@@ -142,7 +142,7 @@ export function S3ConfigModal({ isOpen, onClose, onSuccess }: S3ConfigModalProps
                   <Input
                     id="aws_access_key_id"
                     type="text"
-                    placeholder="AKIAIOSFODNN7EXAMPLE"
+                    placeholder="***REMOVED_AWS_ACCESS_KEY***"
                     value={config.aws_access_key_id}
                     onChange={(e) =>
                       setConfig({ ...config, aws_access_key_id: e.target.value })
