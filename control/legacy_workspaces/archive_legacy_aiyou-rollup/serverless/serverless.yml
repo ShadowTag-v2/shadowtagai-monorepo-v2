@@ -1,0 +1,38 @@
+service: ShadowTag-v2-rollup-serverless
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: dev
+  memorySize: 128
+  timeout: 10
+  environment:
+    PG_HOST: ${env:PG_HOST, ''}
+    PG_PORT: ${env:PG_PORT, '5432'}
+    PG_DATABASE: ${env:PG_DATABASE, ''}
+    PG_USER: ${env:PG_USER, ''}
+    PG_PASSWORD: ${env:PG_PASSWORD, ''}
+    VECTOR_DIM: ${env:VECTOR_DIM, '384'}
+
+functions:
+  hello:
+    handler: src/handler.mjs.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+  insert:
+    handler: src/handler.mjs.insertThought
+    events:
+      - httpApi:
+          path: /thoughts
+          method: post
+
+package:
+  patterns:
+    - '!node_modules/**/.cache/**'
+    - '!**/*.map'
+

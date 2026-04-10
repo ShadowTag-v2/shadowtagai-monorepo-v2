@@ -1,0 +1,22 @@
+{
+  "logo": "file:///Users/pikeymickey/.gemini/antigravity/playground/cosmic-crab/apps/shadowtag-web/public/logo.png",
+  "contact": {
+    "company": "ShadowTagAi Inc.",
+    "address": "495 N Main St., #119, Lakeport, CA 95453",
+    "telephone": "(369) 235-5643",
+    "facsimile": "(707) 263-8659",
+    "email": "redacted@shadowtag-v4.local",
+    "website": "www.shadowtagai.com"
+  },
+  "branding": {
+    "primary": "Autonomous Sentinel",
+    "theme": "Dark Luxury",
+    "colors": {
+      "base": "#000000",
+      "gold": "#b58900",
+      "crimson": "#dc322f",
+      "neon_leaf": "#39ff14",
+      "circuitry": "#7c3aed"
+    }
+  }
+}

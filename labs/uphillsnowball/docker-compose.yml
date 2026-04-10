@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  uphillsnowball-relay:
+    build: .
+    container_name: uphillsnowball-relay
+    platform: linux/arm64
+    ports:
+      - "3000:3001"
+      - "53410:53410"
+    volumes:
+      - .:/opt/uphillsnowball
+    restart: unless-stopped

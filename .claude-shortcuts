@@ -1,0 +1,16 @@
+# Claude Code Path Shortcuts
+# Usage: Reference these shortcuts instead of full paths
+# Example: "read config" instead of "read /home/user/shadowtag-omega-v4-fastapi-services/package.json"
+
+# Project root files
+root=/home/user/shadowtag-omega-v4-fastapi-services
+package=/home/user/shadowtag-omega-v4-fastapi-services/package.json
+migration=/home/user/shadowtag-omega-v4-fastapi-services/MIGRATION.md
+cost-guide=/home/user/shadowtag-omega-v4-fastapi-services/CLAUDE_CODE_COST_OPTIMIZATION.md
+cheatsheet=/home/user/shadowtag-omega-v4-fastapi-services/CLAUDE_COST_CHEATSHEET.md
+
+# Add your project directories here as you create them
+# Example:
+# src=/home/user/shadowtag-omega-v4-fastapi-services/src
+# tests=/home/user/shadowtag-omega-v4-fastapi-services/tests
+# config=/home/user/shadowtag-omega-v4-fastapi-services/config

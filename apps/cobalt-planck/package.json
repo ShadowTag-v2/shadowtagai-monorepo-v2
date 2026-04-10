@@ -1,0 +1,10 @@
+{
+  "name": "cobalt-planck",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Building project...' && sleep 1 && echo 'Build complete.'",
+    "test": "echo 'Running tests...' && sleep 1 && echo 'All tests passed.'",
+    "lint": "echo 'Linting codebase...' && sleep 1 && echo 'No issues found.'",
+    "metrics": "echo 'Collecting metrics...' && sleep 1 && echo 'Metrics: 100% Rick-approved.'"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "components": {
+    "judge-6-hybrid": {
+      "name": "judge-6-hybrid",
+      "namespace": "ShadowTag-v2jr-governance",
+      "replicas": 3,
+      "image": "gcr.io/pnkln-core/judge-6-gemini:v0.53.2"
+    }
+  },
+  "costs": {},
+  "deployments": {},
+  "metrics": {},
+  "last_updated": "2025-11-17T08:54:42.792960"
+}

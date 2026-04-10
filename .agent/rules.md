@@ -1,0 +1,3 @@
+- ROOT: /Users/pikeymickey/shadowtag-omega-v4-stack/shadowtag-omega-v4
+- MODE: ANTIGRAVITY_FORCE
+- NO_NESTED_GIT

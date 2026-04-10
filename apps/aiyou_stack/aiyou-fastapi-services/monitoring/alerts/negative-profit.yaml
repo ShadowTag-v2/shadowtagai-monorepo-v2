@@ -1,0 +1,37 @@
+displayName: "ShadowTagAi - Negative Profit Alert"
+documentation:
+  content: |
+    **CRITICAL: Negative profit detected!**
+
+    The system is costing more than it's generating in revenue.
+
+    Immediate actions:
+    1. Check Vertex AI usage costs
+    2. Review scaling configuration
+    3. Investigate revenue metrics
+    4. Consider kill-switch activation
+  mimeType: "text/markdown"
+
+conditions:
+  - displayName: "Profit < $0"
+    conditionThreshold:
+      filter: |
+        resource.type = "k8s_pod"
+        AND resource.labels.namespace_name = "shadowtagai-production"
+        AND metric.type = "prometheus.googleapis.com/shadowtagai_profit_dollars/gauge"
+
+      comparison: COMPARISON_LT
+      thresholdValue: 0.0
+      duration: "300s"  # 5 minutes
+
+      aggregations:
+        - alignmentPeriod: "60s"
+          perSeriesAligner: ALIGN_MAX
+          crossSeriesReducer: REDUCE_SUM
+
+alertStrategy:
+  autoClose: "3600s"  # 1 hour
+
+enabled: true
+
+severity: CRITICAL

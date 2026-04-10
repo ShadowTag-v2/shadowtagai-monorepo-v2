@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: legal-deadlines
+  labels:
+    name: legal-deadlines
+    environment: production
+    managed-by: kubectl
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: legal-deadlines-sa
+  namespace: legal-deadlines
+  annotations:
+    iam.gke.io/gcp-service-account: legal-deadlines@PROJECT_ID.iam.gserviceaccount.com
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: legal-deadlines-config
+  namespace: legal-deadlines
+data:
+  gcs-project-id: "PROJECT_ID"
+  gcs-bucket-name: "legal-deadlines-documents"
+  environment: "production"
+  log-level: "INFO"
+  api-port: "8001"
+---
+# Note: Create secrets using kubectl create secret
+# kubectl create secret generic legal-deadlines-secrets \
+#   --from-literal=database-url=postgresql://... \
+#   --from-literal=redis-url=redis://... \
+#   --from-literal=sendgrid-api-key=... \
+#   --from-literal=twilio-account-sid=... \
+#   --from-literal=twilio-auth-token=... \
+#   --from-literal=slack-webhook-url=... \
+#   --namespace legal-deadlines

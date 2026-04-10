@@ -1,0 +1,15 @@
+.git/
+.gitignore
+.dockerignore
+
+# BLOCK THE HEAVY ITEMS
+external_sdks/
+browser_artifacts/
+antigravity-data/
+node_modules/
+*.mp4
+*.webm
+
+# Keep the build scripts
+!Dockerfile
+!startup-scripts/

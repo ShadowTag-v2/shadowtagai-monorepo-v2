@@ -1,0 +1,10 @@
+# Original Path: All notes/Contractual.3 #1 initial proofs:/Contractual.3 #1 initial proofs:.txt
+
+# Categories: LEGAL
+
+Contractual.3 #1 initial proofs:
+
+Typically, when you form an oral contract for purchase of goods from a vendor? Such as as an expensive auto repair, like replacing the transmission out of warranty.
+When there is a dispute, how are transactions are adjudicated? Is it under the bill of sale. Is such bill of sale, sufficient as a “writing signed by that vendor?” As is required by the statute of frauds (SOF) to be in writing, when over $500 or longer than a year to be performed. Does the $500 SOF requirement apply in all 50 states and federally?
+Because, in my instance of trying to do car mods, I have dealt with tons of shady auto shops. And I when I try to sue them under a tort theory of recovery I can never seem to win? How would having a complete, and edited by each side to their satisfaction, transcript of the pre-signing negotiations With digital signature blocks. followed by butcher block stating for the correct jurisdiction, “The undersigned agree the above is the entirety of this agreement.” The above being then all uploaded and agreed upon in advance of signing. Thus, regardless of whether a contract was, in fact, created - leave that up to the courts to decide. This simply memorializes the parties actual discussions, importantly, signed by each.
+How would that improve a plaintiff with a defective repair’s chances of recovery. Especially in pro per in small claims court?

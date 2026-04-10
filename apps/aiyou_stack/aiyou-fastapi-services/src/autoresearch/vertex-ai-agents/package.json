@@ -1,0 +1,30 @@
+{
+  "name": "vertex-ai-agents",
+  "version": "1.0.0",
+  "description": "Comprehensive collection of AI agents for Vertex AI Workbench",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "node examples/basic_usage.js",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "vertex-ai",
+    "google-cloud",
+    "ai-agents",
+    "genai",
+    "gemini",
+    "llm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/vertexai": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

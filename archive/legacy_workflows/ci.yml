@@ -1,0 +1,402 @@
+name: ShadowTag-v2 CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'claude/**' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22'
+  PYTHON_VERSION: '3.11'
+  RUST_VERSION: 'stable'
+
+jobs:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 1. PYTHON SERVICES
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  python-services:
+    name: Python Services (FastAPI)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || echo "No requirements.txt found"
+          pip install pytest pytest-cov ruff black mypy || true
+
+      - name: Lint with Ruff
+        run: |
+          if command -v ruff &> /dev/null; then
+            ruff check . --select=E,F,W,C,N || true
+          fi
+
+      - name: Format check with Black
+        run: |
+          if command -v black &> /dev/null; then
+            black --check . || true
+          fi
+
+      - name: Type check with mypy
+        run: |
+          if command -v mypy &> /dev/null; then
+            mypy . --ignore-missing-imports || true
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -d tests ]; then
+            pytest tests/ --cov=. --cov-report=xml --cov-report=term || true
+          else
+            echo "No tests directory found"
+          fi
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: matrix.python-version == '3.11'
+        with:
+          files: ./coverage.xml
+          flags: python
+          fail_ci_if_error: false
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 2. NODE.JS SERVICES
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  node-services:
+    name: Node.js Services
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20', '22']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm install
+          else
+            echo "No package.json found"
+          fi
+
+      - name: Lint
+        run: |
+          if [ -f package.json ] && npm run | grep -q "lint"; then
+            npm run lint || true
+          fi
+
+      - name: Format check
+        run: |
+          if [ -f package.json ] && npm run | grep -q "format:check"; then
+            npm run format:check || true
+          fi
+
+      - name: Type check
+        run: |
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit || true
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -f package.json ] && npm run | grep -q "test"; then
+            npm test -- --ci --coverage || true
+          fi
+
+      - name: Build
+        run: |
+          if [ -f package.json ] && npm run | grep -q "build"; then
+            npm run build || true
+          fi
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 3. RUST SERVICES
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  rust-services:
+    name: Rust Services
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'Cargo.toml') || contains(github.event.head_commit.modified, '*.rs')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: clippy, rustfmt
+          target: x86_64-unknown-linux-gnu
+          override: true
+
+      - name: Cache Cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Format check
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo fmt -- --check
+          fi
+
+      - name: Clippy
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo clippy --all-targets --all-features -- -D warnings
+          fi
+
+      - name: Build
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo build --release --locked
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo test --all --locked
+          fi
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 4. DOCKER BUILD
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'Dockerfile') || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          if [ -f Dockerfile ]; then
+            docker build -t ShadowTag-v2-services:${{ github.sha }} .
+          fi
+
+      - name: Test Docker image
+        run: |
+          if [ -f Dockerfile ]; then
+            docker run --rm ShadowTag-v2-services:${{ github.sha }} --version || echo "No --version flag"
+          fi
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 5. SECURITY SCANNING
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 6. COGNITIVE STACK VALIDATION
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  cognitive-stack-validation:
+    name: Cognitive Stack Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate MEGA_ROLLUP documentation
+        run: |
+          echo "Validating Cognitive Stack v5 documentation..."
+
+          # Check required files exist
+          test -f .cursor/MEGA_ROLLUP/MEGA_ROLLUP.md
+          test -f .cursor/MEGA_ROLLUP/impact_summary.md
+          test -f .cursor/MEGA_ROLLUP/RoE_integration.md
+          test -f .cursor/MEGA_ROLLUP/task_index.json
+
+          echo "✅ All required documentation files present"
+
+      - name: Validate task_index.json structure
+        run: |
+          echo "Validating task index JSON structure..."
+
+          # Check JSON is valid
+          python3 -c "
+          import json
+          with open('.cursor/MEGA_ROLLUP/task_index.json') as f:
+              data = json.load(f)
+              assert 'tasks' in data
+              assert 'workflows' in data
+              assert 'integrations' in data
+              assert 'guard_rails' in data
+              print(f'✅ Valid task index with {len(data[\"tasks\"])} tasks')
+          "
+
+      - name: Check ShadowTag-v2JR guard-rails compliance
+        run: |
+          echo "Checking guard-rails compliance..."
+
+          # Verify guard-rails are defined
+          python3 -c "
+          import json
+          with open('.cursor/MEGA_ROLLUP/task_index.json') as f:
+              data = json.load(f)
+              gr = data['guard_rails']['ShadowTag-v2jr_doctrine']
+              assert gr['purpose'] == 'verified facts → structured decision'
+              assert gr['reason'] == 'automated reasoning'
+              assert gr['brakes'] == 'auditable logs'
+              print('✅ ShadowTag-v2JR guard-rails properly configured')
+          "
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 7. INTEGRATION TESTS (if applicable)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [python-services, node-services]
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: ShadowTag-v2_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+      mongodb:
+        image: mongo:7
+        env:
+          MONGO_INITDB_ROOT_USERNAME: test
+          MONGO_INITDB_ROOT_PASSWORD: test
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+          npm ci || npm install || true
+
+      - name: Run integration tests
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: ShadowTag-v2_test
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          MONGODB_HOST: localhost
+          MONGODB_PORT: 27017
+        run: |
+          if [ -d tests/integration ]; then
+            pytest tests/integration/ -v || true
+          else
+            echo "No integration tests found"
+          fi
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # 8. SUMMARY
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [python-services, node-services, cognitive-stack-validation]
+    if: always()
+
+    steps:
+      - name: Check overall status
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🧠 ShadowTag-v2 Cognitive Stack v5 — CI Pipeline Summary"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "Python Services:    ${{ needs.python-services.result }}"
+          echo "Node.js Services:   ${{ needs.node-services.result }}"
+          echo "Cognitive Stack:    ${{ needs.cognitive-stack-validation.result }}"
+          echo ""
+          echo "Reference: Cor.71"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

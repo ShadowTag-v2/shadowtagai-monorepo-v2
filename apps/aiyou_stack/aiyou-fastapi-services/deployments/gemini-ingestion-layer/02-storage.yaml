@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ingestion-cache
+  namespace: gke-training-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: standard-rwo
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-credentials
+  namespace: gke-training-system
+type: Opaque
+stringData:
+  youtube-api-key = "REDACTED_API_KEY"
+  twitter-api-key = "REDACTED_API_KEY"
+  twitter-api-secret = "REDACTED_API_KEY"
+  newsapi-key = "REDACTED_API_KEY"
+  # Add actual keys during deployment

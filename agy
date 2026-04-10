@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# --- CONFIGURATION ---
+PROJECT_ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
+WORKSPACE_FILE="$PROJECT_ROOT/ShadowTagAI.code-workspace"
+
+# --- COMMANDS ---
+
+# Default: Open the Fortress (VS Code Workspace)
+launch_fortress() {
+    echo ">>> 🚀 Launching ShadowTagAI Fortress..."
+    if command -v code &> /dev/null; then
+        code "$WORKSPACE_FILE"
+    else
+        echo "❌ Error: 'code' command not found. Open VS Code -> Cmd+Shift+P -> 'Shell Command: Install code in PATH'."
+        exit 1
+    fi
+}
+
+# 'agy live': Run the God Mode Agent directly in terminal
+run_live_engine() {
+    echo ">>> 🔥 Igniting LIVE ENGINE (God Mode)..."
+    cd "$PROJECT_ROOT"
+    source .env
+    export PYTHONPATH='.'
+    
+    if [ -f "scripts/god_mode_admin.py" ]; then
+        python3 scripts/god_mode_admin.py
+    else
+        echo "⚠️ Agent script not found. Launching Fortress instead..."
+        launch_fortress
+    fi
+}
+
+# 'agy pull': Sync Monorepo
+sync_repo() {
+    echo ">>> 📡 Syncing Sovereign State..."
+    cd "$PROJECT_ROOT"
+    git pull
+}
+
+# --- ROUTER ---
+case "$1" in
+    live|agent)
+        run_live_engine
+        ;;
+    sync|pull)
+        sync_repo
+        ;;
+    *)
+        launch_fortress
+        ;;
+esac

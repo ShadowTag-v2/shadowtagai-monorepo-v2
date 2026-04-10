@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_terraform_000",
+  "level": 3,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "terraform",
+  "tier": "execution",
+  "shift": "shift_1",
+  "knowledge_graph": {
+    "specialization": "terraform",
+    "domain": "terraform"
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

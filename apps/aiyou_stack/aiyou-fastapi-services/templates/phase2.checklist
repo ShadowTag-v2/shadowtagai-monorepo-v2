@@ -1,0 +1,9 @@
+# Phase 2: Judge #6 Deployment
+☐ Deploy Layer 1 (Gemini fine-tuned) - p99 ≤10ms
+☐ Deploy Layer 2 (PyTorch classifier) - p99 ≤10ms
+☐ Deploy Layer 3 (Rules engine) - p99 ≤10ms
+☐ Configure admission webhooks
+☐ Setup HPA (2-10 replicas per layer)
+☐ Configure PDBs (minAvailable: 1)
+☐ Validate combined p99 ≤30ms
+☐ Test failover scenarios

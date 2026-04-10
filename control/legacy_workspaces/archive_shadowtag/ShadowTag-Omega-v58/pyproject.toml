@@ -1,0 +1,4 @@
+[project]
+name = "shadowtag-omega"
+version = "58.0.0"
+dependencies = ["fastapi", "uvicorn", "pydantic"]

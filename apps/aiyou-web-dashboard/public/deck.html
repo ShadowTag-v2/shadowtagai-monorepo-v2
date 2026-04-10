@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>UphillSnowball Pitch Deck</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #ffffff; color: #333333; }
+        .slide { width: 1024px; height: 768px; page-break-after: always; position: relative; box-sizing: border-box; background-color: #ffffff; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+        @media print { .slide { page-break-after: always; } }
+        .header { position: absolute; top: 50px; left: 60px; font-size: 24px; font-weight: bold; color: #10B981; text-transform: uppercase; letter-spacing: 2px; }
+        .title-slide { background-color: #1b103c; color: white; text-align: center; position: relative; }
+        .title-slide::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 600px; height: 600px;
+            transform: translate(-50%, -50%);
+            background-image: url('leaf.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        .title-slide h1 { font-size: 80px; margin-bottom: 20px; font-weight: 800; position: relative; z-index: 1; }
+        .title-slide p { font-size: 30px; font-weight: 300; color: #10B981; position: relative; z-index: 1; }
+        h2 { font-size: 48px; font-weight: bold; margin-top: 0; margin-bottom: 50px; color: #1b103c; }
+        .content { padding: 60px 100px; }
+        .three-col { display: flex; justify-content: space-between; gap: 40px; }
+        .two-col { display: flex; justify-content: space-between; gap: 60px; align-items: center;}
+        .col { flex: 1; text-align: center; }
+        .col h3 { font-size: 28px; font-weight: bold; margin-bottom: 20px; color: #10B981; }
+        .col p { font-size: 20px; line-height: 1.5; color: #666; text-align: left; }
+        ul.points { font-size: 28px; line-height: 1.8; margin-left: 0; padding-left: 20px; }
+        ul.points li { margin-bottom: 20px; color: #444; }
+        ul.points li strong { color: #1b103c; }
+        .highlight-box { border: 2px solid #e2e8f0; border-radius: 12px; padding: 30px; background: #f8fafc; }
+        .premium-box { border: 4px solid #10B981; border-radius: 12px; padding: 30px; background: #ecfdf5; box-shadow: 0 10px 25px rgba(16,185,129,0.15); }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide title-slide">
+        <h1>UphillSnowball</h1>
+        <p>Verified Intelligence. Controlled Loops. Zero Hallucinations.</p>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide">
+        <div class="content">
+            <h2>Problem</h2>
+            <div class="three-col">
+                <div class="col">
+                    <h3>Manual Exhaustion</h3>
+                    <p>Hydra industries (Legal, Finance, Defense) bleed capital manually auditing evolving rules. Highly paid experts waste hours doing unstructured precedent research.</p>
+                </div>
+                <div class="col">
+                    <h3>Synthetic Index Drift</h3>
+                    <p>Standard generative-only RAG loops hallucinate fatally in production environments. Untracked synthetics merge into the knowledge base, triggering cascading errors.</p>
+                </div>
+                <div class="col">
+                    <h3>Sanction Vectors</h3>
+                    <p>Enterprises face crushing compliance liabilities under the incoming EU '26 AI Act and NY RAISE Acts if untethered AI deployments leak or hallucinate actions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Solution -->
+    <div class="slide">
+        <div class="content">
+            <h2>Solution</h2>
+            <p style="font-size: 26px; color: #666; margin-bottom: 40px;">The <strong>Glass House Sentinel</strong> WebGPU Architecture.</p>
+            <div class="three-col">
+                <div class="col highlight-box">
+                    <h3 style="color:#1b103c;">Cor.Yay File System</h3>
+                    <p>A virtual shadow filing layer that allows agents to stage massive refactors behind impenetrable structural firewalls, keeping host integrity absolute.</p>
+                </div>
+                <div class="col premium-box">
+                    <h3 style="color:#10B981;">Cinematic Studio</h3>
+                    <p>Multimodal verification deployed heavily on headless Chrome arrays. Agents record and cross-examine visual frame traces natively on GCP to prove UI assertions.</p>
+                </div>
+                <div class="col highlight-box">
+                    <h3 style="color:#1b103c;">Autoresearch</h3>
+                    <p>High-concurrency swarm execution driving 487-task workflows natively on serverless Cloud Run, hitting sub-35ms token compression efficiencies.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Market Validation -->
+    <div class="slide">
+        <div class="content">
+            <h2>Market Validation</h2>
+            <ul class="points">
+                <li><strong>Fortune 500 AI Bans:</strong> Financial and Healthcare orgs are blocking horizontal systems (like ChatGPT) entirely due to non-verifiable data leakage.</li>
+                <li><strong>Compliance Firewalls:</strong> Deep integration of strict "Judge 6" ATP rules engines is now a mandatory boardroom priority.</li>
+                <li><strong>Hydra RAG Desperation:</strong> Enterprises are throwing millions at internal verification infrastructures that simply do not scale.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 5: Market Size -->
+    <div class="slide">
+        <div class="content">
+            <h2>Market Size</h2>
+            <div class="three-col" style="margin-top: 60px; align-items: flex-end;">
+                <div class="col" style="display:flex; flex-direction:column; align-items:center;">
+                    <div style="width: 260px; height: 260px; border-radius: 50%; border: 6px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: bold; color: #1b103c;">$11B</div>
+                    <p style="text-align:center; font-weight:bold; margin-top:20px; color:#444;">Enterprise AI Search<br>(Worldwide TAM)</p>
+                </div>
+                <div class="col" style="display:flex; flex-direction:column; align-items:center;">
+                    <div style="width: 190px; height: 190px; border-radius: 50%; border: 6px solid #94a3b8; display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: bold; color: #1b103c;">$2B</div>
+                    <p style="text-align:center; font-weight:bold; margin-top:20px; color:#444;">Hydra Industry<br>RAG Budgets (SAM)</p>
+                </div>
+                <div class="col" style="display:flex; flex-direction:column; align-items:center;">
+                    <div style="width: 130px; height: 130px; border-radius: 50%; border: 6px solid #10B981; background: #ecfdf5; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: #10B981;">84M</div>
+                    <p style="text-align:center; font-weight:bold; margin-top:20px; color:#10B981;">Obtainable Premium<br>Compliance Share (SOM)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Product Flow -->
+    <div class="slide">
+        <div class="content">
+            <h2>Product</h2>
+            <p style="font-size: 26px; color: #666; margin-bottom: 40px;">The Autonomous Uphill Snowball Execution Loop.</p>
+            <div class="three-col">
+                <div class="col">
+                    <div style="font-size: 80px; font-weight: bold; color: #10B981; margin-bottom: 10px;">1</div>
+                    <h3 style="color:#1b103c;">Stage</h3>
+                    <p>Cor.Yay hooks into the local Shadow File System, indexing millions of parameters while keeping all active repository changes purely synthetic.</p>
+                </div>
+                <div class="col">
+                    <div style="font-size: 80px; font-weight: bold; color: #10B981; margin-bottom: 10px;">2</div>
+                    <h3 style="color:#1b103c;">Execute</h3>
+                    <p>The Autoresearch multi-agent swarm launches concurrent, stateless payloads across serverless Google Cloud targets, compressing task durations.</p>
+                </div>
+                <div class="col">
+                    <div style="font-size: 80px; font-weight: bold; color: #10B981; margin-bottom: 10px;">3</div>
+                    <h3 style="color:#1b103c;">Verify</h3>
+                    <p>Judge 6 triggers the 17-Layer DOW CRSMC Compliance Shield. Artifacts are mathematically interrogated and logged to the strict Bead Memory Ledger.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Business Model -->
+    <div class="slide">
+        <div class="content">
+            <h2>Business Model</h2>
+            <p style="font-size: 26px; color: #666; margin-bottom: 40px;">Targeting a brutal <strong>4:1 LTV:CAC</strong> ratio in 12 months.</p>
+            <div class="two-col">
+                <div class="col highlight-box">
+                    <h3 style="color:#444;">Standard Fleet</h3>
+                    <p style="font-size: 24px; text-align: center; color: #1b103c; font-weight: bold; margin: 20px 0;">$500 / seat / month</p>
+                    <p style="text-align: center;">Unlimited Recursive Cloud Run Research</p>
+                </div>
+                <div class="col premium-box">
+                    <h3 style="color:#10B981;">Premium Compliance</h3>
+                    <p style="font-size: 24px; text-align: center; color: #1b103c; font-weight: bold; margin: 20px 0;">$2,400 / seat / month</p>
+                    <p style="text-align: center;">Unlocks explicit Judge 6 protection layers and Sovereign Memory Link infrastructure for liability mitigation.</p>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:40px;">
+                <p style="font-size: 24px; font-weight: bold; color: #1b103c;">Annual Revenue Vector Initial Target: <span style="color:#10B981;">$9.4M</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Adoption Strategy -->
+    <div class="slide">
+        <div class="content">
+            <h2>Adoption Strategy</h2>
+            <ul class="points">
+                <li><strong>Developer Beachheads:</strong> Silently penetrating local CI/CD pipelines to build uncompromising technical reliance before decisively rising up the organizational chart.</li>
+                <li><strong>Pure Serverless Execution:</strong> We are a pure serverless Cloud Run architecture operating securely on Google Cloud, guaranteeing infinite stateless scaling from day one.</li>
+                <li><strong>Compliance Wedges:</strong> Triggering sales motions explicitly linked to the existential liabilities created by the incoming EU '26 AI Act.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 9: Competition -->
+    <div class="slide">
+        <div class="content">
+            <h2>Competition</h2>
+            <div style="position: relative; width: 600px; height: 450px; margin: 0 auto; margin-top: 40px;">
+                <div style="position: absolute; top: 50%; left: 0; right: 0; border-top: 3px solid #cbd5e1; z-index: 1;"></div>
+                <div style="position: absolute; top: 0; bottom: 0; left: 50%; border-left: 3px solid #cbd5e1; z-index: 1;"></div>
+                
+                <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #1b103c; font-size: 16px;">Verifiable Citations</div>
+                <div style="position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #666; font-size: 16px;">Generative Only</div>
+                <div style="position: absolute; top: 50%; left: -80px; transform: translateY(-50%); font-weight: bold; color: #666; font-size: 16px;">Horizontal Apps</div>
+                <div style="position: absolute; top: 50%; right: -120px; transform: translateY(-50%); font-weight: bold; color: #1b103c; font-size: 16px;">Hydra Sector Specific</div>
+
+                <div style="position: absolute; top: 60%; left: 20%; z-index: 2; text-align: center; transform: translate(-50%, -50%);">
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #94a3b8; margin: 0 auto;"></div>
+                    <p style="font-size: 16px; font-weight: bold; color: #444; margin-top: 5px;">ChatGPT Ent.</p>
+                </div>
+                <div style="position: absolute; top: 30%; left: 30%; z-index: 2; text-align: center; transform: translate(-50%, -50%);">
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #64748b; margin: 0 auto;"></div>
+                    <p style="font-size: 16px; font-weight: bold; color: #444; margin-top: 5px;">Glean</p>
+                </div>
+                <div style="position: absolute; top: 60%; left: 80%; z-index: 2; text-align: center; transform: translate(-50%, -50%);">
+                    <div style="width: 20px; height: 20px; border-radius: 50%; background: #475569; margin: 0 auto;"></div>
+                    <p style="font-size: 16px; font-weight: bold; color: #444; margin-top: 5px;">Harvey</p>
+                </div>
+
+                <!-- UphillSnowball Dot -->
+                <div style="position: absolute; top: 10%; left: 95%; z-index: 3; text-align: center; transform: translate(-50%, -50%);">
+                    <div style="width: 30px; height: 30px; border-radius: 50%; background: #10B981; margin: 0 auto; box-shadow: 0 0 15px rgba(16,185,129,0.8);"></div>
+                    <p style="font-size: 20px; font-weight: bold; color: #10B981; margin-top: 5px;">UphillSnowball</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Competitive Advantages -->
+    <div class="slide">
+        <div class="content">
+            <h2>Competitive Advantages</h2>
+            <div class="two-col" style="margin-bottom: 30px;">
+                <div class="col highlight-box" style="flex:1;">
+                    <h3 style="color:#1b103c;">Zero Hallucinations</h3>
+                    <p>We provide the only framework natively hard-coded to reject unverified UI generations, creating a mathematical competitive moat.</p>
+                </div>
+                <div class="col highlight-box" style="flex:1;">
+                    <h3 style="color:#1b103c;">Judge 6 Cover</h3>
+                    <p>Mathematical certainty in output legality via hardcoded sanction-avoidance checkpoints bolted to the executive loop.</p>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="col highlight-box" style="flex:1;">
+                    <h3 style="color:#1b103c;">Sub-90ms p99 Latency</h3>
+                    <p>Sovereign memory protocols enforce sub-90ms execution extraction across 118 massive indexed logic stores.</p>
+                </div>
+                <div class="col highlight-box" style="flex:1;">
+                    <h3 style="color:#1b103c;">Uphill Snowball Protocol</h3>
+                    <p>Our autonomous logic forces synthetic arrays to continuously log data to an immutable bead ledger, eliminating duplicated work globally.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+https://github.com/lancedb/lancedb
+https://github.com/ollama/ollama-python
+https://github.com/vinta/awesome-python
+https://developers.googleblog.com/introducing-the-developer-knowledge-api-and-mcp-server/
+https://developers.google.com/knowledge/mcp
+https://stitch.googleapis.com/mcp
+https://developers.google.com/knowledge/mcp
+https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-3.1-flash-lite-preview:streamGenerateContent
+https://github.com/vercel-labs/agent-skills
+https://github.com/REPOZY/superpowers-optimized
+https://arxiv.org/pdf/2512.14982

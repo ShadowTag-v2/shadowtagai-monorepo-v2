@@ -1,0 +1,39 @@
+{
+  "count": 126,
+  "search_query": "How do atmospheric CO2 concentrations correlate with global surface temperature ",
+  "research_question": "How do atmospheric CO2 concentrations correlate with global surface temperature anomalies, and what is the lag structure of this relationship?",
+  "papers": [
+    {
+      "title": "Contrasting futures for ocean and society from different anthropogenic CO2 emissions scenarios",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2015,
+      "has_abstract": false
+    },
+    {
+      "title": "Correlations of the first and second derivatives of atmospheric CO2 with global surface temperature and the El Nino-Southern Oscillation respectively",
+      "source": "PaperSource.ARXIV",
+      "year": 2014,
+      "has_abstract": true
+    },
+    {
+      "title": "Exploring the spatiotemporal impact and pathways of temperature and CO2 concentration based on network approach.",
+      "source": "PaperSource.PUBMED",
+      "year": 2025,
+      "has_abstract": true
+    },
+    {
+      "title": "Cloud Responses to Abrupt Solar and CO2 Forcing: 1. Temperature Mediated Cloud Feedbacks",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2024,
+      "has_abstract": true
+    },
+    {
+      "title": "Standardising the \u201cGregory method\u201d for calculating equilibrium climate sensitivity",
+      "source": "PaperSource.SEMANTIC_SCHOLAR",
+      "year": 2025,
+      "has_abstract": true
+    }
+  ],
+  "status": "PASS",
+  "duration_seconds": 2.4
+}

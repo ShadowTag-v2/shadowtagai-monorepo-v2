@@ -1,0 +1,45 @@
+# Core dependencies for Nightly Intel Pipeline
+# ATP 5-19 compliant ethical scraping and intelligence gathering
+
+# Web scraping and HTTP
+aiohttp==3.9.1
+robotexclusionrulesparser==1.7.1
+requests==2.31.0
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# Rate limiting and async
+aiolimiter==1.1.0
+tenacity==8.2.3
+
+# GitHub API
+PyGithub==2.1.1
+gitpython==3.1.40
+
+# arXiv crawling
+arxiv==2.1.0
+feedparser==6.0.10
+
+# Data processing
+pandas==2.1.4
+numpy==1.26.2
+
+# Storage (local alternatives to BigQuery/GCS)
+sqlalchemy==2.0.23
+sqlite3worker==1.1.7
+
+# Configuration
+pyyaml==6.0.1
+python-dotenv==1.0.0
+
+# Logging and monitoring
+structlog==23.2.0
+colorlog==6.8.0
+
+# JR Engine / AI scoring
+openai==1.6.1
+anthropic==0.7.8
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3

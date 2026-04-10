@@ -1,0 +1,16 @@
+# SonarCloud Configuration
+sonar.organization=ehanc69
+sonar.projectKey=ehanc69_aiyou-fastapi-services
+sonar.projectName=aiyou-fastapi-services
+
+# Source configuration
+sonar.sources=src,app,shadowtagai,agents
+sonar.tests=tests
+sonar.python.coverage.reportPaths=coverage.xml
+sonar.python.version=3.11
+
+# Exclusions
+sonar.exclusions=**/node_modules/**,**/__pycache__/**,**/venv/**,**/*.pyc,**/migrations/**
+
+# SonarCloud host
+sonar.host.url=https://sonarcloud.io

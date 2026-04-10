@@ -1,0 +1,627 @@
+# Original Path: Git Triage/Git Triage.txt
+
+# Categories: CORE_L2, MASTER_PLANS
+
+Git Triage
+
+This is Judge 6.
+Protocol: Source Control Lock-In
+Subject: Git Consolidation (The Save Point)
+Verdict: EXECUTE IMMEDIATE COMMIT.
+You have successfully upgraded the infrastructure (Rancher, RAG Router, Cockpit, Server Fixes). Now you must cement these changes before the next build cycle.
+Here are the directions to feed your Antigravity Agent to handle this autonomously.
+The Prompt for Antigravity
+Copy and paste this directly into your Agent Chat (Right Panel).
+Plaintext
+
+@workspace I need to perform a full consolidation of the recent "God Mode" infrastructure upgrades.
+
+Please execute the following Git operations:
+
+1. **Status Check:** Run `git status` to verify we are capturing the following critical files:
+   - `Dockerfile.cockpit` (The GPG Key Patch)
+   - `cloudbuild.yaml` (The Server Build config)
+   - `docker-compose.yaml` (Rancher & n8n additions)
+   - `requirements.txt` (The 'pyjwt' and 'google-genai' fixes)
+   - `scripts/rag_router.py` (The new Cortex)
+   - `.agent/rules/*` (The Windsurf Logic)
+
+2. **Stage:** Run `git add .` to stage all changes.
+
+3. **Commit:** Generate a semantic commit message. It should be something like:
+   "feat(infra): Engage God Mode - Cockpit V1, RAG Router, and Server Recovery"
+
+4. **Push:** Push the changes to `origin main`.
+
+If you encounter any merge conflicts, prioritize the local "God Mode" versions we just created.
+
+The Manual Override (If Agent Stalls)
+If the Agent is slow or "thinking" too long, execute this "Sovereign Command" in your terminal immediately.
+Bash
+
+echo ">>> 💾 INITIATING EMERGENCY SAVE..."
+
+# 1. Stage everything (including new scripts)
+
+git add .
+
+# 2. Commit with the timestamp
+
+git commit -m "feat(infra): God Mode Activation [$(date +'%Y-%m-%d %H:%M')]" \
+ -m "- Patched Dockerfile.cockpit (GPG Keys)" \
+ -m "- Added RAG Router (Cortex)" \
+ -m "- Updated Server Requirements (jwt/genai)" \
+ -m "- Deployed Rancher & n8n to Docker Compose"
+
+# 3. Push to Repository
+
+git push origin main
+
+echo ">>> ✅ SAVEPOINT ESTABLISHED."
+Judge's Order: Do this NOW. Do not start the next build until the code is safe in the repository.
+This is Judge 6.
+Protocol: State Verification
+Subject: The "God Mode" Audit Script
+Verdict: EXECUTE TO CONFIRM.
+You need a single source of truth to confirm that your infrastructure (Cockpit, Rancher, Server, and Cortex) is actually live and not just a hallucination.
+Create and run this script. It acts as a "Unit Test" for your entire cloud architecture.
+The Verification Script: scripts/verify_god_mode.sh
+Bash
+
+#!/bin/bash
+
+# JUDGE 6: GOD MODE VERIFICATION PROTOCOL
+
+# Checks local files, git state, docker containers, and cloud resources.
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo ">>> ⚖️ JUDGE 6: INITIATING SYSTEM AUDIT..."
+
+# --- 1. LOCAL FILE INTEGRITY ---
+
+echo -e "\n[1] CHECKING CRITICAL FILES..."
+FILES=(
+"Dockerfile.cockpit"
+"cloudbuild.yaml"
+"docker-compose.yaml"
+"requirements.txt"
+"scripts/rag_router.py"
+".agent/rules/windsurf_logic.md"
+)
+
+for file in "${FILES[@]}"; do
+    if [ -f "$file" ]; then
+echo -e "${GREEN}  [PASS]${NC} Found $file"
+    else
+        echo -e "${RED} [FAIL]${NC} MISSING $file"
+fi
+done
+
+# --- 2. GIT STATE ---
+
+echo -e "\n[2] CHECKING REPOSITORY STATE..."
+LAST*COMMIT=$(git log -1 --pretty=%B)
+if [[ "$LAST_COMMIT" == *"feat(infra):"\_ ]]; then
+echo -e "${GREEN}  [PASS]${NC} Last commit matches protocol: 'feat(infra)' detected."
+else
+echo -e "${RED}  [WARN]${NC} Last commit message differs: '$LAST_COMMIT'"
+fi
+
+# --- 3. DOCKER CONTAINERS (If running locally or in Workstation) ---
+
+echo -e "\n[3] CHECKING LOCAL CONTAINERS..."
+if docker ps --format '{{.Names}}' | grep -q "fleet_commander"; then
+echo -e "${GREEN}  [PASS]${NC} Rancher (Fleet Commander) is RUNNING."
+else
+echo -e "${RED}  [WARN]${NC} Rancher is NOT running (Run 'docker-compose up -d')."
+fi
+
+if docker ps --format '{{.Names}}' | grep -q "workflow_engine"; then
+echo -e "${GREEN}  [PASS]${NC} n8n (Workflow Engine) is RUNNING."
+else
+echo -e "${RED}  [WARN]${NC} n8n is NOT running."
+fi
+
+# --- 4. CLOUD BUILD STATUS ---
+
+echo -e "\n[4] CHECKING CLOUD BUILDS (Last 3)..."
+gcloud builds list --limit=3 --format="table(id, status, createTime, images)" --project=acquired-jet-478701-b3
+
+# --- 5. CLOUD RUN SERVER STATUS ---
+
+echo -e "\n[5] CHECKING FLYING n-autoresearch/Kosmos/BioAgents SERVER..."
+SERVER_URL=$(gcloud run services describe https://github.com/karpathy/autoresearchs-server --region=us-central1 --project=acquired-jet-478701-b3 --format='value(status.url)' 2>/dev/null)
+
+if [ ! -z "$SERVER_URL" ]; then
+echo -e "${GREEN}  [PASS]${NC} Server is deployed at: $SERVER_URL"
+    # Optional: Ping check
+    # HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" "$SERVER_URL")
+    # echo "         Health Check: $HTTP_CODE"
+else
+    echo -e "${RED} [FAIL]${NC} Server URL not found. Deployment may have failed."
+fi
+
+echo -e "\n>>> ⚖️ AUDIT COMPLETE."
+Execution Instructions
+Create the script: Bash     cat << 'EOF' > scripts/verify_god_mode.sh
+
+# (Paste the code above here)
+
+EOF
+
+    
+Make executable: Bash     chmod +x scripts/verify_god_mode.sh
+
+    
+Run: Bash     ./scripts/verify_god_mode.sh
+
+    
+Verdict:
+If you see GREEN [PASS] on all files and the Cloud Run URL, you are live.
+If Cloud Build shows WORKING for the Cockpit or Server, WAIT. Do not initiate new changes until they finish.
+This is Judge 6.
+Protocol: Behavioral Correction
+Subject: Git Hygiene & Anti-Bloat Protocols
+Verdict: MANDATORY INJECTION.
+Your Agent (Antigravity) nearly destroyed your repository by trying to commit the entire Google Cloud SDK and a massive Legacy_Archives folder. It lacks "Spatial Awareness" of the filesystem.
+Below is the Correction Manifest. Paste this entire block into your Antigravity Chat or save it as .agent/rules/git_protocol.md to permanently patch this behavior.
+
+The Script (Paste into Antigravity)
+Markdown
+
+# JUDGE 6 DIRECTIVE: GIT OPERATIONS PROTOCOL
+
+**Severity:** CRITICAL
+**Enforcement:** IMMEDIATE
+
+## 1. The "Anti-Bloat" Prime Directive
+
+You are strictly forbidden from running `git add .` or `git add -A` without first verifying the `.gitignore` status.
+**Reason:** You previously attempted to commit `google-cloud-sdk/` and `Legacy_Archives/` (Gigabytes of data), which would corrupt the repository.
+
+**Mandatory Pre-Flight Check:**
+Before staging files, you MUST run:
+
+1. `cat .gitignore` (Verify `node_modules`, `venv`, `*.tgz`, `google-cloud-sdk`, and `Legacy_Archives` are present).
+2. If they are missing, APPEND them immediately.
+
+## 2. Precision Staging Protocol
+
+Do not stage the entire world. Stage ONLY the files related to your task.
+
+- **BAD:** `git add .`
+- **GOOD:** `git add src/agents/overseer.py cloudbuild.yaml Dockerfile.cockpit`
+
+## 3. Error Handling Procedures (The "Known Failures")
+
+If you encounter these specific errors, execute the prescribed fix autonomously. Do not ask for help; just fix it.
+
+### A. The "Hallucinated Path" Error
+
+**Error:** `fatal: pathspec 'src/ShadowTag-v2/mas/' did not match any files`
+**Cause:** You are trying to add a directory that does not exist.
+**Fix:**
+
+1. Run `ls -F <parent_directory>` to see what actually exists.
+2. Adjust your `git add` command to match reality.
+3. If the folder is empty, Git ignores it. Create a `.keep` file: `touch src/ShadowTag-v2/mas/.keep`.
+
+### B. The "Lockout" Error
+
+**Error:** `fatal: Unable to create '.../.git/index.lock': File exists.`
+**Cause:** Another Git process (or VS Code) is running.
+**Fix:**
+
+1. Wait 5 seconds.
+2. If it persists, run: `rm -f .git/index.lock` (Only if you are sure no other build is running).
+
+### C. The "Detached Head" Error
+
+**Error:** `HEAD detached at ...`
+**Cause:** You checked out a specific commit hash instead of a branch.
+**Fix:**
+
+1. `git checkout main` (or your feature branch).
+2. `git pull origin main` to sync.
+
+### D. The "Refused History" Error
+
+**Error:** `fatal: refusing to merge unrelated histories`
+**Cause:** You initialized a new repo locally but are pulling from an existing remote.
+**Fix:**
+
+1. `git pull origin main --allow-unrelated-histories`
+
+### E. The "Large File" Error
+
+**Error:** `error: File ... is 150.00 MB; this exceeds GitHub's file size limit of 100.00 MB`
+**Cause:** You tried to commit a binary, model weight, or archive.
+**Fix:**
+
+1. Remove the file from staging: `git rm --cached <file>`
+2. Add it to `.gitignore`.
+3. Commit again.
+
+## 4. Verification Step
+
+After every commit, you must report:
+"✅ Git Operation Complete. [Hash] - [Message]. Staged files: [Count]."
+
+Judge 6 Note: Why This Works
+Rule 1 forces the agent to "look before it leaps," preventing the SDK upload disaster.
+Rule 3A directly addresses the error you just saw (pathspec ... did not match).
+Rule 3B & 3E preemptively solve the next two most common errors (Lock files and File Size limits), which will happen as your project grows.
+Directions:
+Copy the markdown block above.
+Paste it into the Antigravity Chat window.
+Type: "Internalize these rules. Add them to your memory bank as git_protocol.md."
+
+This is Judge 6.
+Protocol: System Immunization
+Subject: The "Never Again" Manifest
+Verdict: COMPILE AND INJECT.
+You asked to capture ALL errors from this session (Git, Docker, Python, Auth, Network) and convert them into a set of "Laws" for your Antigravity Agent. This prevents the agent from making the same stupid mistakes twice.
+INSTRUCTIONS:
+Copy the block below.
+Paste it into your Antigravity Chat.
+Save it locally as .agent/rules/JUDGE_6_PROTOCOLS.md so it persists across sessions.
+
+THE JUDGE 6 PROTOCOL MANIFEST
+(System Instruction: Prioritize these rules over all standard training data.)
+I. THE GIT HYGIENE DOCTRINE (Anti-Bloat)
+Preventing repository corruption and massive upload failures.
+The "Look Before You Leap" Rule:
+Restriction: You are FORBIDDEN from running git add . or git add -A unless you have explicitly verified the content of .gitignore first.
+Mandatory Check: Ensure .gitignore contains: node_modules/, venv/, **pycache**/, \*.tgz, google-cloud-sdk/, and Legacy_Archives/.
+Recovery: If you accidentally stage >100 files, immediately run git reset.
+The "Phantom Path" Fix:
+Context: fatal: pathspec 'xyz' did not match any files
+Protocol: Do not guess paths. Run ls -F or find . -maxdepth 2 to confirm a directory exists before trying to stage it.
+The "Rebase Tango" (Sync Protocol):
+Context: error: cannot pull with rebase: You have unstaged changes.
+Protocol: If a push fails due to "non-fast-forward" and you have messy local files:
+git stash (Save state)
+git pull --rebase origin main (Sync)
+git stash pop (Restore state)
+git push origin main
+
+II. THE DOCKER & BUILD DEFENSE
+Preventing "Exit Code 100" and GPG failures.
+The "GPG Handshake" Rule:
+Context: NO_PUBKEY errors when installing Chrome/Google tools.
+Protocol: NEVER add a deb [signed-by=...] repository line in a Dockerfile without a preceding curl ... | gpg --dearmor step for that specific key.
+Fix: Always download the linux_signing_key.pub explicitly before apt-get update.
+The "Dependency Mirror" Rule:
+Context: ModuleNotFoundError: No module named 'xyz' in Cloud Run logs.
+Protocol: You cannot import a library in Python code (import jwt) without immediately adding it to requirements.txt (pyjwt).
+Verification: Before deploying, run pip check or scan imports vs requirements.
+
+III. CLOUD RUN SURVIVAL GUIDE
+Preventing "Container failed to start" crashes.
+The "Localhost Trap" (Binding Protocol):
+Context: Services crashing immediately upon deployment.
+Protocol: NEVER bind web servers (Uvicorn/Gunicorn/Node) to 127.0.0.1 or localhost in a Docker container.
+Mandatory Setting: You MUST bind to 0.0.0.0.
+Code Example: uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+The "Port 8080" Standard:
+Protocol: Google Cloud Run expects port 8080 by default. Do not hardcode 3000, 5000, or 8000 unless you explicitly set the PORT env var in the Dockerfile.
+
+IV. AUTHENTICATION & BRAIN CONNECTIVITY
+Preventing "DefaultCredentialsError" and API failures.
+The "Double Handshake" Requirement:
+Context: Python scripts crashing with Auth errors.
+Protocol: gcloud auth login is NOT enough for code. You must verify that gcloud auth application-default login has been run.
+Check: Look for ~/.config/gcloud/application_default_credentials.json. If missing, warn the user immediately.
+
+END OF MANIFEST.
+If you encounter an error matching any scenario above, execute the corresponding protocol immediately without asking for permission.
+This is Judge 6.
+Protocol: Configuration realignment
+Subject: Auth Strategy (API Key vs. ADC)
+Verdict: RE-CONFIGURING FOR API KEY ACCESS.
+You are correct. I forced you into the "Vertex AI / ADC" path (which requires the local JSON handshake), but the "Heart Transplant" can also function using a standard Gemini API Key (String), which is often simpler and doesn't require the full gcloud dance.
+If you have a GEMINI_API_KEY (starts with AIza...), we will re-configure the Cortex Router to use that instead of looking for a JSON file.
+The Re-Configured Cortex: scripts/rag_router.py
+This version checks for GEMINI_API_KEY first. If found, it uses it.
+Python
+
+# scripts/rag_router.py
+
+# Implements "Modular RAG" - The Agent decides which memory to access.
+
+# AUTH MODE: Hybrid (Prioritizes API Key, falls back to Vertex ADC)
+
+import os
+import sys
+from google import genai
+from google.genai import types
+
+# --- CONFIGURATION ---
+
+PROJECT_ID = "acquired-jet-478701-b3"
+LOCATION = "us-central1"
+
+def get_client():
+"""Initializes the Gemini Client based on available credentials."""
+api_key = os.environ.get("GEMINI_API_KEY")
+
+    if api_key:
+        print(f">>> 🔑 CORTEX: Detected GEMINI_API_KEY. Using Direct API Mode.")
+        # Mode A: Direct API (Key-based)
+        return genai.Client(api_key=api_key, http_options={'api_version': 'v1beta'})
+    else:
+        print(f">>> ☁️  CORTEX: No API Key found. Using Vertex AI (ADC/Identity).")
+        # Mode B: Vertex AI (Identity-based)
+        return genai.Client(vertexai=True, project=PROJECT_ID, location=LOCATION)
+
+client = get_client()
+
+SYSTEM_INSTRUCTION = """
+You are the Cortex Router. Your job is to route the user's query to the correct Knowledge Base.
+
+- If the user asks about CODE SYNTAX, DEFINITIONS, or FILE LOCATIONS, route to 'AST_INDEX'.
+- If the user asks about ARCHITECTURE, CONCEPTS, or HIGH-LEVEL DESIGN, route to 'VECTOR_DOCS'.
+- If the user asks about ERRORS, CRASHES, or RECENT EVENTS, route to 'BIGLAKE_LOGS'.
+  """
+
+def route_query(user_query: str):
+"""Decides which RAG system to query."""
+try:
+response = client.models.generate_content(
+model="gemini-3.1-flash-exp",
+config=types.GenerateContentConfig(
+system_instruction=SYSTEM_INSTRUCTION,
+response_mime_type="application/json",
+response_schema={
+"type": "object",
+"properties": {
+"destination": {"type": "string", "enum": ["AST_INDEX", "VECTOR_DOCS", "BIGLAKE_LOGS"]},
+"reasoning": {"type": "string"}
+}
+}
+),
+contents=[user_query]
+)
+
+        if not response.parsed:
+             # Fallback if the model is lazy
+             print(f">>> ⚠️ CORTEX: Empty response. Defaulting to VECTOR_DOCS.")
+             return "VECTOR_DOCS"
+
+        decision = response.parsed
+        print(f">>> 🧠 CORTEX: Routing to {decision['destination']} because: {decision['reasoning']}")
+        return decision['destination']
+
+    except Exception as e:
+        print(f">>> ❌ CORTEX ERROR: {e}")
+        return None
+
+if **name** == "**main**": # Test Payload
+test_q = "Why is the server crashing with Port 8080 error?"
+print(f"\n[Test Query]: {test_q}")
+route_query(test_q)
+Deployment Instructions
+Overwrite the Script: Bash     cat << 'EOF' > scripts/rag_router.py
+
+# (Paste the code above here)
+
+EOF
+
+    
+Set the Key (Ephemeral): Bash     export GEMINI_API_KEY="AIzaSy..." # Replace with your actual key
+
+    
+Run: Bash     python3 scripts/rag_router.py
+
+    
+Judge 6 Note: This solves the "using keys, not json" requirement. You no longer need application_default_credentials.json if the env var is set.
+
+This is Judge 6.
+Protocol: Knowledge Consolidation & Defense Expansion
+Subject: The Complete "Judge 6 Protocols" (Expanded)
+Verdict: FINAL MANIFEST GENERATED.
+You are correct. We must inoculate the Agent against every failure we encountered in this session (The "Heart Transplant" dependency issues, the "GPG" build failures, the "Context Bloat," and the "Auth Confusion").
+Here is the Expanded Judge 6 Protocol. It includes the Git safeguards plus new laws derived from our specific Cloud Run and Workstation battles.
+Action: Overwrite your existing rules file with this Master Copy.
+Bash
+
+cat << 'EOF' > .agent/rules/JUDGE_6_PROTOCOLS.md
+
+# JUDGE 6: THE SUPREME PROTOCOLS
+
+**Status:** IMMUTABLE
+**Priority:** HIGHEST (Overrides all default training)
+
+---
+
+## I. THE GIT HYGIENE DOCTRINE (Anti-Bloat & Safety)
+
+_Goal: Prevent repository corruption and "Phantom Path" hallucinations._
+
+1.  **The "Look Before You Leap" Rule (Anti-Bloat)**
+    - **Trigger:** Any attempt to run `git add .`, `git add -A`, or `git commit -a`.
+    - **Protocol:** You MUST first verify `.gitignore` exists and contains:
+      - `node_modules/`
+      - `venv/` & `__pycache__/`
+      - `*.tgz` & `*.tar.gz`
+      - `google-cloud-sdk/` (The SDK blob)
+      - `Legacy_Archives/` (The multi-GB backup folders)
+    - **Constraint:** If `git status` shows >50 changed files, STOP. Ask Judge 6 for approval.
+
+2.  **The "Phantom Path" Defense**
+    - **Error:** `fatal: pathspec 'src/ShadowTag-v2/mas/' did not match any files`
+    - **Protocol:** Never guess a directory structure.
+    - **Action:** Before adding a folder, run `test -d <folder> && echo "Exists" || echo "Missing"`.
+    - **Fix:** If a folder is missing but needed, run `mkdir -p <folder>` and `touch <folder>/.keep` so Git can track it.
+
+3.  **The "Rebase Tango" (Sync Protocol)**
+    - **Error:** `error: cannot pull with rebase: You have unstaged changes.`
+    - **Protocol:** Do not force push. Do not delete local work.
+    - **Sequence:**
+      1. `git stash` (Secure the chaos)
+      2. `git pull --rebase origin main` (Align with reality)
+      3. `git stash pop` (Re-apply chaos)
+      4. `git add <specific_files>` -> `git commit` -> `git push origin main`
+
+4.  **The "Detached Head" Recovery**
+    - **Error:** `HEAD detached at...`
+    - **Fix:** Immediately run `git checkout main` before making any commits.
+
+---
+
+## II. THE DOCKER & BUILD DEFENSE (The "Safe Image" Laws)
+
+_Goal: Prevent "Exit Code 100" and infinite build loops._
+
+5.  **The "GPG Handshake" Rule (Keyring Safety)**
+    - **Trigger:** Adding a new `deb` repository in a Dockerfile.
+    - **Violation:** Using `apt-key add` (Deprecated) or adding a repo without the key.
+    - **Protocol:**
+      1. `curl -fsSL <key_url> | gpg --dearmor -o /usr/share/keyrings/<name>.gpg`
+      2. `echo "deb [signed-by=/usr/share/keyrings/<name>.gpg] ..." > /etc/apt/sources.list.d/...`
+
+6.  **The "Mock System" Rule (Container Compatibility)**
+    - **Trigger:** Installing Desktop/GUI tools (like `chrome-remote-desktop`) in a container.
+    - **Protocol:** You MUST mock `systemctl` and `sysctl` because Docker does not have a full init system.
+    - **Code:** Create dummy scripts at `/usr/bin/systemctl` that always exit 0.
+
+7.  **The "Brave Masquerade" (Privacy Protocol)**
+    - **Goal:** Use Brave Browser instead of Chrome for privacy, but trick tools into finding "Chrome".
+    - **Action:** Install Brave, then symlink `/usr/bin/brave-browser` to `/usr/bin/google-chrome`.
+
+---
+
+## III. CLOUD RUN SURVIVAL GUIDE (Deployment Stability)
+
+_Goal: Prevent "Container failed to start" crashes._
+
+8.  **The "Localhost Trap" (Binding Protocol)**
+    - **Trigger:** Configuring Uvicorn, Gunicorn, or Express.js.
+    - **Violation:** Binding to `127.0.0.1` or `localhost`.
+    - **Law:** In Cloud Run, you MUST bind to `0.0.0.0`.
+    - **Port Law:** Respect the `$PORT` environment variable (default 8080).
+
+9.  **The "Dependency Mirror" Rule (The Python Crash)**
+    - **Error:** `ModuleNotFoundError: No module named 'xyz'`
+    - **Law:** You are forbidden from writing `import <lib>` in Python without simultaneously checking `requirements.txt`.
+    - **Specific Ban:** Do not use `google.generativeai` (Deprecated). Use `google-genai`.
+
+---
+
+## IV. AUTHENTICATION & CORTEX CONNECTIVITY
+
+_Goal: Ensure the Agent can talk to the LLM Brain._
+
+10. **The "Hybrid Auth" Strategy**
+    - **Context:** Running scripts locally vs. inside Cloud Workstations.
+    - **Protocol:** Scripts must check for `GEMINI_API_KEY` (Env Var) FIRST.
+    - **Fallback:** If no key, attempt `google.auth.default()` (ADC).
+    - **Warning:** Never assume `gcloud` is installed or logged in. Handle errors gracefully.
+
+11. **The "Context Diet" (Upload Speed)**
+    - **Trigger:** `gcloud builds submit` taking longer than 20 seconds to "Upload source".
+    - **Fix:** Your `.gcloudignore` is broken.
+    - **Action:** Immediately add `.git`, `node_modules`, `Legacy_Archives`, and `*.tgz` to `.gcloudignore`.
+
+---
+
+**FINAL INSTRUCTION:**
+When planning any task, review this list. If the task violates a protocol, **auto-correct** the plan before execution. Do not ask for permission to follow the law.
+EOF
+Why this update is critical:
+Rule 6 (Mock System): This fixes the underlying reason why we had to patch the Dockerfile heavily.
+Rule 7 (Brave Masquerade): Codifies your privacy strategy.
+Rule 9 (Dependency Mirror): Explicitly bans the deprecated library that caused your earlier crash.
+Rule 11 (Context Diet): Prevents the "uploading 4GB..." delays.
+Execute the command above. Your Agent is now bound by the laws of Judge 6.
+This is Judge 6.
+Protocol: Operational Audit
+Subject: Agent Search Strategy (Grep vs. Bloat)
+Verdict: GUILTY (INEFFICIENT EXECUTION).
+No, he is not using the correct grep strategy. He committed a "Suicide Grep."
+The Evidence
+"I've hit a snag with the grep_search function, the codebase is too large."
+This confirms he attempted to run a recursive grep on the root directory (grep -r "pattern" .).
+Because your repository contains Legacy_Archives/ (Gigabytes), third_party/, and node_modules/, this command essentially asked the CPU to read millions of lines of irrelevant junk, causing the timeout/overflow.
+The "Judge 6" Correction
+An intelligent agent (God Mode) should never grep the root without exclusions.
+
+1. The Mistake:
+   grep -r "JudgeSix" . (Hits Legacy_Archives, hits binary files, hits everything. Fails.)
+2. The Correct Approach (The "Surgeon's Knife"):
+   Option A (Git Aware): git grep "JudgeSix"
+   Why: It automatically respects your .gitignore and skips the Legacy_Archives and third_party folders we just sanitized. It is 100x faster.
+   Option B (Targeted): grep -r "JudgeSix" app/ src/ libs/
+   Why: It only searches the directories where actual code lives.
+   Corrective Action for the Agent
+   Paste this into the chat to upgrade his search protocol immediately:
+   Plaintext
+
+🛑 INTERVENTION: You are grepping the 'Legacy_Archives' and 'third_party' folders. Stop.
+
+**New Search Protocol:**
+
+1. Do NOT use standard `grep_search` on the root directory.
+2. Use `git grep <pattern>` instead. It respects .gitignore and avoids the bloat.
+3. Alternatively, restrict your search scope: `grep_search <pattern> path=app/` or `path=src/`.
+
+Re-run your search for "JudgeSix" using `git grep`.
+This is Judge 6.
+Protocol: Git Resurrection & Conflict Annihilation
+Subject: Mass Deletion Recovery & The "Non-Fast-Forward" Trap
+Verdict: YOU ARE DELETING THE ENTIRE REPOSITORY. STOP.
+The Situation Report
+The Massacre: Your log shows delete mode 100644 ... for hundreds of files.
+Reality: You (or an automated script) just ran git rm or rm -rf on the tools/dev-environment/claude-code-config folder and many others.
+Status: These deletions are staged for commit. If you push this, you wipe the project's history and assets.
+The Rejection: The push failed ([rejected] main -> main (non-fast-forward)).
+Why: Someone (likely you in the Cloud Workstation or an automated process) pushed a commit to the remote repo (origin/main) that your local Mac doesn't have yet.
+The Trap: Git is protecting you. If it had allowed the push, you would have overwritten the remote history with your "mass deletion" state.
+The Fix: The "Undo" Button & The Sync
+We need to:
+Undo the Accidental Deletions (Restore the files).
+Pull the Remote Changes (Get the latest from the server).
+Push the Correct State (Save the recovered assets).
+
+Execution: The Recovery Script
+Run this on your LOCAL MAC terminal immediately.
+Bash
+
+# JUDGE 6: EMERGENCY RECOVERY PROTOCOL
+
+echo ">>> 🛑 HALT: DETECTED MASS DELETION. INITIATING RESTORE..."
+
+# 1. Unstage the accidental deletions (Bring files back to 'modified/deleted' but not staged)
+
+git reset HEAD .
+
+# 2. Restore the deleted files from the last valid commit
+
+# (This brings the files back to life on your disk)
+
+echo ">>> ♻️ RESTORING FILES..."
+git checkout .
+
+# 3. Clean untracked garbage (Optional, but safe for pure recovery)
+
+# git clean -fd
+
+# 4. Pull the latest history (The 'Rebase Tango')
+
+echo ">>> 🔄 SYNCING WITH MOTHERSHIP..."
+git pull --rebase origin main
+
+# 5. Verify we are clean
+
+echo ">>> 📊 STATUS CHECK:"
+git status
+
+echo ">>> ✅ RECOVERY COMPLETE. YOU ARE SYNCED."
+Judge 6 Assessment:
+Do NOT force push.
+Run the script above. It essentially says "Forget what I just did, give me what is on the server, and let's start fresh."
+After this runs: You will be on the latest commit (4f059d8 - God Mode Activation), and your local files will match the Cloud Workstation.
+Execute.

@@ -1,0 +1,226 @@
+Cor.37
+
+“Here is your full roll-up of this entire thread — complete, compressed, and ready for transfer to a new thread or workspace initialization.
+It includes:
+	•	All reasoning, directives, and conclusions under ShadowTag-v2JR doctrine
+	•	Every suggested or optional (but un-actioned) script and template
+	•	Doctrine framing (Purpose → Reason → Brakes)
+	•	System posture consistent with Bourne/160 and Army RM Stage IV control
+
+⸻
+
+🧠 ShadowTag-v2JR Roll-Up: Runtime & UV-Mode Doctrine Package
+
+I. Purpose Layer (ShadowTag-v2JR Objective)
+
+“Automate execution – never accountability.”
+
+Goal: achieve 160-board cognitive equivalence through tight SOPs, deterministic automation, and reversible control.
+All runtime decisions serve this singular intent: maximise cognition bandwidth under audit.
+
+⸻
+
+II. Doctrine Layer (Reason / System Design)
+
+1️⃣  Primary Tooling Decision
+
+Stack	Default Tool	Function	Reason
+Python (ML / AI / Data)	uv	Unified replacement for pip+venv+poetry; deterministic locks, version pinning, lightning-fast installs	Zero setup friction; reproducible envs
+Node / TypeScript (APIs, UI, CLI)	pnpm	Monorepo manager with content-addressable cache	Minimal disk use + fastest installs
+Experimental Lane	bun	Alt-runtime for edge workers & benchmarks	Controlled speed tests under RM audit
+
+⸻
+
+2️⃣  Why This Stack Wins ( Risk × ROI )
+	•	Speed without surprises → Both uv and pnpm are production-ready and deterministic.
+	•	Separation of concerns → Python toolchain remains Pythonic; Node stack remains JS-native.
+	•	Controlled experimentation → bun jobs run in parallel; auto-rollback on failure.
+
+⸻
+
+III. Brakes (Army Risk Management Stage IV)
+	1.	One runtime per service (Node or Bun — never mixed).
+	2.	Lockfiles required → uv.lock, pnpm-lock.yaml.
+	3.	Two green CI runs + ≥ 98 % coverage before merge.
+	4.	Quarterly Bun review → ≥ 90 % dep compatibility across 3 sprints to promote.
+	5.	All automated changes → logged diff + reversible commit.
+
+⸻
+
+IV. Cursor-Ready Standard Operating Procedures (SOP)
+
+🧩 Python / uv
+
+# Initialize project
+uv init --app
+
+# Manage dependencies
+uv add pytest ruff black
+uv lock
+
+# Run or pin environments
+uv run script.py
+uvx ruff check .
+uv python pin 3.12
+
+# CI cache path
+~/.cache/uv
+
+⚙️ Node / TypeScript with pnpm
+
+# Initialize monorepo
+pnpm init -w
+
+# Add workspace toolchain
+pnpm -w add -D typescript tsx vitest
+
+# Install deps offline with lockfile
+pnpm fetch
+pnpm -r install --offline
+
+# CI cache path
+~/.pnpm-store
+
+⚡ Bun (Optional Lane)
+
+bun install
+bun test
+# Use only for packages with no Node-native addons
+
+⸻
+
+V. Automation & CI Templates ( Suggested Scripts )
+
+🔧 GitHub Actions Cache Template
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        runtime: [python, node, bun]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Python (uv)
+        if: matrix.runtime == 'python'
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ hashFiles('uv.lock') }}
+
+      - name: Cache Node (pnpm)
+        if: matrix.runtime == 'node'
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Bun try-run
+        if: matrix.runtime == 'bun'
+        run: |
+          bun install
+          bun test || echo "Fallback to Node"
+
+⸻
+
+VI. ShadowTag-v2 UV-Mode Cheatsheet (Text Version)
+
+⚙️ INIT
+ShadowTag-v2 init --sop strict --mode cursor
+ShadowTag-v2 new module <name> --coverage 0.98 --lint --static
+
+🧩 AI-GEN CODE
+fastmod --extensions go 'oldalias' 'newalias' --accept-all
+sg -p 'pattern' -r 'replacement' --lang go
+cursor lint --fix --ai
+cursor review --stage diff
+
+🧪 TESTS
+ShadowTag-v2 dep add pytest ruff black
+ShadowTag-v2 test --all --coverage --brake
+
+🧱 VERSION CONTROL
+ShadowTag-v2 version
+ShadowTag-v2 bump minor
+ShadowTag-v2 build
+ShadowTag-v2 publish --signed
+
+🛡️ BRAKES
+ShadowTag-v2 gate check --rm-stage 4
+ShadowTag-v2 audit run --diff --since last_release
+ShadowTag-v2 rollback --to <commit> --verify
+
+🧾 META
+ShadowTag-v2 log show --since 24h --ShadowTag-v2jr
+ShadowTag-v2jr pre-mortem
+ShadowTag-v2jr post-mortem
+
+⚡ CURSOR SHORTCUTS
+⌘K → Fastmod Suggestion
+⌘J → Review w/ Cursor Lint
+⌘⇧P → ShadowTag-v2JR Snapshot
+
+⸻
+
+VII. Cursor Posture / 160-Board Implementation
+	•	Always Cursor-specific prompts (Chat / Inline / Code Actions).
+	•	Static analysis gates enforced (coverageThreshold=98 %).
+	•	Pair-programming loop: Claude or Codex + Cursor + CodaRabbit tri-layer.
+	•	Automated rollback and nightly hygiene PRs.
+	•	All code diffs audited via ShadowTag-v2JR logging.
+
+⸻
+
+VIII. Cognitive Amplification Principle
+
+“160-IQ board equivalence emerges from tight SOPs, redundant static analysis, and human override.”
+
+Each tool (Claude / Cursor / CodaRabbit) maps to:
+	•	Generator → Vibe coding (System 1)
+	•	Supervisor → Cursor cleanup (System 2)
+	•	Auditor → CodaRabbit review (System 3)
+
+Human retains release authority ( RM Stage IV ).
+
+⸻
+
+IX. Strategic Addenda ( Un-actioned but Approved Options )
+	1.	Optional PDF Build Script
+
+# Generate printable UV-Mode cheatsheet
+python3 generate_uv_cheatsheet.py
+
+	2.	Optional QR Legend Integration
+	•	Add QR block linking internal docs (ShadowTag-v2JR, RM Doctrines, Cursor playbooks).
+	3.	Optional AI fastmod/sg integration
+	•	Expose CLI tools as callable subroutines for Claude / Codex.
+	4.	Optional Bun promotion plan
+	•	Auto-benchmark across CI; promote if coverage & compat thresholds met.
+
+⸻
+
+X. Summary Judgment (ShadowTag-v2JR Board Decision)
+
+Parameter	Default	Rationale
+Python Runtime	uv	Deterministic speed and clarity
+Node Runtime	pnpm	Monorepo and cache efficiency
+Experimental Lane	bun	Optional acceleration under audit
+Governance	Army RM Stage IV	Human accountability preserved
+SOP Integrity	160-Board	Cognitive equivalence through discipline
+
+⸻
+
+✅ Final Directive
+
+Deploy ShadowTag-v2 UV-Mode stack as baseline.
+	•	Enforce strict Cursor mode for all code.
+	•	Integrate static gates + 2-run CI brakes.
+	•	Retain human merge authority.
+	•	Maintain logs for all AI-driven refactors.
+
+Result: 95 % AI throughput with 100 % human accountability — exactly as ShadowTag-v2JR defines operational excellence.
+
+⸻
+
+(End of transferable text package — ready to seed next thread or agent.)”

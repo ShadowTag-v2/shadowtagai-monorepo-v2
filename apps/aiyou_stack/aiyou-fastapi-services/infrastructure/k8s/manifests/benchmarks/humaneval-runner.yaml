@@ -1,0 +1,186 @@
+# HumanEval Benchmark Runner
+# Continuous evaluation of code generation capabilities
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: humaneval-config
+  namespace: pinkln-system
+data:
+  config.yaml: |
+    benchmark:
+      name: humaneval
+      version: "1.0"
+      num_samples: 164
+      temperature: 0.2
+      max_tokens: 512
+      n_problems: 164
+
+    agents:
+      - code-crafter
+      - deep-reasoning
+      - ultrathink-designer
+
+    scoring:
+      metric: pass@k
+      k_values: [1, 10, 100]
+      timeout_seconds: 3.0
+
+    reporting:
+      glicko_update: true
+      bigquery_export: true
+      gcs_results_path: gs://omega-benchmarks/humaneval/
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: humaneval-benchmark
+  namespace: pinkln-system
+  labels:
+    app: humaneval-benchmark
+    component: evaluation
+spec:
+  schedule: "0 */6 * * *"  # Every 6 hours
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 10
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          labels:
+            app: humaneval-benchmark
+        spec:
+          serviceAccountName: training-sa
+          restartPolicy: Never
+
+          nodeSelector:
+            workload: fine-tuning
+            gpu: a100
+
+          tolerations:
+            - key: nvidia.com/gpu
+              operator: Exists
+              effect: NoSchedule
+
+          containers:
+            - name: humaneval
+              image: gcr.io/omega-production/humaneval-runner:latest
+              imagePullPolicy: Always
+
+              command:
+                - python
+                - /app/run_humaneval.py
+
+              args:
+                - --agents=code-crafter,deep-reasoning
+                - --output=gs://omega-benchmarks/humaneval/
+                - --update-glicko=true
+                - --temperature=0.2
+                - --n-samples=164
+
+              env:
+                - name: GLICKO_SERVICE_URL
+                  value: "http://glicko-service:8080"
+                - name: REDIS_HOST
+                  value: "redis-master"
+                - name: BENCHMARK_NAME
+                  value: "humaneval"
+                - name: PYTHONUNBUFFERED
+                  value: "1"
+
+              resources:
+                requests:
+                  nvidia.com/gpu: "1"
+                  memory: "16Gi"
+                  cpu: "4"
+                limits:
+                  nvidia.com/gpu: "1"
+                  memory: "32Gi"
+                  cpu: "8"
+
+              volumeMounts:
+                - name: config
+                  mountPath: /etc/humaneval
+                  readOnly: true
+                - name: results
+                  mountPath: /workspace/results
+
+          volumes:
+            - name: config
+              configMap:
+                name: humaneval-config
+            - name: results
+              emptyDir: {}
+
+---
+# Manual trigger job template
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: humaneval-manual
+  namespace: pinkln-system
+  labels:
+    app: humaneval-benchmark
+    trigger: manual
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app: humaneval-benchmark
+    spec:
+      serviceAccountName: training-sa
+      restartPolicy: Never
+
+      nodeSelector:
+        workload: fine-tuning
+        gpu: a100
+
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+
+      containers:
+        - name: humaneval
+          image: gcr.io/omega-production/humaneval-runner:latest
+
+          command:
+            - python
+            - /app/run_humaneval.py
+
+          args:
+            - --agents=code-crafter,deep-reasoning,ultrathink-designer
+            - --output=gs://omega-benchmarks/humaneval/
+            - --update-glicko=true
+            - --verbose
+
+          env:
+            - name: GLICKO_SERVICE_URL
+              value: "http://glicko-service:8080"
+            - name: REDIS_HOST
+              value: "redis-master"
+
+          resources:
+            requests:
+              nvidia.com/gpu: "1"
+              memory: "16Gi"
+              cpu: "4"
+            limits:
+              nvidia.com/gpu: "1"
+              memory: "32Gi"
+              cpu: "8"
+
+          volumeMounts:
+            - name: config
+              mountPath: /etc/humaneval
+              readOnly: true
+
+      volumes:
+        - name: config
+          configMap:
+            name: humaneval-config

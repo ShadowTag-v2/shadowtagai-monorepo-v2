@@ -1,0 +1,134 @@
+I have shot a video before about using GPUs in Cloud Run.
+Viewers asked in the comments about a realistic application using that setup.
+I built one.
+Let me show you!
+Hi, Jay.
+Welcome!
+You work at an NVIDIA, right?
+What do you do there?
+Thanks for having me, Martin.
+Yes, I work at NVIDIA as a Developer Advocate.
+I help AI engineers harness the power of NVIDIA
+GPUs for building LLM applications.
+Very good.
+And you wrote a sample application that uses NVIDIA GPUs in Google Cloud, right?
+That's right.
+NVIDIA GPUs integrate seamlessly with the open source AI ecosystem,
+and Google Cloud provides excellent cloud infrastructure.
+Together, they make a great combo.
+And when talking to developers, it's always
+better to show code than slides.
+Yes, I agree!
+Let's dive in.
+My app is a smart health agent that will create personalized
+wellness recommendations, including exercises and diet.
+To do that, it asks me for my current daily routine.
+I'll enter that I work at a desk,
+take daily walks, and go to bed around midnight.
+An hour of walking every day.
+That's impressive!
+Yes, I try to do my best.
+Then I'll say that I live in San Francisco.
+I upload the medical records now.
+These are dummy records for John Doe created for the demo.
+Then I click on the Activate button and the AI agent takes over.
+I love those AI agent workflows!
+We can see that the app responded.
+It considered my daily routine and the medical records.
+It even included the current weather when crafting a personalized recommendation.
+And it looks like you can ask follow up questions.
+Yes. That's right.
+I'll ask about my cholesterol levels.
+And here's the answer.
+It looks like I may have to watch my cholesterol.
+Very nice application, Jay.
+And, what AI model is it using?
+It uses the Gemma3 model, made
+by Google DeepMind, and it is GPU optimized.
+And then it runs some sort of agent workflow.
+Yes. Let's have a look.
+Here is the Google Cloud Console.
+We are looking at Cloud Run logs.
+Here is the routine that I entered
+here where it says RAG,
+it starts looking at the medical records that I uploaded.
+It found five documents and it split them up into chunks.
+Then it vectorized those chunks and added them into the vector store.
+And the vectorization, that's a fancy way of saying
+that you made the medical records searchable by the AI?
+Exactly.
+Now that the data is in place, it's time for the agents to start.
+First, the weather agent is called
+to get the current weather in San Francisco.
+That's the city I entered.
+And then it says something about an agent workflow.
+Yes. The routine analysis agent processes
+the entered information about the user's daily activities.
+The knowledge agent processes the medical reports.
+And together, they come up with a personalized health plan.
+That plan is streamed in real time to the user interface.
+And all of this
+runs as a service in Cloud Run?
+Yes, it uses two services in Cloud Run.
+Here they are, the smart-health-app-cpu service displays
+the user interface and takes the input from the user.
+It is a traditional web app without any AI.
+It uses CPUs only, no GPUs.
+Got it.
+I've named the other service ollama-gemma.
+It runs Gemma3 on Ollama.
+Ollama is a tool that makes it easy to download and run large language models.
+I split my application into two services as they need
+different hardware and different scaling behavior.
+And the ollama-gemma service, that's the one that uses GPUs?
+Yes it does.
+I’ll click it.
+Then I click the pen icon here so we can look at the details of the service.
+Here in the Resources section,
+it shows that the service is using a single NVIDIA L4 GPU.
+Thanks for showing us this Jay!
+I have some questions for you.
+Go ahead, Martin.
+I'm a developer so I like to see code.
+I'm especially interested in how the multiple agents work together.
+I have open sourced this application
+so anyone can download it and adapt it to their needs.
+Here you can see how I use the langgraph library
+to put the agents together in a workflow.
+I will include a link to your repo from the video description below.
+So another option for agent orchestration
+would have been to use Google's ADK (Agent Development Kit), right?
+That's right.
+But I'm more familiar with langgraph, so I used that framework.
+Yeah,
+it's a good idea to use the tools that we have experience with!
+Now, why is your application using its own copy of Gemma?
+Because another option would have been to call the Gemini API
+and not host your model yourself.
+The Gemini API works well for many applications,
+but if you want more control, you are better off hosting the model
+inside your own GPU cluster or Cloud Run service like I did.
+For example, you may want to fine tune your model for federated learning.
+Makes sense.
+How did you generate that user interface?
+It looked pretty good. Oh. Thank you.
+I wanted to keep things simple, so I used the Gradio Library.
+I like it because it lets you define a web user interface in Python.
+Cool!
+I hadn't heard about Gradio before.
+How was your developer experience building this app?
+It was pretty easy.
+Cloud Run is serverless, so I didn't have to reserve
+GPUs or provision any infrastructure.
+NVIDIA GPUs integrate seamlessly
+with open source AI ecosystem, and Google
+Cloud provides excellent cloud infrastructure.
+Together, they make a developer's life simple.
+I like hearing that!
+Thank you for joining me today, Jay!
+Thanks for having me, Martin.
+And thank you everyone for watching.
+If you have any questions for Jay or me, ask in the comments below.
+Also, please let me know what you thought of this episode!
+I love hearing from you and I read every single comment!
+Now go build some great AI applications!

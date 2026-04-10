@@ -1,0 +1,32 @@
+{
+  "beads:unknown": {
+    "value": "",
+    "created": "2026-04-09T22:54:25.829474",
+    "ttl": 3600
+  },
+  "beads:6a7c166d55bf": {
+    "value": "Gate 0 system installed \u2014 Biome + Design Tokens + Unified Memory + Pre-Commit Hook + Omega Loop v6",
+    "created": "2026-04-09T22:54:25.845994",
+    "ttl": 3600
+  },
+  "beads:b2fd9058e15b": {
+    "value": ".gitignore hardened: .beads/ restored to git-tracked, .mcp-memory/ and .gptram/ marked ephemeral, media-edge/target/ added to exclusions",
+    "created": "2026-04-09T22:54:25.846518",
+    "ttl": 3600
+  },
+  "beads:12a960b4cb2b": {
+    "value": "VELOCITY_ENGINE_PATHWAY.md is MISSING from infrastructure/ \u2014 referenced in operator_invariants but does not exist on disk. Flagged as known gap.",
+    "created": "2026-04-09T22:54:25.846750",
+    "ttl": 3600
+  },
+  "beads:stage3-canon": {
+    "value": "Stage 3 Complete: (1) apps/ShadowTag-v2_stack/ scaffold restored with 4 canonical roots. (2) CLAUDE.md reduced to 76-byte thin shim. (3) 30+ root debris files swept to scripts/, tools/, archive/. (4) flying_monkeys.py deleted per Monkey Ban #32. (5) .gitignore rewritten with 15 numbered sections. (6) VELOCITY_ENGINE_PATHWAY.md restored. (7) monorepo_manifest.yaml YAML syntax fixed. (8) 2 merge conflicts resolved.",
+    "created": "2026-04-09T22:54:25.852830",
+    "ttl": 3600
+  },
+  "beads:stage4-hard": {
+    "value": "Stage 4 Complete: (1) Pre-commit guillotine hardened with check-merge-conflict, detect-private-key, check-yaml, check-json, 5MB cap. (2) Physical git pre-commit hook installed calling scripts/ai-validate.sh. (3) ai-validate.sh created with 5-check validation. (4) pnkln.code-workspace configured with named folders. (5) All 5 guillotine checks passing GREEN.",
+    "created": "2026-04-09T22:54:25.857091",
+    "ttl": 3600
+  }
+}

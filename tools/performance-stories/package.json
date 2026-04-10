@@ -1,0 +1,28 @@
+{
+  "name": "performance-stories",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Example use cases for performance tooling",
+  "scripts": {
+    "serve": "statikk --port=8787",
+    "serve-network": "statikk --port=8787 --expose",
+    "genindex": "node generate-index.mjs",
+    "validate-index": "node generate-index.mjs --validate",
+    "validate-format": "prettier --check .",
+    "format": "prettier --write .",
+    "postinstall": "cd minified-with-source-maps && make build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChromeDevTools/performance-stories.git"
+  },
+  "homepage": "https://github.com/ChromeDevTools/performance-stories#readme",
+  "devDependencies": {
+    "esbuild": "^0.19.2",
+    "prettier": "^3.0.0",
+    "statikk": "^2.2.0"
+  },
+  "dependencies": {
+    "preact": "^10.25.1"
+  }
+}

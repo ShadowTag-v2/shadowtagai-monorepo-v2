@@ -1,0 +1,8 @@
+blocks:
+  SEARXNG_VPC_METASEARCH:
+    description: "Zero-Egress Proxy Search via Internal SearxNG"
+    rules: |
+      When you encounter an unknown error code or require external documentation:
+      - NEVER use external internet APIs directly.
+      - Query the internal SearxNG endpoint: `GET http://localhost:8081/search?q=[QUERY]&format=json`.
+      - CRITICAL CUI/PII SCRUB: Before searching, scrub all proprietary variable names, IP addresses, and internal system paths from the query string. Search only generic error signatures.

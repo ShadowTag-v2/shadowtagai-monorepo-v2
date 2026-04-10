@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: intel-pipeline-data-pvc
+  namespace: default
+  labels:
+    app: nightly-intel-pipeline
+    component: storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi  # Storage for flattened repos, papers
+  storageClassName: standard-rwo  # GKE standard persistent disk
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: intel-pipeline-storage-pvc
+  namespace: default
+  labels:
+    app: nightly-intel-pipeline
+    component: storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi  # SQLite database storage
+  storageClassName: standard-rwo
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: intel-pipeline-logs-pvc
+  namespace: default
+  labels:
+    app: nightly-intel-pipeline
+    component: storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi  # Log storage
+  storageClassName: standard-rwo

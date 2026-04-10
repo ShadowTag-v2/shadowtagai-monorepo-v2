@@ -1,0 +1,27 @@
+# Default owner
+* @ehanc69
+
+# Monorepo governance
+/.github/ @ehanc69
+/MODULE.bazel @ehanc69
+/.editorconfig @ehanc69
+/monorepo_manifest.yaml @ehanc69
+
+# Core apps
+/apps/pnkln-stack_stack/pnkln-stack-fastapi-services/ @ehanc69
+/apps/pnkln-stack_stack/cosmic-crab-payload/ @ehanc69
+
+# Ecosystem / import lanes
+/apps/pnkln-stack_ecosystem/ @ehanc69
+
+# Libraries
+/libs/ @ehanc69
+
+# Tooling and docs
+/tools/ @ehanc69
+/docs/ @ehanc69
+
+# Archive / legacy zones
+/archive/ @ehanc69
+/tools/legacy/ @ehanc69
+/docs/legacy_shadowtag_v2/ @ehanc69

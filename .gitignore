@@ -1,0 +1,40 @@
+# Canonical root ignore
+.env
+.env.*
+*.pem
+client_secret.json
+service-account.json
+.venv/
+__pycache__/
+node_modules/
+dist/
+build/
+.lancedb/
+output/
+tmp/
+.DS_Store
+CLAUDE.local.md
+data/lancedb/
+data/intelligence_pipeline/
+第三party/mlx-vlm/
+.gitnexus/
+
+# Intelligence Matrix Bloat Purge
+**/node_modules
+**/obj
+**/bin
+.venv
+.timesfm_venv
+labs/external_payloads
+**/*.sqlite3
+**/*.db
+
+# Temporary push exclusions (too large for single push)
+archive/root_debris/
+archive/external_payloads/
+archive/recovered_assets/
+archive/external_repos_root/
+archive/labs_graveyard/
+apps/aiyou_stack/aiyou-fastapi-services/external_repos/
+third_party/
+tools/devtools-frontend/

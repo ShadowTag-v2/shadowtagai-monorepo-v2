@@ -1,0 +1,8 @@
+### TIER BREAKDOWN (THE MENU)
+
+| TIER | LEVEL | PRICE | CAPABILITY |
+|---|---|---|---|
+| 1-5 | BASIC | $25k | Risk Radar (ATP 5-19) |
+| 6-15 | AIT | $100k | Defensive Ops (CodePMCS) |
+| 16-25 | SOF | $400k | Hunter/Killer (Troop B) |
+| 30 | THE CHILD | $1M+ | Sovereign AI (30 Verticals) |

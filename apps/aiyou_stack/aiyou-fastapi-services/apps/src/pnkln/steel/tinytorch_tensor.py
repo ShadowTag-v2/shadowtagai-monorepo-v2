@@ -1,0 +1,184 @@
+from src.pnkln.steel.backend import np
+
+# Constants for memory calculations
+BYTES_PER_FLOAT32 = 4  # Standard float32 size in bytes
+KB_TO_BYTES = 1024  # Kilobytes to bytes conversion
+MB_TO_BYTES = 1024 * 1024  # Megabytes to bytes conversion
+
+
+class Tensor:
+    """Educational tensor that grows with student knowledge (Ported from Harvard CS249r Module 01).
+
+    This class starts simple but includes dormant features for future modules:
+    - requires_grad: Will be used for automatic differentiation (Module 05)
+    - grad: Will store computed gradients (Module 05)
+    - backward(): Will compute gradients (Module 05)
+
+    For now, focus on: data, shape, and basic operations.
+    """
+
+    def __init__(self, data, requires_grad=False):
+        """Create a new tensor from data."""
+        self.data = np.array(data, dtype=np.float32)
+        self.shape = self.data.shape
+        self.size = self.data.size
+        self.dtype = self.data.dtype
+        self.requires_grad = requires_grad
+        self.grad = None
+
+    def __repr__(self):
+        """String representation of tensor for debugging."""
+        grad_info = f", requires_grad={self.requires_grad}" if self.requires_grad else ""
+        return f"Tensor(data={self.data}, shape={self.shape}{grad_info})"
+
+    def __str__(self):
+        """Human-readable string representation."""
+        return f"Tensor({self.data})"
+
+    def numpy(self):
+        """Return the underlying NumPy array."""
+        return self.data
+
+    def memory_footprint(self):
+        """Calculate exact memory usage in bytes."""
+        return self.data.nbytes
+
+    def __add__(self, other):
+        """Add two tensors element-wise with broadcasting support."""
+        if isinstance(other, Tensor):
+            return Tensor(self.data + other.data)
+        else:
+            return Tensor(self.data + other)
+
+    def __sub__(self, other):
+        """Subtract two tensors element-wise."""
+        if isinstance(other, Tensor):
+            return Tensor(self.data - other.data)
+        else:
+            return Tensor(self.data - other)
+
+    def __mul__(self, other):
+        """Multiply two tensors element-wise (NOT matrix multiplication)."""
+        if isinstance(other, Tensor):
+            return Tensor(self.data * other.data)
+        else:
+            return Tensor(self.data * other)
+
+    def __truediv__(self, other):
+        """Divide two tensors element-wise."""
+        if isinstance(other, Tensor):
+            return Tensor(self.data / other.data)
+        else:
+            return Tensor(self.data / other)
+
+    def matmul(self, other):
+        """Matrix multiplication of two tensors."""
+        if not isinstance(other, Tensor):
+            raise TypeError(f"Expected Tensor for matrix multiplication, got {type(other)}")
+        if self.shape == () or other.shape == ():
+            return Tensor(self.data * other.data)
+        if len(self.shape) == 0 or len(other.shape) == 0:
+            return Tensor(self.data * other.data)
+        if len(self.shape) >= 2 and len(other.shape) >= 2:
+            if self.shape[-1] != other.shape[-2]:
+                raise ValueError(
+                    f"Cannot perform matrix multiplication: {self.shape} @ {other.shape}. "
+                    f"Inner dimensions must match: {self.shape[-1]} ≠ {other.shape[-2]}"
+                )
+
+        a = self.data
+        b = other.data
+
+        # Handle 2D matrices with explicit loops (educational)
+        if len(a.shape) == 2 and len(b.shape) == 2:
+            M, K = a.shape
+            K2, N = b.shape
+            result_data = np.zeros((M, N), dtype=a.dtype)
+
+            # Explicit nested loops - students can see exactly what's happening!
+            for i in range(M):
+                for j in range(N):
+                    result_data[i, j] = np.dot(a[i, :], b[:, j])
+        else:
+            # For batched operations (3D+), use np.matmul for correctness
+            result_data = np.matmul(a, b)
+
+        return Tensor(result_data)
+
+    def __matmul__(self, other):
+        """Enable @ operator for matrix multiplication."""
+        return self.matmul(other)
+
+    def __getitem__(self, key):
+        """Enable indexing and slicing operations on Tensors."""
+        result_data = self.data[key]
+        if not isinstance(result_data, np.ndarray):
+            result_data = np.array(result_data)
+        result = Tensor(result_data, requires_grad=self.requires_grad)
+        return result
+
+    def reshape(self, *shape):
+        """Reshape tensor to new dimensions."""
+        if len(shape) == 1 and isinstance(shape[0], (tuple, list)):
+            new_shape = tuple(shape[0])
+        else:
+            new_shape = shape
+        if -1 in new_shape:
+            if new_shape.count(-1) > 1:
+                raise ValueError("Can only specify one unknown dimension with -1")
+            known_size = 1
+            unknown_idx = new_shape.index(-1)
+            for i, dim in enumerate(new_shape):
+                if i != unknown_idx:
+                    known_size *= dim
+            unknown_dim = self.size // known_size
+            new_shape = list(new_shape)
+            new_shape[unknown_idx] = unknown_dim
+            new_shape = tuple(new_shape)
+        if np.prod(new_shape) != self.size:
+            target_size = int(np.prod(new_shape))
+            raise ValueError(f"Total elements must match: {self.size} ≠ {target_size}")
+        reshaped_data = np.reshape(self.data, new_shape)
+        result = Tensor(reshaped_data, requires_grad=self.requires_grad)
+        return result
+
+    def transpose(self, dim0=None, dim1=None):
+        """Transpose tensor dimensions."""
+        if dim0 is None and dim1 is None:
+            if len(self.shape) < 2:
+                return Tensor(self.data.copy())
+            else:
+                axes = list(range(len(self.shape)))
+                axes[-2], axes[-1] = axes[-1], axes[-2]
+                transposed_data = np.transpose(self.data, axes)
+        else:
+            if dim0 is None or dim1 is None:
+                raise ValueError("Both dim0 and dim1 must be specified")
+            axes = list(range(len(self.shape)))
+            axes[dim0], axes[dim1] = axes[dim1], axes[dim0]
+            transposed_data = np.transpose(self.data, axes)
+        result = Tensor(transposed_data, requires_grad=self.requires_grad)
+        return result
+
+    def sum(self, axis=None, keepdims=False):
+        """Sum tensor along specified axis."""
+        result = np.sum(self.data, axis=axis, keepdims=keepdims)
+        return Tensor(result)
+
+    def mean(self, axis=None, keepdims=False):
+        """Compute mean of tensor along specified axis."""
+        result = np.mean(self.data, axis=axis, keepdims=keepdims)
+        return Tensor(result)
+
+    def max(self, axis=None, keepdims=False):
+        """Find maximum values along specified axis."""
+        result = np.max(self.data, axis=axis, keepdims=keepdims)
+        return Tensor(result)
+
+    def zero_grad(self):
+        """Reset gradient to zero."""
+        self.grad = None
+
+    def backward(self):
+        """Compute gradients (implemented in Module 05: Autograd)."""
+        pass

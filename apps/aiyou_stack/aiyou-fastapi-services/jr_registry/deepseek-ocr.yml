@@ -1,0 +1,53 @@
+# jr_registry/deepseek-ocr.yml
+id: "deepseek-ocr"
+title: "DeepSeek-OCR Contexts Optical Compression"
+owner: "Head of Engineering"
+sponsor: "CTO"
+status: "Active"
+intake_date: "2025-11-29"
+last_review: "2025-11-29"
+next_review: "2026-02-28"
+links:
+  doc: "https://arxiv.org/abs/2510.18234"
+  repo: "https://github.com/deepseek-ai/DeepSeek-OCR"
+  ticket: null
+imperatives:
+  - Capital Discipline Through Architectural Excellence
+  - Velocity and Adaptability
+  - Building Defensible Technology Moats
+roi_gate:
+  gate_name: "Judge #6 OCR pipeline decision"
+  why_now: "Need to validate token compression vs accuracy for large-doc ingestion and compliance workloads."
+  due: "2025-12-20"
+  blocked_if_missed: true
+governance:
+  timebox_hours: 16
+  kill_switch_date: "2025-12-21"
+  decision: "TBD"
+  objections_log:
+    - "Need real-world accuracy tests on PNKLN-specific doc types (contracts, financials, mixed layout)."
+scores:
+  defensibility: 4
+  alignment: 5
+  value_hierarchy: "Ease-of-Business"
+  risk: 3
+  confidence: 0.7
+economics:
+  capex_delta_usd: 8000   # one-time GPU/infra cost
+  opex_delta_usd_m: -2.4  # projected per-month savings by reducing token count + inference cost
+  perf_gain_x: 5.0        # estimated throughput benefit for document ingestion
+  cost_per_inference_delta: -0.65
+deployment:
+  target_env: "Self-hosted vLLM + GPU batch ingest; Edge-node Rust fallback optional"
+  onprem_viable: true
+  security_impact: "Neutral (local infra)"
+  pqc_impact: "None"
+deliverables:
+  - name: "OCR accuracy & compression report (sample set)"
+    due: "2025-12-18"
+    status: "Planned"
+  - name: "Integration spec: OCR → token-stream → Judge pipeline"
+    due: "2025-12-22"
+    status: "Planned"
+notes: |
+  DeepSeek-OCR demonstrates ~10× token compression with ~97% OCR precision; still usable at 20× (~60% precision) per OmniDocBench.

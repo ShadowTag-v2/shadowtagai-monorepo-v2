@@ -1,0 +1,34 @@
+scenarios:
+  - name: "Judge6_Spike"
+    description: "Spike test for Judge #6 enforcement endpoint"
+    target_endpoint: "https://judge6.pnkln.ai/enforce"
+    iterations: 2000
+    warmup_iterations: 100
+    concurrency: 100
+    load_shape: "spike"
+    thresholds:
+      p99_ms: 90
+      p95_ms: 65
+      error_rate: 0.01
+
+  - name: "JREngine_Soak"
+    description: "Long-running soak test for JR Engine"
+    target_endpoint: "https://jr-engine.pnkln.ai/score"
+    iterations: 10000
+    warmup_iterations: 500
+    concurrency: 20
+    load_shape: "constant"
+    thresholds:
+      p99_ms: 85
+      error_rate: 0.005
+
+  - name: "Orchestrator_Stress"
+    description: "Stress test for Orchestrator PRB logic"
+    target_endpoint: "https://orchestrator.pnkln.ai/route"
+    iterations: 5000
+    warmup_iterations: 200
+    concurrency: 150
+    load_shape: "ramp_up"
+    thresholds:
+      p99_ms: 120
+      error_rate: 0.02

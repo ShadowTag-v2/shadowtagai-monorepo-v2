@@ -1,0 +1,7 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'buildstatus', '--image', 'gcr.io/acquired-jet-478701-b3/buildstatus', '--region', 'us-central1', '--platform', 'managed', '--allow-unauthenticated']
+    env:
+      - 'SLACK_WEBHOOK_URL=${_SLACK_WEBHOOK_URL}'
+substitutions:
+    _SLACK_WEBHOOK_URL: ${sm://projects/acquired-jet-478701-b3/secrets/SLACK_WEBHOOK_URL/versions/latest}

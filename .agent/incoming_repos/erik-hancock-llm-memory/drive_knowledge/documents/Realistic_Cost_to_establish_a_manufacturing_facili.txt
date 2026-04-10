@@ -1,0 +1,29 @@
+As our MVP is essentially a next-gen powered air-purifying respirator (PAPR)-style device with integrated ozone sterilization and downstream ozone scrubbing — a meaningful evolution for infection control in clinical and high-risk environments.
+Building a domestic manufacturing facility (U.S.-based, say in California or Nevada) capable of producing this type of device will be complex due to:
+Regulatory compliance (FDA, OSHA, EPA)
+Medical-grade materials
+Embedded electronics (ozone generator, sensors)
+Cleanroom or controlled assembly environment
+Below is a breakdown of the realistic 12-month cost and timeline to establish initial production capacity, including low-rate manufacturing (not full-scale mass production yet).
+
+🧾 Realistic Cost to Establish a Manufacturing Facility (12-Month Horizon)
+
+🗓️ Realistic Timeline: From Groundwork to Production Readiness
+
+🔧 Notable Technical & Regulatory Considerations
+1. Ozone Handling & Emissions
+You will need indoor ozone monitoring systems, emergency shutdown protocols, and potentially EPA reporting.
+OSHA limits ozone exposure to 0.1 ppm over 8 hours, so the design must demonstrate containment and neutralization (which your activated carbon filter helps with).
+May require independent lab validation of ozone scrubbing efficacy post-carbon filter.
+2. FDA Regulatory Classification
+This will likely be a Class II device due to active sterilization features and patient proximity.
+You’ll need 510(k) clearance, meaning bench testing, biocompatibility, emissions data, and real-world simulations.
+3. Cleanroom Assembly for Filters & Mask Components
+PAPR-style masks require strict assembly protocols, especially for:
+Filter sealing
+Flow path control
+Electronics (e.g., for ozone generation and battery packs)
+
+🏭 Example Cities with Manufacturing Viability
+
+✅ Summary

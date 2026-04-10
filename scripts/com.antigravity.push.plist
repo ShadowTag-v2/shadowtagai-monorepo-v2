@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  com.antigravity.push.plist — macOS launchd daemon for managed_push.py
+
+  What this does:
+    - Runs managed_push.py as a persistent background service (survives terminal close)
+    - Auto-restarts if the script exits non-zero (push failure → launchd restarts
+      immediately; script resumes from checkpoint file)
+    - Does NOT restart if exit code is 0 (all batches done) — RunAtLoad only
+    - Throttles restarts to 30s minimum gap to avoid hammering GitHub API
+
+  Install:
+    cp scripts/com.antigravity.push.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.antigravity.push.plist
+
+  Status:
+    launchctl list | grep antigravity
+
+  Logs:
+    tail -f /tmp/antigravity_push.log
+
+  Stop:
+    launchctl unload ~/Library/LaunchAgents/com.antigravity.push.plist
+
+  One-shot (no auto-restart):
+    launchctl kickstart -k gui/$(id -u)/com.antigravity.push
+-->
+<plist version="1.0">
+<dict>
+
+  <key>Label</key>
+  <string>com.antigravity.push</string>
+
+  <!-- Script to run -->
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/python3</string>
+    <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/managed_push.py</string>
+  </array>
+
+  <!-- Working directory must be the repo root -->
+  <key>WorkingDirectory</key>
+  <string>/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball</string>
+
+  <!-- Start immediately when loaded -->
+  <key>RunAtLoad</key>
+  <true/>
+
+  <!--
+    KeepAlive: restart only on crash/non-zero exit.
+    When script exits 0 (done), launchd stops restarting.
+    When script exits non-zero (batch failed), launchd restarts after ThrottleInterval.
+  -->
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <!-- Minimum 30s between restarts — avoids GitHub API rate limit hammering -->
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+
+  <!-- Logs (script also writes to this file) -->
+  <key>StandardOutPath</key>
+  <string>/tmp/antigravity_push.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/antigravity_push_err.log</string>
+
+  <!-- Low priority — don't compete with foreground work -->
+  <key>ProcessType</key>
+  <string>Background</string>
+
+  <!-- Environment -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>HOME</key>
+    <string>/Users/pikeymickey</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    <key>GIT_TERMINAL_PROMPT</key>
+    <string>0</string>
+  </dict>
+
+</dict>
+</plist>

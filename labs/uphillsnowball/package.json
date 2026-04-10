@@ -1,0 +1,9 @@
+{
+  "name": "uphillsnowball-relay",
+  "version": "1.0.0",
+  "description": "Antigravity WebSocket Relay",
+  "main": "relay.js",
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

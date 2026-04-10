@@ -1,0 +1,2 @@
+fn(Json<CompletionRequest>) -> impl Future<Output = Json<CompletionResponse>> {handle_inference}
+fn(Json<CompletionRequest>) -> impl Future<Output = Json<CompletionResponse>> {handle_inference}: Handler<_, _>

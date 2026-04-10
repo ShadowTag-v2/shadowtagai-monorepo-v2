@@ -1,0 +1,11 @@
+uphillsnowball is the internal Apple Silicon lab path.
+
+Purpose:
+- local experimentation
+- LanceDB / Apple Silicon / ANE-adjacent work
+- internal eval harness
+- OCR and retrieval experimentation
+- operational tooling for pnkln
+
+Non-goal:
+- do not let uphillsnowball redefine CounselConduit product truth

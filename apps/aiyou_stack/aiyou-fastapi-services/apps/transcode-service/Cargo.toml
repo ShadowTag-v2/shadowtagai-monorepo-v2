@@ -1,0 +1,59 @@
+[package]
+name = "transcode-service"
+version = "0.1.0"
+edition = "2021"
+description = "FFmpeg-based video transcoding service with HLS packaging"
+authors = ["PNKLN Team"]
+
+[dependencies]
+# FFmpeg bindings (requires FFmpeg 7.0+ installed)
+ffmpeg-next = "7.0"
+
+# GCS client (same as media-edge)
+google-cloud-storage = "0.17"
+
+# Pub/Sub for job queue
+google-cloud-pubsub = "0.24"
+
+# Async runtime
+tokio = { version = "1.41", features = ["full", "signal", "process"] }
+
+# Configuration
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+config = "0.14"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+
+# Metrics
+prometheus = "0.13"
+lazy_static = "1.5"
+
+# HTTP server for health checks
+axum = "0.7"
+
+# Temp files
+tempfile = "3.13"
+
+# UUID for job IDs
+uuid = { version = "1.11", features = ["v4", "serde"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Async traits
+async-trait = "0.1"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Bytes
+bytes = "1.7"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3

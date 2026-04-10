@@ -1,0 +1,104 @@
+#p-strat
+%%python
+PITCH={"target":"Elon Musk","ask_tiers":["$1.5M Angel","$5-10M Strategic(xAI)","$1B Co-Founder/Chairman","$25B+ Acquisition"],"thesis":"FAANG cannot occupy the AI Truth layer due to pre-AI ad models. Pnkln (ShadowTag v2) is the cryptographic trust-by-computation layer for AI. Survives compression via DCT/Audio phase shifting. Legal Meta-Language router enforces 27-year cognitive constraint to eliminate hallucination and enable Agentic Trade."};print("ok")
+#p-db
+%%bash
+echo 'CREATE EXTENSION IF NOT EXISTS vector;CREATE EXTENSION IF NOT EXISTS pg_trgm;CREATE TABLE pnkln_tags(id TEXT PRIMARY KEY,tags JSONB NOT NULL DEFAULT '{}'::jsonb,shadow_hash TEXT,ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP);CREATE INDEX idx_tags_gin ON pnkln_tags USING GIN(tags);CREATE TABLE pnkln_rag(id TEXT PRIMARY KEY,txt TEXT,emb vector(1536));CREATE INDEX idx_rag_hnsw ON pnkln_rag USING hnsw(emb vector_cosine_ops);' > init.sql
+#p-types
+%%python
+from pydantic import BaseModel;from typing import Any,Dict,List,Optional
+class Tag(BaseModel):k:str;v:Any
+class TagReq(BaseModel):id:str;tags:List[Tag];shash:Optional[str]=None
+class QReq(BaseModel):allOf:Optional[Dict[str,Any]]=None;anyOf:Optional[Dict[str,Any]]=None;not_:Optional[Dict[str,Any]]=None;lim:int=50;cur:Optional[str]=None
+class RAGDoc(BaseModel):id:str;txt:str;tags:Dict[str,Any];emb:List[float]
+class RAGQ(BaseModel):q:str;k:int=5;flt:Optional[Dict[str,Any]]=None
+print("ok")
+#p-tag
+%%python
+import json;import asyncpg
+async def put_tag(p,r:TagReq):
+ t={x.k:x.v for x in r.tags};q="INSERT INTO pnkln_tags(id,tags,shadow_hash) VALUES($1,$2,$3) ON CONFLICT(id) DO UPDATE SET tags=pnkln_tags.tags||EXCLUDED.tags,shadow_hash=COALESCE(EXCLUDED.shadow_hash,pnkln_tags.shadow_hash)"
+ await p.execute(q,r.id,json.dumps(t),r.shash)
+async def q_tag(p,r:QReq):
+ q,prm="SELECT id,tags,shadow_hash FROM pnkln_tags WHERE 1=1",[];i=1
+ if r.allOf:q+=f" AND tags @> ${i}";prm.append(json.dumps(r.allOf));i+=1
+ if r.not_:q+=f" AND NOT (tags @> ${i})";prm.append(json.dumps(r.not_));i+=1
+ q+=f" ORDER BY id LIMIT ${i}";prm.append(r.lim)
+ return [dict(x) for x in await p.fetch(q,*prm)]
+print("ok")
+#p-stegano
+%%python
+import hashlib,os
+def mk_hash(id:str,pr:str)->str:return hashlib.sha256(f"{id}:{pr}:{os.urandom(8)}".encode()).hexdigest()
+def inject_vis(buf:bytes,h:str)->bytes:return buf # stub: DCT mid-freq
+def inject_aud(buf:bytes,h:str)->bytes:return buf # stub: HF phase-shift
+def ext_hash(buf:bytes)->dict:return {"v":"hex","a":"hex"}
+print("ok")
+#p-agent
+%%python
+class LglMeta:
+ def __init__(self,yoe=27):self.yoe=yoe;self.p="You are executing Law as a Meta-Language. Respond ONLY via deductive logical blocks. Define variables upfront. State material facts. Execute logical synthesis. Hallucination blocked."
+ def wrap(self,q:str,ctx:str)->str:return f"{self.p}\nEXHIBITS:\n{ctx}\nQUERY:\n{q}"
+print("ok")
+#p-rag
+%%python
+async def put_rag(p,d:RAGDoc):
+ await put_tag(p,TagReq(id=d.id,tags=[Tag(k=k,v=v) for k,v in d.tags.items()]))
+ await p.execute("INSERT INTO pnkln_rag(id,txt,emb) VALUES($1,$2,$3::vector) ON CONFLICT(id) DO UPDATE SET txt=EXCLUDED.txt,emb=EXCLUDED.emb",d.id,d.txt,d.emb)
+async def get_rag(p,req:RAGQ):
+ a_ids=None
+ if req.flt:
+  t=await q_tag(p,QReq(allOf=req.flt,lim=1000));a_ids=[x['id'] for x in t]
+  if not a_ids: return []
+ m=[0.01]*1536 # stub embed(req.q)
+ q="SELECT id,txt,1-(emb<=>$1::vector) as sc FROM pnkln_rag"
+ prm=[m]
+ if a_ids:q+=" WHERE id=ANY($2)";prm.append(a_ids)
+ q+=f" ORDER BY emb<=>$1::vector LIMIT ${len(prm)+1}";prm.append(req.k)
+ return [dict(r) for r in await p.fetch(q,*prm)]
+print("ok")
+#p-api
+%%python
+from fastapi import FastAPI;import asyncpg;app=FastAPI(title="pnkln")
+@app.on_event("startup")
+async def su():app.state.p=await asyncpg.create_pool(dsn="postgres://testuser:testpassword@localhost:5432/shadowtag_test")
+@app.post("/tag")
+async def api_tag(r:TagReq):await put_tag(app.state.p,r);return {"ok":1}
+@app.post("/rag/in")
+async def api_in(r:RAGDoc):await put_rag(app.state.p,r);return {"ok":1}
+@app.post("/agent")
+async def api_agt(r:RAGQ):
+ h=await get_rag(app.state.p,r);ctx="\n".join([f"[{x['id']}]:{x['txt']}" for x in h])
+ prm=LglMeta().wrap(r.q,ctx)
+ return {"sync":f"[DEDUCTION]\nExhibits: {len(h)}\nResult: Logic enforced.","raw":prm}
+print("ok")
+#p-ingest
+%%python
+import httpx,time
+def run_ingest(d:str):
+ f=[{"n":"c.md","t":"Indemnify platform."},{"n":"s.md","t":"Vector DB 256MB limit."}]
+ for x in f:
+  p={"id":f"doc-{time.time()}-{x['n']}","txt":x['t'],"tags":{"src":"local"},"emb":[0.1]*1536}
+  r=httpx.post("http://localhost:8000/rag/in",json=p)
+  print(f"{x['n']} -> {r.status_code}")
+print("ok")
+#p-ui
+%%bash
+cat << 'EOF' > ui.tsx
+import {useState} from 'react';
+export default function PnklnUI(){
+ const [q,sq]=useState('');const [r,sr]=useState<any>(null);
+ const run=async()=>{const res=await fetch('/agent',{method:'POST',body:JSON.stringify({q,k:3}),headers:{'content-type':'application/json'}});sr(await res.json());}
+ return (<div style={{background:'#070707',color:'#ededed',height:'100vh',display:'flex',gap:20,padding:20}}>
+  <aside style={{width:300,borderRight:'1px solid #333',paddingRight:20}}>
+   <h3>Pnkln Core</h3>
+   <p>Cognitive: 27Y Legal</p><p>Extr: Zero-Drift</p>
+  </aside>
+  <main style={{flex:1}}>
+   <input value={q} onChange={e=>sq(e.target.value)} style={{width:'100%',padding:10,background:'#111',color:'#fff'}}/>
+   <button onClick={run} style={{marginTop:10}}>Arbitrate</button>
+   {r&&<pre style={{marginTop:20,color:'#4fa0ff'}}>{r.sync}</pre>}
+  </main>
+ </div>);
+}
+EOF

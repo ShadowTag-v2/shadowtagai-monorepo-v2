@@ -1,0 +1,9 @@
+# Phase 3: Stack Integration
+☐ Connect AutoGen orchestrator
+☐ Wire LangGraph state persistence
+☐ Enable ShadowTag v2.0 watermarking
+☐ Configure LLM allocation (Gemini 40%, Claude 35%, GPT-5 15%, Grok 5%)
+☐ Setup cross-namespace communication
+☐ Run end-to-end SLA test
+☐ Confirm full stack p99 ≤90ms
+☐ Document API endpoints
