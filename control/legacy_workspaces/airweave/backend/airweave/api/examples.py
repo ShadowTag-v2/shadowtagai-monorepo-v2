@@ -188,7 +188,7 @@ SOURCE_CONNECTION_CREATE_EXAMPLES = {
             "include_pull_requests": True,
         },
         "auth_fields": {
-            "personal_access_token": "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "personal_access_token": "***REMOVED_GITHUB_PAT***x",
         },
         "auth_mode": "manual",
         "sync_immediately": True,
