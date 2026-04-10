@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cor17-config
+  namespace: cor17
+data:
+  GCP_REGION: "us-central1"
+  GCP_LOCATION: "us-central1"
+  VERTEX_AI_MODEL: "gemini-pro"
+  VERTEX_AI_EMBEDDING_MODEL: "textembedding-gecko@003"
+
+  # Redis Configuration
+  REDIS_HOST: "cor17-redis"
+  REDIS_PORT: "6379"
+  REDIS_DB: "0"
+
+  # API Configuration
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  API_WORKERS: "4"
+  MAX_REQUESTS_PER_MINUTE: "1000"
+
+  # TurboAPI Configuration
+  TURBO_API_MAX_RPS: "40000"
+  TURBO_API_LAMBDA_TIMEOUT: "300"
+
+  # MoE-CL Configuration
+  MOE_NUM_EXPERTS: "8"
+  MOE_ADAPTER_DIM: "64"
+  MOE_TRAINING_SCHEDULE: "nightly"
+
+  # BDH Configuration
+  BDH_ATTENTION_TYPE: "sparse_linear"
+  BDH_GPU_ENABLED: "true"
+
+  # Nowgrep Configuration
+  NOWGREP_INDEX_PATH: "/data/nowgrep/indices"
+  NOWGREP_VECTOR_DIM: "768"
+
+  # Monitoring
+  PROMETHEUS_PORT: "9090"
+  ENABLE_METRICS: "true"
+  ENABLE_TRACING: "true"
+
+  # Security
+  CORS_ORIGINS: "*"
+  ENABLE_RATE_LIMITING: "true"
+
+  # Logging
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"

@@ -1,0 +1,12 @@
+[submodule "tools/external_sdks/genai-toolbox"]
+	path = tools/external_sdks/genai-toolbox
+	url = https://github.com/googleapis/genai-toolbox
+[submodule "tools/external_sdks/generative-ai"]
+	path = tools/external_sdks/generative-ai
+	url = https://github.com/GoogleCloudPlatform/generative-ai
+[submodule "tools/external_sdks/superpowers-optimized"]
+	path = tools/external_sdks/superpowers-optimized
+	url = https://github.com/REPOZY/superpowers-optimized.git
+[submodule "third_party/kvcached"]
+	path = third_party/kvcached
+	url = https://github.com/ovg-project/kvcached.git

@@ -1,0 +1,15 @@
+Night Pipeline Code
+
+is mostly solid for a quick MVP—functional, deployable, covers 10 sources as promised. But it’s got gaps in robustness, efficiency, and best practices that could bite you in production. Here’s the straight critique and fixes. I’ll break it down by section, then suggest overall architecture tweaks.
+1. deploy.sh Issues
+Hardcoded assumptions: PROJECT_ID=“pnkln-prod” – bad if deploying to multiple projects. Make it a param or env var.
+No idempotency for BQ tables: Uses 2>/dev/null || echo "exists" – sloppy. Use bq show to check existence properly.
+Secret verification: Good check, but no auto-creation or prompts for values. Users will fail silently if secrets missing.
+Service account creation: Creates SA only if missing, but doesn’t handle role bindings idempotently—could duplicate policies.
+Scheduler delete/recreate: Deletes job if exists—risky if job is running. Use --update flags instead.
+No cleanup on failure: If deploy fails midway, leaves partial resources. Add trap for rollback.
+No versioning: No image tagging for Cloud Run deploys—hard to rollback.
+**”
+
+Roll in all possible tech relevant resources for ingestion. As in, download/flatten all relevant GitHub repos.
+Find all new tech. Crawl on arxiv.org, for all relevant ai/mlops papers. Wasn’t a script just released for exactly such. We store the flattened  code  - check memory. It’s in there

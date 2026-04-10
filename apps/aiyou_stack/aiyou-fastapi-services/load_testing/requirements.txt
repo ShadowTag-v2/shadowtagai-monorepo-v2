@@ -1,0 +1,13 @@
+# PNKLN Load Testing Requirements - Enhanced v2.0
+
+# HTTP client with async support
+httpx>=0.27.0
+
+# Numerical computing for statistics
+numpy>=1.24.0
+
+# Optional: Enhanced output formatting
+rich>=13.0.0
+
+# Optional: Progress bars
+tqdm>=4.65.0

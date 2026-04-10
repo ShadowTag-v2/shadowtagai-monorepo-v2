@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-01-16T00:00:00Z",
+  "shadowtagai_architecture": {
+    "judge_6": {
+      "description": "Gemini + PyTorch + Rules engine with 98% coverage",
+      "components": ["Gemini Flash 2.0", "PyTorch", "Rules Engine"],
+      "sla": {
+        "coverage": 0.98,
+        "p99_latency": "≤90ms"
+      }
+    },
+    "shadowtag_2_0": {
+      "description": "DCT watermarking for content protection",
+      "method": "Discrete Cosine Transform"
+    },
+    "cor_ns": {
+      "description": "Unified execution brain + service mesh",
+      "components": ["Execution Engine", "Service Mesh"]
+    }
+  },
+  "llm_allocation": {
+    "gemini": 0.40,
+    "claude": 0.35,
+    "gpt5": 0.15,
+    "perplexity": 0.05,
+    "grok": 0.05
+  },
+  "jr_framework": {
+    "purpose": "Does this advance ShadowTagAIAi revenue/mission?",
+    "reasons": "Defensible judgment with evidence",
+    "brakes": "p99 survivability, bootstrap constraints"
+  },
+  "bootstrap_gates": {
+    "roi_target": "3x in 18mo",
+    "ltv_cac_target": "4:1 in 12mo",
+    "p99_latency": "≤90ms",
+    "security": "100% gate (absolute)"
+  },
+  "tech_stack": {
+    "extraction": "0xSero scripts (Python stdlib, sqlite3)",
+    "metadata": "Gemini Flash 2.0 ($0.075/1M input)",
+    "orchestration": ["Grok", "Sonnet 4.5", "Gemini", "GPT-5", "Perplexity"],
+    "storage": ["GitHub", "GCS"],
+    "deployment": ["MacBook", "Vertex AI Workbench", "GKE Native"]
+  },
+  "cost_economics": {
+    "initial_extraction": "$0.45 one-time",
+    "github_storage": "$0 (free)",
+    "gcs_storage": "$0.02/month",
+    "per_query_llm": "$0.08-0.12"
+  }
+}

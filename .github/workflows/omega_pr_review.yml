@@ -1,0 +1,84 @@
+name: Omega Autonomous PR Review (YOLO Mode)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  gemini_cli_code_review:
+    runs-on: ubuntu-latest
+    
+    # Utilizing the exact Docker execution pattern from the Medium architectural guide
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+
+    steps:
+      - name: Checkout Local Repository 
+        uses: actions/checkout@v4
+
+      - name: Verify Authentication Matrix
+        env:
+          GEMINI_API_KEY: ${{ secrets.DEVELOPER_KNOWLEDGE_API_KEY }}
+        run: |
+          echo "Initializing Gemini CLI YOLO API Key Authentication..."
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "ERROR: The 'DEVELOPER_KNOWLEDGE_API_KEY' GitHub Action Secret is missing."
+            exit 1
+          fi
+
+      - name: Bridge Local GitHub MCP Server
+        run: |
+          echo "Mounting native skills/mcp-github configuration..."
+          # Since the container has no npm, we directly leverage the local compiled Node bundle
+          # Ensure Node 20 is available in the runner for the local execution
+          
+      - name: Setup Node SDK (Required for local MCP)
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Write Sovereign Settings Configuration
+        run: |
+          echo "Writing strict Gemini CLI JSON limitations..."
+          mkdir -p "$HOME/.gemini"
+          cat <<EOF > "$HOME/.gemini/settings.json"
+          {
+            "coreTools": ["LSTool", "ReadFileTool", "GrepTool"],
+            "mcpServers": {
+              "github": {
+                "command": "npx",
+                "args": ["-y", "@modelcontextprotocol/server-github"],
+                "env": {
+                  "GITHUB_PERSONAL_ACCESS_TOKEN": "\${{ secrets.GITHUB_TOKEN }}"
+                },
+                "timeout": 5000,
+                "includeTools": [
+                  "create_issue_comment",
+                  "create_pull_request_review",
+                  "get_file_contents",
+                  "get_issue",
+                  "get_pull_request",
+                  "search_repositories",
+                  "update_issue"
+                ]
+              }
+            }
+          }
+          EOF
+
+      - name: Execute Autonomous Council YOLO Review
+        env:
+          GEMINI_API_KEY: ${{ secrets.DEVELOPER_KNOWLEDGE_API_KEY }}
+        run: |
+          echo "Slamming pipeline with 160IQ Matrix Evaluation"
+
+          # This explicitly forces the --yolo flag over a cloud PR
+          gemini --yolo <<EOF
+            Provide a consistent and brutal 160IQ AST code review for the GitHub Pull Request \#${{ github.event.pull_request.number }}
+            Consider all the collaborator comments in the PR that explain the code logic.
+
+            Steps:
+            1. Extract the raw file contents mapping to this PR execution.
+            2. Add a comprehensive summary comment to the PR evaluating if this logic breaches Judge 6 Wet Fleece scaling dynamics.
+            3. Push a formal Pull Request Review with prioritized suggestions and brutal architectural honesty. Quote the current code where possible.
+          EOF

@@ -1,0 +1,14 @@
+#!/bin/bash
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🛡️ [[VIBE SHIELD PRE-PUSH]] Validating AST before upstream transmission..."
+
+# Run ESLint against all source files before push
+npx eslint "src/**/*.{ts,tsx,js,jsx}" --quiet
+
+if [ $? -ne 0 ]; then
+  echo "❌ Vibe Shield blocked the push. Ast-Violations (e.g. dynamic imports, any casts) detected."
+  exit 1
+fi
+
+echo "✅ Vibe Shield cleared for deployment."

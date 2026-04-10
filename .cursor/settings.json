@@ -1,0 +1,31 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.ruff": "explicit",
+    "source.organizeImports.ruff": "explicit"
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["--cov", "--cov-fail-under=98"],
+  "mypy-type-checker.args": ["--strict"],
+  "ruff.enable": true,
+  "ruff.lint.enable": true,
+  "ruff.format.enable": true,
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+  "editor.rulers": [100],
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cursor.ai.model": "gemini-2.0-pro",
+  "cursor.ai.autoApply": true,
+  "cursor.ai.applyWithoutReview": true,
+  "cursor.chat.autoAcceptChanges": true,
+  "ShadowTag-v2.repairProvider": "gemini",
+  "ShadowTag-v2.genModel": "gemini-2.0-pro",
+  "ShadowTag-v2.autoRepairOnSave": true
+}

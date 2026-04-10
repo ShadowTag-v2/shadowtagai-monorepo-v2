@@ -1,0 +1,9 @@
+# Gemini Code Assist: Exclude Massive Repos
+**/node_modules/**
+**/.venv/**
+**/external_repos/**
+**/legacy_workspaces/**
+**/external_payloads/**
+**/devrel-demos/**
+**/.git/**
+.env

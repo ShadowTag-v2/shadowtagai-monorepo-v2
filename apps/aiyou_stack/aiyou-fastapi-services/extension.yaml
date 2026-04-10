@@ -1,0 +1,267 @@
+name: ShadowTag-v2jr-gemini-extension
+version: 1.0.0
+description: |
+  ShadowTag-v2JR Framework for Gemini CLI - Decision logging, semantic cache, and governance automation.
+  Features: BM25-lite search, SOC2/ISO scaffolding, Cursor Plan Mode integration.
+
+author: ShadowTag-v4 Labs
+homepage: https://github.com/ShadowTag-v2labs/ShadowTag-v2jr-gemini-extension
+license: MIT
+
+commands:
+  # Health Check
+  status:
+    description: Health check for GPTRAM cache service and extension status
+    handler: |
+      #!/bin/bash
+      set -e
+
+      echo "🔍 ShadowTag-v2JR Extension Status"
+      echo "================================"
+
+      # Check if GPTRAM service is running
+      if curl -s http://127.0.0.1:8765/ > /dev/null 2>&1; then
+        echo "✅ GPTRAM Cache Service: Running"
+        STATS=$(curl -s http://127.0.0.1:8765/stats)
+        echo "   Items cached: $(echo $STATS | jq -r '.total_items')"
+      else
+        echo "⚠️  GPTRAM Cache Service: Not running"
+        echo "   Start with: python tools/gptram_service.py"
+      fi
+
+      echo ""
+      echo "📋 Extension Features:"
+      echo "   • shadowtag_v4:log:append     - Decision logging"
+      echo "   • shadowtag_v4:cache:search   - BM25-lite search"
+      echo "   • shadowtag_v4:safety:init    - SOC2/ISO scaffolding"
+      echo "   • shadowtag_v4:cursor:planify - Cursor Plan Mode"
+
+  # Decision Logging
+  log:append:
+    description: Log a decision with automatic GPTRAM mirroring
+    parameters:
+      - name: key
+        type: string
+        required: true
+        description: Unique key for the decision (e.g., "decision:2025-11-15")
+      - name: text
+        type: string
+        required: true
+        description: Decision text or description
+      - name: meta
+        type: json
+        required: false
+        description: Optional metadata (JSON object)
+    handler: |
+      #!/bin/bash
+      set -e
+
+      KEY="$1"
+      TEXT="$2"
+      META="${3:-{}}"
+
+      # Log to local file
+      LOG_FILE="decisions.log"
+      echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] $KEY: $TEXT" >> "$LOG_FILE"
+
+      # Mirror to GPTRAM cache
+      curl -X POST http://127.0.0.1:8765/put \
+        -H "Content-Type: application/json" \
+        -d "{\"key\": \"$KEY\", \"text\": \"$TEXT\", \"meta\": $META}" \
+        2>/dev/null || echo "⚠️  GPTRAM service not available - logged locally only"
+
+      echo "✅ Decision logged: $KEY"
+
+  # Cache Search
+  cache:search:
+    description: Search GPTRAM cache using BM25-lite semantic search
+    parameters:
+      - name: query
+        type: string
+        required: true
+        description: Search query
+      - name: k
+        type: integer
+        required: false
+        description: Number of results to return (default 8)
+    handler: |
+      #!/bin/bash
+      set -e
+
+      QUERY="$1"
+      K="${2:-8}"
+
+      RESULTS=$(curl -X POST http://127.0.0.1:8765/fetch_top_k \
+        -H "Content-Type: application/json" \
+        -d "{\"query\": \"$QUERY\", \"k\": $K}" \
+        2>/dev/null)
+
+      if [ $? -eq 0 ]; then
+        echo "🔍 Search results for: $QUERY"
+        echo "$RESULTS" | jq -r '.items[] | "[\(.key)] \(.text)"'
+      else
+        echo "❌ GPTRAM service not available"
+        echo "   Start with: python tools/gptram_service.py"
+        exit 1
+      fi
+
+  # Safety/Compliance Scaffolding
+  safety:init:
+    description: Initialize SOC2/ISO27001 compliance scaffolding
+    parameters:
+      - name: framework
+        type: string
+        required: false
+        description: Compliance framework (soc2, iso27001, nist800-53)
+    handler: |
+      #!/bin/bash
+      set -e
+
+      FRAMEWORK="${1:-soc2}"
+
+      echo "🛡️  Initializing $FRAMEWORK compliance scaffolding..."
+
+      mkdir -p compliance/$FRAMEWORK
+
+      # Create template files based on framework
+      case "$FRAMEWORK" in
+        soc2)
+          cat > compliance/$FRAMEWORK/controls.md <<EOF
+      # SOC2 Trust Service Criteria
+
+      ## CC1: Control Environment
+      - [ ] Governance structure defined
+      - [ ] Risk assessment process documented
+
+      ## CC2: Communication & Information
+      - [ ] Decision logging system (GPTRAM)
+      - [ ] Communication protocols established
+
+      ## CC3: Risk Assessment
+      - [ ] Army Risk Management integration
+      - [ ] Three-layer control model (Purpose → Reason → Brakes)
+
+      ## CC4: Monitoring Activities
+      - [ ] Automated playbook routines
+      - [ ] CI/CD security gates
+
+      ## CC5: Control Activities
+      - [ ] Prohibited pattern detection
+      - [ ] Privacy-first configuration enforcement
+      EOF
+          ;;
+        iso27001)
+          cat > compliance/$FRAMEWORK/controls.md <<EOF
+      # ISO 27001:2022 Controls
+
+      ## A.5: Organizational Controls
+      - [ ] Information security policies
+      - [ ] Governance framework (playbook.json)
+
+      ## A.6: People Controls
+      - [ ] Decision authority matrix
+      - [ ] Training requirements
+
+      ## A.7: Physical Controls
+      - [ ] Local-first architecture (GPTRAM)
+      - [ ] Data residency controls
+
+      ## A.8: Technological Controls
+      - [ ] Access control (cache isolation)
+      - [ ] Cryptography (future: encryption at rest)
+      - [ ] Secure development lifecycle (CI/CD)
+      EOF
+          ;;
+        nist800-53)
+          cat > compliance/$FRAMEWORK/controls.md <<EOF
+      # NIST 800-53 Rev 5 Controls
+
+      ## AC: Access Control
+      - [ ] Local-only service binding (127.0.0.1)
+      - [ ] Key-based cache isolation
+
+      ## AU: Audit & Accountability
+      - [ ] Decision logging (append-only)
+      - [ ] Timestamp tracking (cache.ts)
+
+      ## CM: Configuration Management
+      - [ ] Playbook version control
+      - [ ] Extension manifest validation
+
+      ## RA: Risk Assessment
+      - [ ] Army Risk Management integration
+      - [ ] Automated risk scoring
+      EOF
+          ;;
+      esac
+
+      echo "✅ Created compliance/$FRAMEWORK/controls.md"
+      echo "   Review and customize controls for your organization"
+
+  # Cursor Plan Mode Integration
+  cursor:planify:
+    description: Convert Cursor instructions to Plan Mode format
+    parameters:
+      - name: instruction
+        type: string
+        required: true
+        description: Natural language instruction
+    handler: |
+      #!/bin/bash
+      set -e
+
+      INSTRUCTION="$1"
+
+      echo "📋 Plan Mode Breakdown:"
+      echo "========================"
+      echo ""
+      echo "**Objective:** $INSTRUCTION"
+      echo ""
+      echo "**Steps:**"
+      echo "1. Analyze current codebase structure"
+      echo "2. Identify affected components"
+      echo "3. Propose implementation approach"
+      echo "4. Estimate complexity (Low/Medium/High)"
+      echo "5. Flag potential risks"
+      echo ""
+      echo "**Governance Check:**"
+      echo "- [ ] Aligns with ShadowTag-v2JR Purpose layer"
+      echo "- [ ] Passes Reason layer (risk assessment)"
+      echo "- [ ] No Brakes layer violations (safety gates)"
+      echo ""
+      echo "**Next:** Review plan, then proceed with implementation"
+
+hooks:
+  pre_run:
+    # Ensure GPTRAM service is accessible
+    - |
+      if ! curl -s http://127.0.0.1:8765/ > /dev/null 2>&1; then
+        echo "⚠️  GPTRAM Cache Service not detected"
+        echo "   Some features require the service to be running:"
+        echo "   python tools/gptram_service.py"
+      fi
+
+dependencies:
+  system:
+    - bash
+    - curl
+    - jq
+  python:
+    - fastapi
+    - uvicorn
+    - pydantic
+
+configuration:
+  gptram:
+    host: 127.0.0.1
+    port: 8765
+    db_path: gptram.sqlite
+
+  governance:
+    playbook_path: playbook.json
+    compliance_dir: compliance/
+
+  privacy:
+    local_only: true
+    no_telemetry: true
+    no_external_apis: true

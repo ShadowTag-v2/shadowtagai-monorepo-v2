@@ -1,0 +1,197 @@
+# PNKLN Intelligence Pipeline - Configuration
+# ATP 5-19 RA-1 Compliant | Ethical Scraping Framework
+
+pipeline:
+  name: "PNKLN Nightly Intelligence Pipeline"
+  version: "1.0.0"
+  namespace: "intelligence-pipeline"
+  schedule: "0 2 * * *"  # 2 AM PST daily
+
+# Ethical Scraping Configuration
+scraping:
+  robots_txt:
+    enabled: true
+    cache_ttl: 86400  # 24 hours per RFC 9309
+    respect_crawl_delay: true
+    honor_disallow: true
+
+  rate_limiting:
+    default_delay: 3.0  # seconds between requests
+    domain_specific:
+      youtube.com: 5.0
+      twitter.com: 4.0
+      x.com: 4.0
+      newsapi.org: 2.0
+      .gov: 10.0  # Very conservative for government sites
+      .mil: 10.0
+    adaptive_throttling: true
+    max_concurrent: 3
+
+  user_agent:
+    name: "PNKLN-Intelligence-Bot/1.0"
+    contact: "redacted@shadowtag-v4.local"
+    purpose: "Strategic intelligence gathering for AI governance"
+    url: "https://pnkln.ai/bot-policy"
+
+  error_handling:
+    respect_retry_after: true
+    exponential_backoff: true
+    max_retries: 3
+    circuit_breaker: true
+    circuit_breaker_threshold: 5
+    circuit_breaker_timeout: 300  # 5 minutes
+
+# Intelligence Sources
+sources:
+  federal_register:
+    enabled: true
+    lookback_days: 30
+    keywords:
+      - "artificial intelligence"
+      - "machine learning"
+      - "AI system"
+      - "automated decision"
+      - "algorithmic"
+
+  state_legislation:
+    enabled: true
+    states:
+      - CA
+      - NY
+      - TX
+      - IL
+      - WA
+
+  arxiv:
+    enabled: true
+    categories:
+      - "cs.AI"
+      - "cs.CY"  # Computers and Society
+      - "cs.LG"  # Machine Learning
+    keywords:
+      - "AI governance"
+      - "AI ethics"
+      - "AI safety policy"
+      - "algorithmic accountability"
+
+  tech_news:
+    enabled: true
+    sources:
+      - name: "TechCrunch"
+        feed: "https://techcrunch.com/feed/"
+      - name: "VentureBeat"
+        feed: "https://venturebeat.com/feed/"
+      - name: "The Verge"
+        feed: "https://www.theverge.com/rss/index.xml"
+      - name: "Ars Technica"
+        feed: "https://feeds.arstechnica.com/arstechnica/index"
+
+  competitor_blogs:
+    enabled: true
+    competitors:
+      - name: "Palantir"
+        feed: "https://blog.palantir.com/feed"
+      - name: "Scale AI"
+        feed: "https://scale.com/blog/rss"
+
+  youtube:
+    enabled: true
+    channels:
+      - name: "C-SPAN"
+        channel_id: "UCcV5Ugsr30T8pR33d6LdOlw"
+
+  twitter:
+    enabled: false  # Requires API key
+    accounts:
+      - "@FTC"
+      - "@SECGov"
+      - "@NISTcyber"
+      - "@CISAgov"
+
+# JR Engine Configuration
+jr_engine:
+  model: "claude-3-5-haiku-20241022"
+  max_tokens: 1024
+  temperature: 0.3
+  scoring_criteria:
+    business_relevance: 0.25
+    regulatory_impact: 0.30
+    competitive_intelligence: 0.20
+    timing_urgency: 0.15
+    strategic_value: 0.10
+
+# Tier Classification
+tier_classification:
+  model: "claude-3-5-haiku-20241022"
+  max_tokens: 512
+  temperature: 0.3
+  thresholds:
+    tier_1: 0.7  # CEO briefing
+    tier_2: 0.4  # Auto-action
+    # tier_3: < 0.4  # Archive
+
+# Cor Brain Synthesis
+cor_brain:
+  model: "claude-3-5-sonnet-20241022"
+  max_tokens: 2048
+  temperature: 0.5
+  tier_1_only: true
+
+# Tier 2 Auto-Actions
+tier2_actions:
+  github_issues:
+    enabled: true
+    repository: "pnkln/intelligence"
+  slack_notifications:
+    enabled: true
+    channel: "#intelligence-alerts"
+  monitoring:
+    enabled: true
+    followup_days: 30
+
+# BigQuery Storage
+bigquery:
+  dataset: "pnkln_intelligence"
+  table: "intelligence_items"
+  partition_field: "published_date"
+  partition_type: "DAY"
+
+# Briefing Delivery
+briefing:
+  enabled: true
+  recipients:
+    - "redacted@shadowtag-v4.local"
+  format: "html"
+  include_tier_3_count: true
+
+# Business Impact Tracking
+business_impact:
+  revenue_gates:
+    gate_a:
+      month: 6
+      arr: 750000
+      target_win_rate_boost: 0.15
+    gate_b:
+      month: 12
+      arr: 2500000
+      target_positioning_value: 375000
+    gate_c:
+      month: 18
+      arr: 10000000
+      target_margin_boost: 0.18
+
+  cost_tracking:
+    monthly_budget: 370
+    roi_target: 3.3
+    timeframe_months: 18
+
+# ATP 5-19 Risk Framework
+atp_5_19:
+  target_risk_level: "RA-1"
+  risk_mitigation:
+    - "robots.txt compliance (RFC 9309)"
+    - "Domain-specific rate limiting"
+    - "Circuit breaker pattern"
+    - "Proper User-Agent identification"
+    - "Retry-After header respect"
+  compliance_monitoring: true

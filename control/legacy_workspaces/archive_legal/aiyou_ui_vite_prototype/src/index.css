@@ -1,0 +1,42 @@
+:root {
+  --bg-dark: #070707;
+  --bg-panel: rgba(18, 18, 18, 0.6);
+  --border-glow: rgba(255, 255, 255, 0.08);
+  --accent-gold: #c3a343;
+  --accent-blue: #4fa0ff;
+  --text-main: #ededed;
+  --text-dim: #888888;
+  --glass-blur: blur(16px);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow: hidden;
+  background-image:
+    radial-gradient(circle at 15% 50%, rgba(79, 160, 255, 0.03), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(195, 163, 67, 0.03), transparent 25%);
+}
+
+#root {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Base Utility Classes for App.tsx */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+}

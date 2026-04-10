@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  vllm:
+    image: vllm/vllm-openai:latest
+    command: >
+      --model Qwen2.5-Coder-7B-Instruct
+      --tensor-parallel-size 1
+      --max-model-len 8192
+      --gpu-memory-utilization 0.90
+    environment:
+      - VLLM_WORKER_USE_NATIVE_FLASH_ATTENTION=1
+    ports: ["8000:8000"]
+  gateway:
+    image: ghcr.io/pnkln/simple-proxy:latest
+    environment:
+      - UPSTREAM=http://vllm:8000/v1
+      - RATE_LIMIT_QPS=2
+      - REQUIRE_KEY=true
+    ports: ["8080:8080"]

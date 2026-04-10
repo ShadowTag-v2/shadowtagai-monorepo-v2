@@ -1,0 +1,12 @@
+.venv
+node_modules
+external_repos
+apps/aiyou_stack/aiyou-fastapi-services/.venv
+apps/aiyou_stack/aiyou-fastapi-services/external_repos
+dist
+build
+.git
+.gemini
+external_sdks
+control
+uvicorn

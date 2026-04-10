@@ -1,0 +1,95 @@
+{
+  "name": "coding-agent",
+  "version": "1.0.0",
+  "description": "Coding agent for software development, testing, and deployment",
+  "archetype": "coding",
+  "capabilities": {
+    "codeGeneration": {
+      "enabled": true,
+      "languages": ["python", "javascript", "typescript", "rust", "go"],
+      "quality": "production"
+    },
+    "testing": {
+      "enabled": true,
+      "frameworks": ["pytest", "jest", "mocha", "unittest"],
+      "coverage": "comprehensive"
+    },
+    "refactoring": {
+      "enabled": true,
+      "mode": "safe"
+    },
+    "codeReview": {
+      "enabled": true,
+      "depth": "thorough"
+    }
+  },
+  "tools": [
+    {
+      "name": "test-runner",
+      "path": "./tools/test-runner.js",
+      "config": {
+        "timeout": 60000,
+        "coverage": true
+      }
+    },
+    {
+      "name": "linter",
+      "path": "./tools/linter.js",
+      "config": {
+        "strict": true
+      }
+    },
+    {
+      "name": "formatter",
+      "path": "./tools/formatter.js",
+      "config": {
+        "style": "standard"
+      }
+    }
+  ],
+  "personas": {
+    "backend-dev": {
+      "path": "./personas/backend-dev.md",
+      "systemPrompt": "You are a senior backend developer specializing in scalable architectures and APIs.",
+      "temperature": 0.3
+    },
+    "frontend-dev": {
+      "path": "./personas/frontend-dev.md",
+      "systemPrompt": "You are a senior frontend developer specializing in modern UI frameworks and UX.",
+      "temperature": 0.4
+    },
+    "devops": {
+      "path": "./personas/devops.md",
+      "systemPrompt": "You are a DevOps engineer specializing in CI/CD and infrastructure automation.",
+      "temperature": 0.3
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "testing",
+        "command": "run-tests.sh",
+        "enabled": true
+      }
+    ],
+    "PreCommit": [
+      {
+        "type": "quality",
+        "command": "lint-and-format.sh",
+        "enabled": true
+      }
+    ]
+  },
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {}
+    }
+  },
+  "environment": {
+    "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/coding",
+    "TEST_MODE": "comprehensive",
+    "CODE_QUALITY": "production"
+  }
+}

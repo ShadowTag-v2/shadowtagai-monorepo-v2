@@ -1,0 +1,901 @@
+### CLAUDE.md
+# CLAUDE.md - PNKLN FastAPI Services
+
+**Quick Reference for Claude Code**
+**Last Updated**: 2024-11-15
+
+---
+
+## 🚀 Quick Start
+
+### Development Commands
+
+```bash
+# Start development server
+uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+# Run tests with coverage (98% required - Judge #6)
+uv run pytest --cov --cov-fail-under=98
+
+# Format code
+uv run ruff format .
+
+# Type check (strict mode)
+uv run mypy --strict .
+
+# Lint
+uv run ruff check .
+```
+
+### Test Commands
+
+```bash
+# Run specific test file
+uv run pytest tests/test_user_service.py -v
+
+# Run with coverage report
+uv run pytest --cov --cov-report=html
+# Open htmlcov/index.html in browser
+
+# Run tests matching pattern
+uv run pytest -k "test_user" -v
+```
+
+---
+
+## 📊 Coverage Requirements (Judge #6)
+
+**MANDATORY**: All code must maintain ≥98% test coverage.
+
+### Coverage Gate Enforcement
+
+The `stop-python-quality-pipeline` hook automatically:
+
+1. Runs `pytest --cov --cov-fail-under=98` after every code change
+2. **Blocks commits** if coverage drops below 98%
+3. Displays coverage delta (e.g., "was 98.2%, now 97.8%")
+4. Suggests launching `auto-rollback-agent` if coverage fails
+
+### Auto-Rollback Agent
+
+If coverage drops below 98%, the auto-rollback agent can:
+
+- Attempt to add tests (3 attempts)
+- Revert changes if coverage can't be restored
+- Launch via: `/auto-rollback` or manually via Task tool
+
+See: `.claude/agents/auto-rollback-agent.md`
+
+---
+
+## 🏗️ Architecture
+
+### Project Structure
+
+```
+aiyou-fastapi-services/
+├── src/
+│   ├── routes/          # FastAPI route handlers (HTTP layer)
+│   ├── services/        # Business logic layer
+│   ├── repositories/    # Database access layer
+│   ├── models/          # SQLAlchemy models
+│   ├── schemas/         # Pydantic schemas for validation
+│   └── utils/           # Shared utilities
+├── tests/               # Tests (mirror src/ structure)
+├── configs/             # Configuration files
+├── .claude/
+│   ├── hooks/           # Quality automation hooks
+│   ├── skills/          # Auto-activating skills
+│   ├── agents/          # Specialized agents
+│   ├── scripts/         # Utility scripts
+│   └── dev/             # Dev docs system
+└── scripts/             # Project scripts
+```
+
+### Layered Architecture
+
+**ALWAYS follow strict separation of concerns:**
+
+1. **Routes** → HTTP, request/response
+2. **Services** → Business logic
+3. **Repositories** → Data access
+4. **Models** → Database models
+5. **Schemas** → Pydantic validation
+
+See: `.claude/skills/python-dev-guidelines.md`
+
+---
+
+## 🤖 Auto-Activating Skills
+
+Skills automatically activate based on context. See `.claude/skills/skill-rules.json` for trigger definitions.
+
+### Core Skills
+
+- **python-dev-guidelines**: FastAPI, async/await, type hints, error handling
+- **vertex-ai-workbench**: Vertex AI training, deployment, monitoring
+- **ml-experiment-tracking**: Experiment tracking, metrics logging
+- **bigquery-integration**: BigQuery data loading, feature engineering
+- **testing-coverage**: Pytest patterns, 98% coverage enforcement
+
+### Manual Activation
+
+```bash
+# Load specific skill
+/skill python-dev-guidelines
+/skill vertex-ai-workbench
+```
+
+---
+
+## 📝 Dev Docs System
+
+### The 3-File Pattern
+
+For every task, create:
+
+1. **`[task-name]-plan.md`** - Strategic plan (phases, decisions, risks)
+2. **`[task-name]-context.md`** - Current state, decisions, next steps
+3. **`[task-name]-tasks.md`** - Completion checklist with board metadata
+
+Location: `.claude/dev/active/[task-name]/`
+
+### Templates
+
+```bash
+# Copy templates for new task
+cp .claude/dev/templates/task-plan-template.md .claude/dev/active/my-task/my-task-plan.md
+cp .claude/dev/templates/task-context-template.md .claude/dev/active/my-task/my-task-context.md
+cp .claude/dev/templates/task-tasks-template.md .claude/dev/active/my-task/my-task-tasks.md
+```
+
+### ML Experiments
+
+Use experiment-specific templates:
+
+- `experiment-[name]-plan.md`
+- `experiment-[name]-context.md`
+- `experiment-[name]-results.md`
+
+See: `.claude/dev/templates/experiment-*.md`
+
+---
+
+## 🔧 Hooks System
+
+### Active Hooks
+
+#### PostToolUse Hooks
+
+- **file-tracker**: Logs all file edits for downstream hooks
+
+#### Stop Hooks (run after Claude responds)
+
+- **python-quality-pipeline**: Runs ruff, mypy, pytest with coverage gate
+- **board-sync**: Parses tasks.md and updates project board (if configured)
+
+### Hook Configuration
+
+Hooks run automatically. View logs:
+
+```bash
+# View edit log
+cat .claude/hooks/edited-files.json
+
+# View board sync log
+cat .claude/hooks/board-sync.log
+
+# View auto-rollback log
+cat .claude/hooks/auto-rollback.log
+```
+
+---
+
+## 🤖 Specialized Agents
+
+### Quality Control
+
+- **auto-rollback-agent**: Fixes coverage drops or reverts changes
+- **code-architecture-reviewer**: Reviews code for best practices (TODO)
+- **build-error-resolver**: Systematically fixes errors (TODO)
+
+### ML & Data
+
+- **vertex-ai-deployer**: Automates Vertex AI deployment (TODO)
+- **experiment-analyzer**: Analyzes ML experiment results (TODO)
+
+### Launch Agents
+
+```bash
+# Via slash commands (if implemented)
+/auto-rollback
+/code-review
+
+# Via Task tool
+Task(
+  subagent_type="auto-rollback-agent",
+  prompt="Fix coverage drop from 98.2% to 96.5%",
+  description="Restore coverage"
+)
+```
+
+---
+
+## 🛠️ Utility Scripts
+
+### Coverage Analysis
+
+```bash
+# Detailed coverage report
+uv run python .claude/scripts/coverage-report.py
+
+# JSON format (for hooks/agents)
+uv run python .claude/scripts/coverage-report.py --format json
+
+# Save to file
+uv run python .claude/scripts/coverage-report.py --output coverage-detailed.txt
+```
+
+### Vertex AI Scripts (TODO)
+
+```bash
+# Deploy model
+uv run python .claude/scripts/vertex-ai-deploy.py --model-path gs://... --endpoint-name fraud-detection
+
+# Monitor endpoint
+uv run python .claude/scripts/vertex-ai-monitor.py --endpoint-id 1234567890
+```
+
+---
+
+## 📋 Board Automation
+
+### Task Metadata
+
+Add frontmatter to `*-tasks.md`:
+
+```yaml
+board_id: project-board-123
+epic: EPIC-456
+priority: High
+assignee: developer-name
+labels: [ml, vertex-ai, backend]
+status: In Progress
+```
+
+### Automatic Sync
+
+The `stop-board-sync` hook parses checkboxes and:
+
+- Updates board status when phases complete
+- Syncs completion percentage
+- Logs all updates to `.claude/hooks/board-sync.log`
+
+**Note**: Board API integration is currently a template. Implement based on your board system (Jira, Linear, etc.).
+
+---
+
+## 🧪 Testing Guidelines
+
+### Test Coverage Requirements
+
+- **Overall**: ≥98% (enforced by coverage gate)
+- **Critical paths**: 100% (error handling, authentication, payments)
+- **New code**: Must include tests BEFORE or WITH implementation (TDD)
+
+### Test Structure
+
+```python
+# tests/test_user_service.py
+import pytest
+from src.services.user_service import UserService
+
+@pytest.mark.asyncio
+async def test_create_user_success(user_service, mock_repository):
+    """Test successful user creation."""
+    # Arrange
+    user_data = UserCreate(email="test@example.com", name="Test User")
+
+    # Act
+    user = await user_service.create_user(user_data)
+
+    # Assert
+    assert user.email == "test@example.com"
+    assert user.id is not None
+```
+
+### Mocking External Services
+
+```python
+from unittest.mock import AsyncMock, patch
+
+@pytest.mark.asyncio
+async def test_vertex_ai_prediction(ml_service):
+    """Test Vertex AI prediction with mocking."""
+    mock_endpoint = AsyncMock()
+    mock_endpoint.predict.return_value = {"predictions": [0.95]}
+
+    with patch("src.services.ml_service.get_endpoint") as mock_get:
+        mock_get.return_value = mock_endpoint
+
+        result = await ml_service.predict({"input": "test"})
+
+        assert result["fraud_probability"] == 0.95
+```
+
+---
+
+## 🔐 Environment Variables
+
+### Required Variables
+
+```bash
+# .env file
+DATABASE_URL=postgresql+asyncpg://user:pass@localhost:5432/db
+GOOGLE_CLOUD_PROJECT=pnkln-project
+VERTEX_AI_LOCATION=us-central1
+SECRET_KEY=your-secret-key-here
+```
+
+### Loading Configuration
+
+```python
+from src.config import get_settings
+
+settings = get_settings()  # Cached, loads from .env
+```
+
+See: `src/config.py` (to be created)
+
+---
+
+## 📖 Documentation
+
+### Hierarchical Docs
+
+- **CLAUDE.md** (this file): Quick reference, commands, workflow
+- **PROJECT_KNOWLEDGE.md**: Infrastructure deep dive, architecture decisions
+- **`.claude/skills/`**: Domain-specific best practices (auto-activate)
+- **README.md**: Project overview, setup instructions (TODO)
+
+### Progressive Disclosure
+
+Main skill files are <500 lines. Details in resource files:
+
+- `.claude/skills/resources/python-dev-guidelines/error-handling.md`
+- `.claude/skills/resources/vertex-ai-workbench/deployment.md`
+
+---
+
+## 🚨 Common Issues
+
+### Coverage Gate Fails
+
+```
+❌ COVERAGE GATE FAILED (Judge #6 violation)
+Current: 96.5% | Required: 98% | Delta: -1.7%
+```
+
+**Solution**:
+
+1. Check uncovered lines: `uv run pytest --cov --cov-report=term-missing`
+2. Add tests for uncovered code
+3. Or launch: `/auto-rollback`
+
+### Type Errors (MyPy)
+
+```
+❌ Type errors found (please fix):
+  src/services/user_service.py:45: error: Missing return statement
+```
+
+**Solution**:
+
+1. Fix type hints
+2. Add return type annotations
+3. Use `-> None` for functions without return
+
+### Import Errors
+
+```
+ModuleNotFoundError: No module named 'google.cloud'
+```
+
+**Solution**:
+
+```bash
+uv add google-cloud-aiplatform
+uv sync
+```
+
+---
+
+## 🎯 Workflow Best Practices
+
+### Before Implementation
+
+1. **Plan First**: Use planning mode or strategic-plan-architect agent
+2. **Review Plan**: Catch misunderstandings before coding
+3. **Create Dev Docs**: Use 3-file pattern to track progress
+
+### During Implementation
+
+1. **TDD**: Write tests alongside or before implementation
+2. **Type Hints**: Every function, every parameter
+3. **Error Handling**: All external interactions (DB, API, files)
+4. **Commit Often**: Small, focused commits with descriptive messages
+
+### After Implementation
+
+1. **Coverage Check**: Ensure ≥98% (automatic via hook)
+2. **Code Review**: Self-review or launch code-architecture-reviewer
+3. **Update Docs**: Update context.md, check off tasks.md
+4. **Board Sync**: Verify board status updated (automatic via hook)
+
+---
+
+## 📚 Key Resources
+
+- **Skills**: `.claude/skills/` (auto-activate based on context)
+- **Agents**: `.claude/agents/` (specialized autonomous agents)
+- **Templates**: `.claude/dev/templates/` (dev docs, experiments)
+- **Scripts**: `.claude/scripts/` (utility scripts)
+- **Hooks**: `.claude/hooks/` (quality automation)
+
+---
+
+## 🆘 Help & Feedback
+
+- **Documentation**: See PROJECT_KNOWLEDGE.md for infrastructure deep dive
+- **Skills**: `/skill <name>` to load specific skill
+- **Agents**: See `.claude/agents/` for available agents
+- **Issues**: Check `.claude/hooks/*.log` files for debugging
+
+---
+
+**Remember**: The hooks system enforces quality automatically. Focus on writing good code, and the infrastructure will catch issues before they become problems.
+
+**Judge #6 is watching**: 98% coverage is not optional. The auto-rollback agent has your back.
+
+<!-- gitnexus:start -->
+# GitNexus — Code Intelligence
+
+This project is indexed by GitNexus as **Monorepo-Uphillsnowball** (496297 symbols, 1169382 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+
+> If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
+
+## Always Do
+
+- **MUST run impact analysis before editing any symbol.** Before modifying a function, class, or method, run `gitnexus_impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
+- **MUST run `gitnexus_detect_changes()` before committing** to verify your changes only affect expected symbols and execution flows.
+- **MUST warn the user** if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
+- When exploring unfamiliar code, use `gitnexus_query({query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
+- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `gitnexus_context({name: "symbolName"})`.
+
+## When Debugging
+
+1. `gitnexus_query({query: "<error or symptom>"})` — find execution flows related to the issue
+2. `gitnexus_context({name: "<suspect function>"})` — see all callers, callees, and process participation
+3. `READ gitnexus://repo/Monorepo-Uphillsnowball/process/{processName}` — trace the full execution flow step by step
+4. For regressions: `gitnexus_detect_changes({scope: "compare", base_ref: "main"})` — see what your branch changed
+
+## When Refactoring
+
+- **Renaming**: MUST use `gitnexus_rename({symbol_name: "old", new_name: "new", dry_run: true})` first. Review the preview — graph edits are safe, text_search edits need manual review. Then run with `dry_run: false`.
+- **Extracting/Splitting**: MUST run `gitnexus_context({name: "target"})` to see all incoming/outgoing refs, then `gitnexus_impact({target: "target", direction: "upstream"})` to find all external callers before moving code.
+- After any refactor: run `gitnexus_detect_changes({scope: "all"})` to verify only expected files changed.
+
+## Never Do
+
+- NEVER edit a function, class, or method without first running `gitnexus_impact` on it.
+- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
+- NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
+- NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
+
+## Tools Quick Reference
+
+| Tool | When to use | Command |
+|------|-------------|---------|
+| `query` | Find code by concept | `gitnexus_query({query: "auth validation"})` |
+| `context` | 360-degree view of one symbol | `gitnexus_context({name: "validateUser"})` |
+| `impact` | Blast radius before editing | `gitnexus_impact({target: "X", direction: "upstream"})` |
+| `detect_changes` | Pre-commit scope check | `gitnexus_detect_changes({scope: "staged"})` |
+| `rename` | Safe multi-file rename | `gitnexus_rename({symbol_name: "old", new_name: "new", dry_run: true})` |
+| `cypher` | Custom graph queries | `gitnexus_cypher({query: "MATCH ..."})` |
+
+## Impact Risk Levels
+
+| Depth | Meaning | Action |
+|-------|---------|--------|
+| d=1 | WILL BREAK — direct callers/importers | MUST update these |
+| d=2 | LIKELY AFFECTED — indirect deps | Should test |
+| d=3 | MAY NEED TESTING — transitive | Test if critical path |
+
+## Resources
+
+| Resource | Use for |
+|----------|---------|
+| `gitnexus://repo/Monorepo-Uphillsnowball/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/Monorepo-Uphillsnowball/clusters` | All functional areas |
+| `gitnexus://repo/Monorepo-Uphillsnowball/processes` | All execution flows |
+| `gitnexus://repo/Monorepo-Uphillsnowball/process/{name}` | Step-by-step execution trace |
+
+## Self-Check Before Finishing
+
+Before completing any code modification task, verify:
+1. `gitnexus_impact` was run for all modified symbols
+2. No HIGH/CRITICAL risk warnings were ignored
+3. `gitnexus_detect_changes()` confirms changes match expected scope
+4. All d=1 (WILL BREAK) dependents were updated
+
+## Keeping the Index Fresh
+
+After committing code changes, the GitNexus index becomes stale. Re-run analyze to update it:
+
+```bash
+npx gitnexus analyze
+```
+
+If the index previously included embeddings, preserve them by adding `--embeddings`:
+
+```bash
+npx gitnexus analyze --embeddings
+```
+
+To check whether embeddings exist, inspect `.gitnexus/meta.json` — the `stats.embeddings` field shows the count (0 means no embeddings). **Running analyze without `--embeddings` will delete any previously generated embeddings.**
+
+> Claude Code users: A PostToolUse hook handles this automatically after `git commit` and `git merge`.
+
+## CLI
+
+| Task | Read this skill file |
+|------|---------------------|
+| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
+| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
+| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
+| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
+| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
+| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
+
+<!-- gitnexus:end -->
+
+
+### monorepo_manifest.yaml
+version: 1
+canonical-root: ShadowTag-v2/Monorepo-Uphillsnowball
+
+workspace:
+  name: Monorepo-Uphillsnowball
+  root: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
+  policy: latest-only
+  source_of_truth: monorepo_manifest.yaml
+
+# These are folded-in components — integrated sub-paths of the monorepo.
+# They are NOT canonical roots. The monorepo owns them.
+folded_in_components:
+  aiyou_fastapi_services:
+    status: folded-in
+    path: apps/aiyou_stack/aiyou-fastapi-services
+    notes: Folded-in component. Not a root peer.
+
+  cosmic_crab_payload:
+    status: folded-in
+    path: apps/aiyou_stack/cosmic-crab-payload
+    notes: Folded-in component. Not a root peer.
+
+  pipeline:
+    status: folded-in
+    path: apps/aiyou_stack/Pipeline
+    notes: Folded-in component. Not a root peer.
+
+  nascent_apollo:
+    status: folded-in
+    path: apps/aiyou_stack/nascent-apollo
+    notes: Folded-in component. Not a root peer.
+
+control_plane:
+  canonical_mcp_config: antigravity-mcp-config.json
+  deprecated_mcp_configs:
+    - /Users/pikeymickey/.gemini/antigravity/mcp_config.json
+    - .vscode/cline_mcp_settings.json
+
+products:
+  counselconduit:
+    root: apps/counselconduit
+    runtime: Google Cloud
+    model: gemini-3.1-flash-lite-preview
+    project: shadowtag-omega-v4
+    business_role: mvp-commercial-wedge
+
+  uphillsnowball:
+    root: labs/uphillsnowball
+    runtime: local Apple Silicon
+    business_role: internal-rd-lab
+
+# ── Intelligence Layer ──────────────────────────────────────────────────────
+intelligence:
+  aegaeon_protocol:
+    root: core/aegaeon
+    description: >
+      Gemini Context Cache Slab + 7-instance Swarm Router.
+      Maps Aegaeon VRAM pooling to Gemini Context Caching API (~84% token cost reduction).
+    components:
+      - core/aegaeon/context_cache.py   # Master Memory Slab (75% input discount)
+      - core/aegaeon/swarm_router.py    # Fast Path (1-5) / Heavy Lift (6-7)
+    model: gemini-3.1-flash-lite-preview
+    replaces: gptram
+
+  sovereign_mlx_protocol:
+    root: core/sovereign_mlx
+    description: >
+      Apple Silicon KV-cache slab + ANE bridge.
+      Loads model ONCE into M1 Max Unified Memory; all requests share pre-built KV tensors.
+    components:
+      - core/sovereign_mlx/kv_cache_slab.py   # .beads → KV slab via llama.cpp/Metal
+      - core/sovereign_mlx/ane_bridge.py       # async multi-task dispatcher
+    runtime: local Apple Silicon (Metal GPU, ANE)
+
+  gemini_agent_swarm:
+    root: scripts/gemini_agent_swarm.py
+    description: >
+      Gemini-native multi-agent loop replacing n-autoresearch/Kosmos/BioAgentss.
+      Lineage: karpathy/autoresearch (research loop) + jimmc414/Kosmos (multimodal context)
+               + bio-xyz/BioAgents (role specialisation + handoff protocol).
+    roles: [research, synthesize, critique, architect]
+    replaces: n-autoresearch/Kosmos/BioAgentss
+
+  corpus_intelligence:
+    root: core/rag_evolve.py
+    description: FTS5 search across 86K+ extractions; gatekeeper for Judge 6.
+
+# ── Tooling ─────────────────────────────────────────────────────────────────
+tooling:
+  gitnexus:
+    root: apps/gitnexus
+    description: >
+      GitNexus codebase knowledge graph (tree-sitter AST, BM25+semantic search,
+      blast-radius impact analysis). Exposed as MCP server to Claude Code.
+    mcp_entry: gitnexus (see .mcp.json)
+    setup: cd apps/gitnexus && bash setup.sh
+
+
+### judge6.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="${PWD}"
+REPORT_DIR="${JUDGE6_REPORT_DIR:-${PROJECT_ROOT}/artifacts/judge6-reports}"
+VIDEO_DIR="${JUDGE6_VIDEO_DIR:-${PROJECT_ROOT}/artifacts/videos}"
+PROMPT_FILE="${PROJECT_ROOT}/prompts/judge6-cinematic.md"
+TIMESTAMP="$(date -u +%Y%m%d-%H%M%S)"
+REPORT="${REPORT_DIR}/judge6-${TIMESTAMP}.md"
+BUCKET="${JUDGE6_GCS_BUCKET:-}"
+LOCATION="${REGION:-us-central1}"
+MODEL="${JUDGE6_MODEL:-gemini-3.1-flash-lite-preview}"
+
+mkdir -p "${REPORT_DIR}" "${VIDEO_DIR}"
+
+require_cmd() {
+  local cmd="$1"
+  if ! command -v "${cmd}" >/dev/null 2>&1; then
+    echo "Missing required command: ${cmd}" >&2
+    exit 2
+  fi
+}
+
+append_section() {
+  local title="$1"
+  {
+    echo
+    echo "## ${title}"
+  } >> "${REPORT}"
+}
+
+find_latest_video() {
+  find "${VIDEO_DIR}" -type f \( -name "*.webm" -o -name "*.mp4" \) -print0 \
+    | xargs -0 ls -1t 2>/dev/null \
+    | head -n 1
+}
+
+run_optional_check() {
+  local label="$1"
+  shift
+  append_section "${label}"
+  if "$@" >> "${REPORT}" 2>&1; then
+    echo "PASS" >> "${REPORT}"
+  else
+    echo "FAIL" >> "${REPORT}"
+    return 1
+  fi
+}
+
+require_cmd jq
+require_cmd curl
+
+{
+  echo "# Judge-6 Report"
+  echo
+  echo "- Timestamp: ${TIMESTAMP}"
+  echo "- Project root: ${PROJECT_ROOT}"
+  echo "- Model: ${MODEL}"
+  echo "- Region: ${LOCATION}"
+} > "${REPORT}"
+
+static_failed=0
+
+if command -v eslint >/dev/null 2>&1; then
+  run_optional_check "ESLint" eslint . --format compact || static_failed=1
+else
+  append_section "ESLint"
+  echo "SKIP: eslint not installed" >> "${REPORT}"
+fi
+
+if command -v gitleaks >/dev/null 2>&1; then
+  run_optional_check "Gitleaks" gitleaks detect --source . --no-banner || static_failed=1
+else
+  append_section "Gitleaks"
+  echo "SKIP: gitleaks not installed" >> "${REPORT}"
+fi
+
+if [ -f "${PROJECT_ROOT}/package.json" ] && command -v npm >/dev/null 2>&1; then
+  append_section "npm audit"
+  if npm audit --audit-level=high >> "${REPORT}" 2>&1; then
+    echo "PASS" >> "${REPORT}"
+  else
+    echo "FAIL" >> "${REPORT}"
+    static_failed=1
+  fi
+else
+  append_section "npm audit"
+  echo "SKIP: package.json not present" >> "${REPORT}"
+fi
+
+append_section "RAG Tech-Stack Gatekeeper"
+if [ -f "${PROJECT_ROOT}/core/rag_evolve.py" ]; then
+  if python3 "${PROJECT_ROOT}/core/rag_evolve.py" --gatekeeper >> "${REPORT}" 2>&1; then
+    echo "PASS" >> "${REPORT}"
+  else
+    echo "FAIL" >> "${REPORT}"
+    static_failed=1
+  fi
+else
+  echo "SKIP: core/rag_evolve.py not found" >> "${REPORT}"
+fi
+
+append_section "Cinematic Verification"
+
+if [ ! -f "${PROMPT_FILE}" ]; then
+  echo "FAIL: prompt file missing: ${PROMPT_FILE}" >> "${REPORT}"
+  static_failed=1
+fi
+
+VIDEO_FILE="$(find_latest_video || true)"
+if [ -z "${VIDEO_FILE}" ]; then
+  echo "FAIL: no video artifact found under ${VIDEO_DIR}" >> "${REPORT}"
+  static_failed=1
+fi
+
+if [ -z "${BUCKET}" ]; then
+  echo "FAIL: JUDGE6_GCS_BUCKET is not set" >> "${REPORT}"
+  static_failed=1
+fi
+
+if [ -z "${GOOGLE_CLOUD_PROJECT:-}" ]; then
+  echo "FAIL: GOOGLE_CLOUD_PROJECT is not set" >> "${REPORT}"
+  static_failed=1
+fi
+
+if [ "${static_failed}" -ne 0 ]; then
+  {
+    echo
+    echo "## Final Verdict"
+    echo "BLOCKED"
+    echo
+    echo "One or more required checks failed before cinematic analysis."
+  } >> "${REPORT}"
+  cat "${REPORT}"
+  exit 1
+fi
+
+if [ "${JUDGE6_LOCAL_ANE:-false}" == "true" ]; then
+  echo "Route: Offline Apple Neural Engine (zero_cpu_router.py)"
+  RESPONSE="$(python3 scripts/local-ane-infer.py "${PROMPT_FILE}" "${VIDEO_FILE}")"
+  MODEL_TEXT="${RESPONSE}"
+else
+  # ── Original Google Cloud Pathway ──
+  require_cmd gcloud
+
+  GCS_PATH="${BUCKET%/}/videos/$(basename "${VIDEO_FILE%.*}")-${TIMESTAMP}.$(basename "${VIDEO_FILE##*.}")"
+  gcloud storage cp "${VIDEO_FILE}" "${GCS_PATH}" --quiet
+
+  ACCESS_TOKEN="$(gcloud auth print-access-token)"
+  PROMPT_JSON="$(jq -Rs . < "${PROMPT_FILE}")"
+
+  REQUEST_JSON="$(jq -n \
+    --arg prompt "$(cat "${PROMPT_FILE}")" \
+    --arg fileUri "${GCS_PATH}" \
+    '{
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {text: $prompt},
+            {
+              fileData: {
+                mimeType: "video/webm",
+                fileUri: $fileUri
+              }
+            }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0,
+        responseMimeType: "application/json"
+      }
+    }'
+  )"
+
+  if [[ "${VIDEO_FILE}" == *.mp4 ]]; then
+    REQUEST_JSON="$(jq '.contents[0].parts[1].fileData.mimeType = "video/mp4"' <<< "${REQUEST_JSON}")"
+  fi
+
+  RESPONSE="$(
+    curl -fsS -X POST \
+      -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+      -H "Content-Type: application/json" \
+      "https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${GOOGLE_CLOUD_PROJECT}/locations/${LOCATION}/publishers/google/models/${MODEL}:generateContent" \
+      -d "${REQUEST_JSON}"
+  )"
+
+  MODEL_TEXT="$(jq -r '.candidates[0].content.parts[0].text // empty' <<< "${RESPONSE}")"
+fi
+if [ -z "${MODEL_TEXT}" ]; then
+  {
+    echo "FAIL: model response missing text payload"
+    echo
+    echo '```json'
+    echo "${RESPONSE}"
+    echo '```'
+  } >> "${REPORT}"
+  {
+    echo
+    echo "## Final Verdict"
+    echo "BLOCKED"
+  } >> "${REPORT}"
+  cat "${REPORT}"
+  exit 1
+fi
+
+VERDICT="$(jq -r 'fromjson | .verdict // "FAIL"' <<< "${MODEL_TEXT}")"
+RISK_LEVEL="$(jq -r 'fromjson | .risk_level // "High"' <<< "${MODEL_TEXT}")"
+
+{
+  echo "- Video file: ${VIDEO_FILE}"
+  echo "- Uploaded URI: ${GCS_PATH}"
+  echo "- Verdict: ${VERDICT}"
+  echo "- Risk level: ${RISK_LEVEL}"
+  echo
+  echo "### Model Payload"
+  echo '```json'
+  echo "${MODEL_TEXT}"
+  echo '```'
+} >> "${REPORT}"
+
+{
+  echo
+  echo "## Final Verdict"
+} >> "${REPORT}"
+
+case "${VERDICT}:${RISK_LEVEL}" in
+  PASS:Low|PASS:Medium)
+    echo "APPROVED" >> "${REPORT}"
+    cat "${REPORT}"
+    exit 0
+    ;;
+  *)
+    echo "BLOCKED" >> "${REPORT}"
+    cat "${REPORT}"
+    exit 1
+    ;;
+esac

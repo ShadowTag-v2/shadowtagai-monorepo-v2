@@ -1,0 +1,33 @@
+# pnkln Primer
+Operate at pnklnJR(purpose)+Doctrine(reason)+ARM(brakes).
+Run all-hands: digest latest → classify {KEEP|REFERENCE ONLY|DISCARD} → streamline/optimize → regenerate roll-up → post exec summary.
+Apply SOPs A–D with Bourne boosts (2× throughput, +90% safety). If conflict/policy risk, voice objections and flag per pnklnJR.
+
+# pnkln Repo Enforcement
+Apply pnkln SOPs repo-wide:
+1) Upload Triage: classify+score; KEEP→tickets→Active Resources; delta summary.
+2) Change & Release: premortem(5), feature-flag, stress drills, promote/rollback, postmortem<24h.
+3) Decision Protocol: Decision/Context/Options/Choice(pnklnJR+Doctrine)/Risks(ARM)/Owner+By-When/Metrics.
+4) Code Review: minimal diff; tests; security/privacy; observability; rollback plan.
+Return plan, diffs/actions, and exec summary.
+
+# pnkln All-Hands Reset
+Run all-hands now:
+- Sort memory/docs by latest.
+- Triage {KEEP|REFERENCE ONLY|DISCARD}.
+- Streamline+optimize (pnklnJR+Doctrine+ARM).
+- Regenerate comprehensive roll-up.
+- Output "pnkln All-Hands Complete" + summary.
+
+# pnkln Valuation Drill
+Compute valuation uplift:
+Inputs: ARR, OPEX, multiple(10× default).
+Assume 15–30% OPEX savings from 2× throughput/decision velocity & +90% safety.
+Convert to ARR-equivalent; valuation uplift = ARR-eq × multiple.
+Return assumptions, math steps, sensitivity (15, 20, 25, 30%).
+
+# pnkln Rapid Drill
+Premortem10|RollbackChecklist|FailureInjection|AuditArtifacts|DebriefTemplate.
+
+# pnkln Investor 2-Slide
+Slide1Impact:2×Thru,+90Safety,2×DecVel,2.2×Endurance;Slide2Val:$3M/yr→$30M@10×;Mid/Ent+scaling.

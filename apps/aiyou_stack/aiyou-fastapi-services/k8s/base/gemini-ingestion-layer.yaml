@@ -1,0 +1,599 @@
+# Gemini Ingestion Layer - Nightly Intelligence Collection Pipeline
+# GKE CronJob Multi-Container Architecture
+# Runtime Target: ~45 min/night | Cost: ~$77/month
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gemini-ingestion
+  labels:
+    tier: data-collection
+    pnkln.io/component: "intelligence-pipeline"
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestion-config
+  namespace: gemini-ingestion
+data:
+  # Runtime Configuration
+  TARGET_RUNTIME_MINUTES: "45"
+  EXECUTION_SCHEDULE: "0 2 * * *"  # 2 AM daily (UTC)
+
+  # Quality Gates
+  MIN_ITEMS_PER_DAY: "500"
+  MIN_SOURCE_DIVERSITY: "5"
+  MAX_COST_PER_ITEM: "0.15"
+  MIN_QUALITY_SCORE: "0.70"
+
+  # Ethical Compliance Settings
+  RESPECT_ROBOTS_TXT: "true"
+  RATE_LIMIT_REQUESTS_PER_MIN: "60"
+  USER_AGENT: "PNKLN-Ingestion-Bot/1.0 (+https://pnkln.ai/bot)"
+  CRAWL_DELAY_SECONDS: "1"
+  MAX_CONCURRENT_REQUESTS: "10"
+
+  # Multi-Source Coverage
+  sources.yaml: |
+    sources:
+      tier1:  # High-value, primary sources
+        - name: youtube-api
+          enabled: true
+          quota: 10000
+          priority: 1
+        - name: news-aggregator
+          enabled: true
+          quota: 5000
+          priority: 1
+      tier2:  # Secondary sources
+        - name: twitter-api
+          enabled: true
+          quota: 3000
+          priority: 2
+        - name: reddit-api
+          enabled: true
+          quota: 2000
+          priority: 2
+      tier3:  # Supplementary sources
+        - name: rss-feeds
+          enabled: true
+          quota: 1000
+          priority: 3
+        - name: web-crawler
+          enabled: true
+          quota: 500
+          priority: 3
+
+  # Tier Classification Rules
+  tier_classification.yaml: |
+    classification:
+      tier1:
+        criteria:
+          - verified_source: true
+          - recency_hours: 24
+          - engagement_score: ">= 8"
+          - relevance_score: ">= 0.8"
+        weight: 1.0
+      tier2:
+        criteria:
+          - verified_source: false
+          - recency_hours: 48
+          - engagement_score: ">= 5"
+          - relevance_score: ">= 0.6"
+        weight: 0.6
+      tier3:
+        criteria:
+          - recency_hours: 168  # 1 week
+          - engagement_score: ">= 2"
+          - relevance_score: ">= 0.4"
+        weight: 0.3
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: robots-txt-config
+  namespace: gemini-ingestion
+data:
+  # Cached robots.txt directives from common sources
+  robots_cache.json: |
+    {
+      "cache_ttl_hours": 24,
+      "directives": {}
+    }
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-credentials
+  namespace: gemini-ingestion
+type: Opaque
+stringData:
+  YOUTUBE_API_KEY = "REDACTED_API_KEY"
+  TWITTER_BEARER_TOKEN = "REDACTED_API_KEY"
+  REDDIT_CLIENT_ID: "placeholder-replace-in-production"
+  REDDIT_CLIENT_SECRET = "REDACTED_API_KEY"
+  NEWS_API_KEY = "REDACTED_API_KEY"
+  GEMINI_API_KEY = "REDACTED_API_KEY"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion-nightly
+  namespace: gemini-ingestion
+  labels:
+    app: gemini-ingestion
+    tier: data-collection
+spec:
+  # Schedule: 2 AM UTC daily (adjust for your timezone)
+  schedule: "0 2 * * *"
+
+  # Concurrency policy: Don't run if previous job still running
+  concurrencyPolicy: Forbid
+
+  # Keep last 3 successful and 1 failed job for debugging
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  # Timeout: 60 minutes (allows buffer beyond 45-min target)
+  activeDeadlineSeconds: 3600
+
+  jobTemplate:
+    metadata:
+      labels:
+        app: gemini-ingestion
+        tier: data-collection
+    spec:
+      # Retry failed jobs once
+      backoffLimit: 1
+
+      template:
+        metadata:
+          labels:
+            app: gemini-ingestion
+            tier: data-collection
+          annotations:
+            # Cost tracking
+            cost-category: "intelligence-collection"
+            estimated-monthly-cost: "77"
+        spec:
+          serviceAccountName: gemini-ingestion-sa
+          restartPolicy: OnFailure
+
+          # Node selection: CPU-optimized for web scraping
+          nodeSelector:
+            workload: llm-routing  # Reuse CPU pool
+
+          # Init container: Validate configuration
+          initContainers:
+          - name: config-validator
+            image: gcr.io/pnkln-core-stack/ingestion-validator:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Validating ingestion configuration..."
+              python3 /app/validate_config.py
+              echo "Configuration valid. Starting ingestion pipeline."
+            volumeMounts:
+            - name: config
+              mountPath: /config
+            env:
+            - name: CONFIG_PATH
+              value: /config/sources.yaml
+
+          # Multi-container pod: Each source gets its own container
+          containers:
+
+          # Container 1: YouTube Ingestion
+          - name: youtube-collector
+            image: gcr.io/pnkln-core-stack/youtube-ingestion:latest
+            env:
+            - name: YOUTUBE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: YOUTUBE_API_KEY
+            - name: QUOTA_LIMIT
+              value: "10000"
+            - name: RESPECT_ROBOTS_TXT
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: RESPECT_ROBOTS_TXT
+            - name: RATE_LIMIT_RPM
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: RATE_LIMIT_REQUESTS_PER_MIN
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: robots-cache
+              mountPath: /cache
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1"
+
+          # Container 2: Twitter/X Ingestion
+          - name: twitter-collector
+            image: gcr.io/pnkln-core-stack/twitter-ingestion:latest
+            env:
+            - name: TWITTER_BEARER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: TWITTER_BEARER_TOKEN
+            - name: QUOTA_LIMIT
+              value: "3000"
+            - name: RATE_LIMIT_RPM
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: RATE_LIMIT_REQUESTS_PER_MIN
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+
+          # Container 3: News Aggregator
+          - name: news-collector
+            image: gcr.io/pnkln-core-stack/news-ingestion:latest
+            env:
+            - name: NEWS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: NEWS_API_KEY
+            - name: QUOTA_LIMIT
+              value: "5000"
+            - name: USER_AGENT
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: USER_AGENT
+            - name: CRAWL_DELAY_SECONDS
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: CRAWL_DELAY_SECONDS
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: robots-cache
+              mountPath: /cache
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1"
+
+          # Container 4: Reddit Ingestion
+          - name: reddit-collector
+            image: gcr.io/pnkln-core-stack/reddit-ingestion:latest
+            env:
+            - name: REDDIT_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: REDDIT_CLIENT_ID
+            - name: REDDIT_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: REDDIT_CLIENT_SECRET
+            - name: QUOTA_LIMIT
+              value: "2000"
+            - name: RATE_LIMIT_RPM
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: RATE_LIMIT_REQUESTS_PER_MIN
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+
+          # Container 5: Web Crawler (RSS + Generic)
+          - name: web-crawler
+            image: gcr.io/pnkln-core-stack/web-crawler:latest
+            env:
+            - name: RESPECT_ROBOTS_TXT
+              value: "true"
+            - name: CRAWL_DELAY_SECONDS
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: CRAWL_DELAY_SECONDS
+            - name: MAX_CONCURRENT_REQUESTS
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: MAX_CONCURRENT_REQUESTS
+            - name: USER_AGENT
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: USER_AGENT
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: robots-cache
+              mountPath: /cache
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1"
+
+          # Container 6: Gemini Classifier & Tier Assignment
+          - name: gemini-classifier
+            image: gcr.io/pnkln-core-stack/gemini-classifier:latest
+            env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: GEMINI_API_KEY
+            - name: MODEL_ID
+              value: "gemini-2.0-flash-exp"
+            - name: MIN_QUALITY_SCORE
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: MIN_QUALITY_SCORE
+            - name: VERTEX_AI_PROJECT
+              value: "pnkln-core-stack"
+            - name: VERTEX_AI_LOCATION
+              value: "us-central1"
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: config
+              mountPath: /config
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: "1"
+              limits:
+                memory: "4Gi"
+                cpu: "2"
+
+          # Container 7: Quality Gate Enforcer & Metrics
+          - name: quality-gate
+            image: gcr.io/pnkln-core-stack/quality-gate:latest
+            env:
+            - name: MIN_ITEMS_PER_DAY
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: MIN_ITEMS_PER_DAY
+            - name: MIN_SOURCE_DIVERSITY
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: MIN_SOURCE_DIVERSITY
+            - name: MAX_COST_PER_ITEM
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: MAX_COST_PER_ITEM
+            - name: TARGET_RUNTIME_MINUTES
+              valueFrom:
+                configMapKeyRef:
+                  name: ingestion-config
+                  key: TARGET_RUNTIME_MINUTES
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: metrics
+              mountPath: /metrics
+            resources:
+              requests:
+                memory: "512Mi"
+                cpu: "250m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
+
+          # Container 8: AM Briefing Generator
+          - name: briefing-generator
+            image: gcr.io/pnkln-core-stack/briefing-generator:latest
+            env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-credentials
+                  key: GEMINI_API_KEY
+            - name: MODEL_ID
+              value: "gemini-2.0-flash-exp"
+            - name: OUTPUT_FORMAT
+              value: "markdown"
+            - name: DELIVERY_ENDPOINT
+              value: "http://llm-prefill-service.cognitive-stack-v5:8000/v1/briefing"
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: briefings
+              mountPath: /briefings
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1"
+
+          # Shared volumes
+          volumes:
+          - name: config
+            configMap:
+              name: ingestion-config
+          - name: robots-cache
+            configMap:
+              name: robots-txt-config
+          - name: output
+            emptyDir:
+              sizeLimit: 10Gi
+          - name: metrics
+            emptyDir:
+              sizeLimit: 1Gi
+          - name: briefings
+            persistentVolumeClaim:
+              claimName: briefings-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: briefings-pvc
+  namespace: gemini-ingestion
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: standard-rwo
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingestion-metrics
+  namespace: gemini-ingestion
+  labels:
+    app: gemini-ingestion
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+spec:
+  type: ClusterIP
+  selector:
+    app: gemini-ingestion
+  ports:
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: gemini-ingestion-sa
+  namespace: gemini-ingestion
+  annotations:
+    iam.gke.io/gcp-service-account: redacted@shadowtag-v4.local
+
+---
+# RBAC: Allow ingestion to call services in other namespaces
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ingestion-cross-namespace
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ingestion-cross-namespace-binding
+subjects:
+- kind: ServiceAccount
+  name: gemini-ingestion-sa
+  namespace: gemini-ingestion
+roleRef:
+  kind: ClusterRole
+  name: ingestion-cross-namespace
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Monitoring: PrometheusRule for ingestion metrics
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: gemini-ingestion-alerts
+  namespace: gemini-ingestion
+spec:
+  groups:
+  - name: ingestion-quality-gates
+    interval: 1h
+    rules:
+    - alert: LowDailyItemCount
+      expr: ingestion_items_collected_total < 500
+      for: 1h
+      annotations:
+        summary: "Daily item count below minimum threshold"
+        description: "Collected {{ $value }} items (target: ≥500)"
+
+    - alert: LowSourceDiversity
+      expr: ingestion_active_sources_count < 5
+      for: 1h
+      annotations:
+        summary: "Source diversity below minimum"
+        description: "Only {{ $value }} sources active (target: ≥5)"
+
+    - alert: HighCostPerItem
+      expr: ingestion_cost_per_item_usd > 0.15
+      for: 1h
+      annotations:
+        summary: "Cost per item exceeding budget"
+        description: "Cost: ${{ $value }} per item (target: ≤$0.15)"
+
+    - alert: LowQualityScore
+      expr: avg(ingestion_item_quality_score) < 0.70
+      for: 1h
+      annotations:
+        summary: "Average quality score below threshold"
+        description: "Quality score: {{ $value }} (target: ≥0.70)"
+
+    - alert: RuntimeExceeded
+      expr: ingestion_runtime_minutes > 45
+      for: 5m
+      annotations:
+        summary: "Ingestion runtime exceeding target"
+        description: "Runtime: {{ $value }} minutes (target: ≤45 min)"
+
+    - alert: EthicalComplianceViolation
+      expr: ingestion_robots_txt_violations_total > 0
+      for: 5m
+      annotations:
+        summary: "robots.txt violations detected"
+        description: "{{ $value }} violations in this run"

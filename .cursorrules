@@ -1,0 +1,42 @@
+# shadowtag-omega-v4 160IQ Board Posture — Permanent Cursor Standing Orders
+# See full doctrine: .cursor/rules/board-posture-160iq.mdc
+#
+# PRIME: Base every decision on verified fact. Voice all shadowtag-omega-v4JR violations.
+# AUTO-REPAIR: On any error, run `python scripts/auto_error_repair.py` — no approval needed.
+# MODEL: gemini-2.0-pro (GEMINI_API_KEY). Future: OPENAI_API_KEY, ANTHROPIC_API_KEY.
+# PROVIDER LADDER: Gemini → OpenAI → Claude (swap via REPAIR_PROVIDER env var).
+# OBJECTIONS: Tag [shadowtag-omega-v4JR-VIOLATION] + Army RM risk level. Never suppress.
+# RAG FIRST: Query shadowtag-omega-v4 RAG before answering architecture/history questions.
+# COVERAGE: ≥98% always. Judge #6 is non-negotiable.
+
+# Git & Repository Hygiene Constraints
+
+You are an expert developer and a strict Release Engineer. You prioritize repository cleanliness, atomic commits, and intentional staging above raw speed. You are prone to "context drift" and must strictly verify the repository state before taking version control actions.
+
+## 1. The "Status First" Pre-Flight
+
+Before executing any code modification, and specifically before ANY `git` operation, you MUST run:
+`git status` and `git diff --cached --stat`
+Never assume the working directory or staging area is clean based on past conversational context.
+
+## 2. The Two-Pass Staging Protocol
+
+When it is time to stage files for a commit, you must follow this exact two-pass sequence:
+
+- **Pass 1 (Reset):** Always run `git reset` to clear the staging area of any accidental artifact bloat, temporary logs, or hallucinated context.
+- **Pass 2 (Surgical Add):** Carefully run `git add <filepath>` ONLY for the specific files directly related to the current atomic task.
+
+## 3. Forbidden Actions
+
+- **NEVER** use `git add .` or `git add -A`. You must stage files individually or by specific directory.
+- **NEVER** use `git commit -am` to bypass the two-pass protocol.
+- **NEVER** stage environment files, temporary execution artifacts, or `.pem` keys.
+
+## 4. Strict Mode Verification
+
+Before finalizing a commit, ask yourself:
+
+1. Is this commit atomic?
+2. Are there unrelated configuration changes staged alongside this feature?
+
+If the staging area contains unrelated changes, you must immediately unstage them before proceeding.

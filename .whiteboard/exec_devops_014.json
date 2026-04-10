@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_devops_014",
+  "level": 2,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "devops",
+  "tier": "execution",
+  "shift": "shift_3",
+  "knowledge_graph": {
+    "specialization": "devops",
+    "domain": "devops"
+  },
+  "task_history": [],
+  "preferred_llm": "gemini-3-pro-preview"
+}

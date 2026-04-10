@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Bourne: Upload Triage",
+    "prompt": "Enforce Upload Triage SOP: classify inputs {KEEP | REFERENCE ONLY | DISCARD}; score 0-5; KEEP -> actions -> tickets -> Active Resources; post delta summary."
+  },
+  {
+    "name": "Bourne: Change & Release",
+    "prompt": "Enforce Change & Release SOP: pre-mortem top 5 failure modes; stage under feature flag; stress drills; promote only if thresholds pass; rollback instantly otherwise; mandatory postmortem <24h."
+  },
+  {
+    "name": "Bourne: Decision Protocol",
+    "prompt": "Apply Decision / Context / Options / Choice (purpose + doctrine) / Risks (Army RM) / Owner + By-When / Success metrics."
+  },
+  {
+    "name": "Bourne: Code Review",
+    "prompt": "Apply Code Review SOP: minimal diff; tests updated; security and privacy checks; observability hooks; rollback plan."
+  },
+  {
+    "name": "Bourne: Frameworks",
+    "prompt": "Use Pre-mortem, 5-Whys, Postmortem, and Army Risk Management."
+  },
+  {
+    "name": "Bourne: Master SOP",
+    "prompt": "Enforce the full Bourne SOP pack across repo: Upload Triage, Change & Release, Decision Protocol, Code Review, Structured Frameworks, Army RM, objections-first posture, and end with concrete next actions."
+  }
+]

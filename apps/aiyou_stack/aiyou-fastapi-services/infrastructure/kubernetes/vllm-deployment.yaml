@@ -1,0 +1,220 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge-6-vllm
+  namespace: judge-6
+  labels:
+    app: judge-6
+    component: model-server
+    model: gemini-2-flash
+spec:
+  replicas: 2  # High availability
+  selector:
+    matchLabels:
+      app: judge-6
+      component: model-server
+  template:
+    metadata:
+      labels:
+        app: judge-6
+        component: model-server
+        model: gemini-2-flash
+      annotations:
+        gke-gcsfuse/volumes: "true"  # Enable Cloud Storage FUSE
+        gke-gcsfuse/cpu-limit: "2"
+        gke-gcsfuse/memory-limit: "4Gi"
+    spec:
+      serviceAccountName: judge-6-sa
+
+      # Node affinity for GPU nodes
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-accelerator
+                operator: In
+                values:
+                - nvidia-l4
+
+      # Pod Disruption Budget for high availability
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: judge-6
+            component: model-server
+
+      containers:
+      - name: vllm-server
+        image: us-docker.pkg.dev/vertex-ai/vertex-vision-model-garden-dockers/pytorch-vllm-serve:20250202_0916_RC00
+
+        env:
+        - name: MODEL_ID
+          value: "google/gemini-2.0-flash-thinking-exp-1219"
+        - name: TENSOR_PARALLEL_SIZE
+          value: "1"
+        - name: GPU_MEMORY_UTILIZATION
+          value: "0.90"
+        - name: MAX_MODEL_LEN
+          value: "32768"
+        - name: DTYPE
+          value: "float16"
+        - name: PORT
+          value: "8000"
+        # Enable KV cache optimization
+        - name: ENABLE_PREFIX_CACHING
+          value: "true"
+        # Continuous batching
+        - name: MAX_NUM_BATCHED_TOKENS
+          value: "16384"
+        - name: MAX_NUM_SEQS
+          value: "256"
+
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+
+        # Resource requests and limits
+        resources:
+          requests:
+            cpu: "8"
+            memory: "32Gi"
+            nvidia.com/gpu: "1"  # NVIDIA L4 GPU
+          limits:
+            cpu: "16"
+            memory: "64Gi"
+            nvidia.com/gpu: "1"
+
+        # Readiness probe
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 180  # Model loading takes time
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+
+        # Liveness probe
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 240
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+
+        # Volume mounts for model weights
+        volumeMounts:
+        - name: model-weights
+          mountPath: /models
+          readOnly: true
+        - name: shm
+          mountPath: /dev/shm
+
+      volumes:
+      # Cloud Storage FUSE for model weights
+      - name: model-weights
+        csi:
+          driver: gcsfuse.csi.storage.gke.io
+          volumeAttributes:
+            bucketName: PROJECT_ID-judge-6-models
+            mountOptions: "implicit-dirs,file-cache:max-size:-1,file-cache:cache-file-for-range-read:true"
+      # Shared memory for PyTorch
+      - name: shm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-6-vllm
+  namespace: judge-6
+  labels:
+    app: judge-6
+    component: model-server
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'  # Network Endpoint Groups for load balancing
+spec:
+  type: ClusterIP
+  selector:
+    app: judge-6
+    component: model-server
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: judge-6-vllm-hpa
+  namespace: judge-6
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: judge-6-vllm
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  # Scale based on custom QPS metric
+  - type: Pods
+    pods:
+      metric:
+        name: inference_qps
+      target:
+        type: AverageValue
+        averageValue: "100"  # 100 QPS per pod
+  # Scale based on p99 latency
+  - type: Pods
+    pods:
+      metric:
+        name: p99_latency_ms
+      target:
+        type: AverageValue
+        averageValue: "500"  # p99 < 500ms
+  # Scale based on GPU utilization
+  - type: Resource
+    resource:
+      name: nvidia.com/gpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      selectPolicy: Max
+    scaleDown:
+      stabilizationWindowSeconds: 300  # 5 min cooldown
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge-6-vllm-pdb
+  namespace: judge-6
+spec:
+  minAvailable: 1  # At least 1 pod must be available
+  selector:
+    matchLabels:
+      app: judge-6
+      component: model-server

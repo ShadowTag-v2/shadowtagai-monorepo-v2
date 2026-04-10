@@ -1,0 +1,60 @@
+pipeline:
+  name: PNKLN Nightly Intelligence Pipeline
+  version: 1.0.0-test
+  namespace: intelligence-pipeline
+  schedule: 0 2 * * *
+scraping:
+  robots_txt:
+    enabled: true
+    cache_ttl: 86400
+    respect_crawl_delay: true
+    honor_disallow: true
+  rate_limiting:
+    default_delay: 3.0
+    domain_specific:
+      youtube.com: 5.0
+      twitter.com: 4.0
+      .gov: 10.0
+    adaptive_throttling: true
+    max_concurrent: 3
+  error_handling:
+    circuit_breaker: true
+    circuit_breaker_threshold: 5
+    circuit_breaker_timeout: 300
+sources:
+  federal_register:
+    enabled: true
+  state_legislation:
+    enabled: true
+  arxiv:
+    enabled: true
+  tech_news:
+    enabled: true
+  competitor_blogs:
+    enabled: true
+  youtube:
+    enabled: true
+  twitter:
+    enabled: false
+jr_engine:
+  model: claude-3-5-haiku-20241022
+  scoring_criteria:
+    business_relevance: 0.25
+    regulatory_impact: 0.3
+    competitive_intelligence: 0.2
+    timing_urgency: 0.15
+    strategic_value: 0.1
+tier_classification:
+  model: claude-3-5-haiku-20241022
+  thresholds:
+    tier_1: 0.7
+    tier_2: 0.4
+bigquery:
+  dataset: pnkln_intelligence
+  table: intelligence_items
+  partition_field: published_date
+  partition_type: DAY
+business_impact:
+  cost_tracking:
+    monthly_budget: 370
+    roi_target: 3.3

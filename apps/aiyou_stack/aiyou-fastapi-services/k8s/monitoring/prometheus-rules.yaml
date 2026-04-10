@@ -1,0 +1,181 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: judge-6-sla-rules
+  namespace: pnkln-monitoring
+  labels:
+    app: judge-6
+    prometheus: kube-prometheus
+spec:
+  groups:
+  - name: judge_6_latency_sla
+    interval: 10s
+    rules:
+    # SLA Breach Alerts
+    - alert: Judge6LatencyP99Breach
+      expr: |
+        histogram_quantile(0.99,
+          sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[1m])) by (le)
+        ) > 0.090
+      for: 2m
+      labels:
+        severity: critical
+        component: judge-6
+        sla: latency
+      annotations:
+        summary: "Judge #6 p99 latency exceeds 90ms SLA"
+        description: "Current p99 latency: {{ $value | humanizeDuration }}. SLA requires ≤90ms. Immediate scale-up required."
+        runbook: "https://docs.pnkln.internal/runbooks/judge-6-latency-breach"
+
+    - alert: Judge6LatencyP95Warning
+      expr: |
+        histogram_quantile(0.95,
+          sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[1m])) by (le)
+        ) > 0.060
+      for: 5m
+      labels:
+        severity: warning
+        component: judge-6
+        sla: latency
+      annotations:
+        summary: "Judge #6 p95 latency approaching SLA limit"
+        description: "Current p95 latency: {{ $value | humanizeDuration }}. Target: ≤60ms. Investigate before p99 breach."
+
+    # Error Rate Alerts
+    - alert: Judge6HighErrorRate
+      expr: |
+        sum(rate(judge_request_errors_total{namespace="pnkln-core"}[5m]))
+        /
+        sum(rate(judge_request_total{namespace="pnkln-core"}[5m]))
+        > 0.05
+      for: 3m
+      labels:
+        severity: critical
+        component: judge-6
+      annotations:
+        summary: "Judge #6 error rate exceeds 5%"
+        description: "Current error rate: {{ $value | humanizePercentage }}. Normal: <1%. Check layer health."
+
+    # Circuit Breaker Alerts
+    - alert: Judge6CircuitBreakerTripped
+      expr: |
+        increase(judge_circuit_breaker_trips_total{namespace="pnkln-core"}[5m]) > 10
+      for: 2m
+      labels:
+        severity: warning
+        component: judge-6
+      annotations:
+        summary: "Judge #6 circuit breaker frequently tripping"
+        description: "Circuit breaker trips in last 5m: {{ $value }}. Indicates layer timeouts. Check Gemini/PyTorch layer health."
+
+    # GPU Utilization Alerts
+    - alert: Judge6GPUUnderutilized
+      expr: |
+        avg(nvidia_gpu_duty_cycle{namespace="pnkln-core"}) < 30
+      for: 15m
+      labels:
+        severity: info
+        component: judge-6
+        cost_optimization: true
+      annotations:
+        summary: "Judge #6 GPU underutilized"
+        description: "Average GPU utilization: {{ $value }}%. Consider scaling down or using smaller instance types."
+
+    - alert: Judge6GPUOverutilized
+      expr: |
+        avg(nvidia_gpu_duty_cycle{namespace="pnkln-core"}) > 90
+      for: 5m
+      labels:
+        severity: warning
+        component: judge-6
+      annotations:
+        summary: "Judge #6 GPU overutilized"
+        description: "Average GPU utilization: {{ $value }}%. May cause queuing delays. Scale up."
+
+    # Layer-Specific Alerts
+    - alert: Judge6GeminiLayerSlow
+      expr: |
+        histogram_quantile(0.99,
+          sum(rate(judge_layer_duration_seconds_bucket{layer="gemini"}[1m])) by (le)
+        ) > 0.030
+      for: 3m
+      labels:
+        severity: warning
+        component: judge-6
+        layer: gemini
+      annotations:
+        summary: "Gemini layer p99 exceeds 30ms"
+        description: "Gemini layer latency: {{ $value | humanizeDuration }}. Target: ≤30ms for overall SLA compliance."
+
+    - alert: Judge6PyTorchLayerSlow
+      expr: |
+        histogram_quantile(0.99,
+          sum(rate(judge_layer_duration_seconds_bucket{layer="pytorch"}[1m])) by (le)
+        ) > 0.040
+      for: 3m
+      labels:
+        severity: warning
+        component: judge-6
+        layer: pytorch
+      annotations:
+        summary: "PyTorch layer p99 exceeds 40ms"
+        description: "PyTorch layer latency: {{ $value | humanizeDuration }}. Target: ≤40ms for overall SLA compliance."
+
+    # Request Volume Alerts
+    - alert: Judge6LowRequestVolume
+      expr: |
+        sum(rate(judge_request_total{namespace="pnkln-core"}[5m])) < 1
+      for: 10m
+      labels:
+        severity: info
+        component: judge-6
+      annotations:
+        summary: "Judge #6 receiving low request volume"
+        description: "Request rate: {{ $value }} req/s. Indicates possible routing issue or validation sprint idle."
+
+    - alert: Judge6HighRequestVolume
+      expr: |
+        sum(rate(judge_request_total{namespace="pnkln-core"}[5m])) > 100
+      for: 3m
+      labels:
+        severity: warning
+        component: judge-6
+      annotations:
+        summary: "Judge #6 receiving high request volume"
+        description: "Request rate: {{ $value }} req/s. Ensure HPA is scaling appropriately."
+
+  # Recording Rules for Dashboards
+  - name: judge_6_recording_rules
+    interval: 30s
+    rules:
+    - record: judge:request_latency_p99:30s
+      expr: |
+        histogram_quantile(0.99,
+          sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[30s])) by (le)
+        )
+
+    - record: judge:request_latency_p95:30s
+      expr: |
+        histogram_quantile(0.95,
+          sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[30s])) by (le)
+        )
+
+    - record: judge:request_latency_p50:30s
+      expr: |
+        histogram_quantile(0.50,
+          sum(rate(judge_request_duration_seconds_bucket{namespace="pnkln-core"}[30s])) by (le)
+        )
+
+    - record: judge:error_rate:5m
+      expr: |
+        sum(rate(judge_request_errors_total{namespace="pnkln-core"}[5m]))
+        /
+        sum(rate(judge_request_total{namespace="pnkln-core"}[5m]))
+
+    - record: judge:request_rate:1m
+      expr: |
+        sum(rate(judge_request_total{namespace="pnkln-core"}[1m]))
+
+    - record: judge:gpu_utilization:avg
+      expr: |
+        avg(nvidia_gpu_duty_cycle{namespace="pnkln-core"})

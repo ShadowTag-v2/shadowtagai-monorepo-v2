@@ -1,0 +1,174 @@
+name: Conditional Auto-Merge (Safety-Gated)
+
+on:
+  pull_request:
+    types: [labeled, synchronize, ready_for_review]
+  workflow_run:
+    workflows: ["Cursor Code Review (Blocking)", "Security Auto-Fix (Codemender-style)", "CI Gate - Tests"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  check-automerge-conditions:
+    # Only run if PR has 'automerge' label
+    if: |
+      github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'automerge') ||
+      github.event_name == 'workflow_run'
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Get PR number
+        id: pr
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          else
+            # For workflow_run events, get PR from the workflow
+            PR_NUM=$(gh api "/repos/${{ github.repository }}/pulls?state=open&head=${HEAD_BRANCH}" \
+              --jq '.[0].number' || echo "")
+            echo "number=${PR_NUM}" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Check if PR has automerge label
+        if: steps.pr.outputs.number != ''
+        id: label
+        run: |
+          HAS_LABEL=$(gh pr view ${{ steps.pr.outputs.number }} \
+            --repo ${{ github.repository }} \
+            --json labels \
+            --jq '.labels[].name' | grep -q '^automerge$' && echo "true" || echo "false")
+
+          echo "has_automerge_label=${HAS_LABEL}" >> $GITHUB_OUTPUT
+
+          if [ "${HAS_LABEL}" = "false" ]; then
+            echo "::notice::PR #${{ steps.pr.outputs.number }} does not have 'automerge' label - skipping"
+            exit 0
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check all required checks passed
+        if: steps.label.outputs.has_automerge_label == 'true'
+        id: checks
+        run: |
+          PR_NUM=${{ steps.pr.outputs.number }}
+
+          # Get merge state status
+          STATE=$(gh pr view ${PR_NUM} \
+            --repo ${{ github.repository }} \
+            --json mergeStateStatus \
+            --jq '.mergeStateStatus')
+
+          echo "Merge state: ${STATE}"
+          echo "merge_state=${STATE}" >> $GITHUB_OUTPUT
+
+          # Check if mergeable
+          if [ "${STATE}" != "CLEAN" ] && [ "${STATE}" != "UNSTABLE" ]; then
+            echo "::warning::PR #${PR_NUM} cannot be merged (state: ${STATE})"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check for blocking review issues
+        if: steps.label.outputs.has_automerge_label == 'true' && steps.checks.outputs.merge_state == 'CLEAN'
+        id: review_check
+        run: |
+          PR_NUM=${{ steps.pr.outputs.number }}
+
+          # Check for blocking review comments from cursor-code-review workflow
+          # Look for "❌ Blocking issues found" or "🚨" emoji in recent comments
+
+          BLOCKING_COMMENT=$(gh api "/repos/${{ github.repository }}/issues/${PR_NUM}/comments" \
+            --jq '.[] | select(.user.login == "github-actions[bot]") | select(.body | contains("🚨") or contains("❌ Blocking")) | .body' \
+            | head -1 || echo "")
+
+          if [ -n "${BLOCKING_COMMENT}" ]; then
+            echo "::warning::Blocking review comments found - cannot auto-merge"
+            echo "blocking_found=true" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "blocking_found=false" >> $GITHUB_OUTPUT
+            echo "✅ No blocking review issues"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Verify safety gate compliance
+        if: steps.label.outputs.has_automerge_label == 'true' && steps.review_check.outputs.blocking_found != 'true'
+        run: |
+          echo "Safety gate checks:"
+          echo "- ✅ All CI checks passed"
+          echo "- ✅ No blocking review issues"
+          echo "- ✅ PR has automerge label"
+          echo "- ✅ PR is mergeable"
+          echo ""
+          echo "Proceeding with conditional auto-merge"
+
+      - name: Auto-merge PR
+        if: |
+          steps.label.outputs.has_automerge_label == 'true' &&
+          steps.checks.outputs.merge_state == 'CLEAN' &&
+          steps.review_check.outputs.blocking_found != 'true'
+        run: |
+          PR_NUM=${{ steps.pr.outputs.number }}
+
+          echo "Auto-merging PR #${PR_NUM}"
+
+          gh pr merge ${PR_NUM} \
+            --repo ${{ github.repository }} \
+            --squash \
+            --delete-branch \
+            --auto
+
+          echo "✅ Auto-merge enabled for PR #${PR_NUM}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Comment on auto-merge
+        if: success()
+        run: |
+          gh pr comment "$PR_NUM" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --body "🤖 **Auto-merge enabled**
+
+          All safety gates passed:
+          - ✅ CI checks passed
+          - ✅ No blocking security/review issues
+          - ✅ Code review approved
+
+          This PR will be automatically merged when all checks complete.
+
+          ---
+          _Powered by conditional-automerge workflow_"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUM: ${{ steps.pr.outputs.number }}
+
+      - name: Summary
+        if: always()
+        env:
+          PR_NUM: ${{ steps.pr.outputs.number }}
+        run: |
+          echo "## 🔀 Auto-Merge Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR**: #$PR_NUM" >> $GITHUB_STEP_SUMMARY
+          echo "- **Has automerge label**: ${{ steps.label.outputs.has_automerge_label }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Merge state**: ${{ steps.checks.outputs.merge_state }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Blocking issues**: ${{ steps.review_check.outputs.blocking_found }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ **Auto-merge enabled**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Auto-merge blocked** - see conditions above" >> $GITHUB_STEP_SUMMARY
+          fi

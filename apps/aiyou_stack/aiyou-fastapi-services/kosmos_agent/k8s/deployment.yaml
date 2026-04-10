@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kosmos-agent
+  namespace: kosmos-research
+  labels:
+    app: kosmos-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kosmos-agent
+  template:
+    metadata:
+      labels:
+        app: kosmos-agent
+    spec:
+      serviceAccountName: kosmos-sa
+      containers:
+      - name: agent
+        image: gcr.io/PROJECT_ID/kosmos-agent:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+            ephemeral-storage: "1Gi"
+        env:
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gemini-secrets
+              key: api-key
+        - name: GOOGLE_CLOUD_PROJECT
+          value: "PROJECT_ID_PLACEHOLDER"

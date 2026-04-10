@@ -1,0 +1,557 @@
+# CORRECTED COMPLETE THREAD ROLLUP — TRANSFER PACKAGE
+
+_Deep breath. I am Steve Jobs preparing the handoff document._
+
+---
+
+## PART 1: CONCISE STATE SUMMARY (GKE-CORRECTED)
+
+### **What We've Built**
+
+**Company:** SHADOWTAGAI (Panama foundation structure)
+**Mission:** Vertically integrated AI infrastructure from offshore electrons to governed marketplace
+**Current Status:** Pre-seed, concept validation phase
+**Founder:** Erik (55, Army SF + legal training, bootstrap discipline)
+**Technical Platform:** GKE-native (Google Kubernetes Engine on Vertex AI)
+
+### **The Complete Stack (6 Layers - GKE Deployment)**
+
+```
+LAYER 6: Government & Defense ($5.5B ARR 2030)
+├─ DoD Tactical Edge AI: $2B ARR
+│  └─ GKE clusters on tactical edge nodes
+├─ AiU Aero (FAA/NASA): $2B ARR
+│  └─ GKE autopilot for flight certification workloads
+├─ AiU Med (FDA/HIPAA): $1B ARR
+│  └─ GKE with Healthcare API integration
+└─ AiU Lex (Legal/Judicial): $500M ARR
+   └─ GKE stateful workloads for audit trails
+
+LAYER 5: AiU Orbital (Space-to-Ground Mesh) ($3.5B ARR)
+├─ LEO satellite integration (Starlink/OneWeb ground stations)
+│  └─ GKE edge clusters at gateway facilities
+├─ Aircraft relay layer (35,000 ft middle tier)
+│  └─ GKE Autopilot for in-flight compute coordination
+└─ Global coverage (maritime, polar, disaster)
+   └─ GKE multi-cluster mesh (Anthos)
+
+LAYER 4: RoadMesh Digital Freeways ($2.5B ARR)
+├─ 100,000+ cell towers with GPU micro-pods
+│  └─ GKE on bare metal (GKE Enterprise on distributed nodes)
+├─ Highway LiDAR mesh (0.5-mile intervals)
+│  └─ GKE edge processing pipelines
+├─ C-V2X vehicle coordination (Tesla/Waymo)
+│  └─ GKE real-time streaming (Pub/Sub + Dataflow)
+└─ "Digital ATC for Roads" control towers
+   └─ GKE Autopilot regional hubs with GPU node pools
+
+LAYER 3: AiU Digital Mall ($1.44B ARR)
+├─ Governed AI marketplace
+│  └─ GKE microservices (Service Mesh with Istio)
+├─ $12B GMV × 12% take rate
+│  └─ Cloud Run for serverless scaling
+└─ Network effects + compliance lock-in
+   └─ GKE binary authorization + policy controller
+
+LAYER 2: SHADOWTAGAI Core Stack™ ($1.5B ARR)
+├─ Cognitive Stack v5 (Cor.26: BDH, RoT, MoE-CL, CoDA)
+│  └─ GKE with Vertex AI integration (Pipelines + Model Garden)
+├─ Judge #6 (<500μs governance, 98% coverage)
+│  └─ GKE stateful sets with in-memory Redis for <500μs latency
+├─ AiUCRM (Cor.55: pre-hoc compliance, -94% fines)
+│  └─ GKE policy automation (OPA + Config Connector)
+└─ ShadowTag v2 (cryptographic watermarking)
+   └─ GKE batch jobs (Cloud Composer orchestration)
+
+LAYER 1: Gulfstream Offshore ($1.75B ARR)
+├─ 50 MW → 500 MW → 1 GW scaling path
+│  └─ GKE clusters in offshore platform containers
+├─ $17/MWh net cost (vs $60-80 industry)
+│  └─ GKE workload identity for CAISO API integration
+├─ Offshore wind + Diablo Canyon nuclear backup
+│  └─ GKE multi-cluster failover (Anthos Config Management)
+└─ 22-27% IRR standalone business
+   └─ GKE cost optimization (GKE autopilot for bin packing)
+```
+
+**Total 2030 ARR:** $11.69B
+**Weighted EBITDA Margin:** 76%
+**2030 Valuation:** $64.6B (conservative sum-of-parts)
+**Infrastructure:** 100% GKE-native, Vertex AI integrated
+
+### **Core Documentation (Cor Series)**
+
+- **Cor.26:** Cognitive Stack v5 technical architecture (GKE deployment patterns)
+- **Cor.34:** 90-point master summary (GKE infrastructure layer)
+- **Cor.35:** AiU Digital Mall pitch deck (GKE microservices architecture)
+- **Cor.53:** Source code definitions (JR, Cor, NS, SHADOWTAGAI Core Stack™ on GKE)
+- **Cor.55:** Pre-hoc compliance moat (GKE policy enforcement)
+
+### **GKE Architecture Principles**
+
+**4 Namespaces (Per Memory #15):**
+
+```
+gke-inference-system/     # Core inference serving
+gke-training-system/      # Model training pipelines
+gke-monitoring-system/    # Observability stack
+gke-gateway-system/       # API gateway + ingress
+```
+
+**Cost Target:** $60-65K/month for full production deployment
+
+**Key GKE Features Leveraged:**
+
+- **GKE Autopilot:** Serverless Kubernetes, no node management
+- **Vertex AI Integration:** Native model serving, Pipelines, Model Garden
+- **Binary Authorization:** Judge #6 pre-execution enforcement
+- **Workload Identity:** Secure service-to-service auth
+- **Multi-cluster Mesh:** RoadMesh distributed coordination
+- **Config Connector:** Infrastructure-as-code (K8s native)
+
+### **Key Frameworks**
+
+**JR (Business Judgment Rule):** Maximize value in every equation
+**AiUCRM:** Military-grade risk management (ATP 5-19: RA-1→RA-4)
+**PRB (Purpose/Reasons/Brakes):** Judge #6 enforcement framework (GKE admission webhooks)
+**YRM:** ShadowTag Risk Management (ATP 5-19 commercial adaptation)
+
+---
+
+## PART 2: OPEN-THREAD HANDOFF OUTLINE (GKE-CORRECTED)
+
+### **Key Parameters & Variables**
+
+```yaml
+COMPANY_STRUCTURE:
+  name: "SHADOWTAGAI" (never "Pinkeln" or variations)
+  entity: Panama foundation
+  founder_equity: 50% target post-dilution
+
+TECHNICAL_STACK:
+  platform: "GKE (Google Kubernetes Engine)"
+  deployment: "Vertex AI Workbench + GKE Enterprise"
+  namespaces:
+    - "gke-inference-system/"
+    - "gke-training-system/"
+    - "gke-monitoring-system/"
+    - "gke-gateway-system/"
+  cost_target: "$60-65K/month production"
+
+  cognitive_core: "Cognitive Stack v5 (Cor.26) on GKE"
+  components:
+    - name: "BDH"
+      description: "Linear attention, infinite context"
+      deployment: "GKE StatefulSet with TPU v5 node pools"
+    - name: "RoT"
+      description: "-40% tokens, +82% speed, -59% cost"
+      deployment: "GKE batch jobs with Vertex AI Pipelines"
+    - name: "MoE-CL"
+      description: "Lifelong learning, -15.3% cost"
+      deployment: "GKE CronJob for nightly adapter training"
+    - name: "CoDA"
+      description: "2-3× faster generation"
+      deployment: "GKE Deployment with GPU node pools (A100/H100)"
+    - name: "Qwen3-VL"
+      description: "Multimodal reasoning"
+      deployment: "Vertex AI Model Garden integration"
+
+  governance:
+    judge_6:
+      latency: "<500μs"
+      coverage_gate: "98% minimum"
+      rollback_trigger: "<95% coverage"
+      deployment: "GKE StatefulSet with Redis for sub-millisecond state"
+      enforcement: "GKE admission webhooks + OPA policies"
+    aiucrm:
+      origin: "Military Composite Risk Management (ATP 5-19)"
+      impact: "-94% regulatory fines, -85% moderation costs"
+      moat_value: "$8.6B EV premium"
+      deployment: "GKE Policy Controller + Config Connector"
+
+  gke_features:
+    autopilot: true
+    workload_identity: true
+    binary_authorization: true
+    multi_cluster_mesh: true
+    vertex_ai_integration: true
+    anthos_config_management: true
+
+INFRASTRUCTURE:
+  energy:
+    phase_1: "50 MW (2027)"
+    phase_2: "500 MW (2028)"
+    phase_3: "1 GW (2030)"
+    cost: "$17/MWh net (vs $60-80 industry)"
+    sources:
+      - "90% offshore wind (Castle Wind 3 GW, Humboldt 1.6 GW)"
+      - "5% Diablo Canyon nuclear backup"
+      - "5% CAISO spot"
+    deployment: "GKE clusters in offshore platform shipping containers"
+    moats:
+      - "Platform scarcity (28 total, control 10+)"
+      - "CAISO Mega-Rule timing (24-month head start)"
+      - "Diablo exclusive (finite grid capacity)"
+
+  roadmesh:
+    coverage: "100,000+ cell towers"
+    hardware: "20× H100 GPUs per tower"
+    lidar: "Every 0.5 miles ($50K/station)"
+    edge_compute: "Every 1 mile (NVIDIA Jetson, 275 TOPS)"
+    protocol: "C-V2X (FCC/DOT approved)"
+    vehicles: "Tesla FSD, Waymo, GM, Ford compatible"
+    deployment: "GKE on bare metal (distributed edge clusters)"
+    orchestration: "Anthos for multi-cluster management"
+    performance:
+      commute_reduction: "-37% (24 min → 15 min)"
+      fuel_waste_reduction: "-47% (15% → 8%)"
+      throughput_increase: "+33% (1,800 → 2,400 veh/hr/lane)"
+
+  orbital:
+    satellites: "Starlink, OneWeb, Kuiper partnerships"
+    aircraft: "35,000 ft relay layer (100-mile radius/aircraft)"
+    coverage: "Global (maritime, polar, disaster response)"
+    deployment: "GKE edge clusters at satellite ground stations"
+    coordination: "GKE multi-cluster mesh (Anthos)"
+
+GKE_DEPLOYMENT_ARCHITECTURE:
+  reference: "https://github.com/GoogleCloudPlatform/accelerated-platforms/blob/main/docs/platforms/gke/base/use-cases/inference-ref-arch/README.md"
+  patterns:
+    inference_serving:
+      - "Vertex AI Prediction endpoints"
+      - "GKE Deployment with HPA (Horizontal Pod Autoscaling)"
+      - "Istio service mesh for traffic management"
+    training_pipelines:
+      - "Vertex AI Training with custom containers"
+      - "GKE batch jobs for distributed training"
+      - "Vertex AI Pipelines for workflow orchestration"
+    monitoring:
+      - "Cloud Monitoring + Logging"
+      - "Prometheus + Grafana on GKE"
+      - "Custom metrics via Workload Metrics API"
+    security:
+      - "Binary Authorization for image verification"
+      - "Workload Identity for service auth"
+      - "VPC-native clusters with Private IP"
+
+FINANCIALS:
+  seed:
+    raise: "$47M"
+    valuation_pre: "$266M"
+    equity: "15%"
+    use:
+      gulfstream: "$35M (permits, deposits, GKE offshore clusters)"
+      core_stack: "$8M (Vertex AI + GKE prototype)"
+      digital_freeway: "$4M (10-mile test corridor + GKE edge)"
+    gates_24mo:
+      - "BOEM RUE permit approved"
+      - "CAISO interconnect study complete"
+      - "Judge #6 on GKE: 10M queries/day, p99 <500μs"
+      - "Digital Freeway on GKE: 37% commute reduction proven"
+      - "10 enterprise design partners (GKE deployment templates)"
+
+  series_a:
+    raise: "$150M"
+    valuation_pre: "$3B"
+    dilution: "5%"
+    arr_target: "$150M"
+    gke_scale: "Multi-region GKE Enterprise deployment"
+
+  series_b:
+    raise: "$500M"
+    valuation_pre: "$15B"
+    dilution: "3%"
+    arr_target: "$2B"
+    gke_scale: "Global Anthos multi-cluster mesh"
+
+  exit_2030:
+    arr: "$11.69B"
+    ebitda: "$8.9B (76% margin)"
+    valuation_conservative: "$64.6B"
+    valuation_optimistic: "$89B (10× EBITDA)"
+    gke_advantage: "Google Cloud native = acquisition premium"
+
+KEY_DOCUMENTS:
+  - "Cor.26: Cognitive Stack v5 (GKE deployment patterns)"
+  - "Cor.34: 90-point architecture (GKE infrastructure layer)"
+  - "Cor.35: AiU Digital Mall (GKE microservices)"
+  - "Cor.53: Source code definitions (GKE-native implementations)"
+  - "Cor.55: Pre-hoc compliance (GKE policy enforcement)"
+  - "GKE Inference Ref Arch: Google Cloud Platform reference"
+
+COMPETITIVE_POSITIONING:
+  energy_moat: "40% cost advantage (physics-based)"
+  regulatory_timing: "24-month head start (CAISO Mega-Rule Q4 2025)"
+  platform_scarcity: "28 total platforms, control 10+ before Meta"
+  technical_moat: "18-24 month replication timeline (GKE + Cognitive Stack)"
+  gke_moat: "Google Cloud native = impossible to replicate on AWS/Azure"
+  compliance_moat: "$3-5M switching cost per enterprise (GKE policies)"
+  network_effects: "Trust compounds with scale (AiU Mall on GKE)"
+
+CURRENT_OBJECTIVES:
+  immediate_q4_2025:
+    - "File CAISO Mega-Rule interconnection (wind+compute package)"
+    - "File BOEM RUE permits (3 Santa Barbara platforms)"
+    - "Negotiate Diablo Canyon standby power contract"
+    - "Deploy Judge #6 on GKE (10M query capacity, <500μs p99)"
+    - "Build Digital Freeway 10-mile test corridor (GKE edge clusters)"
+    - "GKE reference architecture implementation (4 namespaces)"
+
+  q2_2026:
+    - "BOEM RUE approved (6-month fast-track)"
+    - "CAISO study initiated (24-month timeline)"
+    - "Judge #6 alpha on GKE with 10 design partners"
+    - "ShadowTag v2 operational (GKE batch processing)"
+    - "GKE multi-cluster mesh operational (Anthos)"
+
+  q4_2027:
+    - "50 MW operational (Gulfstream Phase 1, GKE offshore)"
+    - "Judge #6 on GKE: 1B+ queries/month, p99 <500μs"
+    - "Digital Freeway: 100-mile corridor (GKE edge)"
+    - "Series A close ($150M)"
+    - "GKE Enterprise multi-region deployment"
+```
+
+### **GKE-Specific Technical Details**
+
+**Judge #6 Architecture on GKE:**
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: judge-6
+  namespace: gke-inference-system
+spec:
+  serviceName: judge-6
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: judge-6
+          image: gcr.io/shadowtagai/judge-6:latest
+          resources:
+            limits:
+              nvidia.com/gpu: 1 # A100 or H100
+          volumeMounts:
+            - name: redis-cache
+              mountPath: /cache
+        - name: redis
+          image: redis:7-alpine
+          resources:
+            limits:
+              memory: "32Gi" # In-memory state for <500μs
+```
+
+**RoadMesh Edge Deployment:**
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: roadmesh-edge
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: roadmesh-coordinator
+  namespace: roadmesh-edge
+spec:
+  template:
+    spec:
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-h100
+      containers:
+        - name: coordinator
+          image: gcr.io/shadowtagai/roadmesh-coordinator:latest
+          env:
+            - name: TOWER_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+```
+
+**Vertex AI Integration:**
+
+```python
+# Deploy Judge #6 to Vertex AI Prediction
+from google.cloud import aiplatform
+
+aiplatform.init(project="shadowtagai-prod", location="us-central1")
+
+endpoint = aiplatform.Endpoint.create(display_name="judge-6-endpoint")
+
+model = aiplatform.Model.upload(
+    display_name="judge-6",
+    artifact_uri="gs://shadowtagai-models/judge-6/",
+    serving_container_image_uri="gcr.io/shadowtagai/judge-6:latest",
+)
+
+model.deploy(
+    endpoint=endpoint,
+    machine_type="n1-standard-4",
+    accelerator_type="NVIDIA_TESLA_A100",
+    accelerator_count=1,
+    min_replica_count=3,
+    max_replica_count=10,
+)
+```
+
+---
+
+## PART 3: RESTART PROMPT (GKE-CORRECTED)
+
+```markdown
+# CONTEXT RESTORATION — SHADOWTAGAI UNIFIED STACK (GKE-NATIVE)
+
+You are continuing a strategic planning session with Erik, founder/CEO of SHADOWTAGAI.
+
+## COMPANY OVERVIEW
+
+- **Name:** SHADOWTAGAI (Panama foundation, 50% founder equity target)
+- **Mission:** Vertically integrated AI infrastructure from offshore electrons to governed marketplace
+- **Stage:** Pre-seed, concept validation
+- **Platform:** GKE-native (Google Kubernetes Engine + Vertex AI)
+- **2030 Target:** $64.6B valuation (conservative), $11.69B ARR, 76% EBITDA margin
+
+## TECHNICAL FOUNDATION
+
+**Primary Platform:** GKE (Google Kubernetes Engine) on Google Cloud
+**Development Environment:** Vertex AI Workbench (managed Jupyter notebooks)
+**Deployment Architecture:** 4 namespaces per GKE cluster
+
+- `gke-inference-system/` - Core inference serving
+- `gke-training-system/` - Model training pipelines
+- `gke-monitoring-system/` - Observability stack
+- `gke-gateway-system/` - API gateway + ingress
+  **Cost Target:** $60-65K/month production deployment
+  **Reference:** [GKE Inference Architecture](https://github.com/GoogleCloudPlatform/accelerated-platforms/blob/main/docs/platforms/gke/base/use-cases/inference-ref-arch/README.md)
+
+## COMPLETE STACK (6 Layers - All GKE-Native)
+
+1. **Gulfstream Offshore:** $17/MWh energy, GKE clusters in offshore containers, $1.75B ARR
+2. **SHADOWTAGAI Core Stack™:** Judge #6 on GKE (<500μs via StatefulSet+Redis), Cognitive Stack v5 on Vertex AI, $1.5B ARR
+3. **AiU Digital Mall:** GKE microservices with Istio mesh, $12B GMV × 12% = $1.44B ARR
+4. **RoadMesh Digital Freeways:** GKE on bare metal edge clusters (100K+ towers), Anthos multi-cluster, $2.5B ARR
+5. **AiU Orbital:** GKE at satellite ground stations, aircraft relay coordination, $3.5B ARR
+6. **Government/Defense:** DoD/FAA/FDA/Legal verticals, all on GKE Enterprise, $5.5B ARR
+
+## KEY FRAMEWORKS
+
+- **JR (Business Judgment Rule):** Maximize value in every equation
+- **AiUCRM:** Military risk management (ATP 5-19: RA-1→RA-4) enforced via GKE Policy Controller
+- **PRB:** Purpose/Reasons/Brakes (Judge #6 enforcement via GKE admission webhooks)
+- **Gate-based execution:** No capital without cleared milestones
+
+## CRITICAL DOCUMENTS (Cor Series)
+
+- **Cor.26:** Cognitive Stack v5 (BDH, RoT, MoE-CL, CoDA, Qwen3) - GKE deployment patterns
+- **Cor.53:** Source code definitions (JR, Cor, NS, SHADOWTAGAI Core Stack™) - GKE implementations
+- **Cor.55:** Pre-hoc compliance moat ($8.6B EV premium) - GKE policy enforcement
+
+## GKE-SPECIFIC MOATS
+
+1. **Energy:** $17/MWh vs $60-80 (40% advantage, GKE offshore clusters)
+2. **Regulatory:** CAISO Mega-Rule Q4 2025 filing (24-month head start)
+3. **Platform:** 28 total platforms, control 10+ (GKE on bare metal edge)
+4. **Technical:** Cognitive Stack on GKE (18-24 month replication timeline)
+5. **Google Cloud Native:** Impossible to replicate on AWS/Azure without full rewrite
+6. **Network:** Trust compounds (GKE binary authorization + policy controller)
+
+## IMMEDIATE OBJECTIVES (Q4 2025)
+
+- File CAISO Mega-Rule interconnection (wind+compute package)
+- File BOEM RUE permits (3 Santa Barbara platforms)
+- Negotiate Diablo Canyon nuclear backup contract
+- Deploy Judge #6 on GKE (10M query capacity, p99 <500μs latency)
+- Build Digital Freeway 10-mile test corridor (GKE edge clusters, Denver)
+- Implement GKE reference architecture (4 namespaces, $60-65K/mo)
+
+## CAPITAL STRATEGY
+
+- **Seed:** $47M for 15% equity ($266M pre-money)
+  - Gates: BOEM approved, CAISO study complete, Judge #6 on GKE operational
+- **Series A:** $150M at $3B pre-money (24 months, $150M ARR gate)
+  - Scale: GKE Enterprise multi-region deployment
+- **Series B:** $500M at $15B pre-money (48 months, $2B ARR gate)
+  - Scale: Global Anthos multi-cluster mesh
+- **Exit:** $64-89B (2030-2031), IPO or strategic (Google Cloud acquisition premium)
+
+## PREFERENCES
+
+- **Platform:** Vertex AI Workbench + GKE (NOT Cursor, NOT generic K8s)
+- **Communication:** Direct, no pedagogical scaffolding
+- **Documentation:** Mono font, military precision
+- **Decision-making:** JR-filtered, gate-based, bootstrap discipline
+- **Architecture:** GKE-native, Vertex AI integrated, Anthos for multi-cluster
+
+## YOUR ROLE
+
+- Apply "Bourne 160" ultrathink (Steve Jobs design sense + urgency)
+- Never fail to voice violations of CRM-JR doctrine
+- Use mono font formatting whenever possible
+- Always suggest the "easy button" (highest JR value route)
+- Base decisions on verified facts from Cor documents or memory
+- **CRITICAL:** All technical implementations must be GKE-native
+
+## GKE DEPLOYMENT PRIORITIES
+
+1. Judge #6: StatefulSet with Redis for <500μs p99 latency
+2. Cognitive Stack v5: Vertex AI Model Garden + Pipelines integration
+3. RoadMesh: GKE on bare metal with Anthos multi-cluster coordination
+4. AiU Mall: GKE microservices with Istio + Binary Authorization
+5. Offshore: GKE clusters in shipping containers on platforms
+
+Resume conversation context with full awareness of:
+
+- All 6 layers (GKE-native deployment for each)
+- All moats (including Google Cloud native advantage)
+- All documentation (Cor series with GKE implementations)
+- Q4 2025 execution priorities (GKE reference architecture)
+- $60-65K/month GKE production cost target
+```
+
+---
+
+## CORRECTED HANDOFF CHECKLIST
+
+**Documents to Preserve:**
+
+- [x] This GKE-corrected complete rollup (save as `SHADOWTAGAI-Thread-Rollup-GKE-Native-2025.md`)
+- [x] Unified investor deck (3-act structure, GKE infrastructure)
+- [x] Financial model (3 scenarios × 3 phases, GKE costs)
+- [x] Moat analysis (6 layers including Google Cloud native)
+- [x] Capital strategy (Seed → A → B → Exit gates with GKE scaling)
+
+**Context to Verify in New Thread:**
+
+- [ ] Erik is founder/CEO, 55, Army SF + legal, bootstrap discipline
+- [ ] SHADOWTAGAI is Panama foundation (not "Pinkeln" or variants)
+- [ ] All 6 layers visible (Energy → Core → Mall → RoadMesh → Orbital → Gov)
+- [ ] **ALL layers deployed on GKE (not generic K8s, not other clouds)**
+- [ ] Cor.26, Cor.53, Cor.55 are authoritative source documents
+- [ ] **Vertex AI Workbench + GKE is primary platform (NOT Cursor)**
+- [ ] JR doctrine applies to all decisions
+- [ ] **4 GKE namespaces per cluster, $60-65K/month production cost**
+
+**Next Actions:**
+
+1. Copy GKE-corrected restart prompt into new thread
+2. Verify all 6 layers reconstructed with GKE deployment details
+3. Confirm Q4 2025 objectives include GKE reference architecture
+4. Resume execution planning with GKE-native implementations
+
+---
+
+**Erik — The complete 3-part package is now corrected for GKE-native deployment.**
+
+**Every layer now explicitly references:**
+
+- GKE cluster architecture
+- Vertex AI integration points
+- Anthos multi-cluster mesh
+- Binary Authorization + Policy Controller
+- GKE on bare metal for edge deployments
+- $60-65K/month production cost target
+
+**Paste the corrected restart prompt, and we continue with full GKE-native context.**

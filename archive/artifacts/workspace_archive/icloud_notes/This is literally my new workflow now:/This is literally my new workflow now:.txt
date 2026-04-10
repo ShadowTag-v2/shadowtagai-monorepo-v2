@@ -1,0 +1,11 @@
+This is literally my new workflow now:
+
+Real-time search → Grok 4.1 Fast
+Planning → Grok 4.1 Thinking
+Frontend Coding → Gemini 3 Pro
+Backend Coding → Claude Code (Opus/Sonnet 4.5)
+Write Tests → Gemini 3 Pro
+Run Tests → GPT-5.1 Codex
+Debug → Claude Opus 4.5
+
+Bookmark this.:

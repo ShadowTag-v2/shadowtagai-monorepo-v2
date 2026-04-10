@@ -1,0 +1,71 @@
+# Google Cloud Vertex AI deployment configuration
+# Deploy vLLM-based multi-model serving to Vertex AI
+
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: shadowtag_v4-llm-server
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "1"
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/target: "70"  # CPU utilization target
+    spec:
+      containerConcurrency: 10
+      containers:
+      - image: gcr.io/PROJECT_ID/shadowtag_v4-llm-server:latest
+        ports:
+        - containerPort: 8000
+          name: http1
+        env:
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: GOOGLE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: google-api-key
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "4"
+            nvidia.com/gpu: "1"
+          limits:
+            memory: "32Gi"
+            cpu: "8"
+            nvidia.com/gpu: "1"
+        livenessProbe:
+          httpGet:
+            path: /health
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-a100
+
+---
+# Build and deploy script (run from Cloud Shell):
+#
+# # Build Docker image
+# gcloud builds submit --tag gcr.io/PROJECT_ID/shadowtag_v4-llm-server:latest
+#
+# # Deploy to Vertex AI
+# gcloud run deploy shadowtag_v4-llm-server \
+#   --image gcr.io/PROJECT_ID/shadowtag_v4-llm-server:latest \
+#   --platform managed \
+#   --region us-central1 \
+#   --memory 32Gi \
+#   --cpu 8 \
+#   --gpu 1 \
+#   --gpu-type nvidia-tesla-a100 \
+#   --min-instances 1 \
+#   --max-instances 10 \
+#   --port 8000 \
+#   --allow-unauthenticated

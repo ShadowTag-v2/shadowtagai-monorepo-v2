@@ -1,0 +1,11 @@
+version: "1"
+metadata:
+  name: "workspace-database-tools"
+  description: "Local database helper commands using a lightweight local store"
+tools:
+  - name: "local_db_smoke_test"
+    description: "Run the local database smoke test"
+    command: "python3"
+    args:
+      - "/path/to/Unified-Workspace/scripts/local_db.py"
+      - "--smoke-test"

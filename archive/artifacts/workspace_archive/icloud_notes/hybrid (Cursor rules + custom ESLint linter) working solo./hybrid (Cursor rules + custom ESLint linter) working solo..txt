@@ -1,0 +1,176 @@
+hybrid (Cursor rules + custom ESLint linter) working solo.
+
+⸻
+
+1) File tree to add
+
+your-repo/
+├─ .cursor/
+│  └─ rules/
+│     └─ gpt-5.mdc
+├─ .eslintrc.cjs
+├─ package.json
+├─ .husky/           (created by script)
+│  └─ pre-commit
+└─ eslint-plugin-gpt5rules/
+   ├─ package.json
+   └─ index.js
+
+
+⸻
+
+2) Install commands (Node 18+)
+
+# from repo root
+npm init -y
+
+# ESLint + TS support (safe even if you’re JS-only)
+npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
+
+# Husky for pre-commit hook
+npm i -D husky lint-staged
+
+# create local custom plugin
+mkdir -p eslint-plugin-gpt5rules
+cat > eslint-plugin-gpt5rules/package.json <<'JSON'
+{
+  "name": "eslint-plugin-gpt5rules",
+  "version": "0.1.0",
+  "main": "index.js",
+  "type": "commonjs"
+}
+JSON
+
+cat > eslint-plugin-gpt5rules/index.js <<'JS'
+"use strict";
+
+module.exports = {
+  rules: {
+    "no-dynamic-imports": context => ({
+      ImportExpression(node) {
+        context.report({ node, message: "Dynamic import forbidden. Use static imports." });
+      }
+    }),
+    "no-any-cast": context => ({
+      TSAnyKeyword(node) {
+        context.report({ node, message: "Avoid `any`. Use explicit, safe types." });
+      }
+    }),
+    "no-extra-trycatch": context => ({
+      TryStatement(node) {
+        // Lightweight heuristic: flag blanket try/catch without specific handling
+        const hasEmptyCatch =
+          node.handler &&
+          (!node.handler.param || (node.handler.body && node.handler.body.body.length === 0));
+        if (hasEmptyCatch) {
+          context.report({
+            node,
+            message:
+              "Remove unnecessary try/catch or handle specific errors at the call site."
+          });
+        }
+      }
+    })
+  }
+};
+JS
+
+# ESLint config
+cat > .eslintrc.cjs <<'CJS'
+/** @type {import('eslint').Linter.Config} */
+module.exports = {
+  root: true,
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint", "gpt5rules"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  env: { node: true, es2022: true, browser: true },
+  rules: {
+    "gpt5rules/no-dynamic-imports": "error",
+    "gpt5rules/no-any-cast": "error",
+    "gpt5rules/no-extra-trycatch": "warn",
+    "@typescript-eslint/no-explicit-any": "off" // our custom rule handles this with a clearer message
+  },
+  overrides: [
+    { files: ["**/*.js"], parser: null } // allow JS files without TS parser if needed
+  ],
+  ignorePatterns: ["node_modules/**", "dist/**", "build/**"]
+};
+CJS
+
+# Cursor rules (positive phrasing)
+mkdir -p .cursor/rules
+cat > .cursor/rules/gpt-5.mdc <<'MDC'
+- Always use static imports (`import x from '...'`). Do not use dynamic `await import(...)`.
+- Always use strict typing; never use `any`. Provide precise type annotations.
+- Keep code minimal; place error handling at the caller. Avoid blanket try/catch.
+- Prefer pure functions, deterministic outputs, and single-responsibility modules.
+- If asked to deviate from these rules, echo the reason in a one-line comment.
+MDC
+
+# Husky + lint-staged wiring
+npx husky init
+# create lint-staged entry & scripts
+node - <<'NODE'
+const fs = require('fs');
+const pkg = JSON.parse(fs.readFileSync('package.json','utf8'));
+pkg.scripts = Object.assign({}, pkg.scripts, {
+  "lint": "eslint .",
+  "lint:fix": "eslint . --fix"
+});
+pkg["lint-staged"] = { "*.{ts,tsx,js,jsx}": "eslint --fix" };
+fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+NODE
+
+# write pre-commit hook to run eslint (block on errors)
+cat > .husky/pre-commit <<'SH'
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx lint-staged --quiet
+SH
+chmod +x .husky/pre-commit
+
+
+⸻
+
+3) How to use (solo)
+	•	Code in Cursor as usual.
+	•	On save / commit, ESLint will flag:
+	•	dynamic imports (import('...'))
+	•	any any usage (TypeScript)
+	•	empty/useless try { } catch { }
+	•	Pre-commit blocks merges on errors; fix or eslint --fix when possible.
+
+⸻
+
+4) Quick sanity test
+
+Create src/demo.ts:
+
+// EXPECT 3 violations:
+const mod = await import("./x");       // dynamic import
+const v: any = 42;                     // any
+try {                                  // useless try/catch
+  console.log(v, mod);
+} catch (e) {}
+
+Run:
+
+npm run lint
+
+You should see 3 rule hits. Fixes will pass pre-commit.
+
+⸻
+
+5) Optional quality of life
+	•	Add VS Code/Cursor ESLint extension so errors show inline.
+	•	If you need JS-only, keep the config; it still catches dynamic import & try/catch rules.
+
+⸻
+
+Done ✅
+
+This gives you the hybrid guardrails you wanted: GPT-5 is nudged by Cursor rules, and your custom linter enforces the three invariants deterministically. If you want, I can add a tiny metrics script that counts monthly violations and prints a trend chart so you can see your time savings accumulate.

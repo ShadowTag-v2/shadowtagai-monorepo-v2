@@ -1,0 +1,47 @@
+name: Captains Gatekeeper (Judge 6)
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: 'read'
+  id-token: 'write' # Required for WIF
+
+jobs:
+  judge_six_review:
+    name: 'Judge 6 Governance'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          # RELIES ON REPO SECRETS OR ENV VARS FOR WIF CONFIG
+          # Assuming 'workload_identity_provider' and 'service_account' are configured in secrets
+          workload_identity_provider: 'projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: '767252945109-compute@developer.gserviceaccount.com'
+
+      - name: Setup Node.js (for Gemini CLI)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Judge Six (The Brakes)
+        run: |
+          chmod +x scripts/judge_six_ci.sh
+          ./scripts/judge_six_ci.sh
+
+      - name: 'Sovereign Deploy (Cloud Run)'
+        if: success() && github.ref == 'refs/heads/main'
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: 'https://github.com/karpathy/autoresearchs-server'
+          image: 'us-central1-docker.pkg.dev/acquired-jet-478701-b3/infra/https://github.com/karpathy/autoresearchs-server:latest'
+          region: 'us-central1'
+          flags: '--allow-unauthenticated --service-account=sa-https://github.com/karpathy/autoresearchs@acquired-jet-478701-b3.iam.gserviceaccount.com'

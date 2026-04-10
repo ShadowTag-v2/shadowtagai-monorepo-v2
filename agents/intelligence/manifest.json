@@ -1,0 +1,208 @@
+{
+  "name": "intelligence-agent",
+  "version": "1.0.0",
+  "description": "Intelligence ingestion agent for multi-source data collection with ethical crawling and tier classification",
+  "archetype": "intelligence",
+  "integration": "PNKLN Core Stack™",
+  "deployment": {
+    "platform": "GKE",
+    "type": "CronJob",
+    "schedule": "nightly",
+    "containers": ["ingestion", "validation", "classification"]
+  },
+  "capabilities": {
+    "ingestion": {
+      "enabled": true,
+      "mode": "multi-source",
+      "sources": ["youtube", "twitter", "news", "reddit", "rss"],
+      "ethicalCrawling": true,
+      "rateLimit": true
+    },
+    "validation": {
+      "enabled": true,
+      "engine": "Judge #6",
+      "qualityGates": ["items", "sources", "costs", "scores"]
+    },
+    "classification": {
+      "enabled": true,
+      "tiers": [1, 2, 3],
+      "criteria": ["relevance", "timeliness", "credibility", "completeness"]
+    },
+    "geminiIntegration": {
+      "enabled": true,
+      "model": "gemini-2.0-pro",
+      "analysisPrompt": true
+    }
+  },
+  "performance": {
+    "targetRuntime": "45min",
+    "frequency": "nightly",
+    "itemsPerDay": {
+      "target": 1000,
+      "minimum": 500
+    },
+    "costModel": {
+      "monthly": 77,
+      "currency": "USD",
+      "perItem": 0.0025
+    }
+  },
+  "qualityMetrics": {
+    "relevance": {
+      "threshold": 0.75,
+      "tier1Target": 0.90
+    },
+    "timeliness": {
+      "maxAge": "24h",
+      "tier1MaxAge": "6h"
+    },
+    "completeness": {
+      "requiredFields": ["title", "source", "timestamp", "content"],
+      "tier1Required": ["title", "source", "timestamp", "content", "metadata", "entities"]
+    },
+    "sourceBalance": {
+      "minSources": 5,
+      "maxSourcePercent": 0.40
+    }
+  },
+  "tools": [
+    {
+      "name": "multi-source-ingest",
+      "path": "./tools/sources/multi-source-ingest.js",
+      "config": {
+        "timeout": 300000,
+        "retries": 3,
+        "respectRobots": true
+      }
+    },
+    {
+      "name": "ethical-crawler",
+      "path": "./tools/sources/ethical-crawler.js",
+      "config": {
+        "robotsTxtCache": 3600,
+        "defaultDelay": 1000,
+        "userAgent": "PNKLN-Intelligence-Bot/1.0"
+      }
+    },
+    {
+      "name": "judge-six-validator",
+      "path": "./tools/validation/judge-six-validator.js",
+      "config": {
+        "strictMode": false,
+        "confidenceThreshold": 0.60
+      }
+    },
+    {
+      "name": "tier-classifier",
+      "path": "./tools/classification/tier-classifier.js",
+      "config": {
+        "model": "gemini-2.0-pro",
+        "tierDistribution": {
+          "tier1": 0.20,
+          "tier2": 0.50,
+          "tier3": 0.30
+        }
+      }
+    }
+  ],
+  "personas": {
+    "intelligence-analyst": {
+      "path": "./personas/intelligence-analyst.md",
+      "systemPrompt": "You are an intelligence analyst specializing in multi-source data ingestion and analysis.",
+      "temperature": 0.4
+    },
+    "osint-specialist": {
+      "path": "./personas/osint-specialist.md",
+      "systemPrompt": "You are an OSINT specialist focused on ethical open-source intelligence gathering.",
+      "temperature": 0.3
+    },
+    "data-curator": {
+      "path": "./personas/data-curator.md",
+      "systemPrompt": "You are a data curator ensuring quality, relevance, and compliance in intelligence pipelines.",
+      "temperature": 0.35
+    }
+  },
+  "hooks": {
+    "PreIngestion": [
+      {
+        "type": "validation",
+        "command": "check-ethical-compliance.sh",
+        "enabled": true
+      }
+    ],
+    "PostIngestion": [
+      {
+        "type": "classification",
+        "command": "tier-classify.sh",
+        "enabled": true
+      },
+      {
+        "type": "validation",
+        "command": "judge-six-validate.sh",
+        "enabled": true
+      }
+    ],
+    "PreDelivery": [
+      {
+        "type": "formatting",
+        "command": "format-am-briefing.sh",
+        "enabled": true
+      }
+    ]
+  },
+  "mcpServers": {
+    "gemini": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-gemini"],
+      "env": {
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
+      }
+    }
+  },
+  "ethicalCompliance": {
+    "robotsTxt": {
+      "enabled": true,
+      "cacheTime": 3600,
+      "respectCrawlDelay": true
+    },
+    "rateLimiting": {
+      "enabled": true,
+      "defaultDelay": 1000,
+      "perSourceLimits": {
+        "twitter": 2000,
+        "youtube": 1500,
+        "news": 500
+      }
+    },
+    "transparency": {
+      "userAgent": "PNKLN-Intelligence-Bot/1.0 (+https://pnkln.ai/bot)",
+      "contactEmail": "bot@pnkln.ai",
+      "policyUrl": "https://pnkln.ai/bot-policy"
+    },
+    "dataRetention": {
+      "maxAge": "90d",
+      "piiHandling": "anonymize",
+      "complianceFrameworks": ["GDPR", "CCPA"]
+    }
+  },
+  "integration": {
+    "pnklnStack": {
+      "namespace": "intelligence",
+      "calledBy": [
+        "analysis-service",
+        "alerting-service",
+        "reporting-service",
+        "briefing-service"
+      ],
+      "calls": [],
+      "dataFormat": "json",
+      "deliveryFormat": "am-briefing"
+    }
+  },
+  "environment": {
+    "AGENT_ROOT": "${CLAUDE_PLUGIN_ROOT}/agents/intelligence",
+    "INGESTION_MODE": "ethical-multi-source",
+    "GKE_NAMESPACE": "intelligence",
+    "RUNTIME_TARGET": "45min"
+  }
+}

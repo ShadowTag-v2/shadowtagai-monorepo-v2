@@ -1,0 +1,885 @@
+
+Learning GitHub Actions
+Automation and Integration of CI/CD with GitHub
+With Early Release ebooks, you get books in their earliest form—the
+author ’s raw and unedited content as they write—so you can take
+advantage of these technologies long before the ofﬁcial release of these
+titles.
+Br ent La ster
+
+Learning GitHub Actions
+by Brent Laster
+Copyright © 2023 Tech Skills Transformation, LLC. All rights reserved.
+Printed in the United States of America.
+Published by O’Reilly Media, Inc. , 1005 Gravenstein Highway North,
+Sebastopol, CA  95472.
+O’Reilly books may be purchased for educational, business, or sales
+promotional use. Online editions are also available for most titles
+(http://oreilly .com ). For more information, contact our
+corporate/institutional sales department: 800-998-9938 or
+corporate@or eilly.com .
+Acquisitions Editor:  John Devins
+Development Editor:  Michele Cronin
+Production Editor:  Clare Laylock
+Interior Designer:  David Futato
+Cover Designer:  Karen Montgomery
+Illustrator:  Kate Dullea
+June 2023:  First Edition
+Revision History for the Early Release
+2022-09-13:  First Release
+2022-10-14:  Second Release
+See http://oreilly .com/catalog/errata.csp?isbn=9781098131074  for release
+details.
+The O’Reilly logo is a registered trademark of O’Reilly Media, Inc.
+Learning GitHub Actions , the cover image, and related trade dress are
+trademarks of O’Reilly Media, Inc.
+The views expressed in this work are those of the author(s) and do not
+represent the publisher ’s views. While the publisher and the author(s) have
+used good faith ef forts to ensure that the information and instructions
+contained in this work are accurate, the publisher and the author(s) disclaim
+all responsibility for errors or omissions, including without limitation
+responsibility for damages resulting from the use of or reliance on this
+work. Use of the information and instructions contained in this work is at
+your own risk. If any code samples or other technology this work contains
+or describes is subject to open source licenses or the intellectual property
+rights of others, it is your responsibility to ensure that your use thereof
+complies with such licenses and/or rights.
+978-1-098-13101-2
+[TO COME]
+Chapter 1. Foundations
+A NOTE FOR EARLY RELEASE READERS
+With Early Release ebooks, you get books in their earliest form—the
+author ’s raw and unedited content as they write—so you can take
+advantage of these technologies long before the ofﬁcial release of these
+titles.
+This will be the 1st chapter of the ﬁnal book. Please note that the
+GitHub repo will be made active later on.
+If you have comments about how we might improve the content and/or
+examples in this book, or if you notice missing material within this
+chapter , please reach out to the editor at mcronin@oreilly .com.
+Welcome to Learning GitHub Actions.  I’m excited that you’re here and for
+what you’re about to learn.  This is an amazing time to be working in the
+software ﬁeld.  From containers to clusters to clouds, from automation to
+AI, from security to SREs, the opportunities to create and contribute to
+interesting software projects has never been greater .  And thanks to
+powerful platforms such as GitHub, that creation and contribution has never
+been easier to do.
+GitHub has led the ﬁeld in developing an ecosystem for managing the
+components of software and enabling collaboration, as witnessed by the
+vast number of open-source projects managed in its repositories.  And it has
+continually provided additional value for users through enhancements to its
+interfaces, tracking contributions and issues, mechanisms to publish and
+share information and much more.
+But for the last decade or slightly longer , creating software ef fectively has
+not just been about writing the code.  It has been (and is) also about better
+and faster delivery technologies  The capabilities of CI/CD, DevOps, and
+related practices are now lar gely taken for granted and easy to achieve. But
+historically with GitHub, you still needed to do some amount of integration
+with a separate tool to provide a delivery pipeline.  While there have long
+been ways to “bolt on” extended CI/CD processes, GitHub has been
+missing a truly integrated solution to enable CI/CD and an end-to-end
+Software Development Lifecycle (SDLC)  within its ecosystem. The answer
+to that has ﬁnally arrived in the form of GitHub Actions.
+So how does GitHub Actions achieve this?  How does it provide real value
+on its own and over other solutions?  And, probably most important to you,
+how do you easily learn it and start to use it for your own needs? 
+When you’re learning a new technology , it’s important (or at least helpful)
+to have some basic context before diving into the technical details. So, in
+this chapter , I’ll brieﬂy cover some basic information around the following
+questions:
+What are GitHub Actions?
+What are the use cases for GitHub Actions?
+What are the costs involved?
+When does moving to GitHub Actions make sense? 
+By the end of this chapter , you’ll have a solid context to frame the rest of
+your learning on GitHub Actions. Now , let’s get started.
+PREREQS
+This book assumes you already have a working knowledge of Git and GitHub.  If that’ s
+not the case, there are a number of free resources to help you understand both. 
+If you already have a cursory knowledge of GitHub Actions, you can also feel free to
+skip to Chapter 2  to start diving in on more technical details. But if you’re new to the
+technology or need to be able to make an informed decision about whether or not it
+makes sense for your project or team, I’d recommend reading through the material here. 
+What is GitHub Actions?
+You can deﬁne GitHub Actions this way: GitHub Actions is an end-to-end
+GitHub-centric Software Development Life Cycle (SDLC) process. It
+provides an automation platform and framework that has been missing from
+GitHub previously and has had to be “bolted on” with other solutions such
+as Jenkins, Travis CI, etc.
+There’ s a lot packed in that one statement.  But let’ s key in on two parts that
+are at the heart of the functionality: automation platform and framework.
+Automation Platform
+For purposes of the end user , GitHub Actions are a way to create and
+execute automated workﬂows tied to GitHub events.  Most commonly , we
+might think of this in the context of CI/CD.  As an example, we make a
+change via a Pull Request, and GitHub kicks of f a continuous delivery
+pipeline/workﬂow . Prior to GitHub Actions, we would have needed some
+external tool or process to respond to a notiﬁcation from GitHub that the
+pull request happened and then process it. And the automation that
+happened after the pull request and initial notiﬁcation would have been
+implemented in that external tool. 
+With Actions, we now have the means to create this automation within a
+framework managed by , and within GitHub. We can deﬁne the what, when,
+and how for automated responses to events such as pushes or pull requests. 
+For example, when a push happens in an experimental branch of this
+repository , grab the latest code and attempt to build it.  If a pull request
+happens for a dif ferent branch, build and test the code, and if there’ s a
+failure, update a GitHub Issue. If there’ s not a failure, proceed with putting
+out a new release.
+Conveniently , we can create and store our automation deﬁnitions and
+workﬂows alongside our code in the GitHub repository . And we can edit
+them there as well. In short, Actions make it easier to automate with/from
+GitHub because they are a part of GitHub.  They are based in a GitHub-
+provided framework that adds structure and ﬂow .  We’ll discuss that next.
+Framework
+Taking an automation platform from being a jumbled collection of
+mechanisms to an or ganized and consumable process requires imposing
+structure and ﬂow to the platform.  W ithout those, you simply have a
+collection of tools.  With those, you can assemble truly useful automation to
+accomplish whatever set of tasks need to be done. 
+When I talk about the framework, I’m talking about a core set of related
+components in GitHub that can be put together to execute simple or
+complex automation in an understandable and predictable way .
+I’ll be talking more about these individual components in Chapter 2 .  But
+for a quick overview , it works like this:  In response to an occurrence of a
+matching event , a workﬂow deﬁnition stored with the repository is
+triggered, which in turn ﬁres of f jobs  on designated systems called runners .
+The jobs are made up of sequences of steps  that are either the actual
+“action” or an OS command.
+While similar capabilities were available previously in GitHub via
+mechanisms such as API calls, they were not as easy to assemble at a higher
+level.  Developers often had to invest considerable time and ef fort to learn
+how to string together the right API calls and/or integrations with other
+external tooling (such as Jenkins, Travis CI, etc.) or custom scripting
+andprogramming to be able to get to the desired end goal, especially if they
+wanted to be able to manage processes through GitHub.  (Another approach
+was to mirror the repository outside of GitHub for products to use.)
+Actions implements a native framework in GitHub providing a more
+seamless and ﬂexible experience. This ﬂexibility is enhanced by the
+"Actions Marketplace “, a public repository where actions can be published
+and shared.  If you want to create workﬂows to do common activities (such
+as checking out code or building with a particular build tool), you can
+choose from existing actions in the marketplace. If you want or need more
+extensive logic, for which an action doesn’ t already exist,  you can code
+your own using a well-deﬁned structure.  Then you can publish and share it
+with others via the Marketplace if you want. This approach provides a
+measure of ﬂexibility , reusability , and extensibility not previously available
+for GitHub.  A secondary beneﬁt is that it can enable rapid prototyping and
+implementation through combining Actions for various use cases such as
+those I’ll talk about in the next section.
+ 
+What are the use cases for GitHub Actions?
+Probably the primary use case that comes to mind for GitHub Actions is a
+CI/CD pipeline.  When CI/CD ﬁrst came on the scene, dedicated tools such
+as Jenkins were the primary means of creating pipelines.  These tools were
+ﬂexible, ar guably too ﬂexible, as you had to work hard to tie together
+individual parts into a pipeline.  Gradually over time, with the widespread
+adoption of CI/CD, the concept of “pipelines” has come into its own as a
+predeﬁned structure.  And so too, has the ability to deﬁne pipelines that go
+beyond just the basics of building and simple tests. Today’ s CI/CD pipelines
+can be very complex including advanced testing, multiple integration levels,
+and automated deployments/releases.  GitHub Actions allow you to create
+workﬂows as complex as needed to handle these types of operations
+without ever leaving GitHub’ s ecosystem.
+While GitHub Actions do not use the term “pipeline” in their processes, the
+overall workﬂow approach they use is a similar concept. Workﬂows chain
+together smaller units of work called “jobs”.  Jobs are what we often might
+see in other systems as “stages” - meaning parts of a lar ger process that
+perform a distinct and separate function.  In fact, if you’re coming from
+working with another automation tool, you can think of the overall GitHub
+Actions ﬂow as being a pipeline - meaning some change or event causes a
+series of automated actions to happen automatically in response.
+It may seem that the main use cases would be in response to something
+happening in GitHub.  But there are ways to have workﬂows kicked of f by
+events outside of that environment, started on a particular schedule, or even
+initiated manually via starting a workﬂow through the Actions interface in
+GitHub. I’ll have more to say about these dif ferent ways of initiating a
+workﬂow in Chapter 2 .
+While CI or CI/CD is the primary purpose that comes to mind, actions can
+be used to automate nearly any process. There are two primary places you
+can look to get ideas about what actions can be used for:  the starter
+workﬂows and the Actions Marketplace.
+Starter W orkﬂows
+To help users bootstrap using Actions, when you start to create a new
+workﬂow , GitHub will present example Starter Workﬂows.  Figure 1-
+1 shows an example.  Y ou don’ t have to use one of these, but if they suit
+your purpose or come close to it, you can click on the Conﬁgure button and
+be working on a new workﬂow very quickly .
+As of the time of this writing, the main categories that have starter
+workﬂows are:
+Automation - some simple examples for basic automation including a
+“hello world” type, one that demonstrates how to trigger a workﬂow
+manually , and a couple that deal with other GitHub constructs such as
+pull requests and issues.
+Continuous Integration - a lar ge number of workﬂows that cover the
+areas of building, testing, and/or publishing for a lar ge number of
+different programming languages and tools.
+Deployment - a set of example workﬂows for creating deployable
+objects like containers and then deploying them to various cloud
+platforms
+Security - primarily a set of code-scanning workﬂows using various
+security platforms and their tools
+Miscellaneous - you can also ﬁnd starter workﬂows for various
+development related tasks like code reviews, dependency management,
+monitoring and more.
+You can drill into the full list and code for the starter workﬂows at
+https://github.com/actions/starter -workﬂows
+
+Figur e 1-1. Starter workﬂows for use with GitHub Actions
+Actions Marketplace
+Another good source to ﬁnd actions for various use cases is on the GitHub
+Marketplace, in the Actions section.   That’ s available at
+https://github.com/marketplace?type=actions .  Figure 1-2  shows an
+example of this area in GitHub.
+
+Figur e 1-2. GitHub Actions Marketplace
+Unlike some of the starter workﬂows, the workﬂows referenced here are
+intended to be more fully functional actions that you can select from and
+use in your own workﬂows.  Think of it as being like plugins or other “add-
+on” modules to extend functionality .  As you’ll see in a later chapter , you
+can get to the Actions Marketplace from within the GitHub built-in
+environment for creating a workﬂow . So you can easily browse and ﬁnd
+Actions here to save you time and ef fort from having to code your own.
+In addition to the categories mentioned with the Starter Workﬂows, the
+Marketplace also has featured categories for workﬂows to help with
+interacting with IDEs, working on Localization tasks, doing Mobile
+development, and even working with project management tasks through
+applications such as JIRA.
+The Actions Marketplace is a great place to go to, when you’re creating a
+new workﬂow , to ﬁnd existing actions that may already do what you need,
+and save you the ef fort of creating a new one. And they’re also free. In fact,
+you can get started with GitHub Actions for free.  But there are costs
+associated with certain levels of usage and they’re important to be aware of
+to avoid any surprises. I’ll cover more details on that in the next section.
+What costs are involved?
+One of the ﬁrst questions that comes to mind when any individual, team or
+organization starts thinking about migrating to a new technology is the
+cost.  With GitHub Actions, you may simply qualify for the free version. 
+But if not, it’ s important to have at least a basic understanding of how the
+paid model works, so you’re not surprised.
+The Free V ersion
+GitHub Actions is free if either  of the following two conditions is true: 
+The repositories you use with actions are public
+The systems you execute the actions on (called “runners”) are your
+own (rather than GitHub’ s)
+That means if you are ok with having your GitHub repositories viewable by
+everyone, or you can host the systems that will execute the code contained
+in the steps of the workﬂow , you can use the technology for free.
+GitHub will not char ge you to use self-hosted runners, but this will require
+you to install and run the runner application on your own servers. This is
+needed to allow GitHub Actions to communicate with your servers to
+execute your workﬂows. 
+If this model doesn’ t ﬁt the way you work, you’ll move into the paid
+version model.
+The Paid V ersion
+Private repositories are ones with restricted access. Enterprise/corporate
+GitHub clients may frequently use this model, either via restricting access
+on the public GitHub site or by using an in-house or on-cloud GitHub
+instance restricted to their use.
+There are two types of items you pay for with GitHub Actions:
+Storage - Actions allow you to store artifacts and packages on
+GitHub’ s resources.  After a certain point, the amount of storage you’re
+using for artifacts and packages will start to cost you.
+Minutes - Actions require processing time on virtual systems
+ARTIFACTS AND PACKAGES
+Artifacts refer to objects that you upload or generate through your workﬂows on
+GitHub.  GitHub Packages are a convenient way to make things like containers and
+dependencies accessible.
+For a private repository , you start with a certain amount of storage (for
+artifacts uploaded during processing of workﬂows) and minutes on runners
+that are free. After those are used up, you may be able to pay for and use
+more, or you may be cut of f, depending on how you’re paying/billed by
+GitHub and the defaults for spending limits you have setup. 
+If you’re paying/billed a regular amount monthly , after you’ve used up the
+free storage and minutes, by default, that’ s it.  You won’ t be able to create
+new artifacts or do additional processing.
+If, instead, you just get an invoice from GitHub for whatever amount of
+resources you’ve used during a billing period and pay that variable amount
+each time, by default you can continue to use (and pay for) more minutes
+and/or storage without limits.
+DEFAULT SPENDING LIMITS
+We referenced " default spending limits " in the preceding discussion.  Within GitHub, if
+you have access and authority to do so, those default spending limits can be changed
+through the settings for the type of account you have (user , organization, or enterprise). 
+Changing these for an or ganization or enterprise requires that you are an owner or billng
+manager .
+For machine usage on a system provided by GitHub, the compute cost is
+measured in minutes you use on the runners.  This accumulates as you use
+more compute, but resets to 0 each month.  The amount of storage you use
+accumulates as you store more artifacts, but is not reset each month.  So
+you just continue to pay the storage cost as long as you keep the artifacts
+around on GitHub.
+Table 1-1 from GitHub’ s documentation  shows the breakdown for the
+amount of free minutes and free storage you get per month - depending on
+your account type.
+Table 1-1. GitHub Actions Pricing Plans
+Plan Storage Minutes (per month)
+GitHub Free 500 MB 2,000
+GitHub Pro 1 GB 3,000
+GitHub Free for or ganizations 500 MB 2,000
+GitHub Team 2 GB 3,000
+GitHub Enterprise Cloud 50 GB 50,000
+The storage usage is calculated for each month based on hourly usage
+during the month.
+USAGE ROUNDING
+For billing calculations, storage usage is rounded up to the nearest MB and minute
+usage is rounded up to the nearest minute.
+One other key factor to be aware of is that GitHub Actions char ge more for
+jobs run on a system provided by GitHub if it requires a Windows or
+MacOs system to execute. So your cost to use one of those system versus a
+Linux system gets scaled up and you pay a premium. Table 1-2 shows the
+multipliers involved.
+Table 1-2. Cost Scaling Per OS
+Operating System Minute Multiplier
+Linux 1
+macOS 10
+Windows 2
+And, Table 1-3 shows an example of how the per -minute costs would
+compare for a process run on dif ferent kinds of systems - again taken from
+GitHub’ s documentation.
+Table 1-3. Per-minute costs acr oss
+OS
+Operating System Per-minute rate (USD)
+Linux $0.008
+macOS $0.08
+Windows $0.016
+CURRENT COST INFORMATION
+The information in the tables above is current as of the time of this writing and subject
+to change.  For the latest up-to-date information on costs around GitHub Actions, refer
+to this link .
+The price you pay for use is certainly one factor to consider if you’re
+thinking about moving to GitHub Actions.  But it should not be the only
+one. In the ﬁnal section of this chapter , we’ll discuss how to decide when
+moving to GitHub Actions makes sense.
+When does moving to GitHub Actions make
+sense?
+Aside from price what other factors are worth considering for moving to
+and using GitHub Actions?  Here are a few that may be helpful.
+Investment in GitHub
+By deﬁnition, GitHub Actions are tightly bound to the GitHub ecosystem. 
+They can only work when run through GitHub’ s “engine”.  So anyone
+needing to work with Actions will need to be familiar with, and comfortable
+working with, GitHub as an interface and environment. 
+And, if you are using your own runners to execute Actions, you need to be
+comfortable with having the runner application installed on your systems.
+Use of Public Actions
+GitHub Actions maintain a Marketplace for contributed actions. As with
+any public place where you can download components to pull in, you want
+to be sure that you are aware of what those actions are doing and that they
+meet your security requirements.
+Creating your own Actions
+You have the ﬂexibility to create and use your own Actions. There are a
+couple of dif ferent types as we’ll discuss later in the book. if you already
+have invested in creating custom functionality another way , you’ll need to
+learn the action structure and syntax.  Then consider how you would either
+migrate to more action-based approaches, or have an action invoke your
+existing functionality - if feasible to do so.
+Artifact Management
+GitHub Actions artifact management is convenient for quick, easy storage
+and sharing of artifacts. But it is not a package management system like
+GitHub Packages or Artifactory .  And there is a built-in retention policy
+after which artifacts are removed.  If this is not suitable for your needs,
+you’ll need to establish another way to manage artifacts and connect your
+action workﬂows to it.
+Action Management
+As mentioned, GitHub Actions provide a framework for creating and using
+actions to automate nearly anything.  If you are in a corporate/enterprise
+environment, you may not want everyone creating and pulling in actions for
+shared repositories.  Allowing this without proper controls could open
+security holes. Controls might take the form of making sure the set of
+actions used are approved and manageable. There should also be a regular
+update process to ensure any public actions used are kept up-to-date. 
+And, if employees are creating actions and sharing them for broader use,
+some sort of code review and standards should be in place.
+In general, the question of how much to invest in and use GitHub Actions
+comes down to how much you or your or ganization or enterprise want to
+gain the beneﬁts of the new functionality , can migrate any needed existing
+functionality , and feel comfortable having your code and automation
+managed in this environment.
+Conclusion
+In this chapter , I’ve introduced GitHub Actions and shared some basic
+information about what they are for , their use cases, their costs, and factors
+to consider when moving to them. Actions provide a useful framework for
+automation to happen for content you manage in GitHub. If you are
+invested in the GitHub ecosystem or considering moving to it, they are a
+good option for implementing workﬂows such as CI/CD without having to
+rely on another application. As with any framework, there is ﬂexibility to
+make the automation they provide simple or complex.  And while the
+underlying engine is provided by GitHub, there is an ever -growing
+community of users providing ready-made actions and workﬂows to draw
+on and lessen the setup required for your workﬂows.
+Now that the foundations for what GitHub Actions have been laid, in the
+next chapter , I’ll dive in a bit more to help you understand how actions
+work.
+Chapter 2. How Do Actions
+Work?
+A NOTE FOR EARLY RELEASE READERS
+With Early Release ebooks, you get books in their earliest form—the
+author ’s raw and unedited content as they write—so you can take
+advantage of these technologies long before the ofﬁcial release of these
+titles.
+This will be the 2nd chapter of the ﬁnal book. Please note that the
+GitHub repo will be made active later on.
+If you have comments about how we might improve the content and/or
+examples in this book, or if you notice missing material within this
+chapter , please reach out to the editor at mcronin@oreilly .com.
+In Chapter 1 , we got acquainted at a high level with the overall framework
+and value of GitHub Actions.  In this chapter , I’ll dive into how GitHub
+Actions ﬂow - meaning what kicks them of f, what happens when they run,
+etc.
+In the world of GitHub Actions, “actions” is an overused term. It refers to
+both:
+The entire system for executing automated workﬂows in response to
+events
+The actual code and related pieces that implement individual actions
+Most of the time when users talk about GitHub Actions, they’re referring to
+the former .  So, we’ll start out by covering that part and what you need to
+know about it.  Then in later chapters, we’ll dive in to how to code an
+implementation of an action that can then be used in a workﬂow .
+To better understand the actions environment, I’ll provide you with an
+overview of how the overall ﬂow works. This includes the types of events
+that can start the automation, and a high-level overview of the components
+that are involved in the execution of the automation. Throughout the
+chapter , I’ll provide you with some simple example code. All of this should
+give you what you need to have a solid understanding of how the actions
+environment works.
+An Overview
+At a high level, the workﬂow involved with the GitHub Actions ﬂow is this:
+1. Some event  happens in a GitHub repository . This event is most often
+associated with a unique SHA1 (Secure Hashing Algorithm 1) value
+and a Git reference that resolves to a SHA1 value (a “ref”), such as a
+branch ref. But it may also be an event in GitHub that is not an update
+to a ref, such as a comment in a pull request or an issue being updated.
+2. A dedicated directory in the repository (repo) is searched for workﬂow
+ﬁles corresponding to the event. For example, if a workﬂow is setup to
+be triggered only when things happen on a particular branch, unless
+the event happened on that branch, that workﬂow would not be
+triggered.
+3. Corresponding workﬂows are identiﬁed and a new workﬂow run is
+triggered.
+As you can probably tell from this, the workﬂow object is the key piece
+here.  A GitHub Actions workﬂow is made up of one or more jobs.  Each
+job can be as simple or as complex as needed.  Once a workﬂow is kicked
+off, the jobs begin executing. Jobs, in turn, are made up of steps .  A step
+calls either a shell command or an actual GitHub action.   Then the action or
+command in the step is executed on a runner .  The runner is a server
+(virtual or physical) or a container that has been setup to understand how to
+interact with GitHub Actions.
+We’ll go into more detail on each of these items later , but  Figure 2-
+1 illustrates the basic pattern.
+Figur e 2-1. Relationship of components of GitHub Actions
+If this seems familiar , it’s probably because it’ s basically a continuous
+integration (CI) pattern. Some change is made that is automatically
+detected, and that triggers a set of automated processes to run and respond
+to the change.
+In GitHub Actions, we refer to the changes that signal that work needs to be
+kicked of f as the event. To expand on the CI theme further , let’s look at the
+different kinds of events that can cause an action workﬂow to run.
+Triggering Workﬂows
+As previously described, events trigger workﬂows.  They serve as the signal
+for work to start happening if a GitHub Actions workﬂow is present and the
+triggering event matches the start conditions in the workﬂow . An event can
+be deﬁned in several dif ferent ways.
+1. A person or a process does some operation in a GitHub repository ,
+which triggers an event.
+2. A matching external trigger happens - i.e. an event from outside of
+GitHub.
+3. A schedule is setup to run a workﬂow at particular times or intervals.
+4. A workﬂow is initiated manually - without an operation having to be
+done ﬁrst.
+We’ll dive in these dif ferent types more in Chapter 3, but an event triggered
+from an operation in a GitHub repository is probably the most common that
+we would want to use, and expect to see.
+A common example is a GitHub pull request (PR). if you or a process
+initiate a pull request, then a corresponding “pull request event” is
+triggered. There is also a “push event” for code pushes, etc. In GitHub,
+there are a lar ge number of common operations you can do. Many of these
+can, in turn, trigger an event that can be used with GitHub Actions.
+In addition to the dif ferent ways to trigger events, there are also multiple
+ways to govern when workﬂows react to events. To explain this, here’ s the
+ﬁrst piece of workﬂow syntax to understand - the “on:” clause.  The “on”
+keyword, and the lines that follow it, deﬁne under what conditions the
+workﬂow will match events and start executing. Here’ s some basic types
+and simple examples of the syntax for each.
+The workﬂow can respond to a single event such as when a push happens.
+on: push
+The workﬂow can respond to a list (multiple events).
+on: [push, pull_request]
+The workﬂow can respond to event types with qualiﬁers.
+on:
+  push:
+    branches:
+      - main          
+The workﬂow can execute on a speciﬁc schedule or interval (using standard
+cron syntax).
+on:
+  scheduled:
+    - cron: '30 5,15 * * *'      
+The workﬂow can respond to speciﬁc manual events (more about these
+later).
+on: workflow-dispatch
+on: repository-dispatch
+The workﬂow can be called from other workﬂows (referred to as a “reuse
+event”).
+on: workflow_call
+The workﬂow can respond to webhook events - when the webhook executes
+and sends a payload.  (See here for more details on events and payloads in
+webhooks.)
+on: issue_comment
+Deciding how you want your workﬂows to be triggered is one of the ﬁrst
+steps to implementing functionality with GitHub Actions. To complete the
+picture, you need to understand more about the other parts that make up a
+workﬂow .  I brieﬂy touched on these in Chapter 1 , but I’ll explain more
+about them in the next section.
+Components
+By components, I mean the dif ferent pieces that GitHub Actions deﬁnes for
+you to use to build a workﬂow . For simplicity , at this point I’ll just do a
+brief “survey” of each one to help you understand these from a higher level.
+I’ll go into each in more detail in Chapter 3.
+Steps
+Steps are the basic unit of execution you deal with when working with
+GitHub Actions.  They consist of either invocations of a predeﬁned action
+or a shell command to be run on a system. Any shell commands are
+executed via a run clause. And any predeﬁned actions are pulled in via a
+uses  clause. The steps keyword indicates the start of a series of steps to
+be run sequentially .
+Listing 1 shows an example of two basic steps that simply checkout a set of
+code and run a “make” command to build it. Note that steps can have a
+name associated with them as well.
+steps:
+- uses: actions/checkout@v3
+- name: setup Go version
+  uses: actions/setup-go@v2
+  with:
+    go-version: '1.14.0'
+- run: go run helloworld.go
+Runners
+Runners are the physical or virtual computers or containers where the steps
+are executed. They can be systems provided by/hosted by GitHub (and run
+within their control) or they can be instances you setup, host, and control. 
+In either case, the systems are setup to understand how to interact with the
+GitHub Actions framework, meaning access workﬂows and predeﬁned
+actions, execute steps, and report back outcomes.
+Runners are deﬁned simply via the runs-on:  clause:
+runs-on: ubuntu-latest
+Jobs
+Jobs aggregate steps and deﬁne which runner to execute them on. An
+individual job is usually tar geted towards accomplishing one particular goal
+of the overall workﬂow .
+Aside from the deﬁnition of the runner , a job in a workﬂow is like a
+function or procedure in a programming language.  It is made up of a series
+of individual commands to run and/or predeﬁned actions to call. This is
+similar to how a function or procedure in a programming language is made
+of individual lines of code and/or calls to other functions or procedures.
+The outcome of the job is surfaced up in GitHub Actions interfaces. Success
+or failure is displayed at the level of the job, not the individual steps.  It’ s
+helpful to keep this in mind when determining how much work you want
+any individual job to do. It’ s also helpful when considering how much detail
+you want to know about success or failure within the workﬂow execution
+without having to drill down. If you need more granular reports of success
+or failure displayed at the top level, you may want to put fewer steps in a
+job.  Or , if you need less granular indications of whether a set of steps
+succeeded or failed, you might put more steps into a job.
+Building on the steps and runners previously shown, Listing 2 shows a
+simple job to do a build.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+  - uses: actions/checkout@v3
+  - name: setup Go version'
+    uses: actions/setup-go@v2
+    with:
+      go-version: '1.14.0'
+  - run: go run helloworld.go
+W orkﬂow
+A workﬂow is like a pipeline. At a high level, it ﬁrst deﬁnes the types of
+inputs (events) that it will respond to, and under what conditions it will
+respond to them. This is what we talked about in the earlier section on
+events.  The response, if the events and conditions match, is to then execute
+the series of jobs that do the set of actual work items in the workﬂow . So, it
+is like a continuous integration process in that it responds to a particular
+kind of change and kicks of f an automated sequence of work.
+Listing 3 shows an example of a simple workﬂow for processing Go
+programs built on the previous deﬁnitions.
+1. name: Simple Go Build
+2.
+3. on:
+4.   push:
+5.     branches:
+6.       - main
+7.
+8. jobs:
+9.   build:
+10.    runs-on: ubuntu-latest 
+11.    steps:
+12.      - uses: actions/checkout@v3
+13.      - name: Setup Go version
+14.        uses: actions/setup-go@v2
+15.        with:
+16.          go-version: '1.15.1'
+17.      - run: go run hello-world.go
+Note that this workﬂow is written in YAML  format.  I’ll break down what’ s
+happening in this ﬁle, line-by-line.
+Line 1. The workﬂow ﬁle is assigned a name
+Line 3. This is the on identiﬁer discussed in the section on events.
+Lines 4-6. This workﬂow is triggered when a push operation is done to the
+branch main  in this GitHub repository .
+Line 8. This starts the jobs portion of the workﬂow .
+Line 9. There is one job in this workﬂow , named build .
+Line 10. This job will be executed on a standard ubuntu image, hosted by
+GitHub.
+Line 1 1. This starts the series of steps for this job.
+Line 12. The ﬁrst step is done via pulling in a predeﬁned action. Note the
+way this is referenced.  actions/checkout@v3  refers to the relative path after
+github.com, so this really says it is going to run/use the action deﬁned at
+github.com/actions/checkout . 
+Also notice that this is the only line in this step - no parameters need to be
+passed to this action because it assumes it is checking out the source from
+this repository since it is in this repository .
+Line 13. The hyphen at the start of this line indicates this is the start of a
+second step.  This line is giving the new step a name.
+Line 14. The step is pulling in another predeﬁned action to setup the Go
+environment.
+Lines 15-16. The setup-go  action needs a parameter here - the version of Go
+to use.  The parameter is passed as an input to the action via a with:  clause.
+Line 17. This is another step, one that simply runs a command as indicated
+by the run keyword.  The command is to execute the go run  command on
+an example ﬁle in the repository .
+In order to be found, matched to event conditions, and executed
+automatically , workﬂow ﬁles need to be stored in a special directory in a
+GitHub repository - .github/workﬂows. So you would save your workﬂow
+speciﬁcation as a ﬁle, such as simple-go-build.yml  in the workﬂow directory
+of a repository .  (Note the . yml extension denoting YAML  structure and
+syntax.)
+Workﬂow Execution
+If you push the .github/workﬂows/simple-go-build.yml  ﬁle and a
+corresponding hello-world.go  ﬁle to a GitHub repository , you can see the
+workﬂow actually run right away .  This is because the event condition set in
+the workﬂow (“on a push to main”) would match. So the workﬂow would
+be triggered and executed. 
+GitHub repositories contain an Actions  selection at the top of the project
+page.  Selecting this puts you into a graphical interface where you can see
+runs of workﬂows, jobs, and drill in to the execution of the various steps if
+needed/desired. After pushing the workﬂow ﬁle, if you select the Actions
+tab at the top, you can see the execution of your simple workﬂow , as shown
+in the example one in Figure 2.
+Figur e 2-2. Workﬂow run
+You can also drill in and see the execution and status (indicated by the
+color) of any jobs that execute as part of the workﬂow .  Figure 3 shows the
+execution of the job from our simple workﬂow .
+Figur e 2-3. Run at the job level
+In later chapters you’ll see how to use this interface to drill in further to
+what occurs when the various steps are executed and how to debug
+problems when actions run using the interface.
+Conclusion
+GitHub Actions can refer to either/both of the code that implements an
+action or the automated environment for deﬁning and running those actions
+as part of a workﬂow . In this chapter , I’ve focused on understanding the
+workﬂow , its components, and the way it is executed.
+Workﬂows are like software pipelines. They can be initiated when a
+triggering event occurs (like Continuous Integration) and they aggregate
+one or more jobs to accomplish their overall task. Each job in turn
+aggregates one or more steps to do smaller units of work and the execution
+of the steps results in a success/failure outcome for the job which feeds
+back into success/failure for the overall workﬂow .
+Each job declares what kind of system (operating system and version) it
+will run in. And, at the lowest level, steps can invoke predeﬁned GitHub
+Actions or run simple commands on that system.
+Now that you have the context for the execution environment, Chapter 3
+will provide a quick overview of what makes up the implementation of a
+GitHub Action.
+Chapter 3. What’ s in an Action?
+A NOTE FOR EARLY RELEASE READERS
+With Early Release ebooks, you get books in their earliest form—the
+author ’s raw and unedited content as they write—so you can take
+advantage of these technologies long before the ofﬁcial release of these
+titles.
+This will be the 3rd chapter of the ﬁnal book. Please note that the
+GitHub repo will be made active later on.
+If you have comments about how we might improve the content and/or
+examples in this book, or if you notice missing material within this
+chapter , please reach out to the editor at mcronin@oreilly .com.
+In Chapter 2, I explored the execution environment for GitHub Actions - a
+key part of the overall Actions framework.  As noted, that environment
+centers around workﬂows - the “pipeline” that runs in response to an event
+and execute jobs to do some work.  The jobs in turn execute steps and steps
+can either call an OS command or an action.
+You have the background now to understand where the actual
+implementation of an action ﬁts - when a step in a workﬂow calls it. In this
+chapter , I’ll round out our broad overview of GitHub Actions by looking at
+what makes up an action.  Speciﬁcally , I’ll discuss:
+The structure of an action
+Interfacing with actions
+Using actions
+Public actions and the Marketplace
+IMPLEMENTATION OF AN ACTION
+Note that this chapter is not describing how to implement an action.  Chapter 7 will go
+into detail on how to create your own custom actions.
+The Structure of an Action
+The implementation of a GitHub Action can be very simple or very
+complex.  On the simple side of the range, it might be a small shell script
+that gets executed.  On the other end of that range, it may be a lar ge set of
+implementation code, test cases, and  workﬂows to handle CI/CD tasks like
+validating content, building, checking for vulnerabilities, packaging, etc.
+The checkout action discussed in Chapter 2 is one such implementation on
+the complex end of that range.  Figure 1 shows part of the page in GitHub
+for that repository .
+Figur e 3-1. Checkout action in GitHub
+From this, you can see that there is a lar ge code base for this action. In fact,
+like many other projects in GitHub, it has a lot of supporting pieces in
+addition to the code (licensing, tests, source, .gitattributes, etc.) If you drill
+into the “src” area, you can see more of the underlying implementation,
+including the TypeScript ﬁles that do the real work. Figure 2 shows the
+contents of the “src” subdirectory .
+Figur e 3-2. src directory in checkout action
+On the main page, you can also see references to the contributors, the
+README ﬁle, and other typical information such as the language
+breakdown, and the usage information. (Note that, as a testament to the use
+of actions, the Checkout action has nearly 4 million “used by” references.)
+as shown in Figure 3.
+Figur e 3-3. Additional info on action page
+This action also has a set of workﬂow ﬁles. As noted in Chapter 2, these
+ﬁles are stored in the .github/workﬂows subdirectory of the repository . In
+the case of the Checkout action, the ﬁles here help to validate content being
+updated in the repository . They are setup to respond to standard pushes, pull
+requests, etc. The set of workﬂows associated with this action are shown in
+Figure 4.
+Figur e 3-4. Workﬂows associated with the checkout action
+So, workﬂows use actions to do work in steps, and actions use workﬂows
+for CI/CD, automation, validation, etc. From this, you can start to see how
+the parts of GitHub Actions can work together .
+The key part of a project in GitHub that allows it to be used as an action is a
+special ﬁle that designates it as an action and describes its key
+characteristics such as the inputs it can have. I’ll discuss this ﬁle in the next
+section.
+Interfacing with actions
+To be used as an action, a GitHub repository must contain an actions ﬁle .
+This is a ﬁle that contains metadata about the action itself. It can be named
+either action.yml  or action.yaml.  This ﬁle speciﬁes the inputs, output and
+any needed conﬁguration for the action. And, as the name implies, it is
+written in YAML.
+The format of this ﬁle is broken down into four key areas - basic info
+(name, author , description), inputs, outputs and runs. There is also a less
+used “branding” section that allows adding an icon to the action if desired.
+I’ll explore the key areas that make up the action ﬁle in more detail in
+Chapter 7 on writing “custom actions.” But the inputs and outputs  section
+have typical properties that can be set such as descriptions , defaults , and an
+indication of whether they are required or not. The runs section speciﬁes
+what type of programming the action uses for its implementation (discussed
+more in Chapter 7) and how the action is executed.  Figure 5 shows a
+portion of the Checkout action’ s “action.yml” ﬁle.
+Figur e 3-5. Example action.yml ﬁle
+The inputs  section is important because it deﬁnes how your workﬂows
+interface with this action. If a parameter is required, your workﬂow needs to
+use a “with” statement to provide a value to pass in for that parameter when
+calling the action. The same is true for providing a value dif ferent from the
+default.
+So, this ﬁle really is the speciﬁcation for working with the action
+implemented in the rest of the code. A “presentation” version of it is usually
+shown in the README.md ﬁle in the GitHub repository and out on the
+Actions Marketplace, as shown in Figure 6.
+
+Figur e 3-6. action.yml ﬁle as displayed on the Actions Marketplace
+The takeaway from this is that the action.yml ﬁle is the key to
+understanding how to interact with any action you want or need to use in
+your workﬂows. It is the “contract” on what you need to provide to the
+action and what you can expect to get out of it. The “uses” clause that
+identiﬁes a particular path to an action and the version of it can use a little
+more explanation. I’ll elaborate on that more in the next section.
+Using actions
+Any “uses” clause in a workﬂow employs an expected format to reference
+the GitHub location of the action’ s repository , such as
+uses: actions/checkout@v3
+The path part (“actions/checkout” in this case) is the relative path to the
+action’ s repository in GitHub after “github.com”. The version number (part
+following the @ symbol) can be expressed in multiple ways.
+Technically , any type of valid Git reference can be used after the “@” sign
+to select a particular revision of an action’ s code.That means you could use
+a branch, a tag, or even an individual commit’ s SHA  value to reference a
+version of an action.
+However , GitHub recommends (and most action authors seem to follow) a
+strategy that uses semantic versioning  for releases (formatted as
+major .minor .patch ). Then they associate a shorter tag with only the letter
+“v” and the major version (i.e. “v1”, “v2”, etc.) to the latest version. This
+shorter , major version tag is updated after each release to point to the latest
+version. For example, suppose action/foo is currently at release 2.3.4 and
+“v2” is a Git tag pointing to that version of the code. If action/foo releases a
+new patch and bumps the version to 2.3.5, then the “v2” tag would be
+moved to point to that new version.
+This is a convention and you can always be more explicit as in
+uses: actions/foo@2.3.5
+But most commonly , you’ll simply see the @v# where only the major
+version is indicated.In some cases, you may also see a “level” tag such as
+“beta” added on when a major version ﬁrst comes out. Those tags are
+typically removed as soon as the release is ready . An example of this sort of
+tag is shown below .
+uses: actions/foo@v3-beta
+Adding these kinds of tags is a best practice when creating your own
+actions and something that is expected when looking at versions of actions
+in the Marketplace. Speaking of the Marketplace, I’ll survey that next in
+terms of ﬁnding public actions.
+Public actions and the Marketplace
+The Actions Marketplace  is a repository in GitHub where creators can
+publish their actions to share with others in a standard location. Chapter 7
+goes into more detail on the Marketplace and publishing an action to it. But
+the most basic use of the Marketplace is to simply search to see if there is
+an existing action that can already accomplish some piece of needed
+functionality .
+If you are just browsing GitHub, the Actions Marketplace can be found at
+github.com/marketplace/actions  as shown in Figure 7.
+
+Figur e 3-7. The GitHub Actions Marketplace
+DEFAULT ACTIONS PROVIDED FROM GITHUB
+If you want to speciﬁcally look at repositories for actions provided by GitHub itself, you
+can go to github.com/actions  .  Figure 8 shows this page highlighting this
+GitHub or ganization.
+
+Figur e 3-8. Actions pr ovided by GitHub
+Or if you are starting a new workﬂow , you will get a screen that gives you
+suggestions for actions/workﬂows to get started with (see Figure 9).
+
+Figur e 3-9. Suggestions for getting started
+When editing an existing workﬂow , there’ s also a “MarketPlace” tab
+showing “featured” actions, along with a search box to search for particular
+actions, as shown in Figure 10.
+Figur e 3-10. Marketplace tab when editing workﬂows
+There is a dif ference between going to an action directly versus getting to it
+through a link from the Marketplace. If you just go to
+github.com/actions/checkout  for example, you’ll see the code
+repository for the action as was shown back in Figure 4. If, on the other
+hand, you go to the action through the marketplace link, as in
+https://github.com/marketplace/actions/checkout  you’ll see the project’ s
+README.md ﬁle displayed in a more user -friendly page.This will
+(typically) have a nicer presentation of general information about the action,
+including usage info derived from the action.yml ﬁle. Figure 1 1 shows this
+page for the “checkout” action.
+
+Figur e 3-1 1. Checkout action displayed on the marketplace
+Conclusion
+The actual “actions” in GitHub Actions are the core units that implement
+some tar geted capability and are reusable and portable. They can be
+included in the steps of a workﬂow and combined with other steps to form a
+type of pipeline.
+The code for an action is stored in a standard GitHub repository .   The
+implementation of an action consists of a set of code and a special metadata
+ﬁle named “action.yaml” or “action.yml” that speciﬁes the inputs that the
+action expects as well as its outputs and the expected environment for
+running it.
+The GitHub Actions Marketplace provides a common location and interface
+for sharing public actions. There is built-in search functionality in the
+actions section of each GitHub repository and when editing workﬂows to
+make ﬁnding suitable public actions easier .
+Now that you have the basics down around GitHub Actions, in Chapter 4,
+I’ll dive deeper into the environment for creating workﬂows through the
+GitHub interface.
+About the Author
+Brent Laster is an R&D DevOps director at SAS. He is a global trainer ,
+author , and speaker on open source technologies. He’ s also the founder and
+president of Tech Skills Transformations, LLC, a company dedicated to
+making technology understandable and usable. Throughout his career in
+software development and management, Brent has always made time to
+learn and develop both technical and leadership skills and share them with
+others. He believes that regardless of the topic or technology , there’ s no
+substitute for the excitement and sense of potential that come from
+providing others with the knowledge they need to accomplish their goals.

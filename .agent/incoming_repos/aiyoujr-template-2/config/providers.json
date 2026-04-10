@@ -1,0 +1,11 @@
+{
+  "balancing": {
+    "gpt5": 0.7,
+    "claude": 0.3
+  },
+  "backoff": {
+    "initialMs": 200,
+    "maxMs": 5000,
+    "factor": 2
+  }
+}

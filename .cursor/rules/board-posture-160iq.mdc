@@ -1,0 +1,137 @@
+---
+description: Permanent 160IQ board posture — AiYouJR governance, SOPs, decision frameworks, auto-repair
+globs: ["**/*"]
+---
+
+# AiYou Board Posture — 160IQ Permanent Standing Orders
+
+## 0. PRIME DIRECTIVE
+Every agent, model, and developer operating in this repo is permanently pegged to
+**160IQ operating standards**: maximum precision, zero tolerance for ambiguity,
+all decisions grounded in verified fact (RAG database first, verified external sources
+second). Never speculate without flagging it as speculation.
+
+---
+
+## 1. AiYouJR GOVERNANCE (Purpose Layer)
+
+AiYouJR = the **why** behind every decision. Before any action:
+1. Ask: "Does this serve the AiYou mission?"
+2. Ask: "Is there a risk that violates Army Risk Management doctrine (identify → assess → mitigate → supervise)?"
+3. If yes to (2), surface the objection **before** acting — do not suppress it.
+
+**Rule:** Actively hunt for AiYouJR violations. Voice every objection. Tag violations `[AIYOUJR-VIOLATION]`.
+**Rule:** The doctrine (Cor.Rules / pnkln) provides **reasons**. AiYouJR provides **purpose**. Both must align.
+
+---
+
+## 2. COGNITIVE AUGMENTATION (Legal / Compliant)
+
+All agents and developers must apply the following at all times:
+
+### SOPs (Standing Operating Procedures)
+- **SOP-01:** Run `git status && git diff --cached --stat` before any git operation.
+- **SOP-02:** Run impact analysis (`gitnexus_impact`) before editing any symbol.
+- **SOP-03:** Run `ruff check . && mypy --strict . && pytest --cov --cov-fail-under=98` before commit.
+- **SOP-04:** Auto-repair first, escalate second. Never commit broken code.
+- **SOP-05:** Query RAG (AiYou `/api/v1/aiyou/agent/query`) before answering architecture questions.
+
+### Static Analysis (always-on)
+- Ruff: style + lint (auto-fix enabled)
+- MyPy strict: type safety (zero tolerance)
+- Pytest ≥98% coverage: quality gate (Judge #6)
+- GitNexus impact analysis: blast-radius awareness before edits
+
+### Structured Decision Frameworks
+
+**PRE-MORTEM** (before any significant change):
+> "What is the most likely way this fails? What are the top 3 failure modes?"
+Always run mentally before: major refactors, schema changes, infra changes, new integrations.
+
+**5-WHYS** (when diagnosing failures):
+> Why did X fail? → Why? → Why? → Why? → Why? → Root cause.
+Document root cause in postmortem. Never treat symptoms.
+
+**MANDATORY POSTMORTEM** (after any production incident or test failure >30 min):
+Fields: what happened | why | immediate fix | root cause | prevention | owner | deadline.
+
+### Pair-Programming Protocol
+- All non-trivial changes (>50 lines, new architecture, security-adjacent) require agent review.
+- Use `gitnexus_context` + `gitnexus_impact` as the automated "second pair of eyes."
+- Code review recipe: correctness → security → performance → maintainability → coverage.
+
+---
+
+## 3. AUTOMATED ERROR REPAIR (Zero-Approval Mode)
+
+**Trigger:** Any lint/type/test error detected.
+**Action:** Call `python scripts/auto_error_repair.py` (Gemini primary).
+**Approval required:** NEVER for mechanical fixes (lint, types, trivial test fixes).
+**Escalate only when:**
+- Security vulnerability introduced
+- Data loss risk
+- Architectural decision required
+- Coverage cannot be restored after 5 rounds
+
+**Provider ladder:**
+1. Gemini `GEMINI_GEN_MODEL` (default: `gemini-3.1-pro`) — `GEMINI_API_KEY`
+2. [Future] OpenAI GPT-4o — `OPENAI_API_KEY`
+3. [Future] Claude Sonnet — `ANTHROPIC_API_KEY`
+
+---
+
+## 4. CURSOR-SPECIFIC EXECUTION RULES
+
+> All prompts and agent behaviors in this repo are **Cursor-native**. No IDE-agnostic abstractions.
+
+- **Cmd+K (inline edit):** Use for targeted, single-symbol fixes. Always state the specific error code.
+- **Cmd+L (chat):** Use for: architecture discussion, multi-file reasoning, postmortem analysis.
+- **Agent mode:** Use for: full auto-repair runs, multi-file refactors, test generation.
+- **Auto-accept:** Enabled for mechanical fixes. Review required for: schema changes, auth, secrets.
+- **Model:** `gemini-2.0-pro` (Cursor AI model setting). Override via `GEMINI_GEN_MODEL`.
+
+---
+
+## 5. OBJECTION PROTOCOL
+
+Never suppress an objection. Tag every violation and surface it:
+
+```
+[AIYOUJR-VIOLATION] <brief description>
+Risk level: LOW | MEDIUM | HIGH | CRITICAL
+Army RM assessment: <identify | assess | mitigate | supervise>
+Recommended action: <what to do>
+```
+
+Objection categories to actively scan for:
+- Hardcoded secrets or credentials
+- Bypassed auth (--no-verify, --no-gpg-sign without explicit user request)
+- Coverage drop below 98%
+- Direct ANE/GPU calls bypassing `dispatch_compute()`
+- Direct API calls bypassing the `zero_cpu_router`
+- `git add .` or `git add -A` (staging hygiene violation)
+- Inline TODO that references a missing Beads issue
+
+---
+
+## 6. VERIFIED FACT REQUIREMENT
+
+**Rule:** Base all decisions on verified fact:
+1. **Primary:** AiYou RAG database (`POST $VITE_API_URL/api/v1/aiyou/agent/query`)
+2. **Secondary:** Direct file/code inspection in this repo
+3. **Tertiary:** Verified external sources (documentation, official specs)
+
+**Never:** Speculate, hallucinate file paths, invent function names, or assert behavior
+without verification. If uncertain, say "I need to verify" and verify before asserting.
+
+---
+
+## 7. PERMANENT STAGING
+
+This posture is **permanent**. It does not expire. It applies to:
+- All Claude Code sessions (`~/.claude/settings.json` hooks)
+- All Cursor sessions (this file + `.cursorrules`)
+- All Antigravity agent sessions (`.agent/rules/shadowtag-laws.md`)
+- All CI runs (`scripts/auto_error_repair.py --ci`)
+
+Last hardened: 2026-03-28

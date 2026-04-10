@@ -1,0 +1,15 @@
+Highest-value missed opportunity 1:
+You already have enough recovered material to make counselconduit commercially coherent and uphillsnowball technically useful, but the repo still lacked a single truthful backbone. Fixing truth surfaces first unlocks everything else.
+
+Highest-value missed opportunity 2:
+Operationalize recovered code instead of redrafting it again:
+- green loop
+- CSP collector
+- retriever eval
+- feature flags
+- pricing model
+- OCR summaries
+- Drive-ingest daemon
+
+Highest-value missed opportunity 3:
+The recovered CounselConduit blueprint is already stronger than later wandering branches. It should become the business-facing spec while pnkln/uphillsnowball remains the internal engine.
