@@ -423,9 +423,9 @@ None.
 - `drive_knowledge/documents/250904_ShadowTag_Changes_pdf.txt:715` → `ShadowTag`
 
 ## Secret-like mentions
-- `tools/external_sdks/generative-ai/gemini/autocal/frontend/libs/firebase/config.ts:22` → `AIzaSyDYvf_kZcvo0ktBx8LjUQo3RKXFaCksl4U`
-- `tools/external_sdks/chrome-devtools-mcp/src/tools/performance.ts:229` → `AIzaSyBn5gimNjhiEyA_euicSKko6IlD3HdgUfk`
-- `tools/antigravity-tools/launch.sh:88` → `AIzaSyAxgD_goF3I9hC_DaWGoIt7Cu7yB6PTGQg`
+- `tools/external_sdks/generative-ai/gemini/autocal/frontend/libs/firebase/config.ts:22` → `***REMOVED_GOOGLE_API_KEY***`
+- `tools/external_sdks/chrome-devtools-mcp/src/tools/performance.ts:229` → `***REMOVED_GOOGLE_API_KEY***`
+- `tools/antigravity-tools/launch.sh:88` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/ADAPTER_ONLY_HARDENING_REPORT.md:172` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/ADAPTER_ONLY_HARDENING_REPORT.md:173` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/ADAPTER_ONLY_HARDENING_REPORT.md:174` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
@@ -475,10 +475,10 @@ None.
 - `docs/ADAPTER_ONLY_HARDENING_REPORT.md:218` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
 - `docs/ADAPTER_ONLY_HARDENING_REPORT.md:219` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
 - `docs/ADAPTER_ONLY_HARDENING_REPORT.md:220` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
-- `docs/ADAPTER_ONLY_HARDENING_REPORT.md:221` → `AIzaSyDi-JrXjIdZhw9QyDffwuwe_Kun87aRBBA`
-- `docs/AUDIT_REPORT.json:1580034` → `AIzaSyDYvf_kZcvo0ktBx8LjUQo3RKXFaCksl4U`
-- `docs/AUDIT_REPORT.json:1580040` → `AIzaSyBn5gimNjhiEyA_euicSKko6IlD3HdgUfk`
-- `docs/AUDIT_REPORT.json:1580046` → `AIzaSyAxgD_goF3I9hC_DaWGoIt7Cu7yB6PTGQg`
+- `docs/ADAPTER_ONLY_HARDENING_REPORT.md:221` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580034` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580040` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580046` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580052` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580058` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580064` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
@@ -528,10 +528,10 @@ None.
 - `docs/AUDIT_REPORT.json:1580328` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
 - `docs/AUDIT_REPORT.json:1580334` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
 - `docs/AUDIT_REPORT.json:1580340` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
-- `docs/AUDIT_REPORT.json:1580346` → `AIzaSyDi-JrXjIdZhw9QyDffwuwe_Kun87aRBBA`
-- `docs/AUDIT_REPORT.json:1580352` → `AIzaSyDYvf_kZcvo0ktBx8LjUQo3RKXFaCksl4U`
-- `docs/AUDIT_REPORT.json:1580358` → `AIzaSyBn5gimNjhiEyA_euicSKko6IlD3HdgUfk`
-- `docs/AUDIT_REPORT.json:1580364` → `AIzaSyAxgD_goF3I9hC_DaWGoIt7Cu7yB6PTGQg`
+- `docs/AUDIT_REPORT.json:1580346` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580352` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580358` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580364` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580370` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580376` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580382` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
@@ -581,10 +581,10 @@ None.
 - `docs/AUDIT_REPORT.json:1580646` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
 - `docs/AUDIT_REPORT.json:1580652` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
 - `docs/AUDIT_REPORT.json:1580658` → `AIzaSyBwwM0EXAMPLEKEY1234567890`
-- `docs/AUDIT_REPORT.json:1580664` → `AIzaSyDi-JrXjIdZhw9QyDffwuwe_Kun87aRBBA`
-- `docs/AUDIT_REPORT.json:1580670` → `AIzaSyDYvf_kZcvo0ktBx8LjUQo3RKXFaCksl4U`
-- `docs/AUDIT_REPORT.json:1580676` → `AIzaSyBn5gimNjhiEyA_euicSKko6IlD3HdgUfk`
-- `docs/AUDIT_REPORT.json:1580682` → `AIzaSyAxgD_goF3I9hC_DaWGoIt7Cu7yB6PTGQg`
+- `docs/AUDIT_REPORT.json:1580664` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580670` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580676` → `***REMOVED_GOOGLE_API_KEY***`
+- `docs/AUDIT_REPORT.json:1580682` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580688` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580694` → `***REMOVED_GOOGLE_API_KEY***`
 - `docs/AUDIT_REPORT.json:1580700` → `AIzaSyBwwM0EXAMPLEKEY1234567890`

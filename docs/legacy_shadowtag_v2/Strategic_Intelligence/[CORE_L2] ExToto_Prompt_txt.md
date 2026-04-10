@@ -3,7 +3,7 @@
 # Categories: CORE_L2, DEFENSE_L6, FINANCE_BIZ
 
 ExToto Prompt
-GEMINI_API_KEY : AIzaSyDi-JrXjIdZhw9QyDffwuwe_Kun87aRBBA
+GEMINI_API_KEY : ***REMOVED_GOOGLE_API_KEY***
 “Automating gemini code assists workflows” is key thread
 /Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2
 Use https://github.com/karpathy/autoresearchs and this to accomplish

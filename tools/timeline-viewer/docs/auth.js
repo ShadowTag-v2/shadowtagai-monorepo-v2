@@ -15,7 +15,7 @@ class GoogleAuth {
     };
   }
   static get apiKey() {
-    return 'AIzaSyCm6pJvqmwajgKlO2B0HW6veVRkvgoj308';
+    return '***REMOVED_GOOGLE_API_KEY***';
   }
   static get clientId() {
     return '963139201929-9do1gni449dij7611muu9to5d0b6p9gh.apps.googleusercontent.com';

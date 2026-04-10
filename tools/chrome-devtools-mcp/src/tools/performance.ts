@@ -226,7 +226,7 @@ async function populateCruxData(result: TraceResult): Promise<void> {
   const cruxManager = DevTools.CrUXManager.instance();
   // go/jtfbx. Yes, we're aware this API key is public. ;)
   cruxManager.setEndpointForTesting(
-    'https://chromeuxreport.googleapis.com/v1/records:queryRecord?key=AIzaSyBn5gimNjhiEyA_euicSKko6IlD3HdgUfk',
+    'https://chromeuxreport.googleapis.com/v1/records:queryRecord?key=***REMOVED_GOOGLE_API_KEY***',
   );
   const cruxSetting =
     DevTools.Common.Settings.Settings.instance().createSetting('field-data', {

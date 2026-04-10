@@ -254,7 +254,7 @@ class S3FileDataSourceCreator(DataSourceCreator):
     f: Any
     minio: DockerContainer
     bucket = "feast-test"
-    access_key = "AKIAIOSFODNN7EXAMPLE"
+    access_key = "***REMOVED_AWS_ACCESS_KEY***"
     secret = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
     minio_image = "minio/minio:RELEASE.2021-08-17T20-53-08Z"
 
