@@ -1,0 +1,80 @@
+# =============================================================================
+# Monorepo-Uphillsnowball .bazelrc — M1 Max optimized, Bazel 8.x
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Common flags (apply to all commands)
+# ---------------------------------------------------------------------------
+common --enable_bzlmod
+common --enable_workspace
+common --color=yes
+common --show_timestamps
+common --announce_rc
+
+# ---------------------------------------------------------------------------
+# Build — correctness & hermeticity
+# ---------------------------------------------------------------------------
+build --incompatible_strict_action_env=true
+build --sandbox_default_allow_network=false
+build --incompatible_disallow_empty_glob=false
+
+# ---------------------------------------------------------------------------
+# Build — Apple Silicon / darwin_arm64 performance
+# ---------------------------------------------------------------------------
+# Use all performance cores (M1 Max has 10 cores; leave 2 for OS)
+build --jobs=8
+# Parallel loading
+build --loading_phase_threads=8
+# Local disk cache (shared across workspaces)
+build --disk_cache=~/.cache/bazel
+# Repository cache (avoid re-downloading deps)
+build --repository_cache=~/.cache/bazel-repo
+# Keep going on failures so we see all errors at once
+build --keep_going
+# Show build progress
+build --show_progress_rate_limit=0.5
+# Use worker strategy for Java/Python actions (persistent workers = faster)
+build --strategy=Javac=worker
+build --strategy=Closure=worker
+build --worker_sandboxing=false
+# Enable persistent multiplexed workers
+build --worker_multiplex
+# High-bandwidth local execution
+build --local_resources=cpu=8
+build --local_resources=memory=HOST_RAM*.75
+
+# ---------------------------------------------------------------------------
+# Build — output & diagnostics
+# ---------------------------------------------------------------------------
+build --verbose_failures
+build --explain=/tmp/bazel-explain.log
+
+# ---------------------------------------------------------------------------
+# Test
+# ---------------------------------------------------------------------------
+test --test_output=errors
+test --test_env=PYTHONUNBUFFERED=1
+test --color=yes
+test --jobs=8
+test --test_timeout=60,300,900,3600
+# Cache test results
+test --cache_test_results=yes
+
+# ---------------------------------------------------------------------------
+# Remote cache (disabled by default — enable with --config=remote)
+# ---------------------------------------------------------------------------
+build:remote --remote_cache=grpc://localhost:8980
+build:remote --remote_upload_local_results=true
+
+# ---------------------------------------------------------------------------
+# CI config (use with --config=ci)
+# ---------------------------------------------------------------------------
+build:ci --jobs=4
+build:ci --disk_cache=
+build:ci --noshow_progress
+build:ci --verbose_failures
+
+# ---------------------------------------------------------------------------
+# Python-specific
+# ---------------------------------------------------------------------------
+build --python_version=PY3

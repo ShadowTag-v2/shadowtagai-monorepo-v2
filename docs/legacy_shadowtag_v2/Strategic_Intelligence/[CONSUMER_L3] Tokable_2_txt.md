@@ -1,0 +1,51 @@
+# Original Path: All notes/Tokable.2/Tokable.2.txt
+
+# Categories: CONSUMER_L3
+
+Tokable.2
+
+⸻
+
+Slide 12: Ask
+• Raising $2.5M seed round
+• 18-month runway: team, infra, creator seeding
+• Growth target: 500k MAU, $2M+ ARR
+• Use of funds: 50% eng, 30% creator acquisition, 20% marketing
+
+⸻
+
+Go-To-Market Plan (First 6–9 Months)
+
+Phase 1: Core Build (Months 0–2)
+• Finalize core tech: gesture-to-text + avatar playback
+• MVP private mode + basic charades mode
+• Stream module with fan-facing experience
+• Add real-time emotional inference (smile, confusion, gestures)
+
+⸻
+
+Phase 2: Alpha Launch + Creator Pilot (Months 2–4)
+• Recruit 10–20 micro-influencers to run “Tokable Tournaments”
+• Incentivize early creator streams with rev share or grants
+• Run closed tests with elder care partners or intergenerational testers
+• Begin building Discord/Reddit community
+
+⸻
+
+Phase 3: Beta Rollout & Fan-Facing Features (Months 4–6)
+• Launch public Tokable Streams (streamer discoverability, tipping)
+• Launch “Fan Mode” (watch + react + caption clips)
+• Begin weekly highlight recaps
+• Introduce first wave of brand sponsorships
+
+⸻
+
+Phase 4: Scale Acquisition (Months 6–9)
+• TikTok & YouTube Shorts “charades challenge” campaign
+• Partner with community colleges + senior centers (free Tokable Pro trials)
+• Launch creator leaderboard + fan loyalty programs
+• Begin API pilot outreach to edtech / remote-work partners
+
+⸻
+
+If you’d like, I can generate slide images or visuals for any of these slides next—or draft email copy for investor outreach or early creator onboarding. Want that?

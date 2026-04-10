@@ -1,0 +1,37 @@
+{
+  "repo_name": "pnkln-stack-api",
+  "incoming_repo": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/incoming_repos/pnkln-stack-api",
+  "monorepo_root": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
+  "destination": "apps/pnkln-stack_stack/pnkln-stack-api",
+  "manifest_paths": [
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/monorepo_manifest.yaml",
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/manifests/monorepo_manifest.yaml"
+  ],
+  "summary": {
+    "critical": 1,
+    "high": 0,
+    "medium": 2,
+    "low": 0
+  },
+  "blocked": true,
+  "findings": [
+    {
+      "kind": "manifest_split_brain",
+      "severity": "critical",
+      "path": "monorepo_manifest.yaml <> manifests/monorepo_manifest.yaml",
+      "detail": "Multiple manifest surfaces disagree. Reconcile before any fold-in or path migration."
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "LICENSE",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "e27a/LICENSE",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/core/router_daemon/target/debug/deps/objc2_io_kit-1404d3de0d48a674.d: /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/lib.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/consumes_argument.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/mod.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/hidsystem.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/macros.rs
+
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/core/router_daemon/target/debug/deps/libobjc2_io_kit-1404d3de0d48a674.rmeta: /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/lib.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/consumes_argument.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/mod.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/hidsystem.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/macros.rs
+
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/lib.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/consumes_argument.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/mod.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/hidsystem.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/macros.rs:

@@ -1,0 +1,189 @@
+name: Ingestion (hourly)
+
+on:
+  schedule:
+    # Run hourly at minute 0
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual trigger'
+        required: false
+        default: 'Manual trigger'
+
+env:
+  # Repository references
+  POLICY_REPO: ehanc69/ShadowTag-v2-policy
+  POLICY_BRANCH: main
+
+  # File paths
+  POLICY_FILE_PATH: policy/config/strict_policy.yml
+  LOCAL_POLICY_DIR: policy/config
+
+jobs:
+  ingestion:
+    name: Run Gemini Ingestion Layer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create policy directory
+        run: |
+          mkdir -p "${{ env.LOCAL_POLICY_DIR }}"
+
+      - name: Download policy configuration
+        id: download-policy
+        run: |
+          set -e
+
+          # Construct the correct GitHub raw URL
+          # Format: https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}
+          # INCORRECT (causes 404): https://raw.githubusercontent.com/{owner}/{repo}/refs/heads/{branch}/{path}
+          POLICY_URL="https://raw.githubusercontent.com/${{ env.POLICY_REPO }}/${{ env.POLICY_BRANCH }}/${{ env.POLICY_FILE_PATH }}"
+
+          echo "::group::Download Configuration"
+          echo "Policy URL: ${POLICY_URL}"
+          echo "Target directory: ${{ env.LOCAL_POLICY_DIR }}"
+          echo "::endgroup::"
+
+          # Retry logic for transient failures (up to 4 retries with exponential backoff)
+          MAX_RETRIES=4
+          RETRY_COUNT=0
+          RETRY_DELAY=2
+
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "::group::Download attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+
+            if curl -fsSL \
+              --retry 3 \
+              --retry-delay 2 \
+              --retry-max-time 60 \
+              --max-time 30 \
+              --connect-timeout 10 \
+              -H "Accept: application/vnd.github.v3.raw" \
+              -o "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml" \
+              "${POLICY_URL}"; then
+
+              echo "✓ Successfully downloaded policy configuration"
+              echo "::endgroup::"
+
+              # Validate the downloaded file
+              if [ -f "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml" ] && [ -s "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml" ]; then
+                echo "✓ Policy file validated (non-empty)"
+                echo "File size: $(wc -c < "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml") bytes"
+                exit 0
+              else
+                echo "✗ Downloaded file is empty or missing"
+                exit 1
+              fi
+            else
+              EXIT_CODE=$?
+              echo "✗ Download failed with exit code: ${EXIT_CODE}"
+              echo "::endgroup::"
+
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+
+              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+                echo "Retrying in ${RETRY_DELAY} seconds..."
+                sleep $RETRY_DELAY
+                RETRY_DELAY=$((RETRY_DELAY * 2))  # Exponential backoff
+              else
+                echo "::error::Failed to download policy configuration after $MAX_RETRIES attempts"
+                echo "::error::URL: ${POLICY_URL}"
+                echo "::error::Please verify:"
+                echo "::error::  1. The repository '${{ env.POLICY_REPO }}' exists and is accessible"
+                echo "::error::  2. The branch '${{ env.POLICY_BRANCH }}' exists"
+                echo "::error::  3. The file path '${{ env.POLICY_FILE_PATH }}' is correct"
+                echo "::error::  4. The URL format is: https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
+                echo "::error::  5. NOT: https://raw.githubusercontent.com/{owner}/{repo}/refs/heads/{branch}/{path}"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Verify policy file
+        run: |
+          echo "::group::Policy File Contents Preview"
+          if [ -f "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml" ]; then
+            echo "File: ${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml"
+            echo "Size: $(wc -c < "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml") bytes"
+            echo "Lines: $(wc -l < "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml")"
+            echo ""
+            echo "First 20 lines:"
+            head -n 20 "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml" || true
+          else
+            echo "::error::Policy file not found"
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: Run ingestion pipeline
+        id: run-ingestion
+        env:
+          PYTHONUNBUFFERED: "1"
+          LOG_LEVEL: INFO
+        run: |
+          echo "::group::Running Gemini Ingestion Layer"
+
+          # Check if the ingestion API exists
+          if [ -f "src/api/ingestion.py" ]; then
+            echo "Starting FastAPI ingestion service..."
+
+            # Run ingestion trigger
+            # Note: In production, this would trigger the GKE CronJob
+            # For now, we'll just validate the API can start
+            python -c "from src.api.ingestion import app; print('✓ Ingestion API loaded successfully')"
+
+            echo "✓ Ingestion pipeline validated"
+          else
+            echo "::warning::Ingestion API not found at src/api/ingestion.py"
+            echo "Workflow validation complete, but ingestion not executed"
+          fi
+
+          echo "::endgroup::"
+
+      - name: Upload policy artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: policy-config
+          path: ${{ env.LOCAL_POLICY_DIR }}/
+          retention-days: 7
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Ingestion Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ${{ steps.run-ingestion.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Policy Repository**: ${{ env.POLICY_REPO }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Policy Branch**: ${{ env.POLICY_BRANCH }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Policy File**: ${{ env.POLICY_FILE_PATH }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f "${{ env.LOCAL_POLICY_DIR }}/strict_policy.yml" ]; then
+            echo "✓ Policy configuration downloaded successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✗ Policy configuration download failed" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Triggered by" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Manual trigger: ${{ github.event.inputs.reason }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Scheduled run (hourly cron)" >> $GITHUB_STEP_SUMMARY
+          fi

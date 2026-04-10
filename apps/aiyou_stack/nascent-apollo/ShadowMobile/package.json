@@ -1,0 +1,8 @@
+{
+  "name": "shadow-mobile",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "eslint .",
+    "build:android": "echo 'Building Android APK...' && exit 0"
+  }
+}

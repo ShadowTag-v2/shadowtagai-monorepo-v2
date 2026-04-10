@@ -1,0 +1,254 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2025-11-28T14:18:34.941565",
+  "shadowtagai_architecture": {
+    "judge_6": {
+      "description": "Gemini + PyTorch + Rules engine with 98% coverage",
+      "components": [
+        "Gemini Flash 2.0",
+        "PyTorch",
+        "Rules Engine"
+      ],
+      "sla": {
+        "coverage": 0.98,
+        "p99_latency": "\u226490ms"
+      }
+    },
+    "shadowtag_2_0": {
+      "description": "DCT watermarking for content protection",
+      "method": "Discrete Cosine Transform"
+    },
+    "cor_ns": {
+      "description": "Unified execution brain + service mesh",
+      "components": [
+        "Execution Engine",
+        "Service Mesh"
+      ]
+    }
+  },
+  "llm_allocation": {
+    "gemini": 0.4,
+    "claude": 0.35,
+    "gpt5": 0.15,
+    "perplexity": 0.05,
+    "grok": 0.05
+  },
+  "jr_framework": {
+    "purpose": "Does this advance pnkln revenue/mission?",
+    "reasons": "Defensible judgment with evidence",
+    "brakes": "p99 survivability, bootstrap constraints"
+  },
+  "bootstrap_gates": {
+    "roi_target": "3x in 18mo",
+    "ltv_cac_target": "4:1 in 12mo",
+    "p99_latency": "\u226490ms",
+    "security": "100% gate (absolute)"
+  },
+  "tech_stack": {
+    "extraction": "0xSero scripts (Python stdlib, sqlite3)",
+    "metadata": "Gemini Flash 2.0 ($0.075/1M input)",
+    "orchestration": [
+      "Grok",
+      "Sonnet 4.5",
+      "Gemini",
+      "GPT-5",
+      "Perplexity"
+    ],
+    "storage": [
+      "GitHub",
+      "GCS"
+    ],
+    "deployment": [
+      "MacBook",
+      "Vertex AI Workbench",
+      "GKE Native"
+    ]
+  },
+  "cost_economics": {
+    "initial_extraction": "$0.45 one-time",
+    "github_storage": "$0 (free)",
+    "gcs_storage": "$0.02/month",
+    "per_query_llm": "$0.08-0.12"
+  },
+  "pnkln_architecture": {
+    "judge_6": {
+      "description": "Gemini + PyTorch + Rules engine with 98% coverage",
+      "components": [
+        "Gemini Flash 2.0",
+        "PyTorch",
+        "Rules Engine"
+      ],
+      "sla": {
+        "coverage": 0.98,
+        "p99_latency": "\u226490ms"
+      }
+    },
+    "shadowtag_2_0": {
+      "description": "DCT watermarking for content protection",
+      "method": "Discrete Cosine Transform"
+    },
+    "cor_ns": {
+      "description": "Unified execution brain + service mesh",
+      "components": [
+        "Execution Engine",
+        "Service Mesh"
+      ]
+    }
+  },
+  "conversations": [
+    {
+      "conversation_id": "8372574a-d1b3-485d-a41f-20a9a298558e",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Judge#6 System Integration\nThe user's main objective is to integrate three key architectural patterns into their LLM memory system for \"Judge#6\" governance enforcement: validate GitHub MCP for token compression, adapt `bottom`'s TUI patterns using Python/Textual for a monitoring UI, and develop a high-performance, edge-native runtime inspired by `tinygrad`'s lazy execution and HCQ-style command batching for CloudFlare Workers + WASM to meet a p99 \u2264 90ms SLA, including a pre-sell strategy and prototype validation.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-22T07:42:25Z",
+      "metadata": {
+        "title": "Judge#6 System Integration",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    },
+    {
+      "conversation_id": "461f2d5a-ffca-424f-a23c-588b7943a6b7",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Validate GitHub MCP Integration\nThe user's main objective is to proceed with Phase 1 of the GitHub MCP server integration plan, focusing on rapid validation of token compression. This involves generating and storing a GitHub Personal Access Token (PAT), running a local Docker MCP server, configuring Claude Code for integration, and testing the setup on a target repository to measure the token compression ratio.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-22T07:39:27Z",
+      "metadata": {
+        "title": "Validate GitHub MCP Integration",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    },
+    {
+      "conversation_id": "0bc0a19e-f51d-4c97-ae24-e9d9b8f3cd9c",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Execute Google ML Upgrade\nThe user's main objective is to execute the `google_ml.upgrade_to_preview_version()` command. The immediate goal is to understand what this command does and how to run it within the current environment, especially since initial searches for `google_ml` in the specified directory yielded no results.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-20T04:08:50Z",
+      "metadata": {
+        "title": "Execute Google ML Upgrade",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    },
+    {
+      "conversation_id": "f2c0256d-1376-4bf7-a236-4111902fd53f",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Locate JSON Files\nThe user's main objective is to locate JSON files, specifically `claude_web_extraction_*.json` files in the Downloads directory and other `.json` files within the project directory. This is a step towards their broader goal of integrating Claude Web and Claude Code conversation history into their LLM memory system.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-20T02:51:09Z",
+      "metadata": {
+        "title": "Locate JSON Files",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    },
+    {
+      "conversation_id": "6af1f75d-3b2d-414a-9852-9135bd53e8ef",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Integrate Claude Memory\nThe user's main objective is to integrate their Claude Web and Claude Code conversation history into their LLM memory system. This involves:\n1.  **Processing Claude Web Extraction**: Locate the `claude_web_extraction_*.json` file, move it to the `extractions/` directory, and then run `scripts/merge_web_extractions.py` to incorporate this data.\n2.  **Processing Claude Code Extraction**: Execute `scripts/extract_and_commit.py` to extract conversations from Claude Code's local history.\n3.  **Deploying Consolidated Memory**: Use `scripts/claude_code_memory_local.py` to install the updated memory into the Claude Code environment.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-20T00:30:29Z",
+      "metadata": {
+        "title": "Integrate Claude Memory",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    },
+    {
+      "conversation_id": "6ce3e518-7fae-4ba0-adf8-991b80d4dd1c",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Integrate Web and Drive Setup\nThe user's main objective is to continue integrating new data sources into their LLM memory system. This involves:\n1.  **Completing Web Extraction**: Moving the downloaded `claude_web_extraction_*.json` file to the `extractions/` directory.\n2.  **Setting up Google Drive Extraction**: Providing the `credentials.json` file in the `scripts/` directory for Google Drive API authentication, and understanding how to add their Gemini API key for embeddings.\n3.  **Addressing Local Extraction**: Confirming the correct paths for Cursor/Claude Code conversation history or indicating if local extraction should be skipped.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-19T19:12:47Z",
+      "metadata": {
+        "title": "Integrate Web and Drive Setup",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    },
+    {
+      "conversation_id": "49c7d1f2-0f9a-4a4a-a42f-237f43ac5e65",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Expand LLM Memory Sources\nThe user's main objective is to establish a comprehensive LLM memory system by integrating new data sources. Specifically, they aim to:\n1.  Successfully set up and execute the Google Drive knowledge extraction process, including enabling the Google Drive API, creating OAuth credentials, and running the `extract_google_drive.py` script.\n2.  Merge the extracted Google Drive knowledge with the existing memory system using `merge_drive_knowledge.py`.\n3.  Deploy the updated, consolidated memory to Claude Code via `claude_code_memory_local.py`.\n4.  Ensure that all components (web extraction for Claude, Google Drive extraction for various file types including ebooks and zip archives, and local 0xSero extractions) are fully integrated and functional, providing a complete and searchable knowledge base.",
+          "timestamp": null,
+          "code_context": []
+        }
+      ],
+      "source": "manual-import",
+      "created_at": "2025-11-19T18:56:55Z",
+      "metadata": {
+        "title": "Expand LLM Memory Sources",
+        "tags": [],
+        "difficulty": "unknown",
+        "quality_score": 0.0,
+        "project": "web-extracted",
+        "technologies": []
+      }
+    }
+  ],
+  "knowledge": [],
+  "statistics": {
+    "total_conversations": 7,
+    "total_tokens": 0,
+    "extraction_cost": 0.0,
+    "newly_extracted": 0
+  }
+}

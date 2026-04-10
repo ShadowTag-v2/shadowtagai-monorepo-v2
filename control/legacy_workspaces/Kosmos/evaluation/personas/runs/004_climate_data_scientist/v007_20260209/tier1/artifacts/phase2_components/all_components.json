@@ -1,0 +1,156 @@
+{
+  "2.1_hypothesis_generation": {
+    "count": 0,
+    "response_type": "HypothesisGenerationResponse",
+    "research_question": "How do atmospheric CO2 concentrations correlate with global surface temperature anomalies, and what is the lag structure of this relationship?",
+    "domain": "physics",
+    "hypotheses": [],
+    "novelty_checker_integrated": false,
+    "novelty_checker_note": "NoveltyChecker exists but never called from HypothesisGeneratorAgent",
+    "require_novelty_check_config": true,
+    "min_novelty_score_config": 0.5,
+    "status": "PASS",
+    "duration_seconds": 32.86
+  },
+  "2.2_literature_search": {
+    "count": 126,
+    "search_query": "How do atmospheric CO2 concentrations correlate with global surface temperature ",
+    "research_question": "How do atmospheric CO2 concentrations correlate with global surface temperature anomalies, and what is the lag structure of this relationship?",
+    "papers": [
+      {
+        "title": "Contrasting futures for ocean and society from different anthropogenic CO2 emissions scenarios",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2015,
+        "has_abstract": false
+      },
+      {
+        "title": "Correlations of the first and second derivatives of atmospheric CO2 with global surface temperature and the El Nino-Southern Oscillation respectively",
+        "source": "PaperSource.ARXIV",
+        "year": 2014,
+        "has_abstract": true
+      },
+      {
+        "title": "Exploring the spatiotemporal impact and pathways of temperature and CO2 concentration based on network approach.",
+        "source": "PaperSource.PUBMED",
+        "year": 2025,
+        "has_abstract": true
+      },
+      {
+        "title": "Cloud Responses to Abrupt Solar and CO2 Forcing: 1. Temperature Mediated Cloud Feedbacks",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2024,
+        "has_abstract": true
+      },
+      {
+        "title": "Standardising the \u201cGregory method\u201d for calculating equilibrium climate sensitivity",
+        "source": "PaperSource.SEMANTIC_SCHOLAR",
+        "year": 2025,
+        "has_abstract": true
+      }
+    ],
+    "status": "PASS",
+    "duration_seconds": 2.4
+  },
+  "2.3_experiment_design": {
+    "count": 1,
+    "research_question": "How do atmospheric CO2 concentrations correlate with global surface temperature anomalies, and what is the lag structure of this relationship?",
+    "domain": "physics",
+    "protocols": [
+      {
+        "name": "unnamed",
+        "has_steps": false,
+        "step_count": 0,
+        "has_variables": false,
+        "has_controls": false,
+        "has_statistical_tests": false,
+        "experiment_type": "unknown"
+      }
+    ],
+    "power_analyzer_integrated": false,
+    "experiment_validator_integrated": false,
+    "gap_notes": [
+      "PowerAnalyzer exists but never called by designer",
+      "ExperimentValidator exists but never imported by designer",
+      "Inline _validate_protocol() used instead (~37 lines vs ~500 line validator)"
+    ],
+    "status": "PASS",
+    "duration_seconds": 88.81
+  },
+  "2.4_code_execution": {
+    "code_generated": true,
+    "code_length": 3001,
+    "code_preview": "# T-Test Comparison Analysis\n# Generated from protocol template\n\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\nfrom pathlib import Path\nfrom kosmos.execution.data_analysis import DataAnalyzer\n\n# Data loading with synthetic fallback (Issue #51 fix)\n# Expected format: CSV with columns 'group' and 'measurement'\ndf = None\nif 'data_path' in dir() and data_path:\n    try:\n        df = pd.read_csv(data_path)\n        _data_source = 'file'\n    except Exception as e:\n        print(f'Warnin",
+    "domain": "physics",
+    "data_path": "/mnt/c/python/Kosmos/evaluation/data/climate_co2_temperature_test.csv",
+    "has_data_source_flag": true,
+    "uses_synthetic_data": true,
+    "hardcoded_effect_size": false,
+    "execution": {
+      "success": false,
+      "stdout": "",
+      "stderr": "\nTraceback (most recent call last):\n  File \"/home/jim/miniconda3/envs/llm/lib/python3.11/site-packages/pandas/core/indexes/base.py\", line 3812, in get_loc\n    return self._engine.get_loc(casted_key)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"pandas/_libs/index.pyx\", line 167, in pandas._libs.index.IndexEngine.get_loc\n  File \"pandas/_libs/index.pyx\", line 196, in pandas._libs.index.IndexEngine.get_loc\n  File \"pandas/_libs/hashtable_class_helper.pxi\", line 7088, in pandas._libs.hashtable.",
+      "error": "'group'",
+      "return_value": "None"
+    },
+    "gap_notes": [
+      "Synthetic data flag in code: True",
+      "Uses synthetic data: True",
+      "Hardcoded effect_size=0.5: False",
+      "Direct exec() used (no Docker sandbox by default)"
+    ],
+    "status": "PASS",
+    "duration_seconds": 0.25
+  },
+  "2.5_data_analysis": {
+    "interpretation_received": true,
+    "interpretation_type": "ResultInterpretation",
+    "research_question": "How do atmospheric CO2 concentrations correlate with global surface temperature anomalies, and what is the lag structure of this relationship?",
+    "domain": "physics",
+    "hypothesis_supported": true,
+    "confidence": 0.85,
+    "summary": "The results provide strong statistical evidence for a significant relationship between atmospheric CO2 concentrations and global surface temperature anomalies, with a large effect size suggesting substantial practical importance. However, the correlation analysis alone cannot establish causation or ",
+    "key_findings": [
+      "Statistically significant relationship between CO2 concentrations and temperature anomalies (p=0.003)",
+      "Large effect size (Cohen's d=0.8) indicating substantial practical significance",
+      "Strong negative t-statistic (-12.5) suggesting inverse relationship direction"
+    ],
+    "anomalies_detected": [],
+    "supports_hypothesis_method": "LLM-based (not formal statistical criteria)",
+    "gap_notes": [
+      "supports_hypothesis set by LLM interpretation, not formal criteria",
+      "No check for _data_source (synthetic vs real)",
+      "No check_assumptions() called before interpretation"
+    ],
+    "status": "PASS",
+    "duration_seconds": 23.68
+  },
+  "2.6_convergence_detection": {
+    "research_question": "How do atmospheric CO2 concentrations correlate with global surface temperature anomalies, and what is the lag structure of this relationship?",
+    "domain": "physics",
+    "test_max_iterations": {
+      "should_stop": true,
+      "reason": "StoppingReason.NO_TESTABLE_HYPOTHESES",
+      "details": "0 untested hypotheses, 0 queued experiments"
+    },
+    "test_novelty_decline": {
+      "should_stop": true,
+      "reason": "StoppingReason.NO_TESTABLE_HYPOTHESES",
+      "novelty_trend": [
+        0.8,
+        0.6,
+        0.4,
+        0.2,
+        0.1,
+        0.1
+      ],
+      "details": "0 untested hypotheses, 0 queued experiments"
+    },
+    "cost_tracking": {
+      "total_cost": 0.0,
+      "is_always_zero": true,
+      "note": "total_cost is never propagated from LLM calls"
+    },
+    "status": "PASS",
+    "duration_seconds": 0.0
+  }
+}

@@ -1,0 +1,60 @@
+# Cloud Build configuration for Antigravity Orchestrator
+# Builds and deploys to Cloud Run
+
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:$SHORT_SHA'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:latest'
+      - '-f'
+      - 'bin/Dockerfile.antigravity'
+      - '.'
+
+  # Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:$SHORT_SHA'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:latest'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'antigravity-orchestrator'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:$SHORT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '2Gi'
+      - '--cpu'
+      - '2'
+      - '--timeout'
+      - '300'
+      - '--concurrency'
+      - '80'
+      - '--set-env-vars'
+      - 'n-autoresearch/Kosmos/BioAgents_URL=https://n-autoresearch/Kosmos/BioAgents-server-215390634092.us-central1.run.app'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/antigravity/orchestrator:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+timeout: '1200s'

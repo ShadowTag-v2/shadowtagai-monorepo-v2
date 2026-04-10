@@ -1,0 +1,237 @@
+name: pnkln Prompt Analysis
+on:
+  pull_request:
+    paths:
+      - 'specs/**'
+      - 'docs/**'
+      - 'pnkln-gke-deployment/**'
+      - '.github/workflows/prompt-analysis.yml'
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - 'specs/**'
+      - 'docs/**'
+  workflow_dispatch:
+    inputs:
+      component:
+        description: 'Component to analyze (all, judge6, ingestion-layer, orchestrator, shadowtag, ns, jr)'
+        required: true
+        default: 'all'
+      mode:
+        description: 'Execution mode (test, production)'
+        required: true
+        default: 'production'
+
+env:
+  GCP_PROJECT_ID: pnkln-prod-12345
+  GCP_REGION: us-central1
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  analyze-components:
+    name: Analyze pnkln Components
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install google-cloud-aiplatform
+          pip install matplotlib seaborn pandas
+          pip install jinja2
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+        continue-on-error: true
+
+      - name: Detect changed components
+        id: detect-changes
+        run: |
+          echo "Detecting which component specs changed..."
+
+          CHANGED_COMPONENTS=""
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            CHANGED_COMPONENTS="${{ github.event.inputs.component }}"
+          else
+            # Detect changes from git diff
+            if git diff --name-only HEAD~1 | grep -q "specs/judge6"; then
+              CHANGED_COMPONENTS="${CHANGED_COMPONENTS} judge6"
+            fi
+            if git diff --name-only HEAD~1 | grep -q "specs/ingestion-layer"; then
+              CHANGED_COMPONENTS="${CHANGED_COMPONENTS} ingestion-layer"
+            fi
+            if git diff --name-only HEAD~1 | grep -q "specs/orchestrator"; then
+              CHANGED_COMPONENTS="${CHANGED_COMPONENTS} orchestrator"
+            fi
+            if git diff --name-only HEAD~1 | grep -q "specs/shadowtag"; then
+              CHANGED_COMPONENTS="${CHANGED_COMPONENTS} shadowtag"
+            fi
+            if git diff --name-only HEAD~1 | grep -q "specs/ns"; then
+              CHANGED_COMPONENTS="${CHANGED_COMPONENTS} ns"
+            fi
+            if git diff --name-only HEAD~1 | grep -q "specs/jr"; then
+              CHANGED_COMPONENTS="${CHANGED_COMPONENTS} jr"
+            fi
+
+            # If no specific component specs changed, analyze all
+            if [[ -z "$CHANGED_COMPONENTS" ]]; then
+              CHANGED_COMPONENTS="all"
+            fi
+          fi
+
+          echo "components=${CHANGED_COMPONENTS}" >> $GITHUB_OUTPUT
+          echo "Changed components: ${CHANGED_COMPONENTS}"
+
+      - name: Execute prompt analysis
+        id: analyze
+        run: |
+          cd pnkln-gke-deployment/prompts/scripts
+
+          COMPONENTS="${{ steps.detect-changes.outputs.components }}"
+          MODE="${{ github.event.inputs.mode || 'production' }}"
+
+          if [[ "$MODE" == "test" ]]; then
+            # Test mode: use dummy data
+            python execute_prompt.py ${COMPONENTS} \
+              --test-mode \
+              --project=${{ env.GCP_PROJECT_ID }} \
+              --region=${{ env.GCP_REGION }}
+          else
+            # Production mode: use real specs
+            if [[ -d "../../../specs" ]]; then
+              python execute_prompt.py ${COMPONENTS} \
+                --input-dir=../../../specs \
+                --project=${{ env.GCP_PROJECT_ID }} \
+                --region=${{ env.GCP_REGION }}
+            else
+              echo "WARNING: specs/ directory not found, falling back to test mode"
+              python execute_prompt.py ${COMPONENTS} \
+                --test-mode \
+                --project=${{ env.GCP_PROJECT_ID }} \
+                --region=${{ env.GCP_REGION }}
+            fi
+          fi
+
+          # Set output flag
+          echo "analysis_complete=true" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Generate analysis summary
+        id: summary
+        run: |
+          python pnkln-gke-deployment/prompts/scripts/generate_summary.py \
+            --input-dir=pnkln-gke-deployment/prompts/outputs \
+            --output-file=analysis-summary.md \
+            --format=github-markdown
+
+      - name: Upload analysis outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: prompt-analysis-outputs
+          path: |
+            pnkln-gke-deployment/prompts/outputs/*.json
+            pnkln-gke-deployment/prompts/outputs/*.md
+            analysis-summary.md
+          retention-days: 30
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let summary = 'No analysis summary generated';
+            try {
+              summary = fs.readFileSync('analysis-summary.md', 'utf8');
+            } catch (err) {
+              console.error('Failed to read summary:', err);
+            }
+
+            const comment = `## 🤖 pnkln Component Analysis
+
+            Automated analysis via Gemini 2.0 Pro completed for this PR.
+
+            ${summary}
+
+            ---
+
+            📊 **Full Analysis**: Download artifacts from [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            🔄 **Triggered by**: \`${{ github.event_name }}\`
+            📝 **Commit**: \`${{ github.sha }}\`
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Check analysis results
+        run: |
+          python pnkln-gke-deployment/prompts/scripts/check_results.py \
+            --input-dir=pnkln-gke-deployment/prompts/outputs \
+            --min-confidence=60 \
+            --fail-on-no-go
+        continue-on-error: true
+
+      - name: Generate visualizations
+        run: |
+          python pnkln-gke-deployment/prompts/scripts/visualize_outputs.py \
+            --input-dir=pnkln-gke-deployment/prompts/outputs \
+            --output-dir=visualizations
+
+      - name: Upload visualizations
+        uses: actions/upload-artifact@v4
+        with:
+          name: analysis-visualizations
+          path: visualizations/
+          retention-days: 30
+
+  update-grafana-dashboard:
+    name: Update Grafana Dashboard
+    runs-on: ubuntu-latest
+    needs: analyze-components
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/claude/')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download analysis outputs
+        uses: actions/download-artifact@v4
+        with:
+          name: prompt-analysis-outputs
+          path: outputs/
+
+      - name: Push metrics to monitoring
+        run: |
+          # Push analysis metrics to Cloud Monitoring for Grafana
+          python pnkln-gke-deployment/prompts/scripts/push_metrics.py \
+            --input-dir=outputs \
+            --project=${{ env.GCP_PROJECT_ID }} \
+            --metric-prefix=pnkln/prompt_analysis
+        continue-on-error: true

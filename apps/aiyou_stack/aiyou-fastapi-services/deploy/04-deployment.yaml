@@ -1,0 +1,205 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge6-inference
+  namespace: pnkln
+  labels:
+    app: judge6
+    component: inference
+    version: v1
+spec:
+  replicas: 2  # Start with 2 replicas, HPA will adjust
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0  # Ensure zero-downtime deployments
+  selector:
+    matchLabels:
+      app: judge6
+      component: inference
+  template:
+    metadata:
+      labels:
+        app: judge6
+        component: inference
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: pnkln-inference
+
+      # Node affinity to prefer GPU nodes
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: cloud.google.com/gke-nodepool
+                    operator: In
+                    values:
+                      - gpu-pool
+
+      # Tolerate GPU node taints
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Equal
+          value: "present"
+          effect: NoSchedule
+
+      # Init container to download/verify model
+      initContainers:
+        - name: model-loader
+          image: google/cloud-sdk:slim
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Loading model from GCS..."
+              # Replace with your actual GCS bucket
+              # gsutil -m rsync -r gs://your-model-bucket/judge-6/ /models/
+              mkdir -p /models/judge-6
+              echo "Model loaded successfully"
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+
+      containers:
+        - name: inference
+          # Replace with your actual inference container image
+          image: gcr.io/PROJECT_ID/judge6-inference:latest
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+
+          env:
+            # Configuration from ConfigMap
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: pnkln-config
+                  key: LOG_LEVEL
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: pnkln-config
+                  key: ENVIRONMENT
+            - name: MODEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: pnkln-config
+                  key: MODEL_NAME
+            - name: MAX_BATCH_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: pnkln-config
+                  key: MAX_BATCH_SIZE
+            - name: INFERENCE_TIMEOUT_MS
+              valueFrom:
+                configMapKeyRef:
+                  name: pnkln-config
+                  key: INFERENCE_TIMEOUT_MS
+            - name: WORKER_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  name: pnkln-config
+                  key: WORKER_THREADS
+
+            # Secrets (if using External Secrets Operator)
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: pnkln-secrets
+                  key: api-key
+                  optional: true
+
+            # Pod metadata
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+
+          # Health checks
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+
+          # Startup probe for slow model loading
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30  # 5 minutes total
+
+          # Resource requests and limits
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 8Gi
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: 4000m
+              memory: 16Gi
+              nvidia.com/gpu: "1"
+
+          volumeMounts:
+            - name: model-storage
+              mountPath: /models
+              readOnly: true
+            - name: cache
+              mountPath: /cache
+
+      volumes:
+        # Model storage (can be GCS FUSE or persistent volume)
+        - name: model-storage
+          emptyDir:
+            sizeLimit: 20Gi
+
+        # Cache volume for inference optimization
+        - name: cache
+          emptyDir:
+            sizeLimit: 10Gi
+
+      # Terminate pods quickly for faster scaling
+      terminationGracePeriodSeconds: 30

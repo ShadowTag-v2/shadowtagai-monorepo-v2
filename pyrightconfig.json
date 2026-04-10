@@ -1,0 +1,65 @@
+{
+  "$schema": "https://docs.basedpyright.com/v1.38.2/configuration/config-files/",
+
+  "include": [
+    "apps/aiyou_stack/aiyou-fastapi-services/src",
+    "apps/aiyou_stack/aiyou-fastapi-services/tests",
+    "libs",
+    "scripts"
+  ],
+
+  "exclude": [
+    "**/.git",
+    "**/__pycache__",
+    "**/.venv",
+    "**/venv",
+    "**/.pytest_cache",
+    "**/.mypy_cache",
+    "**/.ruff_cache",
+    "**/.ipynb_checkpoints",
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/out",
+    "**/coverage",
+
+    "archive",
+    "tools/legacy",
+    "docs/legacy_shadowtag_v2",
+    "apps/aiyou_ecosystem/raw_ingest",
+
+    "**/_PRE_OMEGA_BACKUP_*",
+    "**/ShadowTag-Omega",
+    "**/arsenal_recovered",
+    "**/repos/*-legacy",
+
+    "apps/aiyou_stack/aiyou-fastapi-services/external_memory",
+    "apps/aiyou_stack/aiyou-fastapi-services/external_repos",
+    "apps/aiyou_stack/aiyou-fastapi-services/vendor",
+    "apps/aiyou_stack/aiyou-fastapi-services/y"
+  ],
+
+  "ignore": [
+    "apps/aiyou_stack/aiyou-fastapi-services/external_memory",
+    "apps/aiyou_stack/aiyou-fastapi-services/external_repos"
+  ],
+
+  "typeCheckingMode": "basic",
+  "reportMissingTypeStubs": "none",
+  "reportMissingImports": "warning",
+
+  "executionEnvironments": [
+    {
+      "root": "apps/aiyou_stack/aiyou-fastapi-services/src"
+    },
+    {
+      "root": "apps/aiyou_stack/aiyou-fastapi-services/tests"
+    },
+    {
+      "root": "libs"
+    },
+    {
+      "root": "scripts"
+    }
+  ]
+}

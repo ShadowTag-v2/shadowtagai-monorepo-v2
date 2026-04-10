@@ -1,0 +1,7 @@
+Recovered truth:
+- product, lab, and control-plane were mixed in thread momentum
+- current strongest direction is:
+  - counselconduit = business-facing Google-native MVP
+  - uphillsnowball = internal Apple Silicon lab
+  - pnkln = operating/control doctrine
+- canonicalization and control-plane truth must be fixed before more feature drafting

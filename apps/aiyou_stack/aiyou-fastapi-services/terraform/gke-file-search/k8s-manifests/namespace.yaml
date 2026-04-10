@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln-core
+  labels:
+    name: pnkln-core
+    environment: production
+    component: file-search-integration

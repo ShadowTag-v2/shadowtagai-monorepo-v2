@@ -1,0 +1,13 @@
+node_modules/
+.venv/
+dist/
+build/
+bin/
+obj/
+target/
+.chroma_db/
+*.min.js
+*.sqlite3
+*.pdb
+*.pdf
+.git/

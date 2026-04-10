@@ -1,0 +1,51 @@
+name: Backend CI (ShadowTag-v2-fastapi-services)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    # Monorepo Optimization: Only run this workflow if files in the backend app change!
+    paths:
+      - 'apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/**'
+      - '.github/workflows/backend-ci.yml'
+
+jobs:
+  lint-and-typecheck:
+    name: Lint, Format, and Type Check
+    runs-on: ubuntu-latest
+    
+    # Set the default directory so we don't have to `cd` in every single step
+    defaults:
+      run:
+        working-directory: apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
+
+    steps:
+      - name: 📥 Check out repository
+        uses: actions/checkout@v4
+
+      - name: ⚡ Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+          enable-cache: true
+          # Cache based on the lockfile in this specific app directory
+          cache-dependency-glob: "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/uv.lock"
+
+      - name: 🐍 Set up Python
+        # uv is so fast it handles its own python downloads. Adjust the version if needed.
+        run: uv python install 3.11 
+
+      - name: 📦 Install dependencies
+        # --frozen ensures CI fails if the agent forgot to commit the updated uv.lock file
+        run: uv sync --frozen
+
+      - name: 🧹 Run Ruff Linter
+        run: uv run ruff check .
+
+      - name: 🎨 Run Ruff Formatter (Check Only)
+        # We use --check here because CI shouldn't modify code, it should just fail if it's unformatted
+        run: uv run ruff format --check .
+
+      - name: ʦ Run basedpyright Type Checker
+        run: uv run basedpyright

@@ -1,0 +1,37 @@
+{
+  "models": [
+    {
+      "title": "Gemini 3 Pro",
+      "provider": "google-genai",
+      "model": "gemini-3-pro-preview",
+      "apiKey": "ENV:GEMINI_API_KEY"
+    },
+    {
+      "title": "Gemini 2.0 Flash",
+      "provider": "google-genai",
+      "model": "gemini-2.0-flash-exp",
+      "apiKey": "ENV:GEMINI_API_KEY"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "Gemini 3 Autocomplete",
+    "provider": "google-genai",
+    "model": "gemini-3-pro-preview",
+    "apiKey": "ENV:GEMINI_API_KEY"
+  },
+  "customCommands": [
+    {
+      "name": "judge6",
+      "prompt": "Act as Judge #6. Apply ATP 5-19 risk assessment to this code/decision. Output: APPROVE/DENY with reasoning, risk tier (1-5), and confidence score (0-100%)."
+    },
+    {
+      "name": "musk-filter",
+      "prompt": "Apply Musk First Principles Filter: 1) Question requirements (who gave this? bias?), 2) Try to delete entirely, 3) Only then optimize. What should be deleted from this code?"
+    },
+    {
+      "name": "bootstrap",
+      "prompt": "Evaluate this feature against Bootstrap Discipline gates: ROI≥3× at 18mo, LTV:CAC≥4:1 at 12mo. Should we proceed?"
+    }
+  ],
+  "allowAnonymousTelemetry": false
+}

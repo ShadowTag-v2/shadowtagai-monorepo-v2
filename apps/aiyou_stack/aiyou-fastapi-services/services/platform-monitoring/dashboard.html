@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNKLN Platform Monitoring Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .last-update {
+            float: right;
+            color: #999;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #667eea;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-healthy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-degraded {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-unhealthy {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .progress-green { background: linear-gradient(90deg, #28a745, #20c997); }
+        .progress-yellow { background: linear-gradient(90deg, #ffc107, #fd7e14); }
+        .progress-red { background: linear-gradient(90deg, #dc3545, #c82333); }
+
+        .recommendation {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .recommendation h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .recommendation p {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .recommendation .impact {
+            font-weight: 600;
+            color: #28a745;
+        }
+
+        .recommendation .confidence {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .priority-critical { border-left-color: #dc3545; }
+        .priority-high { border-left-color: #fd7e14; }
+        .priority-medium { border-left-color: #ffc107; }
+        .priority-low { border-left-color: #6c757d; }
+
+        .service-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .service-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .service-cost {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin-top: 15px;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-critical {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .revenue-calc {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .revenue-calc h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #0056b3;
+        }
+
+        .revenue-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+
+        .revenue-row strong {
+            color: #0056b3;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PNKLN Core Stack™ Platform Dashboard</h1>
+            <p class="subtitle">Unified Monitoring: V2X Mesh + Gemini Ingestion</p>
+            <div class="last-update" id="lastUpdate">Last updated: --</div>
+        </header>
+
+        <!-- Platform Overview -->
+        <div class="grid">
+            <div class="card">
+                <h2>Platform Health</h2>
+                <div id="platformHealth">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Budget Status</h2>
+                <div id="budgetStatus">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Performance</h2>
+                <div id="performance">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cost Breakdown & Recommendations -->
+        <div class="grid">
+            <div class="card">
+                <h2>Cost Breakdown (30 Days)</h2>
+                <div class="chart-container">
+                    <canvas id="costChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Budget Utilization</h2>
+                <div id="budgetUtilization">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div class="card">
+            <h2>AI-Powered Optimization Recommendations</h2>
+            <div id="recommendations">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Revenue Requirements -->
+        <div class="card">
+            <h2>Revenue Requirements (70% Margin Target)</h2>
+            <div id="revenueRequirements">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Active Alerts -->
+        <div class="card" id="alertsCard" style="display: none;">
+            <h2>Active Alerts</h2>
+            <div id="alerts"></div>
+        </div>
+    </div>
+
+    <script>
+        let costChart = null;
+
+        async function fetchData(endpoint) {
+            try {
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error(`Error fetching ${endpoint}:`, error);
+                return null;
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function getProgressClass(percent) {
+            if (percent < 75) return 'progress-green';
+            if (percent < 90) return 'progress-yellow';
+            return 'progress-red';
+        }
+
+        async function updatePlatformHealth() {
+            const data = await fetchData('/metrics/platform');
+            if (!data) return;
+
+            const healthHTML = `
+                <div class="metric-label">Overall Status</div>
+                <div class="metric-value">
+                    <span class="status-badge status-${data.services.degraded > 0 ? 'degraded' : 'healthy'}">
+                        ${data.services.degraded > 0 ? 'DEGRADED' : 'HEALTHY'}
+                    </span>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="service-row">
+                        <span>Total Services</span>
+                        <span class="service-cost">${data.services.total}</span>
+                    </div>
+                    <div class="service-row">
+                        <span>Healthy</span>
+                        <span class="service-cost" style="color: #28a745;">${data.services.healthy}</span>
+                    </div>
+                    <div class="service-row">
+                        <span>Degraded</span>
+                        <span class="service-cost" style="color: #ffc107;">${data.services.degraded}</span>
+                    </div>
+                    <div class="service-row">
+                        <span>Unhealthy</span>
+                        <span class="service-cost" style="color: #dc3545;">${data.services.unhealthy}</span>
+                    </div>
+                </div>
+            `;
+            document.getElementById('platformHealth').innerHTML = healthHTML;
+
+            // Performance metrics
+            const perfHTML = `
+                <div class="metric-label">Requests/Second</div>
+                <div class="metric-value">${data.performance.requests_per_second.toFixed(1)}</div>
+                <div class="metric-label" style="margin-top: 15px;">Avg Latency</div>
+                <div class="metric-value">${data.performance.avg_latency_ms.toFixed(1)} ms</div>
+                <div class="metric-label" style="margin-top: 15px;">Error Rate</div>
+                <div class="metric-value">${(data.performance.error_rate * 100).toFixed(2)}%</div>
+            `;
+            document.getElementById('performance').innerHTML = perfHTML;
+
+            // Update last update time
+            document.getElementById('lastUpdate').textContent =
+                `Last updated: ${new Date(data.timestamp).toLocaleString()}`;
+
+            // Show alerts if any
+            if (data.alerts && data.alerts.length > 0) {
+                const alertsHTML = data.alerts.map(alert =>
+                    `<div class="alert alert-warning">${alert}</div>`
+                ).join('');
+                document.getElementById('alerts').innerHTML = alertsHTML;
+                document.getElementById('alertsCard').style.display = 'block';
+            }
+        }
+
+        async function updateBudgetStatus() {
+            const data = await fetchData('/costs/status');
+            if (!data) return;
+
+            const budget = data.budget_status;
+            const budgetHTML = `
+                <div class="metric-label">Monthly Spend</div>
+                <div class="metric-value">${formatCurrency(budget.total.current_spend)}</div>
+                <div class="metric-label">Budget: ${formatCurrency(budget.total.budget)}</div>
+                <div class="progress-bar" style="margin-top: 15px;">
+                    <div class="progress-fill ${getProgressClass(budget.total.utilization_percent)}"
+                         style="width: ${Math.min(budget.total.utilization_percent, 100)}%"></div>
+                    <div class="progress-text">${budget.total.utilization_percent.toFixed(1)}% Used</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="metric-label">Remaining Budget</div>
+                    <div style="font-size: 20px; font-weight: 600; color: ${budget.total.remaining > 0 ? '#28a745' : '#dc3545'};">
+                        ${formatCurrency(budget.total.remaining)}
+                    </div>
+                </div>
+            `;
+            document.getElementById('budgetStatus').innerHTML = budgetHTML;
+
+            // Budget utilization by service
+            const utilizationHTML = Object.entries(budget)
+                .filter(([key]) => key !== 'total')
+                .map(([service, data]) => `
+                    <div style="margin-bottom: 20px;">
+                        <div class="metric-label">${service}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill ${getProgressClass(data.utilization_percent)}"
+                                 style="width: ${Math.min(data.utilization_percent, 100)}%"></div>
+                            <div class="progress-text">${data.utilization_percent.toFixed(1)}%</div>
+                        </div>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                            ${formatCurrency(data.current_spend)} / ${formatCurrency(data.budget)}
+                        </div>
+                    </div>
+                `).join('');
+            document.getElementById('budgetUtilization').innerHTML = utilizationHTML;
+
+            // Show budget alerts
+            if (data.alerts && data.alerts.length > 0) {
+                const alertsHTML = data.alerts.map(alert => `
+                    <div class="alert ${alert.type === 'critical' ? 'alert-critical' : 'alert-warning'}">
+                        <strong>${alert.service}</strong>: ${alert.utilization_percent.toFixed(1)}% of budget used<br>
+                        <small>${alert.recommendation}</small>
+                    </div>
+                `).join('');
+
+                const currentAlerts = document.getElementById('alerts').innerHTML;
+                document.getElementById('alerts').innerHTML = currentAlerts + alertsHTML;
+                document.getElementById('alertsCard').style.display = 'block';
+            }
+        }
+
+        async function updateCostBreakdown() {
+            const data = await fetchData('/costs/breakdown?days=30');
+            if (!data) return;
+
+            const breakdown = data.breakdown;
+            const labels = Object.keys(breakdown);
+            const values = Object.values(breakdown);
+
+            if (costChart) {
+                costChart.destroy();
+            }
+
+            const ctx = document.getElementById('costChart').getContext('2d');
+            costChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels.map(l => l.replace('_', ' ').toUpperCase()),
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#f093fb',
+                            '#4facfe',
+                            '#43e97b',
+                            '#38f9d7'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 15,
+                                font: { size: 11 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.label}: ${formatCurrency(context.parsed)}`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function updateRecommendations() {
+            const data = await fetchData('/costs/optimization');
+            if (!data) return;
+
+            if (data.suggestions.length === 0) {
+                document.getElementById('recommendations').innerHTML =
+                    '<p style="color: #28a745;">All systems optimized! No recommendations at this time.</p>';
+                return;
+            }
+
+            const recsHTML = data.suggestions.map(rec => `
+                <div class="recommendation priority-${rec.priority}">
+                    <h3>[${rec.priority.toUpperCase()}] ${rec.title || 'Optimization Opportunity'}</h3>
+                    <p>${rec.description}</p>
+                    <p class="impact">Impact: ${formatCurrency(rec.potential_savings)}/month savings</p>
+                    ${rec.confidence ? `<p class="confidence">Confidence: ${(rec.confidence * 100).toFixed(0)}%</p>` : ''}
+                </div>
+            `).join('');
+
+            const totalSavings = data.total_potential_savings;
+            document.getElementById('recommendations').innerHTML =
+                recsHTML +
+                `<div style="margin-top: 20px; padding: 15px; background: #d4edda; border-radius: 8px; color: #155724;">
+                    <strong>Total Potential Savings: ${formatCurrency(totalSavings)}/month</strong>
+                </div>`;
+        }
+
+        async function updateRevenueRequirements() {
+            const data = await fetchData('/costs/revenue-requirements?margin_percent=70');
+            if (!data) return;
+
+            const revHTML = `
+                <div class="revenue-calc">
+                    <h3>For 70% Gross Margin</h3>
+                    <div class="revenue-row">
+                        <span>Monthly Cost:</span>
+                        <strong>${formatCurrency(data.total_monthly_cost)}</strong>
+                    </div>
+                    <div class="revenue-row">
+                        <span>Required Revenue:</span>
+                        <strong>${formatCurrency(data.required_monthly_revenue)}</strong>
+                    </div>
+                    <div class="revenue-row" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #0056b3;">
+                        <span>Per Vehicle (1k fleet):</span>
+                        <strong>${formatCurrency(data.per_vehicle_revenue_1k)}/month</strong>
+                    </div>
+                    <div class="revenue-row">
+                        <span>Per Vehicle (10k fleet):</span>
+                        <strong>${formatCurrency(data.per_vehicle_revenue_10k)}/month</strong>
+                    </div>
+                </div>
+            `;
+            document.getElementById('revenueRequirements').innerHTML = revHTML;
+        }
+
+        async function refreshDashboard() {
+            await Promise.all([
+                updatePlatformHealth(),
+                updateBudgetStatus(),
+                updateCostBreakdown(),
+                updateRecommendations(),
+                updateRevenueRequirements()
+            ]);
+        }
+
+        // Initial load
+        refreshDashboard();
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshDashboard, 30000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+[project]
+name = "seatjudge-frontend"
+version = "0.1.0"
+description = "SeatJudge Frontend (Static)"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

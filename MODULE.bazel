@@ -1,0 +1,25 @@
+module(
+    name = "uphillsnowball",
+    version = "1.0",
+)
+
+# JavaScript & TypeScript Rules
+bazel_dep(name = "aspect_rules_js", version = "2.0.0")
+bazel_dep(name = "aspect_rules_swc", version = "1.0.0")
+bazel_dep(name = "aspect_rules_ts", version = "2.1.0")
+
+# Python Rules
+bazel_dep(name = "rules_python", version = "0.40.0")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    is_default = True,
+    python_version = "3.11",
+)
+
+# Go Rules (Optional Base Layer)
+bazel_dep(name = "rules_go", version = "0.46.0")
+bazel_dep(name = "gazelle", version = "0.35.0")
+
+# Formatting & Linting
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.2", dev_dependency = True)

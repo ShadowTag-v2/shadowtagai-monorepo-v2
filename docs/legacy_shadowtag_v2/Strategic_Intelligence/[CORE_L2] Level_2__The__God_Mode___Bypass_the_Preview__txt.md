@@ -1,0 +1,32 @@
+# Original Path: Level 2: The "God Mode" (Bypass the Preview)/Level 2: The "God Mode" (Bypass the Preview).txt
+
+# Categories: CORE_L2, MASTER_PLANS
+
+Level 2: The "God Mode" (Bypass the Preview)
+Use this to stop the preview from appearing entirely.
+The preview appears because your Agent is returning a "Suggestion" (which the IDE renders as a Diff) rather than an "Edit" (which the IDE renders as a saved file).
+We need to change the GeminiCodeAssistProxy to perform Direct Writes.
+Modify agents/gemini_code_assist_proxy.py:
+Python
+
+    def trigger_smart_action(self, action_type, file_path, ...):
+        # OLD WAY: Returns a "suggestion" payload
+        # return {"type": "diff", "content": ...}
+
+        # NEW WAY (Antigravity Speed):
+        # 1. Generate the code
+        new_code = self.generate_code(...)
+
+        # 2. ASK JUDGE 6 (The new safety brake)
+        if judge_6.verify(new_code):
+            # 3. DIRECT WRITE (Bypass the UI Preview)
+            with open(file_path, "w") as f:
+                f.write(new_code)
+
+            # 4. Refresh the IDE
+            return {"status": "APPLIED_AUTOMATICALLY"}
+        else:
+            # Only show the preview if Judge 6 is unsure
+            return {"type": "diff", "content": new_code}
+
+Result: You click "Refactor." The screen flickers once. The code is done. No "Accept" button.

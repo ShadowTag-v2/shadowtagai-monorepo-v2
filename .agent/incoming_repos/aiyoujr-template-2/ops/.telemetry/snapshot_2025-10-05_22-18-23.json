@@ -1,0 +1,15 @@
+{
+  "ChatGPT": {
+    "rssMB": 2203.5,
+    "cpuPct": 0.7,
+    "found": true
+  },
+  "Node.js": {
+    "found": false
+  },
+  "Cursor": {
+    "rssMB": 8145.4000000000015,
+    "cpuPct": 20.4,
+    "found": true
+  }
+}

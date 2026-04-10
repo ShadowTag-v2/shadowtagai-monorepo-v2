@@ -1,0 +1,35 @@
+import os
+import sys
+
+from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
+
+# Ensure libs path is discoverable for swarm integration later
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
+from routers import agents
+from routers.auth import verify_activeshield_jwt
+
+app = FastAPI(title="ShadowTag AI Arbiter", version="4.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "*"],  # Restrict to Next.js in prod
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+app.include_router(agents.router, prefix="/api/v1/agents", dependencies=[Depends(verify_activeshield_jwt)])
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "alive", "engine": "FastAPI arbiter online"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

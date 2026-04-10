@@ -1,0 +1,55 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: gcp-production-workflow
+
+# ---------------------------------------------------------------------------
+# DEFAULT: LOCAL DEVELOPMENT (Mac + OrbStack)
+# ---------------------------------------------------------------------------
+build:
+  # Uses your local Docker daemon (OrbStack) for speed
+  local:
+    push: false # Don't push to registry, just load into local K8s
+    useDockerCLI: true
+  artifacts:
+    - image: us-central1-docker.pkg.dev/pnkln-core-stack/repo-name/app
+      docker:
+        dockerfile: Dockerfile
+      # Sync lets you update code (e.g. JS, Python, Go templates)
+      # inside the container without rebuilding it.
+      sync:
+        infer:
+          - '**/*.{js,css,html,go,py}'
+
+# Deploy to your local Minikube or Docker Desktop K8s
+deploy:
+  kubectl:
+    manifests:
+      - k8s/base/*.yaml
+
+# ---------------------------------------------------------------------------
+# PROFILES: SWITCHING CONTEXTS
+# ---------------------------------------------------------------------------
+profiles:
+  # AUTOMATION: Google Cloud Build (CI/CD)
+  # Activated automatically when running in Cloud Build
+  - name: prod
+    build:
+      googleCloudBuild:
+        projectId: pnkln-core-stack
+        # Maximization Tip: Use Kaniko for faster, cached builds in the cloud
+        kanikoImage: gcr.io/kaniko-project/executor:latest
+    deploy:
+      # Use Cloud Deploy for governed rollouts (Canary, Blue/Green)
+      cloudrun: {} # Or kubectl if using GKE Autopilot
+
+  # DEBUGGING: Remote Development on GKE
+  # Run `skaffold dev -p remote-dev` to develop against a real cloud cluster
+  - name: remote-dev
+    build:
+      googleCloudBuild:
+        projectId: pnkln-core-stack
+    deploy:
+      kubectl:
+        manifests:
+          - k8s/dev/*.yaml

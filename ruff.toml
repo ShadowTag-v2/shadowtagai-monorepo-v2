@@ -1,0 +1,30 @@
+target-version = "py311"
+line-length = 150
+extend-exclude = [
+    # Historical and recovered trees are not canonical workspace truth.
+    "archive/",
+    "reference",
+    "**/branches",
+    "**/ShadowTag-Omega_backup_*",
+    "**/ShadowTag-Omega-v*_backup_*",
+    "apps/ShadowTag-v2_stack/.quarantine",
+    # Cookiecutter/Jinja templates are not valid TOML until rendered.
+    "apps/ShadowTag-v2_stack/agent-starter-pack/agent_starter_pack/agents",
+    "apps/ShadowTag-v2_stack/agent-starter-pack/agent_starter_pack/base_template",
+    "apps/ShadowTag-v2_stack/agent-starter-pack/agent_starter_pack/data_ingestion",
+    "apps/ShadowTag-v2_stack/agent-starter-pack/agent_starter_pack/deployment_targets",
+    # Cursor/VSCode extension files — not project source
+    "packages/",
+    "docs/bundles/",
+    "apps/ShadowTag-v2_stack/cosmic-crab-payload/",
+    "**/external_repos/",
+    "tools/external_sdks/",
+]
+
+[lint]
+# E: Errors, F: Pyflakes (unused imports), I: Isort, UP: PyUpgrade (strict typing)
+select = ["E", "F", "I", "UP"]
+ignore = ["E501", "E402", "E722", "F841", "E741", "F821", "I001", "PTH118", "PTH123", "SIM108", "N815", "F401"]
+
+[lint.isort]
+force-single-line = false

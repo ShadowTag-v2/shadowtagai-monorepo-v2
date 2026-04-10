@@ -1,0 +1,12 @@
+This atomic rollup includes current surviving non-script artifacts:
+- docs
+- prompts
+- env examples
+- policy/operator notes
+- mcp adapter notes
+- product/spec artifacts
+
+It excludes:
+- stale superseded variants
+- earlier contradictory drafts
+- obsolete thread momentum claims

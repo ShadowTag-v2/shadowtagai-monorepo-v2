@@ -1,0 +1,548 @@
+[
+  {
+    "repo": "ehanc69/pnkln-stackjr-template-2",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 39.1
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-backend",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/core",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-examples",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-objections-decisions",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-docs",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-sops",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-security",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-sre",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-observability",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-devops",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-infra",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-data-contracts",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-mlops",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-clients",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-frontend",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-core",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-api",
+    "ok": true,
+    "meta": {
+      "open_prs": 1,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-evals",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-governance",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-ui-kit",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-offline-appliance",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-risk-engine",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-indexer",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-codesmith",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-prompts",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-fastapi-services",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-policy",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/security",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/sre",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/observability",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/mlops",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/docs",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/prompts",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/infra",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/fastapi-services",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 100.0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-exec",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-ml",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-data",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-risk",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack-ci",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  },
+  {
+    "repo": "ehanc69/pnkln-stack",
+    "ok": true,
+    "meta": {
+      "open_prs": 0,
+      "open_issues": 0,
+      "health": {
+        "ci_fail_rate": 0
+      },
+      "branch_protection": false,
+      "dependabot_alerts": "disabled"
+    }
+  }
+]

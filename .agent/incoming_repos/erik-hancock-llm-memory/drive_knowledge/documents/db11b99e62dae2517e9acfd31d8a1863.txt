@@ -1,0 +1,184 @@
+#p-init
+%%bash
+python -V
+pip -q install --upgrade google-cloud-aiplatform google-cloud-storage google-cloud-vision google-auth google-auth-oauthlib Pillow numpy pandas matplotlib
+
+#p-vertex-init
+%%python
+import google.cloud.aiplatform as a;from google.cloud import storage as gs
+p="YOUR_GCP_PROJECT";r="us-central1";b="shadowtagai-bucket";a.init(project=p,location=r);c=gs.Client(project=p); 
+def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local); 
+def dl(blob,local):c.bucket(b).blob(blob).download_to_filename(local)
+
+#p-models
+%%python
+from vertexai import init as vinit;from vertexai.generative_models import GenerativeModel,Part;from vertexai.preview.vision_models import ImageGenerationModel
+vinit(project=p,location=r)
+g=GenerativeModel("gemini-3.1-flash-lite-preview")
+g1=GenerativeModel("gemini-3.1-flash-lite-preview")
+ig=ImageGenerationModel.from_pretrained("imagegeneration@006")
+
+#p-prompts-core
+%%python
+import json
+pt={
+"sys_shadowtagai_core":"You are shadowtagai—an orchestration and analysis engine. Output JSON or code. Be concise.",
+"sys_swiper":"You are shadowtagai-swiper. Optimize geo-beacon commerce films. Output plans and JSON recipes.",
+"sys_verdict":"You are shadowtagai-verdict. Enforce task flow with locks/escrows and time escalations.",
+"sys_vcm":"You are shadowtagai-vc-mirror. Extract investor theses and generate tailored pitch copy.",
+"sys_geos":"You are shadowtagai-geos. Summarize geo/polygon events and economic triggers.",
+"sys_odor":"You are shadowtagai-odor. Model airflow/odor/CBRN scrubbing with constraints.",
+"sys_tokable":"You are shadowtagai-tokable. Create emotion-first creator flows.",
+"sys_mcarlo":"You are shadowtagai-mcarlo. Run compact Monte Carlo valuations (JSON in/out)."
+}
+open("/mnt/data/shadowtagai_prompts_core.json","w").write(json.dumps(pt,ensure_ascii=False))
+
+#p-ocr
+%%python
+from google.cloud import vision as gv;import io,os,base64,json
+cl=gv.ImageAnnotatorClient()
+def ocr_b64(b64):
+    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img); 
+    t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
+    return t.strip()
+def ocr_file(fp):
+    with io.open(fp,"rb") as f:bb=base64.b64encode(f.read()).decode()
+    return ocr_b64(bb)
+def ocr_gcs(uri):
+    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img); 
+    t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
+    return t.strip()
+
+#p-ocr-sum
+%%python
+def sum_text(txt,sys="Summarize salient facts, numeric claims, and calls-to-action. Output JSON with keys: facts, metrics, actions."):
+    m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt[:100000]]}],generation_config={"temperature":0.2})
+    return m.text
+def ocr_and_sum_file(fp):return sum_text(ocr_file(fp))
+def ocr_and_sum_gcs(uri):return sum_text(ocr_gcs(uri))
+
+#p-json-tools
+%%python
+import json,math,random,statistics as st
+def j(x):return json.dumps(x,ensure_ascii=False,separators=(",",":"))
+def prc(x,p):x=sorted(x);i=int((len(x)-1)*p);return x[i]
+
+#p-mcarlo
+%%python
+def mcarlo_rev(n,base,sd,yrs=5,gr=0.6): 
+    r=[]; 
+    for _ in range(n):
+        b=max(0,random.gauss(base,sd))
+        v=b*((1+gr)**yrs)
+        r.append(v)
+    return r
+def mcarlo_val(n,rev_mult,rev_samples): 
+    out=[max(0,rev_mult*rv) for rv in rev_samples]; 
+    return {"mean":st.mean(out),"p10":prc(out,0.1),"p50":prc(out,0.5),"p90":prc(out,0.9),"max":max(out)}
+def mcarlo_bundle(cfg): 
+    vals=[]; comps={}
+    for k,v in cfg.items():
+        rs=mcarlo_rev(v["n"],v["base"],v["sd"],v.get("yrs",5),v.get("gr",0.6))
+        vv=mcarlo_val(v["n"],v["mult"],rs);comps[k]=vv;vals.append(vv["mean"])
+    t=sum(vals)
+    return {"components":comps,"sum_mean":t}
+
+#p-bundle-scenarios
+%%python
+cfg={
+"shadowtagai_core": {"n":8000,"base":120e6,"sd":50e6,"gr":0.55,"mult":12},
+"shadowtagai_swiper":{"n":8000,"base":200e6,"sd":90e6,"gr":0.6,"mult":13},
+"shadowtagai_geos":{"n":8000,"base":30e6,"sd":20e6,"gr":0.5,"mult":22},
+"shadowtagai_odor":{"n":8000,"base":120e6,"sd":60e6,"gr":0.5,"mult":10},
+"shadowtagai_verdict":{"n":8000,"base":120e6,"sd":60e6,"gr":0.55,"mult":11},
+"shadowtagai_vcm":{"n":8000,"base":40e6,"sd":20e6,"gr":0.6,"mult":11},
+"shadowtagai_tokable":{"n":8000,"base":80e6,"sd":40e6,"gr":0.55,"mult":11}
+}
+res=mcarlo_bundle(cfg); open("/mnt/data/shadowtagai_valuation.json","w").write(j(res))
+
+#p-swiper-core
+%%python
+def swiper_plan(q): 
+    s="You are shadowtagai-swiper. Return JSON {wedge,geo,content,cpms,revshare,visualize}."
+    m=g1.generate_content([{"role":"system","parts":[s]},{"role":"user","parts":[q]}],generation_config={"temperature":0.3})
+    return m.text
+def swiper_visualize(img_b64,gear): 
+    t=f"Blend {gear} into scene, return JSON placements and style."
+    m=g1.generate_content([{"role":"system","parts":["Return JSON only."]},{"role":"user","parts":[Part.from_data(mime_type="image/jpeg",data=__import__('base64').b64decode(img_b64)),t]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-verdict-core
+%%python
+import time
+class Verdict:
+    def __init__(s):s.q=[]
+    def add(s,t,dl,prio):s.q.append({"t":t,"dl":dl,"p":prio,"k":0,"d":False})
+    def tick(s,now): 
+        for i in s.q:
+            if i["d"]:continue
+            if now>=i["dl"]:i["k"]=2
+            elif (i["dl"]-now)<=900:i["k"]=1
+    def next(s): 
+        u=[x for x in s.q if not x["d"]]
+        u.sort(key=lambda x:(-x["k"],-x["p"])); 
+        return u[0] if u else None
+    def done(s,t): 
+        for i in s.q:
+            if i["t"]==t:i["d"]=True;return True
+        return False
+V=Verdict()
+
+#p-vc-mirror
+%%python
+def vcmirror(profile_txt,company): 
+    sys="Extract investor thesis and produce pitch copy. JSON keys: thesis,fit,angles,email_open,deck_outline."
+    m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[profile_txt,company]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-geos-prime
+%%python
+def geos_skim(txt): 
+    sys="Summarize geo triggers, actors, capital flow, compliance. JSON only."
+    m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-odor-dome
+%%python
+import numpy as np
+def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02): 
+    f=np.zeros((n,n),float)
+    for _ in range(256):
+        nf=np.copy(f)
+        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:])) 
+        for (x,y,s) in src:nf[x%n,y%n]+=s
+        f=nf
+    return f
+def odor_score(f,mask=None): 
+    if mask is None:return float(f.mean())
+    return float((f*mask).mean())
+
+#p-tokable
+%%python
+def tokable_script(theme,persona): 
+    sys="Write a 45-90s emotion-first script with 3 beats and optional interactive branch cues. JSON only."
+    m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[f"{theme} | {persona}"]}],generation_config={"temperature":0.55})
+    return m.text
+
+#p-prompt-templates-studio
+%%python
+import json
+tpl=[
+{"id":"shadowtagai_core","role":"system","content":pt["sys_shadowtagai_core"]},
+{"id":"shadowtagai_swiper","role":"system","content":pt["sys_swiper"]},
+{"id":"shadowtagai_verdict","role":"system","content":pt["sys_verdict"]},
+{"id":"shadowtagai_vcm","role":"system","content":pt["sys_vcm"]},
+{"id":"shadowtagai_geos","role":"system","content":pt["sys_geos"]},
+{"id":"shadowtagai_odor","role":"system","content":pt["sys_odor"]},
+{"id":"shadowtagai_tokable","role":"system","content":pt["sys_tokable"]},
+{"id":"shadowtagai_mcarlo","role":"system","content":pt["sys_mcarlo"]}
+]
+open("/mnt/data/shadowtagai_studio_templates.json","w").write(j(tpl))
+
+#p-min-exec
+%%python
+print("shadowtagai ready")

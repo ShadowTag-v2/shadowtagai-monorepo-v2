@@ -1,0 +1,5 @@
+version: 1
+flags:
+  kill_switch_global: false
+  llm_autofix_enabled: false
+  ui_partial_nav: true

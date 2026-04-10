@@ -1,0 +1,143 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemini-ingestion-layer"
+version = "0.1.0"
+description = "SHADOWTAGAI Core Stack - Gemini Ingestion Layer for intelligence collection"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "Proprietary"}
+authors = [
+    {name = "SHADOWTAGAI Core Stack Team", email = "team@shadowtagai.ai"}
+]
+keywords = ["ai", "intelligence", "ingestion", "gemini", "gke"]
+
+dependencies = [
+    "aiohttp>=3.9.0",
+    "google-generativeai>=0.3.0",
+    "google-cloud-aiplatform>=1.40.0",
+    "google-cloud-storage>=2.14.0",
+    "google-cloud-bigquery>=3.15.0",
+    "google-api-python-client>=2.110.0",
+    "tweepy>=4.14.0",
+    "feedparser>=6.0.10",
+    "pydantic>=2.5.0",
+    "prometheus-client>=0.19.0",
+    "pyyaml>=6.0.3",
+    "mlx>=0.31.1",
+    "mlx-lm>=0.31.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.7.0",
+    "ruff>=0.1.6",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "third_party/ANE/bridge"
+strict = false  # Not strict mode for pre-prod (60% confidence)
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Relaxed for pre-prod
+ignore_missing_imports = true
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--cov=gemini_ingestion_layer",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=60",  # 60% coverage threshold (pre-prod)
+]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+# Coverage configuration
+[tool.coverage.run]
+branch = true
+source = ["src/gemini_ingestion_layer"]
+omit = [
+    "*/tests/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+precision = 2
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.basedpyright]
+# -- 1. Global Type Checking Mode --
+# "recommended" is basedpyright's default, but you can use "standard" (less noisy) or "all" (extremely strict)
+typeCheckingMode = "standard" 
+
+# -- 2. Global Scope --
+# Explicitly tell it where your Python code lives to save memory
+include = [
+    "apps",
+    "packages", # (or "libs", if you have a shared libraries folder)
+]
+
+# Completely ignore these directories (don't even parse them)
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.venv",
+    "**/venv",
+    "**/notebooks/**/*.ipynb", # Stops the notebook parsing crash
+    "**/.git"
+]
+
+# Parse these for autocomplete, but suppress all type-checking errors
+ignore = [
+    "**/alembic/versions", # Usually a good idea to ignore DB migrations
+    "**/scripts/legacy"
+]
+
+# -- 3. Internal Dependency Resolution --
+# If your apps import from shared internal packages without building them first,
+# add the root of those packages here so basedpyright can find them.
+extraPaths = [
+    "packages/shared_utils",
+    "third_party/ANE/bridge"
+]
+
+# -- 4. Execution Environments (The Monorepo Secret Sauce) --
+# This allows you to treat different folders as isolated projects with their own rules.
+
+[[tool.basedpyright.executionEnvironments]]
+root = "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
+# You can override global settings for just this app
+# pythonVersion = "3.11"
+# typeCheckingMode = "strict" 
+
+[[tool.basedpyright.executionEnvironments]]
+root = "apps/another_app"
+# extraPaths = ["apps/another_app/custom_src"]

@@ -1,0 +1,9 @@
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/transcode-service/target/debug/deps/reqwest_middleware-fb8e9fe6f11ccc37.d: /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/lib.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/client.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/error.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/middleware.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/req_init.rs
+
+/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/transcode-service/target/debug/deps/libreqwest_middleware-fb8e9fe6f11ccc37.rmeta: /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/lib.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/client.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/error.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/middleware.rs /Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/req_init.rs
+
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/lib.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/client.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/error.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/middleware.rs:
+/Users/pikeymickey/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/reqwest-middleware-0.2.5/src/req_init.rs:

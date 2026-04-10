@@ -1,0 +1,312 @@
+# pinkln Agent Architecture System - Claude Code Configuration
+# Configuration for running pinkln agents in Claude Code environment
+
+# Claude Code Settings
+claude_code:
+  # Model selection
+  # Options: claude-sonnet-4-5, claude-opus-4, claude-haiku-4
+  default_model: "claude-sonnet-4-5"
+
+  # API Configuration
+  api:
+    # API key source (environment variable)
+    api_key_env: "ANTHROPIC_API_KEY"
+
+    # Request settings
+    max_tokens: 4096
+    temperature: 1.0
+    top_p: 1.0
+    timeout_seconds: 60
+
+  # Local development settings
+  local:
+    # Working directory
+    workspace_root: "."
+
+    # Enable file system access for agents
+    enable_fs_access: true
+
+    # Enable git operations
+    enable_git_access: true
+
+    # Enable bash/shell operations
+    enable_shell_access: true
+
+# pinkln OS Configuration
+pinkln:
+  # Core Philosophy Enforcement
+  philosophy:
+    # Enable all 9 core directives
+    question_everything: true
+    obsess_over_details: true
+    plan_like_da_vinci: true
+    craft_dont_code: true
+    iterate_relentlessly: true
+    simplify_ruthlessly: true
+    marry_tech_and_arts: true
+    reality_distortion_field: true
+    boy_scout_rule: true
+
+  # Reasoning Strategy Selection
+  reasoning:
+    # Complexity thresholds (0-1 scale)
+    basic_threshold: 0.3        # Chain of Thought
+    exploratory_threshold: 0.6  # Tree of Thoughts
+    collaborative_threshold: 0.9  # Multi-Agent Debate
+    # Above 0.9: Debate-Train-Evolve
+
+    # Default strategy override (leave empty for auto-select)
+    force_strategy: ""
+
+    # Enable adaptive strategy switching
+    adaptive: true
+
+  # Validation Settings
+  validation:
+    # Enable excellence verification
+    enable_validation: true
+
+    # Maximum iterations to achieve "insanely great"
+    max_iterations: 10
+
+    # Excellence threshold (0-1)
+    excellence_threshold: 0.85
+
+    # Enable Boy Scout Rule tracking
+    track_cleanup: true
+
+    # Validation strictness
+    # Options: strict, moderate, lenient
+    strictness: "strict"
+
+  # Skills Configuration
+  skills:
+    # Auto-discover skills from filesystem
+    auto_discover: true
+
+    # Skills directory
+    skills_dir: "./pinkln/skills"
+
+    # Enabled skills (leave empty for all)
+    enabled:
+      - ResearchExplorerSkill
+      - DesignCriticSkill
+      - CopyConverterSkill
+      - MonetizationArchitectSkill
+      - WorkflowRefinerSkill
+      - PromptCraftSkill
+
+  # Agents Configuration
+  agents:
+    # Auto-discover agents
+    auto_discover: true
+
+    # Agents directory
+    agents_dir: "./pinkln/agents"
+
+    # Default agent timeout (seconds)
+    timeout: 300
+
+# Session Management
+session:
+  # Enable session tracking
+  enable_tracking: true
+
+  # Session persistence
+  persist_sessions: true
+  sessions_dir: "./sessions"
+
+  # Auto-save session every N calls
+  auto_save_interval: 5
+
+  # Session metadata to track
+  track_metadata:
+    - complexity_scores
+    - strategies_used
+    - tokens_consumed
+    - challenges_completed
+    - boy_scout_actions
+
+# Execution Settings
+execution:
+  # Parallel execution
+  enable_parallel: true
+  max_parallel_agents: 3
+
+  # Retry configuration
+  retry:
+    enabled: true
+    max_attempts: 3
+    backoff_multiplier: 2
+    initial_delay_seconds: 1
+
+  # Caching
+  cache:
+    enabled: true
+    cache_dir: "./.cache/pinkln"
+    ttl_seconds: 3600
+
+# Logging Configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+
+  # Log to file
+  log_to_file: true
+  log_file: "./logs/pinkln.log"
+
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+  # Log session activities
+  log_sessions: true
+
+  # Log token usage
+  log_tokens: true
+
+# Development Settings
+development:
+  # Debug mode
+  debug: false
+
+  # Verbose output
+  verbose: true
+
+  # Save intermediate results
+  save_checkpoints: true
+  checkpoints_dir: "./checkpoints"
+
+  # Profile performance
+  enable_profiling: false
+
+# Marketplace Integration
+marketplace:
+  # Enable marketplace features
+  enabled: true
+
+  # Local registry
+  registry:
+    local_path: "./pinkln/registry"
+    cache_remote: true
+
+  # Component discovery
+  discovery:
+    auto_discover_skills: true
+    auto_discover_agents: true
+    auto_discover_personas: true
+    auto_discover_tools: true
+
+  # Update settings
+  updates:
+    check_for_updates: true
+    auto_update: false
+
+# Performance Optimization
+performance:
+  # Token optimization
+  tokens:
+    # Use token counting before API calls
+    count_before_call: true
+
+    # Warn if exceeding threshold
+    warn_threshold: 3000
+
+    # Truncate if needed
+    auto_truncate: false
+    max_context_tokens: 100000
+
+  # Response optimization
+  streaming:
+    # Enable streaming responses
+    enabled: true
+
+    # Buffer size
+    buffer_size: 1024
+
+# Error Handling
+error_handling:
+  # Graceful degradation
+  graceful_degradation: true
+
+  # Fallback to simpler strategy on error
+  fallback_strategy: "chain_of_thought"
+
+  # Retry on specific errors
+  retry_on_errors:
+    - "rate_limit_error"
+    - "timeout_error"
+    - "server_error"
+
+  # Notification settings
+  notifications:
+    enabled: false
+    webhook_url: ""
+
+# Security Settings
+security:
+  # Validate inputs
+  validate_inputs: true
+
+  # Sanitize outputs
+  sanitize_outputs: true
+
+  # Restrict file access patterns
+  file_access_patterns:
+    - "./pinkln/**"
+    - "./sessions/**"
+    - "./logs/**"
+
+  # Allowed shell commands (when shell access enabled)
+  allowed_shell_commands:
+    - "git"
+    - "ls"
+    - "cat"
+    - "grep"
+
+# Integration Settings
+integrations:
+  # Git integration
+  git:
+    enabled: true
+    auto_commit: false
+    commit_message_template: "pinkln: {action} - {summary}"
+
+  # IDE integration
+  ide:
+    vscode_integration: true
+    cursor_integration: true
+
+  # CI/CD integration
+  cicd:
+    enabled: false
+    platform: ""  # github_actions, gitlab_ci, etc.
+
+# Analytics and Metrics
+analytics:
+  # Enable analytics
+  enabled: true
+
+  # Track metrics
+  metrics:
+    - complexity_distribution
+    - strategy_selection_frequency
+    - average_tokens_per_task
+    - excellence_achievement_rate
+    - boy_scout_improvement_rate
+
+  # Export analytics
+  export:
+    enabled: false
+    format: "json"  # json, csv, prometheus
+    export_path: "./analytics"
+
+# Experimental Features
+experimental:
+  # Enable experimental features
+  enabled: false
+
+  # Features to enable
+  features:
+    - "evolutionary_agents"
+    - "self_improving_prompts"
+    - "meta_learning"

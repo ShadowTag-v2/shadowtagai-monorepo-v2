@@ -1,0 +1,16 @@
+=== CodePMCS Scan ===
+Root: /Users/pikeymickey/aiyou-stack/ShadowTag-v2
+Date: Sun Mar 22 21:58:29 PDT 2026
+
+--- ruff lint ---
+error: invalid value 'text' for '--output-format <OUTPUT_FORMAT>'
+  [possible values: concise, full, json, json-lines, junit, grouped, github, gitlab, pylint, rdjson, azure, sarif]
+
+For more information, try '--help'.
+
+--- secret scan ---
+No obvious secrets found
+
+--- dead symlinks ---
+
+=== SCAN COMPLETE ===
