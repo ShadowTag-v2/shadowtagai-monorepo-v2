@@ -1,0 +1,23 @@
+{
+  "interpretation_received": true,
+  "interpretation_type": "ResultInterpretation",
+  "research_question": "Which genes are differentially expressed between drug-treated and control cancer cell lines, and what biological pathways do they implicate?",
+  "domain": "genomics",
+  "hypothesis_supported": true,
+  "confidence": 0.85,
+  "summary": "The experiment provides strong statistical evidence for differential gene expression between drug-treated and control cancer cell lines, with a highly significant p-value (0.003) and a large effect size (Cohen's d = 0.8). However, the biological significance requires further investigation given the ",
+  "key_findings": [
+    "Statistically significant differential gene expression exists between treatment groups (p = 0.003)",
+    "The effect size is large (Cohen's d = 0.8), suggesting a meaningful biological difference",
+    "The sample size (n=100) provides reasonable statistical power for detecting effects"
+  ],
+  "anomalies_detected": [],
+  "supports_hypothesis_method": "LLM-based (not formal statistical criteria)",
+  "gap_notes": [
+    "supports_hypothesis set by LLM interpretation, not formal criteria",
+    "No check for _data_source (synthetic vs real)",
+    "No check_assumptions() called before interpretation"
+  ],
+  "status": "PASS",
+  "duration_seconds": 20.7
+}

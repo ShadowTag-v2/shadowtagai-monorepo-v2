@@ -1,0 +1,267 @@
+# Original Path: > use planing mode to modernize following. explain your reasoning…/> use planing mode to modernize following. explain your reasoning….txt
+
+# Categories: CORE_L2
+
+>  use planing mode to modernize following. explain your reasoning, before implementing here, do pr. Then discuss change in money:
+
+claude --teleport session_01PdWYkshpPcL3kaRYGXe76F;
+claude --teleport session_0129TJDCPVXYzZgfyFoC55QD;
+claude --teleport session_01YHYNS7A4rpDREHxcUkkooU;
+claude --teleport session_014yp3WQ7GzFCnXssif6nQ5K;
+claude --teleport session_01HRNnBjV9e89WEceYCYEYTT;
+claude --teleport session_01KjE8SBRAVHwPdaMw4Bhe8s;
+claude --teleport session_01AqhQk4mUiqYfbRxry3PjSr;
+claude --teleport session_013QqaTcEibfTWdB2T6qVpjj;
+claude --teleport session_01XS4vJCqs3LxH5ky7uoptTW;
+claude --teleport session_015xd53J5X6eW4UnwLa1Zef3;
+claude --teleport session_01XS4vJCqs3LxH5ky7uoptTW;
+claude --teleport session_0141N95i2BZcMFLfrLEsza3e;
+claude --teleport session_01Kp9nfGJe66xyzXFaWcNScV;
+claude --teleport session_01QS9ZQBHLHgeyU2fGZVwEvx;
+claude --teleport session_013Q4xLmAA7UpgDDcFAP2eUc;
+claude --teleport session_01SiuL13caedf46a6DHdiyvD;
+claude --teleport session_01EomMkEwRCXUzQyo15Kr46C;
+claude --teleport session_011RMxxEuuwhxUyoS2gtizw6;
+claude --teleport session_01SJ5oTaZduakzztvdtbSfSz;
+claude --teleport session_01TePFHPYZKUUevdGi6PNW2j;
+claude --teleport session_017bPGPFFNeGVVFiiTeiEjuB;
+claude --teleport session_017bPGPFFNeGVVFiiTeiEjuB;
+claude --teleport session_01HApJvgcJqCqGjTzPXc4hsH;
+claude --teleport session_015noXjuN929ZXxkiZtGLts8;
+claude --teleport session_01V4R2h4hKtsTmnbP6wuFv9p;
+claude --teleport session_01BQvSod3H3AWwrYokkt6wCL;
+claude --teleport session_01N8sd6WDo9ezvDXmNtP7eG3;
+claude --teleport session_01CtqxzRtHRa54CbxEbZVC4h;
+claude --teleport session_01SnJR7H4LdDMSVNRXmNj1uY;
+claude --teleport session_01UC2apYgLs2CeihtLxfm8pT;
+claude --teleport session_01LxqLjwSqagWVc7LxXfczSY;
+claude --teleport session_01UC2apYgLs2CeihtLxfm8pT;
+claude --teleport session_01N8sd6WDo9ezvDXmNtP7eG3;
+claude --teleport session_014z5Wy7zHetN2Tdj1pvZeap;
+claude --teleport session_01YWPx2N1svovPEduR2fcnaF;
+claude --teleport session_01XDUiUicBarT9B7HFp4kLQe;
+claude --teleport session_01WqEPxBFLf2fh6j4Gm5eRF6;
+claude --teleport session_01MRQcG3xbZNirVvs2VSwfxY;
+claude --teleport session_01YPqLtfb2muQnJBbPFbcJY1;
+claude --teleport session_01MjjvPgcgaPsdjCKGKHFZTB;
+claude --teleport session_011HjffkzypaspRcDZL1uXf1;
+claude --teleport session_01D3Tsbo7Biz3jWhqR82u3YM;
+claude --teleport session_019P6WfRDizQYJEyBKPgjouE;
+claude --teleport session_01WeWvB8LhnA27fckYTF2myF;
+claude --teleport session_01LnnDPRq1b5LKC2Yk8fUnwZ;
+claude --teleport session_01DFQeDamVMJ6Y7MLoZmR23S;
+claude --teleport session_01L7LKQ7QAm749JxA3dFe66d;
+claude --teleport session_01NXaFPLRGQHwZYkMjWgTjYz;
+claude --teleport session_01Shtau3Dwjn2qqypCAUQsgg;
+claude --teleport session_01L5dkyEWB2HZnFpyiB4Qzcs;
+claude --teleport session_01Xjiz4UaLoBTQGou8un81yg;
+claude --teleport session_0124xZi4rK77nhegfzgRQbRK;
+claude --teleport session_01T6FPuGzfnx3meGjPY5Hz8X;
+claude --teleport session_012TMjqWKQfQeLyurA5QthhP"
+claude --teleport session_01JHaeUUKNqT64smLaaB7q7U;
+claude --teleport session_01GT3tb66B9CWyJ5o6PHNYZP.
+<next>
+how many teleport threads are missing from being copy pasted into you?
+
+"claude --teleport session_01Wz3vRoYMZKeU8Whpf5PHin;
+claude --teleport session_012j1em5ogeXnbbtG5DDZuZg;
+claude --teleport session_015XorWLBtpoJuHvKX9MC813;
+claude --teleport session_01RVzFL6F91CVxsjZcooGS4C;
+claude --teleport session_01RPHSGbgGdhcN7akW3sB1VZ;
+claude --teleport session_01M1anzYZdJTDDeZQsiVTkKS;
+claude --teleport session_01BPcqk71q9qmZ8JeFfzc84U;
+claude --teleport session_01AAb3G3GGcMe1r2ZR83EjZF;
+claude --teleport session_01PdWYkshpPcL3kaRYGXe76F;
+claude --teleport session_01Vsn6ARCuamYopRK1wxGSkz;
+claude --teleport session_01EDAwZLBwQoAtbXq4bs5wTc;
+claude --teleport session_01VynnKoNNFFxMTcuPtLiZdR;
+claude --teleport session_0129TJDCPVXYzZgfyFoC55QD;
+claude --teleport session_01YHYNS7A4rpDREHxcUkkooU;
+claude --teleport session_014yp3WQ7GzFCnXssif6nQ5K;
+claude --teleport session_01HRNnBjV9e89WEceYCYEYTT;
+claude --teleport session_01KjE8SBRAVHwPdaMw4Bhe8s;
+claude --teleport session_01AqhQk4mUiqYfbRxry3PjSr."
+
+"claude --teleport session_01AWJ5Mh9S1ybWxXjSNUebTf;
+claude --teleport session_01N6j7sbD1zocGRnN3HqJiKN;
+<next>
+With following, do all "Merge both branches into unified codebase
+Week 3-4: Integrate skills framework into all agents
+Week 5-6: Deploy to production with monitoring” claude --teleport session_01FUUXC1zhcKYsL5ki4WG82p”
+
+"claude --teleport session_01VdvDGrcZ8N26yL2bX7ejFk; claude --teleport session_01MQJ8CfXToph64WHQD2P7Zj"
+
+"claude --teleport session_011CUvSXYqprmqP8aUNU4QbK;
+claude --teleport session_011CUvRbMfMuw9j9AVUnoqVN;
+claude --teleport session_011CUvSfckwmFDcagYDhXrQp;
+claude --teleport session_011CUvSiPCSzf8mxsmYUHe4B;
+claude --teleport session_011CUvSqvx6Xon2eLiftFQAS;
+claude --teleport session_011CUvR5fZ3jVZkqpWXPACTw;
+claude --teleport session_011CUvL58WBB556AvXdpHVEY;
+claude --teleport session_011CUvJuWR9Lm2KsueHVXjhW;
+claude --teleport session_011CUv1fuVMJzmGYGTM8LqkC;"
+
+"claude --teleport session_011CUuRu3LnJrN4kD6znPH4d;
+claude --teleport session_011CUuRENNw8xPG832W6K34V;
+claude --teleport session_011CUuQpFAw8RrquuDkRA8YE;
+claude --teleport session_011CUuQfuy3ku8RBjxYBDN64;
+claude --teleport session_011CUuPcBNmya7ajat5ZPu43;
+claude --teleport session_011CUuPaNNWj9UmUH7aQuDcd;
+claude --teleport session_011CUuPQ3LVUykcUQvxw9Etb;
+claude --teleport session_011CUuNocbGzKdKwr3SfAzpb;
+claude --teleport session_011CUuN9bmr41pQW1153vPNM;
+claude --teleport session_011CUuM8huZ4qPWDosJ51BKN;
+claude --teleport session_011CUuJLbdFsg2ykCjNpgMYM;
+claude --teleport session_011CUuM2SB5hnNSF83EAMM4g;
+claude --teleport session_011CUuJHAKfKnUyeA9JLuVwM;
+claude --teleport session_011CUuHw3U6hZk6Emb52fUbv;
+claude --teleport session_011CUuHtaoBZha9vR2h4UptV;
+claude --teleport session_011CUuHs5ZzEXHGZ2PbVmWHs;
+claude --teleport session_011CUuHpYiYtpLV8oP1Ze3B6;
+claude --teleport session_011CUuHiEwojVC8PmhN2Vt83;
+claude --teleport session_011CUuH5NYBC54NLvM9HYFcK;
+claude --teleport session_011CUuDZ8shs8dsdiH8kETKm;
+claude --teleport session_01LfvGHLyioSmenCeWnwqMKu;
+claude --teleport session_01GC82SJLfmwFvAze3sjbBfw;
+claude --teleport session_01BAv7RFRogW3dXU3s7U2T1k;
+claude --teleport session_01QWpUxsLXyifGDftxappPLv;
+claude --teleport session_01JPLQubyXaThFihhfbC1sFJ;
+claude --teleport session_01UU6dTPXj6GUJMeWdDhVSnG;
+claude --teleport session_011CUuNDctvvHsg1hrerub7v;
+claude --teleport session_011CUuLouBw2TjNTbC342BMB;
+claude --teleport session_011CUuLnhzCNrXYhosFmMAt9;
+claude --teleport session_011CUuFDkKrGTKMYaaWJU4xU."
+
+"claude --teleport session_011CUuJ8iHmLc2zPL1mXxN93
+claude --teleport session_011CUuHy1VqufcfZiXVxZAUT"
+"claude --teleport session_011CUvZn4HaupdGe71hL4T21;
+claude --teleport session_011CUvZjXkF1ugJQaHQk7ZDk;
+claude --teleport session_011CUvYJcxhocxNDZ3qbj2eG;
+claude --teleport session_011CUvTcfQTmEbLMuLtjRNHR
+claude --teleport session_011CUvTbTstkMmBhvZsxq5R3;
+claude --teleport session_011CUvTRHGQKU318G3zAqxLq;
+claude --teleport session_011CUvTQFf8xWB5QNCKxQznS;
+claude --teleport session_011CUvTNfHtAKps6wbBA6crk;
+claude --teleport session_011CUvTGp7HmkLMW64WPiEaN;
+claude --teleport session_011CUvT6z3Yt6z2AFoVYY9nw;
+claude --teleport session_011CUvSx1kFbXRGyJNffbchk;
+claude --teleport session_011CUvStbGkcGHDMAkQGFH13;
+claude --teleport session_011CUvSdiXtbs54emctnZ9XZ;
+claude --teleport session_011CUvSZk73M3Zv5xRHb6Rx4;
+claude --teleport session_011CUvSXYqprmqP8aUNU4QbK;
+claude --teleport session_011CUvSF1kbZKe9hXd4e8Und;
+claude --teleport session_011CUvRFYMVGVdBYtutGzT4G;
+claude --teleport session_011CUvR74Gp38y8mqbXVnyX2;
+claude --teleport session_011CUvL58WBB556AvXdpHVEY;
+claude --teleport session_011CUvJuWR9Lm2KsueHVXjhW;
+claude --teleport session_011CUv1fuVMJzmGYGTM8LqkC;
+claude --teleport session_011CUuSLx6kABLySSEYaZmPP;
+claude --teleport session_011CUuS4XmpMn88Q78QAEru5;"
+
+claude --teleport session_011CUvsoRjY8napguSNzkDMj;
+claude --teleport session_011CUvsnjqSTKVqgY9MeRxfa;
+claude --teleport session_011CUvsjzEHhbLSQrZyXfMs4;
+claude --teleport session_017yuuVUsuvU9ejJhnH3bKPf;
+claude --teleport session_01CnFrcGW5YPbKJFoDVyLUeX;
+claude --teleport session_018WeXbYXdcgCrSBqTc1XK4m;
+claude --teleport session_01AAb3G3GGcMe1r2ZR83EjZF;
+claude --teleport session_01J66yDdMmjWPLScuq4RLxqo;
+claude --teleport session_017h22kbUNsyvrGA1F5xRK74
+claude --teleport session_014LFJeLq4KwLaHUHrG9nWKw;
+claude --teleport session_01AWJ5Mh9S1ybWxXjSNUebTf;
+claude --teleport session_013rF4NrK3MPeh7cUCFHV3m1;
+claude --teleport session_01NHGD2E8WZaomhymk85vTxH;
+claude --teleport session_01QL7CD92JE9RzQ31h92g5yL;
+claude --teleport session_01SzWRjaLvUiwPzpCQa2Cqsd;
+claude --teleport session_012SHejgn7vm3rpJ5trdfWcT;
+claude --teleport session_011CUvsQiQFz4RRkNYg2ufCD;
+claude --teleport session_011CUvs9wKUQZnQe25xn9d7y;
+claude --teleport session_011CUvc8DiA3g5iNfHmfbdFo;
+claude --teleport session_011CUvbutWQzfqenzxZ4D82P;
+claude --teleport session_011CUvajzkpEJ34ZVStqiv2q;
+claude --teleport session_011CUvaJ8CotMEzhesYm2aKf;
+
+Plan and Execute Development Workflow
+
+claude --teleport session_011CUvw6Jxaf31RfuxxVt4iM;
+claude --teleport session_011CUvw3NVKuHZS4aegmKAdD;
+claude --teleport session_011CUvtwiN1Ap7YhWxP4qgZ1;
+claude --teleport session_011CUvtokiAiszyiyL5E4JZE;
+claude --teleport session_01KUckmEQU8oHhDFzL6jZWuU;
+claude --teleport session_011CUvtNTKUCU2fkwEcc3f6X;
+claude --teleport session_011CUvtNTKUCU2fkwEcc3f6X;
+claude --teleport session_011CUvt8nr4t1S5uHCumsx2Z;
+claude --teleport session_011CUvtHaAb221SdJX3iaGE4;
+claude --teleport session_011CUvtCgc9QpgQX58GHkJPT;
+claude --teleport session_011CUvt8nr4t1S5uHCumsx2Z;
+claude --teleport session_011CUvt8nr4t1S5uHCumsx2Z;
+claude --teleport session_011CUvt4nrDPzLQAyAzXdMkn:
+
+Fold into ingestion pipeline ^^^ claude --teleport session_011CUvsuEDuwJEAt6VWsLTpG
+
+juicy claude --teleport session_011CUvtHaAb221SdJX3iaGE4;
+claude --teleport session_011CUvtHaAb221SdJX3iaGE4;
+juicy
+
+claude --teleport session_01WqEPxBFLf2fh6j4Gm5eRF6;
+claude --teleport session_01MRQcG3xbZNirVvs2VSwfxY;
+claude --teleport session_01YPqLtfb2muQnJBbPFbcJY1
+claude --teleport session_018sq1r7PmDuTzRF5HHMcNkj;
+claude --teleport session_01MjjvPgcgaPsdjCKGKHFZTB;
+claude --teleport session_01LBHK7ByAuit28x6fBhEkbL;
+claude --teleport session_016mRkv6W6S8MUwuxhgqAk4w;
+claude --teleport session_01WeWvB8LhnA27fckYTF2myF;
+claude --teleport session_01JvfV1H2Kn4VAkRS44Wa7un;
+claude --teleport session_01PtrKTyPJehixSi4Cvk6j8E;
+claude --teleport session_01DFQeDamVMJ6Y7MLoZmR23S;
+claude --teleport session_014vnEeyvKNGRj4q4efxLQyD;
+claude --teleport session_01NXaFPLRGQHwZYkMjWgTjYz;
+claude --teleport session_01Shtau3Dwjn2qqypCAUQsgg;
+claude --teleport session_01L5dkyEWB2HZnFpyiB4Qzcs;
+claude --teleport session_014NhhsgUSkUJkDTWDkA3qo8;
+claude --teleport session_01QrHo9ECCgp7vT8V6BsMvPH;
+claude --teleport session_013FdUT6yvkyTws4BJ6A1s7C;
+claude --teleport session_01WZXhvEgNG3jVZr7GjzsCmu;
+claude --teleport session_01K6sU7MCSZiWEJhKQ34jg9U;
+claude --teleport session_0124xZi4rK77nhegfzgRQbRK;
+claude --teleport session_014xNJFfo58uhvkUcT8a1eqp;
+claude --teleport session_01H68gzv26893rqrchCFHTww;
+claude --teleport session_016MqCR7jWaQn9ETdFfqaApd;
+claude --teleport session_016ekupByAgC7XdiRoJBP2v1;
+claude --teleport session_012TMjqWKQfQeLyurA5QthhP;
+claude --teleport session_0194BjpSi6mUMk42gBtjDrYL;
+claude --teleport session_019xgtUbZRuE6fMS1jEvVTcU;
+Judge:
+claude --teleport session_011CUvwBxnYT8QujGMHRutvC;
+claude --teleport session_01Fdo7s3HzwmT5BPicwxbQiC;
+claude --teleport session_01XixZTvXFtkwYEuMWcouokW
+claude --teleport session_01Wbr6XFcsaqnqFE6fs6mAwQ;
+Judge:
+claude --teleport session_01YNDZe1wTXMkuQpQnadGLTz;
+claude --teleport session_019urnLtbFUZn7C1BizYz9pC;
+claude --teleport session_01SUmR9isujbtwZWBWTTXE2M;
+claude --teleport session_01R3jPRVciPQHsuwH5oPwmtG;
+claude --teleport session_01WqvexfBLSTuEF6V43i3FEv;
+claude --teleport session_01QS8keDjf5qkoZJ7kTZSM9Q;
+claude --teleport session_01FXtGVmPrLLXkh4dWk4WRh8;
+claude --teleport session_016mBkH685ypiCFuHcuhAxx7;
+claude --teleport session_01Cz1PyDh7QDxMAYmH1rH8tz;
+claude --teleport session_013MK8vgVRPu3pBbPzARUtij;
+claude --teleport session_01D9kuzYgcUaCZzY5Dpu67hm;
+claude --teleport session_01LizFWbMfFAZtib2nx5FkpJ;
+claude --teleport session_01NVMea8Ff626AfFNHXHDBmx;
+claude --teleport session_01SX9cmBe23YZ7WxueesKzw5;
+claude --teleport session_011CUvxDLrFPHFWuv5musAvW;
+claude --teleport session_011CUvwXSfs4DMXSFuSrXg17;
+claude --teleport session_011CUvwRdqfim5Tp6HivzeMq;
+claude --teleport session_011CUvwFd6EehwYx2V6KcP8k;
+claude --teleport session_011CUvwDmhbxKBWMQGyXGkyj;
+
+claude --teleport session_015noXjuN929ZXxkiZtGLts8;
+claude --teleport session_01BQvSod3H3AWwrYokkt6wCL;
+claude --teleport session_01N8sd6WDo9ezvDXmNtP7eG3;
+claude --teleport session_01B152KAvAjv3DkrALiz2iLf;
+claude --teleport session_01CtqxzRtHRa54CbxEbZVC4h;
+claude --teleport session_014z5Wy7zHetN2Tdj1pvZeap;
+claude --teleport session_01YWPx2N1svovPEduR2fcnaF;
+claude --teleport session_01XDUiUicBarT9B7HFp4kLQe;

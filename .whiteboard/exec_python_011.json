@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_python_011",
+  "level": 3,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "python",
+  "tier": "execution",
+  "shift": "shift_6",
+  "knowledge_graph": {
+    "specialization": "python",
+    "domain": "python"
+  },
+  "task_history": [],
+  "preferred_llm": "claude-sonnet-4-5-20250929"
+}

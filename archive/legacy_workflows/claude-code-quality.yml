@@ -1,0 +1,40 @@
+name: Claude Code Quality Check
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**.py'  # Only run when Python files change
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Review the code quality of this PR. Check for:
+
+            1. PEP 8 compliance
+            2. Type hints usage
+            3. Code duplication
+            4. Function complexity
+            5. Proper error handling
+            6. Documentation completeness
+            7. Test coverage
+            8. Performance considerations
+
+            Provide:
+            - A summary of code quality issues
+            - Specific line references for issues
+            - Suggestions for improvement
+            - Overall quality score (1-10)
+          claude_args: "--max-turns 3"

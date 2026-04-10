@@ -1,0 +1,19 @@
+---
+description: pnkln canonical workspace and execution rules
+globs: ["**/*"]
+---
+
+# pnkln rules
+
+- Treat `monorepo_manifest.yaml` as canonical workspace truth.
+- Treat `antigravity-mcp-config.json` as canonical MCP truth.
+- Never create a second source-of-truth MCP config.
+- Keep all four repo roots live and canonical.
+- Put all API keys in `.env`, never inline in JSON.
+- `counselconduit` is the Google-native MVP product path.
+- `uphillsnowball` is the Apple Silicon local lab path.
+- Fix truth surfaces before refactors.
+- Prefer minimal, reviewable changes.
+- Do not revive obsolete thread artifacts once superseded by `docs/UPDATED_pnkln_PACK.md`.
+- Prefer operationalized recovered code over new doctrine prose.
+- **UI & Websites:** Use **Stitch 2 to ideate via MCP** and **Nano Banana 2** for all website building and frontend execution. Remove legacy Dark Luxury and V0-generation aesthetics.

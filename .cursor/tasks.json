@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "agent:use:grok-fast",
+      "type": "shell",
+      "command": "export LLM_PROVIDER=grok-fast && echo 'Switched to Grok-Fast defaults'",
+      "problemMatcher": []
+    },
+    {
+      "label": "agent:bulk-sweep",
+      "type": "shell",
+      "command": "python3 scripts/finish_changes.py --bulk",
+      "problemMatcher": []
+    },
+    {
+      "label": "agent:validate",
+      "type": "shell",
+      "command": "npm run lint && cargo check",
+      "problemMatcher": []
+    },
+    {
+      "label": "slurm_github:handshake",
+      "type": "shell",
+      "command": "gh auth status && echo 'Handshake Complete.'",
+      "problemMatcher": []
+    }
+  ]
+}

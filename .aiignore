@@ -1,0 +1,20 @@
+# === Physical Workspace Protection ===
+# Ignore massive Bazel caches to prevent indexing lockups
+**/bazel-*
+**/bazel-bin
+**/bazel-out
+**/bazel-testlogs
+**/node_modules
+**/__pycache__
+**/.venv
+
+# === AI Hallucination Quarantine ===
+# Ignore AI scratchpads so Gemini doesn't learn from agent hallucinations
+**/repos/claude-worktrees
+**/*.ipynb
+
+# === ANE Artifacts & Datasets ===
+# Prevent Gemini from choking on heavy binary blocks and datasets
+**/ane_stories110M_ckpt.bin
+**/*.mlmodelc
+**/training/data/

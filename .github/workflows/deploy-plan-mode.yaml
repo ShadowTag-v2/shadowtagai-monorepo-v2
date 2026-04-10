@@ -1,0 +1,102 @@
+name: Deploy Plan Mode Service to GKE
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'deployment/gke/**'
+      - 'PLAN_MODE_TEMPLATE.md'
+      - '.github/workflows/deploy-plan-mode.yaml'
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GKE_CLUSTER: plan-mode-cluster
+  GKE_REGION: us-central1
+  IMAGE_NAME: plan-mode-service
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to GKE
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials $GKE_CLUSTER \
+            --region $GKE_REGION \
+            --project $PROJECT_ID
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA \
+            -t gcr.io/$PROJECT_ID/$IMAGE_NAME:latest \
+            -f deployment/gke/Dockerfile \
+            .
+
+      - name: Push Docker image to GCR
+        run: |
+          docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA
+          docker push gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
+
+      - name: Update ConfigMap
+        run: |
+          envsubst < deployment/gke/configmap.yaml | kubectl apply -f -
+
+      - name: Deploy to GKE
+        run: |
+          envsubst < deployment/gke/deployment.yaml | kubectl apply -f -
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/plan-mode-service \
+            plan-mode-api=gcr.io/$PROJECT_ID/$IMAGE_NAME:$GITHUB_SHA
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/plan-mode-service --timeout=5m
+
+      - name: Run smoke tests
+        run: |
+          SERVICE_IP=$(kubectl get svc plan-mode-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          echo "Service IP: $SERVICE_IP"
+
+          # Wait for LoadBalancer IP
+          timeout 300 bash -c 'until [[ -n "$SERVICE_IP" ]]; do sleep 5; SERVICE_IP=$(kubectl get svc plan-mode-service -o jsonpath="{.status.loadBalancer.ingress[0].ip}"); done'
+
+          # Test health endpoint
+          curl -f http://$SERVICE_IP/health || exit 1
+
+          # Test plan generation
+          curl -X POST http://$SERVICE_IP/generate-plan \
+            -H "Content-Type: application/json" \
+            -d '{"task_description": "Test plan generation"}' || exit 1
+
+      - name: Output deployment info
+        run: |
+          echo "Deployment successful!"
+          kubectl get deployment plan-mode-service
+          kubectl get svc plan-mode-service
+          echo "Service URL: http://$(kubectl get svc plan-mode-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')"

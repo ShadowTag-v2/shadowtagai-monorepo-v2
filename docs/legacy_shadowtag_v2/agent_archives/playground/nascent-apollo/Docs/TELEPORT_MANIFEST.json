@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "source": "User Prompt Dump",
+    "date": "2026-01-10",
+    "total_unique_sessions": 142
+  },
+  "priorities": {
+    "JUDGE_LEVEL": [
+      "session_011CUvwBxnYT8QujGMHRutvC",
+      "session_01Fdo7s3HzwmT5BPicwxbQiC",
+      "session_01XixZTvXFtkwYEuMWcouokW",
+      "session_01Wbr6XFcsaqnqFE6fs6mAwQ",
+      "session_01YNDZe1wTXMkuQpQnadGLTz",
+      "session_019urnLtbFUZn7C1BizYz9pC",
+      "session_01SUmR9isujbtwZWBWTTXE2M",
+      "session_01R3jPRVciPQHsuwH5oPwmtG"
+    ],
+    "INGESTION_PIPELINE": [
+      "session_011CUvsuEDuwJEAt6VWsLTpG",
+      "session_011CUvtHaAb221SdJX3iaGE4"
+    ]
+  }
+}

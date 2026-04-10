@@ -1,0 +1,3886 @@
+GPU-ACCELERATED 
+APPLICATIONS
+Accelerated computing has revolutionized a 
+broad range of industries with over five hundred 
+applications optimized for GPUs to help you 
+accelerate your work.GPU -ACCELERATED 
+APPLICATIONS
+CONTENTS
+ 1 Computational Finance
+ 2 Climate, Weather and Ocean Modeling
+ 2 Data Science & Analytics
+ 4 Deep Learning and Machine Learning
+ 8 Defense and Intelligence
+ 9 Manufacturing/AEC: CAD and CAE
+COMPUTATIONAL FLUID DYNAMICS
+COMPUTATIONAL STRUCTURAL MECHANICS
+DESIGN AND VISUALIZATION
+ELECTRONIC DESIGN AUTOMATION
+ 17 Media & Entertainment
+ANIMATION, MODELING AND RENDERING
+COLOR CORRECTION AND GRAIN MANAGEMENT
+COMPOSITING, FINISHING AND EFFECTS
+EDITING
+ENCODING AND DIGITAL DISTRIBUTION
+ON-AIR GRAPHICS
+ON-SET, REVIEW AND STEREO TOOLS
+WEATHER GRAPHICS
+ 24 Medical Imaging
+ 27 Oil and Gas
+ 28 Research: Higher Education and Supercomputing
+COMPUTATIONAL CHEMISTRY AND BIOLOGY
+NUMERICAL ANALYTICS
+PHYSICS
+SCIENTIFIC VISUALIZATION
+ 39 Safety and Security
+ 42 Tools and Management
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 1 
+> Indicates new applicationComputational Finance
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Accelerated 
+Computing EngineElsen Secure, accessible, and accelerated back-
+testing, scenario analysis, risk analytics 
+and real-time trading designed for easy 
+integration and rapid development.•   Web-like API with Native bindings for 
+Python, R, Scala, C 
+•   Custom models and data streams are 
+easy to addMulti-GPU  
+Single Node
+Adaptiv Analytics SunGard A flexible and extensible engine for fast 
+calculations of a wide variety of pricing 
+and risk measures on a broad range of 
+asset classes and derivatives.•   Existing models code in C# supported 
+transparently, with minimal code 
+changes 
+•   Supports multiple backends including 
+CUDA and OpenCL 
+•   Switches transparently between 
+multiple GPUs and CPUS depending on 
+the deal support and load factors.Multi-GPU  
+Single Node
+Alea.cuBase F# QuantAlea’s F# package enabling a growing set of F# 
+capability to run on a GPU•   F# for GPU accelerators Multi-GPU  
+Single Node
+Esther Global Valuation In-memory risk analytics system for OTC 
+portfolios with a particular focus on XVA 
+metrics and balance sheet simulations.•   High quality models not admitting 
+closed form solutions 
+•   Efficient solvers based on full matrix 
+linear algebra powered by GPUs and 
+Monte Carlo algorithmsMulti-GPU  
+Single Node
+Global Risk MISYS Regulatory compliance and enterprise 
+wide risk transparency package•   Risk analytics Multi-GPU  
+Single Node
+Hybridizer C# Altimesh Multi-target C# framework for data 
+parallel computing.•   C# with translation to GPU or Multi-
+Core XeonMulti-GPU  
+Single Node
+MACS Analytics 
+LibraryMurex Analytics library for modeling valuation 
+and risk for derivatives across multiple 
+asset classes•   Market standard models for all asset 
+classes paired with the most efficient 
+resolution methods (Monte Carlo 
+simulations and Partial Differential 
+Equations)Multi-GPU  
+Single Node
+MiAccLib 2.0.1 Hanweck 
+AssociatesAccelerated libraries which encompasses 
+high speed multi-algorithm search 
+engines, data security engine and 
+also video analytics engines for text 
+processing, encryption/decryption and 
+video surveillance respectively.•   Text Processing: Exact Match, 
+Approximate\Similarity Text, 
+Wild Card, MultiKeyword and 
+MultiColumnMultiKeyword, etc 
+•   Data Security: Accelerated Encryption/
+Description for AES-128 
+•  Video Analytics: Accelerated Intrusion 
+Detection AlgorithmMulti-GPU  
+Single Node
+NAG Numerical 
+Algorithms 
+GroupRandom number generators, Brownian 
+bridges, and PDE solvers•  Monte Carlo and PDE solvers Single GPU  
+Single Node
+O-Quant options 
+pricingO-Quant Offering for risk management and 
+complex options / derivatives pricing 
+using GPU•  Cloud-based interface to price complex 
+derivatives representing large baskets 
+of equitiesMulti-GPU  
+Multi-Node
+Oneview Numerix Numerix introduced GPU support for 
+Forward Monte Carlo simulation for 
+Capital Markets and Insurance•  Equity/FX basket models with 
+BlackScholes/Local Vol models for 
+individual equities and FX 
+•  Algorithms: AAD (Automatic Algebraic 
+Differential) 
+•  New approaches to AAD to reduce time 
+to market for fast Price Greeks and XVA 
+GreeksMulti-GPU  
+Multi-Node
+Pathwise Aon Benfield Specialized platform for real-time 
+hedging, valuation, pricing and risk 
+management•  Spreadsheet-like modeling interfaces, 
+Python-based scripting environment, 
+and Grid middlewareMulti-GPU  
+Single Node
+SciFinance SciComp, Inc Derivative pricing (SciFinance) •  Monte Carlo and PDE pricing models Single GPU  
+Single Node
+2 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationSynerscope Data 
+VisualizationSynerscope Visual big data exploration and insight 
+tools•  Graphical exploration of large network 
+datasets including geo-spatial and 
+temporal componentsSingle GPU  
+Single Node
+Volera Hanweck 
+AssociatesReal-time options analytical engine 
+(Volera)•  Real-time options analytics engine Multi-GPU  
+Single Node
+Xcelerit SDK Xcelerit Software Development Kit (SDK) to boost 
+the performance of Financial applications 
+(e.g. Monte-Carlo, Finite-difference) with 
+minimum changes to existing code.•  C++ programming language, cross-
+platform (back-end generates CUDA 
+and optimized CPU code), supports 
+Windows and Linux operating systemsMulti-GPU  
+Single Node
+Climate, Weather and Ocean Modeling
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+ACME-Atm US DOE Global atmospheric model used as 
+component to ACME global coupled 
+climate model•  Dynamics only Multi-GPU  
+Multi-Node
+COSMO COSMO 
+ConsortiumRegional numerical weather prediction 
+and climate research model•  Radiation only in the trunk release, all 
+features in the MCH branch used for 
+operational weather forecastingMulti-GPU  
+Multi-Node
+Gales KNMI, TU Delft Regional numerical weather prediction 
+model•  Full Model Multi-GPU  
+Multi-Node
+Data Science & Analytics
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+ANACONDA Anaconda Anaconda is the leading python package 
+manager, that is the lead contributor 
+to several open source data science 
+libraries. Anaconda includes Numba, a 
+Python-to-GPU compiler that compiles 
+easy-to-read Python code to many-core 
+and GPU architectures. Also includes 
+single-line install of key deep learning 
+packages for GPUs such as pytorch. 
+Anaconda has been downloaded over 
+15M times and is used for AI & ML data 
+science workloads using TensorFlow, 
+Theano, Keras, Caffe, Neon, Lasagne, 
+NLTK, spaCY.•  Includes Bindings to CUDA libraries: 
+cuBLAS, cuFFT, cuSPARSE, cuRAND, 
+and sorting algorithms from the CUB 
+and Modern GPU libraries Includes 
+Numba (JIT python compiler) and Dask 
+(python scheduler) Includes single-line 
+install of numerous DL frameworks 
+such as pytorchMulti-GPU  
+Single Node
+>ArgusSearch Planet AI Deep Learning driven document search •  fast full text search engine: searches 
+hand-written and text documents, 
+including PDF 
+•  allows almost any arbitrary requests 
+(Regular Expressions are supported) 
+•  provides a list of matches sorted by 
+confidenceMulti-GPU  
+Single Node
+Automatic Speech 
+RecognitionCapio In-house and Cloud-based speech 
+recognition technologies•  Real-time and offline (batch) speech 
+recognition 
+•  Exceptional accuracy for transcription of 
+conversational speech 
+•  Continuous Learning (System becomes 
+more accurate as more data is pushed 
+to the platform)Multi-GPU  
+Single Node
+Blazegraph GPU Blazegraph First and fastest GPU accelerated 
+platform for graph query. It provides 
+drop-in acceleration for existing RDF/
+Sparql and Tinkerpop/ Blueprints graph 
+applications. It provides high-level graph 
+database APIs with transparent GPU 
+acceleration for graph query.•  GPU-accelerated SPARQL graph query 
+•  Data Management using the RDF 
+interchange model 
+•  Tinkerpop/Blueprints Graph Support 
+•  Billions of edges on a single multi-GPU 
+node 
+•  SaaS and Appliance models available.Multi-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 3 
+> Indicates new applicationBlazingDB BlazingDB GPU-accelerated relational database for 
+data warehousing scenarios available for 
+AWS and on-premise deployment.•  Modern data warehousing application 
+supporting petabyte scale applicationsMulti-GPU  
+Single Node
+BrytlytDB Brytlyt In-GPU-memory database built on top of 
+PostgreSQL•  GPU-Accelerated joins, aggregations, 
+scans, etc. on PostgreSQL. Visualization 
+platform bundled with database is 
+called SpotLyt.Multi-GPU  
+Multi-Node
+CuPy Preferred 
+NetworksCuPy (https://github.com/cupy/cupy) is 
+a GPU-accelerated scientific computing 
+library for Python with a NumPy 
+compatible interface.•  CUDA 
+•  multi-GPU supportMulti-GPU  
+Single Node
+Datalogue Datalogue AI powered pipelines that automatically 
+prepare any data from any source for 
+immediate & compliant use•  Data transformation 
+•  Ontology mapping 
+•  Data standardization 
+•  Data augmentationMulti-GPU  
+Single Node
+DeepGram DeepGram Voice processing solution for call centers, 
+financials and other scenarios•  Speech to text and phonetic search 
+using GPU deep learningMulti-GPU  
+Single Node
+Driverless AI H2O.ai *Automated Machine Learning with 
+Feature Extraction. Essentially BI for 
+Machine Learning and AI, with accuracy 
+very similar to Kaggle Experts.•  Automated machine learning and 
+feature extraction 
+•  Automated statistical visualization 
+•  Interpretability toolkit for machine 
+learning modelsMulti-GPU  
+Single Node
+GPUdb Kinetica Multi-GPU, Multi-Machine distributed 
+object store providing SQL style query 
+capability, advanced geospatial query 
+capability,heatmap generation, and 
+distributed rasterization services.•  Query against big data in real time.
+•  No pre-indexing allows for complex, ad-
+hoc query chains.
+•  Interactively explore large, streaming 
+data sets.Multi-GPU  
+Single Node
+Gunrock UC Davis Gunrock is a library for graph processing 
+on the GPU. Gunrock achieves a balance 
+between performance and expressiveness 
+by coupling high performance GPU 
+implementations with a high-level 
+programming model, that requires 
+minimal GPU programming knowledge.•  Direction-optimizing BFS, SSSP, 
+PageRank, Connected Components, 
+Betweenness-centrality, triangle 
+counting 
+•  Multi-GPU support for frontier-based 
+methodsMulti-GPU  
+Single Node
+H2O4GPU H2O.ai H2O is a popular machine learning 
+platform which offers GPU-accelerated 
+machine learning. In addition, they offer 
+deep learning by integrating popular deep 
+learning frameworks.•  Currently supporting tree based 
+methods (GBM & Random Forest), GLM, 
+Kmeans and are working on a bunch of 
+other algorithms that are coming soon 
+•  Supports TensorFlow, Caffe and MXNetMulti-GPU  
+Single Node
+IntelligentVoice Intelligent Voice Far more than a transcription tool, this 
+speech recognition software learns 
+what is important in a telephone call, 
+extracts information and stores a visual 
+representation of phone calls to be 
+combined with text/instant messaging and 
+E-mail. Intelligent Voice’s search and alert 
+makes it possible to tackle issues before 
+they arise, address data security concerns 
+and monitor physical access to data.•  Advanced Speech Recognition across 
+large data sets, JumpTo Technology, 
+for data visualisation, E-Discovery, 
+extraction from phone calls, IM & Email 
+defining key phrases and emotional 
+analysis 
+•  Compliance, defining key conversations 
+and interactionsMulti-GPU  
+Single Node
+Jedox Jedox Helps with portfolio analysis, 
+management consolidation, liquidity 
+controlling, cash flow statements, profit 
+center accounting, treasury management, 
+customer value analysis and many more 
+applications, all accessible in a powerful 
+web and mobile application or Excel 
+environment.•  This database holds all relevant data 
+in GPU memory and is thus an ideal 
+application to utilize the Tesla K40 &12 
+GB on-board RAM 
+•  Scale that up with multiple GPUs and 
+keep close to 100 GB of compressed 
+data in GPU memory on a single server 
+system for fast analysis, reporting, and 
+planning.Multi-GPU  
+Single Node
+Labellio KYOCERA 
+Communication 
+Systems CoThe world’s easiest deep learning web 
+service for computer vision, which allows 
+everyone to build own image classifier 
+with only web browser.•  Neural net fine-tuning for image data, 
+data crawling, data browsing as well 
+as drag-and-drop style data cleansing 
+backed by AI supportMulti-GPU  
+Single Node
+4 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationMapD MapD MapD is GPU-powered big data analytics 
+and visualization platform that is 
+hundreds of times faster than CPU 
+in-memory systems. MapD uses GPUs 
+to execute SQL queries on multi-billion 
+row datasets and optionally render the 
+results, all in milliseconds.•  Uses LLVM’s nvptx backend to generate 
+CUDA kernels. OpenGL- (EGL) based 
+rendering is not open source. 
+•  Can run in a docker container using 
+NVIDIA-docker.Multi-GPU  
+Single Node
+Numba Anaconda JIT compilation of Python functions for 
+execution on various targets (including 
+CUDA)•  JIT compilation of Python functions for 
+execution on various targets (including 
+CUDA)Multi-GPU  
+Single Node
+Polymatica Polymatica Analytical OLAP and Data Mining Platform •  Visualization, Reporting, OLAP in-
+memory with GPU acceleration, Data 
+Mining, Machine Learning, Predictive 
+AnalyticsMulti-GPU  
+Multi-Node
+Sqream DB Sqream GPU accelerated SQL database engine 
+for big data analytics. Sqream speeds 
+SQL analytics by 100X by translating SQL 
+queries into highly parallel algorithms 
+run on the GPU.•  Up to 100TB of raw data can be stored 
+and queried in a standard 2U server 
+•  Inserts and analyzes hundreds of 
+billions of records in seconds 
+•  No indexes required 
+•  No changes to SQL code or data science 
+paradigms requiredMulti-GPU  
+Single Node
+SynerScope SynerScope Big data visualization and data discovery, 
+for combining Analytics on Analytics with 
+IoT compute-at-the-edge smart sensors.•  Real-time Interaction with data Single GPU  
+Single Node
+ZX Lib (Fuzzy Logic) Tanay Financial analytics and data mining 
+library•  Monte Carlo simulations, pricing of 
+vanilla and exotic options, fixed income 
+analytics, data miningMulti-GPU  
+Single Node
+Deep Learning and Machine Learning
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+AlphaSense AlphaSense *PaaS for Financial analysis based on 
+public corporate information *Geared 
+at financial analysts within financial 
+services. *Allows very fast searches of 
+public corporate information, and allows 
+questing answering format (“the Google 
+for Analyst research”)•  PaaS for Financial analysis based on 
+public corporate information 
+•  Geared at financial analysts within 
+financial services. 
+•  Allows very fast searches of public 
+corporate information, and allows 
+questing answering format (“the Google 
+for Analyst research”)Multi-GPU  
+Single Node
+ANACONDA 
+EnterpriseAnaconda Anaconda Enterprise takes Anaconda to 
+the next level and makes it easy, secure, 
+and manageable to scale powerful 
+analytics workflows from the laptop to the 
+server and then scaled out to your cluster, 
+while also incorporating collaboration, 
+publishing, security, and Hadoop-
+optimized deployment.•  Anaconda Enterprise opens up 
+the full capabilities of your GPU or 
+multi-core processor to the Python 
+programming language. Common 
+operations like linear algebra, random 
+number generation, FFT and Monte 
+Carlo simulation run faster, and take 
+advantage of multiple cores 
+•  Identify and remedy performance 
+bottlenecks easily with data, code and 
+in-notebook profilers 
+•  Includes Bindings to CUDA libraries: 
+cuBLAS, cuFFT, cuSPARSE, cuRAND, 
+and sorting algorithms from the CUB 
+and Modern GPU librariesMulti-GPU  
+Single Node
+Apache Mahout Apache Mahout Mahout is building an environment for 
+quickly creating scalable performant 
+machine learning applications.•  Designed to make it extremely easy to 
+add new algorithms. Designed to be 
+distributed instead of single machine.Multi-GPU  
+Multi-Node
+ARYA.ai ARYA.ai Deep learning platform with end-to-end 
+workflows for Enterprise. Incorporates 
+TensorFlow. Focusing on consumer 
+banking and insurance industries.•  Deep learning platform with end-to-end 
+workflows for Enterprise. Incorporates 
+TensorFlow.Multi-GPU  
+Multi-Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 5 
+> Indicates new application>Avitas Systems 
+- Inspection as a 
+ServiceAvitas Systems Inspection solution offering enhanced, 
+robotic-based autonomous inspection, 
+advanced predictive analytics, digital 
+inspection data warehousing, and 
+intelligent inspection planning 
+recommendations available in a web-
+based interface•  DL for visual inspection
+BIDMach - UC Berkeley The fastest machine learning library 
+available. Holds the record for many 
+common machine learning algorithms. 
+Both BIDMach and its sister library 
+BIDmat were originated at UC Berkley.•  Written in Scala and supports Scala and 
+Java interfaces. 
+•  Supports linear regression, logistic 
+regression, SVM, LDA, K-Means and 
+other operations.Multi-GPU  
+Single Node
+Bons.ai Bons.ai Bons.ai is an artificial intelligence 
+platform which abstracts away the low-
+level, inner workings of machine learning 
+systems to empower more developers to 
+integrate richer intelligence models into 
+their work.•  Easy to use programming interface. 
+Bons.ai has its own programming 
+language called Inkling. Primary focus 
+on reinforcement learning.Multi-GPU  
+Single Node
+C3 Fraud Detection C3 IoT C3 IoT is a Platform-as-a-Service for 
+industrial customers including utilities, 
+manufacturing, retail, finance, and 
+healthcare. GPUs consumed exclusively 
+through Amazon AWS. Their first DL use 
+cases targets fraud detection from time 
+series power consumption data.•  Deep learning models, including RNNs Multi-GPU  
+Single Node
+>Caffe2 Facebook This is a faster framework for deep 
+learning, it’s forked from BVLC/caffe 
+(master branch). This allows data-parallel 
+via MPI.•  Using the GPU cluster processing mass 
+image dataMulti-GPU  
+Single Node
+Chainer Preferred 
+Networks, Inc.DL framework that makes the 
+construction of neural networks (NN) 
+flexible and intuitive.•  Dynamic NN construction, which makes 
+debugging easier
+•  CPU/GPU-agnostic coding, which is 
+promoted by CuPy, partially NumPy-
+compatible multidimensional array 
+library for CUDA
+•  Data-dependent NN construction, which 
+fully exploits the control flows of Python 
+without magicMulti-GPU  
+Multi-Node
+Clarifai Clarifai Clarifai brings a new level of 
+understanding to visual content through 
+deep learning technologies. Clarifai uses 
+GPUs to train large neural networks to 
+solve practical problems in advertising, 
+media, and search across a wide variety of 
+industries.•  GPU-based training and inference 
+•  Recognizes and indexes images with 
+predefined classifiers, or with custom 
+classifiersMulti-GPU  
+Single Node
+>CNTK Microsoft Microsoft’s Computational Network 
+Toolkit (CNTK) is a unified computational 
+network framework that describes 
+deep neural networks as a series of 
+computational steps via a directed graph.•  Supports many applications, including 
+Speech Recognition, Machine 
+Translation, Image Recognition, Image 
+Captioning, Text Processing and 
+Relevance, Language Understanding, 
+Language ModelingMulti-GPU  
+Single Node
+Cognex ViDi Suite Cognex Deep learning-based software dedicated 
+to industrial image analysis. Cognex 
+ViDi Suite is a field-tested, optimized 
+and reliable software solution based on 
+a state-of-the-art set of algorithms in 
+machine learning.•  Industrial inspection with DL Single GPU  
+Single Node
+6 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationDatabricks cloud Databricks Databricks cloud is GPU-accelerated 
+PaaS offering build on top of AWS.•  GPU instances available with CUDA 
+drivers included, 
+•  GPU support provided by Spark 
+scheduler, 
+•  integration of TensorFlow, Keras 
+•  TensorFrames data connector 
+•  Deep learning pipelines/workflows 
+•  transfer learning and image loading.Multi-GPU  
+Multi-Node
+DeepBench BaiDu Research The primary purpose of DeepBench is to 
+benchmark operations that are important 
+to deep learning on different hardware 
+platforms.•  DeepBench consists of a set of basic 
+operations (dense matrix multiplies, 
+convolutions and communication) as 
+well as some recurrent layer types 
+•  Both forward and backward operations 
+are tested 
+•  This first version of the benchmark will 
+focus on training performance in 32-bit 
+floating-point arithmeticMulti-GPU  
+Single Node
+DeepInstinct DeepInstinct Zero day end point malware detection 
+solution offered to enterprise markets.•  Zero-day threats & APT attack detection 
+on endpoints, servers and mobile 
+devicesMulti-GPU  
+Single Node
+Deeplearni.ng Deeplearni.ng Deep Learning Platform based on 
+TensorFlow. Allows end-to-end 
+workflows. Targeting consumer banking 
+and insurance industries.•  Deep learning workflows can be built 
+•  Based on TensorFlow 
+•  Use cases in consumer banking and 
+InsuranceMulti-GPU  
+Multi-Node
+Deeplearning4j Skymind Deeplearning4j is the most popular deep 
+learning framework for the JVM, and 
+includes all major neural nets such as 
+convolutional, recurrent (LSTMs) and 
+feedforward.•  Integrates with Hadoop and Spark to 
+run distributed 
+•  Java and Scala APIs 
+•  Composable framework that facilitates 
+building your own nets 
+•  Includes ND4J, the Numpy for Java.Multi-GPU  
+Single Node
+Dextro Axon Dextro’s API uses deep learning systems 
+to analyze and categorize videos in real-
+time.•  Object and scene detection 
+•  Machine transcription for audio 
+•  Motion and movement detection.Multi-GPU  
+Single Node
+Gridspace Gridspace Voice analytics to turn your streaming 
+speech audio into useful data and service 
+metrics. Instrument your contact / call 
+center and work communications today 
+with powerful deep learning-driven voice 
+analytics•  Speech-to-text transcription 
+•  Compliance 
+•  Call grading 
+•  Call topic modeling 
+•  Customer service enhancement 
+•  Customer churn predictionN/A
+>HALCON MVTec Software MVTec HALCON is the comprehensive 
+standard software for machine vision with 
+an integrated development environment. 
+HALCON allows models to be trained on 
+GPUs, and outputs trained models for 
+inference on CPU, GPU, or Jetson.•  Deep learning - currently two pre-
+trained networks for 1) inference 
+latency, and 2) precision. HALCON also 
+provides an IDE for training neural 
+networks. Inspection functionality: 
+sub-pixel detection, edge detection, 
+counting, OCR, barcode reading, 3D 
+reconstruction from stereoSingle GPU  
+Single Node
+>IBM Visual Insights IBM IBM Visual Insights uses cognitive 
+capabilities to review and analyze parts, 
+components, and products and identify 
+defects by matching patterns to images 
+of defects that it has previously analyzed 
+and classified. Deploy models to edge 
+computing on production lines to facilitate 
+rapid image capture by camera and 
+cognitive identification of defects. Quickly 
+assess quality inspection metrics across 
+manufacturing processes.•  Cloud-based DL training, deployment on 
+(spec’ed) edge serverMulti-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 7 
+> Indicates new applicationKeras Open Source Keras is a minimalist, highly modular 
+neural networks library, written in 
+Python, and capable of running on top of 
+either TensorFlow or Theano. Keras was 
+developed with a focus on enabling fast 
+experimentation.•  cuDNN version depends on the version 
+of TensorFlow and Theano installed with 
+Keras 
+•  Supported Interfaces: PythonMulti-GPU  
+Single Node
+MatConvNet MathWorks CNNs for MathWorks MATLAB, allows 
+you to use MATLAB GPU support natively 
+rather than writing your own CUDA code.•  Building Blocks, Simple CNN wrapper, 
+DagNN wrapper, cuDNN implementedMulti-GPU  
+Single Node
+Matriod Matroid Matroid offers video classification service 
+in the cloud. Matroid allows training 
+video detections on a set of images and 
+then applying those video detection. For 
+example, video detectors can be trained 
+to identify Steve Jobs and then search for 
+Steve Jobs appearance anywhere in the 
+video.•  Matroid is multi-cloud and allows it 
+customers to easily switch between 
+AWS, Azure and Google Cloud.Multi-GPU  
+Multi-Node
+MetaMind Einstein 
+Platform 
+ServicesProvides a deep learning API for image 
+recognition and text sentiment analysis. 
+Uses either prebuilt, public, or custom 
+classifiers.•  GPU-based training and inference 
+•  Recognizes image and analyzes text, 
+creates and trains classifiers with 
+tooling for uploading and managing 
+datasetsMulti-GPU  
+Single Node
+MXNet Amazon MXnet is a deep learning framework 
+designed for both efficiency and flexibility 
+that allows you to mix the flavors of 
+symbolic programming and imperative 
+programming to maximize efficiency and 
+productivity.•  MXnet supports cuDNN v5 for GPU 
+accelerationMulti-GPU  
+Multi-Node
+NVCaffe Berkeley AI 
+ResearchThe Caffe deep learning framework 
+makes implementing state-of-the-art 
+deep learning easy.•  Process over 40M images per day with a 
+single NVIDIA K40 or Titan GPUSingle GPU  
+Single Node
+Neon Nervana 
+SystemsNeon is a fast, scalable, easy-to-use 
+Python based deep learning framework 
+that has been optimized down to the 
+assembler level. Neon features a rich set 
+of example and pre-trained models for 
+image, video, text, deep reinforcement 
+learning and speech applications.•  Training, inference and deployment of 
+deep learning models. Process over 
+442M images per day on a Titan XMulti-GPU  
+Single Node
+PaddlePaddle PaddlePaddle PaddlePaddle (PArallel Distributed Deep 
+LEarning) is an easy-to-use, efficient, 
+flexible and scalable deep learning 
+platform, which is originally developed 
+by Baidu scientists and engineers for 
+the purpose of applying deep learning to 
+many products at Baidu.•  Optimized math operations through 
+SSE/AVX intrinsics, BLAS libraries (e.g. 
+MKL, ATLAS, cuBLAS) or customized 
+CPU/GPU kernels 
+•  Highly optimized recurrent networks 
+which can handle variable-length 
+sequence without padding 
+•  Optimized local and distributed training 
+for models with high dimensional 
+sparse dataMulti-GPU  
+Single Node
+>Sentient Sentient Sentient is an AI platform company 
+with special focus on digital marketing, 
+ecommerce and finance trading 
+applications.•  Sentient is using GPU deep learning in 
+its commercially available ecommerce, 
+digital marketing and financial trading 
+applications. Studio.ml is a new project 
+designed to make AI development easier 
+by hiding most of the complexity. Studio.
+ml runs on-premise and in the cloud.
+SpaceKnow PaaS SpaceKnow PaaS for deep learning extraction of 
+satellite data information, targeted 
+at Financial Services and Defense / 
+Intelligence Can track macro/micro-
+economic activity by applying deep 
+learning to satellite images.•  Extracts economic activity from satellite 
+images using deep learning 
+•  Can provide batch mode extractionMulti-GPU  
+Multi-Node
+8 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationTensorflow Google Google’s TensorFlow is an open 
+source software library for numerical 
+computation using data flow graphs. 
+Nodes in the graph represent 
+mathematical operations, while the graph 
+edges represent the multidimensional 
+data arrays (tensors) communicated 
+between them.•  TensorFlow is flexible, portable and 
+performant creating an open standard 
+for exchanging research ideas and 
+putting machine learning in productsMulti-GPU  
+Single Node
+Theano LISA Lab Theano is a symbolic expression compiler 
+that powers large-scale computationally 
+intensive scientific investigations.•  Abstract expression graphs for 
+transparent GPU acceleration.Multi-GPU  
+Single Node
+Torch7 Open Source Torch7 is an interactive development 
+environment for machine learning and 
+computer vision.•  Computational back-ends for multicore 
+GPUs.Multi-GPU  
+Single Node
+UETorch Facebook It provides an embedded Torch 
+environment within the powerful Unreal 
+Engine 4. This allows one to have deep 
+learning models directly interact with 
+the game world, and paves way for 
+powerful research. An example of doing 
+AI Research using UETorch is for a neural 
+network to learn physics and intuition 
+about the real world.•  Game interaction and physics, CUDA-
+optimized deep learning and neural 
+networks 
+•  CuDNN supportedMulti-GPU  
+Single Node
+Unify.ID Unify.ID Behavioral user authentication service •  Identifies individuals based on unique 
+factors, such as the way they walk, type 
+and sit.Multi-GPU  
+Single Node
+Visual Intelligence 
+APIDeep Vision Deep Vision specializes in understanding 
+visual content and getting the most value 
+of data by applying visual recognition for 
+enterprises.•  Visual Intelligence API allows 
+leader enterprises in verticals like 
+e-commerce and online auctions, 
+media and entertainment and retailers, 
+to analyze content related with faces, 
+brands and context tags to perform 
+actions like: Curate and organize visual 
+content Search and recommend visually 
+Get insights and analytics visually
+Defense and Intelligence
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Advanced Ortho 
+SeriesDigitalGlobe Geospatial visualization •  Image orthorectification Multi-GPU  
+Single Node
+ArcGIS Pro ESRI Viewshed2 - Determines the raster 
+surface locations visible to a set of 
+observer features, using geodesic 
+methods. Aspect - Determines the 
+compass direction that the downhill 
+slope faces for each location Slope 
+- Determines the slope (gradient or 
+steepness) from each cell of a raster•  Viewshed2 - transforms the elevation 
+surface into a geocentric 3D coordinate 
+system and runs 3D sightlines to each 
+transformed cell center. 
+•  Aspect - The values of each cell in the 
+output raster indicate the compass 
+direction the surface faces at that 
+location. It is measured clockwise in 
+degrees from 0 (due north) to 360 (again 
+due north), coming full circle. 
+•  Slope - The output slope raster can be 
+calculated in two types of units, degrees 
+or percent (percent rise).Multi-GPU  
+Single Node
+Blaze Terra Eternix Geospatial visualization •  3D visualization of geospatial data Multi-GPU  
+Single Node
+Elcomsoft Elcomsoft High-performance distributed password 
+recovery software with NVIDIA GPU 
+acceleration and scalability to over 10,000 
+workstations.•  GPU acceleration for password recovery 
+•  10-100x speedup for password recoveryMulti-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 9 
+> Indicates new applicationENVI Harris Image Processing and Analytics •  Image orthorectification 
+•  Image transformation 
+•  Atmospheric correction 
+•  Panchromatic co-occurrence texture 
+filterMulti-GPU  
+Single Node
+Geomatics GXL PCI Image processing •  Image orthorectification and additional 
+image processingMulti-GPU  
+Single Node
+GeoWeb3d Desktop Geoweb3d Geospatial visualization of 3D and 2D 
+data; mensuration; mission planning•  3D visualization and analysis of 
+geospatial dataMulti-GPU  
+Single Node
+>Graphistry Graphistry Graphistry is the first visual investigation 
+platform to handle increasing enterprise-
+scale workloads.•  Graph reasoning 
+•  GPU-accelerated visual analytics, 
+visual pivoting, and rich investigation 
+templatingMulti-GPU  
+Single Node
+Ikena ISR MotionDSP Real-time full motion video (FMV) and 
+wide-area motion imagery (WAMI) 
+enhancement and computer-vision-
+based analytics software for intelligence 
+analysts•  Real-time super-resolution-based 
+video enhancement on live streams, 
+geospatial visualization, target detection 
+and tracking, and fast 2-D mappingMulti-GPU  
+Single Node
+LuciadLightspeed Luciad Geospatial visualization and analysis •  Geospatial situational awareness Single GPU  
+Single Node
+Manifold Systems Manifold 
+SystemsFull-featured GIS, vector/raster 
+processing & analysis•  Manifold surface tools Multi-GPU  
+Single Node
+SNEAK OpCoast Electromagnetic signals propagation 
+modeling for complex urban and terrain 
+environments.•  Ray tracing, DTED and remote sensing 
+inputs.Multi-GPU  
+Single Node
+SocetGXP BAE Systems The Automatic Spatial Modeler (ASM) is 
+designed to generate 3-D point clouds 
+with accuracy similar to LiDAR, which 
+can extract 3-D objects from stereo 
+images. ASM can extract dense 3-D point 
+clouds from stereo images, and extract 
+accurate building edges and corners from 
+stereo images with high resolution, large 
+overlaps, and high dynamic range.•  Automated 3D feature extraction Multi-GPU  
+Single Node
+Terrabuilder 
+PhotoMeshSkyline Software PhotoMesh integrates a GPU-based, fast 
+algorithm, able to automatically build 
+3D models from simple photographs. 
+PhotoMesh revolutionizes the use of 
+geospatial data by fully automating the 
+generation of high-resolution, textured, 3D 
+mesh models from standard 2D images.•  3D model building from imagery; 
+building texture generation.Multi-GPU  
+Single Node
+Manufacturing/AEC: CAD and CAE
+COMPUTATIONAL FLUID DYNAMICS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+AcuSolve Altair General purpose CFD software •  Linear equation solver Multi-GPU  
+Single Node
+ANSYS Fluent ANSYS General purpose CFD software •  Linear equation solver 
+•  Radiation heat transfer model 
+•  Discrete Ordinate Radiation modelMulti-GPU  
+Multi-Node
+ANSYS Polyflow ANSYS CFD software for the analysis of polymer 
+and glass processing•  Direct Solvers Multi-GPU  
+Single Node
+CPFD Barracuda-
+VR and BarracudaCPFD Fluidized bed modeling software •  Linear equation solver, particle 
+calculationsSingle GPU  
+Single Node
+Culises for 
+OpenFOAMFluiDyna Solver library for general purpose CFD 
+software•  Linear equation solvers Multi-GPU  
+Single Node
+DYVERSO Realflow 3D modeling, animation, and rendering •  Fluid solver (DY-SPH, DY-PBD) Single GPU  
+Single Node
+10 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new application>EXN/Aero Envenio On-demand HPC-cloud CFD solver •  Multiphase, heat transfer, buoyancy, 
+multi-grid, concurrent single/double 
+precision, ideal gas, incompressible & 
+compressible flows, RANS/LES/DES, 
+conjugate heat transferMulti-GPU  
+Multi-Node
+FFT Actran FFT Simulation of acoustics propagation at 
+high frequency or in huge domains such 
+as exhaust of turbomachines, full truck 
+cabin exterior acoustics, and ultrasonic 
+parking sensors.•  Discontinuous Galerkin Method (DGM) 
+solverMulti-GPU  
+Single Node
+FINE/Turbo Numeca 
+InternationalStructured, multi-block, multi-grid CFD 
+solver targeting the turbo machinery 
+industry•  Multi-grid solver Multi-GPU  
+Single Node
+GeoPlat-RS GridPoint 
+Dynamics (GPD)Geoplat Pro-RS is a parallel 
+hydrodynamic simulator with a flexible 
+architecture. This enables to reduce the 
+time for writing the entire simulator 
+by 2/3, and, as consequence, to 
+quickly bring new physical processes 
+into the algorithm. Current stage 
+of development: Implementation of 
+BlackOil model; Creation of pre- and 
+post-processing modules (BlackOil 
+model). Implementation of compositional 
+model; Creation of pre- and post-
+processing modules (BlackOil model and 
+compositional model).•  CUDA, Spectral Decomposition with 
+CUFFT libraryMulti-GPU  
+Single Node
+HiFUN SANDI High Resolution Flow Solver on 
+Unstructured Meshes. State-of-the-art 
+Euler/RANS solver. Super scalability on 
+massively parallel HPC platforms. The 
+code is ported using OpenACC directives 
+for NVIDIA GPU•  HiFUN imbibes most recent CFD 
+technologies; many of them home 
+grown 
+•  HiFUN exhibits highly scalable parallel 
+performance with its ability to scale 
+upto several thousand processors on 
+massively parallel computing platforms 
+•  Capable of handling complex 
+geometries and flow physics arising in 
+high lift flowsMulti-GPU  
+Single Node
+Icepak ANSYS CFD software for electronics thermal 
+management•  Linear Equation Solver Multi-GPU  
+Multi-Node
+midas NFX(CFD) Midas General purpose CFD software based on 
+FEM•  Linear equation solver (Iterative Solver 
+and AMG Preconditioner)Single GPU  
+Single Node
+MIKE 21 DHI 2D hydrological modelling of coast and 
+sea•  Hydrodynamics 
+•  Advection-dispersion 
+•  Sand and mud transport 
+•  Coupled modelling 
+•  Particle tracking 
+•  Oil spill 
+•  Ecological modelling 
+•  Agent based modelling 
+•  Various wave modelsMulti-GPU  
+Single Node
+MIKE FLOOD DHI 1D & 2D urban, coastal, and riverine flood 
+modelling•  Hydrodynamics Multi-GPU  
+Single Node
+Moldflow Autodesk Plastic mold injection software •  Linear equation solver Single GPU  
+Single Node
+nanoFluidX FluiDyna Meshless CFD solver (Smoothed Particle 
+Hydrodynamics, SPH)•  Single/multi-phase flows, thermal, 
+moving/rotating geometries, inlet/outlet 
+boundary conditionsMulti-GPU  
+Multi-Node
+Numerix Zeus Simulation of flow around buildings •  Discrete computational technique Multi-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 11 
+> Indicates new applicationParticleworks Prometech Particle-based CFD software •  Implicit and explicit solvers Multi-GPU  
+Single Node
+PowerViz Exa Industry proven, modern post-processing 
+app for EXA POWERFLOW CFD•  Rendering 
+•  Ray tracingMulti-GPU  
+Single Node
+Simcenter 3D Siemens PLM 
+SoftwareIndustry proven, modern pre- & post-
+processing app for multidiscipline CAE•  Rendering, Raytracing Multi-GPU  
+Single Node
+Speed IT FLOW Vratis Incompressible single-phase CFD 
+software•  Finite volume solver Single GPU  
+Single Node
+SpeedIT for 
+OpenFOAMVratis Solver library for general purpose CFD 
+software•  Linear equation solvers Multi-GPU  
+Single Node
+Turbostream Turbostream 
+Ltd.CFD software for turbomachinery flows •  Explicit solver Multi-GPU  
+Single Node
+ultraFluidX FluiDyna Lattice-Boltzmann-based CFD solver for 
+ground transportation aerodynamics•  Single-phase flows, isothermal, 
+integrated volume mesh generation, 
+local refinement, LES turbulence 
+modelingMulti-GPU  
+Multi-Node
+CFD (Research Developments)
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+DualSPHysics University of 
+ManchesterSPH-based CFD software •  SPH model Multi-GPU  
+Single Node
+GIN3D Boise St - 
+SenocakGeneral purpose CFD software for 
+incompressible flows•  Implicit solver Multi-GPU  
+Single Node
+HiFiLES Stanford - 
+JamesonGeneral purpose CFD software for 
+compressible flows.•  Explicit solver Multi-GPU  
+Multi-Node
+HiPSTAR University of 
+Southampton 
+and University 
+of Melbourne - 
+SandbergCFD software for compressible reacting 
+flows•  Explicit solver Multi-GPU  
+Single Node
+JENRE, Propel 
+(NRL)US Naval 
+Research LabCFD software for compressible flows •  Explicit solver Multi-GPU  
+Single Node
+MUST ITP Aero Engines An edge-based CFD solver for RANS eqns 
+on unstructured grid. It is proprietary to 
+IPT, a divsion of Rolls Royce, and used 
+in-house. GPU-based version of the MUST 
+solver is used in production for the design 
+of turbines and compressors.•  Flux computations over the edges using 
+a multigrid solverMulti-GPU  
+Single Node
+PyFR Imperial College 
+- VincentGeneral purpose CFD software for 
+compressible flows.•  High-order explicit solver based on flux 
+reconstruction methodMulti-GPU  
+Multi-Node
+RAPTOR US DOE CFD formulation of turbulent combustion 
+for fuel injector and other engine 
+applications•  Flow solver Multi-GPU  
+Multi-Node
+S3D Sandia and Oak 
+Ridge NLDirect numerical solver (DNS) for 
+turbulent combustion•  Chemistry model Multi-GPU  
+Multi-Node
+COMPUTATIONAL STRUCTURAL MECHANICS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Adams MSC Software Multi-Body Dynamics simulation software •  Rendering Single GPU  
+Single Node
+ANSYS Mechanical ANSYS Simulation and analysis tool for structural 
+mechanics•  Direct and iterative solvers Multi-GPU  
+Multi-Node
+EDEM DEM Solutions, 
+Ltd.Market-leading Discrete Element 
+Method (DEM) software for bulk material 
+simulation•  DEM solver Single GPU  
+Single Node
+Helyx PEM Engys Specialised add-on solver for HELYX to 
+simulate large numbers of solid objects 
+in motion using the Polyhedral Element 
+Method (PEM)•  Polyhedral Elements Method solver Single GPU  
+Single Node
+12 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationHyperWorks Altair Industry proven, modern pre- & post-
+processing app for CAE•  Rendering 
+•  Anti-aliasing 
+•  Ambient OcclusionSingle GPU  
+Single Node
+Impetus Afea Impetus Afea Predicts large deformations of structures 
+and components exposed to extreme 
+loading conditions•  Non-linear Explicit Finite-Element 
+SolverMulti-GPU  
+Single Node
+LS-Dyna Implicit LSTC Simulation and analysis tool for structural 
+mechanics•  Linear equation solver Multi-GPU  
+Single Node
+Marc MSC Software Simulation and analysis tool for structural 
+mechanics•  Direct sparse solver Multi-GPU  
+Single Node
+midas GTS NX Midas Simulation tool for geo-technical analysis •  Linear equation solver(Multi Frontal 
+Solver)Single GPU  
+Single Node
+midas 
+NFX(Structural)Midas Simulation and analysis tool for structural 
+mechanics•  Linear equation solver(Multi Frontal 
+Solver)Single GPU  
+Single Node
+MSC Nastran MSC Software Simulation and analysis tool for structural 
+mechanics•  Direct sparse solver Multi-GPU  
+Single Node
+NX Nastran Siemens PLM 
+SoftwareSimulation and analysis tool for structural 
+mechanics•  Linear and nonlinear equation solver Multi-GPU  
+Multi-Node
+OptiStruct Altair Industry proven, modern structural 
+analysis solver and solution for structural 
+design and optimization.•  Direct and iterative solvers Single GPU  
+Single Node
+RADIOSS Implicit Altair Simulation and analysis tool for structural 
+mechanics•  Direct and iterative solvers Multi-GPU  
+Single Node
+Rocky DEM Rocky DEM Discrete Element Modeling (DEM)-based 
+particle simulation software•  Explicit DEM solver (dry/sticky contact 
+rheologies) 
+•  1-way & 2-way coupling with ANSYS 
+Fluent and ANSYS MechanicalMulti-GPU  
+Single Node
+SIMULIA 
+3DEXPERIENCEDassault 
+Systèmes 
+SIMULIA Corp.Realistic simulation solution (Uses 
+Abaqus Standard for GPU computing)•  Direct sparse solver Single GPU  
+Single Node
+SIMULIA Abaqus/
+StandardDassault 
+Systèmes 
+SIMULIA Corp.Simulation and analysis tool for structural 
+mechanics•  Direct sparse solver 
+•  AMS Solver 
+•  Steady State DynamicsMulti-GPU  
+Multi-Node
+DESIGN AND VISUALIZATION
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+3DEXCITE DeltaGen Dassault 
+SystèmesHigh-end 3D visualization and realtime 
+interaction to help increase visual quality, 
+speed, and flexibility.•  Interactive ray tracing and global 
+illumination. 
+•  Integration with Siemens TeamCenter. 
+•  Cluster support Realtime & Offline 
+Production Process Integration and 
+scene building. 
+•  Scene Analysis, Xplore DeltaGen, SDK 
+for DeltaGen.Multi-GPU  
+Single Node
+Abaqus/CAE Dassault 
+Systèmes 
+SIMULIA Corp.Complete solution for Abaqus finite 
+element modeling, visualization, and 
+process automation•  Rendering Multi-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 13 
+> Indicates new applicationAccelerad MIT Sustainable 
+Design LabAccelerad is a free suite of programs 
+for fast and accurate lighting and 
+daylighting analysis and visualization. It 
+was developed by Nathaniel Jones at the 
+MIT Sustainable Design Lab and modeled 
+after the popular Radiance software suite 
+developed by Greg Ward at Lawrence 
+Berkeley National Laboratory.•  Up to forty times faster using OptiX 
+•  Renderings with large numbers of 
+ambient bounces 
+•  Calculations over many thousands of 
+sensor points 
+•  Fast simulation of annual climate-based 
+daylighting metrics 
+•  AcceleradRT - Interactive interface for 
+real-time daylighting, glare, and visual 
+comfort analysis with validated accuracy. 
+includes AcceleradVR, an immersive 
+visualization interface compatible with 
+most virtual reality headsets.N/A
+Allplan Nemetschek Complete Building Information Modeling 
+(BIM) for Architecture, Engineering, and 
+Construction•  OpenGL and DirectX based GPU 
+renderingSingle GPU  
+Single Node
+ANSA BETA CAE 
+SystemsIndustry proven, modern pre-processing 
+app for CAE•  OpenGL Single GPU  
+Single Node
+ANSYS Discovery 
+LiveANSYS Interactive and CAD-agnostic Windows-
+based app that gives engineers 
+instantaneous simulation results to help 
+them explore and refine product designs•  OpenGL-based visualization & CUDA-
+based Structural, Fluid Dynamics and 
+Thermal simulationsSingle GPU  
+Single Node
+ANSYS Workbench ANSYS Industry proven, modern pre- & post-
+processing app for CAE•  Rendering Multi-GPU  
+Single Node
+Apex MSC Software Industry proven, modern pre- & post-
+processing app for CAE•  Rendering Single GPU  
+Single Node
+ArchiCAD Nemetschek Complete Building Information Modeling 
+(BIM) for Architecture, Engineering, and 
+Construction•  OpenGL and DirectX based GPU 
+renderingSingle GPU  
+Single Node
+AutoCAD Autodesk 2D and 3D CAD design, drafting, 
+modeling, architectural drawing, and 
+engineering software. Supports Open GL. 
+Native DWG support.•  Surface, mesh, and solid modeling 
+tools, model documentation tools, 
+parametric drawing capabilities 
+•  Native DWG support 
+•  GRID Support.Single GPU  
+Single Node
+CATIA Dassault 
+SystèmesThe reference CAD application for 
+advanced engineering with batching 
+capability and extreme reliability used 
+by 80 of the automotive industry and the 
+entire aerospace industry.•  GPU performance scaling 
+•  VR native integration with HTC ViveSingle GPU  
+Single Node
+CATIA Live 
+RenderingDassault 
+SystèmesRealistic 3D Rendering on full CATIA 3D 
+CAD model•  Physically Based Rendering with no data 
+preparation thanks to native NVIDIA Iray 
+Photoreal integration and interactive 
+realistic rendering using NVIDIA Iray IRTMulti-GPU  
+Single Node
+COMSOL COMSOL General Purpose CAE simulation software •  OpenGL Multi-GPU  
+Single Node
+Creo Parametric PTC Parametric design solution suite. •  Anti-aliasing, better lighting and 
+enhanced shaded-with-edges mode 
+•  Immersive design environment with 
+realistic materials. GRID Support.Single GPU  
+Single Node
+FEMAP Siemens PLM Industry proven, modern pre- & post-
+processing app for CAE•  Rendering Single GPU  
+Single Node
+HIM Optis Human Ergonomics Evaluation software 
+with large model dynamic review in VR 
+with accurate physics behavior•  PhysX
+IC.IDO ESI Group Immersive VR solution for engineering 
+and virtual prototyping. The Helios 
+rendering engine is highly optimized for 
+NVIDIA GPUs.•  NV Pro Pipeline (RiX) for OpenGL 
+rendering, VRWorks SPS and VR 
+SLI, and DesignWorks, including VR 
+Occlusion Culling open source sample 
+and OptiXMulti-GPU  
+Single Node
+Inventor Autodesk 3D mechanical design, documentation, 
+and product simulation.•  Uses BIM for intelligent building 
+components to improve design accuracy.Single GPU  
+Single Node
+14 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationIray NVIDIA A ready-to-integrate, physically-based, 
+photorealistic rendering solution.•  Iray Interactive 
+•  Iray Photoreal 
+•  Iray Cluster 
+•  Fast interactive ray tracing 
+•  Physically-based, global-illumination 
+rendering 
+•  Distributed cluster rendering.Multi-GPU  
+Single Node
+>Iray Server NVIDIA The scaling solution for any Iray based 
+application•  Iray Photoreal and Iray Interactive 
+support, VCA clustering, Cloud 
+rendering, MDL support, AI based 
+denoisingMulti-GPU  
+Multi-Node
+>Iray for 3ds Max Lightworks 
+DesignIray physically-based renderer plugin for 
+Autodesk 3ds Max•  Iray Photoreal and Iray Interactive 
+support, VCA clustering, Cloud 
+rendering, MDL support, AI based 
+denoisingMulti-GPU  
+Multi-Node
+>Iray for Maya 0x1 Software 
+& Consulting 
+GmbHIray physically-based renderer plugin for 
+Autodesk Maya.•  Iray Photoreal and Iray Interactive 
+support, VCA clustering, Cloud 
+rendering, MDL support, AI based 
+denoisingMulti-GPU  
+Multi-Node
+>Iray for Rhino migenius Iray plugin for Rhino. •  Iray Photoreal and Iray Interactive 
+support, VCA clustering, Cloud 
+rendering, MDL support.
+NX Siemens PLM Siemens PLM Software premium design 
+app, has full Iray integration and support 
+multi-gpu rendering. Still CPU bound for 
+most tasks otherwise•  Iray, MDL Multi-GPU  
+Multi-Node
+PLM Software NX 
+and TeamcenterSiemens Product lifecycle management solutions 
+from design to simulation to production 
+to service.•  Design software, NX, and PLM 
+viewer applications, TcVis and Active 
+Workspace 
+•  GRID supportSingle GPU  
+Single Node
+Patran MSC Software Industry proven, modern pre- & post-
+processing app for CAE•  Rendering Single GPU  
+Single Node
+Recap PRO Autodesk ReMake is a solution for converting reality 
+captured with photos or scans into high-
+definition 3D meshes. These meshes that 
+can be cleaned up, fixed, edited, scaled, 
+measured, re-topologized, decimated, 
+aligned, compared and optimized for 
+downstream workflows entirely in 
+ReMake.•  Generation of 3D meshed models from 
+laser scans or photos of an object 
+•  GPU accelerated photogrammetry 
+process from 2D to 3D. 3D model 
+display accelerated by GPUs for smooth 
+navigation of converted models in all 
+display modesMulti-GPU  
+Single Node
+Review PiXYZ Import any CAD data to prepare and 
+experience your content with VR•  Large CAD file support with NVIDIA 
+Pascal Single Pass Stereo extension 
+integrationSingle GPU  
+Single Node
+Revit Autodesk Building Information Modeling (BIM) 
+for architecture, engineering, and 
+construction.•  Modeling (BIM) to design, build, and 
+maintain higher-quality, more energy-
+efficient buildings 
+•  GRID supportSingle GPU  
+Single Node
+Simpleware Synopsys 3D image data visualization, analysis and 
+model generation software•  OpenGL Single GPU  
+Single Node
+SolidEdge Siemens PLM Mid range CAD option from Siemens •  n/a Single GPU  
+Single Node
+SOLIDWORKS Dassault 
+SystèmesCovers all aspects of product 
+development process with a seamless, 
+integrated workflow; design, verification, 
+sustainable design, communication and 
+data management.•  High performance in Shaded, Shaded 
+w/ Edges, and RealView modes, FSAA 
+for sharp edges, Order Independent 
+Transparency 
+•  Real time photorealistic renderings with 
+SOLIDWORKS Visualize, an Iray-based 
+application.Single GPU  
+Single Node
+SOLIDWORKS 
+VisualizeDassault 
+SystèmesEasy to use photorealistic rendering 
+software•  Iray-based ray-tracing, animation 
+support, network rendering.Single GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 15 
+> Indicates new applicationStingray Autodesk The Stingray engine includes 3D game 
+creation tools, design visualization, real-
+time 3D rendering, and virtual reality 
+support. Stingray has great workflows 
+with 3ds Max, Maya, and Maya LT.•  Fully featured viewing technology 
+accelerated by GPU’s for core graphics 
+display as well as complete VR 
+workflowsMulti-GPU  
+Single Node
+Studio PiXYZ Interactively prepare & optimize any CAD 
+data before using your favorite staging 
+tool•  Large scale CAD format, support for 
+multi-CAD file standard, prepare, 
+optimize and heal your geometry before 
+experiencing it in VRSingle GPU  
+Single Node
+Substance Designer Allegorithmic Material shader edition, market reference 
+for procedural texture creation.•  Iray rendering including textures/
+substances and bitmap texture export to 
+render in any Iray powered compatible 
+with MDLMulti-GPU  
+Single Node
+Substance Painter Allegorithmic Intuitive interactive 3D painting software 
+with physics and particle support.•  Iray rendering to enhance all artwork 
+released with the softwareMulti-GPU  
+Single Node
+T-FLEX CAD Top Systems 3D and 2D parametric design, simulation, 
+photorealistic rendering•  High performance visualization, real 
+time photorealistic rendering, CUDAMulti-GPU  
+Single Node
+Theia-RT Optis Light simulation stand-alone validation 
+tool with OpenGL PBR engine, 
+deterministic ray tracer, Monte-Carlo 
+progressive GPU renderer (beta) with 
+a strong physics focus for engineering 
+decision making.•  Fast real-time engine integrating 
+complex precomputed light effectsMulti-GPU  
+Single Node
+>UE4 Epic Games Unreal Engine 4 is a suite of integrated 
+tools for game developers to design 
+and build games, simulations, and 
+visualizations•  - GPU Accelerated Rendering on 
+OpenGL, DirectX and Vulkan. - Phys-X 
+implemented.Multi-GPU  
+Single Node
+VRED Autodesk VRED 3D visualization software helps 
+automotive designers and engineers 
+create product presentations, design 
+reviews, and virtual prototypes. Use 
+Digital Prototyping to quickly visualize 
+ideas and evaluate designs.•  Enhanced geometry behavior 
+•  Automotive product interoperability 
+•  Navigation in a scene 
+•  Import Alias layer structure 
+•  Asset Manager improvements 
+•  Integrated file converter 
+•  Analytic rendering modes 
+•  Gap Analysis tool 
+•  Oculus Rift support 
+•  Animation module 
+•  Multiple rendering modes 
+•  Subsurface scattering 
+•  Displacement mappingMulti-GPU  
+Single Node
+VRX Optis Driving, headlamp, ADAS/AD simulators 
+leveraging Theia-RT render engine and 
+dynamic environment details (traffic, 
+pedestrians...). VRX connects to Mathlab/
+Simulink and ingests camera, IR, Lidar, 
+Ultrasound and Radar sensor simulation.•  VR simulation with HMD and CAVE 
+supportMulti-GPU  
+Single Node
+Vectorworks Nemetschek Building Information Modeling 
+(BIM) enabled design software for 
+the Architecture, Landscape, and 
+Entertainment industries•  OpenGL based GPU rendering Multi-GPU  
+Single Node
+WYSIWYG Cast Software The WYSIWYG software products, 
+designed specifically for lighting 
+professionals, offers a range of solutions 
+to meet the needs of designers, 
+assistants, electricians, console 
+operators, teachers, and students.•  The speed of wysiwyg’s Shaded Views 
+depends entirely on GPU, the GPU 
+will have an easier time rendering ten 
+risers consolidated into one Mesh, than 
+rendering them as individual risers, 
+Wysiwys also support NVIDIA SLI 
+technologiesMulti-GPU  
+Single Node
+16 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationELECTRONIC DESIGN AUTOMATION
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+ANSYS HFSS ANSYS Simulation tool for modeling 3-D full-
+wave electromagnetic fields in high-
+frequency and high-speed electronic 
+components.•  Transient solver 
+•  FEM solverMulti-GPU  
+Single Node
+ANSYS Maxwell ANSYS Industry-leading electromagnetic field 
+simulation software for the design and 
+analysis of electric motors, actuators, 
+sensors, transformers and other 
+electromagnetic and electromechanical 
+devices.•  Eddy Current Solver Multi-GPU  
+Single Node
+ANSYS Nexxim ANSYS Circuit simulation engine for RF/analog/
+mixed-signal IC design; IBIS-AMI analysis 
+speedup with GPU computing.•  AMI analysis Single GPU  
+Single Node
+CDP D2S GPU acceleration of real-time in-
+line enhancement of semiconductor 
+manufacturing equipment such as the 
+NuFlare EBM-9500 and MBM-1000 mask 
+writers•  Simulation-based processing Multi-GPU  
+Multi-Node
+CST MPHYSICS 
+STUDIODassault 
+Systèmes 
+SIMULIA Corp.Multiphysics simulation including 
+thermal, CFD, and mechanical 
+capabilities. Tightly integrated with CST’s 
+electromagnetic solvers.•  Conjugated Heat Transfer Solver Multi-GPU  
+Multi-Node
+CST STUDIO SUITE Dassault 
+Systèmes 
+SIMULIA Corp.Accurate and efficient computational 
+solution for 3D simulation of 
+electromagnetic devices in a wide range 
+of frequencies•  Transient Solver 
+•  Integral Equation Solver 
+•  Asymptotic Solver 
+•  Multilayer SolverMulti-GPU  
+Multi-Node
+EMPro KeySight Modeling and simulation environment for 
+analyzing 3D EM effects of high speed and 
+RF/Microwave components.•  FDTD solver Multi-GPU  
+Single Node
+FEKO Altair 3D EM modeling and simulation •  FDTD solver 
+•  MoM solver 
+•  RL-GO solver 
+•  CMA SolverMulti-GPU  
+Single Node
+HFSS SBR+ ANSYS Simulation tool for installed antenna 
+performance and antenna-to-antenna 
+coupling.•  High-frequency solver Multi-GPU  
+Single Node
+JMAG JMAG FEA software for electromechanical 
+design. Fast solver / High quality mesh / 
+Advanced modeling technologies.•  EM transient solver 
+•  EM time harmonic solver 
+•  EM static solverMulti-GPU  
+Single Node
+KeySight ADS KeySight Simulation tool for design of RF, 
+microwave and high speed digital circuits•  Transient Convolution simulation with 
+BSIM4 modelsSingle GPU  
+Single Node
+REMCOM XFdtd REMCOM 3D EM Simulation •  FDTD Solver Multi-GPU  
+Single Node
+SEMCAD-X SPEAG 3D EM modeling and simulation •  FDTD solver Single GPU  
+Single Node
+Serenity Lucernhammer EM Simulation (RCS) tool •  MoM solver Multi-GPU  
+Single Node
+Sim4Life ZMT Zurich 
+MedTech AG3D Electromagnetics & Acoustic modeling 
+and simulation•  FDTD and Acoustics Solvers Multi-GPU  
+Single Node
+TrueMask MDP D2S GPU-accelerated simulation and data 
+preparation for mask writing•  Simulation-based processing Multi-GPU  
+Multi-Node
+TrueModel D2S GPU-accelerated simulation and 
+geometric checking of curvilinear shapes•  Simulation-based processing Multi-GPU  
+Multi-Node
+Virtuoso - Cadence Cadence Design 
+SystemsEDA design simulation. •  Visualization and acceleration for EDA 
+and CAD design software.Multi-GPU  
+Multi-Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 17 
+> Indicates new applicationVSim for 
+ElectromagneticsTech-X 
+CorporationPhysics Simulation and modeling 
+software for EM•  FDTD solver Single GPU  
+Single Node
+WIPL-D 2D WIPL-D EM Simulation tool •  Frequency domain method for moments Multi-GPU  
+Multi-Node
+WIPL-D 3D WIPL-D 3D EM modeling and simulation •  MoM Solver
+Wireless InSite REMCOM Uses OptiX 3.8 for Ray-tracing and 
+Propagation prediction•  X3D Ray Tracer Multi-GPU  
+Single Node
+Media & Entertainment
+ANIMATION, MODELING AND RENDERING
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+3ds Max Autodesk 3D modeling, animation, and rendering •  Iray interactive 
+•  Photorealistic, physically correct 
+renderingMulti-GPU  
+Single Node
+>Agisoft PhotoScan Agisoft Agisoft PhotoScan is a stand-alone 
+software product that performs 
+photogrammetric processing of digital 
+images and generates 3D spatial data 
+to be used in GIS applications, cultural 
+heritage documentation, and visual 
+effects production as well as for indirect 
+measurements of objects of various 
+scales.•  CUDA, Multi-GPU  
+Single Node
+Blender Blender Inst 3D modeling, rendering and animation •  GPU-accelerated viewport Single GPU  
+Single Node
+Blender Cycles Blender Inst. GPU renderer •  CUDA-accelerated rendering Multi-GPU  
+Single Node
+Cinema 4D Maxon 3D modeling, animation, and rendering •  Increased model complexity at 
+interactive ratesSingle GPU  
+Single Node
+DAZ Studio Daz 3D POWERFUL and FREE 3D creation 
+software tool that is not only easy to use 
+yet but feature and functionality rich. 
+Whether you are a novice or proficient 3D 
+artist or 3D animator, Daz Studio enables 
+you to create AMAZING 3D Art.•  Iray Interactive 
+•  Iray Photoreal 
+•  MDL supportMulti-GPU  
+Single Node
+FurryBall AAA Studio GPU renderer •  CUDA and DirectX GPU rendering Single GPU  
+Single Node
+HIERO Player Foundry Shot management, conform and review 
+timeline•  Fluid, interactive playback Single GPU  
+Single Node
+Houdini SideFX Procedural 3D modeling, animation and 
+rendering•  Faster simulations Multi-GPU  
+Single Node
+KATANA The Foundry Powerful look development and lighting 
+tool•  Faster interactive graphics Single GPU  
+Single Node
+Kilton/Megaton Blastcode Physics-based simulation plug in •  Faster simulation Single GPU  
+Single Node
+Lightwave NewTek 3D modeling, animation, and rendering •  Increased model complexity at 
+interactive ratesSingle GPU  
+Single Node
+LuxRender LuxRender GPU 3D Renderer •  GPU-accelerated ray tracing Single GPU  
+Single Node
+MARI The Foundry 3D paint tool allows painting directly onto 
+3D models•  Faster interactive painting Single GPU  
+Single Node
+Maya Autodesk 3D modeling, animation, and rendering •  Increased model complexity, larger 
+scenesSingle GPU  
+Single Node
+MODO Foundry 3D modeling, animation and rendering •  Increased model complexity, larger 
+scenesSingle GPU  
+Single Node
+MoskitoRender Cebas GPU renderer •  CUDA-based GPU rendering Multi-GPU  
+Single Node
+Motion Builder Autodesk Character animation and motion capture •  Increased model complexity at 
+interactive ratesSingle GPU  
+Single Node
+18 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationMudbox Autodesk 3D sculpting •  Increased model complexity at 
+interactive ratesSingle GPU  
+Single Node
+Maxwell Next Limit CUDA-accelerated interactive and final-
+frame renderer•  unrestricted image resolution 
+•  network rendering 
+•  de-noisingMulti-GPU  
+Single Node
+Octane Render Otoy GPU renderer •  GPU rendering Multi-GPU  
+Single Node
+Realflow Next Limit Fluid simulation system •  GPU-accelerated simulation Single GPU  
+Single Node
+RealityCapture Capturing 
+RealityPhotogrammetry •  CUDA accelerated, fast photogrammetry Multi-GPU  
+Single Node
+Redshift Renderer Redshift GPU-accelerated, biased renderer •  CUDA-based GPU final-frame rendering 
+•  Mac and Windows supportedMulti-GPU  
+Single Node
+Sculptris Pixologic 3D sculpting •  Increased model complexity at 
+interactive ratesSingle GPU  
+Single Node
+Thea Render Altair Physically-based progressive spectral 
+CPU/GPU Renderer supporting fast 
+interactive changes and bucket rendering 
+for high resolution images•  advanced material layering system, 
+subsurface scattering, displacement 
+mapping, physical sun-sky, IES support 
+and many other featuresMulti-GPU  
+Single Node
+TurbulenceFD Jawset Physics-based simulation plug-in •  Maximus supported GPU simulation 
+using CUDASingle GPU  
+Single Node
+Twinmotion Abvent AEC project review/phasing/marketing 
+showcase including VR viewer with mulit 
+CAD/BIM/AEC import and a simple to use 
+interface but powered by UE4•  UE4 PBR material VR experience Single GPU  
+Single Node
+V-Ray GPU Chaos Group GPU renderer with CPU Hybrid rendering •  CUDA interactive GPU rendering Multi-GPU  
+Single Node
+COLOR CORRECTION AND GRAIN MANAGEMENT
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+ARRI de-bayering 
+SDKARRI RAW de-bayering SDK •  De-bayering of ARRI RAW and primary 
+color grading.Single GPU  
+Single Node
+Baselight FilmLight Color grading •  Real-time color correction Multi-GPU  
+Single Node
+Cinema RAW SDK Canon RAW de-bayering •  GPU-accelerated de-bayering Single GPU  
+Single Node
+DaVinci Resolve Blackmagic 
+DesignColor grading and editing •  Real-time color correction and de-
+noisingMulti-GPU  
+Single Node
+Dark Energy Cinnafilm Application and plug-in for image 
+enhancement•  Image de-noising and restoration Multi-GPU  
+Single Node
+Diamant-Film 
+RestorationHS-Art Film cleanup and restoration •  CUDA accelerated optical flow, de-
+flicker, in-painting and over 30 filtersMulti-GPU  
+Single Node
+Effects Suite Red Giant Visual effects plug-in •  Faster effects Single GPU  
+Single Node
+Grain and Noise 
+ReducerWavelet Beam Video noise reduction •  CUDA-accelerated grain and noise 
+reductionMulti-GPU  
+Single Node
+Magic Bullet Looks Red Giant Color and finishing tools •  Faster effects Single GPU  
+Single Node
+Mist Marquise 
+TechnologiesMastering tool for cinema, broadcast and 
+over-the-top content•  CUDA-accelerated de-bayering, 
+color grading, transcoding and image 
+enhancementMulti-GPU  
+Single Node
+Nucoda Digital Vision Color grading •  De-bayering for color correction Single GPU  
+Single Node
+Pablo family Snell Advanced 
+MediaColor grading and finishing •  Real time color correction Multi-GPU  
+Single Node
+PFClean The Pixel Farm Image restoration and remastering •  CUDA-based image processing 
+accelerationMulti-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 19 
+> Indicates new applicationRAW Converter ARRI RAW de-Bayering and primary color 
+grading•  CUDA-accelerated de-bayering and 
+primary gradingSingle GPU  
+Single Node
+REDCINE-X PRO Red Digital 
+CinemaPrimary color grading •  CUDA-accelerated de-bayering and 
+gradingSingle GPU  
+Single Node
+Scratch Assimilate Color grading and finishing •  Accelerated debayering for real-time 
+digital finishingSingle GPU  
+Single Node
+SpeedGrade CC Adobe Color grading •  Real-time grading and finishing with 
+Lumetri Deep Color EngineSingle GPU  
+Single Node
+COMPOSITING, FINISHING AND EFFECTS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+After Effects CC Adobe Motion graphics and effects •  Faster effects plus 3D ray tracing based 
+on NVIDIA OptiX and up to 10x faster 
+perf on about 10% effects 
+•  More effects dev & optimization in 
+progress 
+•  Moving the effects pipeline on top of 
+CUDA for the modular pipleline that will 
+also be used as an effect in Premiere 
+ProMulti-GPU  
+Single Node
+Clipster Rohde & 
+SchwarzVideo and film player and DCI Packager •  Video scaling 
+•  Color space conversion 
+•  Data format conversionMulti-GPU  
+Single Node
+Complete CoreMelt Visual effects plug-in •  Faster effects Single GPU  
+Single Node
+Continuum 
+CompleteBoris FX Visual effects plug-in •  Faster effects Single GPU  
+Single Node
+Element 3D Video Copilot 3D object based particle system •  Faster effects Single GPU  
+Single Node
+FilmTouch Pixelan Video effects plug-in •  Faster effects Single GPU  
+Single Node
+Flame Premium Autodesk Finishing and color grading •  Integrated toolset for 3D VFX, editorial, 
+and color gradingMulti-GPU  
+Single Node
+Fusion Blackmagic 
+DesignEffects and compositing •  Faster effects Single GPU  
+Single Node
+HIERO Foundry Multi-shot management tool that 
+supports collaborative working, 
+review and approval, quick production 
+turnaround and delivery•  Fluid, interactive playback Single GPU  
+Single Node
+Mamba FX SGO High-end compositing •  Faster keying, tracking, painting and 
+restorationSingle GPU  
+Single Node
+Mistika Ultima SGO Color grading and finishing •  Faster keying, tracking, painting and 
+restoration, de-bayeringSingle GPU  
+Single Node
+Mistika VR SGO Near real-time optical flow stitching •  GPU-accelerated video stitching with 
+manual controls 
+•  compatible with most camera rigs 
+•  stitch, review and improve results in 
+seconds 
+•  export clips in many formats, including 
+DPX and ProResSingle GPU  
+Single Node
+Monsters GT Boris FX Visual effects plug-in •  Faster effects Single GPU  
+Single Node
+NUKE Foundry Compositing tool with 3D tracker •  Faster effects Single GPU  
+Single Node
+Open FX Neat Video Video noise reduction plug-in •  Faster effects Single GPU  
+Single Node
+PFTrack The Pixel Farm 3D scene creation and tracking •  CUDA-accelerated tracking Multi-GPU  
+Single Node
+20 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationROBUSKEY Robuskey Chroma keyer plug-in •  Faster effects Single GPU  
+Single Node
+Sapphire Boris FX Visual effects plug-in •  Faster effects Single GPU  
+Single Node
+Twitch Video Copilot Video effects plug-in for After Effects •  Faster effects Single GPU  
+Single Node
+Twixtor Re:Vision Effects Visual effects plug-in •  Faster effects Single GPU  
+Single Node
+Video Essentials NewBlueFX Video effects plug-in •  Faster effects Single GPU  
+Single Node
+EDITING
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Catalyst Browse/
+Prepare/EditSony 4K, Sony RAW, and HD video editing •  Faster effects, transitions and encoding Single GPU  
+Single Node
+Edius Pro Grass Valley Video editing •  Faster effects 
+•  RAW de-bayeringSingle GPU  
+Single Node
+Final Cut Pro Apple Video editing •  Faster effects Single GPU  
+Single Node
+Illustrator CC Adobe Vector-based digital design •  Entire canvas optimized for NVIDIA 
+based on NV Path Render for faster 
+pan and zoom - Approx 30% faster than 
+standard OpenGL optimizations on 
+Adobe-built Mac versionSingle GPU  
+Single Node
+Kolor Autopano GoPro 360 video stitching for GoPro Cameras •  GPU accelerated 360 stitching 2-4X 
+faster than CPUSingle GPU  
+Single Node
+Lightroom CC Adobe Photo editing •  Entire Develop module is GPU 
+accelerated 
+•  Speed up is only modestSingle GPU  
+Single Node
+Lightworks EditShare Video editing •  Faster effects 
+•  CUDA-accelerated de-bayeringSingle GPU  
+Single Node
+Media Composer Avid Video editing •  Faster video effects, unique stereo 3D 
+capabilitiesSingle GPU  
+Single Node
+MXF Film Partners Collaborative editing system supporting 
+Avid Media Composer, Adobe Premiere 
+Pro, Grass Valley Edius and Blackmagic 
+Resolve•  NVIDIA Video Codec allows remote 
+GPU-accelerated production workflowsSingle GPU  
+Single Node
+Photoshop CC Adobe Image editing •  Natural canvas OpenGL accelerated, 
+Blur galleries OpenCL acceleratedSingle GPU  
+Single Node
+Premiere Pro CC Adobe Video editing •  Real-time video editing & accelerated 
+output rendering via Mercury Playback 
+Engine - CUDA / OpenCL Summer 2018 
+- Video Codec SDK - both encode & 
+decode (including HEVC for 8K)Multi-GPU  
+Single Node
+Qube Snell Advanced 
+MediaBroadcast video editing •  Faster video effects, unique stereo 3D 
+capabilitiesSingle GPU  
+Single Node
+Skybox 360/VR 
+ToolsMettle VR design plugin for Premiere Pro •  Fast VR processing via OpenGL and 
+CUDA accelerationSingle GPU  
+Single Node
+Skybox Studio Mettle VR design plugin for After Effects •  Fast VR processing via OpenGL and 
+CUDA accelerationSingle GPU  
+Single Node
+Smoke Autodesk Finishing and editing •  Faster effects Single GPU  
+Single Node
+Vahana Video Stitch 360 degree video stitching •  Offline and realtime video stitching from 
+multiple camerasSingle GPU  
+Single Node
+Vegas Pro Magix Video editing •  Faster video effects and encoding Single GPU  
+Single Node
+Velocity Imagine 
+CommunicationsVideo editing •  Faster effects Single GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 21 
+> Indicates new applicationENCODING AND DIGITAL DISTRIBUTION
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+>AW-360C10 Panasonic 360-degree Live Camera designed for live 
+sporting events, concerts and stadium 
+events•  low-latency, real-time 4K 360 degree 
+stitching from four camera inputs using 
+Jetson TX-1 
+•  control from tablet or over wi-fi from PC 
+•  automatic exposure and white balance 
+adjustmentSingle GPU  
+Single Node
+Alchemist on 
+DemandSnell Advanced 
+MediaVideo standards conversion •  GPU-accelerated video procession and 
+encodingMulti-GPU  
+Single Node
+Amberfin Dalet Transcoding and video quality analysis •  GPU-accelerated video procession and 
+encodingSingle GPU  
+Single Node
+Aurora Tektronix Automated video quality measurement •  GPU-accelerated video quality 
+assessmentSingle GPU  
+Single Node
+Content Agent Root6 Automated transcoding and workflow 
+management•  GPU-accelerated video procession and 
+encodingMulti-GPU  
+Single Node
+Core ArcVideo Video processing and transcoding Live •  Accelerated transcoding and encoding Multi-GPU  
+Single Node
+Elemental Live Elemental Live streaming video processing and 
+encoding•  Video encoding and video processing Multi-GPU  
+Single Node
+Elemental Server Elemental File-based video processing and encoding •  Video encoding and video processing Multi-GPU  
+Single Node
+Fast CinemaDNG 
+ProcessorFastvideo RAW video debayering, denoising and 
+color correction completely on GPU side•  High-quality GPU-based RAW video 
+processing up to 160 fps 
+•  Wavelet, realtime de-noising (pre and 
+post bayer) 
+•  Standard color correction features and 
+monitoring options 
+•  Export to 16-bit TIF or 10-bit 
+ProResFull-sized video processing 
+•  Realtime 4K, 6K, and 8K playback 
+supportedMulti-GPU  
+Single Node
+JPEG2000 Codec Comprimato JPEG2000 encoding and decoding for 
+DCP, IMF, video editing, broadcast 
+contribution, and archiving.•  Faster-than-real-time UltraHD / 4K 
+•  Lossy and mathematically lossless 
+•  High-bit-depth (HDR)Multi-GPU  
+Single Node
+Lightspeed Live Telestream Enterprise-class live streaming system 
+that can ingest, encode, package and 
+deploy multiple sources to multiple 
+destinations. System utilizes the latest 
+technologies to deliver pristine quality 
+and exceptional processing speed. Video 
+processing and transcoding can be 
+accelerated with GPU for up to 9x speed 
+improvements•  Video processing and transcoding Multi-GPU  
+Single Node
+Live ArcVideo High-density, real-time video processing 
+and encoding.•  Accelerated broadcast encoding with 
+NVIDIA CUDA and NVENCMulti-GPU  
+Single Node
+Media Encoder CC Adobe Output aggregator and encoder for 
+Premiere Pro & After Effects•  Faster output rendering based on 
+Mercury Playback EngineMulti-GPU  
+Single Node
+Medialooks SDK Medialooks MFormats SDK provides complete control 
+over the video pipeline•  NVIDIA Video Codec used for 
+accelerated encoding and ecodingSingle GPU  
+Single Node
+Multiplatform 
+TranscoderERLAB Video processing and encoding software •  Pre-processing encoding, decoding, 
+post-processing and deliverySingle GPU  
+Single Node
+Piko TV Kizil Electronik Linear broadcast encoder •  H.264 and HEVC 4K encoding for 
+broadcast channelsSingle GPU  
+Single Node
+22 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new application>PixelStrings Cinnafilm Cloud-based image processing Platform-
+as-a-Service (PaaS) delivers the high-
+quality, automated video conversion and 
+frame optimization•  motion-compensated frame rate 
+conversion 
+•  high-quality de-interlacing 
+•  texture-aware scaling 
+•  degrain/regrain to any film look, 
+•  denoise/retexture to limit banding 
+•  reverse telecine/pulldown pattern 
+correction 
+•  interlace artifact and dust removal 
+•  runtime retimingMulti-GPU  
+Single Node
+Server 2 Sorenson Media Video transcoding for server app •  H.264 video encoding and video 
+processingMulti-GPU  
+Single Node
+Squeeze Desktop 7 Sorenson Media Video transcoding application and plug-In •  H.264 video encoding and video 
+processingMulti-GPU  
+Single Node
+Tachyon Cinnafilm Standards conversion •  Video processing and frame rate 
+conversionMulti-GPU  
+Single Node
+Tornado Marquise 
+TechnologiesTranscoding engine for IMF and DCP 
+facilities•  Image re-sizing up to 8K 
+•  Color space conversion: 601/709, REC 
+2020, DCI XYZ, ACES 1.0 
+•  De-bayering: ARRIRAW, DNG, RED R3D, 
+SONY F65, F55 RAW, Phantom flex 4K, 
+Canon C500 
+•  Mezzanine: ProRes 444, Avid DNxHD 
+444, XDCAM, AVC Intra, AS-11 DPP, IMF 
+•  Uncompressed: DPX, TIFF, OpenEXRSingle GPU  
+Single Node
+Transkoder Colorfront Encoding and transcoding for DCP and 
+IMF mastering•  JPEG2000 encoding and decoding 
+•  32-bit floating point processing on 
+multiple GPUs 
+•  MXF wrapping, accelerated checksums 
+and AES encryption and decryption, 
+•  IMF/IMP and DCI/DCP package 
+authoring, editing, transwrappingMulti-GPU  
+Single Node
+Vantage LightSpeed Telestream Enterprise-class live streaming system 
+that can ingest, encode, package and 
+deploy multiple sources to multiple 
+destinations. System utilizes the latest 
+technologies to deliver pristine quality 
+and exceptional processing speed. Video 
+processing and transcoding can be 
+accelerated with GPU for up to 9x speed 
+improvements•  Video transcoding and processing Multi-GPU  
+Single Node
+Viarte Isovideo Video standards conversion •  CUDA-accelerated video procession and 
+encodingMulti-GPU  
+Single Node
+VidiCert Joanneum 
+ResearchVideo and film quality assurance •  CUDA accelerated video quality analysis Multi-GPU  
+Single Node
+Wowza Streaming 
+Engine TranscoderWowza H.264 video encoding •  NVENC accelerated video encoding Single GPU  
+Single Node
+ON-AIR GRAPHICS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Air Cinegy Broadcast play-out server •  Real-time on-air graphics Single GPU  
+Single Node
+Brodcaast Dscript 
+3DMonarch 3D on-air graphics •  Real-time rendering Single GPU  
+Single Node
+Capture Cinegy Video ingest •  Uses NVENC to encode/decode multiple 
+H.264 and HEVC streamsSingle GPU  
+Single Node
+Clarity Pixel Power On-air graphics •  Real-time rendering Single GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 23 
+> Indicates new applicationCube Dalet On-air Graphics •  Real-time rendering Single GPU  
+Single Node
+eStudio Brainstorm Virtual sets and motion graphics •  Real-time rendering Single GPU  
+Single Node
+Livebook GFX AJT Systems The LiveBook is designed to fit every 
+production environment and facilitate 
+evolving work flows. Whether you are 
+broadcasting over IP, or using SDI for 
+internal or downstream keying, the 
+LiveBook will be able to adapt to your 
+environment.•  GRAPHICS SOLUTION FOR COMPACT 
+LIVE SPORTS PRODUCTIONSMulti-GPU  
+Single Node
+Mosaic ChyronHego On-air graphics •  Real-time rendering Single GPU  
+Single Node
+Multiviewer Evertz Broadcast multiviewer •  Uses NVENC H.264 and HEVC encoding 
+and decodingSingle GPU  
+Single Node
+Nexio 
+ChannelbrandImagine 
+CommunicationsOn-air graphics •  Real-time rendering Multi-GPU  
+Single Node
+Nexio G8 Imagine 
+CommunicationsOn-air graphics •  Real-time rendering Single GPU  
+Single Node
+Nexio TitleOne Imagine 
+CommunicationsOn-air graphics •  Real-time rendering Single GPU  
+Single Node
+PRIME Graphics 
+PlatformChyronHego Universal graphics platform that stacks 
+an array of diverse applications into a 
+single design-tool hub.•  Real-time rendering Single GPU  
+Single Node
+Reality Virtual 
+StudioZero Density Photorealistic virtual studio solution 
+in broadcast industry, powered by Epic 
+Unreal Engine 4•  node-based compositing system 
+designed for real-time production 
+•  same content can be used for broadcast 
+and VR 
+•  image quality is achieved by on NVIDIA 
+GPUs through deferred rendering 
+methods, unique anti-aliasing technology 
+and advanced features such as depth 
+of field, motion blur, light maps, screen 
+space reflections and refractionSingle GPU  
+Single Node
+Titler Pro NewBlueFX Video titling •  GPU-accelerated graphics Single GPU  
+Single Node
+tOG RT Software On-air graphics •  Real-time rendering Single GPU  
+Single Node
+Type Cinegy On-air Graphics •  Real-time rendering Single GPU  
+Single Node
+Vertigo Grass Valley On-air Graphics •  Real-time rendering Single GPU  
+Single Node
+Virtuoso Monarch Virtual sets and motion graphics •  Real-time rendering Single GPU  
+Single Node
+Viz Engine Vizrt On-air graphics and virtual sets •  Real-time rendering Single GPU  
+Single Node
+Wasp3D - CG Wasp3D On-air graphics and virtual sets •  Real-time rendering Single GPU  
+Single Node
+ON-SET, REVIEW AND STEREO TOOLS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Cortex Dailies MTI Film Review, color grading and transcoding on 
+set•  CUDA accelerated grading and 
+transcodingMulti-GPU  
+Single Node
+Dimension Blackmagic 
+Design3D stereoscopic workflow •  Real-time Single GPU  
+Single Node
+Fluid 4K Review BlueFish444 Review and approval of 4K content •  Real-time video review Single GPU  
+Single Node
+24 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationICE Marquise 
+TechnologiesIMF reference video player •  RAW data support for ARRIRAW, 
+DNG, RED R3D, SONY F65, F55 RAW, 
+Phantom flex 4K and Canon C500 
+•  HDR content encoded in Dolby Vision, 
+HDR10, HDR10+ or HLG 
+•  Uncompressed formats support: DPX, 
+TIFF and OpenEXRSingle GPU  
+Single Node
+On-Set Dailies Colorfront Review, color grading and transcoding on 
+set•  Real-time Multi-GPU  
+Single Node
+Previzion Lightcraft On-set virtual production •  Real-time, virtual set production Single GPU  
+Single Node
+RV Autodesk Review and approval of 4K content •  Real-time Single GPU  
+Single Node
+WEATHER GRAPHICS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Cinemative HD Accuweather Weather graphics •  Real-time Single GPU  
+Single Node
+Max Weather WSI Weather graphics •  Real-time Single GPU  
+Single Node
+Metacast ChyronHego Weather graphics •  Real-time Single GPU  
+Single Node
+MeteoEarth MeteoGraphics Weather graphics •  Real-time Single GPU  
+Single Node
+Storyteller Accuweather Weather graphics •  Real-time Single GPU  
+Single Node
+Medical Imaging
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+>Carestream Vue 
+PACSCarestream 
+HealthCarestream’s Vue Clinical Collaboration 
+Platform gives all those who provide, 
+manage, receive and reimburse care the 
+ability to access the clinical images they 
+need, using the preferred device and 
+application for each workflow and setting.
+>Centricity Universal 
+ViewerGeneral Electric PACS Featuring a single image repository 
+across 2D and 3D studies, Centricity 
+Universal Viewer intuitively brings 
+together the tools needed by radiologists, 
+cardiologists and other clinicians to 
+provide enterprise-wide access on a 
+single desktop.•  Intelligent productivity tools, Advanced 
+visualization applications, An advanced 
+mammography workflow, Cross 
+Enterprise Display, Advanced Cardiology 
+tools, Access from anywhere1 Image 
+enable your EMR.
+>IntelliSpace Phillips PACS
+>IntelliSpace Portal 
+8.0Philips IntelliSpace Portal 8.0 is an advanced 
+visualization platform that offers a single 
+integrated solution to help you work 
+quickly and efficiently with increased 
+diagnostic confidence, especially during 
+reading and follow up of complex cases.
+>iNtuition iEMV Terarecon, Inc. Advanced Image Post-Processing
+>JiveX VISUS Health IT free DICOM Viewer provides comparable 
+functionality as the JiveX Review Client 
+such as measuring tools, zoom, etc. 
+The hanging protocols, which are less 
+relevant outside the clinical setting, are 
+not available.
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 25 
+> Indicates new application>McKesson 
+RadiologyMcKesson 
+CorporationMcKesson Radiology Analytics is a new 
+cloud-based analytics solution that helps 
+you interactively visualize and explore 
+operational metrics, while discovering 
+business improvement opportunities. With 
+the introduction of McKesson Radiology 
+Analytics, we’re helping customers achieve 
+their operational goals by unlocking the 
+real value of their data, with a focus on data 
+accuracy, visualization and interaction.•  Volumetric CT and MR Solutions, 
+Teaching File Solutions, McKesson 
+Radiology Collaboration, Improved 
+Enhancements Program
+>Merge PACS IBM Watson 
+HealthMerge PACS is a powerful reading 
+workflow platform that simplifies 
+physician’s reading activities and 
+centralizes the management of studies. 
+Beyond consolidating multiple reading 
+specialty systems, Merge PACS is 
+uniquely designed to handle high-
+enterprise imaging volumes, perform 
+in diverse reading environments (local, 
+remote, dispersed and teleradiology), and 
+enable providers to seamlessly scale their 
+care delivery.•  Unleash the true power of the worklist 
+(Harness a highly modular and flexible 
+worklist that allows studies to have 
+numerous statuses for different users, 
+enabling multiple workflows to coexist 
+natively and simultaneously.) Focus on 
+patient studies without interruptions 
+(Avoid reading disruptions by benefiting 
+from one platform for all specialties, 
+seamless access to data and an 
+automated pre-load of your next study 
+while reviewing the current one.) Drive 
+critical communications and compliance 
+(Enable active consultations among 
+experts through the embedded instant 
+messaging application and auditable 
+worklist exchanges.) Measure and 
+improve outcomes (Go above and 
+beyond monitoring your systems 
+proactively by understanding how your 
+organization performs with enterprise-
+wide reports on reading activities.)
+>MicroDicom MicroDicom MicroDicom DICOM viewer is equipped with 
+most common tools for manipulation of 
+DICOM images and it has an intuitive user 
+interface. It also has the advantage of being 
+free for use and accessible to everyone.•  Supported DICOM images - without 
+compression and RLE, JPEG Lossy, 
+JPEG Lossless, JPEG 2000 Lossy, 
+JPEG2000 Lossless compressions 
+Structured Reports, MPEG-2 and MPEG-
+4 transfer syntaxes, Encapsulated PDF, 
+Open DICOM directory files, Display 
+patient list from DICOMDIR, Load via 
+drag&drop or double-click Open images 
+in common graphic formats(jpeg, bmp, 
+png, gif, tiff), Convert DICOM images 
+to JPEG, BMP, PNG, GIF, TIFF, Convert 
+DICOM images to movie file format(AVI), 
+Copy DICOM image to clipboard,Mouse-
+driven level-window, user-defined 
+window presets Zooming and panning, 
+Medical image processing operation, 
+Measurements and annotations, 
+Brightness/contrast control, Image 
+resize, Rotate, Flip, Invert, Displaying 
+DICOM attributes of selected 
+image,Suited for patient CD/DVD to 
+show DICOM images without installation 
+Run on Windows XP, Windows Vista, 
+Windows 7, Windows 8, Windows 8.1 
+and Windows 10, Available for x86 and 
+x64 platforms, Portable version
+>NovaPACS Novarad With NovaPACS, patient studies can be 
+viewed from any computer at any of our 
+facilities or from a referring physician’s 
+office. NovaPACS also allows the 
+radiologists to read studies performed 
+at any of our facilities, from any of our 
+facilities, making radiology workflow 
+much more efficient and greatly reducing 
+turnaround time for report dictation.•  Customizable, Disaster Recovery, Nova 
+RIS Integration, Product Improvement, 
+Evergreen Product Program, Support
+26 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationPowerGrid University of 
+Illinois Urbana-
+ChampaignAdvanced MRI reconstruction modeling •  Discrete Fourier Tranform Multi-GPU  
+Single Node
+>RadiAnt Medixant RadiAnt DICOM Viewer provides 
+basic tools for the manipulation and 
+measurement of images•  Fluid zooming and panning, Brightness 
+and contrast adjustments, negative 
+mode, Preset window settings for 
+Computed Tomography (lung, bone, 
+etc.), Ability to rotate (90, 180 degrees) 
+or flip (horizontal and vertical) images, 
+Segment length, Mean, minimum 
+and maximum parameter values (e.g. 
+density in Hounsfield Units in Computed 
+Tomography) within circle/ellipse and 
+its area, Angle value (normal and Cobb 
+angle), Pen tool for freehand drawing
+>RemotEye NeoLogica RemotEye Suite represents a very 
+complete solution for all your medical 
+image viewing needs. It offers full DICOM 
+compliance, web-based architecture, 
+cross-platform compatibility, support 
+for a wide variety of devices, including 
+desktop computers, tablets smartphones.
+>Sectra PACS Sectra AB DICOM Viewer
+>SYNAPSE Fujifilm 
+Corporation
+>syngo.via Siemens 
+HealthcareWith our PACS, you can benefit from 
+software solutions for routine reading that 
+increase quality and productivity in your 
+radiology department.•  Robust performance, great speed, 
+intuitive operation, and intelligent 
+working aids.
+>Visage 7 Pro Medicus, 
+Ltd.DICOM viewer, also referred to as: 
+enterprise viewer, a universal viewer 
+(UniViewer), or an archive neutral viewer 
+(ANV).
+>VistARad U.S. Department 
+of Veterans 
+AffairsThe VistA Imaging system integrates 
+clinical images, scanned documents, and 
+other non-textual data into the patient’s 
+electronic medical record. VistA Imaging 
+can capture and manage many different 
+kinds of images•  The VistA Imaging System’s primary 
+functions are: Clinical Image Display, 
+Image Capture, Filmless Radiology, 
+Image Management
+>Vitrea Vision Vital Images Advanced Image Post-Processing
+>XERO VIEWER Agfa-Gevaert 
+GroupXERO Viewer provides secure access to 
+imaging data from different departments 
+and multiple sources, in one view, to 
+anyone who needs it.•  Zero-footprint, Web 2.0 technology, 
+Image-enable your EHR, One 
+consolidated view, Collaborate using 
+the Web, Images on your mobile device, 
+Mobile upload of multimedia objects, 
+View, edit and compare ECGs
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 27 
+> Indicates new applicationOil and Gas
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+6X Ridgeway Kite Reservoir Simulation on Tesla •  CUDA Simulation Parallelization Multi-GPU  
+Multi-Node
+AISight for SCADA BRS Labs Proactive integrity management and 
+real-time precursor alerts for enhanced 
+SCADA operations in oil and gas.•  24/7 real-time analysis and alerting 
+scaling to thousands of sensors across 
+remote and geographically dispersed 
+locations including historical analysis 
+and trend reports.Multi-GPU  
+Single Node
+AxRTM Acceleware Reverse Time Migration Software •  CUDA accelerated libraries for building 
+RTM softwareMulti-GPU  
+Multi-Node
+DecisionSpace Halliburton 
+(Landmark)E&P platform for geoscience, well 
+planning, drilling, earth modeling•  CUDA acceleration of fault extraction Multi-GPU  
+Single Node
+Echelon Stoneridge 
+TechnologyReservoir simulator •  Fully GPU-accelerated reservoir model, 
+including dual-perm, dual porosity, 
+pressure varying perm and porosity 
+•  Eclipse compatible input deckMulti-GPU  
+Multi-Node
+GeoDepth Paradigm 
+GeophysicalSeismic Interpretation Suite •  CUDA-accelerated RTM Multi-GPU  
+Multi-Node
+Geoteric ffA Seismic interpretation •  Attributes calculations 
+•  Geobodies extractionMulti-GPU  
+Single Node
+Graydient S 
+(SCADA)Giant Grey Machine learning anomaly detection for 
+large scale industrial data.•  Proactive integrity management and 
+real-time precursor alerts for enhanced 
+SCADA operations in oil and gas 
+•  24/7 real-time analysis and alerting 
+scaling to thousands of sensors across 
+remote and geographically dispersed 
+locationMulti-GPU  
+Single Node
+HUESpace Bluware Library SDK toolkit for creating 
+applications for seismic compression 
+and seismic/geospatial imaging and 
+interpretation•  CUDA acceleration for compression and 
+large-scale visualizationMulti-GPU  
+Single Node
+InsightEarth CGG Seismic Interpretation Suite •  OpenCL acceleration for AFE and 3D 
+Curvature attributesMulti-GPU  
+Single Node
+Omega2 RTM Schlumberger Seismic processing •  Multiple algorithms (RTM, etc) Multi-GPU  
+Multi-Node
+PumaFlow IFP Beicip-Franlab Reservoir simulation •  GPU-accelerated linear solver Multi-GPU  
+Single Node
+RTM Tsunami Seismic processing •  RTM algorithm Multi-GPU  
+Multi-Node
+Roxar RMS Emerson Reservoir modeling •  Multi GPU capabilities via HUEspace Multi-GPU  
+Single Node
+Seismic City RTM Seismic City RTM Seismic Processing •  CUDA acceleration Multi-GPU  
+Multi-Node
+SKUA Paradigm Reservoir modeling •  Faults, Horizons and Flow Simulation 
+GridMulti-GPU  
+Single Node
+>tNavigator [] Rock Flow 
+Dynamics (RFD)tNavigator Solver is a software package, 
+offered as a single executable, which 
+allows to build static and dynamic 
+reservoir models, run dynamic 
+simulations, calculate PVT properties 
+of fluids, build surface network model, 
+calculate lifting tables, and perform 
+extended uncertainty analysis as a part of 
+one integrated workflow.•  CUDA, Pascal/Volta architecture, Multi-
+Node GPUMulti-GPU  
+Multi-Node
+VoxelGeo Paradigm 
+GeophysicalSeismic Interpretation Package •  Multi-GPU volume rendering 
+•  Horizon-flattening 
+•  Attribute calculationsMulti-GPU  
+Single Node
+28 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationResearch: Higher Education and Supercomputing
+COMPUTATIONAL CHEMISTRY AND BIOLOGY
+Bioinfomatics
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Arioc Johns Hopkins 
+UniversityHigh-throughput read alignment with 
+GPU-accelerated exploration of the seed-
+and-extend search space•  Single-end alignment, paired-end 
+alignment 
+•  Output in SAM or database-ready binary 
+formats 
+•  Multiple GPU implementationMulti-GPU  
+Single Node
+BEAGLE-lib Open Source BEAGLE is a high-performance library 
+that can perform the core calculations at 
+the heart of most Bayesian and Maximum 
+Likelihood phylogenetics packages. It can 
+make use of highly-parallel processors 
+such as those in graphics cards (GPUs) 
+found in many PCs.•  Evaluation of likelihood for sequence 
+evolution on trees and Arbitrary models 
+(e.g. nucleotide, amino acid, codon) 
+•  Speed-ups (over CPU only version): 
+nucleotide model = up to 25x, codon 
+model = up to 50x.Multi-GPU  
+Single Node
+BarraCUDA University of 
+Cambridge 
+Metabolic 
+Research LabsSequence mapping software •  Alignment of short sequencing reads, 
+alignment of indels with gap openings 
+and extensions.Multi-GPU  
+Multi-Node
+Campaign SimTK An open-source library of GPU-
+accelerated data clustering algorithms 
+and tools.•  K-means (and Kps-means, a K-means 
+variant for GPUs with parallel sorting 
+for improved performance) 
+•  K-medoids 
+•  K-centers (a K-medoids variant in which 
+medoids are placed only once according 
+to a heuristic) 
+•  Hierarchical clustering and Self-
+organizing mapMulti-GPU  
+Multi-Node
+CUDASW++ Open Source Open source software for Smith-
+Waterman protein database searches on 
+GPUs.•  Parallel search of Smith-Waterman 
+database.Multi-GPU  
+Single Node
+CUSHAW Open Source Parallelized short read aligner •  Parallel, accurate long read aligner for 
+large genomesMulti-GPU  
+Single Node
+G-BLASTN Hong Kong 
+Baptist 
+UniversityGPU-accelerated nucleotide alignment 
+tool based on the widely used NCBI-
+BLAST.•  Blastn and megablast modes of NCBI-
+BLASTSingle GPU  
+Single Node
+GHOST-Z GPU Akiyama_
+Laboratory, 
+Tokyo Institute of 
+TechnologySequence homology search tool. •  Good for Shotgun Metagenome Analysis. Multi-GPU  
+Multi-Node
+GPU-Blast Carnegie Mellon 
+UniversityLocal search with fast k-tuple heuristic •  Protein alignment according to BLASTP Single GPU  
+Single Node
+mCUDA-MEME Open Source Ultrafast scalable motif discovery 
+algorithm based on MEME .•  Scalable motif discovery algorithm 
+based on MEMEMulti-GPU  
+Single Node
+MUMmer GPU Open Source High-throughput local sequence 
+alignment program•  Aligns multiple query sequences against 
+reference sequence in parallelSingle GPU  
+Single Node
+NVBIO Open Source NVBIO is an open source C++ library 
+of reusable components designed to 
+accelerate bioinformatics applications 
+using CUDA.•  Data structures, algorithms, and utility 
+routines useful for building complex 
+computational genomics applications on 
+CPU-GPU systemsMulti-GPU  
+Single Node
+NVBowtie Open Source A largely complete implementation of the 
+Bowtie2 aligner on top of NVBIO.•  Good coverage of Bowtie2 features and 
+comparable quality resultsMulti-GPU  
+Single Node
+PEANUT Open Source Read mapper for DNA or RNA sequence 
+reads to a known reference genome.•  Achieves supreme sensitivity and speed 
+compared to current state of the art 
+read mappers like BWA MEM, Bowtie2 
+and RazerS3 
+•  PEANUT reports both only the best hits 
+or all hitsSingle GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 29 
+> Indicates new applicationREACTA Open Source A modified version of GCTA with improved 
+computational performance, support 
+for Graphics Processing Units (GPUs), 
+and additional features. The purpose of 
+REACTA is to quantify the contribution of 
+genetic variation to phenotypic variation 
+for complex traits.•  GRM creation, REML analysis, Regional 
+Heritability (including multi-GPU)Multi-GPU  
+Single Node
+SOAP3 Genomics GPU-based software for aligning short 
+reads with a reference sequence. It can 
+find all alignments with k mismatches, 
+where k is chosen from 0 to 3.•  Short read alignment tool that is not 
+heuristic based; reports all answers.Multi-GPU  
+Multi-Node
+SOAP3-dp The University of 
+Hong KongSOAP3-dp: Ultra-fast GPU-based tool for 
+short read alignment via index-assisted 
+dynamic programming.•  Borrows-Wheeler Transformation, 
+Dynamic ProgrammingMulti-GPU  
+Single Node
+SeqNFind Accelerated 
+Technology 
+LaboratoriesSeqNFind is a powerful tool suite 
+that addresses the need for complete 
+and accurate alignments of many 
+small sequences against entire 
+genomes utilizing a unique hardware/
+software cluster system for facilitating 
+bioinformatics research in Next 
+Generation sequencing and genomic 
+comparisons.•  Hardware and software for reference 
+assembly, blast, SW, HMM, de novo 
+assemblyMulti-GPU  
+Single Node
+Synomics Studio Row Analytics Multi-Omics Biomarker Network 
+Discovery and ValidationSynomics Studio 
+is a new, highly scalable analysis platform 
+that enables researchers and clinicians 
+to discover novelassociations between 
+multiple genotypic, phenotypic and 
+clinical attributes of their patients and 
+their disease risk /therapy responses.•  Multi-SNP association studies (GWAS 
+studies with up to 30 SNPs/SNVs in 
+combination) 
+•  Configurable number of cycles of fully 
+random permutation for validation of 
+SNP networks Speed-up on GPU = 170x 
+vs multi-core CPU alone (further speed-
+up available on multi-GPU and NVLink 
+devices) 
+•  Representative performance for 15,000 
+case:controls, 200,000 SNPs 
+•  2 SNP associations found and validated 
+in 12 mins on single 20 core IBM 
+POWER8NVL with 4x Tesla P100 GPU 
+•  17 SNP associations found and 
+validated in 6 days on single 20 core IBM 
+POWER8NVL with 4x Tesla P100 GPUMulti-GPU  
+Single Node
+UGene Unipro Open source Smith-Waterman for SSE/
+CUDA, Suffix array based repeats finder 
+and dotplot.•  Fast short read alignment Multi-GPU  
+Single Node
+WideLM Open Source Fits numerous linear models to a fixed 
+design and response.•  Parallel linear regression on multiple 
+similarly-shaped modelsMulti-GPU  
+Single Node
+Microscopy
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+BioEM Max Planck 
+InstituteGPU-accelerated computing of Bayesian 
+inference of electron microscopy images•  BioEM can use CUDA for the cross-
+correlation step, which essentially 
+consists of an image multiplication 
+in Fourier space and a Fourier back-
+transformationMulti-GPU  
+Single Node
+cryoSPARC cryoSPARC CryoSPARC; is an easy to use software 
+tool that enables rapid, unbiased 
+structure discovery of proteins and 
+molecular complexes from cryo-EM data.•  Ab-initio reconstruction, heterogeneous 
+reconstruction, and high-speed 
+highresolution refinement of 3D protein 
+structures implemented on GPUs 
+•  Lean memory usage: 768 X 768 X 768 
+box size on a 12GB GPU for refinement 
+•  Multiple simultaneous jobs on multiple 
+GPUsMulti-GPU  
+Single Node
+30 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationHuygens Scientific 
+Volume ImagingHuygens Products: Greatly improve your 
+microscope images•  Deconvolution of volumetric images and 
+time series from widefield, confocal, 
+light sheet, super-resolution STED 
+microscopes and more. 
+•  Chromatic aberration and cross-talk 
+correction, image stabilization and 
+stitching 
+•  Visualization, tracking, colocalization 
+and object analysis 
+•  Multi-GPU and cluster supportMulti-GPU  
+Single Node
+Microvolution Microvolution Nearly instantaneous 3D deconvolution & 
+up to 200 times faster.•  3D deconvolution for fluorescence 
+microscopy 
+•  Written for use only on GPUs 
+•  Multi-GPU supportSingle GPU  
+Single Node
+Phasefocus II Box Phasefocus The Phasefocus’s box product implements 
+data processing aspects of Phasefocus’s 
+imaging methods that are known 
+collectively as the Phasefocus Virtual 
+Lens or ptychography.•  Computational diffractive imaging  
+engine (ptychography)
+•  Multi-GPU supportSingle GPU  
+Single Node
+RELION-2 MRC Laboratory 
+of Molecular 
+BiologyRELION (for REgularised LIkelihood 
+OptimisatioN, pronounce rely-on) 
+is a stand-alone computer program 
+that employs an empirical Bayesian 
+approach to refinement of (multiple) 3D 
+reconstructions or 2D class averages in 
+electron cryo-microscopy (cryo-EM).•  Both image classification and 
+highresolution refinement accelerated 
+up to 40-fold 
+•  Template-based particle selection 
+accelerated almost 1000-fold 
+•  Reduced memory requirements 
+•  High-resolution cryo-EM structure 
+determination in a matter of day on a 
+single workstationMulti-GPU  
+Single Node
+Molecular Dynamics
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+ACEMD Acellera Ltd GPU simulation of molecular mechanics 
+force fields, implicit and explicit solvent•  Written for use only on GPUs. Multi-GPU  
+Multi-Node
+AMBER University of 
+California at San 
+FranciscoSuite of programs to simulate molecular 
+dynamics on biomolecule.•  PMEMD Explicit Solvent and GB Implicit 
+SolventMulti-GPU  
+Single Node
+CHARMM Harvard 
+UniversityMD package to simulate molecular 
+dynamics on biomolecule.•  Implicit (5x) 
+•  Explicit (2x) 
+•  Solvent via OpenMM, now ported 
+natively to GPUsMulti-GPU  
+Single Node
+DESMOND David E. Shaw 
+ResearchHigh-speed molecular dynamics 
+simulations of biological systems.•  The code uses novel parallel algorithms 
+and numerical techniques to achieve 
+high performance and accuracyMulti-GPU  
+Single Node
+ESPResSo ESPResSo Highly versatile software package for 
+performing and analyzing scientific 
+Molecular Dynamics many-particle 
+simulations of coarse-grained atomistic 
+or bead-spring models as they are used 
+in soft-matter research in physics, 
+chemistry and molecular biology.•  Hydrodynamic / Electrokinetic forces 
+•  P3M electrostatics.Multi-GPU  
+Single Node
+Folding@Home Stanford 
+UniversityA distributed computing project that 
+studies protein folding, misfolding, 
+aggregation, and related diseases.•  Powerful distributed computing 
+molecular dynamics system 
+•  Implicit solvent and folding.Multi-GPU  
+Single Node
+GENESIS RIKEN GENESIS (GENeralized-Ensemble 
+SImulation System) is a software package 
+for molecular dynamics simulations and 
+trajectory analyses.•  Powerful parallelization for hybrid 
+(CPU+GPU) systems 
+•  Full electrostatics with PME 
+•  Large (1-100 million atoms) biological 
+systemsMulti-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 31 
+> Indicates new applicationGPUgrid.net Acellera Ltd A distributed computing project that uses 
+GPUs for molecular simulations.•  High-performance all-atom 
+biomolecular simulations 
+•  Explicit solvent and bindingMulti-GPU  
+Single Node
+GROMACS GROMACS Simulation of biochemical molecules with 
+complicated bond interactions.•  Implicit (5x) 
+•  Explicit (2x) SolventMulti-GPU  
+Single Node
+Genesis Diamond 
+VisionicsGenesisRTX, is an advanced high-
+fidelity runtime rendering engine which 
+eliminates the need for traditional off-line 
+database compiling or formatting.•  Powerful parallelization for hybrid 
+(CPU+GPU) systems 
+•  Full electrostatics with PME 
+•  Large (1-100 million atoms) biological 
+systemsMulti-GPU  
+Single Node
+HALMD HALMD Large-scale simulations of simple and 
+complex liquids.•  Simple fluids and binary mixtures (pair 
+potentials, high-precision NVE and NVT, 
+dynamic correlations)Single GPU  
+Single Node
+HOOMD-Blue University of 
+MichiganParticle dynamics package written 
+grounds up for GPUs.•  Written for use only on GPUs Multi-GPU  
+Single Node
+HTMD Acellera Ltd High throughput molecular dynamics 
+simulations•  Available via Conda and github 
+•  Support ACEMD, PMEMD, NAMD, 
+GROMACS 
+•  AMBER and CHARMM force fields 
+•  Adaptive sampling, Markov State 
+Models, visualization, protein 
+preparation and ligand parameterizationMulti-GPU  
+Single Node
+LAMMPS Sandia National 
+LabClassical molecular dynamics package •  Lennard-Jones, Gay-Berne, Tersoff, and 
+dozens more potentialsMulti-GPU  
+Multi-Node
+MELD University of 
+CalgaryOpenMM plugin written for GPUs •  Integrative approach to combine physics 
+and information 
+•  Orders of magnitude faster protein 
+folding than brute force MDMulti-GPU  
+Single Node
+myPresto N2PC/AIST/
+JBIC, JapanOpen Source Computational Drug 
+Discovery Suite.•  High performance virtual screening by 
+MD binding free energy calculation.Multi-GPU  
+Multi-Node
+NAMD University 
+of Illinois at 
+Champaign 
+UrbanaDesigned for high-performance 
+simulation of large molecular systems.•  Full electrostatics with PME and 
+most simulation features; 100M atom 
+capable.Multi-GPU  
+Single Node
+OpenMM Stanford 
+UniversityLibrary and application for molecular 
+dynamics for HPC with GPUs.•  Molecular Dynamics toolkit that is the 
+heart of Folding@Home and is used by 
+serveral/a growing number of other 
+applications. 
+•  Extensible and growing 
+•  Implicit and explicit solvent, custom 
+forcesMulti-GPU  
+Single Node
+PolyFTS University of 
+California at 
+Santa BarbaraClassical molecular simulation code 
+for studying polymer self-assembly and 
+thermodynamics.•  Uses auxiliary fields as the fundamental 
+simulation degrees of freedom 
+•  Uses cuFFT extensively (~ 80%) 
+•  CUDA code is ~20% 
+•  Multi CPU or single GPU per job 
+•  1x = Ivy Bridge E5-2690 CPU all 10 cores 
+•  3-8X on K40 or K80 (utilizing 1/2 of the 
+K80)Single GPU  
+Single Node
+32 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationSOP-GPU SOP-GPU SOP-GPU package, where SOP stands for 
+the Self Organized Polymer Model fully 
+implemented on a GPU, is a scientific 
+software package designed to perform 
+Langevin Dynamics Simulations of 
+the mechanical or thermal unfolding, 
+and mechanical indentation of large 
+biomolecular systems in the experimental 
+subsecond (millisecond-to-second) 
+timescale.•  Langevin dynamics simulations using 
+the coarse-grained Self Organized 
+Polymer (SOP) model, Multiple 
+simulation trajectories can be 
+performed simultaneously on a single 
+GPU, Calpha and Calpha-Cbeta models 
+are supported, Simulations of protein 
+forced unfolding, Novel simulations of 
+nanoindentation in silico, Support for 
+hydrodynamic interactions, Up to ~100 
+ms of simulation time per day, Systems 
+of up to 1,000,000 amino-acids (on GPUs 
+with 6GB or great memory)Single GPU  
+Single Node
+Quantum Chemistry
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Abinit ABINIT Allows to find total energy, charge density 
+and electronic structure of systems made 
+of electrons and nuclei within DFT.•  Local Hamiltonian 
+•  Non-local Hamiltonian 
+•  LOBPCG algorithm 
+•  Diagonalization/ orthogonalization.Multi-GPU  
+Single Node
+ACES 4 University of 
+FloridaNew SIA/aces4 development A new super 
+instruction architecture with interface 
+applications for quantum chemistry 
+(aces4) is now under development. Details 
+and downloads can be found on the 
+project’s git hub site.•  Integrating scheduling GPU into SIAL 
+programming language and SIP runtime 
+environment.Multi-GPU  
+Single Node
+ACES III University of 
+FloridaTakes best features of parallel 
+implementations of quantum chemistry 
+methods for electronic structure.•  Integrating scheduling GPU into SIAL 
+programming language and SIP runtime 
+environment.Multi-GPU  
+Multi-Node
+ADF Software for 
+Chemistry & 
+MaterialsDensity Functional Theory (DFT) software 
+package that enables first-principles 
+electronic structure calculations.•  Geometry optimizations and frequency 
+calculations with GGA functionals. Multi-GPU  
+Single Node
+BigDFT BigDFT Implements density functional theory 
+by solving the Kohn-Sham equations 
+describing the electrons in a material.•  DFT; Daubechies wavelets, part of Abinit Multi-GPU  
+Multi-Node
+CP2K CP2K Program to perform atomistic and 
+molecular simulations of solid state, 
+liquid, molecular and biological systems.•  DBCSR (space matrix multiply library) Multi-GPU  
+Multi-Node
+GAMESS-UK Open Source The general purpose ab initio molecular 
+electronic structure program for 
+performing SCF-, DFT- and MCSCF-
+gradient calculations.•  (ss|ss) type integrals within calculations 
+using Hartree-Fock ab initio methods 
+and density functional theory 
+•  Supports organics and inorganics.Multi-GPU  
+Multi-Node
+GAMESS-US Ames 
+Laboratory/Iowa 
+State UniversityComputational chemistry suite used to 
+simulate atomic and molecular electronic 
+structure.•  Libqc with Rys Quadrature Algorithm, 
+Hartree-Fock, MP2 and CCSDMulti-GPU  
+Multi-Node
+Gaussian Gaussian, Inc. Predicts energies, molecular structures, 
+and vibrational frequencies of molecular 
+systems.•  Joint NVIDIA, PGI and Gaussian 
+collaborationMulti-GPU  
+Single Node
+GPAW GPAW Real-space grid DFT code written in C and 
+Python•  Electrostatic poisson equation 
+•  Orthonormalizing of vectors 
+•  Residual minimization method (rmm-
+diis)Multi-GPU  
+Multi-Node
+gWL-LSMS ORNL Materials code for investigating the 
+effects of temperature on magnetism.•  Generalized Wang-Landau method Multi-GPU  
+Multi-Node
+LATTE Open Sourcee Density matrix computations •  CU_BLAS, SP2 Algorithm Multi-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 33 
+> Indicates new applicationLSDalton LSDalton Linear-scaling HF and DFT code suitable 
+for large molecular systems, now also 
+with some CCSD capabilitiesTensor 
+Algebra Library Routines for Shared 
+Memory Systems which is being used to 
+GPU accelerate three (3) CAAR codes; 
+NWChem, LSDALTON and DIRAC.•  (T) correction to the CCSD energy 
+•  RI-MP2 energy/gradient (in 
+development) 
+•  CCSD energy (in development) 
+•  GPU-based ERI generator (in 
+development)Multi-GPU  
+Single Node
+MOLCAS MOLCAS Methods for calculating general electronic 
+structures in molecular systems in both 
+ground and excited states.•  CU_BLAS Multi-GPU  
+Single Node
+MOPAC2012 MOPAC Semiempirical Quantum Chemistry •  Pseudodiagonalization, full 
+diagonalization, and density matrix 
+assembling via Magma librariesSingle GPU  
+Single Node
+NWChem NWChem NWChem aims to provide its users 
+with computational chemistry tools 
+that are scalable both in their ability 
+to treat large scientific computational 
+chemistry problems efficiently, and in 
+their use of available parallel computing 
+resources from high-performance 
+parallel supercomputers to conventional 
+workstation clusters.Tensor Algebra 
+Library Routines for Shared Memory 
+Systems which is being used to GPU 
+accelerate three (3) CAAR codes; 
+NWChem, LSDALTON and DIRAC.•  Triples part of Reg-CCSD(T), CCSD and 
+EOMCCSD task schedulersMulti-GPU  
+Single Node
+Octopus Harvard 
+UniversityUsed for ab initio virtual experimentation 
+and quantum chemistry calculations.•  Full GPU support for ground-state, real-
+time calculations 
+•  Kohn-Sham Hamiltonian, 
+orthogonalization, subspace 
+diagonalization, poisson solver, time 
+propagation DFT applicationSingle GPU  
+Single Node
+PEtot Lawrence 
+Berkeley 
+LaboratoriesFirst principles materials code that 
+computes the behavior of the electron 
+structures of materials.•  Density functional theory (DFT) plane 
+wave pseudopotential calculationsMulti-GPU  
+Single Node
+Q-CHEM Q-Chem Inc. Computational chemistry package 
+designed for HPC clusters.•  Various features including RI-MP2 Single GPU  
+Single Node
+QBox Open Source Qbox is a C++/MPI scalable parallel 
+implementation of first-principles 
+molecular dynamics (FPMD) based on the 
+plane-wave, pseudopotential formalism. 
+Qbox is designed for operation on large 
+parallel computers.Single GPU  
+Single Node
+QMCPACK QMCPACK QMCPACK, an open-source production 
+level many-body ab initio Quantum Monte 
+Carlo code for computing the electronic 
+structure of atoms, molecules, and solids.•  Main features Multi-GPU  
+Multi-Node
+Quantum Espresso/
+PWscfQuantum 
+Espresso 
+FoundationAn integrated suite of computer codes 
+for electronic structure calculations and 
+materials modeling at the nanoscale.•  PWscf package: linear algebra (matix 
+multiply), explicit computational 
+kernels, 3D FFTsMulti-GPU  
+Multi-Node
+QUICK Michigan State 
+UniversityQUICK is a GPU-enabled ab intio quantum 
+chemistry software package.•  Running Hartree-Fock and DFT energy 
+on GPU, Supports s, p, d, f orbitals on 
+energy calculation, HF gradient with 
+s,p,d orbital support, GPU-based ERI 
+generatorMulti-GPU  
+Single Node
+34 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationRMG North Carolina 
+State UniversityRMG is a density functional theory 
+(DFT) based electronics structure code 
+that uses real space grids to represent 
+wavefunctions, charge densities, and ionic 
+potentials. Designed for scalability, it has 
+been run succesfully on systems with 
+thousands of nodes (including GPU nodes) 
+and hundreds of thousands of CPU cores.•  Supports 10k+ GPU nodes, 
+multipetaflops capable 
+•  Handles thousands of atoms with full 
+DFT precision 
+•  Supports multiple GPUs per node 
+•  Fully open source, with installation 
+support, Downloads, documentation, 
+forums www.rmgdft.org 
+•  Cray XE6/XK7Multi-GPU  
+Single Node
+TAL-SH Oak Ridge 
+National LabTensor Algebra Library Routines for 
+Shared Memory Systems which is being 
+used to accelerated three (3) CAAR codes; 
+NWChem, LSDALTON and DIRAC.•  TAL-SH: Tensor Algebra Library for 
+Shared Memory Computers: Nodes 
+equipped with multicore CPU, NVIDIA 
+GPU, and Intel Xeon Phi (in progress). Multi-GPU  
+Multi-Node
+TeraChem PetaChem LLC Quantum chemistry software designed to 
+run on NVIDIA GPU.•  Full GPU-based solution; Performance 
+compared to GAMESS CPU versionMulti-GPU  
+Single Node
+VASP University of 
+ViennaComplex package for performing ab-initio 
+quantum-mechanical molecular dynamics 
+(MD) simulations using pseudopotentials 
+or the projector-augmented wave method 
+and a plane wave basis set.•  Blocked Davidson (ALGO = NORMAL & 
+FAST), RMM-DIIS (ALGO = VERYFAST 
+& FAST), K-Points and optimization 
+for critical step in exact exchange 
+calculationsMulti-GPU  
+Single Node
+Visualization and Docking
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Amira Thermo fisher 
+ScientificA multifaceted software platform 
+for visualizing, manipulating, and 
+understanding Life Science and bio-
+medical data.•  3D visualization of volumetric data and 
+surfacesSingle GPU  
+Single Node
+BINDSURF Bioinformatics 
+and High 
+Performance 
+Computing 
+Research GroupA virtual screening methodology that uses 
+GPUs to determine protein binding sites.•  Allows fast processing of large ligand 
+databasesSingle GPU  
+Single Node
+BUDE Bristol 
+University 
+Docking StationMolecular docking program •  Empirical Free Energy Force field Single GPU  
+Single Node
+FastROCS Open Eye 
+Scientific 
+Software, Inc.Molecule shape comparison application •  Real-time shape similarity searching/
+comparisonMulti-GPU  
+Multi-Node
+Interactive 
+Molecule VisualizerUniversity of 
+IllinoisExperimental interactive molecule 
+visualizer based on a ray-tracing engine.•  Targeting high quality images and 
+ease of interaction, IMV uses the latest 
+GPUcomputing acceleration techniques, 
+combined with natural user interfaces 
+such as Kinect and WiimotesSingle GPU  
+Single Node
+Molegro Virtual 
+Docker 6QIAGEN Method for performing high accuracy 
+flexible molecular docking.•  Energy grid computation, pose 
+evaluation and guided differential 
+evolutionSingle GPU  
+Single Node
+PIPER Protein 
+DockingBoston 
+UniversityProtein-protein docking program •  Molecule docking Single GPU  
+Single Node
+PyMol Schrodinger, Inc. User-sponsored molecular visualization 
+system on an open-source foundation•  Lines: 460% increase 
+•  Cartoons: 1246% increase 
+•  Surface: 1746% increase 
+•  Spheres: 753% increase 
+•  Ribbon: 426% increaseSingle GPU  
+Single Node
+VEGA ZZ University of 
+California, San 
+FranciscoMolecular Modeling Toolkit •  Virtual logP, molecular surface values Single GPU  
+Single Node
+VMD University of 
+IllinoisVisualization and analyzing large bio-
+molecular systems in 3-D graphics•  High quality rendering, large structures 
+(100M atoms), analysis and visualization 
+tasks, multiple GPU support for display 
+of molecular orbitalsSingle GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 35 
+> Indicates new applicationNUMERICAL ANALYTICS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Accelereyes- 
+ArrayFireArrayFire Comprehensive GPU function library •  Hundreds of functions for math, signal/
+image processing, statistics, and more.Multi-GPU  
+Single Node
+HiPLAR 3High Performance Linear Algebra in R •  Supports GPU and multi-core platforms, 
+compatible with legacy R code, no new 
+data types or operators, auto-tuning, 
+support for R Matrix packageMulti-GPU  
+Single Node
+>MATLAB Mathworks GPU acceleration for MATLAB (high-level 
+technical computing language).•  Support for 200+ of most used MATLAB 
+functions (incl. Signal Processing, 
+Image Processing, Communications 
+Systems, etc)Multi-GPU  
+Single Node
+Mathematica Wolfram A symbolic technical computing language 
+and development environment.•  Development environment for CUDA and 
+OpenCL 
+•  GPU acceleration for Wolfram Finance 
+Platform.Multi-GPU  
+Single Node
+NMath Premium NMath GPU-accelerated math and statistics for 
+.NET, automatically detects the presence 
+of a CUDA-enabled GPU at runtime 
+and seamlessly redirects appropriate 
+computations to it.•  Automatically offloads computations to 
+the GPU.Single GPU  
+Single Node
+PHYSICS
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+AWP AWP The Anelastic Wave Propagation, AWP-
+ODC, independently simulates the 
+dynamic rupture and wave propagation 
+that occurs during an earthquake. 
+Dynamic rupture produces friction, 
+traction, slip, and slip rate information 
+on the fault. The moment function is 
+constructed from this fault data and used 
+to currentize wave propagation.•  3D Finite Difference Computation Single GPU  
+Single Node
+BQCD USQCD Lattice quantum chromodynamics 
+application, used for nuclear ad high 
+energy physics calculations. Most usage 
+is concentrated in EMEA•  Wilson-clover fermion linear solver Multi-GPU  
+Single Node
+CASTRO CASTRO A multicomponent compressible 
+hydrodynamic code for astrophysical 
+flows including self-gravity, nuclear 
+reactions and radiation. CASTRO uses an 
+Eulerian grid and incorporates adaptive 
+mesh refinement (AMR). The approach 
+uses a nested hierarchy of logically-
+rectangular grids with simultaneous 
+refinement in both space and time.•  Gravitational Field Solver Multi-GPU  
+Single Node
+CPS USQCD Lattice quantum chromodynamics 
+application, used for nuclear ad high 
+energy physics calculations.•  Wilson, domain-wall and Mbius fermion 
+linear solversMulti-GPU  
+Single Node
+CPS (GRID) USQCD CPS is developed for lattice QCD and 
+written by C++, with some machine-
+specific assembly routines. It is being 
+developed by members of Columbia 
+University, Brookhaven National 
+Laboratory. The CPS consists of code 
+to build a library which is can be 
+statically linked to your code to create an 
+executable. CPS has optimized codes for 
+QCDOC, IBM Blue Gene machines, and 
+builds for scalar machines or parallel 
+machines with QMP.•  QUDA is supported. The GRID code from 
+Edinburgh is currently being optimized.Multi-GPU  
+Multi-Node
+36 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationChanga CHANGA Astrophysics code performs collisionless 
+N-body simulations. It can perform 
+cosmological simulations with periodic 
+boundary conditions in comoving 
+coordinates or simulations of isolated 
+stellar systems.•  Gravitational Model has been 
+accelerated using CUDASingle GPU  
+Single Node
+Chemora CHEMORA Chemora is a system for performing 
+simulations of systems described 
+by differential equations running on 
+accelerated computational clusters.•  Chemora embeds the equations’ 
+computational kernels into dynamically 
+compiled loop nests shaped for input 
+size and GPU structureMulti-GPU  
+Single Node
+Cholla Cholla Computational Hydrodynamics On 
+ParaLLel Architectures for Astrophysics•  Models the Euler equations on a static 
+mesh and evolves the fluid properties of 
+thousands of cells simultaneously using 
+GPUs 
+•  It can update over ten million cells 
+per GPU-second while using an 
+exact Riemann solver and PPM 
+reconstruction, allowing computation 
+of astrophysical simulations with 
+physically interesting grid resolutions 
+(>256^3) on a single device; calculations 
+can be extended onto multiple devices 
+with nearly ideal scaling beyond 64 
+GPUsMulti-GPU  
+Single Node
+Chroma USQCD Lattice Quantum Chromodynamics (LQCD) •  Wilson-clover fermions, Krylov solvers, 
+Domain-decompositionMulti-GPU  
+Multi-Node
+CST PARTICLE 
+STUDIODassault 
+Systèmes 
+SIMULIA Corp.Self-consistent simulation of charged 
+particles in electromagnetic fields•  Particle-in-Cell Solver Multi-GPU  
+Multi-Node
+>GAMER OpenSource A GPU-accelerated Adaptive Mesh 
+Refinement Code for astrophysical 
+applications. Currently the code solves 
+the hydrodynamics with self-gravity.•  Adaptive mesh refinement (AMR). 
+Hydrodynamics with self-gravity 
+•  A variety of GPU-accelerated 
+hydrodynamic and Poisson solvers. 
+Hybrid OpenMP/MPI/GPU parallelization 
+•  Concurrent CPU/GPU execution for 
+performance optimization. Hilbert 
+space-filling curve for load balanceMulti-GPU  
+Single Node
+>GTC Irvine GTC The gyrokinetic toroidal code (GTC) is a 
+massively parallel, particle-in-cell code 
+for turbulence simulation in support of 
+the burning plasma experiment ITER, the 
+crucial next step in the quest for fusion 
+energy. GTC is the production code for 
+the multi-institutional US Department Of 
+Energy (DOE) Scientific Discovery through 
+Advanced Computing (SciDAC) project, 
+GSEP Center (Gyrokinetic Simulation 
+of Energetic Particle Turbulence and 
+Transport), and DOE INCITE project that 
+was awarded 35M hours of CPU time for 
+2011. Currently maintained at UC Irvine, 
+GTC was the first fusion code to reach 
+in production simulations the teraflop in 
+2001 on the seaborg computer at NERSC 
+and the petaflop in 2008 on the jaguar 
+computer at ORNL. GTC simulation of the 
+turbulence self-regulation by zonal flows 
+was published in a 1998 Science paper, 
+which has received the most citations 
+for any magnetic fusion research paper 
+published since 1996.•  Key accelerated features are the 
+PUSHe, Collision and Poisson SolverMulti-GPU  
+Multi-Node
+GTC-P Princeton 
+Plasma Phyiscs 
+LabA development code for optimization of 
+plasma physics. Full science and data 
+sets are included, but in a simplified form 
+to allow performance testing and tuning.•  Optimized with CUDA. OpenACC 
+development underwayMulti-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 37 
+> Indicates new applicationHACC HACC Simulates N-Body Astrophysics. The 
+HACC (Hardware/Hybrid Accelerated 
+Cosmology Code) framework exploits this 
+diverse landscape at the largest scales of 
+problem size, obtaining high scalability 
+and sustained performance. Developed 
+to satisfy the science requirements of 
+cosmological surveys, HACC melds 
+particle and grid methods using a novel 
+algorithmic structure that flexibly maps 
+across architectures, including CPU/
+GPU, multi/many-core, and Blue Gene 
+systems. We demonstrate the success 
+of HACC on two very different machines, 
+the CPU/GPU system Titan and the BG/Q 
+systems Sequoia and Mira, attaining 
+unprecedented levels of scalable 
+performance. We demonstrate strong 
+and weak scaling on Titan, obtaining up 
+to 99.2% parallel efficiency, evolving 1.1 
+trillion particles.•  This code has been optimized with 
+CUDA runs in full production modeMulti-GPU  
+Single Node
+HAMR GPU HAMR GPU accelerated General Relativistic 
+Magneto Hydrodynamic application•  Active galactic nuclei which assumes 
+a radiatively inefficient sub-eddington 
+rate torus 
+•  Axisymmetric ideal MHD. Viscosity 
+and resistivity through use of Riemann 
+solver (HLL) 
+•  Density floors to mass load the jet. Uses 
+grids that can resolve the substructure 
+of the jet over 5 orders of magnitudeMulti-GPU  
+Single Node
+MAESTRO MAESTRO A low Mach number stellar 
+hydrodynamics code that can be used to 
+simulate long-time, low-speed flows that 
+would be prohibitively expensive to model 
+using traditional compressible code.•  Gravitational Field Solver Multi-GPU  
+Single Node
+MILC USCQD Lattice Quantum Chromodynamics (LQCD) 
+codes simulate how elemental particles 
+are formed and bound by the strong force 
+to create larger particles like protons and 
+neutrons.•  Staggered fermions 
+•  Krylov solvers 
+•  Gauge-link fatteningMulti-GPU  
+Multi-Node
+>NekCEM ANL A high-fidelity, open-source 
+electromagnetics solver based on 
+spectral element and spectral element 
+discontinuous Galerkin methods, written 
+in Fortran and C. The code is actively 
+developed at Mathematics and Computer 
+Science Division of Argonne National 
+Laboratory.•  The OpenACC implementation covers 
+all solution routines for the Maxwell 
+equation solver in NekCEM, including 
+a highly tuned element-by-element 
+operator evaluation and a GPUDirect 
+gather-scatter kernel to effect nearest-
+neighbor flux exchangesMulti-GPU  
+Multi-Node
+OSIRIS UCLA Plasma 
+Physics GroupSimulates Plasma Physics including 
+Laser interaction•  2 dimensions of the particle push have 
+been optimized with CUDA. Additional 
+optimization is being planned with 
+OpenACCMulti-GPU  
+Single Node
+PIConGPU PIConGPU A relativistic Particle-in-Cell code that 
+describes the dynamics of a plasma 
+by computing the motion of electrons 
+and ions subject to the Maxwell-Vlasov 
+equation.•  Simulation of laser-wakefield 
+acceleration of electrons.Multi-GPU  
+Single Node
+PPM PPM Piecewise parabolic method, a higher-
+order extension of Godunov’s method 
+which uses spatial interpolation and 
+allows for a steeper representation of 
+discontinuities, particularly contact 
+discontinuities.•  Turbulent, compressible mixing of 
+gases in the context of stars near the 
+ends of their lives and also in inertial 
+confinement fusionSingle GPU  
+Single Node
+QUDA USQCD Library for Lattice QCD calculations using 
+GPUs.•  QUDA supports the following fermion 
+formulations: Wilson,Wilson-
+clover,Twisted mass,Improved staggered 
+(asqtad or HISQ) and Domain wallMulti-GPU  
+Single Node
+38 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationRAMSES RAMSES Simulates astrophysical problems on 
+different scales (e.g. star formation, 
+galaxy dynamics, cosmological structure 
+formation).•  GPU acceleration is applied for radiative 
+transfer for reionization, and the 
+hydrodynamic solver using AMRMulti-GPU  
+Single Node
+XGC PPPL Simulates edge effects for MHD plasma 
+physics•  The particle push portion has been 
+optimized with CUDA and is being fully 
+optimized with OpenACC and CUDAMulti-GPU  
+Multi-Node
+SCIENTIFIC VISUALIZATION
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+3D Slicer Open Source Medical visualization & segmentation •  Rendering, image processing Single GPU  
+Single Node
+Animator GNS Industry proven, modern post-processing 
+app for CAE•  Rendering Multi-GPU  
+Single Node
+EnSight ANSYS Industry proven post-processing app  
+for CAE•  Rendering 
+•  Ray tracingMulti-GPU  
+Single Node
+FieldView IntelligentLight Visualization application for CFD •  Rendering Single GPU  
+Single Node
+FluoRender (SCI, U 
+of Utah)University of 
+UtahInteractive rendering tool for confocal 
+microscopy data visualization.•  Multi-channel volume rendering Single GPU  
+Single Node
+HVR (LCSE, U of 
+Minnesota)University of 
+MinnesotaInteractive volume rendering application •  Volume rendering Multi-GPU  
+Single Node
+ImageVis3D SCI, University of 
+UtahSimple, scalable, and interactive volume 
+rendering application.•  Out-of-core volume rendering Single GPU  
+Single Node
+IndeX NVIDIA Interactive or real-time volumetric 
+copmpute and visualization framework.•  Parallel distributed 3D rendering of 
+dense or sparse volumes 
+•  Accurate ray casting or ray tracing at 
+high resolution of full size datasets 
+•  Plug-in to ParaView also available.Multi-GPU  
+Multi-Node
+ParaView Kitware Scalable data anlysis and visualization 
+application•  Rendering and analysis tasks Multi-GPU  
+Single Node
+Seg3D (SCI, U of 
+Utah)SCI, University of 
+UtahSegmentation application for medical data •  Rendering, image processing Single GPU  
+Single Node
+SPECFEM3D CIG There are two modules/apss in the 
+SPECFEM family: GLOBE and CARTESIAN. 
+The global model is the former Gordon 
+Bell Awardee code. Used for global 
+inversion. Also part of the CAAR effort 
+(although, that one is mostly focused on 
+workflow, rather than the actual model). 
+The regional model is CARTESIAN and it 
+is the app used for seismic simulations, 
+earthquake models, submarine acoustics 
+etc In addition to being used as a 
+community app, Specfem3D is also use as 
+a proxy app for proprietary codes•  OpenCL and CUDA hardware 
+accelerators, based on an automatic 
+source-to-source transformation 
+library. Simulates acoustic (fluid), 
+elastic (solid), coupled acoustic/elastic, 
+poroelastic or seismic wave propagation 
+in any type of conforming mesh of 
+hexahedra (structured or not).Multi-GPU  
+Single Node
+VisIt LLNL Scalable data anlysis and visualization 
+application•  Rendering and analysis tasks Multi-GPU  
+Single Node
+Visulalization 
+Toolkit (VTK)Open Source Data anlysis and visualization toolkit •  Rendering Single GPU  
+Single Node
+vl3 (Argonne 
+National Lab)Large dataset visualization in cosmology, 
+astrophysics, and biosciences fields.•  Volume rendering of particles Multi-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 39 
+> Indicates new applicationSafety and Security
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+AI-NVR IronYun Search in Video •  Search in Video
+BioSurveillance 
+NEXT, BioFinderHerta Security Real time facial recognition and forensic 
+alerts against multiple watchlists.•  Supports crowded scenes, difficult 
+lighting, faster than real-time analysis, 
+partial face concealmentMulti-GPU  
+Single Node
+>Cezurity EVO Cezurity Event Observer (EvO): engine for detecting 
+malicious activity on user computers. 
+Centralized detection engine; Event 
+chains; Context; Real-time analysis - 
+Cezurity Cloud: Cloud-based technology 
+for detecting malware. Cezurity Cloud has 
+the flexibility to fit into diverse solutions. 
+Different information can be sent and 
+processed by the server, depending on 
+the needs of each product or solution. 
+For example, Cezurity Cloud is currently 
+used as a subsystem to supply data 
+for the Cezurity EvO detection engine. 
+Cezurity Cloud helps the Anti-Virus 
+Scanner to detect malware. In addition, 
+the technology is used for monitoring and 
+analyzing changes in our APT-D solution 
+designed to detect persistent threats 
+against corporate networks.•  CUDA Multi-GPU  
+Single Node
+Cylance Cylance Advanced AI-based end point malware 
+detection•  End point malware detection solution 
+build using GPU deep learning 
+technologyMulti-GPU  
+Single Node
+FaceControl VOCORD Detects and recognizes the faces of 
+people, freely passing-by cameras, 
+providing an instant alert to people on 
+a watchlist, recognizes age and gender, 
+counts people by faces, tags newcomers 
+and regular visitors. The system uses 
+deep neural network algorithms and 
+performs recognition with extremely high 
+accuracy in field applications.•  Non-cooperative biometrical facial 
+recognition system, ALPR, video 
+analytics and pattern recognition, video 
+processing and video enhancementMulti-GPU  
+Single Node
+>FindFace 
+Enterprise Server 
+SDKNTechLab Powered by Ntechlab face recognition 
+algorithm, FindFace Enterprise Server 
+SDK effectively processes face recognition 
+and works on the client, no biometric 
+data is transferred or stored by NtechLab. 
+It detects and identifies people faces 
+in live video streams and video footage 
+addressing a wide range of business 
+tasks, such as precise people count, 
+demographic information, people flow 
+and client behavior. FindFace Enterprise 
+Server SDK allows for integration into 
+any web, mobile, or desktop application 
+using the cross-platform REST API. The 
+FindFace Enterprise Server SDK 2.0 
+can be widely applied in a variety cases, 
+including customer analytics, client 
+verification, fraud prevention, hospitality, 
+and access control.•  CUDA, NVDec, DeepStream (testing) Multi-GPU  
+Single Node
+Foundation 
+PlatformOmni AI Foundation Platform performs anomaly 
+detection on video, SCADA, cyber, 
+image, and analytics data in real 
+time by automatically discriminating 
+between normal and abnormal events. 
+Foundation Platform observes, learns, 
+and understands compound collections of 
+heterogeneous multi-input group data in 
+a dynamic environment without the need 
+for supervised learning.•  Unsupervised anomaly detection
+40 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new application>Glueck Media; 
+Glueck AnalyticsGlueck Deep Learning/Machine Learning based 
+Computer Vision technology enabling 
+understanding of how human feels and 
+perceives the environment around them, 
+focusing on face and people analytics.•  Specific features supported includes; 
+Facial Expression, Age Estimation, 
+Gender, Ethnicity, Multi Face Tracking, 
+Attention TimeMulti-GPU  
+Single Node
+Graydient V (Video) Giant Grey Machine learning anomaly detection for 
+enhanced video analytics.•  Proactive event detection and real-time 
+alerts for safety, unauthorized access 
+prevention, and loss prevention 
+•  24/7 real-time analysis and alerting 
+scaling to thousands of video streams 
+across remote and geographically 
+dispersed locationsMulti-GPU  
+Single Node
+Ikena Forensic, 
+Ikena SpotlightMotionDSP Real-time (render-less) super-resolution-
+based video enhancement and redaction 
+software for forensic analysts and law 
+enforcement professionals•  Multi-filter, render-less video 
+reconstruction (super-resolution, 
+stabilization, light/color correction), and 
+automatic tracking for redaction video 
+from body cameras, CCTV and other 
+sourcesMulti-GPU  
+Single Node
+iMotionFocus iCetana Intelligent analysis of video on 1,000+ 
+camera streams to significantly filter and 
+reduce the camera streams requiring an 
+operator view.•  GPU accelerated machine learning to 
+identify abnormal activity within video 
+streamsMulti-GPU  
+Single Node
+innovi Agent Video 
+Intelligence 
+(Agent Vi)Agent Video Intelligence’s (Agent Vi) 
+solutions allow users to achieve optimal 
+value from their video surveillance 
+networks by automating video analysis 
+to detect and alert for events of interest, 
+expedite search in recorded video and 
+extract statistical data from the footage 
+captured by surveillance cameras•  The solution provides real-time video 
+analysis and alerts, video search 
+and investigation, big data analysis, 
+geospatial mapping and more
+LUNA VisionLabs LUNA PLATFORM is a biometric data 
+management system for facial verification 
+and identification. The platform offers 
+a great flexibility to create scenarios 
+of varying complexity for integrated 
+facial recognition on GPU. LUNA SDK, a 
+facial recognition engine developed by 
+VisionLabs, is the core technology of the 
+LUNA PLATFORM.•  Face detection, face alignment, facial 
+descriptor extraction, face matching, 
+facial attribute classification and 
+face spoofing prevention. Optimized 
+scalability using multithreading; 
+Computationally efficient and compact 
+face descriptors; Broad range of 
+working conditions with domain-specific 
+face descriptorsMulti-GPU  
+Single Node
+OpenALPR OpenALPR Automatic license plate and vehicle make/
+model/year recognition software applied 
+to video streams from IP cameras.•  High accuracy license plate character 
+recognition spanning North America, 
+Europe, United Kingdom, Australia, 
+Korea, Singapore and Brazil 
+•  APIs and source code available for 
+embedded applications and web 
+servicesMulti-GPU  
+Single Node
+>Recotraffic; 
+Recosecure; 
+RecohospitalRecogine Intelligent Transportation Systems 
+covering complex multi-modal surface 
+transportation solutions at a regional, 
+sub-regional, corridor and small area 
+level using deep computer vision 
+technologies.•  Traffic Data Collection, Incident 
+Detection, Integrated Management, 
+Vehicle Classification and supporting 
+related applicationMulti-GPU  
+Single Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 41 
+> Indicates new applicationSenDISA Platform Sensen 
+NetworksSenSen provides Video-IoT data 
+analytic software solutions targeted at 
+increasing revenue and reducing the 
+cost of operations of customers. SenSen 
+software can process and fuse data from 
+cameras and other sensors like GPS, 
+Radar, and Lidar in real time for parking 
+guidance, parking enforcement, speed 
+enforcement, traffic data analytics and 
+road safety applications. Casinos use 
+SenSen solutions for table game analytic 
+solutions and customer analytics. SenSen 
+solutions are also used in retail, security 
+and tolling applications.•  Intelligent Transportation - parking 
+enforcement Casino game table 
+analytics
+SenseFace Sensetime Intelligent engine of visual surveillance 
+system with ex ante, concurrent & ex 
+post technical support service. Applicable 
+to security, missing people & suspects 
+search.•  Face Recognition
+Syndex Pro Briefcam Improved security and operations by 
+turning video data into useful information. 
+Based on Video Synopsis technology, 
+Syndex Pro allows users to review hours 
+of video in minutes, while applying search 
+filters for achieving accurate results 
+and faster time-to-target. Data can be 
+processed on-demand or in real time to 
+support a wide range of use cases.•  Review hours of video in minutes, 
+Search in Video
+XIntelligence 
+XHound XTransportXjera Labs AI-based image and video analytics 
+solution. This solution is ideal for 
+people counting and recognition and 
+vehicle counting for various commercial 
+applications, with proven accuracy, high-
+level customization, and robust security.•  People counting, face recognition, 
+license plate recognition
+42 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new applicationTools and Management
+APPLICATION NAME COMPANY/DEVELOPER PRODUCT DESCRIPTION SUPPORTED FEATURES GPU SCALING
+Allinea Forge Allinea now 
+owned by ARM 
+LtdAllinea Forge Professional provides 
+all you will need to debug, profile and 
+optimize for high performance - from 
+single threads through to complex 
+parallel HPC and scientific codes with 
+MPI, OpenACC, OpenMP, threads or 
+NVIDIA CUDA•  CUPTI, cudagdb Multi-GPU  
+Multi-Node
+Bright Cluster 
+ManagerBright 
+ComputingBright Cluster Manager lets you 
+administer clusters as a single entity, 
+provisioning the servers, GPUs, operating 
+system, and workload manager from a 
+unified interface. We make it easy to build 
+an NVIDIA GPU cluster by packaging all 
+the relevant software including CUDA, 
+NVIDIA driver, DCGM, NCCL, and a full 
+deep learning stack. With Bright, you can 
+configure GPUs individually or in groups, 
+which is a real time saver for those with a 
+large cluster. You can even set properties 
+on your NVIDIA GPUs using BrightView. 
+Once up and running, we monitor GPU 
+metrics and run GPU health checks to 
+make sure everything is working as it 
+should. Bright makes managing GPU 
+clusters easy.•  Intuitive web app provides 
+comprehensive view of GPU and cluster 
+metrics, 
+•  Powerful Cluster Management Shell as 
+alternative user interface, 
+•  Fully Support for NVIDIA libraries, 
+CUDA, OpenCL, OpenACC, CUDA-aware 
+libraries, NCCL, and CUB; 
+•  Comprehensive monitoring of GPU; 
+•  Brings in GPU resources from public 
+(AWS, Azure) and private (OpenStack) 
+clouds within minutes; 
+•  Automated scaling of the cluster based 
+on pre-defined policies; 
+•  Supports several popular Linux 
+distributions: RHEL and derivatives, 
+SUSE SLES and Ubuntu LTS; 
+•  GPU-enabled Docker containers; Offers 
+a complete deep learning stack; 
+•  Deployment for popular HPC 
+filesystems and management of fast 
+interconnectsMulti-GPU  
+Multi-Node
+cmake Kitware CMake is an open-source, cross-platform 
+family of tools designed to build, test 
+and package software. CMake is used 
+to control the software compilation 
+process using simple platform and 
+compiler independent configuration 
+files, and generate native makefiles 
+and workspaces that can be used in the 
+compiler environment of your choice. 
+The suite of CMake tools were created 
+by Kitware in response to the need 
+for a powerful, cross-platform build 
+environment for open-source projects.N/A
+HPCtoolkit Rice University HPCToolkit is an integrated suite of tools 
+for measurement and analysis of program 
+performance on computers ranging from 
+multicore desktop systems to the nation’s 
+largest supercomputers.•  CUPTI Multi-GPU  
+Multi-Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 43 
+> Indicates new applicationIBM Spectrum LSF IBM Corporation IBM Spectrum LSF is a complete 
+workload management solution for 
+demanding HPC environments. Featuring 
+intelligent, policy-driven scheduling, 
+it helps organizations to improve 
+competitiveness by accelerating research 
+and design while controlling costs 
+through superior resource utilization and 
+ease of use. Building on over 20 years of 
+experience, IBM Spectrum LSF features a 
+highly scalable and available architecture 
+designed to address the challenge of 
+aligning compute resources with business 
+priorities. With the ability to detect, 
+monitor and schedule GPU enabled 
+workloads to the appropriate resources, 
+IBM Spectrum LSF enables users to 
+easily take advantage of the benefits 
+provided by GPUs.•  Enforcement of GPU allocations via 
+cgroups; 
+•  Exclusive allocation and round robin 
+shared mode allocation; 
+•  CPU-GPU affinity; 
+•  Boost control; 
+•  Power management/li>; 
+•  Multi-Process Server (MPS) support; 
+•  NVIDIA Volta and DCGM supportMulti-GPU  
+Multi-Node
+Magma ICL - University 
+of Tennessee 
+KnoxvilleThe MAGMA project aims to develop a 
+dense linear algebra library similar to 
+LAPACK but for heterogeneous/hybrid 
+architectures, starting with current 
+“Multicore+GPU” systems. The MAGMA 
+research is based on the idea that, to 
+address the complex challenges of the 
+emerging hybrid environments, optimal 
+software solutions will themselves have 
+to hybridize, combining the strengths 
+of different algorithms within a single 
+framework. Building on this idea, we aim 
+to design linear algebra algorithms and 
+frameworks for hybrid manycore and GPU 
+systems that can enable applications to 
+fully exploit the power that each of the 
+hybrid components offers.Multi-GPU  
+Single Node
+open|SpeedShop Krell Institute Open|SpeedShop (O|SS) is an open 
+source multi-platform performance tool 
+enabling performance analysis of HPC 
+applications running on both single node 
+and large scale platforms. O|SS gathers 
+and displays several types of information 
+to aid in solving performance problems, 
+including: program counter sampling 
+for a quick overview of the applications 
+performance, call path profiling to add 
+caller/callee context and locate critical 
+time consuming paths, access to the 
+machine hardware counter information, 
+input/output tracing for finding I/O 
+performance problems, MPI function call 
+tracing for MPI load imbalance detection, 
+memory analysis, POSIX thread tracing, 
+NVIDIA CUDA analysis, and OpenMP 
+analysis. O|SS offers a command-line 
+interface (CLI), a graphical user interface 
+(GUI) and a python scripting API user 
+interface.•  CUPTI Multi-GPU  
+Multi-Node
+PAPI ICL - University 
+of Tennessee 
+KnoxvillePAPI provides the tool designer and 
+application engineer with a consistent 
+interface and methodology for use of the 
+performance counter hardware found 
+in most major microprocessors. PAPI 
+enables software engineers to see, in 
+near real time, the relation between 
+software performance and processor 
+events. In addition, PAPI provides access 
+to a collection of components that expose 
+performance measurement opportunites 
+across the hardware and software stack.•  CUPTI Multi-GPU  
+Multi-Node
+44 | POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18
+> Indicates new application>PBS Professional Altair PBS Works is an HPC Resource 
+management suite consisting of PBS 
+Professional (Workload scheduler), 
+PBS Access (Remote Job submission 
+and Remote Display) and PBS Control 
+(Manage the compute infrastructure).•  Pre-job node risk identification and 
+GPU resource allocation; Automated 
+monitoring of node health; Reduced 
+job terminations due to GPU 
+failure; Increased system resiliency 
+via intelligent routing decisions; 
+Increased job throughput via topology 
+optimization; Optimized job scheduling 
+through GPU load and health 
+monitoring; Real-time monitoring 
+and troubleshooting; Report usage 
+(hardware and software) by individual, 
+group, project, or organization; 
+Understand trends to plan for future 
+needs; Simulate infrastructure changes 
+to answer “what if” questions using 
+real historical workloads with various 
+hypothetical changes in quantities of 
+nodes and licenses; Define once, deploy 
+anywhere: public cloud, private cloud, 
+or bare metal; Leverage cloud bursting 
+for peak workloads; Submit and manage 
+jobs from anywhere with drag-and-drop 
+simplicity; Manage remote files and data 
+directly from the secure web portal; 
+Watch progress of running jobs, both 
+graphically and via tail -fMulti-GPU  
+Multi-Node
+Parallware Trainer Appentra 
+SolutionsParallware Trainer is the new interactive, 
+real-time editor with GUI features 
+to facilitate the learning, usage, and 
+implementation of parallel programming. 
+Users are actively involved in learning 
+parallel programming through 
+observation, comparison, and hands-on 
+experimentation. Parallware Trainer 
+provides support for widely used parallel 
+programming strategies using OpenACC 
+and OpenMP with execution on multicore 
+processors and GPUs.N/A
+SLURM SchedMD SLURM is a highly configurable open 
+source workload and resource manager. 
+In its simplest configuration, Slurm can 
+be installed and configured in a few 
+minutes. Use of optional plugins provides 
+the functionality needed to satisfy the 
+needs of demanding HPC centers with 
+diverse job types, policies and work flows. 
+Advanced configurations use plug-ins to 
+provide features like accounting, resource 
+limit management, by user or bank 
+account, and support for sophisticated 
+scheduling algorithms.•  Scales to millions of cores and tens of 
+thousands of GPGPUs; Military grade 
+security; Heterogenous platform 
+support allowing users to take 
+advantage of GPGPUs; Flexible plugin 
+framework enables Slurm to meet 
+complex customization requirements; 
+Topology aware job scheduling for 
+maximum system utilization; Extensive 
+scheduling options including advanced 
+reservations, suspend/resume, backfill, 
+fair-share and preemptive scheduling 
+for critical jobs; No single point of 
+failureMulti-GPU  
+Multi-Node
+TAU - Tuning and 
+Analysis UtilitiesUniversity of 
+OregonTAU is a program and performance 
+analysis tool framework. TAU provides a 
+suite of static and dynamic tools to form 
+an integrated analysis environment for 
+parallel Fortran, C++, C, Java, and Python 
+applications. Also, recent advancements 
+in TAU’s code analysis capabilities have 
+allowed new static tools to be developed, 
+such as an automatic instrumentation tool•  CUPTI Multi-GPU  
+Multi-Node
+POPULAR GPU‑ACCELERATED APPLICATIONS CATALOG | MAR 18 | 45 
+> Indicates new applicationTorque / Moab Adaptive 
+ComputingMoab HPC Suite is a workload and 
+resource orchestration platform that 
+automates the scheduling, managing, 
+monitoring, and reporting of HPC 
+workloads on massive scale. TORQUE 
+provides control over batch jobs and 
+distributed computing resources. It 
+is an advanced open-source product 
+based on the original PBS project* and 
+incorporates the best of both community 
+and professional development.•  Request/schedule gpus based on gpu 
+location in NUMA systems; Collect and 
+report metrics and status information; 
+Set gpu mode at job run timeMulti-GPU  
+Multi-Node
+Totalview for HPC Rogue Wave 
+SoftwareTotalView for HPC allows simultaneous 
+debug many processes and threads in 
+a single window. Work backwards from 
+failure through reverse debugging, 
+isolating the root cause faster by 
+eliminating repeated restarts of the 
+application. Reproduce difficult problems 
+that occur in concurrent programs that 
+use threads, OpenACC, OpenMP, MPI and 
+CUDA•  CUDA debug API Multi-GPU  
+Multi-Node
+Univa Grid Engine Univa The Univa Grid Engine suite is the 
+leading workload management system. 
+The solution maximizes the use of 
+shared resources in a data center and 
+applies advanced management policy 
+enforcement to deliver results faster, 
+more efficiently, and with lower overall 
+costs. The product suite can be deployed 
+in any technology environment, including 
+containers: on-premise, hybrid or in the 
+cloud.•  Manage NVIDIA CUDA, OpenACC, 
+OpenCL plus MPI hybrid apps; Optimize 
+scheduling with resource-mapped 
+GPUs; Manage GPU apps within or 
+without Docker containers; Obtain 
+visibility with CUDA-specific metrics 
+for GPU monitors and reports; Extend 
+on-premise deployments to incorporate 
+cloud-based GPU instancesMulti-GPU  
+Multi-Node
+Vampir TU Dresden Vampir provides an easy-to-use 
+framework that enables developers to 
+quickly display and analyze arbitrary 
+program behavior at any level of 
+detail. The tool suite implements 
+optimized event analysis algorithms and 
+customizable displays that enable fast 
+and interactive rendering of very complex 
+performance monitoring data.•  CUPTI Multi-GPU  
+Multi-Node
+For more information on GPU-accelerated applications please visit,  www.nvidia.com/teslaappsTest Drive the World’s 
+Fastest Accelerator – Free!
+Take the GPU Test Drive, a free and easy way to 
+experience accelerated computing on GPUs. You can 
+run your own application or try one of the preloaded 
+ones, all running on a remote cluster. Try it today. 
+www.nvidia.com/gputestdrive
+© 2018 NVIDIA Corporation. All rights reserved. NVIDIA, the NVIDIA logo, and CUDA, are trademarks and/or registered trademarks of 
+NVIDIA Corporation. All company and product names are trademarks or registered trademarks of the respective owners with which 
+they are associated. Features, pricing, availability, and specifications are all subject to change without notice.  MAR 18

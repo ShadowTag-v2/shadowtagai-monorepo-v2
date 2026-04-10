@@ -1,0 +1,71 @@
+Atomic Chat Code
+
+“[
+  {
+    "block_name": "New AI Issue Chat",
+    "description": "Starts a new atomic context chat for a new issue and sets up a note entry to record the issue summary.",
+    "actions": [
+      {
+        "type": "AskForInput",
+        "title": "IAssue Title",
+        "prompt": "Enter a short title or description for this issue"
+      },
+      {
+        "type": "AskForInput",
+        "title": "Micro-Brief",
+        "prompt": "Describe what you want to achieve in this chat (role, goal, constraints, output format, etc.)"
+      },
+      {
+        "type": "GetDate",
+        "format": "YYYY-MM-DD HH:mm"
+      },
+      {
+        "type": "OpenApp",
+        "appName": "ChatGPT"
+      },
+      {
+        "type": "CreateNote",
+        "folder": "Notes",
+        "noteTitle": "Context Index",
+        "content": "Issue: {{Issue Title}}\nDate: {{Date}}\nBrief: {{Micro-Brief}}\n\nSummary:\nKey decisions:\nRelated threads:\nTags:\n\n---\n"
+      }
+    ]
+  },
+  {
+    "block_name": "Save Chat Summary",
+    "description": "Appends the summary of a finished atomic chat to the Context Index note.",
+    "actions": [
+      {
+        "type": "AskForInput",
+        "title": "Summary",
+        "prompt": "Write a concise summary of the chat (context, progress, results)."
+      },
+      {
+        "type": "AskForInput",
+        "title": "Key Decisions",
+        "prompt": "List the key decisions made (comma separated)."
+      },
+      {
+        "type": "AskForInput",
+        "title": "Related Threads",
+        "prompt": "List related thread IDs or titles (comma separated)."
+      },
+      {
+        "type": "AskForInput",
+        "title": "Tags",
+        "prompt": "List tags or keywords for this chat (comma separated)."
+      },
+      {
+        "type": "GetDate",
+        "format": "YYYY-MM-DD HH:mm"
+      },
+      {
+        "type": "AppendToNote",
+        "noteTitle": "Context Index",
+        "content": "Issue: {{Issue Title}}\nDate: {{Date}}\nSummary: {{Summary}}\nKey decisions: {{Key Decisions}}\nRelated threads: {{Related Threads}}\nTags: {{Tags}}\n\n---\n"
+      }
+    ]
+  }
+],”
+
+<next>

@@ -1,0 +1,562 @@
+adopt following as persona to align the following with 
+
+“PACIFIC EDGE PROTOCOL: NATIONAL EXPANSION MANIFEST
+"The InevUltrathinkhitecture"
+STEVE JOBS PRINCIPLE: "Deciding what not to do is as important as deciding what to do."
+We are not building a portfolio of commodity assets. We are hunting Unicorns—assets where Federal Preemption, Infinite Cooling, and Metro Proximity converge to create an unfair competitive advantage.
+Everything else is distraction. We kill distraction.
+
+PART 1: THE NUCLEAR RE-COCK (Use What Exists)
+We analyzed 28 decommissioned/decommissioning US nuclear sites. 24 are traps. They lack the "San Onofre Trifecta" (Federal Site + Ocean/Great Lake Cooling + <50ms Latency). 4 are Unicorns.
+TIER 1: THE "UNFAIR ADVANTAGE" TARGETS
+1. DIABLO CANYON (California) — The Active Brother
+	•	Status: Active until 2025/2030 (Unit 2).
+	•	The Unfair Advantage:
+	•	2.2 GW Active Interconnect (No restoration needed).
+	•	Direct Offshore Wind Adjacency (Morro Bay 3 GW Castle Wind).
+	•	PG&E Relationship (Already negotiating standby power).
+	•	Physics: 2.5B gal/day Seawater Intake.
+	•	Latency: 25ms to SF, 28ms to LA.
+	•	Strategy: Phase 4 (2029-2031). The immediate successor to San Onofre.
+2. INDIAN POINT (New York) — The "Manhattan Project"
+	•	Status: Decommissioned 2021.
+	•	The Unfair Advantage:
+	•	Sub-10ms Latency to Wall Street. This is the only nuclear site that can serve High-Frequency Trading (HFT) and NYC AI Inference.
+	•	35 Miles vs. 200 Miles: Competitors are in Ashburn. We are in Buchanan.
+	•	Physics: Hudson River Cooling (Freshwater = Lower Corrosion).
+	•	Strategy: Phase 5 (Priority High). High political friction (NY/Cuomo legacy), but highest revenue potential ($4.2B/yr @ NYC Premium).
+3. ZION (Illinois) — The Freshwater Giant
+	•	Status: Decommissioned 1998 (Site mostly cleared).
+	•	The Unfair Advantage:
+	•	Chicago Metro Access (40 miles / 7-10ms).
+	•	Lake Michigan: Coldest, cleanest intake water (1/10th the filtration CapEx of seawater).
+	•	Midwest Scarcity: Solves the "Ashburn Saturation" problem for Chicago Mercantile Exchange (CME).
+	•	Strategy: Phase 6. Contingent on cooling tunnel intactness (immediate ROV survey required).
+4. OYSTER CREEK (New Jersey) — The Dual-Metro Play
+	•	Status: Decommissioned 2018.
+	•	The Unfair Advantage:
+	•	NYC (60mi) + Philadelphia (60mi) coverage.
+	•	PJM Grid Pricing: Access to PJM Capacity Market payments ($150k/MW-day).
+	•	Strategy: Phase 7. Good, but secondary to Indian Point's latency dominance.
+
+PART 2: THE OFFSHORE PIVOT (California vs. The World)
+We analyzed 2,000+ platforms. The Gulf of Mexico is a Trap. California is the Beachhead.
+WHY CALIFORNIA WINS (The Liability Arbitrage)
+Feature
+CALIFORNIA PLATFORMS (23)
+GULF OF MEXICO (1,700)
+Depth
+800 - 1,200 ft (Deep)
+200 - 400 ft (Shallow)
+Removal Cost
+$40M - $80M (Painful)
+$8M - $25M (Bearable)
+Operator Pain
+Extreme (Chevron/Exxon want out)
+Low
+Our Leverage
+"We save you $80M"
+"We save you $10M"
+Latency
+<10ms to LA/SF
+>60ms to Houston
+Cooling
+12°C Deep Water (Perfect)
+28°C Surface Water (Soup)
+Conclusion: We build primarily in California. The economics of "Rigs-to-Reefs" only work where the pain of removal is excruciating.
+TIER 1: CALIFORNIA CLUSTERS
+	1	Santa Barbara Channel (Exxon): 5 Platforms (Hidalgo, Hermosa, Harvest). Shared HVDC infrastructure.
+	2	Ventura (Chevron): 3 Platforms. Proximity to LA fiber loops.
+TIER 2: GULF OF MEXICO (The Volume Mistake)
+	•	Verdict: DO NOT TOUCH YET.
+	•	Why: Commodity economics. No latency premium. Warm water degradation of PUE.
+	•	Exception: Only feasible in 2032+ as a pure rigorous bulk compute play (training clusters) if California is saturated.
+
+PART 3: THE 2025-2035 ROADMAP
+PHASE 1 (2025-2028): THE BEACHHEAD
+	•	Target: San Onofre + 1 Offshore Platform (Harmony).
+	•	Goal: Prove Federal Preemption + PUE 1.08.
+	•	CapEx: $47M Seed -> $694M Series A.
+PHASE 2 (2029-2031): THE CALIFORNIA GRID
+	•	Target: Diablo Canyon + 10 CA Platforms.
+	•	Goal: 3 GW Total Capacity. Dominate California AI Inference.
+	•	CapEx: $2.5B (Project Finance).
+PHASE 3 (2032-2035): NATIONAL SUPREMACY
+	•	Target: Indian Point (NY) + Zion (IL).
+	•	Goal: Sub-10ms Latency in NYC & Chicago.
+	•	CapEx: $3.5B.
+
+PART 4: THE KILL LIST (What We Reject)
+We ruthlessly reject "Good Idea / Bad Economics".
+	1	Gulf of Mexico Platforms: KILLED. (Too cheap to decommission, too hot).
+	2	Alaska Platforms: KILLED. (Logistics nightmare, useless latency).
+	3	River-Cooled Nuclear (Dresden, Quad Cities): KILLED. (Insufficient flow for 1 GW Hyperscale focus).
+	4	Derated Pump Reuse: KILLED. (Option 1B VFD Pumps locked).
+FINAL THOUGHT: We are not a data center company. We are a Stranded Asset Arbitrage Machine. We find billion-dollar assets that are liabilities to others (Nuclear Sites, Platforms) and turn them into the engine of the AI Age.
+Signed, Ultrathink v2.0”, “ PNKLN: THE INEVITABLE AI ORCHESTRATION STACK
+Comprehensive Business Plan & Valuation Masterpiece
+Date: December 9, 2025 Source Intelligence: Compiled from Pnkln Drive, Financial Intelligence Report, and Master Funding Strategy. Mode: ULTRATHINK | Bootstrap Discipline
+
+1. Executive Summary: The Inevitability Thesis
+Pnkln is building the default AI infrastructure for organizations that cannot afford to fail. While the market drowns in commodity inference providers, Pnkln consolidates 18+ fragmented systems into a unified Core Stack that orchestrates multi-LLM deployments with military-grade reliability (p99 ≤90ms, 98% coverage) and automated governance.
+The Opportunity: We address the critical gap between "toy AI" (chatbots) and "mission-critical AI" (defense, healthcare, finance). By solving the orchestration and governance problem, Pnkln unlocks the regulated enterprise market where competitors like Palantir ($415B) and Anduril ($30.5B) trade at 30-100× revenue multiples.
+The Execution:
+Burn Rate: $60-65K/mo (Bootstrap Discipline)
+Time-to-Value: 3× ROI for customers within 18 months
+Path: 3 Core MVPs → 6 High-Conviction Verticals → $30M ARR (Series A/B)
+
+2. The Pnkln Core Stack (Unified Architecture)
+The transition from a fragmented portfolio to a unified platform represents a first-principles architectural victory.
+Core Components
+￼
+Allocated Intelligence:
+Gemini (40%): Multimodal reasoning & massive context.
+Claude (35%): Safety-critical decisions & deep analysis.
+GPT-5 (15%): General reasoning.
+Grok (5%): Real-time/Edge experimental.
+
+3. Valuation & Financial Intelligence ("The Money")
+Total Accessible Value in Drive: $8.2M - $47.3M (12-month potential)
+A. Cost Avoidance & Efficiency (Year 1)
+Compliance/IP Frameworks: $490K saved (Internal Legal/Compliance leverage).
+NVIDIA Partnership: $33M - $64M net gain (Equity-for-Discount strategy on GPUs).
+Time-to-Market: $1.52M gained (14-month acceleration vs industry std).
+B. Vertical Valuation Projections (Year 3)
+Based on defense tech premiums (15-30× ARR).
+Judge #6: $12.5M ARR → $125M - $187M
+JR Engine + Cor: $36M ARR → $540M - $720M
+ShadowTag DCT: $9M ARR → $135M - $180M
+AutoGen Orchestration: $15M ARR → $225M - $300M
+Cognitive Stack v5: $30M ARR → $450M - $600M
+AiYouJR Governance: $30M ARR → $300M - $450M
+TOTAL CORE VALUATION (YEAR 3): $1.77 Billion - $2.43 Billion
+C. Long-Term Horizon (The "Possibility Space")
+10-Year Maturity: $15B - $25B (Based on $500M-$1B revenue).
+30-Year Maximum: $726B - $1.33T (Pnkln as fundamental utility).
+
+4. Master Funding Strategy
+Current Status: Bootstrap Phase ($60K burn). Goal: Reach $30M ARR with minimal dilution.
+Path 1: Pure ERCOT Software (Immediate Cash Flow)
+The engine that funds the rest.
+Model: SaaS Arbitrage for Energy Markets.
+Revenue: 20% of incremental gains.
+Projection: $6M ARR by Month 12.
+Action: immediate deployment of pure software backtest.
+Path 2: AI-Orchestrated Hybrid Wind-Wave (Grant Leverage)
+Non-dilutive capital stack.
+Sources: CEC GFO-24-701, ARPA-E OPEN.
+Value: $10M - $30M in grants.
+Strategic Asset: Port operations and subsea infrastructure.
+Path 3: Gulfstream UDC (The Moonshot)
+Physical Infrastructure.
+Concept: Underwater Data Centers (UDC) + Renewable Generation.
+Cap Stack: $190M Total ($100M DOE Loan + $30M CEC + $20M ARPA-E + $35M PE).
+Equity Requirement: Only $5M bootstrapped software development.
+Integrated Capital Strategy
+ERCOT Rev ($5M) → Software Dev → Grants ($50M) → Infra Loan ($100M) → Scale
+
+5. Strategic Positioning & Market Moats
+"Sell to rich people until you can afford to sell to poor people."
+Phase 1: Regulated Markets (Defense, Healthcare, Finance). High WTP, high compliance needs.
+Phase 2: Enterprise Mass Market.
+Phase 3: Commodity/Edge (Digital Freeway).
+Differentiation:
+Military-Grade Risk Management: ATP 5-19 doctrine applied to software.
+Unified Governance: AiYouJR automates auditability (saving customers $2M/yr).
+Multi-Cloud/Model Agnostic: Prevents vendor lock-in.
+
+6. Immediate Action Items
+NVIDIA Reactivation:
+Pitch "First Commercial Subsea AI" to Ralph Hinsche.
+Offer 10% equity for $50M GPU discount.
+Regulatory Pre-Clearance:
+Establish Gulfstream/Judge #6 as "Pre-Cleared" using drafted compliance frameworks.
+Target DOE loan acceleration (2+ years advantage).
+Positioning Overhaul:
+Rebrand all decks: "Military-Grade Risk Management" > "Fast Inference".
+Capitalize on the $500M valuation delta of "Trusted Brand" vs "Commodity Tech".
+Vertex Deployment:
+Deploy Judge #6 POC immediately.
+Validate p99 ≤90ms SLA.
+
+Conclusion: Pnkln is not just a company; it is the inevitable conclusion of AI fragmentation. By consolidating orchestration, governance, and security into a single, beautiful stack, we create the standard for the next era of computing. The value is locked in the Drive documents ($47M), but the reality is created in execution.
+Next Step: Execute.”
+
+“#p-init
+%%bash
+python -V
+pip -q install --upgrade google-cloud-aiplatform google-cloud-storage google-cloud-vision google-auth google-auth-oauthlib Pillow numpy pandas matplotlib
+
+#p-vertex-init
+%%python
+import google.cloud.aiplatform as a;from google.cloud import storage as gs
+p="YOUR_GCP_PROJECT";r="us-central1";b="pnkln-bucket";a.init(project=p,location=r);c=gs.Client(project=p); 
+def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local); 
+def dl(blob,local):c.bucket(b).blob(blob).download_to_filename(local)
+
+#p-models
+%%python
+from vertexai import init as vinit;from vertexai.generative_models import GenerativeModel,Part;from vertexai.preview.vision_models import ImageGenerationModel
+vinit(project=p,location=r)
+g=GenerativeModel("gemini-1.5-pro")
+g1=GenerativeModel("gemini-1.5-flash")
+ig=ImageGenerationModel.from_pretrained("imagegeneration@006")
+
+#p-prompts-core
+%%python
+import json
+pt={
+"sys_pnkln_core":"You are pnkln—an orchestration and analysis engine. Output JSON or code. Be concise.",
+"sys_swiper":"You are pnkln-swiper. Optimize geo-beacon commerce films. Output plans and JSON recipes.",
+"sys_verdict":"You are pnkln-verdict. Enforce task flow with locks/escrows and time escalations.",
+"sys_vcm":"You are pnkln-vc-mirror. Extract investor theses and generate tailored pitch copy.",
+"sys_geos":"You are pnkln-geos. Summarize geo/polygon events and economic triggers.",
+"sys_odor":"You are pnkln-odor. Model airflow/odor/CBRN scrubbing with constraints.",
+"sys_tokable":"You are pnkln-tokable. Create emotion-first creator flows.",
+"sys_mcarlo":"You are pnkln-mcarlo. Run compact Monte Carlo valuations (JSON in/out)."
+}
+open("/mnt/data/pnkln_prompts_core.json","w").write(json.dumps(pt,ensure_ascii=False))
+
+#p-ocr
+%%python
+from google.cloud import vision as gv;import io,os,base64,json
+cl=gv.ImageAnnotatorClient()
+def ocr_b64(b64):
+    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img); 
+    t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
+    return t.strip()
+def ocr_file(fp):
+    with io.open(fp,"rb") as f:bb=base64.b64encode(f.read()).decode()
+    return ocr_b64(bb)
+def ocr_gcs(uri):
+    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img); 
+    t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
+    return t.strip()
+
+#p-ocr-sum
+%%python
+def sum_text(txt,sys="Summarize salient facts, numeric claims, and calls-to-action. Output JSON with keys: facts, metrics, actions."):
+    m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt[:100000]]}],generation_config={"temperature":0.2})
+    return m.text
+def ocr_and_sum_file(fp):return sum_text(ocr_file(fp))
+def ocr_and_sum_gcs(uri):return sum_text(ocr_gcs(uri))
+
+#p-json-tools
+%%python
+import json,math,random,statistics as st
+def j(x):return json.dumps(x,ensure_ascii=False,separators=(",",":"))
+def prc(x,p):x=sorted(x);i=int((len(x)-1)*p);return x[i]
+
+#p-mcarlo
+%%python
+def mcarlo_rev(n,base,sd,yrs=5,gr=0.6): 
+    r=[]; 
+    for _ in range(n):
+        b=max(0,random.gauss(base,sd))
+        v=b*((1+gr)**yrs)
+        r.append(v)
+    return r
+def mcarlo_val(n,rev_mult,rev_samples): 
+    out=[max(0,rev_mult*rv) for rv in rev_samples]; 
+    return {"mean":st.mean(out),"p10":prc(out,0.1),"p50":prc(out,0.5),"p90":prc(out,0.9),"max":max(out)}
+def mcarlo_bundle(cfg): 
+    vals=[]; comps={}
+    for k,v in cfg.items():
+        rs=mcarlo_rev(v["n"],v["base"],v["sd"],v.get("yrs",5),v.get("gr",0.6))
+        vv=mcarlo_val(v["n"],v["mult"],rs);comps[k]=vv;vals.append(vv["mean"])
+    t=sum(vals)
+    return {"components":comps,"sum_mean":t}
+
+#p-bundle-scenarios
+%%python
+cfg={
+"pnkln_core": {"n":8000,"base":120e6,"sd":50e6,"gr":0.55,"mult":12},
+"pnkln_swiper":{"n":8000,"base":200e6,"sd":90e6,"gr":0.6,"mult":13},
+"pnkln_geos":{"n":8000,"base":30e6,"sd":20e6,"gr":0.5,"mult":22},
+"pnkln_odor":{"n":8000,"base":120e6,"sd":60e6,"gr":0.5,"mult":10},
+"pnkln_verdict":{"n":8000,"base":120e6,"sd":60e6,"gr":0.55,"mult":11},
+"pnkln_vcm":{"n":8000,"base":40e6,"sd":20e6,"gr":0.6,"mult":11},
+"pnkln_tokable":{"n":8000,"base":80e6,"sd":40e6,"gr":0.55,"mult":11}
+}
+res=mcarlo_bundle(cfg); open("/mnt/data/pnkln_valuation.json","w").write(j(res))
+
+#p-swiper-core
+%%python
+def swiper_plan(q): 
+    s="You are pnkln-swiper. Return JSON {wedge,geo,content,cpms,revshare,visualize}."
+    m=g1.generate_content([{"role":"system","parts":[s]},{"role":"user","parts":[q]}],generation_config={"temperature":0.3})
+    return m.text
+def swiper_visualize(img_b64,gear): 
+    t=f"Blend {gear} into scene, return JSON placements and style."
+    m=g1.generate_content([{"role":"system","parts":["Return JSON only."]},{"role":"user","parts":[Part.from_data(mime_type="image/jpeg",data=__import__('base64').b64decode(img_b64)),t]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-verdict-core
+%%python
+import time
+class Verdict:
+    def __init__(s):s.q=[]
+    def add(s,t,dl,prio):s.q.append({"t":t,"dl":dl,"p":prio,"k":0,"d":False})
+    def tick(s,now): 
+        for i in s.q:
+            if i["d"]:continue
+            if now>=i["dl"]:i["k"]=2
+            elif (i["dl"]-now)<=900:i["k"]=1
+    def next(s): 
+        u=[x for x in s.q if not x["d"]]
+        u.sort(key=lambda x:(-x["k"],-x["p"])); 
+        return u[0] if u else None
+    def done(s,t): 
+        for i in s.q:
+            if i["t"]==t:i["d"]=True;return True
+        return False
+V=Verdict()
+
+#p-vc-mirror
+%%python
+def vcmirror(profile_txt,company): 
+    sys="Extract investor thesis and produce pitch copy. JSON keys: thesis,fit,angles,email_open,deck_outline."
+    m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[profile_txt,company]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-geos-prime
+%%python
+def geos_skim(txt): 
+    sys="Summarize geo triggers, actors, capital flow, compliance. JSON only."
+    m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-odor-dome
+%%python
+import numpy as np
+def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02): 
+    f=np.zeros((n,n),float)
+    for _ in range(256):
+        nf=np.copy(f)
+        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:])) 
+        for (x,y,s) in src:nf[x%n,y%n]+=s
+        f=nf
+    return f
+def odor_score(f,mask=None): 
+    if mask is None:return float(f.mean())
+    return float((f*mask).mean())
+
+#p-tokable
+%%python
+def tokable_script(theme,persona): 
+    sys="Write a 45-90s emotion-first script with 3 beats and optional interactive branch cues. JSON only."
+    m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[f"{theme} | {persona}"]}],generation_config={"temperature":0.55})
+    return m.text
+
+#p-prompt-templates-studio
+%%python
+import json
+tpl=[
+{"id":"pnkln_core","role":"system","content":pt["sys_pnkln_core"]},
+{"id":"pnkln_swiper","role":"system","content":pt["sys_swiper"]},
+{"id":"pnkln_verdict","role":"system","content":pt["sys_verdict"]},
+{"id":"pnkln_vcm","role":"system","content":pt["sys_vcm"]},
+{"id":"pnkln_geos","role":"system","content":pt["sys_geos"]},
+{"id":"pnkln_odor","role":"system","content":pt["sys_odor"]},
+{"id":"pnkln_tokable","role":"system","content":pt["sys_tokable"]},
+{"id":"pnkln_mcarlo","role":"system","content":pt["sys_mcarlo"]}
+]
+open("/mnt/data/pnkln_studio_templates.json","w").write(j(tpl))
+
+#p-min-exec
+%%python
+print("pnkln ready”)”
+
+/Users/pikeymickey/aiyou-fastapi-services/src/gemini_ingestion_layer/config.py; 
+fix in Ruff warning: `one-blank-line-before-c
+(D211) are incompatible. Ignoring
+warning: `multi-line-summary-firs
+`multi-line-summary-second-line` 
+`multi-line-summary-second-line`.
+
+feat/pnkln-core-components*+
+
+“#p-init
+%%bash
+python -V
+pip -q install --upgrade google-cloud-aiplatform google-cloud-storage google-cloud-vision google-auth google-auth-oauthlib Pillow numpy pandas matplotlib
+
+#p-vertex-init
+%%python
+import google.cloud.aiplatform as a;from google.cloud import storage as gs
+p="YOUR_GCP_PROJECT";r="us-central1";b="pnkln-bucket";a.init(project=p,location=r);c=gs.Client(project=p); 
+def up(local,blob):c.bucket(b).blob(blob).upload_from_filename(local); 
+def dl(blob,local):c.bucket(b).blob(blob).download_to_filename(local)
+
+#p-models
+%%python
+from vertexai import init as vinit;from vertexai.generative_models import GenerativeModel,Part;from vertexai.preview.vision_models import ImageGenerationModel
+vinit(project=p,location=r)
+g=GenerativeModel("gemini-1.5-pro")
+g1=GenerativeModel("gemini-1.5-flash")
+ig=ImageGenerationModel.from_pretrained("imagegeneration@006")
+
+#p-prompts-core
+%%python
+import json
+pt={
+"sys_pnkln_core":"You are pnkln—an orchestration and analysis engine. Output JSON or code. Be concise.",
+"sys_swiper":"You are pnkln-swiper. Optimize geo-beacon commerce films. Output plans and JSON recipes.",
+"sys_verdict":"You are pnkln-verdict. Enforce task flow with locks/escrows and time escalations.",
+"sys_vcm":"You are pnkln-vc-mirror. Extract investor theses and generate tailored pitch copy.",
+"sys_geos":"You are pnkln-geos. Summarize geo/polygon events and economic triggers.",
+"sys_odor":"You are pnkln-odor. Model airflow/odor/CBRN scrubbing with constraints.",
+"sys_tokable":"You are pnkln-tokable. Create emotion-first creator flows.",
+"sys_mcarlo":"You are pnkln-mcarlo. Run compact Monte Carlo valuations (JSON in/out)."
+}
+open("/mnt/data/pnkln_prompts_core.json","w").write(json.dumps(pt,ensure_ascii=False))
+
+#p-ocr
+%%python
+from google.cloud import vision as gv;import io,os,base64,json
+cl=gv.ImageAnnotatorClient()
+def ocr_b64(b64):
+    img=gv.Image(content=base64.b64decode(b64));r=cl.document_text_detection(image=img); 
+    t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
+    return t.strip()
+def ocr_file(fp):
+    with io.open(fp,"rb") as f:bb=base64.b64encode(f.read()).decode()
+    return ocr_b64(bb)
+def ocr_gcs(uri):
+    img=gv.Image();img.source.image_uri=uri;r=cl.document_text_detection(image=img); 
+    t=r.full_text_annotation.text if r.full_text_annotation and r.full_text_annotation.text else ""
+    return t.strip()
+
+#p-ocr-sum
+%%python
+def sum_text(txt,sys="Summarize salient facts, numeric claims, and calls-to-action. Output JSON with keys: facts, metrics, actions."):
+    m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt[:100000]]}],generation_config={"temperature":0.2})
+    return m.text
+def ocr_and_sum_file(fp):return sum_text(ocr_file(fp))
+def ocr_and_sum_gcs(uri):return sum_text(ocr_gcs(uri))
+
+#p-json-tools
+%%python
+import json,math,random,statistics as st
+def j(x):return json.dumps(x,ensure_ascii=False,separators=(",",":"))
+def prc(x,p):x=sorted(x);i=int((len(x)-1)*p);return x[i]
+
+#p-mcarlo
+%%python
+def mcarlo_rev(n,base,sd,yrs=5,gr=0.6): 
+    r=[]; 
+    for _ in range(n):
+        b=max(0,random.gauss(base,sd))
+        v=b*((1+gr)**yrs)
+        r.append(v)
+    return r
+def mcarlo_val(n,rev_mult,rev_samples): 
+    out=[max(0,rev_mult*rv) for rv in rev_samples]; 
+    return {"mean":st.mean(out),"p10":prc(out,0.1),"p50":prc(out,0.5),"p90":prc(out,0.9),"max":max(out)}
+def mcarlo_bundle(cfg): 
+    vals=[]; comps={}
+    for k,v in cfg.items():
+        rs=mcarlo_rev(v["n"],v["base"],v["sd"],v.get("yrs",5),v.get("gr",0.6))
+        vv=mcarlo_val(v["n"],v["mult"],rs);comps[k]=vv;vals.append(vv["mean"])
+    t=sum(vals)
+    return {"components":comps,"sum_mean":t}
+
+#p-bundle-scenarios
+%%python
+cfg={
+"pnkln_core": {"n":8000,"base":120e6,"sd":50e6,"gr":0.55,"mult":12},
+"pnkln_swiper":{"n":8000,"base":200e6,"sd":90e6,"gr":0.6,"mult":13},
+"pnkln_geos":{"n":8000,"base":30e6,"sd":20e6,"gr":0.5,"mult":22},
+"pnkln_odor":{"n":8000,"base":120e6,"sd":60e6,"gr":0.5,"mult":10},
+"pnkln_verdict":{"n":8000,"base":120e6,"sd":60e6,"gr":0.55,"mult":11},
+"pnkln_vcm":{"n":8000,"base":40e6,"sd":20e6,"gr":0.6,"mult":11},
+"pnkln_tokable":{"n":8000,"base":80e6,"sd":40e6,"gr":0.55,"mult":11}
+}
+res=mcarlo_bundle(cfg); open("/mnt/data/pnkln_valuation.json","w").write(j(res))
+
+#p-swiper-core
+%%python
+def swiper_plan(q): 
+    s="You are pnkln-swiper. Return JSON {wedge,geo,content,cpms,revshare,visualize}."
+    m=g1.generate_content([{"role":"system","parts":[s]},{"role":"user","parts":[q]}],generation_config={"temperature":0.3})
+    return m.text
+def swiper_visualize(img_b64,gear): 
+    t=f"Blend {gear} into scene, return JSON placements and style."
+    m=g1.generate_content([{"role":"system","parts":["Return JSON only."]},{"role":"user","parts":[Part.from_data(mime_type="image/jpeg",data=__import__('base64').b64decode(img_b64)),t]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-verdict-core
+%%python
+import time
+class Verdict:
+    def __init__(s):s.q=[]
+    def add(s,t,dl,prio):s.q.append({"t":t,"dl":dl,"p":prio,"k":0,"d":False})
+    def tick(s,now): 
+        for i in s.q:
+            if i["d"]:continue
+            if now>=i["dl"]:i["k"]=2
+            elif (i["dl"]-now)<=900:i["k"]=1
+    def next(s): 
+        u=[x for x in s.q if not x["d"]]
+        u.sort(key=lambda x:(-x["k"],-x["p"])); 
+        return u[0] if u else None
+    def done(s,t): 
+        for i in s.q:
+            if i["t"]==t:i["d"]=True;return True
+        return False
+V=Verdict()
+
+#p-vc-mirror
+%%python
+def vcmirror(profile_txt,company): 
+    sys="Extract investor thesis and produce pitch copy. JSON keys: thesis,fit,angles,email_open,deck_outline."
+    m=g.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[profile_txt,company]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-geos-prime
+%%python
+def geos_skim(txt): 
+    sys="Summarize geo triggers, actors, capital flow, compliance. JSON only."
+    m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[txt]}],generation_config={"temperature":0.2})
+    return m.text
+
+#p-odor-dome
+%%python
+import numpy as np
+def odor_sim(n=128,src=[(64,64,1.0)],k=0.92,fx=0.02): 
+    f=np.zeros((n,n),float)
+    for _ in range(256):
+        nf=np.copy(f)
+        nf[1:-1,1:-1]=(f[1:-1,1:-1]*k+fx*(f[:-2,1:-1]+f[2:,1:-1]+f[1:-1,:-2]+f[1:-1,2:])) 
+        for (x,y,s) in src:nf[x%n,y%n]+=s
+        f=nf
+    return f
+def odor_score(f,mask=None): 
+    if mask is None:return float(f.mean())
+    return float((f*mask).mean())
+
+#p-tokable
+%%python
+def tokable_script(theme,persona): 
+    sys="Write a 45-90s emotion-first script with 3 beats and optional interactive branch cues. JSON only."
+    m=g1.generate_content([{"role":"system","parts":[sys]},{"role":"user","parts":[f"{theme} | {persona}"]}],generation_config={"temperature":0.55})
+    return m.text
+
+#p-prompt-templates-studio
+%%python
+import json
+tpl=[
+{"id":"pnkln_core","role":"system","content":pt["sys_pnkln_core"]},
+{"id":"pnkln_swiper","role":"system","content":pt["sys_swiper"]},
+{"id":"pnkln_verdict","role":"system","content":pt["sys_verdict"]},
+{"id":"pnkln_vcm","role":"system","content":pt["sys_vcm"]},
+{"id":"pnkln_geos","role":"system","content":pt["sys_geos"]},
+{"id":"pnkln_odor","role":"system","content":pt["sys_odor"]},
+{"id":"pnkln_tokable","role":"system","content":pt["sys_tokable"]},
+{"id":"pnkln_mcarlo","role":"system","content":pt["sys_mcarlo"]}
+]
+open("/mnt/data/pnkln_studio_templates.json","w").write(j(tpl))
+
+#p-min-exec
+%%python
+print("pnkln ready”)”

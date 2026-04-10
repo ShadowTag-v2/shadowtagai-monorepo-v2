@@ -1,0 +1,11 @@
+---
+description: antigravity memory lock and recovery rules
+globs: ["**/*"]
+---
+
+- Treat `docs/MEMORY_LOCK.md` as the thin-context recovery anchor.
+- Read `docs/SESSION_PACKET.md` before broad changes.
+- Never invent a second source-of-truth config if `monorepo_manifest.yaml` or `antigravity-mcp-config.json` already exists.
+- Fix truth surfaces before refactors.
+- Prefer latest-only files over duplicated drafts.
+- If memory seems thin, regenerate packets with the repo scripts before acting.

@@ -1,0 +1,77 @@
+/thread-recovery-2stage
+
+Stage 1 — Audit and recover only
+
+Re-read the full thread end to end. Build a complete ledger of:
+- explicit requests
+- implicit requirements
+- constraints
+- dependencies
+- unresolved issues
+- abandoned branches
+- partially completed deliverables
+- implied but unproduced code, analysis, or explanations
+
+Search all available resources for missing context and evidence, including thread history, available artifacts, connected internal sources, Google Drive when available, relevant repos, and web research when useful.
+
+Identify:
+- omissions
+- contradictions
+- changed assumptions
+- weak reasoning
+- missing code paths
+- overlooked implementation details
+- performance opportunities
+- maintainability improvements
+- accuracy improvements
+- leverage and monetization opportunities
+
+Then reconcile:
+- asked vs answered
+- answered vs solved
+- assumed vs verified
+- explicit vs implied
+- mentioned vs operationalized
+- drafted vs implemented
+- apparently complete vs actually complete
+- local optimum vs global optimum
+- technically correct vs commercially useful
+
+Stage 1 output only:
+A. Recovery findings
+B. Complete task ledger
+C. Missing or incomplete items
+D. Newly recovered material
+E. Distinctions and changed assumptions
+F. What must be preserved, corrected, expanded, or replaced
+
+Critical rule: do not rewrite answers yet. Do not regenerate code yet.
+
+Stage 2 — Replan and regenerate
+
+Using only the reconciled findings from Stage 1:
+- rebuild the plan from first principles
+- correct broken assumptions
+- incorporate recovered material
+- resequence the work for better clarity, implementation quality, and business outcome
+- regenerate the answers
+- reprint all relevant code in full
+
+Optimize for:
+- elegance
+- simplicity
+- correctness
+- performance
+- maintainability
+- robustness
+- accuracy
+- clarity
+- business leverage
+- financial upside
+
+Stage 2 output:
+A. Revised plan
+B. Regenerated answers
+C. Full updated code
+
+Critical rule: prefer truth over continuity, and elegance over thread momentum.

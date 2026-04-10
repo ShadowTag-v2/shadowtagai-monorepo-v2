@@ -1,0 +1,28 @@
+{
+  "name": "@jssg/utils",
+  "version": "0.0.2",
+  "description": "Codemod utils for jssg engine",
+  "homepage": "https://github.com/codemod/codemod",
+  "repository": "https://github.com/codemod/codemod",
+  "author": "Mohebifar <mo@codemod.com>",
+  "license": "Apache-2.0",
+  "exports": {
+    "./javascript/*": {
+      "types": "./src/javascript/exports/*.ts",
+      "default": "./src/javascript/exports/*.ts"
+    }
+  },
+  "scripts": {
+    "test": "pnpx codemod jssg exec ./tests/imports.test.ts",
+    "check-types": "npx tsc --noEmit",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@codemod.com/jssg-types": "workspace:*",
+    "@codemod.com/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

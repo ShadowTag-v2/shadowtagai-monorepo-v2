@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; }
+        .type-column { display: flex; flex-direction: column; gap: 10px; }
+        .type-row { display: flex; gap: 10px; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 4px; }
+        .primary { background: #4CAF50; color: white; }
+        .danger { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <h1>A2UI Sovereign Console</h1>
+    <input id="intent" type="text" placeholder="Describe Mission..." style="width: 300px; padding: 10px;">
+    <button onclick="launch()" style="padding: 10px;">Generate</button>
+    <hr>
+    <div id="surface"></div>
+    <script src="renderer.js"></script>
+    <script>
+        async function launch() {
+            const intent = document.getElementById("intent").value;
+            const res = await fetch(`/api/ui?intent=${encodeURIComponent(intent)}`);
+            const json = await res.json();
+            new A2UIRenderer(document.getElementById("surface")).render(json);
+        }
+    </script>
+</body>
+</html>

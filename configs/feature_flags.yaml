@@ -1,0 +1,56 @@
+version: 1
+
+flags:
+  # === CounselConduit Product Flags ===
+  counselconduit_managed_mode:
+    enabled: true
+    owner: counselconduit
+    description: "Managed Gemini backend (attorney pays subscription, no API key needed)"
+
+  counselconduit_byok_routing:
+    enabled: true
+    owner: counselconduit
+    description: "BYOK mode for enterprise firms who want to use their own API keys"
+
+  counselconduit_evaporating_ui:
+    enabled: true
+    owner: counselconduit
+    description: "Anti-forensic UI: AI answers disappear from client view after TTL"
+    ttl_seconds: 3600
+
+  counselconduit_kovel_signing:
+    enabled: true
+    owner: counselconduit
+    description: "HMAC-SHA256 Kovel attestation signing on every transaction"
+
+  counselconduit_stripe_billing:
+    enabled: false
+    owner: counselconduit
+    description: "Stripe subscription + usage-based billing"
+
+  counselconduit_clio_integration:
+    enabled: false
+    owner: counselconduit
+    description: "Shadow Invoice API to push time entries to Clio"
+
+  # === UphillSnowball Lab Flags ===
+  uphillsnowball_local_ane_experiments:
+    enabled: true
+    owner: uphillsnowball
+    description: "Apple Neural Engine experiments on local Silicon"
+
+  # === Pnkln Infrastructure Flags ===
+  retriever_eval_pipeline:
+    enabled: true
+    owner: pnkln
+    description: "Retrieval precision/recall evaluation harness"
+
+  green_loop_autopatch:
+    enabled: false
+    owner: pnkln
+    description: "Automated patch-verify-preserve loop"
+
+  drive_ingest_daemon:
+    enabled: true
+    owner: pnkln
+    description: "Google Drive document ingestion pipeline"

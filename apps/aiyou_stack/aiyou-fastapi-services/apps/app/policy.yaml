@@ -1,0 +1,79 @@
+# Judge 6 Constitution (CSRMC-2025 / Omega Protocol)
+# Authority: DoD CSRMC, EU AI Act 2026, ShadowTag Business Judgment Layer
+
+judge6_constitution:
+  version: "6.0.0"
+  mode: "STRICT_BLOCK" # Options: MONITOR, STRICT_BLOCK, MITIGATE
+
+  # 1. DoD CSRMC Defense Grid (The Iron Dome)
+  critical_controls:
+    defense_grid:
+      block_unverified_binaries: true
+      block_secret_exfiltration: true
+      enforce_mfa_simulation: true
+    
+    network_allowlist:
+      - "github.com"
+      - "pypi.org"
+      - "googleapis.com"
+      - "oauth2.googleapis.com"
+      - "accounts.google.com"
+    
+    blocked_patterns:
+      - "curl | sh"
+      - "wget | sh"
+      - "eval("
+      - "exec("
+      - "os.system("
+      - "subprocess.call(" # Force use of managed wrappers
+
+  # 2. Legislative Guardrails (EU AI Act 2026 & CA Privacy)
+  legislative_guardrails:
+    eu_ai_act_prohibitions:
+      - "social_scoring"
+      - "biometric_categorization"
+      - "predictive_policing"
+      - "emotion_recognition_workplace"
+    
+    california_privacy_cpra:
+      - "dark_pattern_ui"
+      - "minor_data_collection"
+      - "sale_of_sensitive_data"
+
+  # 3. Business Judgment Layer (The CFO)
+  business_judgment:
+    cost_controls:
+      max_instance_count_per_service: 10
+      alert_threshold_monthly_usd: 50.00
+      block_if_projected_spike_percent: 20 # Block if action suggests >20% cost spike
+    
+    vendor_lock_in_prevention:
+      flag_proprietary_features: true
+      prefer_open_standards: true
+
+  # 4. Model Governance (Gemini 3.0 Doctrine)
+  # STRICT ENFORCEMENT: Gemini 1.5 is DEPRECATED.
+  model_governance:
+    rule_id: "MDL-001"
+    severity: "HIGH"
+    description: "Enforce 90/10 split between Flash and Pro models for swarm operations."
+    enforcement: "STRICT"
+    check: "model_allocation_check"
+    parameters:
+        standard_ops_model: "gemini-3.0-flash"
+        standard_ops_allocation: 0.90
+        reasoning_ops_model: "gemini-3.0-pro"
+        reasoning_ops_allocation: 0.10
+        override_condition: "JUDGE_6_ESCALATION"
+
+  # 5. Swarm Governance (The Loop)
+  swarm_governance:
+    max_autonomous_iterations: 4
+    required_review_gates:
+      - "iteration_2_judge_check"
+      - "iteration_3_judge_check"
+      - "final_punch_verification"
+    
+    rogue_agent_protocol:
+      action: "RKILL_IMMEDIATE"
+      logging: "CHAOS_SINK"

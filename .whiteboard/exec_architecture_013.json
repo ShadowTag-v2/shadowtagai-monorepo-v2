@@ -1,0 +1,15 @@
+{
+  "agent_id": "exec_architecture_013",
+  "level": 2,
+  "tasks_completed": 0,
+  "success_rate": 1.0,
+  "specialization": "architecture",
+  "tier": "execution",
+  "shift": "shift_2",
+  "knowledge_graph": {
+    "specialization": "architecture",
+    "domain": "architecture"
+  },
+  "task_history": [],
+  "preferred_llm": "claude-sonnet-4-5-20250929"
+}

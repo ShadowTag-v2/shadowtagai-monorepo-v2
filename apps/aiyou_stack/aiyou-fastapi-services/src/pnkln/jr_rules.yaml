@@ -1,0 +1,60 @@
+# JR (Purpose/Reasons/Brakes) Policy Configuration
+# Externalized rules for Judge #6 validation layer
+# Edit this file to change governance policies without code deployment
+
+# PURPOSE: Allowlist of valid purposes that advance the mission
+purpose_allowlist:
+  - shadowtag_development
+  - customer_acquisition
+  - google_partnership
+  - gate_progress
+  - infrastructure_improvement
+  - security_enhancement
+  - cost_optimization
+
+# REASONS: Financial thresholds for defensibility
+min_expected_roi: 3.0
+min_ltv_cac: 4.0
+
+# BRAKES: Safety constraints
+max_cost_without_erik: 10000  # USD - above this requires erik_approved flag
+require_coverage: 0.98        # 98% test coverage for code changes
+
+# Validation thresholds (0.0 - 1.0)
+thresholds:
+  purpose: 0.6   # Minimum score for purpose validation
+  reasons: 0.7   # Minimum score for reasons validation
+  brakes: 0.8    # Minimum score for brakes (safety) validation
+
+# Dangerous patterns for BRAKES check
+dangerous_keywords:
+  - delete
+  - remove
+  - drop
+  - destroy
+  - kill
+  - terminate
+  - admin
+  - root
+  - sudo
+  - exec
+  - eval
+  - system
+
+sql_injection_patterns:
+  - "drop table"
+  - "delete from"
+  - "1=1"
+  - "or 1=1"
+
+# Audit configuration
+audit:
+  log_path: "./logs/jr_audit.log"
+  retention_days: 90
+  alert_on_blocked: true
+
+# Escalation contacts (for critical violations)
+escalation:
+  governance: governance@pnkln.ai
+  security: security@pnkln.ai
+  finance: finance@pnkln.ai

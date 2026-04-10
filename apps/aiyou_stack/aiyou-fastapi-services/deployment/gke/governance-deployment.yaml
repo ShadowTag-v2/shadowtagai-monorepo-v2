@@ -1,0 +1,282 @@
+# GKE Deployment for Agent Governance System
+# Implements hybrid architecture: OPA fast-path + agent slow-path
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: governance
+  labels:
+    name: governance
+    environment: production
+
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: governance-config
+  namespace: governance
+data:
+  GCP_PROJECT_ID: "YOUR_PROJECT_ID"
+  GCP_REGION: "us-central1"
+  GCP_LOCATION: "us-central1"
+  DEPLOYMENT_MODE: "gke-autopilot"
+  ENVIRONMENT: "production"
+  DEFAULT_MODEL: "gemini-2.0-flash"
+  BATCH_MODE_ENABLED: "true"
+  CACHING_ENABLED: "true"
+  CIRCUIT_BREAKER_ENABLED: "true"
+  OPA_FALLBACK_ENABLED: "true"
+
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: governance-secrets
+  namespace: governance
+type: Opaque
+stringData:
+  POSTGRES_PASSWORD: "YOUR_POSTGRES_PASSWORD"
+  [VAPORIZED_PWD]_API_KEY: "YOUR_AGENTOPS_KEY"
+  REDIS_PASSWORD: ""
+
+---
+# Policy Agent Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-agent
+  namespace: governance
+  labels:
+    app: policy-agent
+    tier: governance
+spec:
+  replicas: 3  # Horizontal scaling for high availability
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: policy-agent
+  template:
+    metadata:
+      labels:
+        app: policy-agent
+        tier: governance
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: governance-sa
+      containers:
+      - name: policy-agent
+        image: gcr.io/YOUR_PROJECT_ID/governance-agent:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: GCP_PROJECT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: governance-config
+              key: GCP_PROJECT_ID
+        - name: POSTGRES_PASSWORD
+          [VAPORIZED_PWD]:
+            secretKeyRef:
+              name: governance-secrets
+              key: POSTGRES_PASSWORD
+        - name: AGENTOPS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: governance-secrets
+              key: AGENTOPS_API_KEY
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "2000m"
+            memory: "2Gi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+---
+# Service for policy agent
+apiVersion: v1
+kind: Service
+metadata:
+  name: policy-agent-service
+  namespace: governance
+  labels:
+    app: policy-agent
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: policy-agent
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: policy-agent-hpa
+  namespace: governance
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: policy-agent
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 25
+        periodSeconds: 60
+
+---
+# Service Account with Workload Identity
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: governance-sa
+  namespace: governance
+  annotations:
+    iam.gke.io/gcp-service-account: governance-sa@YOUR_PROJECT_ID.iam.gserviceaccount.com
+
+---
+# Redis for circuit breaker state (StatefulSet)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: governance
+spec:
+  serviceName: redis
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+          name: redis
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
+
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: governance
+spec:
+  clusterIP: None
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+
+---
+# Network Policy for security isolation
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: governance-network-policy
+  namespace: governance
+spec:
+  podSelector:
+    matchLabels:
+      tier: governance
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system  # Allow Istio ingress
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - namespaceSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443  # HTTPS for Vertex AI API
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 6379  # Redis

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "run_id",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Unique identifier for the ingestion run"
+  },
+  {
+    "name": "timestamp",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED",
+    "description": "Time of the ingestion run"
+  },
+  {
+    "name": "status",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Final status: SUCCESS or DEGRADED"
+  },
+  {
+    "name": "items_ingested",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Total number of items ingested"
+  },
+  {
+    "name": "quality_gates_passed",
+    "type": "BOOLEAN",
+    "mode": "REQUIRED",
+    "description": "Whether quality gates passed"
+  },
+  {
+    "name": "average_relevance_score",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Average relevance score of ingested items"
+  },
+  {
+    "name": "tier_1_count",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Count of Tier 1 items"
+  },
+  {
+    "name": "tier_2_count",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Count of Tier 2 items"
+  },
+  {
+    "name": "tier_3_count",
+    "type": "INTEGER",
+    "mode": "NULLABLE",
+    "description": "Count of Tier 3 items"
+  },
+  {
+    "name": "total_cost_usd",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Total cost of the run in USD"
+  },
+  {
+    "name": "runtime_minutes",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Total runtime in minutes"
+  }
+]

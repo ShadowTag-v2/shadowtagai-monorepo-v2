@@ -1,0 +1,446 @@
+# SHADOWTAG/AIYOU CONSOLIDATED BUSINESS PLAN
+
+**Unified Strategy Document - Compiled 2026-01-30**
+
+> **Sources**: 47 business documents, 70 Antigravity conversations, 297 feature branches, 45+ code products, **250 iCloud Notes**, claude thread code
+> **Status**: EXECUTION PHASE
+
+---
+
+## EXECUTIVE SUMMARY
+
+**Antigravity** is not a company; it is a **Sovereign Industrial System**.
+We are building the **Civilization OS**—a vertically integrated stack from electrons (L1) to orbital defense (L6).
+
+### The Thesis
+
+| Asset                 | Value            | Status                          |
+| --------------------- | ---------------- | ------------------------------- |
+| **Sulphur Bank Mine** | $1.1B standalone | SECURED (160 acres, 100MW)      |
+| **The Index**         | +$85M pre-money  | RECOVERED (17GB sovereign code) |
+| **ShadowTag v2**      | $3.07B capture   | TRL-8 (System Qualified)        |
+| **Judge #6**          | $1.6B+           | Production Ready                |
+| **30 Verticals**      | $207B (2030)     | Platform Complete               |
+
+### Core Components
+
+- **Antigravity**: Cross-model AI orchestration (Claude/Gemini/GPT-5)
+- **https://github.com/karpathy/autoresearchs**: 650-agent swarm for parallel task execution
+- **Judge #6**: ATP 5-19 risk governance (<35ms decisions)
+- **ShadowTag**: Cryptographic content watermarking ("Stripe for Authenticity")
+
+**The Pitch**: "31× faster AI. 97% cheaper. Self-evolving. Powered by our own electrons."
+
+---
+
+## THE 6-LAYER EMPIRE STRATEGY
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  L6: DEFENSE (The Shield)                                          │
+│      DoD Edge, ActiveShield ITAR, AiU Aero/Med                      │
+├─────────────────────────────────────────────────────────────────────┤
+│  L5: ORBITAL (The High Ground)                                     │
+│      Space Compute, Post-Starlink Mesh                              │
+├─────────────────────────────────────────────────────────────────────┤
+│  L4: PHYSICAL MESH (The Moving World)                              │
+│      RoadMesh, SkyMesh, Tower GPU Pods                              │
+├─────────────────────────────────────────────────────────────────────┤
+│  L3: CONSUMER (Trust Layer)                                        │
+│      AiU Digital Mall, Tokable, Dreamlight, CineVerse               │
+├─────────────────────────────────────────────────────────────────────┤
+│  L2: CORE PROTOCOLS (The Operating System)                         │
+│      ShadowTag v2, Judge #6, ActiveShield MCF, Vexa                 │
+├─────────────────────────────────────────────────────────────────────┤
+│  L1: ENERGY (The Foundation)                                       │
+│      Sulphur Bank Mine, Geothermal + Solar, Bitcoin Mining          │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Layer 1: Energy Foundation (Sulphur Bank Mine)
+
+- **Asset**: 160 acres, Clearlake Oaks, CA
+- **Capacity**: 50MW Geothermal (Baseload) + 40MW Floating Solar (Peaker)
+- **Value**: $1.1B standalone (pre-revenue)
+- **Impact**: Zero compute costs, IRA incentives
+
+### Layer 2: Core Protocols
+
+- **ShadowTag v2**: Visual (1x1 steganography) + Audio (ultrasonic) + Chain (Polygon/Solana)
+- **Judge #6**: <90ms governance engine, ATP 5-19 compliant
+- **ActiveShield MCF**: EU AI Act/HIPAA/ITAR automation
+
+### Layer 3: Consumer Interface
+
+- **AiU Digital Mall**: Verified-only marketplace ($100M GMV target)
+- **Tokable**: Viral adoption hook (gesture game)
+- **CineVerse**: ShadowTag-signed streaming ($430M revenue)
+
+### Layer 4-6: Physical/Orbital/Defense
+
+- **RoadMesh**: Map-free autonomous navigation ($60 TPUs vs $5K NVIDIA)
+- **Satellite GPU Edge Mesh**: 50ms latency, 100% global coverage
+- **DoD Edge**: ITAR-compliant defense compute
+
+---
+
+## 1. MARKET OPPORTUNITY
+
+### Total Addressable Market (TAM)
+
+| Segment                      | 2024       | 2030       | CAGR      |
+| ---------------------------- | ---------- | ---------- | --------- |
+| Content Moderation           | $8.5B      | $17.0B     | 12.3%     |
+| Social Media Safety          | $4.2B      | $9.7B      | 15.1%     |
+| Compliance/Audit SaaS        | $12.3B     | $34.1B     | 18.4%     |
+| Enterprise AI Infrastructure | -          | $150B      | -         |
+| **Total Addressable**        | **$25.0B** | **$60.8B** | **15.3%** |
+
+### Beachhead Markets
+
+1. **Military/Defense Procurement** (ATP 5-19 compliance) - $800M
+2. **Developer-led Startups** (Speed > Compliance)
+3. **Mid-market SaaS** (Cost > Speed)
+4. **Enterprise FinTech/HealthTech** (Compliance > Cost)
+
+---
+
+## 2. PRODUCT PORTFOLIO
+
+### Tier 1: Core Platform
+
+| Product                 | Description                                    | Pricing                  |
+| ----------------------- | ---------------------------------------------- | ------------------------ |
+| **Kernel Chain API**    | 3 specialized kernels (ATP scan, Judge, Audit) | $0.0003/decision         |
+| **ShadowTag**           | Privacy-first metadata tagging                 | $0.002/tag               |
+| **AiYou Feed**          | Real-time safety decisions                     | $499/mo + $0.01/decision |
+| **Safety-as-a-Service** | White-labeled safety framework                 | $5,000/mo + $50K setup   |
+
+### Tier 2: AI Agents
+
+| Agent             | Use Case               | Pricing  |
+| ----------------- | ---------------------- | -------- |
+| **SalesAgent**    | B2B SaaS automation    | $1.5K/mo |
+| **ContentAgent**  | Marketing automation   | $800/mo  |
+| **CodeCrafter**   | Engineering automation | $2K/mo   |
+| **DeepReasoning** | Strategy consulting    | $5K/mo   |
+| **PanelDebate**   | Research consensus     | $3K/mo   |
+
+### Tier 3: Intelligence Products
+
+| Product                   | Description       | Pricing      |
+| ------------------------- | ----------------- | ------------ |
+| **Tier1 Market Research** | ~50 items/day     | $299/mo      |
+| **Intelligence Pipeline** | Trend monitoring  | $500/mo      |
+| **Wealth Planning**       | Business analysis | $50/analysis |
+| **Evolved Prompts**       | ~500 templates    | $49/mo       |
+
+### Tier 4: Enterprise
+
+| Offering                 | Description             | Pricing   |
+| ------------------------ | ----------------------- | --------- |
+| **Full Stack**           | Unlimited everything    | $5,000/mo |
+| **Kernel Orchestration** | Multi-agent workflows   | $10K/mo   |
+| **Custom Integration**   | Superpowers Marketplace | $200/mo   |
+
+---
+
+## 3. TECHNOLOGY STACK
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    REQUEST ENTRY                             │
+│              FastAPI Router (antigravity_router.py)          │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+                          ▼
+          ┌───────────────────────────────────┐
+          │       ANTIGRAVITY HANDOFF          │
+          │  • Task classification             │
+          │  • Cost optimization               │
+          │  • SLA enforcement (<90ms p99)     │
+          └───────────┬───────────────────────┘
+                      │
+         ┌────────────┼────────────┐
+         │            │            │
+         ▼            ▼            ▼
+    ┌────────┐  ┌────────┐  ┌────────┐
+    │ Claude │  │ Gemini │  │  GPT-5 │
+    │  (35%) │  │  (40%) │  │  (15%) │
+    └────────┘  └────────┘  └────────┘
+         │            │            │
+         └────────────┼────────────┘
+                      │
+                      ▼
+          ┌───────────────────────────────────┐
+          │       https://github.com/karpathy/autoresearchS SWARM          │
+          │  600 agents, 200 per shift         │
+          │  4-hour rotation, 3 shifts         │
+          └───────────────────────────────────┘
+```
+
+### Model Distribution
+
+| Provider          | Allocation | Cost/Month  | Use Case                |
+| ----------------- | ---------- | ----------- | ----------------------- |
+| Gemini 2.0 Flash  | 40%        | $24-26K     | Fast decisions          |
+| Claude Sonnet 4.5 | 35%        | $21-23K     | Deep analysis           |
+| GPT-5             | 15%        | $9-11K      | Specialized tasks       |
+| Grok              | 5%         | $3-4K       | Alternative perspective |
+| Other             | 5%         | $3-4K       | Fallback                |
+| **Total**         | 100%       | **$60-65K** |                         |
+
+### Performance SLAs
+
+| Component         | Target      | Cost             |
+| ----------------- | ----------- | ---------------- |
+| Judge #6 Binary   | p99 ≤ 90ms  | $0.0003/decision |
+| Kernel Chain      | <35ms       | -                |
+| ATP 5-19 Scan     | <50ms       | -                |
+| Claude Deep       | p95 ≤ 2s    | -                |
+| Gemini Production | p99 ≤ 100ms | -                |
+
+### Code Products (45+ modules)
+
+**Core Services**:
+
+- `agents/` - Multi-agent framework
+- `autoresearch/` - 650-agent swarm
+- `judge6/` - ATP 5-19 governance
+- `shadowtag/` - Cryptographic watermarking
+- `codepmcs/` - 50-agent code remediation
+
+**Intelligence**:
+
+- `ingestion/` - Gemini Ingestion Layer
+- `wealth/` - Wealth Acceleration Agent
+- `aiucrm/` - CRM integration
+- `brain/` - Context management
+
+**Infrastructure**:
+
+- `antigravity/` - Cross-model orchestration
+- `monetization/` - Revenue tracking
+- `governance/` - Compliance gates
+- `evolution/` - Self-improvement systems
+
+---
+
+## 4. FINANCIAL PROJECTIONS
+
+### 3-Year Revenue Trajectory
+
+| Metric        | Year 1 (Seed) | Year 2 (Growth) | Year 3 (Scale) |
+| ------------- | ------------- | --------------- | -------------- |
+| **ARR**       | $2.1M         | $7.8M           | $15.0M         |
+| **MRR**       | $175K         | $650K           | $1.25M         |
+| **Customers** | 350           | 980             | 1,650          |
+| **EBITDA**    | $0.1M (5%)    | $2.6M (33%)     | $6.0M (40%)    |
+| **Burn Rate** | $166K/mo      | Break-even      | Profitable     |
+| **Headcount** | 5             | 12              | 25             |
+
+### Unit Economics
+
+| Metric             | Value      | Benchmark            |
+| ------------------ | ---------- | -------------------- |
+| **CAC**            | $1,200     | -                    |
+| **LTV**            | $18,000    | 3-year retention     |
+| **LTV:CAC**        | 15:1       | Healthy > 3:1        |
+| **Gross Margin**   | 78%        | Cloud COGS optimized |
+| **Payback Period** | 2.4 months | -                    |
+
+### Revenue Mix (Year 3)
+
+| Product Line        | MRR   | % of Total |
+| ------------------- | ----- | ---------- |
+| AI Agents           | $400K | 32%        |
+| Kernel API          | $300K | 24%        |
+| Enterprise          | $250K | 20%        |
+| Safety-as-a-Service | $200K | 16%        |
+| Intelligence        | $100K | 8%         |
+
+### Valuation Trajectory
+
+| Milestone       | Valuation | Basis                          |
+| --------------- | --------- | ------------------------------ |
+| Seed (Now)      | $10M pre  | $2M raise                      |
+| + The Index     | +$85M     | 17GB sovereign code recovered  |
+| Series A        | $50M      | 5× ARR                         |
+| Series B        | $170M     | 10× ARR                        |
+| **2030 Target** | **$207B** | Risk-adjusted enterprise value |
+| Ultimate        | $7T       | Global AI infrastructure       |
+
+### $207B Valuation Build-Up (2030)
+
+| Component                      | Value     | Source                    |
+| ------------------------------ | --------- | ------------------------- |
+| Base Platform                  | $68.4B    | Monte Carlo DCF           |
+| Gemini AI Integration          | +$38.9B   | 96% automation            |
+| Governance Premium (Judge #6)  | +$19B     | Enterprise compliance     |
+| Satellite GPU Edge Mesh        | +$18.3B   | Cost/latency optimization |
+| Deployment Strategy (Hybrid)   | +$14.5B   | Edge + Cloud              |
+| Multi-Agent Systems (Glicko-2) | +$10.3B   | Quality improvement       |
+| Security Refactoring           | +$4.1B    | Risk reduction            |
+| LLM Memory Integration         | +$3.5B    | Creator patterns          |
+| Judge #6 Enforcement           | +$1.6B    | ATP 5-19 compliance       |
+| Risk Adjustment (-25%)         | -$32.9B   | Conservative discount     |
+| **Total**                      | **$207B** |                           |
+
+### ShadowTag Market Capture
+
+| Market           | TAM    | Capture | Revenue    |
+| ---------------- | ------ | ------- | ---------- |
+| Enterprise Media | $8.2B  | 15%     | $1.23B     |
+| Creator Economy  | $12B   | 8%      | $960M      |
+| Deepfake Defense | $3.5B  | 25%     | $875M      |
+| **Total**        | $23.7B | 13%     | **$3.07B** |
+
+---
+
+## 5. GO-TO-MARKET STRATEGY
+
+### Phase 1: Product-Led Growth (Months 1-6)
+
+- **Channels**: GitHub, Dev.to, Y Combinator
+- **Tactic**: Open-source Safety Framework Templates
+- **Goal**: 100 free users, 20 paying
+- **Target**: $500K ARR
+
+### Phase 2: Sales-Led Growth (Months 7-12)
+
+- **Channels**: LinkedIn, Cold Email, Compliance Conferences
+- **Tactic**: "Cut Safety Bugs by 70%" case studies
+- **Goal**: $1.5M ARR
+- **Focus**: 5 enterprise pilots @ $5K/mo each
+
+### Phase 3: Platform Expansion (Year 2)
+
+- **Vertical Agents**: Industry-specific AI agents
+- **Marketplace**: Third-party integrations
+- **Goal**: $7.8M ARR
+
+---
+
+## 6. COMPETITIVE ADVANTAGES
+
+### Technical Moat
+
+| Advantage                 | Impact                       |
+| ------------------------- | ---------------------------- |
+| **31× Faster**            | 35ms vs 1100ms (AutoGen)     |
+| **97% Cheaper**           | $0.0003 vs $0.01/task        |
+| **98.5% Token Reduction** | 300 tokens vs 10K            |
+| **Self-Evolution**        | +3.7% continuous improvement |
+| **ISO 26262 Heritage**    | Automotive-grade safety      |
+
+### Optimization Patterns
+
+1. **RoT (Retrieval-of-Thought)**: 40-60% token savings
+2. **ICoT (Implicit Chain-of-Thought)**: 100% accuracy on matrix ops
+3. **CCoT (Concise Chain-of-Thought)**: 30% token savings
+4. **Glicko-2 Model Selection**: 78% cost reduction
+
+### Agent Economics
+
+| Metric    | Before | After  | Improvement    |
+| --------- | ------ | ------ | -------------- |
+| Agents    | 44     | 28     | 36% reduction  |
+| Cost/Year | $1.7M  | $378K  | 78% savings    |
+| Accuracy  | 95%    | 98%    | +3pp           |
+| ROI       | -      | $171M+ | Annual benefit |
+
+---
+
+## 7. FOUNDER & STRUCTURE
+
+```
+╔═════════════════════════════════════════════════════════════════╗
+║ ERIK HANCOCK | SOLE FOUNDER | "TINY TEAMS" PHILOSOPHY           ║
+╠═════════════════════════════════════════════════════════════════╣
+║ AGE: 56 | CREDENTIALS: JD, BA History/German                    ║
+║ TRAITS: Neurodivergent | IQ-160 Lock Required                   ║
+║ PHILOSOPHY: $1B Revenue before first hire                       ║
+╠═════════════════════════════════════════════════════════════════╣
+║ CORPORATE STRUCTURE                                             ║
+║ ├─ Type: Perpetual Family Corp                                  ║
+║ ├─ Foundation: Panama                                           ║
+║ └─ Structure: Hybrid Public/Private                             ║
+╠═════════════════════════════════════════════════════════════════╣
+║ LIQUIDITY EVENTS                                                ║
+║ ├─ IPO: "Global AI Infra" → $150-170B listing                   ║
+║ ├─ Private Retention: Panama Foundation → $100B+ (80% tax eff)  ║
+║ └─ Strategic Sale: SpaceX/Lockheed/DoD → $50-80B                ║
+╚═════════════════════════════════════════════════════════════════╝
+```
+
+---
+
+## 8. THE ASK
+
+### Seed Round
+
+- **Amount**: $2M @ $10M Pre-Money
+- **Use of Funds**:
+  - 50% Engineering (Team of 5)
+  - 30% GTM (Sales/Marketing)
+  - 20% Ops (SOC 2 Audit)
+
+### Bootstrap Gates
+
+- ROI ≥ 3× in 18 months
+- LTV:CAC ≥ 4:1 in 12 months
+- Daily cost limit: $2,500 (hard stop)
+
+---
+
+## 9. CONSOLIDATED ASSET INVENTORY
+
+### Code Repositories
+
+- **Core**: 18 repos in monorepo
+- **External**: 22+ dependencies
+- **GitHub**: 688 consolidated repos
+- **Branches**: 297 feature branches (29MB)
+
+### Documentation
+
+- **Business Plans**: 47 documents
+- **Technical Docs**: 320 files
+- **Antigravity Brain**: 70 conversations + 13 unique MD types
+
+### Infrastructure
+
+- **GCP Project**: shadowtagai-production
+- **Cluster**: autopilot-cluster-1
+- **Registry**: us-central1-docker.pkg.dev
+
+---
+
+## 10. IMMEDIATE PRIORITIES
+
+### Revenue (Week 1-2)
+
+1. [ ] Launch Kernel Chain API ($0.0003/decision)
+2. [ ] 5 pilot customers @ $500/mo
+3. [ ] Target: $10K MRR
+
+### Product (Week 3-4)
+
+1. [ ] Deploy https://github.com/karpathy/autoresearchs to Cloud Run
+2. [ ] Integrate Judge #6 governance
+3. [ ] Launch ShadowTag beta
+
+### Infrastructure (Ongoing)
+
+1. [ ] Complete GKE deployment
+2. [ ] SOC 2 Type 1 audit prep
+3. [ ] Implement revenue tracking
+
+---
+
+**"We are building the seatbelts for the AI age."**
+
+_Compiled from 47 source documents, 70 Antigravity sessions, and 297 feature branches._
+_Last Updated: 2026-01-30_

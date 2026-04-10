@@ -1,0 +1,17 @@
+{
+  "mcp": { "startupTimeoutMs": 60000, "toolTimeoutMs": 120000, "retryCount": 2 },
+  "mcpServers": {
+    "sequential-thinking": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"] },
+    "team-memory": { "command": "uvx", "args": ["--from", "agent-memory-server", "agent-memory", "mcp"], "env": { "REDIS_URL": "${REDIS_URL}", "DISABLE_AUTH": "false" } },
+    "filesystem": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"] },
+    "github": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-github"] },
+    "postgres": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-postgres", "${DATABASE_URL}"] },
+    "brave-search": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-brave-search"] },
+    "puppeteer": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-puppeteer"] },
+    "slack": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-slack"] },
+    "linear": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-linear"] },
+    "notion": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-notion"] },
+    "stitch-mcp": { "command": "npx", "args": ["-y", "mcp-remote", "https://stitch.googleapis.com/mcp", "--header", "X-Goog-Api-Key: ${STITCH_API_KEY}"] },
+    "developer-knowledge-mcp": { "command": "npx", "args": ["-y", "mcp-remote", "https://developers.google.com/knowledge/mcp", "--header", "X-Goog-Api-Key: ${DEVELOPER_KNOWLEDGE_API_KEY}"] }
+  }
+}

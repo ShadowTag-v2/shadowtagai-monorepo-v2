@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-rules-config
+  namespace: pnkln-core
+data:
+  rules.json: |
+    {
+      "version": "1.0.0",
+      "last_updated": "2025-11-14",
+      "rules": [
+        {
+          "id": "R001",
+          "name": "Gemini Approval Gate",
+          "description": "Require Gemini layer approval for final decision",
+          "condition": {
+            "field": "gemini_decision",
+            "operator": "equals",
+            "value": "APPROVE"
+          },
+          "action": "continue",
+          "priority": 1
+        },
+        {
+          "id": "R002",
+          "name": "PyTorch Score Threshold",
+          "description": "Require minimum PyTorch enforcement score",
+          "condition": {
+            "field": "pytorch_score",
+            "operator": "greater_than",
+            "value": 0.7
+          },
+          "action": "continue",
+          "priority": 2
+        },
+        {
+          "id": "R003",
+          "name": "Explicit Deny Override",
+          "description": "Always deny if any layer explicitly denies",
+          "condition": {
+            "any": [
+              {
+                "field": "gemini_decision",
+                "operator": "equals",
+                "value": "DENY"
+              },
+              {
+                "field": "pytorch_score",
+                "operator": "less_than",
+                "value": 0.3
+              }
+            ]
+          },
+          "action": "deny",
+          "priority": 0
+        },
+        {
+          "id": "R004",
+          "name": "Circuit Breaker Fallback",
+          "description": "Fall back to rules-only mode if layers timeout",
+          "condition": {
+            "any": [
+              {
+                "field": "gemini_timeout",
+                "operator": "equals",
+                "value": true
+              },
+              {
+                "field": "pytorch_timeout",
+                "operator": "equals",
+                "value": true
+              }
+            ]
+          },
+          "action": "fallback_rules_only",
+          "priority": 0
+        },
+        {
+          "id": "R005",
+          "name": "High Confidence Auto-Approve",
+          "description": "Auto-approve if all layers highly confident",
+          "condition": {
+            "all": [
+              {
+                "field": "gemini_confidence",
+                "operator": "greater_than",
+                "value": 0.95
+              },
+              {
+                "field": "pytorch_score",
+                "operator": "greater_than",
+                "value": 0.9
+              }
+            ]
+          },
+          "action": "approve",
+          "priority": 1
+        }
+      ],
+      "default_action": "deny",
+      "timeout_action": "fallback_rules_only"
+    }

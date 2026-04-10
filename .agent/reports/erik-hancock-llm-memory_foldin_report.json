@@ -1,0 +1,379 @@
+{
+  "repo_name": "erik-hancock-llm-memory",
+  "incoming_repo": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.agent/incoming_repos/erik-hancock-llm-memory",
+  "monorepo_root": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
+  "destination": "memory/erik-hancock-llm-memory",
+  "manifest_paths": [
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/monorepo_manifest.yaml",
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/manifests/monorepo_manifest.yaml"
+  ],
+  "summary": {
+    "critical": 1,
+    "high": 1,
+    "medium": 58,
+    "low": 0
+  },
+  "blocked": true,
+  "findings": [
+    {
+      "kind": "manifest_split_brain",
+      "severity": "critical",
+      "path": "monorepo_manifest.yaml <> manifests/monorepo_manifest.yaml",
+      "detail": "Multiple manifest surfaces disagree. Reconcile before any fold-in or path migration."
+    },
+    {
+      "kind": "stale_model",
+      "severity": "high",
+      "path": "drive_knowledge/documents/text_txt.txt",
+      "detail": "Stale model reference; migrate to gemini-3.1-flash-lite-preview: gemini-2.5-computer-use-preview-10-2025"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_39_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_29_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/pnkln_CODE_ROLLUP_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_16_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_42_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_30_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/250904_pnkln-stack_Changes_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_3_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_43_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_31_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_21_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_2_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_28_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_38_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_17_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/250906_pnkln-stack_Changes_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_33_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_41_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_9_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_15_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/kuvasz_manual.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_49_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_8_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/CoreWeave_credits_and_nvidia_early_programs_effect.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_14_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_32_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_40_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/Nvidia_pivot_docs_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/250905_pnkln-stack_Changes_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_18_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_4_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_37_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_11_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/pnkln-stack_Integration_4_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_10_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_5_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_36_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_44_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_12_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/pnkln-stack_Integration_Compilation_v3_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_7_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_24_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_34_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/pnkln-stack_Integration_Compilation_v2_pdf.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_35_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_25_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "drive_knowledge/documents/text_13_txt.txt",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/current.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/snapshots/memory_drive_merge_20251124_132443.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/snapshots/memory_drive_merge_20251128_142500.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/snapshots/memory_drive_merge_20251124_134011.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/snapshots/memory_v0.0.2.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/snapshots/memory_v0.0.3.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/snapshots/memory_web_merge_20251124_132833.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/deltas/2025-12-01_delta.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/deltas/2025-11-28_delta.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    },
+    {
+      "kind": "stale_naming",
+      "severity": "medium",
+      "path": "memory/deltas/2025-12-02_delta.json",
+      "detail": "Stale naming/control-plane drift: pnkln-stack"
+    }
+  ]
+}

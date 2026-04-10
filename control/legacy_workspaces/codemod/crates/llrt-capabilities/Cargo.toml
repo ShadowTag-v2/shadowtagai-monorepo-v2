@@ -1,0 +1,47 @@
+[package]
+name = "codemod-llrt-capabilities"
+edition = "2021"
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+repository.workspace = true
+license.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+llrt_modules = { git = "https://github.com/mohebifar/llrt.git", package = "llrt_modules", default-features = false, features = [
+  "console",
+  "abort",
+  "assert",
+  "buffer",
+  "child-process",
+  "crypto",
+  "events",
+  "exceptions",
+  "fetch",
+  "fs",
+  "os",
+  "path",
+  "perf-hooks",
+  "process",
+  "stream-web",
+  "string-decoder",
+  "timers",
+  "tty",
+  "url",
+  "util",
+  "zlib",
+], optional = true }
+serde.workspace = true
+ts-rs = { version = "11.0", features = [
+    "chrono-impl",
+    "uuid-impl",
+    "serde-json-impl",
+    "serde-compat",
+] }
+
+[features]
+native = [
+  "llrt_modules",
+]

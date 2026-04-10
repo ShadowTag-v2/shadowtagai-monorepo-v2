@@ -1,0 +1,21 @@
+{
+  "threads": {},
+  "next_id": 1,
+  "stats": {
+    "total_created": 0,
+    "total_completed": 0,
+    "by_tier": {
+      "FREE": 0,
+      "FLASH": 0,
+      "PRO": 0
+    }
+  },
+  "pipeline": {
+    "discovery": "scripts/github_discovery_agent.py",
+    "scanner": "src/ShadowTag-v2/services/safety_scanner.py",
+    "indexer": "src/ShadowTag-v2/services/corpus_indexer.py",
+    "pdf_indexer": "src/ShadowTag-v2/services/pdf_indexer.py"
+  },
+  "created": "2024-11-22",
+  "version": "1.0.0"
+}

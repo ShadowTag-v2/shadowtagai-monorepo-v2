@@ -1,0 +1,54 @@
+# Antigravity Semgrep Configuration
+# Three rule sources assembled for Cor.Rules enforcement:
+#
+#   semgrep/semgrep-rules     → official community rules (Python, FastAPI, JWT, JS, Docker)
+#   0xdea/semgrep-rules       → vulnerability research rules (C/ANE bridge, memory safety)
+#   .semgrep/rules/           → Antigravity custom rules (LLM, swarm, Cor.Rules)
+#
+# Run: semgrep --config .semgrep.yml .
+# CI:  Already wired in .github/workflows/pnkln-governance.yml
+
+rules:
+  # ── Official rules: Python/FastAPI stack ────────────────────────────────────
+  - id: wildcard-cors
+    paths:
+      include: ["*.py"]
+    source: control/pnkln/semgrep-rules/python/fastapi/security/wildcard-cors.yaml
+
+  - id: jwt-none-alg
+    paths:
+      include: ["*.py"]
+    source: control/pnkln/semgrep-rules/python/jwt/security/jwt-none-alg.yaml
+
+  - id: jwt-hardcode
+    paths:
+      include: ["*.py"]
+    source: control/pnkln/semgrep-rules/python/jwt/security/jwt-hardcode.yaml
+
+  - id: unverified-jwt-decode
+    paths:
+      include: ["*.py"]
+    source: control/pnkln/semgrep-rules/python/jwt/security/unverified-jwt-decode.yaml
+
+  # ── Official rules: JavaScript/TypeScript ───────────────────────────────────
+  - id: js-security
+    paths:
+      include: ["*.js", "*.ts", "*.tsx", "*.jsx"]
+    source: control/pnkln/semgrep-rules/javascript/audit
+
+  # ── Official rules: Docker / GKE infra ──────────────────────────────────────
+  - id: dockerfile-security
+    paths:
+      include: ["Dockerfile*"]
+    source: control/pnkln/semgrep-rules/dockerfile
+
+  # ── 0xdea rules: C/ANE bridge memory safety ─────────────────────────────────
+  # Applies to third_party/ANE/bridge/*.m and *.c
+  - id: ane-memory-safety
+    paths:
+      include: ["*.c", "*.m", "*.cpp"]
+    source: control/pnkln/semgrep-rules-0xdea/rules/c
+
+  # ── Antigravity custom rules ─────────────────────────────────────────────────
+  - id: antigravity-custom
+    source: .semgrep/rules/

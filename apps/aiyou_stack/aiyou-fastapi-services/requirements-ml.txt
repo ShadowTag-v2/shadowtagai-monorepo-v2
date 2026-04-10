@@ -1,0 +1,10 @@
+# ML/AI Libraries (Optional - install only if needed)
+# Install with: pip install -r requirements.txt -r requirements-ml.txt
+
+torch>=2.5.1,<2.6.0
+transformers>=4.46.0,<5.0.0
+sentence-transformers>=3.2.0,<4.0.0
+numpy>=1.26.4,<2.0.0
+scipy>=1.14.0,<2.0.0
+scikit-learn>=1.5.0,<2.0.0
+pandas>=2.2.3,<3.0.0

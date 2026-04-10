@@ -1,0 +1,10 @@
+version: 1
+
+flags:
+  product_stateless_mode:
+    enabled: true
+    owner: product_app
+
+  research_local_accelerator_experiments:
+    enabled: true
+    owner: research_lab

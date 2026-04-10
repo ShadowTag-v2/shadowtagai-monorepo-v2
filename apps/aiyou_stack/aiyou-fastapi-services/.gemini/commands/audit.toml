@@ -1,0 +1,14 @@
+description = "Audits a specific file for security and performance issues."
+prompt = """
+You are a senior security engineer. Review the following file: {{args}}
+
+Context - Recent git changes to this file:
+!{git log -p -n 1 -- {{args}}}
+
+Task:
+1. Analyze the code for OWASP Top 10 vulnerabilities.
+2. Identify any inefficient loops or memory leaks.
+3. Suggest specific refactoring steps.
+
+Output format: Markdown checklist.
+"""

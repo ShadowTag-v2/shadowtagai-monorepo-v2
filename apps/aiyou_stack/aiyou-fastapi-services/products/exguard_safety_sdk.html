@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExGuard SDK | Enterprise Fatigue Monitoring</title>
+    <meta name="description" content="Military-grade biosignal SDK for pilot, driver, and operator safety. Detects fatigue via Blink, Pupil, HRV, and IMU fusion.">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030712;
+            --surface: #111827;
+            --primary: #ef4444; /* Alert Red */
+            --accent: #f59e0b; /* Warning Amber */
+            --text: #f9fafb;
+            --text-dim: #9ca3af;
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; line-height: 1.5; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        nav { padding: 24px 0; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.05em; display: flex; align-items: center; gap: 12px; }
+        .logo span { color: var(--primary); }
+
+        .hero { padding: 120px 0; grid-template-columns: 1fr 1fr; display: grid; gap: 60px; align-items: center; }
+        h1 { font-size: 3.5rem; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px; }
+        .hero p { font-size: 1.25rem; color: var(--text-dim); margin-bottom: 40px; max-width: 500px; }
+
+        .code-block {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            font-size: 0.9rem;
+            box-shadow: 0 20px 50px rgba(239, 68, 68, 0.1);
+        }
+        .kw { color: #c678dd; } .fn { color: #61afef; } .str { color: #98c379; } .com { color: #5c6370; }
+
+        .btn {
+            background: var(--text); color: var(--bg);
+            padding: 16px 32px; border-radius: 8px; font-weight: 600;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn.outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text); }
+
+        .features { padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 60px; }
+        .card { background: var(--surface); padding: 32px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .card h3 { font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .card p { font-size: 0.95rem; color: var(--text-dim); }
+        .icon { width: 32px; height: 32px; background: rgba(239, 68, 68, 0.1); color: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+
+        .pricing { background: var(--surface); padding: 100px 0; text-align: center; }
+        .price-card { background: var(--bg); border: 1px solid rgba(255,255,255,0.1); padding: 60px; max-width: 500px; margin: 0 auto; border-radius: 24px; }
+        .big-price { font-size: 4rem; font-weight: 800; color: var(--text); margin: 24px 0; }
+        .big-price span { font-size: 1rem; color: var(--text-dim); font-weight: 400; }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                ExGuard<span>SDK</span>
+            </div>
+            <div class="links">
+                <a href="#" class="btn outline" style="padding: 10px 20px; font-size: 0.9rem;">Read Docs</a>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="content">
+                <div style="color: var(--primary); font-weight: 700; margin-bottom: 16px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Public Safety / Defense</div>
+                <h1>Predict Fatigue <br>Before It Kills.</h1>
+                <p>The world's most advanced biosignal fusion engine. Detects operator fatigue via blink dynamics, pupil variance, HRV, and micro-posture analysis.</p>
+                <div style="display: flex; gap: 16px;">
+                    <a href="mailto:sales@aiyou.com?subject=ExGuard%20Enterprise%20Inquiry" class="btn">Request License</a>
+                    <a href="#" class="btn outline">View API</a>
+                </div>
+            </div>
+            <div class="code-block mono">
+                <div class="com"># Real-time Fatigue Assessment</div>
+                <div class="kw">from</div> pnkln.fatigue <div class="kw">import</div> SensorFusion<br><br>
+                engine = SensorFusion()<br>
+                engine.weights = {<br>
+                &nbsp;&nbsp;<span class="str">'blink'</span>: 0.3,<br>
+                &nbsp;&nbsp;<span class="str">'pupil'</span>: 0.2,<br>
+                &nbsp;&nbsp;<span class="str">'hrv'</span>: 0.3,<br>
+                &nbsp;&nbsp;<span class="str">'imu'</span>: 0.2<br>
+                }<br><br>
+                <div class="kw">while</div> monitoring:<br>
+                &nbsp;&nbsp;score, metrics = engine.get_fused_score()<br>
+                &nbsp;&nbsp;<div class="kw">if</div> score > <span class="fn">0.8</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;lock_controls(reason=<span class="str">"CRITICAL_FATIGUE"</span>)
+            </div>
+        </section>
+
+        <section class="features">
+            <h2 style="font-size: 2rem;">4-Layer Bio-Fusion Technology</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3><div class="icon">👁️</div> Blink Dynamics</h3>
+                    <p>Tracks blink duration (ms), incomplete blinks, and screen-induced dry eye rate.</p>
+                </div>
+                <div class="card">
+                    <h3><div class="icon">🎯</div> Pupil Variance</h3>
+                    <p>Analyzes autonomic regulation via pupil diameter variance and asymmetry.</p>
+                </div>
+                <div class="card">
+                    <h3><div class="icon">💓</div> HRV Stress</h3>
+                    <p>ISO-standard RMSSD and SDNN calculation for real-time stress indexing.</p>
+                </div>
+                <div class="card">
+                    <h3><div class="icon">⚖️</div> IMU Posture</h3>
+                    <p>Detects "nodding off" via micro-saccades and head drift analysis.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="pricing">
+        <div class="container">
+            <div class="price-card">
+                <h3>Enterprise Core License</h3>
+                <div class="big-price">$50,000 <span>/year</span></div>
+                <p style="color: var(--text-dim); margin-bottom: 32px;">For logistics fleets, aviation, and heavy machinery.</p>
+                <ul style="text-align: left; list-style: none; padding: 0; margin-bottom: 40px; color: var(--text-dim);">
+                    <li style="margin-bottom: 12px;">✅ Full Source Code Access</li>
+                    <li style="margin-bottom: 12px;">✅ Unlimited Seats/Devices</li>
+                    <li style="margin-bottom: 12px;">✅ On-Premise Deployment</li>
+                    <li style="margin-bottom: 12px;">✅ Custom Sensor Integration</li>
+                </ul>
+                <a href="mailto:sales@aiyou.com" class="btn" style="width: 100%; justify-content: center;">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

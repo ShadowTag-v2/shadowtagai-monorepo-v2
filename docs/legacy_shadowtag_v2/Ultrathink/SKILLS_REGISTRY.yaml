@@ -1,0 +1,62 @@
+skills:
+  - name: ResearchExplorerSkill
+    description: |
+      Perform deep topic exploration: web search, assumption-challenging, opportunity spotting.
+    triggers:
+      - topic is ambiguous
+      - user asks for "what are we missing"
+    version: 1.0
+
+  - name: DesignCriticSkill
+    description: |
+      Review designs/artifacts (UI, flows, code structure) with "Jobs-style" criteria: beauty, simplicity, function.
+    triggers:
+      - 'review design'
+      - 'critique UX'
+      - 'architectural clean-up'
+    version: 1.0
+
+  - name: CopyConverterSkill
+    description: |
+      Given audience + offer + insights → generate high-converting copy, funnel assets, messaging.
+    triggers:
+      - 'write copy'
+      - 'funnel script'
+      - 'positioning'
+    version: 1.0
+
+  - name: MonetizationArchitectSkill
+    description: |
+      Given content + audience + offer → design backend revenue systems: upsell, continuity, premium tiers.
+    triggers:
+      - 'monetization plan'
+      - 'increase lifetime value'
+      - 'scale revenue'
+    version: 1.0
+
+  - name: WorkflowRefinerSkill
+    description: |
+      Take existing workflow/architecture and simplify ruthlessly: merge/remove steps, increase leverage.
+    triggers:
+      - 'optimize flow'
+      - 'simplify process'
+      - 'remove complexity'
+    version: 1.0
+
+  - name: PromptCraftSkill
+    description: |
+      Generate elegant, structured prompts for tasks, embedding our voice & frameworks (RTF, TAG, etc.).
+    triggers:
+      - 'build prompt'
+      - 'agent template'
+      - 'prompt engineering'
+    version: 1.0
+
+  - name: GlickoMasterySkill
+    description: |
+      Rate opportunities, models, or designs using Glicko-2 system (Ratings, RD, Volatility). Handles uncertainty better than Elo.
+    triggers:
+      - 'rate via glicko'
+      - 'rank opportunities'
+      - 'evaluate benchmark'
+    version: 1.0

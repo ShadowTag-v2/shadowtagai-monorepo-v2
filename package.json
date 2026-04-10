@@ -1,0 +1,52 @@
+{
+  "name": "ShadowTag-v2-fastapi-services",
+  "version": "1.0.0",
+  "description": "AI Agent system for FastAPI services with System Architect agent and ShadowTagAI DNA Royalty",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy_dna_royalty.js",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "lint:design": "node tools/design-system-lint.mjs src/",
+    "gate0": "npm run lint:fix && npm run lint:design",
+    "memory:status": "python3 tools/unified_memory.py status",
+    "memory:recall": "python3 tools/unified_memory.py recall",
+    "memory:hydrate": "python3 tools/unified_memory.py hydrate"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "fastapi",
+    "solidity",
+    "erc-6551",
+    "erc-4337",
+    "erc-8004"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.96",
+    "scrape-tiktok": "^1.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^7.0.0",
+    "@openzeppelin/contracts": "^5.6.1",
+    "@openzeppelin/contracts-upgradeable": "^5.6.1",
+    "@openzeppelin/hardhat-upgrades": "^3.9.1",
+    "@playwright/test": "^1.59.1",
+    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/parser": "^8.47.0",
+    "eslint": "^10.2.0",
+    "eslint-plugin-gpt5rules": "file:eslint-plugin-gpt5rules",
+    "hardhat": "^3.3.0",
+    "typescript": "^6.0.2"
+  },
+  "overrides": {
+    "node": "file:external_sdks/npm/node",
+    "cli": "file:external_sdks/npm/cli",
+    "node-semver": "file:external_sdks/npm/node-semver"
+  }
+}

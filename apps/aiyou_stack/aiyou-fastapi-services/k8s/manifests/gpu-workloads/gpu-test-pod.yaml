@@ -1,0 +1,57 @@
+# Simple GPU Test Pod
+# Use this to verify GPU scheduling and access
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-test
+  namespace: ml-training
+  labels:
+    app: gpu-test
+spec:
+  serviceAccountName: training-sa
+  restartPolicy: Never
+
+  nodeSelector:
+    workload: fine-tuning
+    gpu: a100
+
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
+
+  containers:
+    - name: cuda
+      image: nvidia/cuda:12.2.0-base-ubuntu22.04
+      command:
+        - /bin/bash
+        - -c
+        - |
+          echo "=== GPU Test Starting ==="
+          echo ""
+          echo "--- nvidia-smi output ---"
+          nvidia-smi
+          echo ""
+          echo "--- GPU Details ---"
+          nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv
+          echo ""
+          echo "--- CUDA Samples ---"
+          cd /tmp
+          apt-get update && apt-get install -y cuda-samples-12-2
+          cd /usr/local/cuda/samples/1_Utilities/deviceQuery
+          make
+          ./deviceQuery
+          echo ""
+          echo "=== GPU Test Complete ==="
+          sleep 60
+
+      resources:
+        requests:
+          nvidia.com/gpu: "1"
+          memory: "4Gi"
+          cpu: "2"
+        limits:
+          nvidia.com/gpu: "1"
+          memory: "8Gi"
+          cpu: "4"

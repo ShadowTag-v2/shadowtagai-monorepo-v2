@@ -1,0 +1,24 @@
+# .gitignore (Updated for Antigravity)
+__pycache__/
+*.pyc
+.env
+.DS_Store
+.venv/
+venv/
+node_modules/
+
+# Antigravity Specifics (The Bloat)
+external_sdks/        # 5.7GB SDKs
+browser_artifacts/    # Jetski Recordings
+logs/                 # Agent Thoughts
+antigravity-data/     # AlloyDB Persistence
+.beads/               # Memory Beads
+
+# Infrastructure
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Media
+*.mp4
+*.webm

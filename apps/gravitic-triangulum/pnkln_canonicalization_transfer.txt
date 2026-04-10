@@ -1,0 +1,761 @@
+# pnkln — Canonicalization Transfer Pack (Vertex AI Studio / Workbench)
+
+## 1. Studio Prompt Templates (copy/paste)
+
+TEMPLATE: CANONICALIZATION TRANSFER — MCP, .gitignore, settings.json
+Mission:
+Finish control-plane canonicalization by applying the same single-truth discipline to MCP, .gitignore, and .vscode/settings.json.
+
+Already-settled truths:
+1. monorepo_manifest.yaml = workspace truth
+2. antigravity-mcp-config.json = only MCP truth
+3. AGENTS.md = behavior truth
+4. pnkln.code-workspace = operator entrypoint
+5. apps/counselconduit = product path
+6. labs/uphillsnowball = lab path
+7. all secrets belong in .env
+8. adapter/retired MCP surfaces must never become truth again
+
+Source doctrine:
+- UPDATED_PNKLN_PACK.md says one MCP config is canonical, all secrets belong in .env, counselconduit is product, uphillsnowball is lab, and historical duplicate MCP surfaces are superseded.
+- ANTIGRAVITY_CONTROL_PLANE.md says antigravity-mcp-config.json is the only canonical MCP config, other MCP files are adapters or retired surfaces only, and the fix order is workspace truth -> merge truth -> MCP truth -> runtime truth -> product hardening.
+
+Required end state:
+A. MCP canonicalization
+1. Keep antigravity-mcp-config.json as the single MCP truth.
+2. Rewrite /Users/pikeymickey/.gemini/antigravity/mcp_config.json and .vscode/cline_mcp_settings.json as note-only adapter/retired stubs.
+3. Search repo for additional MCP config surfaces.
+4. Classify each.
+5. Remove inline secrets.
+
+B. .gitignore canonicalization
+1. Create one canonical root .gitignore.
+2. Ensure it ignores .env, .venv, node_modules, etc.
+3. Does NOT hide canonical source trees.
+4. Classify nested .gitignore files.
+
+C. settings.json canonicalization
+1. Keep one canonical root .vscode/settings.json.
+2. Search nested settings.json.
+3. Classify each.
+4. Clean root settings.json.
+
+D. Audit and proof
+1. Generate docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md
+2. Include classifications and blockers.
+3. Final verdict: COMPLETE or COMPLETE_WITH_BLOCKERS.
+
+Pass criteria:
+- one MCP truth
+- one root .gitignore
+- one root .vscode/settings.json
+- no inline secrets
+- no second control plane
+
+TEMPLATE: FIXER EXECUTION BLOCK
+Mission: Apply a canonical, drift-resistant fix across MCP, .gitignore, and VS Code settings/workspace surfaces.
+Run: bash scripts/fix_canonicalization_surfaces.sh
+Expected behavior:
+1. antigravity-mcp-config.json remains the only live MCP truth.
+2. /Users/pikeymickey/.gemini/antigravity/mcp_config.json -> retired stub.
+3. .vscode/cline_mcp_settings.json -> adapter-only stub.
+4. root .gitignore exists and holds shared ignore policy.
+5. root .vscode/settings.json exists and holds workspace behavior.
+6. pnkln.code-workspace remains operator entrypoint.
+7. docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md is generated.
+
+## 2. Notebook Shell Cells (%%bash)
+
+### audit_mcp_surfaces.sh
+```
+%%bash
+mkdir -p scripts
+cat << 'EOF' > scripts/audit_mcp_surfaces.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
+OUT_DIR="$ROOT/docs/canonicalization"
+REPORT="$OUT_DIR/mcp_surfaces_report.md"
+
+CANONICAL_MCP="$ROOT/antigravity-mcp-config.json"
+RETIRED_MCP="/Users/pikeymickey/.gemini/antigravity/mcp_config.json"
+ADAPTER_MCP="$ROOT/.vscode/cline_mcp_settings.json"
+
+EXPECTED_PROJECT="shadowtag-omega-v4"
+
+mkdir -p "$OUT_DIR"
+cd "$ROOT"
+
+mapfile -t MCP_FILES < <(
+  find "$ROOT" -type f \( \
+    -name "antigravity-mcp-config.json" -o \
+    -name "mcp_config.json" -o \
+    -name ".mcp.json" -o \
+    -name "cline_mcp_settings.json" \
+  \) | sort
+)
+
+mapfile -t SETTINGS_INLINE_MCP < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    '"mcpServers"\s*:|mcp-remote|experimental:mcp|MCP-Protocol-Version|stitch\.googleapis\.com/mcp|developers\.google\.com/.*/mcp' \
+    "$ROOT" || true
+)
+
+mapfile -t INLINE_SECRET_CANDIDATES < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    -e 'AIza[0-9A-Za-z\-_]{20,}' \
+    -e 'ghp_[A-Za-z0-9]{20,}' \
+    -e 'github_pat_[A-Za-z0-9_]{20,}' \
+    -e 'BEGIN PRIVATE KEY' \
+    -e 'X-Goog-Api-Key:\s*[A-Za-z0-9\-_]+' \
+    "$ROOT" || true
+)
+
+classify_file() {
+  local path="$1"
+  if [[ "$path" == "$CANONICAL_MCP" ]]; then
+    echo "canonical"
+  elif [[ "$path" == "$RETIRED_MCP" ]]; then
+    echo "retired"
+  elif [[ "$path" == "$ADAPTER_MCP" ]]; then
+    echo "adapter-only"
+  else
+    echo "forbidden-to-revive"
+  fi
+}
+
+{
+  echo "# MCP Surfaces Canonicalization Report"
+  echo ""
+  echo "## Canonical Truth"
+  echo "- canonical MCP: \`$CANONICAL_MCP\`"
+  echo "- expected project anchor: \`$EXPECTED_PROJECT\`"
+  echo ""
+  echo "## Discovered MCP Files"
+  if [[ ${#MCP_FILES[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    for f in "${MCP_FILES[@]}"; do
+      rel="${f#$ROOT/}"
+      [[ "$f" == "$ROOT" ]] && rel="$f"
+      echo "- \`${rel}\` → **$(classify_file "$f")**"
+    done
+  fi
+  echo ""
+  echo "## Inline MCP Definitions Outside Canonical File"
+  if [[ ${#SETTINGS_INLINE_MCP[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    printf '%s\n' "${SETTINGS_INLINE_MCP[@]}" | sed 's/^/- /'
+  fi
+  echo ""
+  echo "## Inline Secret Candidates"
+  if [[ ${#INLINE_SECRET_CANDIDATES[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    printf '%s\n' "${INLINE_SECRET_CANDIDATES[@]}" | sed 's/^/- /'
+  fi
+  echo ""
+  echo "## Required Outcome"
+  echo "- only \`antigravity-mcp-config.json\` may remain a live MCP truth surface"
+  echo "- adapter and retired files must be note-only stubs"
+  echo "- no live secrets in committed MCP/config files"
+} > "$REPORT"
+
+echo "Wrote $REPORT"
+EOF
+chmod +x scripts/audit_mcp_surfaces.sh
+```
+
+### audit_gitignore_surfaces.sh
+```
+%%bash
+mkdir -p scripts
+cat << 'EOF' > scripts/audit_gitignore_surfaces.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
+OUT_DIR="$ROOT/docs/canonicalization"
+REPORT="$OUT_DIR/gitignore_surfaces_report.md"
+
+mkdir -p "$OUT_DIR"
+cd "$ROOT"
+
+ROOT_GITIGNORE="$ROOT/.gitignore"
+
+mapfile -t GITIGNORE_FILES < <(
+  find "$ROOT" -type f -name ".gitignore" | sort
+)
+
+mapfile -t EXCLUDE_FILES < <(
+  find "$ROOT/.git" -type f \( -path "*/info/exclude" \) 2>/dev/null | sort || true
+)
+
+COMMON_PATTERNS=(
+  ".env"
+  ".venv"
+  "node_modules"
+  "__pycache__"
+  ".pytest_cache"
+  ".mypy_cache"
+  ".ruff_cache"
+  "dist"
+  "build"
+  "coverage"
+)
+
+has_pattern() {
+  local file="$1"
+  local pattern="$2"
+  rg -n --fixed-strings "$pattern" "$file" >/dev/null 2>&1
+}
+
+{
+  echo "# .gitignore Canonicalization Report"
+  echo ""
+  echo "## Canonical Recommendation"
+  echo "- canonical shared ignore file: \`.gitignore\` at repo root"
+  echo "- local-only ignore belongs in \`.git/info/exclude\`"
+  echo ""
+  echo "## Root .gitignore Presence"
+  if [[ -f "$ROOT_GITIGNORE" ]]; then
+    echo "- present: \`$ROOT_GITIGNORE\`"
+  else
+    echo "- missing: \`$ROOT_GITIGNORE\`"
+  fi
+  echo ""
+  echo "## Discovered .gitignore Files"
+  if [[ ${#GITIGNORE_FILES[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    for f in "${GITIGNORE_FILES[@]}"; do
+      rel="${f#$ROOT/}"
+      if [[ "$f" == "$ROOT_GITIGNORE" ]]; then
+        echo "- \`${rel}\` → **canonical candidate**"
+      else
+        echo "- \`${rel}\` → **needs classification: necessary local override vs redundant vs stale**"
+      fi
+    done
+  fi
+  echo ""
+  echo "## Local Exclude Files"
+  if [[ ${#EXCLUDE_FILES[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    for f in "${EXCLUDE_FILES[@]}"; do
+      rel="${f#$ROOT/}"
+      echo "- \`${rel}\` → local-only ignore surface"
+    done
+  fi
+  echo ""
+  echo "## Root Coverage Check"
+  if [[ -f "$ROOT_GITIGNORE" ]]; then
+    for p in "${COMMON_PATTERNS[@]}"; do
+      if has_pattern "$ROOT_GITIGNORE" "$p"; then
+        echo "- pattern present: \`$p\`"
+      else
+        echo "- pattern missing: \`$p\`"
+      fi
+    done
+  else
+    echo "- skipped; root .gitignore missing"
+  fi
+  echo ""
+  echo "## Required Outcome"
+  echo "- keep one canonical root .gitignore"
+  echo "- keep only narrow, justified nested .gitignore overrides"
+  echo "- move personal/local ignores to .git/info/exclude where appropriate"
+  echo "- do not hide canonical source roots"
+} > "$REPORT"
+
+echo "Wrote $REPORT"
+EOF
+chmod +x scripts/audit_gitignore_surfaces.sh
+```
+
+### audit_settings_surfaces.sh
+```
+%%bash
+mkdir -p scripts
+cat << 'EOF' > scripts/audit_settings_surfaces.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
+OUT_DIR="$ROOT/docs/canonicalization"
+REPORT="$OUT_DIR/settings_surfaces_report.md"
+
+ROOT_SETTINGS="$ROOT/.vscode/settings.json"
+WORKSPACE_FILE="$ROOT/pnkln.code-workspace"
+
+mkdir -p "$OUT_DIR"
+cd "$ROOT"
+
+mapfile -t SETTINGS_FILES < <(
+  find "$ROOT" -type f -path "*/.vscode/settings.json" | sort
+)
+
+mapfile -t WORKSPACE_FILES < <(
+  find "$ROOT" -type f -name "*.code-workspace" | sort
+)
+
+mapfile -t SUSPICIOUS_SETTINGS < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    '"mcpServers"\s*:|X-Goog-Api-Key|AIza[0-9A-Za-z\-_]{20,}|shadowtag-(omega|v[0-9])|gemini-[0-9]+\.[0-9]+-[A-Za-z0-9._-]+' \
+    "$ROOT/.vscode" "$ROOT"/*.code-workspace 2>/dev/null || true
+)
+
+{
+  echo "# settings.json Canonicalization Report"
+  echo ""
+  echo "## Canonical Recommendation"
+  echo "- canonical root workspace settings: \`.vscode/settings.json\`"
+  echo "- canonical operator workspace file: \`pnkln.code-workspace\`"
+  echo ""
+  echo "## Root Settings"
+  if [[ -f "$ROOT_SETTINGS" ]]; then
+    echo "- present: \`$ROOT_SETTINGS\`"
+  else
+    echo "- missing: \`$ROOT_SETTINGS\`"
+  fi
+  echo ""
+  echo "## Workspace Files"
+  if [[ ${#WORKSPACE_FILES[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    for f in "${WORKSPACE_FILES[@]}"; do
+      rel="${f#$ROOT/}"
+      if [[ "$f" == "$WORKSPACE_FILE" ]]; then
+        echo "- \`${rel}\` → **canonical operator entrypoint**"
+      else
+        echo "- \`${rel}\` → **needs classification**"
+      fi
+    done
+  fi
+  echo ""
+  echo "## Discovered .vscode/settings.json Files"
+  if [[ ${#SETTINGS_FILES[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    for f in "${SETTINGS_FILES[@]}"; do
+      rel="${f#$ROOT/}"
+      if [[ "$f" == "$ROOT_SETTINGS" ]]; then
+        echo "- \`${rel}\` → **canonical root settings**"
+      else
+        echo "- \`${rel}\` → **needs classification: necessary local override vs stale/superseded**"
+      fi
+    done
+  fi
+  echo ""
+  echo "## Suspicious Settings Hits"
+  if [[ ${#SUSPICIOUS_SETTINGS[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    printf '%s\n' "${SUSPICIOUS_SETTINGS[@]}" | sed 's/^/- /'
+  fi
+  echo ""
+  echo "## Required Outcome"
+  echo "- keep one canonical root .vscode/settings.json"
+  echo "- keep one canonical .code-workspace operator entrypoint"
+  echo "- avoid inline secrets"
+  echo "- avoid alternate MCP definitions in settings"
+  echo "- allow subproject settings only when clearly justified"
+} > "$REPORT"
+
+echo "Wrote $REPORT"
+EOF
+chmod +x scripts/audit_settings_surfaces.sh
+```
+
+### fix_canonicalization_surfaces.sh
+```
+%%bash
+mkdir -p scripts
+cat << 'EOF' > scripts/fix_canonicalization_surfaces.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+# fix_canonicalization_surfaces.sh
+# Purpose:
+# - enforce one canonical MCP truth
+# - ensure one canonical root .gitignore
+# - ensure one canonical root .vscode/settings.json / pnkln.code-workspace pairing
+# - demote or flag duplicate surfaces
+# - generate docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md
+
+ROOT="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
+DOCS_DIR="$ROOT/docs/canonicalization"
+FINAL_REPORT="$ROOT/docs/CANONICALIZATION_REPORT_MCP_GITIGNORE_SETTINGS.md"
+
+CANONICAL_MCP="$ROOT/antigravity-mcp-config.json"
+RETIRED_MCP="/Users/pikeymickey/.gemini/antigravity/mcp_config.json"
+ADAPTER_MCP="$ROOT/.vscode/cline_mcp_settings.json"
+
+ROOT_GITIGNORE="$ROOT/.gitignore"
+ROOT_SETTINGS="$ROOT/.vscode/settings.json"
+WORKSPACE_FILE="$ROOT/pnkln.code-workspace"
+
+EXPECTED_PROJECT="shadowtag-omega-v4"
+
+log() {
+  printf "\n[canonicalize] %s\n" "$*"
+}
+
+fail() {
+  printf "\n[canonicalize] ERROR: %s\n" "$*" >&2
+  exit 1
+}
+
+require_cmd() {
+  command -v "$1" >/dev/null 2>&1 || fail "missing required command: $1"
+}
+
+require_cmd bash
+require_cmd python3
+require_cmd rg
+require_cmd find
+require_cmd mkdir
+
+cd "$ROOT" || fail "cannot cd into $ROOT"
+mkdir -p "$DOCS_DIR" "$ROOT/.vscode"
+
+# 1) Ensure canonical MCP exists
+[[ -f "$CANONICAL_MCP" ]] || fail "missing canonical MCP file: $CANONICAL_MCP"
+
+# 2) Rewrite retired MCP stub
+log "Rewriting retired MCP stub"
+mkdir -p "$(dirname "$RETIRED_MCP")"
+cat > "$RETIRED_MCP" <<'EOF2'
+{
+  "note": "RETIRED. Canonical MCP truth lives in /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json. Do not edit this file as a primary config surface."
+}
+EOF2
+
+# 3) Rewrite adapter-only MCP stub
+log "Rewriting adapter-only MCP stub"
+cat > "$ADAPTER_MCP" <<'EOF2'
+{
+  "note": "ADAPTER ONLY. Canonical MCP truth lives in /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json. Mirror from canonical only if a client requires this path."
+}
+EOF2
+
+# 4) Ensure canonical root .gitignore
+log "Ensuring canonical root .gitignore"
+if [[ ! -f "$ROOT_GITIGNORE" ]]; then
+  cat > "$ROOT_GITIGNORE" <<'EOF2'
+# Canonical root ignore
+
+# secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+client_secret.json
+service-account.json
+token.json
+
+# python
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+
+# node
+node_modules/
+dist/
+build/
+coverage/
+.next/
+
+# local state / db / temp
+.lancedb/
+tmp/
+output/
+data/tmp/
+*.sqlite
+*.sqlite3
+
+# macOS / editor noise
+.DS_Store
+.idea/
+EOF2
+  log "Created root .gitignore"
+else
+  log "Root .gitignore already present; left in place"
+fi
+
+# 5) Ensure canonical root settings.json
+log "Ensuring canonical root .vscode/settings.json"
+if [[ ! -f "$ROOT_SETTINGS" ]]; then
+  cat > "$ROOT_SETTINGS" <<'EOF2'
+{
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "jupyter.jupyterServerType": "local",
+  "files.autoSave": "onFocusChange",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "git.mergeEditor": true,
+  "files.exclude": {
+    "**/archive/**": true,
+    "**/tools/legacy/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.venv/**": true
+  },
+  "search.exclude": {
+    "**/archive/**": true,
+    "**/tools/legacy/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.venv/**": true
+  },
+  "files.watcherExclude": {
+    "**/archive/**": true,
+    "**/tools/legacy/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.venv/**": true
+  }
+}
+EOF2
+  log "Created root .vscode/settings.json"
+else
+  log "Root .vscode/settings.json already present; left in place"
+fi
+
+# 6) Run audits
+log "Running MCP audit"
+bash scripts/audit_mcp_surfaces.sh
+
+log "Running .gitignore audit"
+bash scripts/audit_gitignore_surfaces.sh
+
+log "Running settings audit"
+bash scripts/audit_settings_surfaces.sh
+
+# 7) Collect discovered surfaces
+mapfile -t MCP_FILES < <(
+  find "$ROOT" -type f \( \
+    -name "antigravity-mcp-config.json" -o \
+    -name "mcp_config.json" -o \
+    -name ".mcp.json" -o \
+    -name "cline_mcp_settings.json" \
+  \) | sort
+)
+
+mapfile -t GITIGNORE_FILES < <(
+  find "$ROOT" -type f -name ".gitignore" | sort
+)
+
+mapfile -t SETTINGS_FILES < <(
+  find "$ROOT" -type f -path "*/.vscode/settings.json" | sort
+)
+
+mapfile -t WORKSPACE_FILES < <(
+  find "$ROOT" -type f -name "*.code-workspace" | sort
+)
+
+classify_mcp() {
+  local f="$1"
+  if [[ "$f" == "$CANONICAL_MCP" ]]; then
+    echo "canonical"
+  elif [[ "$f" == "$RETIRED_MCP" ]]; then
+    echo "retired"
+  elif [[ "$f" == "$ADAPTER_MCP" ]]; then
+    echo "adapter-only"
+  else
+    echo "forbidden-to-revive"
+  fi
+}
+
+classify_gitignore() {
+  local f="$1"
+  if [[ "$f" == "$ROOT_GITIGNORE" ]]; then
+    echo "canonical"
+  else
+    echo "needs-classification"
+  fi
+}
+
+classify_settings() {
+  local f="$1"
+  if [[ "$f" == "$ROOT_SETTINGS" ]]; then
+    echo "canonical"
+  else
+    echo "needs-classification"
+  fi
+}
+
+classify_workspace() {
+  local f="$1"
+  if [[ "$f" == "$WORKSPACE_FILE" ]]; then
+    echo "canonical"
+  else
+    echo "needs-classification"
+  fi
+}
+
+# 8) Drift checks
+mapfile -t INLINE_SECRET_HITS < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    -e 'AIza[0-9A-Za-z\-_]{20,}' \
+    -e 'ghp_[A-Za-z0-9]{20,}' \
+    -e 'github_pat_[A-Za-z0-9_]{20,}' \
+    -e 'BEGIN PRIVATE KEY' \
+    "$ROOT" || true
+)
+
+mapfile -t INLINE_MCP_SURFACE_HITS < <(
+  rg -n --hidden \
+    --glob '!**/.git/**' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.venv/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    '"mcpServers"\s*:|mcp-remote|experimental:mcp' \
+    "$ROOT/.vscode" "$ROOT"/*.code-workspace 2>/dev/null || true
+)
+
+blockers=()
+
+if [[ ! -f "$CANONICAL_MCP" ]]; then
+  blockers+=("missing canonical MCP file")
+fi
+if [[ ! -f "$ROOT_GITIGNORE" ]]; then
+  blockers+=("missing canonical root .gitignore")
+fi
+if [[ ! -f "$ROOT_SETTINGS" ]]; then
+  blockers+=("missing canonical root settings.json")
+fi
+if [[ ! -f "$WORKSPACE_FILE" ]]; then
+  blockers+=("missing canonical operator workspace file")
+fi
+if [[ ${#INLINE_SECRET_HITS[@]} -gt 0 ]]; then
+  blockers+=("inline secret candidates found")
+fi
+
+final_verdict="COMPLETE"
+if [[ ${#blockers[@]} -gt 0 ]]; then
+  final_verdict="COMPLETE_WITH_BLOCKERS"
+fi
+
+# 9) Combined report
+log "Writing combined report"
+{
+  echo "# Canonicalization Report — MCP, .gitignore, settings.json"
+  echo ""
+  echo "## Canonical truth files"
+  echo "- workspace truth: \`monorepo_manifest.yaml\`"
+  echo "- MCP truth: \`antigravity-mcp-config.json\`"
+  echo "- behavior truth: \`AGENTS.md\`"
+  echo "- operator entrypoint: \`pnkln.code-workspace\`"
+  echo ""
+  echo "## MCP surfaces"
+  for f in "${MCP_FILES[@]}"; do
+    rel="${f#$ROOT/}"
+    [[ "$f" == /Users/* ]] || true
+    if [[ "$f" == "$RETIRED_MCP" ]]; then
+       rel="$f"
+    fi
+    echo "- \`${rel}\` → **$(classify_mcp "$f")**"
+  done
+  echo ""
+  echo "## .gitignore surfaces"
+  for f in "${GITIGNORE_FILES[@]}"; do
+    rel="${f#$ROOT/}"
+    echo "- \`${rel}\` → **$(classify_gitignore "$f")**"
+  done
+  echo ""
+  echo "## settings.json surfaces"
+  for f in "${SETTINGS_FILES[@]}"; do
+    rel="${f#$ROOT/}"
+    echo "- \`${rel}\` → **$(classify_settings "$f")**"
+  done
+  echo ""
+  echo "## workspace files"
+  for f in "${WORKSPACE_FILES[@]}"; do
+    rel="${f#$ROOT/}"
+    echo "- \`${rel}\` → **$(classify_workspace "$f")**"
+  done
+  echo ""
+  echo "## Inline MCP definitions in settings/workspace"
+  if [[ ${#INLINE_MCP_SURFACE_HITS[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    printf '%s\n' "${INLINE_MCP_SURFACE_HITS[@]}" | sed 's/^/- /'
+  fi
+  echo ""
+  echo "## Inline secret candidates"
+  if [[ ${#INLINE_SECRET_HITS[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    printf '%s\n' "${INLINE_SECRET_HITS[@]}" | sed 's/^/- /'
+  fi
+  echo ""
+  echo "## Remaining blockers"
+  if [[ ${#blockers[@]} -eq 0 ]]; then
+    echo "- none"
+  else
+    for b in "${blockers[@]}"; do
+      echo "- $b"
+    done
+  fi
+  echo ""
+  echo "## Final verdict"
+  echo "- **$final_verdict**"
+} > "$FINAL_REPORT"
+
+log "Done"
+echo "files changed:"
+echo "- $RETIRED_MCP"
+echo "- $ADAPTER_MCP"
+echo "- $ROOT_GITIGNORE"
+echo "- $ROOT_SETTINGS"
+echo "- $FINAL_REPORT"
+echo ""
+echo "remaining blockers:"
+if [[ ${#blockers[@]} -eq 0 ]]; then
+  echo "- none"
+else
+  for b in "${blockers[@]}"; do
+    echo "- $b"
+  done
+fi
+echo ""
+echo "final verdict:"
+echo "- $final_verdict"
+EOF
+chmod +x scripts/fix_canonicalization_surfaces.sh
+bash scripts/fix_canonicalization_surfaces.sh
+```
