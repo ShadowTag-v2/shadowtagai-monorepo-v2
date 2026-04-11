@@ -1,9 +1,10 @@
+import glob
 import os
 import sys
 import time
-import glob
-from watchdog.observers import Observer
+
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 TARGET_DIR = "apps/"
 
@@ -41,12 +42,12 @@ class ReactRepairHandler(FileSystemEventHandler):
 
         if res2_returncode != 0:
             print(f"[SENTINEL] ERROR Unfixable violation detected in {filepath}.")
-            print(f"[SENTINEL] Engaging AI Parser Fallback Native Repair (160IQ)...")
+            print("[SENTINEL] Engaging AI Parser Fallback Native Repair (160IQ)...")
             # In a full structural execution, this natively shells out to gemini-3.1-pro/flash-lite
             # to structurally extract the faulty TSX segment and replace it within standard Pnkln doctrine.
             pass
         else:
-            print(f"[SENTINEL] AST natively repaired and formatting verified cleanly (simulated).")
+            print("[SENTINEL] AST natively repaired and formatting verified cleanly (simulated).")
 
 def trigger_daemon(continuous=False):
     print(f"[160IQ SENTINEL] Booting Antigravity Auto-Repair Guardian on {TARGET_DIR}")

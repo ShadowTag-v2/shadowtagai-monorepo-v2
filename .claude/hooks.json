@@ -1,0 +1,144 @@
+{
+  "$schema": "ECC-adapted hook configuration for Antigravity/Claude Code",
+  "$source": "everything-claude-code hooks.json + claude-agent-sdk-python types.py + CC SSETransport.ts + query.ts",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/validate-bash.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/pre-file-write.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/suggest-compact.js",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/observe-instincts.sh",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/post-file-write.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/command-audit-log.sh",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/observe-instincts.sh",
+            "timeout": 3000
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/failure-tracker.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/prompt-context.py",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "manual",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/pre-compact-state.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/stop-quality-gate.sh",
+            "timeout": 120000
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/session-cost-tracker.sh",
+            "timeout": 10000
+          }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.gemini/antigravity/Monorepo-Uphillsnowball/.claude/hooks/reactive-compact-sim.py --reset",
+            "timeout": 3000
+          }
+        ]
+      }
+    ]
+  }
+}
