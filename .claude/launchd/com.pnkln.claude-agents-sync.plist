@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.pnkln.claude-agents-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>
+LOGDIR="$HOME/.claude/logs"
+mkdir -p "$LOGDIR"
+
+# Sync CLAUDE.md to AGENTS.md (project root)
+CLAUDE_SRC="$HOME/.claude/CLAUDE.md"
+AGENTS_DST="$HOME/AGENTS.md"
+
+if [ -f "$CLAUDE_SRC" ]; then
+    cp "$CLAUDE_SRC" "$AGENTS_DST" 2>/dev/null
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Synced CLAUDE.md → AGENTS.md" >> "$LOGDIR/launchd-sync.log"
+else
+    echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] WARNING: Source not found: $CLAUDE_SRC" >> "$LOGDIR/launchd-sync.log"
+fi
+        </string>
+    </array>
+    <key>WatchPaths</key>
+    <array>
+        <string>/Users/pikeymickey/.claude/CLAUDE.md</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>/Users/pikeymickey/.claude/logs/launchd-sync-stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/pikeymickey/.claude/logs/launchd-sync-stderr.log</string>
+</dict>
+</plist>

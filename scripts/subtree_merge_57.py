@@ -5,10 +5,10 @@ import argparse
 import json
 import os
 import shutil
-from pathlib import Path
 from collections.abc import Iterable
+from pathlib import Path
 
-DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/ShadowTag-v2-stack")
+DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/shadowtag-omega-v4-stack")
 DEFAULT_DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
 EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "node_modules", ".DS_Store"}
 

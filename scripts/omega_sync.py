@@ -133,13 +133,33 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         env = os.environ.copy()
         env["GIT_TERMINAL_PROMPT"] = "0"
 
+        # Attempt fetch to update remote tracking refs (non-blocking on timeout)
+        print(f"  🔄 Fetching remote state (60s timeout)...")
+        try:
+            fetch_result = subprocess.run(
+                ["git", "fetch", "origin", "--depth=1"],
+                capture_output=True,
+                text=True,
+                env=env,
+                timeout=60,
+            )
+            if fetch_result.returncode == 0:
+                print(f"  🔄 Fetch complete ✅")
+            else:
+                print(f"  ⚠️  Fetch warning (continuing): {fetch_result.stderr[:200]}")
+        except subprocess.TimeoutExpired:
+            print(f"  ⚠️  Fetch timed out (large repo) — skipping, will force push")
+
+        git_base = [
+            "git",
+            "-c", "credential.helper=",
+            "-c", f"http.https://github.com/.extraheader=Authorization: Basic {__import__('base64').b64encode(f'x-access-token:{token}'.encode()).decode()}",
+        ]
+
+        # Try --force-with-lease first (safest)
+        print(f"  📤 Pushing with --force-with-lease...")
         result = subprocess.run(
-            [
-                "git",
-                "-c", "credential.helper=",
-                "-c", f"http.https://github.com/.extraheader=Authorization: Basic {__import__('base64').b64encode(f'x-access-token:{token}'.encode()).decode()}",
-                "push", "origin", branch,
-            ],
+            git_base + ["push", "--force-with-lease", "origin", branch],
             capture_output=True,
             text=True,
             env=env,
@@ -147,6 +167,20 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
 
         if result.returncode == 0:
             print(f"  ✅ Push successful: {org}/{repo} @ {branch}")
+        elif "stale info" in result.stderr or "rejected" in result.stderr:
+            # Fallback to plain --force if lease is stale
+            print(f"  ⚠️  Lease stale, retrying with --force...")
+            result = subprocess.run(
+                git_base + ["push", "--force", "origin", branch],
+                capture_output=True,
+                text=True,
+                env=env,
+            )
+            if result.returncode == 0:
+                print(f"  ✅ Push successful (forced): {org}/{repo} @ {branch}")
+            else:
+                print(f"  ❌ Push failed: {result.stderr}")
+                sys.exit(1)
         else:
             print(f"  ❌ Push failed: {result.stderr}")
             sys.exit(1)
