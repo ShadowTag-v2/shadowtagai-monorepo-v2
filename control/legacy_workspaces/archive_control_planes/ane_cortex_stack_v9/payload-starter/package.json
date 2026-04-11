@@ -1,7 +1,0 @@
-{
-  "name": "ane-payload-starter",
-  "private": true,
-  "scripts": {
-    "dev": "node -e \"console.log('Payload starter placeholder'); setInterval(()=>{}, 100000)\""
-  }
-}

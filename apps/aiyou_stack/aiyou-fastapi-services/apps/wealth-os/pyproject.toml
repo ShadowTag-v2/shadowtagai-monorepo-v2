@@ -1,9 +1,0 @@
-[project]
-name = "wealth-os"
-version = "0.1.0"
-description = "Wealth OS"
-dependencies = []
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"

@@ -1,9 +1,0 @@
-[project]
-name = "composer-dags"
-version = "0.1.0"
-description = "Composer DAGs"
-dependencies = []
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"

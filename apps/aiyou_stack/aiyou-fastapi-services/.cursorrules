@@ -1,7 +1,0 @@
-# .cursorrules
-
-# 🛸 Antigravity Redirect
-# This file redirects the IDE to the official Antigravity Rules Engine.
-
-include: .antigravity/rules.md
-include: .context/system_prompt.md

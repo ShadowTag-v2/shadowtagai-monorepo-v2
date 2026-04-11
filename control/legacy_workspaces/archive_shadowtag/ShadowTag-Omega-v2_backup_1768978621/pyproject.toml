@@ -1,6 +1,0 @@
-[project]
-name = "shadowtag-omega-v2"
-version = "2.0.0"
-dependencies = ["fastapi", "uvicorn", "google-genai", "landingai-ade", "google-api-python-client"]
-[tool.uv.workspace]
-members = ["apps/*", "libs/*"]

@@ -1,6 +1,0 @@
-[submodule "tools/dev-environment/antigravity-proxy"]
-	path = tools/dev-environment/antigravity-proxy
-	url = https://github.com/elad12390/antigravity-proxy.git
-[submodule "tools/dev-environment/claude-code-config"]
-	path = tools/dev-environment/claude-code-config
-	url = https://github.com/elad12390/code-assistant-configuration-interface.git
