@@ -1,3 +1,0 @@
-{"id": "init-001", "type": "epic", "title": "Establish shadowtag-omega-v2 Sovereignty", "status": "closed", "notes": "Infrastructure locked in us-central1. Cloud Run server recovered from ModuleNotFoundError."}
-{"id": "mem-001", "type": "task", "title": "Integrate Miras Framework", "status": "in_progress", "blocks": ["act-001"], "description": "Implement Huber Attentional Bias for outlier-robust real-time learning."}
-{"id": "act-001", "type": "feature", "title": "Chrome DevTools Actuation", "status": "ready", "description": "Enable Agent to touch the Researcher Profile frontend via MCP server."}

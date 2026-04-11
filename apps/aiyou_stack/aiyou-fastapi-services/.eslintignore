@@ -1,5 +1,0 @@
-node_modules
-dist
-build
-src/demo.ts
-jest.config.js

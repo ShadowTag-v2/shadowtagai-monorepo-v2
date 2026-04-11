@@ -1,9 +1,0 @@
-[project]
-name = "seatjudge-bff"
-version = "0.1.0"
-description = "SeatJudge BFF"
-dependencies = []
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"

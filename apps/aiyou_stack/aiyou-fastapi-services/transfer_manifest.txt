@@ -1,6 +1,0 @@
-Manifest:
-- apps/n-autoresearch/Kosmos/BioAgents-server/src/main.py
-- bin/n-autoresearch/Kosmos/BioAgents-server
-- src/governance/judge_six
-- src/intelligence/tegu_vision
-- scripts/verify_smart_actions.py

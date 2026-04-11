@@ -1,1 +1,0 @@
-Agent-in-the-loop TDD: write tests first; loop “run tests → propose patch → diff review → iterate” with strict limits; staging smoke; 2-approver merge.

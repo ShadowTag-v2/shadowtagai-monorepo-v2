@@ -1,3 +1,0 @@
-# Create shadowtagai system user
-# Format: u NAME UID:GID GECOS HOME SHELL
-u shadowtagai - "SHADOWTAGAI Service" /opt/shadowtagai /usr/bin/nologin

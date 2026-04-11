@@ -1,8 +1,0 @@
-purpose: pnklnJR
-reason: Doctrine
-brakes:
-  - framework: Army Risk Management
-  - refs: [ATP 5-19, AR 385-10, DD 2977]
-strict_mode: true
-objections_required: true
-

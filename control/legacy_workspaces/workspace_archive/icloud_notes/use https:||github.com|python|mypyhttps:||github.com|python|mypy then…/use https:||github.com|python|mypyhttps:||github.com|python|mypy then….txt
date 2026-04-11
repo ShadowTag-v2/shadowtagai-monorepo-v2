@@ -1,7 +1,0 @@
-use https://github.com/python/mypyhttps://github.com/python/mypy then what is in the "cor" text files we did not have previously https://drive.google.com/drive/folders/1AKd808FcEft8MploLPLhEtuE_TQPy6PM?usp=drive_link
-
-https://github.com/DavidAnson/markdownlint.git
-
-Clone in https://github.com/DavidAnson/vscode-markdownlint.git
-
-"Ingest all memos into the Cognitive Stack" or "Run a ShadowTag simulation")
