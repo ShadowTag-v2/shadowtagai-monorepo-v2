@@ -1,7 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/bin/n-autoresearch/Kosmos/BioAgents-server", line 42, in <module>
-    from src.n-autoresearch/Kosmos/BioAgents.agents.autoresearch import n-autoresearch/Kosmos/BioAgents, LLMProvider, AgentTier
-  File "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/src/n-autoresearch/Kosmos/BioAgents/agents/autoresearch.py", line 1513
-    ||||||| empty tree
-    ^
-SyntaxError: invalid syntax

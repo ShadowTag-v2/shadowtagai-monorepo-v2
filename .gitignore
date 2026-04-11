@@ -38,3 +38,24 @@ archive/labs_graveyard/
 apps/aiyou_stack/aiyou-fastapi-services/external_repos/
 third_party/
 tools/devtools-frontend/
+
+# Phase 2 size reduction — block re-ingestion of patterns deleted in bulk sweep
+# Rust build artifacts (were 669 MB, 5,402 files on main before deletion)
+**/target/debug/**
+**/target/release/**
+# Distribution archives — never belong in a source tree
+*.tar.gz
+*.tgz
+*.tar
+*.zip
+*.7z
+# Protobuf binary blobs (conversation backups etc.)
+*.pb
+# Directories deleted in Phase 2 bulk sweep — prevent re-materialization
+control/legacy_workspaces/
+docs/harvested_from_deleted_user/
+docs/harvested_from_deleted_user_2/
+apps/GeminiWatermarkTool/artworks/
+archive/claude-code-src-leak/
+.agent/incoming_repos/
+apps/aiyou_stack/aiyou-fastapi-services/

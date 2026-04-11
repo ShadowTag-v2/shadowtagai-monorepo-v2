@@ -1,1 +1,0 @@
-"""Pnkln FastAPI service"""

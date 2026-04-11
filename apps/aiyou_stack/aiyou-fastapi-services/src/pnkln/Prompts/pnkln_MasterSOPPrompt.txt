@@ -1,1 +1,0 @@
-Enforce pnkln SOPs: staged-first minimal-diff; coverage>=98; two-green CI; static-analysis gates; protected paths; observability logs; Vertex-only prompts; run all-hands: digest->streamline->optimize->roll-up; apply pnkln doctrine brakes at all times.

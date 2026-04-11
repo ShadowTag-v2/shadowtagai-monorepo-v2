@@ -1,1 +1,0 @@
-# PKGBUILD test suite

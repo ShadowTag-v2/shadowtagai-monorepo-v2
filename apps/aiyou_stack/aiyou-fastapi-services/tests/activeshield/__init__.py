@@ -1,3 +1,0 @@
-"""
-ActiveShield Medical Test Package
-"""

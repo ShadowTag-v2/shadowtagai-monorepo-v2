@@ -1,6 +1,0 @@
--r requirements.txt
-
-# Vertex AI Studio
-google-cloud-aiplatform>=1.43.0
-jupyter>=1.0.0
-ipykernel>=6.29.0
