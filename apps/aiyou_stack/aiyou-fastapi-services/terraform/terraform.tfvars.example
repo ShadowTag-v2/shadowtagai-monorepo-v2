@@ -1,7 +1,0 @@
-# Example Terraform variables
-# Copy to terraform.tfvars and customize
-
-project_id   = "pnkln-core-stack"
-region       = "us-central1"
-cluster_name = "pnkln-inference-prod"
-environment  = "prod"

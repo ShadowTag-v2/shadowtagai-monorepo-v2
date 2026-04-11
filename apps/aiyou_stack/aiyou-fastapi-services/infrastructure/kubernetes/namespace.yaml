@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: judge-6
-  labels:
-    name: judge-6
-    application: pnkln-core-stack
-    environment: production

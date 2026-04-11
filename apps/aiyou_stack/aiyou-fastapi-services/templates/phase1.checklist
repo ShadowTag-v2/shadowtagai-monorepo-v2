@@ -1,9 +1,0 @@
-# Phase 1: Infrastructure Setup
-☐ Request GPU quota (22× A100)
-☐ Create GKE cluster with Autopilot
-☐ Configure Istio service mesh
-☐ Deploy monitoring stack (Prometheus/Grafana)
-☐ Verify p99 baseline < 10ms
-☐ Setup Workload Identity for Vertex AI
-☐ Configure artifact registry
-☐ Enable required APIs (container.googleapis.com, compute.googleapis.com)

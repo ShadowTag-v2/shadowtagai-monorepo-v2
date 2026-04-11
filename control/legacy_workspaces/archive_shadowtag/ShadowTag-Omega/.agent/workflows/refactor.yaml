@@ -1,3 +1,0 @@
-name: Refactor
-description: Optimize code
-prompt: Identify O(n^2) complexity and simplify.

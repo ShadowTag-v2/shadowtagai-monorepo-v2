@@ -1,2 +1,0 @@
-fn(axum::Json<CompletionRequest>) -> impl Future<Output = axum::Json<CompletionResponse>> {handle_inference}
-fn(axum::Json<CompletionRequest>) -> impl Future<Output = axum::Json<CompletionResponse>> {handle_inference}: Handler<_, _>

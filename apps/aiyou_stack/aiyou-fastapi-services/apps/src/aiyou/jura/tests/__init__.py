@@ -1,1 +1,0 @@
-"""JURA Protocol tests."""

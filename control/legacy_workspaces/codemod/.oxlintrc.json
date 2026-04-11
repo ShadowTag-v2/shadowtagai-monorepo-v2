@@ -1,3 +1,0 @@
-{
-  "ignorePatterns": ["**/fixtures/**", "generated/**", "packages/jssg-types/src/llrt/**"]
-}

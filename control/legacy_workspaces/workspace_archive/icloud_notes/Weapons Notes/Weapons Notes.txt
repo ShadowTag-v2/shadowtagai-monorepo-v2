@@ -1,2 +1,0 @@
-Weapons Notes
-Include a thermal camouflage “skin” to temperature match gun platform to immediately surrounding terrain. 

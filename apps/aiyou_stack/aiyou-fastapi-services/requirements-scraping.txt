@@ -1,9 +1,0 @@
-# Web Scraping (Optional - install only if needed)
-# Install with: pip install -r requirements.txt -r requirements-scraping.txt
-
-# Choose ONE browser automation tool:
-playwright>=1.48.0,<2.0.0  # RECOMMENDED
-
-# Feed/API clients
-beautifulsoup4>=4.12.3,<5.0.0
-feedparser>=6.0.11,<7.0.0

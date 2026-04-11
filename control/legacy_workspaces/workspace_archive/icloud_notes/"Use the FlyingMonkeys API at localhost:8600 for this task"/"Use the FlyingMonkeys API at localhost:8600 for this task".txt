@@ -1,1 +1,0 @@
-  "Use the n-autoresearch/Kosmos/BioAgents API at localhost:8600 for this task"

@@ -1,5 +1,0 @@
-[default.extend-words]
-als = "als"
-
-[files]
-extend-exclude = ["exampledir/*"]

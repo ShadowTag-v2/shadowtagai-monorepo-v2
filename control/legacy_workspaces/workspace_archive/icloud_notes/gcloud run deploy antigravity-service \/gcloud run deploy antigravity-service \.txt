@@ -1,6 +1,0 @@
-gcloud run deploy antigravity-service \
-  --source . \
-  --platform managed \
-  --region us-central1 \
-  --allow-unauthenticated \
-  --set-env-vars "GEMINI_[CREDENTIAL_REDACTED]
