@@ -74,8 +74,9 @@ def push_chunk(up_to_sha: str, branch: str, target: str = "shadowtag") -> bool:
     # We'll import it directly
     sys.path.insert(0, script_dir)
     try:
-        import omega_sync
         import base64
+
+        import omega_sync
 
         target_config = omega_sync.TARGETS[target]
         jwt_token = omega_sync.generate_jwt(
@@ -132,7 +133,7 @@ def main():
             text=True,
         ).strip()
 
-    print(f"═══ CHUNKED PUSH DAEMON ═══")
+    print("═══ CHUNKED PUSH DAEMON ═══")
     print(f"  Branch: {args.branch}")
     print(f"  Batch size: {args.batch_size} commits")
     print(f"  Target: {args.target}")

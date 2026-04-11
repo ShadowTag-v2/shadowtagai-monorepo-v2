@@ -1,0 +1,172 @@
+{
+  "version": "2.0.0",
+  "source": "harikrishna8121999/antigravity-workflows + guanyang/antigravity-skills + repowise-dev/claude-code-prompts + everything-claude-code + oh-my-claudecode + monorepo adaptations",
+  "workflows": {
+    "debug-error": {
+      "category": "debugging",
+      "description": "Analyze error messages and stack traces to suggest fixes",
+      "path": ".agent/workflows/debug-error.md",
+      "related_skills": ["systematic-debugging"],
+      "tags": ["error", "debug", "stack-trace", "fix"]
+    },
+    "security-audit": {
+      "category": "security",
+      "description": "Scan code for vulnerabilities, secrets, and security issues",
+      "path": ".agent/workflows/security-audit.md",
+      "related_skills": ["firebase-security-architect"],
+      "tags": ["security", "audit", "secrets", "vulnerabilities", "owasp"]
+    },
+    "unit-test": {
+      "category": "testing",
+      "description": "Generate comprehensive unit tests with detected testing framework",
+      "path": ".agent/workflows/unit-test.md",
+      "related_skills": ["tdd-workflow", "verification-before-completion"],
+      "tags": ["testing", "unit", "jest", "vitest", "pytest", "coverage"]
+    },
+    "rag-pipeline": {
+      "category": "ai-tools",
+      "description": "Build retrieval-augmented generation pipelines",
+      "path": ".agent/workflows/rag-pipeline.md",
+      "related_skills": ["lancedb-rag-automator", "sovereign-dual-stack"],
+      "tags": ["rag", "vector", "embeddings", "lancedb", "retrieval"]
+    },
+    "refactor": {
+      "category": "development",
+      "description": "Improve code quality, extract functions, reduce duplication",
+      "path": ".agent/workflows/refactor.md",
+      "related_skills": ["compiler-guillotine", "code-review"],
+      "tags": ["refactor", "quality", "cleanup", "ast-grep"]
+    },
+    "git-commit": {
+      "category": "git",
+      "description": "Generate conventional commit messages from staged changes",
+      "path": ".agent/workflows/git-commit.md",
+      "related_skills": ["git-commit-formatter", "git-execution-auditor"],
+      "tags": ["git", "commit", "conventional-commits"]
+    },
+    "docker": {
+      "category": "deployment",
+      "description": "Containerize application with Docker",
+      "path": ".agent/workflows/docker.md",
+      "related_skills": ["docker-orchestrator"],
+      "tags": ["docker", "container", "deployment", "devops"]
+    },
+    "landing-page": {
+      "category": "creative",
+      "description": "Build stunning, conversion-focused landing pages for any stack",
+      "path": ".agent/workflows/landing-page.md",
+      "related_skills": ["dark-luxury-ui-orchestrator", "stitch-taste-design"],
+      "tags": ["landing-page", "ui", "design", "conversion", "responsive"]
+    },
+    "live-engine": {
+      "category": "system",
+      "description": "Set comprehensive environment variables and paths for God Mode operation",
+      "path": ".agent/workflows/live-engine.md",
+      "related_skills": ["yolo-mode-operator"],
+      "tags": ["environment", "godmode", "heartbeat"]
+    },
+    "omega-sync": {
+      "category": "git",
+      "description": "Secure push to canonical ShadowTagAI monorepo via ephemeral GitHub App JWT",
+      "path": ".agent/workflows/omega-sync.md",
+      "related_skills": ["git-execution-auditor", "secure-infra"],
+      "tags": ["sync", "push", "github-app", "jwt"]
+    },
+    "thread-canonicalize": {
+      "category": "system",
+      "description": "Enforce canonical workspace state from regenerated plan",
+      "path": ".agent/workflows/thread-canonicalize.md",
+      "related_skills": ["sovereign-monorepo-hygiene"],
+      "tags": ["canonical", "workspace", "enforcement"]
+    },
+    "thread-harden": {
+      "category": "system",
+      "description": "Add automation and enforcement to prevent architectural drift",
+      "path": ".agent/workflows/thread-harden.md",
+      "related_skills": ["sovereign-monorepo-hygiene"],
+      "tags": ["hardening", "hooks", "enforcement", "drift"]
+    },
+    "claude-framework-reference": {
+      "category": "ai-tools",
+      "description": "Claude Sonnet 4.5 operating framework reference for cross-model coordination",
+      "path": ".agent/workflows/claude-framework-reference.md",
+      "related_skills": ["managed-agents-builder", "model-delegation"],
+      "tags": ["claude", "framework", "coordination", "cross-model"]
+    },
+    "model-delegation": {
+      "category": "ai-tools",
+      "description": "Cross-model task delegation (Gemini Antigravity ↔ Claude Sonnet 4.5)",
+      "path": ".agent/workflows/model-delegation.md",
+      "related_skills": ["dispatching-parallel-agents", "multi-agent-patterns"],
+      "tags": ["delegation", "gemini", "claude", "multi-model"]
+    },
+    "merge-56-code-only-no-history": {
+      "category": "git",
+      "description": "Code-only import of ehanc69 repositories without preserving git history",
+      "path": ".agent/workflows/merge-56-code-only-no-history.md",
+      "related_skills": ["sovereign-monorepo-hygiene"],
+      "tags": ["merge", "import", "code-only"]
+    },
+    "merge-56-ehanc69-into-shadowtag-strict": {
+      "category": "git",
+      "description": "Strict execution script for folding in 56 ehanc69 repos",
+      "path": ".agent/workflows/merge-56-ehanc69-into-shadowtag-strict.md",
+      "related_skills": ["git-execution-auditor"],
+      "tags": ["merge", "ehanc69", "strict"]
+    },
+    "merge-56-four-file-proof": {
+      "category": "git",
+      "description": "Strict 4-file reporting schema for the governed-merge-56 pipeline",
+      "path": ".agent/workflows/merge-56-four-file-proof.md",
+      "related_skills": ["verification-before-completion"],
+      "tags": ["merge", "proof", "reporting"]
+    }
+  },
+  "categories": {
+    "ai-tools": {
+      "name": "AI & LLM",
+      "description": "Prompt engineering, RAG, and AI agents",
+      "emoji": "🤖"
+    },
+    "creative": {
+      "name": "Creative & UI",
+      "description": "Landing pages, dashboards, and premium UI",
+      "emoji": "🎨"
+    },
+    "debugging": {
+      "name": "Debugging & Performance",
+      "description": "Error analysis, logging, and optimization",
+      "emoji": "🐛"
+    },
+    "deployment": {
+      "name": "Deployment & Infrastructure",
+      "description": "Docker, CI/CD, and cloud deployment",
+      "emoji": "🚀"
+    },
+    "development": {
+      "name": "Development",
+      "description": "Refactoring, new features, and code quality",
+      "emoji": "🔧"
+    },
+    "git": {
+      "name": "Git & Collaboration",
+      "description": "Version control workflows for commits, PRs, and sync",
+      "emoji": "🔀"
+    },
+    "security": {
+      "name": "Security",
+      "description": "Vulnerability scanning, secrets detection, and audits",
+      "emoji": "🔒"
+    },
+    "system": {
+      "name": "System & Orchestration",
+      "description": "Environment setup, canonicalization, and hardening",
+      "emoji": "⚙️"
+    },
+    "testing": {
+      "name": "Testing & Quality",
+      "description": "Unit tests, E2E tests, and code review",
+      "emoji": "🧪"
+    }
+  }
+}
