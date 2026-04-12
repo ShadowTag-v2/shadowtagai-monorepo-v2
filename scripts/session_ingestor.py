@@ -19,6 +19,7 @@ env:
   VITE_API_URL           ShadowTag-v2 API base (default: http://localhost:8000)
   ShadowTag-v2_DRY_RUN          set to 1 for dry-run
 """
+
 from __future__ import annotations
 
 import argparse
@@ -31,7 +32,9 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-MANIFEST_PATH = REPO_ROOT / "apps" / "ShadowTag-v2_stack" / "nascent-apollo" / "Docs" / "TELEPORT_MANIFEST.json"
+MANIFEST_PATH = (
+    REPO_ROOT / "apps" / "ShadowTag-v2_stack" / "nascent-apollo" / "Docs" / "TELEPORT_MANIFEST.json"
+)
 CLAUDE_PROJECTS = Path.home() / ".claude" / "projects" / "-Users-pikeymickey"
 API_BASE = os.getenv("VITE_API_URL", "http://localhost:8000")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
@@ -42,16 +45,19 @@ DRY_RUN = os.getenv("ShadowTag-v2_DRY_RUN", "0") == "1"
 
 # ── Text utilities ─────────────────────────────────────────────────────────────
 
+
 def chunk_text(text: str) -> list[str]:
     chunks: list[str] = []
     start = 0
     n = len(text)
     while start < n:
-        chunks.append(text[start: start + CHUNK_SIZE])
+        chunks.append(text[start : start + CHUNK_SIZE])
         start += CHUNK_SIZE - CHUNK_OVERLAP
     return chunks
 
+
 # ── Session discovery ─────────────────────────────────────────────────────────
+
 
 def find_session_file(session_id: str) -> Path | None:
     """
@@ -111,7 +117,9 @@ def extract_text_from_jsonl(path: Path) -> str:
                         parts.append(f"{role}: {txt}")
     return "\n---\n".join(parts)
 
+
 # ── Gemini embedding ───────────────────────────────────────────────────────────
+
 
 def embed_gemini(text: str) -> list[float]:
     if not GEMINI_API_KEY:
@@ -120,10 +128,12 @@ def embed_gemini(text: str) -> list[float]:
         f"https://generativelanguage.googleapis.com/v1beta/models/"
         f"{EMBED_MODEL}:embedContent?key={GEMINI_API_KEY}"
     )
-    body = json.dumps({
-        "model": f"models/{EMBED_MODEL}",
-        "content": {"parts": [{"text": text}]},
-    }).encode()
+    body = json.dumps(
+        {
+            "model": f"models/{EMBED_MODEL}",
+            "content": {"parts": [{"text": text}]},
+        }
+    ).encode()
     req = urllib.request.Request(
         url, data=body, headers={"Content-Type": "application/json"}, method="POST"
     )
@@ -131,15 +141,19 @@ def embed_gemini(text: str) -> list[float]:
         data = json.loads(resp.read())
     return data["embedding"]["values"]
 
+
 # ── Insert ─────────────────────────────────────────────────────────────────────
 
+
 def insert_chunk(artifact_id: str, text: str, tags: dict[str, Any], embed: list[float]) -> bool:
-    payload = json.dumps({
-        "artifactId": artifact_id,
-        "text": text,
-        "tags": tags,
-        "embed": embed,
-    }).encode()
+    payload = json.dumps(
+        {
+            "artifactId": artifact_id,
+            "text": text,
+            "tags": tags,
+            "embed": embed,
+        }
+    ).encode()
     req = urllib.request.Request(
         f"{API_BASE}/api/v1/ShadowTag-v2/graph/insert",
         data=payload,
@@ -152,7 +166,9 @@ def insert_chunk(artifact_id: str, text: str, tags: dict[str, Any], embed: list[
     except urllib.error.URLError:
         return False
 
+
 # ── Core ingest ────────────────────────────────────────────────────────────────
+
 
 def ingest_session(session_id: str, group: str) -> dict[str, Any]:
     session_path = find_session_file(session_id)
@@ -203,14 +219,19 @@ def ingest_session(session_id: str, group: str) -> dict[str, Any]:
         "timestamp": int(time.time()),
     }
 
+
 # ── Main ───────────────────────────────────────────────────────────────────────
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="ShadowTag-v2 Session Ingestor")
     parser.add_argument("--group", help="Only ingest sessions from this group")
     parser.add_argument("--all", action="store_true", help="Ingest all groups (priority order)")
-    parser.add_argument("--local-only", action="store_true",
-                        help="Ingest all local UUID JSONL files (bypasses manifest session IDs)")
+    parser.add_argument(
+        "--local-only",
+        action="store_true",
+        help="Ingest all local UUID JSONL files (bypasses manifest session IDs)",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Print what would be ingested")
     args = parser.parse_args()
 
@@ -232,7 +253,7 @@ def main() -> None:
             print(f"[ingestor] {sid} → {len(chunks)} chunks ({len(text)} chars)")
             if DRY_RUN:
                 for i, c in enumerate(chunks):
-                    print(f"  [dry-run] chunk {i+1}/{len(chunks)} ({len(c)} chars)")
+                    print(f"  [dry-run] chunk {i + 1}/{len(chunks)} ({len(c)} chars)")
                 continue
             ingested = 0
             for i, chunk in enumerate(chunks):
@@ -249,14 +270,14 @@ def main() -> None:
                 try:
                     embed = embed_gemini(chunk)
                 except Exception as exc:
-                    print(f"[ingestor] embed failed chunk {i+1}: {exc}")
+                    print(f"[ingestor] embed failed chunk {i + 1}: {exc}")
                     continue
                 ok = insert_chunk(artifact_id, chunk, tags, embed)
                 if ok:
                     ingested += 1
-                    print(f"[ingestor] {sid} chunk {i+1}/{len(chunks)} → OK")
+                    print(f"[ingestor] {sid} chunk {i + 1}/{len(chunks)} → OK")
                 else:
-                    print(f"[ingestor] {sid} chunk {i+1}/{len(chunks)} → FAIL")
+                    print(f"[ingestor] {sid} chunk {i + 1}/{len(chunks)} → FAIL")
             print(f"[ingestor] {sid} → {ingested}/{len(chunks)} chunks ingested")
         return
 
@@ -271,7 +292,9 @@ def main() -> None:
     ingest_status: dict[str, Any] = manifest.get("ingest_status", {})
 
     print("[ingestor] NOTE: manifest session IDs (session_01XXXX) are Anthropic cloud IDs.")
-    print("[ingestor] Local ~/.claude/projects/ uses UUID format. Use --local-only for local sessions.")
+    print(
+        "[ingestor] Local ~/.claude/projects/ uses UUID format. Use --local-only for local sessions."
+    )
 
     # Sort groups by priority
     sorted_groups = sorted(groups.items(), key=lambda x: x[1].get("priority", 99))
@@ -280,7 +303,9 @@ def main() -> None:
         if args.group and group_name != args.group:
             continue
         sessions = group_data.get("sessions", [])
-        print(f"\n[ingestor] group={group_name} priority={group_data.get('priority')} sessions={len(sessions)}")
+        print(
+            f"\n[ingestor] group={group_name} priority={group_data.get('priority')} sessions={len(sessions)}"
+        )
 
         for sid in sessions:
             # Skip already ingested
@@ -301,7 +326,9 @@ def main() -> None:
     total_not_found = sum(1 for v in ingest_status.values() if v.get("status") == "not_found")
     print(f"\n[ingestor] done. ingested={total_ingested} not_found={total_not_found}")
     if total_not_found > 0:
-        print(f"[ingestor] {total_not_found} not_found = cloud IDs with no local JSONL. Run --local-only instead.")
+        print(
+            f"[ingestor] {total_not_found} not_found = cloud IDs with no local JSONL. Run --local-only instead."
+        )
 
 
 if __name__ == "__main__":

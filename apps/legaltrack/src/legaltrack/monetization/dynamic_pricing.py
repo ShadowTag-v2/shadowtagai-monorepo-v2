@@ -13,7 +13,9 @@ class DynamicPricingEngine:
         self.base_rate_usd = base_rate_usd
         self.cost_per_filing = 15.0  # High value enterprise routing fee
 
-    def calculate_monthly_invoice(self, firm_id: str, filings_processed: int, api_calls_made: int) -> float:
+    def calculate_monthly_invoice(
+        self, firm_id: str, filings_processed: int, api_calls_made: int
+    ) -> float:
         """
         Determines the true value provided and prices accordingly to capture consumer surplus.
         """

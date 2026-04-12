@@ -22,7 +22,9 @@ class DriveIngestionDaemon:
 
         while True:
             print("[DAEMON] Bypassing Google Workspace CLI check to process local payload.")
-            print("[DAEMON] Detected accessible drive assets via CLI. Initiating downstream extraction.")
+            print(
+                "[DAEMON] Detected accessible drive assets via CLI. Initiating downstream extraction."
+            )
             run_res = subprocess.run(["python3", extractor], check=False)
             if run_res.returncode == 0:
                 print("[DAEMON] Extraction loop finished. Awaiting drift intervals.")

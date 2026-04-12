@@ -1,0 +1,67 @@
+# PNKLN Core Stack™ - Namespace Architecture
+# AI Operating Posture Framework Implementation
+# 4-tier namespace structure for workload isolation
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ShadowTag-v2jr-governance
+  labels:
+    tier: governance
+    compliance: "strict"
+    pnkln.io/component: "judge"
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    description: "Judge #6 hybrid enforcement system namespace"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: autogen-orchestration
+  labels:
+    tier: orchestration
+    pnkln.io/component: "multi-agent"
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    description: "Multi-agent orchestration namespace"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cognitive-stack-v5
+  labels:
+    tier: inference
+    pnkln.io/component: "llm-routing"
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: baseline
+  annotations:
+    description: "LLM routing and cognitive services namespace"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shadowtag-v2
+  labels:
+    tier: security
+    pnkln.io/component: "watermarking"
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    description: "Content watermarking and provenance namespace"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    tier: infrastructure
+    pnkln.io/component: "observability"
+    pod-security.kubernetes.io/enforce: baseline
+  annotations:
+    description: "Monitoring, logging, and observability namespace"

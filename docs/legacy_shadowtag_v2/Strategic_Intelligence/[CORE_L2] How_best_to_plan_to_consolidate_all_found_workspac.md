@@ -237,7 +237,7 @@ gemini
 
 # gemini-cli settings
 
-.gemini/***REMOVED_GOOGLE_API_KEY***
+.gemini/AIzaSyDi-JrXjIdZhw9QyDffwuwe_Kun87aRBBA
 
 # GitHub App credentials
 

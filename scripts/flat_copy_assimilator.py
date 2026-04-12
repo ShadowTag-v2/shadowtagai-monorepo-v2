@@ -19,7 +19,9 @@ TARGET_ORG = "ShadowTag-v2"
 TARGET_REPO = "Monorepo-Uphillsnowball"
 
 TEMP_DIR = Path("/tmp/ShadowTag-v2_temp")
-DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
+DST_ROOT = Path(
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack"
+)
 EXCLUDE_DIRS = {
     ".git",
     "__pycache__",
@@ -41,7 +43,11 @@ EXCLUDE_DIRS = {
 
 def run_cmd(cmd, cwd=None):
     res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
-    if res.returncode != 0 and "Deleted branch" not in res.stderr and "No such remote" not in res.stderr:
+    if (
+        res.returncode != 0
+        and "Deleted branch" not in res.stderr
+        and "No such remote" not in res.stderr
+    ):
         print(f"Error ({res.returncode}): {res.stderr}", flush=True)
     return res
 
@@ -56,11 +62,20 @@ def get_installation_token(app_id, pem_path, target_account):
     resp = requests.get("https://api.github.com/app/installations", headers=headers)
     resp.raise_for_status()
     installations = resp.json()
-    inst_id = next((inst["id"] for inst in installations if inst["account"]["login"].lower() == target_account.lower()), None)
+    inst_id = next(
+        (
+            inst["id"]
+            for inst in installations
+            if inst["account"]["login"].lower() == target_account.lower()
+        ),
+        None,
+    )
     if not inst_id:
         print(f"Could not find installation for {target_account} using App {app_id}")
         sys.exit(1)
-    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+    resp = requests.post(
+        f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
+    )
     resp.raise_for_status()
     return resp.json()["token"]
 
@@ -146,10 +161,15 @@ def main():
 
     monorepo_root = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball")
     run_cmd("git add -A", cwd=monorepo_root)
-    run_cmd('git commit -m "chore(assimilation): check point before rigorous flat copy loop" || true', cwd=monorepo_root)
+    run_cmd(
+        'git commit -m "chore(assimilation): check point before rigorous flat copy loop" || true',
+        cwd=monorepo_root,
+    )
 
     # Configure the push remote explicitly via App 2 token
-    target_remote_url = f"https://x-access-token:{target_token}@github.com/{TARGET_ORG}/{TARGET_REPO}.git"
+    target_remote_url = (
+        f"https://x-access-token:{target_token}@github.com/{TARGET_ORG}/{TARGET_REPO}.git"
+    )
     run_cmd("git remote remove origin || true", cwd=monorepo_root)
     run_cmd(f"git remote add origin {target_remote_url}", cwd=monorepo_root)
 
@@ -159,7 +179,9 @@ def main():
 
     initial_push = run_cmd("git push -u origin main", cwd=monorepo_root)
     if initial_push.returncode != 0:
-        print(f"Initial push failed. Waiting to let Git pack-objects settle. Status: {initial_push.stderr}")
+        print(
+            f"Initial push failed. Waiting to let Git pack-objects settle. Status: {initial_push.stderr}"
+        )
     else:
         print("Initial base state pushed successfully.")
 
@@ -202,14 +224,19 @@ def main():
                 stderr=subprocess.DEVNULL,
             )
 
-            print(f"   [COPY] Flat copying {repo_name} to monorepo (ignoring Git/Bloat)...", flush=True)
+            print(
+                f"   [COPY] Flat copying {repo_name} to monorepo (ignoring Git/Bloat)...",
+                flush=True,
+            )
             copy_tree(clone_path, target_path)
 
             append_to_manifest(repo_name, manifest_path)
 
             print("   [SYNC] Committing and uploading chunk...", flush=True)
             run_cmd("git add -A", cwd=monorepo_root)
-            run_cmd(f'git commit -m "chore(assimilation): flat copy {repo_name}"', cwd=monorepo_root)
+            run_cmd(
+                f'git commit -m "chore(assimilation): flat copy {repo_name}"', cwd=monorepo_root
+            )
             push_res = run_cmd("git push origin main", cwd=monorepo_root)
 
             if push_res.returncode == 0:

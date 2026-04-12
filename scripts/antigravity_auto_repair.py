@@ -8,6 +8,7 @@ from watchdog.observers import Observer
 
 TARGET_DIR = "apps/"
 
+
 class ReactRepairHandler(FileSystemEventHandler):
     def __init__(self):
         super().__init__()
@@ -16,7 +17,18 @@ class ReactRepairHandler(FileSystemEventHandler):
 
     def on_modified(self, event):
         # Drop recursive FSEvents cache bombs before they burn the OS file descriptors
-        ignore_dirs = ["node_modules", ".next", "dist", "build", ".venv", ".gemini", "legacy_workspaces", "data", "media-edge", ".git"]
+        ignore_dirs = [
+            "node_modules",
+            ".next",
+            "dist",
+            "build",
+            ".venv",
+            ".gemini",
+            "legacy_workspaces",
+            "data",
+            "media-edge",
+            ".git",
+        ]
         if event.is_directory or any(bad_dir in event.src_path for bad_dir in ignore_dirs):
             return
 
@@ -49,6 +61,7 @@ class ReactRepairHandler(FileSystemEventHandler):
         else:
             print("[SENTINEL] AST natively repaired and formatting verified cleanly (simulated).")
 
+
 def trigger_daemon(continuous=False):
     print(f"[160IQ SENTINEL] Booting Antigravity Auto-Repair Guardian on {TARGET_DIR}")
 
@@ -63,7 +76,9 @@ def trigger_daemon(continuous=False):
 
     try:
         if continuous:
-            print("[SENTINEL] Continuous monitoring enabled. AST is physically locked to Sovereign Doctrine.")
+            print(
+                "[SENTINEL] Continuous monitoring enabled. AST is physically locked to Sovereign Doctrine."
+            )
             while True:
                 time.time()
                 time.sleep(1)
@@ -77,6 +92,7 @@ def trigger_daemon(continuous=False):
         observer.stop()
         print("[SENTINEL] Guardian daemon terminated.")
     observer.join()
+
 
 if __name__ == "__main__":
     is_continuous = "--continuous" in sys.argv

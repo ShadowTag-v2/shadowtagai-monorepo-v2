@@ -35,13 +35,18 @@ def get_repos_with_client_id(client_id, pem_path, owner_name):
     if not target_installation_id:
         if installations:
             target_installation_id = installations[0]["id"]
-            print(f"Using installation {target_installation_id} for {installations[0]['account']['login']}")
+            print(
+                f"Using installation {target_installation_id} for {installations[0]['account']['login']}"
+            )
         else:
             print(f"Could not find installation for {owner_name} and no other installations found.")
             return []
 
     # Get installation access token
-    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers)
+    resp = requests.post(
+        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
+        headers=headers,
+    )
     if resp.status_code != 201:
         print(f"Failed to get access token for {client_id}: {resp.status_code} {resp.text}")
         return []
@@ -50,12 +55,18 @@ def get_repos_with_client_id(client_id, pem_path, owner_name):
     access_token = token_data["token"]
 
     # Get repositories
-    auth_headers = {"Authorization": f"Token {access_token}", "Accept": "application/vnd.github.v3+json"}
+    auth_headers = {
+        "Authorization": f"Token {access_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
 
     repos = []
     page = 1
     while True:
-        resp = requests.get(f"https://api.github.com/installation/repositories?per_page=100&page={page}", headers=auth_headers)
+        resp = requests.get(
+            f"https://api.github.com/installation/repositories?per_page=100&page={page}",
+            headers=auth_headers,
+        )
         resp.raise_for_status()
         data = resp.json()
         repos.extend(data["repositories"])

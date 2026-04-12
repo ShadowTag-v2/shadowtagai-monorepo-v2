@@ -1,0 +1,242 @@
+/**
+ * layout.css — Canonical shared layout classes (Invariant #92)
+ *
+ * Consolidates duplicate CSS class definitions found 4-6 times across stylesheets:
+ *   .hero (5 defs), .nav-links (6 defs), .section (4 defs),
+ *   .pricing-grid (4 defs), .expanded (6 defs), .active (5 defs)
+ *
+ * BEM Namespace: st-layout (block)
+ *
+ * Usage:
+ *   <link rel="stylesheet" href="/libs/ui/styles/layout.css">
+ *   <section class="st-hero">...</section>
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   Design Tokens (CSS Custom Properties)
+   Apps override these to brand without changing structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --st-bg: #030712;
+  --st-surface: #111827;
+  --st-surface-hover: #1f2937;
+  --st-primary: #f9fafb;
+  --st-primary-fg: #030712;
+  --st-text: #f9fafb;
+  --st-text-dim: #9ca3af;
+  --st-border: rgba(255, 255, 255, 0.1);
+  --st-border-hover: rgba(255, 255, 255, 0.2);
+  --st-glow: rgba(255, 255, 255, 0.15);
+  --st-radius: 12px;
+  --st-container: 1200px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Container
+   ═══════════════════════════════════════════════════════════ */
+
+.st-container {
+  max-width: var(--st-container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Hero Section — replaces 5 divergent .hero definitions
+   ═══════════════════════════════════════════════════════════ */
+
+.st-hero {
+  padding: 120px 0 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.st-hero__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.st-hero__subtitle {
+  font-size: 1.25rem;
+  color: var(--st-text-dim);
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+.st-hero__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .st-hero {
+    grid-template-columns: 1fr;
+    padding: 80px 0 60px;
+    text-align: center;
+  }
+  .st-hero__subtitle {
+    max-width: 100%;
+  }
+  .st-hero__actions {
+    justify-content: center;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Navigation — replaces 6 divergent .nav-links definitions
+   ═══════════════════════════════════════════════════════════ */
+
+.st-nav {
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--st-border);
+}
+
+.st-nav__logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.05em;
+  text-decoration: none;
+  color: var(--st-text);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.st-nav__links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.st-nav__link {
+  color: var(--st-text-dim);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.st-nav__link:hover,
+.st-nav__link.st-active {
+  color: var(--st-text);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Section — replaces 4 divergent .section definitions
+   ═══════════════════════════════════════════════════════════ */
+
+.st-section {
+  padding: 100px 0;
+  border-top: 1px solid var(--st-border);
+}
+
+.st-section__title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.st-section__subtitle {
+  font-size: 1.1rem;
+  color: var(--st-text-dim);
+  margin-bottom: 60px;
+  max-width: 600px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Grid / Cards — replaces .pricing-grid (4 defs)
+   ═══════════════════════════════════════════════════════════ */
+
+.st-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.st-grid--2 { grid-template-columns: repeat(2, 1fr); }
+.st-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.st-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1024px) {
+  .st-grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .st-grid--2,
+  .st-grid--3,
+  .st-grid--4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.st-card {
+  background: var(--st-surface);
+  padding: 32px;
+  border-radius: var(--st-radius);
+  border: 1px solid var(--st-border);
+  transition: border-color 0.2s;
+}
+
+.st-card:hover {
+  border-color: var(--st-border-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   State: Active / Expanded — replaces divergent .active (5),
+   .expanded (6) definitions
+   ═══════════════════════════════════════════════════════════ */
+
+.st-active {
+  color: var(--st-text) !important;
+}
+
+.st-expanded {
+  max-height: 2000px;
+  opacity: 1;
+  overflow: visible;
+}
+
+.st-collapsed {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Footer
+   ═══════════════════════════════════════════════════════════ */
+
+.st-footer {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--st-border);
+  color: var(--st-text-dim);
+  font-size: 0.9rem;
+}
+
+.st-footer__links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.st-footer__link {
+  color: var(--st-text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.st-footer__link:hover {
+  color: var(--st-text);
+}

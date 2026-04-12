@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
+import datetime
 import os
 import zipfile
-import datetime
+
 
 def deploy_kosmos_core():
     """
@@ -20,19 +21,19 @@ def deploy_kosmos_core():
     files_to_package = [
         "core/pnkln-evolve.py",
         "src/pnkln/judge_six.py",
-        "scripts/deploy_kosmos_core.py", # Include self for installation logic
+        "scripts/deploy_kosmos_core.py",  # Include self for installation logic
     ]
 
     core_dirs = [
         "doctrine",
         "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos/n-autoresearch",
         "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos/Kosmos",
-        "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos/BioAgents"
+        "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos/BioAgents",
     ]
 
     try:
         # Create Zip File
-        with zipfile.ZipFile(output_filename, 'w') as zipf:
+        with zipfile.ZipFile(output_filename, "w") as zipf:
             # Add Core Files
             for file_path in files_to_package:
                 if os.path.exists(file_path):
@@ -58,11 +59,14 @@ def deploy_kosmos_core():
         print("1. Upload this zip file to the target LLM instance.")
         print("2. Unzip the contents.")
         print("3. Ensure 'agents/' and 'doctrine/' directories are placed correctly.")
-        print("4. Run 'python3 run_operation_glow_up.py' (or integrate InvisibleSwarm into your main loop).")
+        print(
+            "4. Run 'python3 run_operation_glow_up.py' (or integrate InvisibleSwarm into your main loop)."
+        )
         print("5. Verify 'Make Cash' governance via Judge #6.")
 
     except Exception as e:
         print(f"❌ Transfer Failed: {e}")
+
 
 if __name__ == "__main__":
     deploy_kosmos_core()

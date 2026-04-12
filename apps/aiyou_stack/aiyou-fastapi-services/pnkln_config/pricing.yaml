@@ -1,0 +1,17 @@
+pricing_tiers:
+
+- tier: Free
+    description: "0-1000 requests"
+    max_requests: 1000
+    base_cost: 0
+    cost_per_request: 0
+- tier: Basic
+    description: "1001-10000"
+    max_requests: 10000
+    base_cost: 0
+    cost_per_request: 0.01
+- tier: Premium
+    description: ">10000"
+    max_requests: null
+    base_cost: 100
+    cost_per_request: 0.005

@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pnkln-file-search"
+version = "0.1.0"
+description = "Google File Search Integration for Pnkln Core Stack"
+requires-python = ">=3.10"
+dependencies = [
+    "alembic>=1.18.4",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.135.2",
+    "google-cloud-aiplatform>=1.143.0",
+    "greenlet>=3.3.2",
+    "lancedb>=0.30.1",
+    "passlib[bcrypt]>=1.7.4",
+    "psycopg2-binary>=2.9.11",
+    "pyarrow>=23.0.1",
+    "pydantic-settings>=2.13.1",
+    "pydantic[email]>=2.12.5",
+    "python-dotenv>=1.2.2",
+    "python-jose>=3.5.0",
+    "python-json-logger>=4.0.0",
+    "python-multipart>=0.0.22",
+    "uvicorn>=0.42.0",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '\.pyi?$'
+
+[tool.ruff]
+# Set the maximum line length to 100 characters (standard for modern FastAPI projects)
+line-length = 100
+
+# Assume Python 3.11+ for syntax upgrades
+target-version = "py311"
+
+# Ignore these directories (Ruff is fast, but no need to scan these)
+exclude = [
+    ".venv",
+    ".git",
+    "__pycache__",
+    "node_modules",
+    "alembic", # Ignore database migration files
+]
+
+[tool.ruff.lint]
+# -- Core Rules for AI Agents --
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes (catches unused imports/variables)
+    "I",   # isort (automatically sorts and groups imports)
+    "UP",  # pyupgrade (forces modern python syntax, like | for Union)
+    "B",   # flake8-bugbear (catches common potential bugs)
+    "SIM", # flake8-simplify (helps agents write cleaner, less convoluted code)
+]
+
+# Ignore specific rules that might be too pedantic
+ignore = [
+    "E501", # Line too long (handled by the formatter instead of the linter)
+    "B008", # Do not perform function calls in argument defaults (FastAPI uses Depends() which violates this, so we MUST ignore it)
+]
+
+# Allow autofix for all enabled rules (when `--fix` is passed in the pre-commit hook)
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+# Use single quotes for non-docstrings (or change to true if you prefer double quotes)
+quote-style = "double"
+# Indent with spaces, not tabs
+indent-style = "space"
+# Respect trailing commas
+skip-magic-trailing-comma = false
+# Automatically detect the appropriate line ending
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+# Tell pytest where to look for tests
+testpaths = ["tests"]
+# Only run files that start with test_
+python_files = ["test_*.py"]
+# Use verbose output and short tracebacks (easier for agents to read)
+addopts = "-v --tb=short"
+
+[dependency-groups]
+dev = [
+    "aiosqlite>=0.22.1",
+    "httpx>=0.28.1",
+    "opencv-python-headless>=4.13.0.92",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "soundfile>=0.13.1",
+    "web3>=7.14.1",
+]

@@ -51,6 +51,11 @@ class FourModelOrchestrator:
 
         return {
             "consensus": consensus_reached,
-            "raw_outputs": {"gemini": results[0], "gpt-4": results[1], "claude": results[2], "deepseek": results[3]},
+            "raw_outputs": {
+                "gemini": results[0],
+                "gpt-4": results[1],
+                "claude": results[2],
+                "deepseek": results[3],
+            },
             "selected_truth": results[0],  # Prefer native Gemini for downstream speed
         }

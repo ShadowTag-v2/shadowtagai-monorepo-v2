@@ -14,7 +14,6 @@ Tests all 6 gaps:
 """
 
 import asyncio
-import os
 import sys
 import time
 from pathlib import Path
@@ -39,7 +38,8 @@ async def test_full_research_cycle():
         artifacts_dir.mkdir(parents=True, exist_ok=True)
 
         workflow = ResearchWorkflow(
-            research_objective="What are recent advances in large language model efficiency?", artifacts_dir=str(artifacts_dir)
+            research_objective="What are recent advances in large language model efficiency?",
+            artifacts_dir=str(artifacts_dir),
         )
 
         start = time.time()
@@ -77,7 +77,11 @@ async def test_context_compression():
 
         # Test cycle result compression
         test_task_results = [
-            {"type": "data_analysis", "summary": "Analysis of gene expression patterns", "statistics": {"correlation": 0.85, "p_value": 0.001}},
+            {
+                "type": "data_analysis",
+                "summary": "Analysis of gene expression patterns",
+                "statistics": {"correlation": 0.85, "p_value": 0.001},
+            },
             {"type": "literature_review", "summary": "Review of relevant papers", "papers": []},
         ]
 
@@ -234,7 +238,11 @@ async def test_plan_creator():
         creator = PlanCreatorAgent(anthropic_client=None)
 
         # Test plan creation
-        context = {"research_objective": "Investigate KRAS mutations in cancer", "prior_findings": [], "cycle": 1}
+        context = {
+            "research_objective": "Investigate KRAS mutations in cancer",
+            "prior_findings": [],
+            "cycle": 1,
+        }
 
         plan = await creator.create_plan(context)
 

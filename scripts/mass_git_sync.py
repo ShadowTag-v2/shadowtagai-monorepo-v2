@@ -86,7 +86,9 @@ def extract_repo_path(remote_url: str):
 def process_git_directory(repo_path: str, token: str):
     print(f"\n--- Processing: {repo_path} ---")
     if repo_path == "/Users/pikeymickey" or repo_path == "/Users/Deleted Users/pikeymickey":
-        print("⏭️ DANGER: Target is the system user home directory. Hard-skipping to prevent massive secrets leak.")
+        print(
+            "⏭️ DANGER: Target is the system user home directory. Hard-skipping to prevent massive secrets leak."
+        )
         return
 
     if not os.path.isdir(os.path.join(repo_path, ".git")):
@@ -100,7 +102,11 @@ def process_git_directory(repo_path: str, token: str):
         # 2. Check if there are changes to commit
         status = subprocess.getoutput(f"cd '{repo_path}' && git status --porcelain")
         if status.strip():
-            subprocess.run(["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"], cwd=repo_path, check=False)
+            subprocess.run(
+                ["git", "commit", "-m", "chore(antigravity): autonomous multi-repo sync"],
+                cwd=repo_path,
+                check=False,
+            )
             print("✅ Changes committed.")
         else:
             print("✅ Working tree clean. No new commits.")

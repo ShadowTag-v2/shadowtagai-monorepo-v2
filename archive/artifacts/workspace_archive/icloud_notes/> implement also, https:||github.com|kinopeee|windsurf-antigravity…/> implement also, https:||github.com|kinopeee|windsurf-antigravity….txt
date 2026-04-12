@@ -1,5 +1,0 @@
-> implement also, https://github.com/kinopeee/windsurf-antigravity-rules.git,
-https://github.com/lbjlaq/Antigravity-Manager.git; https://github.com/liuw1535/antigravity2api-nodejs.git;
-https://github.com/study8677/antigravity-workspace-template; https://github.com/wusimpl/AntigravityQuotaWatcher;
-https://github.com/GoogleCloudPlatform/generative-ai; https://github.com/gemini-projects/gemini;
-https://github.com/zszszszsz/.config; https://github.com/gemini-projects/gemini engage the monkeys and continue

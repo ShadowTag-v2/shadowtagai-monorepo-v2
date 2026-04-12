@@ -28,12 +28,21 @@ def get_installation_token():
         raise Exception(f"Failed to fetch installations: {resp.text}")
 
     installations = resp.json()
-    inst_id = next((inst["id"] for inst in installations if inst["account"]["login"].lower() == INSTALLATION_USER.lower()), None)
+    inst_id = next(
+        (
+            inst["id"]
+            for inst in installations
+            if inst["account"]["login"].lower() == INSTALLATION_USER.lower()
+        ),
+        None,
+    )
 
     if not inst_id:
         raise Exception(f"Installation for {INSTALLATION_USER} not found.")
 
-    token_resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+    token_resp = requests.post(
+        f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
+    )
     if token_resp.status_code != 201:
         raise Exception(f"Failed to generate token: {token_resp.text}")
 
@@ -42,7 +51,9 @@ def get_installation_token():
 
 def generate_inventory(token):
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
-    res = requests.get("https://api.github.com/installation/repositories?per_page=100", headers=headers)
+    res = requests.get(
+        "https://api.github.com/installation/repositories?per_page=100", headers=headers
+    )
     if res.status_code != 200:
         raise Exception(f"Failed to fetch repositories: {res.text}")
 

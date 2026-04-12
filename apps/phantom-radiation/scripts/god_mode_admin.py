@@ -21,7 +21,9 @@ from libs.steel.sentinel import JudgeSixSentinel
 from libs.steel.vfs import ShadowVFS
 from libs.steel.write_memory import SovereignMemoryPool
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger("GodModeAdmin")
 
 
@@ -36,7 +38,10 @@ class AdminTask:
 class GodModeRuntime:
     def __init__(self):
         self.project_id = os.environ.get("GCP_PROJECT_ID", "shadowtag-omega-v4")
-        self.workspace_root = os.environ.get("GOD_MODE_WORKSPACE", "/Users/pikeymickey/.gemini/antigravity/playground/phantom-radiation")
+        self.workspace_root = os.environ.get(
+            "GOD_MODE_WORKSPACE",
+            "/Users/pikeymickey/.gemini/antigravity/playground/phantom-radiation",
+        )
         self.bucket_name = os.environ.get("GOD_MODE_BUCKET", f"{self.project_id}-godmode-artifacts")
 
         self.queue: asyncio.Queue[AdminTask] = asyncio.Queue()
@@ -146,7 +151,9 @@ class GodModeRuntime:
             for scheduled in self.schedules:
                 if now - scheduled["last_run"] >= scheduled["interval_sec"]:
                     template: AdminTask = scheduled["task"]
-                    await self.enqueue(AdminTask(task_type=template.task_type, payload=template.payload))
+                    await self.enqueue(
+                        AdminTask(task_type=template.task_type, payload=template.payload)
+                    )
                     scheduled["last_run"] = now
             await asyncio.sleep(1.0)
 
@@ -182,7 +189,9 @@ class GodModeRuntime:
                 from libs.steel.swarm import SwarmOrchestrator
 
                 self.swarm = SwarmOrchestrator()
-            result = await self.swarm.run_parallel_mission(recon_url=recon_url, executive_task=executive_task)
+            result = await self.swarm.run_parallel_mission(
+                recon_url=recon_url, executive_task=executive_task
+            )
             return json.dumps(result, default=str)[:3000]
 
         if task_type == "memory_write":
@@ -257,7 +266,9 @@ class GodModeRuntime:
                 await self.enqueue(AdminTask(task_type="rollback_shadow"))
                 continue
             if command.startswith("shell "):
-                await self.enqueue(AdminTask(task_type="shell", payload={"command": command[6:].strip()}))
+                await self.enqueue(
+                    AdminTask(task_type="shell", payload={"command": command[6:].strip()})
+                )
                 continue
             if command.startswith("write "):
                 # write <path> <content>
@@ -304,7 +315,9 @@ class GodModeRuntime:
                 continue
             if command.startswith("mems "):
                 query_text = command[len("mems ") :].strip()
-                await self.enqueue(AdminTask(task_type="memory_search", payload={"query_text": query_text}))
+                await self.enqueue(
+                    AdminTask(task_type="memory_search", payload={"query_text": query_text})
+                )
                 continue
             if command.startswith("artifact "):
                 # artifact <name> | <data>
@@ -313,12 +326,16 @@ class GodModeRuntime:
                     logger.error("Usage: artifact <name> | <data>")
                     continue
                 name, data = [s.strip() for s in body.split("|", 1)]
-                await self.enqueue(AdminTask(task_type="artifact_upload", payload={"name": name, "data": data}))
+                await self.enqueue(
+                    AdminTask(task_type="artifact_upload", payload={"name": name, "data": data})
+                )
                 continue
             if command.startswith("json "):
                 try:
                     obj = json.loads(command[len("json ") :])
-                    await self.enqueue(AdminTask(task_type=obj["type"], payload=obj.get("payload", {})))
+                    await self.enqueue(
+                        AdminTask(task_type=obj["type"], payload=obj.get("payload", {}))
+                    )
                 except Exception as exc:
                     logger.error("json parse failed: %s", exc)
                 continue

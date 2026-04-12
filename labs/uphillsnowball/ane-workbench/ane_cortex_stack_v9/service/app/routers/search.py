@@ -12,7 +12,13 @@ router = APIRouter(prefix="/api")
 def api_search(req: SearchRequest):
     s = load_settings()
     exact, semantic, memory, tasks, _, _ = collect_context(
-        s.sqlite_db, s.lancedb_root, s.postgres_dsn, req.repo_id, req.query, s.authority_state_path, req.limit
+        s.sqlite_db,
+        s.lancedb_root,
+        s.postgres_dsn,
+        req.repo_id,
+        req.query,
+        s.authority_state_path,
+        req.limit,
     )
     exact_items = [
         SearchResultItem(
@@ -37,7 +43,13 @@ def api_search(req: SearchRequest):
         for r in semantic
     ]
     memory_items = [
-        SearchResultItem(source=r.get("source", "memory"), id=r["title"], title=r["title"], score=0.5, content_preview=r["content"]).model_dump()
+        SearchResultItem(
+            source=r.get("source", "memory"),
+            id=r["title"],
+            title=r["title"],
+            score=0.5,
+            content_preview=r["content"],
+        ).model_dump()
         for r in memory
     ]
     task_items = [

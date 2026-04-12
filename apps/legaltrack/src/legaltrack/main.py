@@ -12,7 +12,11 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Core Platform initialization ($11.7B AI Architecture Mainframe)
-app = FastAPI(title="LegalTrack Zero-Trust Platform", description="The 3-Kernel Spec Zero-Touch Legal Deadline Management Pipeline", version="2.0.0")
+app = FastAPI(
+    title="LegalTrack Zero-Trust Platform",
+    description="The 3-Kernel Spec Zero-Touch Legal Deadline Management Pipeline",
+    version="2.0.0",
+)
 
 # Global State Singletons
 router_engine = UltrathinkRouter()
@@ -60,12 +64,19 @@ async def process_court_filing(payload: IngestionPayload, bg_tasks: BackgroundTa
     device_sdk = DeviceEnforcementSDK(user_id="U123", intensity_level="aggressive")
 
     # Execute prod in the background to maintain p99 < 90ms response times
-    bg_tasks.add_task(device_sdk.dispatch_prod, {"message": f"DUE {calculated_deadline} - {rule_found}"})
+    bg_tasks.add_task(
+        device_sdk.dispatch_prod, {"message": f"DUE {calculated_deadline} - {rule_found}"}
+    )
 
     # 5. Log ROI projection
     roi_calc.log_processing_event(tokens_used=4200, latency_ms=75, estimated_human_minutes=45)
 
-    return {"status": "processed", "route_taken": path, "deadline_calulcated": calculated_deadline, "rule_source": rule_found}
+    return {
+        "status": "processed",
+        "route_taken": path,
+        "deadline_calulcated": calculated_deadline,
+        "rule_source": rule_found,
+    }
 
 
 @app.get("/api/v1/telemetry/roi")

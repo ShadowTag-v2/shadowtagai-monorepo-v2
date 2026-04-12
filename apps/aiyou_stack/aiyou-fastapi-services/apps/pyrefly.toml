@@ -1,0 +1,5 @@
+disableTypeErrors = false
+extraPaths = [
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps/.venv/lib/python3.14/site-packages",
+    "/Users/pikeymickey/aiyou-stack/ShadowTag-v2/apps"
+]

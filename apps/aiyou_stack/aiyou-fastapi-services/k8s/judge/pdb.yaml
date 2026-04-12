@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge-6-pdb
+  namespace: pnkln-core
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: judge-6
+  unhealthyPodEvictionPolicy: AlwaysAllow

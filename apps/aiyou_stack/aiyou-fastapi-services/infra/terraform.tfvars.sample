@@ -1,0 +1,4 @@
+# Sample configuration - Copy to terraform.tfvars and customize
+project_id        = "my-gcp-project"
+region            = "us-central1"
+model_bucket_name = "pnkln-models-unique-12345"

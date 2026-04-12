@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/antigravity-verifier', '-f', 'shadowtag_v2/verifier_service/Dockerfile', '.' ]
+images:
+- 'gcr.io/$PROJECT_ID/antigravity-verifier'

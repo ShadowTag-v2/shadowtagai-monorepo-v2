@@ -1,0 +1,199 @@
+---
+# ============================================================================
+# EXAMPLE DEPLOYMENT - PNKLN CORE JUDGE #6 + FILE SEARCH
+# ============================================================================
+# This is an example deployment showing how to integrate File Search with
+# the Judge #6 hybrid architecture for policy enforcement
+# ============================================================================
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pnkln-orchestrator
+  namespace: pnkln-core
+  labels:
+    app: pnkln-orchestrator
+    component: file-search
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pnkln-orchestrator
+  template:
+    metadata:
+      labels:
+        app: pnkln-orchestrator
+        version: v1
+    spec:
+      # Use Workload Identity service account
+      serviceAccountName: pnkln-file-search-sa
+
+      containers:
+      - name: orchestrator
+        image: gcr.io/pnkln-core-gke/orchestrator:latest
+
+        env:
+        # GCP Configuration
+        - name: GCP_PROJECT_ID
+          value: "pnkln-core-gke"
+        - name: GCP_REGION
+          value: "us-central1"
+
+        # Vertex AI File Search Configuration
+        - name: VERTEX_AI_ENDPOINT
+          value: "https://us-central1-aiplatform.googleapis.com"
+        - name: FILE_SEARCH_ENABLED
+          value: "true"
+
+        # Judge #6 Performance Targets
+        - name: JUDGE_LATENCY_P99_MS
+          value: "90"
+        - name: FILE_SEARCH_LATENCY_P99_MS
+          value: "1000"
+        - name: TOTAL_LATENCY_ACCEPTABLE_MS
+          value: "850"
+
+        # Corpus Configuration
+        - name: CORPUS_BUCKET_PREFIX
+          value: "pnkln-policy-corpus"
+
+        # Verticals (example - adjust based on deployment)
+        - name: DEFAULT_VERTICAL
+          value: "defense"
+
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: grpc
+          containerPort: 9090
+          protocol: TCP
+
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        # Security context
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /app/cache
+
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+
+      # Pod security settings
+      securityContext:
+        fsGroup: 1000
+
+      # Affinity rules for high availability
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - pnkln-orchestrator
+              topologyKey: kubernetes.io/hostname
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pnkln-orchestrator
+  namespace: pnkln-core
+  labels:
+    app: pnkln-orchestrator
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: http
+    protocol: TCP
+    name: http
+  - port: 9090
+    targetPort: grpc
+    protocol: TCP
+    name: grpc
+  selector:
+    app: pnkln-orchestrator
+
+---
+# Horizontal Pod Autoscaler for dynamic scaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: pnkln-orchestrator-hpa
+  namespace: pnkln-core
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: pnkln-orchestrator
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30
+      - type: Pods
+        value: 2
+        periodSeconds: 30
+      selectPolicy: Max

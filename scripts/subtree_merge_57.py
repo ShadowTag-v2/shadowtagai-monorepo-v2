@@ -9,8 +9,18 @@ from collections.abc import Iterable
 from pathlib import Path
 
 DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/shadowtag-omega-v4-stack")
-DEFAULT_DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
-EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "node_modules", ".DS_Store"}
+DEFAULT_DST_ROOT = Path(
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack"
+)
+EXCLUDE_DIRS = {
+    ".git",
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    ".ruff_cache",
+    "node_modules",
+    ".DS_Store",
+}
 
 
 def iter_sources(root: Path) -> Iterable[Path]:
@@ -75,13 +85,18 @@ def main() -> int:
             if src.is_dir():
                 results.append(copy_tree(src, dst))
 
-    print(json.dumps({
-        "status": "ok",
-        "src_root": str(src_root),
-        "dst_root": str(dst_root),
-        "merged_count": len(results),
-        "results": results
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "src_root": str(src_root),
+                "dst_root": str(dst_root),
+                "merged_count": len(results),
+                "results": results,
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

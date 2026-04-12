@@ -1,0 +1,213 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion-pipeline
+  namespace: shadowtag_v4-llm-serving
+spec:
+  # Run nightly at 2:30 AM UTC
+  schedule: "30 2 * * *"
+
+  # Keep last 3 successful and 1 failed job
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+
+  # Job configuration
+  jobTemplate:
+    metadata:
+      labels:
+        app: gemini-ingestion
+        component: nightly-pipeline
+    spec:
+      # Allow 60 minutes to complete (target: 45 min)
+      activeDeadlineSeconds: 3600
+
+      # Retry once on failure
+      backoffLimit: 1
+
+      template:
+        metadata:
+          labels:
+            app: gemini-ingestion
+            component: nightly-pipeline
+        spec:
+          restartPolicy: Never
+
+          containers:
+          # Main ingestion pipeline container
+          - name: ingestion-pipeline
+            image: shadowtag_v4-llm-server:latest
+            imagePullPolicy: IfNotPresent
+
+            command:
+            - python
+            - -m
+            - src.ingestion.pipeline
+
+            env:
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: MAX_ITEMS_PER_SOURCE
+              value: "100"
+            - name: OUTPUT_PATH
+              value: "/output/daily_briefing.md"
+
+            # Optional: Google API key for Gemini integration
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-keys
+                  key: google-api-key
+                  optional: true
+
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: "1"
+              limits:
+                memory: "4Gi"
+                cpu: "2"
+
+            volumeMounts:
+            - name: output-volume
+              mountPath: /output
+            - name: cache-volume
+              mountPath: /root/.cache
+
+          volumes:
+          - name: output-volume
+            persistentVolumeClaim:
+              claimName: ingestion-output-pvc
+          - name: cache-volume
+            emptyDir: {}
+
+          # Optional: Node selector for cost optimization
+          nodeSelector:
+            workload-type: batch
+
+---
+# PVC for briefing output
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ingestion-output-pvc
+  namespace: shadowtag_v4-llm-serving
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+
+---
+# ConfigMap for ingestion configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingestion-config
+  namespace: shadowtag_v4-llm-serving
+data:
+  sources.yaml: |
+    # Data sources configuration
+    sources:
+      - name: youtube-tech
+        type: youtube
+        url: https://www.youtube.com
+        enabled: true
+        rate_limit: 30
+        priority: 1
+
+      - name: twitter-ai
+        type: twitter
+        url: https://api.twitter.com/2
+        enabled: true
+        rate_limit: 100
+        priority: 1
+
+      - name: hackernews
+        type: news
+        url: https://hacker-news.firebaseio.com/v0
+        enabled: true
+        rate_limit: 60
+        priority: 1
+
+      - name: arxiv-cs-ai
+        type: academic
+        url: https://export.arxiv.org/api/query
+        enabled: true
+        rate_limit: 10
+        priority: 1
+
+  tiers.yaml: |
+    # Tier classification criteria
+    tier1:
+      min_relevance: 0.7
+      max_age_hours: 24
+      min_credibility: 0.7
+      min_completeness: 0.8
+
+    tier2:
+      min_relevance: 0.4
+      max_age_hours: 72
+      min_credibility: 0.5
+      min_completeness: 0.5
+
+    tier3:
+      min_relevance: 0.0
+      max_age_hours: 168
+      min_credibility: 0.0
+      min_completeness: 0.0
+
+---
+# Service for accessing briefing output (optional)
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingestion-briefing-service
+  namespace: shadowtag_v4-llm-serving
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: http
+  selector:
+    app: briefing-server
+
+---
+# Optional: Deployment for serving briefings via HTTP
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: briefing-server
+  namespace: shadowtag_v4-llm-serving
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: briefing-server
+  template:
+    metadata:
+      labels:
+        app: briefing-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: briefings
+          mountPath: /usr/share/nginx/html
+          readOnly: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+      volumes:
+      - name: briefings
+        persistentVolumeClaim:
+          claimName: ingestion-output-pvc

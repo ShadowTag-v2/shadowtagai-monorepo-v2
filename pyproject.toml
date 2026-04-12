@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "SHADOWTAGAI Core Stack - Gemini Ingestion Layer for intelligence collection"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "Proprietary"}
+license = { text = "Proprietary" }
 authors = [
     {name = "SHADOWTAGAI Core Stack Team", email = "team@shadowtagai.ai"}
 ]

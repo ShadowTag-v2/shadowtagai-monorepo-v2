@@ -26,7 +26,9 @@ GitHash = NewType("GitHash", str)
 class GitHashParamType(click.ParamType):
     name = "git_hash"
 
-    def convert(self, value: Any, param: click.Parameter | None, ctx: click.Context | None) -> GitHash | None:
+    def convert(
+        self, value: Any, param: click.Parameter | None, ctx: click.Context | None
+    ) -> GitHash | None:
         if value is None:
             return None
 

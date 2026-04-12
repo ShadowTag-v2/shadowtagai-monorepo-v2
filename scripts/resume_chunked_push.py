@@ -14,7 +14,9 @@ MAX_BYTES = MAX_MB * 1024 * 1024
 
 def get_github_token():
     APP_ID = "3018200"
-    PEM_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    PEM_PATH = (
+        "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    )
     with open(PEM_PATH) as f:
         private_key = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
@@ -41,9 +43,13 @@ def sync_remote_state(token):
 
 def get_push_candidate_set():
     # Construct union of tracked modified, staged, and untracked (non-ignored)
-    out_staged = subprocess.run(["git", "diff", "--cached", "--name-only"], capture_output=True, text=True)
+    out_staged = subprocess.run(
+        ["git", "diff", "--cached", "--name-only"], capture_output=True, text=True
+    )
     out_modified = subprocess.run(["git", "diff", "--name-only"], capture_output=True, text=True)
-    out_untracked = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True)
+    out_untracked = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True
+    )
 
     files = set()
     for block in [out_staged, out_modified, out_untracked]:
@@ -81,7 +87,9 @@ def chunk_commit_push():
             if not current_files:
                 continue
 
-            print(f"Batch {BATCH}: Adding {len(current_files)} remaining files ({current_size / 1024 / 1024:.2f} MB)...")
+            print(
+                f"Batch {BATCH}: Adding {len(current_files)} remaining files ({current_size / 1024 / 1024:.2f} MB)..."
+            )
             for i in range(0, len(current_files), 1000):
                 subprocess.run(["git", "add"] + current_files[i : i + 1000], check=True)
 

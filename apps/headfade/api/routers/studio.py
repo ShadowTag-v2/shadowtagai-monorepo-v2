@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter
 from google.cloud import aiplatform, storage, texttospeech
 from pydantic import BaseModel
@@ -23,8 +22,12 @@ async def export_studio_video(payload: ForgeRequest):
         tts_client = texttospeech.TextToSpeechClient()
         audio_content = tts_client.synthesize_speech(
             input=texttospeech.SynthesisInput(text=payload.text),
-            voice=texttospeech.VoiceSelectionParams(name=payload.voice_profile, language_code="en-US"),
-            audio_config=texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.LINEAR16),
+            voice=texttospeech.VoiceSelectionParams(
+                name=payload.voice_profile, language_code="en-US"
+            ),
+            audio_config=texttospeech.AudioConfig(
+                audio_encoding=texttospeech.AudioEncoding.LINEAR16
+            ),
         ).audio_content
 
         # 2. Embed SynthID Watermark

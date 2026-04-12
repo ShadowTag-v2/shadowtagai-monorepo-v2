@@ -30,7 +30,20 @@ COLLECTION_NAME = "coryay_knowledge"
 EMBED_MODEL = "all-MiniLM-L6-v2"
 CHUNK_SIZE = 8_000  # chars — stays under MiniLM token limit
 BATCH_SIZE = 50  # vectors per ChromaDB upsert (low memory profile for M1)
-TEXT_EXTS = {".py", ".md", ".ts", ".tsx", ".js", ".jsx", ".txt", ".yaml", ".yml", ".toml", ".sql", ".sh"}
+TEXT_EXTS = {
+    ".py",
+    ".md",
+    ".ts",
+    ".tsx",
+    ".js",
+    ".jsx",
+    ".txt",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".sql",
+    ".sh",
+}
 SKIP_DIRS = {
     "node_modules",
     "__pycache__",
@@ -96,7 +109,11 @@ def get_collection(recreate: bool = False):
 
 
 def chunk_text(text: str) -> list[str]:
-    return [text[i : i + CHUNK_SIZE] for i in range(0, len(text), CHUNK_SIZE) if text[i : i + CHUNK_SIZE].strip()]
+    return [
+        text[i : i + CHUNK_SIZE]
+        for i in range(0, len(text), CHUNK_SIZE)
+        if text[i : i + CHUNK_SIZE].strip()
+    ]
 
 
 def flush_batch(
@@ -187,8 +204,12 @@ def crawl(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Re-index monorepo into local RAG engine")
     parser.add_argument("--dirs", nargs="+", default=DEFAULT_DIRS, help="Directories to crawl")
-    parser.add_argument("--dry-run", action="store_true", help="Scan only, no writes to Chroma/SQLite")
-    parser.add_argument("--recreate", action="store_true", help="Delete and recreate ChromaDB collection")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Scan only, no writes to Chroma/SQLite"
+    )
+    parser.add_argument(
+        "--recreate", action="store_true", help="Delete and recreate ChromaDB collection"
+    )
     args = parser.parse_args()
 
     print(f"[INDEX] Monorepo root : {MONOREPO_ROOT}")

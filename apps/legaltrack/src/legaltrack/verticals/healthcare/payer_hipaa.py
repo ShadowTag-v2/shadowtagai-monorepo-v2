@@ -41,7 +41,9 @@ class HealthcarePayerPipeline:
         # async with self.db_pool.acquire() as conn:
         #     await conn.execute("INSERT INTO payer_bulletins (rule) VALUES ($1)", json.dumps(extracted_rule))
 
-        logger.info("Healthcare Vertical: Payer rule physically locked into pgvector memory matrix.")
+        logger.info(
+            "Healthcare Vertical: Payer rule physically locked into pgvector memory matrix."
+        )
         return extracted_rule
 
     def enforce_hipaa_lock(self, _patient_data: dict[str, object]) -> str:

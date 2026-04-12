@@ -31,7 +31,14 @@ class GoogleCalendarController:
         return raw_key.replace("-", "").replace("_", "")
 
     async def upsert_event(
-        self, calendar_id: str, title: str, start_iso: str, end_iso: str, source_system: str, event_hash: str, location: str | None = None
+        self,
+        calendar_id: str,
+        title: str,
+        start_iso: str,
+        end_iso: str,
+        source_system: str,
+        event_hash: str,
+        location: str | None = None,
     ) -> dict[str, Any]:
         """
         Checks if the event ID exists. If yes, updates it. If no, creates it.
@@ -39,7 +46,9 @@ class GoogleCalendarController:
         event_id = self._generate_idempotency_key(source_system, event_hash)
 
         if not self.service:
-            logger.warning(f"GoogleCalendarController: No credentials provided. Mocking upsert for {title} at {start_iso}")
+            logger.warning(
+                f"GoogleCalendarController: No credentials provided. Mocking upsert for {title} at {start_iso}"
+            )
             return {"status": "success", "event_id": event_id, "idempotent": True}
 
         event_body = {
@@ -53,10 +62,16 @@ class GoogleCalendarController:
         try:
             try:
                 # Try inserting first (O(1) fast path)
-                event = self.service.events().insert(calendarId=calendar_id, body=event_body).execute()
+                event = (
+                    self.service.events().insert(calendarId=calendar_id, body=event_body).execute()
+                )
             except Exception:
                 # If it fails with 409 conflict, update instead
-                event = self.service.events().update(calendarId=calendar_id, eventId=event_id, body=event_body).execute()
+                event = (
+                    self.service.events()
+                    .update(calendarId=calendar_id, eventId=event_id, body=event_body)
+                    .execute()
+                )
 
             logger.info(f"Successfully upserted Google Calendar event: {event.get('id')}")
             return {"status": "success", "event_id": event.get("id"), "idempotent": True}

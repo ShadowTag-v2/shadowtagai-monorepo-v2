@@ -17,11 +17,17 @@ def get_token():
     with open(APP_2_KEY) as f:
         pk = f.read()
     now = int(time.time())
-    encoded_jwt = jwt.encode({"iat": now - 60, "exp": now + (10 * 60), "iss": APP_2_ID}, pk, algorithm="RS256")
+    encoded_jwt = jwt.encode(
+        {"iat": now - 60, "exp": now + (10 * 60), "iss": APP_2_ID}, pk, algorithm="RS256"
+    )
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
     resp = requests.get("https://api.github.com/app/installations", headers=headers)
-    inst_id = next(inst["id"] for inst in resp.json() if inst["account"]["login"].lower() == TARGET_ORG.lower())
-    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+    inst_id = next(
+        inst["id"] for inst in resp.json() if inst["account"]["login"].lower() == TARGET_ORG.lower()
+    )
+    resp = requests.post(
+        f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
+    )
     return resp.json()["token"]
 
 
@@ -41,4 +47,6 @@ if __name__ == "__main__":
     run_cmd("git fetch origin main")
     run_cmd("git checkout -b main")
     run_cmd("git reset --mixed origin/main")
-    print("Local git repo re-initialized and synced with origin/main perfectly! 15GB bloat eradicated.")
+    print(
+        "Local git repo re-initialized and synced with origin/main perfectly! 15GB bloat eradicated."
+    )

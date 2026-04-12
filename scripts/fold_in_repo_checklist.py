@@ -95,7 +95,9 @@ class Finding:
 
 def load_yaml(path: Path) -> Any:
     if yaml is None:
-        raise RuntimeError("pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml")
+        raise RuntimeError(
+            "pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml"
+        )
     with path.open("r", encoding="utf-8") as file:
         return yaml.safe_load(file)
 
@@ -122,7 +124,12 @@ def canonical_destinations(root_manifest: dict[str, Any]) -> set[str]:
 
 def file_text(path: Path) -> str | None:
     try:
-        if path.suffix.lower() not in TEXT_EXTS and path.name not in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
+        if path.suffix.lower() not in TEXT_EXTS and path.name not in {
+            ".env",
+            ".gitignore",
+            "BUILD",
+            "WORKSPACE",
+        }:
             return None
         return path.read_text(encoding="utf-8", errors="ignore")
     except Exception:
@@ -134,11 +141,18 @@ def iter_text_files(root: Path):
         dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
         for name in files:
             path = Path(base) / name
-            if path.suffix.lower() in TEXT_EXTS or name in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
+            if path.suffix.lower() in TEXT_EXTS or name in {
+                ".env",
+                ".gitignore",
+                "BUILD",
+                "WORKSPACE",
+            }:
                 yield path
 
 
-def search_patterns(root: Path, patterns: list[str], kind: str, severity: str, detail_prefix: str) -> list[Finding]:
+def search_patterns(
+    root: Path, patterns: list[str], kind: str, severity: str, detail_prefix: str
+) -> list[Finding]:
     findings: list[Finding] = []
     compiled = [re.compile(p) for p in patterns]
     for path in iter_text_files(root):
@@ -149,7 +163,9 @@ def search_patterns(root: Path, patterns: list[str], kind: str, severity: str, d
             match = rx.search(text)
             if match:
                 rel = str(path.relative_to(root))
-                findings.append(Finding(kind, severity, rel, f"{detail_prefix}: {match.group(0)[:160]}"))
+                findings.append(
+                    Finding(kind, severity, rel, f"{detail_prefix}: {match.group(0)[:160]}")
+                )
                 break
     return findings
 
@@ -179,7 +195,9 @@ def compare_manifests(paths: list[Path]) -> list[Finding]:
         try:
             loaded.append((path, load_yaml(path)))
         except Exception as exc:
-            findings.append(Finding("manifest_parse", "high", str(path), f"Failed to parse manifest: {exc}"))
+            findings.append(
+                Finding("manifest_parse", "high", str(path), f"Failed to parse manifest: {exc}")
+            )
             return findings
     first_path, first_doc = loaded[0]
     for path, doc in loaded[1:]:
@@ -210,7 +228,11 @@ def check_destination_conflict(dest_rel: str, manifest_paths: list[Path]) -> lis
     try:
         root_manifest = load_yaml(manifest_paths[0])
     except Exception as exc:
-        findings.append(Finding("manifest_parse", "high", str(manifest_paths[0]), f"Failed to parse manifest: {exc}"))
+        findings.append(
+            Finding(
+                "manifest_parse", "high", str(manifest_paths[0]), f"Failed to parse manifest: {exc}"
+            )
+        )
         return findings
     destinations = canonical_destinations(root_manifest)
     norm = dest_rel.strip().strip("/")
@@ -266,9 +288,29 @@ def main() -> int:
             f"Stale model reference; migrate to {CURRENT_MODEL_HINT}",
         )
     )
-    findings.extend(search_patterns(incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"))
-    findings.extend(search_patterns(incoming, STALE_NAMING_PATTERNS, "stale_naming", "medium", "Stale naming/control-plane drift"))
-    findings.extend(search_patterns(incoming, SECRET_PATTERNS, "secret_like", "critical", "Potential secret material detected"))
+    findings.extend(
+        search_patterns(
+            incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"
+        )
+    )
+    findings.extend(
+        search_patterns(
+            incoming,
+            STALE_NAMING_PATTERNS,
+            "stale_naming",
+            "medium",
+            "Stale naming/control-plane drift",
+        )
+    )
+    findings.extend(
+        search_patterns(
+            incoming,
+            SECRET_PATTERNS,
+            "secret_like",
+            "critical",
+            "Potential secret material detected",
+        )
+    )
 
     report = {
         "repo_name": args.repo_name,

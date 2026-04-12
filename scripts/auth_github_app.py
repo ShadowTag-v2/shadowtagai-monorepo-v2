@@ -31,7 +31,9 @@ TOKEN_EXPIRY_CACHE = Path("/tmp/gh_token_shadowtag_exp.txt")
 def _load_pem() -> str:
     if PEM_PATH.exists():
         return PEM_PATH.read_text()
-    fallback = Path.home() / "Downloads" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    fallback = (
+        Path.home() / "Downloads" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    )
     if fallback.exists():
         return fallback.read_text()
     sys.exit(f"ERROR: PEM not found at {PEM_PATH} or {fallback}")

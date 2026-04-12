@@ -1,0 +1,156 @@
+# Moderation Thresholds Configuration
+# ====================================
+# Confidence thresholds for detection systems
+# Used by NS (Neural System) detection layer
+#
+# Thresholds are calibrated for California AI regulations
+# Lower threshold = more sensitive (more false positives)
+# Higher threshold = less sensitive (more false negatives)
+
+version: "1.0.0"
+
+# Default Thresholds
+defaults:
+  self_harm:
+    # Self-harm detection is always highest priority
+    # Lower threshold for maximum sensitivity
+    explicit_ideation: 0.5
+    self_harm_methods: 0.6
+    distress_indicators: 0.7
+    crisis_response_trigger: 0.5
+
+  explicit_content:
+    sexual: 0.6
+    violence: 0.7
+    gore: 0.8
+    nudity: 0.5
+    harmful_instructions: 0.6
+
+  medical_impersonation:
+    direct_impersonation: 0.7
+    medical_advice: 0.6
+    prescription_language: 0.7
+
+  harassment:
+    targeted: 0.6
+    general: 0.7
+
+  spam:
+    promotional: 0.7
+    repetitive: 0.8
+
+# Age-Based Adjustments
+# Multipliers applied to default thresholds
+# < 1.0 = more sensitive, > 1.0 = less sensitive
+age_adjustments:
+  under_13:
+    self_harm: 0.8        # 20% more sensitive
+    explicit_content: 0.6  # 40% more sensitive
+    medical: 0.9
+    harassment: 0.8
+
+  teen_13_17:
+    self_harm: 0.9
+    explicit_content: 0.8  # 20% more sensitive
+    medical: 1.0
+    harassment: 0.9
+
+  adult:
+    self_harm: 1.0
+    explicit_content: 1.0
+    medical: 1.0
+    harassment: 1.0
+
+  unknown:
+    # Default to most protective (same as under_13)
+    self_harm: 0.8
+    explicit_content: 0.6
+    medical: 0.9
+    harassment: 0.8
+
+# External API Thresholds
+# Thresholds for external moderation APIs
+external_apis:
+  google_safety:
+    enabled: true
+    threshold: 0.5
+    categories:
+      violence: 0.5
+      harassment: 0.5
+      hate_speech: 0.5
+      sexually_explicit: 0.5
+      dangerous: 0.5
+
+  hive_moderation:
+    enabled: true
+    threshold: 0.5
+    categories:
+      adult: 0.5
+      violence: 0.6
+      gore: 0.7
+      nudity: 0.5
+      drugs: 0.6
+
+  gemini_classification:
+    enabled: true
+    threshold: 0.6
+    use_for_ambiguous: true
+    ambiguous_range:
+      min: 0.3
+      max: 0.7
+
+# Human Review Triggers
+human_review:
+  # Trigger human review when confidence is in ambiguous range
+  ambiguous_range:
+    min: 0.4
+    max: 0.7
+
+  # Always trigger human review for these conditions
+  always_review:
+    - "self_harm_high_confidence"
+    - "medical_impersonation_detected"
+    - "minor_explicit_content"
+
+  # Skip human review for these (auto-allow)
+  auto_allow:
+    - "low_risk_adult_content"
+    - "general_health_info"
+
+# Cost Optimization
+cost_optimization:
+  # Use caching to reduce API calls
+  cache_enabled: true
+  cache_ttl_hours: 24
+
+  # Skip external APIs if pattern matching is confident
+  skip_external_threshold: 0.9
+
+  # Batch similar requests
+  batching_enabled: true
+  batch_size: 10
+  batch_timeout_ms: 100
+
+# Monitoring & Alerting
+monitoring:
+  # Alert thresholds for operational metrics
+  alerts:
+    crisis_response_rate:
+      warning: 0.01  # 1%
+      critical: 0.05  # 5%
+
+    false_positive_rate:
+      warning: 0.10  # 10%
+      critical: 0.20  # 20%
+
+    latency_p95_ms:
+      warning: 500
+      critical: 1000
+
+  # Metrics to track
+  track_metrics:
+    - "detection_rate_by_category"
+    - "false_positive_rate"
+    - "cache_hit_rate"
+    - "api_call_count"
+    - "latency_percentiles"

@@ -12,11 +12,26 @@ from pathlib import Path
 
 # Add project root to path
 import sys
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.ShadowTag-v2.services.gemini_core import GeminiAntigravity
-from agents.jura_protocol import JuraProtocol
-from agents.bugbot import BugBot
+try:
+    import importlib
+
+    _st_mod = importlib.import_module("src.ShadowTag-v2.services.gemini_core")
+    GeminiAntigravity = _st_mod.GeminiAntigravity
+except (ImportError, ModuleNotFoundError):
+    GeminiAntigravity = None
+
+try:
+    from agents.jura_protocol import JuraProtocol
+except ImportError:
+    JuraProtocol = None
+
+try:
+    from agents.bugbot import BugBot
+except ImportError:
+    BugBot = None
 
 
 class GeminiScheduler:
@@ -47,7 +62,7 @@ class GeminiScheduler:
         log_entry = f"[{timestamp}] {message}"
         print(f"///▞ SCHEDULER :: {message}")
 
-        with open(self.log_file, 'a') as f:
+        with open(self.log_file, "a") as f:
             f.write(log_entry + "\n")
 
     def run_ingestion(self):
@@ -63,19 +78,15 @@ class GeminiScheduler:
         # Step 2: Initialize Gemini for AI tasks
         if not self._init_gemini():
             self._log("Skipping AI tasks - Gemini unavailable")
-            return {
-                "status": "partial",
-                "bugbot": bugbot_results,
-                "gemini": "unavailable"
-            }
+            return {"status": "partial", "bugbot": bugbot_results, "gemini": "unavailable"}
 
         # Step 3: AI-powered code review
         self._log("Running Jura assessment")
         try:
             # Quick assessment of recent changes
             assessment = self.jura.quick_assess(
-                "Review codebase health based on BugBot results: " +
-                json.dumps(bugbot_results, default=str)[:1000]
+                "Review codebase health based on BugBot results: "
+                + json.dumps(bugbot_results, default=str)[:1000]
             )
         except Exception as e:
             assessment = {"error": str(e)}
@@ -85,11 +96,11 @@ class GeminiScheduler:
         try:
             summary = self.gemini.generate_text(
                 f"""Summarize this code health report in 2-3 sentences:
-                BugBot Score: {bugbot_results.get('health_score', 0)}/100
-                Issues: {bugbot_results.get('total_issues', 0)}
-                Jura Assessment: {assessment.get('recommendation', 'N/A')}
+                BugBot Score: {bugbot_results.get("health_score", 0)}/100
+                Issues: {bugbot_results.get("total_issues", 0)}
+                Jura Assessment: {assessment.get("recommendation", "N/A")}
                 """,
-                json_output=False
+                json_output=False,
             )
         except Exception as e:
             summary = f"Summary generation failed: {e}"
@@ -100,14 +111,16 @@ class GeminiScheduler:
             "health_score": bugbot_results.get("health_score", 0),
             "total_issues": bugbot_results.get("total_issues", 0),
             "jura_recommendation": assessment.get("recommendation", "N/A"),
-            "summary": summary
+            "summary": summary,
         }
 
         self._log(f"Ingestion complete: {result['health_score']}/100")
 
         # Save results
-        results_file = self.log_file.parent / f"ingestion_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(results_file, 'w') as f:
+        results_file = (
+            self.log_file.parent / f"ingestion_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+        )
+        with open(results_file, "w") as f:
             json.dump(result, f, indent=2)
 
         return result
@@ -120,11 +133,7 @@ class GeminiScheduler:
         self._log(f"Jura evaluation for {candidate_id}")
         passed, reasoning = self.jura.administer_exam(candidate_id, 0, proof)
 
-        return {
-            "candidate": candidate_id,
-            "passed": passed,
-            "reasoning": reasoning
-        }
+        return {"candidate": candidate_id, "passed": passed, "reasoning": reasoning}
 
     def start_scheduler(self, interval_minutes: int = 60):
         """Start the scheduler loop."""
@@ -148,7 +157,9 @@ def main():
 
     parser = argparse.ArgumentParser(description="Gemini Scheduler")
     parser.add_argument("--run-once", action="store_true", help="Run ingestion once and exit")
-    parser.add_argument("--interval", type=int, default=60, help="Interval in minutes (default: 60)")
+    parser.add_argument(
+        "--interval", type=int, default=60, help="Interval in minutes (default: 60)"
+    )
 
     args = parser.parse_args()
 

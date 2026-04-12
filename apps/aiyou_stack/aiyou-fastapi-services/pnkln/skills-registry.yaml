@@ -1,0 +1,782 @@
+# PNKLN Skills Registry
+# Core skills library for workflow automation and AI agent orchestration
+# Version: 1.0.0
+
+skills:
+  # ============================================================================
+  # SKILL 1: Research Explorer Skill
+  # ============================================================================
+  research_explorer:
+    id: "research-explorer-v1"
+    name: "ResearchExplorerSkill"
+    description: "Deep topic exploration with assumption-challenging and multi-perspective analysis"
+    version: "1.0.0"
+
+    capabilities:
+      - "Deep domain research with academic rigor"
+      - "Assumption identification and challenging"
+      - "Multi-perspective synthesis"
+      - "Edge case discovery"
+      - "Contradictory evidence analysis"
+      - "Research gap identification"
+
+    input_schema:
+      topic:
+        type: "string"
+        required: true
+        description: "Main research topic or question"
+      depth_level:
+        type: "enum"
+        values: ["surface", "medium", "deep", "exhaustive"]
+        default: "deep"
+        description: "Research depth required"
+      perspectives:
+        type: "array"
+        items: "string"
+        default: ["technical", "business", "user", "ethical"]
+        description: "Perspectives to explore"
+      challenge_assumptions:
+        type: "boolean"
+        default: true
+        description: "Whether to actively challenge stated assumptions"
+
+    output_schema:
+      findings:
+        type: "object"
+        structure:
+          summary: "Executive summary of research"
+          key_insights: "Array of critical discoveries"
+          challenged_assumptions: "Assumptions identified and challenged"
+          evidence_base: "Supporting evidence with citations"
+          contradictions: "Conflicting information discovered"
+          research_gaps: "Areas requiring further investigation"
+          recommendations: "Actionable next steps"
+
+    prompt_template: |
+      You are a research explorer with the following mission:
+
+      TOPIC: {topic}
+      DEPTH: {depth_level}
+      PERSPECTIVES: {perspectives}
+
+      Your research methodology:
+      1. **Question Everything**: Start by identifying assumptions in the topic itself
+      2. **Multi-Angle Attack**: Explore from technical, business, user, and ethical angles
+      3. **Seek Contradictions**: Actively look for evidence that contradicts common wisdom
+      4. **Edge Case Hunting**: Find the boundaries where conventional thinking breaks down
+      5. **Gap Mapping**: Identify what's NOT known or documented
+
+      Deliver findings in this structure:
+      - Executive Summary (3-5 sentences)
+      - Key Insights (ranked by impact)
+      - Challenged Assumptions (what everyone assumes but shouldn't)
+      - Evidence Base (with specific sources/examples)
+      - Contradictions Found (conflicting information)
+      - Research Gaps (what needs further investigation)
+      - Recommendations (concrete next steps)
+
+      Think like a skeptical scientist, not a confirming researcher.
+
+    activation_triggers:
+      keywords: ["research", "explore", "investigate", "analyze deeply", "what are the assumptions"]
+      patterns: ["^research:", "^explore:", "deep dive into", "challenge assumptions"]
+      context_markers: ["need evidence", "comprehensive analysis", "multi-perspective"]
+
+    quality_metrics:
+      - "Number of assumptions challenged"
+      - "Diversity of perspectives covered"
+      - "Evidence quality and citation count"
+      - "Contradictions identified"
+      - "Actionability of recommendations"
+
+  # ============================================================================
+  # SKILL 2: Design Critic Skill
+  # ============================================================================
+  design_critic:
+    id: "design-critic-v1"
+    name: "DesignCriticSkill"
+    description: "Jobs-style design review focusing on beauty, simplicity, and function harmony"
+    version: "1.0.0"
+
+    capabilities:
+      - "Visual/UX design critique"
+      - "Simplicity assessment"
+      - "Beauty-function balance analysis"
+      - "User delight evaluation"
+      - "Ruthless feature removal suggestions"
+      - "Design principle adherence checking"
+
+    input_schema:
+      design_artifact:
+        type: "string"
+        required: true
+        description: "Description, screenshot, or wireframe of design"
+      design_type:
+        type: "enum"
+        values: ["ui", "ux", "visual", "interaction", "information_architecture"]
+        required: true
+      evaluation_criteria:
+        type: "array"
+        items: "string"
+        default: ["beauty", "simplicity", "function", "delight", "coherence"]
+        description: "Criteria to evaluate against"
+      ruthlessness_level:
+        type: "enum"
+        values: ["gentle", "balanced", "ruthless", "jobs_level"]
+        default: "ruthless"
+        description: "How aggressive to be in simplification"
+
+    output_schema:
+      critique:
+        type: "object"
+        structure:
+          overall_assessment: "Summary judgment (approve/revise/reject)"
+          beauty_score: "Visual appeal rating (1-10)"
+          simplicity_score: "Simplicity rating (1-10)"
+          function_score: "Functional effectiveness (1-10)"
+          what_works: "Elements that achieve excellence"
+          what_fails: "Elements that fall short"
+          remove_immediately: "Features/elements to delete"
+          design_debt: "Compromises that will haunt you later"
+          path_to_greatness: "Specific improvements needed"
+
+    prompt_template: |
+      You are a design critic in the spirit of Steve Jobs and Dieter Rams.
+
+      DESIGN TO CRITIQUE: {design_artifact}
+      TYPE: {design_type}
+      RUTHLESSNESS: {ruthlessness_level}
+
+      Your evaluation framework:
+
+      **Beauty**: Does it spark joy? Is every pixel intentional?
+      **Simplicity**: Can you remove anything? Is complexity essential or accidental?
+      **Function**: Does form follow function perfectly? Any friction?
+      **Delight**: Does it surprise and delight? Or just "work"?
+      **Coherence**: Does every element belong to a unified vision?
+
+      Your critique structure:
+
+      1. **First Impression** (gut reaction in 10 words)
+      2. **Beauty Analysis** (score 1-10, specific observations)
+      3. **Simplicity Analysis** (score 1-10, what to remove)
+      4. **Function Analysis** (score 1-10, friction points)
+      5. **What Works** (celebrate excellence)
+      6. **What Fails** (be specific and brutal)
+      7. **Remove Immediately** (list features/elements to delete)
+      8. **Design Debt** (compromises that will compound)
+      9. **Path to Greatness** (3-5 concrete improvements)
+      10. **Final Verdict** (Approve/Revise/Reject with reasoning)
+
+      Remember: "Simplicity is the ultimate sophistication."
+      Every element must justify its existence.
+
+    activation_triggers:
+      keywords: ["design review", "critique design", "evaluate ui", "simplify", "does this look good"]
+      patterns: ["^critique:", "^review design:", "make it simpler", "jobs would say"]
+      context_markers: ["too complex", "visual feedback", "user experience"]
+
+    quality_metrics:
+      - "Specificity of feedback"
+      - "Number of simplification suggestions"
+      - "Actionability of recommendations"
+      - "Beauty-function balance insight"
+
+  # ============================================================================
+  # SKILL 3: Copy Converter Skill
+  # ============================================================================
+  copy_converter:
+    id: "copy-converter-v1"
+    name: "CopyConverterSkill"
+    description: "High-converting copy generation using proven psychological triggers"
+    version: "1.0.0"
+
+    capabilities:
+      - "Landing page copy creation"
+      - "Email sequence generation"
+      - "Ad copy optimization"
+      - "CTA crafting"
+      - "Psychological trigger integration"
+      - "A/B test variant creation"
+
+    input_schema:
+      copy_type:
+        type: "enum"
+        values: ["landing_page", "email", "ad", "cta", "social_post", "sales_page"]
+        required: true
+      product_service:
+        type: "string"
+        required: true
+        description: "What you're selling"
+      target_audience:
+        type: "string"
+        required: true
+        description: "Who you're selling to"
+      primary_benefit:
+        type: "string"
+        required: true
+        description: "Core value proposition"
+      psychological_triggers:
+        type: "array"
+        items: "string"
+        default: ["scarcity", "social_proof", "authority", "reciprocity", "curiosity"]
+        description: "Triggers to employ"
+      tone:
+        type: "enum"
+        values: ["professional", "casual", "urgent", "empathetic", "authoritative"]
+        default: "professional"
+
+    output_schema:
+      copy:
+        type: "object"
+        structure:
+          headline: "Attention-grabbing headline"
+          subheadline: "Supporting subheadline"
+          body: "Main copy body"
+          cta: "Call-to-action"
+          variants: "A/B test variations"
+          trigger_analysis: "Which triggers used and why"
+          expected_conversion_lift: "Estimated improvement over baseline"
+
+    prompt_template: |
+      You are a direct response copywriter who combines Eugene Schwartz's psychological insight with modern conversion optimization.
+
+      MISSION: Create {copy_type} copy that converts
+      PRODUCT/SERVICE: {product_service}
+      AUDIENCE: {target_audience}
+      PRIMARY BENEFIT: {primary_benefit}
+      TRIGGERS TO USE: {psychological_triggers}
+      TONE: {tone}
+
+      Your copy framework:
+
+      1. **Headline**: Stop the scroll (curiosity + benefit)
+      2. **Subheadline**: Amplify desire (specific outcome)
+      3. **Body**: Build case (proof + emotion + logic)
+      4. **CTA**: Remove friction (clear + urgent + low-risk)
+
+      Psychological principles to deploy:
+      - **Scarcity**: Limited availability creates urgency
+      - **Social Proof**: Others' success reduces risk
+      - **Authority**: Credibility transfers trust
+      - **Reciprocity**: Give value first
+      - **Curiosity**: Open loops demand closure
+      - **Loss Aversion**: Emphasize what they'll miss
+
+      Deliver:
+      1. **Primary Copy**:
+         - Headline (10-15 words max)
+         - Subheadline (15-25 words)
+         - Body (structured for skim-reading)
+         - CTA (action-oriented, friction-free)
+
+      2. **A/B Test Variants** (3 variations):
+         - Variant A: Different angle
+         - Variant B: Different trigger emphasis
+         - Variant C: Different tone
+
+      3. **Trigger Analysis**:
+         - Which triggers you used
+         - Why they fit this audience
+         - Where they appear in copy
+
+      4. **Conversion Hypothesis**:
+         - Expected lift over generic copy
+         - Key success metrics to track
+
+      Write like you're having a conversation with a smart friend who has the exact problem you're solving.
+
+    activation_triggers:
+      keywords: ["write copy", "landing page", "email sequence", "convert better", "sales copy"]
+      patterns: ["^copy:", "^write:", "need copy for", "increase conversions"]
+      context_markers: ["conversion rate", "cta", "call to action", "marketing"]
+
+    quality_metrics:
+      - "Clarity of value proposition"
+      - "Psychological trigger integration"
+      - "CTA strength"
+      - "Skim-readability"
+      - "Variant quality"
+
+  # ============================================================================
+  # SKILL 4: Monetization Architect Skill
+  # ============================================================================
+  monetization_architect:
+    id: "monetization-architect-v1"
+    name: "MonetizationArchitectSkill"
+    description: "Backend revenue systems design and optimization"
+    version: "1.0.0"
+
+    capabilities:
+      - "Revenue model design"
+      - "Pricing strategy optimization"
+      - "Monetization flow mapping"
+      - "Payment integration planning"
+      - "Revenue leak identification"
+      - "LTV/CAC optimization"
+
+    input_schema:
+      business_model:
+        type: "string"
+        required: true
+        description: "Current or planned business model"
+      current_revenue:
+        type: "object"
+        required: false
+        description: "Existing revenue streams and metrics"
+      target_customer:
+        type: "string"
+        required: true
+        description: "Target customer profile"
+      competitive_landscape:
+        type: "string"
+        required: false
+        description: "How competitors monetize"
+      constraints:
+        type: "array"
+        items: "string"
+        default: []
+        description: "Technical or business constraints"
+
+    output_schema:
+      monetization_blueprint:
+        type: "object"
+        structure:
+          revenue_model: "Recommended monetization approach"
+          pricing_strategy: "Tier structure and pricing"
+          implementation_phases: "Rollout plan with milestones"
+          technical_requirements: "Systems and integrations needed"
+          risk_factors: "What could break or fail"
+          optimization_levers: "How to increase revenue over time"
+          financial_projections: "Expected revenue curves"
+
+    prompt_template: |
+      You are a monetization architect who designs revenue systems that scale.
+
+      ANALYZE:
+      Business Model: {business_model}
+      Current Revenue: {current_revenue}
+      Target Customer: {target_customer}
+      Competition: {competitive_landscape}
+      Constraints: {constraints}
+
+      Your monetization design framework:
+
+      **Phase 1: Revenue Model Selection**
+      Evaluate these models for fit:
+      - Subscription (recurring, predictable)
+      - Usage-based (aligns cost with value)
+      - Freemium (land-and-expand)
+      - Transaction fee (percentage of value created)
+      - Hybrid (combine multiple)
+
+      **Phase 2: Pricing Strategy**
+      Design tier structure:
+      - Value metric (what to charge for)
+      - Price anchoring (high tier sets context)
+      - Good-Better-Best psychology
+      - Feature gating strategy
+
+      **Phase 3: Implementation Architecture**
+      Technical requirements:
+      - Payment gateway integration
+      - Subscription management
+      - Usage tracking/metering
+      - Billing automation
+      - Revenue analytics
+
+      **Phase 4: Optimization Levers**
+      How to grow revenue:
+      - Expansion revenue opportunities
+      - Churn reduction tactics
+      - Pricing experiment framework
+      - LTV maximization strategies
+
+      Deliver:
+      1. **Revenue Model Recommendation**:
+         - Primary model and rationale
+         - Why it fits your customer
+         - Expected unit economics
+
+      2. **Pricing Strategy**:
+         - Tier names and positioning
+         - Price points with justification
+         - Feature allocation per tier
+         - Upgrade incentives
+
+      3. **Implementation Roadmap**:
+         - Phase 1: MVP monetization (30 days)
+         - Phase 2: Full system (90 days)
+         - Phase 3: Optimization (ongoing)
+
+      4. **Technical Blueprint**:
+         - Payment provider recommendation
+         - Integration requirements
+         - Data tracking needs
+         - Analytics dashboard specs
+
+      5. **Risk Assessment**:
+         - Payment failure scenarios
+         - Churn risk factors
+         - Competitive response
+         - Mitigation strategies
+
+      6. **Optimization Playbook**:
+         - Month 1-3: Launch and learn
+         - Month 4-6: First optimizations
+         - Month 7-12: Scale revenue
+         - Ongoing: Experimentation framework
+
+      Think like a CFO and a growth hacker combined.
+
+    activation_triggers:
+      keywords: ["monetization", "revenue model", "pricing strategy", "how to charge", "payment system"]
+      patterns: ["^monetize:", "^revenue:", "how should we price", "make money from"]
+      context_markers: ["subscription", "pricing tier", "payment", "revenue"]
+
+    quality_metrics:
+      - "Model-market fit"
+      - "Implementation feasibility"
+      - "Revenue predictability"
+      - "Optimization potential"
+
+  # ============================================================================
+  # SKILL 5: Workflow Refiner Skill
+  # ============================================================================
+  workflow_refiner:
+    id: "workflow-refiner-v1"
+    name: "WorkflowRefinerSkill"
+    description: "Ruthless simplification and workflow optimization"
+    version: "1.0.0"
+
+    capabilities:
+      - "Process bottleneck identification"
+      - "Unnecessary step elimination"
+      - "Automation opportunity discovery"
+      - "Workflow visualization"
+      - "Efficiency metric definition"
+      - "Simplification recommendations"
+
+    input_schema:
+      workflow_description:
+        type: "string"
+        required: true
+        description: "Current workflow or process"
+      workflow_type:
+        type: "enum"
+        values: ["development", "marketing", "sales", "operations", "creative", "support"]
+        required: true
+      pain_points:
+        type: "array"
+        items: "string"
+        default: []
+        description: "Known friction points"
+      goals:
+        type: "array"
+        items: "string"
+        default: ["reduce_time", "reduce_errors", "increase_throughput"]
+        description: "Optimization goals"
+      tools_available:
+        type: "array"
+        items: "string"
+        default: []
+        description: "Existing tools and systems"
+
+    output_schema:
+      optimized_workflow:
+        type: "object"
+        structure:
+          current_state_analysis: "Problems with current workflow"
+          bottlenecks: "Critical constraint points"
+          waste_inventory: "Unnecessary steps/activities"
+          optimized_workflow: "Streamlined process"
+          automation_opportunities: "What to automate and how"
+          expected_improvements: "Quantified efficiency gains"
+          implementation_plan: "How to transition"
+
+    prompt_template: |
+      You are a workflow efficiency expert with zero tolerance for waste.
+
+      OPTIMIZE THIS WORKFLOW:
+      Description: {workflow_description}
+      Type: {workflow_type}
+      Pain Points: {pain_points}
+      Goals: {goals}
+      Available Tools: {tools_available}
+
+      Your optimization methodology:
+
+      **Step 1: Waste Identification**
+      Find the 7 deadly wastes:
+      1. Waiting (idle time between steps)
+      2. Over-processing (unnecessary complexity)
+      3. Rework (errors requiring correction)
+      4. Motion (switching between tools/contexts)
+      5. Inventory (work-in-progress buildup)
+      6. Over-production (doing more than needed)
+      7. Skills underutilization (manual work that could be automated)
+
+      **Step 2: Bottleneck Analysis**
+      - Identify the constraint (slowest step)
+      - Measure throughput impact
+      - Calculate cost of bottleneck
+
+      **Step 3: Simplification**
+      Apply these principles:
+      - Eliminate: Can this step be removed entirely?
+      - Combine: Can steps be merged?
+      - Rearrange: Better sequence?
+      - Simplify: Easier way to do this?
+      - Automate: Should a human do this?
+
+      **Step 4: Automation Mapping**
+      For each step, determine:
+      - Can be fully automated (no human)
+      - Can be assisted (human + AI/tools)
+      - Must be manual (human judgment required)
+
+      Deliver:
+      1. **Current State Analysis**:
+         - Workflow map (visualize steps)
+         - Time per step
+         - Error rate per step
+         - Total cycle time
+
+      2. **Waste Inventory**:
+         - List of unnecessary steps
+         - Redundant activities
+         - Over-complicated processes
+         - Estimated time wasted
+
+      3. **Bottleneck Report**:
+         - Primary constraint identified
+         - Throughput impact
+         - Root cause analysis
+         - Fix priority
+
+      4. **Optimized Workflow**:
+         - Streamlined process map
+         - Steps eliminated (with rationale)
+         - Steps combined
+         - New sequence
+         - Expected cycle time
+
+      5. **Automation Roadmap**:
+         - Quick wins (automate in <1 week)
+         - Medium-term (1-4 weeks)
+         - Long-term (1-3 months)
+         - Tools/integrations needed
+         - Expected ROI per automation
+
+      6. **Implementation Plan**:
+         - Week 1: Low-hanging fruit
+         - Week 2-4: Core optimizations
+         - Month 2-3: Automation rollout
+         - Success metrics to track
+
+      7. **Before/After Metrics**:
+         - Cycle time: X hours → Y hours
+         - Error rate: X% → Y%
+         - Throughput: X/day → Y/day
+         - Estimated time saved: X hours/week
+
+      Be ruthless. If a step doesn't add clear value, kill it.
+
+    activation_triggers:
+      keywords: ["optimize workflow", "simplify process", "too many steps", "workflow efficiency", "automate"]
+      patterns: ["^optimize:", "^simplify:", "streamline", "reduce friction"]
+      context_markers: ["bottleneck", "slow process", "too complicated", "waste time"]
+
+    quality_metrics:
+      - "Percentage of steps eliminated"
+      - "Cycle time reduction"
+      - "Automation coverage"
+      - "Implementation feasibility"
+
+  # ============================================================================
+  # SKILL 6: Prompt Craft Skill
+  # ============================================================================
+  prompt_craft:
+    id: "prompt-craft-v1"
+    name: "PromptCraftSkill"
+    description: "Elegant, high-performance prompt generation and optimization"
+    version: "1.0.0"
+
+    capabilities:
+      - "Prompt engineering"
+      - "Instruction optimization"
+      - "Context compression"
+      - "Output format specification"
+      - "Few-shot example creation"
+      - "Chain-of-thought design"
+
+    input_schema:
+      task_description:
+        type: "string"
+        required: true
+        description: "What the prompt should accomplish"
+      target_model:
+        type: "enum"
+        values: ["gpt4", "claude", "gemini", "generic"]
+        default: "claude"
+        description: "AI model that will use this prompt"
+      output_format:
+        type: "string"
+        required: false
+        description: "Desired output structure"
+      complexity:
+        type: "enum"
+        values: ["simple", "moderate", "complex", "expert"]
+        default: "moderate"
+        description: "Task complexity level"
+      constraints:
+        type: "array"
+        items: "string"
+        default: []
+        description: "Special requirements or limitations"
+
+    output_schema:
+      prompt_package:
+        type: "object"
+        structure:
+          optimized_prompt: "Ready-to-use prompt"
+          system_message: "System/context instructions"
+          few_shot_examples: "Example inputs/outputs"
+          usage_notes: "How to use effectively"
+          variations: "Alternative prompt versions"
+          expected_performance: "Quality and consistency expectations"
+
+    prompt_template: |
+      You are a prompt engineering specialist who creates prompts that consistently produce excellent results.
+
+      TASK: Create a prompt for this objective
+      Description: {task_description}
+      Target Model: {target_model}
+      Desired Output: {output_format}
+      Complexity: {complexity}
+      Constraints: {constraints}
+
+      Your prompt design framework:
+
+      **Principle 1: Clarity Over Cleverness**
+      - Use simple, direct language
+      - One instruction per sentence
+      - Avoid ambiguity
+
+      **Principle 2: Context Before Task**
+      - Set role/persona
+      - Provide relevant background
+      - State success criteria
+
+      **Principle 3: Structure Generates Consistency**
+      - Use numbered steps
+      - Define output format explicitly
+      - Provide examples
+
+      **Principle 4: Constraints Enable Creativity**
+      - Specify what NOT to do
+      - Set boundaries clearly
+      - Define quality standards
+
+      **Principle 5: Test and Refine**
+      - Include edge cases
+      - Anticipate failure modes
+      - Build in self-correction
+
+      Prompt structure to follow:
+
+      ```
+      [ROLE/CONTEXT]
+      You are a [specific role] with [specific expertise].
+
+      [TASK]
+      Your task is to [specific action] in order to [desired outcome].
+
+      [INSTRUCTIONS]
+      1. [Step 1]
+      2. [Step 2]
+      3. [Step 3]
+
+      [CONSTRAINTS]
+      - Do not [forbidden action]
+      - Always [required action]
+      - Ensure [quality standard]
+
+      [OUTPUT FORMAT]
+      Deliver your response as:
+      - [Structure specification]
+
+      [EXAMPLES]
+      Example 1:
+      Input: [example input]
+      Output: [example output]
+      ```
+
+      Deliver:
+      1. **Primary Prompt**:
+         - Complete, copy-paste ready
+         - Optimized for {target_model}
+         - Follows structure above
+
+      2. **System Message** (if applicable):
+         - Context that persists across interactions
+         - Role definition
+         - Global constraints
+
+      3. **Few-Shot Examples** (3-5 examples):
+         - Cover common cases
+         - Include edge cases
+         - Show desired output quality
+
+      4. **Usage Notes**:
+         - Best practices for this prompt
+         - Common pitfalls to avoid
+         - How to adjust for different use cases
+
+      5. **Prompt Variations**:
+         - Version A: Concise (for simple cases)
+         - Version B: Detailed (for complex cases)
+         - Version C: Chain-of-thought (for reasoning tasks)
+
+      6. **Performance Expectations**:
+         - Consistency score (how often it works)
+         - Quality level (output quality)
+         - Failure modes (when it breaks)
+         - Mitigation strategies
+
+      Make prompts that work the first time, every time.
+
+    activation_triggers:
+      keywords: ["create prompt", "prompt engineering", "write instructions", "optimize prompt"]
+      patterns: ["^prompt:", "^craft:", "need a prompt for", "prompt that does"]
+      context_markers: ["ai instructions", "llm task", "model instructions"]
+
+    quality_metrics:
+      - "Prompt clarity"
+      - "Instruction completeness"
+      - "Output consistency"
+      - "Edge case coverage"
+
+# ============================================================================
+# METADATA & VERSIONING
+# ============================================================================
+metadata:
+  registry_version: "1.0.0"
+  last_updated: "2025-11-15"
+  total_skills: 6
+  compatibility: "Claude Agent SDK v0.1.30+"
+
+  skill_categories:
+    research: ["research_explorer"]
+    design: ["design_critic"]
+    marketing: ["copy_converter"]
+    business: ["monetization_architect"]
+    operations: ["workflow_refiner"]
+    engineering: ["prompt_craft"]
+
+  usage_stats_schema:
+    skill_id: "string"
+    activation_count: "number"
+    success_rate: "percentage"
+    avg_execution_time: "milliseconds"
+    user_satisfaction: "rating_1_to_5"

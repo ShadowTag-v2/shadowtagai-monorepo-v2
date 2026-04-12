@@ -5,17 +5,18 @@ Scans project for scripts that should be tracked in GitHub.
 Produces structured JSON output for pipeline integration.
 """
 
-import os
 import json
+import os
 import re
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
-from dataclasses import dataclass, asdict
 
 
 @dataclass
 class ScriptCandidate:
     """Candidate script for GitHub."""
+
     path: str
     language: str
     purpose: str
@@ -32,6 +33,7 @@ class ScriptCandidate:
 @dataclass
 class RepoProposal:
     """Proposed GitHub repository."""
+
     repo_name: str
     repo_purpose: str
     scripts_included: list[str]
@@ -70,8 +72,18 @@ class GitHubDiscoveryAgent:
 
     # Directories to skip
     SKIP_DIRS = {
-        "node_modules", "dist", "build", "__pycache__", ".pytest_cache",
-        ".git", "venv", "env", ".venv", ".env", "vendor", "target"
+        "node_modules",
+        "dist",
+        "build",
+        "__pycache__",
+        ".pytest_cache",
+        ".git",
+        "venv",
+        "env",
+        ".venv",
+        ".env",
+        "vendor",
+        "target",
     }
 
     # Sensitive patterns
@@ -80,7 +92,7 @@ class GitHubDiscoveryAgent:
         r'(?i)secret\s*[=:]\s*["\']?[\w-]{20,}',
         r'(?i)password\s*[=:]\s*["\']?[^\s"\']{8,}',
         r'(?i)token\s*[=:]\s*["\']?[\w-]{20,}',
-        r'-----BEGIN.*PRIVATE.*KEY-----',
+        r"-----BEGIN.*PRIVATE.*KEY-----",
     ]
 
     def __init__(self, project_root: str = None):
@@ -102,15 +114,15 @@ class GitHubDiscoveryAgent:
                 "total_scanned": len(self.candidates),
                 "candidates": len([c for c in self.candidates if not c.sensitive]),
                 "sensitive": len([c for c in self.candidates if c.sensitive]),
-                "repos_proposed": len(repos)
+                "repos_proposed": len(repos),
             },
             "scripts": [asdict(c) for c in self.candidates],
             "repos": [asdict(r) for r in repos],
             "handoff": {
                 "thread_id": "ATOMIC-DISCOVERY",
                 "next_action": "safety_scanner.py --input discovery.json",
-                "tier": "FREE"
-            }
+                "tier": "FREE",
+            },
         }
 
     def _discover_scripts(self):
@@ -131,11 +143,11 @@ class GitHubDiscoveryAgent:
     def _analyze_file(self, file_path: Path) -> ScriptCandidate | None:
         """Analyze a single file for candidacy."""
         try:
-            with open(file_path, encoding='utf-8', errors='ignore') as f:
+            with open(file_path, encoding="utf-8", errors="ignore") as f:
                 content = f.read()
 
             # Skip trivial files (< 20 lines)
-            lines = content.split('\n')
+            lines = content.split("\n")
             if len(lines) < 20:
                 return None
 
@@ -177,7 +189,7 @@ class GitHubDiscoveryAgent:
                 issues=issues,
                 tests_present=tests_present,
                 usage_evidence=usage,
-                recommended_repo_group=repo_group
+                recommended_repo_group=repo_group,
             )
 
         except Exception:
@@ -188,13 +200,13 @@ class GitHubDiscoveryAgent:
         # Check for docstring
         docstring_match = re.search(r'"""(.+?)"""', content, re.DOTALL)
         if docstring_match:
-            doc = docstring_match.group(1).strip().split('\n')[0]
+            doc = docstring_match.group(1).strip().split("\n")[0]
             return doc[:200]
 
         # Check for header comment
-        for line in content.split('\n')[:10]:
-            if line.strip().startswith('#') and len(line) > 10:
-                return line.strip('# ').strip()[:200]
+        for line in content.split("\n")[:10]:
+            if line.strip().startswith("#") and len(line) > 10:
+                return line.strip("# ").strip()[:200]
 
         return f"Script: {file_path.name}"
 
@@ -203,17 +215,17 @@ class GitHubDiscoveryAgent:
         name = file_path.name.lower()
         path_str = str(file_path).lower()
 
-        if 'test' in name or 'test' in path_str:
+        if "test" in name or "test" in path_str:
             return "test-util"
-        elif 'cli' in name or 'argparse' in content or 'click' in content:
+        elif "cli" in name or "argparse" in content or "click" in content:
             return "cli"
-        elif 'deploy' in path_str or 'k8s' in path_str or 'docker' in name:
+        elif "deploy" in path_str or "k8s" in path_str or "docker" in name:
             return "infra"
-        elif 'pipeline' in name or 'etl' in name:
+        elif "pipeline" in name or "etl" in name:
             return "data-pipeline"
-        elif 'scrape' in name or 'crawler' in name:
+        elif "scrape" in name or "crawler" in name:
             return "scraper"
-        elif 'def ' in content and 'import ' in content:
+        elif "def " in content and "import " in content:
             return "library"
         else:
             return "other"
@@ -225,33 +237,30 @@ class GitHubDiscoveryAgent:
 
         if language == "python":
             # Find imports
-            for match in re.finditer(r'^(?:from|import)\s+(\w+)', content, re.MULTILINE):
+            for match in re.finditer(r"^(?:from|import)\s+(\w+)", content, re.MULTILINE):
                 pkg = match.group(1)
-                if pkg in ['src', 'app', 'lib', 'utils']:
+                if pkg in ["src", "app", "lib", "utils"]:
                     internal.append(pkg)
-                elif pkg not in ['os', 'sys', 're', 'json', 'datetime', 'typing', 'pathlib']:
+                elif pkg not in ["os", "sys", "re", "json", "datetime", "typing", "pathlib"]:
                     external.append(pkg)
 
-        return {
-            "internal": list(set(internal)),
-            "external": list(set(external))
-        }
+        return {"internal": list(set(internal)), "external": list(set(external))}
 
     def _find_issues(self, content: str, file_path: Path) -> list[str]:
         """Find potential issues in code."""
         issues = []
 
         # Hardcoded paths
-        if re.search(r'/Users/|/home/|C:\\', content):
+        if re.search(r"/Users/|/home/|C:\\", content):
             issues.append("hardcoded paths")
 
         # Missing error handling
-        if 'try:' not in content and 'except' not in content:
-            if 'open(' in content or 'requests.' in content:
+        if "try:" not in content and "except" not in content:
+            if "open(" in content or "requests." in content:
                 issues.append("missing error handling")
 
         # TODO/FIXME
-        if 'TODO' in content or 'FIXME' in content:
+        if "TODO" in content or "FIXME" in content:
             issues.append("contains TODOs")
 
         return issues
@@ -261,7 +270,7 @@ class GitHubDiscoveryAgent:
         test_patterns = [
             f"test_{file_path.stem}.py",
             f"{file_path.stem}_test.py",
-            f"tests/test_{file_path.stem}.py"
+            f"tests/test_{file_path.stem}.py",
         ]
         return any((self.project_root / p).exists() for p in test_patterns)
 
@@ -274,7 +283,7 @@ class GitHubDiscoveryAgent:
         for other in self.project_root.rglob("*.py"):
             if other != file_path:
                 try:
-                    if f"import {name}" in other.read_text(errors='ignore'):
+                    if f"import {name}" in other.read_text(errors="ignore"):
                         evidence.append(f"imported by {other.name}")
                         break
                 except:
@@ -284,7 +293,7 @@ class GitHubDiscoveryAgent:
         ci_files = list(self.project_root.glob(".github/workflows/*.yml"))
         for ci in ci_files:
             try:
-                if name in ci.read_text(errors='ignore'):
+                if name in ci.read_text(errors="ignore"):
                     evidence.append("referenced in CI")
                     break
             except:
@@ -296,11 +305,11 @@ class GitHubDiscoveryAgent:
         """Suggest repo grouping for script."""
         path_parts = file_path.parts
 
-        if 'services' in path_parts:
+        if "services" in path_parts:
             return "ShadowTag-v2-services"
-        elif 'scripts' in path_parts:
+        elif "scripts" in path_parts:
             return "ShadowTag-v2-scripts"
-        elif 'infra' in path_parts or 'k8s' in path_parts:
+        elif "infra" in path_parts or "k8s" in path_parts:
             return "ShadowTag-v2-infra"
         elif category == "test-util":
             return "ShadowTag-v2-tests"
@@ -328,20 +337,28 @@ class GitHubDiscoveryAgent:
 
         repos = []
         for repo_name, scripts in groups.items():
-            repos.append(RepoProposal(
-                repo_name=repo_name,
-                repo_purpose=f"Collection of {repo_name.replace('ShadowTag-v2-', '')} for ShadowTag-v2 platform",
-                scripts_included=scripts,
-                suggested_structure=["src/", "scripts/", "tests/", "docs/"],
-                minimal_files_to_add=["README.md", "LICENSE", ".gitignore", "pyproject.toml"],
-                security_notes=["Review for hardcoded credentials", "Add .env.example"],
-                initial_commit_plan=[
-                    {"title": "chore: bootstrap repo", "description": "Initial structure and config"},
-                    {"title": "feat: add core scripts", "description": "Import main functionality"},
-                    {"title": "docs: add README", "description": "Basic documentation"}
-                ],
-                priority="now" if len(scripts) > 3 else "later"
-            ))
+            repos.append(
+                RepoProposal(
+                    repo_name=repo_name,
+                    repo_purpose=f"Collection of {repo_name.replace('ShadowTag-v2-', '')} for ShadowTag-v2 platform",
+                    scripts_included=scripts,
+                    suggested_structure=["src/", "scripts/", "tests/", "docs/"],
+                    minimal_files_to_add=["README.md", "LICENSE", ".gitignore", "pyproject.toml"],
+                    security_notes=["Review for hardcoded credentials", "Add .env.example"],
+                    initial_commit_plan=[
+                        {
+                            "title": "chore: bootstrap repo",
+                            "description": "Initial structure and config",
+                        },
+                        {
+                            "title": "feat: add core scripts",
+                            "description": "Import main functionality",
+                        },
+                        {"title": "docs: add README", "description": "Basic documentation"},
+                    ],
+                    priority="now" if len(scripts) > 3 else "later",
+                )
+            )
 
         return sorted(repos, key=lambda r: len(r.scripts_included), reverse=True)
 
@@ -369,7 +386,7 @@ def main():
         output = json.dumps(result, indent=2)
 
         if args.output:
-            with open(args.output, 'w') as f:
+            with open(args.output, "w") as f:
                 f.write(output)
             print(f"Output saved to: {args.output}")
         else:

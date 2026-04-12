@@ -18,6 +18,7 @@ Usage:
     python3 scripts/web_to_corpus.py --dry-run     # print what would be written
     python3 scripts/web_to_corpus.py --stats       # show extraction counts by source
 """
+
 from __future__ import annotations
 
 import argparse
@@ -35,39 +36,39 @@ WEB_DB = REPO_ROOT / "data/web_ingest/ingest.db"
 # Order matters: more-specific keys first.
 TRUST: dict[str, dict] = {
     # Verified / citable
-    "news/reuters":      {"trust": "high",   "citable": True,  "label": "VERIFIED"},
-    "news/apnews":       {"trust": "high",   "citable": True,  "label": "VERIFIED"},
-    "news/bbc":          {"trust": "high",   "citable": True,  "label": "VERIFIED"},
-    "news/bloomberg":    {"trust": "high",   "citable": True,  "label": "VERIFIED"},
-    "news/nature":       {"trust": "high",   "citable": True,  "label": "VERIFIED"},
-    "news/sciencedaily": {"trust": "high",   "citable": True,  "label": "VERIFIED"},
-    "news/cnbc":         {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/cnn":          {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/wired":        {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/techcrunch":   {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/theverge":     {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/arstechnica":  {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/venturebeat":  {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/yahoo":        {"trust": "medium", "citable": True,  "label": "VERIFIED"},
-    "news/":             {"trust": "medium", "citable": True,  "label": "VERIFIED"},
+    "news/reuters": {"trust": "high", "citable": True, "label": "VERIFIED"},
+    "news/apnews": {"trust": "high", "citable": True, "label": "VERIFIED"},
+    "news/bbc": {"trust": "high", "citable": True, "label": "VERIFIED"},
+    "news/bloomberg": {"trust": "high", "citable": True, "label": "VERIFIED"},
+    "news/nature": {"trust": "high", "citable": True, "label": "VERIFIED"},
+    "news/sciencedaily": {"trust": "high", "citable": True, "label": "VERIFIED"},
+    "news/cnbc": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/cnn": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/wired": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/techcrunch": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/theverge": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/arstechnica": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/venturebeat": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/yahoo": {"trust": "medium", "citable": True, "label": "VERIFIED"},
+    "news/": {"trust": "medium", "citable": True, "label": "VERIFIED"},
     # Synthesis-only (social / unverified)
-    "reddit/":           {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "4chan/":             {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "twitter_bypass/":   {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "instagram/":        {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "linkedin/":         {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
-    "darkweb/":          {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
+    "reddit/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "4chan/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "twitter_bypass/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "instagram/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "linkedin/": {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "darkweb/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
     # last30days skill output — social/signal sources
-    "last30days/hn":          {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/polymarket":  {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/web/":        {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/reddit/":     {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/x/":          {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/youtube/":    {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/tiktok/":     {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/instagram/":  {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/bluesky/":    {"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
-    "last30days/truthsocial/":{"trust": "low",    "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/hn": {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/polymarket": {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/web/": {"trust": "medium", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/reddit/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/x/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/youtube/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/tiktok/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/instagram/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/bluesky/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
+    "last30days/truthsocial/": {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"},
 }
 
 _DEFAULT_TRUST = {"trust": "low", "citable": False, "label": "SYNTHESIS-ONLY"}
@@ -82,9 +83,15 @@ def _trust_for(source: str) -> dict:
 
 # ── Class Heuristic ───────────────────────────────────────────────────────────
 
-_STAT_RE = re.compile(r"\b\d+\.?\d*\s*%|\b\d{4,}\b|\bpercent\b|\bGDP\b|\bmillion\b|\bbillion\b", re.I)
-_RESEARCH_RE = re.compile(r"\bstudy\b|\bpaper\b|\bresearch\b|\bjournal\b|\barXiv\b|\bpreprint\b", re.I)
-_SOCIAL_RE = re.compile(r"\bthink\b|\bfeel\b|\bIMO\b|\bLMK\b|\breddit\b|\b4chan\b|\bunpopular opinion\b", re.I)
+_STAT_RE = re.compile(
+    r"\b\d+\.?\d*\s*%|\b\d{4,}\b|\bpercent\b|\bGDP\b|\bmillion\b|\bbillion\b", re.I
+)
+_RESEARCH_RE = re.compile(
+    r"\bstudy\b|\bpaper\b|\bresearch\b|\bjournal\b|\barXiv\b|\bpreprint\b", re.I
+)
+_SOCIAL_RE = re.compile(
+    r"\bthink\b|\bfeel\b|\bIMO\b|\bLMK\b|\breddit\b|\b4chan\b|\bunpopular opinion\b", re.I
+)
 
 
 def _classify(text: str, source: str) -> str:
@@ -99,6 +106,7 @@ def _classify(text: str, source: str) -> str:
 
 
 # ── DB Helpers ────────────────────────────────────────────────────────────────
+
 
 def _ensure_langextract_tables(conn: sqlite3.Connection) -> None:
     """Create extractions + processed + FTS5 if missing (idempotent)."""
@@ -154,12 +162,11 @@ def _ensure_langextract_tables(conn: sqlite3.Connection) -> None:
 
 
 def _already_processed(conn: sqlite3.Connection, item_id: str) -> bool:
-    return bool(
-        conn.execute("SELECT 1 FROM processed WHERE file_id=?", (item_id,)).fetchone()
-    )
+    return bool(conn.execute("SELECT 1 FROM processed WHERE file_id=?", (item_id,)).fetchone())
 
 
 # ── Main Normalizer ────────────────────────────────────────────────────────────
+
 
 def normalize(dry_run: bool = False) -> dict[str, int]:
     """
@@ -209,15 +216,17 @@ def normalize(dry_run: bool = False) -> dict[str, int]:
         except Exception:
             meta = {}
 
-        attrs = json.dumps({
-            "source_url": url,
-            "trust": trust["trust"],
-            "citable": trust["citable"],
-            "label": trust["label"],
-            "adapter": source,
-            "score": meta.get("score", meta.get("like_count", 0)),
-            "ingested_at": ingested_at,
-        })
+        attrs = json.dumps(
+            {
+                "source_url": url,
+                "trust": trust["trust"],
+                "citable": trust["citable"],
+                "label": trust["label"],
+                "adapter": source,
+                "score": meta.get("score", meta.get("like_count", 0)),
+                "ingested_at": ingested_at,
+            }
+        )
 
         # Display name: "source_prefix: title[:60]"
         name = f"{source}: {title[:60]}"
@@ -268,10 +277,13 @@ def show_stats() -> None:
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
 
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Normalize web scrape items into corpus extractions")
     ap.add_argument("--once", action="store_true", help="Run one pass (default behavior)")
-    ap.add_argument("--dry-run", action="store_true", help="Print what would be written, no DB writes")
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Print what would be written, no DB writes"
+    )
     ap.add_argument("--stats", action="store_true", help="Show extraction counts by source")
     args = ap.parse_args()
 
@@ -282,7 +294,9 @@ def main() -> None:
     label = "[DRY RUN] " if args.dry_run else ""
     print(f"{label}web_to_corpus: scanning {WEB_DB} ...")
     stats = normalize(dry_run=args.dry_run)
-    print(f"{label}Done — processed={stats['processed']} skipped={stats['skipped']} errors={stats['errors']}")
+    print(
+        f"{label}Done — processed={stats['processed']} skipped={stats['skipped']} errors={stats['errors']}"
+    )
 
 
 if __name__ == "__main__":

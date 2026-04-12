@@ -10,7 +10,9 @@ import os
 import sys
 
 # Add project root to path
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+)
 sys.path.insert(0, PROJECT_ROOT)
 
 
@@ -36,7 +38,9 @@ def test_workflow_initialization():
     try:
         from kosmos.workflow.research_loop import ResearchWorkflow
 
-        workflow = ResearchWorkflow(research_objective="Test objective", artifacts_dir="./test_artifacts")
+        workflow = ResearchWorkflow(
+            research_objective="Test objective", artifacts_dir="./test_artifacts"
+        )
         print("  [OK] Workflow created")
         return True
     except Exception as e:

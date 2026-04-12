@@ -47,10 +47,15 @@ def query_chroma(query: str, top_k: int) -> list[dict]:
     col = _get_chroma_collection()
     count = col.count()
     if count == 0:
-        print(f"[WARN] '{COLLECTION_NAME}' is empty — run: python scripts/reindex_monorepo.py", file=sys.stderr)
+        print(
+            f"[WARN] '{COLLECTION_NAME}' is empty — run: python scripts/reindex_monorepo.py",
+            file=sys.stderr,
+        )
         return []
     n = min(top_k, count)
-    results = col.query(query_embeddings=[vec], n_results=n, include=["documents", "metadatas", "distances"])
+    results = col.query(
+        query_embeddings=[vec], n_results=n, include=["documents", "metadatas", "distances"]
+    )
     hits = []
     for doc, meta, dist in zip(
         results["documents"][0],

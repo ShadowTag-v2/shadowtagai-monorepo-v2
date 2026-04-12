@@ -1,0 +1,11 @@
+ag_ui_adk
+fastapi
+uvicorn
+pydantic
+starlette
+requests
+httpx
+google-cloud-storage
+google-cloud-firestore
+google-cloud-logging
+google-auth

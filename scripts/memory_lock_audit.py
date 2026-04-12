@@ -5,8 +5,8 @@ import argparse
 import json
 import os
 import re
-from pathlib import Path
 from collections.abc import Iterable
+from pathlib import Path
 
 CANONICAL_FILES = [
     "monorepo_manifest.yaml",
@@ -30,9 +30,30 @@ MCP_FILES = [
     ".vscode/cline_mcp_settings.json",
 ]
 NAME_PATTERNS = [r"\bShadowTag-v2\b", r"\bShadowTag\b", r"\bshadowtag-v2\b"]
-SECRET_PATTERNS = [r"AIza[0-9A-Za-z\-_]{20,}", r"-----BEGIN [A-Z ]+PRIVATE KEY-----", r"sk-[A-Za-z0-9]{20,}"]
+SECRET_PATTERNS = [
+    r"AIza[0-9A-Za-z\-_]{20,}",
+    r"-----BEGIN [A-Z ]+PRIVATE KEY-----",
+    r"sk-[A-Za-z0-9]{20,}",
+]
 SKIP_DIRS = {".git", "node_modules", ".venv", "dist", "build", "__pycache__"}
-TEXT_EXTS = {".md", ".txt", ".json", ".yaml", ".yml", ".py", ".sh", ".toml", ".env", ".example", ".cfg", ".ini", ".ts", ".tsx", ".js", ".jsx"}
+TEXT_EXTS = {
+    ".md",
+    ".txt",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".py",
+    ".sh",
+    ".toml",
+    ".env",
+    ".example",
+    ".cfg",
+    ".ini",
+    ".ts",
+    ".tsx",
+    ".js",
+    ".jsx",
+}
 
 
 def iter_text_files(root: Path) -> Iterable[Path]:
@@ -40,7 +61,12 @@ def iter_text_files(root: Path) -> Iterable[Path]:
         dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
         for name in filenames:
             path = Path(dirpath) / name
-            if path.suffix.lower() in TEXT_EXTS or name in {"AGENTS.md", "monorepo_manifest.yaml", "antigravity-mcp-config.json", ".env.example"}:
+            if path.suffix.lower() in TEXT_EXTS or name in {
+                "AGENTS.md",
+                "monorepo_manifest.yaml",
+                "antigravity-mcp-config.json",
+                ".env.example",
+            }:
                 yield path
 
 
@@ -59,7 +85,14 @@ def find_matches(root: Path, patterns: list[str]) -> list[dict]:
         for rx in regexes:
             for m in rx.finditer(text):
                 line_no = text.count("\n", 0, m.start()) + 1
-                hits.append({"file": str(path.relative_to(root)), "line": line_no, "match": m.group(0), "pattern": rx.pattern})
+                hits.append(
+                    {
+                        "file": str(path.relative_to(root)),
+                        "line": line_no,
+                        "match": m.group(0),
+                        "pattern": rx.pattern,
+                    }
+                )
     return hits
 
 
