@@ -14,7 +14,9 @@ def scrub_file(filepath):
     content = re.sub(r"-----BEGIN.*?PRIVATE KEY-----", "[REDACTED_PRIVATE_KEY_HEADER]", content)
 
     # Standardize models
-    content = re.sub(r"gemini-2\.5-flash-thinking-exp-\d+-\d+", "gemini-3.1-flash-lite-preview", content)
+    content = re.sub(
+        r"gemini-2\.5-flash-thinking-exp-\d+-\d+", "gemini-3.1-flash-lite-preview", content
+    )
     content = re.sub(r"gemini-2\.5-flash", "gemini-3.1-flash-lite-preview", content)
 
     with open(filepath, "w") as f:

@@ -18,7 +18,8 @@ def bootstrap():
         "repo_id": s.repo_id,
         "authority": state,
         "startup_instruction": (
-            "Hydrate from authority memory first. " "Treat codebase as a target to update, not the source of truth for standards/settings."
+            "Hydrate from authority memory first. "
+            "Treat codebase as a target to update, not the source of truth for standards/settings."
         ),
     }
 
@@ -51,8 +52,12 @@ def seed_bootstrap():
         }
     )
     replace_authority_atoms(s.postgres_dsn, s.repo_id, payload)
-    record_authority_event(s.postgres_dsn, s.repo_id, "startup_hydration", "seed bootstrap", json.dumps(payload))
-    thread_id = create_thread(s.postgres_dsn, "00000000-0000-0000-0000-000000000001", "bootstrap seed")
+    record_authority_event(
+        s.postgres_dsn, s.repo_id, "startup_hydration", "seed bootstrap", json.dumps(payload)
+    )
+    thread_id = create_thread(
+        s.postgres_dsn, "00000000-0000-0000-0000-000000000001", "bootstrap seed"
+    )
     add_event(s.postgres_dsn, thread_id, "assistant", "Seeded memory-first bootstrap contract.")
     write_summary(s.postgres_dsn, thread_id, "Memory-first bootstrap contract is active.")
     return {"status": "seeded", "authority": payload}

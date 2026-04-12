@@ -1,0 +1,48 @@
+# jr_registry/ai-engineering-toolkit.yml
+id: "ai-engineering-toolkit"
+title: "AI Engineering Toolkit — curated registry of 100+ AI/LLM libraries"
+owner: "Platform Team"
+sponsor: "CTO"
+status: "Review"
+intake_date: "2025-11-29"
+last_review: "2025-11-29"
+next_review: "2026-04-29"
+links:
+  doc: "https://github.com/akhilmakol/ai-in-engineering-toolkit"
+  repo: "https://github.com/akhilmakol/ai-in-engineering-toolkit"
+  ticket: null
+imperatives:
+  - Velocity and Adaptability
+  - Building Defensible Technology Moats
+roi_gate:
+  gate_name: "Ecosystem intelligence index populate"
+  why_now: "Populate external radar with broad tool set for agents, RAG, inference, MLOps."
+  due: "2026-03-01"
+  blocked_if_missed: false
+governance:
+  timebox_hours: 4
+  kill_switch_date: "2026-03-02"
+  decision: "TBD"
+  objections_log: []
+scores:
+  defensibility: 2
+  alignment: 3
+  value_hierarchy: "Ease-of-Business"
+  risk: 1
+  confidence: 0.95
+economics:
+  capex_delta_usd: 0
+  opex_delta_usd_m: 0
+  perf_gain_x: 1.0
+  cost_per_inference_delta: 0.0
+deployment:
+  target_env: "N/A (reference material)"
+  onprem_viable: true
+  security_impact: "None"
+  pqc_impact: "N/A"
+deliverables:
+  - name: "Toolkit review and priority extraction"
+    due: "2026-02-15"
+    status: "Planned"
+notes: |
+  A broad, curated list of 100+ LLM/AI libraries — a good "radar" for tooling evaluation and monitoring evolving ecosystem.

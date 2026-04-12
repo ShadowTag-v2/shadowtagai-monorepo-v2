@@ -35,13 +35,20 @@ async def run_swarm_payload(query: SwarmQuery):
 
         # Execute the swarm logic durably in the worker cluster
         # Using string name to prevent circular imports if necessary, or actual class
-        result = await client.execute_workflow("SwarmWorkflow", query.task, id=task_id, task_queue="omega-swarm-queue")
+        result = await client.execute_workflow(
+            "SwarmWorkflow", query.task, id=task_id, task_queue="omega-swarm-queue"
+        )
         status = "completed"
         message = result
     except Exception as e:
         status = "failed or dispatched async"
         message = f"Temporal Execution Message: {e}"
 
-    response_payload = {"status": status, "task_id": task_id, "routing": "temporalio.client", "message": message}
+    response_payload = {
+        "status": status,
+        "task_id": task_id,
+        "routing": "temporalio.client",
+        "message": message,
+    }
 
     return response_payload

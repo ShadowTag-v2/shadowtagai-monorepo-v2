@@ -26,7 +26,12 @@ class TelemetryEventBus:
         """
         Publishes event and routes to all registered subscribers async.
         """
-        event = {"id": f"evt_{datetime.utcnow().timestamp()}", "topic": topic, "timestamp": datetime.utcnow().isoformat(), "payload": payload}
+        event = {
+            "id": f"evt_{datetime.utcnow().timestamp()}",
+            "topic": topic,
+            "timestamp": datetime.utcnow().isoformat(),
+            "payload": payload,
+        }
 
         # Append to audit trail (SC.2 Immutable Backup equivalent for local tests)
         self.audit_log.append(event)

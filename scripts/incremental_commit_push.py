@@ -41,7 +41,9 @@ if not insts:
     exit(1)
 
 inst_id = insts[0]["id"]
-res = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+res = requests.post(
+    f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
+)
 token = res.json()["token"]
 remote_url = f"https://x-access-token:{token}@github.com/{REPO}.git"
 

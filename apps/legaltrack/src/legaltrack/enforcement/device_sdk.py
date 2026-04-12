@@ -30,14 +30,20 @@ class DeviceEnforcementSDK:
         Aggressive hooks: Desktop screen shade, constant SMS, Tesla Honk.
         Executes active Twilio outbound REST calls and triggers the vehicle hardware loop.
         """
-        logger.warning(f"EXECUTING AGGRESSIVE PROD to User {self.user_id}: {event_data.get('message')}")
+        logger.warning(
+            f"EXECUTING AGGRESSIVE PROD to User {self.user_id}: {event_data.get('message')}"
+        )
 
         async with httpx.AsyncClient() as client:
             try:
                 # Active Twilio SMS Outbound Prod
                 await client.post(
                     "https://api.twilio.com/2010-04-01/Accounts/AC_TWILIO_SID/Messages.json",
-                    data={"To": "+15555555555", "From": "+15558675309", "Body": f"URGENT DEADLINE: {event_data.get('message')}"},
+                    data={
+                        "To": "+15555555555",
+                        "From": "+15558675309",
+                        "Body": f"URGENT DEADLINE: {event_data.get('message')}",
+                    },
                     auth=("AC_TWILIO_SID", "ENV_TWILIO_TOKEN"),
                 )
                 logger.info("Twilio SMS successfully dispatched.")

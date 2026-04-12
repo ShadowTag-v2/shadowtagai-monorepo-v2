@@ -8,7 +8,9 @@ db = firestore.Client(project="shadowtag-omega-v4")
 
 
 @router.post("/vote")
-async def record_human_deception_index(video_id: str, user_vote: str, actual_truth: str, latency_ms: int):
+async def record_human_deception_index(
+    video_id: str, user_vote: str, actual_truth: str, latency_ms: int
+):
     """
     [ THE CORE B2B ENGINE ]
     This is the exact mechanism that generates the proprietary Human Deception Index (HDI).

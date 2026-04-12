@@ -1,0 +1,9 @@
+[project]
+name = "shadowtag_v4-video"
+version = "0.1.0"
+description = "ShadowTag-v4 Video Service"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

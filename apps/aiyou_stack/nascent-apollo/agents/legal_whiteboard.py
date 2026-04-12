@@ -50,11 +50,15 @@ class LegalWhiteboard:
         WHITEBOARD_PATH.write_text(json.dumps(self.state, indent=2))
 
     def record_knowledge(self, insight: str, source: str = "task"):
-        self.state["knowledge"].append({"insight": insight, "source": source, "ts": datetime.utcnow().isoformat() + "Z"})
+        self.state["knowledge"].append(
+            {"insight": insight, "source": source, "ts": datetime.utcnow().isoformat() + "Z"}
+        )
         self._save()
 
     def record_pattern(self, pattern: str, accuracy: float):
-        self.state["patterns"].append({"pattern": pattern, "accuracy": accuracy, "ts": datetime.utcnow().isoformat() + "Z"})
+        self.state["patterns"].append(
+            {"pattern": pattern, "accuracy": accuracy, "ts": datetime.utcnow().isoformat() + "Z"}
+        )
         if self.state["level"] < 1 and len(self.state["patterns"]) >= 10:
             self.state["level"] = 1
         self._save()
@@ -76,7 +80,12 @@ class LegalWhiteboard:
 
     def log_performance(self, task: str, latency_ms: float, cost_usd: float):
         self.state["performance_log"].append(
-            {"task": task, "latency_ms": latency_ms, "cost_usd": cost_usd, "ts": datetime.utcnow().isoformat() + "Z"}
+            {
+                "task": task,
+                "latency_ms": latency_ms,
+                "cost_usd": cost_usd,
+                "ts": datetime.utcnow().isoformat() + "Z",
+            }
         )
         self._save()
 

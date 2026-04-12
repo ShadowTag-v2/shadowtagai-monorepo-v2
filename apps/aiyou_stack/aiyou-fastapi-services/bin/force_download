@@ -1,0 +1,31 @@
+#!/bin/bash
+# FORCE DOWNLOAD TO DESKTOP
+# Delivers artifacts to a visible "New Location"
+
+TARGET_DIR="$HOME/Desktop/ShadowTag_Exports"
+BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/7ee442db-0144-48a9-b0af-249183dbaed8"
+
+echo "🚀 FORCING DELIVERABLES TO: $TARGET_DIR"
+mkdir -p "$TARGET_DIR"
+
+# 1. DELIVER BUSINESS PLAN
+echo "📄 Copying Business Plan..."
+if [ -f "$BRAIN_DIR/business_plan.md" ]; then
+    cp "$BRAIN_DIR/business_plan.md" "$TARGET_DIR/Business_Plan.md"
+else
+    echo "⚠️ Business Plan not found in Brain. Attempting to copy from Docs..."
+    cp "Docs/Omega_Session_Data/Business_Plan_FINAL.md" "$TARGET_DIR/Business_Plan.md"
+fi
+
+# 2. DELIVER DISTINCTIONS
+echo "🤔 Copying Distinctions Log..."
+cp "$BRAIN_DIR/Antigravity_Concept_Distinctions.md" "$TARGET_DIR/Distinctions.md" 2>/dev/null
+
+# 3. DOWNLOAD LEDGERS (From Localhost)
+echo "💰 Downloading Ledgers..."
+curl -s "http://localhost:8900/store/ledger/export?format=qif" -o "$TARGET_DIR/Ledger.qif"
+curl -s "http://localhost:8900/store/ledger/export?format=csv" -o "$TARGET_DIR/Ledger.csv"
+
+# 4. VERIFY
+echo "✅ DELIVERY COMPLETE."
+ls -la "$TARGET_DIR"

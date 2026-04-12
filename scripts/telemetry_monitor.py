@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import lancedb
 from pathlib import Path
+
+import lancedb
 
 REPO_ROOT = Path(__file__).parent.parent
 LANCEDB_PATH = REPO_ROOT / "data" / "lancedb" / "workspace_knowledge"

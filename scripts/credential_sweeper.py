@@ -7,7 +7,9 @@ TARGET_DIRS = ["apps", "core", "libs", "rag_engine", "scripts", "tools"]
 CREDENTIAL_PATTERNS = [
     # AWS Access Key
     (
-        re.compile(r'(?i)(aws_access_key_id|aws_secret_access_key)\s*[:=]\s*["\'][A-Za-z0-9/+=]{16,40}["\']'),
+        re.compile(
+            r'(?i)(aws_access_key_id|aws_secret_access_key)\s*[:=]\s*["\'][A-Za-z0-9/+=]{16,40}["\']'
+        ),
         r'\1 = "REDACTED_AWS_CREDENTIAL"',
     ),
     # Generic Bearer Tokens / API Keys
@@ -17,7 +19,9 @@ CREDENTIAL_PATTERNS = [
     ),
     # GCP Service Account generic JSON matching (simplified)
     (
-        re.compile(r'"private_key":\s*"-----BEGIN PRIVATE KEY-----\\n[a-zA-Z0-9/+=_\\n]+-----END PRIVATE KEY-----\\n"'),
+        re.compile(
+            r'"private_key":\s*"-----BEGIN PRIVATE KEY-----\\n[a-zA-Z0-9/+=_\\n]+-----END PRIVATE KEY-----\\n"'
+        ),
         r'"private_key": "REDACTED_GCP_PRIVATE_KEY"',
     ),
     # MongoDB/Postgres URIs

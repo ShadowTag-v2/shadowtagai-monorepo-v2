@@ -1,5 +1,5 @@
-import subprocess
 import os
+import subprocess
 
 
 def run_cmd(cmd):
@@ -12,7 +12,12 @@ def run_cmd(cmd):
 
 def main():
     import sys
-    targets = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
+
+    targets = (
+        " ".join(sys.argv[1:])
+        if len(sys.argv) > 1
+        else "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
+    )
     print(f"Initiating Omega Loop / Egress Protocol targeting: {targets}\n")
 
     # 1. Lint / Format Phase
@@ -25,6 +30,7 @@ def main():
     # 2.1 UI Consistency Auditor Logic
     print("\n[UI AUDITOR] Validating React UI linkages...")
     import subprocess
+
     subprocess.run("python3 scripts/ui_consistency_auditor.py", shell=True)
 
     # 3. Stage All Valid Work
@@ -35,10 +41,16 @@ def main():
     # 2.5 Security Gate: Gitleaks
     print("\n[SECURITY] Running Gitleaks gate on staged files...")
     # Altered for Steve Jobs-esque Egress: Logging only, do not halt the core architecture on legacy payload keys.
-    subprocess.run("/opt/homebrew/bin/gitleaks protect --staged --verbose || echo 'Gitleaks found keys (logged).'", shell=True, check=False)
+    subprocess.run(
+        "/opt/homebrew/bin/gitleaks protect --staged --verbose || echo 'Gitleaks found keys (logged).'",
+        shell=True,
+        check=False,
+    )
 
     # 3. Commit with standard convention
-    run_cmd("git commit -m \"chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules\" --no-verify || echo 'Clean working tree.'")
+    run_cmd(
+        "git commit -m \"chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules\" --no-verify || echo 'Clean working tree.'"
+    )
 
     # 4. Push
     run_cmd("git push origin main || echo 'Push failed or branch up to date.'")

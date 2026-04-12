@@ -1,7 +1,0 @@
-Hertz 	400
-Luxor 		350
-Camp SLO	250
-Gas Cost: 	500
-Food		300
-Fun			300
-$2,100

@@ -49,13 +49,21 @@ def get_token(app_id, pem_path, owner_name):
     if not target_installation_id:
         return None
 
-    resp = session.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers, timeout=30)
+    resp = session.post(
+        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
+        headers=headers,
+        timeout=30,
+    )
     if resp.status_code == 201:
         return resp.json()["token"]
     return None
 
 
-token_s = get_token("3018200", "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem", "ShadowTag-v2")
+token_s = get_token(
+    "3018200",
+    "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    "ShadowTag-v2",
+)
 if not token_s:
     print("Failed to acquire token")
     sys.exit(1)

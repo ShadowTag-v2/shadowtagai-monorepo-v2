@@ -76,7 +76,9 @@ class CopyrightGuardrail:
                         "type": "UNOBFUSCATED_SOURCE",
                         "severity": "HIGH",
                         "detail": f"Forbidden source pattern found: '{matches[0]}'. Use obfuscated term instead.",
-                        "suggested_replacement": SOURCE_OBFUSCATION_MAP.get(matches[0], "Proprietary Intelligence"),
+                        "suggested_replacement": SOURCE_OBFUSCATION_MAP.get(
+                            matches[0], "Proprietary Intelligence"
+                        ),
                     }
                 )
         return violations
@@ -170,7 +172,9 @@ def main():
     if not all_violations:
         logger.info("🏁 FULL SCAN COMPLETE — Zero violations. Copyright compliance confirmed.")
     else:
-        logger.warning(f"🏁 SCAN COMPLETE — {len(all_violations)} total violation(s) found across frontend.")
+        logger.warning(
+            f"🏁 SCAN COMPLETE — {len(all_violations)} total violation(s) found across frontend."
+        )
 
 
 if __name__ == "__main__":

@@ -25,7 +25,9 @@ class Jetski:
         args = shlex.split(cmd)
 
         try:
-            result = subprocess.run(args, cwd=self.working_dir, capture_output=True, text=True, timeout=self.timeout)
+            result = subprocess.run(
+                args, cwd=self.working_dir, capture_output=True, text=True, timeout=self.timeout
+            )
 
             stdout = result.stdout.strip()
             stderr = result.stderr.strip()

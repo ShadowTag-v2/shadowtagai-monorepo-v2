@@ -1,0 +1,24 @@
+# Vertex AI Studio — pnkln Demo Cells
+
+Paste the following into a Notebook cell in Vertex AI Studio.
+
+---
+
+### Cell 1 — Environment check
+%%bash
+set -euo pipefail
+echo "[pnkln] Env check starting"
+python3 --version
+pip3 --version
+which gcloud || echo "gcloud not found (ok for local demos)"
+echo "[pnkln] Env check ok"
+
+### Cell 2 — Clone/Sync (optional placeholder)
+%%bash
+echo "[pnkln] Placeholder for repo sync"
+# git clone <secure_repo_url> pnkln-secure || true
+
+### Cell 3 — Run demo
+%%bash
+chmod +x pnkln/scripts/run_demo.sh
+./pnkln/scripts/run_demo.sh

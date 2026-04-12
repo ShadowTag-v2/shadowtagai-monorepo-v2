@@ -1,0 +1,389 @@
+# Grafana Deployment with Pre-configured Dashboards
+# Dashboards: Inference Overview, Judge #6, GPU Utilization, Cost Tracking
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: monitoring
+data:
+  prometheus.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://prometheus.monitoring.svc.cluster.local:9090
+      isDefault: true
+      editable: false
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-config
+  namespace: monitoring
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: 'PNKLN Inference'
+      type: file
+      disableDeletion: false
+      updateIntervalSeconds: 30
+      allowUiUpdates: true
+      options:
+        path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-inference
+  namespace: monitoring
+data:
+  inference-overview.json: |
+    {
+      "dashboard": {
+        "title": "Inference Overview",
+        "tags": ["inference", "latency", "qps"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "title": "P99 Latency (SLA: 90ms)",
+            "targets": [{
+              "expr": "histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) * 1000",
+              "legendFormat": "p99"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "title": "Requests per Second",
+            "targets": [{
+              "expr": "sum(rate(http_requests_total[5m]))",
+              "legendFormat": "QPS"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "title": "Error Rate",
+            "targets": [{
+              "expr": "sum(rate(http_requests_total{code=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m]))",
+              "legendFormat": "5xx Rate"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "title": "Model Allocation",
+            "targets": [
+              {"expr": "sum(rate(llm_requests_total{model=\"gemini-1.5-pro-002\"}[5m]))", "legendFormat": "Gemini (40%)"},
+              {"expr": "sum(rate(llm_requests_total{model=\"claude-3-5-sonnet-20241022\"}[5m]))", "legendFormat": "Claude (35%)"},
+              {"expr": "sum(rate(llm_requests_total{model=\"gpt-4\"}[5m]))", "legendFormat": "GPT-4 (15%)"},
+              {"expr": "sum(rate(llm_requests_total{model=\"grok-beta\"}[5m]))", "legendFormat": "Grok (5%)"},
+              {"expr": "sum(rate(llm_requests_total{model=\"llama-3.1-70b\"}[5m]))", "legendFormat": "Llama 3.1 (5%)"}
+            ],
+            "type": "piechart",
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          }
+        ]
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-judge
+  namespace: monitoring
+data:
+  judge-6-dashboard.json: |
+    {
+      "dashboard": {
+        "title": "Judge #6 Governance",
+        "tags": ["governance", "compliance", "atp-5-19"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "title": "Coverage (Target: 98%)",
+            "targets": [{
+              "expr": "(sum(rate(judge_requests_total[5m])) / sum(rate(http_requests_total[5m]))) * 100",
+              "legendFormat": "Coverage %"
+            }],
+            "type": "gauge",
+            "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0}
+          },
+          {
+            "title": "Layer Distribution",
+            "targets": [
+              {"expr": "sum(rate(judge_layer1_requests_total[5m]))", "legendFormat": "Layer 1 (Gemini)"},
+              {"expr": "sum(rate(judge_layer2_requests_total[5m]))", "legendFormat": "Layer 2 (PyTorch)"},
+              {"expr": "sum(rate(judge_layer3_requests_total[5m]))", "legendFormat": "Layer 3 (Rules)"}
+            ],
+            "type": "piechart",
+            "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0}
+          },
+          {
+            "title": "Violations by Type",
+            "targets": [
+              {"expr": "sum by (policy_id) (rate(judge_violations_total[5m]))", "legendFormat": "{{policy_id}}"}
+            ],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0}
+          },
+          {
+            "title": "Layer 1 Latency (Target: <30ms)",
+            "targets": [{
+              "expr": "histogram_quantile(0.99, rate(judge_layer1_latency_seconds_bucket[5m])) * 1000",
+              "legendFormat": "p99"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 8, "x": 0, "y": 8}
+          },
+          {
+            "title": "Layer 2 Latency (Target: <40ms)",
+            "targets": [{
+              "expr": "histogram_quantile(0.99, rate(judge_layer2_latency_seconds_bucket[5m])) * 1000",
+              "legendFormat": "p99"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 8, "x": 8, "y": 8}
+          },
+          {
+            "title": "Layer 3 Latency (Target: <20ms)",
+            "targets": [{
+              "expr": "histogram_quantile(0.99, rate(judge_layer3_latency_seconds_bucket[5m])) * 1000",
+              "legendFormat": "p99"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 8, "x": 16, "y": 8}
+          }
+        ]
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-gpu
+  namespace: monitoring
+data:
+  gpu-utilization.json: |
+    {
+      "dashboard": {
+        "title": "GPU Utilization",
+        "tags": ["gpu", "nvidia", "l4"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "title": "GPU Utilization (Target: 70-85%)",
+            "targets": [{
+              "expr": "avg(DCGM_FI_DEV_GPU_UTIL)",
+              "legendFormat": "GPU Util %"
+            }],
+            "type": "gauge",
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "title": "GPU Memory Usage",
+            "targets": [{
+              "expr": "avg(DCGM_FI_DEV_FB_USED / DCGM_FI_DEV_FB_FREE * 100)",
+              "legendFormat": "Memory %"
+            }],
+            "type": "gauge",
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "title": "GPU Temperature",
+            "targets": [{
+              "expr": "avg(DCGM_FI_DEV_GPU_TEMP)",
+              "legendFormat": "Temperature °C"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "title": "GPU Power Usage",
+            "targets": [{
+              "expr": "avg(DCGM_FI_DEV_POWER_USAGE)",
+              "legendFormat": "Power (W)"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          }
+        ]
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-cost
+  namespace: monitoring
+data:
+  cost-tracking.json: |
+    {
+      "dashboard": {
+        "title": "Cost Tracking",
+        "tags": ["cost", "budget", "roi"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "title": "Monthly Cost Projection (Budget: $65K)",
+            "targets": [{
+              "expr": "sum(rate(llm_router_cost_usd[1h])) * 730",
+              "legendFormat": "Projected Monthly Cost"
+            }],
+            "type": "gauge",
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "title": "Cost by Model",
+            "targets": [
+              {"expr": "sum by (model) (rate(llm_router_cost_usd[1h])) * 730", "legendFormat": "{{model}}"}
+            ],
+            "type": "piechart",
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "title": "Hourly Burn Rate",
+            "targets": [{
+              "expr": "sum(rate(llm_router_cost_usd[1h]))",
+              "legendFormat": "$/hour"
+            }],
+            "type": "graph",
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "title": "Budget Utilization",
+            "targets": [{
+              "expr": "(sum(increase(llm_router_cost_usd[30d])) / 65000) * 100",
+              "legendFormat": "Budget %"
+            }],
+            "type": "gauge",
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          }
+        ]
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:10.2.2
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: GF_SECURITY_ADMIN_USER
+          value: admin
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          [VAPORIZED_PWD]:
+            secretKeyRef:
+              name: grafana-secrets
+              key: admin-password
+        - name: GF_INSTALL_PLUGINS
+          value: "grafana-piechart-panel,grafana-clock-panel"
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "2Gi"
+          limits:
+            cpu: "1"
+            memory: "4Gi"
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+        - name: datasources
+          mountPath: /etc/grafana/provisioning/datasources
+        - name: dashboards-config
+          mountPath: /etc/grafana/provisioning/dashboards
+        - name: dashboard-inference
+          mountPath: /var/lib/grafana/dashboards/inference-overview.json
+          subPath: inference-overview.json
+        - name: dashboard-judge
+          mountPath: /var/lib/grafana/dashboards/judge-6-dashboard.json
+          subPath: judge-6-dashboard.json
+        - name: dashboard-gpu
+          mountPath: /var/lib/grafana/dashboards/gpu-utilization.json
+          subPath: gpu-utilization.json
+        - name: dashboard-cost
+          mountPath: /var/lib/grafana/dashboards/cost-tracking.json
+          subPath: cost-tracking.json
+      volumes:
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: grafana-pvc
+      - name: datasources
+        configMap:
+          name: grafana-datasources
+      - name: dashboards-config
+        configMap:
+          name: grafana-dashboards-config
+      - name: dashboard-inference
+        configMap:
+          name: grafana-dashboard-inference
+      - name: dashboard-judge
+        configMap:
+          name: grafana-dashboard-judge
+      - name: dashboard-gpu
+        configMap:
+          name: grafana-dashboard-gpu
+      - name: dashboard-cost
+        configMap:
+          name: grafana-dashboard-cost
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+  namespace: monitoring
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: standard-rwo
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    app: grafana
+spec:
+  type: ClusterIP
+  selector:
+    app: grafana
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-secrets
+  namespace: monitoring
+type: Opaque
+stringData:
+  admin-password: "[VAPORIZED_PWD]"

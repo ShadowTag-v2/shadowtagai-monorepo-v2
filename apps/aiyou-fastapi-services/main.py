@@ -21,7 +21,9 @@ app.add_middleware(
 )
 
 
-app.include_router(agents.router, prefix="/api/v1/agents", dependencies=[Depends(verify_activeshield_jwt)])
+app.include_router(
+    agents.router, prefix="/api/v1/agents", dependencies=[Depends(verify_activeshield_jwt)]
+)
 
 
 @app.get("/health")

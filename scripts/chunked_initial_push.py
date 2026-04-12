@@ -37,7 +37,9 @@ def clear_heavy_folders():
 
 def get_github_token():
     APP_ID = "3018200"
-    PEM_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    PEM_PATH = (
+        "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    )
     with open(PEM_PATH) as f:
         private_key = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
@@ -49,7 +51,10 @@ def get_github_token():
     if not target_inst:
         print("Error: Could not find GitHub App installation for 'ShadowTag-v2'")
         sys.exit(1)
-    res2 = requests.post(f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens", headers=headers)
+    res2 = requests.post(
+        f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens",
+        headers=headers,
+    )
     res2.raise_for_status()
     return res2.json()["token"]
 
@@ -65,7 +70,9 @@ def chunk_commit_push(token):
 
     # Initial skeleton to tie history
     with open(".gitignore", "a") as f:
-        f.write("\nnode_modules/\n.venv/\nvenv/\n.next/\ndist/\nbuild/\n__pycache__/\ntarget/\n.pnpm/\n*.jar\n*.node\n*.dylib\n*.so\n*.h5\n*.bin\n")
+        f.write(
+            "\nnode_modules/\n.venv/\nvenv/\n.next/\ndist/\nbuild/\n__pycache__/\ntarget/\n.pnpm/\n*.jar\n*.node\n*.dylib\n*.so\n*.h5\n*.bin\n"
+        )
 
     subprocess.run(["git", "add", ".gitignore"], check=False)
     if os.path.exists("README.md"):
@@ -79,7 +86,9 @@ def chunk_commit_push(token):
     current_files = []
 
     # get all untracked standard files
-    result = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True)
+    result = subprocess.run(
+        ["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True
+    )
     all_files = [f for f in result.stdout.split("\n") if f]
 
     print(f"Discovered {len(all_files)} trackable files.")
@@ -108,13 +117,18 @@ def chunk_commit_push(token):
             if not current_files:
                 continue
 
-            print(f"Batch {BATCH}: Adding {len(current_files)} files ({current_size / 1024 / 1024:.2f} MB)...")
+            print(
+                f"Batch {BATCH}: Adding {len(current_files)} files ({current_size / 1024 / 1024:.2f} MB)..."
+            )
 
             for i in range(0, len(current_files), 1000):
                 cmd = ["git", "add"] + current_files[i : i + 1000]
                 subprocess.run(cmd, check=True)
 
-            subprocess.run(["git", "commit", "-m", f"chore: canonical monorepo payload chunk {BATCH}"], check=False)
+            subprocess.run(
+                ["git", "commit", "-m", f"chore: canonical monorepo payload chunk {BATCH}"],
+                check=False,
+            )
 
             success = False
             for attempt in range(3):

@@ -17,7 +17,9 @@ SA_EMAIL = "redacted@shadowtag-v4.local"
 KEY_FILE_PATH = os.path.expanduser("~/.gcp/headless-runner-key.json")
 
 # --- Environment Setup ---
-WORKSPACE_CONFIG = "/Users/pikeymickey/.gemini/antigravity/playground/ultraviolet-zodiac/.gcloud_config"
+WORKSPACE_CONFIG = (
+    "/Users/pikeymickey/.gemini/antigravity/playground/ultraviolet-zodiac/.gcloud_config"
+)
 os.environ["CLOUDSDK_CONFIG"] = WORKSPACE_CONFIG
 
 
@@ -86,13 +88,17 @@ def solve_auth():
         if attempt_auth_strategy(strategy):
             if verify_token():
                 log(f"✅ [SOLVER] Success via {strategy}.")
-                print(json.dumps({"status": "success", "method": strategy, "timestamp": time.time()}))
+                print(
+                    json.dumps({"status": "success", "method": strategy, "timestamp": time.time()})
+                )
                 return
             else:
                 log("⚠️ [SOLVER] Critique: Strategy succeeded, but token is still invalid.")
 
     log("⛔ [SOLVER] All strategies exhausted. Auth is BROKEN.", "CRITICAL")
-    print(json.dumps({"status": "failed", "error": "All strategies failed", "timestamp": time.time()}))
+    print(
+        json.dumps({"status": "failed", "error": "All strategies failed", "timestamp": time.time()})
+    )
     sys.exit(1)
 
 

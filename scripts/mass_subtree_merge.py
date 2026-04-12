@@ -7,8 +7,17 @@ import time
 def fetch_repos_with_token(org, token):
     """Fetches repos for an organization using the installation access token"""
     print(f"Fetching repos for {org}...")
-    headers = ["-H", "Accept: application/vnd.github.v3+json", "-H", f"Authorization: token {token}"]
-    url = f"https://api.github.com/users/{org}/repos?per_page=100" if org == "ehanc69" else f"https://api.github.com/orgs/{org}/repos?per_page=100"
+    headers = [
+        "-H",
+        "Accept: application/vnd.github.v3+json",
+        "-H",
+        f"Authorization: token {token}",
+    ]
+    url = (
+        f"https://api.github.com/users/{org}/repos?per_page=100"
+        if org == "ehanc69"
+        else f"https://api.github.com/orgs/{org}/repos?per_page=100"
+    )
 
     cmd = ["curl", "-s"] + headers + [url]
     res = subprocess.run(cmd, capture_output=True, text=True)
@@ -62,7 +71,9 @@ def subtree_merge_all():
                 cmd_master = ["git", "subtree", "add", f"--prefix={prefix}", remote_url, "master"]
                 res2 = subprocess.run(cmd_master, capture_output=True, text=True)
                 if res2.returncode != 0:
-                    print(f"    ❌ Failed to add subtree {repo}: {res2.stderr.strip().splitlines()[-1] if res2.stderr else 'Unknown error'}")
+                    print(
+                        f"    ❌ Failed to add subtree {repo}: {res2.stderr.strip().splitlines()[-1] if res2.stderr else 'Unknown error'}"
+                    )
                 else:
                     print("    ✅ Success (master branch)")
             else:

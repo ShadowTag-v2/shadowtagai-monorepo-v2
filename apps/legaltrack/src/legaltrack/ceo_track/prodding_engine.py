@@ -45,4 +45,8 @@ async def trigger_schiznit_nudge(schedule: CEOTrackSchedule, background_tasks: B
         # Fire off the physical hardware prodding loop asynchronously
         background_tasks.add_task(_orchestrate_departure, schedule)
 
-    return {"status": "active_prodding", "task": schedule.task_name, "actions_dispatched": action_plan}
+    return {
+        "status": "active_prodding",
+        "task": schedule.task_name,
+        "actions_dispatched": action_plan,
+    }

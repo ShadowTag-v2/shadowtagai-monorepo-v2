@@ -67,7 +67,9 @@ def summarize_control_plane(path: str) -> dict[str, Any]:
     }
 
 
-def load_monorepo_truth(manifest_path: str, merge_status_path: str, control_plane_path: str) -> dict[str, Any]:
+def load_monorepo_truth(
+    manifest_path: str, merge_status_path: str, control_plane_path: str
+) -> dict[str, Any]:
     manifest = read_manifest(manifest_path)
     merge_status = summarize_merge_status(merge_status_path)
     control_plane = summarize_control_plane(control_plane_path)
@@ -85,5 +87,6 @@ def load_monorepo_truth(manifest_path: str, merge_status_path: str, control_plan
         "canonical_repo_roots": roots,
         "merge_status": merge_status,
         "control_plane": control_plane,
-        "rule": "ShadowTag-v2/Monorepo-Uphillsnowball is the one canonical root. " "ShadowTag-v2_stack/* are folded-in components, not root peers.",
+        "rule": "ShadowTag-v2/Monorepo-Uphillsnowball is the one canonical root. "
+        "ShadowTag-v2_stack/* are folded-in components, not root peers.",
     }

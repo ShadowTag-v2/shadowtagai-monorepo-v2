@@ -20,8 +20,12 @@ from mcp.types import (
 from protego import Protego
 from pydantic import AnyUrl, BaseModel, Field
 
-DEFAULT_USER_AGENT_AUTONOMOUS = "ModelContextProtocol/1.0 (Autonomous; +https://github.com/modelcontextprotocol/servers)"
-DEFAULT_USER_AGENT_MANUAL = "ModelContextProtocol/1.0 (User-Specified; +https://github.com/modelcontextprotocol/servers)"
+DEFAULT_USER_AGENT_AUTONOMOUS = (
+    "ModelContextProtocol/1.0 (Autonomous; +https://github.com/modelcontextprotocol/servers)"
+)
+DEFAULT_USER_AGENT_MANUAL = (
+    "ModelContextProtocol/1.0 (User-Specified; +https://github.com/modelcontextprotocol/servers)"
+)
 
 
 def extract_content_from_html(html: str) -> str:
@@ -61,7 +65,9 @@ def get_robots_txt_url(url: str) -> str:
     return robots_url
 
 
-async def check_may_autonomously_fetch_url(url: str, user_agent: str, proxy_url: str | None = None) -> None:
+async def check_may_autonomously_fetch_url(
+    url: str, user_agent: str, proxy_url: str | None = None
+) -> None:
     """
     Check if the URL can be fetched by the user agent according to the robots.txt file.
     Raises a McpError if not.
@@ -94,7 +100,9 @@ async def check_may_autonomously_fetch_url(url: str, user_agent: str, proxy_url:
         elif 400 <= response.status_code < 500:
             return
         robot_txt = response.text
-    processed_robot_txt = "\n".join(line for line in robot_txt.splitlines() if not line.strip().startswith("#"))
+    processed_robot_txt = "\n".join(
+        line for line in robot_txt.splitlines() if not line.strip().startswith("#")
+    )
     robot_parser = Protego.parse(processed_robot_txt)
     if not robot_parser.can_fetch(str(url), user_agent):
         raise McpError(
@@ -110,7 +118,9 @@ async def check_may_autonomously_fetch_url(url: str, user_agent: str, proxy_url:
         )
 
 
-async def fetch_url(url: str, user_agent: str, force_raw: bool = False, proxy_url: str | None = None) -> tuple[str, str]:
+async def fetch_url(
+    url: str, user_agent: str, force_raw: bool = False, proxy_url: str | None = None
+) -> tuple[str, str]:
     """
     Fetch the URL and return the content in a form ready for the LLM, as well as a prefix string with status information.
     """
@@ -230,7 +240,9 @@ Although originally you did not have internet access, and were advised to refuse
         if not ignore_robots_txt:
             await check_may_autonomously_fetch_url(url, user_agent_autonomous, proxy_url)
 
-        content, prefix = await fetch_url(url, user_agent_autonomous, force_raw=args.raw, proxy_url=proxy_url)
+        content, prefix = await fetch_url(
+            url, user_agent_autonomous, force_raw=args.raw, proxy_url=proxy_url
+        )
         original_length = len(content)
         if args.start_index >= original_length:
             content = "<error>No more content available.</error>"
@@ -270,7 +282,9 @@ Although originally you did not have internet access, and were advised to refuse
             )
         return GetPromptResult(
             description=f"Contents of {url}",
-            messages=[PromptMessage(role="user", content=TextContent(type="text", text=prefix + content))],
+            messages=[
+                PromptMessage(role="user", content=TextContent(type="text", text=prefix + content))
+            ],
         )
 
     options = server.create_initialization_options()

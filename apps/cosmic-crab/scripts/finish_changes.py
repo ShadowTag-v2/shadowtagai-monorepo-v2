@@ -5,7 +5,11 @@ import subprocess
 import sys
 
 # Configure Logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", stream=sys.stdout)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    stream=sys.stdout,
+)
 logger = logging.getLogger("FinishChanges")
 
 
@@ -27,7 +31,9 @@ def run_command(command, dry_run=False):
         logger.error(f"Stderr: {e.stderr}")
         return False
     except FileNotFoundError:
-        logger.error(f"Command not found: {command[0]}. Please ensure it is installed and in your PATH.")
+        logger.error(
+            f"Command not found: {command[0]}. Please ensure it is installed and in your PATH."
+        )
         return False
 
 
@@ -37,7 +43,9 @@ def main():
     Lint -> Format -> Stage -> Commit
     """
     parser = argparse.ArgumentParser(description="Finish changes cycle.")
-    parser.add_argument("--dry-run", action="store_true", help="Print commands instead of executing them.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Print commands instead of executing them."
+    )
     args = parser.parse_args()
 
     logger.info("Starting the finish changes cycle...")

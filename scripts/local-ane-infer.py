@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-import os
-import sys
 import argparse
 import json
+import os
+import sys
 
 # Bind the ANE bridge path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services')))
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), "../apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
+        )
+    )
+)
 
 try:
     from zero_cpu_router import dispatch_compute
 except ImportError:
     dispatch_compute = None
+
 
 def antigravity_local_infer(prompt: str, model: str = "pnkln-logic-8b", require_json: bool = False):
     """
@@ -33,6 +40,7 @@ def antigravity_local_infer(prompt: str, model: str = "pnkln-logic-8b", require_
     except Exception as e:
         print(json.dumps({"error": str(e)}))
         sys.exit(1)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Antigravity Autonomous Local ANE Interface")

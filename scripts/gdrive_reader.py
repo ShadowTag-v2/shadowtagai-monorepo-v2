@@ -7,6 +7,7 @@ Reads all Google Docs and PDFs from your Drive, extracts text content.
 import io
 import json
 from pathlib import Path
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -15,13 +16,14 @@ from googleapiclient.http import MediaIoBaseDownload
 
 try:
     import fitz  # PyMuPDF
+
     HAS_PYMUPDF = True
 except ImportError:
     HAS_PYMUPDF = False
 
 SCOPES = [
-    'https://www.googleapis.com/auth/drive.readonly',
-    'https://www.googleapis.com/auth/documents.readonly'
+    "https://www.googleapis.com/auth/drive.readonly",
+    "https://www.googleapis.com/auth/documents.readonly",
 ]
 
 CLIENT_SECRET_PATH = "/Users/pikeymickey/Downloads/client_secret_215390634092-soouingb3826ubu3m7bseu24c6lu04h4.apps.googleusercontent.com.json"
@@ -43,7 +45,7 @@ def get_credentials():
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_PATH, SCOPES)
             creds = flow.run_local_server(port=0)
 
-        with open(TOKEN_PATH, 'w') as token:
+        with open(TOKEN_PATH, "w") as token:
             token.write(creds.to_json())
 
     return creds
@@ -57,15 +59,19 @@ def list_all_files(service, mime_type: str = None):
     query = f"mimeType='{mime_type}'" if mime_type else None
 
     while True:
-        results = service.files().list(
-            q=query,
-            pageSize=100,
-            fields="nextPageToken, files(id, name, mimeType, modifiedTime)",
-            pageToken=page_token
-        ).execute()
+        results = (
+            service.files()
+            .list(
+                q=query,
+                pageSize=100,
+                fields="nextPageToken, files(id, name, mimeType, modifiedTime)",
+                pageToken=page_token,
+            )
+            .execute()
+        )
 
-        files.extend(results.get('files', []))
-        page_token = results.get('nextPageToken')
+        files.extend(results.get("files", []))
+        page_token = results.get("nextPageToken")
 
         if not page_token:
             break
@@ -76,12 +82,9 @@ def list_all_files(service, mime_type: str = None):
 def export_google_doc(service, file_id: str, file_name: str) -> str:
     """Export a Google Doc as plain text."""
     try:
-        request = service.files().export_media(
-            fileId=file_id,
-            mimeType='text/plain'
-        )
+        request = service.files().export_media(fileId=file_id, mimeType="text/plain")
         content = request.execute()
-        return content.decode('utf-8')
+        return content.decode("utf-8")
     except Exception as e:
         print(f"  Error exporting {file_name}: {e}")
         return ""
@@ -122,7 +125,7 @@ def extract_pdf_text(pdf_bytes: bytes) -> str:
 
 def sanitize_filename(name: str) -> str:
     """Sanitize filename for filesystem."""
-    return "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in name)
+    return "".join(c if c.isalnum() or c in (" ", "-", "_") else "_" for c in name)
 
 
 def main():
@@ -133,44 +136,44 @@ def main():
 
     # Authenticate
     creds = get_credentials()
-    service = build('drive', 'v3', credentials=creds)
+    service = build("drive", "v3", credentials=creds)
 
     print("///▞ GDRIVE READER :: Authenticated")
 
     # Get all Google Docs
     print("\n=== Google Docs ===")
-    docs = list_all_files(service, 'application/vnd.google-apps.document')
+    docs = list_all_files(service, "application/vnd.google-apps.document")
     print(f"Found {len(docs)} Google Docs")
 
     for doc in docs:
         print(f"  Processing: {doc['name']}")
-        content = export_google_doc(service, doc['id'], doc['name'])
+        content = export_google_doc(service, doc["id"], doc["name"])
 
         if content:
-            filename = sanitize_filename(doc['name']) + ".txt"
+            filename = sanitize_filename(doc["name"]) + ".txt"
             filepath = OUTPUT_DIR / filename
             filepath.write_text(content)
             print(f"    Saved: {filepath}")
 
     # Get all PDFs
     print("\n=== PDFs ===")
-    pdfs = list_all_files(service, 'application/pdf')
+    pdfs = list_all_files(service, "application/pdf")
     print(f"Found {len(pdfs)} PDFs")
 
     for pdf in pdfs:
         print(f"  Processing: {pdf['name']}")
-        pdf_bytes = download_pdf(service, pdf['id'], pdf['name'])
+        pdf_bytes = download_pdf(service, pdf["id"], pdf["name"])
 
         if pdf_bytes:
             # Save raw PDF
-            pdf_filename = sanitize_filename(pdf['name']) + ".pdf"
+            pdf_filename = sanitize_filename(pdf["name"]) + ".pdf"
             pdf_filepath = OUTPUT_DIR / pdf_filename
             pdf_filepath.write_bytes(pdf_bytes)
 
             # Extract and save text
             text = extract_pdf_text(pdf_bytes)
             if text and not text.startswith("["):
-                txt_filename = sanitize_filename(pdf['name']) + "_extracted.txt"
+                txt_filename = sanitize_filename(pdf["name"]) + "_extracted.txt"
                 txt_filepath = OUTPUT_DIR / txt_filename
                 txt_filepath.write_text(text)
                 print(f"    Saved: {txt_filepath}")
@@ -185,8 +188,8 @@ def main():
 
     # Create manifest
     manifest = {
-        "docs": [{"id": d['id'], "name": d['name']} for d in docs],
-        "pdfs": [{"id": p['id'], "name": p['name']} for p in pdfs]
+        "docs": [{"id": d["id"], "name": d["name"]} for d in docs],
+        "pdfs": [{"id": p["id"], "name": p["name"]} for p in pdfs],
     }
     manifest_path = OUTPUT_DIR / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2))

@@ -46,7 +46,9 @@ class AutoresearchSwarm:
         Task: Vote GO or NO-GO. Return JSON: {{"vote": "GO/NO-GO", "reason": "brief string"}}
         """
         try:
-            response = await self.model_flash.generate_content_async(prompt, generation_config={"response_mime_type": "application/json"})
+            response = await self.model_flash.generate_content_async(
+                prompt, generation_config={"response_mime_type": "application/json"}
+            )
             return json.loads(response.text)
         except Exception as e:
             return {"vote": "NO-GO", "reason": f"Agent Error: {str(e)}"}
@@ -68,15 +70,22 @@ class AutoresearchSwarm:
         if self.model_pro:
             try:
                 # E.g. generating the literature review / code logic
-                response = await self.model_pro.generate_content_async(f"Autoresearch Task: {task}. Provide structured output.")
+                response = await self.model_pro.generate_content_async(
+                    f"Autoresearch Task: {task}. Provide structured output."
+                )
                 return {"status": "SUCCESS", "output": response.text}
             except Exception as e:
                 return {"status": "ERROR", "reason": str(e)}
         else:
-            return {"status": "SUCCESS", "output": "Mock Execution Complete. (No VertexAI API loaded)"}
+            return {
+                "status": "SUCCESS",
+                "output": "Mock Execution Complete. (No VertexAI API loaded)",
+            }
 
 
 if __name__ == "__main__":
     swarm = AutoresearchSwarm()
-    result = asyncio.run(swarm.execute_autoresearch_loop("Map zero-ETL integration points.", max_iterations=2))
+    result = asyncio.run(
+        swarm.execute_autoresearch_loop("Map zero-ETL integration points.", max_iterations=2)
+    )
     print(json.dumps(result, indent=2))

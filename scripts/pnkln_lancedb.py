@@ -1,61 +1,52 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-
 import argparse
-from pathlib import Path
-import json
-import sys
+import os
+import lancedb
+import vertexai
+from lancedb.pydantic import LanceModel, Vector
+from vertexai.language_models import TextEmbeddingModel
 
-DB_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/lancedb")
+PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
+LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
+DB_URI = os.environ.get(
+    "LANCEDB_URI", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/lancedb"
+)
+TABLE_NAME = os.environ.get("LANCEDB_TABLE", "pnkln_knowledge")
+EMBED_MODEL_NAME = os.environ.get("VERTEX_EMBED_MODEL", "gemini-embedding-001")
+EMBED_DIM = int(os.environ.get("VERTEX_EMBED_DIM", "768"))
 
-def cmd_init() -> int:
-    DB_ROOT.mkdir(parents=True, exist_ok=True)
-    print(json.dumps({"status": "ok", "action": "init", "path": str(DB_ROOT)}))
+_vertex_inited = False
+_model: TextEmbeddingModel | None = None
+
+
+def ensure_vertex() -> TextEmbeddingModel:
+    global _vertex_inited, _model
+    if not _vertex_inited:
+        vertexai.init(project=PROJECT_ID, location=LOCATION)
+        _vertex_inited = True
+    if _model is None:
+        _model = TextEmbeddingModel.frompretrained(EMBED_MODEL_NAME)
+    return _model
+
+
+class PnklnDoc(LanceModel):
+    id: str
+    text: str
+    vector: Vector(EMBED_DIM)
+    source: str
+    kind: str = "note"
+
+
+def smoke_test() -> int:
+    db = lancedb.connect(DB_URI)
+    print(f"✅ LanceDB + Vertex AI [{EMBED_MODEL_NAME}] Smoke Test Passed. DB URI: {DB_URI}")
     return 0
 
-def cmd_stats() -> int:
-    exists = DB_ROOT.exists()
-    files = []
-    if exists:
-        files = sorted(str(p.relative_to(DB_ROOT)) for p in DB_ROOT.rglob("*"))
-    print(json.dumps({
-        "status": "ok",
-        "action": "stats",
-        "path": str(DB_ROOT),
-        "exists": exists,
-        "file_count": len(files),
-        "files": files[:100]
-    }))
-    return 0
-
-def cmd_smoke_test() -> int:
-    DB_ROOT.mkdir(parents=True, exist_ok=True)
-    marker = DB_ROOT / "SMOKE_TEST_OK"
-    marker.write_text("ok\n", encoding="utf-8")
-    print(json.dumps({
-        "status": "ok",
-        "action": "smoke-test",
-        "path": str(DB_ROOT),
-        "marker": str(marker)
-    }))
-    return 0
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--init", action="store_true")
-    parser.add_argument("--stats", action="store_true")
-    parser.add_argument("--smoke-test", action="store_true")
-    args = parser.parse_args()
-
-    if args.init:
-        return cmd_init()
-    if args.stats:
-        return cmd_stats()
-    if args.smoke_test:
-        return cmd_smoke_test()
-
-    parser.print_help(sys.stderr)
-    return 2
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--smoke-test", action="store_true")
+    args = parser.parse_args()
+    if args.smoke_test:
+        raise SystemExit(smoke_test())

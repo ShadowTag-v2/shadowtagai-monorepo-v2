@@ -27,14 +27,21 @@ def get_token(client_id, pem_path, owner_name):
     if not target_installation_id:
         return None
 
-    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers)
+    resp = requests.post(
+        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
+        headers=headers,
+    )
     if resp.status_code == 201:
         return resp.json()["token"]
     return None
 
 
 if __name__ == "__main__":
-    token = get_token("Iv23liWtuBLy8uYLpzjn", "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem", "ehanc69")
+    token = get_token(
+        "Iv23liWtuBLy8uYLpzjn",
+        "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem",
+        "ehanc69",
+    )
     if not token:
         print("Failed to get token for ehanc69")
         sys.exit(1)

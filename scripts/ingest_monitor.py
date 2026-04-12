@@ -16,6 +16,7 @@ Usage:
     python3 scripts/ingest_monitor.py --verified-only  # cite only VERIFIED sources
     python3 scripts/ingest_monitor.py --sources reddit,news  # limit adapters
 """
+
 from __future__ import annotations
 
 import argparse
@@ -24,7 +25,7 @@ import json
 import subprocess
 import sys
 import time
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -60,8 +61,8 @@ async def _run_adapter(name: str, adapter_fn) -> int:
 
 async def run_web_adapters(sources: list[str]) -> dict[str, int]:
     """Run the specified free adapters concurrently."""
-    from ingestion.sources.reddit_adapter import RedditAdapter
     from ingestion.sources.fourchan_adapter import FourChanAdapter
+    from ingestion.sources.reddit_adapter import RedditAdapter
 
     ADAPTERS: dict[str, object] = {
         "reddit": lambda: RedditAdapter(limit=25),
@@ -71,12 +72,14 @@ async def run_web_adapters(sources: list[str]) -> dict[str, int]:
     # Optional adapters — only import if available
     try:
         from ingestion.sources.news_adapter import NewsRSSAdapter
+
         ADAPTERS["news"] = lambda: NewsRSSAdapter()
     except ImportError:
         pass
 
     try:
         from ingestion.sources.darkweb_adapter import DarkWebAdapter
+
         ADAPTERS["darkweb"] = lambda: DarkWebAdapter()
     except ImportError:
         pass
@@ -98,6 +101,7 @@ def run_web_to_corpus() -> dict[str, int]:
     """Run the web_to_corpus normalizer inline."""
     try:
         from scripts.web_to_corpus import normalize
+
         return normalize(dry_run=False)
     except ImportError:
         # Fall back to subprocess if import path differs
@@ -166,7 +170,9 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
     # Stage 2
     print("[monitor] Stage 2: web_to_corpus …")
     corpus_stats = run_web_to_corpus()
-    print(f"  processed={corpus_stats.get('processed')} skipped={corpus_stats.get('skipped')} errors={corpus_stats.get('errors')}")
+    print(
+        f"  processed={corpus_stats.get('processed')} skipped={corpus_stats.get('skipped')} errors={corpus_stats.get('errors')}"
+    )
 
     # Stage 3
     print("[monitor] Stage 3: gemini agent swarm …")
@@ -204,7 +210,9 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
 
 
 def run_loop(interval: int, sources: list[str], verified_only: bool) -> None:
-    print(f"[monitor] Loop mode: interval={interval}s sources={sources or 'all'} verified_only={verified_only}")
+    print(
+        f"[monitor] Loop mode: interval={interval}s sources={sources or 'all'} verified_only={verified_only}"
+    )
     while True:
         run_once(sources, verified_only)
         print(f"[monitor] Sleeping {interval}s …")
@@ -217,9 +225,22 @@ def run_loop(interval: int, sources: list[str], verified_only: bool) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Continuous web ingest → corpus → swarm monitor")
     ap.add_argument("--once", action="store_true", help="Single pass, no loop")
-    ap.add_argument("--interval", type=int, default=DEFAULT_INTERVAL, metavar="SECONDS", help="Loop cadence (default 3600)")
-    ap.add_argument("--verified-only", action="store_true", help="Pass --verified-only to rag_evolve / swarm")
-    ap.add_argument("--sources", default="", metavar="NAMES", help="Comma-separated adapters to run (default: all)")
+    ap.add_argument(
+        "--interval",
+        type=int,
+        default=DEFAULT_INTERVAL,
+        metavar="SECONDS",
+        help="Loop cadence (default 3600)",
+    )
+    ap.add_argument(
+        "--verified-only", action="store_true", help="Pass --verified-only to rag_evolve / swarm"
+    )
+    ap.add_argument(
+        "--sources",
+        default="",
+        metavar="NAMES",
+        help="Comma-separated adapters to run (default: all)",
+    )
     args = ap.parse_args()
 
     sources = [s.strip() for s in args.sources.split(",") if s.strip()]

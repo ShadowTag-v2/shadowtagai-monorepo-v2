@@ -26,7 +26,9 @@ class TeslaOemIntegration:
         """Starts climate control to implicitly nudge the user that departure is required."""
         success = await self.wake_vehicle()
         if success:
-            logger.info(f"Tesla SDK: Climate control set to {target_temp_c}C. Implicit nudge activated.")
+            logger.info(
+                f"Tesla SDK: Climate control set to {target_temp_c}C. Implicit nudge activated."
+            )
 
     async def sound_horn(self):
         """Aggressive Nudge (Level: No-Slack). Sounds the vehicle horn."""

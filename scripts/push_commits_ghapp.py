@@ -7,7 +7,9 @@ import jwt
 import requests
 
 APP_ID = "3018200"
-PRIVATE_KEY_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+PRIVATE_KEY_PATH = (
+    "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+)
 REPO_OWNER = "ShadowTag-v2"
 REPO_NAME = "Monorepo-Uphillsnowball"
 
@@ -57,7 +59,12 @@ def main():
     print("Finding unpushed commits...")
     subprocess.run(["git", "fetch", remote_url, "main"], check=True)
 
-    res = subprocess.run(["git", "log", "FETCH_HEAD..HEAD", "--oneline", "--reverse"], capture_output=True, text=True, check=True)
+    res = subprocess.run(
+        ["git", "log", "FETCH_HEAD..HEAD", "--oneline", "--reverse"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
 
     output = res.stdout.strip()
     if not output:

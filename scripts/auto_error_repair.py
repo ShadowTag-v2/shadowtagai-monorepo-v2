@@ -23,6 +23,7 @@ Usage:
   # CI mode (non-zero exit on unresolved errors):
   python scripts/auto_error_repair.py --ci
 """
+
 from __future__ import annotations
 
 import argparse
@@ -31,8 +32,8 @@ import os
 import re
 import subprocess
 import sys
-import time
 import textwrap
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -50,9 +51,10 @@ AUTO_COMMIT = os.getenv("REPAIR_AUTO_COMMIT", "1") == "1"
 LINT_CMD = ["uv", "run", "ruff", "check", ".", "--output-format", "json"]
 TYPE_CMD = ["uv", "run", "mypy", "--output=json", "."]
 TEST_CMD = ["uv", "run", "pytest", "--tb=short", "-q", "--no-header"]
-FMT_CMD  = ["uv", "run", "ruff", "format", "."]
+FMT_CMD = ["uv", "run", "ruff", "format", "."]
 
 # ── Types ─────────────────────────────────────────────────────────────────────
+
 
 class Error(NamedTuple):
     file: str
@@ -62,7 +64,9 @@ class Error(NamedTuple):
     message: str
     source: str  # "ruff" | "mypy" | "pytest"
 
+
 # ── Linter / test runners ─────────────────────────────────────────────────────
+
 
 def run_ruff() -> list[Error]:
     r = subprocess.run(LINT_CMD, capture_output=True, text=True, cwd=REPO_ROOT)
@@ -70,14 +74,16 @@ def run_ruff() -> list[Error]:
     try:
         items = json.loads(r.stdout or "[]")
         for item in items:
-            errors.append(Error(
-                file=item.get("filename", ""),
-                line=item.get("location", {}).get("row", 0),
-                col=item.get("location", {}).get("column", 0),
-                code=item.get("code", ""),
-                message=item.get("message", ""),
-                source="ruff",
-            ))
+            errors.append(
+                Error(
+                    file=item.get("filename", ""),
+                    line=item.get("location", {}).get("row", 0),
+                    col=item.get("location", {}).get("column", 0),
+                    code=item.get("code", ""),
+                    message=item.get("message", ""),
+                    source="ruff",
+                )
+            )
     except json.JSONDecodeError:
         pass
     return errors
@@ -91,14 +97,16 @@ def run_mypy() -> list[Error]:
         try:
             item = json.loads(line)
             if item.get("severity") == "error":
-                errors.append(Error(
-                    file=item.get("file", ""),
-                    line=item.get("line", 0),
-                    col=item.get("column", 0),
-                    code=item.get("code", ""),
-                    message=item.get("message", ""),
-                    source="mypy",
-                ))
+                errors.append(
+                    Error(
+                        file=item.get("file", ""),
+                        line=item.get("line", 0),
+                        col=item.get("column", 0),
+                        code=item.get("code", ""),
+                        message=item.get("message", ""),
+                        source="mypy",
+                    )
+                )
         except json.JSONDecodeError:
             continue
     return errors
@@ -113,14 +121,16 @@ def run_tests() -> list[Error]:
     for line in r.stdout.splitlines():
         m = re.match(r"FAILED (.+?)::(.+?) - (.+)", line)
         if m:
-            errors.append(Error(
-                file=m.group(1),
-                line=0,
-                col=0,
-                code="TEST_FAIL",
-                message=f"{m.group(2)}: {m.group(3)}",
-                source="pytest",
-            ))
+            errors.append(
+                Error(
+                    file=m.group(1),
+                    line=0,
+                    col=0,
+                    code="TEST_FAIL",
+                    message=f"{m.group(2)}: {m.group(3)}",
+                    source="pytest",
+                )
+            )
     return errors
 
 
@@ -134,7 +144,9 @@ def collect_errors() -> list[Error]:
     errs += run_tests()
     return errs
 
+
 # ── Provider: Gemini ──────────────────────────────────────────────────────────
+
 
 def _gemini_generate(prompt: str) -> str:
     if not GEMINI_API_KEY:
@@ -143,10 +155,12 @@ def _gemini_generate(prompt: str) -> str:
         f"https://generativelanguage.googleapis.com/v1beta/models/"
         f"{GEMINI_GEN_MODEL}:generateContent?key={GEMINI_API_KEY}"
     )
-    body = json.dumps({
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
-    }).encode()
+    body = json.dumps(
+        {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
+        }
+    ).encode()
     req = urllib.request.Request(
         url, data=body, headers={"Content-Type": "application/json"}, method="POST"
     )
@@ -174,6 +188,7 @@ def _gemini_generate(prompt: str) -> str:
 #     )
 #     return msg.content[0].text
 
+
 def generate(prompt: str) -> str:
     if REPAIR_PROVIDER == "openai":
         raise NotImplementedError("Set REPAIR_PROVIDER=gemini or stub _openai_generate")
@@ -181,7 +196,9 @@ def generate(prompt: str) -> str:
         raise NotImplementedError("Set REPAIR_PROVIDER=gemini or stub _claude_generate")
     return _gemini_generate(prompt)
 
+
 # ── Patch builder ─────────────────────────────────────────────────────────────
+
 
 def read_file_context(file_path: str, line: int, radius: int = 20) -> str:
     p = REPO_ROOT / file_path
@@ -190,7 +207,7 @@ def read_file_context(file_path: str, line: int, radius: int = 20) -> str:
     lines = p.read_text(errors="replace").splitlines()
     start = max(0, line - radius - 1)
     end = min(len(lines), line + radius)
-    numbered = [f"{i+1}: {l}" for i, l in enumerate(lines[start:end], start=start)]
+    numbered = [f"{i + 1}: {l}" for i, l in enumerate(lines[start:end], start=start)]
     return "\n".join(numbered)
 
 
@@ -204,10 +221,10 @@ def build_repair_prompt(errors: list[Error]) -> str:
     for file, file_errors in list(by_file.items())[:5]:  # cap at 5 files per round
         context = read_file_context(file, file_errors[0].line)
         err_lines = "\n".join(
-            f"  [{e.source}:{e.code}] line {e.line}: {e.message}"
-            for e in file_errors[:10]
+            f"  [{e.source}:{e.code}] line {e.line}: {e.message}" for e in file_errors[:10]
         )
-        sections.append(textwrap.dedent(f"""
+        sections.append(
+            textwrap.dedent(f"""
             ### File: {file}
             Errors:
             {err_lines}
@@ -216,7 +233,8 @@ def build_repair_prompt(errors: list[Error]) -> str:
             ```
             {context}
             ```
-        """))
+        """)
+        )
 
     return textwrap.dedent(f"""
         You are an expert Python/TypeScript developer performing automated error repair.
@@ -285,7 +303,9 @@ def auto_commit(patched_files: list[str], round_n: int) -> None:
     subprocess.run(["git", "commit", "-m", msg], cwd=REPO_ROOT)
     print(f"[repair] committed: {msg}")
 
+
 # ── Main repair loop ──────────────────────────────────────────────────────────
+
 
 def repair_loop(dry_run: bool = False, ci: bool = False) -> int:
     for round_n in range(1, MAX_ROUNDS + 1):

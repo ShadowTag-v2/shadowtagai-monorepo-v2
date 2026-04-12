@@ -45,7 +45,9 @@ def pnkln_score_10fingers(scores):
     scores: dict{name:0-10}
     returns: composite viability score 0-100
     """
-    total_weighted_score = sum(min(10, max(0, scores.get(k, 0))) * WEIGHTS[k] for k, _ in pnkln_10FINGERS)
+    total_weighted_score = sum(
+        min(10, max(0, scores.get(k, 0))) * WEIGHTS[k] for k, _ in pnkln_10FINGERS
+    )
     max_possible_score = sum(10 * WEIGHTS[k] for k, _ in pnkln_10FINGERS)
 
     return round(100 * total_weighted_score / max_possible_score, 1)
@@ -104,7 +106,12 @@ def main():
     print("=" * 40 + "\n")
 
     # Dump Report
-    report = {"scores": scores, "viability": viability, "verdict": verdict, "details": pnkln_10FINGERS}
+    report = {
+        "scores": scores,
+        "viability": viability,
+        "verdict": verdict,
+        "details": pnkln_10FINGERS,
+    }
     print(json.dumps(report, indent=2))
 
 

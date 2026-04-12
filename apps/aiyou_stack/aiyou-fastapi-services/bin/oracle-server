@@ -1,0 +1,235 @@
+#!/usr/bin/env python3
+"""
+Oracle HTTP Server - :8700
+Exposes Gemini CLI to Claude Code via HTTP
+
+Endpoints:
+    GET  /health   - Health check
+    POST /ask      - Query Gemini with conversation history
+    POST /quick    - One-off query, no history
+    GET  /history  - Get conversation history
+    DELETE /history - Clear conversation history
+    GET  /context  - Read FULLAUTO_CONTEXT.md
+"""
+import os
+import subprocess
+import json
+from pathlib import Path
+from datetime import datetime
+from typing import Optional, List
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import uvicorn
+
+app = FastAPI(
+    title="Oracle Server",
+    description="Gemini 1M+ context wrapper for Claude Code",
+    version="1.0"
+)
+
+HISTORY_DIR = Path(".oracle_history")
+MAX_HISTORY = 5
+PORT = int(os.environ.get("ORACLE_PORT", 8700))
+
+
+class AskRequest(BaseModel):
+    prompt: str
+    files: Optional[List[str]] = None
+    lines: Optional[str] = None
+
+
+class AskResponse(BaseModel):
+    response: str
+    files_included: List[str]
+    history_size: int
+
+
+class HistoryEntry(BaseModel):
+    timestamp: str
+    prompt: str
+    files: List[str]
+    response: str
+
+
+def load_history() -> list:
+    """Load last N exchanges from history file."""
+    history_file = HISTORY_DIR / "conversation.json"
+    if not history_file.exists():
+        return []
+
+    with open(history_file) as f:
+        history = json.load(f)
+
+    return history[-MAX_HISTORY:]
+
+
+def save_history(prompt: str, response: str, files: List[str] = None):
+    """Append exchange to history."""
+    HISTORY_DIR.mkdir(exist_ok=True)
+    history_file = HISTORY_DIR / "conversation.json"
+
+    history = []
+    if history_file.exists():
+        with open(history_file) as f:
+            history = json.load(f)
+
+    history.append({
+        "timestamp": datetime.now().isoformat(),
+        "prompt": prompt,
+        "files": files or [],
+        "response": response[:2000],
+    })
+
+    history = history[-(MAX_HISTORY * 2):]
+
+    with open(history_file, "w") as f:
+        json.dump(history, f, indent=2)
+
+
+def format_history(history: list) -> str:
+    """Format history for context."""
+    if not history:
+        return ""
+
+    lines = ["## Previous Conversation"]
+    for h in history:
+        lines.append(f"\n### User:\n{h['prompt'][:500]}...")
+        lines.append(f"\n### Oracle:\n{h['response'][:500]}...")
+
+    return "\n".join(lines)
+
+
+def call_gemini(prompt: str, timeout: int = 120) -> str:
+    """Call Gemini CLI."""
+    try:
+        result = subprocess.run(
+            ["gemini", "-p", prompt],
+            capture_output=True,
+            text=True,
+            timeout=timeout
+        )
+        if result.returncode == 0:
+            return result.stdout
+        return f"Error: {result.stderr}"
+    except subprocess.TimeoutExpired:
+        return "Error: Gemini CLI timed out"
+    except FileNotFoundError:
+        return "Error: Gemini CLI not found"
+
+
+@app.get("/health")
+async def health():
+    """Health check endpoint."""
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    return {
+        "status": "ok",
+        "service": "oracle",
+        "port": PORT,
+        "model": "gemini-2.5-pro-preview-06-05",
+        "api_key_set": bool(api_key)
+    }
+
+
+@app.post("/ask", response_model=AskResponse)
+async def oracle_ask(request: AskRequest):
+    """Query Gemini with conversation history."""
+    # Build @file syntax
+    file_refs = ""
+    if request.files:
+        for f in request.files:
+            if request.lines and ":" not in f:
+                f = f"{f}:{request.lines}"
+            file_refs += f"@{f} "
+
+    # Load history and format
+    history = load_history()
+    context = format_history(history)
+
+    # Build full prompt
+    full_prompt = f"{context}\n\n{file_refs}{request.prompt}"
+
+    # Call Gemini
+    response = call_gemini(full_prompt)
+
+    # Save to history
+    save_history(request.prompt, response, request.files)
+
+    return AskResponse(
+        response=response,
+        files_included=request.files or [],
+        history_size=len(load_history())
+    )
+
+
+@app.post("/quick", response_model=AskResponse)
+async def oracle_quick(request: AskRequest):
+    """One-off query, no history."""
+    file_refs = " ".join(f"@{f}" for f in (request.files or []))
+    full_prompt = f"{file_refs} {request.prompt}".strip()
+
+    response = call_gemini(full_prompt)
+
+    return AskResponse(
+        response=response,
+        files_included=request.files or [],
+        history_size=len(load_history())
+    )
+
+
+@app.get("/history")
+async def get_history():
+    """Get conversation history."""
+    history = load_history()
+    return {
+        "history": history,
+        "count": len(history),
+        "max_history": MAX_HISTORY
+    }
+
+
+@app.delete("/history")
+async def clear_history():
+    """Clear conversation history."""
+    history_file = HISTORY_DIR / "conversation.json"
+    if history_file.exists():
+        history_file.unlink()
+        return {"status": "cleared", "message": "History cleared successfully"}
+    return {"status": "empty", "message": "No history to clear"}
+
+
+@app.get("/context")
+async def get_context():
+    """Read FULLAUTO_CONTEXT.md."""
+    context_file = Path("FULLAUTO_CONTEXT.md")
+    if context_file.exists():
+        return {
+            "exists": True,
+            "content": context_file.read_text()
+        }
+    return {
+        "exists": False,
+        "content": None,
+        "message": "FULLAUTO_CONTEXT.md not found"
+    }
+
+
+if __name__ == "__main__":
+    print(f"""
+    ╔══════════════════════════════════════════════════════════════════════╗
+    ║  ORACLE SERVER :: Gemini 1M+ Context Wrapper                         ║
+    ║  ──────────────────────────────────────────────────────────────────── ║
+    ║  PORT:      {PORT}                                                   ║
+    ║  MODEL:     gemini-2.5-pro-preview-06-05                             ║
+    ║  HISTORY:   {MAX_HISTORY} exchanges                                         ║
+    ║  ──────────────────────────────────────────────────────────────────── ║
+    ║  ENDPOINTS:                                                          ║
+    ║    GET  /health   - Health check                                     ║
+    ║    POST /ask      - Query with history                               ║
+    ║    POST /quick    - One-off query                                    ║
+    ║    GET  /history  - View history                                     ║
+    ║    DELETE /history - Clear history                                   ║
+    ║    GET  /context  - Read FULLAUTO_CONTEXT.md                         ║
+    ╚══════════════════════════════════════════════════════════════════════╝
+    """)
+    uvicorn.run(app, host="0.0.0.0", port=PORT, log_level="info")

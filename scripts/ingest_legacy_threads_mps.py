@@ -91,7 +91,9 @@ def execute_ingestion():
             chunks = chunk_text(content)
             events = []
             for chunk in chunks:
-                events.append({"text": chunk, "timestamp": "legacy_ingest", "node_type": "legacy_thread_docs"})
+                events.append(
+                    {"text": chunk, "timestamp": "legacy_ingest", "node_type": "legacy_thread_docs"}
+                )
 
             # Persist to Chroma via Memory Service (using the file path as timeline_id to keep it scoped or global)
             memory.persist_traversal(timeline_id="global_monorepo", events=events)

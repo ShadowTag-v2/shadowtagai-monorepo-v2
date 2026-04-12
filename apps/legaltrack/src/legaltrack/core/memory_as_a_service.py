@@ -22,7 +22,10 @@ class MemoryAsAService:
         """
         logger.info(f"MaaS: Extracting entities for Attorney {attorney_id} | Case {case_id}")
         # Phase 3 NLP Extraction via Intelligence Pipeline
-        extracted_memory = {"judge_preference": "Hates footnoted citations", "opposing_counsel": "Delays discovery"}
+        extracted_memory = {
+            "judge_preference": "Hates footnoted citations",
+            "opposing_counsel": "Delays discovery",
+        }
 
         if self.db_pool:
             async with self.db_pool.acquire() as conn:
@@ -47,7 +50,9 @@ class MemoryAsAService:
                     json.dumps(extracted_memory),
                 )
 
-                logger.info("MaaS: Successfully persisted structured memory state to pgvector backend.")
+                logger.info(
+                    "MaaS: Successfully persisted structured memory state to pgvector backend."
+                )
 
         return extracted_memory
 

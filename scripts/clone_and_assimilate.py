@@ -36,7 +36,10 @@ def get_token(client_id, pem_path, owner_name):
         payload = {"iat": iat, "exp": exp, "iss": str(client_id)}
         encoded_jwt = jwt.encode(payload, pem_data, algorithm="RS256")
 
-        headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
+        headers = {
+            "Authorization": f"Bearer {encoded_jwt}",
+            "Accept": "application/vnd.github.v3+json",
+        }
         session = get_session()
 
         resp = session.get("https://api.github.com/app/installations", headers=headers, timeout=30)
@@ -58,7 +61,9 @@ def get_token(client_id, pem_path, owner_name):
             print(f"No installation ID found in API response for {owner_name}")
             return None
 
-        print(f"Found installation ID {target_installation_id} for {owner_name}, requesting access token...")
+        print(
+            f"Found installation ID {target_installation_id} for {owner_name}, requesting access token..."
+        )
         resp = session.post(
             f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
             headers=headers,
@@ -80,7 +85,11 @@ if __name__ == "__main__":
     print("--- GitHub Multi-Repo Assimilator ---")
 
     # 1. Fetch Tokens
-    token_e = get_token("Iv23liWtuBLy8uYLpzjn", "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem", "ehanc69")
+    token_e = get_token(
+        "Iv23liWtuBLy8uYLpzjn",
+        "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem",
+        "ehanc69",
+    )
     token_s = get_token(
         "Iv23ctYqrxPQIt2ir8gY",
         "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem",
@@ -126,14 +135,18 @@ if __name__ == "__main__":
         # Try ehanc69 token first
         if token_e:
             cmd = f"git clone https://x-access-token:{token_e}@github.com/ehanc69/{repo}.git {dest}"
-            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            res = subprocess.run(
+                cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
             if res.returncode == 0:
                 success = True
 
         # Fallback to ShadowTag-v2 token
         if not success and token_s:
             cmd = f"git clone https://x-access-token:{token_s}@github.com/ShadowTag-v2/{repo}.git {dest}"
-            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            res = subprocess.run(
+                cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
             if res.returncode == 0:
                 success = True
 
@@ -167,7 +180,9 @@ if __name__ == "__main__":
         if not os.path.exists(dest):
             print(f"Cloning external: {name}...")
             cmd = f"git clone {url} {dest}"
-            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            res = subprocess.run(
+                cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            )
             if res.returncode == 0:
                 git_dir = os.path.join(dest, ".git")
                 if os.path.exists(git_dir):

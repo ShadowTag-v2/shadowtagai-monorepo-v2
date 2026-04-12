@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wealth Accelerator | Find $1M+ in Hidden Revenue</title>
+    <meta name="description" content="AI-powered business analysis that finds your revenue leaks. Get a $50 analysis that typically uncovers $10K+ in immediate opportunities.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #22c55e;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+            background: radial-gradient(ellipse at top, #1e293b 0%, var(--bg-dark) 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content { position: relative; z-index: 1; text-align: center; }
+
+        .badge {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .price-tag {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 16px 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .price-tag .amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .price-tag .label { color: var(--text-secondary); font-size: 1.1rem; }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gradient);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 80px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-card .label { color: var(--text-secondary); }
+
+        /* How It Works */
+        .section { padding: 100px 0; }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .step {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 20px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 40px;
+            background: var(--gradient);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step h3 { font-size: 1.5rem; margin-bottom: 16px; }
+        .step p { color: var(--text-secondary); }
+
+        /* Leaks Section */
+        .leaks { background: var(--bg-card); }
+
+        .leak-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .leak-card {
+            background: var(--bg-dark);
+            padding: 32px;
+            border-radius: 16px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .leak-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .leak-card h4 { margin-bottom: 12px; }
+        .leak-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 120px 0;
+            background: radial-gradient(ellipse at bottom, #1e293b 0%, var(--bg-dark) 70%);
+        }
+
+        .cta-section h2 { font-size: 2.5rem; margin-bottom: 24px; }
+        .cta-section p { color: var(--text-secondary); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+        .guarantee {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+            color: var(--text-secondary);
+        }
+
+        .guarantee svg { color: var(--accent); }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <span class="badge">🚀 AI-Powered Business Analysis</span>
+                <h1>Find Your Hidden Revenue in 30 Seconds</h1>
+                <p class="subtitle">Our AI analyzes your business metrics and uncovers the leaks costing you $10K+ per month. One analysis. Real numbers. Actionable fixes.</p>
+
+                <div class="price-tag">
+                    <span class="amount">$50</span>
+                    <span class="label">per analysis</span>
+                </div>
+
+                <a href="#order" class="cta-button">
+                    Get Your Analysis Now
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="number">$1M+</div>
+                        <div class="label">Revenue Leaks Found</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">94%</div>
+                        <div class="label">Gross Margin</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">30s</div>
+                        <div class="label">Analysis Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">3</div>
+                        <div class="label">Leaks Identified</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <h3>Submit Your Metrics</h3>
+                    <p>Share your revenue, CAC, LTV, churn rate, and conversion data. We handle the rest.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <h3>AI Analyzes Leaks</h3>
+                    <p>Our Wealth Accelerator AI scans for the top 3 revenue leaks costing you the most money.</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <h3>Get Your Report</h3>
+                    <p>Receive a hard-truth analysis, a prioritized fix plan, and a 30-day challenge to recover lost revenue.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section leaks">
+        <div class="container">
+            <h2 class="section-title">Common Leaks We Find</h2>
+            <div class="leak-cards">
+                <div class="leak-card">
+                    <div class="value">+$216K/yr</div>
+                    <h4>Tip/Checkout Flow Friction</h4>
+                    <p>15% of customers abandon due to too many steps. Fix: 1-click purchasing. +30% conversion.</p>
+                </div>
+                <div class="leak-card">
+                    <div class="value">+$288K/yr</div>
+                    <h4>Missing Social Proof</h4>
+                    <p>60% of page viewers don't buy. Fix: Reviews, badges, and better previews. +30% conversion.</p>
+                </div>
+                <div class="leak-card">
+                    <div class="value">+$540K/yr</div>
+                    <h4>Churn via Poor Onboarding</h4>
+                    <p>8% monthly churn from early failure. Fix: Bootcamp + milestone rewards. Churn drops to 5%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="order">
+        <div class="container">
+            <h2>Ready to Stop Leaving Money on the Table?</h2>
+            <p>Get your personalized Wealth Accelerator report. If we don't find at least $10K in leaks, we'll refund you.</p>
+            <a href="mailto:founders@shadowtag_v4.com?subject=Wealth%20Accelerator%20Analysis%20Request" class="cta-button">
+                Order Your $50 Analysis
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <div class="guarantee">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                $10K Leak Guarantee or Your Money Back
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ShadowTag-v4 / pnkln. Powered by Autoresearch Swarm Intelligence.</p>
+        </div>
+    </footer>
+</body>
+</html>

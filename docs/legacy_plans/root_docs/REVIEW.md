@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-
-# REVIEW.md\n
-
-# ||||||| empty tree
-
 # Antigravity Review Fleet Guidelines: Sovereign Cloud
 
 ## The Golden Rule: BEHAVIORAL VERIFICATION
@@ -56,5 +50,3 @@ For each finding include:
 - concise explanation
 - why it matters
 - the smallest sensible fix
-
-> > > > > > > 5003ee8144b25604e711ef88a2d161f951a40419
