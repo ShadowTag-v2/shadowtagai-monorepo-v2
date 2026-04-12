@@ -15,6 +15,7 @@ except ImportError:
     ANE_ENABLED = False
 
 import pathlib
+
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
 BEADS_DIR = os.path.join(ROOT_DIR, ".beads")
 INDEX_DB = os.path.join(BEADS_DIR, "beads_index.sqlite")
@@ -39,7 +40,9 @@ def biome_check(filepath: str) -> str:
 
     # Run Biome natively for extreme speed
     try:
-        result = subprocess.run(["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True)
+        result = subprocess.run(
+            ["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True
+        )
         return "PASS" if result.returncode == 0 else "FAIL_SYNTAX"
     except Exception as e:
         return f"ERROR: {str(e)}"
@@ -70,10 +73,7 @@ else:
 print(json.dumps({{"category": cat}}))
 """
     result = dispatch_compute(
-        text=ane_code,
-        prompt_description=f"bead_{filename[:10]}",
-        examples=[],
-        file_name=filename
+        text=ane_code, prompt_description=f"bead_{filename[:10]}", examples=[], file_name=filename
     )
     if isinstance(result, list) and len(result) > 0:
         result_dict = result[0]

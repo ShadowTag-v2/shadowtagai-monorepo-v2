@@ -2,19 +2,23 @@ import os
 import shutil
 import subprocess
 
+
 def write_file(path, content):
     dir_name = os.path.dirname(path)
     if dir_name:
         os.makedirs(dir_name, exist_ok=True)
-    with open(path, 'w') as f:
-        f.write(content.strip() + '\n')
+    with open(path, "w") as f:
+        f.write(content.strip() + "\n")
     print(f"Wrote {path}")
+
 
 # 1. pnkln-antigravity-pack
 pack_dir = "pnkln-antigravity-pack"
 os.makedirs(pack_dir, exist_ok=True)
 
-write_file(f"{pack_dir}/.antigravity/rules/cor-antigravity.mdc", """
+write_file(
+    f"{pack_dir}/.antigravity/rules/cor-antigravity.mdc",
+    """
 # Cor.Antigravity Skills — Unhinged Edition (pnkln Final)
 ## Mission Posture (Permanent 160-IQ Bourne Lock)
 - Board: 160-IQ baseline enforced.
@@ -83,9 +87,12 @@ Build → run → record UI video → Gemini multimodal critique → PASS/FAIL �
 4. Enable MCP canonical (antigravity-mcp-config.json only).
 5. Skills auto-discover via ~/.agents/skills/superpowers symlink + vercel-labs/agent-skills.
 6. Every agent now runs unhinged power + locked discipline.
-""")
+""",
+)
 
-write_file(f"{pack_dir}/Dockerfile", """
+write_file(
+    f"{pack_dir}/Dockerfile",
+    """
 FROM mcr.microsoft.com/playwright:v1.58.2-noble
 
 RUN apt-get update && apt-get install -y curl gnupg && \
@@ -97,9 +104,12 @@ WORKDIR /app
 COPY . .
 RUN npm ci && chmod +x scripts/pnkln-test.sh scripts/judge6.sh scripts/cleanup-cinematic-videos.sh
 ENTRYPOINT ["./scripts/pnkln-test.sh"]
-""")
+""",
+)
 
-write_file(f"{pack_dir}/playwright.config.ts", """
+write_file(
+    f"{pack_dir}/playwright.config.ts",
+    """
 import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
@@ -121,9 +131,12 @@ export default defineConfig({
   globalSetup: './global-setup.ts',
   globalTeardown: './global-teardown.ts',
 });
-""")
+""",
+)
 
-write_file(f"{pack_dir}/scripts/judge6.sh", """
+write_file(
+    f"{pack_dir}/scripts/judge6.sh",
+    """
 #!/usr/bin/env bash
 set -euo pipefail
 PROJECT_ROOT="${PWD}"
@@ -160,9 +173,12 @@ else
   cat "${REPORT}"
   exit 0
 fi
-""")
+""",
+)
 
-write_file(f"{pack_dir}/scripts/cleanup-cinematic-videos.sh", """
+write_file(
+    f"{pack_dir}/scripts/cleanup-cinematic-videos.sh",
+    """
 #!/usr/bin/env bash
 set -euo pipefail
 BUCKET="gs://pnkln-cinematic-artifacts"
@@ -173,9 +189,12 @@ echo "=== Judge-6 Video Cleanup Started: $(date) ===" | tee -a "${LOG}"
 gcloud storage ls --recursive "${BUCKET}/videos/" | awk '{print $1}' | xargs -I {} gcloud storage rm --quiet {} 2>&1 | tee -a "${LOG}"
 find docs/judge6-reports -name "judge6-*.md" -mtime +${DAYS} -delete 2>&1 | tee -a "${LOG}"
 echo "=== Cleanup Complete ===" | tee -a "${LOG}"
-""")
+""",
+)
 
-write_file(f"{pack_dir}/docker-compose.yml", """
+write_file(
+    f"{pack_dir}/docker-compose.yml",
+    """
 version: '3.8'
 services:
   pnkln-judge6:
@@ -185,24 +204,30 @@ services:
     command: bash -c "npm ci && chmod +x scripts/pnkln-test.sh && ./scripts/pnkln-test.sh"
     stdin_open: true
     tty: true
-""")
+""",
+)
 
-write_file(f"{pack_dir}/scripts/pnkln-test.sh", """
+write_file(
+    f"{pack_dir}/scripts/pnkln-test.sh",
+    """
 #!/usr/bin/env bash
 rm -f latest-run.mp4
 npx playwright test --video=on --output=latest-run.mp4 "$@"
 chmod +x scripts/judge6.sh
 ./scripts/judge6.sh --full-audit
-""")
+""",
+)
 
 for f in ["scripts/judge6.sh", "scripts/cleanup-cinematic-videos.sh", "scripts/pnkln-test.sh"]:
     os.chmod(f"{pack_dir}/{f}", 0o755)
 
-shutil.make_archive(pack_dir, 'zip', pack_dir)
+shutil.make_archive(pack_dir, "zip", pack_dir)
 print(f"Created {pack_dir}.zip")
 
 # 2. Setup the recursive meta-evolve layer
-write_file("program.md", """
+write_file(
+    "program.md",
+    """
 # pnkln Meta-Evolution Program v2
 Goal: Maximize Judge-6 score while preserving 2× throughput and +90% safety.
 Allowed edits: core/pnkln-evolve.py AND program.md
@@ -211,9 +236,12 @@ Keep changes only if score improves AND risk ≤ Medium.
 Run exactly 5 minutes per experiment.
 Log every run. Revert on failure.
 Evolve: better prompts, faster video analysis, tighter ARM controls, new skills, and self-improving meta-rules.
-""")
+""",
+)
 
-write_file("core/pnkln-evolve.py", """
+write_file(
+    "core/pnkln-evolve.py",
+    """
 # pnkln-evolve.py — Agent-editable core
 import subprocess
 import time
@@ -243,9 +271,12 @@ def run_judge6_experiment():
 
 if __name__ == "__main__":
     run_judge6_experiment()
-""")
+""",
+)
 
-write_file("core/meta-evolve.py", """
+write_file(
+    "core/meta-evolve.py",
+    """
 # meta-evolve.py — Agent-editable meta-layer
 import subprocess
 import time
@@ -278,9 +309,12 @@ def run_meta_experiment():
 
 if __name__ == "__main__":
     run_meta_experiment()
-""")
+""",
+)
 
-write_file("scripts/pnkln-update.sh", """#!/usr/bin/env bash
+write_file(
+    "scripts/pnkln-update.sh",
+    """#!/usr/bin/env bash
 set -euo pipefail
 
 echo "🔄 pnkln Self-Update Daemon Starting..."
@@ -312,10 +346,13 @@ echo "Judge-6 cinematic enforcement re-locked."
 # antigravity restart-workspace
 
 echo "✅ pnkln Control Plane Updated — Judge-6 remains fully armed."
-""")
+""",
+)
 os.chmod("scripts/pnkln-update.sh", 0o755)
 
-write_file("scripts/pnkln-seed-monorepo.sh", """#!/usr/bin/env bash
+write_file(
+    "scripts/pnkln-seed-monorepo.sh",
+    """#!/usr/bin/env bash
 set -euo pipefail
 
 echo "🌱 Seeding full pnkln monorepo..."
@@ -334,7 +371,8 @@ judge6-gate: active
 EOF
 
 echo "Monorepo seeded with Judge-6, Cor.Rules, cinematic loop, and all skills."
-""")
+""",
+)
 os.chmod("scripts/pnkln-seed-monorepo.sh", 0o755)
 
 # Also let's clone the repos
@@ -367,13 +405,13 @@ repos = [
     "https://github.com/hoangsonww/Agentic-AI-Pipeline",
     "https://github.com/Toowiredd/claude-skills-automation",
     "https://github.com/JPM1118/Threadwork",
-    "https://github.com/github/spec-kit"
+    "https://github.com/github/spec-kit",
 ]
 
 out_dir = "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/external_repos"
 os.makedirs(out_dir, exist_ok=True)
 for repo in repos:
-    repo_name = repo.rstrip('/').split('/')[-1].replace('.git', '')
+    repo_name = repo.rstrip("/").split("/")[-1].replace(".git", "")
     dest = os.path.join(out_dir, repo_name)
     if not os.path.exists(dest):
         print(f"Cloning {repo}...")

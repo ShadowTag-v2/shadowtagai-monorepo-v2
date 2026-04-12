@@ -1,0 +1,24 @@
+{
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/archive/**": true,
+    "**/node_modules/**": true,
+    "**/.venv/**": true,
+    "**/control/**": true,
+    "**/external_sdks/**": true,
+    "**/uvicorn/**": true,
+    "**/*.proto": true
+  },
+  "python.analysis.exclude": ["**/control/**", "**/external_sdks/**", "**/uvicorn/**"],
+  "python.testing.autoTestDiscoverOnSaveEnabled": false,
+  "java.server.launchMode": "LightWeight",
+  "java.autobuild.enabled": false,
+  "java.completion.enabled": false,
+  "java.project.importOnFirstTimeStartup": "disabled",
+  "bazel.enableCodeLens": false,
+  "bazel.disableUpdateCheck": true,
+  "gradle.autoDetect": "off",
+  "antigravity.dangerMode": "auto",
+  "cmake.sourceDirectory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/control/legacy_workspaces/vllm"
+}

@@ -11,7 +11,6 @@ if PROJECT_ROOT not in sys.path:
 
 import langextract as lx
 from dotenv import load_dotenv
-
 from rag_engine.memory_service import SequentialMemoryService
 from shared.config import settings
 

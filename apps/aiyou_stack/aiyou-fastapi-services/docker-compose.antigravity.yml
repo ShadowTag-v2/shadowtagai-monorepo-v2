@@ -1,0 +1,159 @@
+networks:
+  antigravity:
+    driver: bridge
+    name: antigravity-network
+
+services:
+  # ============================================================
+  # FastAPI Backend (Python)
+  # ============================================================
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+    container_name: antigravity-fastapi
+    environment:
+      - ENVIRONMENT=development
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - LOG_LEVEL=debug
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      timeout: 3s
+    networks:
+      - antigravity
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - ./agents:/app/agents:cached
+      - ./app:/app/app:cached
+      - ./shadowtagai:/app/shadowtagai:cached
+      - ./src:/app/src:cached
+
+  # ============================================================
+  # FastGPT - Knowledge Console (RAG)
+  # ============================================================
+  fastgpt:
+    container_name: antigravity-fastgpt
+    depends_on:
+      - n-autoresearch/Kosmos/BioAgents
+      - mongodb
+    environment:
+      - DB_URL=mongodb://REDACTED_USER:REDACTED_PASS@google/gemini-cli && sleep infinity"
+    container_name: gemini-cli
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    image: node:20-slim
+    networks:
+      - antigravity
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/app:cached
+      - gemini-cli-cache:/root/.gemini
+    working_dir: /app
+
+  # ============================================================
+  # mitmproxy - Intercepts Antigravity IDE traffic
+  # ============================================================
+  mitmproxy:
+    # Fixed: Combined flags into single command using multiline syntax
+    command: >
+      mitmweb
+      --web-host 0.0.0.0
+      --set confdir=/home/mitmproxy/.mitmproxy
+      --ignore-hosts '^(accounts\.google\.com|oauth2\.googleapis\.com)'
+    container_name: antigravity-proxy
+    image: mitmproxy/mitmproxy:latest
+    networks:
+      - antigravity
+    ports:
+      - "8082:8080"   # Proxy port (8080 in use by kuvasz)
+      - "8083:8081"   # Web interface
+    restart: unless-stopped
+    volumes:
+      - ./tools/dev-environment/antigravity-proxy:/home/mitmproxy/.mitmproxy
+
+  # ============================================================
+  # MongoDB - FastGPT Database
+  # ============================================================
+  mongodb:
+    container_name: fastgpt-mongo
+    image: mongo:6
+    networks:
+      - antigravity
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+    volumes:
+      - fastgpt-mongo-data:/data/db
+
+  # ============================================================
+  # Next.js Frontend
+  # ============================================================
+  nextjs:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: antigravity-nextjs
+    depends_on:
+      - fastapi
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_n-autoresearch/Kosmos/BioAgents_URL=http://localhost:8600
+    networks:
+      - antigravity
+    ports:
+      - "3030:3000"  # 3000 in use by grafana
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/app:cached
+      - /app/node_modules
+      - /app/.next
+
+  # ============================================================
+  # Redis - Optional caching
+  # ============================================================
+  redis:
+    container_name: antigravity-redis
+    image: redis:7-alpine
+    networks:
+      - antigravity
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # ============================================================
+  # Terraform Auditor - Infrastructure with Swarm Audit
+  # ============================================================
+  terraform-auditor:
+    container_name: terraform-auditor
+    depends_on:
+      - n-autoresearch/Kosmos/BioAgents
+    entrypoint: ["tail", "-f", "/dev/null"]
+    environment:
+      - n-autoresearch/Kosmos/BioAgents_URL=http://n-autoresearch/Kosmos/BioAgents-server:8600
+      - TF_VAR_project_id=${GCP_PROJECT_ID:-}
+      - TF_VAR_region=${GCP_REGION:-us-central1}
+    image: hashicorp/terraform:1.6
+    networks:
+      - antigravity
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./infrastructure:/app/infrastructure:cached
+      - ./scripts:/app/scripts:cached
+      - ~/.aws:/root/.aws:ro
+      - ~/.config/gcloud:/root/.config/gcloud:ro
+    working_dir: /app/infrastructure
+
+version: '3.8'
+
+volumes:
+  fastgpt-mongo-data:
+  gemini-cli-cache:

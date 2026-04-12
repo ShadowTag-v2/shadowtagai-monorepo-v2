@@ -1,0 +1,45 @@
+name: shadowtagai
+description: "Pure Serverless Cloud Run Economic Engine via UphillSnowball"
+version: "2.0.0"
+publisher: "ShadowTagAI Sovereign Corp"
+icon: "cloud-lock"
+
+commands:
+  - name: plan
+    description: "Generate execution plan via Gemini Code Assist (UphillSnowball)"
+    usage: "shadowtagai plan [objective]"
+    handler:
+      type: script
+      path: "bin/run_csrmc_pilot.py"
+      args: ["--mode", "plan"]
+
+  - name: risk
+    description: "Evaluate risk controls via Judge CSRMC"
+    usage: "shadowtagai risk [context]"
+    handler:
+      type: script
+      path: "bin/run_csrmc_pilot.py"
+      args: ["--mode", "risk"]
+
+  - name: audit
+    description: "Generate GKC Audit Proof (Iceberg Lake)"
+    usage: "shadowtagai audit [artifact]"
+    handler:
+      type: script
+      path: "bin/run_csrmc_pilot.py"
+      args: ["--mode", "audit"]
+
+permissions:
+  - "read:workspace"
+  - "write:workspace"
+  - "network:allow:regscale.internal.army.mil"
+  - "network:allow:api.stripe.com"
+
+billing:
+  enabled: true
+  provider: "stripe"
+  pricing:
+    model: "usage"
+    unit: "run"
+    rate: 0.05
+    currency: "USD"

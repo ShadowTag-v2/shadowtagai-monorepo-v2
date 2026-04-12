@@ -1,1 +1,0 @@
-All pdfs and git stored at  Vectorization: Uploaded to Gemini File Search (managed vector store).

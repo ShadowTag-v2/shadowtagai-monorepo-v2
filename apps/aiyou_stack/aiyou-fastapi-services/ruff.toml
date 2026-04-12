@@ -1,0 +1,33 @@
+# Set the maximum line length to 100 characters
+line-length = 100
+
+# Assume Python 3.11+
+target-version = "py311"
+
+# Ignore these directories
+exclude = [
+    ".venv",
+    ".git",
+    "__pycache__",
+    "node_modules",
+    "alembic",
+]
+
+[lint]
+# -- Core Rules for AI Agents --
+select = ["E", "W", "F", "I", "UP", "B", "SIM"]
+
+# Ignore pedantic rules so agents can prototype smoothly
+ignore = [
+    "E501", # Line too long
+    "B008", # FastAPI Depends() issue
+    "F401", # Unused imports
+    "F841", # Unused variables
+]
+
+# Allow autofix for all enabled rules
+fixable = ["ALL"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

@@ -4,11 +4,21 @@ from ..utils.db import pg_conn
 def create_thread(dsn: str, user_id: str, title: str | None = None) -> str:
     with pg_conn(dsn) as conn:
         cur = conn.cursor()
-        cur.execute("INSERT INTO ltm_threads (user_id, title) VALUES (%s::uuid, %s) RETURNING id", (user_id, title))
+        cur.execute(
+            "INSERT INTO ltm_threads (user_id, title) VALUES (%s::uuid, %s) RETURNING id",
+            (user_id, title),
+        )
         return str(cur.fetchone()[0])
 
 
-def add_event(dsn: str, thread_id: str, actor: str, content: str, meta_json: str = "{}", importance_score: int = 0):
+def add_event(
+    dsn: str,
+    thread_id: str,
+    actor: str,
+    content: str,
+    meta_json: str = "{}",
+    importance_score: int = 0,
+):
     with pg_conn(dsn) as conn:
         cur = conn.cursor()
         cur.execute(

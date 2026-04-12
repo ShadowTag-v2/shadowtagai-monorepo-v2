@@ -62,4 +62,6 @@ for path in INTEL_PATHS:
     except Exception as e:
         print(f"    ❌ Extraction Failed: {path} - {e}")
 
-print(f"\n✅ SYSTEM OVERLOAD AVOIDED. Extracted {success_count} critical intelligence blocks into the Monorepo Boundary.")
+print(
+    f"\n✅ SYSTEM OVERLOAD AVOIDED. Extracted {success_count} critical intelligence blocks into the Monorepo Boundary."
+)

@@ -30,7 +30,9 @@ class PGVectorStore:
         database = self.db_config.get("database")
         host = self.db_config.get("host")  # Should be the private VPC IP
 
-        self.pool = await asyncpg.create_pool(user=user, password=password, database=database, host=host)
+        self.pool = await asyncpg.create_pool(
+            user=user, password=password, database=database, host=host
+        )
         if self.pool is not None:
             # Register the vector type with the pool
             async with self.pool.acquire() as conn:
@@ -70,7 +72,10 @@ class PGVectorStore:
                     embedding = [0.0] * 768  # Placeholder
 
                     await conn.execute(
-                        "INSERT INTO legal_embeddings (content, metadata, embedding) VALUES ($1, $2, $3)", content, json.dumps(metadata), embedding
+                        "INSERT INTO legal_embeddings (content, metadata, embedding) VALUES ($1, $2, $3)",
+                        content,
+                        json.dumps(metadata),
+                        embedding,
                     )
         logger.info(f"Ingested {len(documents)} documents securely into Cloud SQL pgvector.")
 
@@ -101,7 +106,13 @@ class PGVectorStore:
 
                 results = []
                 for row in rows:
-                    results.append({"content": row["content"], "metadata": json.loads(row["metadata"]), "score": row["similarity"]})
+                    results.append(
+                        {
+                            "content": row["content"],
+                            "metadata": json.loads(row["metadata"]),
+                            "score": row["similarity"],
+                        }
+                    )
 
                 return results
         return []

@@ -1,0 +1,25 @@
+# Platform Monitoring Service Requirements
+
+# Core Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+
+# Async HTTP
+aiohttp==3.9.1
+httpx==0.26.0
+
+# Google Cloud AI
+google-generativeai==0.3.2
+google-cloud-aiplatform==1.39.0
+
+# Payment Processing
+stripe==7.9.0
+
+# Monitoring
+prometheus-client==0.19.0
+
+# Development
+pytest==7.4.4
+pytest-asyncio==0.23.3
+black==23.12.1

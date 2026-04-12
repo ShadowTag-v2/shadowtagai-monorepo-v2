@@ -31,7 +31,9 @@ class TeslaController:
         logger.info(f"Preconditioning cabin of {self.vin} to {target_temp_c}°C...")
         return True
 
-    async def set_navigation_target(self, address: str, latitude: float | None = None, longitude: float | None = None) -> bool:
+    async def set_navigation_target(
+        self, address: str, latitude: float | None = None, longitude: float | None = None
+    ) -> bool:
         """Pushes navigation data directly into the car's FSD interface."""
         logger.info(f"Pushing destination '{address}' to {self.vin} FSD...")
         return True

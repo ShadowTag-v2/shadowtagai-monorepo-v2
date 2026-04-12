@@ -52,7 +52,9 @@ class Judge6:
 
         # L2: NIST SP 800-53 Baseline Audit
         if "eval(" in code or "exec(" in code:
-            logger.warning("   [WARN] L2: Dangerous execution pattern (eval/exec) detected - NIST Violation Potential")
+            logger.warning(
+                "   [WARN] L2: Dangerous execution pattern (eval/exec) detected - NIST Violation Potential"
+            )
         logger.info("   [PASS] L2: NIST SP 800-53 Baseline Audit")
 
         # L3: Security Scan (Stub)

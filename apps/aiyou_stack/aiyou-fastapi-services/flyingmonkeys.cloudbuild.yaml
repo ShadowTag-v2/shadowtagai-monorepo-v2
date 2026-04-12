@@ -1,0 +1,27 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/n-autoresearch/Kosmos/BioAgents-server:latest', '-f', 'apps/n-autoresearch/Kosmos/BioAgents-server/Dockerfile', 'apps']
+
+  # Push the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/n-autoresearch/Kosmos/BioAgents-server:latest']
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'shadowtagai-juggernaut'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/n-autoresearch/Kosmos/BioAgents-server:latest'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8080'
+images:
+  - 'gcr.io/$PROJECT_ID/n-autoresearch/Kosmos/BioAgents-server:latest'

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: transcode-service
+  namespace: pnkln-production
+  labels:
+    app: pnkln
+    component: transcode-service
+spec:
+  type: ClusterIP
+  selector:
+    app: pnkln
+    component: transcode-service
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 9090
+      targetPort: metrics
+      protocol: TCP
+      name: metrics

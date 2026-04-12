@@ -1,2 +1,0 @@
-function n(){o();console.log("done")}function o(){e(300);const n=document.createElement("div");n.innerText="Hi";document.body.append(n);console.log("hi")}function e(n){console.trace();const o=performance.now();while(performance.now()-o<n);}n();
-//# sourceMappingURL=gen.js.map

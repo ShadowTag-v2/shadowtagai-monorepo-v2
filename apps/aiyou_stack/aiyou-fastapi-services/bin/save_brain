@@ -1,0 +1,35 @@
+#!/bin/bash
+# PROTOCOL OMEGA: BRAIN ARCHIVAL TOOL
+# Usage: bin/save_brain
+
+BRAIN_DIR="/Users/pikeymickey/.gemini/antigravity/brain/7ee442db-0144-48a9-b0af-249183dbaed8"
+TARGET_DIR="Docs/Omega_Session_Data"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+echo "🧠 INITIATING BRAIN DUMP..."
+
+# 1. Create Target Directory
+mkdir -p "$TARGET_DIR"
+echo "📂 Created $TARGET_DIR"
+
+# 2. Copy Critical Artifacts
+echo "📄 Archiving Strategy Documents..."
+cp "$BRAIN_DIR/business_plan.md" "$TARGET_DIR/Business_Plan_$TIMESTAMP.md"
+cp "$BRAIN_DIR/Performance_Analysis.md" "$TARGET_DIR/Performance_Analysis_$TIMESTAMP.md"
+cp "$BRAIN_DIR/Antigravity_Concept_Distinctions.md" "$TARGET_DIR/Distinctions_$TIMESTAMP.md"
+cp "$BRAIN_DIR/walkthrough.md" "$TARGET_DIR/Walkthrough_Log_$TIMESTAMP.md"
+cp "$BRAIN_DIR/task.md" "$TARGET_DIR/Task_Log_$TIMESTAMP.md"
+
+# 3. Download Latest Ledger (The "Downloads")
+echo "💰 Downloading Sovereign Ledger..."
+curl -s "http://localhost:8900/store/ledger/export?format=qif" -o "$TARGET_DIR/Ledger_$TIMESTAMP.qif"
+curl -s "http://localhost:8900/store/ledger/export?format=csv" -o "$TARGET_DIR/Ledger_$TIMESTAMP.csv"
+
+# 4. Persist to Git
+echo "🔒 Locking Artifacts to Repository..."
+git add "$TARGET_DIR"
+git commit -m "ARCHIVE: Saved Omega Session Data ($TIMESTAMP)" --allow-empty
+
+echo ""
+echo "✅ BRAIN SAVED."
+echo "All plans, analysis, and financial data are now in: $TARGET_DIR"

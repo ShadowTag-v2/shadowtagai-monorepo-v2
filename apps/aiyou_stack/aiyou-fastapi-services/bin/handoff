@@ -1,0 +1,30 @@
+#!/bin/bash
+# PROTOCOL OMEGA: THREAD HANDOFF TOOL
+# Usage: bin/handoff
+
+echo "📦 INITIATING SOVEREIGN HANDOFF..."
+
+# 1. Identify the Transfer Packet (Assuming I am running in the repo root)
+# We will pull the latest transfer packet from the Brain if available, 
+# or use the one explicitly placed in the root if I write it there first.
+# For robustness, we will create the file content into the repo first.
+
+if [ -f "transfer_packet.md" ]; then
+    mv transfer_packet.md HANDOFF_INSTRUCTION.md
+    echo "📄 Transfer Packet anchored to 'HANDOFF_INSTRUCTION.md'"
+else
+    echo "⚠️  No local transfer_packet.md found to anchor. Ensuring Git state is clean regardless."
+fi
+
+# 2. Git State Lock
+echo "🔒 Locking State (Git Commit)..."
+git add .
+git commit -m "SOVEREIGN HANDOFF: Protocol Omega Active" --allow-empty
+
+# 3. Final Health Check
+echo "🏥 System Health:"
+curl -s http://localhost:8900/health
+
+echo ""
+echo "✅ HANDOFF COMPLETE."
+echo "The next agent will see 'HANDOFF_INSTRUCTION.md' and 'GEMINI.md'."

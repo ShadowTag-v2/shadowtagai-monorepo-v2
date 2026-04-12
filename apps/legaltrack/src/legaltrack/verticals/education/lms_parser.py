@@ -35,15 +35,23 @@ class UphillsnowballEducationParser:
                 # Active pull of the Canvas Assignment JSON using the authenticated syllabus endpoint
                 domain = self.tenant_id.split(".")[0]  # e.g. "stanford"
                 resp = await client.get(
-                    f"https://{domain}.instructure.com/api/v1/courses/{course_id}/assignments", headers={"Authorization": "Bearer ENV_CANVAS_TOKEN"}
+                    f"https://{domain}.instructure.com/api/v1/courses/{course_id}/assignments",
+                    headers={"Authorization": "Bearer ENV_CANVAS_TOKEN"},
                 )
-                logger.info(f"EDU Vertical: Canvas API retrieved {len(resp.json())} assignments from upstream lock.")
+                logger.info(
+                    f"EDU Vertical: Canvas API retrieved {len(resp.json())} assignments from upstream lock."
+                )
             except Exception as e:
                 logger.error(f"EDU Vertical: Canvas Sync failed - {e}")
 
-        return {"action": "timeline_generated", "course": course_id, "deadline": due_date, "lms_sync": "active"}
+        return {
+            "action": "timeline_generated",
+            "course": course_id,
+            "deadline": due_date,
+            "lms_sync": "active",
+        }
 
-    async def scan_syllabus_for_deadlines(self, syllabus_text: str) -> list[dict[str, Any]]:
+    async def scan_syllabus_for_deadlines(self, _syllabus_text: str) -> list[dict[str, Any]]:
         """
         Utilizes the Glicko-2 router to extract academic milestones (Midterms, Papers)
         from unstructured text, applying the exact same logic used for court rules.
@@ -51,7 +59,10 @@ class UphillsnowballEducationParser:
         logger.debug("EDU Vertical: RAG parsing syllabus for milestone extraction...")
 
         # Mapped to the Intelligence Pipeline abstractly
-        academic_milestones = [{"type": "Midterm", "date": "2026-10-15"}, {"type": "Final Paper", "date": "2026-12-01"}]
+        academic_milestones = [
+            {"type": "Midterm", "date": "2026-10-15"},
+            {"type": "Final Paper", "date": "2026-12-01"},
+        ]
 
         logger.info(f"EDU Vertical: Secured {len(academic_milestones)} milestones from syllabus.")
         return academic_milestones

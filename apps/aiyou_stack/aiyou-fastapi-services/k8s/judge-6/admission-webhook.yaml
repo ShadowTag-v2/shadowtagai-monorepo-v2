@@ -1,0 +1,291 @@
+# Judge #6 Admission Webhook
+# Enforces governance policies at Kubernetes admission control layer
+# Target: 98% coverage of all inference requests
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: judge-webhook-sa
+  namespace: ShadowTag-v2jr-governance
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: judge-webhook-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["validatingwebhookconfigurations", "mutatingwebhookconfigurations"]
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: judge-webhook-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: judge-webhook-role
+subjects:
+- kind: ServiceAccount
+  name: judge-webhook-sa
+  namespace: ShadowTag-v2jr-governance
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge-webhook-config
+  namespace: ShadowTag-v2jr-governance
+data:
+  config.yaml: |
+    # Webhook configuration
+    webhook:
+      port: 8443
+      cert_path: "/etc/webhook/certs/tls.crt"
+      key_path: "/etc/webhook/certs/tls.key"
+
+    # Judge routing strategy
+    routing:
+      # Route 90% to Layer 1 (fast path)
+      layer1_probability: 0.90
+
+      # Escalation conditions
+      escalate_to_layer2:
+        - condition: "latency_p99 > 30ms"
+        - condition: "confidence < 0.85"
+        - condition: "contains(policy_id, 'atp-5-19')"
+
+      escalate_to_layer3:
+        - condition: "risk_score > 80"
+        - condition: "regulatory_intersection == true"
+        - condition: "critical_violation == true"
+
+    # Coverage enforcement
+    enforcement:
+      target_coverage: 0.98  # 98% of requests
+
+      # Namespaces to enforce
+      included_namespaces:
+        - "autogen-orchestration"
+        - "llm-inference"
+        - "shadowtag-audit"
+
+      # Excluded namespaces (system)
+      excluded_namespaces:
+        - "kube-system"
+        - "kube-public"
+        - "monitoring"
+
+      # Enforcement modes
+      mode: "enforce"  # enforce | audit | off
+
+      # Failure policy
+      failure_policy: "Fail"  # Fail | Ignore
+
+    # Audit logging
+    audit:
+      enabled: true
+      log_level: "info"
+      log_format: "json"
+      audit_trail_path: "/var/log/judge/audit.log"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge-webhook
+  namespace: ShadowTag-v2jr-governance
+  labels:
+    app: judge-webhook
+    component: judge-6
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: judge-webhook
+      component: judge-6
+  template:
+    metadata:
+      labels:
+        app: judge-webhook
+        component: judge-6
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: judge-webhook-sa
+
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: pool
+                operator: In
+                values:
+                - governance
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - judge-webhook
+              topologyKey: kubernetes.io/hostname
+
+      tolerations:
+      - key: "workload"
+        operator: "Equal"
+        value: "governance"
+        effect: "NoSchedule"
+
+      containers:
+      - name: webhook
+        image: gcr.io/${PROJECT_ID}/judge-webhook:latest
+        imagePullPolicy: Always
+
+        ports:
+        - name: webhook
+          containerPort: 8443
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+
+        env:
+        - name: JUDGE_LAYER1_ENDPOINT
+          value: "http://judge-layer1.ShadowTag-v2jr-governance.svc.cluster.local:8080"
+        - name: JUDGE_LAYER2_ENDPOINT
+          value: "http://judge-layer2.ShadowTag-v2jr-governance.svc.cluster.local:8080"
+        - name: JUDGE_LAYER3_ENDPOINT
+          value: "http://judge-layer3.ShadowTag-v2jr-governance.svc.cluster.local:8080"
+        - name: TARGET_COVERAGE
+          value: "0.98"
+        - name: LOG_LEVEL
+          value: "info"
+
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 15
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        volumeMounts:
+        - name: webhook-certs
+          mountPath: /etc/webhook/certs
+          readOnly: true
+        - name: config
+          mountPath: /etc/webhook/config
+          readOnly: true
+        - name: audit-logs
+          mountPath: /var/log/judge
+
+      volumes:
+      - name: webhook-certs
+        secret:
+          secretName: judge-webhook-certs
+      - name: config
+        configMap:
+          name: judge-webhook-config
+      - name: audit-logs
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge-webhook
+  namespace: ShadowTag-v2jr-governance
+  labels:
+    app: judge-webhook
+    component: judge-6
+spec:
+  type: ClusterIP
+  selector:
+    app: judge-webhook
+    component: judge-6
+  ports:
+  - name: webhook
+    port: 443
+    targetPort: 8443
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: judge-6-validator
+  labels:
+    app: judge-webhook
+    component: judge-6
+webhooks:
+- name: judge.ShadowTag-v2jr-governance.svc
+  admissionReviewVersions: ["v1"]
+  clientConfig:
+    service:
+      name: judge-webhook
+      namespace: ShadowTag-v2jr-governance
+      path: "/validate"
+    caBundle: ${CA_BUNDLE}  # Must be replaced with actual CA bundle
+  rules:
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: [""]
+    apiVersions: ["v1"]
+    resources: ["pods"]
+    scope: "Namespaced"
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["apps"]
+    apiVersions: ["v1"]
+    resources: ["deployments", "replicasets"]
+    scope: "Namespaced"
+  namespaceSelector:
+    matchExpressions:
+    - key: name
+      operator: In
+      values:
+      - autogen-orchestration
+      - llm-inference
+      - shadowtag-audit
+  failurePolicy: Fail
+  sideEffects: None
+  timeoutSeconds: 10
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge-webhook-pdb
+  namespace: ShadowTag-v2jr-governance
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: judge-webhook
+      component: judge-6

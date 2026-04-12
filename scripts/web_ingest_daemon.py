@@ -5,6 +5,7 @@ Ensure you reprint all thread code, number of atomic code blocks being irrelevan
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 """
+
 """
 Web/Local Document Ingest Daemon
 Extracts structure from downloaded PDFs (Kaggle, DoD, NIST) using LangExtract.
@@ -106,7 +107,9 @@ class CheckpointDB:
         self.conn.commit()
 
     def is_done(self, file_id: str) -> bool:
-        row = self.conn.execute("SELECT status FROM processed WHERE file_id=?", (file_id,)).fetchone()
+        row = self.conn.execute(
+            "SELECT status FROM processed WHERE file_id=?", (file_id,)
+        ).fetchone()
         return row is not None and row[0] == "ok"
 
     def insert_extractions(self, file_id: str, name: str, extractions: list[dict]) -> None:
@@ -159,7 +162,9 @@ class WebIngester:
 
             logger.info(f"[{i}/{len(files)}] Extracting: {name}")
             if fpath.suffix == ".pdf":
-                logger.info(f"  → Skipping PDF {name} in Web Ingest (delegated to Zero-CPU pipeline)")
+                logger.info(
+                    f"  → Skipping PDF {name} in Web Ingest (delegated to Zero-CPU pipeline)"
+                )
                 self.db.mark(fid, name, "ok", 0)
                 continue
 

@@ -69,7 +69,9 @@ class BarExamProtocol:
                         count = len(state.get(real_key, []))
                         # Special handling for applied
                         if key == "applied_optimizations":
-                            count = sum(1 for o in state.get("optimizations", []) if o.get("applied"))
+                            count = sum(
+                                1 for o in state.get("optimizations", []) if o.get("applied")
+                            )
 
                         if count < val:
                             passed = False

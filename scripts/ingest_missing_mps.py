@@ -73,7 +73,14 @@ def execute_ingestion():
                 continue
 
             chunks = chunk_text(content)
-            events = [{"text": chunk, "timestamp": "legacy_ingest_patch", "node_type": "legacy_thread_docs"} for chunk in chunks]
+            events = [
+                {
+                    "text": chunk,
+                    "timestamp": "legacy_ingest_patch",
+                    "node_type": "legacy_thread_docs",
+                }
+                for chunk in chunks
+            ]
             memory.persist_traversal(timeline_id="global_monorepo", events=events)
             total_chunks += len(chunks)
             total_files += 1

@@ -13,7 +13,9 @@ def repeat_prompt(text: str, times: int = 2, separator: str = """\n\n--- REPEAT 
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Repeat a prompt xN times for non-reasoning workloads")
+    parser = argparse.ArgumentParser(
+        description="Repeat a prompt xN times for non-reasoning workloads"
+    )
     parser.add_argument("input", help="Raw text or path to a text file")
     parser.add_argument("--times", type=int, default=2)
     parser.add_argument("--file", action="store_true", help="Treat input as a file path")

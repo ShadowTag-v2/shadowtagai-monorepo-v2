@@ -1,0 +1,468 @@
+---
+# ==============================================================================
+# Judge6 Multi-Layer Inference Deployment
+# ==============================================================================
+#
+# FIXES APPLIED:
+# 1. Replaced shell interpolation with actual project ID
+# 2. Added readiness and liveness probes for all containers
+# 3. Added securityContext for pod and containers
+# 4. Added CPU limits to all containers
+# 5. Added node affinity for GPU workloads
+# 6. Added PodDisruptionBudget for high availability
+# 7. Added HorizontalPodAutoscaler
+#
+# PREREQUISITES:
+# - ConfigMap 'atp519-rules' must be created before deployment
+# - Images must be pushed to gcr.io/shadowtagai-core-stack/
+# - GPU node pool with nvidia-l4 accelerators
+# ==============================================================================
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: judge6-system
+  labels:
+    name: judge6-system
+    monitoring: enabled
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: judge6-config
+  namespace: judge6-system
+data:
+  MODEL_REGION: "us-central1"
+  PROJECT_ID: "acquired-jet-478701-b3"
+  LOG_LEVEL: "info"
+  ENABLE_METRICS: "true"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: judge6-inference
+  namespace: judge6-system
+  labels:
+    app: judge6
+    component: inference
+    version: v1
+spec:
+  replicas: 1  # Limited by L4 GPU quota (1 available)
+  selector:
+    matchLabels:
+      app: judge6
+      component: inference
+  template:
+    metadata:
+      labels:
+        app: judge6
+        component: inference
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      # Security context for the pod
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+
+      # Service account for Workload Identity
+      serviceAccountName: judge6-sa
+
+      # Node selector for GKE Autopilot GPU
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-l4
+
+      # Affinity for GPU nodes
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: accelerator
+                    operator: In
+                    values:
+                      - nvidia-l4
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - judge6
+                topologyKey: kubernetes.io/hostname
+
+      # Tolerations for GPU nodes
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Equal"
+          value: "present"
+          effect: "NoSchedule"
+
+      # Init container to validate configuration
+      initContainers:
+        - name: config-validator
+          image: gcr.io/acquired-jet-478701-b3/judge6-validator:latest
+          imagePullPolicy: Always
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Validating configuration..."
+              if [ ! -f /etc/atp519/rules.json ]; then
+                echo "ERROR: ATP519 rules not found"
+                exit 1
+              fi
+              echo "Configuration valid"
+          volumeMounts:
+            - name: atp519-rules
+              mountPath: /etc/atp519
+              readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+
+      containers:
+        # Layer 1: Gemini Model
+        - name: layer1-gemini
+          image: gcr.io/acquired-jet-478701-b3/judge6-gemini:latest
+          imagePullPolicy: Always
+          env:
+            - name: MODEL_ENDPOINT
+              value: "projects/acquired-jet-478701-b3/locations/us-central1/endpoints/judge6-gemini"
+            - name: LATENCY_BUDGET_MS
+              value: "30"
+            - name: PROJECT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: judge6-config
+                  key: PROJECT_ID
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: judge6-config
+                  key: LOG_LEVEL
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "2"
+              nvidia.com/gpu: "1"
+            limits:
+              memory: "8Gi"
+              cpu: "4"
+              nvidia.com/gpu: "1"
+          # Readiness probe
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 3
+          # Liveness probe
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          # Startup probe for slow-starting containers
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 0
+            periodSeconds: 10
+            timeoutSeconds: 3
+            successThreshold: 1
+            failureThreshold: 30
+          volumeMounts:
+            - name: model-cache
+              mountPath: /var/cache/models
+            - name: atp519-rules
+              mountPath: /etc/atp519
+              readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: false  # Model cache needs write access
+
+        # Layer 2: Orchestration
+        - name: layer2-orchestration
+          image: gcr.io/acquired-jet-478701-b3/judge6-orchestrator:latest
+          imagePullPolicy: Always
+          env:
+            - name: UPSTREAM_LAYER1
+              value: "localhost:8080"
+            - name: ORCHESTRATION_MODE
+              value: "cascade"
+            - name: PROJECT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: judge6-config
+                  key: PROJECT_ID
+          ports:
+            - name: http
+              containerPort: 8081
+              protocol: TCP
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+
+        # Layer 3: Enforcement Gateway
+        - name: layer3-gateway
+          image: gcr.io/acquired-jet-478701-b3/judge6-gateway:latest
+          imagePullPolicy: Always
+          env:
+            - name: UPSTREAM_ORCHESTRATOR
+              value: "localhost:8081"
+            - name: ENFORCEMENT_POLICY
+              value: "strict"
+            - name: RATE_LIMIT_RPS
+              value: "1000"
+          ports:
+            - name: http
+              containerPort: 8082
+              protocol: TCP
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8082
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8082
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+
+      volumes:
+        # EmptyDir for model cache (ephemeral)
+        - name: model-cache
+          emptyDir:
+            sizeLimit: 20Gi
+            # Use memory-backed storage for faster access
+            # medium: Memory
+        # ConfigMap for ATP519 rules
+        - name: atp519-rules
+          configMap:
+            name: atp519-rules
+            defaultMode: 0444
+
+---
+# Service Account for Workload Identity
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: judge6-sa
+  namespace: judge6-system
+  annotations:
+    iam.gke.io/gcp-service-account: redacted@shadowtag-v4.local
+
+---
+# Service (Internal LoadBalancer for private cluster)
+apiVersion: v1
+kind: Service
+metadata:
+  name: judge6-service
+  namespace: judge6-system
+  labels:
+    app: judge6
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+    networking.gke.io/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  selector:
+    app: judge6
+    component: inference
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8082
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+
+---
+# HorizontalPodAutoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: judge6-hpa
+  namespace: judge6-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: judge6-inference
+  minReplicas: 1  # Limited by L4 GPU quota
+  maxReplicas: 1  # Limited by L4 GPU quota
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 2
+          periodSeconds: 15
+      selectPolicy: Max
+
+---
+# PodDisruptionBudget for high availability
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: judge6-pdb
+  namespace: judge6-system
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: judge6
+      component: inference
+
+---
+# NetworkPolicy for security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: judge6-netpol
+  namespace: judge6-system
+spec:
+  podSelector:
+    matchLabels:
+      app: judge6
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: judge6-system
+        - namespaceSelector:
+            matchLabels:
+              name: monitoring
+      ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 8081
+        - protocol: TCP
+          port: 8082
+        - protocol: TCP
+          port: 9090
+  egress:
+    # Allow DNS
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+    # Allow external API calls (Vertex AI)
+    - to:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 443

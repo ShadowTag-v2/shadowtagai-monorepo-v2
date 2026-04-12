@@ -1,0 +1,7 @@
+kafka-python>=2.0.2
+google-auth
+requests
+apache-beam[gcp]
+google-cloud-managedkafka
+google-cloud-secret-manager
+google-cloud-dataflow-client

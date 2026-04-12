@@ -1,0 +1,51 @@
+# PNKLN Core Stack - Namespace Architecture
+# 4-tier namespace design for workload isolation
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ShadowTag-v2jr-governance
+  labels:
+    tier: governance
+    compliance: "strict"
+    pnkln.io/component: "judge"
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: autogen-orchestration
+  labels:
+    tier: orchestration
+    pnkln.io/component: "multi-agent"
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cognitive-stack-v5
+  labels:
+    tier: inference
+    pnkln.io/component: "llm-routing"
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shadowtag-v2
+  labels:
+    tier: security
+    pnkln.io/component: "watermarking"
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

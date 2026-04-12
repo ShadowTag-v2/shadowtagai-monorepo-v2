@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Notebooks
+.ipynb_checkpoints
+
+# Environment
+.env
+*.env
+secrets/
+
+# IDE
+.idea/
+.vscode/

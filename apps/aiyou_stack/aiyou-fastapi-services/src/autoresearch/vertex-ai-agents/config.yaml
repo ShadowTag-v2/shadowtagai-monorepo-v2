@@ -1,0 +1,111 @@
+# Vertex AI Agents Configuration
+# This file contains global configuration for all agents
+
+version: "1.0.0"
+
+# Default settings for all agents
+defaults:
+  model: "gemini-pro"
+  temperature: 0.5
+  maxTokens: 8192
+  timeout: 300  # seconds
+  retries: 3
+
+# Model configurations
+models:
+  gemini-pro:
+    provider: "google"
+    endpoint: "https://generativelanguage.googleapis.com/v1/models/gemini-pro"
+    maxTokens: 32768
+    supportedFeatures:
+      - "code_generation"
+      - "code_analysis"
+      - "multi_turn_conversation"
+
+  gemini-ultra:
+    provider: "google"
+    endpoint: "https://generativelanguage.googleapis.com/v1/models/gemini-ultra"
+    maxTokens: 32768
+    supportedFeatures:
+      - "code_generation"
+      - "code_analysis"
+      - "multi_turn_conversation"
+      - "advanced_reasoning"
+
+# Tool configurations
+tools:
+  code_generation:
+    enabled: true
+    maxLength: 10000
+
+  code_analysis:
+    enabled: true
+    languages:
+      - "python"
+      - "javascript"
+      - "typescript"
+      - "java"
+      - "go"
+      - "rust"
+      - "cpp"
+
+  file_read:
+    enabled: true
+    maxFileSize: 10485760  # 10MB
+
+  file_write:
+    enabled: true
+    maxFileSize: 10485760  # 10MB
+
+  web_search:
+    enabled: true
+    maxResults: 10
+
+# Category-specific settings
+categorySettings:
+  product-strategy:
+    temperature: 0.7
+    creativity: "high"
+
+  development:
+    temperature: 0.3
+    precision: "high"
+
+  quality-testing:
+    temperature: 0.2
+    strictness: "high"
+
+  ai-innovation:
+    temperature: 0.6
+    experimentation: "high"
+
+# Integration settings
+integrations:
+  vertexAI:
+    enabled: true
+    projectId: "${VERTEX_AI_PROJECT_ID}"
+    location: "us-central1"
+
+  logging:
+    enabled: true
+    level: "info"
+    format: "json"
+
+  monitoring:
+    enabled: true
+    metricsEndpoint: "${METRICS_ENDPOINT}"
+
+# Security settings
+security:
+  apiKeyRequired: true
+  rateLimit:
+    requestsPerMinute: 60
+    requestsPerHour: 1000
+
+  allowedOrigins:
+    - "localhost"
+    - "*.google.com"
+
+  contentFiltering:
+    enabled: true
+    sensitiveDataDetection: true

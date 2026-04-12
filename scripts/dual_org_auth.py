@@ -12,7 +12,9 @@ EHANC69_KEY_PATH = "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.
 # ShadowTag-v2 Credentials
 SHADOWTAG_APP_ID = "3018200"
 SHADOWTAG_CLIENT_ID = "Iv23ctYqrxPQIt2ir8gY"
-SHADOWTAG_KEY_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem"
+SHADOWTAG_KEY_PATH = (
+    "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem"
+)
 
 
 def get_installation_token(app_id, key_path):
@@ -62,7 +64,9 @@ def generate_tokens():
 
     shadowtag_token = get_installation_token(SHADOWTAG_APP_ID, SHADOWTAG_KEY_PATH)
     if shadowtag_token:
-        print(f"[✅] Successfully generated ShadowTag-v2 short-lived token: {shadowtag_token[:8]}...")
+        print(
+            f"[✅] Successfully generated ShadowTag-v2 short-lived token: {shadowtag_token[:8]}..."
+        )
 
     return ehanc69_token, shadowtag_token
 

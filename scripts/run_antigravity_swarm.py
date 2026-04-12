@@ -1,26 +1,25 @@
-
-import sys
-import sys
 import os
-import time
 import random
+import sys
+import time
 
 # Add project root to path
 root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(root_dir)
 
-env_path = os.path.join(root_dir, '.env')
+env_path = os.path.join(root_dir, ".env")
 if os.path.exists(env_path):
-    with open(env_path, 'r') as f:
+    with open(env_path, "r") as f:
         for line in f:
-            if line.strip() and not line.startswith('#'):
+            if line.strip() and not line.startswith("#"):
                 try:
-                    key, val = line.strip().split('=', 1)
+                    key, val = line.strip().split("=", 1)
                     os.environ[key] = val.strip("'\"")
                 except ValueError:
                     pass
 
 from pnkln.core.judge_six_pipeline import JudgeSix
+
 
 class AgentUnit:
     def __init__(self, id, role):
@@ -32,6 +31,7 @@ class AgentUnit:
         self.judge_decision = ""
         self.viability_score = 0
 
+
 class AntigravitySwarm:
     """
     Antigravity implementation of the BioAgents swarm.
@@ -40,6 +40,7 @@ class AntigravitySwarm:
     - Reason: Doctrine
     - Brakes: Judge6
     """
+
     def __init__(self):
         self.running = True
         self.governance_log = []
@@ -60,18 +61,21 @@ class AntigravitySwarm:
             "active_agents": len(self.units),
             "approved_actions": sum(1 for u in self.units if u.status == "Approved"),
             "blocked_actions": sum(1 for u in self.units if u.status == "Blocked"),
-            "avg_viability": sum(u.viability_score for u in self.units) / len(self.units) if self.units else 0,
-            "recent_decisions": self.governance_log[-5:]
+            "avg_viability": sum(u.viability_score for u in self.units) / len(self.units)
+            if self.units
+            else 0,
+            "recent_decisions": self.governance_log[-5:],
         }
 
     def start(self):
         import threading
+
         self.thread = threading.Thread(target=self._run_loop)
         self.thread.start()
 
     def stop(self):
         self.running = False
-        if hasattr(self, 'thread'):
+        if hasattr(self, "thread"):
             self.thread.join()
 
     def _initialize_antigravity_roster(self):
@@ -80,7 +84,7 @@ class AntigravitySwarm:
             ("SOP-A", "Upload Triage"),
             ("SOP-B", "Change & Release"),
             ("SOP-C", "Decision Protocol"),
-            ("SOP-D", "Code Review")
+            ("SOP-D", "Code Review"),
         ]
 
         # Capabilities (Tech Stack & Research)
@@ -93,7 +97,7 @@ class AntigravitySwarm:
             ("RES-03", "RLAD Abstractions"),
             ("RES-04", "RLP Dense Rewards"),
             ("RES-05", "Set-RL Entropy"),
-            ("RES-06", "ICoT Reasoning")
+            ("RES-06", "ICoT Reasoning"),
         ]
 
         for pid, role in pillars:
@@ -109,12 +113,13 @@ class AntigravitySwarm:
         """
         while self.running:
             for unit in self.units:
-                if not self.running: break
+                if not self.running:
+                    break
 
                 # 1. Simulate Deep Work & Code Analysis
                 unit.status = "Analyzing"
                 unit.current_task = f"Executing {unit.role} protocols..."
-                time.sleep(random.uniform(0.1, 0.3)) # Fast simulation (Antigravity speed)
+                time.sleep(random.uniform(0.1, 0.3))  # Fast simulation (Antigravity speed)
 
                 # 2. Generate Recommendation based on Antigravity Doctrine
                 actions = ["Refactor", "Optimize", "Secure", "Document", "Test", "Deploy"]
@@ -134,7 +139,7 @@ class AntigravitySwarm:
                     "domain": unit.role,
                     "complexity_score": random.randint(1, 10),
                     "doctrine_alignment": f"Aligned with {unit.role}",
-                    "iq_score": 160 # Baseline IQ
+                    "iq_score": 160,  # Baseline IQ
                 }
 
                 # Use Judge's internal validation logic
@@ -151,20 +156,23 @@ class AntigravitySwarm:
                         unit.status = "Blocked"
 
                     # Log decision
-                    self.governance_log.append({
-                        "timestamp": time.time(),
-                        "agent": unit.role,
-                        "proposal": unit.recommendation,
-                        "decision": unit.judge_decision,
-                        "score": unit.viability_score,
-                        "context": context
-                    })
+                    self.governance_log.append(
+                        {
+                            "timestamp": time.time(),
+                            "agent": unit.role,
+                            "proposal": unit.recommendation,
+                            "decision": unit.judge_decision,
+                            "score": unit.viability_score,
+                            "context": context,
+                        }
+                    )
 
                 except Exception as e:
                     print(f"Judge Error: {e}")
                     unit.status = "Error"
 
-            time.sleep(1.5) # Wait before next cycle
+            time.sleep(1.5)  # Wait before next cycle
+
 
 if __name__ == "__main__":
     print("///▞ ANTIGRAVITY SWARM :: INITIALIZING")
@@ -178,15 +186,17 @@ if __name__ == "__main__":
         for i in range(5):
             time.sleep(2)
             status = swarm.get_governance_status()
-            print(f"\n///▞ STATUS CYCLE {i+1}")
+            print(f"\n///▞ STATUS CYCLE {i + 1}")
             print(f"Active Agents: {status['active_agents']}")
             print(f"Approved Actions: {status['approved_actions']}")
             print(f"Blocked Actions: {status['blocked_actions']}")
             print(f"Avg Viability: {status['avg_viability']}")
 
-            if status['recent_decisions']:
-                last_decision = status['recent_decisions'][-1]
-                print(f"Latest Decision: {last_decision['agent']} -> {last_decision['decision']} ({last_decision['proposal']})")
+            if status["recent_decisions"]:
+                last_decision = status["recent_decisions"][-1]
+                print(
+                    f"Latest Decision: {last_decision['agent']} -> {last_decision['decision']} ({last_decision['proposal']})"
+                )
 
     except KeyboardInterrupt:
         print("\nStopping swarm...")

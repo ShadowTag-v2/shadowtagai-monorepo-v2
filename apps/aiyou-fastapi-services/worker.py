@@ -9,7 +9,9 @@ async def main():
         # Connect to local Temporal server (requires 'temporal server start-dev' active)
         client = await Client.connect("localhost:7233")
     except Exception as e:
-        print(f"[-] FATAL: Temporal cluster unreachable. Make sure 'temporal server start-dev' is active. {e}")
+        print(
+            f"[-] FATAL: Temporal cluster unreachable. Make sure 'temporal server start-dev' is active. {e}"
+        )
         return
 
     # Run the worker to actively consume the 'omega-swarm-queue' referenced in invariant #2

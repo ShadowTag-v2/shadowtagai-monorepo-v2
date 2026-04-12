@@ -17,6 +17,7 @@ except ImportError:
 INTEL_DIR = os.path.abspath("apps/ShadowTag-v2_ecosystem/recovered_intel")
 # Use physical mapping to the active root
 import pathlib
+
 ROOT_DIR = str(pathlib.Path(__file__).parent.parent.absolute())
 BEADS_DB_PATH = os.path.join(ROOT_DIR, ".beads", "ane_memory_beads.sqlite")
 
@@ -80,21 +81,21 @@ print(json.dumps({{"semantic_type": semantic_type, "neural_summary": summary}}))
         text=ane_eval_code,
         prompt_description=f"bead_ingest_{folder_name[:10]}",
         examples=[],
-        file_name=folder_name
+        file_name=folder_name,
     )
 
     if isinstance(result, list) and len(result) > 0:
         result_dict = result[0]
         if result_dict.get("attrs", {}).get("compute_target") == "ANE-NPU":
-        try:
-            import json
+            try:
+                import json
 
-            return json.loads(result.get("data"))
-        except:
-            return {
-                "semantic_type": "parse_error",
-                "neural_summary": "Failed to decode ANE Tensor.",
-            }
+                return json.loads(result_dict.get("data"))
+            except Exception:
+                return {
+                    "semantic_type": "parse_error",
+                    "neural_summary": "Failed to decode ANE Tensor.",
+                }
 
     return {"semantic_type": "cpu_fallback", "neural_summary": "CPU processed."}
 
@@ -130,12 +131,16 @@ def execute_ingestion():
                 ),
             )
             conn.commit()
-            print(f"    ✅ Bead Written: {insights.get('semantic_type')} -> {insights.get('neural_summary')}")
+            print(
+                f"    ✅ Bead Written: {insights.get('semantic_type')} -> {insights.get('neural_summary')}"
+            )
         except Exception as e:
             print(f"    ❌ Failed to write bead for {folder_name}: {e}")
 
     conn.close()
-    print("\n✅ [ANE BEADS INGESTER] Complete. Legacy Intelligence successfully mapped to memory_beads UUIDs.")
+    print(
+        "\n✅ [ANE BEADS INGESTER] Complete. Legacy Intelligence successfully mapped to memory_beads UUIDs."
+    )
 
 
 if __name__ == "__main__":

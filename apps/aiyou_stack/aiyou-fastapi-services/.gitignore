@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# GCP credentials (keep templates)
+*.json
+!package.json
+!package-lock.json
+
+# Testing
+.tox/
+.coverage.*/
+
+# Large backup archives (kept locally)
+archive/
+
+# Large dirs excluded from monorepo migration
+vendor/
+Docs/
+pnkln_intelligence/
+external_memory/
+erik-hancock-llm-memory/
+libs/
+y/
+shadowtag_v2/
+branches/
+deployment_staging/
+repos/
+tools/
+knowledge/
+TODO.md
+omega_payload.tar.gz
+get-pip.py
+.scannerwork/
+scripts/consolidated_sweeps/
+data/legal_evidence/*.pdf
+_PRE_OMEGA_BACKUP_*/

@@ -12,6 +12,7 @@ Scans React/TSX/JSX/HTML files for:
 
 Output: Structured audit findings to stdout (markdown format)
 """
+
 import os
 import re
 from pathlib import Path
@@ -23,46 +24,56 @@ RULES = [
     {
         "id": "ORPHAN_ONCLICK",
         "desc": "Empty onClick handler",
-        "pattern": re.compile(r'onClick=\{[\s]*\}'),
+        "pattern": re.compile(r"onClick=\{[\s]*\}"),
         "severity": "HIGH",
     },
     {
         "id": "PLACEHOLDER_HREF",
-        "desc": "Placeholder href=\"#\"",
+        "desc": 'Placeholder href="#"',
         "pattern": re.compile(r'href=["\']#["\']'),
         "severity": "MEDIUM",
     },
     {
         "id": "INLINE_BUTTON_STYLE",
         "desc": "Inline style on <button>",
-        "pattern": re.compile(r'<button\s+style=\{\{'),
+        "pattern": re.compile(r"<button\s+style=\{\{"),
         "severity": "LOW",
     },
     {
         "id": "CONSOLE_LOG",
         "desc": "Console.log in production code",
-        "pattern": re.compile(r'console\.(log|debug|info)\('),
+        "pattern": re.compile(r"console\.(log|debug|info)\("),
         "severity": "MEDIUM",
     },
     {
         "id": "MAP_NO_KEY",
         "desc": "Array .map() without key prop",
-        "pattern": re.compile(r'\.map\([^)]*\)\s*=>\s*\(\s*<(?!Fragment)[A-Z]\w+[^>]*(?!key=)'),
+        "pattern": re.compile(r"\.map\([^)]*\)\s*=>\s*\(\s*<(?!Fragment)[A-Z]\w+[^>]*(?!key=)"),
         "severity": "HIGH",
     },
     {
         "id": "TODO_FIXME",
         "desc": "TODO/FIXME left in code",
-        "pattern": re.compile(r'(?://|#|/\*)\s*(TODO|FIXME|HACK|XXX)', re.IGNORECASE),
+        "pattern": re.compile(r"(?://|#|/\*)\s*(TODO|FIXME|HACK|XXX)", re.IGNORECASE),
         "severity": "LOW",
     },
 ]
 
 SKIP_DIRS = {
-    "node_modules", ".venv", "venv", "__pycache__",
-    ".git", "archive", "target", ".mypy_cache",
-    ".ruff_cache", ".pytest_cache", "dist", "build",
-    "coverage", ".next",
+    "node_modules",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".git",
+    "archive",
+    "target",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".pytest_cache",
+    "dist",
+    "build",
+    "coverage",
+    ".next",
 }
 
 
@@ -74,14 +85,16 @@ def scan_file(filepath: str) -> list[dict]:
             for lineno, line in enumerate(f, 1):
                 for rule in RULES:
                     if rule["pattern"].search(line):
-                        findings.append({
-                            "file": filepath,
-                            "line": lineno,
-                            "rule": rule["id"],
-                            "desc": rule["desc"],
-                            "severity": rule["severity"],
-                            "snippet": line.strip()[:120],
-                        })
+                        findings.append(
+                            {
+                                "file": filepath,
+                                "line": lineno,
+                                "rule": rule["id"],
+                                "desc": rule["desc"],
+                                "severity": rule["severity"],
+                                "snippet": line.strip()[:120],
+                            }
+                        )
     except (OSError, UnicodeDecodeError):
         pass
     return findings
@@ -115,8 +128,10 @@ def main():
     low = [f for f in all_findings if f["severity"] == "LOW"]
 
     print(f"**Scanned:** {scanned} files")
-    print(f"**Total findings:** {len(all_findings)} "
-          f"(🔴 {len(high)} HIGH, 🟡 {len(med)} MEDIUM, 🔵 {len(low)} LOW)\n")
+    print(
+        f"**Total findings:** {len(all_findings)} "
+        f"(🔴 {len(high)} HIGH, 🟡 {len(med)} MEDIUM, 🔵 {len(low)} LOW)\n"
+    )
 
     if high:
         print("## 🔴 HIGH Severity\n")

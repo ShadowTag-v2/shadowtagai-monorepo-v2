@@ -20,7 +20,9 @@ try:
         pk = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
     enc = jwt.encode(payload, pk, algorithm="RS256")
-    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"})
+    r = requests.get(
+        "https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"}
+    )
     r.raise_for_status()
     insts = r.json()
     r2 = requests.post(
@@ -45,7 +47,9 @@ def get_remote_tree(repo):
             url = f"https://api.github.com/repos/{org}/{repo}/git/trees/{branch}?recursive=1"
             res = requests.get(url, headers=headers)
             if res.status_code == 200:
-                tree = [item["path"] for item in res.json().get("tree", []) if item["type"] == "blob"]
+                tree = [
+                    item["path"] for item in res.json().get("tree", []) if item["type"] == "blob"
+                ]
                 return tree
     return None
 
@@ -58,7 +62,9 @@ for repo, dest in REPOS.items():
     remote_files = get_remote_tree(repo)
 
     if remote_files is None:
-        report += f"## {repo}\n**Status:** blocked (Could not fetch remote tree from GitHub API)\n\n"
+        report += (
+            f"## {repo}\n**Status:** blocked (Could not fetch remote tree from GitHub API)\n\n"
+        )
         print("  -> Blocked")
         continue
 

@@ -2,21 +2,24 @@
 scripts/cinematic_studio.py
 Telemetry capture and Auto-Healing boundary for the Cinematic Studio UI payload.
 """
+
 import logging
-from collections import deque
 import time
+from collections import deque
 
 try:
     from scripts.omega_auto_dispatcher import push_auto_repair_payload
 except ImportError:
     # Handle if run from a different directory
-    import sys
     import os
+    import sys
+
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
     from scripts.omega_auto_dispatcher import push_auto_repair_payload
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("CinematicTelemetry")
+
 
 class CinematicTelemetry:
     def __init__(self):
@@ -49,7 +52,9 @@ class CinematicTelemetry:
             last_error_time = self.recent_500s[-1][0]
 
             if (last_error_time - first_error_time) <= self.time_window_seconds:
-                logger.critical("🔥 3 Concurrent HTTP 500s Detected! Triggering God Mode Auto-Repair Sequence.")
+                logger.critical(
+                    "🔥 3 Concurrent HTTP 500s Detected! Triggering God Mode Auto-Repair Sequence."
+                )
 
                 # Combine stack traces to give context to the Swarm
                 combined_stack = " | ".join([err[2] for err in self.recent_500s if err[2]])
@@ -62,9 +67,16 @@ class CinematicTelemetry:
                 # Clear queue to prevent spamming
                 self.recent_500s.clear()
 
+
 if __name__ == "__main__":
     # Test harness
     telemetry = CinematicTelemetry()
-    telemetry.log_http_response(500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline")
-    telemetry.log_http_response(500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline")
-    telemetry.log_http_response(500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline")
+    telemetry.log_http_response(
+        500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline"
+    )
+    telemetry.log_http_response(
+        500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline"
+    )
+    telemetry.log_http_response(
+        500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline"
+    )

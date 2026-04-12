@@ -19,7 +19,9 @@ class WarpGrepWrapper:
             print(f"🚀 WARPGREP: AI Search initiated for '{query}'...")
             # In a real implementation, we would import MorphClient here.
             # Since we don't have the package installed in this env, we simulate or warn.
-            print("⚠️ Morph SDK not installed in this environment. Please run: npm install @morphllm/morphsdk")
+            print(
+                "⚠️ Morph SDK not installed in this environment. Please run: npm install @morphllm/morphsdk"
+            )
             return self._fallback_search(query, path)
         else:
             print("🐌 WARPGREP: No MORPH_API_KEY found. Falling back to standard grep.")

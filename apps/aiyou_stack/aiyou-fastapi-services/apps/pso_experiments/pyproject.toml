@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pso-experiments"
+version = "0.1.0"
+description = "Experimental PSO‑for‑Neural‑Nets backend (pure‑Python)."
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pso_nn*"]
+
+[tool.pytest.ini_options]
+pythonpath = [ "." ]

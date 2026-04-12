@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-swarm
+  namespace: shadowtag_v4-agents
+  labels:
+    app: agent-swarm
+    component: n-autoresearch/Kosmos/BioAgents
+spec:
+  replicas: 200
+  selector:
+    matchLabels:
+      app: agent-swarm
+  template:
+    metadata:
+      labels:
+        app: agent-swarm
+    spec:
+      containers:
+      - name: agent
+        image: gcr.io/acquired-jet-478701-b3/shadowtag_v4-agent:latest
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+        env:
+        - name: AGENT_SHIFT_DURATION
+          value: "4h"
+        - name: AGENT_ROLE
+          value: "generalist"
+        - name: SWARM_MODE
+          value: "true"

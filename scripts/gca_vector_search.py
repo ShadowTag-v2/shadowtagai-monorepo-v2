@@ -6,7 +6,9 @@ try:
     import chromadb
     from sentence_transformers import SentenceTransformer
 except ImportError:
-    print("Dependencies missing for vector search. Run: uv pip install chromadb sentence-transformers")
+    print(
+        "Dependencies missing for vector search. Run: uv pip install chromadb sentence-transformers"
+    )
     sys.exit(1)
 
 
@@ -49,7 +51,11 @@ def query_hud_vectors(query_text: str, top_k: int = 10):
         results["ids"][0][i]
         distance = results["distances"][0][i]
         metadata = results["metadatas"][0][i]
-        document = results["documents"][0][i] if "documents" in results and results["documents"] else "<Code snippet absent in this index format>"
+        document = (
+            results["documents"][0][i]
+            if "documents" in results and results["documents"]
+            else "<Code snippet absent in this index format>"
+        )
 
         source_file = metadata.get("source", metadata.get("filename", "Unknown Source"))
         print(f"\n[{i + 1}] 📄 File: {source_file}")

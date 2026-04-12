@@ -32,7 +32,13 @@ DATA_DIR = REPO_ROOT / "data/alphaxiv"
 DB_PATH = DATA_DIR / "ingest.db"
 JSONL_PATH = DATA_DIR / "extractions.jsonl"
 
-TARGET_CONCEPTS = ["NIST SP 800-53 LLM", "Zero Trust Architecture", "AI Alignment", "QSBS IRC 1202", "Quantitative Valuation Models"]
+TARGET_CONCEPTS = [
+    "NIST SP 800-53 LLM",
+    "Zero Trust Architecture",
+    "AI Alignment",
+    "QSBS IRC 1202",
+    "Quantitative Valuation Models",
+]
 
 
 def init_db():
@@ -72,9 +78,15 @@ async def run_alpha_xiv_mcp():
                 logger.info(f"Querying alphaXiv for: {concept}")
 
                 # Use the agentic_paper_retrieval tool exposed by the MCP
-                result = await session.call_tool("agentic_paper_retrieval", arguments={"query": concept, "top_k": 3})
+                result = await session.call_tool(
+                    "agentic_paper_retrieval", arguments={"query": concept, "top_k": 3}
+                )
 
-                papers = json.loads(result.text) if hasattr(result, "text") else getattr(result, "content", [])
+                papers = (
+                    json.loads(result.text)
+                    if hasattr(result, "text")
+                    else getattr(result, "content", [])
+                )
 
                 # Store extractions
                 with open(JSONL_PATH, "a") as jsonl:
@@ -93,7 +105,13 @@ async def run_alpha_xiv_mcp():
                         )
 
                         # JSONL append for LanceDB sync
-                        record = {"file_id": paper_id, "class": "academic_paper", "name": title, "text": text, "source": "alphaxiv"}
+                        record = {
+                            "file_id": paper_id,
+                            "class": "academic_paper",
+                            "name": title,
+                            "text": text,
+                            "source": "alphaxiv",
+                        }
                         jsonl.write(json.dumps(record) + "\n")
 
                 conn.commit()
@@ -104,7 +122,11 @@ async def run_alpha_xiv_mcp():
     # ── Post-Ingest Trigger ───────────────────────────────────────────────────
     logger.info("Ingestion batch complete. Firing RAG Intelligence Layer...")
     try:
-        subprocess.run([sys.executable, "core/rag_evolve.py", "--post-ingest", "alphaxiv"], cwd=REPO_ROOT, check=False)
+        subprocess.run(
+            [sys.executable, "core/rag_evolve.py", "--post-ingest", "alphaxiv"],
+            cwd=REPO_ROOT,
+            check=False,
+        )
     except Exception as e:
         logger.error(f"Intelligence loop trigger failed: {e}")
 

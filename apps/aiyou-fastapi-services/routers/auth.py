@@ -5,17 +5,20 @@ import logging
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
+
 class TokenData(BaseModel):
     username: str
     scopes: list[str] = []
 
+
 logger = logging.getLogger(__name__)
+
 
 async def verify_activeshield_jwt(token: str = Depends(oauth2_scheme)):
     """
     ActiveShield MCF Zero-Trust Policy Layer (L2.3).
     All microservices operating via aiyou-fastapi-services must
-    route through this gateway to ensure strict token authentication 
+    route through this gateway to ensure strict token authentication
     before engaging domain logic.
     """
     if not token or token == "invalid_token":
@@ -27,6 +30,7 @@ async def verify_activeshield_jwt(token: str = Depends(oauth2_scheme)):
         )
     # Placeholder for actual cryptographic verification against Firebase/Auth0
     return TokenData(username="sovereign_sysadmin", scopes=["execute"])
+
 
 def get_current_active_operator(token_data: TokenData = Depends(verify_activeshield_jwt)):
     if "execute" not in token_data.scopes:

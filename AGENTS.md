@@ -12,11 +12,12 @@ Keep the monorepo structurally truthful, Google-native, and latest-only.
 
 ## Product split
 
-### counselconduit
-- product path: `apps/counselconduit`
+### kovelai
+- product path: `apps/kovelai`
 - runtime: Google Cloud
 - project: `shadowtag-omega-v4`
 - model: `gemini-3.1-flash-lite-preview`
+- note: formerly CounselConduit. `apps/counselconduit` retained as operational backend.
 
 ### uphillsnowball
 - lab path: `labs/uphillsnowball`
@@ -39,6 +40,15 @@ All four repo roots must remain canonical:
 - never mark a live repo archived
 - never treat duplicate recovered trees as canonical
 - fix root truth first, tooling second, runtime third
+- never COMPLECT orthogonal concerns (see `docs/doctrine/SIMPLICITY_DOCTRINE.md`)
+
+## Architectural philosophy
+
+- `docs/doctrine/SIMPLICITY_DOCTRINE.md` is the CANONICAL architectural philosophy
+- Simple (one-fold, unentangled) over Easy (familiar, at-hand) — always
+- Hammock Protocol: think BEFORE coding for any architectural decision
+- Problems over Puzzles: if it doesn't serve the user, don't build it
+- AI as Junior Dev: pair with AI, review output, never accept AI architecture unchecked
 
 ## Strategic note
 

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pnkln
+  labels:
+    name: pnkln
+    environment: production
+    managed-by: terraform
+    project: pnkln-core-stack
+    cost-center: ai-inference
+  annotations:
+    description: "PNKLN Core Stack - AI Inference Platform"

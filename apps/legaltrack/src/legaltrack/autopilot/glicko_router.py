@@ -8,7 +8,9 @@ class Glicko2Agent:
     Tracks the performance of an individual sub-agent (e.g. Designer, Panel).
     """
 
-    def __init__(self, name: str, rating: float = 1500.0, rd: float = 350.0, volatility: float = 0.06):
+    def __init__(
+        self, name: str, rating: float = 1500.0, rd: float = 350.0, volatility: float = 0.06
+    ):
         self.name = name
         self.rating = rating
         self.rd = rd
@@ -42,7 +44,9 @@ class UltrathinkRouter:
         target_agent = "Deep" if task_complexity == "high" else "Accelerator"
         agent_stats = self.agents[target_agent]
 
-        logger.info(f"Task Complexity: {task_complexity}. Evaluating Agent '{target_agent}' [Rating: {agent_stats.rating}, RD: {agent_stats.rd}]")
+        logger.info(
+            f"Task Complexity: {task_complexity}. Evaluating Agent '{target_agent}' [Rating: {agent_stats.rating}, RD: {agent_stats.rd}]"
+        )
 
         # If uncertainty (RD) is high, or task is inherently complex, require Multi-Agent Debate
         if agent_stats.rd > self.mad_rd_threshold or task_complexity == "critical":
@@ -54,7 +58,9 @@ class UltrathinkRouter:
             return "ToT", 0.5
 
         else:
-            logger.info("ROUTING TO DTE (Dynamic Template Evolution). Native function calling (75ms).")
+            logger.info(
+                "ROUTING TO DTE (Dynamic Template Evolution). Native function calling (75ms)."
+            )
             return "DTE", 0.1
 
     def update_rating(self, agent_name: str, task_success: float):
@@ -75,4 +81,6 @@ class UltrathinkRouter:
                 # Increase uncertainty from failure
                 agent.rd = min(350.0, agent.rd + 25.0)
 
-            logger.debug(f"Updated {agent_name} Glicko-2. New Rating: {agent.rating}, RD: {agent.rd}")
+            logger.debug(
+                f"Updated {agent_name} Glicko-2. New Rating: {agent.rating}, RD: {agent.rd}"
+            )

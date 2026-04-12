@@ -9,9 +9,9 @@ try:
 except ImportError:
     lx = None
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from ebooklib import epub
 from pypdf import PdfReader
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -161,16 +161,23 @@ def process_file(filepath: str) -> bool:
 
         # FIX: Check if any extractions were actually returned
         if not result.extractions:
-            logger.warning(f"No extractions found for {filepath}. Skipping save and registry update.")
+            logger.warning(
+                f"No extractions found for {filepath}. Skipping save and registry update."
+            )
             return False
 
         # Add metadata & save temp
-        lx.io.save_annotated_documents([result], output_name="temp_output.jsonl", output_dir=OUTPUT_DIR)
+        lx.io.save_annotated_documents(
+            [result], output_name="temp_output.jsonl", output_dir=OUTPUT_DIR
+        )
 
         # Append temp content to main file to handle streaming/crashes
         temp_path = os.path.join(OUTPUT_DIR, "temp_output.jsonl")
         if os.path.exists(temp_path):
-            with open(temp_path, encoding="utf-8") as f_in, open(OUTPUT_FILE, "a", encoding="utf-8") as f_out:
+            with (
+                open(temp_path, encoding="utf-8") as f_in,
+                open(OUTPUT_FILE, "a", encoding="utf-8") as f_out,
+            ):
                 f_out.write(f_in.read())
             os.remove(temp_path)
 
@@ -216,7 +223,9 @@ def main():
                     append_to_processed_state(filepath)
                     total_files_processed += 1
 
-    logger.info(f"Ingestion scan complete. Discovered {total_files_discovered}. Successfully processed {total_files_processed} new files.")
+    logger.info(
+        f"Ingestion scan complete. Discovered {total_files_discovered}. Successfully processed {total_files_processed} new files."
+    )
 
 
 if __name__ == "__main__":

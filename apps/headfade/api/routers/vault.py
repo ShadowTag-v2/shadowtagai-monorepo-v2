@@ -25,7 +25,15 @@ async def secure_shadowtag_receipt(payload: ReceiptPayload):
             batch.insert(
                 table="ForensicReceipts",
                 columns=("SessionId", "PromptData", "VideoUri", "Timestamp", "SynthIdVerified"),
-                values=[(payload.session_id, payload.prompt, payload.video_uri, spanner.COMMIT_TIMESTAMP, True)],
+                values=[
+                    (
+                        payload.session_id,
+                        payload.prompt,
+                        payload.video_uri,
+                        spanner.COMMIT_TIMESTAMP,
+                        True,
+                    )
+                ],
             )
 
         return {"status": "success", "message": "ShadowTag receipt irrevocably logged."}

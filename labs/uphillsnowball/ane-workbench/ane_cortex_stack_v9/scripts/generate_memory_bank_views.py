@@ -9,14 +9,20 @@ authority = AuthorityState(s.authority_state_path).read()
 base = Path(".agent/memory")
 (base / "patterns").mkdir(parents=True, exist_ok=True)
 
-(base / "project-brief.md").write_text("# Project Brief\n\nAuthority memory is canonical. Codebase is secondary context.\n", encoding="utf-8")
+(base / "project-brief.md").write_text(
+    "# Project Brief\n\nAuthority memory is canonical. Codebase is secondary context.\n",
+    encoding="utf-8",
+)
 
 (base / "product-vision.md").write_text(
-    "# Product Vision\n\nWake up current, stay current, and upgrade code from memory-first truth.\n", encoding="utf-8"
+    "# Product Vision\n\nWake up current, stay current, and upgrade code from memory-first truth.\n",
+    encoding="utf-8",
 )
 
 (base / "context.md").write_text(
-    "# Context\n\n" f"Startup contract: {authority.get('startup_contract', {})}\n\n" f"Settings: {authority.get('settings', {})}\n",
+    "# Context\n\n"
+    f"Startup contract: {authority.get('startup_contract', {})}\n\n"
+    f"Settings: {authority.get('settings', {})}\n",
     encoding="utf-8",
 )
 
@@ -33,7 +39,10 @@ base = Path(".agent/memory")
     encoding="utf-8",
 )
 
-(base / "tech-stack.md").write_text("# Tech Stack\n\n- Postgres\n- JSONL\n- LanceDB\n- SQLite\n- FastAPI\n- ANE-first runtime\n", encoding="utf-8")
+(base / "tech-stack.md").write_text(
+    "# Tech Stack\n\n- Postgres\n- JSONL\n- LanceDB\n- SQLite\n- FastAPI\n- ANE-first runtime\n",
+    encoding="utf-8",
+)
 
 (base / "patterns" / "common-tasks.md").write_text(
     "# Common Tasks\n\n## Session bootstrap\nGET /api/hydrate-pack before any substantial reasoning.\n",

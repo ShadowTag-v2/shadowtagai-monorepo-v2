@@ -22,7 +22,7 @@ class AmbientAutomotiveOS:
     def __init__(self, vehicle_id: str):
         self.vehicle_id = vehicle_id
 
-    async def ingest_voice_command(self, audio_transcript: str) -> dict[str, Any]:
+    async def ingest_voice_command(self, _audio_transcript: str) -> dict[str, Any]:
         """
         Processes native in-car voice commands (e.g. "Draft a motion for extension on the Smith case").
         Routes the transcript directly into the Glicko-2 / 4-Model Orchestrator pipeline.
@@ -41,7 +41,9 @@ class AmbientAutomotiveOS:
         Zero-Touch Logistics: If a physical appearance is required (e.g., Courthouse),
         the system intercepts the FSD API to automatically route the car to the venue.
         """
-        logger.warning(f"Automotive OS: FSD OVERRIDE. Routing vehicle {self.vehicle_id} to {deadline_location} ({lat}, {lng})")
+        logger.warning(
+            f"Automotive OS: FSD OVERRIDE. Routing vehicle {self.vehicle_id} to {deadline_location} ({lat}, {lng})"
+        )
 
         async with httpx.AsyncClient() as client:
             try:
@@ -49,10 +51,17 @@ class AmbientAutomotiveOS:
                 await client.post(
                     f"https://owner-api.teslamotors.com/api/1/vehicles/{self.vehicle_id}/command/navigation_request",
                     headers={"Authorization": "Bearer ENV_API_KEY"},
-                    json={"type": "share_ext_content_raw", "value": {"lat": lat, "long": lng, "destination": deadline_location}},
+                    json={
+                        "type": "share_ext_content_raw",
+                        "value": {"lat": lat, "long": lng, "destination": deadline_location},
+                    },
                 )
                 logger.info(f"Automotive OS: FSD physical route locked to {deadline_location}.")
-                return {"fsd_status": "engaged", "destination": deadline_location, "network": "success"}
+                return {
+                    "fsd_status": "engaged",
+                    "destination": deadline_location,
+                    "network": "success",
+                }
             except Exception as e:
                 logger.error(f"Automotive OS: FSD Network Intercept failed - {e}")
                 return {"fsd_status": "failed", "error": str(e)}

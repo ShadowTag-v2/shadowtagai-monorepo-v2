@@ -49,7 +49,11 @@ def get_token(app_id, pem_path, owner_name):
     if not target_installation_id:
         return None
 
-    resp = session.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers, timeout=30)
+    resp = session.post(
+        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
+        headers=headers,
+        timeout=30,
+    )
     if resp.status_code == 201:
         return resp.json()["token"]
     return None
@@ -69,7 +73,9 @@ if __name__ == "__main__":
         print("CRITICAL: Failed to acquire ShadowTag-v2 App token.")
         sys.exit(1)
 
-    repo_url = f"https://x-access-token:{token_s}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
+    repo_url = (
+        f"https://x-access-token:{token_s}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
+    )
 
     # Disable terminal prompts and LFS hooks to prevent deadlocks
     os.environ["GIT_TERMINAL_PROMPT"] = "0"
@@ -80,7 +86,9 @@ if __name__ == "__main__":
 
     res = subprocess.run(cmd, shell=True, text=True)  # REMOVED capture_output=True
     if res.returncode == 0:
-        print("SUCCESS! The fully assimilated monorepo has been pushed to https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball")
+        print(
+            "SUCCESS! The fully assimilated monorepo has been pushed to https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball"
+        )
     else:
         print("Push failed! Attempting master branch...")
 

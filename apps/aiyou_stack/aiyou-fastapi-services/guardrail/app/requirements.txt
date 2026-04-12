@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+google-cloud-modelarmor
+google-cloud-storage
+requests>=2.32.0
+tenacity

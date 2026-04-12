@@ -9,7 +9,9 @@ sys.path.insert(0, os.path.abspath("apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi
 try:
     from zero_cpu_router import dispatch_compute
 except ImportError:
-    print("WARNING: zero_cpu_router not found. Formatting will proceed locally without Cloud dispatch.")
+    print(
+        "WARNING: zero_cpu_router not found. Formatting will proceed locally without Cloud dispatch."
+    )
 
 
 def run_local_linting(target_dir):
@@ -73,8 +75,15 @@ def main():
         action="store_true",
         help="Execute the Great Refactor across all apps/ and libs/",
     )
-    parser.add_argument("--lint-only", action="store_true", help="Only run the local M1 Max linters")
-    parser.add_argument("targets", nargs="*", default=["apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"], help="Target directories")
+    parser.add_argument(
+        "--lint-only", action="store_true", help="Only run the local M1 Max linters"
+    )
+    parser.add_argument(
+        "targets",
+        nargs="*",
+        default=["apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"],
+        help="Target directories",
+    )
     args = parser.parse_args()
 
     target_dirs = args.targets
@@ -90,10 +99,14 @@ def main():
         # For demonstration, we simulate targeting a few Python files
         for root, _, files in os.walk("apps"):
             for file in files:
-                if file.endswith(".py") and os.path.getsize(os.path.join(root, file)) > 10000:  # Files > 10KB
+                if (
+                    file.endswith(".py") and os.path.getsize(os.path.join(root, file)) > 10000
+                ):  # Files > 10KB
                     file_path = os.path.join(root, file)
                     dispatch_heavy_refactor(file_path)
-        print("[+] All refactoring payloads dispatched to Google Drive IPC Inbox. Awaiting Colab workers...")
+        print(
+            "[+] All refactoring payloads dispatched to Google Drive IPC Inbox. Awaiting Colab workers..."
+        )
 
 
 if __name__ == "__main__":

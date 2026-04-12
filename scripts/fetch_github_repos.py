@@ -33,18 +33,27 @@ def get_repos(app_id, pem_path, owner_type, owner_name):
         return []
 
     # Get installation access token
-    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers)
+    resp = requests.post(
+        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
+        headers=headers,
+    )
     resp.raise_for_status()
     token_data = resp.json()
     access_token = token_data["token"]
 
     # Get repositories
-    auth_headers = {"Authorization": f"Token {access_token}", "Accept": "application/vnd.github.v3+json"}
+    auth_headers = {
+        "Authorization": f"Token {access_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
 
     repos = []
     page = 1
     while True:
-        resp = requests.get(f"https://api.github.com/installation/repositories?per_page=100&page={page}", headers=auth_headers)
+        resp = requests.get(
+            f"https://api.github.com/installation/repositories?per_page=100&page={page}",
+            headers=auth_headers,
+        )
         resp.raise_for_status()
         data = resp.json()
         repos.extend(data["repositories"])
