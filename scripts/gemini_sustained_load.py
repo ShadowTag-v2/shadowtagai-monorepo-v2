@@ -4,19 +4,20 @@ Gemini Sustained Load Calculator & Runner
 Maximum indefinite throughput without quota exhaustion.
 """
 
-import os
 import asyncio
-import time
 import json
+import os
+import time
 from dataclasses import dataclass
 
 import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
+from google.generativeai.types import HarmBlockThreshold, HarmCategory
 
 
 @dataclass
 class QuotaLimits:
     """Gemini Pro API quota limits per account."""
+
     # Free tier limits (conservative estimates)
     requests_per_minute: int = 60
     requests_per_day: int = 1500
@@ -107,9 +108,7 @@ class SustainedLoadEngine:
 
         try:
             response = await asyncio.to_thread(
-                model.generate_content,
-                prompt,
-                safety_settings=self.safety_config
+                model.generate_content, prompt, safety_settings=self.safety_config
             )
             self.total_requests += 1
             return response.text
@@ -130,7 +129,9 @@ class SustainedLoadEngine:
         if duration_hours:
             end_time = self.start_time + (duration_hours * 3600)
 
-        print(f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run")
+        print(
+            f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run"
+        )
         print("///▞ SUSTAINED :: Press Ctrl+C to stop\n")
 
         try:
@@ -147,9 +148,11 @@ class SustainedLoadEngine:
                 if self.total_requests % 100 == 0:
                     elapsed = time.time() - self.start_time
                     actual_rpm = (self.total_requests / elapsed) * 60
-                    print(f"///▞ SUSTAINED :: {self.total_requests} requests, "
-                          f"{actual_rpm:.1f} actual RPM, "
-                          f"{self.total_errors} errors")
+                    print(
+                        f"///▞ SUSTAINED :: {self.total_requests} requests, "
+                        f"{actual_rpm:.1f} actual RPM, "
+                        f"{self.total_errors} errors"
+                    )
 
                 # Rate limit
                 await asyncio.sleep(self.interval)
@@ -187,13 +190,13 @@ class SustainedLoadEngine:
         print("\n" + "=" * 60)
         print("///▞ SUSTAINED LOAD STATS")
         print("=" * 60)
-        print(f"Duration: {elapsed/3600:.2f} hours ({elapsed:.0f} seconds)")
+        print(f"Duration: {elapsed / 3600:.2f} hours ({elapsed:.0f} seconds)")
         print(f"Total Requests: {self.total_requests:,}")
         print(f"Total Errors: {self.total_errors}")
-        print(f"Error Rate: {(self.total_errors/max(1,self.total_requests))*100:.2f}%")
+        print(f"Error Rate: {(self.total_errors / max(1, self.total_requests)) * 100:.2f}%")
         print(f"Actual RPM: {actual_rpm:.1f}")
         print(f"Target RPM: {self.total_rpm}")
-        print(f"Efficiency: {(actual_rpm/self.total_rpm)*100:.1f}%")
+        print(f"Efficiency: {(actual_rpm / self.total_rpm) * 100:.1f}%")
         print("=" * 60)
 
         # Projection
@@ -227,10 +230,12 @@ async def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Gemini Sustained Load Runner")
-    parser.add_argument("--mode", choices=["safe", "aggressive"], default="safe",
-                       help="Rate limiting mode")
-    parser.add_argument("--hours", type=float, default=None,
-                       help="Duration in hours (default: indefinite)")
+    parser.add_argument(
+        "--mode", choices=["safe", "aggressive"], default="safe", help="Rate limiting mode"
+    )
+    parser.add_argument(
+        "--hours", type=float, default=None, help="Duration in hours (default: indefinite)"
+    )
     args = parser.parse_args()
 
     engine = SustainedLoadEngine(mode=args.mode)
@@ -242,17 +247,21 @@ async def main():
 
     # Save results
     output_path = "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/sustained_results.json"
-    with open(output_path, 'w') as f:
+    with open(output_path, "w") as f:
         elapsed = time.time() - engine.start_time if engine.start_time else 0
-        json.dump({
-            "mode": args.mode,
-            "num_keys": engine.num_keys,
-            "target_rpm": engine.total_rpm,
-            "total_requests": engine.total_requests,
-            "total_errors": engine.total_errors,
-            "elapsed_seconds": elapsed,
-            "actual_rpm": (engine.total_requests / elapsed) * 60 if elapsed > 0 else 0
-        }, f, indent=2)
+        json.dump(
+            {
+                "mode": args.mode,
+                "num_keys": engine.num_keys,
+                "target_rpm": engine.total_rpm,
+                "total_requests": engine.total_requests,
+                "total_errors": engine.total_errors,
+                "elapsed_seconds": elapsed,
+                "actual_rpm": (engine.total_requests / elapsed) * 60 if elapsed > 0 else 0,
+            },
+            f,
+            indent=2,
+        )
     print(f"\nResults saved to {output_path}")
 
 

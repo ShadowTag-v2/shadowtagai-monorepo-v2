@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gemini-ingestion
+  namespace: pnkln-ingestion
+  labels:
+    app: pnkln-core-stack
+    component: ingestion-layer
+    version: v1.0
+spec:
+  # Schedule: 3:00 AM daily (UTC)
+  schedule: "0 3 * * *"
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: youtube-collector
+            image: gcr.io/${PROJECT_ID}/youtube-collector:latest
+            envFrom:
+              - secretRef:
+                  name: ingestion-api-keys
+          - name: twitter-collector
+            image: gcr.io/${PROJECT_ID}/twitter-collector:latest
+            envFrom:
+              - secretRef:
+                  name: ingestion-api-keys
+          restartPolicy: OnFailure

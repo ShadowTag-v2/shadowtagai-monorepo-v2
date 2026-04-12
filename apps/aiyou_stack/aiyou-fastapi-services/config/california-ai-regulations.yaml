@@ -1,0 +1,250 @@
+# California AI Regulations Policy Configuration
+# ==============================================
+# Policy rules for California AI chatbot compliance
+# Based on Governor Newsom's AI chatbot safety legislation (2024-2025)
+#
+# Usage:
+#   This file defines the regulatory rules enforced by the NS-JR-Cor framework.
+#   Rules are evaluated in order of priority (lower = higher priority).
+#
+# Structure:
+#   - rule_id: Unique identifier
+#   - name: Human-readable name
+#   - trigger: Condition that activates the rule
+#   - action: What to do when triggered
+#   - severity: info | low | medium | high | critical
+#   - user_age_applies: List of age categories (empty = all users)
+#   - parameters: Rule-specific configuration
+
+version: "1.0.0"
+framework: "CA_AI_CHATBOT"
+effective_date: "2024-01-01"
+
+# Crisis Resources
+crisis_resources:
+  988_LIFELINE:
+    name: "988 Suicide & Crisis Lifeline"
+    phone: "988"
+    text: "Text HOME to 741741"
+    url: "https://988lifeline.org/"
+    description: "Free, 24/7 support for people in distress"
+    priority: 1
+
+  CRISIS_TEXT:
+    name: "Crisis Text Line"
+    text: "Text HOME to 741741"
+    url: "https://www.crisistextline.org/"
+    description: "Text-based crisis support"
+    priority: 2
+
+  TREVOR_PROJECT:
+    name: "The Trevor Project"
+    phone: "1-866-488-7386"
+    text: "Text START to 678-678"
+    url: "https://www.thetrevorproject.org/"
+    description: "Crisis support for LGBTQ+ young people"
+    priority: 3
+
+  SAMHSA:
+    name: "SAMHSA National Helpline"
+    phone: "1-800-662-4357"
+    url: "https://www.samhsa.gov/find-help/national-helpline"
+    description: "Treatment referral service"
+    priority: 4
+
+# Regulation Rules
+regulations:
+  # Self-Harm Detection and Response
+  - rule_id: "CA_SELF_HARM_001"
+    name: "Self-Harm Detection"
+    description: "Detect self-harm or suicidal ideation in user messages"
+    trigger: "self_harm_detected"
+    action: "respond_with_resources"
+    severity: "critical"
+    priority: 1
+    parameters:
+      confidence_threshold: 0.5
+      response_type: "immediate"
+    legal_reference: "California AI Chatbot Safety Law 2024"
+    remediation: "Provide crisis resources and encourage professional help"
+
+  - rule_id: "CA_SELF_HARM_002"
+    name: "Self-Harm Crisis Response"
+    description: "Provide appropriate crisis resources when self-harm is detected"
+    trigger: "self_harm_detected"
+    action: "respond_with_resources"
+    severity: "critical"
+    priority: 1
+    parameters:
+      resources:
+        - "988_LIFELINE"
+        - "CRISIS_TEXT"
+        - "TREVOR_PROJECT"
+      include_disclaimer: true
+    legal_reference: "California AI Chatbot Safety Law 2024"
+
+  # AI Disclosure Requirements
+  - rule_id: "CA_DISCLOSURE_001"
+    name: "AI Nature Disclosure - Start"
+    description: "Disclose AI nature at start of conversation"
+    trigger: "conversation_start"
+    action: "disclose_ai"
+    severity: "medium"
+    priority: 5
+    parameters:
+      disclosure_text: "I am an AI assistant. I am not a human."
+      position: "before_response"
+    legal_reference: "California AI Transparency Law"
+
+  - rule_id: "CA_DISCLOSURE_002"
+    name: "AI Nature Disclosure - On Request"
+    description: "Disclose AI nature when directly asked"
+    trigger: "ai_identity_question"
+    action: "disclose_ai"
+    severity: "high"
+    priority: 2
+    parameters:
+      disclosure_text: "I am an AI assistant created to help you. I am not a human."
+    legal_reference: "California AI Transparency Law"
+
+  # Minor Protection - Break Reminders
+  - rule_id: "CA_MINOR_BREAK_001"
+    name: "Minor Break Reminder - Under 13"
+    description: "Remind users under 13 to take a break after 30 minutes"
+    trigger: "session_duration_exceeded"
+    action: "break_reminder"
+    severity: "high"
+    priority: 10
+    user_age_applies:
+      - "under_13"
+    parameters:
+      threshold_minutes: 30
+      reminder_text: "Time for a break! Go do something fun offline!"
+      repeat_interval_minutes: 15
+    legal_reference: "California Age-Appropriate Design Code Act + COPPA"
+
+  - rule_id: "CA_MINOR_BREAK_002"
+    name: "Minor Break Reminder - Teens"
+    description: "Remind teen users to take a break after 60 minutes"
+    trigger: "session_duration_exceeded"
+    action: "break_reminder"
+    severity: "medium"
+    priority: 15
+    user_age_applies:
+      - "teen_13_17"
+    parameters:
+      threshold_minutes: 60
+      reminder_text: "You've been chatting for a while. Consider taking a break!"
+      repeat_interval_minutes: 30
+    legal_reference: "California Age-Appropriate Design Code Act"
+
+  # Explicit Content Blocking
+  - rule_id: "CA_EXPLICIT_001"
+    name: "Explicit Content Block - Minors"
+    description: "Block explicit imagery and content for minors"
+    trigger: "explicit_content_detected"
+    action: "block"
+    severity: "critical"
+    priority: 2
+    user_age_applies:
+      - "under_13"
+      - "teen_13_17"
+    parameters:
+      categories:
+        - "sexual"
+        - "violence"
+        - "drugs"
+        - "self_harm_promotion"
+      confidence_threshold: 0.6
+    legal_reference: "California AI Chatbot Safety Law 2024"
+    remediation: "Remove or block explicit content before display"
+
+  - rule_id: "CA_EXPLICIT_002"
+    name: "Explicit Content Warning - Adults"
+    description: "Warn adults before displaying explicit content"
+    trigger: "explicit_content_detected"
+    action: "warn"
+    severity: "medium"
+    priority: 20
+    user_age_applies:
+      - "adult"
+    parameters:
+      warning_text: "This content may contain explicit material."
+      require_acknowledgment: false
+
+  # Medical Impersonation Prevention
+  - rule_id: "CA_MEDICAL_001"
+    name: "Medical Impersonation Block"
+    description: "Prevent AI from impersonating medical professionals"
+    trigger: "medical_claim_detected"
+    action: "block"
+    severity: "critical"
+    priority: 3
+    parameters:
+      impersonation_threshold: 0.7
+    legal_reference: "AB 3030 - AI Healthcare Restrictions"
+    remediation: "Clarify AI is not a medical professional"
+
+  - rule_id: "CA_MEDICAL_002"
+    name: "Medical Advice Disclaimer"
+    description: "Add disclaimer when health topics discussed"
+    trigger: "health_topic_detected"
+    action: "warn"
+    severity: "high"
+    priority: 8
+    parameters:
+      disclaimer: |
+        I am an AI and cannot provide medical advice.
+        Please consult a healthcare professional for medical concerns.
+      position: "after_response"
+    legal_reference: "AB 3030 - AI Healthcare Restrictions"
+
+  # Data Privacy (CPRA)
+  - rule_id: "CA_PRIVACY_001"
+    name: "Minor Data Collection Consent"
+    description: "Require parental consent for minor data collection"
+    trigger: "data_collection"
+    action: "require_consent"
+    severity: "high"
+    priority: 4
+    user_age_applies:
+      - "under_13"
+    parameters:
+      consent_type: "parental"
+      verification_required: true
+    legal_reference: "CPRA + COPPA"
+
+  - rule_id: "CA_PRIVACY_002"
+    name: "Teen Data Collection Notice"
+    description: "Notify teens about data collection"
+    trigger: "data_collection"
+    action: "warn"
+    severity: "medium"
+    priority: 12
+    user_age_applies:
+      - "teen_13_17"
+    parameters:
+      notice_text: "We collect and use your data as described in our privacy policy."
+    legal_reference: "CPRA"
+
+# Platform-Specific Overrides
+platform_overrides:
+  # Example: Stricter rules for mental health platforms
+  mental_health_platform:
+    - rule_id: "CA_SELF_HARM_001"
+      parameters:
+        confidence_threshold: 0.3  # Lower threshold = more sensitive
+
+  # Example: Relaxed break reminders for educational platforms
+  education_platform:
+    - rule_id: "CA_MINOR_BREAK_001"
+      parameters:
+        threshold_minutes: 45  # Slightly longer for learning
+
+# Enforcement Settings
+enforcement:
+  strict_mode: true
+  log_all_violations: true
+  human_review_threshold: 0.4
+  cache_verdicts: true
+  cache_ttl_hours: 24

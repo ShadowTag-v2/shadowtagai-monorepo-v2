@@ -1,0 +1,163 @@
+# PNKLN GKE Inference - Namespace Architecture
+# 4-layer isolation: Governance, Orchestration, Inference, Audit
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ShadowTag-v2jr-governance
+  labels:
+    name: ShadowTag-v2jr-governance
+    component: judge-6
+    security.istio.io/tlsMode: istio
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    description: "Judge #6 governance layer - ATP 5-19 compliance enforcement"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: autogen-orchestration
+  labels:
+    name: autogen-orchestration
+    component: cognitive
+    security.istio.io/tlsMode: istio
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/warn: baseline
+  annotations:
+    description: "AutoGen cognitive orchestration - multi-agent workflows"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: llm-inference
+  labels:
+    name: llm-inference
+    component: inference
+    security.istio.io/tlsMode: istio
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/warn: baseline
+  annotations:
+    description: "LLM inference layer - vLLM, GKE Inference Gateway, model serving"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shadowtag-audit
+  labels:
+    name: shadowtag-audit
+    component: audit
+    security.istio.io/tlsMode: istio
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    description: "ShadowTag cryptographic audit trail - C2PA + DCT watermarking"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+    component: observability
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/warn: baseline
+  annotations:
+    description: "Monitoring stack - Prometheus, Grafana, alerting"
+---
+# Network Policies for namespace isolation
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: ShadowTag-v2jr-governance
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-governance-ingress
+  namespace: ShadowTag-v2jr-governance
+spec:
+  podSelector:
+    matchLabels:
+      component: judge-6
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: autogen-orchestration
+    - namespaceSelector:
+        matchLabels:
+          name: llm-inference
+    ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: autogen-orchestration
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-orchestration-ingress
+  namespace: autogen-orchestration
+spec:
+  podSelector:
+    matchLabels:
+      component: autogen
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 8000
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: llm-inference
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-inference-ingress
+  namespace: llm-inference
+spec:
+  podSelector:
+    matchLabels:
+      component: llm-router
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: autogen-orchestration
+    ports:
+    - protocol: TCP
+      port: 8080

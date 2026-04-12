@@ -1,0 +1,14 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: shadowtagai-orchestrator
+  namespace: shadowtagai-production
+  labels:
+    app: shadowtagai
+    component: orchestrator
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: shadowtagai
+      component: orchestrator

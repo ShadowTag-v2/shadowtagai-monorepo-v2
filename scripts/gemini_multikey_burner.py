@@ -5,21 +5,22 @@ Load balances across 10 Gemini Pro accounts for maximum throughput.
 No caching, no rate limiting - burn through quotas fast.
 """
 
-import os
 import asyncio
 import json
+import os
 import time
-from typing import Any
 from dataclasses import dataclass
 from itertools import cycle
+from typing import Any
 
 import google.generativeai as genai
-from google.generativeai.types import HarmCategory, HarmBlockThreshold
+from google.generativeai.types import HarmBlockThreshold, HarmCategory
 
 
 @dataclass
 class KeyStats:
     """Track usage per key."""
+
     key_id: int
     requests: int = 0
     tokens_used: int = 0
@@ -52,9 +53,7 @@ class MultiKeyGeminiBurner:
         print(f"///▞ BURNER :: Loaded {len(self.keys)} API keys")
 
         # Initialize stats per key
-        self.stats: dict[int, KeyStats] = {
-            i: KeyStats(key_id=i) for i in range(len(self.keys))
-        }
+        self.stats: dict[int, KeyStats] = {i: KeyStats(key_id=i) for i in range(len(self.keys))}
 
         # Round-robin iterator
         self.key_cycle = cycle(range(len(self.keys)))
@@ -84,10 +83,7 @@ class MultiKeyGeminiBurner:
         model = self._get_model(key)
 
         try:
-            response = model.generate_content(
-                prompt,
-                safety_settings=self.safety_config
-            )
+            response = model.generate_content(prompt, safety_settings=self.safety_config)
 
             # Update stats
             self.stats[idx].requests += 1
@@ -123,7 +119,7 @@ class MultiKeyGeminiBurner:
         """Burn through prompts sequentially with key rotation."""
         results = []
         for i, prompt in enumerate(prompts):
-            print(f"///▞ BURNER :: Request {i+1}/{len(prompts)}")
+            print(f"///▞ BURNER :: Request {i + 1}/{len(prompts)}")
             result = self.generate(prompt)
             results.append(result)
         return results
@@ -142,10 +138,10 @@ class MultiKeyGeminiBurner:
                     "key_id": s.key_id,
                     "requests": s.requests,
                     "errors": s.errors,
-                    "last_used": s.last_used
+                    "last_used": s.last_used,
                 }
                 for s in self.stats.values()
-            ]
+            ],
         }
 
     def print_stats(self):
@@ -158,7 +154,7 @@ class MultiKeyGeminiBurner:
         print(f"Total Requests: {stats['total_requests']}")
         print(f"Total Errors: {stats['total_errors']}")
         print("\nPer-Key Breakdown:")
-        for ks in stats['per_key']:
+        for ks in stats["per_key"]:
             print(f"  Key {ks['key_id']}: {ks['requests']} requests, {ks['errors']} errors")
         print("=" * 50)
 
@@ -181,19 +177,23 @@ async def main():
 
     elapsed = time.time() - start
     print(f"\n///▞ BURNER :: Completed in {elapsed:.2f}s")
-    print(f"///▞ BURNER :: Rate: {len(test_prompts)/elapsed:.1f} requests/sec")
+    print(f"///▞ BURNER :: Rate: {len(test_prompts) / elapsed:.1f} requests/sec")
 
     burner.print_stats()
 
     # Save results
     output_path = "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/burn_results.json"
-    with open(output_path, 'w') as f:
-        json.dump({
-            "stats": burner.get_stats(),
-            "elapsed_seconds": elapsed,
-            "requests_per_second": len(test_prompts) / elapsed,
-            "results_count": len(results)
-        }, f, indent=2)
+    with open(output_path, "w") as f:
+        json.dump(
+            {
+                "stats": burner.get_stats(),
+                "elapsed_seconds": elapsed,
+                "requests_per_second": len(test_prompts) / elapsed,
+                "results_count": len(results),
+            },
+            f,
+            indent=2,
+        )
     print(f"\n///▞ BURNER :: Results saved to {output_path}")
 
 

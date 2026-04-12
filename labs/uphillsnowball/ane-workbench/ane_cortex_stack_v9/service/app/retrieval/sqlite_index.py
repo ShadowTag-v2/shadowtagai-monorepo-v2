@@ -5,7 +5,20 @@ from pathlib import Path
 from ..utils.db import sqlite_conn
 from ..utils.hash import sha256_file, sha256_text
 
-TEXT_EXTS = {".md", ".txt", ".py", ".m", ".h", ".c", ".cc", ".cpp", ".json", ".yaml", ".yml", ".toml"}
+TEXT_EXTS = {
+    ".md",
+    ".txt",
+    ".py",
+    ".m",
+    ".h",
+    ".c",
+    ".cc",
+    ".cpp",
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+}
 CODE_EXTS = {".py", ".m", ".h", ".c", ".cc", ".cpp"}
 
 
@@ -27,7 +40,9 @@ def scan_repo(sqlite_db: str, repo_id: str, repo_root: str):
         for path in root.rglob("*"):
             if not path.is_file():
                 continue
-            if any(part in {".git", "build", "dist", "__pycache__", ".venv"} for part in path.parts):
+            if any(
+                part in {".git", "build", "dist", "__pycache__", ".venv"} for part in path.parts
+            ):
                 continue
             kind, language = classify_kind(path)
             if kind == "other":
@@ -39,7 +54,19 @@ def scan_repo(sqlite_db: str, repo_id: str, repo_root: str):
             mtime_ns = int(path.stat().st_mtime_ns)
             cur.execute(
                 "INSERT OR REPLACE INTO documents (doc_id, repo_id, rel_path, abs_path, kind, language, size_bytes, sha256, mtime_ns, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                (doc_id, repo_id, rel_path, str(path), kind, language, size_bytes, sha, mtime_ns, now, now),
+                (
+                    doc_id,
+                    repo_id,
+                    rel_path,
+                    str(path),
+                    kind,
+                    language,
+                    size_bytes,
+                    sha,
+                    mtime_ns,
+                    now,
+                    now,
+                ),
             )
             try:
                 body = path.read_text(encoding="utf-8", errors="ignore")
@@ -58,7 +85,10 @@ def extract_symbols(text: str):
     patterns = [
         (r"^\s*[-+]\s*\([^)]*\)\s*([A-Za-z_][A-Za-z0-9_]*)", "objc_method"),
         (r"^\s*(?:def|class)\s+([A-Za-z_][A-Za-z0-9_]*)", "python"),
-        (r"^\s*(?:static\s+)?(?:inline\s+)?[A-Za-z_][\w\s\*]+\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", "c_func"),
+        (
+            r"^\s*(?:static\s+)?(?:inline\s+)?[A-Za-z_][\w\s\*]+\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(",
+            "c_func",
+        ),
     ]
     out = []
     for i, line in enumerate(text.splitlines(), start=1):
@@ -94,7 +124,9 @@ def chunk_text(sqlite_db: str):
     chunks = []
     with sqlite_conn(sqlite_db) as conn:
         cur = conn.cursor()
-        rows = cur.execute("SELECT doc_id, rel_path, abs_path, kind, language, sha256 FROM documents").fetchall()
+        rows = cur.execute(
+            "SELECT doc_id, rel_path, abs_path, kind, language, sha256 FROM documents"
+        ).fetchall()
         for doc_id, rel_path, abs_path, kind, language, sha in rows:
             try:
                 text = Path(abs_path).read_text(encoding="utf-8", errors="ignore")
@@ -136,7 +168,12 @@ def chunk_text(sqlite_db: str):
 
 def exact_search(sqlite_db: str, query: str, limit: int = 8):
     with sqlite_conn(sqlite_db) as conn:
-        conn.row_factory = lambda cur, row: {"doc_id": row[0], "rel_path": row[1], "title": row[2], "body": row[3]}
+        conn.row_factory = lambda cur, row: {
+            "doc_id": row[0],
+            "rel_path": row[1],
+            "title": row[2],
+            "body": row[3],
+        }
         cur = conn.cursor()
         try:
             return cur.execute(

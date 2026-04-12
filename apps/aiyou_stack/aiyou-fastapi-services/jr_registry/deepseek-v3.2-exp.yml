@@ -1,0 +1,53 @@
+# jr_registry/deepseek-v3.2-exp.yml
+id: "deepseek-v3.2-exp"
+title: "DeepSeek-V3.2-Exp Sparse Attention LLM"
+owner: "CTO"
+sponsor: "Head of Product"
+status: "Active"
+intake_date: "2025-11-29"
+last_review: "2025-11-29"
+next_review: "2026-02-28"
+links:
+  doc: "https://github.com/deepseek-ai/DeepSeek-V3.2-Exp/blob/main/DeepSeek_V3_2.pdf"
+  repo: "https://github.com/deepseek-ai/DeepSeek-V3.2-Exp"
+  ticket: null
+imperatives:
+  - Capital Discipline Through Architectural Excellence
+  - Velocity and Adaptability
+  - Building Defensible Technology Moats
+roi_gate:
+  gate_name: "Judge #6 v1.0 context-cost model decision"
+  why_now: "Need CPI & latency benchmarks for long-context workloads before committing to production long-doc path."
+  due: "2025-12-15"
+  blocked_if_missed: true
+governance:
+  timebox_hours: 12
+  kill_switch_date: "2025-12-16"
+  decision: "TBD"
+  objections_log:
+    - "Need comparative quality/accuracy vs Gemini/vertex for legal-doc reasoning"
+scores:
+  defensibility: 4
+  alignment: 5
+  value_hierarchy: "Ease-of-Business"
+  risk: 3
+  confidence: 0.75
+economics:
+  capex_delta_usd: 0
+  opex_delta_usd_m: -0.48
+  perf_gain_x: 1.9
+  cost_per_inference_delta: -0.52
+deployment:
+  target_env: "Self-hosted vLLM / GCP GPU cluster"
+  onprem_viable: true
+  security_impact: "None"
+  pqc_impact: "N/A"
+deliverables:
+  - name: "CPI & latency benchmark report long-context legal"
+    due: "2025-12-10"
+    status: "Planned"
+  - name: "Quality regression (legal doc) vs baseline"
+    due: "2025-12-12"
+    status: "Planned"
+notes: |
+  Official release notes claim 50%+ API price reduction, long-context sparse-attention efficiency while preserving output parity.

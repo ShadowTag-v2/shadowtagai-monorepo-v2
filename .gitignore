@@ -1,86 +1,136 @@
-# Canonical root ignore
+# ═══════════════════════════════════════════════════════════
+# Canonical Root Ignore — ShadowTag-v2/Monorepo-Uphillsnowball
+# Per Invariant #55: Strict Workspace Isolation
+# Per Invariant #90: Chunked Push Protocol
+# ═══════════════════════════════════════════════════════════
+
+# --- Secrets & Credentials ---
 .env
 .env.*
 *.pem
-client_secret.json
-service-account.json
-.venv/
-__pycache__/
-node_modules/
-dist/
-build/
-.lancedb/
-output/
-tmp/
-.DS_Store
-CLAUDE.local.md
-data/lancedb/
-data/intelligence_pipeline/
-第三party/mlx-vlm/
-.gitnexus/
-
-# Intelligence Matrix Bloat Purge
-**/node_modules
-**/obj
-**/bin
-.venv
-.timesfm_venv
-labs/external_payloads
-**/*.sqlite3
-**/*.db
-
-# Temporary push exclusions (too large for single push)
-archive/root_debris/
-archive/external_payloads/
-archive/recovered_assets/
-archive/external_repos_root/
-archive/labs_graveyard/
-apps/aiyou_stack/aiyou-fastapi-services/external_repos/
-third_party/
-tools/devtools-frontend/
-
-# Phase 2 size reduction — block re-ingestion of patterns deleted in bulk sweep
-# Rust build artifacts (were 669 MB, 5,402 files on main before deletion)
-**/target/debug/**
-**/target/release/**
-# Distribution archives — never belong in a source tree
-*.tar.gz
-*.tgz
-*.tar
-*.zip
-*.7z
-# Protobuf binary blobs (conversation backups etc.)
-*.pb
-# Directories deleted in Phase 2 bulk sweep — prevent re-materialization
-control/legacy_workspaces/
-docs/harvested_from_deleted_user/
-docs/harvested_from_deleted_user_2/
-apps/GeminiWatermarkTool/artworks/
-archive/claude-code-src-leak/
-.agent/incoming_repos/
-apps/aiyou_stack/aiyou-fastapi-services/
-
-# --- merged from fix-invariants-103-105 (aacce908ef6) — Phase 2 Step 2.5 ---
 client_secret*.json
 service-account*.json
 storage_state.json
 **/credentials.json
+
+# --- Language Runtimes ---
+.venv/
+__pycache__/
 **/__pycache__/
+node_modules/
 **/node_modules/
 **/obj/
 **/bin/
+dist/
+build/
 .timesfm_venv/
 **/*.pyc
 **/*.pyo
-**/*.cache
+
+# --- ROOT-LEVEL EXTERNAL REPOS (CRITICAL — Invariant #55) ---
+external_repos/
+.agent/incoming_repos/
+
+# --- Archive Subdirectories (keep on disk, never track) ---
+archive/recovered_assets/
+archive/root_debris/
+archive/labs_graveyard/
+archive/external_payloads/
+archive/claude-code-src-leak/
+archive/external_repos_root/
+
+# --- Nested Git Repos ---
+**/.git/
+
+# --- Binary Artifacts ---
+**/*.dll
+**/*.so
+**/*.dylib
+**/*.exe
+**/*.jar
+**/*.whl
+**/*.node
+**/*.wasm
+**/*.pack
+**/*.idx
 **/*.pdb
-archive/external_payloads/repos/
-labs/external_payloads/
+**/*.o
+**/*.a
+**/*.obj
+
+# --- Media & Large Data ---
+**/*.mp4
+**/*.mp3
+**/*.wav
+**/*.pdf
+**/*.csv
+**/*.heapsnapshot
+**/*.cpuprofile
+
+# --- Large Data Formats ---
+**/*.jsonl
+**/*.parquet
+**/*.arrow
+**/*.feather
+**/*.h5
+**/*.hdf5
+
+# --- Data & Caches ---
+.lancedb/
+data/lancedb/
+data/intelligence_pipeline/
+output/
+tmp/
+**/*.sqlite3
+**/*.db
+**/*.cache
+
+# --- Heavy Archive Payloads ---
+control/legacy_workspaces/
+
+# --- IDE & OS ---
+.DS_Store
 **/.DS_Store
+.gitnexus/
+CLAUDE.local.md
+第三party/mlx-vlm/
+
+# --- Build Artifacts ---
 *.log
 .!*
 *.coverage
 launchd-sync*
+
+# --- Root Debris Prevention ---
 test_*.cmake
 test_*.py
 test2.py
+
+# --- Rust Build Artifacts ---
+**/target/debug/
+**/target/release/
+**/*.rlib
+**/*.rmeta
+
+# --- Next.js / Webpack Caches ---
+**/.next/
+**/.nuxt/
+
+# --- Image/Animation Artifacts ---
+**/*.gif
+
+# --- Protobuf / Conversation Dumps ---
+**/*.pb
+
+# --- macOS/Linux compile caches ---
+**/*.dSYM/
+docs/harvested_from_deleted_user/
+docs/harvested_from_deleted_user_2/
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.ico
+**/.next/
+
+# Stitch-skills removed from tracking (skills live in ~/.gemini/antigravity/skills/)
+labs/uphillsnowball/stitch-skills/

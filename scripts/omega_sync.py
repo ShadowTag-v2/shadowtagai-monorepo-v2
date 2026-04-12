@@ -11,6 +11,7 @@ Flow:
   4. Configure git remote with token
   5. Push current branch
 """
+
 import os
 import subprocess
 import sys
@@ -56,9 +57,9 @@ def generate_jwt(app_id: int, pem_path: str) -> str:
 
     now = int(time.time())
     payload = {
-        "iat": now - 60,       # issued at (60s clock skew buffer)
+        "iat": now - 60,  # issued at (60s clock skew buffer)
         "exp": now + (10 * 60),  # expires in 10 minutes
-        "iss": str(app_id),     # GitHub App ID (must be string for PyJWT 2.x)
+        "iss": str(app_id),  # GitHub App ID (must be string for PyJWT 2.x)
     }
 
     return jwt.encode(payload, private_key, algorithm="RS256")
@@ -152,8 +153,10 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
 
         git_base = [
             "git",
-            "-c", "credential.helper=",
-            "-c", f"http.https://github.com/.extraheader=Authorization: Basic {__import__('base64').b64encode(f'x-access-token:{token}'.encode()).decode()}",
+            "-c",
+            "credential.helper=",
+            "-c",
+            f"http.https://github.com/.extraheader=Authorization: Basic {__import__('base64').b64encode(f'x-access-token:{token}'.encode()).decode()}",
         ]
 
         # Try --force-with-lease first (safest)

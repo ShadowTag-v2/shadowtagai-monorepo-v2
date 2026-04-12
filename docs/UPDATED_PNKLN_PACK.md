@@ -1,4 +1,4 @@
-# UPDATED_pnkln_PACK.md
+# UPDATED_PNKLN_PACK.md
 
 ## Canonical surviving files
 
@@ -12,7 +12,7 @@
 - `.vscode/cline_mcp_settings.json`
 
 ### Product env templates
-- `apps/counselconduit/.env.example`
+- `apps/kovelai/.env.example`
 - `labs/uphillsnowball/.env.example`
 
 ### Runtime support
@@ -20,18 +20,6 @@
 - `scripts/verify_mcp.sh`
 - `scripts/pnkln_lancedb.py`
 - `scripts/pnkln_root_guard.sh`
-- `scripts/green_loop.py`
-- `scripts/drive_ingest_daemon.py`
-- `scripts/retriever_eval.py`
-- `scripts/ocr_summary_ingest.py`
-
-### Product and lab support
-- `configs/feature_flags.yaml`
-- `apps/counselconduit/spec/MVP.md`
-- `apps/counselconduit/spec/PRICING.md`
-- `apps/counselconduit/spec/VALUATION.md`
-- `ops/nginx/csp_collector.conf`
-- `ops/audits/third_party_inventory.md`
 
 ### Operator guidance
 - `AGENTS.md`
@@ -46,30 +34,13 @@ This pack supersedes:
 - older partial pnkln pack drafts
 - stale cross-thread MCP snippets
 - non-canonical repo-root interpretations
-- repeated doctrine-only drafts that were not backed by operational files
-
-## Strategic recovery
-
-### Highest-value missed opportunity 1
-You already have enough recovered material to make `counselconduit` commercially coherent and `uphillsnowball` technically useful, but the repo still lacked a single truthful backbone. Fixing truth surfaces first unlocks everything else.
-
-### Highest-value missed opportunity 2
-Operationalize recovered code instead of redrafting it again:
-- green loop
-- CSP collector
-- retriever eval
-- feature flags
-- pricing model
-- OCR summaries
-- Drive-ingest daemon
-
-### Highest-value missed opportunity 3
-The recovered CounselConduit blueprint is already stronger than later wandering branches. It should become the business-facing spec while `pnkln/uphillsnowball` remains the internal engine.
+- `ShadowTag-v2_stack` path references (real path is `aiyou_stack`)
+- `counselconduit` branding (renamed to `kovelai`)
 
 ## Current truth
 
-- four repos are canonical once the manifest patch lands
-- one MCP config is canonical
+- four repos are canonical in `monorepo_manifest.yaml`
+- one MCP config is canonical (7 servers, latest-only pack)
 - all secrets belong in `.env`
-- `counselconduit` is the Google-native MVP product path
+- `kovelai` (formerly counselconduit) is the Google-native billing gateway
 - `uphillsnowball` is the local Apple Silicon lab path

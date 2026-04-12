@@ -35,7 +35,9 @@ def patch_drift():
             f.write(f"### {repo['repo_name']}\n")
             f.write(f"- **Destination:** `{repo['destination_path']}`\n")
             f.write("- **Rationale:** Designated reference_only but not cloned/rsynced.\n")
-            f.write("- **Exact Next Action:** Clone repository via GitHub App into reference dest.\n")
+            f.write(
+                "- **Exact Next Action:** Clone repository via GitHub App into reference dest.\n"
+            )
             f.write("- **Risk Note:** None. Purely missing data.\n\n")
 
     # 3. Update 04_canonical_state.md

@@ -107,16 +107,19 @@ async def run_swarm(query: str) -> dict:
 
     # Phase 1 — Research (Fast Path): pull corpus hits
     hits = search_corpus(query, top_k=8)
-    corpus_text = "\n".join(f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits)
+    corpus_text = "\n".join(
+        f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits
+    )
 
     # Extract actual GitNexus localized structural intelligence
     import subprocess
+
     try:
         ast_result = subprocess.check_output(
             ["npx", "gitnexus", "query", query],
             cwd="apps/gitnexus",
             stderr=subprocess.DEVNULL,
-            timeout=10
+            timeout=10,
         ).decode()
     except Exception:
         ast_result = "[AST Nexus: Local graph compilation unavailable or timed out.]"
@@ -124,9 +127,7 @@ async def run_swarm(query: str) -> dict:
     research_task = SwarmTask(
         "research",
         _RESEARCH_TMPL.format(
-            query=query,
-            corpus_hits=corpus_text or "(no hits)",
-            ast_context=ast_result
+            query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result
         ),
         tier=SwarmTier.FAST,
     )
@@ -201,6 +202,7 @@ async def _loop(query: str, interval: int) -> None:
     try:
         from omega_auto_dispatcher import dispatch_payload_by_id
     except ImportError:
+
         def dispatch_payload_by_id(pid: int) -> None:
             logger.debug("omega_auto_dispatcher unavailable; skipping payload %s", pid)
 

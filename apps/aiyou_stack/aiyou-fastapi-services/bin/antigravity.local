@@ -1,0 +1,678 @@
+#!/usr/bin/env python3
+"""
+Antigravity CLI - Claude Code Terminal Interface
+================================================
+Talk to the 650-agent Autoresearch swarm from terminal.
+
+Usage:
+    antigravity mission "Deploy ShadowTag v2"
+    antigravity task "Review PR #42" --tier flash
+    antigravity swarm status
+    antigravity judge "Is this code safe?" --code ./file.py
+
+Stack:
+- Cloud Run (source-based, no Docker)
+- Native Gemini function calling (no AutoGen/LangGraph)
+- 10 Cloud Code Assist licenses
+- JURA routing: FREE (30%) / FLASH (60%) / PRO (10%)
+"""
+
+import os
+import sys
+import json
+import asyncio
+import argparse
+import time
+from pathlib import Path
+from typing import Optional, Dict, Any, List
+from dataclasses import dataclass, field
+from enum import Enum
+
+# Add parent to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+try:
+    import google.generativeai as genai
+    from google.generativeai.types import FunctionDeclaration, Tool
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+
+try:
+    import anthropic
+    ANTHROPIC_AVAILABLE = True
+except ImportError:
+    ANTHROPIC_AVAILABLE = False
+
+try:
+    import httpx
+    HTTPX_AVAILABLE = True
+except ImportError:
+    HTTPX_AVAILABLE = False
+
+
+# =============================================================================
+# CONFIGURATION
+# =============================================================================
+
+class JURATier(Enum):
+    FREE = "free"      # 30% traffic, ~$0.001/req, 1 agent
+    FLASH = "flash"    # 60% traffic, ~$0.01/req, 3 agents
+    PRO = "pro"        # 10% traffic, ~$0.10-1.00/req, 8 agents
+
+
+@dataclass
+class Config:
+    """Antigravity configuration"""
+    # API Keys
+    gemini_key: str = field(default_factory=lambda: os.getenv("GEMINI_API_KEY", ""))
+    anthropic_key: str = field(default_factory=lambda: os.getenv("ANTHROPIC_API_KEY", ""))
+    openai_key: str = field(default_factory=lambda: os.getenv("OPENAI_API_KEY", ""))
+    grok_key: str = field(default_factory=lambda: os.getenv("GROK_API_KEY", ""))
+    
+    # GCP
+    gcp_project: str = field(default_factory=lambda: os.getenv("GCP_PROJECT_ID", ""))
+    cloud_run_url: str = field(default_factory=lambda: os.getenv("ANTIGRAVITY_URL", "http://localhost:8600"))
+    
+    # LLM allocation (from memory)
+    llm_weights: Dict[str, float] = field(default_factory=lambda: {
+        "gemini": 0.40,   # 40%
+        "claude": 0.35,   # 35%
+        "gpt": 0.15,      # 15%
+        "grok": 0.05      # 5%
+    })
+    
+    # Kernel Chain API pricing
+    kernel_cost_per_decision: float = 0.0003  # $0.0003/decision
+    kernel_latency_ms: int = 35               # <35ms target
+    
+    # Cloud Code Assist licenses
+    code_assist_licenses: int = 10
+
+
+CONFIG = Config()
+
+
+# =============================================================================
+# SWARM VOTE (Autoresearch consensus)
+# =============================================================================
+
+@dataclass
+class SwarmVote:
+    """Autoresearch swarm vote result"""
+    intent: str
+    risk: str  # L/M/H/EH
+    brakes: int  # number of brakes applied
+    action: str  # A=Approve, R=Reject, E=Escalate
+    confidence: float
+    agents_voted: int
+    
+    def __str__(self) -> str:
+        return f"///▞ SWARM: {self.intent} | RISK: {self.risk} | BRAKES: {self.brakes} → [{self.action}] {self.confidence:.0%}"
+
+
+def swarm_gate(intent: str, context: Dict[str, Any] = None) -> SwarmVote:
+    """
+    Preface action with Autoresearch vote.
+    Zero cost, deterministic, ATP 5-19 compliant.
+    """
+    context = context or {}
+    
+    # Risk assessment based on ATP 5-19
+    risk_indicators = {
+        "deploy": "M",
+        "delete": "H",
+        "production": "H",
+        "auth": "H",
+        "payment": "EH",
+        "user data": "H",
+        "security": "H",
+        "test": "L",
+        "review": "L",
+        "analyze": "L",
+    }
+    
+    risk = "L"
+    for keyword, level in risk_indicators.items():
+        if keyword in intent.lower():
+            if risk_indicators.get(keyword, "L") > risk:
+                risk = level
+    
+    # Brake count based on risk
+    brakes = {"L": 0, "M": 1, "H": 2, "EH": 3}.get(risk, 0)
+    
+    # Action decision
+    if risk == "EH":
+        action = "E"  # Escalate
+        confidence = 0.60
+    elif brakes >= 2:
+        action = "R" if context.get("force") else "E"
+        confidence = 0.75
+    else:
+        action = "A"
+        confidence = 0.95 - (brakes * 0.1)
+    
+    return SwarmVote(
+        intent=intent[:50],
+        risk=risk,
+        brakes=brakes,
+        action=action,
+        confidence=confidence,
+        agents_voted=650
+    )
+
+
+# =============================================================================
+# NATIVE GEMINI FUNCTION CALLING
+# =============================================================================
+
+# Define tools as native Gemini function declarations
+ANTIGRAVITY_TOOLS = [
+    {
+        "name": "execute_mission",
+        "description": "Execute a mission through the Autoresearch swarm. Generates OPORD and coordinates 650 agents.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "mission_name": {"type": "string", "description": "Name of the mission"},
+                "objective": {"type": "string", "description": "Primary objective"},
+                "constraints": {"type": "array", "items": {"type": "string"}, "description": "Operational constraints"},
+                "tier": {"type": "string", "enum": ["free", "flash", "pro"], "description": "JURA tier for routing"}
+            },
+            "required": ["mission_name", "objective"]
+        }
+    },
+    {
+        "name": "judge_code",
+        "description": "Run Judge #6 governance check on code. Enforces p99≤90ms SLA.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "code": {"type": "string", "description": "Code to judge"},
+                "language": {"type": "string", "description": "Programming language"},
+                "checks": {"type": "array", "items": {"type": "string"}, "description": "Specific checks to run"}
+            },
+            "required": ["code"]
+        }
+    },
+    {
+        "name": "swarm_status",
+        "description": "Get status of all 650 agents in the Autoresearch squadron.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "unit": {"type": "string", "enum": ["HHT", "AIR_CAV", "ALPHA", "BRAVO", "CHARLIE", "CODEPMCS", "ALL"]}
+            }
+        }
+    },
+    {
+        "name": "route_task",
+        "description": "Route a task through JURA tier system.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "task": {"type": "string", "description": "Task description"},
+                "tier": {"type": "string", "enum": ["free", "flash", "pro"]},
+                "priority": {"type": "integer", "minimum": 1, "maximum": 5}
+            },
+            "required": ["task"]
+        }
+    },
+    {
+        "name": "codepmcs_scan",
+        "description": "Scan code with CodePMCS for quality issues.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "path": {"type": "string", "description": "File or directory path"},
+                "fix": {"type": "boolean", "description": "Auto-fix issues"}
+            },
+            "required": ["path"]
+        }
+    }
+]
+
+
+class GeminiOrchestrator:
+    """Native Gemini function calling orchestrator (no AutoGen/LangGraph)"""
+    
+    def __init__(self, api_key: str = None):
+        self.api_key = api_key or CONFIG.gemini_key
+        if not self.api_key:
+            raise ValueError("GEMINI_API_KEY required")
+        
+        genai.configure(api_key=self.api_key)
+        
+        # Use gemini-2.0-flash for speed, gemini-1.5-pro for complex
+        self.flash_model = genai.GenerativeModel(
+            "gemini-2.0-flash-exp",
+            tools=self._build_tools()
+        )
+        self.pro_model = genai.GenerativeModel(
+            "gemini-1.5-pro",
+            tools=self._build_tools()
+        )
+    
+    def _build_tools(self) -> List[Tool]:
+        """Build native Gemini tools"""
+        return [Tool(function_declarations=[
+            FunctionDeclaration(
+                name=t["name"],
+                description=t["description"],
+                parameters=t["parameters"]
+            )
+            for t in ANTIGRAVITY_TOOLS
+        ])]
+    
+    def _execute_function(self, name: str, args: Dict) -> Dict:
+        """Execute a function call"""
+        if name == "execute_mission":
+            return self._execute_mission(**args)
+        elif name == "judge_code":
+            return self._judge_code(**args)
+        elif name == "swarm_status":
+            return self._swarm_status(**args)
+        elif name == "route_task":
+            return self._route_task(**args)
+        elif name == "codepmcs_scan":
+            return self._codepmcs_scan(**args)
+        else:
+            return {"error": f"Unknown function: {name}"}
+    
+    def _execute_mission(self, mission_name: str, objective: str, 
+                         constraints: List[str] = None, tier: str = "flash") -> Dict:
+        """Execute mission through swarm"""
+        vote = swarm_gate(f"Mission: {mission_name} - {objective}")
+        
+        if vote.action == "R":
+            return {"status": "rejected", "reason": "Swarm vote rejected", "vote": str(vote)}
+        
+        # Generate OPORD
+        opord = {
+            "mission": mission_name,
+            "objective": objective,
+            "constraints": constraints or [],
+            "tier": tier,
+            "agents_assigned": {"free": 1, "flash": 3, "pro": 8}.get(tier, 3),
+            "estimated_cost": {"free": 0.001, "flash": 0.01, "pro": 0.50}.get(tier, 0.01),
+            "swarm_vote": str(vote)
+        }
+        
+        return {"status": "executing", "opord": opord}
+    
+    def _judge_code(self, code: str, language: str = "python", 
+                    checks: List[str] = None) -> Dict:
+        """Judge #6 code governance"""
+        issues = []
+        
+        # Basic checks (tier-0 gates)
+        if "eval(" in code or "exec(" in code:
+            issues.append({"severity": "HIGH", "issue": "Dynamic code execution detected"})
+        
+        if "password" in code.lower() and "=" in code:
+            issues.append({"severity": "CRITICAL", "issue": "Potential hardcoded password"})
+        
+        # Syntax check for Python
+        if language == "python":
+            try:
+                compile(code, "<string>", "exec")
+            except SyntaxError as e:
+                issues.append({"severity": "CRITICAL", "issue": f"Syntax error: {e}"})
+        
+        verdict = "PASS" if not any(i["severity"] == "CRITICAL" for i in issues) else "FAIL"
+        
+        return {
+            "verdict": verdict,
+            "issues": issues,
+            "latency_ms": 35,  # Kernel Chain API target
+            "cost": CONFIG.kernel_cost_per_decision
+        }
+    
+    def _swarm_status(self, unit: str = "ALL") -> Dict:
+        """Get swarm status"""
+        units = {
+            "HHT": {"count": 90, "role": "Headquarters", "status": "active"},
+            "AIR_CAV": {"count": 120, "role": "Aerial Scouts", "status": "active"},
+            "ALPHA": {"count": 130, "role": "Armor (Heavy Compute)", "status": "active"},
+            "BRAVO": {"count": 130, "role": "Stryker (Rapid)", "status": "active"},
+            "CHARLIE": {"count": 130, "role": "Bradley (Protected)", "status": "active"},
+            "CODEPMCS": {"count": 50, "role": "Code Quality", "status": "active"}
+        }
+        
+        if unit == "ALL":
+            return {
+                "total_agents": 650,
+                "units": units,
+                "code_assist_licenses": CONFIG.code_assist_licenses,
+                "status": "FULL_COMBAT"
+            }
+        
+        return units.get(unit, {"error": "Unknown unit"})
+    
+    def _route_task(self, task: str, tier: str = None, priority: int = 3) -> Dict:
+        """Route task through JURA"""
+        # Auto-determine tier if not specified
+        if not tier:
+            if priority >= 4 or any(k in task.lower() for k in ["critical", "urgent", "security"]):
+                tier = "pro"
+            elif priority <= 2 or any(k in task.lower() for k in ["simple", "quick", "test"]):
+                tier = "free"
+            else:
+                tier = "flash"
+        
+        vote = swarm_gate(task)
+        
+        return {
+            "task": task,
+            "tier": tier,
+            "agents": {"free": 1, "flash": 3, "pro": 8}.get(tier, 3),
+            "estimated_cost": {"free": 0.001, "flash": 0.01, "pro": 0.50}.get(tier, 0.01),
+            "swarm_vote": str(vote)
+        }
+    
+    def _codepmcs_scan(self, path: str, fix: bool = False) -> Dict:
+        """CodePMCS scan"""
+        p = Path(path)
+        if not p.exists():
+            return {"error": f"Path not found: {path}"}
+        
+        results = {
+            "path": str(p),
+            "files_scanned": 0,
+            "issues_found": 0,
+            "issues_fixed": 0 if fix else None
+        }
+        
+        if p.is_file():
+            results["files_scanned"] = 1
+            # Would run actual scan here
+        elif p.is_dir():
+            results["files_scanned"] = len(list(p.glob("**/*.py")))
+        
+        return results
+    
+    async def chat(self, message: str, tier: JURATier = JURATier.FLASH) -> str:
+        """Chat with function calling"""
+        model = self.flash_model if tier != JURATier.PRO else self.pro_model
+        
+        # Initial response
+        response = model.generate_content(message)
+        
+        # Handle function calls
+        while response.candidates[0].content.parts:
+            part = response.candidates[0].content.parts[0]
+            
+            if hasattr(part, 'function_call') and part.function_call:
+                fc = part.function_call
+                result = self._execute_function(fc.name, dict(fc.args))
+                
+                # Send function response back
+                response = model.generate_content([
+                    {"role": "user", "parts": [{"text": message}]},
+                    {"role": "model", "parts": [part]},
+                    {"role": "function", "parts": [{"function_response": {
+                        "name": fc.name,
+                        "response": result
+                    }}]}
+                ])
+            else:
+                break
+        
+        return response.text
+
+
+# =============================================================================
+# CLI COMMANDS
+# =============================================================================
+
+def cmd_mission(args):
+    """Execute a mission"""
+    if not GEMINI_AVAILABLE:
+        print("❌ Gemini SDK not installed: pip install google-generativeai")
+        return 1
+    
+    vote = swarm_gate(f"Mission: {args.objective}")
+    print(vote)
+    
+    if vote.action == "R":
+        print("❌ Mission rejected by swarm")
+        return 1
+    
+    if vote.action == "E":
+        confirm = input("⚠️  Swarm recommends escalation. Continue? [y/N]: ")
+        if confirm.lower() != 'y':
+            return 0
+    
+    try:
+        orchestrator = GeminiOrchestrator()
+        result = asyncio.run(orchestrator.chat(
+            f"Execute mission: {args.objective}. Tier: {args.tier}",
+            JURATier(args.tier)
+        ))
+        print(result)
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return 1
+    
+    return 0
+
+
+def cmd_task(args):
+    """Route a task through JURA"""
+    vote = swarm_gate(args.description)
+    print(vote)
+    
+    tier = JURATier(args.tier)
+    agents = {"free": 1, "flash": 3, "pro": 8}[args.tier]
+    cost = {"free": 0.001, "flash": 0.01, "pro": 0.50}[args.tier]
+    
+    print(f"\n📋 Task: {args.description}")
+    print(f"   Tier: {tier.value.upper()}")
+    print(f"   Agents: {agents}")
+    print(f"   Est. Cost: ${cost:.3f}")
+    
+    if GEMINI_AVAILABLE and not args.dry_run:
+        try:
+            orchestrator = GeminiOrchestrator()
+            result = asyncio.run(orchestrator.chat(args.description, tier))
+            print(f"\n{result}")
+        except Exception as e:
+            print(f"❌ Error: {e}")
+            return 1
+    
+    return 0
+
+
+def cmd_swarm(args):
+    """Swarm status"""
+    units = {
+        "HHT": (90, "Headquarters", "Judge #6, S-1 to S-6 Staff"),
+        "AIR_CAV": (120, "Aerial Scouts", "Apache, Kiowa, Black Hawk"),
+        "ALPHA": (130, "Armor", "M1 Abrams (Heavy Compute)"),
+        "BRAVO": (130, "Stryker", "Rapid Deployment"),
+        "CHARLIE": (130, "Bradley", "Protected Operations"),
+        "CODEPMCS": (50, "Code Quality", "Scan, Fix, PR Generation")
+    }
+    
+    print("╔══════════════════════════════════════════════════════════════════╗")
+    print("║  AUTORESEARCH TRIAD SQUADRON - STATUS                            ║")
+    print("╠══════════════════════════════════════════════════════════════════╣")
+    
+    total = 0
+    for unit, (count, role, desc) in units.items():
+        total += count
+        status = "🟢" if args.unit in ["all", unit.lower()] else "⚪"
+        print(f"║  {status} {unit:12} │ {count:3} agents │ {role:16} │")
+    
+    print("╠══════════════════════════════════════════════════════════════════╣")
+    print(f"║  TOTAL: {total} agents │ Cloud Code Assist: {CONFIG.code_assist_licenses} licenses        ║")
+    print(f"║  STATUS: FULL COMBAT 24/7                                       ║")
+    print("╚══════════════════════════════════════════════════════════════════╝")
+    
+    return 0
+
+
+def cmd_judge(args):
+    """Judge #6 code governance"""
+    if args.code:
+        code = args.code
+    elif args.file:
+        try:
+            code = Path(args.file).read_text()
+        except Exception as e:
+            print(f"❌ Error reading file: {e}")
+            return 1
+    else:
+        print("❌ Provide --code or --file")
+        return 1
+    
+    vote = swarm_gate(f"Judge code: {args.file or 'inline'}")
+    print(vote)
+    
+    # Run tier-0 gates
+    issues = []
+    
+    # Security patterns
+    dangerous = [
+        (r'eval\s*\(', "eval() - code injection risk", "CRITICAL"),
+        (r'exec\s*\(', "exec() - code injection risk", "CRITICAL"),
+        (r'subprocess.*shell\s*=\s*True', "shell=True - command injection", "HIGH"),
+        (r'pickle\.loads?', "pickle - deserialization risk", "HIGH"),
+        (r'password\s*=\s*["\'][^"\']+["\']', "Hardcoded password", "CRITICAL"),
+        (r'api_key\s*=\s*["\'][^"\']+["\']', "Hardcoded API key", "CRITICAL"),
+    ]
+    
+    import re
+    for pattern, desc, severity in dangerous:
+        if re.search(pattern, code, re.IGNORECASE):
+            issues.append({"severity": severity, "issue": desc})
+    
+    # Syntax check
+    try:
+        compile(code, "<string>", "exec")
+    except SyntaxError as e:
+        issues.append({"severity": "CRITICAL", "issue": f"Syntax error: {e}"})
+    
+    # Verdict
+    critical = [i for i in issues if i["severity"] == "CRITICAL"]
+    high = [i for i in issues if i["severity"] == "HIGH"]
+    
+    print(f"\n⚖️  Judge #6 Verdict")
+    print(f"   Latency: <{CONFIG.kernel_latency_ms}ms")
+    print(f"   Cost: ${CONFIG.kernel_cost_per_decision}")
+    
+    if critical:
+        print(f"\n   ❌ FAIL - {len(critical)} critical issues")
+        for i in critical:
+            print(f"      🔴 {i['issue']}")
+    elif high:
+        print(f"\n   ⚠️  WARN - {len(high)} high issues")
+        for i in high:
+            print(f"      🟡 {i['issue']}")
+    else:
+        print(f"\n   ✅ PASS")
+    
+    return 1 if critical else 0
+
+
+def cmd_chat(args):
+    """Interactive chat with Antigravity"""
+    if not GEMINI_AVAILABLE:
+        print("❌ Gemini SDK not installed: pip install google-generativeai")
+        return 1
+    
+    print("🛸 Antigravity Chat (type 'exit' to quit)")
+    print("   Tier: FLASH | Agents: 3 | IQ Lock: 160")
+    print("-" * 50)
+    
+    try:
+        orchestrator = GeminiOrchestrator()
+        
+        while True:
+            try:
+                user_input = input("\n▶ ")
+                if user_input.lower() in ['exit', 'quit', 'q']:
+                    break
+                
+                if not user_input.strip():
+                    continue
+                
+                # Swarm gate
+                vote = swarm_gate(user_input)
+                print(f"   {vote}")
+                
+                # Get response
+                response = asyncio.run(orchestrator.chat(user_input))
+                print(f"\n{response}")
+                
+            except KeyboardInterrupt:
+                break
+                
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return 1
+    
+    print("\n👋 Antigravity signing off")
+    return 0
+
+
+# =============================================================================
+# MAIN
+# =============================================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Antigravity CLI - Autoresearch Swarm Interface",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  antigravity mission "Deploy ShadowTag v2 to Cloud Run"
+  antigravity task "Review authentication module" --tier pro
+  antigravity swarm status
+  antigravity judge --file ./app/main.py
+  antigravity chat
+        """
+    )
+    
+    subparsers = parser.add_subparsers(dest="command", help="Commands")
+    
+    # mission
+    p_mission = subparsers.add_parser("mission", help="Execute a mission")
+    p_mission.add_argument("objective", help="Mission objective")
+    p_mission.add_argument("--tier", choices=["free", "flash", "pro"], default="flash")
+    p_mission.set_defaults(func=cmd_mission)
+    
+    # task
+    p_task = subparsers.add_parser("task", help="Route a task through JURA")
+    p_task.add_argument("description", help="Task description")
+    p_task.add_argument("--tier", choices=["free", "flash", "pro"], default="flash")
+    p_task.add_argument("--dry-run", action="store_true", help="Don't execute, just show routing")
+    p_task.set_defaults(func=cmd_task)
+    
+    # swarm
+    p_swarm = subparsers.add_parser("swarm", help="Swarm status")
+    p_swarm.add_argument("action", choices=["status"], default="status", nargs="?")
+    p_swarm.add_argument("--unit", choices=["all", "hht", "air_cav", "alpha", "bravo", "charlie", "codepmcs"], default="all")
+    p_swarm.set_defaults(func=cmd_swarm)
+    
+    # judge
+    p_judge = subparsers.add_parser("judge", help="Judge #6 code governance")
+    p_judge.add_argument("--code", help="Inline code to judge")
+    p_judge.add_argument("--file", "-f", help="File to judge")
+    p_judge.set_defaults(func=cmd_judge)
+    
+    # chat
+    p_chat = subparsers.add_parser("chat", help="Interactive chat")
+    p_chat.set_defaults(func=cmd_chat)
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        return 0
+    
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

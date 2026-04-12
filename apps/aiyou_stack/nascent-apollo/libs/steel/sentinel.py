@@ -65,7 +65,9 @@ class JudgeSixSentinel:
         if max_risk in [RiskTier.ORANGE, RiskTier.YELLOW] and self.army:
             intent = f"Accept {max_risk.name} risk in {file_pattern}."
             vote = self.army.bottom_up_vote(intent=intent, risk_level="H")
-            logger.info(f"{Fore.CYAN}>>> 🗳️  ARMY VOTE: {vote['final_action']} ({vote['approval_rate']:.1%}){Style.RESET_ALL}")
+            logger.info(
+                f"{Fore.CYAN}>>> 🗳️  ARMY VOTE: {vote['final_action']} ({vote['approval_rate']:.1%}){Style.RESET_ALL}"
+            )
             if vote["final_action"] != "A":
                 return False, max_risk, proposed_fix
 

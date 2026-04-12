@@ -28,8 +28,16 @@ def load_settings(path: str = "./config/app.yaml") -> Settings:
         repo_id=data.get("repo", {}).get("repo_id", "ane"),
         repo_root=data.get("repo", {}).get("repo_root", "./external_repos/ANE"),
         json_memory_path=data.get("paths", {}).get("json_memory_path", Settings().json_memory_path),
-        authority_state_path=data.get("paths", {}).get("authority_state_path", Settings().authority_state_path),
-        monorepo_manifest_path=data.get("paths", {}).get("monorepo_manifest_path", Settings().monorepo_manifest_path),
-        monorepo_merge_status_path=data.get("paths", {}).get("monorepo_merge_status_path", Settings().monorepo_merge_status_path),
-        monorepo_control_plane_path=data.get("paths", {}).get("monorepo_control_plane_path", Settings().monorepo_control_plane_path),
+        authority_state_path=data.get("paths", {}).get(
+            "authority_state_path", Settings().authority_state_path
+        ),
+        monorepo_manifest_path=data.get("paths", {}).get(
+            "monorepo_manifest_path", Settings().monorepo_manifest_path
+        ),
+        monorepo_merge_status_path=data.get("paths", {}).get(
+            "monorepo_merge_status_path", Settings().monorepo_merge_status_path
+        ),
+        monorepo_control_plane_path=data.get("paths", {}).get(
+            "monorepo_control_plane_path", Settings().monorepo_control_plane_path
+        ),
     )

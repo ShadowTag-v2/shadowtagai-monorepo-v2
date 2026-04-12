@@ -100,7 +100,12 @@ Output MUST be valid JSON matching this schema exactly:
 
     raw = json.loads(response.text)
     thesis = TrendThesis(**raw)
-    log.info("Trend thesis: %s (TVI=%d, cost=$%.2f)", thesis.name, thesis.tvi_score, thesis.estimated_cost_usd)
+    log.info(
+        "Trend thesis: %s (TVI=%d, cost=$%.2f)",
+        thesis.name,
+        thesis.tvi_score,
+        thesis.estimated_cost_usd,
+    )
     return thesis
 
 
@@ -209,7 +214,9 @@ def run() -> None:
     thesis = analyze_global_zeitgeist()
 
     if thesis.tvi_score < TREND_VELOCITY_THRESHOLD:
-        log.info("TVI=%d below threshold=%d — no action", thesis.tvi_score, TREND_VELOCITY_THRESHOLD)
+        log.info(
+            "TVI=%d below threshold=%d — no action", thesis.tvi_score, TREND_VELOCITY_THRESHOLD
+        )
         return
 
     if not filter_through_sentinel(thesis):

@@ -1,0 +1,44 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: media-edge-backend-config
+  namespace: pnkln-production
+spec:
+  # Health check for GCP Load Balancer
+  healthCheck:
+    checkIntervalSec: 10
+    timeoutSec: 5
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+    type: HTTP
+    requestPath: /ready
+    port: 8080
+
+  # Connection draining for graceful shutdown
+  connectionDraining:
+    drainingTimeoutSec: 60
+
+  # No session affinity (stateless)
+  sessionAffinity:
+    affinityType: "NONE"
+
+  # Request timeout
+  timeoutSec: 30
+
+  # Cloud CDN configuration (ENABLED)
+  cdn:
+    enabled: true
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+      includeQueryString: true
+    cacheMode: CACHE_ALL_STATIC
+    defaultTtl: 3600      # 1 hour default
+    maxTtl: 86400         # 24 hours max
+    clientTtl: 3600       # 1 hour client cache
+    negativeCaching: true
+    signedUrlCacheMaxAgeSec: 7200
+
+  # Security policy (optional, uncomment if using Cloud Armor)
+  # securityPolicy:
+  #   name: "pnkln-security-policy"

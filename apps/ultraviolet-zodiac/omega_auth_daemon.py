@@ -20,7 +20,9 @@ REFRESH_INTERVAL_SECONDS = 180  # 3 minutes
 
 # --- Environment Setup ---
 # Force gcloud to use the workspace config to avoid Seatbelt issues
-WORKSPACE_CONFIG = "/Users/pikeymickey/.gemini/antigravity/playground/ultraviolet-zodiac/.gcloud_config"
+WORKSPACE_CONFIG = (
+    "/Users/pikeymickey/.gemini/antigravity/playground/ultraviolet-zodiac/.gcloud_config"
+)
 os.environ["CLOUDSDK_CONFIG"] = WORKSPACE_CONFIG
 
 
@@ -64,7 +66,13 @@ def main():
         try:
             # Run the solver synchronously
             # Use sys.executable to ensure we use the same Python environment
-            result = subprocess.run([sys.executable, SOLVER_SCRIPT], capture_output=True, text=True, check=False, env=os.environ)
+            result = subprocess.run(
+                [sys.executable, SOLVER_SCRIPT],
+                capture_output=True,
+                text=True,
+                check=False,
+                env=os.environ,
+            )
 
             if result.returncode == 0:
                 log("✅ Solver Success: " + result.stdout.strip())

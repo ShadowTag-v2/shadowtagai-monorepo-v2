@@ -1,333 +1,99 @@
 version: 1
+
 workspace:
   name: Monorepo-Uphillsnowball
   root: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball
   policy: latest-only
   source_of_truth: monorepo_manifest.yaml
+
 repo_roots:
-- name: ShadowTag-v2-fastapi-services
-  status: canonical
-  path: apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services
-  notes: Primary live backend root.
-- name: src
-  status: folded-in
-  path: apps/src
-  notes: Autonomously injected per Stage 3 resolution.
-- name: uphillsnowball
-  status: folded-in
-  path: labs/uphillsnowball
-  notes: Autonomously injected per Stage 3 resolution.
-- name: terraform
-  status: folded-in
-  path: infra/terraform
-  notes: Autonomously injected per Stage 3 resolution.
-- name: shadowtag
-  status: folded-in
-  path: packages/shadowtag
-  notes: Autonomously injected per Stage 3 resolution.
-- name: docs
-  status: folded-in
-  path: staging/docs
-  notes: Autonomously injected per Stage 3 resolution.
-- name: pnkln
-  status: folded-in
-  path: control/pnkln
-  notes: Autonomously injected per Stage 3 resolution.
-- name: rules_packs
-  status: folded-in
-  path: control/rules_packs
-  notes: Autonomously injected per Stage 3 resolution.
-- name: antigravity
-  status: folded-in
-  path: control/antigravity
-  notes: Autonomously injected per Stage 3 resolution.
-- name: policy
-  status: folded-in
-  path: control/policy
-  notes: Autonomously injected per Stage 3 resolution.
-- name: legacy_workspaces
-  status: folded-in
-  path: control/legacy_workspaces
-  notes: Autonomously injected per Stage 3 resolution.
-- name: sovereign_mlx
-  status: folded-in
-  path: data/sovereign_mlx
-  notes: Autonomously injected per Stage 3 resolution.
-- name: drive_ingest
-  status: folded-in
-  path: data/drive_ingest
-  notes: Autonomously injected per Stage 3 resolution.
-- name: file_index
-  status: folded-in
-  path: data/file_index
-  notes: Autonomously injected per Stage 3 resolution.
-- name: lancedb
-  status: folded-in
-  path: data/lancedb
-  notes: Autonomously injected per Stage 3 resolution.
-- name: research
-  status: folded-in
-  path: docs/research
-  notes: Autonomously injected per Stage 3 resolution.
-- name: contractual
-  status: folded-in
-  path: docs/contractual
-  notes: Autonomously injected per Stage 3 resolution.
-- name: 10x
-  status: folded-in
-  path: docs/10x
-  notes: Autonomously injected per Stage 3 resolution.
-- name: pnkln
-  status: folded-in
-  path: docs/pnkln
-  notes: Autonomously injected per Stage 3 resolution.
-- name: pnkln-stack
-  status: folded-in
-  path: docs/pnkln-stack
-  notes: Autonomously injected per Stage 3 resolution.
-- name: adr
-  status: folded-in
-  path: docs/adr
-  notes: Autonomously injected per Stage 3 resolution.
-- name: products
-  status: folded-in
-  path: docs/products
-  notes: Autonomously injected per Stage 3 resolution.
-- name: context
-  status: folded-in
-  path: docs/context
-  notes: Autonomously injected per Stage 3 resolution.
-- name: canonicalization
-  status: folded-in
-  path: docs/canonicalization
-  notes: Autonomously injected per Stage 3 resolution.
-- name: financials
-  status: folded-in
-  path: docs/financials
-  notes: Autonomously injected per Stage 3 resolution.
-- name: verdict-systems
-  status: folded-in
-  path: docs/verdict-systems
-  notes: Autonomously injected per Stage 3 resolution.
-- name: analysis
-  status: folded-in
-  path: docs/analysis
-  notes: Autonomously injected per Stage 3 resolution.
-- name: tokable
-  status: folded-in
-  path: docs/tokable
-  notes: Autonomously injected per Stage 3 resolution.
-- name: implementation-plans
-  status: folded-in
-  path: docs/implementation-plans
-  notes: Autonomously injected per Stage 3 resolution.
-- name: canonical
-  status: folded-in
-  path: docs/canonical
-  notes: Autonomously injected per Stage 3 resolution.
-- name: framework
-  status: folded-in
-  path: docs/framework
-  notes: Autonomously injected per Stage 3 resolution.
-- name: security
-  status: folded-in
-  path: docs/security
-  notes: Autonomously injected per Stage 3 resolution.
-- name: specs
-  status: folded-in
-  path: docs/specs
-  notes: Autonomously injected per Stage 3 resolution.
-- name: technical-specs
-  status: folded-in
-  path: docs/technical-specs
-  notes: Autonomously injected per Stage 3 resolution.
-- name: contracts
-  status: folded-in
-  path: docs/contracts
-  notes: Autonomously injected per Stage 3 resolution.
-- name: sop
-  status: folded-in
-  path: docs/sop
-  notes: Autonomously injected per Stage 3 resolution.
-- name: harvested_from_deleted_user
-  status: folded-in
-  path: docs/harvested_from_deleted_user
-  notes: Autonomously injected per Stage 3 resolution.
-- name: business
-  status: folded-in
-  path: docs/business
-  notes: Autonomously injected per Stage 3 resolution.
-- name: strategic
-  status: folded-in
-  path: docs/strategic
-  notes: Autonomously injected per Stage 3 resolution.
-- name: runbooks
-  status: folded-in
-  path: docs/runbooks
-  notes: Autonomously injected per Stage 3 resolution.
-- name: invariants
-  status: folded-in
-  path: docs/invariants
-  notes: Autonomously injected per Stage 3 resolution.
-- name: judges
-  status: folded-in
-  path: docs/judges
-  notes: Autonomously injected per Stage 3 resolution.
-- name: market-analysis
-  status: folded-in
-  path: docs/market-analysis
-  notes: Autonomously injected per Stage 3 resolution.
-- name: decisions
-  status: folded-in
-  path: docs/decisions
-  notes: Autonomously injected per Stage 3 resolution.
-- name: legacy_plans
-  status: folded-in
-  path: docs/legacy_plans
-  notes: Autonomously injected per Stage 3 resolution.
-- name: use-cases
-  status: folded-in
-  path: docs/use-cases
-  notes: Autonomously injected per Stage 3 resolution.
-- name: doctrine
-  status: folded-in
-  path: docs/doctrine
-  notes: Autonomously injected per Stage 3 resolution.
-- name: architecture
-  status: folded-in
-  path: docs/architecture
-  notes: Autonomously injected per Stage 3 resolution.
-- name: Strategic_Intelligence
-  status: folded-in
-  path: docs/Strategic_Intelligence
-  notes: Autonomously injected per Stage 3 resolution.
-- name: guides
-  status: folded-in
-  path: docs/guides
-  notes: Autonomously injected per Stage 3 resolution.
-- name: deployment
-  status: folded-in
-  path: docs/deployment
-  notes: Autonomously injected per Stage 3 resolution.
-- name: examples
-  status: folded-in
-  path: docs/examples
-  notes: Autonomously injected per Stage 3 resolution.
-- name: harvested_from_deleted_user_2
-  status: folded-in
-  path: docs/harvested_from_deleted_user_2
-  notes: Autonomously injected per Stage 3 resolution.
-- name: Sovereign_Omni_Brain
-  status: folded-in
-  path: docs/Sovereign_Omni_Brain
-  notes: Autonomously injected per Stage 3 resolution.
-- name: governance
-  status: folded-in
-  path: docs/governance
-  notes: Autonomously injected per Stage 3 resolution.
-- name: prompts
-  status: folded-in
-  path: docs/prompts
-  notes: Autonomously injected per Stage 3 resolution.
-- name: legacy_shadowtag_v2
-  status: folded-in
-  path: docs/legacy_shadowtag_v2
-  notes: Autonomously injected per Stage 3 resolution.
-- name: templates
-  status: folded-in
-  path: docs/templates
-  notes: Autonomously injected per Stage 3 resolution.
-- name: aerospace
-  status: folded-in
-  path: docs/aerospace
-  notes: Autonomously injected per Stage 3 resolution.
-- name: frameworks
-  status: folded-in
-  path: docs/frameworks
-  notes: Autonomously injected per Stage 3 resolution.
-- name: infrastructure
-  status: folded-in
-  path: docs/infrastructure
-  notes: Autonomously injected per Stage 3 resolution.
-- name: legal
-  status: folded-in
-  path: docs/legal
-  notes: Autonomously injected per Stage 3 resolution.
-- name: model-spec
-  status: folded-in
-  path: docs/model-spec
-  notes: Autonomously injected per Stage 3 resolution.
-- name: engineering
-  status: folded-in
-  path: docs/engineering
-  notes: Autonomously injected per Stage 3 resolution.
-- name: technical
-  status: folded-in
-  path: docs/technical
-  notes: Autonomously injected per Stage 3 resolution.
-- name: business-plan
-  status: folded-in
-  path: docs/business-plan
-  notes: Autonomously injected per Stage 3 resolution.
-- name: bundles
-  status: folded-in
-  path: docs/bundles
-  notes: Autonomously injected per Stage 3 resolution.
-- name: analysis-prompts
-  status: folded-in
-  path: docs/analysis-prompts
-  notes: Autonomously injected per Stage 3 resolution.
-- name: strategy
-  status: folded-in
-  path: docs/strategy
-  notes: Autonomously injected per Stage 3 resolution.
-- name: verticals
-  status: folded-in
-  path: docs/verticals
-  notes: Autonomously injected per Stage 3 resolution.
-- name: erik-hancock-llm-memory
-  status: folded-in
-  path: memory/erik-hancock-llm-memory
-  notes: Autonomously injected per Stage 3 resolution.
-- name: cosmic-crab-payload
-  status: canonical
-  path: apps/ShadowTag-v2_stack/cosmic-crab-payload
-  notes: Canonical payload/runtime support root.
-- name: Pipeline
-  status: canonical
-  path: apps/ShadowTag-v2_stack/Pipeline
-  notes: Live canonical root for Pipeline.
-- name: nascent-apollo
-  status: canonical
-  path: apps/ShadowTag-v2_stack/nascent-apollo
-  notes: Live canonical root for nascent-apollo.
+  # ─── Canonical (verified on disk) ───
+  - name: aiyou-fastapi-services
+    status: canonical
+    path: apps/aiyou_stack/aiyou-fastapi-services
+    notes: Primary live backend root.
+
+  - name: cosmic-crab-payload
+    status: canonical
+    path: apps/aiyou_stack/cosmic-crab-payload
+    notes: Canonical payload/runtime support root.
+
+  - name: Pipeline
+    status: canonical
+    path: apps/aiyou_stack/Pipeline
+    notes: Live canonical root for Pipeline.
+
+  - name: nascent-apollo
+    status: canonical
+    path: apps/aiyou_stack/nascent-apollo
+    notes: Live canonical root for nascent-apollo.
+
+  # ─── Folded-in (labs/data/control) ───
+  - name: uphillsnowball
+    status: folded-in
+    path: labs/uphillsnowball
+
+  # ─── Shared Libraries ───
+  - name: ui
+    status: canonical
+    path: libs/ui
+    notes: "Invariant #92. Shared Button, layout CSS, design tokens. All apps import from here."
+
+  - name: lancedb
+    status: folded-in
+    path: data/lancedb
+    notes: Local vector store.
+
+  - name: drive_ingest
+    status: folded-in
+    path: data/drive_ingest
+    notes: Google Drive ingestion daemon.
+
+  - name: sovereign_mlx
+    status: folded-in
+    path: data/sovereign_mlx
+    notes: MLX model weights and configs.
+
+  - name: erik-hancock-llm-memory
+    status: folded-in
+    path: memory/erik-hancock-llm-memory
+    notes: Institutional memory archive.
+
+  - name: counselconduit
+    status: folded-in
+    path: apps/counselconduit
+    notes: Operational backend for KovelAI. Retained as development alias.
+
 control_plane:
   canonical_mcp_config: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json
   deprecated_mcp_configs:
-  - /Users/pikeymickey/.gemini/antigravity/mcp_config.json
-  - /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.vscode/cline_mcp_settings.json
+    - /Users/pikeymickey/.gemini/antigravity/mcp_config.json
+    - /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.vscode/cline_mcp_settings.json
+
 products:
-  counselconduit:
-    root: apps/counselconduit
+  kovelai:
+    root: apps/kovelai
     runtime: google-cloud
     model: gemini-3.1-flash-lite-preview
     project: shadowtag-omega-v4
     business_role: mvp-commercial-wedge
+    notes: CounselConduit renamed. Billing gateway + S.E.U. proxy. No intelligence factor.
+
   uphillsnowball:
     root: labs/uphillsnowball
     runtime: local-apple-silicon
     model: gemini-3.1-flash-lite-preview
     project: shadowtag-omega-v4
     business_role: internal-rd-lab
+
 completion_rule:
   canonicalization_complete_when:
-  - all_target_repos_have_status_canonical_or_archived
-  - no_repo_has_status_unresolved
-  - control_plane_has_single_canonical_mcp_config
-  - deprecated_mcp_configs_are_demoted
+    - all_target_repos_have_status_canonical_or_archived
+    - no_repo_has_status_unresolved
+    - control_plane_has_single_canonical_mcp_config
+    - deprecated_mcp_configs_are_demoted
+
 highest_value_opportunities:
-- 'Fix truth surfaces first: canonical repo roots and one canonical MCP control plane.'
-- 'Operationalize recovered code: green loop, CSP collector, retriever eval, feature
-  flags, pricing model, OCR summaries, Drive-ingest daemon.'
-- CounselConduit is the overarching Google Cloud product. uphillsnowball is our independent
-  internal local R&D lab. They remain completely detached without overlapping dependencies.
+  - 'Fix truth surfaces first: canonical repo roots and one canonical MCP control plane.'
+  - 'Operationalize recovered code: green loop, CSP collector, retriever eval, feature flags, pricing model, OCR summaries, Drive-ingest daemon.'
+  - KovelAI (formerly CounselConduit) is the Google Cloud billing gateway product. uphillsnowball is the independent local R&D lab. They remain completely detached.

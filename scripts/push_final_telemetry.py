@@ -14,7 +14,9 @@ headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.
 res = requests.get("https://api.github.com/app/installations", headers=headers)
 res.raise_for_status()
 target_inst = next((i for i in res.json() if i["account"]["login"] == "ShadowTag-v2"), None)
-res2 = requests.post(f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens", headers=headers)
+res2 = requests.post(
+    f"https://api.github.com/app/installations/{target_inst['id']}/access_tokens", headers=headers
+)
 token = res2.json()["token"]
 
 repo_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"

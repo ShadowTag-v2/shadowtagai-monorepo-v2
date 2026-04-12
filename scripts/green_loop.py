@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
-import json, subprocess, logging, os
+import json
+import logging
+import os
+import subprocess
+
 logging.basicConfig(level=logging.INFO)
+
 
 def green_loop():
     if subprocess.call(["pytest", "."]) == 0:
@@ -8,6 +13,7 @@ def green_loop():
         os.makedirs("data/green_loop", exist_ok=True)
         with open("data/green_loop/latest.json", "w") as f:
             f.write(json.dumps({"hash": subprocess.getoutput("git rev-parse HEAD")}))
+
 
 if __name__ == "__main__":
     green_loop()

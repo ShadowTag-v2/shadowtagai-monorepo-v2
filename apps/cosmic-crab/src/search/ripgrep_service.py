@@ -19,7 +19,9 @@ class RipgrepService:
         self.ast_grep_path = "ast-grep"  # Assumes installed or in bin
         self.nowgrep_path = "nowgrep"  # Assumes installed or in bin
 
-    def search(self, query: str, includes: list[str] = None, case_insensitive: bool = True) -> list[dict]:
+    def search(
+        self, query: str, includes: list[str] = None, case_insensitive: bool = True
+    ) -> list[dict]:
         """Executes a ripgrep search and returns JSON formatted results."""
         cmd = ["rg", "--json", query, self.search_root]
 

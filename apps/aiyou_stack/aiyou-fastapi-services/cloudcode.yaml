@@ -1,0 +1,46 @@
+# Cloud Code Configuration
+# This file configures the Cloud Code extension to use Buildpacks and Secret Manager by default.
+
+common:
+  build:
+    builder: "gcr.io/buildpacks/builder:v1"
+    buildpackEnv:
+      GOOGLE_ENTRYPOINT: "python3 -m agents.autoresearch"
+
+  deploy:
+    cloudRun:
+      serviceName: "n-autoresearch/Kosmos/BioAgents-swarm"
+      region: "us-central1"
+      allowUnauthenticated: false
+      serviceAccount: "sa-n-autoresearch/Kosmos/redacted@shadowtag-v4.local"
+      annotations:
+        run.googleapis.com/cpu-throttling: "false"
+        run.googleapis.com/execution-environment: "gen2"
+        run.googleapis.com/sessionAffinity: "true"
+
+
+  debug:
+    cloudRun:
+      enableDebugging: true
+      debugPort: 9229
+
+profiles:
+  - name: "prod"
+    activation:
+      - os: darwin
+    build:
+      target: "prod"
+    deploy:
+      cloudRun:
+        serviceName: "n-autoresearch/Kosmos/BioAgents-swarm"
+        minInstances: 1
+        resources:
+          limits:
+            memory: "8Gi"
+            cpu: "4"
+
+  - name: "utilities"
+    deploy:
+      cloudRun:
+        serviceName: "gcr-cleaner"
+        image: "us-docker.pkg.dev/gcr-cleaner/gcr-cleaner/gcr-cleaner-cli"

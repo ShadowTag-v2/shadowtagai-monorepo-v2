@@ -1,0 +1,514 @@
+# MCP Code Execution Server - GKE Deployment
+# Production-grade Kubernetes manifests with:
+# - gVisor runtime (runsc) for sandboxing
+# - Horizontal Pod Autoscaler (HPA)
+# - Network Policy (egress blocking)
+# - Istio VirtualService (canary deployment)
+# - Service Monitor (Prometheus integration)
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mcp-system
+  labels:
+    name: mcp-system
+    istio-injection: enabled  # Enable Istio sidecar injection
+
+---
+# ConfigMap for MCP Server Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mcp-server-config
+  namespace: mcp-system
+data:
+  # Server configuration
+  HOST: "0.0.0.0"
+  PORT: "8080"
+  WORKERS: "4"
+
+  # Sandbox configuration
+  SANDBOX_RUNTIME: "runsc"  # gVisor runtime
+  SANDBOX_TIMEOUT_SECONDS: "30"
+  SANDBOX_MAX_CPU: "1.0"
+  SANDBOX_MAX_MEMORY_MB: "512"
+  SANDBOX_MAX_DISK_MB: "100"
+  SANDBOX_POOL_SIZE: "10"
+
+  # Security configuration
+  MAX_CODE_LENGTH: "10000"
+  ALLOWED_IMPORTS: "json,math,datetime,typing,dataclasses,itertools,functools,collections,re"
+
+  # Audit configuration (BigQuery)
+  BIGQUERY_DATASET: "mcp_audit_logs"
+  BIGQUERY_TABLE: "code_executions"
+
+---
+# Secret for BigQuery Service Account (create manually)
+# kubectl create secret generic mcp-bigquery-sa \
+#   --from-file=key.json=./service-account-key.json \
+#   -n mcp-system
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mcp-bigquery-sa
+  namespace: mcp-system
+type: Opaque
+# Data will be populated by kubectl create secret command
+
+---
+# Deployment: MCP Server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-server
+  namespace: mcp-system
+  labels:
+    app: mcp-server
+    version: v1
+spec:
+  replicas: 3  # Start with 3 replicas, HPA will scale up/down
+  selector:
+    matchLabels:
+      app: mcp-server
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: mcp-server
+        version: v1
+      annotations:
+        # Prometheus scraping
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      # Use gVisor runtime class (must be configured on GKE cluster)
+      runtimeClassName: gvisor
+
+      # Service account for BigQuery access
+      serviceAccountName: mcp-server-sa
+
+      # Security context (defense in depth)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      containers:
+      - name: mcp-server
+        image: gcr.io/PROJECT_ID/mcp-server:latest  # Replace PROJECT_ID
+        imagePullPolicy: Always
+
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+
+        # Environment variables from ConfigMap
+        envFrom:
+        - configMapRef:
+            name: mcp-server-config
+
+        # Environment variables from Secrets
+        env:
+        - name: BIGQUERY_PROJECT
+          value: "PROJECT_ID"  # Replace with actual GCP project ID
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/var/secrets/google/key.json"
+
+        # Volume mounts for BigQuery service account
+        volumeMounts:
+        - name: bigquery-sa
+          mountPath: /var/secrets/google
+          readOnly: true
+
+        # Resource limits (enforced by Kubernetes)
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "2000m"    # 2 CPUs max
+            memory: "4Gi"   # 4GB max
+
+        # Liveness probe (restart if unhealthy)
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        # Readiness probe (remove from load balancer if not ready)
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+
+        # Security context (container level)
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+
+      # Volumes
+      volumes:
+      - name: bigquery-sa
+        secret:
+          secretName: mcp-bigquery-sa
+
+      # Pod anti-affinity (spread across nodes for HA)
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - mcp-server
+              topologyKey: kubernetes.io/hostname
+
+---
+# Service Account for MCP Server (Workload Identity)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mcp-server-sa
+  namespace: mcp-system
+  annotations:
+    # Workload Identity binding (replace with actual GCP service account)
+    iam.gke.io/gcp-service-account: mcp-server@PROJECT_ID.iam.gserviceaccount.com
+
+---
+# Service: Internal Load Balancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-server
+  namespace: mcp-system
+  labels:
+    app: mcp-server
+spec:
+  type: ClusterIP  # Internal only (no external exposure)
+  selector:
+    app: mcp-server
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  sessionAffinity: None
+
+---
+# Horizontal Pod Autoscaler (HPA)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mcp-server-hpa
+  namespace: mcp-system
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mcp-server
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  # Scale based on CPU utilization
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70  # Target 70% CPU
+  # Scale based on memory utilization
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80  # Target 80% memory
+  # Scale based on request rate (requires custom metrics)
+  - type: Pods
+    pods:
+      metric:
+        name: mcp_executions_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"  # 100 executions/sec per pod
+
+  # Scaling behavior (prevent flapping)
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50  # Increase by 50% at a time
+        periodSeconds: 60
+      - type: Pods
+        value: 2   # Or add 2 pods at a time
+        periodSeconds: 60
+      selectPolicy: Max
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5 minutes before scaling down
+      policies:
+      - type: Percent
+        value: 10  # Decrease by 10% at a time
+        periodSeconds: 60
+      selectPolicy: Min
+
+---
+# Network Policy: Egress Blocking (Security)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mcp-server-network-policy
+  namespace: mcp-system
+spec:
+  podSelector:
+    matchLabels:
+      app: mcp-server
+  policyTypes:
+  - Ingress
+  - Egress
+
+  # Ingress: Allow only from Istio ingress gateway
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    ports:
+    - protocol: TCP
+      port: 8080
+
+  # Egress: Allow ONLY internal services (block internet)
+  egress:
+  # Allow DNS resolution
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: UDP
+      port: 53
+
+  # Allow BigQuery API (Google Cloud internal)
+  - to:
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 443
+
+  # Block all other egress (no internet access from sandbox)
+  # This prevents data exfiltration even if sandbox is compromised
+
+---
+# Istio VirtualService: Canary Deployment
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: mcp-server
+  namespace: mcp-system
+spec:
+  hosts:
+  - mcp-server
+  http:
+  - match:
+    - headers:
+        # Route canary traffic based on header
+        x-canary:
+          exact: "true"
+    route:
+    - destination:
+        host: mcp-server
+        subset: v2  # New version (canary)
+      weight: 100
+
+  - route:
+    - destination:
+        host: mcp-server
+        subset: v1  # Stable version
+      weight: 90  # 90% of traffic
+    - destination:
+        host: mcp-server
+        subset: v2  # New version (canary)
+      weight: 10  # 10% of traffic (canary)
+
+---
+# Istio DestinationRule: Subsets for Canary
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: mcp-server
+  namespace: mcp-system
+spec:
+  host: mcp-server
+  trafficPolicy:
+    # Connection pool settings (optimize for high throughput)
+    connectionPool:
+      tcp:
+        maxConnections: 1000
+      http:
+        http1MaxPendingRequests: 1000
+        http2MaxRequests: 1000
+        maxRequestsPerConnection: 10
+
+    # Outlier detection (circuit breaker)
+    outlierDetection:
+      consecutiveErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+
+---
+# PodDisruptionBudget: Maintain availability during disruptions
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: mcp-server-pdb
+  namespace: mcp-system
+spec:
+  minAvailable: 2  # Always keep at least 2 pods running
+  selector:
+    matchLabels:
+      app: mcp-server
+
+---
+# ServiceMonitor: Prometheus Scraping (if using Prometheus Operator)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mcp-server
+  namespace: mcp-system
+  labels:
+    app: mcp-server
+spec:
+  selector:
+    matchLabels:
+      app: mcp-server
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s
+
+---
+# RBAC: Service Account Permissions
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: mcp-server-role
+  namespace: mcp-system
+rules:
+# Allow reading ConfigMaps (for dynamic config reload)
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch"]
+
+# Allow reading Secrets (for credentials)
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mcp-server-rolebinding
+  namespace: mcp-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mcp-server-role
+subjects:
+- kind: ServiceAccount
+  name: mcp-server-sa
+  namespace: mcp-system
+
+---
+# Documentation: Deployment Instructions
+# =====================================================
+#
+# PREREQUISITES:
+# 1. GKE cluster with gVisor enabled:
+#    gcloud container clusters create mcp-cluster \
+#      --zone=us-central1-a \
+#      --machine-type=n1-standard-4 \
+#      --num-nodes=3 \
+#      --enable-sandbox \
+#      --addons=Istio
+#
+# 2. Workload Identity configured:
+#    gcloud iam service-accounts create mcp-server \
+#      --project=PROJECT_ID
+#
+#    gcloud projects add-iam-policy-binding PROJECT_ID \
+#      --member="serviceAccount:mcp-server@PROJECT_ID.iam.gserviceaccount.com" \
+#      --role="roles/bigquery.dataEditor"
+#
+#    gcloud iam service-accounts add-iam-policy-binding \
+#      mcp-server@PROJECT_ID.iam.gserviceaccount.com \
+#      --role roles/iam.workloadIdentityUser \
+#      --member "serviceAccount:PROJECT_ID.svc.id.goog[mcp-system/mcp-server-sa]"
+#
+# 3. Build and push Docker image:
+#    docker build -t gcr.io/PROJECT_ID/mcp-server:latest .
+#    docker push gcr.io/PROJECT_ID/mcp-server:latest
+#
+# DEPLOYMENT:
+# 1. Create namespace and deploy:
+#    kubectl apply -f mcp-server-deployment.yaml
+#
+# 2. Verify deployment:
+#    kubectl get pods -n mcp-system
+#    kubectl logs -n mcp-system -l app=mcp-server
+#
+# 3. Test health check:
+#    kubectl run test -it --rm --image=curlimages/curl -- \
+#      curl http://mcp-server.mcp-system/health
+#
+# CANARY DEPLOYMENT:
+# 1. Deploy new version with version: v2 label
+# 2. Gradually increase weight in VirtualService
+# 3. Monitor metrics in Grafana
+# 4. Rollback if error rate increases:
+#    kubectl rollout undo deployment/mcp-server -n mcp-system
+#
+# MONITORING:
+# - Prometheus: http://prometheus.istio-system:9090
+# - Grafana: http://grafana.istio-system:3000
+# - Metrics: kubectl port-forward -n mcp-system svc/mcp-server 8080:80
+#            curl http://localhost:8080/metrics
+#
+# SCALING:
+# - Manual: kubectl scale deployment/mcp-server -n mcp-system --replicas=10
+# - Automatic: HPA will scale based on CPU/memory/custom metrics
+#
+# SECURITY:
+# - gVisor: Verify with: kubectl get pod <pod-name> -n mcp-system -o jsonpath='{.spec.runtimeClassName}'
+# - Network Policy: kubectl describe networkpolicy mcp-server-network-policy -n mcp-system
+# - Audit Logs: SELECT * FROM `PROJECT_ID.mcp_audit_logs.code_executions` ORDER BY timestamp DESC LIMIT 100

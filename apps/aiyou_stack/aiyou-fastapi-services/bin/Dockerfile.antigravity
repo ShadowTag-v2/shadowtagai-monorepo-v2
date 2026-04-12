@@ -1,0 +1,33 @@
+# Antigravity Orchestrator Dockerfile
+# The Central Brain - Full Pipeline on Cloud Run
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip install --no-cache-dir \
+    fastapi \
+    uvicorn[standard] \
+    pydantic \
+    httpx \
+    aiohttp
+
+# Copy Antigravity module
+COPY src/antigravity/ /app/src/antigravity/
+
+# Copy orchestrator server
+COPY bin/antigravity-orchestrator /app/bin/antigravity-orchestrator
+
+# Set PYTHONPATH for imports
+ENV PYTHONPATH=/app:/app/src
+
+# Expose port (Cloud Run uses PORT env var, default 8080)
+EXPOSE 8080
+
+# Run the orchestrator
+CMD ["python", "/app/bin/antigravity-orchestrator"]

@@ -26,7 +26,7 @@ if [ -n "$STAGED" ]; then
   FOUND=$(echo "$STAGED" | xargs grep -l '<<<<<<' 2>/dev/null | head -1 || true)
 else
   # Quick scan of key directories only
-  FOUND=$(grep -rl '<<<<<<' $EXCLUDE_DIRS --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.yaml' --include='*.yml' apps/ core/ tools/ scripts/ infrastructure/ 2>/dev/null | grep -v 'resolve_conflicts\|scan_files' | head -1 || true)
+  FOUND=$(grep -rl '<<<<<<' $EXCLUDE_DIRS --exclude-dir=external_repos --include='*.py' --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.yaml' --include='*.yml' apps/ core/ tools/ scripts/ infrastructure/ 2>/dev/null | grep -v 'resolve_conflicts\|scan_files' | head -1 || true)
 fi
 if [ -n "$FOUND" ]; then
   echo -e "${RED}FAIL${NC} — Conflict markers found in: $FOUND"

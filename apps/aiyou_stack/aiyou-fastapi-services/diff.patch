@@ -1,0 +1,116 @@
+diff --git a/erik-hancock-llm-memory/memory/current.json b/erik-hancock-llm-memory/memory/current.json
+index 44fd24642..33b5ab8e0 120000
+--- a/erik-hancock-llm-memory/memory/current.json
++++ b/erik-hancock-llm-memory/memory/current.json
+@@ -1 +1 @@
+-snapshots/memory_v0.0.7.json
+\ No newline at end of file
++snapshots/memory_v0.1.0.json
+\ No newline at end of file
+diff --git a/erik-hancock-llm-memory/scripts/extract_and_commit.py b/erik-hancock-llm-memory/scripts/extract_and_commit.py
+index e8ab469fd..7965326c8 100755
+--- a/erik-hancock-llm-memory/scripts/extract_and_commit.py
++++ b/erik-hancock-llm-memory/scripts/extract_and_commit.py
+@@ -22,8 +22,9 @@ CURSOR_DB_PATHS = [
+     Path.home() / ".cursor/workspaceStorage"
+ ]
+ CLAUDE_CODE_PATHS = [
+-    Path.home() / ".claude-code/history"
++    Path.home() / ".claude"  # history.jsonl lives here
+ ]
++ANTIGRAVITY_BRAIN_PATH = Path.home() / ".gemini/antigravity/brain"
+ MEMORY_REPO = Path(__file__).parent.parent
+ MEMORY_DIR = MEMORY_REPO / "memory"
+ DELTAS_DIR = MEMORY_DIR / "deltas"
+@@ -76,21 +77,62 @@ class ConversationExtractor:
+         return conversations
+ 
+     def extract_claude_code_conversations(self) -> List[Dict[str, Any]]:
+-        """Extract from Claude Code history"""
++        """Extract from Claude Code history.jsonl"""
+         conversations = []
+ 
+         for base_path in CLAUDE_CODE_PATHS:
+-            if not base_path.exists():
++            history_file = base_path / "history.jsonl"
++            if not history_file.exists():
++                continue
++
++            try:
++                with open(history_file) as f:
++                    for line in f:
++                        try:
++                            data = json.loads(line.strip())
++                            # Each line is an event, group by sessionId
++                            session_id = data.get('sessionId', 'unknown')
++                            conv = {
++                                'conversation_id': session_id,
++                                'messages': [{'role': 'user', 'content': data.get('display', '')}],
++                                'source': 'claude-code',
++                                'created_at': data.get('timestamp', 0),
++                                'project': data.get('project', ''),
++                            }
++                            conversations.append(conv)
++                        except json.JSONDecodeError:
++                            continue
++            except Exception as e:
++                print(f"Warning: Could not read {history_file}: {e}", file=sys.stderr)
++
++        return conversations
++
++    def extract_antigravity_conversations(self) -> List[Dict[str, Any]]:
++        """Extract from Antigravity brain directories"""
++        conversations = []
++
++        if not ANTIGRAVITY_BRAIN_PATH.exists():
++            return conversations
++
++        for conv_dir in ANTIGRAVITY_BRAIN_PATH.iterdir():
++            if not conv_dir.is_dir():
+                 continue
+ 
+-            for history_file in base_path.glob("**/*.json"):
++            # Read any .md files as conversation artifacts
++            for md_file in conv_dir.glob("*.md"):
+                 try:
+-                    with open(history_file) as f:
+-                        data = json.load(f)
+-                        conv = self._normalize_conversation(data, 'claude-code')
++                    with open(md_file) as f:
++                        content = f.read()
++                        conv = {
++                            'conversation_id': conv_dir.name,
++                            'messages': [{'role': 'assistant', 'content': content}],
++                            'source': 'antigravity',
++                            'created_at': int(md_file.stat().st_mtime * 1000),
++                            'artifact_name': md_file.name,
++                        }
+                         conversations.append(conv)
+                 except Exception as e:
+-                    print(f"Warning: Could not read {history_file}: {e}", file=sys.stderr)
++                    print(f"Warning: Could not read {md_file}: {e}", file=sys.stderr)
+ 
+         return conversations
+ 
+@@ -143,7 +185,7 @@ class ConversationExtractor:
+ 
+         return list(tags)
+ 
+-    def extract_all(self) -> List[Dict[str, Any]]:
++    def extract_all(self) -> list[dict[str, Any]]:
+         """Extract all conversations from all sources"""
+         print("Extracting Cursor conversations...")
+         cursor_convs = self.extract_cursor_conversations()
+@@ -153,7 +195,11 @@ class ConversationExtractor:
+         claude_convs = self.extract_claude_code_conversations()
+         print(f"  Found {len(claude_convs)} Claude Code conversations")
+ 
+-        all_convs = cursor_convs + claude_convs
++        print("Extracting Antigravity conversations...")
++        antigravity_convs = self.extract_antigravity_conversations()
++        print(f"  Found {len(antigravity_convs)} Antigravity conversations")
++
++        all_convs = cursor_convs + claude_convs + antigravity_convs
+         print(f"\nTotal: {len(all_convs)} conversations")
+         print(f"Estimated tokens: {self.total_tokens:,}")
+         print(f"Estimated cost: ${self.total_tokens * COST_PER_1K_TOKENS / 1000:.2f}")

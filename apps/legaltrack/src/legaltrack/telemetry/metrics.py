@@ -31,7 +31,9 @@ class ROIProjector:
         hours_saved = estimated_human_minutes / 60.0
         self.total_hours_saved += hours_saved
 
-        logger.info(f"Processed Event in {latency_ms}ms. Tokens: {tokens_used}. Saved {estimated_human_minutes}m of human time.")
+        logger.info(
+            f"Processed Event in {latency_ms}ms. Tokens: {tokens_used}. Saved {estimated_human_minutes}m of human time."
+        )
 
     def get_roi_report(self) -> dict[str, Any]:
         """

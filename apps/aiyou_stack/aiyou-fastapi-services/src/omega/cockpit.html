@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SHADOWTAG OMEGA // COCKPIT</title>
+    <style>
+        :root { --bg: #0a0a0a; --panel: #111; --border: #333; --green: #0f0; --red: #f00; --text: #ccc; }
+        body { background: var(--bg); color: var(--text); font-family: 'Courier New', monospace; margin: 0; padding: 20px; height: 100vh; display: grid; grid-template-rows: auto 1fr; gap: 20px; box-sizing: border-box; }
+        header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 100%; }
+        .panel { background: var(--panel); border: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; overflow: hidden; }
+        h2 { margin: 0 0 15px 0; font-size: 0.9rem; color: #666; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .agent-row { display: flex; justify-content: space-between; padding: 10px; background: #1a1a1a; margin-bottom: 10px; border-left: 3px solid #444; transition: all 0.3s; }
+        .agent-row.active { border-left-color: var(--green); background: #1f2a1f; }
+        #log-stream { flex: 1; overflow-y: auto; font-size: 0.85rem; line-height: 1.5; }
+        .log-entry { margin-bottom: 5px; border-left: 2px solid transparent; padding-left: 8px; }
+        .log-entry.SUCCESS { border-left-color: var(--green); color: #8f8; }
+        .log-entry.DENIED { border-left-color: var(--red); color: #f88; }
+        .log-entry.PENDING { border-left-color: #ff0; color: #ff9; }
+        .control-btn { background: #222; border: 1px solid #444; color: #fff; padding: 10px; cursor: pointer; width: 100%; text-align: left; margin-bottom: 5px; }
+        .control-btn:hover { background: #333; }
+    </style>
+</head>
+<body>
+    <header><div>/// SHADOWTAG OMEGA</div><div>TIER 30: ACTIVE</div></header>
+    <div class="main-grid">
+        <div class="panel">
+            <h2>SQUADRON</h2>
+            <div id="agent-007" class="agent-row"><div>AGENT-007 (Stripe)</div><div id="status-007">IDLE</div></div>
+            <div id="agent-023" class="agent-row"><div>AGENT-023 (Velocity)</div><div id="status-023">IDLE</div></div>
+            <h2 style="margin-top: 20px;">OVERRIDE</h2>
+            <button class="control-btn" onclick="send('agent-007', 'initiate_transfer')">>> AUTH: TRANSFER $500</button>
+            <button class="control-btn" onclick="send('agent-023', 'read_lake')">>> TASK: READ DATA LAKE</button>
+            <button class="control-btn" style="border-color: #522;" onclick="send('agent-007', 'unauthorized_nuke')">>> RISK: NUKE DATABASE</button>
+        </div>
+        <div class="panel">
+            <h2>JUDGE6 LOG</h2>
+            <div id="log-stream"></div>
+        </div>
+    </div>
+    <script>
+        const ws = new WebSocket("ws://" + window.location.host + "/ws");
+        ws.onmessage = (e) => {
+            const d = JSON.parse(e.data);
+            if (d.type === 'SYSTEM_LOG' || d.type === 'RISK_ALERT') log(d.msg, d.status || (d.type === 'RISK_ALERT' ? 'DENIED' : 'INFO'));
+            else if (d.type === 'AGENT_UPDATE') { upd(d.id, d.status); if (d.log) log(d.log, 'INFO'); }
+        };
+        function log(m, t) {
+            const s = document.getElementById('log-stream'), d = document.createElement('div');
+            d.className = `log-entry ${t}`; d.innerText = `[${new Date().toLocaleTimeString()}] ${m}`;
+            s.appendChild(d); s.scrollTop = s.scrollHeight;
+        }
+        function upd(id, s) {
+            const el = document.getElementById(id), sl = document.getElementById(`status-${id.split('-')[1]}`);
+            sl.innerText = s; el.className = 'agent-row';
+            if (s === 'ACTIVE' || s === 'WORKING') el.classList.add('active');
+        }
+        function send(id, act) { ws.send(JSON.stringify({ agent_id: id, action: act })); }
+    </script>
+</body>
+</html>

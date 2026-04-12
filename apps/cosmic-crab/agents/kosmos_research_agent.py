@@ -36,7 +36,9 @@ class KosmosSwarmOrchestrator:
         synthesis = f"Discovery complete for {objective}. Analysts found primary scaling deltas; Lit review confirmed doctrinal alignment."
 
         # 4. Record as Memory Beads
-        self.whiteboard.record_bead(insight=synthesis, source="kosmos_swarm", thinking_trace=str(results))
+        self.whiteboard.record_bead(
+            insight=synthesis, source="kosmos_swarm", thinking_trace=str(results)
+        )
 
         logger.info("🎯 KOSMOS SWARM: All agents reported back. Objective secured.")
         return synthesis

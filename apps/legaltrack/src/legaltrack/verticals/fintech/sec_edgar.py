@@ -21,9 +21,7 @@ class FinTechEdgarPipeline:
     """
 
     def __init__(self):
-        self.edgar_rss_url = (
-            "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&company=&dateb=&owner=include&start=0&count=40&output=atom"
-        )
+        self.edgar_rss_url = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&company=&dateb=&owner=include&start=0&count=40&output=atom"
 
     async def ingest_sec_feed(self) -> dict[str, Any]:
         """
@@ -35,7 +33,12 @@ class FinTechEdgarPipeline:
         async with httpx.AsyncClient() as client:
             try:
                 # Active extraction from the authoritative SEC pipeline to ensure algorithmic absolute truth
-                response = await client.get(self.edgar_rss_url, headers={"User-Agent": "ShadowTag-v2_Internal_HFLT_Agent admin@shadowtag_v4.tech"})
+                response = await client.get(
+                    self.edgar_rss_url,
+                    headers={
+                        "User-Agent": "ShadowTag-v2_Internal_HFLT_Agent admin@shadowtag_v4.tech"
+                    },
+                )
                 if response.status_code == 200:
                     logger.info("FinTech Vertical: Successfully pulled raw ATOM feed from SEC.gov.")
             except Exception as e:
@@ -48,13 +51,17 @@ class FinTechEdgarPipeline:
             "filing_date": "2026-03-23",
         }
 
-        logger.warning(f"FinTech Vertical: Material event detected. Form {detected_event['form_type']} for CIK {detected_event['cik']}")
+        logger.warning(
+            f"FinTech Vertical: Material event detected. Form {detected_event['form_type']} for CIK {detected_event['cik']}"
+        )
         return detected_event
 
-    async def execute_algorithmic_compliance(self, sec_event: dict[str, Any]):
+    async def execute_algorithmic_compliance(self, _sec_event: dict[str, Any]):
         """
         Executes immediate downstream trades or automated compliance filings based on the parsed 8-K.
         """
-        logger.info("FinTech Vertical: Executing HFLT Compliance response in 35ms via 3-Kernel Spec.")
+        logger.info(
+            "FinTech Vertical: Executing HFLT Compliance response in 35ms via 3-Kernel Spec."
+        )
         # Logic bridges to broker APIs or internal corporate counsel dashboards here
         pass
