@@ -1,29 +1,25 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 
-echo "☕ Integrating googleapis/mcp-toolbox-sdk-java for JVM backend context..."
-cd /Users/pikeymickey || exit 1
+echo "[BUILD] Integrating googleapis/mcp-toolbox-sdk-java for JVM backend context..."
+MCP_DIR="${HOME}/mcp-toolbox-sdk-java"
 
-if [ ! -d "mcp-toolbox-sdk-java" ]; then
-    git clone https://github.com/googleapis/mcp-toolbox-sdk-java.git mcp-toolbox-sdk-java
+if [ ! -d "$MCP_DIR" ]; then
+    git clone https://github.com/googleapis/mcp-toolbox-sdk-java.git "$MCP_DIR"
 fi
 
-cd mcp-toolbox-sdk-java
+cd "$MCP_DIR" || exit 1
+echo "[BUILD] Compiling Java MCP SDK via Maven..."
 
-# Resolve the Maven binary — system Maven or downloaded Maven
-MAVEN_BIN=""
-if command -v mvn >/dev/null 2>&1; then
-    MAVEN_BIN="mvn"
+# Use system mvn (./mvnw not present in this repo — tracked as RISK_REGISTER #2)
+if command -v mvn &>/dev/null; then
+    mvn clean install -DskipTests -q
 elif [ -x "/tmp/apache-maven-3.9.9/bin/mvn" ]; then
-    MAVEN_BIN="/tmp/apache-maven-3.9.9/bin/mvn"
+    /tmp/apache-maven-3.9.9/bin/mvn clean install -DskipTests -q
 else
-    echo "❌ Maven not found. Install via 'brew install maven' or download to /tmp/apache-maven-3.9.9/"
+    echo "[ERROR] Maven not found. Install via: brew install maven"
     exit 1
 fi
 
-echo "⚙️ Compiling Java MCP SDK via Maven ($MAVEN_BIN)..."
-# -Dfmt.skip=true required because google-java-format is incompatible with JDK 26
-"$MAVEN_BIN" clean install -DskipTests -Dfmt.skip=true -q
-
-echo "✅ Java MCP Built. Ensure ~/.gemini/antigravity/mcp_config.json points to the target JAR."
-echo "   JAR location: $(ls /Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-*-SNAPSHOT.jar 2>/dev/null | head -1)"
+JAR_PATH=$(find target -name "mcp-toolbox-sdk-java-*.jar" | head -n 1)
+echo "[SUCCESS] Java MCP Built at: $JAR_PATH"
