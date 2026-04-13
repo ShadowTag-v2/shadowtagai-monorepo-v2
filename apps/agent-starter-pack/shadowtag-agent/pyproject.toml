@@ -1,9 +1,9 @@
 [project]
 name = "shadowtag-agent"
-version = "0.1.0"
-description = ""
+version = "0.2.0"
+description = "UphillSnowball Legal AI Agent — ShadowTag Sovereign Infrastructure"
 authors = [
-    {name = "Your Name", email = "your@email.com"},
+    {name = "ShadowTag-v2", email = "ops@shadowtagai.com"},
 ]
 dependencies = [
     "google-adk>=1.15.0,<2.0.0",
@@ -14,8 +14,9 @@ dependencies = [
     "fastapi>=0.115.8,<1.0.0",
     "uvicorn~=0.34.0",
     "asyncpg>=0.30.0,<1.0.0",
+    "google-cloud-firestore>=2.20.0,<3.0.0",
 ]
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10,<3.15"
 
 
 [dependency-groups]
@@ -100,7 +101,7 @@ packages = ["app","frontend"]
 # Generation metadata - enables CLI commands to understand project context
 # These fields allow any generated project to work as a remote template
 name = "shadowtag-agent"
-description = "Simple ReAct agent"
+description = "UphillSnowball Legal AI Agent"
 base_template = "adk"
 agent_directory = "app"
 
