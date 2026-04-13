@@ -1,59 +1,78 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-COR_DIR="${HOME}/cor-autoresearch"
-mkdir -p "$COR_DIR"/{bridge,config}
+ROOT="${ROOT:-$PWD/external}"
+mkdir -p "$ROOT"
 
-echo "[SETUP] Cloning Autoresearch Triad (Kosmos, BioAgents, n-autoresearch)..."
-[[ -d "$COR_DIR/Kosmos" ]]         || git clone https://github.com/jimmc414/Kosmos.git "$COR_DIR/Kosmos"
-[[ -d "$COR_DIR/BioAgents" ]]      || git clone https://github.com/bio-xyz/BioAgents.git "$COR_DIR/BioAgents"
-[[ -d "$COR_DIR/n-autoresearch" ]] || git clone https://github.com/miolini/autoresearch-macos.git "$COR_DIR/n-autoresearch"
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || {
+    echo "Missing required command: $1" >&2
+    exit 1
+  }
+}
 
-echo "[SETUP] Enforcing Cloud Tasks Queue Doctrine (BullMQ BANNED)..."
-# Rip out BullMQ imports AND their downstream references to prevent dangling TS errors
-if [ -d "$COR_DIR/BioAgents" ]; then
-    # Phase 1: Remove import lines
-    find "$COR_DIR/BioAgents" -name "*.ts" -type f -exec sed -i '' '/import.*bullmq/d' {} + 2>/dev/null || true
-    find "$COR_DIR/BioAgents" -name "*.ts" -type f -exec sed -i '' '/from.*bullmq/d' {} + 2>/dev/null || true
-    # Phase 2: Comment out BullMQ class instantiations to prevent dangling refs
-    find "$COR_DIR/BioAgents" -name "*.ts" -type f -exec sed -i '' 's/new Queue(/\/\/ BANNED: new Queue(/g' {} + 2>/dev/null || true
-    find "$COR_DIR/BioAgents" -name "*.ts" -type f -exec sed -i '' 's/new Worker(/\/\/ BANNED: new Worker(/g' {} + 2>/dev/null || true
-fi
+need_cmd git
 
-cat << 'EOF' > "$COR_DIR/bridge/cloud_tasks_worker.py"
-import logging
-from google.cloud import tasks_v2
+ensure_uv_if_needed() {
+  if command -v uv >/dev/null 2>&1; then
+    return 0
+  fi
+  echo "uv is required but not installed." >&2
+  echo "Install it explicitly; this script will not curl-pipe installers." >&2
+  exit 1
+}
 
-logger = logging.getLogger("Queue-Doctrine")
-logger.info("Migrating BioAgents to Serverless Google Cloud Tasks. BullMQ disabled.")
-# All /api/deep-research calls route to GCP Tasks natively.
-EOF
+repo_exists() {
+  git ls-remote --exit-code "$1" >/dev/null 2>&1
+}
 
-echo "[SETUP] Setting up N-Autoresearch Orchestrator..."
-cd "$COR_DIR/n-autoresearch" || exit 1
+clone_or_update() {
+  local url="$1"
+  local dir="$2"
 
-# Use existing uv if available (~/.local/bin/uv per drift audit), skip redundant install
-UV_CMD=""
-if command -v uv >/dev/null 2>&1; then
-    UV_CMD="uv"
-elif [ -x "$HOME/.local/bin/uv" ]; then
-    UV_CMD="$HOME/.local/bin/uv"
-elif [ -x "$HOME/.cargo/bin/uv" ]; then
-    UV_CMD="$HOME/.cargo/bin/uv"
-else
-    echo "[SETUP] uv not found — installing..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-    UV_CMD="$HOME/.cargo/bin/uv"
-fi
+  if ! repo_exists "$url"; then
+    echo "Skipping unavailable repo: $url" >&2
+    return 1
+  fi
 
-# Only run uv sync if pyproject.toml exists
-if [ -f "pyproject.toml" ]; then
-    $UV_CMD sync && $UV_CMD run prepare.py
-elif [ -f "requirements.txt" ]; then
-    echo "[SETUP] No pyproject.toml found. Using pip install as fallback."
-    $UV_CMD pip install -r requirements.txt
-else
-    echo "[WARN] No pyproject.toml or requirements.txt found in n-autoresearch. Manual setup required."
-fi
+  if [ ! -d "$dir/.git" ]; then
+    git clone --depth=1 "$url" "$dir"
+  else
+    git -C "$dir" fetch --depth=1 origin
+    git -C "$dir" reset --hard FETCH_HEAD
+  fi
+}
 
-echo "[SUCCESS] Autoresearch Triad Scaffolded. Layered beneath STATE A (Pure YOLO)."
+prepare_python_repo_if_supported() {
+  local dir="$1"
+
+  if [ -f "$dir/pyproject.toml" ]; then
+    ensure_uv_if_needed
+    (
+      cd "$dir"
+      uv sync
+    )
+  fi
+
+  if [ -f "$dir/prepare.py" ]; then
+    ensure_uv_if_needed
+    (
+      cd "$dir"
+      uv run prepare.py
+    )
+  fi
+}
+
+ROOT_KOSMOS="$ROOT/Kosmos"
+ROOT_BIOAGENTS="$ROOT/BioAgents"
+ROOT_AUTORESEARCH="$ROOT/autoresearch-macos"
+
+clone_or_update "https://github.com/jimmc414/Kosmos.git" "$ROOT_KOSMOS" || true
+clone_or_update "https://github.com/bio-xyz/BioAgents.git" "$ROOT_BIOAGENTS" || true
+clone_or_update "https://github.com/miolini/autoresearch-macos.git" "$ROOT_AUTORESEARCH" || true
+
+prepare_python_repo_if_supported "$ROOT_AUTORESEARCH"
+
+echo "Setup complete."
+echo "No automatic source rewriting was performed."
+echo "Any BullMQ or repo-specific dependency removal must be done with a code-aware patch, not sed."
