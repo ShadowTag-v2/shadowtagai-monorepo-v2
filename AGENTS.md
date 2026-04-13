@@ -84,11 +84,13 @@ unless the user explicitly directs a control plane change:
 ## Hardened state
 
 - v8.4 canonicalized: 2026-04-13
-- Commit: `c0e93f5a368`
+- Commit: `c279f820037`
 - CI Python: 3.13 (all 3 workflows)
-- Firestore: `shadowtag-engine` (4 collections)
+- Firestore: 3 databases (`(default)`, `shadowtag-engine`, `knowledge-base-database`)
+- Firestore rules: zero-trust deployed (default deny-all, admin-only access)
 - Semantic Kernel: .NET 11.0 Preview 2
 - Structural tests: 30/30
 - Lighthouse: A97 / BP100 / SEO100
 - Dead code: clean (vulture + ruff)
-- Infrastructure: shadowtagai.web.app deployed
+- Infrastructure: shadowtagai.web.app + kovelai.web.app deployed
+
