@@ -1,28 +1,29 @@
 /* ============================================================
    KovelAI — "The Chambers" Design System
-   BARBRI Authority × Aman Resorts Dark Luxury
+   Google Brand-Permeation: Gold-Tinted Neutrals (Hue 40–43°)
+   No pure black. No pure white. No pure gray. Brand DNA in every pixel.
    ============================================================ */
 
 /* --- Design Tokens --- */
 :root {
-    /* Backgrounds */
-    --bg-obsidian:     #0C0C0E;
-    --bg-surface:      #18181B;
-    --bg-elevated:     #1C1C20;
-    --bg-card:         rgba(255, 255, 255, 0.03);
-    --bg-card-hover:   rgba(255, 255, 255, 0.06);
-    --bg-glass:        rgba(24, 24, 27, 0.7);
+    /* Backgrounds — warm gold-blacks */
+    --bg-obsidian:     #0e0d0a;                 /* HSL(40, 17%, 5%) — warm black */
+    --bg-surface:      #1c1a15;                 /* HSL(40, 14%, 10%) — warm surface */
+    --bg-elevated:     #23211a;                 /* HSL(42, 14%, 12%) — warm elevated */
+    --bg-card:         rgba(200, 170, 100, 0.03); /* gold-tinted glass */
+    --bg-card-hover:   rgba(200, 170, 100, 0.06); /* gold-tinted glass hover */
+    --bg-glass:        rgba(28, 26, 21, 0.7);   /* warm glass */
 
-    /* Borders */
-    --border:          #27272A;
-    --border-subtle:   rgba(255, 255, 255, 0.06);
+    /* Borders — gold-tinted */
+    --border:          #2d2a22;                 /* HSL(40, 13%, 16%) — warm border */
+    --border-subtle:   rgba(200, 170, 100, 0.06); /* gold-subtle */
     --border-gold:     rgba(201, 168, 76, 0.25);
 
-    /* Text */
-    --text-primary:    #FAFAFA;
-    --text-secondary:  #A1A1AA;
-    --text-dim:        #52525B;
-    --text-inverse:    #09090B;
+    /* Text — warm cream tints, never pure white */
+    --text-primary:    #faf6ec;                 /* HSL(42, 65%, 95%) — warm cream */
+    --text-secondary:  #a8a08e;                 /* HSL(40, 14%, 61%) — warm mid */
+    --text-dim:        #5c5647;                 /* HSL(40, 13%, 32%) — warm dim */
+    --text-inverse:    #0c0b08;                 /* HSL(40, 20%, 4%) — warm near-black */
 
     /* Accent Palette */
     --gold:            #C9A84C;
@@ -32,11 +33,11 @@
     --teal-muted:      rgba(45, 212, 191, 0.12);
     --danger:          #EF4444;
 
-    /* Gradients */
+    /* Gradients — warm-shifted */
     --gradient-gold:   linear-gradient(135deg, #C9A84C 0%, #E8D48B 50%, #C9A84C 100%);
-    --gradient-hero:   linear-gradient(180deg, transparent 0%, rgba(12, 12, 14, 0.4) 40%, #0C0C0E 100%);
-    --gradient-section:linear-gradient(180deg, #0C0C0E 0%, #18181B 100%);
-    --gradient-cta:    linear-gradient(180deg, rgba(201, 168, 76, 0.04) 0%, #0C0C0E 100%);
+    --gradient-hero:   linear-gradient(180deg, transparent 0%, rgba(14, 13, 10, 0.4) 40%, #0e0d0a 100%);
+    --gradient-section:linear-gradient(180deg, #0e0d0a 0%, #1c1a15 100%);
+    --gradient-cta:    linear-gradient(180deg, rgba(201, 168, 76, 0.04) 0%, #0e0d0a 100%);
     --glow-gold:       rgba(201, 168, 76, 0.15);
     --glow-teal:       rgba(45, 212, 191, 0.1);
 
@@ -84,14 +85,14 @@ strong { color: var(--text-primary); font-weight: 700; }
 /* --- Navigation --- */
 .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(12, 12, 14, 0.75);
+    background: rgba(14, 13, 10, 0.75);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--border-subtle);
     transition: background var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 }
 .nav.scrolled {
-    background: rgba(12, 12, 14, 0.95);
+    background: rgba(14, 13, 10, 0.95);
     box-shadow: 0 1px 0 var(--border-subtle);
 }
 .nav-inner {
@@ -151,7 +152,7 @@ strong { color: var(--text-primary); font-weight: 700; }
 }
 .hero-grid-overlay {
     position: absolute; inset: 0; z-index: 1;
-    background-image: radial-gradient(rgba(201, 168, 76, 0.03) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(200, 170, 100, 0.04) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
@@ -490,7 +491,7 @@ strong { color: var(--text-primary); font-weight: 700; }
     .nav-links.open {
         display: flex; flex-direction: column;
         position: absolute; top: 72px; left: 0; right: 0;
-        background: rgba(12, 12, 14, 0.98);
+        background: rgba(14, 13, 10, 0.98);
         backdrop-filter: blur(20px);
         padding: 24px 32px; gap: 16px;
         border-bottom: 1px solid var(--border-subtle);
