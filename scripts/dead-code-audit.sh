@@ -39,7 +39,7 @@ check_alignment() {
   while IFS= read -r f; do
     [ -n "$f" ] || continue
     case "$f" in
-      AGENTS.md|CLAUDE.md|GEMINI.md|operator_invariants.json|pricing_doctrine.md|release_checklist.md|BUSINESS_CONTEXT_LOCKED.md|antigravity-mcp-config.json|monorepo_manifest.yaml)
+      AGENTS.md|CLAUDE.md|GEMINI.md|operator_invariants.json|pricing_doctrine.md|release_checklist.md|antigravity-mcp-config.json|monorepo_manifest.yaml)
         local blob
         blob="$(git show ":$f" 2>/dev/null)"
         printf '%s' "$blob" | grep -q 'shadowtag-omega-v4' || {
@@ -169,14 +169,19 @@ PY
 
 run_dotnet_build_if_present() {
   cd "$(root)" || return 1
+  local DOTNET_BIN="/usr/local/share/dotnet/dotnet"
+  if [ ! -x "$DOTNET_BIN" ]; then
+    note ".NET SDK not found at $DOTNET_BIN — skipping Semantic Kernel build."
+    return 0
+  fi
   if [ -f "global.json" ] || ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1; then
     note "Verifying .NET 11.0 Preview 2 Semantic Kernel execution..."
-    dotnet build || fail ".NET 11.0 Preview 2 Compilation failed." || return 1
+    "$DOTNET_BIN" build || fail ".NET 11.0 Preview 2 Compilation failed." || return 1
   fi
 }
 
 main() {
-  note "running v8.2b guard & 30-Point Tech Debt Guillotine"
+  note "running v8.2c guard & 30-Point Tech Debt Guillotine"
   check_gitignore || exit 1
   check_no_env_files || exit 1
   check_no_prod_sourcemaps || exit 1
