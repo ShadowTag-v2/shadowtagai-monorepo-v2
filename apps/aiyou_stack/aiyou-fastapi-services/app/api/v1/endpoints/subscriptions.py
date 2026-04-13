@@ -7,10 +7,7 @@ Revenue:
 - Payment integration (Stripe)
 """
 
-from datetime import datetime
-
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
@@ -23,6 +20,7 @@ from app.schemas.subscription import (
     SubscriptionUpgradeRequest,
     UsageResponse,
 )
+from app.services.subscription_service import SubscriptionService
 from app.utils.logger import get_logger
 
 router = APIRouter()
@@ -30,9 +28,15 @@ logger = get_logger(__name__)
 settings = get_settings()
 
 
+def get_subscription_service(db: AsyncSession = Depends(get_db)) -> SubscriptionService:
+    """Dependency to get SubscriptionService instance."""
+    return SubscriptionService(db)
+
+
 @router.get("/my-subscription", response_model=SubscriptionResponse)
 async def get_my_subscription(
-    current_user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)
+    current_user: User = Depends(get_current_active_user),
+    service: SubscriptionService = Depends(get_subscription_service),
 ) -> Subscription:
     """
     Get current user's subscription
@@ -41,34 +45,19 @@ async def get_my_subscription(
     - Shows current tier and usage
     - Opportunity to upsell if near limits
     """
-    result = await db.execute(
-        select(Subscription)
-        .where(Subscription.user_id == current_user.id)
-        .where(Subscription.status.in_(["active", "trialing"]))
-    )
-    subscription = result.scalar_one_or_none()
+    subscription = await service.get_active_subscription(current_user.id)
 
     if subscription is None:
         # Create default free subscription if none exists
-        subscription = Subscription(
-            user_id=current_user.id,
-            tier="free",
-            status="active",
-            price=0,
-            api_calls_count=0,
-            api_calls_limit=1000,  # Free tier limit
-            current_period_start=datetime.utcnow(),
-        )
-        db.add(subscription)
-        await db.commit()
-        await db.refresh(subscription)
+        subscription = await service.create_free_subscription(current_user.id)
 
     return subscription
 
 
 @router.get("/usage", response_model=UsageResponse)
 async def get_usage(
-    current_user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)
+    current_user: User = Depends(get_current_active_user),
+    service: SubscriptionService = Depends(get_subscription_service),
 ) -> UsageResponse:
     """
     Get current usage statistics
@@ -77,12 +66,7 @@ async def get_usage(
     - Shows usage vs limits
     - Trigger upsell when approaching limits
     """
-    result = await db.execute(
-        select(Subscription)
-        .where(Subscription.user_id == current_user.id)
-        .where(Subscription.status.in_(["active", "trialing"]))
-    )
-    subscription = result.scalar_one_or_none()
+    subscription = await service.get_active_subscription(current_user.id)
 
     if subscription is None:
         return UsageResponse(
@@ -105,7 +89,7 @@ async def get_usage(
 async def upgrade_subscription(
     upgrade_data: SubscriptionUpgradeRequest,
     current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db),
+    service: SubscriptionService = Depends(get_subscription_service),
 ) -> Subscription:
     """
     Upgrade subscription to higher tier
@@ -119,13 +103,7 @@ async def upgrade_subscription(
     - Payment verification required
     - Idempotency handling
     """
-    # Get current subscription
-    result = await db.execute(
-        select(Subscription)
-        .where(Subscription.user_id == current_user.id)
-        .where(Subscription.status.in_(["active", "trialing"]))
-    )
-    subscription = result.scalar_one_or_none()
+    subscription = await service.get_active_subscription(current_user.id)
 
     # Validate upgrade path
     tier_hierarchy = {"free": 0, "pro": 1, "enterprise": 2}
@@ -146,35 +124,10 @@ async def upgrade_subscription(
 
     # TODO: Integrate with Stripe payment processing
     # For now, we'll create/update subscription assuming payment succeeded
-    # In production, this would:
-    # 1. Create Stripe subscription
-    # 2. Verify payment
-    # 3. Update database on webhook callback
 
-    if subscription is None:
-        # Create new subscription
-        subscription = Subscription(
-            user_id=current_user.id,
-            tier=upgrade_data.new_tier,
-            status="active",
-            price=price,
-            api_calls_count=0,
-            api_calls_limit=None,  # Unlimited for paid tiers
-            current_period_start=datetime.utcnow(),
-        )
-        db.add(subscription)
-    else:
-        # Upgrade existing subscription
-        subscription.tier = upgrade_data.new_tier
-        subscription.price = price
-        subscription.api_calls_limit = None  # Unlimited for paid tiers
-        subscription.status = "active"
-
-    # Update user tier
-    current_user.subscription_tier = upgrade_data.new_tier
-
-    await db.commit()
-    await db.refresh(subscription)
+    subscription = await service.upgrade_subscription(
+        subscription, current_user, upgrade_data.new_tier, price
+    )
 
     logger.info(
         "subscription_upgraded",
@@ -188,7 +141,8 @@ async def upgrade_subscription(
 
 @router.post("/cancel", status_code=status.HTTP_200_OK)
 async def cancel_subscription(
-    current_user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)
+    current_user: User = Depends(get_current_active_user),
+    service: SubscriptionService = Depends(get_subscription_service),
 ) -> dict:
     """
     Cancel subscription
@@ -197,12 +151,7 @@ async def cancel_subscription(
     - Retention opportunity
     - Cancel at period end (user keeps access until paid period ends)
     """
-    result = await db.execute(
-        select(Subscription)
-        .where(Subscription.user_id == current_user.id)
-        .where(Subscription.status == "active")
-    )
-    subscription = result.scalar_one_or_none()
+    subscription = await service.get_active_only_subscription(current_user.id)
 
     if subscription is None:
         raise HTTPException(
@@ -214,11 +163,7 @@ async def cancel_subscription(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot cancel free tier"
         )
 
-    # Mark for cancellation at period end
-    subscription.cancel_at_period_end = True
-    subscription.canceled_at = datetime.utcnow()
-
-    await db.commit()
+    await service.cancel_subscription(subscription)
 
     logger.info("subscription_canceled", user_id=current_user.id, tier=subscription.tier)
 

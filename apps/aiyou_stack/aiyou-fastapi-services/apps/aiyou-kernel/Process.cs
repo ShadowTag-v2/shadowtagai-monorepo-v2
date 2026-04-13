@@ -1,3 +1,4 @@
+#pragma warning disable SKEXP0080
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Process;
 using System.ComponentModel;

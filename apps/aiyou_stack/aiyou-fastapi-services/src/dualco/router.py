@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from src.database import get_db
 
 from .engine import DualCoEngine
-from .models import DualCoDecision
 from .schemas import BoardResolution, DecisionLogCreate, DecisionLogRead, DualCoStatus, MetricsInput
+from .service import DualCoService
 
 router = APIRouter(prefix="/dualco", tags=["DualCo Strategy"])
 
@@ -28,13 +28,9 @@ def get_board_packet(db: Session = Depends(get_db)):
 
 @router.post("/decisions", response_model=DecisionLogRead)
 def log_decision(decision: DecisionLogCreate, db: Session = Depends(get_db)):
-    db_decision = DualCoDecision(**decision.dict())
-    db.add(db_decision)
-    db.commit()
-    db.refresh(db_decision)
-    return db_decision
+    return DualCoService.log_decision(db, decision.dict())
 
 
 @router.get("/decisions", response_model=list[DecisionLogRead])
 def get_decisions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return db.query(DualCoDecision).offset(skip).limit(limit).all()
+    return DualCoService.list_decisions(db, skip, limit)

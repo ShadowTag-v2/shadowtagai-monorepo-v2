@@ -3,29 +3,33 @@ API routes for trigger management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.automation.triggers import trigger_manager
 from app.core.database import get_db
-from app.models.automation import Trigger
 from app.schemas.automation import (
     TriggerCreate,
     TriggerEventRequest,
     TriggerResponse,
     TriggerUpdate,
 )
+from app.services.automation_service import TriggerService
 
 router = APIRouter(prefix="/triggers", tags=["triggers"])
 
 
+def get_trigger_service(db: AsyncSession = Depends(get_db)) -> TriggerService:
+    """Dependency to get TriggerService instance."""
+    return TriggerService(db)
+
+
 @router.post("/", response_model=TriggerResponse, status_code=201)
-async def create_trigger(trigger: TriggerCreate, db: AsyncSession = Depends(get_db)):
+async def create_trigger(
+    trigger: TriggerCreate,
+    service: TriggerService = Depends(get_trigger_service),
+):
     """Create a new trigger."""
-    db_trigger = Trigger(**trigger.model_dump())
-    db.add(db_trigger)
-    await db.commit()
-    await db.refresh(db_trigger)
+    db_trigger = await service.create(trigger.model_dump())
 
     # Register with trigger manager
     if db_trigger.enabled:
@@ -35,43 +39,40 @@ async def create_trigger(trigger: TriggerCreate, db: AsyncSession = Depends(get_
 
 
 @router.get("/", response_model=list[TriggerResponse])
-async def list_triggers(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
+async def list_triggers(
+    skip: int = 0,
+    limit: int = 100,
+    service: TriggerService = Depends(get_trigger_service),
+):
     """List all triggers."""
-    result = await db.execute(select(Trigger).offset(skip).limit(limit))
-    triggers = result.scalars().all()
-    return triggers
+    return await service.list(skip, limit)
 
 
 @router.get("/{trigger_id}", response_model=TriggerResponse)
-async def get_trigger(trigger_id: int, db: AsyncSession = Depends(get_db)):
+async def get_trigger(
+    trigger_id: int,
+    service: TriggerService = Depends(get_trigger_service),
+):
     """Get a specific trigger by ID."""
-    result = await db.execute(select(Trigger).where(Trigger.id == trigger_id))
-    trigger = result.scalar_one_or_none()
-
+    trigger = await service.get(trigger_id)
     if not trigger:
         raise HTTPException(status_code=404, detail="Trigger not found")
-
     return trigger
 
 
 @router.put("/{trigger_id}", response_model=TriggerResponse)
 async def update_trigger(
-    trigger_id: int, trigger_update: TriggerUpdate, db: AsyncSession = Depends(get_db)
+    trigger_id: int,
+    trigger_update: TriggerUpdate,
+    service: TriggerService = Depends(get_trigger_service),
 ):
     """Update a trigger."""
-    result = await db.execute(select(Trigger).where(Trigger.id == trigger_id))
-    trigger = result.scalar_one_or_none()
-
+    trigger = await service.get(trigger_id)
     if not trigger:
         raise HTTPException(status_code=404, detail="Trigger not found")
 
-    # Update fields
     update_data = trigger_update.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(trigger, field, value)
-
-    await db.commit()
-    await db.refresh(trigger)
+    trigger = await service.update(trigger, update_data)
 
     # Update trigger manager
     await trigger_manager.unregister_trigger(trigger.id)
@@ -82,24 +83,24 @@ async def update_trigger(
 
 
 @router.delete("/{trigger_id}", status_code=204)
-async def delete_trigger(trigger_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_trigger(
+    trigger_id: int,
+    service: TriggerService = Depends(get_trigger_service),
+):
     """Delete a trigger."""
-    result = await db.execute(select(Trigger).where(Trigger.id == trigger_id))
-    trigger = result.scalar_one_or_none()
-
+    trigger = await service.get(trigger_id)
     if not trigger:
         raise HTTPException(status_code=404, detail="Trigger not found")
 
     # Remove from trigger manager
     await trigger_manager.unregister_trigger(trigger.id)
 
-    await db.delete(trigger)
-    await db.commit()
+    await service.delete(trigger)
     return None
 
 
 @router.post("/events", status_code=202)
-async def trigger_event(event_request: TriggerEventRequest, db: AsyncSession = Depends(get_db)):
+async def trigger_event(event_request: TriggerEventRequest):
     """Trigger an event to execute associated workflows."""
     execution_ids = await trigger_manager.trigger_event(
         event_name=event_request.event_name, event_data=event_request.event_data
@@ -113,9 +114,8 @@ async def trigger_event(event_request: TriggerEventRequest, db: AsyncSession = D
 
 
 @router.post("/webhooks/{webhook_path:path}", status_code=202)
-async def trigger_webhook(webhook_path: str, request: Request, db: AsyncSession = Depends(get_db)):
+async def trigger_webhook(webhook_path: str, request: Request):
     """Webhook endpoint for triggering workflows."""
-    # Get request body as JSON
     try:
         webhook_data = await request.json()
     except Exception:
