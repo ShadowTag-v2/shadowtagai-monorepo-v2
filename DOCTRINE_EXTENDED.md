@@ -47,25 +47,68 @@ Hooks are lifecycle interceptors configured in `.gemini/settings.json`. 11 event
 
 ## X. Governed Recovery Defaults
 
-> **CAUTION**: These operations are powerful and potentially destructive. They are governed, not raw slogans.
+> [!CAUTION]
+> These operations are powerful and potentially destructive.
+> They are **governed, reversible, and logged** — not raw slogans.
+> The principle is: **rollback MUST be reversible.**
 
-### `git reset --hard latest-stable`
-- **When**: ONLY after an execution path fails entirely AND TDD branch-reality fix fails.
-- **Gate**: Require `git stash` of any uncommitted work BEFORE reset.
-- **Log**: Write reset event to `.beads/issues.jsonl` with reason and SHA.
-- **Never**: Run without verifying `latest-stable` tag exists via `git tag -l`.
+### Hard Reset Protocol (`git reset --hard`)
 
-### Force-Push Recovery
-- **When**: ONLY via the Squash-Push Protocol (Invariant #103) for massive repo egress.
-- **Gate**: Must use `--force-with-lease` FIRST. Only fall back to `--force` on "stale info" rejection.
-- **Log**: Write push event to `.beads/issues.jsonl`.
-- **Never**: Force-push to `main` without tree SHA parity verification.
+**Preconditions (ALL required before execution):**
+1. `git status` — inspect working tree state
+2. `git stash push -u -m "pre-recovery-$(date +%s)"` OR `git branch recovery/$(date +%s)` — capture state to a reversible ref
+3. `git tag -l latest-stable` — verify the rollback target exists
+4. Determine if the failure is **local-only** or **already published** to shared history
+5. Write intent to `.beads/issues.jsonl` with: reason, current SHA, target SHA, stash/branch ref
 
-### Broad YOLO Execution
-- **When**: STATE A (Pure YOLO) — repetitive UI, standard logic, known patterns.
+**Execution:** Only then: `git reset --hard <known-good-commit>`
+
+**Post-Execution:** Verify with `git log --oneline -3` and `git stash list`.
+
+**NEVER:**
+- Run `git reset --hard` without steps 1-5.
+- Run on a shared branch if the failure has been pushed (use `revert` instead).
+- Delete the recovery stash/branch until the recovery is validated.
+
+### Force-Push Protocol
+
+**Mandatory Default:** `--force-with-lease` is the ONLY acceptable force-push mechanism.
+
+**Preconditions (ALL required):**
+1. Verify tree SHA parity: `git log --oneline origin/main..HEAD`
+2. Confirm no other collaborators have pushed (check `git fetch && git log origin/main --oneline -5`)
+3. Write intent to `.beads/issues.jsonl` with: reason, local SHA, remote SHA
+
+**Escalation Policy:**
+- `--force-with-lease` FIRST — always.
+- `--force` is FORBIDDEN on `main` and any shared branch. Period.
+- `--force` is permitted ONLY on personal feature branches (`recovery/*`, `fix/*`) that have zero collaborators, and ONLY after `--force-with-lease` fails with a verified stale-info rejection.
+
+**NEVER:**
+- Force-push to `main` under any circumstance.
+- Force-push without the 3-step precondition gate.
+- Use raw `--force` as a "fallback" for convenience.
+
+### Bounded YOLO Execution (State Machine)
+
+**STATE A — Pure YOLO (Autonomous Execution)**
+- **Scope**: Repetitive UI work, standard logic, known patterns, low-ambiguity changes, file edits within the allowed tool subset.
 - **Gate**: Destructive tools (`rm -rf`, `sudo`) are physically excluded from the MCP schema. YOLO is 100% safe for the allowed subset.
-- **Escalation**: STATE B (Clutch) MUST trigger for: undocumented systems, complex flows, schema work, auth/payment, architecture shifts.
-- **Never**: Execute YOLO on database migrations, payment logic, or auth changes.
+- **Behavior**: Execute unconstrained. Parallelize safe subtasks. Do not pause for approval.
+
+**STATE B — Clutch (Governed Execution)**
+- **Mandatory Triggers**: Undocumented systems, complex flows, schema work, auth/payment changes, architecture shifts, ANY git history rewrite, ANY force-push, ANY database migration.
+- **Behavior**:
+  1. Drop into Planning Mode
+  2. Lock `-plan.md` or `TASK.md`
+  3. Research and verify
+  4. Bound the scope
+  5. Log transition to `.beads/issues.jsonl`
+  6. Disengage back to STATE A only after successful execution
+
+**NEVER:**
+- Execute YOLO on database migrations, payment logic, auth changes, or shared git history.
+- Remain in State A when a State B trigger is encountered.
 
 ## XI. Claude Code Source Leak Intelligence
 - **AutoDream Pattern**: Background memory consolidation fires as forked subagent. Gate order: Time → Sessions → Lock.
