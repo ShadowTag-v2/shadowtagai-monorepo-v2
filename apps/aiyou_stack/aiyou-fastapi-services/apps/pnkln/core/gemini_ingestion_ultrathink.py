@@ -89,7 +89,7 @@ class UltrathinkSourceCollector(BaseSourceCollector):
                 Essential.FORMAT: "structured JSON",
             }
 
-    async def collect(self, max_items: int = 100) -> SourceCoverageMetrics:
+    async def collect(self, _max_items: int = 100) -> SourceCoverageMetrics:
         """
         Collect with Cheat Sheet Fusion prompt.
 

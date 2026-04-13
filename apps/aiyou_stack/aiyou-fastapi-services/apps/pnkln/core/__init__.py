@@ -1,23 +1,28 @@
 """Pnkln core execution engine"""
 
-from .orchestrator import (
-    Agent,
-    AuditEntry,
-    MonetizationMetrics,
-    PnklnOrchestrator,
-    ReasoningFramework,
-    RiskLevel,
-    Skill,
-    create_orchestrator,
-)
+try:
+    from .orchestrator import (
+        Agent,
+        AuditEntry,
+        MonetizationMetrics,
+        PnklnOrchestrator,
+        ReasoningFramework,
+        RiskLevel,
+        Skill,
+        create_orchestrator,
+    )
 
-__all__ = [
-    "PnklnOrchestrator",
-    "create_orchestrator",
-    "Skill",
-    "Agent",
-    "AuditEntry",
-    "MonetizationMetrics",
-    "RiskLevel",
-    "ReasoningFramework",
-]
+    __all__ = [
+        "PnklnOrchestrator",
+        "create_orchestrator",
+        "Skill",
+        "Agent",
+        "AuditEntry",
+        "MonetizationMetrics",
+        "RiskLevel",
+        "ReasoningFramework",
+    ]
+except ImportError:
+    # orchestrator.py has unresolved upstream deps (yaml, litellm, etc.)
+    # submodules (cor_context, cor_tools, etc.) importable independently
+    __all__ = []

@@ -232,7 +232,7 @@ class BaseSourceCollector:
         self.source_type = source_type
         self.cost_per_api_call = 0.001  # Mock cost
 
-    async def collect(self, max_items: int = 100) -> SourceCoverageMetrics:
+    async def collect(self, _max_items: int = 100) -> SourceCoverageMetrics:
         """
         Collect items from source.
 
@@ -251,7 +251,7 @@ class YouTubeCollector(BaseSourceCollector):
     def __init__(self):
         super().__init__(SourceType.YOUTUBE)
 
-    async def collect(self, max_items: int = 100) -> SourceCoverageMetrics:
+    async def collect(self, _max_items: int = 100) -> SourceCoverageMetrics:
         """Collect YouTube videos matching intelligence criteria."""
         await asyncio.sleep(5.0)  # Simulate API calls
 
@@ -273,7 +273,7 @@ class TwitterCollector(BaseSourceCollector):
     def __init__(self):
         super().__init__(SourceType.TWITTER)
 
-    async def collect(self, max_items: int = 100) -> SourceCoverageMetrics:
+    async def collect(self, _max_items: int = 100) -> SourceCoverageMetrics:
         """Collect Twitter posts matching intelligence criteria."""
         await asyncio.sleep(4.0)  # Simulate API calls
 
@@ -295,7 +295,7 @@ class NewsAPICollector(BaseSourceCollector):
     def __init__(self):
         super().__init__(SourceType.NEWS_API)
 
-    async def collect(self, max_items: int = 100) -> SourceCoverageMetrics:
+    async def collect(self, _max_items: int = 100) -> SourceCoverageMetrics:
         """Collect news articles."""
         await asyncio.sleep(3.0)
 
