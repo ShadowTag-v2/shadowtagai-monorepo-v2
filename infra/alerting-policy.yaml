@@ -1,0 +1,57 @@
+# Cloud Monitoring Alerting Policy for shadowtag-agent
+# Deploy: gcloud alpha monitoring policies create --policy-from-file=infra/alerting-policy.yaml
+# Project: shadowtag-omega-v4
+
+displayName: "ShadowTag Agent Critical Alerts"
+documentation:
+  content: |
+    Alert fires when the shadowtag-agent Cloud Run service experiences:
+    1. High error rate (>5% of requests returning 5xx)
+    2. High latency (p99 > 10s)
+    3. Container restart loops (>3 restarts in 5 minutes)
+  mimeType: "text/markdown"
+
+conditions:
+  - displayName: "High Error Rate (>5% 5xx)"
+    conditionThreshold:
+      filter: >
+        resource.type="cloud_run_revision"
+        AND resource.labels.service_name="shadowtag-agent"
+        AND metric.type="run.googleapis.com/request_count"
+        AND metric.labels.response_code_class="5xx"
+      comparison: COMPARISON_GT
+      thresholdValue: 0.05
+      duration: "300s"
+      aggregations:
+        - alignmentPeriod: "60s"
+          perSeriesAligner: ALIGN_RATE
+          crossSeriesReducer: REDUCE_SUM
+
+  - displayName: "High Latency (p99 > 10s)"
+    conditionThreshold:
+      filter: >
+        resource.type="cloud_run_revision"
+        AND resource.labels.service_name="shadowtag-agent"
+        AND metric.type="run.googleapis.com/request_latencies"
+      comparison: COMPARISON_GT
+      thresholdValue: 10000
+      duration: "300s"
+      aggregations:
+        - alignmentPeriod: "60s"
+          perSeriesAligner: ALIGN_PERCENTILE_99
+
+  - displayName: "Container Restart Loop"
+    conditionThreshold:
+      filter: >
+        resource.type="cloud_run_revision"
+        AND resource.labels.service_name="shadowtag-agent"
+        AND metric.type="run.googleapis.com/container/instance_count"
+      comparison: COMPARISON_GT
+      thresholdValue: 3
+      duration: "300s"
+      aggregations:
+        - alignmentPeriod: "60s"
+          perSeriesAligner: ALIGN_COUNT
+
+combiner: OR
+enabled: true
