@@ -33,16 +33,12 @@ class ScheduledJobService:
 
     async def get(self, job_id: int) -> ScheduledJob | None:
         """Get a scheduled job by ID."""
-        result = await self.db.execute(
-            select(ScheduledJob).where(ScheduledJob.id == job_id)
-        )
+        result = await self.db.execute(select(ScheduledJob).where(ScheduledJob.id == job_id))
         return result.scalar_one_or_none()
 
     async def list(self, skip: int = 0, limit: int = 100) -> list[ScheduledJob]:
         """List scheduled jobs with pagination."""
-        result = await self.db.execute(
-            select(ScheduledJob).offset(skip).limit(limit)
-        )
+        result = await self.db.execute(select(ScheduledJob).offset(skip).limit(limit))
         return list(result.scalars().all())
 
     async def update(self, job: ScheduledJob, update_data: dict) -> ScheduledJob:
@@ -75,16 +71,12 @@ class WorkflowService:
 
     async def get(self, workflow_id: int) -> Workflow | None:
         """Get a workflow by ID."""
-        result = await self.db.execute(
-            select(Workflow).where(Workflow.id == workflow_id)
-        )
+        result = await self.db.execute(select(Workflow).where(Workflow.id == workflow_id))
         return result.scalar_one_or_none()
 
     async def list(self, skip: int = 0, limit: int = 100) -> list[Workflow]:
         """List workflows with pagination."""
-        result = await self.db.execute(
-            select(Workflow).offset(skip).limit(limit)
-        )
+        result = await self.db.execute(select(Workflow).offset(skip).limit(limit))
         return list(result.scalars().all())
 
     async def update(self, workflow: Workflow, update_data: dict) -> Workflow:
@@ -117,16 +109,12 @@ class TriggerService:
 
     async def get(self, trigger_id: int) -> Trigger | None:
         """Get a trigger by ID."""
-        result = await self.db.execute(
-            select(Trigger).where(Trigger.id == trigger_id)
-        )
+        result = await self.db.execute(select(Trigger).where(Trigger.id == trigger_id))
         return result.scalar_one_or_none()
 
     async def list(self, skip: int = 0, limit: int = 100) -> list[Trigger]:
         """List triggers with pagination."""
-        result = await self.db.execute(
-            select(Trigger).offset(skip).limit(limit)
-        )
+        result = await self.db.execute(select(Trigger).offset(skip).limit(limit))
         return list(result.scalars().all())
 
     async def update(self, trigger: Trigger, update_data: dict) -> Trigger:
@@ -151,9 +139,7 @@ class ExecutionService:
 
     async def get(self, execution_id: int) -> JobExecution | None:
         """Get a job execution by ID."""
-        result = await self.db.execute(
-            select(JobExecution).where(JobExecution.id == execution_id)
-        )
+        result = await self.db.execute(select(JobExecution).where(JobExecution.id == execution_id))
         return result.scalar_one_or_none()
 
     async def list(

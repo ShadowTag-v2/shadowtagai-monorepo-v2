@@ -1,9 +1,9 @@
-import time
-import requests
-from fastapi import FastAPI
-import uvicorn
 import threading
+import time
 
+import requests
+import uvicorn
+from fastapi import FastAPI
 from transcript_to_contract.upload import router as upload_router
 
 app = FastAPI()

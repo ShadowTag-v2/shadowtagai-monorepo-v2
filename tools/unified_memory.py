@@ -6,6 +6,7 @@ Per operator_invariants.json PRE_ACTION_MEMORY_GATE steps 3 and 4.
 Provides 'status' and 'hydrate' subcommands for verifying and loading
 the Hot (Beads L1), Cold (Beads L2/JSONL), and GPTRAM caches.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -94,7 +95,9 @@ def cmd_status(_args: argparse.Namespace) -> int:
     open_count = sum(1 for b in beads if b.get("status") == "open")
     print(f"\n  📊 Beads: {len(beads)} total, {open_count} open")
 
-    print(f"\n{GREEN if all_ok else RED}═══ {'ALL CACHES SOUND' if all_ok else 'DRIFT DETECTED — REVIEW ABOVE'} ═══{NC}")
+    print(
+        f"\n{GREEN if all_ok else RED}═══ {'ALL CACHES SOUND' if all_ok else 'DRIFT DETECTED — REVIEW ABOVE'} ═══{NC}"
+    )
     return 0 if all_ok else 1
 
 
@@ -137,9 +140,7 @@ def cmd_hydrate(_args: argparse.Namespace) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Unified Memory Bridge — Pre-Action Gate 3 & 4"
-    )
+    parser = argparse.ArgumentParser(description="Unified Memory Bridge — Pre-Action Gate 3 & 4")
     sub = parser.add_subparsers(dest="cmd", required=True)
     sub.add_parser("status", help="Verify cache structural soundness")
     sub.add_parser("hydrate", help="Pull beads into Hot Store")

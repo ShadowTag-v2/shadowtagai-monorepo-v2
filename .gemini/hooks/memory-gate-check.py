@@ -5,6 +5,7 @@ Memory Gate Check — Gemini CLI SessionStart
 Reads memory_state from operator_invariants.json and injects it
 as a system message at session start.
 """
+
 import json
 import sys
 import os
@@ -29,7 +30,7 @@ def main():
 
     response = {
         "decision": "allow",
-        "systemMessage": f"*** PRE-ACTION MEMORY GATE: State={state} ***"
+        "systemMessage": f"*** PRE-ACTION MEMORY GATE: State={state} ***",
     }
     json.dump(response, sys.stdout)
     sys.stderr.write(f"[memory-gate] State: {state}\n")

@@ -8,6 +8,7 @@ import hashlib
 from datetime import datetime
 from pathlib import Path
 
+from app.core.config import settings
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from shadowtag_v2.audio_stego import (
     AudioDecoder,
@@ -18,7 +19,6 @@ from shadowtag_v2.audio_stego import (
 from shadowtag_v2.receipt_chain import ChainStorage, Receipt, ReceiptChain
 
 from app.api.schemas.audio import DecodeResponse, EncodeResponse
-from app.core.config import settings
 
 router = APIRouter()
 

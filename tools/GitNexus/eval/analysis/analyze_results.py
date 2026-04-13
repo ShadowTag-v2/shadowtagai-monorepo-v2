@@ -173,12 +173,19 @@ def run_swebench_evaluation(results_dir: Path, run_id: str, subset: str = "lite"
     try:
         eval_output = results_dir / run_id / "swebench_eval"
         cmd = [
-            sys.executable, "-m", "swebench.harness.run_evaluation",
-            "--dataset_name", dataset_mapping.get(subset, subset),
-            "--predictions_path", str(preds_path),
-            "--max_workers", "4",
-            "--run_id", run_id,
-            "--output_dir", str(eval_output),
+            sys.executable,
+            "-m",
+            "swebench.harness.run_evaluation",
+            "--dataset_name",
+            dataset_mapping.get(subset, subset),
+            "--predictions_path",
+            str(preds_path),
+            "--max_workers",
+            "4",
+            "--run_id",
+            run_id,
+            "--output_dir",
+            str(eval_output),
         ]
 
         logger.info(f"Running SWE-bench evaluation for {run_id}...")
@@ -258,10 +265,7 @@ def compare_modes(
     runs = load_run_results(results_path)
 
     # Filter to the specified model
-    model_runs = {
-        run_id: data for run_id, data in runs.items()
-        if parse_run_id(run_id)[0] == model
-    }
+    model_runs = {run_id: data for run_id, data in runs.items() if parse_run_id(run_id)[0] == model}
 
     if not model_runs:
         console.print(f"[yellow]No results found for model: {model}[/yellow]")
@@ -275,9 +279,7 @@ def compare_modes(
         metrics[mode] = compute_metrics(run_data)
 
     mode_order = [
-        mode
-        for mode in ["baseline", "native", "native_augment", "mcp", "augment", "full"]
-        if mode in metrics
+        mode for mode in ["baseline", "native", "native_augment", "mcp", "augment", "full"] if mode in metrics
     ] or sorted(metrics.keys())
 
     # Print comparison table
@@ -336,7 +338,9 @@ def compare_modes(
             cost_color = "green" if cost_delta < 0 else "red"
             calls_color = "green" if calls_delta < 0 else "red"
 
-            console.print(f"  {mode} vs baseline: cost [{cost_color}]{cost_str}[/{cost_color}], calls [{calls_color}]{calls_str}[/{calls_color}]")
+            console.print(
+                f"  {mode} vs baseline: cost [{cost_color}]{cost_str}[/{cost_color}], calls [{calls_color}]{calls_str}[/{calls_color}]"
+            )
 
     console.print(table)
 
@@ -434,12 +438,16 @@ def _print_markdown(all_metrics: dict):
     print("|-----|-------|------|---|---------|------|------|-------|----------|")
     for run_id, m in sorted(all_metrics.items()):
         gn = str(m["total_gn_tool_calls"]) if m["total_gn_tool_calls"] > 0 else "-"
-        print(f"| {run_id} | {m['model']} | {m['mode']} | {m['n_instances']} | {m['n_with_patch']} | {m['patch_rate']:.0%} | ${m['total_cost']:.2f} | {m['total_api_calls']} | {gn} |")
+        print(
+            f"| {run_id} | {m['model']} | {m['mode']} | {m['n_instances']} | {m['n_with_patch']} | {m['patch_rate']:.0%} | ${m['total_cost']:.2f} | {m['total_api_calls']} | {gn} |"
+        )
 
 
 def _print_csv(all_metrics: dict):
     """Print CSV output."""
-    print("run_id,model,mode,n_instances,n_with_patch,patch_rate,total_cost,avg_cost,total_api_calls,avg_api_calls,total_gn_tool_calls,total_augment_hits,augment_hit_rate")
+    print(
+        "run_id,model,mode,n_instances,n_with_patch,patch_rate,total_cost,avg_cost,total_api_calls,avg_api_calls,total_gn_tool_calls,total_augment_hits,augment_hit_rate"
+    )
     for run_id, m in sorted(all_metrics.items()):
         print(
             f"{run_id},{m['model']},{m['mode']},{m['n_instances']},{m['n_with_patch']},"

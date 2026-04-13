@@ -64,7 +64,7 @@ payload="{\"query\": \"$query\"}"''',
         endpoint="/tool/list_repos",
         header='echo "=== Code Knowledge Graph Overview ==="',
         payload_builder='payload="{}"',
-        fallback='cd /testbed && npx gitnexus list 2>&1',
+        fallback="cd /testbed && npx gitnexus list 2>&1",
     ),
     "augment": ToolScriptSpec(
         key="augment",

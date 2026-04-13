@@ -45,13 +45,43 @@ SECRET_PATTERNS = [
 ]
 
 TEXT_EXTS = {
-    ".py", ".md", ".txt", ".yaml", ".yml", ".json", ".toml", ".sh", ".bash", ".zsh",
-    ".js", ".ts", ".tsx", ".jsx", ".env", ".cfg", ".ini", ".bazel", ".bzl", ""
+    ".py",
+    ".md",
+    ".txt",
+    ".yaml",
+    ".yml",
+    ".json",
+    ".toml",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".js",
+    ".ts",
+    ".tsx",
+    ".jsx",
+    ".env",
+    ".cfg",
+    ".ini",
+    ".bazel",
+    ".bzl",
+    "",
 }
 
 IGNORE_DIRS = {
-    ".git", "node_modules", ".venv", "venv", "dist", "build", "coverage", "__pycache__",
-    ".mypy_cache", ".pytest_cache", ".ruff_cache", ".next", ".idea", ".vscode"
+    ".git",
+    "node_modules",
+    ".venv",
+    "venv",
+    "dist",
+    "build",
+    "coverage",
+    "__pycache__",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".next",
+    ".idea",
+    ".vscode",
 }
 
 
@@ -65,7 +95,9 @@ class Finding:
 
 def load_yaml(path: Path) -> Any:
     if yaml is None:
-        raise RuntimeError("pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml")
+        raise RuntimeError(
+            "pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml"
+        )
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
@@ -92,7 +124,12 @@ def canonical_destinations(root_manifest: dict[str, Any]) -> set[str]:
 
 def file_text(path: Path) -> str | None:
     try:
-        if path.suffix.lower() not in TEXT_EXTS and path.name not in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
+        if path.suffix.lower() not in TEXT_EXTS and path.name not in {
+            ".env",
+            ".gitignore",
+            "BUILD",
+            "WORKSPACE",
+        }:
             return None
         return path.read_text(encoding="utf-8", errors="ignore")
     except Exception:
@@ -104,11 +141,18 @@ def iter_text_files(root: Path):
         dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
         for name in files:
             p = Path(base) / name
-            if p.suffix.lower() in TEXT_EXTS or name in {".env", ".gitignore", "BUILD", "WORKSPACE"}:
+            if p.suffix.lower() in TEXT_EXTS or name in {
+                ".env",
+                ".gitignore",
+                "BUILD",
+                "WORKSPACE",
+            }:
                 yield p
 
 
-def search_patterns(root: Path, patterns: list[str], kind: str, severity: str, detail_prefix: str) -> list[Finding]:
+def search_patterns(
+    root: Path, patterns: list[str], kind: str, severity: str, detail_prefix: str
+) -> list[Finding]:
     findings: list[Finding] = []
     compiled = [re.compile(p) for p in patterns]
     for p in iter_text_files(root):
@@ -119,7 +163,9 @@ def search_patterns(root: Path, patterns: list[str], kind: str, severity: str, d
             m = rx.search(txt)
             if m:
                 rel = str(p.relative_to(root))
-                findings.append(Finding(kind, severity, rel, f"{detail_prefix}: {m.group(0)[:160]}"))
+                findings.append(
+                    Finding(kind, severity, rel, f"{detail_prefix}: {m.group(0)[:160]}")
+                )
                 break
     return findings
 
@@ -129,7 +175,14 @@ def find_nested_git_dirs(root: Path) -> list[Finding]:
     for p in root.rglob(".git"):
         if p.parent == root:
             continue
-        findings.append(Finding("nested_git", "high", str(p.parent.relative_to(root)), "Nested .git directory detected; subtree may be a repo, not a fold-in."))
+        findings.append(
+            Finding(
+                "nested_git",
+                "high",
+                str(p.parent.relative_to(root)),
+                "Nested .git directory detected; subtree may be a repo, not a fold-in.",
+            )
+        )
     return findings
 
 
@@ -142,34 +195,56 @@ def compare_manifests(paths: list[Path]) -> list[Finding]:
         try:
             loaded.append((p, load_yaml(p)))
         except Exception as e:
-            findings.append(Finding("manifest_parse", "high", str(p), f"Failed to parse manifest: {e}"))
+            findings.append(
+                Finding("manifest_parse", "high", str(p), f"Failed to parse manifest: {e}")
+            )
             return findings
     first_path, first_doc = loaded[0]
     for path, doc in loaded[1:]:
         if doc != first_doc:
-            findings.append(Finding(
-                "manifest_split_brain",
-                "critical",
-                f"{first_path.name} <> {path.relative_to(path.parent.parent if path.parent.name == 'manifests' else path.parent)}",
-                "Multiple manifest surfaces disagree. Reconcile before any fold-in or path migration."
-            ))
+            findings.append(
+                Finding(
+                    "manifest_split_brain",
+                    "critical",
+                    f"{first_path.name} <> {path.relative_to(path.parent.parent if path.parent.name == 'manifests' else path.parent)}",
+                    "Multiple manifest surfaces disagree. Reconcile before any fold-in or path migration.",
+                )
+            )
     return findings
 
 
 def check_destination_conflict(dest_rel: str, manifest_paths: list[Path]) -> list[Finding]:
     findings: list[Finding] = []
     if not manifest_paths:
-        findings.append(Finding("manifest_missing", "high", "monorepo_manifest.yaml", "No manifest found at monorepo root; destination conflict checks are incomplete."))
+        findings.append(
+            Finding(
+                "manifest_missing",
+                "high",
+                "monorepo_manifest.yaml",
+                "No manifest found at monorepo root; destination conflict checks are incomplete.",
+            )
+        )
         return findings
     try:
         root_manifest = load_yaml(manifest_paths[0])
     except Exception as e:
-        findings.append(Finding("manifest_parse", "high", str(manifest_paths[0]), f"Failed to parse manifest: {e}"))
+        findings.append(
+            Finding(
+                "manifest_parse", "high", str(manifest_paths[0]), f"Failed to parse manifest: {e}"
+            )
+        )
         return findings
     dests = canonical_destinations(root_manifest)
     norm = dest_rel.strip().strip("/")
     if norm in dests:
-        findings.append(Finding("destination_conflict", "critical", norm, "Destination already declared canonical in manifest. Fold-in must be merge-aware, not a blind copy."))
+        findings.append(
+            Finding(
+                "destination_conflict",
+                "critical",
+                norm,
+                "Destination already declared canonical in manifest. Fold-in must be merge-aware, not a blind copy.",
+            )
+        )
     return findings
 
 
@@ -204,10 +279,38 @@ def main() -> int:
     findings.extend(compare_manifests(manifest_paths))
     findings.extend(check_destination_conflict(args.dest_rel, manifest_paths))
     findings.extend(find_nested_git_dirs(incoming))
-    findings.extend(search_patterns(incoming, STALE_MODEL_PATTERNS, "stale_model", "high", f"Stale model reference; migrate to {CURRENT_MODEL_HINT}"))
-    findings.extend(search_patterns(incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"))
-    findings.extend(search_patterns(incoming, STALE_NAMING_PATTERNS, "stale_naming", "medium", "Stale naming/control-plane drift"))
-    findings.extend(search_patterns(incoming, SECRET_PATTERNS, "secret_like", "critical", "Potential secret material detected"))
+    findings.extend(
+        search_patterns(
+            incoming,
+            STALE_MODEL_PATTERNS,
+            "stale_model",
+            "high",
+            f"Stale model reference; migrate to {CURRENT_MODEL_HINT}",
+        )
+    )
+    findings.extend(
+        search_patterns(
+            incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"
+        )
+    )
+    findings.extend(
+        search_patterns(
+            incoming,
+            STALE_NAMING_PATTERNS,
+            "stale_naming",
+            "medium",
+            "Stale naming/control-plane drift",
+        )
+    )
+    findings.extend(
+        search_patterns(
+            incoming,
+            SECRET_PATTERNS,
+            "secret_like",
+            "critical",
+            "Potential secret material detected",
+        )
+    )
 
     report = {
         "repo_name": args.repo_name,

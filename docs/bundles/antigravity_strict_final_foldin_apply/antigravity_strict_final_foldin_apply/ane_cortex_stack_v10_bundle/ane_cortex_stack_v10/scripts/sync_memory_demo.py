@@ -1,4 +1,9 @@
-from service.app.adapters.cortexltm import add_event, create_thread, upsert_master_memory, write_summary
+from service.app.adapters.cortexltm import (
+    add_event,
+    create_thread,
+    upsert_master_memory,
+    write_summary,
+)
 from service.app.config import load_settings
 
 s = load_settings()

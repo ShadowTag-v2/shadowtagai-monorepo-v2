@@ -6,10 +6,13 @@
     },
     "mcp-toolbox-sdk-java": {
       "command": "java",
-      "args": ["-jar", "/Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-0.2.0-SNAPSHOT.jar"],
+      "args": [
+        "-jar",
+        "/Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-0.2.1-SNAPSHOT.jar"
+      ],
       "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
-        "JAVA_HOME": "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+        "GOOGLE_APPLICATION_CREDENTIALS": "use_default_adc",
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/jdk-26.jdk/Contents/Home"
       }
     },
     "mcp-toolbox-for-databases": {
@@ -29,13 +32,7 @@
       "serverUrl": "https://api.github.com/mcp/",
       "oauth": {
         "clientId": "Iv23ctYqrxPQIt2ir8gY",
-        "clientSecret": "process.env.GITHUB_CLIENT_SECRET"
-      }
-    },
-    "stripe-production": {
-      "serverUrl": "https://api.stripe.com/mcp/",
-      "headers": {
-        "Authorization": "Bearer process.env.STRIPE_RESTRICTED_KEY"
+        "clientSecret": "OMITTED_FOR_SECURITY_USE_ENV_VAR"
       }
     },
     "supabase-mcp": {

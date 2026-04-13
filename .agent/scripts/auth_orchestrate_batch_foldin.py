@@ -8,7 +8,9 @@ try:
     import jwt
     import requests
 except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "PyJWT", "requests", "cryptography"])
+    subprocess.check_call(
+        [sys.executable, "-m", "pip", "install", "PyJWT", "requests", "cryptography"]
+    )
     import jwt
     import requests
 
@@ -77,7 +79,10 @@ def get_auth_token():
         payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
         encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
 
-        headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
+        headers = {
+            "Authorization": f"Bearer {encoded_jwt}",
+            "Accept": "application/vnd.github.v3+json",
+        }
 
         res = requests.get("https://api.github.com/app/installations", headers=headers)
         res.raise_for_status()
@@ -88,7 +93,9 @@ def get_auth_token():
 
         inst_id = installations[0]["id"]
 
-        res2 = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+        res2 = requests.post(
+            f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
+        )
         res2.raise_for_status()
         return res2.json()["token"]
     except Exception as e:
@@ -129,14 +136,18 @@ for repo_name, dest_path in REPOS:
             else:
                 clone_url = f"https://github.com/{org}/{repo_name}.git"
 
-            res = subprocess.run(["git", "clone", clone_url, clone_path], capture_output=True, env=env)
+            res = subprocess.run(
+                ["git", "clone", clone_url, clone_path], capture_output=True, env=env
+            )
             if res.returncode == 0:
                 print(f"[{repo_name}] Cloned successfully from {org}.")
                 cloned = True
                 break
 
         if not cloned:
-            markdown_table += f"| {repo_name} | BLOCKED | {dest_path} | - | Auth/Clone failed | Fail |\n"
+            markdown_table += (
+                f"| {repo_name} | BLOCKED | {dest_path} | - | Auth/Clone failed | Fail |\n"
+            )
             print(f"[{repo_name}] Clone failed. Skipping.")
             continue
 
@@ -176,14 +187,18 @@ for repo_name, dest_path in REPOS:
     print(f"[{repo_name}] Landing Tree to {dest_path}...")
     abs_dest = os.path.join(MONO_ROOT, dest_path)
     os.makedirs(abs_dest, exist_ok=True)
-    subprocess.run(["rsync", "-a", "--exclude=.git", f"{clone_path}/", abs_dest], capture_output=True)
+    subprocess.run(
+        ["rsync", "-a", "--exclude=.git", f"{clone_path}/", abs_dest], capture_output=True
+    )
 
     print(f"[{repo_name}] Updating Manifest...")
     try:
         with open(MANIFEST_PATH) as f:
             manifest_lines = f.readlines()
 
-        insert_idx = next((i + 1 for i, line in enumerate(manifest_lines) if line.startswith("repo_roots:")), -1)
+        insert_idx = next(
+            (i + 1 for i, line in enumerate(manifest_lines) if line.startswith("repo_roots:")), -1
+        )
         exists = any(f"  {repo_name}:" in line for line in manifest_lines)
 
         if insert_idx != -1 and not exists:

@@ -45,7 +45,7 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -53,17 +53,19 @@ logger = logging.getLogger(__name__)
 
 class WealthLens(str, Enum):
     """The 3 wealth analysis lenses"""
-    LEAKS = "leaks"          # Waste detection
-    REDESIGN = "redesign"    # Funnel optimization
-    LEVERAGE = "leverage"    # Compounding effects
+
+    LEAKS = "leaks"  # Waste detection
+    REDESIGN = "redesign"  # Funnel optimization
+    LEVERAGE = "leverage"  # Compounding effects
 
 
 class LeakSeverity(str, Enum):
     """Severity of detected leak"""
-    CRITICAL = "critical"    # >20% waste
-    HIGH = "high"           # 10-20% waste
-    MEDIUM = "medium"       # 5-10% waste
-    LOW = "low"             # <5% waste
+
+    CRITICAL = "critical"  # >20% waste
+    HIGH = "high"  # 10-20% waste
+    MEDIUM = "medium"  # 5-10% waste
+    LOW = "low"  # <5% waste
 
 
 @dataclass
@@ -74,6 +76,7 @@ class Leak:
     Jobs: "Focus is about saying no to 1000 things."
     Every leak is something we should say no to.
     """
+
     leak_type: str  # "duplicate_items", "low_value_source", "peak_pricing", etc.
     severity: LeakSeverity
     cost_per_month: float  # Wasted cost
@@ -98,6 +101,7 @@ class RedesignProposal:
 
     Jobs: "Design is not just what it looks like, design is how it works."
     """
+
     redesign_type: str  # "source_reallocation", "tier_upsell", "subscription", etc.
     impact_category: str  # "cost_reduction", "revenue_increase", "both"
     projected_gain: float  # $ per month
@@ -110,7 +114,7 @@ class RedesignProposal:
 
     def to_plan(self) -> str:
         """Convert to actionable plan"""
-        steps_str = "\n".join([f"  {i+1}. {step}" for i, step in enumerate(self.steps)])
+        steps_str = "\n".join([f"  {i + 1}. {step}" for i, step in enumerate(self.steps)])
         return (
             f"💡 {self.redesign_type.upper()}\n"
             f"Impact: ${self.projected_gain:.2f}/month ({self.impact_category})\n"
@@ -128,6 +132,7 @@ class LeverageOpportunity:
     Jobs: "Innovation distinguishes between a leader and a follower."
     Find what compounds exponentially.
     """
+
     opportunity_type: str  # "viral_referral", "data_moat", "network_effect", etc.
     compound_rate: float  # Growth rate per period (e.g., 1.2 = 20% per month)
     initial_value: float  # Starting value
@@ -155,6 +160,7 @@ class WealthAnalysis:
 
     Structure: Hard Truth → Plan → Challenge
     """
+
     analysis_id: str
     job_id: str  # Which ingestion job
     timestamp: datetime = field(default_factory=datetime.utcnow)
@@ -186,7 +192,7 @@ class WealthAnalysis:
             "",
             "SECTION 1: HARD TRUTH (Leaks)",
             "-" * 80,
-            ""
+            "",
         ]
 
         if self.leaks:
@@ -197,13 +203,7 @@ class WealthAnalysis:
         else:
             lines.append("✅ No significant leaks detected!")
 
-        lines.extend([
-            "",
-            "",
-            "SECTION 2: PLAN (Redesigns)",
-            "-" * 80,
-            ""
-        ])
+        lines.extend(["", "", "SECTION 2: PLAN (Redesigns)", "-" * 80, ""])
 
         if self.redesigns:
             for redesign in sorted(self.redesigns, key=lambda r: r.projected_gain, reverse=True):
@@ -213,34 +213,32 @@ class WealthAnalysis:
         else:
             lines.append("Current design is optimal (no obvious improvements).")
 
-        lines.extend([
-            "",
-            "",
-            "SECTION 3: CHALLENGE (Leverage)",
-            "-" * 80,
-            ""
-        ])
+        lines.extend(["", "", "SECTION 3: CHALLENGE (Leverage)", "-" * 80, ""])
 
         if self.leverage_opportunities:
-            for opp in sorted(self.leverage_opportunities, key=lambda o: o.projected_3yr_value, reverse=True):
+            for opp in sorted(
+                self.leverage_opportunities, key=lambda o: o.projected_3yr_value, reverse=True
+            ):
                 lines.append(opp.to_challenge())
                 lines.append("")
             lines.append(f"🚀 TOTAL 3-YEAR LEVERAGE VALUE: ${self.total_leverage_value:,.0f}")
         else:
             lines.append("No compounding opportunities identified yet.")
 
-        lines.extend([
-            "",
-            "",
-            "SUMMARY",
-            "=" * 80,
-            f"Monthly leaks: -${self.total_leak_cost:.2f}",
-            f"Monthly gains (redesigns): +${self.total_projected_gain:.2f}",
-            f"Net monthly improvement: ${self.net_monthly_improvement:.2f}",
-            f"3-year leverage value: ${self.total_leverage_value:,.0f}",
-            f"ROI on improvements: {self.roi_on_improvements:.1f}x",
-            "=" * 80
-        ])
+        lines.extend(
+            [
+                "",
+                "",
+                "SUMMARY",
+                "=" * 80,
+                f"Monthly leaks: -${self.total_leak_cost:.2f}",
+                f"Monthly gains (redesigns): +${self.total_projected_gain:.2f}",
+                f"Net monthly improvement: ${self.net_monthly_improvement:.2f}",
+                f"3-year leverage value: ${self.total_leverage_value:,.0f}",
+                f"ROI on improvements: {self.roi_on_improvements:.1f}x",
+                "=" * 80,
+            ]
+        )
 
         return "\n".join(lines)
 
@@ -274,7 +272,7 @@ class WealthOptimizer:
     async def analyze(
         self,
         ingestion_result: Any,  # IngestionResult from gemini_ingestion_layer
-        historical_data: Optional[List[Any]] = None
+        historical_data: Optional[List[Any]] = None,
     ) -> WealthAnalysis:
         """
         Perform complete wealth analysis on ingestion job.
@@ -288,10 +286,7 @@ class WealthOptimizer:
         """
         analysis_id = f"wealth_{ingestion_result.job_id}"
 
-        analysis = WealthAnalysis(
-            analysis_id=analysis_id,
-            job_id=ingestion_result.job_id
-        )
+        analysis = WealthAnalysis(analysis_id=analysis_id, job_id=ingestion_result.job_id)
 
         # 1. DETECT LEAKS (Hard Truth)
         analysis.leaks = await self._detect_leaks(ingestion_result)
@@ -303,8 +298,7 @@ class WealthOptimizer:
 
         # 3. IDENTIFY LEVERAGE (Challenge)
         analysis.leverage_opportunities = await self._identify_leverage(
-            ingestion_result,
-            historical_data
+            ingestion_result, historical_data
         )
         analysis.total_leverage_value = sum(
             opp.projected_3yr_value for opp in analysis.leverage_opportunities
@@ -332,7 +326,7 @@ class WealthOptimizer:
         # Leak 1: Low Tier 1 ratio sources
         for source_type, metrics in result.source_metrics.items():
             if metrics.tier_1_ratio < self.target_tier_1_ratio:
-                waste_percentage = (self.target_tier_1_ratio - metrics.tier_1_ratio)
+                waste_percentage = self.target_tier_1_ratio - metrics.tier_1_ratio
                 wasted_cost = metrics.total_cost_usd * waste_percentage
                 monthly_cost = wasted_cost * 30  # Daily to monthly
 
@@ -347,8 +341,8 @@ class WealthOptimizer:
                             "source": source_type.value,
                             "tier_1_ratio": metrics.tier_1_ratio,
                             "target_ratio": self.target_tier_1_ratio,
-                            "items_ingested": metrics.items_ingested
-                        }
+                            "items_ingested": metrics.items_ingested,
+                        },
                     )
                     leaks.append(leak)
 
@@ -367,8 +361,8 @@ class WealthOptimizer:
                 evidence={
                     "avg_cost_per_item": result.avg_cost_per_item,
                     "target_cost_per_item": self.target_cost_per_item,
-                    "total_items": result.total_items
-                }
+                    "total_items": result.total_items,
+                },
             )
             leaks.append(leak)
 
@@ -385,8 +379,8 @@ class WealthOptimizer:
                 description=f"Estimated {estimated_duplicates} duplicate items per day. No deduplication layer implemented.",
                 evidence={
                     "estimated_duplicates": estimated_duplicates,
-                    "total_items": result.total_items
-                }
+                    "total_items": result.total_items,
+                },
             )
             leaks.append(leak)
 
@@ -397,9 +391,7 @@ class WealthOptimizer:
         redesigns = []
 
         # Redesign 1: Source reallocation (fix low Tier 1 ratio)
-        low_tier_1_sources = [
-            leak for leak in leaks if leak.leak_type == "low_tier_1_source"
-        ]
+        low_tier_1_sources = [leak for leak in leaks if leak.leak_type == "low_tier_1_source"]
 
         if low_tier_1_sources:
             # Reallocate budget from low Tier 1 sources to high Tier 1 sources
@@ -418,12 +410,12 @@ class WealthOptimizer:
                     f"Reduce collection from {len(low_tier_1_sources)} low-performing sources by 50%",
                     "Increase collection from top 2 high-performing sources by 30%",
                     "Monitor Tier 1 ratio improvement over 2 weeks",
-                    "Fully deprecate sources with <20% Tier 1 ratio after validation"
+                    "Fully deprecate sources with <20% Tier 1 ratio after validation",
                 ],
                 risks=[
                     "May lose unique insights from deprecated sources",
-                    "Top sources might not scale linearly"
-                ]
+                    "Top sources might not scale linearly",
+                ],
             )
             redesigns.append(redesign)
 
@@ -445,12 +437,9 @@ class WealthOptimizer:
                     "Implement content hash (SHA-256 on normalized text)",
                     "Build dedup cache (Redis, 90-day retention)",
                     "Add dedup check before tier classification (save cost)",
-                    "Track dedup hit rate (target 10-15%)"
+                    "Track dedup hit rate (target 10-15%)",
                 ],
-                risks=[
-                    "Latency penalty (~5-10ms per item)",
-                    "Cache storage costs (~$5/month)"
-                ]
+                risks=["Latency penalty (~5-10ms per item)", "Cache storage costs (~$5/month)"],
             )
             redesigns.append(redesign)
 
@@ -471,12 +460,12 @@ class WealthOptimizer:
                     "Package current offering as 'Premium Tier' ($4500-7500/month)",
                     "Add SLA guarantees (Tier 1 ratio ≥55%, p99 latency ≤100ms)",
                     "Offer custom source integrations ($2500 setup fee)",
-                    "Upsell to existing customers with high Tier 1 usage"
+                    "Upsell to existing customers with high Tier 1 usage",
                 ],
                 risks=[
                     "May cannibalize standard tier revenue",
-                    "Higher support burden for SLA guarantees"
-                ]
+                    "Higher support burden for SLA guarantees",
+                ],
             )
             redesigns.append(redesign)
 
@@ -493,21 +482,16 @@ class WealthOptimizer:
                 "Define tiers: Starter ($1500/month, 50K items), Pro ($3500/month, 150K items), Enterprise (custom)",
                 "Offer 20% discount for annual prepay",
                 "Add overage pricing ($0.035/item beyond tier limit)",
-                "Grandfather existing customers for 3 months"
+                "Grandfather existing customers for 3 months",
             ],
-            risks=[
-                "Customer resistance to price changes",
-                "Revenue dip during transition period"
-            ]
+            risks=["Customer resistance to price changes", "Revenue dip during transition period"],
         )
         redesigns.append(redesign)
 
         return redesigns
 
     async def _identify_leverage(
-        self,
-        result: Any,
-        historical_data: Optional[List[Any]]
+        self, result: Any, historical_data: Optional[List[Any]]
     ) -> List[LeverageOpportunity]:
         """Identify compounding leverage opportunities"""
         opportunities = []
@@ -530,9 +514,9 @@ class WealthOptimizer:
             activation_requirements=[
                 "Maintain >40% Tier 1 ratio",
                 "Implement data retention (90+ days)",
-                "Build search/retrieval API"
+                "Build search/retrieval API",
             ],
-            description="Accumulated intelligence dataset becomes proprietary asset. Can license to research institutions, train custom models, or build intelligence archive product."
+            description="Accumulated intelligence dataset becomes proprietary asset. Can license to research institutions, train custom models, or build intelligence archive product.",
         )
         opportunities.append(opportunity)
 
@@ -540,8 +524,8 @@ class WealthOptimizer:
         # Assume 5% monthly viral growth if customers love the product
         current_mrr = 15000  # Assume 10 customers @ $1500/month
         viral_growth_rate = 1.05  # 5% per month
-        mrr_1yr = current_mrr * (viral_growth_rate ** 12)
-        mrr_3yr = current_mrr * (viral_growth_rate ** 36)
+        mrr_1yr = current_mrr * (viral_growth_rate**12)
+        mrr_3yr = current_mrr * (viral_growth_rate**36)
 
         opportunity = LeverageOpportunity(
             opportunity_type="viral_referral",
@@ -552,9 +536,9 @@ class WealthOptimizer:
             activation_requirements=[
                 "Build referral program (20% discount for referrer)",
                 "Jobs-quality product (insanely great experience)",
-                "Customer success team (ensure high NPS)"
+                "Customer success team (ensure high NPS)",
             ],
-            description="Challenge: Can we make the product so good that customers can't help but tell others? Jobs: 'Make products worth talking about.'"
+            description="Challenge: Can we make the product so good that customers can't help but tell others? Jobs: 'Make products worth talking about.'",
         )
         opportunities.append(opportunity)
 
@@ -568,9 +552,9 @@ class WealthOptimizer:
             activation_requirements=[
                 "Add 2 new sources per quarter",
                 "Cross-source correlation analysis",
-                "Diversification across regions/languages"
+                "Diversification across regions/languages",
             ],
-            description="Challenge: Each new source increases value of existing sources through cross-correlation. More sources = exponentially better insights."
+            description="Challenge: Each new source increases value of existing sources through cross-correlation. More sources = exponentially better insights.",
         )
         opportunities.append(opportunity)
 
@@ -592,14 +576,14 @@ class WealthOptimizer:
 # EXAMPLE USAGE
 # ============================================================================
 
+
 async def example_wealth_optimizer():
     """Demonstrate Wealth Optimizer"""
     from shadowtagai.core.gemini_ingestion_layer import (
-        GeminiIngestionLayer,
         SourceType,
         SourceCoverageMetrics,
         IngestionResult,
-        IngestionStatus
+        IngestionStatus,
     )
 
     print("=== Wealth Optimizer Demo ===\n")
@@ -631,7 +615,7 @@ async def example_wealth_optimizer():
             ),
         },
         quality_gates_passed={},
-        total_cost_usd=5.25
+        total_cost_usd=5.25,
     )
 
     # Analyze

@@ -23,7 +23,7 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -31,7 +31,6 @@ import numpy as np
 from src.kosmos.doctrine import (
     RiskManager as DoctrineRiskManager,
     RiskLevel as DoctrineRiskLevel,
-    RiskMatrix,
     MDMPPipeline,
     TLPPipeline,
     BattleDrillRouter,
@@ -55,6 +54,7 @@ logger = logging.getLogger(__name__)
 
 class DecisionStatus(Enum):
     """Judge verdict status."""
+
     APPROVED = "APPROVED"
     DEFERRED = "DEFERRED"
     REJECTED = "REJECTED"
@@ -68,10 +68,11 @@ class RiskLevel(Enum):
     Maps to doctrine RiskLevel for consensus threshold calculation.
     See ATP 5-19 Figure 1-3 for risk matrix.
     """
+
     EXTREMELY_HIGH = "EH"  # Probability A, Severity I → 90% consensus required
-    HIGH = "H"             # Probability B-C, Severity I-II → 75% consensus required
-    MEDIUM = "M"           # Probability C-D, Severity II-III → 60% consensus required
-    LOW = "L"              # Probability D-E, Severity III-IV → 50% consensus required
+    HIGH = "H"  # Probability B-C, Severity I-II → 75% consensus required
+    MEDIUM = "M"  # Probability C-D, Severity II-III → 60% consensus required
+    LOW = "L"  # Probability D-E, Severity III-IV → 50% consensus required
 
     def to_doctrine_level(self) -> DoctrineRiskLevel:
         """Convert to doctrine RiskLevel for threshold lookup."""
@@ -92,7 +93,7 @@ class RiskLevel(Enum):
         return APPROVAL_AUTHORITY.get(self.to_doctrine_level(), "Commander")
 
     @staticmethod
-    def from_probability_severity(prob: Probability, sev: Severity) -> 'RiskLevel':
+    def from_probability_severity(prob: Probability, sev: Severity) -> "RiskLevel":
         """Calculate risk level from ATP 5-19 probability × severity matrix."""
         doctrine_level = RISK_MATRIX.get((prob, sev), DoctrineRiskLevel.MEDIUM)
         reverse_mapping = {
@@ -106,6 +107,7 @@ class RiskLevel(Enum):
 
 class RegulatoryFramework(Enum):
     """Supported regulatory frameworks."""
+
     EU_AI_ACT = "eu_ai_act"
     DSA_VLOP = "dsa_vlop"
     GDPR = "gdpr"
@@ -119,6 +121,7 @@ class RegulatoryFramework(Enum):
 @dataclass
 class Decision:
     """Decision to be validated by Judge Architecture."""
+
     id: str
     type: str  # "strategic", "tactical", "operational"
     description: str
@@ -144,6 +147,7 @@ class Decision:
 @dataclass
 class JudgeVerdict:
     """Complete Judge Architecture verdict."""
+
     decision_id: str
     status: DecisionStatus
     reason: str
@@ -164,6 +168,7 @@ class JudgeVerdict:
 @dataclass
 class ComplianceCheck:
     """Result of regulatory compliance check."""
+
     framework: RegulatoryFramework
     compliant: bool
     gaps: List[str] = field(default_factory=list)
@@ -227,7 +232,7 @@ class RegulatoryComplianceEngine:
             "status": status,
             "compliance_profile": compliance_profile,
             "overall_risk": highest_risk,
-            "reason": reason
+            "reason": reason,
         }
 
     def _map_decision_to_frameworks(self, decision: Decision) -> List[RegulatoryFramework]:
@@ -280,7 +285,7 @@ class RegulatoryComplianceEngine:
             compliant=compliant,
             gaps=gaps,
             remediation=remediation,
-            risk_level=risk_level
+            risk_level=risk_level,
         )
 
     async def _check_dsa_vlop(self, decision: Decision) -> ComplianceCheck:
@@ -308,7 +313,7 @@ class RegulatoryComplianceEngine:
             compliant=compliant,
             gaps=gaps,
             remediation=remediation,
-            risk_level=risk_level
+            risk_level=risk_level,
         )
 
     async def _check_gdpr(self, decision: Decision) -> ComplianceCheck:
@@ -319,7 +324,7 @@ class RegulatoryComplianceEngine:
             compliant=True,
             gaps=[],
             remediation=[],
-            risk_level=RiskLevel.LOW
+            risk_level=RiskLevel.LOW,
         )
 
     async def _check_coppa(self, decision: Decision) -> ComplianceCheck:
@@ -330,7 +335,7 @@ class RegulatoryComplianceEngine:
             compliant=True,
             gaps=[],
             remediation=[],
-            risk_level=RiskLevel.LOW
+            risk_level=RiskLevel.LOW,
         )
 
     async def _check_ftc(self, decision: Decision) -> ComplianceCheck:
@@ -341,7 +346,7 @@ class RegulatoryComplianceEngine:
             compliant=True,
             gaps=[],
             remediation=[],
-            risk_level=RiskLevel.LOW
+            risk_level=RiskLevel.LOW,
         )
 
     async def _check_app_store(self, decision: Decision) -> ComplianceCheck:
@@ -352,7 +357,7 @@ class RegulatoryComplianceEngine:
             compliant=True,
             gaps=[],
             remediation=[],
-            risk_level=RiskLevel.LOW
+            risk_level=RiskLevel.LOW,
         )
 
     def _calculate_highest_risk(self, compliance_profile: Dict[str, ComplianceCheck]) -> RiskLevel:
@@ -361,7 +366,7 @@ class RegulatoryComplianceEngine:
             RiskLevel.EXTREMELY_HIGH: 4,
             RiskLevel.HIGH: 3,
             RiskLevel.MEDIUM: 2,
-            RiskLevel.LOW: 1
+            RiskLevel.LOW: 1,
         }
 
         max_risk = RiskLevel.LOW
@@ -414,7 +419,7 @@ class AdtechStandardsValidator:
             "simid_enabled": False,  # Not yet implemented
             "privacy_sandbox_ready": True,
             "skan_instrumented": True,
-            "cpm_impact": "+40-50% (IAB/OM verified)"
+            "cpm_impact": "+40-50% (IAB/OM verified)",
         }
 
     async def scan(self, ingestion_result: Any) -> Dict[str, Any]:
@@ -457,7 +462,9 @@ class InfrastructureOptimizer:
         else:
             return "default_neuron_onnx"  # Portable fallback
 
-    def project_savings(self, current_spend: float, multi_silicon_mix: Dict[str, float]) -> Dict[str, float]:
+    def project_savings(
+        self, current_spend: float, multi_silicon_mix: Dict[str, float]
+    ) -> Dict[str, float]:
         """
         Project cost savings from multi-silicon strategy.
 
@@ -479,7 +486,7 @@ class InfrastructureOptimizer:
         return {
             "gross_savings": gross_savings,
             "complexity_cost": complexity_cost,
-            "net_savings": net_savings
+            "net_savings": net_savings,
         }
 
     async def analyze(self, decision: Decision) -> Dict[str, Any]:
@@ -487,7 +494,7 @@ class InfrastructureOptimizer:
         return {
             "vendor_lock_in_risk": 0.0,  # Multi-silicon eliminates lock-in
             "cost_impact": "25-30% savings",
-            "slo_compliance": True
+            "slo_compliance": True,
         }
 
 
@@ -503,8 +510,13 @@ class SupplyChainSecurityGate:
     "Ship it like a bank" — zero tolerance for supply chain vulnerabilities.
     """
 
-    async def validate(self, function_name: str = None, callable: Any = None,
-                      sbom: Dict[str, Any] = None, decision: Decision = None) -> Dict[str, Any]:
+    async def validate(
+        self,
+        function_name: str = None,
+        callable: Any = None,
+        sbom: Dict[str, Any] = None,
+        decision: Decision = None,
+    ) -> Dict[str, Any]:
         """
         Validate supply chain security for function or decision.
 
@@ -521,7 +533,7 @@ class SupplyChainSecurityGate:
             "risk_score": "L",
             "slsa_provenance_verified": True,
             "cve_vulnerabilities": [],
-            "reason": "All security checks passed"
+            "reason": "All security checks passed",
         }
 
 
@@ -541,7 +553,9 @@ class ProductDeliveryGate:
     - Accessibility: WCAG 2.2, ASR subtitles, age-appropriate defaults
     """
 
-    async def validate(self, feature: str, variant_id: str = None, metrics: Dict[str, Any] = None) -> Dict[str, Any]:
+    async def validate(
+        self, feature: str, variant_id: str = None, metrics: Dict[str, Any] = None
+    ) -> Dict[str, Any]:
         """
         Validate product delivery readiness.
 
@@ -598,7 +612,7 @@ class BlockchainIntegrationEvaluator:
             "recommendation": "DEFER",
             "reason": "Focus on core loops pre-PMF",
             "approved_features": [],
-            "deferred_features": ["DID", "token-gated content"]
+            "deferred_features": ["DID", "token-gated content"],
         }
 
 
@@ -634,7 +648,7 @@ class CompetitiveRealityCheck:
             "closes_gap_to_incumbents": True,
             "widens_differentiation": True,
             "commodity_trap_risk": False,
-            "verdict": "DOUBLE DOWN"
+            "verdict": "DOUBLE DOWN",
         }
 
 
@@ -675,15 +689,23 @@ class MilestoneTracker:
                 {"task": "'Why this?' recommender UI", "owner": "Product", "status": "PENDING"},
                 {"task": "SKAN/Topics instrumentation", "owner": "Growth", "status": "PENDING"},
                 {"task": "OpenTelemetry observability", "owner": "CTO", "status": "PENDING"},
-                {"task": "Advertiser dashboard (OM + brand safety)", "owner": "Product", "status": "PENDING"},
+                {
+                    "task": "Advertiser dashboard (OM + brand safety)",
+                    "owner": "Product",
+                    "status": "PENDING",
+                },
             ],
             "days_61_90": [
                 {"task": "ISO 42001 control matrix", "owner": "Cofounder", "status": "PENDING"},
                 {"task": "YouAi Governance Report v0.1", "owner": "CEO", "status": "PENDING"},
                 {"task": "Infra SLOs documented", "owner": "CTO", "status": "PENDING"},
-                {"task": "Creator console: brand safety 95%", "owner": "Product", "status": "PENDING"},
+                {
+                    "task": "Creator console: brand safety 95%",
+                    "owner": "Product",
+                    "status": "PENDING",
+                },
                 {"task": "FTC disclosure templates", "owner": "Product", "status": "PENDING"},
-            ]
+            ],
         }
 
     async def assess_impact(self, decision: Decision) -> Dict[str, Any]:
@@ -691,7 +713,7 @@ class MilestoneTracker:
         return {
             "tasks": ["Update 30-60-90 tracker with new tasks from this decision"],
             "milestone_acceleration": 0,  # Days saved (if any)
-            "milestone_delay": 0  # Days added (if any)
+            "milestone_delay": 0,  # Days added (if any)
         }
 
 
@@ -734,7 +756,7 @@ class QuantifiedImpactModel:
             "cost_impact": 0.0,
             "valuation_delta": 0.0,
             "multiple_expansion": 0.0,
-            "infra_savings": 0.0
+            "infra_savings": 0.0,
         }
 
 
@@ -762,21 +784,25 @@ class JudgeArchitectureMonitor:
             "decision_accuracy": [],
             "doctrine_alignment": [],
             "regulatory_gap_detection": [],
-            "processing_time_ms": []
+            "processing_time_ms": [],
         }
 
-    def log_decision(self, decision_id: str, decision_type: str, iq_level: int, outcome: Dict[str, Any]):
+    def log_decision(
+        self, decision_id: str, decision_type: str, iq_level: int, outcome: Dict[str, Any]
+    ):
         """Log decision with quality metrics."""
-        self.decision_log.append({
-            "decision_id": decision_id,
-            "decision_type": decision_type,
-            "iq_level": iq_level,
-            "accuracy": outcome["accuracy"],
-            "doctrine_alignment": outcome["doctrine_alignment"],
-            "regulatory_gaps_detected": len(outcome["regulatory_gaps"]),
-            "processing_time_ms": outcome["processing_time_ms"],
-            "timestamp": datetime.now()
-        })
+        self.decision_log.append(
+            {
+                "decision_id": decision_id,
+                "decision_type": decision_type,
+                "iq_level": iq_level,
+                "accuracy": outcome["accuracy"],
+                "doctrine_alignment": outcome["doctrine_alignment"],
+                "regulatory_gaps_detected": len(outcome["regulatory_gaps"]),
+                "processing_time_ms": outcome["processing_time_ms"],
+                "timestamp": datetime.now(),
+            }
+        )
 
         if iq_level == 160:
             self.iq_160_metrics["decision_accuracy"].append(outcome["accuracy"])
@@ -792,10 +818,16 @@ class JudgeArchitectureMonitor:
         return {
             "decision_accuracy_mean": float(np.mean(self.iq_160_metrics["decision_accuracy"])),
             "doctrine_alignment_mean": float(np.mean(self.iq_160_metrics["doctrine_alignment"])),
-            "regulatory_gaps_per_decision": float(np.mean(self.iq_160_metrics["regulatory_gap_detection"])),
-            "processing_time_p50_ms": float(np.percentile(self.iq_160_metrics["processing_time_ms"], 50)),
-            "processing_time_p95_ms": float(np.percentile(self.iq_160_metrics["processing_time_ms"], 95)),
-            "total_decisions": len(self.iq_160_metrics["decision_accuracy"])
+            "regulatory_gaps_per_decision": float(
+                np.mean(self.iq_160_metrics["regulatory_gap_detection"])
+            ),
+            "processing_time_p50_ms": float(
+                np.percentile(self.iq_160_metrics["processing_time_ms"], 50)
+            ),
+            "processing_time_p95_ms": float(
+                np.percentile(self.iq_160_metrics["processing_time_ms"], 95)
+            ),
+            "total_decisions": len(self.iq_160_metrics["decision_accuracy"]),
         }
 
 
@@ -903,14 +935,13 @@ class JudgeArchitecture:
             decision_id=decision.id,
             status=DecisionStatus.PENDING,
             reason="",
-            iq_level=self.iq_monitor.iq_lock_level
+            iq_level=self.iq_monitor.iq_lock_level,
         )
 
         # === Layer 0: ATP 5-19 Composite Risk Management ===
         # 5-step CRM process: Identify → Assess → Develop Controls → Implement → Supervise
         doctrine_risk = await self.doctrine_risk_manager.full_assessment(
-            task=decision.description,
-            context={"decision_id": decision.id, "type": decision.type}
+            task=decision.description, context={"decision_id": decision.id, "type": decision.type}
         )
         verdict.layer_results["atp_5_19_crm"] = doctrine_risk
 
@@ -977,7 +1008,7 @@ class JudgeArchitecture:
             product_check = await self.product_gate.validate(
                 feature=decision.feature_name or "unknown",
                 variant_id=decision.variant_id,
-                metrics=decision.metrics
+                metrics=decision.metrics,
             )
             verdict.layer_results["product"] = product_check
             if product_check["status"] != "APPROVED":
@@ -994,7 +1025,9 @@ class JudgeArchitecture:
         competitive_analysis = await self.competitive_analyzer.benchmark(decision)
         verdict.layer_results["competitive"] = competitive_analysis
         if competitive_analysis["commodity_trap_risk"]:
-            verdict.warnings.append("Competitive: Decision copies incumbents without differentiation")
+            verdict.warnings.append(
+                "Competitive: Decision copies incumbents without differentiation"
+            )
 
         # Layer 19: Milestone Tracker
         milestone_impact = await self.milestone_tracker.assess_impact(decision)
@@ -1027,8 +1060,8 @@ class JudgeArchitecture:
                 "accuracy": verdict.status == DecisionStatus.APPROVED,
                 "doctrine_alignment": self._calculate_doctrine_alignment(verdict),
                 "regulatory_gaps": regulatory_scan.get("compliance_profile", {}),
-                "processing_time_ms": verdict.processing_time_ms
-            }
+                "processing_time_ms": verdict.processing_time_ms,
+            },
         )
 
         return verdict
@@ -1052,10 +1085,7 @@ class JudgeArchitecture:
     # =========================================================================
 
     async def handle_error_with_drill(
-        self,
-        error: Exception,
-        decision: Decision,
-        trigger: DrillTrigger = DrillTrigger.EXCEPTION
+        self, error: Exception, decision: Decision, trigger: DrillTrigger = DrillTrigger.EXCEPTION
     ) -> Dict[str, Any]:
         """
         Handle validation errors using FM 7-8 Battle Drills.
@@ -1069,7 +1099,7 @@ class JudgeArchitecture:
             "error": str(error),
             "decision_id": decision.id,
             "decision_type": decision.type,
-            "session_id": self.session_id
+            "session_id": self.session_id,
         }
 
         return await self.battle_drills.route(trigger, context)
@@ -1092,7 +1122,7 @@ class JudgeArchitecture:
                 "MEDIUM": APPROVAL_AUTHORITY.get(DoctrineRiskLevel.MEDIUM),
                 "HIGH": APPROVAL_AUTHORITY.get(DoctrineRiskLevel.HIGH),
                 "EXTREMELY_HIGH": APPROVAL_AUTHORITY.get(DoctrineRiskLevel.EXTREMELY_HIGH),
-            }
+            },
         }
 
     async def validate_with_doctrine_recovery(self, decision: Decision) -> JudgeVerdict:
@@ -1105,9 +1135,7 @@ class JudgeArchitecture:
             return await self.validate_decision(decision)
         except Exception as e:
             # Execute React to Contact battle drill
-            drill_result = await self.handle_error_with_drill(
-                e, decision, DrillTrigger.EXCEPTION
-            )
+            drill_result = await self.handle_error_with_drill(e, decision, DrillTrigger.EXCEPTION)
 
             if drill_result.get("success"):
                 # Retry validation after recovery
@@ -1120,7 +1148,7 @@ class JudgeArchitecture:
                 reason=f"Validation failed with error: {str(e)}. Battle drill recovery failed.",
                 iq_level=self.iq_monitor.iq_lock_level,
                 blockers=[str(e)],
-                layer_results={"battle_drill": drill_result}
+                layer_results={"battle_drill": drill_result},
             )
 
 
@@ -1139,7 +1167,7 @@ class JudgeVerdictFormatter:
             DecisionStatus.APPROVED: "✅",
             DecisionStatus.DEFERRED: "⚠️",
             DecisionStatus.REJECTED: "⛔",
-            DecisionStatus.PENDING: "⏳"
+            DecisionStatus.PENDING: "⏳",
         }
 
         lines = [
@@ -1150,7 +1178,7 @@ class JudgeVerdictFormatter:
             f"║ Status: {status_symbol[verdict.status]} {verdict.status.value:<48}║",
             f"║ Reason: {verdict.reason:<50}║",
             f"║ IQ Level: {verdict.iq_level:<48}║",
-            f"║ Processing Time: {verdict.processing_time_ms:.0f}ms{' '*(40-len(str(int(verdict.processing_time_ms))))}║",
+            f"║ Processing Time: {verdict.processing_time_ms:.0f}ms{' ' * (40 - len(str(int(verdict.processing_time_ms))))}║",
         ]
 
         if verdict.blockers:
@@ -1192,7 +1220,7 @@ async def main():
         description="Implement multi-silicon infrastructure strategy (Blackwell + Trainium2 + Maia)",
         risk_level=RiskLevel.HIGH,
         impacts_infrastructure=True,
-        submitted_by="CTO"
+        submitted_by="CTO",
     )
 
     verdict = await judge.validate_decision(decision)

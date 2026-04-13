@@ -308,9 +308,7 @@ class StripeConnect:
             return None
 
         try:
-            event = stripe.Webhook.construct_event(
-                payload, sig_header, WEBHOOK_SECRET
-            )
+            event = stripe.Webhook.construct_event(payload, sig_header, WEBHOOK_SECRET)
             return event
         except stripe.SignatureVerificationError:
             logger.error("Webhook signature verification FAILED")
@@ -335,13 +333,9 @@ class StripeConnect:
             balance = stripe.Balance.retrieve(stripe_account=account_id)
             return {
                 "available": [
-                    {"amount": b.amount, "currency": b.currency}
-                    for b in balance.available
+                    {"amount": b.amount, "currency": b.currency} for b in balance.available
                 ],
-                "pending": [
-                    {"amount": b.amount, "currency": b.currency}
-                    for b in balance.pending
-                ],
+                "pending": [{"amount": b.amount, "currency": b.currency} for b in balance.pending],
                 "status": "live",
             }
         except stripe.StripeError as e:

@@ -1,1 +1,2 @@
-def helper2(): return 2
+def helper2():
+    return 2

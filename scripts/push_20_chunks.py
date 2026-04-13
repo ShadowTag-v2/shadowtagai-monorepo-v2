@@ -86,7 +86,7 @@ def issue_token(target_name: str) -> tuple[str, str]:
     print(f"  🔍 Finding installation for {org}...")
     installation_id = omega_sync.get_installation_id(jwt_token, org)
 
-    print(f"  🎟️  Exchanging JWT for installation access token...")
+    print("  🎟️  Exchanging JWT for installation access token...")
     access_token = omega_sync.get_access_token(jwt_token, installation_id)
 
     print(f"  ✅ Token issued (installation {installation_id})")
@@ -112,10 +112,14 @@ def push_chunk(
 
         cmd = [
             "git",
-            "-c", "credential.helper=",
-            "-c", f"http.https://github.com/.extraheader=Authorization: Basic {b64}",
-            "-c", f"http.postBuffer={post_buffer}",
-            "-c", "push.negotiate=false",
+            "-c",
+            "credential.helper=",
+            "-c",
+            f"http.https://github.com/.extraheader=Authorization: Basic {b64}",
+            "-c",
+            f"http.postBuffer={post_buffer}",
+            "-c",
+            "push.negotiate=false",
             "push",
             "--thin",
         ]
@@ -164,24 +168,26 @@ def push_commits_individually(
 
     for j, sha in enumerate(commits):
         short = sha[:12]
-        print(f"    ↳ Sub-commit [{j+1}/{len(commits)}] {short}...")
+        print(f"    ↳ Sub-commit [{j + 1}/{len(commits)}] {short}...")
 
         # Try with 300s timeout and 50MB buffer for single commits
         ok = push_chunk(sha, branch, current_token, force=force, timeout=300, post_buffer=52428800)
         if ok:
             pushed += 1
-            print(f"    ↳ [{j+1}/{len(commits)}] ✅ individual commit pushed")
+            print(f"    ↳ [{j + 1}/{len(commits)}] ✅ individual commit pushed")
         else:
             # Last resort: fresh token + 600s timeout
-            print(f"    ↳ [{j+1}/{len(commits)}] ⚠️ failed — escalating (fresh token + 600s)...")
+            print(f"    ↳ [{j + 1}/{len(commits)}] ⚠️ failed — escalating (fresh token + 600s)...")
             time.sleep(5)
             current_token, _ = token_issuer(target)
-            ok = push_chunk(sha, branch, current_token, force=force, timeout=600, post_buffer=52428800)
+            ok = push_chunk(
+                sha, branch, current_token, force=force, timeout=600, post_buffer=52428800
+            )
             if ok:
                 pushed += 1
-                print(f"    ↳ [{j+1}/{len(commits)}] ✅ pushed (escalation succeeded)")
+                print(f"    ↳ [{j + 1}/{len(commits)}] ✅ pushed (escalation succeeded)")
             else:
-                print(f"    ↳ [{j+1}/{len(commits)}] ❌ FATAL: commit {short} cannot be pushed.")
+                print(f"    ↳ [{j + 1}/{len(commits)}] ❌ FATAL: commit {short} cannot be pushed.")
                 return False, current_token, pushed
 
         time.sleep(1)  # Brief cooldown
@@ -192,27 +198,36 @@ def push_commits_individually(
 def main():
     parser = argparse.ArgumentParser(description="Chunked Git Push Daemon (Invariant #58)")
     parser.add_argument(
-        "--batch-size", type=int, default=5,
+        "--batch-size",
+        type=int,
+        default=5,
         help="Number of commits per chunk (default: 5)",
     )
     parser.add_argument(
-        "--token-window", type=int, default=10,
+        "--token-window",
+        type=int,
+        default=10,
         help="Re-issue token after this many chunks (default: 10)",
     )
     parser.add_argument(
-        "--target", default="shadowtag",
+        "--target",
+        default="shadowtag",
         help="Auth target: shadowtag or ehanc69",
     )
     parser.add_argument(
-        "--branch", default=None,
+        "--branch",
+        default=None,
         help="Branch to push (default: current branch)",
     )
     parser.add_argument(
-        "--no-force", action="store_true",
+        "--no-force",
+        action="store_true",
         help="Disable --force (default: force-push enabled for diverged branches)",
     )
     parser.add_argument(
-        "--resume-from", type=int, default=1,
+        "--resume-from",
+        type=int,
+        default=1,
         help="Resume from chunk N (1-indexed, default: 1)",
     )
     args = parser.parse_args()
@@ -277,7 +292,9 @@ def main():
 
         target_sha = chunk_commits[-1]
         short_sha = target_sha[:12]
-        print(f"\n  [{chunk_num}/{total_chunks}] Pushing {len(chunk_commits)} commits up to {short_sha}...")
+        print(
+            f"\n  [{chunk_num}/{total_chunks}] Pushing {len(chunk_commits)} commits up to {short_sha}..."
+        )
 
         # Try the batch push
         success = push_chunk(target_sha, args.branch, access_token, force=force, timeout=300)
@@ -287,18 +304,27 @@ def main():
             print(f"  [{chunk_num}/{total_chunks}] ✅ Batch pushed ({pushed} chunks done)")
         else:
             # === ADAPTIVE SPLIT: push commits individually ===
-            print(f"  [{chunk_num}/{total_chunks}] ⚠️ Batch failed — splitting into {len(chunk_commits)} individual commits...")
+            print(
+                f"  [{chunk_num}/{total_chunks}] ⚠️ Batch failed — splitting into {len(chunk_commits)} individual commits..."
+            )
             time.sleep(3)
             access_token, org = issue_token(args.target)
             chunks_since_token = 0
 
             ok, access_token, sub_pushed = push_commits_individually(
-                chunk_commits, args.branch, access_token, force, issue_token, args.target,
+                chunk_commits,
+                args.branch,
+                access_token,
+                force,
+                issue_token,
+                args.target,
             )
             if ok:
                 pushed += 1
                 chunks_since_token += 1
-                print(f"  [{chunk_num}/{total_chunks}] ✅ All {sub_pushed} sub-commits pushed (adaptive split)")
+                print(
+                    f"  [{chunk_num}/{total_chunks}] ✅ All {sub_pushed} sub-commits pushed (adaptive split)"
+                )
             else:
                 print(f"  ABORT: Chunk {chunk_num} failed even with individual commits.")
                 print(f"  💡 Hint: resume later with --resume-from {chunk_num}")
@@ -308,7 +334,7 @@ def main():
         if i < len(chunk_groups) - 1:
             time.sleep(2)
 
-    print(f"\n═══ CHUNKED PUSH COMPLETE ═══")
+    print("\n═══ CHUNKED PUSH COMPLETE ═══")
     print(f"  Chunks: {pushed} pushed, {skipped} skipped / {total_chunks} total")
     print(f"  Branch: {args.branch}")
 

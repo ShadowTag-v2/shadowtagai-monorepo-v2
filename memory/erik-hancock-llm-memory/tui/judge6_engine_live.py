@@ -11,9 +11,12 @@ USAGE:
 
 import asyncio
 import time
-from typing import Optional
 import sys
-sys.path.insert(0, '/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/erik-hancock-llm-memory')
+
+sys.path.insert(
+    0,
+    "/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/ShadowTag-v2-fastapi-services/erik-hancock-llm-memory",
+)
 
 from judge6.uop import PolicyUOp, PolicyOps
 from judge6.renderer.jr_engine import JREngineRenderer, ATP519Patterns
@@ -38,8 +41,7 @@ class RealJudge6Engine:
 
         # Default policy: Check for PII in commits
         self.policy = PolicyUOp(
-            op=PolicyOps.CHECK_PII,
-            args={"patterns": [ATP519Patterns.SSN, ATP519Patterns.CCN]}
+            op=PolicyOps.CHECK_PII, args={"patterns": [ATP519Patterns.SSN, ATP519Patterns.CCN]}
         )
 
         # Compile policy to WASM (once at startup)
@@ -80,7 +82,7 @@ class RealJudge6Engine:
                 timestamp=time.time(),
                 latency_us=latency_us,
                 result="FAIL" if decision_result["violation"] else "PASS",
-                violation_type=decision_result.get("pattern", "")
+                violation_type=decision_result.get("pattern", ""),
             )
 
         except Exception as e:
@@ -91,7 +93,7 @@ class RealJudge6Engine:
                 timestamp=time.time(),
                 latency_us=latency_us,
                 result="ERROR",
-                violation_type=f"Exception: {str(e)}"
+                violation_type=f"Exception: {str(e)}",
             )
 
     def _generate_mock_context(self) -> dict:
@@ -127,6 +129,7 @@ class RealJudge6Engine:
         """
         # Simulate compression work (5-20ms)
         import random
+
         compression_ms = random.uniform(5, 20)
         await asyncio.sleep(compression_ms / 1000.0)
 
@@ -149,6 +152,7 @@ class RealJudge6Engine:
         """
         # Simulate WASM exec (10-40ms)
         import random
+
         exec_ms = random.uniform(10, 40)
         await asyncio.sleep(exec_ms / 1000.0)
 
@@ -172,6 +176,7 @@ def get_engine(mode: str = "mock"):
         return RealJudge6Engine()
     else:
         from tui.judge6_monitor import MockJudge6Engine
+
         return MockJudge6Engine()
 
 
@@ -188,7 +193,9 @@ if __name__ == "__main__":
             latencies.append(metric.latency_ms)
 
             status = "✓" if metric.result == "PASS" else "✗"
-            print(f"{status} Decision {i+1}: {metric.latency_ms:.1f}ms - {metric.result} {metric.violation_type}")
+            print(
+                f"{status} Decision {i + 1}: {metric.latency_ms:.1f}ms - {metric.result} {metric.violation_type}"
+            )
 
         avg = sum(latencies) / len(latencies)
         print(f"\n📊 Average latency: {avg:.1f}ms")

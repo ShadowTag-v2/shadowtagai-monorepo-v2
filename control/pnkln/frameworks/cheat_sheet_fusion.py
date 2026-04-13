@@ -60,16 +60,17 @@ logger = logging.getLogger(__name__)
 
 class Essential(str, Enum):
     """The 10 essential prompt elements"""
-    TONE = "tone"           # Voice/personality
-    FORMAT = "format"       # Structure/output style
-    ACT = "act"            # Role/persona
-    OBJECTIVE = "objective" # Clear goal
-    CONTEXT = "context"    # Background/situation
+
+    TONE = "tone"  # Voice/personality
+    FORMAT = "format"  # Structure/output style
+    ACT = "act"  # Role/persona
+    OBJECTIVE = "objective"  # Clear goal
+    CONTEXT = "context"  # Background/situation
     KEYWORDS = "keywords"  # Critical terms
     EXAMPLES = "examples"  # Few-shot demos
     AUDIENCE = "audience"  # Who it's for
-    CITATIONS = "citations" # Sources/attribution
-    CALL = "call"          # Next action
+    CITATIONS = "citations"  # Sources/attribution
+    CALL = "call"  # Next action
 
 
 @dataclass
@@ -79,6 +80,7 @@ class CheatSheetVariant:
 
     Jobs philosophy: Each variant should be "insanely great" in its own way.
     """
+
     variant_id: str
     essentials: Dict[Essential, Any]
 
@@ -126,6 +128,7 @@ class CheatSheetVariant:
 @dataclass
 class DTETestResult:
     """Result from DTE validation test"""
+
     variant_id: str
     accuracy: float
     latency_ms: float
@@ -163,7 +166,7 @@ class CheatSheetFusion:
         use_case: str,
         dte_enabled: bool = True,
         evolution_rate: float = 0.1,
-        target_accuracy: float = 0.60  # 60% baseline, aiming for +3.7% = 63.7%
+        target_accuracy: float = 0.60,  # 60% baseline, aiming for +3.7% = 63.7%
     ):
         """
         Initialize Cheat Sheet Fusion.
@@ -198,9 +201,7 @@ class CheatSheetFusion:
         )
 
     def create_variant(
-        self,
-        essentials: Dict[Essential, Any],
-        parent_id: Optional[str] = None
+        self, essentials: Dict[Essential, Any], parent_id: Optional[str] = None
     ) -> str:
         """Create a new cheat sheet variant"""
         # Generate variant ID from essentials hash
@@ -221,7 +222,7 @@ class CheatSheetFusion:
             essentials=essentials,
             generation=self.generation,
             parent_id=parent_id,
-            mutations=mutations
+            mutations=mutations,
         )
 
         self.variants[variant_id] = variant
@@ -247,10 +248,7 @@ class CheatSheetFusion:
         return None
 
     async def test_variant(
-        self,
-        variant_id: str,
-        ground_truth_data: List[Dict],
-        test_fn: Optional[Any] = None
+        self, variant_id: str, ground_truth_data: List[Dict], test_fn: Optional[Any] = None
     ) -> DTETestResult:
         """
         Test a variant against ground truth using DTE.
@@ -271,6 +269,7 @@ class CheatSheetFusion:
 
         # Run test (mock implementation - replace with real testing)
         import time
+
         start_time = time.perf_counter()
 
         passed = 0
@@ -284,6 +283,7 @@ class CheatSheetFusion:
             else:
                 # Mock: Random accuracy around target
                 import random
+
                 result = random.random() < self.target_accuracy
 
             if result:
@@ -309,7 +309,10 @@ class CheatSheetFusion:
             )
 
         # Update best variant
-        if self.best_variant_id is None or accuracy > self.variants[self.best_variant_id].best_accuracy:
+        if (
+            self.best_variant_id is None
+            or accuracy > self.variants[self.best_variant_id].best_accuracy
+        ):
             self.best_variant_id = variant_id
             logger.info(f"New best variant: {variant_id} ({accuracy:.1%})")
 
@@ -319,7 +322,7 @@ class CheatSheetFusion:
             latency_ms=latency_ms,
             cost_usd=0.001 * total,  # Mock cost
             test_cases_passed=passed,
-            test_cases_total=total
+            test_cases_total=total,
         )
 
     def evolve(self, direction: str = "improve") -> str:
@@ -353,15 +356,18 @@ class CheatSheetFusion:
                 # Add more specific keywords
                 keywords = new_essentials[Essential.KEYWORDS]
                 if isinstance(keywords, list):
-                    keywords.append(f"high_quality_tier_1")
+                    keywords.append("high_quality_tier_1")
                 new_essentials[Essential.KEYWORDS] = keywords
 
         elif direction == "explore":
             # Random mutation
             import random
+
             essential_to_mutate = random.choice(list(Essential))
             # Apply random change (simplified for demo)
-            new_essentials[essential_to_mutate] = f"mutated_{new_essentials.get(essential_to_mutate, 'default')}"
+            new_essentials[essential_to_mutate] = (
+                f"mutated_{new_essentials.get(essential_to_mutate, 'default')}"
+            )
 
         elif direction == "simplify":
             # Remove least important essentials (Jobs: simplicity)
@@ -376,12 +382,10 @@ class CheatSheetFusion:
                 Essential.FORMAT: 4,
                 Essential.AUDIENCE: 3,
                 Essential.CITATIONS: 2,
-                Essential.CALL: 1
+                Essential.CALL: 1,
             }
             keep_essentials = sorted(
-                new_essentials.keys(),
-                key=lambda e: essential_importance.get(e, 0),
-                reverse=True
+                new_essentials.keys(), key=lambda e: essential_importance.get(e, 0), reverse=True
             )[:7]
             new_essentials = {e: new_essentials[e] for e in keep_essentials}
 
@@ -493,16 +497,25 @@ class CheatSheetFusion:
             "target_accuracy_gain": 0.037,  # +3.7%
             "best_variant": {
                 "id": self.best_variant_id,
-                "accuracy": self.variants[self.best_variant_id].best_accuracy if self.best_variant_id else None,
-                "tests_run": self.variants[self.best_variant_id].tests_run if self.best_variant_id else 0
-            } if self.best_variant_id else None,
-            "progress_to_target": (self.total_accuracy_gain / 0.037 * 100) if self.baseline_accuracy else 0
+                "accuracy": self.variants[self.best_variant_id].best_accuracy
+                if self.best_variant_id
+                else None,
+                "tests_run": self.variants[self.best_variant_id].tests_run
+                if self.best_variant_id
+                else 0,
+            }
+            if self.best_variant_id
+            else None,
+            "progress_to_target": (self.total_accuracy_gain / 0.037 * 100)
+            if self.baseline_accuracy
+            else 0,
         }
 
 
 # ============================================================================
 # PRESET CHEAT SHEETS (Jobs-Quality Defaults)
 # ============================================================================
+
 
 class PresetCheatSheets:
     """
@@ -520,15 +533,25 @@ class PresetCheatSheets:
             Essential.OBJECTIVE: "Identify YouTube videos that provide exceptional governance intelligence: EU AI Act analysis, DSA compliance, GDPR implications, model risk management, ethical AI practices.",
             Essential.AUDIENCE: "Regulatory compliance teams, AI governance officers, legal counsel",
             Essential.TONE: "Insanely great - Jobs quality obsession. Only the best insights.",
-            Essential.KEYWORDS: ["EU AI Act", "DSA VLOP", "GDPR", "model governance", "AI ethics", "compliance", "risk management", "transparency", "accountability"],
+            Essential.KEYWORDS: [
+                "EU AI Act",
+                "DSA VLOP",
+                "GDPR",
+                "model governance",
+                "AI ethics",
+                "compliance",
+                "risk management",
+                "transparency",
+                "accountability",
+            ],
             Essential.FORMAT: "Structured JSON: {title, channel, description, tier_justification, key_insights, timestamp, url}",
             Essential.EXAMPLES: [
                 "Tier 1: 'EU AI Act Article 9 Deep Dive' by AI Policy Expert - Actionable compliance checklist",
                 "Tier 2: 'AI Trends 2024' by Tech News - General insights, some governance mentions",
-                "Tier 3: 'AI Tutorial' by Educator - Technical, no governance relevance"
+                "Tier 3: 'AI Tutorial' by Educator - Technical, no governance relevance",
             ],
             Essential.CITATIONS: "YouTube Data API v3, ATP 5-19 Risk Framework validation",
-            Essential.CALL: "Return items with tier classification (1/2/3) and confidence score (0-1). Prioritize quality over quantity."
+            Essential.CALL: "Return items with tier classification (1/2/3) and confidence score (0-1). Prioritize quality over quantity.",
         }
 
     @staticmethod
@@ -540,15 +563,24 @@ class PresetCheatSheets:
             Essential.OBJECTIVE: "Detect early governance signals: regulatory changes, enforcement actions, industry debates, risk incidents.",
             Essential.AUDIENCE: "Risk management teams, policy strategists, C-suite",
             Essential.TONE: "Urgent, focused, reality-distortion (Jobs: make impossibles possible)",
-            Essential.KEYWORDS: ["breaking", "announcement", "enforcement", "fine", "violation", "guidance", "draft regulation", "consultation"],
+            Essential.KEYWORDS: [
+                "breaking",
+                "announcement",
+                "enforcement",
+                "fine",
+                "violation",
+                "guidance",
+                "draft regulation",
+                "consultation",
+            ],
             Essential.FORMAT: "Structured: {tweet_text, author, timestamp, signal_type, urgency_score, related_regulations}",
             Essential.EXAMPLES: [
                 "Tier 1: '@EU_Commission announces Article 52 enforcement guidance' - Direct regulatory impact",
                 "Tier 2: 'Industry expert discusses AI Act implications' - Valuable analysis",
-                "Tier 3: 'AI is cool' - No governance relevance"
+                "Tier 3: 'AI is cool' - No governance relevance",
             ],
             Essential.CITATIONS: "Twitter API v2, verified regulatory accounts, industry leaders",
-            Essential.CALL: "Flag HIGH urgency items immediately. Include source credibility score."
+            Essential.CALL: "Flag HIGH urgency items immediately. Include source credibility score.",
         }
 
     @staticmethod
@@ -560,21 +592,31 @@ class PresetCheatSheets:
             Essential.OBJECTIVE: "Identify compliance enforcement cases that set precedents or reveal enforcement priorities.",
             Essential.AUDIENCE: "Legal teams, compliance officers, risk managers",
             Essential.TONE: "Hard truth - reality-based, no sugar-coating (Jobs: brutal honesty)",
-            Essential.KEYWORDS: ["fine", "penalty", "violation", "enforcement", "investigation", "settlement", "consent order", "regulatory action"],
+            Essential.KEYWORDS: [
+                "fine",
+                "penalty",
+                "violation",
+                "enforcement",
+                "investigation",
+                "settlement",
+                "consent order",
+                "regulatory action",
+            ],
             Essential.FORMAT: "Structured: {headline, source, date, violation_type, entity, penalty_amount, precedent_value}",
             Essential.EXAMPLES: [
                 "Tier 1: 'Company X fined €50M for GDPR/AI Act violations' - Direct precedent",
                 "Tier 2: 'Regulator issues guidance on AI transparency' - Important context",
-                "Tier 3: 'AI company raises funding' - No compliance relevance"
+                "Tier 3: 'AI company raises funding' - No compliance relevance",
             ],
             Essential.CITATIONS: "NewsAPI, verified news sources, regulatory press releases",
-            Essential.CALL: "Classify precedent value: HIGH/MEDIUM/LOW. Extract enforcement patterns."
+            Essential.CALL: "Classify precedent value: HIGH/MEDIUM/LOW. Extract enforcement patterns.",
         }
 
 
 # ============================================================================
 # EXAMPLE USAGE
 # ============================================================================
+
 
 async def example_cheat_sheet_fusion():
     """Demonstrate Cheat Sheet Fusion with DTE evolution"""
@@ -586,7 +628,7 @@ async def example_cheat_sheet_fusion():
         use_case="tier_1_intelligence",
         dte_enabled=True,
         evolution_rate=0.1,
-        target_accuracy=0.60
+        target_accuracy=0.60,
     )
 
     # Create initial variant from preset
@@ -649,4 +691,5 @@ async def example_cheat_sheet_fusion():
 
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(example_cheat_sheet_fusion())

@@ -15,5 +15,5 @@ def process_nested_tuple(users: dict[str, User]):
 
 def process_parenthesized_tuple(users: list[User]):
     # Parenthesized tuple as top-level pattern
-    for (i, u) in enumerate(users):
+    for i, u in enumerate(users):
         u.save()

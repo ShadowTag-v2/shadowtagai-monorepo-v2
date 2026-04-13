@@ -1,4 +1,4 @@
-""" Standardized prompt templates for interacting with language models. """
+"""Standardized prompt templates for interacting with language models."""
 
 # Primary prompt for the executive agent
 EXECUTIVE_PROMPT = {

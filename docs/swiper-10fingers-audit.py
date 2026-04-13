@@ -21,22 +21,23 @@ pnkln_10fingers = [
     ("Marketing", "cheap compounding channels then paid"),
     ("RiskCompliance", "risk matrix+moat"),
     ("ScalingModel", "unit econ proven>30% margin"),
-    ("ExitAsset", "systems/contracts/reviews or durable CF")
+    ("ExitAsset", "systems/contracts/reviews or durable CF"),
 ]
 
 # WEIGHTS (for composite scoring)
 weights = {
-    "MarketDemand": 1.3,      # Heaviest - no market = death
-    "OfferMix": 1.1,          # Revenue architecture
-    "TechLeverage": 1.1,      # Automation multiplier
-    "DistributionDensity": 1.1, # Route economics
-    "PricingPower": 1.0,      # ARPC expansion
-    "LaborTraining": 1.1,     # Cost control
-    "Marketing": 1.0,         # Customer acquisition
-    "RiskCompliance": 1.0,    # Moat/defensibility
-    "ScalingModel": 1.1,      # Unit economics proof
-    "ExitAsset": 1.0          # Liquidity event readiness
+    "MarketDemand": 1.3,  # Heaviest - no market = death
+    "OfferMix": 1.1,  # Revenue architecture
+    "TechLeverage": 1.1,  # Automation multiplier
+    "DistributionDensity": 1.1,  # Route economics
+    "PricingPower": 1.0,  # ARPC expansion
+    "LaborTraining": 1.1,  # Cost control
+    "Marketing": 1.0,  # Customer acquisition
+    "RiskCompliance": 1.0,  # Moat/defensibility
+    "ScalingModel": 1.1,  # Unit economics proof
+    "ExitAsset": 1.0,  # Liquidity event readiness
 }
+
 
 # SCORING FUNCTION
 def pnkln_score_10fingers(scores):
@@ -44,8 +45,7 @@ def pnkln_score_10fingers(scores):
     scores: dict{name:0-10}
     returns: composite viability score 0-100
     """
-    s = sum(min(10, max(0, scores.get(k, 0))) * weights[k]
-            for k, _ in pnkln_10fingers)
+    s = sum(min(10, max(0, scores.get(k, 0))) * weights[k] for k, _ in pnkln_10fingers)
     mx = sum(10 * weights[k] for k, _ in pnkln_10fingers)
     return round(100 * s / mx, 1)
 
@@ -87,8 +87,10 @@ def print_detailed_audit(scores):
         else:
             status = "🚨 CRITICAL"
 
-        print(f"{finger:25} | Score: {score:2}/10 | Weight: {weight:3} | "
-              f"Weighted: {weighted:4.1f}/{max_possible:4.1f} | {status}")
+        print(
+            f"{finger:25} | Score: {score:2}/10 | Weight: {weight:3} | "
+            f"Weighted: {weighted:4.1f}/{max_possible:4.1f} | {status}"
+        )
         print(f"  └─ {description}")
         print()
 
@@ -225,16 +227,16 @@ def print_recommendations(scores, final_score):
 if __name__ == "__main__":
     # Swiper Platform Scores (from detailed assessment)
     swiper_scores = {
-        "MarketDemand": 7,           # Massive TAM but unvalidated category
-        "OfferMix": 6,               # Good tiers but unvalidated pricing
-        "TechLeverage": 7,           # Strong automation, Stage 1 ROI <18mo
-        "DistributionDensity": 8,    # Digital scalability excellent
-        "PricingPower": 7,           # Premium justified but unproven
-        "LaborTraining": 5,          # ❌ Content creation labor-intensive
-        "Marketing": 6,              # Viral potential but B2B sales required
-        "RiskCompliance": 7,         # Strong moats, COPPA/GDPR manageable
-        "ScalingModel": 4,           # ❌ Zero unit economics validation
-        "ExitAsset": 5               # Tech built but no contracts/traction
+        "MarketDemand": 7,  # Massive TAM but unvalidated category
+        "OfferMix": 6,  # Good tiers but unvalidated pricing
+        "TechLeverage": 7,  # Strong automation, Stage 1 ROI <18mo
+        "DistributionDensity": 8,  # Digital scalability excellent
+        "PricingPower": 7,  # Premium justified but unproven
+        "LaborTraining": 5,  # ❌ Content creation labor-intensive
+        "Marketing": 6,  # Viral potential but B2B sales required
+        "RiskCompliance": 7,  # Strong moats, COPPA/GDPR manageable
+        "ScalingModel": 4,  # ❌ Zero unit economics validation
+        "ExitAsset": 5,  # Tech built but no contracts/traction
     }
 
     # Run audit

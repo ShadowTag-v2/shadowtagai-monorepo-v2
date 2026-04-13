@@ -8,6 +8,6 @@ pid = propose_promotion(
     "setting",
     "settings",
     {"default_inference_backend": "ane", "fallback_backend": "metal"},
-    "assistant"
+    "assistant",
 )
 print({"promotion_id": pid})

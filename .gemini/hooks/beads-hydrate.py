@@ -5,6 +5,7 @@ Beads Auto-Hydrate Hook — Gemini CLI SessionStart
 Reads the latest entries from .beads/issues.jsonl and injects them
 as system context at session start. Closes the beads auto-append loop.
 """
+
 import json
 import sys
 import os
@@ -51,7 +52,7 @@ def main():
     # Write hook response
     response = {
         "decision": "allow",
-        "systemMessage": f"*** BEADS AUTO-HYDRATE ***\n{context_block}"
+        "systemMessage": f"*** BEADS AUTO-HYDRATE ***\n{context_block}",
     }
     json.dump(response, sys.stdout)
     sys.stderr.write(f"[beads-hydrate] Injected {len(beads_summary)} entries\n")

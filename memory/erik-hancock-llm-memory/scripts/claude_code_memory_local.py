@@ -40,98 +40,98 @@ class ClaudeCodeMemoryLoader:
         mem = self.memory_data
 
         md = f"""# ShadowTagAi Architecture Memory
-Last Updated: {mem.get('last_updated', 'Unknown')}
-Version: {mem.get('version', '1.0.0')}
+Last Updated: {mem.get("last_updated", "Unknown")}
+Version: {mem.get("version", "1.0.0")}
 
 ## Core Architectures
 
 ### Judge #6
-**Description**: {mem['shadowtagai_architecture']['judge_6']['description']}
+**Description**: {mem["shadowtagai_architecture"]["judge_6"]["description"]}
 
 **Components**:
 """
-        for comp in mem['shadowtagai_architecture']['judge_6']['components']:
+        for comp in mem["shadowtagai_architecture"]["judge_6"]["components"]:
             md += f"- {comp}\n"
 
         md += f"""
 **SLA**:
-- Coverage: {mem['shadowtagai_architecture']['judge_6']['sla']['coverage'] * 100}%
-- p99 Latency: {mem['shadowtagai_architecture']['judge_6']['sla']['p99_latency']}
+- Coverage: {mem["shadowtagai_architecture"]["judge_6"]["sla"]["coverage"] * 100}%
+- p99 Latency: {mem["shadowtagai_architecture"]["judge_6"]["sla"]["p99_latency"]}
 
 ### ShadowTag 2.0
-**Description**: {mem['shadowtagai_architecture']['shadowtag_2_0']['description']}
-**Method**: {mem['shadowtagai_architecture']['shadowtag_2_0']['method']}
+**Description**: {mem["shadowtagai_architecture"]["shadowtag_2_0"]["description"]}
+**Method**: {mem["shadowtagai_architecture"]["shadowtag_2_0"]["method"]}
 
 ### Cor/NS
-**Description**: {mem['shadowtagai_architecture']['cor_ns']['description']}
+**Description**: {mem["shadowtagai_architecture"]["cor_ns"]["description"]}
 
 **Components**:
 """
-        for comp in mem['shadowtagai_architecture']['cor_ns']['components']:
+        for comp in mem["shadowtagai_architecture"]["cor_ns"]["components"]:
             md += f"- {comp}\n"
 
         md += f"""
 ## JR Framework (Purpose • Reasons • Brakes)
 
-**Purpose**: {mem['jr_framework']['purpose']}
+**Purpose**: {mem["jr_framework"]["purpose"]}
 
-**Reasons**: {mem['jr_framework']['reasons']}
+**Reasons**: {mem["jr_framework"]["reasons"]}
 
-**Brakes**: {mem['jr_framework']['brakes']}
+**Brakes**: {mem["jr_framework"]["brakes"]}
 
 ## Bootstrap Gates
 
-- **ROI Target**: {mem['bootstrap_gates']['roi_target']}
-- **LTV:CAC Target**: {mem['bootstrap_gates']['ltv_cac_target']}
-- **p99 Latency**: {mem['bootstrap_gates']['p99_latency']}
-- **Security**: {mem['bootstrap_gates']['security']}
+- **ROI Target**: {mem["bootstrap_gates"]["roi_target"]}
+- **LTV:CAC Target**: {mem["bootstrap_gates"]["ltv_cac_target"]}
+- **p99 Latency**: {mem["bootstrap_gates"]["p99_latency"]}
+- **Security**: {mem["bootstrap_gates"]["security"]}
 
 ## LLM Allocation Strategy
 
 """
-        for llm, allocation in mem['llm_allocation'].items():
+        for llm, allocation in mem["llm_allocation"].items():
             md += f"- **{llm.upper()}**: {allocation * 100}%\n"
 
         md += f"""
 ## Tech Stack
 
-**Extraction**: {mem['tech_stack']['extraction']}
+**Extraction**: {mem["tech_stack"]["extraction"]}
 
-**Metadata**: {mem['tech_stack']['metadata']}
+**Metadata**: {mem["tech_stack"]["metadata"]}
 
 **Orchestration**:
 """
-        for tool in mem['tech_stack']['orchestration']:
+        for tool in mem["tech_stack"]["orchestration"]:
             md += f"- {tool}\n"
 
         md += """
 **Storage**:
 """
-        for storage in mem['tech_stack']['storage']:
+        for storage in mem["tech_stack"]["storage"]:
             md += f"- {storage}\n"
 
         md += """
 **Deployment Path**:
 """
-        for env in mem['tech_stack']['deployment']:
+        for env in mem["tech_stack"]["deployment"]:
             md += f"- {env}\n"
 
         md += f"""
 ## Cost Economics
 
-- **Initial Extraction**: {mem['cost_economics']['initial_extraction']}
-- **GitHub Storage**: {mem['cost_economics']['github_storage']}
-- **GCS Storage**: {mem['cost_economics']['gcs_storage']}
-- **Per-Query LLM**: {mem['cost_economics']['per_query_llm']}
+- **Initial Extraction**: {mem["cost_economics"]["initial_extraction"]}
+- **GitHub Storage**: {mem["cost_economics"]["github_storage"]}
+- **GCS Storage**: {mem["cost_economics"]["gcs_storage"]}
+- **Per-Query LLM**: {mem["cost_economics"]["per_query_llm"]}
 
 ## Conversation Statistics
 """
-        if 'statistics' in mem:
-            stats = mem['statistics']
+        if "statistics" in mem:
+            stats = mem["statistics"]
             md += f"""
-- **Total Conversations**: {stats.get('total_conversations', 0):,}
-- **Total Tokens**: {stats.get('total_tokens', 0):,}
-- **Extraction Cost**: ${stats.get('extraction_cost', 0)}
+- **Total Conversations**: {stats.get("total_conversations", 0):,}
+- **Total Tokens**: {stats.get("total_tokens", 0):,}
+- **Extraction Cost**: ${stats.get("extraction_cost", 0)}
 """
 
         md += """
@@ -221,7 +221,7 @@ Version: {mem.get('version', '1.0.0')}
         memory_md = self.generate_memory_markdown()
 
         # Write to file
-        with open(CLAUDE_CODE_MEMORY, 'w') as f:
+        with open(CLAUDE_CODE_MEMORY, "w") as f:
             f.write(memory_md)
 
         print(f"✓ Memory installed to {CLAUDE_CODE_MEMORY}")
@@ -231,9 +231,9 @@ Version: {mem.get('version', '1.0.0')}
         startup_msg = f"""
 Claude Code Memory Loaded
 ========================
-Version: {self.memory_data.get('version', '1.0.0')}
-Conversations: {self.memory_data.get('statistics', {}).get('total_conversations', 0):,}
-Last Updated: {self.memory_data.get('last_updated', 'Unknown')}
+Version: {self.memory_data.get("version", "1.0.0")}
+Conversations: {self.memory_data.get("statistics", {}).get("total_conversations", 0):,}
+Last Updated: {self.memory_data.get("last_updated", "Unknown")}
 
 Architecture contexts loaded:
 - Judge #6 (98% coverage, p99 ≤90ms)
@@ -256,17 +256,17 @@ Ready to assist with ShadowTagAi-aligned decision making.
                 "enabled": True,
                 "path": str(CLAUDE_CODE_MEMORY),
                 "auto_load": True,
-                "sync_repo": "erik-hancock-llm-memory"
+                "sync_repo": "erik-hancock-llm-memory",
             },
             "shadowtagai": {
                 "architecture": ["judge_6", "shadowtag_2_0", "cor_ns"],
                 "frameworks": ["jr_framework", "bootstrap_gates"],
-                "llm_allocation": self.memory_data.get('llm_allocation', {})
-            }
+                "llm_allocation": self.memory_data.get("llm_allocation", {}),
+            },
         }
 
         config_path = CLAUDE_CODE_DIR / "config.json"
-        with open(config_path, 'w') as f:
+        with open(config_path, "w") as f:
             json.dump(config, f, indent=2)
 
         print(f"✓ Config created at {config_path}")
@@ -303,5 +303,5 @@ def main():
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

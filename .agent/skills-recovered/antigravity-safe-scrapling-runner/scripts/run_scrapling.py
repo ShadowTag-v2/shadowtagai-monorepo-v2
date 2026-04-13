@@ -6,9 +6,7 @@ import importlib.util
 def install_if_needed():
     if importlib.util.find_spec("scrapling") is None:
         print("Scrapling not found. Installing now...")
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "scrapling", "lxml"]
-        )
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "scrapling", "lxml"])
 
 
 def main():

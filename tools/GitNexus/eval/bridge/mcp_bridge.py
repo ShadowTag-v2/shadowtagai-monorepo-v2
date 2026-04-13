@@ -67,11 +67,14 @@ class MCPBridge:
             )
 
             # Send initialize request
-            init_result = self._send_request("initialize", {
-                "protocolVersion": "2024-11-05",
-                "capabilities": {},
-                "clientInfo": {"name": "gitnexus-eval", "version": "0.1.0"},
-            })
+            init_result = self._send_request(
+                "initialize",
+                {
+                    "protocolVersion": "2024-11-05",
+                    "capabilities": {},
+                    "clientInfo": {"name": "gitnexus-eval", "version": "0.1.0"},
+                },
+            )
 
             if init_result is None:
                 logger.error("MCP server failed to initialize")
@@ -119,10 +122,13 @@ class MCPBridge:
             logger.error("MCP bridge not started")
             return None
 
-        result = self._send_request("tools/call", {
-            "name": tool_name,
-            "arguments": arguments or {},
-        })
+        result = self._send_request(
+            "tools/call",
+            {
+                "name": tool_name,
+                "arguments": arguments or {},
+            },
+        )
 
         if result is None:
             return None

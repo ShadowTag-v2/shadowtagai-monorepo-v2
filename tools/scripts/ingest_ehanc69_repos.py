@@ -16,7 +16,9 @@ page = 1
 while True:
     print(f"Fetching page {page}...")
     try:
-        response = requests.get(f"https://api.github.com/users/{GITHUB_USER}/repos?per_page=100&page={page}")
+        response = requests.get(
+            f"https://api.github.com/users/{GITHUB_USER}/repos?per_page=100&page={page}"
+        )
         response.raise_for_status()
         page_repos = response.json()
         if not page_repos:
@@ -48,4 +50,6 @@ for repo in repos:
     time.sleep(0.5)
 
 print("\nIngestion complete.")
-print("NOTE: We expect these directories to be explicitly ignored by the root git configuration so they don't break our git logs.")
+print(
+    "NOTE: We expect these directories to be explicitly ignored by the root git configuration so they don't break our git logs."
+)

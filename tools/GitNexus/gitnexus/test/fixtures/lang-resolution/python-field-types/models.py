@@ -4,6 +4,7 @@ class Address:
     def save(self):
         pass
 
+
 class User:
     name: str
     address: Address

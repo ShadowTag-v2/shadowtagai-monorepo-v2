@@ -7,6 +7,7 @@ Renews token between batch windows.
 Usage:
     python3 scripts/chunked_push.py [--dry-run] [--chunk-size-mb 100] [--batch-size 5]
 """
+
 from __future__ import annotations
 
 import argparse
@@ -23,9 +24,7 @@ REPO = "Monorepo-Uphillsnowball"
 APP_ID = "3018200"
 PEM_PATH = os.environ.get(
     "GITHUB_APP_PEM",
-    os.path.expanduser(
-        "~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
-    ),
+    os.path.expanduser("~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"),
 )
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -62,7 +61,7 @@ def mint_jwt() -> str:
     encoded = pyjwt.encode(payload, pem, algorithm="RS256")
 
     # Get installation ID
-    url = f"https://api.github.com/app/installations"
+    url = "https://api.github.com/app/installations"
     rq = urllib.request.Request(
         url,
         headers={
@@ -120,9 +119,7 @@ def get_tracked_files() -> list[tuple[str, int]]:
     return files
 
 
-def group_into_chunks(
-    files: list[tuple[str, int]], chunk_mb: int
-) -> list[list[tuple[str, int]]]:
+def group_into_chunks(files: list[tuple[str, int]], chunk_mb: int) -> list[list[tuple[str, int]]]:
     """Group files into chunks of approximately chunk_mb megabytes."""
     chunks: list[list[tuple[str, int]]] = []
     current: list[tuple[str, int]] = []
@@ -160,16 +157,12 @@ def push_chunk(
     tree_items = []
     chunk_size_mb = sum(s for _, s in chunk) / 1024 / 1024
 
-    print(
-        f"\n  📦 Chunk {chunk_idx}: {len(chunk)} files, {chunk_size_mb:.1f} MB"
-    )
+    print(f"\n  📦 Chunk {chunk_idx}: {len(chunk)} files, {chunk_size_mb:.1f} MB")
 
     for i, (fpath, size) in enumerate(chunk):
         if dry_run:
-            print(f"    [DRY] {fpath} ({size/1024:.0f}K)")
-            tree_items.append(
-                {"path": fpath, "mode": "100644", "type": "blob", "sha": "dry-run"}
-            )
+            print(f"    [DRY] {fpath} ({size / 1024:.0f}K)")
+            tree_items.append({"path": fpath, "mode": "100644", "type": "blob", "sha": "dry-run"})
             continue
 
         full = REPO_ROOT / fpath
@@ -177,12 +170,10 @@ def push_chunk(
             content = base64.b64encode(f.read()).decode()
 
         blob = api("POST", "git/blobs", {"content": content, "encoding": "base64"}, token)
-        tree_items.append(
-            {"path": fpath, "mode": "100644", "type": "blob", "sha": blob["sha"]}
-        )
+        tree_items.append({"path": fpath, "mode": "100644", "type": "blob", "sha": blob["sha"]})
 
         if (i + 1) % 50 == 0 or i == len(chunk) - 1:
-            print(f"    ✅ {i+1}/{len(chunk)} files uploaded")
+            print(f"    ✅ {i + 1}/{len(chunk)} files uploaded")
 
     return tree_items
 
@@ -190,9 +181,7 @@ def push_chunk(
 def main():
     parser = argparse.ArgumentParser(description="Chunked Git Data API Push")
     parser.add_argument("--dry-run", action="store_true", help="Don't actually push")
-    parser.add_argument(
-        "--chunk-size-mb", type=int, default=CHUNK_SIZE_MB, help="MB per chunk"
-    )
+    parser.add_argument("--chunk-size-mb", type=int, default=CHUNK_SIZE_MB, help="MB per chunk")
     parser.add_argument(
         "--batch-size", type=int, default=BATCH_SIZE, help="Chunks per token window"
     )
@@ -211,7 +200,9 @@ def main():
     # 2. Group into chunks
     chunks = group_into_chunks(files, args.chunk_size_mb)
     print(f"Chunks ({args.chunk_size_mb}MB each): {len(chunks)}")
-    print(f"Batch windows ({args.batch_size} chunks/window): {(len(chunks) + args.batch_size - 1) // args.batch_size}")
+    print(
+        f"Batch windows ({args.batch_size} chunks/window): {(len(chunks) + args.batch_size - 1) // args.batch_size}"
+    )
 
     if args.dry_run:
         print("\n🔸 DRY RUN — no changes will be pushed")
@@ -225,9 +216,9 @@ def main():
         batch_num = batch_start // args.batch_size + 1
         total_batches = (len(chunks) + args.batch_size - 1) // args.batch_size
 
-        print(f"\n{'='*40}")
-        print(f"BATCH {batch_num}/{total_batches} (chunks {batch_start+1}-{batch_end})")
-        print(f"{'='*40}")
+        print(f"\n{'=' * 40}")
+        print(f"BATCH {batch_num}/{total_batches} (chunks {batch_start + 1}-{batch_end})")
+        print(f"{'=' * 40}")
 
         if batch_start > 0 and not args.dry_run:
             print("  🔄 Renewing JWT token...")
@@ -244,9 +235,9 @@ def main():
         print(f"\n🔸 DRY RUN complete. Would push {len(all_tree_items)} files.")
         return
 
-    print(f"\n{'='*40}")
+    print(f"\n{'=' * 40}")
     print("CREATING COMMIT")
-    print(f"{'='*40}")
+    print(f"{'=' * 40}")
 
     # Get current main
     branch = api("GET", "branches/main", token=token)

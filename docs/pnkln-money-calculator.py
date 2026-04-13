@@ -13,7 +13,6 @@ Usage:
 
 import argparse
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass
@@ -44,7 +43,7 @@ def calculate_10fingers_score(scores: dict[str, int]) -> float:
         "Marketing": 1.0,
         "RiskCompliance": 1.0,
         "ScalingModel": 1.1,
-        "ExitAsset": 1.0
+        "ExitAsset": 1.0,
     }
 
     weighted_sum = sum(scores[k] * weights[k] for k in scores)
@@ -60,36 +59,25 @@ def calculate_baseline_scenario() -> dict:
         "kernel_chaining": WorkStream(
             name="Kernel Chaining Architecture",
             arr=2_310_000,  # 70% of $3.3M potential
-            margin=0.80
+            margin=0.80,
         ),
         "gemini_migration": WorkStream(
-            name="Autogen → Gemini Migration",
-            arr=420_000,
-            margin=0.90,
-            cost_savings=102_000
+            name="Autogen → Gemini Migration", arr=420_000, margin=0.90, cost_savings=102_000
         ),
         "superpowers_marketplace": WorkStream(
-            name="Superpowers Marketplace",
-            arr=1_152_000,
-            margin=0.76
+            name="Superpowers Marketplace", arr=1_152_000, margin=0.76
         ),
         "intelligence_pipeline": WorkStream(
             name="PNKLN Intelligence Pipeline",
             arr=936_000,  # 60% of $1.56M potential
-            margin=0.44
+            margin=0.44,
         ),
         "devtools": WorkStream(
-            name="Cursor/ESLint Hybrid",
-            arr=330_000,
-            margin=0.73,
-            cost_savings=225_000
+            name="Cursor/ESLint Hybrid", arr=330_000, margin=0.73, cost_savings=225_000
         ),
         "llm_serving": WorkStream(
-            name="LLM Serving Efficiency",
-            arr=1_020_000,
-            margin=0.60,
-            cost_savings=120_000
-        )
+            name="LLM Serving Efficiency", arr=1_020_000, margin=0.60, cost_savings=120_000
+        ),
     }
 
     # Baseline existing ventures
@@ -97,19 +85,16 @@ def calculate_baseline_scenario() -> dict:
         "swiper": WorkStream(
             name="Swiper Platform",
             arr=480_000,  # 10 retailers @ $4K/mo
-            margin=0.65
+            margin=0.65,
         ),
         "ai_agents": WorkStream(
             name="AI Agent Platform",
             arr=1_440_000,  # $120K MRR
-            margin=0.75
-        )
+            margin=0.75,
+        ),
     }
 
-    return {
-        "work_streams": work_streams,
-        "baseline_ventures": baseline_ventures
-    }
+    return {"work_streams": work_streams, "baseline_ventures": baseline_ventures}
 
 
 def calculate_conservative_scenario() -> dict:
@@ -119,55 +104,39 @@ def calculate_conservative_scenario() -> dict:
         "kernel_chaining": WorkStream(
             name="Kernel Chaining Architecture",
             arr=1_650_000,  # 50% of potential
-            margin=0.70
+            margin=0.70,
         ),
         "gemini_migration": WorkStream(
-            name="Autogen → Gemini Migration",
-            arr=210_000,
-            margin=0.85,
-            cost_savings=80_000
+            name="Autogen → Gemini Migration", arr=210_000, margin=0.85, cost_savings=80_000
         ),
         "superpowers_marketplace": WorkStream(
-            name="Superpowers Marketplace",
-            arr=576_000,
-            margin=0.65
+            name="Superpowers Marketplace", arr=576_000, margin=0.65
         ),
         "intelligence_pipeline": WorkStream(
-            name="PNKLN Intelligence Pipeline",
-            arr=468_000,
-            margin=0.35
+            name="PNKLN Intelligence Pipeline", arr=468_000, margin=0.35
         ),
         "devtools": WorkStream(
-            name="Cursor/ESLint Hybrid",
-            arr=165_000,
-            margin=0.65,
-            cost_savings=150_000
+            name="Cursor/ESLint Hybrid", arr=165_000, margin=0.65, cost_savings=150_000
         ),
         "llm_serving": WorkStream(
-            name="LLM Serving Efficiency",
-            arr=510_000,
-            margin=0.50,
-            cost_savings=90_000
-        )
+            name="LLM Serving Efficiency", arr=510_000, margin=0.50, cost_savings=90_000
+        ),
     }
 
     baseline_ventures = {
         "swiper": WorkStream(
             name="Swiper Platform",
             arr=240_000,  # 5 retailers
-            margin=0.55
+            margin=0.55,
         ),
         "ai_agents": WorkStream(
             name="AI Agent Platform",
             arr=960_000,  # $80K MRR
-            margin=0.70
-        )
+            margin=0.70,
+        ),
     }
 
-    return {
-        "work_streams": work_streams,
-        "baseline_ventures": baseline_ventures
-    }
+    return {"work_streams": work_streams, "baseline_ventures": baseline_ventures}
 
 
 def calculate_aggressive_scenario() -> dict:
@@ -177,55 +146,39 @@ def calculate_aggressive_scenario() -> dict:
         "kernel_chaining": WorkStream(
             name="Kernel Chaining Architecture",
             arr=4_620_000,  # 2× baseline (enterprise focus)
-            margin=0.85
+            margin=0.85,
         ),
         "gemini_migration": WorkStream(
-            name="Autogen → Gemini Migration",
-            arr=800_000,
-            margin=0.92,
-            cost_savings=120_000
+            name="Autogen → Gemini Migration", arr=800_000, margin=0.92, cost_savings=120_000
         ),
         "superpowers_marketplace": WorkStream(
-            name="Superpowers Marketplace",
-            arr=2_304_000,
-            margin=0.80
+            name="Superpowers Marketplace", arr=2_304_000, margin=0.80
         ),
         "intelligence_pipeline": WorkStream(
-            name="PNKLN Intelligence Pipeline",
-            arr=1_872_000,
-            margin=0.50
+            name="PNKLN Intelligence Pipeline", arr=1_872_000, margin=0.50
         ),
         "devtools": WorkStream(
-            name="Cursor/ESLint Hybrid",
-            arr=600_000,
-            margin=0.78,
-            cost_savings=300_000
+            name="Cursor/ESLint Hybrid", arr=600_000, margin=0.78, cost_savings=300_000
         ),
         "llm_serving": WorkStream(
-            name="LLM Serving Efficiency",
-            arr=2_040_000,
-            margin=0.68,
-            cost_savings=150_000
-        )
+            name="LLM Serving Efficiency", arr=2_040_000, margin=0.68, cost_savings=150_000
+        ),
     }
 
     baseline_ventures = {
         "swiper": WorkStream(
             name="Swiper Platform",
             arr=960_000,  # 20 retailers
-            margin=0.70
+            margin=0.70,
         ),
         "ai_agents": WorkStream(
             name="AI Agent Platform",
             arr=2_400_000,  # $200K MRR
-            margin=0.80
-        )
+            margin=0.80,
+        ),
     }
 
-    return {
-        "work_streams": work_streams,
-        "baseline_ventures": baseline_ventures
-    }
+    return {"work_streams": work_streams, "baseline_ventures": baseline_ventures}
 
 
 def print_scenario_analysis(scenario_name: str, data: dict):
@@ -247,12 +200,16 @@ def print_scenario_analysis(scenario_name: str, data: dict):
         total_arr += ws.arr
         total_profit += ws.profit
 
-        print(f"{ws.name:40} | ARR: ${ws.arr:>12,.0f} | Profit: ${ws.profit:>12,.0f} | Margin: {ws.margin:.0%}")
+        print(
+            f"{ws.name:40} | ARR: ${ws.arr:>12,.0f} | Profit: ${ws.profit:>12,.0f} | Margin: {ws.margin:.0%}"
+        )
         if ws.cost_savings > 0:
             print(f"{'':40} | Cost Savings: ${ws.cost_savings:>12,.0f}")
 
     print("-" * 80)
-    print(f"{'WORK STREAMS TOTAL':40} | ARR: ${total_arr:>12,.0f} | Profit: ${total_profit:>12,.0f}")
+    print(
+        f"{'WORK STREAMS TOTAL':40} | ARR: ${total_arr:>12,.0f} | Profit: ${total_profit:>12,.0f}"
+    )
     print()
 
     # Baseline ventures
@@ -266,10 +223,14 @@ def print_scenario_analysis(scenario_name: str, data: dict):
         baseline_arr += bv.arr
         baseline_profit += bv.profit
 
-        print(f"{bv.name:40} | ARR: ${bv.arr:>12,.0f} | Profit: ${bv.profit:>12,.0f} | Margin: {bv.margin:.0%}")
+        print(
+            f"{bv.name:40} | ARR: ${bv.arr:>12,.0f} | Profit: ${bv.profit:>12,.0f} | Margin: {bv.margin:.0%}"
+        )
 
     print("-" * 80)
-    print(f"{'BASELINE TOTAL':40} | ARR: ${baseline_arr:>12,.0f} | Profit: ${baseline_profit:>12,.0f}")
+    print(
+        f"{'BASELINE TOTAL':40} | ARR: ${baseline_arr:>12,.0f} | Profit: ${baseline_profit:>12,.0f}"
+    )
     print()
 
     # Integrated platform
@@ -313,7 +274,7 @@ def print_scenario_analysis(scenario_name: str, data: dict):
             "Marketing": 8,
             "RiskCompliance": 8,
             "ScalingModel": 8,
-            "ExitAsset": 8
+            "ExitAsset": 8,
         }
     elif scenario_name == "conservative":
         scores = {
@@ -326,7 +287,7 @@ def print_scenario_analysis(scenario_name: str, data: dict):
             "Marketing": 6,
             "RiskCompliance": 7,
             "ScalingModel": 6,
-            "ExitAsset": 6
+            "ExitAsset": 6,
         }
     else:  # aggressive
         scores = {
@@ -339,7 +300,7 @@ def print_scenario_analysis(scenario_name: str, data: dict):
             "Marketing": 9,
             "RiskCompliance": 8,
             "ScalingModel": 9,
-            "ExitAsset": 9
+            "ExitAsset": 9,
         }
 
     viability_score = calculate_10fingers_score(scores)
@@ -402,17 +363,25 @@ def print_comparison_table(scenarios: dict):
             "arr": total_arr,
             "profit": total_profit,
             "margin": margin,
-            "valuation": valuation_blended
+            "valuation": valuation_blended,
         }
 
     # Print table
     print(f"{'Metric':<30} | {'Conservative':>15} | {'Baseline':>15} | {'Aggressive':>15}")
     print("-" * 80)
 
-    print(f"{'Total ARR':<30} | ${results['conservative']['arr']:>14,.0f} | ${results['baseline']['arr']:>14,.0f} | ${results['aggressive']['arr']:>14,.0f}")
-    print(f"{'Net Profit':<30} | ${results['conservative']['profit']:>14,.0f} | ${results['baseline']['profit']:>14,.0f} | ${results['aggressive']['profit']:>14,.0f}")
-    print(f"{'Margin':<30} | {results['conservative']['margin']:>14.1%} | {results['baseline']['margin']:>14.1%} | {results['aggressive']['margin']:>14.1%}")
-    print(f"{'Exit Valuation':<30} | ${results['conservative']['valuation']:>14,.0f} | ${results['baseline']['valuation']:>14,.0f} | ${results['aggressive']['valuation']:>14,.0f}")
+    print(
+        f"{'Total ARR':<30} | ${results['conservative']['arr']:>14,.0f} | ${results['baseline']['arr']:>14,.0f} | ${results['aggressive']['arr']:>14,.0f}"
+    )
+    print(
+        f"{'Net Profit':<30} | ${results['conservative']['profit']:>14,.0f} | ${results['baseline']['profit']:>14,.0f} | ${results['aggressive']['profit']:>14,.0f}"
+    )
+    print(
+        f"{'Margin':<30} | {results['conservative']['margin']:>14.1%} | {results['baseline']['margin']:>14.1%} | {results['aggressive']['margin']:>14.1%}"
+    )
+    print(
+        f"{'Exit Valuation':<30} | ${results['conservative']['valuation']:>14,.0f} | ${results['baseline']['valuation']:>14,.0f} | ${results['aggressive']['valuation']:>14,.0f}"
+    )
     print()
 
     print("🎯 RECOMMENDATION: Focus on BASELINE scenario execution")
@@ -428,7 +397,7 @@ def main():
         "--scenario",
         choices=["conservative", "baseline", "aggressive", "all"],
         default="all",
-        help="Which scenario to calculate (default: all)"
+        help="Which scenario to calculate (default: all)",
     )
 
     args = parser.parse_args()
@@ -436,7 +405,7 @@ def main():
     scenarios = {
         "conservative": calculate_conservative_scenario(),
         "baseline": calculate_baseline_scenario(),
-        "aggressive": calculate_aggressive_scenario()
+        "aggressive": calculate_aggressive_scenario(),
     }
 
     if args.scenario == "all":
