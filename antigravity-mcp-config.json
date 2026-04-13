@@ -4,17 +4,26 @@
       "serverUrl": "https://developer-knowledge.googleapis.com/mcp/",
       "authProviderType": "google_credentials"
     },
+    "mcp-toolbox-sdk-java": {
+      "command": "java",
+      "args": ["-jar", "/Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-0.2.0-SNAPSHOT.jar"],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
+        "JAVA_HOME": "/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+      }
+    },
     "mcp-toolbox-for-databases": {
       "command": "npx",
       "args": ["-y", "@antigravity/mcp-database-toolbox", "--prebuilt", "firestore"],
       "env": {
         "FIRESTORE_PROJECT": "shadowtag-omega-v4",
         "FIRESTORE_DATABASE": "shadowtag-engine"
-      }
+      },
+      "authProviderType": "google_credentials"
     },
     "chrome-devtools-mcp": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
+      "args": ["-y", "@anthropic/chrome-devtools-mcp@latest", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
     },
     "github-mcp": {
       "serverUrl": "https://api.github.com/mcp/",
@@ -32,10 +41,6 @@
     "supabase-mcp": {
       "serverUrl": "https://api.supabase.com/mcp/",
       "authProviderType": "oauth"
-    },
-    "google-cloud-run-admin": {
-      "serverUrl": "https://run.googleapis.com/mcp/",
-      "authProviderType": "google_credentials"
     }
   }
 }
