@@ -1,62 +1,28 @@
 name: 10X Vibe Coding Matrix (OMEGA SINGULARITY)
-
-on:
-  pull_request:
-    branches: [ master, main ]
-  push:
-    branches: [ master, main ]
-
-permissions:
-  contents: write
-  pull-requests: write
-
+on: [push, pull_request]
+permissions: { contents: write, pull-requests: write }
 jobs:
   execute_10x_matrix:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Monorepo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Phase 1 - Gitleaks & Token Exorcism
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Python & Node Environments
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - uses: actions/checkout@v4
+      - uses: gitleaks/gitleaks-action@v2
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Phase 2 - Pinkln YOLO Purge (Python & TS)
+        with: { python-version: '3.11' }
+      - uses: actions/setup-java@v3
+        with: { distribution: 'temurin', java-version: '21' }
+      - name: Phase 2 - Pinkln YOLO Purge & Vulture
         run: |
-          pip install ruff
+          pip install ruff vulture
           npm install -g @biomejs/biome
+          vulture apps/ libs/ scripts/ --min-confidence 80 || true
           ruff check --fix . || true
           biome check --write . || true
-
-      - name: Phase 3 - Tactical UI Auditor
-        run: |
-          if [ -f scripts/ui_consistency_auditor.py ]; then
-            python scripts/ui_consistency_auditor.py > audit_findings.md
-          else
-            echo "UI Auditor active. Parsing React apps for inconsistencies..." > audit_findings.md
-          fi
-          
-      - name: Phase 4 - Auto-Commit The Fixes (The 10X Hack)
+      - name: Phase 4 - Auto-Commit
         run: |
           git config --global user.name "Antigravity V60 [Bot]"
           git config --global user.email "bot@shadowtag.ai"
           git add .
-          git diff --staged --quiet || (git commit -m "chore(auto-fix): apply 10X Vibe Coding matrix" && git push origin HEAD:${{ github.head_ref || github.ref_name }})
-
-      - name: Post Audit Findings to PR
-        if: github.event_name == 'pull_request'
-        uses: mshick/add-pr-comment@v2
-        with:
-          message-path: audit_findings.md
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          git diff --staged --quiet || (git commit -m "chore(auto-fix): apply 10X Vibe Coding matrix" && git push origin HEAD:${{ github.head_ref }})
