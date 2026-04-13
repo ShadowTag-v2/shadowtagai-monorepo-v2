@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "mcp-toolbox-sdk-java": {
+      "command": "java",
+      "args": [
+        "-jar",
+        "MUST_SET_VIA_MCP_JAVA_SDK_JAR_PATH_ENV"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "use_default_adc"
+      },
+      "_note": "JSON has no variable interpolation. Set the JAR path in your IDE MCP config or WORKSTATION_LOCAL_OVERRIDES. Run scripts/build_java_mcp.sh to get the absolute path."
+    },
+    "google-developer-knowledge": {
+      "serverUrl": "https://developer-knowledge.googleapis.com/mcp/",
+      "authProviderType": "google_credentials"
+    },
+    "mcp-toolbox-for-databases": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-toolbox", "--prebuilt", "firestore"],
+      "authProviderType": "google_credentials",
+      "_note": "Package name is placeholder. Replace with the actual published MCP database toolbox package from googleapis/genai-toolbox or build from source."
+    },
+    "chrome-devtools-mcp": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-server-chrome-devtools", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
+    },
+    "github-mcp": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "OMITTED_FOR_SECURITY_USE_ENV_VAR"
+      },
+      "_note": "GitHub MCP uses the CLI-based server via npx, not a REST endpoint. OAuth DCR is not yet supported for MCP servers. Use a PAT or GitHub App installation token."
+    }
+  }
+}
