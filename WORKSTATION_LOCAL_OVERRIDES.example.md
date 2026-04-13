@@ -1,12 +1,14 @@
-# WORKSTATION_LOCAL_OVERRIDES — v8.2c (Example)
+# WORKSTATION_LOCAL_OVERRIDES — v8.3 (Example)
 
 > This file contains machine-local paths and secrets. Use env vars in production.
 > Do NOT commit real secrets. This is a template.
 
-## PEM Keys
+## GitHub App (Parameterized in operator_invariants.json)
 ```
 SHADOWTAG_PEM=/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem
 EHANC69_PEM=/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem
+GITHUB_APP_ID=3018200
+GITHUB_CLIENT_ID=Iv23ctYqrxPQIt2ir8gY
 ```
 
 ## OAuth Client Secret
@@ -53,4 +55,5 @@ ORBSTACK_DOCKER=$HOME/.orbstack/bin/docker
 ```
 NOTEBOOKLM_MASTER_BRAIN=c493b409-3955-418f-a993-755c38dc8e7f
 NOTEBOOKLM_AUTH=storage_state.json
+NOTEBOOKLM_STATUS=OPERATIONAL  # v0.1.1 installed
 ```
