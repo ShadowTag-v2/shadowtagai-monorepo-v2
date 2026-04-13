@@ -22,6 +22,11 @@
 | 15 | Bounded YOLO (`agentYoloMode=true`) auto-approval | 🟢 Low | MITIGATED | Destructive tools (`rm -rf`, `sudo`) physically excluded from MCP schema. Model cannot call tools that do not exist. |
 | 16 | `git reset --hard` (Temporal Reversal) wipes uncommitted work | 🟠 High | GOVERNED | Reset ONLY authorized via Temporal Reversal state machine. Stash → reset to `latest-stable` → branch → fix via TDD. |
 | 17 | `git push --force` overwrites remote history | 🔴 Critical | GOVERNED | Bound by Squash-Push Protocol. Must use `--force-with-lease` first. Escalate to `--force` ONLY after fetching origin to verify tracking refs. |
+| 18 | No Firestore security rules deployed on any database | 🔴 Critical | RESOLVED | Zero-trust rules deployed to `firestore.rules`. Default deny-all with admin-only access. Deployed via `firebase deploy --only firestore:rules`. |
+| 19 | No Storage security rules deployed | 🔴 Critical | RESOLVED | Locked-down `storage.rules` deployed. Default deny-all — no storage actively used. |
+| 20 | `shadowtagai.com` ACME 403 — conflicting Squarespace DNS | 🟠 High | KNOWN | Squarespace retains A/CNAME records that override Firebase Hosting verification. Manual DNS cleanup required in Squarespace admin. |
+| 21 | `knowledge-base-database` — undocumented, empty, no delete protection | 🟡 Medium | KNOWN | Empty Firestore database with no collections and `deletionPolicy: ABANDON`. Candidate for deletion or documentation. |
+| 22 | No Firestore monitoring alerts deployed | 🟡 Medium | OPEN | Cloud Monitoring alerting policies for read/write volume and error rates not yet configured for `shadowtag-omega-v4`. |
 
 ## Review Policy
 

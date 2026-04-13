@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-import subprocess
 import os
 import re
-from pathlib import Path
+import subprocess
 from collections import defaultdict
+from pathlib import Path
 
 # Priority order: higher = preferred when merging same block
 PRIORITY = {

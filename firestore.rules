@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default: deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // KovelAI leads — authenticated create, admin read/update/delete
+    match /kovelai_leads/{leadId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // KovelAI firms — authenticated create, admin read/update/delete
+    match /kovelai_firms/{firmId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // UphillSnowball analyses — strict admin-only
+    match /uphillsnowball_analyses/{docId} {
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // UphillSnowball billing — strict admin-only (contains rate/cost data)
+    match /uphillsnowball_billing/{docId} {
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // UphillSnowball intakes — authenticated create, admin manage
+    match /uphillsnowball_intakes/{docId} {
+      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // UphillSnowball screenings — strict admin-only
+    match /uphillsnowball_screenings/{docId} {
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}
