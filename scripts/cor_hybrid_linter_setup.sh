@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 echo "🚀 Scaffolding Cor.Hybrid Linter & Git Hooks..."
 
-# Source nvm if available
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
+npm init -y || true
 npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin husky lint-staged
 
 mkdir -p eslint-plugin-cor-rules
@@ -65,7 +62,7 @@ module.exports = {
     "cor-rules/no-console-log": "warn",
     "@typescript-eslint/no-explicit-any": "off"
   },
-  ignorePatterns: ["node_modules/**", "dist/**", "build/**", ".next/**", "external_repos/**", "control/**", "tools/**"]
+  ignorePatterns: ["node_modules/**", "dist/**", "build/**", ".next/**"]
 };
 EOF
 
