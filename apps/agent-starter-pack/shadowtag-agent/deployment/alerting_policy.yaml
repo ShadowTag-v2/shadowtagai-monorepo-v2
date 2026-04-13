@@ -1,0 +1,67 @@
+# Cloud Monitoring Alerting Policy for shadowtag-agent
+# Deploy: gcloud alpha monitoring policies create --policy-from-file=alerting_policy.yaml --project=shadowtag-omega-v4
+
+displayName: "ShadowTag Agent Error Rate Alert"
+documentation:
+  content: |
+    The shadowtag-agent Cloud Run service is experiencing elevated error rates.
+    Check Cloud Run logs and Firestore write failures.
+    Runbook: https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/blob/main/docs/runbooks/agent-errors.md
+  mimeType: text/markdown
+
+conditions:
+  - displayName: "Cloud Run 5xx Error Rate > 1%"
+    conditionThreshold:
+      filter: >-
+        resource.type = "cloud_run_revision"
+        AND resource.labels.service_name = "shadowtag-agent"
+        AND metric.type = "run.googleapis.com/request_count"
+        AND metric.labels.response_code_class = "5xx"
+      comparison: COMPARISON_GT
+      thresholdValue: 0.01
+      duration: 300s
+      aggregations:
+        - alignmentPeriod: 60s
+          perSeriesAligner: ALIGN_RATE
+          crossSeriesReducer: REDUCE_SUM
+          groupByFields:
+            - resource.labels.service_name
+      trigger:
+        count: 1
+
+  - displayName: "Cloud Run Instance Memory > 512MB"
+    conditionThreshold:
+      filter: >-
+        resource.type = "cloud_run_revision"
+        AND resource.labels.service_name = "shadowtag-agent"
+        AND metric.type = "run.googleapis.com/container/memory/utilizations"
+      comparison: COMPARISON_GT
+      thresholdValue: 0.8
+      duration: 300s
+      aggregations:
+        - alignmentPeriod: 60s
+          perSeriesAligner: ALIGN_PERCENTILE_99
+      trigger:
+        count: 1
+
+  - displayName: "Cloud Run Request Latency P99 > 10s"
+    conditionThreshold:
+      filter: >-
+        resource.type = "cloud_run_revision"
+        AND resource.labels.service_name = "shadowtag-agent"
+        AND metric.type = "run.googleapis.com/request_latencies"
+      comparison: COMPARISON_GT
+      thresholdValue: 10000
+      duration: 300s
+      aggregations:
+        - alignmentPeriod: 60s
+          perSeriesAligner: ALIGN_PERCENTILE_99
+      trigger:
+        count: 1
+
+combiner: OR
+enabled: true
+
+notificationChannels: []
+# TODO: Add notification channel after creating one:
+# gcloud alpha monitoring channels create --display-name="ShadowTag Ops" --type=email --channel-labels=email_address=ops@shadowtagai.com --project=shadowtag-omega-v4
