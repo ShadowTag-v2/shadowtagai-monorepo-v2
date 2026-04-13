@@ -32,7 +32,7 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 
 ## Hardened State
 - v8.4 canonicalized: 2026-04-13
-- Commit: `c0e93f5a368`
+- Commit: `c279f820037`
 - Lighthouse: A97 / BP100 / SEO100
 - Structural tests: 30/30
 - Dead code: clean (vulture + ruff)
