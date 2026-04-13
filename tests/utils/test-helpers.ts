@@ -10,7 +10,7 @@ import { jest } from '@jest/globals';
  * Creates a mock function with type safety
  */
 export function createMock<T extends (...args: any[]) => any>(): jest.MockedFunction<T> {
-  return jest.fn() as jest.MockedFunction<T>;
+  return jest.fn() as unknown as jest.MockedFunction<T>;
 }
 
 /**
@@ -46,7 +46,7 @@ export function sleep(ms: number): Promise<void> {
 export function createSpy<T extends object, K extends keyof T>(
   obj: T,
   method: K
-): jest.SpyInstance {
+): jest.Spied<any> {
   return jest.spyOn(obj, method as any);
 }
 
@@ -284,18 +284,19 @@ export const consoleSpy = {
   /**
    * Suppresses console output during tests
    */
-  suppress(): jest.SpyInstance[] {
+  suppress(): jest.Spied<any>[] {
+    const noop = () => {};
     return [
-      jest.spyOn(console, 'log').mockImplementation(),
-      jest.spyOn(console, 'error').mockImplementation(),
-      jest.spyOn(console, 'warn').mockImplementation(),
+      jest.spyOn(console, 'log').mockImplementation(noop),
+      jest.spyOn(console, 'error').mockImplementation(noop),
+      jest.spyOn(console, 'warn').mockImplementation(noop),
     ];
   },
 
   /**
    * Restores console output
    */
-  restore(spies: jest.SpyInstance[]): void {
+  restore(spies: jest.Spied<any>[]): void {
     spies.forEach(spy => spy.mockRestore());
   },
 };

@@ -1,103 +1,41 @@
 {
-  "mcp": {
-    "startupTimeoutMs": 60000,
-    "toolTimeoutMs": 120000,
-    "retryCount": 2
-  },
   "mcpServers": {
     "google-developer-knowledge": {
-      "serverUrl": "https://developerknowledge.googleapis.com/mcp",
-      "timeout": 30000,
+      "serverUrl": "https://developer-knowledge.googleapis.com/mcp/",
       "authProviderType": "google_credentials"
     },
-    "stitch-mcp": {
-      "serverUrl": "https://stitch.googleapis.com/mcp",
-      "timeout": 30000,
-      "authProviderType": "google_credentials"
-    },
-    "sequential-thinking": {
-      "command": "/opt/homebrew/bin/node",
-      "args": [
-        "/opt/homebrew/bin/npx",
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
+    "mcp-toolbox-for-databases": {
+      "command": "npx",
+      "args": ["-y", "@antigravity/mcp-database-toolbox", "--prebuilt", "firestore"],
       "env": {
-        "PATH": "/opt/homebrew/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin"
-      }
-    },
-    "firebase-mcp-server": {
-      "command": "/opt/homebrew/bin/node",
-      "args": [
-        "/opt/homebrew/bin/npx",
-        "-y",
-        "firebase-tools@latest",
-        "experimental:mcp"
-      ],
-      "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
-        "GCLOUD_PROJECT": "shadowtag-omega-v4",
-        "FIREBASE_PROJECT": "shadowtag-omega-v4",
-        "PATH": "/opt/homebrew/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin"
+        "FIRESTORE_PROJECT": "shadowtag-omega-v4",
+        "FIRESTORE_DATABASE": "shadowtag-engine"
       }
     },
     "chrome-devtools-mcp": {
-      "command": "/opt/homebrew/bin/node",
-      "args": [
-        "/opt/homebrew/bin/npx",
-        "-y",
-        "chrome-devtools-mcp@latest",
-        "--browser-url=http://127.0.0.1:9222",
-        "--no-usage-statistics",
-        "--no-performance-crux",
-        "--viewport=1280x720",
-        "--logFile=/Users/pikeymickey/.cache/chrome-devtools-mcp/mcp-debug.log"
-      ],
-      "env": {
-        "CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS": "1",
-        "CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS": "1",
-        "PATH": "/opt/homebrew/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin"
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
+    },
+    "github-mcp": {
+      "serverUrl": "https://api.github.com/mcp/",
+      "oauth": {
+        "clientId": "Iv23ctYqrxPQIt2ir8gY",
+        "clientSecret": "process.env.GITHUB_CLIENT_SECRET"
       }
     },
-    "mcp-toolbox-for-databases": {
-      "command": "/opt/homebrew/bin/node",
-      "args": [
-        "/opt/homebrew/bin/npx",
-        "-y",
-        "@toolbox-sdk/server@latest",
-        "--prebuilt",
-        "firestore",
-        "--stdio"
-      ],
-      "env": {
-        "FIRESTORE_PROJECT": "shadowtag-omega-v4",
-        "FIRESTORE_DATABASE": "shadowtag-engine",
-        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
-        "PATH": "/opt/homebrew/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/local/bin:/usr/bin:/bin"
+    "stripe-production": {
+      "serverUrl": "https://api.stripe.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer process.env.STRIPE_RESTRICTED_KEY"
       }
     },
-    "cloud-run": {
-      "serverUrl": "https://run.googleapis.com/mcp",
-      "timeout": 30000,
+    "supabase-mcp": {
+      "serverUrl": "https://api.supabase.com/mcp/",
+      "authProviderType": "oauth"
+    },
+    "google-cloud-run-admin": {
+      "serverUrl": "https://run.googleapis.com/mcp/",
       "authProviderType": "google_credentials"
-    }
-  },
-  "commands": {
-    "gemini-31-flash-lite-preview-stream": {
-      "description": "Direct gemini-3.1-flash-lite-preview streaming test",
-      "command": "bash",
-      "args": [
-        "-lc",
-        "curl \"https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-3.1-flash-lite-preview:streamGenerateContent?key=${API_KEY}\" -X POST -H \"Content-Type: application/json\" -d '{\"contents\":[{\"role\":\"user\",\"parts\":[{\"text\":\"Explain how AI works in a few words\"}]}]}'"
-      ]
-    },
-    "pnkln-lancedb-smoke-test": {
-      "description": "Run local LanceDB smoke test on Apple Silicon",
-      "command": "bash",
-      "args": [
-        "-lc",
-        "python3 /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/pnkln_lancedb.py --smoke-test"
-      ]
     }
   }
 }
