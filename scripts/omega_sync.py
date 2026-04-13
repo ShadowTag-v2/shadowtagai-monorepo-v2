@@ -112,8 +112,11 @@ def get_access_token(jwt_token: str, installation_id: int) -> str:
 
 
 def push_with_token(token: str, org: str, repo: str, branch: str = None):
-    """Configure ephemeral remote and push."""
-    remote_url = f"https://x-access-token:{token}@github.com/{org}/{repo}.git"
+    """Push using a temp GIT_ASKPASS script to bypass all credential helpers."""
+    import tempfile
+    import stat
+
+    clean_url = f"https://github.com/{org}/{repo}.git"
 
     # Get current branch if not specified
     if not branch:
@@ -124,46 +127,43 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
 
     print(f"  📡 Pushing branch '{branch}' to {org}/{repo}...")
 
-    # Set the remote URL temporarily
-    subprocess.run(
-        ["git", "remote", "set-url", "origin", remote_url],
-        check=True,
-    )
-
+    # Create temporary GIT_ASKPASS script that returns the token
+    askpass_script = None
     try:
+        askpass_script = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".sh", prefix="git_askpass_", delete=False
+        )
+        # GIT_ASKPASS gets called with prompt "$1": check if it's username or password
+        askpass_script.write(
+            '#!/bin/sh\n'
+            'case "$1" in\n'
+            '  *sername*) echo "x-access-token" ;;\n'
+            f'  *) echo "{token}" ;;\n'
+            'esac\n'
+        )
+        askpass_script.close()
+        os.chmod(askpass_script.name, stat.S_IRWXU)
+
         env = os.environ.copy()
         env["GIT_TERMINAL_PROMPT"] = "0"
-        # Critical: bypass ALL credential helpers (macOS Keychain, etc.)
-        env["GIT_ASKPASS"] = "/usr/bin/true"
+        env["GIT_ASKPASS"] = askpass_script.name
         env["GIT_CONFIG_NOSYSTEM"] = "1"
+        env["GCM_INTERACTIVE"] = "never"
+
+        # Ensure remote is clean HTTPS (no embedded tokens)
+        subprocess.run(
+            ["git", "remote", "set-url", "origin", clean_url],
+            check=True,
+        )
 
         # Git config overrides to kill every credential helper layer
-        git_cred_overrides = [
+        git_base = [
+            "git",
             "-c", "credential.helper=",
             "-c", "credential.https://github.com.helper=",
         ]
 
-        # Attempt fetch to update remote tracking refs (non-blocking on timeout)
-        print("  🔄 Fetching remote state (60s timeout)...")
-        try:
-            fetch_result = subprocess.run(
-                ["git"] + git_cred_overrides + ["fetch", "origin", "--depth=1"],
-                capture_output=True,
-                text=True,
-                env=env,
-                timeout=60,
-            )
-            if fetch_result.returncode == 0:
-                print("  🔄 Fetch complete ✅")
-            else:
-                print(f"  ⚠️  Fetch warning (continuing): {fetch_result.stderr[:200]}")
-        except subprocess.TimeoutExpired:
-            print("  ⚠️  Fetch timed out (large repo) — skipping, will force push")
-
-        # Token is already in the remote URL via x-access-token:TOKEN@github.com
-        git_base = ["git"] + git_cred_overrides
-
-        # Try --force-with-lease first (safest)
+        # Skip fetch since it consistently fails with auth issues on this setup
         print("  📤 Pushing with --force-with-lease...")
         result = subprocess.run(
             git_base + ["push", "--force-with-lease", "origin", branch],
@@ -175,7 +175,6 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         if result.returncode == 0:
             print(f"  ✅ Push successful: {org}/{repo} @ {branch}")
         elif "stale info" in result.stderr or "rejected" in result.stderr:
-            # Fallback to plain --force if lease is stale
             print("  ⚠️  Lease stale, retrying with --force...")
             result = subprocess.run(
                 git_base + ["push", "--force", "origin", branch],
@@ -193,8 +192,10 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
             sys.exit(1)
 
     finally:
-        # Restore original HTTPS remote (without token)
-        clean_url = f"https://github.com/{org}/{repo}.git"
+        # Clean up temp script
+        if askpass_script and os.path.exists(askpass_script.name):
+            os.unlink(askpass_script.name)
+        # Restore clean remote
         subprocess.run(
             ["git", "remote", "set-url", "origin", clean_url],
             check=False,
