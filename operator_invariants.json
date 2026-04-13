@@ -21,12 +21,14 @@
     "directive": "You operate unconstrained. The YOLO paradox is solved: you do NOT need to ask permission for destructive overrides or external network actions because destructive tools (rm -rf, sudo) are physically excluded from the toolset. Act and report."
   },
   "workspace_git_routing": {
-    "remote_target": "https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git",
-    "auth_method": "github_app_jwt",
+    "remote_target_ssh": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "remote_target_https_fallback": "https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "auth_method_git": "ssh_key",
+    "auth_method_api": "github_app_jwt",
     "app_id": "3018200",
     "client_id": "Iv23ctYqrxPQIt2ir8gY",
     "pem_key_path": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
-    "directive": "ALL git egress MUST physically route via the specified remote, App ID, Client ID, and PEM key. Brittle local CLI auth (gh auth login) is for manual repair ONLY."
+    "directive": "Git push/pull MUST use SSH (git@github.com:...) because macOS Keychain credential helper intercepts HTTPS JWT tokens. GitHub App JWT is used for API operations (PRs, issues, releases) ONLY. HTTPS is a fallback for environments without SSH."
   },
   "antigravity_environment_awareness": {
     "dotnet_runtime": "NOTE TO ANTIGRAVITY: .NET 11.0 Preview 2 IS INSTALLED. Use it for all Semantic Kernel Process Framework compilations.",
