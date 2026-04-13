@@ -23,7 +23,7 @@
     },
     "chrome-devtools-mcp": {
       "command": "npx",
-      "args": ["-y", "@anthropic/chrome-devtools-mcp@latest", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
+      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
     },
     "github-mcp": {
       "serverUrl": "https://api.github.com/mcp/",
