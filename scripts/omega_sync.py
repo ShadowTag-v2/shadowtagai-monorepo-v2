@@ -112,11 +112,18 @@ def get_access_token(jwt_token: str, installation_id: int) -> str:
 
 
 def push_with_token(token: str, org: str, repo: str, branch: str = None):
-    """Push using a temp GIT_ASKPASS script to bypass all credential helpers."""
+    """Push using SSH (primary) with HTTPS+ASKPASS fallback.
+
+    Per DOCTRINE_EXTENDED.md Section X:
+    - SSH is the PRIMARY transport (avoids macOS credential cache poisoning)
+    - --force-with-lease is the ONLY permitted force mechanism
+    - Raw --force is FORBIDDEN on main and shared branches
+    """
     import tempfile
     import stat
 
-    clean_url = f"https://github.com/{org}/{repo}.git"
+    ssh_url = f"git@github.com:{org}/{repo}.git"
+    https_url = f"https://github.com/{org}/{repo}.git"
 
     # Get current branch if not specified
     if not branch:
@@ -127,13 +134,37 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
 
     print(f"  📡 Pushing branch '{branch}' to {org}/{repo}...")
 
-    # Create temporary GIT_ASKPASS script that returns the token
+    # ── PRIMARY: SSH push ──
+    print("  🔑 Attempting SSH push (primary transport)...")
+    subprocess.run(
+        ["git", "remote", "set-url", "origin", ssh_url],
+        check=True,
+    )
+
+    result = subprocess.run(
+        ["git", "push", "--force-with-lease", "origin", branch],
+        capture_output=True,
+        text=True,
+    )
+
+    if result.returncode == 0:
+        print(f"  ✅ SSH push successful: {org}/{repo} @ {branch}")
+        return
+
+    print(f"  ⚠️  SSH push failed: {result.stderr.strip()}")
+
+    # ── FALLBACK: HTTPS + GIT_ASKPASS ──
+    print("  🔄 Falling back to HTTPS + GIT_ASKPASS...")
     askpass_script = None
     try:
+        subprocess.run(
+            ["git", "remote", "set-url", "origin", https_url],
+            check=True,
+        )
+
         askpass_script = tempfile.NamedTemporaryFile(
             mode="w", suffix=".sh", prefix="git_askpass_", delete=False
         )
-        # GIT_ASKPASS gets called with prompt "$1": check if it's username or password
         askpass_script.write(
             '#!/bin/sh\n'
             'case "$1" in\n'
@@ -150,21 +181,13 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         env["GIT_CONFIG_NOSYSTEM"] = "1"
         env["GCM_INTERACTIVE"] = "never"
 
-        # Ensure remote is clean HTTPS (no embedded tokens)
-        subprocess.run(
-            ["git", "remote", "set-url", "origin", clean_url],
-            check=True,
-        )
-
-        # Git config overrides to kill every credential helper layer
         git_base = [
             "git",
             "-c", "credential.helper=",
             "-c", "credential.https://github.com.helper=",
         ]
 
-        # Skip fetch since it consistently fails with auth issues on this setup
-        print("  📤 Pushing with --force-with-lease...")
+        print("  📤 HTTPS push with --force-with-lease...")
         result = subprocess.run(
             git_base + ["push", "--force-with-lease", "origin", branch],
             capture_output=True,
@@ -173,31 +196,20 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         )
 
         if result.returncode == 0:
-            print(f"  ✅ Push successful: {org}/{repo} @ {branch}")
-        elif "stale info" in result.stderr or "rejected" in result.stderr:
-            print("  ⚠️  Lease stale, retrying with --force...")
-            result = subprocess.run(
-                git_base + ["push", "--force", "origin", branch],
-                capture_output=True,
-                text=True,
-                env=env,
-            )
-            if result.returncode == 0:
-                print(f"  ✅ Push successful (forced): {org}/{repo} @ {branch}")
-            else:
-                print(f"  ❌ Push failed: {result.stderr}")
-                sys.exit(1)
+            print(f"  ✅ HTTPS push successful: {org}/{repo} @ {branch}")
         else:
-            print(f"  ❌ Push failed: {result.stderr}")
+            print(f"  ❌ Push failed on both SSH and HTTPS.")
+            print(f"     HTTPS error: {result.stderr}")
+            print(f"     NOTE: Raw --force is FORBIDDEN on shared branches.")
+            print(f"     Per DOCTRINE_EXTENDED.md Section X, escalate to State B.")
             sys.exit(1)
 
     finally:
-        # Clean up temp script
         if askpass_script and os.path.exists(askpass_script.name):
             os.unlink(askpass_script.name)
-        # Restore clean remote
+        # Restore SSH as canonical remote
         subprocess.run(
-            ["git", "remote", "set-url", "origin", clean_url],
+            ["git", "remote", "set-url", "origin", ssh_url],
             check=False,
         )
 
