@@ -1,40 +1,54 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[BUILD] Integrating googleapis/mcp-toolbox-sdk-java for JVM backend context..."
-MCP_DIR="${HOME}/mcp-toolbox-sdk-java"
+REPO_URL="${REPO_URL:-https://github.com/googleapis/mcp-toolbox-sdk-java.git}"
+WORKDIR="${WORKDIR:-$HOME/.cache/mcp-toolbox-sdk-java}"
+MAVEN_FALLBACK="/tmp/apache-maven-3.9.9/bin/mvn"
 
-if [ ! -d "$MCP_DIR" ]; then
-    git clone https://github.com/googleapis/mcp-toolbox-sdk-java.git "$MCP_DIR"
-fi
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || {
+    echo "Missing required command: $1" >&2
+    exit 1
+  }
+}
 
-cd "$MCP_DIR" || exit 1
+need_cmd git
+need_cmd java
 
-# Resolve Maven — ./mvnw doesn't ship with this repo (Risk #2)
-if [ -x "./mvnw" ]; then
-    MVN="./mvnw"
-elif command -v mvn >/dev/null 2>&1; then
-    MVN="mvn"
-elif [ -x "/tmp/apache-maven-3.9.9/bin/mvn" ]; then
-    MVN="/tmp/apache-maven-3.9.9/bin/mvn"
+if command -v mvn >/dev/null 2>&1; then
+  MVN_BIN="$(command -v mvn)"
+elif [ -x "$MAVEN_FALLBACK" ]; then
+  MVN_BIN="$MAVEN_FALLBACK"
 else
-    echo "[FAIL] Maven not found. Install via: brew install maven"
-    exit 1
+  echo "Maven not found. Install mvn or provide /tmp/apache-maven-3.9.9/bin/mvn" >&2
+  exit 1
 fi
 
-echo "[BUILD] Compiling Java MCP SDK via: $MVN"
-$MVN clean install -DskipTests -q
+mkdir -p "$(dirname "$WORKDIR")"
 
-JAR_PATH=$(find . -name "mcp-toolbox-sdk-java-*.jar" -path "*/target/*" | head -n 1)
+if [ ! -d "$WORKDIR/.git" ]; then
+  git clone --depth=1 "$REPO_URL" "$WORKDIR"
+else
+  git -C "$WORKDIR" fetch --depth=1 origin main
+  git -C "$WORKDIR" reset --hard FETCH_HEAD
+fi
+
+(
+  cd "$WORKDIR"
+  "$MVN_BIN" -q -DskipTests clean package
+)
+
+JAR_PATH="$(
+  find "$WORKDIR" -type f \
+    \( -path '*/target/*.jar' -o -path '*/build/libs/*.jar' \) \
+    ! -name '*sources.jar' \
+    ! -name '*javadoc.jar' \
+    | head -n 1
+)"
+
 if [ -z "$JAR_PATH" ]; then
-    JAR_PATH=$(find . -name "*.jar" -path "*/build/libs/*" | head -n 1)
+  echo "No runnable jar found under $WORKDIR" >&2
+  exit 1
 fi
 
-if [ -z "$JAR_PATH" ]; then
-    echo "[FAIL] No JAR artifact found after build."
-    exit 1
-fi
-
-JAR_PATH="$(cd "$(dirname "$JAR_PATH")" && pwd)/$(basename "$JAR_PATH")"
-echo "[SUCCESS] Java MCP Built at: $JAR_PATH"
-echo "Export: export MCP_JAVA_SDK_JAR_PATH=\"$JAR_PATH\""
+printf '%s\n' "$JAR_PATH"
