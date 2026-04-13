@@ -1,115 +1,54 @@
 {
-  "version": 18,
+  "version": "8.2c",
   "scope": "antigravity_local_operator_invariants",
-  "purpose": "v60.0 OMEGA APEX SINGULARITY. Total integration of Kosmos/BioAgents/n-autoresearch, Java MCP SDK, Obsidian/NotebookLM Second Brain, 35 Security Rules, 30 Tech Debts, and the Rich Hickey/Karpathy Protocol.",
+  "purpose": "OMEGA APEX SINGULARITY. Flawless normalization of Model Doctrine, Bounded YOLO via Tool Exclusion, .NET 11.0 Preview 2, Git PEM Routing, 30 Tech Debts, Cloud Tasks, and the Hickey/Karpathy Protocol.",
   "settings": {
     "authorized_gcp_project": "shadowtag-omega-v4",
-    "correct_external_model": "gemini-3.1-flash-lite-preview-thinking",
-    "github_control_plane": "github_app",
     "gemini_context_resolution": "global_overrides_in_~/.gemini/GEMINI.md; project_guardrails_in_working_directory; context_files_override_general_prompts",
     "gemini_yolo_mode_setting": "geminicodeassist.agentYoloMode=true",
     "allowed_tool_classes": ["command(*)", "mcp(*)"],
     "excluded_destructive_tools": ["ShellTool(rm -rf)", "ShellTool(sudo)"],
     "telemetry_state": "SEVERED_VIA_DISABLE_TELEMETRY=1_AND_DISABLE_ERROR_REPORTING=1",
-    "autonomy_policy": "ACT, THEN REPORT. Do not ask for confirmation for routine work inside the workspace root."
+    "queue_doctrine": "Serverless Google Cloud Tasks ONLY. BullMQ is EXPLICITLY BANNED."
   },
-  "antigravity_mcp_integration": {
-    "core_directive": "DO NOT paste database schemas or logs. Fetch live context dynamically via connected MCP servers.",
-    "java_mcp_sdk": "Use googleapis/mcp-toolbox-sdk-java for enterprise JVM backends. Build via Maven and configure stdio transport pointing to the compiled .jar.",
-    "auth_google_adc": "Set authProviderType: 'google_credentials' for Google Cloud APIs. Requires gcloud auth application-default login.",
-    "auth_oauth_dcr": "Antigravity automatically handles OAuth for servers supporting Dynamic Client Registration (DCR).",
-    "custom_config_path": "~/.gemini/antigravity/mcp_config.json"
+  "normalized_model_doctrine": {
+    "authorized_external_model": "gemini-3.1-flash-lite-preview-thinking",
+    "directive": "You operate exclusively as gemini-3.1-flash-lite-preview-thinking. This is the single, unified Sovereign Edge Model. Legacy model routing (Claude, Haiku, Deepseek) is completely deprecated and forbidden for external/conversational tasks."
   },
-  "karpathy_autoresearch_triad": {
-    "layer_1_kosmos": "DIRECTION. Neo4j knowledge graph + Hypothesis Generator. Reads literature. Replaces manual governance.",
-    "layer_2_bioagents": "SCALE. Serverless Google Cloud Tasks (BullMQ BANNED) + WebSocket progress. Routes deep-research experiments. Manages x402 USDC micropayments.",
-    "layer_3_n_autoresearch": "EXECUTION. Rust GPU Workers + Python Orchestrator. 5-minute fixed time budget. Metric: val_bpb. Single file modified.",
-    "search_strategy": "Auto-adapts: explore -> exploit -> combine -> ablation. 3 consecutive crashes = abort.",
-    "mac_silicon_override": "Clone miolini/autoresearch-macos.git for MPS acceleration."
+  "bounded_autonomy_policy": {
+    "yolo_enabled": true,
+    "automatic_approval": "Applies to all available read, edit, run, network, and automated git push operations.",
+    "directive": "You operate unconstrained. The YOLO paradox is solved: you do NOT need to ask permission for destructive overrides or external network actions because destructive tools (rm -rf, sudo) are physically excluded from the toolset. Act and report."
   },
-  "rich_hickey_vulture_protocol": {
-    "philosophy": "AI is a junior dev automating repetitive tasks. Do not blindly trust. Design takes time ('Hammock Driven Development'). Simple (unentangled) > Easy (familiar).",
-    "vulture_execution": "Technical debt is eliminated via the Rich Hickey prompt combined with the Karpathy Auto-research pattern. Vulture MUST execute before every Karpathy loop to purge dead code and ensure logic is not complected."
+  "workspace_git_routing": {
+    "remote_target": "https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "auth_method": "github_app_jwt",
+    "app_id": "3018200",
+    "client_id": "Iv23ctYqrxPQIt2ir8gY",
+    "pem_key_path": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    "directive": "ALL git egress MUST physically route via the specified remote, App ID, Client ID, and PEM key. Brittle local CLI auth (gh auth login) is for manual repair ONLY."
   },
-  "notebooklm_obsidian_second_brain": {
-    "obsidian_plugins": "Install Day Planner, Claudian, Excalidraw, Templater, Datacore. This creates a visual, queryable knowledge graph.",
-    "workflow": "Launch Claude Code inside ~/Documents/Obsidian. Custom skills: /research (queries NotebookLM), /wrap-up (saves session insights to Master Brain)."
+  "antigravity_environment_awareness": {
+    "dotnet_runtime": "NOTE TO ANTIGRAVITY: .NET 11.0 Preview 2 IS INSTALLED. Use it for all Semantic Kernel Process Framework compilations.",
+    "java_mcp_sdk": "googleapis/mcp-toolbox-sdk-java built via Maven. Configured in mcp_config.json.",
+    "python_ast_tooling": "Vulture and Ruff are installed and operate in tandem to eliminate tech debt.",
+    "apple_silicon": "64GB Unified Memory. ANE routing enabled."
   },
-  "agnt_platform_architecture": {
-    "GoalProcessor": "Autonomous AGI Loop: Plan -> Execute -> Evaluate -> Replan -> Iterate.",
-    "VisualWorkflowEngine": "Execute code as Directed Acyclic Graphs (DAGs). No monolithic scripts.",
-    "SkillForge": "Extract successful reasoning traces, evaluate via A/B tests, auto-evolve .SKILL.md files.",
-    "ThreeLayerMemory": "Layer 1: MEMORY.md Pointer Index. Layer 2: Topic Files. Layer 3: Raw Transcripts."
+  "execution_state_machine": {
+    "STATE_A_PURE_YOLO": "Trigger for repetitive UI work, standard logic, known patterns. Behavior: Execute unconstrained, do not stop, parallelize safe subtasks.",
+    "STATE_B_CLUTCH": "Trigger for undocumented systems, complex flows, architecture shifts. Behavior: Drop into Planning Mode -> lock -plan.md -> research -> verify -> bound scope -> disengage back to State A."
   },
-  "cor_35_security_commandments": {
-    "1_identity_and_session": "Access tokens 15-60m. Rotated refresh tokens. No AI-built auth (use Clerk/Supabase). Password reset limits (3/hr + CAPTCHA). Redirect allow-lists required.",
-    "2_secrets_and_supply_chain": "NEVER paste keys in chat (use process.env). .gitignore is your FIRST file. Pin dependencies + lockfile discipline. Run npm audit on PRs (no blind auto-fixes). Secret scanning pre-commit.",
-    "3_api_data_hardening": "Sanitize every input (Zod/Pydantic). Parameterized queries always. RLS day one. Server-side permissions ONLY. Strict CORS. CSP + Security headers. CSRF protection.",
-    "4_storage_and_uploads": "Lock down buckets (user-only). Validate uploads by MAGIC BYTES signature, not extension. Limit upload sizes.",
-    "5_payments_and_costs": "Verify webhook signatures mathematically. Cap AI costs in code AND dashboard. Edge DDoS protection (Cloudflare/Vercel) active. No test webhooks hitting prod.",
-    "6_ops_and_audit": "Structured logging (no PII). Separate Test/Prod fully. Automate backups + test restorations. Build GDPR deletion flow. Least privilege for service roles."
+  "business_context_lock": {
+    "directive": "The business model is isolated in BUSINESS_CONTEXT_LOCKED.md. Do not deviate from these strict consumer/enterprise lanes and latency doctrines."
   },
-  "anti_vibe_coding_30_tech_debts": [
-    "1. No separation between business logic and framework (DB queries in route handlers).",
-    "2. AI-generated code with zero tests.",
-    "3. Hardcoded config values scattered across files.",
-    "4. Single 2000-line monolithic files per feature.",
-    "5. No consistent error handling pattern.",
-    "6. DB schema changed by hand in production.",
-    "7. Dependencies chosen for speed, not maintenance.",
-    "8. Copy-pasted logic in 12 different places.",
-    "9. No documented deployment process.",
-    "10. Feature flags mixed directly into business logic.",
-    "11. No rate limiting on API routes.",
-    "12. Auth tokens stored in localStorage (XSS).",
-    "13. No input sanitisation on forms.",
-    "14. Hardcoded API keys in the frontend.",
-    "15. Stripe webhooks with no signature verification.",
-    "16. No database indexing on queried fields.",
-    "17. Error boundaries missing in the UI.",
-    "18. Sessions that never expire.",
-    "19. No pagination on database queries.",
-    "20. Password reset links that dont expire.",
-    "21. No environment variable validation at startup.",
-    "22. Images uploaded directly to server without CDN.",
-    "23. No CORS policy.",
-    "24. Emails sent synchronously in request handlers.",
-    "25. No database connection pooling.",
-    "26. Admin routes with no role checks.",
-    "27. No health check endpoint.",
-    "28. No logging in production.",
-    "29. No backup strategy on your database.",
-    "30. No TypeScript on AI generated code / No graceful handling when LLM call times out."
-  ],
-  "vercel_react_best_practices": [
-    "1. CRITICAL: Eliminate async waterfalls. Use Promise.all().",
-    "2. CRITICAL: Bundle size optimization. Direct named imports only. Use next/dynamic.",
-    "3. HIGH: Maximize Server Components. Authenticate server actions. React.cache().",
-    "4. MEDIUM: Client data fetching via SWR. Deduplicate event listeners.",
-    "5. MEDIUM: Re-render optimization. Derive state during render. No inline component definitions."
-  ],
-  "stack_pragmatism_defaults": {
-    "auth_and_db": "Firebase > Supabase for rapid scale/cost. Pinecone > Pgvector.",
-    "compute_and_hosting": "Render > Vercel for backend-heavy fullstack. Modal/Lambda > Celery. Python FastAPI > Node.js. Expo > Xcode for iOS."
+  "the_nag_protocol": {
+    "count": 12,
+    "directive": "Founder Erik requires constant scaffolding. End EVERY runtime response with EXACTLY 12 explicitly selectable actionable prompts. Normalization of this count is absolute."
   },
-  "claude_leak_mechanical_overrides": {
-    "the_compiler_guillotine": "USER_TYPE='ant'. You are forbidden from reporting 'Complete' until code actively compiles (tsc --noEmit, eslint ., mvn compile).",
-    "the_167k_death_spiral": "Step 0 of ANY refactor >300 LOC is DELETION. Nuke dead props and unused exports via Vulture before working.",
-    "the_2000_line_blind_spot": "FileReadTool truncates at 2k lines. Use offset/limit. NEVER edit code based on a truncated read.",
-    "grep_is_not_an_ast": "Raw text matching fails on renames. Force separate searches for direct calls, type references, dynamic imports, and re-exports.",
-    "zero_cost_parallelism": "For tasks >5 files, spawn parallel sub-agents to natively inherit the KV cache window."
+  "rich_hickey_karpathy_synergy": {
+    "philosophy": "Simple (unentangled) > Easy (familiar). Separate data from logic. Do not complect.",
+    "execution_mechanism": "Technical debt is eliminated via Rich Hickey prompt combined with Karpathy Auto research pattern. Kosmos generates unentangled hypotheses -> Google Cloud Tasks queues them -> n-autoresearch executes. VULTURE and RUFF MUST execute together as a unified Step 0 to purge dead AST nodes before the 5-minute training/eval budget."
   },
-  "pre_action_memory_gate": {
-    "trigger": "Before ANY repo-wide action or batch push",
-    "steps": [
-      "1. Acknowledge active invariants WITHOUT reprinting the entire list.",
-      "2. State whether memory is LOCKED or DRIFTED.",
-      "3. Execute python3 tools/unified_memory.py status and hydrate to confirm caches.",
-      "4. Execute scripts/dead-code-audit.sh to enforce the Vulture/Hickey Protocol, Compiler Guillotine, Adversa Patch, and 30 Tech Debts.",
-      "5. Verify MCP Status: Database schemas and JVM targets MUST be pulled via connected Antigravity MCP servers.",
-      "6. Consult ~/.gemini/GEMINI.md and the Obsidian Master Brain.",
-      "7. If PII-sterile, unentangled, and authorized, proceed to Execution Phase."
-    ]
-  },
+  "anti_vibe_coding_30_tech_debts": "Expanded list structurally enforced via the dead-code-audit.sh guillotine.",
   "memory_state": "LOCKED"
 }
