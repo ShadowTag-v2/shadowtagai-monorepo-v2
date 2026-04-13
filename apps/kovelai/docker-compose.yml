@@ -1,0 +1,116 @@
+# ════════════════════════════════════════════════════════════
+# KovelAI — 1-Click Appliance Stack
+# docker compose up -d
+#
+# Services:
+#   kovelai-api    → S.E.U. Proxy + Billing Engine (FastAPI :8080)
+#   kovelai-agent  → AG-UI CopilotKit Agent (FastAPI :8000)
+#   kovelai-nginx  → Reverse Proxy + TLS + Anti-Forensic Headers
+#
+# Security:
+#   - Internal bridge network (only nginx is exposed)
+#   - Secrets via .env file (never baked into image)
+#   - Memory limits prevent OOM on small firm servers
+#   - Anti-forensic headers injected at nginx layer
+# ════════════════════════════════════════════════════════════
+
+services:
+
+  # ── S.E.U. Proxy + Billing Engine ─────────────────────
+  kovelai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/kovelai/secure-proxy:latest
+    container_name: kovelai-api
+    command: >
+      uvicorn api.main:app
+      --host 0.0.0.0
+      --port 8080
+      --workers 2
+      --log-level info
+      --timeout-keep-alive 30
+    env_file: .env
+    environment:
+      - PORT=8080
+      - SERVICE_NAME=kovelai-api
+    networks:
+      - kovelai-internal
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
+        reservations:
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; r = httpx.get('http://localhost:8080/api/v1/health'); exit(0 if r.status_code == 200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  # ── AG-UI CopilotKit Agent ────────────────────────────
+  kovelai-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/kovelai/secure-proxy:latest
+    container_name: kovelai-agent
+    command: >
+      uvicorn agent.kovelai_agent:app
+      --host 0.0.0.0
+      --port 8000
+      --workers 1
+      --log-level info
+    env_file: .env
+    environment:
+      - KOVELAI_PORT=8000
+      - SERVICE_NAME=kovelai-agent
+    networks:
+      - kovelai-internal
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+          cpus: "0.5"
+        reservations:
+          memory: 96M
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; r = httpx.get('http://localhost:8000/health'); exit(0 if r.status_code == 200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ── Nginx Reverse Proxy ───────────────────────────────
+  kovelai-nginx:
+    image: nginx:1.27-alpine
+    container_name: kovelai-nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # TLS certs (mount your own or use Let's Encrypt)
+      - ${TLS_CERT_DIR:-./certs}:/etc/nginx/certs:ro
+    networks:
+      - kovelai-internal
+    depends_on:
+      kovelai-api:
+        condition: service_healthy
+      kovelai-agent:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: "0.25"
+
+networks:
+  kovelai-internal:
+    driver: bridge
+    internal: false  # nginx needs external access; API/Agent are proxied
