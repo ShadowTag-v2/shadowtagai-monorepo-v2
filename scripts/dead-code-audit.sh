@@ -126,6 +126,18 @@ check_30_point_tech_debt() {
           note "File exceeds 2000 lines. Apply Rich Hickey protocol: split by concern (Tech Debt 4): $f"
           bad=1
         fi
+
+        # Debt 20: No TypeScript on AI code (excludes config/build files)
+        if echo "$f" | grep -qE '\.js$|\.jsx$'; then
+          case "$(basename "$f")" in
+            *.config.*|*.setup.*|babel.*|jest.*|eslint.*|prettier.*|postcss.*|tailwind.*|next.config.*|vite.config.*|webpack.config.*|rollup.config.*|commitlint.*|lint-staged.*)
+              ;; # Skip config files — these are legitimately JS
+            *)
+              note "JavaScript used instead of TypeScript for AI code (Tech Debt 20): $f"
+              bad=1
+              ;;
+          esac
+        fi
         ;;
     esac
   done <<< "$(staged)"
@@ -134,7 +146,7 @@ check_30_point_tech_debt() {
   while IFS= read -r f; do
     [ -n "$f" ] || continue
     case "$f" in
-      apps/*.ts|apps/*.tsx|apps/*.py|apps/*.java|apps/*.cs)
+      app/*.ts|app/*.py|apps/*.ts|apps/*.tsx|apps/*.py|apps/*.java|apps/*.cs)
         local basename
         basename=$(basename "$f" | cut -d. -f1)
         if ! find tests/ apps/ src/test -name "*${basename}*test*" -o -name "*${basename}*spec*" 2>/dev/null | grep -q .; then
@@ -145,6 +157,41 @@ check_30_point_tech_debt() {
   done <<< "$(staged)"
 
   [ "$bad" -eq 0 ] || return 1
+}
+
+run_janitor_protocol() {
+  cd "$(root)" || return 1
+  note "Running Janitor Sweep (Vulture + Ruff Synergy)..."
+  if command -v vulture >/dev/null 2>&1; then 
+      vulture app/ apps/ libs/ scripts/ --min-confidence 80 >/dev/null 2>&1 || true
+  fi
+  if command -v ruff >/dev/null 2>&1; then 
+      ruff check --fix . >/dev/null 2>&1 || true
+      ruff format . >/dev/null 2>&1 || true
+  fi
+}
+
+run_dotnet_build_if_present() {
+  cd "$(root)" || return 1
+  # Locate dotnet — not on default PATH per Risk #5
+  local DOTNET_CMD
+  if command -v dotnet >/dev/null 2>&1; then
+    DOTNET_CMD="dotnet"
+  elif [ -x "/usr/local/share/dotnet/dotnet" ]; then
+    DOTNET_CMD="/usr/local/share/dotnet/dotnet"
+  elif [ -n "${DOTNET_BIN:-}" ] && [ -x "$DOTNET_BIN" ]; then
+    DOTNET_CMD="$DOTNET_BIN"
+  else
+    note ".NET SDK not found — skipping Semantic Kernel build gate."
+    return 0
+  fi
+  # Only build if .sln/.csproj found (may be nested)
+  local sln_files
+  sln_files=$(find . -maxdepth 3 -name '*.sln' -o -name '*.csproj' 2>/dev/null | head -1)
+  if [ -n "$sln_files" ]; then
+    note "Verifying .NET 11.0 Preview 2 Semantic Kernel execution..."
+    $DOTNET_CMD build "$sln_files" || fail ".NET 11.0 Preview 2 Compilation failed." || return 1
+  fi
 }
 
 run_typecheck_if_present() {
@@ -162,7 +209,17 @@ PY
 }
 
 main() {
-  note "running v8.3 guard & 30-Point Tech Debt Guillotine"
+  note "Running v8.4 Guard & 30-Point Tech Debt Guillotine"
+  
+  # Governed Danger State logic
+  COMMAND_COUNT=0
+  if [ $# -gt 0 ]; then
+    COMMAND_COUNT=$(printf '%s' "$*" | tr -cd ';' | wc -c | tr -d '[:space:]')
+  fi
+  if [ "$COMMAND_COUNT" -gt 50 ]; then
+      fail "Potential Adversa AI 50-Subcommand Injection detected. Halting execution." || exit 1
+  fi
+
   check_gitignore || exit 1
   check_no_env_files || exit 1
   check_no_prod_sourcemaps || exit 1
@@ -172,8 +229,9 @@ main() {
   check_debug_and_storage || exit 1
   
   check_30_point_tech_debt || exit 1
-  
+  run_janitor_protocol
   run_typecheck_if_present || exit 1
+  run_dotnet_build_if_present || exit 1
   note "all checks passed"
 }
 
