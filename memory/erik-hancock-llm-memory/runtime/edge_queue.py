@@ -4,16 +4,19 @@ Combines WebGPU's ergonomics with HCQ's performance patterns
 """
 
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import Any
 import time
 import hashlib
 import requests
 
+
 @dataclass
 class EdgeCommand:
     """Single command in queue (analogous to GPU command)"""
+
     type: str  # 'wait', 'exec', 'signal', 'timestamp'
     args: dict[str, Any]
+
 
 class EdgeSignal:
     """
@@ -47,7 +50,7 @@ class EdgeSignal:
                 self._value_cache = int(response.text)
                 self._cache_timestamp_ms = now_ms
         except Exception:
-            pass # Fallback to cache on error
+            pass  # Fallback to cache on error
 
         return self._value_cache
 
@@ -72,6 +75,7 @@ class EdgeSignal:
                 )
             time.sleep(0.001)  # 1ms poll interval
 
+
 class PolicyWASM:
     """
     Cached WASM policy module
@@ -84,10 +88,11 @@ class PolicyWASM:
         self.hash = hashlib.sha256(wasm_binary).hexdigest()[:16]
 
     @classmethod
-    def load_precompiled(cls, policy_name: str) -> 'PolicyWASM':
+    def load_precompiled(cls, policy_name: str) -> "PolicyWASM":
         """Load pre-compiled WASM from R2 cache (Simulated)"""
         # In prototype, we just use dummy bytes
         return cls(policy_name=policy_name, wasm_binary=b"DUMMY_WASM_BYTES")
+
 
 class EdgeQueue:
     """
@@ -98,53 +103,50 @@ class EdgeQueue:
         self.commands: list[EdgeCommand] = []
         self._submitted = False
 
-    def wait(self, signal: EdgeSignal, value: int) -> 'EdgeQueue':
+    def wait(self, signal: EdgeSignal, value: int) -> "EdgeQueue":
         """Enqueue wait command"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
 
-        self.commands.append(EdgeCommand(
-            type='wait',
-            args={'signal_id': signal.do_id, 'value': value}
-        ))
+        self.commands.append(
+            EdgeCommand(type="wait", args={"signal_id": signal.do_id, "value": value})
+        )
         return self
 
-    def exec(self, policy: PolicyWASM, context: dict[str, Any]) -> 'EdgeQueue':
+    def exec(self, policy: PolicyWASM, context: dict[str, Any]) -> "EdgeQueue":
         """Enqueue WASM policy execution"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
 
-        self.commands.append(EdgeCommand(
-            type='exec',
-            args={
-                'policy_name': policy.name,
-                'policy_hash': policy.hash,
-                'wasm': policy.wasm.hex(),
-                'context': context
-            }
-        ))
+        self.commands.append(
+            EdgeCommand(
+                type="exec",
+                args={
+                    "policy_name": policy.name,
+                    "policy_hash": policy.hash,
+                    "wasm": policy.wasm.hex(),
+                    "context": context,
+                },
+            )
+        )
         return self
 
-    def signal(self, signal: EdgeSignal, value: int) -> 'EdgeQueue':
+    def signal(self, signal: EdgeSignal, value: int) -> "EdgeQueue":
         """Enqueue signal write"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
 
-        self.commands.append(EdgeCommand(
-            type='signal',
-            args={'signal_id': signal.do_id, 'value': value}
-        ))
+        self.commands.append(
+            EdgeCommand(type="signal", args={"signal_id": signal.do_id, "value": value})
+        )
         return self
 
-    def timestamp(self, signal: EdgeSignal) -> 'EdgeQueue':
+    def timestamp(self, signal: EdgeSignal) -> "EdgeQueue":
         """Enqueue timestamp capture"""
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
 
-        self.commands.append(EdgeCommand(
-            type='timestamp',
-            args={'signal_id': signal.do_id}
-        ))
+        self.commands.append(EdgeCommand(type="timestamp", args={"signal_id": signal.do_id}))
         return self
 
     def submit(self, worker_url: str) -> dict[str, Any]:
@@ -154,30 +156,23 @@ class EdgeQueue:
 
         self._submitted = True
 
-        payload = {
-            'commands': [
-                {'type': cmd.type, 'args': cmd.args}
-                for cmd in self.commands
-            ]
-        }
+        payload = {"commands": [{"type": cmd.type, "args": cmd.args} for cmd in self.commands]}
 
         start_us = time.time() * 1_000_000
 
         response = requests.post(
             f"{worker_url}/execute_queue",
             json=payload,
-            headers={'Content-Type': 'application/json'},
-            timeout=5.0
+            headers={"Content-Type": "application/json"},
+            timeout=5.0,
         )
 
         end_us = time.time() * 1_000_000
 
         if not response.ok:
-            raise RuntimeError(
-                f"Queue execution failed: {response.status_code} {response.text}"
-            )
+            raise RuntimeError(f"Queue execution failed: {response.status_code} {response.text}")
 
         result = response.json()
-        result['queue_latency_us'] = end_us - start_us
+        result["queue_latency_us"] = end_us - start_us
 
         return result

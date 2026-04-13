@@ -5,9 +5,11 @@ from ..adapters.code_graph import build_code_graph, validate_reference
 
 router = APIRouter(prefix="/api")
 
+
 class ValidateRequest(BaseModel):
     query: str
     repo_root: str | None = None
+
 
 @router.post("/validate-reference")
 def validate_reference_api(req: ValidateRequest):

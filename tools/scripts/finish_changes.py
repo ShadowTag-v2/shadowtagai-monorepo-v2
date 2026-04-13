@@ -30,7 +30,9 @@ def check_git_status() -> bool:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="The Janitor: Lints, formats, stages, and commits all changes.")
+    parser = argparse.ArgumentParser(
+        description="The Janitor: Lints, formats, stages, and commits all changes."
+    )
     parser.add_argument("-m", "--message", help="Commit message.")
     args = parser.parse_args()
 

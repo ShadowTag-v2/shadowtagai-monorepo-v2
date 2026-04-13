@@ -34,13 +34,15 @@ PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
 
 class GitNexusMode(str, Enum):
     """Evaluation modes for GitNexus integration."""
-    BASELINE = "baseline"               # No GitNexus — pure mini-swe-agent
-    NATIVE = "native"                   # GitNexus tools via eval-server
-    NATIVE_AUGMENT = "native_augment"   # Native tools + grep enrichment (recommended)
+
+    BASELINE = "baseline"  # No GitNexus — pure mini-swe-agent
+    NATIVE = "native"  # GitNexus tools via eval-server
+    NATIVE_AUGMENT = "native_augment"  # Native tools + grep enrichment (recommended)
 
 
 class GitNexusAgentConfig(AgentConfig):
     """Extended config for GitNexus evaluation agent."""
+
     gitnexus_mode: GitNexusMode = GitNexusMode.BASELINE
     augment_timeout: float = AUGMENT_TIMEOUT_SECONDS
     augment_min_pattern_length: int = 3
@@ -90,9 +92,7 @@ class GitNexusAgent(DefaultAgent):
                 if augmented:
                     outputs[i] = augmented
 
-        return self.add_messages(
-            *self.model.format_observation_messages(message, outputs, self.get_template_vars())
-        )
+        return self.add_messages(*self.model.format_observation_messages(message, outputs, self.get_template_vars()))
 
     def _maybe_augment(self, action: dict, output: dict) -> dict | None:
         """
@@ -109,10 +109,12 @@ class GitNexusAgent(DefaultAgent):
 
         start = time.time()
         try:
-            augment_result = self.env.execute({
-                "command": f'gitnexus-augment "{pattern}" 2>&1 || true',
-                "timeout": self.config.augment_timeout,
-            })
+            augment_result = self.env.execute(
+                {
+                    "command": f'gitnexus-augment "{pattern}" 2>&1 || true',
+                    "timeout": self.config.augment_timeout,
+                }
+            )
             elapsed = time.time() - start
             self.gitnexus_metrics.augmentation_calls += 1
             self.gitnexus_metrics.augmentation_time += elapsed
@@ -135,7 +137,7 @@ class GitNexusAgent(DefaultAgent):
         """Extract the search pattern from a grep/find/rg command."""
         patterns = [
             r'(?:grep|rg|ag)\s+(?:-[a-zA-Z]*\s+)*["\']([^"\']+)["\']',
-            r'(?:grep|rg|ag)\s+(?:-[a-zA-Z]*\s+)*(\S+)',
+            r"(?:grep|rg|ag)\s+(?:-[a-zA-Z]*\s+)*(\S+)",
         ]
 
         for pat in patterns:

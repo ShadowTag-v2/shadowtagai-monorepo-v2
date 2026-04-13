@@ -2,6 +2,7 @@
 Swarm Management Tools.
 Allows the agent to control and monitor the AgentOrchestrator swarm.
 """
+
 from typing import Any
 
 from pnkln.agents import CorAutoresearch
@@ -61,11 +62,7 @@ def swarm_vote(decision: str, risk_level: str = "M", brakes: int = 0) -> dict[st
     """
     from agents.autoresearch2 import execute_internal_swarm  # noqa: PLC0415
 
-    result = execute_internal_swarm(
-        intent=decision,
-        risk_level=risk_level,
-        brake_count=brakes
-    )
+    result = execute_internal_swarm(intent=decision, risk_level=risk_level, brake_count=brakes)
 
     return {
         "decision": result.decision,
@@ -74,8 +71,8 @@ def swarm_vote(decision: str, risk_level: str = "M", brakes: int = 0) -> dict[st
         "votes": {
             "strategy": result.strategy_votes,
             "execution": result.execution_votes,
-            "worker": result.worker_votes
-        }
+            "worker": result.worker_votes,
+        },
     }
 
 
@@ -94,5 +91,5 @@ def swarm_research(topic: str) -> dict[str, Any]:
     return {
         "topic": topic,
         "status": "Research mode requires LLM execution",
-        "instruction": "Use SWARM RESEARCH: [topic] in Claude/Gemini with AgentOrchestrator prompt loaded"
+        "instruction": "Use SWARM RESEARCH: [topic] in Claude/Gemini with AgentOrchestrator prompt loaded",
     }

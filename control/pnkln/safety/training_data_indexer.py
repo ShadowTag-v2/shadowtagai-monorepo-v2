@@ -42,6 +42,7 @@ logger = logging.getLogger(__name__)
 
 class SafetyCategory(Enum):
     """Safety categories from Apertus research"""
+
     WEAPONIZED_WORDS = "weaponized_words"  # Multilingual slurs/toxic terms
     LDNOOBW = "ldnoobw"  # Dirty/naughty/obscene words (28 languages)
     CHEMICAL_WEAPONS = "chemical_weapons"  # Ledgard's agents list
@@ -54,6 +55,7 @@ class SafetyCategory(Enum):
 @dataclass
 class SafetyHit:
     """A single safety match in content"""
+
     category: SafetyCategory
     term: str
     context: str  # 50 chars before/after
@@ -66,6 +68,7 @@ class SafetyHit:
 @dataclass
 class SafetyScanResult:
     """Result of scanning a document"""
+
     doc_id: str
     doc_hash: str  # SHA-256
     scanned_at: datetime
@@ -107,11 +110,21 @@ class SafetyLexicon:
         # Chemical weapons terms from paper
         self._lexicons[SafetyCategory.CHEMICAL_WEAPONS] = {
             "en": {
-                "phosgene", "sulfur mustard", "nitrogen mustard",
-                "sarin", "tabun", "vx", "novichok",
-                "hydrogen cyanide", "cyanogen chloride",
-                "chloropicrin", "bromopicrin", "adamsite",
-                "lewisite", "ricin", "abrin"
+                "phosgene",
+                "sulfur mustard",
+                "nitrogen mustard",
+                "sarin",
+                "tabun",
+                "vx",
+                "novichok",
+                "hydrogen cyanide",
+                "cyanogen chloride",
+                "chloropicrin",
+                "bromopicrin",
+                "adamsite",
+                "lewisite",
+                "ricin",
+                "abrin",
             },
             "de": {"senfgas", "phosgen", "blausäure"},
             "fr": {"gaz moutarde", "phosgène", "acide cyanhydrique"},
@@ -152,7 +165,7 @@ class TrainingDataIndexer:
         self,
         es_host: str = "localhost",
         es_port: int = 9200,
-        index_name: str = "pnkln_training_safety"
+        index_name: str = "pnkln_training_safety",
     ):
         self.es_host = es_host
         self.es_port = es_port
@@ -172,6 +185,7 @@ class TrainingDataIndexer:
         """Connect to Elasticsearch"""
         try:
             from elasticsearch import AsyncElasticsearch
+
             self._es_client = AsyncElasticsearch(
                 [f"http://{self.es_host}:{self.es_port}"],
                 # Arm64/HPC compatibility settings
@@ -194,22 +208,15 @@ class TrainingDataIndexer:
                         "web_content_analyzer": {
                             "type": "custom",
                             "tokenizer": "standard",
-                            "filter": [
-                                "lowercase",
-                                "asciifolding",
-                                "stop"
-                            ],
-                            "char_filter": ["html_strip"]
+                            "filter": ["lowercase", "asciifolding", "stop"],
+                            "char_filter": ["html_strip"],
                         }
                     }
-                }
+                },
             },
             "mappings": {
                 "properties": {
-                    "content": {
-                        "type": "text",
-                        "analyzer": "web_content_analyzer"
-                    },
+                    "content": {"type": "text", "analyzer": "web_content_analyzer"},
                     "doc_hash": {"type": "keyword"},
                     "source": {"type": "keyword"},
                     "language": {"type": "keyword"},
@@ -217,14 +224,14 @@ class TrainingDataIndexer:
                     "token_count": {"type": "integer"},
                     "safety_flags": {"type": "keyword"},
                 }
-            }
+            },
         }
 
         if self._es_client:
             await self._es_client.indices.create(
                 index=self.index_name,
                 body=mappings,
-                ignore=400  # Ignore if exists
+                ignore=400,  # Ignore if exists
             )
             logger.info(f"Index {self.index_name} ready")
 
@@ -237,7 +244,7 @@ class TrainingDataIndexer:
         content: str,
         doc_id: str,
         language: str = "en",
-        categories: Optional[List[SafetyCategory]] = None
+        categories: Optional[List[SafetyCategory]] = None,
     ) -> SafetyScanResult:
         """
         Scan a document for safety issues.
@@ -254,7 +261,7 @@ class TrainingDataIndexer:
             doc_hash=self.compute_hash(content),
             scanned_at=datetime.utcnow(),
             total_tokens=len(content.split()),
-            languages_detected={language}
+            languages_detected={language},
         )
 
         content_lower = content.lower()
@@ -282,7 +289,7 @@ class TrainingDataIndexer:
                         position=pos,
                         language=language,
                         severity=severity,
-                        requires_review=(severity > 0.7)
+                        requires_review=(severity > 0.7),
                     )
                     result.hits.append(hit)
 
@@ -291,12 +298,7 @@ class TrainingDataIndexer:
 
         return result
 
-    def _calculate_severity(
-        self,
-        category: SafetyCategory,
-        term: str,
-        context: str
-    ) -> float:
+    def _calculate_severity(self, category: SafetyCategory, term: str, context: str) -> float:
         """
         Context-aware severity calculation.
 
@@ -316,8 +318,14 @@ class TrainingDataIndexer:
 
         # Reduce severity for educational/research context
         educational_markers = [
-            "research", "study", "analysis", "history",
-            "definition", "example", "warning", "avoid"
+            "research",
+            "study",
+            "analysis",
+            "history",
+            "definition",
+            "example",
+            "warning",
+            "avoid",
         ]
         context_lower = context.lower()
 
@@ -328,12 +336,7 @@ class TrainingDataIndexer:
 
         return min(1.0, base_severity)
 
-    async def search_phrase(
-        self,
-        phrase: str,
-        slop: int = 0,
-        limit: int = 100
-    ) -> List[Dict]:
+    async def search_phrase(self, phrase: str, slop: int = 0, limit: int = 100) -> List[Dict]:
         """
         Search for a phrase with configurable slop.
 
@@ -345,29 +348,15 @@ class TrainingDataIndexer:
             return []
 
         query = {
-            "query": {
-                "match_phrase": {
-                    "content": {
-                        "query": phrase,
-                        "slop": slop
-                    }
-                }
-            },
-            "size": limit
+            "query": {"match_phrase": {"content": {"query": phrase, "slop": slop}}},
+            "size": limit,
         }
 
-        result = await self._es_client.search(
-            index=self.index_name,
-            body=query
-        )
+        result = await self._es_client.search(index=self.index_name, body=query)
 
         return [hit["_source"] for hit in result["hits"]["hits"]]
 
-    async def bulk_index(
-        self,
-        documents: AsyncIterator[Dict],
-        progress_callback=None
-    ) -> Dict:
+    async def bulk_index(self, documents: AsyncIterator[Dict], progress_callback=None) -> Dict:
         """
         Bulk index documents with parallel processing.
 
@@ -381,7 +370,7 @@ class TrainingDataIndexer:
             "failed": 0,
             "duplicates": 0,
             "safety_flagged": 0,
-            "start_time": datetime.utcnow().isoformat()
+            "start_time": datetime.utcnow().isoformat(),
         }
 
         seen_hashes = set()
@@ -398,9 +387,7 @@ class TrainingDataIndexer:
 
             # Safety scan
             scan_result = await self.scan_document(
-                doc.get("content", ""),
-                doc.get("id", doc_hash),
-                doc.get("language", "en")
+                doc.get("content", ""), doc.get("id", doc_hash), doc.get("language", "en")
             )
 
             # Prepare for indexing
@@ -416,7 +403,7 @@ class TrainingDataIndexer:
                     "token_count": scan_result.total_tokens,
                     "safety_flags": [h.category.value for h in scan_result.hits],
                     "max_severity": scan_result.max_severity,
-                }
+                },
             }
 
             batch.append(index_doc)
@@ -428,6 +415,7 @@ class TrainingDataIndexer:
             if len(batch) >= self.bulk_config["chunk_size"]:
                 if self._es_client:
                     from elasticsearch.helpers import async_bulk
+
                     success, failed = await async_bulk(
                         self._es_client,
                         batch,
@@ -447,10 +435,8 @@ class TrainingDataIndexer:
         if batch:
             if self._es_client:
                 from elasticsearch.helpers import async_bulk
-                success, failed = await async_bulk(
-                    self._es_client,
-                    batch
-                )
+
+                success, failed = await async_bulk(self._es_client, batch)
                 stats["indexed"] += success
                 stats["failed"] += len(failed)
             else:
@@ -459,10 +445,7 @@ class TrainingDataIndexer:
         stats["end_time"] = datetime.utcnow().isoformat()
         return stats
 
-    async def generate_safety_report(
-        self,
-        languages: Optional[List[str]] = None
-    ) -> Dict:
+    async def generate_safety_report(self, languages: Optional[List[str]] = None) -> Dict:
         """
         Generate safety report similar to Apertus Table 5.
 
@@ -485,21 +468,12 @@ class TrainingDataIndexer:
                 continue
 
             query = {
-                "query": {
-                    "term": {"safety_flags": category.value}
-                },
+                "query": {"term": {"safety_flags": category.value}},
                 "size": 0,
-                "aggs": {
-                    "by_language": {
-                        "terms": {"field": "language"}
-                    }
-                }
+                "aggs": {"by_language": {"terms": {"field": "language"}}},
             }
 
-            result = await self._es_client.search(
-                index=self.index_name,
-                body=query
-            )
+            result = await self._es_client.search(index=self.index_name, body=query)
 
             total = result["hits"]["total"]["value"]
             report["by_category"][category.value] = {
@@ -507,7 +481,7 @@ class TrainingDataIndexer:
                 "by_language": {
                     b["key"]: b["doc_count"]
                     for b in result["aggregations"]["by_language"]["buckets"]
-                }
+                },
             }
 
         return report
@@ -516,6 +490,7 @@ class TrainingDataIndexer:
 # =============================================================================
 # INTEGRATION WITH JUDGE #6
 # =============================================================================
+
 
 class SafetyGate:
     """
@@ -529,7 +504,7 @@ class SafetyGate:
         self,
         indexer: TrainingDataIndexer,
         max_severity: float = 0.7,
-        auto_block_categories: Optional[List[SafetyCategory]] = None
+        auto_block_categories: Optional[List[SafetyCategory]] = None,
     ):
         self.indexer = indexer
         self.max_severity = max_severity
@@ -538,12 +513,7 @@ class SafetyGate:
             SafetyCategory.CHEMICAL_WEAPONS,
         ]
 
-    async def evaluate(
-        self,
-        content: str,
-        doc_id: str,
-        language: str = "en"
-    ) -> Dict:
+    async def evaluate(self, content: str, doc_id: str, language: str = "en") -> Dict:
         """
         Evaluate content through safety gate.
 
@@ -556,9 +526,7 @@ class SafetyGate:
                 "requires_review": bool
             }
         """
-        scan_result = await self.indexer.scan_document(
-            content, doc_id, language
-        )
+        scan_result = await self.indexer.scan_document(content, doc_id, language)
 
         # Auto-block for critical categories
         for hit in scan_result.hits:
@@ -594,17 +562,14 @@ class SafetyGate:
 # CLI ENTRY POINT
 # =============================================================================
 
+
 async def main():
     """CLI entry point for training data safety operations"""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Training Data Safety Indexer"
-    )
+    parser = argparse.ArgumentParser(description="Training Data Safety Indexer")
     parser.add_argument(
-        "command",
-        choices=["scan", "search", "report", "index"],
-        help="Command to run"
+        "command", choices=["scan", "search", "report", "index"], help="Command to run"
     )
     parser.add_argument("--file", "-f", help="File to scan")
     parser.add_argument("--query", "-q", help="Search query")
@@ -621,25 +586,26 @@ async def main():
             return
 
         content = Path(args.file).read_text()
-        result = await indexer.scan_document(
-            content,
-            args.file,
-            args.language
-        )
-        print(json.dumps({
-            "doc_id": result.doc_id,
-            "is_clean": result.is_clean,
-            "max_severity": result.max_severity,
-            "hit_count": len(result.hits),
-            "hits": [
+        result = await indexer.scan_document(content, args.file, args.language)
+        print(
+            json.dumps(
                 {
-                    "category": h.category.value,
-                    "term": h.term,
-                    "severity": h.severity,
-                }
-                for h in result.hits[:10]  # Limit output
-            ]
-        }, indent=2))
+                    "doc_id": result.doc_id,
+                    "is_clean": result.is_clean,
+                    "max_severity": result.max_severity,
+                    "hit_count": len(result.hits),
+                    "hits": [
+                        {
+                            "category": h.category.value,
+                            "term": h.term,
+                            "severity": h.severity,
+                        }
+                        for h in result.hits[:10]  # Limit output
+                    ],
+                },
+                indent=2,
+            )
+        )
 
     elif args.command == "search":
         if not args.query:

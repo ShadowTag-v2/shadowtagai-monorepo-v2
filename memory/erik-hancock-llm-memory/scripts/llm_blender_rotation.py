@@ -27,6 +27,7 @@ from typing import Any, Optional
 
 class LLMProvider(Enum):
     """Supported LLM providers"""
+
     GROK = "grok"
     SONNET = "claude"
     GEMINI = "gemini"
@@ -37,6 +38,7 @@ class LLMProvider(Enum):
 @dataclass
 class LLMConfig:
     """Configuration for each LLM"""
+
     provider: LLMProvider
     allocation: float
     cost_per_1k_tokens: float
@@ -51,42 +53,43 @@ LLM_CONFIGS = {
         allocation=0.05,  # Intake only
         cost_per_1k_tokens=0.01,
         api_key_env="GROK_API_KEY",
-        endpoint="https://api.x.ai/v1/chat/completions"
+        endpoint="https://api.x.ai/v1/chat/completions",
     ),
     LLMProvider.SONNET: LLMConfig(
         provider=LLMProvider.SONNET,
         allocation=0.35,  # Coordination
         cost_per_1k_tokens=0.015,
         api_key_env="ANTHROPIC_API_KEY",
-        endpoint="https://api.anthropic.com/v1/messages"
+        endpoint="https://api.anthropic.com/v1/messages",
     ),
     LLMProvider.GEMINI: LLMConfig(
         provider=LLMProvider.GEMINI,
         allocation=0.40,  # Bulk processing
         cost_per_1k_tokens=0.0025,
         api_key_env="GOOGLE_API_KEY",
-        endpoint="https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent"
+        endpoint="https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent",
     ),
     LLMProvider.GPT5: LLMConfig(
         provider=LLMProvider.GPT5,
         allocation=0.15,  # Structured output
         cost_per_1k_tokens=0.008,
         api_key_env="OPENAI_API_KEY",
-        endpoint="https://api.openai.com/v1/chat/completions"
+        endpoint="https://api.openai.com/v1/chat/completions",
     ),
     LLMProvider.PERPLEXITY: LLMConfig(
         provider=LLMProvider.PERPLEXITY,
         allocation=0.05,  # Research, web-grounded
         cost_per_1k_tokens=0.005,
         api_key_env="PERPLEXITY_API_KEY",
-        endpoint="https://api.perplexity.ai/chat/completions"
-    )
+        endpoint="https://api.perplexity.ai/chat/completions",
+    ),
 }
 
 
 @dataclass
 class Thread:
     """A thread of work to be processed"""
+
     thread_id: str
     content: str
     assigned_llm: LLMProvider
@@ -133,14 +136,16 @@ Output as JSON array of threads.
         """Call Grok API (mock for now)"""
         # TODO: Implement actual Grok API call
         # For now, return a mock decomposition
-        return json.dumps([
-            {
-                "thread_id": "thread_1",
-                "content": "Main task implementation",
-                "complexity": 8,
-                "domain": "code"
-            }
-        ])
+        return json.dumps(
+            [
+                {
+                    "thread_id": "thread_1",
+                    "content": "Main task implementation",
+                    "complexity": 8,
+                    "domain": "code",
+                }
+            ]
+        )
 
 
 class SonnetCoordinator:
@@ -161,36 +166,25 @@ class SonnetCoordinator:
         assigned_threads = []
 
         # Rotation LLMs (exclude Grok and Sonnet)
-        rotation_llms = [
-            LLMProvider.GEMINI,
-            LLMProvider.GPT5,
-            LLMProvider.PERPLEXITY
-        ]
+        rotation_llms = [LLMProvider.GEMINI, LLMProvider.GPT5, LLMProvider.PERPLEXITY]
 
         for idx, thread_data in enumerate(threads):
             # Assign based on domain and round-robin
             assigned_llm = self._assign_by_domain(
-                thread_data['domain'],
-                thread_data['complexity'],
-                rotation_llms,
-                idx
+                thread_data["domain"], thread_data["complexity"], rotation_llms, idx
             )
 
             thread = Thread(
-                thread_id=thread_data['thread_id'],
-                content=thread_data['content'],
-                assigned_llm=assigned_llm
+                thread_id=thread_data["thread_id"],
+                content=thread_data["content"],
+                assigned_llm=assigned_llm,
             )
             assigned_threads.append(thread)
 
         return assigned_threads
 
     def _assign_by_domain(
-        self,
-        domain: str,
-        complexity: int,
-        rotation_llms: list[LLMProvider],
-        idx: int
+        self, domain: str, complexity: int, rotation_llms: list[LLMProvider], idx: int
     ) -> LLMProvider:
         """Assign LLM based on domain expertise"""
         # Domain-based assignment
@@ -198,7 +192,7 @@ class SonnetCoordinator:
             "code": LLMProvider.GPT5,  # Best for structured code
             "research": LLMProvider.PERPLEXITY,  # Web-grounded
             "analysis": LLMProvider.GEMINI,  # Multimodal, bulk
-            "creative": LLMProvider.GEMINI  # Large context
+            "creative": LLMProvider.GEMINI,  # Large context
         }
 
         # Check if domain has preferred LLM
@@ -220,11 +214,7 @@ class ReviewRotator:
     """Manages the 3-round review rotation"""
 
     def __init__(self):
-        self.rotation_order = [
-            LLMProvider.GEMINI,
-            LLMProvider.GPT5,
-            LLMProvider.PERPLEXITY
-        ]
+        self.rotation_order = [LLMProvider.GEMINI, LLMProvider.GPT5, LLMProvider.PERPLEXITY]
 
     async def execute_round_1(self, threads: list[Thread]) -> list[Thread]:
         """Round 1: Each LLM answers assigned threads"""
@@ -340,9 +330,15 @@ class ClaudeCodeSynthesizer:
         for thread in threads:
             synthesis_prompt += f"## Thread: {thread.thread_id}\n"
             synthesis_prompt += f"Task: {thread.content}\n\n"
-            synthesis_prompt += f"Initial Answer ({thread.assigned_llm.value}):\n{thread.round_1_response}\n\n"
-            synthesis_prompt += f"Review 1 ({thread.round_1_reviewer.value}):\n{thread.round_2_review}\n\n"
-            synthesis_prompt += f"Review 2 ({thread.round_2_reviewer.value}):\n{thread.round_3_review}\n\n"
+            synthesis_prompt += (
+                f"Initial Answer ({thread.assigned_llm.value}):\n{thread.round_1_response}\n\n"
+            )
+            synthesis_prompt += (
+                f"Review 1 ({thread.round_1_reviewer.value}):\n{thread.round_2_review}\n\n"
+            )
+            synthesis_prompt += (
+                f"Review 2 ({thread.round_2_reviewer.value}):\n{thread.round_3_review}\n\n"
+            )
             synthesis_prompt += "---\n\n"
 
         # Call Claude Code for final synthesis
@@ -377,7 +373,7 @@ Generated: {timestamp}
 - Synthesis: Claude Code
 """
 
-        with open(filepath, 'w') as f:
+        with open(filepath, "w") as f:
             f.write(content)
 
         # Git commit (simplified - in production, use proper git operations)
@@ -494,5 +490,5 @@ async def main():
     print(f"\nResult: {result}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     asyncio.run(main())

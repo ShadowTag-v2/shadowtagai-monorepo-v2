@@ -5,6 +5,7 @@ class City:
     def save(self) -> bool:
         return True
 
+
 class Address:
     city: City
 
@@ -13,6 +14,7 @@ class Address:
 
     def get_city(self) -> City:
         return self.city
+
 
 class User:
     address: Address

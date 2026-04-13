@@ -5,7 +5,6 @@ from typing import Any
 from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel
 
-
 # Initialize the router instance
 router = APIRouter(prefix="/api/v1/agents", tags=["agents"])
 

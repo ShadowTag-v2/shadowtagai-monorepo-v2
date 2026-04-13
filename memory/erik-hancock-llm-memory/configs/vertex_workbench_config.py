@@ -13,7 +13,7 @@ from google.auth import default
 from google.cloud import storage
 
 # GCS Configuration
-PROJECT_ID = os.getenv('GOOGLE_CLOUD_PROJECT', 'shadowtagai-prod')
+PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "shadowtagai-prod")
 BUCKET_NAME = f"{PROJECT_ID}-workbench-memory"
 MEMORY_BLOB_PATH = "memory/current.json"
 LOCAL_MEMORY_PATH = Path.home() / ".workbench" / "memory.json"
@@ -27,10 +27,7 @@ class VertexMemoryManager:
 
     def __init__(self):
         self.credentials, self.project = default()
-        self.storage_client = storage.Client(
-            project=PROJECT_ID,
-            credentials=self.credentials
-        )
+        self.storage_client = storage.Client(project=PROJECT_ID, credentials=self.credentials)
         self.bucket = None
 
     def create_gcs_bucket(self):
@@ -40,18 +37,14 @@ class VertexMemoryManager:
             print(f"✓ Using existing bucket: {BUCKET_NAME}")
         except Exception:
             # Create bucket if it doesn't exist
-            bucket = self.storage_client.create_bucket(
-                BUCKET_NAME,
-                location="us-central1"
-            )
+            bucket = self.storage_client.create_bucket(BUCKET_NAME, location="us-central1")
             self.bucket = bucket
             print(f"✓ Created bucket: {BUCKET_NAME}")
 
             # Set lifecycle policy (delete old versions after 90 days)
-            bucket.lifecycle_rules = [{
-                "action": {"type": "Delete"},
-                "condition": {"age": 90, "isLive": False}
-            }]
+            bucket.lifecycle_rules = [
+                {"action": {"type": "Delete"}, "condition": {"age": 90, "isLive": False}}
+            ]
             bucket.patch()
             print("✓ Set lifecycle policy: 90-day retention")
 
@@ -66,7 +59,7 @@ class VertexMemoryManager:
         # Enable versioning
         blob.metadata = {
             "uploaded_at": blob.time_created.isoformat(),
-            "source": "erik-hancock-llm-memory"
+            "source": "erik-hancock-llm-memory",
         }
         blob.patch()
 
@@ -165,7 +158,7 @@ get_ipython().user_ns['sync_memory'] = sync_memory
 '''
 
         startup_file = IPYTHON_STARTUP / "00-load-shadowtagai-memory.py"
-        with open(startup_file, 'w') as f:
+        with open(startup_file, "w") as f:
             f.write(startup_script)
 
         print(f"✓ Created startup script: {startup_file}")
@@ -194,7 +187,9 @@ def setup_vertex_workbench(memory_source: Path = None):
         manager.upload_memory(memory_source)
     else:
         print("\n2. Skipping upload (no source file provided)")
-        print(f"   Upload manually: gsutil cp memory/current.json gs://{BUCKET_NAME}/{MEMORY_BLOB_PATH}")
+        print(
+            f"   Upload manually: gsutil cp memory/current.json gs://{BUCKET_NAME}/{MEMORY_BLOB_PATH}"
+        )
 
     # Download to local
     print("\n3. Downloading memory to local...")
@@ -222,7 +217,7 @@ def setup_vertex_workbench(memory_source: Path = None):
     print("  - Total: ~$0.02-0.05/month")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Check for memory source argument
     if len(sys.argv) > 1:
         memory_source = Path(sys.argv[1])

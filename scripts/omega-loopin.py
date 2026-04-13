@@ -40,7 +40,7 @@ def run(cmd: str, check: bool = True, dry_run: bool = False) -> subprocess.Compl
     """Execute shell command with logging."""
     print(f"{STEP} {cmd}")
     if dry_run:
-        print(f"     [DRY RUN] Skipped.")
+        print("     [DRY RUN] Skipped.")
         return subprocess.CompletedProcess(args=cmd, returncode=0, stdout="", stderr="")
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=str(REPO_ROOT))
     if check and result.returncode != 0:
@@ -342,7 +342,7 @@ def main():
             print(f"  {FAIL} Unknown phase: {num}")
 
     print(f"\n{'═' * 53}")
-    print(f"  Omega Loopin Complete. Memory State: LOCKED.")
+    print("  Omega Loopin Complete. Memory State: LOCKED.")
     print(f"{'═' * 53}")
 
 

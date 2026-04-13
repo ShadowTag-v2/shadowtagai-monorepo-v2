@@ -68,7 +68,7 @@ def mock_shadowtag_verifier(mocker):
     mock.sign.return_value = {
         "signature": "test_signature_base64_encoded",
         "id": "test_verification_chain_id",
-        "timestamp": "2024-01-01T00:00:00Z"
+        "timestamp": "2024-01-01T00:00:00Z",
     }
 
     mock.verify.return_value = True
@@ -77,6 +77,7 @@ def mock_shadowtag_verifier(mocker):
 
 
 # Test Data Factories
+
 
 @pytest.fixture
 def sample_image_file(tmp_path):
@@ -90,7 +91,7 @@ def sample_image_file(tmp_path):
     from PIL import Image
 
     # Create simple test image
-    img = Image.new('RGB', (100, 100), color='red')
+    img = Image.new("RGB", (100, 100), color="red")
     img_path = tmp_path / "test_image.jpg"
     img.save(img_path)
 

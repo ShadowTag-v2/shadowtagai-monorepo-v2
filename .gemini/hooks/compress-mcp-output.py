@@ -6,6 +6,7 @@ Saves ~70% of context tokens on list_log_entries, list_timeseries, etc.
 Invariant #71: AfterTool hooks MUST compress verbose JSON output.
 Protocol: stdin=JSON (hook input), stdout=JSON (hook output), stderr=debug.
 """
+
 import json
 import sys
 import csv
@@ -20,12 +21,14 @@ def compress_log_entries(data: list) -> str:
     writer = csv.writer(out)
     writer.writerow(["timestamp", "severity", "logName", "textPayload"])
     for entry in data[:100]:  # Cap at 100 entries
-        writer.writerow([
-            entry.get("timestamp", ""),
-            entry.get("severity", ""),
-            entry.get("logName", "").split("/")[-1],
-            str(entry.get("textPayload", entry.get("jsonPayload", "")))[:200]
-        ])
+        writer.writerow(
+            [
+                entry.get("timestamp", ""),
+                entry.get("severity", ""),
+                entry.get("logName", "").split("/")[-1],
+                str(entry.get("textPayload", entry.get("jsonPayload", "")))[:200],
+            ]
+        )
     return out.getvalue()
 
 
@@ -43,12 +46,7 @@ def compress_timeseries(data: list) -> str:
             interval = point.get("interval", {})
             value = point.get("value", {})
             val_str = str(list(value.values())[0]) if value else ""
-            writer.writerow([
-                metric.split("/")[-1],
-                resource,
-                interval.get("endTime", ""),
-                val_str
-            ])
+            writer.writerow([metric.split("/")[-1], resource, interval.get("endTime", ""), val_str])
     return out.getvalue()
 
 
@@ -86,12 +84,12 @@ def main():
         original_len = len(str(tool_output))
         compressed_len = len(compressed)
         savings = round((1 - compressed_len / max(original_len, 1)) * 100)
-        print(f"[compress-mcp-output] Compressed {original_len} → {compressed_len} chars ({savings}% saved)", file=sys.stderr)
+        print(
+            f"[compress-mcp-output] Compressed {original_len} → {compressed_len} chars ({savings}% saved)",
+            file=sys.stderr,
+        )
 
-        json.dump({
-            "decision": "allow",
-            "toolResultOverride": compressed
-        }, sys.stdout)
+        json.dump({"decision": "allow", "toolResultOverride": compressed}, sys.stdout)
     else:
         json.dump({"decision": "allow"}, sys.stdout)
 

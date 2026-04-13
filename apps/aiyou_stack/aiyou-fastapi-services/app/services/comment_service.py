@@ -39,21 +39,12 @@ class CommentService:
         return comment
 
     @staticmethod
-    def list_comments_for_post(
-        db: Session, post_id: int, page: int = 1, size: int = 20
-    ) -> dict:
+    def list_comments_for_post(db: Session, post_id: int, page: int = 1, size: int = 20) -> dict:
         """List comments for a post with author info and pagination."""
-        query = db.query(Comment).filter(
-            Comment.forum_post_id == post_id, not Comment.is_deleted
-        )
+        query = db.query(Comment).filter(Comment.forum_post_id == post_id, not Comment.is_deleted)
         total = query.count()
 
-        comments = (
-            query.order_by(Comment.created_at)
-            .offset((page - 1) * size)
-            .limit(size)
-            .all()
-        )
+        comments = query.order_by(Comment.created_at).offset((page - 1) * size).limit(size).all()
 
         enriched = []
         for comment in comments:

@@ -18,7 +18,6 @@ import asyncio
 import time
 from collections import deque
 from dataclasses import dataclass
-from typing import Deque
 from datetime import datetime
 
 from textual.app import App, ComposeResult
@@ -34,6 +33,7 @@ except ImportError:
     # Fallback if running from project root
     import sys
     import os
+
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     from widgets import LatencyHistogramWidget
 
@@ -41,6 +41,7 @@ except ImportError:
 @dataclass
 class DecisionMetric:
     """Single governance decision measurement"""
+
     timestamp: float
     latency_us: int  # microseconds
     result: str  # "PASS" | "FAIL" | "ERROR"
@@ -111,7 +112,7 @@ class MockJudge6Engine:
     def __init__(self):
         self.decision_count = 0
         self.patterns = [
-            ("NO_PII", 0.95, (10_000, 30_000)),    # 95%: Fast path
+            ("NO_PII", 0.95, (10_000, 30_000)),  # 95%: Fast path
             ("SSN_DETECTED", 0.03, (40_000, 70_000)),  # 3%: Medium path
             ("CCN_DETECTED", 0.015, (60_000, 100_000)),  # 1.5%: Slow path
             ("TIMEOUT", 0.005, (150_000, 300_000)),  # 0.5%: p99+ spikes
@@ -138,7 +139,7 @@ class MockJudge6Engine:
                     timestamp=time.time(),
                     latency_us=latency_us,
                     result=result,
-                    violation_type=pattern if result == "FAIL" else ""
+                    violation_type=pattern if result == "FAIL" else "",
                 )
 
         # Fallback (shouldn't reach)
@@ -209,11 +210,7 @@ class ViolationTableWidget(Static):
         self.table.clear()
         for v in list(self.stats.violations)[-10:]:  # Last 10 violations
             timestamp = datetime.fromtimestamp(v.timestamp).strftime("%H:%M:%S")
-            self.table.add_row(
-                timestamp,
-                v.violation_type,
-                f"{v.latency_ms:.1f}"
-            )
+            self.table.add_row(timestamp, v.violation_type, f"{v.latency_ms:.1f}")
 
 
 class DecisionRateWidget(Static):
@@ -314,6 +311,7 @@ class Judge6MonitorApp(App):
         if mode == "live":
             try:
                 from tui.judge6_engine_live import RealJudge6Engine
+
                 self.engine = RealJudge6Engine()
                 self.title = "Judge#6 Monitor (LIVE)"
             except ImportError as e:
@@ -324,6 +322,7 @@ class Judge6MonitorApp(App):
         elif mode == "edgequeue":
             try:
                 from tui.judge6_engine_edgequeue import EdgeQueueEngine
+
                 self.engine = EdgeQueueEngine()
                 self.title = "Judge#6 Monitor (EdgeQueue)"
             except ImportError as e:
@@ -345,18 +344,18 @@ class Judge6MonitorApp(App):
             Horizontal(
                 LatencySparklineWidget(self.stats, id="latency-widget"),
                 DecisionRateWidget(self.engine, self.stats, id="metrics-widget"),
-                id="top-row"
+                id="top-row",
             ),
             LatencyHistogramWidget(self.stats, id="histogram-widget"),
             ViolationTableWidget(self.stats, id="violation-widget"),
-            id="main-container"
+            id="main-container",
         )
         yield Footer()
 
     def on_mount(self):
         """Start decision loop (Bottom's main loop equivalent)"""
-        self.update_timer = self.set_interval(1/60, self.update_display)  # 60Hz like Bottom
-        self.decision_timer = self.set_interval(0.1, self.run_decision)   # 10 decisions/sec
+        self.update_timer = self.set_interval(1 / 60, self.update_display)  # 60Hz like Bottom
+        self.decision_timer = self.set_interval(0.1, self.run_decision)  # 10 decisions/sec
 
     async def run_decision(self):
         """Execute one governance decision (Bottom's data collection equivalent)"""

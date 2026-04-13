@@ -73,7 +73,6 @@ BLOCKING_PATTERNS = [
 MAX_COMPOUND_SUBCOMMANDS = 50
 
 
-
 def validate_command(command: str) -> tuple[list[str], bool]:
     """
     Validate a bash command.
@@ -87,7 +86,7 @@ def validate_command(command: str) -> tuple[list[str], bool]:
     # === ADVERSA VULNERABILITY MITIGATION ===
     # Check compound command subcommand count (bashPermissions.ts:103)
     # Beyond 50 subcommands, auto-rejection rules don't apply
-    subcommands = re.split(r'\s*(?:&&|\|\||;|\|)\s*', command)
+    subcommands = re.split(r"\s*(?:&&|\|\||;|\|)\s*", command)
     if len(subcommands) > MAX_COMPOUND_SUBCOMMANDS:
         should_block = True
         issues.append(
@@ -101,7 +100,6 @@ def validate_command(command: str) -> tuple[list[str], bool]:
         if re.search(pattern, command, re.IGNORECASE):
             should_block = True
             issues.append(f"BLOCKED: Dangerous command pattern detected: {pattern}")
-
 
     # Check validation rules
     for pattern, message in VALIDATION_RULES:

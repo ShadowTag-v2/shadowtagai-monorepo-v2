@@ -22,7 +22,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 
-
 from src.kosmos.doctrine import (
     RiskLevel as DoctrineRiskLevel,
 )

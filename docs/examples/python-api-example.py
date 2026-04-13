@@ -15,6 +15,7 @@ import requests
 # Helper Functions
 # =============================================================================
 
+
 def stream_response(url: str, data: dict):
     """
     Stream response from API endpoint and print in real-time
@@ -45,13 +46,14 @@ async def async_stream_response(url: str, data: dict):
             response.raise_for_status()
             async for chunk in response.content.iter_any():
                 if chunk:
-                    print(chunk.decode('utf-8'), end="", flush=True)
+                    print(chunk.decode("utf-8"), end="", flush=True)
     print("\n")
 
 
 # =============================================================================
 # Example 1: Basic Monetization Strategy Analysis
 # =============================================================================
+
 
 def example1_monetization_strategy():
     """Complete monetization strategy analysis"""
@@ -66,9 +68,9 @@ def example1_monetization_strategy():
             "engagement_level": "high",
             "revenue_streams": ["consulting", "courses"],
             "platforms": ["Twitter", "LinkedIn", "Newsletter"],
-            "additional_context": "Launching a new cohort-based course next month"
+            "additional_context": "Launching a new cohort-based course next month",
         },
-        "focus_areas": ["pricing", "conversion", "LTV"]
+        "focus_areas": ["pricing", "conversion", "LTV"],
     }
 
     stream_response(url, data)
@@ -77,6 +79,7 @@ def example1_monetization_strategy():
 # =============================================================================
 # Example 2: Funnel Analysis
 # =============================================================================
+
 
 def example2_funnel_analysis():
     """Analyze conversion funnel"""
@@ -88,40 +91,15 @@ def example2_funnel_analysis():
             "niche": "Marketing consultants",
             "current_monthly_revenue": 8000,
             "audience_size": 20000,
-            "engagement_level": "medium"
+            "engagement_level": "medium",
         },
         "funnel_stages": [
-            {
-                "name": "Blog/Content",
-                "visitors": 15000,
-                "conversions": 3000,
-                "revenue": 0
-            },
-            {
-                "name": "Lead Magnet Page",
-                "visitors": 3000,
-                "conversions": 1200,
-                "revenue": 0
-            },
-            {
-                "name": "Email Nurture",
-                "visitors": 1200,
-                "conversions": 300,
-                "revenue": 0
-            },
-            {
-                "name": "Sales Page",
-                "visitors": 300,
-                "conversions": 45,
-                "revenue": 22365
-            },
-            {
-                "name": "Customers",
-                "visitors": 45,
-                "conversions": 0,
-                "revenue": 0
-            }
-        ]
+            {"name": "Blog/Content", "visitors": 15000, "conversions": 3000, "revenue": 0},
+            {"name": "Lead Magnet Page", "visitors": 3000, "conversions": 1200, "revenue": 0},
+            {"name": "Email Nurture", "visitors": 1200, "conversions": 300, "revenue": 0},
+            {"name": "Sales Page", "visitors": 300, "conversions": 45, "revenue": 22365},
+            {"name": "Customers", "visitors": 45, "conversions": 0, "revenue": 0},
+        ],
     }
 
     stream_response(url, data)
@@ -131,21 +109,19 @@ def example2_funnel_analysis():
 # Example 3: Pricing Evaluation
 # =============================================================================
 
+
 def example3_pricing_evaluation():
     """Evaluate pricing strategy"""
     print("\n=== Example 3: Pricing Evaluation ===\n")
 
     url = "http://localhost:8000/analyze/pricing"
     data = {
-        "business_context": {
-            "niche": "Fitness coaches",
-            "current_monthly_revenue": 12000
-        },
+        "business_context": {"niche": "Fitness coaches", "current_monthly_revenue": 12000},
         "product_type": "course",
         "current_price": 197,
         "cost_to_deliver": 25,
         "monthly_customers": 25,
-        "market_position": "mid-market"
+        "market_position": "mid-market",
     }
 
     stream_response(url, data)
@@ -154,6 +130,7 @@ def example3_pricing_evaluation():
 # =============================================================================
 # Example 4: Revenue Projections
 # =============================================================================
+
 
 def example4_revenue_projections():
     """Calculate revenue projections"""
@@ -165,13 +142,13 @@ def example4_revenue_projections():
             "niche": "Content creators",
             "current_monthly_revenue": 5000,
             "audience_size": 25000,
-            "engagement_level": "high"
+            "engagement_level": "high",
         },
         "current_monthly_revenue": 5000,
         "current_audience_size": 25000,
         "monthly_audience_growth": 15,
         "current_conversion_rate": 1.5,
-        "projection_months": 12
+        "projection_months": 12,
     }
 
     stream_response(url, data)
@@ -180,6 +157,7 @@ def example4_revenue_projections():
 # =============================================================================
 # Example 5: Customer LTV Calculation
 # =============================================================================
+
 
 def example5_ltv_calculation():
     """Calculate customer lifetime value"""
@@ -190,12 +168,12 @@ def example5_ltv_calculation():
         "business_context": {
             "niche": "E-commerce store owners",
             "current_monthly_revenue": 20000,
-            "revenue_streams": ["courses", "software", "membership"]
+            "revenue_streams": ["courses", "software", "membership"],
         },
         "average_order_value": 297,
         "purchase_frequency": 3.5,
         "customer_lifespan": 2.5,
-        "gross_margin": 85
+        "gross_margin": 85,
     }
 
     stream_response(url, data)
@@ -204,6 +182,7 @@ def example5_ltv_calculation():
 # =============================================================================
 # Example 6: Market Opportunity Assessment
 # =============================================================================
+
 
 def example6_opportunity_assessment():
     """Assess market opportunities"""
@@ -221,8 +200,8 @@ def example6_opportunity_assessment():
             "software",
             "membership",
             "affiliate",
-            "sponsorship"
-        ]
+            "sponsorship",
+        ],
     }
 
     stream_response(url, data)
@@ -231,6 +210,7 @@ def example6_opportunity_assessment():
 # =============================================================================
 # Example 7: Custom Analysis
 # =============================================================================
+
 
 def example7_custom_analysis():
     """Custom strategic analysis"""
@@ -252,7 +232,7 @@ def example7_custom_analysis():
                 - LTV: $1,200
                 - Team: 8 people
                 - Main challenge: Want to move upmarket to enterprise
-            """
+            """,
         },
         "prompt": """
             I want to transition from serving small businesses ($99-299/month)
@@ -268,7 +248,7 @@ def example7_custom_analysis():
             7. Challenge me with ONE thing to do this week
 
             Be brutally honest about whether this is the right move.
-        """
+        """,
     }
 
     stream_response(url, data)
@@ -277,6 +257,7 @@ def example7_custom_analysis():
 # =============================================================================
 # Example 8: Async Usage with aiohttp
 # =============================================================================
+
 
 async def example8_async_usage():
     """Demonstrate async API usage"""
@@ -288,7 +269,7 @@ async def example8_async_usage():
             "niche": "Online educators",
             "current_monthly_revenue": 7500,
             "audience_size": 30000,
-            "engagement_level": "medium"
+            "engagement_level": "medium",
         }
     }
 
@@ -298,6 +279,7 @@ async def example8_async_usage():
 # =============================================================================
 # Example 9: Batch Processing Multiple Requests
 # =============================================================================
+
 
 async def example9_batch_processing():
     """Process multiple analysis requests concurrently"""
@@ -314,8 +296,8 @@ async def example9_batch_processing():
                 "current_price": 497,
                 "cost_to_deliver": 50,
                 "monthly_customers": 20,
-                "market_position": "premium"
-            }
+                "market_position": "premium",
+            },
         },
         {
             "url": "http://localhost:8000/analyze/ltv",
@@ -323,9 +305,9 @@ async def example9_batch_processing():
                 "average_order_value": 497,
                 "purchase_frequency": 2,
                 "customer_lifespan": 3,
-                "gross_margin": 90
-            }
-        }
+                "gross_margin": 90,
+            },
+        },
     ]
 
     # Run analyses concurrently
@@ -338,6 +320,7 @@ async def example9_batch_processing():
 # =============================================================================
 # Example 10: Error Handling
 # =============================================================================
+
 
 def example10_error_handling():
     """Demonstrate error handling"""
@@ -365,6 +348,7 @@ def example10_error_handling():
 # Example 11: Health Check and Service Discovery
 # =============================================================================
 
+
 def example11_service_discovery():
     """Check service health and available endpoints"""
     print("\n=== Example 11: Service Discovery ===\n")
@@ -383,6 +367,7 @@ def example11_service_discovery():
 # Example 12: Complete Workflow
 # =============================================================================
 
+
 def example12_complete_workflow():
     """
     Complete workflow: Analyze → Identify Opportunities → Project Growth
@@ -395,13 +380,12 @@ def example12_complete_workflow():
         "audience_size": 75000,
         "engagement_level": "high",
         "revenue_streams": ["consulting", "done-for-you"],
-        "platforms": ["LinkedIn", "Newsletter", "Podcast"]
+        "platforms": ["LinkedIn", "Newsletter", "Podcast"],
     }
 
     print("\n--- Phase 1: Monetization Strategy ---\n")
     stream_response(
-        "http://localhost:8000/analyze/monetization",
-        {"business_context": business_context}
+        "http://localhost:8000/analyze/monetization", {"business_context": business_context}
     )
 
     print("\n--- Phase 2: Opportunity Assessment ---\n")
@@ -412,13 +396,8 @@ def example12_complete_workflow():
             "audience_size": business_context["audience_size"],
             "engagement": business_context["engagement_level"],
             "current_revenue": business_context["current_monthly_revenue"],
-            "potential_revenue_streams": [
-                "courses",
-                "software",
-                "membership",
-                "affiliate"
-            ]
-        }
+            "potential_revenue_streams": ["courses", "software", "membership", "affiliate"],
+        },
     )
 
     print("\n--- Phase 3: Revenue Projections ---\n")
@@ -430,14 +409,15 @@ def example12_complete_workflow():
             "current_audience_size": business_context["audience_size"],
             "monthly_audience_growth": 8,
             "current_conversion_rate": 1.2,
-            "projection_months": 12
-        }
+            "projection_months": 12,
+        },
     )
 
 
 # =============================================================================
 # Main execution
 # =============================================================================
+
 
 def main():
     """Run examples"""

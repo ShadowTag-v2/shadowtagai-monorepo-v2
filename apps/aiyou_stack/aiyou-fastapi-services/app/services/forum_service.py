@@ -50,9 +50,7 @@ class ForumService:
         return db.query(ForumCategory).filter(ForumCategory.slug == slug).first()
 
     @staticmethod
-    def create_category(
-        db: Session, category_data: ForumCategoryCreate
-    ) -> ForumCategory:
+    def create_category(db: Session, category_data: ForumCategoryCreate) -> ForumCategory:
         """Create a new forum category."""
         category = ForumCategory(**category_data.model_dump())
         db.add(category)
@@ -74,9 +72,7 @@ class ForumService:
     # ===== Topics =====
 
     @staticmethod
-    def list_topics(
-        db: Session, category_id: int, page: int = 1, size: int = 20
-    ) -> dict:
+    def list_topics(db: Session, category_id: int, page: int = 1, size: int = 20) -> dict:
         """List topics in a category with pagination and author info."""
         query = db.query(ForumTopic).filter(ForumTopic.category_id == category_id)
         total = query.count()
@@ -152,9 +148,7 @@ class ForumService:
         return topic
 
     @staticmethod
-    def update_topic(
-        db: Session, topic: ForumTopic, topic_data: ForumTopicUpdate
-    ) -> ForumTopic:
+    def update_topic(db: Session, topic: ForumTopic, topic_data: ForumTopicUpdate) -> ForumTopic:
         """Update a topic."""
         for field, value in topic_data.model_dump(exclude_unset=True).items():
             setattr(topic, field, value)
@@ -171,9 +165,7 @@ class ForumService:
     # ===== Posts =====
 
     @staticmethod
-    def list_posts(
-        db: Session, topic_id: int, page: int = 1, size: int = 20
-    ) -> dict:
+    def list_posts(db: Session, topic_id: int, page: int = 1, size: int = 20) -> dict:
         """List posts in a topic with pagination and author info."""
         query = db.query(ForumPost).filter(
             ForumPost.topic_id == topic_id,
@@ -181,12 +173,7 @@ class ForumService:
         )
         total = query.count()
 
-        posts = (
-            query.order_by(ForumPost.created_at)
-            .offset((page - 1) * size)
-            .limit(size)
-            .all()
-        )
+        posts = query.order_by(ForumPost.created_at).offset((page - 1) * size).limit(size).all()
 
         enriched = []
         for post in posts:
@@ -237,9 +224,7 @@ class ForumService:
         topic.reply_count += 1
         topic.last_activity_at = datetime.utcnow()
 
-        category = db.query(ForumCategory).filter(
-            ForumCategory.id == topic.category_id
-        ).first()
+        category = db.query(ForumCategory).filter(ForumCategory.id == topic.category_id).first()
         if category:
             category.total_posts += 1
 
@@ -251,9 +236,7 @@ class ForumService:
         return post
 
     @staticmethod
-    def update_post(
-        db: Session, post: ForumPost, post_data: ForumPostUpdate
-    ) -> ForumPost:
+    def update_post(db: Session, post: ForumPost, post_data: ForumPostUpdate) -> ForumPost:
         """Update a forum post."""
         post.content = post_data.content
         post.is_edited = True

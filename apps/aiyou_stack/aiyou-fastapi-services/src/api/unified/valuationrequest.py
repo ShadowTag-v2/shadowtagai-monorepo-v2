@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
-
 router = APIRouter(prefix="/api/v1/unified", tags=["Unified Ecosystem"])
 
 

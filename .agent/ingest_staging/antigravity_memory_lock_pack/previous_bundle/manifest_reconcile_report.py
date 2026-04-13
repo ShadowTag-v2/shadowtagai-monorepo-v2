@@ -47,7 +47,9 @@ def classify_path(path: str) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Compare two manifest files and emit a reconcile report")
+    ap = argparse.ArgumentParser(
+        description="Compare two manifest files and emit a reconcile report"
+    )
     ap.add_argument("primary_manifest")
     ap.add_argument("secondary_manifest")
     ap.add_argument("--markdown-out", default=None)
@@ -67,13 +69,17 @@ def main() -> int:
 
     classified = []
     for key in differing:
-        classified.append({
-            "path": key,
-            "section": classify_path(key),
-            "primary": f1[key],
-            "secondary": f2[key],
-            "severity": "critical" if classify_path(key) in {"repo_roots", "control_plane"} else "medium"
-        })
+        classified.append(
+            {
+                "path": key,
+                "section": classify_path(key),
+                "primary": f1[key],
+                "secondary": f2[key],
+                "severity": "critical"
+                if classify_path(key) in {"repo_roots", "control_plane"}
+                else "medium",
+            }
+        )
 
     report = {
         "primary_manifest": str(p1),
@@ -82,12 +88,12 @@ def main() -> int:
             "only_primary": len(only_primary),
             "only_secondary": len(only_secondary),
             "differing": len(differing),
-            "critical_drift": sum(1 for x in classified if x["severity"] == "critical")
+            "critical_drift": sum(1 for x in classified if x["severity"] == "critical"),
         },
         "only_primary": only_primary,
         "only_secondary": only_secondary,
         "differing": classified,
-        "recommendation": "Root manifest should remain canonical. Reconcile or retire the second manifest before any large migration or fold-in."
+        "recommendation": "Root manifest should remain canonical. Reconcile or retire the second manifest before any large migration or fold-in.",
     }
 
     if args.json_out:
@@ -115,14 +121,16 @@ def main() -> int:
     ]
     if classified:
         for item in classified:
-            md_lines.extend([
-                f"### `{item['path']}`",
-                f"- section: `{item['section']}`",
-                f"- severity: `{item['severity']}`",
-                f"- primary: `{item['primary']}`",
-                f"- secondary: `{item['secondary']}`",
-                "",
-            ])
+            md_lines.extend(
+                [
+                    f"### `{item['path']}`",
+                    f"- section: `{item['section']}`",
+                    f"- severity: `{item['severity']}`",
+                    f"- primary: `{item['primary']}`",
+                    f"- secondary: `{item['secondary']}`",
+                    "",
+                ]
+            )
     else:
         md_lines.append("No differing keys found.\n")
 
