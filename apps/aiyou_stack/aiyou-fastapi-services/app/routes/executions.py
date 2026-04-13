@@ -3,26 +3,28 @@ API routes for job execution management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.automation.engine import workflow_engine
 from app.core.database import get_db
-from app.models.automation import JobExecution, JobStatus
+from app.models.automation import JobStatus
 from app.schemas.automation import ExecuteWorkflowRequest, JobExecutionResponse
+from app.services.automation_service import ExecutionService
 
 router = APIRouter(prefix="/executions", tags=["executions"])
 
 
+def get_execution_service(db: AsyncSession = Depends(get_db)) -> ExecutionService:
+    """Dependency to get ExecutionService instance."""
+    return ExecutionService(db)
+
+
 @router.post("/", response_model=JobExecutionResponse, status_code=202)
-async def execute_workflow(
-    execution_request: ExecuteWorkflowRequest, db: AsyncSession = Depends(get_db)
-):
+async def execute_workflow(execution_request: ExecuteWorkflowRequest):
     """Manually execute a workflow."""
     execution = await workflow_engine.execute_workflow(
         workflow_id=execution_request.workflow_id, input_data=execution_request.input_data
     )
-
     return execution
 
 
@@ -32,42 +34,31 @@ async def list_executions(
     status: JobStatus | None = Query(None, description="Filter by status"),
     skip: int = 0,
     limit: int = 100,
-    db: AsyncSession = Depends(get_db),
+    service: ExecutionService = Depends(get_execution_service),
 ):
     """List job executions with optional filters."""
-    query = select(JobExecution).order_by(desc(JobExecution.created_at))
-
-    if workflow_id:
-        query = query.where(JobExecution.workflow_id == workflow_id)
-
-    if status:
-        query = query.where(JobExecution.status == status)
-
-    query = query.offset(skip).limit(limit)
-
-    result = await db.execute(query)
-    executions = result.scalars().all()
-    return executions
+    return await service.list(workflow_id, status, skip, limit)
 
 
 @router.get("/{execution_id}", response_model=JobExecutionResponse)
-async def get_execution(execution_id: int, db: AsyncSession = Depends(get_db)):
+async def get_execution(
+    execution_id: int,
+    service: ExecutionService = Depends(get_execution_service),
+):
     """Get a specific job execution by ID."""
-    result = await db.execute(select(JobExecution).where(JobExecution.id == execution_id))
-    execution = result.scalar_one_or_none()
-
+    execution = await service.get(execution_id)
     if not execution:
         raise HTTPException(status_code=404, detail="Execution not found")
-
     return execution
 
 
 @router.post("/{execution_id}/retry", response_model=JobExecutionResponse, status_code=202)
-async def retry_execution(execution_id: int, db: AsyncSession = Depends(get_db)):
+async def retry_execution(
+    execution_id: int,
+    service: ExecutionService = Depends(get_execution_service),
+):
     """Retry a failed job execution."""
-    result = await db.execute(select(JobExecution).where(JobExecution.id == execution_id))
-    execution = result.scalar_one_or_none()
-
+    execution = await service.get(execution_id)
     if not execution:
         raise HTTPException(status_code=404, detail="Execution not found")
 
@@ -86,14 +77,14 @@ async def retry_execution(execution_id: int, db: AsyncSession = Depends(get_db))
 
 
 @router.delete("/{execution_id}", status_code=204)
-async def delete_execution(execution_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_execution(
+    execution_id: int,
+    service: ExecutionService = Depends(get_execution_service),
+):
     """Delete a job execution record."""
-    result = await db.execute(select(JobExecution).where(JobExecution.id == execution_id))
-    execution = result.scalar_one_or_none()
-
+    execution = await service.get(execution_id)
     if not execution:
         raise HTTPException(status_code=404, detail="Execution not found")
 
-    await db.delete(execution)
-    await db.commit()
+    await service.delete(execution)
     return None

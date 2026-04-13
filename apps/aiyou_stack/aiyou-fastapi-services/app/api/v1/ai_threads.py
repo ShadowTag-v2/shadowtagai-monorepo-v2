@@ -10,7 +10,6 @@ REST API for managing curated AI agent knowledge threads:
 """
 
 import time
-import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -39,6 +38,7 @@ from app.api.schemas.ai_threads import (
     ThreadSummary,
     ThreadUpdate,
 )
+from app.services.scrape_job_service import ScrapeJobService
 from app.services.thread_service import ThreadService
 
 router = APIRouter()
@@ -47,6 +47,11 @@ router = APIRouter()
 def get_thread_service(db: Session = Depends(get_db)) -> ThreadService:
     """Dependency to get ThreadService instance."""
     return ThreadService(db)
+
+
+def get_scrape_job_service(db: Session = Depends(get_db)) -> ScrapeJobService:
+    """Dependency to get ScrapeJobService instance."""
+    return ScrapeJobService(db)
 
 
 # ============================================================================
@@ -348,7 +353,7 @@ def _get_category_description(category: ThreadCategoryEnum) -> str:
 @router.post("/scrape-jobs", response_model=ScrapeJobResponse, status_code=status.HTTP_201_CREATED)
 async def create_scrape_job(
     data: ScrapeJobCreate,
-    db: Session = Depends(get_db),
+    service: ScrapeJobService = Depends(get_scrape_job_service),
 ):
     """
     Create a new scrape job to collect threads.
@@ -357,47 +362,26 @@ async def create_scrape_job(
     The scraper will search for threads matching the query
     and import them into the system.
     """
-    from src.shadowtag_v4.models.ai_threads import AIThreadScrapeJob
-
-    job = AIThreadScrapeJob(
-        id=str(uuid.uuid4()),
-        query=data.query,
-        min_likes=data.min_likes,
-        max_results=data.max_results,
-        scheduled_at=data.scheduled_at,
-        status="pending",
-    )
-    db.add(job)
-    db.commit()
-    db.refresh(job)
-
-    return job
+    return service.create(data.model_dump())
 
 
 @router.get("/scrape-jobs", response_model=list[ScrapeJobResponse])
 async def list_scrape_jobs(
     status_filter: str | None = Query(default=None, alias="status"),
     limit: int = Query(default=20, ge=1, le=100),
-    db: Session = Depends(get_db),
+    service: ScrapeJobService = Depends(get_scrape_job_service),
 ):
     """List scrape jobs with optional status filter."""
-    from src.shadowtag_v4.models.ai_threads import AIThreadScrapeJob
-
-    query = db.query(AIThreadScrapeJob)
-    if status_filter:
-        query = query.filter(AIThreadScrapeJob.status == status_filter)
-    return query.order_by(AIThreadScrapeJob.created_at.desc()).limit(limit).all()
+    return service.list(status_filter, limit)
 
 
 @router.get("/scrape-jobs/{job_id}", response_model=ScrapeJobResponse)
 async def get_scrape_job(
     job_id: str,
-    db: Session = Depends(get_db),
+    service: ScrapeJobService = Depends(get_scrape_job_service),
 ):
     """Get scrape job status by ID."""
-    from src.shadowtag_v4.models.ai_threads import AIThreadScrapeJob
-
-    job = db.query(AIThreadScrapeJob).filter_by(id=job_id).first()
+    job = service.get(job_id)
     if not job:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Scrape job not found: {job_id}"

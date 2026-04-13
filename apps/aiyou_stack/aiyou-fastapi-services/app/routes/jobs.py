@@ -3,24 +3,28 @@ API routes for scheduled job management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.automation.scheduler import automation_scheduler
 from app.core.database import get_db
-from app.models.automation import ScheduledJob
 from app.schemas.automation import ScheduledJobCreate, ScheduledJobResponse, ScheduledJobUpdate
+from app.services.automation_service import ScheduledJobService
 
 router = APIRouter(prefix="/jobs", tags=["scheduled-jobs"])
 
 
+def get_job_service(db: AsyncSession = Depends(get_db)) -> ScheduledJobService:
+    """Dependency to get ScheduledJobService instance."""
+    return ScheduledJobService(db)
+
+
 @router.post("/", response_model=ScheduledJobResponse, status_code=201)
-async def create_scheduled_job(job: ScheduledJobCreate, db: AsyncSession = Depends(get_db)):
+async def create_scheduled_job(
+    job: ScheduledJobCreate,
+    service: ScheduledJobService = Depends(get_job_service),
+):
     """Create a new scheduled job."""
-    db_job = ScheduledJob(**job.model_dump())
-    db.add(db_job)
-    await db.commit()
-    await db.refresh(db_job)
+    db_job = await service.create(job.model_dump())
 
     # Add to scheduler if enabled
     if db_job.enabled and automation_scheduler._initialized:
@@ -30,43 +34,40 @@ async def create_scheduled_job(job: ScheduledJobCreate, db: AsyncSession = Depen
 
 
 @router.get("/", response_model=list[ScheduledJobResponse])
-async def list_scheduled_jobs(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
+async def list_scheduled_jobs(
+    skip: int = 0,
+    limit: int = 100,
+    service: ScheduledJobService = Depends(get_job_service),
+):
     """List all scheduled jobs."""
-    result = await db.execute(select(ScheduledJob).offset(skip).limit(limit))
-    jobs = result.scalars().all()
-    return jobs
+    return await service.list(skip, limit)
 
 
 @router.get("/{job_id}", response_model=ScheduledJobResponse)
-async def get_scheduled_job(job_id: int, db: AsyncSession = Depends(get_db)):
+async def get_scheduled_job(
+    job_id: int,
+    service: ScheduledJobService = Depends(get_job_service),
+):
     """Get a specific scheduled job by ID."""
-    result = await db.execute(select(ScheduledJob).where(ScheduledJob.id == job_id))
-    job = result.scalar_one_or_none()
-
+    job = await service.get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="Scheduled job not found")
-
     return job
 
 
 @router.put("/{job_id}", response_model=ScheduledJobResponse)
 async def update_scheduled_job(
-    job_id: int, job_update: ScheduledJobUpdate, db: AsyncSession = Depends(get_db)
+    job_id: int,
+    job_update: ScheduledJobUpdate,
+    service: ScheduledJobService = Depends(get_job_service),
 ):
     """Update a scheduled job."""
-    result = await db.execute(select(ScheduledJob).where(ScheduledJob.id == job_id))
-    job = result.scalar_one_or_none()
-
+    job = await service.get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="Scheduled job not found")
 
-    # Update fields
     update_data = job_update.model_dump(exclude_unset=True)
-    for field, value in update_data.items():
-        setattr(job, field, value)
-
-    await db.commit()
-    await db.refresh(job)
+    job = await service.update(job, update_data)
 
     # Update scheduler
     if automation_scheduler._initialized:
@@ -79,11 +80,12 @@ async def update_scheduled_job(
 
 
 @router.delete("/{job_id}", status_code=204)
-async def delete_scheduled_job(job_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_scheduled_job(
+    job_id: int,
+    service: ScheduledJobService = Depends(get_job_service),
+):
     """Delete a scheduled job."""
-    result = await db.execute(select(ScheduledJob).where(ScheduledJob.id == job_id))
-    job = result.scalar_one_or_none()
-
+    job = await service.get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="Scheduled job not found")
 
@@ -91,17 +93,17 @@ async def delete_scheduled_job(job_id: int, db: AsyncSession = Depends(get_db)):
     if automation_scheduler._initialized:
         await automation_scheduler.remove_job(job.id)
 
-    await db.delete(job)
-    await db.commit()
+    await service.delete(job)
     return None
 
 
 @router.post("/{job_id}/run", status_code=202)
-async def run_scheduled_job_now(job_id: int, db: AsyncSession = Depends(get_db)):
+async def run_scheduled_job_now(
+    job_id: int,
+    service: ScheduledJobService = Depends(get_job_service),
+):
     """Manually trigger a scheduled job to run now."""
-    result = await db.execute(select(ScheduledJob).where(ScheduledJob.id == job_id))
-    job = result.scalar_one_or_none()
-
+    job = await service.get(job_id)
     if not job:
         raise HTTPException(status_code=404, detail="Scheduled job not found")
 

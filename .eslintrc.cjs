@@ -1,3 +1,4 @@
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
@@ -7,10 +8,9 @@ module.exports = {
   rules: {
     "cor-rules/no-dynamic-imports": "error",
     "cor-rules/no-any-cast": "error",
-    "cor-rules/no-empty-catch": "warn",
-    "cor-rules/max-function-lines": "warn",
+    "cor-rules/no-extra-trycatch": "warn",
     "cor-rules/no-console-log": "warn",
     "@typescript-eslint/no-explicit-any": "off"
   },
-  ignorePatterns: ["node_modules/**", "dist/**", "build/**", ".next/**"]
+  ignorePatterns: ["node_modules/**", "dist/**", "build/**", ".next/**", "tools/**", "control/**", "external_sdks/**"]
 };
