@@ -1,0 +1,39 @@
+# KovelAI Docker Build Exclusions
+# Frontend is deployed separately to Firebase Hosting
+
+# Git and version control
+.git
+.gitignore
+
+# Environment secrets (injected at runtime, never baked in)
+.env
+.env.*
+!.env.example
+
+# Frontend (Firebase Hosting)
+public/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker-in-Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+*.md
+LICENSE
+gtm/

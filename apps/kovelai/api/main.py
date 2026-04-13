@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import logging
 import os
 import secrets
 import time
@@ -24,7 +25,12 @@ from typing import Optional
 
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+
+from api.stripe_connect import StripeConnect
+
+logger = logging.getLogger("kovelai.api")
 
 app = FastAPI(
     title="KovelAI — Privileged Client Gateway",
@@ -278,11 +284,14 @@ async def execute_privileged_query(
     count = SEUProxyEngine.increment_usage(x_seu_token)
 
     # Billing: charge client's CC via Stripe Connect
-    BillingEngine.bill_client_query(
-        attorney_id=session["attorney_id"],
+    billing_result = StripeConnect.bill_client_query(
+        lawyer_account_id=session.get("stripe_account_id", "acct_default"),
         rate_cents=1500,
+        client_payment_method=session.get("payment_method", "pm_default"),
+        session_id=session["session_id"],
         query_type=query.query_type,
     )
+    logger.info("Billing result: %s", billing_result.get("status"))
 
     # Check tier auto-upgrade
     new_tier = BillingEngine.check_tier_upgrade(session["attorney_id"], count)
@@ -332,3 +341,120 @@ async def health():
 async def list_tiers():
     """List available pricing tiers."""
     return BillingEngine.TIERS
+
+
+# ──────────────────────────────────────────────
+# Stripe Connect Endpoints
+# ──────────────────────────────────────────────
+
+
+class OnboardFirmRequest(BaseModel):
+    """Firm onboarding request."""
+    firm_name: str = Field(..., description="Law firm name")
+    email: str = Field(..., description="Firm admin email")
+
+
+@app.post("/api/v1/stripe/onboard")
+async def onboard_firm(req: OnboardFirmRequest):
+    """
+    Create a Stripe Express Connected Account for a new law firm.
+    Returns an onboarding link the firm owner clicks to complete KYC.
+    """
+    account = StripeConnect.create_connected_account(
+        firm_name=req.firm_name,
+        email=req.email,
+    )
+    if account.get("status") == "failed":
+        raise HTTPException(status_code=500, detail=account.get("error", "Account creation failed"))
+
+    # Generate the Stripe-hosted onboarding link
+    link = StripeConnect.create_account_link(account["account_id"])
+    return {
+        "account_id": account["account_id"],
+        "onboarding_url": link.get("url"),
+        "status": account["status"],
+    }
+
+
+@app.post("/api/v1/stripe/webhook")
+async def stripe_webhook(request: Request):
+    """
+    Stripe webhook handler. Processes:
+    - payment_intent.succeeded → log client payment
+    - account.updated → track onboarding completion
+    - invoice.paid → confirm SaaS tier payment
+    """
+    payload = await request.body()
+    sig_header = request.headers.get("stripe-signature", "")
+
+    event = StripeConnect.verify_webhook(payload, sig_header)
+    if event is None:
+        # In dev mode without webhook secret, log but accept
+        logger.warning("Webhook verification skipped or failed")
+        return JSONResponse(
+            status_code=200,
+            content={"status": "received", "verified": False},
+        )
+
+    event_type = event.get("type", "")
+    data = event.get("data", {}).get("object", {})
+
+    if event_type == "payment_intent.succeeded":
+        logger.info(
+            "Payment succeeded: %s → %s (%d cents)",
+            data.get("id"),
+            data.get("transfer_data", {}).get("destination"),
+            data.get("amount", 0),
+        )
+    elif event_type == "account.updated":
+        logger.info(
+            "Account updated: %s (charges_enabled=%s)",
+            data.get("id"),
+            data.get("charges_enabled"),
+        )
+    elif event_type == "invoice.paid":
+        logger.info(
+            "Invoice paid: %s for customer %s",
+            data.get("id"),
+            data.get("customer"),
+        )
+    else:
+        logger.debug("Unhandled event type: %s", event_type)
+
+    return JSONResponse(
+        status_code=200,
+        content={"status": "processed", "type": event_type},
+    )
+
+
+@app.get("/api/v1/stripe/balance/{account_id}")
+async def get_firm_balance(account_id: str):
+    """
+    Get the balance for a connected account.
+    Used in the lawyer dashboard to show earnings.
+    """
+    balance = StripeConnect.get_account_balance(account_id)
+    return balance
+
+
+class SubscribeRequest(BaseModel):
+    """Firm subscription request (Track B)."""
+    email: str = Field(..., description="Firm billing email")
+    tier: str = Field(default="starter", description="starter | pro | sovereign")
+    payment_method: Optional[str] = Field(default=None, description="Stripe payment method ID")
+
+
+@app.post("/api/v1/stripe/subscribe")
+async def subscribe_firm(req: SubscribeRequest):
+    """
+    Create or update a KovelAI SaaS subscription for the firm.
+    This is Track B: Lawyer pays US for platform access.
+    """
+    result = StripeConnect.create_firm_subscription(
+        firm_email=req.email,
+        tier=req.tier,
+        payment_method=req.payment_method,
+    )
+    if result.get("status") == "failed":
+        raise HTTPException(status_code=500, detail=result.get("error", "Subscription failed"))
+    return result
