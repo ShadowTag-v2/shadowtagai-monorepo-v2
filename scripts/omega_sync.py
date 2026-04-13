@@ -151,12 +151,12 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         except subprocess.TimeoutExpired:
             print("  ⚠️  Fetch timed out (large repo) — skipping, will force push")
 
+        # Token is already in the remote URL via x-access-token:TOKEN@github.com
+        # Only disable credential.helper to prevent macOS Keychain interference
         git_base = [
             "git",
             "-c",
             "credential.helper=",
-            "-c",
-            f"http.https://github.com/.extraheader=Authorization: Basic {__import__('base64').b64encode(f'x-access-token:{token}'.encode()).decode()}",
         ]
 
         # Try --force-with-lease first (safest)
