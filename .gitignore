@@ -102,9 +102,9 @@ CLAUDE.local.md
 launchd-sync*
 
 # --- Root Debris Prevention ---
-test_*.cmake
-test_*.py
-test2.py
+/test_*.cmake
+/test_*.py
+/test2.py
 
 # --- Rust Build Artifacts ---
 **/target/debug/
