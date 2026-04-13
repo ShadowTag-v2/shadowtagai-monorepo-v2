@@ -133,12 +133,21 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
     try:
         env = os.environ.copy()
         env["GIT_TERMINAL_PROMPT"] = "0"
+        # Critical: bypass ALL credential helpers (macOS Keychain, etc.)
+        env["GIT_ASKPASS"] = "/usr/bin/true"
+        env["GIT_CONFIG_NOSYSTEM"] = "1"
+
+        # Git config overrides to kill every credential helper layer
+        git_cred_overrides = [
+            "-c", "credential.helper=",
+            "-c", "credential.https://github.com.helper=",
+        ]
 
         # Attempt fetch to update remote tracking refs (non-blocking on timeout)
         print("  🔄 Fetching remote state (60s timeout)...")
         try:
             fetch_result = subprocess.run(
-                ["git", "fetch", "origin", "--depth=1"],
+                ["git"] + git_cred_overrides + ["fetch", "origin", "--depth=1"],
                 capture_output=True,
                 text=True,
                 env=env,
@@ -152,12 +161,7 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
             print("  ⚠️  Fetch timed out (large repo) — skipping, will force push")
 
         # Token is already in the remote URL via x-access-token:TOKEN@github.com
-        # Only disable credential.helper to prevent macOS Keychain interference
-        git_base = [
-            "git",
-            "-c",
-            "credential.helper=",
-        ]
+        git_base = ["git"] + git_cred_overrides
 
         # Try --force-with-lease first (safest)
         print("  📤 Pushing with --force-with-lease...")
