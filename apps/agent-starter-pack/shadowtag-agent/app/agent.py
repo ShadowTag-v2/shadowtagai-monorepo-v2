@@ -34,6 +34,8 @@ from google.adk.apps import App
 from google.adk.models import Gemini
 from google.genai import types
 
+from app import firestore_client
+
 try:
     _, project_id = google.auth.default()
     if project_id:
@@ -97,6 +99,12 @@ def uphillsnowball_case_intake(client_description: str) -> str:
         "billable": True,
     }
 
+    # Persist to shadowtag-engine Firestore
+    try:
+        firestore_client.create_intake(intake)
+    except Exception:
+        pass  # Fire-and-forget: tool output is primary
+
     return json.dumps(intake, indent=2)
 
 
@@ -141,6 +149,12 @@ def uphillsnowball_sanctions_check(entity_name: str, jurisdiction: str = "US") -
         "recommended_action": "PROCEED",
         "screening_timestamp": datetime.datetime.now(ZoneInfo("UTC")).isoformat(),
     }
+
+    # Persist to shadowtag-engine Firestore
+    try:
+        firestore_client.create_screening(result)
+    except Exception:
+        pass  # Fire-and-forget
 
     return json.dumps(result, indent=2)
 
@@ -199,6 +213,12 @@ def uphillsnowball_document_analysis(document_text: str, analysis_type: str = "r
         "timestamp": datetime.datetime.now(ZoneInfo("UTC")).isoformat(),
     }
 
+    # Persist to shadowtag-engine Firestore
+    try:
+        firestore_client.create_analysis(result)
+    except Exception:
+        pass  # Fire-and-forget
+
     return json.dumps(result, indent=2)
 
 
@@ -256,6 +276,12 @@ def uphillsnowball_billing_tracker(
         "timestamp": datetime.datetime.now(ZoneInfo("UTC")).isoformat(),
         "status": "PENDING_REVIEW",
     }
+
+    # Persist to shadowtag-engine Firestore
+    try:
+        firestore_client.create_billing_entry(entry)
+    except Exception:
+        pass  # Fire-and-forget
 
     return json.dumps(entry, indent=2)
 

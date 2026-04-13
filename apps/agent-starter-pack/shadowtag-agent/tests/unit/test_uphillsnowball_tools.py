@@ -16,8 +16,6 @@
 
 import json
 
-import pytest
-
 from app.agent import (
     uphillsnowball_billing_tracker,
     uphillsnowball_case_intake,
