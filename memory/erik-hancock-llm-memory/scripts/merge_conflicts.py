@@ -17,7 +17,7 @@ class ConflictResolver:
 
     def __init__(self, use_anthropic: bool = True):
         self.use_anthropic = use_anthropic
-        self.api_key = os.getenv('ANTHROPIC_API_KEY')
+        self.api_key = os.getenv("ANTHROPIC_API_KEY")
 
         if use_anthropic and not self.api_key:
             print("Warning: ANTHROPIC_API_KEY not set, using heuristic resolution")
@@ -26,9 +26,7 @@ class ConflictResolver:
     def get_conflicted_files(self) -> list[Path]:
         """Get list of files with merge conflicts"""
         result = subprocess.run(
-            ['git', 'diff', '--name-only', '--diff-filter=U'],
-            capture_output=True,
-            text=True
+            ["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True
         )
 
         if result.returncode != 0:
@@ -52,30 +50,25 @@ class ConflictResolver:
 
         i = 0
         while i < len(lines):
-            if lines[i].startswith('<<<<<<<'):
+            if lines[i].startswith("<<<<<<<"):
                 # Start of conflict
-                conflict = {
-                    'ours': [],
-                    'theirs': [],
-                    'separator_idx': None,
-                    'end_idx': None
-                }
+                conflict = {"ours": [], "theirs": [], "separator_idx": None, "end_idx": None}
 
                 # Find middle separator
                 j = i + 1
-                while j < len(lines) and not lines[j].startswith('======='):
-                    conflict['ours'].append(lines[j])
+                while j < len(lines) and not lines[j].startswith("======="):
+                    conflict["ours"].append(lines[j])
                     j += 1
 
-                conflict['separator_idx'] = j
+                conflict["separator_idx"] = j
 
                 # Find end marker
                 j += 1
-                while j < len(lines) and not lines[j].startswith('>>>>>>>'):
-                    conflict['theirs'].append(lines[j])
+                while j < len(lines) and not lines[j].startswith(">>>>>>>"):
+                    conflict["theirs"].append(lines[j])
                     j += 1
 
-                conflict['end_idx'] = j
+                conflict["end_idx"] = j
 
                 conflicts.append(conflict)
                 i = j + 1
@@ -84,12 +77,7 @@ class ConflictResolver:
 
         return conflicts
 
-    def resolve_conflict_llm(
-        self,
-        file_path: Path,
-        ours: str,
-        theirs: str
-    ) -> str:
+    def resolve_conflict_llm(self, file_path: Path, ours: str, theirs: str) -> str:
         """
         Use LLM to resolve conflict intelligently
 
@@ -157,7 +145,7 @@ Provide ONLY the resolved code, no explanations or markdown fences.
             if isinstance(ours_json, dict) and isinstance(theirs_json, dict):
                 # Merge dictionaries (prefer remote on conflict)
                 merged = {**ours_json, **theirs_json}
-                return json.dumps(merged, indent=2) + '\n'
+                return json.dumps(merged, indent=2) + "\n"
 
         except json.JSONDecodeError:
             pass
@@ -191,8 +179,8 @@ Provide ONLY the resolved code, no explanations or markdown fences.
         # Resolve each conflict
         resolved_content = content
         for idx, conflict in enumerate(reversed(conflicts)):  # Reverse to preserve indices
-            ours = ''.join(conflict['ours'])
-            theirs = ''.join(conflict['theirs'])
+            ours = "".join(conflict["ours"])
+            theirs = "".join(conflict["theirs"])
 
             print(f"  Resolving conflict {len(conflicts) - idx}...")
 
@@ -208,7 +196,7 @@ Provide ONLY the resolved code, no explanations or markdown fences.
             # Find conflict markers in current content
             start_idx = None
             for i, line in enumerate(lines):
-                if line.startswith('<<<<<<<'):
+                if line.startswith("<<<<<<<"):
                     start_idx = i
                     break
 
@@ -219,7 +207,7 @@ Provide ONLY the resolved code, no explanations or markdown fences.
             # Find end marker
             end_idx = None
             for i in range(start_idx, len(lines)):
-                if lines[i].startswith('>>>>>>>'):
+                if lines[i].startswith(">>>>>>>"):
                     end_idx = i
                     break
 
@@ -229,19 +217,17 @@ Provide ONLY the resolved code, no explanations or markdown fences.
 
             # Replace with resolution
             resolved_content = (
-                ''.join(lines[:start_idx]) +
-                resolution +
-                ''.join(lines[end_idx + 1:])
+                "".join(lines[:start_idx]) + resolution + "".join(lines[end_idx + 1 :])
             )
 
         # Write resolved content
-        with open(file_path, 'w') as f:
+        with open(file_path, "w") as f:
             f.write(resolved_content)
 
         print("  ✓ Resolved all conflicts")
 
         # Stage the file
-        subprocess.run(['git', 'add', str(file_path)])
+        subprocess.run(["git", "add", str(file_path)])
         print("  ✓ Staged for commit")
 
         return True
@@ -278,10 +264,7 @@ def main():
     print("=" * 60)
 
     # Check if in a git repo
-    result = subprocess.run(
-        ['git', 'rev-parse', '--git-dir'],
-        capture_output=True
-    )
+    result = subprocess.run(["git", "rev-parse", "--git-dir"], capture_output=True)
 
     if result.returncode != 0:
         print("Error: Not in a Git repository", file=sys.stderr)
@@ -289,9 +272,7 @@ def main():
 
     # Check for conflicts
     result = subprocess.run(
-        ['git', 'diff', '--name-only', '--diff-filter=U'],
-        capture_output=True,
-        text=True
+        ["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True
     )
 
     if not result.stdout.strip():
@@ -299,7 +280,7 @@ def main():
         return 0
 
     # Create resolver
-    use_llm = os.getenv('ANTHROPIC_API_KEY') is not None
+    use_llm = os.getenv("ANTHROPIC_API_KEY") is not None
     resolver = ConflictResolver(use_anthropic=use_llm)
 
     if use_llm:
@@ -328,5 +309,5 @@ def main():
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

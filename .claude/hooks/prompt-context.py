@@ -8,6 +8,7 @@ import sys
 import re
 from datetime import datetime
 
+
 def main():
     try:
         input_data = json.load(sys.stdin)
@@ -30,7 +31,7 @@ def main():
             # Block the prompt and show reason to user
             output = {
                 "decision": "block",
-                "reason": f"🔒 Security policy violation: {message}. Please rephrase your request without including sensitive credentials."
+                "reason": f"🔒 Security policy violation: {message}. Please rephrase your request without including sensitive credentials.",
             }
             print(json.dumps(output))
             sys.exit(0)

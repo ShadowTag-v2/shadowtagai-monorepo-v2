@@ -47,7 +47,9 @@ def classify_path(path: str) -> str:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Compare two manifest files and emit a reconcile report")
+    ap = argparse.ArgumentParser(
+        description="Compare two manifest files and emit a reconcile report"
+    )
     ap.add_argument("primary_manifest")
     ap.add_argument("secondary_manifest")
     ap.add_argument("--markdown-out", default=None)
@@ -73,7 +75,9 @@ def main() -> int:
                 "section": classify_path(key),
                 "primary": f1[key],
                 "secondary": f2[key],
-                "severity": "critical" if classify_path(key) in {"repo_roots", "control_plane"} else "medium",
+                "severity": "critical"
+                if classify_path(key) in {"repo_roots", "control_plane"}
+                else "medium",
             }
         )
 

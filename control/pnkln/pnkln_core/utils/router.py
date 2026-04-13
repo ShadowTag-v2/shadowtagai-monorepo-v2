@@ -1,5 +1,5 @@
 def route_task(task_description: str) -> str:
-    """ Routes a task description to the appropriate agent or category.
+    """Routes a task description to the appropriate agent or category.
 
     Args:
         task_description: The input string describing the task.

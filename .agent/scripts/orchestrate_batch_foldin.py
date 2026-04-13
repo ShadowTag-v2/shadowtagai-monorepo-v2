@@ -27,7 +27,10 @@ REPOS = [
     ("ehanc69/pnkln-stack-evals", "evals/pnkln-stack-evals"),
     ("ehanc69/pnkln-stack-governance", "governance/pnkln-stack-governance"),
     ("ehanc69/pnkln-stack-ui-kit", "apps/pnkln-stack_stack/pnkln-stack-ui-kit"),
-    ("ehanc69/pnkln-stack-offline-appliance", "apps/pnkln-stack_stack/pnkln-stack-offline-appliance"),
+    (
+        "ehanc69/pnkln-stack-offline-appliance",
+        "apps/pnkln-stack_stack/pnkln-stack-offline-appliance",
+    ),
     ("ehanc69/pnkln-stack-risk-engine", "infra/pnkln-stack-risk-engine"),
     ("ehanc69/pnkln-stack-indexer", "packages/pnkln-stack-indexer"),
     ("ehanc69/pnkln-stack-codesmith", "packages/pnkln-stack-codesmith"),
@@ -68,7 +71,11 @@ for git_source, dest_path in REPOS:
 
     print(f"[{repo_name}] Cloning...")
     if not os.path.exists(clone_path):
-        res = subprocess.run(["git", "clone", f"https://github.com/{git_source}.git", clone_path], capture_output=True, env=env)
+        res = subprocess.run(
+            ["git", "clone", f"https://github.com/{git_source}.git", clone_path],
+            capture_output=True,
+            env=env,
+        )
         if res.returncode != 0:
             markdown_table += f"| {repo_name} | BLOCKED | {dest_path} | - | Clone failed (Private/Missing) | Fail |\n"
             continue
@@ -108,14 +115,18 @@ for git_source, dest_path in REPOS:
     print(f"[{repo_name}] Landing Tree...")
     abs_dest = os.path.join(MONO_ROOT, dest_path)
     os.makedirs(abs_dest, exist_ok=True)
-    subprocess.run(["rsync", "-a", "--exclude=.git", f"{clone_path}/", abs_dest], capture_output=True)
+    subprocess.run(
+        ["rsync", "-a", "--exclude=.git", f"{clone_path}/", abs_dest], capture_output=True
+    )
 
     print(f"[{repo_name}] Updating Manifest...")
     try:
         with open(MANIFEST_PATH) as f:
             manifest_lines = f.readlines()
 
-        insert_idx = next((i + 1 for i, line in enumerate(manifest_lines) if line.startswith("repo_roots:")), -1)
+        insert_idx = next(
+            (i + 1 for i, line in enumerate(manifest_lines) if line.startswith("repo_roots:")), -1
+        )
         exists = any(f"  {repo_name}:" in line for line in manifest_lines)
 
         if insert_idx != -1 and not exists:

@@ -5,6 +5,7 @@ def get_remaining_slots(tier_limits, limit_type, current_count):
         return float("inf")
     return max(0, limit - current_count)
 
+
 def enforce_rate_limit(org_id):
     """Another function in middleware."""
     pass

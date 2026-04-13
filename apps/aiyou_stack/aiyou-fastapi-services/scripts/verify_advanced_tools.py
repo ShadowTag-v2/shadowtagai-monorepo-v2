@@ -1,6 +1,5 @@
-from src.shadowtag_v4.tools.registry import registry
-
 from src.shadowtag_v4.agents.base import AntigravityAgent
+from src.shadowtag_v4.tools.registry import registry
 
 
 def main():

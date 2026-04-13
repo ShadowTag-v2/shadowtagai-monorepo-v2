@@ -1,6 +1,7 @@
 import models as m
 import auth as a
 
+
 def main():
     u = m.User()
     u.save()

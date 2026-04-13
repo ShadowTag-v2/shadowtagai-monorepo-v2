@@ -306,9 +306,9 @@ def run_configuration(
     else:
         with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {
-                executor.submit(
-                    process_instance, instance, config, output_dir, model_name, mode_name
-                ): instance["instance_id"]
+                executor.submit(process_instance, instance, config, output_dir, model_name, mode_name): instance[
+                    "instance_id"
+                ]
                 for instance in instances
             }
             for future in concurrent.futures.as_completed(futures):
@@ -347,8 +347,12 @@ def run_configuration(
 
 @app.command()
 def single(
-    model: str = typer.Option(..., "-m", "--model", help=f"Model config name. Available: {', '.join(AVAILABLE_MODELS)}"),
-    mode: str = typer.Option("native_augment", "--mode", help=f"Evaluation mode. Available: {', '.join(AVAILABLE_MODES)}"),
+    model: str = typer.Option(
+        ..., "-m", "--model", help=f"Model config name. Available: {', '.join(AVAILABLE_MODELS)}"
+    ),
+    mode: str = typer.Option(
+        "native_augment", "--mode", help=f"Evaluation mode. Available: {', '.join(AVAILABLE_MODES)}"
+    ),
     subset: str = typer.Option("lite", "--subset", help="SWE-bench subset: lite, verified, full"),
     split: str = typer.Option("dev", "--split", help="Dataset split"),
     slice_spec: str = typer.Option("", "--slice", help="Slice spec (e.g., '0:5')"),
@@ -373,7 +377,9 @@ def single(
 
 @app.command()
 def matrix(
-    models: list[str] = typer.Option(AVAILABLE_MODELS, "-m", "--models", help="Models to evaluate (comma-separated or repeated)"),
+    models: list[str] = typer.Option(
+        AVAILABLE_MODELS, "-m", "--models", help="Models to evaluate (comma-separated or repeated)"
+    ),
     modes: list[str] = typer.Option(AVAILABLE_MODES, "--modes", help="Modes to evaluate"),
     subset: str = typer.Option("lite", "--subset", help="SWE-bench subset"),
     split: str = typer.Option("dev", "--split", help="Dataset split"),
@@ -388,7 +394,9 @@ def matrix(
     instances = load_instances(subset, split, slice_spec, filter_spec)
 
     combos = list(product(models, modes))
-    console.print(f"\n[bold]Matrix evaluation:[/bold] {len(models)} models x {len(modes)} modes = {len(combos)} configs")
+    console.print(
+        f"\n[bold]Matrix evaluation:[/bold] {len(models)} models x {len(modes)} modes = {len(combos)} configs"
+    )
     console.print(f"  Models: {', '.join(models)}")
     console.print(f"  Modes: {', '.join(modes)}")
     console.print(f"  Instances per config: {len(instances)}")
@@ -472,7 +480,9 @@ def list_configs():
         gn_mode = config.get("agent", {}).get("gitnexus_mode", "baseline")
         console.print(f"  {name:<20} gitnexus_mode={gn_mode}")
 
-    console.print(f"\n[bold]Matrix:[/bold] {len(AVAILABLE_MODELS)} models x {len(AVAILABLE_MODES)} modes = {len(AVAILABLE_MODELS) * len(AVAILABLE_MODES)} configurations")
+    console.print(
+        f"\n[bold]Matrix:[/bold] {len(AVAILABLE_MODELS)} models x {len(AVAILABLE_MODES)} modes = {len(AVAILABLE_MODELS) * len(AVAILABLE_MODES)} configurations"
+    )
 
 
 # ─── Summary Output ────────────────────────────────────────────────────────
@@ -501,12 +511,8 @@ def _print_summary(results: list[dict], model: str, mode: str):
     table.add_row("Avg Calls/Instance", f"{total_calls / max(total, 1):.1f}")
 
     # GitNexus-specific metrics
-    gn_tool_calls = sum(
-        r.get("gitnexus_metrics", {}).get("total_tool_calls", 0) for r in results
-    )
-    gn_augment_hits = sum(
-        r.get("gitnexus_metrics", {}).get("augmentation_hits", 0) for r in results
-    )
+    gn_tool_calls = sum(r.get("gitnexus_metrics", {}).get("total_tool_calls", 0) for r in results)
+    gn_augment_hits = sum(r.get("gitnexus_metrics", {}).get("augmentation_hits", 0) for r in results)
     if gn_tool_calls > 0:
         table.add_row("GitNexus Tool Calls", str(gn_tool_calls))
     if gn_augment_hits > 0:

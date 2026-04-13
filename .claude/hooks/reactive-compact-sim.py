@@ -21,7 +21,6 @@ Source-verified constants from the actual CC codebase:
 import json
 import sys
 import os
-import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -40,7 +39,7 @@ POST_COMPACT_SKILLS_TOKEN_BUDGET = 25_000
 RECONNECT_BASE_DELAY_MS = 1_000
 RECONNECT_MAX_DELAY_MS = 30_000
 RECONNECT_GIVE_UP_MS = 600_000  # 10 minutes
-LIVENESS_TIMEOUT_MS = 45_000    # 45s silence = dead
+LIVENESS_TIMEOUT_MS = 45_000  # 45s silence = dead
 POST_MAX_RETRIES = 10
 POST_BASE_DELAY_MS = 500
 POST_MAX_DELAY_MS = 8_000
@@ -48,16 +47,19 @@ POST_MAX_DELAY_MS = 8_000
 # Retry delay with jitter (from withRetry.ts:530-548)
 BASE_DELAY_MS = 1_000
 
-STATE_FILE = Path(os.environ.get(
-    "REACTIVE_COMPACT_STATE",
-    os.path.expanduser("~/.claude/homunculus/reactive-compact-state.json")
-))
+STATE_FILE = Path(
+    os.environ.get(
+        "REACTIVE_COMPACT_STATE",
+        os.path.expanduser("~/.claude/homunculus/reactive-compact-state.json"),
+    )
+)
 
 
 def get_retry_delay(attempt: int, max_delay_ms: int = 32_000) -> float:
     """Reconstructed from CC withRetry.ts:530-548.
     Exponential backoff with 25% jitter."""
     import random
+
     base_delay = min(BASE_DELAY_MS * (2 ** (attempt - 1)), max_delay_ms)
     jitter = random.random() * 0.25 * base_delay
     return base_delay + jitter
@@ -70,8 +72,7 @@ def is_prompt_too_long(message: dict) -> bool:
         return False
     error = message.get("error", {})
     if isinstance(error, dict):
-        return error.get("type") == "prompt_too_long" or \
-               error.get("status") == 413
+        return error.get("type") == "prompt_too_long" or error.get("status") == 413
     return False
 
 
@@ -98,7 +99,7 @@ def load_state() -> dict:
         "has_attempted": False,
         "consecutive_failures": 0,
         "last_compact_at": None,
-        "total_reactive_compacts": 0
+        "total_reactive_compacts": 0,
     }
 
 
@@ -139,7 +140,7 @@ def try_reactive_compact(messages: list, state: dict) -> Optional[dict]:
         "reason": "reactive_413_recovery",
         "messages_before": len(messages),
         "timestamp": state["last_compact_at"],
-        "retry_number": state["total_reactive_compacts"]
+        "retry_number": state["total_reactive_compacts"],
     }
 
 
@@ -158,7 +159,7 @@ def audit_sse_resilience() -> dict:
             "permanent_http_codes": [401, 403, 404],
             "jitter_range": "±25%",
             "sequence_dedup_prune_threshold": 1000,
-            "sequence_dedup_keep_recent": 200
+            "sequence_dedup_keep_recent": 200,
         },
         "requirements": [
             "Exponential backoff: base * 2^(attempt-1) capped at max",
@@ -169,15 +170,16 @@ def audit_sse_resilience() -> dict:
             "Permanent rejection: 401/403/404 = immediate close, no retry",
             "Sequence dedup: track seen sequence numbers, prune at 1000 entries",
             "Last-Event-ID: send on reconnect for server-side resumption",
-            "Header refresh: get fresh auth headers before each reconnect attempt"
+            "Header refresh: get fresh auth headers before each reconnect attempt",
         ],
         "audit_status": "PASS",
-        "source": "SSETransport.ts:16-33, 468-534"
+        "source": "SSETransport.ts:16-33, 468-534",
     }
 
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description="Reactive Compact Simulator")
     parser.add_argument("--check", type=str, help="Check a JSON message for withholding")
     parser.add_argument("--audit-sse", action="store_true", help="Audit SSE resilience standards")
@@ -215,12 +217,16 @@ if __name__ == "__main__":
             state = load_state()
             result = try_reactive_compact([], state)
             save_state(state)
-            print(json.dumps({
-                "withhold": True,
-                "compact_result": result,
-                "ptl": is_prompt_too_long(msg),
-                "media_error": is_media_size_error(msg)
-            }))
+            print(
+                json.dumps(
+                    {
+                        "withhold": True,
+                        "compact_result": result,
+                        "ptl": is_prompt_too_long(msg),
+                        "media_error": is_media_size_error(msg),
+                    }
+                )
+            )
         else:
             print(json.dumps({"withhold": False}))
         sys.exit(0)

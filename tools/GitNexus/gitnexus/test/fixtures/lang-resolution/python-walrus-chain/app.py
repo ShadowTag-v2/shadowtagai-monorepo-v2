@@ -17,7 +17,7 @@ def walrus_chain_user() -> None:
     # Regular assignment where alias gets type from u (regular chain)
     alias = u
     # Walrus inside condition: w gets type from u via named_expression chain
-    if (w := u):
+    if w := u:
         w.save()
     alias.save()
 
@@ -25,6 +25,6 @@ def walrus_chain_user() -> None:
 def walrus_chain_repo() -> None:
     r: Repo = get_repo()
     alias = r
-    if (w := r):
+    if w := r:
         w.save()
     alias.save()

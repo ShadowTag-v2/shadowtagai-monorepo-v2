@@ -1,11 +1,14 @@
 from user import User
 from repo import Repo
 
+
 def get_user() -> User:
     return User()
 
+
 def get_repo() -> Repo:
     return Repo()
+
 
 def process():
     u: User = get_user()

@@ -235,9 +235,7 @@ class OracleStudio:
         result.steps_completed.append(MurderBoardStep.ACTION_EXTRACTION.value)
 
         # Step 7: Permanent Note Builder
-        notes = self._build_permanent_notes(
-            arguments, assumptions, steelmans, actions, doc_hash
-        )
+        notes = self._build_permanent_notes(arguments, assumptions, steelmans, actions, doc_hash)
         result.permanent_notes = [self._note_to_dict(n) for n in notes]
         result.steps_completed.append(MurderBoardStep.PERMANENT_NOTE_BUILDER.value)
 
@@ -270,7 +268,8 @@ class OracleStudio:
             has_operative = any(
                 v.original_text.strip() == sentence.strip()
                 for v in verb_ledger.verbs
-                if v.classification.value in ("performative", "operative", "coercive", "dispositive")
+                if v.classification.value
+                in ("performative", "operative", "coercive", "dispositive")
             )
 
             claim_buffer.append(sentence)
@@ -304,7 +303,9 @@ class OracleStudio:
     def _classify_argument(self, text: str) -> str:
         """Classify an argument as factual, legal, procedural, or policy."""
         text_lower = text.lower()
-        if any(w in text_lower for w in ["statute", "code", "section", "u.s.c.", "rule", "precedent"]):
+        if any(
+            w in text_lower for w in ["statute", "code", "section", "u.s.c.", "rule", "precedent"]
+        ):
             return "legal"
         if any(w in text_lower for w in ["court", "motion", "filing", "hearing", "procedur"]):
             return "procedural"
@@ -315,9 +316,7 @@ class OracleStudio:
     def _assess_argument_strength(self, sentences: list[str], verb_ledger: VerbLedger) -> float:
         """Score argument strength based on verb forensics."""
         combined = " ".join(sentences)
-        relevant_verbs = [
-            v for v in verb_ledger.verbs if v.original_text in combined
-        ]
+        relevant_verbs = [v for v in verb_ledger.verbs if v.original_text in combined]
         if not relevant_verbs:
             return 0.5
 
@@ -344,7 +343,8 @@ class OracleStudio:
             arg_text = arg.claim.lower()
             # Flag arguments with excessive hedging
             hedging_verbs = [
-                v for v in verb_ledger.verbs
+                v
+                for v in verb_ledger.verbs
                 if v.classification.value == "hedging" and v.verb.lower() in arg_text
             ]
             if hedging_verbs:
@@ -355,8 +355,7 @@ class OracleStudio:
 
             # Flag passive constructions that obscure actor
             passive_verbs = [
-                v for v in verb_ledger.verbs
-                if v.is_passive and v.verb.lower() in arg_text
+                v for v in verb_ledger.verbs if v.is_passive and v.verb.lower() in arg_text
             ]
             if passive_verbs:
                 arg.vulnerabilities.append(
@@ -495,10 +494,7 @@ class OracleStudio:
             composite = score.composite_score if score else 0.5
 
             # Steelman: strongest possible version
-            steelman = (
-                f"At its strongest, this {arg.classification} argument asserts: "
-                f"{arg.claim} "
-            )
+            steelman = f"At its strongest, this {arg.classification} argument asserts: {arg.claim} "
             if arg.support:
                 steelman += f"Supported by: {'; '.join(arg.support[:3])}. "
             steelman += (
@@ -525,13 +521,9 @@ class OracleStudio:
             # Counter-arguments
             counters = []
             if arg.classification == "legal":
-                counters.append(
-                    "Challenge with contrary authority or distinguish on facts"
-                )
+                counters.append("Challenge with contrary authority or distinguish on facts")
             if arg.classification == "factual":
-                counters.append(
-                    "Demand production of underlying documents (FRCP 34)"
-                )
+                counters.append("Demand production of underlying documents (FRCP 34)")
             counters.append("Depose declarant to test credibility and consistency")
 
             # Net assessment
@@ -771,9 +763,9 @@ class OracleStudio:
             return 0.5
 
         avg_relevance = sum(s.composite_score for s in scores) / len(scores)
-        survival_rate = sum(
-            1 for s in steelmans if "SURVIVES" in s.net_assessment
-        ) / max(len(steelmans), 1)
+        survival_rate = sum(1 for s in steelmans if "SURVIVES" in s.net_assessment) / max(
+            len(steelmans), 1
+        )
 
         return min(0.95, max(0.05, (avg_relevance * 0.6 + survival_rate * 0.4)))
 
@@ -784,6 +776,7 @@ class OracleStudio:
     def _split_legal_text(self, text: str) -> list[str]:
         """Split legal text into meaningful segments."""
         import re
+
         text = re.sub(r"(\b(?:U\.S|v|No|Rev|Stat|Sec|Art|Amdt|Supp|App)\.) ", r"\1⟨DOT⟩ ", text)
         sentences = re.split(r"(?<=[.!?;])\s+", text)
         return [s.replace("⟨DOT⟩", ".") for s in sentences if s.strip()]

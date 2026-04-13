@@ -1,11 +1,19 @@
 from __future__ import annotations
-from typing import Dict, Any
+from typing import Any
 import json
 from ..utils.db import pg_conn
 from ..adapters.authority_state import AuthorityState
 from ..adapters.memory_atoms import replace_authority_atoms
 
-def propose_promotion(pg_dsn: str, repo_id: str, promotion_kind: str, subject: str, payload: dict[str, Any], proposed_by: str = "assistant"):
+
+def propose_promotion(
+    pg_dsn: str,
+    repo_id: str,
+    promotion_kind: str,
+    subject: str,
+    payload: dict[str, Any],
+    proposed_by: str = "assistant",
+):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
         cur.execute(
@@ -13,6 +21,7 @@ def propose_promotion(pg_dsn: str, repo_id: str, promotion_kind: str, subject: s
             (repo_id, promotion_kind, subject, json.dumps(payload), proposed_by),
         )
         return str(cur.fetchone()[0])
+
 
 def approve_and_apply(pg_dsn: str, repo_id: str, promotion_id: str, authority_state_path: str):
     with pg_conn(pg_dsn) as conn:

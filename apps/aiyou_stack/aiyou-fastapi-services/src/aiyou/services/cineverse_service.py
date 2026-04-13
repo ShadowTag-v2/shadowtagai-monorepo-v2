@@ -43,7 +43,11 @@ class CineverseService:
 
     @staticmethod
     def publish_content(
-        db: Session, job: IngestionJob, user: User, is_premium: bool = False, price_cents: int | None = None
+        db: Session,
+        job: IngestionJob,
+        user: User,
+        is_premium: bool = False,
+        price_cents: int | None = None,
     ) -> Content:
         """Publish content from a completed ingestion job."""
         creator = db.query(Creator).filter(Creator.user_id == user.id).first()
@@ -91,9 +95,7 @@ class CineverseService:
         return db.query(Content).filter(Content.id == content_id).first()
 
     @staticmethod
-    def start_stream(
-        db: Session, content: Content, user: User | None = None
-    ) -> Stream:
+    def start_stream(db: Session, content: Content, user: User | None = None) -> Stream:
         """Start a streaming session and increment view count."""
         session_id = str(uuid4())
         stream = Stream(

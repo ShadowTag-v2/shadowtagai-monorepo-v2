@@ -1,7 +1,8 @@
+import logging
 import os
+
 import lancedb
 import pyarrow as pa
-import logging
 
 LANCEDB_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../../.lancedb"))
 

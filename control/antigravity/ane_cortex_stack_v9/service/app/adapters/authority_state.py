@@ -1,9 +1,10 @@
 from __future__ import annotations
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
 import json
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from ..utils.db import pg_conn
+
 
 class AuthorityState:
     def __init__(self, path: str):
@@ -44,7 +45,15 @@ class AuthorityState:
         state[section] = payload
         return self.write(state)
 
-def persist_snapshot(pg_dsn: str, repo_id: str, authority_kind: str, subject: str, content_json: str, version_tag: str | None = None):
+
+def persist_snapshot(
+    pg_dsn: str,
+    repo_id: str,
+    authority_kind: str,
+    subject: str,
+    content_json: str,
+    version_tag: str | None = None,
+):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
         cur.execute(
@@ -56,7 +65,10 @@ def persist_snapshot(pg_dsn: str, repo_id: str, authority_kind: str, subject: st
             (repo_id, authority_kind, subject, content_json, version_tag),
         )
 
-def record_authority_event(pg_dsn: str, repo_id: str, event_type: str, subject: str, body_json: str):
+
+def record_authority_event(
+    pg_dsn: str, repo_id: str, event_type: str, subject: str, body_json: str
+):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
         cur.execute(

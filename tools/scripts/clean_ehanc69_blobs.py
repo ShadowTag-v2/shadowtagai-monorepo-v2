@@ -97,7 +97,9 @@ def analyze_and_destroy(root_path: Path):
                     shutil.rmtree(dir_path)
                     bytes_saved += size
                     items_deleted += 1
-                    logging.info(f"Nuked directory and its contents: {dir_path.relative_to(root_path)}")
+                    logging.info(
+                        f"Nuked directory and its contents: {dir_path.relative_to(root_path)}"
+                    )
                     # This is the key optimization: prevent os.walk from descending further.
                     dirs.remove(dir_name)
                 except Exception as e:
@@ -114,7 +116,9 @@ def analyze_and_destroy(root_path: Path):
                     continue
                 file_size = file_path.stat().st_size
             except (FileNotFoundError, OSError) as e:
-                logging.debug(f"Could not stat file (likely broken symlink): {file_path}. Error: {e}")
+                logging.debug(
+                    f"Could not stat file (likely broken symlink): {file_path}. Error: {e}"
+                )
                 continue
 
             # Decide whether to delete the file

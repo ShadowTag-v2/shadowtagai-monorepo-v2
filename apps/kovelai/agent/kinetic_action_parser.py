@@ -278,7 +278,7 @@ class KineticActionParser:
             # Layer 3: Mandatory modals
             for match in MANDATORY_MODALS.finditer(sentence):
                 # Avoid double-counting "shall not" already caught above
-                full_context = sentence[max(0, match.start()):match.end() + 10]
+                full_context = sentence[max(0, match.start()) : match.end() + 10]
                 if "not" in full_context.lower():
                     continue
                 ledger.verbs.append(
@@ -403,7 +403,9 @@ class KineticActionParser:
 
         total = len(ledger.verbs)
         passive_count = sum(1 for v in ledger.verbs if v.is_passive)
-        hedging_count = sum(1 for v in ledger.verbs if v.classification == VerbClassification.HEDGING)
+        hedging_count = sum(
+            1 for v in ledger.verbs if v.classification == VerbClassification.HEDGING
+        )
         active_count = total - passive_count
 
         ledger.active_ratio = active_count / total

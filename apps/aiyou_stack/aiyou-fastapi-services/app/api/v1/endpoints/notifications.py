@@ -26,9 +26,7 @@ async def list_notifications(
     unread_only: bool = False,
 ):
     """List notifications for current user."""
-    result = NotificationService.list_notifications(
-        db, current_user.id, page, size, unread_only
-    )
+    result = NotificationService.list_notifications(db, current_user.id, page, size, unread_only)
 
     return NotificationListResponse(
         items=result["items"],

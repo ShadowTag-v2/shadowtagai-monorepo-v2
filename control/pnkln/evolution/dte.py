@@ -12,8 +12,9 @@ Based on Agent0 paper (arXiv:2511.16043v1):
 
 Part of PNKLN evolution stack.
 """
+
 import math
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -21,6 +22,7 @@ from enum import Enum
 
 class DifficultyStrategy(Enum):
     """Strategies for difficulty adjustment."""
+
     STREAK = "streak"
     WINDOW = "window"
     ADAPTIVE = "adaptive"
@@ -30,6 +32,7 @@ class DifficultyStrategy(Enum):
 @dataclass
 class DifficultyLevel:
     """Statistics for a single difficulty level."""
+
     level: int
     attempts: int = 0
     successes: int = 0
@@ -53,6 +56,7 @@ class DifficultyLevel:
 @dataclass
 class EvolutionMetrics:
     """Metrics for the entire evolution process."""
+
     total_iterations: int = 0
     current_difficulty: int = 1
     max_difficulty_reached: int = 1
@@ -80,7 +84,7 @@ class DifficultyTracker:
         min_difficulty: int = 1,
         max_difficulty: int = 10,
         streak_threshold: int = 3,
-        window_size: int = 10
+        window_size: int = 10,
     ):
         self.strategy = strategy
         self.min_difficulty = min_difficulty
@@ -105,7 +109,9 @@ class DifficultyTracker:
         else:
             level.failures += 1
             self.metrics.total_failures += 1
-        level.avg_confidence = ((level.avg_confidence * (level.attempts - 1) + confidence) / level.attempts)
+        level.avg_confidence = (
+            level.avg_confidence * (level.attempts - 1) + confidence
+        ) / level.attempts
         self.recent_outcomes.append(success)
         if len(self.recent_outcomes) > self.window_size:
             self.recent_outcomes.pop(0)
@@ -118,7 +124,9 @@ class DifficultyTracker:
         if next_difficulty != self.metrics.current_difficulty:
             self.metrics.difficulty_changes += 1
             self.metrics.current_difficulty = next_difficulty
-            self.metrics.max_difficulty_reached = max(self.metrics.max_difficulty_reached, next_difficulty)
+            self.metrics.max_difficulty_reached = max(
+                self.metrics.max_difficulty_reached, next_difficulty
+            )
             self.streak_count = 0
         return next_difficulty
 
@@ -181,5 +189,5 @@ class DifficultyTracker:
             "max_difficulty_reached": self.metrics.max_difficulty_reached,
             "total_iterations": self.metrics.total_iterations,
             "success_rate": self.metrics.total_successes / max(self.metrics.total_iterations, 1),
-            "difficulty_changes": self.metrics.difficulty_changes
+            "difficulty_changes": self.metrics.difficulty_changes,
         }

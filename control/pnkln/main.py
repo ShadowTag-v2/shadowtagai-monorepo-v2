@@ -3,8 +3,9 @@ from config.prompts import EXECUTIVE_PROMPT
 from pnkln_core.services.vertex_ai import run_task
 from pnkln_core.utils.router import route_task
 
+
 def main():
-    """ Main entrypoint for the pnkln system.
+    """Main entrypoint for the pnkln system.
     Takes a task description from the command line, routes it, and passes it to the executive agent.
     """
     if len(sys.argv) < 2:
@@ -31,6 +32,7 @@ def main():
         print("(Ensure you have authenticated with GCP and have the correct permissions)")
 
     print("\n----------------------")
+
 
 if __name__ == "__main__":
     main()

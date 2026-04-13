@@ -35,9 +35,7 @@ class AuthService:
         result = await self.db.execute(select(User).where(User.id == user_id))
         return result.scalar_one_or_none()
 
-    async def create_user(
-        self, email: str, full_name: str, hashed_password: str
-    ) -> User:
+    async def create_user(self, email: str, full_name: str, hashed_password: str) -> User:
         """Create a new user with the given details."""
         new_user = User(
             email=email,

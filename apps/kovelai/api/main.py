@@ -350,6 +350,7 @@ async def list_tiers():
 
 class OnboardFirmRequest(BaseModel):
     """Firm onboarding request."""
+
     firm_name: str = Field(..., description="Law firm name")
     email: str = Field(..., description="Firm admin email")
 
@@ -439,6 +440,7 @@ async def get_firm_balance(account_id: str):
 
 class SubscribeRequest(BaseModel):
     """Firm subscription request (Track B)."""
+
     email: str = Field(..., description="Firm billing email")
     tier: str = Field(default="starter", description="starter | pro | sovereign")
     payment_method: Optional[str] = Field(default=None, description="Stripe payment method ID")

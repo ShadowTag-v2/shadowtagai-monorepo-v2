@@ -1,11 +1,11 @@
 import asyncio
+import logging
+
+from lancedb_engine import physical_ingest
 from temporalio import activity
 from temporalio.client import Client
 from temporalio.worker import Worker
-import logging
-
 from upload_workflow import LanceDBIngestionWorkflow
-from lancedb_engine import physical_ingest
 
 logging.basicConfig(level=logging.INFO)
 

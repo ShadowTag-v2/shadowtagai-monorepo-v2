@@ -15,7 +15,7 @@ Output:
 import time
 import statistics
 import json
-from typing import List, Dict, Any
+from typing import Any
 from datetime import datetime
 from src.judges import JudgeFactory, JudgeRequest, JudgeType
 
@@ -31,9 +31,7 @@ class LatencyValidator:
             num_samples: Number of decisions to test (default: 1000)
         """
         self.num_samples = num_samples
-        self.results: dict[JudgeType, list[float]] = {
-            judge_type: [] for judge_type in JudgeType
-        }
+        self.results: dict[JudgeType, list[float]] = {judge_type: [] for judge_type in JudgeType}
 
     def generate_sample_request(self, judge_type: JudgeType, idx: int) -> JudgeRequest:
         """Generate sample request for testing"""
@@ -42,27 +40,29 @@ class LatencyValidator:
                 "amount_usd": 50000 + (idx % 50000),
                 "vendor_status": ["new", "approved", "unverified"][idx % 3],
                 "purchase_order": f"PO-{idx}" if idx % 2 == 0 else None,
-                "destination_country": ["US", "UK", "Unknown"][idx % 3]
+                "destination_country": ["US", "UK", "Unknown"][idx % 3],
             },
             JudgeType.CASE: {
                 "case_value_usd": 100000 + (idx % 900000),
                 "case_type": ["contract_dispute", "litigation", "settlement"][idx % 3],
                 "conflict_check_passed": idx % 4 != 0,
-                "probability_of_success": 0.3 + (idx % 7) * 0.1
+                "probability_of_success": 0.3 + (idx % 7) * 0.1,
             },
             JudgeType.LAW: {
                 "compliance_area": ["eu_ai_act", "gdpr", "ca_sb53", "export_control"][idx % 4],
-                "ai_system_type": ["biometric_identification", "credit_scoring"][idx % 2] if idx % 2 == 0 else None,
+                "ai_system_type": ["biometric_identification", "credit_scoring"][idx % 2]
+                if idx % 2 == 0
+                else None,
                 "legal_review_completed": idx % 3 != 0,
-                "dpia_completed": idx % 2 == 0
+                "dpia_completed": idx % 2 == 0,
             },
             JudgeType.FRAUD: {
                 "fraud_score": 0.1 + (idx % 8) * 0.1,
                 "identity_verified": idx % 2 == 0,
                 "geo_location_mismatch": idx % 3 == 0,
                 "velocity_check_failed": idx % 5 == 0,
-                "amount_usd": 1000 + (idx % 9000)
-            }
+                "amount_usd": 1000 + (idx % 9000),
+            },
         }
 
         return JudgeRequest(
@@ -70,7 +70,7 @@ class LatencyValidator:
             judge_type=judge_type,
             action_type="test_action",
             context=contexts[judge_type],
-            requested_by="performance_test@example.com"
+            requested_by="performance_test@example.com",
         )
 
     def run_validation(self, verbose: bool = True) -> dict[str, Any]:
@@ -189,7 +189,9 @@ class LatencyValidator:
         print(f"  p50 (median): {overall['p50_ms']:.2f}ms")
         print(f"  p90:          {overall['p90_ms']:.2f}ms")
         print(f"  p95:          {overall['p95_ms']:.2f}ms")
-        print(f"  p99:          {overall['p99_ms']:.2f}ms  {'✓ PASS' if results['passed'] else '✗ FAIL'}")
+        print(
+            f"  p99:          {overall['p99_ms']:.2f}ms  {'✓ PASS' if results['passed'] else '✗ FAIL'}"
+        )
         print(f"  p100 (max):   {overall['p100_ms']:.2f}ms")
         print()
 
@@ -199,19 +201,27 @@ class LatencyValidator:
 
         for judge_type, stats in results["by_vertical"].items():
             status = "✓" if stats["p99_ms"] <= results["target_p99_ms"] else "✗"
-            print(f"{judge_type:12} {status}  p50: {stats['p50_ms']:5.2f}ms  p99: {stats['p99_ms']:5.2f}ms  max: {stats['max_ms']:5.2f}ms")
+            print(
+                f"{judge_type:12} {status}  p50: {stats['p50_ms']:5.2f}ms  p99: {stats['p99_ms']:5.2f}ms  max: {stats['max_ms']:5.2f}ms"
+            )
 
         print()
         print(f"{'=' * 60}")
         if results["passed"]:
-            print(f"✓ VALIDATION PASSED: p99 = {overall['p99_ms']:.2f}ms ≤ {results['target_p99_ms']}ms")
+            print(
+                f"✓ VALIDATION PASSED: p99 = {overall['p99_ms']:.2f}ms ≤ {results['target_p99_ms']}ms"
+            )
         else:
-            print(f"✗ VALIDATION FAILED: p99 = {overall['p99_ms']:.2f}ms > {results['target_p99_ms']}ms")
+            print(
+                f"✗ VALIDATION FAILED: p99 = {overall['p99_ms']:.2f}ms > {results['target_p99_ms']}ms"
+            )
         print(f"{'=' * 60}")
 
-    def export_results(self, results: dict[str, Any], filename: str = "latency_validation_results.json"):
+    def export_results(
+        self, results: dict[str, Any], filename: str = "latency_validation_results.json"
+    ):
         """Export results to JSON file"""
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             json.dump(results, f, indent=2)
         print(f"\nResults exported to: {filename}")
 
@@ -219,7 +229,7 @@ class LatencyValidator:
         """Export raw latency data to CSV"""
         import csv
 
-        with open(filename, 'w', newline='') as f:
+        with open(filename, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["judge_type", "sample_idx", "latency_ms"])
 
@@ -235,10 +245,14 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Validate Judge #6 latency performance")
-    parser.add_argument("--samples", type=int, default=1000, help="Number of samples to test (default: 1000)")
+    parser.add_argument(
+        "--samples", type=int, default=1000, help="Number of samples to test (default: 1000)"
+    )
     parser.add_argument("--export-json", action="store_true", help="Export results to JSON")
     parser.add_argument("--export-csv", action="store_true", help="Export raw data to CSV")
-    parser.add_argument("--quiet", action="store_true", help="Suppress output (just return exit code)")
+    parser.add_argument(
+        "--quiet", action="store_true", help="Suppress output (just return exit code)"
+    )
 
     args = parser.parse_args()
 
