@@ -65,3 +65,28 @@ Highest-value sequence:
 - never take the "simplest approach" — take the most robust one
 - use sequential-thinking MCP for multi-step architectural decisions
 - re-read files before editing; re-read after to confirm
+
+## Immutable zones
+
+The following files constitute the control plane. Agents MUST NOT modify them
+unless the user explicitly directs a control plane change:
+
+- `AGENTS.md` — canonical contract
+- `GEMINI.md` — operator invariants
+- `monorepo_manifest.yaml` — workspace truth
+- `antigravity-mcp-config.json` — MCP truth
+- `BUSINESS_CONTEXT_LOCKED.md` — pricing and architecture truth
+- `RISK_REGISTER.md` — operational risk truth
+- `scripts/dead-code-audit.sh` — guillotine
+- `scripts/pnkln_root_guard.sh` — root guard
+- `.gitignore` — debris prevention
+
+## Hardened state
+
+- v8.3 canonicalized: 2026-04-13
+- Commit: `7381346dc6c`
+- CI Python: 3.13 (all 3 workflows)
+- Firestore: `shadowtag-engine` (4 collections)
+- Semantic Kernel: .NET 11.0 Preview 2
+- Unit tests: 17/17
+- Dead code: clean
