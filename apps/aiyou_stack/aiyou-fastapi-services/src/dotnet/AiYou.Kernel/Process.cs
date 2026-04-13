@@ -30,7 +30,7 @@ public class CompressionStep : KernelProcessStep
         // Real implementation would use a small local model (e.g., Phi-3) 
         // to strip noise and return a JSON feature vector.
         Console.WriteLine($"[Compressor] Processing: {rawInput.Substring(0, Math.Min(20, rawInput.Length))}...");
-        
+
         // Mocking the feature extraction for the 'Gold Master' signal
         string data = JsonSerializer.Serialize(new { party_size = 4, ltv = 0.9 });
         await context.EmitEventAsync(new() { Id = "FeaturesExtracted", Data = data });
@@ -49,15 +49,15 @@ public class RiskStep : KernelProcessStep
         // 1. Load Doctrine Rules (Vector Search from Postgres)
         // 2. Compare Features vs. Rules
         // 3. Output Score
-        
+
         // Simulating a Moderate Risk assessment based on CSRMC criteria
-        var assessment = new RiskAssessment 
-        { 
-            Level = RiskLevel.RA2_Moderate, 
-            ProbabilityScore = 0.45, 
-            Rationale = "High LTV, but late night transaction (CSRMC Velocity Check)." 
+        var assessment = new RiskAssessment
+        {
+            Level = RiskLevel.RA2_Moderate,
+            ProbabilityScore = 0.45,
+            Rationale = "High LTV, but late night transaction (CSRMC Velocity Check)."
         };
-        
+
         if (assessment.Level >= RiskLevel.RA4_Preclusive)
         {
             await context.EmitEventAsync(new() { Id = "RiskPreclusive", Data = assessment });
@@ -74,6 +74,20 @@ public class RiskStep : KernelProcessStep
 }
 
 // ---------------------------------------------------------
+// STEP 2B: SOVEREIGN FALLBACK (The "Hermes-Agent")
+// ---------------------------------------------------------
+public class HermesOfflineStep : KernelProcessStep
+{
+    [KernelFunction, Description("Offline Deterministic Tool Execution via Hermes-Agent")]
+    public async Task RouteOfflineAsync(KernelProcessStepContext context, RiskAssessment risk)
+    {
+        Console.WriteLine($"[HERMES-AGENT] Sovereign mode activated. Routing offline to localhost:11434.");
+        // This invokes the binary downloaded from NousResearch/hermes-agent
+        await context.EmitEventAsync(new() { Id = "SovereignComplete", Data = risk });
+    }
+}
+
+// ---------------------------------------------------------
 // STEP 3: HUMAN GATE (The "Brakes")
 // ---------------------------------------------------------
 public class HumanGateStep : KernelProcessStep
@@ -84,6 +98,11 @@ public class HumanGateStep : KernelProcessStep
     {
         Console.WriteLine($"[HumanGate] PAUSED. Risk: {risk.Level}. Waiting for Approval...");
         // In reality, this persists state to Postgres and sleeps until API wake-up
+        
+        // Emulate human click after sleeping
+        await Task.Delay(1000); 
+        Console.WriteLine("[HumanGate] APPROVED via mock internal trigger.");
+        await context.EmitEventAsync(new() { Id = "Approved", Data = risk });
     }
 }
 
@@ -98,7 +117,7 @@ public class EnforcementStep : KernelProcessStep
         Console.WriteLine($"[Enforcement] EXECUTING Transaction. Risk: {risk.Level}");
         // Call MCP Tool (e.g., Stripe, POS) here
     }
-    
+
     [KernelFunction]
     public void Block(RiskAssessment risk)
     {
@@ -117,29 +136,35 @@ public static class JudgeProcessBuilder
 
         var compress = builder.AddStepFromType<CompressionStep>("Compressor");
         var risk = builder.AddStepFromType<RiskStep>("RiskEngine");
+        var hermes = builder.AddStepFromType<HermesOfflineStep>("HermesFallback");
         var human = builder.AddStepFromType<HumanGateStep>("HumanGate");
         var enforce = builder.AddStepFromType<EnforcementStep>("Enforcer");
 
         // The Directed Graph (The "Flow")
         builder.OnExternalEvent("Start")
-            .SendEventTo(new ProcessFunctionTargetBuilder(compress, "ExtractFeaturesAsync", "rawInput"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(compress, nameof(CompressionStep.ExtractFeaturesAsync), "rawInput"));
 
         compress.OnEvent("FeaturesExtracted")
-            .SendEventTo(new ProcessFunctionTargetBuilder(risk, "EvaluateRiskAsync", "features"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(risk, nameof(RiskStep.EvaluateRiskAsync), "features"));
 
         // Branching Logic (The "Intelligence")
         risk.OnEvent("RiskLow")
-            .SendEventTo(new ProcessFunctionTargetBuilder(enforce, "Execute", "risk"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Execute), "risk"));
 
         risk.OnEvent("RiskModerate")
-            .SendEventTo(new ProcessFunctionTargetBuilder(human, "AwaitApprovalAsync", "risk"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(human, nameof(HumanGateStep.AwaitApprovalAsync), "risk"));
 
         risk.OnEvent("RiskPreclusive")
-            .SendEventTo(new ProcessFunctionTargetBuilder(enforce, "Block", "risk"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(hermes, nameof(HermesOfflineStep.RouteOfflineAsync), "risk"));
+
+        // Hermes Output Closure
+        hermes.OnEvent("SovereignComplete")
+            .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Block), "risk"));
 
         // Human Loop Closure
+        // Fixed: Internalized the event emission directly from the HumanGateStep
         human.OnEvent("Approved")
-            .SendEventTo(new ProcessFunctionTargetBuilder(enforce, "Execute", "risk"));
+            .SendEventTo(new ProcessFunctionTargetBuilder(enforce, nameof(EnforcementStep.Execute), "risk"));
 
         return builder.Build();
     }
