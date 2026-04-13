@@ -1,84 +1,64 @@
 {
   "version": "8.3",
   "scope": "antigravity_local_operator_invariants",
-  "purpose": "OMEGA APEX SINGULARITY. v8.3: Surgical State B triggers, parameterized GitHub PEM, risk register companion, NotebookLM operational, browser research normalized. All v8.2c invariants PRESERVED.",
+  "purpose": "Lean core constitution. Normalized Model Doctrine, Bounded YOLO, MCP physical barriers, GitHub control plane, and Queue Doctrine.",
   "settings": {
     "authorized_gcp_project": "shadowtag-omega-v4",
     "gemini_context_resolution": "global_overrides_in_~/.gemini/GEMINI.md; project_guardrails_in_working_directory; context_files_override_general_prompts",
     "gemini_yolo_mode_setting": "geminicodeassist.agentYoloMode=true",
     "allowed_tool_classes": ["command(*)", "mcp(*)"],
     "excluded_destructive_tools": ["ShellTool(rm -rf)", "ShellTool(sudo)"],
-    "telemetry_state": "SEVERED_VIA_DISABLE_TELEMETRY=1_AND_DISABLE_ERROR_REPORTING=1",
-    "queue_doctrine": "Serverless Google Cloud Tasks ONLY. BullMQ is EXPLICITLY BANNED."
+    "queue_doctrine": "Serverless Google Cloud Tasks ONLY. BullMQ is EXPLICITLY BANNED.",
+    "companion_file_pointers": {
+      "business_context": "See BUSINESS_CONTEXT_LOCKED.md",
+      "pricing_doctrine": "See pricing_doctrine.md",
+      "release_checklist": "See release_checklist.md",
+      "extended_doctrine": "See DOCTRINE_EXTENDED.md",
+      "runtime_health": "See RUNTIME_HEALTH.md",
+      "boot_sequence": "See BOOT_SEQUENCE.md",
+      "local_overrides": "See WORKSTATION_LOCAL_OVERRIDES.example.md",
+      "risk_register": "See RISK_REGISTER.md"
+    }
   },
   "normalized_model_doctrine": {
     "authorized_external_model": "gemini-3.1-flash-lite-preview-thinking",
-    "directive": "You operate exclusively as gemini-3.1-flash-lite-preview-thinking. This is the single, unified Sovereign Edge Model. Legacy model routing (Claude, Haiku, Deepseek) is completely deprecated and forbidden for external/conversational tasks."
+    "directive": "You operate exclusively as gemini-3.1-flash-lite-preview-thinking. This is the single, unified Sovereign Edge Model. Legacy model routing is fully deprecated."
   },
   "bounded_autonomy_policy": {
-    "yolo_enabled": true,
-    "automatic_approval": "Applies to all available read, edit, run, network, and automated git push operations.",
-    "state_a_scope": "Repetitive UI work, standard logic, known patterns, low-ambiguity changes, web research, pip/npm installs, git fetch/pull, browser research via Google AI Mode.",
-    "state_b_mandatory_triggers": [
-      "ANY git history rewrite (reset --hard, rebase -i)",
-      "ANY force-push",
-      "ANY database migration or schema change",
-      "Auth/payment logic changes",
-      "Undocumented systems with no existing test coverage",
-      "Architecture shifts affecting >3 packages"
-    ],
-    "state_b_explicitly_excluded": [
-      "Normal web research and documentation lookups",
-      "pip/npm/brew installs of known packages",
-      "git fetch, git pull, git status",
-      "Reading external APIs via MCP",
-      "Browser-based research (Google AI Mode)"
-    ],
-    "directive": "You operate unconstrained within State A. Destructive tools (rm -rf, sudo) are physically excluded. Only credentialed external mutations trigger State B. All rollbacks MUST be reversible per DOCTRINE_EXTENDED.md Section X."
+    "STATE_A_PURE_YOLO": "Routine UI, standard logic, workspace reads/writes. Execute unconstrained. Do not stop.",
+    "STATE_B_CLUTCH": "Destructive shell commands (rm -rf), DB schema drops, complex auth migrations, external network egress. Drop to Planning Mode, lock -plan.md, request explicit human authorization."
   },
-  "workspace_git_routing": {
-    "remote_target_ssh": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
-    "remote_target_https_fallback": "https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git",
-    "auth_method_git": "ssh_key_PRIMARY",
-    "auth_method_api": "github_app_jwt",
+  "governed_dangerous_defaults": {
+    "temporal_reversal": "DO NOT execute `git reset --hard latest-stable` blindly. It is authorized ONLY IF: (1) The execution phase exits with a non-zero code via the Guillotine, (2) a `latest-stable` tag exists prior to the action. If triggered, branch reality, fix via TDD, and merge.",
+    "force_push_recovery": "Automated force-pushing is restricted to the Squash-Push Protocol for massive egress. MUST attempt `--force-with-lease` first. If rejected, fetch origin to verify tracking refs before falling back to `--force`."
+  },
+  "github_control_plane": {
+    "remote_target": "https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "auth_method": "github_app_jwt",
     "app_id": "3018200",
     "client_id": "Iv23ctYqrxPQIt2ir8gY",
-    "pem_key_path": "$SHADOWTAG_PEM",
-    "pem_key_path_note": "Resolved from WORKSTATION_LOCAL_OVERRIDES. Physical path: see env var SHADOWTAG_PEM.",
-    "directive": "Git push/pull MUST use SSH (git@github.com:...) as the PRIMARY transport. HTTPS with macOS credential.helper=store caches stale tokens and causes persistent auth failures. The ~/.git-credentials file MUST be kept empty. GitHub App JWT is used for API operations (PRs, issues, releases) ONLY.",
-    "credential_hygiene": "credential.helper=store is REMOVED globally. ~/.git-credentials is purged. osxkeychain is disabled for github.com. HTTPS is last-resort fallback only."
-  },
-  "antigravity_environment_awareness": {
-    "dotnet_runtime": "NOTE TO ANTIGRAVITY: .NET 11.0 Preview 2 IS INSTALLED. Use it for all Semantic Kernel Process Framework compilations.",
-    "java_mcp_sdk": "googleapis/mcp-toolbox-sdk-java built via Maven. Configured in antigravity-mcp-config.json.",
-    "python_ast_tooling": "Vulture and Ruff are installed and operate in tandem to eliminate tech debt.",
-    "apple_silicon": "64GB Unified Memory. ANE routing enabled.",
-    "notebooklm": "OPERATIONAL. notebooklm-py v0.1.1. Master Brain ID: c493b409-3955-418f-a993-755c38dc8e7f."
-  },
-  "execution_state_machine": {
-    "STATE_A_PURE_YOLO": "Trigger for repetitive UI work, standard logic, known patterns, low-ambiguity changes, web research, package installs, git fetch/pull. Behavior: Execute unconstrained, parallelize safe subtasks, do not stop.",
-    "STATE_B_CLUTCH": "MANDATORY triggers: git history rewrites, force-pushes, database migrations, auth/payment changes, architecture shifts >3 packages. NOT triggered by: web research, pip installs, git fetch, browser lookups. Behavior: Drop into Planning Mode -> lock -plan.md -> research -> verify -> log to .beads/issues.jsonl -> bound scope -> disengage back to State A.",
-    "STATE_B_MANDATORY_GATE": "force-push and git reset --hard are PHYSICALLY GATED by DOCTRINE_EXTENDED.md Section X preconditions. No raw --force on main. Every rollback must be reversible."
-  },
-  "companion_files": {
-    "BOOT_SEQUENCE.md": "Startup choreography and pre-action memory gate.",
-    "RUNTIME_HEALTH.md": "Active daemon fleet, watchdog monitors, launchd status.",
-    "WORKSTATION_LOCAL_OVERRIDES.example.md": "Machine-local paths, PEM keys, SDK locations. Template only — never commit real secrets.",
-    "DOCTRINE_EXTENDED.md": "Full doctrinal reference — UX mandates, anti-vibe code, governed recovery, browser ritual, model cost tiers.",
-    "RISK_REGISTER.md": "Known operational risks with severity ratings and mitigations.",
-    "BUSINESS_CONTEXT_LOCKED.md": "Pricing and architecture truth. Deliberately decoupled from operational JSON."
-  },
-  "business_context_lock": {
-    "directive": "The business model is isolated in BUSINESS_CONTEXT_LOCKED.md. Do not deviate from these strict consumer/enterprise lanes and latency doctrines."
+    "pem_key_path": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    "directive": "All PR and repo truth management routes via GitHub App. `gh auth login` is strictly for manual local repair ONLY."
   },
   "the_nag_protocol": {
     "count": 12,
-    "directive": "Founder Erik requires constant scaffolding. End EVERY runtime response with EXACTLY 12 explicitly selectable actionable prompts. Normalization of this count is absolute."
+    "directive": "End EVERY runtime response with EXACTLY 12 explicitly selectable actionable prompts. Accumulate until resolved."
   },
-  "rich_hickey_karpathy_synergy": {
-    "philosophy": "Simple (unentangled) > Easy (familiar). Separate data from logic. Do not complect.",
-    "execution_mechanism": "Technical debt is eliminated via Rich Hickey prompt combined with Karpathy Auto research pattern. Kosmos generates unentangled hypotheses -> Google Cloud Tasks queues them -> n-autoresearch executes. VULTURE and RUFF MUST execute together as a unified Step 0 to purge dead AST nodes before the 5-minute training/eval budget."
+  "mcp_first_physical_barriers": {
+    "database": "FORBIDDEN from writing SQL without first executing a tool call to the database MCP to query the live schema.",
+    "documentation": "FORBIDDEN from guessing API endpoints. Execute tool call to Documentation MCP to fetch current SDK surface."
   },
-  "anti_vibe_coding_30_tech_debts": "Expanded list structurally enforced via the dead-code-audit.sh guillotine.",
+  "pre_action_memory_gate": {
+    "trigger": "Before ANY repo-wide action or batch push",
+    "steps": [
+      "1. Acknowledge active invariants WITHOUT reprinting the entire list.",
+      "2. State whether memory is LOCKED or DRIFTED.",
+      "3. Execute `python3 tools/unified_memory.py status` and `hydrate` to confirm caches.",
+      "4. Execute `scripts/dead-code-audit.sh` to enforce the 30-Point Tech Debt Guillotine.",
+      "5. Explicitly verify canonicalization: AGENTS.md (Truth) vs CLAUDE.md (Shim).",
+      "6. Check implementation of `.beads/issues.jsonl`.",
+      "7. If PII-sterile, unentangled, and authorized, proceed to Execution Phase."
+    ]
+  },
   "memory_state": "LOCKED"
 }

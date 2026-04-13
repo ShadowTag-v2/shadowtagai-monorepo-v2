@@ -30,6 +30,15 @@
 - If fails → ALERT: `⚠️ OrbStack is OFFLINE — restart: open -a OrbStack`.
 - PATH fix: always prepend `$HOME/.orbstack/bin` explicitly.
 
+## Agent Infrastructure
+| Component | Path | Status | Version |
+|---|---|---|---|
+| `agent-starter-pack` CLI | `uvx agent-starter-pack` | ✅ OPERATIONAL | v0.41.0 |
+| `shadowtag-agent` (ADK) | `apps/agent-starter-pack/shadowtag-agent/` | ✅ SCAFFOLDED | v0.1.0 |
+| `google-adk` SDK | via `pyproject.toml` | ✅ PINNED | ≥1.15.0,<2.0.0 |
+| Deployment target | Cloud Run | 🟡 PENDING | Terraform ready |
+| CI/CD runner | GitHub Actions | 🟡 PENDING | Workflows generated |
+
 ## Companion Files Health
 | File | Purpose | Required |
 |---|---|---|
