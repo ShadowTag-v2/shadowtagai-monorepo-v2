@@ -1,7 +1,7 @@
 {
-  "version": "8.2c",
+  "version": "8.3",
   "scope": "antigravity_local_operator_invariants",
-  "purpose": "OMEGA APEX SINGULARITY. Flawless normalization of Model Doctrine, Bounded YOLO via Tool Exclusion, .NET 11.0 Preview 2, Git PEM Routing, 30 Tech Debts, Cloud Tasks, and the Hickey/Karpathy Protocol.",
+  "purpose": "OMEGA APEX SINGULARITY. v8.3: Surgical State B triggers, parameterized GitHub PEM, risk register companion, NotebookLM operational, browser research normalized. All v8.2c invariants PRESERVED.",
   "settings": {
     "authorized_gcp_project": "shadowtag-omega-v4",
     "gemini_context_resolution": "global_overrides_in_~/.gemini/GEMINI.md; project_guardrails_in_working_directory; context_files_override_general_prompts",
@@ -18,7 +18,23 @@
   "bounded_autonomy_policy": {
     "yolo_enabled": true,
     "automatic_approval": "Applies to all available read, edit, run, network, and automated git push operations.",
-    "directive": "You operate unconstrained within State A. Destructive tools (rm -rf, sudo) are physically excluded. Git history rewrites, force-pushes, and database migrations MUST trigger State B (Clutch). All rollbacks MUST be reversible per DOCTRINE_EXTENDED.md Section X."
+    "state_a_scope": "Repetitive UI work, standard logic, known patterns, low-ambiguity changes, web research, pip/npm installs, git fetch/pull, browser research via Google AI Mode.",
+    "state_b_mandatory_triggers": [
+      "ANY git history rewrite (reset --hard, rebase -i)",
+      "ANY force-push",
+      "ANY database migration or schema change",
+      "Auth/payment logic changes",
+      "Undocumented systems with no existing test coverage",
+      "Architecture shifts affecting >3 packages"
+    ],
+    "state_b_explicitly_excluded": [
+      "Normal web research and documentation lookups",
+      "pip/npm/brew installs of known packages",
+      "git fetch, git pull, git status",
+      "Reading external APIs via MCP",
+      "Browser-based research (Google AI Mode)"
+    ],
+    "directive": "You operate unconstrained within State A. Destructive tools (rm -rf, sudo) are physically excluded. Only credentialed external mutations trigger State B. All rollbacks MUST be reversible per DOCTRINE_EXTENDED.md Section X."
   },
   "workspace_git_routing": {
     "remote_target_ssh": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
@@ -27,20 +43,30 @@
     "auth_method_api": "github_app_jwt",
     "app_id": "3018200",
     "client_id": "Iv23ctYqrxPQIt2ir8gY",
-    "pem_key_path": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    "pem_key_path": "$SHADOWTAG_PEM",
+    "pem_key_path_note": "Resolved from WORKSTATION_LOCAL_OVERRIDES. Physical path: see env var SHADOWTAG_PEM.",
     "directive": "Git push/pull MUST use SSH (git@github.com:...) as the PRIMARY transport. HTTPS with macOS credential.helper=store caches stale tokens and causes persistent auth failures. The ~/.git-credentials file MUST be kept empty. GitHub App JWT is used for API operations (PRs, issues, releases) ONLY.",
     "credential_hygiene": "credential.helper=store is REMOVED globally. ~/.git-credentials is purged. osxkeychain is disabled for github.com. HTTPS is last-resort fallback only."
   },
   "antigravity_environment_awareness": {
     "dotnet_runtime": "NOTE TO ANTIGRAVITY: .NET 11.0 Preview 2 IS INSTALLED. Use it for all Semantic Kernel Process Framework compilations.",
-    "java_mcp_sdk": "googleapis/mcp-toolbox-sdk-java built via Maven. Configured in mcp_config.json.",
+    "java_mcp_sdk": "googleapis/mcp-toolbox-sdk-java built via Maven. Configured in antigravity-mcp-config.json.",
     "python_ast_tooling": "Vulture and Ruff are installed and operate in tandem to eliminate tech debt.",
-    "apple_silicon": "64GB Unified Memory. ANE routing enabled."
+    "apple_silicon": "64GB Unified Memory. ANE routing enabled.",
+    "notebooklm": "OPERATIONAL. notebooklm-py v0.1.1. Master Brain ID: c493b409-3955-418f-a993-755c38dc8e7f."
   },
   "execution_state_machine": {
-    "STATE_A_PURE_YOLO": "Trigger for repetitive UI work, standard logic, known patterns, low-ambiguity changes. Behavior: Execute unconstrained, parallelize safe subtasks, do not stop.",
-    "STATE_B_CLUTCH": "MANDATORY triggers: undocumented systems, complex flows, schema work, auth/payment changes, architecture shifts, ANY git history rewrite (reset --hard, rebase -i), ANY force-push, ANY database migration. Behavior: Drop into Planning Mode -> lock -plan.md -> research -> verify -> log to .beads/issues.jsonl -> bound scope -> disengage back to State A.",
+    "STATE_A_PURE_YOLO": "Trigger for repetitive UI work, standard logic, known patterns, low-ambiguity changes, web research, package installs, git fetch/pull. Behavior: Execute unconstrained, parallelize safe subtasks, do not stop.",
+    "STATE_B_CLUTCH": "MANDATORY triggers: git history rewrites, force-pushes, database migrations, auth/payment changes, architecture shifts >3 packages. NOT triggered by: web research, pip installs, git fetch, browser lookups. Behavior: Drop into Planning Mode -> lock -plan.md -> research -> verify -> log to .beads/issues.jsonl -> bound scope -> disengage back to State A.",
     "STATE_B_MANDATORY_GATE": "force-push and git reset --hard are PHYSICALLY GATED by DOCTRINE_EXTENDED.md Section X preconditions. No raw --force on main. Every rollback must be reversible."
+  },
+  "companion_files": {
+    "BOOT_SEQUENCE.md": "Startup choreography and pre-action memory gate.",
+    "RUNTIME_HEALTH.md": "Active daemon fleet, watchdog monitors, launchd status.",
+    "WORKSTATION_LOCAL_OVERRIDES.example.md": "Machine-local paths, PEM keys, SDK locations. Template only — never commit real secrets.",
+    "DOCTRINE_EXTENDED.md": "Full doctrinal reference — UX mandates, anti-vibe code, governed recovery, browser ritual, model cost tiers.",
+    "RISK_REGISTER.md": "Known operational risks with severity ratings and mitigations.",
+    "BUSINESS_CONTEXT_LOCKED.md": "Pricing and architecture truth. Deliberately decoupled from operational JSON."
   },
   "business_context_lock": {
     "directive": "The business model is isolated in BUSINESS_CONTEXT_LOCKED.md. Do not deviate from these strict consumer/enterprise lanes and latency doctrines."

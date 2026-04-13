@@ -1,4 +1,4 @@
-# BOOT_SEQUENCE — v8.2c
+# BOOT_SEQUENCE — v8.3
 
 ## Mandatory Startup Commands
 1. **Auth Routing**: `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` via SSH (App ID `3018200` for API operations only).
@@ -15,7 +15,9 @@
 5. Verify Environment Auth: `DEVELOPER_KNOWLEDGE_API_KEY` present.
 6. References: Always consult `CLAUDE.md`, `VELOCITY_ENGINE_PATHWAY.md`, and `sovereign-monorepo-hygiene/SKILL.md`.
 7. Check `.beads/issues.jsonl` — discuss whether working or not.
-8. If `LOCKED` and authorized → proceed immediately to Execution Phase.
+8. Verify companion files present: `RUNTIME_HEALTH.md`, `DOCTRINE_EXTENDED.md`, `RISK_REGISTER.md`, `WORKSTATION_LOCAL_OVERRIDES.example.md`.
+9. Verify NotebookLM: `python3 -c "import notebooklm"` — must succeed.
+10. If `LOCKED` and authorized → proceed immediately to Execution Phase.
 
 ## Boot Sequence (Numbered)
 1. CANONICALIZATION GUARD (`AGENTS.md`)

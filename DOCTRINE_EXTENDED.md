@@ -1,4 +1,4 @@
-# DOCTRINE_EXTENDED — v8.2c
+# DOCTRINE_EXTENDED — v8.3
 
 ## I. Barney-Style UX
 All ShadowTagAI products must be "Barney style" — a 5th grader can run them. Simple GUI for non-digital-native Boomer Fortune-500 CEOs and their spouses. Race-car complexity hidden entirely.
@@ -89,15 +89,27 @@ Hooks are lifecycle interceptors configured in `.gemini/settings.json`. 11 event
 - Force-push without the 3-step precondition gate.
 - Use raw `--force` as a "fallback" for convenience.
 
-### Bounded YOLO Execution (State Machine)
+### Bounded YOLO Execution (State Machine) — v8.3 Refined
 
 **STATE A — Pure YOLO (Autonomous Execution)**
 - **Scope**: Repetitive UI work, standard logic, known patterns, low-ambiguity changes, file edits within the allowed tool subset.
+- **Explicitly State A (NO clutch needed)**:
+  - Web research via Google AI Mode or browser
+  - `pip install`, `npm install`, `brew install` of known packages
+  - `git fetch`, `git pull`, `git status`, `git log`
+  - Reading APIs/documentation via MCP
+  - File creation/modification within the workspace
 - **Gate**: Destructive tools (`rm -rf`, `sudo`) are physically excluded from the MCP schema. YOLO is 100% safe for the allowed subset.
 - **Behavior**: Execute unconstrained. Parallelize safe subtasks. Do not pause for approval.
 
 **STATE B — Clutch (Governed Execution)**
-- **Mandatory Triggers**: Undocumented systems, complex flows, schema work, auth/payment changes, architecture shifts, ANY git history rewrite, ANY force-push, ANY database migration.
+- **Mandatory Triggers (credentialed external mutations ONLY)**:
+  - ANY git history rewrite (`reset --hard`, `rebase -i`)
+  - ANY force-push
+  - ANY database migration or schema change
+  - Auth/payment logic changes
+  - Undocumented systems with no existing test coverage
+  - Architecture shifts affecting >3 packages
 - **Behavior**:
   1. Drop into Planning Mode
   2. Lock `-plan.md` or `TASK.md`
@@ -124,3 +136,28 @@ Hooks are lifecycle interceptors configured in `.gemini/settings.json`. 11 event
 | gemini-3.1-flash-lite-preview-thinking | — | — | External runtime (CANONICAL) |
 | Sonnet | $3/Mtok | $15/Mtok | Standard reasoning |
 | Opus 4.6 | $30/Mtok | $150/Mtok | Q* MCTS heavy lifting |
+
+## XIII. Browser Research Ritual
+
+> [!NOTE]
+> Web research is **State A** — no approval needed. This normalizes the browser research pattern.
+
+**Google AI Mode Research Protocol:**
+1. Open browser to `google.com` or use Antigravity's `search_web` tool.
+2. Use Google AI Mode for synthesized answers on volatile tech questions.
+3. Cross-reference with Developer Knowledge MCP and Grounding Ladder (§IX).
+4. No State B trigger — this is routine intelligence gathering.
+
+**When to use:**
+- SDK version verification before implementation
+- Framework API surface exploration
+- Competitor/market research for product decisions
+- Stack Overflow / GitHub Issues for debugging context
+
+## XIV. Risk Register Governance
+
+The `RISK_REGISTER.md` companion file tracks known operational risks with severity ratings and mitigations. Review policy:
+- Reviewed on each version bump
+- New risks appended with sequential numbering
+- Resolved risks retained for institutional memory
+- Severity: 🔴 Critical → 🟠 High → 🟡 Medium → 🟢 Low
