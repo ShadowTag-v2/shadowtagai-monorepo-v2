@@ -12,9 +12,9 @@ requests and pauses execution until human approval is granted.
 Phase: STUB — Awaiting CounselConduit MVP deployment
 """
 
+import logging
 import os
 import sys
-import logging
 import time
 
 logging.basicConfig(
