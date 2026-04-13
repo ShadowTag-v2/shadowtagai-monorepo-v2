@@ -1,26 +1,40 @@
-/* KovelAI — Dark Luxury Editorial Design System */
-/* Neo-Brutalist + Kinetic Typography + Compliance-First Aesthetic */
+/* ShadowTag AI — Indigo-Tinted Brand Design System */
+/* Google Brand-Permeation Technique: Every neutral carries the indigo brand hue (240°) */
+/* No pure black. No pure white. No pure gray. Brand DNA in every pixel. */
 
 :root {
-    --bg: #060610;
-    --bg-elevated: #0d0d1a;
-    --bg-card: rgba(255,255,255,0.025);
-    --bg-card-hover: rgba(255,255,255,0.05);
-    --border: rgba(255,255,255,0.06);
+    /* Backgrounds — deep indigo-blacks */
+    --bg: #08081a;                              /* HSL(240, 38%, 7%) — indigo-black */
+    --bg-elevated: #0e0e28;                     /* HSL(240, 46%, 10%) — raised indigo */
+    --bg-card: rgba(120,120,220, 0.03);         /* indigo-tinted glass */
+    --bg-card-hover: rgba(120,120,220, 0.06);   /* indigo-tinted glass hover */
+
+    /* Borders — indigo-tinted */
+    --border: rgba(130,130,210, 0.08);          /* indigo-tinted border */
     --border-accent: rgba(212,175,55,0.2);
-    --text: #e8e8ec;
-    --text-muted: #6b6b7b;
-    --text-dim: #3d3d4d;
-    --accent: #d4af37;       /* Legal gold */
-    --accent-2: #10b981;     /* Trust emerald */
+
+    /* Text — light indigo tints, never pure white */
+    --text: #e2e2f0;                            /* HSL(240, 30%, 91%) — indigo cream */
+    --text-muted: #7474a0;                      /* HSL(240, 19%, 54%) — indigo mid */
+    --text-dim: #3e3e60;                        /* HSL(240, 22%, 31%) — indigo dim */
+
+    /* Accent palette */
+    --accent: #d4af37;                          /* Legal gold — high contrast pop */
+    --accent-2: #10b981;                        /* Trust emerald */
     --danger: #ef4444;
     --safe: #10b981;
+
+    /* Glows & gradients */
     --glow: rgba(212,175,55,0.15);
     --gradient: linear-gradient(135deg, #d4af37 0%, #f0d060 50%, #d4af37 100%);
     --gradient-subtle: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(16,185,129,0.05));
+
+    /* Shape */
     --radius: 16px;
     --radius-sm: 10px;
     --radius-xs: 6px;
+
+    /* Typography */
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --mono: 'JetBrains Mono', 'SF Mono', monospace;
 }
@@ -45,7 +59,7 @@ strong { color: var(--text); }
 em { font-style: italic; color: var(--text-muted); }
 
 /* Navigation */
-.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(6,6,16,0.88); backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--border); transition: background 0.3s; }
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(8,8,26,0.88); backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--border); transition: background 0.3s; }
 .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 72px; }
 .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-size: 1.15rem; font-weight: 600; }
 .nav-logo strong { color: var(--accent); }
@@ -60,8 +74,8 @@ em { font-style: italic; color: var(--text-muted); }
 
 /* Hero */
 .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding: 140px 32px 100px; overflow: hidden; }
-.hero-grid-bg { position: absolute; inset: 0; background-image: radial-gradient(rgba(212,175,55,0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%); }
-.hero-glow { position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%); pointer-events: none; }
+.hero-grid-bg { position: absolute; inset: 0; background-image: radial-gradient(rgba(120,120,220,0.04) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%); }
+.hero-glow { position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(100,100,240,0.06) 0%, rgba(212,175,55,0.04) 40%, transparent 70%); pointer-events: none; }
 .hero-content { position: relative; max-width: 780px; }
 .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; }
 .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse-dot 2s ease-in-out infinite; }

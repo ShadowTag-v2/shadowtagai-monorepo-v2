@@ -3,355 +3,826 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KovelAI — The Privileged Client Gateway for Law Firms</title>
-    <meta name="description" content="Recover 10+ non-billable hours weekly. Clients pay upfront per query. Zero data retention. Full Kovel privilege protection under U.S. v. Heppner.">
-    <meta property="og:title" content="KovelAI — The Privileged Client Gateway">
-    <meta property="og:description" content="Law firms get paid upfront per client query. AI answers, privileged web search, OSINT — all under the Kovel Doctrine.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://shadowtagai.com">
+    <title>ShadowTag AI | UphillSnowball — Sovereign AI Infrastructure</title>
+    <meta name="description" content="ShadowTag AI builds autonomous intelligence systems for institutions that demand total data sovereignty. Explore the UphillSnowball platform.">
+    <link rel="icon" href="logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <style>
+        /* ===== SHADOW OBSIDIAN DESIGN SYSTEM ===== */
+        :root {
+            --bg: #080c18;
+            --surface: #0f131f;
+            --surface-low: #171b28;
+            --surface-container: #1b1f2c;
+            --surface-high: #262a37;
+            --surface-highest: #303442;
+            --surface-bright: #353946;
+            --surface-lowest: #0a0e1a;
+            --on-surface: #dfe2f4;
+            --on-surface-variant: #b9cbb9;
+            --outline: #849585;
+            --outline-variant: #3b4b3d;
+            --primary: #00ff88;
+            --primary-dim: #00e479;
+            --primary-fixed: #60ff99;
+            --on-primary: #003919;
+            --secondary: #d2bbff;
+            --secondary-container: #6001d1;
+            --secondary-dim: #7c3aed;
+            --tertiary: #00d4ff;
+            --tertiary-dim: #3cd7ff;
+            --error: #ffb4ab;
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--on-surface);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        a { color: inherit; text-decoration: none; }
+
+        /* ===== UNDULATING BACKGROUND — FULL-PAGE ===== */
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .aurora-bg::before,
+        .aurora-bg::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: auroraFloat 12s ease-in-out infinite alternate;
+        }
+        .aurora-bg::before {
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -20%; left: -10%;
+            animation-duration: 14s;
+        }
+        .aurora-bg::after {
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, var(--secondary-dim) 0%, transparent 70%);
+            bottom: -30%; right: -15%;
+            animation-duration: 18s;
+            animation-direction: alternate-reverse;
+        }
+        .aurora-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            animation: auroraFloat 20s ease-in-out infinite alternate;
+        }
+        .aurora-orb--cyan {
+            width: 40vw; height: 40vw;
+            background: radial-gradient(circle, var(--tertiary) 0%, transparent 70%);
+            top: 40%; left: 50%;
+            transform: translateX(-50%);
+        }
+        @keyframes auroraFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(3vw, -5vh) scale(1.1); }
+            66% { transform: translate(-4vw, 3vh) scale(0.95); }
+            100% { transform: translate(2vw, -2vh) scale(1.05); }
+        }
+
+        /* ===== PARTICLE FIELD ===== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleDrift linear infinite;
+        }
+        @keyframes particleDrift {
+            0% { opacity: 0; transform: translateY(100vh) scale(0.5); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1.2); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(15, 19, 31, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(59, 75, 61, 0.15);
+            transition: background 0.3s ease;
+        }
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .nav-brand img {
+            width: 36px; height: 36px;
+            border-radius: 6px;
+        }
+        .nav-brand-text {
+            font-weight: 700;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
+            color: var(--on-surface);
+        }
+        .nav-brand-text span {
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            letter-spacing: 0.02em;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--on-surface); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 6rem;
+            overflow: hidden;
+        }
+        .hero-bg-image {
+            position: absolute;
+            inset: 0;
+            background: url('hero-bg.png') center/cover no-repeat;
+            opacity: 0.25;
+            animation: heroBgPulse 10s ease-in-out infinite alternate;
+        }
+        @keyframes heroBgPulse {
+            0% { opacity: 0.2; transform: scale(1); }
+            100% { opacity: 0.3; transform: scale(1.03); }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+        .hero-logo {
+            width: 120px; height: 120px;
+            margin: 0 auto 2rem;
+            animation: logoFloat 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.3));
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 0.375rem 1.25rem;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--on-surface) 0%, var(--on-surface-variant) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--on-surface-variant);
+            max-width: 640px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+        .hero-ctas {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-dim), var(--primary));
+            color: var(--on-primary);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.15);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--on-surface);
+            border: 1px solid rgba(59, 75, 61, 0.3);
+        }
+        .btn-ghost:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 6rem 2rem;
+        }
+        .section-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--on-surface-variant);
+            max-width: 640px;
+            line-height: 1.7;
+        }
+
+        /* ===== PRODUCT ECOSYSTEM — BENTO GRID ===== */
+        .products-section {
+            background: var(--surface-low);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            margin-top: 3rem;
+        }
+        .bento-card {
+            background: var(--surface-container);
+            border-radius: 6px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 120px; height: 120px;
+            background: radial-gradient(circle at top right, var(--secondary-dim), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .bento-card:hover {
+            background: var(--surface-high);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(96, 1, 209, 0.08);
+        }
+        .bento-card:hover::before { opacity: 0.08; }
+        .bento-icon {
+            width: 48px; height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            margin-bottom: 1.25rem;
+            font-size: 1.5rem;
+        }
+        .bento-icon--green {
+            background: rgba(0, 255, 136, 0.08);
+            color: var(--primary);
+        }
+        .bento-icon--purple {
+            background: rgba(124, 58, 237, 0.08);
+            color: var(--secondary);
+        }
+        .bento-icon--cyan {
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--tertiary);
+        }
+        .bento-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+        .bento-card p {
+            font-size: 0.875rem;
+            color: var(--on-surface-variant);
+            line-height: 1.6;
+        }
+        .bento-card .status-pulse {
+            position: absolute;
+            top: 1.25rem; right: 1.25rem;
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(0, 255, 136, 0); }
+        }
+
+        /* ===== COMPANY OVERVIEW ===== */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+            align-items: start;
+        }
+        .overview-text p {
+            font-size: 1rem;
+            color: var(--on-surface-variant);
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+        }
+        .verticals-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--on-surface-variant);
+            margin-bottom: 1rem;
+        }
+        .verticals-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .chip {
+            padding: 0.5rem 1rem;
+            background: var(--surface-container);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--on-surface);
+            transition: all 0.3s ease;
+        }
+        .chip:hover {
+            background: var(--surface-high);
+            color: var(--primary);
+        }
+
+        /* ===== HOLOGRAPHIC PRODUCT BANNER ===== */
+        .product-banner {
+            position: relative;
+            overflow: hidden;
+            background: var(--surface-lowest);
+        }
+        .product-banner-bg {
+            position: absolute;
+            inset: 0;
+            background: url('product-bg.png') center/cover no-repeat;
+            opacity: 0.2;
+            animation: heroBgPulse 15s ease-in-out infinite alternate;
+        }
+        .product-banner-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .product-banner h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .product-banner p {
+            font-size: 1rem;
+            color: var(--on-surface-variant);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        /* ===== CAREERS ===== */
+        .careers-section {
+            background: linear-gradient(135deg, rgba(0, 228, 121, 0.06) 0%, rgba(124, 58, 237, 0.06) 100%);
+            border-top: 1px solid rgba(0, 255, 136, 0.05);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.05);
+        }
+        .careers-inner {
+            text-align: center;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(59, 75, 61, 0.1);
+        }
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .footer-left img { width: 24px; height: 24px; border-radius: 4px; }
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--outline);
+        }
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .footer-links a {
+            font-size: 0.8rem;
+            color: var(--outline);
+            transition: color 0.2s ease;
+        }
+        .footer-links a:hover { color: var(--on-surface); }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== 3D TILT ON CARDS ===== */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .overview-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .nav-links { display: none; }
+            .hero { padding: 7rem 1.5rem 4rem; }
+            .hero-logo { width: 80px; height: 80px; }
+            .section { padding: 4rem 1.5rem; }
+            .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
-    <!-- Nav -->
-    <nav class="nav" id="main-nav">
-        <div class="nav-inner">
-            <a href="javascript:void(0)" class="nav-logo" id="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-                <div class="logo-shield">⚖</div>
-                <span>Kovel<strong>AI</strong></span>
+
+<!-- ===== UNDULATING AURORA BACKGROUND ===== -->
+<div class="aurora-bg">
+    <div class="aurora-orb aurora-orb--cyan"></div>
+</div>
+
+<!-- ===== PARTICLE FIELD ===== -->
+<div class="particles" id="particles"></div>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="#" class="nav-brand">
+            <img src="logo.png" alt="ShadowTag AI Logo">
+            <span class="nav-brand-text">Shadow<span>Tag</span> AI</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#careers">Careers</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+    <div class="hero-bg-image"></div>
+    <div class="hero-content">
+        <img src="logo.png" alt="UphillSnowball Logo" class="hero-logo">
+        <div class="hero-badge">UphillSnowball</div>
+        <h1>SOVEREIGN AI INFRASTRUCTURE</h1>
+        <p>Building autonomous intelligence systems for institutions that demand total data sovereignty.</p>
+        <div class="hero-ctas">
+            <a href="#products" class="btn btn-primary">
+                <span class="material-symbols-outlined" style="font-size:1.125rem">explore</span>
+                Explore the Platform
             </a>
-            <div class="nav-links" id="nav-links">
-                <a href="#how-it-works">How It Works</a>
-                <a href="#privilege">Privilege Shield</a>
-                <a href="#security">S.E.U. Security</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#pilot" class="btn-nav" id="nav-cta">Request Pilot</a>
-            </div>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
+            <a href="#about" class="btn btn-ghost">
+                <span class="material-symbols-outlined" style="font-size:1.125rem">description</span>
+                View Documentation
+            </a>
         </div>
-    </nav>
+    </div>
+</section>
 
-    <!-- Hero -->
-    <section class="hero" id="hero">
-        <div class="hero-grid-bg"></div>
-        <div class="hero-glow"></div>
-        <div class="hero-content">
-            <div class="hero-eyebrow">
-                <span class="eyebrow-dot"></span>
-                Privileged Client AI Gateway
-            </div>
-            <h1>
-                <span class="hero-line">Monetize the</span>
-                <span class="hero-line hero-accent">2:00 AM Client</span>
-                <span class="hero-line">Panic Attack</span>
-            </h1>
-            <p class="hero-sub">Clients swipe their credit card. Get instant, <strong>privileged</strong> AI answers and web search. You get paid upfront per query — while you sleep. Full Kovel Doctrine protection under <em>U.S. v. Heppner</em>.</p>
-            <div class="hero-actions">
-                <a href="#pilot" class="btn-primary btn-glow" id="hero-cta-pilot">
-                    <span>Request 14-Day Pilot</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
-                <a href="#how-it-works" class="btn-ghost" id="hero-cta-learn">See How It Works →</a>
-            </div>
-            <div class="hero-proof">
-                <div class="proof-item">
-                    <div class="proof-value">$0</div>
-                    <div class="proof-label">Data Stored</div>
-                </div>
-                <div class="proof-divider"></div>
-                <div class="proof-item">
-                    <div class="proof-value">45</div>
-                    <div class="proof-label">Days to Revenue</div>
-                </div>
-                <div class="proof-divider"></div>
-                <div class="proof-item">
-                    <div class="proof-value">∞</div>
-                    <div class="proof-label">Privilege Shield</div>
-                </div>
-            </div>
+<!-- ===== PRODUCT ECOSYSTEM ===== -->
+<section class="section products-section" id="products">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Product Ecosystem</div>
+            <div class="section-title">UphillSnowball Platform</div>
+            <div class="section-subtitle">Six interlocking modules engineered for sovereign AI deployment at institutional scale.</div>
         </div>
-    </section>
 
-    <!-- The Problem -->
-    <section class="section" id="problem">
-        <div class="section-inner">
-            <div class="split-layout">
-                <div class="split-left">
-                    <div class="section-eyebrow">The Heppner Problem</div>
-                    <h2>Your Clients Are <span class="text-danger">Destroying Their Own Cases</span> Right Now</h2>
-                    <p class="split-body">In <em>United States v. Heppner</em> (S.D.N.Y., Feb 2026), courts ruled that information disclosed to consumer AI or search tools has <strong>zero privilege protection</strong>. Every time your client Googles their symptoms, stalks an ex on Facebook, or pastes a contract into ChatGPT — opposing counsel can subpoena it all.</p>
+        <div class="bento-grid">
+            <div class="bento-card tilt-card reveal">
+                <div class="status-pulse"></div>
+                <div class="bento-icon bento-icon--green">
+                    <span class="material-symbols-outlined">shield</span>
                 </div>
-                <div class="split-right">
-                    <div class="danger-card">
-                        <div class="danger-icon">🔴</div>
-                        <h3>Public Google Search</h3>
-                        <p>Discoverable. Ad-profiled. Subpoena-ready.</p>
-                    </div>
-                    <div class="danger-card">
-                        <div class="danger-icon">🔴</div>
-                        <h3>Public ChatGPT / Claude</h3>
-                        <p>No attorney-client relationship. TOS allows data harvesting.</p>
-                    </div>
-                    <div class="danger-card">
-                        <div class="danger-icon">🔴</div>
-                        <h3>WebMD Symptom Search</h3>
-                        <p>Insurance companies weaponize this to prove pre-existing conditions.</p>
-                    </div>
-                    <div class="safe-card">
-                        <div class="safe-icon">🛡️</div>
-                        <h3>KovelAI Enterprise Search</h3>
-                        <p>Zero Data Retention. Attorney-directed. Fully privileged under <em>Kovel</em>.</p>
-                    </div>
+                <h3>Sentinel Engine</h3>
+                <p>Autonomous threat containment and perimeter intelligence for high-stakes digital environments.</p>
+            </div>
+            <div class="bento-card tilt-card reveal">
+                <div class="status-pulse"></div>
+                <div class="bento-icon bento-icon--purple">
+                    <span class="material-symbols-outlined">auto_awesome_motion</span>
                 </div>
+                <h3>Oracle Studio</h3>
+                <p>Architect and visualize complex multi-agent simulations with real-time feedback loops and deterministic outcomes.</p>
+            </div>
+            <div class="bento-card tilt-card reveal">
+                <div class="status-pulse"></div>
+                <div class="bento-icon bento-icon--cyan">
+                    <span class="material-symbols-outlined">rebase_edit</span>
+                </div>
+                <h3>Kinetic Parser</h3>
+                <p>Deconstruct and transform unstructured global telemetry into actionable sovereign intelligence at line speed.</p>
+            </div>
+            <div class="bento-card tilt-card reveal">
+                <div class="status-pulse"></div>
+                <div class="bento-icon bento-icon--purple">
+                    <span class="material-symbols-outlined">hub</span>
+                </div>
+                <h3>CounselConduit</h3>
+                <p>Cross-institution data bridging with zero-knowledge verification protocols and hardened encryption layers.</p>
+            </div>
+            <div class="bento-card tilt-card reveal">
+                <div class="status-pulse"></div>
+                <div class="bento-icon bento-icon--green">
+                    <span class="material-symbols-outlined">dns</span>
+                </div>
+                <h3>Compute Engine</h3>
+                <p>Localized high-performance infrastructure optimized for sovereign weight and absolute data containment.</p>
+            </div>
+            <div class="bento-card tilt-card reveal">
+                <div class="status-pulse"></div>
+                <div class="bento-icon bento-icon--cyan">
+                    <span class="material-symbols-outlined">groups</span>
+                </div>
+                <h3>Agent Swarm</h3>
+                <p>Deploy decentralized intelligence clusters that operate autonomously across air-gapped networks.</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- How It Works -->
-    <section class="section section-dark" id="how-it-works">
-        <div class="section-inner">
-            <div class="section-eyebrow center">The Mechanism</div>
-            <h2 class="section-title">How KovelAI <span class="text-accent">Flips Legal Cash Flow</span></h2>
-            <p class="section-sub">For the first time in history, lawyers get paid <strong>before</strong> they do the work.</p>
-            <div class="mechanism-grid">
-                <div class="mech-card">
-                    <div class="mech-num">01</div>
-                    <div class="mech-content">
-                        <h3>Magic Link Sent</h3>
-                        <p>Lawyer texts client a secure link. Client logs in with their <strong>credit card</strong> — this is the identity gate and security perimeter.</p>
-                    </div>
-                </div>
-                <div class="mech-card">
-                    <div class="mech-num">02</div>
-                    <div class="mech-content">
-                        <h3>Client Queries AI</h3>
-                        <p>Client asks questions, searches the web, translates documents — all inside KovelAI's Enterprise ZDR portal. Every query is <strong>charged upfront</strong> to their card.</p>
-                    </div>
-                </div>
-                <div class="mech-card">
-                    <div class="mech-num">03</div>
-                    <div class="mech-content">
-                        <h3>Lawyer Gets Paid</h3>
-                        <p><strong>Stripe Connect</strong> routes payment directly to the law firm's bank account. KovelAI never touches legal fees. The lawyer wakes up to cleared revenue.</p>
-                    </div>
-                </div>
-                <div class="mech-card">
-                    <div class="mech-num">04</div>
-                    <div class="mech-content">
-                        <h3>Data Evaporates</h3>
-                        <p>Client is logged out after inactivity. Screen wipes. Query data exists only in RAM during processing. The lawyer receives the permanent, immutable transcript.</p>
-                    </div>
+<!-- ===== HOLOGRAPHIC PRODUCT BANNER ===== -->
+<section class="section product-banner">
+    <div class="product-banner-bg"></div>
+    <div class="section-inner product-banner-content reveal">
+        <div class="section-label">Architecture</div>
+        <h2>Zero-Trust by Default</h2>
+        <p>Every layer of the UphillSnowball stack is designed from the silicon up to ensure that intelligence belongs to the operator, never the provider. Air-gapped. Auditable. Autonomous.</p>
+        <a href="#about" class="btn btn-ghost">Learn About Our Architecture</a>
+    </div>
+</section>
+
+<!-- ===== COMPANY OVERVIEW ===== -->
+<section class="section" id="about">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Company</div>
+            <div class="section-title">Engineering Institutional Trust</div>
+        </div>
+        <div class="overview-grid">
+            <div class="overview-text reveal">
+                <p>ShadowTag AI exists to bridge the gap between radical technological advancement and the non-negotiable requirements of institutional security. Our UphillSnowball architecture is designed from the silicon up to ensure that intelligence belongs to the operator, never the provider.</p>
+                <p>We provide the foundation for sovereign nations and global enterprises to deploy next-generation AI without compromising their most sensitive data assets. Our infrastructure is transparent, auditable, and entirely autonomous.</p>
+            </div>
+            <div class="reveal">
+                <div class="verticals-label">Industry Verticals</div>
+                <div class="verticals-chips">
+                    <div class="chip">Government &amp; Defense</div>
+                    <div class="chip">Central Banking</div>
+                    <div class="chip">Precision Health</div>
+                    <div class="chip">Global Logistics</div>
+                    <div class="chip">Energy Grids</div>
+                    <div class="chip">Legal &amp; Compliance</div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Privilege Shield -->
-    <section class="section" id="privilege">
-        <div class="section-inner">
-            <div class="section-eyebrow center">Web-to-Privilege Pipeline</div>
-            <h2 class="section-title">We Turn <span class="text-accent">Vulnerable Web Activity</span> Into Protected Work Product</h2>
-            <div class="shield-grid">
-                <div class="shield-card">
-                    <div class="shield-before">🔴 Public WebMD</div>
-                    <div class="shield-arrow">→</div>
-                    <div class="shield-after">🛡️ Privileged Medical Research</div>
-                    <p>PI clients searching symptoms online = discoverable. Inside KovelAI's Enterprise PubMed = attorney work product.</p>
-                </div>
-                <div class="shield-card">
-                    <div class="shield-before">🔴 Public Facebook</div>
-                    <div class="shield-arrow">→</div>
-                    <div class="shield-after">🛡️ Privileged OSINT</div>
-                    <p>Clients stalking exes on social media = discoverable IP trail. Via KovelAI proxy = privileged investigator work product.</p>
-                </div>
-                <div class="shield-card">
-                    <div class="shield-before">🔴 Public Google Translate</div>
-                    <div class="shield-arrow">→</div>
-                    <div class="shield-after">🛡️ Privileged Translation</div>
-                    <p>Pasting foreign contracts into Google Translate = instant privilege waiver. KovelAI Enterprise Translation = ephemeral RAM only.</p>
-                </div>
-                <div class="shield-card">
-                    <div class="shield-before">🔴 Public Zillow/Crypto</div>
-                    <div class="shield-arrow">→</div>
-                    <div class="shield-after">🛡️ Privileged Asset Search</div>
-                    <p>DIY property/crypto searching in divorce = discoverable. Via KovelAI ZDR APIs = shielded financial intelligence.</p>
-                </div>
-            </div>
+<!-- ===== MEDIA & EVENTS ===== -->
+<section class="section" id="media" style="background: var(--surface-low);">
+    <div class="section-inner">
+        <div class="reveal">
+            <div class="section-label">Media & Events</div>
+            <div class="section-title">Corporate Timeline</div>
         </div>
-    </section>
-
-    <!-- S.E.U. Security -->
-    <section class="section section-dark" id="security">
-        <div class="section-inner">
-            <div class="section-eyebrow center">Architecture</div>
-            <h2 class="section-title">The S.E.U. <span class="text-accent">Security Stack</span></h2>
-            <p class="section-sub">The credit card login is the ultimate perimeter. We are mathematically immune to the supply-chain attacks that humiliated billion-dollar AI startups.</p>
-            <div class="seu-grid">
-                <div class="seu-card">
-                    <div class="seu-letter">S</div>
-                    <h3>Sandbox-Bound</h3>
-                    <p>Proxy tokens are cryptographically bound to the client's session ID and IP. Stolen tokens are rejected from any other origin.</p>
-                </div>
-                <div class="seu-card">
-                    <div class="seu-letter">E</div>
-                    <h3>Ephemeral</h3>
-                    <p>API tokens minted when credit card clears. Destroyed the millisecond the client logs out. Dead session = dead key.</p>
-                </div>
-                <div class="seu-card">
-                    <div class="seu-letter">U</div>
-                    <h3>User-Billed</h3>
-                    <p>Every token maps to the lawyer's auto-scaling tier. Rogue actors can't bleed KovelAI — they just trigger a tier upgrade.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- UPL Guardrails -->
-    <section class="section" id="guardrails">
-        <div class="section-inner">
-            <div class="section-eyebrow center">Compliance</div>
-            <h2 class="section-title">UPL Guardrails: <span class="text-accent">The Learned Intermediary</span></h2>
-            <div class="guardrails-content">
-                <div class="guardrail-item">
-                    <div class="guardrail-num">1</div>
+        <div class="overview-grid" style="margin-top: 2rem;">
+            <div class="reveal">
+                <div style="display: flex; gap: 1.5rem; align-items: flex-start;">
+                    <div style="min-width: 4px; background: linear-gradient(180deg, var(--primary), var(--secondary-dim)); border-radius: 2px; height: 100%;"></div>
                     <div>
-                        <h3>Factual Limitation</h3>
-                        <p>AI is forbidden from applying search results to the client's specific facts or predicting court outcomes.</p>
-                    </div>
-                </div>
-                <div class="guardrail-item">
-                    <div class="guardrail-num">2</div>
-                    <div>
-                        <h3>Mandatory Appendage</h3>
-                        <p>Every response appends: <em>"This is raw factual research. It is not legal advice. I have flagged this for [Lawyer's Name] to review."</em></p>
-                    </div>
-                </div>
-                <div class="guardrail-item">
-                    <div class="guardrail-num">3</div>
-                    <div>
-                        <h3>Lawyer's Dashboard</h3>
-                        <p>Attorney receives the full search summary and original query — satisfying human-in-the-loop ethical requirements.</p>
+                        <div style="font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.5rem;">January 29, 2026</div>
+                        <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">ShadowTag AI Incorporated</h3>
+                        <p style="font-size: 0.875rem; color: var(--on-surface-variant); line-height: 1.7;">ShadowTag AI officially incorporated as a Delaware C-Corporation, establishing the legal foundation for sovereign AI infrastructure development and the UphillSnowball platform.</p>
                     </div>
                 </div>
             </div>
+            <div class="reveal">
+                <div class="verticals-label">Upcoming</div>
+                <div class="verticals-chips">
+                    <div class="chip">Platform Launch</div>
+                    <div class="chip">Developer Preview</div>
+                    <div class="chip">Seed Round</div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Pricing -->
-    <section class="section section-dark" id="pricing">
-        <div class="section-inner">
-            <div class="section-eyebrow center">Dual-Credit-Card Engine</div>
-            <h2 class="section-title">Your Clients Pay <span class="text-accent">You</span>. You Pay <span class="text-accent">Us</span>.</h2>
-            <p class="section-sub">We never touch legal fees. Stripe Connect routes client payments directly to your bank. You pay a flat SaaS subscription.</p>
-            <div class="pricing-grid">
-                <div class="price-card">
-                    <div class="price-tier">Triage Starter</div>
-                    <div class="price-amount">$399<span>/mo</span></div>
-                    <ul class="price-features">
-                        <li>Up to 50 client sessions</li>
-                        <li>AI chat + web search</li>
-                        <li>Stripe Connect payout</li>
-                        <li>Anti-forensic evaporation</li>
-                        <li>Email support</li>
-                    </ul>
-                    <a href="#pilot" class="btn-primary btn-full" id="pricing-starter-cta">Start Pilot</a>
-                </div>
-                <div class="price-card price-featured">
-                    <div class="price-badge">Best Value</div>
-                    <div class="price-tier">Intelligence Pro</div>
-                    <div class="price-amount">$1,299<span>/mo</span></div>
-                    <ul class="price-features">
-                        <li>Up to 250 sessions</li>
-                        <li>Medical + financial search</li>
-                        <li>OSINT proxy</li>
-                        <li>Enterprise translation</li>
-                        <li>Dedicated CSM</li>
-                        <li>Practice-area analytics</li>
-                    </ul>
-                    <a href="#pilot" class="btn-primary btn-full" id="pricing-pro-cta">Request Pilot</a>
-                </div>
-                <div class="price-card">
-                    <div class="price-tier">Sovereign OS</div>
-                    <div class="price-amount">$3,500<span>/mo</span></div>
-                    <ul class="price-features">
-                        <li>Unlimited sessions</li>
-                        <li>Priority OSINT + social media</li>
-                        <li>Deep web translation</li>
-                        <li>On-premise option</li>
-                        <li>SLA + priority support</li>
-                        <li>Compliance audit reports</li>
-                    </ul>
-                    <a href="#pilot" class="btn-primary btn-full" id="pricing-sovereign-cta">Contact Sales</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ===== CAREERS ===== -->
+<section class="section careers-section" id="careers">
+    <div class="section-inner careers-inner reveal">
+        <div class="section-label">Careers</div>
+        <div class="section-title">Join the ShadowTag Team</div>
+        <p class="section-subtitle" style="margin: 0 auto 2rem;">Help us build the next generation of sovereign infrastructure for the world's most critical institutions.</p>
+        <a href="mailto:careers@shadowtagai.com" class="btn btn-primary">
+            <span class="material-symbols-outlined" style="font-size:1.125rem">work</span>
+            View Open Roles
+        </a>
+    </div>
+</section>
 
-    <!-- Pilot CTA -->
-    <section class="section section-cta" id="pilot">
-        <div class="section-inner">
-            <div class="section-eyebrow center">Get Started</div>
-            <h2 class="section-title">14-Day Pilot. <span class="text-accent">No Commitment.</span></h2>
-            <p class="section-sub">See KovelAI generate upfront revenue from your firm's existing client base. We configure Stripe Connect, train your team, and show you the billing delta.</p>
-            <form class="pilot-form" id="pilot-form">
-                <div class="form-row">
-                    <input type="text" placeholder="Your name" required id="pilot-name">
-                    <input type="email" placeholder="Work email" required id="pilot-email">
-                </div>
-                <div class="form-row">
-                    <input type="text" placeholder="Firm name" id="pilot-firm">
-                    <select id="pilot-size">
-                        <option value="">Firm size</option>
-                        <option value="solo">Solo practitioner</option>
-                        <option value="2-10">2–10 attorneys</option>
-                        <option value="11-50">11–50 attorneys</option>
-                        <option value="50+">50+ attorneys</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary btn-glow btn-full" id="pilot-submit">
-                    <span>Request Pilot Access</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-            </form>
+<!-- ===== FOOTER ===== -->
+<footer class="footer" id="contact">
+    <div class="footer-inner">
+        <div class="footer-left">
+            <img src="logo.png" alt="ShadowTag AI">
+            <span class="footer-copy">&copy; 2025 ShadowTag AI. All rights reserved.</span>
         </div>
-    </section>
+        <div class="footer-links">
+            <a href="#">Security</a>
+            <a href="#">Privacy</a>
+            <a href="https://x.com/" target="_blank" rel="noopener">X</a>
+            <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+    </div>
+</footer>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-col footer-brand">
-                <div class="footer-logo">⚖ Kovel<strong>AI</strong></div>
-                <p>The Privileged Client Gateway.<br>Zero data. Upfront cash flow.<br>Full Kovel protection.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Product</h4>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#privilege">Privilege Shield</a>
-                <a href="#security">S.E.U. Architecture</a>
-                <a href="#pricing">Pricing</a>
-            </div>
-            <div class="footer-col">
-                <h4>Legal</h4>
-                <a href="https://casetext.com/case/united-states-v-kovel" target="_blank" rel="noopener noreferrer">U.S. v. Kovel (1961)</a>
-                <a href="https://scholar.google.com/scholar?q=United+States+v.+Heppner" target="_blank" rel="noopener noreferrer">U.S. v. Heppner (2026)</a>
-                <a href="https://www.americanbar.org/groups/professional_responsibility/publications/formal_opinions/" target="_blank" rel="noopener noreferrer">ABA Opinion 512</a>
-                <a href="https://www.law.cornell.edu/ethics/tx/code/TX_CODE.HTM" target="_blank" rel="noopener noreferrer">MRPC 5.3</a>
-            </div>
-            <div class="footer-col">
-                <h4>Contact</h4>
-                <a href="tel:+13692355643">(369) 235-5643</a>
-                <a href="mailto:founder@shadowtagai.com">founder@shadowtagai.com</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 ShadowTagAI, Inc. All rights reserved.</p>
-        </div>
-    </footer>
+<script>
+/* ===== PARTICLE GENERATOR ===== */
+(function() {
+    const container = document.getElementById('particles');
+    const count = 40;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 16) + 's';
+        p.style.animationDelay = (Math.random() * 12) + 's';
+        p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+        if (Math.random() > 0.7) p.style.background = 'var(--secondary)';
+        if (Math.random() > 0.9) p.style.background = 'var(--tertiary)';
+        container.appendChild(p);
+    }
+})();
 
-    <script src="main.js"></script>
+/* ===== SCROLL REVEAL ===== */
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => revealObserver.observe(el));
+
+/* ===== 3D TILT ===== */
+document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / centerY * -4;
+        const rotateY = (x - centerX) / centerX * 4;
+        card.style.transform = `translateY(-4px) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) perspective(1000px) rotateX(0) rotateY(0)';
+    });
+});
+
+/* ===== NAV SCROLL EFFECT ===== */
+window.addEventListener('scroll', () => {
+    const nav = document.getElementById('nav');
+    if (window.scrollY > 50) {
+        nav.style.background = 'rgba(8, 12, 24, 0.9)';
+    } else {
+        nav.style.background = 'rgba(15, 19, 31, 0.6)';
+    }
+});
+</script>
+
 </body>
 </html>
