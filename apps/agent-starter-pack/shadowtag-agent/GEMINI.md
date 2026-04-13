@@ -1,14 +1,29 @@
-# Coding Agent Guide
+# ShadowTag Agent — Coding Guide
+
+> **Project**: `shadowtag-omega-v4`  
+> **Authorized Runtime Model**: `gemini-3.1-flash-lite-preview-thinking`  
+> **Agent Framework**: Google ADK  
+> **Queue Broker**: Google Cloud Tasks (BullMQ BANNED)
+
+---
+
+## Canonical Truth Hierarchy
+
+1. `AGENTS.md` — Constitutional contract (monorepo root)
+2. `GEMINI.md` — This file; agent-local operational guide
+3. `monorepo_manifest.yaml` — Workspace truth
+4. `BUSINESS_CONTEXT_LOCKED.md` — Pricing and architecture truth
+5. `RISK_REGISTER.md` — Operational risk truth
+
+---
 
 ## Reference Documentation
 
-If you have ADK skills available, use those instead of fetching the URLs below.
+If ADK skills are available, use those instead of fetching URLs.
 
-Otherwise, fetch these resources as needed:
-- **ADK Cheatsheet**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/agent_starter_pack/resources/docs/adk-cheatsheet.md — Agent definitions, tools, callbacks, orchestration
-- **Evaluation Guide**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/agent_starter_pack/resources/docs/adk-eval-guide.md — Eval config, metrics, gotchas
-- **Deployment Guide**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/agent_starter_pack/resources/docs/adk-deploy-guide.md — Infrastructure, CI/CD, testing deployed agents
-- **Development Guide**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/docs/guide/development-guide.md — Full development workflow
+- **ADK Cheatsheet**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/agent_starter_pack/resources/docs/adk-cheatsheet.md
+- **Evaluation Guide**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/agent_starter_pack/resources/docs/adk-eval-guide.md
+- **Deployment Guide**: https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/agent_starter_pack/resources/docs/adk-deploy-guide.md
 - **ADK Docs**: https://google.github.io/adk-docs/llms.txt
 
 ---
@@ -16,22 +31,24 @@ Otherwise, fetch these resources as needed:
 ## Development Phases
 
 ### Phase 1: Understand Requirements
-Before writing any code, understand the project's requirements, constraints, and success criteria.
+Before writing any code, understand the project's requirements, constraints, and success criteria. Use `uphillsnowball_*` tool naming convention for all legal domain tools.
 
 ### Phase 2: Build and Implement
-Implement agent logic in `app/`. Use `make playground` for interactive testing. Iterate based on user feedback.
+Implement agent logic in `app/`. Use `make playground` for interactive testing. All tools must follow the privilege-shield doctrine.
 
-### Phase 3: The Evaluation Loop (Main Iteration Phase)
-Start with 1-2 eval cases, run `make eval`, iterate. Expect 5-10+ iterations. See the **Evaluation Guide** for metrics, evalset schema, LLM-as-judge config, and common gotchas.
+### Phase 3: The Evaluation Loop
+Start with 1-2 eval cases, run `make eval`, iterate. Expect 5-10+ iterations.
 
 ### Phase 4: Pre-Deployment Tests
 Run `make test`. Fix issues until all tests pass.
 
 ### Phase 5: Deploy to Dev
-**Requires explicit human approval.** Run `make deploy` only after user confirms. See the **Deployment Guide** for details.
+**Requires explicit human approval.** Run `make deploy` only after user confirms.
 
 ### Phase 6: Production Deployment
-Ask the user: Option A (simple single-project) or Option B (full CI/CD pipeline with `uvx agent-starter-pack setup-cicd`). See the [deployment docs](https://raw.githubusercontent.com/GoogleCloudPlatform/agent-starter-pack/refs/heads/main/docs/guide/deployment.md) for step-by-step instructions.
+Ask user: Option A (single-project) or Option B (full CI/CD with `uvx agent-starter-pack setup-cicd`).
+
+---
 
 ## Development Commands
 
@@ -47,12 +64,39 @@ Ask the user: Option A (simple single-project) or Option B (full CI/CD pipeline 
 
 ---
 
-## Operational Guidelines for Coding Agents
+## Operational Guardrails
 
-- **Code preservation**: Only modify code directly targeted by the user's request. Preserve all surrounding code, config values (e.g., `model`), comments, and formatting.
-- **NEVER change the model** unless explicitly asked. Use `gemini-3-flash-preview` or `gemini-3.1-pro-preview` for new agents.
-- **Model 404 errors**: Fix `GOOGLE_CLOUD_LOCATION` (e.g., `global` instead of `us-central1`), not the model name.
-- **ADK tool imports**: Import the tool instance, not the module: `from google.adk.tools.load_web_page import load_web_page`
+- **Code preservation**: Only modify code directly targeted by the request.
+- **NEVER change the model** unless explicitly asked. Use `gemini-3-flash-preview` for agent runtime.
+- **Model 404 errors**: Fix `GOOGLE_CLOUD_LOCATION` (use `global`), not the model name.
+- **ADK tool imports**: Import the tool instance, not the module.
 - **Run Python with `uv`**: `uv run python script.py`. Run `make install` first.
-- **Stop on repeated errors**: If the same error appears 3+ times, fix the root cause instead of retrying.
+- **Stop on repeated errors**: If the same error appears 3+ times, fix the root cause.
 - **Terraform conflicts** (Error 409): Use `terraform import` instead of retrying creation.
+
+---
+
+## ShadowTag-Specific Doctrine
+
+### Tool Naming Convention
+All legal domain tools MUST use the `uphillsnowball_` prefix:
+- `uphillsnowball_case_intake`
+- `uphillsnowball_sanctions_check`
+- `uphillsnowball_document_analysis`
+- `uphillsnowball_billing_tracker`
+
+### Privilege Shield
+All agent interactions are protected under attorney-client privilege. Never log raw client descriptions to unencrypted stores.
+
+### Firestore Integration
+Agent state persistence targets the `shadowtag-engine` Firestore database. Use the `google-cloud-firestore` SDK for document operations.
+
+### Deployment Target
+- **Cloud Run** on `shadowtag-omega-v4`
+- **Region**: `us-central1`
+- **Auth**: Workload Identity Federation (WIF) for GitHub Actions CI/CD
+
+### GitHub Doctrine
+- SSH is the mandatory transport for push/pull.
+- GitHub App JWT is for API operations (PRs, issues, releases) ONLY.
+- Repository: `ShadowTag-v2/Monorepo-Uphillsnowball`
