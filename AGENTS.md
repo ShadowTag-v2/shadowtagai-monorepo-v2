@@ -83,10 +83,12 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v8.3 canonicalized: 2026-04-13
-- Commit: `7381346dc6c`
+- v8.4 canonicalized: 2026-04-13
+- Commit: `c0e93f5a368`
 - CI Python: 3.13 (all 3 workflows)
 - Firestore: `shadowtag-engine` (4 collections)
 - Semantic Kernel: .NET 11.0 Preview 2
-- Unit tests: 17/17
-- Dead code: clean
+- Structural tests: 30/30
+- Lighthouse: A97 / BP100 / SEO100
+- Dead code: clean (vulture + ruff)
+- Infrastructure: shadowtagai.web.app deployed
