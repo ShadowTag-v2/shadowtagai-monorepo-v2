@@ -437,7 +437,7 @@ if FASTAPI_AVAILABLE:
             yield text_message_start(msg_id)
             yield text_message_content(
                 msg_id,
-                f"## ⚖️ Step 4: Relevance Filtering\n\n"
+                "## ⚖️ Step 4: Relevance Filtering\n\n"
             )
             for score in result.relevance_scores:
                 yield text_message_content(
@@ -455,7 +455,7 @@ if FASTAPI_AVAILABLE:
             yield text_message_start(msg_id)
             yield text_message_content(
                 msg_id,
-                f"## ⚔️ Step 5: Steelman / Challenger\n\n"
+                "## ⚔️ Step 5: Steelman / Challenger\n\n"
             )
             for sm in result.steelman_results:
                 yield text_message_content(
@@ -594,9 +594,9 @@ def main():
     print(f"   Oracle Studio:     http://localhost:{port}/api/oracle-studio")
     print(f"   Verb Auditor:      http://localhost:{port}/api/verb-audit")
     print(f"   Health check:      http://localhost:{port}/health")
-    print(f"   Privilege Shield:  ACTIVE")
+    print("   Privilege Shield:  ACTIVE")
     print(f"   Oracle Studio:     {'AVAILABLE' if ORACLE_AVAILABLE else 'OFFLINE'}")
-    print(f"   MCP Servers:       11")
+    print("   MCP Servers:       11")
 
     uvicorn.run(app, host="0.0.0.0", port=port)
 

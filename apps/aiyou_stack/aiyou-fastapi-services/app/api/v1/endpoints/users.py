@@ -14,10 +14,14 @@ from app.core.dependencies import get_current_active_user
 from app.db.session import get_db
 from app.models.user import User
 from app.schemas.user import UserResponse, UserUpdate
-from app.utils.logger import get_logger
+from app.services.user_service import UserService
 
 router = APIRouter()
-logger = get_logger(__name__)
+
+
+def get_user_service(db: AsyncSession = Depends(get_db)) -> UserService:
+    """Dependency to get UserService instance."""
+    return UserService(db)
 
 
 @router.get("/me", response_model=UserResponse)
@@ -36,7 +40,7 @@ async def get_current_user_info(current_user: User = Depends(get_current_active_
 async def update_current_user(
     user_data: UserUpdate,
     current_user: User = Depends(get_current_active_user),
-    db: AsyncSession = Depends(get_db),
+    service: UserService = Depends(get_user_service),
 ) -> User:
     """
     Update current user information
@@ -46,25 +50,13 @@ async def update_current_user(
     - Input validation via schema
     - XSS prevention
     """
-    # Update fields if provided
-    if user_data.full_name is not None:
-        current_user.full_name = user_data.full_name
-
-    if user_data.email is not None:
-        # Check email uniqueness (future enhancement)
-        current_user.email = user_data.email
-
-    await db.commit()
-    await db.refresh(current_user)
-
-    logger.info("user_updated", user_id=current_user.id)
-
-    return current_user
+    return await service.update_user(current_user, user_data.full_name, user_data.email)
 
 
 @router.delete("/me", status_code=status.HTTP_200_OK)
 async def delete_current_user(
-    current_user: User = Depends(get_current_active_user), db: AsyncSession = Depends(get_db)
+    current_user: User = Depends(get_current_active_user),
+    service: UserService = Depends(get_user_service),
 ) -> dict:
     """
     Soft delete current user account
@@ -74,14 +66,5 @@ async def delete_current_user(
     - Soft delete (preserves data for audit)
     - Deactivates account immediately
     """
-    from datetime import datetime
-
-    # Soft delete
-    current_user.deleted_at = datetime.utcnow()
-    current_user.is_active = False
-
-    await db.commit()
-
-    logger.info("user_deleted", user_id=current_user.id)
-
+    await service.soft_delete_user(current_user)
     return {"message": "Account deleted successfully"}

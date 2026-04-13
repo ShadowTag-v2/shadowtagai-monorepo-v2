@@ -8,14 +8,19 @@ Operations:
 """
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.db.session import get_db
+from app.services.health_service import HealthService
 
 router = APIRouter()
 settings = get_settings()
+
+
+def get_health_service(db: AsyncSession = Depends(get_db)) -> HealthService:
+    """Dependency to get HealthService instance."""
+    return HealthService(db)
 
 
 @router.get("/health")
@@ -36,7 +41,7 @@ async def health_check() -> dict:
 
 
 @router.get("/readiness")
-async def readiness_check(db: AsyncSession = Depends(get_db)) -> dict:
+async def readiness_check(service: HealthService = Depends(get_health_service)) -> dict:
     """
     Readiness check with database connectivity
 
@@ -44,11 +49,4 @@ async def readiness_check(db: AsyncSession = Depends(get_db)) -> dict:
     - Kubernetes readiness probe
     - Verifies database connection
     """
-    try:
-        # Check database connectivity
-        result = await db.execute(text("SELECT 1"))
-        result.scalar_one()
-
-        return {"status": "ready", "database": "connected"}
-    except Exception as e:
-        return {"status": "not_ready", "database": "disconnected", "error": str(e)}
+    return await service.check_db_connectivity()
