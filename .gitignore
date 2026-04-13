@@ -134,3 +134,41 @@ docs/harvested_from_deleted_user_2/
 
 # Stitch-skills removed from tracking (skills live in ~/.gemini/antigravity/skills/)
 labs/uphillsnowball/stitch-skills/
+
+# Archive test debris (drift audit 2026-04-13)
+archive/agent_debris/agents/test_runner.py
+archive/agent_debris/antigravity-arch/tests/test_pkgbuild.py
+archive/broken/aiyou_fastapi_misc/test_autogen_migration.py
+archive/broken/aiyou_fastapi_misc/test_gold_master.py
+archive/scratch/test2.py
+archive/scratch/test_cmake_python.py
+
+# Nested repo directories (orphan gitlinks removed 2026-04-13, files retained on disk)
+labs/uphillsnowball/external_payloads/repos/
+labs/uphillsnowball/prompts/leaks/
+libs/autoresearch_sources/n-autoresearch/
+libs/cyberpunk_stack/
+libs/turboquant-pytorch/
+third_party/FawltyDeps/
+third_party/acme.sh/
+third_party/autocomplete/
+third_party/awesome-cheatsheets/
+third_party/bugscope/
+third_party/buildtools/
+third_party/dotfiles/
+third_party/html-agility-pack/
+third_party/jupyenv/
+third_party/ladybug/
+third_party/ladybug-vlang/
+third_party/learn-claude-code/
+third_party/nvm/
+third_party/pipedream/
+third_party/powerlevel10k/
+third_party/prezto/
+third_party/pure-bash-bible/
+third_party/pyreadstat/
+third_party/ruby-ladybug/
+third_party/rules_gcs/
+third_party/run-nix-shell/
+third_party/simpleini/
+third_party/the-art-of-command-line/
