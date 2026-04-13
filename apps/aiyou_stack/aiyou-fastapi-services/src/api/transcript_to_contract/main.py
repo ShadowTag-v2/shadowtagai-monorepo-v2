@@ -1,7 +1,9 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+
 from .auth import verify_zero_trust
-import logging
 
 logger = logging.getLogger("temporal-router")
 router = APIRouter(prefix="/transcript")

@@ -8,10 +8,10 @@ from datetime import datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from src.dualco.models import DualCoGateState, DualCoMetricHistory
 
 from src.dualco.constants import GATE_A_LOGOS
 from src.dualco.engine import DualCoEngine, GateName
-from src.dualco.models import DualCoGateState, DualCoMetricHistory
 from src.dualco.schemas import MetricsInput
 
 # Import ONLY DualCo dependencies to avoid potential import errors in other parts of the app

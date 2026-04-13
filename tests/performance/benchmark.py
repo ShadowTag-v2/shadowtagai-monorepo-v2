@@ -8,7 +8,6 @@ Usage:
 
 import time
 import statistics
-from typing import List, Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from src.judges import JudgeFactory, JudgeRequest, JudgeType
 
@@ -49,7 +48,7 @@ class PerformanceBenchmark:
                     judge_type=judge_type,
                     action_type="test",
                     context={"amount_usd": 1000 + idx},
-                    requested_by="benchmark@example.com"
+                    requested_by="benchmark@example.com",
                 )
 
                 judge.judge(request)
@@ -79,7 +78,7 @@ class PerformanceBenchmark:
             "duration_seconds": actual_duration,
             "throughput_per_second": throughput,
             "target": 100,
-            "passed": throughput >= 100
+            "passed": throughput >= 100,
         }
 
     def benchmark_memory_usage(self, num_decisions: int = 10000):
@@ -112,7 +111,7 @@ class PerformanceBenchmark:
                 judge_type=judge_type,
                 action_type="test",
                 context={"amount_usd": 1000 + i},
-                requested_by="benchmark@example.com"
+                requested_by="benchmark@example.com",
             )
 
             judge.judge(request)
@@ -131,7 +130,7 @@ class PerformanceBenchmark:
             "baseline_mb": baseline_mb,
             "final_mb": final_mb,
             "increase_mb": increase_mb,
-            "per_decision_kb": (increase_mb / num_decisions) * 1024
+            "per_decision_kb": (increase_mb / num_decisions) * 1024,
         }
 
     def benchmark_cold_vs_warm_start(self, num_iterations: int = 100):
@@ -157,7 +156,7 @@ class PerformanceBenchmark:
                 judge_type=JudgeType.FIN,
                 action_type="test",
                 context={"amount_usd": 50000},
-                requested_by="benchmark@example.com"
+                requested_by="benchmark@example.com",
             )
 
             start = time.perf_counter()
@@ -177,7 +176,7 @@ class PerformanceBenchmark:
                 judge_type=JudgeType.FIN,
                 action_type="test",
                 context={"amount_usd": 50000},
-                requested_by="benchmark@example.com"
+                requested_by="benchmark@example.com",
             )
 
             start = time.perf_counter()
@@ -198,7 +197,7 @@ class PerformanceBenchmark:
         self.results["cold_vs_warm"] = {
             "cold_mean_ms": cold_mean,
             "warm_mean_ms": warm_mean,
-            "speedup_factor": speedup
+            "speedup_factor": speedup,
         }
 
     def benchmark_decision_complexity(self):
@@ -210,26 +209,34 @@ class PerformanceBenchmark:
         print()
 
         test_cases = [
-            ("Simple ALLOW", JudgeType.FIN, {
-                "amount_usd": 1000,
-                "vendor_status": "approved",
-                "purchase_order": "PO-123"
-            }),
-            ("Simple BLOCK", JudgeType.FIN, {
-                "amount_usd": 75000,
-                "vendor_status": "new",
-                "purchase_order": None,
-                "destination_country": "Unknown"
-            }),
-            ("Complex fraud", JudgeType.FRAUD, {
-                "fraud_score": 0.65,
-                "identity_verified": True,
-                "geo_location_mismatch": True,
-                "velocity_check_failed": False,
-                "device_fingerprint_match": True,
-                "amount_usd": 10000,
-                "account_age_days": 45
-            }),
+            (
+                "Simple ALLOW",
+                JudgeType.FIN,
+                {"amount_usd": 1000, "vendor_status": "approved", "purchase_order": "PO-123"},
+            ),
+            (
+                "Simple BLOCK",
+                JudgeType.FIN,
+                {
+                    "amount_usd": 75000,
+                    "vendor_status": "new",
+                    "purchase_order": None,
+                    "destination_country": "Unknown",
+                },
+            ),
+            (
+                "Complex fraud",
+                JudgeType.FRAUD,
+                {
+                    "fraud_score": 0.65,
+                    "identity_verified": True,
+                    "geo_location_mismatch": True,
+                    "velocity_check_failed": False,
+                    "device_fingerprint_match": True,
+                    "amount_usd": 10000,
+                    "account_age_days": 45,
+                },
+            ),
         ]
 
         for name, judge_type, context in test_cases:
@@ -242,7 +249,7 @@ class PerformanceBenchmark:
                     judge_type=judge_type,
                     action_type="test",
                     context=context,
-                    requested_by="benchmark@example.com"
+                    requested_by="benchmark@example.com",
                 )
 
                 start = time.perf_counter()
@@ -269,6 +276,7 @@ class PerformanceBenchmark:
         # Skip memory benchmark if psutil not available
         try:
             import psutil
+
             self.benchmark_memory_usage(num_decisions=1000)
         except ImportError:
             print("Memory benchmark skipped (psutil not installed)")

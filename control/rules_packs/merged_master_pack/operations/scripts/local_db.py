@@ -20,7 +20,18 @@ def cmd_stats() -> int:
     files = []
     if exists:
         files = sorted(str(p.relative_to(DB_ROOT)) for p in DB_ROOT.rglob("*"))
-    print(json.dumps({"status": "ok", "action": "stats", "path": str(DB_ROOT), "exists": exists, "file_count": len(files), "files": files[:100]}))
+    print(
+        json.dumps(
+            {
+                "status": "ok",
+                "action": "stats",
+                "path": str(DB_ROOT),
+                "exists": exists,
+                "file_count": len(files),
+                "files": files[:100],
+            }
+        )
+    )
     return 0
 
 
@@ -28,7 +39,11 @@ def cmd_smoke_test() -> int:
     DB_ROOT.mkdir(parents=True, exist_ok=True)
     marker = DB_ROOT / "SMOKE_TEST_OK"
     marker.write_text("ok\n", encoding="utf-8")
-    print(json.dumps({"status": "ok", "action": "smoke-test", "path": str(DB_ROOT), "marker": str(marker)}))
+    print(
+        json.dumps(
+            {"status": "ok", "action": "smoke-test", "path": str(DB_ROOT), "marker": str(marker)}
+        )
+    )
     return 0
 
 
@@ -46,6 +61,7 @@ def main() -> int:
         return cmd_smoke_test()
     parser.print_help(sys.stderr)
     return 2
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

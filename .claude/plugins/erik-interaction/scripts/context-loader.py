@@ -7,7 +7,7 @@ Auto-searches past conversations when question assumes prior context
 import argparse
 import json
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 # Trigger patterns from past-conversation-auto-search skill
 EXPLICIT_REFERENCES = [
@@ -17,7 +17,7 @@ EXPLICIT_REFERENCES = [
     "you mentioned",
     "earlier you said",
     "previously",
-    "the other day"
+    "the other day",
 ]
 
 COMPONENT_REFERENCES = {
@@ -96,8 +96,8 @@ def extract_technical_terms(question: str) -> List[str]:
     terms = []
 
     for word in words:
-        word_clean = re.sub(r'[^\w\s-]', '', word)
-        if word_clean and (word_clean[0].isupper() or '-' in word_clean):
+        word_clean = re.sub(r"[^\w\s-]", "", word)
+        if word_clean and (word_clean[0].isupper() or "-" in word_clean):
             terms.append(word_clean)
 
     # Also add words that match known components
@@ -133,11 +133,7 @@ def search_conversations(query: str, session_id: str) -> Dict:
     """
     # TODO: Implement actual conversation search
     # For now, return empty context
-    return {
-        "query": query,
-        "results": [],
-        "context": {}
-    }
+    return {"query": query, "results": [], "context": {}}
 
 
 def main():
@@ -167,7 +163,9 @@ def main():
         context_parts = []
 
         if "latest_architecture" in results["context"]:
-            context_parts.append(f"Current architecture: {results['context']['latest_architecture']}")
+            context_parts.append(
+                f"Current architecture: {results['context']['latest_architecture']}"
+            )
 
         if "current_costs" in results["context"]:
             context_parts.append(f"Current costs: {results['context']['current_costs']}")
@@ -183,8 +181,8 @@ def main():
         "continue": True,
         "hookSpecificOutput": {
             "hookEventName": "UserPromptSubmit",
-            "additionalContext": additional_context
-        }
+            "additionalContext": additional_context,
+        },
     }
 
     print(json.dumps(output))

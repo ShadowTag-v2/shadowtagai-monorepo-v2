@@ -14,6 +14,7 @@ Can be wired into:
     - CI/CD pipeline
     - Manual execution after task completion
 """
+
 from __future__ import annotations
 
 import argparse
@@ -79,20 +80,22 @@ def _scan_task_md(path: Path) -> list[dict]:
     completed = []
 
     # Match lines like: - `[x]` Some task description
-    pattern = re.compile(r'^[\s-]*`?\[x\]`?\s+(.+)$', re.MULTILINE | re.IGNORECASE)
+    pattern = re.compile(r"^[\s-]*`?\[x\]`?\s+(.+)$", re.MULTILINE | re.IGNORECASE)
 
     for match in pattern.finditer(content):
         title = match.group(1).strip()
         # Clean up markdown formatting
-        title = re.sub(r'[*_`]', '', title)
+        title = re.sub(r"[*_`]", "", title)
         # Remove trailing status indicators like ✅, — ...
-        title = re.sub(r'\s*[✅—].*$', '', title).strip()
+        title = re.sub(r"\s*[✅—].*$", "", title).strip()
         if title:
-            completed.append({
-                "title": title,
-                "source": str(path),
-                "_dedup_key": _dedup_key(title),
-            })
+            completed.append(
+                {
+                    "title": title,
+                    "source": str(path),
+                    "_dedup_key": _dedup_key(title),
+                }
+            )
 
     return completed
 
@@ -125,10 +128,7 @@ def cmd_scan(dry_run: bool = False) -> int:
                 all_completed.extend(_scan_task_md(task_file))
 
     # Filter out already-recorded completions
-    new_completions = [
-        c for c in all_completed
-        if c["_dedup_key"] not in existing_keys
-    ]
+    new_completions = [c for c in all_completed if c["_dedup_key"] not in existing_keys]
 
     if not new_completions:
         print(f"  {GREEN}No new completions to record.{NC}")
@@ -155,7 +155,9 @@ def cmd_scan(dry_run: bool = False) -> int:
     if dry_run:
         print(f"\n  {YELLOW}DRY RUN — nothing written.{NC}")
     else:
-        print(f"\n  {GREEN}✅ {len(new_completions)} completion(s) appended to .beads/issues.jsonl{NC}")
+        print(
+            f"\n  {GREEN}✅ {len(new_completions)} completion(s) appended to .beads/issues.jsonl{NC}"
+        )
 
     return 0
 

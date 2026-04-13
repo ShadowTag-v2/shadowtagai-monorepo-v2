@@ -70,7 +70,9 @@ class VertexUnifiedHypervisor:
             stdout, stderr = process.communicate(input=response_text)
 
             if process.returncode != 0:
-                logger.error(f"Patcher rejected payload. Triggering Temporal Reversal. Stderr: {stderr}")
+                logger.error(
+                    f"Patcher rejected payload. Triggering Temporal Reversal. Stderr: {stderr}"
+                )
                 # Trigger rollback
                 subprocess.run(["git", "reset", "--hard", "latest-stable"])
                 return False

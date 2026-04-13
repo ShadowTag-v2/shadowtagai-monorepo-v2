@@ -5,7 +5,9 @@ import subprocess
 import sys
 
 # Configure Logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger("GodModeAdmin")
 
 
@@ -51,11 +53,12 @@ def handle_command(line):
         else:
             try:
                 payload = json.loads(arg)
-                task_objective = payload.get('task')
+                task_objective = payload.get("task")
                 logger.info(f"JSON: Received task: {task_objective}")
 
                 # ---> NEW BEHAVIOR: Forward to Sovereign FastAPI Endpoint
                 import requests
+
                 api_url = os.environ.get("VITE_API_URL", "http://localhost:8000")
                 endpoint = f"{api_url}/api/v1/ShadowTag-v2/agent/query"
 
@@ -67,14 +70,16 @@ def handle_command(line):
                         endpoint,
                         json={"q": task_objective},
                         headers={"Content-Type": "application/json"},
-                        timeout=5  # Fast timeout so the queue loop doesn't stall
+                        timeout=5,  # Fast timeout so the queue loop doesn't stall
                     )
                     if response.status_code == 200:
                         logger.info("JSON: Task successfully dispatched to FastAPI agent pipeline.")
                     else:
-                        logger.error(f"JSON: Failed to dispatch. Status Code: {response.status_code} - {response.text}")
+                        logger.error(
+                            f"JSON: Failed to dispatch. Status Code: {response.status_code} - {response.text}"
+                        )
                 except Exception as net_err:
-                     logger.error(f"JSON: Connection error to FastAPI matrix: {net_err}")
+                    logger.error(f"JSON: Connection error to FastAPI matrix: {net_err}")
 
             except json.JSONDecodeError:
                 logger.error(f"JSON: Invalid JSON payload: {arg}")

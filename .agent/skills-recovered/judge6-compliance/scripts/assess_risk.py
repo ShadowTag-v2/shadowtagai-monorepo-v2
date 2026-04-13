@@ -1,5 +1,5 @@
-
 import sys
+
 
 def assess_risk(phase, margin=0.0):
     """
@@ -12,7 +12,7 @@ def assess_risk(phase, margin=0.0):
     print(f"⚖️ JUDGE 6 ASSESSMENT [Phase {phase}]")
 
     # Phase 1: Wet Fleece (Technical Viability on $0)
-    if phase == '1':
+    if phase == "1":
         print("🔍 CHECK: Checking for free-tier infrastructure usage...")
         # In a real skill, this might grep for 'n1-standard' or check billing API
         # For this logic check, we assume compliance if explicitly stated.
@@ -20,7 +20,7 @@ def assess_risk(phase, margin=0.0):
         sys.exit(0)
 
     # Phase 2: Dry Ground (Unit Economics)
-    elif phase == '2':
+    elif phase == "2":
         print(f"💰 CHECK: Margin Analysis (Target > 30%). Current: {margin:.1%}")
         if margin < 0.30:
             print(f"🛑 BLOCK: Margin {margin:.1%} is below 30% threshold.")
@@ -31,7 +31,7 @@ def assess_risk(phase, margin=0.0):
             sys.exit(0)
 
     # Phase 3: Battle (Scale)
-    elif phase == '3':
+    elif phase == "3":
         print("⚔️ CHECK: Golden Artifact Verification")
         # Logic to check if artifact exists
         print("✅ PASS: Proceed to Battle.")
@@ -40,6 +40,7 @@ def assess_risk(phase, margin=0.0):
     else:
         print(f"❌ ERROR: Unknown Phase '{phase}'")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     # Usage: python assess_risk.py <phase> <margin_optional>

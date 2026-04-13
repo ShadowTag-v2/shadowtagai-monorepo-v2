@@ -3,7 +3,8 @@ class User:
         pass
 
     def get_name(self) -> str:
-        return ''
+        return ""
+
 
 def get_user() -> User:
     return User()

@@ -1,4 +1,4 @@
-""" Core configuration, specifications, and policies for the pnkln system. """
+"""Core configuration, specifications, and policies for the pnkln system."""
 
 # Project specification
 SPECIFICATION = {

@@ -37,9 +37,7 @@ def validate_schema(filename):
 
             # Primary key check
             if not re.search(r"\bid\b.*PRIMARY KEY", body, re.IGNORECASE):
-                errors.append(
-                    f"ERROR: Table '{table_name}' is missing a primary key named 'id'."
-                )
+                errors.append(f"ERROR: Table '{table_name}' is missing a primary key named 'id'.")
 
         if errors:
             for err in errors:

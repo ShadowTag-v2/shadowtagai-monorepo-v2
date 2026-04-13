@@ -1,9 +1,10 @@
 from __future__ import annotations
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
 import json
 import uuid
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
+
 
 class JsonMemoryStore:
     """
@@ -11,6 +12,7 @@ class JsonMemoryStore:
     Each line is one memory object.
     Retrieval is linear scan by design.
     """
+
     def __init__(self, path: str = "./data/memory/memories.jsonl"):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -49,12 +51,14 @@ class JsonMemoryStore:
         q = query.lower()
         scored = []
         for item in self.all():
-            hay = " ".join([
-                str(item.get("subject","")),
-                str(item.get("summary","")),
-                str(item.get("body","")),
-                " ".join(item.get("tags", [])),
-            ]).lower()
+            hay = " ".join(
+                [
+                    str(item.get("subject", "")),
+                    str(item.get("summary", "")),
+                    str(item.get("body", "")),
+                    " ".join(item.get("tags", [])),
+                ]
+            ).lower()
             score = 0
             if q in hay:
                 score += 10

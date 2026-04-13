@@ -1,7 +1,8 @@
 from __future__ import annotations
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
 import re
+
 
 def build_code_graph(repo_root: str) -> dict[str, Any]:
     root = Path(repo_root)
@@ -13,7 +14,10 @@ def build_code_graph(repo_root: str) -> dict[str, Any]:
             continue
         if any(part in {".git", "build", "dist", "__pycache__", ".venv"} for part in path.parts):
             continue
-        if path.suffix.lower() not in {".py", ".m", ".h", ".c", ".cc", ".cpp", ".md"} and path.name.lower() != "makefile":
+        if (
+            path.suffix.lower() not in {".py", ".m", ".h", ".c", ".cc", ".cpp", ".md"}
+            and path.name.lower() != "makefile"
+        ):
             continue
         rel = str(path.relative_to(root))
         files.append(rel)
@@ -36,6 +40,7 @@ def build_code_graph(repo_root: str) -> dict[str, Any]:
         for inc in re.findall(r'#include\s+"([^"]+)"', text):
             edges.append({"src": rel, "dst": inc, "type": "include"})
     return {"files": files, "symbols": symbols, "edges": edges}
+
 
 def validate_reference(graph: dict[str, Any], query: str) -> dict[str, Any]:
     q = query.lower()

@@ -1,4 +1,3 @@
-import os
 import pathlib
 
 ROOT = pathlib.Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball")
@@ -12,7 +11,7 @@ dirs_to_create = [
     "configs",
     "ops/nginx",
     "ops/audits",
-    "scripts"
+    "scripts",
 ]
 
 for d in dirs_to_create:

@@ -135,7 +135,7 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         env["GIT_TERMINAL_PROMPT"] = "0"
 
         # Attempt fetch to update remote tracking refs (non-blocking on timeout)
-        print(f"  🔄 Fetching remote state (60s timeout)...")
+        print("  🔄 Fetching remote state (60s timeout)...")
         try:
             fetch_result = subprocess.run(
                 ["git", "fetch", "origin", "--depth=1"],
@@ -145,11 +145,11 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
                 timeout=60,
             )
             if fetch_result.returncode == 0:
-                print(f"  🔄 Fetch complete ✅")
+                print("  🔄 Fetch complete ✅")
             else:
                 print(f"  ⚠️  Fetch warning (continuing): {fetch_result.stderr[:200]}")
         except subprocess.TimeoutExpired:
-            print(f"  ⚠️  Fetch timed out (large repo) — skipping, will force push")
+            print("  ⚠️  Fetch timed out (large repo) — skipping, will force push")
 
         git_base = [
             "git",
@@ -160,7 +160,7 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         ]
 
         # Try --force-with-lease first (safest)
-        print(f"  📤 Pushing with --force-with-lease...")
+        print("  📤 Pushing with --force-with-lease...")
         result = subprocess.run(
             git_base + ["push", "--force-with-lease", "origin", branch],
             capture_output=True,
@@ -172,7 +172,7 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
             print(f"  ✅ Push successful: {org}/{repo} @ {branch}")
         elif "stale info" in result.stderr or "rejected" in result.stderr:
             # Fallback to plain --force if lease is stale
-            print(f"  ⚠️  Lease stale, retrying with --force...")
+            print("  ⚠️  Lease stale, retrying with --force...")
             result = subprocess.run(
                 git_base + ["push", "--force", "origin", branch],
                 capture_output=True,

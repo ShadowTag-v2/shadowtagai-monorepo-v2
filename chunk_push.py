@@ -10,12 +10,12 @@ with open("commits.txt", "r") as f:
 total = len(commits)
 print(f"Total commits to push: {total}")
 
-chunks = commits[BATCH_SIZE-1::BATCH_SIZE]
+chunks = commits[BATCH_SIZE - 1 :: BATCH_SIZE]
 if not chunks or commits[-1] != chunks[-1]:
     chunks.append(commits[-1])
 
 for i, commit in enumerate(chunks):
-    print(f"Pushing chunk {i+1}/{len(chunks)} at commit {commit[:8]}")
+    print(f"Pushing chunk {i + 1}/{len(chunks)} at commit {commit[:8]}")
     cmd = ["git", "push", "origin", f"{commit}:refs/heads/fix-invariants-103-105"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:

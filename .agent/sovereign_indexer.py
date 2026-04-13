@@ -38,7 +38,9 @@ class SovereignRAG:
         self.chroma_client = chromadb.PersistentClient(path=self.db_path)
         self.embed_fn = VertexEmbeddingFunction(project_id=project_id)
 
-        self.collection = self.chroma_client.get_or_create_collection(name="antigravity_codebase", embedding_function=self.embed_fn)
+        self.collection = self.chroma_client.get_or_create_collection(
+            name="antigravity_codebase", embedding_function=self.embed_fn
+        )
 
     def _chunk_text(self, text: str, chunk_size: int = 1500) -> list[str]:
         return [text[i : i + chunk_size] for i in range(0, len(text), chunk_size)]
@@ -75,7 +77,9 @@ class SovereignRAG:
         if docs:
             # Upsert into FUSE-backed ChromaDB
             self.collection.upsert(documents=docs, metadatas=metadatas, ids=ids)
-            logger.info(f"Successfully indexed {len(docs)} chunks across {len(files_to_index)} files.")
+            logger.info(
+                f"Successfully indexed {len(docs)} chunks across {len(files_to_index)} files."
+            )
         else:
             logger.info("Workspace is empty or fully indexed.")
 
