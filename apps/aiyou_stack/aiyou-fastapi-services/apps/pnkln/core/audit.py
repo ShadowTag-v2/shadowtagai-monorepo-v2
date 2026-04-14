@@ -6,6 +6,8 @@ Persistent tracking of all pnkln executions with monetization metrics.
 Philosophy: Leave everything cleaner than you found it - and prove it.
 """
 
+from __future__ import annotations
+
 import json
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta

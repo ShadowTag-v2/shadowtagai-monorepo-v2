@@ -235,7 +235,7 @@ class QuidditchCompetition:
         4. Seeker makes final call
         """
         # Assign roles
-        roles = self.assign_roles(rankings)
+        self.assign_roles(rankings)
 
         # Award points
         house_points = {}

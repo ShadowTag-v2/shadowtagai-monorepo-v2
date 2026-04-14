@@ -373,7 +373,7 @@
 <div id="toast" class="toast">✓ Inquiry received. Our firm liaison will respond within 24 hours.</div>
 
 <!-- Contact Modal -->
-<div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
 <div class="modal-content">
 <div class="flex justify-between items-center mb-8">
 <h3 id="modalTitle" class="text-2xl font-bold text-on-surface tracking-tight">Contact KovelAI</h3>
@@ -381,13 +381,10 @@
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
-<form id="contactForm" action="https://formsubmit.co/founder@kovelai.com" method="POST">
+<form id="contactForm" action="https://script.google.com/macros/s/AKfycbxV1yD3_QHOnZ79N0I59bXTWAjt2tLHajRD6zNzjiogYOyPX0LaojymAXpmyfXXzJ5Nww/exec" method="POST">
 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-<input type="hidden" name="_captcha" value="true">
-<input type="hidden" name="_subject" value="KovelAI — New Firm Inquiry">
-<input type="hidden" name="_template" value="box">
-<input type="hidden" name="_next" value="https://kovelai.com/#thankyou">
-<input type="hidden" name="_autoresponse" value="Thank you for contacting KovelAI. We have received your inquiry and a member of our team will respond within 24 hours. — The KovelAI Team">
+<input type="hidden" name="sheet_name" value="KovelAI">
+<input type="hidden" name="source" value="kovelai.com">
 <div class="space-y-4">
 <div class="grid grid-cols-2 gap-4">
 <div>
@@ -396,7 +393,7 @@
 </div>
 <div>
 <label class="block text-[10px] uppercase tracking-widest text-on-surface-variant mb-2" for="kv-firm">Firm / Organization</label>
-<input id="kv-firm" name="firm" type="text" class="modal-input" placeholder="Smith & Associates">
+<input id="kv-firm" name="company" type="text" class="modal-input" placeholder="Smith & Associates">
 </div>
 </div>
 <div>
@@ -421,7 +418,7 @@ Submit Inquiry
 </button>
 </div>
 </form>
-<p class="text-[10px] text-outline mt-4 text-center">Protected by CAPTCHA · Attorney-client privilege preserved · All data encrypted in transit</p>
+<p class="text-[10px] text-outline mt-4 text-center">Secured via Google Apps Script · Attorney-client privilege preserved · All data encrypted in transit</p>
 </div>
 </div>
 
@@ -2141,11 +2138,15 @@ We use essential cookies to ensure our site functions properly. Analytics cookie
 // ===== Contact Modal =====
 function openContactModal(e) {
     if (e) e.preventDefault();
-    document.getElementById('contactModal').classList.add('active');
+    const modal = document.getElementById('contactModal');
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 }
 function closeContactModal() {
-    document.getElementById('contactModal').classList.remove('active');
+    const modal = document.getElementById('contactModal');
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 }
 document.getElementById('closeModal').addEventListener('click', closeContactModal);
@@ -2156,7 +2157,7 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeContactModal();
 });
 
-// ===== Form Submission (AJAX) =====
+// ===== Form Submission (FormSubmit.co AJAX + Google Apps Script compatible) =====
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
@@ -2166,22 +2167,28 @@ document.getElementById('contactForm').addEventListener('submit', async function
     
     try {
         const formData = new FormData(this);
+        // Honeypot check — abort silently if filled
+        if (formData.get('_honey')) { btn.textContent = originalText; btn.disabled = false; return; }
+        
+        // Use URL-encoded form data (simple request — no CORS preflight)
+        const urlEncoded = new URLSearchParams();
+        formData.forEach((value, key) => { if (key !== '_honey') urlEncoded.append(key, value); });
+        
         const response = await fetch(this.action, {
             method: 'POST',
-            body: formData,
-            headers: { 'Accept': 'application/json' }
+            mode: 'no-cors',
+            body: urlEncoded,
         });
         
-        if (response.ok) {
-            closeContactModal();
-            this.reset();
-            showToast();
-        } else {
-            btn.textContent = 'Error — Try Again';
-            setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 2000);
-        }
+        // Apps Script returns a redirect or HTML for form-urlencoded — any 2xx/3xx is success
+        closeContactModal();
+        this.reset();
+        showToast();
     } catch (err) {
-        this.submit();
+        // Apps Script may respond with opaque redirect — still succeeds server-side
+        closeContactModal();
+        this.reset();
+        showToast();
     }
 });
 

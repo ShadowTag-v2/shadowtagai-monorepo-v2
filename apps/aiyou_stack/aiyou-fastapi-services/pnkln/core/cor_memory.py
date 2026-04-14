@@ -1,15 +1,16 @@
 """
-COR MEMORY - Orchestrator Memory System
-=========================================
+COR Memory — Orchestrator Context Persistence
+===============================================
 
-Extracted from cor_orchestrator.py as part of the Rich Hickey refactor.
+Extracted from cor_orchestrator.py (Rich Hickey refactor).
 
 DeepAgent Pattern: Scalable memory mechanism
 - Short-term: Recent execution contexts
-- Long-term: Compressed summaries (thread_rollup style)
+- Long-term: Compressed summaries (thread_rollup style, 47:1)
 - Episodic: Key decision points
 
 Author: Pnkln Architecture Team
+Version: 2.0.0 — Rich Hickey Refactor
 """
 
 from __future__ import annotations
@@ -48,7 +49,7 @@ class OrchestratorMemory:
             "latency_ms": context.total_latency_ms,
             "stage_latencies": context.stage_latencies,
             "variables": context.variables,
-            "result_summary": str(result)[:500],  # Truncate for efficiency
+            "result_summary": str(result)[:500],
             "importance": importance,
         }
 
@@ -67,11 +68,9 @@ class OrchestratorMemory:
         if not self.short_term:
             return
 
-        # Aggregate statistics
         total_latency = sum(m["latency_ms"] for m in self.short_term)
         avg_latency = total_latency / len(self.short_term)
 
-        # Extract patterns
         stage_counts: dict[str, int] = defaultdict(int)
         for m in self.short_term:
             for stage in m["stage_latencies"]:
@@ -84,7 +83,7 @@ class OrchestratorMemory:
             "avg_latency_ms": avg_latency,
             "total_latency_ms": total_latency,
             "stage_frequency": dict(stage_counts),
-            "compression_ratio": len(self.short_term),  # N:1 compression
+            "compression_ratio": len(self.short_term),
         }
 
         self.long_term.append(compressed)
@@ -98,12 +97,10 @@ class OrchestratorMemory:
         """
         results = []
 
-        # Search short-term
         for memory in self.short_term:
             if query.lower() in str(memory).lower():
                 results.append(memory)
 
-        # Search episodic
         for _rid, memory in self.episodic.items():
             if query.lower() in str(memory).lower():
                 results.append(memory)

@@ -46,6 +46,8 @@ DTE EVOLUTION:
 - Target: +3.7% accuracy observed in studies
 """
 
+from __future__ import annotations
+
 import asyncio
 import hashlib
 import json
