@@ -1,5 +1,4 @@
-"""
-BugBot: Intelligent GitHub Issue Triage & Auto-Fix
+"""BugBot: Intelligent GitHub Issue Triage & Auto-Fix
 
 Uses ultrathink framework for:
 - Multi-agent debate on issue classification
@@ -54,8 +53,7 @@ class TriageResult(BaseModel):
 
 
 class BugBot:
-    """
-    Intelligent GitHub issue triage bot.
+    """Intelligent GitHub issue triage bot.
 
     Usage:
         bot = BugBot()
@@ -79,13 +77,13 @@ class BugBot:
         debate_agents: int = 3,
         reasoning_strategy: Literal["MAD", "RCR"] = "MAD",
     ):
-        """
-        Initialize BugBot.
+        """Initialize BugBot.
 
         Args:
             auto_fix_enabled: Try to generate fixes for simple issues
             debate_agents: Number of agents for severity debate
             reasoning_strategy: Which reasoning approach
+
         """
         self.auto_fix_enabled = auto_fix_enabled
         self.debate_agents = debate_agents
@@ -130,14 +128,14 @@ Reported by: {issue.get("author", "unknown")}
         return care.format(issue_text)
 
     async def triage(self, issue: dict) -> TriageResult:
-        """
-        Triage a GitHub issue using multi-agent debate.
+        """Triage a GitHub issue using multi-agent debate.
 
         Args:
             issue: Issue data (title, body, labels, etc.)
 
         Returns:
             TriageResult with classification and recommendations
+
         """
         import re
 
@@ -244,8 +242,7 @@ Reported by: {issue.get("author", "unknown")}
         return any(keyword in title_lower or keyword in body_lower for keyword in auto_fix_keywords)
 
     async def generate_fix(self, issue: dict, triage: TriageResult) -> str | None:
-        """
-        Generate a fix for the issue (if auto-fixable).
+        """Generate a fix for the issue (if auto-fixable).
 
         Args:
             issue: Issue data
@@ -253,6 +250,7 @@ Reported by: {issue.get("author", "unknown")}
 
         Returns:
             Proposed fix (code, docs, etc.) or None
+
         """
         if not triage.auto_fix_possible:
             return None

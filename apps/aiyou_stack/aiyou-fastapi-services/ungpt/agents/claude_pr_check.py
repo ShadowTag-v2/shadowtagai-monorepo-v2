@@ -1,5 +1,4 @@
-"""
-L6: Claude.3 - PR Check (Dynamic, Optional)
+"""L6: Claude.3 - PR Check (Dynamic, Optional)
 
 Role: The Auditor
 - Final sanity check on the repo structure
@@ -43,10 +42,9 @@ PR_COMMENT:
 
 
 async def review_pr(
-    github_url: str, repo_name: str, model: str, api_key: str, github_token: str
+    github_url: str, repo_name: str, model: str, api_key: str, github_token: str,
 ) -> dict[str, Any]:
-    """
-    Review the PR and add a comment if needed.
+    """Review the PR and add a comment if needed.
 
     Args:
         github_url: URL to GitHub research branch
@@ -63,13 +61,14 @@ async def review_pr(
             'comment_posted': bool,
             'cost': float
         }
+
     """
     prompt = PR_CHECK_PROMPT.format(github_url=github_url, repo_name=repo_name)
 
     client = anthropic.Anthropic(api_key=api_key)
 
     message = client.messages.create(
-        model=model, max_tokens=1000, messages=[{"role": "user", "content": prompt}]
+        model=model, max_tokens=1000, messages=[{"role": "user", "content": prompt}],
     )
 
     content = message.content[0].text
@@ -120,7 +119,7 @@ async def _post_github_comment(github_url: str, repo_name: str, comment: str, to
     async with httpx.AsyncClient(timeout=30.0) as client:
         # Get latest commit on branch
         ref_resp = await client.get(
-            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}", headers=headers
+            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}", headers=headers,
         )
 
         if ref_resp.status_code != 200:
@@ -150,7 +149,6 @@ def _extract_section(content: str, marker: str) -> str:
     for m in next_markers:
         if m != marker and m in content[start:]:
             pos = content.find(m, start)
-            if pos < end:
-                end = pos
+            end = min(end, pos)
 
     return content[start:end].strip()

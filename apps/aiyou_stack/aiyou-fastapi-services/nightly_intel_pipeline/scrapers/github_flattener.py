@@ -1,5 +1,4 @@
-"""
-GitHub Repository Flattener
+"""GitHub Repository Flattener
 Downloads and flattens GitHub repositories for AI/MLOps technologies
 """
 
@@ -17,8 +16,7 @@ logger = structlog.get_logger(__name__)
 
 
 class GitHubFlattener:
-    """
-    Discovers and flattens relevant GitHub repositories
+    """Discovers and flattens relevant GitHub repositories
 
     Features:
     - Topic-based repository discovery
@@ -46,8 +44,7 @@ class GitHubFlattener:
         min_stars: int | None = None,
         max_results_per_topic: int | None = None,
     ) -> list[Repository.Repository]:
-        """
-        Search for repositories by topics with star filtering
+        """Search for repositories by topics with star filtering
 
         Args:
             topics: List of GitHub topics to search
@@ -56,6 +53,7 @@ class GitHubFlattener:
 
         Returns:
             List of Repository objects
+
         """
         topics = topics or self.config["target_topics"]
         min_stars = min_stars or self.config["min_stars"]
@@ -69,7 +67,7 @@ class GitHubFlattener:
                 logger.info("searching_repositories", topic=topic, query=query)
 
                 repositories = self.github.search_repositories(
-                    query=query, sort="stars", order="desc"
+                    query=query, sort="stars", order="desc",
                 )
 
                 count = 0
@@ -96,8 +94,7 @@ class GitHubFlattener:
         return list(all_repos.values())
 
     def should_include_file(self, file_path: str) -> bool:
-        """
-        Determine if file should be included in flattened output
+        """Determine if file should be included in flattened output
 
         Filters by:
         - File extension (code, config, docs)
@@ -120,8 +117,7 @@ class GitHubFlattener:
         return path.name in ["Dockerfile", "Makefile", "LICENSE", "README"]
 
     def flatten_repository(self, repo: Repository.Repository) -> str | None:
-        """
-        Flatten a repository into a single text file
+        """Flatten a repository into a single text file
 
         Format:
         ```
@@ -140,6 +136,7 @@ class GitHubFlattener:
 
         Returns:
             Path to flattened file, or None if failed
+
         """
         try:
             logger.info("flattening_repository", name=repo.full_name, stars=repo.stargazers_count)
@@ -194,7 +191,7 @@ class GitHubFlattener:
                             # Download file content
                             try:
                                 file_content = content_file.decoded_content.decode(
-                                    "utf-8", errors="ignore"
+                                    "utf-8", errors="ignore",
                                 )
                             except Exception as decode_error:
                                 logger.warning(
@@ -260,8 +257,7 @@ class GitHubFlattener:
         repos: list[Repository.Repository] | None = None,
         topics: list[str] | None = None,
     ) -> list[str]:
-        """
-        Flatten multiple repositories
+        """Flatten multiple repositories
 
         Args:
             repos: List of Repository objects (if None, will search)
@@ -269,6 +265,7 @@ class GitHubFlattener:
 
         Returns:
             List of paths to flattened files
+
         """
         if repos is None:
             repos = self.search_repositories(topics=topics)
@@ -291,14 +288,14 @@ class GitHubFlattener:
         return flattened_files
 
     def get_recent_updates(self, days_back: int = 7) -> list[Repository.Repository]:
-        """
-        Find recently updated repositories in target topics
+        """Find recently updated repositories in target topics
 
         Args:
             days_back: Number of days to look back
 
         Returns:
             List of recently updated repositories
+
         """
         cutoff_date = datetime.now() - timedelta(days=days_back)
         cutoff_str = cutoff_date.strftime("%Y-%m-%d")
@@ -310,7 +307,7 @@ class GitHubFlattener:
                 query = f"topic:{topic} stars:>={self.config['min_stars']} pushed:>={cutoff_str}"
 
                 repositories = self.github.search_repositories(
-                    query=query, sort="updated", order="desc"
+                    query=query, sort="updated", order="desc",
                 )
 
                 count = 0
@@ -339,8 +336,7 @@ class GitHubFlattener:
 
 
 def flatten_top_repos(topics: list[str] | None = None) -> list[str]:
-    """
-    Convenience function to flatten top repositories
+    """Convenience function to flatten top repositories
 
     Usage:
         flattened_files = flatten_top_repos(["mlops", "kubernetes"])
@@ -350,8 +346,7 @@ def flatten_top_repos(topics: list[str] | None = None) -> list[str]:
 
 
 def flatten_recent_updates(days_back: int = 7) -> list[str]:
-    """
-    Convenience function to flatten recently updated repositories
+    """Convenience function to flatten recently updated repositories
 
     Usage:
         flattened_files = flatten_recent_updates(days_back=7)

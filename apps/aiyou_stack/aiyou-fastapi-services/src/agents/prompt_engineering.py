@@ -1,5 +1,4 @@
-"""
-Prompt Engineering Agents for Vertex AI Workbench
+"""Prompt Engineering Agents for Vertex AI Workbench
 Specialized agents for prompt adaptation, analysis, and optimization
 """
 

@@ -1,5 +1,4 @@
-"""
-Content Provenance Engine
+"""Content Provenance Engine
 Implements C2PA content credentials and provenance tracking
 """
 
@@ -86,8 +85,7 @@ class ContentEngine:
         logger.info(f"Content Engine initialized with Persona IQ: {self.persona_iq}")
 
     async def verify_c2pa(self, request: C2PAVerificationRequest) -> C2PAVerificationResponse:
-        """
-        Verify C2PA content credentials
+        """Verify C2PA content credentials
 
         Running at IQ {self.persona_iq} for thorough provenance analysis
         """
@@ -140,7 +138,7 @@ class ContentEngine:
                     "timestamp": datetime.utcnow().isoformat(),
                     "actor": "creator_001",
                     "action": "created",
-                }
+                },
             ]
 
             verified = signature_valid and not tampered
@@ -173,7 +171,7 @@ class ContentEngine:
         )
 
     async def create_provenance(
-        self, request: ContentProvenanceRequest
+        self, request: ContentProvenanceRequest,
     ) -> ContentProvenanceResponse:
         """Create content provenance record"""
         logger.info(f"Creating provenance record at IQ {self.persona_iq}")
@@ -257,14 +255,13 @@ class ContentEngine:
                 "manifest_url": provenance.manifest_url,
                 "verified": True,
             }
-        else:
-            return {
-                "content_id": content_id,
-                "has_credentials": False,
-                "status": "none",
-                "manifest_url": None,
-                "verified": False,
-            }
+        return {
+            "content_id": content_id,
+            "has_credentials": False,
+            "status": "none",
+            "manifest_url": None,
+            "verified": False,
+        }
 
     async def watermark_content(self, request: WatermarkRequest) -> WatermarkResponse:
         """Watermark content using ShadowTag"""
@@ -288,7 +285,7 @@ class ContentEngine:
 
         # Verify immediately to ensure integrity
         verify_result = shadowtag_verify(
-            media_path=result_path, media_type=request.content_type.value
+            media_path=result_path, media_type=request.content_type.value,
         )
 
         return WatermarkResponse(

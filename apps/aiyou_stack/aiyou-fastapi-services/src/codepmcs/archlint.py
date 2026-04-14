@@ -1,5 +1,4 @@
-"""
-ArchLint: The Ironwood Architecture Enforcer.
+"""ArchLint: The Ironwood Architecture Enforcer.
 Part of the Cor.56 CI Protocol.
 Enforces "Pure Gemini/JAX" and bans "Legacy/PyTorch" patterns.
 """

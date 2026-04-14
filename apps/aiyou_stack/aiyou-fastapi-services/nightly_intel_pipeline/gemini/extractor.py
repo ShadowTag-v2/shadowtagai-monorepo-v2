@@ -1,5 +1,4 @@
-"""
-Gemini Extractor - Semantic Intelligence Extraction
+"""Gemini Extractor - Semantic Intelligence Extraction
 ===================================================
 Extracts structured IntelEvent objects from raw text using Gemini.
 """
@@ -19,8 +18,7 @@ logger = structlog.get_logger(__name__)
 
 
 class GeminiExtractor:
-    """
-    Extracts structured IntelEvent objects from raw text using Gemini.
+    """Extracts structured IntelEvent objects from raw text using Gemini.
 
     Uses Gemini Flash 2.0 for cost-efficient extraction (200x cheaper than Claude).
     """
@@ -50,8 +48,7 @@ class GeminiExtractor:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> tuple[str, dict]:
-        """
-        Call Gemini API and return response.
+        """Call Gemini API and return response.
 
         Args:
             prompt: Full prompt text
@@ -61,6 +58,7 @@ class GeminiExtractor:
 
         Returns:
             Tuple of (response_text, usage_dict)
+
         """
         model = model or self.config["model"]
         temperature = temperature or self.config["temperature"]
@@ -119,18 +117,18 @@ class GeminiExtractor:
                 time.sleep(wait_time)
 
         raise Exception(
-            f"Gemini API failed after {self.config['max_retries']} retries: {last_error}"
+            f"Gemini API failed after {self.config['max_retries']} retries: {last_error}",
         )
 
     def _parse_json_response(self, response: str) -> dict:
-        """
-        Parse JSON from Gemini response, handling markdown code blocks.
+        """Parse JSON from Gemini response, handling markdown code blocks.
 
         Args:
             response: Raw response text
 
         Returns:
             Parsed JSON dict
+
         """
         text = response.strip()
 
@@ -143,8 +141,7 @@ class GeminiExtractor:
         return json.loads(text)
 
     def _detect_source_type(self, text: str, source_url: str) -> str:
-        """
-        Detect source type from content and URL.
+        """Detect source type from content and URL.
 
         Args:
             text: Document text
@@ -152,6 +149,7 @@ class GeminiExtractor:
 
         Returns:
             Source type string
+
         """
         rules = self.config.get("source_type_rules", {})
 
@@ -176,8 +174,7 @@ class GeminiExtractor:
         content_id: str = "",
         source_type_hint: str | None = None,
     ) -> IntelEvent:
-        """
-        Extract structured IntelEvent from raw text.
+        """Extract structured IntelEvent from raw text.
 
         Args:
             text: Raw document text
@@ -187,6 +184,7 @@ class GeminiExtractor:
 
         Returns:
             IntelEvent with extracted data
+
         """
         if not self.config.get("enabled", True):
             logger.warning("gemini_extraction_disabled")
@@ -232,7 +230,7 @@ class GeminiExtractor:
                     "raw_text_hash": text_hash,
                     "gemini_model": self.config["model"],
                     **data,
-                }
+                },
             )
 
             logger.info(
@@ -259,8 +257,7 @@ class GeminiExtractor:
         items: list[tuple[str, str, str]],
         source_type_hint: str | None = None,
     ) -> list[IntelEvent]:
-        """
-        Extract IntelEvents from multiple documents.
+        """Extract IntelEvents from multiple documents.
 
         Args:
             items: List of (text, source_url, content_id) tuples
@@ -268,6 +265,7 @@ class GeminiExtractor:
 
         Returns:
             List of IntelEvent objects
+
         """
         events = []
         batch_size = self.config.get("batch_size", 10)
@@ -313,8 +311,7 @@ def extract_intel_event(
     content_id: str = "",
     source_type_hint: str | None = None,
 ) -> IntelEvent:
-    """
-    Extract structured IntelEvent from raw text.
+    """Extract structured IntelEvent from raw text.
 
     Convenience wrapper around GeminiExtractor.
 
@@ -334,6 +331,7 @@ def extract_intel_event(
             content_id="2401.12345",
             source_type_hint="arxiv"
         )
+
     """
     extractor = GeminiExtractor()
     try:

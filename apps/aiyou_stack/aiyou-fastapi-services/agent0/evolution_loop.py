@@ -7,8 +7,7 @@ from .tools import atp_519_scan
 
 
 class EvolutionLoop:
-    """
-    Orchestrates the co-evolution of Curriculum and Executor agents.
+    """Orchestrates the co-evolution of Curriculum and Executor agents.
     """
 
     def __init__(self, iterations: int = 10):
@@ -58,7 +57,7 @@ class EvolutionLoop:
                     "difficulty": difficulty,
                     "executor_success": executor_success,
                     "compression": scan_result["compression_ratio"],
-                }
+                },
             )
 
             time.sleep(0.1)  # Simulate processing

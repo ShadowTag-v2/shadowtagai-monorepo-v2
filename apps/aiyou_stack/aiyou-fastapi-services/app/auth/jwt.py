@@ -1,5 +1,4 @@
-"""
-JWT token creation and validation.
+"""JWT token creation and validation.
 Implements OAuth2 password bearer flow for secure authentication.
 """
 
@@ -18,8 +17,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.api_prefix}/auth/login
 
 
 def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = None) -> str:
-    """
-    Create a JWT access token.
+    """Create a JWT access token.
 
     Args:
         data: The payload data to encode in the token
@@ -27,6 +25,7 @@ def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = 
 
     Returns:
         Encoded JWT token string
+
     """
     to_encode = data.copy()
 
@@ -43,8 +42,7 @@ def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = 
 
 
 def create_refresh_token(data: dict[str, Any], expires_delta: timedelta | None = None) -> str:
-    """
-    Create a JWT refresh token.
+    """Create a JWT refresh token.
 
     Args:
         data: The payload data to encode in the token
@@ -52,6 +50,7 @@ def create_refresh_token(data: dict[str, Any], expires_delta: timedelta | None =
 
     Returns:
         Encoded JWT refresh token string
+
     """
     to_encode = data.copy()
 
@@ -68,8 +67,7 @@ def create_refresh_token(data: dict[str, Any], expires_delta: timedelta | None =
 
 
 def verify_token(token: str, token_type: str = "access") -> TokenData:
-    """
-    Verify and decode a JWT token.
+    """Verify and decode a JWT token.
 
     Args:
         token: The JWT token to verify
@@ -80,6 +78,7 @@ def verify_token(token: str, token_type: str = "access") -> TokenData:
 
     Raises:
         HTTPException: If token is invalid or expired
+
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -108,8 +107,7 @@ def verify_token(token: str, token_type: str = "access") -> TokenData:
 
 
 async def get_current_user(token: str | None = Depends(oauth2_scheme)) -> User | None:
-    """
-    Get the current authenticated user from JWT token.
+    """Get the current authenticated user from JWT token.
 
     Args:
         token: The JWT token from the request
@@ -119,6 +117,7 @@ async def get_current_user(token: str | None = Depends(oauth2_scheme)) -> User |
 
     Raises:
         HTTPException: If token is invalid
+
     """
     if token is None:
         return None
@@ -129,7 +128,7 @@ async def get_current_user(token: str | None = Depends(oauth2_scheme)) -> User |
     # For now, we'll create a mock user
     # TODO: Replace with actual database query
     user = User(
-        username=token_data.username, email=f"{token_data.username}@example.com", is_active=True
+        username=token_data.username, email=f"{token_data.username}@example.com", is_active=True,
     )
 
     if user is None:
@@ -143,8 +142,7 @@ async def get_current_user(token: str | None = Depends(oauth2_scheme)) -> User |
 
 
 async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
-    """
-    Get the current authenticated and active user.
+    """Get the current authenticated and active user.
 
     Args:
         current_user: The current user from JWT token
@@ -154,6 +152,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 
     Raises:
         HTTPException: If user is not authenticated or inactive
+
     """
     if current_user is None:
         raise HTTPException(

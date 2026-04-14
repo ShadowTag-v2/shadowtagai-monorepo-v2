@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Google Drive Indexer
+"""Google Drive Indexer
 
 This script indexes the contents of a specific Google Drive folder and saves the
 metadata to a JSON file. It uses the Google Drive API.
@@ -24,7 +23,7 @@ from googleapiclient.discovery import build
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("drive_indexer")
 
@@ -42,7 +41,6 @@ TOKEN_FILE = "token.json"
 
 def get_credentials() -> Credentials:
     """Gets valid user credentials from storage or initiates OAuth flow."""
-
     creds = None
     if os.path.exists(TOKEN_FILE):
         creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
@@ -54,7 +52,7 @@ def get_credentials() -> Credentials:
             if not os.path.exists(CREDENTIALS_FILE):
                 raise FileNotFoundError(
                     f"'{CREDENTIALS_FILE}' not found. Please download OAuth 2.0 Client IDs "
-                    "from Google Cloud Console (APIs & Services > Credentials) and save it here."
+                    "from Google Cloud Console (APIs & Services > Credentials) and save it here.",
                 )
 
             # Simple local server flow

@@ -1,5 +1,4 @@
-"""
-Bar Exam Protocol - Agent Level Qualification System
+"""Bar Exam Protocol - Agent Level Qualification System
 
 Implements 6-level progression system with qualification gates.
 Agents must pass bar exams to advance levels.
@@ -35,22 +34,22 @@ class BarExamGate:
 
     # Level 1: Pattern Recognition
     LEVEL_1_REQUIREMENTS = LevelRequirements(
-        tasks_completed=100, success_rate=0.90, patterns_identified=10
+        tasks_completed=100, success_rate=0.90, patterns_identified=10,
     )
 
     # Level 2: Optimization Suggestions
     LEVEL_2_REQUIREMENTS = LevelRequirements(
-        tasks_completed=500, success_rate=0.95, optimizations_proposed=20
+        tasks_completed=500, success_rate=0.95, optimizations_proposed=20,
     )
 
     # Level 3: Autonomous Improvement
     LEVEL_3_REQUIREMENTS = LevelRequirements(
-        tasks_completed=2000, success_rate=0.98, autonomous_improvements=50, cost_savings_usd=5000.0
+        tasks_completed=2000, success_rate=0.98, autonomous_improvements=50, cost_savings_usd=5000.0,
     )
 
     # Level 4: Agent Creation
     LEVEL_4_REQUIREMENTS = LevelRequirements(
-        tasks_completed=10000, success_rate=0.99, agents_spawned=5
+        tasks_completed=10000, success_rate=0.99, agents_spawned=5,
     )
 
     # Level 5: Swarm Orchestration
@@ -63,14 +62,14 @@ class BarExamGate:
 
     @classmethod
     def evaluate(cls, agent_state: Any) -> int:
-        """
-        Evaluate agent state and return highest qualified level.
+        """Evaluate agent state and return highest qualified level.
 
         Args:
             agent_state: AgentState object with current metrics
 
         Returns:
             Highest level the agent qualifies for (0-5)
+
         """
         # Extract metrics from agent state
         metrics = {
@@ -79,7 +78,7 @@ class BarExamGate:
             "patterns_identified": agent_state.knowledge_graph.get("patterns_identified", 0),
             "optimizations_proposed": agent_state.knowledge_graph.get("optimizations_proposed", 0),
             "autonomous_improvements": agent_state.knowledge_graph.get(
-                "autonomous_improvements", 0
+                "autonomous_improvements", 0,
             ),
             "cost_savings_usd": agent_state.knowledge_graph.get("cost_savings_usd", 0.0),
             "agents_spawned": agent_state.knowledge_graph.get("agents_spawned", 0),
@@ -115,7 +114,7 @@ class BarExamGate:
                 metrics.get("agents_spawned", 0) >= requirements.agents_spawned,
                 metrics.get("swarms_orchestrated", 0) >= requirements.swarms_orchestrated,
                 metrics.get("roi_generated", 0.0) >= requirements.roi_generated,
-            ]
+            ],
         )
 
     @classmethod

@@ -1,5 +1,4 @@
-"""
-Ultrathink Quickstart Examples
+"""Ultrathink Quickstart Examples
 
 Run these to see all framework capabilities in action.
 """
@@ -85,7 +84,7 @@ def example_4_chain_of_thought():
     print(f"Confidence: {result.confidence:.0%}\n")
     print(f"Final answer: {result.final_answer}")
     print(
-        "\n(Note: This is a placeholder - in production, would show actual step-by-step reasoning)\n"
+        "\n(Note: This is a placeholder - in production, would show actual step-by-step reasoning)\n",
     )
 
 

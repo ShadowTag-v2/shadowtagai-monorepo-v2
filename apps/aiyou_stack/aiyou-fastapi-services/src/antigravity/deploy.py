@@ -1,5 +1,4 @@
-"""
-Deploy Manager - GitHub → Cloud Build → Cloud Run
+"""Deploy Manager - GitHub → Cloud Build → Cloud Run
 
 Pushes code to GitHub, creates PRs, triggers Cloud Build.
 All chats saved to GitHub for referencing.
@@ -13,8 +12,7 @@ import httpx
 
 
 class DeployManager:
-    """
-    Deploy Manager
+    """Deploy Manager
 
     Workflow:
     1. Push code to GitHub
@@ -39,10 +37,9 @@ class DeployManager:
         self.repo_full = f"{repo_owner}/{repo_name}"
 
     async def deploy(
-        self, code_items: list[dict[str, Any]], session_id: str, auto_merge: bool = False
+        self, code_items: list[dict[str, Any]], session_id: str, auto_merge: bool = False,
     ) -> dict[str, Any]:
-        """
-        Deploy code through the full pipeline.
+        """Deploy code through the full pipeline.
 
         Args:
             code_items: List of {atom_id, code, reasoning}
@@ -57,6 +54,7 @@ class DeployManager:
                 "merged": bool,
                 "deployment": {...}
             }
+
         """
         branch_name = f"antigravity/{session_id[:8]}"
         datetime.utcnow().strftime("%Y%m%d_%H%M%S")
@@ -144,7 +142,7 @@ class DeployManager:
             return create_response.json()
 
     async def _commit_file(
-        self, branch: str, path: str, content: str, message: str
+        self, branch: str, path: str, content: str, message: str,
     ) -> dict[str, Any]:
         """Commit a file to the branch"""
         if not self.token:

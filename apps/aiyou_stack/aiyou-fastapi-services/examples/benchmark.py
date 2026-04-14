@@ -1,5 +1,4 @@
-"""
-Benchmark script for ShadowTag-v2 LLM serving.
+"""Benchmark script for ShadowTag-v2 LLM serving.
 
 Tests throughput, latency, and GPU utilization under various loads.
 """
@@ -76,14 +75,14 @@ class LLMBenchmark:
         prompt: str = "Explain how vLLM achieves high throughput:",
         max_tokens: int = 100,
     ) -> BenchmarkResult:
-        """
-        Benchmark request throughput.
+        """Benchmark request throughput.
 
         Args:
             num_requests: Total requests to send
             concurrency: Number of concurrent requests
             prompt: Prompt to use
             max_tokens: Tokens to generate per request
+
         """
         print("\n=== Throughput Benchmark ===")
         print(f"Requests: {num_requests}, Concurrency: {concurrency}")
@@ -214,13 +213,13 @@ async def main():
         print(f"{'Test':<20} {'RPS':<15} {'P95 Latency':<15} {'Tokens/sec':<15}")
         print("-" * 60)
         print(
-            f"{'Low (1)':<20} {result1.requests_per_second:<15.2f} {result1.p95_latency_ms:<15.2f} {result1.tokens_per_second:<15.2f}"
+            f"{'Low (1)':<20} {result1.requests_per_second:<15.2f} {result1.p95_latency_ms:<15.2f} {result1.tokens_per_second:<15.2f}",
         )
         print(
-            f"{'Medium (5)':<20} {result2.requests_per_second:<15.2f} {result2.p95_latency_ms:<15.2f} {result2.tokens_per_second:<15.2f}"
+            f"{'Medium (5)':<20} {result2.requests_per_second:<15.2f} {result2.p95_latency_ms:<15.2f} {result2.tokens_per_second:<15.2f}",
         )
         print(
-            f"{'High (20)':<20} {result3.requests_per_second:<15.2f} {result3.p95_latency_ms:<15.2f} {result3.tokens_per_second:<15.2f}"
+            f"{'High (20)':<20} {result3.requests_per_second:<15.2f} {result3.p95_latency_ms:<15.2f} {result3.tokens_per_second:<15.2f}",
         )
 
         # Speedup analysis

@@ -16,7 +16,7 @@ class Embedding:
         # Xavier initialization
         limit = math.sqrt(6.0 / (vocab_size + embed_dim))
         self.weight = Tensor(
-            np.random.uniform(-limit, limit, (vocab_size, embed_dim)), requires_grad=True
+            np.random.uniform(-limit, limit, (vocab_size, embed_dim)), requires_grad=True,
         )
 
     def forward(self, indices: Tensor) -> Tensor:
@@ -49,7 +49,7 @@ class PositionalEncoding:
 
         limit = math.sqrt(2.0 / embed_dim)
         self.position_embeddings = Tensor(
-            np.random.uniform(-limit, limit, (max_seq_len, embed_dim)), requires_grad=True
+            np.random.uniform(-limit, limit, (max_seq_len, embed_dim)), requires_grad=True,
         )
 
     def forward(self, x: Tensor) -> Tensor:
@@ -83,7 +83,7 @@ def create_sinusoidal_embeddings(max_seq_len: int, embed_dim: int) -> Tensor:
     """Fixed sinusoidal positional encodings."""
     position = np.arange(max_seq_len, dtype=np.float32)[:, np.newaxis]
     div_term = np.exp(
-        np.arange(0, embed_dim, 2, dtype=np.float32) * -(math.log(10000.0) / embed_dim)
+        np.arange(0, embed_dim, 2, dtype=np.float32) * -(math.log(10000.0) / embed_dim),
     )
 
     pe = np.zeros((max_seq_len, embed_dim), dtype=np.float32)

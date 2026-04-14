@@ -1,5 +1,4 @@
-"""
-JuraProtocol - "Jura" Gatekeeper (German for Judge).
+"""JuraProtocol - "Jura" Gatekeeper (German for Judge).
 Prevents dumb agents from polluting memory.
 Supports atomic chat reconfiguration for dynamic context injection.
 """
@@ -69,7 +68,7 @@ class JuraProtocol:
     """Jura - The German Judge. ATP 5-19 risk assessment gatekeeper."""
 
     def __init__(
-        self, project_id: str = None, redis_host: str = "10.85.19.187", redis_port: int = 6379
+        self, project_id: str = None, redis_host: str = "10.85.19.187", redis_port: int = 6379,
     ):
         self.whiteboard = LegalWhiteboard()
         self.jura = GeminiAntigravity(project_id=project_id)
@@ -157,7 +156,7 @@ class JuraProtocol:
             response = self.jura.model.generate_content(
                 prompt,
                 generation_config=self.jura._get_generation_config(
-                    thinking_level=self.config.thinking_level, json_output=True
+                    thinking_level=self.config.thinking_level, json_output=True,
                 ),
             )
             result = json.loads(response.text.replace("```json", "").replace("```", ""))
@@ -188,7 +187,7 @@ class JuraProtocol:
             response = self.jura.model.generate_content(
                 prompt,
                 generation_config=self.jura._get_generation_config(
-                    thinking_level="high", json_output=True
+                    thinking_level="high", json_output=True,
                 ),
             )
             raw = response.text.replace("```json", "").replace("```", "")
@@ -196,12 +195,12 @@ class JuraProtocol:
 
             if result.get("verdict") == "PASS":
                 self.whiteboard.record_learning(
-                    candidate_id, f"Passed Level {target_level}", result
+                    candidate_id, f"Passed Level {target_level}", result,
                 )
                 return True, result.get("reasoning")
             return False, result.get("reasoning")
         except Exception as e:
-            return False, f"System Error: {str(e)}"
+            return False, f"System Error: {e!s}"
 
     def quick_assess(self, code_snippet: str) -> dict:
         """Fast risk assessment without full exam - uses low thinking."""
@@ -215,7 +214,7 @@ class JuraProtocol:
             response = self.jura.model.generate_content(
                 prompt,
                 generation_config=self.jura._get_generation_config(
-                    thinking_level="low", json_output=True
+                    thinking_level="low", json_output=True,
                 ),
             )
             return json.loads(response.text.replace("```json", "").replace("```", ""))

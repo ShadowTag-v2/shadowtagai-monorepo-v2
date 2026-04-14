@@ -1,5 +1,4 @@
-"""
-Base agent framework implementing ADK integration for governance decisions.
+"""Base agent framework implementing ADK integration for governance decisions.
 
 Provides foundational agent interface with deterministic guardrails,
 streaming support, and comprehensive metrics tracking.
@@ -100,8 +99,7 @@ class GovernanceDecision(BaseModel):
 
 
 class BaseGovernanceAgent(ABC):
-    """
-    Abstract base class for governance agents.
+    """Abstract base class for governance agents.
 
     Implements core interface for policy-based decision making with
     metrics tracking, error handling, and extensibility hooks.
@@ -130,8 +128,7 @@ class BaseGovernanceAgent(ABC):
         request: dict[str, Any],
         context: dict[str, Any] | None = None,
     ) -> GovernanceDecision:
-        """
-        Evaluate governance request and return decision.
+        """Evaluate governance request and return decision.
 
         Args:
             request: Governance request containing action, resource, user context
@@ -139,31 +136,30 @@ class BaseGovernanceAgent(ABC):
 
         Returns:
             Structured governance decision with reasoning and references
+
         """
-        pass
 
     @abstractmethod
     async def get_policy_context(self, request: dict[str, Any]) -> list[str]:
-        """
-        Retrieve relevant policy context for request.
+        """Retrieve relevant policy context for request.
 
         Args:
             request: Governance request
 
         Returns:
             List of relevant policy document snippets
+
         """
-        pass
 
     def validate_request(self, request: dict[str, Any]) -> bool:
-        """
-        Validate request structure and required fields.
+        """Validate request structure and required fields.
 
         Args:
             request: Request to validate
 
         Returns:
             True if valid, raises ValueError otherwise
+
         """
         required_fields = ["action", "resource"]
         for field in required_fields:
@@ -177,8 +173,7 @@ class BaseGovernanceAgent(ABC):
         output_tokens: int,
         cached_tokens: int = 0,
     ) -> tuple[float, float]:
-        """
-        Calculate cost and savings for model inference.
+        """Calculate cost and savings for model inference.
 
         Pricing (per 1M tokens):
         - Flash-Lite: $0.10 input, $0.40 output
@@ -192,6 +187,7 @@ class BaseGovernanceAgent(ABC):
 
         Returns:
             Tuple of (cost_usd, cached_savings_usd)
+
         """
         pricing = {
             "gemini-2.0-flash-lite": (0.10, 0.40),
@@ -216,8 +212,7 @@ class BaseGovernanceAgent(ABC):
         risk_level: RiskLevel | None,
         escalation_threshold: float = 0.6,
     ) -> tuple[bool, str | None]:
-        """
-        Determine if decision requires human escalation.
+        """Determine if decision requires human escalation.
 
         Args:
             confidence: Confidence score
@@ -226,6 +221,7 @@ class BaseGovernanceAgent(ABC):
 
         Returns:
             Tuple of (should_escalate, reason)
+
         """
         if confidence < escalation_threshold:
             return True, f"Low confidence: {confidence:.2f} < {escalation_threshold}"
@@ -239,8 +235,7 @@ class BaseGovernanceAgent(ABC):
         self,
         decision: GovernanceDecision,
     ) -> GovernanceDecision:
-        """
-        Apply deterministic guardrails to agent decision.
+        """Apply deterministic guardrails to agent decision.
 
         Implements safety checks that override model output if needed.
 
@@ -249,6 +244,7 @@ class BaseGovernanceAgent(ABC):
 
         Returns:
             Decision with guardrails applied
+
         """
         # Confidence threshold check
         if decision.confidence_score < 0.5:

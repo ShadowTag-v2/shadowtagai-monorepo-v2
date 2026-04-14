@@ -1,5 +1,4 @@
-"""
-User Service Layer
+"""User Service Layer
 
 Encapsulates all user-related database operations.
 Route handlers must delegate here — no raw DB calls in routes.

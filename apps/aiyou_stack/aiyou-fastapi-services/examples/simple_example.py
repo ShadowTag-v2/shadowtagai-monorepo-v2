@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Simple example script demonstrating the Code Refactorer API.
+"""Simple example script demonstrating the Code Refactorer API.
 
 Usage:
     python simple_example.py
@@ -91,9 +90,8 @@ def health_check():
             print("\nService is running!")
             print(json.dumps(response.json(), indent=2))
             return True
-        else:
-            print(f"\nService returned status: {response.status_code}")
-            return False
+        print(f"\nService returned status: {response.status_code}")
+        return False
     except requests.exceptions.RequestException as e:
         print(f"\nError connecting to service: {e}")
         print(f"\nMake sure the service is running at {SERVICE_URL}")

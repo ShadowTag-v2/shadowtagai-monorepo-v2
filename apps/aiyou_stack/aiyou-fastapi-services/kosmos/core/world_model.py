@@ -1,5 +1,4 @@
-"""
-World Model: Persistent state tracking across autonomous discovery cycles.
+"""World Model: Persistent state tracking across autonomous discovery cycles.
 
 Implements the 'structured world-model' concept from Kosmos paper (arxiv 2511.02824).
 Maintains hypotheses, analysis results, literature references, and knowledge graphs
@@ -109,8 +108,7 @@ class LiteratureRef:
 
 
 class KosmosWorldModel:
-    """
-    Persistent state management for Kosmos-pattern autonomous agents.
+    """Persistent state management for Kosmos-pattern autonomous agents.
 
     Maintains:
     - Research hypotheses with confidence scores
@@ -124,12 +122,12 @@ class KosmosWorldModel:
     """
 
     def __init__(self, session_id: str, goal: str):
-        """
-        Initialize a new world model for a research session.
+        """Initialize a new world model for a research session.
 
         Args:
             session_id: Unique identifier for this research session
             goal: High-level research goal/question
+
         """
         self.session_id = session_id
         self.goal = goal
@@ -153,10 +151,9 @@ class KosmosWorldModel:
         self.status: str = "initialized"  # initialized, running, completed, failed
 
     def add_hypothesis(
-        self, text: str, confidence: float = 0.5, evidence: list[str] = None
+        self, text: str, confidence: float = 0.5, evidence: list[str] = None,
     ) -> Hypothesis:
-        """
-        Add a new research hypothesis to the world model.
+        """Add a new research hypothesis to the world model.
 
         Args:
             text: Hypothesis statement
@@ -165,6 +162,7 @@ class KosmosWorldModel:
 
         Returns:
             Created Hypothesis object
+
         """
         hypothesis = Hypothesis(
             id=f"hyp_{len(self.hypotheses) + 1:03d}",
@@ -182,8 +180,7 @@ class KosmosWorldModel:
         hypothesis_id: str | None = None,
         **kwargs,
     ) -> AnalysisResult:
-        """
-        Add an analysis result to the world model.
+        """Add an analysis result to the world model.
 
         Args:
             code: Analysis code that was executed
@@ -193,6 +190,7 @@ class KosmosWorldModel:
 
         Returns:
             Created AnalysisResult object
+
         """
         result = AnalysisResult(
             id=f"result_{len(self.analysis_results) + 1:03d}",
@@ -212,8 +210,7 @@ class KosmosWorldModel:
         relevance_score: float = 0.5,
         **kwargs,
     ) -> LiteratureRef:
-        """
-        Add a literature reference to the world model.
+        """Add a literature reference to the world model.
 
         Args:
             title: Paper title
@@ -224,6 +221,7 @@ class KosmosWorldModel:
 
         Returns:
             Created LiteratureRef object
+
         """
         ref = LiteratureRef(
             id=f"lit_{len(self.literature_refs) + 1:03d}",
@@ -237,12 +235,12 @@ class KosmosWorldModel:
         return ref
 
     def update_phase(self, new_phase: WorkflowPhase, reason: str = ""):
-        """
-        Transition to a new workflow phase.
+        """Transition to a new workflow phase.
 
         Args:
             new_phase: Target phase
             reason: Explanation for phase transition (for observability)
+
         """
         self.phase_history.append(
             {
@@ -250,30 +248,30 @@ class KosmosWorldModel:
                 "to_phase": new_phase.value,
                 "reason": reason,
                 "timestamp": datetime.utcnow().isoformat(),
-            }
+            },
         )
         self.phase = new_phase
 
     def add_knowledge(self, entity: str, entity_type: str = "concept", **attributes):
-        """
-        Add an entity to the knowledge graph.
+        """Add an entity to the knowledge graph.
 
         Args:
             entity: Entity name/ID
             entity_type: Type of entity (concept, dataset, variable, etc.)
             **attributes: Additional node attributes
+
         """
         self.knowledge_graph.add_node(entity, type=entity_type, **attributes)
 
     def add_relationship(self, source: str, target: str, relation: str, **attributes):
-        """
-        Add a relationship to the knowledge graph.
+        """Add a relationship to the knowledge graph.
 
         Args:
             source: Source entity
             target: Target entity
             relation: Relationship type (causes, correlates_with, derived_from, etc.)
             **attributes: Additional edge attributes
+
         """
         self.knowledge_graph.add_edge(source, target, relation=relation, **attributes)
 
@@ -299,23 +297,23 @@ class KosmosWorldModel:
         return [h for h in self.hypotheses if not h.tested]
 
     def record_cost(self, tokens: int, model: str, cost: float):
-        """
-        Record token usage and cost for observability.
+        """Record token usage and cost for observability.
 
         Args:
             tokens: Number of tokens consumed
             model: Model name (gemini-2.5-pro, gemini-2.5-flash)
             cost: Cost in USD
+
         """
         self.total_tokens += tokens
         self.total_cost += cost
 
     def get_summary(self) -> dict[str, Any]:
-        """
-        Get a summary of the current world model state.
+        """Get a summary of the current world model state.
 
         Returns:
             Dictionary with key metrics and statistics
+
         """
         return {
             "session_id": self.session_id,
@@ -338,11 +336,11 @@ class KosmosWorldModel:
         }
 
     def to_dict(self) -> dict[str, Any]:
-        """
-        Serialize world model to dictionary for persistence.
+        """Serialize world model to dictionary for persistence.
 
         Returns:
             Dictionary representation suitable for Firestore/JSON storage
+
         """
         return {
             "session_id": self.session_id,
@@ -361,14 +359,14 @@ class KosmosWorldModel:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> KosmosWorldModel:
-        """
-        Deserialize world model from dictionary.
+        """Deserialize world model from dictionary.
 
         Args:
             data: Dictionary from to_dict()
 
         Returns:
             Reconstructed KosmosWorldModel instance
+
         """
         model = cls(session_id=data["session_id"], goal=data["goal"])
         model.created_at = datetime.fromisoformat(data["created_at"])

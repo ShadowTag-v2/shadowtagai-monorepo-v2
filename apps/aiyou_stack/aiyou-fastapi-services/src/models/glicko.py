@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System for Performance Tracking
+"""Glicko-2 Rating System for Performance Tracking
 Tracks uncertainty and volatility in addition to skill rating
 """
 
@@ -10,13 +9,13 @@ from pydantic import BaseModel, Field
 
 
 class Glicko2Player(BaseModel):
-    """
-    A player/agent/strategy in the Glicko-2 rating system
+    """A player/agent/strategy in the Glicko-2 rating system
 
     Attributes:
         mu: Rating (mean skill level), default 1500
         phi: Rating deviation (uncertainty), default 350
         sigma: Volatility (degree of expected fluctuation), default 0.06
+
     """
 
     player_id: str
@@ -38,7 +37,7 @@ class Glicko2Player(BaseModel):
                 "sigma": 0.055,
                 "name": "Activation Funnel Strategy A",
                 "games_played": 47,
-            }
+            },
         }
 
 
@@ -48,19 +47,19 @@ class Glicko2Match(BaseModel):
     player1_id: str
     player2_id: str
     score: float = Field(
-        ..., description="Score: 1.0 = player1 wins, 0.5 = draw, 0.0 = player2 wins"
+        ..., description="Score: 1.0 = player1 wins, 0.5 = draw, 0.0 = player2 wins",
     )
     timestamp: datetime | None = None
     metadata: dict | None = None
 
 
 class Glicko2System(BaseModel):
-    """
-    Glicko-2 rating system
+    """Glicko-2 rating system
 
     Attributes:
         tau: System constant controlling volatility change (typically 0.3-1.2)
         tol: Convergence tolerance for iterative calculation (default 1e-6)
+
     """
 
     tau: float = Field(default=0.5, description="Volatility constraint")
@@ -83,23 +82,20 @@ class Glicko2System(BaseModel):
         return mu, phi
 
     def g(self, phi: float) -> float:
-        """
-        Calculate g(φ) function
+        """Calculate g(φ) function
         Reduces impact of opponents with high uncertainty
         """
         return 1.0 / math.sqrt(1.0 + (3.0 * phi * phi) / (math.pi * math.pi))
 
     def E(self, mu: float, mu_j: float, phi_j: float) -> float:
-        """
-        Expected score function
+        """Expected score function
         Probability that player beats opponent j
         """
         g_phi = self.g(phi_j)
         return 1.0 / (1.0 + math.exp(-g_phi * (mu - mu_j)))
 
     def compute_variance(self, matches: list[tuple[float, float, float]]) -> float:
-        """
-        Compute variance v from matches
+        """Compute variance v from matches
         matches: List of (mu_j, phi_j, score) tuples
         """
         variance_sum = 0.0
@@ -111,10 +107,9 @@ class Glicko2System(BaseModel):
         return 1.0 / variance_sum if variance_sum > 0 else float("inf")
 
     def compute_delta(
-        self, variance: float, matches: list[tuple[float, float, float]], mu: float
+        self, variance: float, matches: list[tuple[float, float, float]], mu: float,
     ) -> float:
-        """
-        Compute improvement Δ
+        """Compute improvement Δ
         matches: List of (mu_j, phi_j, score) tuples
         """
         delta_sum = 0.0
@@ -126,10 +121,9 @@ class Glicko2System(BaseModel):
         return variance * delta_sum
 
     def compute_new_volatility(
-        self, sigma: float, phi: float, variance: float, delta: float
+        self, sigma: float, phi: float, variance: float, delta: float,
     ) -> float:
-        """
-        Compute new volatility σ' using iterative algorithm
+        """Compute new volatility σ' using iterative algorithm
         This is the complex part of Glicko-2
         """
         phi_sq = phi * phi
@@ -181,8 +175,7 @@ class Glicko2System(BaseModel):
         matches: list[Glicko2Match],
         opponent_ratings: dict[str, Glicko2Player],
     ) -> Glicko2Player:
-        """
-        Update player rating based on match results
+        """Update player rating based on match results
 
         Args:
             player: Player to update
@@ -191,6 +184,7 @@ class Glicko2System(BaseModel):
 
         Returns:
             Updated Glicko2Player
+
         """
         if not matches:
             # No matches: Increase uncertainty
@@ -262,8 +256,7 @@ class Glicko2System(BaseModel):
 
 
 class PerformanceTracker(BaseModel):
-    """
-    Tracks performance of different strategies/agents/approaches using Glicko-2
+    """Tracks performance of different strategies/agents/approaches using Glicko-2
     """
 
     system: Glicko2System = Field(default_factory=Glicko2System)
@@ -277,16 +270,16 @@ class PerformanceTracker(BaseModel):
         return player
 
     def record_match(
-        self, player1_id: str, player2_id: str, score: float, metadata: dict | None = None
+        self, player1_id: str, player2_id: str, score: float, metadata: dict | None = None,
     ) -> Glicko2Match:
-        """
-        Record a match result
+        """Record a match result
 
         Args:
             player1_id: First player ID
             player2_id: Second player ID
             score: 1.0 = player1 wins, 0.5 = draw, 0.0 = player2 wins
             metadata: Optional match context
+
         """
         match = Glicko2Match(
             player1_id=player1_id,
@@ -320,11 +313,11 @@ class PerformanceTracker(BaseModel):
         return updated_players
 
     def get_leaderboard(self, min_games: int = 0) -> list[Glicko2Player]:
-        """
-        Get leaderboard sorted by rating
+        """Get leaderboard sorted by rating
 
         Args:
             min_games: Minimum games played to be included
+
         """
         eligible = [p for p in self.players.values() if p.games_played >= min_games]
         return sorted(eligible, key=lambda p: p.mu, reverse=True)

@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - ShadowTag Steganographic Embedding
+"""PNKLN Core Stack - ShadowTag Steganographic Embedding
 
 Dual-layer watermark embedding:
 - Visual: DCT-based embedding in frequency domain
@@ -31,8 +30,7 @@ class WatermarkPayload:
 
 
 class DCTEmbedder:
-    """
-    DCT (Discrete Cosine Transform) frequency-domain watermarking.
+    """DCT (Discrete Cosine Transform) frequency-domain watermarking.
 
     Embeds watermark in mid-frequency coefficients for:
     - Robustness against compression
@@ -41,19 +39,18 @@ class DCTEmbedder:
     """
 
     def __init__(self, strength: float = 0.1):
-        """
-        Initialize DCT embedder.
+        """Initialize DCT embedder.
 
         Args:
             strength: Embedding strength (0.0-1.0)
                      Higher = more robust but more visible
+
         """
         self.strength = strength
         logger.info("dct_embedder_initialized", strength=strength)
 
     def embed(self, image_data: bytes, payload: WatermarkPayload) -> bytes:
-        """
-        Embed watermark into image using DCT.
+        """Embed watermark into image using DCT.
 
         Args:
             image_data: Raw image bytes (e.g., JPEG, PNG)
@@ -61,6 +58,7 @@ class DCTEmbedder:
 
         Returns:
             Watermarked image bytes
+
         """
         # TODO: Implement actual DCT embedding
         # For production:
@@ -80,14 +78,14 @@ class DCTEmbedder:
         return image_data
 
     def extract(self, image_data: bytes) -> WatermarkPayload | None:
-        """
-        Extract watermark from image.
+        """Extract watermark from image.
 
         Args:
             image_data: Watermarked image bytes
 
         Returns:
             Extracted payload or None if not found
+
         """
         # TODO: Implement actual DCT extraction
         # For production:
@@ -120,8 +118,7 @@ class DCTEmbedder:
 
 
 class UltrasonicEmbedder:
-    """
-    Ultrasonic watermark embedding for audio/video.
+    """Ultrasonic watermark embedding for audio/video.
 
     Embeds inaudible watermark above 18kHz (human hearing limit ~16kHz):
     - Frequency range: 18-22 kHz
@@ -130,22 +127,21 @@ class UltrasonicEmbedder:
     """
 
     def __init__(self, carrier_freq: int = 19000, sample_rate: int = 44100):
-        """
-        Initialize ultrasonic embedder.
+        """Initialize ultrasonic embedder.
 
         Args:
             carrier_freq: Carrier frequency in Hz (18000-22000)
             sample_rate: Audio sample rate in Hz
+
         """
         self.carrier_freq = carrier_freq
         self.sample_rate = sample_rate
         logger.info(
-            "ultrasonic_embedder_initialized", carrier_freq=carrier_freq, sample_rate=sample_rate
+            "ultrasonic_embedder_initialized", carrier_freq=carrier_freq, sample_rate=sample_rate,
         )
 
     def embed(self, audio_data: bytes, payload: WatermarkPayload) -> bytes:
-        """
-        Embed ultrasonic watermark into audio.
+        """Embed ultrasonic watermark into audio.
 
         Args:
             audio_data: Raw audio bytes (e.g., WAV, MP3)
@@ -153,6 +149,7 @@ class UltrasonicEmbedder:
 
         Returns:
             Watermarked audio bytes
+
         """
         # TODO: Implement actual ultrasonic embedding
         # For production:
@@ -167,14 +164,14 @@ class UltrasonicEmbedder:
         return audio_data
 
     def extract(self, audio_data: bytes) -> WatermarkPayload | None:
-        """
-        Extract ultrasonic watermark from audio.
+        """Extract ultrasonic watermark from audio.
 
         Args:
             audio_data: Watermarked audio bytes
 
         Returns:
             Extracted payload or None if not found
+
         """
         # TODO: Implement actual ultrasonic extraction
         # For production:
@@ -189,8 +186,7 @@ class UltrasonicEmbedder:
 
 
 class ShadowTagEmbedder:
-    """
-    Main dual-layer steganographic embedder.
+    """Main dual-layer steganographic embedder.
 
     Combines:
     - DCT embedding for images/video frames
@@ -211,8 +207,7 @@ class ShadowTagEmbedder:
         asset_type: Literal["image", "video", "audio"],
         payload: WatermarkPayload,
     ) -> bytes:
-        """
-        Embed watermark into asset based on type.
+        """Embed watermark into asset based on type.
 
         Args:
             asset_data: Raw asset bytes
@@ -221,6 +216,7 @@ class ShadowTagEmbedder:
 
         Returns:
             Watermarked asset bytes
+
         """
         if asset_type == "image":
             watermarked = self.dct.embed(asset_data, payload)
@@ -249,10 +245,9 @@ class ShadowTagEmbedder:
         return watermarked
 
     def extract(
-        self, asset_data: bytes, asset_type: Literal["image", "video", "audio"]
+        self, asset_data: bytes, asset_type: Literal["image", "video", "audio"],
     ) -> WatermarkPayload | None:
-        """
-        Extract watermark from asset.
+        """Extract watermark from asset.
 
         Args:
             asset_data: Watermarked asset bytes
@@ -260,22 +255,22 @@ class ShadowTagEmbedder:
 
         Returns:
             Extracted payload or None if not found
+
         """
         if asset_type == "image":
             return self.dct.extract(asset_data)
 
-        elif asset_type == "video":
+        if asset_type == "video":
             # Try both DCT and ultrasonic
             payload = self.dct.extract(asset_data)
             if payload is None:
                 payload = self.ultrasonic.extract(asset_data)
             return payload
 
-        elif asset_type == "audio":
+        if asset_type == "audio":
             return self.ultrasonic.extract(asset_data)
 
-        else:
-            raise ValueError(f"Unsupported asset type: {asset_type}")
+        raise ValueError(f"Unsupported asset type: {asset_type}")
 
     def verify_robustness(
         self,
@@ -283,8 +278,7 @@ class ShadowTagEmbedder:
         modified_data: bytes,
         asset_type: Literal["image", "video", "audio"],
     ) -> dict:
-        """
-        Test watermark survival after re-encoding.
+        """Test watermark survival after re-encoding.
 
         Args:
             original_data: Original watermarked asset
@@ -293,6 +287,7 @@ class ShadowTagEmbedder:
 
         Returns:
             Survival test results
+
         """
         # Extract from both
         original_payload = self.extract(original_data, asset_type)

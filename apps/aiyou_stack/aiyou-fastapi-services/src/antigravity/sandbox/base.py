@@ -20,8 +20,7 @@ class CodeSandbox(Protocol):
         language: str = "python",
         timeout: int = 30,
     ) -> ExecutionResult:
-        """
-        Execute the provided code synchronously.
+        """Execute the provided code synchronously.
         Must handle timeouts and capture Stdout/Stderr.
         """
         ...

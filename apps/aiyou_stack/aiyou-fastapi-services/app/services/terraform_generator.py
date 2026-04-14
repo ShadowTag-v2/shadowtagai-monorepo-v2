@@ -1,5 +1,4 @@
-"""
-Terraform Generator Service
+"""Terraform Generator Service
 Generates Terraform configurations from infrastructure designs
 """
 
@@ -21,7 +20,6 @@ class TerraformGeneratorService:
 
     def generate(self, request: TerraformGenerateRequest) -> TerraformGenerateResponse:
         """Generate Terraform configuration files"""
-
         files = []
         modules_used = []
 
@@ -54,7 +52,6 @@ class TerraformGeneratorService:
 
     def validate(self, request: TerraformValidateRequest) -> TerraformValidateResponse:
         """Validate Terraform configuration"""
-
         issues = []
         best_practices = []
         suggestions = []
@@ -69,7 +66,7 @@ class TerraformGeneratorService:
                             severity="warning",
                             message="No provider configuration found in main.tf",
                             file=file.filename,
-                        )
+                        ),
                     )
 
             # Check for hardcoded values
@@ -79,7 +76,7 @@ class TerraformGeneratorService:
                         severity="error",
                         message="Potential hardcoded secrets detected. Use variables or secrets management.",
                         file=file.filename,
-                    )
+                    ),
                 )
 
         # Best practices
@@ -96,12 +93,11 @@ class TerraformGeneratorService:
         valid = all(issue.severity != "error" for issue in issues)
 
         return TerraformValidateResponse(
-            valid=valid, issues=issues, best_practices=best_practices, suggestions=suggestions
+            valid=valid, issues=issues, best_practices=best_practices, suggestions=suggestions,
         )
 
     def _generate_provider_config(self, provider: CloudProvider) -> TerraformFile:
         """Generate provider configuration"""
-
         if provider == CloudProvider.AWS:
             content = """terraform {
   required_version = ">= 1.0"
@@ -169,12 +165,11 @@ provider "azurerm" {
 """
 
         return TerraformFile(
-            filename="provider.tf", content=content, description="Terraform provider configuration"
+            filename="provider.tf", content=content, description="Terraform provider configuration",
         )
 
     def _generate_backend_config(self, backend_config: dict[str, str]) -> TerraformFile:
         """Generate backend configuration"""
-
         backend_type = backend_config.get("type", "s3")
 
         if backend_type == "s3":
@@ -212,7 +207,6 @@ provider "azurerm" {
 
     def _generate_variables(self, variables: dict[str, Any]) -> TerraformFile:
         """Generate variables file"""
-
         content = """# Infrastructure Variables
 
 variable "environment" {
@@ -275,14 +269,13 @@ variable "{key}" {{
 """
 
         return TerraformFile(
-            filename="variables.tf", content=content, description="Terraform input variables"
+            filename="variables.tf", content=content, description="Terraform input variables",
         )
 
     def _generate_main_config(
-        self, components: list[dict[str, Any]], provider: CloudProvider
+        self, components: list[dict[str, Any]], provider: CloudProvider,
     ) -> TerraformFile:
         """Generate main infrastructure configuration"""
-
         content = "# Main Infrastructure Configuration\n\n"
 
         for component in components:
@@ -300,12 +293,11 @@ variable "{key}" {{
                 content += self._generate_k8s_resource(component, provider)
 
         return TerraformFile(
-            filename="main.tf", content=content, description="Main infrastructure resources"
+            filename="main.tf", content=content, description="Main infrastructure resources",
         )
 
     def _generate_compute_resource(self, component: dict[str, Any], provider: CloudProvider) -> str:
         """Generate compute resource configuration"""
-
         if provider == CloudProvider.AWS:
             return """
 # Auto Scaling Group
@@ -360,10 +352,9 @@ data "aws_ami" "ubuntu" {
         return ""
 
     def _generate_database_resource(
-        self, component: dict[str, Any], provider: CloudProvider
+        self, component: dict[str, Any], provider: CloudProvider,
     ) -> str:
         """Generate database resource configuration"""
-
         if provider == CloudProvider.AWS:
             return """
 # RDS Database
@@ -411,7 +402,6 @@ resource "aws_db_subnet_group" "main" {
 
     def _generate_lb_resource(self, component: dict[str, Any], provider: CloudProvider) -> str:
         """Generate load balancer resource configuration"""
-
         if provider == CloudProvider.AWS:
             return """
 # Application Load Balancer
@@ -465,7 +455,6 @@ resource "aws_lb_listener" "http" {
 
     def _generate_storage_resource(self, component: dict[str, Any], provider: CloudProvider) -> str:
         """Generate storage resource configuration"""
-
         if provider == CloudProvider.AWS:
             return """
 # S3 Bucket
@@ -509,7 +498,6 @@ resource "aws_s3_bucket_public_access_block" "main" {
 
     def _generate_k8s_resource(self, component: dict[str, Any], provider: CloudProvider) -> str:
         """Generate Kubernetes cluster configuration"""
-
         if provider == CloudProvider.AWS:
             return """
 # EKS Cluster
@@ -555,7 +543,6 @@ resource "aws_eks_node_group" "main" {
 
     def _generate_outputs(self, components: list[dict[str, Any]]) -> TerraformFile:
         """Generate outputs file"""
-
         content = """# Infrastructure Outputs
 
 output "infrastructure_info" {
@@ -576,7 +563,6 @@ output "infrastructure_info" {
 
     def _extract_modules(self, components: list[dict[str, Any]]) -> list[str]:
         """Extract modules used in components"""
-
         modules = set()
         for component in components:
             component_type = component.get("type", "")
@@ -589,14 +575,12 @@ output "infrastructure_info" {
         """Format value for Terraform"""
         if isinstance(value, str):
             return f'"{value}"'
-        elif isinstance(value, bool):
+        if isinstance(value, bool):
             return str(value).lower()
-        else:
-            return str(value)
+        return str(value)
 
     def _generate_deployment_instructions(self, provider: CloudProvider) -> list[str]:
         """Generate deployment instructions"""
-
         instructions = [
             "📋 Terraform Deployment Instructions:",
             "",

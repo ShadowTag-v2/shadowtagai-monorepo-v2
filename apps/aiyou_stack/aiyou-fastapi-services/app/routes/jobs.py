@@ -1,5 +1,4 @@
-"""
-API routes for scheduled job management.
+"""API routes for scheduled job management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -94,7 +93,6 @@ async def delete_scheduled_job(
         await automation_scheduler.remove_job(job.id)
 
     await service.delete(job)
-    return None
 
 
 @router.post("/{job_id}/run", status_code=202)

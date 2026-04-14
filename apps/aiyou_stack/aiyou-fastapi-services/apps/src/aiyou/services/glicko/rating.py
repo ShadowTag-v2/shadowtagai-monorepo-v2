@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System for AI Model Selection
+"""Glicko-2 Rating System for AI Model Selection
 Implements dynamic model performance tracking and selection
 """
 
@@ -28,8 +27,7 @@ class TaskType(StrEnum):
 
 @dataclass
 class Glicko2Player:
-    """
-    Glicko-2 rating system implementation for AI model performance tracking
+    """Glicko-2 rating system implementation for AI model performance tracking
 
     Based on: http://www.glicko.net/glicko/glicko2.pdf
 
@@ -37,6 +35,7 @@ class Glicko2Player:
         mu: Rating (default 1500)
         phi: Rating deviation (uncertainty, default 350)
         sigma: Volatility (consistency, default 0.06)
+
     """
 
     mu: float = 1500.0
@@ -78,13 +77,13 @@ class Glicko2Player:
         scores: list[float],
         task_type: str | None = None,
     ):
-        """
-        Update rating based on match results
+        """Update rating based on match results
 
         Args:
             opponents: List of opponent players (other AI models)
             scores: List of scores (1.0 = win, 0.5 = draw, 0.0 = loss)
             task_type: Optional task type for tracking
+
         """
         if not opponents or len(opponents) != len(scores):
             raise ValueError("Opponents and scores must have same length")
@@ -153,8 +152,7 @@ class Glicko2Player:
         )
 
     def _compute_new_volatility(self, phi: float, v: float, delta: float) -> float:
-        """
-        Compute new volatility using Illinois algorithm
+        """Compute new volatility using Illinois algorithm
         This is the complex part of Glicko-2
         """
         # Step 5.1
@@ -204,8 +202,7 @@ class Glicko2Player:
 
 
 class ModelRating(Base):
-    """
-    Track Glicko-2 ratings for AI models across different task types
+    """Track Glicko-2 ratings for AI models across different task types
     """
 
     __tablename__ = "model_ratings"
@@ -214,7 +211,7 @@ class ModelRating(Base):
 
     # Model identification
     model_name = Column(
-        String(100), nullable=False, index=True
+        String(100), nullable=False, index=True,
     )  # "gemini-1.5-pro", "claude-3.5-sonnet"
     model_version = Column(String(50))
     task_type = Column(String(50), nullable=False, index=True)
@@ -250,8 +247,7 @@ class ModelRating(Base):
 
 
 class ModelMatch(Base):
-    """
-    Record of model performance comparison (match result)
+    """Record of model performance comparison (match result)
     """
 
     __tablename__ = "model_matches"
@@ -290,8 +286,7 @@ class ModelMatch(Base):
 
 
 class GlickoModelSelector:
-    """
-    Select best AI model for each task using Glicko-2 ratings
+    """Select best AI model for each task using Glicko-2 ratings
     """
 
     def __init__(self, db: Session):
@@ -303,8 +298,7 @@ class GlickoModelSelector:
         task_type: TaskType,
         optimize_for: str = "accuracy",  # "accuracy", "cost", "latency", "balanced"
     ) -> dict[str, any]:
-        """
-        Select best model for task type
+        """Select best model for task type
 
         Args:
             task_type: Type of moderation task
@@ -318,6 +312,7 @@ class GlickoModelSelector:
                 "expected_cost": float,
                 "expected_latency": int
             }
+
         """
         # Get all models for this task type
         ratings = self.db.query(ModelRating).filter(ModelRating.task_type == task_type.value).all()
@@ -355,8 +350,7 @@ class GlickoModelSelector:
         winner: str,
         performance_data: dict[str, any],
     ):
-        """
-        Record match result and update ratings
+        """Record match result and update ratings
 
         Args:
             model_a_name: First model name
@@ -364,6 +358,7 @@ class GlickoModelSelector:
             task_type: Task type
             winner: "model_a", "model_b", or "draw"
             performance_data: Cost, latency, accuracy data
+
         """
         # Get or create ratings
         rating_a = self._get_or_create_rating(model_a_name, task_type)
@@ -453,7 +448,7 @@ class GlickoModelSelector:
             import uuid
 
             rating = ModelRating(
-                id=str(uuid.uuid4()), model_name=model_name, task_type=task_type.value
+                id=str(uuid.uuid4()), model_name=model_name, task_type=task_type.value,
             )
             self.db.add(rating)
             self.db.commit()
@@ -461,8 +456,7 @@ class GlickoModelSelector:
         return rating
 
     def _compute_cost_adjusted_rating(self, mu: float, cost_usd: float, latency_ms: int) -> float:
-        """
-        Compute cost-adjusted rating
+        """Compute cost-adjusted rating
         Higher rating, lower cost, lower latency = better score
         """
         # Normalize latency (penalize >2s heavily)

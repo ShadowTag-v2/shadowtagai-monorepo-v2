@@ -1,5 +1,4 @@
-"""
-L1: Claude.1 - Frame & SPT.2 (Dynamic)
+"""L1: Claude.1 - Frame & SPT.2 (Dynamic)
 
 Role: The Architect
 - Creates the logical framework
@@ -53,10 +52,9 @@ CODE_LIKELY: [YES | NO | MAYBE]
 
 
 async def frame_query(
-    normalized_query: str, spt1: dict, model: str, api_key: str
+    normalized_query: str, spt1: dict, model: str, api_key: str,
 ) -> dict[str, Any]:
-    """
-    Frame the query and define structural requirements.
+    """Frame the query and define structural requirements.
 
     Args:
         normalized_query: Normalized query from L0
@@ -71,6 +69,7 @@ async def frame_query(
             'code_likely': bool,
             'cost': float
         }
+
     """
     spt1_text = spt1.get("raw", str(spt1))
 
@@ -79,7 +78,7 @@ async def frame_query(
     client = anthropic.Anthropic(api_key=api_key)
 
     message = client.messages.create(
-        model=model, max_tokens=2000, messages=[{"role": "user", "content": prompt}]
+        model=model, max_tokens=2000, messages=[{"role": "user", "content": prompt}],
     )
 
     content = message.content[0].text
@@ -127,7 +126,6 @@ def _extract_section(content: str, marker: str) -> str:
     for m in next_markers:
         if m != marker and m in content[start:]:
             pos = content.find(m, start)
-            if pos < end:
-                end = pos
+            end = min(end, pos)
 
     return content[start:end].strip()

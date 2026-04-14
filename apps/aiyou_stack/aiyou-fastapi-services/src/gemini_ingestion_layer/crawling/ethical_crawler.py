@@ -1,5 +1,4 @@
-"""
-Ethical Crawler Implementation
+"""Ethical Crawler Implementation
 
 Implements responsible web crawling with:
 - robots.txt compliance (REP)
@@ -43,8 +42,7 @@ class CrawlResult:
 
 
 class EthicalCrawler:
-    """
-    Ethical web crawler with robots.txt compliance and rate limiting.
+    """Ethical web crawler with robots.txt compliance and rate limiting.
 
     Follows web crawling best practices:
     - Respects robots.txt directives
@@ -61,14 +59,14 @@ class EthicalCrawler:
         default_rate_limit_rpm: int = 60,
         request_timeout_seconds: int = 30,
     ):
-        """
-        Initialize ethical crawler.
+        """Initialize ethical crawler.
 
         Args:
             user_agent: User-Agent string for transparency
             respect_robots_txt: Whether to check robots.txt (default True)
             default_rate_limit_rpm: Default requests per minute per domain
             request_timeout_seconds: Timeout for HTTP requests
+
         """
         self.user_agent = user_agent
         self.respect_robots_txt = respect_robots_txt
@@ -96,10 +94,9 @@ class EthicalCrawler:
         return parsed.netloc
 
     async def _get_robots_parser(
-        self, domain: str, session: aiohttp.ClientSession
+        self, domain: str, session: aiohttp.ClientSession,
     ) -> RobotFileParser | None:
-        """
-        Get or fetch robots.txt parser for domain.
+        """Get or fetch robots.txt parser for domain.
 
         Args:
             domain: Domain to check
@@ -107,6 +104,7 @@ class EthicalCrawler:
 
         Returns:
             RobotFileParser or None if unavailable
+
         """
         if not self.respect_robots_txt:
             return None
@@ -128,18 +126,16 @@ class EthicalCrawler:
                     parser.parse(content.split("\n"))
                     self.robots_cache[domain] = parser
                     return parser
-                else:
-                    # If robots.txt not found, allow crawling
-                    self.robots_cache[domain] = None
-                    return None
+                # If robots.txt not found, allow crawling
+                self.robots_cache[domain] = None
+                return None
         except Exception:
             # On error, be conservative and allow (but cache None)
             self.robots_cache[domain] = None
             return None
 
     async def _can_fetch(self, url: str, session: aiohttp.ClientSession) -> bool:
-        """
-        Check if URL can be fetched according to robots.txt.
+        """Check if URL can be fetched according to robots.txt.
 
         Args:
             url: URL to check
@@ -147,6 +143,7 @@ class EthicalCrawler:
 
         Returns:
             True if allowed, False if blocked
+
         """
         if not self.respect_robots_txt:
             return True
@@ -171,8 +168,7 @@ class EthicalCrawler:
         session: aiohttp.ClientSession | None = None,
         custom_headers: dict[str, str] | None = None,
     ) -> CrawlResult:
-        """
-        Fetch URL with ethical crawling practices.
+        """Fetch URL with ethical crawling practices.
 
         Args:
             url: URL to fetch
@@ -181,6 +177,7 @@ class EthicalCrawler:
 
         Returns:
             CrawlResult with fetch outcome
+
         """
         self.stats["total_requests"] += 1
         start_time = asyncio.get_event_loop().time()
@@ -231,15 +228,14 @@ class EthicalCrawler:
 
         except Exception as e:
             self.stats["failed_requests"] += 1
-            return CrawlResult(url=url, success=False, error=f"{type(e).__name__}: {str(e)}")
+            return CrawlResult(url=url, success=False, error=f"{type(e).__name__}: {e!s}")
 
         finally:
             if close_session:
                 await session.close()
 
     async def fetch_batch(self, urls: list[str], max_concurrent: int = 10) -> list[CrawlResult]:
-        """
-        Fetch multiple URLs concurrently with rate limiting.
+        """Fetch multiple URLs concurrently with rate limiting.
 
         Args:
             urls: List of URLs to fetch
@@ -247,6 +243,7 @@ class EthicalCrawler:
 
         Returns:
             List of CrawlResults
+
         """
         async with aiohttp.ClientSession(timeout=self.timeout) as session:
             semaphore = asyncio.Semaphore(max_concurrent)
@@ -269,11 +266,11 @@ class EthicalCrawler:
         }
 
     def configure_domain_rate_limit(self, domain: str, rpm: int) -> None:
-        """
-        Configure custom rate limit for specific domain.
+        """Configure custom rate limit for specific domain.
 
         Args:
             domain: Domain name
             rpm: Requests per minute
+
         """
         self.rate_limiter.configure_domain(domain, rpm)

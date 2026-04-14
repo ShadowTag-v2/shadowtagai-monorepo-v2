@@ -1,6 +1,5 @@
 # /antigravity/engines/wealth.py
-"""
-MODERN MAGIC FORMULA
+"""MODERN MAGIC FORMULA
 Philosophy: Greenblatt (EBIT/EV) + Crypto Staking Yield
 Target: High Quality + High Yield
 """
@@ -26,8 +25,7 @@ class MagicRanker:
         ]
 
     def rank_assets(self) -> pd.DataFrame:
-        """
-        Ranks assets based on the weighted sum of their Quality and Yield ranks.
+        """Ranks assets based on the weighted sum of their Quality and Yield ranks.
         Lower Rank Sum = Better.
         """
         df = pd.DataFrame(self.market_data)

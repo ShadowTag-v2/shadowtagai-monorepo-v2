@@ -1,5 +1,4 @@
-"""
-Industry & Manufacturer Blog Crawler
+"""Industry & Manufacturer Blog Crawler
 Discovers and ingests content from tech industry sources aligned with PNKLN verticals
 """
 
@@ -382,8 +381,7 @@ INDUSTRY_SOURCES = {
 
 
 class IndustryCrawler:
-    """
-    Ethical industry blog and manufacturer site crawler
+    """Ethical industry blog and manufacturer site crawler
 
     Features:
     - RSS feed parsing where available
@@ -395,8 +393,8 @@ class IndustryCrawler:
     def __init__(self):
         self.storage_path = Path(
             STORAGE_CONFIG.get("industry_articles", {}).get(
-                "path", str(Path(STORAGE_CONFIG["briefing_output"]["path"]).parent / "industry")
-            )
+                "path", str(Path(STORAGE_CONFIG["briefing_output"]["path"]).parent / "industry"),
+            ),
         )
         self.storage_path.mkdir(parents=True, exist_ok=True)
         self.scraper = EthicalScraper()
@@ -414,13 +412,12 @@ class IndustryCrawler:
 
         if ".gov" in domain or ".mil" in domain:
             return self.rate_limits.get("regulatory", 10.0)
-        elif "github" in domain:
+        if "github" in domain:
             return self.rate_limits.get("github", 2.0)
-        else:
-            return self.rate_limits.get("default_delay", 3.0)
+        return self.rate_limits.get("default_delay", 3.0)
 
     def _calculate_relevance(
-        self, article: IndustryArticle, source_keywords: list[str], vertical: str
+        self, article: IndustryArticle, source_keywords: list[str], vertical: str,
     ) -> float:
         """Calculate article relevance to PNKLN business"""
         text = f"{article.title} {article.summary}".lower()
@@ -448,7 +445,7 @@ class IndustryCrawler:
         return min(base_score + keyword_bonus + recency_bonus, 1.0)
 
     async def fetch_rss_feed(
-        self, source: dict[str, Any], vertical: str, days_back: int = 30
+        self, source: dict[str, Any], vertical: str, days_back: int = 30,
     ) -> list[IndustryArticle]:
         """Fetch articles from RSS feed"""
         articles = []
@@ -482,7 +479,7 @@ class IndustryCrawler:
                 )
 
                 article.relevance_score = self._calculate_relevance(
-                    article, source.get("keywords", []), vertical
+                    article, source.get("keywords", []), vertical,
                 )
 
                 articles.append(article)
@@ -495,7 +492,7 @@ class IndustryCrawler:
         return articles
 
     async def scrape_html_source(
-        self, source: dict[str, Any], vertical: str, days_back: int = 30
+        self, source: dict[str, Any], vertical: str, days_back: int = 30,
     ) -> list[IndustryArticle]:
         """Scrape articles from HTML page (when no RSS available)"""
         articles = []
@@ -539,17 +536,17 @@ class IndustryCrawler:
                     )
 
                     article.relevance_score = self._calculate_relevance(
-                        article, source.get("keywords", []), vertical
+                        article, source.get("keywords", []), vertical,
                     )
 
                     articles.append(article)
 
                     logger.info(
-                        "html_source_scraped", source=source["name"], status=response.status_code
+                        "html_source_scraped", source=source["name"], status=response.status_code,
                     )
                 else:
                     logger.warning(
-                        "html_scrape_failed", source=source["name"], status=response.status_code
+                        "html_scrape_failed", source=source["name"], status=response.status_code,
                     )
 
         except Exception as e:
@@ -583,7 +580,7 @@ class IndustryCrawler:
         return all_articles
 
     async def crawl_all_verticals(
-        self, days_back: int = 30, min_relevance: float = 0.5
+        self, days_back: int = 30, min_relevance: float = 0.5,
     ) -> list[IndustryArticle]:
         """Crawl all industry sources across all PNKLN verticals"""
         all_articles = []
@@ -669,7 +666,7 @@ class IndustryCrawler:
 
         for vertical, vert_articles in sorted(by_vertical.items()):
             summary_parts.append(
-                f"## {vertical.replace('_', ' ').title()} ({len(vert_articles)} articles)"
+                f"## {vertical.replace('_', ' ').title()} ({len(vert_articles)} articles)",
             )
             summary_parts.append("")
 
@@ -677,7 +674,7 @@ class IndustryCrawler:
                 summary_parts.append(
                     f"- **{article.title}** - {article.source} "
                     f"({article.published.strftime('%Y-%m-%d')}) "
-                    f"[{article.relevance_score:.0%}]"
+                    f"[{article.relevance_score:.0%}]",
                 )
 
             if len(vert_articles) > 5:
@@ -689,8 +686,7 @@ class IndustryCrawler:
 
 # Convenience functions
 async def crawl_industry_intel(days_back: int = 30) -> list[str]:
-    """
-    Crawl all industry sources for PNKLN-relevant intel
+    """Crawl all industry sources for PNKLN-relevant intel
 
     Usage:
         files = await crawl_industry_intel(days_back=30)
@@ -701,8 +697,7 @@ async def crawl_industry_intel(days_back: int = 30) -> list[str]:
 
 
 async def crawl_vertical_intel(vertical: str, days_back: int = 30) -> list[str]:
-    """
-    Crawl specific vertical's industry sources
+    """Crawl specific vertical's industry sources
 
     Usage:
         files = await crawl_vertical_intel("core_stack", days_back=7)

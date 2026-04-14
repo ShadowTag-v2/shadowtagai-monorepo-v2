@@ -1,5 +1,4 @@
-"""
-Tier Classification Module
+"""Tier Classification Module
 
 Implements 3-tier data classification system:
 - Tier 1: High-value, verified sources (30% target)
@@ -11,4 +10,4 @@ Uses Gemini 2.5 Flash-Lite for cost-effective classification.
 
 from .tier_classifier import ClassificationResult, TierClassifier
 
-__all__ = ["TierClassifier", "ClassificationResult"]
+__all__ = ["ClassificationResult", "TierClassifier"]

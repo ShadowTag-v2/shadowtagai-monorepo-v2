@@ -3,4 +3,4 @@
 from .ray_orchestrator import RayOrchestrator
 from .vllm_backend import VLLMBackend
 
-__all__ = ["VLLMBackend", "RayOrchestrator"]
+__all__ = ["RayOrchestrator", "VLLMBackend"]

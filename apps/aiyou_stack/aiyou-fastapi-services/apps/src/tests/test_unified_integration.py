@@ -1,5 +1,4 @@
-"""
-Integration tests for complete 8-branch ecosystem.
+"""Integration tests for complete 8-branch ecosystem.
 
 Tests all layers:
 1. Layer 0: Optimization (GPU pooling, compression, monetization)
@@ -287,8 +286,7 @@ def test_llm_rotation_config():
 
 
 def test_layer0_gpu_savings_impact():
-    """
-    Test Layer 0 optimization impact on aerospace deployment.
+    """Test Layer 0 optimization impact on aerospace deployment.
 
     Verifies that 82% GPU savings from Aegaeon pooling
     correctly reduces deployment costs.
@@ -309,8 +307,7 @@ def test_layer0_gpu_savings_impact():
 
 
 def test_complete_valuation_model():
-    """
-    Test complete $715B valuation model.
+    """Test complete $715B valuation model.
 
     Aerospace ARR: $440M
     Pinkln ARR: $10.2B
@@ -341,8 +338,7 @@ def test_complete_valuation_model():
 
 
 def test_unified_orchestrator_performance():
-    """
-    Test unified orchestrator achieves performance targets:
+    """Test unified orchestrator achieves performance targets:
     - Latency: p99 ≤90ms (target: 35ms)
     - Cost: $0.0003 per execution
     - 31× faster than AutoGen
@@ -359,8 +355,7 @@ def test_unified_orchestrator_performance():
 
 @pytest.mark.asyncio
 async def test_end_to_end_inference():
-    """
-    End-to-end test: Prompt → All layers → Response
+    """End-to-end test: Prompt → All layers → Response
 
     Validates complete integration:
     1. Layer 0: GPU pooling + compression
@@ -396,8 +391,7 @@ async def test_end_to_end_inference():
 
 
 def test_benchmark_targets():
-    """
-    Verify all performance targets are documented:
+    """Verify all performance targets are documented:
 
     Layer 0:
     - 82% GPU savings (Aegaeon)

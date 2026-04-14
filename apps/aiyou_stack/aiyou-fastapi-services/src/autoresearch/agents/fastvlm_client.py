@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-FastVLM Client: Apple Vision-Language Model Integration
+"""FastVLM Client: Apple Vision-Language Model Integration
 
 Uses MLX-optimized FastVLM for on-device visual understanding.
 Integrates with minions for visual task routing.
@@ -36,8 +35,7 @@ class VisionResult:
 
 
 class FastVLMClient:
-    """
-    FastVLM inference client for Apple Silicon.
+    """FastVLM inference client for Apple Silicon.
 
     Provides:
     - Image understanding and description
@@ -81,13 +79,13 @@ class FastVLMClient:
         minions_url: str = "http://localhost:8600",
         enable_caching: bool = True,
     ):
-        """
-        Initialize FastVLM client.
+        """Initialize FastVLM client.
 
         Args:
             model: Model size (fastvlm-0.5b, fastvlm-1.5b, fastvlm-7b)
             minions_url: minions server URL
             enable_caching: Whether to cache results in GPTRAM
+
         """
         self.model_name = model
         self.config = self.MODEL_CONFIGS.get(model, self.MODEL_CONFIGS["fastvlm-1.5b"])
@@ -226,8 +224,7 @@ class FastVLMClient:
         max_tokens: int = 512,
         use_cache: bool = True,
     ) -> VisionResult:
-        """
-        Analyze an image with FastVLM.
+        """Analyze an image with FastVLM.
 
         Args:
             image_path: Path to image file
@@ -237,6 +234,7 @@ class FastVLMClient:
 
         Returns:
             VisionResult with analysis
+
         """
         start = time.time()
 
@@ -314,10 +312,9 @@ class FastVLMClient:
             )
 
     async def batch_analyze(
-        self, image_paths: list[str], prompt: str = "Describe this image.", max_tokens: int = 256
+        self, image_paths: list[str], prompt: str = "Describe this image.", max_tokens: int = 256,
     ) -> list[VisionResult]:
-        """
-        Analyze multiple images.
+        """Analyze multiple images.
 
         Args:
             image_paths: List of image file paths
@@ -326,6 +323,7 @@ class FastVLMClient:
 
         Returns:
             List of VisionResult objects
+
         """
         results = []
         for path in image_paths:
@@ -334,8 +332,7 @@ class FastVLMClient:
         return results
 
     async def route_visual_task(self, image_path: str, task: str) -> dict[str, Any]:
-        """
-        Route visual task through minions + FastVLM.
+        """Route visual task through minions + FastVLM.
 
         1. FastVLM analyzes image
         2. Description + task sent to minions
@@ -347,12 +344,13 @@ class FastVLMClient:
 
         Returns:
             Combined result from vision + minions
+
         """
         import requests
 
         # Step 1: Visual analysis
         vision_result = await self.analyze(
-            image_path, f"Analyze this image for the following task: {task}"
+            image_path, f"Analyze this image for the following task: {task}",
         )
 
         if not vision_result.success:
@@ -371,7 +369,7 @@ Based on the visual analysis above, complete the task.
 
         try:
             response = requests.post(
-                f"{self.fm_url}/task", json={"prompt": combined_prompt}, timeout=30
+                f"{self.fm_url}/task", json={"prompt": combined_prompt}, timeout=30,
             )
             fm_result = response.json()
 
@@ -393,14 +391,14 @@ Based on the visual analysis above, complete the task.
             }
 
     async def describe_screenshot(self, screenshot_path: str) -> VisionResult:
-        """
-        Specialized method for UI screenshot analysis.
+        """Specialized method for UI screenshot analysis.
 
         Args:
             screenshot_path: Path to screenshot
 
         Returns:
             VisionResult with UI description
+
         """
         prompt = """Analyze this UI screenshot. Describe:
 1. The type of application/interface shown
@@ -412,28 +410,28 @@ Based on the visual analysis above, complete the task.
         return await self.analyze(screenshot_path, prompt, max_tokens=512)
 
     async def extract_text(self, image_path: str) -> VisionResult:
-        """
-        Extract text from image (OCR-like functionality).
+        """Extract text from image (OCR-like functionality).
 
         Args:
             image_path: Path to image with text
 
         Returns:
             VisionResult with extracted text
+
         """
         prompt = "Extract and transcribe all visible text from this image. Preserve formatting and structure where possible."
 
         return await self.analyze(image_path, prompt, max_tokens=1024)
 
     async def analyze_document(self, document_path: str) -> VisionResult:
-        """
-        Analyze document image (invoice, contract, etc.).
+        """Analyze document image (invoice, contract, etc.).
 
         Args:
             document_path: Path to document image
 
         Returns:
             VisionResult with document analysis
+
         """
         prompt = """Analyze this document image. Extract:
 1. Document type (invoice, contract, letter, etc.)

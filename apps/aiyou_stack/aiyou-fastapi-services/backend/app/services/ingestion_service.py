@@ -1,5 +1,4 @@
-"""
-Ingestion layer monitoring and management service.
+"""Ingestion layer monitoring and management service.
 """
 
 import asyncio
@@ -21,8 +20,7 @@ from app.models.ingestion import (
 
 
 class IngestionService:
-    """
-    Service for managing ingestion operations and monitoring.
+    """Service for managing ingestion operations and monitoring.
     """
 
     def __init__(self):
@@ -109,7 +107,7 @@ class IngestionService:
     # Ingestion Job Management
 
     async def start_job(
-        self, job_name: str, source_ids: list[str], parameters: dict | None = None
+        self, job_name: str, source_ids: list[str], parameters: dict | None = None,
     ) -> IngestionJob:
         """Start a new ingestion job."""
         job_id = str(uuid.uuid4())
@@ -183,7 +181,7 @@ class IngestionService:
         return self.jobs.get(job_id)
 
     def list_jobs(
-        self, status: IngestionStatus | None = None, limit: int = 50
+        self, status: IngestionStatus | None = None, limit: int = 50,
     ) -> list[IngestionJob]:
         """List ingestion jobs."""
         jobs = list(self.jobs.values())
@@ -353,7 +351,7 @@ class IngestionService:
     # AM Briefing
 
     def create_briefing(
-        self, tier_1_items: int, tier_2_items: int, tier_3_items: int, relevance_score: float = 0.85
+        self, tier_1_items: int, tier_2_items: int, tier_3_items: int, relevance_score: float = 0.85,
     ) -> AMBriefingDelivery:
         """Create an AM briefing delivery record."""
         briefing_id = str(uuid.uuid4())
@@ -385,7 +383,7 @@ class IngestionService:
         on_time_count = sum(1 for b in recent if b.on_time)
         avg_relevance = sum(b.relevance_score for b in recent) / len(recent)
         avg_rating = sum(b.user_rating for b in recent if b.user_rating) / max(
-            1, sum(1 for b in recent if b.user_rating)
+            1, sum(1 for b in recent if b.user_rating),
         )
 
         return {

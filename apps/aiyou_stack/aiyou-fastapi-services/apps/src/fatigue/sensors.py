@@ -1,5 +1,4 @@
-"""
-Sensor Layer - Biosignal Detection
+"""Sensor Layer - Biosignal Detection
 Handles blink tracking, pupil dynamics, HRV monitoring, and IMU analysis
 """
 
@@ -43,8 +42,7 @@ class BlinkMetrics:
 
 
 class BlinkDetector:
-    """
-    Detects blink rate and patterns from eye-tracking cameras
+    """Detects blink rate and patterns from eye-tracking cameras
 
     Fatigue Indicators:
     - Reduced blink rate (<10 bpm = screen-induced dry eye)
@@ -59,8 +57,7 @@ class BlinkDetector:
         self.incomplete_blinks: deque = deque(maxlen=50)
 
     def process_frame(self, eye_closure: float, timestamp: datetime) -> SensorReading | None:
-        """
-        Process single video frame for blink detection
+        """Process single video frame for blink detection
 
         Args:
             eye_closure: 0.0 (fully open) to 1.0 (fully closed)
@@ -68,6 +65,7 @@ class BlinkDetector:
 
         Returns:
             SensorReading if blink detected, else None
+
         """
         # Blink detection threshold (>0.7 = likely blink)
         if eye_closure > 0.7:
@@ -135,11 +133,11 @@ class BlinkDetector:
         )
 
     def get_fatigue_score(self) -> float:
-        """
-        Calculate fatigue score from blink metrics
+        """Calculate fatigue score from blink metrics
 
         Returns:
             0.0 (fresh) to 1.0 (critical fatigue)
+
         """
         metrics = self.get_metrics()
         score = 0.0
@@ -182,8 +180,7 @@ class PupilMetrics:
 
 
 class PupilTracker:
-    """
-    Tracks pupil diameter changes for fatigue detection
+    """Tracks pupil diameter changes for fatigue detection
 
     Fatigue Indicators:
     - Reduced pupil diameter (constriction from mental fatigue)
@@ -203,7 +200,7 @@ class PupilTracker:
                 "left": left_mm,
                 "right": right_mm,
                 "avg": (left_mm + right_mm) / 2,
-            }
+            },
         )
 
     def get_metrics(self) -> PupilMetrics:
@@ -258,8 +255,7 @@ class HRVMetrics:
 
 
 class HRVMonitor:
-    """
-    Monitors HRV via BLE-connected wearable
+    """Monitors HRV via BLE-connected wearable
 
     Fatigue Indicators:
     - Low RMSSD (<20ms = high stress/fatigue)
@@ -330,8 +326,7 @@ class IMUMetrics:
 
 
 class IMUAnalyzer:
-    """
-    Analyzes head posture and micro-movements
+    """Analyzes head posture and micro-movements
 
     Fatigue Indicators:
     - Increasing forward head tilt (neck fatigue)
@@ -351,7 +346,7 @@ class IMUAnalyzer:
                 "pitch": pitch_deg,
                 "yaw": yaw_deg,
                 "roll": roll_deg,
-            }
+            },
         )
 
     def get_metrics(self) -> IMUMetrics:
@@ -403,8 +398,7 @@ class IMUAnalyzer:
 
 
 class SensorFusion:
-    """
-    Fuses all sensor inputs for comprehensive fatigue assessment
+    """Fuses all sensor inputs for comprehensive fatigue assessment
 
     Weights:
     - Blink: 30% (most reliable short-term indicator)
@@ -423,11 +417,11 @@ class SensorFusion:
         self.weights = {"blink": 0.30, "pupil": 0.20, "hrv": 0.30, "imu": 0.20}
 
     def get_fused_fatigue_score(self) -> tuple[float, dict[str, float]]:
-        """
-        Calculate weighted fatigue score from all sensors
+        """Calculate weighted fatigue score from all sensors
 
         Returns:
             (fused_score, individual_scores)
+
         """
         scores = {
             "blink": self.blink_detector.get_fatigue_score(),
@@ -447,14 +441,13 @@ class SensorFusion:
 
         if score < 0.2:
             return FatigueLevel.FRESH
-        elif score < 0.4:
+        if score < 0.4:
             return FatigueLevel.MILD
-        elif score < 0.6:
+        if score < 0.6:
             return FatigueLevel.MODERATE
-        elif score < 0.8:
+        if score < 0.8:
             return FatigueLevel.SEVERE
-        else:
-            return FatigueLevel.CRITICAL
+        return FatigueLevel.CRITICAL
 
     def get_recommendation(self) -> str:
         """Get actionable recommendation based on fatigue level"""

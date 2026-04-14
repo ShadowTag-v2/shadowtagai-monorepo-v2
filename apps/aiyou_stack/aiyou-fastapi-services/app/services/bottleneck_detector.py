@@ -1,5 +1,4 @@
-"""
-Bottleneck detection and analysis service
+"""Bottleneck detection and analysis service
 Finds the exact lines making your app slow
 """
 
@@ -17,8 +16,7 @@ from app.models.performance import (
 
 
 class BottleneckDetector:
-    """
-    Analyzes performance metrics to find bottlenecks
+    """Analyzes performance metrics to find bottlenecks
     and provides specific line-by-line recommendations
     """
 
@@ -26,10 +24,9 @@ class BottleneckDetector:
         self.session = session
 
     async def find_top_bottlenecks(
-        self, limit: int = 5, endpoint: str = None, severity: str = None
+        self, limit: int = 5, endpoint: str = None, severity: str = None,
     ) -> list[BottleneckResponse]:
-        """
-        Find the top bottlenecks in the application
+        """Find the top bottlenecks in the application
 
         Returns the specific functions/lines causing slowdowns
         """
@@ -49,8 +46,7 @@ class BottleneckDetector:
         return [BottleneckResponse.from_orm(b) for b in bottlenecks]
 
     async def analyze_slow_endpoints(self, time_window_hours: int = 24) -> list[dict[str, Any]]:
-        """
-        Analyze which endpoints are slowest
+        """Analyze which endpoints are slowest
 
         Returns detailed analysis of slow endpoints with statistics
         """
@@ -103,14 +99,13 @@ class BottleneckDetector:
                         }
                         for b in bottlenecks
                     ],
-                }
+                },
             )
 
         return slow_endpoints
 
     async def detect_n_plus_one_queries(self) -> list[dict[str, Any]]:
-        """
-        Detect potential N+1 query problems
+        """Detect potential N+1 query problems
 
         Identifies endpoints with high database call counts
         """
@@ -123,7 +118,7 @@ class BottleneckDetector:
                     Bottleneck.function_name.like("%query%")
                     | Bottleneck.function_name.like("%execute%")
                     | Bottleneck.function_name.like("%fetch%"),
-                )
+                ),
             )
             .order_by(desc(Bottleneck.call_count))
             .limit(10)
@@ -147,8 +142,7 @@ class BottleneckDetector:
         ]
 
     async def find_memory_leaks(self, time_window_hours: int = 24) -> list[dict[str, Any]]:
-        """
-        Detect potential memory leaks
+        """Detect potential memory leaks
 
         Finds endpoints with increasing memory usage over time
         """
@@ -165,7 +159,7 @@ class BottleneckDetector:
                 and_(
                     PerformanceMetric.timestamp >= cutoff_time,
                     PerformanceMetric.memory_usage.isnot(None),
-                )
+                ),
             )
             .group_by(PerformanceMetric.endpoint)
             .having(func.max(PerformanceMetric.memory_usage) > 100)  # > 100MB
@@ -188,8 +182,7 @@ class BottleneckDetector:
         ]
 
     async def get_performance_trends(self, endpoint: str, hours: int = 24) -> dict[str, Any]:
-        """
-        Get performance trends for a specific endpoint
+        """Get performance trends for a specific endpoint
 
         Shows how performance changes over time
         """
@@ -201,7 +194,7 @@ class BottleneckDetector:
                 and_(
                     PerformanceMetric.endpoint == endpoint,
                     PerformanceMetric.timestamp >= cutoff_time,
-                )
+                ),
             )
             .order_by(PerformanceMetric.timestamp)
         )
@@ -234,8 +227,7 @@ class BottleneckDetector:
         }
 
     async def generate_fix_suggestions(self, bottleneck_id: int) -> dict[str, Any]:
-        """
-        Generate specific code fix suggestions for a bottleneck
+        """Generate specific code fix suggestions for a bottleneck
 
         Provides actual code examples and optimization strategies
         """
@@ -269,7 +261,7 @@ from sqlalchemy.orm import selectinload
 users = await db.query(User).options(selectinload(User.posts)).all()
                 """,
                     "impact": "high",
-                }
+                },
             )
 
         # I/O related fixes
@@ -294,7 +286,7 @@ import asyncio
 results = await asyncio.gather(*[fetch_data(item) for item in items])
                 """,
                     "impact": "high",
-                }
+                },
             )
 
         # CPU-intensive fixes
@@ -319,7 +311,7 @@ def expensive_computation(data):
     return result
                 """,
                     "impact": "medium",
-                }
+                },
             )
 
         # General caching suggestion
@@ -338,7 +330,7 @@ async def my_endpoint(param: str):
     return result
                 """,
                     "impact": "high",
-                }
+                },
             )
 
         return {

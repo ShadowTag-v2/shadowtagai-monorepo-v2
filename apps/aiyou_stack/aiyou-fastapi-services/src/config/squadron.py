@@ -74,7 +74,7 @@ FLYING_MONKEYS_SQUADRON = SquadronConfig(
             tier="PRO",
             education=["NIST 800-53", "PCI DSS v4.0", "HIPAA Security Rule"],
         ),
-    }
+    },
 )
 
 MONETIZATION_MATRIX = {

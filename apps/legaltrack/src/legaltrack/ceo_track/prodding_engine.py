@@ -1,4 +1,5 @@
 from fastapi import APIRouter, BackgroundTasks
+
 from ..models import CEOTrackSchedule
 from .integrations.tesla_api import TeslaController
 
@@ -8,8 +9,7 @@ tesla = TeslaController(api_key="TBD", active_vin="TBD")
 
 
 async def _orchestrate_departure(schedule: CEOTrackSchedule):
-    """
-    The background loop for Schiznit hardware prodding prior to an external meeting.
+    """The background loop for Schiznit hardware prodding prior to an external meeting.
     """
     # 15 mins prior: Wake up car and start pre-conditioning
     await tesla.wake_vehicle()
@@ -27,12 +27,10 @@ async def _orchestrate_departure(schedule: CEOTrackSchedule):
 
 @router.post("/schiznit/nudge")
 async def trigger_schiznit_nudge(schedule: CEOTrackSchedule, background_tasks: BackgroundTasks):
-    """
-    CEOTrack "Schiznit" Orchestrator.
+    """CEOTrack "Schiznit" Orchestrator.
     Monitors the CEO's active schedule and sends dynamic API pushes
     (to phone, smart home, or Tesla FSD).
     """
-
     action_plan = []
 
     if schedule.location == "Office" and not schedule.is_completed:

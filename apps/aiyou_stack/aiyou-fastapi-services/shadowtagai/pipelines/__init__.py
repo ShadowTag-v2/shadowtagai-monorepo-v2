@@ -1,5 +1,4 @@
-"""
-ShadowTagAi Pipelines
+"""ShadowTagAi Pipelines
 
 Specialized execution pipelines built on COR Orchestrator patterns.
 """

@@ -1,5 +1,4 @@
-"""
-minion Agent Swarm Orchestrator
+"""minion Agent Swarm Orchestrator
 
 Code-generation agent swarm implementing:
 - Gemini Antigravity Framework (PiCO, PRISM, Value.Lock)
@@ -67,8 +66,7 @@ class CodeGenerationTask:
 
 
 class minionOrchestrator:
-    """
-    200-agent swarm orchestrator for code generation.
+    """200-agent swarm orchestrator for code generation.
 
     ARCHITECTURE:
     - Strategy Tier (20 agents): High-level planning, task decomposition
@@ -130,15 +128,13 @@ class minionOrchestrator:
         print(f"   Repository: {git_repo_path}")
 
     async def initialize_agents(self):
-        """
-        Initialize 200 agents with proper distribution.
+        """Initialize 200 agents with proper distribution.
         """
         print("\n🏗️  Initializing 200 agents...")
         """Implementation stub."""
 
     async def execute_code_generation(self, task: CodeGenerationTask) -> dict[str, Any]:
-        """
-        Execute code generation task with full swarm and Persistent Memory.
+        """Execute code generation task with full swarm and Persistent Memory.
         """
         print(f"\n🐒 Executing Task: {task.task_id}")
         print(f"   Description: {task.description}")
@@ -168,8 +164,7 @@ class minionOrchestrator:
         return result
 
     async def _call_gemini_api(self, prompt: str, _repl_env: dict[str, Any] | None = None) -> str:
-        """
-        Call Gemini API with Antigravity framework.
+        """Call Gemini API with Antigravity framework.
         ENFORCES: 90% Flash / 10% Pro split (MDL-001)
         """
         # from app.antigravity_handoff import AntigravityRouter, TaskType

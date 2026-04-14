@@ -14,9 +14,8 @@ def get_project_number(project_id):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json().get("projectNumber")
-    else:
-        print(f"Error getting project number: {response.status_code} {response.text}")
-        return None
+    print(f"Error getting project number: {response.status_code} {response.text}")
+    return None
 
 
 if __name__ == "__main__":

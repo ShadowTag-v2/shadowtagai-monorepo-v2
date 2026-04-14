@@ -19,8 +19,7 @@ router = APIRouter()
 
 @router.post("/extract", response_model=ParsedDeadline)
 async def extract_deadline_from_filing(event: LegalFilingEvent):
-    """
-    Passes the filing text to Gemini using the native Pnkln "lawcal" prompt.
+    """Passes the filing text to Gemini using the native Pnkln "lawcal" prompt.
     This guarantees zero-drift extraction by routing through the proven template.
     """
     # 1. Decrypt Body — uses Fernet key from settings (falls back to raw bytes in dev)

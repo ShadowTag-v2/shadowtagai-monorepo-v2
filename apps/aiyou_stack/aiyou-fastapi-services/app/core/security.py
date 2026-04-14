@@ -1,5 +1,4 @@
-"""
-Security Primitives: JWT, Password Hashing, Token Management
+"""Security Primitives: JWT, Password Hashing, Token Management
 
 Security Features:
 - Bcrypt password hashing (cost factor 12)
@@ -21,13 +20,12 @@ settings = get_settings()
 
 # Password hashing context (Bcrypt)
 pwd_context = CryptContext(
-    schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=settings.BCRYPT_ROUNDS
+    schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=settings.BCRYPT_ROUNDS,
 )
 
 
 def hash_password(password: str) -> str:
-    """
-    Hash password using bcrypt
+    """Hash password using bcrypt
 
     Security:
     - Bcrypt with configurable cost factor (default 12)
@@ -39,13 +37,13 @@ def hash_password(password: str) -> str:
 
     Returns:
         Hashed password string
+
     """
     return pwd_context.hash(password)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """
-    Verify password against hash (timing-safe)
+    """Verify password against hash (timing-safe)
 
     Security:
     - Constant-time comparison
@@ -57,13 +55,13 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
     Returns:
         True if password matches, False otherwise
+
     """
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = None) -> str:
-    """
-    Create JWT access token
+    """Create JWT access token
 
     Security:
     - Short expiration (default 30 min)
@@ -76,6 +74,7 @@ def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = 
 
     Returns:
         Encoded JWT token
+
     """
     to_encode = data.copy()
 
@@ -91,8 +90,7 @@ def create_access_token(data: dict[str, Any], expires_delta: timedelta | None = 
 
 
 def create_refresh_token(data: dict[str, Any], expires_delta: timedelta | None = None) -> str:
-    """
-    Create JWT refresh token
+    """Create JWT refresh token
 
     Security:
     - Long expiration (default 7 days)
@@ -105,6 +103,7 @@ def create_refresh_token(data: dict[str, Any], expires_delta: timedelta | None =
 
     Returns:
         Encoded JWT refresh token
+
     """
     to_encode = data.copy()
 
@@ -120,8 +119,7 @@ def create_refresh_token(data: dict[str, Any], expires_delta: timedelta | None =
 
 
 def decode_token(token: str, token_type: str = "access") -> dict[str, Any] | None:
-    """
-    Decode and validate JWT token
+    """Decode and validate JWT token
 
     Security:
     - Signature verification
@@ -135,6 +133,7 @@ def decode_token(token: str, token_type: str = "access") -> dict[str, Any] | Non
 
     Returns:
         Decoded payload if valid, None otherwise
+
     """
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
@@ -155,14 +154,14 @@ def decode_token(token: str, token_type: str = "access") -> dict[str, Any] | Non
 
 
 def verify_access_token(token: str) -> str | None:
-    """
-    Verify access token and extract user ID
+    """Verify access token and extract user ID
 
     Args:
         token: JWT access token
 
     Returns:
         User ID (subject) if token is valid, None otherwise
+
     """
     payload = decode_token(token, token_type="access")
     if payload is None:
@@ -173,14 +172,14 @@ def verify_access_token(token: str) -> str | None:
 
 
 def verify_refresh_token(token: str) -> str | None:
-    """
-    Verify refresh token and extract user ID
+    """Verify refresh token and extract user ID
 
     Args:
         token: JWT refresh token
 
     Returns:
         User ID (subject) if token is valid, None otherwise
+
     """
     payload = decode_token(token, token_type="refresh")
     if payload is None:
@@ -191,8 +190,7 @@ def verify_refresh_token(token: str) -> str | None:
 
 
 def validate_password_strength(password: str) -> tuple[bool, str | None]:
-    """
-    Validate password meets security requirements
+    """Validate password meets security requirements
 
     Security Rules:
     - Minimum length (configurable, default 12)
@@ -206,6 +204,7 @@ def validate_password_strength(password: str) -> tuple[bool, str | None]:
 
     Returns:
         Tuple of (is_valid, error_message)
+
     """
     min_length = settings.MIN_PASSWORD_LENGTH
 

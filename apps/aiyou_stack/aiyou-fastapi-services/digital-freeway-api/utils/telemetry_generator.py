@@ -1,5 +1,4 @@
-"""
-Mock Telemetry Generator for Digital Freeway API
+"""Mock Telemetry Generator for Digital Freeway API
 Simulates 10K vehicles with realistic movement patterns.
 """
 
@@ -64,8 +63,7 @@ class SimulatedVehicle:
 
 
 class TelemetryGenerator:
-    """
-    Generate mock telemetry for N vehicles.
+    """Generate mock telemetry for N vehicles.
 
     Usage:
         generator = TelemetryGenerator(num_vehicles=10000)
@@ -104,14 +102,14 @@ class TelemetryGenerator:
         duration_seconds: float | None = None,
         batch_size: int = 100,
     ):
-        """
-        Run the telemetry generator.
+        """Run the telemetry generator.
 
         Args:
             api_url: Digital Freeway API endpoint
             update_hz: Updates per second (10 = 100ms intervals)
             duration_seconds: How long to run (None = forever)
             batch_size: Vehicles to update per batch
+
         """
         dt = 1.0 / update_hz
         elapsed = 0.0
@@ -150,7 +148,7 @@ class TelemetryGenerator:
                 elapsed += dt
                 if elapsed % 5 < dt:
                     print(
-                        f"[{elapsed:.0f}s] Sent {requests_sent} requests, tracking {len(self.vehicles)} vehicles"
+                        f"[{elapsed:.0f}s] Sent {requests_sent} requests, tracking {len(self.vehicles)} vehicles",
                     )
 
                 if duration_seconds and elapsed >= duration_seconds:
@@ -179,7 +177,7 @@ async def main():
 
     generator = TelemetryGenerator(num_vehicles=args.vehicles)
     await generator.run(
-        api_url=args.url, update_hz=args.hz, duration_seconds=args.duration, batch_size=args.batch
+        api_url=args.url, update_hz=args.hz, duration_seconds=args.duration, batch_size=args.batch,
     )
 
 

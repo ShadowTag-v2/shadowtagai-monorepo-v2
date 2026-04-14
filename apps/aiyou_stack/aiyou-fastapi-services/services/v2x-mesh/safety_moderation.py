@@ -1,5 +1,4 @@
-"""
-Safety Moderation for V2X Mesh
+"""Safety Moderation for V2X Mesh
 
 Integrates with:
 - Google Cloud Content Safety API
@@ -46,8 +45,7 @@ class ModerationResult:
 
 
 class GoogleContentSafety:
-    """
-    Google Cloud Content Safety API integration
+    """Google Cloud Content Safety API integration
 
     Ref: https://cloud.google.com/natural-language/docs/moderating-text
     """
@@ -124,8 +122,7 @@ class GoogleContentSafety:
 
 
 class HiveModeration:
-    """
-    Hive AI Moderation API integration
+    """Hive AI Moderation API integration
 
     Ref: https://docs.thehive.ai/
     Specialized for image/video moderation
@@ -176,8 +173,7 @@ class HiveModeration:
 
 
 class V2XSafetyModerator:
-    """
-    V2X-specific safety moderation
+    """V2X-specific safety moderation
 
     Combines Google Content Safety and Hive with custom V2X rules
     """
@@ -206,10 +202,9 @@ class V2XSafetyModerator:
         }
 
     async def moderate_event_message(
-        self, event_data: dict[str, Any]
+        self, event_data: dict[str, Any],
     ) -> tuple[bool, ModerationResult]:
-        """
-        Moderate event message before broadcast
+        """Moderate event message before broadcast
 
         Returns: (is_safe, moderation_result)
         """
@@ -240,10 +235,9 @@ class V2XSafetyModerator:
         return result.is_safe, result
 
     async def moderate_map_update(
-        self, map_feature: dict[str, Any]
+        self, map_feature: dict[str, Any],
     ) -> tuple[bool, ModerationResult]:
-        """
-        Moderate map feature update
+        """Moderate map feature update
 
         Checks for:
         - Spam (excessive updates)
@@ -281,10 +275,9 @@ class V2XSafetyModerator:
         return result.is_safe, result
 
     async def moderate_sensor_data(
-        self, sensor_type: str, data: bytes, metadata: dict[str, Any]
+        self, sensor_type: str, data: bytes, metadata: dict[str, Any],
     ) -> tuple[bool, ModerationResult]:
-        """
-        Moderate sensor data (images, video)
+        """Moderate sensor data (images, video)
 
         Used when vehicles share sensor data for verification
         """
@@ -379,7 +372,6 @@ class V2XSafetyModerator:
         """Submit audit entry to ShadowTag service"""
         # TODO: HTTP POST to ShadowTag
         # await http_client.post(f"{self.shadowtag_endpoint}/v1/moderation-audit", json=audit_entry)
-        pass
 
     def _generate_audit_id(self) -> str:
         """Generate audit ID"""
@@ -404,8 +396,7 @@ class V2XSafetyModerator:
 
 # Cost estimation
 class ModerationCostEstimator:
-    """
-    Estimate moderation costs based on usage
+    """Estimate moderation costs based on usage
 
     Google Content Safety: ~$1-3 per 1000 requests
     Hive: ~$0.50-2 per 1000 images, ~$5-15 per 1000 videos
@@ -413,7 +404,7 @@ class ModerationCostEstimator:
 
     @staticmethod
     def estimate_monthly_cost(
-        events_per_day: int, map_updates_per_day: int, images_per_day: int, videos_per_day: int
+        events_per_day: int, map_updates_per_day: int, images_per_day: int, videos_per_day: int,
     ) -> dict[str, float]:
         """Estimate monthly moderation costs"""
         # Cost per 1000 items

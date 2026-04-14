@@ -24,7 +24,7 @@ def deploy():
         gce_setup=notebooks_v2.GceSetup(
             machine_type="n1-standard-4",
             vm_image=notebooks_v2.VmImage(
-                project="deeplearning-platform-release", family="common-cpu-notebooks"
+                project="deeplearning-platform-release", family="common-cpu-notebooks",
             ),
             network_interfaces=[notebooks_v2.NetworkInterface(network="global/networks/default")],
             boot_disk=notebooks_v2.BootDisk(
@@ -32,7 +32,7 @@ def deploy():
                 disk_type="PD_SSD",
             ),
             disable_public_ip=False,
-        )
+        ),
     )
 
     # Check Existence
@@ -50,7 +50,7 @@ def deploy():
                 parent=parent,
                 instance_id=INSTANCE_NAME,
                 instance=instance,
-            )
+            ),
         )
         print("    ⏳ Deploying... (Wait 5-10 mins)")
         op.result(timeout=900)

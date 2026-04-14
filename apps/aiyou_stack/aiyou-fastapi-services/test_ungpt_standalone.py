@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-UnGPT Standalone Test & Demo
+"""UnGPT Standalone Test & Demo
 Tests core logic without full dependency stack
 """
 
@@ -188,7 +187,7 @@ try:
         cost = count * tier_costs_simple[tier]
         daily_costs[tier] = cost
         print(
-            f"      {tier.capitalize():10} {percentage * 100:3.0f}% ({count:2} queries) = ${cost:.2f}/day"
+            f"      {tier.capitalize():10} {percentage * 100:3.0f}% ({count:2} queries) = ${cost:.2f}/day",
         )
 
     total_daily = sum(daily_costs.values())

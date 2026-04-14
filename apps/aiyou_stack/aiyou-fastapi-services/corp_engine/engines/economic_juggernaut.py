@@ -1,5 +1,4 @@
-"""
-Economic Juggernaut Engine
+"""Economic Juggernaut Engine
 ===========================
 The North-Seeking Economic Pulsar.
 Advises AND implements changes - invisibly to end users.
@@ -99,8 +98,7 @@ class ImplementationResult(BaseModel):
 
 
 class EconomicJuggernaut:
-    """
-    The Economic Juggernaut - our North-Seeking Money Engine.
+    """The Economic Juggernaut - our North-Seeking Money Engine.
 
     Core Principles:
     1. ANALYZE - Continuously scan for optimization opportunities
@@ -129,8 +127,7 @@ class EconomicJuggernaut:
     # =========================================================================
 
     async def analyze_tenant(self, tenant_id: str, data: dict[str, Any]) -> list[ValueProposal]:
-        """
-        Scan tenant data for optimization opportunities.
+        """Scan tenant data for optimization opportunities.
         This runs continuously in background - Stay Current Doctrine.
         """
         proposals = []
@@ -156,7 +153,7 @@ class EconomicJuggernaut:
     # =========================================================================
 
     def _create_proposal(
-        self, tenant_id: str, opt_type: OptimizationType, opportunity: dict[str, Any]
+        self, tenant_id: str, opt_type: OptimizationType, opportunity: dict[str, Any],
     ) -> ValueProposal:
         """Create a value proposal from an identified opportunity"""
         proposal_id = self._generate_id(f"{tenant_id}:{opt_type}:{datetime.utcnow()}")
@@ -188,10 +185,9 @@ class EconomicJuggernaut:
     # =========================================================================
 
     async def implement_proposal(
-        self, proposal_id: str, force: bool = False
+        self, proposal_id: str, force: bool = False,
     ) -> ImplementationResult:
-        """
-        Implement a value proposal.
+        """Implement a value proposal.
         Changes are invisible to end users - they just see better results.
         """
         proposal = self._proposals.get(proposal_id)
@@ -283,8 +279,7 @@ class EconomicJuggernaut:
     # =========================================================================
 
     async def measure_results(self, proposal_id: str, actual_data: dict[str, Any]) -> ValueMetrics:
-        """
-        Measure actual value created vs expected.
+        """Measure actual value created vs expected.
         This feeds the "ever upward sloping graph".
         """
         proposal = self._proposals.get(proposal_id)
@@ -326,8 +321,7 @@ class EconomicJuggernaut:
     # =========================================================================
 
     def get_value_report(self, tenant_id: str | None = None) -> dict[str, Any]:
-        """
-        Generate value report for dashboard.
+        """Generate value report for dashboard.
         This is what shows the "ever upward sloping graph".
         """
         proposals = list(self._proposals.values())
@@ -368,8 +362,7 @@ class EconomicJuggernaut:
     # =========================================================================
 
     async def _check_compliance(self, proposal: ValueProposal) -> dict[str, Any]:
-        """
-        Check all compliance gates before implementation.
+        """Check all compliance gates before implementation.
         "No Hot Water" principle - we don't get in trouble.
         """
         gates_passed = []
@@ -414,8 +407,7 @@ class EconomicJuggernaut:
         return not (proposal.risk_level == "high" and not proposal.requires_approval)
 
     async def _check_eu_ai_act(self, proposal: ValueProposal) -> bool:
-        """
-        EU AI Act Article 26 compliance.
+        """EU AI Act Article 26 compliance.
         Requires transparency for high-risk AI systems.
         """
         # High-risk changes must be logged and auditable
@@ -426,8 +418,7 @@ class EconomicJuggernaut:
         return True
 
     async def _check_california_ai_minor(self, proposal: ValueProposal) -> bool:
-        """
-        California AI Minor Protection Act compliance.
+        """California AI Minor Protection Act compliance.
         Extra protections for minors.
         """
         # Check if proposal affects minor users

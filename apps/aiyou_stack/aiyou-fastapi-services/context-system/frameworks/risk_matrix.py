@@ -1,5 +1,4 @@
-"""
-Decision Framework - ATP 5-19 Risk Assessment Matrix Integration
+"""Decision Framework - ATP 5-19 Risk Assessment Matrix Integration
 Military risk management adapted for business decisions
 """
 
@@ -90,8 +89,7 @@ class RiskMatrix:
 
     @staticmethod
     def assess_risk(probability: str, severity: str) -> str:
-        """
-        Assess risk level based on probability and severity
+        """Assess risk level based on probability and severity
 
         Args:
             probability: A-E (Frequent to Unlikely)
@@ -99,6 +97,7 @@ class RiskMatrix:
 
         Returns:
             Risk level: EH, H, M, or L
+
         """
         key = (probability.upper(), severity.upper())
         return RISK_MATRIX.get(key, "EH")  # Default to EH if invalid input
@@ -110,10 +109,9 @@ class RiskMatrix:
 
     @staticmethod
     def evaluate_decision(
-        probability: str, severity: str, justification: str, mitigation: list[str]
+        probability: str, severity: str, justification: str, mitigation: list[str],
     ) -> RiskAssessment:
-        """
-        Evaluate a business decision through risk matrix
+        """Evaluate a business decision through risk matrix
 
         Returns comprehensive risk assessment with action gate
         """
@@ -199,7 +197,6 @@ class FrameworkRegistry:
 
 def example_risk_assessments() -> list[dict]:
     """Example risk assessments for common business scenarios"""
-
     examples = [
         {
             "scenario": "Launch new vertical without pilot customers",

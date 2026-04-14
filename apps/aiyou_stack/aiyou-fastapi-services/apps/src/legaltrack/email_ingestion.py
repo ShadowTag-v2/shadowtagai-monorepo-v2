@@ -1,5 +1,4 @@
-"""
-Email Ingestion Layer for LegalTrack
+"""Email Ingestion Layer for LegalTrack
 
 OAuth connectors for Gmail and Outlook
 - Rate limiting (compliance with provider SLAs)

@@ -17,6 +17,7 @@ class CheckpointManager:
 
         Args:
             session_id: Session identifier
+
         """
         self.current_session_id = session_id
 
@@ -32,6 +33,7 @@ class CheckpointManager:
 
         Raises:
             ValueError: If session not set
+
         """
         if not self.current_session_id:
             raise ValueError("Session ID not set. Call set_session() first.")
@@ -54,7 +56,7 @@ class CheckpointManager:
             db.close()
 
     async def manual_checkpoint(
-        self, file_paths: list[str], user_message: str | None = None
+        self, file_paths: list[str], user_message: str | None = None,
     ) -> str:
         """Create a manual checkpoint.
 
@@ -67,6 +69,7 @@ class CheckpointManager:
 
         Raises:
             ValueError: If session not set
+
         """
         if not self.current_session_id:
             raise ValueError("Session ID not set. Call set_session() first.")
@@ -89,7 +92,7 @@ class CheckpointManager:
             db.close()
 
     async def rewind(
-        self, checkpoint_id: str, restore_code: bool = True, restore_conversation: bool = False
+        self, checkpoint_id: str, restore_code: bool = True, restore_conversation: bool = False,
     ) -> bool:
         """Rewind to a specific checkpoint.
 
@@ -103,6 +106,7 @@ class CheckpointManager:
 
         Raises:
             ValueError: If checkpoint not found or restore fails
+
         """
         from src.models.checkpoint import CheckpointRestore
 
@@ -111,7 +115,7 @@ class CheckpointManager:
             service = CheckpointingService(db=db)
 
             restore_data = CheckpointRestore(
-                restore_code=restore_code, restore_conversation=restore_conversation
+                restore_code=restore_code, restore_conversation=restore_conversation,
             )
 
             await service.restore_checkpoint(checkpoint_id, restore_data)
@@ -128,6 +132,7 @@ class CheckpointManager:
 
         Raises:
             ValueError: If session not set
+
         """
         if not self.current_session_id:
             raise ValueError("Session ID not set. Call set_session() first.")

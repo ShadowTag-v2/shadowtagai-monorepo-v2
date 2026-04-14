@@ -12,7 +12,7 @@ class EventCreate(BaseModel):
 
     event_name: str = Field(..., description="Name of the event")
     event_type: str | None = Field(
-        None, description="Type of event (page_view, click, conversion, etc.)"
+        None, description="Type of event (page_view, click, conversion, etc.)",
     )
 
     # User identification
@@ -67,7 +67,7 @@ class EventCreate(BaseModel):
                 },
                 "revenue": 99.99,
                 "currency": "USD",
-            }
+            },
         }
 
 
@@ -107,5 +107,5 @@ class EventQuery(BaseModel):
                 "start_date": "2025-01-01T00:00:00Z",
                 "end_date": "2025-01-31T23:59:59Z",
                 "limit": 100,
-            }
+            },
         }

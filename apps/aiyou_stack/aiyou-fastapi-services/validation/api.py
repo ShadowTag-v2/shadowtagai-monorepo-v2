@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Judge #6 Validation API
+"""PNKLN Core Stack - Judge #6 Validation API
 
 FastAPI service exposing validation endpoints across 4 namespaces:
 - ingestion (validates items from ingestion layer)
@@ -24,10 +23,10 @@ logger = structlog.get_logger(__name__)
 
 # Prometheus metrics
 validation_requests = Counter(
-    "judge6_validation_requests_total", "Total validation requests", ["namespace", "status"]
+    "judge6_validation_requests_total", "Total validation requests", ["namespace", "status"],
 )
 validation_latency = Histogram(
-    "judge6_validation_latency_seconds", "Validation latency", ["namespace"]
+    "judge6_validation_latency_seconds", "Validation latency", ["namespace"],
 )
 
 
@@ -148,10 +147,9 @@ async def health_check(validator: Judge6Validator = Depends(get_validator)):
 
 @app.post("/validate", response_model=ValidationResponse)
 async def validate_item(
-    request: ValidationRequest, validator: Judge6Validator = Depends(get_validator)
+    request: ValidationRequest, validator: Judge6Validator = Depends(get_validator),
 ):
-    """
-    Validate a single item.
+    """Validate a single item.
 
     Performs multi-stage validation including:
     - PyTorch safety screening
@@ -171,15 +169,14 @@ async def validate_item(
 
     except Exception as e:
         logger.error("validation_error", item_id=request.item.id, error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Validation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Validation failed: {e!s}")
 
 
 @app.post("/validate/batch", response_model=BatchValidationResponse)
 async def validate_batch(
-    request: BatchValidationRequest, validator: Judge6Validator = Depends(get_validator)
+    request: BatchValidationRequest, validator: Judge6Validator = Depends(get_validator),
 ):
-    """
-    Validate multiple items in batch.
+    """Validate multiple items in batch.
 
     Processes items concurrently up to max_concurrent limit.
     """
@@ -204,7 +201,7 @@ async def validate_batch(
             return await validate_one(req)
 
     validation_results = await asyncio.gather(
-        *[validate_with_semaphore(req) for req in request.items], return_exceptions=True
+        *[validate_with_semaphore(req) for req in request.items], return_exceptions=True,
     )
 
     # Process results

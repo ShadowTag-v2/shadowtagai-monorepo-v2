@@ -1,5 +1,4 @@
-"""
-Vertex AI RAG Retriever Implementation
+"""Vertex AI RAG Retriever Implementation
 Based on SELF-ROUTE research paper specifications
 
 Key Features:
@@ -29,8 +28,7 @@ class RetrievedChunk:
 
 
 class VertexRAGRetriever:
-    """
-    Production-ready RAG retriever using Vertex AI
+    """Production-ready RAG retriever using Vertex AI
 
     Architecture:
     - Chunk Size: 300 words (empirically validated)
@@ -47,8 +45,7 @@ class VertexRAGRetriever:
         project_id: str | None = None,
         location: str = "us-central1",
     ):
-        """
-        Initialize the RAG retriever
+        """Initialize the RAG retriever
 
         Args:
             embedding_model: Vertex AI embedding model name
@@ -56,6 +53,7 @@ class VertexRAGRetriever:
             overlap: Word overlap between chunks (default: 50)
             project_id: GCP project ID
             location: GCP region for Vertex AI
+
         """
         self.embedding_model = embedding_model
         self.chunk_size = chunk_size
@@ -72,7 +70,7 @@ class VertexRAGRetriever:
 
         logger.info(
             f"Initialized VertexRAGRetriever: model={embedding_model}, "
-            f"chunk_size={chunk_size}, overlap={overlap}"
+            f"chunk_size={chunk_size}, overlap={overlap}",
         )
 
     @property
@@ -90,7 +88,7 @@ class VertexRAGRetriever:
                 logger.info(f"Loaded embedding model: {self.embedding_model}")
             except ImportError:
                 logger.error(
-                    "vertexai package not installed. Install with: pip install google-cloud-aiplatform"
+                    "vertexai package not installed. Install with: pip install google-cloud-aiplatform",
                 )
                 raise
             except Exception as e:
@@ -100,10 +98,9 @@ class VertexRAGRetriever:
         return self._embedder
 
     def chunk_document(
-        self, text: str, document_id: str = "default", preserve_cache: bool = True
+        self, text: str, document_id: str = "default", preserve_cache: bool = True,
     ) -> list[str]:
-        """
-        Split document into 300-word chunks with configurable overlap
+        """Split document into 300-word chunks with configurable overlap
 
         Args:
             text: Input document text
@@ -112,6 +109,7 @@ class VertexRAGRetriever:
 
         Returns:
             List of text chunks
+
         """
         # Check cache
         if preserve_cache and document_id in self.chunk_cache:
@@ -143,20 +141,20 @@ class VertexRAGRetriever:
 
         logger.info(
             f"Chunked document '{document_id}': {len(words)} words -> "
-            f"{len(chunks)} chunks (avg {len(words) / len(chunks):.0f} words/chunk)"
+            f"{len(chunks)} chunks (avg {len(words) / len(chunks):.0f} words/chunk)",
         )
 
         return chunks
 
     def get_embeddings(self, texts: list[str]) -> np.ndarray:
-        """
-        Generate embeddings for text chunks using Vertex AI
+        """Generate embeddings for text chunks using Vertex AI
 
         Args:
             texts: List of text strings to embed
 
         Returns:
             Numpy array of embeddings (n_texts, embedding_dim)
+
         """
         try:
             # Vertex AI embedding API
@@ -166,7 +164,7 @@ class VertexRAGRetriever:
             embeddings = np.array([emb.values for emb in embeddings_result])
 
             logger.debug(
-                f"Generated {len(embeddings)} embeddings of dimension {embeddings.shape[1]}"
+                f"Generated {len(embeddings)} embeddings of dimension {embeddings.shape[1]}",
             )
             return embeddings
 
@@ -175,10 +173,9 @@ class VertexRAGRetriever:
             raise
 
     def cosine_similarity(
-        self, query_embedding: np.ndarray, chunk_embeddings: np.ndarray
+        self, query_embedding: np.ndarray, chunk_embeddings: np.ndarray,
     ) -> np.ndarray:
-        """
-        Compute cosine similarity between query and chunks
+        """Compute cosine similarity between query and chunks
 
         Args:
             query_embedding: Query embedding vector (1D array)
@@ -186,6 +183,7 @@ class VertexRAGRetriever:
 
         Returns:
             Similarity scores (n_chunks,)
+
         """
         # Normalize vectors
         query_norm = query_embedding / np.linalg.norm(query_embedding)
@@ -204,8 +202,7 @@ class VertexRAGRetriever:
         k: int = 5,
         _return_scores: bool = True,
     ) -> list[RetrievedChunk]:
-        """
-        Retrieve top-k most relevant chunks for a query
+        """Retrieve top-k most relevant chunks for a query
 
         Args:
             query: Search query
@@ -216,6 +213,7 @@ class VertexRAGRetriever:
 
         Returns:
             List of RetrievedChunk objects sorted by relevance
+
         """
         # Chunk document if provided
         if document_text:
@@ -255,19 +253,19 @@ class VertexRAGRetriever:
         logger.info(
             f"Retrieved {len(retrieved_chunks)} chunks. "
             f"Top score: {retrieved_chunks[0].score:.3f}, "
-            f"Bottom score: {retrieved_chunks[-1].score:.3f}"
+            f"Bottom score: {retrieved_chunks[-1].score:.3f}",
         )
 
         return retrieved_chunks
 
     def retrieve_with_indices(
-        self, query: str, document_text: str, document_id: str = "default", k: int = 5
+        self, query: str, document_text: str, document_id: str = "default", k: int = 5,
     ) -> tuple[list[str], list[int], list[float]]:
-        """
-        Retrieve chunks with explicit indices (for prompt formatting)
+        """Retrieve chunks with explicit indices (for prompt formatting)
 
         Returns:
             Tuple of (chunk_texts, chunk_indices, scores)
+
         """
         retrieved = self.retrieve(query, document_text, document_id, k)
 
@@ -283,8 +281,7 @@ class VertexRAGRetriever:
         include_scores: bool = False,
         include_indices: bool = True,
     ) -> str:
-        """
-        Format retrieved chunks for prompt input
+        """Format retrieved chunks for prompt input
 
         Args:
             chunks: List of retrieved chunks
@@ -293,6 +290,7 @@ class VertexRAGRetriever:
 
         Returns:
             Formatted string ready for LLM prompt
+
         """
         formatted_parts = []
 

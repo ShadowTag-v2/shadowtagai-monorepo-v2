@@ -1,5 +1,4 @@
-"""
-Microsoft 365 Enterprise Adapter
+"""Microsoft 365 Enterprise Adapter
 =================================
 API-only integration with customer MS365 environments.
 All processing happens in our GCP infrastructure.
@@ -56,7 +55,7 @@ class MS365Config(AdapterConfig):
             "Calendar.Read",
             "Files.Read.All",
             "Sites.Read.All",
-        ]
+        ],
     )
 
     # Services to sync
@@ -101,8 +100,7 @@ class MS365Group(BaseModel):
 
 
 class MS365Adapter(BaseAdapter[MS365Entity]):
-    """
-    Microsoft 365 Enterprise Adapter.
+    """Microsoft 365 Enterprise Adapter.
 
     Connects to customer MS365 via Graph API.
     All data processing happens in our GCP infrastructure.
@@ -128,8 +126,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
     # =========================================================================
 
     async def connect(self) -> bool:
-        """
-        Connect to Microsoft 365 via OAuth2.
+        """Connect to Microsoft 365 via OAuth2.
         Uses client credentials flow for app-only access.
         """
         self.health.status = AdapterStatus.CONNECTING
@@ -147,10 +144,9 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
                 self.health.status = AdapterStatus.CONNECTED
                 logger.info(f"MS365 adapter connected for tenant {self.ms365_config.tenant_id}")
                 return True
-            else:
-                self.health.status = AdapterStatus.ERROR
-                self.health.last_error = "Failed to obtain access token"
-                return False
+            self.health.status = AdapterStatus.ERROR
+            self.health.last_error = "Failed to obtain access token"
+            return False
 
         except Exception as e:
             self.health.status = AdapterStatus.ERROR
@@ -190,8 +186,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
     # =========================================================================
 
     async def fetch_data(self, query: dict[str, Any]) -> list[MS365Entity]:
-        """
-        Fetch data from Microsoft 365.
+        """Fetch data from Microsoft 365.
         Routes to appropriate service based on query.
         """
         data_type = query.get("type", "users")
@@ -200,21 +195,19 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
 
         if data_type == "users":
             return await self._fetch_users(batch_size, modified_since)
-        elif data_type == "groups":
+        if data_type == "groups":
             return await self._fetch_groups(batch_size, modified_since)
-        elif data_type == "mail":
+        if data_type == "mail":
             return await self._fetch_mail(query.get("user_id"), batch_size)
-        elif data_type == "calendar":
+        if data_type == "calendar":
             return await self._fetch_calendar(query.get("user_id"), batch_size)
-        elif data_type == "files":
+        if data_type == "files":
             return await self._fetch_files(query.get("site_id"), batch_size)
-        else:
-            logger.warning(f"Unknown MS365 data type: {data_type}")
-            return []
+        logger.warning(f"Unknown MS365 data type: {data_type}")
+        return []
 
     async def push_data(self, data: list[MS365Entity]) -> SyncResult:
-        """
-        Push data back to Microsoft 365.
+        """Push data back to Microsoft 365.
         Only enabled for configured write operations.
         """
         result = SyncResult(
@@ -279,7 +272,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
     # =========================================================================
 
     async def _fetch_users(
-        self, batch_size: int, modified_since: str | None
+        self, batch_size: int, modified_since: str | None,
     ) -> list[dict[str, Any]]:
         """Fetch users from Azure AD"""
         endpoint = "/users"
@@ -313,7 +306,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
         return users
 
     async def _fetch_groups(
-        self, batch_size: int, modified_since: str | None
+        self, batch_size: int, modified_since: str | None,
     ) -> list[dict[str, Any]]:
         """Fetch groups from Azure AD"""
         endpoint = "/groups"
@@ -365,7 +358,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
                         "to_recipients": msg.get("toRecipients", []),
                         "received_at": msg.get("receivedDateTime"),
                         "body_preview": msg.get("bodyPreview", ""),
-                    }
+                    },
                 )
 
         return messages
@@ -396,7 +389,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
                         "end": event.get("end", {}),
                         "attendees": event.get("attendees", []),
                         "location": event.get("location", {}),
-                    }
+                    },
                 )
 
         return events
@@ -427,7 +420,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
                         "created_at": item.get("createdDateTime"),
                         "modified_at": item.get("lastModifiedDateTime"),
                         "is_folder": "folder" in item,
-                    }
+                    },
                 )
 
         return files
@@ -529,8 +522,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
     # =========================================================================
 
     async def _process_data(self, data: list[MS365Entity]) -> list[MS365Entity]:
-        """
-        Process MS365 data through our AI pipeline.
+        """Process MS365 data through our AI pipeline.
         This is where the Economic Juggernaut adds value.
         """
         processed = []
@@ -555,8 +547,7 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
         return processed
 
     async def _calculate_value_added(self, original: list[Any], processed: list[Any]) -> float:
-        """
-        Calculate value added by MS365 integration.
+        """Calculate value added by MS365 integration.
 
         Value sources:
         - Time saved on manual data analysis

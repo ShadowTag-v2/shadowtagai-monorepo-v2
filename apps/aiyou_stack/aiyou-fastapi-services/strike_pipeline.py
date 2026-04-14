@@ -41,7 +41,7 @@ def pipeline(target_url: str):
             link_count = a11y_data.get("extracted_links", 0)
             print(
                 "[+] Stealth penetration successful. "
-                f"Extracted {link_count} structural nodes and A11y payload."
+                f"Extracted {link_count} structural nodes and A11y payload.",
             )
         except Exception as e:
             print(f"[!] Stealth payload parsing failed: {e}\nRaw output: {out_str[:200]}")

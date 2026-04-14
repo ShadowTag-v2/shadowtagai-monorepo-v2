@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System for Pnkln Agents
+"""Glicko-2 Rating System for Pnkln Agents
 Version: 1.0.0
 
 Philosophy: Uncertainty-aware performance tracking
@@ -35,8 +34,7 @@ class Match:
 
 
 class Glicko2Player:
-    """
-    Glicko-2 player/agent with rating, rating deviation, and volatility.
+    """Glicko-2 player/agent with rating, rating deviation, and volatility.
 
     Attributes:
         mu: Rating on Glicko-2 scale (internal)
@@ -48,6 +46,7 @@ class Glicko2Player:
         get_rd(): Get rating deviation (uncertainty)
         get_vol(): Get volatility
         update(): Update rating after matches
+
     """
 
     def __init__(
@@ -56,13 +55,13 @@ class Glicko2Player:
         rd: float = DEFAULT_RD,
         vol: float = DEFAULT_VOLATILITY,
     ):
-        """
-        Initialize player with Glicko scale ratings.
+        """Initialize player with Glicko scale ratings.
 
         Args:
             rating: Initial rating (default 1500)
             rd: Initial rating deviation (default 350)
             vol: Initial volatility (default 0.06)
+
         """
         # Convert to Glicko-2 scale
         self.mu = (rating - DEFAULT_RATING) / GLICKO_SCALE
@@ -82,16 +81,14 @@ class Glicko2Player:
         return self.vol
 
     def _g(self, phi: float) -> float:
-        """
-        Glicko-2 g function.
+        """Glicko-2 g function.
 
         Reduces the impact of games against uncertain opponents.
         """
         return 1 / math.sqrt(1 + 3 * phi**2 / math.pi**2)
 
     def _E(self, mu: float, mu_j: float, phi_j: float) -> float:
-        """
-        Expected outcome against opponent.
+        """Expected outcome against opponent.
 
         Args:
             mu: Player's rating
@@ -100,18 +97,19 @@ class Glicko2Player:
 
         Returns:
             Expected score (0 to 1)
+
         """
         return 1 / (1 + math.exp(-self._g(phi_j) * (mu - mu_j)))
 
     def _compute_v(self, matches: list[Match]) -> float:
-        """
-        Compute variance of performance.
+        """Compute variance of performance.
 
         Args:
             matches: List of matches played
 
         Returns:
             Estimated variance
+
         """
         v_inv = 0.0
         for match in matches:
@@ -126,8 +124,7 @@ class Glicko2Player:
         return 1 / v_inv if v_inv > 0 else float("inf")
 
     def _compute_delta(self, matches: list[Match], v: float) -> float:
-        """
-        Compute estimated improvement in rating.
+        """Compute estimated improvement in rating.
 
         Args:
             matches: List of matches played
@@ -135,6 +132,7 @@ class Glicko2Player:
 
         Returns:
             Estimated improvement
+
         """
         delta_sum = 0.0
         for match in matches:
@@ -149,10 +147,9 @@ class Glicko2Player:
         return v * delta_sum
 
     def _compute_new_volatility(
-        self, v: float, delta: float, tau: float = TAU, tol: float = 1e-6
+        self, v: float, delta: float, tau: float = TAU, tol: float = 1e-6,
     ) -> float:
-        """
-        Compute new volatility using Illinois algorithm.
+        """Compute new volatility using Illinois algorithm.
 
         This is the most complex part of Glicko-2.
         Uses iterative convergence to find optimal volatility.
@@ -165,6 +162,7 @@ class Glicko2Player:
 
         Returns:
             New volatility
+
         """
         phi = self.phi
         vol = self.vol
@@ -211,8 +209,7 @@ class Glicko2Player:
         return math.exp(A / 2)
 
     def update(self, matches: list[Match], tau: float = TAU, tol: float = 1e-6) -> None:
-        """
-        Update rating based on match results.
+        """Update rating based on match results.
 
         Args:
             matches: List of Match objects
@@ -227,6 +224,7 @@ class Glicko2Player:
             ...     Match(opponent_rating=1700, opponent_rd=300, outcome=0.0)
             ... ]
             >>> player.update(matches)
+
         """
         if not matches:
             # No games played - increase uncertainty due to inactivity
@@ -263,13 +261,13 @@ class Glicko2Player:
         self.vol = new_vol
 
     def decay_rating(self, periods: int = 1) -> None:
-        """
-        Decay rating due to inactivity.
+        """Decay rating due to inactivity.
 
         Increases rating deviation to reflect increased uncertainty.
 
         Args:
             periods: Number of rating periods inactive
+
         """
         for _ in range(periods):
             phi_star = math.sqrt(self.phi**2 + self.vol**2)
@@ -285,8 +283,7 @@ class Glicko2Player:
 
 
 def compare_players(player1: Glicko2Player, player2: Glicko2Player) -> dict:
-    """
-    Compare two players and predict match outcome.
+    """Compare two players and predict match outcome.
 
     Args:
         player1: First player
@@ -294,6 +291,7 @@ def compare_players(player1: Glicko2Player, player2: Glicko2Player) -> dict:
 
     Returns:
         Dictionary with comparison data
+
     """
     # Expected score for player1
     mu1 = player1.mu
@@ -355,7 +353,7 @@ if __name__ == "__main__":
 
     # Bob's perspective (one loss to Alice)
     bob_matches = [
-        Match(opponent_rating=1500, opponent_rd=200, outcome=0.0)  # Loss to Alice
+        Match(opponent_rating=1500, opponent_rd=200, outcome=0.0),  # Loss to Alice
     ]
 
     bob.update(bob_matches)

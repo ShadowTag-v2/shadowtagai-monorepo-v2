@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Claude Agent SDK with Custom Tools Example
+"""Claude Agent SDK with Custom Tools Example
 
 This example shows how to create and use custom tools with the Claude Agent SDK.
 """
@@ -14,14 +13,14 @@ from claude_agent_sdk import ClaudeAgentOptions, query, tool
 
 @tool
 def calculate_fibonacci(n: int) -> int:
-    """
-    Calculate the nth Fibonacci number.
+    """Calculate the nth Fibonacci number.
 
     Args:
         n: The position in the Fibonacci sequence (must be >= 0)
 
     Returns:
         The nth Fibonacci number
+
     """
     if n < 0:
         raise ValueError("n must be non-negative")
@@ -36,14 +35,14 @@ def calculate_fibonacci(n: int) -> int:
 
 @tool
 def get_weather(city: str) -> dict[str, Any]:
-    """
-    Get weather information for a city.
+    """Get weather information for a city.
 
     Args:
         city: The name of the city
 
     Returns:
         Mock weather data for the city
+
     """
     # This is a mock implementation
     return {"city": city, "temperature": 72, "condition": "Sunny", "humidity": 45, "wind_speed": 10}

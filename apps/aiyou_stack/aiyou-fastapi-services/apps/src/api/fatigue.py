@@ -1,5 +1,4 @@
-"""
-AR Glasses Fatigue Detection API
+"""AR Glasses Fatigue Detection API
 FastAPI endpoints for real-time fatigue monitoring and display control
 
 Endpoints:
@@ -169,8 +168,7 @@ async def root():
     tags=["Session"],
 )
 async def start_session(request: SessionRequest, background_tasks: BackgroundTasks):
-    """
-    Start fatigue monitoring session
+    """Start fatigue monitoring session
 
     Initializes:
     - Sensor fusion pipeline
@@ -179,7 +177,6 @@ async def start_session(request: SessionRequest, background_tasks: BackgroundTas
     - BLE sync (if enabled)
     - Connected AR glasses
     """
-
     # Generate session ID
     session_id = f"sess_{request.user_id}_{datetime.utcnow().timestamp()}"
 
@@ -235,8 +232,7 @@ async def start_session(request: SessionRequest, background_tasks: BackgroundTas
 
 @app.post("/fatigue/session/update", response_model=FatigueStatusResponse, tags=["Session"])
 async def update_session(update: SensorUpdate):
-    """
-    Send sensor data update and get fatigue prediction
+    """Send sensor data update and get fatigue prediction
 
     Real-time endpoint - designed for 100-500ms latency
     Call this every 1-5 seconds from glasses device
@@ -259,7 +255,7 @@ async def update_session(update: SensorUpdate):
 
     if update.left_pupil_mm and update.right_pupil_mm:
         sensor_fusion.pupil_tracker.add_reading(
-            update.left_pupil_mm, update.right_pupil_mm, update.timestamp
+            update.left_pupil_mm, update.right_pupil_mm, update.timestamp,
         )
 
     if update.rr_interval_ms:
@@ -318,7 +314,6 @@ async def update_session(update: SensorUpdate):
 @app.get("/fatigue/session/status", response_model=FatigueStatusResponse, tags=["Session"])
 async def get_session_status(session_id: str = Query(..., description="Session ID")):
     """Get current session status without sending new data"""
-
     if session_id not in active_sessions:
         raise HTTPException(status_code=404, detail="Session not found")
 
@@ -350,7 +345,6 @@ async def get_session_status(session_id: str = Query(..., description="Session I
 @app.post("/fatigue/session/end", tags=["Session"])
 async def end_session(session_id: str):
     """End fatigue monitoring session"""
-
     if session_id not in active_sessions:
         raise HTTPException(status_code=404, detail="Session not found")
 
@@ -383,7 +377,6 @@ async def end_session(session_id: str):
 @app.get("/fatigue/devices", response_model=list[DeviceInfo], tags=["Devices"])
 async def list_devices():
     """List all connected devices (glasses + wearables)"""
-
     devices = []
 
     # List from all active sessions
@@ -399,7 +392,7 @@ async def list_devices():
                     capabilities=glasses_device.capabilities.__dict__
                     if glasses_device.capabilities
                     else None,
-                )
+                ),
             )
 
         ble_manager = session.get("ble_manager")
@@ -414,7 +407,7 @@ async def list_devices():
                         battery_percent=device.last_reading.battery_percent
                         if device.last_reading
                         else None,
-                    )
+                    ),
                 )
 
     return devices
@@ -423,7 +416,6 @@ async def list_devices():
 @app.post("/fatigue/devices/connect", tags=["Devices"])
 async def connect_device(request: ConnectDeviceRequest, session_id: str):
     """Connect new device (glasses or wearable) to active session"""
-
     if session_id not in active_sessions:
         raise HTTPException(status_code=404, detail="Session not found")
 
@@ -461,16 +453,14 @@ async def connect_device(request: ConnectDeviceRequest, session_id: str):
             "platform": request.platform,
         }
 
-    else:
-        raise HTTPException(
-            status_code=400, detail="Device type must be 'wearable' for this endpoint"
-        )
+    raise HTTPException(
+        status_code=400, detail="Device type must be 'wearable' for this endpoint",
+    )
 
 
 @app.get("/fatigue/metrics/session/{session_id}", tags=["Metrics"])
 async def get_session_metrics(session_id: str):
     """Get detailed metrics for session"""
-
     if session_id not in active_sessions:
         raise HTTPException(status_code=404, detail="Session not found")
 

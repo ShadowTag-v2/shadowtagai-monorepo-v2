@@ -1,5 +1,4 @@
-"""
-Regulation Registry System
+"""Regulation Registry System
 
 Central registry for all compliance modules.
 Supports dynamic module registration, discovery, and instantiation.
@@ -26,8 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 class RegulationRegistry:
-    """
-    Central registry for compliance regulation modules.
+    """Central registry for compliance regulation modules.
 
     Provides:
     - Module registration and discovery
@@ -52,12 +50,12 @@ class RegulationRegistry:
         return cls._instance
 
     def register(self, regulation_id: RegulationId, module_class: type[ComplianceModule]) -> None:
-        """
-        Register a compliance module class.
+        """Register a compliance module class.
 
         Args:
             regulation_id: The regulation identifier
             module_class: The module class to register
+
         """
         if regulation_id in self._modules:
             logger.warning(f"Overwriting existing module: {regulation_id.value}")
@@ -70,14 +68,14 @@ class RegulationRegistry:
         logger.info(f"Registered compliance module: {regulation_id.value}")
 
     def unregister(self, regulation_id: RegulationId) -> bool:
-        """
-        Unregister a compliance module.
+        """Unregister a compliance module.
 
         Args:
             regulation_id: The regulation to unregister
 
         Returns:
             True if module was unregistered, False if not found
+
         """
         if regulation_id not in self._modules:
             return False
@@ -90,8 +88,7 @@ class RegulationRegistry:
         return True
 
     def get_module(self, regulation_id: RegulationId) -> ComplianceModule | None:
-        """
-        Get a module instance by regulation ID.
+        """Get a module instance by regulation ID.
 
         Lazy instantiation - creates instance on first access.
 
@@ -100,6 +97,7 @@ class RegulationRegistry:
 
         Returns:
             ComplianceModule instance or None if not registered
+
         """
         if regulation_id not in self._modules:
             logger.warning(f"Module not registered: {regulation_id.value}")
@@ -114,14 +112,14 @@ class RegulationRegistry:
         return self._instances[regulation_id]
 
     def get_modules(self, regulation_ids: list[RegulationId]) -> list[ComplianceModule]:
-        """
-        Get multiple module instances.
+        """Get multiple module instances.
 
         Args:
             regulation_ids: List of regulations to get
 
         Returns:
             List of ComplianceModule instances (excluding not found)
+
         """
         modules = []
         for reg_id in regulation_ids:
@@ -131,14 +129,14 @@ class RegulationRegistry:
         return modules
 
     def get_metadata(self, regulation_id: RegulationId) -> ModuleMetadata | None:
-        """
-        Get module metadata without full instantiation.
+        """Get module metadata without full instantiation.
 
         Args:
             regulation_id: The regulation to get metadata for
 
         Returns:
             ModuleMetadata or None if not registered
+
         """
         if regulation_id in self._metadata_cache:
             return self._metadata_cache[regulation_id]
@@ -151,20 +149,20 @@ class RegulationRegistry:
         return None
 
     def list_registered(self) -> list[RegulationId]:
-        """
-        List all registered regulation IDs.
+        """List all registered regulation IDs.
 
         Returns:
             List of registered RegulationId values
+
         """
         return list(self._modules.keys())
 
     def list_metadata(self) -> list[ModuleMetadata]:
-        """
-        Get metadata for all registered modules.
+        """Get metadata for all registered modules.
 
         Returns:
             List of ModuleMetadata for all registered modules
+
         """
         return [
             self.get_metadata(reg_id)
@@ -173,14 +171,14 @@ class RegulationRegistry:
         ]
 
     def filter_by_jurisdiction(self, jurisdiction: Jurisdiction) -> list[RegulationId]:
-        """
-        Filter registered modules by jurisdiction.
+        """Filter registered modules by jurisdiction.
 
         Args:
             jurisdiction: The jurisdiction to filter by
 
         Returns:
             List of RegulationId values matching the jurisdiction
+
         """
         matching = []
         for reg_id in self._modules:
@@ -219,18 +217,17 @@ class RegulationRegistry:
 
 @lru_cache(maxsize=1)
 def get_registry() -> RegulationRegistry:
-    """
-    Get the global RegulationRegistry instance.
+    """Get the global RegulationRegistry instance.
 
     Returns:
         The singleton RegulationRegistry
+
     """
     return RegulationRegistry()
 
 
 def register_module(regulation_id: RegulationId):
-    """
-    Decorator to register a compliance module class.
+    """Decorator to register a compliance module class.
 
     Usage:
         @register_module(RegulationId.EU_AI_ACT)
@@ -246,8 +243,7 @@ def register_module(regulation_id: RegulationId):
 
 
 def auto_register_modules() -> None:
-    """
-    Auto-register all built-in compliance modules.
+    """Auto-register all built-in compliance modules.
 
     Call this during application startup to ensure all modules are available.
     """

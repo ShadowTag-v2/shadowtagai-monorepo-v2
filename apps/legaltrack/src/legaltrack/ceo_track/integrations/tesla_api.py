@@ -5,8 +5,7 @@ logger = logging.getLogger("tesla_api")
 
 
 class TeslaController:
-    """
-    Wrapper around the unofficial Tesla Owner API (or Fleet API)
+    """Wrapper around the unofficial Tesla Owner API (or Fleet API)
     used by the CEOTrack (Schiznit) prodding engine.
     """
 
@@ -32,7 +31,7 @@ class TeslaController:
         return True
 
     async def set_navigation_target(
-        self, address: str, latitude: float | None = None, longitude: float | None = None
+        self, address: str, latitude: float | None = None, longitude: float | None = None,
     ) -> bool:
         """Pushes navigation data directly into the car's FSD interface."""
         logger.info(f"Pushing destination '{address}' to {self.vin} FSD...")

@@ -1,5 +1,4 @@
-"""
-Base Skill class for the pinkln Agent Architecture System.
+"""Base Skill class for the pinkln Agent Architecture System.
 
 Skills are atomic capabilities - reusable expertise modules used by agents.
 Examples: ResearchExplorer, DesignCritic, CopyConverter, etc.
@@ -32,8 +31,7 @@ class SkillMetadata:
 
 
 class BaseSkill(ABC):
-    """
-    Base class for all pinkln Skills.
+    """Base class for all pinkln Skills.
 
     A Skill is a reusable capability or expertise module. Think of it like a
     library function, but for prompting/agent behavior.
@@ -46,21 +44,20 @@ class BaseSkill(ABC):
     """
 
     def __init__(self, name: str, version: str = "1.0", description: str = ""):
-        """
-        Initialize a skill.
+        """Initialize a skill.
 
         Args:
             name: Skill name
             version: Version number
             description: Description of what this skill does
+
         """
         self.metadata = SkillMetadata(name=name, version=version, description=description)
         self.context: dict[str, Any] | None = None
 
     @abstractmethod
     async def execute(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
-        """
-        Execute the skill.
+        """Execute the skill.
 
         Args:
             input_data: Input data for the skill
@@ -72,52 +69,51 @@ class BaseSkill(ABC):
             - metadata: Execution metadata
             - critique: Self-critique of the result
             - assumptions: Assumptions made
+
         """
-        pass
 
     @abstractmethod
     def get_prompt_template(self) -> str:
-        """
-        Get the prompt template for this skill.
+        """Get the prompt template for this skill.
 
         Returns:
             Formatted prompt string
+
         """
-        pass
 
     def validate_input(self, input_data: dict[str, Any]) -> bool:
-        """
-        Validate input data.
+        """Validate input data.
 
         Args:
             input_data: Input to validate
 
         Returns:
             True if valid
+
         """
         return True  # Override in subclasses for specific validation
 
     def reflect(self, output: Any) -> dict[str, Any]:
-        """
-        Reflect on the output quality (part of RCR framework).
+        """Reflect on the output quality (part of RCR framework).
 
         Args:
             output: The output to reflect on
 
         Returns:
             Reflection dictionary with assumptions, weaknesses, improvements
+
         """
         return {"assumptions": [], "weaknesses": [], "improvements": [], "confidence": 0.8}
 
     def critique(self, output: Any) -> dict[str, Any]:
-        """
-        Critique the output (part of RCR framework).
+        """Critique the output (part of RCR framework).
 
         Args:
             output: Output to critique
 
         Returns:
             Critique dictionary
+
         """
         return {"flaws": [], "inefficiencies": [], "edge_cases_missed": [], "complexity_issues": []}
 

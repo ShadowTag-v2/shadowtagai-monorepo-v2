@@ -1,5 +1,4 @@
-"""
-ShadowTagAi Agents: Collection → Enforcement Pipeline
+"""ShadowTagAi Agents: Collection → Enforcement Pipeline
 
 Provides:
 - Gemini Ingestion Layer (Intelligence collection with ethical compliance)

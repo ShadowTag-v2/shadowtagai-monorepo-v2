@@ -1,5 +1,4 @@
-"""
-Dead Letter Queue Inspector - Forensic tool for failed audit traces.
+"""Dead Letter Queue Inspector - Forensic tool for failed audit traces.
 
 The "Coroner" for compliance failures.
 """
@@ -13,8 +12,7 @@ from google.cloud import pubsub_v1
 
 
 class DLQInspector:
-    """
-    Forensic inspector for Dead Letter Queue.
+    """Forensic inspector for Dead Letter Queue.
 
     Features:
     - Pull failed messages for analysis
@@ -36,19 +34,19 @@ class DLQInspector:
         self.publisher = pubsub_v1.PublisherClient()
 
         self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.dlq_subscription
+            self.project_id, self.dlq_subscription,
         )
         self.topic_path = self.publisher.topic_path(self.project_id, self.main_topic)
 
     def examine(self, max_messages: int = 10) -> list[dict[str, Any]]:
-        """
-        Examine failed messages in the DLQ.
+        """Examine failed messages in the DLQ.
 
         Args:
             max_messages: Maximum number of messages to retrieve
 
         Returns:
             List of failed message details
+
         """
         print(f"Inspecting Dead Letter Queue: {self.dlq_subscription}...")
 
@@ -56,7 +54,7 @@ class DLQInspector:
             request={
                 "subscription": self.subscription_path,
                 "max_messages": max_messages,
-            }
+            },
         )
 
         if not response.received_messages:
@@ -100,21 +98,21 @@ class DLQInspector:
         return failures
 
     def replay(self, ack_id: str) -> str | None:
-        """
-        Replay a single message back to the main topic.
+        """Replay a single message back to the main topic.
 
         Args:
             ack_id: The ack_id of the message to replay
 
         Returns:
             New message ID if successful, None otherwise
+
         """
         # First, pull the specific message
         response = self.subscriber.pull(
             request={
                 "subscription": self.subscription_path,
                 "max_messages": 100,  # Pull batch to find our message
-            }
+            },
         )
 
         for received_message in response.received_messages:
@@ -137,7 +135,7 @@ class DLQInspector:
                     request={
                         "subscription": self.subscription_path,
                         "ack_ids": [ack_id],
-                    }
+                    },
                 )
 
                 print(f"Replayed message {msg.message_id} -> {new_message_id}")
@@ -147,14 +145,14 @@ class DLQInspector:
         return None
 
     def replay_all(self) -> list[str]:
-        """
-        Replay all messages in the DLQ back to the main topic.
+        """Replay all messages in the DLQ back to the main topic.
 
         Returns:
             List of new message IDs
+
         """
         response = self.subscriber.pull(
-            request={"subscription": self.subscription_path, "max_messages": 1000}
+            request={"subscription": self.subscription_path, "max_messages": 1000},
         )
 
         if not response.received_messages:
@@ -182,32 +180,32 @@ class DLQInspector:
         # Acknowledge all DLQ messages
         if ack_ids:
             self.subscriber.acknowledge(
-                request={"subscription": self.subscription_path, "ack_ids": ack_ids}
+                request={"subscription": self.subscription_path, "ack_ids": ack_ids},
             )
 
         print(f"Replayed {len(new_message_ids)} messages")
         return new_message_ids
 
     def purge(self, ack_ids: list[str] | None = None) -> int:
-        """
-        Purge messages from the DLQ (acknowledge without processing).
+        """Purge messages from the DLQ (acknowledge without processing).
 
         Args:
             ack_ids: Specific messages to purge, or None to purge all
 
         Returns:
             Number of messages purged
+
         """
         if ack_ids:
             self.subscriber.acknowledge(
-                request={"subscription": self.subscription_path, "ack_ids": ack_ids}
+                request={"subscription": self.subscription_path, "ack_ids": ack_ids},
             )
             print(f"Purged {len(ack_ids)} messages")
             return len(ack_ids)
 
         # Purge all
         response = self.subscriber.pull(
-            request={"subscription": self.subscription_path, "max_messages": 1000}
+            request={"subscription": self.subscription_path, "max_messages": 1000},
         )
 
         if not response.received_messages:
@@ -217,18 +215,18 @@ class DLQInspector:
         all_ack_ids = [m.ack_id for m in response.received_messages]
 
         self.subscriber.acknowledge(
-            request={"subscription": self.subscription_path, "ack_ids": all_ack_ids}
+            request={"subscription": self.subscription_path, "ack_ids": all_ack_ids},
         )
 
         print(f"Purged {len(all_ack_ids)} messages")
         return len(all_ack_ids)
 
     def generate_report(self) -> str:
-        """
-        Generate a forensic report of DLQ contents.
+        """Generate a forensic report of DLQ contents.
 
         Returns:
             Markdown-formatted report
+
         """
         failures = self.examine(max_messages=100)
 

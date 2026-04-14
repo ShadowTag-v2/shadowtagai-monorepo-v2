@@ -15,12 +15,12 @@ def generate_grounded_content(prompt="How much is Google stock?"):
 
     # Define the Google Search Retrieval tool
     tool = Tool.from_google_search_retrieval(
-        google_search_retrieval=grounding.GoogleSearchRetrieval()
+        google_search_retrieval=grounding.GoogleSearchRetrieval(),
     )
 
     try:
         response = model.generate_content(
-            prompt, tools=[tool], generation_config={"temperature": 0.0}
+            prompt, tools=[tool], generation_config={"temperature": 0.0},
         )
 
         print("\nResponse:")

@@ -1,5 +1,4 @@
-"""
-California Bar Exam Protocol - Legal Reasoning for Agent Swarm
+"""California Bar Exam Protocol - Legal Reasoning for Agent Swarm
 
 Integrates 9 years of legal education + 11 California Bar exam attempts
 into agent reasoning methodology.
@@ -15,6 +14,7 @@ Author: Antigravity (Gemini 2.0 Flash Experimental)
 Based on: 11 CA Bar attempts + 9 years college experience
 Created: 2025-11-22
 """
+from typing import Optional, Any
 
 import re
 from dataclasses import dataclass
@@ -47,8 +47,7 @@ class MBEQuestion:
 
 
 class FactPatternBreaker:
-    """
-    Break complex fact patterns into simple sentences.
+    """Break complex fact patterns into simple sentences.
 
     RULE: One subject + one action verb + one object per sentence
     FOCUS: Action verbs are the ONLY thing that matters in law
@@ -136,8 +135,7 @@ class FactPatternBreaker:
 
     @classmethod
     def break_into_simple_sentences(cls, fact_pattern: str) -> list[SimpleSentence]:
-        """
-        Break fact pattern into simple sentences.
+        """Break fact pattern into simple sentences.
 
         Example:
         Input: "John offered to sell his car to Mary for $5000, but Mary
@@ -149,6 +147,7 @@ class FactPatternBreaker:
         3. Mary made [a counteroffer of $4500]
 
         Each sentence = one subject + one action verb + one object
+
         """
         sentences = []
 
@@ -191,7 +190,7 @@ class FactPatternBreaker:
                     object=object_part,
                     modifiers=[],  # TODO: Extract modifiers
                     legal_significance=cls._get_legal_significance(action_verb),
-                )
+                ),
             )
 
         return sentences
@@ -225,8 +224,7 @@ class FactPatternBreaker:
 
 
 class MBEReadingProtocol:
-    """
-    MBE reading protocol from 11 bar exam attempts.
+    """MBE reading protocol from 11 bar exam attempts.
 
     ORDER:
     1. Read answers first (bottom to top - prevents missing info)
@@ -239,8 +237,7 @@ class MBEReadingProtocol:
 
     @staticmethod
     def analyze_question(question: MBEQuestion) -> dict[str, Any]:
-        """
-        Analyze MBE question using proven protocol.
+        """Analyze MBE question using proven protocol.
 
         Returns analysis showing step-by-step reasoning.
         """
@@ -280,8 +277,7 @@ class MBEReadingProtocol:
 
 
 class HogwartsTeamStructure:
-    """
-    Competitive agent team structure.
+    """Competitive agent team structure.
 
     HOUSES (Agent Teams):
     - Gryffindor: Aggressive analysis, quick decisions
@@ -353,8 +349,7 @@ class HogwartsTeamStructure:
 
 
 class WhiteboardProtocol:
-    """
-    Single point of truth whiteboard for swarm discussion.
+    """Single point of truth whiteboard for swarm discussion.
 
     VISIBLE TO ALL AGENTS:
     1. Question text (fact pattern)
@@ -394,7 +389,7 @@ class WhiteboardProtocol:
         print("\n" + "=" * 80)
 
     def add_agent_contribution(
-        self, agent_id: str, house: str, analysis: str, proposed_answer: str
+        self, agent_id: str, house: str, analysis: str, proposed_answer: str,
     ):
         """Add agent's analysis to whiteboard"""
         self.agent_contributions.append(
@@ -404,7 +399,7 @@ class WhiteboardProtocol:
                 "analysis": analysis,
                 "proposed_answer": proposed_answer,
                 "timestamp": "now",  # Would use datetime in production
-            }
+            },
         )
 
         print(f"\n💬 {house} Agent {agent_id}:")

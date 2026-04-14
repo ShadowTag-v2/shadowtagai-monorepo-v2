@@ -1,5 +1,4 @@
-"""
-Structured Problem Solving Process API Routes
+"""Structured Problem Solving Process API Routes
 Endpoints for Is/Is Not Diagram and 6-step problem solving methodology
 """
 
@@ -81,8 +80,7 @@ async def get_procedure_overview():
 
 @router.post("/is-is-not", summary="Create Is/Is Not diagram")
 async def create_is_is_not_diagram(diagram: IsIsNotDiagram):
-    """
-    Create and render an Is/Is Not Diagram
+    """Create and render an Is/Is Not Diagram
 
     This tool helps clarify the problem by defining what it IS and what it IS NOT
     across four key dimensions: WHAT, WHEN, WHERE, and EXTENT.
@@ -91,13 +89,12 @@ async def create_is_is_not_diagram(diagram: IsIsNotDiagram):
         rendered = renderer.render_is_is_not_diagram(diagram)
         return {"diagram": diagram, "rendered": rendered}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating diagram: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating diagram: {e!s}")
 
 
 @router.post("/problem-solving", summary="Create structured problem-solving process")
 async def create_problem_solving_process(process: StructuredProblemSolvingProcess):
-    """
-    Create a complete Structured Problem Solving Process
+    """Create a complete Structured Problem Solving Process
 
     Supports all 6 steps of the methodology with integrated tools and techniques.
     """
@@ -105,7 +102,7 @@ async def create_problem_solving_process(process: StructuredProblemSolvingProces
         rendered = renderer.render_problem_solving_process(process)
         return {"process": process, "rendered": rendered}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating process: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating process: {e!s}")
 
 
 @router.get("/problem-solving/example", summary="Get example problem-solving process")

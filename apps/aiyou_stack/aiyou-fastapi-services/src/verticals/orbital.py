@@ -1,6 +1,5 @@
 class AiUOrbital:
-    """
-    Vertical 5: AiU Orbital (Connectivity)
+    """Vertical 5: AiU Orbital (Connectivity)
     ARR 2030: $3.5B
     Moat: Global LEO ground station mesh + Aircraft Relay.
     """

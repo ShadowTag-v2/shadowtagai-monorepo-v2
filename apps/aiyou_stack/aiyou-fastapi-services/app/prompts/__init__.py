@@ -11,11 +11,11 @@ from .cheat_sheet import (
 )
 
 __all__ = [
-    "CheatSheet",
-    "ToneType",
-    "FormatType",
-    "CheatSheetEvolution",
     "CHEAT_SHEET_VERSIONS",
+    "CheatSheet",
+    "CheatSheetEvolution",
+    "FormatType",
+    "ToneType",
     "create_kernel_cheat_sheet",
     "create_wealth_planning_cheat_sheet",
 ]

@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Briefing Delivery
+"""PNKLN Intelligence Pipeline - Briefing Delivery
 
 Delivers morning briefings to CEO and team:
 - Tier 1: Detailed executive briefing via email
@@ -21,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class BriefingDelivery:
-    """
-    Briefing delivery handler
+    """Briefing delivery handler
     """
 
     def __init__(self):
@@ -36,11 +34,11 @@ class BriefingDelivery:
         logger.info("BriefingDelivery initialized")
 
     async def deliver_briefing(self, items: list[IntelligenceItem]):
-        """
-        Deliver morning briefing
+        """Deliver morning briefing
 
         Args:
             items: List of processed intelligence items
+
         """
         logger.info("=== Delivering Morning Briefing ===")
         start_time = datetime.now()
@@ -262,11 +260,10 @@ PIPELINE STATS:
 
 
 async def main():
-    """
-    Main briefing delivery entry point
+    """Main briefing delivery entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load processed items

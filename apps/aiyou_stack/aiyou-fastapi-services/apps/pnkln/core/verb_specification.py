@@ -1,5 +1,4 @@
-"""
-VerbSpecification - Action Verb Decomposition System
+"""VerbSpecification - Action Verb Decomposition System
 Version: 1.0.0
 
 Philosophy: California Bar Method - each action verb gets its own separate consideration.
@@ -215,8 +214,7 @@ class TaskDecomposition:
 
 
 class VerbSpecification:
-    """
-    Action verb decomposition system.
+    """Action verb decomposition system.
 
     California Bar Method:
     1. Break compound statements into simple sentences
@@ -233,8 +231,7 @@ class VerbSpecification:
     # =========================================================================
 
     def decompose(self, text: str) -> TaskDecomposition:
-        """
-        Decompose text into action verbs with analysis.
+        """Decompose text into action verbs with analysis.
 
         "Dan and Dave went to burglarize" becomes:
         - "Dan went to burglarize"
@@ -280,8 +277,7 @@ class VerbSpecification:
         )
 
     def _split_compound_subjects(self, text: str) -> list[str]:
-        """
-        Split compound subjects into simple sentences.
+        """Split compound subjects into simple sentences.
 
         "A and B do X" → ["A does X", "B does X"]
         """
@@ -372,8 +368,7 @@ class VerbSpecification:
         }
 
     def analyze_verb(self, verb: str, answers: dict[str, str] = None) -> VerbAnalysis:
-        """
-        Create analysis for a specific verb.
+        """Create analysis for a specific verb.
 
         Args:
             verb: The action verb
@@ -381,6 +376,7 @@ class VerbSpecification:
 
         Returns:
             VerbAnalysis with template and answers
+
         """
         template = self.get_verb_template(verb)
         analysis = VerbAnalysis(
@@ -418,8 +414,7 @@ class VerbSpecification:
     # =========================================================================
 
     def generate_outline(self, decomposition: TaskDecomposition) -> str:
-        """
-        Generate outline from decomposition.
+        """Generate outline from decomposition.
 
         This is the skeleton that gets filled in.
         """
@@ -449,12 +444,12 @@ class VerbSpecification:
         decomposition: TaskDecomposition,
         filled_analyses: dict[str, dict[str, str]] = None,
     ) -> str:
-        """
-        Generate complete specification document.
+        """Generate complete specification document.
 
         Args:
             decomposition: The task decomposition
             filled_analyses: Dict of verb → {question → answer}
+
         """
         filled = filled_analyses or {}
 
@@ -499,8 +494,7 @@ class VerbSpecification:
         decomposition: TaskDecomposition,
         filled_analyses: dict[str, dict[str, str]],
     ) -> dict[str, Any]:
-        """
-        Check if all verbs have been fully analyzed.
+        """Check if all verbs have been fully analyzed.
 
         "Leave no points on the table."
         """
@@ -542,8 +536,7 @@ class VerbSpecification:
 
 
 def create_verb_system() -> VerbSpecification:
-    """
-    Create verb specification system.
+    """Create verb specification system.
 
     "Each action verb gets its own separate consideration."
     """

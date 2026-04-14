@@ -1,5 +1,4 @@
-"""
-FastAPI routes for monitoring, metrics, and alerting.
+"""FastAPI routes for monitoring, metrics, and alerting.
 
 Endpoints:
 - GET /api/dashboard - Unified metrics dashboard
@@ -76,8 +75,7 @@ class AlertActionRequest(BaseModel):
 # Dashboard endpoints
 @router.get("/dashboard", response_model=DashboardResponse)
 async def get_dashboard_data():
-    """
-    Get unified dashboard data.
+    """Get unified dashboard data.
 
     Returns complete system snapshot including:
     - Ingestion metrics
@@ -101,13 +99,13 @@ async def get_dashboard_data():
 
 @router.get("/dashboard/health", response_model=HealthResponse)
 async def get_health_status():
-    """
-    Get system health status.
+    """Get system health status.
 
     Returns:
     - Overall health score (0-100)
     - Status (healthy/degraded/critical)
     - Component breakdown
+
     """
     dashboard = get_dashboard()
     snapshot = await dashboard.get_current_snapshot()
@@ -129,8 +127,7 @@ async def get_health_status():
 
 @router.get("/dashboard/sla")
 async def get_sla_compliance():
-    """
-    Get SLA compliance metrics.
+    """Get SLA compliance metrics.
 
     Returns compliance status for:
     - Data quality (>15% Tier 1)
@@ -150,8 +147,7 @@ async def list_alerts(
     ),
     priority: str | None = Query(None, description="Filter by priority (info, warning, critical)"),
 ):
-    """
-    List active predictive alerts.
+    """List active predictive alerts.
 
     Query parameters:
     - category: Filter by alert category
@@ -198,8 +194,7 @@ async def acknowledge_alert(alert_id: str):
 
     if alerting.acknowledge_alert(alert_id):
         return {"status": "success", "message": f"Alert {alert_id} acknowledged"}
-    else:
-        raise HTTPException(status_code=404, detail="Alert not found")
+    raise HTTPException(status_code=404, detail="Alert not found")
 
 
 @router.post("/alerts/{alert_id}/resolve")
@@ -209,8 +204,7 @@ async def resolve_alert(alert_id: str):
 
     if alerting.resolve_alert(alert_id):
         return {"status": "success", "message": f"Alert {alert_id} resolved"}
-    else:
-        raise HTTPException(status_code=404, detail="Alert not found")
+    raise HTTPException(status_code=404, detail="Alert not found")
 
 
 @router.post("/alerts/{alert_id}/snooze")
@@ -226,8 +220,7 @@ async def snooze_alert(alert_id: str, request: AlertActionRequest):
             "status": "success",
             "message": f"Alert {alert_id} snoozed for {request.snooze_minutes} minutes",
         }
-    else:
-        raise HTTPException(status_code=404, detail="Alert not found")
+    raise HTTPException(status_code=404, detail="Alert not found")
 
 
 @router.get("/alerts/stats")
@@ -240,13 +233,13 @@ async def get_alert_statistics():
 # Performance endpoints
 @router.get("/performance")
 async def get_performance_metrics():
-    """
-    Get performance monitoring data.
+    """Get performance monitoring data.
 
     Returns:
     - Component statistics
     - Bottlenecks
     - System resources
+
     """
     return performance_monitor.generate_performance_report()
 
@@ -264,8 +257,7 @@ async def get_component_performance(component_name: str):
 
 @router.get("/performance/bottlenecks")
 async def get_performance_bottlenecks(threshold_ms: float = Query(1000.0)):
-    """
-    Get performance bottlenecks.
+    """Get performance bottlenecks.
 
     Query parameters:
     - threshold_ms: Minimum average duration to be considered a bottleneck
@@ -281,11 +273,10 @@ async def get_performance_bottlenecks(threshold_ms: float = Query(1000.0)):
 async def get_ml_anomalies(
     hours: int = Query(24, description="Hours of history to retrieve"),
     severity: str | None = Query(
-        None, description="Filter by severity (low, medium, high, critical)"
+        None, description="Filter by severity (low, medium, high, critical)",
     ),
 ):
-    """
-    Get ML-detected anomalies.
+    """Get ML-detected anomalies.
 
     Query parameters:
     - hours: How many hours of history to include
@@ -303,13 +294,13 @@ async def get_ml_anomalies(
 
 @router.get("/ml/predictions")
 async def get_ml_predictions():
-    """
-    Get ML predictions.
+    """Get ML predictions.
 
     Returns:
     - Cost predictions (end of month projection)
     - Source failure predictions
     - Quality trends
+
     """
     # This would connect to actual ML detector instance
     return {

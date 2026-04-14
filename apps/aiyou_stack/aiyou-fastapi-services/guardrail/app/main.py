@@ -29,8 +29,7 @@ class SafetyEstop:
         self._refresh_config()
 
     def _refresh_config(self):
-        """
-        Dynamically loads the Blocklist from GCS.
+        """Dynamically loads the Blocklist from GCS.
         This allows you to add a name like "Ashley St. Clair" to the bucket
         and have it blocked instantly without redeploying code.
         """
@@ -62,14 +61,13 @@ class SafetyEstop:
 
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
     def call_google_armor(self, prompt: str) -> tuple[bool, bool, str]:
-        """
-        Corner 2: The Bodyguard (Google Model Armor).
+        """Corner 2: The Bodyguard (Google Model Armor).
         Returns: (is_blocked, has_pii, reason)
         """
         try:
             # Create the request
             request = modelarmor_v1.SanitizeUserPromptRequest(
-                name=ARMOR_TEMPLATE_ID, user_prompt_data=modelarmor_v1.DataItem(text=prompt)
+                name=ARMOR_TEMPLATE_ID, user_prompt_data=modelarmor_v1.DataItem(text=prompt),
             )
 
             # Call Google API
@@ -100,8 +98,7 @@ class SafetyEstop:
 
     @retry(stop=stop_after_attempt(2))
     def call_hive(self, prompt: str, strict_mode: bool) -> tuple[bool, str]:
-        """
-        Corner 3: The Censor (Hive).
+        """Corner 3: The Censor (Hive).
         Uses 'Strict Mode' if Google detected PII.
         """
         url = "https://api.thehive.ai/api/v2/task/sync"

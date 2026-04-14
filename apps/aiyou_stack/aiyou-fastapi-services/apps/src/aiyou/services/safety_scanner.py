@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Safety Scanner with Lexicons
+"""Safety Scanner with Lexicons
 Scans content for harmful patterns before corpus indexing.
 Judge #6 pre-filter for Flying n-autoresearch/Kosmos/BioAgents pipeline.
 """
@@ -23,8 +22,7 @@ class ScanResult:
 
 
 class SafetyScanner:
-    """
-    Lexicon-based safety scanner.
+    """Lexicon-based safety scanner.
 
     Pipeline position:
     GitHub Discovery → Safety Scanner → Corpus Indexer
@@ -70,11 +68,11 @@ class SafetyScanner:
     ]
 
     def __init__(self, custom_lexicons: dict[str, list[str]] = None):
-        """
-        Initialize scanner with optional custom lexicons.
+        """Initialize scanner with optional custom lexicons.
 
         Args:
             custom_lexicons: Dict of {category: [patterns]}
+
         """
         self.lexicons = {
             "secrets": self.SECRETS_PATTERNS,
@@ -92,8 +90,7 @@ class SafetyScanner:
         }
 
     def scan_content(self, content: str, source: str = "unknown") -> ScanResult:
-        """
-        Scan content for safety issues.
+        """Scan content for safety issues.
 
         Args:
             content: Text to scan
@@ -101,6 +98,7 @@ class SafetyScanner:
 
         Returns:
             ScanResult with flags and redactions
+
         """
         flags = []
         redactions = []
@@ -148,20 +146,20 @@ class SafetyScanner:
             return ScanResult(
                 path=file_path,
                 safe=False,
-                flags=[f"error:{str(e)}"],
+                flags=[f"error:{e!s}"],
                 redactions=[],
                 confidence=0.0,
             )
 
     def scan_discovery_output(self, discovery_json: dict) -> dict:
-        """
-        Scan all candidates from GitHub Discovery Agent.
+        """Scan all candidates from GitHub Discovery Agent.
 
         Args:
             discovery_json: Output from github_discovery_agent.py
 
         Returns:
             Annotated discovery JSON with safety flags
+
         """
         results = {"scanned": 0, "safe": 0, "flagged": 0, "scripts": []}
 

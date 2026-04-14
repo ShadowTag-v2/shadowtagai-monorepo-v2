@@ -1,5 +1,4 @@
-"""
-ATP 5-19 Risk Assessment Engine
+"""ATP 5-19 Risk Assessment Engine
 U.S. Army Techniques Publication 5-19 risk management framework adapted for finance
 """
 
@@ -46,8 +45,7 @@ RISK_MATRIX: dict[tuple[Probability, Severity], RiskLevel] = {
 
 
 def assess_probability_from_percentage(percentage: float) -> Probability:
-    """
-    Convert percentage probability to ATP 5-19 level
+    """Convert percentage probability to ATP 5-19 level
 
     Args:
         percentage: Probability as percentage (0-100)
@@ -57,25 +55,24 @@ def assess_probability_from_percentage(percentage: float) -> Probability:
 
     Raises:
         ValueError: If percentage out of range
+
     """
     if not 0 <= percentage <= 100:
         raise ValueError(f"Probability percentage must be 0-100, got {percentage}")
 
     if percentage >= 80:
         return Probability.A  # Frequent
-    elif percentage >= 50:
+    if percentage >= 50:
         return Probability.B  # Likely
-    elif percentage >= 20:
+    if percentage >= 20:
         return Probability.C  # Occasional
-    elif percentage >= 5:
+    if percentage >= 5:
         return Probability.D  # Seldom
-    else:
-        return Probability.E  # Unlikely
+    return Probability.E  # Unlikely
 
 
 def assess_probability_from_frequency(occurrences: int, total: int) -> Probability:
-    """
-    Assess probability from historical frequency
+    """Assess probability from historical frequency
 
     Args:
         occurrences: Number of times event occurred
@@ -86,6 +83,7 @@ def assess_probability_from_frequency(occurrences: int, total: int) -> Probabili
 
     Raises:
         ValueError: If invalid inputs
+
     """
     if total <= 0:
         raise ValueError(f"Total must be positive, got {total}")
@@ -102,8 +100,7 @@ def assess_probability_from_frequency(occurrences: int, total: int) -> Probabili
 
 
 def assess_severity_from_loss(loss_usd: float) -> Severity:
-    """
-    Convert potential loss to ATP 5-19 severity level
+    """Convert potential loss to ATP 5-19 severity level
 
     Args:
         loss_usd: Potential loss in USD
@@ -116,22 +113,21 @@ def assess_severity_from_loss(loss_usd: float) -> Severity:
         II (Critical): $1M-$10M loss, material breach
         III (Moderate): $100K-$1M loss, minor violations
         IV (Negligible): <$100K loss, no violations
+
     """
     loss_abs = abs(loss_usd)
 
     if loss_abs > 10_000_000:
         return Severity.I  # Catastrophic
-    elif loss_abs > 1_000_000:
+    if loss_abs > 1_000_000:
         return Severity.II  # Critical
-    elif loss_abs > 100_000:
+    if loss_abs > 100_000:
         return Severity.III  # Moderate
-    else:
-        return Severity.IV  # Negligible
+    return Severity.IV  # Negligible
 
 
 def assess_severity_from_var(var_usd: float, portfolio_value: float) -> Severity:
-    """
-    Assess severity from Value at Risk relative to portfolio
+    """Assess severity from Value at Risk relative to portfolio
 
     Args:
         var_usd: Value at Risk (95% confidence)
@@ -139,6 +135,7 @@ def assess_severity_from_var(var_usd: float, portfolio_value: float) -> Severity
 
     Returns:
         Severity level (I-IV)
+
     """
     if portfolio_value <= 0:
         raise ValueError(f"Portfolio value must be positive, got {portfolio_value}")
@@ -148,12 +145,11 @@ def assess_severity_from_var(var_usd: float, portfolio_value: float) -> Severity
     # Thresholds based on % of portfolio at risk
     if var_percentage > 20:
         return Severity.I  # Catastrophic: >20% portfolio at risk
-    elif var_percentage > 5:
+    if var_percentage > 5:
         return Severity.II  # Critical: 5-20% at risk
-    elif var_percentage > 1:
+    if var_percentage > 1:
         return Severity.III  # Moderate: 1-5% at risk
-    else:
-        return Severity.IV  # Negligible: <1% at risk
+    return Severity.IV  # Negligible: <1% at risk
 
 
 # ============================================================================
@@ -162,8 +158,7 @@ def assess_severity_from_var(var_usd: float, portfolio_value: float) -> Severity
 
 
 def calculate_risk_level(probability: Probability, severity: Severity) -> RiskLevel:
-    """
-    Calculate risk level from probability and severity using ATP 5-19 matrix
+    """Calculate risk level from probability and severity using ATP 5-19 matrix
 
     Args:
         probability: Probability level (A-E)
@@ -171,15 +166,15 @@ def calculate_risk_level(probability: Probability, severity: Severity) -> RiskLe
 
     Returns:
         Risk level (EH/H/M/L)
+
     """
     return RISK_MATRIX[(probability, severity)]
 
 
 def calculate_risk_from_loss(
-    probability_pct: float, loss_usd: float
+    probability_pct: float, loss_usd: float,
 ) -> tuple[Probability, Severity, RiskLevel]:
-    """
-    Calculate full risk assessment from probability and loss
+    """Calculate full risk assessment from probability and loss
 
     Args:
         probability_pct: Probability as percentage (0-100)
@@ -187,6 +182,7 @@ def calculate_risk_from_loss(
 
     Returns:
         Tuple of (Probability, Severity, RiskLevel)
+
     """
     prob = assess_probability_from_percentage(probability_pct)
     sev = assess_severity_from_loss(loss_usd)
@@ -195,10 +191,9 @@ def calculate_risk_from_loss(
 
 
 def calculate_risk_from_var(
-    probability_pct: float, var_usd: float, portfolio_value: float
+    probability_pct: float, var_usd: float, portfolio_value: float,
 ) -> tuple[Probability, Severity, RiskLevel]:
-    """
-    Calculate risk assessment from VaR metrics
+    """Calculate risk assessment from VaR metrics
 
     Args:
         probability_pct: Probability as percentage (0-100)
@@ -207,6 +202,7 @@ def calculate_risk_from_var(
 
     Returns:
         Tuple of (Probability, Severity, RiskLevel)
+
     """
     prob = assess_probability_from_percentage(probability_pct)
     sev = assess_severity_from_var(var_usd, portfolio_value)
@@ -220,8 +216,7 @@ def calculate_risk_from_var(
 
 
 def assess_residual_risk(original_risk: RiskLevel, mitigation_effectiveness: float) -> RiskLevel:
-    """
-    Estimate residual risk after mitigation measures
+    """Estimate residual risk after mitigation measures
 
     Args:
         original_risk: Risk level before mitigation
@@ -234,6 +229,7 @@ def assess_residual_risk(original_risk: RiskLevel, mitigation_effectiveness: flo
         - <50% effective: No change
         - 50-75%: Reduce by 1 level
         - >75%: Reduce by 2 levels
+
     """
     if not 0 <= mitigation_effectiveness <= 100:
         raise ValueError(f"Mitigation effectiveness must be 0-100, got {mitigation_effectiveness}")
@@ -263,8 +259,7 @@ def assess_residual_risk(original_risk: RiskLevel, mitigation_effectiveness: flo
 
 
 def recommend_action(risk_level: RiskLevel, confidence: float) -> str:
-    """
-    Recommend action based on risk level and confidence
+    """Recommend action based on risk level and confidence
 
     Args:
         risk_level: Assessed risk level
@@ -272,33 +267,32 @@ def recommend_action(risk_level: RiskLevel, confidence: float) -> str:
 
     Returns:
         Action recommendation
+
     """
     # High confidence recommendations
     if confidence >= 80:
         if risk_level == RiskLevel.EH:
             return "DENY - Extremely high risk"
-        elif risk_level == RiskLevel.H:
+        if risk_level == RiskLevel.H:
             return "APPROVE_WITH_CONDITIONS - High risk requires mitigation"
-        elif risk_level == RiskLevel.M:
+        if risk_level == RiskLevel.M:
             return "APPROVE_WITH_CONDITIONS - Moderate risk, monitor closely"
-        else:  # L
-            return "APPROVE - Low risk"
+        # L
+        return "APPROVE - Low risk"
 
     # Medium confidence recommendations
-    elif confidence >= 60:
+    if confidence >= 60:
         if risk_level in (RiskLevel.EH, RiskLevel.H):
             return "ESCALATE - High risk with uncertain confidence"
-        elif risk_level == RiskLevel.M:
+        if risk_level == RiskLevel.M:
             return "APPROVE_WITH_CONDITIONS - Moderate risk, additional review"
-        else:  # L
-            return "APPROVE - Low risk"
+        # L
+        return "APPROVE - Low risk"
 
     # Low confidence recommendations
-    else:
-        if risk_level in (RiskLevel.EH, RiskLevel.H):
-            return "DENY - Cannot approve high risk with low confidence"
-        else:
-            return "DEFER - Requires additional analysis"
+    if risk_level in (RiskLevel.EH, RiskLevel.H):
+        return "DENY - Cannot approve high risk with low confidence"
+    return "DEFER - Requires additional analysis"
 
 
 def get_risk_description(risk_level: RiskLevel) -> str:
@@ -318,10 +312,9 @@ def get_risk_description(risk_level: RiskLevel) -> str:
 
 
 def validate_risk_assessment(
-    probability: Probability, severity: Severity, risk_level: RiskLevel
+    probability: Probability, severity: Severity, risk_level: RiskLevel,
 ) -> bool:
-    """
-    Validate that risk level matches ATP 5-19 matrix
+    """Validate that risk level matches ATP 5-19 matrix
 
     Args:
         probability: Probability level
@@ -330,6 +323,7 @@ def validate_risk_assessment(
 
     Returns:
         True if valid, False otherwise
+
     """
     expected = calculate_risk_level(probability, severity)
     return expected == risk_level

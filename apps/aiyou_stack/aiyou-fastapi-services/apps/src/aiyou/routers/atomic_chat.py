@@ -1,5 +1,4 @@
-"""
-Atomic Chat Router - REST API Endpoints
+"""Atomic Chat Router - REST API Endpoints
 
 Provides endpoints for:
 - Creating new atomic chat contexts (OPORD creation)
@@ -43,10 +42,10 @@ class CreateContextRequest(BaseModel):
         description="Commander's intent, concept of operations, tasks, coordinating instructions",
     )
     service_support: dict[str, Any] | None = Field(
-        None, description="Logistics, personnel, medical/error handling"
+        None, description="Logistics, personnel, medical/error handling",
     )
     command_signal: dict[str, Any] | None = Field(
-        None, description="Command structure, signal channels, succession"
+        None, description="Command structure, signal channels, succession",
     )
     tags: list[str] | None = Field(None, description="Tags for categorization")
 
@@ -98,8 +97,7 @@ pdf_indexer = ScholarlyPDFIndexer()
 
 @router.post("/contexts", status_code=status.HTTP_201_CREATED)
 async def create_context(request: CreateContextRequest) -> dict[str, Any]:
-    """
-    Create new OPORD context.
+    """Create new OPORD context.
 
     This is the "New AI Issue Chat" workflow endpoint.
 
@@ -120,6 +118,7 @@ async def create_context(request: CreateContextRequest) -> dict[str, Any]:
       "tags": ["api", "blockchain", "erc8004"]
     }
     ```
+
     """
     try:
         result = context_service.create_context(
@@ -152,8 +151,7 @@ async def get_context(opord_number: int) -> dict[str, Any]:
 
 @router.patch("/contexts/{opord_number}")
 async def update_context(opord_number: int, request: UpdateContextRequest) -> dict[str, Any]:
-    """
-    Update OPORD context with summary and decisions.
+    """Update OPORD context with summary and decisions.
 
     This is the "Save Chat Summary" workflow endpoint.
     """
@@ -177,8 +175,7 @@ async def update_context(opord_number: int, request: UpdateContextRequest) -> di
 
 @router.post("/contexts/search")
 async def search_contexts(request: SearchContextsRequest) -> list[dict[str, Any]]:
-    """
-    Search OPORD contexts with full-text and filters.
+    """Search OPORD contexts with full-text and filters.
 
     Example:
     ```
@@ -189,6 +186,7 @@ async def search_contexts(request: SearchContextsRequest) -> list[dict[str, Any]
       "limit": 50
     }
     ```
+
     """
     try:
         results = context_service.search_contexts(
@@ -207,8 +205,7 @@ async def search_contexts(request: SearchContextsRequest) -> list[dict[str, Any]
 
 @router.post("/workflows/execute")
 async def execute_workflow(request: ExecuteWorkflowRequest) -> dict[str, Any]:
-    """
-    Execute workflow from JSON definition.
+    """Execute workflow from JSON definition.
 
     Example:
     ```
@@ -227,6 +224,7 @@ async def execute_workflow(request: ExecuteWorkflowRequest) -> dict[str, Any]:
       }
     }
     ```
+
     """
     try:
         result = workflow_engine.execute_workflow(workflow=request.workflow, inputs=request.inputs)
@@ -247,8 +245,7 @@ async def upload_scholarly_pdf(
     year: int = Form(...),
     topics: str | None = Form(None),  # Comma-separated
 ) -> dict[str, Any]:
-    """
-    Upload and index scholarly PDF.
+    """Upload and index scholarly PDF.
 
     Extracts text, indexes in Elasticsearch for full-text search.
     This enables the "Sauron's Panorama" knowledge base.
@@ -283,8 +280,7 @@ async def upload_scholarly_pdf(
 async def search_scholarly_pdfs(
     request: ScholarlyPDFSearchRequest,
 ) -> list[dict[str, Any]]:
-    """
-    Search indexed scholarly PDFs.
+    """Search indexed scholarly PDFs.
 
     Full-text search across all indexed papers using Elasticsearch.
 
@@ -300,6 +296,7 @@ async def search_scholarly_pdfs(
     ```
 
     Returns papers ranked by relevance with excerpt highlights.
+
     """
     try:
         results = pdf_indexer.search_pdfs(
@@ -330,8 +327,7 @@ async def get_shift_contexts(shift_number: int, status: str = "active") -> list[
 
 @router.post("/shifts/{shift_number}/clear-memory")
 async def clear_shift_memory(shift_number: int) -> dict[str, Any]:
-    """
-    Clear shift memory (archive completed contexts).
+    """Clear shift memory (archive completed contexts).
 
     Called during shift handoff to free short-term memory.
     """

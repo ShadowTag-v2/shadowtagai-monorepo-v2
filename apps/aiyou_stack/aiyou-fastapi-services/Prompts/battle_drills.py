@@ -1,5 +1,4 @@
-"""
-Battle Drills for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
+"""Battle Drills for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
 =================================================
 Mission-typed battle drills with specific tasks per troop.
 Based on Army Battle Drills adapted for software operations.

@@ -1,5 +1,4 @@
-"""
-LLM Memory Persistence System
+"""LLM Memory Persistence System
 
 Cross-device context synchronization via Git
 
@@ -105,7 +104,7 @@ class ConversationExtractor:
             # Handle various formats (list of convos, or dict with 'sources')
             if isinstance(data, list):
                 return data
-            elif isinstance(data, dict):
+            if isinstance(data, dict):
                 # Try to find a list in common keys
                 for key in ["conversations", "chat_history", "sources"]:
                     if key in data and isinstance(data[key], list):

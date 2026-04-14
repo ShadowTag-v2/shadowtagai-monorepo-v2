@@ -1,5 +1,4 @@
-"""
-Prompt management system with templates and engineering.
+"""Prompt management system with templates and engineering.
 """
 
 import json
@@ -232,7 +231,7 @@ class PromptEngineer:
             [
                 f"Example {i + 1}:\nInput: {ex['input']}\nOutput: {ex['output']}"
                 for i, ex in enumerate(examples)
-            ]
+            ],
         )
 
         return f"{examples_text}\n\n{prompt}"

@@ -1,5 +1,4 @@
-"""
-Compliance SDR Agent Demo
+"""Compliance SDR Agent Demo
 
 Demonstrates enforcement-first lead generation with GDPR/CAN-SPAM compliance.
 """
@@ -39,7 +38,7 @@ def demo_jr_engine():
         config={
             "max_budget_per_action": 100.0,
             "require_human_approval_above": 1000.0,
-        }
+        },
     )
 
     # Example 1: Approved action
@@ -57,7 +56,7 @@ def demo_jr_engine():
             risk_probability=0.2,
             risk_severity=0.3,
             mitigation_strategy="Judge #6 GDPR/CAN-SPAM filtering",
-        )
+        ),
     ]
 
     decision = jr_engine.validate(
@@ -247,18 +246,18 @@ def demo_revenue_model():
     print(f"  LTV:CAC gate: {constraints_dict['ltv_cac_gate']}")
     print(f"  SLA p99: {constraints_dict['sla_p99_ms']}ms")
     print(
-        f"  Operational cost: ${constraints_dict['operational_cost_range'][0]:,.2f}-${constraints_dict['operational_cost_range'][1]:,.2f}/mo"
+        f"  Operational cost: ${constraints_dict['operational_cost_range'][0]:,.2f}-${constraints_dict['operational_cost_range'][1]:,.2f}/mo",
     )
 
     # Break-even analysis
     print("\nBreak-even Analysis:")
     min_customers, max_customers = DEFAULT_CONSTRAINTS.calculate_break_even_customers(
-        DEFAULT_REVENUE_MODEL.base_tier.monthly_price_usd
+        DEFAULT_REVENUE_MODEL.base_tier.monthly_price_usd,
     )
     print(f"  Base tier ($297/mo): {min_customers}-{max_customers} customers")
 
     min_leads, max_leads = DEFAULT_CONSTRAINTS.calculate_break_even_leads(
-        DEFAULT_REVENUE_MODEL.price_per_validated_lead
+        DEFAULT_REVENUE_MODEL.price_per_validated_lead,
     )
     print(f"  Usage tier ($0.10/lead): {min_leads:,}-{max_leads:,} leads/mo")
 

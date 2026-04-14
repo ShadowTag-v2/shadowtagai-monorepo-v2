@@ -4,8 +4,7 @@ from schema.memory import MemoryItem
 
 
 class AntigravityMemory:
-    """
-    Antigravity Permanent Memory System.
+    """Antigravity Permanent Memory System.
     Connects to Vertex AI Vector Search to store and recall code decisions.
 
     See: https://cloud.google.com/blog/products/ai-machine-learning/memory-for-ai-code-reviews-using-gemini-code-assist
@@ -43,7 +42,6 @@ class AntigravityMemory:
     async def get_embedding(self, text: str) -> list[float]:
         """Helper to get embeddings from Vertex AI Multimodal Embedding Model."""
         # Implementation via vertexai.preview.language_models
-        pass
 
 
 if __name__ == "__main__":

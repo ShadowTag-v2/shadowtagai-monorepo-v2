@@ -1,5 +1,4 @@
-"""
-Unit tests for Gemini Ingestion Layer (batch intelligence collection).
+"""Unit tests for Gemini Ingestion Layer (batch intelligence collection).
 """
 
 import pytest
@@ -24,7 +23,7 @@ class TestGeminiIngestionLayer:
     async def test_nightly_job_completes(self):
         """Test that nightly job completes successfully."""
         result = await self.ingestion.run_nightly_job(
-            job_id="test_job_001", max_items_per_source=100
+            job_id="test_job_001", max_items_per_source=100,
         )
 
         assert isinstance(result, IngestionResult)
@@ -35,7 +34,7 @@ class TestGeminiIngestionLayer:
     async def test_runtime_under_45_minutes(self):
         """Test that runtime meets ≤45 min target."""
         result = await self.ingestion.run_nightly_job(
-            job_id="test_runtime", max_items_per_source=100
+            job_id="test_runtime", max_items_per_source=100,
         )
 
         # With mock collectors (fast), should be well under 45 min
@@ -47,7 +46,7 @@ class TestGeminiIngestionLayer:
     async def test_multi_source_collection(self):
         """Test that multiple sources are collected."""
         result = await self.ingestion.run_nightly_job(
-            job_id="test_sources", max_items_per_source=100
+            job_id="test_sources", max_items_per_source=100,
         )
 
         # Should have metrics for multiple sources
@@ -73,7 +72,7 @@ class TestGeminiIngestionLayer:
     async def test_tier_1_ratio_target(self):
         """Test that Tier 1 ratio meets ≥40% target."""
         result = await self.ingestion.run_nightly_job(
-            job_id="test_tier_ratio", max_items_per_source=100
+            job_id="test_tier_ratio", max_items_per_source=100,
         )
 
         # Mock collectors designed to produce ~40% Tier 1
@@ -109,7 +108,7 @@ class TestGeminiIngestionLayer:
     async def test_am_briefing_delivered(self):
         """Test that AM briefing is generated and marked delivered."""
         result = await self.ingestion.run_nightly_job(
-            job_id="test_briefing", max_items_per_source=100
+            job_id="test_briefing", max_items_per_source=100,
         )
 
         assert result.am_briefing_delivered is True

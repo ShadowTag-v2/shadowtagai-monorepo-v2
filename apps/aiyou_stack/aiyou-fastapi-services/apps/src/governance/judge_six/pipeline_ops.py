@@ -10,8 +10,7 @@ class PipelineOps:
         self.db = db
 
     def calculate_hot_risk(self, transactions: list[dict[str, Any]]) -> float:
-        """
-        Calculates the aggregate 'Hot Risk' for a batch of transactions.
+        """Calculates the aggregate 'Hot Risk' for a batch of transactions.
         Logic: SUM(risk_score) for the batch.
         """
         total_risk = 0.0
@@ -27,8 +26,7 @@ class PipelineOps:
         collection_name: str,
         callback: Callable[[list[firestore.DocumentSnapshot], Any, Any], None],
     ):
-        """
-        Watches a Firestore collection stream using on_snapshot.
+        """Watches a Firestore collection stream using on_snapshot.
         """
         col_ref = self.db.collection(collection_name)
 
@@ -37,8 +35,7 @@ class PipelineOps:
         done_event = threading.Event()
 
         def on_snapshot(col_snapshot, changes, read_time):
-            """
-            Wrapper callback to handle the snapshot.
+            """Wrapper callback to handle the snapshot.
             """
             try:
                 # Delegate to the provided business logic callback

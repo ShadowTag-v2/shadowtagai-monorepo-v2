@@ -1,5 +1,4 @@
-"""
-Database models package
+"""Database models package
 """
 
 from app.db.models.seo import (
@@ -13,11 +12,11 @@ from app.db.models.seo import (
 )
 
 __all__ = [
-    "SEOAnalysis",
+    "CoreWebVital",
     "MetaTag",
+    "SEOAnalysis",
     "SchemaMarkup",
+    "SearchRanking",
     "Sitemap",
     "SitemapURL",
-    "CoreWebVital",
-    "SearchRanking",
 ]

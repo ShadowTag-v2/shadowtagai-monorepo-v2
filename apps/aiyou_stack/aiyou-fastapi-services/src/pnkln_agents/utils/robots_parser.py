@@ -1,5 +1,4 @@
-"""
-robots.txt Parser
+"""robots.txt Parser
 Ethical web crawling compliance checker
 """
 
@@ -11,8 +10,7 @@ import requests
 
 
 class RobotsParser:
-    """
-    robots.txt parser with caching
+    """robots.txt parser with caching
 
     Respects website crawling rules as defined in robots.txt
     Caches parsed robots.txt for 24 hours to reduce requests
@@ -24,14 +22,14 @@ class RobotsParser:
         self.cache_ttl = timedelta(hours=24)
 
     def is_allowed(self, url: str) -> bool:
-        """
-        Check if URL is allowed by robots.txt
+        """Check if URL is allowed by robots.txt
 
         Args:
             url: Full URL to check
 
         Returns:
             True if allowed, False if disallowed
+
         """
         try:
             parsed = urlparse(url)
@@ -51,7 +49,7 @@ class RobotsParser:
             try:
                 # Fetch with timeout
                 response = requests.get(
-                    robots_url, timeout=5, headers={"User-Agent": self.user_agent}
+                    robots_url, timeout=5, headers={"User-Agent": self.user_agent},
                 )
 
                 if response.status_code == 200:
@@ -78,14 +76,14 @@ class RobotsParser:
             return True
 
     def get_crawl_delay(self, url: str) -> float | None:
-        """
-        Get crawl delay from robots.txt
+        """Get crawl delay from robots.txt
 
         Args:
             url: Full URL to check
 
         Returns:
             Crawl delay in seconds, or None if not specified
+
         """
         try:
             parsed = urlparse(url)
@@ -102,11 +100,11 @@ class RobotsParser:
             return None
 
     def clear_cache(self, domain: str | None = None):
-        """
-        Clear robots.txt cache
+        """Clear robots.txt cache
 
         Args:
             domain: Specific domain to clear, or None to clear all
+
         """
         if domain:
             self.cache.pop(domain, None)

@@ -31,7 +31,7 @@ async def intercept_tool_call(
     identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),
 ):
     logger.info(
-        f"[SHIELD 1] Intercepting tool call: {request.function_name} by principal ID: {identity.email}"
+        f"[SHIELD 1] Intercepting tool call: {request.function_name} by principal ID: {identity.email}",
     )
 
     # ATP 5-19 Deterministic Math
@@ -48,18 +48,18 @@ async def intercept_tool_call(
         if cost_usd > 100:
             logger.info("[SHIELD 1] REQUIRE COA triggers on high budget utilization.")
             return ToolCallResponse(
-                status="REQUIRE_COA_CONFIRMATION", reason="Tier 3 Risk: High Cost Threshold"
+                status="REQUIRE_COA_CONFIRMATION", reason="Tier 3 Risk: High Cost Threshold",
             )
 
         # Tier 1/2 (Cleared)
         logger.info("[SHIELD 1] Tool cleared for execution.")
         return ToolCallResponse(status="CLEARED")
 
-    elif request.function_name == "trigger_swarm_refactor":
+    if request.function_name == "trigger_swarm_refactor":
         scope = request.arguments.get("scope", "")
         if "core" in scope or "security" in scope:
             return ToolCallResponse(
-                status="REQUIRE_COA_CONFIRMATION", reason="Tier 3 Risk: Core modification"
+                status="REQUIRE_COA_CONFIRMATION", reason="Tier 3 Risk: Core modification",
             )
         return ToolCallResponse(status="CLEARED")
 

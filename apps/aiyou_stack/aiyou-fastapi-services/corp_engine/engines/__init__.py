@@ -1,5 +1,4 @@
-"""
-Corp Engine - Economic Engines
+"""Corp Engine - Economic Engines
 ==============================
 The money-making machinery of the platform.
 Economic Juggernaut: Analyze → Advise → Implement → Measure → Report

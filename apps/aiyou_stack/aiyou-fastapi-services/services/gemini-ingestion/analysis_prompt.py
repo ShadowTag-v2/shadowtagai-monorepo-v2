@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer Analysis Prompt
+"""Gemini Ingestion Layer Analysis Prompt
 
 Adapted from Judge #6 analysis framework for intelligence collection pipeline.
 Target: Gemini 2.0 Pro analysis of pre-production ingestion system.

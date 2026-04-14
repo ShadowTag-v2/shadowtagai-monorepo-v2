@@ -1,5 +1,4 @@
-"""
-Performance monitoring integration for unified observability.
+"""Performance monitoring integration for unified observability.
 
 Integrates with Performance Engineer to provide:
 - Real-time metrics collection
@@ -47,8 +46,7 @@ class PerformanceMetrics:
 
 
 class PerformanceMonitor:
-    """
-    Unified performance monitoring.
+    """Unified performance monitoring.
 
     Tracks:
     - Component-level performance
@@ -107,21 +105,20 @@ class PerformanceMonitor:
                         logger.debug(f"{component_name} completed in {metrics.duration_ms:.2f}ms")
 
                 return async_wrapped
-            else:
 
-                @wraps(func)
-                def sync_wrapped(*args, **kwargs):
-                    trace_id = f"{component_name}_{time.time()}"
-                    self.start_trace(trace_id)
+            @wraps(func)
+            def sync_wrapped(*args, **kwargs):
+                trace_id = f"{component_name}_{time.time()}"
+                self.start_trace(trace_id)
 
-                    try:
-                        result = func(*args, **kwargs)
-                        return result
-                    finally:
-                        metrics = self.end_trace(trace_id, component_name)
-                        logger.debug(f"{component_name} completed in {metrics.duration_ms:.2f}ms")
+                try:
+                    result = func(*args, **kwargs)
+                    return result
+                finally:
+                    metrics = self.end_trace(trace_id, component_name)
+                    logger.debug(f"{component_name} completed in {metrics.duration_ms:.2f}ms")
 
-                return sync_wrapped
+            return sync_wrapped
 
         return wrapper
 
@@ -179,7 +176,7 @@ class PerformanceMonitor:
                         "max_duration_ms": max(durations),
                         "sample_count": len(durations),
                         "severity": "critical" if avg_duration > threshold_ms * 2 else "warning",
-                    }
+                    },
                 )
 
         return sorted(bottlenecks, key=lambda x: -x["avg_duration_ms"])

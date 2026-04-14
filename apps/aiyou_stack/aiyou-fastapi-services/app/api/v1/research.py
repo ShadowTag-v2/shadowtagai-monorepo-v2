@@ -1,5 +1,4 @@
-"""
-Research API Endpoint
+"""Research API Endpoint
 
 Multi-source research orchestration via REST API.
 Integrates with GeminiResearchAgent for Drive, Gmail, Web search.
@@ -34,7 +33,7 @@ class ResearchRequest(BaseModel):
 
     query: str = Field(..., description="Research query", min_length=3, max_length=1000)
     sources: list[str] | None = Field(
-        None, description="Override source selection (drive, gmail, web)"
+        None, description="Override source selection (drive, gmail, web)",
     )
     max_results_per_source: int = Field(10, description="Maximum results per source", ge=1, le=50)
     enable_synthesis: bool = Field(True, description="Use Gemini to synthesize results into report")
@@ -84,8 +83,7 @@ class ResearchIntentResponse(BaseModel):
 
 @router.post("/", response_model=ResearchResponse)
 async def execute_research(request: ResearchRequest):
-    """
-    Execute multi-source research query.
+    """Execute multi-source research query.
 
     Workflow:
     1. Route query to determine sources (or use override)
@@ -101,6 +99,7 @@ async def execute_research(request: ResearchRequest):
 
     Raises:
         HTTPException: On execution errors
+
     """
     try:
         logger.info(f"Research request: {request.query[:50]}...")
@@ -128,16 +127,15 @@ async def execute_research(request: ResearchRequest):
 
     except TimeoutError as e:
         logger.error(f"Research timeout: {e}")
-        raise HTTPException(status_code=504, detail=f"Research query timed out: {str(e)}")
+        raise HTTPException(status_code=504, detail=f"Research query timed out: {e!s}")
     except Exception as e:
         logger.error(f"Research failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Research execution failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Research execution failed: {e!s}")
 
 
 @router.get("/tools", response_model=ToolAvailabilityResponse)
 async def get_tool_availability():
-    """
-    Check which research tools are available.
+    """Check which research tools are available.
 
     Returns availability status for:
     - drive_search: Google Drive API
@@ -157,8 +155,7 @@ async def get_tool_availability():
 
 @router.post("/detect", response_model=ResearchIntentResponse)
 async def detect_intent(query: str):
-    """
-    Detect if a query has research intent.
+    """Detect if a query has research intent.
 
     Useful for routing decisions without executing full research.
 
@@ -167,6 +164,7 @@ async def detect_intent(query: str):
 
     Returns:
         ResearchIntentResponse with detection results
+
     """
     intent = detect_research_intent(query)
 

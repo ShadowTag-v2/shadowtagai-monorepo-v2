@@ -35,8 +35,7 @@ class BigQueryTool:
 
 
 class DataEngineeringAgent:
-    """
-    The 'Brain' of the operation. Analyzes Swarm Telemetry in BigQuery.
+    """The 'Brain' of the operation. Analyzes Swarm Telemetry in BigQuery.
     """
 
     def __init__(self, project_id: str):

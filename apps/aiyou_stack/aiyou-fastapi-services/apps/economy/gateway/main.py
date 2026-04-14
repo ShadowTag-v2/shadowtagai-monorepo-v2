@@ -17,8 +17,7 @@ STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "whsec_mock_secret")
 
 @app.post("/webhook/stripe")
 async def stripe_webhook(request: Request):
-    """
-    Listens for Stripe 'checkout.session.completed' events.
+    """Listens for Stripe 'checkout.session.completed' events.
     Triggers NFT Minting upon success.
     """
     payload = await request.body()

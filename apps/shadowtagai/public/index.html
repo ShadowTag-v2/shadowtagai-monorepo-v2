@@ -2252,6 +2252,19 @@ if (window.location.hash) {
             const vignette = document.querySelector('.hero-video-vignette');
             if (vignette) vignette.style.display = 'none';
         });
+
+        // Aggressive autoplay retry — handle Safari/Chrome policy denials
+        function retryAutoplay() {
+            activeVideo.play().catch(() => {/* silently retry on next interaction */});
+        }
+        ['click', 'touchstart', 'scroll', 'keydown'].forEach(evt => {
+            document.addEventListener(evt, function onFirstInteraction() {
+                retryAutoplay();
+                document.removeEventListener(evt, onFirstInteraction);
+            }, { once: true, passive: true });
+        });
+        // Also retry 1s after DOM load
+        setTimeout(retryAutoplay, 1000);
     })();
 
     // ===== PHASE 2: Scroll-Triggered Parallax Controller =====

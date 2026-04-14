@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Abstract Base Agent for Flying n-autoresearch/Kosmos/BioAgents swarm.
+"""Abstract Base Agent for Flying n-autoresearch/Kosmos/BioAgents swarm.
 Defines composable agent interface with forward/backward pattern.
 Based on patterns from yyz-agentics-june/neural_network/core/base.py
 """
@@ -56,8 +55,7 @@ class AgentResult:
 
 
 class BaseAgent(ABC):
-    """
-    Abstract base class for Flying Monkey agents.
+    """Abstract base class for Flying Monkey agents.
 
     Implements composable forward/backward pattern from neural networks.
     Agents can be chained in sequences for complex task pipelines.
@@ -68,13 +66,13 @@ class BaseAgent(ABC):
     """
 
     def __init__(self, agent_id: int, tier: AgentTier = AgentTier.FREE, squad_id: int = None):
-        """
-        Initialize base agent.
+        """Initialize base agent.
 
         Args:
             agent_id: Unique agent identifier (0-599)
             tier: Service tier (FREE, FLASH, PRO)
             squad_id: Squad assignment (0-23)
+
         """
         self.agent_id = agent_id
         self.tier = tier
@@ -99,12 +97,10 @@ class BaseAgent(ABC):
     @abstractmethod
     def _init_params(self):
         """Initialize agent-specific parameters."""
-        pass
 
     @abstractmethod
     def forward(self, context: AgentContext, training: bool = True) -> AgentResult:
-        """
-        Execute forward pass (task processing).
+        """Execute forward pass (task processing).
 
         Args:
             context: Execution context with task data
@@ -112,21 +108,20 @@ class BaseAgent(ABC):
 
         Returns:
             AgentResult with output and metrics
+
         """
-        pass
 
     @abstractmethod
     def backward(self, grad_output: np.ndarray) -> np.ndarray:
-        """
-        Execute backward pass (refinement/feedback).
+        """Execute backward pass (refinement/feedback).
 
         Args:
             grad_output: Gradient from downstream agent
 
         Returns:
             Gradient to upstream agent
+
         """
-        pass
 
     def __call__(self, context: AgentContext, training: bool = True) -> AgentResult:
         """Allow agent to be called as function."""
@@ -163,29 +158,27 @@ class BaseAgent(ABC):
 
 
 class CompositeAgent(BaseAgent):
-    """
-    Agent composed of multiple sub-agents in sequence.
+    """Agent composed of multiple sub-agents in sequence.
 
     Enables complex task pipelines by chaining agents.
     """
 
     def __init__(
-        self, agent_id: int, components: list[BaseAgent], tier: AgentTier = AgentTier.FREE
+        self, agent_id: int, components: list[BaseAgent], tier: AgentTier = AgentTier.FREE,
     ):
-        """
-        Initialize composite agent.
+        """Initialize composite agent.
 
         Args:
             agent_id: Unique identifier
             components: List of sub-agents to chain
             tier: Service tier
+
         """
         super().__init__(agent_id, tier)
         self.components = components
 
     def _init_params(self):
         """Composite agents have no direct params."""
-        pass
 
     def forward(self, context: AgentContext, training: bool = True) -> AgentResult:
         """Execute all components in sequence."""
@@ -240,8 +233,7 @@ class CompositeAgent(BaseAgent):
 
 
 class TaskProcessorAgent(BaseAgent):
-    """
-    Concrete agent for task processing.
+    """Concrete agent for task processing.
 
     Implements basic task allocation and execution.
     """
@@ -299,7 +291,7 @@ class TaskProcessorAgent(BaseAgent):
             self.errors += 1
             self.status = AgentStatus.ERROR
             return AgentResult(
-                output=None, latency_ms=(time.time() - start) * 1000, success=False, error=str(e)
+                output=None, latency_ms=(time.time() - start) * 1000, success=False, error=str(e),
             )
 
     def backward(self, grad_output: np.ndarray) -> np.ndarray:
@@ -320,8 +312,7 @@ class TaskProcessorAgent(BaseAgent):
 
 
 class PheromoneAgent(BaseAgent):
-    """
-    Agent for ACO pheromone field updates.
+    """Agent for ACO pheromone field updates.
 
     Maintains and updates pheromone trails for squad routing.
     """
@@ -380,7 +371,7 @@ class PheromoneAgent(BaseAgent):
             self.errors += 1
             self.status = AgentStatus.ERROR
             return AgentResult(
-                output=None, latency_ms=(time.time() - start) * 1000, success=False, error=str(e)
+                output=None, latency_ms=(time.time() - start) * 1000, success=False, error=str(e),
             )
 
     def backward(self, grad_output: np.ndarray) -> np.ndarray:

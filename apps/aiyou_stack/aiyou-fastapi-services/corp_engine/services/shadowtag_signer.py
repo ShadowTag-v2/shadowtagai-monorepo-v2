@@ -1,5 +1,4 @@
-"""
-ShadowTag Signer Service
+"""ShadowTag Signer Service
 =========================
 C2PA-compliant content provenance signing for Corp Engine outputs.
 All intel reports, exports, and API responses are watermarked.
@@ -16,8 +15,7 @@ from cryptography.hazmat.primitives.asymmetric import ed25519
 
 
 class ShadowTagSigner:
-    """
-    ShadowTag v2.0 C2PA-compliant signer.
+    """ShadowTag v2.0 C2PA-compliant signer.
 
     Features:
     - Ed25519 digital signatures
@@ -37,8 +35,7 @@ class ShadowTagSigner:
         self.issuer = "shadowtagai-corp-engine"
 
     def sign_content(self, content: Any, content_type: str = "json") -> dict:
-        """
-        Sign content and generate C2PA manifest.
+        """Sign content and generate C2PA manifest.
 
         Args:
             content: Content to sign (dict, str, or bytes)
@@ -46,6 +43,7 @@ class ShadowTagSigner:
 
         Returns:
             dict with signature, manifest, and verification data
+
         """
         # Normalize content to bytes
         if isinstance(content, dict):
@@ -79,10 +77,9 @@ class ShadowTagSigner:
         }
 
     def verify_signature(
-        self, content: Any, signature_b64: str, content_type: str = "json"
+        self, content: Any, signature_b64: str, content_type: str = "json",
     ) -> dict:
-        """
-        Verify a signature against content.
+        """Verify a signature against content.
 
         Args:
             content: Original content
@@ -91,6 +88,7 @@ class ShadowTagSigner:
 
         Returns:
             dict with verification result
+
         """
         try:
             # Normalize content
@@ -176,27 +174,26 @@ class ShadowTagSigner:
     def _get_public_key_b64(self) -> str:
         """Get base64-encoded public key"""
         public_bytes = self.public_key.public_bytes(
-            encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw
+            encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw,
         )
         return base64.b64encode(public_bytes).decode("utf-8")
 
     def sign_api_response(self, response: dict) -> dict:
-        """
-        Sign an API response and add signature field.
+        """Sign an API response and add signature field.
 
         Args:
             response: API response dict
 
         Returns:
             Response with shadowtag_signature field added
+
         """
         result = self.sign_content(response, "json")
         response["shadowtag_signature"] = result["signature"]
         return response
 
     def sign_export(self, data: Any, export_format: str = "json") -> dict:
-        """
-        Sign an export file.
+        """Sign an export file.
 
         Args:
             data: Export data
@@ -204,6 +201,7 @@ class ShadowTagSigner:
 
         Returns:
             dict with signed data and verification info
+
         """
         result = self.sign_content(data, export_format)
 

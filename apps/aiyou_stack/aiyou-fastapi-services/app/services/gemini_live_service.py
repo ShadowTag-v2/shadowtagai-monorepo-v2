@@ -1,5 +1,4 @@
-"""
-Gemini Live Service - Real-time Multimodal Interaction
+"""Gemini Live Service - Real-time Multimodal Interaction
 
 Implements the Gemini Live API (WebSocket-based) for low-latency audio/video streaming.
 Uses the unified google-genai SDK.
@@ -22,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class GeminiLiveService:
-    """
-    Manager for Gemini Live sessions.
+    """Manager for Gemini Live sessions.
     Handles persistent WebSocket connections to Gemini 2.0 Flash in Vertex AI.
     """
 
@@ -41,7 +39,7 @@ class GeminiLiveService:
 
         if genai:
             self.client = genai.Client(
-                vertexai=True, project=self.project_id, location=self.location
+                vertexai=True, project=self.project_id, location=self.location,
             )
         else:
             self.client = None
@@ -53,8 +51,7 @@ class GeminiLiveService:
         logger.info("Knowledge context injected into GeminiLiveService")
 
     async def start_session(self, config: dict[str, Any] | None = None) -> Any:
-        """
-        Starts a new Live session.
+        """Starts a new Live session.
         Returns a session object that can be used for send/receive loop.
         """
         if not self.client:
@@ -70,7 +67,7 @@ class GeminiLiveService:
             "generation_config": {
                 "response_modalities": ["AUDIO"],
                 "speech_config": {
-                    "voice_config": {"prebuilt_voice_config": {"voice_name": "Puck"}}
+                    "voice_config": {"prebuilt_voice_config": {"voice_name": "Puck"}},
                 },
             },
             "system_instruction": system_instruction,
@@ -82,14 +79,13 @@ class GeminiLiveService:
         # Cast to Any to satisfy Pyright/Mypy for dynamic dict update
         from typing import cast
 
-        typed_config = cast(Any, live_config)
+        typed_config = cast("Any", live_config)
 
         # Note: In a real FastAPI context, the caller will manage the context manager
         return self.client.aio.live.connect(model=self.model_id, config=typed_config)
 
     async def run_proxy(self, client_ws, gemini_session):
-        """
-        Proxy messages between the client (WebSocket) and Gemini (Live session).
+        """Proxy messages between the client (WebSocket) and Gemini (Live session).
         """
 
         async def send_to_gemini():
@@ -111,7 +107,7 @@ class GeminiLiveService:
                     await client_ws.send_json(response.model_dump())
             except Exception as e:
                 logger.error(
-                    f"Error in Gemini Live WebSocket (receive_from_gemini): {e}", exc_info=True
+                    f"Error in Gemini Live WebSocket (receive_from_gemini): {e}", exc_info=True,
                 )
                 with suppress(Exception):
                     await client_ws.close(code=1011, reason=str(e))

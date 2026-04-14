@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4 Services
+"""ShadowTag-v4 Services
 
 This package contains all the service modules for the ShadowTag-v4 platform:
 - CineVerse: Verified streaming platform

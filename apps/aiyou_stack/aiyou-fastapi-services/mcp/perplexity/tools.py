@@ -1,5 +1,4 @@
-"""
-Perplexity MCP Tools - Standalone tool functions for MCP integration.
+"""Perplexity MCP Tools - Standalone tool functions for MCP integration.
 
 These functions can be registered directly with Claude Code's MCP system
 or called programmatically from other services.
@@ -21,8 +20,7 @@ def governance_score(
     user_region: str | None = None,
     transaction_value: float | None = None,
 ) -> dict[str, Any]:
-    """
-    Judge #6 governance scoring for Perplexity requests.
+    """Judge #6 governance scoring for Perplexity requests.
 
     Args:
         request_type: Type of request (purchase, checkout, query, generate)
@@ -32,6 +30,7 @@ def governance_score(
 
     Returns:
         Dict with decision, risk_score, compliance_flags, reasoning
+
     """
     import time
 
@@ -57,7 +56,7 @@ def governance_score(
 
     # Calculate risk score
     base_risk = {"purchase": 30, "checkout": 40, "query": 10, "generate": 15, "delete": 50}.get(
-        request_type.lower(), 20
+        request_type.lower(), 20,
     )
 
     if transaction_value and transaction_value > 1000:
@@ -103,8 +102,7 @@ def watermark_content(
     source: str,
     metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """
-    Apply SHADOWTAG cryptographic watermark to content.
+    """Apply SHADOWTAG cryptographic watermark to content.
 
     Args:
         content: Content to watermark
@@ -113,6 +111,7 @@ def watermark_content(
 
     Returns:
         Dict with signature, merkle_root, timestamp
+
     """
     timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
     full_metadata = {"source": source, "timestamp": timestamp, **(metadata or {})}
@@ -135,8 +134,7 @@ def log_to_manifest(
     watermark_result: dict[str, Any] | None = None,
     context_id: str = "perplexity_comet",
 ) -> str:
-    """
-    Log transaction to Apertus-compatible JSONL manifest.
+    """Log transaction to Apertus-compatible JSONL manifest.
 
     Args:
         governance_result: Result from governance_score
@@ -145,11 +143,12 @@ def log_to_manifest(
 
     Returns:
         Run ID for the logged entry
+
     """
     MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     run_id = governance_result.get(
-        "request_id", hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:16]
+        "request_id", hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:16],
     )
     timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
@@ -186,8 +185,7 @@ def search_manifest(
     decision: str | None = None,
     limit: int = 10,
 ) -> list[dict[str, Any]]:
-    """
-    Search the Apertus manifest for past governance decisions.
+    """Search the Apertus manifest for past governance decisions.
 
     Args:
         query: Search query (searches content and reasoning)
@@ -197,6 +195,7 @@ def search_manifest(
 
     Returns:
         List of matching manifest entries
+
     """
     if not MANIFEST_PATH.exists():
         return []

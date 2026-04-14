@@ -17,8 +17,7 @@ from app.models.kernel import KernelInput, KernelOutput
 
 
 class KernelChain:
-    """
-    Sequential kernel chain orchestrator.
+    """Sequential kernel chain orchestrator.
 
     Implements Pattern A: Synchronous Chain
     - Kernels execute in sequence
@@ -28,11 +27,11 @@ class KernelChain:
     """
 
     def __init__(self, kernels: list[Kernel]):
-        """
-        Initialize chain with ordered kernels.
+        """Initialize chain with ordered kernels.
 
         Args:
             kernels: List of kernels in execution order
+
         """
         self.kernels = kernels
         self.kernel_names = [k.name for k in kernels]
@@ -43,8 +42,7 @@ class KernelChain:
         trace_id: str | None = None,
         metadata: dict[str, Any] | None = None,
     ) -> list[KernelOutput]:
-        """
-        Execute the full kernel chain.
+        """Execute the full kernel chain.
 
         Args:
             initial_input: Initial input data (DecisionContext)
@@ -56,6 +54,7 @@ class KernelChain:
 
         Raises:
             KernelChainError: If any kernel fails or violates constraints
+
         """
         trace_id = trace_id or str(uuid.uuid4())
         metadata = metadata or {}
@@ -82,7 +81,7 @@ class KernelChain:
                     raise KernelChainError(
                         f"Kernel {kernel.name} confidence "
                         f"{output.metrics.confidence:.2%} below threshold "
-                        f"{settings.confidence_threshold:.2%}"
+                        f"{settings.confidence_threshold:.2%}",
                     )
 
             # Prepare input for next kernel (feed forward)
@@ -96,8 +95,7 @@ class KernelChain:
 
 
 class ChainExecutor:
-    """
-    High-level executor for the SHADOWTAGAI kernel chain.
+    """High-level executor for the SHADOWTAGAI kernel chain.
 
     Orchestrates the 3-kernel decision pipeline:
     1. ATP519ScanKernel: Extract violations
@@ -112,8 +110,7 @@ class ChainExecutor:
         self,
         decision_context: DecisionContext,
     ) -> DecisionResult:
-        """
-        Execute full decision pipeline and return structured result.
+        """Execute full decision pipeline and return structured result.
 
         Args:
             decision_context: Raw decision context to evaluate
@@ -123,6 +120,7 @@ class ChainExecutor:
 
         Raises:
             KernelChainError: If chain execution fails
+
         """
         start_time = time.perf_counter()
 
@@ -149,13 +147,13 @@ class ChainExecutor:
             if total_latency_ms > settings.max_latency_p99_ms:
                 raise KernelChainError(
                     f"Chain exceeded p99 latency SLA: "
-                    f"{total_latency_ms:.2f}ms > {settings.max_latency_p99_ms}ms"
+                    f"{total_latency_ms:.2f}ms > {settings.max_latency_p99_ms}ms",
                 )
 
             if total_cost_usd > settings.max_cost_per_decision:
                 raise KernelChainError(
                     f"Chain exceeded cost SLA: "
-                    f"${total_cost_usd:.6f} > ${settings.max_cost_per_decision}"
+                    f"${total_cost_usd:.6f} > ${settings.max_cost_per_decision}",
                 )
 
             # Build kernel metrics summary
@@ -190,5 +188,5 @@ class ChainExecutor:
         except Exception as e:
             total_latency_ms = (time.perf_counter() - start_time) * 1000
             raise KernelChainError(
-                f"Chain execution failed after {total_latency_ms:.2f}ms: {str(e)}"
+                f"Chain execution failed after {total_latency_ms:.2f}ms: {e!s}",
             ) from e

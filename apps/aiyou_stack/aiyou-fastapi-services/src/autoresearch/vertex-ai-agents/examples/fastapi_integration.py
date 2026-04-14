@@ -1,5 +1,4 @@
-"""
-FastAPI integration example for Vertex AI Agents
+"""FastAPI integration example for Vertex AI Agents
 Demonstrates how to build an API service using the agents
 """
 

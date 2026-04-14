@@ -20,8 +20,7 @@ class ContractReview:
 
 
 class ContractJudge:
-    """
-    Judge #6 Domain Judge: Law (Representation).
+    """Judge #6 Domain Judge: Law (Representation).
     Reviews contracts for fairness, compliance, and leverage.
     """
 
@@ -44,8 +43,7 @@ class ContractJudge:
         ]
 
     def review_contract(self, request: ContractRequest) -> ContractReview:
-        """
-        AI Agent Logic: "Would a human shark sign this?"
+        """AI Agent Logic: "Would a human shark sign this?"
         """
         red_flags = []
         leverage_points = []

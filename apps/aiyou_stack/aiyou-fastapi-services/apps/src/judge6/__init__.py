@@ -1,5 +1,4 @@
-"""
-Judge #6 Governance Engine - LangGraph Implementation
+"""Judge #6 Governance Engine - LangGraph Implementation
 
 This module implements what Antigravity promised but didn't deliver:
 - LangGraph state machine for governance kill chain
@@ -14,13 +13,13 @@ from .memory import SovereignMemory
 from .state import AssessmentState, AuditState, DebateState, GovernanceState
 
 __all__ = [
-    "create_governance_graph",
+    "AssessmentState",
+    "AuditState",
+    "DebateState",
     "GovernanceEngine",
     "GovernanceState",
-    "AssessmentState",
-    "DebateState",
-    "AuditState",
     "SovereignMemory",
+    "create_governance_graph",
 ]
 
 __version__ = "1.0.0"

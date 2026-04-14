@@ -1,5 +1,4 @@
-"""
-API Endpoint Tests
+"""API Endpoint Tests
 
 Tests for main application endpoints and routes
 """

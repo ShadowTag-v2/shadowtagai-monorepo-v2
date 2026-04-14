@@ -1,5 +1,4 @@
-"""
-PNKLN Revenue Platform - Gemini 2.0 Integration
+"""PNKLN Revenue Platform - Gemini 2.0 Integration
 97% cost reduction: GPT-4 ($50K/year) -> Gemini ($1.5K/year)
 
 This module replaces OpenAI/AutoGen with Google Gemini 2.0 for:
@@ -39,7 +38,7 @@ class GeminiCostTracker:
         savings = gpt4_cost - gemini_cost
         self.saved_cost += savings
         logger.info(
-            f"Generated {tokens_out} tokens. Saved ${savings:.4f} vs GPT-4. Total Savings: ${self.saved_cost:.2f}"
+            f"Generated {tokens_out} tokens. Saved ${savings:.4f} vs GPT-4. Total Savings: ${self.saved_cost:.2f}",
         )
 
 
@@ -57,8 +56,7 @@ class GeminiService:
         # self.model = genai.GenerativeModel('gemini-pro')
 
     async def generate_content(self, prompt: str) -> str:
-        """
-        Generate content using Gemini model.
+        """Generate content using Gemini model.
         Returns mocked response if API key missing for dev/test.
         """
         if not self.api_key:

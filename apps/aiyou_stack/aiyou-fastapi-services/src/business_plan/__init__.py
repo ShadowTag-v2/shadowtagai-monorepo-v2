@@ -1,5 +1,4 @@
-"""
-AI Agent Business Plan - Thread Rollup & Transfer Package
+"""AI Agent Business Plan - Thread Rollup & Transfer Package
 Generated: 2025-11-17
 Context: AI Agent-as-a-Service (Vertical SaaS Model)
 

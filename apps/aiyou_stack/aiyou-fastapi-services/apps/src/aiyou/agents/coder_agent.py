@@ -1,5 +1,4 @@
-"""
-Coder Agent - Specialist in code generation, refactoring, and implementation.
+"""Coder Agent - Specialist in code generation, refactoring, and implementation.
 
 Focuses on writing clean, well-documented code following best practices.
 """
@@ -8,8 +7,7 @@ from src.agents.base_agent import BaseAgent
 
 
 class CoderAgent(BaseAgent):
-    """
-    Coder agent specialized in code generation and implementation.
+    """Coder agent specialized in code generation and implementation.
 
     This agent writes code, creates files, implements features, and ensures
     proper documentation and type hints.

@@ -15,12 +15,11 @@ router = APIRouter(
 
 
 async def _boot_temporal_swarm(issue_id: str):
-    """
-    Temporal.io Client execution.
+    """Temporal.io Client execution.
     Triggers the Python Swarm, creates the gVisor sandbox, and executes the Cor.Cursor visual proofing.
     """
     logger.info(
-        f"[TEMPORAL BRIDGE] Spinning up gVisor sandbox and Cor.Cursor recorder for {issue_id}..."
+        f"[TEMPORAL BRIDGE] Spinning up gVisor sandbox and Cor.Cursor recorder for {issue_id}...",
     )
     temporal_host = os.environ.get("TEMPORAL_HOST", "localhost:7233")
     try:
@@ -42,8 +41,7 @@ async def _boot_temporal_swarm(issue_id: str):
 
 @router.post("/webhook")
 async def eventarc_webhook(request: Request, background_tasks: BackgroundTasks):
-    """
-    Receives Eventarc payloads from Firestore when whiteboard_issues are updated.
+    """Receives Eventarc payloads from Firestore when whiteboard_issues are updated.
     If status == 'CLEARED_FOR_SWARM', wakes up the Temporal Swarm workflows.
     """
     try:

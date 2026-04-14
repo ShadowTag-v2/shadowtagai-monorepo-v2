@@ -2,8 +2,7 @@ import random
 
 
 class ComplianceSDRAgent:
-    """
-    Simulates a Sales Development Rep (SDR) agent subject to GDPR governance checks.
+    """Simulates a Sales Development Rep (SDR) agent subject to GDPR governance checks.
     Used for verifying Judge #6 'Brakes' logic.
     """
 
@@ -13,8 +12,7 @@ class ComplianceSDRAgent:
         self.blocked_leads = 0
 
     def generate_leads(self, count: int, target_profile: str):
-        """
-        Generates dummy leads and checks them against a mock Governance Engine.
+        """Generates dummy leads and checks them against a mock Governance Engine.
         """
         print(f"🔍 [ComplianceSDR] Generating {count} leads for '{target_profile}'...")
 
@@ -42,8 +40,7 @@ class ComplianceSDRAgent:
         print(f"    Total Processed: {count}")
 
     def judge_six_governance_check(self, lead: dict) -> dict:
-        """
-        Simulates Judge #6 Governance Engine (GDPR Rule).
+        """Simulates Judge #6 Governance Engine (GDPR Rule).
         """
         # Rule: EU emails require explicit consent.
         if "germany" in lead["location"].lower() or ".de" in lead["email"]:
@@ -100,8 +97,7 @@ class LeadGenerationResult:
 
 
 class ComplianceSDRAgent(ShadowTagAiAgent):
-    """
-    Compliance-First SDR Agent for B2B lead generation
+    """Compliance-First SDR Agent for B2B lead generation
 
     Features:
     - GDPR/CAN-SPAM enforcement
@@ -163,7 +159,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
 
         # Corporate email patterns (lower GDPR risk)
         self.corporate_patterns = [
-            r".*@(?!(" + "|".join(self.personal_email_domains) + r"))[\w\-]+\.[a-z]{2,}$"
+            r".*@(?!(" + "|".join(self.personal_email_domains) + r"))[\w\-]+\.[a-z]{2,}$",
         ]
 
     def generate_leads(
@@ -173,8 +169,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
         customer_id: str,
         context: dict[str, Any] | None = None,
     ) -> AgentResult:
-        """
-        Generate leads with compliance enforcement
+        """Generate leads with compliance enforcement
 
         Args:
             query: Search query (e.g., "German fintech CTOs")
@@ -184,6 +179,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
 
         Returns:
             AgentResult with LeadGenerationResult
+
         """
         context = context or {}
         cost_estimate = target_count * self.price_per_approved_lead
@@ -231,8 +227,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
         ]
 
     def _execute_task(self, task: AgentTask, constraints: dict[str, Any]) -> LeadGenerationResult:
-        """
-        Execute lead generation with compliance filtering
+        """Execute lead generation with compliance filtering
 
         NOTE: This is a mock implementation. In production, this would:
         1. Query LinkedIn Sales Navigator, Apollo.io, Clearbit, etc.
@@ -307,8 +302,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
         )
 
     def _mock_lead_scraping(self, query: str, count: int) -> list[Lead]:
-        """
-        Mock lead scraping (replace with actual API integration)
+        """Mock lead scraping (replace with actual API integration)
 
         In production, this would integrate with:
         - LinkedIn Sales Navigator
@@ -379,7 +373,7 @@ class ComplianceSDRAgent(ShadowTagAiAgent):
         if not email or "@" not in email:
             return True
 
-        domain = email.split("@")[-1].lower()
+        domain = email.rsplit("@", maxsplit=1)[-1].lower()
         return domain in self.personal_email_domains
 
     def _verify_with_judge_six(self, result: LeadGenerationResult, context: dict[str, Any]):
@@ -421,13 +415,13 @@ def example_usage():
         config={
             "max_budget_per_action": 100.0,
             "require_human_approval_above": 1000.0,
-        }
+        },
     )
 
     judge_six = JudgeSixLite(
         config={
             "sla_p99_ms": 90,
-        }
+        },
     )
 
     agent = ComplianceSDRAgent(jr_engine=jr_engine, judge_six=judge_six)

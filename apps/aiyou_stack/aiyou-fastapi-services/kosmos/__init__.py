@@ -1,3 +1,3 @@
 from .core import KosmosInstance, KosmosPool, KosmosType
 
-__all__ = ["KosmosInstance", "KosmosType", "KosmosPool"]
+__all__ = ["KosmosInstance", "KosmosPool", "KosmosType"]

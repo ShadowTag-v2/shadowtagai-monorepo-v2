@@ -1,5 +1,4 @@
-"""
-API routes for trigger management.
+"""API routes for trigger management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -96,14 +95,13 @@ async def delete_trigger(
     await trigger_manager.unregister_trigger(trigger.id)
 
     await service.delete(trigger)
-    return None
 
 
 @router.post("/events", status_code=202)
 async def trigger_event(event_request: TriggerEventRequest):
     """Trigger an event to execute associated workflows."""
     execution_ids = await trigger_manager.trigger_event(
-        event_name=event_request.event_name, event_data=event_request.event_data
+        event_name=event_request.event_name, event_data=event_request.event_data,
     )
 
     return {
@@ -122,12 +120,12 @@ async def trigger_webhook(webhook_path: str, request: Request):
         webhook_data = {}
 
     execution_id = await trigger_manager.trigger_webhook(
-        webhook_path=webhook_path, webhook_data=webhook_data
+        webhook_path=webhook_path, webhook_data=webhook_data,
     )
 
     if execution_id is None:
         raise HTTPException(
-            status_code=404, detail=f"No webhook trigger found for path: {webhook_path}"
+            status_code=404, detail=f"No webhook trigger found for path: {webhook_path}",
         )
 
     return {"message": "Webhook triggered", "execution_id": execution_id}

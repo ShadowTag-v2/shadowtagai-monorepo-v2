@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Parallel Fitness Evaluator for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
+"""Parallel Fitness Evaluator for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
 Uses multiprocessing with shared memory for 4-10x speedup.
 Based on patterns from yyz-agentics-june/performance_optimization/src/parallel_optimized.py
 """
@@ -23,8 +22,7 @@ class BatchResult:
 
 
 class ParallelFitnessEvaluator:
-    """
-    Parallel fitness evaluation for swarm optimization.
+    """Parallel fitness evaluation for swarm optimization.
 
     Uses multiprocessing pools with shared memory to evaluate
     fitness of 600 agents in parallel batches.
@@ -33,15 +31,15 @@ class ParallelFitnessEvaluator:
     """
 
     def __init__(
-        self, num_workers: int = None, batch_size: int = 25, use_shared_memory: bool = True
+        self, num_workers: int = None, batch_size: int = 25, use_shared_memory: bool = True,
     ):
-        """
-        Initialize parallel evaluator.
+        """Initialize parallel evaluator.
 
         Args:
             num_workers: Number of worker processes (default: CPU count)
             batch_size: Agents per batch (default: 25 = one squad)
             use_shared_memory: Use shared memory for large arrays
+
         """
         self.num_workers = num_workers or cpu_count()
         self.batch_size = batch_size
@@ -49,10 +47,9 @@ class ParallelFitnessEvaluator:
         self._shared_mem = None
 
     def evaluate_batch(
-        self, positions: np.ndarray, fitness_fn: Callable[[np.ndarray], float]
+        self, positions: np.ndarray, fitness_fn: Callable[[np.ndarray], float],
     ) -> list[float]:
-        """
-        Evaluate fitness for a batch of positions in parallel.
+        """Evaluate fitness for a batch of positions in parallel.
 
         Args:
             positions: Array of shape (num_particles, dim)
@@ -60,6 +57,7 @@ class ParallelFitnessEvaluator:
 
         Returns:
             List of fitness values
+
         """
         num_particles = len(positions)
 
@@ -74,7 +72,7 @@ class ParallelFitnessEvaluator:
         # Parallel evaluation
         with Pool(processes=self.num_workers) as pool:
             results = pool.starmap(
-                _evaluate_batch_worker, [(batch, fitness_fn) for batch in batches]
+                _evaluate_batch_worker, [(batch, fitness_fn) for batch in batches],
             )
 
         # Flatten results
@@ -86,8 +84,7 @@ class ParallelFitnessEvaluator:
         fitness_fn: Callable[[np.ndarray], float],
         num_agents: int = 600,
     ) -> dict:
-        """
-        Evaluate entire 600-agent swarm in parallel.
+        """Evaluate entire 600-agent swarm in parallel.
 
         Args:
             swarm_positions: Array of shape (num_agents, dim)
@@ -96,6 +93,7 @@ class ParallelFitnessEvaluator:
 
         Returns:
             Dictionary with fitness values and timing metrics
+
         """
         start_time = time.time()
 
@@ -134,10 +132,9 @@ class ParallelFitnessEvaluator:
         }
 
     def evaluate_with_shared_memory(
-        self, positions: np.ndarray, agent_states: np.ndarray, fitness_fn_name: str
+        self, positions: np.ndarray, agent_states: np.ndarray, fitness_fn_name: str,
     ) -> list[float]:
-        """
-        Evaluate using shared memory for large state arrays.
+        """Evaluate using shared memory for large state arrays.
 
         Avoids copying large arrays to each worker process.
 
@@ -148,6 +145,7 @@ class ParallelFitnessEvaluator:
 
         Returns:
             List of fitness values
+
         """
         # Create shared memory
         shm = shared_memory.SharedMemory(create=True, size=agent_states.nbytes)
@@ -176,11 +174,11 @@ class ParallelFitnessEvaluator:
             shm.unlink()
 
     def benchmark(self, num_agents: int = 600, dim: int = 100, iterations: int = 10) -> dict:
-        """
-        Benchmark parallel vs sequential evaluation.
+        """Benchmark parallel vs sequential evaluation.
 
         Returns:
             Dictionary with timing comparison
+
         """
         # Generate test data
         positions = np.random.uniform(0, 599, (num_agents, dim))

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN Stack Integration Analyzer
+"""PNKLN Stack Integration Analyzer
 
 Analyzes the integration between Intelligence Pipeline (upstream collection)
 and Judge #6 (downstream enforcement) to identify:
@@ -363,7 +362,7 @@ class StackIntegrationAnalyzer:
             [
                 f"### {name}\n```\n{content[:2000]}...\n```"  # Truncate for demo
                 for name, content in specs.items()
-            ]
+            ],
         )
 
         prompt = f"""{INTEGRATION_ANALYSIS_PROMPT}
@@ -418,7 +417,7 @@ confidence_floor: 55%
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Analyze PNKLN stack integration between components"
+        description="Analyze PNKLN stack integration between components",
     )
     parser.add_argument(
         "--output",
@@ -434,7 +433,7 @@ def main():
         help="Base path to repository root",
     )
     parser.add_argument(
-        "--api-key", type=str, help="Google API key (or set GOOGLE_API_KEY env var)"
+        "--api-key", type=str, help="Google API key (or set GOOGLE_API_KEY env var)",
     )
 
     args = parser.parse_args()

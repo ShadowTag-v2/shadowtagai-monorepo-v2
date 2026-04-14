@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer
+"""Gemini Ingestion Layer
 Intelligence collection pipeline with ethical compliance
 
 Architecture: GKE CronJob Multi-Container
@@ -127,8 +126,7 @@ class IngestionResult:
 
 
 class EthicalComplianceValidator:
-    """
-    Validates ethical compliance for web crawling and data collection
+    """Validates ethical compliance for web crawling and data collection
 
     Checks:
     - robots.txt compliance
@@ -143,7 +141,7 @@ class EthicalComplianceValidator:
         self.max_requests_per_hour = self.config.get("max_requests_per_hour", 60)
         self.respect_robots_txt = self.config.get("respect_robots_txt", True)
         self.user_agent = self.config.get(
-            "user_agent", "SHADOWTAGAIBot/1.0 (+https://shadowtagai.ai/bot)"
+            "user_agent", "SHADOWTAGAIBot/1.0 (+https://shadowtagai.ai/bot)",
         )
 
         # Track request history for rate limiting
@@ -231,8 +229,7 @@ class EthicalComplianceValidator:
 
 
 class TierClassifier:
-    """
-    Classifies data sources into tiers based on quality and authority
+    """Classifies data sources into tiers based on quality and authority
 
     Tier 1: High-value, authoritative sources (e.g., .gov, major news, academic)
     Tier 2: Moderate-value, verified sources (e.g., established blogs, verified accounts)
@@ -280,8 +277,7 @@ class TierClassifier:
 
 
 class GeminiIngestionLayer:
-    """
-    Intelligence collection pipeline with ethical compliance
+    """Intelligence collection pipeline with ethical compliance
 
     Architecture:
     - GKE CronJob (nightly batch processing)
@@ -330,10 +326,9 @@ class GeminiIngestionLayer:
         self.sources.append(source)
 
     def ingest(
-        self, sources: list[Source] | None = None, target_items: int | None = None
+        self, sources: list[Source] | None = None, target_items: int | None = None,
     ) -> IngestionResult:
-        """
-        Run ingestion pipeline
+        """Run ingestion pipeline
 
         Args:
             sources: List of sources to ingest from (default: all registered)
@@ -341,6 +336,7 @@ class GeminiIngestionLayer:
 
         Returns:
             IngestionResult with items, metrics, and violations
+
         """
         start_time = time.perf_counter()
         sources = sources or self.sources
@@ -384,7 +380,7 @@ class GeminiIngestionLayer:
                 self.ethical_validator.record_request(source)
 
             except Exception as e:
-                errors.append(f"Error collecting from {source.url}: {str(e)}")
+                errors.append(f"Error collecting from {source.url}: {e!s}")
 
         # Calculate metrics
         runtime_minutes = (time.perf_counter() - start_time) / 60
@@ -400,8 +396,7 @@ class GeminiIngestionLayer:
         )
 
     def _collect_from_source(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect items from a source (mock implementation)
+        """Collect items from a source (mock implementation)
 
         TODO: Implement actual collectors for each source type:
         - YouTube: YouTube Data API
@@ -510,14 +505,13 @@ class GeminiIngestionLayer:
             "relevance_score": metrics.average_relevance_score >= self.target_relevance_score,
             "runtime": metrics.runtime_minutes <= self.target_runtime_minutes,
             "ethical_compliance": len(
-                [v for v in metrics.ethical_violations if v.severity in ["high", "critical"]]
+                [v for v in metrics.ethical_violations if v.severity in ["high", "critical"]],
             )
             == 0,
         }
 
     def export_am_briefing(self, items: list[IngestedItem], format: str = "markdown") -> str:
-        """
-        Export AM (morning) briefing from ingested items
+        """Export AM (morning) briefing from ingested items
 
         Args:
             items: List of ingested items
@@ -525,10 +519,11 @@ class GeminiIngestionLayer:
 
         Returns:
             Formatted briefing
+
         """
         if format == "markdown":
             return self._export_markdown_briefing(items)
-        elif format == "json":
+        if format == "json":
             import json
 
             return json.dumps(
@@ -544,8 +539,7 @@ class GeminiIngestionLayer:
                 ],
                 indent=2,
             )
-        else:
-            raise ValueError(f"Unsupported format: {format}")
+        raise ValueError(f"Unsupported format: {format}")
 
     def _export_markdown_briefing(self, items: list[IngestedItem]) -> str:
         """Export markdown format briefing"""

@@ -1,5 +1,4 @@
-"""
-JURA Compliance Gate
+"""JURA Compliance Gate
 =====================
 Integrated compliance checking for all Economic Juggernaut operations.
 "No Hot Water" principle - every operation must pass compliance gates.
@@ -74,8 +73,7 @@ class ComplianceRule(BaseModel):
 
 
 class JuraComplianceGate:
-    """
-    JURA Compliance Gate - the guardian of regulatory safety.
+    """JURA Compliance Gate - the guardian of regulatory safety.
 
     Core Principle: "No Hot Water"
     - Every operation gated through compliance
@@ -155,8 +153,7 @@ class JuraComplianceGate:
         data: dict[str, Any],
         level: ComplianceLevel = ComplianceLevel.STANDARD,
     ) -> ComplianceResult:
-        """
-        Main compliance gate - all operations must pass through here.
+        """Main compliance gate - all operations must pass through here.
 
         Args:
             tenant_id: Tenant performing the operation
@@ -166,6 +163,7 @@ class JuraComplianceGate:
 
         Returns:
             ComplianceResult with pass/fail and details
+
         """
         audit_id = self._generate_audit_id(tenant_id, operation)
 
@@ -203,7 +201,7 @@ class JuraComplianceGate:
                             "framework": framework.value,
                             "error": str(e),
                             "severity": "critical",
-                        }
+                        },
                     )
 
         # Determine overall pass/fail
@@ -226,7 +224,7 @@ class JuraComplianceGate:
 
         if not passed:
             logger.warning(
-                f"COMPLIANCE BLOCKED: {tenant_id} - {operation} - Failed: {failed_frameworks}"
+                f"COMPLIANCE BLOCKED: {tenant_id} - {operation} - Failed: {failed_frameworks}",
             )
 
         return result
@@ -259,7 +257,7 @@ class JuraComplianceGate:
 
         self._tenant_frameworks[tenant_id] = frameworks
         logger.info(
-            f"Configured tenant {tenant_id} with frameworks: {[f.value for f in frameworks]}"
+            f"Configured tenant {tenant_id} with frameworks: {[f.value for f in frameworks]}",
         )
 
         return frameworks
@@ -273,7 +271,7 @@ class JuraComplianceGate:
     # =========================================================================
 
     async def _check_gdpr(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """GDPR compliance check"""
         violations = []
@@ -289,7 +287,7 @@ class JuraComplianceGate:
                         "rule": "GDPR Article 6",
                         "description": "Processing personal data without lawful basis",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             # Check consent if required
@@ -299,7 +297,7 @@ class JuraComplianceGate:
                         "rule": "GDPR Article 7",
                         "description": "Consent not properly recorded",
                         "severity": "high",
-                    }
+                    },
                 )
 
             # Data minimization
@@ -318,7 +316,7 @@ class JuraComplianceGate:
         }
 
     async def _check_ccpa(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """CCPA compliance check"""
         violations = []
@@ -333,7 +331,7 @@ class JuraComplianceGate:
                         "rule": "CCPA 1798.120",
                         "description": "Consumer opt-out right not honored",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             # Privacy notice
@@ -348,7 +346,7 @@ class JuraComplianceGate:
         }
 
     async def _check_hipaa(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """HIPAA compliance check"""
         violations = []
@@ -362,7 +360,7 @@ class JuraComplianceGate:
                         "rule": "HIPAA Security Rule",
                         "description": "PHI not encrypted",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             # Access controls
@@ -372,7 +370,7 @@ class JuraComplianceGate:
                         "rule": "HIPAA Audit Controls",
                         "description": "PHI access not logged",
                         "severity": "high",
-                    }
+                    },
                 )
 
             # Minimum necessary
@@ -382,7 +380,7 @@ class JuraComplianceGate:
                         "rule": "HIPAA Minimum Necessary",
                         "description": "Sharing more PHI than necessary",
                         "severity": "medium",
-                    }
+                    },
                 )
 
         return {
@@ -393,7 +391,7 @@ class JuraComplianceGate:
         }
 
     async def _check_soc2(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """SOC 2 compliance check"""
         violations = []
@@ -406,7 +404,7 @@ class JuraComplianceGate:
                     "rule": "SOC 2 CC6.1",
                     "description": "Operation without proper authentication",
                     "severity": "critical",
-                }
+                },
             )
 
         # Availability
@@ -425,7 +423,7 @@ class JuraComplianceGate:
         }
 
     async def _check_eu_ai_act(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """EU AI Act compliance check - delegates to regulations module"""
         violations = []
@@ -438,7 +436,7 @@ class JuraComplianceGate:
                     "rule": "EU AI Act Article 26",
                     "description": "AI-generated content not properly disclosed",
                     "severity": "high",
-                }
+                },
             )
 
         # High-risk AI system requirements
@@ -449,7 +447,7 @@ class JuraComplianceGate:
                         "rule": "EU AI Act Article 14",
                         "description": "High-risk AI lacking human oversight",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             if not data.get("risk_assessment"):
@@ -463,7 +461,7 @@ class JuraComplianceGate:
         }
 
     async def _check_ca_ai_minor(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """California AI Minor Protection Act compliance"""
         violations = []
@@ -478,7 +476,7 @@ class JuraComplianceGate:
                         "rule": "CA AI Minor Protection",
                         "description": "Missing parental consent for user under 13",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             if data.get("ai_generated") and not data.get("age_appropriate_disclosure"):
@@ -487,7 +485,7 @@ class JuraComplianceGate:
                         "rule": "CA AI Minor Protection - Disclosure",
                         "description": "AI content disclosure not age-appropriate",
                         "severity": "high",
-                    }
+                    },
                 )
 
             # No behavioral manipulation
@@ -497,7 +495,7 @@ class JuraComplianceGate:
                         "rule": "CA AI Minor Protection - Targeting",
                         "description": "Behavioral targeting of minors prohibited",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             warnings.append("Enhanced protections active for minor user")
@@ -510,7 +508,7 @@ class JuraComplianceGate:
         }
 
     async def _check_fedramp(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """FedRAMP compliance check"""
         violations = []
@@ -523,7 +521,7 @@ class JuraComplianceGate:
                         "rule": "FedRAMP Authorization",
                         "description": "Federal data in non-authorized environment",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             if data.get("data_residency") != "us-gov":
@@ -532,7 +530,7 @@ class JuraComplianceGate:
                         "rule": "FedRAMP Data Residency",
                         "description": "Federal data must stay in US-gov regions",
                         "severity": "critical",
-                    }
+                    },
                 )
 
         return {
@@ -543,7 +541,7 @@ class JuraComplianceGate:
         }
 
     async def _check_cmmc(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """CMMC (Cybersecurity Maturity Model Certification) check"""
         violations = []
@@ -555,7 +553,7 @@ class JuraComplianceGate:
                     "rule": "CMMC Level 2",
                     "description": "CUI requires CMMC Level 2 certification",
                     "severity": "critical",
-                }
+                },
             )
 
         return {
@@ -566,7 +564,7 @@ class JuraComplianceGate:
         }
 
     async def _check_itar(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """ITAR (International Traffic in Arms Regulations) check"""
         violations = []
@@ -579,7 +577,7 @@ class JuraComplianceGate:
                         "rule": "ITAR 22 CFR 120-130",
                         "description": "ITAR data accessed by non-US person",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             if operation == "export" and not data.get("export_license"):
@@ -588,7 +586,7 @@ class JuraComplianceGate:
                         "rule": "ITAR Export Control",
                         "description": "Export of ITAR data without license",
                         "severity": "critical",
-                    }
+                    },
                 )
 
         return {
@@ -599,7 +597,7 @@ class JuraComplianceGate:
         }
 
     async def _check_pci_dss(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel
+        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
     ) -> dict[str, Any]:
         """PCI-DSS compliance check"""
         violations = []
@@ -612,7 +610,7 @@ class JuraComplianceGate:
                         "rule": "PCI-DSS Requirement 3",
                         "description": "Cardholder data not encrypted",
                         "severity": "critical",
-                    }
+                    },
                 )
 
             if data.get("stores_cvv"):
@@ -621,7 +619,7 @@ class JuraComplianceGate:
                         "rule": "PCI-DSS Requirement 3.2",
                         "description": "CVV storage prohibited",
                         "severity": "critical",
-                    }
+                    },
                 )
 
         return {
@@ -661,7 +659,7 @@ class JuraComplianceGate:
     # =========================================================================
 
     def get_audit_trail(
-        self, tenant_id: str | None = None, limit: int = 100
+        self, tenant_id: str | None = None, limit: int = 100,
     ) -> list[ComplianceResult]:
         """Get audit trail, optionally filtered by tenant"""
         results = self._audit_log[-limit:]

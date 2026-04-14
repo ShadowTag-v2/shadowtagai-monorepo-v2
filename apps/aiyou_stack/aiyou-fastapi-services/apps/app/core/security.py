@@ -1,5 +1,4 @@
-"""
-Security utilities for secret management and encryption.
+"""Security utilities for secret management and encryption.
 """
 
 import base64
@@ -15,8 +14,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2
 
 
 class SecretManager:
-    """
-    Manages secrets and sensitive configuration.
+    """Manages secrets and sensitive configuration.
 
     Supports:
     - Environment variable loading
@@ -25,12 +23,12 @@ class SecretManager:
     """
 
     def __init__(self, secrets_file: Path | None = None, encryption_key: bytes | None = None):
-        """
-        Initialize secret manager.
+        """Initialize secret manager.
 
         Args:
             secrets_file: Path to secrets YAML file
             encryption_key: Optional encryption key for encrypted secrets
+
         """
         self.secrets_file = secrets_file or Path("configs/secrets.yml")
         self.encryption_key = encryption_key
@@ -56,8 +54,7 @@ class SecretManager:
                 self._secrets[clean_key] = value
 
     def get(self, key: str, default: Any = None, decrypt: bool = False) -> Any:
-        """
-        Get a secret value.
+        """Get a secret value.
 
         Args:
             key: Secret key (supports dot notation, e.g., 'database.password')
@@ -66,6 +63,7 @@ class SecretManager:
 
         Returns:
             Secret value
+
         """
         # Navigate nested dict using dot notation
         parts = key.split(".")
@@ -90,13 +88,13 @@ class SecretManager:
         return value
 
     def set(self, key: str, value: Any, encrypt: bool = False) -> None:
-        """
-        Set a secret value (in memory only).
+        """Set a secret value (in memory only).
 
         Args:
             key: Secret key
             value: Secret value
             encrypt: Whether to encrypt the value
+
         """
         # Encrypt if requested and cipher available
         if encrypt and self._cipher:
@@ -114,13 +112,13 @@ class SecretManager:
         target[parts[-1]] = value
 
     def save(self, filepath: Path | None = None) -> None:
-        """
-        Save secrets to file.
+        """Save secrets to file.
 
         WARNING: Only save to secure locations!
 
         Args:
             filepath: Path to save to (uses default if None)
+
         """
         path = filepath or self.secrets_file
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -130,8 +128,7 @@ class SecretManager:
 
     @staticmethod
     def generate_key(password: str, salt: bytes | None = None) -> bytes:
-        """
-        Generate encryption key from password.
+        """Generate encryption key from password.
 
         Args:
             password: Password to derive key from
@@ -139,6 +136,7 @@ class SecretManager:
 
         Returns:
             Encryption key
+
         """
         if salt is None:
             salt = os.urandom(16)
@@ -160,14 +158,14 @@ class EnvironmentLoader:
 
     @staticmethod
     def load_dotenv(env_file: Path = Path(".env")) -> dict[str, str]:
-        """
-        Load environment variables from .env file.
+        """Load environment variables from .env file.
 
         Args:
             env_file: Path to .env file
 
         Returns:
             Dictionary of environment variables
+
         """
         env_vars = {}
 
@@ -186,8 +184,7 @@ class EnvironmentLoader:
 
     @staticmethod
     def validate_required(required_vars: list) -> bool:
-        """
-        Validate that required environment variables are set.
+        """Validate that required environment variables are set.
 
         Args:
             required_vars: List of required variable names
@@ -197,6 +194,7 @@ class EnvironmentLoader:
 
         Raises:
             ValueError: If any required var is missing
+
         """
         missing = [var for var in required_vars if var not in os.environ]
 
@@ -221,8 +219,7 @@ def get_secret_manager() -> SecretManager:
 
 
 def get_secret(key: str, default: Any = None) -> Any:
-    """
-    Convenience function to get a secret.
+    """Convenience function to get a secret.
 
     Args:
         key: Secret key
@@ -230,5 +227,6 @@ def get_secret(key: str, default: Any = None) -> Any:
 
     Returns:
         Secret value
+
     """
     return get_secret_manager().get(key, default)

@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System for AI Model Selection
+"""Glicko-2 Rating System for AI Model Selection
 """
 
 from .rating import (
@@ -13,7 +12,7 @@ from .rating import (
 __all__ = [
     "Glicko2Player",
     "GlickoModelSelector",
-    "ModelRating",
     "ModelMatch",
+    "ModelRating",
     "TaskType",
 ]

@@ -1,5 +1,4 @@
-"""
-Kernel-to-Function Adapter Layer
+"""Kernel-to-Function Adapter Layer
 
 Converts kernel chain components into Gemini function tools,
 enabling unified single-API-call orchestration.
@@ -23,8 +22,7 @@ from src.wealth.model import WealthAccelerator
 
 
 class KernelFunctionRegistry:
-    """
-    Registry that converts kernel chain components into Gemini function tools.
+    """Registry that converts kernel chain components into Gemini function tools.
 
     Usage:
         registry = KernelFunctionRegistry()
@@ -46,12 +44,11 @@ class KernelFunctionRegistry:
                 "context": {
                     "type": "string",
                     "description": "Decision context to analyze for violations",
-                }
+                },
             },
         )
         def atp_519_scan(context: str) -> dict:
-            """
-            Kernel 1: ATP 5-19 Violation Scanner
+            """Kernel 1: ATP 5-19 Violation Scanner
 
             Extracts structured violations from raw decision context.
             Replaces: Separate Gemini API call
@@ -80,12 +77,11 @@ class KernelFunctionRegistry:
                 "violations": {
                     "type": "object",
                     "description": "Violations data from ATP scan",
-                }
+                },
             },
         )
         def judge_six_classify(violations: dict) -> dict:
-            """
-            Kernel 2: Judge Six Binary Classifier
+            """Kernel 2: Judge Six Binary Classifier
 
             Uses local PyTorch model for instant classification.
             Replaces: Separate API call
@@ -115,12 +111,11 @@ class KernelFunctionRegistry:
                 "metadata": {
                     "type": "object",
                     "description": "Decision metadata to compress",
-                }
+                },
             },
         )
         def audit_compress(metadata: dict) -> dict:
-            """
-            Kernel 3: Audit Compression
+            """Kernel 3: Audit Compression
 
             Uses zstd level 22 for 10:1 compression ratio.
             Replaces: Separate processing step
@@ -160,8 +155,7 @@ class KernelFunctionRegistry:
             },
         )
         def multi_agent_debate(question: str, num_agents: int = 3) -> dict:
-            """
-            Multi-Agent Debate (PanelGPT/MAD)
+            """Multi-Agent Debate (PanelGPT/MAD)
 
             Replaces: AutoGen multi-agent (3+ API calls, 1100ms)
             Now: Local orchestration (35ms)
@@ -204,8 +198,7 @@ class KernelFunctionRegistry:
             },
         )
         def dte_evolve(prompt: str, strategy: str = "RCR_MAD") -> dict:
-            """
-            DTE Self-Evolution
+            """DTE Self-Evolution
 
             Proven: +3.7% accuracy improvement
             Self-improving system
@@ -249,10 +242,9 @@ class KernelFunctionRegistry:
             },
         )
         def wealth_analyze(
-            revenue_monthly: float, cac: float, ltv: float, churn_rate: float
+            revenue_monthly: float, cac: float, ltv: float, churn_rate: float,
         ) -> dict:
-            """
-            Wealth Planning Model
+            """Wealth Planning Model
 
             Structure: Hard Truth → Plan → Challenge
             Detects: Leaks, funnel issues, leverage opportunities
@@ -300,8 +292,7 @@ class KernelFunctionRegistry:
             },
         )
         def glicko_update(function_name: str, performance_score: float) -> dict:
-            """
-            Glicko-2 Performance Rating
+            """Glicko-2 Performance Rating
 
             Tracks: Rating (mu), Uncertainty (phi), Volatility (sigma)
             Better than: Elo, PPO for performance tracking
@@ -342,8 +333,7 @@ class KernelFunctionRegistry:
 
 # Convenience function for quick access
 def create_unified_function_registry() -> KernelFunctionRegistry:
-    """
-    Create a unified function registry with all kernel and ultrathink functions.
+    """Create a unified function registry with all kernel and ultrathink functions.
 
     Returns:
         KernelFunctionRegistry with 7 core functions:
@@ -354,5 +344,6 @@ def create_unified_function_registry() -> KernelFunctionRegistry:
         5. dte_evolve - Prompt evolution
         6. wealth_analyze - Business planning
         7. glicko_update - Performance rating
+
     """
     return KernelFunctionRegistry()

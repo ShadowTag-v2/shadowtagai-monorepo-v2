@@ -1,5 +1,4 @@
-"""
-CodePMCS Client - Code Quality Validation
+"""CodePMCS Client - Code Quality Validation
 
 Scans and auto-fixes code before commit.
 Monitors pipeline for updates and new tech.
@@ -11,8 +10,7 @@ import httpx
 
 
 class CodePMCSClient:
-    """
-    CodePMCS Code Quality Client
+    """CodePMCS Code Quality Client
 
     Functions:
     - Scan code for issues
@@ -27,8 +25,7 @@ class CodePMCSClient:
         self.use_local = base_url is None
 
     async def scan(self, code: str, language: str = "python") -> dict[str, Any]:
-        """
-        Scan code for quality issues.
+        """Scan code for quality issues.
 
         Returns:
             {
@@ -37,6 +34,7 @@ class CodePMCSClient:
                 "fixes": [{"type": str, "original": str, "fixed": str}],
                 "score": float
             }
+
         """
         if self.use_local:
             return self._local_scan(code, language)
@@ -44,7 +42,7 @@ class CodePMCSClient:
         async with httpx.AsyncClient(timeout=60.0) as client:
             try:
                 response = await client.post(
-                    f"{self.base_url}/codepmcs/scan", json={"code": code, "language": language}
+                    f"{self.base_url}/codepmcs/scan", json={"code": code, "language": language},
                 )
 
                 if response.status_code == 200:
@@ -70,7 +68,7 @@ class CodePMCSClient:
                         "message": "Unresolved TODO/FIXME",
                         "line": i,
                         "severity": "low",
-                    }
+                    },
                 )
 
             if "print(" in line and language == "python":
@@ -80,7 +78,7 @@ class CodePMCSClient:
                         "message": "Debug print statement",
                         "line": i,
                         "severity": "low",
-                    }
+                    },
                 )
 
             if "password" in line.lower() and "=" in line:
@@ -90,7 +88,7 @@ class CodePMCSClient:
                         "message": "Possible hardcoded password",
                         "line": i,
                         "severity": "high",
-                    }
+                    },
                 )
 
             if len(line) > 120:
@@ -100,7 +98,7 @@ class CodePMCSClient:
                         "message": "Line too long (>120 chars)",
                         "line": i,
                         "severity": "low",
-                    }
+                    },
                 )
 
         # Calculate score
@@ -118,8 +116,7 @@ class CodePMCSClient:
         }
 
     async def fix(self, code: str, issues: list[dict[str, Any]]) -> dict[str, Any]:
-        """
-        Auto-fix detected issues.
+        """Auto-fix detected issues.
 
         Returns:
             {
@@ -127,6 +124,7 @@ class CodePMCSClient:
                 "fixes_applied": int,
                 "remaining_issues": [...]
             }
+
         """
         if self.use_local:
             return self._local_fix(code, issues)
@@ -134,7 +132,7 @@ class CodePMCSClient:
         async with httpx.AsyncClient(timeout=60.0) as client:
             try:
                 response = await client.post(
-                    f"{self.base_url}/codepmcs/fix", json={"code": code, "issues": issues}
+                    f"{self.base_url}/codepmcs/fix", json={"code": code, "issues": issues},
                 )
 
                 if response.status_code == 200:
@@ -172,8 +170,7 @@ class CodePMCSClient:
         }
 
     async def check_pipeline_updates(self) -> dict[str, Any]:
-        """
-        Check pipeline for updates to apply to code.
+        """Check pipeline for updates to apply to code.
 
         Returns:
             {
@@ -181,6 +178,7 @@ class CodePMCSClient:
                 "updates": [{"type": str, "description": str}],
                 "new_tech": [...]
             }
+
         """
         # TODO: Implement pipeline monitoring
         return {"updates_available": False, "updates": [], "new_tech": []}

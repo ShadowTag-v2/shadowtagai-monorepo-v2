@@ -10,8 +10,7 @@ from cryptography.hazmat.primitives.asymmetric import ed25519
 
 
 class HybridSigner:
-    """
-    Implements Hybrid Falcon-Dilithium Signatures for ShadowTag v2.
+    """Implements Hybrid Falcon-Dilithium Signatures for ShadowTag v2.
     In the prototype phase, 'PQC' is simulated via SHA-3 derived lattice-like commitments.
     """
 
@@ -31,8 +30,7 @@ class HybridSigner:
         return classical_pk_bytes + pqc_pk_sim
 
     def sign(self, message: bytes) -> bytes:
-        """
-        Generates a dual signature: ECDSA/Ed25519 + PQC Simulation.
+        """Generates a dual signature: ECDSA/Ed25519 + PQC Simulation.
         Structure: [Classical_Sig (64)] + [PQC_Sig_Sim (64)]
         """
         # Classical Signature (Ed25519)
@@ -47,8 +45,7 @@ class HybridSigner:
 
     @staticmethod
     def verify(public_key: bytes, message: bytes, signature: bytes) -> bool:
-        """
-        Verifies both components of the hybrid signature.
+        """Verifies both components of the hybrid signature.
         """
         if len(public_key) < 64 or len(signature) < 128:
             logging.error("///▞ PQC :: Invalid hybrid key or signature length")
@@ -65,7 +62,7 @@ class HybridSigner:
             pk = ed25519.Ed25519PublicKey.from_public_bytes(classical_pk_bytes)
             pk.verify(classical_sig, message)
         except Exception as e:
-            logging.error(f"///▞ PQC :: Classical verification failed: {e}")
+            logging.exception(f"///▞ PQC :: Classical verification failed: {e}")
             return False
 
         # 2. Verify PQC Simulation

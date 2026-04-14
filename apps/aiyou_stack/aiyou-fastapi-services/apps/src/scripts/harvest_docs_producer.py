@@ -79,12 +79,12 @@ def produce_documents(producer: KafkaProducer, topic: str, batch_size: int, limi
 def main():
     parser = argparse.ArgumentParser(description="Harvest Docs Producer")
     parser.add_argument(
-        "--bootstrap_servers", default="localhost:9092", help="Kafka bootstrap servers"
+        "--bootstrap_servers", default="localhost:9092", help="Kafka bootstrap servers",
     )
     parser.add_argument("--topic", default="harvested-docs", help="Kafka topic")
     parser.add_argument("--batch_size", type=int, default=100, help="Batch size for flushing")
     parser.add_argument(
-        "--limit", type=int, default=-1, help="Number of docs to produce (-1 for infinite)"
+        "--limit", type=int, default=-1, help="Number of docs to produce (-1 for infinite)",
     )
 
     args = parser.parse_args()

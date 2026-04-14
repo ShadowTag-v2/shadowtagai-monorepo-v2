@@ -1,5 +1,4 @@
-"""
-YRM: Your Risk Manager - ATP 5-19 Risk Assessment & Stratification
+"""YRM: Your Risk Manager - ATP 5-19 Risk Assessment & Stratification
 
 Implements military-grade risk classification and constitutional
 axiom validation for AI governance.
@@ -16,18 +15,15 @@ logger = logging.getLogger(__name__)
 class RiskAssessmentError(Exception):
     """Raised when risk assessment fails."""
 
-    pass
 
 
 class AxiomValidationError(Exception):
     """Raised when axiom validation fails."""
 
-    pass
 
 
 class YourRiskManager:
-    """
-    ATP 5-19 Risk Assessment & Stratification Engine
+    """ATP 5-19 Risk Assessment & Stratification Engine
 
     Provides deterministic, rule-based risk classification according
     to military operational security standards.
@@ -45,8 +41,7 @@ class YourRiskManager:
         logger.info("YourRiskManager initialized with %d risk levels", len(self.ra_patterns))
 
     def classify_request(self, user_input: str) -> RiskLevel:
-        """
-        Classify request using ATP 5-19 risk stratification.
+        """Classify request using ATP 5-19 risk stratification.
 
         Performs hierarchical risk assessment from most severe (RA-4)
         to least severe (RA-1).
@@ -59,6 +54,7 @@ class YourRiskManager:
 
         Raises:
             RiskAssessmentError: If classification fails
+
         """
         if not user_input:
             raise RiskAssessmentError("Cannot classify empty input")
@@ -89,13 +85,12 @@ class YourRiskManager:
             return RiskLevel.RA_1
 
         except Exception as e:
-            raise RiskAssessmentError(f"Risk classification failed: {str(e)}") from e
+            raise RiskAssessmentError(f"Risk classification failed: {e!s}") from e
 
     def assess_axiom_violations(
-        self, user_input: str, axioms: list[ConstitutionalAxiom]
+        self, user_input: str, axioms: list[ConstitutionalAxiom],
     ) -> list[ConstitutionalAxiom]:
-        """
-        Check for constitutional axiom violations.
+        """Check for constitutional axiom violations.
 
         Args:
             user_input: User request to validate
@@ -106,6 +101,7 @@ class YourRiskManager:
 
         Raises:
             AxiomValidationError: If validation fails
+
         """
         if not user_input:
             raise AxiomValidationError("Cannot validate empty input")
@@ -125,11 +121,10 @@ class YourRiskManager:
             return violations
 
         except Exception as e:
-            raise AxiomValidationError(f"Axiom validation failed: {str(e)}") from e
+            raise AxiomValidationError(f"Axiom validation failed: {e!s}") from e
 
     def _violates_axiom(self, user_input: str, axiom: ConstitutionalAxiom) -> bool:
-        """
-        Check if input violates specific axiom.
+        """Check if input violates specific axiom.
 
         Args:
             user_input: User request to check
@@ -137,16 +132,17 @@ class YourRiskManager:
 
         Returns:
             True if axiom is violated, False otherwise
+
         """
         input_lower = user_input.lower()
 
         if axiom.axiom_id == "A1":  # PURPOSE_REQUIRED
             return self._check_purpose_required(input_lower)
 
-        elif axiom.axiom_id == "A2":  # HARM_PROHIBITION
+        if axiom.axiom_id == "A2":  # HARM_PROHIBITION
             return self._check_harm_prohibition(input_lower)
 
-        elif axiom.axiom_id == "A6":  # NO_USER_OVERRIDE
+        if axiom.axiom_id == "A6":  # NO_USER_OVERRIDE
             return self._check_no_user_override(input_lower)
 
         # Other axioms (A3, A4, A5) are enforced at system level,
@@ -168,14 +164,14 @@ class YourRiskManager:
         return any(pattern in input_lower for pattern in self.axiom_config.OVERRIDE_PATTERNS)
 
     def get_risk_threshold(self, risk_level: RiskLevel) -> float:
-        """
-        Get confidence threshold for risk level.
+        """Get confidence threshold for risk level.
 
         Args:
             risk_level: Risk level to get threshold for
 
         Returns:
             Confidence threshold (0.0 to 1.0)
+
         """
         thresholds = {
             RiskLevel.RA_1: 0.0,

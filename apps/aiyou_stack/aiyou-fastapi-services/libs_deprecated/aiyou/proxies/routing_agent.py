@@ -8,11 +8,9 @@ class RoutingAgent:
         self.brain = RecursiveAgent()
 
     def dispatch(self, user_request: str) -> dict:
-        """
-        Decides: Do we keep this LOCAL or send to SWARM?
+        """Decides: Do we keep this LOCAL or send to SWARM?
         Uses ECHO PROTOCOL for 97% classification accuracy.
         """
-
         # 1. CONSTRUCT THE ECHO PROMPT
         # We repeat the classification instruction to force attention.
 
@@ -40,8 +38,7 @@ class RoutingAgent:
 
         if "SWARM" in verdict:
             return {"route": "SWARM", "target": "autoresearch", "payload": user_request}
-        else:
-            return {"route": "LOCAL", "target": "gemini_flash", "payload": user_request}
+        return {"route": "LOCAL", "target": "gemini_flash", "payload": user_request}
 
 
 router = RoutingAgent()

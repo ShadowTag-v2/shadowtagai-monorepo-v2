@@ -1,5 +1,4 @@
-"""
-Prefetch Pipeline - Minimize LLM Usage Through Smart Caching & Web Investigation
+"""Prefetch Pipeline - Minimize LLM Usage Through Smart Caching & Web Investigation
 
 Strategy:
 1. SEMANTIC CACHE: Use embeddings to find similar past queries (skip LLM if hit)
@@ -89,8 +88,7 @@ class PrefetchResult:
 
 
 class SemanticCache:
-    """
-    Semantic cache using embeddings for similarity matching.
+    """Semantic cache using embeddings for similarity matching.
 
     Uses cosine similarity to find similar past queries.
     Threshold: 0.85 for semantic match, 0.95 for near-exact.
@@ -140,7 +138,7 @@ class SemanticCache:
 
         try:
             result = self._embedder.embed_content(
-                model=self.embedding_model, content=text, task_type="retrieval_query"
+                model=self.embedding_model, content=text, task_type="retrieval_query",
             )
             return result["embedding"]
         except Exception as e:
@@ -162,11 +160,11 @@ class SemanticCache:
         return dot_product / (norm_a * norm_b)
 
     async def lookup(self, query: str) -> tuple[CacheHitType, CacheEntry | None, float]:
-        """
-        Look up query in cache.
+        """Look up query in cache.
 
         Returns:
             Tuple of (hit_type, cache_entry, similarity_score)
+
         """
         query_hash = self._hash_query(query)
 
@@ -190,7 +188,7 @@ class SemanticCache:
 
                 if hash_key in self._embeddings:
                     similarity = self._cosine_similarity(
-                        query_embedding, self._embeddings[hash_key]
+                        query_embedding, self._embeddings[hash_key],
                     )
 
                     if similarity > best_score:
@@ -252,7 +250,7 @@ class SemanticCache:
         """Evict least recently used entries"""
         # Sort by hit_count, remove bottom 10%
         sorted_entries = sorted(
-            self._cache.items(), key=lambda x: (x[1].hit_count, x[1].created_at)
+            self._cache.items(), key=lambda x: (x[1].hit_count, x[1].created_at),
         )
 
         to_remove = len(sorted_entries) // 10
@@ -268,7 +266,7 @@ class SemanticCache:
                 self.stats["semantic_hits"],
                 self.stats["partial_hits"],
                 self.stats["misses"],
-            ]
+            ],
         )
 
         hit_rate = 0.0
@@ -285,8 +283,7 @@ class SemanticCache:
 
 
 class WebPrefetcher:
-    """
-    Prefetch web context before calling LLM.
+    """Prefetch web context before calling LLM.
 
     Gathers relevant context from web to reduce prompt tokens
     and provide more accurate answers without full LLM reasoning.
@@ -306,11 +303,11 @@ class WebPrefetcher:
             logger.warning("httpx not available, web prefetch disabled")
 
     async def prefetch(self, query: str) -> str | None:
-        """
-        Prefetch web context for query.
+        """Prefetch web context for query.
 
         Returns:
             Summarized context string or None
+
         """
         if not self._http_available:
             return None
@@ -354,8 +351,7 @@ class WebPrefetcher:
         return None
 
     async def search_and_summarize(self, query: str) -> dict[str, Any]:
-        """
-        Search web and return structured results.
+        """Search web and return structured results.
 
         Returns dict with:
         - context: Summarized context string
@@ -373,8 +369,7 @@ class WebPrefetcher:
 
 
 class PrefetchPipeline:
-    """
-    Main prefetch pipeline combining all strategies.
+    """Main prefetch pipeline combining all strategies.
 
     Flow:
     1. Check semantic cache (instant, free)
@@ -413,8 +408,7 @@ class PrefetchPipeline:
         strategy: PrefetchStrategy | None = None,
         min_confidence: float = 0.80,
     ) -> PrefetchResult:
-        """
-        Process query through prefetch pipeline.
+        """Process query through prefetch pipeline.
 
         Args:
             query: User query
@@ -423,6 +417,7 @@ class PrefetchPipeline:
 
         Returns:
             PrefetchResult with cache info, context, and whether LLM needed
+
         """
         start_time = time.perf_counter()
         strategy = strategy or self.default_strategy
@@ -487,7 +482,7 @@ class PrefetchPipeline:
         if prefetch_contexts:
             result.prefetch_context = "\n\n---\n\n".join(prefetch_contexts)
             result.tokens_saved = len(
-                result.prefetch_context.split()
+                result.prefetch_context.split(),
             )  # Context reduces LLM reasoning
 
         # Determine if LLM still needed
@@ -525,8 +520,7 @@ class PrefetchPipeline:
         queries: list[str],
         strategy: PrefetchStrategy | None = None,
     ) -> list[PrefetchResult]:
-        """
-        Process batch of queries, deduplicating similar ones.
+        """Process batch of queries, deduplicating similar ones.
         """
         # Deduplicate queries
         unique_queries = list(set(queries))
@@ -575,8 +569,7 @@ class PrefetchPipeline:
 
 
 class PrefetchChain:
-    """
-    LangChain-style chain with prefetch pipeline.
+    """LangChain-style chain with prefetch pipeline.
 
     Wraps any LLM and adds prefetch layer to minimize calls.
     """
@@ -624,13 +617,12 @@ Using the context above, provide a concise answer:"""
         if hasattr(self.llm, "ainvoke"):
             result = await self.llm.ainvoke(prompt)
             return result.content if hasattr(result, "content") else str(result)
-        elif hasattr(self.llm, "invoke"):
+        if hasattr(self.llm, "invoke"):
             result = self.llm.invoke(prompt)
             return result.content if hasattr(result, "content") else str(result)
-        elif callable(self.llm):
+        if callable(self.llm):
             return self.llm(prompt)
-        else:
-            raise ValueError("Unknown LLM interface")
+        raise ValueError("Unknown LLM interface")
 
 
 # =============================================================================
@@ -644,8 +636,7 @@ def create_prefetch_pipeline(
     use_memory: bool = True,
     memory_client: Any = None,
 ) -> PrefetchPipeline:
-    """
-    Factory to create configured prefetch pipeline.
+    """Factory to create configured prefetch pipeline.
 
     Args:
         use_cache: Enable semantic cache
@@ -655,6 +646,7 @@ def create_prefetch_pipeline(
 
     Returns:
         Configured PrefetchPipeline
+
     """
     cache = SemanticCache() if use_cache else None
     web = WebPrefetcher() if use_web else None

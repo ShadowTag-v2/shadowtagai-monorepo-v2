@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - ShadowTag-v4 Platform API
+"""PNKLN Core Stack - ShadowTag-v4 Platform API
 
 AI-curated social video platform with:
 - AI-presumed feed ranking (not engagement-based)
@@ -167,8 +166,7 @@ async def health_check():
 
 @app.post("/feed", response_model=FeedResponse)
 async def get_feed(request: FeedRequest):
-    """
-    Get AI-ranked personalized feed.
+    """Get AI-ranked personalized feed.
 
     Returns content ranked by:
     - Energy-based neural models
@@ -255,8 +253,7 @@ async def upload_content(
     owner_address: str = Form(...),
     auto_verify: bool = Form(True),
 ):
-    """
-    Upload and publish content to ShadowTag-v4.
+    """Upload and publish content to ShadowTag-v4.
 
     Pipeline:
     1. Classify content (Tier 1/2/3)
@@ -383,7 +380,7 @@ async def upload_content(
 
     except Exception as e:
         logger.error("upload_failed", error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Upload failed: {e!s}")
 
 
 @app.get("/item/{item_id}")

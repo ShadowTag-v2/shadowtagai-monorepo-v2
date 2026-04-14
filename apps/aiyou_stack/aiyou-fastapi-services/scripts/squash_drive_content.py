@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-The Squasher: Drive Content Extractor
+"""The Squasher: Drive Content Extractor
 Downloads and extracts text from Google Drive assets into a single JSONL file.
 """
 

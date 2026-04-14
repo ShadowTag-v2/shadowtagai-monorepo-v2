@@ -1,5 +1,4 @@
-"""
-Intelligence Agent: Collection → Enforcement Pipeline
+"""Intelligence Agent: Collection → Enforcement Pipeline
 
 Combines Gemini Ingestion Layer (upstream) with Judge #6 Enforcement (downstream)
 
@@ -69,8 +68,7 @@ class IntelligenceResult:
 
 
 class IntelligenceAgent(ShadowTagAiAgent):
-    """
-    Intelligence agent combining collection and enforcement
+    """Intelligence agent combining collection and enforcement
 
     Pipeline:
     1. Collect intelligence from multiple sources (Gemini Ingestion Layer)
@@ -96,18 +94,18 @@ class IntelligenceAgent(ShadowTagAiAgent):
         # Initialize ingestion layer
         self.ingestion_config = ingestion_config or DEFAULT_INGESTION_CONFIG
         self.ingestion_layer = ingestion_layer or GeminiIngestionLayer(
-            config=self.ingestion_config.to_dict()
+            config=self.ingestion_config.to_dict(),
         )
 
     def collect_intelligence(self, task: IntelligenceTask) -> IntelligenceResult:
-        """
-        Run intelligence collection and enforcement pipeline
+        """Run intelligence collection and enforcement pipeline
 
         Args:
             task: IntelligenceTask with query, sources, and requirements
 
         Returns:
             IntelligenceResult with collected data, verification, and briefing
+
         """
         start_time = time.perf_counter()
         task.context = task.context or {}
@@ -134,13 +132,12 @@ class IntelligenceAgent(ShadowTagAiAgent):
 
         if agent_result.status == AgentStatus.COMPLETED:
             return agent_result.output
-        else:
-            # Return partial result with error status
-            return IntelligenceResult(
-                status=agent_result.status,
-                audit_trail=agent_result.audit_trail,
-                execution_time_ms=execution_time_ms,
-            )
+        # Return partial result with error status
+        return IntelligenceResult(
+            status=agent_result.status,
+            audit_trail=agent_result.audit_trail,
+            execution_time_ms=execution_time_ms,
+        )
 
     def _build_reasons(self, task: AgentTask) -> list[Reason]:
         """Build reasons specific to intelligence collection"""
@@ -169,8 +166,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
         ]
 
     def _execute_task(self, task: AgentTask, constraints: dict[str, Any]) -> IntelligenceResult:
-        """
-        Execute intelligence collection with enforcement
+        """Execute intelligence collection with enforcement
 
         Pipeline:
         1. Gemini Ingestion Layer collects data
@@ -239,7 +235,7 @@ class IntelligenceAgent(ShadowTagAiAgent):
 
         # Step 4: Generate AM briefing
         briefing = self.ingestion_layer.export_am_briefing(
-            ingestion_result.items, format="markdown"
+            ingestion_result.items, format="markdown",
         )
 
         # Step 5: Calculate combined metrics
@@ -313,7 +309,7 @@ def example_usage():
             customer_id="customer_123",
             require_enforcement=True,
             require_briefing=True,
-        )
+        ),
     )
 
     print(f"Status: {result.status.value}")

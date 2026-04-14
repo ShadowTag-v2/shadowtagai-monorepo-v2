@@ -20,8 +20,7 @@ Base = declarative_base()
 
 
 class Transaction(Base):
-    """
-    Marketplace transaction (purchase/subscription)
+    """Marketplace transaction (purchase/subscription)
 
     Platform fee: 20-30% of transaction amount
     Developer receives: 70-80% of transaction amount

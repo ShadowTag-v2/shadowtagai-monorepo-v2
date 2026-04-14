@@ -1,5 +1,4 @@
-"""
-KERNEL CHAINING ORCHESTRATOR - Unified Multi-Pattern Coordination
+"""KERNEL CHAINING ORCHESTRATOR - Unified Multi-Pattern Coordination
 ==================================================================
 
 CONCEPT:
@@ -94,8 +93,7 @@ class PersonaType(StrEnum):
 
 @dataclass
 class ChainState:
-    """
-    Persistent state across chain hops.
+    """Persistent state across chain hops.
 
     Implements:
     - Memory compounding (accumulate context)
@@ -154,8 +152,7 @@ class ChainState:
 
 @dataclass
 class ChainHop:
-    """
-    Single hop in kernel chain.
+    """Single hop in kernel chain.
 
     Each hop:
     1. Receives input + chain state
@@ -176,11 +173,11 @@ class ChainHop:
     critique_hook: Callable[[ChainState, Any], list[str]] | None = None
 
     async def execute(self, state: ChainState, input_data: Any) -> Any:
-        """
-        Execute hop with state management.
+        """Execute hop with state management.
 
         Returns:
             Hop output
+
         """
         start_time = time.perf_counter()
 
@@ -214,7 +211,7 @@ class ChainHop:
                 state.add_critique(critique)
 
         logger.info(
-            f"Chain hop {self.name} completed in {latency_ms:.2f}ms (type: {self.hop_type.value})"
+            f"Chain hop {self.name} completed in {latency_ms:.2f}ms (type: {self.hop_type.value})",
         )
 
         return output
@@ -226,8 +223,7 @@ class ChainHop:
 
 
 class KernelChainingOrchestrator:
-    """
-    Unified multi-pattern coordination via kernel chaining.
+    """Unified multi-pattern coordination via kernel chaining.
 
     ULTRATHINK PRINCIPLES (Jobs-inspired):
     -------------------------------------
@@ -284,7 +280,7 @@ class KernelChainingOrchestrator:
         """Register a named chain workflow."""
         self.chains[chain_name] = hops
         logger.info(
-            f"Registered chain '{chain_name}' with {len(hops)} hops: {[h.name for h in hops]}"
+            f"Registered chain '{chain_name}' with {len(hops)} hops: {[h.name for h in hops]}",
         )
 
     def add_hop(
@@ -297,8 +293,7 @@ class KernelChainingOrchestrator:
         improvement_hook: Callable | None = None,
         critique_hook: Callable | None = None,
     ) -> None:
-        """
-        Add hop to chain (builder pattern).
+        """Add hop to chain (builder pattern).
 
         Args:
             chain_name: Name of chain to add to
@@ -308,6 +303,7 @@ class KernelChainingOrchestrator:
             persona: Agent persona (Ultrathink, Wealth, etc.)
             improvement_hook: Boy Scout improvement function
             critique_hook: Critique validation function
+
         """
         hop = ChainHop(
             name=hop_name,
@@ -324,10 +320,9 @@ class KernelChainingOrchestrator:
         self.chains[chain_name].append(hop)
 
     async def execute_chain(
-        self, chain_name: str, initial_input: Any, chain_id: str | None = None
+        self, chain_name: str, initial_input: Any, chain_id: str | None = None,
     ) -> tuple[Any, ChainState]:
-        """
-        Execute named chain workflow.
+        """Execute named chain workflow.
 
         Args:
             chain_name: Name of registered chain
@@ -336,6 +331,7 @@ class KernelChainingOrchestrator:
 
         Returns:
             (final_output, chain_state)
+
         """
         if chain_name not in self.chains:
             raise KeyError(f"Chain '{chain_name}' not registered")
@@ -362,16 +358,15 @@ class KernelChainingOrchestrator:
 
         logger.info(
             f"Chain '{chain_name}' completed in {state.total_latency_ms:.2f}ms "
-            f"(chain_id: {chain_id})"
+            f"(chain_id: {chain_id})",
         )
 
         return (current_output, state)
 
     async def reality_distortion(
-        self, impossible_goal: str, chain_name: str, max_iterations: int = 5
+        self, impossible_goal: str, chain_name: str, max_iterations: int = 5,
     ) -> tuple[Any, ChainState]:
-        """
-        Reality Distortion Field (Jobs-inspired).
+        """Reality Distortion Field (Jobs-inspired).
 
         For "impossible" challenges:
         1. Run chain normally
@@ -387,16 +382,17 @@ class KernelChainingOrchestrator:
 
         Returns:
             (result, final_state) or raises if truly impossible
+
         """
         logger.info(
             f"Reality Distortion activated for: '{impossible_goal}' "
-            f"(max {max_iterations} iterations)"
+            f"(max {max_iterations} iterations)",
         )
 
         for iteration in range(max_iterations):
             # Execute chain
             result, state = await self.execute_chain(
-                chain_name, {"goal": impossible_goal, "iteration": iteration}
+                chain_name, {"goal": impossible_goal, "iteration": iteration},
             )
 
             # Check if "impossible" solved
@@ -405,13 +401,13 @@ class KernelChainingOrchestrator:
 
             if success:
                 logger.info(
-                    f"Reality Distortion SUCCESS on iteration {iteration + 1}: {impossible_goal}"
+                    f"Reality Distortion SUCCESS on iteration {iteration + 1}: {impossible_goal}",
                 )
                 return (result, state)
 
             # Critique assumptions for next iteration
             state.add_critique(
-                f"Iteration {iteration + 1} failed - challenging assumptions", category="assumption"
+                f"Iteration {iteration + 1} failed - challenging assumptions", category="assumption",
             )
 
             # Evolve chain (would integrate with DTE here)
@@ -419,7 +415,7 @@ class KernelChainingOrchestrator:
 
         # Truly impossible (or needs more iterations)
         raise RuntimeError(
-            f"Reality Distortion failed after {max_iterations} iterations: {impossible_goal}"
+            f"Reality Distortion failed after {max_iterations} iterations: {impossible_goal}",
         )
 
     def _evaluate_success(self, result: Any, goal: str) -> bool:
@@ -531,7 +527,7 @@ async def example_usage():
     print("=== Kernel Chaining Demo ===\n")
 
     result, state = await orchestrator.execute_chain(
-        "design_to_code", {"goal": "Build insanely great app"}
+        "design_to_code", {"goal": "Build insanely great app"},
     )
 
     print(f"Final Result: {result}\n")
@@ -546,7 +542,7 @@ async def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     asyncio.run(example_usage())

@@ -1,5 +1,4 @@
-"""
-Pydantic models for AWS Cost Optimizer API requests and responses.
+"""Pydantic models for AWS Cost Optimizer API requests and responses.
 """
 
 from datetime import datetime
@@ -36,7 +35,7 @@ class CostAnalysisRequest(BaseModel):
     end_date: str | None = Field(None, description="End date (YYYY-MM-DD)")
     granularity: GranularityType = Field(GranularityType.DAILY, description="Data granularity")
     group_by: list[str] | None = Field(
-        None, description="Dimension to group by (e.g., SERVICE, INSTANCE_TYPE)"
+        None, description="Dimension to group by (e.g., SERVICE, INSTANCE_TYPE)",
     )
     service_filter: list[str] | None = Field(None, description="Filter by specific AWS services")
 
@@ -48,8 +47,8 @@ class CostAnalysisRequest(BaseModel):
                 "granularity": "DAILY",
                 "group_by": ["SERVICE"],
                 "service_filter": ["Amazon Elastic Compute Cloud - Compute"],
-            }
-        }
+            },
+        },
     )
 
 
@@ -57,10 +56,10 @@ class RecommendationRequest(BaseModel):
     """Request model for optimization recommendations."""
 
     optimization_types: list[OptimizationType] | None = Field(
-        None, description="Types of optimizations to analyze"
+        None, description="Types of optimizations to analyze",
     )
     min_savings_threshold: float | None = Field(
-        100.0, description="Minimum monthly savings to include in recommendations"
+        100.0, description="Minimum monthly savings to include in recommendations",
     )
     include_forecast: bool = Field(False, description="Include cost forecast in analysis")
 
@@ -70,8 +69,8 @@ class RecommendationRequest(BaseModel):
                 "optimization_types": ["RIGHT_SIZING", "IDLE_RESOURCES"],
                 "min_savings_threshold": 100.0,
                 "include_forecast": true,
-            }
-        }
+            },
+        },
     )
 
 
@@ -119,8 +118,8 @@ class CostAnalysisResponse(BaseModel):
                 "data_points": [{"date": "2024-01-01", "amount": 175.50, "unit": "USD"}],
                 "granularity": "DAILY",
                 "analyzed_at": "2024-01-31T10:00:00Z",
-            }
-        }
+            },
+        },
     )
 
 
@@ -167,11 +166,11 @@ class RecommendationsResponse(BaseModel):
                             "Change instance type",
                         ],
                         "priority": "HIGH",
-                    }
+                    },
                 ],
                 "generated_at": "2024-01-31T10:00:00Z",
-            }
-        }
+            },
+        },
     )
 
 

@@ -1,5 +1,4 @@
-"""
-Bennett Central Hive Mind — Asymmetric Compute Engine.
+"""Bennett Central Hive Mind — Asymmetric Compute Engine.
 
 The Vanguard move for consumer commerce:
   1. Pool subscription revenue from N users.
@@ -57,8 +56,7 @@ class TrendThesis:
 
 
 def analyze_global_zeitgeist() -> TrendThesis:
-    """
-    Step 1 — The O(1) Heavy Lift.
+    """Step 1 — The O(1) Heavy Lift.
 
     One massive context window ingests the global OSINT exhaust
     (scraped by the Jetski fleet and dropped to GCS by the prior pipeline).
@@ -110,8 +108,7 @@ Output MUST be valid JSON matching this schema exactly:
 
 
 def filter_through_sentinel(thesis: TrendThesis) -> bool:
-    """
-    Step 2 — The Brakes.
+    """Step 2 — The Brakes.
 
     Before purchasing for 10,000 households, the trend must clear
     the Go sentinel (ATP 5-19 matrix). Checks include:
@@ -136,7 +133,7 @@ def filter_through_sentinel(thesis: TrendThesis) -> bool:
                         "category": thesis.category,
                         "sku": thesis.supplier_sku,
                         "cost": thesis.estimated_cost_usd,
-                    }
+                    },
                 ),
             },
             timeout=3.0,
@@ -153,8 +150,7 @@ def filter_through_sentinel(thesis: TrendThesis) -> bool:
 
 
 def execute_syndicate_allocation(thesis: TrendThesis) -> dict[str, Any]:
-    """
-    Step 3 — The O(N) Revenue Distribution.
+    """Step 3 — The O(N) Revenue Distribution.
 
     ONE BigQuery query replaces running expensive LLMs for every user.
     A sub-penny SQL op matches the trend against 10,000 preference vectors.
@@ -175,7 +171,7 @@ def execute_syndicate_allocation(thesis: TrendThesis) -> dict[str, Any]:
         query_parameters=[
             bigquery.ScalarQueryParameter("category", "STRING", thesis.category),
             bigquery.ScalarQueryParameter("cost", "FLOAT64", thesis.estimated_cost_usd),
-        ]
+        ],
     )
 
     rows = list(bq.query(query, job_config=job_config).result())
@@ -215,7 +211,7 @@ def run() -> None:
 
     if thesis.tvi_score < TREND_VELOCITY_THRESHOLD:
         log.info(
-            "TVI=%d below threshold=%d — no action", thesis.tvi_score, TREND_VELOCITY_THRESHOLD
+            "TVI=%d below threshold=%d — no action", thesis.tvi_score, TREND_VELOCITY_THRESHOLD,
         )
         return
 

@@ -1,5 +1,4 @@
-"""
-SEO Master Database Models
+"""SEO Master Database Models
 """
 
 from datetime import datetime
@@ -40,10 +39,10 @@ class SEOAnalysis(Base):
     # Relationships
     meta_tags = relationship("MetaTag", back_populates="seo_analysis", cascade="all, delete-orphan")
     schema_markups = relationship(
-        "SchemaMarkup", back_populates="seo_analysis", cascade="all, delete-orphan"
+        "SchemaMarkup", back_populates="seo_analysis", cascade="all, delete-orphan",
     )
     core_web_vitals = relationship(
-        "CoreWebVital", back_populates="seo_analysis", cascade="all, delete-orphan"
+        "CoreWebVital", back_populates="seo_analysis", cascade="all, delete-orphan",
     )
 
 

@@ -1,5 +1,4 @@
-"""
-TAG: Task-Action-Goal
+"""TAG: Task-Action-Goal
 
 Perfect for performance-oriented objectives.
 When you need measurable outcomes.
@@ -11,8 +10,7 @@ from ultrathink.core.prompts.base import BasePrompt
 
 
 class TAG(BasePrompt):
-    """
-    Task-Action-Goal prompting.
+    """Task-Action-Goal prompting.
 
     Usage:
         >>> tag = TAG(
@@ -35,14 +33,14 @@ class TAG(BasePrompt):
         goal: str,
         constraints: str | None = None,
     ) -> None:
-        """
-        Initialize TAG prompt.
+        """Initialize TAG prompt.
 
         Args:
             task: The problem or objective
             action: Specific actions to take
             goal: Measurable outcome or success metric
             constraints: Optional limitations (budget, time, resources)
+
         """
         super().__init__(task=task, action=action, goal=goal, constraints=constraints)
         self.task = task

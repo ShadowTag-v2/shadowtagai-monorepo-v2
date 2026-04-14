@@ -1,5 +1,4 @@
-"""
-PsoModel: High-level adapter for minion integration.
+"""PsoModel: High-level adapter for minion integration.
 
 Provides a simple interface for PSO-based neural network optimization
 that integrates with the minion swarm and existing optimizers.
@@ -54,8 +53,7 @@ class PsoModelConfig:
 
 
 class PsoModel:
-    """
-    High-level PSO model adapter for minion integration.
+    """High-level PSO model adapter for minion integration.
 
     This class wraps the low-level PSO optimizer to provide a simple
     interface for neural network optimization that integrates with
@@ -92,8 +90,7 @@ class PsoModel:
         parallel_evaluator: Any | None = None,
         fitness_fn: FitnessFunction | None = None,
     ):
-        """
-        Initialize PsoModel.
+        """Initialize PsoModel.
 
         Args:
             target_network: Neural network to optimize
@@ -101,6 +98,7 @@ class PsoModel:
             adaptive_pso: Optional AdaptivePSO instance for enhanced optimization
             parallel_evaluator: Optional ParallelFitnessEvaluator for fast evaluation
             fitness_fn: Custom fitness function (auto-selected if not provided)
+
         """
         self.network = target_network
         self.config = config or PsoModelConfig()
@@ -142,8 +140,7 @@ class PsoModel:
         self._callbacks: list[Callable] = []
 
     def add_callback(self, callback: Callable[[int, float, dict], None]) -> "PsoModel":
-        """
-        Add progress callback.
+        """Add progress callback.
 
         Callback receives: (iteration, fitness, stats_dict)
         """
@@ -157,8 +154,7 @@ class PsoModel:
         max_iterations: int | None = None,
         batch_size: int | None = None,
     ) -> OptimizationResult:
-        """
-        Optimize neural network weights using PSO.
+        """Optimize neural network weights using PSO.
 
         Args:
             data: Training data
@@ -168,13 +164,14 @@ class PsoModel:
 
         Returns:
             OptimizationResult with best weights and history
+
         """
         max_iter = max_iterations or self.config.max_iterations
         batch = batch_size or self.config.batch_size
 
         logger.info(
             f"Starting PSO optimization: {self._optimizer.shape_info.total_params} params, "
-            f"{self.config.num_particles} particles, max {max_iter} iterations"
+            f"{self.config.num_particles} particles, max {max_iter} iterations",
         )
 
         # Use adaptive PSO if available
@@ -190,16 +187,15 @@ class PsoModel:
 
         logger.info(
             f"PSO optimization complete: fitness={self._result.best_fitness:.6f}, "
-            f"iterations={self._result.iterations}, converged={self._result.converged}"
+            f"iterations={self._result.iterations}, converged={self._result.converged}",
         )
 
         return self._result
 
     async def _optimize_with_adaptive(
-        self, data: np.ndarray, labels: np.ndarray, max_iterations: int, batch_size: int | None
+        self, data: np.ndarray, labels: np.ndarray, max_iterations: int, batch_size: int | None,
     ) -> OptimizationResult:
-        """
-        Optimization using AdaptivePSO from shadowtagai.
+        """Optimization using AdaptivePSO from shadowtagai.
 
         Integrates with existing swarm infrastructure.
         """
@@ -211,7 +207,7 @@ class PsoModel:
             # Wrap for parallel evaluation
             async def parallel_fitness(positions: list[np.ndarray]) -> list[float]:
                 return await asyncio.get_event_loop().run_in_executor(
-                    None, lambda: self.parallel_evaluator.evaluate_batch(fitness_wrapper, positions)
+                    None, lambda: self.parallel_evaluator.evaluate_batch(fitness_wrapper, positions),
                 )
 
             # Run adaptive PSO with parallel evaluation
@@ -285,7 +281,7 @@ class PsoModel:
                 "task_type": self.config.task_type,
                 "has_adaptive_pso": self.adaptive_pso is not None,
                 "has_parallel_evaluator": self.parallel_evaluator is not None,
-            }
+            },
         )
         return stats
 
@@ -317,8 +313,7 @@ def create_pso_model(
     max_iterations: int = 100,
     use_parallel: bool = False,
 ) -> PsoModel:
-    """
-    Create PsoModel with common configuration.
+    """Create PsoModel with common configuration.
 
     Args:
         network: Neural network to optimize
@@ -329,6 +324,7 @@ def create_pso_model(
 
     Returns:
         Configured PsoModel instance
+
     """
     config = PsoModelConfig(
         num_particles=num_particles,

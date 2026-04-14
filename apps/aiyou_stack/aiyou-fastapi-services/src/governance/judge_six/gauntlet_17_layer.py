@@ -4,13 +4,11 @@ logger = logging.getLogger(__name__)
 
 
 class ATP_5_19_RiskMitigation:
-    """
-    Implements DoD CRSMC & ATP 5-19 Risk Mitigation for AI Code Evaluation.
+    """Implements DoD CRSMC & ATP 5-19 Risk Mitigation for AI Code Evaluation.
     """
 
     def evaluate_payload(self, query: str) -> dict:
-        """
-        1. Identify Hazards
+        """1. Identify Hazards
         2. Assess Risk
         3. Develop Controls
         """
@@ -40,16 +38,14 @@ class ATP_5_19_RiskMitigation:
 
 
 class Gauntlet17Layer:
-    """
-    Room 3: The Gauntlet (Critic) - 17-Layer DOW CRSMC
+    """Room 3: The Gauntlet (Critic) - 17-Layer DOW CRSMC
     """
 
     def __init__(self):
         self.risk_engine = ATP_5_19_RiskMitigation()
 
     def judge(self, payload: str) -> dict:
-        """
-        Judges execution payloads against the 17-layers before they hit Room 4 (Rejection Loop)
+        """Judges execution payloads against the 17-layers before they hit Room 4 (Rejection Loop)
         or Room 5 (Vault).
         """
         logger.info("[GAUNTLET] Commencing 17-Layer Inspection...")

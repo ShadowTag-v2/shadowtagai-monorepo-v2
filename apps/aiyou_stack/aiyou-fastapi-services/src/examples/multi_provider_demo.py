@@ -1,5 +1,4 @@
-"""
-Multi-Provider Demo: Gemini + Anthropic Working Together
+"""Multi-Provider Demo: Gemini + Anthropic Working Together
 
 This example demonstrates the unified orchestrator routing tasks between
 Gemini (for speed/cost) and Anthropic (for reasoning quality).
@@ -40,7 +39,7 @@ def print_result(result: Any, show_trace: bool = False):
     print(
         f"✓ Result: {result.content[:200]}..."
         if len(result.content) > 200
-        else f"✓ Result: {result.content}"
+        else f"✓ Result: {result.content}",
     )
     print("\nMetrics:")
     print(f"  • Complexity: {result.task_complexity.value}")
@@ -136,7 +135,7 @@ def demo_provider_override(orchestrator: UnifiedOrchestrator):
     print(f"\nTask: {task}")
     print("Forcing Provider: Gemini")
     result = orchestrator.execute(
-        task, provider=Provider.GEMINI, complexity=TaskComplexity.MODERATE
+        task, provider=Provider.GEMINI, complexity=TaskComplexity.MODERATE,
     )
     print_result(result)
 
@@ -144,7 +143,7 @@ def demo_provider_override(orchestrator: UnifiedOrchestrator):
     print(f"\nTask: {task}")
     print("Forcing Provider: Anthropic")
     result = orchestrator.execute(
-        task, provider=Provider.ANTHROPIC, complexity=TaskComplexity.MODERATE
+        task, provider=Provider.ANTHROPIC, complexity=TaskComplexity.MODERATE,
     )
     print_result(result)
 
@@ -234,7 +233,7 @@ def demo_performance_comparison():
     print("\nComparison:")
     print(f"  Speed: Gemini is {anthropic_time / gemini_time:.1f}x faster")
     print(
-        f"  Cost: Gemini is {anthropic_result.cost_usd / max(gemini_result.cost_usd, 0.000001):.1f}x cheaper"
+        f"  Cost: Gemini is {anthropic_result.cost_usd / max(gemini_result.cost_usd, 0.000001):.1f}x cheaper",
     )
 
 

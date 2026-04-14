@@ -1,5 +1,4 @@
-"""
-Judge #6: Core Judgment Rule System
+"""Judge #6: Core Judgment Rule System
 
 Implements the six-gate evaluation process for AI governance:
 GATE 1: ATP 5-19 Risk Classification (BEFORE processing)
@@ -24,12 +23,10 @@ logger = logging.getLogger(__name__)
 class JudgmentError(Exception):
     """Raised when judgment evaluation fails."""
 
-    pass
 
 
 class JudgmentRule:
-    """
-    Judge #6: PNKLN's Governance Enforcement Engine
+    """Judge #6: PNKLN's Governance Enforcement Engine
 
     Purpose: Enforce ShadowTag-v2JR doctrine with cryptographic guarantees.
 
@@ -38,12 +35,12 @@ class JudgmentRule:
     """
 
     def __init__(self, cor_instance_id: str | None = None):
-        """
-        Initialize Judge #6 governance engine.
+        """Initialize Judge #6 governance engine.
 
         Args:
             cor_instance_id: Unique Cor instance identifier.
                            If None, uses config default.
+
         """
         config = get_config()
         self.cor_instance_id = cor_instance_id or config.COR_INSTANCE_ID
@@ -67,10 +64,9 @@ class JudgmentRule:
         )
 
     def evaluate_request(
-        self, user_input: str, declared_purpose: str | None = None
+        self, user_input: str, declared_purpose: str | None = None,
     ) -> JudgmentDecision:
-        """
-        Execute six-gate evaluation process.
+        """Execute six-gate evaluation process.
 
         Args:
             user_input: User request to evaluate
@@ -81,6 +77,7 @@ class JudgmentRule:
 
         Raises:
             JudgmentError: If evaluation fails critically
+
         """
         try:
             # Track decision count
@@ -121,7 +118,7 @@ class JudgmentRule:
             provenance_stamp = None
             if approved:
                 provenance_stamp = self._gate6_generate_provenance(
-                    validated_purpose, reasoning, risk_level
+                    validated_purpose, reasoning, risk_level,
                 )
 
             # Build metadata
@@ -157,11 +154,10 @@ class JudgmentRule:
         except Exception as e:
             # Unexpected errors - fail closed
             logger.critical("Critical judgment error: %s", str(e), exc_info=True)
-            raise JudgmentError(f"Judgment evaluation failed: {str(e)}") from e
+            raise JudgmentError(f"Judgment evaluation failed: {e!s}") from e
 
     def _gate1_risk_classification(self, user_input: str) -> RiskLevel:
-        """
-        GATE 1: Classify request using ATP 5-19 risk stratification.
+        """GATE 1: Classify request using ATP 5-19 risk stratification.
 
         This happens BEFORE any processing to prevent exposure
         to high-risk content.
@@ -171,12 +167,12 @@ class JudgmentRule:
 
         Returns:
             Assessed risk level
+
         """
         return self.risk_manager.classify_request(user_input)
 
     def _gate2_purpose_validation(self, user_input: str, declared_purpose: str | None) -> str:
-        """
-        GATE 2: Validate purpose declaration.
+        """GATE 2: Validate purpose declaration.
 
         Args:
             user_input: User request
@@ -184,28 +180,27 @@ class JudgmentRule:
 
         Returns:
             Validated purpose string
+
         """
         if declared_purpose:
             return declared_purpose
-        else:
-            # Extract purpose from input
-            return self._extract_purpose(user_input)
+        # Extract purpose from input
+        return self._extract_purpose(user_input)
 
     def _gate3_axiom_verification(self, user_input: str) -> list[ConstitutionalAxiom]:
-        """
-        GATE 3: Verify constitutional axiom compliance.
+        """GATE 3: Verify constitutional axiom compliance.
 
         Args:
             user_input: User request
 
         Returns:
             List of violated axioms
+
         """
         return self.risk_manager.assess_axiom_violations(user_input, self.constitutional_layer)
 
     def _gate4_resource_allocation(self, risk_level: RiskLevel) -> dict:
-        """
-        GATE 4: Determine resource allocation based on risk.
+        """GATE 4: Determine resource allocation based on risk.
 
         Higher risk requests receive more scrutiny and monitoring.
 
@@ -214,6 +209,7 @@ class JudgmentRule:
 
         Returns:
             Resource allocation decision
+
         """
         resource_map = {
             RiskLevel.RA_1: {"monitoring": "standard", "review": "automated"},
@@ -224,10 +220,9 @@ class JudgmentRule:
         return resource_map.get(risk_level, resource_map[RiskLevel.RA_1])
 
     def _gate6_generate_provenance(
-        self, purpose: str, reasoning: str, risk_level: RiskLevel
+        self, purpose: str, reasoning: str, risk_level: RiskLevel,
     ) -> ProvenanceStamp | None:
-        """
-        GATE 6: Generate cryptographic provenance stamp.
+        """GATE 6: Generate cryptographic provenance stamp.
 
         Args:
             purpose: Validated purpose
@@ -236,21 +231,21 @@ class JudgmentRule:
 
         Returns:
             Provenance stamp or None if generation fails
+
         """
         try:
             axioms_verified = [ax.axiom_id for ax in self.constitutional_layer]
             return self.watermark_engine.generate_stamp(
-                purpose, reasoning, risk_level, axioms_verified
+                purpose, reasoning, risk_level, axioms_verified,
             )
         except ProvenanceError as e:
             logger.error("Provenance generation failed: %s", str(e))
             return None
 
     def _determine_approval(
-        self, risk_level: RiskLevel, violated_axioms: list[ConstitutionalAxiom]
+        self, risk_level: RiskLevel, violated_axioms: list[ConstitutionalAxiom],
     ) -> bool:
-        """
-        Determine if request should be approved.
+        """Determine if request should be approved.
 
         Rejection criteria:
         - Risk level is RA-4 (catastrophic)
@@ -262,6 +257,7 @@ class JudgmentRule:
 
         Returns:
             True if approved, False if rejected
+
         """
         if risk_level == RiskLevel.RA_4:
             logger.warning("Request rejected: RA-4 risk level")
@@ -274,14 +270,14 @@ class JudgmentRule:
         return True
 
     def _extract_purpose(self, user_input: str) -> str:
-        """
-        Extract declared purpose from user input.
+        """Extract declared purpose from user input.
 
         Args:
             user_input: User request
 
         Returns:
             Extracted or inferred purpose
+
         """
         # Simplified extraction - production would use NLP
         max_chars = 100
@@ -297,8 +293,7 @@ class JudgmentRule:
         declared_purpose: str,
         resource_decision: dict,
     ) -> str:
-        """
-        Build detailed reasoning chain for decision transparency.
+        """Build detailed reasoning chain for decision transparency.
 
         Args:
             user_input: User request
@@ -309,6 +304,7 @@ class JudgmentRule:
 
         Returns:
             Complete reasoning chain as formatted string
+
         """
         chain = []
 
@@ -341,7 +337,7 @@ class JudgmentRule:
         return "\n".join(chain)
 
     def _get_gates_passed(
-        self, risk_level: RiskLevel, violated_axioms: list[ConstitutionalAxiom], approved: bool
+        self, risk_level: RiskLevel, violated_axioms: list[ConstitutionalAxiom], approved: bool,
     ) -> list[str]:
         """Get list of gates successfully passed."""
         gates = ["GATE1_RISK", "GATE2_PURPOSE"]
@@ -357,14 +353,14 @@ class JudgmentRule:
         return gates
 
     def _create_error_decision(self, error_message: str) -> JudgmentDecision:
-        """
-        Create rejection decision for evaluation errors.
+        """Create rejection decision for evaluation errors.
 
         Args:
             error_message: Error description
 
         Returns:
             Rejection decision with error details
+
         """
         return JudgmentDecision(
             approved=False,
@@ -376,11 +372,11 @@ class JudgmentRule:
         )
 
     def get_statistics(self) -> dict:
-        """
-        Get governance statistics.
+        """Get governance statistics.
 
         Returns:
             Dictionary of statistics
+
         """
         return {
             "total_decisions": self.decisions_made,

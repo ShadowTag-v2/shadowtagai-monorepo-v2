@@ -73,6 +73,7 @@ def create_intake(intake_data: dict[str, Any]) -> str | None:
 
     Returns:
         The Firestore document ID, or None if write failed.
+
     """
     db = _get_db()
     if db is None:
@@ -93,6 +94,7 @@ def create_screening(screening_data: dict[str, Any]) -> str | None:
 
     Returns:
         The Firestore document ID, or None if write failed.
+
     """
     db = _get_db()
     if db is None:
@@ -113,6 +115,7 @@ def create_analysis(analysis_data: dict[str, Any]) -> str | None:
 
     Returns:
         The Firestore document ID, or None if write failed.
+
     """
     db = _get_db()
     if db is None:
@@ -133,6 +136,7 @@ def create_billing_entry(billing_data: dict[str, Any]) -> str | None:
 
     Returns:
         The Firestore document ID, or None if write failed.
+
     """
     db = _get_db()
     if db is None:
@@ -158,6 +162,7 @@ def get_intake(intake_id: str) -> dict[str, Any] | None:
 
     Returns:
         The intake document as a dict, or None if not found.
+
     """
     db = _get_db()
     if db is None:
@@ -206,13 +211,14 @@ def list_intakes(matter_id: str | None = None, limit: int = 50) -> list[dict[str
 
     Returns:
         List of intake documents.
+
     """
     db = _get_db()
     if db is None:
         return []
 
     query = db.collection("uphillsnowball_intakes").order_by(
-        "timestamp", direction="DESCENDING"
+        "timestamp", direction="DESCENDING",
     ).limit(limit)
 
     if matter_id:
@@ -230,6 +236,7 @@ def list_billing_by_matter(matter_id: str, limit: int = 100) -> list[dict[str, A
 
     Returns:
         List of billing entries for the matter.
+
     """
     db = _get_db()
     if db is None:
@@ -259,6 +266,7 @@ def update_intake_status(intake_id: str, new_status: str) -> bool:
 
     Returns:
         True if update succeeded, False otherwise.
+
     """
     db = _get_db()
     if db is None:
@@ -279,6 +287,7 @@ def update_billing_status(entry_id: str, new_status: str) -> bool:
 
     Returns:
         True if update succeeded, False otherwise.
+
     """
     db = _get_db()
     if db is None:
@@ -303,6 +312,7 @@ def delete_intake(intake_id: str) -> bool:
 
     Returns:
         True if deletion succeeded, False otherwise.
+
     """
     db = _get_db()
     if db is None:
@@ -321,6 +331,7 @@ def delete_billing_entry(entry_id: str) -> bool:
 
     Returns:
         True if deletion succeeded, False otherwise.
+
     """
     db = _get_db()
     if db is None:

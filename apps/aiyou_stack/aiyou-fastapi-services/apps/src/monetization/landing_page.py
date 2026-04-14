@@ -1,5 +1,4 @@
-"""
-Landing page generator for ShadowTag-v2 Intelligence Services.
+"""Landing page generator for ShadowTag-v2 Intelligence Services.
 
 Generates static HTML landing pages with:
 - Hero section
@@ -16,8 +15,7 @@ def generate_landing_page(
     stripe_publishable_key: str = "pk_test_...",
     custom_domain: str = "shadowtag_v4-intelligence.com",
 ) -> str:
-    """
-    Generate complete landing page HTML.
+    """Generate complete landing page HTML.
 
     Args:
         stripe_publishable_key: Stripe publishable key
@@ -25,6 +23,7 @@ def generate_landing_page(
 
     Returns:
         Complete HTML page
+
     """
     html = f"""<!DOCTYPE html>
 <html lang="en">

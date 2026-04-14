@@ -1,12 +1,11 @@
-import re
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
 
 class DataMoatAnonymizer:
-    """
-    Plugging the $20k/mo Data Moat Leak.
+    """Plugging the $20k/mo Data Moat Leak.
     Sanitizes ingested court filings (PII, Names, Dates) returning pure "Legal Intelligence"
     blueprints that can be licensed dynamically without compromising client confidentiality.
     """
@@ -20,8 +19,7 @@ class DataMoatAnonymizer:
         ]
 
     def sanitize_for_licensing(self, raw_legal_text: str) -> str:
-        """
-        Strips raw legal text of specific identities while preserving the structural reasoning and procedural rules.
+        """Strips raw legal text of specific identities while preserving the structural reasoning and procedural rules.
         """
         logger.info("Anonymizer: Scrubbing document to preserve Data Moat value.")
         safe_text = raw_legal_text

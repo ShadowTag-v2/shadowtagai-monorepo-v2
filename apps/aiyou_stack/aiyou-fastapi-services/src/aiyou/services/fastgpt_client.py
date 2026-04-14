@@ -1,5 +1,4 @@
-"""
-FastGPT Client - Wire contract for FastGPT knowledge console.
+"""FastGPT Client - Wire contract for FastGPT knowledge console.
 
 Implements GPTRAM (Retrieval-Augmented Memory) pattern:
 1. Retrieve from Context Index + BigQuery + Sonar history
@@ -44,8 +43,7 @@ class ContextBundle:
 
 
 class FastGPTClient:
-    """
-    Client for FastGPT knowledge console.
+    """Client for FastGPT knowledge console.
 
     Provides:
     - Organization knowledge search
@@ -54,12 +52,12 @@ class FastGPTClient:
     """
 
     def __init__(self, base_url: str | None = None, api_key: str | None = None):
-        """
-        Initialize FastGPT client.
+        """Initialize FastGPT client.
 
         Args:
             base_url: FastGPT API URL. Defaults to localhost:3001
             api_key: Optional API key for authentication
+
         """
         self.base_url = base_url or os.getenv("FASTGPT_URL", "http://localhost:3001")
         self.api_key = api_key or os.getenv("FASTGPT_API_KEY", "")
@@ -77,8 +75,7 @@ class FastGPTClient:
         project: str = "ShadowTag-v2-fastapi-services",
         limit: int = 5,
     ) -> list[KnowledgeResult]:
-        """
-        Search organization knowledge base.
+        """Search organization knowledge base.
 
         POST https://fastgpt.yourdomain/api/chat
         Body:
@@ -100,6 +97,7 @@ class FastGPTClient:
 
         Returns:
             List of KnowledgeResult objects
+
         """
         try:
             response = await self._client.post(
@@ -129,10 +127,9 @@ class FastGPTClient:
             return []
 
     async def get_context_for_task(
-        self, task_id: str, query: str | None = None, limit: int = 8
+        self, task_id: str, query: str | None = None, limit: int = 8,
     ) -> ContextBundle:
-        """
-        GPTRAM: Retrieve + Augment for a task.
+        """GPTRAM: Retrieve + Augment for a task.
 
         1. GET /api/context/search?query=...&limit=8
         2. GET /api/intel/briefing/today
@@ -145,6 +142,7 @@ class FastGPTClient:
 
         Returns:
             ContextBundle with all retrieved context
+
         """
         context_notes = []
         intel_briefing = {}
@@ -154,7 +152,7 @@ class FastGPTClient:
         if query:
             try:
                 response = await self._client.get(
-                    "/api/context/search", params={"query": query, "limit": limit}
+                    "/api/context/search", params={"query": query, "limit": limit},
                 )
                 if response.status_code == 200:
                     context_notes = response.json().get("notes", [])
@@ -176,7 +174,7 @@ class FastGPTClient:
         # 3. Fetch relevant Sonar issues (optional)
         try:
             response = await self._client.get(
-                "/api/quality/issues", params={"severity": "BLOCKER,CRITICAL", "limit": 5}
+                "/api/quality/issues", params={"severity": "BLOCKER,CRITICAL", "limit": 5},
             )
             if response.status_code == 200:
                 sonar_issues = response.json().get("issues", [])
@@ -194,7 +192,7 @@ class FastGPTClient:
         )
 
     def _estimate_tokens(
-        self, context_notes: list[dict], intel_briefing: dict, sonar_issues: list[dict]
+        self, context_notes: list[dict], intel_briefing: dict, sonar_issues: list[dict],
     ) -> int:
         """Rough token estimation (4 chars ~ 1 token)."""
         total_chars = 0
@@ -206,11 +204,11 @@ class FastGPTClient:
         return total_chars // 4
 
     async def format_pre_context(self, bundle: ContextBundle) -> str:
-        """
-        Format ContextBundle as pre-context string for LLM.
+        """Format ContextBundle as pre-context string for LLM.
 
         Returns:
             Formatted markdown string for system/user message prefix
+
         """
         lines = ["# Pre-Context (GPTRAM)", ""]
 

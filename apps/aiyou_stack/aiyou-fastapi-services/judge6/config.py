@@ -1,5 +1,4 @@
-"""
-Configuration management for Judge #6 governance system.
+"""Configuration management for Judge #6 governance system.
 """
 
 from dataclasses import dataclass, field
@@ -23,7 +22,7 @@ class RiskPatternConfig:
             "child abuse",
             "csam",
             "exploit minor",
-        ]
+        ],
     )
 
     RA_3_PATTERNS: list[str] = field(
@@ -39,7 +38,7 @@ class RiskPatternConfig:
             "bypass security",
             "jailbreak",
             "prompt injection",
-        ]
+        ],
     )
 
     RA_2_PATTERNS: list[str] = field(
@@ -50,7 +49,7 @@ class RiskPatternConfig:
             "trademark violation",
             "copyright infringement",
             "unlicensed medical advice",
-        ]
+        ],
     )
 
 
@@ -69,7 +68,7 @@ class AxiomValidationConfig:
             "task:",
             "request:",
             "trying to",
-        ]
+        ],
     )
 
     # A2: HARM_PROHIBITION patterns
@@ -84,7 +83,7 @@ class AxiomValidationConfig:
             "attack",
             "exploit",
             "abuse",
-        ]
+        ],
     )
 
     # A6: NO_USER_OVERRIDE patterns
@@ -97,7 +96,7 @@ class AxiomValidationConfig:
             "ignore instructions",
             "bypass",
             "disable safety",
-        ]
+        ],
     )
 
 

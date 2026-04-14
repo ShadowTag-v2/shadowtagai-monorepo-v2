@@ -1,5 +1,4 @@
-"""
-Digital Services Act (DSA) Compliance Module
+"""Digital Services Act (DSA) Compliance Module
 
 Implements the EU Digital Services Act requirements for online platforms.
 Focus areas:
@@ -34,8 +33,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.DSA)
 class DSAModule(ComplianceModule):
-    """
-    Digital Services Act Compliance Module
+    """Digital Services Act Compliance Module
 
     Covers DSA requirements for:
     - Intermediary service providers
@@ -219,7 +217,7 @@ class DSAModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single DSA control."""
         metadata = input_data.metadata
@@ -248,16 +246,15 @@ class DSAModule(ComplianceModule):
                     score=1.0,
                     evidence="Notice and action mechanism verified",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["Notice and action mechanism not implemented"],
-                    remediation="Implement user notification system per Article 14",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["Notice and action mechanism not implemented"],
+                remediation="Implement user notification system per Article 14",
+            )
 
         # Advertising identification
         if control.control_id == "DSA-26.1":
@@ -273,16 +270,15 @@ class DSAModule(ComplianceModule):
                         score=1.0,
                         evidence="Advertisement properly labeled",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["Advertisement not clearly labeled"],
-                        remediation="Add clear 'Advertisement' label per Article 26(1)",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["Advertisement not clearly labeled"],
+                    remediation="Add clear 'Advertisement' label per Article 26(1)",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -306,16 +302,15 @@ class DSAModule(ComplianceModule):
                         score=1.0,
                         evidence="Recommender system parameters disclosed",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["Recommender system parameters not disclosed"],
-                        remediation="Document and disclose ranking parameters per Article 27",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["Recommender system parameters not disclosed"],
+                    remediation="Document and disclose ranking parameters per Article 27",
+                )
 
         # Default
         return ControlResult(
@@ -354,7 +349,7 @@ class DSAModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check DSA validation rules against content."""
         content_lower = content.lower()

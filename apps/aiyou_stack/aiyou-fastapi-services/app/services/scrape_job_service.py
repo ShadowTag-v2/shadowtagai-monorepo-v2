@@ -1,5 +1,4 @@
-"""
-Scrape Job Service Layer
+"""Scrape Job Service Layer
 
 Encapsulates database operations for AI Thread scrape job management.
 """

@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Task Models
+"""Verdict Systems - Task Models
 Core task representation and urgency calculation
 """
 
@@ -67,8 +66,7 @@ class TaskUpdate(BaseModel):
 
 
 class Task(TaskBase):
-    """
-    Core task model with urgency tile calculation
+    """Core task model with urgency tile calculation
     The Schiznit engine uses this model to orchestrate executive function
     across all verticals. Each task automatically calculates its urgency.
     """
@@ -92,8 +90,7 @@ class Task(TaskBase):
         )
 
     def calculate_urgency(self) -> UrgencyLevel:
-        """
-        Calculate current urgency tile based on deadline and priority.
+        """Calculate current urgency tile based on deadline and priority.
         Logic:
         - Critical: Past deadline OR < 1 hour (if Urgent priority)
         - Red: < 6 hours remaining

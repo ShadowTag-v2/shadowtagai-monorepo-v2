@@ -22,8 +22,7 @@ async def get_time_series(
     query: TimeSeriesQuery,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get time series data
+    """Get time series data
 
     Retrieve time series data for a specific metric over a time period.
     Supports metrics like event_count, user_count, revenue, etc.
@@ -40,8 +39,7 @@ async def analyze_user_behavior(
     days: int = 30,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Analyze user behavior
+    """Analyze user behavior
 
     Get detailed analysis of user behavior including session metrics,
     most common events, and conversion paths.
@@ -66,8 +64,7 @@ async def generate_insights(
     days: int = 7,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Generate insights
+    """Generate insights
 
     Generate actionable insights from your analytics data including trends,
     anomalies, and recommendations.
@@ -85,8 +82,7 @@ async def get_analytics_overview(
     days: int = 7,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get analytics overview
+    """Get analytics overview
 
     Get a high-level overview of key metrics including total events,
     unique users, and top events.
@@ -100,7 +96,7 @@ async def get_analytics_overview(
     total_events = await EventService.get_event_count(db, start_date=start_date, end_date=end_date)
     unique_users = await EventService.get_unique_users(db, start_date=start_date, end_date=end_date)
     top_events = await EventService.get_top_events(
-        db, start_date=start_date, end_date=end_date, limit=5
+        db, start_date=start_date, end_date=end_date, limit=5,
     )
 
     return {

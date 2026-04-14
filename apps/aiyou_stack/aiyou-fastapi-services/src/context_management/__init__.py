@@ -1,5 +1,4 @@
-"""
-Context Window Management for AI Analysis Sessions
+"""Context Window Management for AI Analysis Sessions
 
 Tracks AI chat sessions with metadata, summaries, and context indices
 to manage conversation history and ensure effective analysis workflows.

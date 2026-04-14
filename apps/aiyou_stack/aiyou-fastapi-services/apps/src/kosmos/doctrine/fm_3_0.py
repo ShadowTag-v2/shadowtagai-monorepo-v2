@@ -1,5 +1,4 @@
-"""
-FM 3-0: Operations (Warfighting Functions)
+"""FM 3-0: Operations (Warfighting Functions)
 ==========================================
 
 Source: FM 3-0 (October 2022)
@@ -45,8 +44,7 @@ class OperationType(Enum):
 
 @dataclass
 class WarfightingFunction(ABC):
-    """
-    Base class for all Warfighting Functions.
+    """Base class for all Warfighting Functions.
 
     Each function represents a group of tasks and systems
     united by a common purpose.
@@ -61,7 +59,6 @@ class WarfightingFunction(ABC):
     @abstractmethod
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
         """Execute the warfighting function"""
-        pass
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -76,8 +73,7 @@ class WarfightingFunction(ABC):
 
 @dataclass
 class CommandControl(WarfightingFunction):
-    """
-    FM 3-0: Command and Control Warfighting Function
+    """FM 3-0: Command and Control Warfighting Function
 
     The related tasks and systems that enable commanders to
     synchronize and converge all elements of combat power.
@@ -108,8 +104,7 @@ class CommandControl(WarfightingFunction):
     disciplined_initiative_enabled: bool = True
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute C2 function.
+        """Execute C2 function.
 
         Provides authority and direction to subordinate elements.
         """
@@ -134,8 +129,7 @@ class CommandControl(WarfightingFunction):
 
 @dataclass
 class Intelligence(WarfightingFunction):
-    """
-    FM 3-0: Intelligence Warfighting Function
+    """FM 3-0: Intelligence Warfighting Function
 
     The related tasks and systems that facilitate understanding
     of the enemy, terrain, weather, and civil considerations.
@@ -169,15 +163,14 @@ class Intelligence(WarfightingFunction):
     pir: list[str] = field(default_factory=list)
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute Intelligence function.
+        """Execute Intelligence function.
 
         Provides understanding of operational environment.
         """
         return {
             "function": "intelligence",
             "ipb_complete": all(
-                [self.terrain_analysis, self.weather_analysis, self.threat_evaluation]
+                [self.terrain_analysis, self.weather_analysis, self.threat_evaluation],
             ),
             "pir_count": len(self.pir),
             "threat_level": self._assess_threat_level(),
@@ -188,13 +181,12 @@ class Intelligence(WarfightingFunction):
         """Assess current threat level"""
         if self.threat_evaluation.get("high_risk"):
             return "HIGH"
-        elif self.threat_evaluation.get("medium_risk"):
+        if self.threat_evaluation.get("medium_risk"):
             return "MEDIUM"
         return "LOW"
 
     async def conduct_ipb(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Conduct Intelligence Preparation of the Battlefield.
+        """Conduct Intelligence Preparation of the Battlefield.
 
         ATP 2-01.3 four-step IPB process:
         1. Define the operational environment
@@ -223,8 +215,7 @@ class Intelligence(WarfightingFunction):
 
 @dataclass
 class Fires(WarfightingFunction):
-    """
-    FM 3-0: Fires Warfighting Function
+    """FM 3-0: Fires Warfighting Function
 
     The related tasks and systems that create and converge
     effects in all domains against the adversary.
@@ -253,8 +244,7 @@ class Fires(WarfightingFunction):
     fire_missions: list[dict[str, Any]] = field(default_factory=list)
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute Fires function.
+        """Execute Fires function.
 
         Delivers effects against designated targets.
         """
@@ -283,8 +273,7 @@ class Fires(WarfightingFunction):
 
 @dataclass
 class Movement(WarfightingFunction):
-    """
-    FM 3-0: Movement and Maneuver Warfighting Function
+    """FM 3-0: Movement and Maneuver Warfighting Function
 
     The related tasks and systems that move and employ forces
     to achieve a position of relative advantage.
@@ -303,8 +292,7 @@ class Movement(WarfightingFunction):
     positions: dict[str, str] = field(default_factory=dict)
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute Movement and Maneuver function.
+        """Execute Movement and Maneuver function.
 
         Positions forces for advantage.
         """
@@ -326,8 +314,7 @@ class Movement(WarfightingFunction):
 
 @dataclass
 class Sustainment(WarfightingFunction):
-    """
-    FM 3-0: Sustainment Warfighting Function
+    """FM 3-0: Sustainment Warfighting Function
 
     The related tasks and systems that provide support and
     services to ensure freedom of action, extend operational reach.
@@ -352,8 +339,7 @@ class Sustainment(WarfightingFunction):
     resources: dict[str, int] = field(default_factory=dict)
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute Sustainment function.
+        """Execute Sustainment function.
 
         Maintains combat power through resource management.
         """
@@ -386,8 +372,7 @@ class Sustainment(WarfightingFunction):
 
 @dataclass
 class Protection(WarfightingFunction):
-    """
-    FM 3-0: Protection Warfighting Function
+    """FM 3-0: Protection Warfighting Function
 
     The related tasks and systems that preserve the force
     so the commander can apply maximum combat power.
@@ -412,8 +397,7 @@ class Protection(WarfightingFunction):
     threats_neutralized: int = 0
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute Protection function.
+        """Execute Protection function.
 
         Preserves force effectiveness.
         """
@@ -426,8 +410,7 @@ class Protection(WarfightingFunction):
         }
 
     def set_security_posture(self, level: str):
-        """
-        Set security posture per ATP 3-20.96:
+        """Set security posture per ATP 3-20.96:
         - SCREEN: Early warning, minimal engagement (50%)
         - GUARD: Fight for time, deny observation (75%)
         - COVER: Battle positions, self-contained (90%)
@@ -456,8 +439,7 @@ class Protection(WarfightingFunction):
 
 
 def create_warfighting_functions() -> dict[WarfightingFunctionType, WarfightingFunction]:
-    """
-    Factory function to create all six warfighting functions.
+    """Factory function to create all six warfighting functions.
 
     Returns dictionary mapping function type to instance.
     """
@@ -467,19 +449,19 @@ def create_warfighting_functions() -> dict[WarfightingFunctionType, WarfightingF
             function_type=WarfightingFunctionType.COMMAND_CONTROL,
         ),
         WarfightingFunctionType.INTELLIGENCE: Intelligence(
-            name="Intelligence", function_type=WarfightingFunctionType.INTELLIGENCE
+            name="Intelligence", function_type=WarfightingFunctionType.INTELLIGENCE,
         ),
         WarfightingFunctionType.FIRES: Fires(
-            name="Fires", function_type=WarfightingFunctionType.FIRES
+            name="Fires", function_type=WarfightingFunctionType.FIRES,
         ),
         WarfightingFunctionType.MOVEMENT_MANEUVER: Movement(
             name="Movement and Maneuver",
             function_type=WarfightingFunctionType.MOVEMENT_MANEUVER,
         ),
         WarfightingFunctionType.SUSTAINMENT: Sustainment(
-            name="Sustainment", function_type=WarfightingFunctionType.SUSTAINMENT
+            name="Sustainment", function_type=WarfightingFunctionType.SUSTAINMENT,
         ),
         WarfightingFunctionType.PROTECTION: Protection(
-            name="Protection", function_type=WarfightingFunctionType.PROTECTION
+            name="Protection", function_type=WarfightingFunctionType.PROTECTION,
         ),
     }

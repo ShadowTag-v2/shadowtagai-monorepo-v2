@@ -1,5 +1,4 @@
-"""
-Receipt Chain Endpoints
+"""Receipt Chain Endpoints
 
 API endpoints for managing and querying receipt chains.
 """
@@ -17,11 +16,11 @@ router = APIRouter()
 
 @router.get("/list", response_model=list[ChainSummary])
 async def list_chains():
-    """
-    List all receipt chains.
+    """List all receipt chains.
 
     Returns:
         List of chain summaries
+
     """
     storage = ChainStorage(Path(settings.CHAIN_DB_PATH))
     chains = storage.list_chains()
@@ -32,14 +31,14 @@ async def list_chains():
 
 @router.get("/{chain_id}")
 async def get_chain(chain_id: str):
-    """
-    Get detailed information about a specific chain.
+    """Get detailed information about a specific chain.
 
     Args:
         chain_id: Chain identifier
 
     Returns:
         Chain summary and statistics
+
     """
     storage = ChainStorage(Path(settings.CHAIN_DB_PATH))
     chain = storage.load_chain(chain_id)
@@ -53,14 +52,14 @@ async def get_chain(chain_id: str):
 
 @router.get("/{chain_id}/verify", response_model=VerificationResult)
 async def verify_chain(chain_id: str):
-    """
-    Verify the cryptographic integrity of a chain.
+    """Verify the cryptographic integrity of a chain.
 
     Args:
         chain_id: Chain identifier
 
     Returns:
         Verification result with details
+
     """
     storage = ChainStorage(Path(settings.CHAIN_DB_PATH))
     chain = storage.load_chain(chain_id)
@@ -82,14 +81,14 @@ async def verify_chain(chain_id: str):
 
 @router.get("/receipt/{operation_id}", response_model=ReceiptDetail)
 async def get_receipt(operation_id: str):
-    """
-    Get a specific receipt by operation ID.
+    """Get a specific receipt by operation ID.
 
     Args:
         operation_id: Operation identifier
 
     Returns:
         Receipt details
+
     """
     storage = ChainStorage(Path(settings.CHAIN_DB_PATH))
     receipts = storage.search_receipts(operation_id=operation_id)
@@ -107,8 +106,7 @@ async def search_receipts(
     media_type: str | None = None,
     payload_hash: str | None = None,
 ):
-    """
-    Search for receipts matching criteria.
+    """Search for receipts matching criteria.
 
     Args:
         operation_type: Filter by operation type
@@ -117,6 +115,7 @@ async def search_receipts(
 
     Returns:
         List of matching receipts
+
     """
     storage = ChainStorage(Path(settings.CHAIN_DB_PATH))
     receipts = storage.search_receipts(

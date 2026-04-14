@@ -1,5 +1,4 @@
-"""
-COR Skill Registry - Skills API Discovery & ATP 5-19 Risk Stratification
+"""COR Skill Registry - Skills API Discovery & ATP 5-19 Risk Stratification
 
 This module provides:
 1. Discovery and cataloging of Anthropic Skills API endpoints
@@ -82,11 +81,11 @@ class ATP519RiskAssessor:
 
     @staticmethod
     def assess_skill_risk(skill_data: dict[str, Any]) -> tuple[str, dict[str, Any]]:
-        """
-        Assess risk level for a skill based on ATP 5-19 framework
+        """Assess risk level for a skill based on ATP 5-19 framework
 
         Returns:
             tuple: (risk_level, atp_classification_details)
+
         """
         description = skill_data.get("description", "").lower()
         name = skill_data.get("name", "").lower()
@@ -139,11 +138,11 @@ class CORSkillRegistry:
     """Center of Reference Skill Registry - Discovery and Cataloging Engine"""
 
     def __init__(self, api_key: str | None = None):
-        """
-        Initialize the COR Skill Registry
+        """Initialize the COR Skill Registry
 
         Args:
             api_key: Anthropic API key (defaults to ANTHROPIC_API_KEY env var)
+
         """
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -155,14 +154,14 @@ class CORSkillRegistry:
         logger.info("COR Skill Registry initialized")
 
     def discover_skills(self, page_size: int = 100) -> list[SkillMetadata]:
-        """
-        Discover all available skills from Anthropic Skills API
+        """Discover all available skills from Anthropic Skills API
 
         Args:
             page_size: Number of skills to retrieve per page
 
         Returns:
             List of SkillMetadata objects
+
         """
         try:
             logger.info("Discovering skills from Anthropic Skills API...")
@@ -186,8 +185,7 @@ class CORSkillRegistry:
             return self._generate_mock_skills()
 
     def _fetch_skills_page(self, page_size: int) -> list[dict[str, Any]]:
-        """
-        Fetch a page of skills from the API
+        """Fetch a page of skills from the API
 
         Note: This is a placeholder - actual implementation depends on
         Anthropic Skills API structure when available
@@ -198,7 +196,6 @@ class CORSkillRegistry:
 
     def _process_skill(self, skill_data: dict[str, Any]) -> SkillMetadata:
         """Process raw skill data into structured metadata"""
-
         # Assess risk level using ATP 5-19 framework
         risk_level, atp_classification = self.risk_assessor.assess_skill_risk(skill_data)
 
@@ -274,14 +271,14 @@ class CORSkillRegistry:
         return mock_skills
 
     def generate_manifest(self, output_path: str = "cor_skills_manifest.json") -> str:
-        """
-        Generate a JSON manifest of all discovered skills
+        """Generate a JSON manifest of all discovered skills
 
         Args:
             output_path: Path to write manifest file
 
         Returns:
             Path to generated manifest
+
         """
         manifest = {
             "generated_at": datetime.utcnow().isoformat(),
@@ -334,7 +331,7 @@ def main():
             for skill in risk_skills:
                 print(f"  • {skill.name}")
                 print(
-                    f"    Risk: {skill.atp_classification['level']} - {skill.atp_classification['rationale']}"
+                    f"    Risk: {skill.atp_classification['level']} - {skill.atp_classification['rationale']}",
                 )
                 print(f"    Judge #6 Review Required: {skill.atp_classification['judge6_review']}")
 

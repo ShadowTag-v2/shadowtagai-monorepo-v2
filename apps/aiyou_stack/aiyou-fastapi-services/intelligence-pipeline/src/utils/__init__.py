@@ -1,3 +1,2 @@
-"""
-PNKLN Intelligence Pipeline - Utilities
+"""PNKLN Intelligence Pipeline - Utilities
 """

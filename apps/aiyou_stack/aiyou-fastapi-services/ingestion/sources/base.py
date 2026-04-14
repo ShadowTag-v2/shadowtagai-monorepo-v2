@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Base Source Adapter
+"""PNKLN Core Stack - Base Source Adapter
 
 Abstract base class for all source adapters (YouTube, Twitter, News, RSS).
 Defines common interface and shared functionality.
@@ -17,8 +16,7 @@ logger = structlog.get_logger(__name__)
 
 
 class SourceAdapter(ABC):
-    """
-    Abstract base class for source adapters.
+    """Abstract base class for source adapters.
 
     Each adapter is responsible for:
     1. Connecting to a specific data source (YouTube, Twitter, etc.)
@@ -36,10 +34,9 @@ class SourceAdapter(ABC):
 
     @abstractmethod
     async def fetch_items(
-        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None
+        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None,
     ) -> AsyncIterator[IngestedItem]:
-        """
-        Fetch items from the source.
+        """Fetch items from the source.
 
         Args:
             queries: Search queries or topics (source-specific)
@@ -48,29 +45,30 @@ class SourceAdapter(ABC):
 
         Yields:
             IngestedItem objects
+
         """
         raise NotImplementedError
 
     @abstractmethod
     async def validate_credentials(self) -> bool:
-        """
-        Validate API credentials for this source.
+        """Validate API credentials for this source.
 
         Returns:
             True if credentials are valid, False otherwise
+
         """
         raise NotImplementedError
 
     @abstractmethod
     def get_cost_estimate(self, num_items: int) -> float:
-        """
-        Estimate cost for fetching N items from this source.
+        """Estimate cost for fetching N items from this source.
 
         Args:
             num_items: Number of items to estimate cost for
 
         Returns:
             Estimated cost in USD
+
         """
         raise NotImplementedError
 
@@ -98,8 +96,7 @@ class SourceAdapter(ABC):
         }
 
     async def close(self) -> None:
-        """
-        Close any open connections or cleanup resources.
+        """Close any open connections or cleanup resources.
         Override in subclasses if needed.
         """
         logger.info(f"{self.source_name}_adapter_closed", stats=self.get_stats())

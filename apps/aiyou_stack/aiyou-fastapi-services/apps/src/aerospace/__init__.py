@@ -1,5 +1,4 @@
-"""
-AiY Aerospace Expansion Module (Cor.19)
+"""AiY Aerospace Expansion Module (Cor.19)
 ========================================
 
 Comprehensive aerospace and edge compute infrastructure system integrating:
@@ -24,7 +23,7 @@ from .valuation.enterprise_value import EnterpriseValuationModel
 
 __all__ = [
     "AerospaceBusinessPlan",
-    "EnterpriseValuationModel",
     "EdgeMeshArchitecture",
+    "EnterpriseValuationModel",
     "ROICalculator",
 ]

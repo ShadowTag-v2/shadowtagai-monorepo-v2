@@ -1,5 +1,4 @@
-"""
-Multi-source data collection manager.
+"""Multi-source data collection manager.
 
 Handles intelligence gathering from diverse sources:
 - YouTube (videos, transcripts, comments)
@@ -58,8 +57,7 @@ class DataSource:
 
 
 class SourceManager:
-    """
-    Manages multiple data sources for intelligence collection.
+    """Manages multiple data sources for intelligence collection.
 
     Features:
     - Multi-source coverage (YouTube, Twitter, News, etc.)
@@ -116,8 +114,7 @@ class SourceManager:
         source: DataSource,
         max_items: int = 100,
     ) -> list[dict]:
-        """
-        Collect data from a single source.
+        """Collect data from a single source.
 
         Args:
             source: Data source to collect from
@@ -125,6 +122,7 @@ class SourceManager:
 
         Returns:
             List of collected items
+
         """
         async with self._semaphore:
             logger.info(f"Collecting from {source.name} (max={max_items})...")
@@ -153,8 +151,7 @@ class SourceManager:
         source: DataSource,
         max_items: int,
     ) -> list[dict]:
-        """
-        Source-specific collection logic.
+        """Source-specific collection logic.
         """
         # Handle Google Drive Extraction
         if source.source_type == SourceType.DRIVE:
@@ -171,7 +168,7 @@ class SourceManager:
                 # Parse delimited text
                 # === SOURCE: Label / Filename ===
                 pattern = re.compile(
-                    r"=== SOURCE: (.*?) / (.*?) ===\n\n(.*?)(?=\n=== SOURCE:|\Z)", re.DOTALL
+                    r"=== SOURCE: (.*?) / (.*?) ===\n\n(.*?)(?=\n=== SOURCE:|\Z)", re.DOTALL,
                 )
 
                 matches = pattern.findall(content)
@@ -191,7 +188,7 @@ class SourceManager:
                             "timestamp": datetime.now().isoformat(),
                             "url": f"gdrive://{filename}",  # Pseudo-URI
                             "metadata": {"folder": label, "filename": filename},
-                        }
+                        },
                     )
                 return items
 
@@ -222,8 +219,7 @@ class SourceManager:
         max_items_per_source: int = 100,
         priority_only: bool = False,
     ) -> dict[str, list[dict]]:
-        """
-        Collect from all enabled sources.
+        """Collect from all enabled sources.
 
         Args:
             max_items_per_source: Max items per source
@@ -231,6 +227,7 @@ class SourceManager:
 
         Returns:
             Dictionary mapping source names to collected items
+
         """
         sources = self.list_sources(enabled_only=True)
 

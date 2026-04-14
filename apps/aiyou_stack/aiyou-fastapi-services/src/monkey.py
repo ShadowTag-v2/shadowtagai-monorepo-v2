@@ -24,7 +24,7 @@ def run_monkey(mission_id: str, objective: str):
 
     # 2. The Model (Optimized for JSON)
     model = genai.GenerativeModel(
-        "gemini-1.5-flash", generation_config={"response_mime_type": "application/json"}
+        "gemini-1.5-flash", generation_config={"response_mime_type": "application/json"},
     )
 
     # 3. The Protocol (Strict JSON)

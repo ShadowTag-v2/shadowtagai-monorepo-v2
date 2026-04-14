@@ -6,8 +6,7 @@ from src.pnkln.steel.tinytorch_tensor import Tensor
 
 
 class GeminiLayer:
-    """
-    A Neural-Symbolic Layer that uses Gemini 2.0 Flash as the activation function.
+    """A Neural-Symbolic Layer that uses Gemini 2.0 Flash as the activation function.
 
     Architecture:
     Input Tensor -> [Text Projection] -> Gemini Context -> [Reasoning] -> Output Tensor
@@ -27,8 +26,7 @@ class GeminiLayer:
         self.model = genai.GenerativeModel(model_name)
 
     def forward(self, x: Tensor, prompt_template: str = "Analyze this data: {data}") -> Tensor:
-        """
-        Performs the 'Forward Pass' through the Gemini Intelligence Unit.
+        """Performs the 'Forward Pass' through the Gemini Intelligence Unit.
         """
         # 1. Project Tensor to Symbol (Data -> Text)
         input_data = x.numpy().tolist()

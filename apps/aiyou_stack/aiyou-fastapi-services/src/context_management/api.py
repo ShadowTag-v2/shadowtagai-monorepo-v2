@@ -1,5 +1,4 @@
-"""
-FastAPI endpoints for Context Window Management
+"""FastAPI endpoints for Context Window Management
 """
 
 from fastapi import APIRouter, HTTPException, Query
@@ -55,8 +54,7 @@ class SessionListResponse(BaseModel):
 
 @router.post("/sessions", response_model=SessionResponse)
 async def create_session(request: CreateSessionRequest):
-    """
-    Create a new AI analysis session
+    """Create a new AI analysis session
 
     This endpoint creates a new analysis session and adds it to the context index.
     Use this when starting a new AI chat for architecture review, code analysis, etc.
@@ -72,6 +70,7 @@ async def create_session(request: CreateSessionRequest):
             "confidence_threshold": 0.60
         }
         ```
+
     """
     try:
         session = context_manager.create_session(request)
@@ -86,8 +85,7 @@ async def create_session(request: CreateSessionRequest):
 
 @router.get("/sessions/{session_id}", response_model=SessionResponse)
 async def get_session(session_id: str):
-    """
-    Retrieve a session by ID
+    """Retrieve a session by ID
 
     Returns the full session details including metadata, token usage,
     and related session references.
@@ -105,8 +103,7 @@ async def get_session(session_id: str):
 
 @router.put("/sessions/{session_id}", response_model=SessionResponse)
 async def update_session(session_id: str, request: UpdateSessionRequest):
-    """
-    Update an existing session
+    """Update an existing session
 
     Allows updating status, token count, and completion timestamp.
     Automatically manages active session counts and token consumption tracking.
@@ -119,6 +116,7 @@ async def update_session(session_id: str, request: UpdateSessionRequest):
             "completed_at": "2025-11-15T14:30:00Z"
         }
         ```
+
     """
     session = context_manager.update_session(
         session_id=session_id,
@@ -143,8 +141,7 @@ async def list_sessions(
     status: SessionStatus | None = Query(None, description="Filter by session status"),
     limit: int = Query(100, ge=1, le=500, description="Maximum number of results"),
 ):
-    """
-    List sessions with optional filtering
+    """List sessions with optional filtering
 
     Retrieve all sessions or filter by role (e.g., architecture_review, code_analysis)
     and status (active, completed, archived).
@@ -164,17 +161,17 @@ async def list_sessions(
 async def search_sessions(
     q: str = Query(..., description="Search query"),
     fields: list[str] = Query(
-        ["issue_title", "goal", "constraints"], description="Fields to search in"
+        ["issue_title", "goal", "constraints"], description="Fields to search in",
     ),
 ):
-    """
-    Search sessions by text query
+    """Search sessions by text query
 
     Performs a case-insensitive search across specified fields.
     Returns matching sessions in reverse chronological order.
 
     Example:
         `/sessions/search?q=ingestion&fields=issue_title&fields=goal`
+
     """
     sessions = context_manager.search_sessions(query=q, search_in=fields)
 
@@ -187,8 +184,7 @@ async def search_sessions(
 
 @router.post("/sessions/{session_id}/archive", response_model=SessionResponse)
 async def archive_session(session_id: str):
-    """
-    Archive a completed session
+    """Archive a completed session
 
     Marks a session as archived, removing it from active tracking
     while preserving the historical record.
@@ -212,8 +208,7 @@ async def archive_session(session_id: str):
 
 @router.post("/summaries", response_model=SummaryResponse)
 async def create_summary(request: CreateSummaryRequest):
-    """
-    Create a summary for a completed session
+    """Create a summary for a completed session
 
     Captures key outcomes, decisions, findings, and recommendations from
     an AI analysis session. Automatically marks the session as completed.
@@ -231,6 +226,7 @@ async def create_summary(request: CreateSummaryRequest):
             "tags": ["ingestion", "gemini-2.0-pro", "pre-production"]
         }
         ```
+
     """
     try:
         # Verify session exists
@@ -252,8 +248,7 @@ async def create_summary(request: CreateSummaryRequest):
 
 @router.get("/summaries/{session_id}", response_model=SummaryResponse)
 async def get_summary(session_id: str):
-    """
-    Retrieve a summary by session ID
+    """Retrieve a summary by session ID
 
     Returns the chat summary including decisions, findings, recommendations,
     and identified risks for the specified session.
@@ -276,8 +271,7 @@ async def get_summary(session_id: str):
 
 @router.get("/index", response_model=ContextIndex)
 async def get_index():
-    """
-    Get the full context index
+    """Get the full context index
 
     Returns the master index with all sessions, statistics, and metadata.
     Use this to get an overview of all analysis activities.
@@ -287,8 +281,7 @@ async def get_index():
 
 @router.get("/sessions/{session_id}/export")
 async def export_session_context(session_id: str):
-    """
-    Export a session with its summary for AI context loading
+    """Export a session with its summary for AI context loading
 
     Provides a complete export of a session including metadata, summary,
     and related information in a format suitable for loading into an AI chat.
@@ -304,8 +297,7 @@ async def export_session_context(session_id: str):
 
 @router.get("/sessions/active")
 async def get_active_sessions():
-    """
-    Get all currently active sessions
+    """Get all currently active sessions
 
     Returns a list of sessions with status=ACTIVE.
     Useful for tracking ongoing analysis work.
@@ -326,8 +318,7 @@ async def get_active_sessions():
 
 @router.get("/health")
 async def health_check():
-    """
-    Health check endpoint
+    """Health check endpoint
 
     Returns the health status of the context management service.
     """

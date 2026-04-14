@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-n-autoresearch/Kosmos/BioAgents Swarm Status Dashboard
+"""n-autoresearch/Kosmos/BioAgents Swarm Status Dashboard
 Real-time monitoring of 200-agent deployment progress
 """
 
@@ -223,7 +222,7 @@ if __name__ == "__main__":
     import sys
 
     monitor = SwarmMonitor(
-        state_file="/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/shadowtag_v4-fastapi-services/swarm_status.json"
+        state_file="/Users/pikeymickey/Documents/Claude Code/Code/Claude Demo/shadowtag_v4-fastapi-services/swarm_status.json",
     )
 
     if len(sys.argv) > 1 and sys.argv[1] == "watch":

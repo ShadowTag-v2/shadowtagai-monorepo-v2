@@ -1,5 +1,4 @@
-"""
-Audit Event Publisher - High-speed API for publishing audit traces to Pub/Sub.
+"""Audit Event Publisher - High-speed API for publishing audit traces to Pub/Sub.
 
 Governance-grade event publishing with automatic retries and batching.
 """
@@ -14,8 +13,7 @@ from google.cloud import pubsub_v1
 
 
 class AuditPublisher:
-    """
-    High-speed publisher for audit trace events.
+    """High-speed publisher for audit trace events.
 
     Features:
     - Automatic batching for throughput
@@ -45,8 +43,7 @@ class AuditPublisher:
         outputs: dict[str, Any],
         metadata: dict[str, Any] | None = None,
     ) -> str:
-        """
-        Publish an audit trace event.
+        """Publish an audit trace event.
 
         Args:
             decision_id: Unique identifier for the decision
@@ -57,6 +54,7 @@ class AuditPublisher:
 
         Returns:
             Message ID from Pub/Sub
+
         """
         trace_data = {
             "decision_id": decision_id,
@@ -92,11 +90,11 @@ class AuditPublisher:
         outputs: dict[str, Any],
         metadata: dict[str, Any] | None = None,
     ) -> pubsub_v1.publisher.futures.Future:
-        """
-        Publish an audit trace event asynchronously.
+        """Publish an audit trace event asynchronously.
 
         Returns:
             Future that resolves to message ID
+
         """
         trace_data = {
             "decision_id": decision_id,
@@ -111,18 +109,18 @@ class AuditPublisher:
         data = json.dumps(trace_data).encode("utf-8")
 
         return self.publisher.publish(
-            self.topic_path, data, decision_id=decision_id, decision=decision
+            self.topic_path, data, decision_id=decision_id, decision=decision,
         )
 
     def publish_batch(self, events: list[dict[str, Any]]) -> list[str]:
-        """
-        Publish multiple audit events efficiently.
+        """Publish multiple audit events efficiently.
 
         Args:
             events: List of event dictionaries with decision_id, decision, inputs, outputs
 
         Returns:
             List of message IDs
+
         """
         futures = []
 

@@ -1,5 +1,4 @@
-"""
-Example: Sending Transactional Emails
+"""Example: Sending Transactional Emails
 
 This example shows how to send transactional emails like:
 - Order confirmations
@@ -16,7 +15,6 @@ API_BASE_URL = "http://localhost:8000/api/v1/email"
 
 async def send_order_confirmation():
     """Send an order confirmation email"""
-
     async with httpx.AsyncClient() as client:
         # Create order confirmation template
         template_data = {
@@ -104,7 +102,6 @@ async def send_order_confirmation():
 
 async def send_password_reset():
     """Send a password reset email"""
-
     async with httpx.AsyncClient() as client:
         # Create password reset template
         template_data = {

@@ -1,5 +1,4 @@
-"""
-Environment configuration management
+"""Environment configuration management
 """
 
 from dotenv import load_dotenv

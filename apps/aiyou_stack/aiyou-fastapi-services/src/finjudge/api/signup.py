@@ -1,5 +1,4 @@
-"""
-FinJudge Signup Automation
+"""FinJudge Signup Automation
 Webhook handler for Typeform → Email → API Key flow
 """
 
@@ -174,7 +173,6 @@ curl https://api.finjudge.dev/v1/usage \\
 
 def send_welcome_email(api_key: str, email: str, organization: str | None = None):
     """Send welcome email with API key"""
-
     if not SMTP_USER or not SMTP_PASSWORD:
         print(f"⚠️  Email not configured. API key for {email}: {api_key}")
         return
@@ -232,8 +230,7 @@ async def typeform_webhook(
     payload: TypeformResponse,
     _typeform_signature: str | None = Header(None, alias="typeform-signature"),
 ):
-    """
-    Typeform webhook handler
+    """Typeform webhook handler
 
     Automatically generates API key when user submits signup form.
 
@@ -242,7 +239,6 @@ async def typeform_webhook(
     2. Add webhook: https://api.finjudge.dev/signup/typeform
     3. Set TYPEFORM_WEBHOOK_SECRET environment variable
     """
-
     # TODO: Verify Typeform signature if TYPEFORM_SECRET is set
     # if TYPEFORM_SECRET and typeform_signature:
     #     verify_typeform_signature(payload, typeform_signature)
@@ -269,7 +265,7 @@ async def typeform_webhook(
 
     if not email:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Email not found in Typeform response"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email not found in Typeform response",
         )
 
     # Generate API key
@@ -277,7 +273,7 @@ async def typeform_webhook(
 
     try:
         plaintext_key, api_key_record = key_manager.generate_key(
-            email=email, organization=organization, tier=TierLevel.FREE
+            email=email, organization=organization, tier=TierLevel.FREE,
         )
 
         # Send welcome email
@@ -294,14 +290,13 @@ async def typeform_webhook(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate API key: {str(e)}",
+            detail=f"Failed to generate API key: {e!s}",
         )
 
 
 @router.post("/manual", response_model=SignupResponse, status_code=status.HTTP_201_CREATED)
 async def manual_signup(request: SignupRequest):
-    """
-    Manual signup endpoint (for testing or custom integrations)
+    """Manual signup endpoint (for testing or custom integrations)
 
     **Example**:
     ```bash
@@ -317,7 +312,7 @@ async def manual_signup(request: SignupRequest):
 
     try:
         plaintext_key, api_key_record = key_manager.generate_key(
-            email=request.email, organization=request.organization, tier=TierLevel.FREE
+            email=request.email, organization=request.organization, tier=TierLevel.FREE,
         )
 
         # Send welcome email
@@ -334,5 +329,5 @@ async def manual_signup(request: SignupRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate API key: {str(e)}",
+            detail=f"Failed to generate API key: {e!s}",
         )

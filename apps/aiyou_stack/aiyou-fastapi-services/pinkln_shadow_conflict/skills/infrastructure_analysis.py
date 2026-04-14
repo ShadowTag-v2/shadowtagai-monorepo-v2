@@ -1,5 +1,4 @@
-"""
-Infrastructure Analysis Skill - pinkln Agent Architecture System
+"""Infrastructure Analysis Skill - pinkln Agent Architecture System
 
 This skill provides comprehensive analysis capabilities for infrastructure components
 in the PNKLN Core Stack™, including Judge #6 (enforcement/validation) and Gemini
@@ -69,8 +68,7 @@ class AnalysisResult:
 
 
 class InfrastructureAnalysisSkill:
-    """
-    Skill for analyzing infrastructure systems in PNKLN Core Stack™.
+    """Skill for analyzing infrastructure systems in PNKLN Core Stack™.
 
     This skill applies the pinkln philosophy to infrastructure analysis:
     - Question Everything: Challenge architectural assumptions
@@ -138,10 +136,9 @@ class InfrastructureAnalysisSkill:
         self.analysis_history = []
 
     def analyze_system(
-        self, spec: SystemSpec, focus_areas: list[MetricType] | None = None
+        self, spec: SystemSpec, focus_areas: list[MetricType] | None = None,
     ) -> AnalysisResult:
-        """
-        Analyze a single infrastructure system.
+        """Analyze a single infrastructure system.
 
         Args:
             spec: System specification to analyze
@@ -149,6 +146,7 @@ class InfrastructureAnalysisSkill:
 
         Returns:
             AnalysisResult with findings and recommendations
+
         """
         result = AnalysisResult(system_name=spec.name)
 
@@ -168,7 +166,7 @@ class InfrastructureAnalysisSkill:
         return result
 
     def _analyze_judge_system(
-        self, spec: SystemSpec, focus_areas: list[MetricType]
+        self, spec: SystemSpec, focus_areas: list[MetricType],
     ) -> AnalysisResult:
         """Analyze a judge/validation system."""
         result = AnalysisResult(system_name=spec.name)
@@ -182,20 +180,20 @@ class InfrastructureAnalysisSkill:
         if MetricType.QUALITY in focus_areas:
             result.strengths.append("High coverage target (98%) ensures comprehensive validation")
             result.weaknesses.append(
-                "False positive/negative tracking requires continuous calibration"
+                "False positive/negative tracking requires continuous calibration",
             )
             result.recommendations.append("Implement A/B testing for validation rule changes")
 
         # Architecture analysis
         result.strengths.append(
-            "Hybrid Gemini+PyTorch architecture balances NLP and ML capabilities"
+            "Hybrid Gemini+PyTorch architecture balances NLP and ML capabilities",
         )
         result.optimizations.append("Consider caching validation results for repeated patterns")
 
         # Integration analysis
         if MetricType.INTEGRATION in focus_areas:
             result.risks.append(
-                "Calling services in 4 namespaces creates coupling—monitor dependencies"
+                "Calling services in 4 namespaces creates coupling—monitor dependencies",
             )
             result.recommendations.append("Implement circuit breakers for downstream service calls")
 
@@ -209,7 +207,7 @@ class InfrastructureAnalysisSkill:
         return result
 
     def _analyze_ingestion_system(
-        self, spec: SystemSpec, focus_areas: list[MetricType]
+        self, spec: SystemSpec, focus_areas: list[MetricType],
     ) -> AnalysisResult:
         """Analyze an ingestion/collection system."""
         result = AnalysisResult(system_name=spec.name)
@@ -219,23 +217,23 @@ class InfrastructureAnalysisSkill:
             result.strengths.append("45-minute nightly runtime is efficient for batch processing")
             result.optimizations.append("Consider parallelization in GKE to reduce runtime further")
             result.recommendations.append(
-                "Track runtime trends to detect data volume growth impact"
+                "Track runtime trends to detect data volume growth impact",
             )
 
         # Cost analysis
         if MetricType.COST in focus_areas:
             result.strengths.append(
-                f"Monthly operational cost of ${spec.cost_model['amount']} is economical"
+                f"Monthly operational cost of ${spec.cost_model['amount']} is economical",
             )
             result.recommendations.append("Analyze cost sensitivity if item volume doubles")
             result.optimizations.append(
-                "Implement cost per tier to optimize high-value data collection"
+                "Implement cost per tier to optimize high-value data collection",
             )
 
         # Compliance analysis
         if MetricType.COMPLIANCE in focus_areas:
             result.strengths.append(
-                "Ethical crawling (robots.txt, rate limiting) reduces legal risks"
+                "Ethical crawling (robots.txt, rate limiting) reduces legal risks",
             )
             result.recommendations.append("Audit compliance logs regularly to ensure no violations")
             result.recommendations.append("Document transparency measures for stakeholder trust")
@@ -243,28 +241,28 @@ class InfrastructureAnalysisSkill:
         # Quality analysis
         if MetricType.QUALITY in focus_areas:
             result.strengths.append(
-                "Multi-dimensional quality focus (relevance, timeliness, completeness)"
+                "Multi-dimensional quality focus (relevance, timeliness, completeness)",
             )
             result.weaknesses.append("Pre-prod specs limit confidence (target 60% vs 70% in prod)")
             result.recommendations.append(
-                "Implement quality scoring per tier to prioritize high-value items"
+                "Implement quality scoring per tier to prioritize high-value items",
             )
             result.optimizations.append(
-                "Add source diversity metrics to prevent over-reliance on single sources"
+                "Add source diversity metrics to prevent over-reliance on single sources",
             )
 
         # Architecture analysis
         result.strengths.append(
-            "GKE CronJob multi-container approach enables scalability and fault tolerance"
+            "GKE CronJob multi-container approach enables scalability and fault tolerance",
         )
         result.optimizations.append(
-            "Evaluate resource allocation per container for cost efficiency"
+            "Evaluate resource allocation per container for cost efficiency",
         )
 
         # Integration analysis
         if MetricType.INTEGRATION in focus_areas:
             result.strengths.append(
-                "Being called by 4 namespaces positions ingestion as foundational layer"
+                "Being called by 4 namespaces positions ingestion as foundational layer",
             )
             result.risks.append("Downstream dependencies on ingestion quality—ensure SLAs")
             result.recommendations.append("Implement data quality gates before distribution")
@@ -272,7 +270,7 @@ class InfrastructureAnalysisSkill:
         # Unique features analysis
         result.strengths.append("Tier classification enables strategic resource allocation")
         result.recommendations.append(
-            "Analyze tier distribution to ensure 80/20 rule (80% value from 20% data)"
+            "Analyze tier distribution to ensure 80/20 rule (80% value from 20% data)",
         )
 
         result.confidence_score = 0.65
@@ -286,8 +284,7 @@ class InfrastructureAnalysisSkill:
         return result
 
     def comparative_analysis(self, spec1: SystemSpec, spec2: SystemSpec) -> dict[str, Any]:
-        """
-        Perform comparative analysis between two systems.
+        """Perform comparative analysis between two systems.
 
         Args:
             spec1: First system specification
@@ -295,6 +292,7 @@ class InfrastructureAnalysisSkill:
 
         Returns:
             Dictionary with comparative insights
+
         """
         analysis1 = self.analyze_system(spec1)
         analysis2 = self.analyze_system(spec2)
@@ -306,7 +304,7 @@ class InfrastructureAnalysisSkill:
             "architecture_comparison": self._compare_architectures(spec1, spec2),
             "integration_analysis": self._analyze_integration_relationship(spec1, spec2),
             "combined_recommendations": self._generate_combined_recommendations(
-                analysis1, analysis2
+                analysis1, analysis2,
             ),
         }
 
@@ -329,12 +327,11 @@ class InfrastructureAnalysisSkill:
         """Determine the relationship between two system types."""
         if type1 == SystemType.INGESTION and type2 == SystemType.JUDGE:
             return "Ingestion feeds Judge - upstream data collection for downstream validation"
-        elif type1 == SystemType.JUDGE and type2 == SystemType.INGESTION:
+        if type1 == SystemType.JUDGE and type2 == SystemType.INGESTION:
             return (
                 "Judge validates Ingestion output - downstream enforcement of upstream collection"
             )
-        else:
-            return "Parallel systems with potential integration points"
+        return "Parallel systems with potential integration points"
 
     def _compare_metrics(self, spec1: SystemSpec, spec2: SystemSpec) -> dict[str, Any]:
         """Compare metrics between systems."""
@@ -370,7 +367,7 @@ class InfrastructureAnalysisSkill:
         }
 
     def _analyze_integration_relationship(
-        self, spec1: SystemSpec, spec2: SystemSpec
+        self, spec1: SystemSpec, spec2: SystemSpec,
     ) -> dict[str, Any]:
         """Analyze how systems integrate."""
         return {
@@ -387,7 +384,7 @@ class InfrastructureAnalysisSkill:
         }
 
     def _generate_combined_recommendations(
-        self, analysis1: AnalysisResult, analysis2: AnalysisResult
+        self, analysis1: AnalysisResult, analysis2: AnalysisResult,
     ) -> list[str]:
         """Generate recommendations for the combined system."""
         return [
@@ -400,10 +397,9 @@ class InfrastructureAnalysisSkill:
         ]
 
     def generate_gemini_prompt(
-        self, spec: SystemSpec, include_sections: list[str] | None = None
+        self, spec: SystemSpec, include_sections: list[str] | None = None,
     ) -> str:
-        """
-        Generate a Gemini 2.0 Pro analysis prompt for a system.
+        """Generate a Gemini 2.0 Pro analysis prompt for a system.
 
         Args:
             spec: System specification
@@ -411,6 +407,7 @@ class InfrastructureAnalysisSkill:
 
         Returns:
             Formatted prompt string for Gemini analysis
+
         """
         sections = include_sections or [
             "architecture",

@@ -1,5 +1,4 @@
-"""
-Judge #6 Main Entry Point and Demonstration
+"""Judge #6 Main Entry Point and Demonstration
 
 Usage:
     python -m judge6.main              # Run demonstration

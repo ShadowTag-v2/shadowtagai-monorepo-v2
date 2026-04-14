@@ -1,5 +1,4 @@
-"""
-Neural Hash Agent
+"""Neural Hash Agent
 ShadowTag core: Generate neural fingerprints for media authentication
 
 Implements:
@@ -38,12 +37,12 @@ class NeuralFingerprint(BaseModel):
 
     # Semantic layer (Gemini embeddings)
     semantic_embedding: list[float] = Field(
-        ..., description="768-dim semantic embedding from Gemini"
+        ..., description="768-dim semantic embedding from Gemini",
     )
 
     # Energy-based density model
     latent_density: dict[str, float] = Field(
-        ..., description="Latent PDF parameters for content value"
+        ..., description="Latent PDF parameters for content value",
     )
 
     # Perceptual hash
@@ -56,10 +55,10 @@ class NeuralFingerprint(BaseModel):
 
     # Quality metrics
     collision_probability: float = Field(
-        default=1e-9, description="Theoretical collision probability"
+        default=1e-9, description="Theoretical collision probability",
     )
     metadata_reduction: float = Field(
-        default=0.60, description="Metadata size reduction vs. raw (60%)"
+        default=0.60, description="Metadata size reduction vs. raw (60%)",
     )
 
     class Config:
@@ -72,13 +71,12 @@ class NeuralFingerprint(BaseModel):
                 "asset_id": "asset_123",
                 "collision_probability": 1e-9,
                 "metadata_reduction": 0.60,
-            }
+            },
         }
 
 
 class NeuralHashAgent:
-    """
-    Neural Hash Agent for ShadowTag authentication
+    """Neural Hash Agent for ShadowTag authentication
 
     Generates multi-layered neural fingerprints:
     1. Semantic embedding (Gemini) - meaning/context
@@ -93,12 +91,12 @@ class NeuralHashAgent:
     """
 
     def __init__(self, gemini_api_key: str, batch_processor: GeminiBatchProcessor | None = None):
-        """
-        Initialize Neural Hash Agent
+        """Initialize Neural Hash Agent
 
         Args:
             gemini_api_key: Google AI API key for Gemini
             batch_processor: Optional pre-configured GeminiBatchProcessor
+
         """
         self.agent_role = AgentRole.NEURAL_HASH
 
@@ -110,8 +108,7 @@ class NeuralHashAgent:
         logger.info("NeuralHashAgent initialized")
 
     async def process_message(self, message: AgentMessage) -> AgentMessage:
-        """
-        Process incoming agent message
+        """Process incoming agent message
 
         Expected message.data format:
         {
@@ -137,7 +134,6 @@ class NeuralHashAgent:
 
     async def _generate_fingerprint_handler(self, message: AgentMessage) -> dict[str, Any]:
         """Handle fingerprint generation request"""
-
         asset_data = message.data.get("asset", {})
 
         # Convert to MediaAsset if dict
@@ -156,7 +152,6 @@ class NeuralHashAgent:
 
     async def _verify_fingerprint_handler(self, message: AgentMessage) -> dict[str, Any]:
         """Handle fingerprint verification request"""
-
         fingerprint_data = message.data.get("fingerprint")
         candidate_asset = message.data.get("candidate_asset")
 
@@ -171,14 +166,14 @@ class NeuralHashAgent:
         }
 
     async def generate_fingerprint(self, asset: MediaAsset) -> NeuralFingerprint:
-        """
-        Generate neural fingerprint for media asset
+        """Generate neural fingerprint for media asset
 
         Args:
             asset: MediaAsset to fingerprint
 
         Returns:
             NeuralFingerprint with multi-layer hash data
+
         """
         logger.info(f"Generating neural fingerprint for asset {asset.asset_id}")
 
@@ -204,14 +199,13 @@ class NeuralHashAgent:
 
         logger.info(
             f"✓ Neural fingerprint generated: {fingerprint.fingerprint_id} "
-            f"(60% metadata reduction, <10^-9 collision prob)"
+            f"(60% metadata reduction, <10^-9 collision prob)",
         )
 
         return fingerprint
 
     async def _compute_semantic_embedding(self, asset: MediaAsset) -> list[float]:
-        """
-        Compute semantic embedding using Gemini Batch API
+        """Compute semantic embedding using Gemini Batch API
 
         Uses extracted text or metadata for embedding
         Cost: ~$0.002 per embedding (50% batch savings)
@@ -229,21 +223,19 @@ class NeuralHashAgent:
 
         # Get embedding via batch processor
         embeddings = await self.batch_processor.embed_documents_batch(
-            [text], task_type="SEMANTIC_SIMILARITY"
+            [text], task_type="SEMANTIC_SIMILARITY",
         )
 
         if embeddings and len(embeddings) > 0:
             return embeddings[0]["embedding"]
-        else:
-            # Fallback: zero embedding
-            logger.warning("Failed to generate embedding, using zero vector")
-            return [0.0] * 768
+        # Fallback: zero embedding
+        logger.warning("Failed to generate embedding, using zero vector")
+        return [0.0] * 768
 
     async def _compute_latent_density(
-        self, asset: MediaAsset, semantic_embedding: list[float]
+        self, asset: MediaAsset, semantic_embedding: list[float],
     ) -> dict[str, float]:
-        """
-        Compute latent density model (energy-based)
+        """Compute latent density model (energy-based)
 
         Models content value distribution using:
         - Semantic embedding statistics
@@ -269,8 +261,7 @@ class NeuralHashAgent:
         }
 
     async def _compute_perceptual_hash(self, asset: MediaAsset) -> str:
-        """
-        Compute perceptual hash (DCT-based)
+        """Compute perceptual hash (DCT-based)
 
         For images/video: Visual DCT hash
         For audio: Spectral fingerprint
@@ -291,10 +282,9 @@ class NeuralHashAgent:
         return perceptual_hash
 
     async def verify_fingerprint(
-        self, original_fingerprint: dict[str, Any], candidate_asset: MediaAsset
+        self, original_fingerprint: dict[str, Any], candidate_asset: MediaAsset,
     ) -> dict[str, Any]:
-        """
-        Verify if candidate asset matches original fingerprint
+        """Verify if candidate asset matches original fingerprint
 
         Args:
             original_fingerprint: Original NeuralFingerprint dict
@@ -302,13 +292,14 @@ class NeuralHashAgent:
 
         Returns:
             Verification result with confidence score
+
         """
         # Generate fingerprint for candidate
         candidate_fingerprint = await self.generate_fingerprint(candidate_asset)
 
         # Compare fingerprints
         similarity_scores = await self._compare_fingerprints(
-            NeuralFingerprint(**original_fingerprint), candidate_fingerprint
+            NeuralFingerprint(**original_fingerprint), candidate_fingerprint,
         )
 
         # Compute overall confidence
@@ -328,20 +319,19 @@ class NeuralHashAgent:
         }
 
     async def _compare_fingerprints(
-        self, fp1: NeuralFingerprint, fp2: NeuralFingerprint
+        self, fp1: NeuralFingerprint, fp2: NeuralFingerprint,
     ) -> dict[str, float]:
         """Compare two fingerprints and return similarity scores"""
-
         # 1. Semantic similarity (cosine)
         emb1 = np.array(fp1.semantic_embedding)
         emb2 = np.array(fp2.semantic_embedding)
         semantic_sim = float(
-            np.dot(emb1, emb2) / (np.linalg.norm(emb1) * np.linalg.norm(emb2) + 1e-10)
+            np.dot(emb1, emb2) / (np.linalg.norm(emb1) * np.linalg.norm(emb2) + 1e-10),
         )
 
         # 2. Latent density similarity (KL divergence approximation)
         latent_diff = abs(fp1.latent_density["mean"] - fp2.latent_density["mean"]) + abs(
-            fp1.latent_density["variance"] - fp2.latent_density["variance"]
+            fp1.latent_density["variance"] - fp2.latent_density["variance"],
         )
         latent_sim = 1.0 / (1.0 + latent_diff)
 
@@ -358,10 +348,9 @@ class NeuralHashAgent:
         }
 
     async def batch_generate_fingerprints(
-        self, assets: list[MediaAsset]
+        self, assets: list[MediaAsset],
     ) -> list[NeuralFingerprint]:
-        """
-        Generate fingerprints for multiple assets in batch
+        """Generate fingerprints for multiple assets in batch
 
         Optimizes Gemini API calls using batch processor
         Cost: ~$0.002 per asset (vs $0.004 individual)
@@ -374,7 +363,7 @@ class NeuralHashAgent:
         total_cost = len(assets) * 0.002
         logger.info(
             f"✓ Batch completed: {len(fingerprints)} fingerprints, "
-            f"estimated cost: ${total_cost:.2f}"
+            f"estimated cost: ${total_cost:.2f}",
         )
 
         return fingerprints

@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4: The Verified AI Civilization Layer
+"""ShadowTag-v4: The Verified AI Civilization Layer
 
 Main package for the ShadowTag-v4 platform, providing verified AI infrastructure
 and content delivery services.

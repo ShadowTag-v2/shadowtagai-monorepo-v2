@@ -1,5 +1,4 @@
-"""
-Tests for GPTRAM Encryption Key Management
+"""Tests for GPTRAM Encryption Key Management
 """
 
 import os

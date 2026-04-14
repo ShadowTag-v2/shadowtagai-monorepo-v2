@@ -16,7 +16,7 @@ DASHBOARD_LANDING_SELECTOR = os.getenv("DASHBOARD_LANDING_SELECTOR", "h1:has-tex
 
 if not all([ADMIN_URL, USERNAME, PASSWORD]):
     raise OSError(
-        "ADMIN_URL, ADMIN_USERNAME, and ADMIN_PASSWORD [VAPORIZED_PWD] variables must be set"
+        "ADMIN_URL, ADMIN_USERNAME, and ADMIN_PASSWORD [VAPORIZED_PWD] variables must be set",
     )
 
 

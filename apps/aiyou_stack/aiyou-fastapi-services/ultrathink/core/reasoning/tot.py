@@ -1,5 +1,4 @@
-"""
-Tree-of-Thoughts (ToT) Reasoning
+"""Tree-of-Thoughts (ToT) Reasoning
 
 Multi-path exploration with backtracking.
 When there are multiple solution paths, explore them systematically.
@@ -44,8 +43,7 @@ class ToTResult(BaseModel):
 
 
 class ToT:
-    """
-    Tree-of-Thoughts reasoning engine.
+    """Tree-of-Thoughts reasoning engine.
 
     Usage:
         >>> tot = ToT(branches=3, max_depth=5, search="bfs")
@@ -69,14 +67,14 @@ class ToT:
         search: Literal["bfs", "dfs", "beam"] = "bfs",
         prune_threshold: float = 0.3,
     ) -> None:
-        """
-        Initialize ToT reasoner.
+        """Initialize ToT reasoner.
 
         Args:
             branches: How many alternative paths to explore per node
             max_depth: Maximum tree depth
             search: Search strategy (BFS=breadth-first, DFS=depth-first, beam=best-first)
             prune_threshold: Value below which to prune branches (0-1)
+
         """
         self.branches = branches
         self.max_depth = max_depth
@@ -115,8 +113,7 @@ Option 2: ...
         model: any | None = None,
         temperature: float = 0.7,
     ) -> ToTResult:
-        """
-        Execute tree-of-thoughts reasoning.
+        """Execute tree-of-thoughts reasoning.
 
         Args:
             problem: The problem to solve
@@ -125,6 +122,7 @@ Option 2: ...
 
         Returns:
             ToTResult with tree and best path
+
         """
         # Placeholder implementation
         # In production, this would:
@@ -142,7 +140,7 @@ Option 2: ...
                     state=ThoughtState.EXPLORING,
                     value=1.0,
                     depth=0,
-                )
+                ),
             ],
             best_path=[],
             final_answer="Placeholder - would be computed via tree search",

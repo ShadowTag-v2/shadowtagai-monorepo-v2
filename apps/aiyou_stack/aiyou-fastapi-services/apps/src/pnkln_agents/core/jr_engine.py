@@ -1,5 +1,4 @@
-"""
-JR Engine: Purpose/Reasons/Brakes Validator
+"""JR Engine: Purpose/Reasons/Brakes Validator
 Target latency: <500μs
 Method: ATP 5-19 risk assessment (Probability × Severity → Level)
 Function: Validates all agent actions before execution
@@ -80,8 +79,7 @@ class JRDecision:
 
 
 class JREngine:
-    """
-    Purpose/Reasons/Brakes validator for agent actions
+    """Purpose/Reasons/Brakes validator for agent actions
 
     Validates every agent action against:
     - Business purpose alignment
@@ -101,8 +99,7 @@ class JREngine:
         reasons: list[Reason],
         context: dict[str, Any] | None = None,
     ) -> JRDecision:
-        """
-        Validates an agent action using Purpose/Reasons/Brakes framework
+        """Validates an agent action using Purpose/Reasons/Brakes framework
 
         Args:
             purpose: Intent and goal of the action
@@ -111,6 +108,7 @@ class JREngine:
 
         Returns:
             JRDecision with approval status, constraints, and audit trail
+
         """
         start_time = time.perf_counter()
         context = context or {}
@@ -197,7 +195,7 @@ class JREngine:
         return None
 
     def _validate_reasons(
-        self, reasons: list[Reason], purpose: Purpose, context: dict[str, Any]
+        self, reasons: list[Reason], purpose: Purpose, context: dict[str, Any],
     ) -> Brake | None:
         """Validate reasons and assess risk using ATP 5-19"""
         if not reasons:
@@ -292,7 +290,7 @@ class JREngine:
         return None
 
     def _build_constraints(
-        self, purpose: Purpose, reasons: list[Reason], context: dict[str, Any]
+        self, purpose: Purpose, reasons: list[Reason], context: dict[str, Any],
     ) -> dict[str, Any]:
         """Build constraints for approved actions"""
         constraints = {
@@ -358,11 +356,10 @@ class JREngine:
         """Calculate risk level from probability × severity score"""
         if risk_score >= 0.8:
             return RiskLevel.EXTREMELY_HIGH
-        elif risk_score >= 0.6:
+        if risk_score >= 0.6:
             return RiskLevel.HIGH
-        elif risk_score >= 0.4:
+        if risk_score >= 0.4:
             return RiskLevel.MODERATE
-        elif risk_score >= 0.2:
+        if risk_score >= 0.2:
             return RiskLevel.LOW
-        else:
-            return RiskLevel.EXTREMELY_LOW
+        return RiskLevel.EXTREMELY_LOW

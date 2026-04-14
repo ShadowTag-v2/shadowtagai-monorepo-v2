@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-CODEPMCS (Preventive Maintenance Checks and Services)
+"""CODEPMCS (Preventive Maintenance Checks and Services)
 Mission: Enforce Ranger Standards (Linting, Security, Watermarking)
 ATP 3-75 Compliance Gate
 """
@@ -33,8 +32,7 @@ class InspectionResult:
 
 
 class RangerStandardInspector:
-    """
-    Code quality inspector implementing Ranger Standards.
+    """Code quality inspector implementing Ranger Standards.
     Coverage >= 98%, Secure, Linted, Documented.
     """
 
@@ -47,11 +45,11 @@ class RangerStandardInspector:
         logger.info("🔍 CHECKING: Linting (Ruff)")
         try:
             res = subprocess.run(
-                ["ruff", "check", str(self.target_path), "--fix"], capture_output=True, timeout=60
+                ["ruff", "check", str(self.target_path), "--fix"], capture_output=True, timeout=60,
             )
             if res.returncode != 0:
                 self.result.faults.append(
-                    Fault("Linting", "X", f"Ruff violations: {res.stdout.decode()[:200]}")
+                    Fault("Linting", "X", f"Ruff violations: {res.stdout.decode()[:200]}"),
                 )
                 self.result.mission_capable = False
             else:

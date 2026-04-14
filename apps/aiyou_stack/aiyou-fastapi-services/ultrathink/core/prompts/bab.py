@@ -1,5 +1,4 @@
-"""
-BAB: Before-After-Bridge
+"""BAB: Before-After-Bridge
 
 The transformation framework. Perfect for planning, strategy, roadmaps.
 
@@ -11,8 +10,7 @@ from ultrathink.core.prompts.base import BasePrompt
 
 
 class BAB(BasePrompt):
-    """
-    Before-After-Bridge prompting.
+    """Before-After-Bridge prompting.
 
     Usage:
         >>> bab = BAB(
@@ -36,14 +34,14 @@ class BAB(BasePrompt):
         bridge: str,
         timeline: str | None = None,
     ) -> None:
-        """
-        Initialize BAB prompt.
+        """Initialize BAB prompt.
 
         Args:
             before: Current state or problem
             after: Desired end state or vision
             bridge: How to get from before → after
             timeline: Optional time constraints
+
         """
         super().__init__(before=before, after=after, bridge=bridge, timeline=timeline)
         self.before = before

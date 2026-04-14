@@ -1,5 +1,4 @@
-"""
-QuidditchCompetition - Gamified Agent Competition System
+"""QuidditchCompetition - Gamified Agent Competition System
 Version: 1.0.0
 
 Philosophy: Competition drives excellence. Dynamic roles based on performance.
@@ -109,8 +108,7 @@ class RoundResult:
 
 
 class QuidditchCompetition:
-    """
-    Gamified competition system for agents.
+    """Gamified competition system for agents.
 
     Each round:
     1. Agents compete on a task
@@ -121,7 +119,7 @@ class QuidditchCompetition:
 
     def __init__(self):
         self.agents: dict[str, QuidditchAgent] = {}
-        self.house_points: dict[HogwartsHouse, int] = {house: 0 for house in HogwartsHouse}
+        self.house_points: dict[HogwartsHouse, int] = dict.fromkeys(HogwartsHouse, 0)
         self.round_history: list[RoundResult] = []
         self.current_round: int = 0
 
@@ -152,8 +150,7 @@ class QuidditchCompetition:
     # =========================================================================
 
     def assign_roles(self, rankings: list[str]) -> dict[str, QuidditchRole]:
-        """
-        Assign Quidditch roles based on rankings.
+        """Assign Quidditch roles based on rankings.
 
         1st = Seeker (final authority)
         2nd-3rd = Chasers (build solutions)
@@ -224,10 +221,9 @@ class QuidditchCompetition:
         }
 
     def play_round(
-        self, rankings: list[str], winning_solution: str, seeker_decision: str
+        self, rankings: list[str], winning_solution: str, seeker_decision: str,
     ) -> RoundResult:
-        """
-        Execute a competition round.
+        """Execute a competition round.
 
         1. Chasers propose solutions (scoring)
         2. Beaters critique (attack)
@@ -337,8 +333,7 @@ class QuidditchCompetition:
     # =========================================================================
 
     def form_team(self, agent_ids: list[str]) -> dict[str, Any]:
-        """
-        Form a Quidditch team from agents.
+        """Form a Quidditch team from agents.
         Balances roles based on current standings.
         """
         # Sort by rating
@@ -383,8 +378,7 @@ class QuidditchCompetition:
     # =========================================================================
 
     def pre_match_briefing(self, team: list[str]) -> dict[str, Any]:
-        """
-        Pre-match briefing for team.
+        """Pre-match briefing for team.
         Each agent gets strategy based on house.
         """
         briefings = {}
@@ -406,8 +400,7 @@ class QuidditchCompetition:
         return briefings
 
     def halftime_analysis(self) -> dict[str, Any]:
-        """
-        Halftime analysis of competition.
+        """Halftime analysis of competition.
         Identify trends, suggest adjustments.
         """
         if len(self.round_history) < 2:
@@ -423,7 +416,7 @@ class QuidditchCompetition:
             seeker_counts[seeker] = seeker_counts.get(seeker, 0) + 1
 
         # House momentum
-        house_momentum = {h: 0 for h in HogwartsHouse}
+        house_momentum = dict.fromkeys(HogwartsHouse, 0)
         for result in recent:
             for house, points in result.house_points_awarded.items():
                 house_momentum[house] += points
@@ -440,8 +433,7 @@ class QuidditchCompetition:
     # =========================================================================
 
     def create_tournament(self, format: str = "bracket", rounds: int = 5) -> dict[str, Any]:
-        """
-        Create a tournament structure.
+        """Create a tournament structure.
 
         Formats:
         - bracket: Elimination
@@ -452,10 +444,10 @@ class QuidditchCompetition:
 
         if format == "bracket":
             return self._create_bracket(participants, rounds)
-        elif format == "league":
+        if format == "league":
             return self._create_league(participants, rounds)
-        else:  # ladder
-            return self._create_ladder(participants)
+        # ladder
+        return self._create_ladder(participants)
 
     def _create_bracket(self, participants: list[str], rounds: int) -> dict[str, Any]:
         """Create elimination bracket."""
@@ -476,7 +468,7 @@ class QuidditchCompetition:
                             "agent_a": remaining[i],
                             "agent_b": remaining[i + 1],
                             "winner": None,
-                        }
+                        },
                     )
                 else:
                     # Bye
@@ -538,8 +530,7 @@ class QuidditchCompetition:
 
 
 def create_competition() -> QuidditchCompetition:
-    """
-    Create Quidditch competition system.
+    """Create Quidditch competition system.
 
     "Competition drives excellence."
     """
@@ -608,7 +599,7 @@ if __name__ == "__main__":
     print("\nAgent Rankings:")
     for agent in standings["agent_rankings"][:3]:
         print(
-            f"  #{agent['rank']} {agent['agent_id']} ({agent['house']}): {agent['rating']} rating"
+            f"  #{agent['rank']} {agent['agent_id']} ({agent['house']}): {agent['rating']} rating",
         )
 
     print("\nHouse Cup:")

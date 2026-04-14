@@ -1,5 +1,4 @@
-"""
-Ingestion service layer.
+"""Ingestion service layer.
 
 Extracts all database operations from ingestion routes
 into a proper service/repository pattern.
@@ -113,9 +112,8 @@ class IngestionService:
         if job.moderation_category == ModerationCategory.SAFE:
             if job.moderation_confidence and job.moderation_confidence >= 80:
                 return IngestionStatus.APPROVED
-            else:
-                job.requires_human_review = True
-                return IngestionStatus.REQUIRES_REVIEW
+            job.requires_human_review = True
+            return IngestionStatus.REQUIRES_REVIEW
 
         if job.moderation_confidence and job.moderation_confidence >= 90:
             return IngestionStatus.REJECTED

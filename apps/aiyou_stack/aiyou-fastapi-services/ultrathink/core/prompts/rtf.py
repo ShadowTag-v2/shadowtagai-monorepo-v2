@@ -1,5 +1,4 @@
-"""
-RTF: Role-Task-Format
+"""RTF: Role-Task-Format
 
 The simplest, most elegant prompting pattern.
 Perfect for 80% of use cases.
@@ -14,8 +13,7 @@ from ultrathink.core.prompts.base import BasePrompt
 
 
 class RTF(BasePrompt):
-    """
-    Role-Task-Format prompting.
+    """Role-Task-Format prompting.
 
     Usage:
         >>> rtf = RTF(
@@ -38,14 +36,14 @@ class RTF(BasePrompt):
         format: str = "clear, structured response",
         tone: Literal["professional", "casual", "technical", "creative"] = "professional",
     ) -> None:
-        """
-        Initialize RTF prompt.
+        """Initialize RTF prompt.
 
         Args:
             role: Who the model should be (e.g., "senior Python developer")
             task: What to accomplish (e.g., "review code for security issues")
             format: Output format (e.g., "JSON", "bullet points", "markdown")
             tone: Communication style
+
         """
         super().__init__(role=role, task=task, format=format, tone=tone)
         self.role = role

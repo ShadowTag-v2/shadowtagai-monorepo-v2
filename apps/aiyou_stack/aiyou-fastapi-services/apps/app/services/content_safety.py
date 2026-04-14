@@ -1,5 +1,4 @@
-"""
-Content Safety Service
+"""Content Safety Service
 Google Content Safety API + PII Detection for ATP 5-19 Compliance
 
 Integrated from Cor.17 for PNKLN Core Stack™
@@ -25,8 +24,7 @@ class SafetyLevel(Enum):
 
 
 class ContentSafetyService:
-    """
-    Content safety and PII detection service
+    """Content safety and PII detection service
 
     Provides:
     - PII detection and scrubbing (ATP 5-19 compliance)
@@ -65,10 +63,9 @@ class ContentSafetyService:
         logger.info("Content Safety service shutdown")
 
     async def moderate_content(
-        self, content: str, scrub_pii: bool = True, check_safety: bool = True
+        self, content: str, scrub_pii: bool = True, check_safety: bool = True,
     ) -> dict[str, Any]:
-        """
-        Moderate content for PII and safety
+        """Moderate content for PII and safety
 
         Args:
             content: Content to moderate
@@ -77,6 +74,7 @@ class ContentSafetyService:
 
         Returns:
             Moderation result with scrubbed content and safety assessment
+
         """
         try:
             result = {
@@ -111,14 +109,14 @@ class ContentSafetyService:
             return {"status": "error", "error": str(e)}
 
     def _scrub_pii(self, text: str) -> tuple[str, list[str]]:
-        """
-        Scrub PII from text
+        """Scrub PII from text
 
         Args:
             text: Text to scrub
 
         Returns:
             Tuple of (scrubbed_text, list_of_pii_types_found)
+
         """
         scrubbed = text
         pii_found = []
@@ -132,14 +130,14 @@ class ContentSafetyService:
         return scrubbed, pii_found
 
     async def _assess_safety(self, content: str) -> dict[str, Any]:
-        """
-        Assess content safety
+        """Assess content safety
 
         Args:
             content: Content to assess
 
         Returns:
             Safety assessment with level and score
+
         """
         # Simplified heuristic-based safety assessment
         # In production, this would call Google Content Safety API
@@ -181,8 +179,7 @@ class ContentSafetyService:
         return {"level": level, "score": min(risk_score, 1.0), "categories": categories}
 
     async def moderate_media(self, media_url: str, media_type: str = "image") -> dict[str, Any]:
-        """
-        Moderate media content (images, videos)
+        """Moderate media content (images, videos)
 
         Args:
             media_url: URL of the media
@@ -190,6 +187,7 @@ class ContentSafetyService:
 
         Returns:
             Moderation result
+
         """
         # Placeholder for media moderation
         # In production, this would integrate with Hive or Google Vision API
@@ -204,11 +202,11 @@ class ContentSafetyService:
         }
 
     async def get_stats(self) -> dict[str, Any]:
-        """
-        Get moderation statistics
+        """Get moderation statistics
 
         Returns:
             Statistics on moderation activity
+
         """
         # Placeholder statistics
         return {

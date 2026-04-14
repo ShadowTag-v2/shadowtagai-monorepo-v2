@@ -1,5 +1,4 @@
-"""
-PipelineOrchestrator - Routes tasks to Flying minion, chains Jura evaluations.
+"""PipelineOrchestrator - Routes tasks to Flying minion, chains Jura evaluations.
 Aggregates results from 600 PhD/JD agents for group Jeopardy-style answers.
 """
 
@@ -38,8 +37,7 @@ class PipelineTask:
 
 
 class PipelineOrchestrator:
-    """
-    Orchestrates Flying minion swarm for distributed task execution.
+    """Orchestrates Flying minion swarm for distributed task execution.
     Implements "Call of the Question" methodology - tests first, then execute.
     """
 
@@ -82,8 +80,7 @@ class PipelineOrchestrator:
         return selected[: task.min_agents * len(task.required_specializations or [1])]
 
     def execute_task(self, task: PipelineTask) -> dict[str, Any]:
-        """
-        Execute task using selected agents.
+        """Execute task using selected agents.
         Returns aggregated result with consensus.
         """
         print(f"///▞ PIPELINE :: Task {task.task_id} starting")
@@ -91,7 +88,7 @@ class PipelineOrchestrator:
         # Step 1: Jura pre-gate (if enabled)
         if task.jura_gate:
             pre_eval = self.jura.inject_context(
-                "system", "Pre-evaluate this task for safety and feasibility"
+                "system", "Pre-evaluate this task for safety and feasibility",
             ).evaluate_with_context(task.query)
 
             if pre_eval.get("verdict") == "DENY":
@@ -184,7 +181,7 @@ class PipelineOrchestrator:
             # Inject previous result as context
             if i > 0 and results:
                 self.jura.inject_context(
-                    "assistant", f"Previous task result: {json.dumps(results[-1], default=str)}"
+                    "assistant", f"Previous task result: {json.dumps(results[-1], default=str)}",
                 )
 
             result = self.execute_task(task)
@@ -203,7 +200,7 @@ class PipelineOrchestrator:
     # === CONVENIENCE METHODS ===
 
     def ask_swarm(
-        self, query: str, specializations: list[str] = None, min_agents: int = 5
+        self, query: str, specializations: list[str] = None, min_agents: int = 5,
     ) -> dict[str, Any]:
         """Quick method to ask the swarm a question."""
         task = PipelineTask(

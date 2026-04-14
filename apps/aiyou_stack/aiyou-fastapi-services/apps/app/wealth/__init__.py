@@ -10,10 +10,10 @@ from .model import (
 )
 
 __all__ = [
-    "LeakType",
-    "RevenueLeak",
     "FunnelRedesign",
+    "LeakType",
     "LeverageStrategy",
-    "WealthPlan",
+    "RevenueLeak",
     "WealthAccelerator",
+    "WealthPlan",
 ]

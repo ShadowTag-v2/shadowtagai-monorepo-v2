@@ -39,7 +39,7 @@ def boardroom_status():
             "alert_level": "green",  # Mock signal
         },
         "operations": {
-            "active_agents": 0  # Mock signal
+            "active_agents": 0,  # Mock signal
         },
     }
 
@@ -51,5 +51,4 @@ def request_funds(req: TransactionRequest):
 
     if approved:
         return {"status": "approved", "granted": req.amount}
-    else:
-        raise HTTPException(status_code=402, detail="Insufficient funds or budget limit exceeded")
+    raise HTTPException(status_code=402, detail="Insufficient funds or budget limit exceeded")

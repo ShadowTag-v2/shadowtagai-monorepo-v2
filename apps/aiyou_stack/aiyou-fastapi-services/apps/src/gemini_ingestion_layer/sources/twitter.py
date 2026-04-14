@@ -7,8 +7,7 @@ class TwitterSource(BaseSource):
     """Twitter/X tweet ingestion"""
 
     async def fetch(self, limit: int = 2000) -> list[IngestionItem]:
-        """
-        Fetch tweets matching criteria.
+        """Fetch tweets matching criteria.
 
         Uses Twitter API v2 to fetch:
         - Recent tweets from monitored accounts

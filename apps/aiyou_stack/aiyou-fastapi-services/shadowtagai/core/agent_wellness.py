@@ -1,5 +1,4 @@
-"""
-AgentWellness - Buffet, Hydration, Breaks, and Vitamins for Agents
+"""AgentWellness - Buffet, Hydration, Breaks, and Vitamins for Agents
 Version: 1.0.0
 
 Philosophy: Healthy agents perform better. Feed them well, keep them hydrated,
@@ -154,8 +153,7 @@ class AgentHealthStatus:
 
 
 class AgentWellness:
-    """
-    Complete wellness program for agents.
+    """Complete wellness program for agents.
 
     Keep them healthy, fed, hydrated, rested, and supplemented.
     """
@@ -190,10 +188,9 @@ class AgentWellness:
     # =========================================================================
 
     def serve_meal(
-        self, agent_id: str, data_quality: float, context_richness: float, example_diversity: float
+        self, agent_id: str, data_quality: float, context_richness: float, example_diversity: float,
     ):
-        """
-        Serve agent a meal (high-quality inputs).
+        """Serve agent a meal (high-quality inputs).
 
         Protein = Clean data
         Carbs = Clear context
@@ -249,8 +246,7 @@ class AgentWellness:
         context_window: int = None,
         token_budget: int = None,
     ):
-        """
-        Provide resources (hydration) to agent.
+        """Provide resources (hydration) to agent.
 
         Water = Memory
         Coffee = GPU
@@ -304,15 +300,14 @@ class AgentWellness:
 
         if tasks >= self.long_break_interval:
             return BreakType.LONG
-        elif tasks >= self.short_break_interval:
+        if tasks >= self.short_break_interval:
             return BreakType.SHORT
-        elif tasks >= self.micro_break_interval:
+        if tasks >= self.micro_break_interval:
             return BreakType.MICRO
         return None
 
     def take_break(self, agent_id: str, break_type: BreakType) -> dict[str, Any]:
-        """
-        Agent takes a break.
+        """Agent takes a break.
 
         Micro = Clear working memory
         Short = Reset context + reseed random
@@ -352,8 +347,7 @@ class AgentWellness:
     # =========================================================================
 
     def supplement(self, agent_id: str, vitamin: VitaminType, amount: float = 0.2):
-        """
-        Give agent a vitamin supplement.
+        """Give agent a vitamin supplement.
 
         A = Vision (clear specs)
         B = Energy (optimized prompts)
@@ -396,8 +390,7 @@ class AgentWellness:
     # =========================================================================
 
     def daily_routine(self, agent_id: str) -> dict[str, Any]:
-        """
-        Complete daily wellness routine for agent.
+        """Complete daily wellness routine for agent.
 
         Morning: Vitamins
         Throughout: Hydration checks
@@ -476,8 +469,7 @@ class AgentWellness:
 
 
 def create_wellness_program() -> AgentWellness:
-    """
-    Create agent wellness program.
+    """Create agent wellness program.
 
     "Healthy agents perform better."
     """
@@ -504,7 +496,7 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("Serving Meal...")
     wellness.serve_meal(
-        "agent_alpha", data_quality=0.9, context_richness=0.8, example_diversity=0.7
+        "agent_alpha", data_quality=0.9, context_richness=0.8, example_diversity=0.7,
     )
     print(f"Meal quality: {wellness.get_health('agent_alpha').meal_quality.overall:.1%}")
 
@@ -536,7 +528,7 @@ if __name__ == "__main__":
     print("Supplementing Vitamins...")
     wellness.full_supplement("agent_alpha")
     deficiencies = wellness.check_deficiencies("agent_alpha")
-    print(f"Deficiencies after supplement: {deficiencies if deficiencies else 'None'}")
+    print(f"Deficiencies after supplement: {deficiencies or 'None'}")
 
     # Health report
     print("\n" + "=" * 60)

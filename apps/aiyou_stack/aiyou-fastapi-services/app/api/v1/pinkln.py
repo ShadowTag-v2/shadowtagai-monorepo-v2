@@ -1,5 +1,4 @@
-"""
-Pinkln Ultrathink API Endpoints
+"""Pinkln Ultrathink API Endpoints
 Multi-agent platform with debates, code crafters, wealth acceleration
 """
 
@@ -79,8 +78,7 @@ class GRPOComparisonRequest(BaseModel):
 
 @router.post("/debate")
 async def run_debate(request: DebateRequest) -> dict[str, Any]:
-    """
-    Run multi-agent debate panel
+    """Run multi-agent debate panel
 
     Features:
     - Multiple AI perspectives (IQ 160)
@@ -89,15 +87,14 @@ async def run_debate(request: DebateRequest) -> dict[str, Any]:
     - Glicko-2 ranked participants
     """
     result = await mas.run_debate(
-        topic=request.topic, num_participants=request.num_participants, rounds=request.rounds
+        topic=request.topic, num_participants=request.num_participants, rounds=request.rounds,
     )
     return result
 
 
 @router.post("/code/craft")
 async def craft_code(request: CodeCraftRequest) -> dict[str, Any]:
-    """
-    Code crafter agent with cheat sheet fusion
+    """Code crafter agent with cheat sheet fusion
 
     Features:
     - DTE-evolved prompts
@@ -106,7 +103,7 @@ async def craft_code(request: CodeCraftRequest) -> dict[str, Any]:
     - IQ 160 implementation
     """
     response = await mas.craft_code(
-        task=request.task, language=request.language, use_cheat_sheet=request.use_cheat_sheet
+        task=request.task, language=request.language, use_cheat_sheet=request.use_cheat_sheet,
     )
 
     return {
@@ -121,8 +118,7 @@ async def craft_code(request: CodeCraftRequest) -> dict[str, Any]:
 
 @router.post("/wealth/accelerate")
 async def accelerate_wealth(request: WealthAccelerationRequest) -> dict[str, Any]:
-    """
-    Wealth accelerator agent
+    """Wealth accelerator agent
 
     Features:
     - Leak detection (conversion, retention, upsell, viral)
@@ -143,8 +139,7 @@ async def accelerate_wealth(request: WealthAccelerationRequest) -> dict[str, Any
 
 @router.post("/reasoning/deep")
 async def deep_reasoning(request: DeepReasoningRequest) -> dict[str, Any]:
-    """
-    Deep reasoning agent with DTE evolution
+    """Deep reasoning agent with DTE evolution
 
     Features:
     - Multi-framework reasoning (CoT, ToT, RCR)
@@ -153,7 +148,7 @@ async def deep_reasoning(request: DeepReasoningRequest) -> dict[str, Any]:
     - Evolved strategies (+3.7% accuracy)
     """
     response = await mas.deep_reasoning(
-        problem=request.problem, use_dte_evolution=request.use_dte_evolution
+        problem=request.problem, use_dte_evolution=request.use_dte_evolution,
     )
 
     return {
@@ -168,8 +163,7 @@ async def deep_reasoning(request: DeepReasoningRequest) -> dict[str, Any]:
 
 @router.post("/cheat-sheet/fuse")
 async def fuse_cheat_sheet(request: CheatSheetRequest) -> dict[str, str]:
-    """
-    Cheat sheet fusion (21→10 essentials)
+    """Cheat sheet fusion (21→10 essentials)
 
     Generates evolved prompts with:
     - Tone, format, act, objective, context
@@ -201,21 +195,20 @@ async def fuse_cheat_sheet(request: CheatSheetRequest) -> dict[str, str]:
 
 @router.get("/agents/rankings")
 async def get_agent_rankings() -> list[dict[str, Any]]:
-    """
-    Get Glicko-2 agent rankings
+    """Get Glicko-2 agent rankings
 
     Returns:
     - Agent ratings (superiority over Elo)
     - Rating deviation (uncertainty)
     - Role and task completion
+
     """
     return mas.get_agent_rankings()
 
 
 @router.post("/grpo/compare")
 async def compare_grpo_ppo(request: GRPOComparisonRequest) -> dict[str, Any]:
-    """
-    GRPO vs PPO comparison
+    """GRPO vs PPO comparison
 
     Compares:
     - GRPO (Group Relative Policy Optimization)

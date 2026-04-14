@@ -22,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Lifecycle manager for the FastAPI application.
+    """Lifecycle manager for the FastAPI application.
     Handles startup and shutdown events.
     """
     # Startup
@@ -171,7 +170,7 @@ class MonetizationMiddleware(BaseHTTPMiddleware):
         if request.url.path.startswith(settings.api_prefix):
             if not api_key:
                 return JSONResponse(
-                    status_code=401, content={"error": "Missing X-ShadowTag-v2-API-KEY header"}
+                    status_code=401, content={"error": "Missing X-ShadowTag-v2-API-KEY header"},
                 )
 
             # 3. Track Usage & Billing
@@ -179,7 +178,7 @@ class MonetizationMiddleware(BaseHTTPMiddleware):
                 monetization.track_request(api_key, request.url.path)
             except ValueError as e:
                 return JSONResponse(
-                    status_code=402, content={"error": str(e)}
+                    status_code=402, content={"error": str(e)},
                 )  # Payment Required / Quota Exceeded
 
         response = await call_next(request)

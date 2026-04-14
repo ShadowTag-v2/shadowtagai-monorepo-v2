@@ -1,5 +1,4 @@
-"""
-CopyConverterSkill - High-converting copy generation.
+"""CopyConverterSkill - High-converting copy generation.
 """
 
 import os

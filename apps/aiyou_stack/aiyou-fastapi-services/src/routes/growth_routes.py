@@ -21,14 +21,14 @@ async def analyze_growth(
     request: AnalyticsMetrics,
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Analyze growth metrics using the Growth Engineer agent.
+    """Analyze growth metrics using the Growth Engineer agent.
 
     Args:
         request: Analytics metrics request
 
     Returns:
         Growth analysis results
+
     """
     service = AgentService(db)
 
@@ -53,7 +53,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
 
 
 @router.post("/ab-test/design")
@@ -61,14 +61,14 @@ async def design_ab_test(
     request: ABTestRequest,
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Design an A/B test with the Growth Engineer agent.
+    """Design an A/B test with the Growth Engineer agent.
 
     Args:
         request: A/B test request
 
     Returns:
         A/B test design and recommendations
+
     """
     service = AgentService(db)
 
@@ -97,7 +97,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Test design failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Test design failed: {e!s}")
 
 
 @router.post("/viral-loop/analyze")
@@ -105,14 +105,14 @@ async def analyze_viral_loop(
     request: ViralLoopRequest,
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Analyze viral loop potential using the Growth Engineer agent.
+    """Analyze viral loop potential using the Growth Engineer agent.
 
     Args:
         request: Viral loop analysis request
 
     Returns:
         Viral loop analysis and recommendations
+
     """
     service = AgentService(db)
 
@@ -139,7 +139,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Viral loop analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Viral loop analysis failed: {e!s}")
 
 
 @router.post("/retention/analyze")
@@ -147,14 +147,14 @@ async def analyze_retention(
     cohort_data: dict[str, Any],
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Analyze user retention using the Growth Engineer agent.
+    """Analyze user retention using the Growth Engineer agent.
 
     Args:
         cohort_data: Cohort retention data
 
     Returns:
         Retention analysis and recommendations
+
     """
     service = AgentService(db)
 
@@ -179,7 +179,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Retention analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Retention analysis failed: {e!s}")
 
 
 @router.post("/funnel/analyze")
@@ -187,14 +187,14 @@ async def analyze_funnel(
     funnel_steps: dict[str, Any],
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Analyze conversion funnel using the Growth Engineer agent.
+    """Analyze conversion funnel using the Growth Engineer agent.
 
     Args:
         funnel_steps: Funnel step data
 
     Returns:
         Funnel analysis and optimization recommendations
+
     """
     service = AgentService(db)
 
@@ -219,7 +219,7 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {e!s}")
 
 
 @router.post("/hooks/identify")
@@ -227,14 +227,14 @@ async def identify_user_hooks(
     user_journey: dict[str, Any],
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Identify user hooks in the application using the Growth Engineer agent.
+    """Identify user hooks in the application using the Growth Engineer agent.
 
     Args:
         user_journey: User journey and behavior data
 
     Returns:
         Identified hooks and engagement recommendations
+
     """
     service = AgentService(db)
 
@@ -259,7 +259,7 @@ Please analyze using the Hook Model (Trigger → Action → Reward → Investmen
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Hook identification failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Hook identification failed: {e!s}")
 
 
 @router.post("/experiment/recommend")
@@ -267,14 +267,14 @@ async def recommend_experiments(
     product_context: dict[str, Any],
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Get experiment recommendations from the Growth Engineer agent.
+    """Get experiment recommendations from the Growth Engineer agent.
 
     Args:
         product_context: Product and metrics context
 
     Returns:
         Recommended experiments and growth tactics
+
     """
     service = AgentService(db)
 
@@ -299,4 +299,4 @@ Please provide:
         )
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Experiment recommendation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Experiment recommendation failed: {e!s}")

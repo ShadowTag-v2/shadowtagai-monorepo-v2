@@ -1,5 +1,4 @@
-"""
-Vertex AI Agents Registry
+"""Vertex AI Agents Registry
 Python implementation for loading and managing AI agents
 """
 

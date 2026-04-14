@@ -15,7 +15,6 @@ from app.config import settings
 class Base(DeclarativeBase):
     """Base class for SQLAlchemy models."""
 
-    pass
 
 
 # Create async engine
@@ -36,11 +35,11 @@ AsyncSessionLocal = async_sessionmaker(
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    """
-    Dependency for getting async database sessions.
+    """Dependency for getting async database sessions.
 
     Yields:
         AsyncSession: Database session
+
     """
     async with AsyncSessionLocal() as session:
         try:

@@ -8,7 +8,7 @@ from datetime import datetime
 # --- CONFIGURATION ---
 # Default to a safe 'echo' command if not specified, usually replaced by node agent
 AGENT_COMMAND = os.environ.get(
-    "ANTIGRAVITY_AGENT_CMD", "node src/agents/scientific/scientific_agent.py"
+    "ANTIGRAVITY_AGENT_CMD", "node src/agents/scientific/scientific_agent.py",
 )
 NUM_AGENTS = int(os.environ.get("ANTIGRAVITY_NUM_AGENTS", 4))
 
@@ -157,10 +157,10 @@ async def main():
                     pass
             break
 
-        elif command == "status":
+        if command == "status":
             for a in agents:
                 print(
-                    f"[{a.id}] State: {a.state} | Last Active: {a.last_activity.strftime('%H:%M:%S')}"
+                    f"[{a.id}] State: {a.state} | Last Active: {a.last_activity.strftime('%H:%M:%S')}",
                 )
 
         elif command.upper() in STRATEGIES:

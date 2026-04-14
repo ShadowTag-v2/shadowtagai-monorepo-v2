@@ -1,5 +1,4 @@
-"""
-Logging configuration for the pipeline
+"""Logging configuration for the pipeline
 """
 
 from pathlib import Path
@@ -11,7 +10,6 @@ from ..config import LOGGING_CONFIG
 
 def setup_logging():
     """Configure structured logging"""
-
     # Ensure log directory exists
     log_file = Path(LOGGING_CONFIG["file"])
     log_file.parent.mkdir(parents=True, exist_ok=True)

@@ -42,9 +42,9 @@ def gemini_llm_router(prompt, level=2, mode="auto"):
     # Simulation Logic for "Bootstrap Beauty"
     if "Reason" in prompt:
         return f"Thought (level {level}, {effective_mode}): Plan steps for {prompt.split(': ')[1] if ': ' in prompt else prompt}."
-    elif "Act" in prompt:
+    if "Act" in prompt:
         return f"Action: Orchestrate {prompt.split(': ')[1] if ': ' in prompt else prompt}."
-    elif "Synthesize" in prompt:
+    if "Synthesize" in prompt:
         return f"Report (Immersive): Visual system insight - {prompt.split(': ')[1] if ': ' in prompt else prompt}."
     return "Agent output"
 
@@ -119,7 +119,7 @@ def run_kosmos_system(objective, dataset, num_cycles=3):
             ("LiteratureSearch", "flash", 2),
         ]:
             t = threading.Thread(
-                target=run_agent_thread, args=(conn, agent_type, objective, cycle, level, mode)
+                target=run_agent_thread, args=(conn, agent_type, objective, cycle, level, mode),
             )
             threads.append(t)
             t.start()

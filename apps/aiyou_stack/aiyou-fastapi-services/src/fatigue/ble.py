@@ -1,5 +1,4 @@
-"""
-BLE Sync Layer
+"""BLE Sync Layer
 Wearable integration for HRV and biometric data
 
 Supported Devices:
@@ -59,17 +58,14 @@ class BLEDevice(ABC):
     @abstractmethod
     async def connect(self) -> bool:
         """Establish BLE connection"""
-        pass
 
     @abstractmethod
     async def disconnect(self):
         """Disconnect from device"""
-        pass
 
     @abstractmethod
     async def read_data(self) -> WearableReading | None:
         """Read current sensor data"""
-        pass
 
     def register_callback(self, callback: Callable):
         """Register callback for new data"""
@@ -88,8 +84,7 @@ class BLEDevice(ABC):
 
 
 class OuraIntegration(BLEDevice):
-    """
-    Oura Ring integration
+    """Oura Ring integration
 
     Features:
     - Real-time HRV via BLE (when in range)
@@ -169,8 +164,7 @@ class OuraIntegration(BLEDevice):
 
 
 class WhoopIntegration(BLEDevice):
-    """
-    Whoop Band integration
+    """Whoop Band integration
 
     Features:
     - Real-time HRV during activities
@@ -230,8 +224,7 @@ class WhoopIntegration(BLEDevice):
 
 
 class AppleWatchIntegration(BLEDevice):
-    """
-    Apple Watch integration
+    """Apple Watch integration
 
     Features:
     - Real-time HR via HealthKit
@@ -303,8 +296,7 @@ class AppleWatchIntegration(BLEDevice):
 
 
 class BLESyncManager:
-    """
-    Central manager for all BLE wearable connections
+    """Central manager for all BLE wearable connections
 
     Features:
     - Multi-device support
@@ -389,8 +381,7 @@ class BLESyncManager:
         }
 
     async def fuse_readings(self) -> dict | None:
-        """
-        Fuse data from multiple wearables
+        """Fuse data from multiple wearables
 
         Priority: Apple Watch > Oura > Whoop (sensor quality)
         """
@@ -429,7 +420,7 @@ class BLESyncManager:
                 fused_data.setdefault("supplementary", {})
                 fused_data["supplementary"][reading.device_type.value] = reading.metadata
 
-        return fused_data if fused_data else None
+        return fused_data or None
 
     def set_polling_interval(self, seconds: float):
         """Adjust polling rate (battery vs. latency tradeoff)"""
@@ -454,17 +445,16 @@ class BLESyncManager:
 
 
 class HRVFatigueIntegration:
-    """
-    Integrates BLE wearable data with fatigue detection pipeline
+    """Integrates BLE wearable data with fatigue detection pipeline
 
     Automatically feeds HRV data into HRVMonitor
     """
 
     def __init__(self, ble_manager: BLESyncManager, hrv_monitor):
-        """
-        Args:
-            ble_manager: BLESyncManager instance
-            hrv_monitor: HRVMonitor from sensors module
+        """Args:
+        ble_manager: BLESyncManager instance
+        hrv_monitor: HRVMonitor from sensors module
+
         """
         self.ble_manager = ble_manager
         self.hrv_monitor = hrv_monitor

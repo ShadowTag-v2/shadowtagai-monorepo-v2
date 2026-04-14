@@ -45,11 +45,11 @@ TOOL_DEFINITIONS = {
                     "path": {
                         "type": "STRING",
                         "description": "Directory path to list. Defaults to '.'.",
-                    }
+                    },
                 },
             },
         },
-    ]
+    ],
 }
 
 
@@ -146,7 +146,7 @@ def run_agent_loop(model: str, user_msg: str) -> str:
         try:
             resp = call_gemini_turn(model, history, tools=TOOL_DEFINITIONS)
         except Exception as e:
-            return f"API Error: {str(e)}"
+            return f"API Error: {e!s}"
 
         if "candidates" not in resp or not resp["candidates"]:
             return f"Error: No candidates. {json.dumps(resp)}"

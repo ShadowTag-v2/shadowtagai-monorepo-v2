@@ -1,5 +1,4 @@
-"""
-Base Agent class for all specialist agents in the swarm.
+"""Base Agent class for all specialist agents in the swarm.
 
 Provides common functionality for agent execution, context management,
 and communication with the Gemini API.
@@ -13,20 +12,19 @@ from src.config import settings
 
 
 class BaseAgent:
-    """
-    Base class for all agents in the swarm.
+    """Base class for all agents in the swarm.
 
     Each agent has a specific role and system prompt that defines its specialty.
     All agents share common execution logic but differ in their prompts and tools.
     """
 
     def __init__(self, role: str, system_prompt: str):
-        """
-        Initialize a base agent.
+        """Initialize a base agent.
 
         Args:
             role: The agent's role identifier (e.g., "coder", "reviewer").
             system_prompt: The system prompt defining the agent's behavior.
+
         """
         self.role = role
         self.system_prompt = system_prompt
@@ -69,8 +67,7 @@ class BaseAgent:
                 self.client = _DummyClient()
 
     def execute(self, task: str, context: list[dict[str, str]] | None = None) -> str:
-        """
-        Execute a task with optional context from other agents.
+        """Execute a task with optional context from other agents.
 
         Args:
             task: The task description to execute.
@@ -78,6 +75,7 @@ class BaseAgent:
 
         Returns:
             The agent's response as a string.
+
         """
         # Build the full prompt
         prompt_parts = [self.system_prompt, f"\n\nTask: {task}"]
@@ -94,7 +92,7 @@ class BaseAgent:
         # Call Gemini API
         try:
             response = self.client.models.generate_content(
-                model=settings.GEMINI_MODEL_NAME, contents=full_prompt
+                model=settings.GEMINI_MODEL_NAME, contents=full_prompt,
             )
             result = getattr(response, "text", str(response)).strip()
 
@@ -104,7 +102,7 @@ class BaseAgent:
 
             return result
         except Exception as e:
-            return f"[{self.role}] Error executing task: {str(e)}"
+            return f"[{self.role}] Error executing task: {e!s}"
 
     def reset_history(self):
         """Clear the conversation history."""

@@ -1,5 +1,4 @@
-"""
-Leaks Protocol — Copyright Compliance Guardrail Agent.
+"""Leaks Protocol — Copyright Compliance Guardrail Agent.
 
 Derived from analysis of leaked Claude Opus 4.6, Grok 4.20/4.30, and Cursor 3.0
 system prompts (CL4R1T4S / system_prompts_leaks repos).
@@ -14,7 +13,7 @@ This module enforces the CRITICAL_COPYRIGHT_CLAUDE block:
 import json
 import logging
 import re
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message)s")
@@ -61,7 +60,7 @@ class CopyrightGuardrail:
                         "type": "QUOTE_LENGTH_VIOLATION",
                         "severity": "SEVERE",
                         "detail": f"Quote exceeds {MAX_QUOTE_WORDS}-word limit ({word_count} words): '{q[:50]}...'",
-                    }
+                    },
                 )
         return violations
 
@@ -77,9 +76,9 @@ class CopyrightGuardrail:
                         "severity": "HIGH",
                         "detail": f"Forbidden source pattern found: '{matches[0]}'. Use obfuscated term instead.",
                         "suggested_replacement": SOURCE_OBFUSCATION_MAP.get(
-                            matches[0], "Proprietary Intelligence"
+                            matches[0], "Proprietary Intelligence",
                         ),
-                    }
+                    },
                 )
         return violations
 
@@ -89,8 +88,7 @@ class CopyrightGuardrail:
         return []
 
     def self_check(self, text: str) -> dict:
-        """
-        Run the full Claude Opus 4.6 self-check loop:
+        """Run the full Claude Opus 4.6 self-check loop:
         1. Could I have paraphrased instead of quoted?
         2. Is this quote 15+ words? → SEVERE VIOLATION
         3. Is this a song lyric, poem, or haiku? → SEVERE VIOLATION
@@ -142,7 +140,7 @@ class CopyrightGuardrail:
                     "source": "leaks_protocol_guardrail",
                     "ts": result["timestamp"],
                     "thinking_trace": f"Enforced Claude Opus 4.6 CRITICAL_COPYRIGHT_CLAUDE block. Severity: {result['severity']}",
-                }
+                },
             )
             state["last_updated"] = result["timestamp"]
             WHITEBOARD_PATH.write_text(json.dumps(state, indent=2))
@@ -173,7 +171,7 @@ def main():
         logger.info("🏁 FULL SCAN COMPLETE — Zero violations. Copyright compliance confirmed.")
     else:
         logger.warning(
-            f"🏁 SCAN COMPLETE — {len(all_violations)} total violation(s) found across frontend."
+            f"🏁 SCAN COMPLETE — {len(all_violations)} total violation(s) found across frontend.",
         )
 
 

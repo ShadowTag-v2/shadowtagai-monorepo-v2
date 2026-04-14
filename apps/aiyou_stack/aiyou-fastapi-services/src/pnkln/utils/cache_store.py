@@ -7,8 +7,7 @@ from typing import Any
 
 
 class CacheStore:
-    """
-    Abstracted Cache/Memory layer for the Antigravity Swarm.
+    """Abstracted Cache/Memory layer for the Antigravity Swarm.
     Defaults to Memorystore for Valkey in production.
     """
 

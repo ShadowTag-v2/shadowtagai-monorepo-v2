@@ -1,5 +1,4 @@
-"""
-Kosmos Dev: IQ-160 Agent Swarm for Product Development.
+"""Kosmos Dev: IQ-160 Agent Swarm for Product Development.
 
 Deploys hundreds of IQ-160 agents to develop ALL products across your GitHub
 repositories. Following the Kosmos paper architecture, agents share information

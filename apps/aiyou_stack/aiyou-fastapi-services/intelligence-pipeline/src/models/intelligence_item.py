@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Data Models
+"""PNKLN Intelligence Pipeline - Data Models
 
 Core data structures for intelligence items, scoring, and classification
 """
@@ -34,8 +33,7 @@ class IntelligenceTier(Enum):
 
 @dataclass
 class IntelligenceItem:
-    """
-    Core intelligence item
+    """Core intelligence item
 
     Represents a single piece of intelligence (regulation, news, paper, etc.)
     with metadata, content, and scoring information
@@ -68,7 +66,7 @@ class IntelligenceItem:
         """Generate unique ID based on content"""
         if not self.id:
             content_hash = hashlib.sha256(
-                f"{self.source.value}:{self.url}:{self.title}".encode()
+                f"{self.source.value}:{self.url}:{self.title}".encode(),
             ).hexdigest()[:16]
             self.id = f"intel_{content_hash}"
 
@@ -94,8 +92,7 @@ class IntelligenceItem:
 
 @dataclass
 class JRScore:
-    """
-    JR Engine score with reasoning
+    """JR Engine score with reasoning
 
     The JR (Junior) Engine provides initial scoring and reasoning
     for intelligence items before Cor Brain synthesis
@@ -113,8 +110,7 @@ class JRScore:
 
 @dataclass
 class TierClassification:
-    """
-    Tier classification result
+    """Tier classification result
 
     Determines whether item goes to:
     - Tier 1: CEO briefing (critical/strategic)
@@ -136,8 +132,7 @@ class TierClassification:
 
 @dataclass
 class CorSynthesis:
-    """
-    Cor Brain synthesis for Tier 1 items
+    """Cor Brain synthesis for Tier 1 items
 
     Provides executive summary and strategic analysis
     """

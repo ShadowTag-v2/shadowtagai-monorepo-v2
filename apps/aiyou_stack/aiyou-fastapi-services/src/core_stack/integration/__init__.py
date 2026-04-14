@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack™ — Integration Layer
+"""PNKLN Core Stack™ — Integration Layer
 Gemini Ingestion → Judge #6 → Services
 
 This module handles the data flow between:

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-CodePMCS CLI - Command line interface for GitHub Actions and local use.
+"""CodePMCS CLI - Command line interface for GitHub Actions and local use.
 
 Usage:
     python -m codepmcs.cli scan [--format=json|sarif] [path]
@@ -137,7 +136,7 @@ def format_scan_text(result: ScanResult) -> str:
                     f"   File: {issue.file_path}:{issue.line_start}",
                     f"   {issue.description}",
                     "",
-                ]
+                ],
             )
 
     lines.append("=" * 60)
@@ -215,9 +214,8 @@ async def cmd_pr(args):
     if pr_result.success:
         print(f"PR created: {pr_result.url}")
         return 0
-    else:
-        print(f"PR creation failed: {pr_result.error}")
-        return 1
+    print(f"PR creation failed: {pr_result.error}")
+    return 1
 
 
 async def cmd_full(args):
@@ -271,18 +269,17 @@ async def main():
 
     if args.command == "scan":
         return await cmd_scan(args)
-    elif args.command == "fix":
+    if args.command == "fix":
         return await cmd_fix(args)
-    elif args.command == "pr":
+    if args.command == "pr":
         return await cmd_pr(args)
-    elif args.command == "full":
+    if args.command == "full":
         return await cmd_full(args)
-    elif args.command == "status":
+    if args.command == "status":
         return await cmd_status(args)
-    else:
-        print("Usage: codepmcs <command> [options]")
-        print("Commands: scan, fix, pr, full, status")
-        return 1
+    print("Usage: codepmcs <command> [options]")
+    print("Commands: scan, fix, pr, full, status")
+    return 1
 
 
 if __name__ == "__main__":

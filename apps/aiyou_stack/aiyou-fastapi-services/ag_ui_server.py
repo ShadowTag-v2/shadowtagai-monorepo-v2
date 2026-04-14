@@ -45,7 +45,7 @@ if BaseAgent is not None:
                         "varAllocation": 77.21,
                         "quarterKelly": 12.04,
                         "actionVerdict": "EXECUTING AST SWARM INFERENCING",
-                    }
+                    },
                 ),
             }
 
@@ -66,7 +66,7 @@ else:
             "status": (
                 "ADK wrapper running in headless mode. "
                 "Install ag_ui_adk and google-adk for full CopilotKit event streaming."
-            )
+            ),
         }
 
 

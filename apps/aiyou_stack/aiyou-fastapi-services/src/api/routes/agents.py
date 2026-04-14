@@ -33,8 +33,7 @@ except ValueError as e:
     description="Analyze competitive landscape, features, and market positioning",
 )
 async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisResponse:
-    """
-    Perform comprehensive market analysis using Market Analyst agent
+    """Perform comprehensive market analysis using Market Analyst agent
 
     This endpoint accepts:
     - A text prompt describing the analysis needed
@@ -69,7 +68,7 @@ async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisRespon
 
         if "error" in result:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=result["error"]
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=result["error"],
             )
 
         return MarketAnalysisResponse(**result)
@@ -78,7 +77,7 @@ async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisRespon
         raise
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Analysis failed: {str(e)}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Analysis failed: {e!s}",
         )
 
 
@@ -89,8 +88,7 @@ async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisRespon
     description="Get detailed feature comparison and gap analysis",
 )
 async def competitor_analysis(request: CompetitorAnalysisRequest) -> CompetitorAnalysisResponse:
-    """
-    Perform structured competitor analysis with feature matrix
+    """Perform structured competitor analysis with feature matrix
 
     This endpoint provides:
     - Feature comparison matrix
@@ -106,7 +104,7 @@ async def competitor_analysis(request: CompetitorAnalysisRequest) -> CompetitorA
 
     try:
         result = market_analyst.analyze_competitors(
-            product=request.product, competitors=request.competitors, features=request.features
+            product=request.product, competitors=request.competitors, features=request.features,
         )
 
         return CompetitorAnalysisResponse(**result)
@@ -114,7 +112,7 @@ async def competitor_analysis(request: CompetitorAnalysisRequest) -> CompetitorA
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Competitor analysis failed: {str(e)}",
+            detail=f"Competitor analysis failed: {e!s}",
         )
 
 
@@ -124,8 +122,7 @@ async def competitor_analysis(request: CompetitorAnalysisRequest) -> CompetitorA
     description="Prioritize features based on impact and effort",
 )
 async def prioritize_features(request: FeaturePrioritizationRequest) -> dict[str, Any]:
-    """
-    Prioritize features using impact/effort matrix
+    """Prioritize features using impact/effort matrix
 
     Returns features ranked by priority with P0/P1/P2 labels.
     """
@@ -139,7 +136,7 @@ async def prioritize_features(request: FeaturePrioritizationRequest) -> dict[str
         features_list = [feature.dict() for feature in request.features]
 
         prioritized = market_analyst.tools.prioritize_features(
-            features=features_list, criteria=request.criteria
+            features=features_list, criteria=request.criteria,
         )
 
         return {
@@ -153,7 +150,7 @@ async def prioritize_features(request: FeaturePrioritizationRequest) -> dict[str
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Feature prioritization failed: {str(e)}",
+            detail=f"Feature prioritization failed: {e!s}",
         )
 
 

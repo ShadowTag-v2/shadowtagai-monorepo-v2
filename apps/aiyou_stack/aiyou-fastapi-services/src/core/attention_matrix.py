@@ -1,5 +1,4 @@
-"""
-================================================================================
+"""================================================================================
 attention_matrix.py
 
 Philosophical Mandate:
@@ -17,13 +16,12 @@ logger = logging.getLogger(__name__)
 
 # Primary location of the canonical UphillSnowball Operator Invariants
 DEFAULT_INVARIANT_PATH = Path(
-    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/operator_invariants.json"
+    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/operator_invariants.json",
 )
 
 
 class AttentionInjector:
-    """
-    Ingests the master operator_invariants.json payload (58+ dicts).
+    """Ingests the master operator_invariants.json payload (58+ dicts).
     Dynamically slices the matrix down to the top-N critical laws
     based on contextual keywords, and returns an ArXiv Prompt Repetition tail.
     """
@@ -35,7 +33,7 @@ class AttentionInjector:
     def _load_invariants(self) -> list[dict]:
         if not self.json_path.exists():
             logger.warning(
-                f"CRITICAL: Operator invariants missing at {self.json_path}. Falling back to empty matrix."
+                f"CRITICAL: Operator invariants missing at {self.json_path}. Falling back to empty matrix.",
             )
             return []
 
@@ -48,8 +46,7 @@ class AttentionInjector:
             return []
 
     def _score_invariant(self, invariant: dict, context_tags: list[str]) -> int:
-        """
-        Determines the relevance of an invariant relative to the current task.
+        """Determines the relevance of an invariant relative to the current task.
         Prioritizes Stage 6, State A (YOLO), and Zero-Trust mechanically.
         """
         score = 0
@@ -75,8 +72,7 @@ class AttentionInjector:
         return score
 
     def build_attention_tail(self, context_tags: list[str], top_n: int = 3) -> str:
-        """
-        Executes the Head-and-Tail Compression Loop.
+        """Executes the Head-and-Tail Compression Loop.
         1. Filters and scores all 58 invariants against the context.
         2. Slices the exact Top N critical rules.
         3. Formats them as an explicitly hostile Promp Repetition suffix.
@@ -86,7 +82,7 @@ class AttentionInjector:
 
         # Score and sort invariants descending
         scored = sorted(
-            self.invariants, key=lambda x: self._score_invariant(x, context_tags), reverse=True
+            self.invariants, key=lambda x: self._score_invariant(x, context_tags), reverse=True,
         )
 
         # Slice the critical threshold

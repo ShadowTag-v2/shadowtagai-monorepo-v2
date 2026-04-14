@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Adaptive Particle Swarm Optimization with Adam-inspired momentum.
+"""Adaptive Particle Swarm Optimization with Adam-inspired momentum.
 Combines PSO swarm intelligence with adaptive learning rates from Adam optimizer.
 Based on patterns from yyz-agentics-june/neuralflow/core/optimizers/optimizers.py
 """
@@ -25,8 +24,7 @@ class Particle:
 
 
 class AdaptivePSO:
-    """
-    Adaptive PSO optimizer combining swarm intelligence with Adam momentum.
+    """Adaptive PSO optimizer combining swarm intelligence with Adam momentum.
 
     Key innovation: Uses Adam's m (velocity) and v (acceleration) terms
     to adaptively adjust PSO inertia and cognitive/social components.
@@ -46,8 +44,7 @@ class AdaptivePSO:
         beta2: float = 0.999,
         epsilon: float = 1e-8,
     ):
-        """
-        Initialize Adaptive PSO.
+        """Initialize Adaptive PSO.
 
         Args:
             num_particles: Number of particles (agents)
@@ -59,6 +56,7 @@ class AdaptivePSO:
             beta1: Adam first moment decay rate
             beta2: Adam second moment decay rate
             epsilon: Small constant for numerical stability
+
         """
         self.num_particles = num_particles
         self.dim = dim
@@ -92,13 +90,12 @@ class AdaptivePSO:
                     best_fitness=float("inf"),
                     m=np.zeros(self.dim),  # First moment
                     v=np.zeros(self.dim),  # Second moment
-                )
+                ),
             )
         return particles
 
     def _compute_adaptive_weights(self, particle: Particle, gradient: np.ndarray) -> tuple:
-        """
-        Compute adaptive weights using Adam-like momentum.
+        """Compute adaptive weights using Adam-like momentum.
 
         Args:
             particle: The particle to update
@@ -106,6 +103,7 @@ class AdaptivePSO:
 
         Returns:
             Tuple of (adaptive_inertia, adaptive_c1, adaptive_c2)
+
         """
         # Update biased first moment estimate
         particle.m = self.beta1 * particle.m + (1 - self.beta1) * gradient
@@ -138,8 +136,7 @@ class AdaptivePSO:
         early_stop: float = None,
         verbose: bool = False,
     ) -> dict:
-        """
-        Run adaptive PSO optimization.
+        """Run adaptive PSO optimization.
 
         Args:
             fitness_fn: Function to minimize (takes position array, returns scalar)
@@ -149,6 +146,7 @@ class AdaptivePSO:
 
         Returns:
             Dictionary with optimization results
+
         """
         # Initial evaluation
         for particle in self.particles:
@@ -174,7 +172,7 @@ class AdaptivePSO:
 
                 # Get adaptive weights
                 adaptive_w, adaptive_c1, adaptive_c2 = self._compute_adaptive_weights(
-                    particle, gradient
+                    particle, gradient,
                 )
 
                 # Random components

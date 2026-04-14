@@ -1,5 +1,4 @@
-"""
-Multi-LLM Consensus System with Cross-Validation
+"""Multi-LLM Consensus System with Cross-Validation
 Layer 1: Claude initial reasoning
 Layer 2: Parallel analysis (Grok, Gemini, GPT-5)
 Layer 2.5: Peer review cross-validation
@@ -51,8 +50,7 @@ class PeerReview:
 
 
 class ConsensusOrchestrator:
-    """
-    Multi-LLM consensus system with cross-validation
+    """Multi-LLM consensus system with cross-validation
 
     Architecture:
     Query → Layer 1 (Claude) → Layer 2 (Broadcast to Grok/Gemini/GPT) →
@@ -74,11 +72,9 @@ class ConsensusOrchestrator:
         self.xai_endpoint = xai_endpoint
 
     async def layer1_initial_reasoning(self, query: str) -> ModelResponse:
-        """
-        Layer 1: Claude Sonnet 4.5 initial reasoning pass
+        """Layer 1: Claude Sonnet 4.5 initial reasoning pass
         This sets the framework that other models will analyze
         """
-
         prompt = f"""You are the initial reasoning layer in a multi-model consensus system.
 
 QUERY: {query}
@@ -118,13 +114,11 @@ Be thorough but concise. Show your reasoning clearly.
         )
 
     async def layer2_parallel_analysis(
-        self, claude_response: str, original_query: str
+        self, claude_response: str, original_query: str,
     ) -> list[ModelResponse]:
-        """
-        Layer 2: Broadcast Claude's response to 3 models for parallel analysis
+        """Layer 2: Broadcast Claude's response to 3 models for parallel analysis
         Each model analyzes independently without seeing others' work
         """
-
         base_prompt = f"""You are participating in a multi-model consensus system.
 
 ORIGINAL QUERY:
@@ -156,15 +150,14 @@ Be thorough. Your response will be peer-reviewed by other advanced models.
         return valid_responses
 
     async def layer2_5_cross_validation(
-        self, responses: list[ModelResponse]
+        self, responses: list[ModelResponse],
     ) -> dict[ModelType, list[PeerReview]]:
-        """
-        Layer 2.5: Cross-validation - each model reviews the other two
+        """Layer 2.5: Cross-validation - each model reviews the other two
 
         Returns:
             Dict mapping each model to reviews it received from peers
-        """
 
+        """
         reviews = {}
 
         # For each model, get reviews from the other two
@@ -176,7 +169,7 @@ Be thorough. Your response will be peer-reviewed by other advanced models.
                     continue  # Don't review yourself
 
                 review = await self._get_peer_review(
-                    reviewer=reviewer_response.model, target_response=target_response
+                    reviewer=reviewer_response.model, target_response=target_response,
                 )
                 peer_reviews.append(review)
 
@@ -185,10 +178,9 @@ Be thorough. Your response will be peer-reviewed by other advanced models.
         return reviews
 
     async def _get_peer_review(
-        self, reviewer: ModelType, target_response: ModelResponse
+        self, reviewer: ModelType, target_response: ModelResponse,
     ) -> PeerReview:
         """Get one model to review another model's response"""
-
         review_prompt = f"""You are peer-reviewing another advanced AI model's response.
 
 MODEL BEING REVIEWED: {target_response.model.value}
@@ -256,11 +248,9 @@ Return JSON:
         layer2_responses: list[ModelResponse],
         peer_reviews: dict[ModelType, list[PeerReview]],
     ) -> dict[str, Any]:
-        """
-        Layer 3: Claude Sonnet 4.5 synthesizes all responses and peer reviews
+        """Layer 3: Claude Sonnet 4.5 synthesizes all responses and peer reviews
         into final execution-ready output
         """
-
         # Build synthesis prompt
         synthesis_sections = []
 
@@ -279,7 +269,7 @@ Return JSON:
                 synthesis_sections.append(
                     f"  From {review.reviewer_model.value} "
                     f"(agreement: {review.agreement_score:.2f}):\n"
-                    f"  {review.critique}\n"
+                    f"  {review.critique}\n",
                 )
 
         full_context = "\n".join(synthesis_sections)
@@ -328,10 +318,8 @@ This is your final output - make it authoritative and actionable.
         }
 
     async def execute_full_consensus(self, query: str) -> dict[str, Any]:
+        """Execute full 3-layer consensus pipeline with cross-validation
         """
-        Execute full 3-layer consensus pipeline with cross-validation
-        """
-
         print("[Layer 1] Claude initial reasoning...")
         layer1 = await self.layer1_initial_reasoning(query)
 

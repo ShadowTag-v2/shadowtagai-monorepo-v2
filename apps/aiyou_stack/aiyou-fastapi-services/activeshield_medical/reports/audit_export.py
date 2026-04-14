@@ -1,5 +1,4 @@
-"""
-Audit Exporter
+"""Audit Exporter
 ===============
 
 Exports audit data for compliance, legal, and insurance purposes.
@@ -18,8 +17,7 @@ from typing import Any
 
 
 class AuditExporter:
-    """
-    Exports ActiveShieldMedical audit data in various formats.
+    """Exports ActiveShieldMedical audit data in various formats.
 
     Use Cases:
     1. Regulatory Audit - Full compliance documentation
@@ -37,8 +35,7 @@ class AuditExporter:
         shield_results: list[dict[str, Any]],
         include_content: bool = False,
     ) -> dict[str, Any]:
-        """
-        Export session audit data as JSON.
+        """Export session audit data as JSON.
 
         Args:
             session_id: Session to export
@@ -47,6 +44,7 @@ class AuditExporter:
 
         Returns:
             Complete audit export
+
         """
         export_id = self._generate_export_id(session_id, "json")
         exported_at = datetime.utcnow()
@@ -98,11 +96,11 @@ class AuditExporter:
         session_id: str,
         shield_results: list[dict[str, Any]],
     ) -> str:
-        """
-        Export session audit data as CSV.
+        """Export session audit data as CSV.
 
         Returns:
             CSV string
+
         """
         lines = ["shield_id,phase,action,passed,violations,warnings,checked_at"]
 
@@ -116,7 +114,7 @@ class AuditExporter:
                     str(len(result.get("violations", []))),
                     str(len(result.get("warnings", []))),
                     result.get("checked_at", ""),
-                ]
+                ],
             )
             lines.append(line)
 
@@ -133,8 +131,7 @@ class AuditExporter:
         incident_id: str | None = None,
         legal_hold: bool = False,
     ) -> dict[str, Any]:
-        """
-        Export litigation-ready evidence package.
+        """Export litigation-ready evidence package.
 
         This is the format used for:
         - Legal discovery requests
@@ -158,7 +155,7 @@ class AuditExporter:
                         "warnings": result.get("warnings", []),
                         "actions_required": result.get("required_actions", []),
                     },
-                }
+                },
             )
 
         # Identify key events
@@ -218,7 +215,7 @@ class AuditExporter:
                         "action": "created",
                         "timestamp": exported_at.isoformat(),
                         "actor": "ActiveShieldMedical System",
-                    }
+                    },
                 ],
             },
             "legal_notice": (
@@ -241,8 +238,7 @@ class AuditExporter:
         period_end: datetime,
         aggregate_data: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Export periodic compliance report.
+        """Export periodic compliance report.
 
         Used for:
         - Quarterly compliance reviews
@@ -327,27 +323,27 @@ class AuditExporter:
 
         if data.get("sb243_violations", 0) > 0:
             recommendations.append(
-                "Review SB 243 violations and ensure AI disclosure is shown before all interactions"
+                "Review SB 243 violations and ensure AI disclosure is shown before all interactions",
             )
 
         if data.get("crisis_detections", 0) > 0:
             recommendations.append(
-                "Review crisis detection events and verify crisis protocols are being followed"
+                "Review crisis detection events and verify crisis protocols are being followed",
             )
 
         if data.get("decisions_blocked", 0) > 0:
             recommendations.append(
-                "Analyze blocked clinical decisions to identify patterns and improve AI responses"
+                "Analyze blocked clinical decisions to identify patterns and improve AI responses",
             )
 
         if data.get("human_reviews", 0) > data.get("total_sessions", 0) * 0.1:
             recommendations.append(
-                "High rate of human escalation detected - consider tuning AI confidence thresholds"
+                "High rate of human escalation detected - consider tuning AI confidence thresholds",
             )
 
         if not recommendations:
             recommendations.append(
-                "Continue current compliance practices - no significant issues detected"
+                "Continue current compliance practices - no significant issues detected",
             )
 
         return recommendations
@@ -378,7 +374,7 @@ class AuditExporter:
                 "format": format,
                 "legal_hold": legal_hold,
                 "exported_at": datetime.utcnow().isoformat(),
-            }
+            },
         )
 
     def get_export_log(self, limit: int = 100) -> list[dict[str, Any]]:

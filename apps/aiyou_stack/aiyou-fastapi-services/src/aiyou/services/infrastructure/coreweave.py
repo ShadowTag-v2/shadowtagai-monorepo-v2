@@ -1,5 +1,4 @@
-"""
-CoreWeave GPU Orchestration Service.
+"""CoreWeave GPU Orchestration Service.
 
 Manages GPU resources across cloud and edge nodes.
 """

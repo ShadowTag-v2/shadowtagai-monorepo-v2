@@ -1,5 +1,4 @@
-"""
-Message-Level Consensus Orchestrator for Claude Code
+"""Message-Level Consensus Orchestrator for Claude Code
 Processes user messages through 3 LLMs with circular peer review
 
 Flow:
@@ -58,8 +57,7 @@ class PeerReview:
 
 
 class MessageConsensusOrchestrator:
-    """
-    Lightweight consensus system for Claude Code messages.
+    """Lightweight consensus system for Claude Code messages.
     Fixed models: Gemini, Perplexity, SuperGrok
     """
 
@@ -92,13 +90,13 @@ class MessageConsensusOrchestrator:
         self.models = ["Gemini", "Perplexity", "SuperGrok"]
 
     async def process_message(
-        self, user_message: str, auto_archive: bool = True, tags: list[str] = None
+        self, user_message: str, auto_archive: bool = True, tags: list[str] = None,
     ) -> dict[str, Any]:
-        """
-        Process user message through full consensus pipeline.
+        """Process user message through full consensus pipeline.
 
         Returns:
             Dict with final_answer, explanations, and metadata
+
         """
         print(f"\n{'=' * 80}")
         print("MESSAGE CONSENSUS ORCHESTRATOR")
@@ -136,7 +134,7 @@ class MessageConsensusOrchestrator:
             # Layer 3: Claude synthesizes and prepares execution
             print("[Layer 3] Claude synthesizing final answer for execution...")
             result = await self._claude_synthesis(
-                user_message, claude_initial, layer2_responses, all_reviews
+                user_message, claude_initial, layer2_responses, all_reviews,
             )
 
         print("[✓] Consensus complete - ready for execution\n")
@@ -147,7 +145,7 @@ class MessageConsensusOrchestrator:
             try:
                 archive = TranscriptArchive()
                 transcript_id = archive.archive(
-                    user_query=user_message, result=result, system_type="simple", tags=tags or []
+                    user_query=user_message, result=result, system_type="simple", tags=tags or [],
                 )
                 archive.close()
                 print(f"[Archive] Saved as transcript #{transcript_id}\n")
@@ -164,7 +162,7 @@ class MessageConsensusOrchestrator:
                     "claude-sonnet-4-20250514": {
                         "input": 3000,  # Layer 1 + Layer 3
                         "output": 2000,
-                    }
+                    },
                 }
 
                 # Add Layer 2 models if used
@@ -194,7 +192,7 @@ class MessageConsensusOrchestrator:
 
                 cost_tracker.close()
                 print(
-                    f"[Cost] ${query_cost.total_cost:.4f} ({query_cost.api_calls_made} API calls)\n"
+                    f"[Cost] ${query_cost.total_cost:.4f} ({query_cost.api_calls_made} API calls)\n",
                 )
 
                 # Add cost to result
@@ -263,10 +261,9 @@ Be thorough but concise."""
             )
 
     async def _broadcast_to_models(
-        self, user_message: str, claude_analysis: str
+        self, user_message: str, claude_analysis: str,
     ) -> list[ModelResponse]:
         """Broadcast to Gemini, Perplexity, SuperGrok in parallel"""
-
         base_prompt = f"""You are part of a multi-model consensus system.
 
 USER'S ORIGINAL MESSAGE:
@@ -299,10 +296,9 @@ Your response will be peer-reviewed by other models."""
         return [r for r in responses if isinstance(r, ModelResponse)]
 
     async def _circular_review_round(
-        self, responses: list[ModelResponse], shift: int
+        self, responses: list[ModelResponse], shift: int,
     ) -> list[PeerReview]:
-        """
-        Perform one round of circular peer review.
+        """Perform one round of circular peer review.
         shift=1: Each reviews right neighbor
         shift=2: Each reviews second neighbor
         """
@@ -324,10 +320,9 @@ Your response will be peer-reviewed by other models."""
         return reviews
 
     async def _get_peer_review(
-        self, reviewer_response: ModelResponse, reviewed_response: ModelResponse
+        self, reviewer_response: ModelResponse, reviewed_response: ModelResponse,
     ) -> PeerReview:
         """Get peer review from reviewer about reviewed"""
-
         review_prompt = f"""Peer review another AI model's response.
 
 MODEL BEING REVIEWED: {reviewed_response.model_name}
@@ -379,7 +374,6 @@ Provide critical peer review in JSON:
         peer_reviews: list[PeerReview],
     ) -> dict[str, Any]:
         """Claude synthesizes everything into execution-ready answer"""
-
         # Build synthesis context
         context = []
         context.append(f"USER'S ORIGINAL MESSAGE:\n{user_message}\n")
@@ -394,7 +388,7 @@ Provide critical peer review in JSON:
             for review in peer_reviews:
                 context.append(
                     f"\n{review.reviewer} reviewed {review.reviewed} "
-                    f"(agreement: {review.agreement_score:.2f}):\n{review.critique}\n"
+                    f"(agreement: {review.agreement_score:.2f}):\n{review.critique}\n",
                 )
 
         full_context = "\n".join(context)
@@ -530,7 +524,6 @@ This is your final output - make it ready for immediate execution."""
 
 async def main():
     """Simple CLI for testing"""
-
     orchestrator = MessageConsensusOrchestrator()
 
     if len(sys.argv) > 1:

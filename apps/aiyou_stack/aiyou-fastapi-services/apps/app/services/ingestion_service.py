@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer Service
+"""Gemini Ingestion Layer Service
 Implements PNKLN Core Stack™ Preparation (P) component
 Based on docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/gemini-ingestion-layer.md
 """
@@ -26,8 +25,7 @@ from app.models.schemas import (
 
 
 class EthicalComplianceChecker:
-    """
-    Ethical web crawling compliance checker
+    """Ethical web crawling compliance checker
     Enforces robots.txt, rate limiting, PII scrubbing
     """
 
@@ -153,8 +151,7 @@ class EthicalComplianceChecker:
 
 
 class GeminiTierClassifier:
-    """
-    Gemini 2.0 Pro-powered tier classification
+    """Gemini 2.0 Pro-powered tier classification
     Classifies intelligence items into Tier 1/2/3
     """
 
@@ -200,10 +197,9 @@ Output JSON (no additional text):
             self.model = None  # Fallback to rule-based classification
 
     async def classify(
-        self, title: str, summary: str, tags: list[str], domain: str
+        self, title: str, summary: str, tags: list[str], domain: str,
     ) -> TierClassification:
         """Classify item into Tier 1/2/3"""
-
         if self.model:
             # Use Gemini 2.0 Pro for classification
             try:
@@ -236,10 +232,9 @@ Output JSON (no additional text):
         return self._rule_based_classification(title, summary, tags, domain)
 
     def _rule_based_classification(
-        self, title: str, summary: str, tags: list[str], domain: str
+        self, title: str, summary: str, tags: list[str], domain: str,
     ) -> TierClassification:
         """Fallback rule-based classification"""
-
         # Tier 1 indicators
         tier1_keywords = [
             "faa",
@@ -299,8 +294,7 @@ Output JSON (no additional text):
 
 
 class IngestionService:
-    """
-    Main Gemini Ingestion Layer service
+    """Main Gemini Ingestion Layer service
     Coordinates crawling, classification, and ethical compliance
     """
 
@@ -308,12 +302,11 @@ class IngestionService:
         self.ethics_checker = EthicalComplianceChecker()
         self.tier_classifier = GeminiTierClassifier(api_key=gemini_api_key)
         self.storage: dict[
-            str, dict
+            str, dict,
         ] = {}  # In-memory storage (replace with Cloud Storage in production)
 
     async def submit_item(self, request: IngestionSubmitRequest) -> str:
-        """
-        Submit an intelligence item for ingestion
+        """Submit an intelligence item for ingestion
         Returns: item_id
         """
         # Generate item ID
@@ -340,7 +333,7 @@ class IngestionService:
             # Check ethical compliance
             url_allowed = await self.ethics_checker.check_robots_txt(str(request.source.url))
             rate_ok = await self.ethics_checker.check_rate_limit(
-                request.source.type, request.source.domain
+                request.source.type, request.source.domain,
             )
 
             if not url_allowed or not rate_ok:
@@ -373,7 +366,7 @@ class IngestionService:
         """Generate unique item ID"""
         timestamp = datetime.utcnow().strftime("%Y-%m-%d")
         content_hash = hashlib.blake2b(
-            request.content.full_text.encode(), digest_size=4
+            request.content.full_text.encode(), digest_size=4,
         ).hexdigest()
         return f"ing_{timestamp}_{content_hash}"
 

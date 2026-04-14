@@ -1,5 +1,4 @@
-"""
-Response models for the Database Expert API
+"""Response models for the Database Expert API
 """
 
 from typing import Any
@@ -34,7 +33,7 @@ class QueryAnalysisResponse(BaseModel):
                     ],
                 },
                 "expert_recommendations": "This query has several performance issues...",
-            }
+            },
         }
 
 
@@ -54,7 +53,7 @@ class SchemaAnalysisResponse(BaseModel):
                         "users": {
                             "name": "users",
                             "recommendations": [
-                                "Add index on users.email for better lookup performance"
+                                "Add index on users.email for better lookup performance",
                             ],
                             "issues": [],
                             "stats": {
@@ -63,11 +62,11 @@ class SchemaAnalysisResponse(BaseModel):
                                 "row_count": 5000000,
                                 "estimated_size_mb": 512.5,
                             },
-                        }
-                    }
+                        },
+                    },
                 },
                 "summary": "Analyzed 1 tables, Found 0 issues, 1 recommendations",
-            }
+            },
         }
 
 
@@ -86,7 +85,7 @@ class SchemaDesignResponse(BaseModel):
                 "requirements": "E-commerce platform with users, products, orders",
                 "scale": "10 million users",
                 "design": "Here's the recommended schema design...",
-            }
+            },
         }
 
 
@@ -108,11 +107,11 @@ class IndexSuggestionResponse(BaseModel):
                         "columns": ["status"],
                         "reason": "Used in WHERE clause",
                         "priority": "high",
-                    }
+                    },
                 ],
                 "count": 1,
                 "summary": "Found 1 index optimization opportunities",
-            }
+            },
         }
 
 
@@ -135,7 +134,7 @@ class PerformanceEstimationResponse(BaseModel):
                 },
                 "query_analysis": {"query_type": "SELECT", "complexity": 25},
                 "summary": "Estimated time: 250.50ms - Acceptable performance",
-            }
+            },
         }
 
 
@@ -152,7 +151,7 @@ class ChatResponse(BaseModel):
                 "success": True,
                 "message": "How can I optimize this query?",
                 "response": "Based on the query you provided, here are my recommendations...",
-            }
+            },
         }
 
 
@@ -169,7 +168,7 @@ class ErrorResponse(BaseModel):
                 "success": False,
                 "error": "Invalid SQL query",
                 "details": "Query parsing failed at line 1",
-            }
+            },
         }
 
 
@@ -182,5 +181,5 @@ class HealthResponse(BaseModel):
 
     class Config:
         json_schema_extra = {
-            "example": {"status": "healthy", "version": "0.1.0", "agent": "Database Expert"}
+            "example": {"status": "healthy", "version": "0.1.0", "agent": "Database Expert"},
         }

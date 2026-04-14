@@ -1,5 +1,4 @@
-"""
-Visualization generator for briefings.
+"""Visualization generator for briefings.
 
 Creates charts and graphs for intelligence data:
 - Tier distribution pie charts
@@ -26,8 +25,7 @@ class ChartData:
 
 
 class BriefingVisualizer:
-    """
-    Generates visualizations for briefings.
+    """Generates visualizations for briefings.
 
     Outputs:
     - ASCII charts (terminal-friendly)
@@ -37,11 +35,11 @@ class BriefingVisualizer:
     """
 
     def __init__(self, output_format: str = "ascii"):
-        """
-        Initialize visualizer.
+        """Initialize visualizer.
 
         Args:
             output_format: ascii, matplotlib, plotly, mermaid
+
         """
         self.output_format = output_format
 
@@ -63,16 +61,15 @@ class BriefingVisualizer:
                 },
                 title="Tier Distribution",
             )
-        elif self.output_format == "mermaid":
+        if self.output_format == "mermaid":
             return self._mermaid_pie_chart(
                 {
                     "Tier 1": tier1_count,
                     "Tier 2": tier2_count,
                     "Tier 3": tier3_count,
-                }
+                },
             )
-        else:
-            return f"Tier Distribution: T1={tier1_count}, T2={tier2_count}, T3={tier3_count}"
+        return f"Tier Distribution: T1={tier1_count}, T2={tier2_count}, T3={tier3_count}"
 
     def generate_source_coverage_chart(
         self,
@@ -84,7 +81,7 @@ class BriefingVisualizer:
                 source_stats,
                 title="Items by Source Type",
             )
-        elif self.output_format == "mermaid":
+        if self.output_format == "mermaid":
             # Mermaid bar chart
             lines = ["```mermaid", "xychart-beta", '    title "Items by Source Type"']
             lines.append("    x-axis [" + ", ".join(f'"{k}"' for k in source_stats) + "]")
@@ -92,8 +89,7 @@ class BriefingVisualizer:
             lines.append("    bar [" + ", ".join(str(v) for v in source_stats.values()) + "]")
             lines.append("```")
             return "\n".join(lines)
-        else:
-            return f"Source Coverage: {source_stats}"
+        return f"Source Coverage: {source_stats}"
 
     def generate_compliance_trend(
         self,
@@ -111,7 +107,7 @@ class BriefingVisualizer:
                 title="Compliance Score Trend (7 days)",
                 y_label="Score %",
             )
-        elif self.output_format == "mermaid":
+        if self.output_format == "mermaid":
             # Mermaid line chart
             lines = ["```mermaid", "xychart-beta", '    title "Compliance Trend"']
             dates = [h.get("date", "").split("T")[0][-5:] for h in compliance_history]
@@ -121,8 +117,7 @@ class BriefingVisualizer:
             lines.append("    line [" + ", ".join(str(s) for s in scores) + "]")
             lines.append("```")
             return "\n".join(lines)
-        else:
-            return "Compliance trend chart"
+        return "Compliance trend chart"
 
     def generate_cost_breakdown(
         self,
@@ -134,10 +129,9 @@ class BriefingVisualizer:
                 cost_data,
                 title="Monthly Cost Breakdown",
             )
-        elif self.output_format == "mermaid":
+        if self.output_format == "mermaid":
             return self._mermaid_pie_chart(cost_data, title="Cost Breakdown")
-        else:
-            return f"Costs: {cost_data}"
+        return f"Costs: {cost_data}"
 
     def _ascii_bar_chart(
         self,
@@ -307,7 +301,7 @@ class BriefingVisualizer:
                 tier_dist.get("tier_1", 0),
                 tier_dist.get("tier_2", 0),
                 tier_dist.get("tier_3", 0),
-            )
+            ),
         )
 
         # 2. Source Coverage
@@ -326,7 +320,7 @@ class BriefingVisualizer:
                     "Compliance Score": 95.0,
                     "Budget Usage": 100.0,
                 },
-            )
+            ),
         )
 
         # 4. Cost Summary

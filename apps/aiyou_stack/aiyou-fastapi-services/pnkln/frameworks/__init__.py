@@ -1,5 +1,4 @@
-"""
-Pinkln Ultrathink Frameworks
+"""Pinkln Ultrathink Frameworks
 
 Jobs-inspired AI quality obsession:
 - Cheat Sheet Fusion (21→10 essentials)

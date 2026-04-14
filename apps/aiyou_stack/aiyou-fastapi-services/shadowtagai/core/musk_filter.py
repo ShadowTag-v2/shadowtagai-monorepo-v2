@@ -1,5 +1,4 @@
-"""
-Musk First Principles Filter - Pre-JR Engine Triage.
+"""Musk First Principles Filter - Pre-JR Engine Triage.
 
 Runs BEFORE Purpose/Reasons/Brakes to ensure we're not
 optimizing things that shouldn't exist.
@@ -45,8 +44,7 @@ class MuskFilterResult:
 
 
 class MuskFilter:
-    """
-    Pre-JR Engine triage filter based on Elon Musk's first principles algorithm.
+    """Pre-JR Engine triage filter based on Elon Musk's first principles algorithm.
 
     1. Question requirements (make less dumb)
     2. Delete the thing (10% restore rule)
@@ -65,14 +63,14 @@ class MuskFilter:
         self.optimizations_blocked: list[str] = []
 
     def score_requirements(self, answers: dict) -> float:
-        """
-        Score requirements questioning (Step 1).
+        """Score requirements questioning (Step 1).
 
         Args:
             answers: Dict mapping question text to (answer, score) tuples
 
         Returns:
             Average score (must be >= 3.0 to pass)
+
         """
         total = 0
         count = 0
@@ -88,14 +86,14 @@ class MuskFilter:
         return total / count if count > 0 else 0.0
 
     def attempt_deletion(self, candidates: list[dict]) -> float:
-        """
-        Attempt deletion on components (Step 2).
+        """Attempt deletion on components (Step 2).
 
         Args:
             candidates: List of dicts with keys: name, deleted, restored, reason
 
         Returns:
             Restore rate (should be >= 10% to pass)
+
         """
         self.deletion_candidates = []
 
@@ -119,12 +117,12 @@ class MuskFilter:
         return (restored_count / deleted_count) * 100
 
     def block_optimization(self, item: str, reason: str = "") -> None:
-        """
-        Block an optimization that hasn't passed Steps 1+2.
+        """Block an optimization that hasn't passed Steps 1+2.
 
         Args:
             item: The thing being optimized
             reason: Why optimization was blocked
+
         """
         self.optimizations_blocked.append(f"{item}: {reason}")
 
@@ -136,8 +134,7 @@ class MuskFilter:
         min_restore_rate: float = 10.0,
         max_restore_rate: float = 50.0,
     ) -> MuskFilterResult:
-        """
-        Run the complete Musk First Principles Filter.
+        """Run the complete Musk First Principles Filter.
 
         Args:
             requirement_answers: Dict mapping questions to (answer, score) tuples
@@ -148,6 +145,7 @@ class MuskFilter:
 
         Returns:
             MuskFilterResult with pass/fail and audit data
+
         """
         # Step 1: Question requirements
         req_score = self.score_requirements(requirement_answers)
@@ -178,15 +176,15 @@ class MuskFilter:
 
         if restore_rate < min_restore_rate:
             audit_trail["warnings"].append(
-                f"Restore rate {restore_rate:.1f}% < {min_restore_rate}% - too timid, delete more"
+                f"Restore rate {restore_rate:.1f}% < {min_restore_rate}% - too timid, delete more",
             )
         if restore_rate > max_restore_rate:
             audit_trail["warnings"].append(
-                f"Restore rate {restore_rate:.1f}% > {max_restore_rate}% - too aggressive"
+                f"Restore rate {restore_rate:.1f}% > {max_restore_rate}% - too aggressive",
             )
         if not step1_passed:
             audit_trail["warnings"].append(
-                f"Requirements score {req_score:.1f} < {min_requirement_score} - requirements too dumb"
+                f"Requirements score {req_score:.1f} < {min_requirement_score} - requirements too dumb",
             )
 
         return MuskFilterResult(
@@ -203,8 +201,7 @@ class MuskFilter:
 
 # Convenience function
 def run_musk_filter(requirement_answers: dict, deletion_candidates: list[dict]) -> MuskFilterResult:
-    """
-    One-liner to run Musk First Principles Filter.
+    """One-liner to run Musk First Principles Filter.
 
     Returns MuskFilterResult with pass/fail status.
     """

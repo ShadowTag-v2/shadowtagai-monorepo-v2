@@ -1,5 +1,4 @@
-"""
-Simple Agent Example - pinkln Agent Architecture System
+"""Simple Agent Example - pinkln Agent Architecture System
 
 This example demonstrates basic usage of the pinkln agent system.
 """
@@ -55,7 +54,7 @@ async def example_2_design_review():
     design_skill = DesignCriticSkill()
 
     result = await design_skill.execute(
-        {"artifact": "User onboarding flow with 7 steps and 3 forms"}
+        {"artifact": "User onboarding flow with 7 steps and 3 forms"},
     )
 
     print("\n🎨 Design Critique:")
@@ -89,7 +88,7 @@ async def example_3_monetization_design():
             "catalog": "Online course library with 50+ hours of content",
             "audience": "5,000 email subscribers",
             "offers": ["$97 course"],
-        }
+        },
     )
 
     print("\n💵 Monetization Architecture:")
@@ -108,7 +107,7 @@ async def example_3_monetization_design():
 
     print("\n3️⃣ Continuity:")
     print(
-        f"   {offers['continuity']['name']} - ${offers['continuity']['price']}/{offers['continuity']['frequency']}"
+        f"   {offers['continuity']['name']} - ${offers['continuity']['price']}/{offers['continuity']['frequency']}",
     )
     print(f"   Expected LTV: ${offers['continuity']['expected_ltv']}")
 

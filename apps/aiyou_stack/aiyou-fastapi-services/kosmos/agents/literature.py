@@ -1,5 +1,4 @@
-"""
-Literature Agent: Specializes in academic literature search and citation.
+"""Literature Agent: Specializes in academic literature search and citation.
 
 Capabilities:
 - Search papers via Google Scholar, arXiv, Semantic Scholar
@@ -16,8 +15,7 @@ from kosmos.core.vertex_client import GeminiModel
 
 
 class LiteratureAgent(BaseAgent):
-    """
-    Agent specialized in literature search and knowledge extraction.
+    """Agent specialized in literature search and knowledge extraction.
 
     Uses Gemini Flash for fast, cost-effective search operations.
     Populates world model with literature references and citation graph.
@@ -52,8 +50,7 @@ Always provide:
     )
 
     def execute_task(self, task: str, context: dict[str, Any] | None = None) -> ReActResult:
-        """
-        Execute literature search task.
+        """Execute literature search task.
 
         Example tasks:
         - "Find papers on reinforcement learning for protein folding"
@@ -66,6 +63,7 @@ Always provide:
 
         Returns:
             ReActResult with discovered papers
+
         """
         goal = self._build_goal_with_instruction(task)
 
@@ -82,13 +80,13 @@ Always provide:
         return result
 
     def _extract_and_store_references(self, result: ReActResult):
-        """
-        Extract literature references from ReAct result and add to world model.
+        """Extract literature references from ReAct result and add to world model.
 
         Parses agent observations for paper metadata and stores in world model.
 
         Args:
             result: ReAct execution result
+
         """
         # Simplified extraction logic - real implementation would parse
         # structured output from search tools
@@ -106,8 +104,7 @@ Always provide:
                     )
 
     def search_papers(self, query: str, limit: int = 10) -> ReActResult:
-        """
-        Convenience method for paper search.
+        """Convenience method for paper search.
 
         Args:
             query: Search query
@@ -115,6 +112,7 @@ Always provide:
 
         Returns:
             ReActResult with search results
+
         """
         return self.execute_task(
             f"Search for papers matching: '{query}'. Return top {limit} most relevant papers.",
@@ -122,8 +120,7 @@ Always provide:
         )
 
     def find_citations(self, paper_id: str, depth: int = 1) -> ReActResult:
-        """
-        Find citations for a given paper.
+        """Find citations for a given paper.
 
         Args:
             paper_id: Paper identifier (DOI, arXiv ID, etc.)
@@ -131,6 +128,7 @@ Always provide:
 
         Returns:
             ReActResult with citation graph
+
         """
         return self.execute_task(
             f"Find all papers that cite '{paper_id}'. Build citation graph to depth {depth}.",

@@ -1,5 +1,4 @@
-"""
-ACO - Automated Compliance & Oversight
+"""ACO - Automated Compliance & Oversight
 Defense-Grade Wrapper for Judge #6 to enable Continuous ATO.
 
 Unlocks Pillar III ($35B Valuation).
@@ -25,8 +24,7 @@ class RMFControl:
 
 
 class ACO:
-    """
-    Automated Compliance & Oversight (ACO)
+    """Automated Compliance & Oversight (ACO)
     Translates commercial 'Judge #6' logic into DoD RMF/ATO standards.
     """
 
@@ -34,8 +32,7 @@ class ACO:
         self.active_controls = ["AC-1", "AU-2", "SC-7", "IA-5"]
 
     def evaluate_decision(self, context: str) -> dict:
-        """
-        Evaluates a decision context against RMF controls.
+        """Evaluates a decision context against RMF controls.
         Returns a 'Continuous ATO' scorecard.
         """
         controls = []
@@ -49,7 +46,7 @@ class ACO:
                 compliant_count += 1
 
             controls.append(
-                RMFControl(id=ctrl_id, status=status, evidence=f"Trace_{abs(hash(context))}")
+                RMFControl(id=ctrl_id, status=status, evidence=f"Trace_{abs(hash(context))}"),
             )
 
         ato_status = "GRANTED" if compliant_count == len(self.active_controls) else "DENIED"

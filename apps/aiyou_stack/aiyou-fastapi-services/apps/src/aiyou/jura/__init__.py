@@ -1,5 +1,4 @@
-"""
-JURA Protocol: Cost-aware agent routing for n-autoresearch/Kosmos/BioAgents swarm.
+"""JURA Protocol: Cost-aware agent routing for n-autoresearch/Kosmos/BioAgents swarm.
 
 Tiers:
 - FREE: Grok, 1 agent, 5s timeout, ~$0.001/request
@@ -13,11 +12,11 @@ from .limiter import JuraLimiter, TierLimits
 from .router import JuraRouter
 
 __all__ = [
-    "JuraClassifier",
     "CostTier",
-    "JuraLimiter",
-    "TierLimits",
-    "JuraCostTracker",
+    "JuraClassifier",
     "JuraCostRecord",
+    "JuraCostTracker",
+    "JuraLimiter",
     "JuraRouter",
+    "TierLimits",
 ]

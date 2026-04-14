@@ -35,8 +35,7 @@ class RiskLevel(Enum):
 
 
 class JudgeSix:
-    """
-    The Conscience & The CFO.
+    """The Conscience & The CFO.
     Enforces ATP 5-19 (Safety) AND Gulfstream (Financials).
     """
 
@@ -60,8 +59,7 @@ class JudgeSix:
                 logger.error(f"Failed to load laws: {e}")
 
     async def evaluate(self, action: str, payload: dict) -> dict:
-        """
-        The Universal Gating Function.
+        """The Universal Gating Function.
         """
         # 1. Safety Gate (ATP 5-19)
         safety_risk = self._assess_safety(action)
@@ -88,8 +86,7 @@ class JudgeSix:
         return RiskLevel.LOW.value
 
     def _assess_gulfstream(self, action: str, payload: dict) -> int:
-        """
-        The 'Rent Model' Governor.
+        """The 'Rent Model' Governor.
         We do not build unless the math is perfect.
         """
         if action == "approve_lease" or action == "deploy_capital":
@@ -114,7 +111,7 @@ class JudgeSix:
             law3 = self.laws.get("FIN_03", {"max_months": 3})
             if payback > law3["max_months"]:
                 logger.warning(
-                    f"GULFSTREAM WARNING: Payback {payback} > {law3['max_months']} months"
+                    f"GULFSTREAM WARNING: Payback {payback} > {law3['max_months']} months",
                 )
                 return RiskLevel.MEDIUM.value
 
@@ -123,8 +120,7 @@ class JudgeSix:
 
 # --- SHADOWTAG: THE TRUTH PROTOCOL ---
 class ShadowTag:
-    """
-    v2.0: Invisible Watermarking + Polygon Anchor.
+    """v2.0: Invisible Watermarking + Polygon Anchor.
     """
 
     def sign(self, content: str, user_id: str) -> dict:
@@ -147,7 +143,7 @@ class ShadowTag:
                         "user_id": user_id,
                         "timestamp": firestore.SERVER_TIMESTAMP,
                         "status": "ANCHORED",
-                    }
+                    },
                 )
             except Exception as e:
                 logger.error(f"Failed to anchor to Firestore: {e}")

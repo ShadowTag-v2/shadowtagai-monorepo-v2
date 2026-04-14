@@ -2,4 +2,4 @@
 
 from .business_plan import AerospaceBusinessPlan, FinancialSummary, Phase, PhaseStatus
 
-__all__ = ["AerospaceBusinessPlan", "Phase", "PhaseStatus", "FinancialSummary"]
+__all__ = ["AerospaceBusinessPlan", "FinancialSummary", "Phase", "PhaseStatus"]

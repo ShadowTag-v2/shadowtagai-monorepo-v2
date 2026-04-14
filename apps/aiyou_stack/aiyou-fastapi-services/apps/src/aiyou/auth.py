@@ -1,5 +1,4 @@
-"""
-Authentication and authorization system.
+"""Authentication and authorization system.
 
 Implements JWT-based authentication with refresh tokens and role-based access control.
 Security: ABSOLUTE GATE - all protected routes must verify authentication.
@@ -41,8 +40,7 @@ class AuthService:
 
     @staticmethod
     def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
-        """
-        Create JWT access token.
+        """Create JWT access token.
 
         Args:
             data: Payload to encode
@@ -50,6 +48,7 @@ class AuthService:
 
         Returns:
             Encoded JWT token
+
         """
         to_encode = data.copy()
 
@@ -65,14 +64,14 @@ class AuthService:
 
     @staticmethod
     def create_refresh_token(user_id: str) -> str:
-        """
-        Create refresh token.
+        """Create refresh token.
 
         Args:
             user_id: User identifier
 
         Returns:
             Refresh token string
+
         """
         token_data = {"sub": user_id, "type": "refresh", "jti": str(uuid.uuid4())}
 
@@ -84,8 +83,7 @@ class AuthService:
 
     @staticmethod
     def decode_token(token: str) -> dict:
-        """
-        Decode and validate JWT token.
+        """Decode and validate JWT token.
 
         Args:
             token: JWT token string
@@ -95,6 +93,7 @@ class AuthService:
 
         Raises:
             HTTPException: If token is invalid or expired
+
         """
         try:
             payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
@@ -108,8 +107,7 @@ class AuthService:
 
     @staticmethod
     def authenticate_user(db: Session, email: str, password: str) -> User | None:
-        """
-        Authenticate user with email and password.
+        """Authenticate user with email and password.
 
         Args:
             db: Database session
@@ -120,6 +118,7 @@ class AuthService:
             User object if authentication succeeds, None otherwise
 
         Security: ABSOLUTE - invalid credentials must return None
+
         """
         user = db.query(User).filter(User.email == email).first()
 
@@ -144,8 +143,7 @@ class AuthService:
         user_agent: str | None = None,
         device_id: str | None = None,
     ) -> UserSession:
-        """
-        Create new user session.
+        """Create new user session.
 
         Args:
             db: Database session
@@ -158,6 +156,7 @@ class AuthService:
 
         Returns:
             Created session object
+
         """
         session = UserSession(
             user_id=user_id,
@@ -177,8 +176,7 @@ class AuthService:
 
     @staticmethod
     def revoke_session(db: Session, session_id: str) -> bool:
-        """
-        Revoke user session.
+        """Revoke user session.
 
         Args:
             db: Database session
@@ -186,6 +184,7 @@ class AuthService:
 
         Returns:
             True if session was revoked, False if not found
+
         """
         session = db.query(UserSession).filter(UserSession.id == session_id).first()
 
@@ -202,8 +201,7 @@ async def get_current_user(
     credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)],
     db: Annotated[Session, Depends(get_db)],
 ) -> User:
-    """
-    Dependency to get current authenticated user.
+    """Dependency to get current authenticated user.
 
     Args:
         credentials: HTTP bearer token
@@ -216,6 +214,7 @@ async def get_current_user(
         HTTPException: If authentication fails
 
     Security: ABSOLUTE GATE - must verify token and session validity
+
     """
     token = credentials.credentials
 
@@ -262,15 +261,14 @@ async def get_current_user(
 
     if not user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="User account is inactive"
+            status_code=status.HTTP_403_FORBIDDEN, detail="User account is inactive",
         )
 
     return user
 
 
 async def require_role(*required_roles: UserRole):
-    """
-    Dependency factory to require specific user roles.
+    """Dependency factory to require specific user roles.
 
     Args:
         required_roles: One or more required roles
@@ -282,6 +280,7 @@ async def require_role(*required_roles: UserRole):
         @app.get("/admin")
         async def admin_route(user: User = Depends(require_role(UserRole.ADMIN))):
             return {"message": "Admin access granted"}
+
     """
 
     async def role_checker(

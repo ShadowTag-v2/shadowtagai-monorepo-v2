@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Nightly Intel Pipeline - Main Entry Point
+"""Nightly Intel Pipeline - Main Entry Point
 Local execution script for intelligence gathering and briefing generation
 """
 
@@ -42,11 +41,11 @@ Environment Variables Required:
     )
 
     parser.add_argument(
-        "--topics", nargs="+", help="GitHub topics to search for (overrides config)"
+        "--topics", nargs="+", help="GitHub topics to search for (overrides config)",
     )
 
     parser.add_argument(
-        "--days-back", type=int, help="Number of days to look back for papers/repos (default: 7)"
+        "--days-back", type=int, help="Number of days to look back for papers/repos (default: 7)",
     )
 
     parser.add_argument(
@@ -100,7 +99,7 @@ Environment Variables Required:
         print("Next steps:")
         print(f"  1. Review the briefing: cat {briefing_file}")
         print(
-            f"  2. Check the database: sqlite3 {Path(__file__).parent / 'storage' / 'intel_pipeline.db'}"
+            f"  2. Check the database: sqlite3 {Path(__file__).parent / 'storage' / 'intel_pipeline.db'}",
         )
         print(f"  3. Examine flattened repos: ls {Path(__file__).parent / 'data' / 'repos'}")
         print(f"  4. Review paper metadata: ls {Path(__file__).parent / 'data' / 'papers'}")
@@ -112,7 +111,7 @@ Environment Variables Required:
         print("PIPELINE EXECUTION FAILED")
         print("=" * 80)
         print()
-        print(f"Error: {str(e)}")
+        print(f"Error: {e!s}")
         print()
         import traceback
 

@@ -1,5 +1,4 @@
-"""
-Swarm API Router - REST endpoints for LiveSwarm orchestration.
+"""Swarm API Router - REST endpoints for LiveSwarm orchestration.
 
 Endpoints:
 - GET /swarm/status - Swarm status
@@ -72,11 +71,11 @@ async def spawn_agent(request: SpawnRequest) -> dict[str, Any]:
     """Spawn a new agent from a parent."""
     swarm = get_swarm()
     agent = swarm.spawn_agent(
-        parent_id=request.parent_id, name=request.name, specialization=request.specialization
+        parent_id=request.parent_id, name=request.name, specialization=request.specialization,
     )
     if not agent:
         raise HTTPException(
-            status_code=400, detail="Failed to spawn agent. Parent may not have SPAWNER level."
+            status_code=400, detail="Failed to spawn agent. Parent may not have SPAWNER level.",
         )
     return {"status": "spawned", "agent": agent.to_dict()}
 
@@ -86,7 +85,7 @@ async def execute_task(request: TaskRequest) -> dict[str, Any]:
     """Execute a task in the swarm."""
     swarm = get_swarm()
     result = await swarm.execute_task(
-        task={"type": request.type, "complexity": request.complexity}, agent_id=request.agent_id
+        task={"type": request.type, "complexity": request.complexity}, agent_id=request.agent_id,
     )
     return result
 
@@ -96,7 +95,7 @@ async def record_revenue(request: RevenueRequest) -> dict[str, Any]:
     """Record revenue for an agent with DNA share distribution."""
     swarm = get_swarm()
     distribution = swarm.record_revenue(
-        agent_id=request.agent_id, amount_usd=request.amount_usd, simulated=request.simulated
+        agent_id=request.agent_id, amount_usd=request.amount_usd, simulated=request.simulated,
     )
     if "error" in distribution:
         raise HTTPException(status_code=404, detail=distribution["error"])
@@ -112,8 +111,7 @@ async def get_dynasty_tree() -> dict[str, Any]:
 
 @router.post("/activate")
 async def activate_swarm() -> dict[str, Any]:
-    """
-    Activate the swarm and spawn initial agents.
+    """Activate the swarm and spawn initial agents.
 
     This bootstraps the swarm with core specialization agents.
     """

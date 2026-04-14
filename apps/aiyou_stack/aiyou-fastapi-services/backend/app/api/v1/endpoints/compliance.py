@@ -1,5 +1,4 @@
-"""
-Compliance API endpoints
+"""Compliance API endpoints
 """
 
 import uuid
@@ -186,7 +185,7 @@ async def check_compliance(
                 recommendation=issue.get("recommendation", ""),
                 regulation=issue.get("regulation", "GENERAL"),
                 article=issue.get("article"),
-            )
+            ),
         )
 
     return ComplianceCheckResponse(
@@ -271,7 +270,7 @@ async def get_compliance_policies():
                 "jurisdictions": p.jurisdictions,
             }
             for p in COMPLIANCE_POLICIES
-        ]
+        ],
     }
 
 

@@ -1,5 +1,4 @@
-"""
-Content Safety & Compliance Service
+"""Content Safety & Compliance Service
 Google Content Safety API + Hive for semantic and media/PII moderation
 Quantitative Effect: ↑ Trust/Compliance +99%, ↓ Manual review –70%
 """
@@ -16,8 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContentSafetyService:
-    """
-    Content safety and compliance service
+    """Content safety and compliance service
     Handles semantic moderation, PII detection, and media safety
     """
 
@@ -55,8 +53,7 @@ class ContentSafetyService:
         check_pii: bool = True,
         check_toxicity: bool = True,
     ) -> dict[str, Any]:
-        """
-        Moderate content for safety and compliance
+        """Moderate content for safety and compliance
 
         Args:
             content: Content to moderate
@@ -66,6 +63,7 @@ class ContentSafetyService:
 
         Returns:
             Moderation result with safety scores
+
         """
         try:
             self.moderation_stats["total_checks"] += 1
@@ -126,8 +124,7 @@ class ContentSafetyService:
             return {"status": "error", "error": str(e), "approved": False}
 
     async def moderate_media(self, media_url: str, media_type: str = "image") -> dict[str, Any]:
-        """
-        Moderate media content (images, video, audio)
+        """Moderate media content (images, video, audio)
 
         Args:
             media_url: URL of media to moderate
@@ -135,6 +132,7 @@ class ContentSafetyService:
 
         Returns:
             Media moderation result
+
         """
         try:
             # Simulate media moderation
@@ -184,7 +182,7 @@ class ContentSafetyService:
                         "parent": parent,
                         "inspect_config": inspect_config,
                         "item": item,
-                    }
+                    },
                 )
 
                 findings = []
@@ -195,7 +193,7 @@ class ContentSafetyService:
                                 "type": finding.info_type.name,
                                 "likelihood": finding.likelihood.name,
                                 "quote": finding.quote[:50] if hasattr(finding, "quote") else "",
-                            }
+                            },
                         )
 
                 return findings
@@ -260,7 +258,7 @@ class ContentSafetyService:
         }
 
     async def log_violation(
-        self, violation_type: str, content_snippet: str, metadata: dict[str, Any] | None = None
+        self, violation_type: str, content_snippet: str, metadata: dict[str, Any] | None = None,
     ) -> bool:
         """Log a safety violation for audit trail"""
         try:

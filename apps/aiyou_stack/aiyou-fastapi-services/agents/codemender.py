@@ -1,5 +1,4 @@
-"""
-CodeMender Agent - Neuro-symbolic Repair Agent
+"""CodeMender Agent - Neuro-symbolic Repair Agent
 Inspired by DeepMind's CodeMender (2025)
 
 Capabilities:
@@ -30,8 +29,7 @@ class RepairResult:
 
 
 class CodeMenderAgent:
-    """
-    Autonomous agent for fixing code vulnerabilities/bugs.
+    """Autonomous agent for fixing code vulnerabilities/bugs.
     Uses a 'Think -> Patch -> Verify' loop.
     """
 
@@ -61,10 +59,9 @@ class CodeMenderAgent:
             self.code_model = None
 
     async def resolve_issue(
-        self, file_path: str, issue_description: str, test_command: str | None = None
+        self, file_path: str, issue_description: str, test_command: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Main entry point to fix an issue in a file.
+        """Main entry point to fix an issue in a file.
         """
         if not self.think_model:
             return {"status": "error", "reason": "CodeMender not initialized"}
@@ -122,7 +119,7 @@ class CodeMenderAgent:
             resp = await self.think_model.generate_content_async(prompt)
             return str(resp.text)
         except Exception as e:
-            return f"Analysis failed: {str(e)}"
+            return f"Analysis failed: {e!s}"
 
     async def _generate_patch(self, code: str, root_cause: str) -> str:
         if not self.code_model:
@@ -152,11 +149,10 @@ class CodeMenderAgent:
                 return text.split("```")[1].split("\n", 1)[1].rsplit("\n", 1)[0]
             return text
         except Exception as e:
-            return f"Patch gen failed: {str(e)}"
+            return f"Patch gen failed: {e!s}"
 
     async def _verify_fix(self, file_path: str, patch: str, test_cmd: str) -> tuple[bool, str]:
-        """
-        Applies patch temporarily, runs test, reverts if fails.
+        """Applies patch temporarily, runs test, reverts if fails.
         """
         # Read original
         try:
@@ -179,15 +175,14 @@ class CodeMenderAgent:
                 # allow user to apply it via 'git apply' or similar?
                 # For this agent, let's leave it applied if success, revert if fail.
                 return True, log
-            else:
-                # Revert
-                with open(file_path, "w") as f:
-                    f.write(original_content)
-                return False, log
+            # Revert
+            with open(file_path, "w") as f:
+                f.write(original_content)
+            return False, log
 
         except Exception as e:
             # Emergency Revert
             if "original_content" in locals():
                 with open(file_path, "w") as f:
                     f.write(original_content)
-            return False, f"Verification Exception: {str(e)}"
+            return False, f"Verification Exception: {e!s}"

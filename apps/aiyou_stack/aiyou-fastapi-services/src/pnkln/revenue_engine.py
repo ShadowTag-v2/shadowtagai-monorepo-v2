@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Antigravity Revenue Engine
+"""Antigravity Revenue Engine
 Manages the lifecycle of the 30 Sovereign Verticals.
 """
 
@@ -41,7 +40,7 @@ class RevenueEngine:
                                     "model": parts[2],
                                     "target": parts[3],
                                     "status": parts[4],
-                                }
+                                },
                             )
         except FileNotFoundError:
             logger.warning(f"Verticals strategy file not found at {VERTICALS_FILE}")
@@ -56,9 +55,8 @@ class RevenueEngine:
             logger.info(f"🔥 IGNITING VERTICAL {vertical_id}: {target['name']}")
             # Logic to spin up agents or resources would go here
             return True
-        else:
-            logger.error(f"Vertical {vertical_id} not found.")
-            return False
+        logger.error(f"Vertical {vertical_id} not found.")
+        return False
 
     def status(self):
         """Reports status of all verticals."""

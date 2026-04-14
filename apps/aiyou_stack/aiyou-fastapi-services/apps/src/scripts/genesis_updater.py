@@ -9,8 +9,7 @@ JUDGE6_THRESHOLD = 0.85
 
 
 def genesis_scan():
-    """
-    The 'Scholar-to-Code' Loop:
+    """The 'Scholar-to-Code' Loop:
     1. Read arXiv.
     2. Judge the paper (Simulated).
     3. Simulate deployment.
@@ -48,8 +47,7 @@ def genesis_scan():
 
 
 def deploy_simulation(tech_name):
-    """
-    Simulates the 'Updater' creating a new feature branch.
+    """Simulates the 'Updater' creating a new feature branch.
     """
     print(f"[UPDATER] Spinning up Shadow Fork for '{tech_name}'...")
     print("[UPDATER] Refactoring Codebase...")
@@ -57,7 +55,7 @@ def deploy_simulation(tech_name):
     # Create a dummy file to prove we touched the disk
     with open("trinity_manifest.txt", "w") as f:
         f.write(
-            f"DEPLOYED FEATURE: {tech_name}\nSTATUS: ACTIVE\nTIMESTAMP: {time.strftime('%Y-%m-%d %H:%M:%S')}"
+            f"DEPLOYED FEATURE: {tech_name}\nSTATUS: ACTIVE\nTIMESTAMP: {time.strftime('%Y-%m-%d %H:%M:%S')}",
         )
 
     print("[UPDATER] Unit Tests Passed (100%)")

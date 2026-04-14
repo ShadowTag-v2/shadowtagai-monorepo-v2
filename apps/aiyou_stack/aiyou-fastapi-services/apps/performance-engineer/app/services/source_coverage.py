@@ -21,8 +21,7 @@ class SourceCoverageAnalyzer:
         self.sources.update(counts)
 
     def calculate_shannon_entropy(self) -> float:
-        """
-        Calculates diversity score (0-100) based on Shannon Entropy.
+        """Calculates diversity score (0-100) based on Shannon Entropy.
         """
         total = sum(self.sources.values())
         if total == 0:
@@ -40,8 +39,7 @@ class SourceCoverageAnalyzer:
         return round(min(100.0, normalized_score), 2)
 
     def get_tier_distribution(self) -> dict[str, float]:
-        """
-        Simulates Tier Classification (T1/T2/T3).
+        """Simulates Tier Classification (T1/T2/T3).
         """
         # Mock logic based on source types
         total = sum(self.sources.values()) or 1

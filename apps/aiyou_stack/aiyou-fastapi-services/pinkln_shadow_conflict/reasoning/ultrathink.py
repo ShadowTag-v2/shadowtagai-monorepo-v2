@@ -1,5 +1,4 @@
-"""
-Ultrathink Engine - Unified Reasoning Orchestrator
+"""Ultrathink Engine - Unified Reasoning Orchestrator
 
 The Ultrathink engine automatically selects and orchestrates the appropriate
 reasoning strategy based on problem complexity:
@@ -37,8 +36,7 @@ class ReasoningLevel(Enum):
 
 
 class UltrathinkEngine:
-    """
-    The Ultrathink Reasoning Engine.
+    """The Ultrathink Reasoning Engine.
 
     This engine embodies the "Ultrathink like Steve Jobs" philosophy by:
     1. Assessing problem complexity
@@ -60,10 +58,9 @@ class UltrathinkEngine:
         self.execution_history: list = []
 
     async def process(
-        self, problem: str, strategy: str | None = None, context: Any | None = None, **kwargs
+        self, problem: str, strategy: str | None = None, context: Any | None = None, **kwargs,
     ) -> dict[str, Any]:
-        """
-        Process a problem using Ultrathink.
+        """Process a problem using Ultrathink.
 
         Args:
             problem: Problem to solve
@@ -73,6 +70,7 @@ class UltrathinkEngine:
 
         Returns:
             Solution with metadata
+
         """
         # If strategy not specified, auto-select
         if not strategy:
@@ -88,8 +86,7 @@ class UltrathinkEngine:
         return result
 
     async def refine(self, response: dict[str, Any], critique: dict[str, Any]) -> dict[str, Any]:
-        """
-        Refine a response based on critique.
+        """Refine a response based on critique.
 
         Args:
             response: Original response
@@ -97,6 +94,7 @@ class UltrathinkEngine:
 
         Returns:
             Refined response
+
         """
         # Use RCR for refinement
         rcr = self.strategies["rcr"]
@@ -116,14 +114,14 @@ class UltrathinkEngine:
         return response
 
     def _assess_complexity(self, problem: str) -> float:
-        """
-        Assess problem complexity.
+        """Assess problem complexity.
 
         Args:
             problem: Problem to assess
 
         Returns:
             Complexity score (0-1)
+
         """
         factors = {
             "length": min(len(problem) / 1000, 0.25),
@@ -137,30 +135,28 @@ class UltrathinkEngine:
         return min(sum(factors.values()), 1.0)
 
     def _select_strategy(self, complexity: float) -> str:
-        """
-        Select reasoning strategy based on complexity.
+        """Select reasoning strategy based on complexity.
 
         Args:
             complexity: Complexity score (0-1)
 
         Returns:
             Strategy name
+
         """
         if complexity < ReasoningLevel.BASIC.threshold:
             return "chain_of_thought"
-        elif complexity < ReasoningLevel.EXPLORATORY.threshold:
+        if complexity < ReasoningLevel.EXPLORATORY.threshold:
             return "tree_of_thoughts"
-        elif complexity < ReasoningLevel.COLLABORATIVE.threshold:
+        if complexity < ReasoningLevel.COLLABORATIVE.threshold:
             return "multi_agent_debate"
-        else:
-            # For maximum complexity, use multi-agent debate with RCR
-            return "panel_gpt"
+        # For maximum complexity, use multi-agent debate with RCR
+        return "panel_gpt"
 
     async def _execute_strategy(
-        self, strategy: str, problem: str, context: Any | None, **kwargs
+        self, strategy: str, problem: str, context: Any | None, **kwargs,
     ) -> dict[str, Any]:
-        """
-        Execute specific reasoning strategy.
+        """Execute specific reasoning strategy.
 
         Args:
             strategy: Strategy name
@@ -170,6 +166,7 @@ class UltrathinkEngine:
 
         Returns:
             Strategy result
+
         """
         if strategy not in self.strategies:
             raise ValueError(f"Unknown strategy: {strategy}")
@@ -180,19 +177,18 @@ class UltrathinkEngine:
         if strategy == "chain_of_thought" or strategy == "plan_and_solve":
             return await strategy_obj.reason(problem, context)
 
-        elif strategy == "tree_of_thoughts":
+        if strategy == "tree_of_thoughts":
             search_strategy = kwargs.get("search_strategy", SearchStrategy.BFS)
             return await strategy_obj.explore(problem, search_strategy, context)
 
-        elif strategy in ["multi_agent_debate", "panel_gpt"]:
+        if strategy in ["multi_agent_debate", "panel_gpt"]:
             num_agents = kwargs.get("num_agents", 3)
             personas = kwargs.get("personas")
             strategy_obj.num_agents = num_agents
             return await strategy_obj.debate(problem, personas, context)
 
-        else:
-            # Default: treat as CoT
-            return await self.strategies["chain_of_thought"].reason(problem, context)
+        # Default: treat as CoT
+        return await self.strategies["chain_of_thought"].reason(problem, context)
 
     def get_execution_history(self) -> list:
         """Get execution history."""
@@ -204,8 +200,7 @@ class UltrathinkEngine:
 
 
 class UltrathinkSkill:
-    """
-    Ultrathink as a callable skill.
+    """Ultrathink as a callable skill.
 
     This wraps the Ultrathink engine as a skill that can be used by agents.
     """
@@ -237,8 +232,7 @@ Final Answer:
         self.engine = UltrathinkEngine()
 
     async def execute(self, problem: str, strategy: str | None = None, **kwargs) -> dict[str, Any]:
-        """
-        Execute Ultrathink skill.
+        """Execute Ultrathink skill.
 
         Args:
             problem: Problem to solve
@@ -247,6 +241,7 @@ Final Answer:
 
         Returns:
             Ultrathink result
+
         """
         # Get complexity assessment
         complexity = self.engine._assess_complexity(problem)
@@ -282,11 +277,10 @@ Final Answer:
             chain = result.get("thought_chain", [])
             return "\n".join(f"Step {i + 1}: {step}" for i, step in enumerate(chain))
 
-        elif method == "tree_of_thoughts":
+        if method == "tree_of_thoughts":
             return f"Explored {result.get('tree_size', 0)} nodes\nBest path found"
 
-        elif method in ["multi_agent_debate", "panel_gpt"]:
+        if method in ["multi_agent_debate", "panel_gpt"]:
             return f"Debate completed in {result.get('num_rounds', 0)} rounds"
 
-        else:
-            return str(result.get("output", ""))
+        return str(result.get("output", ""))

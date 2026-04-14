@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Notes to Code Converter
+"""Notes to Code Converter
 Extracts code-relevant content from iPhone Notes and Google Drive docs
 """
 
@@ -12,7 +11,7 @@ from pathlib import Path
 # Directories
 NOTES_DIR = Path("/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/docs/icloud_notes_imported")
 GDRIVE_DIR = Path(
-    "/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/docs/gdrive_sync/ShadowTag-v2_Phase_Docs"
+    "/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/docs/gdrive_sync/ShadowTag-v2_Phase_Docs",
 )
 OUTPUT_DIR = Path("/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2/docs/extracted_code")
 
@@ -170,7 +169,7 @@ def generate_manifest(results: list) -> dict:
                 "code_blocks": len(r["code_blocks"]),
                 "api_specs": len(r["api_specs"]),
                 "size": r["size"],
-            }
+            },
         )
 
     return manifest
@@ -203,7 +202,7 @@ def main():
     for r in results:
         for block in r["code_blocks"]:
             all_blocks.append(
-                {"source": r["filename"], "language": block["language"], "code": block["code"]}
+                {"source": r["filename"], "language": block["language"], "code": block["code"]},
             )
 
     with open(code_blocks_path, "w") as f:

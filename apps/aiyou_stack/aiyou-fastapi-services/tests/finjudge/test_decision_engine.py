@@ -1,5 +1,4 @@
-"""
-Tests for FinJudge Decision Engine
+"""Tests for FinJudge Decision Engine
 """
 
 from datetime import datetime
@@ -104,7 +103,7 @@ class TestRiskAssessment:
             request_id=uuid4(),
             decision_type=DecisionType.TRADE_APPROVAL,
             context=DecisionContext(
-                timestamp=datetime.utcnow(), entity="Low Risk Desk", purpose="Small trade, low risk"
+                timestamp=datetime.utcnow(), entity="Low Risk Desk", purpose="Small trade, low risk",
             ),
             evidence=[
                 Evidence(
@@ -112,7 +111,7 @@ class TestRiskAssessment:
                     source="Risk System",
                     data={"probability": 3.0, "expected_loss": 25000},
                     confidence=95.0,
-                )
+                ),
             ],
             constraints=Constraints(),
         )
@@ -139,7 +138,7 @@ class TestRiskAssessment:
                     source="Risk System",
                     data={"probability": 55.0, "expected_loss": 8000000},
                     confidence=90.0,
-                )
+                ),
             ],
             constraints=Constraints(),
         )
@@ -167,7 +166,7 @@ class TestRiskAssessment:
                     source="Risk System",
                     data={"probability": 85.0, "expected_loss": 25000000},
                     confidence=92.0,
-                )
+                ),
             ],
             constraints=Constraints(),
         )
@@ -236,7 +235,7 @@ class TestEvidenceQuality:
                     source="Unknown",
                     data={"estimate": "rough guess"},
                     confidence=30.0,
-                )
+                ),
             ],
             constraints=Constraints(),
         )
@@ -271,7 +270,7 @@ class TestComplianceIntegration:
                         "leverage": 5.0,  # Exceeds Reg T limit of 2.0
                     },
                     confidence=90.0,
-                )
+                ),
             ],
             constraints=Constraints(regulatory=["Regulation T"]),
         )
@@ -298,7 +297,7 @@ class TestComplianceIntegration:
                     source="Compliance System",
                     data={"kyc_complete": True, "aml_check": "passed"},
                     confidence=100.0,
-                )
+                ),
             ],
             constraints=Constraints(regulatory=["Dodd-Frank"]),
         )
@@ -339,7 +338,7 @@ class TestRationaleGeneration:
                     source="ML Model",
                     data={"prediction": "uncertain"},
                     confidence=50.0,  # Low confidence
-                )
+                ),
             ],
             constraints=Constraints(),
         )
@@ -370,7 +369,7 @@ class TestConditionsAndNextSteps:
                     source="Risk System",
                     data={"probability": 55.0, "expected_loss": 3000000},
                     confidence=88.0,
-                )
+                ),
             ],
             constraints=Constraints(),
         )
@@ -482,7 +481,7 @@ class TestRealWorldScenarios:
                 ),
             ],
             constraints=Constraints(
-                regulatory=["Dodd-Frank"], policy_rules=["CREDIT-001", "RISK-002"]
+                regulatory=["Dodd-Frank"], policy_rules=["CREDIT-001", "RISK-002"],
             ),
         )
 
@@ -509,10 +508,10 @@ class TestRealWorldScenarios:
                     source="Risk System",
                     data={"var_95": 15000000, "probability": 70.0, "expected_loss": 12000000},
                     confidence=95.0,
-                )
+                ),
             ],
             constraints=Constraints(
-                risk_limits=RiskLimits(var_limit=10000000), policy_rules=["RISK-003"]
+                risk_limits=RiskLimits(var_limit=10000000), policy_rules=["RISK-003"],
             ),
         )
 

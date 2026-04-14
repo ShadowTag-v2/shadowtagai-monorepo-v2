@@ -1,5 +1,4 @@
-"""
-ANTIGRAVITY :: GOD MODE :: OMEGA DEPLOYMENT
+"""ANTIGRAVITY :: GOD MODE :: OMEGA DEPLOYMENT
 Classification: TIER 30 SOVEREIGN
 Context: 1M+
 """
@@ -27,7 +26,7 @@ def deploy():
         gce_setup=notebooks_v2.GceSetup(
             machine_type="n1-standard-4",
             vm_image=notebooks_v2.VmImage(
-                project="deeplearning-platform-release", image_family="common-cpu-notebooks"
+                project="deeplearning-platform-release", image_family="common-cpu-notebooks",
             ),
             # CRITICAL: Grant the VM permission to touch Google Drive
             service_accounts=[
@@ -38,12 +37,12 @@ def deploy():
                         "https://www.googleapis.com/auth/drive",  # <--- THE 10TB KEY
                         "https://www.googleapis.com/auth/userinfo.email",
                     ],
-                )
+                ),
             ],
             network_interfaces=[notebooks_v2.NetworkInterface(network="global/networks/default")],
             boot_disk=notebooks_v2.BootDisk(disk_size_gb=200, disk_type="PD_SSD"),
             disable_public_ip=False,
-        )
+        ),
     )
 
     # Check if exists
@@ -58,8 +57,8 @@ def deploy():
     try:
         op = client.create_instance(
             request=notebooks_v2.CreateInstanceRequest(
-                parent=parent, instance_id=INSTANCE_NAME, instance=instance
-            )
+                parent=parent, instance_id=INSTANCE_NAME, instance=instance,
+            ),
         )
         print("    ⏳ Creation initiated... (approx 5-10 mins)")
         op.result(timeout=600)

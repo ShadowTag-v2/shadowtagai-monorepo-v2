@@ -32,8 +32,7 @@ def get_executor(settings: AppSettings = Depends(get_settings)) -> SandboxExecut
 async def health_check(
     settings: AppSettings = Depends(get_settings),
 ) -> HealthResponse:
-    """
-    Health check endpoint.
+    """Health check endpoint.
 
     Returns service health status and configuration information.
     """
@@ -50,8 +49,7 @@ async def execute_code(
     executor: SandboxExecutor = Depends(get_executor),
     settings: AppSettings = Depends(get_settings),
 ) -> CodeExecutionResponse:
-    """
-    Execute Python code in a sandboxed environment.
+    """Execute Python code in a sandboxed environment.
 
     This endpoint provides secure code execution with the following protections:
     - RestrictedPython for safe code compilation
@@ -68,6 +66,7 @@ async def execute_code(
 
     Raises:
         HTTPException: If sandboxing is disabled or execution fails critically
+
     """
     if not settings.sandbox.enabled:
         logger.error("code_execution_rejected", reason="sandbox_disabled")
@@ -112,7 +111,7 @@ async def execute_code(
         )
         raise HTTPException(
             status_code=500,
-            detail=f"Code execution failed: {str(e)}",
+            detail=f"Code execution failed: {e!s}",
         )
 
 
@@ -120,11 +119,11 @@ async def execute_code(
 async def get_sandbox_stats(
     executor: SandboxExecutor = Depends(get_executor),
 ) -> SandboxStatsResponse:
-    """
-    Get sandbox execution statistics.
+    """Get sandbox execution statistics.
 
     Returns:
         SandboxStatsResponse with execution history statistics
+
     """
     stats = executor.get_execution_stats()
 
@@ -137,11 +136,11 @@ async def get_sandbox_stats(
 async def reset_sandbox_stats(
     executor: SandboxExecutor = Depends(get_executor),
 ) -> dict:
-    """
-    Reset sandbox execution statistics.
+    """Reset sandbox execution statistics.
 
     Returns:
         Success message
+
     """
     executor.clear_history()
 
@@ -152,50 +151,47 @@ async def reset_sandbox_stats(
 
 @router.post("/stripe/create-checkout-session")
 async def create_checkout_session(request: dict):
-    """
-    Generate a mocked Stripe checkout session for the Investor slide.
+    """Generate a mocked Stripe checkout session for the Investor slide.
     """
     logger.info("stripe_checkout_requested", payload=request)
     return {
         "id": "cs_test_mock123456789",
-        "url": "https://checkout.stripe.com/c/pay/cs_test_mock123"
+        "url": "https://checkout.stripe.com/c/pay/cs_test_mock123",
     }
 
 
 @router.post("/ast/parse")
 async def ast_parse(payload: dict):
-    """
-    Evaluate AST structure against Judge-6 rules via GitNexus Indexer.
+    """Evaluate AST structure against Judge-6 rules via GitNexus Indexer.
     """
     input_action = payload.get("action", "")
     logger.info("ast_parse_requested", action=input_action)
-    
+
     if "rm" in input_action or "drop" in input_action or "delete" in input_action:
         return {
             "status": "VIOLATION",
             "message": "Destructive modifier detected at root execution.",
-            "shield": "Execution Killed"
+            "shield": "Execution Killed",
         }
-        
+
     return {
         "status": "OK",
         "message": "Tree-sitter validated pure execution node.",
-        "shield": "Let pass"
+        "shield": "Let pass",
     }
 
 
 @router.post("/stripe/webhook")
 async def stripe_webhook(request: dict):
-    """
-    Parse generic incoming Stripe events, looking for checkout session completions.
+    """Parse generic incoming Stripe events, looking for checkout session completions.
     """
     event_type = request.get("type")
-    
+
     if event_type == "checkout.session.completed":
         session_data = request.get("data", {}).get("object", {})
         customer_email = session_data.get("customer_email", "unknown")
         logger.info("stripe_checkout_completed", email=customer_email, session_id=session_data.get("id"))
         return {"status": "success", "action": "ingested_completion"}
-        
+
     logger.info("stripe_webhook_ignored", type=event_type)
     return {"status": "ignored"}

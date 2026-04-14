@@ -56,7 +56,7 @@ async def verify_infrastructure():
             print("\n✅ PHASE 1 VERIFIED: Infrastructure & Core Services operational.")
             return True
         except Exception as e:
-            print(f"\n❌ VERIFICATION FAILED: {str(e)}")
+            print(f"\n❌ VERIFICATION FAILED: {e!s}")
             import traceback
 
             traceback.print_exc()

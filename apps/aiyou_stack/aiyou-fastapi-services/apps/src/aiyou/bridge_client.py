@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4 Bridge Client (Mock)
+"""ShadowTag-v4 Bridge Client (Mock)
 Provides connectivity to the Sovereign Task Queue and Iceberg Data Lake.
 """
 

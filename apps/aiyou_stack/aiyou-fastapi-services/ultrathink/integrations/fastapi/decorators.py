@@ -1,5 +1,4 @@
-"""
-FastAPI route decorators for ultrathink integration.
+"""FastAPI route decorators for ultrathink integration.
 
 Make every route smarter with zero boilerplate.
 """
@@ -17,8 +16,7 @@ def ultrathink_route(
     monetize: bool = False,
     track_performance: bool = True,
 ):
-    """
-    Enhance FastAPI route with ultrathink capabilities.
+    """Enhance FastAPI route with ultrathink capabilities.
 
     Usage:
         @app.post("/analyze")
@@ -39,6 +37,7 @@ def ultrathink_route(
 
     Returns:
         Decorated function with ultrathink enhancements
+
     """
 
     def decorator(func: Callable) -> Callable:
@@ -83,8 +82,7 @@ def ultrathink_route(
 
 
 def with_reasoning(strategy: Literal["CoT", "ToT", "RCR", "MAD"]):
-    """
-    Apply specific reasoning strategy to a function.
+    """Apply specific reasoning strategy to a function.
 
     Usage:
         @with_reasoning("MAD")
@@ -97,6 +95,7 @@ def with_reasoning(strategy: Literal["CoT", "ToT", "RCR", "MAD"]):
 
     Returns:
         Decorated function with reasoning applied
+
     """
 
     def decorator(func: Callable) -> Callable:

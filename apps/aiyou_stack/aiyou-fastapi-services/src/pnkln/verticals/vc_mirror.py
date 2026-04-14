@@ -1,5 +1,4 @@
-"""
-Pnkln VC Mirror Vertical
+"""Pnkln VC Mirror Vertical
 Investor thesis extraction and pitch copy generation.
 """
 

@@ -24,8 +24,7 @@ class ChainExecutor:
         self.chain = chain
 
     async def execute_decision(self, context: DecisionContext) -> DecisionResult:
-        """
-        Execute the full chain: Scan -> Classify -> Compress
+        """Execute the full chain: Scan -> Classify -> Compress
         """
         try:
             # 1. ATP Scan
@@ -71,7 +70,7 @@ class ChainExecutor:
                         severity=v.get("severity", "low"),
                         context=v.get("snippet", ""),
                         suggested_action="Review compliance guidelines",
-                    )
+                    ),
                 )
 
             # Construct Final Result

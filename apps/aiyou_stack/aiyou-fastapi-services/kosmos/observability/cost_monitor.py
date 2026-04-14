@@ -1,5 +1,4 @@
-"""
-Cost Monitor: Budget tracking and alerts for LLM inference costs.
+"""Cost Monitor: Budget tracking and alerts for LLM inference costs.
 
 Features:
 - Real-time cost tracking per session
@@ -34,12 +33,10 @@ class UsageRecord:
 class BudgetExceededError(Exception):
     """Raised when budget limit would be exceeded."""
 
-    pass
 
 
 class CostMonitor:
-    """
-    Monitor and control LLM inference costs.
+    """Monitor and control LLM inference costs.
 
     Tracks usage across sessions and enforces budget limits.
     Provides cost estimation and alerting.
@@ -60,14 +57,14 @@ class CostMonitor:
         alert_threshold: float = 0.8,  # Alert at 80% of budget
         session_budget: float | None = 500.0,  # Max cost per session
     ):
-        """
-        Initialize cost monitor.
+        """Initialize cost monitor.
 
         Args:
             daily_budget: Daily budget limit in USD
             monthly_budget: Monthly budget limit in USD
             alert_threshold: Fraction of budget to trigger alert (0-1)
             session_budget: Optional per-session budget limit
+
         """
         self.daily_budget = daily_budget
         self.monthly_budget = monthly_budget
@@ -86,7 +83,7 @@ class CostMonitor:
 
         logger.info(
             f"CostMonitor initialized: daily=${daily_budget:.2f}, "
-            f"monthly=${monthly_budget:.2f}, session=${session_budget:.2f}"
+            f"monthly=${monthly_budget:.2f}, session=${session_budget:.2f}",
         )
 
     def check_budget(
@@ -94,8 +91,7 @@ class CostMonitor:
         estimated_cost: float,
         session_id: str | None = None,
     ) -> bool:
-        """
-        Check if an operation would exceed budget limits.
+        """Check if an operation would exceed budget limits.
 
         Args:
             estimated_cost: Estimated cost in USD
@@ -106,6 +102,7 @@ class CostMonitor:
 
         Raises:
             BudgetExceededError: If budget would be exceeded
+
         """
         self._reset_if_needed()
 
@@ -113,14 +110,14 @@ class CostMonitor:
         if self.daily_burn + estimated_cost > self.daily_budget:
             raise BudgetExceededError(
                 f"Operation would exceed daily budget: "
-                f"${self.daily_burn:.2f} + ${estimated_cost:.2f} > ${self.daily_budget:.2f}"
+                f"${self.daily_burn:.2f} + ${estimated_cost:.2f} > ${self.daily_budget:.2f}",
             )
 
         # Check monthly budget
         if self.monthly_burn + estimated_cost > self.monthly_budget:
             raise BudgetExceededError(
                 f"Operation would exceed monthly budget: "
-                f"${self.monthly_burn:.2f} + ${estimated_cost:.2f} > ${self.monthly_budget:.2f}"
+                f"${self.monthly_burn:.2f} + ${estimated_cost:.2f} > ${self.monthly_budget:.2f}",
             )
 
         # Check session budget if applicable
@@ -129,7 +126,7 @@ class CostMonitor:
             if session_cost + estimated_cost > self.session_budget:
                 raise BudgetExceededError(
                     f"Operation would exceed session budget for {session_id}: "
-                    f"${session_cost:.2f} + ${estimated_cost:.2f} > ${self.session_budget:.2f}"
+                    f"${session_cost:.2f} + ${estimated_cost:.2f} > ${self.session_budget:.2f}",
                 )
 
         # Check alert thresholds
@@ -137,14 +134,14 @@ class CostMonitor:
             logger.warning(
                 f"Approaching daily budget limit: "
                 f"${self.daily_burn + estimated_cost:.2f} / ${self.daily_budget:.2f} "
-                f"({(self.daily_burn + estimated_cost) / self.daily_budget * 100:.1f}%)"
+                f"({(self.daily_burn + estimated_cost) / self.daily_budget * 100:.1f}%)",
             )
 
         if self.monthly_burn + estimated_cost > self.monthly_budget * self.alert_threshold:
             logger.warning(
                 f"Approaching monthly budget limit: "
                 f"${self.monthly_burn + estimated_cost:.2f} / ${self.monthly_budget:.2f} "
-                f"({(self.monthly_burn + estimated_cost) / self.monthly_budget * 100:.1f}%)"
+                f"({(self.monthly_burn + estimated_cost) / self.monthly_budget * 100:.1f}%)",
             )
 
         return True
@@ -159,8 +156,7 @@ class CostMonitor:
         input_tokens: int | None = None,
         output_tokens: int | None = None,
     ):
-        """
-        Record actual usage and cost.
+        """Record actual usage and cost.
 
         Args:
             tokens: Total tokens consumed
@@ -170,6 +166,7 @@ class CostMonitor:
             agent_name: Agent name
             input_tokens: Input tokens (optional, for detailed tracking)
             output_tokens: Output tokens (optional, for detailed tracking)
+
         """
         self._reset_if_needed()
 
@@ -195,7 +192,7 @@ class CostMonitor:
 
         logger.debug(
             f"Recorded usage: {tokens} tokens, ${cost:.4f} ({model}) "
-            f"[daily: ${self.daily_burn:.2f}, monthly: ${self.monthly_burn:.2f}]"
+            f"[daily: ${self.daily_burn:.2f}, monthly: ${self.monthly_burn:.2f}]",
         )
 
     def estimate_cost(
@@ -204,8 +201,7 @@ class CostMonitor:
         output_tokens: int,
         model: str,
     ) -> float:
-        """
-        Estimate cost for a generation.
+        """Estimate cost for a generation.
 
         Args:
             input_tokens: Expected input tokens
@@ -214,6 +210,7 @@ class CostMonitor:
 
         Returns:
             Estimated cost in USD
+
         """
         if model not in self.PRICING:
             logger.warning(f"Unknown model {model}, using gemini-1.5-pro pricing")
@@ -240,11 +237,11 @@ class CostMonitor:
         return self.monthly_burn
 
     def get_budget_status(self) -> dict[str, any]:
-        """
-        Get comprehensive budget status.
+        """Get comprehensive budget status.
 
         Returns:
             Dictionary with budget metrics
+
         """
         self._reset_if_needed()
 
@@ -282,8 +279,7 @@ class CostMonitor:
         start_time: datetime | None = None,
         end_time: datetime | None = None,
     ) -> dict[str, any]:
-        """
-        Get usage summary for a time period.
+        """Get usage summary for a time period.
 
         Args:
             start_time: Start of period (default: 24 hours ago)
@@ -291,6 +287,7 @@ class CostMonitor:
 
         Returns:
             Usage statistics dictionary
+
         """
         if start_time is None:
             start_time = datetime.utcnow() - timedelta(days=1)
@@ -341,7 +338,7 @@ class CostMonitor:
         # Reset daily if new day
         if today > self.last_reset_date:
             logger.info(
-                f"Daily budget reset: burned ${self.daily_burn:.2f} on {self.last_reset_date}"
+                f"Daily budget reset: burned ${self.daily_burn:.2f} on {self.last_reset_date}",
             )
             self.daily_burn = 0.0
             self.last_reset_date = today
@@ -349,7 +346,7 @@ class CostMonitor:
         # Reset monthly if new month
         if current_month != self.last_reset_month:
             logger.info(
-                f"Monthly budget reset: burned ${self.monthly_burn:.2f} in month {self.last_reset_month}"
+                f"Monthly budget reset: burned ${self.monthly_burn:.2f} in month {self.last_reset_month}",
             )
             self.monthly_burn = 0.0
             self.last_reset_month = current_month

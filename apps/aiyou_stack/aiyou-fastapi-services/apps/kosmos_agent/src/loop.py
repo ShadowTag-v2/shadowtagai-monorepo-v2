@@ -31,8 +31,7 @@ class KosmosAgent:
 
     @tracer.start_as_current_span("agent_step")
     def step(self, input_text: str):
-        """
-        Executes a single step of the ReAct loop.
+        """Executes a single step of the ReAct loop.
         """
         # Construct current context
         prompt = f"{self.system_prompt}\n\nHistory:\n"

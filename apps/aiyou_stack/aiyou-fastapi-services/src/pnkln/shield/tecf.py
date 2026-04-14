@@ -1,5 +1,4 @@
-"""
-TECF - Tactical Edge Compute Fabric
+"""TECF - Tactical Edge Compute Fabric
 Defense-Grade Wrapper for SkyNode (TowerNode) to enable JADC2.
 
 Unlocks Pillar III ($35B Valuation).
@@ -27,8 +26,7 @@ class DILState:
 
 
 class TacticalEdgeNode(TowerNode):
-    """
-    TECF Node - A militarized SkyNode.
+    """TECF Node - A militarized SkyNode.
     Capable of autonomous operation in DIL environments.
     """
 
@@ -54,8 +52,7 @@ class TacticalEdgeNode(TowerNode):
         if not self.dil_state.is_connected:
             self.local_cache.append(workload)
             return "CACHED_LOCAL"
-        else:
-            return "PROCESSED_UPLINK"
+        return "PROCESSED_UPLINK"
 
     def _sync_cache(self):
         """Upload cached data upon reconnection."""

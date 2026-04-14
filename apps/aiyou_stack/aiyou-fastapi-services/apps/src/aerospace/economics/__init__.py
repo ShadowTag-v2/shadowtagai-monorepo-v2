@@ -7,4 +7,4 @@ from .roi_calculator import (
     ROICalculator,
 )
 
-__all__ = ["ROICalculator", "DeploymentConfig", "CostStructure", "RevenueStructure"]
+__all__ = ["CostStructure", "DeploymentConfig", "ROICalculator", "RevenueStructure"]

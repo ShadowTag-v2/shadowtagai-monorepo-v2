@@ -27,8 +27,7 @@ class SearchService:
         top_k: int = 5,
         min_score: float | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Search conversations semantically using vector search.
+        """Search conversations semantically using vector search.
 
         Returns conversations with their matching messages.
         """
@@ -65,12 +64,11 @@ class SearchService:
                     "role": result["metadata"].get("role"),
                     "timestamp": result["metadata"].get("timestamp"),
                     "score": result["score"],
-                }
+                },
             )
 
             # Update max score
-            if result["score"] > conversation_map[conv_id]["max_score"]:
-                conversation_map[conv_id]["max_score"] = result["score"]
+            conversation_map[conv_id]["max_score"] = max(conversation_map[conv_id]["max_score"], result["score"])
 
         # Sort by max score and limit
         sorted_conversations = sorted(
@@ -83,7 +81,7 @@ class SearchService:
         results = []
         for conv_data in sorted_conversations:
             conversation = await self.conversation_service.get_conversation(
-                UUID(conv_data["conversation_id"])
+                UUID(conv_data["conversation_id"]),
             )
             if conversation:
                 results.append(
@@ -91,7 +89,7 @@ class SearchService:
                         "conversation": conversation,
                         "score": conv_data["max_score"],
                         "matched_messages": conv_data["matched_messages"],
-                    }
+                    },
                 )
 
         return results
@@ -103,8 +101,7 @@ class SearchService:
         top_k: int = 10,
         min_score: float | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Search individual messages semantically.
+        """Search individual messages semantically.
 
         Returns individual messages with their parent conversation context.
         """
@@ -135,7 +132,7 @@ class SearchService:
                         "message": message,
                         "score": result["score"],
                         "conversation_id": message.conversation_id,
-                    }
+                    },
                 )
 
         return results
@@ -145,8 +142,7 @@ class SearchService:
         conversation_id: UUID | None = None,
         limit: int = 5,
     ) -> list[Conversation]:
-        """
-        Get related conversation suggestions based on current conversation.
+        """Get related conversation suggestions based on current conversation.
 
         Uses the last message in the conversation to find similar conversations.
         """
@@ -217,7 +213,7 @@ class SearchService:
                     "role": message.role.value,
                     "timestamp": message.timestamp.isoformat(),
                     "project_id": str(conversation.project_id) if conversation.project_id else None,
-                }
+                },
             )
 
         if message_ids:

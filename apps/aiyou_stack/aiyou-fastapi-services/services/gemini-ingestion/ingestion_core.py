@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer - Core Intelligence Collection Pipeline
+"""Gemini Ingestion Layer - Core Intelligence Collection Pipeline
 
 Nightly CronJob that ingests data from multiple sources for PNKLN Core Stack™
 Integrates with V2X mesh for traffic/transportation intelligence enrichment.
@@ -129,7 +128,7 @@ class IngestionMetrics:
     # Items
     total_items_ingested: int = 0
     items_by_tier: dict[DataTier, int] = field(
-        default_factory=lambda: {DataTier.TIER_1: 0, DataTier.TIER_2: 0, DataTier.TIER_3: 0}
+        default_factory=lambda: {DataTier.TIER_1: 0, DataTier.TIER_2: 0, DataTier.TIER_3: 0},
     )
     items_by_source: dict[str, int] = field(default_factory=dict)
 
@@ -230,10 +229,9 @@ class GeminiAnalyzer:
         self.api_key = api_key
 
     async def analyze_content(
-        self, title: str, content: str, source_type: SourceType
+        self, title: str, content: str, source_type: SourceType,
     ) -> dict[str, Any]:
-        """
-        Analyze content using Gemini API
+        """Analyze content using Gemini API
 
         Returns:
             - relevance_score: 0.0 - 1.0
@@ -241,6 +239,7 @@ class GeminiAnalyzer:
             - summary: str
             - key_points: List[str]
             - sentiment: str
+
         """
         # Mock Gemini analysis for now
         # In production, this calls Gemini 2.0 Pro API
@@ -288,8 +287,7 @@ class TierClassifier:
     """Classify ingested items into quality tiers"""
 
     def classify(self, item: IngestedItem) -> DataTier:
-        """
-        Classify item into tier based on:
+        """Classify item into tier based on:
         - Source credibility
         - Relevance score
         - Timeliness
@@ -331,10 +329,9 @@ class TierClassifier:
         # Classify
         if score >= 75:
             return DataTier.TIER_1
-        elif score >= 50:
+        if score >= 50:
             return DataTier.TIER_2
-        else:
-            return DataTier.TIER_3
+        return DataTier.TIER_3
 
 
 class IngestionPipeline:
@@ -389,7 +386,7 @@ class IngestionPipeline:
         self._calculate_metrics()
 
         logger.info(
-            f"Ingestion run {run_id} complete: {self.metrics.total_items_ingested} items in {self.metrics.runtime_seconds:.1f}s"
+            f"Ingestion run {run_id} complete: {self.metrics.total_items_ingested} items in {self.metrics.runtime_seconds:.1f}s",
         )
 
         return self.metrics
@@ -436,7 +433,7 @@ class IngestionPipeline:
                 "content": content[:200],
                 "url": source.url,
                 "published_at": datetime.now() - timedelta(hours=2),
-            }
+            },
         ]
 
     async def _fetch_v2x_mesh_data(self, source: SourceConfig) -> list[dict]:
@@ -454,20 +451,20 @@ class IngestionPipeline:
                 "url": f"{source.url}/events/123",
                 "published_at": datetime.now() - timedelta(minutes=30),
                 "metadata": {"severity": 8, "affected_radius_m": 500, "event_type": "hard_brake"},
-            }
+            },
         ]
 
     async def _process_item(self, item_data: dict, source: SourceConfig) -> IngestedItem | None:
         """Process individual item"""
         # Analyze with Gemini
         analysis = await self.analyzer.analyze_content(
-            title=item_data["title"], content=item_data["content"], source_type=source.source_type
+            title=item_data["title"], content=item_data["content"], source_type=source.source_type,
         )
 
         # Create item
         item = IngestedItem(
             item_id=hashlib.sha256(
-                (item_data["url"] + str(item_data["published_at"])).encode()
+                (item_data["url"] + str(item_data["published_at"])).encode(),
             ).hexdigest()[:16],
             source_id=source.source_id,
             source_type=source.source_type,
@@ -514,7 +511,7 @@ class IngestionPipeline:
         # Costs
         self.metrics.total_cost_dollars = sum(i.cost_cents for i in self.ingested_items) / 100.0
         self.metrics.cost_per_item_cents = (self.metrics.total_cost_dollars * 100) / len(
-            self.ingested_items
+            self.ingested_items,
         )
 
     def get_am_briefing(self) -> dict[str, Any]:
@@ -558,7 +555,7 @@ class IngestionPipeline:
                     else "other",
                     "relevance": f"{item.relevance_score:.2f}",
                     "url": item.url,
-                }
+                },
             )
 
         # Category breakdown
@@ -592,7 +589,7 @@ if __name__ == "__main__":
                 url="http://v2x-mesh-gateway/v1/events",
                 tier=DataTier.TIER_1,
                 relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY],
-            )
+            ),
         )
 
         pipeline.add_source(
@@ -602,7 +599,7 @@ if __name__ == "__main__":
                 url="https://example.com/traffic-news/rss",
                 tier=DataTier.TIER_2,
                 relevance_categories=[RelevanceCategory.TRAFFIC],
-            )
+            ),
         )
 
         # Run ingestion

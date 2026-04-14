@@ -1,5 +1,4 @@
-"""
-UnGPT v2.0 Agents
+"""UnGPT v2.0 Agents
 
 Static (SuperGrok):
 - supergrok_intake: L0 - Voice to text + SPT.1
@@ -30,13 +29,13 @@ from . import (
 )
 
 __all__ = [
-    "supergrok_intake",
-    "supergrok_validate",
-    "supergrok_repackage",
-    "supergrok_voice",
-    "claude_frame",
     "claude_execute",
+    "claude_frame",
     "claude_pr_check",
     "gemini_refine",
     "gpt5_refine",
+    "supergrok_intake",
+    "supergrok_repackage",
+    "supergrok_validate",
+    "supergrok_voice",
 ]

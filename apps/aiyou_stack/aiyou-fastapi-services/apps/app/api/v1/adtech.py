@@ -1,5 +1,4 @@
-"""
-Adtech compliance API endpoints
+"""Adtech compliance API endpoints
 Implements VAST 4.x, OM SDK, Privacy Sandbox verification
 """
 
@@ -24,8 +23,7 @@ adtech_engine = AdtechEngine()
 
 @router.post("/vast/validate", response_model=VASTValidationResponse)
 async def validate_vast(request: VASTValidationRequest):
-    """
-    Validate VAST XML compliance
+    """Validate VAST XML compliance
 
     Checks:
     - VAST version compliance (4.0-4.3)
@@ -40,8 +38,7 @@ async def validate_vast(request: VASTValidationRequest):
 
 @router.post("/omsdk/verify", response_model=OMSDKVerificationResponse)
 async def verify_omsdk(request: OMSDKVerificationRequest):
-    """
-    Verify Open Measurement SDK compliance
+    """Verify Open Measurement SDK compliance
 
     Validates:
     - Ad session configuration
@@ -56,8 +53,7 @@ async def verify_omsdk(request: OMSDKVerificationRequest):
 
 @router.post("/privacy-sandbox/check", response_model=PrivacySandboxComplianceResponse)
 async def check_privacy_sandbox(request: PrivacySandboxComplianceRequest):
-    """
-    Check Privacy Sandbox compliance
+    """Check Privacy Sandbox compliance
 
     For iOS:
     - SKAdNetwork (SKAN) configuration
@@ -74,8 +70,7 @@ async def check_privacy_sandbox(request: PrivacySandboxComplianceRequest):
 
 @router.post("/brand-safety/check", response_model=BrandSafetyResponse)
 async def check_brand_safety(request: BrandSafetyCheck):
-    """
-    Check brand safety compliance
+    """Check brand safety compliance
 
     Verifies:
     - Content category classification

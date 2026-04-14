@@ -1,5 +1,4 @@
-"""
-OPORD Generator for minion Cavalry Squadron
+"""OPORD Generator for minion Cavalry Squadron
 ===================================================
 Implements 5-Paragraph Operations Order format for agent swarm coordination.
 Integrates TLP (Troop Leading Procedures) with OODA loop for tactical agility.
@@ -79,8 +78,7 @@ class CommandAndSignal:
 
 @dataclass
 class OPORD:
-    """
-    5-Paragraph Operations Order for Agent Swarm
+    """5-Paragraph Operations Order for Agent Swarm
 
     Based on FM 5-0 and FM 6-0 doctrine adapted for AI agents.
     Each paragraph maps to specific agent coordination needs.
@@ -145,8 +143,7 @@ class OPORD:
 
 @dataclass
 class FRAGO:
-    """
-    Fragmentary Order - updates to existing OPORD.
+    """Fragmentary Order - updates to existing OPORD.
     Used for mid-mission adjustments without full replanning.
     """
 
@@ -170,8 +167,7 @@ class FRAGO:
 
 
 class OPORDGenerator:
-    """
-    Generates OPORDs for minion Cavalry Squadron.
+    """Generates OPORDs for minion Cavalry Squadron.
     Maps user tasks to military mission format.
 
     Staff Section Responsibilities:
@@ -192,8 +188,7 @@ class OPORDGenerator:
         self._opord_counter = 0
 
     def generate(self, task: str, context: dict[str, Any] = None) -> OPORD:
-        """
-        Generate OPORD from user task.
+        """Generate OPORD from user task.
 
         Args:
             task: User's task description
@@ -201,6 +196,7 @@ class OPORDGenerator:
 
         Returns:
             Complete OPORD ready for issue
+
         """
         context = context or {}
 
@@ -231,14 +227,13 @@ class OPORDGenerator:
 
         if any(kw in task_lower for kw in self.ATTACK_KEYWORDS):
             return MissionType.ATTACK
-        elif any(kw in task_lower for kw in self.DEFEND_KEYWORDS):
+        if any(kw in task_lower for kw in self.DEFEND_KEYWORDS):
             return MissionType.DEFEND
-        elif any(kw in task_lower for kw in self.RECON_KEYWORDS):
+        if any(kw in task_lower for kw in self.RECON_KEYWORDS):
             return MissionType.RECONNAISSANCE
-        elif any(kw in task_lower for kw in self.MOVEMENT_KEYWORDS):
+        if any(kw in task_lower for kw in self.MOVEMENT_KEYWORDS):
             return MissionType.MOVEMENT
-        else:
-            return MissionType.STABILITY
+        return MissionType.STABILITY
 
     def _build_situation(self, context: dict[str, Any]) -> Situation:
         """Build Para 1: SITUATION"""
@@ -271,10 +266,9 @@ class OPORDGenerator:
         return f"minion Squadron {verb} {task} IOT achieve commander's intent."
 
     def _build_execution(
-        self, task: str, mission_type: MissionType, context: dict[str, Any]
+        self, task: str, mission_type: MissionType, context: dict[str, Any],
     ) -> Execution:
         """Build Para 3: EXECUTION"""
-
         # Commander's Intent
         intent = self._build_commander_intent(task, mission_type)
 
@@ -352,7 +346,6 @@ class OPORDGenerator:
 
     def _assign_troops(self, mission_type: MissionType, task: str) -> dict[str, list[str]]:
         """S-3 assigns troops based on mission type"""
-
         base_assignments = {
             MissionType.ATTACK: {
                 "HHT": ["Command and control", "OPORD dissemination", "Resource coordination"],
@@ -466,8 +459,7 @@ class OPORDGenerator:
 
 
 class TroopLeadingProcedures:
-    """
-    8-Step TLP with OODA loop embedded for tactical agility.
+    """8-Step TLP with OODA loop embedded for tactical agility.
     Each step maps to Squadron staff functions.
 
     Based on FM 6-0 and ATP 5-19.
@@ -490,8 +482,7 @@ class TroopLeadingProcedures:
         self.context = {}
 
     async def execute(self, task: str, squadron: Any = None) -> OPORD:
-        """
-        Execute TLP to generate and issue OPORD.
+        """Execute TLP to generate and issue OPORD.
 
         Args:
             task: Mission task description
@@ -499,6 +490,7 @@ class TroopLeadingProcedures:
 
         Returns:
             Issued OPORD
+
         """
         self.context = {"task": task, "squadron": squadron}
 
@@ -506,7 +498,7 @@ class TroopLeadingProcedures:
             self.current_step = step_idx
 
             logger.info(
-                f"TLP Step {step_idx + 1}/8: {step_name} ({staff_section}) - {ooda_phase.value}"
+                f"TLP Step {step_idx + 1}/8: {step_name} ({staff_section}) - {ooda_phase.value}",
             )
 
             result = await self._execute_step(step_name, staff_section, ooda_phase)
@@ -520,45 +512,44 @@ class TroopLeadingProcedures:
         return self.context.get("issue_opord")
 
     async def _execute_step(
-        self, step_name: str, staff_section: str, ooda_phase: OODAPhase
+        self, step_name: str, staff_section: str, ooda_phase: OODAPhase,
     ) -> dict[str, Any]:
         """Execute individual TLP step"""
-
         if step_name == "receive_mission":
             return {"task": self.context["task"], "received": True}
 
-        elif step_name == "issue_warning_order":
+        if step_name == "issue_warning_order":
             # Alert troops to prepare
             return {
                 "warning_order_issued": True,
                 "troops_alerted": ["AIR_CAV", "ALPHA", "BRAVO", "CHARLIE"],
             }
 
-        elif step_name == "make_tentative_plan":
+        if step_name == "make_tentative_plan":
             # Initial OPORD draft
             return {"tentative_plan": True}
 
-        elif step_name == "initiate_movement":
+        if step_name == "initiate_movement":
             # Position resources
             return {"resources_positioned": True}
 
-        elif step_name == "conduct_reconnaissance":
+        if step_name == "conduct_reconnaissance":
             # S-2 gathers intel
             return {"recon_complete": True, "intel": self.context.get("intel", {})}
 
-        elif step_name == "complete_the_plan":
+        if step_name == "complete_the_plan":
             # Finalize OPORD
             opord = self.generator.generate(self.context["task"], self.context)
             return {"opord": opord, "plan_complete": True}
 
-        elif step_name == "issue_opord":
+        if step_name == "issue_opord":
             # Commander issues OPORD
             opord = self.context.get("complete_the_plan", {}).get("opord")
             if opord:
                 opord.status = "issued"
             return opord
 
-        elif step_name == "supervise_and_refine":
+        if step_name == "supervise_and_refine":
             # XO supervises execution
             return {"supervision_active": True, "needs_replan": False}
 

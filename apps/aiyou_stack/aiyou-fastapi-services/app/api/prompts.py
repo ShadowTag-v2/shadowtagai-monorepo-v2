@@ -1,5 +1,4 @@
-"""
-Prompt management API endpoints.
+"""Prompt management API endpoints.
 """
 
 import structlog
@@ -25,8 +24,7 @@ def get_prompt_manager() -> PromptManager:
 
 @router.get("/templates", response_model=list[str])
 async def list_templates():
-    """
-    List all available prompt templates.
+    """List all available prompt templates.
     """
     try:
         manager = get_prompt_manager()
@@ -41,8 +39,7 @@ async def list_templates():
 
 @router.get("/templates/{template_name}")
 async def get_template(template_name: str):
-    """
-    Get a specific prompt template by name.
+    """Get a specific prompt template by name.
     """
     try:
         manager = get_prompt_manager()
@@ -62,8 +59,7 @@ async def get_template(template_name: str):
 
 @router.post("/templates")
 async def create_template(request: PromptTemplateCreate):
-    """
-    Create a new prompt template.
+    """Create a new prompt template.
     """
     try:
         manager = get_prompt_manager()
@@ -87,8 +83,7 @@ async def create_template(request: PromptTemplateCreate):
 
 @router.delete("/templates/{template_name}")
 async def delete_template(template_name: str):
-    """
-    Delete a prompt template.
+    """Delete a prompt template.
     """
     try:
         manager = get_prompt_manager()
@@ -108,8 +103,7 @@ async def delete_template(template_name: str):
 
 @router.post("/render")
 async def render_template(request: PromptRenderRequest):
-    """
-    Render a prompt template with provided variables.
+    """Render a prompt template with provided variables.
     """
     try:
         manager = get_prompt_manager()
@@ -132,8 +126,7 @@ async def render_template(request: PromptRenderRequest):
 
 @router.post("/templates/export")
 async def export_templates(filepath: str):
-    """
-    Export all templates to a JSON file.
+    """Export all templates to a JSON file.
     """
     try:
         manager = get_prompt_manager()
@@ -148,8 +141,7 @@ async def export_templates(filepath: str):
 
 @router.post("/templates/import")
 async def import_templates(filepath: str):
-    """
-    Import templates from a JSON file.
+    """Import templates from a JSON file.
     """
     try:
         manager = get_prompt_manager()

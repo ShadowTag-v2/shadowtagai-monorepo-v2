@@ -1,5 +1,4 @@
-"""
-LLM Client integration supporting multiple providers.
+"""LLM Client integration supporting multiple providers.
 """
 
 from abc import ABC, abstractmethod
@@ -27,7 +26,6 @@ class LLMClient(ABC):
         **kwargs,
     ) -> str:
         """Send a chat request and get a complete response."""
-        pass
 
     @abstractmethod
     async def chat_stream(
@@ -39,7 +37,6 @@ class LLMClient(ABC):
         **kwargs,
     ) -> AsyncIterator[str]:
         """Send a chat request and stream the response."""
-        pass
 
 
 class AnthropicClient(LLMClient):
@@ -122,7 +119,7 @@ class OpenAIClient(LLMClient):
         logger.info("OpenAI client initialized", model=self.model)
 
     def _convert_messages(
-        self, messages: list[dict[str, str]], system_prompt: str | None = None
+        self, messages: list[dict[str, str]], system_prompt: str | None = None,
     ) -> list[dict[str, str]]:
         """Convert messages format and add system prompt."""
         formatted_messages = []
@@ -203,14 +200,13 @@ class LLMClientFactory:
 
     @staticmethod
     def create_client(
-        provider: str | None = None, api_key: str | None = None, model: str | None = None
+        provider: str | None = None, api_key: str | None = None, model: str | None = None,
     ) -> LLMClient:
         """Create an LLM client based on the provider."""
         provider = provider or settings.DEFAULT_LLM_PROVIDER
 
         if provider.lower() == "anthropic":
             return AnthropicClient(api_key=api_key, model=model)
-        elif provider.lower() == "openai":
+        if provider.lower() == "openai":
             return OpenAIClient(api_key=api_key, model=model)
-        else:
-            raise ValueError(f"Unsupported LLM provider: {provider}")
+        raise ValueError(f"Unsupported LLM provider: {provider}")

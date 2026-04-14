@@ -1,5 +1,4 @@
-"""
-GaaS (Governance-as-a-Service) Trust Factor System.
+"""GaaS (Governance-as-a-Service) Trust Factor System.
 
 Implements longitudinal compliance scoring with severity-aware penalization
 and graduated enforcement modes (coercive, normative, adaptive).
@@ -63,8 +62,7 @@ class TrustScore:
 
 
 class GaaSTrustManager:
-    """
-    Manages trust scoring for agent-based governance.
+    """Manages trust scoring for agent-based governance.
 
     Implements GaaS framework with:
     - Severity-aware violation penalties
@@ -78,13 +76,13 @@ class GaaSTrustManager:
         low_threshold: float = 0.3,
         decay_days: int = 90,
     ):
-        """
-        Initialize trust manager.
+        """Initialize trust manager.
 
         Args:
             high_threshold: Score above which agent is high trust
             low_threshold: Score below which agent is low trust
             decay_days: Days for violation penalty to decay to zero
+
         """
         self.high_threshold = high_threshold
         self.low_threshold = low_threshold
@@ -113,8 +111,7 @@ class GaaSTrustManager:
         success: bool,
         violation: ViolationRecord | None = None,
     ) -> TrustScore:
-        """
-        Record decision outcome and update trust score.
+        """Record decision outcome and update trust score.
 
         Args:
             agent_id: Agent identifier
@@ -123,6 +120,7 @@ class GaaSTrustManager:
 
         Returns:
             Updated trust score
+
         """
         trust = self.get_trust_score(agent_id)
 
@@ -130,14 +128,13 @@ class GaaSTrustManager:
         trust.total_decisions += 1
         if success:
             trust.successful_decisions += 1
-        else:
-            # Record violation
-            if violation:
-                trust.violations.append(violation)
+        # Record violation
+        elif violation:
+            trust.violations.append(violation)
 
-                # Apply penalty
-                penalty = self.penalty_weights[violation.severity]
-                trust.score = max(0.0, trust.score - penalty)
+            # Apply penalty
+            penalty = self.penalty_weights[violation.severity]
+            trust.score = max(0.0, trust.score - penalty)
 
         # Apply time decay to recover from old violations
         trust.score = self._apply_decay(trust)
@@ -149,8 +146,7 @@ class GaaSTrustManager:
         return trust
 
     def _apply_decay(self, trust: TrustScore) -> float:
-        """
-        Apply time-decay to trust score recovery.
+        """Apply time-decay to trust score recovery.
 
         Violations older than decay_days contribute zero penalty.
         Linear decay between violation date and decay_days.
@@ -180,18 +176,16 @@ class GaaSTrustManager:
         """Calculate trust tier from score."""
         if score > self.high_threshold:
             return TrustTier.HIGH
-        elif score >= self.low_threshold:
+        if score >= self.low_threshold:
             return TrustTier.MEDIUM
-        else:
-            return TrustTier.LOW
+        return TrustTier.LOW
 
     def get_enforcement_mode(
         self,
         agent_id: str,
         rule_type: str = "normative",
     ) -> EnforcementMode:
-        """
-        Determine enforcement mode based on trust tier and rule type.
+        """Determine enforcement mode based on trust tier and rule type.
 
         GaaS Matrix:
                     | Normative Rules | Coercive Rules |
@@ -205,6 +199,7 @@ class GaaSTrustManager:
 
         Returns:
             Enforcement mode to apply
+
         """
         trust = self.get_trust_score(agent_id)
 
@@ -214,8 +209,7 @@ class GaaSTrustManager:
         if trust.tier == TrustTier.MEDIUM:
             if rule_type == "normative":
                 return EnforcementMode.NORMATIVE  # Warn
-            else:
-                return EnforcementMode.COERCIVE  # Block
+            return EnforcementMode.COERCIVE  # Block
 
         # Low trust
         return EnforcementMode.COERCIVE  # Always block
@@ -225,8 +219,7 @@ class GaaSTrustManager:
         agent_id: str,
         rule_type: str = "normative",
     ) -> tuple[bool, EnforcementMode]:
-        """
-        Determine if action should be blocked based on trust.
+        """Determine if action should be blocked based on trust.
 
         Args:
             agent_id: Agent identifier
@@ -234,15 +227,15 @@ class GaaSTrustManager:
 
         Returns:
             Tuple of (should_block, enforcement_mode)
+
         """
         mode = self.get_enforcement_mode(agent_id, rule_type)
 
         if mode == EnforcementMode.COERCIVE:
             return True, mode
-        elif mode == EnforcementMode.NORMATIVE:
+        if mode == EnforcementMode.NORMATIVE:
             return False, mode  # Warn but allow
-        else:
-            return False, mode  # Trust-based allow
+        return False, mode  # Trust-based allow
 
     def get_metrics(self, agent_id: str) -> dict:
         """Get trust metrics for agent."""
@@ -261,7 +254,7 @@ class GaaSTrustManager:
             ),
             "violation_count": len(trust.violations),
             "recent_violations": len(
-                [v for v in trust.violations if (datetime.utcnow() - v.timestamp).days <= 30]
+                [v for v in trust.violations if (datetime.utcnow() - v.timestamp).days <= 30],
             ),
             "last_updated": trust.last_updated.isoformat(),
         }

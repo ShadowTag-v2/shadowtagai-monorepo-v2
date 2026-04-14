@@ -1,5 +1,4 @@
-"""
-Policy RAG (Retrieval-Augmented Generation) system.
+"""Policy RAG (Retrieval-Augmented Generation) system.
 
 Implements semantic search over policy documents using vector embeddings
 with support for both Vertex AI Vector Search and pgvector.
@@ -59,7 +58,6 @@ class BasePolicyRetriever(ABC):
     @abstractmethod
     async def add_policy(self, policy_doc: dict) -> None:
         """Add policy document to vector store."""
-        pass
 
     @abstractmethod
     async def retrieve(
@@ -69,22 +67,18 @@ class BasePolicyRetriever(ABC):
         filters: dict | None = None,
     ) -> list[str]:
         """Retrieve relevant policy chunks."""
-        pass
 
     @abstractmethod
     async def update_policy(self, policy_id: str, policy_doc: dict) -> None:
         """Update existing policy document."""
-        pass
 
     @abstractmethod
     async def delete_policy(self, policy_id: str) -> None:
         """Delete policy document."""
-        pass
 
 
 class PolicyDocumentProcessor:
-    """
-    Process policy documents into chunks with metadata.
+    """Process policy documents into chunks with metadata.
 
     Implements intelligent chunking by sections/clauses rather than
     arbitrary character splits for better semantic retrieval.
@@ -113,8 +107,7 @@ class PolicyDocumentProcessor:
         )
 
     def process_policy(self, policy_doc: dict) -> list[PolicyChunk]:
-        """
-        Process policy document into chunks.
+        """Process policy document into chunks.
 
         Args:
             policy_doc: {
@@ -128,6 +121,7 @@ class PolicyDocumentProcessor:
 
         Returns:
             List of policy chunks with metadata
+
         """
         policy_id = policy_doc["policy_id"]
         policy_name = policy_doc["policy_name"]
@@ -176,8 +170,7 @@ class PolicyDocumentProcessor:
 
 
 class PgVectorRetriever(BasePolicyRetriever):
-    """
-    Policy retriever using pgvector on Cloud SQL PostgreSQL.
+    """Policy retriever using pgvector on Cloud SQL PostgreSQL.
 
     Cost-effective option for <50M vectors with SQL integration.
     """
@@ -226,7 +219,7 @@ class PgVectorRetriever(BasePolicyRetriever):
                     embedding vector(768),  -- textembedding-gecko dimensions
                     created_at TIMESTAMP DEFAULT NOW()
                 )
-            """
+            """,
             )
 
             # Create HNSW index for vector similarity
@@ -235,7 +228,7 @@ class PgVectorRetriever(BasePolicyRetriever):
                 CREATE INDEX IF NOT EXISTS policy_chunks_embedding_idx
                 ON policy_chunks
                 USING hnsw (embedding vector_cosine_ops)
-            """
+            """,
             )
 
             self.conn.commit()
@@ -285,8 +278,7 @@ class PgVectorRetriever(BasePolicyRetriever):
         top_k: int = 5,
         filters: dict | None = None,
     ) -> list[str]:
-        """
-        Retrieve relevant policy chunks using semantic search.
+        """Retrieve relevant policy chunks using semantic search.
 
         Args:
             query: Search query
@@ -295,6 +287,7 @@ class PgVectorRetriever(BasePolicyRetriever):
 
         Returns:
             List of policy chunk texts
+
         """
         # Generate query embedding
         query_embedding = await self.embeddings.aembed_query(query)
@@ -333,7 +326,7 @@ class PgVectorRetriever(BasePolicyRetriever):
         formatted_results = []
         for content, section, policy_name, similarity in results:
             formatted_results.append(
-                f"[{policy_name} - {section}]\n{content}\n(Relevance: {similarity:.2f})"
+                f"[{policy_name} - {section}]\n{content}\n(Relevance: {similarity:.2f})",
             )
 
         return formatted_results
@@ -357,8 +350,7 @@ class PgVectorRetriever(BasePolicyRetriever):
 
 
 class VertexAIVectorSearchRetriever(BasePolicyRetriever):
-    """
-    Policy retriever using Vertex AI Vector Search.
+    """Policy retriever using Vertex AI Vector Search.
 
     Enterprise-scale option for >50M vectors with sub-100ms latency.
     """
@@ -410,5 +402,4 @@ def get_policy_retriever() -> BasePolicyRetriever:
     """Factory function to get configured policy retriever."""
     if settings.vector_db_type == "vertex-ai":
         return VertexAIVectorSearchRetriever()
-    else:
-        return PgVectorRetriever()
+    return PgVectorRetriever()

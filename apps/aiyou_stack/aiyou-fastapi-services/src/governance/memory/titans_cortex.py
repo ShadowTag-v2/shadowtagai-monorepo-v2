@@ -1,5 +1,4 @@
-"""
-ANTIGRAVITY :: GOD MODE :: TITANS CORTEX
+"""ANTIGRAVITY :: GOD MODE :: TITANS CORTEX
 Classification: TIER 30 SOVEREIGN
 Context: 1M+
 """
@@ -7,8 +6,8 @@ Context: 1M+
 import logging
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 # Configure Logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -16,13 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 class AntigravityMirasLayer(nn.Module):
-    """
-    The Shadowtag Cortex: A Neural Memory Module.
+    """The Shadowtag Cortex: A Neural Memory Module.
     Implements Titans 'MAC' (Memory as Context) with Miras Framework.
 
     References:
     - Titans: Learning to Memorize at Test Time (MAC architecture)
     - Miras: Attentional Bias for robust context (Yaad/Moneta)
+
     """
 
     def __init__(self, d_model=256, variant="yaad", p=3, delta=1.0, momentum=0.9):
@@ -36,7 +35,7 @@ class AntigravityMirasLayer(nn.Module):
         # As per Titans paper: Shallow memory fails. We go deep.
         # This acts as the "Associative Memory" that stores context.
         self.memory_mlp = nn.Sequential(
-            nn.Linear(d_model, d_model * 4), nn.GELU(), nn.Linear(d_model * 4, d_model)
+            nn.Linear(d_model, d_model * 4), nn.GELU(), nn.Linear(d_model * 4, d_model),
         )
 
         # 2. THE SURPRISE GATE (Plasticity)
@@ -49,8 +48,7 @@ class AntigravityMirasLayer(nn.Module):
         self.norm = nn.LayerNorm(d_model)
 
     def forward(self, x, history=None):
-        """
-        x: [Batch, Seq, Dim] - The current input embedding
+        """x: [Batch, Seq, Dim] - The current input embedding
         history: [Batch, Seq, Dim] - The past context (Optional/Not used in base MAC)
         """
         # A. RETRIEVE (Memory Access / Reconstruction)

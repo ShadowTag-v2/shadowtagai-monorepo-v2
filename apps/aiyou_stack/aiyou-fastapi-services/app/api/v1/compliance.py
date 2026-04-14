@@ -1,5 +1,4 @@
-"""
-Compliance API Router
+"""Compliance API Router
 
 REST API endpoints for the ActiveShield Modular Compliance Framework.
 Implements the Phase 1 API as defined in the MCF architecture.
@@ -64,10 +63,10 @@ class BatchAssessmentRequest(BaseModel):
     """Request for batch assessment"""
 
     inputs: list[AssessmentInput] = Field(
-        ..., max_length=100, description="List of assessment inputs (max 100)"
+        ..., max_length=100, description="List of assessment inputs (max 100)",
     )
     max_concurrent: int = Field(
-        default=10, ge=1, le=50, description="Maximum concurrent assessments"
+        default=10, ge=1, le=50, description="Maximum concurrent assessments",
     )
 
 
@@ -116,8 +115,7 @@ async def generate_blueprint(
     request: ComplianceBlueprintRequest,
     x_api_key: str = Header(..., description="API authentication key"),
 ) -> ComplianceBlueprintResponse:
-    """
-    Generate a compliance blueprint based on user's selections.
+    """Generate a compliance blueprint based on user's selections.
 
     Returns:
     - List of selected modules with metadata
@@ -125,6 +123,7 @@ async def generate_blueprint(
     - Estimated monthly cost
     - API endpoints for SDK integration
     - SDK configuration
+
     """
     engine = get_compliance_engine()
 
@@ -132,7 +131,7 @@ async def generate_blueprint(
         blueprint = await engine.generate_blueprint(request)
         logger.info(
             f"Blueprint generated with {len(blueprint.selected_modules)} modules, "
-            f"cost: ${blueprint.estimated_monthly_cost_usd}/mo"
+            f"cost: ${blueprint.estimated_monthly_cost_usd}/mo",
         )
         return blueprint
     except Exception as e:
@@ -150,10 +149,9 @@ async def generate_blueprint(
     description="Assess content against selected compliance modules.",
 )
 async def run_assessment(
-    input_data: AssessmentInput, x_api_key: str = Header(..., description="API authentication key")
+    input_data: AssessmentInput, x_api_key: str = Header(..., description="API authentication key"),
 ) -> ComplianceAssessmentResult:
-    """
-    Run a comprehensive compliance assessment.
+    """Run a comprehensive compliance assessment.
 
     Executes assessments against all selected modules in parallel.
 
@@ -162,6 +160,7 @@ async def run_assessment(
     - Per-module assessment results
     - Critical findings and recommendations
     - ShadowTag audit hash
+
     """
     engine = get_compliance_engine()
 
@@ -169,7 +168,7 @@ async def run_assessment(
         result = await engine.assess(input_data)
         logger.info(
             f"Assessment {result.assessment_id} completed: "
-            f"status={result.overall_status.value}, score={result.overall_score:.2%}"
+            f"status={result.overall_status.value}, score={result.overall_score:.2%}",
         )
         return result
     except ValueError as e:
@@ -193,11 +192,10 @@ async def run_assessment(
 )
 async def list_modules(
     jurisdiction: str | None = Query(
-        None, description="Filter by jurisdiction (us, eu, uk, apac, global)"
+        None, description="Filter by jurisdiction (us, eu, uk, apac, global)",
     ),
 ) -> ModuleListResponse:
-    """
-    List all available compliance modules.
+    """List all available compliance modules.
 
     Optionally filter by jurisdiction.
     """
@@ -220,14 +218,14 @@ async def list_modules(
     description="Get detailed information about a specific regulation module.",
 )
 async def get_module(regulation_id: str) -> ModuleDetailResponse:
-    """
-    Get detailed information about a specific module.
+    """Get detailed information about a specific module.
 
     Returns:
     - Module metadata
     - Control definitions and checklist
     - Validation rules
     - Required evidence list
+
     """
     engine = get_compliance_engine()
     await engine.initialize()
@@ -257,10 +255,9 @@ async def get_module(regulation_id: str) -> ModuleDetailResponse:
     description="Validate LLM-generated content against compliance rules (GPT Store pattern).",
 )
 async def validate_content(
-    request: ValidationRequest, x_api_key: str = Header(..., description="API authentication key")
+    request: ValidationRequest, x_api_key: str = Header(..., description="API authentication key"),
 ) -> ValidationResult:
-    """
-    Validate generated content against compliance rules.
+    """Validate generated content against compliance rules.
 
     Used for post-generation validation in GPT Store and similar integrations.
 
@@ -269,6 +266,7 @@ async def validate_content(
     - List of violations with severity
     - Suggested remediation
     - Remediated content (if auto-fix available)
+
     """
     engine = get_compliance_engine()
 
@@ -276,7 +274,7 @@ async def validate_content(
         result = await engine.validate_response(request)
         logger.info(
             f"Validation {result.validation_id}: "
-            f"compliant={result.is_compliant}, violations={len(result.violations)}"
+            f"compliant={result.is_compliant}, violations={len(result.violations)}",
         )
         return result
     except Exception as e:
@@ -297,8 +295,7 @@ async def batch_assessment(
     request: BatchAssessmentRequest,
     x_api_key: str = Header(..., description="API authentication key"),
 ) -> BatchAssessmentResponse:
-    """
-    Batch assessment with MCP efficiency patterns.
+    """Batch assessment with MCP efficiency patterns.
 
     Processes multiple assessments in parallel with configurable concurrency.
     Implements progressive disclosure for token efficiency.
@@ -307,6 +304,7 @@ async def batch_assessment(
     - Batch ID for tracking
     - Success/failure counts
     - All assessment results
+
     """
     engine = get_compliance_engine()
     batch_id = str(uuid4())
@@ -336,10 +334,9 @@ async def batch_assessment(
     description="Retrieve ShadowTag audit proof for an assessment.",
 )
 async def get_audit_trail(
-    assessment_id: str, x_api_key: str = Header(..., description="API authentication key")
+    assessment_id: str, x_api_key: str = Header(..., description="API authentication key"),
 ) -> AuditTrailResponse:
-    """
-    Retrieve audit trail for a completed assessment.
+    """Retrieve audit trail for a completed assessment.
 
     Returns signed URL for accessing the full audit log.
     Requires Pro tier or higher.
@@ -367,8 +364,7 @@ async def get_audit_trail(
     description="Check compliance engine health status.",
 )
 async def health_check() -> HealthResponse:
-    """
-    Get compliance engine health status.
+    """Get compliance engine health status.
     """
     engine = get_compliance_engine()
     health = engine.health_check()
@@ -397,8 +393,7 @@ async def assess_single_module(
     input_data: AssessmentInput,
     x_api_key: str = Header(..., description="API authentication key"),
 ) -> ComplianceAssessmentResult:
-    """
-    Run assessment against a single specific module.
+    """Run assessment against a single specific module.
 
     Useful for focused assessments or testing.
     """
@@ -406,7 +401,7 @@ async def assess_single_module(
         reg_id = RegulationId(regulation_id)
     except ValueError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Module not found"}
+            status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Module not found"},
         )
 
     # Override modules in input
@@ -422,8 +417,7 @@ async def assess_single_module(
     description="Get a compliance checklist for a specific regulation.",
 )
 async def get_module_checklist(regulation_id: str) -> dict[str, Any]:
-    """
-    Get a compliance checklist template for a module.
+    """Get a compliance checklist template for a module.
 
     Useful for manual compliance reviews and documentation.
     """
@@ -434,7 +428,7 @@ async def get_module_checklist(regulation_id: str) -> dict[str, Any]:
         reg_id = RegulationId(regulation_id)
     except ValueError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Module not found"}
+            status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Module not found"},
         )
 
     info = engine.get_module_info(reg_id)

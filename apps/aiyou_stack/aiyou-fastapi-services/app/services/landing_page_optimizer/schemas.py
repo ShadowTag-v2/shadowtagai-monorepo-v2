@@ -38,22 +38,22 @@ class OptimizePageRequest(BaseModel):
         max_length=50000,
     )
     focus_areas: list[FocusArea] | None = Field(
-        default=[FocusArea.ALL], description="Specific areas to focus on for optimization"
+        default=[FocusArea.ALL], description="Specific areas to focus on for optimization",
     )
     current_conversion_rate: float | None = Field(
-        default=None, description="Current conversion rate as percentage (0-100)", ge=0, le=100
+        default=None, description="Current conversion rate as percentage (0-100)", ge=0, le=100,
     )
     target_conversion_rate: float | None = Field(
-        default=None, description="Target conversion rate to achieve (0-100)", ge=0, le=100
+        default=None, description="Target conversion rate to achieve (0-100)", ge=0, le=100,
     )
     page_url: HttpUrl | None = Field(
-        default=None, description="URL of the landing page (for context)"
+        default=None, description="URL of the landing page (for context)",
     )
     target_audience: str | None = Field(
-        default=None, description="Description of target audience", max_length=500
+        default=None, description="Description of target audience", max_length=500,
     )
     product_service: str | None = Field(
-        default=None, description="Description of product or service being offered", max_length=1000
+        default=None, description="Description of product or service being offered", max_length=1000,
     )
 
     class Config:
@@ -65,7 +65,7 @@ class OptimizePageRequest(BaseModel):
                 "target_conversion_rate": 5.0,
                 "target_audience": "Small business owners looking to improve their online presence",
                 "product_service": "Website builder platform",
-            }
+            },
         }
 
 
@@ -74,13 +74,13 @@ class Recommendation(BaseModel):
 
     title: str = Field(..., description="Title of the recommendation")
     description: str = Field(
-        ..., description="Detailed description of the issue and recommendation"
+        ..., description="Detailed description of the issue and recommendation",
     )
     category: FocusArea = Field(..., description="Category this recommendation belongs to")
     priority: Priority = Field(..., description="Priority level for implementation")
     expected_impact: str = Field(..., description="Expected impact on conversions")
     implementation_steps: list[str] = Field(
-        default_factory=list, description="Step-by-step implementation guide"
+        default_factory=list, description="Step-by-step implementation guide",
     )
     before_example: str | None = Field(default=None, description="Example of current state")
     after_example: str | None = Field(default=None, description="Example of improved state")
@@ -100,7 +100,7 @@ class Recommendation(BaseModel):
                 ],
                 "before_example": "Welcome to Our App",
                 "after_example": "Build Your Professional Website in 10 Minutes",
-            }
+            },
         }
 
 
@@ -133,23 +133,23 @@ class OptimizationAnalysis(BaseModel):
     """Detailed analysis of the landing page"""
 
     overall_score: float = Field(
-        ..., description="Overall optimization score (0-100)", ge=0, le=100
+        ..., description="Overall optimization score (0-100)", ge=0, le=100,
     )
     key_strengths: list[str] = Field(
-        default_factory=list, description="Key strengths of current page"
+        default_factory=list, description="Key strengths of current page",
     )
     key_weaknesses: list[str] = Field(default_factory=list, description="Key weaknesses to address")
     recommendations: list[Recommendation] = Field(
-        default_factory=list, description="Detailed recommendations"
+        default_factory=list, description="Detailed recommendations",
     )
     headline_variations: list[HeadlineVariation] | None = Field(
-        default=None, description="Alternative headline suggestions"
+        default=None, description="Alternative headline suggestions",
     )
     cta_variations: list[CTAVariation] | None = Field(
-        default=None, description="Alternative CTA suggestions"
+        default=None, description="Alternative CTA suggestions",
     )
     social_proof_suggestions: list[SocialProofSuggestion] | None = Field(
-        default=None, description="Social proof element suggestions"
+        default=None, description="Social proof element suggestions",
     )
     estimated_conversion_lift: str | None = Field(
         default=None,
@@ -163,7 +163,7 @@ class OptimizePageResponse(BaseModel):
     status: str = Field(default="success", description="Response status")
     analysis: OptimizationAnalysis = Field(..., description="Detailed analysis and recommendations")
     metadata: dict = Field(
-        default_factory=dict, description="Additional metadata about the analysis"
+        default_factory=dict, description="Additional metadata about the analysis",
     )
     timestamp: datetime = Field(default_factory=datetime.now, description="Timestamp of analysis")
 
@@ -184,7 +184,7 @@ class OptimizePageResponse(BaseModel):
                 },
                 "metadata": {"focus_areas": ["headlines", "cta"], "processing_time_ms": 2500},
                 "timestamp": "2024-01-15T10:30:00Z",
-            }
+            },
         }
 
 
@@ -215,7 +215,7 @@ class GenerateCTARequest(BaseModel):
     action_type: str = Field(..., description="Type of action (signup, purchase, download, etc.)")
     product_service: str = Field(..., description="Product or service description")
     urgency_level: str | None = Field(
-        default="medium", description="Level of urgency (low, medium, high)"
+        default="medium", description="Level of urgency (low, medium, high)",
     )
     count: int = Field(default=5, ge=1, le=20, description="Number of variations to generate")
 
@@ -233,7 +233,7 @@ class GenerateSocialProofRequest(BaseModel):
 
     product_service: str = Field(..., description="Product or service description")
     existing_data: dict | None = Field(
-        default=None, description="Existing data (number of users, ratings, etc.)"
+        default=None, description="Existing data (number of users, ratings, etc.)",
     )
     proof_types: list[str] | None = Field(
         default=["testimonials", "statistics", "trust_badges"],

@@ -9,13 +9,13 @@ class BaseAgent(ABC):
     """Base class for all AI agents in the system"""
 
     def __init__(self, name: str, system_prompt: str, config: dict[str, Any] | None = None):
-        """
-        Initialize base agent
+        """Initialize base agent
 
         Args:
             name: Agent name
             system_prompt: System prompt for the agent
             config: Agent configuration dictionary
+
         """
         self.name = name
         self.system_prompt = system_prompt
@@ -23,10 +23,9 @@ class BaseAgent(ABC):
 
     @abstractmethod
     async def process(
-        self, prompt: str, context: dict[str, Any] | None = None, stream: bool = False
+        self, prompt: str, context: dict[str, Any] | None = None, stream: bool = False,
     ) -> AsyncIterator[str] | dict[str, Any]:
-        """
-        Process user request through the agent
+        """Process user request through the agent
 
         Args:
             prompt: User input/request
@@ -35,8 +34,8 @@ class BaseAgent(ABC):
 
         Returns:
             Agent response (streamed or complete)
+
         """
-        pass
 
     def get_info(self) -> dict[str, Any]:
         """Get agent information"""
@@ -45,11 +44,9 @@ class BaseAgent(ABC):
     @abstractmethod
     def get_capabilities(self) -> list[str]:
         """Get list of agent capabilities"""
-        pass
 
     def validate_input(self, prompt: str, context: dict | None = None) -> bool:
-        """
-        Validate input before processing
+        """Validate input before processing
 
         Args:
             prompt: User prompt
@@ -57,5 +54,6 @@ class BaseAgent(ABC):
 
         Returns:
             True if valid, False otherwise
+
         """
         return not (not prompt or not prompt.strip())

@@ -1,5 +1,4 @@
-"""
-Quality & Testing Agents for Vertex AI Workbench
+"""Quality & Testing Agents for Vertex AI Workbench
 """
 
 from typing import Any

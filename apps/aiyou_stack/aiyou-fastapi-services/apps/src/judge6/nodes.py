@@ -1,5 +1,4 @@
-"""
-LangGraph Node Implementations for Judge #6 Kill Chain
+"""LangGraph Node Implementations for Judge #6 Kill Chain
 
 Kill Chain Phases:
 1. node_assessment - OPA Fast Check (JREngine wrapper, <500μs)
@@ -54,8 +53,7 @@ except ImportError:
 
 
 def node_assessment(state: GovernanceState) -> GovernanceState:
-    """
-    Assessment Node: OPA Fast Check
+    """Assessment Node: OPA Fast Check
     Wraps JREngine in LangGraph context.
     Target latency: <500μs (deterministic, no LLM calls)
 
@@ -86,7 +84,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
                     "risk_probability": reason.get("risk_probability", 0.5),
                     "risk_severity": reason.get("risk_severity", 0.5),
                     "mitigation_strategy": reason.get("mitigation_strategy"),
-                }
+                },
             )
 
         # Evaluate BRAKES: What constraints apply?
@@ -98,7 +96,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
                     "triggered": True,
                     "reason": "Production system - requires extra caution",
                     "risk_level": "MEDIUM",
-                }
+                },
             )
 
         if context.get("no_tests"):
@@ -108,7 +106,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
                     "triggered": True,
                     "reason": "No test coverage - blind deployment",
                     "risk_level": "HIGH",
-                }
+                },
             )
 
         if context.get("authentication_logic"):
@@ -118,7 +116,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
                     "triggered": True,
                     "reason": "Security-sensitive authentication code",
                     "risk_level": "HIGH",
-                }
+                },
             )
 
         if context.get("database_migration"):
@@ -128,7 +126,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
                     "triggered": True,
                     "reason": "Database schema change - irreversible",
                     "risk_level": "EXTREMELY_HIGH",
-                }
+                },
             )
 
         # Calculate risk level using ATP 5-19 matrix logic
@@ -196,7 +194,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
         state.assessment = assessment
 
         state.audit.add_entry(
-            event_type="assessment_failed", details={"error": str(e)}, severity="ERROR"
+            event_type="assessment_failed", details={"error": str(e)}, severity="ERROR",
         )
 
         return state
@@ -208,8 +206,7 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
 
 
 def node_router(state: GovernanceState) -> str:
-    """
-    Router Node: Decide whether to execute debate phase.
+    """Router Node: Decide whether to execute debate phase.
 
     Triggers debate if:
     1. Assessment confidence < 0.80
@@ -218,6 +215,7 @@ def node_router(state: GovernanceState) -> str:
 
     Returns:
         Next node name: "debate" or "audit"
+
     """
     assessment = state.assessment
     confidence = assessment.confidence
@@ -249,14 +247,13 @@ def node_router(state: GovernanceState) -> str:
             severity="INFO",
         )
         return "debate"
-    else:
-        state.debate.status = DebateStatus.NOT_TRIGGERED
-        state.audit.add_entry(
-            event_type="debate_skipped",
-            details={"confidence": confidence, "risk_level": risk_level.value},
-            severity="INFO",
-        )
-        return "audit"
+    state.debate.status = DebateStatus.NOT_TRIGGERED
+    state.audit.add_entry(
+        event_type="debate_skipped",
+        details={"confidence": confidence, "risk_level": risk_level.value},
+        severity="INFO",
+    )
+    return "audit"
 
 
 # =============================================================================
@@ -265,8 +262,7 @@ def node_router(state: GovernanceState) -> str:
 
 
 async def _async_single_round_vote(state: GovernanceState) -> GovernanceState:
-    """
-    Single-round voting using memory precedents and prefetch context.
+    """Single-round voting using memory precedents and prefetch context.
 
     Flow:
     1. Lookup similar precedents from memory
@@ -397,8 +393,7 @@ async def _async_single_round_vote(state: GovernanceState) -> GovernanceState:
 
 
 async def _async_swarm_vote(state: GovernanceState) -> GovernanceState:
-    """
-    Swarm voting using n-autoresearch/Kosmos/BioAgents2 (200-agent heuristic + conditional LLM).
+    """Swarm voting using n-autoresearch/Kosmos/BioAgents2 (200-agent heuristic + conditional LLM).
 
     Cost: $0.00006/decision average (5x under $0.0003 target)
     - 80% clear consensus: $0 (heuristic only)
@@ -534,7 +529,7 @@ async def _async_swarm_vote(state: GovernanceState) -> GovernanceState:
         state.debate = debate
 
         state.audit.add_entry(
-            event_type="swarm_vote_failed", details={"error": str(e)}, severity="ERROR"
+            event_type="swarm_vote_failed", details={"error": str(e)}, severity="ERROR",
         )
 
         return state
@@ -546,8 +541,7 @@ async def _async_swarm_vote(state: GovernanceState) -> GovernanceState:
 
 
 async def _async_debate_legacy(state: GovernanceState) -> GovernanceState:
-    """
-    LEGACY: Three-phase panel debate (Prosecutor → Defender → Judge).
+    """LEGACY: Three-phase panel debate (Prosecutor → Defender → Judge).
 
     This is the original 3-round debate system. Kept as side option.
     Use voting_mode=VotingMode.THREE_PHASE to activate.
@@ -574,7 +568,7 @@ async def _async_debate_legacy(state: GovernanceState) -> GovernanceState:
         # Round 3: Judge synthesizes and decides
         await asyncio.sleep(0.060)  # Simulate Opus call
         judge_analysis, final_decision, final_confidence = _build_judge_decision(
-            prosecutor_argument, defender_argument
+            prosecutor_argument, defender_argument,
         )
 
         # Record debate round
@@ -586,7 +580,7 @@ async def _async_debate_legacy(state: GovernanceState) -> GovernanceState:
                 judge_analysis=judge_analysis,
                 consensus_score=final_confidence,
                 models_used=["claude-opus", "claude-sonnet", "claude-opus"],
-            )
+            ),
         )
 
         debate.debate_conclusion = judge_analysis
@@ -619,7 +613,7 @@ async def _async_debate_legacy(state: GovernanceState) -> GovernanceState:
         state.debate = debate
 
         state.audit.add_entry(
-            event_type="debate_failed", details={"error": str(e)}, severity="ERROR"
+            event_type="debate_failed", details={"error": str(e)}, severity="ERROR",
         )
 
         return state
@@ -691,8 +685,7 @@ def _build_judge_decision(prosecutor: dict, defender: dict) -> tuple[str, str, f
 
 
 async def _async_debate(state: GovernanceState) -> GovernanceState:
-    """
-    Dispatch to appropriate voting mode based on state.debate.voting_mode.
+    """Dispatch to appropriate voting mode based on state.debate.voting_mode.
 
     Modes:
     - SWARM (default): 200-agent heuristic + conditional LLM ($0.00006/decision avg)
@@ -726,8 +719,7 @@ async def _async_debate(state: GovernanceState) -> GovernanceState:
 
 
 def node_debate(state: GovernanceState) -> GovernanceState:
-    """
-    Debate Node: Panel Debate System
+    """Debate Node: Panel Debate System
     Wraps PanelDebateSystem in LangGraph context.
     Only executed if confidence <80% or high risk.
     """
@@ -757,8 +749,7 @@ def node_debate(state: GovernanceState) -> GovernanceState:
 
 
 def node_audit(state: GovernanceState) -> GovernanceState:
-    """
-    Audit Node: Compress and store audit trail
+    """Audit Node: Compress and store audit trail
     Wraps AuditCompressKernel in LangGraph context.
     Target: ATP 5-19 format, ≤487 bytes compressed
     """
@@ -859,8 +850,7 @@ def node_audit(state: GovernanceState) -> GovernanceState:
 
 
 def node_finalize(state: GovernanceState) -> GovernanceState:
-    """
-    Finalize Node: Prepare final decision output
+    """Finalize Node: Prepare final decision output
     Aggregates all phases into final verdict
     """
     # Determine final decision from assessment and debate

@@ -1,5 +1,4 @@
-"""
-Global error handlers for the API.
+"""Global error handlers for the API.
 Provides consistent error responses across all endpoints.
 """
 
@@ -13,22 +12,20 @@ from app.models.response import ErrorResponse
 
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
-    """
-    Handle HTTP exceptions with consistent error format.
+    """Handle HTTP exceptions with consistent error format.
     """
     return JSONResponse(
         status_code=exc.status_code,
         content=ErrorResponse(
-            error=exc.__class__.__name__, message=exc.detail, path=str(request.url.path)
+            error=exc.__class__.__name__, message=exc.detail, path=str(request.url.path),
         ).model_dump(),
     )
 
 
 async def validation_exception_handler(
-    request: Request, exc: RequestValidationError | ValidationError
+    request: Request, exc: RequestValidationError | ValidationError,
 ) -> JSONResponse:
-    """
-    Handle validation errors with detailed field-level information.
+    """Handle validation errors with detailed field-level information.
     """
     errors = []
 
@@ -48,8 +45,7 @@ async def validation_exception_handler(
 
 
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    """
-    Handle unexpected exceptions.
+    """Handle unexpected exceptions.
     """
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -63,8 +59,7 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
 
 
 def add_error_handlers(app: FastAPI) -> None:
-    """
-    Register all error handlers with the FastAPI application.
+    """Register all error handlers with the FastAPI application.
     """
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)
     app.add_exception_handler(RequestValidationError, validation_exception_handler)

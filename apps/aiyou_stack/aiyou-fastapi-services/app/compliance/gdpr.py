@@ -1,5 +1,4 @@
-"""
-GDPR (General Data Protection Regulation) Compliance Implementation
+"""GDPR (General Data Protection Regulation) Compliance Implementation
 
 Provides:
 - Data portability (export user data)
@@ -15,8 +14,7 @@ from .ccpa import CCPACompliance
 
 
 class GDPRCompliance(CCPACompliance):
-    """
-    GDPR Compliance Implementation
+    """GDPR Compliance Implementation
 
     Extends CCPA compliance with GDPR-specific features.
     Many requirements overlap with CCPA (data access, deletion).
@@ -28,8 +26,7 @@ class GDPRCompliance(CCPACompliance):
         self.response_deadline_days = 30
 
     async def process_data_portability_request(self, user_id: str):
-        """
-        Process GDPR data portability request (Article 20)
+        """Process GDPR data portability request (Article 20)
 
         Similar to CCPA access request but with structured, machine-readable format
         """
@@ -37,12 +34,11 @@ class GDPRCompliance(CCPACompliance):
         from .ccpa import DataExportFormat
 
         return await self.process_access_request(
-            f"GDPR-{user_id}", export_format=DataExportFormat.JSON
+            f"GDPR-{user_id}", export_format=DataExportFormat.JSON,
         )
 
     async def check_consent(self, user_id: str, purpose: str) -> bool:
-        """
-        Check if user has given consent for a specific purpose
+        """Check if user has given consent for a specific purpose
 
         Args:
             user_id: User ID
@@ -50,6 +46,7 @@ class GDPRCompliance(CCPACompliance):
 
         Returns:
             True if consent given, False otherwise
+
         """
         result = await self.db.query(
             "SELECT consent FROM user_consents WHERE user_id = ? AND purpose = ?",
@@ -59,13 +56,13 @@ class GDPRCompliance(CCPACompliance):
         return result.get("consent", False) if result else False
 
     async def record_consent(self, user_id: str, purpose: str, granted: bool):
-        """
-        Record user consent for a specific purpose
+        """Record user consent for a specific purpose
 
         Args:
             user_id: User ID
             purpose: Purpose of data processing
             granted: Whether consent was granted
+
         """
         await self.db.execute(
             """
@@ -79,5 +76,5 @@ class GDPRCompliance(CCPACompliance):
         )
 
         self.audit_logger.info(
-            f"GDPR consent recorded: user {user_id}, purpose {purpose}, granted {granted}"
+            f"GDPR consent recorded: user {user_id}, purpose {purpose}, granted {granted}",
         )

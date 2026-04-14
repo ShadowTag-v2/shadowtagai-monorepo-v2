@@ -1,5 +1,4 @@
-"""
-AR Glasses Fatigue Detection & Reduction SDK
+"""AR Glasses Fatigue Detection & Reduction SDK
 Dreamlight-style fatigue management for always-on AI eyewear
 
 Core Components:

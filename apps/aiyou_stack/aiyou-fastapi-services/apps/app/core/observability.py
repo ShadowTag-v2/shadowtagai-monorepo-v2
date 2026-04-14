@@ -1,5 +1,4 @@
-"""
-Observability setup using OpenTelemetry
+"""Observability setup using OpenTelemetry
 """
 
 import logging
@@ -33,7 +32,7 @@ class Metrics:
             self.meter = otel_metrics.get_meter(__name__)
 
             self.request_counter = self.meter.create_counter(
-                "http_requests_total", description="Total HTTP requests", unit="1"
+                "http_requests_total", description="Total HTTP requests", unit="1",
             )
 
             self.request_duration = self.meter.create_histogram(
@@ -43,7 +42,7 @@ class Metrics:
             )
 
             self.error_counter = self.meter.create_counter(
-                "http_errors_total", description="Total HTTP errors", unit="1"
+                "http_errors_total", description="Total HTTP errors", unit="1",
             )
 
             logger.info("Metrics initialized successfully")
@@ -80,7 +79,6 @@ class Metrics:
         success: bool,
     ):
         """Record decision metrics"""
-        pass
 
     def record_kernel_execution(
         self,
@@ -91,7 +89,6 @@ class Metrics:
         tokens_output: int = None,
     ):
         """Record kernel execution metrics"""
-        pass
 
 
 # Global metrics instance
@@ -100,13 +97,12 @@ metrics = Metrics()
 
 def setup_observability(app: FastAPI):
     """Setup OpenTelemetry observability"""
-
     resource = Resource.create(
         {
             "service.name": settings.service_name,
             "service.version": settings.service_version,
             "deployment.environment": settings.environment,
-        }
+        },
     )
 
     # Setup tracing

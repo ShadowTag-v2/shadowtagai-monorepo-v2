@@ -21,8 +21,7 @@ class StackHealthResponse(BaseModel):
 
 @router.get("/status", response_model=StackHealthResponse)
 async def get_stack_status():
-    """
-    Get overall PNKLN Core Stack status
+    """Get overall PNKLN Core Stack status
 
     Returns health status for all 4 namespaces:
     - Ingestion
@@ -35,19 +34,19 @@ async def get_stack_status():
     # Simulate namespace status checks
     # In production, these would query actual GKE namespaces
     ingestion = GKENamespaceStatus(
-        namespace=settings.GKE_NAMESPACE_INGESTION, healthy=True, pod_count=3, issues=[]
+        namespace=settings.GKE_NAMESPACE_INGESTION, healthy=True, pod_count=3, issues=[],
     )
 
     validation = GKENamespaceStatus(
-        namespace=settings.GKE_NAMESPACE_VALIDATION, healthy=True, pod_count=2, issues=[]
+        namespace=settings.GKE_NAMESPACE_VALIDATION, healthy=True, pod_count=2, issues=[],
     )
 
     processing = GKENamespaceStatus(
-        namespace=settings.GKE_NAMESPACE_PROCESSING, healthy=True, pod_count=5, issues=[]
+        namespace=settings.GKE_NAMESPACE_PROCESSING, healthy=True, pod_count=5, issues=[],
     )
 
     delivery = GKENamespaceStatus(
-        namespace=settings.GKE_NAMESPACE_DELIVERY, healthy=True, pod_count=2, issues=[]
+        namespace=settings.GKE_NAMESPACE_DELIVERY, healthy=True, pod_count=2, issues=[],
     )
 
     all_healthy = all([ingestion.healthy, validation.healthy, processing.healthy, delivery.healthy])
@@ -68,8 +67,7 @@ async def get_stack_status():
 
 @router.get("/namespaces")
 async def list_namespaces():
-    """
-    List all PNKLN GKE namespaces
+    """List all PNKLN GKE namespaces
 
     Returns configuration of the 4-namespace architecture
     """
@@ -104,8 +102,7 @@ async def list_namespaces():
 
 @router.get("/briefing/latest")
 async def get_latest_briefing():
-    """
-    Get the latest AM briefing
+    """Get the latest AM briefing
 
     Returns the most recent morning briefing with highlights
     """
@@ -124,7 +121,7 @@ async def get_latest_briefing():
             tier=TierClassification.TIER_1,
             relevance_score=0.95,
             cost=0.03,
-        )
+        ),
     ]
 
     from app.services.gemini_ingestion import GeminiIngestionService
@@ -159,8 +156,7 @@ async def get_latest_briefing():
 
 @router.get("/config")
 async def get_pnkln_config():
-    """
-    Get PNKLN Core Stack configuration
+    """Get PNKLN Core Stack configuration
 
     Returns key configuration parameters
     """

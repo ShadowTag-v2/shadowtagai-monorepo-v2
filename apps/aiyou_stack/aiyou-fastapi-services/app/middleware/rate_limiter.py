@@ -11,8 +11,7 @@ from app.config.settings import settings
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
-    """
-    Rate limiting middleware to prevent API abuse
+    """Rate limiting middleware to prevent API abuse
     Supports TurboAPI configuration for high RPS
     """
 
@@ -55,7 +54,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         # Add rate limit headers
         response.headers["X-RateLimit-Limit"] = str(self.max_requests)
         response.headers["X-RateLimit-Remaining"] = str(
-            max(0, self.max_requests - len(self.request_counts[client_ip]))
+            max(0, self.max_requests - len(self.request_counts[client_ip])),
         )
 
         return response

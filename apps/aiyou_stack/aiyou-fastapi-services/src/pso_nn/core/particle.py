@@ -1,5 +1,4 @@
-"""
-PSO Particle: Represents a candidate solution in the search space.
+"""PSO Particle: Represents a candidate solution in the search space.
 
 Each particle has:
 - Position: Current solution (neural network weights)
@@ -26,8 +25,7 @@ class ParticleState:
 
 @dataclass
 class Particle:
-    """
-    A single particle in the PSO swarm.
+    """A single particle in the PSO swarm.
 
     Represents a candidate neural network weight configuration.
     Uses adaptive momentum (Adam-style) for improved convergence.
@@ -57,7 +55,7 @@ class Particle:
 
     @classmethod
     def random(
-        cls, dimensions: int, bounds: tuple[float, float] = (-1.0, 1.0), particle_id: int = 0
+        cls, dimensions: int, bounds: tuple[float, float] = (-1.0, 1.0), particle_id: int = 0,
     ) -> "Particle":
         """Create a randomly initialized particle."""
         low, high = bounds
@@ -80,8 +78,7 @@ class Particle:
         beta1: float = 0.9,  # Adam first moment decay
         beta2: float = 0.999,  # Adam second moment decay
     ) -> None:
-        """
-        Update velocity using PSO formula with Adam-style momentum.
+        """Update velocity using PSO formula with Adam-style momentum.
 
         v_new = w * v_old + c1 * r1 * (personal_best - position)
                          + c2 * r2 * (global_best - position)
@@ -110,10 +107,9 @@ class Particle:
         self.velocity = m_hat / (np.sqrt(v_hat) + eps)
 
     def update_position(
-        self, bounds: tuple[float, float] | None = None, max_velocity: float = 1.0
+        self, bounds: tuple[float, float] | None = None, max_velocity: float = 1.0,
     ) -> None:
-        """
-        Update position using current velocity.
+        """Update position using current velocity.
 
         Clips position to bounds and velocity to max_velocity.
         """
@@ -130,8 +126,7 @@ class Particle:
         self.age += 1
 
     def update_personal_best(self, fitness: float) -> bool:
-        """
-        Update personal best if current fitness is better.
+        """Update personal best if current fitness is better.
 
         Returns True if personal best was updated.
         """

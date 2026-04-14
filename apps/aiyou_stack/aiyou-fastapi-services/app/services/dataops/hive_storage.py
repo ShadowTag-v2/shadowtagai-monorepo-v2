@@ -1,5 +1,4 @@
-"""
-Hive Storage Service - Data Ops
+"""Hive Storage Service - Data Ops
 Embeddings, moderation logs, and continual learning adapter storage
 Quantitative Effect: ↑ Traceability +90%, ↓ Data drift –50%
 """
@@ -18,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class HiveStorageService:
-    """
-    Unified data operations service
+    """Unified data operations service
     Handles embeddings, logs, and adapter storage with GCS backend
     """
 
@@ -46,7 +44,7 @@ class HiveStorageService:
                 self.data_bucket = self.gcs_client.bucket(settings.GCS_BUCKET_NAME)
                 if not self.data_bucket.exists():
                     self.data_bucket = self.gcs_client.create_bucket(
-                        settings.GCS_BUCKET_NAME, location=settings.GCP_REGION
+                        settings.GCS_BUCKET_NAME, location=settings.GCP_REGION,
                     )
             except Exception as e:
                 logger.warning(f"Could not access data bucket: {e}")
@@ -56,7 +54,7 @@ class HiveStorageService:
                 self.model_bucket = self.gcs_client.bucket(settings.GCS_MODEL_BUCKET)
                 if not self.model_bucket.exists():
                     self.model_bucket = self.gcs_client.create_bucket(
-                        settings.GCS_MODEL_BUCKET, location=settings.GCP_REGION
+                        settings.GCS_MODEL_BUCKET, location=settings.GCP_REGION,
                     )
             except Exception as e:
                 logger.warning(f"Could not access model bucket: {e}")
@@ -75,10 +73,9 @@ class HiveStorageService:
         logger.info("Hive Storage service shutdown")
 
     async def store_embeddings(
-        self, embedding_id: str, embeddings: list[float], metadata: dict[str, Any] | None = None
+        self, embedding_id: str, embeddings: list[float], metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Store embeddings with metadata
+        """Store embeddings with metadata
 
         Args:
             embedding_id: Unique identifier for embeddings
@@ -87,6 +84,7 @@ class HiveStorageService:
 
         Returns:
             Storage result
+
         """
         try:
             data = {
@@ -144,14 +142,14 @@ class HiveStorageService:
             return None
 
     async def log_moderation(self, log_entry: dict[str, Any]) -> bool:
-        """
-        Store moderation log entry
+        """Store moderation log entry
 
         Args:
             log_entry: Moderation log data
 
         Returns:
             Success status
+
         """
         try:
             log_id = f"mod_{datetime.utcnow().strftime('%Y%m%d_%H%M%S_%f')}"
@@ -180,8 +178,7 @@ class HiveStorageService:
         adapter_weights: dict[str, Any],
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Save MoE-CL adapter weights
+        """Save MoE-CL adapter weights
 
         Args:
             adapter_id: Adapter identifier
@@ -190,6 +187,7 @@ class HiveStorageService:
 
         Returns:
             Save result
+
         """
         try:
             data = {

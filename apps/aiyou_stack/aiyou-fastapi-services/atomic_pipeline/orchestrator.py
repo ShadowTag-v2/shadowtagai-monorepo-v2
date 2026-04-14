@@ -1,5 +1,4 @@
-"""
-Atomic Pipeline Orchestrator
+"""Atomic Pipeline Orchestrator
 =============================
 Multi-model orchestration for intelligent code generation.
 
@@ -113,8 +112,7 @@ class PipelineResult(BaseModel):
 
 
 class AtomicPipelineOrchestrator:
-    """
-    Orchestrator for the atomic code generation pipeline.
+    """Orchestrator for the atomic code generation pipeline.
 
     Implements multi-model flow:
     - Gemini 3 Pro → Design & Parse
@@ -180,8 +178,7 @@ class AtomicPipelineOrchestrator:
         requirements: str,
         context: dict[str, Any] | None = None,
     ) -> PipelineResult:
-        """
-        Run the full atomic pipeline.
+        """Run the full atomic pipeline.
 
         Args:
             requirements: Raw requirements or task description
@@ -189,6 +186,7 @@ class AtomicPipelineOrchestrator:
 
         Returns:
             PipelineResult with all task outcomes
+
         """
         pipeline_id = str(uuid.uuid4())[:8]
         start_time = datetime.utcnow()
@@ -268,8 +266,7 @@ class AtomicPipelineOrchestrator:
         requirements: str,
         context: dict[str, Any] | None = None,
     ) -> list[AtomicTask]:
-        """
-        INTAKE stage: Gemini 3 Pro parses and atomizes requirements.
+        """INTAKE stage: Gemini 3 Pro parses and atomizes requirements.
 
         "Slow is smooth" - Take time to properly understand requirements.
         """
@@ -307,8 +304,7 @@ class AtomicPipelineOrchestrator:
     # =========================================================================
 
     async def _stage_research(self, task: AtomicTask) -> AtomicTask:
-        """
-        RESEARCH stage: Perplexity Sonar performs deep research.
+        """RESEARCH stage: Perplexity Sonar performs deep research.
 
         Gathers documentation, best practices, and examples.
         """
@@ -346,8 +342,7 @@ class AtomicPipelineOrchestrator:
     # =========================================================================
 
     async def _stage_trends(self, task: AtomicTask) -> AtomicTask:
-        """
-        TRENDS stage: Grok analyzes X trends and business context.
+        """TRENDS stage: Grok analyzes X trends and business context.
 
         Applies current community preferences and best practices.
         """
@@ -380,8 +375,7 @@ class AtomicPipelineOrchestrator:
     # =========================================================================
 
     async def _stage_execution(self, task: AtomicTask) -> AtomicTask:
-        """
-        EXECUTION stage: n-autoresearch/Kosmos/BioAgents swarm executes the task.
+        """EXECUTION stage: n-autoresearch/Kosmos/BioAgents swarm executes the task.
 
         "Smooth is fast" - With good preparation, execution is swift.
         """
@@ -437,8 +431,7 @@ class AtomicPipelineOrchestrator:
     # =========================================================================
 
     async def _stage_publish(self, task: AtomicTask) -> AtomicTask:
-        """
-        PUBLISH stage: Output to Git, Vertex AI Workbench, Colab.
+        """PUBLISH stage: Output to Git, Vertex AI Workbench, Colab.
         """
         task.status = TaskStatus.PUBLISHING
 
@@ -492,8 +485,7 @@ class AtomicPipelineOrchestrator:
         framework: str = "React",
         style_system: str = "MUI",
     ) -> dict[str, Any]:
-        """
-        Frontend design using @omarsar0 pattern.
+        """Frontend design using @omarsar0 pattern.
 
         Gemini 3 Pro leads creative direction (~$0.087 per design).
         Returns design spec for Opus 4.5 integration.
@@ -505,6 +497,7 @@ class AtomicPipelineOrchestrator:
 
         Returns:
             Design specification for integration
+
         """
         # Gemini generates the design
         design_spec = await self._gemini.design_component(

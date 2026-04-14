@@ -1,5 +1,4 @@
-"""
-Unified Orchestrator: Best of Both Worlds
+"""Unified Orchestrator: Best of Both Worlds
 
 Combines Gemini's native function calling with Anthropic's superior reasoning:
 - Gemini: Fast function calling (12x faster, 70% cheaper)
@@ -65,8 +64,7 @@ class UnifiedResult:
 
 
 class UnifiedOrchestrator:
-    """
-    Unified orchestrator combining Gemini + Anthropic.
+    """Unified orchestrator combining Gemini + Anthropic.
 
     Routing strategy:
     1. SIMPLE tasks → Gemini function calling only
@@ -96,6 +94,7 @@ class UnifiedOrchestrator:
             complexity="hybrid"
         )
         ```
+
     """
 
     def __init__(
@@ -107,8 +106,7 @@ class UnifiedOrchestrator:
         enable_auto_routing: bool = True,
         default_complexity: TaskComplexity = TaskComplexity.MODERATE,
     ):
-        """
-        Initialize unified orchestrator.
+        """Initialize unified orchestrator.
 
         Args:
             function_caller: Optional GeminiFunctionCaller instance
@@ -117,6 +115,7 @@ class UnifiedOrchestrator:
             judge_validator: Optional custom validation function
             enable_auto_routing: Automatically detect task complexity
             default_complexity: Default complexity if not specified
+
         """
         self.function_caller = function_caller
         self.llm_executor = llm_executor or MultiProviderExecutor()
@@ -138,8 +137,7 @@ class UnifiedOrchestrator:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> UnifiedResult:
-        """
-        Execute task with automatic provider routing.
+        """Execute task with automatic provider routing.
 
         Args:
             task: Task description
@@ -152,6 +150,7 @@ class UnifiedOrchestrator:
 
         Returns:
             UnifiedResult with content, metrics, costs
+
         """
         start_time = time.time()
         context = context or {}
@@ -184,8 +183,7 @@ class UnifiedOrchestrator:
         return result
 
     def _detect_complexity(self, task: str) -> TaskComplexity:
-        """
-        Detect task complexity from task description.
+        """Detect task complexity from task description.
 
         Uses heuristics:
         - Simple: Single action, simple verbs
@@ -254,8 +252,7 @@ class UnifiedOrchestrator:
         temperature: float | None,
         max_tokens: int | None,
     ) -> UnifiedResult:
-        """
-        Execute simple task (prefer Gemini for speed/cost).
+        """Execute simple task (prefer Gemini for speed/cost).
 
         Strategy: Single LLM call or simple function calling.
         """
@@ -308,7 +305,7 @@ class UnifiedOrchestrator:
                     "model": response.model,
                     "latency_ms": response.latency_ms,
                     "cost_usd": response.cost_usd,
-                }
+                },
             ],
         )
 
@@ -320,8 +317,7 @@ class UnifiedOrchestrator:
         temperature: float | None,
         max_tokens: int | None,
     ) -> UnifiedResult:
-        """
-        Execute complex reasoning task (prefer Anthropic).
+        """Execute complex reasoning task (prefer Anthropic).
 
         Strategy: Use Anthropic's superior CoT and reasoning capabilities.
         """
@@ -363,7 +359,7 @@ class UnifiedOrchestrator:
                     "model": response.model,
                     "latency_ms": response.latency_ms,
                     "cost_usd": response.cost_usd,
-                }
+                },
             ],
         )
 
@@ -375,8 +371,7 @@ class UnifiedOrchestrator:
         temperature: float | None,
         max_tokens: int | None,
     ) -> UnifiedResult:
-        """
-        Execute hybrid task (Anthropic plans, Gemini executes).
+        """Execute hybrid task (Anthropic plans, Gemini executes).
 
         Strategy:
         1. Use Anthropic to create execution plan
@@ -417,7 +412,7 @@ FINAL: [synthesis]"""
                 "latency_ms": plan_response.latency_ms,
                 "cost_usd": plan_response.cost_usd,
                 "content": plan_response.content,
-            }
+            },
         )
 
         total_cost += plan_response.cost_usd
@@ -438,7 +433,7 @@ FINAL: [synthesis]"""
                         "function_calls": metrics["function_calls"],
                         "latency_ms": metrics["total_latency_ms"],
                         "content": execution_result,
-                    }
+                    },
                 )
             except Exception:
                 # Fallback to direct LLM call
@@ -463,7 +458,7 @@ FINAL: [synthesis]"""
                         "model": exec_response.model,
                         "latency_ms": exec_response.latency_ms,
                         "cost_usd": exec_response.cost_usd,
-                    }
+                    },
                 )
         else:
             # No function caller, use Gemini LLM
@@ -488,7 +483,7 @@ FINAL: [synthesis]"""
                     "model": exec_response.model,
                     "latency_ms": exec_response.latency_ms,
                     "cost_usd": exec_response.cost_usd,
-                }
+                },
             )
 
         # Step 3: Anthropic synthesizes final result
@@ -516,7 +511,7 @@ Provide a clear, concise final answer."""
                 "latency_ms": final_response.latency_ms,
                 "cost_usd": final_response.cost_usd,
                 "content": final_response.content,
-            }
+            },
         )
 
         total_cost += final_response.cost_usd
@@ -548,8 +543,7 @@ Provide a clear, concise final answer."""
         temperature: float | None,
         max_tokens: int | None,
     ) -> UnifiedResult:
-        """
-        Execute moderate task (auto-select provider).
+        """Execute moderate task (auto-select provider).
 
         Strategy: Let MultiProviderExecutor choose based on task type.
         """
@@ -580,7 +574,7 @@ Provide a clear, concise final answer."""
                     "model": response.model,
                     "latency_ms": response.latency_ms,
                     "cost_usd": response.cost_usd,
-                }
+                },
             ],
         )
 
@@ -597,7 +591,7 @@ Provide a clear, concise final answer."""
 
         total_cost = sum(r.total_cost_usd for r in self.execution_history)
         avg_latency = sum(r.total_latency_ms for r in self.execution_history) / len(
-            self.execution_history
+            self.execution_history,
         )
 
         # Provider distribution

@@ -1,5 +1,4 @@
-"""
-Governance API endpoints
+"""Governance API endpoints
 Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 """
 
@@ -27,8 +26,7 @@ batch_engine = get_batch_engine()
 
 @router.post("/assess", response_model=GovernanceAssessmentResponse)
 async def assess_governance(request: GovernanceAssessmentRequest):
-    """
-    Comprehensive governance assessment across multiple frameworks
+    """Comprehensive governance assessment across multiple frameworks
 
     Assesses content against:
     - EU AI Act (risk classification, transparency)
@@ -42,14 +40,13 @@ async def assess_governance(request: GovernanceAssessmentRequest):
     result = await governance_engine.assess(request)
 
     return GovernanceAssessmentResponse(
-        assessment_id=assessment_id, timestamp=datetime.utcnow(), **result
+        assessment_id=assessment_id, timestamp=datetime.utcnow(), **result,
     )
 
 
 @router.post("/eu-ai-act/assess", response_model=EUAIActAssessment)
 async def assess_eu_ai_act(request: GovernanceAssessmentRequest):
-    """
-    EU AI Act specific assessment
+    """EU AI Act specific assessment
 
     Determines:
     - Risk classification (unacceptable, high, limited, minimal)
@@ -64,8 +61,7 @@ async def assess_eu_ai_act(request: GovernanceAssessmentRequest):
 
 @router.post("/nist-rmf/assess", response_model=NISTRMFAssessment)
 async def assess_nist_rmf(request: GovernanceAssessmentRequest):
-    """
-    NIST AI Risk Management Framework assessment
+    """NIST AI Risk Management Framework assessment
 
     Evaluates across four functions:
     - GOVERN: Policies, processes, roles
@@ -79,8 +75,7 @@ async def assess_nist_rmf(request: GovernanceAssessmentRequest):
 
 @router.post("/iso-42001/assess", response_model=ISO42001Assessment)
 async def assess_iso_42001(request: GovernanceAssessmentRequest):
-    """
-    ISO/IEC 42001 AI Management System assessment
+    """ISO/IEC 42001 AI Management System assessment
 
     Evaluates 7 clauses:
     - Context of the organization
@@ -178,8 +173,7 @@ async def assess_batch_governance(
     top_k_violations: int = None,
     similarity_threshold: float = 0.8,
 ):
-    """
-    Batch governance assessment with MCP efficiency patterns
+    """Batch governance assessment with MCP efficiency patterns
 
     Efficiently assess 100s-1000s of items using:
     - Progressive disclosure (98.7% token reduction)
@@ -232,6 +226,7 @@ async def assess_batch_governance(
                 "cost_usd": 0.0056
             }
         }
+
     """
     try:
         # Execute batch assessment
@@ -268,5 +263,5 @@ async def assess_batch_governance(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Batch assessment failed: {str(e)}",
+            detail=f"Batch assessment failed: {e!s}",
         )

@@ -1,5 +1,4 @@
-"""
-Reviewer Agent - Specialist in code review, quality analysis, and security.
+"""Reviewer Agent - Specialist in code review, quality analysis, and security.
 
 Focuses on identifying issues, suggesting improvements, and ensuring best practices.
 """
@@ -8,8 +7,7 @@ from src.agents.base_agent import BaseAgent
 
 
 class ReviewerAgent(BaseAgent):
-    """
-    Reviewer agent specialized in code quality and security review.
+    """Reviewer agent specialized in code quality and security review.
 
     This agent reviews code for quality, security vulnerabilities, performance
     issues, and adherence to best practices.

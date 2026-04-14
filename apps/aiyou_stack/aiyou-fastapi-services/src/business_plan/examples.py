@@ -1,5 +1,4 @@
-"""
-Business Plan Module - Usage Examples
+"""Business Plan Module - Usage Examples
 Demonstrates querying metrics, verticals, tech stack, and context restoration
 """
 
@@ -57,7 +56,7 @@ def example_2_verticals():
         print(f"  {v.priority}. {v.name}")
         print(
             f"     ${v.monthly_price}/mo | {v.target_customers} customers | "
-            f"${v.mrr_contribution:,} MRR"
+            f"${v.mrr_contribution:,} MRR",
         )
 
     print(f"\nTotal MRR Target: ${get_total_mrr():,}")
@@ -144,7 +143,7 @@ def example_6_constraints():
     print(f"  Max function length: {DEV_CONSTRAINTS.max_function_length} lines")
     print(f"  Min test coverage: {DEV_CONSTRAINTS.test_coverage_minimum * 100:.0f}%")
     print(
-        f"  External libs: {'Approval required' if DEV_CONSTRAINTS.external_libraries_approval else 'Allowed'}"
+        f"  External libs: {'Approval required' if DEV_CONSTRAINTS.external_libraries_approval else 'Allowed'}",
     )
 
     print("\nShipping Philosophy:")

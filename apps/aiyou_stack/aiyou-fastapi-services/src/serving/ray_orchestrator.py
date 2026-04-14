@@ -6,8 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 class RayOrchestrator:
-    """
-    Ray Serve orchestrator for distributed multi-model serving.
+    """Ray Serve orchestrator for distributed multi-model serving.
 
     Aegaeon uses Ray for:
     - Distributed model deployment
@@ -73,8 +72,7 @@ class RayOrchestrator:
         return self._initialized
 
     async def deploy_model(self, model_name: str, backend: any):
-        """
-        Deploy a model using Ray Serve.
+        """Deploy a model using Ray Serve.
 
         In production, this would create a Ray Serve deployment
         that auto-scales based on request load.

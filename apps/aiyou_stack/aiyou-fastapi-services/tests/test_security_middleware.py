@@ -1,5 +1,4 @@
-"""
-Security Middleware Tests
+"""Security Middleware Tests
 
 Tests for rate limiting, security headers, and request validation
 """
@@ -40,7 +39,7 @@ class TestRateLimitMiddleware:
     def test_rate_limit_allows_within_limit(self, basic_app):
         """Test requests within rate limit are allowed"""
         basic_app.add_middleware(
-            RateLimitMiddleware, requests_per_minute=60, burst=10, enabled=True
+            RateLimitMiddleware, requests_per_minute=60, burst=10, enabled=True,
         )
 
         client = TestClient(basic_app)
@@ -272,7 +271,7 @@ class TestMiddlewareIntegration:
         # Add all middleware (order matters!)
         basic_app.add_middleware(RequestValidationMiddleware)
         basic_app.add_middleware(
-            RateLimitMiddleware, requests_per_minute=60, burst=10, enabled=True
+            RateLimitMiddleware, requests_per_minute=60, burst=10, enabled=True,
         )
         basic_app.add_middleware(SecurityHeadersMiddleware)
 

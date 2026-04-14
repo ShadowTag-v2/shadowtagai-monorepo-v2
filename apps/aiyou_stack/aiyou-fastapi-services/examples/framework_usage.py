@@ -1,5 +1,4 @@
-"""
-Example Usage: ShadowTag-v2JR Core Framework
+"""Example Usage: ShadowTag-v2JR Core Framework
 Demonstrates PRISM kernel, business plan, risk assessment, and context management
 
 Author: ShadowTag-v2JR System
@@ -163,7 +162,7 @@ def example_code_validation():
     print("\nValidating good code:")
     result = framework.validate_code(function_lines=15, test_coverage=0.85)
     print(
-        f"  Function length (15 lines): {'✅ PASS' if result['function_length_valid'] else '❌ FAIL'}"
+        f"  Function length (15 lines): {'✅ PASS' if result['function_length_valid'] else '❌ FAIL'}",
     )
     print(f"  Test coverage (85%): {'✅ PASS' if result['test_coverage_valid'] else '❌ FAIL'}")
 
@@ -171,7 +170,7 @@ def example_code_validation():
     print("\nValidating problematic code:")
     result = framework.validate_code(function_lines=30, test_coverage=0.60)
     print(
-        f"  Function length (30 lines): {'✅ PASS' if result['function_length_valid'] else '❌ FAIL'}"
+        f"  Function length (30 lines): {'✅ PASS' if result['function_length_valid'] else '❌ FAIL'}",
     )
     print(f"  Test coverage (60%): {'✅ PASS' if result['test_coverage_valid'] else '❌ FAIL'}")
     print("\n  Constraints:")

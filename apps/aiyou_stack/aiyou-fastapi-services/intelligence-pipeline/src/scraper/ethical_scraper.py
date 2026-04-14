@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Ethical Web Scraper
+"""PNKLN Intelligence Pipeline - Ethical Web Scraper
 ATP 5-19 RA-1 Compliant | RFC 9309 robots.txt Compliance
 
 This module implements responsible web scraping with:
@@ -29,8 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 class EthicalScraper:
-    """
-    ATP 5-19 RA-1 compliant web scraper with robots.txt respect
+    """ATP 5-19 RA-1 compliant web scraper with robots.txt respect
 
     Features:
     - RFC 9309 compliant robots.txt parsing
@@ -41,11 +39,11 @@ class EthicalScraper:
     """
 
     def __init__(self, config: dict):
-        """
-        Initialize ethical scraper with configuration
+        """Initialize ethical scraper with configuration
 
         Args:
             config: Dictionary containing scraping ethics configuration
+
         """
         self.config = config
         self.robots_cache: dict[str, tuple[RobotFileParser, datetime]] = {}
@@ -56,8 +54,7 @@ class EthicalScraper:
         logger.info("EthicalScraper initialized with ATP 5-19 RA-1 compliance")
 
     async def fetch_url(self, url: str, headers: dict | None = None) -> str | None:
-        """
-        Fetch URL with full ethical compliance
+        """Fetch URL with full ethical compliance
 
         ATP 5-19 Risk Mitigation:
         - RA-4 (Extremely High): Violating robots.txt, DDoS
@@ -69,6 +66,7 @@ class EthicalScraper:
 
         Returns:
             Page content as string, or None if blocked/failed
+
         """
         domain = urlparse(url).netloc
 
@@ -105,8 +103,7 @@ class EthicalScraper:
                             logger.warning(f"⚠️  Rate limited on {domain}, waiting {retry_after}s")
                             await asyncio.sleep(retry_after)
                             return await self.fetch_url(url, headers)  # Retry once
-                        else:
-                            return None
+                        return None
 
                     # Handle server errors
                     if response.status >= 500:
@@ -140,14 +137,14 @@ class EthicalScraper:
             return None
 
     async def is_allowed(self, url: str) -> bool:
-        """
-        Check robots.txt with 24h caching per RFC 9309
+        """Check robots.txt with 24h caching per RFC 9309
 
         Args:
             url: URL to check
 
         Returns:
             True if allowed, False if disallowed
+
         """
         domain = urlparse(url).netloc
         robots_url = f"https://{domain}/robots.txt"
@@ -188,14 +185,14 @@ class EthicalScraper:
             return False
 
     async def get_crawl_delay(self, domain: str) -> float:
-        """
-        Extract crawl-delay from robots.txt or use defaults
+        """Extract crawl-delay from robots.txt or use defaults
 
         Args:
             domain: Domain to check
 
         Returns:
             Crawl delay in seconds
+
         """
         if domain not in self.robots_cache:
             # Populate cache by checking a dummy URL
@@ -224,12 +221,12 @@ class EthicalScraper:
         return default
 
     async def apply_rate_limit(self, domain: str, crawl_delay: float):
-        """
-        Enforce crawl-delay with adaptive jitter to prevent thundering herd
+        """Enforce crawl-delay with adaptive jitter to prevent thundering herd
 
         Args:
             domain: Domain being accessed
             crawl_delay: Base delay in seconds
+
         """
         if domain in self.last_request:
             elapsed = time.time() - self.last_request[domain]
@@ -245,14 +242,14 @@ class EthicalScraper:
         self.last_request[domain] = time.time()
 
     def is_circuit_open(self, domain: str) -> bool:
-        """
-        Circuit breaker pattern for sustained failures
+        """Circuit breaker pattern for sustained failures
 
         Args:
             domain: Domain to check
 
         Returns:
             True if circuit is open (domain unavailable)
+
         """
         if domain not in self.circuit_breakers:
             return False
@@ -273,11 +270,11 @@ class EthicalScraper:
         return False
 
     def record_failure(self, domain: str):
-        """
-        Record failure for circuit breaker
+        """Record failure for circuit breaker
 
         Args:
             domain: Domain that failed
+
         """
         if domain not in self.circuit_breakers:
             self.circuit_breakers[domain] = (1, datetime.now())
@@ -288,22 +285,22 @@ class EthicalScraper:
             logger.warning(f"Recorded failure #{failures + 1} for {domain}")
 
     def reset_circuit(self, domain: str):
-        """
-        Reset circuit breaker on success
+        """Reset circuit breaker on success
 
         Args:
             domain: Domain that succeeded
+
         """
         if domain in self.circuit_breakers:
             logger.info(f"✓ Resetting circuit breaker for {domain}")
             del self.circuit_breakers[domain]
 
     def get_stats(self) -> dict:
-        """
-        Get scraping statistics for monitoring
+        """Get scraping statistics for monitoring
 
         Returns:
             Dictionary with scraping stats
+
         """
         return {
             "total_requests": sum(self.request_counts.values()),

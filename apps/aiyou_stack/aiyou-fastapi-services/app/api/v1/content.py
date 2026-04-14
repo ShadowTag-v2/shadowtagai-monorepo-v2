@@ -1,5 +1,4 @@
-"""
-Content provenance API endpoints
+"""Content provenance API endpoints
 Implements C2PA content credentials and provenance tracking
 """
 
@@ -22,8 +21,7 @@ content_engine = ContentEngine()
 
 @router.post("/c2pa/verify", response_model=C2PAVerificationResponse)
 async def verify_c2pa(request: C2PAVerificationRequest):
-    """
-    Verify C2PA content credentials
+    """Verify C2PA content credentials
 
     Checks:
     - Content authenticity
@@ -39,8 +37,7 @@ async def verify_c2pa(request: C2PAVerificationRequest):
 
 @router.post("/provenance/create", response_model=ContentProvenanceResponse)
 async def create_provenance(request: ContentProvenanceRequest):
-    """
-    Create content provenance record
+    """Create content provenance record
 
     Records:
     - Content creation/modification
@@ -84,8 +81,7 @@ async def list_manifest_actions():
 
 @router.post("/credentials/attach")
 async def attach_credentials(content_id: str, creator_id: str):
-    """
-    Attach C2PA credentials to content
+    """Attach C2PA credentials to content
 
     Generates and embeds:
     - Content credentials
@@ -105,8 +101,7 @@ async def get_credential_status(content_id: str):
 
 @router.post("/watermark", response_model=WatermarkResponse)
 async def watermark_content(request: WatermarkRequest):
-    """
-    Watermark content using ShadowTag v2.0
+    """Watermark content using ShadowTag v2.0
 
     Embeds:
     - DCT coefficient watermark (Video)

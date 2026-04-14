@@ -22,8 +22,7 @@ logger = logging.getLogger("SPM-ADK-Loop")
 
 
 class SPMEngine:
-    """
-    ADK Pattern Implementation: Coordinator + Loop.
+    """ADK Pattern Implementation: Coordinator + Loop.
 
     PATTERNS:
     1. Coordinator (Dispatcher): SPMEngine routes between GCA (Gen) and minion (Tools).
@@ -50,8 +49,7 @@ class SPMEngine:
         self.genkit.register_flow("spm_refinement_loop", self.run_pipeline)
 
     def run_pipeline(self, user_prompt: str, max_iterations: int = 4) -> dict[str, Any]:
-        """
-        Executes the 'Iterative Refinement' Loop (ADK Pattern #6).
+        """Executes the 'Iterative Refinement' Loop (ADK Pattern #6).
         """
         logger.info(f"🔄 STARTING SPM ADK LOOP (Max Iters: {max_iterations})")
 
@@ -75,7 +73,7 @@ class SPMEngine:
 
             # C. Generator Step: Suggest Prompts
             suggestions = self._gca_suggest_prompts(
-                context="\n".join(context_chain), rules=memory_rules
+                context="\n".join(context_chain), rules=memory_rules,
             )
 
             # D. Critic Step: Judge #6 Scrutiny
@@ -119,8 +117,7 @@ class SPMEngine:
         return resp.text
 
     def _dispatch_monkeys(self, task: str) -> str:
-        """
-        Uses Jetski (if available) and CavMTOE to vote/execute.
+        """Uses Jetski (if available) and CavMTOE to vote/execute.
         """
         jetski_out = "N/A"
         if self.jetski:
@@ -150,5 +147,5 @@ class SPMEngine:
 
     def _gca_write_code(self, prompts: list[str], current_code: str) -> str:
         return self.gca_model.generate_content(
-            f"Update code based on: {prompts}\nCurrent Code:\n{current_code}"
+            f"Update code based on: {prompts}\nCurrent Code:\n{current_code}",
         ).text

@@ -1,5 +1,4 @@
-"""
-LegalWhiteboard - The "Never Resting" memory latch.
+"""LegalWhiteboard - The "Never Resting" memory latch.
 Records agent evolution. Single Point of Truth.
 """
 

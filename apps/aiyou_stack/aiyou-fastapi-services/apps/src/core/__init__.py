@@ -1,5 +1,4 @@
-"""
-ShadowTag-v2JR Core Framework
+"""ShadowTag-v2JR Core Framework
 PRISM Kernel, Business Plan, Operating Framework, and Context Management
 
 Author: ShadowTag-v2JR System
@@ -83,8 +82,8 @@ from .gemini_function_calling import (
 )
 
 __all__ = [
-    "GeminiFunctionCaller",
-    "FunctionTool",
-    "FunctionResult",
     "FunctionRegistry",
+    "FunctionResult",
+    "FunctionTool",
+    "GeminiFunctionCaller",
 ]

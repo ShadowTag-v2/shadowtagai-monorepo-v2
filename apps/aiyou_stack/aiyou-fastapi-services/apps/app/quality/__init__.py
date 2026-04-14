@@ -2,4 +2,4 @@
 
 from .sonar_client import Issue, QualityGateStatus, SonarQubeClient
 
-__all__ = ["SonarQubeClient", "QualityGateStatus", "Issue"]
+__all__ = ["Issue", "QualityGateStatus", "SonarQubeClient"]

@@ -1,5 +1,4 @@
-"""
-Stripe Webhook Simulation — ShadowTag-v4
+"""Stripe Webhook Simulation — ShadowTag-v4
 
 Simulates incoming Stripe webhook events to validate
 the local FastAPI endpoint handler parses correctly.
@@ -61,7 +60,7 @@ def simulate_checkout_completed() -> dict:
                     "user_id": "usr_shadowtag_test_001",
                     "product": "ShadowTag AI Pro",
                 },
-            }
+            },
         },
         "livemode": False,
         "api_version": "2025-03-31.basil",
@@ -87,7 +86,7 @@ def simulate_invoice_payment_succeeded() -> dict:
                 "billing_reason": "subscription_cycle",
                 "period_start": int(time.time()) - 2592000,
                 "period_end": int(time.time()),
-            }
+            },
         },
         "livemode": False,
         "api_version": "2025-03-31.basil",
@@ -116,11 +115,11 @@ def simulate_subscription_deleted() -> dict:
                                 "id": "price_test_pro_monthly",
                                 "unit_amount": 2900,
                                 "currency": "usd",
-                            }
-                        }
-                    ]
+                            },
+                        },
+                    ],
                 },
-            }
+            },
         },
         "livemode": False,
         "api_version": "2025-03-31.basil",
@@ -195,7 +194,7 @@ def main():
         simulate_subscription_deleted(),
     ]
 
-    print(f"\n🔧 Stripe Webhook Simulator — ShadowTag-v4")
+    print("\n🔧 Stripe Webhook Simulator — ShadowTag-v4")
     print(f"   Target: {args.target}")
     print(f"   Events: {len(events)}")
     print(f"   Time: {datetime.utcnow().isoformat()}Z")
@@ -213,7 +212,7 @@ def main():
         results.append(result)
 
     print(f"\n{'='*60}")
-    print(f"📊 Summary:")
+    print("📊 Summary:")
     for r in results:
         icon = "✅" if r["success"] else "❌"
         print(f"   {icon} {r['event_type']}: HTTP {r['status_code']}")

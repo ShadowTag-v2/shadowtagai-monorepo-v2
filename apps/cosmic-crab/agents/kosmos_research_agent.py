@@ -2,16 +2,16 @@
 import asyncio
 import logging
 
-from agents.legal_whiteboard import whiteboard
 from scripts.deep_research_loop import DeepResearchLoop
+
+from agents.legal_whiteboard import whiteboard
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("KosmosSwarm")
 
 
 class KosmosSwarmOrchestrator:
-    """
-    ShadowTag Omega V7 Kosmos Swarm Orchestrator
+    """ShadowTag Omega V7 Kosmos Swarm Orchestrator
     Implements the multi-agent discovery architecture: Director, Analyst, and Designer.
     """
 
@@ -37,7 +37,7 @@ class KosmosSwarmOrchestrator:
 
         # 4. Record as Memory Beads
         self.whiteboard.record_bead(
-            insight=synthesis, source="kosmos_swarm", thinking_trace=str(results)
+            insight=synthesis, source="kosmos_swarm", thinking_trace=str(results),
         )
 
         logger.info("🎯 KOSMOS SWARM: All agents reported back. Objective secured.")

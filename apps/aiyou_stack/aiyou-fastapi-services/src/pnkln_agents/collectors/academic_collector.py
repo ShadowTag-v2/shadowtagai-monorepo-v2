@@ -1,5 +1,4 @@
-"""
-Academic arXiv Collector
+"""Academic arXiv Collector
 Collects research papers from arXiv.org
 """
 
@@ -18,8 +17,7 @@ from .base import BaseCollector
 
 
 class AcademicCollector(BaseCollector):
-    """
-    arXiv.org academic paper collector
+    """arXiv.org academic paper collector
 
     Pricing: FREE
     Rate Limits: 1 request per 3 seconds (to be respectful)
@@ -35,8 +33,7 @@ class AcademicCollector(BaseCollector):
         self.cost_per_request = 0.0  # arXiv is free
 
     def collect(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect research papers from arXiv
+        """Collect research papers from arXiv
 
         Searches for AI/ML papers from past 30 days
         """
@@ -44,7 +41,7 @@ class AcademicCollector(BaseCollector):
 
         try:
             query = self.config.get(
-                "search_query", "cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.CV"
+                "search_query", "cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.CV",
             )
             max_results = min(target_count, 100)
 
@@ -115,9 +112,8 @@ class AcademicCollector(BaseCollector):
 
         if age_days <= 7:
             return 1.0
-        elif age_days <= 14:
+        if age_days <= 14:
             return 0.9
-        elif age_days <= 30:
+        if age_days <= 30:
             return 0.7
-        else:
-            return 0.5
+        return 0.5

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-MCP Code Execution Server for Judge #6 v2.0
+"""MCP Code Execution Server for Judge #6 v2.0
 Production-grade FastAPI implementation with gVisor sandbox integration
 
 Security Features:
@@ -47,7 +46,7 @@ except ImportError:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -143,7 +142,7 @@ class CodeExecutionRequest(BaseModel):
     user_id: str = Field(..., description="User ID for audit logging")
     session_id: str = Field(..., description="Session ID for request correlation")
     context: dict[str, Any] | None = Field(
-        default_factory=dict, description="Variables to inject into execution context"
+        default_factory=dict, description="Variables to inject into execution context",
     )
     timeout_seconds: int | None = Field(default=config.SANDBOX_TIMEOUT_SECONDS, ge=1, le=60)
 
@@ -193,8 +192,7 @@ class SecurityValidator:
 
     @staticmethod
     def validate_ast(code: str) -> tuple[bool, list[str]]:
-        """
-        Validate code using Abstract Syntax Tree analysis.
+        """Validate code using Abstract Syntax Tree analysis.
         Returns: (is_valid, list_of_violations)
         """
         violations = []
@@ -232,8 +230,7 @@ class SecurityValidator:
 
     @staticmethod
     def validate_patterns(code: str) -> tuple[bool, list[str]]:
-        """
-        Regex-based validation for obfuscated attacks.
+        """Regex-based validation for obfuscated attacks.
         Returns: (is_valid, list_of_violations)
         """
         violations = []
@@ -246,8 +243,7 @@ class SecurityValidator:
 
     @classmethod
     def validate(cls, code: str) -> tuple[bool, dict[str, bool], list[str]]:
-        """
-        Run all security validations.
+        """Run all security validations.
         Returns: (is_valid, checks_passed, all_violations)
         """
         ast_valid, ast_violations = cls.validate_ast(code)
@@ -271,8 +267,7 @@ class SecurityValidator:
 
 
 class SandboxManager:
-    """
-    Manages sandboxed code execution using gVisor (runsc runtime).
+    """Manages sandboxed code execution using gVisor (runsc runtime).
 
     In production, this would interface with:
     - Docker API (with runsc runtime)
@@ -326,10 +321,9 @@ class SandboxManager:
             logger.debug(f"Pool full, destroying {sandbox_id}")
 
     async def execute(
-        self, code: str, context: dict[str, Any], timeout_seconds: int
+        self, code: str, context: dict[str, Any], timeout_seconds: int,
     ) -> tuple[bool, Any, str | None, dict[str, float]]:
-        """
-        Execute code in gVisor sandbox.
+        """Execute code in gVisor sandbox.
 
         Returns: (success, result, error, resource_usage)
 
@@ -377,7 +371,7 @@ class SandboxManager:
 
             # Execute with timeout
             await asyncio.wait_for(
-                asyncio.to_thread(exec, code, restricted_globals), timeout=timeout_seconds
+                asyncio.to_thread(exec, code, restricted_globals), timeout=timeout_seconds,
             )
 
             # Extract result (if code set a 'result' variable)
@@ -406,7 +400,7 @@ class SandboxManager:
             return (
                 False,
                 None,
-                f"Execution error: {str(e)}",
+                f"Execution error: {e!s}",
                 {"execution_time_ms": execution_time * 1000},
             )
 
@@ -500,8 +494,7 @@ app = FastAPI(
 
 @app.post("/execute", response_model=CodeExecutionResponse)
 async def execute_code(request: CodeExecutionRequest) -> CodeExecutionResponse:
-    """
-    Execute Python code in a sandboxed gVisor container.
+    """Execute Python code in a sandboxed gVisor container.
 
     Security:
     - AST validation (no dangerous imports/functions)
@@ -539,7 +532,7 @@ async def execute_code(request: CodeExecutionRequest) -> CodeExecutionResponse:
                 security_violations=security_violations,
                 resource_usage={},
                 sandbox_id=None,
-            )
+            ),
         )
 
         raise HTTPException(
@@ -553,7 +546,7 @@ async def execute_code(request: CodeExecutionRequest) -> CodeExecutionResponse:
 
     # Step 2: Execute in sandbox
     success, result, error, resource_usage = await sandbox_manager.execute(
-        code=request.code, context=request.context, timeout_seconds=request.timeout_seconds
+        code=request.code, context=request.context, timeout_seconds=request.timeout_seconds,
     )
 
     execution_time_ms = (time.time() - start_time) * 1000
@@ -576,7 +569,7 @@ async def execute_code(request: CodeExecutionRequest) -> CodeExecutionResponse:
             security_violations=security_violations,
             resource_usage=resource_usage,
             sandbox_id="sandbox-001",  # Would be real sandbox ID in production
-        )
+        ),
     )
 
     return CodeExecutionResponse(

@@ -15,8 +15,7 @@ async def create_user(
     user: UserCreate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Create a new user
+    """Create a new user
 
     Creates a user profile for tracking analytics.
     """
@@ -38,8 +37,7 @@ async def get_user(
     user_id: str,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get user by ID
+    """Get user by ID
 
     Retrieve detailed information about a specific user.
     """
@@ -60,8 +58,7 @@ async def update_user(
     user_data: UserUpdate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Update user information
+    """Update user information
 
     Update user properties, segment, cohort, or other attributes.
     """
@@ -85,8 +82,7 @@ async def list_users(
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    List users with filtering
+    """List users with filtering
 
     Retrieve a list of users, optionally filtered by segment, cohort, or active status.
     """
@@ -104,8 +100,7 @@ async def list_users(
 
 @router.get("/meta/segments")
 async def get_segments(db: AsyncSession = Depends(get_db)):
-    """
-    Get all user segments
+    """Get all user segments
 
     Returns a list of all unique user segments.
     """
@@ -116,8 +111,7 @@ async def get_segments(db: AsyncSession = Depends(get_db)):
 
 @router.get("/meta/cohorts")
 async def get_cohorts(db: AsyncSession = Depends(get_db)):
-    """
-    Get all user cohorts
+    """Get all user cohorts
 
     Returns a list of all unique user cohorts.
     """

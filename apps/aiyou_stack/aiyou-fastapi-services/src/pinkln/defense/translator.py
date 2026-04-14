@@ -1,5 +1,4 @@
-"""
-Pinkln Defense Translator
+"""Pinkln Defense Translator
 Translates Commercial Strategy/Terminology into DoD/Mil-Spec Language.
 
 "We speak Silicon Valley to investors, but Pentagon to the Generals."

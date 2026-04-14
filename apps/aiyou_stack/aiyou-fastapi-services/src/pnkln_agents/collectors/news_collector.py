@@ -1,5 +1,4 @@
-"""
-News API Collector
+"""News API Collector
 Collects news articles using NewsAPI.org
 """
 
@@ -19,8 +18,7 @@ from .base import BaseCollector
 
 
 class NewsCollector(BaseCollector):
-    """
-    NewsAPI.org collector
+    """NewsAPI.org collector
 
     Pricing: Free for 100 requests/day, Developer plan $449/mo for 250K requests
     Rate Limits: 100 requests/day (free), 1000 requests/day (paid)
@@ -39,8 +37,7 @@ class NewsCollector(BaseCollector):
         self.cost_per_request = 0.002  # $449/mo for 250K = $0.0018/request
 
     def collect(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect news articles from NewsAPI
+        """Collect news articles from NewsAPI
 
         Searches for AI-related news from past 7 days
         """
@@ -48,7 +45,7 @@ class NewsCollector(BaseCollector):
 
         try:
             query = self.config.get(
-                "search_query", 'AI OR "artificial intelligence" OR "machine learning"'
+                "search_query", 'AI OR "artificial intelligence" OR "machine learning"',
             )
             from_date = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
             page_size = min(target_count, 100)  # NewsAPI limit
@@ -133,11 +130,10 @@ class NewsCollector(BaseCollector):
 
             if age_days <= 1:
                 return 1.0
-            elif age_days <= 3:
+            if age_days <= 3:
                 return 0.9
-            elif age_days <= 7:
+            if age_days <= 7:
                 return 0.7
-            else:
-                return 0.5
+            return 0.5
         except:
             return 0.5

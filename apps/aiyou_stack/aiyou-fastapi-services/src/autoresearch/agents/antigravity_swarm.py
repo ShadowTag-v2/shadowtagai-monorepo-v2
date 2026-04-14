@@ -1,5 +1,4 @@
-"""
-Antigravity Swarm - Judge #6 Governed Agent Orchestration
+"""Antigravity Swarm - Judge #6 Governed Agent Orchestration
 
 Purpose: ShadowTag-v2JR doctrine enforcement
 Reason: SOP compliance + research delta application
@@ -119,8 +118,7 @@ logger = logging.getLogger(__name__)
 
 
 class AntigravitySwarm(minion):
-    """
-    Judge #6 governed agent swarm.
+    """Judge #6 governed agent swarm.
 
     Extends minion with Antigravity doctrine:
     - Purpose: ShadowTag-v2JR mission alignment
@@ -219,7 +217,7 @@ class AntigravitySwarm(minion):
                         "decision": decision,
                         "score": score,
                         "context": context,
-                    }
+                    },
                 )
 
         except AttributeError as e:

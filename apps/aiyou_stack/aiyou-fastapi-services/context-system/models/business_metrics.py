@@ -1,5 +1,4 @@
-"""
-PART 2: BUSINESS METRICS & UNIT ECONOMICS
+"""PART 2: BUSINESS METRICS & UNIT ECONOMICS
 Key Parameters & Variables
 """
 
@@ -73,15 +72,15 @@ class VerticalRevenueTargets:
             target_customers=15,  # 30% of customer base
         ),
         "content_repurposing": VerticalMetrics(
-            monthly_price=800, setup_fee=2000, target_customers=10
+            monthly_price=800, setup_fee=2000, target_customers=10,
         ),
         "customer_support": VerticalMetrics(monthly_price=2000, setup_fee=8000, target_customers=8),
         "meeting_intelligence": VerticalMetrics(
-            monthly_price=1200, setup_fee=3000, target_customers=12
+            monthly_price=1200, setup_fee=3000, target_customers=12,
         ),
         "market_research": VerticalMetrics(monthly_price=3000, setup_fee=10000, target_customers=3),
         "workflow_orchestration": VerticalMetrics(
-            monthly_price=2500, setup_fee=12000, target_customers=2
+            monthly_price=2500, setup_fee=12000, target_customers=2,
         ),
     }
 
@@ -150,7 +149,7 @@ class KillSwitches:
 
     @classmethod
     def evaluate_gate(
-        cls, current_month: int, current_mrr: int, pilot_count: int = 0, ltv_cac: float = 0
+        cls, current_month: int, current_mrr: int, pilot_count: int = 0, ltv_cac: float = 0,
     ) -> dict:
         """Evaluate if any kill-switch criteria are met"""
         triggered_gates = []
@@ -164,7 +163,7 @@ class KillSwitches:
                             "triggered": True,
                             "action": gate.action,
                             "severity": gate.severity,
-                        }
+                        },
                     )
 
             elif gate.month == 6 and current_month >= 6:
@@ -175,7 +174,7 @@ class KillSwitches:
                             "triggered": True,
                             "action": gate.action,
                             "severity": gate.severity,
-                        }
+                        },
                     )
 
             elif gate.month == 12 and current_month >= 12:
@@ -186,7 +185,7 @@ class KillSwitches:
                             "triggered": True,
                             "action": gate.action,
                             "severity": gate.severity,
-                        }
+                        },
                     )
 
         return {

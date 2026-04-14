@@ -1,14 +1,13 @@
 import logging
+from collections.abc import Callable
 from datetime import datetime
 from typing import Any
-from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
 
 class TelemetryEventBus:
-    """
-    Real-time high-throughput event router using GCP Pub/Sub (simulated internally for MVP).
+    """Real-time high-throughput event router using GCP Pub/Sub (simulated internally for MVP).
     Tracks every action for the Intelligence Pipeline and ROI modeling.
     """
 
@@ -23,8 +22,7 @@ class TelemetryEventBus:
         logger.info(f"Registered subscriber for topic: {topic}")
 
     async def publish(self, topic: str, payload: dict[str, Any]):
-        """
-        Publishes event and routes to all registered subscribers async.
+        """Publishes event and routes to all registered subscribers async.
         """
         event = {
             "id": f"evt_{datetime.utcnow().timestamp()}",

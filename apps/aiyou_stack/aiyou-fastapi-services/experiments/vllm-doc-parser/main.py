@@ -18,8 +18,7 @@ def health():
 
 @app.post("/parse")
 async def parse_document(file: UploadFile = File(...)):
-    """
-    Endpoint to parse a document image/PDF using the Vision Model.
+    """Endpoint to parse a document image/PDF using the Vision Model.
     """
     # 1. Save temp file
     # 2. Preprocess image

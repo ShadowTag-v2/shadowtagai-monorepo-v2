@@ -1,5 +1,4 @@
-"""
-ShadowTagAI Corp Engine - Elastic Enterprise SaaS Platform
+"""ShadowTagAI Corp Engine - Elastic Enterprise SaaS Platform
 ============================================================
 Self-configuring platform that converts pipeline intel into
 software/tech/biz model updates for enterprise customers.

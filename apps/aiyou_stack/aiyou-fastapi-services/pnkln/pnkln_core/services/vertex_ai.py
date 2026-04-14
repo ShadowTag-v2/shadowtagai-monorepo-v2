@@ -16,6 +16,7 @@ def run_task(task_prompt: str) -> str:
 
     Returns:
         The text response from the model.
+
     """
     chat_session = get_chat_session()
     response = chat_session.send_message(task_prompt)

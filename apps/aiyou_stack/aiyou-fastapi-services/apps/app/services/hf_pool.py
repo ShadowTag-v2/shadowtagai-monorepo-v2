@@ -1,5 +1,4 @@
-"""
-Hugging Face Client Pool
+"""Hugging Face Client Pool
 Rotates politely; does NOT evade rate limits.
 """
 

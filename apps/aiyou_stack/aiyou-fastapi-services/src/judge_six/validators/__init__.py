@@ -1,9 +1,8 @@
-"""
-JR Engine Validators
+"""JR Engine Validators
 """
 
 from .brakes import BrakesValidator
 from .purpose import PurposeValidator
 from .reasons import ReasonsValidator
 
-__all__ = ["PurposeValidator", "ReasonsValidator", "BrakesValidator"]
+__all__ = ["BrakesValidator", "PurposeValidator", "ReasonsValidator"]

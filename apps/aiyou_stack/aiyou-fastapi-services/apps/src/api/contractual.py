@@ -1,5 +1,4 @@
-"""
-Contractual API - AI-Powered Contract Negotiation Platform
+"""Contractual API - AI-Powered Contract Negotiation Platform
 
 This module implements the FastAPI endpoints for the Contractual service,
 which provides real-time conflict detection and resolution for business negotiations.
@@ -237,7 +236,6 @@ class Signature(BaseModel):
 )
 async def create_session(request: CreateSessionRequest) -> NegotiationSession:
     """Create new negotiation session"""
-
     session = NegotiationSession(
         user_a_id=request.user_a_id,
         industry=request.industry,
@@ -259,7 +257,6 @@ async def create_session(request: CreateSessionRequest) -> NegotiationSession:
 )
 async def get_session(session_id: UUID) -> NegotiationSession:
     """Get session details"""
-
     # TODO: Fetch from database
     # For now, return mock data
     return NegotiationSession(
@@ -278,10 +275,9 @@ async def get_session(session_id: UUID) -> NegotiationSession:
     description="Update session status or other metadata",
 )
 async def update_session(
-    session_id: UUID, status: SessionStatus | None = None
+    session_id: UUID, status: SessionStatus | None = None,
 ) -> NegotiationSession:
     """Update session metadata"""
-
     # TODO: Update in database
     session = await get_session(session_id)
 
@@ -300,9 +296,7 @@ async def update_session(
 )
 async def cancel_session(session_id: UUID) -> None:
     """Cancel session"""
-
     # TODO: Soft delete in database (set status to CANCELLED)
-    pass
 
 
 # ============================================================================
@@ -319,7 +313,6 @@ async def cancel_session(session_id: UUID) -> None:
 )
 async def start_recording(session_id: UUID, request: StartRecordingRequest) -> Recording:
     """Start audio recording"""
-
     recording = Recording(
         session_id=session_id,
         format="webm" if request.device_type == "web" else "m4a",
@@ -344,7 +337,6 @@ async def start_recording(session_id: UUID, request: StartRecordingRequest) -> R
 )
 async def stop_recording(session_id: UUID) -> Transcript:
     """Stop recording and trigger transcription"""
-
     # TODO: Finalize recording in database
     # TODO: Trigger Whisper API transcription (async task)
     # TODO: Return transcript once available
@@ -381,7 +373,6 @@ async def stop_recording(session_id: UUID) -> Transcript:
 )
 async def get_transcript(session_id: UUID) -> Transcript:
     """Get transcript"""
-
     # TODO: Fetch from database
     # Mock response
     return Transcript(
@@ -410,7 +401,6 @@ async def get_transcript(session_id: UUID) -> Transcript:
 )
 async def analyze_conflicts(session_id: UUID) -> list[DetectedConflict]:
     """Trigger AI conflict detection"""
-
     # TODO: Fetch transcript from database
     # TODO: Call ConflictDetector service
     # TODO: Save detected conflicts to database
@@ -437,7 +427,7 @@ async def analyze_conflicts(session_id: UUID) -> list[DetectedConflict]:
             confidence=0.93,
             explanation="Parties have proposed different payment amounts: $500 vs $450",
             severity=ConflictSeverity.HIGH,
-        )
+        ),
     ]
 
     return conflicts
@@ -451,7 +441,6 @@ async def analyze_conflicts(session_id: UUID) -> list[DetectedConflict]:
 )
 async def list_conflicts(session_id: UUID) -> list[DetectedConflict]:
     """List detected conflicts"""
-
     # TODO: Fetch from database
     return []
 
@@ -464,7 +453,6 @@ async def list_conflicts(session_id: UUID) -> list[DetectedConflict]:
 )
 async def get_conflict(conflict_id: UUID) -> DetectedConflict:
     """Get conflict details"""
-
     # TODO: Fetch from database
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Conflict not found")
 
@@ -485,10 +473,9 @@ async def get_conflict(conflict_id: UUID) -> DetectedConflict:
     """,
 )
 async def resolve_conflict(
-    conflict_id: UUID, request: ConflictResolutionRequest
+    conflict_id: UUID, request: ConflictResolutionRequest,
 ) -> ResolvedConflict:
     """Submit resolution choice"""
-
     # TODO: Fetch conflict from database
     # TODO: Validate resolution (e.g., chosen_term matches request.resolution_method)
     # TODO: Create ResolvedConflict in database
@@ -520,7 +507,6 @@ async def resolve_conflict(
 )
 async def sign_resolution(conflict_id: UUID, user_id: UUID) -> ResolvedConflict:
     """Digitally sign resolution"""
-
     # TODO: Fetch ResolvedConflict from database
     # TODO: Update signature timestamp for user
     # TODO: Check if both parties have signed → mark as final
@@ -553,7 +539,6 @@ async def sign_resolution(conflict_id: UUID, user_id: UUID) -> ResolvedConflict:
 )
 async def get_suggestions(conflict_id: UUID) -> list[Term]:
     """Get AI compromise suggestions"""
-
     # TODO: Fetch conflict from database
     # TODO: Call AI service to generate suggestions
     # TODO: Return top 3 suggestions
@@ -595,7 +580,6 @@ async def get_suggestions(conflict_id: UUID) -> list[Term]:
 )
 async def generate_contract(session_id: UUID) -> Contract:
     """Generate contract from resolved conflicts"""
-
     # TODO: Validate all conflicts are resolved
     # TODO: Select appropriate template based on industry + contract_type
     # TODO: Populate template with resolved terms
@@ -621,7 +605,6 @@ async def generate_contract(session_id: UUID) -> Contract:
 )
 async def get_contract(contract_id: UUID) -> Contract:
     """Get contract details"""
-
     # TODO: Fetch from database
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Contract not found")
 
@@ -638,10 +621,9 @@ async def get_contract(contract_id: UUID) -> Contract:
     """,
 )
 async def sign_contract(
-    contract_id: UUID, user_id: UUID, signature_data: str, ip_address: str
+    contract_id: UUID, user_id: UUID, signature_data: str, ip_address: str,
 ) -> Signature:
     """Add e-signature to contract"""
-
     # TODO: Validate user has permission to sign
     # TODO: Create signature record
     # TODO: If both parties signed, update contract status to SIGNED
@@ -663,7 +645,6 @@ async def sign_contract(
 )
 async def download_contract(contract_id: UUID):
     """Download signed PDF"""
-
     # TODO: Fetch contract from database
     # TODO: Verify both parties have signed
     # TODO: Return PDF file from GCS
@@ -683,7 +664,6 @@ async def download_contract(contract_id: UUID):
 )
 async def list_templates():
     """List available templates"""
-
     # TODO: Fetch from database
     # Return industry-specific templates
 
@@ -707,7 +687,7 @@ async def list_templates():
                 "industry": "consulting",
                 "contract_type": "service",
             },
-        ]
+        ],
     }
 
 
@@ -718,7 +698,6 @@ async def list_templates():
 )
 async def get_template(template_id: UUID):
     """Get template details"""
-
     # TODO: Fetch from database
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Template not found")
 

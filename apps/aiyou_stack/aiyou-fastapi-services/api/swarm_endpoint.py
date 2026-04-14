@@ -1,5 +1,4 @@
-"""
-n-autoresearch/Kosmos/BioAgents Swarm API Endpoint (Pro Tier)
+"""n-autoresearch/Kosmos/BioAgents Swarm API Endpoint (Pro Tier)
 
 Hosted governance-as-a-service for production deployments.
 Pricing: $0.0001/decision (Pro) | $0.00005/decision (Enterprise)
@@ -61,7 +60,7 @@ class SwarmVoteRequest(BaseModel):
     intent: str = Field(..., description="What action is being decided")
     risk_level: RiskLevel = Field(default=RiskLevel.MEDIUM, description="ATP 5-19 risk level")
     brake_count: int = Field(
-        default=0, ge=0, le=10, description="Number of safety brakes triggered"
+        default=0, ge=0, le=10, description="Number of safety brakes triggered",
     )
     context: dict[str, Any] | None = Field(default=None, description="Additional context")
     webhook_url: str | None = Field(default=None, description="Webhook for async notification")
@@ -161,8 +160,7 @@ def execute_internal_swarm(
     risk_level: RiskLevel,
     brake_count: int,
 ) -> dict[str, Any]:
-    """
-    Execute swarm voting internally (no external LLM calls).
+    """Execute swarm voting internally (no external LLM calls).
 
     This is the $0 cost path - pure heuristic logic.
     """
@@ -254,12 +252,11 @@ async def validate_api_key(x_api_key: str = Header(...)) -> dict[str, Any]:
     # Stub - replace with real validation
     if x_api_key.startswith("fm_free_"):
         return {"tier": "free", "api_key_id": x_api_key[:16]}
-    elif x_api_key.startswith("fm_pro_"):
+    if x_api_key.startswith("fm_pro_"):
         return {"tier": "pro", "api_key_id": x_api_key[:16]}
-    elif x_api_key.startswith("fm_ent_"):
+    if x_api_key.startswith("fm_ent_"):
         return {"tier": "enterprise", "api_key_id": x_api_key[:16]}
-    else:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+    raise HTTPException(status_code=401, detail="Invalid API key")
 
 
 # =============================================================================
@@ -272,8 +269,7 @@ async def vote(
     request: SwarmVoteRequest,
     api_key_info: dict = Depends(validate_api_key),
 ) -> SwarmVoteResponse:
-    """
-    Execute swarm voting on a decision.
+    """Execute swarm voting on a decision.
 
     The 600-agent swarm evaluates the decision using ATP 5-19 risk framework
     and returns APPROVE, REJECT, or ESCALATE with confidence score.
@@ -354,8 +350,7 @@ async def batch_vote(
     requests: list[SwarmVoteRequest],
     api_key_info: dict = Depends(validate_api_key),
 ) -> list[SwarmVoteResponse]:
-    """
-    Execute swarm voting on multiple decisions in batch.
+    """Execute swarm voting on multiple decisions in batch.
 
     More efficient than individual calls for bulk processing.
     """

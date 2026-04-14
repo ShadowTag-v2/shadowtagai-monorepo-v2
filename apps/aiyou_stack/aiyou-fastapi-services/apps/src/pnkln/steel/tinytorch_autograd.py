@@ -126,12 +126,11 @@ def backward(self, gradient=None):
     # Init/Accumulate grad
     if self.grad is None:
         self.grad = gradient
+    # Handle Tensor vs numpy
+    elif isinstance(self.grad, Tensor):
+        self.grad.data += gradient
     else:
-        # Handle Tensor vs numpy
-        if isinstance(self.grad, Tensor):
-            self.grad.data += gradient
-        else:
-            self.grad += gradient
+        self.grad += gradient
 
     grad_fn = getattr(self, "_grad_fn", None)
     if grad_fn is not None:

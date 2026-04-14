@@ -13,8 +13,8 @@ sys.path.insert(
     0,
     os.path.dirname(
         os.path.dirname(
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        )
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        ),
     ),
 )
 
@@ -82,9 +82,8 @@ def test_database_connection():
     if os.path.exists(db_path):
         print(f"  [OK] Database exists: {db_path}")
         return True
-    else:
-        print(f"  [WARN] Database not found: {db_path}")
-        return True  # Not critical for sanity
+    print(f"  [WARN] Database not found: {db_path}")
+    return True  # Not critical for sanity
 
 
 def test_provider_detection():

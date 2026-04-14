@@ -1,5 +1,4 @@
-"""
-JuraLimiter: Enforces tier-based constraints on agent assignments.
+"""JuraLimiter: Enforces tier-based constraints on agent assignments.
 
 Each tier has limits on:
 - Maximum agents
@@ -27,8 +26,7 @@ class TierLimits:
 
 
 class JuraLimiter:
-    """
-    Enforces tier-based constraints on request routing.
+    """Enforces tier-based constraints on request routing.
 
     Tier allocation:
     - FREE: 180 worker agents (30% of 600)
@@ -90,8 +88,7 @@ class JuraLimiter:
         return self.TIER_LIMITS[tier]
 
     def check_availability(self, tier: CostTier, requested_agents: int = 1) -> tuple[bool, str]:
-        """
-        Check if a tier has capacity for a request.
+        """Check if a tier has capacity for a request.
 
         Args:
             tier: The cost tier
@@ -99,6 +96,7 @@ class JuraLimiter:
 
         Returns:
             (available, reason) tuple
+
         """
         if tier == CostTier.AUTO:
             return False, "AUTO tier must be resolved first"
@@ -120,8 +118,7 @@ class JuraLimiter:
         return True, "Available"
 
     def clamp_agents(self, tier: CostTier, requested: int) -> int:
-        """
-        Clamp requested agent count to tier limits.
+        """Clamp requested agent count to tier limits.
 
         Args:
             tier: The cost tier
@@ -129,6 +126,7 @@ class JuraLimiter:
 
         Returns:
             Clamped agent count
+
         """
         if tier == CostTier.AUTO:
             return requested
@@ -153,8 +151,7 @@ class JuraLimiter:
         return models[0] if models else "gemini-2.0-flash"
 
     def get_fallback_model(self, tier: CostTier, failed_model: str) -> str | None:
-        """
-        Get next fallback model when primary is rate limited.
+        """Get next fallback model when primary is rate limited.
 
         Args:
             tier: The cost tier
@@ -162,6 +159,7 @@ class JuraLimiter:
 
         Returns:
             Next model in fallback chain, or None if exhausted
+
         """
         models = self.get_allowed_models(tier)
         if not models:
@@ -178,8 +176,7 @@ class JuraLimiter:
         return None
 
     def get_model_with_fallback(self, tier: CostTier, rate_limited: list[str] = None) -> str:
-        """
-        Get best available model, skipping rate-limited ones.
+        """Get best available model, skipping rate-limited ones.
 
         Args:
             tier: The cost tier
@@ -187,6 +184,7 @@ class JuraLimiter:
 
         Returns:
             Best available model
+
         """
         rate_limited = rate_limited or []
         models = self.get_allowed_models(tier)
@@ -199,8 +197,7 @@ class JuraLimiter:
         return models[-1] if models else "gemini-2.0-flash"
 
     def estimate_cost(self, tier: CostTier, input_tokens: int, output_tokens: int) -> float:
-        """
-        Estimate cost for a request based on tier.
+        """Estimate cost for a request based on tier.
 
         Pricing (per 1M tokens):
         - Grok-2: $2.00 input, $10.00 output
@@ -222,8 +219,7 @@ class JuraLimiter:
         return cost
 
     def check_cost_limit(self, tier: CostTier, estimated_cost: float) -> tuple[bool, str]:
-        """
-        Check if estimated cost is within tier limits.
+        """Check if estimated cost is within tier limits.
 
         Args:
             tier: The cost tier
@@ -231,6 +227,7 @@ class JuraLimiter:
 
         Returns:
             (within_limit, reason) tuple
+
         """
         if tier == CostTier.AUTO:
             return True, "AUTO tier - no cost limit"

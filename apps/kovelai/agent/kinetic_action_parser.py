@@ -1,5 +1,4 @@
-"""
-Kinetic Action Parser (KAP) — Forensic Action Verb Auditor
+"""Kinetic Action Parser (KAP) — Forensic Action Verb Auditor
 
 The Kinetic Action Parser is the mandatory first-pass hook (Prompt 0) in the
 KovelAI Oracle Studio pipeline. It performs a "syntactic autopsy" on legal text,
@@ -26,7 +25,6 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 
 class VerbClassification(str, Enum):
@@ -68,8 +66,8 @@ class ExtractedVerb:
     verb: str
     original_text: str  # surrounding sentence/clause
     position: int  # character offset in source
-    actor: Optional[str] = None  # WHO is performing
-    target: Optional[str] = None  # WHAT is being acted upon
+    actor: str | None = None  # WHO is performing
+    target: str | None = None  # WHAT is being acted upon
     classification: VerbClassification = VerbClassification.OPERATIVE
     obligation_grade: ObligationGrade = ObligationGrade.DIRECTORY
     is_negated: bool = False
@@ -81,8 +79,7 @@ class ExtractedVerb:
 
 @dataclass
 class VerbLedger:
-    """
-    The Verb Ledger — complete forensic output of the Kinetic Action Parser.
+    """The Verb Ledger — complete forensic output of the Kinetic Action Parser.
     This is the input artifact for Oracle Studio Step 2.
     """
 
@@ -220,8 +217,7 @@ OPERATIVE_VERBS = re.compile(
 
 
 class KineticActionParser:
-    """
-    The Kinetic Action Parser — forensic verb extraction engine.
+    """The Kinetic Action Parser — forensic verb extraction engine.
 
     Usage:
         parser = KineticActionParser()
@@ -230,8 +226,7 @@ class KineticActionParser:
     """
 
     def parse(self, text: str) -> VerbLedger:
-        """
-        Execute full forensic analysis on input text.
+        """Execute full forensic analysis on input text.
         Returns a VerbLedger with all extracted verbs and aggregate metrics.
         """
         import hashlib
@@ -257,7 +252,7 @@ class KineticActionParser:
                         obligation_grade=ObligationGrade.MANDATORY,
                         confidence=0.95,
                         forensic_note="Contractual speech act — creates legal obligation on utterance",
-                    )
+                    ),
                 )
 
             # Layer 2: Prohibitive modals (check before permissive to avoid overlap)
@@ -272,7 +267,7 @@ class KineticActionParser:
                         is_negated=True,
                         confidence=0.95,
                         forensic_note="Prohibition — creates negative obligation",
-                    )
+                    ),
                 )
 
             # Layer 3: Mandatory modals
@@ -290,7 +285,7 @@ class KineticActionParser:
                         obligation_grade=ObligationGrade.MANDATORY,
                         confidence=0.92,
                         forensic_note="Affirmative mandate — creates positive obligation",
-                    )
+                    ),
                 )
 
             # Layer 4: Hedging language
@@ -304,7 +299,7 @@ class KineticActionParser:
                         obligation_grade=ObligationGrade.ASPIRATIONAL,
                         confidence=0.85,
                         forensic_note="⚠️ HEDGING: dilutes certainty — flag for attorney review",
-                    )
+                    ),
                 )
 
             # Layer 5: Passive voice
@@ -318,7 +313,7 @@ class KineticActionParser:
                         is_passive=True,
                         confidence=0.80,
                         forensic_note="⚠️ PASSIVE: actor obscured — WHO did this?",
-                    )
+                    ),
                 )
 
             # Layer 6: Nominalizations (hidden verbs)
@@ -331,7 +326,7 @@ class KineticActionParser:
                         classification=VerbClassification.NOMINALIZED,
                         confidence=0.78,
                         forensic_note="⚠️ NOMINALIZED: action buried in noun phrase — decompose",
-                    )
+                    ),
                 )
 
             # Layer 7: Dispositive verbs
@@ -345,7 +340,7 @@ class KineticActionParser:
                         obligation_grade=ObligationGrade.MANDATORY,
                         confidence=0.90,
                         forensic_note="DISPOSITIVE: this verb changes legal state — critical",
-                    )
+                    ),
                 )
 
             # Layer 8: Operative verbs (catch-all for standard legal verbs)
@@ -361,7 +356,7 @@ class KineticActionParser:
                             position=offset + match.start(),
                             classification=VerbClassification.OPERATIVE,
                             confidence=0.85,
-                        )
+                        ),
                     )
 
             # Layer 9: Permissive modals
@@ -377,7 +372,7 @@ class KineticActionParser:
                             obligation_grade=ObligationGrade.PERMISSIVE,
                             confidence=0.85,
                             forensic_note="Permissive — grants discretion, not obligation",
-                        )
+                        ),
                     )
 
         # Sort by position for reading order
@@ -428,16 +423,16 @@ class KineticActionParser:
         if ledger.passive_ratio > 0.4:
             ledger.red_flags.append(
                 f"⚠️ HIGH PASSIVE RATIO ({ledger.passive_ratio:.0%}): "
-                "Document systematically hides actors behind passive constructions"
+                "Document systematically hides actors behind passive constructions",
             )
         if ledger.hedging_ratio > 0.25:
             ledger.red_flags.append(
                 f"⚠️ EXCESSIVE HEDGING ({ledger.hedging_ratio:.0%}): "
-                "Document dilutes certainty — likely contains escape hatches"
+                "Document dilutes certainty — likely contains escape hatches",
             )
         if not any(v.obligation_grade == ObligationGrade.MANDATORY for v in ledger.verbs):
             ledger.red_flags.append(
-                "⚠️ NO MANDATORY OBLIGATIONS: Document creates no binding duties"
+                "⚠️ NO MANDATORY OBLIGATIONS: Document creates no binding duties",
             )
 
         dispositive_count = sum(
@@ -446,5 +441,5 @@ class KineticActionParser:
         if dispositive_count > 0:
             ledger.red_flags.append(
                 f"🔴 DISPOSITIVE ACTIONS ({dispositive_count}): "
-                "Document contains state-changing verbs — review immediately"
+                "Document contains state-changing verbs — review immediately",
             )

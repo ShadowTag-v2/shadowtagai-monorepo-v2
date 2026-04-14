@@ -6,14 +6,14 @@ from typing import Any
 
 
 def analyze_metrics(args: dict[str, Any]) -> dict[str, Any]:
-    """
-    Analyze growth metrics and provide insights.
+    """Analyze growth metrics and provide insights.
 
     Args:
         args: Dictionary containing:
             - metrics: Dictionary of metrics to analyze
             - time_range: Optional time range
             - dimensions: Optional list of dimensions
+
     """
     metrics = args.get("metrics", {})
     time_range = args.get("time_range", "7d")
@@ -49,10 +49,10 @@ def analyze_metrics(args: dict[str, Any]) -> dict[str, Any]:
 
         if activation_rate < 25:
             analysis["insights"].append(
-                "Low activation rate detected. Users are not reaching the 'aha moment'."
+                "Low activation rate detected. Users are not reaching the 'aha moment'.",
             )
             analysis["recommendations"].append(
-                "Optimize onboarding flow to get users to value faster."
+                "Optimize onboarding flow to get users to value faster.",
             )
 
     if "users_retained" in metrics and "users_activated" in metrics:
@@ -66,7 +66,7 @@ def analyze_metrics(args: dict[str, Any]) -> dict[str, Any]:
         if retention_rate < 40:
             analysis["insights"].append("Low retention rate. Users are not forming habits.")
             analysis["recommendations"].append(
-                "Implement engagement loops and habit-forming features."
+                "Implement engagement loops and habit-forming features.",
             )
 
     # Calculate viral metrics
@@ -90,15 +90,14 @@ def analyze_metrics(args: dict[str, Any]) -> dict[str, Any]:
     if analysis["summary"]:
         if any(v > 20 for k, v in analysis["summary"].items() if "growth" in k):
             analysis["insights"].append(
-                "Strong growth detected. Consider scaling acquisition channels."
+                "Strong growth detected. Consider scaling acquisition channels.",
             )
 
     return {"content": [{"type": "text", "text": json.dumps(analysis, indent=2)}]}
 
 
 def ab_test_calculator(args: dict[str, Any]) -> dict[str, Any]:
-    """
-    Calculate A/B test sample size and statistical significance.
+    """Calculate A/B test sample size and statistical significance.
 
     Args:
         args: Dictionary containing:
@@ -110,6 +109,7 @@ def ab_test_calculator(args: dict[str, Any]) -> dict[str, Any]:
             - variant_a_visitors: Optional visitors for variant A
             - variant_b_conversions: Optional conversions for variant B
             - variant_b_visitors: Optional visitors for variant B
+
     """
     baseline_rate = args.get("baseline_rate", 0.1)
     mde = args.get("minimum_detectable_effect", 0.1)  # 10% relative change
@@ -129,8 +129,8 @@ def ab_test_calculator(args: dict[str, Any]) -> dict[str, Any]:
                 {
                     "type": "text",
                     "text": json.dumps({"error": "Effect size cannot be zero"}, indent=2),
-                }
-            ]
+                },
+            ],
         }
 
     # Simplified sample size calculation
@@ -192,8 +192,7 @@ def ab_test_calculator(args: dict[str, Any]) -> dict[str, Any]:
 
 
 def viral_coefficient_calculator(args: dict[str, Any]) -> dict[str, Any]:
-    """
-    Calculate viral coefficient (K-factor) and viral loop metrics.
+    """Calculate viral coefficient (K-factor) and viral loop metrics.
 
     Args:
         args: Dictionary containing:
@@ -202,6 +201,7 @@ def viral_coefficient_calculator(args: dict[str, Any]) -> dict[str, Any]:
             - cycle_time_days: Time for one viral cycle in days
             - initial_users: Optional initial user count
             - time_horizon_days: Optional time horizon for projection
+
     """
     invites = args.get("invites_sent_per_user", 0)
     conv_rate = args.get("conversion_rate", 0)
@@ -236,23 +236,23 @@ def viral_coefficient_calculator(args: dict[str, Any]) -> dict[str, Any]:
             f"Sub-viral. Growth depends on other channels. Each user brings {k_factor} new users."
         )
         result["recommendations"].append(
-            "Increase invites per user or improve conversion rate to achieve virality."
+            "Increase invites per user or improve conversion rate to achieve virality.",
         )
 
     # Add recommendations based on components
     if invites < 1:
         result["recommendations"].append(
-            f"Increase invites per user from {invites} to >1 by making sharing easier."
+            f"Increase invites per user from {invites} to >1 by making sharing easier.",
         )
 
     if conv_rate < 0.2:
         result["recommendations"].append(
-            f"Improve conversion rate from {conv_rate * 100:.1f}% to >20% with better targeting."
+            f"Improve conversion rate from {conv_rate * 100:.1f}% to >20% with better targeting.",
         )
 
     if cycle_time > 14:
         result["recommendations"].append(
-            f"Reduce cycle time from {cycle_time} days to <14 days for faster growth."
+            f"Reduce cycle time from {cycle_time} days to <14 days for faster growth.",
         )
 
     # Calculate what's needed for virality
@@ -269,8 +269,7 @@ def viral_coefficient_calculator(args: dict[str, Any]) -> dict[str, Any]:
 
 
 def retention_analyzer(args: dict[str, Any]) -> dict[str, Any]:
-    """
-    Analyze user retention and cohort behavior.
+    """Analyze user retention and cohort behavior.
 
     Args:
         args: Dictionary containing:
@@ -279,6 +278,7 @@ def retention_analyzer(args: dict[str, Any]) -> dict[str, Any]:
             - day_1_retained: Users retained on day 1
             - day_7_retained: Users retained on day 7
             - day_30_retained: Users retained on day 30
+
     """
     cohort_data = args.get("cohort_data", [])
 
@@ -296,7 +296,7 @@ def retention_analyzer(args: dict[str, Any]) -> dict[str, Any]:
                 "day_1": d1,
                 "day_7": d7,
                 "day_30": d30,
-            }
+            },
         ]
 
     analysis = {"cohorts": [], "insights": [], "recommendations": []}
@@ -323,13 +323,13 @@ def retention_analyzer(args: dict[str, Any]) -> dict[str, Any]:
     # Generate insights
     if analysis["cohorts"]:
         avg_d1 = sum(c["retention_rates"].get("day_1", 0) for c in analysis["cohorts"]) / len(
-            analysis["cohorts"]
+            analysis["cohorts"],
         )
         avg_d7 = sum(c["retention_rates"].get("day_7", 0) for c in analysis["cohorts"]) / len(
-            analysis["cohorts"]
+            analysis["cohorts"],
         )
         avg_d30 = sum(c["retention_rates"].get("day_30", 0) for c in analysis["cohorts"]) / len(
-            analysis["cohorts"]
+            analysis["cohorts"],
         )
 
         analysis["average_retention"] = {
@@ -341,26 +341,26 @@ def retention_analyzer(args: dict[str, Any]) -> dict[str, Any]:
         # Benchmarks (industry averages)
         if avg_d1 < 25:
             analysis["insights"].append(
-                "Day 1 retention is below 25% benchmark. Users aren't finding immediate value."
+                "Day 1 retention is below 25% benchmark. Users aren't finding immediate value.",
             )
             analysis["recommendations"].append(
-                "Optimize onboarding to deliver value in first session."
+                "Optimize onboarding to deliver value in first session.",
             )
 
         if avg_d7 < 15:
             analysis["insights"].append(
-                "Day 7 retention is below 15% benchmark. Users aren't forming habits."
+                "Day 7 retention is below 15% benchmark. Users aren't forming habits.",
             )
             analysis["recommendations"].append(
-                "Add engagement hooks and notifications to bring users back."
+                "Add engagement hooks and notifications to bring users back.",
             )
 
         if avg_d30 < 10:
             analysis["insights"].append(
-                "Day 30 retention is below 10% benchmark. Long-term value is unclear."
+                "Day 30 retention is below 10% benchmark. Long-term value is unclear.",
             )
             analysis["recommendations"].append(
-                "Build features that increase investment and long-term engagement."
+                "Build features that increase investment and long-term engagement.",
             )
 
         # Calculate retention curve slope
@@ -380,13 +380,13 @@ def retention_analyzer(args: dict[str, Any]) -> dict[str, Any]:
 
 
 def funnel_analyzer(args: dict[str, Any]) -> dict[str, Any]:
-    """
-    Analyze conversion funnels and identify drop-off points.
+    """Analyze conversion funnels and identify drop-off points.
 
     Args:
         args: Dictionary containing:
             - funnel_steps: List of funnel steps with counts
                 [{"step": "Landing", "count": 1000}, {"step": "Signup", "count": 300}, ...]
+
     """
     funnel_steps = args.get("funnel_steps", [])
 
@@ -396,8 +396,8 @@ def funnel_analyzer(args: dict[str, Any]) -> dict[str, Any]:
                 {
                     "type": "text",
                     "text": json.dumps({"error": "Need at least 2 funnel steps"}, indent=2),
-                }
-            ]
+                },
+            ],
         }
 
     analysis = {
@@ -438,10 +438,10 @@ def funnel_analyzer(args: dict[str, Any]) -> dict[str, Any]:
         # Identify problem areas
         if drop_off_rate > 50 and i > 0:
             analysis["insights"].append(
-                f"Critical drop-off at '{step_name}': {drop_off_rate:.1f}% of users lost."
+                f"Critical drop-off at '{step_name}': {drop_off_rate:.1f}% of users lost.",
             )
             analysis["recommendations"].append(
-                f"Investigate and optimize the '{funnel_steps[i - 1]['step']}' to '{step_name}' transition."
+                f"Investigate and optimize the '{funnel_steps[i - 1]['step']}' to '{step_name}' transition.",
             )
 
         previous_count = step_count
@@ -454,7 +454,7 @@ def funnel_analyzer(args: dict[str, Any]) -> dict[str, Any]:
     # General recommendations
     if overall < 5:
         analysis["recommendations"].append(
-            "Overall conversion is very low (<5%). Consider A/B testing each step."
+            "Overall conversion is very low (<5%). Consider A/B testing each step.",
         )
 
     # Find the biggest drop-off
@@ -553,7 +553,7 @@ GROWTH_TOOLS = {
                             "count": {"type": "number"},
                         },
                     },
-                }
+                },
             },
             "required": ["funnel_steps"],
         },

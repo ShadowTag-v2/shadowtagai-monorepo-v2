@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN CORE STACK - RAG Corpus Import Tool
+"""PNKLN CORE STACK - RAG Corpus Import Tool
 ==========================================
 Purpose: Import policy documents from GCS into Vertex AI RAG corpora
 Usage: python corpus_import.py --vertical defense --path gs://bucket/path/
@@ -40,7 +39,6 @@ def import_files(
     chunk_overlap: int = 100,
 ) -> None:
     """Import files from GCS into RAG corpus"""
-
     aiplatform.init(project=project_id, location=region)
 
     corpus_name = f"pnkln_{vertical}_policies"
@@ -93,7 +91,6 @@ def import_files(
 
 def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k: int = 5) -> None:
     """Test query against a RAG corpus"""
-
     from vertexai.generative_models import GenerativeModel
 
     aiplatform.init(project=project_id, location=region)
@@ -130,8 +127,8 @@ def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k:
                             rag_corpora=[target_corpus.name],
                         ),
                         similarity_top_k=top_k,
-                    )
-                )
+                    ),
+                ),
             ],
         )
 
@@ -141,7 +138,7 @@ def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k:
         if response.candidates[0].grounding_metadata:
             print("Source Citations:")
             for i, chunk in enumerate(
-                response.candidates[0].grounding_metadata.grounding_chunks, 1
+                response.candidates[0].grounding_metadata.grounding_chunks, 1,
             ):
                 print(f"  [{i}] {chunk}")
 
@@ -176,15 +173,15 @@ Examples:
     parser.add_argument("--vertical", help="Vertical name (e.g., defense, healthcare)")
     parser.add_argument("--path", help="GCS path to files (gs://bucket/path/*.pdf)")
     parser.add_argument(
-        "--chunk-size", type=int, default=512, help="Document chunk size (default: 512)"
+        "--chunk-size", type=int, default=512, help="Document chunk size (default: 512)",
     )
     parser.add_argument(
-        "--chunk-overlap", type=int, default=100, help="Chunk overlap (default: 100)"
+        "--chunk-overlap", type=int, default=100, help="Chunk overlap (default: 100)",
     )
     parser.add_argument("--list-corpora", action="store_true", help="List all available corpora")
     parser.add_argument("--query", help="Test query against corpus")
     parser.add_argument(
-        "--top-k", type=int, default=5, help="Number of results for query (default: 5)"
+        "--top-k", type=int, default=5, help="Number of results for query (default: 5)",
     )
 
     args = parser.parse_args()
@@ -206,7 +203,7 @@ Examples:
         parser.error("--vertical and --path required for import")
 
     import_files(
-        args.project, args.region, args.vertical, args.path, args.chunk_size, args.chunk_overlap
+        args.project, args.region, args.vertical, args.path, args.chunk_size, args.chunk_overlap,
     )
 
 

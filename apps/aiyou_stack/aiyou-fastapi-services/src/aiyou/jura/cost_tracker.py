@@ -1,5 +1,4 @@
-"""
-JuraCostTracker: Cost accounting and revenue attribution for requests.
+"""JuraCostTracker: Cost accounting and revenue attribution for requests.
 
 Tracks:
 - Per-request costs
@@ -75,8 +74,7 @@ class JuraCostRecord:
 
 
 class JuraCostTracker:
-    """
-    Tracks costs and generates metrics for JURA protocol.
+    """Tracks costs and generates metrics for JURA protocol.
 
     Features:
     - In-memory cost tracking (last 1000 requests)
@@ -109,8 +107,7 @@ class JuraCostTracker:
         task_type: str = "execution",
         metadata: dict[str, Any] | None = None,
     ) -> JuraCostRecord:
-        """
-        Record a completed request.
+        """Record a completed request.
 
         Args:
             tier: Cost tier used
@@ -126,6 +123,7 @@ class JuraCostTracker:
 
         Returns:
             The created JuraCostRecord
+
         """
         record = JuraCostRecord(
             request_id=str(uuid.uuid4()),
@@ -162,7 +160,7 @@ class JuraCostTracker:
 
         logger.debug(
             f"Recorded cost: tier={tier.value}, cost=${cost_usd:.4f}, "
-            f"agents={len(agent_ids)}, latency={latency_ms}ms"
+            f"agents={len(agent_ids)}, latency={latency_ms}ms",
         )
 
         return record
@@ -254,14 +252,14 @@ class JuraCostTracker:
         logger.info("Cost tracker reset")
 
     def get_cost_projection(self, daily_requests: int = 1000) -> dict[str, Any]:
-        """
-        Project monthly costs based on current tier distribution.
+        """Project monthly costs based on current tier distribution.
 
         Args:
             daily_requests: Expected daily request count
 
         Returns:
             Projected costs by tier and total
+
         """
         if self._total_requests == 0:
             return {"error": "No data for projection"}

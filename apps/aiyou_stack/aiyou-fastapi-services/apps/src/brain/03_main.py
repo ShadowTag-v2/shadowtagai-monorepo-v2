@@ -44,7 +44,7 @@ def chat(r: ChatRequest):
                 "status": "queued",
                 "goal": r.query,
                 "created_at": firestore.SERVER_TIMESTAMP,
-            }
+            },
         )
 
         # 4. RETURN OPTIMISTIC UI

@@ -1,5 +1,4 @@
-"""
-Pagination utilities for list endpoints.
+"""Pagination utilities for list endpoints.
 """
 
 from math import ceil
@@ -11,8 +10,7 @@ T = TypeVar("T")
 
 
 def paginate(items: list[T], page: int = 1, page_size: int = 10) -> tuple[list[T], PaginationMeta]:
-    """
-    Paginate a list of items.
+    """Paginate a list of items.
 
     Args:
         items: List of items to paginate
@@ -21,6 +19,7 @@ def paginate(items: list[T], page: int = 1, page_size: int = 10) -> tuple[list[T
 
     Returns:
         Tuple of (paginated_items, pagination_meta)
+
     """
     total_items = len(items)
     total_pages = ceil(total_items / page_size) if page_size > 0 else 0
@@ -34,15 +33,14 @@ def paginate(items: list[T], page: int = 1, page_size: int = 10) -> tuple[list[T
 
     # Create pagination metadata
     pagination_meta = create_pagination_meta(
-        page=page, page_size=page_size, total_items=total_items
+        page=page, page_size=page_size, total_items=total_items,
     )
 
     return paginated_items, pagination_meta
 
 
 def create_pagination_meta(page: int, page_size: int, total_items: int) -> PaginationMeta:
-    """
-    Create pagination metadata.
+    """Create pagination metadata.
 
     Args:
         page: Current page number
@@ -51,6 +49,7 @@ def create_pagination_meta(page: int, page_size: int, total_items: int) -> Pagin
 
     Returns:
         PaginationMeta object
+
     """
     total_pages = ceil(total_items / page_size) if page_size > 0 else 0
 

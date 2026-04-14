@@ -9,10 +9,9 @@ MASK_VALUE = -1e9  # Large negative value used for attention masking (becomes ~0
 
 
 def scaled_dot_product_attention(
-    Q: Tensor, K: Tensor, V: Tensor, mask: Tensor | None = None
+    Q: Tensor, K: Tensor, V: Tensor, mask: Tensor | None = None,
 ) -> tuple[Tensor, Tensor]:
-    """
-    Compute scaled dot-product attention.
+    """Compute scaled dot-product attention.
 
     This is the fundamental attention operation that powers all transformer models.
     We'll implement it with explicit loops first to show the O(n²) complexity.
@@ -26,6 +25,7 @@ def scaled_dot_product_attention(
     Returns:
         output: Attended values (batch_size, seq_len, d_model)
         attention_weights: Attention matrix (batch_size, seq_len, seq_len)
+
     """
     # Step 1: Extract dimensions and validate
     # Note: Q, K, V can be 3D (batch, seq, dim) or 4D (batch, heads, seq, dim)
@@ -73,27 +73,26 @@ def scaled_dot_product_attention(
 
 
 class MultiHeadAttention:
-    """
-    Multi-head attention mechanism.
+    """Multi-head attention mechanism.
 
     Runs multiple attention heads in parallel, each learning different relationships.
     This is the core component of transformer architectures.
     """
 
     def __init__(self, embed_dim: int, num_heads: int):
-        """
-        Initialize multi-head attention.
+        """Initialize multi-head attention.
 
         Args:
             embed_dim: Embedding dimension (d_model)
             num_heads: Number of parallel attention heads
+
         """
         if embed_dim % num_heads != 0:
             raise ValueError(
                 f"embed_dim ({embed_dim}) must be divisible by num_heads ({num_heads}).\n"
                 f"  Issue: Multi-head attention splits embed_dim into num_heads heads.\n"
                 f"  Fix: Choose embed_dim and num_heads such that embed_dim % num_heads == 0.\n"
-                f"  Example: embed_dim=512, num_heads=8 works (512/8=64 per head)."
+                f"  Example: embed_dim=512, num_heads=8 works (512/8=64 per head).",
             )
 
         self.embed_dim = embed_dim
@@ -109,8 +108,7 @@ class MultiHeadAttention:
         self.out_proj = Linear(embed_dim, embed_dim)
 
     def forward(self, x: Tensor, mask: Tensor | None = None) -> Tensor:
-        """
-        Forward pass through multi-head attention.
+        """Forward pass through multi-head attention.
 
         Args:
             x: Input tensor (batch_size, seq_len, embed_dim)
@@ -118,6 +116,7 @@ class MultiHeadAttention:
 
         Returns:
             output: Attended representation (batch_size, seq_len, embed_dim)
+
         """
         # Step 1: Extract dimensions
         batch_size, seq_len, embed_dim = x.shape
@@ -126,7 +125,7 @@ class MultiHeadAttention:
                 f"Input dimension mismatch in MultiHeadAttention.forward().\n"
                 f"  Expected: embed_dim={self.embed_dim} (set during initialization)\n"
                 f"  Got: embed_dim={embed_dim} from input shape {x.shape}\n"
-                f"  Fix: Ensure input tensor's last dimension matches the embed_dim used when creating MultiHeadAttention."
+                f"  Fix: Ensure input tensor's last dimension matches the embed_dim used when creating MultiHeadAttention.",
             )
 
         # Step 2: Project to Q, K, V
@@ -177,11 +176,11 @@ class MultiHeadAttention:
         return self.forward(x, mask)
 
     def parameters(self) -> list[Tensor]:
-        """
-        Return all trainable parameters.
+        """Return all trainable parameters.
 
         Returns:
             List of all parameter tensors
+
         """
         params = []
         params.extend(self.q_proj.parameters())

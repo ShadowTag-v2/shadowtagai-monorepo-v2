@@ -1,5 +1,4 @@
-"""
-arXiv Paper Crawler
+"""arXiv Paper Crawler
 Discovers and downloads relevant AI/MLOps research papers
 """
 
@@ -17,8 +16,7 @@ logger = structlog.get_logger(__name__)
 
 
 class ArxivCrawler:
-    """
-    Ethical arXiv paper discovery and download
+    """Ethical arXiv paper discovery and download
 
     Features:
     - Category-based search (cs.AI, cs.LG, etc.)
@@ -41,8 +39,7 @@ class ArxivCrawler:
         )
 
     def _is_excluded(self, paper: arxiv.Result) -> bool:
-        """
-        Check if paper should be excluded based on immaterial content filters.
+        """Check if paper should be excluded based on immaterial content filters.
         Avoids papers that are pure surveys without implementation or toy benchmarks.
         """
         exclude_terms = self.config.get("exclude_terms", [])
@@ -54,14 +51,13 @@ class ArxivCrawler:
         for term in exclude_terms:
             if term.lower() in text_to_check:
                 logger.debug(
-                    "paper_excluded", title=paper.title, reason=f"Contains exclusion term: {term}"
+                    "paper_excluded", title=paper.title, reason=f"Contains exclusion term: {term}",
                 )
                 return True
         return False
 
     def _get_vertical_relevance(self, paper: arxiv.Result) -> float:
-        """
-        Score paper relevance to PNKLN verticals based on category and content.
+        """Score paper relevance to PNKLN verticals based on category and content.
         Returns weighted score 0.0-1.0.
         """
         weights = self.config.get("vertical_weights", {})
@@ -114,8 +110,7 @@ class ArxivCrawler:
         days_back: int | None = None,
         min_relevance: float = 0.5,
     ) -> list[arxiv.Result]:
-        """
-        Search for papers on arXiv with PNKLN vertical relevance filtering.
+        """Search for papers on arXiv with PNKLN vertical relevance filtering.
 
         Args:
             categories: arXiv categories (e.g., ["cs.AI", "cs.LG"])
@@ -126,6 +121,7 @@ class ArxivCrawler:
 
         Returns:
             List of arxiv.Result objects sorted by vertical relevance
+
         """
         categories = categories or self.config["categories"]
         search_terms = search_terms or self.config["search_terms"]
@@ -143,7 +139,7 @@ class ArxivCrawler:
                     query = f"cat:{category} AND all:{search_term}"
 
                     logger.info(
-                        "searching_arxiv", category=category, search_term=search_term, query=query
+                        "searching_arxiv", category=category, search_term=search_term, query=query,
                     )
 
                     # Search arXiv
@@ -216,8 +212,7 @@ class ArxivCrawler:
         return [paper for paper, _ in sorted_papers]
 
     def format_paper_metadata(self, paper: arxiv.Result) -> str:
-        """
-        Format paper metadata as markdown
+        """Format paper metadata as markdown
 
         Returns a structured text representation of the paper
         """
@@ -246,7 +241,7 @@ class ArxivCrawler:
 
 - [PDF]({paper.pdf_url})
 - [Abstract]({paper.entry_id})
-- [Comments]({paper.comment if paper.comment else "N/A"})
+- [Comments]({paper.comment or "N/A"})
 
 ## Primary Category
 
@@ -261,8 +256,7 @@ class ArxivCrawler:
         return metadata
 
     def download_paper(self, paper: arxiv.Result, download_pdf: bool = True) -> str | None:
-        """
-        Download paper metadata and optionally PDF
+        """Download paper metadata and optionally PDF
 
         Args:
             paper: arXiv Result object
@@ -270,6 +264,7 @@ class ArxivCrawler:
 
         Returns:
             Path to metadata file, or None if failed
+
         """
         try:
             # Create safe filename from arxiv ID
@@ -311,8 +306,7 @@ class ArxivCrawler:
         download_pdfs: bool = False,
         **search_kwargs,
     ) -> list[str]:
-        """
-        Download multiple papers
+        """Download multiple papers
 
         Args:
             papers: List of arxiv.Result objects (if None, will search)
@@ -321,6 +315,7 @@ class ArxivCrawler:
 
         Returns:
             List of paths to metadata files
+
         """
         if papers is None:
             papers = self.search_papers(**search_kwargs)
@@ -339,16 +334,15 @@ class ArxivCrawler:
                 downloaded_files.append(metadata_file)
 
         logger.info(
-            "papers_download_complete", total_papers=len(papers), successful=len(downloaded_files)
+            "papers_download_complete", total_papers=len(papers), successful=len(downloaded_files),
         )
 
         return downloaded_files
 
     def get_recent_papers(
-        self, days_back: int | None = None, download_pdfs: bool = False
+        self, days_back: int | None = None, download_pdfs: bool = False,
     ) -> list[str]:
-        """
-        Convenience method to get recent papers across all configured categories
+        """Convenience method to get recent papers across all configured categories
 
         Args:
             days_back: Number of days to look back
@@ -356,6 +350,7 @@ class ArxivCrawler:
 
         Returns:
             List of paths to downloaded metadata files
+
         """
         return self.download_papers(days_back=days_back, download_pdfs=download_pdfs)
 
@@ -366,8 +361,7 @@ class ArxivCrawler:
         days_back: int = 30,
         download_pdfs: bool = False,
     ) -> list[str]:
-        """
-        Search for papers by specific keywords
+        """Search for papers by specific keywords
 
         Args:
             keywords: List of search terms
@@ -377,6 +371,7 @@ class ArxivCrawler:
 
         Returns:
             List of paths to downloaded metadata files
+
         """
         return self.download_papers(
             search_terms=keywords,
@@ -386,11 +381,11 @@ class ArxivCrawler:
         )
 
     def generate_summary(self, papers: list[arxiv.Result]) -> str:
-        """
-        Generate a summary of discovered papers
+        """Generate a summary of discovered papers
 
         Returns:
             Markdown-formatted summary
+
         """
         summary_parts = [
             "# arXiv Paper Discovery Summary",
@@ -413,7 +408,7 @@ class ArxivCrawler:
                 authors = paper.authors[0].name if paper.authors else "N/A"
                 summary_parts.append(
                     f"- **{paper.title}** - {authors} et al. "
-                    f"({paper.published.strftime('%Y-%m-%d')})"
+                    f"({paper.published.strftime('%Y-%m-%d')})",
                 )
             if len(cat_papers) > 10:
                 summary_parts.append(f"- ... and {len(cat_papers) - 10} more\n")
@@ -424,8 +419,7 @@ class ArxivCrawler:
 
 # Convenience functions
 def crawl_recent_papers(days_back: int = 7, download_pdfs: bool = False) -> list[str]:
-    """
-    Crawl arXiv for recent papers
+    """Crawl arXiv for recent papers
 
     Usage:
         metadata_files = crawl_recent_papers(days_back=7)
@@ -435,8 +429,7 @@ def crawl_recent_papers(days_back: int = 7, download_pdfs: bool = False) -> list
 
 
 def search_arxiv(keywords: list[str], days_back: int = 30) -> list[str]:
-    """
-    Search arXiv by keywords
+    """Search arXiv by keywords
 
     Usage:
         files = search_arxiv(["MLOps", "LLM serving"], days_back=30)

@@ -11,8 +11,7 @@ from app.models.kernel import KernelInput, KernelMetrics, KernelOutput
 
 
 class AuditCompressKernel(Kernel):
-    """
-    Kernel 3: Compress decision metadata into audit trail.
+    """Kernel 3: Compress decision metadata into audit trail.
 
     Specifications:
     - Input: Decision metadata + full context
@@ -34,14 +33,14 @@ class AuditCompressKernel(Kernel):
         self.compressor = zstd.ZstdCompressor(level=self.COMPRESSION_LEVEL)
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Compress decision metadata into audit trail.
+        """Compress decision metadata into audit trail.
 
         Args:
             kernel_input: Contains JudgeSixClassification and metadata
 
         Returns:
             KernelOutput with AuditTrail
+
         """
         try:
             # Extract classification
@@ -50,7 +49,7 @@ class AuditCompressKernel(Kernel):
             else:
                 raise KernelChainError(
                     f"Invalid input type: expected JudgeSixClassification, "
-                    f"got {type(kernel_input.data)}"
+                    f"got {type(kernel_input.data)}",
                 )
 
             # Build audit metadata (structured for compression)
@@ -111,12 +110,11 @@ class AuditCompressKernel(Kernel):
             )
 
         except Exception as e:
-            raise KernelChainError(f"Audit compression failed: {str(e)}") from e
+            raise KernelChainError(f"Audit compression failed: {e!s}") from e
 
     @staticmethod
     def decompress(audit_trail: AuditTrail) -> dict:
-        """
-        Decompress audit trail back to original metadata.
+        """Decompress audit trail back to original metadata.
 
         Utility function for audit retrieval.
         """

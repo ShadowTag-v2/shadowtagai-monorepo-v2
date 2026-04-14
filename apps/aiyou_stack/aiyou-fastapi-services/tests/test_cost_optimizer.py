@@ -1,5 +1,4 @@
-"""
-Tests for AWS Cost Optimizer service.
+"""Tests for AWS Cost Optimizer service.
 """
 
 from unittest.mock import Mock, patch
@@ -37,8 +36,8 @@ class TestCostAnalysis:
                 {
                     "TimePeriod": {"Start": "2024-01-01"},
                     "Total": {"UnblendedCost": {"Amount": "100.50", "Unit": "USD"}},
-                }
-            ]
+                },
+            ],
         }
 
         result = await cost_optimizer_service.analyze_costs()
@@ -65,12 +64,12 @@ class TestCostAnalysis:
                             "Metrics": {"UnblendedCost": {"Amount": "25.00", "Unit": "USD"}},
                         },
                     ],
-                }
-            ]
+                },
+            ],
         }
 
         result = await cost_optimizer_service.analyze_costs(
-            start_date="2024-01-01", end_date="2024-01-31", group_by=["SERVICE"]
+            start_date="2024-01-01", end_date="2024-01-31", group_by=["SERVICE"],
         )
 
         assert result.summary.total_cost == 75.00
@@ -92,14 +91,14 @@ class TestRecommendations:
                         "MonthlyCost": "150.00",
                     },
                     "ModifyRecommendationDetail": {
-                        "TargetInstances": [{"EstimatedMonthlySavings": "75.00"}]
+                        "TargetInstances": [{"EstimatedMonthlySavings": "75.00"}],
                     },
-                }
-            ]
+                },
+            ],
         }
 
         result = await cost_optimizer_service.get_optimization_recommendations(
-            optimization_types=[OptimizationType.RIGHT_SIZING], min_savings_threshold=50.0
+            optimization_types=[OptimizationType.RIGHT_SIZING], min_savings_threshold=50.0,
         )
 
         assert result.total_estimated_savings >= 50.0
@@ -110,15 +109,15 @@ class TestRecommendations:
     async def test_recommendations_with_forecast(self, cost_optimizer_service, mock_ce_client):
         """Test recommendations with cost forecast."""
         mock_ce_client.get_rightsizing_recommendations.return_value = {
-            "RightsizingRecommendations": []
+            "RightsizingRecommendations": [],
         }
 
         mock_ce_client.get_cost_forecast.return_value = {
-            "Total": {"Amount": "5000.00", "Unit": "USD"}
+            "Total": {"Amount": "5000.00", "Unit": "USD"},
         }
 
         result = await cost_optimizer_service.get_optimization_recommendations(
-            include_forecast=True
+            include_forecast=True,
         )
 
         assert result.forecast is not None
@@ -150,8 +149,8 @@ class TestDataProcessing:
                 {
                     "TimePeriod": {"Start": "2024-01-01"},
                     "Total": {"UnblendedCost": {"Amount": "123.45", "Unit": "USD"}},
-                }
-            ]
+                },
+            ],
         }
 
         data_points = cost_optimizer_service._process_cost_data(cost_data)
@@ -170,10 +169,10 @@ class TestDataProcessing:
                         {
                             "Keys": ["Service1"],
                             "Metrics": {"UnblendedCost": {"Amount": "100.00", "Unit": "USD"}},
-                        }
+                        },
                     ],
-                }
-            ]
+                },
+            ],
         }
 
         data_points = cost_optimizer_service._process_cost_data(cost_data)
@@ -197,7 +196,7 @@ class TestCostSummary:
         ]
 
         summary = cost_optimizer_service._calculate_cost_summary(
-            data_points=data_points, start_date="2024-01-01", end_date="2024-01-03", raw_data={}
+            data_points=data_points, start_date="2024-01-01", end_date="2024-01-03", raw_data={},
         )
 
         assert summary.total_cost == 450.00

@@ -29,8 +29,7 @@ class RunIngestionResponse(BaseModel):
 
 @router.post("/run", response_model=RunIngestionResponse)
 async def run_ingestion_pipeline(request: RunIngestionRequest):
-    """
-    Run the Gemini Ingestion Layer pipeline
+    """Run the Gemini Ingestion Layer pipeline
 
     - **sources**: Optional list of sources to ingest from (defaults to all enabled)
 
@@ -64,8 +63,7 @@ async def run_ingestion_pipeline(request: RunIngestionRequest):
 
 @router.get("/metrics", response_model=IngestionMetrics)
 async def get_latest_metrics():
-    """
-    Get latest ingestion metrics
+    """Get latest ingestion metrics
 
     Returns the most recent metrics from the ingestion pipeline
     """
@@ -78,8 +76,7 @@ async def get_latest_metrics():
 
 @router.get("/compliance", response_model=EthicalComplianceReport)
 async def get_compliance_report():
-    """
-    Get ethical crawling compliance report
+    """Get ethical crawling compliance report
 
     Returns metrics on robots.txt adherence, rate limiting, and flagged domains
     """
@@ -95,8 +92,7 @@ async def get_compliance_report():
 
 @router.get("/sources")
 async def get_enabled_sources():
-    """
-    Get list of enabled ingestion sources
+    """Get list of enabled ingestion sources
 
     Returns configuration of which source types are currently enabled
     """
@@ -109,8 +105,7 @@ async def get_enabled_sources():
 
 @router.get("/quality-gates")
 async def get_quality_gate_config():
-    """
-    Get quality gate configuration
+    """Get quality gate configuration
 
     Returns the current quality gate thresholds
     """

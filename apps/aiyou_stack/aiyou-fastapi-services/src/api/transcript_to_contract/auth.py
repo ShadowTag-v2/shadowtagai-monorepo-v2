@@ -20,8 +20,7 @@ security = HTTPBearer()
 def verify_zero_trust(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ) -> GCPServiceIdentity:
-    """
-    Enforces the Zero-Trust identity protocol prior to Temporal temporal execution.
+    """Enforces the Zero-Trust identity protocol prior to Temporal temporal execution.
     Only allows 'shadowtag-core-run-sa' or 'headless-runner' JWTs inside the Omega-v4 project.
     """
     token = credentials.credentials
@@ -47,5 +46,5 @@ def verify_zero_trust(
 
     except Exception as e:
         raise HTTPException(
-            status_code=401, detail=f"Pnkln Kovel Shield: Unauthorized Identity Matrix ({str(e)})"
+            status_code=401, detail=f"Pnkln Kovel Shield: Unauthorized Identity Matrix ({e!s})",
         )

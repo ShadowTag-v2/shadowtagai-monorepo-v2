@@ -31,7 +31,6 @@ class EmailProvider(ABC):
         metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Send an email"""
-        pass
 
 
 class SMTPProvider(EmailProvider):
@@ -74,7 +73,7 @@ class SMTPProvider(EmailProvider):
 
             # Send email
             async with aiosmtplib.SMTP(
-                hostname=self.host, port=self.port, use_tls=self.use_tls
+                hostname=self.host, port=self.port, use_tls=self.use_tls,
             ) as smtp:
                 if self.username and self.password:
                     await smtp.login(self.username, self.password)
@@ -85,8 +84,8 @@ class SMTPProvider(EmailProvider):
             return {"success": True, "provider": "smtp", "message_id": None}
 
         except Exception as e:
-            logger.error(f"SMTP send failed: {str(e)}")
-            raise EmailProviderError(f"SMTP send failed: {str(e)}")
+            logger.error(f"SMTP send failed: {e!s}")
+            raise EmailProviderError(f"SMTP send failed: {e!s}")
 
 
 class SendGridProvider(EmailProvider):
@@ -145,11 +144,11 @@ class SendGridProvider(EmailProvider):
             return {"success": True, "provider": "sendgrid", "message_id": message_id}
 
         except httpx.HTTPError as e:
-            logger.error(f"SendGrid HTTP error: {str(e)}")
-            raise EmailProviderError(f"SendGrid send failed: {str(e)}")
+            logger.error(f"SendGrid HTTP error: {e!s}")
+            raise EmailProviderError(f"SendGrid send failed: {e!s}")
         except Exception as e:
-            logger.error(f"SendGrid send failed: {str(e)}")
-            raise EmailProviderError(f"SendGrid send failed: {str(e)}")
+            logger.error(f"SendGrid send failed: {e!s}")
+            raise EmailProviderError(f"SendGrid send failed: {e!s}")
 
 
 class MailgunProvider(EmailProvider):
@@ -191,7 +190,7 @@ class MailgunProvider(EmailProvider):
 
             async with httpx.AsyncClient() as client:
                 response = await client.post(
-                    f"{self.base_url}/messages", auth=("api", self.api_key), data=data, timeout=30.0
+                    f"{self.base_url}/messages", auth=("api", self.api_key), data=data, timeout=30.0,
                 )
 
                 if response.status_code >= 400:
@@ -203,11 +202,11 @@ class MailgunProvider(EmailProvider):
             return {"success": True, "provider": "mailgun", "message_id": result.get("id")}
 
         except httpx.HTTPError as e:
-            logger.error(f"Mailgun HTTP error: {str(e)}")
-            raise EmailProviderError(f"Mailgun send failed: {str(e)}")
+            logger.error(f"Mailgun HTTP error: {e!s}")
+            raise EmailProviderError(f"Mailgun send failed: {e!s}")
         except Exception as e:
-            logger.error(f"Mailgun send failed: {str(e)}")
-            raise EmailProviderError(f"Mailgun send failed: {str(e)}")
+            logger.error(f"Mailgun send failed: {e!s}")
+            raise EmailProviderError(f"Mailgun send failed: {e!s}")
 
 
 class EmailProviderFactory:

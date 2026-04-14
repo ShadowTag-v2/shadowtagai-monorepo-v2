@@ -6,11 +6,11 @@ try:
     from .models import Decision, DecisionStatus, JudgeVerdict, RiskLevel
 
     __all__ = [
-        "JudgeArchitecture",
-        "JudgeVerdictFormatter",
         "Decision",
         "DecisionStatus",
+        "JudgeArchitecture",
         "JudgeVerdict",
+        "JudgeVerdictFormatter",
         "RiskLevel",
     ]
 except ImportError:

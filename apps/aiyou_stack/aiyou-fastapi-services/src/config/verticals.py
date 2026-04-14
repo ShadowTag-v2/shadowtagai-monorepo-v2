@@ -1,5 +1,4 @@
-"""
-Vertical-Specific Configurations for 30 Regulated Industries
+"""Vertical-Specific Configurations for 30 Regulated Industries
 
 Each vertical has custom settings for:
 - k: Number of chunks to retrieve

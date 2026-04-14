@@ -1,5 +1,4 @@
-"""
-Logging middleware for request/response tracking.
+"""Logging middleware for request/response tracking.
 
 Provides:
 - Unique request IDs for tracing
@@ -24,8 +23,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
     """Log all requests and responses with correlation IDs."""
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """
-        Process request with logging and timing.
+        """Process request with logging and timing.
 
         Args:
             request: Incoming HTTP request
@@ -33,6 +31,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response with request ID header added
+
         """
         # Generate unique request ID for tracing
         request_id = str(uuid.uuid4())
@@ -56,7 +55,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         except Exception as e:
             # Log error
             logger.error(
-                f"ERROR | {request_id} | {str(e)}",
+                f"ERROR | {request_id} | {e!s}",
                 extra={"request_id": request_id, "error": str(e)},
                 exc_info=True,
             )

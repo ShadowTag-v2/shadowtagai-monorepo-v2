@@ -1,5 +1,4 @@
-"""
-Reflect-Critique-Refine (RCR) reasoning framework.
+"""Reflect-Critique-Refine (RCR) reasoning framework.
 
 RCR implements a self-improvement cycle where agents:
 1. REFLECT on their own solutions
@@ -54,8 +53,7 @@ class RefinementResult:
 
 
 class ReflectCritiqueRefine:
-    """
-    Reflect-Critique-Refine framework implementation.
+    """Reflect-Critique-Refine framework implementation.
 
     This framework enables:
     - Self-assessment and error detection
@@ -128,8 +126,7 @@ Refined solution:
         max_critiques: int = 2,
         context: dict[str, Any] | None = None,
     ) -> RefinementResult:
-        """
-        Perform one RCR iteration.
+        """Perform one RCR iteration.
 
         Args:
             own_solution: The agent's own solution
@@ -139,6 +136,7 @@ Refined solution:
 
         Returns:
             Refinement result
+
         """
         # Phase 1: REFLECT
         reflection = await self.reflect(own_solution, context)
@@ -160,16 +158,15 @@ Refined solution:
                 "reflection": reflection,
                 "critiques": critiques,
                 "refinement": refinement,
-            }
+            },
         )
 
         return refinement
 
     async def reflect(
-        self, solution: Any, context: dict[str, Any] | None = None
+        self, solution: Any, context: dict[str, Any] | None = None,
     ) -> ReflectionResult:
-        """
-        Reflect on own solution.
+        """Reflect on own solution.
 
         Args:
             solution: Solution to reflect on
@@ -177,6 +174,7 @@ Refined solution:
 
         Returns:
             Reflection result
+
         """
         # Placeholder - would use LLM in production
         return ReflectionResult(
@@ -188,10 +186,9 @@ Refined solution:
         )
 
     async def critique(
-        self, peer_solution: dict[str, Any], context: dict[str, Any] | None = None
+        self, peer_solution: dict[str, Any], context: dict[str, Any] | None = None,
     ) -> CritiqueResult:
-        """
-        Critique a peer's solution.
+        """Critique a peer's solution.
 
         Args:
             peer_solution: Peer's solution to critique
@@ -199,6 +196,7 @@ Refined solution:
 
         Returns:
             Critique result
+
         """
         peer_id = peer_solution.get("id", "unknown")
 
@@ -220,8 +218,7 @@ Refined solution:
         critiques: list[CritiqueResult],
         context: dict[str, Any] | None = None,
     ) -> RefinementResult:
-        """
-        Refine solution based on reflection and critiques.
+        """Refine solution based on reflection and critiques.
 
         Args:
             original: Original solution
@@ -231,6 +228,7 @@ Refined solution:
 
         Returns:
             Refinement result
+
         """
         # Analyze critiques to extract improvements
         all_suggestions = []
@@ -257,8 +255,7 @@ Refined solution:
 
 
 class RCRCodeAdapter(ReflectCritiqueRefine):
-    """
-    RCR adapted specifically for code review and improvement.
+    """RCR adapted specifically for code review and improvement.
 
     This variant focuses on:
     - Identifying bugs and logical errors
@@ -335,8 +332,7 @@ Refined code:
         critiques: list[CritiqueResult],
         context: dict[str, Any] | None = None,
     ) -> RefinementResult:
-        """
-        Refine code based on reflection and critiques.
+        """Refine code based on reflection and critiques.
 
         Args:
             original: Original code
@@ -346,6 +342,7 @@ Refined code:
 
         Returns:
             Refinement result with corrected code
+
         """
         # Collect all bugs from critiques
         all_bugs = []

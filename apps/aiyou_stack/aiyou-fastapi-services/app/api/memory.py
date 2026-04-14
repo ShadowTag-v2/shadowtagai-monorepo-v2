@@ -94,7 +94,6 @@ async def delete_memory_entry(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Memory entry not found",
         )
-    return None
 
 
 @router.post("/synthesize", response_model=MemorySynthesisResponse)

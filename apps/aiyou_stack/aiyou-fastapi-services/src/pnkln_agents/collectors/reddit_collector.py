@@ -1,5 +1,4 @@
-"""
-Reddit Collector
+"""Reddit Collector
 Collects posts from AI-related subreddits
 """
 
@@ -18,8 +17,7 @@ from .base import BaseCollector
 
 
 class RedditCollector(BaseCollector):
-    """
-    Reddit API collector via PRAW
+    """Reddit API collector via PRAW
 
     Pricing: FREE (read-only access)
     Rate Limits: 60 requests per minute
@@ -39,20 +37,19 @@ class RedditCollector(BaseCollector):
             raise ValueError("Reddit client_id and client_secret required")
 
         self.reddit = praw.Reddit(
-            client_id=client_id, client_secret=client_secret, user_agent=user_agent
+            client_id=client_id, client_secret=client_secret, user_agent=user_agent,
         )
         self.rate_limit_delay = 1.0  # 1 second between requests
         self.cost_per_request = 0.0  # Reddit API is free
 
     def collect(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect posts from AI-related subreddits
+        """Collect posts from AI-related subreddits
 
         Default subreddits: MachineLearning, artificial, LocalLLaMA, OpenAI
         """
         items = []
         subreddits = self.config.get(
-            "subreddits", ["MachineLearning", "artificial", "LocalLLaMA", "OpenAI"]
+            "subreddits", ["MachineLearning", "artificial", "LocalLLaMA", "OpenAI"],
         )
 
         try:
@@ -109,9 +106,8 @@ class RedditCollector(BaseCollector):
 
         if age_hours <= 12:
             return 1.0
-        elif age_hours <= 48:
+        if age_hours <= 48:
             return 0.8
-        elif age_hours <= 168:  # 1 week
+        if age_hours <= 168:  # 1 week
             return 0.6
-        else:
-            return 0.4
+        return 0.4

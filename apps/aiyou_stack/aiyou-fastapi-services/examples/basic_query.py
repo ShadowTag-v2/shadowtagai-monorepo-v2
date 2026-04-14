@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Basic Claude Agent SDK Query Example
+"""Basic Claude Agent SDK Query Example
 
 This example demonstrates how to use the Claude Agent SDK to make simple queries.
 """
@@ -56,7 +55,7 @@ async def claude_code_preset_example():
 
     # Use Claude Code preset
     options = ClaudeAgentOptions(
-        system_prompt={"type": "preset", "preset": "claude_code"}, max_tokens=2048, api_key=api_key
+        system_prompt={"type": "preset", "preset": "claude_code"}, max_tokens=2048, api_key=api_key,
     )
 
     prompt = "Write a simple Python function to calculate fibonacci numbers."

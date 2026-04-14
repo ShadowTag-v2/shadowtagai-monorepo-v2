@@ -1,5 +1,4 @@
-"""
-PSO-NN Models: High-level model adapters for integration.
+"""PSO-NN Models: High-level model adapters for integration.
 """
 
 from .pso_model import PsoModel

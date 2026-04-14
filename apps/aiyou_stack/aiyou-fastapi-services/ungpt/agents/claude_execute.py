@@ -1,5 +1,4 @@
-"""
-L4: Claude.2 - Execution & Publish (Dynamic)
+"""L4: Claude.2 - Execution & Publish (Dynamic)
 
 Role: The Builder
 - Validates against SPT.2 (structural requirements)
@@ -66,8 +65,7 @@ async def execute_and_publish(
     github_token: str,
     query_id: str,
 ) -> dict[str, Any]:
-    """
-    Execute code and publish results.
+    """Execute code and publish results.
 
     Args:
         flagged_draft: Draft with [REQ_EXECUTION] flags
@@ -87,6 +85,7 @@ async def execute_and_publish(
             'crm_reasoning': str,
             'cost': float
         }
+
     """
     # Execute all flagged code blocks
     execution_results = await _execute_code_blocks(execution_flags)
@@ -102,7 +101,7 @@ async def execute_and_publish(
     client = anthropic.Anthropic(api_key=api_key)
 
     message = client.messages.create(
-        model=model, max_tokens=8000, messages=[{"role": "user", "content": prompt}]
+        model=model, max_tokens=8000, messages=[{"role": "user", "content": prompt}],
     )
 
     content = message.content[0].text
@@ -150,8 +149,7 @@ async def execute_and_publish(
 
 
 async def _execute_code_blocks(flags: list[dict]) -> list[dict]:
-    """
-    Execute flagged code blocks in a sandbox.
+    """Execute flagged code blocks in a sandbox.
 
     Uses subprocess with restricted permissions.
     """
@@ -165,7 +163,7 @@ async def _execute_code_blocks(flags: list[dict]) -> list[dict]:
                     "success": False,
                     "output": f"Unsupported language: {flag['language']}",
                     "error": None,
-                }
+                },
             )
             continue
 
@@ -190,7 +188,7 @@ async def _execute_code_blocks(flags: list[dict]) -> list[dict]:
                     "success": result.returncode == 0,
                     "output": result.stdout,
                     "error": result.stderr if result.returncode != 0 else None,
-                }
+                },
             )
 
         except subprocess.TimeoutExpired:
@@ -200,12 +198,12 @@ async def _execute_code_blocks(flags: list[dict]) -> list[dict]:
                     "success": False,
                     "output": "",
                     "error": "Execution timed out (60s limit)",
-                }
+                },
             )
 
         except Exception as e:
             results.append(
-                {"index": flag["index"], "success": False, "output": "", "error": str(e)}
+                {"index": flag["index"], "success": False, "output": "", "error": str(e)},
             )
 
         finally:
@@ -244,8 +242,7 @@ async def _push_to_github(
     config: dict,
     token: str,
 ) -> str:
-    """
-    Push results to GitHub in the 4-file structure.
+    """Push results to GitHub in the 4-file structure.
 
     Files:
     - README.md
@@ -289,12 +286,12 @@ async def _push_to_github(
     async with httpx.AsyncClient(timeout=30.0) as client:
         # Get default branch SHA
         ref_resp = await client.get(
-            f"https://api.github.com/repos/{repo}/git/ref/heads/main", headers=headers
+            f"https://api.github.com/repos/{repo}/git/ref/heads/main", headers=headers,
         )
         if ref_resp.status_code != 200:
             # Try master
             ref_resp = await client.get(
-                f"https://api.github.com/repos/{repo}/git/ref/heads/master", headers=headers
+                f"https://api.github.com/repos/{repo}/git/ref/heads/master", headers=headers,
             )
 
         if ref_resp.status_code == 200:
@@ -340,7 +337,6 @@ def _extract_section(content: str, marker: str) -> str:
     for m in next_markers:
         if m != marker and m in content[start:]:
             pos = content.find(m, start)
-            if pos < end:
-                end = pos
+            end = min(end, pos)
 
     return content[start:end].strip()

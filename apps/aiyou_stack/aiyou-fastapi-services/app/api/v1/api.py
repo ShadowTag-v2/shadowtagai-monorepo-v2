@@ -1,5 +1,4 @@
-"""
-API v1 Router
+"""API v1 Router
 
 Aggregates all v1 endpoints
 """

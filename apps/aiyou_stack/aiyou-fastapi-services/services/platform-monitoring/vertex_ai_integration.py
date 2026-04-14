@@ -1,5 +1,4 @@
-"""
-Vertex AI Integration for Platform Intelligence
+"""Vertex AI Integration for Platform Intelligence
 
 Enhances platform with:
 - Gemini 2.0 Pro for advanced analysis
@@ -46,8 +45,7 @@ class AIRecommendation:
 
 
 class VertexAIAnalyzer:
-    """
-    Vertex AI integration for platform intelligence
+    """Vertex AI integration for platform intelligence
 
     Uses Gemini 2.0 Pro for:
     - Cost optimization analysis
@@ -61,10 +59,9 @@ class VertexAIAnalyzer:
         self.model = "gemini-2.0-pro"  # Mock for now
 
     async def analyze_cost_optimization(
-        self, cost_data: dict, budget_data: dict
+        self, cost_data: dict, budget_data: dict,
     ) -> list[AIRecommendation]:
-        """
-        Analyze costs and provide optimization recommendations
+        """Analyze costs and provide optimization recommendations
 
         Uses Gemini to identify:
         - Wasteful spending patterns
@@ -95,7 +92,7 @@ class VertexAIAnalyzer:
                     ],
                     estimated_savings_dollars=27.0,
                     confidence_score=0.85,
-                )
+                ),
             )
 
         # Analyze V2X compute costs
@@ -117,14 +114,13 @@ class VertexAIAnalyzer:
                     ],
                     estimated_savings_dollars=600.0,
                     confidence_score=0.75,
-                )
+                ),
             )
 
         return recommendations
 
     async def analyze_performance_tuning(self, performance_data: dict) -> list[AIRecommendation]:
-        """
-        Analyze performance and provide tuning recommendations
+        """Analyze performance and provide tuning recommendations
 
         Identifies:
         - Latency bottlenecks
@@ -153,16 +149,15 @@ class VertexAIAnalyzer:
                     ],
                     estimated_savings_dollars=0.0,
                     confidence_score=0.80,
-                )
+                ),
             )
 
         return recommendations
 
     async def detect_anomalies(
-        self, metrics_history: list[dict], current_metrics: dict
+        self, metrics_history: list[dict], current_metrics: dict,
     ) -> list[dict]:
-        """
-        Detect anomalies in platform metrics
+        """Detect anomalies in platform metrics
 
         Uses time-series analysis to identify:
         - Unusual cost spikes
@@ -188,14 +183,13 @@ class VertexAIAnalyzer:
                         "Traffic surge in V2X mesh",
                         "Storage cost spike",
                     ],
-                }
+                },
             )
 
         return anomalies
 
     async def predict_capacity_needs(self, growth_rate: float, current_capacity: dict) -> dict:
-        """
-        Predict future capacity needs
+        """Predict future capacity needs
 
         Forecasts:
         - Compute requirements
@@ -214,14 +208,14 @@ class VertexAIAnalyzer:
                 "compute": {
                     "current_cores": current_capacity.get("cores", 8),
                     "projected_cores": int(
-                        current_capacity.get("cores", 8) * (1 + growth_rate) ** months_ahead
+                        current_capacity.get("cores", 8) * (1 + growth_rate) ** months_ahead,
                     ),
                     "recommendation": "Plan to add 16 cores in Q2",
                 },
                 "storage": {
                     "current_gb": current_capacity.get("storage_gb", 100),
                     "projected_gb": int(
-                        current_capacity.get("storage_gb", 100) * (1 + growth_rate) ** months_ahead
+                        current_capacity.get("storage_gb", 100) * (1 + growth_rate) ** months_ahead,
                     ),
                     "recommendation": "Migrate to tiered storage (GCS Nearline/Coldline)",
                 },
@@ -229,7 +223,7 @@ class VertexAIAnalyzer:
                     "current_monthly": current_capacity.get("monthly_cost", 3300),
                     "projected_monthly": int(
                         current_capacity.get("monthly_cost", 3300)
-                        * (1 + growth_rate) ** months_ahead
+                        * (1 + growth_rate) ** months_ahead,
                     ),
                     "recommendation": "Implement auto-scaling and spot instances before cost doubles",
                 },
@@ -237,8 +231,7 @@ class VertexAIAnalyzer:
         }
 
     async def generate_intelligent_alerts(self, metrics: dict, thresholds: dict) -> list[dict]:
-        """
-        Generate intelligent alerts using AI
+        """Generate intelligent alerts using AI
 
         Reduces alert fatigue by:
         - Correlating related issues
@@ -262,19 +255,19 @@ class VertexAIAnalyzer:
                     "recommended_action": "Scale up GKE nodes by 50% immediately",
                     "estimated_resolution_time": "15 minutes",
                     "confidence": 0.85,
-                }
+                },
             )
 
         return alerts
 
     async def analyze_platform_health(self, all_metrics: dict) -> dict:
-        """
-        Comprehensive platform health analysis
+        """Comprehensive platform health analysis
 
         Returns:
         - Overall health score
         - Component health breakdown
         - Top recommendations
+
         """
         await asyncio.sleep(0.1)
 
@@ -308,14 +301,13 @@ class VertexAIAnalyzer:
                     "probability": 0.15,
                     "timeframe": "30 days",
                     "mitigation": "Implement cost optimization recommendations",
-                }
+                },
             ],
         }
 
 
 class VertexAIService:
-    """
-    Main service for Vertex AI integration
+    """Main service for Vertex AI integration
 
     Provides unified AI capabilities across platform
     """
@@ -324,7 +316,7 @@ class VertexAIService:
         self.analyzer = VertexAIAnalyzer()
 
     async def get_optimization_recommendations(
-        self, cost_data: dict, performance_data: dict, budget_data: dict
+        self, cost_data: dict, performance_data: dict, budget_data: dict,
     ) -> list[AIRecommendation]:
         """Get all optimization recommendations"""
         cost_recs = await self.analyzer.analyze_cost_optimization(cost_data, budget_data)
@@ -339,13 +331,13 @@ class VertexAIService:
         return all_recs
 
     async def get_platform_insights(
-        self, all_metrics: dict, cost_data: dict, performance_data: dict
+        self, all_metrics: dict, cost_data: dict, performance_data: dict,
     ) -> dict:
         """Get comprehensive platform insights"""
         health_analysis = await self.analyzer.analyze_platform_health(all_metrics)
         anomalies = await self.analyzer.detect_anomalies([], all_metrics)
         intelligent_alerts = await self.analyzer.generate_intelligent_alerts(
-            all_metrics, {"latency_ms": 100, "error_rate": 0.05}
+            all_metrics, {"latency_ms": 100, "error_rate": 0.05},
         )
 
         return {
@@ -369,7 +361,7 @@ if __name__ == "__main__":
 
         # Get recommendations
         recommendations = await service.get_optimization_recommendations(
-            cost_data, performance_data, budget_data
+            cost_data, performance_data, budget_data,
         )
 
         print("AI Recommendations:")

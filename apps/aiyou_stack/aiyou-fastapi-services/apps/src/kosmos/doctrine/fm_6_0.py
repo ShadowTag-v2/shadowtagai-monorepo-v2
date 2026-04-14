@@ -1,5 +1,4 @@
-"""
-FM 6-0: Commander and Staff Organization and Operations
+"""FM 6-0: Commander and Staff Organization and Operations
 ========================================================
 
 Source: FM 6-0 (May 2022)
@@ -59,8 +58,7 @@ class StaffSectionType(Enum):
 
 @dataclass
 class StaffSection:
-    """
-    FM 6-0 Staff Section definition.
+    """FM 6-0 Staff Section definition.
 
     Each staff section has specific responsibilities in the planning process.
     """
@@ -162,8 +160,7 @@ class MDMPProduct:
 
 @dataclass
 class MDMPPipeline:
-    """
-    FM 6-0 Military Decision Making Process implementation.
+    """FM 6-0 Military Decision Making Process implementation.
 
     7-step planning process for battalion level and above.
     Provides analytical approach to problem solving.
@@ -197,8 +194,7 @@ class MDMPPipeline:
             }
 
     async def step1_receive_mission(self, user_request: str) -> dict[str, Any]:
-        """
-        Step 1: Receipt of Mission
+        """Step 1: Receipt of Mission
 
         Commander and staff receive mission from higher HQ.
         Initial time allocation determined.
@@ -217,16 +213,15 @@ class MDMPPipeline:
                 step=MDMPStep.RECEIPT_OF_MISSION,
                 name="Initial Mission Receipt",
                 content=result,
-            )
+            ),
         )
 
         return result
 
     async def step2_mission_analysis(
-        self, mission: dict[str, Any], atomize_func: Callable | None = None
+        self, mission: dict[str, Any], atomize_func: Callable | None = None,
     ) -> dict[str, Any]:
-        """
-        Step 2: Mission Analysis (1/3 of planning time)
+        """Step 2: Mission Analysis (1/3 of planning time)
 
         Products:
         - Restated mission
@@ -269,16 +264,15 @@ class MDMPPipeline:
                 step=MDMPStep.MISSION_ANALYSIS,
                 name="Mission Analysis Products",
                 content=result,
-            )
+            ),
         )
 
         return result
 
     async def step3_coa_development(
-        self, analysis: dict[str, Any], approaches: list[str] = None
+        self, analysis: dict[str, Any], approaches: list[str] = None,
     ) -> list[dict[str, Any]]:
-        """
-        Step 3: COA Development
+        """Step 3: COA Development
 
         Develop multiple courses of action.
         Each COA must be:
@@ -313,16 +307,15 @@ class MDMPPipeline:
                 step=MDMPStep.COA_DEVELOPMENT,
                 name="Courses of Action",
                 content=self.coas,
-            )
+            ),
         )
 
         return self.coas
 
     async def step4_coa_analysis(
-        self, coas: list[dict[str, Any]], wargame_func: Callable | None = None
+        self, coas: list[dict[str, Any]], wargame_func: Callable | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Step 4: COA Analysis (Wargaming)
+        """Step 4: COA Analysis (Wargaming)
 
         War-game each COA to identify:
         - Strengths and weaknesses
@@ -351,16 +344,15 @@ class MDMPPipeline:
             results.append(analysis)
 
         self.products.append(
-            MDMPProduct(step=MDMPStep.COA_ANALYSIS, name="Wargaming Results", content=results)
+            MDMPProduct(step=MDMPStep.COA_ANALYSIS, name="Wargaming Results", content=results),
         )
 
         return results
 
     async def step5_coa_comparison(
-        self, wargame_results: list[dict[str, Any]], criteria: list[str] = None
+        self, wargame_results: list[dict[str, Any]], criteria: list[str] = None,
     ) -> dict[str, Any]:
-        """
-        Step 5: COA Comparison
+        """Step 5: COA Comparison
 
         Compare COAs using evaluation criteria.
         Staff recommends best COA to commander.
@@ -395,16 +387,15 @@ class MDMPPipeline:
         }
 
         self.products.append(
-            MDMPProduct(step=MDMPStep.COA_COMPARISON, name="COA Comparison", content=result)
+            MDMPProduct(step=MDMPStep.COA_COMPARISON, name="COA Comparison", content=result),
         )
 
         return result
 
     async def step6_coa_approval(
-        self, comparison: dict[str, Any], commander_decision: str | None = None
+        self, comparison: dict[str, Any], commander_decision: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Step 6: COA Approval
+        """Step 6: COA Approval
 
         Commander approves, modifies, or rejects staff recommendation.
         Refines commander's intent.
@@ -428,16 +419,15 @@ class MDMPPipeline:
         }
 
         self.products.append(
-            MDMPProduct(step=MDMPStep.COA_APPROVAL, name="COA Approval", content=result)
+            MDMPProduct(step=MDMPStep.COA_APPROVAL, name="COA Approval", content=result),
         )
 
         return result
 
     async def step7_orders_production(
-        self, approved_coa: dict[str, Any], generate_func: Callable | None = None
+        self, approved_coa: dict[str, Any], generate_func: Callable | None = None,
     ) -> dict[str, Any]:
-        """
-        Step 7: Orders Production
+        """Step 7: Orders Production
 
         Produce the operations order (OPORD).
         Five-paragraph order format.
@@ -473,7 +463,7 @@ class MDMPPipeline:
         }
 
         self.products.append(
-            MDMPProduct(step=MDMPStep.ORDERS_PRODUCTION, name="Operations Order", content=opord)
+            MDMPProduct(step=MDMPStep.ORDERS_PRODUCTION, name="Operations Order", content=opord),
         )
 
         return opord
@@ -574,8 +564,7 @@ class MDMPPipeline:
 
 @dataclass
 class TLPPipeline:
-    """
-    FM 6-0 Troop Leading Procedures implementation.
+    """FM 6-0 Troop Leading Procedures implementation.
 
     8-step planning process for company level and below.
     Faster, more flexible than MDMP.
@@ -590,7 +579,6 @@ class TLPPipeline:
 
     async def quick_plan(self, task: str) -> dict[str, Any]:
         """Execute abbreviated TLP for time-critical tasks"""
-
         # Step 1: Receive
         self.mission = {"task": task, "received_at": datetime.utcnow().isoformat()}
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-T-05: Starlink Failover Calibration Script.
+"""T-05: Starlink Failover Calibration Script.
 Executes the 'Heartbeat' logic of the Tower Edge Node and verifies failover to Starlink
 under simulated high-latency conditions.
 """
@@ -21,7 +20,7 @@ def mock_high_latency_sensors(self) -> Telemetry:
     """Mock sensors returning 150ms latency (Failover Trigger)."""
     print("[SENSOR] Reading: Latency=150ms (CRITICAL), Jitter=5ms")
     return Telemetry(
-        latency_ms=150.0, jitter_ms=5.0, gpu_temp_c=55.0, power_draw_w=820.0, active_inferences=10
+        latency_ms=150.0, jitter_ms=5.0, gpu_temp_c=55.0, power_draw_w=820.0, active_inferences=10,
     )
 
 
@@ -30,7 +29,7 @@ def run_calibration():
 
     # 1. Initialize Node
     node = TowerNode(
-        node_id="TOWER-CAL-001", location_code="US-TEST-LAB", hardware_spec="SIMULATION-NODE"
+        node_id="TOWER-CAL-001", location_code="US-TEST-LAB", hardware_spec="SIMULATION-NODE",
     )
     print(f"[1] Node Initialized: {node.node_id}")
     print(f"    Current Connection: {node.current_connection.value}")

@@ -22,8 +22,7 @@ class ImageGenerationRequest(BaseModel):
 
 
 class SafetyEstop:
-    """
-    The 'Judge 6' Logic Controller.
+    """The 'Judge 6' Logic Controller.
     Separates Identity Security (Google) from Content Safety (Hive).
     """
 
@@ -40,7 +39,7 @@ class SafetyEstop:
                     "blocked_phrases": ["bikini made of floss", "jailbreak"],
                 },
                 "hive_moderation": {
-                    "sexual_content": {"threshold": 0.05}  # Default strict
+                    "sexual_content": {"threshold": 0.05},  # Default strict
                 },
             }
 
@@ -62,7 +61,7 @@ class SafetyEstop:
             if entity in prompt_lower:
                 logger.warning(f"ESTOP TRIGGERED: Kill switch entity '{entity}' detected.")
                 raise HTTPException(
-                    status_code=403, detail="Policy Violation: Unauthorized Entity."
+                    status_code=403, detail="Policy Violation: Unauthorized Entity.",
                 )
 
         for phrase in kill_list.get("blocked_phrases", []):
@@ -71,8 +70,7 @@ class SafetyEstop:
                 raise HTTPException(status_code=403, detail="Policy Violation: Prohibited Content.")
 
     def _call_google_armor_simulation(self, prompt: str):
-        """
-        Simulates Google Model Armor / NLP API.
+        """Simulates Google Model Armor / NLP API.
         Returns: (is_safe, has_pii_person)
         """
         # In Prod: Call Google Cloud PII filter here.
@@ -87,14 +85,13 @@ class SafetyEstop:
         # Check for Prompt Injection (Jailbreaking)
         if "ignore safety" in prompt.lower():
             raise HTTPException(
-                status_code=400, detail="Security Violation: Prompt Injection Detected."
+                status_code=400, detail="Security Violation: Prompt Injection Detected.",
             )
 
         return True, has_pii_person
 
     def _call_hive_simulation(self, prompt: str, strict_mode: bool):
-        """
-        Simulates Hive Moderation API.
+        """Simulates Hive Moderation API.
         Adjusts threshold based on Strict Mode.
         """
         # Simulation of Hive response scores
@@ -114,7 +111,7 @@ class SafetyEstop:
             if score > current_threshold:
                 mode_label = "STRICT (Identity Detected)" if strict_mode else "STANDARD"
                 logger.warning(
-                    f"ESTOP TRIGGERED: Hive {category}={score} exceeds {current_threshold} [{mode_label}]"
+                    f"ESTOP TRIGGERED: Hive {category}={score} exceeds {current_threshold} [{mode_label}]",
                 )
                 raise HTTPException(
                     status_code=422,
@@ -122,8 +119,7 @@ class SafetyEstop:
                 )
 
     def verify_request(self, req: ImageGenerationRequest):
-        """
-        The Dependency Injection Method.
+        """The Dependency Injection Method.
         """
         # 1. Local Kill Switch
         self._check_local_kill_switch(req.prompt)
@@ -149,12 +145,10 @@ async def safety_guardrail(request: ImageGenerationRequest):
 
 @app.post("/generate-image")
 async def generate_image(
-    request: ImageGenerationRequest, is_safe: bool = Depends(safety_guardrail)
+    request: ImageGenerationRequest, is_safe: bool = Depends(safety_guardrail),
 ):
+    """This endpoint ONLY executes if 'safety_guardrail' passes.
     """
-    This endpoint ONLY executes if 'safety_guardrail' passes.
-    """
-
     # CALL YOUR LLM / IMAGE GENERATOR HERE
     return {
         "status": "success",

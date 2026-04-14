@@ -22,8 +22,7 @@ class FinancialDecisionState(TypedDict):
 
 
 def opa_fast_check(state: FinancialDecisionState):
-    """
-    Simulates Open Policy Agent (OPA) deterministic rules.
+    """Simulates Open Policy Agent (OPA) deterministic rules.
     Doctrine: ATP 3-60 (Targeting - Fast Fires)
     """
     print(f"⚡ [OPA] Checking transaction: ${state['amount']} to {state['merchant']}")
@@ -49,8 +48,7 @@ def opa_fast_check(state: FinancialDecisionState):
 
 
 def judge6_reasoning(state: FinancialDecisionState):
-    """
-    The LLM-as-a-Judge for complex financial reasoning.
+    """The LLM-as-a-Judge for complex financial reasoning.
     Doctrine: FM 6-0 (Mission Command - Commander's Intent)
     """
     print("🧠 [Judge#6] Deliberating on complex case...")
@@ -78,8 +76,7 @@ def judge6_reasoning(state: FinancialDecisionState):
 
 
 def audit_logger(state: FinancialDecisionState):
-    """
-    Logs decision to Sovereign Memory (Mem0 + GraphRAG).
+    """Logs decision to Sovereign Memory (Mem0 + GraphRAG).
     Doctrine: ATP 2-01.3 (Intelligence)
     """
     print(f"📝 [Audit] Logging decision: {state['decision']} via {state['path_taken']}")

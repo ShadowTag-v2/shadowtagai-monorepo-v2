@@ -6,6 +6,7 @@ def route_task(task_description: str) -> str:
 
     Returns:
         A string representing the target category ('dev', 'ops', 'legal', 'general').
+
     """
     normalized_task = task_description.strip().lower()
     if "code" in normalized_task or "develop" in normalized_task:

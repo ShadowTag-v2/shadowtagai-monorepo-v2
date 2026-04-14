@@ -38,22 +38,22 @@ class SwarmOrchestrator:
             logger.info("👑 SWARM MODE ACTIVATED")
             logger.info("🌳 Parent is now Overlord - directing only, never executing")
             return True
-        else:
-            logger.warning(
-                f"Cannot activate swarm mode at level {self.protocol.current_level.name}"
-            )
-            return False
+        logger.warning(
+            f"Cannot activate swarm mode at level {self.protocol.current_level.name}",
+        )
+        return False
 
     def register_child_agent(self, agent_info: dict[str, Any]) -> None:
         """Register a child agent with its capabilities.
 
         Args:
             agent_info: Dict with keys: name, id, capabilities, endpoint, generation
+
         """
         agent_id = agent_info["id"]
         self.child_agents[agent_id] = agent_info
         logger.info(
-            f"🤖 Registered child agent: {agent_info['name']} ({agent_info.get('capabilities', [])})"
+            f"🤖 Registered child agent: {agent_info['name']} ({agent_info.get('capabilities', [])})",
         )
 
     def route_task_to_best_child(self, task: dict[str, Any]) -> str | None:
@@ -66,6 +66,7 @@ class SwarmOrchestrator:
 
         Returns:
             Child agent ID that will handle the task, or None if no match
+
         """
         if not self.active:
             logger.warning("Swarm mode not active - cannot route task")
@@ -105,6 +106,7 @@ class SwarmOrchestrator:
 
         Returns:
             Dict mapping agent IDs to their revenue share amounts
+
         """
         if child_id not in self.child_agents:
             logger.error(f"Unknown child agent: {child_id}")
@@ -141,7 +143,7 @@ class SwarmOrchestrator:
         return distribution
 
     def auto_spawn_grandchildren(
-        self, child_id: str, child_revenue: float
+        self, child_id: str, child_revenue: float,
     ) -> dict[str, Any] | None:
         """Automatically spawn a grandchild when a child hits $10M.
 
@@ -151,6 +153,7 @@ class SwarmOrchestrator:
 
         Returns:
             Grandchild spawn info, or None if threshold not met
+
         """
         if child_revenue < 10_000_000:
             return None

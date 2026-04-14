@@ -1,5 +1,4 @@
-"""
-FastAPI routes for monetization and billing.
+"""FastAPI routes for monetization and billing.
 
 Endpoints:
 - GET / - Landing page
@@ -75,8 +74,7 @@ class SubscriptionResponse(BaseModel):
 # Landing page
 @router.get("/", response_class=HTMLResponse)
 async def get_landing_page():
-    """
-    Serve the landing page with pricing and signup.
+    """Serve the landing page with pricing and signup.
 
     Returns complete HTML page with:
     - Hero section
@@ -100,8 +98,7 @@ async def get_landing_page():
 # Pricing
 @router.get("/api/pricing")
 async def get_pricing_plans():
-    """
-    Get all pricing plans.
+    """Get all pricing plans.
 
     Returns detailed pricing information for all tiers.
     """
@@ -132,8 +129,7 @@ async def get_pricing_plans():
 # Checkout
 @billing_router.post("/create-checkout-session")
 async def create_checkout_session(request: CreateCheckoutRequest):
-    """
-    Create Stripe checkout session for subscription.
+    """Create Stripe checkout session for subscription.
 
     Body:
     - tier: Pricing tier (starter, professional, enterprise)
@@ -144,6 +140,7 @@ async def create_checkout_session(request: CreateCheckoutRequest):
     Returns:
     - checkout_url: URL to redirect user to Stripe checkout
     - session_id: Checkout session ID
+
     """
     try:
         tier_enum = PricingTier[request.tier.upper()]
@@ -172,8 +169,7 @@ async def create_checkout_session(request: CreateCheckoutRequest):
 
 @billing_router.post("/create-portal-session")
 async def create_portal_session(request: CreatePortalRequest):
-    """
-    Create Stripe customer portal session.
+    """Create Stripe customer portal session.
 
     Allows customers to:
     - Update payment methods
@@ -187,6 +183,7 @@ async def create_portal_session(request: CreatePortalRequest):
 
     Returns:
     - portal_url: URL to redirect user to customer portal
+
     """
     stripe = get_stripe_integration()
 
@@ -208,8 +205,7 @@ async def create_portal_session(request: CreatePortalRequest):
 # Usage tracking
 @billing_router.get("/usage", response_model=UsageResponse)
 async def get_usage_stats(customer_id: str):
-    """
-    Get current usage statistics for a customer.
+    """Get current usage statistics for a customer.
 
     Query parameters:
     - customer_id: Customer ID
@@ -218,6 +214,7 @@ async def get_usage_stats(customer_id: str):
     - Current usage (sources, items, API calls)
     - Plan limits
     - Any overages
+
     """
     tracker = get_usage_tracker()
 
@@ -255,8 +252,7 @@ async def get_usage_stats(customer_id: str):
 
 @billing_router.get("/subscription", response_model=SubscriptionResponse)
 async def get_subscription(customer_id: str):
-    """
-    Get subscription details for a customer.
+    """Get subscription details for a customer.
 
     Query parameters:
     - customer_id: Customer ID
@@ -265,6 +261,7 @@ async def get_subscription(customer_id: str):
     - Subscription status
     - Current period
     - Cancellation status
+
     """
     stripe = get_stripe_integration()
 
@@ -296,8 +293,7 @@ async def stripe_webhook(
     request: Request,
     stripe_signature: str | None = Header(None, alias="stripe-signature"),
 ):
-    """
-    Stripe webhook handler.
+    """Stripe webhook handler.
 
     Handles events:
     - checkout.session.completed - New subscription
@@ -326,8 +322,7 @@ async def stripe_webhook(
 # Revenue analytics (admin only)
 @revenue_router.get("/analytics")
 async def get_revenue_analytics():
-    """
-    Get revenue analytics (admin only).
+    """Get revenue analytics (admin only).
 
     Returns:
     - MRR (Monthly Recurring Revenue)
@@ -336,6 +331,7 @@ async def get_revenue_analytics():
     - Growth metrics
     - Customer counts
     - Churn rate
+
     """
     stripe = get_stripe_integration()
 
@@ -350,14 +346,14 @@ async def get_revenue_analytics():
 
 @revenue_router.get("/projections")
 async def get_revenue_projections():
-    """
-    Get revenue projections (admin only).
+    """Get revenue projections (admin only).
 
     Returns:
     - 12-month revenue projection
     - Expected customer growth
     - Churn estimates
     - Target metrics
+
     """
     stripe = get_stripe_integration()
 

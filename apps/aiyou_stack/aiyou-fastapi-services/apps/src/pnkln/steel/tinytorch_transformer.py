@@ -11,8 +11,7 @@ MB_TO_BYTES = 1024 * 1024  # Megabytes to bytes conversion
 
 
 def create_causal_mask(seq_len: int) -> Tensor:
-    """
-    Create a causal (autoregressive) attention mask.
+    """Create a causal (autoregressive) attention mask.
 
     This mask ensures that position i can only attend to positions j where j ≤ i.
     Essential for autoregressive language models like GPT.
@@ -24,6 +23,7 @@ def create_causal_mask(seq_len: int) -> Tensor:
         Tensor of shape (1, seq_len, seq_len) with:
         - 1.0 for positions that CAN be attended to (lower triangle)
         - 0.0 for positions that CANNOT be attended to (upper triangle)
+
     """
     # Lower triangular matrix: 1 = can attend, 0 = cannot attend
     mask = np.tril(np.ones((seq_len, seq_len), dtype=np.float32))
@@ -31,20 +31,19 @@ def create_causal_mask(seq_len: int) -> Tensor:
 
 
 class LayerNorm:
-    """
-    Layer Normalization for transformer blocks.
+    """Layer Normalization for transformer blocks.
 
     Normalizes across the feature dimension (last axis) for each sample independently,
     unlike batch normalization which normalizes across the batch dimension.
     """
 
     def __init__(self, normalized_shape, eps=1e-5):
-        """
-        Initialize LayerNorm with learnable parameters.
+        """Initialize LayerNorm with learnable parameters.
 
         Args:
             normalized_shape: Shape to normalize over (usually embed_dim)
             eps: Small epsilon for numerical stability
+
         """
         if isinstance(normalized_shape, int):
             normalized_shape = (normalized_shape,)
@@ -57,8 +56,7 @@ class LayerNorm:
         self.beta = Tensor(np.zeros(normalized_shape), requires_grad=True)  # Shift parameter
 
     def forward(self, x):
-        """
-        Apply layer normalization.
+        """Apply layer normalization.
 
         MATHEMATICAL FORMULA:
         y = (x - μ) / σ * γ + β
@@ -92,21 +90,20 @@ class LayerNorm:
 
 
 class MLP:
-    """
-    Multi-Layer Perceptron (Feed-Forward Network) for transformer blocks.
+    """Multi-Layer Perceptron (Feed-Forward Network) for transformer blocks.
 
     Standard pattern: Linear -> GELU -> Linear with expansion ratio of 4:1.
     This provides the non-linear transformation in each transformer block.
     """
 
     def __init__(self, embed_dim, hidden_dim=None, _dropout_prob=0.1):
-        """
-        Initialize MLP with two linear layers.
+        """Initialize MLP with two linear layers.
 
         Args:
             embed_dim: Embedding dimension
             hidden_dim: Hidden dimension (default 4x embed_dim)
             dropout_prob: Dropout probability (unused in inference-only version)
+
         """
         if hidden_dim is None:
             hidden_dim = 4 * embed_dim  # Standard 4x expansion
@@ -120,8 +117,7 @@ class MLP:
         self.linear2 = Linear(hidden_dim, embed_dim)
 
     def forward(self, x):
-        """
-        Forward pass through MLP.
+        """Forward pass through MLP.
 
         COMPUTATION FLOW:
         x -> Linear -> GELU -> Linear -> output
@@ -150,16 +146,14 @@ class MLP:
 
 
 class TransformerBlock:
-    """
-    Complete Transformer Block with self-attention, MLP, and residual connections.
+    """Complete Transformer Block with self-attention, MLP, and residual connections.
 
     This is the core building block of GPT and other transformer models.
     Each block processes the input sequence and passes it to the next block.
     """
 
     def __init__(self, embed_dim, num_heads, mlp_ratio=4, _dropout_prob=0.1):
-        """
-        Initialize a complete transformer block.
+        """Initialize a complete transformer block.
 
         TRANSFORMER BLOCK ARCHITECTURE:
         x → LayerNorm → MultiHeadAttention → + (residual) →
@@ -180,8 +174,7 @@ class TransformerBlock:
         self.mlp = MLP(embed_dim, hidden_dim)
 
     def forward(self, x, mask=None):
-        """
-        Forward pass through transformer block.
+        """Forward pass through transformer block.
 
         COMPUTATION FLOW:
         x → ln1 → attention → + x → ln2 → mlp → + → output
@@ -220,16 +213,14 @@ class TransformerBlock:
 
 
 class GeminiMini(Layer):
-    """
-    Complete Gemini-Style Transformer model (Mini/Educational).
+    """Complete Gemini-Style Transformer model (Mini/Educational).
 
     This combines embeddings, positional encoding, multiple transformer blocks,
     and a language modeling head for text generation.
     """
 
     def __init__(self, vocab_size, embed_dim, num_layers, num_heads, max_seq_len=1024):
-        """
-        Initialize complete Gemini-Mini model.
+        """Initialize complete Gemini-Mini model.
 
         ARCHITECTURE:
         tokens → embedding → + pos_embedding →
@@ -259,8 +250,7 @@ class GeminiMini(Layer):
         self.lm_head = Linear(embed_dim, vocab_size, bias=False)
 
     def forward(self, tokens):
-        """
-        Forward pass through GPT model.
+        """Forward pass through GPT model.
 
         COMPUTATION FLOW:
         tokens → embed + pos_embed → blocks → ln_f → lm_head → logits
@@ -303,13 +293,13 @@ class GeminiMini(Layer):
         return Tensor(mask)
 
     def generate(self, prompt_tokens, max_new_tokens=50, temperature=1.0):
-        """
-        Generate text autoregressively.
+        """Generate text autoregressively.
 
         Args:
             prompt_tokens: Initial token sequence
             max_new_tokens: Number of tokens to generate
             temperature: Sampling temperature (1.0 = normal, <1.0 = conservative, >1.0 = creative)
+
         """
         current_tokens = Tensor(prompt_tokens.data.copy())
 

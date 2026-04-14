@@ -1,5 +1,4 @@
-"""
-Cor - Unified Execution Brain
+"""Cor - Unified Execution Brain
 
 Central orchestrator for task execution. Coordinates between:
 - JR Engine for validation
@@ -30,8 +29,7 @@ class ExecutionPlan:
 
 
 class CorOrchestrator:
-    """
-    Cor: The unified execution brain.
+    """Cor: The unified execution brain.
 
     Coordinates all SHADOWTAGAI components to execute tasks efficiently.
 
@@ -46,6 +44,7 @@ class CorOrchestrator:
 
         result = cor.execute("Research AI and write report")
         ```
+
     """
 
     def __init__(
@@ -55,14 +54,14 @@ class CorOrchestrator:
         shadowtag: Any | None = None,
         memory: Any | None = None,
     ):
-        """
-        Initialize Cor orchestrator.
+        """Initialize Cor orchestrator.
 
         Args:
             function_caller: GeminiFunctionCaller instance
             judge: Optional JudgeSix instance for validation
             shadowtag: Optional ShadowTag instance for watermarking
             memory: Optional SemanticMemory (NS) instance
+
         """
         self.function_caller = function_caller
         self.judge = judge
@@ -72,8 +71,7 @@ class CorOrchestrator:
         self.execution_history: list[dict[str, Any]] = []
 
     def plan(self, task: str, available_tools: list[str]) -> ExecutionPlan:
-        """
-        Create execution plan for a task.
+        """Create execution plan for a task.
 
         Args:
             task: Task description
@@ -81,6 +79,7 @@ class CorOrchestrator:
 
         Returns:
             ExecutionPlan
+
         """
         # Simple planning logic (can be enhanced with LLM)
         steps = [
@@ -103,8 +102,7 @@ class CorOrchestrator:
         )
 
     def execute(self, task: str, context: dict[str, Any] | None = None) -> str:
-        """
-        Execute a task with full SHADOWTAGAI stack integration.
+        """Execute a task with full SHADOWTAGAI stack integration.
 
         Args:
             task: Task description
@@ -112,6 +110,7 @@ class CorOrchestrator:
 
         Returns:
             Final result (watermarked if ShadowTag enabled)
+
         """
         start_time = time.time()
         context = context or {}

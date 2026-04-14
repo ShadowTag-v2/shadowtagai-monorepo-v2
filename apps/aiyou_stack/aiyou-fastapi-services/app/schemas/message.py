@@ -19,7 +19,6 @@ class MessageBase(BaseModel):
 class MessageCreate(MessageBase):
     """Schema for creating a message."""
 
-    pass
 
 
 class MessageResponse(MessageBase):

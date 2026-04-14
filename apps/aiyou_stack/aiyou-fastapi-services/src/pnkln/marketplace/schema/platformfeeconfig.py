@@ -14,8 +14,7 @@ Base = declarative_base()
 
 
 class PlatformFeeConfig(Base):
-    """
-    Platform fee configuration
+    """Platform fee configuration
 
     Allows dynamic fee adjustment based on:
     - Developer tier (new vs. established)

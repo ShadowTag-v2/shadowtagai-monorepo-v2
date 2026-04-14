@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Scheduler - Run workflows via Gemini Layer instead of GitHub Actions.
+"""Gemini Scheduler - Run workflows via Gemini Layer instead of GitHub Actions.
 Bypasses GitHub Actions billing by using Gemini API directly.
 """
 
@@ -54,8 +53,7 @@ class GeminiScheduler:
             f.write(log_entry + "\n")
 
     def run_ingestion(self):
-        """
-        Run the ingestion workflow (replaces GitHub Actions 'Ingestion (hourly)').
+        """Run the ingestion workflow (replaces GitHub Actions 'Ingestion (hourly)').
         """
         self._log("Starting ingestion run")
 
@@ -74,7 +72,7 @@ class GeminiScheduler:
             # Quick assessment of recent changes
             assessment = self.jura.quick_assess(
                 "Review codebase health based on BugBot results: "
-                + json.dumps(bugbot_results, default=str)[:1000]
+                + json.dumps(bugbot_results, default=str)[:1000],
             )
         except Exception as e:
             assessment = {"error": str(e)}
@@ -146,7 +144,7 @@ def main():
     parser = argparse.ArgumentParser(description="Gemini Scheduler")
     parser.add_argument("--run-once", action="store_true", help="Run ingestion once and exit")
     parser.add_argument(
-        "--interval", type=int, default=60, help="Interval in minutes (default: 60)"
+        "--interval", type=int, default=60, help="Interval in minutes (default: 60)",
     )
 
     args = parser.parse_args()

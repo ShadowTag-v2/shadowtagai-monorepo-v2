@@ -1,5 +1,4 @@
-"""
-PNKLN API Endpoints
+"""PNKLN API Endpoints
 ===================
 
 REST API for PNKLN intelligence pipeline:
@@ -72,7 +71,7 @@ def get_nowgrep() -> Nowgrep:
                     "text": "Edge inference pipeline for autonomous vehicle perception.",
                     "category": "automotive",
                 },
-            ]
+            ],
         )
         _nowgrep.build()
     return _nowgrep
@@ -169,8 +168,7 @@ async def search(
     q: str = Query(..., description="Search query"),
     topk: int = Query(default=6, ge=1, le=20, description="Number of results"),
 ) -> SearchResponse:
-    """
-    Semantic search with card-based results.
+    """Semantic search with card-based results.
 
     Uses Nowgrep for fast semantic search with all-MiniLM-L6-v2
     embeddings and position-aware reranking.
@@ -189,14 +187,13 @@ async def search(
     query_time = (time.time() - start_time) * 1000
 
     return SearchResponse(
-        cards=cards, count=len(cards), query=q, query_time_ms=round(query_time, 2)
+        cards=cards, count=len(cards), query=q, query_time_ms=round(query_time, 2),
     )
 
 
 @router.post("/assist", response_model=AssistResponse)
 async def assist(request: AssistRequest) -> AssistResponse:
-    """
-    Vehicle assist endpoint with safety validation.
+    """Vehicle assist endpoint with safety validation.
 
     Provides lane and occlusion information for FSD assist,
     with safety gates on user notes.
@@ -234,8 +231,7 @@ async def assist(request: AssistRequest) -> AssistResponse:
 
 @router.get("/mesh", response_model=MeshStatsResponse)
 async def get_mesh() -> MeshStatsResponse:
-    """
-    Get infrastructure mesh statistics.
+    """Get infrastructure mesh statistics.
 
     Returns latency, FSD event rates, token costs, and
     throughput/safety gains from mesh optimization.
@@ -246,8 +242,7 @@ async def get_mesh() -> MeshStatsResponse:
 
 @router.post("/chain", response_model=ChainResponse)
 async def run_chain(request: ChainRequest) -> ChainResponse:
-    """
-    Execute R1→R2→R3 parallel chain.
+    """Execute R1→R2→R3 parallel chain.
 
     Runs the prompt through generation, analysis, and
     finalization stages with ROT trace storage.
@@ -261,8 +256,7 @@ async def run_chain(request: ChainRequest) -> ChainResponse:
 
 @router.get("/rot/retrieve")
 async def retrieve_rot(hint: str = Query(..., description="Hint to search for")) -> dict[str, Any]:
-    """
-    Retrieve ROT node by hint.
+    """Retrieve ROT node by hint.
 
     Searches reasoning traces for a node containing the hint.
     """
@@ -274,8 +268,7 @@ async def retrieve_rot(hint: str = Query(..., description="Hint to search for"))
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check() -> HealthResponse:
-    """
-    Health check with Nowgrep status.
+    """Health check with Nowgrep status.
 
     Returns service health and Nowgrep index status.
     """

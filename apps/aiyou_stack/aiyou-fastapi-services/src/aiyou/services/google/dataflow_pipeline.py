@@ -5,8 +5,7 @@ import logging
 
 
 class DataflowPipeline:
-    """
-    Handles large-scale data processing jobs via Google Dataflow (Apache Beam).
+    """Handles large-scale data processing jobs via Google Dataflow (Apache Beam).
     """
 
     def __init__(self, project_id: str, bucket_name: str):
@@ -18,8 +17,6 @@ class DataflowPipeline:
         """Launch a Dataflow template job."""
         self.logger.info(f"Launching Dataflow job: {job_name}")
         # gcloud dataflow jobs run ...
-        pass
 
     def stream_events(self, topic: str):
         """Setup a streaming pipeline from Pub/Sub or Kafka."""
-        pass

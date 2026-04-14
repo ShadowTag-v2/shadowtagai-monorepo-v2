@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-pinkln Infrastructure Analysis Demo
+"""pinkln Infrastructure Analysis Demo
 
 This script demonstrates the infrastructure analysis capabilities for the
 PNKLN Core Stack™, including Judge #6 and Gemini Ingestion Layer analysis.
@@ -332,7 +331,7 @@ async def demo_all():
 async def main():
     """Main entry point"""
     parser = argparse.ArgumentParser(
-        description="pinkln Infrastructure Analysis Demo - PNKLN Core Stack™"
+        description="pinkln Infrastructure Analysis Demo - PNKLN Core Stack™",
     )
     parser.add_argument(
         "--demo",

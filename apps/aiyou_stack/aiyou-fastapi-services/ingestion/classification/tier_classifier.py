@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Tier Classification Engine
+"""PNKLN Core Stack - Tier Classification Engine
 
 Classifies ingested items into tiers using Gemini 2.0 Pro:
 - Tier 1: High-value, time-sensitive intelligence (target 20%)
@@ -58,8 +57,7 @@ class IngestedItem:
 
 
 class TierClassifier:
-    """
-    Classifies ingested items into tiers using Gemini 2.0 Pro.
+    """Classifies ingested items into tiers using Gemini 2.0 Pro.
 
     Uses structured prompts to evaluate items across multiple dimensions
     and assign tier classifications with reasoning.
@@ -145,10 +143,9 @@ class TierClassifier:
             raise ValueError(f"Failed to parse Gemini response: {e}")
 
     def _calculate_overall_score(
-        self, relevance: float, timeliness: float, completeness: float, source_authority: float
+        self, relevance: float, timeliness: float, completeness: float, source_authority: float,
     ) -> float:
-        """
-        Calculate weighted overall score.
+        """Calculate weighted overall score.
 
         Weights:
         - Relevance: 40%
@@ -162,14 +159,12 @@ class TierClassifier:
         """Assign tier based on overall score and thresholds."""
         if overall_score >= self.config.classification.tier_1_score_threshold:
             return 1
-        elif overall_score >= self.config.classification.tier_2_score_threshold:
+        if overall_score >= self.config.classification.tier_2_score_threshold:
             return 2
-        else:
-            return 3
+        return 3
 
     async def classify(self, item: IngestedItem) -> TierScore:
-        """
-        Classify a single ingested item using Gemini.
+        """Classify a single ingested item using Gemini.
 
         Args:
             item: The ingested item to classify
@@ -179,6 +174,7 @@ class TierClassifier:
 
         Raises:
             ValueError: If Gemini response is invalid
+
         """
         prompt = self._format_prompt(item)
 
@@ -236,10 +232,9 @@ class TierClassifier:
             raise
 
     async def classify_batch(
-        self, items: list[IngestedItem], max_concurrent: int = 10
+        self, items: list[IngestedItem], max_concurrent: int = 10,
     ) -> dict[str, TierScore]:
-        """
-        Classify multiple items concurrently.
+        """Classify multiple items concurrently.
 
         Args:
             items: List of items to classify
@@ -247,6 +242,7 @@ class TierClassifier:
 
         Returns:
             Dictionary mapping item IDs to TierScores
+
         """
         import asyncio
 
@@ -258,7 +254,7 @@ class TierClassifier:
                 return item.id, score
 
         results = await asyncio.gather(
-            *[classify_with_semaphore(item) for item in items], return_exceptions=True
+            *[classify_with_semaphore(item) for item in items], return_exceptions=True,
         )
 
         # Filter out exceptions
@@ -283,14 +279,14 @@ class TierClassifier:
         return successful
 
     def get_tier_distribution(self, scores: dict[str, TierScore]) -> dict[str, dict]:
-        """
-        Calculate tier distribution statistics.
+        """Calculate tier distribution statistics.
 
         Args:
             scores: Dictionary of item scores
 
         Returns:
             Distribution stats with counts and percentages
+
         """
         total = len(scores)
         if total == 0:

@@ -1,5 +1,4 @@
-"""
-Self-Configuring AI Engine
+"""Self-Configuring AI Engine
 ===========================
 Auto-configures platform based on customer profile.
 Ports itself to emerging frameworks/LLMs/protocols.
@@ -65,8 +64,7 @@ class AIConfigProfile(BaseModel):
 
 
 class SelfConfiguringEngine:
-    """
-    AI engine that auto-configures based on tenant profile.
+    """AI engine that auto-configures based on tenant profile.
     Monitors emerging tech and auto-ports to new frameworks.
     """
 
@@ -179,10 +177,9 @@ class SelfConfiguringEngine:
         regulatory_requirements: list[str],
     ) -> AIConfigProfile:
         """Generate AI configuration based on tenant profile"""
-
         # Get base configs
         industry_config = self.INDUSTRY_CONFIGS.get(
-            industry, self.INDUSTRY_CONFIGS[IndustryVertical.TECHNOLOGY]
+            industry, self.INDUSTRY_CONFIGS[IndustryVertical.TECHNOLOGY],
         )
         size_config = self.SIZE_CONFIGS.get(company_size, self.SIZE_CONFIGS[CompanySize.SMB])
 
@@ -228,7 +225,7 @@ class SelfConfiguringEngine:
         return config
 
     def _recommend_integrations(
-        self, tech_stack: list[str], industry: IndustryVertical
+        self, tech_stack: list[str], industry: IndustryVertical,
     ) -> list[str]:
         """Recommend integrations based on tech stack"""
         integrations = []
@@ -289,7 +286,7 @@ class SelfConfiguringEngine:
                         "from": current_config.primary_model,
                         "to": tech,
                         "recommendation": f"Consider upgrading to {tech} for improved performance",
-                    }
+                    },
                 )
 
         return {

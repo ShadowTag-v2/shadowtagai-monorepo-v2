@@ -1,5 +1,4 @@
-"""
-Production API Server for Consensus Orchestrator
+"""Production API Server for Consensus Orchestrator
 FastAPI-based REST API with authentication, rate limiting, and monitoring
 """
 
@@ -19,7 +18,7 @@ from pydantic import BaseModel, Field
 
 # Setup logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -71,7 +70,7 @@ class QueryRequest(BaseModel):
                 "max_threads": 6,
                 "tags": ["architecture", "fastapi"],
                 "auto_archive": True,
-            }
+            },
         }
 
 
@@ -119,7 +118,7 @@ async def log_requests(request: Request, call_next):
     logger.info(
         f"{request.method} {request.url.path} - "
         f"Status: {response.status_code} - "
-        f"Time: {process_time:.3f}s"
+        f"Time: {process_time:.3f}s",
     )
 
     response.headers["X-Process-Time"] = str(process_time)
@@ -164,7 +163,7 @@ async def check_rate_limit(request: Request, api_key: str = Depends(verify_api_k
     # Check limit
     if len(request_counts[client_id]) >= RATE_LIMIT:
         raise HTTPException(
-            status_code=429, detail=f"Rate limit exceeded. Max {RATE_LIMIT} requests per minute."
+            status_code=429, detail=f"Rate limit exceeded. Max {RATE_LIMIT} requests per minute.",
         )
 
     # Add current request
@@ -257,7 +256,7 @@ async def readiness_check():
 
     # Check at least one model is available
     models_ready = any(
-        [orch.gemini_model is not None, orch.anthropic_key is not None, orch.openai_key is not None]
+        [orch.gemini_model is not None, orch.anthropic_key is not None, orch.openai_key is not None],
     )
 
     if not models_ready:
@@ -275,8 +274,7 @@ async def process_query(
     api_key: str = Depends(verify_api_key),
     rate_limit: bool = Depends(check_rate_limit),
 ):
-    """
-    Process a consensus query with multi-LLM orchestration.
+    """Process a consensus query with multi-LLM orchestration.
 
     This endpoint:
     1. Pre-processes query with Grok intake
@@ -325,7 +323,7 @@ async def process_query(
 
     except Exception as e:
         logger.error(f"Query failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Query processing failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Query processing failed: {e!s}")
 
 
 # === Error Handlers ===

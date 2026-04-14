@@ -1,5 +1,4 @@
-"""
-Google Secret Manager Integration
+"""Google Secret Manager Integration
 Production-ready secrets management with automatic environment variable fallback
 """
 
@@ -21,8 +20,7 @@ except ImportError:
 
 
 class SecretManager:
-    """
-    Google Secret Manager client with automatic fallback to environment variables
+    """Google Secret Manager client with automatic fallback to environment variables
 
     Features:
     - Retrieves secrets from Google Secret Manager in production
@@ -33,11 +31,11 @@ class SecretManager:
     """
 
     def __init__(self, project_id: str | None = None):
-        """
-        Initialize Secret Manager client
+        """Initialize Secret Manager client
 
         Args:
             project_id: GCP project ID (if None, uses environment variables only)
+
         """
         self.project_id = project_id
         self.client = None
@@ -53,8 +51,7 @@ class SecretManager:
             logger.info("ℹ️ Using environment variables for secrets (no GCP project configured)")
 
     def get_secret(self, secret_id: str, version: str = "latest") -> str | None:
-        """
-        Retrieve secret from Secret Manager with fallback to environment variables
+        """Retrieve secret from Secret Manager with fallback to environment variables
 
         Args:
             secret_id: Secret name in Secret Manager (e.g., "youtube-api-key")
@@ -62,6 +59,7 @@ class SecretManager:
 
         Returns:
             Secret value as string, or None if not found
+
         """
         # Check cache first
         cache_key = f"{secret_id}:{version}"
@@ -90,7 +88,7 @@ class SecretManager:
 
         if env_value:
             logger.debug(
-                f"✅ Retrieved secret '{secret_id}' from environment variable {env_var_name}"
+                f"✅ Retrieved secret '{secret_id}' from environment variable {env_var_name}",
             )
             self.cache[cache_key] = env_value
             return env_value
@@ -99,8 +97,7 @@ class SecretManager:
         return None
 
     def get_secret_json(self, secret_id: str, version: str = "latest") -> dict[str, Any] | None:
-        """
-        Retrieve JSON secret and parse it
+        """Retrieve JSON secret and parse it
 
         Args:
             secret_id: Secret name in Secret Manager
@@ -108,6 +105,7 @@ class SecretManager:
 
         Returns:
             Parsed JSON as dict, or None if not found or invalid JSON
+
         """
         secret_value = self.get_secret(secret_id, version)
         if not secret_value:
@@ -120,11 +118,11 @@ class SecretManager:
             return None
 
     def get_api_keys(self) -> dict[str, str]:
-        """
-        Retrieve all API keys for external services
+        """Retrieve all API keys for external services
 
         Returns:
             Dict mapping service name to API key
+
         """
         api_keys = {}
 
@@ -152,11 +150,11 @@ class SecretManager:
         return api_keys
 
     def get_auth_keys(self) -> dict[str, str]:
-        """
-        Retrieve authentication keys for FastAPI middleware
+        """Retrieve authentication keys for FastAPI middleware
 
         Returns:
             Dict mapping plain API keys to tier names
+
         """
         # Retrieve API keys configuration (JSON format)
         # Example JSON: {"key123": "tier_1", "key456": "enterprise"}
@@ -181,11 +179,11 @@ class SecretManager:
         return {"dev-key-12345": "tier_1"}
 
     def get_database_url(self) -> str:
-        """
-        Retrieve database connection URL
+        """Retrieve database connection URL
 
         Returns:
             Database URL string
+
         """
         db_url = self.get_secret("database-url")
         if db_url:
@@ -197,11 +195,11 @@ class SecretManager:
         return default_url
 
     def get_redis_url(self) -> str:
-        """
-        Retrieve Redis connection URL
+        """Retrieve Redis connection URL
 
         Returns:
             Redis URL string
+
         """
         redis_url = self.get_secret("redis-url")
         if redis_url:
@@ -213,8 +211,7 @@ class SecretManager:
         return default_url
 
     def clear_cache(self):
-        """
-        Clear the secret cache (useful for testing or forcing refresh)
+        """Clear the secret cache (useful for testing or forcing refresh)
         """
         self.cache.clear()
         logger.info("🔄 Secret cache cleared")
@@ -225,14 +222,14 @@ _secret_manager_instance: SecretManager | None = None
 
 
 def get_secret_manager(project_id: str | None = None) -> SecretManager:
-    """
-    Get or create singleton Secret Manager instance
+    """Get or create singleton Secret Manager instance
 
     Args:
         project_id: GCP project ID (optional)
 
     Returns:
         SecretManager instance
+
     """
     global _secret_manager_instance
 

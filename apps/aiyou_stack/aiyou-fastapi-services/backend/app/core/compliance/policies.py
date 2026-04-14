@@ -1,5 +1,4 @@
-"""
-Compliance Policies - GDPR and CCPA compliance rules and policies
+"""Compliance Policies - GDPR and CCPA compliance rules and policies
 """
 
 from dataclasses import dataclass

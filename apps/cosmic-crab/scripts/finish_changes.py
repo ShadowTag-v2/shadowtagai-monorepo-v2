@@ -32,19 +32,18 @@ def run_command(command, dry_run=False):
         return False
     except FileNotFoundError:
         logger.error(
-            f"Command not found: {command[0]}. Please ensure it is installed and in your PATH."
+            f"Command not found: {command[0]}. Please ensure it is installed and in your PATH.",
         )
         return False
 
 
 def main():
-    """
-    Main function to run the finish changes cycle.
+    """Main function to run the finish changes cycle.
     Lint -> Format -> Stage -> Commit
     """
     parser = argparse.ArgumentParser(description="Finish changes cycle.")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Print commands instead of executing them."
+        "--dry-run", action="store_true", help="Print commands instead of executing them.",
     )
     args = parser.parse_args()
 
@@ -80,10 +79,9 @@ def main():
     status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
     if not status_result.stdout:
         logger.info("No changes to commit. Workspace is clean.")
-    else:
-        if not run_command(["git", "commit", "-m", "chore: finish changes"], dry_run=args.dry_run):
-            logger.error("Committing changes failed. Aborting.")
-            sys.exit(1)
+    elif not run_command(["git", "commit", "-m", "chore: finish changes"], dry_run=args.dry_run):
+        logger.error("Committing changes failed. Aborting.")
+        sys.exit(1)
 
     logger.info("Finish changes cycle completed successfully.")
 

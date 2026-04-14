@@ -1,5 +1,4 @@
-"""
-PNKLN Judge #6 - AI Governance & Risk Management System
+"""PNKLN Judge #6 - AI Governance & Risk Management System
 ========================================================
 
 A cryptographically-enforced AI governance framework implementing:
@@ -22,12 +21,12 @@ __version__ = "2.0.0"
 __author__ = "Erik Bjontegard, Pnkln"
 
 __all__ = [
-    "RiskLevel",
-    "JudgmentDecision",
-    "JudgmentRule",
-    "ShadowTagEngine",
-    "ProvenanceStamp",
-    "YourRiskManager",
     "COR53_AXIOMS",
     "ConstitutionalAxiom",
+    "JudgmentDecision",
+    "JudgmentRule",
+    "ProvenanceStamp",
+    "RiskLevel",
+    "ShadowTagEngine",
+    "YourRiskManager",
 ]

@@ -1,5 +1,4 @@
-"""
-Metrics Collector for Prometheus
+"""Metrics Collector for Prometheus
 
 Tracks key metrics:
 - Items/Day
@@ -13,8 +12,7 @@ from typing import Any
 
 
 class MetricsCollector:
-    """
-    Collect and expose metrics for Prometheus.
+    """Collect and expose metrics for Prometheus.
 
     Key Metrics:
     - gemini_ingestion_items_total: Total items ingested
@@ -53,15 +51,15 @@ class MetricsCollector:
                 "tier_2_count": stats.get("tier_2_count", 0),
                 "tier_3_count": stats.get("tier_3_count", 0),
                 "timestamp": datetime.utcnow(),
-            }
+            },
         )
 
     def get_prometheus_format(self) -> str:
-        """
-        Export metrics in Prometheus text format.
+        """Export metrics in Prometheus text format.
 
         Returns:
             Prometheus-formatted metrics
+
         """
         lines = []
         lines.append("# HELP gemini_ingestion_items_total Total items ingested")

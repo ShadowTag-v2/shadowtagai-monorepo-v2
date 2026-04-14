@@ -1,5 +1,4 @@
-"""
-Antigravity Wrapper for Firebase Genkit.
+"""Antigravity Wrapper for Firebase Genkit.
 Aligns Genkit initialization with the Antigravity/ShadowTag-v4 architecture.
 """
 
@@ -16,25 +15,23 @@ logger = logging.getLogger(__name__)
 
 
 class GenkitInterface:
-    """
-    Wrapper for Genkit initialization and flow management.
+    """Wrapper for Genkit initialization and flow management.
     Ensures standard configuration across the Antigravity ecosystem.
     """
 
     def __init__(self, plugins: list[Any] | None = None) -> None:
-        """
-        Initialize the Genkit interface.
+        """Initialize the Genkit interface.
 
         Args:
             plugins: List of Genkit plugins to initialize.
+
         """
         self.plugins = plugins or []
         self._ai: Genkit | None = None
         self._initialized = False
 
     def initialize(self) -> Genkit:
-        """
-        Lazy initialization of the Genkit instance.
+        """Lazy initialization of the Genkit instance.
         """
         if not self._initialized:
             logger.info("Initializing Genkit with plugins: %s", self.plugins)
@@ -56,12 +53,12 @@ class GenkitInterface:
         return self.initialize()
 
     def register_flow(self, name: str, func: Callable[..., Any]) -> Action:
-        """
-        Register a flow with the Genkit instance.
+        """Register a flow with the Genkit instance.
 
         Args:
            name: The name of the flow.
            func: The function to register as a flow.
+
         """
         logger.info("Registering Genkit flow: %s", name)
         # Using the decorator pattern programmatically if possible,

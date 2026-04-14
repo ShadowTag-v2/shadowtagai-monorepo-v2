@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Integration tests for PNKLN Core Stack™ API
+"""Integration tests for PNKLN Core Stack™ API
 Tests AutoGen → Gemini migration functionality
 """
 
@@ -37,7 +36,7 @@ async def test_agent_fallback_proposal():
     print("=" * 70)
 
     agent = GeminiAgent(
-        name="skeptic", persona="You are a skeptical analyst", temperature=0.5, api_key=None
+        name="skeptic", persona="You are a skeptical analyst", temperature=0.5, api_key=None,
     )
 
     # Test Tier 1 content (regulatory)
@@ -197,7 +196,7 @@ async def test_persona_variations():
         )
 
         print(
-            f"{agent_name.capitalize():10} → Tier {result.tier} (confidence: {result.confidence:.0%})"
+            f"{agent_name.capitalize():10} → Tier {result.tier} (confidence: {result.confidence:.0%})",
         )
 
     print("\n✓ Agent personas exhibit expected bias patterns")

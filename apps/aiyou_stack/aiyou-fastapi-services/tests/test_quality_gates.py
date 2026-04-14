@@ -1,5 +1,4 @@
-"""
-Test Quality Gates
+"""Test Quality Gates
 
 Aligned with new requirements:
 - Items, Sources, Costs, Scores instead of 98% coverage

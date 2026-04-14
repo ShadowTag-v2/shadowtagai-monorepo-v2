@@ -51,7 +51,7 @@ class Reaction(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     reaction_type_id = Column(
-        Integer, ForeignKey("reaction_types.id", ondelete="CASCADE"), nullable=False
+        Integer, ForeignKey("reaction_types.id", ondelete="CASCADE"), nullable=False,
     )
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     forum_post_id = Column(Integer, ForeignKey("forum_posts.id", ondelete="CASCADE"), nullable=True)

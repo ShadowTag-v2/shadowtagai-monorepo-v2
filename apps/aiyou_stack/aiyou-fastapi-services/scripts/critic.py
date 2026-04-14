@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Critic Agent: Validates Implementer's test plan against diff
+"""Critic Agent: Validates Implementer's test plan against diff
 Uses Claude Sonnet for deep reasoning
 BLOCKS merge if critical issues found
 Stage 2 of Dual-Model CI Pipeline
@@ -69,7 +68,7 @@ def main(diff_file: str, plan_file: str):
 
     # Check for fallback/skip condition
     if test_plan.get("fallback") or test_plan.get("note", "").startswith(
-        "Implementer analysis skipped"
+        "Implementer analysis skipped",
     ):
         print("⚠️  Implementer skipped - approving with warning")
         with open("critic_issues.md", "w") as f:
@@ -90,7 +89,7 @@ def main(diff_file: str, plan_file: str):
                         diff=diff[:40000],  # Limit size
                         test_plan=json.dumps(test_plan, indent=2)[:10000],
                     ),
-                }
+                },
             ],
         )
 
@@ -107,7 +106,7 @@ def main(diff_file: str, plan_file: str):
                 if line.startswith("```json"):
                     in_json = True
                     continue
-                elif line.startswith("```"):
+                if line.startswith("```"):
                     in_json = False
                     continue
                 if in_json or (not line.startswith("```")):
@@ -129,7 +128,7 @@ def main(diff_file: str, plan_file: str):
                     "line": 0,
                     "issue": "Critic response parsing failed - manual review recommended",
                     "suggestion": "Review PR manually",
-                }
+                },
             ],
             "summary": "Critic parsing failed - defaulting to approve with warning",
         }
@@ -143,9 +142,9 @@ def main(diff_file: str, plan_file: str):
                     "severity": "warning",
                     "file": "N/A",
                     "line": 0,
-                    "issue": f"Critic API unavailable: {str(e)}",
+                    "issue": f"Critic API unavailable: {e!s}",
                     "suggestion": "Review PR manually",
-                }
+                },
             ],
             "summary": "Critic unavailable - defaulting to approve",
         }
@@ -160,7 +159,7 @@ def main(diff_file: str, plan_file: str):
                 line = issue.get("line", "")
                 line_suffix = f":{line}" if line else ""
                 f.write(
-                    f"{emoji} **{file_ref}{line_suffix}** - {issue.get('issue', 'Unknown issue')}\n"
+                    f"{emoji} **{file_ref}{line_suffix}** - {issue.get('issue', 'Unknown issue')}\n",
                 )
                 if issue.get("suggestion"):
                     f.write(f"   → {issue['suggestion']}\n\n")

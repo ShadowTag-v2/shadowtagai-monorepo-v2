@@ -14,8 +14,7 @@ class ToolDefinition(BaseModel):
 
 
 class UnifiedRegistry:
-    """
-    Central registry for all AI tools, functions, and 'Kernel Chains'.
+    """Central registry for all AI tools, functions, and 'Kernel Chains'.
     Supports auto-generation of Gemini function schemas and monetization integration.
     """
 
@@ -31,7 +30,6 @@ class UnifiedRegistry:
         cost: float = 0.0,
     ):
         """Decorator to register a function as a tool."""
-
         if parameters is None:
             parameters = {}
 
@@ -59,7 +57,7 @@ class UnifiedRegistry:
         schemas = []
         for tool in self._tools.values():
             schemas.append(
-                {"name": tool.name, "description": tool.description, "parameters": tool.parameters}
+                {"name": tool.name, "description": tool.description, "parameters": tool.parameters},
             )
         return schemas
 

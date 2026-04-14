@@ -1,5 +1,4 @@
-"""
-Policy Rule Engine
+"""Policy Rule Engine
 Internal policy and risk limit enforcement
 """
 
@@ -7,8 +6,7 @@ from ..models.base import Evidence, RiskLimits
 
 
 class PolicyEngine:
-    """
-    Internal policy rule enforcement engine
+    """Internal policy rule enforcement engine
     Validates decisions against firm-specific policies and risk limits
     """
 
@@ -17,8 +15,7 @@ class PolicyEngine:
         self.policy_db = self._initialize_policies()
 
     def _initialize_policies(self) -> dict:
-        """
-        Initialize policy rule database
+        """Initialize policy rule database
         In production, this would load from policy management system
         """
         return {
@@ -55,10 +52,9 @@ class PolicyEngine:
         }
 
     def check_policies(
-        self, policy_ids: list[str], evidence: list[Evidence], risk_limits: RiskLimits | None = None
+        self, policy_ids: list[str], evidence: list[Evidence], risk_limits: RiskLimits | None = None,
     ) -> list[str]:
-        """
-        Check policy compliance
+        """Check policy compliance
 
         Args:
             policy_ids: List of policy IDs to check
@@ -67,6 +63,7 @@ class PolicyEngine:
 
         Returns:
             List of policy violations (empty if compliant)
+
         """
         violations = []
 
@@ -86,30 +83,29 @@ class PolicyEngine:
         return violations
 
     def _check_policy(
-        self, policy_id: str, evidence: list[Evidence], risk_limits: RiskLimits | None
+        self, policy_id: str, evidence: list[Evidence], risk_limits: RiskLimits | None,
     ) -> str | None:
-        """
-        Check specific policy
+        """Check specific policy
 
         Returns:
             Violation message if policy violated, None if compliant
+
         """
         policy = self.policy_db[policy_id]
 
         if policy_id == "RISK-001":
             return self._check_position_size(evidence, policy)
-        elif policy_id == "RISK-002":
+        if policy_id == "RISK-002":
             return self._check_concentration(evidence, policy)
-        elif policy_id == "RISK-003":
+        if policy_id == "RISK-003":
             return self._check_var_limit(evidence, risk_limits, policy)
-        elif policy_id == "RISK-004":
+        if policy_id == "RISK-004":
             return self._check_leverage_limit(evidence, policy)
-        elif policy_id == "TRADE-001":
+        if policy_id == "TRADE-001":
             return self._check_trade_approval(evidence, policy)
-        elif policy_id == "CREDIT-001":
+        if policy_id == "CREDIT-001":
             return self._check_credit_rating(evidence, policy)
-        else:
-            return None
+        return None
 
     def _check_position_size(self, evidence: list[Evidence], policy: dict) -> str | None:
         """Check position size limit"""
@@ -130,7 +126,7 @@ class PolicyEngine:
         return None
 
     def _check_var_limit(
-        self, evidence: list[Evidence], risk_limits: RiskLimits | None, policy: dict
+        self, evidence: list[Evidence], risk_limits: RiskLimits | None, policy: dict,
     ) -> str | None:
         """Check VaR limit"""
         # Check risk_limits first

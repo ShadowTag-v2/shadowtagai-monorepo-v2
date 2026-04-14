@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack™ — Gemini Ingestion Layer Data Models
+"""PNKLN Core Stack™ — Gemini Ingestion Layer Data Models
 Integration contract between Ingestion → Judge #6 → Services
 """
 
@@ -74,8 +73,7 @@ class CostSummary:
 
 @dataclass
 class IngestedItem:
-    """
-    Individual intelligence item from Gemini Ingestion Layer.
+    """Individual intelligence item from Gemini Ingestion Layer.
     This is the atomic unit passed to Judge #6 for validation.
     """
 
@@ -133,8 +131,7 @@ class IngestedItem:
 
 @dataclass
 class IngestionBriefing:
-    """
-    Complete output from Gemini Ingestion Layer (daily batch).
+    """Complete output from Gemini Ingestion Layer (daily batch).
     This is what gets written to Cloud Storage and triggers Judge #6 update.
     """
 
@@ -154,8 +151,7 @@ class IngestionBriefing:
     classifier_version: str
 
     def meets_quality_gates(self) -> bool:
-        """
-        Validate against all quality gates before Judge #6 ingestion.
+        """Validate against all quality gates before Judge #6 ingestion.
         Rollback trigger: 3 consecutive days failing gates.
         """
         return (
@@ -218,8 +214,7 @@ class IngestionBriefing:
 
 @dataclass
 class JudgeDecision:
-    """
-    Real-time validation response from Judge #6.
+    """Real-time validation response from Judge #6.
     Returned to services in <500μs p99.
     """
 
@@ -281,7 +276,7 @@ if __name__ == "__main__":
             {"topic": "DoD Procurement", "items": 3421, "avg_score": 0.82},
         ],
         quality_metrics=QualityMetrics(
-            avg_relevance=0.76, completeness=0.94, timeliness=0.89, source_diversity=23
+            avg_relevance=0.76, completeness=0.94, timeliness=0.89, source_diversity=23,
         ),
         cost_summary=CostSummary(
             total_cost_usd=2.54,

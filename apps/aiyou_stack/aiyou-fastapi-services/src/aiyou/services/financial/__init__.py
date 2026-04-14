@@ -1,5 +1,4 @@
-"""
-Financial Services Module
+"""Financial Services Module
 
 ROI calculators and financial analysis tools for Digital Freeway
 and other ShadowTag-v4 infrastructure products.

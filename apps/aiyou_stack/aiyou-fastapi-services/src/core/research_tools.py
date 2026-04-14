@@ -1,5 +1,4 @@
-"""
-Research Tools for Multi-Source Orchestration
+"""Research Tools for Multi-Source Orchestration
 
 Defines FunctionTool declarations for Drive, Gmail, and Web search
 to be used with GeminiFunctionCaller for parallel research execution.
@@ -36,8 +35,7 @@ def drive_search_impl(
     file_type: str | None = None,
     modified_after: str | None = None,
 ) -> dict[str, Any]:
-    """
-    Search Google Drive for documents matching query.
+    """Search Google Drive for documents matching query.
 
     Args:
         query: Search query string
@@ -47,6 +45,7 @@ def drive_search_impl(
 
     Returns:
         Dict with documents found, count, and metadata
+
     """
     if not GOOGLE_APIS_AVAILABLE:
         return {
@@ -153,10 +152,9 @@ drive_search_tool = FunctionTool(
 
 
 def gmail_search_impl(
-    query: str, max_results: int = 10, include_attachments: bool = False
+    query: str, max_results: int = 10, include_attachments: bool = False,
 ) -> dict[str, Any]:
-    """
-    Search Gmail for email threads matching query.
+    """Search Gmail for email threads matching query.
 
     Args:
         query: Gmail search query (supports operators: from:, to:, subject:, etc.)
@@ -165,6 +163,7 @@ def gmail_search_impl(
 
     Returns:
         Dict with email threads found, count, and metadata
+
     """
     if not GOOGLE_APIS_AVAILABLE:
         return {
@@ -274,8 +273,7 @@ def web_search_impl(
     site_filter: str | None = None,
     date_restrict: str | None = None,
 ) -> dict[str, Any]:
-    """
-    Search the public web for information.
+    """Search the public web for information.
 
     Args:
         query: Web search query
@@ -285,6 +283,7 @@ def web_search_impl(
 
     Returns:
         Dict with search results, count, and metadata
+
     """
     try:
         # Use Google Custom Search API if available
@@ -293,7 +292,7 @@ def web_search_impl(
 
         if api_key and search_engine_id:
             return _google_custom_search(
-                query, max_results, site_filter, date_restrict, api_key, search_engine_id
+                query, max_results, site_filter, date_restrict, api_key, search_engine_id,
             )
 
         # Fallback: Return empty with note to use built-in WebSearch
@@ -385,8 +384,7 @@ web_search_tool = FunctionTool(
 
 
 def _get_google_credentials() -> Credentials | None:
-    """
-    Get Google OAuth credentials from environment or credential file.
+    """Get Google OAuth credentials from environment or credential file.
 
     Looks for:
     1. GOOGLE_APPLICATION_CREDENTIALS env var
@@ -429,7 +427,7 @@ def _mime_to_type(mime_type: str) -> str:
         "application/pdf": "pdf",
         "application/vnd.google-apps.folder": "folder",
     }
-    return mime_map.get(mime_type, mime_type.split("/")[-1] if mime_type else "unknown")
+    return mime_map.get(mime_type, mime_type.rsplit("/", maxsplit=1)[-1] if mime_type else "unknown")
 
 
 # ============================================================================
@@ -448,7 +446,7 @@ def check_tool_availability() -> dict[str, bool]:
     """Check which research tools are available based on credentials/config."""
     creds = _get_google_credentials()
     has_search_api = bool(
-        os.environ.get("GOOGLE_SEARCH_API_KEY") and os.environ.get("GOOGLE_SEARCH_ENGINE_ID")
+        os.environ.get("GOOGLE_SEARCH_API_KEY") and os.environ.get("GOOGLE_SEARCH_ENGINE_ID"),
     )
 
     return {

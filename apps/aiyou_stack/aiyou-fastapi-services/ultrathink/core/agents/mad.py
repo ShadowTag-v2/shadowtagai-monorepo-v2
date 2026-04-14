@@ -1,5 +1,4 @@
-"""
-Multi-Agent Debate (MAD)
+"""Multi-Agent Debate (MAD)
 
 Multiple agents debate a problem until consensus.
 Reduces hallucinations, improves accuracy through critique.
@@ -29,7 +28,7 @@ class DebateRound(BaseModel):
     round_number: int
     agent_responses: dict[str, str] = Field(description="agent_id -> response")
     critiques: dict[str, list[str]] = Field(
-        default_factory=dict, description="agent_id -> list of critiques"
+        default_factory=dict, description="agent_id -> list of critiques",
     )
     consensus_reached: bool = False
 
@@ -46,8 +45,7 @@ class MADResult(BaseModel):
 
 
 class MultiAgentDebate:
-    """
-    Multi-Agent Debate engine.
+    """Multi-Agent Debate engine.
 
     Usage:
         >>> mad = MultiAgentDebate(agents=3, rounds=5, strategy="RCR")
@@ -72,8 +70,7 @@ class MultiAgentDebate:
         consensus_threshold: float = 0.67,
         roles: list[AgentRole] | None = None,
     ) -> None:
-        """
-        Initialize multi-agent debate.
+        """Initialize multi-agent debate.
 
         Args:
             agents: Number of agents (3-5 recommended)
@@ -81,6 +78,7 @@ class MultiAgentDebate:
             strategy: Debate strategy (RCR = reflect-critique-refine)
             consensus_threshold: Agreement level to stop (0.67 = 2/3 majority)
             roles: Optional specific roles for each agent
+
         """
         self.agents = agents
         self.rounds = rounds
@@ -140,8 +138,7 @@ REFINE your position:
         model: any | None = None,
         temperature: float = 0.7,
     ) -> MADResult:
-        """
-        Execute multi-agent debate to solve a problem.
+        """Execute multi-agent debate to solve a problem.
 
         Args:
             problem: The problem/question to debate
@@ -150,11 +147,12 @@ REFINE your position:
 
         Returns:
             MADResult with consensus and debate history
+
         """
         try:
             from ultrathink.llm import LLMExecutor
 
-            executor = model if model else LLMExecutor()
+            executor = model or LLMExecutor()
 
             rounds_history = []
             previous_responses = {}
@@ -166,7 +164,7 @@ REFINE your position:
                 for i, role in enumerate(self.roles[: self.agents]):
                     agent_id = f"agent_{i + 1}"
                     prompt = self.format_prompt(
-                        problem, agent_id, role, round_num, previous_responses
+                        problem, agent_id, role, round_num, previous_responses,
                     )
 
                     llm_response = executor.execute(prompt, temperature=temperature)
@@ -180,7 +178,7 @@ REFINE your position:
                         round_number=round_num,
                         agent_responses=agent_responses,
                         consensus_reached=consensus_reached,
-                    )
+                    ),
                 )
 
                 previous_responses = agent_responses

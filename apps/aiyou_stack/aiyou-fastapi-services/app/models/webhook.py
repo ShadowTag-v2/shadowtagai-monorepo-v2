@@ -67,7 +67,7 @@ class Webhook(Base):
     user = relationship("User", back_populates="webhooks")
     integration = relationship("Integration", back_populates="webhooks")
     events_rel = relationship(
-        "WebhookEvent", back_populates="webhook", cascade="all, delete-orphan"
+        "WebhookEvent", back_populates="webhook", cascade="all, delete-orphan",
     )
 
 
@@ -95,7 +95,7 @@ class WebhookEvent(Base):
     # Relationships
     webhook = relationship("Webhook", back_populates="events_rel")
     deliveries = relationship(
-        "WebhookDelivery", back_populates="event", cascade="all, delete-orphan"
+        "WebhookDelivery", back_populates="event", cascade="all, delete-orphan",
     )
 
 

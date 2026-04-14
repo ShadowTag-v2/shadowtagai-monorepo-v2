@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Robustness Testing Example
+"""Robustness Testing Example
 
 Demonstrates comprehensive robustness testing against various attacks.
 """
@@ -11,10 +10,9 @@ from shadowtag_v2.testing.robustness_tests import RobustnessTests
 
 
 def test_watermark_survival(
-    shadowtag, original_video, original_audio, attacked_video, attacked_audio, test_name
+    shadowtag, original_video, original_audio, attacked_video, attacked_audio, test_name,
 ):
     """Test if watermark survives after attack."""
-
     print(f"\nTesting: {test_name}")
     print("-" * 40)
 
@@ -32,10 +30,9 @@ def test_watermark_survival(
             print(f"  Layer agreement: {verification['layer_agreement']:.2%}")
             print(f"  Confidence: {verification['confidence']:.2%}")
             return True
-        else:
-            print("  ✗ FAILED")
-            print(f"  Reason: {verification.get('reason', 'Unknown')}")
-            return False
+        print("  ✗ FAILED")
+        print(f"  Reason: {verification.get('reason', 'Unknown')}")
+        return False
 
     except Exception as e:
         print(f"  ✗ ERROR: {e}")

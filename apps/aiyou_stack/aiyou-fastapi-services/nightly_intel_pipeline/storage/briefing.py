@@ -1,5 +1,4 @@
-"""
-Briefing Generator
+"""Briefing Generator
 Creates executive briefings from intelligence data
 
 Enhanced with Gemini IntelEvent integration for:
@@ -22,8 +21,7 @@ logger = structlog.get_logger(__name__)
 
 
 class BriefingGenerator:
-    """
-    Generates intelligence briefings from scored content
+    """Generates intelligence briefings from scored content
 
     Output format: Markdown with tiered recommendations
     """
@@ -41,8 +39,7 @@ class BriefingGenerator:
         date_range_end: str | None = None,
         include_intel_events: bool = True,
     ) -> str:
-        """
-        Generate executive briefing with IntelEvent integration
+        """Generate executive briefing with IntelEvent integration
 
         Args:
             date_range_start: Start of date range
@@ -51,6 +48,7 @@ class BriefingGenerator:
 
         Returns:
             Path to briefing file
+
         """
         now = datetime.now()
         date_range_end = date_range_end or now.isoformat()
@@ -146,7 +144,7 @@ class BriefingGenerator:
             summary = intel_events_data.get("summary", {})
             if summary.get("by_source_type"):
                 source_breakdown = ", ".join(
-                    [f"{k}: {v}" for k, v in summary["by_source_type"].items()]
+                    [f"{k}: {v}" for k, v in summary["by_source_type"].items()],
                 )
                 parts.append(f"  - By source: {source_breakdown}")
         parts.append("")
@@ -185,10 +183,10 @@ class BriefingGenerator:
             parts.append("")
             for event in intel_events_data["upcoming_deadlines"][:10]:
                 parts.append(
-                    f"- **{event.get('effective_date', 'TBD')}**: {event.get('title', 'Untitled')}"
+                    f"- **{event.get('effective_date', 'TBD')}**: {event.get('title', 'Untitled')}",
                 )
                 parts.append(
-                    f"  - Jurisdiction: {event.get('jurisdiction', 'Unknown')} | Type: {event.get('source_type', 'Unknown')}"
+                    f"  - Jurisdiction: {event.get('jurisdiction', 'Unknown')} | Type: {event.get('source_type', 'Unknown')}",
                 )
                 if event.get("summary"):
                     parts.append(f"  - {event['summary'][:150]}...")
@@ -200,7 +198,7 @@ class BriefingGenerator:
         parts.append("## Tier 1: Executive Review Required")
         parts.append("")
         parts.append(
-            "High-value items requiring leadership attention and strategic decision-making."
+            "High-value items requiring leadership attention and strategic decision-making.",
         )
         parts.append("")
 
@@ -282,7 +280,7 @@ class BriefingGenerator:
         parts.append("- **JR Engine Scoring:** Purpose → Reasons → Brakes framework")
         parts.append("- **Multi-Source Intelligence:** GitHub repositories, arXiv papers")
         parts.append(
-            "- **Tier Classification:** Executive (Tier 1), Auto-Action (Tier 2), Archive (Tier 3), Low (Tier 4)"
+            "- **Tier Classification:** Executive (Tier 1), Auto-Action (Tier 2), Archive (Tier 3), Low (Tier 4)",
         )
         parts.append("")
 
@@ -296,7 +294,7 @@ class BriefingGenerator:
         if repo.get("url"):
             parts.append(f"**URL:** {repo['url']}")
         parts.append(
-            f"**Score:** {repo['total_score']:.1f} | **ATP Risk:** {repo['atp_risk_level']} | **Stars:** {repo.get('stars', 'N/A')}"
+            f"**Score:** {repo['total_score']:.1f} | **ATP Risk:** {repo['atp_risk_level']} | **Stars:** {repo.get('stars', 'N/A')}",
         )
 
         if repo.get("description"):
@@ -306,16 +304,16 @@ class BriefingGenerator:
             parts.append("")
             parts.append("**Evaluation:**")
             parts.append(
-                f"- Purpose Alignment ({repo['purpose_alignment']:.0f}): {repo['purpose_reasoning']}"
+                f"- Purpose Alignment ({repo['purpose_alignment']:.0f}): {repo['purpose_reasoning']}",
             )
             parts.append(
-                f"- Technical Merit ({repo['technical_merit']:.0f}): {repo['technical_reasoning']}"
+                f"- Technical Merit ({repo['technical_merit']:.0f}): {repo['technical_reasoning']}",
             )
             parts.append(
-                f"- Adoption Potential ({repo['adoption_potential']:.0f}): {repo['adoption_reasoning']}"
+                f"- Adoption Potential ({repo['adoption_potential']:.0f}): {repo['adoption_reasoning']}",
             )
             parts.append(
-                f"- Risk Assessment ({repo['risk_assessment']:.0f}): {repo['risk_reasoning']}"
+                f"- Risk Assessment ({repo['risk_assessment']:.0f}): {repo['risk_reasoning']}",
             )
 
             if repo.get("brakes"):
@@ -337,7 +335,7 @@ class BriefingGenerator:
 
         parts.append(f"#### {paper['title']}")
         parts.append(
-            f"**arXiv:** {paper['arxiv_id']} | **Score:** {paper['total_score']:.1f} | **ATP Risk:** {paper['atp_risk_level']}"
+            f"**arXiv:** {paper['arxiv_id']} | **Score:** {paper['total_score']:.1f} | **ATP Risk:** {paper['atp_risk_level']}",
         )
 
         if paper.get("pdf_url"):
@@ -361,13 +359,13 @@ class BriefingGenerator:
             parts.append("")
             parts.append("**Evaluation:**")
             parts.append(
-                f"- Purpose Alignment ({paper['purpose_alignment']:.0f}): {paper['purpose_reasoning']}"
+                f"- Purpose Alignment ({paper['purpose_alignment']:.0f}): {paper['purpose_reasoning']}",
             )
             parts.append(
-                f"- Technical Merit ({paper['technical_merit']:.0f}): {paper['technical_reasoning']}"
+                f"- Technical Merit ({paper['technical_merit']:.0f}): {paper['technical_reasoning']}",
             )
             parts.append(
-                f"- Adoption Potential ({paper['adoption_potential']:.0f}): {paper['adoption_reasoning']}"
+                f"- Adoption Potential ({paper['adoption_potential']:.0f}): {paper['adoption_reasoning']}",
             )
 
             if paper.get("brakes"):
@@ -396,7 +394,7 @@ class BriefingGenerator:
             parts.append(f"#### {title}")
 
         parts.append(
-            f"**Source Type:** {event.get('source_type', 'Unknown')} | **Jurisdiction:** {event.get('jurisdiction', 'Global')}"
+            f"**Source Type:** {event.get('source_type', 'Unknown')} | **Jurisdiction:** {event.get('jurisdiction', 'Global')}",
         )
 
         if event.get("effective_date"):
@@ -404,7 +402,7 @@ class BriefingGenerator:
 
         if event.get("jr_total_score"):
             parts.append(
-                f"**JR Score:** {event['jr_total_score']:.1f} | **Tier:** {event.get('jr_tier', 'N/A')} | **ATP Risk:** {event.get('jr_atp_risk_level', 'N/A')}"
+                f"**JR Score:** {event['jr_total_score']:.1f} | **Tier:** {event.get('jr_tier', 'N/A')} | **ATP Risk:** {event.get('jr_atp_risk_level', 'N/A')}",
             )
 
         if event.get("summary"):
@@ -471,8 +469,7 @@ class BriefingGenerator:
 
 # Convenience function
 def generate_briefing() -> str:
-    """
-    Generate briefing from current database
+    """Generate briefing from current database
 
     Usage:
         briefing_file = generate_briefing()

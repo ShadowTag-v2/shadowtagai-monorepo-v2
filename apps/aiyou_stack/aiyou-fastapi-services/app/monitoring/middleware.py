@@ -1,5 +1,4 @@
-"""
-Monitoring middleware for FastAPI.
+"""Monitoring middleware for FastAPI.
 Automatically tracks requests, errors, and performance metrics.
 """
 
@@ -25,8 +24,7 @@ logger = get_logger(__name__)
 
 
 class MonitoringMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware for comprehensive request monitoring.
+    """Middleware for comprehensive request monitoring.
 
     Tracks:
     - Request/response metrics
@@ -164,8 +162,7 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
 
     @staticmethod
     def _normalize_endpoint(path: str) -> str:
-        """
-        Normalize endpoint path for metrics.
+        """Normalize endpoint path for metrics.
         Converts dynamic path parameters to placeholders.
 
         Example: /users/123 -> /users/{id}

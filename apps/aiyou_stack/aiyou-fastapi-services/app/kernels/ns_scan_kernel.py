@@ -1,5 +1,4 @@
-"""
-NS Scan Kernel - California AI Regulations
+"""NS Scan Kernel - California AI Regulations
 ==========================================
 Kernel 1 of NS-JR-Cor pipeline for California AI compliance.
 
@@ -55,8 +54,7 @@ class NSScanInput:
 
 
 class NSScanKernel(Kernel):
-    """
-    Kernel 1: NS (Neural System) Signal Detection.
+    """Kernel 1: NS (Neural System) Signal Detection.
 
     Scans content for California AI regulation triggers:
     - Self-harm indicators
@@ -105,14 +103,14 @@ RULES:
         self.ns_engine = ns_engine or create_ns_engine()
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Execute NS scan on content.
+        """Execute NS scan on content.
 
         Args:
             kernel_input: Contains NSScanInput or raw content string
 
         Returns:
             KernelOutput with NSDetectionOutput
+
         """
         try:
             # Extract input
@@ -128,7 +126,7 @@ RULES:
             else:
                 raise KernelChainError(
                     f"Invalid input type: expected NSScanInput, str, or dict, "
-                    f"got {type(kernel_input.data)}"
+                    f"got {type(kernel_input.data)}",
                 )
 
             # Run detection
@@ -159,11 +157,10 @@ RULES:
             )
 
         except Exception as e:
-            raise KernelChainError(f"NS scan failed: {str(e)}") from e
+            raise KernelChainError(f"NS scan failed: {e!s}") from e
 
     def _adjust_for_minors(self, output: NSDetectionOutput) -> NSDetectionOutput:
-        """
-        Adjust detection output for minor users.
+        """Adjust detection output for minor users.
         Lowers confidence thresholds = more sensitive.
         """
         # Boost confidence scores for minors (more cautious)
@@ -196,8 +193,7 @@ RULES:
 
 
 class GeminiNSScanKernel(NSScanKernel):
-    """
-    NS Scan Kernel with Gemini Flash enhancement.
+    """NS Scan Kernel with Gemini Flash enhancement.
 
     Uses Gemini Flash for advanced classification when:
     - Pattern matching is inconclusive

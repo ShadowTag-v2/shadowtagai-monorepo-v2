@@ -30,7 +30,7 @@ class TestUphillSnowballCaseIntake:
     def test_high_risk_detection(self):
         """Sanctions keyword triggers HIGH risk level."""
         result = json.loads(uphillsnowball_case_intake(
-            "Client is facing sanctions from federal regulators"
+            "Client is facing sanctions from federal regulators",
         ))
         assert result["risk_level"] == "HIGH"
         assert "sanctions" in result["detected_practice_areas"]
@@ -40,7 +40,7 @@ class TestUphillSnowballCaseIntake:
     def test_medium_risk_detection(self):
         """Breach keyword triggers MEDIUM risk level."""
         result = json.loads(uphillsnowball_case_intake(
-            "Contract breach dispute with vendor over deliverables"
+            "Contract breach dispute with vendor over deliverables",
         ))
         assert result["risk_level"] == "MEDIUM"
         assert "breach" in result["detected_practice_areas"]
@@ -48,7 +48,7 @@ class TestUphillSnowballCaseIntake:
     def test_low_risk_default(self):
         """General inquiry defaults to LOW risk."""
         result = json.loads(uphillsnowball_case_intake(
-            "Need help with a standard contract review"
+            "Need help with a standard contract review",
         ))
         assert result["risk_level"] == "LOW"
 
@@ -78,7 +78,7 @@ class TestUphillSnowballSanctionsCheck:
     def test_eu_jurisdiction(self):
         """EU jurisdiction checks EU-CONSOLIDATED databases."""
         result = json.loads(uphillsnowball_sanctions_check(
-            "Euro Trading GmbH", jurisdiction="EU"
+            "Euro Trading GmbH", jurisdiction="EU",
         ))
         assert result["jurisdiction"] == "EU"
         assert "EU-CONSOLIDATED" in result["databases_checked"]
@@ -91,7 +91,7 @@ class TestUphillSnowballSanctionsCheck:
     def test_unknown_jurisdiction_fallback(self):
         """Unknown jurisdiction falls back to US databases."""
         result = json.loads(uphillsnowball_sanctions_check(
-            "Entity", jurisdiction="ZZ"
+            "Entity", jurisdiction="ZZ",
         ))
         assert "OFAC-SDN" in result["databases_checked"]
 
@@ -110,7 +110,7 @@ class TestUphillSnowballDocumentAnalysis:
     def test_no_findings(self):
         """Clean document yields zero findings."""
         result = json.loads(uphillsnowball_document_analysis(
-            "This is a simple agreement between two parties."
+            "This is a simple agreement between two parties.",
         ))
         assert result["findings_count"] == 0
         assert result["risk_score"] == 0
@@ -130,7 +130,7 @@ class TestUphillSnowballDocumentAnalysis:
     def test_analysis_type_passthrough(self):
         """Analysis type is correctly recorded."""
         result = json.loads(uphillsnowball_document_analysis(
-            "Test document", analysis_type="compliance"
+            "Test document", analysis_type="compliance",
         ))
         assert result["type"] == "compliance"
 

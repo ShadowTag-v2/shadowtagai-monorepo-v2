@@ -1,5 +1,4 @@
-"""
-Deadline Extraction Service
+"""Deadline Extraction Service
 AI/ML-powered extraction of deadlines from legal documents
 """
 
@@ -24,8 +23,7 @@ class ExtractionMethod(StrEnum):
 
 
 class DeadlineExtractor:
-    """
-    Extracts deadlines from legal documents using multiple approaches:
+    """Extracts deadlines from legal documents using multiple approaches:
     1. Rule-based pattern matching
     2. Named Entity Recognition (NER)
     3. LLM-based extraction
@@ -33,11 +31,11 @@ class DeadlineExtractor:
     """
 
     def __init__(self, model_path: str | None = None):
-        """
-        Initialize the deadline extractor
+        """Initialize the deadline extractor
 
         Args:
             model_path: Path to custom trained model (optional)
+
         """
         # Load SpaCy model for NLP
         try:
@@ -112,8 +110,7 @@ class DeadlineExtractor:
         service_date: date | None = None,
         filing_date: date | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Extract all deadlines from document text
+        """Extract all deadlines from document text
 
         Args:
             text: Document text
@@ -124,6 +121,7 @@ class DeadlineExtractor:
 
         Returns:
             List of extracted deadlines with metadata
+
         """
         deadlines = []
 
@@ -143,7 +141,7 @@ class DeadlineExtractor:
         return deadlines
 
     def _extract_rule_based(
-        self, text: str, service_date: date | None, filing_date: date | None
+        self, text: str, service_date: date | None, filing_date: date | None,
     ) -> list[dict[str, Any]]:
         """Extract deadlines using rule-based pattern matching"""
         deadlines = []
@@ -169,7 +167,7 @@ class DeadlineExtractor:
 
                 # Calculate deadline date
                 deadline_date = self._calculate_deadline_date(
-                    match.group(0), service_date, filing_date, trigger_event
+                    match.group(0), service_date, filing_date, trigger_event,
                 )
 
                 if deadline_date:
@@ -185,13 +183,13 @@ class DeadlineExtractor:
                                 "pattern_match": True,
                                 "context_clarity": self._assess_context_clarity(context),
                             },
-                        }
+                        },
                     )
 
         return deadlines
 
     def _extract_ner_based(
-        self, text: str, service_date: date | None, filing_date: date | None
+        self, text: str, service_date: date | None, filing_date: date | None,
     ) -> list[dict[str, Any]]:
         """Extract deadlines using Named Entity Recognition"""
         deadlines = []
@@ -232,7 +230,7 @@ class DeadlineExtractor:
                                         "ner_score": entity.get("score", 0.0),
                                         "keyword_match": True,
                                     },
-                                }
+                                },
                             )
 
         return deadlines
@@ -297,7 +295,6 @@ class DeadlineExtractor:
         trigger_event: str,
     ) -> date | None:
         """Calculate the actual deadline date from extracted information"""
-
         # Try to extract number of days
         days_match = re.search(r"(\d+)\s+days?", match_text, re.IGNORECASE)
         if days_match:
@@ -399,8 +396,7 @@ class DeadlineExtractor:
         return unique_deadlines
 
     def _calculate_confidence(self, deadline: dict[str, Any], full_text: str) -> float:
-        """
-        Calculate confidence score for extracted deadline
+        """Calculate confidence score for extracted deadline
 
         Factors:
         - Extraction method used

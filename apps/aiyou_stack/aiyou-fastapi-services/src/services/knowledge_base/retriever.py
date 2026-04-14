@@ -48,8 +48,7 @@ def _embed_query(text: str) -> list[float] | None:
 
 
 def search_lancedb(query: str, top_k: int = 5) -> dict:
-    """
-    Embeds query via Vertex AI and searches LanceDB 'documents' + 'code_files' tables.
+    """Embeds query via Vertex AI and searches LanceDB 'documents' + 'code_files' tables.
     Returns merged results ranked by cosine similarity.
     Falls back gracefully if LanceDB is unavailable.
     """
@@ -97,8 +96,7 @@ DATA_STORE_ID = "shadowtag-knowledge-base"  # Placeholder
 
 
 def search_knowledge_base(query: str):
-    """
-    Queries the Vertex AI Search Data Store.
+    """Queries the Vertex AI Search Data Store.
     """
     client = discoveryengine.SearchServiceClient()
     serving_config = client.serving_config_path(
@@ -129,7 +127,7 @@ def search_knowledge_base(query: str):
                 "snippet": result.document.derived_struct_data.get("snippets")[0].get("snippet")
                 if result.document.derived_struct_data.get("snippets")
                 else "",
-            }
+            },
         )
 
     return {

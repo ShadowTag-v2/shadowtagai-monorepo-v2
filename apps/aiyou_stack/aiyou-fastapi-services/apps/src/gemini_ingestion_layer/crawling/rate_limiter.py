@@ -1,5 +1,4 @@
-"""
-Rate Limiter Implementation
+"""Rate Limiter Implementation
 
 Implements token bucket algorithm for ethical rate limiting across domains.
 Aligned with SHADOWTAGAI Core Stack 2025 best practices.
@@ -32,11 +31,11 @@ class TokenBucket:
         self.last_refill = now
 
     def consume(self, tokens: int = 1) -> bool:
-        """
-        Attempt to consume tokens.
+        """Attempt to consume tokens.
 
         Returns:
             True if tokens were consumed, False if insufficient tokens
+
         """
         self._refill()
 
@@ -55,25 +54,24 @@ class TokenBucket:
 
 
 class RateLimiter:
-    """
-    Global rate limiter for the ingestion layer.
+    """Global rate limiter for the ingestion layer.
 
     Implements per-minute rate limiting with configurable limits.
     Default: 60 requests per minute (1 req/sec)
     """
 
     def __init__(self, requests_per_minute: int = 60):
-        """
-        Initialize rate limiter.
+        """Initialize rate limiter.
 
         Args:
             requests_per_minute: Maximum requests allowed per minute
+
         """
         self.requests_per_minute = requests_per_minute
         self.requests_per_second = requests_per_minute / 60.0
 
         self.bucket = TokenBucket(
-            capacity=requests_per_minute, refill_rate=self.requests_per_second
+            capacity=requests_per_minute, refill_rate=self.requests_per_second,
         )
 
         # Statistics
@@ -82,11 +80,11 @@ class RateLimiter:
         self.total_wait_time = 0.0
 
     async def acquire(self, tokens: int = 1) -> None:
-        """
-        Acquire permission to make a request.
+        """Acquire permission to make a request.
 
         Args:
             tokens: Number of tokens to consume (default 1)
+
         """
         if not self.bucket.consume(tokens):
             self.total_waits += 1
@@ -111,31 +109,30 @@ class RateLimiter:
 
 
 class DomainRateLimiter:
-    """
-    Per-domain rate limiting for ethical crawling.
+    """Per-domain rate limiting for ethical crawling.
 
     Maintains separate rate limits for each domain to avoid
     overwhelming any single source.
     """
 
     def __init__(self, default_rpm: int = 60):
-        """
-        Initialize domain-specific rate limiter.
+        """Initialize domain-specific rate limiter.
 
         Args:
             default_rpm: Default requests per minute for unknown domains
+
         """
         self.default_rpm = default_rpm
         self.limiters: dict[str, RateLimiter] = {}
         self.domain_configs: dict[str, int] = {}
 
     def configure_domain(self, domain: str, requests_per_minute: int) -> None:
-        """
-        Configure custom rate limit for a specific domain.
+        """Configure custom rate limit for a specific domain.
 
         Args:
             domain: Domain name (e.g., 'example.com')
             requests_per_minute: Custom RPM limit for this domain
+
         """
         self.domain_configs[domain] = requests_per_minute
 
@@ -152,12 +149,12 @@ class DomainRateLimiter:
         return self.limiters[domain]
 
     async def acquire(self, domain: str, tokens: int = 1) -> None:
-        """
-        Acquire permission to make request to domain.
+        """Acquire permission to make request to domain.
 
         Args:
             domain: Target domain
             tokens: Number of tokens to consume
+
         """
         limiter = self._get_limiter(domain)
         await limiter.acquire(tokens)

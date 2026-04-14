@@ -1,5 +1,4 @@
-"""
-Pre-defined load testing scenarios
+"""Pre-defined load testing scenarios
 """
 
 from dataclasses import dataclass

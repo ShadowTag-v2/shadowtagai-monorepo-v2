@@ -1,5 +1,4 @@
-"""
-RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe.
+"""RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe.
 """
 
 import os
@@ -47,7 +46,7 @@ class RevenueGate:
                             "unit_amount": 2000,
                         },
                         "quantity": 1,
-                    }
+                    },
                 ],
                 mode="payment",
                 success_url="https://shadowtag.ai/success",

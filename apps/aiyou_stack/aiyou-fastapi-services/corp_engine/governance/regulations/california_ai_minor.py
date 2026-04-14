@@ -1,5 +1,4 @@
-"""
-California AI Minor Protection Act Compliance
+"""California AI Minor Protection Act Compliance
 ==============================================
 Implementation of California's AI protections for minors.
 Based on AB 2273 (California Age-Appropriate Design Code Act)
@@ -87,8 +86,7 @@ class DataProtectionStatus(BaseModel):
 
 
 class CaliforniaAIMinorCompliance:
-    """
-    California AI Minor Protection Compliance Engine.
+    """California AI Minor Protection Compliance Engine.
 
     Implements protections required by California law including:
     - Age-Appropriate Design Code (AB 2273)
@@ -134,10 +132,9 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def determine_protection_level(
-        self, birth_date: date | None = None, age: int | None = None
+        self, birth_date: date | None = None, age: int | None = None,
     ) -> MinorProtectionLevel:
-        """
-        Determine appropriate protection level based on age.
+        """Determine appropriate protection level based on age.
 
         Args:
             birth_date: User's date of birth
@@ -145,6 +142,7 @@ class CaliforniaAIMinorCompliance:
 
         Returns:
             Appropriate protection level
+
         """
         if birth_date:
             today = date.today()
@@ -161,12 +159,11 @@ class CaliforniaAIMinorCompliance:
 
         if age < 13:
             return MinorProtectionLevel.UNDER_13
-        elif age < 16:
+        if age < 16:
             return MinorProtectionLevel.TEEN_13_15
-        elif age < 18:
+        if age < 18:
             return MinorProtectionLevel.TEEN_16_17
-        else:
-            return MinorProtectionLevel.ADULT
+        return MinorProtectionLevel.ADULT
 
     # =========================================================================
     # Core Compliance Check
@@ -179,8 +176,7 @@ class CaliforniaAIMinorCompliance:
         operation: str,
         data: dict[str, Any],
     ) -> MinorComplianceResult:
-        """
-        Main compliance check for operations involving minors.
+        """Main compliance check for operations involving minors.
 
         Args:
             user_id: User identifier
@@ -190,6 +186,7 @@ class CaliforniaAIMinorCompliance:
 
         Returns:
             Compliance result with any violations and required actions
+
         """
         result = MinorComplianceResult(
             user_id=user_id,
@@ -214,7 +211,7 @@ class CaliforniaAIMinorCompliance:
                         "description": f"Prohibited practice for minors: {practice}",
                         "severity": "critical",
                         "reference": "CA Age-Appropriate Design Code",
-                    }
+                    },
                 )
 
         # Check parental consent requirements
@@ -226,7 +223,7 @@ class CaliforniaAIMinorCompliance:
                     "description": consent_check["reason"],
                     "severity": "critical",
                     "reference": "COPPA / CA Privacy Rights Act",
-                }
+                },
             )
             result.parental_consent_required = True
             required_actions.append("Obtain verifiable parental consent")
@@ -242,7 +239,7 @@ class CaliforniaAIMinorCompliance:
                         "description": issue,
                         "severity": "high",
                         "reference": "CA Data Minimization Requirements",
-                    }
+                    },
                 )
             required_actions.extend(minimization["actions"])
         result.data_minimization_applied = minimization["minimization_applied"]
@@ -265,7 +262,7 @@ class CaliforniaAIMinorCompliance:
                         "description": "Content not appropriate for user age",
                         "severity": "critical",
                         "reference": "CA Age-Appropriate Design Code",
-                    }
+                    },
                 )
             elif content_risk == ContentRisk.HIGH_RISK:
                 warnings.append("Content may not be age-appropriate - review recommended")
@@ -282,7 +279,7 @@ class CaliforniaAIMinorCompliance:
         if not result.compliant:
             logger.warning(
                 f"Minor protection violations for {user_id} "
-                f"(level: {protection_level.value}): {len(violations)} violations"
+                f"(level: {protection_level.value}): {len(violations)} violations",
             )
 
         return result
@@ -324,7 +321,7 @@ class CaliforniaAIMinorCompliance:
         return result
 
     def record_parental_consent(
-        self, user_id: str, consent_scope: list[str], verification_method: str
+        self, user_id: str, consent_scope: list[str], verification_method: str,
     ) -> DataProtectionStatus:
         """Record parental consent for a minor"""
         if user_id not in self._user_records:
@@ -344,7 +341,7 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def _check_data_minimization(
-        self, protection_level: MinorProtectionLevel, data_categories: list[Any]
+        self, protection_level: MinorProtectionLevel, data_categories: list[Any],
     ) -> dict[str, Any]:
         """Check data minimization requirements for minors"""
         result = {
@@ -366,10 +363,10 @@ class CaliforniaAIMinorCompliance:
                     result["compliant"] = False
                     result["issues"].append(
                         f"Collection of {cat.value if hasattr(cat, 'value') else cat} "
-                        "data prohibited for users under 13"
+                        "data prohibited for users under 13",
                     )
                     result["actions"].append(
-                        f"Remove {cat.value if hasattr(cat, 'value') else cat} data collection"
+                        f"Remove {cat.value if hasattr(cat, 'value') else cat} data collection",
                     )
 
         # Teen protection = restricted data collection
@@ -378,10 +375,10 @@ class CaliforniaAIMinorCompliance:
             for cat in data_categories:
                 if cat in restricted:
                     result["issues"].append(
-                        f"Collection of {cat.value if hasattr(cat, 'value') else cat} data restricted for minors"
+                        f"Collection of {cat.value if hasattr(cat, 'value') else cat} data restricted for minors",
                     )
                     result["actions"].append(
-                        f"Obtain explicit consent for {cat.value if hasattr(cat, 'value') else cat} data or minimize collection"
+                        f"Obtain explicit consent for {cat.value if hasattr(cat, 'value') else cat} data or minimize collection",
                     )
 
         if result["issues"]:
@@ -394,7 +391,7 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def _check_ai_requirements(
-        self, protection_level: MinorProtectionLevel, data: dict[str, Any]
+        self, protection_level: MinorProtectionLevel, data: dict[str, Any],
     ) -> dict[str, Any]:
         """Check AI-specific requirements for content involving minors"""
         violations = []
@@ -410,7 +407,7 @@ class CaliforniaAIMinorCompliance:
                     "description": "AI-generated content must be disclosed to minors",
                     "severity": "high",
                     "reference": "CA AI Minor Protection",
-                }
+                },
             )
             actions.append("Add age-appropriate AI content disclosure")
 
@@ -423,7 +420,7 @@ class CaliforniaAIMinorCompliance:
                         "description": "Algorithmic content amplification prohibited for users under 13",
                         "severity": "critical",
                         "reference": "CA Age-Appropriate Design Code",
-                    }
+                    },
                 )
             else:
                 warnings.append("Algorithmic amplification should prioritize minor well-being")
@@ -437,7 +434,7 @@ class CaliforniaAIMinorCompliance:
                         "description": "Personalized recommendations restricted for minors under 16",
                         "severity": "high",
                         "reference": "CA Age-Appropriate Design Code",
-                    }
+                    },
                 )
                 content_filtered = True
 
@@ -449,7 +446,7 @@ class CaliforniaAIMinorCompliance:
                     "description": "AI systems must not manipulate minor emotions",
                     "severity": "critical",
                     "reference": "CA AI Minor Protection",
-                }
+                },
             )
 
         return {
@@ -464,7 +461,7 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def _assess_content_risk(
-        self, content: Any, protection_level: MinorProtectionLevel
+        self, content: Any, protection_level: MinorProtectionLevel,
     ) -> ContentRisk:
         """Assess content risk for a minor"""
         # In production, this would use content classification AI

@@ -21,12 +21,10 @@ class MemoryInterface(ABC):
     @abstractmethod
     def get_context(self, limit: int = 10) -> str:
         """Retrieve recent context formatted as a string."""
-        pass
 
 
 class ShortTermMemory(MemoryInterface):
-    """
-    In-memory rolling buffer for active conversation context.
+    """In-memory rolling buffer for active conversation context.
     """
 
     def __init__(self, max_entries: int = 50):
@@ -53,8 +51,7 @@ class ShortTermMemory(MemoryInterface):
 
 
 class LongTermMemory(MemoryInterface):
-    """
-    Interface for persistent storage (Vector DB / SQL).
+    """Interface for persistent storage (Vector DB / SQL).
     Currently a stub for future integration with Chroma/PGVector.
     """
 
@@ -72,8 +69,7 @@ class LongTermMemory(MemoryInterface):
 
 
 class SecureMemoryWrapper(MemoryInterface):
-    """
-    Decorator/Proxy that sanitizes inputs before storing them in the underlying memory.
+    """Decorator/Proxy that sanitizes inputs before storing them in the underlying memory.
     Redacts sensitive keys, emails, and PII.
     """
 

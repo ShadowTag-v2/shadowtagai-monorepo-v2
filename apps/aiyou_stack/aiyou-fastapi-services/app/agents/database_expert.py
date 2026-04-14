@@ -1,5 +1,4 @@
-"""
-Database Expert Agent - AI-powered database optimization specialist
+"""Database Expert Agent - AI-powered database optimization specialist
 
 This agent uses Claude Agent SDK to provide expert database analysis,
 query optimization, schema design, and performance tuning recommendations.
@@ -21,14 +20,14 @@ from app.tools.database_tools import (
 # Define custom tools for the Database Expert agent
 @tool
 def analyze_sql_query(sql_query: str) -> dict[str, Any]:
-    """
-    Analyze a SQL query for optimization opportunities.
+    """Analyze a SQL query for optimization opportunities.
 
     Args:
         sql_query: The SQL query string to analyze
 
     Returns:
         Dictionary containing query analysis, issues, and optimization suggestions
+
     """
     analyzer = QueryAnalyzer()
     analysis = analyzer.analyze_query(sql_query)
@@ -44,8 +43,7 @@ def analyze_sql_query(sql_query: str) -> dict[str, Any]:
 
 @tool
 def suggest_query_indexes(sql_query: str, schema: dict[str, Any] | None = None) -> dict[str, Any]:
-    """
-    Suggest indexes for a SQL query.
+    """Suggest indexes for a SQL query.
 
     Args:
         sql_query: The SQL query to analyze
@@ -53,6 +51,7 @@ def suggest_query_indexes(sql_query: str, schema: dict[str, Any] | None = None) 
 
     Returns:
         Dictionary with index suggestions
+
     """
     optimizer = IndexOptimizer()
     suggestions = optimizer.suggest_indexes(sql_query, schema)
@@ -67,8 +66,7 @@ def suggest_query_indexes(sql_query: str, schema: dict[str, Any] | None = None) 
 
 @tool
 def analyze_database_schema(schema: dict[str, Any]) -> dict[str, Any]:
-    """
-    Analyze database schema for optimization opportunities.
+    """Analyze database schema for optimization opportunities.
 
     Args:
         schema: Database schema information in the format:
@@ -82,6 +80,7 @@ def analyze_database_schema(schema: dict[str, Any]) -> dict[str, Any]:
 
     Returns:
         Dictionary with schema analysis and recommendations
+
     """
     analyzer = SchemaAnalyzer()
     analysis = analyzer.analyze_schema(schema)
@@ -97,10 +96,9 @@ def analyze_database_schema(schema: dict[str, Any]) -> dict[str, Any]:
 
 @tool
 def estimate_query_performance(
-    sql_query: str, row_count: int, has_indexes: bool = True
+    sql_query: str, row_count: int, has_indexes: bool = True,
 ) -> dict[str, Any]:
-    """
-    Estimate query execution time and provide performance recommendations.
+    """Estimate query execution time and provide performance recommendations.
 
     Args:
         sql_query: SQL query to analyze
@@ -109,6 +107,7 @@ def estimate_query_performance(
 
     Returns:
         Performance estimation and recommendations
+
     """
     query_analyzer = QueryAnalyzer()
     perf_analyzer = PerformanceAnalyzer()
@@ -126,8 +125,7 @@ def estimate_query_performance(
 
 
 class DatabaseExpert:
-    """
-    Database Expert Agent - specializes in database optimization and performance tuning
+    """Database Expert Agent - specializes in database optimization and performance tuning
     """
 
     SYSTEM_PROMPT = """You are a Database Expert - a specialized AI assistant focused on database optimization,
@@ -161,11 +159,11 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
 """
 
     def __init__(self, model: str = "claude-sonnet-4-5-20250929"):
-        """
-        Initialize the Database Expert agent
+        """Initialize the Database Expert agent
 
         Args:
             model: Claude model to use for the agent
+
         """
         self.model = model
         self.tools = [
@@ -176,10 +174,9 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
         ]
 
     async def chat(
-        self, user_message: str, conversation_history: list[dict[str, str]] | None = None
+        self, user_message: str, conversation_history: list[dict[str, str]] | None = None,
     ) -> AsyncGenerator[str, None]:
-        """
-        Chat with the Database Expert agent
+        """Chat with the Database Expert agent
 
         Args:
             user_message: User's message/question
@@ -187,6 +184,7 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
 
         Yields:
             Response chunks from the agent
+
         """
         # Build conversation messages
         messages = conversation_history or []
@@ -194,7 +192,7 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
 
         # Configure agent options
         options = ClaudeAgentOptions(
-            system_prompt=self.SYSTEM_PROMPT, model=self.model, tools=self.tools, max_tokens=4096
+            system_prompt=self.SYSTEM_PROMPT, model=self.model, tools=self.tools, max_tokens=4096,
         )
 
         # Stream responses from the agent
@@ -202,14 +200,14 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
             yield message
 
     async def analyze_query(self, sql_query: str) -> dict[str, Any]:
-        """
-        Analyze a SQL query with expert recommendations
+        """Analyze a SQL query with expert recommendations
 
         Args:
             sql_query: SQL query to analyze
 
         Returns:
             Complete analysis with expert recommendations
+
         """
         result = {"query": sql_query, "analysis": {}, "recommendations": []}
 
@@ -245,7 +243,7 @@ Please provide:
 
         # Get expert analysis from Claude
         options = ClaudeAgentOptions(
-            system_prompt=self.SYSTEM_PROMPT, model=self.model, max_tokens=2048
+            system_prompt=self.SYSTEM_PROMPT, model=self.model, max_tokens=2048,
         )
 
         expert_analysis = ""
@@ -257,10 +255,9 @@ Please provide:
         return result
 
     async def design_schema(
-        self, requirements: str, expected_scale: str | None = None
+        self, requirements: str, expected_scale: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Get expert schema design recommendations
+        """Get expert schema design recommendations
 
         Args:
             requirements: Description of schema requirements
@@ -268,6 +265,7 @@ Please provide:
 
         Returns:
             Schema design recommendations
+
         """
         prompt = f"""Design an optimized database schema for the following requirements:
 
@@ -285,7 +283,7 @@ Please provide:
 """
 
         options = ClaudeAgentOptions(
-            system_prompt=self.SYSTEM_PROMPT, model=self.model, max_tokens=4096
+            system_prompt=self.SYSTEM_PROMPT, model=self.model, max_tokens=4096,
         )
 
         design_recommendations = ""
@@ -301,13 +299,13 @@ Please provide:
 
 # Convenience function to create Database Expert instance
 def create_database_expert(model: str = "claude-sonnet-4-5-20250929") -> DatabaseExpert:
-    """
-    Create a Database Expert agent instance
+    """Create a Database Expert agent instance
 
     Args:
         model: Claude model to use
 
     Returns:
         DatabaseExpert instance
+
     """
     return DatabaseExpert(model=model)

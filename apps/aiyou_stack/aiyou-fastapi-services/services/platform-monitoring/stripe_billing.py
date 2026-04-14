@@ -1,5 +1,4 @@
-"""
-Stripe Billing Integration
+"""Stripe Billing Integration
 
 Provides payment processing and subscription management:
 - Customer management
@@ -106,8 +105,7 @@ PRICING_PLANS = {
 
 
 class StripeBillingService:
-    """
-    Stripe billing integration service
+    """Stripe billing integration service
 
     Handles all payment operations including:
     - Customer lifecycle
@@ -121,10 +119,9 @@ class StripeBillingService:
 
     # Customer Management
     async def create_customer(
-        self, email: str, name: str, metadata: dict[str, str] | None = None
+        self, email: str, name: str, metadata: dict[str, str] | None = None,
     ) -> dict[str, Any]:
-        """
-        Create a new Stripe customer
+        """Create a new Stripe customer
 
         Args:
             email: Customer email
@@ -133,6 +130,7 @@ class StripeBillingService:
 
         Returns:
             Customer object with id and details
+
         """
         try:
             customer = stripe.Customer.create(
@@ -190,7 +188,7 @@ class StripeBillingService:
 
     # Payment Method Management
     async def attach_payment_method(
-        self, customer_id: str, payment_method_id: str
+        self, customer_id: str, payment_method_id: str,
     ) -> dict[str, Any]:
         """Attach payment method to customer"""
         try:
@@ -199,7 +197,7 @@ class StripeBillingService:
 
             # Set as default
             stripe.Customer.modify(
-                customer_id, invoice_settings={"default_payment_method": payment_method_id}
+                customer_id, invoice_settings={"default_payment_method": payment_method_id},
             )
 
             return {
@@ -217,8 +215,7 @@ class StripeBillingService:
         vehicle_count: int,
         billing_interval: BillingInterval = BillingInterval.MONTHLY,
     ) -> dict[str, Any]:
-        """
-        Create a usage-based subscription
+        """Create a usage-based subscription
 
         Automatically selects appropriate tier based on vehicle count
         """
@@ -245,7 +242,7 @@ class StripeBillingService:
                             "unit_amount": int(plan.price_per_vehicle * 100),
                         },
                         "quantity": vehicle_count,
-                    }
+                    },
                 ],
                 metadata={
                     "tier": tier.value,
@@ -265,10 +262,10 @@ class StripeBillingService:
                 "amount_per_period": base_amount / 100,
                 "billing_interval": billing_interval.value,
                 "current_period_start": datetime.fromtimestamp(
-                    subscription.current_period_start
+                    subscription.current_period_start,
                 ).isoformat(),
                 "current_period_end": datetime.fromtimestamp(
-                    subscription.current_period_end
+                    subscription.current_period_end,
                 ).isoformat(),
                 "client_secret": subscription.latest_invoice.payment_intent.client_secret
                 if subscription.latest_invoice
@@ -278,10 +275,9 @@ class StripeBillingService:
             return {"error": str(e)}
 
     async def update_subscription_quantity(
-        self, subscription_id: str, new_vehicle_count: int
+        self, subscription_id: str, new_vehicle_count: int,
     ) -> dict[str, Any]:
-        """
-        Update subscription quantity (vehicle count)
+        """Update subscription quantity (vehicle count)
 
         Handles tier changes automatically
         """
@@ -314,21 +310,21 @@ class StripeBillingService:
             return {"error": str(e)}
 
     async def cancel_subscription(
-        self, subscription_id: str, immediate: bool = False
+        self, subscription_id: str, immediate: bool = False,
     ) -> dict[str, Any]:
-        """
-        Cancel a subscription
+        """Cancel a subscription
 
         Args:
             subscription_id: Stripe subscription ID
             immediate: If True, cancel immediately. If False, cancel at period end.
+
         """
         try:
             if immediate:
                 subscription = stripe.Subscription.delete(subscription_id)
             else:
                 subscription = stripe.Subscription.modify(
-                    subscription_id, cancel_at_period_end=True
+                    subscription_id, cancel_at_period_end=True,
                 )
 
             return {
@@ -355,10 +351,10 @@ class StripeBillingService:
                 "tier": subscription.metadata.get("tier"),
                 "vehicle_count": int(subscription.metadata.get("vehicle_count", 0)),
                 "current_period_start": datetime.fromtimestamp(
-                    subscription.current_period_start
+                    subscription.current_period_start,
                 ).isoformat(),
                 "current_period_end": datetime.fromtimestamp(
-                    subscription.current_period_end
+                    subscription.current_period_end,
                 ).isoformat(),
                 "cancel_at_period_end": subscription.cancel_at_period_end,
             }
@@ -373,8 +369,7 @@ class StripeBillingService:
         timestamp: int | None = None,
         action: str = "increment",
     ) -> dict[str, Any]:
-        """
-        Record usage for metered billing
+        """Record usage for metered billing
 
         Useful for tracking additional usage beyond base subscription
         (e.g., API calls, data transfer)
@@ -434,15 +429,14 @@ class StripeBillingService:
                         "invoice_pdf": inv.invoice_pdf,
                     }
                     for inv in invoices.data
-                ]
+                ],
             }
         except stripe.error.StripeError as e:
             return {"error": str(e)}
 
     # Webhook Handling
     def verify_webhook_signature(self, payload: bytes, signature: str) -> dict[str, Any] | None:
-        """
-        Verify webhook signature and return event
+        """Verify webhook signature and return event
 
         Security: Prevents spoofed webhooks
         """
@@ -455,8 +449,7 @@ class StripeBillingService:
             return None
 
     async def handle_webhook_event(self, event: dict[str, Any]) -> dict[str, Any]:
-        """
-        Process webhook events
+        """Process webhook events
 
         Handles:
         - payment_intent.succeeded
@@ -491,10 +484,9 @@ class StripeBillingService:
         """Determine subscription tier based on vehicle count"""
         if vehicle_count <= 100:
             return SubscriptionTier.STARTER
-        elif vehicle_count <= 500:
+        if vehicle_count <= 500:
             return SubscriptionTier.GROWTH
-        else:
-            return SubscriptionTier.ENTERPRISE
+        return SubscriptionTier.ENTERPRISE
 
     async def _handle_payment_succeeded(self, data: dict) -> dict[str, Any]:
         """Handle successful payment"""
@@ -561,8 +553,7 @@ class StripeBillingService:
 
     # Reporting
     async def get_revenue_report(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
-        """
-        Generate revenue report for date range
+        """Generate revenue report for date range
 
         Returns MRR, ARR, churn, growth metrics
         """
@@ -605,8 +596,7 @@ class StripeBillingService:
 
 # Pricing calculator utility
 def calculate_pricing(vehicle_count: int) -> dict[str, Any]:
-    """
-    Calculate pricing for a given vehicle count
+    """Calculate pricing for a given vehicle count
 
     Returns tier, monthly cost, yearly cost with discount
     """

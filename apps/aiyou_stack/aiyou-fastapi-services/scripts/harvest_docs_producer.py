@@ -28,7 +28,7 @@ def get_all_remote_branches() -> list[str]:
         branches = [b.strip() for b in result.splitlines() if "->" not in b]
         return branches
     except Exception as e:
-        logging.error(f"Failed to list branches: {e}")
+        logging.exception(f"Failed to list branches: {e}")
         return []
 
 
@@ -66,7 +66,7 @@ def main():
     logger = logging.getLogger("HarvestDocs")
 
     parser = argparse.ArgumentParser(
-        description="Harvest documentation from Git branches to Pub/Sub."
+        description="Harvest documentation from Git branches to Pub/Sub.",
     )
     parser.parse_args()
 
@@ -81,7 +81,7 @@ def main():
         logger.info("🌤️  Detected Cloud Environment (Empty Repo). Hydrating...")
         try:
             repo_url = os.environ.get(
-                "REPO_URL", "https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services.git"
+                "REPO_URL", "https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services.git",
             )
             subprocess.check_call(["git", "clone", repo_url, "."])
             subprocess.check_call(["git", "fetch", "--all"])
@@ -120,7 +120,7 @@ def main():
             try:
                 future = publisher.publish(TOPIC_PATH, data_bytes)
                 futures.append(
-                    (future, filepath)
+                    (future, filepath),
                 )  # Keep track of which future belongs to which file
                 total_docs += 1
             except Exception as e:

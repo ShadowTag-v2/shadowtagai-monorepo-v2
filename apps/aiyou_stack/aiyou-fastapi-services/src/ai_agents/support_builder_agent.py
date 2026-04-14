@@ -1,5 +1,4 @@
-"""
-AI Agent for Support Builder using Anthropic Claude API.
+"""AI Agent for Support Builder using Anthropic Claude API.
 
 This agent provides intelligent customer support responses,
 suggesting relevant FAQs and help articles.
@@ -13,8 +12,7 @@ from src.config import settings
 
 
 class SupportBuilderAgent:
-    """
-    AI agent for customer support using Claude.
+    """AI agent for customer support using Claude.
 
     This agent analyzes user queries and generates helpful responses,
     while also identifying relevant FAQs and documentation.
@@ -50,8 +48,7 @@ Guidelines:
         temperature: float = 0.7,
         max_tokens: int = 1024,
     ) -> str:
-        """
-        Generate a response to a user message using Claude.
+        """Generate a response to a user message using Claude.
 
         Args:
             user_message: The user's message
@@ -63,6 +60,7 @@ Guidelines:
 
         Returns:
             AI-generated response string
+
         """
         # Build messages list
         messages = conversation_history or []
@@ -101,8 +99,7 @@ Guidelines:
         temperature: float = 0.7,
         max_tokens: int = 1024,
     ) -> AsyncGenerator[str, None]:
-        """
-        Stream a response to a user message using Claude.
+        """Stream a response to a user message using Claude.
 
         Args:
             user_message: The user's message
@@ -114,6 +111,7 @@ Guidelines:
 
         Yields:
             Chunks of the AI-generated response
+
         """
         # Build messages list
         messages = conversation_history or []
@@ -145,8 +143,7 @@ Guidelines:
         user_message: str,
         categories: list[str],
     ) -> dict[str, any]:
-        """
-        Analyze user query to determine intent and relevant categories.
+        """Analyze user query to determine intent and relevant categories.
 
         Args:
             user_message: The user's message
@@ -154,6 +151,7 @@ Guidelines:
 
         Returns:
             Dictionary with intent analysis results
+
         """
         analysis_prompt = f"""Analyze this customer support query and provide:
 1. The primary intent (question, complaint, request, feedback)
@@ -231,14 +229,14 @@ Reasoning: [brief explanation]
         self,
         user_message: str,
     ) -> list[str]:
-        """
-        Generate keywords for FAQ search based on user message.
+        """Generate keywords for FAQ search based on user message.
 
         Args:
             user_message: The user's message
 
         Returns:
             List of search keywords
+
         """
         keyword_prompt = f"""Extract 3-5 key search terms from this customer query that would help find relevant FAQs.
 Focus on the core topic, not question words.

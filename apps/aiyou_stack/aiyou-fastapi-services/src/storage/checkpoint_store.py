@@ -18,6 +18,7 @@ class CheckpointStore:
 
         Args:
             storage_path: Base path for storing checkpoint files
+
         """
         self.storage_path = Path(storage_path or settings.checkpoint_storage_path)
         self.storage_path.mkdir(parents=True, exist_ok=True)
@@ -30,6 +31,7 @@ class CheckpointStore:
 
         Returns:
             Path to checkpoint directory
+
         """
         checkpoint_dir = self.storage_path / checkpoint_id
         checkpoint_dir.mkdir(parents=True, exist_ok=True)
@@ -43,11 +45,12 @@ class CheckpointStore:
 
         Returns:
             Hexadecimal hash string
+
         """
         return hashlib.sha256(content).hexdigest()
 
     async def save_file(
-        self, checkpoint_id: str, file_path: str, snapshot_id: str
+        self, checkpoint_id: str, file_path: str, snapshot_id: str,
     ) -> tuple[str, int, str]:
         """Save a file to checkpoint storage.
 
@@ -58,6 +61,7 @@ class CheckpointStore:
 
         Returns:
             Tuple of (content_hash, size_bytes, storage_path)
+
         """
         # Read file content
         async with aiofiles.open(file_path, "rb") as f:
@@ -83,6 +87,7 @@ class CheckpointStore:
         Args:
             storage_path: Path to stored snapshot file
             target_path: Target path to restore file to
+
         """
         # Create target directory if needed
         target_dir = Path(target_path).parent
@@ -102,6 +107,7 @@ class CheckpointStore:
 
         Returns:
             File content as bytes
+
         """
         async with aiofiles.open(storage_path, "rb") as f:
             return await f.read()
@@ -111,6 +117,7 @@ class CheckpointStore:
 
         Args:
             checkpoint_id: Checkpoint identifier
+
         """
         checkpoint_dir = self._get_checkpoint_dir(checkpoint_id)
         if checkpoint_dir.exists():
@@ -124,6 +131,7 @@ class CheckpointStore:
 
         Returns:
             Number of checkpoints deleted
+
         """
         deleted_count = 0
 
@@ -144,6 +152,7 @@ class CheckpointStore:
 
         Returns:
             Dictionary with storage statistics
+
         """
         total_size = 0
         checkpoint_count = 0

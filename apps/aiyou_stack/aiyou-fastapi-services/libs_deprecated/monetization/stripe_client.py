@@ -11,8 +11,7 @@ stripe.api_key = os.getenv("STRIPE_API_KEY", "sk_test_mock_key_antigravity")
 class StripeGate:
     @staticmethod
     def create_checkout_session(success_url: str, cancel_url: str) -> str:
-        """
-        The Card Reader.
+        """The Card Reader.
         Redirects to a pre-configured Stripe Payment Link (No-Code).
         """
         # FLASH LIQUIDITY: Use the link directly.

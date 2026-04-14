@@ -1,5 +1,4 @@
-"""
-Payment Service (Stripe Integration)
+"""Payment Service (Stripe Integration)
 
 Revenue:
 - Stripe subscription management
@@ -24,8 +23,7 @@ if settings.STRIPE_SECRET_KEY:
 
 
 class PaymentService:
-    """
-    Stripe payment service
+    """Stripe payment service
 
     Revenue Features:
     - Create customers
@@ -37,10 +35,9 @@ class PaymentService:
 
     @staticmethod
     async def create_customer(
-        email: str, name: str | None = None, metadata: dict[str, str] | None = None
+        email: str, name: str | None = None, metadata: dict[str, str] | None = None,
     ) -> str | None:
-        """
-        Create Stripe customer
+        """Create Stripe customer
 
         Args:
             email: Customer email
@@ -49,6 +46,7 @@ class PaymentService:
 
         Returns:
             Stripe customer ID or None on error
+
         """
         try:
             customer = stripe.Customer.create(email=email, name=name, metadata=metadata or {})
@@ -61,10 +59,9 @@ class PaymentService:
 
     @staticmethod
     async def create_subscription(
-        customer_id: str, price_id: str, payment_method_id: str, trial_days: int | None = None
+        customer_id: str, price_id: str, payment_method_id: str, trial_days: int | None = None,
     ) -> dict[str, Any] | None:
-        """
-        Create Stripe subscription
+        """Create Stripe subscription
 
         Args:
             customer_id: Stripe customer ID
@@ -74,6 +71,7 @@ class PaymentService:
 
         Returns:
             Subscription data or None on error
+
         """
         try:
             # Attach payment method to customer
@@ -81,7 +79,7 @@ class PaymentService:
 
             # Set as default payment method
             stripe.Customer.modify(
-                customer_id, invoice_settings={"default_payment_method": payment_method_id}
+                customer_id, invoice_settings={"default_payment_method": payment_method_id},
             )
 
             # Create subscription
@@ -113,8 +111,7 @@ class PaymentService:
 
     @staticmethod
     async def cancel_subscription(subscription_id: str, at_period_end: bool = True) -> bool:
-        """
-        Cancel Stripe subscription
+        """Cancel Stripe subscription
 
         Args:
             subscription_id: Stripe subscription ID
@@ -122,6 +119,7 @@ class PaymentService:
 
         Returns:
             Success status
+
         """
         try:
             if at_period_end:
@@ -142,8 +140,7 @@ class PaymentService:
 
     @staticmethod
     async def verify_webhook_signature(payload: bytes, signature: str) -> dict[str, Any] | None:
-        """
-        Verify Stripe webhook signature
+        """Verify Stripe webhook signature
 
         Security:
         - Prevents webhook spoofing
@@ -155,10 +152,11 @@ class PaymentService:
 
         Returns:
             Event data or None if verification fails
+
         """
         try:
             event = stripe.Webhook.construct_event(
-                payload, signature, settings.STRIPE_WEBHOOK_SECRET
+                payload, signature, settings.STRIPE_WEBHOOK_SECRET,
             )
             return event
 

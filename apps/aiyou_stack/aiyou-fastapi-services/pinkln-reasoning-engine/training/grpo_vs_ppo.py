@@ -1,5 +1,4 @@
-"""
-GRPO vs PPO Comparison — Reinforcement Learning for Agent Training
+"""GRPO vs PPO Comparison — Reinforcement Learning for Agent Training
 
 GRPO (Group Relative Policy Optimization):
 - Trains on GROUPS of trajectories (G=8 typical)
@@ -33,8 +32,7 @@ class Trajectory:
 
 
 class PPOTrainer:
-    """
-    Proximal Policy Optimization
+    """Proximal Policy Optimization
 
     Key idea: Clip policy updates to prevent large changes
     Loss = min(r_t * A_t, clip(r_t, 1-ε, 1+ε) * A_t)
@@ -46,8 +44,7 @@ class PPOTrainer:
         self.gamma = gamma
 
     def compute_advantages(self, trajectory: Trajectory) -> list[float]:
-        """
-        Compute GAE (Generalized Advantage Estimation)
+        """Compute GAE (Generalized Advantage Estimation)
 
         A_t = δ_t + γλδ_{t+1} + ... + (γλ)^{T-t}δ_T
         where δ_t = r_t + γV(s_{t+1}) - V(s_t)
@@ -68,8 +65,7 @@ class PPOTrainer:
         return advantages
 
     def compute_loss(self, trajectory: Trajectory, new_log_probs: list[float]) -> float:
-        """
-        PPO clipped surrogate objective
+        """PPO clipped surrogate objective
 
         L = E[ min(r_t * A_t, clip(r_t, 1-ε, 1+ε) * A_t) ]
         """
@@ -77,7 +73,7 @@ class PPOTrainer:
 
         losses = []
         for old_log_prob, new_log_prob, advantage in zip(
-            trajectory.log_probs, new_log_probs, advantages, strict=False
+            trajectory.log_probs, new_log_probs, advantages, strict=False,
         ):
             # Probability ratio
             ratio = math.exp(new_log_prob - old_log_prob)
@@ -93,8 +89,7 @@ class PPOTrainer:
 
 
 class GRPOTrainer:
-    """
-    Group Relative Policy Optimization
+    """Group Relative Policy Optimization
 
     Key idea: Compute advantages RELATIVE to group performance
     - Sample G trajectories per prompt
@@ -114,15 +109,14 @@ class GRPOTrainer:
         self.gamma = gamma
 
     def compute_relative_advantages(self, group_trajectories: list[Trajectory]) -> list[float]:
-        """
-        Compute relative advantages based on group ranking
+        """Compute relative advantages based on group ranking
 
         1. Rank trajectories by total reward
         2. Assign advantages: best = +1, worst = -1, linearly interpolated
         """
         if len(group_trajectories) != self.group_size:
             raise ValueError(
-                f"Expected {self.group_size} trajectories, got {len(group_trajectories)}"
+                f"Expected {self.group_size} trajectories, got {len(group_trajectories)}",
             )
 
         # Compute total rewards
@@ -141,10 +135,9 @@ class GRPOTrainer:
         return advantages
 
     def compute_loss(
-        self, group_trajectories: list[Trajectory], new_log_probs_group: list[list[float]]
+        self, group_trajectories: list[Trajectory], new_log_probs_group: list[list[float]],
     ) -> float:
-        """
-        GRPO loss
+        """GRPO loss
 
         L = -E[ log π(a|s) * A_relative ]
         where A_relative is computed from group ranking
@@ -153,7 +146,7 @@ class GRPOTrainer:
 
         total_loss = 0.0
         for _trajectory, new_log_probs, advantage in zip(
-            group_trajectories, new_log_probs_group, advantages, strict=False
+            group_trajectories, new_log_probs_group, advantages, strict=False,
         ):
             # Policy gradient with relative advantage
             for log_prob in new_log_probs:
@@ -166,7 +159,7 @@ class GRPOTrainer:
 
 
 def simulate_trajectories(
-    n: int, quality_range: tuple[float, float] = (0.0, 1.0)
+    n: int, quality_range: tuple[float, float] = (0.0, 1.0),
 ) -> list[Trajectory]:
     """Generate synthetic trajectories for testing"""
     trajectories = []
@@ -182,7 +175,7 @@ def simulate_trajectories(
         log_probs = [math.log(random.uniform(0.1, 0.9)) for _ in range(num_steps)]
 
         trajectories.append(
-            Trajectory(states=states, actions=actions, rewards=rewards, log_probs=log_probs)
+            Trajectory(states=states, actions=actions, rewards=rewards, log_probs=log_probs),
         )
 
     return trajectories
@@ -220,7 +213,7 @@ if __name__ == "__main__":
     print(f"  Average PPO loss: {avg_ppo_loss:.4f}")
     print(f"  Loss range: [{min(ppo_losses):.4f}, {max(ppo_losses):.4f}]")
     print(
-        f"  Loss std dev: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f}"
+        f"  Loss std dev: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f}",
     )
 
     # GRPO Training
@@ -255,7 +248,7 @@ if __name__ == "__main__":
     print("  ✓ Pros: Industry standard, well-understood")
     print("  ✗ Cons: Requires value function, sensitive to clip_epsilon")
     print(
-        f"  📊 Loss stability: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f} (std dev)"
+        f"  📊 Loss stability: {(sum((l - avg_ppo_loss) ** 2 for l in ppo_losses) / len(ppo_losses)) ** 0.5:.4f} (std dev)",
     )
 
     print("\nGRPO:")

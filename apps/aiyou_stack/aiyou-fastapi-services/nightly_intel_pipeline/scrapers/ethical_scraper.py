@@ -1,5 +1,4 @@
-"""
-Ethical Web Scraper with ATP 5-19 RA-1 Compliance
+"""Ethical Web Scraper with ATP 5-19 RA-1 Compliance
 Implements robots.txt respect, rate limiting, and circuit breaker patterns
 """
 
@@ -36,7 +35,7 @@ class CircuitBreaker:
             self.state = "open"
             self.opened_at = datetime.now()
             logger.warning(
-                "circuit_breaker_opened", failures=self.failures, timeout=self.timeout_seconds
+                "circuit_breaker_opened", failures=self.failures, timeout=self.timeout_seconds,
             )
 
     def record_success(self):
@@ -63,8 +62,7 @@ class CircuitBreaker:
 
 
 class EthicalScraper:
-    """
-    ATP 5-19 RA-1 compliant web scraper
+    """ATP 5-19 RA-1 compliant web scraper
 
     Features:
     - RFC 9309 compliant robots.txt handling (24-hour cache)
@@ -89,7 +87,7 @@ class EthicalScraper:
         self.retry_config = self.config["retry_policy"]
 
         logger.info(
-            "ethical_scraper_initialized", user_agent=self.user_agent, rate_limits=self.rate_config
+            "ethical_scraper_initialized", user_agent=self.user_agent, rate_limits=self.rate_config,
         )
 
     def _get_domain(self, url: str) -> str:
@@ -102,8 +100,7 @@ class EthicalScraper:
         return f"{parsed.scheme}://{parsed.netloc}/robots.txt"
 
     async def _fetch_robots_txt(self, url: str) -> RobotFileParser:
-        """
-        Fetch and parse robots.txt with RFC 9309 compliant caching
+        """Fetch and parse robots.txt with RFC 9309 compliant caching
         Cache TTL: 24 hours
         """
         domain = self._get_domain(url)
@@ -157,8 +154,7 @@ class EthicalScraper:
         return allowed
 
     def get_crawl_delay(self, url: str, parser: RobotFileParser) -> float:
-        """
-        Get crawl delay from robots.txt or config
+        """Get crawl delay from robots.txt or config
         Returns domain-specific or default delay
         """
         domain = self._get_domain(url)
@@ -179,8 +175,7 @@ class EthicalScraper:
         return self.rate_config["default_delay"]
 
     def apply_rate_limit(self, domain: str, delay: float):
-        """
-        Apply rate limiting with adaptive jitter
+        """Apply rate limiting with adaptive jitter
         Ensures minimum delay between requests to same domain
         """
         now = time.time()
@@ -199,7 +194,7 @@ class EthicalScraper:
                     remaining = max(0.1, remaining + jitter)
 
                 logger.debug(
-                    "rate_limit_applied", domain=domain, delay=remaining, configured_delay=delay
+                    "rate_limit_applied", domain=domain, delay=remaining, configured_delay=delay,
                 )
                 time.sleep(remaining)
 
@@ -215,19 +210,19 @@ class EthicalScraper:
         return self.circuit_breakers[domain]
 
     @retry(
-        stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10), reraise=True
+        stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10), reraise=True,
     )
     async def fetch_url(
-        self, url: str, method: str = "GET", headers: dict | None = None, **kwargs
+        self, url: str, method: str = "GET", headers: dict | None = None, **kwargs,
     ) -> tuple[int, str]:
-        """
-        Fetch URL with full ethical compliance
+        """Fetch URL with full ethical compliance
 
         Returns:
             Tuple of (status_code, content)
 
         Raises:
             Exception: If circuit is open or URL is disallowed
+
         """
         domain = self._get_domain(url)
 
@@ -276,13 +271,13 @@ class EthicalScraper:
             raise
 
     async def fetch_multiple(
-        self, urls: list[str], max_concurrent: int | None = None
+        self, urls: list[str], max_concurrent: int | None = None,
     ) -> dict[str, tuple[int, str]]:
-        """
-        Fetch multiple URLs with concurrency control
+        """Fetch multiple URLs with concurrency control
 
         Returns:
             Dict mapping URL to (status_code, content)
+
         """
         max_concurrent = max_concurrent or self.rate_config["max_concurrent"]
         semaphore = asyncio.Semaphore(max_concurrent)
@@ -304,8 +299,7 @@ class EthicalScraper:
 
 # Convenience function for simple use cases
 async def fetch_url_ethically(url: str, **kwargs) -> tuple[int, str]:
-    """
-    Simple wrapper for ethical URL fetching
+    """Simple wrapper for ethical URL fetching
 
     Usage:
         status, content = await fetch_url_ethically("https://example.com")

@@ -1,5 +1,4 @@
-"""
-FastAPI Authentication Middleware with Rate Limiting
+"""FastAPI Authentication Middleware with Rate Limiting
 Production-ready API key authentication with tier-based rate limiting
 """
 
@@ -16,8 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class AuthenticationMiddleware(BaseHTTPMiddleware):
-    """
-    API Key Authentication Middleware with tier-based rate limiting
+    """API Key Authentication Middleware with tier-based rate limiting
 
     Features:
     - SHA-256 API key hashing for security
@@ -28,14 +26,14 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
     """
 
     def __init__(self, app, api_keys: dict[str, str], redis_url: str | None = None):
-        """
-        Initialize authentication middleware
+        """Initialize authentication middleware
 
         Args:
             app: FastAPI application
             api_keys: Dict mapping SHA-256 hashed API keys to tier names
                      Example: {"hash1": "tier_1", "hash2": "enterprise"}
             redis_url: Redis connection URL (optional, falls back to in-memory)
+
         """
         super().__init__(app)
         self.api_keys = api_keys  # {key_hash: tier}
@@ -62,8 +60,7 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
         self.rate_limit_cache: dict[str, list] = {}  # {key_hash: [timestamp1, timestamp2, ...]}
 
     async def dispatch(self, request: Request, call_next):
-        """
-        Process request with authentication and rate limiting
+        """Process request with authentication and rate limiting
         """
         # Skip auth for health check endpoints
         if request.url.path in ["/health", "/healthz", "/metrics"]:
@@ -107,8 +104,7 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
         return response
 
     def _check_rate_limit(self, key_hash: str, limit: int) -> tuple[bool, int, int]:
-        """
-        Check if request is allowed under rate limit
+        """Check if request is allowed under rate limit
 
         Args:
             key_hash: SHA-256 hash of API key
@@ -116,20 +112,19 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Tuple of (allowed, remaining_requests, reset_timestamp)
+
         """
         now = int(time.time())
         window_start = now - 60  # 60-second sliding window
 
         if self.redis_client:
             return self._check_rate_limit_redis(key_hash, limit, now, window_start)
-        else:
-            return self._check_rate_limit_memory(key_hash, limit, now, window_start)
+        return self._check_rate_limit_memory(key_hash, limit, now, window_start)
 
     def _check_rate_limit_redis(
-        self, key_hash: str, limit: int, now: int, window_start: int
+        self, key_hash: str, limit: int, now: int, window_start: int,
     ) -> tuple[bool, int, int]:
-        """
-        Check rate limit using Redis (persistent, distributed)
+        """Check rate limit using Redis (persistent, distributed)
         """
         redis_key = f"ratelimit:{key_hash}"
 
@@ -161,10 +156,9 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
             return True, limit, now + 60
 
     def _check_rate_limit_memory(
-        self, key_hash: str, limit: int, now: int, window_start: int
+        self, key_hash: str, limit: int, now: int, window_start: int,
     ) -> tuple[bool, int, int]:
-        """
-        Check rate limit using in-memory cache (fallback)
+        """Check rate limit using in-memory cache (fallback)
 
         ⚠️ WARNING: Does not persist across pod restarts
         """
@@ -191,23 +185,22 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
 
 
 def hash_api_key(api_key: str) -> str:
-    """
-    Hash an API key using SHA-256
+    """Hash an API key using SHA-256
 
     Args:
         api_key: Plain text API key
 
     Returns:
         SHA-256 hex digest
+
     """
     return hashlib.sha256(api_key.encode()).hexdigest()
 
 
 def create_auth_middleware(
-    api_keys_config: dict[str, str], redis_url: str | None = None
+    api_keys_config: dict[str, str], redis_url: str | None = None,
 ) -> AuthenticationMiddleware:
-    """
-    Factory function to create authentication middleware
+    """Factory function to create authentication middleware
 
     Args:
         api_keys_config: Dict mapping plain API keys to tiers
@@ -216,6 +209,7 @@ def create_auth_middleware(
 
     Returns:
         Configured AuthenticationMiddleware instance
+
     """
     # Hash all API keys
     hashed_keys = {hash_api_key(key): tier for key, tier in api_keys_config.items()}

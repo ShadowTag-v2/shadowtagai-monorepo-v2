@@ -1,5 +1,4 @@
-"""
-Infrastructure Agent - PNKLN Core Stack™ Analyst
+"""Infrastructure Agent - PNKLN Core Stack™ Analyst
 
 This agent provides comprehensive infrastructure analysis and optimization
 for the PNKLN Core Stack™ systems, including Judge #6, Gemini Ingestion Layer,
@@ -41,8 +40,7 @@ class InfrastructureAgentConfig:
 
 
 class InfrastructureAgent(BaseAgent):
-    """
-    Autonomous agent for infrastructure analysis and optimization.
+    """Autonomous agent for infrastructure analysis and optimization.
 
     This agent combines multiple analytical capabilities to provide
     comprehensive insights into PNKLN Core Stack™ infrastructure components.
@@ -57,11 +55,11 @@ class InfrastructureAgent(BaseAgent):
     """
 
     def __init__(self, config: InfrastructureAgentConfig | None = None):
-        """
-        Initialize the Infrastructure Agent.
+        """Initialize the Infrastructure Agent.
 
         Args:
             config: Optional configuration for the agent
+
         """
         super().__init__(name="Infrastructure Agent", role="PNKLN Core Stack™ Analyst")
         self.config = config or InfrastructureAgentConfig()
@@ -69,8 +67,7 @@ class InfrastructureAgent(BaseAgent):
         self.analysis_cache = {}
 
     async def execute(self, task: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
-        """
-        Execute an infrastructure analysis task.
+        """Execute an infrastructure analysis task.
 
         Args:
             task: Task description
@@ -78,31 +75,31 @@ class InfrastructureAgent(BaseAgent):
 
         Returns:
             Analysis results and recommendations
+
         """
         # Parse task to determine what to analyze
         task_lower = task.lower()
 
         if "judge" in task_lower and "ingestion" in task_lower:
             return await self.analyze_full_pipeline()
-        elif "judge" in task_lower:
+        if "judge" in task_lower:
             return await self.analyze_judge_six()
-        elif "ingestion" in task_lower or "gemini" in task_lower:
+        if "ingestion" in task_lower or "gemini" in task_lower:
             return await self.analyze_gemini_ingestion()
-        elif "compare" in task_lower or "comparative" in task_lower:
+        if "compare" in task_lower or "comparative" in task_lower:
             return await self.comparative_analysis()
-        elif "optimize" in task_lower:
+        if "optimize" in task_lower:
             return await self.optimize_infrastructure(context)
-        elif "cost" in task_lower:
+        if "cost" in task_lower:
             return await self.cost_analysis()
-        else:
-            return await self.general_infrastructure_review(task, context)
+        return await self.general_infrastructure_review(task, context)
 
     async def analyze_judge_six(self) -> dict[str, Any]:
-        """
-        Analyze Judge #6 validation/enforcement system.
+        """Analyze Judge #6 validation/enforcement system.
 
         Returns:
             Comprehensive analysis of Judge #6
+
         """
         print("\n🔍 Analyzing Judge #6 System...")
 
@@ -123,11 +120,11 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def analyze_gemini_ingestion(self) -> dict[str, Any]:
-        """
-        Analyze Gemini Ingestion Layer intelligence collection system.
+        """Analyze Gemini Ingestion Layer intelligence collection system.
 
         Returns:
             Comprehensive analysis of Gemini Ingestion Layer
+
         """
         print("\n🔍 Analyzing Gemini Ingestion Layer...")
 
@@ -156,16 +153,16 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def comparative_analysis(self) -> dict[str, Any]:
-        """
-        Perform comparative analysis between Judge #6 and Gemini Ingestion.
+        """Perform comparative analysis between Judge #6 and Gemini Ingestion.
 
         Returns:
             Comparative insights and integration recommendations
+
         """
         print("\n🔍 Performing Comparative Analysis...")
 
         comparison = self.skill.comparative_analysis(
-            self.skill.JUDGE_SIX_SPEC, self.skill.GEMINI_INGESTION_SPEC
+            self.skill.JUDGE_SIX_SPEC, self.skill.GEMINI_INGESTION_SPEC,
         )
 
         # Enhance with pinkln insights
@@ -179,11 +176,11 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def analyze_full_pipeline(self) -> dict[str, Any]:
-        """
-        Analyze the full pipeline from ingestion to validation.
+        """Analyze the full pipeline from ingestion to validation.
 
         Returns:
             End-to-end pipeline analysis
+
         """
         print("\n🔍 Analyzing Full Pipeline (Ingestion → Judge)...")
 
@@ -203,16 +200,16 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def optimize_infrastructure(
-        self, context: dict[str, Any] | None = None
+        self, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Generate optimization recommendations for infrastructure.
+        """Generate optimization recommendations for infrastructure.
 
         Args:
             context: Optional context with specific optimization goals
 
         Returns:
             Optimization recommendations
+
         """
         print("\n⚡ Generating Optimization Recommendations...")
 
@@ -291,11 +288,11 @@ class InfrastructureAgent(BaseAgent):
         return optimizations
 
     async def cost_analysis(self) -> dict[str, Any]:
-        """
-        Perform cost analysis across infrastructure.
+        """Perform cost analysis across infrastructure.
 
         Returns:
             Cost breakdown and optimization opportunities
+
         """
         print("\n💰 Performing Cost Analysis...")
 
@@ -339,10 +336,9 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def general_infrastructure_review(
-        self, task: str, context: dict[str, Any] | None = None
+        self, task: str, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Perform general infrastructure review based on task description.
+        """Perform general infrastructure review based on task description.
 
         Args:
             task: Task description
@@ -350,6 +346,7 @@ class InfrastructureAgent(BaseAgent):
 
         Returns:
             Review results
+
         """
         return {
             "task": task,
@@ -427,7 +424,7 @@ class InfrastructureAgent(BaseAgent):
                     "action": rec,
                     "timeline": "1-2 weeks" if i <= 2 else "2-4 weeks",
                     "owner": "Infrastructure Team",
-                }
+                },
             )
 
         return actions

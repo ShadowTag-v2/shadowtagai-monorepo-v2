@@ -1,5 +1,4 @@
-"""
-Glicko Rating System - Uncertainty-aware rankings.
+"""Glicko Rating System - Uncertainty-aware rankings.
 
 Glicko extends Elo by adding:
 - Rating Deviation (RD): Measures uncertainty in rating
@@ -31,8 +30,7 @@ class GlickoRating:
 
 
 class GlickoSystem:
-    """
-    Glicko-2 rating system implementation.
+    """Glicko-2 rating system implementation.
 
     Advantages over Elo:
     - Accounts for uncertainty (RD)
@@ -45,11 +43,11 @@ class GlickoSystem:
     EPSILON = 0.000001  # Convergence tolerance
 
     def __init__(self, tau: float = 0.5):
-        """
-        Initialize Glicko system.
+        """Initialize Glicko system.
 
         Args:
             tau: System volatility constraint
+
         """
         self.TAU = tau
 
@@ -59,8 +57,7 @@ class GlickoSystem:
         opponent_ratings: list[GlickoRating],
         outcomes: list[float],  # 1 = win, 0.5 = draw, 0 = loss
     ) -> GlickoRating:
-        """
-        Update a player's rating after games.
+        """Update a player's rating after games.
 
         Args:
             player_rating: Player's current rating
@@ -69,6 +66,7 @@ class GlickoSystem:
 
         Returns:
             Updated rating
+
         """
         if len(opponent_ratings) != len(outcomes):
             raise ValueError("Number of opponents must match number of outcomes")
@@ -99,7 +97,7 @@ class GlickoSystem:
 
         # Step 7: Convert back to original scale
         new_rating = GlickoRating(
-            rating=173.7178 * mu_prime + 1500, rd=173.7178 * phi_prime, volatility=sigma_prime
+            rating=173.7178 * mu_prime + 1500, rd=173.7178 * phi_prime, volatility=sigma_prime,
         )
 
         return new_rating
@@ -114,7 +112,7 @@ class GlickoSystem:
         )
 
     def _compute_delta(
-        self, mu: float, opponents: list[GlickoRating], outcomes: list[float], v: float
+        self, mu: float, opponents: list[GlickoRating], outcomes: list[float], v: float,
     ) -> float:
         """Compute performance difference."""
         return v * sum(
@@ -165,7 +163,7 @@ class GlickoSystem:
         return math.exp(A / 2)
 
     def _g(self, phi: float) -> float:
-        """g function for Glicko-2."""
+        """G function for Glicko-2."""
         return 1 / math.sqrt(1 + 3 * phi**2 / math.pi**2)
 
     def _E(self, mu: float, opp_rating: float, opp_rd: float) -> float:
@@ -175,8 +173,7 @@ class GlickoSystem:
         return 1 / (1 + math.exp(-self._g(opp_phi) * (mu - opp_mu)))
 
     def decay_rd(self, rating: GlickoRating, periods: int = 1) -> GlickoRating:
-        """
-        Decay RD due to inactivity.
+        """Decay RD due to inactivity.
 
         Args:
             rating: Current rating
@@ -184,6 +181,7 @@ class GlickoSystem:
 
         Returns:
             Rating with decayed RD
+
         """
         new_rd = min(
             math.sqrt(rating.rd**2 + periods * rating.volatility**2),

@@ -1,5 +1,4 @@
-"""
-Pub/Sub Audit Trail with Dead Letter Queue (DLQ)
+"""Pub/Sub Audit Trail with Dead Letter Queue (DLQ)
 
 Governance-grade message processing with automatic failure routing.
 """

@@ -1,5 +1,4 @@
-"""
-Task management endpoints
+"""Task management endpoints
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -58,7 +57,6 @@ async def delete_task(task_id: int, db: Session = Depends(get_db)):
     if not task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
     TaskService.delete_task(db, task)
-    return None
 
 
 @router.patch("/{task_id}/status")

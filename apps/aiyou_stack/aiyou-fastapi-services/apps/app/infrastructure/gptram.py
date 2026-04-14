@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-GPTRAM: Redis-based Long-term Memory for AI Agents
+"""GPTRAM: Redis-based Long-term Memory for AI Agents
 
 Provides:
 - Verdict caching (avoid re-judging same content)
@@ -53,8 +52,7 @@ class Violation:
 
 
 class GPTRAM:
-    """
-    GPU-accelerated Redis AI Memory
+    """GPU-accelerated Redis AI Memory
 
     Long-term memory layer for n-autoresearch/Kosmos/BioAgents/Judge governance.
     Caches verdicts, tracks violations, maintains context.
@@ -72,12 +70,12 @@ class GPTRAM:
     SESSION_TTL = 86400  # 24 hours
 
     def __init__(self, redis_url: str = None, prefix: str = "gptram"):
-        """
-        Initialize GPTRAM.
+        """Initialize GPTRAM.
 
         Args:
             redis_url: Redis connection URL (default: REDIS_URL env or localhost)
             prefix: Key prefix for all Redis keys
+
         """
         self.prefix = prefix
         self.redis_url = redis_url or os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -128,14 +126,14 @@ class GPTRAM:
     # === Verdict Operations ===
 
     async def get_prior_verdict(self, task_context: str) -> dict[str, Any] | None:
-        """
-        Check if we've already judged this context.
+        """Check if we've already judged this context.
 
         Args:
             task_context: The task/content to check
 
         Returns:
             Cached verdict if exists, None otherwise
+
         """
         ctx_hash = self._hash_context(task_context)
         key = self._key("verdict", ctx_hash)
@@ -157,8 +155,7 @@ class GPTRAM:
         return None
 
     async def save_verdict(self, task_context: str, verdict: dict[str, Any]) -> str:
-        """
-        Cache a verdict for future lookups.
+        """Cache a verdict for future lookups.
 
         Args:
             task_context: The judged content
@@ -166,6 +163,7 @@ class GPTRAM:
 
         Returns:
             Context hash key
+
         """
         ctx_hash = self._hash_context(task_context)
         key = self._key("verdict", ctx_hash)
@@ -197,8 +195,7 @@ class GPTRAM:
         context_hash: str = "",
         details: dict[str, Any] = None,
     ) -> str:
-        """
-        Record a violation event.
+        """Record a violation event.
 
         Args:
             rule_id: ATP_519_xxx rule identifier
@@ -208,6 +205,7 @@ class GPTRAM:
 
         Returns:
             Violation key
+
         """
         violation = Violation(
             rule_id=rule_id,
@@ -282,7 +280,7 @@ class GPTRAM:
         return stats
 
     async def get_recent_violations(
-        self, limit: int = 10, rule_id: str = None
+        self, limit: int = 10, rule_id: str = None,
     ) -> list[dict[str, Any]]:
         """Get recent violations."""
         violations = []

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PreToolUse hook for Write/Edit - Check file operations for safety
+"""PreToolUse hook for Write/Edit - Check file operations for safety
 """
 
 import json
@@ -27,8 +26,7 @@ PROTECTED_DIRS = [
 
 
 def is_protected_file(file_path: str) -> tuple[bool, str]:
-    """
-    Check if a file is protected from modification.
+    """Check if a file is protected from modification.
     Returns (is_protected, reason) tuple.
     """
     # Check for path traversal
@@ -52,8 +50,7 @@ def is_protected_file(file_path: str) -> tuple[bool, str]:
 
 
 def check_content_safety(content: str, file_path: str) -> tuple[bool, str]:
-    """
-    Check if file content contains potentially dangerous or sensitive data.
+    """Check if file content contains potentially dangerous or sensitive data.
     Returns (has_issue, warning) tuple.
     """
     warnings = []
@@ -107,7 +104,7 @@ def main():
     if has_issue:
         # Show warning but allow operation
         output = {
-            "systemMessage": f"⚠️  Content safety warning:\n{warning}\n\nConsider reviewing the file before committing."
+            "systemMessage": f"⚠️  Content safety warning:\n{warning}\n\nConsider reviewing the file before committing.",
         }
         print(json.dumps(output))
 

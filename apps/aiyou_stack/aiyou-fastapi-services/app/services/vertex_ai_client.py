@@ -1,5 +1,4 @@
-"""
-Vertex AI Client - Gemini Efficiency Patterns
+"""Vertex AI Client - Gemini Efficiency Patterns
 
 Implements MCP-inspired efficiency patterns for Omega Governance Service:
 1. Execute models directly without bloating context (98.7% token reduction)
@@ -46,8 +45,7 @@ class ExecuteModelResponse:
 
 
 class VertexAIClient:
-    """
-    Vertex AI client with MCP efficiency patterns
+    """Vertex AI client with MCP efficiency patterns
 
     Key efficiency gains over traditional approach:
     - 98.7% token reduction (150K → 2K) via progressive disclosure
@@ -79,8 +77,7 @@ class VertexAIClient:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> ExecuteModelResponse:
-        """
-        Execute a single Gemini model request
+        """Execute a single Gemini model request
 
         CORE EFFICIENCY GAIN:
         Instead of passing large prompts/responses through model context,
@@ -96,6 +93,7 @@ class VertexAIClient:
             )
             # Response never enters model context
             score = extract_score(response.text)  # Only score logged
+
         """
         try:
             # Use Gemini Flash for cost efficiency
@@ -123,7 +121,7 @@ class VertexAIClient:
             output_tokens = len(response.text) // 4
 
             logger.debug(
-                f"Model execution: {input_tokens} input + {output_tokens} output = {input_tokens + output_tokens} total tokens"
+                f"Model execution: {input_tokens} input + {output_tokens} output = {input_tokens + output_tokens} total tokens",
             )
 
             return ExecuteModelResponse(
@@ -143,10 +141,9 @@ class VertexAIClient:
             raise
 
     async def execute_batch(
-        self, prompts: list[str], system_instruction: str | None = None, max_parallel: int = 10
+        self, prompts: list[str], system_instruction: str | None = None, max_parallel: int = 10,
     ) -> tuple[list[ExecuteModelResponse], int]:
-        """
-        Execute multiple prompts in parallel
+        """Execute multiple prompts in parallel
 
         KEY ADVANTAGE: Process 1000s of documents without bloating context
 
@@ -168,6 +165,7 @@ class VertexAIClient:
 
             # Only 10 ads enter model context, not 100
             return top_violations
+
         """
         logger.info(f"Batch executing {len(prompts)} prompts (max_parallel={max_parallel})")
 
@@ -178,27 +176,26 @@ class VertexAIClient:
         for i in range(0, len(prompts), max_parallel):
             batch = prompts[i : i + max_parallel]
             batch_results = await asyncio.gather(
-                *[self.execute_model(prompt, system_instruction) for prompt in batch]
+                *[self.execute_model(prompt, system_instruction) for prompt in batch],
             )
             results.extend(batch_results)
             total_tokens += sum(r.tokens_used["total"] for r in batch_results)
 
             # Log progress
             logger.debug(
-                f"Batch {i // max_parallel + 1}/{(len(prompts) + max_parallel - 1) // max_parallel} complete"
+                f"Batch {i // max_parallel + 1}/{(len(prompts) + max_parallel - 1) // max_parallel} complete",
             )
 
         logger.info(
-            f"Batch execution complete: {total_tokens} total tokens across {len(prompts)} prompts"
+            f"Batch execution complete: {total_tokens} total tokens across {len(prompts)} prompts",
         )
 
         return results, total_tokens
 
     async def generate_embeddings(
-        self, texts: list[str], model: str = "textembedding-gecko@003"
+        self, texts: list[str], model: str = "textembedding-gecko@003",
     ) -> tuple[list[list[float]], int]:
-        """
-        Generate embeddings for semantic search
+        """Generate embeddings for semantic search
 
         Embeddings never enter model context - only similarity scores or top matches
 
@@ -221,6 +218,7 @@ class VertexAIClient:
             # Only top 5 most similar violations enter model context
             top_5 = sorted(similarities, key=lambda x: x[1], reverse=True)[:5]
             return top_5
+
         """
         try:
             # Use Vertex AI Embeddings API
@@ -233,7 +231,7 @@ class VertexAIClient:
             for i in range(0, len(texts), batch_size):
                 batch = texts[i : i + batch_size]
                 embeddings = await asyncio.get_event_loop().run_in_executor(
-                    None, lambda: model_instance.get_embeddings(batch)
+                    None, lambda: model_instance.get_embeddings(batch),
                 )
                 all_embeddings.extend([emb.values for emb in embeddings])
 
@@ -259,10 +257,9 @@ class VertexAIClient:
         return dot_product / (norm_a * norm_b) if norm_a > 0 and norm_b > 0 else 0.0
 
     async def find_most_similar(
-        self, query: str, candidates: list[str], top_k: int = 10
+        self, query: str, candidates: list[str], top_k: int = 10,
     ) -> list[tuple[str, float, int]]:
-        """
-        Find top-K most similar texts
+        """Find top-K most similar texts
 
         Example:
             # Find similar content violations
@@ -274,6 +271,7 @@ class VertexAIClient:
 
             # Only 5 most relevant violations enter model context
             return top_violations
+
         """
         logger.info(f"Finding top-{top_k} similar items from {len(candidates)} candidates")
 

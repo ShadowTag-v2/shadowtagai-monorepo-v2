@@ -117,7 +117,7 @@ class VectorDB:
                 self.conversations.query,
                 query_texts=[query],
                 n_results=top_k,
-                where=where if where else None,
+                where=where or None,
             ),
         )
 
@@ -135,7 +135,7 @@ class VectorDB:
                         "content": results["documents"][0][i],
                         "metadata": results["metadatas"][0][i],
                         "score": score,
-                    }
+                    },
                 )
 
         return formatted_results
@@ -198,7 +198,7 @@ class VectorDB:
                         "content": results["documents"][0][i],
                         "metadata": results["metadatas"][0][i],
                         "score": score,
-                    }
+                    },
                 )
 
         return formatted_results

@@ -1,5 +1,4 @@
-"""
-Pinkln Skills System
+"""Pinkln Skills System
 
 Modular reasoning skills with Glicko-2 ratings:
 - CoT (Chain of Thought)
@@ -18,11 +17,11 @@ from .registry import SkillRegistry
 from .tot import TreeOfThoughts
 
 __all__ = [
-    "Skill",
-    "SkillResult",
     "ChainOfThought",
-    "TreeOfThoughts",
-    "RecursiveCritique",
     "FrameworkReasoning",
+    "RecursiveCritique",
+    "Skill",
     "SkillRegistry",
+    "SkillResult",
+    "TreeOfThoughts",
 ]

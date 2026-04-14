@@ -68,10 +68,10 @@ def start_server() -> subprocess.Popen[str]:
 
     # Start threads to log stdout and stderr in real-time
     threading.Thread(
-        target=log_output, args=(process.stdout, logger.info), daemon=True
+        target=log_output, args=(process.stdout, logger.info), daemon=True,
     ).start()
     threading.Thread(
-        target=log_output, args=(process.stderr, logger.error), daemon=True
+        target=log_output, args=(process.stderr, logger.error), daemon=True,
     ).start()
 
     return process
@@ -109,7 +109,7 @@ def server_fixture(request: Any) -> Iterator[subprocess.Popen[str]]:
         logger.info("Server process stopped")
 
     request.addfinalizer(stop_server)
-    yield server_process
+    return server_process
 
 
 def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
@@ -144,7 +144,7 @@ def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
     }
 
     response = requests.post(
-        STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=60
+        STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=60,
     )
     assert response.status_code == 200
     # Parse SSE events from response
@@ -174,10 +174,10 @@ def test_chat_stream_error_handling(server_fixture: subprocess.Popen[str]) -> No
     """Test the chat stream error handling."""
     logger.info("Starting chat stream error handling test")
     data = {
-        "input": {"messages": [{"type": "invalid_type", "content": "Cause an error"}]}
+        "input": {"messages": [{"type": "invalid_type", "content": "Cause an error"}]},
     }
     response = requests.post(
-        STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=10
+        STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=10,
     )
 
     assert response.status_code == 422, (
@@ -187,8 +187,7 @@ def test_chat_stream_error_handling(server_fixture: subprocess.Popen[str]) -> No
 
 
 def test_collect_feedback(server_fixture: subprocess.Popen[str]) -> None:
-    """
-    Test the feedback collection endpoint (/feedback) to ensure it properly
+    """Test the feedback collection endpoint (/feedback) to ensure it properly
     logs the received feedback.
     """
     # Create sample feedback data
@@ -200,6 +199,6 @@ def test_collect_feedback(server_fixture: subprocess.Popen[str]) -> None:
     }
 
     response = requests.post(
-        FEEDBACK_URL, json=feedback_data, headers=HEADERS, timeout=10
+        FEEDBACK_URL, json=feedback_data, headers=HEADERS, timeout=10,
     )
     assert response.status_code == 200

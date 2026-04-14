@@ -1,5 +1,4 @@
-"""
-Tier Classification Implementation
+"""Tier Classification Implementation
 
 Uses Gemini 2.5 Flash-Lite for cost-effective content classification.
 Pricing: $0.10 input / $0.40 output per million tokens
@@ -47,8 +46,7 @@ class ClassificationResult:
 
 
 class TierClassifier:
-    """
-    Tier classification using Gemini 2.5 Flash-Lite.
+    """Tier classification using Gemini 2.5 Flash-Lite.
 
     Evaluates content across multiple dimensions:
     - Source credibility and authority
@@ -64,14 +62,14 @@ class TierClassifier:
         temperature: float = 0.3,
         max_tokens: int = 8192,
     ):
-        """
-        Initialize tier classifier.
+        """Initialize tier classifier.
 
         Args:
             model: Gemini model to use
             confidence_threshold: Minimum confidence for classification (60% for pre-prod)
             temperature: Model temperature (lower = more deterministic)
             max_tokens: Maximum tokens for response
+
         """
         self.model = model
         self.confidence_threshold = confidence_threshold
@@ -109,14 +107,14 @@ class TierClassifier:
         }
 
     def _get_classification_prompt(self, content: dict[str, Any]) -> str:
-        """
-        Generate classification prompt for Gemini.
+        """Generate classification prompt for Gemini.
 
         Args:
             content: Content metadata to classify
 
         Returns:
             Formatted prompt for Gemini
+
         """
         source = content.get("source", "unknown")
         domain = content.get("domain", "unknown")
@@ -172,8 +170,7 @@ Provide your classification:"""
         return prompt
 
     async def classify(self, content: dict[str, Any]) -> ClassificationResult:
-        """
-        Classify content into tier.
+        """Classify content into tier.
 
         Args:
             content: Content metadata dictionary with keys:
@@ -186,6 +183,7 @@ Provide your classification:"""
 
         Returns:
             ClassificationResult with tier and confidence
+
         """
         self.stats["total_classifications"] += 1
 
@@ -230,8 +228,7 @@ Provide your classification:"""
         return result
 
     async def _classify_with_gemini(self, content: dict[str, Any]) -> ClassificationResult:
-        """
-        Classify using Gemini API.
+        """Classify using Gemini API.
 
         NOTE: This is a placeholder. In production, implement actual Gemini API call:
 
@@ -259,6 +256,7 @@ Provide your classification:"""
 
         Returns:
             ClassificationResult
+
         """
         # Placeholder implementation
         # In production, use actual Gemini API
@@ -306,14 +304,14 @@ Provide your classification:"""
         )
 
     async def classify_batch(self, contents: list[dict[str, Any]]) -> list[ClassificationResult]:
-        """
-        Classify multiple items.
+        """Classify multiple items.
 
         Args:
             contents: List of content dictionaries
 
         Returns:
             List of ClassificationResults
+
         """
         import asyncio
 
@@ -339,8 +337,7 @@ Provide your classification:"""
         }
 
     def check_tier_distribution(self) -> dict[str, Any]:
-        """
-        Check if tier distribution meets targets.
+        """Check if tier distribution meets targets.
 
         Targets:
         - Tier 1: 30%
@@ -349,6 +346,7 @@ Provide your classification:"""
 
         Returns:
             Distribution analysis with pass/fail status
+
         """
         stats = self.get_stats()
         total = self.stats["total_classifications"]

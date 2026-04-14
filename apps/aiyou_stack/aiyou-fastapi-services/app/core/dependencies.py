@@ -1,5 +1,4 @@
-"""
-Dependency Injection for Authentication
+"""Dependency Injection for Authentication
 
 Security:
 - JWT verification
@@ -24,8 +23,7 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: AsyncSession = Depends(get_db),
 ) -> User:
-    """
-    Get current authenticated user from JWT token
+    """Get current authenticated user from JWT token
 
     Security:
     - Token verification
@@ -38,6 +36,7 @@ async def get_current_user(
 
     Returns:
         User object
+
     """
     token = credentials.credentials
 
@@ -64,15 +63,14 @@ async def get_current_user(
     # Validate user can log in
     if not user.can_login():
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Account is inactive, locked, or deleted"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Account is inactive, locked, or deleted",
         )
 
     return user
 
 
 async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
-    """
-    Get current user and ensure account is active
+    """Get current user and ensure account is active
 
     Security:
     - Additional active check
@@ -80,6 +78,7 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 
     Returns:
         Active user object
+
     """
     if not current_user.is_active:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Account is inactive")
@@ -88,10 +87,9 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
 
 
 async def require_tier(
-    required_tier: str, current_user: User = Depends(get_current_active_user)
+    required_tier: str, current_user: User = Depends(get_current_active_user),
 ) -> User:
-    """
-    Require specific subscription tier
+    """Require specific subscription tier
 
     Revenue:
     - Tier-based access control
@@ -106,6 +104,7 @@ async def require_tier(
 
     Returns:
         User object if authorized
+
     """
     tier_hierarchy = {"free": 0, "pro": 1, "enterprise": 2}
     user_tier_level = tier_hierarchy.get(current_user.subscription_tier, 0)

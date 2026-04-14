@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System
+"""Glicko-2 Rating System
 
 Improved rating system over Elo, with rating deviation (RD) and volatility.
 Used for ranking Pinkln agents based on debate/benchmark performance.
@@ -17,13 +16,13 @@ EPSILON = 0.000001  # Convergence threshold
 
 @dataclass
 class Glicko2Player:
-    """
-    Glicko-2 player representation
+    """Glicko-2 player representation
 
     Attributes:
         mu: Rating (default 1500, higher = better)
         phi: Rating deviation (default 350, lower = more certain)
         vol: Volatility (default 0.06, measures consistency)
+
     """
 
     mu: float = 1500.0
@@ -57,8 +56,7 @@ class Glicko2Player:
 
 
 def g(phi: float) -> float:
-    """
-    Auxiliary function g(φ)
+    """Auxiliary function g(φ)
 
     Reduces impact of opponents with high RD
     """
@@ -66,8 +64,7 @@ def g(phi: float) -> float:
 
 
 def E(mu: float, mu_j: float, phi_j: float) -> float:
-    """
-    Expected score E(μ, μ_j, φ_j)
+    """Expected score E(μ, μ_j, φ_j)
 
     Probability that player with rating μ beats player with (μ_j, φ_j)
     """
@@ -81,8 +78,7 @@ def update(
     tau: float = TAU,
     tol: float = EPSILON,
 ) -> Glicko2Player:
-    """
-    Update player rating after games
+    """Update player rating after games
 
     Args:
         player: Player to update
@@ -93,8 +89,8 @@ def update(
 
     Returns:
         Updated Glicko2Player
-    """
 
+    """
     if len(opponents) != len(results):
         raise ValueError("Number of opponents must match number of results")
 
@@ -183,11 +179,11 @@ def update(
 
 
 def predict_win_probability(player1: Glicko2Player, player2: Glicko2Player) -> float:
-    """
-    Predict probability that player1 beats player2
+    """Predict probability that player1 beats player2
 
     Returns:
         float: Probability (0.0–1.0)
+
     """
     mu1, phi1 = player1.to_glicko_scale()
     mu2, phi2 = player2.to_glicko_scale()
@@ -196,14 +192,14 @@ def predict_win_probability(player1: Glicko2Player, player2: Glicko2Player) -> f
 
 
 def rating_difference_to_win_probability(rating_diff: float) -> float:
-    """
-    Convert rating difference to win probability
+    """Convert rating difference to win probability
 
     Args:
         rating_diff: Rating difference (player1.mu - player2.mu)
 
     Returns:
         Approximate win probability
+
     """
     # Simplified: assumes equal RD
     return 1.0 / (1.0 + 10.0 ** (-rating_diff / 400.0))
@@ -239,7 +235,7 @@ if __name__ == "__main__":
 
     print("\nUpdated Rating:")
     print(
-        f"  Alice: μ={alice_updated.mu:.1f}, φ={alice_updated.phi:.1f}, σ={alice_updated.vol:.3f}"
+        f"  Alice: μ={alice_updated.mu:.1f}, φ={alice_updated.phi:.1f}, σ={alice_updated.vol:.3f}",
     )
 
     change = alice_updated.mu - alice.mu

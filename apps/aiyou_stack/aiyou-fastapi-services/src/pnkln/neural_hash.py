@@ -1,5 +1,4 @@
-"""
-PNKLN Neural Hash - Semantic/Latent Hash Generation (CLIP-based)
+"""PNKLN Neural Hash - Semantic/Latent Hash Generation (CLIP-based)
 
 Generates semantic hashes for media assets using CLIP (Contrastive Language-Image Pre-training).
 Captures perceptual similarity to survive re-encoding, compression, and minor edits.
@@ -41,8 +40,7 @@ class HashResult:
 
 
 class NeuralHash:
-    """
-    CLIP-based Semantic Hashing.
+    """CLIP-based Semantic Hashing.
     Converts media content into a 512-bit semantic fingerprint.
     """
 
@@ -57,7 +55,7 @@ class NeuralHash:
         if not ML_AVAILABLE:
             raise ImportError(
                 "NeuralHash requires torch, transformers, and pillow. "
-                "Please run: pip install torch transformers pillow numpy"
+                "Please run: pip install torch transformers pillow numpy",
             )
 
         if self._model is None:
@@ -71,8 +69,7 @@ class NeuralHash:
             logger.info(f"Model loaded on {self._device} in {time.time() - t0:.2f}s")
 
     def _binarize_embedding(self, embedding: np.ndarray) -> str:
-        """
-        Convert float embedding to 512-bit hex string (Locality Sensitive Hash).
+        """Convert float embedding to 512-bit hex string (Locality Sensitive Hash).
         Logic: Threshold at 0 (hypersphere center) -> bits -> hex.
         """
         bits = (embedding > 0).astype(np.uint8)
@@ -128,8 +125,7 @@ class NeuralHash:
             raise
 
     def compute_video_hash(self, video_path: str | Path) -> HashResult:
-        """
-        Generate neural hash for a video file (STUB for Phase 1).
+        """Generate neural hash for a video file (STUB for Phase 1).
         Likely extracts keyframes and averages them or hashes the middle frame.
         """
         logger.warning(f"Video Hashing is in BETA for {video_path}. Using placeholder.")
@@ -142,8 +138,7 @@ class NeuralHash:
         )
 
     def compare(self, hash1: str, hash2: str) -> float:
-        """
-        Compare two neural hashes using Hamming Distance.
+        """Compare two neural hashes using Hamming Distance.
         Returns similarity: 0.0 to 1.0 (1.0 = identical content).
         """
         bits1 = self._hex_to_bits(hash1)

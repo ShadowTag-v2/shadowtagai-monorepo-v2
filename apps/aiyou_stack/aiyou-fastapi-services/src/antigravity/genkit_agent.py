@@ -15,8 +15,7 @@ ai = Genkit(plugins=[vertexai()])
 
 @ai.tool
 def search_knowledge(query: str) -> str:
-    """
-    Searches the Sovereign Lake (Vertex AI Search) for truth.
+    """Searches the Sovereign Lake (Vertex AI Search) for truth.
     """
     logging.info(f"🔍 Searching Knowledge Base for: {query}")
     # Integration Point: Vertex AI Search Client
@@ -27,8 +26,7 @@ def search_knowledge(query: str) -> str:
 
 @ai.tool
 def trigger_transformation(dataset_name: str) -> str:
-    """
-    Triggers a Dataform SQL transformation workspace calibration.
+    """Triggers a Dataform SQL transformation workspace calibration.
     """
     logging.info(f"⚙️ Triggering Dataform for: {dataset_name}")
     # Integration Point: Dataform Client
@@ -46,8 +44,7 @@ InputSchema = z.object({"request": z.string().describe("The user's query or comm
 # Define the flow
 @ai.flow(name="sovereign_agent")
 def sovereign_agent_flow(user_input: str) -> str:
-    """
-    The Main Sovereign Agent Loop.
+    """The Main Sovereign Agent Loop.
     Uses the model to decide between Search and Action.
     """
     logging.info(f"🧠 Agent Start: {user_input}")

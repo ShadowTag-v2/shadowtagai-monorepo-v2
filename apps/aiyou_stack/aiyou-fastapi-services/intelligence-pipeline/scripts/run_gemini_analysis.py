@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN Intelligence Pipeline - Gemini Self-Analysis Runner
+"""PNKLN Intelligence Pipeline - Gemini Self-Analysis Runner
 
 Executes comprehensive analysis of the Intelligence Pipeline using Gemini 2.0 Pro.
 Generates scored report with visualizations and recommendations.
@@ -76,7 +75,7 @@ class IntelligencePipelineAnalyzer:
     def build_analysis_prompt(self, documents: dict[str, str], analysis_prompt: str) -> str:
         """Build complete prompt with documents and instructions"""
         doc_section = "\n\n".join(
-            [f"### DOCUMENT: {name}\n```\n{content}\n```" for name, content in documents.items()]
+            [f"### DOCUMENT: {name}\n```\n{content}\n```" for name, content in documents.items()],
         )
 
         return f"""{analysis_prompt}
@@ -174,7 +173,7 @@ confidence_floor: 60%
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run Gemini 2.0 Pro analysis on Intelligence Pipeline"
+        description="Run Gemini 2.0 Pro analysis on Intelligence Pipeline",
     )
     parser.add_argument(
         "--output",
@@ -189,7 +188,7 @@ def main():
         help="Base path to intelligence-pipeline directory",
     )
     parser.add_argument(
-        "--api-key", type=str, help="Google API key (or set GOOGLE_API_KEY env var)"
+        "--api-key", type=str, help="Google API key (or set GOOGLE_API_KEY env var)",
     )
 
     args = parser.parse_args()

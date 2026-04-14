@@ -1,5 +1,4 @@
-"""
-ShadowTag Watermarking Service
+"""ShadowTag Watermarking Service
 Dual-layer imperceptible watermarking for media authentication
 
 Implements:
@@ -78,13 +77,12 @@ class WatermarkData(BaseModel):
                 "psnr_db": 42.5,
                 "imperceptibility_score": 0.96,
                 "robustness_score": 0.99,
-            }
+            },
         }
 
 
 class ShadowTagWatermarkService:
-    """
-    ShadowTag Watermarking Service
+    """ShadowTag Watermarking Service
 
     Dual-layer imperceptible watermarking:
     1. Visual layer (DCT): Embedded in frequency domain
@@ -114,8 +112,7 @@ class ShadowTagWatermarkService:
         logger.info("ShadowTagWatermarkService initialized")
 
     async def process_message(self, message: AgentMessage) -> AgentMessage:
-        """
-        Process incoming agent message
+        """Process incoming agent message
 
         Expected message.data format:
         {
@@ -143,7 +140,6 @@ class ShadowTagWatermarkService:
 
     async def _embed_watermark_handler(self, message: AgentMessage) -> dict[str, Any]:
         """Handle watermark embedding request"""
-
         asset_data = message.data.get("asset", {})
         creator_id = message.data.get("creator_id")
         neural_fingerprint_id = message.data.get("neural_fingerprint_id")
@@ -156,7 +152,7 @@ class ShadowTagWatermarkService:
 
         # Embed watermark
         watermarked_asset, watermark_data = await self.embed_watermark(
-            asset, creator_id, neural_fingerprint_id
+            asset, creator_id, neural_fingerprint_id,
         )
 
         return {
@@ -168,7 +164,6 @@ class ShadowTagWatermarkService:
 
     async def _verify_watermark_handler(self, message: AgentMessage) -> dict[str, Any]:
         """Handle watermark verification request"""
-
         asset_data = message.data.get("asset", {})
 
         asset = MediaAsset(**asset_data) if isinstance(asset_data, dict) else asset_data
@@ -190,8 +185,7 @@ class ShadowTagWatermarkService:
         neural_fingerprint_id: str | None = None,
         blockchain_hash: str | None = None,
     ) -> tuple[MediaAsset, WatermarkData]:
-        """
-        Embed imperceptible watermark into media asset
+        """Embed imperceptible watermark into media asset
 
         Args:
             asset: MediaAsset to watermark
@@ -201,6 +195,7 @@ class ShadowTagWatermarkService:
 
         Returns:
             Tuple of (watermarked_asset, watermark_data)
+
         """
         logger.info(f"Embedding watermark for asset {asset.asset_id}")
 
@@ -244,7 +239,7 @@ class ShadowTagWatermarkService:
         logger.info(
             f"✓ Watermark embedded: {watermark_data.watermark_id} "
             f"(type={watermark_type}, PSNR={watermark_data.psnr_db or 'N/A'} dB, "
-            f"99% robustness)"
+            f"99% robustness)",
         )
 
         return watermarked_asset, watermark_data
@@ -255,18 +250,17 @@ class ShadowTagWatermarkService:
 
         if asset_type in ["image", "photo"]:
             return WatermarkType.VISUAL_DCT
-        elif asset_type in ["video", "movie"]:
+        if asset_type in ["video", "movie"]:
             return WatermarkType.HYBRID  # Visual + Audio
-        elif asset_type in ["audio", "music", "podcast"]:
+        if asset_type in ["audio", "music", "podcast"]:
             return WatermarkType.AUDIO_ULTRASONIC
-        else:  # document, text
-            return WatermarkType.TEXT_SEMANTIC
+        # document, text
+        return WatermarkType.TEXT_SEMANTIC
 
     async def _embed_visual_dct(
-        self, asset: MediaAsset, watermark_data: WatermarkData
+        self, asset: MediaAsset, watermark_data: WatermarkData,
     ) -> tuple[MediaAsset, float]:
-        """
-        Embed watermark in DCT frequency domain (images)
+        """Embed watermark in DCT frequency domain (images)
 
         Process:
         1. Convert to YCbCr color space
@@ -276,6 +270,7 @@ class ShadowTagWatermarkService:
 
         Returns:
             Tuple of (watermarked_asset, PSNR in dB)
+
         """
         logger.info(f"Embedding visual DCT watermark (strength={self.visual_strength})")
 
@@ -305,10 +300,9 @@ class ShadowTagWatermarkService:
         return asset, psnr
 
     async def _embed_audio_ultrasonic(
-        self, asset: MediaAsset, watermark_data: WatermarkData
+        self, asset: MediaAsset, watermark_data: WatermarkData,
     ) -> MediaAsset:
-        """
-        Embed watermark in ultrasonic frequency band (20-22 kHz)
+        """Embed watermark in ultrasonic frequency band (20-22 kHz)
 
         Process:
         1. Load audio waveform
@@ -319,6 +313,7 @@ class ShadowTagWatermarkService:
 
         Returns:
             Watermarked asset
+
         """
         logger.info("Embedding ultrasonic audio watermark (20-22 kHz band)")
 
@@ -342,13 +337,13 @@ class ShadowTagWatermarkService:
         return asset
 
     async def _embed_hybrid(
-        self, asset: MediaAsset, watermark_data: WatermarkData
+        self, asset: MediaAsset, watermark_data: WatermarkData,
     ) -> tuple[MediaAsset, float]:
-        """
-        Embed hybrid watermark (visual + audio for video)
+        """Embed hybrid watermark (visual + audio for video)
 
         Returns:
             Tuple of (watermarked_asset, PSNR)
+
         """
         logger.info("Embedding hybrid watermark (visual + audio)")
 
@@ -361,10 +356,9 @@ class ShadowTagWatermarkService:
         return asset, psnr
 
     async def _embed_text_semantic(
-        self, asset: MediaAsset, watermark_data: WatermarkData
+        self, asset: MediaAsset, watermark_data: WatermarkData,
     ) -> MediaAsset:
-        """
-        Embed semantic watermark in text documents
+        """Embed semantic watermark in text documents
 
         Uses:
         - Synonym substitution
@@ -373,6 +367,7 @@ class ShadowTagWatermarkService:
 
         Returns:
             Watermarked asset
+
         """
         logger.info("Embedding text semantic watermark")
 
@@ -390,8 +385,7 @@ class ShadowTagWatermarkService:
         return asset
 
     def _encode_watermark_payload(self, watermark_data: WatermarkData) -> str:
-        """
-        Encode watermark data into binary payload
+        """Encode watermark data into binary payload
 
         Payload format (128 bits):
         - Creator ID hash (64 bits)
@@ -415,14 +409,14 @@ class ShadowTagWatermarkService:
         return payload
 
     async def verify_watermark(self, asset: MediaAsset) -> dict[str, Any]:
-        """
-        Verify and extract watermark from media asset
+        """Verify and extract watermark from media asset
 
         Args:
             asset: MediaAsset to verify
 
         Returns:
             Verification result with confidence score
+
         """
         logger.info(f"Verifying watermark for asset {asset.asset_id}")
 
@@ -450,7 +444,6 @@ class ShadowTagWatermarkService:
 
     async def _verify_visual_dct(self, asset: MediaAsset) -> dict[str, Any]:
         """Verify visual DCT watermark"""
-
         # TODO: Implement actual DCT watermark extraction
 
         # Simulate extraction
@@ -466,16 +459,14 @@ class ShadowTagWatermarkService:
                 "watermark_data": watermark_data,
                 "extraction_method": "dct_frequency_domain",
             }
-        else:
-            return {
-                "is_watermarked": False,
-                "confidence": 0.0,
-                "reason": "No watermark payload found",
-            }
+        return {
+            "is_watermarked": False,
+            "confidence": 0.0,
+            "reason": "No watermark payload found",
+        }
 
     async def _verify_audio_ultrasonic(self, asset: MediaAsset) -> dict[str, Any]:
         """Verify ultrasonic audio watermark"""
-
         payload = asset.metadata.get("watermark_payload", "")
 
         if payload:
@@ -487,16 +478,14 @@ class ShadowTagWatermarkService:
                 "watermark_data": watermark_data,
                 "extraction_method": "ultrasonic_frequency_demodulation",
             }
-        else:
-            return {
-                "is_watermarked": False,
-                "confidence": 0.0,
-                "reason": "No ultrasonic watermark detected",
-            }
+        return {
+            "is_watermarked": False,
+            "confidence": 0.0,
+            "reason": "No ultrasonic watermark detected",
+        }
 
     async def _verify_hybrid(self, asset: MediaAsset) -> dict[str, Any]:
         """Verify hybrid watermark (visual + audio)"""
-
         # Check both layers
         visual_result = await self._verify_visual_dct(asset)
         audio_result = await self._verify_audio_ultrasonic(asset)
@@ -509,16 +498,14 @@ class ShadowTagWatermarkService:
                 "watermark_data": visual_result["watermark_data"],
                 "extraction_method": "hybrid_visual_audio",
             }
-        else:
-            return {
-                "is_watermarked": False,
-                "confidence": 0.5,
-                "reason": "Hybrid watermark partially detected",
-            }
+        return {
+            "is_watermarked": False,
+            "confidence": 0.5,
+            "reason": "Hybrid watermark partially detected",
+        }
 
     async def _verify_text_semantic(self, asset: MediaAsset) -> dict[str, Any]:
         """Verify text semantic watermark"""
-
         payload = asset.metadata.get("watermark_payload", "")
 
         if payload:
@@ -530,22 +517,21 @@ class ShadowTagWatermarkService:
                 "watermark_data": watermark_data,
                 "extraction_method": "semantic_analysis",
             }
-        else:
-            return {
-                "is_watermarked": False,
-                "confidence": 0.0,
-                "reason": "No semantic watermark found",
-            }
+        return {
+            "is_watermarked": False,
+            "confidence": 0.0,
+            "reason": "No semantic watermark found",
+        }
 
     def _decode_watermark_payload(self, payload: str) -> dict[str, Any]:
-        """
-        Decode watermark payload back to metadata
+        """Decode watermark payload back to metadata
 
         Args:
             payload: Encoded watermark payload string
 
         Returns:
             Decoded watermark metadata
+
         """
         # Extract components
         creator_hash = payload[:16]

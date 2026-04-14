@@ -23,14 +23,14 @@ class CodeRefactorerService:
         self.max_tokens = settings.max_tokens
 
     async def refactor_code(self, request: RefactorRequest) -> RefactorResponse:
-        """
-        Refactor code based on the specified refactoring type.
+        """Refactor code based on the specified refactoring type.
 
         Args:
             request: RefactorRequest containing code and refactoring parameters
 
         Returns:
             RefactorResponse with refactored code and analysis
+
         """
         # Build the prompt based on refactoring type
         system_prompt = self._build_system_prompt(request.refactor_type)
@@ -41,20 +41,20 @@ class CodeRefactorerService:
 
         # Parse the response
         refactor_response = self._parse_refactor_response(
-            response_text, request.code, request.language.value
+            response_text, request.code, request.language.value,
         )
 
         return refactor_response
 
     async def analyze_code(self, request: AnalyzeRequest) -> AnalyzeResponse:
-        """
-        Analyze code for quality issues without refactoring.
+        """Analyze code for quality issues without refactoring.
 
         Args:
             request: AnalyzeRequest containing code to analyze
 
         Returns:
             AnalyzeResponse with issues and metrics
+
         """
         system_prompt = """You are a code analysis expert. Analyze code for:
         - Code quality issues
@@ -175,7 +175,7 @@ After: <complexity metrics>
         async for message in query(
             prompt=user_prompt,
             options=ClaudeAgentOptions(
-                system_prompt=system_prompt, model=self.model, max_tokens=self.max_tokens
+                system_prompt=system_prompt, model=self.model, max_tokens=self.max_tokens,
             ),
         ):
             if hasattr(message, "text") and message.text:
@@ -184,7 +184,7 @@ After: <complexity metrics>
         return "".join(full_response)
 
     def _parse_refactor_response(
-        self, response: str, original_code: str, language: str
+        self, response: str, original_code: str, language: str,
     ) -> RefactorResponse:
         """Parse Claude's refactoring response into structured format."""
         # Extract refactored code
@@ -253,7 +253,7 @@ After: <complexity metrics>
                                 severity=severity,
                                 category="code_quality",
                                 message=message,
-                            )
+                            ),
                         )
 
         return issues
