@@ -2,6 +2,7 @@
 Multi-agent workflow for compliance document analysis
 """
 
+import json
 import logging
 import operator
 from datetime import datetime

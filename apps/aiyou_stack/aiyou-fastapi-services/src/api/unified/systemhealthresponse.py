@@ -2,6 +2,8 @@ from datetime import datetime
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
+from .layerhealth import HealthStatus, LayerHealth
+
 
 router = APIRouter(prefix="/api/v1/unified", tags=["Unified Ecosystem"])
 
