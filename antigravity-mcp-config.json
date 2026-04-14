@@ -15,14 +15,13 @@
         "JAVA_HOME": "/Library/Java/JavaVirtualMachines/jdk-26.jdk/Contents/Home"
       }
     },
-    "mcp-toolbox-for-databases": {
+    "firebase": {
       "command": "npx",
-      "args": ["-y", "@antigravity/mcp-database-toolbox", "--prebuilt", "firestore"],
+      "args": ["-y", "firebase-tools@latest", "mcp"],
       "env": {
-        "FIRESTORE_PROJECT": "shadowtag-omega-v4",
-        "FIRESTORE_DATABASE": "shadowtag-engine"
-      },
-      "authProviderType": "google_credentials"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "GCLOUD_PROJECT": "shadowtag-omega-v4"
+      }
     },
     "chrome-devtools-mcp": {
       "command": "npx",
@@ -38,6 +37,14 @@
     "supabase-mcp": {
       "serverUrl": "https://api.supabase.com/mcp/",
       "authProviderType": "oauth"
+    },
+    "gcloud-mcp": {
+      "command": "gcloud-mcp",
+      "args": [],
+      "env": {
+        "CLOUDSDK_CORE_PROJECT": "shadowtag-omega-v4",
+        "PATH": "/opt/homebrew/bin:/usr/local/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/bin:/bin"
+      }
     }
   }
 }

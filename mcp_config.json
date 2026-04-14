@@ -1,25 +1,17 @@
 {
+  "note": "DEPRECATED ADAPTER. Canonical MCP truth lives in antigravity-mcp-config.json. This file exists only for backward compatibility with tools that read mcp_config.json.",
   "mcpServers": {
-    "firestore": {
-      "command": "sh",
-      "args": [
-        "-lc",
-        "exec npx -y @google-cloud/mcp-toolbox --prebuilt firestore"
-      ]
+    "firebase": {
+      "command": "npx",
+      "args": ["-y", "firebase-tools@latest", "mcp"]
     },
-    "java_sdk": {
-      "command": "sh",
-      "args": [
-        "-lc",
-        "test -n \"$MCP_JAVA_SDK_JAR_PATH\" && test -r \"$MCP_JAVA_SDK_JAR_PATH\" && exec java -jar \"$MCP_JAVA_SDK_JAR_PATH\""
-      ]
+    "gcloud": {
+      "command": "gcloud-mcp",
+      "args": []
     },
     "github": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-github"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-github"]
     }
   }
 }
