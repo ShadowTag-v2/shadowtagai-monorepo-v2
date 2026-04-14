@@ -9,6 +9,8 @@ Provides:
 - Breach notification
 """
 
+from datetime import datetime
+
 from .ccpa import CCPACompliance
 
 

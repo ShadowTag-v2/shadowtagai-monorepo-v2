@@ -8,6 +8,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request, status
 
 from app.auth import get_current_active_user, verify_api_key
+from app.config import settings
 from app.middleware.rate_limit import limiter
 from app.models.response import APIResponse, PaginatedResponse
 from app.models.user import User, UserResponse

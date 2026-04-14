@@ -227,7 +227,7 @@ class ShadowTag:
                 return wm
         return None
 
-    def export_audit_trail(self) -> List[dict[str, Any]]:
+    def export_audit_trail(self) -> list[dict[str, Any]]:
         """
         Export full audit trail.
 
