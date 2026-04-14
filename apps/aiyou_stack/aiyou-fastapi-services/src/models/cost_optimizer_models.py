@@ -68,7 +68,7 @@ class RecommendationRequest(BaseModel):
             "example": {
                 "optimization_types": ["RIGHT_SIZING", "IDLE_RESOURCES"],
                 "min_savings_threshold": 100.0,
-                "include_forecast": true,
+                "include_forecast": True,
             },
         },
     )
