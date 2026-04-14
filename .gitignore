@@ -172,3 +172,4 @@ third_party/rules_gcs/
 third_party/run-nix-shell/
 third_party/simpleini/
 third_party/the-art-of-command-line/
+.beads/temporal.db-journal
