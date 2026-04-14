@@ -8,3 +8,6 @@ pydantic
 pyjwt
 mcp
 colorama
+lancedb
+sentence-transformers
+pyarrow

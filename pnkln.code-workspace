@@ -32,5 +32,6 @@
     "cline.openai.apiKey": "ollama-local",
     "cline.openai.modelId": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx32G -Xms100m -Xlog:disable",
+    "java.configuration.updateBuildConfiguration": "automatic",
   }
 }
