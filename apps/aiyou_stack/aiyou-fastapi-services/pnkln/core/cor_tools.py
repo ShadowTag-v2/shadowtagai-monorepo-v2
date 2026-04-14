@@ -1,8 +1,8 @@
 """
-COR TOOLS - Dynamic Tool Registry with Semantic Retrieval
+COR Tools — Dynamic Tool Registry with Semantic Retrieval
 ==========================================================
 
-Extracted from cor_orchestrator.py as part of the Rich Hickey refactor.
+Extracted from cor_orchestrator.py (Rich Hickey refactor).
 
 DeepAgent Pattern: Scalable tool retrieval from large toolsets
 - Embedding-based similarity search
@@ -10,6 +10,7 @@ DeepAgent Pattern: Scalable tool retrieval from large toolsets
 - Usage tracking for RL optimization
 
 Author: Pnkln Architecture Team
+Version: 2.0.0 — Rich Hickey Refactor
 """
 
 from __future__ import annotations
@@ -19,7 +20,7 @@ import logging
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, cast
+from typing import Any
 
 import numpy as np
 
@@ -64,16 +65,10 @@ class ToolRegistry:
         self._tool_names: list[str] = []
 
     def register_tool(
-        self,
-        name: str,
-        description: str,
-        func: Callable,
-        embedding: np.ndarray | None = None,
+        self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None
     ) -> None:
         """Register tool with optional embedding."""
         if embedding is None:
-            # Simple hash-based embedding placeholder
-            # In production, use sentence-transformers or similar
             embedding = self._simple_embedding(description)
 
         self.tools[name] = Tool(name=name, description=description, func=func, embedding=embedding)
@@ -82,7 +77,6 @@ class ToolRegistry:
 
     def _simple_embedding(self, text: str) -> np.ndarray:
         """Simple embedding placeholder (replace with real embeddings in production)."""
-        # Hash-based pseudo-embedding for demonstration
         np.random.seed(hash(text) % (2**32))
         return np.random.randn(self.embedding_dim).astype(np.float32)
 
@@ -90,11 +84,10 @@ class ToolRegistry:
         """Rebuild embedding index for fast retrieval."""
         self._tool_names = list(self.tools.keys())
         if self._tool_names:
+            from typing import cast
+
             self._embedding_matrix = np.vstack(
-                cast(
-                    list[np.ndarray],
-                    [self.tools[name].embedding for name in self._tool_names],
-                )
+                cast(list[np.ndarray], [self.tools[name].embedding for name in self._tool_names])
             )
 
     def retrieve_tools(
@@ -102,8 +95,6 @@ class ToolRegistry:
     ) -> list[tuple[str, float]]:
         """
         Retrieve most relevant tools for query.
-
-        DeepAgent Pattern: Semantic tool retrieval
 
         Args:
             query: Natural language query
@@ -116,7 +107,6 @@ class ToolRegistry:
         if not self._tool_names or self._embedding_matrix is None:
             return []
 
-        # Compute query embedding
         query_embedding = self._simple_embedding(query)
 
         # Cosine similarity

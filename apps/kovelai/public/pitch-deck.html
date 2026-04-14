@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KovelAI — Investor Deck</title>
+  <meta name="description" content="KovelAI Investor Pitch Deck: AI-Powered Legal Privilege Protection Platform" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0a0a0f;--surface:#12121a;--surface-alt:#1a1a26;
+      --border:#2a2a3a;--text:#e8e6e3;--text-muted:#8a8a9a;
+      --accent:#6366f1;--accent-glow:#818cf8;--accent-dim:#4f46e5;
+      --gold:#f59e0b;--emerald:#10b981;--rose:#f43f5e;
+      --font:'Inter',system-ui,sans-serif;
+      --mono:'JetBrains Mono',monospace;
+    }
+    html{scroll-behavior:smooth;scroll-snap-type:y mandatory}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+
+    /* ── Slide System ── */
+    .slide{
+      min-height:100vh;display:flex;flex-direction:column;
+      justify-content:center;align-items:center;padding:4rem 2rem;
+      scroll-snap-align:start;position:relative;
+    }
+    .slide-inner{max-width:1000px;width:100%}
+
+    /* ── Navigation ── */
+    .slide-nav{
+      position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);
+      display:flex;flex-direction:column;gap:0.75rem;z-index:100;
+    }
+    .slide-nav a{
+      width:10px;height:10px;border-radius:50%;background:var(--border);
+      display:block;transition:all 0.3s ease;
+    }
+    .slide-nav a:hover,.slide-nav a.active{
+      background:var(--accent);box-shadow:0 0 12px var(--accent-glow);
+      transform:scale(1.4);
+    }
+
+    /* ── Typography ── */
+    h1{font-weight:900;font-size:clamp(2.4rem,5vw,4.5rem);letter-spacing:-0.03em;line-height:1.1}
+    h2{font-weight:800;font-size:clamp(1.8rem,3.5vw,3rem);letter-spacing:-0.02em;line-height:1.2;margin-bottom:1.5rem}
+    h3{font-weight:700;font-size:1.25rem;margin-bottom:0.5rem}
+    .eyebrow{
+      text-transform:uppercase;font-size:0.75rem;font-weight:600;
+      letter-spacing:0.15em;color:var(--accent-glow);margin-bottom:0.75rem;
+    }
+    .subtitle{font-size:1.25rem;color:var(--text-muted);max-width:600px;margin-top:1rem}
+    .mono{font-family:var(--mono);font-size:0.9rem}
+
+    /* ── Grid ── */
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+    @media(max-width:768px){
+      .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+    }
+
+    /* ── Cards ── */
+    .card{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:16px;padding:2rem;position:relative;overflow:hidden;
+      transition:all 0.3s ease;
+    }
+    .card:hover{
+      border-color:var(--accent);transform:translateY(-4px);
+      box-shadow:0 16px 48px rgba(99,102,241,0.1);
+    }
+    .card .icon{
+      width:48px;height:48px;border-radius:12px;display:flex;
+      align-items:center;justify-content:center;font-size:1.5rem;
+      margin-bottom:1rem;background:rgba(99,102,241,0.12);
+    }
+    .card-number{
+      font-size:3rem;font-weight:900;color:var(--accent);opacity:0.15;
+      position:absolute;top:0.75rem;right:1.25rem;
+    }
+
+    /* ── Stat blocks ── */
+    .stat{text-align:center}
+    .stat-value{font-size:clamp(2rem,4vw,3.5rem);font-weight:900;background:linear-gradient(135deg,var(--accent),var(--emerald));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .stat-label{font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem}
+
+    /* ── Timeline ── */
+    .timeline{position:relative;padding-left:2rem}
+    .timeline::before{
+      content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+      background:linear-gradient(to bottom,var(--accent),var(--emerald));
+    }
+    .timeline-item{position:relative;padding-bottom:2rem}
+    .timeline-item::before{
+      content:'';position:absolute;left:-2rem;top:0.25rem;width:14px;height:14px;
+      border-radius:50%;background:var(--accent);border:3px solid var(--bg);
+      transform:translateX(-6px);
+    }
+    .timeline-item .year{font-weight:700;color:var(--accent-glow);font-size:0.9rem}
+
+    /* ── Tags ── */
+    .tag{
+      display:inline-block;padding:0.25rem 0.75rem;border-radius:999px;
+      font-size:0.75rem;font-weight:600;
+    }
+    .tag-accent{background:rgba(99,102,241,0.15);color:var(--accent-glow)}
+    .tag-gold{background:rgba(245,158,11,0.15);color:var(--gold)}
+    .tag-emerald{background:rgba(16,185,129,0.15);color:var(--emerald)}
+
+    /* ── CTA ── */
+    .cta-btn{
+      display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2.5rem;
+      border-radius:12px;font-weight:700;font-size:1rem;text-decoration:none;
+      transition:all 0.3s ease;border:none;cursor:pointer;
+    }
+    .cta-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent-dim));
+      color:#fff;box-shadow:0 4px 24px rgba(99,102,241,0.3);
+    }
+    .cta-primary:hover{
+      transform:translateY(-2px);box-shadow:0 8px 32px rgba(99,102,241,0.5);
+    }
+    .cta-outline{
+      background:transparent;color:var(--accent-glow);
+      border:2px solid var(--accent);
+    }
+    .cta-outline:hover{background:rgba(99,102,241,0.1)}
+
+    /* ── Gradient accents ── */
+    .gradient-text{
+      background:linear-gradient(135deg,var(--accent-glow),var(--emerald),var(--gold));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    .gradient-border{
+      border-image:linear-gradient(135deg,var(--accent),var(--emerald)) 1;
+    }
+    .glow-ring{
+      position:absolute;width:500px;height:500px;border-radius:50%;
+      background:radial-gradient(circle,rgba(99,102,241,0.08) 0%,transparent 70%);
+      pointer-events:none;
+    }
+
+    /* ── Divider ── */
+    .divider{width:60px;height:3px;background:var(--accent);border-radius:2px;margin:1.5rem 0}
+
+    /* ── Flow Diagram ── */
+    .flow{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center}
+    .flow-step{
+      background:var(--surface-alt);border:1px solid var(--border);
+      border-radius:12px;padding:1rem 1.5rem;font-weight:600;font-size:0.9rem;
+      text-align:center;min-width:140px;
+    }
+    .flow-arrow{color:var(--accent-glow);font-size:1.5rem;font-weight:900}
+
+    /* ── Animations ── */
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeInUp 0.6s ease-out both}
+    .delay-1{animation-delay:0.1s}.delay-2{animation-delay:0.2s}.delay-3{animation-delay:0.3s}
+    .delay-4{animation-delay:0.4s}.delay-5{animation-delay:0.5s}
+
+    /* ── Footer ── */
+    .footer-badge{
+      position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+      font-size:0.75rem;color:var(--text-muted);opacity:0.5;
+    }
+
+    /* ── Table ── */
+    .comp-table{width:100%;border-collapse:collapse;margin-top:1.5rem}
+    .comp-table th,.comp-table td{padding:0.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+    .comp-table th{font-weight:700;color:var(--text-muted);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.05em}
+    .comp-table tr:hover td{background:rgba(99,102,241,0.04)}
+    .check{color:var(--emerald);font-weight:700}
+    .cross{color:var(--rose);font-weight:700}
+  </style>
+</head>
+<body>
+
+  <!-- Navigation dots -->
+  <nav class="slide-nav" aria-label="Slide navigation">
+    <a href="#cover" title="Cover"></a>
+    <a href="#problem" title="Problem"></a>
+    <a href="#solution" title="Solution"></a>
+    <a href="#product" title="Product"></a>
+    <a href="#market" title="Market"></a>
+    <a href="#business" title="Business Model"></a>
+    <a href="#traction" title="Traction"></a>
+    <a href="#competitive" title="Competitive"></a>
+    <a href="#team" title="Team"></a>
+    <a href="#ask" title="The Ask"></a>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 1: COVER -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="cover" class="slide">
+    <div class="glow-ring" style="top:-200px;left:-100px"></div>
+    <div class="slide-inner" style="text-align:center">
+      <p class="eyebrow animate">Investor Deck — Q2 2026</p>
+      <h1 class="animate delay-1">
+        <span class="gradient-text">KovelAI</span>
+      </h1>
+      <p class="subtitle animate delay-2" style="margin:1rem auto 0">
+        The AI-Powered Digital Privilege Shield for Law Firms.<br/>
+        Sanctioned-proof client intake. Zero-breach privilege protection.
+      </p>
+      <div style="margin-top:2.5rem" class="animate delay-3">
+        <span class="tag tag-accent" style="margin-right:0.5rem">LegalTech</span>
+        <span class="tag tag-emerald" style="margin-right:0.5rem">AI/ML</span>
+        <span class="tag tag-gold">Compliance</span>
+      </div>
+      <div style="margin-top:3rem" class="animate delay-4">
+        <a href="#problem" class="cta-btn cta-primary">View Deck →</a>
+      </div>
+    </div>
+    <div class="footer-badge">Confidential — KovelAI, Inc.</div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 2: THE PROBLEM -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="problem" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">The Problem</p>
+      <h2>Lawyers Are One Form Away<br/>From a <span style="color:var(--rose)">Sanctions Order</span></h2>
+      <div class="divider"></div>
+      <div class="grid-3" style="margin-top:2rem">
+        <div class="card animate">
+          <div class="card-number">01</div>
+          <div class="icon">⚖️</div>
+          <h3>Heppner Sanctions Risk</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">
+            <em>Heppner v. Wal-Mart</em> established that lawyers face sanctions for filing AI-assisted work
+            without verification. Generic AI tools give no audit trail.
+          </p>
+        </div>
+        <div class="card animate delay-1">
+          <div class="card-number">02</div>
+          <div class="icon">🔓</div>
+          <h3>Privilege Breach</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">
+            Every client query into ChatGPT is a potential privilege waiver.
+            Cloud AI vendors have no attorney-client privilege safeguards.
+          </p>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-number">03</div>
+          <div class="icon">💸</div>
+          <h3>$12B Wasted Annually</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem">
+            Law firms spend $12B/year on client intake, form processing, and conflict checks
+            that could be automated — but can't trust existing tools.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 3: THE SOLUTION -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="solution" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">The Solution</p>
+      <h2>Your <span class="gradient-text">Private Matter Brain</span></h2>
+      <p class="subtitle">Not an AI assistant. A sanctioned-proof, privilege-shielded legal thinking surface.</p>
+      <div class="divider"></div>
+      <div class="grid-2" style="margin-top:2rem">
+        <div>
+          <h3 style="color:var(--text-muted);margin-bottom:1.5rem">Client Side</h3>
+          <div class="card animate" style="margin-bottom:1rem">
+            <div class="icon">🛡️</div>
+            <h3>Digital Privilege Shield</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem">
+              Air-gapped intake forms with end-to-end encryption. No data leaves the privilege boundary.
+              Full audit trail for bar compliance.
+            </p>
+          </div>
+          <div class="card animate delay-1">
+            <div class="icon">📋</div>
+            <h3>Smart Client Intake</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem">
+              AI triages client intake, extracts facts, identifies conflicts — all within the Kovel doctrine boundary.
+            </p>
+          </div>
+        </div>
+        <div>
+          <h3 style="color:var(--text-muted);margin-bottom:1.5rem">Lawyer Side</h3>
+          <div class="card animate delay-2" style="margin-bottom:1rem">
+            <div class="icon">🧠</div>
+            <h3>Matter Core Argument Extractor</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem">
+              Issue extraction, fact-pattern analysis, contradiction spotting, research framing — billable thinking surface.
+            </p>
+          </div>
+          <div class="card animate delay-3">
+            <div class="icon">📊</div>
+            <h3>Billable Intelligence</h3>
+            <p style="color:var(--text-muted);font-size:0.9rem">
+              Every AI interaction generates billable units. 6-minute increment tracking. Reusable matter notes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 4: PRODUCT -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="product" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Product Architecture</p>
+      <h2>Built on <span class="gradient-text">Zero-Trust Sovereign AI</span></h2>
+      <div class="divider"></div>
+
+      <div class="flow" style="margin:2.5rem 0">
+        <div class="flow-step">Client Intake<br/><small style="color:var(--text-muted)">Encrypted Forms</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Kovel Filter<br/><small style="color:var(--text-muted)">Privilege Gate</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">AI Engine<br/><small style="color:var(--text-muted)">Gemini 3.1</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Judge #6<br/><small style="color:var(--text-muted)">21-Layer Audit</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">Lawyer Dashboard<br/><small style="color:var(--text-muted)">Matter Brain</small></div>
+      </div>
+
+      <div class="grid-3" style="margin-top:2rem">
+        <div class="card animate">
+          <div class="icon">🔒</div>
+          <h3>Zero-Trust Firestore</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted)">Admin-only access with deployed security rules. No public reads or writes.</p>
+        </div>
+        <div class="card animate delay-1">
+          <div class="icon">🤖</div>
+          <h3>Gemini 3.1 Flash</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted)">Sovereign model inference. No data leaves GCP. Sub-90ms p99 latency.</p>
+        </div>
+        <div class="card animate delay-2">
+          <div class="icon">📜</div>
+          <h3>Full Audit Trail</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted)">Every AI decision logged, timestamped, and exportable for bar compliance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 5: MARKET -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="market" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Market Opportunity</p>
+      <h2>A <span class="gradient-text">$28B</span> Market Ready for Disruption</h2>
+      <div class="divider"></div>
+      <div class="grid-4" style="margin-top:2.5rem">
+        <div class="card stat animate">
+          <div class="stat-value">$28B</div>
+          <div class="stat-label">US Legal Tech TAM</div>
+        </div>
+        <div class="card stat animate delay-1">
+          <div class="stat-value">$4.2B</div>
+          <div class="stat-label">AI Legal SAM</div>
+        </div>
+        <div class="card stat animate delay-2">
+          <div class="stat-value">449K</div>
+          <div class="stat-label">US Law Firms</div>
+        </div>
+        <div class="card stat animate delay-3">
+          <div class="stat-value">32%</div>
+          <div class="stat-label">CAGR AI Legal</div>
+        </div>
+      </div>
+      <div class="card animate delay-4" style="margin-top:2rem;text-align:center">
+        <p style="font-size:1.1rem;font-weight:600">
+          Only <span style="color:var(--rose)">3%</span> of law firms use AI tools that respect privilege boundaries.
+        </p>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem">
+          97% of the market is either unserved or using non-compliant solutions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 6: BUSINESS MODEL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="business" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Business Model</p>
+      <h2>SaaS + <span class="gradient-text">Billable AI</span> Revenue</h2>
+      <div class="divider"></div>
+      <div class="grid-3" style="margin-top:2rem">
+        <div class="card animate">
+          <div class="card-number">T1</div>
+          <h3>Solo / Small Firm</h3>
+          <p style="font-size:2rem;font-weight:900;color:var(--accent-glow);margin:0.5rem 0">$299<small style="font-size:0.9rem;font-weight:400;color:var(--text-muted)">/mo</small></p>
+          <ul style="list-style:none;font-size:0.85rem;color:var(--text-muted)">
+            <li>✓ Client intake automation</li>
+            <li>✓ Privilege shield</li>
+            <li>✓ 500 AI queries/mo</li>
+            <li>✓ Single user</li>
+          </ul>
+        </div>
+        <div class="card animate delay-1" style="border-color:var(--accent)">
+          <div class="card-number">T2</div>
+          <span class="tag tag-accent" style="margin-bottom:0.5rem">Popular</span>
+          <h3>Mid-Size Firm</h3>
+          <p style="font-size:2rem;font-weight:900;color:var(--accent-glow);margin:0.5rem 0">$1,499<small style="font-size:0.9rem;font-weight:400;color:var(--text-muted)">/mo</small></p>
+          <ul style="list-style:none;font-size:0.85rem;color:var(--text-muted)">
+            <li>✓ Everything in Solo</li>
+            <li>✓ Matter Brain AI</li>
+            <li>✓ Unlimited queries</li>
+            <li>✓ Up to 25 users</li>
+            <li>✓ Billable tracking</li>
+          </ul>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-number">T3</div>
+          <h3>Enterprise / AmLaw 200</h3>
+          <p style="font-size:2rem;font-weight:900;color:var(--accent-glow);margin:0.5rem 0">Custom</p>
+          <ul style="list-style:none;font-size:0.85rem;color:var(--text-muted)">
+            <li>✓ Everything in Mid-Size</li>
+            <li>✓ On-prem deployment</li>
+            <li>✓ Custom integrations</li>
+            <li>✓ Dedicated support</li>
+            <li>✓ SOC 2 Type II</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card animate delay-3" style="margin-top:1.5rem">
+        <h3 style="color:var(--gold)">💰 Unit Economics</h3>
+        <div class="grid-4" style="margin-top:1rem">
+          <div class="stat"><div class="stat-value" style="font-size:1.8rem">95%</div><div class="stat-label">Gross Margin</div></div>
+          <div class="stat"><div class="stat-value" style="font-size:1.8rem">$18K</div><div class="stat-label">ARPU (T2)</div></div>
+          <div class="stat"><div class="stat-value" style="font-size:1.8rem">&lt;8mo</div><div class="stat-label">CAC Payback</div></div>
+          <div class="stat"><div class="stat-value" style="font-size:1.8rem">3.2x</div><div class="stat-label">LTV/CAC</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 7: TRACTION -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="traction" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Traction &amp; Roadmap</p>
+      <h2>From <span class="gradient-text">Zero to Production</span></h2>
+      <div class="divider"></div>
+      <div class="grid-2" style="margin-top:2rem">
+        <div>
+          <h3 style="color:var(--text-muted);margin-bottom:1.5rem">Key Metrics (Q2 2026)</h3>
+          <div class="card animate" style="margin-bottom:1rem">
+            <div class="grid-2">
+              <div class="stat"><div class="stat-value" style="font-size:1.6rem">30/30</div><div class="stat-label">Test Suite Pass</div></div>
+              <div class="stat"><div class="stat-value" style="font-size:1.6rem">A97</div><div class="stat-label">Lighthouse Score</div></div>
+            </div>
+          </div>
+          <div class="card animate delay-1">
+            <div class="grid-2">
+              <div class="stat"><div class="stat-value" style="font-size:1.6rem">&lt;90ms</div><div class="stat-label">p99 Latency</div></div>
+              <div class="stat"><div class="stat-value" style="font-size:1.6rem">0</div><div class="stat-label">Security Vulns</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="color:var(--text-muted);margin-bottom:1.5rem">Product Roadmap</h3>
+          <div class="timeline animate delay-2">
+            <div class="timeline-item">
+              <span class="year">Q2 2026</span>
+              <p style="font-size:0.9rem;color:var(--text-muted)">Production landing + intake forms deployed. Zero-trust Firestore. Sovereign AI engine.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="year">Q3 2026</span>
+              <p style="font-size:0.9rem;color:var(--text-muted)">Matter Brain v1 launch. Billable tracking. Multi-user firm accounts.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="year">Q4 2026</span>
+              <p style="font-size:0.9rem;color:var(--text-muted)">SOC 2 certification. Enterprise pilot with AmLaw 200 firm. On-prem deployment option.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="year">2027</span>
+              <p style="font-size:0.9rem;color:var(--text-muted)">Series A. International expansion. Legal Research API. Court filing integration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 8: COMPETITIVE LANDSCAPE -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="competitive" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Competitive Landscape</p>
+      <h2>Nobody Else Does <span class="gradient-text">Privilege-First AI</span></h2>
+      <div class="divider"></div>
+      <table class="comp-table animate">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>KovelAI</th>
+            <th>Clio AI</th>
+            <th>Harvey AI</th>
+            <th>Generic LLM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Privilege-Shielded Inference</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Kovel Doctrine Compliance</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Full Audit Trail</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="check" style="color:var(--gold)">~</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Billable AI Tracking</td>
+            <td class="check">✓</td>
+            <td class="check" style="color:var(--gold)">~</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Client Intake Automation</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Matter Core Argument Extraction</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="check" style="color:var(--gold)">~</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Zero-Trust / On-Prem Option</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Heppner Sanctions Shield</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:1.5rem;color:var(--text-muted);font-size:0.85rem;text-align:center">
+        ~ = Partial support &nbsp;&nbsp;|&nbsp;&nbsp; ✓ = Full support &nbsp;&nbsp;|&nbsp;&nbsp; ✗ = Not available
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 9: TEAM -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="team" class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Team</p>
+      <h2>Built by Operators, Not <span style="color:var(--text-muted)">Academics</span></h2>
+      <div class="divider"></div>
+      <div class="grid-3" style="margin-top:2rem">
+        <div class="card animate" style="text-align:center">
+          <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--emerald));margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2rem">👤</div>
+          <h3>Founder / CEO</h3>
+          <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem">
+            Army veteran. Full-stack engineer. Built AI infrastructure serving mission-critical workloads.
+            Doctrine-driven development methodology.
+          </p>
+          <div style="margin-top:0.75rem">
+            <span class="tag tag-accent">AI/ML</span>
+            <span class="tag tag-emerald">Cloud Infra</span>
+          </div>
+        </div>
+        <div class="card animate delay-1" style="text-align:center">
+          <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2rem">⚖️</div>
+          <h3>Legal Advisor</h3>
+          <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem">
+            20+ years litigation experience. Expert in Kovel doctrine, privilege law, and legal ethics compliance.
+          </p>
+          <div style="margin-top:0.75rem">
+            <span class="tag tag-gold">Litigation</span>
+            <span class="tag tag-accent">Ethics</span>
+          </div>
+        </div>
+        <div class="card animate delay-2" style="text-align:center">
+          <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--accent));margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2rem">🤖</div>
+          <h3>AI Engineering</h3>
+          <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem">
+            Autonomous AI swarm architecture. 30/30 structural tests. Sub-90ms inference. Google Cloud native.
+          </p>
+          <div style="margin-top:0.75rem">
+            <span class="tag tag-emerald">Gemini</span>
+            <span class="tag tag-accent">GCP</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SLIDE 10: THE ASK -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="ask" class="slide">
+    <div class="glow-ring" style="bottom:-200px;right:-100px"></div>
+    <div class="slide-inner" style="text-align:center">
+      <p class="eyebrow">The Ask</p>
+      <h2>Raising <span class="gradient-text">$1.5M Pre-Seed</span></h2>
+      <p class="subtitle" style="margin:0.75rem auto 2rem">
+        Building the moat around AI-powered legal privilege protection.
+      </p>
+
+      <div class="grid-4 animate" style="margin-bottom:2.5rem">
+        <div class="card stat">
+          <div class="stat-value" style="font-size:1.6rem">40%</div>
+          <div class="stat-label">Engineering &amp; Product</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-value" style="font-size:1.6rem">25%</div>
+          <div class="stat-label">Compliance &amp; SOC 2</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-value" style="font-size:1.6rem">20%</div>
+          <div class="stat-label">Go-to-Market</div>
+        </div>
+        <div class="card stat">
+          <div class="stat-value" style="font-size:1.6rem">15%</div>
+          <div class="stat-label">Operations</div>
+        </div>
+      </div>
+
+      <div class="card animate delay-1" style="max-width:600px;margin:0 auto 2.5rem;text-align:left">
+        <h3 style="color:var(--gold);margin-bottom:1rem">🎯 18-Month Milestones</h3>
+        <ul style="list-style:none;font-size:0.9rem;color:var(--text-muted)">
+          <li style="margin-bottom:0.5rem">✓ 50 paying law firm accounts</li>
+          <li style="margin-bottom:0.5rem">✓ SOC 2 Type II certification</li>
+          <li style="margin-bottom:0.5rem">✓ Matter Brain v2 with research API</li>
+          <li style="margin-bottom:0.5rem">✓ $500K ARR run rate</li>
+          <li>✓ Series A ready</li>
+        </ul>
+      </div>
+
+      <div class="animate delay-2">
+        <a href="mailto:invest@kovelai.com" class="cta-btn cta-primary" style="margin-right:1rem">
+          Contact Us →
+        </a>
+        <a href="/" class="cta-btn cta-outline">
+          Visit KovelAI.com
+        </a>
+      </div>
+    </div>
+    <div class="footer-badge">Confidential — KovelAI, Inc. — Q2 2026</div>
+  </section>
+
+  <script>
+    // Slide navigation dot active state
+    const dots = document.querySelectorAll('.slide-nav a');
+    const slides = document.querySelectorAll('.slide');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          dots.forEach(dot => {
+            dot.classList.toggle('active', dot.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    slides.forEach(slide => observer.observe(slide));
+
+    // Scroll animation trigger
+    const animateObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.animate').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      animateObserver.observe(el);
+    });
+  </script>
+
+</body>
+</html>

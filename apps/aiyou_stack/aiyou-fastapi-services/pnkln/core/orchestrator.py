@@ -6,6 +6,8 @@ Philosophy: Steve Jobs mode - beautiful, inevitable, ruthlessly simple
 Design: KERNEL framework - Keep simple, Easy verify, Reproducible, Narrow, Explicit, Logical
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -94,7 +96,7 @@ class Skill:
     activation_prompt: str
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Skill":
+    def from_dict(cls, data: dict[str, Any]) -> Skill:
         return cls(
             id=data["id"],
             name=data["name"],
@@ -121,7 +123,7 @@ class Agent:
     system_prompt: str
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "Agent":
+    def from_dict(cls, data: dict[str, Any]) -> Agent:
         return cls(
             id=data["id"],
             name=data["name"],

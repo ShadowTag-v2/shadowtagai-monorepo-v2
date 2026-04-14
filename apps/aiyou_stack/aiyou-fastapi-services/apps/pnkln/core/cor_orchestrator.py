@@ -29,6 +29,8 @@ Version: 2.0.0 (Rich Hickey Refactor)
 License: Proprietary
 """
 
+from __future__ import annotations
+
 import asyncio
 import logging
 from collections.abc import Callable

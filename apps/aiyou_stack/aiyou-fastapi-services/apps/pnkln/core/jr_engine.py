@@ -49,6 +49,8 @@ Version: 1.0.0
 License: Proprietary
 """
 
+from __future__ import annotations
+
 import logging
 import time
 from dataclasses import dataclass

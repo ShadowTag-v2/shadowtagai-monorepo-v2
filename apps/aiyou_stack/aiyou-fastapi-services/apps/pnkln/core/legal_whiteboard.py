@@ -16,6 +16,8 @@ Target: 99%+ accuracy through:
 "Always learning, always yearning, never resting, ever vesting."
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import StrEnum
@@ -76,7 +78,7 @@ class AgentNote:
     content: str  # Must be in outline form
     visibility: NoteVisibility = NoteVisibility.PRIVATE
     timestamp: datetime = field(default_factory=datetime.now)
-    annotations: list["Annotation"] = field(default_factory=list)
+    annotations: list[Annotation] = field(default_factory=list)
 
 
 @dataclass

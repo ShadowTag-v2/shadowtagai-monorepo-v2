@@ -14,7 +14,8 @@ All heavy logic lives in the domain modules:
 - models.py (data structures)
 """
 
-import asyncio
+from __future__ import annotations
+
 import logging
 import time
 from datetime import datetime
