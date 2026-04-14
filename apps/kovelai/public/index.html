@@ -9,7 +9,7 @@
 <script src="/js/three.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?render=6LfLP7EsAAAAAAXMAb0d47AyLjtsqQSqU_MG4Z27" async defer></script>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -566,7 +566,8 @@
 <label class="block text-[10px] uppercase tracking-widest text-on-surface-variant mb-2" for="kv-message">Message</label>
 <textarea id="kv-message" name="message" required rows="4" class="modal-input resize-none" placeholder="Describe your requirements..."></textarea>
 </div>
-<div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-theme="dark" style="margin: 0.75rem 0; transform: scale(0.87); transform-origin: left;"></div>
+<input type="hidden" name="recaptcha_token" id="kvRecaptchaToken">
+<!-- reCAPTCHA v3 — invisible, score-based (no checkbox) -->
 <button type="submit" id="submitBtn" class="w-full gradient-primary text-on-primary py-4 rounded-lg font-bold text-sm tracking-wider uppercase shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all mt-4">
 Submit Inquiry
 </button>
@@ -2344,9 +2345,17 @@ document.getElementById('contactForm').addEventListener('submit', async function
         // Honeypot check — abort silently if filled
         if (formData.get('_honey')) { btn.textContent = originalText; btn.disabled = false; return; }
         
+        // reCAPTCHA v3 — get invisible token
+        let recaptchaToken = '';
+        if (typeof grecaptcha !== 'undefined') {
+            recaptchaToken = await grecaptcha.execute('6LfLP7EsAAAAAAXMAb0d47AyLjtsqQSqU_MG4Z27', {action: 'contact_submit'});
+        }
+        
         // Use URL-encoded form data (simple request — no CORS preflight)
         const urlEncoded = new URLSearchParams();
-        formData.forEach((value, key) => { if (key !== '_honey') urlEncoded.append(key, value); });
+        formData.forEach((value, key) => { if (key !== '_honey' && key !== 'recaptcha_token') urlEncoded.append(key, value); });
+        urlEncoded.append('recaptcha_token', recaptchaToken);
+        urlEncoded.append('recaptcha_action', 'contact_submit');
         
         const response = await fetch(this.action, {
             method: 'POST',
