@@ -40,7 +40,7 @@ class IntelligentCache:
                 host=settings.REDIS_HOST,
                 port=settings.REDIS_PORT,
                 db=settings.REDIS_DB,
-                password=[VAPORIZED_PWD].REDIS_PASSWORD,
+                password=settings.REDIS_PASSWORD,
                 decode_responses=False,
             )
             await self.redis_client.ping()

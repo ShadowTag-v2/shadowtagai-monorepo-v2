@@ -10,7 +10,7 @@ from src.pnkln.steel.tinytorch_embeddings import (
 from src.pnkln.steel.tinytorch_profiling import Profiler, quick_profile
 from src.pnkln.steel.tinytorch_tensor import Tensor
 from src.pnkln.steel.tinytorch_tokenization import create_tokenizer
-from src.pnkln.steel.tinytorch_transformer import GPT, MLP, LayerNorm, TransformerBlock
+from src.pnkln.steel.tinytorch_transformer import GPT, MLP, GeminiMini, LayerNorm, TransformerBlock
 
 
 def run_demo():
