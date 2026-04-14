@@ -9,6 +9,7 @@
 <script src="/js/three.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -565,6 +566,7 @@
 <label class="block text-[10px] uppercase tracking-widest text-on-surface-variant mb-2" for="kv-message">Message</label>
 <textarea id="kv-message" name="message" required rows="4" class="modal-input resize-none" placeholder="Describe your requirements..."></textarea>
 </div>
+<div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-theme="dark" style="margin: 0.75rem 0; transform: scale(0.87); transform-origin: left;"></div>
 <button type="submit" id="submitBtn" class="w-full gradient-primary text-on-primary py-4 rounded-lg font-bold text-sm tracking-wider uppercase shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all mt-4">
 Submit Inquiry
 </button>
