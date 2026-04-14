@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 
+from .ingestionmetrics import IngestionMetrics
+from .source import EthicalViolation, IngestedItem
+
 
 @dataclass
 class IngestionResult:

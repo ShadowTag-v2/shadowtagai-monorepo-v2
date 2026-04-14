@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Any
 from urllib.parse import urlparse
 
+from .source import EthicalViolation, EthicalViolationType, IngestedItem, Source
+
 
 class EthicalComplianceValidator:
     """
