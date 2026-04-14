@@ -8,13 +8,18 @@ PRISM Integration: Long⊗Short Token Routing
 Based on Ultrathink synthesis for PNKLN inference optimization.
 """
 
+from __future__ import annotations
+
 import math
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Union
+from typing import Any, TYPE_CHECKING, Union
 
 import structlog
+
+if TYPE_CHECKING:
+    import torch
 
 try:
     import numpy as np
