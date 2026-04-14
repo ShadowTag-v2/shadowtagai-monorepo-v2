@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Evidence-Grade Ingestion Pipeline.
+"""Evidence-Grade Ingestion Pipeline.
 
 Architecture:
 1. Ingest: Fetch raw metadata (HN, RSS).
@@ -31,7 +30,7 @@ try:
     from pypdf import PdfReader
 except ImportError as e:
     raise ImportError(
-        f"Missing dependency: {e}. Run: pip install chromadb pypdf playwright aiohttp"
+        f"Missing dependency: {e}. Run: pip install chromadb pypdf playwright aiohttp",
     )
 
 # --- CONFIGURATION ---
@@ -64,8 +63,7 @@ class IngestionItem:
 
 # --- MODULE 1: AI CLASSIFICATION (Ollama) ---
 async def consult_ollama(session, text):
-    """
-    Asks local Llama 3 if the content is relevant.
+    """Asks local Llama 3 if the content is relevant.
     """
     system_prompt = """
     You are a Legal Tech & Emerging Tech Research Assistant.
@@ -90,8 +88,7 @@ async def consult_ollama(session, text):
 
 # --- MODULE 2: FORENSIC CAPTURE (Playwright) ---
 async def capture_evidence(browser, item):
-    """
-    Renders page, injects timestamp, saves PDF, and hashes it.
+    """Renders page, injects timestamp, saves PDF, and hashes it.
     """
     safe_title = "".join([c for c in item.title if c.isalnum() or c in (" ", "-", "_")]).strip()[
         :50
@@ -122,7 +119,7 @@ async def capture_evidence(browser, item):
 
         return filepath, file_hash
     except Exception as e:
-        logging.error(f"Capture failed for {item.url}: {e}")
+        logging.exception(f"Capture failed for {item.url}: {e}")
         return None, None
     finally:
         await page.close()
@@ -130,8 +127,7 @@ async def capture_evidence(browser, item):
 
 # --- MODULE 3: INDEXING (Vector Store) ---
 def index_document(item):
-    """
-    Extracts text from the PDF and stores it in ChromaDB with metadata.
+    """Extracts text from the PDF and stores it in ChromaDB with metadata.
     """
     try:
         if not item.evidence_path:
@@ -159,14 +155,14 @@ def index_document(item):
                     "evidence_file": str(item.evidence_path),
                     "evidence_hash": item.file_hash,
                     "capture_date": datetime.now().isoformat(),
-                }
+                },
             ],
             ids=[item.id],
         )
         logging.info(f"🧠 Indexed: {item.title}")
         return True
     except Exception as e:
-        logging.error(f"Indexing failed for {item.title}: {e}")
+        logging.exception(f"Indexing failed for {item.title}: {e}")
         return False
 
 
@@ -206,7 +202,7 @@ async def run_pipeline():
             print("🔌 Connecting to Hacker News...")
             try:
                 async with session.get(
-                    "https://hacker-news.firebaseio.com/v0/topstories.json"
+                    "https://hacker-news.firebaseio.com/v0/topstories.json",
                 ) as resp:
                     ids = (await resp.json())[:10]  # Process top 10 for demo
 
@@ -219,7 +215,7 @@ async def run_pipeline():
                     if d and "url" in d:
                         items.append(IngestionItem(d["title"], d["url"]))
             except Exception as e:
-                logging.error(f"Failed to fetch from HN: {e}")
+                logging.exception(f"Failed to fetch from HN: {e}")
                 items = []
 
             print(f"📥 Processing {len(items)} items...")

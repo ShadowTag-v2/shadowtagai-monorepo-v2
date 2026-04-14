@@ -1,5 +1,4 @@
-"""
-PNKLN Revenue Platform - Gemini 2.0 Integration
+"""PNKLN Revenue Platform - Gemini 2.0 Integration
 97% cost reduction: GPT-4 ($50K/year) → Gemini ($1.5K/year)
 
 This module replaces OpenAI/AutoGen with Google Gemini 2.0 for:
@@ -82,8 +81,7 @@ cost_tracker = GeminiCostTracker()
 
 
 class GeminiService:
-    """
-    Gemini 2.0 service for all AI inference
+    """Gemini 2.0 service for all AI inference
 
     Features:
     - 97% cost reduction vs GPT-4
@@ -94,8 +92,7 @@ class GeminiService:
     """
 
     def __init__(self, model_name: str = "gemini-2.0-flash-exp"):
-        """
-        Initialize Gemini service
+        """Initialize Gemini service
 
         Models:
         - gemini-2.0-flash-exp: Fast, cheap ($0.15/$0.60 per 1M tokens)
@@ -113,8 +110,7 @@ class GeminiService:
         max_tokens: int | None = None,
         use_case: str = "general",
     ) -> dict[str, Any]:
-        """
-        Generate response with Gemini
+        """Generate response with Gemini
 
         Args:
             prompt: User prompt
@@ -125,23 +121,24 @@ class GeminiService:
 
         Returns:
             Dict with response text, usage stats, and cost savings
+
         """
         # Configure generation
         generation_config = genai.GenerationConfig(
-            temperature=temperature, max_output_tokens=max_tokens
+            temperature=temperature, max_output_tokens=max_tokens,
         )
 
         # Add system instruction if provided
         if system_instruction:
             model_with_system = genai.GenerativeModel(
-                self.model_name, system_instruction=system_instruction
+                self.model_name, system_instruction=system_instruction,
             )
             response = await asyncio.to_thread(
-                model_with_system.generate_content, prompt, generation_config=generation_config
+                model_with_system.generate_content, prompt, generation_config=generation_config,
             )
         else:
             response = await asyncio.to_thread(
-                self.model.generate_content, prompt, generation_config=generation_config
+                self.model.generate_content, prompt, generation_config=generation_config,
             )
 
         # Extract usage metadata
@@ -175,8 +172,7 @@ class GeminiService:
         temperature: float = 0.7,
         use_case: str = "chat",
     ) -> dict[str, Any]:
-        """
-        Multi-turn chat with Gemini
+        """Multi-turn chat with Gemini
 
         Args:
             messages: List of {"role": "user"|"model", "content": "..."}
@@ -186,11 +182,12 @@ class GeminiService:
 
         Returns:
             Dict with response and cost savings
+
         """
         # Start chat session
         if system_instruction:
             model_with_system = genai.GenerativeModel(
-                self.model_name, system_instruction=system_instruction
+                self.model_name, system_instruction=system_instruction,
             )
             chat = model_with_system.start_chat(history=[])
         else:
@@ -234,10 +231,9 @@ class GeminiService:
 
 
 async def ai_tutor_session(
-    student_id: str, task_description: str, subject: str, difficulty: str = "medium"
+    student_id: str, task_description: str, subject: str, difficulty: str = "medium",
 ) -> dict[str, Any]:
-    """
-    AI tutor session using Gemini (replaces GPT-4)
+    """AI tutor session using Gemini (replaces GPT-4)
 
     Cost comparison:
     - GPT-4: ~$0.50 per session (assuming 5K input, 3K output tokens)
@@ -266,7 +262,7 @@ Be supportive but don't give away answers."""
 Provide a helpful hint to get them started. Ask a guiding question."""
 
     response = await gemini.generate(
-        prompt=prompt, system_instruction=system_instruction, temperature=0.7, use_case="ai_tutor"
+        prompt=prompt, system_instruction=system_instruction, temperature=0.7, use_case="ai_tutor",
     )
 
     return {
@@ -283,8 +279,7 @@ Provide a helpful hint to get them started. Ask a guiding question."""
 
 
 async def analyze_intelligence_item(content: str, source_type: str) -> dict[str, Any]:
-    """
-    Analyze intelligence item using Gemini (replaces GPT-4)
+    """Analyze intelligence item using Gemini (replaces GPT-4)
 
     Cost comparison:
     - GPT-4: ~$0.80 per analysis (10K input, 5K output)
@@ -331,8 +326,7 @@ Analyze and classify this intelligence item."""
 
 
 class AutoGenToGeminiMigrator:
-    """
-    Migration service for AutoGen → Gemini customers
+    """Migration service for AutoGen → Gemini customers
 
     Revenue opportunity:
     - Migration consulting: $10K-$100K per client
@@ -344,10 +338,9 @@ class AutoGenToGeminiMigrator:
         self.gemini = GeminiService()
 
     async def estimate_savings(
-        self, monthly_gpt4_cost: float, total_monthly_tokens: int
+        self, monthly_gpt4_cost: float, total_monthly_tokens: int,
     ) -> dict[str, Any]:
-        """
-        Estimate cost savings from migration
+        """Estimate cost savings from migration
 
         Args:
             monthly_gpt4_cost: Current monthly OpenAI bill
@@ -355,6 +348,7 @@ class AutoGenToGeminiMigrator:
 
         Returns:
             Savings estimate and migration ROI
+
         """
         # Gemini equivalent cost (assume 50/50 input/output split)
         input_tokens = total_monthly_tokens * 0.5
@@ -381,8 +375,7 @@ class AutoGenToGeminiMigrator:
         }
 
     async def migrate_autogen_agent(self, autogen_config: dict[str, Any]) -> str:
-        """
-        Generate Gemini equivalent of AutoGen agent
+        """Generate Gemini equivalent of AutoGen agent
 
         Returns Python code for Gemini-based agent
         """
@@ -426,8 +419,7 @@ class {agent_name.capitalize()}Agent:
 
 
 def get_cost_report() -> dict[str, Any]:
-    """
-    Generate cost savings report
+    """Generate cost savings report
 
     Use for:
     - Monthly billing reconciliation
@@ -472,7 +464,6 @@ def get_cost_report() -> dict[str, Any]:
 
 async def main():
     """Example usage of Gemini integration"""
-
     # Example 1: AI Tutor
     tutor_result = await ai_tutor_session(
         student_id="student_001",

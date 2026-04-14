@@ -1,5 +1,4 @@
-"""
-Example client for ShadowTag-v2 LLM serving API.
+"""Example client for ShadowTag-v2 LLM serving API.
 
 Demonstrates how to use the multi-model serving endpoint with different routing strategies.
 """
@@ -25,8 +24,7 @@ class LLMClient:
         temperature: float = 0.7,
         routing_strategy: str = "token_aware",
     ) -> dict:
-        """
-        Generate a completion.
+        """Generate a completion.
 
         Args:
             prompt: Input prompt
@@ -37,6 +35,7 @@ class LLMClient:
 
         Returns:
             Completion response with text and metadata
+
         """
         request = {
             "prompt": prompt,
@@ -219,7 +218,7 @@ async def example_stats():
             print(f"  GPU {gpu_id}:")
             print(f"    Models: {gpu_info['model_count']} ({', '.join(gpu_info['models_loaded'])})")
             print(
-                f"    Memory: {gpu_info['available_memory_gb']:.1f}GB / {gpu_info['total_memory_gb']:.1f}GB"
+                f"    Memory: {gpu_info['available_memory_gb']:.1f}GB / {gpu_info['total_memory_gb']:.1f}GB",
             )
             print(f"    Utilization: {gpu_info['utilization']:.2%}")
 

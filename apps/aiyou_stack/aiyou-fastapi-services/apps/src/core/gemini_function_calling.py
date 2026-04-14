@@ -1,5 +1,4 @@
-"""
-Native Gemini Function Calling Implementation
+"""Native Gemini Function Calling Implementation
 
 This module replaces AutoGen's multi-agent architecture with native Gemini
 function calling, reducing latency from 1100ms to <90ms (p99).
@@ -81,8 +80,7 @@ class FunctionTool:
 
 
 class GeminiFunctionCaller:
-    """
-    Native Gemini Function Calling orchestrator.
+    """Native Gemini Function Calling orchestrator.
 
     Replaces AutoGen's GroupChat/multi-agent architecture with a single
     Gemini conversation that can call multiple Python functions.
@@ -109,6 +107,7 @@ class GeminiFunctionCaller:
         # Execute
         result = caller.execute("Research quantum computing")
         ```
+
     """
 
     def __init__(
@@ -122,8 +121,7 @@ class GeminiFunctionCaller:
         max_function_calls: int = 10,
         timeout_seconds: int = 30,
     ):
-        """
-        Initialize Gemini Function Caller.
+        """Initialize Gemini Function Caller.
 
         Args:
             model_name: Gemini model to use (gemini-2.0-flash-exp for <90ms latency)
@@ -134,6 +132,7 @@ class GeminiFunctionCaller:
             system_instruction: System prompt for the model
             max_function_calls: Maximum number of function calls per execution
             timeout_seconds: Total execution timeout
+
         """
         self.model_name = model_name
         self.tools = tools or []
@@ -156,19 +155,19 @@ class GeminiFunctionCaller:
         if self.tools:
             self.gemini_tools.append(
                 genai.protos.Tool(
-                    function_declarations=[tool.to_gemini_declaration() for tool in self.tools]
-                )
+                    function_declarations=[tool.to_gemini_declaration() for tool in self.tools],
+                ),
             )
 
         if self.enable_google_search:
             self.gemini_tools.append(
-                genai.protos.Tool(google_search_retrieval=genai.protos.GoogleSearchRetrieval())
+                genai.protos.Tool(google_search_retrieval=genai.protos.GoogleSearchRetrieval()),
             )
 
         # Create model
         self.model = genai.GenerativeModel(
             model_name=self.model_name,
-            tools=self.gemini_tools if self.gemini_tools else None,
+            tools=self.gemini_tools or None,
             system_instruction=self.system_instruction,
         )
 
@@ -181,8 +180,7 @@ class GeminiFunctionCaller:
         prompt: str,
         validation_callback: Callable[[str, dict[str, Any]], bool] | None = None,
     ) -> str:
-        """
-        Execute a prompt with function calling.
+        """Execute a prompt with function calling.
 
         Args:
             prompt: User request
@@ -194,13 +192,14 @@ class GeminiFunctionCaller:
         Raises:
             TimeoutError: If execution exceeds timeout
             ValueError: If function call is invalid or validation fails
+
         """
         start_time = time.time()
         self.execution_history.clear()
 
         # Start chat
         chat = self.model.start_chat(
-            enable_automatic_function_calling=self.enable_automatic_calling
+            enable_automatic_function_calling=self.enable_automatic_calling,
         )
 
         # Send initial message
@@ -246,7 +245,7 @@ class GeminiFunctionCaller:
                             args=fn_args,
                             result=result,
                             execution_time_ms=fn_time,
-                        )
+                        ),
                     )
 
                     # Send result back to Gemini
@@ -255,11 +254,11 @@ class GeminiFunctionCaller:
                             parts=[
                                 genai.protos.Part(
                                     function_response=genai.protos.FunctionResponse(
-                                        name=fn_name, response={"result": result}
-                                    )
-                                )
-                            ]
-                        )
+                                        name=fn_name, response={"result": result},
+                                    ),
+                                ),
+                            ],
+                        ),
                     )
 
                 except Exception as e:
@@ -272,7 +271,7 @@ class GeminiFunctionCaller:
                             result=None,
                             execution_time_ms=fn_time,
                             error=str(e),
-                        )
+                        ),
                     )
                     raise ValueError(f"Function execution failed: {fn_name} - {e}")
 
@@ -310,7 +309,7 @@ class GeminiFunctionCaller:
         self.function_map[tool.name] = tool.function
         # Rebuild Gemini tools
         self.gemini_tools = [
-            genai.protos.Tool(function_declarations=[t.to_gemini_declaration() for t in self.tools])
+            genai.protos.Tool(function_declarations=[t.to_gemini_declaration() for t in self.tools]),
         ]
         # Recreate model with updated tools
         self.model = genai.GenerativeModel(

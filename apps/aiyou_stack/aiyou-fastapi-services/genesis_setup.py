@@ -43,7 +43,7 @@ def main():
             f"gcloud firestore indexes composite create "
             f"--project {PROJECT_ID} "
             f"--collection-group=knowledge_base "
-            f'--field-config field-path=embedding,vector-config=\'{{"dimension":768, "flat": "{{}}"}}\''
+            f'--field-config field-path=embedding,vector-config=\'{{"dimension":768, "flat": "{{}}"}}\'',
         )
     except Exception as e:
         print(f"     ! Index creation skipped or failed (might already exist): {e}")

@@ -26,7 +26,6 @@ depends_on = None
 
 def upgrade():
     """Create all tables for AI thread management"""
-
     # AI thread authors table
     op.create_table(
         "ai_thread_authors",
@@ -41,7 +40,7 @@ def upgrade():
         sa.Column("follower_count", sa.Integer, default=0),
         sa.Column("verified", sa.Boolean, default=False),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False,
         ),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
     )
@@ -78,7 +77,7 @@ def upgrade():
         sa.Column("source_url", sa.String(500), nullable=True),
         sa.Column("metadata", JSON, nullable=True),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False,
         ),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
     )
@@ -111,7 +110,7 @@ def upgrade():
         sa.Column("code_language", sa.String(50), nullable=True),
         sa.Column("likes", sa.Integer, default=0),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False,
         ),
     )
     op.create_index("idx_post_thread_id", "ai_thread_posts", ["thread_id"])
@@ -142,7 +141,7 @@ def upgrade():
         sa.Column("index_name", sa.String(100), nullable=True),
         sa.Column("content_hash", sa.String(64), nullable=True),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False,
         ),
         sa.Column("updated_at", sa.DateTime(timezone=True), nullable=True),
     )
@@ -166,7 +165,7 @@ def upgrade():
         sa.Column("started_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("completed_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column(
-            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False
+            "created_at", sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False,
         ),
     )
     op.create_index("idx_scrape_job_status", "ai_thread_scrape_jobs", ["status"])

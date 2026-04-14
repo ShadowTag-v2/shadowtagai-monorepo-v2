@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-SkyNode Fleet Simulation
+"""SkyNode Fleet Simulation
 Validates the V4.0.0 Valuation Target for 'The Steel' ($100B Pillar).
 """
 

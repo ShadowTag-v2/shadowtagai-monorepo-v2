@@ -1,5 +1,4 @@
-"""
-Training Data Safety Indexer
+"""Training Data Safety Indexer
 Based on: Apertus LLM Training Data Indexing Research (arxiv:2510.09471v1)
 
 PURPOSE:
@@ -92,8 +91,7 @@ class SafetyScanResult:
 
 
 class SafetyLexicon:
-    """
-    Multilingual safety term lexicons.
+    """Multilingual safety term lexicons.
 
     Based on:
     - Weaponized Words (restricted, multilingual)
@@ -145,8 +143,7 @@ class SafetyLexicon:
 
 
 class TrainingDataIndexer:
-    """
-    Full-text indexer for training data safety auditing.
+    """Full-text indexer for training data safety auditing.
 
     Elasticsearch configuration (from Apertus paper):
     - Custom analyzer: web_content_analyzer
@@ -210,8 +207,8 @@ class TrainingDataIndexer:
                             "tokenizer": "standard",
                             "filter": ["lowercase", "asciifolding", "stop"],
                             "char_filter": ["html_strip"],
-                        }
-                    }
+                        },
+                    },
                 },
             },
             "mappings": {
@@ -223,7 +220,7 @@ class TrainingDataIndexer:
                     "indexed_at": {"type": "date"},
                     "token_count": {"type": "integer"},
                     "safety_flags": {"type": "keyword"},
-                }
+                },
             },
         }
 
@@ -246,8 +243,7 @@ class TrainingDataIndexer:
         language: str = "en",
         categories: list[SafetyCategory] | None = None,
     ) -> SafetyScanResult:
-        """
-        Scan a document for safety issues.
+        """Scan a document for safety issues.
 
         From paper: "many harmful strings are actually general terms needed
         for important discussions... you can't just blanket-remove everything;
@@ -299,8 +295,7 @@ class TrainingDataIndexer:
         return result
 
     def _calculate_severity(self, category: SafetyCategory, term: str, context: str) -> float:
-        """
-        Context-aware severity calculation.
+        """Context-aware severity calculation.
 
         From paper: Despite lots of toxic words in training data,
         Apertus still performs well on toxicity benchmarks because
@@ -337,8 +332,7 @@ class TrainingDataIndexer:
         return min(1.0, base_severity)
 
     async def search_phrase(self, phrase: str, slop: int = 0, limit: int = 100) -> list[dict]:
-        """
-        Search for a phrase with configurable slop.
+        """Search for a phrase with configurable slop.
 
         From paper: match_phrase queries with slop for fuzzy matching.
         Response times practical even for 300-word phrases.
@@ -357,8 +351,7 @@ class TrainingDataIndexer:
         return [hit["_source"] for hit in result["hits"]["hits"]]
 
     async def bulk_index(self, documents: AsyncIterator[dict], progress_callback=None) -> dict:
-        """
-        Bulk index documents with parallel processing.
+        """Bulk index documents with parallel processing.
 
         From paper Table 4:
         - FineWeb-Edu: ~10,300 docs/sec
@@ -448,8 +441,7 @@ class TrainingDataIndexer:
         return stats
 
     async def generate_safety_report(self, languages: list[str] | None = None) -> dict:
-        """
-        Generate safety report similar to Apertus Table 5.
+        """Generate safety report similar to Apertus Table 5.
 
         Reports counts of documents with harmful terms by:
         - Category (Weaponized Words, LDNOOBW, Chemical)
@@ -495,8 +487,7 @@ class TrainingDataIndexer:
 
 
 class SafetyGate:
-    """
-    Safety gate for Judge #6 pipeline.
+    """Safety gate for Judge #6 pipeline.
 
     Blocks content that exceeds severity thresholds before
     it reaches governance evaluation.
@@ -516,8 +507,7 @@ class SafetyGate:
         ]
 
     async def evaluate(self, content: str, doc_id: str, language: str = "en") -> dict:
-        """
-        Evaluate content through safety gate.
+        """Evaluate content through safety gate.
 
         Returns:
             {
@@ -527,6 +517,7 @@ class SafetyGate:
                 "hits": List[SafetyHit],
                 "requires_review": bool
             }
+
         """
         scan_result = await self.indexer.scan_document(content, doc_id, language)
 
@@ -571,7 +562,7 @@ async def main():
 
     parser = argparse.ArgumentParser(description="Training Data Safety Indexer")
     parser.add_argument(
-        "command", choices=["scan", "search", "report", "index"], help="Command to run"
+        "command", choices=["scan", "search", "report", "index"], help="Command to run",
     )
     parser.add_argument("--file", "-f", help="File to scan")
     parser.add_argument("--query", "-q", help="Search query")
@@ -606,7 +597,7 @@ async def main():
                     ],
                 },
                 indent=2,
-            )
+            ),
         )
 
     elif args.command == "search":

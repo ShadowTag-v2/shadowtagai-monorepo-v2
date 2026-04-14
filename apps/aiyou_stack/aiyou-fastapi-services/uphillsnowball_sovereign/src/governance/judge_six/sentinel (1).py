@@ -24,5 +24,4 @@ class JudgeSixSentinel:
 
         if vote["verdict"] == "APPROVED":
             return {"status": "SUCCESS", "reason": f"Army Consensus: {vote['approval_rate']:.1%}"}
-        else:
-            return {"status": "BLOCKED", "reason": "Army Rejected Mission"}
+        return {"status": "BLOCKED", "reason": "Army Rejected Mission"}

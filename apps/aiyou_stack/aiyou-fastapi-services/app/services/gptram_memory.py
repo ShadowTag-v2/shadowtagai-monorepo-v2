@@ -1,5 +1,4 @@
-"""
-GPTRAM - GPT Retrieval Augmented Memory
+"""GPTRAM - GPT Retrieval Augmented Memory
 Temporal agent memory with Redis backend (Memorystore)
 
 Integrated from Cor.17 AI Architecture for PNKLN Core Stack™
@@ -18,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class GPTRAMMemory:
-    """
-    Temporal agent memory storage with retrieval capabilities
+    """Temporal agent memory storage with retrieval capabilities
 
     Uses Redis (Memorystore on GKE) for:
     - Session interaction history
@@ -48,11 +46,11 @@ class GPTRAMMemory:
             redis_url = f"redis://{self.redis_host}:{self.redis_port}/{self.redis_db}"
 
             self.redis_client = await redis.from_url(
-                redis_url, password=self.redis_password, encoding="utf-8", decode_responses=True
+                redis_url, password=self.redis_password, encoding="utf-8", decode_responses=True,
             )
             await self.redis_client.ping()
             logger.info(
-                f"✅ GPTRAM memory initialized with Redis at {self.redis_host}:{self.redis_port}"
+                f"✅ GPTRAM memory initialized with Redis at {self.redis_host}:{self.redis_port}",
             )
         except Exception as e:
             logger.error(f"Failed to initialize GPTRAM: {e}")
@@ -66,10 +64,9 @@ class GPTRAMMemory:
             logger.info("GPTRAM memory connection closed")
 
     async def store_interaction(
-        self, session_id: str, interaction: dict[str, Any], ttl: int | None = None
+        self, session_id: str, interaction: dict[str, Any], ttl: int | None = None,
     ) -> bool:
-        """
-        Store an interaction in temporal memory
+        """Store an interaction in temporal memory
 
         Args:
             session_id: Unique session identifier
@@ -78,6 +75,7 @@ class GPTRAMMemory:
 
         Returns:
             Success status
+
         """
         if not self.redis_client:
             logger.warning("GPTRAM not initialized, skipping interaction storage")
@@ -93,7 +91,7 @@ class GPTRAMMemory:
 
             # Add to session index (sorted set by timestamp)
             await self.redis_client.zadd(
-                f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()}
+                f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()},
             )
 
             logger.debug(f"Stored interaction for session {session_id}")
@@ -103,10 +101,9 @@ class GPTRAMMemory:
             return False
 
     async def retrieve_session_history(
-        self, session_id: str, limit: int = 100, min_timestamp: datetime | None = None
+        self, session_id: str, limit: int = 100, min_timestamp: datetime | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Retrieve session interaction history
+        """Retrieve session interaction history
 
         Args:
             session_id: Session identifier
@@ -115,6 +112,7 @@ class GPTRAMMemory:
 
         Returns:
             List of interactions ordered by timestamp
+
         """
         if not self.redis_client:
             return []
@@ -123,7 +121,7 @@ class GPTRAMMemory:
             # Get keys from session index (sorted by timestamp)
             min_score = min_timestamp.timestamp() if min_timestamp else 0
             keys = await self.redis_client.zrangebyscore(
-                f"gptram:index:{session_id}", min_score, "+inf", start=0, num=limit
+                f"gptram:index:{session_id}", min_score, "+inf", start=0, num=limit,
             )
 
             # Retrieve interaction data
@@ -140,8 +138,7 @@ class GPTRAMMemory:
             return []
 
     async def store_reasoning_graph(self, session_id: str, graph: dict[str, Any]) -> bool:
-        """
-        Store reasoning graph for RoT (Retrieval-of-Thought)
+        """Store reasoning graph for RoT (Retrieval-of-Thought)
 
         Reasoning graphs capture the flow of multi-step reasoning:
         - Query decomposition
@@ -154,6 +151,7 @@ class GPTRAMMemory:
 
         Returns:
             Success status
+
         """
         if not self.redis_client:
             return False
@@ -168,14 +166,14 @@ class GPTRAMMemory:
             return False
 
     async def retrieve_reasoning_graph(self, session_id: str) -> dict[str, Any] | None:
-        """
-        Retrieve reasoning graph for RoT
+        """Retrieve reasoning graph for RoT
 
         Args:
             session_id: Session identifier
 
         Returns:
             Reasoning graph or None if not found
+
         """
         if not self.redis_client:
             return None
@@ -189,11 +187,11 @@ class GPTRAMMemory:
             return None
 
     async def get_memory_stats(self, session_id: str) -> dict[str, Any]:
-        """
-        Get memory statistics for a session
+        """Get memory statistics for a session
 
         Returns:
             Statistics including interaction count, reasoning graph presence
+
         """
         if not self.redis_client:
             return {
@@ -222,14 +220,14 @@ class GPTRAMMemory:
             }
 
     async def clear_session(self, session_id: str) -> bool:
-        """
-        Clear all memory for a session
+        """Clear all memory for a session
 
         Args:
             session_id: Session identifier
 
         Returns:
             Success status
+
         """
         if not self.redis_client:
             return False

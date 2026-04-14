@@ -7,20 +7,19 @@ from temporalio import activity, workflow
 
 @activity.defn
 async def ingest_logs_to_lancedb() -> str:
-    """
-    Crawls local .agent/logs/ and archive_brain_sessions/ directories,
+    """Crawls local .agent/logs/ and archive_brain_sessions/ directories,
     extracts transcripts, and ingests them into LanceDB.
     """
     # Navigate up from apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/src/workflows/omega_dream_daemon.py
     # to the Monorepo root.
     repo_root = os.path.dirname(
         os.path.dirname(
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        )
+            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        ),
     )
     logs_pattern = os.path.join(repo_root, ".agent", "logs", "*.log")
     legacy_pattern = os.path.join(
-        repo_root, "control", "legacy_workspaces", "archive_brain_sessions", "*", "*.md"
+        repo_root, "control", "legacy_workspaces", "archive_brain_sessions", "*", "*.md",
     )
 
     # In reality, this would import core/lancedb_indexer.py and trigger ingestion.
@@ -45,14 +44,13 @@ async def ingest_logs_to_lancedb() -> str:
 
 @workflow.defn
 class OmegaDreamDaemon:
-    """
-    Temporal cron workflow designed to mimic KAIROS_DREAM daemon.
+    """Temporal cron workflow designed to mimic KAIROS_DREAM daemon.
     Should be scheduled from the client with cron_schedule="0 3 * * *".
     """
 
     @workflow.run
     async def run(self) -> str:
         result = await workflow.execute_activity(
-            ingest_logs_to_lancedb, start_to_close_timeout=timedelta(minutes=10)
+            ingest_logs_to_lancedb, start_to_close_timeout=timedelta(minutes=10),
         )
         return result

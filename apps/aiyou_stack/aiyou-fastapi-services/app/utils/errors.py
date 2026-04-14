@@ -1,5 +1,4 @@
-"""
-Custom exception classes for accessible error handling.
+"""Custom exception classes for accessible error handling.
 
 All exceptions follow WCAG 2.1 principles with:
 - Clear, user-friendly messages
@@ -12,8 +11,7 @@ from typing import Any
 
 
 class APIException(Exception):
-    """
-    Base API exception with semantic structure.
+    """Base API exception with semantic structure.
 
     All API errors inherit from this class to ensure consistent error handling.
     """
@@ -26,8 +24,7 @@ class APIException(Exception):
         details: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
     ):
-        """
-        Initialize API exception.
+        """Initialize API exception.
 
         Args:
             status_code: HTTP status code (e.g., 400, 404, 500)
@@ -35,6 +32,7 @@ class APIException(Exception):
             message: User-friendly error message in plain language
             details: Additional error details (field-specific errors, suggestions)
             headers: Optional HTTP headers to include in response
+
         """
         self.status_code = status_code
         self.code = code
@@ -45,8 +43,7 @@ class APIException(Exception):
 
 
 class ValidationError(APIException):
-    """
-    400 Bad Request - Invalid input data.
+    """400 Bad Request - Invalid input data.
 
     Used when client sends data that doesn't meet validation requirements.
     """
@@ -65,8 +62,7 @@ class ValidationError(APIException):
 
 
 class UnauthorizedError(APIException):
-    """
-    401 Unauthorized - Authentication required.
+    """401 Unauthorized - Authentication required.
 
     Used when client needs to authenticate before accessing resource.
     """
@@ -85,8 +81,7 @@ class UnauthorizedError(APIException):
 
 
 class ForbiddenError(APIException):
-    """
-    403 Forbidden - Insufficient permissions.
+    """403 Forbidden - Insufficient permissions.
 
     Used when authenticated client lacks permission for requested action.
     """
@@ -105,8 +100,7 @@ class ForbiddenError(APIException):
 
 
 class NotFoundError(APIException):
-    """
-    404 Not Found - Resource doesn't exist.
+    """404 Not Found - Resource doesn't exist.
 
     Used when requested resource cannot be found.
     """
@@ -125,8 +119,7 @@ class NotFoundError(APIException):
 
 
 class ConflictError(APIException):
-    """
-    409 Conflict - Resource conflict.
+    """409 Conflict - Resource conflict.
 
     Used when request conflicts with current state (e.g., duplicate email).
     """
@@ -145,8 +138,7 @@ class ConflictError(APIException):
 
 
 class InternalError(APIException):
-    """
-    500 Internal Server Error - Server fault.
+    """500 Internal Server Error - Server fault.
 
     Used for unexpected server errors. Details should not expose sensitive info.
     """

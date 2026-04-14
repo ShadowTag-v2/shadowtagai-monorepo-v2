@@ -48,7 +48,7 @@ class TowerNode:
     # Modules
     _ledger: ShadowTag = field(default_factory=ShadowTag)
     _brain: Orchestrator = field(
-        default_factory=lambda: Orchestrator(function_caller=None)
+        default_factory=lambda: Orchestrator(function_caller=None),
     )  # Mocking init args for now
     _bq_client: bigquery.Client | None = None
 
@@ -67,8 +67,7 @@ class TowerNode:
         self._gdc = GDCClient(project_id="pnkln-edge", zone=self.location_code)
 
     def heartbeat(self) -> Telemetry:
-        """
-        Critical <100ms check.
+        """Critical <100ms check.
         If Fiber latency > 100ms, trigger Starlink failover assessment.
         Logs telemetry to BigQuery.
         """
@@ -79,7 +78,7 @@ class TowerNode:
         # PnklnJR Doctrine: Failover Logic
         if t_now.latency_ms > 100 and self.current_connection == ConnectionType.FIBER:
             logger.warning(
-                f"Node {self.node_id} latency spike ({t_now.latency_ms}ms). Assessing Starlink..."
+                f"Node {self.node_id} latency spike ({t_now.latency_ms}ms). Assessing Starlink...",
             )
             self._evaluate_failover()
 

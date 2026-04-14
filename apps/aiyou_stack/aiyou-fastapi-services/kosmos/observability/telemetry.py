@@ -1,5 +1,4 @@
-"""
-OpenTelemetry Integration: Cloud Trace integration for distributed tracing.
+"""OpenTelemetry Integration: Cloud Trace integration for distributed tracing.
 
 Provides:
 - Automatic span creation for agent operations
@@ -26,7 +25,7 @@ except ImportError:
     logging.warning(
         "OpenTelemetry not installed. "
         "Install with: pip install opentelemetry-api opentelemetry-sdk "
-        "opentelemetry-exporter-gcp-trace"
+        "opentelemetry-exporter-gcp-trace",
     )
 
 logger = logging.getLogger(__name__)
@@ -37,8 +36,7 @@ def setup_telemetry(
     service_name: str = "kosmos-agents",
     enable_trace: bool = True,
 ) -> trace.Tracer | None:
-    """
-    Set up OpenTelemetry with Cloud Trace integration.
+    """Set up OpenTelemetry with Cloud Trace integration.
 
     Args:
         project_id: GCP project ID
@@ -47,6 +45,7 @@ def setup_telemetry(
 
     Returns:
         Tracer instance if successful, None otherwise
+
     """
     if not OTEL_AVAILABLE:
         logger.warning("OpenTelemetry not available - tracing disabled")
@@ -62,7 +61,7 @@ def setup_telemetry(
             {
                 "service.name": service_name,
                 "service.version": "0.1.0",
-            }
+            },
         )
 
         # Create tracer provider
@@ -87,14 +86,14 @@ def setup_telemetry(
 
 
 def get_tracer(name: str | None = None) -> trace.Tracer:
-    """
-    Get a tracer instance.
+    """Get a tracer instance.
 
     Args:
         name: Optional tracer name (defaults to module name)
 
     Returns:
         Tracer instance
+
     """
     if not OTEL_AVAILABLE:
         # Return no-op tracer
@@ -104,13 +103,13 @@ def get_tracer(name: str | None = None) -> trace.Tracer:
 
 
 class TracedOperation:
-    """
-    Context manager for tracing an operation.
+    """Context manager for tracing an operation.
 
     Example:
         with TracedOperation("agent_execution", agent="literature", goal="search papers"):
             # Perform agent operation
             result = agent.execute_task(goal)
+
     """
 
     def __init__(
@@ -119,13 +118,13 @@ class TracedOperation:
         tracer: trace.Tracer | None = None,
         **attributes,
     ):
-        """
-        Initialize traced operation.
+        """Initialize traced operation.
 
         Args:
             operation_name: Name of the operation (span name)
             tracer: Optional tracer instance (uses default if None)
             **attributes: Additional span attributes
+
         """
         self.operation_name = operation_name
         self.tracer = tracer or get_tracer()
@@ -164,14 +163,14 @@ class TracedOperation:
 def trace_react_cycle(
     tracer: trace.Tracer | None = None,
 ) -> callable:
-    """
-    Decorator for tracing ReAct cycles.
+    """Decorator for tracing ReAct cycles.
 
     Example:
         @trace_react_cycle()
         def execute_cycle(self, goal):
             # ReAct loop implementation
             pass
+
     """
     tracer = tracer or get_tracer()
 
@@ -193,12 +192,12 @@ def trace_react_cycle(
 
 
 def add_span_attributes(span: trace.Span | None, **attributes):
-    """
-    Add attributes to current span.
+    """Add attributes to current span.
 
     Args:
         span: Span instance
         **attributes: Attributes to add
+
     """
     if not OTEL_AVAILABLE or not span:
         return
@@ -219,8 +218,7 @@ def trace_agent_execution(
     task: str,
     tracer: trace.Tracer | None = None,
 ) -> TracedOperation:
-    """
-    Create a traced operation for agent execution.
+    """Create a traced operation for agent execution.
 
     Args:
         agent_name: Name of the agent
@@ -229,6 +227,7 @@ def trace_agent_execution(
 
     Returns:
         TracedOperation context manager
+
     """
     return TracedOperation(
         "agent_execution",
@@ -243,8 +242,7 @@ def trace_tool_invocation(
     tool_input: Any,
     tracer: trace.Tracer | None = None,
 ) -> TracedOperation:
-    """
-    Create a traced operation for tool invocation.
+    """Create a traced operation for tool invocation.
 
     Args:
         tool_name: Name of the tool
@@ -253,6 +251,7 @@ def trace_tool_invocation(
 
     Returns:
         TracedOperation context manager
+
     """
     return TracedOperation(
         "tool_invocation",

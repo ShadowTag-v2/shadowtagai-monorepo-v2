@@ -1,5 +1,4 @@
-"""
-Context Restoration & State Management
+"""Context Restoration & State Management
 Thread rollup for seamless continuation across sessions
 """
 
@@ -23,7 +22,7 @@ class ImmediateActions:
             ],
             "deadline": "End of Week 1",
             "status": "in_progress",
-        }
+        },
     )
 
     priority_2_pipeline: dict[str, Any] = field(
@@ -36,7 +35,7 @@ class ImmediateActions:
             ],
             "deadline": "End of Week 1",
             "status": "pending",
-        }
+        },
     )
 
     priority_3_infrastructure: dict[str, Any] = field(
@@ -49,7 +48,7 @@ class ImmediateActions:
             ],
             "deadline": "End of Week 1",
             "status": "pending",
-        }
+        },
     )
 
     def get_next_action(self) -> str:
@@ -83,7 +82,7 @@ class StateSummary:
             "✅ Technical architecture (Python, LangGraph, GPT-4, Pinecone)",
             "✅ Unit economics validated (LTV:CAC 4:1+, 75% margin)",
             "✅ Kill-switch gates (Month 3, 6, 12 evidence-driven pivots)",
-        ]
+        ],
     )
 
     current_focus: list[str] = field(
@@ -91,7 +90,7 @@ class StateSummary:
             "Priority 1: Build Sales Automation Agent MVP",
             "Priority 2: Validate demand (X thread + 20 founder DMs)",
             "Priority 3: Infrastructure (Stripe + landing + GCP secrets)",
-        ]
+        ],
     )
 
     def to_dict(self) -> dict[str, Any]:

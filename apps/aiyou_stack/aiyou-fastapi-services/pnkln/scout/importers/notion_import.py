@@ -1,5 +1,4 @@
-"""
-Notion Import Script for Boy Scout Rule Registry
+"""Notion Import Script for Boy Scout Rule Registry
 
 Imports skills and agents from registry.json to Notion databases.
 
@@ -65,7 +64,7 @@ class NotionImporter:
         }
 
     def _make_request(
-        self, method: str, endpoint: str, data: dict | None = None, retries: int = 3
+        self, method: str, endpoint: str, data: dict | None = None, retries: int = 3,
     ) -> dict[str, Any]:
         """Make API request with retry logic"""
         url = f"{self.base_url}/{endpoint}"
@@ -177,8 +176,7 @@ def import_registry(
     agents_db_id: str | None = None,
     registry_path: Path | None = None,
 ) -> dict[str, Any]:
-    """
-    Convenience function to import registry to Notion.
+    """Convenience function to import registry to Notion.
 
     Args:
         api_key: Notion Integration Token (or set NOTION_API_KEY env var)
@@ -192,6 +190,7 @@ def import_registry(
     Example:
         >>> result = import_registry()
         >>> print(f"Imported {result['skills_imported']} skills")
+
     """
     importer = NotionImporter(api_key=api_key, skills_db_id=skills_db_id, agents_db_id=agents_db_id)
     return importer.import_from_registry(registry_path)

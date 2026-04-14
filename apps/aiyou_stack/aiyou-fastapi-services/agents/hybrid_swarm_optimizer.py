@@ -2,7 +2,7 @@ import numpy as np
 
 # Patch for scikit-opt compatibility with newer NumPy
 if not hasattr(np, "int"):
-    np.int = int
+    int = int
 
 from typing import Any
 
@@ -11,8 +11,7 @@ from sko.PSO import PSO
 
 
 class HybridSwarmOptimizer:
-    """
-    Hybrid Swarm Optimizer: PSO + ACO Cascade.
+    """Hybrid Swarm Optimizer: PSO + ACO Cascade.
 
     Phase 1: PSO (Particle Swarm Optimization)
     - Allocates tasks to agents to minimize load variance and cost.
@@ -86,7 +85,7 @@ class HybridSwarmOptimizer:
             return total
 
         aca = ACA_TSP(
-            func=aco_func, n_dim=n, size_pop=20, max_iter=max_iter, distance_matrix=distance_matrix
+            func=aco_func, n_dim=n, size_pop=20, max_iter=max_iter, distance_matrix=distance_matrix,
         )
         best_route_indices, best_latency = aca.run()
 

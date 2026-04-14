@@ -1,5 +1,4 @@
-"""
-UnGPT - Atomic Thread Orchestrator
+"""UnGPT - Atomic Thread Orchestrator
 Implements Atom of Thoughts (AoT) with multi-LLM consensus
 """
 
@@ -10,10 +9,10 @@ __version__ = "0.1.0"
 
 __all__ = [
     "AtomicThread",
-    "DecompositionResult",
-    "PNKLNAtomicOrchestrator",
-    "ModelType",
-    "ModelResponse",
-    "PeerReview",
     "ConsensusOrchestrator",
+    "DecompositionResult",
+    "ModelResponse",
+    "ModelType",
+    "PNKLNAtomicOrchestrator",
+    "PeerReview",
 ]

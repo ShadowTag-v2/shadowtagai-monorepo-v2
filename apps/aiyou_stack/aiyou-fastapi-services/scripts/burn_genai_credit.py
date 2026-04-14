@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Vertex AI Search Ingestion Script (Burn Strategy A)
+"""Vertex AI Search Ingestion Script (Burn Strategy A)
 Target: $1,000 GenAI App Builder Credit
 """
 
@@ -26,7 +25,6 @@ def import_documents(
     local_files: list[str] = None,
 ):
     """Imports documents into Vertex AI Search."""
-
     client_options = (
         ClientOptions(api_endpoint=f"{location}-discoveryengine.googleapis.com")
         if location != "global"

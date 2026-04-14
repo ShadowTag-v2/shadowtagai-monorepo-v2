@@ -1,5 +1,4 @@
-"""
-Pnkln Swiper Vertical
+"""Pnkln Swiper Vertical
 Geo-beacon commerce films optimization.
 """
 

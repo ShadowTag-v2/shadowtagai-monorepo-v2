@@ -1,5 +1,4 @@
-"""
-Gemini Extraction Prompts
+"""Gemini Extraction Prompts
 =========================
 Structured prompts for IntelEvent extraction.
 """
@@ -256,14 +255,14 @@ Respond with ONLY the JSON object."""
 
 
 def get_prompt_for_source_type(source_type: str) -> str:
-    """
-    Get the appropriate extraction prompt for a source type.
+    """Get the appropriate extraction prompt for a source type.
 
     Args:
         source_type: Type of source (arxiv, github, federal_register, etc.)
 
     Returns:
         Prompt template string
+
     """
     prompts = {
         "arxiv": ARXIV_EXTRACTION_PROMPT,

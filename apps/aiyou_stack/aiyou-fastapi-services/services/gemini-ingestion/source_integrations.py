@@ -1,5 +1,4 @@
-"""
-Multi-Source Integrations for Gemini Ingestion Layer
+"""Multi-Source Integrations for Gemini Ingestion Layer
 
 Concrete implementations for:
 - YouTube API (videos, comments, transcripts)
@@ -33,7 +32,7 @@ class YouTubeIntegration:
         self.base_url = "https://www.googleapis.com/youtube/v3"
 
     async def search_videos(
-        self, query: str, max_results: int = 20, published_after: datetime | None = None
+        self, query: str, max_results: int = 20, published_after: datetime | None = None,
     ) -> list[dict]:
         """Search YouTube videos"""
         logger.info(f"Searching YouTube: {query}")
@@ -54,7 +53,7 @@ class YouTubeIntegration:
                     "likes": 450,
                     "duration_seconds": 180,
                 },
-            }
+            },
         ]
 
     async def get_video_transcript(self, video_id: str) -> str | None:
@@ -72,7 +71,7 @@ class TwitterIntegration:
         self.base_url = "https://api.twitter.com/2"
 
     async def search_tweets(
-        self, query: str, max_results: int = 100, _since_hours: int = 24
+        self, query: str, max_results: int = 100, _since_hours: int = 24,
     ) -> list[dict]:
         """Search recent tweets"""
         logger.info(f"Searching Twitter: {query}")
@@ -93,7 +92,7 @@ class TwitterIntegration:
                     "likes": 18,
                     "verified": True,
                 },
-            }
+            },
         ]
 
     async def get_trending_topics(self, _location_id: int = 1) -> list[str]:
@@ -110,7 +109,7 @@ class NewsAPIIntegration:
         self.base_url = "https://newsapi.org/v2"
 
     async def search_news(
-        self, query: str, sources: list[str] | None = None, from_date: datetime | None = None
+        self, query: str, sources: list[str] | None = None, from_date: datetime | None = None,
     ) -> list[dict]:
         """Search news articles"""
         logger.info(f"Searching NewsAPI: {query}")
@@ -130,7 +129,7 @@ class NewsAPIIntegration:
                     "author": "Jane Reporter",
                     "category": "Transportation",
                 },
-            }
+            },
         ]
 
 
@@ -162,13 +161,12 @@ class RSSFeedIntegration:
                     "feed_title": "Transportation Weekly",
                     "categories": ["transit", "policy"],
                 },
-            }
+            },
         ]
 
 
 class V2XMeshIntegration:
-    """
-    Integration with V2X Mesh network for real-time traffic events
+    """Integration with V2X Mesh network for real-time traffic events
 
     Provides high-value Tier 1 data from vehicle mesh
     """
@@ -177,7 +175,7 @@ class V2XMeshIntegration:
         self.gateway_url = mesh_gateway_url
 
     async def fetch_recent_events(
-        self, since_minutes: int = 30, min_severity: int = 5
+        self, since_minutes: int = 30, min_severity: int = 5,
     ) -> list[dict]:
         """Fetch recent V2X events"""
         logger.info(f"Fetching V2X mesh events (last {since_minutes}min)")
@@ -244,7 +242,7 @@ class V2XMeshIntegration:
                     },
                     "tier": "tier_1",
                 },
-            }
+            },
         ]
 
 
@@ -276,8 +274,7 @@ class WebScraperIntegration:
 
 
 class SourceOrchestrator:
-    """
-    Orchestrates multi-source data collection
+    """Orchestrates multi-source data collection
 
     Manages concurrent fetching from all sources with priority and rate limiting
     """
@@ -316,7 +313,7 @@ class SourceOrchestrator:
         logger.info("Registered Web Scraper")
 
     async def fetch_all_sources(
-        self, sources: list[SourceConfig], query: str = "traffic transportation"
+        self, sources: list[SourceConfig], query: str = "traffic transportation",
     ) -> dict[str, list[dict]]:
         """Fetch from all configured sources concurrently"""
         logger.info(f"Fetching from {len(sources)} sources...")

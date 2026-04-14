@@ -1,5 +1,4 @@
-"""
-Workflow engine service for executing workflow automation blocks.
+"""Workflow engine service for executing workflow automation blocks.
 """
 
 import re
@@ -23,8 +22,7 @@ from app.services.storage_service import StorageService
 
 
 class WorkflowEngine:
-    """
-    Engine for executing workflow automation blocks.
+    """Engine for executing workflow automation blocks.
     Manages workflow state, variable substitution, and action execution.
     """
 
@@ -47,13 +45,13 @@ class WorkflowEngine:
         return self.workflows.get(workflow_name)
 
     def start_workflow(
-        self, workflow_name: str, initial_variables: dict[str, Any] | None = None
+        self, workflow_name: str, initial_variables: dict[str, Any] | None = None,
     ) -> tuple[WorkflowExecution, WorkflowAction | None]:
-        """
-        Start a new workflow execution.
+        """Start a new workflow execution.
 
         Returns:
             Tuple of (WorkflowExecution, next_action or None)
+
         """
         workflow = self.workflows.get(workflow_name)
         if not workflow:
@@ -62,7 +60,7 @@ class WorkflowEngine:
         # Create execution context
         execution_id = str(uuid.uuid4())
         context = WorkflowExecutionContext(
-            variables=initial_variables or {}, current_action_index=0
+            variables=initial_variables or {}, current_action_index=0,
         )
 
         execution = WorkflowExecution(
@@ -78,13 +76,13 @@ class WorkflowEngine:
         return self._execute_next_action(execution)
 
     def provide_input(
-        self, execution_id: str, input_value: str
+        self, execution_id: str, input_value: str,
     ) -> tuple[WorkflowExecution, WorkflowAction | None]:
-        """
-        Provide user input for a waiting workflow.
+        """Provide user input for a waiting workflow.
 
         Returns:
             Tuple of (WorkflowExecution, next_action or None)
+
         """
         execution = self.executions.get(execution_id)
         if not execution:
@@ -92,7 +90,7 @@ class WorkflowEngine:
 
         if execution.status != WorkflowExecutionStatus.WAITING_INPUT:
             raise ValueError(
-                f"Execution is not waiting for input. Current status: {execution.status}"
+                f"Execution is not waiting for input. Current status: {execution.status}",
             )
 
         workflow = self.workflows.get(execution.workflow_name)
@@ -121,13 +119,13 @@ class WorkflowEngine:
         return self.executions.get(execution_id)
 
     def _execute_next_action(
-        self, execution: WorkflowExecution
+        self, execution: WorkflowExecution,
     ) -> tuple[WorkflowExecution, WorkflowAction | None]:
-        """
-        Execute the next action in the workflow.
+        """Execute the next action in the workflow.
 
         Returns:
             Tuple of (WorkflowExecution, next_action or None)
+
         """
         workflow = self.workflows.get(execution.workflow_name)
         if not workflow:
@@ -151,7 +149,7 @@ class WorkflowEngine:
                 execution.updated_at = datetime.utcnow()
                 return execution, action
 
-            elif isinstance(action, GetDateAction):
+            if isinstance(action, GetDateAction):
                 # Get current date
                 date_value = self._format_date(action.format)
                 execution.context.variables["Date"] = date_value
@@ -160,7 +158,7 @@ class WorkflowEngine:
                 execution.context.current_action_index += 1
                 return self._execute_next_action(execution)
 
-            elif isinstance(action, OpenAppAction):
+            if isinstance(action, OpenAppAction):
                 # Note: In a real implementation, this would interact with a system
                 # For now, we just log it
                 execution.context.variables[f"Opened_{action.appName}"] = True
@@ -169,11 +167,11 @@ class WorkflowEngine:
                 execution.context.current_action_index += 1
                 return self._execute_next_action(execution)
 
-            elif isinstance(action, CreateNoteAction):
+            if isinstance(action, CreateNoteAction):
                 # Create note with variable substitution
                 content = self._substitute_variables(action.content, execution.context.variables)
                 note_id = self.storage_service.create_note(
-                    folder=action.folder, title=action.noteTitle, content=content
+                    folder=action.folder, title=action.noteTitle, content=content,
                 )
                 execution.context.variables[f"Note_{action.noteTitle}_ID"] = note_id
 
@@ -181,7 +179,7 @@ class WorkflowEngine:
                 execution.context.current_action_index += 1
                 return self._execute_next_action(execution)
 
-            elif isinstance(action, AppendToNoteAction):
+            if isinstance(action, AppendToNoteAction):
                 # Append to note with variable substitution
                 content = self._substitute_variables(action.content, execution.context.variables)
                 self.storage_service.append_to_note(title=action.noteTitle, content=content)
@@ -190,8 +188,7 @@ class WorkflowEngine:
                 execution.context.current_action_index += 1
                 return self._execute_next_action(execution)
 
-            else:
-                raise ValueError(f"Unknown action type: {type(action)}")
+            raise ValueError(f"Unknown action type: {type(action)}")
 
         except Exception as e:
             execution.status = WorkflowExecutionStatus.FAILED
@@ -200,8 +197,7 @@ class WorkflowEngine:
             return execution, None
 
     def _substitute_variables(self, template: str, variables: dict[str, Any]) -> str:
-        """
-        Substitute template variables in the format {{VariableName}}.
+        """Substitute template variables in the format {{VariableName}}.
 
         Args:
             template: Template string with {{VariableName}} placeholders
@@ -209,6 +205,7 @@ class WorkflowEngine:
 
         Returns:
             String with variables substituted
+
         """
 
         def replace_var(match):
@@ -218,8 +215,7 @@ class WorkflowEngine:
         return re.sub(r"\{\{([^}]+)\}\}", replace_var, template)
 
     def _format_date(self, format_string: str) -> str:
-        """
-        Format current date according to the format string.
+        """Format current date according to the format string.
 
         Supports simple format tokens:
         - YYYY: 4-digit year

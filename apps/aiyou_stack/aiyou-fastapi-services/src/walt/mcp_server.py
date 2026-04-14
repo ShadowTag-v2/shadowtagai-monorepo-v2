@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-WALT (Web Automation LLM Tool) MCP Server
+"""WALT (Web Automation LLM Tool) MCP Server
 =========================================
 
 Browser automation server implementing the Model Context Protocol (MCP).
@@ -54,12 +53,12 @@ try:
 except ImportError:
     PLAYWRIGHT_AVAILABLE = False
     logging.warning(
-        "Playwright not available. Install with: pip install playwright && playwright install"
+        "Playwright not available. Install with: pip install playwright && playwright install",
     )
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -116,7 +115,7 @@ metrics_tool_latency = Histogram(
 metrics_browser_pool = Gauge("walt_browser_pool_available", "Number of available browsers in pool")
 
 metrics_cost_spent = Counter(
-    "walt_cost_spent_dollars", "Total cost spent on WALT operations", ["call_type"]
+    "walt_cost_spent_dollars", "Total cost spent on WALT operations", ["call_type"],
 )
 
 # ============================================================================
@@ -413,10 +412,9 @@ class ToolExecutor:
         self.browser_manager = browser_manager
 
     async def execute(
-        self, tool_name: ToolName, arguments: dict[str, Any], session_id: str
+        self, tool_name: ToolName, arguments: dict[str, Any], session_id: str,
     ) -> tuple[bool, Any, str | None]:
         """Execute tool and return (success, result, error)"""
-
         # Get browser context and page
         context = await self.browser_manager.get_context(session_id)
         pages = context.pages
@@ -428,22 +426,21 @@ class ToolExecutor:
         try:
             if tool_name == ToolName.NAVIGATE:
                 return await self._navigate(page, arguments)
-            elif tool_name == ToolName.CLICK:
+            if tool_name == ToolName.CLICK:
                 return await self._click(page, arguments)
-            elif tool_name == ToolName.FILL:
+            if tool_name == ToolName.FILL:
                 return await self._fill(page, arguments)
-            elif tool_name == ToolName.EXTRACT:
+            if tool_name == ToolName.EXTRACT:
                 return await self._extract_text(page, arguments)
-            elif tool_name == ToolName.EXTRACT_STRUCTURED:
+            if tool_name == ToolName.EXTRACT_STRUCTURED:
                 return await self._extract_structured(page, arguments)
-            elif tool_name == ToolName.SCREENSHOT:
+            if tool_name == ToolName.SCREENSHOT:
                 return await self._screenshot(page, arguments)
-            elif tool_name == ToolName.WORKFLOW:
+            if tool_name == ToolName.WORKFLOW:
                 return await self._run_workflow(page, arguments)
-            elif tool_name == ToolName.SEARCH_AND_EXTRACT:
+            if tool_name == ToolName.SEARCH_AND_EXTRACT:
                 return await self._search_and_extract(page, arguments)
-            else:
-                return False, None, f"Unknown tool: {tool_name}"
+            return False, None, f"Unknown tool: {tool_name}"
 
         except Exception as e:
             logger.error(f"Tool execution error: {e}")
@@ -482,12 +479,11 @@ class ToolExecutor:
             elements = await page.query_selector_all(selector)
             texts = [await el.inner_text() for el in elements]
             return True, {"texts": texts, "count": len(texts)}, None
-        else:
-            element = await page.query_selector(selector)
-            if not element:
-                return False, None, f"Element not found: {selector}"
-            text = await element.inner_text()
-            return True, {"text": text}, None
+        element = await page.query_selector(selector)
+        if not element:
+            return False, None, f"Element not found: {selector}"
+        text = await element.inner_text()
+        return True, {"text": text}, None
 
     async def _extract_structured(self, page: Page, args: dict) -> tuple[bool, Any, str | None]:
         """Extract structured data"""
@@ -503,8 +499,7 @@ class ToolExecutor:
                 row_data = [await cell.inner_text() for cell in cells]
                 data.append(row_data)
             return True, {"data": data, "rows": len(data)}, None
-        else:
-            return False, None, f"Unsupported structure type: {structure}"
+        return False, None, f"Unsupported structure type: {structure}"
 
     async def _screenshot(self, page: Page, args: dict) -> tuple[bool, Any, str | None]:
         """Take screenshot"""
@@ -573,7 +568,7 @@ class ToolExecutor:
                 None,
             )
         except Exception as e:
-            return False, None, f"Temporal Swarm Dispatch Failed: {str(e)}"
+            return False, None, f"Temporal Swarm Dispatch Failed: {e!s}"
 
     async def _search_and_extract(self, page: Page, args: dict) -> tuple[bool, Any, str | None]:
         """Search and extract (placeholder - requires LLM integration)"""
@@ -611,7 +606,7 @@ class ToolExecutor:
                 None,
             )
         except Exception as e:
-            return False, None, f"Temporal Swarm Dispatch Failed: {str(e)}"
+            return False, None, f"Temporal Swarm Dispatch Failed: {e!s}"
 
 
 # ============================================================================
@@ -667,7 +662,7 @@ async def list_tools():
                 "input_schema": tool.input_schema,
             }
             for tool in WALT_TOOLS
-        ]
+        ],
     }
 
 
@@ -688,7 +683,7 @@ async def call_tool(request: ToolCallRequest) -> ToolCallResponse:
 
     # Execute tool
     success, result, error = await tool_executor.execute(
-        request.tool_name, request.arguments, request.session_id
+        request.tool_name, request.arguments, request.session_id,
     )
 
     execution_time_ms = (time.time() - start_time) * 1000
@@ -701,7 +696,7 @@ async def call_tool(request: ToolCallRequest) -> ToolCallResponse:
     ).inc()
 
     metrics_tool_latency.labels(
-        tool_name=request.tool_name.value, call_type=actual_call_type.value
+        tool_name=request.tool_name.value, call_type=actual_call_type.value,
     ).observe(execution_time_ms / 1000)
 
     metrics_cost_spent.labels(call_type=actual_call_type.value).inc(cost)
@@ -774,7 +769,7 @@ def create_mcp_server():
     async def navigate(url: str, session_id: str = "default", wait_until: str = "load") -> str:
         """Navigate to a URL"""
         success, result, error = await tool_executor.execute(
-            ToolName.NAVIGATE, {"url": url, "wait_until": wait_until}, session_id
+            ToolName.NAVIGATE, {"url": url, "wait_until": wait_until}, session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -784,7 +779,7 @@ def create_mcp_server():
     async def click(selector: str, session_id: str = "default", button: str = "left") -> str:
         """Click an element"""
         success, result, error = await tool_executor.execute(
-            ToolName.CLICK, {"selector": selector, "button": button}, session_id
+            ToolName.CLICK, {"selector": selector, "button": button}, session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -794,7 +789,7 @@ def create_mcp_server():
     async def fill(selector: str, value: str, session_id: str = "default") -> str:
         """Fill a form field"""
         success, result, error = await tool_executor.execute(
-            ToolName.FILL, {"selector": selector, "value": value}, session_id
+            ToolName.FILL, {"selector": selector, "value": value}, session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -802,11 +797,11 @@ def create_mcp_server():
 
     @mcp.tool()
     async def extract_text(
-        selector: str, multiple: bool = False, session_id: str = "default"
+        selector: str, multiple: bool = False, session_id: str = "default",
     ) -> str:
         """Extract text from element(s)"""
         success, result, error = await tool_executor.execute(
-            ToolName.EXTRACT, {"selector": selector, "multiple": multiple}, session_id
+            ToolName.EXTRACT, {"selector": selector, "multiple": multiple}, session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -814,11 +809,11 @@ def create_mcp_server():
 
     @mcp.tool()
     async def extract_structured(
-        selector: str, structure: str = "table", session_id: str = "default"
+        selector: str, structure: str = "table", session_id: str = "default",
     ) -> str:
         """Extract structured data"""
         success, result, error = await tool_executor.execute(
-            ToolName.EXTRACT_STRUCTURED, {"selector": selector, "structure": structure}, session_id
+            ToolName.EXTRACT_STRUCTURED, {"selector": selector, "structure": structure}, session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -826,13 +821,13 @@ def create_mcp_server():
 
     @mcp.tool()
     async def screenshot(
-        selector: str = None, full_page: bool = True, session_id: str = "default"
+        selector: str = None, full_page: bool = True, session_id: str = "default",
     ) -> Any:
         """Take a screenshot"""
         import base64
 
         success, result, error = await tool_executor.execute(
-            ToolName.SCREENSHOT, {"selector": selector, "full_page": full_page}, session_id
+            ToolName.SCREENSHOT, {"selector": selector, "full_page": full_page}, session_id,
         )
         if not success:
             return f"Error: {error}"

@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Workplace Vertical
+"""Verdict Systems - Workplace Vertical
 Employer-controlled focus, workflow enforcement, productivity tracking
 
 Features:

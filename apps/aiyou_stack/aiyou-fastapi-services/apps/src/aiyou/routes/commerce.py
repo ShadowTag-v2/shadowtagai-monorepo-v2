@@ -1,5 +1,4 @@
-"""
-Commerce Mall API Routes.
+"""Commerce Mall API Routes.
 
 Handles product catalog, cart, and checkout.
 """
@@ -36,7 +35,7 @@ class CheckoutRequest(BaseModel):
 
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(
-    category: str = None, db: Session = Depends(get_db), skip: int = 0, limit: int = 50
+    category: str = None, db: Session = Depends(get_db), skip: int = 0, limit: int = 50,
 ):
     """List products with optional filtering."""
     query = db.query(Product).filter(Product.is_active)
@@ -107,7 +106,7 @@ async def checkout(
                     quantity=item["quantity"],
                     price_cents=prod.price_cents,
                     subtotal_cents=subtotal,
-                )
+                ),
             )
 
     # Create Order

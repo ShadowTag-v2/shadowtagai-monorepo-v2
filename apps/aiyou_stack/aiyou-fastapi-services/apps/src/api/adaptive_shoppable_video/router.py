@@ -1,6 +1,5 @@
 # ruff: noqa: F403, F405
-"""
-Adaptive Shoppable Video Platform (Amazon Challenger) - FastAPI Service
+"""Adaptive Shoppable Video Platform (Amazon Challenger) - FastAPI Service
 
 This is brilliantly inventive ✅ — merging adtech + streaming + commerce into one seamless loop.
 
@@ -157,8 +156,7 @@ async def health_check():
 
 @app.post("/videos", response_model=VideoResponse, status_code=201)
 async def create_video(video: VideoCreate):
-    """
-    Create a new video with adaptive shoppable features
+    """Create a new video with adaptive shoppable features
 
     Supports:
     - Multiple formats (short-form, long-form, adaptive)
@@ -194,8 +192,7 @@ async def list_videos(
     limit: int = Query(default=20, le=100),
     offset: int = Query(default=0, ge=0),
 ):
-    """
-    List videos with filtering options
+    """List videos with filtering options
 
     Filter by:
     - Format (short_form, long_form, adaptive, etc.)
@@ -237,8 +234,7 @@ async def get_video(video_id: str):
 
 @app.post("/videos/play", response_model=AdaptiveVideoResponse)
 async def get_adaptive_playback(request: AdaptiveVideoRequest):
-    """
-    🎬 CORE FEATURE: Adaptive Shoppable Video Playback
+    """🎬 CORE FEATURE: Adaptive Shoppable Video Playback
 
     This endpoint powers AdaptiveShoppableVideo's three major innovations:
 
@@ -326,7 +322,7 @@ async def get_adaptive_playback(request: AdaptiveVideoRequest):
                         "height": overlay["height"],
                     },
                     "cta_text": overlay["cta_text"],
-                }
+                },
             )
 
     # Select persuasion points (household targeting)
@@ -384,7 +380,7 @@ async def get_adaptive_playback(request: AdaptiveVideoRequest):
                 "came_from_url": request.came_from_url,
                 "behavioral_signals": behavioral_signals,
             },
-        }
+        },
     )
 
     # Update video view count
@@ -451,8 +447,7 @@ async def list_products(
 
 @app.post("/products/overlays", status_code=201)
 async def create_product_overlay(overlay: ProductOverlayCreate):
-    """
-    Add shoppable product overlay to video
+    """Add shoppable product overlay to video
 
     Creates clickable hotspot that appears during specific time window
     Users can tap to add-to-cart without leaving the video
@@ -489,8 +484,7 @@ async def create_product_overlay(overlay: ProductOverlayCreate):
 
 @app.post("/persuasion-points", status_code=201)
 async def create_persuasion_point(point: PersuasionPointCreate):
-    """
-    🗣️ Add persuasion talking points to video
+    """🗣️ Add persuasion talking points to video
 
     Persuasion Layer Innovation:
     Most ads only persuade the individual. AdaptiveShoppableVideo persuades the household.
@@ -510,6 +504,7 @@ async def create_persuasion_point(point: PersuasionPointCreate):
     - Eliminates friction in family/household purchases (>70% of retail)
     - Higher conversion rates for high-consideration items
     - Unique moat: Only AdaptiveShoppableVideo targets the full decision chain
+
     """
     if point.video_id not in videos_db:
         raise HTTPException(status_code=404, detail="Video not found")
@@ -530,7 +525,7 @@ async def create_persuasion_point(point: PersuasionPointCreate):
 
 @app.get("/persuasion-points")
 async def list_persuasion_points(
-    video_id: str | None = None, target_audience: PersuasionTarget | None = None
+    video_id: str | None = None, target_audience: PersuasionTarget | None = None,
 ):
     """List persuasion points with optional filters"""
     filtered = list(persuasion_points_db.values())
@@ -550,8 +545,7 @@ async def list_persuasion_points(
 
 @app.post("/interactions", status_code=201)
 async def log_interaction(interaction: InteractionCreate):
-    """
-    Log user interaction (view, click, purchase, etc.)
+    """Log user interaction (view, click, purchase, etc.)
 
     Powers AI personalization by capturing:
     - Behavioral signals (scroll, hover, seek, pause)
@@ -617,8 +611,7 @@ async def get_interactions(
 
 @app.get("/analytics/videos/{video_id}", response_model=AnalyticsSummary)
 async def get_video_analytics(video_id: str):
-    """
-    Get comprehensive analytics for a video
+    """Get comprehensive analytics for a video
 
     Metrics include:
     - Engagement: Views, completion rate, watch time
@@ -637,12 +630,12 @@ async def get_video_analytics(video_id: str):
 
     # Calculate metrics
     total_views = len(
-        [i for i in video_interactions if i["interaction_type"] == InteractionType.VIEW]
+        [i for i in video_interactions if i["interaction_type"] == InteractionType.VIEW],
     )
     unique_viewers = len(set(i["user_id"] for i in video_interactions if i.get("user_id")))
 
     total_purchases = len(
-        [i for i in video_interactions if i["interaction_type"] == InteractionType.PURCHASE]
+        [i for i in video_interactions if i["interaction_type"] == InteractionType.PURCHASE],
     )
     total_revenue = sum(
         i.get("purchase_amount", 0)
@@ -664,7 +657,7 @@ async def get_video_analytics(video_id: str):
     product_clicks = {}
     for interaction in video_interactions:
         if interaction["interaction_type"] == InteractionType.CLICK_PRODUCT and interaction.get(
-            "product_id"
+            "product_id",
         ):
             product_id = interaction["product_id"]
             product_clicks[product_id] = product_clicks.get(product_id, 0) + 1
@@ -679,7 +672,7 @@ async def get_video_analytics(video_id: str):
                     "name": product["name"],
                     "clicks": clicks,
                     "price": product["price"],
-                }
+                },
             )
 
     # Persuasion effectiveness (mock - would need A/B test data)
@@ -718,8 +711,7 @@ async def get_video_analytics(video_id: str):
 
 @app.get("/analytics/dashboard")
 async def get_platform_analytics():
-    """
-    Platform-wide analytics dashboard
+    """Platform-wide analytics dashboard
 
     Shows overall AdaptiveShoppableVideo performance across all videos and retailers
     """
@@ -770,21 +762,21 @@ async def get_platform_analytics():
                     v
                     for v in videos_db.values()
                     if v["personalization_stage"] == PersonalizationStage.RULES
-                ]
+                ],
             ),
             "bandits_stage_videos": len(
                 [
                     v
                     for v in videos_db.values()
                     if v["personalization_stage"] == PersonalizationStage.BANDITS
-                ]
+                ],
             ),
             "generative_stage_videos": len(
                 [
                     v
                     for v in videos_db.values()
                     if v["personalization_stage"] == PersonalizationStage.GENERATIVE
-                ]
+                ],
             ),
         },
         "top_categories": [
@@ -810,8 +802,7 @@ async def create_retailer(
     store_locations: list[dict] | None = None,
     revenue_share_percentage: float = 10.0,
 ):
-    """
-    Register a retail partner for Premium Beacons
+    """Register a retail partner for Premium Beacons
 
     Retailers sponsor location-based content and shoppable videos
     """
@@ -871,11 +862,11 @@ async def get_retailer_performance(retailer_id: str):
         "total_conversions": total_conversions,
         "total_revenue_usd": round(retailer_revenue, 2),
         "conversion_rate_pct": round(
-            (total_conversions / total_views * 100) if total_views > 0 else 0.0, 2
+            (total_conversions / total_views * 100) if total_views > 0 else 0.0, 2,
         ),
         "revenue_share_pct": retailer["revenue_share_percentage"],
         "retailer_payout_usd": round(
-            retailer_revenue * (retailer["revenue_share_percentage"] / 100), 2
+            retailer_revenue * (retailer["revenue_share_percentage"] / 100), 2,
         ),
     }
 
@@ -887,8 +878,7 @@ async def get_retailer_performance(retailer_id: str):
 
 @app.on_event("startup")
 async def startup_event():
-    """
-    Initialize platform with demo data
+    """Initialize platform with demo data
     """
     print("🎥 Adaptive Shoppable Video Platform (Amazon Challenger) starting...")
     print("✅ Billboards nag. YouTube interrupts. AdaptiveShoppableVideo entertains.")

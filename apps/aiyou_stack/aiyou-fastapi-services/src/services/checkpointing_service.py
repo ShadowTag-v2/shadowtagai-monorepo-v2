@@ -27,6 +27,7 @@ class CheckpointingService:
         Args:
             db: Database session
             store: Checkpoint storage instance
+
         """
         self.db = db
         self.store = store or CheckpointStore()
@@ -39,6 +40,7 @@ class CheckpointingService:
 
         Returns:
             Created checkpoint
+
         """
         # Generate checkpoint ID
         checkpoint_id = str(uuid.uuid4())
@@ -72,7 +74,7 @@ class CheckpointingService:
             try:
                 # Save file to storage
                 content_hash, size_bytes, storage_path = await self.store.save_file(
-                    checkpoint_id=checkpoint_id, file_path=file_path, snapshot_id=snapshot_id
+                    checkpoint_id=checkpoint_id, file_path=file_path, snapshot_id=snapshot_id,
                 )
 
                 # Create file snapshot record
@@ -106,7 +108,7 @@ class CheckpointingService:
         return checkpoint
 
     async def restore_checkpoint(
-        self, checkpoint_id: str, restore_data: CheckpointRestore
+        self, checkpoint_id: str, restore_data: CheckpointRestore,
     ) -> Checkpoint:
         """Restore a checkpoint.
 
@@ -119,6 +121,7 @@ class CheckpointingService:
 
         Raises:
             ValueError: If checkpoint not found or invalid
+
         """
         # Get checkpoint
         checkpoint = self.db.query(Checkpoint).filter(Checkpoint.id == checkpoint_id).first()
@@ -142,7 +145,7 @@ class CheckpointingService:
                 try:
                     # Restore file from storage
                     await self.store.restore_file(
-                        storage_path=snapshot.storage_path, target_path=snapshot.file_path
+                        storage_path=snapshot.storage_path, target_path=snapshot.file_path,
                     )
                 except Exception as e:
                     print(f"Error restoring file {snapshot.file_path}: {e}")
@@ -165,6 +168,7 @@ class CheckpointingService:
 
         Returns:
             Checkpoint or None if not found
+
         """
         return (
             self.db.query(Checkpoint)
@@ -173,7 +177,7 @@ class CheckpointingService:
         )
 
     def list_checkpoints(
-        self, session_id: str, limit: int = 100, offset: int = 0
+        self, session_id: str, limit: int = 100, offset: int = 0,
     ) -> tuple[list[Checkpoint], int]:
         """List checkpoints for a session.
 
@@ -184,6 +188,7 @@ class CheckpointingService:
 
         Returns:
             Tuple of (checkpoints, total_count)
+
         """
         query = (
             self.db.query(Checkpoint)
@@ -204,6 +209,7 @@ class CheckpointingService:
 
         Returns:
             List of file snapshots
+
         """
         return self.db.query(FileSnapshot).filter(FileSnapshot.checkpoint_id == checkpoint_id).all()
 
@@ -215,6 +221,7 @@ class CheckpointingService:
 
         Returns:
             True if deleted, False if not found
+
         """
         checkpoint = self.get_checkpoint(checkpoint_id)
 
@@ -238,6 +245,7 @@ class CheckpointingService:
 
         Returns:
             Number of checkpoints cleaned up
+
         """
         now = datetime.utcnow()
 
@@ -274,6 +282,7 @@ class CheckpointingService:
 
         Returns:
             Dictionary with session statistics
+
         """
         checkpoints = (
             self.db.query(Checkpoint)
@@ -290,9 +299,9 @@ class CheckpointingService:
             "total_files": total_files,
             "total_size_bytes": total_size,
             "active_checkpoints": len(
-                [cp for cp in checkpoints if cp.status == CheckpointStatus.ACTIVE.value]
+                [cp for cp in checkpoints if cp.status == CheckpointStatus.ACTIVE.value],
             ),
             "restored_checkpoints": len(
-                [cp for cp in checkpoints if cp.status == CheckpointStatus.RESTORED.value]
+                [cp for cp in checkpoints if cp.status == CheckpointStatus.RESTORED.value],
             ),
         }

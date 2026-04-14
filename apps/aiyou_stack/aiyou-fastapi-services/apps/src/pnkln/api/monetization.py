@@ -28,8 +28,7 @@ class APIKey(BaseModel):
 
 
 class StripeClient:
-    """
-    Stub for Stripe integration.
+    """Stub for Stripe integration.
     In production, this would use the official stripe library.
     """
 
@@ -45,12 +44,10 @@ class StripeClient:
         """Report metered usage to Stripe."""
         # STUB: Log usage report
         # print(f"///▞ STRIPE :: Reported usage {quantity} for {subscription_id}")
-        pass
 
 
 class MonetizationEngine:
-    """
-    Core engine for handling API keys, tracking usage, and enforcing pricing tiers.
+    """Core engine for handling API keys, tracking usage, and enforcing pricing tiers.
     Plugins 'Wealth Leaks' by capturing value at the API layer.
     """
 
@@ -98,8 +95,7 @@ class MonetizationEngine:
         return None
 
     def track_request(self, api_key: str, endpoint: str) -> dict:
-        """
-        Tracks a request, updates spend, and checks limits.
+        """Tracks a request, updates spend, and checks limits.
         Returns usage stats or raises error if limit exceeded.
         """
         key = self.validate_key(api_key)
@@ -160,7 +156,7 @@ if __name__ == "__main__":
     print("///▞ TRACKING REQUEST :: 'decision_complex'")
     stats = monetization.track_request(key, "decision_complex")
     print(
-        f"///▞ USAGE :: Cost=${stats['cost']} | TotalSpend=${monetization.calculate_total_revenue()}"
+        f"///▞ USAGE :: Cost=${stats['cost']} | TotalSpend=${monetization.calculate_total_revenue()}",
     )
 
     # Verify Persistence

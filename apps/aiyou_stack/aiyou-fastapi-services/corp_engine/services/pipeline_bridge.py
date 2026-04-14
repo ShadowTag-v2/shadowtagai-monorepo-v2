@@ -1,5 +1,4 @@
-"""
-Pipeline Bridge Service
+"""Pipeline Bridge Service
 ========================
 Bridge between Nightly Intel Pipeline and Corp Engine.
 Subscribes to pipeline output topics and routes to tenant processing.
@@ -14,8 +13,7 @@ from google.cloud import pubsub_v1
 
 
 class PipelineBridge:
-    """
-    Bridges Nightly Intel Pipeline output to Corp Engine.
+    """Bridges Nightly Intel Pipeline output to Corp Engine.
 
     Subscribes to:
     - pnkln-scored-items: Scored intel from pipeline
@@ -37,7 +35,7 @@ class PipelineBridge:
 
         # Output topic for processed intel
         self.output_topic = self.publisher.topic_path(
-            self.project_id, "corp-engine-intel-updates-prod"
+            self.project_id, "corp-engine-intel-updates-prod",
         )
 
         self._running = False
@@ -61,7 +59,7 @@ class PipelineBridge:
     async def _subscribe_scored_items(self):
         """Subscribe to scored items from Nightly Pipeline"""
         subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscriptions["scored_items"]
+            self.project_id, self.subscriptions["scored_items"],
         )
 
         def callback(message):
@@ -77,7 +75,7 @@ class PipelineBridge:
     async def _subscribe_config_changes(self):
         """Subscribe to tenant config changes"""
         subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscriptions["config_changes"]
+            self.project_id, self.subscriptions["config_changes"],
         )
 
         def callback(message):
@@ -93,7 +91,7 @@ class PipelineBridge:
     async def _subscribe_auto_port(self):
         """Subscribe to auto-port framework notifications"""
         subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscriptions["auto_port"]
+            self.project_id, self.subscriptions["auto_port"],
         )
 
         def callback(message):
@@ -191,14 +189,13 @@ class PipelineBridge:
 
         if "security" in title or "vulnerability" in title:
             return "security_alert"
-        elif "release" in title or "version" in title:
+        if "release" in title or "version" in title:
             return "framework_release"
-        elif "arxiv" in source:
+        if "arxiv" in source:
             return "research_paper"
-        elif any(kw in source for kw in ["github", "npm", "pypi"]):
+        if any(kw in source for kw in ["github", "npm", "pypi"]):
             return "package_update"
-        else:
-            return "tech_update"
+        return "tech_update"
 
     def _extract_tech_keywords(self, data: dict) -> list[str]:
         """Extract technology keywords from intel data"""

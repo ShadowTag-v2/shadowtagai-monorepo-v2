@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PDF Indexer for Scholarly Papers
+"""PDF Indexer for Scholarly Papers
 Indexes PDFs for Flying n-autoresearch/Kosmos/BioAgents research corpus.
 Apertus-style scholarly document ingestion.
 """
@@ -31,8 +30,7 @@ class PDFMetadata:
 
 
 class PDFIndexer:
-    """
-    Scholarly PDF indexer for Flying n-autoresearch/Kosmos/BioAgents corpus.
+    """Scholarly PDF indexer for Flying n-autoresearch/Kosmos/BioAgents corpus.
 
     Extracts text, metadata, and indexes for searchable research.
     """
@@ -115,8 +113,7 @@ class PDFIndexer:
         )
 
     def index_pdf(self, pdf_path: str, category: str = "paper") -> str:
-        """
-        Index a single PDF.
+        """Index a single PDF.
 
         Args:
             pdf_path: Path to PDF file
@@ -124,6 +121,7 @@ class PDFIndexer:
 
         Returns:
             Document ID
+
         """
         # Extract text
         text = self.extract_text(pdf_path)
@@ -157,8 +155,7 @@ class PDFIndexer:
         return doc_id
 
     def index_directory(self, dir_path: str, recursive: bool = True) -> list[str]:
-        """
-        Index all PDFs in directory.
+        """Index all PDFs in directory.
 
         Args:
             dir_path: Directory to scan
@@ -166,6 +163,7 @@ class PDFIndexer:
 
         Returns:
             List of document IDs
+
         """
         indexed = []
         path = Path(dir_path)
@@ -182,8 +180,7 @@ class PDFIndexer:
         return indexed
 
     def index_arxiv_list(self, arxiv_ids: list[str], download_dir: str = "/tmp/arxiv") -> list[str]:
-        """
-        Download and index papers from arXiv.
+        """Download and index papers from arXiv.
 
         Args:
             arxiv_ids: List of arXiv IDs (e.g., ["2301.00001", "2301.00002"])
@@ -191,6 +188,7 @@ class PDFIndexer:
 
         Returns:
             List of document IDs
+
         """
         import urllib.request
 

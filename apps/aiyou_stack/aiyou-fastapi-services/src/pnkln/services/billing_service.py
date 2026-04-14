@@ -1,5 +1,4 @@
-"""
-PNKLN Billing Service - Stripe Integration
+"""PNKLN Billing Service - Stripe Integration
 Handles invoice generation, usage recording, and webhook processing.
 """
 
@@ -18,17 +17,16 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "sk_test_placeholder")
 
 
 class BillingService:
-    """
-    Billing service for Tower Edge revenue capture.
+    """Billing service for Tower Edge revenue capture.
     Integrates with Stripe for invoicing and usage-based billing.
     """
 
     def __init__(self, rate_card: RateCard | None = None):
-        """
-        Initialize billing service.
+        """Initialize billing service.
 
         Args:
             rate_card: RateCard for pricing (defaults to standard rates)
+
         """
         self.rate_card = rate_card or RateCard()
         self._ensure_stripe_products()
@@ -60,12 +58,12 @@ class BillingService:
 
             if "PNKLN Edge Inference" not in product_names:
                 self.inference_product = stripe.Product.create(
-                    name="PNKLN Edge Inference", description="Low-latency inference at edge node"
+                    name="PNKLN Edge Inference", description="Low-latency inference at edge node",
                 )
                 self.inference_price = stripe.Price.create(
                     product=self.inference_product.id,
                     unit_amount=int(
-                        self.rate_card.inference_unit_price * 100 * 1000
+                        self.rate_card.inference_unit_price * 100 * 1000,
                     ),  # Per 1000 inferences
                     currency="usd",
                     billing_scheme="per_unit",
@@ -84,8 +82,7 @@ class BillingService:
             self.inference_price = None
 
     def get_or_create_customer(self, client_id: str, email: str | None = None) -> str:
-        """
-        Get or create a Stripe customer for the client.
+        """Get or create a Stripe customer for the client.
 
         Args:
             client_id: Internal client identifier
@@ -93,6 +90,7 @@ class BillingService:
 
         Returns:
             Stripe customer ID
+
         """
         try:
             # Search for existing customer by metadata
@@ -109,10 +107,9 @@ class BillingService:
             return f"mock_customer_{client_id}"
 
     def record_usage(
-        self, client_id: str, node_id: str, gb_processed: float, inference_count: int
+        self, client_id: str, node_id: str, gb_processed: float, inference_count: int,
     ) -> str:
-        """
-        Record usage for a client.
+        """Record usage for a client.
 
         Args:
             client_id: Client identifier
@@ -122,6 +119,7 @@ class BillingService:
 
         Returns:
             Usage record ID
+
         """
         event = RevenueEvent(
             client_id=client_id,
@@ -135,14 +133,13 @@ class BillingService:
         logger.info(
             f"Usage recorded: {client_id} | Node: {node_id} | "
             f"Egress: {gb_processed}GB | Inferences: {inference_count} | "
-            f"Bill: ${bill_amount:.4f}"
+            f"Bill: ${bill_amount:.4f}",
         )
 
         return f"usage_{client_id}_{datetime.now().isoformat()}"
 
     def create_invoice(self, client_id: str, revenue_event: RevenueEvent) -> str:
-        """
-        Create an invoice for a revenue event.
+        """Create an invoice for a revenue event.
 
         Args:
             client_id: Client identifier
@@ -150,6 +147,7 @@ class BillingService:
 
         Returns:
             Invoice ID
+
         """
         try:
             customer_id = self.get_or_create_customer(client_id)
@@ -195,8 +193,7 @@ class BillingService:
 
     @staticmethod
     def handle_webhook(payload: bytes, sig_header: str, endpoint_secret: str) -> dict:
-        """
-        Handle Stripe webhook events.
+        """Handle Stripe webhook events.
 
         Args:
             payload: Raw webhook payload
@@ -205,6 +202,7 @@ class BillingService:
 
         Returns:
             Processed event data
+
         """
         try:
             event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
@@ -214,7 +212,7 @@ class BillingService:
                 logger.info(f"Invoice {invoice.id} paid: ${invoice.amount_paid / 100:.2f}")
                 return {"status": "success", "event": "invoice.paid", "invoice_id": invoice.id}
 
-            elif event.type == "invoice.payment_failed":
+            if event.type == "invoice.payment_failed":
                 invoice = event.data.object
                 logger.warning(f"Invoice {invoice.id} payment failed")
                 return {

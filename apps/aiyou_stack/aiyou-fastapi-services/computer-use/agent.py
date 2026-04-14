@@ -1,5 +1,4 @@
-"""
-Gemini Computer-Use Agent
+"""Gemini Computer-Use Agent
 
 Safety-controlled browser automation agent using Gemini 2.5 Computer-Use API.
 """
@@ -57,11 +56,11 @@ def _part_image(png_bytes: bytes) -> types.Part:
 
 
 def main() -> int:
-    """
-    Run the Computer-Use agent.
+    """Run the Computer-Use agent.
 
     Returns:
         Exit code (0 = success, non-zero = failure)
+
     """
     api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
@@ -103,7 +102,7 @@ def main() -> int:
                                 types.Part(text=GOAL),
                                 _part_image(png),
                             ],
-                        )
+                        ),
                     ],
                     config=cfg,
                 )

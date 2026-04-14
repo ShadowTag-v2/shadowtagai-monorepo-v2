@@ -1,5 +1,4 @@
-"""
-MONTE CARLO RISK ASSESSMENT - Concurrent Execution Pattern
+"""MONTE CARLO RISK ASSESSMENT - Concurrent Execution Pattern
 ===========================================================
 
 SK PATTERN 2: Concurrent Execution
@@ -84,8 +83,7 @@ class MonteCarloResult:
 
 
 class ProbabilityModelA:
-    """
-    Model A: Frequent events (>1 per week).
+    """Model A: Frequent events (>1 per week).
 
     Evaluates if decision could lead to frequent negative outcomes.
     """
@@ -116,8 +114,7 @@ class ProbabilityModelA:
 
 
 class ProbabilityModelB:
-    """
-    Model B: Likely events (1 per month - 1 per year).
+    """Model B: Likely events (1 per month - 1 per year).
     """
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
@@ -129,7 +126,7 @@ class ProbabilityModelB:
         # Heuristic: moderate risk keywords
         likely_keywords = ["sometimes", "occasionally", "often"]
         score = sum(1 for kw in likely_keywords if kw in decision_text) / max(
-            len(likely_keywords), 1
+            len(likely_keywords), 1,
         )
 
         severity = SeverityLevel.III_MODERATE if score > 0.3 else SeverityLevel.IV_NEGLIGIBLE
@@ -144,8 +141,7 @@ class ProbabilityModelB:
 
 
 class ProbabilityModelC:
-    """
-    Model C: Occasional events (1 per 1-3 years).
+    """Model C: Occasional events (1 per 1-3 years).
     """
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
@@ -157,7 +153,7 @@ class ProbabilityModelC:
         # Heuristic: rare but possible
         occasional_keywords = ["maybe", "possible", "could"]
         score = sum(1 for kw in occasional_keywords if kw in decision_text) / max(
-            len(occasional_keywords), 1
+            len(occasional_keywords), 1,
         )
 
         severity = SeverityLevel.III_MODERATE if score > 0.4 else SeverityLevel.IV_NEGLIGIBLE
@@ -172,8 +168,7 @@ class ProbabilityModelC:
 
 
 class ProbabilityModelD:
-    """
-    Model D: Seldom events (1 per 10 years).
+    """Model D: Seldom events (1 per 10 years).
     """
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
@@ -185,7 +180,7 @@ class ProbabilityModelD:
         # Heuristic: very rare indicators
         seldom_keywords = ["rarely", "unlikely", "uncommon"]
         score = sum(1 for kw in seldom_keywords if kw in decision_text) / max(
-            len(seldom_keywords), 1
+            len(seldom_keywords), 1,
         )
 
         severity = SeverityLevel.IV_NEGLIGIBLE
@@ -200,8 +195,7 @@ class ProbabilityModelD:
 
 
 class ProbabilityModelE:
-    """
-    Model E: Unlikely events (<1 per 10 years).
+    """Model E: Unlikely events (<1 per 10 years).
     """
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
@@ -213,7 +207,7 @@ class ProbabilityModelE:
         # Heuristic: extremely rare
         unlikely_keywords = ["never", "impossible", "won't happen"]
         score = sum(1 for kw in unlikely_keywords if kw in decision_text) / max(
-            len(unlikely_keywords), 1
+            len(unlikely_keywords), 1,
         )
 
         severity = SeverityLevel.IV_NEGLIGIBLE
@@ -233,8 +227,7 @@ class ProbabilityModelE:
 
 
 class MonteCarloRiskAssessment:
-    """
-    Concurrent probability assessment using 5 parallel models.
+    """Concurrent probability assessment using 5 parallel models.
 
     SK Pattern: Concurrent Execution
     Performance: <500μs for all 5 models via AsyncIO gather()
@@ -261,8 +254,7 @@ class MonteCarloRiskAssessment:
         logger.info("Monte Carlo Risk Assessment initialized (5 models)")
 
     async def evaluate_scenarios(self, decision: dict) -> MonteCarloResult:
-        """
-        Run all 5 probability models in parallel.
+        """Run all 5 probability models in parallel.
 
         Args:
             decision: Decision to assess
@@ -272,6 +264,7 @@ class MonteCarloRiskAssessment:
 
         Performance:
             Target <500μs total execution
+
         """
         start_time = time.perf_counter()
 
@@ -322,7 +315,7 @@ class MonteCarloRiskAssessment:
             logger.info(
                 f"Monte Carlo completed in {execution_time_us:.1f}μs: "
                 f"{final_risk_level.value} "
-                f"({selected_probability.value} × {selected_severity.value})"
+                f"({selected_probability.value} × {selected_severity.value})",
             )
 
         return result
@@ -350,7 +343,7 @@ async def example_usage():
     # Test case 2: Higher risk decision
     print("\n=== Test 2: Higher risk decision ===")
     decision2 = {
-        "text": "This change will constantly affect production systems repeatedly every time"
+        "text": "This change will constantly affect production systems repeatedly every time",
     }
     result2 = await assessor.evaluate_scenarios(decision2)
     print(f"Risk Level: {result2.final_risk_level.value}")
@@ -374,7 +367,7 @@ async def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     asyncio.run(example_usage())

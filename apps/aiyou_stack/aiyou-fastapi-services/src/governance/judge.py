@@ -11,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class JudgeSix:
-    """
-    THE CONSCIENCE (V7 Sentinel)
+    """THE CONSCIENCE (V7 Sentinel)
     Enforces the "Kill Switch" (Pattern Matching) and "Precedent Law".
     """
 
@@ -28,8 +27,7 @@ class JudgeSix:
 
 
 class JudgeSixTrigger:
-    """
-    UphillSnowball: Fast Path MITM Evaluator (The Autonomous Firewall)
+    """UphillSnowball: Fast Path MITM Evaluator (The Autonomous Firewall)
     Triggered prior to heavy-lift inference. Evaluates the severity of a User/Agent payload.
     """
 
@@ -37,8 +35,7 @@ class JudgeSixTrigger:
         self.fast_model = model
 
     def monitor(self, payload: str, source: str = "human") -> dict:
-        """
-        Executes Fast Path Single-Call to determine action severity.
+        """Executes Fast Path Single-Call to determine action severity.
         Level 5 -> RKill & Management Page (Fast Egress Path)
         Level 1-4 -> Dispatches heavy-lift mitigation via Temporal Queue
         Level 0 -> Clean execution
@@ -93,9 +90,9 @@ class JudgeSixTrigger:
                     "level": 5,
                     "reason": "Catastrophic Payload Sequence Intercepted.",
                 }
-            elif level >= 1:
+            if level >= 1:
                 logger.warning(
-                    f"[JUDGE 6 FAST-PATH] Level {level} Anomaly detected. Queuing Heavy Path Mitigation."
+                    f"[JUDGE 6 FAST-PATH] Level {level} Anomaly detected. Queuing Heavy Path Mitigation.",
                 )
                 # The upstream dispatcher will route this to omega-swarm-queue
                 return {
@@ -104,8 +101,7 @@ class JudgeSixTrigger:
                     "level": level,
                     "job_id": str(uuid.uuid4()),
                 }
-            else:
-                return {"status": "approved", "directive": "execute", "level": 0}
+            return {"status": "approved", "directive": "execute", "level": 0}
 
         except Exception as e:
             logger.error(f"[JUDGE 6 FAST-PATH] Inference Failure: {e}")

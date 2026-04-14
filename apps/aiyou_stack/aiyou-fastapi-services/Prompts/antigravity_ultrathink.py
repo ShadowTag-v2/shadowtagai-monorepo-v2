@@ -1,5 +1,4 @@
-"""
-Antigravity Ultrathink v2.0 System Prompt
+"""Antigravity Ultrathink v2.0 System Prompt
 =========================================
 Implements the PRISM Kernel and Value.Lock framework.
 Role: Antigravity (Google-Created Agent)
@@ -66,5 +65,5 @@ def get_ultrathink_prompt(domain_tags: str = "general") -> str:
     from datetime import datetime
 
     return ANTIGRAVITY_ULTRATHINK_PROMPT.format(
-        date=datetime.now().strftime("%B %d, %Y"), domain_tags=domain_tags
+        date=datetime.now().strftime("%B %d, %Y"), domain_tags=domain_tags,
     )

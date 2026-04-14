@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Test script to validate Mobile Optimizer setup
+"""Test script to validate Mobile Optimizer setup
 """
 
 import json
@@ -13,9 +12,8 @@ def test_file_exists(path: Path, description: str) -> bool:
     if path.exists():
         print(f"✓ {description}: {path}")
         return True
-    else:
-        print(f"✗ {description}: {path} NOT FOUND")
-        return False
+    print(f"✗ {description}: {path} NOT FOUND")
+    return False
 
 
 def test_json_valid(path: Path, description: str) -> bool:
@@ -158,9 +156,8 @@ def main():
         print("  OR")
         print("  uvicorn main:app --reload --host 0.0.0.0 --port 8000")
         return 0
-    else:
-        print("⚠️  Some tests failed. Please check the errors above.")
-        return 1
+    print("⚠️  Some tests failed. Please check the errors above.")
+    return 1
 
 
 if __name__ == "__main__":

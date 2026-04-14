@@ -1,5 +1,4 @@
-"""
-DeepAgent-Style Memory Architecture for Pnkln Agents
+"""DeepAgent-Style Memory Architecture for Pnkln Agents
 =====================================================
 
 Implements tripartite memory structure from DeepAgent paper:
@@ -28,8 +27,7 @@ from datetime import UTC, datetime
 
 @dataclass
 class EpisodicMemory:
-    """
-    Compressed trajectory of agent actions
+    """Compressed trajectory of agent actions
 
     Stores: What happened, when, and why
     Compression: Full timeline → semantic summary ≤487 bytes
@@ -38,7 +36,7 @@ class EpisodicMemory:
     objective_id: str
     agent_id: str
     timeline: list[tuple[str, str, dict]] = field(
-        default_factory=list
+        default_factory=list,
     )  # (timestamp, action, result)
     compressed_summary: str = ""
     total_steps: int = 0
@@ -51,8 +49,7 @@ class EpisodicMemory:
 
 @dataclass
 class WorkingMemory:
-    """
-    Active context for current task
+    """Active context for current task
 
     Stores: Current state, pending actions, recent history
     Rolling window: Last 10 actions kept in full detail
@@ -73,8 +70,7 @@ class WorkingMemory:
 
 @dataclass
 class ToolMemory:
-    """
-    Performance statistics for individual tools
+    """Performance statistics for individual tools
 
     Tracks: Success rate, latency, cost, usage frequency
     Used by: Dynamic tool retrieval (DeepAgent-style selection)
@@ -94,8 +90,7 @@ class ToolMemory:
 
 
 class AgentMemoryManager:
-    """
-    Central manager for agent memory operations
+    """Central manager for agent memory operations
 
     Responsibilities:
     1. Store/retrieve episodic, working, and tool memories
@@ -165,8 +160,7 @@ class AgentMemoryManager:
         conn.close()
 
     def record_action(self, agent_id: str, objective_id: str, action: str, result: dict):
-        """
-        Record a single agent action
+        """Record a single agent action
 
         Updates:
         - Episodic memory: Append to timeline
@@ -211,8 +205,7 @@ class AgentMemoryManager:
         success: bool,
         error: str | None = None,
     ):
-        """
-        Record tool usage statistics
+        """Record tool usage statistics
 
         Updates:
         - Tool memory: Success rate, latency, cost
@@ -242,8 +235,7 @@ class AgentMemoryManager:
         self._save_tool_memory(tool)
 
     def fold_memory(self, agent_id: str, objective_id: str) -> dict:
-        """
-        DeepAgent-style autonomous memory folding
+        """DeepAgent-style autonomous memory folding
 
         Process:
         1. Compress episodic timeline → summary (≤487 bytes)
@@ -253,6 +245,7 @@ class AgentMemoryManager:
 
         Returns:
             dict with compressed memories
+
         """
         episodic = self.get_episodic_memory(objective_id)
         working = self.get_working_memory(agent_id)
@@ -268,7 +261,7 @@ class AgentMemoryManager:
         # 2. Extract working state (keep only last 3 actions post-fold)
         working.last_n_actions = deque(list(working.last_n_actions)[-3:], maxlen=10)
         working.context_tokens = self._estimate_tokens(
-            str(working.current_state), working.last_n_actions
+            str(working.current_state), working.last_n_actions,
         )
 
         # 3. Aggregate tool stats
@@ -297,8 +290,7 @@ class AgentMemoryManager:
         return steps_threshold or tokens_threshold
 
     def _compress_trajectory(self, episodic: EpisodicMemory) -> str:
-        """
-        Semantic compression of episodic timeline
+        """Semantic compression of episodic timeline
 
         Strategy:
         1. Extract key events (decisions, tool calls, errors)
@@ -328,10 +320,9 @@ class AgentMemoryManager:
         return summary
 
     def _generate_audit_blob(
-        self, episodic: EpisodicMemory, working: WorkingMemory, tool_stats: list[ToolMemory]
+        self, episodic: EpisodicMemory, working: WorkingMemory, tool_stats: list[ToolMemory],
     ) -> str:
-        """
-        Generate compressed audit blob (ATP 519 + zstd)
+        """Generate compressed audit blob (ATP 519 + zstd)
 
         Target: ≤487 bytes
         Format: JSON + zstd compression + base64 encoding
@@ -363,7 +354,7 @@ class AgentMemoryManager:
         """Calculate token savings from compression"""
         original_tokens = len(episodic.timeline) * 100  # Estimate: 100 tokens/action
         compressed_tokens = self._estimate_tokens(
-            episodic.compressed_summary, working.current_state
+            episodic.compressed_summary, working.current_state,
         )
 
         if original_tokens == 0:
@@ -558,7 +549,7 @@ if __name__ == "__main__":
     # Record tool usage
     print("\n2. Recording tool usage...")
     manager.record_tool_use(
-        tool_name="navigate", source="WALT", latency_ms=45.2, cost=0.0001, success=True
+        tool_name="navigate", source="WALT", latency_ms=45.2, cost=0.0001, success=True,
     )
 
     manager.record_tool_use(
@@ -578,13 +569,13 @@ if __name__ == "__main__":
 
     print(f"   Episodic: {episodic.total_steps} steps")
     print(
-        f"   Working: {working.context_tokens} tokens, {len(working.last_n_actions)} recent actions"
+        f"   Working: {working.context_tokens} tokens, {len(working.last_n_actions)} recent actions",
     )
     print(f"   Tools: {len(tools)} tools tracked")
 
     for tool in tools:
         print(
-            f"     - {tool.tool_name}: {tool.success_rate:.1%} success, {tool.avg_latency_ms:.1f}ms"
+            f"     - {tool.tool_name}: {tool.success_rate:.1%} success, {tool.avg_latency_ms:.1f}ms",
         )
 
     print("\n4. Manual fold trigger...")

@@ -1,5 +1,4 @@
-"""
-Quick test of UnGPT service core functionality
+"""Quick test of UnGPT service core functionality
 Tests without requiring full Google SDK setup
 """
 

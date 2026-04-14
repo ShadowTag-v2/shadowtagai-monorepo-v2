@@ -21,8 +21,7 @@ class BeadsEngine:
                 f.write("")  # Touch file
 
     def remember(self, action: str, details: str):
-        """
-        Logs an action to the infinite tape.
+        """Logs an action to the infinite tape.
         """
         event = {
             "timestamp": datetime.utcnow().isoformat(),
@@ -35,8 +34,7 @@ class BeadsEngine:
         print(f"📿 BEADS: Remembered -> {action}")
 
     def recall(self) -> list:
-        """
-        Retrieves full history.
+        """Retrieves full history.
         """
         history = []
         if os.path.exists(BEADS_FILE):

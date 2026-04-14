@@ -15,7 +15,7 @@ SKIP_LIST = {"xla", "rumdl"}
 def migrate_repo(repo_path):
     repo_path = repo_path.strip()
     if not repo_path:
-        return
+        return None
 
     dirname = os.path.basename(repo_path)
 

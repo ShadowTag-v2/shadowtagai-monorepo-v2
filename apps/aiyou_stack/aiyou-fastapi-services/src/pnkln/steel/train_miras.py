@@ -112,7 +112,7 @@ def train_miras():
 
             B, S, V = outputs.shape
             flat_outputs = Tensor(
-                outputs.data.reshape(B * S, V), requires_grad=outputs.requires_grad
+                outputs.data.reshape(B * S, V), requires_grad=outputs.requires_grad,
             )
             flat_targets = Tensor(targets.data.flatten())
 

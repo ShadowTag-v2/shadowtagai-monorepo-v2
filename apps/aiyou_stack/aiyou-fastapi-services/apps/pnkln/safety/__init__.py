@@ -1,5 +1,4 @@
-"""
-PNKLN Safety Module
+"""PNKLN Safety Module
 
 Training data safety indexing and content classification based on:
 - Apertus LLM Training Data Indexing Research (arxiv:2510.09471v1)
@@ -22,10 +21,10 @@ from .training_data_indexer import (
 )
 
 __all__ = [
-    "TrainingDataIndexer",
     "SafetyCategory",
-    "SafetyHit",
-    "SafetyScanResult",
-    "SafetyLexicon",
     "SafetyGate",
+    "SafetyHit",
+    "SafetyLexicon",
+    "SafetyScanResult",
+    "TrainingDataIndexer",
 ]

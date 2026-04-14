@@ -2,8 +2,7 @@ import math
 
 
 class Glicko2Engine:
-    """
-    Implementation of the Glicko-2 rating system for agent evaluation.
+    """Implementation of the Glicko-2 rating system for agent evaluation.
     Reference: http://www.glicko.net/glicko/glicko2.pdf
     """
 
@@ -18,10 +17,9 @@ class Glicko2Engine:
         return 1.0 / (1.0 + math.exp(-self._g(phi_j) * (mu - mu_j)))
 
     def update_rating(
-        self, rating: float, rd: float, volatility: float, results: list[tuple[float, float, float]]
+        self, rating: float, rd: float, volatility: float, results: list[tuple[float, float, float]],
     ) -> tuple[float, float, float]:
-        """
-        Update rating for a single player based on a series of game results.
+        """Update rating for a single player based on a series of game results.
 
         Args:
             rating: Current rating (standard scale, e.g., 1500)
@@ -32,6 +30,7 @@ class Glicko2Engine:
 
         Returns:
             (new_rating, new_rd, new_volatility)
+
         """
         # Step 2: Convert to Glicko-2 scale
         mu = (rating - 1500.0) / 173.7178

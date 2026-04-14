@@ -1,5 +1,4 @@
-"""
-GRPO/PPO Trainer - Group Relative Policy Optimization vs PPO
+"""GRPO/PPO Trainer - Group Relative Policy Optimization vs PPO
 
 Comparison framework for GRPO (Group Relative Policy Optimization) and
 standard PPO (Proximal Policy Optimization) reinforcement learning algorithms.
@@ -20,6 +19,7 @@ References:
 - "Group Relative Policy Optimization" (DeepMind, 2024)
 - "Proximal Policy Optimization Algorithms" (Schulman et al., 2017)
 - "Trust Region Policy Optimization" (Schulman et al., 2015)
+
 """
 
 import statistics
@@ -39,8 +39,7 @@ class TrainingAlgorithm(Enum):
 
 @dataclass
 class Experience:
-    """
-    Single experience tuple.
+    """Single experience tuple.
 
     Attributes:
         state: Environment state
@@ -51,6 +50,7 @@ class Experience:
         log_prob: Log probability of action
         value: Value estimate
         group_id: Group ID for GRPO (None for PPO)
+
     """
 
     state: Any
@@ -65,13 +65,13 @@ class Experience:
 
 @dataclass
 class TrainingBatch:
-    """
-    Batch of experiences for training.
+    """Batch of experiences for training.
 
     Attributes:
         experiences: List of experiences
         batch_size: Batch size
         num_groups: Number of groups (for GRPO)
+
     """
 
     experiences: list[Experience]
@@ -81,8 +81,7 @@ class TrainingBatch:
 
 @dataclass
 class TrainingMetrics:
-    """
-    Training metrics for single update.
+    """Training metrics for single update.
 
     Attributes:
         algorithm: Algorithm used
@@ -95,6 +94,7 @@ class TrainingMetrics:
         clip_fraction: Fraction of updates clipped
         throughput_samples_per_sec: Training throughput
         memory_usage_mb: Memory usage in MB
+
     """
 
     algorithm: TrainingAlgorithm
@@ -111,8 +111,7 @@ class TrainingMetrics:
 
 @dataclass
 class ComparisonResult:
-    """
-    GRPO vs PPO comparison result.
+    """GRPO vs PPO comparison result.
 
     Attributes:
         grpo_metrics: GRPO training metrics
@@ -123,6 +122,7 @@ class ComparisonResult:
         training_time_grpo_sec: GRPO training time
         training_time_ppo_sec: PPO training time
         winner: Which algorithm performed better
+
     """
 
     grpo_metrics: list[TrainingMetrics]
@@ -136,8 +136,7 @@ class ComparisonResult:
 
 
 class GRPOTrainer:
-    """
-    GRPO/PPO Trainer for agent training and comparison.
+    """GRPO/PPO Trainer for agent training and comparison.
 
     Performance targets:
     - Training throughput: ~500 samples/sec
@@ -155,8 +154,7 @@ class GRPOTrainer:
         gae_lambda: float = 0.95,
         learning_rate: float = 3e-4,
     ):
-        """
-        Initialize GRPO trainer.
+        """Initialize GRPO trainer.
 
         Args:
             num_groups: Number of groups for GRPO (default 8)
@@ -166,6 +164,7 @@ class GRPOTrainer:
             gamma: Discount factor (default 0.99)
             gae_lambda: GAE lambda parameter (default 0.95)
             learning_rate: Learning rate (default 3e-4)
+
         """
         self.num_groups = num_groups
         self.clip_epsilon = clip_epsilon
@@ -176,8 +175,7 @@ class GRPOTrainer:
         self.learning_rate = learning_rate
 
     def _assign_groups(self, experiences: list[Experience]) -> list[Experience]:
-        """
-        Assign experiences to groups for GRPO.
+        """Assign experiences to groups for GRPO.
 
         Uses reward-based stratification to ensure balanced groups.
 
@@ -186,6 +184,7 @@ class GRPOTrainer:
 
         Returns:
             Experiences with group_id assigned
+
         """
         # Sort by reward
         sorted_exp = sorted(experiences, key=lambda e: e.reward)
@@ -197,14 +196,14 @@ class GRPOTrainer:
         return experiences
 
     def _compute_advantages_ppo(self, experiences: list[Experience]) -> list[tuple[float, float]]:
-        """
-        Compute advantages using standard PPO (GAE).
+        """Compute advantages using standard PPO (GAE).
 
         Args:
             experiences: List of experiences
 
         Returns:
             List of (advantage, return) tuples
+
         """
         advantages = []
         returns = []
@@ -234,8 +233,7 @@ class GRPOTrainer:
         return list(zip(advantages, returns, strict=False))
 
     def _compute_advantages_grpo(self, experiences: list[Experience]) -> list[tuple[float, float]]:
-        """
-        Compute advantages using GRPO (group-relative).
+        """Compute advantages using GRPO (group-relative).
 
         Instead of normalizing against global baseline, normalize within groups.
         This provides more stable learning signal.
@@ -245,6 +243,7 @@ class GRPOTrainer:
 
         Returns:
             List of (advantage, return) tuples
+
         """
         # Group experiences
         groups: dict[int, list[Experience]] = {}
@@ -296,10 +295,9 @@ class GRPOTrainer:
         return list(zip(normalized_advantages, returns, strict=False))
 
     def _compute_policy_loss(
-        self, experiences: list[Experience], advantages: list[float], new_log_probs: list[float]
+        self, experiences: list[Experience], advantages: list[float], new_log_probs: list[float],
     ) -> tuple[float, float, float]:
-        """
-        Compute PPO/GRPO policy loss.
+        """Compute PPO/GRPO policy loss.
 
         Uses clipped surrogate objective.
 
@@ -310,6 +308,7 @@ class GRPOTrainer:
 
         Returns:
             Tuple of (policy_loss, kl_divergence, clip_fraction)
+
         """
         policy_losses = []
         kl_divs = []
@@ -345,10 +344,9 @@ class GRPOTrainer:
         return (avg_policy_loss, avg_kl_div, clip_fraction)
 
     def _compute_value_loss(
-        self, experiences: list[Experience], returns: list[float], new_values: list[float]
+        self, experiences: list[Experience], returns: list[float], new_values: list[float],
     ) -> float:
-        """
-        Compute value function loss.
+        """Compute value function loss.
 
         Args:
             experiences: List of experiences
@@ -357,6 +355,7 @@ class GRPOTrainer:
 
         Returns:
             Average value loss
+
         """
         value_losses = []
 
@@ -373,8 +372,7 @@ class GRPOTrainer:
         policy_update_fn: Callable[[list[Experience]], list[float]],
         value_update_fn: Callable[[list[Experience]], list[float]],
     ) -> TrainingMetrics:
-        """
-        Single PPO training step.
+        """Single PPO training step.
 
         Args:
             batch: Training batch
@@ -383,6 +381,7 @@ class GRPOTrainer:
 
         Returns:
             Training metrics
+
         """
         start_time = time.time()
 
@@ -399,7 +398,7 @@ class GRPOTrainer:
 
         # Compute losses
         policy_loss, kl_div, clip_frac = self._compute_policy_loss(
-            experiences, advantages, new_log_probs
+            experiences, advantages, new_log_probs,
         )
         value_loss = self._compute_value_loss(experiences, returns, new_values)
 
@@ -432,8 +431,7 @@ class GRPOTrainer:
         policy_update_fn: Callable[[list[Experience]], list[float]],
         value_update_fn: Callable[[list[Experience]], list[float]],
     ) -> TrainingMetrics:
-        """
-        Single GRPO training step.
+        """Single GRPO training step.
 
         Args:
             batch: Training batch
@@ -442,6 +440,7 @@ class GRPOTrainer:
 
         Returns:
             Training metrics
+
         """
         start_time = time.time()
 
@@ -461,7 +460,7 @@ class GRPOTrainer:
 
         # Compute losses (same as PPO, but advantages are group-relative)
         policy_loss, kl_div, clip_frac = self._compute_policy_loss(
-            experiences, advantages, new_log_probs
+            experiences, advantages, new_log_probs,
         )
         value_loss = self._compute_value_loss(experiences, returns, new_values)
 
@@ -495,8 +494,7 @@ class GRPOTrainer:
         policy_update_fn: Callable[[list[Experience]], list[float]],
         value_update_fn: Callable[[list[Experience]], list[float]],
     ) -> ComparisonResult:
-        """
-        Compare GRPO vs PPO performance.
+        """Compare GRPO vs PPO performance.
 
         Args:
             num_iterations: Number of training iterations
@@ -507,6 +505,7 @@ class GRPOTrainer:
 
         Returns:
             Comparison result
+
         """
         # Train with PPO
         ppo_start = time.time()
@@ -565,11 +564,11 @@ class GRPOTrainer:
         )
 
     def get_statistics(self) -> dict[str, Any]:
-        """
-        Get trainer statistics.
+        """Get trainer statistics.
 
         Returns:
             Dictionary with statistics
+
         """
         return {
             "num_groups": self.num_groups,

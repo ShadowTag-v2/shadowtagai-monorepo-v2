@@ -21,8 +21,7 @@ def check_env():
 
 
 def import_documents(project_id: str, location: str, data_store_id: str, input_dir: str):
-    """
-    Imports documents from a local directory to Vertex AI Search.
+    """Imports documents from a local directory to Vertex AI Search.
     Note: In a real scenario, we usually upload to GCS first, but here we'll simulate
     or use the inline content method if files are small, or guide the user to GCS.
 
@@ -55,8 +54,7 @@ def import_documents(project_id: str, location: str, data_store_id: str, input_d
 
 
 def query_judge6_grounded(project_id: str, location: str, data_store_id: str, query: str):
-    """
-    Queries Gemini with grounding against the Vertex AI Search data store.
+    """Queries Gemini with grounding against the Vertex AI Search data store.
     This is the key step that uses the "GenAI App Builder" credits.
     """
     print("\n--- 2. Querying Judge #6 (Grounded) ---")
@@ -67,14 +65,14 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
     data_store_path = f"projects/{project_id}/locations/{location}/collections/default_collection/dataStores/{data_store_id}"
 
     grounding_tool = Tool.from_google_search_retrieval(
-        grounding.GoogleSearchRetrieval()
+        grounding.GoogleSearchRetrieval(),
     )  # Fallback to Google Search if datastore not ready, but we want Data Store:
 
     # Correct way for Vertex AI Search Grounding:
     grounding_tool = Tool.from_retrieval(
         grounding.Retrieval(
             source=grounding.VertexAISearch(datastore=data_store_path),
-        )
+        ),
     )
 
     model = GenerativeModel("gemini-1.5-flash-001")
@@ -82,7 +80,7 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
     print(f"❓ Question: {query}")
     try:
         response = model.generate_content(
-            query, tools=[grounding_tool], generation_config={"temperature": 0.0}
+            query, tools=[grounding_tool], generation_config={"temperature": 0.0},
         )
         print("\n⚖️  Judge #6 Verdict:")
         print(response.text)

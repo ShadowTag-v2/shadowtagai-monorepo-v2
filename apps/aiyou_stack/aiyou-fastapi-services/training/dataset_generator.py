@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-CodeActInstruct Dataset Generator for Cor.54 Orchestrator
+"""CodeActInstruct Dataset Generator for Cor.54 Orchestrator
 ==========================================================
 
 PURPOSE:
@@ -315,11 +314,11 @@ class ScenarioGenerator:
 
     @classmethod
     def generate_scenario(cls, domain: str) -> tuple[str, str, dict[str, float]]:
-        """
-        Generate a single synthetic scenario.
+        """Generate a single synthetic scenario.
 
         Returns:
             (context, complexity, risk_vector)
+
         """
         if domain not in cls.TEMPLATES:
             raise ValueError(f"Unknown domain: {domain}")
@@ -343,7 +342,7 @@ class ScenarioGenerator:
                     "chain" in context.lower(),
                     "parallelize" in context.lower(),
                     len(context.split()) > 15,
-                ]
+                ],
             ),
             "complex": sum(
                 [
@@ -351,7 +350,7 @@ class ScenarioGenerator:
                     context.lower().count("and") > 1,
                     "retry" in context.lower(),
                     len(context.split()) > 20,
-                ]
+                ],
             ),
         }
 
@@ -427,8 +426,7 @@ class CodeGenerator:
         constraints: list[str],
         domain: str = "general",
     ) -> str:
-        """
-        Generate orchestration code for a given scenario.
+        """Generate orchestration code for a given scenario.
 
         Args:
             context: Natural language task description
@@ -438,6 +436,7 @@ class CodeGenerator:
 
         Returns:
             Generated Python code (as string)
+
         """
         # Build prompt
         risk_str = ", ".join([f"{k}={v:.2f}" for k, v in risk_vector.items()])
@@ -521,13 +520,12 @@ Generate the code now (ONLY code, no markdown fences):"""
             # Return a fallback minimal implementation
             return f"""def orchestrate():
     \"\"\"Fallback implementation for: {context[:50]}...\"\"\"
-    return {{"error": "Code generation failed", "message": "{str(e)}"}}"""
+    return {{"error": "Code generation failed", "message": "{e!s}"}}"""
 
     async def generate_batch(
-        self, scenarios: list[tuple[str, dict[str, float], list[str], str]], max_concurrent: int = 5
+        self, scenarios: list[tuple[str, dict[str, float], list[str], str]], max_concurrent: int = 5,
     ) -> list[str]:
-        """
-        Generate code for multiple scenarios in parallel.
+        """Generate code for multiple scenarios in parallel.
 
         Args:
             scenarios: List of (context, risk_vector, constraints, domain) tuples
@@ -535,6 +533,7 @@ Generate the code now (ONLY code, no markdown fences):"""
 
         Returns:
             List of generated code strings
+
         """
         semaphore = asyncio.Semaphore(max_concurrent)
 
@@ -544,7 +543,7 @@ Generate the code now (ONLY code, no markdown fences):"""
                 # Note: Gemini Python SDK is not async, so we run in executor
                 loop = asyncio.get_event_loop()
                 code = await loop.run_in_executor(
-                    None, self.generate_code, context, risk_vector, constraints, domain
+                    None, self.generate_code, context, risk_vector, constraints, domain,
                 )
                 return code
 
@@ -590,8 +589,7 @@ class ErrorInjector:
 
     @classmethod
     def inject_error(cls, code: str, error_type: str | None = None) -> tuple[str, str]:
-        """
-        Inject a realistic error into working code.
+        """Inject a realistic error into working code.
 
         Args:
             code: Working Python code
@@ -599,6 +597,7 @@ class ErrorInjector:
 
         Returns:
             (buggy_code, error_type)
+
         """
         if error_type is None:
             error_type = random.choice(list(cls.ERROR_TYPES.keys()))
@@ -626,8 +625,7 @@ class ErrorInjector:
         working_code: str,
         max_iterations: int = 3,
     ) -> MultiTurnTrajectory:
-        """
-        Create a multi-turn self-debugging trajectory.
+        """Create a multi-turn self-debugging trajectory.
 
         Flow:
             1. Start with working code
@@ -639,6 +637,7 @@ class ErrorInjector:
 
         Returns:
             MultiTurnTrajectory with conversation turns
+
         """
         # Inject error
         buggy_code, error_type = cls.inject_error(working_code)
@@ -682,7 +681,7 @@ Generate orchestration code:"""
 ```
 
 Please fix the code and return the corrected version.""",
-            }
+            },
         )
 
         # Turn 4+: Attempt to fix (using Gemini)
@@ -722,18 +721,17 @@ Fix the code and return ONLY the corrected code (no explanations):"""
                 if is_valid:
                     trajectory.was_fixed = True
                     break
-                else:
-                    # Continue with new error
-                    error_message = new_error
-                    current_code = fixed_code
+                # Continue with new error
+                error_message = new_error
+                current_code = fixed_code
 
-                    if iteration < max_iterations - 1:
-                        trajectory.turns.append(
-                            {
-                                "role": "user",
-                                "content": f"Still has error: {error_message}\nPlease fix:",
-                            }
-                        )
+                if iteration < max_iterations - 1:
+                    trajectory.turns.append(
+                        {
+                            "role": "user",
+                            "content": f"Still has error: {error_message}\nPlease fix:",
+                        },
+                    )
 
             except Exception as e:
                 logger.error(f"Fix generation failed: {e}")
@@ -750,15 +748,15 @@ Fix the code and return ONLY the corrected code (no explanations):"""
         except SyntaxError as e:
             return f"SyntaxError: {e.msg} at line {e.lineno}"
         except Exception as e:
-            return f"{type(e).__name__}: {str(e)}"
+            return f"{type(e).__name__}: {e!s}"
 
     @staticmethod
     def _validate_code(code: str) -> tuple[bool, str | None]:
-        """
-        Validate code for syntax and basic security.
+        """Validate code for syntax and basic security.
 
         Returns:
             (is_valid, error_message)
+
         """
         # Check syntax
         try:
@@ -798,11 +796,11 @@ class QualityFilter:
 
     @staticmethod
     def validate_example(example: OrchestrationExample) -> tuple[bool, list[str]]:
-        """
-        Comprehensive validation of a training example.
+        """Comprehensive validation of a training example.
 
         Returns:
             (passes, list_of_issues)
+
         """
         issues = []
 
@@ -881,8 +879,7 @@ class QualityFilter:
         min_executable_rate: float = 0.95,
         max_security_violations: int = 0,
     ) -> tuple[list[OrchestrationExample], dict[str, Any]]:
-        """
-        Filter dataset to meet quality thresholds.
+        """Filter dataset to meet quality thresholds.
 
         Args:
             examples: List of examples to filter
@@ -891,6 +888,7 @@ class QualityFilter:
 
         Returns:
             (filtered_examples, statistics)
+
         """
         filtered = []
         rejection_reasons = defaultdict(int)
@@ -953,8 +951,7 @@ class AiURCMConverter:
 
     @staticmethod
     def convert_test_to_example(test_case: dict[str, Any]) -> OrchestrationExample:
-        """
-        Convert a single AiURCM test case to orchestration example.
+        """Convert a single AiURCM test case to orchestration example.
 
         Expected test_case format:
         {
@@ -1020,14 +1017,14 @@ class AiURCMConverter:
 
     @staticmethod
     def convert_test_suite(test_suite_path: Path) -> list[OrchestrationExample]:
-        """
-        Convert entire AiURCM test suite to training examples.
+        """Convert entire AiURCM test suite to training examples.
 
         Args:
             test_suite_path: Path to test suite JSON file
 
         Returns:
             List of OrchestrationExample objects
+
         """
         if not test_suite_path.exists():
             logger.warning(f"Test suite not found: {test_suite_path}")
@@ -1062,7 +1059,7 @@ class DatasetPipeline:
     """End-to-end dataset generation pipeline."""
 
     def __init__(
-        self, generator: CodeGenerator, output_dir: Path, num_synthetic_per_domain: int = 1000
+        self, generator: CodeGenerator, output_dir: Path, num_synthetic_per_domain: int = 1000,
     ):
         """Initialize pipeline."""
         self.generator = generator
@@ -1073,7 +1070,7 @@ class DatasetPipeline:
         logger.info(f"Initialized DatasetPipeline, output: {output_dir}")
 
     def generate_synthetic_examples(
-        self, domain: str, num_examples: int
+        self, domain: str, num_examples: int,
     ) -> list[OrchestrationExample]:
         """Generate synthetic examples for a single domain."""
         logger.info(f"Generating {num_examples} synthetic examples for domain: {domain}")
@@ -1142,8 +1139,7 @@ class DatasetPipeline:
         num_trajectories: int = 100,
         error_distribution: dict[str, float] | None = None,
     ) -> list[MultiTurnTrajectory]:
-        """
-        Generate multi-turn self-debug trajectories.
+        """Generate multi-turn self-debug trajectories.
 
         Args:
             base_examples: Working examples to inject errors into
@@ -1152,6 +1148,7 @@ class DatasetPipeline:
 
         Returns:
             List of MultiTurnTrajectory objects
+
         """
         logger.info(f"Generating {num_trajectories} multi-turn trajectories")
 
@@ -1176,14 +1173,14 @@ class DatasetPipeline:
             console=console,
         ) as progress:
             task = progress.add_task(
-                "[cyan]Generating debug trajectories...", total=num_trajectories
+                "[cyan]Generating debug trajectories...", total=num_trajectories,
             )
 
             for example in sampled:
                 try:
                     # Choose error type based on distribution
                     random.choices(
-                        list(error_distribution.keys()), weights=list(error_distribution.values())
+                        list(error_distribution.keys()), weights=list(error_distribution.values()),
                     )[0]
 
                     # Generate trajectory
@@ -1213,10 +1210,9 @@ class DatasetPipeline:
         return trajectories
 
     def run_full_pipeline(
-        self, aiurcm_test_suite: Path | None = None, num_multi_turn: int = 1000
+        self, aiurcm_test_suite: Path | None = None, num_multi_turn: int = 1000,
     ) -> dict[str, Any]:
-        """
-        Run complete dataset generation pipeline.
+        """Run complete dataset generation pipeline.
 
         Steps:
             1. Convert AiURCM test cases (if provided)
@@ -1228,9 +1224,10 @@ class DatasetPipeline:
 
         Returns:
             Statistics dictionary
+
         """
         console.print(
-            "\n[bold cyan]═══ CodeActInstruct Dataset Generation Pipeline ═══[/bold cyan]\n"
+            "\n[bold cyan]═══ CodeActInstruct Dataset Generation Pipeline ═══[/bold cyan]\n",
         )
 
         all_examples = []
@@ -1253,10 +1250,10 @@ class DatasetPipeline:
         # Stage 3: Quality filtering
         console.print("[bold]Stage 3:[/bold] Quality filtering and validation...")
         filtered_examples, filter_stats = QualityFilter.filter_dataset(
-            all_examples, min_executable_rate=0.95, max_security_violations=0
+            all_examples, min_executable_rate=0.95, max_security_violations=0,
         )
         console.print(
-            f"  ✓ Filtered: {filter_stats['passed']}/{filter_stats['total_examples']} passed"
+            f"  ✓ Filtered: {filter_stats['passed']}/{filter_stats['total_examples']} passed",
         )
         console.print(f"  ✓ Executable rate: {filter_stats['executable_rate']:.1%}")
         console.print(f"  ✓ Security violations: {filter_stats['security_violations']}\n")
@@ -1264,7 +1261,7 @@ class DatasetPipeline:
         # Stage 4: Multi-turn trajectories
         console.print("[bold]Stage 4:[/bold] Generating multi-turn debug trajectories...")
         trajectories = self.generate_multi_turn_trajectories(
-            filtered_examples, num_trajectories=num_multi_turn
+            filtered_examples, num_trajectories=num_multi_turn,
         )
         console.print(f"  ✓ Generated {len(trajectories)} trajectories\n")
 
@@ -1274,14 +1271,12 @@ class DatasetPipeline:
         # Export single-turn examples
         single_turn_path = self.output_dir / "single_turn_examples.jsonl"
         with open(single_turn_path, "w") as f:
-            for example in filtered_examples:
-                f.write(json.dumps(example.to_gemini_format()) + "\n")
+            f.writelines(json.dumps(example.to_gemini_format()) + "\n" for example in filtered_examples)
 
         # Export multi-turn trajectories
         multi_turn_path = self.output_dir / "multi_turn_trajectories.jsonl"
         with open(multi_turn_path, "w") as f:
-            for trajectory in trajectories:
-                f.write(json.dumps(trajectory.to_gemini_format()) + "\n")
+            f.writelines(json.dumps(trajectory.to_gemini_format()) + "\n" for trajectory in trajectories)
 
         console.print(f"  ✓ Exported single-turn: {single_turn_path}")
         console.print(f"  ✓ Exported multi-turn: {multi_turn_path}\n")
@@ -1338,7 +1333,7 @@ class DatasetPipeline:
     def _display_summary(stats: dict[str, Any]):
         """Display summary table."""
         table = Table(
-            title="Dataset Generation Summary", show_header=True, header_style="bold cyan"
+            title="Dataset Generation Summary", show_header=True, header_style="bold cyan",
         )
 
         table.add_column("Metric", style="cyan", width=30)
@@ -1370,7 +1365,7 @@ class DatasetPipeline:
 
 @click.command()
 @click.option(
-    "--aiurcm_tests", type=click.Path(exists=False), help="Path to AiURCM test suite JSON file"
+    "--aiurcm_tests", type=click.Path(exists=False), help="Path to AiURCM test suite JSON file",
 )
 @click.option(
     "--num_synthetic",
@@ -1412,8 +1407,7 @@ def main(
     api_key: str | None,
     seed: int,
 ):
-    """
-    Generate CodeActInstruct training dataset for Cor.54 orchestrator.
+    """Generate CodeActInstruct training dataset for Cor.54 orchestrator.
 
     This tool creates high-quality training data by:
     1. Converting existing AiURCM test cases
@@ -1443,7 +1437,7 @@ def main(
 
     logger.info("Starting CodeActInstruct dataset generation")
     logger.info(
-        f"Configuration: synthetic={num_synthetic}, multi_turn={num_multi_turn}, model={gemini_model}"
+        f"Configuration: synthetic={num_synthetic}, multi_turn={num_multi_turn}, model={gemini_model}",
     )
 
     # Initialize components
@@ -1452,7 +1446,7 @@ def main(
     except ValueError as e:
         console.print(f"[red]Error: {e}[/red]")
         console.print(
-            "\n[yellow]Please set GOOGLE_API_KEY environment variable or pass --api_key[/yellow]"
+            "\n[yellow]Please set GOOGLE_API_KEY environment variable or pass --api_key[/yellow]",
         )
         sys.exit(1)
 
@@ -1461,20 +1455,20 @@ def main(
     num_per_domain = num_synthetic // num_domains
 
     pipeline = DatasetPipeline(
-        generator=generator, output_dir=Path(output_dir), num_synthetic_per_domain=num_per_domain
+        generator=generator, output_dir=Path(output_dir), num_synthetic_per_domain=num_per_domain,
     )
 
     # Run pipeline
     try:
         aiurcm_path = Path(aiurcm_tests) if aiurcm_tests else None
         stats = pipeline.run_full_pipeline(
-            aiurcm_test_suite=aiurcm_path, num_multi_turn=num_multi_turn
+            aiurcm_test_suite=aiurcm_path, num_multi_turn=num_multi_turn,
         )
 
         console.print("\n[bold green]✓ Dataset generation complete![/bold green]")
         console.print(f"\n[cyan]Output directory:[/cyan] {output_dir}")
         console.print(
-            f"[cyan]Total training examples:[/cyan] {stats['filtered_examples'] + stats['multi_turn_trajectories']}"
+            f"[cyan]Total training examples:[/cyan] {stats['filtered_examples'] + stats['multi_turn_trajectories']}",
         )
 
     except Exception as e:

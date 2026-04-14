@@ -1,5 +1,4 @@
-"""
-ShadowTag cryptographic verification models.
+"""ShadowTag cryptographic verification models.
 
 Provides provenance attestation for all platform operations.
 """
@@ -14,8 +13,7 @@ from ..database import Base
 
 
 class VerificationRecord(Base):
-    """
-    Individual verification record.
+    """Individual verification record.
 
     Each record represents a single signed event in the system.
     """
@@ -27,7 +25,7 @@ class VerificationRecord(Base):
 
     # Event details
     event_type = Column(
-        String(100), nullable=False, index=True
+        String(100), nullable=False, index=True,
     )  # content_upload, payment, session_start
     entity_type = Column(String(100), nullable=False, index=True)  # content, order, stream
     entity_id = Column(String(36), nullable=False, index=True)
@@ -44,7 +42,7 @@ class VerificationRecord(Base):
 
     # Metadata
     timestamp = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
+        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True,
     )
     node_id = Column(String(36), index=True)  # Which infrastructure node signed
     location_data = Column(JSON)  # GPS coords (if applicable)
@@ -71,8 +69,7 @@ class VerificationRecord(Base):
 
 
 class VerificationChain(Base):
-    """
-    Verification chain model.
+    """Verification chain model.
 
     Groups related verification records into a provenance chain.
     """

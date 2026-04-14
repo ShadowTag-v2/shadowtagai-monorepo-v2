@@ -1,5 +1,4 @@
-"""
-Database Session Management
+"""Database Session Management
 
 Security:
 - Connection pooling with limits
@@ -30,13 +29,12 @@ engine = create_async_engine(
 
 # Create async session factory
 AsyncSessionLocal = async_sessionmaker(
-    engine, class_=AsyncSession, expire_on_commit=False, autocommit=False, autoflush=False
+    engine, class_=AsyncSession, expire_on_commit=False, autocommit=False, autoflush=False,
 )
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    """
-    Dependency for database sessions
+    """Dependency for database sessions
 
     Usage:
         @app.get("/users")
@@ -60,8 +58,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 
 async def init_db() -> None:
-    """
-    Initialize database (create tables)
+    """Initialize database (create tables)
 
     WARNING: Use Alembic migrations in production
     """

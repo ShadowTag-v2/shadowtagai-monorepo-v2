@@ -1,5 +1,4 @@
-"""
-Reasoning frameworks for the pinkln Agent Architecture System.
+"""Reasoning frameworks for the pinkln Agent Architecture System.
 
 Implements multiple reasoning strategies:
 - CoT (Chain of Thought): Linear step-by-step reasoning
@@ -18,8 +17,8 @@ from .ultrathink import UltrathinkEngine
 
 __all__ = [
     "ChainOfThought",
-    "TreeOfThoughts",
-    "ReflectCritiqueRefine",
     "MultiAgentDebate",
+    "ReflectCritiqueRefine",
+    "TreeOfThoughts",
     "UltrathinkEngine",
 ]

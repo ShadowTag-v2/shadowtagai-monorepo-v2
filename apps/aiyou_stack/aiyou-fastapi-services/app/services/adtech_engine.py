@@ -1,5 +1,4 @@
-"""
-Adtech Compliance Engine
+"""Adtech Compliance Engine
 Implements VAST 4.x, OM SDK, Privacy Sandbox verification
 """
 
@@ -33,8 +32,7 @@ class AdtechEngine:
         logger.info(f"Adtech Engine initialized with Persona IQ: {self.persona_iq}")
 
     async def validate_vast(self, request: VASTValidationRequest) -> VASTValidationResponse:
-        """
-        Validate VAST XML compliance
+        """Validate VAST XML compliance
 
         Running at IQ {self.persona_iq} for comprehensive validation
         """
@@ -91,7 +89,7 @@ class AdtechEngine:
         # Duration detection
         duration = None
         duration_match = re.search(
-            r"<Duration>(\d{2}):(\d{2}):(\d{2})</Duration>", request.vast_xml
+            r"<Duration>(\d{2}):(\d{2}):(\d{2})</Duration>", request.vast_xml,
         )
         if duration_match:
             hours, mins, secs = map(int, duration_match.groups())
@@ -138,7 +136,7 @@ class AdtechEngine:
         )
 
     async def check_privacy_sandbox(
-        self, request: PrivacySandboxComplianceRequest
+        self, request: PrivacySandboxComplianceRequest,
     ) -> PrivacySandboxComplianceResponse:
         """Check Privacy Sandbox compliance"""
         logger.info(f"Checking Privacy Sandbox compliance at IQ {self.persona_iq}")
@@ -221,7 +219,7 @@ class AdtechEngine:
         warnings = []
         if not safe:
             warnings.append(
-                f"Content failed brand safety threshold ({settings.brand_safety_threshold})"
+                f"Content failed brand safety threshold ({settings.brand_safety_threshold})",
             )
         for cat in blocked:
             warnings.append(f"Blocked category detected: {cat}")

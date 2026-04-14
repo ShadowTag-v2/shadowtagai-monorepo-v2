@@ -1,5 +1,4 @@
-"""
-Context Index Service - CRUD Operations for OPORD Contexts
+"""Context Index Service - CRUD Operations for OPORD Contexts
 
 Provides service layer for creating, reading, updating, and deleting
 OPORD contexts with Elasticsearch integration for full-text search.
@@ -15,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContextIndexService:
-    """
-    Service layer for Context Index operations.
+    """Service layer for Context Index operations.
 
     Wraps AtomicChatManager with business logic for:
     - OPORD creation with validation
@@ -40,11 +38,11 @@ class ContextIndexService:
         command_signal: dict[str, Any] | None = None,
         tags: list[str] | None = None,
     ) -> dict[str, Any]:
-        """
-        Create new OPORD context with validation.
+        """Create new OPORD context with validation.
 
         Returns:
             Dict with opord_number, created_at, status
+
         """
         # Validation
         required_mission_keys = ["who", "what", "when", "where", "why"]
@@ -91,18 +89,18 @@ class ContextIndexService:
         decisions: list[str] | None = None,
         status: str | None = None,
     ) -> bool:
-        """
-        Update OPORD context with summary and decisions.
+        """Update OPORD context with summary and decisions.
 
         Args:
             opord_number: OPORD to update
             summary: Task summary
             decisions: List of key decisions made
             status: New status (active, completed, archived)
+
         """
         if summary or decisions:
             success = self.chat_manager.complete_opord(
-                opord_number=opord_number, summary=summary or "", decisions=decisions or []
+                opord_number=opord_number, summary=summary or "", decisions=decisions or [],
             )
             logger.info(f"Updated OPORD {opord_number:05d} with summary")
             return success
@@ -119,13 +117,12 @@ class ContextIndexService:
         status: str | None = None,
         date_range: tuple | None = None,
     ) -> list[dict]:
-        """
-        Search OPORD contexts with filters.
+        """Search OPORD contexts with filters.
 
         Full-text search via query, structured filters via other params.
         """
         results = self.chat_manager.search_opords(
-            query=query, tags=tags, agent_id=agent_id, date_range=date_range
+            query=query, tags=tags, agent_id=agent_id, date_range=date_range,
         )
 
         # Additional filters
@@ -155,10 +152,9 @@ class ContextIndexService:
         return self.chat_manager.acknowledge_opord(opord_number, agent_id)
 
     def log_revenue_event(
-        self, opord_number: int, amount: float, source: str, generation: int
+        self, opord_number: int, amount: float, source: str, generation: int,
     ) -> dict:
-        """
-        Log revenue event to context for audit trail.
+        """Log revenue event to context for audit trail.
 
         Integrates with revenue_engine for transaction tracking.
         """
@@ -189,8 +185,7 @@ class ContextIndexService:
         action_taken: str,
         reasoning: str,
     ) -> dict:
-        """
-        Log Judge#6 governance decision to context.
+        """Log Judge#6 governance decision to context.
 
         Creates audit trail for compliance.
         """
@@ -206,7 +201,7 @@ class ContextIndexService:
         # TODO: Push to Elasticsearch judge6_decisions index
         logger.warning(
             f"Judge#6 decision logged for OPORD {opord_number:05d}: "
-            f"{severity} violation of {policy_violated}"
+            f"{severity} violation of {policy_violated}",
         )
 
         return decision_log

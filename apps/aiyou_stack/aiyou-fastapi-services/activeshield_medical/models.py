@@ -1,5 +1,4 @@
-"""
-ActiveShield Medical - Database Models
+"""ActiveShield Medical - Database Models
 ======================================
 
 SQLAlchemy models for persistent audit logging and adverse event tracking.
@@ -13,8 +12,7 @@ from src.shadowtag_v4.database import Base
 
 
 class ActiveShieldAuditLog(Base):
-    """
-    Immutable audit log for all ActiveShield interactions.
+    """Immutable audit log for all ActiveShield interactions.
 
     Tracks: Pre-hoc checks, Mid-hoc monitoring, and Post-hoc logging.
     Serves as the legal compliance trail.
@@ -29,7 +27,7 @@ class ActiveShieldAuditLog(Base):
 
     # Context
     phase = Column(
-        String(20), nullable=False
+        String(20), nullable=False,
     )  # split from Enum to avoid DB-level enum migration pain
     action = Column(String(32), nullable=False)
     passed = Column(Boolean, nullable=False)
@@ -56,8 +54,7 @@ class ActiveShieldAuditLog(Base):
 
 
 class ActiveShieldAdverseEvent(Base):
-    """
-    Registry of critical adverse events and blocked clinical decisions.
+    """Registry of critical adverse events and blocked clinical decisions.
 
     Used for:
     - FDA/Regulatory reporting
@@ -74,7 +71,7 @@ class ActiveShieldAdverseEvent(Base):
 
     # Event Details
     event_type = Column(
-        String(64), nullable=False
+        String(64), nullable=False,
     )  # e.g., "crisis_intervention", "drug_interaction_block"
     description = Column(String, nullable=False)
     severity = Column(String(32), nullable=False)  # critical, high, moderate

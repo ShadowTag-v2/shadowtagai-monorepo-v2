@@ -28,10 +28,9 @@ class GenerateResponse(BaseModel):
 
 @router.post("/generate", response_model=GenerateResponse)
 async def generate_content(
-    request: GenerateRequest, service: GroundedGenerationService = Depends(get_service)
+    request: GenerateRequest, service: GroundedGenerationService = Depends(get_service),
 ):
-    """
-    Generate content grounded in Google Search.
+    """Generate content grounded in Google Search.
     """
     try:
         result = await service.generate(request.prompt, request.model_id)

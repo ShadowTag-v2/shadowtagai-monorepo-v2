@@ -2,8 +2,7 @@ import random
 
 
 class CavMTOE:
-    """
-    The 650-Unit Digital Battalion.
+    """The 650-Unit Digital Battalion.
     Implements 'Bottom-Up' Consensus Voting for Risk Acceptance.
     """
 

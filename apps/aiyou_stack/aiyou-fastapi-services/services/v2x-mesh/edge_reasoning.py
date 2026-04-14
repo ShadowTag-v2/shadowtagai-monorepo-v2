@@ -1,5 +1,4 @@
-"""
-Edge Reasoning and GPU Optimization for V2X Mesh
+"""Edge Reasoning and GPU Optimization for V2X Mesh
 
 Implements:
 - Attention-locality filtering (40% traffic reduction)
@@ -43,8 +42,7 @@ class EventRelevance:
 
 
 class AttentionLocalityFilter:
-    """
-    Attention-locality filtering to reduce message processing
+    """Attention-locality filtering to reduce message processing
 
     Filters incoming V2X messages based on:
     1. Spatial proximity (distance to event)
@@ -151,8 +149,7 @@ class AttentionLocalityFilter:
 
 
 class KVCompression:
-    """
-    ZeroMerge-style KV cache compression
+    """ZeroMerge-style KV cache compression
 
     Reduces memory footprint of cached inference states
     by merging similar key-value pairs.
@@ -163,13 +160,13 @@ class KVCompression:
         self.similarity_threshold = similarity_threshold
 
     def compress_kv_cache(
-        self, keys: np.ndarray, values: np.ndarray
+        self, keys: np.ndarray, values: np.ndarray,
     ) -> tuple[np.ndarray, np.ndarray, dict]:
-        """
-        Compress KV cache by merging similar entries
+        """Compress KV cache by merging similar entries
 
         Returns:
             compressed_keys, compressed_values, compression_metadata
+
         """
         n_tokens = keys.shape[0]
         target_size = int(n_tokens * self.compression_ratio)
@@ -205,7 +202,7 @@ class KVCompression:
         return compressed_keys, compressed_values, metadata
 
     def _cluster_similar(
-        self, similarity_matrix: np.ndarray, target_clusters: int
+        self, similarity_matrix: np.ndarray, target_clusters: int,
     ) -> list[list[int]]:
         """Simple clustering based on similarity"""
         n = similarity_matrix.shape[0]
@@ -231,8 +228,7 @@ class KVCompression:
 
 
 class PrefetchOptimizer:
-    """
-    PRESERVE-style prefetch optimization
+    """PRESERVE-style prefetch optimization
 
     Predicts which mesh data will be needed soon and
     prefetches it to reduce latency.
@@ -270,8 +266,7 @@ class PrefetchOptimizer:
 
 
 class TowerCache:
-    """
-    MemServe-style shared cache at roadside towers
+    """MemServe-style shared cache at roadside towers
 
     Caches frequently accessed inference states and map data
     to reduce redundant computation across vehicles.
@@ -309,7 +304,7 @@ class TowerCache:
 
         # Find LRU
         lru_key = min(
-            self.cache.keys(), key=lambda k: (self.access_counts[k], self.cache[k]["timestamp"])
+            self.cache.keys(), key=lambda k: (self.access_counts[k], self.cache[k]["timestamp"]),
         )
 
         # Remove
@@ -328,8 +323,7 @@ class TowerCache:
 
 
 class GPUInferenceAccelerator:
-    """
-    GPU-accelerated inference for FSD decision support
+    """GPU-accelerated inference for FSD decision support
 
     Uses GPU to:
     1. Process sensor fusion (lidar, radar, camera)
@@ -342,10 +336,9 @@ class GPUInferenceAccelerator:
         self.inference_cache = TowerCache(max_size_gb=2.0)
 
     async def process_scene(
-        self, sensor_data: dict[str, np.ndarray], mesh_context: list[dict]
+        self, sensor_data: dict[str, np.ndarray], mesh_context: list[dict],
     ) -> dict[str, Any]:
-        """
-        Process scene using GPU acceleration
+        """Process scene using GPU acceleration
 
         Args:
             sensor_data: Raw sensor inputs (camera, lidar, radar)
@@ -353,6 +346,7 @@ class GPUInferenceAccelerator:
 
         Returns:
             scene_understanding: Detected objects, hazards, recommended actions
+
         """
         # Check cache
         cache_key = self._compute_cache_key(sensor_data, mesh_context)
@@ -404,7 +398,7 @@ class GPUInferenceAccelerator:
         for obj in objects:
             if obj["type"] == "pedestrian" and obj["distance"] < 30.0:
                 hazards.append(
-                    {"type": "pedestrian_proximity", "severity": 8, "action": "reduce_speed"}
+                    {"type": "pedestrian_proximity", "severity": 8, "action": "reduce_speed"},
                 )
 
         # Mesh-reported hazards
@@ -415,7 +409,7 @@ class GPUInferenceAccelerator:
                         "type": "mesh_collision_warning",
                         "severity": event.get("severity", 5),
                         "action": "prepare_brake",
-                    }
+                    },
                 )
 
         return hazards
@@ -443,8 +437,7 @@ class GPUInferenceAccelerator:
 
 
 class EdgeReasoningPipeline:
-    """
-    Complete edge reasoning pipeline
+    """Complete edge reasoning pipeline
 
     Combines:
     - Attention-locality filtering
@@ -467,13 +460,13 @@ class EdgeReasoningPipeline:
         }
 
     async def process_mesh_messages(
-        self, messages: list[dict], sensor_data: dict | None = None
+        self, messages: list[dict], sensor_data: dict | None = None,
     ) -> dict[str, Any]:
-        """
-        Process incoming mesh messages with full reasoning pipeline
+        """Process incoming mesh messages with full reasoning pipeline
 
         Returns:
             processing_result with filtered messages and FSD suggestions
+
         """
         # 1. Attention-locality filtering (40% reduction)
         filtered = self.attention_filter.filter_messages(messages)

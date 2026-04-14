@@ -1,10 +1,11 @@
-from pydantic import BaseModel
+from datetime import UTC, datetime
+
+import firebase_admin
 from fastapi import APIRouter, HTTPException
+from firebase_admin import credentials, firestore
 from google import genai
 from google.genai import types
-import firebase_admin
-from firebase_admin import credentials, firestore
-from datetime import datetime, UTC
+from pydantic import BaseModel
 
 # -------------------------------------------------------------------------------------
 # HEADFADE AI: THE MASTER PLAN (ArXiv 2512.14982 Compliant)
@@ -44,8 +45,7 @@ class AnalyzeRequest(BaseModel):
 
 @router.post("/analyze")
 async def generate_forensic_reveal(req: AnalyzeRequest):
-    """
-    Uses Gemini 3.1 Flash Lite Preview's 'Thinking' feature to forensically breakdown the video.
+    """Uses Gemini 3.1 Flash Lite Preview's 'Thinking' feature to forensically breakdown the video.
     Logs the user's vote into the Human Deception Index.
     """
     if not req.video_uri:
@@ -62,7 +62,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
                     "user_vote": req.user_vote.upper(),
                     "timestamp": datetime.now(UTC).isoformat(),
                     "fooled": req.actual_truth.upper() != req.user_vote.upper(),
-                }
+                },
             )
         except Exception as e:
             print(f"[ARBITER WARNING] Failed to write HDI metric: {e}")
@@ -81,7 +81,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
             model="gemini-3.1-flash-lite-preview",
             contents=[types.Part.from_uri(file_uri=req.video_uri, mime_type="video/mp4"), prompt],
             config=types.GenerateContentConfig(
-                temperature=0.2, thinking_config=types.ThinkingConfig(include_thoughts=True)
+                temperature=0.2, thinking_config=types.ThinkingConfig(include_thoughts=True),
             ),
         )
 

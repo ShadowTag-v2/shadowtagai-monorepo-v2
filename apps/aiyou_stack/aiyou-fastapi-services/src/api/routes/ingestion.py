@@ -1,5 +1,4 @@
-"""
-Ingestion layer endpoints.
+"""Ingestion layer endpoints.
 
 Provides endpoints for managing and monitoring the Gemini Ingestion Layer.
 """
@@ -85,8 +84,7 @@ class IngestionMetrics(BaseModel):
     description="Get all configured ingestion sources",
 )
 async def list_sources() -> list[IngestionSource]:
-    """
-    List all configured ingestion sources.
+    """List all configured ingestion sources.
 
     Returns source configurations including tier classifications
     and enabled status.
@@ -120,8 +118,7 @@ async def list_sources() -> list[IngestionSource]:
     description="Add a new ingestion source",
 )
 async def add_source(source: IngestionSource) -> IngestionSource:
-    """
-    Add a new ingestion source.
+    """Add a new ingestion source.
 
     Creates a new source configuration with specified tier
     and rate limiting settings.
@@ -137,8 +134,7 @@ async def add_source(source: IngestionSource) -> IngestionSource:
     description="Get information about the most recent ingestion job",
 )
 async def get_latest_job() -> IngestionJob:
-    """
-    Get the latest ingestion job status.
+    """Get the latest ingestion job status.
 
     Returns information about the most recent ingestion run,
     including items collected and any errors encountered.
@@ -163,8 +159,7 @@ async def get_latest_job() -> IngestionJob:
     description="Manually trigger an ingestion job",
 )
 async def trigger_job(background_tasks: BackgroundTasks) -> IngestionJob:
-    """
-    Manually trigger an ingestion job.
+    """Manually trigger an ingestion job.
 
     Starts a new ingestion run outside of the normal schedule.
     Useful for testing or recovering from failures.
@@ -187,8 +182,7 @@ async def trigger_job(background_tasks: BackgroundTasks) -> IngestionJob:
     description="Get ingestion layer performance metrics",
 )
 async def get_metrics() -> IngestionMetrics:
-    """
-    Get ingestion layer metrics.
+    """Get ingestion layer metrics.
 
     Returns key performance indicators including:
     - Items collected per day

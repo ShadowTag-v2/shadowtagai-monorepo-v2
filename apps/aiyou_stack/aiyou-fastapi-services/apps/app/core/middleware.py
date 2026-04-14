@@ -1,5 +1,4 @@
-"""
-Custom middleware for Omega Governance Service
+"""Custom middleware for Omega Governance Service
 """
 
 import asyncio
@@ -53,7 +52,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         # Add rate limit headers
         response.headers["X-RateLimit-Limit"] = str(self.requests_limit)
         response.headers["X-RateLimit-Remaining"] = str(
-            self.requests_limit - len(self.requests[client_ip])
+            self.requests_limit - len(self.requests[client_ip]),
         )
         response.headers["X-RateLimit-Reset"] = str(int(current_time + self.window_seconds))
 

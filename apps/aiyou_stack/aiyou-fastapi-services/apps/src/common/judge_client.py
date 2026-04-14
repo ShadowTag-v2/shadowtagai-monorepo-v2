@@ -9,8 +9,7 @@ JUDGE6_URL = "http://localhost:8080/validate"
 
 
 def check_with_judge6(operation: str, confidence: float, vertical: str) -> bool:
-    """
-    Consults Judge#6 before execution.
+    """Consults Judge#6 before execution.
     Returns True if PROCEED, False if FREEZE.
     """
     try:
@@ -26,10 +25,9 @@ def check_with_judge6(operation: str, confidence: float, vertical: str) -> bool:
         if verdict["verdict"] == "PROCEED":
             logging.info(f"✅ Judge#6 APPROVED: {operation} (Reason: {verdict['reason']})")
             return True
-        else:
-            logging.warning(f"⛔ Judge#6 BLOCKED: {operation} (Reason: {verdict['reason']})")
-            return False
+        logging.warning(f"⛔ Judge#6 BLOCKED: {operation} (Reason: {verdict['reason']})")
+        return False
 
     except Exception as e:
-        logging.error(f"⚠️ Judge#6 Connection Failed: {e}")
+        logging.exception(f"⚠️ Judge#6 Connection Failed: {e}")
         return False  # Fail safe (closed)

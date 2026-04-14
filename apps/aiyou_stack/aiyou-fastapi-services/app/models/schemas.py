@@ -46,9 +46,9 @@ class CodeExecutionRequest(BaseModel):
                 {
                     "code": "print('Hello, World!')\nresult = 2 + 2\nprint(f'Result: {result}')",
                     "timeout": 10,
-                }
-            ]
-        }
+                },
+            ],
+        },
     }
 
 
@@ -84,9 +84,9 @@ class CodeExecutionResponse(BaseModel):
                     "execution_time": 0.05,
                     "memory_used_mb": 12.5,
                     "cpu_percent": 15.2,
-                }
-            ]
-        }
+                },
+            ],
+        },
     }
 
 

@@ -10,7 +10,6 @@ ANTIGRAVITY_ROOT = Path(os.path.expanduser("~/antigravity-flattened"))
 
 def bootstrap_ironwood():
     """Injects forked repositories into sys.path to enable Ironwood stack."""
-
     # Priority paths for Ironwood Stack
     ironwood_paths = [
         ANTIGRAVITY_ROOT / "jax",
@@ -51,7 +50,7 @@ def verify_ironwood():
         import gemma
 
         print(
-            f"✅ Gemma: (Source) @ {os.path.dirname(gemma.__file__) if hasattr(gemma, '__file__') else 'Namespace/Unknown'}"
+            f"✅ Gemma: (Source) @ {os.path.dirname(gemma.__file__) if hasattr(gemma, '__file__') else 'Namespace/Unknown'}",
         )
     except ImportError as e:
         # Gemma repo structure might use 'gemma' folder inside, checking...

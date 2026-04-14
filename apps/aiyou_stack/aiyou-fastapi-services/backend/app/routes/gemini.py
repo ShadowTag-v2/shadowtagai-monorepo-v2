@@ -1,5 +1,4 @@
-"""
-FastAPI routes for Gemini AI analysis.
+"""FastAPI routes for Gemini AI analysis.
 """
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -34,10 +33,9 @@ async def get_gemini_status(service: GeminiService = Depends(get_gemini_service)
 
 @router.post("/analyze", response_model=GeminiAnalysisResponse)
 async def analyze_system(
-    request: GeminiAnalysisRequest, service: GeminiService = Depends(get_gemini_service)
+    request: GeminiAnalysisRequest, service: GeminiService = Depends(get_gemini_service),
 ):
-    """
-    Perform AI-powered analysis of a system using Gemini.
+    """Perform AI-powered analysis of a system using Gemini.
 
     This endpoint can analyze:
     - Ingestion Layer architecture and performance
@@ -47,7 +45,7 @@ async def analyze_system(
     """
     if not service.is_available():
         raise HTTPException(
-            status_code=503, detail="Gemini AI is not available. Please configure API key."
+            status_code=503, detail="Gemini AI is not available. Please configure API key.",
         )
 
     try:
@@ -56,15 +54,14 @@ async def analyze_system(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
 
 
 @router.post("/compare", response_model=ComparisonAnalysisResponse)
 async def compare_systems(
-    request: ComparisonAnalysisRequest, service: GeminiService = Depends(get_gemini_service)
+    request: ComparisonAnalysisRequest, service: GeminiService = Depends(get_gemini_service),
 ):
-    """
-    Compare two systems (e.g., Judge #6 vs Ingestion Layer).
+    """Compare two systems (e.g., Judge #6 vs Ingestion Layer).
 
     Provides comparative analysis across:
     - Architecture
@@ -78,7 +75,7 @@ async def compare_systems(
     """
     if not service.is_available():
         raise HTTPException(
-            status_code=503, detail="Gemini AI is not available. Please configure API key."
+            status_code=503, detail="Gemini AI is not available. Please configure API key.",
         )
 
     try:
@@ -87,7 +84,7 @@ async def compare_systems(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Comparison failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Comparison failed: {e!s}")
 
 
 @router.post("/analyze/ingestion-layer")
@@ -97,8 +94,7 @@ async def analyze_ingestion_layer(
     documentation: str = None,
     service: GeminiService = Depends(get_gemini_service),
 ):
-    """
-    Specialized endpoint for Gemini Ingestion Layer Analysis.
+    """Specialized endpoint for Gemini Ingestion Layer Analysis.
 
     Analyzes:
     - GKE CronJob Multi-Container architecture
@@ -112,7 +108,7 @@ async def analyze_ingestion_layer(
     """
     if not service.is_available():
         raise HTTPException(
-            status_code=503, detail="Gemini AI is not available. Please configure API key."
+            status_code=503, detail="Gemini AI is not available. Please configure API key.",
         )
 
     request = GeminiAnalysisRequest(
@@ -130,4 +126,4 @@ async def analyze_ingestion_layer(
         response = await service.analyze(request)
         return response
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")

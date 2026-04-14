@@ -1,5 +1,4 @@
-"""
-Kosmos Integration - AI Scientist for Autonomous Agent Optimization
+"""Kosmos Integration - AI Scientist for Autonomous Agent Optimization
 
 Implements autonomous research and experimentation for agent swarm optimization.
 Generates hypotheses, designs experiments, validates improvements.
@@ -47,14 +46,14 @@ class KosmosScientist:
         self.experiments: list[Experiment] = []
 
     def generate_hypothesis(self, task_logs: list[dict[str, Any]]) -> Hypothesis:
-        """
-        Analyze patterns in task execution logs and generate improvement hypothesis.
+        """Analyze patterns in task execution logs and generate improvement hypothesis.
 
         Args:
             task_logs: Historical task execution data
 
         Returns:
             Hypothesis for potential improvement
+
         """
         # Analyze task logs for patterns
         total_tasks = len(task_logs)
@@ -97,8 +96,7 @@ class KosmosScientist:
         return hypothesis
 
     def design_experiment(self, hypothesis: Hypothesis, available_agents: int = 100) -> Experiment:
-        """
-        Create A/B test for hypothesis validation.
+        """Create A/B test for hypothesis validation.
 
         Args:
             hypothesis: Hypothesis to test
@@ -106,6 +104,7 @@ class KosmosScientist:
 
         Returns:
             Experiment design with control and treatment groups
+
         """
         # Determine sample size (rule of thumb: 20+ agents per group)
         control_size = min(20, available_agents // 2)
@@ -132,14 +131,14 @@ class KosmosScientist:
         return experiment
 
     def run_experiment(self, experiment: Experiment) -> dict[str, Any]:
-        """
-        Execute experiment on subset of agent pool.
+        """Execute experiment on subset of agent pool.
 
         Args:
             experiment: Experiment design to execute
 
         Returns:
             Experiment results with statistical analysis
+
         """
         # NOTE: This is a placeholder implementation
         # In production, this would:
@@ -173,11 +172,11 @@ class KosmosScientist:
         return results
 
     def publish_findings(self, experiment: Experiment) -> None:
-        """
-        Share validated optimizations to whiteboard.
+        """Share validated optimizations to whiteboard.
 
         Args:
             experiment: Completed experiment with results
+
         """
         if not experiment.results:
             print("⚠️  Cannot publish: Experiment has no results")
@@ -189,7 +188,7 @@ class KosmosScientist:
         if p_value < 0.05:
             # Significant improvement - rollout to all agents
             hypothesis = next(
-                (h for h in self.hypotheses if h.id == experiment.hypothesis_id), None
+                (h for h in self.hypotheses if h.id == experiment.hypothesis_id), None,
             )
 
             if hypothesis:
@@ -200,7 +199,7 @@ class KosmosScientist:
                 print(f"   Improvement: {hypothesis.expected_improvement}")
                 print(f"   p-value: {p_value:.4f}")
                 print(
-                    f"   Effect size: {experiment.results['statistical_significance']['effect_size']:.1%}"
+                    f"   Effect size: {experiment.results['statistical_significance']['effect_size']:.1%}",
                 )
                 print("\n   📝 Recommendation: Rollout to all agents")
 
@@ -211,7 +210,7 @@ class KosmosScientist:
         else:
             # No significant improvement - reject hypothesis
             hypothesis = next(
-                (h for h in self.hypotheses if h.id == experiment.hypothesis_id), None
+                (h for h in self.hypotheses if h.id == experiment.hypothesis_id), None,
             )
 
             if hypothesis:

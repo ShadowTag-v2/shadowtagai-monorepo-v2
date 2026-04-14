@@ -1,5 +1,4 @@
-"""
-Scheduler for managing scheduled jobs and automation.
+"""Scheduler for managing scheduled jobs and automation.
 """
 
 import logging
@@ -20,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class AutomationScheduler:
-    """
-    Manages scheduled jobs for automation workflows.
+    """Manages scheduled jobs for automation workflows.
     """
 
     def __init__(self):
@@ -73,11 +71,11 @@ class AutomationScheduler:
                     logger.error(f"Failed to load job {job.id}: {e}")
 
     async def add_job(self, scheduled_job: ScheduledJob):
-        """
-        Add a scheduled job to the scheduler.
+        """Add a scheduled job to the scheduler.
 
         Args:
             scheduled_job: ScheduledJob instance to schedule
+
         """
         job_id = f"scheduled_job_{scheduled_job.id}"
 
@@ -115,11 +113,11 @@ class AutomationScheduler:
         logger.info(f"Added scheduled job {job_id}: {scheduled_job.name}")
 
     async def remove_job(self, scheduled_job_id: int):
-        """
-        Remove a scheduled job from the scheduler.
+        """Remove a scheduled job from the scheduler.
 
         Args:
             scheduled_job_id: ID of the scheduled job to remove
+
         """
         job_id = f"scheduled_job_{scheduled_job_id}"
 
@@ -128,16 +126,16 @@ class AutomationScheduler:
             logger.info(f"Removed scheduled job {job_id}")
 
     async def _execute_scheduled_job(self, scheduled_job_id: int):
-        """
-        Execute a scheduled job.
+        """Execute a scheduled job.
 
         Args:
             scheduled_job_id: ID of the scheduled job to execute
+
         """
         async with AsyncSessionLocal() as session:
             # Get scheduled job
             result = await session.execute(
-                select(ScheduledJob).where(ScheduledJob.id == scheduled_job_id)
+                select(ScheduledJob).where(ScheduledJob.id == scheduled_job_id),
             )
             scheduled_job = result.scalar_one_or_none()
 
@@ -170,7 +168,7 @@ class AutomationScheduler:
                 )
 
                 logger.info(
-                    f"Scheduled job {scheduled_job_id} completed with status: {execution.status}"
+                    f"Scheduled job {scheduled_job_id} completed with status: {execution.status}",
                 )
 
             except Exception as e:

@@ -1,5 +1,4 @@
-"""
-pinkln Agent Architecture System - Claude Code Integration
+"""pinkln Agent Architecture System - Claude Code Integration
 
 This module provides seamless integration between the pinkln Agent Architecture
 System and Claude Code (Anthropic's official CLI for Claude).
@@ -38,8 +37,7 @@ class ClaudeCodeSession:
 
 
 class ClaudePnklnAgent:
-    """
-    Integration wrapper for pinkln Agent Architecture System with Claude Code.
+    """Integration wrapper for pinkln Agent Architecture System with Claude Code.
 
     This class provides a seamless interface between the pinkln OS and Claude Code,
     leveraging the Anthropic Claude Agent SDK for local development and execution.
@@ -57,6 +55,7 @@ class ClaudePnklnAgent:
             challenge="Optimize our pricing strategy",
             role="Monetization Architect"
         )
+
     """
 
     def __init__(
@@ -65,18 +64,18 @@ class ClaudePnklnAgent:
         config_path: Path | None = None,
         session_id: str | None = None,
     ):
-        """
-        Initialize the Claude Code integration.
+        """Initialize the Claude Code integration.
 
         Args:
             model: Claude model to use (default: claude-sonnet-4-5)
             config_path: Path to configuration file
             session_id: Optional session identifier
+
         """
         self.model = model
         self.pinkln_os = PnklnOS()
         self.session = ClaudeCodeSession(
-            session_id=session_id or f"pinkln-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+            session_id=session_id or f"pinkln-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
         )
 
         # Load configuration if provided
@@ -110,8 +109,7 @@ class ClaudePnklnAgent:
         temperature: float = 1.0,
         enable_validation: bool = True,
     ) -> dict[str, Any]:
-        """
-        Execute a challenge using the pinkln OS and Claude Code.
+        """Execute a challenge using the pinkln OS and Claude Code.
 
         Args:
             challenge: The problem or task to solve
@@ -128,6 +126,7 @@ class ClaudePnklnAgent:
             - role: Agent role used
             - metadata: Additional execution metadata
             - boy_scout_actions: Cleanup actions taken (if any)
+
         """
         # Assess complexity
         complexity = self.pinkln_os.assess_complexity(challenge)
@@ -183,10 +182,9 @@ class ClaudePnklnAgent:
         return result
 
     async def _call_claude_sdk(
-        self, prompt: str, system_prompt: str, max_tokens: int, temperature: float
+        self, prompt: str, system_prompt: str, max_tokens: int, temperature: float,
     ) -> dict[str, Any]:
-        """
-        Call Claude via Agent SDK.
+        """Call Claude via Agent SDK.
 
         In production, this would use:
         from anthropic import Anthropic
@@ -201,10 +199,9 @@ class ClaudePnklnAgent:
         }
 
     async def _iterate_to_excellence(
-        self, initial_solution: dict[str, Any], challenge: str, role: str, max_iterations: int = 3
+        self, initial_solution: dict[str, Any], challenge: str, role: str, max_iterations: int = 3,
     ) -> dict[str, Any]:
-        """
-        Apply the pinkln 'Iterate Relentlessly' principle.
+        """Apply the pinkln 'Iterate Relentlessly' principle.
 
         Args:
             initial_solution: The initial solution
@@ -214,6 +211,7 @@ class ClaudePnklnAgent:
 
         Returns:
             Refined solution meeting pinkln standards
+
         """
         current_solution = initial_solution
 
@@ -255,10 +253,9 @@ Provide an improved solution.
         return current_solution
 
     async def multi_agent_debate(
-        self, challenge: str, perspectives: list[dict[str, str]], synthesize: bool = True
+        self, challenge: str, perspectives: list[dict[str, str]], synthesize: bool = True,
     ) -> dict[str, Any]:
-        """
-        Run a multi-agent debate using different perspectives.
+        """Run a multi-agent debate using different perspectives.
 
         Args:
             challenge: The problem to debate
@@ -275,6 +272,7 @@ Provide an improved solution.
                 {"role": "Pragmatist", "focus": "execution feasibility"}
             ]
             result = await agent.multi_agent_debate(challenge, perspectives)
+
         """
         results = {
             "challenge": challenge,
@@ -295,7 +293,7 @@ Be concise but thorough. End with a clear recommendation.
 """
             result = await self.execute(enhanced_challenge, role=perspective["role"])
             results["perspectives"].append(
-                {"role": perspective["role"], "focus": perspective["focus"], "response": result}
+                {"role": perspective["role"], "focus": perspective["focus"], "response": result},
             )
 
         # Synthesize if requested
@@ -322,11 +320,11 @@ Synthesize these perspectives into:
         return results
 
     def get_session_summary(self) -> dict[str, Any]:
-        """
-        Get summary of current session.
+        """Get summary of current session.
 
         Returns:
             Dictionary with session statistics and metadata
+
         """
         return {
             "session_id": self.session.session_id,
@@ -338,10 +336,9 @@ Synthesize these perspectives into:
         }
 
     async def skill_execution(
-        self, skill_name: str, task_context: dict[str, Any]
+        self, skill_name: str, task_context: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Execute a specific pinkln skill.
+        """Execute a specific pinkln skill.
 
         Args:
             skill_name: Name of the skill to execute
@@ -357,6 +354,7 @@ Synthesize these perspectives into:
         - MonetizationArchitectSkill
         - WorkflowRefinerSkill
         - PromptCraftSkill
+
         """
         # Map skill names to implementations
         skill_map = {
@@ -400,7 +398,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="pinkln Agent Architecture System - Claude Code Edition"
+        description="pinkln Agent Architecture System - Claude Code Edition",
     )
     parser.add_argument("challenge", help="The challenge to solve")
     parser.add_argument("--role", default="pinkln Agent", help="Agent role to adopt")

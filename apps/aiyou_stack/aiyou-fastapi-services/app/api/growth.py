@@ -1,5 +1,4 @@
-"""
-Growth Engineer API Routes
+"""Growth Engineer API Routes
 
 FastAPI routes for the Growth Engineer agent.
 """
@@ -36,8 +35,7 @@ growth_agent = GrowthEngineerAgent()
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
-    """
-    Health check endpoint for the Growth Engineer agent.
+    """Health check endpoint for the Growth Engineer agent.
     """
     metadata = growth_agent.get_metadata()
     return HealthResponse(
@@ -50,8 +48,7 @@ async def health_check():
 
 @router.get("/metadata", response_model=AgentMetadata)
 async def get_agent_metadata():
-    """
-    Get metadata about the Growth Engineer agent.
+    """Get metadata about the Growth Engineer agent.
     """
     metadata = growth_agent.get_metadata()
     return AgentMetadata(**metadata)
@@ -59,8 +56,7 @@ async def get_agent_metadata():
 
 @router.post("/analyze/user-hooks", response_model=AgentResponse)
 async def analyze_user_hooks(request: UserHookAnalysisRequest):
-    """
-    Analyze application to find user hooks and engagement opportunities.
+    """Analyze application to find user hooks and engagement opportunities.
 
     This endpoint helps identify:
     - Current activation points and "aha moments"
@@ -89,14 +85,13 @@ async def analyze_user_hooks(request: UserHookAnalysisRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error analyzing user hooks: {str(e)}",
+            detail=f"Error analyzing user hooks: {e!s}",
         )
 
 
 @router.post("/design/viral-loop", response_model=AgentResponse)
 async def design_viral_loop(request: ViralLoopRequest):
-    """
-    Design a viral loop mechanism for your product.
+    """Design a viral loop mechanism for your product.
 
     This endpoint provides:
     - Viral loop mechanism design
@@ -127,14 +122,13 @@ async def design_viral_loop(request: ViralLoopRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error designing viral loop: {str(e)}",
+            detail=f"Error designing viral loop: {e!s}",
         )
 
 
 @router.post("/experiment/ab-test", response_model=AgentResponse)
 async def create_ab_test(request: ABTestRequest):
-    """
-    Create and configure an A/B test experiment.
+    """Create and configure an A/B test experiment.
 
     This endpoint provides:
     - Null and alternative hypotheses
@@ -167,14 +161,13 @@ async def create_ab_test(request: ABTestRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error creating A/B test: {str(e)}",
+            detail=f"Error creating A/B test: {e!s}",
         )
 
 
 @router.post("/analyze/metrics", response_model=AgentResponse)
 async def analyze_growth_metrics(request: GrowthMetricsRequest):
-    """
-    Analyze growth metrics and provide optimization recommendations.
+    """Analyze growth metrics and provide optimization recommendations.
 
     This endpoint provides:
     - Key insights from the data
@@ -203,14 +196,13 @@ async def analyze_growth_metrics(request: GrowthMetricsRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error analyzing growth metrics: {str(e)}",
+            detail=f"Error analyzing growth metrics: {e!s}",
         )
 
 
 @router.post("/design/engagement-feature", response_model=AgentResponse)
 async def design_engagement_feature(request: EngagementFeatureRequest):
-    """
-    Design an engagement feature with viral potential.
+    """Design an engagement feature with viral potential.
 
     This endpoint provides:
     - Feature design and user experience flow
@@ -241,14 +233,13 @@ async def design_engagement_feature(request: EngagementFeatureRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error designing engagement feature: {str(e)}",
+            detail=f"Error designing engagement feature: {e!s}",
         )
 
 
 @router.post("/implement/analytics", response_model=AgentResponse)
 async def implement_analytics_tracking(request: AnalyticsTrackingRequest):
-    """
-    Implement analytics tracking for growth metrics.
+    """Implement analytics tracking for growth metrics.
 
     This endpoint provides:
     - Event taxonomy and naming conventions
@@ -278,14 +269,13 @@ async def implement_analytics_tracking(request: AnalyticsTrackingRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error implementing analytics: {str(e)}",
+            detail=f"Error implementing analytics: {e!s}",
         )
 
 
 @router.post("/optimize/referral", response_model=AgentResponse)
 async def optimize_referral_system(request: ReferralOptimizationRequest):
-    """
-    Optimize an existing referral system for better performance.
+    """Optimize an existing referral system for better performance.
 
     This endpoint provides:
     - Current performance analysis
@@ -314,21 +304,20 @@ async def optimize_referral_system(request: ReferralOptimizationRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error optimizing referral system: {str(e)}",
+            detail=f"Error optimizing referral system: {e!s}",
         )
 
 
 @router.post("/query", response_model=AgentResponse)
 async def general_growth_query(request: GeneralGrowthQuery):
-    """
-    Handle general growth engineering queries.
+    """Handle general growth engineering queries.
 
     Use this endpoint for any growth engineering questions or requests
     that don't fit into the specific categories above.
     """
     try:
         result = await growth_agent.general_growth_query(
-            user_query=request.query, context=request.context
+            user_query=request.query, context=request.context,
         )
 
         return AgentResponse(
@@ -341,5 +330,5 @@ async def general_growth_query(request: GeneralGrowthQuery):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error processing query: {str(e)}",
+            detail=f"Error processing query: {e!s}",
         )

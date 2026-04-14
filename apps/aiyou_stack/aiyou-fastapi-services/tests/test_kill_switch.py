@@ -1,5 +1,4 @@
-"""
-Tests for KillSwitch
+"""Tests for KillSwitch
 """
 
 import pytest

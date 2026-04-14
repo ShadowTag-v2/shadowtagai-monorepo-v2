@@ -1,5 +1,4 @@
-"""
-SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
+"""SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
@@ -11,8 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class HealthcarePayerPipeline:
-    """
-    Healthcare Admin Vertical ($2.5B Extension).
+    """Healthcare Admin Vertical ($2.5B Extension).
     Extends the Zero-Touch engine into medical compliance.
     Strictly enforcing HIPAA data obfuscation while precisely tracking Payer (Insurance)
     update deadlines and provider credentialing windows.
@@ -24,8 +22,7 @@ class HealthcarePayerPipeline:
         self.provider_id = provider_id
 
     async def ingest_payer_bulletin(self, _raw_bulletin_html: str) -> dict[str, str]:
-        """
-        Parses thousands of pages of Medicare / Private Insurance payer updates
+        """Parses thousands of pages of Medicare / Private Insurance payer updates
         to extract changing claim submission deadlines or new billing codes.
         """
         logger.info(f"Healthcare Vertical: Parsing Payer Bulletin for Provider {self.provider_id}")
@@ -42,13 +39,12 @@ class HealthcarePayerPipeline:
         #     await conn.execute("INSERT INTO payer_bulletins (rule) VALUES ($1)", json.dumps(extracted_rule))
 
         logger.info(
-            "Healthcare Vertical: Payer rule physically locked into pgvector memory matrix."
+            "Healthcare Vertical: Payer rule physically locked into pgvector memory matrix.",
         )
         return extracted_rule
 
     def enforce_hipaa_lock(self, _patient_data: dict[str, object]) -> str:
-        """
-        Zero-Trust Architecture extension: Irreversibly strips PHI (Protected Health Information)
+        """Zero-Trust Architecture extension: Irreversibly strips PHI (Protected Health Information)
         before any patient timeline event hits the external Intelligence Pipeline.
         """
         logger.debug("Healthcare Vertical: Stripping PHI to enforce HIPAA compliance boundary.")

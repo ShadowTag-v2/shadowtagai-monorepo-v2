@@ -1,5 +1,4 @@
-"""
-Framework-based Reasoning Skill
+"""Framework-based Reasoning Skill
 
 Apply structured frameworks to problems (SWOT, 5 Whys, First Principles, etc.)
 
@@ -38,8 +37,7 @@ class Framework(Enum):
 
 
 class FrameworkReasoning(Skill):
-    """
-    Framework-based reasoning skill
+    """Framework-based reasoning skill
 
     Apply structured thinking frameworks to problems
     """
@@ -102,15 +100,14 @@ class FrameworkReasoning(Skill):
 """
 
         super().__init__(
-            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet
+            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet,
         )
 
         self.model = model
         self.default_framework = default_framework
 
     async def execute(self, task: str, context: dict[str, Any] | None = None) -> SkillResult:
-        """
-        Execute framework-based reasoning
+        """Execute framework-based reasoning
 
         Args:
             task: Problem to solve
@@ -118,6 +115,7 @@ class FrameworkReasoning(Skill):
 
         Returns:
             SkillResult with framework-structured reasoning
+
         """
         start_time = time.time()
 
@@ -241,7 +239,6 @@ class FrameworkReasoning(Skill):
 # Example usage
 async def example():
     """Example: Apply First Principles to a problem"""
-
     framework_skill = FrameworkReasoning(default_framework=Framework.FIRST_PRINCIPLES)
 
     result = await framework_skill.execute(

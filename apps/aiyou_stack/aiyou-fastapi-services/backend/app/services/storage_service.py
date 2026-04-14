@@ -1,5 +1,4 @@
-"""
-Storage service for managing notes, issues, and other data.
+"""Storage service for managing notes, issues, and other data.
 """
 
 import uuid
@@ -9,8 +8,7 @@ from app.models.storage import Issue, Note
 
 
 class StorageService:
-    """
-    In-memory storage service for notes and issues.
+    """In-memory storage service for notes and issues.
     In production, this should be replaced with a database backend.
     """
 
@@ -24,8 +22,7 @@ class StorageService:
     # Note operations
 
     def create_note(self, folder: str, title: str, content: str) -> str:
-        """
-        Create a new note.
+        """Create a new note.
 
         Args:
             folder: Folder for the note
@@ -34,6 +31,7 @@ class StorageService:
 
         Returns:
             Note ID
+
         """
         note_id = str(uuid.uuid4())
         now = datetime.utcnow()
@@ -53,14 +51,14 @@ class StorageService:
         return note_id
 
     def get_note_by_title(self, title: str) -> Note | None:
-        """
-        Get a note by its title.
+        """Get a note by its title.
 
         Args:
             title: Note title
 
         Returns:
             Note if found, None otherwise
+
         """
         note_id = self.notes_by_title.get(title)
         if note_id:
@@ -68,20 +66,19 @@ class StorageService:
         return None
 
     def get_note_by_id(self, note_id: str) -> Note | None:
-        """
-        Get a note by its ID.
+        """Get a note by its ID.
 
         Args:
             note_id: Note ID
 
         Returns:
             Note if found, None otherwise
+
         """
         return self.notes.get(note_id)
 
     def append_to_note(self, title: str, content: str) -> str:
-        """
-        Append content to an existing note.
+        """Append content to an existing note.
 
         Args:
             title: Note title
@@ -92,6 +89,7 @@ class StorageService:
 
         Raises:
             ValueError: If note not found
+
         """
         note = self.get_note_by_title(title)
         if not note:
@@ -104,14 +102,14 @@ class StorageService:
         return note.note_id
 
     def list_notes(self, folder: str | None = None) -> list[Note]:
-        """
-        List all notes, optionally filtered by folder.
+        """List all notes, optionally filtered by folder.
 
         Args:
             folder: Optional folder to filter by
 
         Returns:
             List of notes
+
         """
         notes = list(self.notes.values())
 
@@ -124,14 +122,14 @@ class StorageService:
         return notes
 
     def delete_note(self, note_id: str) -> bool:
-        """
-        Delete a note.
+        """Delete a note.
 
         Args:
             note_id: Note ID
 
         Returns:
             True if deleted, False if not found
+
         """
         note = self.notes.get(note_id)
         if not note:
@@ -147,8 +145,7 @@ class StorageService:
     # Issue operations
 
     def create_issue(self, title: str, description: str, tags: list[str] | None = None) -> str:
-        """
-        Create a new issue.
+        """Create a new issue.
 
         Args:
             title: Issue title
@@ -157,6 +154,7 @@ class StorageService:
 
         Returns:
             Issue ID
+
         """
         issue_id = str(uuid.uuid4())
         now = datetime.utcnow()
@@ -176,26 +174,26 @@ class StorageService:
         return issue_id
 
     def get_issue(self, issue_id: str) -> Issue | None:
-        """
-        Get an issue by ID.
+        """Get an issue by ID.
 
         Args:
             issue_id: Issue ID
 
         Returns:
             Issue if found, None otherwise
+
         """
         return self.issues.get(issue_id)
 
     def list_issues(self, status: str | None = None) -> list[Issue]:
-        """
-        List all issues, optionally filtered by status.
+        """List all issues, optionally filtered by status.
 
         Args:
             status: Optional status to filter by
 
         Returns:
             List of issues
+
         """
         issues = list(self.issues.values())
 
@@ -208,8 +206,7 @@ class StorageService:
         return issues
 
     def update_issue_status(self, issue_id: str, status: str) -> bool:
-        """
-        Update issue status.
+        """Update issue status.
 
         Args:
             issue_id: Issue ID
@@ -217,6 +214,7 @@ class StorageService:
 
         Returns:
             True if updated, False if not found
+
         """
         issue = self.issues.get(issue_id)
         if not issue:
@@ -228,14 +226,14 @@ class StorageService:
         return True
 
     def delete_issue(self, issue_id: str) -> bool:
-        """
-        Delete an issue.
+        """Delete an issue.
 
         Args:
             issue_id: Issue ID
 
         Returns:
             True if deleted, False if not found
+
         """
         if issue_id in self.issues:
             del self.issues[issue_id]

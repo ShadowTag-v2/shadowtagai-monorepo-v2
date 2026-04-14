@@ -11,8 +11,7 @@ from app.models.kernel import KernelInput, KernelMetrics, KernelOutput
 
 
 class ATP519ScanKernel(Kernel):
-    """
-    Kernel 1: Extract ATP 5-19 violations from raw decision context.
+    """Kernel 1: Extract ATP 5-19 violations from raw decision context.
 
     Specifications:
     - Input: Raw decision context (up to 50KB)
@@ -82,14 +81,14 @@ Return violations in JSON format only."""
         )
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Scan decision context for ATP 5-19 violations.
+        """Scan decision context for ATP 5-19 violations.
 
         Args:
             kernel_input: Contains DecisionContext in data field
 
         Returns:
             KernelOutput with ViolationsScanOutput
+
         """
         try:
             # Extract decision context
@@ -100,7 +99,7 @@ Return violations in JSON format only."""
             else:
                 raise KernelChainError(
                     f"Invalid input type: expected DecisionContext or str, "
-                    f"got {type(kernel_input.data)}"
+                    f"got {type(kernel_input.data)}",
                 )
 
             # Build prompt
@@ -153,8 +152,8 @@ Return violations in JSON format only."""
 
         except json.JSONDecodeError as e:
             raise KernelChainError(
-                f"Failed to parse Gemini response as JSON: {str(e)}\n"
-                f"Response: {response_text[:200]}"
+                f"Failed to parse Gemini response as JSON: {e!s}\n"
+                f"Response: {response_text[:200]}",
             ) from e
         except Exception as e:
-            raise KernelChainError(f"ATP 5-19 scan failed: {str(e)}") from e
+            raise KernelChainError(f"ATP 5-19 scan failed: {e!s}") from e

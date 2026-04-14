@@ -1,5 +1,4 @@
-"""
-Hypothesis Agent: Specializes in generating testable research hypotheses.
+"""Hypothesis Agent: Specializes in generating testable research hypotheses.
 
 Capabilities:
 - Generate hypotheses from data patterns and literature
@@ -16,8 +15,7 @@ from kosmos.core.vertex_client import GeminiModel
 
 
 class HypothesisAgent(BaseAgent):
-    """
-    Agent specialized in hypothesis generation and evaluation.
+    """Agent specialized in hypothesis generation and evaluation.
 
     Uses Gemini Pro for creative yet rigorous hypothesis formulation.
     Synthesizes insights from literature and data to propose testable hypotheses.
@@ -61,8 +59,7 @@ Always provide:
     )
 
     def execute_task(self, task: str, context: dict[str, Any] | None = None) -> ReActResult:
-        """
-        Execute hypothesis generation task.
+        """Execute hypothesis generation task.
 
         Example tasks:
         - "Generate hypotheses explaining the observed correlation between X and Y"
@@ -75,6 +72,7 @@ Always provide:
 
         Returns:
             ReActResult with generated hypotheses
+
         """
         goal = self._build_goal_with_instruction(task)
 
@@ -98,11 +96,11 @@ Always provide:
         return result
 
     def _extract_and_store_hypotheses(self, result: ReActResult):
-        """
-        Extract hypotheses from ReAct result and add to world model.
+        """Extract hypotheses from ReAct result and add to world model.
 
         Args:
             result: ReAct execution result
+
         """
         # Look for hypothesis generation in final answer or observations
         if result.final_answer:
@@ -128,8 +126,7 @@ Always provide:
         num_hypotheses: int = 5,
         focus: str | None = None,
     ) -> ReActResult:
-        """
-        Generate multiple hypotheses based on current world model state.
+        """Generate multiple hypotheses based on current world model state.
 
         Args:
             num_hypotheses: Number of hypotheses to generate
@@ -137,6 +134,7 @@ Always provide:
 
         Returns:
             ReActResult with generated hypotheses
+
         """
         task = (
             f"Generate {num_hypotheses} testable hypotheses based on current literature and data."
@@ -154,14 +152,14 @@ Always provide:
         return self.execute_task(task)
 
     def evaluate_hypothesis(self, hypothesis_id: str) -> ReActResult:
-        """
-        Evaluate an existing hypothesis for plausibility and testability.
+        """Evaluate an existing hypothesis for plausibility and testability.
 
         Args:
             hypothesis_id: World model hypothesis ID
 
         Returns:
             ReActResult with evaluation
+
         """
         hypothesis = self.world_model.get_hypothesis(hypothesis_id)
         if not hypothesis:
@@ -185,8 +183,7 @@ Always provide:
         hypothesis_id: str,
         new_evidence: str,
     ) -> ReActResult:
-        """
-        Refine a hypothesis based on new evidence.
+        """Refine a hypothesis based on new evidence.
 
         Args:
             hypothesis_id: World model hypothesis ID
@@ -194,6 +191,7 @@ Always provide:
 
         Returns:
             ReActResult with refined hypothesis
+
         """
         hypothesis = self.world_model.get_hypothesis(hypothesis_id)
         if not hypothesis:
@@ -210,11 +208,11 @@ Always provide:
         )
 
     def prioritize_hypotheses(self) -> ReActResult:
-        """
-        Prioritize untested hypotheses by feasibility and potential impact.
+        """Prioritize untested hypotheses by feasibility and potential impact.
 
         Returns:
             ReActResult with prioritized hypothesis list
+
         """
         untested = self.world_model.get_untested_hypotheses()
 
@@ -231,7 +229,7 @@ Always provide:
             [
                 f"{i + 1}. [{h.id}] {h.text} (confidence: {h.confidence})"
                 for i, h in enumerate(untested)
-            ]
+            ],
         )
 
         return self.execute_task(

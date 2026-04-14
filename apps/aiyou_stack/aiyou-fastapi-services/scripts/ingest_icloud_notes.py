@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Ingest iCloud Notes export into ShadowTag-v2 docs/notes/
+"""Ingest iCloud Notes export into ShadowTag-v2 docs/notes/
 Reads exported note directories, extracts text, builds index.
 """
 

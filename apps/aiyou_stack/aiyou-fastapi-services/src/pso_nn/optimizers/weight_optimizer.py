@@ -1,5 +1,4 @@
-"""
-Weight Optimizer: PSO-based neural network weight optimization.
+"""Weight Optimizer: PSO-based neural network weight optimization.
 
 Flattens network weights, optimizes via PSO, and reshapes back.
 Supports PyTorch, NumPy arrays, and custom networks.
@@ -25,8 +24,7 @@ class NetworkShape:
 
 
 class WeightOptimizer:
-    """
-    PSO-based optimizer for neural network weights.
+    """PSO-based optimizer for neural network weights.
 
     Handles:
     - Weight flattening and reshaping
@@ -47,14 +45,14 @@ class WeightOptimizer:
         swarm_config: SwarmConfig | None = None,
         bounds: tuple[float, float] = (-2.0, 2.0),
     ):
-        """
-        Initialize weight optimizer.
+        """Initialize weight optimizer.
 
         Args:
             network: Neural network (PyTorch Module, NumPy-based, or custom)
             fitness_fn: Fitness function for evaluation
             swarm_config: PSO swarm configuration
             bounds: Weight bounds for initialization
+
         """
         self.network = network
         self.fitness_fn = fitness_fn
@@ -104,7 +102,7 @@ class WeightOptimizer:
                 names.append(f"layer_{i}")
         else:
             raise ValueError(
-                "Network must have parameters(), weights attribute, or get_weights() method"
+                "Network must have parameters(), weights attribute, or get_weights() method",
             )
 
         total = sum(np.prod(s) for s in shapes)
@@ -165,10 +163,9 @@ class WeightOptimizer:
                 self.network.weights = weights
 
     def create_fitness_wrapper(
-        self, data: np.ndarray, labels: np.ndarray, batch_size: int | None = None
+        self, data: np.ndarray, labels: np.ndarray, batch_size: int | None = None,
     ) -> Callable[[np.ndarray], float]:
-        """
-        Create a fitness function wrapper for PSO.
+        """Create a fitness function wrapper for PSO.
 
         Args:
             data: Training data
@@ -177,6 +174,7 @@ class WeightOptimizer:
 
         Returns:
             Callable fitness function
+
         """
 
         def evaluate(weights: np.ndarray) -> float:
@@ -224,8 +222,7 @@ class WeightOptimizer:
         n_workers: int = 4,
         callback: Callable[[int, float], None] | None = None,
     ) -> OptimizationResult:
-        """
-        Optimize network weights using PSO.
+        """Optimize network weights using PSO.
 
         Args:
             data: Training data
@@ -238,6 +235,7 @@ class WeightOptimizer:
 
         Returns:
             OptimizationResult with best weights and history
+
         """
         fitness_wrapper = self.create_fitness_wrapper(data, labels, batch_size)
 
@@ -268,7 +266,7 @@ class WeightOptimizer:
         fitness_wrapper = self.create_fitness_wrapper(data, labels, batch_size)
 
         result = await self.swarm.optimize_async(
-            fitness_fn=fitness_wrapper, max_iterations=max_iterations
+            fitness_fn=fitness_wrapper, max_iterations=max_iterations,
         )
 
         self._optimized_weights = result.best_position

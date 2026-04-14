@@ -1,5 +1,4 @@
-"""
-The pnkln OS™ - Master System Agent
+"""The pnkln OS™ - Master System Agent
 
 The core personality and cultural layer that defines the soul of every agent and skill.
 This embodies the "Ultrathink like Steve Jobs" philosophy.
@@ -38,8 +37,7 @@ class PnklnContext:
 
 
 class PnklnOS:
-    """
-    The pnkln Operating System - Master System Agent
+    """The pnkln Operating System - Master System Agent
 
     This is the core that orchestrates all Skills, Agents, and reasoning frameworks.
     It embodies the "Steve Jobs" philosophy in every operation.
@@ -116,14 +114,14 @@ Your Core Directives (Ultrathink):
         self.validation = ValidationLayer()
 
     def assess_complexity(self, problem: str) -> float:
-        """
-        Assess the complexity of a problem to select appropriate reasoning strategy.
+        """Assess the complexity of a problem to select appropriate reasoning strategy.
 
         Args:
             problem: The problem statement
 
         Returns:
             Complexity score between 0 and 1
+
         """
         # Heuristic-based complexity assessment
         factors = {
@@ -135,29 +133,27 @@ Your Core Directives (Ultrathink):
         return min(sum(factors.values()), 1.0)
 
     def select_reasoning_strategy(self, complexity: float) -> str:
-        """
-        Select appropriate reasoning strategy based on complexity.
+        """Select appropriate reasoning strategy based on complexity.
 
         Args:
             complexity: Complexity score (0-1)
 
         Returns:
             Strategy name
+
         """
         if complexity < ComplexityLevel.BASIC.value:
             return "chain_of_thought"
-        elif complexity < ComplexityLevel.EXPLORATORY.value:
+        if complexity < ComplexityLevel.EXPLORATORY.value:
             return "tree_of_thoughts"
-        elif complexity < ComplexityLevel.COLLABORATIVE.value:
+        if complexity < ComplexityLevel.COLLABORATIVE.value:
             return "multi_agent_debate"
-        else:
-            return "debate_train_evolve"
+        return "debate_train_evolve"
 
     async def process(
-        self, challenge: str, context: dict[str, Any] | None = None
+        self, challenge: str, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Process a challenge using the pinkln OS.
+        """Process a challenge using the pinkln OS.
 
         This is the main entry point that:
         1. Assesses complexity
@@ -171,6 +167,7 @@ Your Core Directives (Ultrathink):
 
         Returns:
             Solution dictionary with metadata
+
         """
         # Initialize context
         self.context = PnklnContext(challenge=challenge, metadata=context or {})
@@ -181,7 +178,7 @@ Your Core Directives (Ultrathink):
 
         # Process with selected strategy
         response = await self.reasoning_engine.process(
-            challenge, strategy=strategy, context=self.context
+            challenge, strategy=strategy, context=self.context,
         )
 
         # Validate excellence
@@ -194,10 +191,9 @@ Your Core Directives (Ultrathink):
         return response
 
     async def _iterate_to_excellence(
-        self, response: dict[str, Any], max_iterations: int = 10
+        self, response: dict[str, Any], max_iterations: int = 10,
     ) -> dict[str, Any]:
-        """
-        Iterate until response achieves "insanely great" status.
+        """Iterate until response achieves "insanely great" status.
 
         Args:
             response: Initial response
@@ -205,6 +201,7 @@ Your Core Directives (Ultrathink):
 
         Returns:
             Refined response
+
         """
         iterations = 0
         while not self.validation.is_insanely_great(response) and iterations < max_iterations:
@@ -234,8 +231,7 @@ Your Core Directives (Ultrathink):
         return self.MASTER_PROMPT
 
     def create_agent_prompt(self, agent_role: str, task: str, **kwargs) -> str:
-        """
-        Create a prompt for an agent with pinkln OS philosophy embedded.
+        """Create a prompt for an agent with pinkln OS philosophy embedded.
 
         Args:
             agent_role: The role of the agent
@@ -244,6 +240,7 @@ Your Core Directives (Ultrathink):
 
         Returns:
             Formatted prompt
+
         """
         return f"""
 {self.MASTER_PROMPT}

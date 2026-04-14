@@ -1,5 +1,4 @@
-"""
-Unified Metrics Dashboard - Single pane of glass for all observability.
+"""Unified Metrics Dashboard - Single pane of glass for all observability.
 
 Combines:
 - Ingestion pipeline metrics (sources, tiers, compliance)
@@ -67,8 +66,7 @@ class Alert:
 
 
 class UnifiedMetricsDashboard:
-    """
-    Unified observability dashboard.
+    """Unified observability dashboard.
 
     Aggregates metrics from:
     - Ingestion pipeline (SourceManager, TierClassifier)
@@ -99,11 +97,11 @@ class UnifiedMetricsDashboard:
         self.snapshots: list[DashboardSnapshot] = []
 
     async def get_current_snapshot(self) -> DashboardSnapshot:
-        """
-        Get current unified snapshot of all systems.
+        """Get current unified snapshot of all systems.
 
         Returns:
             DashboardSnapshot with all current metrics
+
         """
         snapshot = DashboardSnapshot()
 
@@ -170,8 +168,7 @@ class UnifiedMetricsDashboard:
         return snapshot
 
     def _calculate_health_score(self, snapshot: DashboardSnapshot) -> float:
-        """
-        Calculate overall system health score (0-100).
+        """Calculate overall system health score (0-100).
 
         Weights:
         - Ingestion health: 30%
@@ -245,10 +242,9 @@ class UnifiedMetricsDashboard:
         """Determine overall status from health score."""
         if health_score >= 80:
             return "healthy"
-        elif health_score >= 60:
+        if health_score >= 60:
             return "degraded"
-        else:
-            return "critical"
+        return "critical"
 
     async def _calculate_mrr(self) -> float:
         """Calculate Monthly Recurring Revenue."""
@@ -272,14 +268,14 @@ class UnifiedMetricsDashboard:
         return 0.0
 
     async def generate_alerts(self, snapshot: DashboardSnapshot) -> list[Alert]:
-        """
-        Generate alerts from current snapshot.
+        """Generate alerts from current snapshot.
 
         Args:
             snapshot: Current system snapshot
 
         Returns:
             List of alerts requiring attention
+
         """
         alerts = []
 
@@ -297,7 +293,7 @@ class UnifiedMetricsDashboard:
                         current_value=utilization,
                         threshold=90.0,
                         recommendation="Review cost drivers or increase budget",
-                    )
+                    ),
                 )
             elif utilization >= 75:
                 alerts.append(
@@ -310,7 +306,7 @@ class UnifiedMetricsDashboard:
                         current_value=utilization,
                         threshold=75.0,
                         recommendation="Monitor closely, consider optimizations",
-                    )
+                    ),
                 )
 
         # Performance alerts
@@ -328,7 +324,7 @@ class UnifiedMetricsDashboard:
                             metric_name=bottleneck.get("component"),
                             current_value=bottleneck.get("avg_duration_ms"),
                             recommendation="Investigate and optimize component",
-                        )
+                        ),
                     )
 
         # ML anomaly alerts
@@ -344,7 +340,7 @@ class UnifiedMetricsDashboard:
                         message=f"{critical_count} critical anomalies detected",
                         current_value=float(critical_count),
                         recommendation="Review anomaly details and root cause",
-                    )
+                    ),
                 )
 
             at_risk = snapshot.ml_insights.get("at_risk_sources", 0)
@@ -358,7 +354,7 @@ class UnifiedMetricsDashboard:
                         message=f"{at_risk} sources at risk of failure",
                         current_value=float(at_risk),
                         recommendation="Enable circuit breakers or review source health",
-                    )
+                    ),
                 )
 
         # Ingestion alerts
@@ -376,7 +372,7 @@ class UnifiedMetricsDashboard:
                         current_value=tier1_pct,
                         threshold=10.0,
                         recommendation="Review collection criteria and source selection",
-                    )
+                    ),
                 )
 
         # Store alerts
@@ -387,11 +383,11 @@ class UnifiedMetricsDashboard:
         return alerts
 
     def get_dashboard_data(self) -> dict:
-        """
-        Get complete dashboard data for UI rendering.
+        """Get complete dashboard data for UI rendering.
 
         Returns:
             Dictionary with all dashboard sections
+
         """
         if not self.snapshots:
             return {"error": "No snapshots available"}
@@ -464,8 +460,7 @@ class UnifiedMetricsDashboard:
         return trends
 
     def get_sla_compliance(self) -> dict:
-        """
-        Calculate SLA compliance metrics.
+        """Calculate SLA compliance metrics.
 
         SLAs:
         - Uptime: 99.9%
@@ -501,14 +496,14 @@ class UnifiedMetricsDashboard:
                         b
                         for b in latest.performance.get("bottlenecks", [])
                         if b.get("severity") == "critical"
-                    ]
+                    ],
                 ),
                 "compliant": len(
                     [
                         b
                         for b in latest.performance.get("bottlenecks", [])
                         if b.get("severity") == "critical"
-                    ]
+                    ],
                 )
                 == 0,
             },
@@ -534,8 +529,7 @@ def initialize_dashboard(
     usage_tracker=None,
     cost_detector=None,
 ):
-    """
-    Initialize global dashboard with component references.
+    """Initialize global dashboard with component references.
 
     Args:
         ingestion_manager: SourceManager instance
@@ -543,6 +537,7 @@ def initialize_dashboard(
         ml_detector: MLAnomalyDetectionSystem instance
         usage_tracker: UsageTracker instance
         cost_detector: CostSpikeDetector instance
+
     """
     global unified_dashboard
     unified_dashboard = UnifiedMetricsDashboard(

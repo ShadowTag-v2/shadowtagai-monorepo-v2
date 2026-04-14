@@ -1,5 +1,4 @@
-"""
-Semantic Search Service (Nowgrep-inspired)
+"""Semantic Search Service (Nowgrep-inspired)
 Ultra-fast neural search for intelligence items, code, and text
 
 Integrated from Cor.17 Nowgrep for PNKLN Core Stack™
@@ -17,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class SemanticSearchService:
-    """
-    Semantic search service with vector indexing
+    """Semantic search service with vector indexing
 
     Uses Vertex AI embeddings for:
     - Intelligence item search
@@ -63,10 +61,9 @@ class SemanticSearchService:
         logger.info("Semantic Search service shutdown")
 
     async def create_index(
-        self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content"
+        self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content",
     ) -> dict[str, Any]:
-        """
-        Create a new search index
+        """Create a new search index
 
         Args:
             index_name: Name of the index
@@ -75,6 +72,7 @@ class SemanticSearchService:
 
         Returns:
             Index creation result
+
         """
         try:
             start_time = datetime.utcnow()
@@ -107,7 +105,7 @@ class SemanticSearchService:
             elapsed = (datetime.utcnow() - start_time).total_seconds()
 
             logger.info(
-                f"Created index '{index_name}' with {len(documents)} documents in {elapsed:.2f}s"
+                f"Created index '{index_name}' with {len(documents)} documents in {elapsed:.2f}s",
             )
 
             return {
@@ -122,10 +120,9 @@ class SemanticSearchService:
             return {"status": "error", "error": str(e)}
 
     async def search(
-        self, index_name: str, query: str, top_k: int = 10, min_score: float = 0.0
+        self, index_name: str, query: str, top_k: int = 10, min_score: float = 0.0,
     ) -> dict[str, Any]:
-        """
-        Perform semantic search on an index
+        """Perform semantic search on an index
 
         Args:
             index_name: Name of the index to search
@@ -135,6 +132,7 @@ class SemanticSearchService:
 
         Returns:
             Search results with scores
+
         """
         try:
             if index_name not in self.indices:
@@ -183,10 +181,9 @@ class SemanticSearchService:
             return {"status": "error", "error": str(e)}
 
     async def multimodal_search(
-        self, index_name: str, query: str, image_url: str | None = None, top_k: int = 10
+        self, index_name: str, query: str, image_url: str | None = None, top_k: int = 10,
     ) -> dict[str, Any]:
-        """
-        Perform multimodal search (text + image)
+        """Perform multimodal search (text + image)
 
         Args:
             index_name: Name of the index
@@ -196,6 +193,7 @@ class SemanticSearchService:
 
         Returns:
             Search results
+
         """
         # For now, fall back to text search
         # TODO: Implement actual multimodal embeddings when needed
@@ -203,14 +201,14 @@ class SemanticSearchService:
         return await self.search(index_name, query, top_k)
 
     async def _generate_embeddings(self, texts: list[str]) -> list[list[float]]:
-        """
-        Generate embeddings for texts
+        """Generate embeddings for texts
 
         Args:
             texts: List of texts to embed
 
         Returns:
             List of embedding vectors
+
         """
         if not self.embedding_available or not self.genai:
             # Fallback: return zero vectors
@@ -223,7 +221,7 @@ class SemanticSearchService:
             for text in texts:
                 # Use Gemini's embedding endpoint
                 result = self.genai.embed_content(
-                    model="models/embedding-001", content=text, task_type="retrieval_document"
+                    model="models/embedding-001", content=text, task_type="retrieval_document",
                 )
                 embeddings.append(result["embedding"])
 
@@ -234,8 +232,7 @@ class SemanticSearchService:
             return [[0.0] * self.vector_dim for _ in texts]
 
     def _cosine_similarity(self, vec1: list[float], vec2: list[float]) -> float:
-        """
-        Compute cosine similarity between two vectors
+        """Compute cosine similarity between two vectors
 
         Args:
             vec1: First vector
@@ -243,6 +240,7 @@ class SemanticSearchService:
 
         Returns:
             Cosine similarity score (0.0 to 1.0)
+
         """
         try:
             v1 = np.array(vec1)
@@ -262,14 +260,14 @@ class SemanticSearchService:
             return 0.0
 
     async def delete_index(self, index_name: str) -> bool:
-        """
-        Delete an index
+        """Delete an index
 
         Args:
             index_name: Name of the index to delete
 
         Returns:
             Success status
+
         """
         if index_name in self.indices:
             del self.indices[index_name]
@@ -278,11 +276,11 @@ class SemanticSearchService:
         return False
 
     async def list_indices(self) -> list[dict[str, Any]]:
-        """
-        List all available indices
+        """List all available indices
 
         Returns:
             List of index metadata
+
         """
         return [
             {

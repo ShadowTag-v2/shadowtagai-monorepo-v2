@@ -1,5 +1,4 @@
-"""
-COR Context — Lightweight Execution Context
+"""COR Context — Lightweight Execution Context
 =============================================
 
 Extracted from cor_orchestrator.py (Rich Hickey refactor).
@@ -23,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class ExecutionContext:
-    """
-    Lightweight execution context for agent pipeline.
+    """Lightweight execution context for agent pipeline.
 
     SK Equivalent: KernelContext (but without DI overhead)
     Latency: <1μs creation time
@@ -57,7 +55,7 @@ class ExecutionContext:
         if self.total_latency_ms > self.latency_budget_ms:
             logger.warning(
                 f"Context {self.request_id} exceeded latency budget: "
-                f"{self.total_latency_ms:.2f}ms > {self.latency_budget_ms}ms"
+                f"{self.total_latency_ms:.2f}ms > {self.latency_budget_ms}ms",
             )
 
     def is_over_budget(self) -> bool:

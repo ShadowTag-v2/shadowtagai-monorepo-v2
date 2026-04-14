@@ -1,5 +1,4 @@
-"""
-Prompt Templates for SELF-ROUTE Implementation
+"""Prompt Templates for SELF-ROUTE Implementation
 Based on research paper specifications (Table 9)
 
 Templates optimized for Gemini-1.5-Pro/Flash with:
@@ -196,8 +195,7 @@ Answer:"""
 
     @staticmethod
     def format_chunks_with_indices(chunks: list[str], indices: list[int] = None) -> str:
-        """
-        Format chunks with numbered indices for citation
+        """Format chunks with numbered indices for citation
 
         Args:
             chunks: List of text chunks
@@ -205,6 +203,7 @@ Answer:"""
 
         Returns:
             Formatted string with numbered chunks
+
         """
         formatted_parts = []
 
@@ -220,14 +219,14 @@ Answer:"""
 
     @staticmethod
     def format_chunks_simple(chunks: list[str]) -> str:
-        """
-        Format chunks with simple numbering
+        """Format chunks with simple numbering
 
         Args:
             chunks: List of text chunks
 
         Returns:
             Formatted string with numbered chunks
+
         """
         formatted_parts = []
 
@@ -238,10 +237,9 @@ Answer:"""
 
     @classmethod
     def get_rag_prompt(
-        cls, task_type: TaskType, query: str, chunks: list[str], indices: list[int] = None
+        cls, task_type: TaskType, query: str, chunks: list[str], indices: list[int] = None,
     ) -> str:
-        """
-        Get RAG prompt for specific task type
+        """Get RAG prompt for specific task type
 
         Args:
             task_type: Type of task (legal, multi-hop, etc.)
@@ -251,6 +249,7 @@ Answer:"""
 
         Returns:
             Formatted RAG prompt
+
         """
         # Format chunks based on task type
         if task_type in [TaskType.LEGAL_COMPLIANCE, TaskType.SCIENTIFIC, TaskType.GENERAL]:
@@ -282,8 +281,7 @@ Answer:"""
 
     @classmethod
     def get_lc_prompt(cls, task_type: TaskType, query: str, full_context: str) -> str:
-        """
-        Get Long-Context prompt for specific task type
+        """Get Long-Context prompt for specific task type
 
         Args:
             task_type: Type of task
@@ -292,6 +290,7 @@ Answer:"""
 
         Returns:
             Formatted LC prompt
+
         """
         template_map = {
             TaskType.LEGAL_COMPLIANCE: cls.LEGAL_LC_PROMPT,
@@ -308,15 +307,13 @@ Answer:"""
 
 
 class QueryClassifier:
-    """
-    Classify query complexity to predict routing likelihood
+    """Classify query complexity to predict routing likelihood
     Based on Section 5.2 failure patterns
     """
 
     @staticmethod
     def classify_complexity(query: str) -> str:
-        """
-        Classify query into complexity categories
+        """Classify query into complexity categories
 
         Returns: "SIMPLE", "MULTIHOP", "COMPLEX", "CAUSAL"
         """
@@ -357,8 +354,7 @@ class QueryClassifier:
 
     @staticmethod
     def detect_task_type(query: str, domain_hint: str = None) -> TaskType:
-        """
-        Detect task type from query and domain
+        """Detect task type from query and domain
 
         Args:
             query: User query
@@ -366,6 +362,7 @@ class QueryClassifier:
 
         Returns:
             TaskType enum
+
         """
         query_lower = query.lower()
 
@@ -398,8 +395,7 @@ class QueryClassifier:
 
     @staticmethod
     def should_force_lc(query: str) -> bool:
-        """
-        Determine if query should bypass RAG and go straight to LC
+        """Determine if query should bypass RAG and go straight to LC
 
         Based on Pattern D (implicit context failures)
         """

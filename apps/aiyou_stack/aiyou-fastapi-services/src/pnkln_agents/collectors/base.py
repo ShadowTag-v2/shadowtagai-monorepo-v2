@@ -1,5 +1,4 @@
-"""
-Base Collector Interface
+"""Base Collector Interface
 All source collectors inherit from this base class
 """
 
@@ -22,8 +21,7 @@ class BaseCollector(ABC):
 
     @abstractmethod
     def collect(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect items from source
+        """Collect items from source
 
         Args:
             source: Source configuration
@@ -31,16 +29,15 @@ class BaseCollector(ABC):
 
         Returns:
             List of ingested items
+
         """
-        pass
 
     def _respect_rate_limit(self):
         """Sleep to respect rate limiting"""
         time.sleep(self.rate_limit_delay)
 
     def _calculate_cost(self, api_calls: int, tokens_used: int = 0) -> float:
-        """
-        Calculate cost of API usage
+        """Calculate cost of API usage
 
         Args:
             api_calls: Number of API calls made
@@ -48,6 +45,7 @@ class BaseCollector(ABC):
 
         Returns:
             Cost in USD
+
         """
         # Override in subclass with actual pricing
         return api_calls * 0.01  # Default $0.01 per call

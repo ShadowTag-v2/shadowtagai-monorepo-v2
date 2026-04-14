@@ -9,8 +9,7 @@ logger = logging.getLogger("StrategicIngestion")
 
 
 class StrategicIngester:
-    """
-    ShadowTag Omega V7 Strategic Ingestion
+    """ShadowTag Omega V7 Strategic Ingestion
     Batch processes Army DOW, CSRMC, NIST, and Special Forces doctrine via LangExtract patterns.
     """
 
@@ -94,7 +93,7 @@ class StrategicIngester:
 
     async def run_batch(self):
         logger.info(
-            f"💣 BATCH INGESTION: Starting processing for {len(self.resources)} strategic assets."
+            f"💣 BATCH INGESTION: Starting processing for {len(self.resources)} strategic assets.",
         )
 
         for res in self.resources:

@@ -1,5 +1,4 @@
-"""
-GRPO (Group Relative Policy Optimization) for Pnkln
+"""GRPO (Group Relative Policy Optimization) for Pnkln
 Version: 1.0.0
 
 Philosophy: Simpler, more stable RL training than PPO
@@ -58,8 +57,7 @@ class GRPOBatch:
 
 
 class GRPOTrainer:
-    """
-    Group Relative Policy Optimization trainer.
+    """Group Relative Policy Optimization trainer.
 
     Instead of learning a value function (like PPO), GRPO computes
     advantages relative to the mean reward within each group.
@@ -72,8 +70,7 @@ class GRPOTrainer:
         self.training_history: list[dict[str, Any]] = []
 
     def compute_advantages(self, batch: GRPOBatch) -> np.ndarray:
-        """
-        Compute group-relative advantages.
+        """Compute group-relative advantages.
 
         For each response, advantage = reward - mean(group_rewards)
 
@@ -85,6 +82,7 @@ class GRPOTrainer:
 
         Returns:
             Array of advantages (same shape as rewards)
+
         """
         advantages = np.zeros_like(batch.rewards)
         num_groups = self.config.num_groups
@@ -110,8 +108,7 @@ class GRPOTrainer:
         return advantages
 
     def compute_loss(self, batch: GRPOBatch, new_log_probs: np.ndarray) -> dict[str, float]:
-        """
-        Compute GRPO policy gradient loss.
+        """Compute GRPO policy gradient loss.
 
         Loss = -mean(advantages * log_probs)
 
@@ -125,6 +122,7 @@ class GRPOTrainer:
 
         Returns:
             Dictionary with loss components
+
         """
         advantages = batch.advantages
         old_log_probs = batch.log_probs
@@ -162,8 +160,7 @@ class GRPOTrainer:
         }
 
     def train_step(self, batch: GRPOBatch) -> dict[str, Any]:
-        """
-        Execute one GRPO training step.
+        """Execute one GRPO training step.
 
         1. Compute advantages (group-relative)
         2. Compute loss
@@ -174,6 +171,7 @@ class GRPOTrainer:
 
         Returns:
             Training metrics
+
         """
         # Compute advantages
         advantages = self.compute_advantages(batch)
@@ -202,10 +200,9 @@ class GRPOTrainer:
 
 
 def generate_synthetic_batch(
-    num_groups: int = 8, responses_per_prompt: int = 4, reward_noise: float = 0.1
+    num_groups: int = 8, responses_per_prompt: int = 4, reward_noise: float = 0.1,
 ) -> GRPOBatch:
-    """
-    Generate synthetic GRPO batch for testing.
+    """Generate synthetic GRPO batch for testing.
 
     Creates realistic reward distributions:
     - Some prompts are "easier" (higher base reward)
@@ -219,6 +216,7 @@ def generate_synthetic_batch(
 
     Returns:
         Synthetic GRPO batch
+
     """
     total_responses = num_groups * responses_per_prompt
 
@@ -263,11 +261,11 @@ def generate_synthetic_batch(
 
 
 def compare_ppo_grpo() -> dict[str, dict[str, Any]]:
-    """
-    Compare PPO and GRPO characteristics.
+    """Compare PPO and GRPO characteristics.
 
     Returns:
         Dictionary with comparison metrics
+
     """
     return {
         "ppo": {
@@ -314,7 +312,7 @@ if __name__ == "__main__":
 
     # Create trainer
     config = GRPOConfig(
-        num_groups=8, responses_per_prompt=4, learning_rate=1e-4, normalize_advantages=True
+        num_groups=8, responses_per_prompt=4, learning_rate=1e-4, normalize_advantages=True,
     )
     trainer = GRPOTrainer(config)
 
@@ -325,7 +323,7 @@ if __name__ == "__main__":
 
     # Generate synthetic batch
     batch = generate_synthetic_batch(
-        num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+        num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
     )
 
     print("\nBatch statistics:")
@@ -353,7 +351,7 @@ if __name__ == "__main__":
     for i in range(4):
         print(
             f"  Response {i}: reward={group_0_rewards[i]:.3f}, "
-            f"advantage={group_0_advantages[i]:.3f}"
+            f"advantage={group_0_advantages[i]:.3f}",
         )
     print(f"  Group mean: {group_mean:.3f}")
     print(f"  Advantage sum: {np.sum(group_0_advantages):.6f} (should be ~0)")

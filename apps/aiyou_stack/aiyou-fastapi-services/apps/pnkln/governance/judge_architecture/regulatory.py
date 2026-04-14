@@ -1,5 +1,4 @@
-"""
-Layer 12–13: Regulatory Compliance & Adtech Standards
+"""Layer 12–13: Regulatory Compliance & Adtech Standards
 =====================================================
 
 Extracted from layers.py monolith per Rich Hickey doctrine.
@@ -31,8 +30,7 @@ class ComplianceCheck:
 
 
 class RegulatoryComplianceEngine:
-    """
-    Layer 12: Validate decisions against global regulatory frameworks.
+    """Layer 12: Validate decisions against global regulatory frameworks.
 
     Frameworks:
     - EU AI Act (risk classification, transparency, logging)
@@ -54,8 +52,7 @@ class RegulatoryComplianceEngine:
         }
 
     async def validate_decision(self, decision: Decision) -> dict[str, Any]:
-        """
-        Validate decision against all applicable regulatory frameworks.
+        """Validate decision against all applicable regulatory frameworks.
 
         Returns:
             {
@@ -64,6 +61,7 @@ class RegulatoryComplianceEngine:
                 "overall_risk": RiskLevel,
                 "reason": str
             }
+
         """
         applicable = self._map_decision_to_frameworks(decision)
         compliance_profile = {}
@@ -241,8 +239,7 @@ class RegulatoryComplianceEngine:
 
 
 class AdtechStandardsValidator:
-    """
-    Layer 13: Validate adtech compliance for +40-50% CPM durability.
+    """Layer 13: Validate adtech compliance for +40-50% CPM durability.
 
     Standards:
     - IAB VAST 4.x (no VPAID legacy)
@@ -253,8 +250,7 @@ class AdtechStandardsValidator:
     """
 
     async def validate(self, decision: Decision) -> dict[str, Any]:
-        """
-        Validate adtech standards compliance.
+        """Validate adtech standards compliance.
 
         Returns:
             {
@@ -265,6 +261,7 @@ class AdtechStandardsValidator:
                 "skan_instrumented": bool,
                 "cpm_impact": str  # "+40-50%" or "-15% risk"
             }
+
         """
         # Simplified implementation - production would integrate with actual ad serving
         return {

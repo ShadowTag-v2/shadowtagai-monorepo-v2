@@ -1,5 +1,4 @@
-"""
-Verification script for Genkit integration.
+"""Verification script for Genkit integration.
 Tests initialization and basic flow execution.
 """
 

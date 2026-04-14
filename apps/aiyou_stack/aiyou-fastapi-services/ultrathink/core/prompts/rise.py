@@ -1,5 +1,4 @@
-"""
-RISE: Role-Input-Steps-Expectation
+"""RISE: Role-Input-Steps-Expectation
 
 The most detailed framework. For complex, multi-step processes.
 When you need precision and step-by-step execution.
@@ -11,8 +10,7 @@ from ultrathink.core.prompts.base import BasePrompt
 
 
 class RISE(BasePrompt):
-    """
-    Role-Input-Steps-Expectation prompting.
+    """Role-Input-Steps-Expectation prompting.
 
     Usage:
         >>> rise = RISE(
@@ -43,8 +41,7 @@ class RISE(BasePrompt):
         expectation: str,
         output_format: str | None = None,
     ) -> None:
-        """
-        Initialize RISE prompt.
+        """Initialize RISE prompt.
 
         Args:
             role: Expertise or persona
@@ -52,6 +49,7 @@ class RISE(BasePrompt):
             steps: Sequential process to follow
             expectation: What the output should achieve
             output_format: Optional format specification
+
         """
         super().__init__(
             role=role,

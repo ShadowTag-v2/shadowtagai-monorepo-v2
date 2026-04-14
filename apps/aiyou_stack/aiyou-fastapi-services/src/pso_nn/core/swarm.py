@@ -1,5 +1,4 @@
-"""
-PSO Swarm: Manages a population of particles for optimization.
+"""PSO Swarm: Manages a population of particles for optimization.
 
 Implements standard PSO with:
 - Global best tracking
@@ -56,19 +55,18 @@ class OptimizationResult:
 
 
 class ParticleSwarm:
-    """
-    Particle Swarm Optimizer for neural network weights.
+    """Particle Swarm Optimizer for neural network weights.
 
     Manages a population of particles exploring the weight space.
     Supports parallel fitness evaluation for large swarms.
     """
 
     def __init__(self, config: SwarmConfig | None = None, **kwargs):
-        """
-        Initialize swarm.
+        """Initialize swarm.
 
         Args:
             config: SwarmConfig instance, or pass individual params as kwargs
+
         """
         if config is None:
             config = SwarmConfig(**kwargs)
@@ -91,7 +89,7 @@ class ParticleSwarm:
         """Create initial particle population."""
         self.particles = [
             Particle.random(
-                dimensions=self.config.dimensions, bounds=self.config.bounds, particle_id=i
+                dimensions=self.config.dimensions, bounds=self.config.bounds, particle_id=i,
             )
             for i in range(self.config.num_particles)
         ]
@@ -102,8 +100,7 @@ class ParticleSwarm:
         return self.config.w_start - progress * (self.config.w_start - self.config.w_end)
 
     def step(self, fitness_fn: Callable[[np.ndarray], float]) -> float:
-        """
-        Execute one iteration of PSO.
+        """Execute one iteration of PSO.
 
         Args:
             fitness_fn: Function that takes position and returns fitness score
@@ -111,6 +108,7 @@ class ParticleSwarm:
 
         Returns:
             Current global best fitness
+
         """
         w = self._get_inertia()
         improved = False
@@ -139,7 +137,7 @@ class ParticleSwarm:
                 beta2=self.config.beta2,
             )
             particle.update_position(
-                bounds=self.config.bounds, max_velocity=self.config.max_velocity
+                bounds=self.config.bounds, max_velocity=self.config.max_velocity,
             )
 
         # Track history and stagnation
@@ -158,12 +156,12 @@ class ParticleSwarm:
         fitness_fn: Callable[[np.ndarray], float],
         executor: ProcessPoolExecutor | None = None,
     ) -> float:
-        """
-        Execute one iteration with parallel fitness evaluation.
+        """Execute one iteration with parallel fitness evaluation.
 
         Args:
             fitness_fn: Fitness function (must be picklable for ProcessPool)
             executor: Optional executor for parallel evaluation
+
         """
         w = self._get_inertia()
 
@@ -188,10 +186,10 @@ class ParticleSwarm:
         # Update velocities and positions
         for particle in self.particles:
             particle.update_velocity(
-                global_best=self.global_best, w=w, c1=self.config.c1, c2=self.config.c2
+                global_best=self.global_best, w=w, c1=self.config.c1, c2=self.config.c2,
             )
             particle.update_position(
-                bounds=self.config.bounds, max_velocity=self.config.max_velocity
+                bounds=self.config.bounds, max_velocity=self.config.max_velocity,
             )
 
         self.fitness_history.append(self.global_best_fitness)
@@ -221,8 +219,7 @@ class ParticleSwarm:
         parallel: bool = False,
         n_workers: int = 4,
     ) -> OptimizationResult:
-        """
-        Run full optimization loop.
+        """Run full optimization loop.
 
         Args:
             fitness_fn: Function to minimize
@@ -232,6 +229,7 @@ class ParticleSwarm:
 
         Returns:
             OptimizationResult with best solution and history
+
         """
         max_iter = max_iterations or self.config.max_iterations
 
@@ -262,10 +260,9 @@ class ParticleSwarm:
         )
 
     async def optimize_async(
-        self, fitness_fn: Callable[[np.ndarray], float], max_iterations: int | None = None
+        self, fitness_fn: Callable[[np.ndarray], float], max_iterations: int | None = None,
     ) -> OptimizationResult:
-        """
-        Async optimization for integration with async frameworks.
+        """Async optimization for integration with async frameworks.
 
         Uses ThreadPoolExecutor for parallel evaluation without blocking.
         """
@@ -299,8 +296,7 @@ class ParticleSwarm:
         self.stagnation_count = 0
 
     def get_diversity(self) -> float:
-        """
-        Calculate swarm diversity (average distance from centroid).
+        """Calculate swarm diversity (average distance from centroid).
 
         Higher diversity = more exploration, lower = more exploitation.
         """

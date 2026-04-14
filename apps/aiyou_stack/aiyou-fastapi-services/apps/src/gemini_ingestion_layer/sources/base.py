@@ -1,5 +1,4 @@
-"""
-Base Source Class
+"""Base Source Class
 
 Abstract base for all data source implementations.
 """
@@ -45,7 +44,6 @@ class BaseSource(ABC):
     @abstractmethod
     async def fetch(self, limit: int = 100) -> list[IngestionItem]:
         """Fetch items from source"""
-        pass
 
     def get_stats(self) -> dict[str, Any]:
         """Get source statistics"""

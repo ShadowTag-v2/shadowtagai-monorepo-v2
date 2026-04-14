@@ -1,5 +1,4 @@
-"""
-Tests for Unified Search API
+"""Tests for Unified Search API
 """
 
 import os
@@ -93,12 +92,12 @@ class TestUnifiedSearchAPI:
         # Mock GPTRAM results
         mock_search_gptram.return_value = [
             SearchResult(
-                source="gptram", score=0.9, key="decision:test", text="Test decision", ts=1700000000
-            )
+                source="gptram", score=0.9, key="decision:test", text="Test decision", ts=1700000000,
+            ),
         ]
 
         response = client.post(
-            "/search", json={"query": "test query", "k": 5, "sources": ["gptram"]}
+            "/search", json={"query": "test query", "k": 5, "sources": ["gptram"]},
         )
 
         assert response.status_code == 200
@@ -178,7 +177,7 @@ class TestRRFAlgorithm:
         """Test that RRF gives fair weight to both sources"""
         # Both sources return same-ranked results
         gptram_results = [
-            SearchResult(source="gptram", score=1.0, key="g1", text="GPTRAM result 1")
+            SearchResult(source="gptram", score=1.0, key="g1", text="GPTRAM result 1"),
         ]
         pnkln_results = [SearchResult(source="pnkln", score=1.0, key="p1", text="PNKLN result 1")]
 

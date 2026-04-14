@@ -10,7 +10,7 @@ schema = pa.schema(
         pa.field("workspace_id", pa.int32()),
         pa.field("text", pa.string()),
         pa.field("vector", pa.list_(pa.float32(), 768)),
-    ]
+    ],
 )
 table = (
     db.create_table("workspace_knowledge", schema=schema)
@@ -42,4 +42,4 @@ def search_workspace_knowledge(workspace_id: int, query: str) -> str:
             else "No internal documents found."
         )
     except Exception as e:
-        return f"Internal search failed: {str(e)}"
+        return f"Internal search failed: {e!s}"

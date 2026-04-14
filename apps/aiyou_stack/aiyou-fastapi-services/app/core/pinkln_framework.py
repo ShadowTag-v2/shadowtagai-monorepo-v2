@@ -1,5 +1,4 @@
-"""
-Pinkln Ultrathink Framework
+"""Pinkln Ultrathink Framework
 Jobs-inspired multi-agent ecosystem with DTE evolution, Glicko ratings, and wealth acceleration
 
 Persona: Ultrathink Jobs—breathe/urgency/beauty/details/simplify/Boy Scout
@@ -42,8 +41,7 @@ class ReasoningFramework(StrEnum):
 
 @dataclass
 class CheatSheetEssentials:
-    """
-    10 Essential Elements (evolved from 21)
+    """10 Essential Elements (evolved from 21)
     For maximum prompt effectiveness
     """
 
@@ -88,8 +86,7 @@ class CheatSheetEssentials:
 
 @dataclass
 class WealthLeakDetection:
-    """
-    Wealth-Planning Model: Spot leaks, redesign funnels
+    """Wealth-Planning Model: Spot leaks, redesign funnels
     Structure: Hard truth / Plan / Challenge
     """
 
@@ -109,8 +106,7 @@ class WealthLeakDetection:
 
 @dataclass
 class TrustValidation:
-    """
-    Trust Structure: Security, memory compounding, validations
+    """Trust Structure: Security, memory compounding, validations
     Boy Scout improvements, Reality Distortion for impossibles
     """
 
@@ -132,8 +128,7 @@ class TrustValidation:
 
 
 class PinklnFramework:
-    """
-    Pinkln Ultrathink Framework Orchestrator
+    """Pinkln Ultrathink Framework Orchestrator
 
     Integrates:
     - Multi-agent reasoning (debates, code crafters)
@@ -166,8 +161,7 @@ class PinklnFramework:
         }
 
     def fuse_cheat_sheet(self, essentials: CheatSheetEssentials) -> str:
-        """
-        Fuse cheat sheet with current reasoning framework
+        """Fuse cheat sheet with current reasoning framework
         Returns evolved prompt
         """
         base_prompt = essentials.to_prompt()
@@ -183,10 +177,9 @@ class PinklnFramework:
         return base_prompt + enhancement
 
     def detect_wealth_leak(
-        self, leak_type: str, current_rate: float, target_rate: float
+        self, leak_type: str, current_rate: float, target_rate: float,
     ) -> WealthLeakDetection:
-        """
-        Detect and diagnose wealth leaks
+        """Detect and diagnose wealth leaks
         Running at IQ {self.persona_iq} for maximum foresight
         """
         severity = min(1.0, (target_rate - current_rate) / target_rate)
@@ -234,7 +227,7 @@ class PinklnFramework:
         }
 
         base_plan = plans.get(
-            leak_type, "1. Diagnose root cause, 2. Test solutions, 3. Scale what works"
+            leak_type, "1. Diagnose root cause, 2. Test solutions, 3. Scale what works",
         )
 
         if severity > 0.5:
@@ -252,14 +245,13 @@ class PinklnFramework:
         }
 
         return challenges.get(
-            leak_type, "Execution is hard. Resources are constrained. Must prove ROI first."
+            leak_type, "Execution is hard. Resources are constrained. Must prove ROI first.",
         )
 
     def validate_trust(
-        self, security_score: float, memory_compounds: bool, critique: str, assumptions: list[str]
+        self, security_score: float, memory_compounds: bool, critique: str, assumptions: list[str],
     ) -> TrustValidation:
         """Validate trust structure with Boy Scout improvements"""
-
         # Generate Boy Scout improvements
         improvements = [
             "Added explicit security validation",

@@ -48,7 +48,7 @@ def list_recipients(
 
 @router.patch("/recipients/{recipient_id}", response_model=schemas.RecipientResponse)
 def update_recipient(
-    recipient_id: int, recipient_update: schemas.RecipientUpdate, db: Session = Depends(get_db)
+    recipient_id: int, recipient_update: schemas.RecipientUpdate, db: Session = Depends(get_db),
 ):
     """Update recipient"""
     recipient = repository.EmailRepository.update_recipient(db, recipient_id, recipient_update)
@@ -157,7 +157,7 @@ async def send_email(
     except EmailProviderError as e:
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {e!s}")
 
 
 @router.get("/emails/{email_id}", response_model=schemas.EmailResponse)

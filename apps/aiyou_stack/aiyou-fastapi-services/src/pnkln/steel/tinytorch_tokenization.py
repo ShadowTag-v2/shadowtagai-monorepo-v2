@@ -7,8 +7,7 @@ KB_TO_BYTES = 1024  # Kilobytes to bytes conversion
 
 
 class Tokenizer:
-    """
-    Base tokenizer class providing the interface for all tokenizers.
+    """Base tokenizer class providing the interface for all tokenizers.
 
     This defines the contract that all tokenizers must follow:
     - encode(): text → list of token IDs
@@ -25,8 +24,7 @@ class Tokenizer:
 
 
 class CharTokenizer(Tokenizer):
-    """
-    Character-level tokenizer that treats each character as a separate token.
+    """Character-level tokenizer that treats each character as a separate token.
     """
 
     def __init__(self, vocab: list[str] | None = None):
@@ -81,8 +79,7 @@ class CharTokenizer(Tokenizer):
 
 
 class BPETokenizer(Tokenizer):
-    """
-    Byte Pair Encoding (BPE) tokenizer that learns subword units.
+    """Byte Pair Encoding (BPE) tokenizer that learns subword units.
     """
 
     def __init__(self, vocab_size: int = 1000):
@@ -257,7 +254,7 @@ class BPETokenizer(Tokenizer):
 
 
 def create_tokenizer(
-    strategy: str = "char", vocab_size: int = 1000, corpus: list[str] = None
+    strategy: str = "char", vocab_size: int = 1000, corpus: list[str] = None,
 ) -> Tokenizer:
     """Factory function to create and train tokenizers."""
     if strategy == "char":
@@ -272,14 +269,14 @@ def create_tokenizer(
         raise ValueError(
             f"Unknown tokenization strategy: '{strategy}'.\n"
             f"  Available strategies: 'char', 'bpe'.\n"
-            f"  Fix: Use 'char' for character-level or 'bpe' for byte-pair encoding tokenization."
+            f"  Fix: Use 'char' for character-level or 'bpe' for byte-pair encoding tokenization.",
         )
 
     return tokenizer
 
 
 def tokenize_dataset(
-    texts: list[str], tokenizer: Tokenizer, max_length: int = None
+    texts: list[str], tokenizer: Tokenizer, max_length: int = None,
 ) -> list[list[int]]:
     """Tokenize a dataset with optional length limits."""
     tokenized = []

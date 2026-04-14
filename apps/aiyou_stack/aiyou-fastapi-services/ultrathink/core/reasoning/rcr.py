@@ -1,5 +1,4 @@
-"""
-RCR: Reflect-Critique-Refine
+"""RCR: Reflect-Critique-Refine
 
 Self-correcting iteration loop.
 The model critiques its own output and improves.
@@ -29,14 +28,13 @@ class RCRResult(BaseModel):
     final_output: str
     total_iterations: int
     improvement_score: float = Field(
-        ge=0.0, le=1.0, description="How much did iteration improve output"
+        ge=0.0, le=1.0, description="How much did iteration improve output",
     )
     metadata: dict = Field(default_factory=dict)
 
 
 class RCR:
-    """
-    Reflect-Critique-Refine reasoning engine.
+    """Reflect-Critique-Refine reasoning engine.
 
     Usage:
         >>> rcr = RCR(max_iterations=3, focus="accuracy")
@@ -60,13 +58,13 @@ class RCR:
         focus: Literal["accuracy", "clarity", "completeness", "creativity"] = "accuracy",
         stop_threshold: float = 0.9,
     ) -> None:
-        """
-        Initialize RCR engine.
+        """Initialize RCR engine.
 
         Args:
             max_iterations: How many refine rounds
             focus: What aspect to prioritize in critique
             stop_threshold: If iteration improvement < this, stop early
+
         """
         self.max_iterations = max_iterations
         self.focus = focus
@@ -109,8 +107,7 @@ Generate an improved version addressing the critiques above."""
         model: any | None = None,
         temperature: float = 0.5,
     ) -> RCRResult:
-        """
-        Execute reflect-critique-refine loop.
+        """Execute reflect-critique-refine loop.
 
         Args:
             task: The task/problem to solve
@@ -120,6 +117,7 @@ Generate an improved version addressing the critiques above."""
 
         Returns:
             RCRResult with all iterations and final output
+
         """
         # Placeholder implementation
         # In production, this would:
@@ -139,7 +137,7 @@ Generate an improved version addressing the critiques above."""
                     reflection="",
                     critique="",
                     improvements=[],
-                )
+                ),
             ],
             final_output="Refined output placeholder",
             total_iterations=1,

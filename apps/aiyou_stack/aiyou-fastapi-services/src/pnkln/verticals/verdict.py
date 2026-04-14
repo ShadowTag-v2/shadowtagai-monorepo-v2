@@ -1,5 +1,4 @@
-"""
-Pnkln Verdict Vertical
+"""Pnkln Verdict Vertical
 Task scheduler enforcing flow with locks/escrows and time escalations.
 """
 
@@ -9,8 +8,7 @@ from typing import Any
 
 
 class Verdict:
-    """
-    Verdict Task Scheduler.
+    """Verdict Task Scheduler.
     Enforces task flow, deadlines (dl), and priorities (prio).
     Escalates kernel (k) state based on time proximity.
     """
@@ -19,8 +17,7 @@ class Verdict:
         self.q: list[dict[str, Any]] = []
 
     def add(self, t: str, dl: float, prio: int) -> None:
-        """
-        Add a task to the queue.
+        """Add a task to the queue.
         t: Task ID/Name
         dl: Deadline (timestamp)
         prio: Priority (higher is more important)
@@ -32,12 +29,11 @@ class Verdict:
                 "p": prio,
                 "k": 0,  # Kernel state: 0=Normal, 1=Urgent, 2=Overdue
                 "d": False,  # Done flag
-            }
+            },
         )
 
     def tick(self, now: float) -> None:
-        """
-        Update task states based on current time.
+        """Update task states based on current time.
         Escalates 'k' (kernel) level as deadline approaches.
         """
         for i in self.q:
@@ -50,8 +46,7 @@ class Verdict:
                 i["k"] = 1  # Urgent
 
     def next(self) -> dict[str, Any] | None:
-        """
-        Get the next highest priority task.
+        """Get the next highest priority task.
         Sorts by Kernel State (desc) then Priority (desc).
         """
         u = [x for x in self.q if not x["d"]]

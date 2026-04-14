@@ -1,5 +1,4 @@
-"""
-Ripgrep Search Service — Pure serverless search wrapper.
+"""Ripgrep Search Service — Pure serverless search wrapper.
 Provides ultra-fast codebase traversal via ripgrep (rg).
 """
 
@@ -20,7 +19,7 @@ class RipgrepService:
         self.nowgrep_path = "nowgrep"  # Assumes installed or in bin
 
     def search(
-        self, query: str, includes: list[str] = None, case_insensitive: bool = True
+        self, query: str, includes: list[str] = None, case_insensitive: bool = True,
     ) -> list[dict]:
         """Executes a ripgrep search and returns JSON formatted results."""
         cmd = ["rg", "--json", query, self.search_root]
@@ -51,7 +50,7 @@ class RipgrepService:
                                 "path": match_data["path"]["text"].replace(self.search_root, ""),
                                 "line": match_data["line_number"],
                                 "content": match_data["lines"]["text"].strip(),
-                            }
+                            },
                         )
                 except json.JSONDecodeError:
                     continue
@@ -79,7 +78,7 @@ class RipgrepService:
                         "path": item["file"].replace(self.search_root, ""),
                         "line": item["range"]["start"]["line"] + 1,
                         "content": item.get("replacement", "AST Match"),  # Simplified
-                    }
+                    },
                 )
             return matches
         except Exception as e:
@@ -106,7 +105,7 @@ class RipgrepService:
                                 "path": parts[0].replace(self.search_root, ""),
                                 "line": int(parts[1]) if parts[1].isdigit() else 0,
                                 "content": parts[2].strip(),
-                            }
+                            },
                         )
             return matches
         except Exception as e:

@@ -19,8 +19,7 @@ class EthicalComplianceMonitor:
         self.violations: list[str] = []
 
     def check_robots_txt(self, url: str) -> bool:
-        """
-        Mock check for robots.txt compliance.
+        """Mock check for robots.txt compliance.
         In production, this would request /robots.txt and parse rules.
         """
         # Pnkln Doctrine: "Transparent, Ethical, Legal"
@@ -29,8 +28,7 @@ class EthicalComplianceMonitor:
         return True
 
     def check_rate_limit(self, domain: str, limit_seconds: int = 1) -> bool:
-        """
-        Enforce rate limiting per domain.
+        """Enforce rate limiting per domain.
         """
         last_req = self.rate_limits.get(domain, 0)
         now = time.time()

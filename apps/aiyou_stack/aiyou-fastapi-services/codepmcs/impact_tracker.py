@@ -1,5 +1,4 @@
-"""
-Cor.56 Impact Tracker
+"""Cor.56 Impact Tracker
 Measures the health and velocity of the Antigravity OS.
 
 Metrics:

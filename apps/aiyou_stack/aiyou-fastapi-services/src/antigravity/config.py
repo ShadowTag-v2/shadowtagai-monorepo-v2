@@ -49,13 +49,13 @@ class Settings(BaseSettings):
     # MCP Configuration
     MCP_ENABLED: bool = Field(default=False, description="Enable MCP integration")
     MCP_SERVERS_CONFIG: str = Field(
-        default="mcp_servers.json", description="Path to MCP servers configuration file"
+        default="mcp_servers.json", description="Path to MCP servers configuration file",
     )
     MCP_CONNECTION_TIMEOUT: int = Field(
-        default=30, description="Timeout in seconds for MCP server connections"
+        default=30, description="Timeout in seconds for MCP server connections",
     )
     MCP_TOOL_PREFIX: str = Field(
-        default="mcp_", description="Prefix for MCP tool names to avoid conflicts"
+        default="mcp_", description="Prefix for MCP tool names to avoid conflicts",
     )
 
     model_config = SettingsConfigDict(

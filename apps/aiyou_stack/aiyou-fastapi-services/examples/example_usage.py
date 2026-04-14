@@ -1,5 +1,4 @@
-"""
-Example usage of the Transformer Circuits library.
+"""Example usage of the Transformer Circuits library.
 
 This script demonstrates the core functionality:
 1. Computing QK attributions
@@ -25,8 +24,7 @@ from transformer_circuits.visualization import (
 
 
 def example_1_qk_attributions():
-    """
-    Example 1: Compute QK attributions for induction.
+    """Example 1: Compute QK attributions for induction.
 
     Prompt: "I always loved visiting Aunt Sally. Whenever I was feeling sad, Aunt"
     Question: Why does the model attend from final "Aunt" to first "Sally"?
@@ -97,8 +95,7 @@ def example_1_qk_attributions():
 
 
 def example_2_head_loadings():
-    """
-    Example 2: Compute head loadings for an attribution graph edge.
+    """Example 2: Compute head loadings for an attribution graph edge.
 
     Shows which attention heads mediate feature-to-feature attributions.
     """
@@ -153,8 +150,7 @@ def example_2_head_loadings():
 
 
 def example_3_attribution_graph():
-    """
-    Example 3: Build and analyze attribution graph.
+    """Example 3: Build and analyze attribution graph.
 
     Traces backwards from a target logit to understand computation.
     """
@@ -211,8 +207,7 @@ def example_3_attribution_graph():
 
 
 def example_4_interventions():
-    """
-    Example 4: Feature steering interventions.
+    """Example 4: Feature steering interventions.
 
     Test causal effects by modifying feature activations.
     """
@@ -260,8 +255,7 @@ def example_4_interventions():
 
 
 def example_5_circuit_validation():
-    """
-    Example 5: Validate a complete circuit hypothesis.
+    """Example 5: Validate a complete circuit hypothesis.
 
     Test multiple components of a hypothesized circuit.
     """

@@ -1,5 +1,4 @@
-"""
-Core configuration and constants for Gemini API + Custom Tools workaround.
+"""Core configuration and constants for Gemini API + Custom Tools workaround.
 
 CONTEXT: Google Gemini API blocks simultaneous use of:
   - Custom tools (MCP/function calling)

@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Family Vertical
+"""Verdict Systems - Family Vertical
 Family scheduling, parental oversight, and accountability
 
 Features:

@@ -1,5 +1,4 @@
-"""
-METT-TC Context Builder for minion
+"""METT-TC Context Builder for minion
 ==========================================
 Mission, Enemy, Terrain, Troops, Time, Civilian considerations.
 Dynamic context injection for Antigravity prompts.
@@ -12,8 +11,7 @@ from typing import Any
 
 @dataclass
 class METTTCContext:
-    """
-    METT-TC tactical context for mission planning.
+    """METT-TC tactical context for mission planning.
 
     Mission  - Task and purpose
     Enemy    - Threats, blockers, constraints
@@ -92,15 +90,14 @@ class METTTCContext:
 
 
 class METTTCBuilder:
-    """
-    Builder for constructing METT-TC context from various sources.
+    """Builder for constructing METT-TC context from various sources.
     """
 
     def __init__(self):
         self.context = METTTCContext()
 
     def with_mission(
-        self, mission_type: str, statement: str, intent: str = "", end_state: str = ""
+        self, mission_type: str, statement: str, intent: str = "", end_state: str = "",
     ) -> "METTTCBuilder":
         """Set mission parameters"""
         self.context.mission_type = mission_type
@@ -120,7 +117,7 @@ class METTTCBuilder:
         return self
 
     def with_terrain(
-        self, files: list[str] = None, dependencies: list[str] = None, summary: str = ""
+        self, files: list[str] = None, dependencies: list[str] = None, summary: str = "",
     ) -> "METTTCBuilder":
         """Set terrain/codebase context"""
         if files:
@@ -132,7 +129,7 @@ class METTTCBuilder:
         return self
 
     def with_troops(
-        self, agents: int = 600, vehicles: int = 134, allocation: dict[str, int] = None
+        self, agents: int = 600, vehicles: int = 134, allocation: dict[str, int] = None,
     ) -> "METTTCBuilder":
         """Set available forces"""
         self.context.available_agents = agents
@@ -142,7 +139,7 @@ class METTTCBuilder:
         return self
 
     def with_time(
-        self, timeout: int = 300, token_budget: int = 100000, priority: str = "normal"
+        self, timeout: int = 300, token_budget: int = 100000, priority: str = "normal",
     ) -> "METTTCBuilder":
         """Set time constraints"""
         self.context.timeout_seconds = timeout
@@ -151,7 +148,7 @@ class METTTCBuilder:
         return self
 
     def with_compliance(
-        self, requirements: list[str] = None, user_data: bool = False, jura_gates: list[str] = None
+        self, requirements: list[str] = None, user_data: bool = False, jura_gates: list[str] = None,
     ) -> "METTTCBuilder":
         """Set civilian/compliance considerations"""
         if requirements:
@@ -176,14 +173,14 @@ class METTTCBuilder:
 
 
 def build_mett_tc_from_opord(opord: Any) -> METTTCContext:
-    """
-    Build METT-TC context from an OPORD.
+    """Build METT-TC context from an OPORD.
 
     Args:
         opord: OPORD object from opord_generator
 
     Returns:
         METTTCContext populated from OPORD
+
     """
     builder = METTTCBuilder()
 
@@ -218,17 +215,16 @@ def build_mett_tc_from_opord(opord: Any) -> METTTCContext:
             "regulatory",
             "financial",
             "security",
-        ]
+        ],
     )
 
     return builder.build()
 
 
 def build_mett_tc_from_task(
-    task: str, mission_type: str, context: dict[str, Any] = None
+    task: str, mission_type: str, context: dict[str, Any] = None,
 ) -> METTTCContext:
-    """
-    Build METT-TC context from a task description.
+    """Build METT-TC context from a task description.
 
     Args:
         task: User's task description
@@ -237,6 +233,7 @@ def build_mett_tc_from_task(
 
     Returns:
         METTTCContext for the task
+
     """
     context = context or {}
 

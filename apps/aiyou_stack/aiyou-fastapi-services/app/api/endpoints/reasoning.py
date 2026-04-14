@@ -47,7 +47,7 @@ async def train_adapter(request: TrainAdapterRequest, req: Request):
         raise HTTPException(status_code=503, detail="Reasoning engine not initialized")
 
     result = await reasoning.train_adapter(
-        expert_id=request.expert_id, training_data=request.training_data
+        expert_id=request.expert_id, training_data=request.training_data,
     )
 
     return result

@@ -1,5 +1,4 @@
-"""
-Corp Engine Governance Regulations
+"""Corp Engine Governance Regulations
 ===================================
 Specific regulatory compliance modules.
 """

@@ -1,5 +1,4 @@
-"""
-Unified Pinkln Orchestrator
+"""Unified Pinkln Orchestrator
 
 Combines:
 - Gemini Function Calling (1 API call)
@@ -44,8 +43,7 @@ class UnifiedExecutionResult:
 
 
 class UnifiedPinklnOrchestrator:
-    """
-    Unified orchestrator combining all Pinkln systems.
+    """Unified orchestrator combining all Pinkln systems.
 
     Architecture:
     1. Gemini Orchestrator (1 API call)
@@ -68,8 +66,7 @@ class UnifiedPinklnOrchestrator:
         enable_memory: bool = True,
         enable_glicko: bool = True,
     ):
-        """
-        Initialize unified orchestrator.
+        """Initialize unified orchestrator.
 
         Args:
             api_key: Gemini API key
@@ -77,6 +74,7 @@ class UnifiedPinklnOrchestrator:
             enable_shadowtag: Enable cryptographic watermarking
             enable_memory: Enable semantic memory (NS)
             enable_glicko: Enable Glicko-2 performance tracking
+
         """
         self.enable_jr_validation = enable_jr_validation
         self.enable_shadowtag = enable_shadowtag
@@ -220,10 +218,9 @@ Allow: Research, analysis, optimization, collaboration
 """
 
     def execute(
-        self, user_request: str, context: dict[str, Any] | None = None
+        self, user_request: str, context: dict[str, Any] | None = None,
     ) -> UnifiedExecutionResult:
-        """
-        Execute user request through unified orchestrator.
+        """Execute user request through unified orchestrator.
 
         This is the main entry point that combines:
         - Gemini function calling (1 API call)
@@ -239,6 +236,7 @@ Allow: Research, analysis, optimization, collaboration
 
         Returns:
             UnifiedExecutionResult with complete metrics
+
         """
         start_time = time.time()
 
@@ -290,7 +288,7 @@ Allow: Research, analysis, optimization, collaboration
             total_latency_ms = (time.time() - start_time) * 1000
 
             return UnifiedExecutionResult(
-                response=f"Error: {str(e)}",
+                response=f"Error: {e!s}",
                 functions_called=[],
                 total_latency_ms=total_latency_ms,
                 meets_sla=False,
@@ -349,10 +347,10 @@ Allow: Research, analysis, optimization, collaboration
 
 # Convenience function for quick use
 def create_unified_orchestrator(api_key: str | None = None, **kwargs) -> UnifiedPinklnOrchestrator:
-    """
-    Create a unified Pinkln orchestrator with all features enabled.
+    """Create a unified Pinkln orchestrator with all features enabled.
 
     Returns:
         UnifiedPinklnOrchestrator ready for execution
+
     """
     return UnifiedPinklnOrchestrator(api_key=api_key, **kwargs)

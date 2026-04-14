@@ -1,5 +1,4 @@
-"""
-Gemini Event Ingestion Layer
+"""Gemini Event Ingestion Layer
 ============================
 Semantic normalization layer for intelligence pipeline.
 
@@ -24,11 +23,11 @@ from .intel_event import (
 )
 
 __all__ = [
-    "IntelEvent",
-    "SourceType",
-    "ChangeType",
-    "Jurisdiction",
-    "GeminiExtractor",
-    "extract_intel_event",
     "GEMINI_INGESTION_CONFIG",
+    "ChangeType",
+    "GeminiExtractor",
+    "IntelEvent",
+    "Jurisdiction",
+    "SourceType",
+    "extract_intel_event",
 ]

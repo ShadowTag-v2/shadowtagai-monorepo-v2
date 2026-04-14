@@ -1,5 +1,4 @@
-"""
-Cost Tracking and Analytics for Multi-LLM Consensus System
+"""Cost Tracking and Analytics for Multi-LLM Consensus System
 
 Tracks API costs, provides ROI analysis, and cost optimization recommendations.
 """
@@ -77,8 +76,7 @@ class QueryCost:
 
 
 class CostTracker:
-    """
-    Track and analyze costs for multi-LLM consensus queries.
+    """Track and analyze costs for multi-LLM consensus queries.
     Integrates with transcript archive for historical cost analysis.
     """
 
@@ -125,11 +123,11 @@ class CostTracker:
 
         # Indexes
         cursor.execute(
-            "CREATE INDEX IF NOT EXISTS idx_cost_transcript ON query_costs(transcript_id)"
+            "CREATE INDEX IF NOT EXISTS idx_cost_transcript ON query_costs(transcript_id)",
         )
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_cost_timestamp ON query_costs(timestamp)")
         cursor.execute(
-            "CREATE INDEX IF NOT EXISTS idx_cost_system_type ON query_costs(system_type)"
+            "CREATE INDEX IF NOT EXISTS idx_cost_system_type ON query_costs(system_type)",
         )
 
         self.conn.commit()
@@ -155,8 +153,7 @@ class CostTracker:
         peer_reviews: int = 0,
         threads: int = 0,
     ) -> QueryCost:
-        """
-        Track cost for a query.
+        """Track cost for a query.
 
         Args:
             transcript_id: ID from transcript archive
@@ -168,6 +165,7 @@ class CostTracker:
 
         Returns:
             QueryCost object
+
         """
         # Calculate costs per model
         model_costs = {}
@@ -230,8 +228,7 @@ class CostTracker:
         )
 
     def get_cost_stats(self, days: int = 30, system_type: str | None = None) -> dict:
-        """
-        Get cost statistics for a period.
+        """Get cost statistics for a period.
 
         Args:
             days: Number of days to analyze
@@ -239,6 +236,7 @@ class CostTracker:
 
         Returns:
             Dictionary with cost statistics
+
         """
         cursor = self.conn.cursor()
 
@@ -334,8 +332,7 @@ class CostTracker:
         }
 
     def get_roi_analysis(self, days: int = 30) -> dict:
-        """
-        Calculate ROI of consensus vs single-model approach.
+        """Calculate ROI of consensus vs single-model approach.
 
         Compares cost of consensus against estimated cost of:
         - Using only Claude
@@ -405,8 +402,7 @@ class CostTracker:
         }
 
     def get_optimization_recommendations(self) -> list[dict]:
-        """
-        Provide cost optimization recommendations based on usage patterns.
+        """Provide cost optimization recommendations based on usage patterns.
         """
         stats = self.get_cost_stats(30)
         recommendations = []
@@ -425,7 +421,7 @@ class CostTracker:
                             "title": "High GPT-4 usage detected",
                             "description": f"GPT-4 accounts for {model_pct:.1f}% of costs. Consider using Gemini or Grok for peer reviews.",
                             "potential_savings_percent": 15,
-                        }
+                        },
                     )
 
         # Check if consensus is overused
@@ -444,7 +440,7 @@ class CostTracker:
                             "title": "High atomic consensus usage",
                             "description": f"{atomic_pct:.1f}% of queries use full atomic consensus. Consider simple consensus for straightforward queries.",
                             "potential_savings_percent": 30,
-                        }
+                        },
                     )
 
         # Check API call efficiency
@@ -456,7 +452,7 @@ class CostTracker:
                     "title": "High API calls per query",
                     "description": f"Averaging {stats['avg_api_calls_per_query']:.1f} API calls per query. Consider reducing thread count or model count.",
                     "potential_savings_percent": 20,
-                }
+                },
             )
 
         # Check if caching would help
@@ -468,7 +464,7 @@ class CostTracker:
                     "title": "Enable caching for common queries",
                     "description": "Consider implementing Redis caching for repeated queries.",
                     "potential_savings_percent": 10,
-                }
+                },
             )
 
         return recommendations
@@ -512,7 +508,7 @@ def main():
     stats_parser = subparsers.add_parser("stats", help="Show cost statistics")
     stats_parser.add_argument("--days", type=int, default=30, help="Days to analyze")
     stats_parser.add_argument(
-        "--type", choices=["atomic", "simple", "single"], help="Filter by system type"
+        "--type", choices=["atomic", "simple", "single"], help="Filter by system type",
     )
 
     # ROI
@@ -548,7 +544,7 @@ def main():
         print("\nCost by System Type:")
         for sys_type, data in stats["cost_by_system_type"].items():
             print(
-                f"  {sys_type}: {data['queries']} queries, ${data['total_cost']:.2f} total, ${data['avg_cost']:.2f} avg"
+                f"  {sys_type}: {data['queries']} queries, ${data['total_cost']:.2f} total, ${data['avg_cost']:.2f} avg",
             )
         print("\nCost by Model:")
         for model, cost in stats["cost_by_model"].items():
@@ -565,7 +561,7 @@ def main():
         print(f"  Consensus Total: ${roi['consensus_total_cost']:.2f}")
         print(f"  Single-Claude Estimated: ${roi['single_claude_estimated_cost']:.2f}")
         print(
-            f"  Consensus Premium: ${roi['consensus_premium_dollars']:.2f} ({roi['consensus_premium_percent']:.1f}%)"
+            f"  Consensus Premium: ${roi['consensus_premium_dollars']:.2f} ({roi['consensus_premium_percent']:.1f}%)",
         )
         print("\nVALUE DELIVERED:")
         print(f"  Time Saved: {roi['time_saved_hours']:.1f} hours")

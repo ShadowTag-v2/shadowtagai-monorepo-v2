@@ -61,7 +61,7 @@ def route_query(user_query: str):
             return "VECTOR_DOCS"
 
         print(
-            f">>> 🧠 CORTEX: Routing to {decision['destination']} because: {decision['reasoning']}"
+            f">>> 🧠 CORTEX: Routing to {decision['destination']} because: {decision['reasoning']}",
         )
         return decision["destination"]
 

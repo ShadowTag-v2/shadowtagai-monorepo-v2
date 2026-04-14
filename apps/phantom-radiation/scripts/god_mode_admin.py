@@ -17,12 +17,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from libs.steel.artifact_api import ArtifactAPI
 from libs.steel.retrieve_memory import SovereignMemoryRetriever
 from libs.steel.sdk import VelocityEngine
-from libs.steel.sentinel import JudgeSixSentinel
 from libs.steel.vfs import ShadowVFS
 from libs.steel.write_memory import SovereignMemoryPool
 
+from libs.steel.sentinel import JudgeSixSentinel
+
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("GodModeAdmin")
 
@@ -131,7 +132,7 @@ class GodModeRuntime:
                         "status": status,
                         "elapsed_sec": elapsed,
                         "output": output[:1000],
-                    }
+                    },
                 )
                 if len(self.history) > 200:
                     self.history = self.history[-200:]
@@ -152,7 +153,7 @@ class GodModeRuntime:
                 if now - scheduled["last_run"] >= scheduled["interval_sec"]:
                     template: AdminTask = scheduled["task"]
                     await self.enqueue(
-                        AdminTask(task_type=template.task_type, payload=template.payload)
+                        AdminTask(task_type=template.task_type, payload=template.payload),
                     )
                     scheduled["last_run"] = now
             await asyncio.sleep(1.0)
@@ -190,7 +191,7 @@ class GodModeRuntime:
 
                 self.swarm = SwarmOrchestrator()
             result = await self.swarm.run_parallel_mission(
-                recon_url=recon_url, executive_task=executive_task
+                recon_url=recon_url, executive_task=executive_task,
             )
             return json.dumps(result, default=str)[:3000]
 
@@ -267,7 +268,7 @@ class GodModeRuntime:
                 continue
             if command.startswith("shell "):
                 await self.enqueue(
-                    AdminTask(task_type="shell", payload={"command": command[6:].strip()})
+                    AdminTask(task_type="shell", payload={"command": command[6:].strip()}),
                 )
                 continue
             if command.startswith("write "):
@@ -280,7 +281,7 @@ class GodModeRuntime:
                         AdminTask(
                             task_type="write_file",
                             payload={"path": path, "content": content, "use_shadow": True},
-                        )
+                        ),
                     )
                 except Exception:
                     logger.error("Usage: write <path> <content>")
@@ -296,7 +297,7 @@ class GodModeRuntime:
                     AdminTask(
                         task_type="swarm_mission",
                         payload={"recon_url": recon_url, "executive_task": executive_task},
-                    )
+                    ),
                 )
                 continue
             if command.startswith("memw "):
@@ -310,13 +311,13 @@ class GodModeRuntime:
                     AdminTask(
                         task_type="memory_write",
                         payload={"domain": domain, "thought_text": thought_text},
-                    )
+                    ),
                 )
                 continue
             if command.startswith("mems "):
                 query_text = command[len("mems ") :].strip()
                 await self.enqueue(
-                    AdminTask(task_type="memory_search", payload={"query_text": query_text})
+                    AdminTask(task_type="memory_search", payload={"query_text": query_text}),
                 )
                 continue
             if command.startswith("artifact "):
@@ -327,14 +328,14 @@ class GodModeRuntime:
                     continue
                 name, data = [s.strip() for s in body.split("|", 1)]
                 await self.enqueue(
-                    AdminTask(task_type="artifact_upload", payload={"name": name, "data": data})
+                    AdminTask(task_type="artifact_upload", payload={"name": name, "data": data}),
                 )
                 continue
             if command.startswith("json "):
                 try:
                     obj = json.loads(command[len("json ") :])
                     await self.enqueue(
-                        AdminTask(task_type=obj["type"], payload=obj.get("payload", {}))
+                        AdminTask(task_type=obj["type"], payload=obj.get("payload", {})),
                     )
                 except Exception as exc:
                     logger.error("json parse failed: %s", exc)
@@ -346,7 +347,7 @@ class GodModeRuntime:
         logger.info(
             "Commands: help | status | sync | shell <cmd> | write <path> <content> | "
             "mission <url> | <task> | memw <domain> | <text> | mems <query> | "
-            "artifact <name> | <data> | commit | rollback | json <task-json> | stop"
+            "artifact <name> | <data> | commit | rollback | json <task-json> | stop",
         )
 
 

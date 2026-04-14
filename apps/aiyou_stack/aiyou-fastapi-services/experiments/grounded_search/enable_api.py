@@ -18,10 +18,9 @@ def enable_api(project_id, service_name):
     if response.status_code == 200 or response.status_code == 201:
         print(f"Successfully enabled {service_name}")
         return True
-    else:
-        print(f"Error enabling service: {response.status_code} {response.text}")
-        # If 403, it might be that Service Usage API itself is not enabled or permissions are missing.
-        return False
+    print(f"Error enabling service: {response.status_code} {response.text}")
+    # If 403, it might be that Service Usage API itself is not enabled or permissions are missing.
+    return False
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
-"""
-FinJudge CLI - Main Command Interface
+"""FinJudge CLI - Main Command Interface
 """
 
 import json
@@ -21,8 +20,7 @@ console = Console()
 @click.group()
 @click.version_option(version="0.2.0", prog_name="finjudge")
 def cli():
-    """
-    FinJudge - Supreme Court Clerk for Financial Decisions
+    """FinJudge - Supreme Court Clerk for Financial Decisions
 
     Pure judge layer for risk classification using ATP 5-19 framework.
 
@@ -30,8 +28,8 @@ def cli():
         finjudge eval decision.json
         finjudge eval decision.json -o ruling.json
         finjudge eval decision.json --format table
+
     """
-    pass
 
 
 @cli.command()
@@ -46,8 +44,7 @@ def cli():
 )
 @click.option("--pretty/--no-pretty", default=True, help="Pretty print JSON output")
 def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
-    """
-    Evaluate a financial decision using FinJudge
+    """Evaluate a financial decision using FinJudge
 
     Reads a decision JSON file, calls the Pure Judge engine, and displays
     the risk assessment ruling.
@@ -55,7 +52,6 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
     DECISION_FILE: Path to JSON file containing JudgeRequest
 
     Examples:
-
         # Basic evaluation with summary output
         finjudge eval burn_rate_decision.json
 
@@ -64,6 +60,7 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
 
         # Display as table
         finjudge eval decision.json --format table
+
     """
     try:
         # Load decision file
@@ -77,7 +74,7 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
             request = JudgeRequest(**decision_data)
         except Exception as e:
             console.print("[bold red]Error:[/bold red] Invalid decision file format")
-            console.print(f"[red]{str(e)}[/red]")
+            console.print(f"[red]{e!s}[/red]")
             sys.exit(1)
 
         # Initialize judge
@@ -111,10 +108,10 @@ def eval(decision_file: Path, output: Path | None, format: str, pretty: bool):
         sys.exit(1)
     except json.JSONDecodeError as e:
         console.print("[bold red]Error:[/bold red] Invalid JSON in decision file")
-        console.print(f"[red]{str(e)}[/red]")
+        console.print(f"[red]{e!s}[/red]")
         sys.exit(1)
     except Exception as e:
-        console.print(f"[bold red]Error:[/bold red] {str(e)}")
+        console.print(f"[bold red]Error:[/bold red] {e!s}")
         sys.exit(1)
 
 
@@ -131,10 +128,9 @@ def _display_json(ruling: JudgeRuling, pretty: bool):
 
 def _display_table(ruling: JudgeRuling):
     """Display ruling as formatted table"""
-
     # Risk Matrix Table
     risk_table = Table(
-        title="Risk Matrix (ATP 5-19)", show_header=True, header_style="bold magenta"
+        title="Risk Matrix (ATP 5-19)", show_header=True, header_style="bold magenta",
     )
     risk_table.add_column("Metric", style="cyan", width=20)
     risk_table.add_column("Value", style="green")
@@ -176,7 +172,7 @@ def _display_table(ruling: JudgeRuling):
             metrics_table.add_row(key, str(value))
 
         metrics_table.add_row(
-            "Primary Risk Driver", ruling.numeric_overview.primary_risk_driver, style="bold"
+            "Primary Risk Driver", ruling.numeric_overview.primary_risk_driver, style="bold",
         )
 
         console.print(metrics_table)
@@ -184,10 +180,9 @@ def _display_table(ruling: JudgeRuling):
 
 def _display_summary(ruling: JudgeRuling):
     """Display ruling as formatted summary"""
-
     # Header
     risk_color = {"EXTREME": "red", "HIGH": "yellow", "MODERATE": "blue", "LOW": "green"}.get(
-        ruling.risk_matrix.risk_level.value, "white"
+        ruling.risk_matrix.risk_level.value, "white",
     )
 
     console.print(
@@ -197,7 +192,7 @@ def _display_summary(ruling: JudgeRuling):
             f"Disposition: [bold]{ruling.recommendation.disposition.value}[/bold]",
             title=f"Decision: {ruling.decision_id}",
             border_style=risk_color,
-        )
+        ),
     )
 
     console.print()
@@ -249,8 +244,7 @@ def _get_exit_code(ruling: JudgeRuling) -> int:
 
 @cli.command()
 def demo():
-    """
-    Run demo evaluation with sample decision
+    """Run demo evaluation with sample decision
 
     Demonstrates FinJudge with a pre-loaded burn rate increase scenario.
     """
@@ -309,8 +303,7 @@ def demo():
 @cli.command()
 @click.argument("decision_file", type=click.Path(exists=True, path_type=Path))
 def validate(decision_file: Path):
-    """
-    Validate decision JSON file format
+    """Validate decision JSON file format
 
     Checks that the decision file conforms to JudgeRequest schema without
     actually judging it.
@@ -331,10 +324,10 @@ def validate(decision_file: Path):
         console.print(f"[bold]Intent:[/bold] {request.intent_nl}")
 
     except json.JSONDecodeError as e:
-        console.print(f"[bold red]✗[/bold red] Invalid JSON: {str(e)}")
+        console.print(f"[bold red]✗[/bold red] Invalid JSON: {e!s}")
         sys.exit(1)
     except Exception as e:
-        console.print(f"[bold red]✗[/bold red] Validation failed: {str(e)}")
+        console.print(f"[bold red]✗[/bold red] Validation failed: {e!s}")
         sys.exit(1)
 
 

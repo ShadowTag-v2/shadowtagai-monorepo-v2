@@ -28,7 +28,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         # Log response
         logger.info(
             f"Response: {request.method} {request.url.path} "
-            f"Status: {response.status_code} Duration: {duration:.3f}s"
+            f"Status: {response.status_code} Duration: {duration:.3f}s",
         )
 
         # Add custom headers

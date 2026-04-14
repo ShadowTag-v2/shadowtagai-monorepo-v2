@@ -1,5 +1,4 @@
-"""
-CHEAT SHEET FUSION - Jobs-Quality Prompt Engineering
+"""CHEAT SHEET FUSION - Jobs-Quality Prompt Engineering
 =====================================================
 
 EVOLUTION: 21 prompt elements → 10 essentials
@@ -77,8 +76,7 @@ class Essential(StrEnum):
 
 @dataclass
 class CheatSheetVariant:
-    """
-    A specific prompt variant with 10 essentials configured.
+    """A specific prompt variant with 10 essentials configured.
 
     Jobs philosophy: Each variant should be "insanely great" in its own way.
     """
@@ -111,7 +109,7 @@ class CheatSheetVariant:
         logger.info(
             f"Variant {self.variant_id}: Test #{self.tests_run} "
             f"accuracy={accuracy:.1%}, avg={self.avg_accuracy:.1%}, "
-            f"best={self.best_accuracy:.1%}"
+            f"best={self.best_accuracy:.1%}",
         )
 
     def get_improvement(self) -> float:
@@ -145,8 +143,7 @@ class DTETestResult:
 
 
 class CheatSheetFusion:
-    """
-    Cheat Sheet Fusion with DTE Evolution.
+    """Cheat Sheet Fusion with DTE Evolution.
 
     Usage:
         fusion = CheatSheetFusion(source="youtube", use_case="tier_1_intelligence")
@@ -170,8 +167,7 @@ class CheatSheetFusion:
         evolution_rate: float = 0.1,
         target_accuracy: float = 0.60,  # 60% baseline, aiming for +3.7% = 63.7%
     ):
-        """
-        Initialize Cheat Sheet Fusion.
+        """Initialize Cheat Sheet Fusion.
 
         Args:
             source: Data source (e.g., "youtube", "twitter")
@@ -179,6 +175,7 @@ class CheatSheetFusion:
             dte_enabled: Enable Dynamic Test Evolution
             evolution_rate: Mutation rate for evolution (0.1 = 10% change per cycle)
             target_accuracy: Target accuracy to achieve
+
         """
         self.source = source
         self.use_case = use_case
@@ -199,7 +196,7 @@ class CheatSheetFusion:
 
         logger.info(
             f"CheatSheetFusion initialized: source={source}, use_case={use_case}, "
-            f"DTE={'enabled' if dte_enabled else 'disabled'}, target={target_accuracy:.1%}"
+            f"DTE={'enabled' if dte_enabled else 'disabled'}, target={target_accuracy:.1%}",
         )
 
     def create_variant(self, essentials: dict[Essential, Any], parent_id: str | None = None) -> str:
@@ -230,7 +227,7 @@ class CheatSheetFusion:
 
         logger.info(
             f"Created variant {variant_id}: gen={self.generation}, "
-            f"parent={parent_id}, mutations={mutations}"
+            f"parent={parent_id}, mutations={mutations}",
         )
 
         return variant_id
@@ -248,10 +245,9 @@ class CheatSheetFusion:
         return None
 
     async def test_variant(
-        self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None
+        self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None,
     ) -> DTETestResult:
-        """
-        Test a variant against ground truth using DTE.
+        """Test a variant against ground truth using DTE.
 
         Args:
             variant_id: Variant to test
@@ -260,6 +256,7 @@ class CheatSheetFusion:
 
         Returns:
             DTETestResult with accuracy metrics
+
         """
         if variant_id not in self.variants:
             raise ValueError(f"Variant {variant_id} not found")
@@ -305,7 +302,7 @@ class CheatSheetFusion:
             self.total_accuracy_gain += gain
             logger.info(
                 f"Accuracy gain: {gain:+.1%} "
-                f"(total: {self.total_accuracy_gain:+.1%}, target: +3.7%)"
+                f"(total: {self.total_accuracy_gain:+.1%}, target: +3.7%)",
             )
 
         # Update best variant
@@ -326,8 +323,7 @@ class CheatSheetFusion:
         )
 
     def evolve(self, direction: str = "improve") -> str:
-        """
-        Evolve cheat sheet based on test results.
+        """Evolve cheat sheet based on test results.
 
         Args:
             direction: "improve" (enhance best), "explore" (random mutation),
@@ -335,6 +331,7 @@ class CheatSheetFusion:
 
         Returns:
             New variant ID
+
         """
         if not self.dte_enabled:
             logger.warning("DTE not enabled, evolution skipped")
@@ -397,20 +394,20 @@ class CheatSheetFusion:
 
         logger.info(
             f"Evolved from {parent_id} → {new_variant_id} "
-            f"(direction={direction}, gen={self.generation})"
+            f"(direction={direction}, gen={self.generation})",
         )
 
         return new_variant_id
 
     def generate_prompt(self, variant_id: str | None = None) -> str:
-        """
-        Generate final prompt from variant.
+        """Generate final prompt from variant.
 
         Args:
             variant_id: Specific variant (default: current best)
 
         Returns:
             Compiled prompt string
+
         """
         if variant_id:
             variant = self.variants.get(variant_id)
@@ -424,8 +421,7 @@ class CheatSheetFusion:
 
     @staticmethod
     def _compile_prompt(essentials: dict[Essential, Any]) -> str:
-        """
-        Compile essentials into final prompt.
+        """Compile essentials into final prompt.
 
         Jobs philosophy: Beautiful, simple, focused.
         """
@@ -520,8 +516,7 @@ class CheatSheetFusion:
 
 
 class PresetCheatSheets:
-    """
-    Preset cheat sheets for common use cases.
+    """Preset cheat sheets for common use cases.
 
     Jobs philosophy: Start with great defaults, evolve to perfection.
     """

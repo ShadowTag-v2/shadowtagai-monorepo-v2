@@ -1,5 +1,4 @@
-"""
-Innovation Lab & AI Innovation Service
+"""Innovation Lab & AI Innovation Service
 
 Experiments with cutting-edge tech. Tries the crazy ideas so you don't have to.
 """

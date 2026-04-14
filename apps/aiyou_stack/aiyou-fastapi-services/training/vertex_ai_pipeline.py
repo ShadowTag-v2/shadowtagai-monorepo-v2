@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Vertex AI Training Pipeline for Cor.54 CodeAct Orchestrator
+"""Vertex AI Training Pipeline for Cor.54 CodeAct Orchestrator
 ===========================================================
 
 PURPOSE:
@@ -64,7 +63,7 @@ try:
     from vertexai.preview.tuning import sft
 except ImportError:
     logger.error(
-        "Google Cloud libraries not installed. Run: pip install google-cloud-aiplatform google-cloud-storage google-generativeai"
+        "Google Cloud libraries not installed. Run: pip install google-cloud-aiplatform google-cloud-storage google-generativeai",
     )
     sys.exit(1)
 
@@ -182,8 +181,7 @@ class GCSDatasetManager:
             logger.info(f"Created bucket: {self.bucket_name}")
 
     def upload_dataset(self, local_path: Path, gcs_path: str, show_progress: bool = True) -> str:
-        """
-        Upload dataset file to GCS.
+        """Upload dataset file to GCS.
 
         Args:
             local_path: Local file path
@@ -192,6 +190,7 @@ class GCSDatasetManager:
 
         Returns:
             Full GCS URL (gs://bucket/path)
+
         """
         if not self.bucket:
             self.setup_bucket()
@@ -216,8 +215,7 @@ class GCSDatasetManager:
         single_turn_ratio: float = 0.9,
         train_val_split: float = 0.9,
     ) -> tuple[str, str]:
-        """
-        Prepare and upload training/validation datasets.
+        """Prepare and upload training/validation datasets.
 
         Steps:
             1. Load single-turn and multi-turn data
@@ -227,6 +225,7 @@ class GCSDatasetManager:
 
         Returns:
             (train_gcs_url, val_gcs_url)
+
         """
         console.print("\n[bold]Preparing training data...[/bold]")
 
@@ -283,11 +282,11 @@ class GCSDatasetManager:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         train_gcs = self.upload_dataset(
-            train_path, f"datasets/{self.config.model_name}/{timestamp}/train.jsonl"
+            train_path, f"datasets/{self.config.model_name}/{timestamp}/train.jsonl",
         )
 
         val_gcs = self.upload_dataset(
-            val_path, f"datasets/{self.config.model_name}/{timestamp}/val.jsonl"
+            val_path, f"datasets/{self.config.model_name}/{timestamp}/val.jsonl",
         )
 
         console.print("[green]✓ Training data prepared[/green]")
@@ -310,8 +309,7 @@ class GCSDatasetManager:
     def _save_jsonl(examples: list[dict[str, Any]], path: Path):
         """Save JSONL file."""
         with open(path, "w") as f:
-            for example in examples:
-                f.write(json.dumps(example) + "\n")
+            f.writelines(json.dumps(example) + "\n" for example in examples)
 
 
 # ============================================================================
@@ -336,8 +334,7 @@ class VertexAITrainer:
         logger.info(f"Initialized Vertex AI in project: {config.project_id}")
 
     def submit_training_job(self, train_data_gcs: str, val_data_gcs: str) -> str:
-        """
-        Submit fine-tuning job to Vertex AI.
+        """Submit fine-tuning job to Vertex AI.
 
         Args:
             train_data_gcs: GCS URL for training data
@@ -345,6 +342,7 @@ class VertexAITrainer:
 
         Returns:
             Job resource name
+
         """
         console.print("\n[bold]Submitting training job to Vertex AI...[/bold]")
 
@@ -381,8 +379,7 @@ class VertexAITrainer:
             raise
 
     def monitor_training_job(self, job_name: str, poll_interval: int = 60) -> dict[str, Any]:
-        """
-        Monitor training job until completion.
+        """Monitor training job until completion.
 
         Args:
             job_name: Job resource name
@@ -390,10 +387,11 @@ class VertexAITrainer:
 
         Returns:
             Job completion status and metadata
+
         """
         console.print("\n[bold]Monitoring training job...[/bold]")
         console.print(
-            f"[yellow]This may take 2-4 hours. Polling every {poll_interval}s.[/yellow]\n"
+            f"[yellow]This may take 2-4 hours. Polling every {poll_interval}s.[/yellow]\n",
         )
 
         start_time = time.time()
@@ -417,7 +415,7 @@ class VertexAITrainer:
                     if state in ["JOB_STATE_SUCCEEDED", "SUCCEEDED"]:
                         elapsed = time.time() - start_time
                         console.print(
-                            f"\n[green]✓ Training completed in {elapsed / 3600:.1f} hours[/green]"
+                            f"\n[green]✓ Training completed in {elapsed / 3600:.1f} hours[/green]",
                         )
 
                         return {
@@ -427,7 +425,7 @@ class VertexAITrainer:
                             "model_resource_name": job.resource_name,
                         }
 
-                    elif state in [
+                    if state in [
                         "JOB_STATE_FAILED",
                         "FAILED",
                         "JOB_STATE_CANCELLED",
@@ -455,11 +453,11 @@ class VertexAITrainer:
                     time.sleep(poll_interval)
 
     def get_model_checkpoints(self, job_name: str) -> list[str]:
-        """
-        Get checkpoint URLs from completed training job.
+        """Get checkpoint URLs from completed training job.
 
         Returns:
             List of GCS URLs for model checkpoints
+
         """
         # This would query the job artifacts
         # Simplified placeholder
@@ -486,10 +484,9 @@ class ModelEvaluator:
         self.config = config
 
     def evaluate_checkpoint(
-        self, checkpoint_url: str, eval_dataset: list[dict[str, Any]], sample_size: int = 100
+        self, checkpoint_url: str, eval_dataset: list[dict[str, Any]], sample_size: int = 100,
     ) -> dict[str, Any]:
-        """
-        Evaluate a model checkpoint on key metrics.
+        """Evaluate a model checkpoint on key metrics.
 
         Metrics:
             - Executable Rate: % of generated code that parses without syntax errors
@@ -504,6 +501,7 @@ class ModelEvaluator:
 
         Returns:
             Evaluation metrics
+
         """
         console.print(f"\n[bold]Evaluating checkpoint: {Path(checkpoint_url).name}[/bold]")
 
@@ -620,11 +618,11 @@ class ModelEvaluator:
             return ""
 
     def _validate_generated_code(self, code: str) -> tuple[bool, bool]:
-        """
-        Validate generated code.
+        """Validate generated code.
 
         Returns:
             (is_executable, has_security_violations)
+
         """
         import ast
 
@@ -681,7 +679,7 @@ class ModelEvaluator:
         sec_status = "✓ PASS" if sec_viols == 0 else "✗ FAIL"
         sec_color = "green" if sec_viols == 0 else "red"
         table.add_row(
-            "Security Violations", str(sec_viols), "0", f"[{sec_color}]{sec_status}[/{sec_color}]"
+            "Security Violations", str(sec_viols), "0", f"[{sec_color}]{sec_status}[/{sec_color}]",
         )
 
         # Latency p99
@@ -689,7 +687,7 @@ class ModelEvaluator:
         lat_status = "✓ PASS" if lat_p99 <= 100 else "✗ FAIL"
         lat_color = "green" if lat_p99 <= 100 else "red"
         table.add_row(
-            "Latency p99", f"{lat_p99:.1f}ms", "≤100ms", f"[{lat_color}]{lat_status}[/{lat_color}]"
+            "Latency p99", f"{lat_p99:.1f}ms", "≤100ms", f"[{lat_color}]{lat_status}[/{lat_color}]",
         )
 
         # Error Rate
@@ -697,7 +695,7 @@ class ModelEvaluator:
         err_status = "✓ PASS" if err_rate < 0.005 else "⚠ WARN"
         err_color = "green" if err_rate < 0.005 else "yellow"
         table.add_row(
-            "Error Rate", f"{err_rate:.1%}", "<0.5%", f"[{err_color}]{err_status}[/{err_color}]"
+            "Error Rate", f"{err_rate:.1%}", "<0.5%", f"[{err_color}]{err_status}[/{err_color}]",
         )
 
         console.print(table)
@@ -716,8 +714,7 @@ class ModelDeployer:
         self.config = config
 
     def deploy_model(self, checkpoint_url: str, endpoint_name: str | None = None) -> str:
-        """
-        Deploy model checkpoint to Vertex AI endpoint.
+        """Deploy model checkpoint to Vertex AI endpoint.
 
         Args:
             checkpoint_url: GCS URL of best checkpoint
@@ -725,6 +722,7 @@ class ModelDeployer:
 
         Returns:
             Endpoint resource name
+
         """
         if endpoint_name is None:
             endpoint_name = f"{self.config.model_name}-endpoint"
@@ -784,8 +782,7 @@ class TrainingPipeline:
         self.deployer = ModelDeployer(config)
 
     def run_full_pipeline(self) -> dict[str, Any]:
-        """
-        Execute complete training pipeline.
+        """Execute complete training pipeline.
 
         Steps:
             1. Setup GCS bucket
@@ -798,6 +795,7 @@ class TrainingPipeline:
 
         Returns:
             Pipeline results and metadata
+
         """
         console.print(
             Panel.fit(
@@ -806,7 +804,7 @@ class TrainingPipeline:
                 f"Base: {self.config.base_model}\n"
                 f"Project: {self.config.project_id}",
                 border_style="cyan",
-            )
+            ),
         )
 
         pipeline_start = time.time()
@@ -863,7 +861,7 @@ class TrainingPipeline:
             eval_results = []
             for checkpoint in checkpoints:
                 eval_result = self.evaluator.evaluate_checkpoint(
-                    checkpoint, val_examples, sample_size=self.config.eval_sample_size
+                    checkpoint, val_examples, sample_size=self.config.eval_sample_size,
                 )
                 eval_results.append(eval_result)
 
@@ -874,7 +872,7 @@ class TrainingPipeline:
             results["best_checkpoint"] = best_checkpoint
 
             console.print(
-                f"\n[green]✓ Best checkpoint: {Path(best_checkpoint['checkpoint']).name}[/green]"
+                f"\n[green]✓ Best checkpoint: {Path(best_checkpoint['checkpoint']).name}[/green]",
             )
             console.print(f"  Executable Rate: {best_checkpoint['executable_rate']:.1%}")
             console.print(f"  Latency p99: {best_checkpoint['latency_p99_ms']:.1f}ms\n")
@@ -886,7 +884,7 @@ class TrainingPipeline:
                 results["endpoint"] = endpoint
             else:
                 console.print(
-                    "\n[yellow]Step 7: Auto-deploy disabled (use --auto_deploy=true)[/yellow]"
+                    "\n[yellow]Step 7: Auto-deploy disabled (use --auto_deploy=true)[/yellow]",
                 )
 
             # Complete
@@ -909,8 +907,7 @@ class TrainingPipeline:
             return results
 
     def _select_best_checkpoint(self, eval_results: list[dict[str, Any]]) -> dict[str, Any]:
-        """
-        Select best checkpoint based on metrics.
+        """Select best checkpoint based on metrics.
 
         Criteria (in order of priority):
             1. Security violations == 0 (hard requirement)
@@ -920,6 +917,7 @@ class TrainingPipeline:
 
         Returns:
             Best checkpoint evaluation result
+
         """
         # Filter: no security violations
         safe_checkpoints = [r for r in eval_results if r["security_violations"] == 0]
@@ -968,7 +966,7 @@ class TrainingPipeline:
                     else ""
                 ),
                 border_style="green",
-            )
+            ),
         )
 
         # Save results
@@ -1002,15 +1000,15 @@ class TrainingPipeline:
     help="Path to multi-turn training data (JSONL)",
 )
 @click.option(
-    "--model_name", type=str, default="gemini-policy-v1", help="Name for fine-tuned model"
+    "--model_name", type=str, default="gemini-policy-v1", help="Name for fine-tuned model",
 )
 @click.option(
-    "--base_model", type=str, default="gemini-1.5-pro-002", help="Base Gemini model to fine-tune"
+    "--base_model", type=str, default="gemini-1.5-pro-002", help="Base Gemini model to fine-tune",
 )
 @click.option("--learning_rate", type=float, default=1e-5, help="Learning rate for fine-tuning")
 @click.option("--num_epochs", type=int, default=3, help="Number of training epochs")
 @click.option(
-    "--auto_deploy", is_flag=True, help="Automatically deploy best checkpoint to endpoint"
+    "--auto_deploy", is_flag=True, help="Automatically deploy best checkpoint to endpoint",
 )
 @click.option("--setup_only", is_flag=True, help="Only setup GCS infrastructure (no training)")
 @click.option("--evaluate_only", is_flag=True, help="Only evaluate existing checkpoint")
@@ -1028,8 +1026,7 @@ def main(
     evaluate_only: bool,
     checkpoint: str | None,
 ):
-    """
-    Vertex AI Training Pipeline for Cor.54 CodeAct Orchestrator.
+    """Vertex AI Training Pipeline for Cor.54 CodeAct Orchestrator.
 
     This tool automates the complete fine-tuning workflow for Gemini models
     on Google Cloud Vertex AI, including dataset preparation, training,
@@ -1120,7 +1117,7 @@ def main(
 
             if results["status"] != "success":
                 console.print(
-                    f"[red]Pipeline failed: {results.get('error', 'Unknown error')}[/red]"
+                    f"[red]Pipeline failed: {results.get('error', 'Unknown error')}[/red]",
                 )
                 sys.exit(1)
 

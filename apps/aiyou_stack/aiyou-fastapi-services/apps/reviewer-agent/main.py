@@ -45,7 +45,7 @@ async def review_fix(request: ReviewRequest):
 
     try:
         response = model.generate_content(
-            prompt, generation_config=GenerationConfig(response_mime_type="application/json")
+            prompt, generation_config=GenerationConfig(response_mime_type="application/json"),
         )
         return json.loads(response.text)
     except Exception as e:

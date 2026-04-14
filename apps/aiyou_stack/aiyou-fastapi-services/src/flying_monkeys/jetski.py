@@ -10,8 +10,7 @@ logger = logging.getLogger("jetski")
 
 
 class Jetski:
-    """
-    Jetski: The High-Velocity Tool Interface for Flying minion.
+    """Jetski: The High-Velocity Tool Interface for Flying minion.
     Provides verified access to:
     1. Browser (via Sidecar)
     2. Terminal (via Restricted Subprocess)
@@ -24,8 +23,7 @@ class Jetski:
 
     # --- TERMINAL CAPABILITIES ---
     async def terminal_run(self, command: str, timeout: int = 30) -> dict[str, Any]:
-        """
-        Executes a terminal command safely.
+        """Executes a terminal command safely.
         """
         logger.info(f"🚤 [Jetski] Executing: {command}")
 
@@ -41,7 +39,7 @@ class Jetski:
         try:
             # We use subprocess for local execution (containerized)
             process = subprocess.run(
-                command, shell=True, cwd=self.cwd, capture_output=True, text=True, timeout=timeout
+                command, shell=True, cwd=self.cwd, capture_output=True, text=True, timeout=timeout,
             )
             return {
                 "exit_code": process.returncode,
@@ -55,8 +53,7 @@ class Jetski:
 
     # --- BROWSER CAPABILITIES (Sidecar Interface) ---
     async def browser_navigate(self, url: str) -> dict[str, Any]:
-        """
-        Navigates the sidecar browser to a URL and returns the content.
+        """Navigates the sidecar browser to a URL and returns the content.
         Simulated for now, assumes 'browserless/chrome' or similar sidecar.
         """
         logger.info(f"🌊 [Jetski] Surfing to: {url}")

@@ -1,5 +1,4 @@
-"""
-User management endpoints.
+"""User management endpoints.
 
 Provides CRUD operations for users with full accessibility support:
 - Clear error messages
@@ -53,11 +52,10 @@ user_id_counter = 1
 async def get_users(
     skip: int = Query(0, ge=0, description="Number of records to skip for pagination"),
     limit: int = Query(
-        100, ge=1, le=1000, description="Maximum number of records to return (1-1000)"
+        100, ge=1, le=1000, description="Maximum number of records to return (1-1000)",
     ),
 ) -> list[UserResponse]:
-    """
-    Get all users with pagination support.
+    """Get all users with pagination support.
 
     Args:
         skip: Number of records to skip (default: 0)
@@ -79,6 +77,7 @@ async def get_users(
             }
         ]
         ```
+
     """
     return users_db[skip : skip + limit]
 
@@ -107,8 +106,7 @@ async def get_users(
 async def get_user(
     user_id: int = Path(..., gt=0, description="The unique ID of the user to retrieve"),
 ) -> UserResponse:
-    """
-    Get a specific user by ID.
+    """Get a specific user by ID.
 
     Args:
         user_id: Positive integer user identifier
@@ -130,6 +128,7 @@ async def get_user(
             "updated_at": "2025-11-15T10:00:00Z"
         }
         ```
+
     """
     for user in users_db:
         if user["id"] == user_id:
@@ -172,8 +171,7 @@ async def get_user(
     },
 )
 async def create_user(user: UserCreate) -> UserResponse:
-    """
-    Create a new user.
+    """Create a new user.
 
     Args:
         user: User data (name, email, age)
@@ -204,6 +202,7 @@ async def create_user(user: UserCreate) -> UserResponse:
             "updated_at": "2025-11-15T10:00:00Z"
         }
         ```
+
     """
     global user_id_counter
 
@@ -268,8 +267,7 @@ async def update_user(
     user_id: int = Path(..., gt=0, description="The ID of the user to update"),
     user_update: UserUpdate = ...,
 ) -> UserResponse:
-    """
-    Update an existing user.
+    """Update an existing user.
 
     Args:
         user_id: Positive integer user identifier
@@ -289,6 +287,7 @@ async def update_user(
             "email": "redacted@shadowtag-v4.local"
         }
         ```
+
     """
     # Find user
     user_index = None
@@ -355,8 +354,7 @@ async def update_user(
 async def delete_user(
     user_id: int = Path(..., gt=0, description="The ID of the user to delete"),
 ) -> None:
-    """
-    Delete a user.
+    """Delete a user.
 
     Args:
         user_id: Positive integer user identifier
@@ -366,6 +364,7 @@ async def delete_user(
 
     Returns:
         None (HTTP 204 No Content)
+
     """
     # Find and delete user
     for i, user in enumerate(users_db):

@@ -1,5 +1,4 @@
-"""
-Demonstration of Gemini Ingestion Layer with visualizations and resilience.
+"""Demonstration of Gemini Ingestion Layer with visualizations and resilience.
 
 Shows:
 1. Visualization generation (ASCII, Mermaid)
@@ -14,7 +13,7 @@ import logging
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 
 from src.ingestion import (
@@ -102,8 +101,7 @@ async def demo_circuit_breaker():
 
         if call_count <= 3:
             raise Exception(f"Simulated failure #{call_count}")
-        else:
-            return f"Success on call #{call_count}"
+        return f"Success on call #{call_count}"
 
     # Try calls until circuit opens
     for i in range(10):
@@ -178,8 +176,7 @@ async def demo_retry_handler():
 
         if call_count < 3:
             raise Exception(f"Failure #{call_count}")
-        else:
-            return f"Success on attempt #{call_count}"
+        return f"Success on attempt #{call_count}"
 
     try:
         result = await retry.execute(eventually_succeeds)

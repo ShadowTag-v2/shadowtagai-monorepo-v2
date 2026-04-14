@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 # Imports
 sys.path.append(
-    os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../src/libs/shadowtag_v4"))
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../src/libs/shadowtag_v4")),
 )
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../src/libs")))
 # UN-MOCKED BRIDGE (Sovereign)

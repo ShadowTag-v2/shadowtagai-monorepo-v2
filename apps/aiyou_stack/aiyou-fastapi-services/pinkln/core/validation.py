@@ -1,5 +1,4 @@
-"""
-Validation Layer and Boy Scout Rule implementation.
+"""Validation Layer and Boy Scout Rule implementation.
 
 This module provides:
 1. Validation of outputs against "insanely great" standards
@@ -14,8 +13,7 @@ from typing import Any
 
 @dataclass
 class BoyScoutMetadata:
-    """
-    Boy Scout Rule metadata: "Leave it cleaner than you found it"
+    """Boy Scout Rule metadata: "Leave it cleaner than you found it"
 
     Tracks all improvements made during an interaction.
     """
@@ -42,8 +40,7 @@ class BoyScoutMetadata:
 
 
 class BoyScoutRule:
-    """
-    Enforces the Boy Scout Rule across all interactions.
+    """Enforces the Boy Scout Rule across all interactions.
 
     Every deliverable must track:
     - What was touched
@@ -58,14 +55,14 @@ class BoyScoutRule:
 
     @staticmethod
     def validate_cleanup(metadata: BoyScoutMetadata) -> bool:
-        """
-        Validate that cleanup actually happened.
+        """Validate that cleanup actually happened.
 
         Args:
             metadata: Boy Scout metadata to validate
 
         Returns:
             True if valid cleanup occurred
+
         """
         # Must have touched files
         if not metadata.files_touched:
@@ -83,14 +80,14 @@ class BoyScoutRule:
 
     @staticmethod
     def format_deliverable_metadata(metadata: BoyScoutMetadata) -> str:
-        """
-        Format metadata for inclusion in deliverables.
+        """Format metadata for inclusion in deliverables.
 
         Args:
             metadata: Metadata to format
 
         Returns:
             Formatted markdown string
+
         """
         return f"""
 ---
@@ -112,8 +109,7 @@ class BoyScoutRule:
 
 
 class ValidationLayer:
-    """
-    Validation layer that ensures outputs meet "insanely great" standards.
+    """Validation layer that ensures outputs meet "insanely great" standards.
 
     This implements the validation system that runs after every complex generation.
     """
@@ -142,14 +138,14 @@ Refine the answer based on this critique. Leave this interaction better than you
         self.validation_history: list[dict[str, Any]] = []
 
     def verify(self, response: dict[str, Any]) -> bool:
-        """
-        Verify that response meets basic quality standards.
+        """Verify that response meets basic quality standards.
 
         Args:
             response: Response to verify
 
         Returns:
             True if meets standards
+
         """
         # Check for required fields
         if "output" not in response:
@@ -162,14 +158,14 @@ Refine the answer based on this critique. Leave this interaction better than you
         return True
 
     def is_insanely_great(self, response: dict[str, Any]) -> bool:
-        """
-        Check if response meets "insanely great" standards.
+        """Check if response meets "insanely great" standards.
 
         Args:
             response: Response to check
 
         Returns:
             True if insanely great
+
         """
         if "quality_score" not in response.get("metadata", {}):
             return False
@@ -184,14 +180,14 @@ Refine the answer based on this critique. Leave this interaction better than you
         return True
 
     def critique_response(self, response: dict[str, Any]) -> dict[str, Any]:
-        """
-        Generate critique of response.
+        """Generate critique of response.
 
         Args:
             response: Response to critique
 
         Returns:
             Critique dictionary
+
         """
         critique = {
             "assumptions": self._identify_assumptions(response),
@@ -240,8 +236,7 @@ Refine the answer based on this critique. Leave this interaction better than you
         return missing
 
     def apply_boy_scout_rule(self, response: dict[str, Any], context: Any) -> dict[str, Any]:
-        """
-        Apply Boy Scout Rule to response.
+        """Apply Boy Scout Rule to response.
 
         Args:
             response: Response to enhance
@@ -249,6 +244,7 @@ Refine the answer based on this critique. Leave this interaction better than you
 
         Returns:
             Enhanced response with Boy Scout metadata
+
         """
         # Create Boy Scout metadata
         boy_scout = BoyScoutMetadata()
@@ -277,20 +273,19 @@ Refine the answer based on this critique. Leave this interaction better than you
 
 
 class QualityMetrics:
-    """
-    Quality metrics for measuring output excellence.
+    """Quality metrics for measuring output excellence.
     """
 
     @staticmethod
     def calculate_quality_score(response: dict[str, Any]) -> dict[str, float]:
-        """
-        Calculate quality score across multiple dimensions.
+        """Calculate quality score across multiple dimensions.
 
         Args:
             response: Response to score
 
         Returns:
             Quality scores dictionary
+
         """
         return {
             "clarity": 0.0,  # Placeholder - would use actual analysis
@@ -303,14 +298,14 @@ class QualityMetrics:
 
     @staticmethod
     def assess_complexity(code: str) -> float:
-        """
-        Assess code complexity.
+        """Assess code complexity.
 
         Args:
             code: Code to assess
 
         Returns:
             Complexity score (0-1, lower is better)
+
         """
         # Simple heuristic - would use cyclomatic complexity in production
         lines = code.split("\n")

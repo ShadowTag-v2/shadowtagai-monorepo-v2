@@ -1,5 +1,4 @@
-"""
-AiU Digital Mall - Marketplace Core
+"""AiU Digital Mall - Marketplace Core
 Governed AI marketplace with pre-execution compliance verification
 """
 
@@ -80,8 +79,7 @@ class Transaction:
 
 
 class DigitalMall:
-    """
-    AiU Digital Mall - Governed AI Marketplace
+    """AiU Digital Mall - Governed AI Marketplace
 
     Features:
     - Pre-execution compliance for all listings (AiUCRM validation)
@@ -110,14 +108,15 @@ class DigitalMall:
         # Purchase (buyer transaction)
         transaction = mall.purchase(product_id, buyer_id="buyer_123")
         ```
+
     """
 
     def __init__(self, fee_percentage: float = 0.12):
-        """
-        Initialize Digital Mall
+        """Initialize Digital Mall
 
         Args:
             fee_percentage: Marketplace fee (default 12%)
+
         """
         self.fee_percentage = fee_percentage
         self.vendors: dict[str, Vendor] = {}
@@ -135,14 +134,14 @@ class DigitalMall:
         }
 
     def register_vendor(self, vendor: Vendor) -> str:
-        """
-        Register new vendor (requires AiUCRM validation)
+        """Register new vendor (requires AiUCRM validation)
 
         Args:
             vendor: Vendor information
 
         Returns:
             vendor_id
+
         """
         # TODO: Integrate AiUCRM validation
         # For now, auto-approve for MVP
@@ -157,14 +156,14 @@ class DigitalMall:
         return vendor.vendor_id
 
     def list_product(self, product: Product) -> str:
-        """
-        List product (requires AiUCRM validation)
+        """List product (requires AiUCRM validation)
 
         Args:
             product: Product information
 
         Returns:
             product_id
+
         """
         # Verify vendor exists and is verified
         vendor = self.vendors.get(product.vendor_id)
@@ -185,8 +184,7 @@ class DigitalMall:
         return product.product_id
 
     def purchase(self, product_id: str, buyer_id: str) -> Transaction:
-        """
-        Process purchase transaction
+        """Process purchase transaction
 
         Args:
             product_id: Product to purchase
@@ -194,6 +192,7 @@ class DigitalMall:
 
         Returns:
             Transaction record
+
         """
         product = self.products.get(product_id)
         if not product or product.status != ProductStatus.ACTIVE:
@@ -246,8 +245,7 @@ class DigitalMall:
         compliance_frameworks: list[str] | None = None,
         max_risk_score: float = 1.0,
     ) -> list[Product]:
-        """
-        Search products with filters
+        """Search products with filters
 
         Args:
             category: Filter by category
@@ -256,6 +254,7 @@ class DigitalMall:
 
         Returns:
             List of matching products
+
         """
         results = []
 

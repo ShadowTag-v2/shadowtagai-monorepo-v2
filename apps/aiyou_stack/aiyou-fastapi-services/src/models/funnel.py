@@ -51,7 +51,7 @@ class FunnelStep(Base):
 
     # Foreign key
     funnel_id = Column(
-        UUID(as_uuid=True), ForeignKey("funnels.id", ondelete="CASCADE"), nullable=False
+        UUID(as_uuid=True), ForeignKey("funnels.id", ondelete="CASCADE"), nullable=False,
     )
 
     # Step configuration
@@ -83,7 +83,7 @@ class UserFunnelProgress(Base):
 
     # Foreign keys
     funnel_id = Column(
-        UUID(as_uuid=True), ForeignKey("funnels.id", ondelete="CASCADE"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("funnels.id", ondelete="CASCADE"), nullable=False, index=True,
     )
 
     # User identification

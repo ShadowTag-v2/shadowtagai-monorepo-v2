@@ -1,5 +1,4 @@
-"""
-Calendar Integration Service
+"""Calendar Integration Service
 Integrates with Google Calendar, Outlook, and other calendar providers
 """
 
@@ -29,8 +28,7 @@ class NotificationChannel(StrEnum):
 
 
 class CalendarService:
-    """
-    Manages calendar synchronization and event creation
+    """Manages calendar synchronization and event creation
 
     Supports:
     - Google Calendar API
@@ -40,11 +38,11 @@ class CalendarService:
     """
 
     def __init__(self, credentials_path: str | None = None):
-        """
-        Initialize calendar service
+        """Initialize calendar service
 
         Args:
             credentials_path: Path to service account credentials
+
         """
         self.google_client = None
         self.outlook_client = None
@@ -62,8 +60,7 @@ class CalendarService:
         document_links: list[str] | None = None,
         reminders: list[int] | None = None,
     ) -> str:
-        """
-        Create calendar event for deadline
+        """Create calendar event for deadline
 
         Args:
             provider: Calendar provider
@@ -78,6 +75,7 @@ class CalendarService:
 
         Returns:
             Event ID from calendar provider
+
         """
         if provider == CalendarProvider.GOOGLE:
             return await self._create_google_event(
@@ -90,7 +88,7 @@ class CalendarService:
                 document_links,
                 reminders,
             )
-        elif provider == CalendarProvider.OUTLOOK:
+        if provider == CalendarProvider.OUTLOOK:
             return await self._create_outlook_event(
                 calendar_id,
                 deadline_id,
@@ -101,8 +99,7 @@ class CalendarService:
                 document_links,
                 reminders,
             )
-        else:
-            raise ValueError(f"Unsupported calendar provider: {provider}")
+        raise ValueError(f"Unsupported calendar provider: {provider}")
 
     async def _create_google_event(
         self,
@@ -122,7 +119,7 @@ class CalendarService:
 
         # Build event description with all details
         full_description = self._build_event_description(
-            description, case_number, document_links, deadline_id
+            description, case_number, document_links, deadline_id,
         )
 
         # Event structure
@@ -148,7 +145,7 @@ class CalendarService:
                 "private": {
                     "deadline_id": deadline_id,
                     "source": "zero_touch_legal_deadlines",
-                }
+                },
             },
         }
 
@@ -175,7 +172,7 @@ class CalendarService:
         # TODO: Implement Microsoft Graph API integration
 
         full_description = self._build_event_description(
-            description, case_number, document_links, deadline_id
+            description, case_number, document_links, deadline_id,
         )
 
         # Event structure for Microsoft Graph API
@@ -236,7 +233,7 @@ class CalendarService:
         return True
 
     async def delete_event(
-        self, provider: CalendarProvider, calendar_id: str, event_id: str
+        self, provider: CalendarProvider, calendar_id: str, event_id: str,
     ) -> bool:
         """Delete calendar event"""
         # TODO: Implement delete logic for each provider
@@ -244,8 +241,7 @@ class CalendarService:
 
 
 class ReminderService:
-    """
-    Manages reminder notifications across multiple channels
+    """Manages reminder notifications across multiple channels
 
     Cascading reminders:
     - STANDARD: 30, 14, 7, 1 days before
@@ -264,8 +260,7 @@ class ReminderService:
         self.slack_client = None
 
     def get_reminder_dates(self, deadline_date: date, frequency: str) -> list[date]:
-        """
-        Calculate reminder dates based on frequency
+        """Calculate reminder dates based on frequency
 
         Args:
             deadline_date: The deadline date
@@ -273,6 +268,7 @@ class ReminderService:
 
         Returns:
             List of reminder dates
+
         """
         if frequency == "STANDARD":
             days = self.STANDARD_DAYS
@@ -302,8 +298,7 @@ class ReminderService:
         channels: list[NotificationChannel],
         days_until_deadline: int,
     ):
-        """
-        Send reminder notification
+        """Send reminder notification
 
         Args:
             deadline_id: Deadline identifier
@@ -314,11 +309,12 @@ class ReminderService:
             recipients: List of recipient emails/phones
             channels: Notification channels to use
             days_until_deadline: Days remaining
+
         """
         # Build reminder message
         urgency = self._get_urgency_level(days_until_deadline)
         message = self._build_reminder_message(
-            title, description, case_number, deadline_date, days_until_deadline, urgency
+            title, description, case_number, deadline_date, days_until_deadline, urgency,
         )
 
         # Send via each channel
@@ -339,12 +335,11 @@ class ReminderService:
         """Determine urgency level based on days remaining"""
         if days_until <= 1:
             return "CRITICAL"
-        elif days_until <= 3:
+        if days_until <= 3:
             return "HIGH"
-        elif days_until <= 7:
+        if days_until <= 7:
             return "MEDIUM"
-        else:
-            return "NORMAL"
+        return "NORMAL"
 
     def _build_reminder_message(
         self,
@@ -356,7 +351,6 @@ class ReminderService:
         urgency: str,
     ) -> dict[str, str]:
         """Build reminder message with HTML and plain text versions"""
-
         urgency_emoji = {"CRITICAL": "🚨", "HIGH": "⚠️", "MEDIUM": "⏰", "NORMAL": "📅"}
 
         emoji = urgency_emoji.get(urgency, "📅")
@@ -407,7 +401,7 @@ Please ensure timely compliance to avoid missed deadlines.
         return {"subject": subject, "plain_text": plain_text, "html": html}
 
     async def _send_email_reminder(
-        self, recipients: list[str], message: dict[str, str], urgency: str
+        self, recipients: list[str], message: dict[str, str], urgency: str,
     ):
         """Send email reminder"""
         # TODO: Implement email sending via SendGrid, AWS SES, or similar
@@ -423,7 +417,7 @@ Please ensure timely compliance to avoid missed deadlines.
         print(f"[SMS] Sending reminder to {recipients}: {sms_text}")
 
     async def _send_slack_reminder(
-        self, recipients: list[str], message: dict[str, str], urgency: str
+        self, recipients: list[str], message: dict[str, str], urgency: str,
     ):
         """Send Slack reminder"""
         # TODO: Implement Slack webhook integration
@@ -431,7 +425,7 @@ Please ensure timely compliance to avoid missed deadlines.
         print(f"[SLACK] Sending {urgency} reminder to {recipients}")
 
     async def _send_push_reminder(
-        self, recipients: list[str], message: dict[str, str], urgency: str
+        self, recipients: list[str], message: dict[str, str], urgency: str,
     ):
         """Send push notification"""
         # TODO: Implement push notifications via Firebase Cloud Messaging or similar
@@ -439,13 +433,11 @@ Please ensure timely compliance to avoid missed deadlines.
 
 
 class VerificationWorkflow:
-    """
-    Manages lawyer verification and approval workflow
+    """Manages lawyer verification and approval workflow
     """
 
     def __init__(self):
         """Initialize verification workflow"""
-        pass
 
     async def queue_for_review(
         self,
@@ -454,20 +446,20 @@ class VerificationWorkflow:
         confidence: float,
         _assigned_to: str | None = None,
     ):
-        """
-        Queue deadline for lawyer review
+        """Queue deadline for lawyer review
 
         Args:
             deadline_id: Deadline to review
             reason: Reason for review (low confidence, complex calculation, etc.)
             confidence: AI confidence score
             assigned_to: Assigned lawyer/staff
+
         """
         # TODO: Implement review queue (database, task queue, etc.)
         print(f"[REVIEW QUEUE] Deadline {deadline_id} queued: {reason} (confidence: {confidence})")
 
     async def notify_reviewer(
-        self, deadline_id: str, reviewer_email: str, _deadline_details: dict[str, Any]
+        self, deadline_id: str, reviewer_email: str, _deadline_details: dict[str, Any],
     ):
         """Send notification to assigned reviewer"""
         # TODO: Send email/notification to reviewer
@@ -481,8 +473,7 @@ class VerificationWorkflow:
         notes: str | None,
         verified_by: str,
     ) -> bool:
-        """
-        Process verification response from lawyer
+        """Process verification response from lawyer
 
         Args:
             deadline_id: Deadline being verified
@@ -493,22 +484,22 @@ class VerificationWorkflow:
 
         Returns:
             Success status
+
         """
         if approved:
             # Mark as verified, sync to calendar
             print(f"[VERIFIED] Deadline {deadline_id} approved by {verified_by}")
             return True
-        else:
-            # Update deadline with corrections
-            print(f"[CORRECTED] Deadline {deadline_id} corrected by {verified_by}")
-            if corrected_date:
-                # Update deadline date
-                # Feed back to ML model for improvement
-                pass
-            return True
+        # Update deadline with corrections
+        print(f"[CORRECTED] Deadline {deadline_id} corrected by {verified_by}")
+        if corrected_date:
+            # Update deadline date
+            # Feed back to ML model for improvement
+            pass
+        return True
 
     async def get_pending_reviews(
-        self, _assigned_to: str | None = None, limit: int = 50
+        self, _assigned_to: str | None = None, limit: int = 50,
     ) -> list[dict[str, Any]]:
         """Get list of deadlines pending review"""
         # TODO: Query review queue from database

@@ -28,8 +28,7 @@ class RoutingDecision:
 
 
 class TokenLevelRouter:
-    """
-    Token-level router for multi-model serving.
+    """Token-level router for multi-model serving.
 
     Implements Aegaeon-style token-granular scheduling:
     1. Estimates token budget for incoming requests
@@ -51,8 +50,7 @@ class TokenLevelRouter:
         self.gpu_token_usage: dict[int, int] = {}
 
     def estimate_tokens(self, prompt: str, max_tokens: int | None = None) -> int:
-        """
-        Estimate token count for a request.
+        """Estimate token count for a request.
 
         Simple estimation: ~4 chars per token (GPT-style).
         For production, use tiktoken or model-specific tokenizer.
@@ -68,8 +66,7 @@ class TokenLevelRouter:
         max_tokens: int = 512,
         strategy: str = "least_loaded",
     ) -> RoutingDecision:
-        """
-        Route a request to the best available model.
+        """Route a request to the best available model.
 
         Args:
             prompt: Input prompt
@@ -79,6 +76,7 @@ class TokenLevelRouter:
 
         Returns:
             RoutingDecision with selected model
+
         """
         estimated_tokens = self.estimate_tokens(prompt, max_tokens)
 
@@ -92,16 +90,15 @@ class TokenLevelRouter:
                     gpu_id=model.gpu_id,
                     reason=f"User-specified model: {model_name}",
                 )
-            else:
-                raise ValueError(f"Model {model_name} not available")
+            raise ValueError(f"Model {model_name} not available")
 
         # Auto-routing based on strategy
         if strategy == "token_aware":
             return await self._route_token_aware(estimated_tokens)
-        elif strategy == "round_robin":
+        if strategy == "round_robin":
             return self._route_round_robin(estimated_tokens)
-        else:  # least_loaded (default)
-            return self._route_least_loaded(estimated_tokens)
+        # least_loaded (default)
+        return self._route_least_loaded(estimated_tokens)
 
     def _route_least_loaded(self, estimated_tokens: int) -> RoutingDecision:
         """Route to model with least active requests."""
@@ -149,8 +146,7 @@ class TokenLevelRouter:
         )
 
     async def _route_token_aware(self, estimated_tokens: int) -> RoutingDecision:
-        """
-        Advanced token-aware routing (Aegaeon-style).
+        """Advanced token-aware routing (Aegaeon-style).
 
         Routes based on available token budget per GPU.
         """
@@ -185,7 +181,7 @@ class TokenLevelRouter:
         if not best_model:
             logger.warning(
                 f"No GPU with {estimated_tokens} token budget available, "
-                "falling back to least loaded"
+                "falling back to least loaded",
             )
             return self._route_least_loaded(estimated_tokens)
 

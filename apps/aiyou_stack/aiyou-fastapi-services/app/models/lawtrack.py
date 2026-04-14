@@ -1,5 +1,4 @@
-"""
-LawTrack Pydantic Models
+"""LawTrack Pydantic Models
 
 Comprehensive data models for the LawTrack legal deadline management platform.
 Includes enums, base models, request/response models for all API operations.

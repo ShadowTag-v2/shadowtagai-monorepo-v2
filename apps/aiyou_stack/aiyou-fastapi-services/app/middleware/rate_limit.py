@@ -1,5 +1,4 @@
-"""
-Rate Limiting Middleware
+"""Rate Limiting Middleware
 
 Prevents brute force attacks and API abuse
 
@@ -22,8 +21,7 @@ settings = get_settings()
 
 
 class RateLimiter:
-    """
-    Simple in-memory rate limiter
+    """Simple in-memory rate limiter
 
     Note: For production with multiple instances, use Redis-based rate limiting
     """
@@ -35,14 +33,14 @@ class RateLimiter:
         self.hour_limit = settings.RATE_LIMIT_PER_HOUR
 
     def is_allowed(self, ip: str) -> tuple[bool, str]:
-        """
-        Check if request from IP is allowed
+        """Check if request from IP is allowed
 
         Args:
             ip: Client IP address
 
         Returns:
             Tuple of (is_allowed, error_message)
+
         """
         now = datetime.utcnow()
         minute_ago = now - timedelta(minutes=1)
@@ -81,8 +79,7 @@ rate_limiter = RateLimiter()
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
-    """
-    Apply rate limiting to all requests
+    """Apply rate limiting to all requests
 
     Security:
     - Prevents brute force attacks

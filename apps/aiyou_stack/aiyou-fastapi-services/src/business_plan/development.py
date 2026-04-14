@@ -1,5 +1,4 @@
-"""
-Development Constraints & Operational Frameworks
+"""Development Constraints & Operational Frameworks
 SOPs, coding standards, and shipping philosophy
 """
 
@@ -22,7 +21,7 @@ class DevelopmentConstraints:
             "Ship fast > perfect",
             "Real utility > general-purpose",
             "Evidence-only decisions",
-        ]
+        ],
     )
 
     guardrails: list[str] = field(
@@ -30,7 +29,7 @@ class DevelopmentConstraints:
             "No feature without user interview (n≥10)",
             "No new vertical without $5K+ pilot demand",
             "No hire without founder doing job 3+ months first",
-        ]
+        ],
     )
 
     def validate_function(self, lines: int) -> bool:
@@ -90,7 +89,7 @@ class OperatingPrinciples:
             "Revenue doctrine: Every feature = 'Does this make money faster?'",
             "Boy Scout Rule: Ship clean, war-game architectures, document beautifully",
             "Reality Distortion: Impossibles are invitations to innovate",
-        ]
+        ],
     )
 
     research_deltas: list[str] = field(
@@ -103,7 +102,7 @@ class OperatingPrinciples:
             "Bridge/Interdependent: ~2.8–5.1% params → +50% accuracy",
             "ICoT: implicit chain-of-thought (100% on 4×4 multiplication)",
             "MoE economics: expert-parallel + KV compression",
-        ]
+        ],
     )
 
     def to_dict(self) -> dict[str, Any]:
@@ -130,7 +129,7 @@ class BootstrapDiscipline:
             "Kill-switches enforced at Month 3, 6, 12",
             "No hire without founder doing job 3+ months",
             "No feature without n≥10 user validation",
-        ]
+        ],
     )
 
     def validate_economics(self, ltv: float, cac: float) -> bool:

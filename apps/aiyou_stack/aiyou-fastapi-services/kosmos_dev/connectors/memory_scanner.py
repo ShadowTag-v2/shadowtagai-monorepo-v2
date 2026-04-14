@@ -1,5 +1,4 @@
-"""
-Memory Scanner: Scan local file system for watermarked content.
+"""Memory Scanner: Scan local file system for watermarked content.
 
 Implements file system walking with filters for watermark detection.
 """
@@ -48,8 +47,7 @@ class LocalFile:
 
 
 class MemoryScanner:
-    """
-    Scanner for local file system content.
+    """Scanner for local file system content.
 
     Supports:
     - Recursive directory scanning
@@ -98,8 +96,7 @@ class MemoryScanner:
         max_size_mb: float = 100,
         calculate_hash: bool = False,
     ) -> AsyncIterator[LocalFile]:
-        """
-        Scan directory for files.
+        """Scan directory for files.
 
         Args:
             path: Directory to scan (default: base_path)
@@ -107,6 +104,7 @@ class MemoryScanner:
             extensions: Filter by extensions (e.g., [".jpg", ".pdf"])
             max_size_mb: Skip files larger than this
             calculate_hash: Calculate MD5 hash
+
         """
         scan_path = Path(path) if path else self.base_path
 
@@ -183,8 +181,7 @@ class MemoryScanner:
         self,
         path: str | None = None,
     ) -> AsyncIterator[LocalFile]:
-        """
-        Scan for files that may contain watermarks.
+        """Scan for files that may contain watermarks.
 
         Targets: images, PDFs, videos, documents
         """

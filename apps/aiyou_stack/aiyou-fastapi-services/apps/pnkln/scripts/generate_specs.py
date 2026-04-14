@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-pnkln Spec Generator - Unified JSON config generator for pnkln platform.
+"""pnkln Spec Generator - Unified JSON config generator for pnkln platform.
 Namespace: pnkln
 Generated outputs: pnkln/out/*.json
 """

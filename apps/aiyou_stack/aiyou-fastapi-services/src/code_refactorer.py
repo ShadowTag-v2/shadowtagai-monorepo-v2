@@ -1,5 +1,4 @@
-"""
-Code Refactorer Agent
+"""Code Refactorer Agent
 
 Refactoring specialist who improves code quality.
 Cleans up that code you wrote at 3am. Makes it readable, fast, and maintainable.
@@ -109,7 +108,7 @@ class RefactorConfig:
             FocusArea.PERFORMANCE,
             FocusArea.MAINTAINABILITY,
             FocusArea.BEST_PRACTICES,
-        ]
+        ],
     )
     language: str = "auto-detect"
     aggressiveness: Aggressiveness = Aggressiveness.MODERATE
@@ -124,8 +123,7 @@ class RefactorConfig:
     description="Analyzes code to identify issues, code smells, and areas for improvement",
 )
 async def analyze_code_tool(code: str, language: str | None = None) -> dict[str, Any]:
-    """
-    Analyzes code quality and returns issues, metrics, and recommendations.
+    """Analyzes code quality and returns issues, metrics, and recommendations.
 
     Args:
         code: The code to analyze
@@ -133,6 +131,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
 
     Returns:
         Dictionary containing issues, metrics, and recommendations
+
     """
     issues = []
     recommendations = []
@@ -149,7 +148,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                     "severity": Severity.MEDIUM.value,
                     "description": "Use of Python 2 print statement",
                     "suggestion": "Use Python 3 print function: print()",
-                }
+                },
             )
 
         if re.search(r"\bexec\b", code) or re.search(r"\beval\b", code):
@@ -159,7 +158,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                     "severity": Severity.CRITICAL.value,
                     "description": "Use of exec/eval detected",
                     "suggestion": "Avoid exec/eval for security and maintainability",
-                }
+                },
             )
 
     # Check for long lines
@@ -171,7 +170,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                 "severity": Severity.LOW.value,
                 "description": f"Long lines detected at lines: {long_lines[:5]}",
                 "suggestion": "Break long lines for better readability (PEP 8: max 79-100 chars)",
-            }
+            },
         )
 
     # Check for TODO/FIXME comments
@@ -184,7 +183,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                 "severity": Severity.MEDIUM.value,
                 "description": f"Found {todo_matches} TODO/FIXME comments",
                 "suggestion": "Address technical debt markers",
-            }
+            },
         )
 
     # Check for deep nesting
@@ -197,7 +196,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                 "severity": Severity.HIGH.value,
                 "description": f"Deep nesting detected ({indent_level} levels)",
                 "suggestion": "Consider extracting nested logic into separate functions",
-            }
+            },
         )
 
     # Check for very long functions (basic heuristic)
@@ -214,7 +213,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                         "severity": Severity.MEDIUM.value,
                         "description": f"Long function detected at line {start + 1} ({func_length} lines)",
                         "suggestion": "Consider breaking down into smaller functions",
-                    }
+                    },
                 )
 
     # Check for missing docstrings (Python-specific)
@@ -226,7 +225,7 @@ async def analyze_code_tool(code: str, language: str | None = None) -> dict[str,
                     "severity": Severity.LOW.value,
                     "description": "Missing docstrings",
                     "suggestion": "Add docstrings to functions and classes",
-                }
+                },
             )
 
     # Calculate metrics
@@ -361,8 +360,7 @@ Always be constructive and educational. Help developers understand not just what
 
 
 async def refactor_code(code: str, config: RefactorConfig | None = None) -> RefactorResult:
-    """
-    Main Code Refactorer agent function.
+    """Main Code Refactorer agent function.
 
     Args:
         code: The code to refactor
@@ -370,6 +368,7 @@ async def refactor_code(code: str, config: RefactorConfig | None = None) -> Refa
 
     Returns:
         RefactorResult containing the refactored code, changes, analysis, and summary
+
     """
     if config is None:
         config = RefactorConfig()
@@ -429,8 +428,7 @@ async def refactor_code(code: str, config: RefactorConfig | None = None) -> Refa
 
 
 async def analyze_code(code: str, language: str | None = None) -> CodeAnalysis:
-    """
-    Analyze code without refactoring.
+    """Analyze code without refactoring.
 
     Args:
         code: The code to analyze
@@ -438,6 +436,7 @@ async def analyze_code(code: str, language: str | None = None) -> CodeAnalysis:
 
     Returns:
         CodeAnalysis containing issues, metrics, and recommendations
+
     """
     prompt = f"""Please analyze the following code for issues, code smells, and improvement opportunities:
 
@@ -482,10 +481,9 @@ Provide a detailed analysis including:
 
 
 async def refactor_interactive(
-    code: str, config: RefactorConfig | None = None
+    code: str, config: RefactorConfig | None = None,
 ) -> AsyncGenerator[str, str | None]:
-    """
-    Interactive refactoring session.
+    """Interactive refactoring session.
 
     Args:
         code: The initial code to refactor
@@ -493,6 +491,7 @@ async def refactor_interactive(
 
     Yields:
         Responses from the refactoring agent
+
     """
     if config is None:
         config = RefactorConfig()
@@ -543,14 +542,14 @@ Please start by analyzing the code and suggesting the first improvement."""
 
 # Public API
 __all__ = [
-    "refactor_code",
-    "analyze_code",
-    "refactor_interactive",
-    "RefactorConfig",
-    "RefactorResult",
+    "CODE_REFACTORER_SYSTEM_PROMPT",
+    "Aggressiveness",
     "CodeAnalysis",
     "FocusArea",
-    "Aggressiveness",
+    "RefactorConfig",
+    "RefactorResult",
     "Severity",
-    "CODE_REFACTORER_SYSTEM_PROMPT",
+    "analyze_code",
+    "refactor_code",
+    "refactor_interactive",
 ]

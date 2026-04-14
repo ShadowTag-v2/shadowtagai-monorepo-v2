@@ -1,5 +1,4 @@
-"""
-Configuration management for UnGPT system
+"""Configuration management for UnGPT system
 Loads from environment variables with sensible defaults
 """
 
@@ -55,8 +54,7 @@ class Config:
 
     @classmethod
     def validate(cls) -> tuple[bool, list[str]]:
-        """
-        Validate configuration
+        """Validate configuration
         Returns (is_valid, missing_keys)
         """
         missing = []

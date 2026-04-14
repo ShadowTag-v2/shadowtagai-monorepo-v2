@@ -1,5 +1,4 @@
-"""
-Multi-Agent Debate (MAD) reasoning framework.
+"""Multi-Agent Debate (MAD) reasoning framework.
 
 MAD enables multiple agents to debate solutions, critique each other, and reach
 consensus. This improves reasoning accuracy and robustness through collaborative
@@ -51,8 +50,7 @@ class DebateRound:
 
 
 class MultiAgentDebate:
-    """
-    Multi-Agent Debate framework implementation.
+    """Multi-Agent Debate framework implementation.
 
     This framework:
     1. Creates multiple agents with different perspectives
@@ -62,13 +60,13 @@ class MultiAgentDebate:
     """
 
     def __init__(self, num_agents: int = 3, max_rounds: int = 5, consensus_threshold: float = 0.85):
-        """
-        Initialize MAD framework.
+        """Initialize MAD framework.
 
         Args:
             num_agents: Number of agents in debate
             max_rounds: Maximum debate rounds
             consensus_threshold: Threshold for reaching consensus (0-1)
+
         """
         self.num_agents = num_agents
         self.max_rounds = max_rounds
@@ -78,10 +76,9 @@ class MultiAgentDebate:
         self.rcr = ReflectCritiqueRefine()
 
     async def debate(
-        self, problem: str, personas: list[str] | None = None, context: dict[str, Any] | None = None
+        self, problem: str, personas: list[str] | None = None, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Conduct multi-agent debate.
+        """Conduct multi-agent debate.
 
         Args:
             problem: Problem to debate
@@ -90,6 +87,7 @@ class MultiAgentDebate:
 
         Returns:
             Debate results with consensus answer
+
         """
         # Initialize agents
         self._initialize_agents(personas or ["Optimist", "Skeptic", "Pragmatist"])
@@ -144,10 +142,9 @@ class MultiAgentDebate:
             self.agents.append(agent)
 
     async def _run_round(
-        self, round_num: int, problem: str, context: dict[str, Any] | None
+        self, round_num: int, problem: str, context: dict[str, Any] | None,
     ) -> DebateRound:
-        """
-        Run a single round of debate.
+        """Run a single round of debate.
 
         Args:
             round_num: Round number
@@ -156,6 +153,7 @@ class MultiAgentDebate:
 
         Returns:
             Debate round result
+
         """
         debate_round = DebateRound(round_number=round_num)
 
@@ -199,14 +197,14 @@ class MultiAgentDebate:
         return debate_round
 
     async def _generate_initial_position(
-        self, agent: DebateAgent, problem: str, context: dict[str, Any] | None
+        self, agent: DebateAgent, problem: str, context: dict[str, Any] | None,
     ) -> str:
         """Generate initial position for an agent."""
         # Placeholder - would use LLM with agent persona in production
         return f"{agent.persona}'s position on: {problem}"
 
     async def _refine_position(
-        self, agent: DebateAgent, problem: str, context: dict[str, Any] | None
+        self, agent: DebateAgent, problem: str, context: dict[str, Any] | None,
     ) -> str:
         """Refine agent's position using RCR."""
         # Get last round's reflection and critiques
@@ -223,14 +221,14 @@ class MultiAgentDebate:
         return refinement.refined_answer
 
     def _calculate_consensus(self, agents: list[DebateAgent]) -> float:
-        """
-        Calculate consensus score among agents.
+        """Calculate consensus score among agents.
 
         Args:
             agents: Active agents
 
         Returns:
             Consensus score (0-1)
+
         """
         if not agents:
             return 0.0
@@ -241,7 +239,7 @@ class MultiAgentDebate:
 
         # Penalize if agents are too far apart
         confidence_variance = sum((a.confidence - avg_confidence) ** 2 for a in agents) / len(
-            agents
+            agents,
         )
 
         consensus = avg_confidence * (1 - min(confidence_variance, 0.5))
@@ -292,28 +290,26 @@ class MultiAgentDebate:
 
 
 class PanelGPT(MultiAgentDebate):
-    """
-    PanelGPT: Expert panel simulation.
+    """PanelGPT: Expert panel simulation.
 
     A specialized MAD variant where agents act as domain experts in a panel discussion.
     """
 
     def __init__(self, expert_domains: list[str] | None = None, **kwargs):
-        """
-        Initialize PanelGPT.
+        """Initialize PanelGPT.
 
         Args:
             expert_domains: Domains for each expert
             **kwargs: Arguments for MultiAgentDebate
+
         """
         super().__init__(**kwargs)
         self.expert_domains = expert_domains or ["Technical", "Business", "User Experience"]
 
     async def debate(
-        self, problem: str, personas: list[str] | None = None, context: dict[str, Any] | None = None
+        self, problem: str, personas: list[str] | None = None, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Conduct expert panel discussion.
+        """Conduct expert panel discussion.
 
         Args:
             problem: Problem for panel to discuss
@@ -322,6 +318,7 @@ class PanelGPT(MultiAgentDebate):
 
         Returns:
             Panel discussion results
+
         """
         # Use expert domains as personas if not provided
         if not personas:

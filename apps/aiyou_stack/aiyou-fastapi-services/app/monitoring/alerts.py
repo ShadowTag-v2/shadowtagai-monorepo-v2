@@ -1,5 +1,4 @@
-"""
-Alert management system for proactive incident detection.
+"""Alert management system for proactive incident detection.
 Supports multiple notification channels (webhook, email, Slack).
 """
 
@@ -78,7 +77,7 @@ class Alert:
                     "title": "Metric Value / Threshold",
                     "value": f"{self.metric_value} / {self.threshold}",
                     "short": True,
-                }
+                },
             )
 
         return {
@@ -90,8 +89,8 @@ class Alert:
                     "fields": fields,
                     "footer": "ShadowTag-v2 Monitoring",
                     "ts": int(self.timestamp.timestamp()),
-                }
-            ]
+                },
+            ],
         }
 
 
@@ -112,11 +111,11 @@ class AlertManager:
             await self._client.aclose()
 
     async def send_alert(self, alert: Alert):
-        """
-        Send alert through configured channels.
+        """Send alert through configured channels.
 
         Args:
             alert: Alert to send
+
         """
         # Add to history
         self.alert_history.append(alert)
@@ -163,7 +162,7 @@ class AlertManager:
 
             logger.info(f"Alert sent to webhook: {alert.name}")
         except Exception as e:
-            logger.error(f"Failed to send alert to webhook: {str(e)}")
+            logger.error(f"Failed to send alert to webhook: {e!s}")
 
     async def _send_slack(self, alert: Alert):
         """Send alert to Slack webhook."""
@@ -180,11 +179,10 @@ class AlertManager:
 
             logger.info(f"Alert sent to Slack: {alert.name}")
         except Exception as e:
-            logger.error(f"Failed to send alert to Slack: {str(e)}")
+            logger.error(f"Failed to send alert to Slack: {e!s}")
 
     async def _send_email(self, alert: Alert):
-        """
-        Send alert via email.
+        """Send alert via email.
         This is a placeholder - implement with your email service.
         """
         try:
@@ -192,7 +190,7 @@ class AlertManager:
             # Example using SendGrid, SES, or SMTP
             logger.info(f"Email alert (placeholder): {alert.name}")
         except Exception as e:
-            logger.error(f"Failed to send email alert: {str(e)}")
+            logger.error(f"Failed to send email alert: {e!s}")
 
     def get_recent_alerts(self, limit: int = 100) -> list[dict]:
         """Get recent alerts."""
@@ -211,8 +209,7 @@ async def trigger_alert(
     metric_value: float | None = None,
     threshold: float | None = None,
 ):
-    """
-    Convenience function to trigger an alert.
+    """Convenience function to trigger an alert.
 
     Args:
         name: Alert name
@@ -221,6 +218,7 @@ async def trigger_alert(
         details: Additional details
         metric_value: Current metric value
         threshold: Alert threshold
+
     """
     alert = Alert(
         name=name,

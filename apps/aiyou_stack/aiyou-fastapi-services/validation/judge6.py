@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Judge #6 Validation Layer
+"""PNKLN Core Stack - Judge #6 Validation Layer
 
 Hybrid Gemini+PyTorch validation system that ensures data quality
 and compliance before items reach downstream applications.
@@ -19,8 +18,8 @@ from enum import StrEnum
 
 import structlog
 import torch
-import torch.nn as nn
 from anthropic import Anthropic
+from torch import nn
 
 from ingestion.classification.tier_classifier import IngestedItem, TierScore
 from ingestion.core.config import get_config
@@ -71,8 +70,7 @@ class ValidationResult:
 
 
 class ContentSafetyClassifier(nn.Module):
-    """
-    PyTorch model for content safety classification.
+    """PyTorch model for content safety classification.
 
     Lightweight neural network for fast (<10ms) content screening:
     - Hate speech detection
@@ -97,22 +95,21 @@ class ContentSafetyClassifier(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Forward pass.
+        """Forward pass.
 
         Args:
             x: Input embeddings (batch_size, input_dim)
 
         Returns:
             Safety scores for 4 categories (batch_size, 4)
+
         """
         logits = self.encoder(x)
         return self.sigmoid(logits)
 
 
 class Judge6Validator:
-    """
-    Judge #6 - Main validation orchestrator.
+    """Judge #6 - Main validation orchestrator.
 
     Implements hybrid Gemini+PyTorch validation with:
     - Fast PyTorch pre-screening (<10ms)
@@ -150,8 +147,7 @@ class Judge6Validator:
         )
 
     async def validate(self, item: IngestedItem, tier_score: TierScore) -> ValidationResult:
-        """
-        Validate an ingested item using multi-stage pipeline.
+        """Validate an ingested item using multi-stage pipeline.
 
         Pipeline:
         1. Fast PyTorch safety screening (<10ms)
@@ -166,6 +162,7 @@ class Judge6Validator:
 
         Returns:
             ValidationResult with pass/fail decision
+
         """
         start_time = datetime.utcnow()
 
@@ -265,8 +262,7 @@ class Judge6Validator:
         return result
 
     async def _safety_screen(self, item: IngestedItem) -> dict[str, float]:
-        """
-        Fast PyTorch-based safety screening.
+        """Fast PyTorch-based safety screening.
 
         Returns safety scores for 4 categories:
         - hate_speech: 0.0-1.0 (1.0 = safe)
@@ -336,10 +332,9 @@ class Judge6Validator:
         return any(domain in item.url for domain in credible_domains)
 
     def _assess_risk(
-        self, item: IngestedItem, tier_score: TierScore, validation_checks: dict[str, bool]
+        self, item: IngestedItem, tier_score: TierScore, validation_checks: dict[str, bool],
     ) -> dict:
-        """
-        ATP 5-19 Risk Assessment.
+        """ATP 5-19 Risk Assessment.
 
         Severity (1-5):
         1 = Negligible
@@ -402,10 +397,9 @@ class Judge6Validator:
         }
 
     async def _gemini_deep_check(
-        self, item: IngestedItem, tier_score: TierScore, validation_checks: dict[str, bool]
+        self, item: IngestedItem, tier_score: TierScore, validation_checks: dict[str, bool],
     ) -> dict:
-        """
-        Gemini-powered deep content analysis.
+        """Gemini-powered deep content analysis.
 
         Used for high-risk or Tier 1 items requiring semantic understanding.
         """
@@ -464,15 +458,14 @@ Respond in JSON:
             return {
                 "passed": False,
                 "confidence": 0.0,
-                "reasons": [f"Gemini analysis error: {str(e)}"],
+                "reasons": [f"Gemini analysis error: {e!s}"],
                 "recommendation": "flag",
             }
 
     def _check_jr_compliance(
-        self, item: IngestedItem, validation_checks: dict[str, bool], risk_assessment: dict
+        self, item: IngestedItem, validation_checks: dict[str, bool], risk_assessment: dict,
     ) -> dict:
-        """
-        ShadowTagJR (Judgment Rule) compliance check.
+        """ShadowTagJR (Judgment Rule) compliance check.
 
         Ensures validation decisions are:
         - Informed: Based on sufficient data
@@ -481,7 +474,7 @@ Respond in JSON:
         """
         # Informed: Do we have enough data?
         informed = validation_checks.get("metadata_valid", False) and validation_checks.get(
-            "completeness", False
+            "completeness", False,
         )
 
         # Reasonable: Does risk assessment make sense?
@@ -529,7 +522,7 @@ Respond in JSON:
         return round(confidence, 3)
 
     def _determine_status(
-        self, validation_checks: dict[str, bool], confidence: float, risk_assessment: dict
+        self, validation_checks: dict[str, bool], confidence: float, risk_assessment: dict,
     ) -> ValidationStatus:
         """Determine final validation status."""
         # Hard blocks

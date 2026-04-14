@@ -1,5 +1,4 @@
-"""
-ATP 5-19: Composite Risk Management
+"""ATP 5-19: Composite Risk Management
 ====================================
 
 Source: ATP 5-19 (April 2014)
@@ -92,8 +91,7 @@ APPROVAL_AUTHORITY = {
 
 @dataclass
 class Hazard:
-    """
-    ATP 5-19 Step 1: Identify Hazards
+    """ATP 5-19 Step 1: Identify Hazards
 
     A hazard is any condition, actual or potential, that could cause
     injury, illness, or death; damage to or loss of equipment, property,
@@ -115,8 +113,7 @@ class Hazard:
     identified_by: str = ""
 
     def assess(self, probability: Probability, severity: Severity) -> RiskLevel:
-        """
-        ATP 5-19 Step 2: Assess Hazards
+        """ATP 5-19 Step 2: Assess Hazards
 
         Use risk matrix to determine risk level.
         """
@@ -140,8 +137,7 @@ class Hazard:
 
 @dataclass
 class Control:
-    """
-    ATP 5-19 Step 3: Develop Controls
+    """ATP 5-19 Step 3: Develop Controls
 
     Controls eliminate hazards or reduce their risk.
     Types: Engineering, Administrative, PPE
@@ -199,8 +195,7 @@ class Control:
 
 
 class RiskMatrix:
-    """
-    ATP 5-19 Risk Assessment Matrix utility class.
+    """ATP 5-19 Risk Assessment Matrix utility class.
 
     Provides methods to assess and visualize risk.
     """
@@ -250,8 +245,7 @@ Unlikely   │   MEDIUM    │  MEDIUM  │   LOW    │    LOW     │
 
 @dataclass
 class RiskManager:
-    """
-    ATP 5-19 Composite Risk Management Engine
+    """ATP 5-19 Composite Risk Management Engine
 
     Implements the 5-step CRM process for AI agent tasks.
     """
@@ -265,10 +259,9 @@ class RiskManager:
     residual_risk: RiskLevel | None = None
 
     async def step1_identify_hazards(
-        self, task: str, context: dict[str, Any] = None
+        self, task: str, context: dict[str, Any] = None,
     ) -> list[Hazard]:
-        """
-        Step 1: Identify Hazards
+        """Step 1: Identify Hazards
 
         Identify conditions that could cause mission degradation.
         For AI agents: errors, security issues, resource exhaustion, etc.
@@ -286,7 +279,7 @@ class RiskManager:
 
         for hid, desc, cat, src in hazard_templates:
             hazard = Hazard(
-                id=hid, description=desc, category=cat, source=src, identified_by="RiskManager"
+                id=hid, description=desc, category=cat, source=src, identified_by="RiskManager",
             )
             hazards.append(hazard)
 
@@ -294,8 +287,7 @@ class RiskManager:
         return hazards
 
     async def step2_assess_hazards(self) -> RiskLevel:
-        """
-        Step 2: Assess Hazards
+        """Step 2: Assess Hazards
 
         Determine probability and severity for each hazard.
         Calculate overall initial risk.
@@ -326,8 +318,7 @@ class RiskManager:
         return max_risk
 
     async def step3_develop_controls(self) -> list[Control]:
-        """
-        Step 3: Develop Controls
+        """Step 3: Develop Controls
 
         Create controls to mitigate each hazard.
         """
@@ -358,8 +349,7 @@ class RiskManager:
         return controls
 
     async def step4_implement_controls(self, implementer: str = "System") -> int:
-        """
-        Step 4: Implement Controls
+        """Step 4: Implement Controls
 
         Activate all developed controls.
         Returns count of implemented controls.
@@ -372,8 +362,7 @@ class RiskManager:
         return count
 
     async def step5_supervise_evaluate(self) -> dict[str, Any]:
-        """
-        Step 5: Supervise and Evaluate
+        """Step 5: Supervise and Evaluate
 
         Monitor effectiveness of controls.
         Calculate residual risk.
@@ -403,8 +392,7 @@ class RiskManager:
         }
 
     async def full_assessment(self, task: str, context: dict[str, Any] = None) -> dict[str, Any]:
-        """
-        Run complete 5-step CRM process.
+        """Run complete 5-step CRM process.
         """
         await self.step1_identify_hazards(task, context)
         await self.step2_assess_hazards()

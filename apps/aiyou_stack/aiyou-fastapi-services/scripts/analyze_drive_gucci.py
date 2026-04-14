@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Drive Content Analyzer ("The Gucci Finder")
+"""Drive Content Analyzer ("The Gucci Finder")
 
 Parses pnkln_intelligence/knowledge_base/drive_index.json to identify high-value assets.
 Categorizes them into:

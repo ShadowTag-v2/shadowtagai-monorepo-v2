@@ -1,5 +1,4 @@
-"""
-Governance Engine
+"""Governance Engine
 Implements EU AI Act, DSA, NIST RMF, and ISO 42001 assessments
 """
 
@@ -29,8 +28,7 @@ class GovernanceEngine:
         logger.info(f"Governance Engine initialized with Persona IQ: {self.persona_iq}")
 
     async def assess(self, request: GovernanceAssessmentRequest) -> dict[str, Any]:
-        """
-        Comprehensive governance assessment
+        """Comprehensive governance assessment
 
         Runs at IQ {self.persona_iq} for maximum foresight and risk detection
         """
@@ -172,7 +170,7 @@ class GovernanceEngine:
                 operation,
                 performance_evaluation,
                 improvement,
-            ]
+            ],
         )
         certification_ready = min_score >= 0.85
 
@@ -199,7 +197,7 @@ class GovernanceEngine:
         return RiskLevel.MINIMAL
 
     async def _assess_eu_ai_act_controls(
-        self, request: GovernanceAssessmentRequest
+        self, request: GovernanceAssessmentRequest,
     ) -> list[ControlAssessment]:
         """Assess EU AI Act controls"""
         return [
@@ -224,7 +222,7 @@ class GovernanceEngine:
         ]
 
     async def _assess_nist_rmf_controls(
-        self, request: GovernanceAssessmentRequest
+        self, request: GovernanceAssessmentRequest,
     ) -> list[ControlAssessment]:
         """Assess NIST RMF controls"""
         return [
@@ -243,7 +241,7 @@ class GovernanceEngine:
         ]
 
     async def _assess_iso_42001_controls(
-        self, request: GovernanceAssessmentRequest
+        self, request: GovernanceAssessmentRequest,
     ) -> list[ControlAssessment]:
         """Assess ISO 42001 controls"""
         return [
@@ -290,7 +288,7 @@ class GovernanceEngine:
         return None
 
     async def _identify_residual_risks(
-        self, controls: list[ControlAssessment], risk_level: RiskLevel
+        self, controls: list[ControlAssessment], risk_level: RiskLevel,
     ) -> list[str]:
         """Identify residual risks after controls"""
         residual = []

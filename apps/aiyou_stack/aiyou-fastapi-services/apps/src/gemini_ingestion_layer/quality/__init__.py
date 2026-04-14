@@ -1,5 +1,4 @@
-"""
-Quality Gates Module
+"""Quality Gates Module
 
 Implements multi-faceted quality checks:
 - Items ingested per day (target: 10,000)
@@ -12,4 +11,4 @@ Implements multi-faceted quality checks:
 
 from .gates import QualityGateResult, QualityGates
 
-__all__ = ["QualityGates", "QualityGateResult"]
+__all__ = ["QualityGateResult", "QualityGates"]

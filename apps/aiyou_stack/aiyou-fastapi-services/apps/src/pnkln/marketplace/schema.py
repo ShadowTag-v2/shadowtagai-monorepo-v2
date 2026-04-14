@@ -1,5 +1,4 @@
-"""
-PNKLN Marketplace - Database Schema
+"""PNKLN Marketplace - Database Schema
 Two-sided marketplace for AI superpowers and kernel chains
 
 Revenue model:

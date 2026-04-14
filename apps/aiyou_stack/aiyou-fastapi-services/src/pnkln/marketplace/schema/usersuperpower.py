@@ -16,8 +16,7 @@ Base = declarative_base()
 
 
 class UserSuperpower(Base):
-    """
-    User's installed/purchased superpowers
+    """User's installed/purchased superpowers
 
     Tracks which superpowers a user has access to
     """

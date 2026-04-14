@@ -15,8 +15,7 @@ CORE_API_URL = os.environ.get("CORE_API_URL", "https://seatjudge-api-poaakxhkkq-
 
 
 async def get_id_token(audience: str) -> str:
-    """
-    Generates a Google OIDC ID Token for the target audience
+    """Generates a Google OIDC ID Token for the target audience
     using the metadata server (when running on Cloud Run).
     """
     try:
@@ -36,8 +35,7 @@ async def serve_dashboard():
 
 @app.get("/bff/map/{venue_id}")
 async def proxy_get_map(venue_id: str):
-    """
-    Proxies the GET /map/{venue_id} call to the Core API.
+    """Proxies the GET /map/{venue_id} call to the Core API.
     Injects the OIDC Authorization header.
     """
     token = await get_id_token(CORE_API_URL)
@@ -54,8 +52,7 @@ async def proxy_get_map(venue_id: str):
 
 @app.post("/bff/assess")
 async def proxy_assess(request: Request):
-    """
-    Proxies the POST /assess call to the Core API.
+    """Proxies the POST /assess call to the Core API.
     Injects the OIDC Authorization header.
     """
     token = await get_id_token(CORE_API_URL)

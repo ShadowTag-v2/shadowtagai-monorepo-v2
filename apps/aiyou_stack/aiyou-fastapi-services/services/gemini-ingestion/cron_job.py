@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer - Nightly CronJob Entry Point
+"""Gemini Ingestion Layer - Nightly CronJob Entry Point
 
 Orchestrates the complete ingestion pipeline:
 1. Fetch from multi-sources (YouTube, Twitter, News, RSS, V2X Mesh)
@@ -90,12 +89,12 @@ class CronJobRunner:
         """Initialize pipeline with sources"""
         # Configure ethical crawling
         crawler_config = EthicalCrawlingConfig(
-            rate_limit_requests_per_minute=60, avoid_peak_hours=True
+            rate_limit_requests_per_minute=60, avoid_peak_hours=True,
         )
 
         # Create pipeline
         pipeline = IngestionPipeline(
-            crawler_config=crawler_config, gemini_api_key=self.config["gemini_api_key"]
+            crawler_config=crawler_config, gemini_api_key=self.config["gemini_api_key"],
         )
 
         # Add V2X Mesh source (Tier 1 - highest priority)
@@ -111,7 +110,7 @@ class CronJobRunner:
                     RelevanceCategory.TRANSPORTATION,
                 ],
                 crawl_frequency_hours=1,  # Frequent updates
-            )
+            ),
         )
 
         # Add YouTube source (Tier 2)
@@ -127,7 +126,7 @@ class CronJobRunner:
                         RelevanceCategory.URBAN_MOBILITY,
                     ],
                     api_key=self.config["youtube_api_key"],
-                )
+                ),
             )
 
         # Add Twitter source (Tier 2)
@@ -140,7 +139,7 @@ class CronJobRunner:
                     tier=DataTier.TIER_2,
                     relevance_categories=[RelevanceCategory.TRAFFIC, RelevanceCategory.SAFETY],
                     api_key=self.config["twitter_bearer_token"],
-                )
+                ),
             )
 
         # Add News API source (Tier 2)
@@ -157,7 +156,7 @@ class CronJobRunner:
                         RelevanceCategory.INFRASTRUCTURE,
                     ],
                     api_key=self.config["news_api_key"],
-                )
+                ),
             )
 
         # Add RSS feeds (Tier 3)
@@ -169,7 +168,7 @@ class CronJobRunner:
                 tier=DataTier.TIER_3,
                 relevance_categories=[RelevanceCategory.TRANSPORTATION],
                 crawl_frequency_hours=24,
-            )
+            ),
         )
 
         logger.info(f"Initialized pipeline with {len(pipeline.sources)} sources")
@@ -258,28 +257,28 @@ class CronJobRunner:
         logger.info(f"Run ID: {metrics.run_id}")
         logger.info(
             f"Runtime: {runtime_minutes:.1f} min (target: {target_minutes} min) "
-            + ("✅" if runtime_minutes <= target_minutes else "⚠️")
+            + ("✅" if runtime_minutes <= target_minutes else "⚠️"),
         )
 
         logger.info("\n📦 ITEMS:")
         logger.info(f"  Total: {metrics.total_items_ingested}")
         logger.info(
             f"  Tier 1: {metrics.items_by_tier[DataTier.TIER_1]} "
-            + f"({metrics.items_by_tier[DataTier.TIER_1] / max(1, metrics.total_items_ingested) * 100:.1f}%)"
+             f"({metrics.items_by_tier[DataTier.TIER_1] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
         )
         logger.info(
             f"  Tier 2: {metrics.items_by_tier[DataTier.TIER_2]} "
-            + f"({metrics.items_by_tier[DataTier.TIER_2] / max(1, metrics.total_items_ingested) * 100:.1f}%)"
+             f"({metrics.items_by_tier[DataTier.TIER_2] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
         )
         logger.info(
             f"  Tier 3: {metrics.items_by_tier[DataTier.TIER_3]} "
-            + f"({metrics.items_by_tier[DataTier.TIER_3] / max(1, metrics.total_items_ingested) * 100:.1f}%)"
+             f"({metrics.items_by_tier[DataTier.TIER_3] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
         )
 
         logger.info("\n📈 QUALITY:")
         logger.info(
             f"  Relevance: {metrics.avg_relevance_score:.2f} (target: ≥0.7) "
-            + ("✅" if metrics.avg_relevance_score >= 0.7 else "⚠️")
+            + ("✅" if metrics.avg_relevance_score >= 0.7 else "⚠️"),
         )
         logger.info(f"  Timeliness: {metrics.timeliness_score * 100:.1f}% (target: ≥70%)")
         logger.info(f"  Completeness: {metrics.completeness_score * 100:.1f}% (target: ≥80%)")

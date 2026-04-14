@@ -1,5 +1,4 @@
-"""
-JETSKI REALITY VALIDATOR
+"""JETSKI REALITY VALIDATOR
 Combines Selenium Wire (network) + CDP (browser control)
 """
 
@@ -39,12 +38,11 @@ class JetskiEngine:
         }
 
         self.driver = webdriver.Chrome(
-            options=chrome_options, seleniumwire_options=seleniumwire_options
+            options=chrome_options, seleniumwire_options=seleniumwire_options,
         )
 
     def verify_endpoint(self, url: str, expected_status: int = 200) -> dict:
-        """
-        Verify an API endpoint returns expected status.
+        """Verify an API endpoint returns expected status.
         Captures full request/response cycle.
         """
         if not self.driver:
@@ -73,7 +71,7 @@ class JetskiEngine:
                         "status": request.response.status_code if request.response else None,
                         "headers": dict(request.headers),
                         "body_size": len(request.response.body) if request.response else 0,
-                    }
+                    },
                 )
 
             # Check main request
@@ -99,8 +97,7 @@ class JetskiEngine:
             return {"success": False, "error": str(e), "network_log": []}
 
     def verify_page_render(self, url: str, selector: str) -> dict:
-        """
-        Verify a page renders correctly and element exists.
+        """Verify a page renders correctly and element exists.
         Returns screenshot as base64.
         """
         if not self.driver:
@@ -145,8 +142,7 @@ class JetskiEngine:
             }
 
     def intercept_and_modify(self, url: str, modifications: dict) -> dict:
-        """
-        Advanced: Modify requests/responses in-flight.
+        """Advanced: Modify requests/responses in-flight.
         Use case: Test how app handles modified API responses.
         """
         if not self.driver:
@@ -178,7 +174,7 @@ class JetskiEngine:
                         r
                         for r in self.driver.requests
                         if modifications.get("block_pattern", "") in r.url
-                    ]
+                    ],
                 ),
             }
         except Exception as e:

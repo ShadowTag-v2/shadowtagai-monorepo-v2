@@ -1,5 +1,4 @@
-"""
-Authentication Service Layer
+"""Authentication Service Layer
 
 Encapsulates all database operations for user authentication,
 registration, and token management.
@@ -13,8 +12,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.security import (
     create_access_token,
     create_refresh_token,
-    hash_password,
-    verify_password,
 )
 from app.models.user import User
 

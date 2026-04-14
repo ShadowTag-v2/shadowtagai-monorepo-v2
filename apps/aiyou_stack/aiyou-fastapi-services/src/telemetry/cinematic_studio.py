@@ -10,8 +10,7 @@ from google.genai import types
 
 
 class CinematicStudio:
-    """
-    ⏺ ///▙▖▙▖▞ THE STUDIO (Cursor-Killer)
+    """⏺ ///▙▖▙▖▞ THE STUDIO (Cursor-Killer)
     Record -> Upload -> Multimodal Critique via gemini-3.1-flash-lite-preview
     """
 
@@ -80,7 +79,6 @@ class CinematicStudio:
             os.kill(pid, signal.SIGINT)  # Graceful SIGINT finalizes the MP4 'moov' atom
         except Exception:
             print("⚠️ [Studio] No active FFmpeg PID found.")
-            pass
 
         time.sleep(3)
 
@@ -116,14 +114,14 @@ class CinematicStudio:
             Reply strictly with 'PASS' if flawless, or 'FAIL: [Reason]'.
             """
             response = client.models.generate_content(
-                model="gemini-3.1-flash-lite-preview", contents=[video_part, prompt]
+                model="gemini-3.1-flash-lite-preview", contents=[video_part, prompt],
             )
             verdict = response.text.strip()
             print(f"⚖️ [Critic] Verdict: {verdict}")
             return verdict
         except Exception as e:
             print(f"❌ [Critic] Internal Review Error: {e}")
-            return f"FAIL: {str(e)}"
+            return f"FAIL: {e!s}"
 
 
 if __name__ == "__main__":

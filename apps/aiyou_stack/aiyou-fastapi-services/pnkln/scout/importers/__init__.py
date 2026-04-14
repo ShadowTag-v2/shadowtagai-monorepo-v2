@@ -1,5 +1,4 @@
-"""
-Boy Scout Rule Registry Importers
+"""Boy Scout Rule Registry Importers
 
 Import scripts for pushing the scout registry to external platforms:
 - Airtable: airtable_import.py

@@ -1,5 +1,4 @@
-"""
-API request and response models
+"""API request and response models
 """
 
 from pydantic import BaseModel, Field
@@ -11,7 +10,7 @@ class QueryRequest(BaseModel):
     query: str = Field(..., description="User query to process")
     vertical: str = Field(..., description="Vertical name (e.g., 'defense', 'healthcare')")
     corpus_name: str | None = Field(
-        None, description="Optional corpus name (auto-detected if not provided)"
+        None, description="Optional corpus name (auto-detected if not provided)",
     )
     top_k: int | None = Field(None, description="Number of top results to retrieve", ge=1, le=20)
 

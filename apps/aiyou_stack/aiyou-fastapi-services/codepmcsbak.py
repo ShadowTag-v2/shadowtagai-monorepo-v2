@@ -132,7 +132,7 @@ class JudgeSixSentinel:
         learning_context = ""
         if failures:
             learning_context = "AVOID PREVIOUS MISTAKES:\n" + "\n".join(
-                [f"- {f['hazards']}" for f in failures]
+                [f"- {f['hazards']}" for f in failures],
             )
 
         full_prompt = f"""
@@ -155,7 +155,7 @@ class JudgeSixSentinel:
         test_file = f"tests/test_{os.path.basename(file_path)}"
         if not os.path.exists(test_file):
             print(
-                f"{Fore.YELLOW}>>> ⚠️  No unit tests found for {file_path}. Skipping functional check.{Style.RESET_ALL}"
+                f"{Fore.YELLOW}>>> ⚠️  No unit tests found for {file_path}. Skipping functional check.{Style.RESET_ALL}",
             )
             return True  # Pass by default if no tests, but warn
 
@@ -165,9 +165,8 @@ class JudgeSixSentinel:
         if result.returncode == 0:
             print(f"{Fore.GREEN}>>> ✅ Tests Passed.{Style.RESET_ALL}")
             return True
-        else:
-            print(f"{Fore.RED}>>> ❌ Tests Failed:\n{result.stderr}{Style.RESET_ALL}")
-            return False
+        print(f"{Fore.RED}>>> ❌ Tests Failed:\n{result.stderr}{Style.RESET_ALL}")
+        return False
 
     def assess_risk(self, code):
         matrix = {

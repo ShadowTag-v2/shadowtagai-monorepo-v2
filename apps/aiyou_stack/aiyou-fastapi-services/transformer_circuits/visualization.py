@@ -1,5 +1,4 @@
-"""
-Visualization utilities for transformer circuits.
+"""Visualization utilities for transformer circuits.
 
 Provides tools to visualize:
 - QK attribution matrices
@@ -22,8 +21,7 @@ def plot_qk_attribution_matrix(
     top_k: int = 20,
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize QK attributions as a matrix heatmap.
+    """Visualize QK attributions as a matrix heatmap.
 
     Shows the bilinear interaction matrix between query and key features,
     highlighting which feature pairs contribute most to the attention score.
@@ -35,6 +33,7 @@ def plot_qk_attribution_matrix(
 
     Returns:
         Plotly figure
+
     """
     # Get top contributing features
     top_attrs = result.get_top_k(k=top_k, only_features=True)
@@ -62,7 +61,7 @@ def plot_qk_attribution_matrix(
             texttemplate="%{text}",
             textfont={"size": 10},
             colorbar=dict(title="Contribution"),
-        )
+        ),
     )
 
     fig.update_layout(
@@ -85,8 +84,7 @@ def plot_qk_attribution_waterfall(
     top_k: int = 15,
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize QK attributions as a waterfall chart.
+    """Visualize QK attributions as a waterfall chart.
 
     Shows how individual feature interactions sum to produce the total attention score.
 
@@ -97,6 +95,7 @@ def plot_qk_attribution_waterfall(
 
     Returns:
         Plotly figure
+
     """
     top_attrs = result.get_top_k(k=top_k, only_features=True)
 
@@ -117,7 +116,7 @@ def plot_qk_attribution_waterfall(
             x=labels,
             y=values,
             connector={"line": {"color": "rgb(63, 63, 63)"}},
-        )
+        ),
     )
 
     fig.update_layout(
@@ -138,8 +137,7 @@ def plot_head_loadings(
     top_k: int = 10,
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize head loadings for an attribution graph edge.
+    """Visualize head loadings for an attribution graph edge.
 
     Shows which attention heads mediate the edge and their relative contributions.
 
@@ -150,6 +148,7 @@ def plot_head_loadings(
 
     Returns:
         Plotly figure
+
     """
     top_heads = edge_attribution.get_top_heads(k=top_k)
 
@@ -197,8 +196,7 @@ def plot_attribution_graph(
     layout: str = "hierarchical",
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize attribution graph as an interactive network diagram.
+    """Visualize attribution graph as an interactive network diagram.
 
     Args:
         graph: AttributionGraph to visualize
@@ -207,6 +205,7 @@ def plot_attribution_graph(
 
     Returns:
         Plotly figure
+
     """
     # Build edge traces
     edge_traces = []
@@ -277,8 +276,7 @@ def plot_head_usage_analysis(
     top_k: int = 20,
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize which attention heads are used most in the graph.
+    """Visualize which attention heads are used most in the graph.
 
     Args:
         graph: AttributionGraph to analyze
@@ -287,6 +285,7 @@ def plot_head_usage_analysis(
 
     Returns:
         Plotly figure
+
     """
     head_usage = graph.analyze_head_usage()
     sorted_heads = sorted(head_usage.items(), key=lambda x: x[1], reverse=True)[:top_k]
@@ -301,7 +300,7 @@ def plot_head_usage_analysis(
             marker_color="steelblue",
             text=[f"{v:.3f}" for v in values],
             textposition="auto",
-        )
+        ),
     )
 
     fig.update_layout(
@@ -324,8 +323,7 @@ def plot_intervention_scan(
     feature_name: str,
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize the effect of steering a feature across a range of scale values.
+    """Visualize the effect of steering a feature across a range of scale values.
 
     Args:
         scale_values: List of scale factors applied
@@ -336,6 +334,7 @@ def plot_intervention_scan(
 
     Returns:
         Plotly figure
+
     """
     # Track target token probability
     target_probs = []
@@ -356,7 +355,7 @@ def plot_intervention_scan(
             mode="lines+markers",
             name=f"P({target_token})",
             line=dict(color="red", width=3),
-        )
+        ),
     )
 
     # Add vertical line at scale=1.0 (baseline)
@@ -383,8 +382,7 @@ def plot_concordance_discordance(
     query_pos: int,
     save_path: str | None = None,
 ) -> go.Figure:
-    """
-    Visualize concordance vs discordance head attention patterns.
+    """Visualize concordance vs discordance head attention patterns.
 
     From the correctness circuits case study in the paper.
 
@@ -397,6 +395,7 @@ def plot_concordance_discordance(
 
     Returns:
         Plotly figure
+
     """
     positions = list(range(len(tokens)))
 
@@ -410,7 +409,7 @@ def plot_concordance_discordance(
             marker_color="green",
             text=tokens,
             textposition="outside",
-        )
+        ),
     )
 
     fig.add_trace(
@@ -421,7 +420,7 @@ def plot_concordance_discordance(
             marker_color="red",
             text=tokens,
             textposition="outside",
-        )
+        ),
     )
 
     fig.add_vline(x=query_pos, line_dash="dash", line_color="blue", annotation_text="Query")
@@ -446,14 +445,14 @@ def create_interactive_dashboard(
     graph: AttributionGraph,
     save_path: str = "circuits_dashboard.html",
 ):
-    """
-    Create an interactive dashboard combining multiple visualizations.
+    """Create an interactive dashboard combining multiple visualizations.
 
     Args:
         qk_result: QK attribution result
         edge_attribution: Edge attribution with head loadings
         graph: Attribution graph
         save_path: Path to save HTML dashboard
+
     """
     from plotly.subplots import make_subplots
 

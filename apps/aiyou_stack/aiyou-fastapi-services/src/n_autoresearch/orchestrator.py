@@ -1,5 +1,4 @@
-"""
-CorAutoresearch Arbiter Orchestrator (Heavy Path)
+"""CorAutoresearch Arbiter Orchestrator (Heavy Path)
 =================================================
 This Temporal Worker maps incoming Level 1-4 compliance anomalies or logic
 faults sent from the edge (Judge 6) directly into the Autonomous Swarm for
@@ -29,14 +28,13 @@ logger = logging.getLogger(__name__)
 
 @activity.defn
 async def mitigate_anomaly(anomaly_payload: str) -> str:
-    """
-    Simulates the Heavy Path loop (CorAutoresearch).
+    """Simulates the Heavy Path loop (CorAutoresearch).
     This spins up a full 128k context trace of the user's workspace, evaluates the
     sub-optimal logic or policy leak detected by the MITM Judge, and drafts the
     patch autonomically in the background.
     """
     logger.info(
-        f"[ARBITER SWARM] Received Anomaly Payload for Mitigation: {anomaly_payload[:100]}..."
+        f"[ARBITER SWARM] Received Anomaly Payload for Mitigation: {anomaly_payload[:100]}...",
     )
 
     # Simulated delay for 3x Rust GPU compilation or native Swarm routing
@@ -76,8 +74,7 @@ async def mitigate_anomaly(anomaly_payload: str) -> str:
 
 @workflow.defn
 class OmegaPayloadOrchestrator:
-    """
-    Primary routing block that captures API ingress payloads from `agent/query`
+    """Primary routing block that captures API ingress payloads from `agent/query`
     and channels them sequentially through the Heavy Path Swarm.
     """
 
@@ -85,7 +82,7 @@ class OmegaPayloadOrchestrator:
     async def run(self, anomaly_payload: str) -> str:
         # 1. Dispatch the Heavy Lift
         mitigation_result = await workflow.execute_activity(
-            mitigate_anomaly, anomaly_payload, start_to_close_timeout=timedelta(minutes=10)
+            mitigate_anomaly, anomaly_payload, start_to_close_timeout=timedelta(minutes=10),
         )
 
         # 2. In a live system, Judge 6 would re-evaluate `mitigation_result` here.

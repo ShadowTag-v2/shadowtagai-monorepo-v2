@@ -14,8 +14,7 @@ class ForgeRequest(BaseModel):
 
 @router.post("/clone-voice")
 async def export_studio_video(payload: ForgeRequest):
-    """
-    Real-time voice cloning via Google TTS and SynthID verification.
+    """Real-time voice cloning via Google TTS and SynthID verification.
     """
     try:
         # 1. Generate Voice
@@ -23,10 +22,10 @@ async def export_studio_video(payload: ForgeRequest):
         audio_content = tts_client.synthesize_speech(
             input=texttospeech.SynthesisInput(text=payload.text),
             voice=texttospeech.VoiceSelectionParams(
-                name=payload.voice_profile, language_code="en-US"
+                name=payload.voice_profile, language_code="en-US",
             ),
             audio_config=texttospeech.AudioConfig(
-                audio_encoding=texttospeech.AudioEncoding.LINEAR16
+                audio_encoding=texttospeech.AudioEncoding.LINEAR16,
             ),
         ).audio_content
 

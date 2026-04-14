@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Corrected Async Latency Validator for Judge6 Service
+"""Corrected Async Latency Validator for Judge6 Service
 
 CRITICAL FIXES APPLIED:
 1. Changed from ThreadPoolExecutor to async/await with httpx
@@ -109,7 +108,6 @@ class LatencyValidator:
 
     async def validate(self) -> ValidationReport:
         """Run latency validation"""
-
         logger.info("=" * 60)
         logger.info("Starting latency validation")
         logger.info(f"Endpoint: {self.config.endpoint}")
@@ -154,7 +152,6 @@ class LatencyValidator:
 
     async def _run_with_progress(self, tasks: list):
         """Run tasks with progress reporting"""
-
         completed = 0
         report_interval = max(1, self.config.iterations // 10)  # Report every 10%
 
@@ -165,12 +162,11 @@ class LatencyValidator:
             if completed % report_interval == 0:
                 logger.info(
                     f"Progress: {completed}/{self.config.iterations} "
-                    f"({100 * completed // self.config.iterations}%)"
+                    f"({100 * completed // self.config.iterations}%)",
                 )
 
     async def _make_request(self, client: httpx.AsyncClient, request_id: int) -> LatencyResult:
         """Make a single request with retry logic"""
-
         async with self.semaphore:  # Control concurrency
             for attempt in range(self.config.retry_attempts + 1):
                 result = await self._try_request(client, request_id, attempt)
@@ -190,10 +186,9 @@ class LatencyValidator:
             return result
 
     async def _try_request(
-        self, client: httpx.AsyncClient, request_id: int, attempt: int
+        self, client: httpx.AsyncClient, request_id: int, attempt: int,
     ) -> LatencyResult:
         """Try a single request (single attempt)"""
-
         result = LatencyResult()
         payload = self._build_payload(request_id)
 
@@ -220,22 +215,22 @@ class LatencyValidator:
             return result
 
         except httpx.TimeoutException as e:
-            result.error = f"Timeout: {str(e)}"
+            result.error = f"Timeout: {e!s}"
             result.error_type = ErrorType.TIMEOUT
             return result
 
         except httpx.ConnectError as e:
-            result.error = f"Connection error: {str(e)}"
+            result.error = f"Connection error: {e!s}"
             result.error_type = ErrorType.CONNECTION
             return result
 
         except httpx.HTTPError as e:
-            result.error = f"HTTP error: {str(e)}"
+            result.error = f"HTTP error: {e!s}"
             result.error_type = ErrorType.HTTP_ERROR
             return result
 
         except Exception as e:
-            result.error = f"Unknown error: {str(e)}"
+            result.error = f"Unknown error: {e!s}"
             result.error_type = ErrorType.UNKNOWN
             return result
 
@@ -252,7 +247,6 @@ class LatencyValidator:
 
     def _generate_report(self, duration: float) -> ValidationReport:
         """Generate validation report from results"""
-
         report = ValidationReport()
         report.total_requests = len(self.results)
         report.duration_seconds = duration
@@ -298,7 +292,6 @@ class LatencyValidator:
 
     def _print_report(self, report: ValidationReport):
         """Print validation report"""
-
         logger.info("\n" + "=" * 60)
         logger.info("VALIDATION REPORT")
         logger.info("=" * 60)
@@ -306,7 +299,7 @@ class LatencyValidator:
         logger.info("\nRequests:")
         logger.info(f"  Total:      {report.total_requests}")
         logger.info(
-            f"  Successful: {report.successful_requests} ({report.success_rate * 100:.2f}%)"
+            f"  Successful: {report.successful_requests} ({report.success_rate * 100:.2f}%)",
         )
         logger.info(f"  Failed:     {report.failed_requests} ({report.error_rate * 100:.2f}%)")
 
@@ -336,11 +329,11 @@ class LatencyValidator:
         logger.info(
             f"  P99 < {self.config.p99_threshold_ms}ms:  {p99_status} (actual: {report.p99:.2f}ms)"
             if report.p99
-            else "  P99: N/A (no successful requests)"
+            else "  P99: N/A (no successful requests)",
         )
         logger.info(
             f"  Error rate < {self.config.error_rate_threshold * 100}%: {err_status} "
-            f"(actual: {report.error_rate * 100:.2f}%)"
+            f"(actual: {report.error_rate * 100:.2f}%)",
         )
 
         logger.info("=" * 60)
@@ -357,7 +350,6 @@ class LatencyValidator:
 
 async def main():
     """Main execution"""
-
     # Configuration
     config = ValidationConfig(
         endpoint="https://judge6.shadowtagai.ai/enforce",

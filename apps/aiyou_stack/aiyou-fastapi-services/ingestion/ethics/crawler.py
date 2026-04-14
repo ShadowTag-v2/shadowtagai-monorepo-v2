@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Ethical Web Crawler
+"""PNKLN Core Stack - Ethical Web Crawler
 
 Implements ethical web crawling with:
 - robots.txt compliance (100% honor rate)
@@ -25,8 +24,7 @@ logger = structlog.get_logger(__name__)
 
 
 class EthicalCrawler:
-    """
-    Ethical web crawler with robots.txt compliance and rate limiting.
+    """Ethical web crawler with robots.txt compliance and rate limiting.
 
     This crawler ensures PNKLN adheres to web standards and ethical norms:
     - Respects robots.txt directives
@@ -57,8 +55,7 @@ class EthicalCrawler:
         return f"{parsed.scheme}://{parsed.netloc}"
 
     async def _get_robots_parser(self, url: str) -> RobotFileParser | None:
-        """
-        Fetch and parse robots.txt for the given URL's domain.
+        """Fetch and parse robots.txt for the given URL's domain.
 
         Returns None if robots.txt cannot be fetched or parsing fails.
         """
@@ -79,18 +76,16 @@ class EthicalCrawler:
                 self._robots_cache[domain] = parser
                 logger.info("robots_txt_fetched", domain=domain, success=True)
                 return parser
-            else:
-                logger.warning(
-                    "robots_txt_fetch_failed", domain=domain, status_code=response.status_code
-                )
-                return None
+            logger.warning(
+                "robots_txt_fetch_failed", domain=domain, status_code=response.status_code,
+            )
+            return None
         except Exception as e:
             logger.warning("robots_txt_error", domain=domain, error=str(e))
             return None
 
     async def is_allowed(self, url: str) -> bool:
-        """
-        Check if crawling the URL is allowed per robots.txt.
+        """Check if crawling the URL is allowed per robots.txt.
 
         If robots.txt cannot be fetched, defaults to ALLOWED (permissive).
         If respect_robots_txt is disabled, always returns True.
@@ -110,8 +105,7 @@ class EthicalCrawler:
         return allowed
 
     async def _enforce_rate_limit(self, url: str) -> None:
-        """
-        Enforce per-domain rate limiting.
+        """Enforce per-domain rate limiting.
 
         Implements:
         - Minimum delay between requests
@@ -143,8 +137,7 @@ class EthicalCrawler:
         retry=retry_if_exception_type(httpx.HTTPStatusError),
     )
     async def fetch(self, url: str, method: str = "GET", **kwargs: Any) -> httpx.Response:
-        """
-        Fetch a URL with ethical crawling safeguards.
+        """Fetch a URL with ethical crawling safeguards.
 
         Args:
             url: URL to fetch
@@ -157,6 +150,7 @@ class EthicalCrawler:
         Raises:
             ValueError: If URL is not allowed by robots.txt
             httpx.HTTPError: If request fails after retries
+
         """
         # Check robots.txt
         if not await self.is_allowed(url):
@@ -204,10 +198,9 @@ class EthicalCrawler:
             raise
 
     async def fetch_many(
-        self, urls: list[str], max_concurrent: int = 5
+        self, urls: list[str], max_concurrent: int = 5,
     ) -> list[httpx.Response | Exception]:
-        """
-        Fetch multiple URLs concurrently while respecting rate limits.
+        """Fetch multiple URLs concurrently while respecting rate limits.
 
         Args:
             urls: List of URLs to fetch
@@ -215,6 +208,7 @@ class EthicalCrawler:
 
         Returns:
             List of responses or exceptions (preserves order)
+
         """
         import asyncio
 
@@ -228,7 +222,7 @@ class EthicalCrawler:
                     return e
 
         results = await asyncio.gather(
-            *[fetch_with_semaphore(url) for url in urls], return_exceptions=True
+            *[fetch_with_semaphore(url) for url in urls], return_exceptions=True,
         )
 
         return results

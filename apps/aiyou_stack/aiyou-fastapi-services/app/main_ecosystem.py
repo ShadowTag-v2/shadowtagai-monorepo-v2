@@ -1,5 +1,4 @@
-"""
-FastAPI application for SHADOWTAGAI Ultrathink Ecosystem.
+"""FastAPI application for SHADOWTAGAI Ultrathink Ecosystem.
 
 Evolution from kernel chain to Jobs-inspired multi-agent platform with:
 - Glicko-2 rated kernels/agents
@@ -59,12 +58,12 @@ async def lifespan(app: FastAPI):
             "ATP519ScanKernel",
             "JudgeSixClassifyKernel",
             "AuditCompressKernel",
-        ]
+        ],
     )
 
     if not validation.passed:
         logger.error(
-            "Kernel chain failed JR Engine validation", extra={"validation": validation.dict()}
+            "Kernel chain failed JR Engine validation", extra={"validation": validation.dict()},
         )
         raise RuntimeError("Kernel chain validation failed")
 
@@ -226,7 +225,7 @@ async def get_validation_report():
             "ATP519ScanKernel",
             "JudgeSixClassifyKernel",
             "AuditCompressKernel",
-        ]
+        ],
     )
 
     return validation.dict()
@@ -239,8 +238,7 @@ async def get_validation_report():
 
 @app.post("/debate")
 async def run_debate(question: str, num_agents: int = 3, max_rounds: int = 3):
-    """
-    Run multi-agent debate using PanelGPT/MAD framework.
+    """Run multi-agent debate using PanelGPT/MAD framework.
 
     Args:
         question: Question to debate
@@ -249,6 +247,7 @@ async def run_debate(question: str, num_agents: int = 3, max_rounds: int = 3):
 
     Returns:
         DebateResult with rounds and consensus
+
     """
     # Create debate agents
     agents = [
@@ -274,8 +273,7 @@ async def evolve_prompt(
     prompt: str,
     strategy: EvolutionStrategy = EvolutionStrategy.RCR_MAD,
 ):
-    """
-    Evolve a prompt using DTE (Dynamic Test Evolution).
+    """Evolve a prompt using DTE (Dynamic Test Evolution).
 
     Args:
         prompt: Current prompt to evolve
@@ -283,6 +281,7 @@ async def evolve_prompt(
 
     Returns:
         EvolutionResult with improvement metrics
+
     """
     test_cases = [
         {"input": "Sample input 1", "expected": "Output 1"},
@@ -302,8 +301,7 @@ async def analyze_wealth(
     churn_rate: float,
     conversion_rates: dict[str, float] = None,
 ):
-    """
-    Analyze business and generate wealth plan.
+    """Analyze business and generate wealth plan.
 
     Args:
         revenue_monthly: Monthly recurring revenue
@@ -314,6 +312,7 @@ async def analyze_wealth(
 
     Returns:
         WealthPlan with leaks, plan, and challenge
+
     """
     if conversion_rates is None:
         conversion_rates = {}
@@ -344,14 +343,14 @@ async def compare_training_systems():
 
 @app.get("/cheat-sheet")
 async def get_cheat_sheet(sheet_type: str = "kernel"):
-    """
-    Get evolved cheat sheet for prompt engineering.
+    """Get evolved cheat sheet for prompt engineering.
 
     Args:
         sheet_type: Type of sheet (kernel, wealth)
 
     Returns:
         Cheat sheet with evolved 10 essentials
+
     """
     if sheet_type == "kernel":
         sheet = create_kernel_cheat_sheet()
@@ -359,7 +358,7 @@ async def get_cheat_sheet(sheet_type: str = "kernel"):
         sheet = create_wealth_planning_cheat_sheet()
     else:
         raise HTTPException(
-            status_code=400, detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'"
+            status_code=400, detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'",
         )
 
     return {

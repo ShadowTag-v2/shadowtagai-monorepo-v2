@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Google Drive Document Reader
+"""Google Drive Document Reader
 Reads all Google Docs and PDFs from your Drive, extracts text content.
 """
 

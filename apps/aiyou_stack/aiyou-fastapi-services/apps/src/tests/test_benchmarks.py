@@ -1,5 +1,4 @@
-"""
-Benchmark Suite for Pinkln Unified System
+"""Benchmark Suite for Pinkln Unified System
 
 Tests against:
 - HumanEval: Python code generation (162 problems)
@@ -45,7 +44,7 @@ class TestLatencyBenchmarks:
         """Test kernel chain latency (target: <35ms)."""
         start = time.time()
         result = orchestrator.execute(
-            "Analyze decision context for ATP 5-19 violations: $2M unauthorized purchase"
+            "Analyze decision context for ATP 5-19 violations: $2M unauthorized purchase",
         )
         latency_ms = (time.time() - start) * 1000
 
@@ -56,7 +55,7 @@ class TestLatencyBenchmarks:
         """Test multi-agent debate latency."""
         start = time.time()
         result = orchestrator.execute(
-            "Have 3 experts debate: Should we prioritize speed or accuracy?"
+            "Have 3 experts debate: Should we prioritize speed or accuracy?",
         )
         latency_ms = (time.time() - start) * 1000
 
@@ -125,7 +124,7 @@ class TestAccuracyBenchmarks:
                 print(f"  Test {i}: ✅ PASS")
             else:
                 print(
-                    f"  Test {i}: ❌ FAIL (expected {case['expected_violations']}, got {has_violations})"
+                    f"  Test {i}: ❌ FAIL (expected {case['expected_violations']}, got {has_violations})",
                 )
 
         accuracy = (correct / len(test_cases)) * 100

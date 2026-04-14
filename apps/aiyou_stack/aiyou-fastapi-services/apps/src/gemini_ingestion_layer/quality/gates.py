@@ -1,5 +1,4 @@
-"""
-Quality Gates Implementation
+"""Quality Gates Implementation
 
 Multi-faceted quality checks for the Gemini Ingestion Layer.
 Unlike Judge #6's 98% coverage requirement, this focuses on:
@@ -62,8 +61,7 @@ class QualityGateResult:
 
 
 class QualityGates:
-    """
-    Quality gates for Gemini Ingestion Layer.
+    """Quality gates for Gemini Ingestion Layer.
 
     Gates aligned with ingestion objectives:
     1. Volume: Daily items ingested
@@ -90,8 +88,7 @@ class QualityGates:
         target_runtime_minutes: int = 45,
         max_runtime_minutes: int = 60,
     ):
-        """
-        Initialize quality gates.
+        """Initialize quality gates.
 
         Args:
             daily_items_target: Target number of items per day
@@ -104,6 +101,7 @@ class QualityGates:
             min_completeness_pct: Minimum field completion percentage
             target_runtime_minutes: Target runtime (~45 min/night)
             max_runtime_minutes: Maximum acceptable runtime
+
         """
         self.daily_items_target = daily_items_target
         self.daily_items_min = daily_items_min
@@ -121,8 +119,7 @@ class QualityGates:
         ingestion_stats: dict[str, Any],
         run_metadata: dict[str, Any] | None = None,
     ) -> QualityGateResult:
-        """
-        Evaluate all quality gates.
+        """Evaluate all quality gates.
 
         Args:
             ingestion_stats: Statistics from ingestion run with keys:
@@ -137,6 +134,7 @@ class QualityGates:
 
         Returns:
             QualityGateResult with all gate evaluations
+
         """
         gates = []
 
@@ -200,7 +198,7 @@ class QualityGates:
                 expected_value=f">= {self.daily_items_target}",
                 message=f"Ingested {items_ingested} items, meeting target",
             )
-        elif items_ingested >= self.daily_items_min:
+        if items_ingested >= self.daily_items_min:
             return GateResult(
                 name="Items Volume",
                 status=GateStatus.WARN,
@@ -209,14 +207,13 @@ class QualityGates:
                 message=f"Ingested {items_ingested} items, below target but above minimum",
                 severity="warning",
             )
-        else:
-            return GateResult(
-                name="Items Volume",
-                status=GateStatus.FAIL,
-                actual_value=items_ingested,
-                expected_value=f">= {self.daily_items_min}",
-                message=f"Only ingested {items_ingested} items, below minimum threshold",
-            )
+        return GateResult(
+            name="Items Volume",
+            status=GateStatus.FAIL,
+            actual_value=items_ingested,
+            expected_value=f">= {self.daily_items_min}",
+            message=f"Only ingested {items_ingested} items, below minimum threshold",
+        )
 
     def _check_source_diversity(self, unique_sources: int) -> GateResult:
         """Check if source diversity meets minimum"""
@@ -228,14 +225,13 @@ class QualityGates:
                 expected_value=f">= {self.min_source_diversity}",
                 message=f"Used {unique_sources} unique sources, meeting diversity requirement",
             )
-        else:
-            return GateResult(
-                name="Source Diversity",
-                status=GateStatus.FAIL,
-                actual_value=unique_sources,
-                expected_value=f">= {self.min_source_diversity}",
-                message=f"Only {unique_sources} unique sources, below minimum diversity",
-            )
+        return GateResult(
+            name="Source Diversity",
+            status=GateStatus.FAIL,
+            actual_value=unique_sources,
+            expected_value=f">= {self.min_source_diversity}",
+            message=f"Only {unique_sources} unique sources, below minimum diversity",
+        )
 
     def _check_cost_efficiency(self, cost_per_item: float) -> GateResult:
         """Check if cost per item is within targets"""
@@ -247,7 +243,7 @@ class QualityGates:
                 expected_value=f"<= ${self.cost_per_item_target:.6f}",
                 message=f"Cost per item ${cost_per_item:.6f}, meeting target",
             )
-        elif cost_per_item <= self.cost_per_item_max:
+        if cost_per_item <= self.cost_per_item_max:
             return GateResult(
                 name="Cost Efficiency",
                 status=GateStatus.WARN,
@@ -256,14 +252,13 @@ class QualityGates:
                 message=f"Cost per item ${cost_per_item:.6f}, above target but acceptable",
                 severity="warning",
             )
-        else:
-            return GateResult(
-                name="Cost Efficiency",
-                status=GateStatus.FAIL,
-                actual_value=f"${cost_per_item:.6f}",
-                expected_value=f"<= ${self.cost_per_item_max:.6f}",
-                message=f"Cost per item ${cost_per_item:.6f}, exceeds maximum threshold",
-            )
+        return GateResult(
+            name="Cost Efficiency",
+            status=GateStatus.FAIL,
+            actual_value=f"${cost_per_item:.6f}",
+            expected_value=f"<= ${self.cost_per_item_max:.6f}",
+            message=f"Cost per item ${cost_per_item:.6f}, exceeds maximum threshold",
+        )
 
     def _check_relevance(self, avg_relevance: float) -> GateResult:
         """Check if relevance scores meet minimum (60% for pre-prod)"""
@@ -275,14 +270,13 @@ class QualityGates:
                 expected_value=f">= {self.min_relevance_score:.1%}",
                 message=f"Average relevance {avg_relevance:.1%}, meeting threshold",
             )
-        else:
-            return GateResult(
-                name="Relevance Score",
-                status=GateStatus.FAIL,
-                actual_value=f"{avg_relevance:.1%}",
-                expected_value=f">= {self.min_relevance_score:.1%}",
-                message=f"Average relevance {avg_relevance:.1%}, below minimum threshold",
-            )
+        return GateResult(
+            name="Relevance Score",
+            status=GateStatus.FAIL,
+            actual_value=f"{avg_relevance:.1%}",
+            expected_value=f">= {self.min_relevance_score:.1%}",
+            message=f"Average relevance {avg_relevance:.1%}, below minimum threshold",
+        )
 
     def _check_timeliness(self, items_by_age: list[datetime]) -> GateResult:
         """Check if items are timely (< 24 hours old)"""
@@ -311,7 +305,7 @@ class QualityGates:
                 expected_value=">= 90% within 24h",
                 message=f"{timely_pct:.1%} of items are timely",
             )
-        elif timely_pct >= 0.75:  # 75-90%
+        if timely_pct >= 0.75:  # 75-90%
             return GateResult(
                 name="Timeliness",
                 status=GateStatus.WARN,
@@ -320,14 +314,13 @@ class QualityGates:
                 message=f"Only {timely_pct:.1%} of items are timely",
                 severity="warning",
             )
-        else:
-            return GateResult(
-                name="Timeliness",
-                status=GateStatus.FAIL,
-                actual_value=f"{timely_pct:.1%} within {self.min_timeliness_hours}h",
-                expected_value=">= 75% within 24h",
-                message=f"Too many stale items: {timely_pct:.1%} timely",
-            )
+        return GateResult(
+            name="Timeliness",
+            status=GateStatus.FAIL,
+            actual_value=f"{timely_pct:.1%} within {self.min_timeliness_hours}h",
+            expected_value=">= 75% within 24h",
+            message=f"Too many stale items: {timely_pct:.1%} timely",
+        )
 
     def _check_completeness(self, avg_completion: float) -> GateResult:
         """Check if field completion meets minimum (85%)"""
@@ -339,14 +332,13 @@ class QualityGates:
                 expected_value=f">= {self.min_completeness_pct:.1%}",
                 message=f"Field completion {avg_completion:.1%}, meeting requirement",
             )
-        else:
-            return GateResult(
-                name="Completeness",
-                status=GateStatus.FAIL,
-                actual_value=f"{avg_completion:.1%}",
-                expected_value=f">= {self.min_completeness_pct:.1%}",
-                message=f"Field completion {avg_completion:.1%}, below minimum",
-            )
+        return GateResult(
+            name="Completeness",
+            status=GateStatus.FAIL,
+            actual_value=f"{avg_completion:.1%}",
+            expected_value=f">= {self.min_completeness_pct:.1%}",
+            message=f"Field completion {avg_completion:.1%}, below minimum",
+        )
 
     def _check_runtime(self, runtime_minutes: float) -> GateResult:
         """Check if runtime meets efficiency targets (~45 min/night)"""
@@ -358,7 +350,7 @@ class QualityGates:
                 expected_value=f"<= {self.target_runtime_minutes} min",
                 message=f"Runtime {runtime_minutes:.1f} min, meeting target",
             )
-        elif runtime_minutes <= self.max_runtime_minutes:
+        if runtime_minutes <= self.max_runtime_minutes:
             return GateResult(
                 name="Runtime Efficiency",
                 status=GateStatus.WARN,
@@ -367,24 +359,23 @@ class QualityGates:
                 message=f"Runtime {runtime_minutes:.1f} min, above target but acceptable",
                 severity="warning",
             )
-        else:
-            return GateResult(
-                name="Runtime Efficiency",
-                status=GateStatus.FAIL,
-                actual_value=f"{runtime_minutes:.1f} min",
-                expected_value=f"<= {self.max_runtime_minutes} min",
-                message=f"Runtime {runtime_minutes:.1f} min, exceeds maximum",
-            )
+        return GateResult(
+            name="Runtime Efficiency",
+            status=GateStatus.FAIL,
+            actual_value=f"{runtime_minutes:.1f} min",
+            expected_value=f"<= {self.max_runtime_minutes} min",
+            message=f"Runtime {runtime_minutes:.1f} min, exceeds maximum",
+        )
 
     def generate_report(self, result: QualityGateResult) -> str:
-        """
-        Generate human-readable quality gate report.
+        """Generate human-readable quality gate report.
 
         Args:
             result: QualityGateResult to report on
 
         Returns:
             Formatted report string
+
         """
         report = []
         report.append("=" * 70)

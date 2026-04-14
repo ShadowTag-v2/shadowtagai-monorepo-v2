@@ -1,5 +1,4 @@
-"""
-LegalTrack FastAPI Application
+"""LegalTrack FastAPI Application
 Combines Zero-Touch (ZT) architecture with LegalTrack implementation
 
 Email ingestion → Deadline extraction → Calendar sync → Notifications

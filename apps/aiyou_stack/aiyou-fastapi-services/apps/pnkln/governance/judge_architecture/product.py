@@ -1,5 +1,4 @@
-"""
-Layer 16–17: Product Delivery Gate & Blockchain Evaluator
+"""Layer 16–17: Product Delivery Gate & Blockchain Evaluator
 =========================================================
 
 Extracted from layers.py monolith per Rich Hickey doctrine.
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class ProductDeliveryGate:
-    """
-    Layer 16: No feature ships without doctrine-mandated features.
+    """Layer 16: No feature ships without doctrine-mandated features.
 
     Gates:
     - Recommender: "Why this?" UI, brand safety, diversity constraints
@@ -30,10 +28,9 @@ class ProductDeliveryGate:
     """
 
     async def validate(
-        self, feature: str, variant_id: str = None, metrics: dict[str, Any] = None
+        self, feature: str, variant_id: str = None, metrics: dict[str, Any] = None,
     ) -> dict[str, Any]:
-        """
-        Validate product delivery readiness.
+        """Validate product delivery readiness.
 
         Returns:
             {
@@ -41,6 +38,7 @@ class ProductDeliveryGate:
                 "blockers": List[str],
                 "checklist_complete": bool
             }
+
         """
         blockers = []
 
@@ -66,8 +64,7 @@ class ProductDeliveryGate:
 
 
 class BlockchainIntegrationEvaluator:
-    """
-    Layer 17: Deploy blockchain only for verifiable trust premium.
+    """Layer 17: Deploy blockchain only for verifiable trust premium.
 
     Use cases:
     - Smart contracts for creator rev-share (invisible to users)
@@ -76,8 +73,7 @@ class BlockchainIntegrationEvaluator:
     """
 
     async def evaluate(self, decision: Decision) -> dict[str, Any]:
-        """
-        Evaluate blockchain integration decision.
+        """Evaluate blockchain integration decision.
 
         Returns:
             {
@@ -86,6 +82,7 @@ class BlockchainIntegrationEvaluator:
                 "approved_features": List[str],
                 "deferred_features": List[str]
             }
+
         """
         # Simplified placeholder
         return {

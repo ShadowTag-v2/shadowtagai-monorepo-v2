@@ -1,5 +1,4 @@
-"""
-V2X Mesh API Service
+"""V2X Mesh API Service
 
 FastAPI application for V2X mesh network management.
 
@@ -117,7 +116,7 @@ async def lifespan(app: FastAPI):
 
     # Create edge reasoning pipeline
     context = AttentionContext(
-        vehicle_position=(0.0, 0.0), vehicle_velocity=(0.0, 0.0), vehicle_heading=0.0
+        vehicle_position=(0.0, 0.0), vehicle_velocity=(0.0, 0.0), vehicle_heading=0.0,
     )
     app_state.edge_pipeline = EdgeReasoningPipeline(context, use_gpu=True)
 
@@ -180,12 +179,12 @@ async def broadcast_event(event: EventRequest):
             "event_type": event.event_type,
             "severity": event.severity,
             "description": event.description,
-        }
+        },
     )
 
     if not is_safe:
         raise HTTPException(
-            status_code=400, detail=f"Event blocked by moderation: {moderation_result.categories}"
+            status_code=400, detail=f"Event blocked by moderation: {moderation_result.categories}",
         )
 
     # Broadcast event
@@ -254,7 +253,7 @@ async def add_map_feature(feature_req: MapFeatureRequest):
             "feature_id": feature.feature_id,
             "feature_type": feature.feature_type,
             "properties": feature.properties,
-        }
+        },
     )
 
     if not is_safe:
@@ -275,11 +274,11 @@ async def add_map_feature(feature_req: MapFeatureRequest):
                 "delta_id": delta.delta_id,
                 "feature_type": feature.feature_type,
             },
-        }
+        },
     )
 
     return MapFeatureResponse(
-        feature_id=feature.feature_id, delta_id=delta.delta_id, status="added"
+        feature_id=feature.feature_id, delta_id=delta.delta_id, status="added",
     )
 
 
@@ -325,7 +324,7 @@ async def get_mesh_peers():
                 "position": peer_info.position,
                 "distance_m": peer_info.distance_m,
                 "reliability_score": peer_info.reliability_score,
-            }
+            },
         )
 
     return {"count": len(peers), "peers": peers, "stats": gossip_stats}

@@ -1,5 +1,4 @@
-"""
-Basic Gemini Function Calling Example
+"""Basic Gemini Function Calling Example
 
 Demonstrates the simplest migration from AutoGen to native Gemini.
 """

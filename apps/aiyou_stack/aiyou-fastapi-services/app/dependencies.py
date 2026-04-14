@@ -1,13 +1,11 @@
-"""
-Common dependencies for FastAPI routes
+"""Common dependencies for FastAPI routes
 """
 
 from app.db.session import SessionLocal
 
 
 def get_db():
-    """
-    Dependency function to get database session.
+    """Dependency function to get database session.
     Yields a database session and closes it after use.
     """
     db = SessionLocal()

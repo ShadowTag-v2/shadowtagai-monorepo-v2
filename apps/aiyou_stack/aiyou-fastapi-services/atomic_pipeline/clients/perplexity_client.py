@@ -1,5 +1,4 @@
-"""
-Perplexity Sonar API Client
+"""Perplexity Sonar API Client
 ============================
 Deep research and citation-backed responses.
 
@@ -65,8 +64,7 @@ class PerplexityResponse(BaseModel):
 
 
 class PerplexityClient:
-    """
-    Perplexity Sonar API Client.
+    """Perplexity Sonar API Client.
 
     Used in the atomic pipeline for:
     - Deep research with citations
@@ -107,8 +105,7 @@ class PerplexityClient:
         recency_filter: str | None = None,
         domain_filter: list[str] | None = None,
     ) -> PerplexityResponse:
-        """
-        Perform a search query with Perplexity.
+        """Perform a search query with Perplexity.
 
         Args:
             query: Search query
@@ -118,6 +115,7 @@ class PerplexityClient:
 
         Returns:
             PerplexityResponse with content and citations
+
         """
         messages = []
 
@@ -168,8 +166,7 @@ class PerplexityClient:
         depth: str = "comprehensive",
         focus_areas: list[str] | None = None,
     ) -> PerplexityResponse:
-        """
-        Deep research on a topic with structured output.
+        """Deep research on a topic with structured output.
 
         Args:
             topic: Topic to research
@@ -178,6 +175,7 @@ class PerplexityClient:
 
         Returns:
             PerplexityResponse with research findings
+
         """
         depth_instructions = {
             "quick": "Provide a brief overview with key points.",
@@ -209,8 +207,7 @@ Provide:
         technology: str,
         specific_feature: str | None = None,
     ) -> PerplexityResponse:
-        """
-        Find official documentation for a technology.
+        """Find official documentation for a technology.
 
         Args:
             technology: Technology to find docs for
@@ -218,6 +215,7 @@ Provide:
 
         Returns:
             PerplexityResponse with documentation links and summaries
+
         """
         query = f"Official documentation for {technology}"
         if specific_feature:
@@ -241,8 +239,7 @@ Provide:
         technologies: list[str],
         use_case: str,
     ) -> PerplexityResponse:
-        """
-        Compare multiple technologies for a specific use case.
+        """Compare multiple technologies for a specific use case.
 
         Args:
             technologies: List of technologies to compare
@@ -250,6 +247,7 @@ Provide:
 
         Returns:
             PerplexityResponse with comparison analysis
+
         """
         tech_list = ", ".join(technologies)
 

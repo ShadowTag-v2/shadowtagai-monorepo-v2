@@ -7,8 +7,7 @@ from typing import Any
 
 
 class BrowserAutomator:
-    """
-    Antigravity Runner: Headless Chrome Automation on Cloud Run.
+    """Antigravity Runner: Headless Chrome Automation on Cloud Run.
     Aligned with: https://docs.cloud.google.com/run/docs/browser-automation
     """
 
@@ -30,4 +29,3 @@ class BrowserAutomator:
     async def execute_action(self, url: str, action: dict[str, Any]):
         """Execute a complex action (click, type, wait)."""
         self.logger.info(f"Executing action {action.get('type')} on {url}")
-        pass

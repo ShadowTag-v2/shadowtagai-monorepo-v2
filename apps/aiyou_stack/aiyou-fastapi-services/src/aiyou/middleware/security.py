@@ -1,5 +1,4 @@
-"""
-Security Middleware for ShadowTag-v4 Platform
+"""Security Middleware for ShadowTag-v4 Platform
 Implements rate limiting, security headers, and request validation
 """
 
@@ -16,8 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
-    """
-    Token bucket rate limiting middleware
+    """Token bucket rate limiting middleware
 
     Implements per-IP rate limiting with separate limits for:
     - General API requests (requests per minute)
@@ -186,8 +184,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
-    """
-    Add security headers to all responses
+    """Add security headers to all responses
 
     Implements OWASP recommendations for secure HTTP headers
     """
@@ -230,8 +227,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 
 class RequestValidationMiddleware(BaseHTTPMiddleware):
-    """
-    Validate incoming requests for security issues
+    """Validate incoming requests for security issues
 
     Checks:
     - Request size limits
@@ -251,7 +247,6 @@ class RequestValidationMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         """Validate request before processing"""
-
         # Check content length
         content_length = request.headers.get("content-length")
         if content_length:

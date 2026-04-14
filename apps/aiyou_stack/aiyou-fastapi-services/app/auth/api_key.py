@@ -1,5 +1,4 @@
-"""
-API Key authentication.
+"""API Key authentication.
 Simple and efficient authentication using API keys in headers.
 """
 
@@ -13,8 +12,7 @@ api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
 async def verify_api_key(api_key: str | None = Security(api_key_header)) -> str:
-    """
-    Verify the API key from request headers.
+    """Verify the API key from request headers.
 
     Args:
         api_key: The API key from X-API-Key header
@@ -24,6 +22,7 @@ async def verify_api_key(api_key: str | None = Security(api_key_header)) -> str:
 
     Raises:
         HTTPException: If API key is missing or invalid
+
     """
     if api_key is None:
         raise HTTPException(
@@ -39,14 +38,14 @@ async def verify_api_key(api_key: str | None = Security(api_key_header)) -> str:
 
 
 async def get_api_key(api_key: str | None = Security(api_key_header)) -> str | None:
-    """
-    Get the API key from request headers (optional).
+    """Get the API key from request headers (optional).
 
     Args:
         api_key: The API key from X-API-Key header
 
     Returns:
         The API key if present and valid, None otherwise
+
     """
     if api_key is None:
         return None

@@ -1,5 +1,4 @@
-"""
-Policy enforcement agent using Google ADK and Gemini.
+"""Policy enforcement agent using Google ADK and Gemini.
 
 Implements real governance decisions with RAG-based policy retrieval,
 structured output, and comprehensive reasoning traces.
@@ -28,8 +27,7 @@ from src.gov_config import settings
 
 
 class PolicyEnforcementAgent(BaseGovernanceAgent):
-    """
-    Primary governance agent for policy enforcement.
+    """Primary governance agent for policy enforcement.
 
     Uses Gemini 2.0 with function calling for structured decisions,
     RAG for policy retrieval, and comprehensive audit trails.
@@ -113,14 +111,14 @@ Guidelines:
 - Never hallucinate policies - only use provided context"""
 
     async def get_policy_context(self, request: dict[str, Any]) -> list[str]:
-        """
-        Retrieve relevant policy context using RAG.
+        """Retrieve relevant policy context using RAG.
 
         Args:
             request: Governance request
 
         Returns:
             List of policy document snippets
+
         """
         if not self.policy_retriever:
             return ["No policy retriever configured - using default policies"]
@@ -162,8 +160,7 @@ Guidelines:
         request: dict[str, Any],
         context: dict[str, Any] | None = None,
     ) -> GovernanceDecision:
-        """
-        Evaluate governance request using Gemini with RAG policy context.
+        """Evaluate governance request using Gemini with RAG policy context.
 
         Args:
             request: Governance request {action, resource, user_context}
@@ -171,6 +168,7 @@ Guidelines:
 
         Returns:
             Structured governance decision
+
         """
         # Validate request
         self.validate_request(request)
@@ -199,7 +197,7 @@ Guidelines:
                 risk_level=RiskLevel(decision_data.get("risk_level", "H")),
                 reasoning_trace=decision_data.get("reasoning_steps", []),
                 policy_references=self._parse_policy_refs(
-                    decision_data.get("policy_references", [])
+                    decision_data.get("policy_references", []),
                 ),
                 evidence_snippets=decision_data.get("evidence", []),
                 user_id=request.get("user_context", {}).get("user_id"),
@@ -222,9 +220,9 @@ Guidelines:
                 decision_id=decision_id,
                 status=DecisionStatus.ERROR,
                 confidence_score=0.0,
-                reasoning_trace=[f"Error during evaluation: {str(e)}"],
+                reasoning_trace=[f"Error during evaluation: {e!s}"],
                 requires_escalation=True,
-                escalation_reason=f"System error: {str(e)}",
+                escalation_reason=f"System error: {e!s}",
                 action_type=request.get("action", ""),
                 metrics=self.get_metrics(),
             )
@@ -261,7 +259,7 @@ Guidelines:
                 prompt_parts.append(f"Precedents: {json.dumps(context['precedents'])}")
 
         prompt_parts.append(
-            "\n## Task\nEvaluate this request against the policies and provide a structured JSON decision."
+            "\n## Task\nEvaluate this request against the policies and provide a structured JSON decision.",
         )
 
         return "\n".join(prompt_parts)
@@ -277,7 +275,7 @@ Guidelines:
             Content(
                 role="user",
                 parts=[Part.from_text(self.system_instruction + "\n\n" + prompt)],
-            )
+            ),
         ]
 
         # Generate

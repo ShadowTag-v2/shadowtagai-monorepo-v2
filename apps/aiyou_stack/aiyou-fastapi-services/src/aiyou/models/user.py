@@ -1,5 +1,4 @@
-"""
-User authentication and profile models.
+"""User authentication and profile models.
 
 Handles user accounts, roles, sessions, and authentication tokens.
 """
@@ -26,8 +25,7 @@ class UserRole(StrEnum):
 
 
 class User(Base):
-    """
-    User account model.
+    """User account model.
 
     Tracks user authentication, profile, and subscription status across all services.
     """
@@ -63,7 +61,7 @@ class User(Base):
     # Relationships
     sessions = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
     ingestion_jobs = relationship(
-        "IngestionJob", back_populates="user", cascade="all, delete-orphan"
+        "IngestionJob", back_populates="user", cascade="all, delete-orphan",
     )
     creator_profile = relationship("Creator", back_populates="user", uselist=False)
     subscriptions = relationship("Subscription", back_populates="user")
@@ -76,8 +74,7 @@ class User(Base):
 
 
 class UserSession(Base):
-    """
-    User session model for tracking active logins.
+    """User session model for tracking active logins.
 
     Supports multiple concurrent sessions per user (multi-device).
     """
@@ -89,7 +86,7 @@ class UserSession(Base):
 
     # Foreign keys
     user_id = Column(
-        String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+        String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True,
     )
 
     # Session data
@@ -121,7 +118,7 @@ class IngestionJob(Base):
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(
-        String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+        String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True,
     )
     job_type = Column(String(50))
     status = Column(String(20))

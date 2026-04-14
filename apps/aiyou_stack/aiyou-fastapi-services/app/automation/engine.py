@@ -1,5 +1,4 @@
-"""
-Workflow execution engine for running automation workflows.
+"""Workflow execution engine for running automation workflows.
 """
 
 import asyncio
@@ -17,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 class WorkflowEngine:
-    """
-    Engine for executing automation workflows.
+    """Engine for executing automation workflows.
     """
 
     def __init__(self):
@@ -36,12 +34,12 @@ class WorkflowEngine:
         }
 
     def register_handler(self, action_type: str, handler):
-        """
-        Register a custom action handler.
+        """Register a custom action handler.
 
         Args:
             action_type: The type of action to handle
             handler: Async function that takes (action_config, context) and returns result
+
         """
         self.action_handlers[action_type] = handler
 
@@ -52,8 +50,7 @@ class WorkflowEngine:
         scheduled_job_id: int | None = None,
         trigger_id: int | None = None,
     ) -> JobExecution:
-        """
-        Execute a workflow and track the execution.
+        """Execute a workflow and track the execution.
 
         Args:
             workflow_id: ID of the workflow to execute
@@ -63,6 +60,7 @@ class WorkflowEngine:
 
         Returns:
             JobExecution instance with execution results
+
         """
         async with AsyncSessionLocal() as session:
             # Create job execution record
@@ -93,7 +91,7 @@ class WorkflowEngine:
                 # Execute workflow
                 logger.info(f"Executing workflow {workflow_id}: {workflow.name}")
                 output = await self._execute_workflow_definition(
-                    workflow.definition, input_data or {}
+                    workflow.definition, input_data or {},
                 )
 
                 # Mark as successful
@@ -101,7 +99,7 @@ class WorkflowEngine:
                 execution.output_data = output
                 execution.completed_at = datetime.utcnow()
                 execution.duration_seconds = int(
-                    (execution.completed_at - execution.started_at).total_seconds()
+                    (execution.completed_at - execution.started_at).total_seconds(),
                 )
 
                 logger.info(f"Workflow {workflow_id} completed successfully")
@@ -115,7 +113,7 @@ class WorkflowEngine:
 
                 if execution.started_at:
                     execution.duration_seconds = int(
-                        (execution.completed_at - execution.started_at).total_seconds()
+                        (execution.completed_at - execution.started_at).total_seconds(),
                     )
 
                 logger.error(f"Workflow {workflow_id} failed: {e}\n{execution.error_traceback}")
@@ -127,10 +125,9 @@ class WorkflowEngine:
             return execution
 
     async def _execute_workflow_definition(
-        self, definition: dict[str, Any], input_data: dict[str, Any]
+        self, definition: dict[str, Any], input_data: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Execute the workflow definition.
+        """Execute the workflow definition.
 
         Args:
             definition: Workflow definition dictionary
@@ -138,6 +135,7 @@ class WorkflowEngine:
 
         Returns:
             Output data from workflow execution
+
         """
         context = {
             "input": input_data,
@@ -177,7 +175,7 @@ class WorkflowEngine:
         return context["output"]
 
     async def _execute_http_request(
-        self, config: dict[str, Any], context: dict[str, Any]
+        self, config: dict[str, Any], context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute an HTTP request action."""
         import httpx
@@ -193,7 +191,7 @@ class WorkflowEngine:
                 method=method,
                 url=url,
                 headers=headers,
-                json=body if body else None,
+                json=body or None,
                 timeout=timeout,
             )
 
@@ -204,7 +202,7 @@ class WorkflowEngine:
             }
 
     async def _execute_delay(
-        self, config: dict[str, Any], context: dict[str, Any]
+        self, config: dict[str, Any], context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a delay action."""
         seconds = config.get("seconds", 1)
@@ -222,7 +220,7 @@ class WorkflowEngine:
         return {"logged": message}
 
     async def _execute_condition(
-        self, config: dict[str, Any], context: dict[str, Any]
+        self, config: dict[str, Any], context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a conditional action."""
         condition = config.get("condition")
@@ -234,11 +232,10 @@ class WorkflowEngine:
 
         if result:
             return if_true
-        else:
-            return if_false
+        return if_false
 
     async def _execute_transform(
-        self, config: dict[str, Any], context: dict[str, Any]
+        self, config: dict[str, Any], context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a data transformation action."""
         transformation = config.get("transformation", {})

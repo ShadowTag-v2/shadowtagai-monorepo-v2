@@ -1,3 +1,2 @@
-"""
-Innovation Lab utility functions
+"""Innovation Lab utility functions
 """

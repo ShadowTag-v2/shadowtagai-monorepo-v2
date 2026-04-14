@@ -4,8 +4,7 @@ logger = logging.getLogger("Judge6")
 
 
 class Judge6:
-    """
-    ShadowTag Omega V7 Judge 6.1 Governance Shield
+    """ShadowTag Omega V7 Judge 6.1 Governance Shield
     Implements 17-Layer NIST-Aligned CRSMC (Cognitive Risk Sentinel & Monitoring Control).
     Version 6.1: Recursive self-protective loops enabled.
     """
@@ -53,7 +52,7 @@ class Judge6:
         # L2: NIST SP 800-53 Baseline Audit
         if "eval(" in code or "exec(" in code:
             logger.warning(
-                "   [WARN] L2: Dangerous execution pattern (eval/exec) detected - NIST Violation Potential"
+                "   [WARN] L2: Dangerous execution pattern (eval/exec) detected - NIST Violation Potential",
             )
         logger.info("   [PASS] L2: NIST SP 800-53 Baseline Audit")
 

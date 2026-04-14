@@ -5,8 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 class ROIProjector:
-    """
-    Autopilot Telemetry Engine for tracking latency, cost, and firm-wide ROI.
+    """Autopilot Telemetry Engine for tracking latency, cost, and firm-wide ROI.
     Validates the 97% cost reduction and 31x speed increase claims.
     """
 
@@ -17,8 +16,7 @@ class ROIProjector:
         self.model_cost_accrued = 0.0
 
     def log_processing_event(self, tokens_used: int, latency_ms: int, estimated_human_minutes: int):
-        """
-        Record a successful Zero-Touch extraction and compute ROI.
+        """Record a successful Zero-Touch extraction and compute ROI.
         """
         self.total_events_processed += 1
 
@@ -32,12 +30,11 @@ class ROIProjector:
         self.total_hours_saved += hours_saved
 
         logger.info(
-            f"Processed Event in {latency_ms}ms. Tokens: {tokens_used}. Saved {estimated_human_minutes}m of human time."
+            f"Processed Event in {latency_ms}ms. Tokens: {tokens_used}. Saved {estimated_human_minutes}m of human time.",
         )
 
     def get_roi_report(self) -> dict[str, Any]:
-        """
-        Generates the financial snapshot to prove the platform's value.
+        """Generates the financial snapshot to prove the platform's value.
         """
         gross_value_created = self.total_hours_saved * self.hourly_lawyer_rate
         net_value = gross_value_created - self.model_cost_accrued

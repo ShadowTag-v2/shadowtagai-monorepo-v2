@@ -1,5 +1,4 @@
-"""
-ActiveShield Medical - Unit Tests
+"""ActiveShield Medical - Unit Tests
 ==================================
 
 Test coverage for:

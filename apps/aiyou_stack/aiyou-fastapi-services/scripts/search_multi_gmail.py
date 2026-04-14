@@ -75,7 +75,7 @@ def search_account(service, account_name):
             .list(
                 userId="me",
                 q=query,
-                labelIds=label_ids if label_ids else None,
+                labelIds=label_ids or None,
                 maxResults=50,
                 includeSpamTrash=True,
             )
@@ -117,7 +117,7 @@ def main():
     # 2. Secondary Account (New)
     print("\n--- 2. Processing Secondary Account ---")
     print(
-        "ℹ️  To search a second account, you will need to authenticate in the browser window that opens."
+        "ℹ️  To search a second account, you will need to authenticate in the browser window that opens.",
     )
     try:
         service2 = get_gmail_service(TOKEN_FILES[1], "Secondary")
@@ -128,8 +128,7 @@ def main():
     # Output
     with open("ingested_biz_plans.md", "w") as f:
         f.write("# Ingested Business Plans (Multi-Account)\n\n")
-        for hit in all_hits:
-            f.write(f"* {hit}\n")
+        f.writelines(f"* {hit}\n" for hit in all_hits)
 
     print(f"\n✅ Scan Complete. Saved {len(all_hits)} items to ingested_biz_plans.md")
 

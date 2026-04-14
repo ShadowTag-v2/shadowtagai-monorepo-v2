@@ -60,8 +60,7 @@ async def analyze_landing_page(
     request: OptimizePageRequest,
     service: LandingPageOptimizerService = Depends(get_optimizer_service),
 ) -> OptimizePageResponse:
-    """
-    Analyze a landing page for optimization opportunities
+    """Analyze a landing page for optimization opportunities
 
     This endpoint performs a comprehensive analysis of your landing page content,
     identifying strengths, weaknesses, and providing actionable recommendations
@@ -75,6 +74,7 @@ async def analyze_landing_page(
 
     Raises:
         HTTPException: If analysis fails
+
     """
     try:
         logger.info(f"Analyzing landing page - Focus: {request.focus_areas}")
@@ -107,7 +107,7 @@ async def analyze_landing_page(
             detail={"error": "Validation error", "message": e.message, "details": e.details},
         )
     except Exception as e:
-        logger.exception(f"Unexpected error during analysis: {str(e)}")
+        logger.exception(f"Unexpected error during analysis: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -128,8 +128,7 @@ async def generate_headlines(
     request: GenerateHeadlinesRequest,
     service: LandingPageOptimizerService = Depends(get_optimizer_service),
 ) -> GenerateHeadlinesResponse:
-    """
-    Generate headline variations
+    """Generate headline variations
 
     Creates multiple headline variations optimized for conversion,
     each with reasoning and target emotion.
@@ -142,6 +141,7 @@ async def generate_headlines(
 
     Raises:
         HTTPException: If generation fails
+
     """
     try:
         logger.info(f"Generating {request.count} headline variations")
@@ -160,7 +160,7 @@ async def generate_headlines(
             detail={"error": "Agent error", "message": e.message},
         )
     except Exception as e:
-        logger.exception(f"Error generating headlines: {str(e)}")
+        logger.exception(f"Error generating headlines: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Internal server error", "message": str(e)},
@@ -178,8 +178,7 @@ async def generate_ctas(
     request: GenerateCTARequest,
     service: LandingPageOptimizerService = Depends(get_optimizer_service),
 ) -> GenerateCTAResponse:
-    """
-    Generate CTA (Call-to-Action) variations
+    """Generate CTA (Call-to-Action) variations
 
     Creates multiple CTA variations with color and placement suggestions,
     optimized for the specified action type and urgency level.
@@ -192,6 +191,7 @@ async def generate_ctas(
 
     Raises:
         HTTPException: If generation fails
+
     """
     try:
         logger.info(f"Generating {request.count} CTA variations for action: {request.action_type}")
@@ -210,7 +210,7 @@ async def generate_ctas(
             detail={"error": "Agent error", "message": e.message},
         )
     except Exception as e:
-        logger.exception(f"Error generating CTAs: {str(e)}")
+        logger.exception(f"Error generating CTAs: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Internal server error", "message": str(e)},
@@ -228,8 +228,7 @@ async def generate_social_proof(
     request: GenerateSocialProofRequest,
     service: LandingPageOptimizerService = Depends(get_optimizer_service),
 ) -> GenerateSocialProofResponse:
-    """
-    Generate social proof suggestions
+    """Generate social proof suggestions
 
     Creates suggestions for social proof elements like testimonials,
     statistics, trust badges, and more.
@@ -242,6 +241,7 @@ async def generate_social_proof(
 
     Raises:
         HTTPException: If generation fails
+
     """
     try:
         logger.info(f"Generating social proof for: {request.product_service}")
@@ -260,7 +260,7 @@ async def generate_social_proof(
             detail={"error": "Agent error", "message": e.message},
         )
     except Exception as e:
-        logger.exception(f"Error generating social proof: {str(e)}")
+        logger.exception(f"Error generating social proof: {e!s}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={"error": "Internal server error", "message": str(e)},

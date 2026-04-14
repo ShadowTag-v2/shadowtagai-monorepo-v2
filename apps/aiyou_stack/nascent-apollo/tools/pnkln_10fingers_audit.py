@@ -41,8 +41,7 @@ WEIGHTS = {
 
 
 def pnkln_score_10fingers(scores):
-    """
-    scores: dict{name:0-10}
+    """scores: dict{name:0-10}
     returns: composite viability score 0-100
     """
     total_weighted_score = sum(
@@ -56,10 +55,9 @@ def pnkln_score_10fingers(scores):
 def get_verdict(viability):
     if viability >= 75.0:
         return "GO (Proceed with Execution)"
-    elif viability >= 60.0:
+    if viability >= 60.0:
         return "CONDITIONAL (Address Red Flags, Retest)"
-    else:
-        return "HOLD (Fundamental Flaws - Pivot or Kill)"
+    return "HOLD (Fundamental Flaws - Pivot or Kill)"
 
 
 def main():

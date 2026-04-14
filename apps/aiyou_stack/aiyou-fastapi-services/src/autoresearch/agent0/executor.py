@@ -3,16 +3,14 @@ from typing import Any
 
 
 class ExecutorAgent:
-    """
-    Generates ATP_519_scan detection patterns (Rules) to catch violations.
+    """Generates ATP_519_scan detection patterns (Rules) to catch violations.
     """
 
     def __init__(self, model_client=None):
         self.model_client = model_client
 
     def generate_rule(self, task_scenario: dict[str, Any]) -> str:
-        """
-        Generates a JSON rule to detect the given scenario.
+        """Generates a JSON rule to detect the given scenario.
         In a real impl, this calls the LLM.
         For POC, we'll generate a simple keyword-based rule.
         """

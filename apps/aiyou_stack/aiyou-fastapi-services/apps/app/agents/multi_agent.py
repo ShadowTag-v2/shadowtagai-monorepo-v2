@@ -1,5 +1,4 @@
-"""
-Multi-Agent System for Pinkln
+"""Multi-Agent System for Pinkln
 Includes: Debate Panel, Code Crafter, Wealth Accelerator, Deep Reasoning
 All enhanced with cheat sheet fusion and DTE evolution
 """
@@ -57,8 +56,7 @@ class DebateParticipant:
 
 
 class MultiAgentSystem:
-    """
-    Multi-agent orchestrator for Pinkln Ultrathink
+    """Multi-agent orchestrator for Pinkln Ultrathink
 
     Coordinates:
     - Debate panels (multiple perspectives)
@@ -103,10 +101,9 @@ class MultiAgentSystem:
         logger.info(f"Registered agent {agent_id} ({role.value}) with rating {initial_rating}")
 
     async def run_debate(
-        self, topic: str, num_participants: int = 3, rounds: int = 2
+        self, topic: str, num_participants: int = 3, rounds: int = 2,
     ) -> dict[str, Any]:
-        """
-        Run multi-agent debate panel
+        """Run multi-agent debate panel
 
         Args:
             topic: Topic to debate
@@ -115,6 +112,7 @@ class MultiAgentSystem:
 
         Returns:
             Debate results with consensus and insights
+
         """
         logger.info(f"Starting debate: {topic} ({num_participants} agents, {rounds} rounds)")
 
@@ -142,7 +140,7 @@ class MultiAgentSystem:
             rating = player.mu if player else 1500.0
 
             participant = DebateParticipant(
-                agent_id=agent_id, position=position, arguments=[], rating=rating
+                agent_id=agent_id, position=position, arguments=[], rating=rating,
             )
             participants.append(participant)
 
@@ -153,7 +151,7 @@ class MultiAgentSystem:
             for participant in participants:
                 # Generate argument (at IQ 160)
                 argument = self._generate_argument(
-                    topic=topic, position=participant.position, round_num=round_num
+                    topic=topic, position=participant.position, round_num=round_num,
                 )
                 participant.arguments.append(argument)
 
@@ -211,10 +209,9 @@ class MultiAgentSystem:
         )
 
     async def craft_code(
-        self, task: str, language: str = "python", use_cheat_sheet: bool = True
+        self, task: str, language: str = "python", use_cheat_sheet: bool = True,
     ) -> AgentResponse:
-        """
-        Code crafter agent enhanced with cheat sheet fusion
+        """Code crafter agent enhanced with cheat sheet fusion
 
         Args:
             task: Coding task description
@@ -223,6 +220,7 @@ class MultiAgentSystem:
 
         Returns:
             Generated code with reasoning
+
         """
         logger.info(f"Code crafting: {task} ({language})")
 
@@ -282,8 +280,7 @@ if __name__ == "__main__":
         )
 
     async def accelerate_wealth(self, business_metrics: dict[str, float]) -> dict[str, Any]:
-        """
-        Wealth accelerator agent
+        """Wealth accelerator agent
 
         Detects leaks, proposes redesigns, structured as:
         - Hard truth
@@ -295,6 +292,7 @@ if __name__ == "__main__":
 
         Returns:
             Wealth acceleration plan with detected leaks
+
         """
         logger.info(f"Running wealth acceleration at IQ {self.persona_iq}")
 
@@ -346,8 +344,7 @@ if __name__ == "__main__":
         }
 
     async def deep_reasoning(self, problem: str, use_dte_evolution: bool = True) -> AgentResponse:
-        """
-        Deep reasoning agent with DTE evolution
+        """Deep reasoning agent with DTE evolution
 
         Args:
             problem: Problem to solve
@@ -355,6 +352,7 @@ if __name__ == "__main__":
 
         Returns:
             Reasoning response with evolution metrics
+
         """
         logger.info(f"Deep reasoning: {problem}")
 

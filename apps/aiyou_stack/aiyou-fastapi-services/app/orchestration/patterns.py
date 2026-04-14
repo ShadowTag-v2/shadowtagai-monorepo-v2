@@ -9,8 +9,7 @@ from app.models.kernel import KernelInput, KernelOutput
 
 
 class SynchronousChain:
-    """
-    Pattern A: Synchronous Chain (currently implemented in KernelChain).
+    """Pattern A: Synchronous Chain (currently implemented in KernelChain).
 
     for kernel in kernel_chain:
       output = kernel(input)
@@ -43,8 +42,7 @@ class SynchronousChain:
 
 
 class ParallelMergeChain:
-    """
-    Pattern B: Parallel + Merge (when kernels are independent).
+    """Pattern B: Parallel + Merge (when kernels are independent).
 
     results = parallel_map(kernels, input)
     merged = reduce(results)  # consensus or voting
@@ -56,8 +54,7 @@ class ParallelMergeChain:
         input_data: KernelInput,
         merge_fn: Callable[[list[KernelOutput]], Any],
     ) -> Any:
-        """
-        Execute kernels in parallel and merge results.
+        """Execute kernels in parallel and merge results.
 
         Args:
             kernels: List of independent kernels
@@ -66,6 +63,7 @@ class ParallelMergeChain:
 
         Returns:
             Merged result
+
         """
         # Execute all kernels concurrently
         tasks = [kernel(input_data) for kernel in kernels]
@@ -82,8 +80,7 @@ class ParallelMergeChain:
 
 
 class ConditionalBranchChain:
-    """
-    Pattern C: Conditional Branch.
+    """Pattern C: Conditional Branch.
 
     output = kernel_1(input)
     if output.risk_tier > 3:
@@ -100,8 +97,7 @@ class ConditionalBranchChain:
         false_branch: list[Kernel],
         input_data: KernelInput,
     ) -> list[KernelOutput]:
-        """
-        Execute initial kernel, then branch based on condition.
+        """Execute initial kernel, then branch based on condition.
 
         Args:
             initial_kernel: First kernel to execute
@@ -112,6 +108,7 @@ class ConditionalBranchChain:
 
         Returns:
             List of outputs from executed path
+
         """
         # Execute initial kernel
         initial_output = await initial_kernel(input_data)

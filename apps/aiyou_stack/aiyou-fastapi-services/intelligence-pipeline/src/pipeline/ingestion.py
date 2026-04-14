@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Data Ingestion Module
+"""PNKLN Intelligence Pipeline - Data Ingestion Module
 
 Ingests intelligence from multiple sources:
 - Federal Register (regulations.gov)
@@ -28,16 +27,15 @@ logger = logging.getLogger(__name__)
 
 
 class IntelligenceIngestion:
-    """
-    Multi-source intelligence ingestion with ethical scraping
+    """Multi-source intelligence ingestion with ethical scraping
     """
 
     def __init__(self, config: dict | None = None):
-        """
-        Initialize ingestion pipeline
+        """Initialize ingestion pipeline
 
         Args:
             config: Optional configuration override
+
         """
         self.config = config or DEFAULT_SCRAPING_CONFIG
         self.scraper = EthicalScraper(self.config)
@@ -46,11 +44,11 @@ class IntelligenceIngestion:
         logger.info("IntelligenceIngestion initialized")
 
     async def ingest_all(self) -> list[IntelligenceItem]:
-        """
-        Ingest from all configured sources
+        """Ingest from all configured sources
 
         Returns:
             List of intelligence items
+
         """
         logger.info("=== Starting Intelligence Ingestion ===")
         start_time = datetime.now()
@@ -75,7 +73,7 @@ class IntelligenceIngestion:
 
         duration = (datetime.now() - start_time).total_seconds()
         logger.info(
-            f"✓ Ingestion complete: {len(self.intelligence_items)} items in {duration:.1f}s"
+            f"✓ Ingestion complete: {len(self.intelligence_items)} items in {duration:.1f}s",
         )
 
         # Log scraper stats
@@ -85,8 +83,7 @@ class IntelligenceIngestion:
         return self.intelligence_items
 
     async def ingest_federal_register(self):
-        """
-        Ingest from Federal Register (regulations.gov API)
+        """Ingest from Federal Register (regulations.gov API)
         Focus: AI-related regulations, executive orders, agency rules
         """
         logger.info("📰 Ingesting Federal Register...")
@@ -98,7 +95,7 @@ class IntelligenceIngestion:
         params = {
             "conditions[term]": "artificial intelligence OR machine learning OR AI system OR automated decision",
             "conditions[publication_date][gte]": (datetime.now() - timedelta(days=30)).strftime(
-                "%Y-%m-%d"
+                "%Y-%m-%d",
             ),
             "per_page": 100,
             "order": "newest",
@@ -122,7 +119,7 @@ class IntelligenceIngestion:
                     url=doc.get("html_url", ""),
                     content=doc.get("abstract", ""),
                     published_date=datetime.fromisoformat(
-                        doc.get("publication_date", datetime.now().isoformat())
+                        doc.get("publication_date", datetime.now().isoformat()),
                     ),
                     metadata={
                         "document_number": doc.get("document_number"),
@@ -139,8 +136,7 @@ class IntelligenceIngestion:
             logger.error(f"Error ingesting Federal Register: {e}")
 
     async def ingest_state_regulations(self):
-        """
-        Ingest state-level AI regulations
+        """Ingest state-level AI regulations
         Focus: CA, NY, TX, IL, WA (major tech states)
         """
         logger.info("🏛️  Ingesting State Regulations...")
@@ -174,8 +170,7 @@ class IntelligenceIngestion:
             logger.error(f"Error ingesting state regulations: {e}")
 
     async def ingest_arxiv_papers(self):
-        """
-        Ingest AI research papers from ArXiv
+        """Ingest AI research papers from ArXiv
         Focus: AI safety, ethics, governance papers
         """
         logger.info("📚 Ingesting ArXiv papers...")
@@ -222,8 +217,7 @@ class IntelligenceIngestion:
             logger.error(f"Error ingesting ArXiv: {e}")
 
     async def ingest_tech_news(self):
-        """
-        Ingest tech news from major publications
+        """Ingest tech news from major publications
         Focus: TechCrunch, VentureBeat, The Verge, Ars Technica
         """
         logger.info("📰 Ingesting Tech News...")
@@ -277,8 +271,7 @@ class IntelligenceIngestion:
             logger.error(f"Error ingesting tech news: {e}")
 
     async def ingest_competitor_blogs(self):
-        """
-        Ingest competitor blog posts and announcements
+        """Ingest competitor blog posts and announcements
         Focus: Palantir, Scale AI, DataRobot, etc.
         """
         logger.info("🏢 Ingesting Competitor Blogs...")
@@ -316,8 +309,7 @@ class IntelligenceIngestion:
             logger.error(f"Error ingesting competitor blogs: {e}")
 
     async def ingest_youtube_channels(self):
-        """
-        Ingest YouTube channel updates on AI policy
+        """Ingest YouTube channel updates on AI policy
         Focus: C-SPAN, policy think tanks
         """
         logger.info("🎥 Ingesting YouTube Channels...")
@@ -370,8 +362,7 @@ class IntelligenceIngestion:
             logger.error(f"Error ingesting YouTube: {e}")
 
     async def ingest_twitter_accounts(self):
-        """
-        Ingest Twitter/X accounts (via RSS bridges or API)
+        """Ingest Twitter/X accounts (via RSS bridges or API)
         Focus: FTC, SEC, regulatory accounts
         """
         logger.info("🐦 Ingesting Twitter/X Accounts...")
@@ -402,11 +393,10 @@ class IntelligenceIngestion:
 
 
 async def main():
-    """
-    Main ingestion entry point
+    """Main ingestion entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     ingestion = IntelligenceIngestion()

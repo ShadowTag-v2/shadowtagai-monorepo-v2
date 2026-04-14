@@ -1,5 +1,4 @@
-"""
-Tree of Thoughts (ToT) reasoning framework.
+"""Tree of Thoughts (ToT) reasoning framework.
 
 ToT enables exploration of multiple reasoning paths through a tree structure,
 allowing for lookahead, backtracking, and evaluation of different approaches.
@@ -47,8 +46,7 @@ class ThoughtNode:
 
 
 class TreeOfThoughts:
-    """
-    Tree of Thoughts reasoning implementation.
+    """Tree of Thoughts reasoning implementation.
 
     This framework:
     1. Decomposes problems into steps
@@ -86,12 +84,12 @@ Provide reasoning for your rating.
 """
 
     def __init__(self, max_depth: int = 5, thoughts_per_step: int = 3):
-        """
-        Initialize ToT framework.
+        """Initialize ToT framework.
 
         Args:
             max_depth: Maximum tree depth
             thoughts_per_step: Number of thoughts to generate per step
+
         """
         self.max_depth = max_depth
         self.thoughts_per_step = thoughts_per_step
@@ -105,8 +103,7 @@ Provide reasoning for your rating.
         strategy: SearchStrategy = SearchStrategy.BFS,
         context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Explore the problem using tree of thoughts.
+        """Explore the problem using tree of thoughts.
 
         Args:
             problem: Problem to explore
@@ -115,6 +112,7 @@ Provide reasoning for your rating.
 
         Returns:
             Exploration results with best path
+
         """
         # Step 1: Decompose into steps
         steps = await self._decompose(problem)
@@ -145,23 +143,22 @@ Provide reasoning for your rating.
         }
 
     async def _decompose(self, problem: str) -> list[str]:
-        """
-        Decompose problem into steps.
+        """Decompose problem into steps.
 
         Args:
             problem: Problem to decompose
 
         Returns:
             List of steps
+
         """
         # Placeholder - would use LLM in production
         return ["Step 1", "Step 2", "Step 3"]
 
     async def _generate_thoughts(
-        self, step: str, context: dict[str, Any] | None = None
+        self, step: str, context: dict[str, Any] | None = None,
     ) -> list[str]:
-        """
-        Generate multiple thoughts for a step.
+        """Generate multiple thoughts for a step.
 
         Args:
             step: Step to generate thoughts for
@@ -169,13 +166,13 @@ Provide reasoning for your rating.
 
         Returns:
             List of thought strings
+
         """
         # Placeholder - would use LLM in production
         return [f"Thought {i + 1} for {step}" for i in range(self.thoughts_per_step)]
 
     async def _evaluate_thought(self, problem: str, thought: str) -> tuple[ThoughtViability, float]:
-        """
-        Evaluate viability of a thought.
+        """Evaluate viability of a thought.
 
         Args:
             problem: Original problem
@@ -183,20 +180,21 @@ Provide reasoning for your rating.
 
         Returns:
             (viability rating, value score)
+
         """
         # Placeholder - would use LLM in production
         return (ThoughtViability.LIKELY, 0.7)
 
     async def _explore_bfs(
-        self, root: ThoughtNode, steps: list[str], context: dict[str, Any] | None
+        self, root: ThoughtNode, steps: list[str], context: dict[str, Any] | None,
     ):
-        """
-        Explore tree using breadth-first search.
+        """Explore tree using breadth-first search.
 
         Args:
             root: Root node
             steps: Problem steps
             context: Optional context
+
         """
         queue = [root]
 
@@ -232,15 +230,15 @@ Provide reasoning for your rating.
                 queue.append(child)
 
     async def _explore_dfs(
-        self, root: ThoughtNode, steps: list[str], context: dict[str, Any] | None
+        self, root: ThoughtNode, steps: list[str], context: dict[str, Any] | None,
     ):
-        """
-        Explore tree using depth-first search.
+        """Explore tree using depth-first search.
 
         Args:
             root: Root node
             steps: Problem steps
             context: Optional context
+
         """
         stack = [root]
 
@@ -270,8 +268,7 @@ Provide reasoning for your rating.
                 stack.append(child)
 
     def _create_node(self, content: str, depth: int, parent_id: int | None = None) -> ThoughtNode:
-        """
-        Create a new thought node.
+        """Create a new thought node.
 
         Args:
             content: Node content
@@ -280,6 +277,7 @@ Provide reasoning for your rating.
 
         Returns:
             Created node
+
         """
         node = ThoughtNode(id=self.next_id, content=content, depth=depth, parent_id=parent_id)
         self.nodes[node.id] = node
@@ -287,11 +285,11 @@ Provide reasoning for your rating.
         return node
 
     def _find_best_path(self) -> list[dict[str, Any]]:
-        """
-        Find the best path through the tree.
+        """Find the best path through the tree.
 
         Returns:
             List of nodes representing best path
+
         """
         if not self.nodes:
             return []
@@ -333,14 +331,14 @@ Provide reasoning for your rating.
                     n
                     for n in self.nodes.values()
                     if n.viability in [ThoughtViability.SURE, ThoughtViability.LIKELY]
-                ]
+                ],
             ),
             "pruned_nodes": len(
                 [
                     n
                     for n in self.nodes.values()
                     if n.viability in [ThoughtViability.IMPOSSIBLE, ThoughtViability.UNLIKELY]
-                ]
+                ],
             ),
         }
 
@@ -354,7 +352,7 @@ Provide reasoning for your rating.
         return "\n".join(lines)
 
     def _visualize_node(
-        self, node_id: int, lines: list[str], prefix: str = "", is_last: bool = True
+        self, node_id: int, lines: list[str], prefix: str = "", is_last: bool = True,
     ):
         """Recursively visualize tree nodes."""
         node = self.nodes[node_id]
@@ -362,7 +360,7 @@ Provide reasoning for your rating.
         # Add current node
         connector = "└── " if is_last else "├── "
         lines.append(
-            f"{prefix}{connector}{node.content[:50]} ({node.viability.value}, {node.value_score:.2f})"
+            f"{prefix}{connector}{node.content[:50]} ({node.viability.value}, {node.value_score:.2f})",
         )
 
         # Add children

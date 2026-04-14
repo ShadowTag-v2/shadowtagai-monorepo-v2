@@ -1,5 +1,4 @@
-"""
-Base Agent: Abstract base class for specialized Kosmos agents.
+"""Base Agent: Abstract base class for specialized Kosmos agents.
 
 Each agent specializes in a specific aspect of autonomous research:
 - Literature search and citation
@@ -33,8 +32,7 @@ class AgentConfig:
 
 
 class BaseAgent(ABC):
-    """
-    Abstract base class for specialized Kosmos agents.
+    """Abstract base class for specialized Kosmos agents.
 
     Each agent:
     1. Has a specific role/instruction
@@ -50,14 +48,14 @@ class BaseAgent(ABC):
         world_model: KosmosWorldModel,
         tool_registry: dict[str, Callable],
     ):
-        """
-        Initialize base agent.
+        """Initialize base agent.
 
         Args:
             config: Agent configuration
             vertex_client: Vertex AI client for LLM calls
             world_model: Shared world model for state tracking
             tool_registry: Global registry of available tools
+
         """
         self.config = config
         self.vertex_client = vertex_client
@@ -78,8 +76,7 @@ class BaseAgent(ABC):
 
     @abstractmethod
     def execute_task(self, task: str, context: dict[str, Any] | None = None) -> ReActResult:
-        """
-        Execute agent's specialized task.
+        """Execute agent's specialized task.
 
         Args:
             task: Task description
@@ -87,18 +84,18 @@ class BaseAgent(ABC):
 
         Returns:
             ReActResult with execution trace
+
         """
-        pass
 
     def _build_goal_with_instruction(self, task: str) -> str:
-        """
-        Build goal prompt combining agent instruction with specific task.
+        """Build goal prompt combining agent instruction with specific task.
 
         Args:
             task: Specific task to execute
 
         Returns:
             Formatted goal string for ReAct loop
+
         """
         return f"""
 {self.config.instruction}

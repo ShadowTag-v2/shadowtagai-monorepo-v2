@@ -1,5 +1,4 @@
-"""
-Decision Framework & Risk Assessment
+"""Decision Framework & Risk Assessment
 ATP 5-19 Military Risk Management + Business Kill-Switches
 """
 
@@ -161,10 +160,9 @@ class KillSwitches:
 
     @classmethod
     def evaluate(
-        cls, month: int, mrr: int, pilots: int = 0, ltv_cac: float = 0.0
+        cls, month: int, mrr: int, pilots: int = 0, ltv_cac: float = 0.0,
     ) -> tuple[bool, str]:
-        """
-        Evaluate if kill-switch triggered
+        """Evaluate if kill-switch triggered
         Returns: (should_kill, reason)
         """
         if month == 3 and (pilots < 5 or mrr < 10_000):

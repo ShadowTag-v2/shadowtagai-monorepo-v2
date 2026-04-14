@@ -1,5 +1,4 @@
-"""
-Configuration for Gemini Ingestion Layer
+"""Configuration for Gemini Ingestion Layer
 
 Aligned with SHADOWTAGAI Core Stack 2025 technology refresh:
 - GKE deployment on Google Cloud Platform
@@ -56,7 +55,7 @@ class IngestionConfig:
 
     # Multi-Source Configuration
     enabled_sources: list[str] = field(
-        default_factory=lambda: ["youtube", "twitter", "news", "reddit", "rss_feeds"]
+        default_factory=lambda: ["youtube", "twitter", "news", "reddit", "rss_feeds"],
     )
 
     # Gemini API Configuration
@@ -70,7 +69,7 @@ class IngestionConfig:
 
     # AM Briefing Configuration
     briefing_recipients: list[str] = field(
-        default_factory=lambda: os.getenv("BRIEFING_RECIPIENTS", "").split(",")
+        default_factory=lambda: os.getenv("BRIEFING_RECIPIENTS", "").split(","),
     )
     briefing_format: str = "markdown"
 
@@ -81,7 +80,7 @@ class IngestionConfig:
 
     # Integration with 4 Namespaces
     serving_namespaces: list[str] = field(
-        default_factory=lambda: ["intelligence", "analytics", "reporting", "api-gateway"]
+        default_factory=lambda: ["intelligence", "analytics", "reporting", "api-gateway"],
     )
 
 
@@ -157,7 +156,7 @@ RSS_FEEDS_CONFIG = SourceConfig(
             "https://news.ycombinator.com/rss",
             "https://techcrunch.com/feed/",
             "https://www.wired.com/feed/rss",
-        ]
+        ],
     },
 )
 

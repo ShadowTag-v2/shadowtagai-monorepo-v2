@@ -1,5 +1,4 @@
-"""
-UnGPT Multi-LLM Consensus Service
+"""UnGPT Multi-LLM Consensus Service
 Production-ready FastAPI implementation with tiered routing and cost controls
 """
 
@@ -67,7 +66,7 @@ class UnGPTRequest(BaseModel):
     query: str = Field(..., description="User query")
     user_location: str = Field(default="US", description="ISO country code for compliance")
     complexity: QueryComplexity | None = Field(
-        None, description="Force specific tier (auto-detect if None)"
+        None, description="Force specific tier (auto-detect if None)",
     )
     max_cost: float = Field(default=0.50, description="Maximum cost in USD")
     include_reasoning: bool = Field(default=False, description="Include detailed reasoning chain")
@@ -113,10 +112,9 @@ QUERY_LIMITS = {"max_cost_per_query": 0.50, "require_approval_above": 0.30}
 
 
 async def check_budget(
-    user_id: str, estimated_cost: float, query_tier: str
+    user_id: str, estimated_cost: float, query_tier: str,
 ) -> tuple[bool, str | None]:
-    """
-    Check if query is within budget limits.
+    """Check if query is within budget limits.
     """
     today = datetime.utcnow().date().isoformat()
     key_prefix = f"cost:{user_id}:{today}"
@@ -171,14 +169,12 @@ async def record_spend(user_id: str, actual_cost: float, query_tier: str):
 
 
 async def detect_complexity(query: str) -> QueryComplexity:
-    """
-    Use Claude to assess query complexity.
+    """Use Claude to assess query complexity.
 
     Simple: Factual questions, definitions, single-step
     Moderate: Comparisons, multi-step analysis
     Complex: Strategic, financial, multi-domain
     """
-
     classification_prompt = f"""Classify this query's complexity for multi-model consensus routing.
 
 QUERY: {query}
@@ -227,8 +223,7 @@ Classification criteria:
 
 
 async def execute_simple_path(query: str) -> dict[str, Any]:
-    """
-    Simple path: Claude only
+    """Simple path: Claude only
     Cost: ~$0.017
     """
     start_time = asyncio.get_event_loop().time()
@@ -248,19 +243,18 @@ async def execute_simple_path(query: str) -> dict[str, Any]:
         "consensus_level": "single_model",
         "execution_time": execution_time,
         "total_cost": calculate_cost(
-            "claude", response.usage.input_tokens, response.usage.output_tokens
+            "claude", response.usage.input_tokens, response.usage.output_tokens,
         ),
         "models": ["claude-sonnet-4"],
         "risk_level": "RA-1",
         "reasoning_chain": [
-            {"step": "single_model_query", "model": "claude-sonnet-4", "result": "Direct response"}
+            {"step": "single_model_query", "model": "claude-sonnet-4", "result": "Direct response"},
         ],
     }
 
 
 async def execute_moderate_path(query: str) -> dict[str, Any]:
-    """
-    Moderate path: Claude + Gemini with synthesis
+    """Moderate path: Claude + Gemini with synthesis
     Cost: ~$0.046
     """
     start_time = asyncio.get_event_loop().time()
@@ -276,7 +270,7 @@ async def execute_moderate_path(query: str) -> dict[str, Any]:
 
     claude_text = claude_response.content[0].text
     reasoning_chain.append(
-        {"step": "claude_initial", "model": "claude-sonnet-4", "result": claude_text[:200] + "..."}
+        {"step": "claude_initial", "model": "claude-sonnet-4", "result": claude_text[:200] + "..."},
     )
 
     # Step 2: Gemini analysis
@@ -295,7 +289,7 @@ Provide your independent analysis. Do you agree with Claude? What would you add 
             "step": "gemini_analysis",
             "model": "gemini-2.0-flash",
             "result": gemini_text[:200] + "...",
-        }
+        },
     )
 
     # Step 3: Claude synthesis
@@ -321,11 +315,11 @@ Synthesize both perspectives into a final, comprehensive answer. Resolve any dis
     # Calculate total cost
     total_cost = (
         calculate_cost(
-            "claude", claude_response.usage.input_tokens, claude_response.usage.output_tokens
+            "claude", claude_response.usage.input_tokens, claude_response.usage.output_tokens,
         )
         + calculate_cost("gemini", 500, 300)  # Estimated
         + calculate_cost(
-            "claude", final_response.usage.input_tokens, final_response.usage.output_tokens
+            "claude", final_response.usage.input_tokens, final_response.usage.output_tokens,
         )
     )
 
@@ -334,7 +328,7 @@ Synthesize both perspectives into a final, comprehensive answer. Resolve any dis
             "step": "final_synthesis",
             "model": "claude-sonnet-4",
             "result": "Combined response generated",
-        }
+        },
     )
 
     return {
@@ -350,8 +344,7 @@ Synthesize both perspectives into a final, comprehensive answer. Resolve any dis
 
 
 async def execute_complex_path(query: str) -> dict[str, Any]:
-    """
-    Complex path: Full multi-model consensus (simplified for MVP)
+    """Complex path: Full multi-model consensus (simplified for MVP)
     Cost: ~$0.10-0.30 (optimized from full $0.268)
 
     Note: This is a simplified version. Full implementation would
@@ -386,7 +379,7 @@ Your response will be analyzed by other advanced models."""
             "step": "layer1_reasoning",
             "model": "claude-sonnet-4",
             "result": layer1_text[:300] + "...",
-        }
+        },
     )
 
     # Layer 2: Gemini analysis (parallel - in production would include Grok, GPT-5)
@@ -409,7 +402,7 @@ Provide your independent analysis:
             "step": "layer2_parallel",
             "model": "gemini-2.0-flash",
             "result": layer2_text[:300] + "...",
-        }
+        },
     )
 
     # Layer 3: Claude final synthesis
@@ -444,11 +437,11 @@ Provide comprehensive, execution-ready response."""
     # Calculate costs
     total_cost = (
         calculate_cost(
-            "claude", layer1_response.usage.input_tokens, layer1_response.usage.output_tokens
+            "claude", layer1_response.usage.input_tokens, layer1_response.usage.output_tokens,
         )
         + calculate_cost("gemini", 800, 500)
         + calculate_cost(
-            "claude", layer3_response.usage.input_tokens, layer3_response.usage.output_tokens
+            "claude", layer3_response.usage.input_tokens, layer3_response.usage.output_tokens,
         )
     )
 
@@ -457,7 +450,7 @@ Provide comprehensive, execution-ready response."""
             "step": "layer3_synthesis",
             "model": "claude-sonnet-4",
             "result": "Final consensus generated",
-        }
+        },
     )
 
     return {
@@ -473,8 +466,7 @@ Provide comprehensive, execution-ready response."""
 
 
 def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
-    """
-    Calculate cost based on model and token usage.
+    """Calculate cost based on model and token usage.
 
     Rates (per 1M tokens):
     - Claude Sonnet 4: $3/$15 (in/out)
@@ -514,10 +506,8 @@ def get_user_id(authorization: str | None = Header(None)) -> str:
 
 @app.post("/v1/ungpt/query", response_model=UnGPTResponse)
 async def process_query(request: UnGPTRequest, user_id: str = Depends(get_user_id)):
+    """Main UnGPT endpoint with tiered routing and cost controls.
     """
-    Main UnGPT endpoint with tiered routing and cost controls.
-    """
-
     # 1. Detect complexity if not specified
     if request.complexity is None:
         request.complexity = await detect_complexity(request.query)
@@ -568,7 +558,7 @@ async def process_query(request: UnGPTRequest, user_id: str = Depends(get_user_i
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Query execution failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Query execution failed: {e!s}")
 
 
 @app.get("/v1/ungpt/health")
@@ -606,7 +596,7 @@ async def get_budget_status(user_id: str):
             },
         }
     except redis.RedisError as e:
-        raise HTTPException(status_code=503, detail=f"Budget service unavailable: {str(e)}")
+        raise HTTPException(status_code=503, detail=f"Budget service unavailable: {e!s}")
 
 
 if __name__ == "__main__":

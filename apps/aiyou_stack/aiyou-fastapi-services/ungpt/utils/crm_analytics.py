@@ -1,5 +1,4 @@
-"""
-CRM Analytics - Track quality scores and re-loop effectiveness
+"""CRM Analytics - Track quality scores and re-loop effectiveness
 
 SQLite-based tracking for:
 - Run history
@@ -99,7 +98,7 @@ def log_run(
 
 
 def log_reloop(
-    db_path: str, query_id: str, before_score: float, after_score: float, tools_used: str
+    db_path: str, query_id: str, before_score: float, after_score: float, tools_used: str,
 ):
     """Log a re-loop event"""
     conn = sqlite3.connect(db_path)

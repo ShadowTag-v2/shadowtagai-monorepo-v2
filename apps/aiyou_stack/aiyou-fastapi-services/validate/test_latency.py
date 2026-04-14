@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN Judge #6 Latency Validation Harness
+"""PNKLN Judge #6 Latency Validation Harness
 
 Tests p99 latency against 90ms SLA target.
 Generates detailed reports with percentile breakdowns.
@@ -83,10 +82,9 @@ class LatencyTester:
         self.results: list[LatencyResult] = []
 
     async def send_request(
-        self, session: aiohttp.ClientSession, request_id: int, prompt: str, timeout: float = 30.0
+        self, session: aiohttp.ClientSession, request_id: int, prompt: str, timeout: float = 30.0,
     ) -> LatencyResult:
         """Send single inference request and measure latency"""
-
         headers = {"Content-Type": "application/json"}
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
@@ -137,10 +135,9 @@ class LatencyTester:
             )
 
     async def run_test(
-        self, num_requests: int = 100, concurrency: int = 10, prompt: str = None
+        self, num_requests: int = 100, concurrency: int = 10, prompt: str = None,
     ) -> list[LatencyResult]:
         """Run concurrent latency test"""
-
         if prompt is None:
             prompt = "Analyze the following code for security vulnerabilities: def login(user, pwd): exec(f'SELECT * FROM users WHERE name={user}')"
 
@@ -166,7 +163,7 @@ class LatencyTester:
             # Execute with progress bar
             results = []
             for coro in tqdm(
-                asyncio.as_completed(tasks), total=num_requests, desc="Requests", unit="req"
+                asyncio.as_completed(tasks), total=num_requests, desc="Requests", unit="req",
             ):
                 result = await coro
                 results.append(result)
@@ -176,7 +173,6 @@ class LatencyTester:
 
     def generate_report(self, sla_target_ms: float = 90.0) -> LatencyReport:
         """Generate comprehensive latency report"""
-
         if not self.results:
             raise ValueError("No test results available. Run test first.")
 
@@ -237,7 +233,6 @@ class LatencyTester:
 
     def print_report(self, report: LatencyReport):
         """Print formatted report to console"""
-
         print("\n" + "=" * 70)
         print("📊 LATENCY TEST REPORT")
         print("=" * 70)
@@ -313,7 +308,6 @@ class LatencyTester:
 
     def save_report(self, report: LatencyReport, filename: str = None):
         """Save report to JSON file"""
-
         if filename is None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"latency_report_{timestamp}.json"
@@ -327,7 +321,7 @@ class LatencyTester:
 async def main():
     parser = argparse.ArgumentParser(description="PNKLN Judge #6 Latency Validation Harness")
     parser.add_argument(
-        "--endpoint", default="http://judge6.pnkln.svc.cluster.local", help="Inference endpoint URL"
+        "--endpoint", default="http://judge6.pnkln.svc.cluster.local", help="Inference endpoint URL",
     )
     parser.add_argument(
         "--p99-target-ms",
@@ -336,10 +330,10 @@ async def main():
         help="p99 latency SLA target in milliseconds (default: 90)",
     )
     parser.add_argument(
-        "--num-requests", type=int, default=100, help="Number of requests to send (default: 100)"
+        "--num-requests", type=int, default=100, help="Number of requests to send (default: 100)",
     )
     parser.add_argument(
-        "--concurrency", type=int, default=10, help="Concurrent requests (default: 10)"
+        "--concurrency", type=int, default=10, help="Concurrent requests (default: 10)",
     )
     parser.add_argument("--api-key", default=None, help="API key for authentication (optional)")
     parser.add_argument("--prompt", default=None, help="Custom prompt for testing (optional)")
@@ -353,7 +347,7 @@ async def main():
     # Run test
     time.time()
     await tester.run_test(
-        num_requests=args.num_requests, concurrency=args.concurrency, prompt=args.prompt
+        num_requests=args.num_requests, concurrency=args.concurrency, prompt=args.prompt,
     )
 
     # Generate and print report

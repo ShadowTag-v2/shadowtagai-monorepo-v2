@@ -1,5 +1,4 @@
-"""
-Resilience and edge case handling for ingestion pipeline.
+"""Resilience and edge case handling for ingestion pipeline.
 
 Implements:
 - Circuit breakers for failing sources
@@ -51,8 +50,7 @@ class CircuitBreakerStats:
 
 
 class CircuitBreaker:
-    """
-    Circuit breaker for source protection.
+    """Circuit breaker for source protection.
 
     Prevents cascade failures by opening circuit after threshold failures.
     """
@@ -68,8 +66,7 @@ class CircuitBreaker:
         self._lock = asyncio.Lock()
 
     async def call(self, func: Callable, *args, **kwargs):
-        """
-        Execute function through circuit breaker.
+        """Execute function through circuit breaker.
 
         Args:
             func: Async function to call
@@ -80,6 +77,7 @@ class CircuitBreaker:
 
         Raises:
             CircuitBreakerOpenError: If circuit is open
+
         """
         async with self._lock:
             self.stats.total_requests += 1
@@ -98,7 +96,7 @@ class CircuitBreaker:
                     else:
                         raise CircuitBreakerOpenError(
                             f"Circuit breaker {self.name} is OPEN. "
-                            f"Retry in {self.config.timeout_seconds - elapsed:.0f}s"
+                            f"Retry in {self.config.timeout_seconds - elapsed:.0f}s",
                         )
 
         # Execute function
@@ -141,7 +139,7 @@ class CircuitBreaker:
             elif self.stats.state == CircuitState.CLOSED:
                 if self.stats.failure_count >= self.config.failure_threshold:
                     logger.error(
-                        f"Circuit breaker {self.name} opening ({self.stats.failure_count} failures)"
+                        f"Circuit breaker {self.name} opening ({self.stats.failure_count} failures)",
                     )
                     self.stats.state = CircuitState.OPEN
                     self.stats.last_state_change = datetime.now()
@@ -168,7 +166,6 @@ class CircuitBreaker:
 class CircuitBreakerOpenError(Exception):
     """Raised when circuit breaker is open."""
 
-    pass
 
 
 @dataclass
@@ -184,8 +181,7 @@ class CostAlert:
 
 
 class CostSpikeDetector:
-    """
-    Detects and responds to cost spikes.
+    """Detects and responds to cost spikes.
 
     Features:
     - Real-time cost tracking
@@ -302,8 +298,7 @@ class CostSpikeDetector:
 
 
 class RetryHandler:
-    """
-    Exponential backoff retry handler.
+    """Exponential backoff retry handler.
 
     Implements:
     - Exponential backoff (2^n * base_delay)
@@ -324,8 +319,7 @@ class RetryHandler:
         self.jitter = jitter
 
     async def execute(self, func: Callable, *args, **kwargs):
-        """
-        Execute function with retry logic.
+        """Execute function with retry logic.
 
         Args:
             func: Async function to call
@@ -336,6 +330,7 @@ class RetryHandler:
 
         Raises:
             Last exception if all retries exhausted
+
         """
         last_exception = None
 
@@ -358,7 +353,7 @@ class RetryHandler:
 
                     logger.warning(
                         f"Attempt {attempt + 1}/{self.max_retries + 1} failed: {e}. "
-                        f"Retrying in {delay:.1f}s..."
+                        f"Retrying in {delay:.1f}s...",
                     )
 
                     await asyncio.sleep(delay)
@@ -369,8 +364,7 @@ class RetryHandler:
 
 
 class GracefulDegradation:
-    """
-    Handles graceful degradation when sources fail.
+    """Handles graceful degradation when sources fail.
 
     Strategies:
     - Fallback to cached data
@@ -389,8 +383,7 @@ class GracefulDegradation:
         fetch_func: Callable,
         max_age_seconds: int = 3600,
     ):
-        """
-        Get data with fallback to cache.
+        """Get data with fallback to cache.
 
         Args:
             key: Cache key
@@ -399,6 +392,7 @@ class GracefulDegradation:
 
         Returns:
             Fresh or cached data
+
         """
         try:
             # Try fresh fetch
@@ -420,8 +414,7 @@ class GracefulDegradation:
                 if age <= max_age_seconds:
                     logger.info(f"Using cached data for {key} (age: {age:.0f}s)")
                     return cached["data"]
-                else:
-                    logger.warning(f"Cached data for {key} too old ({age:.0f}s)")
+                logger.warning(f"Cached data for {key} too old ({age:.0f}s)")
 
             # No valid cache, re-raise
             raise

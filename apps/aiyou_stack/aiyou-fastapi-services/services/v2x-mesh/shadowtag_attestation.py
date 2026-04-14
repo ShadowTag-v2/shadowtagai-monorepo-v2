@@ -1,5 +1,4 @@
-"""
-ShadowTag Integration for V2X Vehicle Attestation
+"""ShadowTag Integration for V2X Vehicle Attestation
 
 Provides:
 - Per-node key management in TEE/TPM
@@ -57,8 +56,7 @@ class RevocationEntry:
 
 
 class ShadowTagAttestation:
-    """
-    ShadowTag attestation system for V2X mesh
+    """ShadowTag attestation system for V2X mesh
 
     Integrates with existing ShadowTag service for:
     - Video/sensor data watermarking
@@ -115,9 +113,8 @@ class ShadowTagAttestation:
             # In production: retrieve from TEE/TPM
             # TPM path: /sys/class/tpm/tpm0/device/caps
             return f"tee::{hashlib.sha256(self.vehicle_id.encode()).hexdigest()[:16]}"
-        else:
-            # Development: use vehicle ID hash
-            return f"dev::{hashlib.sha256(self.vehicle_id.encode()).hexdigest()[:16]}"
+        # Development: use vehicle ID hash
+        return f"dev::{hashlib.sha256(self.vehicle_id.encode()).hexdigest()[:16]}"
 
     def _generate_pseudonym(self) -> bytes:
         """Generate random pseudonym"""
@@ -154,8 +151,7 @@ class ShadowTagAttestation:
         print(f"Rotated pseudonym: {old_pseudonym.hex()[:8]} -> {new_pseudonym.hex()[:8]}")
 
     def sign_message(self, message_data: bytes) -> bytes:
-        """
-        Sign message using Ed25519 in TEE/TPM
+        """Sign message using Ed25519 in TEE/TPM
 
         In production, this calls into secure enclave.
         For development, uses HMAC-SHA256.
@@ -208,8 +204,7 @@ class ShadowTagAttestation:
         # Verify signature
         if self.use_tee:
             return self._tee_verify(pseudonym, message_data, signature)
-        else:
-            return self._dev_verify(pseudonym, message_data, signature)
+        return self._dev_verify(pseudonym, message_data, signature)
 
     def _tee_verify(self, pseudonym: bytes, data: bytes, signature: bytes) -> bool:
         """Verify using TEE/TPM (production)"""
@@ -264,7 +259,6 @@ class ShadowTagAttestation:
 
         # TODO: HTTP POST to ShadowTag service
         # await http_client.post(f"{self.shadowtag_endpoint}/v1/evidence", json=payload)
-        pass
 
     def add_revocation(self, entry: RevocationEntry):
         """Add entry to revocation list"""
@@ -315,8 +309,7 @@ class ShadowTagAttestation:
         message_timestamp: int,
         max_velocity_mps: float = 50.0,  # ~180 km/h max
     ) -> float:
-        """
-        Compute distance bound for claimed position
+        """Compute distance bound for claimed position
 
         Uses time difference and max velocity to bound how far
         vehicle could have moved since last verified position.
@@ -347,8 +340,7 @@ class ShadowTagAttestation:
 
 
 class RevocationAuthority:
-    """
-    Central authority for managing revocations
+    """Central authority for managing revocations
 
     In production, this would be a distributed system with
     multiple authorities using threshold signatures.
@@ -359,7 +351,7 @@ class RevocationAuthority:
         self.issued_revocations: list[RevocationEntry] = []
 
     def issue_revocation(
-        self, pseudonym: bytes, reason: str, duration: int | None = None
+        self, pseudonym: bytes, reason: str, duration: int | None = None,
     ) -> RevocationEntry:
         """Issue revocation for a pseudonym"""
         now = int(time.time())

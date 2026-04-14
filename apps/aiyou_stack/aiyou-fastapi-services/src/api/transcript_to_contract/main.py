@@ -16,8 +16,7 @@ class ContractPayload(BaseModel):
 
 @router.post("/query", dependencies=[Depends(verify_zero_trust)])
 async def temporal_query_submit(payload: ContractPayload):
-    """
-    Zero-Trust ingress point for Temporal contract processing.
+    """Zero-Trust ingress point for Temporal contract processing.
     Delegates to the external omega-swarm-queue using Agentic logic.
     """
     logger.info(f"Incoming verified payload for {payload.video_id}")

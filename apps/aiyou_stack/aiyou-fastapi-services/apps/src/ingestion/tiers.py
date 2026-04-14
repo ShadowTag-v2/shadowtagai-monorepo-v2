@@ -1,5 +1,4 @@
-"""
-Tier Classification System for Intelligence Data.
+"""Tier Classification System for Intelligence Data.
 
 Classifies collected data into tiers based on:
 - Relevance to key topics
@@ -99,8 +98,7 @@ class ClassifiedItem:
 
 
 class TierClassifier:
-    """
-    Classifies intelligence data into quality tiers.
+    """Classifies intelligence data into quality tiers.
 
     Uses multi-factor scoring to determine data value:
     - Tier 1: High-value, actionable intelligence
@@ -127,8 +125,7 @@ class TierClassifier:
         }
 
     def calculate_scores(self, item: dict) -> ClassificationScores:
-        """
-        Calculate classification scores for an item.
+        """Calculate classification scores for an item.
 
         This is a simplified implementation. Production version would:
         1. Use LLM to assess relevance to key topics
@@ -181,14 +178,14 @@ class TierClassifier:
         )
 
     def classify_item(self, item: dict) -> ClassifiedItem:
-        """
-        Classify an item into a tier.
+        """Classify an item into a tier.
 
         Args:
             item: Data item to classify
 
         Returns:
             ClassifiedItem with tier and scores
+
         """
         self.stats["total_classified"] += 1
 
@@ -276,8 +273,7 @@ class TierClassifier:
         }
 
     def get_quality_score(self) -> float:
-        """
-        Calculate overall quality score (0-100).
+        """Calculate overall quality score (0-100).
 
         Higher percentage of Tier 1 items = higher quality.
         """

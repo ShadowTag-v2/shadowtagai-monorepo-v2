@@ -1,5 +1,4 @@
-"""
-Boy Scout Rule Metadata Bridge
+"""Boy Scout Rule Metadata Bridge
 
 Integrates the pnkln/scout registry with the existing AuditTrailPersistence system.
 Provides tracking, validation, and reporting for agent cleanup actions.
@@ -20,8 +19,7 @@ from .audit import AuditTrailPersistence, create_audit_trail
 
 @dataclass
 class BoyScoutMetadata:
-    """
-    Tracks cleanup actions for a single agent execution.
+    """Tracks cleanup actions for a single agent execution.
 
     Attributes:
         agent_name: Name of the agent performing work
@@ -32,6 +30,7 @@ class BoyScoutMetadata:
         new_state: Hash/snapshot of final state
         timestamp: When the execution occurred
         execution_id: Unique ID for this execution
+
     """
 
     agent_name: str
@@ -66,15 +65,14 @@ class BoyScoutMetadata:
 
 
 class ScoutMetadataTracker:
-    """
-    Tracks Boy Scout Rule metadata across agent executions.
+    """Tracks Boy Scout Rule metadata across agent executions.
 
     Integrates with AuditTrailPersistence for persistent storage
     and provides validation that cleanup standards are met.
     """
 
     def __init__(
-        self, audit_trail: AuditTrailPersistence | None = None, registry_path: Path | None = None
+        self, audit_trail: AuditTrailPersistence | None = None, registry_path: Path | None = None,
     ):
         self.audit_trail = audit_trail or create_audit_trail()
         self.registry_path = (
@@ -104,8 +102,7 @@ class ScoutMetadataTracker:
         return None
 
     def start_session(self, agent_name: str, baseline_state: str = "") -> str:
-        """
-        Start a new tracking session for an agent execution.
+        """Start a new tracking session for an agent execution.
 
         Args:
             agent_name: Name of the agent starting work
@@ -113,6 +110,7 @@ class ScoutMetadataTracker:
 
         Returns:
             Execution ID for this session
+
         """
         metadata = BoyScoutMetadata(agent_name=agent_name, baseline_state=baseline_state)
         self._active_sessions[metadata.execution_id] = metadata
@@ -137,8 +135,7 @@ class ScoutMetadataTracker:
         cleaner_than_found: bool = True,
         metrics: dict | None = None,
     ) -> BoyScoutMetadata:
-        """
-        End a tracking session and persist to audit trail.
+        """End a tracking session and persist to audit trail.
 
         Args:
             execution_id: ID from start_session()
@@ -151,6 +148,7 @@ class ScoutMetadataTracker:
 
         Raises:
             ValueError: If Boy Scout Rule validation fails
+
         """
         if execution_id not in self._active_sessions:
             raise ValueError(f"No active session: {execution_id}")
@@ -163,7 +161,7 @@ class ScoutMetadataTracker:
         if not session.validate():
             raise ValueError(
                 f"Boy Scout Rule violation: Agent {session.agent_name} "
-                f"did not leave system cleaner. Actions: {session.cleanup_actions}"
+                f"did not leave system cleaner. Actions: {session.cleanup_actions}",
             )
 
         # Persist to audit trail
@@ -186,8 +184,7 @@ class ScoutMetadataTracker:
         return session
 
     def get_cleanup_report(self, agent_name: str | None = None, limit: int = 100) -> dict[str, Any]:
-        """
-        Generate cleanup report for agents.
+        """Generate cleanup report for agents.
 
         Args:
             agent_name: Filter by specific agent (optional)
@@ -195,6 +192,7 @@ class ScoutMetadataTracker:
 
         Returns:
             Report with cleanup statistics
+
         """
         entries = self.audit_trail.read_all()
 
@@ -269,8 +267,7 @@ def create_scout_tracker(audit_trail: AuditTrailPersistence | None = None) -> Sc
 
 # Context manager for tracking sessions
 class ScoutSession:
-    """
-    Context manager for Boy Scout Rule tracking.
+    """Context manager for Boy Scout Rule tracking.
 
     Usage:
         tracker = create_scout_tracker()
@@ -291,7 +288,7 @@ class ScoutSession:
 
     def __enter__(self) -> "ScoutSession":
         self.execution_id = self.tracker.start_session(
-            self.agent_name, baseline_state=self.baseline
+            self.agent_name, baseline_state=self.baseline,
         )
         return self
 

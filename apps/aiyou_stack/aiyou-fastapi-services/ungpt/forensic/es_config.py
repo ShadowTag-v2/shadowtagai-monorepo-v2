@@ -1,5 +1,4 @@
-"""
-Elasticsearch Configuration for Glass Box
+"""Elasticsearch Configuration for Glass Box
 
 Based on Apertus paper constraints:
 - mmap disabled for HPC/container compatibility
@@ -9,8 +8,7 @@ Based on Apertus paper constraints:
 
 
 def get_es_config(index_name: str = "ungpt_forensic", shards: int = 1, replicas: int = 0) -> dict:
-    """
-    Get Elasticsearch index configuration.
+    """Get Elasticsearch index configuration.
 
     Settings based on Apertus paper Section 3:
     - Disabled memory mapping (vm.max_map_count workaround)
@@ -24,6 +22,7 @@ def get_es_config(index_name: str = "ungpt_forensic", shards: int = 1, replicas:
 
     Returns:
         Elasticsearch index settings dict
+
     """
     return {
         "settings": {
@@ -84,7 +83,7 @@ def get_es_config(index_name: str = "ungpt_forensic", shards: int = 1, replicas:
                 # Compliance
                 "pii_scrubbed": {"type": "boolean"},
                 "retention_days": {"type": "integer"},
-            }
+            },
         },
     }
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Simulate Steel - Phase 2 Valuation Engine
+"""Simulate Steel - Phase 2 Valuation Engine
 Validates the $100B valuation thesis for 1GW Virtual Capacity.
 
 Usage:
@@ -62,7 +61,7 @@ def run_simulation():
                 node_id=f"TOWER-{i:04d}",
                 location_code="US-EDGE",
                 capacity_mw=0.01,  # 10kW
-            )
+            ),
         )
 
     print(f"Fleet Assembled: {len(fleet)} nodes (Simulation Sample)")

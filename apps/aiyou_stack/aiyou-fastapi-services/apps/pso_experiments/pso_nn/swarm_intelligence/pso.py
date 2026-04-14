@@ -75,7 +75,7 @@ class ParticleSwarmOptimizer:
         temp = fitness_fn(np.random.randn(dims))
         if not isinstance(temp, float):
             raise TypeError(
-                f"fitness_fn should return a single valued float but returned {type(temp)}"
+                f"fitness_fn should return a single valued float but returned {type(temp)}",
             )
 
         if not callable(compare_fn):
@@ -97,7 +97,7 @@ class ParticleSwarmOptimizer:
         if not random:
             if not isinstance(particles_list, Iterable):
                 raise TypeError(
-                    f"particles_list should be an Iterable but got {type(particles_list)}"
+                    f"particles_list should be an Iterable but got {type(particles_list)}",
                 )
             if len(particles_list) == n_particles:
                 raise ValueError(f"particles_list should {n_particles} number of particles.")
@@ -106,7 +106,7 @@ class ParticleSwarmOptimizer:
                 if not isinstance(particle, particle_cls):
                     raise TypeError(
                         "Every particle in particles_list must be an object of class particle_cls"
-                        f" but got object of type {type(particle)} at position {i}"
+                        f" but got object of type {type(particle)} at position {i}",
                     )
 
     def _get_fitness(self, position):

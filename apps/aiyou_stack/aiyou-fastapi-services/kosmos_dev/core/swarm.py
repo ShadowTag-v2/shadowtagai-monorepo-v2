@@ -1,5 +1,4 @@
-"""
-Swarm Manager: Spawn and orchestrate hundreds of IQ-160 agents.
+"""Swarm Manager: Spawn and orchestrate hundreds of IQ-160 agents.
 
 Implements Kosmos paper patterns:
 - Two core agent types: Data Analysis + Literature Search
@@ -273,8 +272,7 @@ CRITICAL: Every finding MUST include:
 
 
 class SwarmManager:
-    """
-    Manages the agent swarm for Kosmos Dev.
+    """Manages the agent swarm for Kosmos Dev.
 
     Implements Kosmos paper pattern:
     - Data Analysis agents + Literature Search agents

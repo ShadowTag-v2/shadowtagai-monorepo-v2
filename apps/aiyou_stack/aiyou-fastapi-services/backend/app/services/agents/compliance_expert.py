@@ -1,5 +1,4 @@
-"""
-Compliance Expert Agent - AI-powered privacy compliance specialist
+"""Compliance Expert Agent - AI-powered privacy compliance specialist
 Implements GDPR, CCPA, cookie consent, and legal compliance requirements
 """
 
@@ -15,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class ComplianceExpertAgent:
-    """
-    AI-powered compliance expert that analyzes code, endpoints, and data practices
+    """AI-powered compliance expert that analyzes code, endpoints, and data practices
     for GDPR, CCPA, and other privacy regulation compliance.
     """
 
@@ -63,10 +61,9 @@ Provide responses in JSON format with:
 Be thorough but practical. Focus on what matters most for legal compliance."""
 
     async def analyze_endpoint(
-        self, endpoint_code: str, endpoint_path: str, request_method: str = "GET"
+        self, endpoint_code: str, endpoint_path: str, request_method: str = "GET",
     ) -> dict[str, Any]:
-        """
-        Analyze an API endpoint for compliance issues
+        """Analyze an API endpoint for compliance issues
 
         Args:
             endpoint_code: The source code of the endpoint
@@ -75,6 +72,7 @@ Be thorough but practical. Focus on what matters most for legal compliance."""
 
         Returns:
             Compliance analysis results
+
         """
         prompt = f"""Analyze this API endpoint for privacy compliance:
 
@@ -123,7 +121,7 @@ Provide detailed compliance analysis in JSON format."""
                             "description": "Unable to parse compliance analysis",
                             "recommendation": "Manual review required",
                             "regulation": "GENERAL",
-                        }
+                        },
                     ],
                     "recommendations": [result_text],
                     "summary": "Compliance analysis completed",
@@ -142,8 +140,7 @@ Provide detailed compliance analysis in JSON format."""
         storage_duration: str,
         third_party_sharing: bool = False,
     ) -> dict[str, Any]:
-        """
-        Analyze data processing activity for compliance
+        """Analyze data processing activity for compliance
 
         Args:
             data_type: Type of data being processed (e.g., "email", "location")
@@ -153,6 +150,7 @@ Provide detailed compliance analysis in JSON format."""
 
         Returns:
             Compliance analysis results
+
         """
         prompt = f"""Analyze this data processing activity for GDPR/CCPA compliance:
 
@@ -196,10 +194,9 @@ Provide compliance analysis in JSON format."""
             raise
 
     async def check_consent_requirements(
-        self, user_location: str, data_categories: list[str], processing_purposes: list[str]
+        self, user_location: str, data_categories: list[str], processing_purposes: list[str],
     ) -> dict[str, Any]:
-        """
-        Determine what consent is required for data processing
+        """Determine what consent is required for data processing
 
         Args:
             user_location: User's location (country code or region)
@@ -208,6 +205,7 @@ Provide compliance analysis in JSON format."""
 
         Returns:
             Consent requirements analysis
+
         """
         prompt = f"""Determine consent requirements for this data processing:
 
@@ -255,8 +253,7 @@ Provide detailed consent requirements in JSON format."""
         user_rights: list[str],
         contact_email: str,
     ) -> str:
-        """
-        Generate a privacy policy based on data practices
+        """Generate a privacy policy based on data practices
 
         Args:
             company_name: Name of the company
@@ -266,6 +263,7 @@ Provide detailed consent requirements in JSON format."""
 
         Returns:
             Generated privacy policy text
+
         """
         prompt = f"""Generate a GDPR and CCPA compliant privacy policy for:
 
@@ -309,10 +307,9 @@ Make it clear, comprehensive, and legally compliant."""
             raise
 
     async def audit_compliance(
-        self, system_description: str, regulations: list[str] = None
+        self, system_description: str, regulations: list[str] = None,
     ) -> dict[str, Any]:
-        """
-        Perform comprehensive compliance audit
+        """Perform comprehensive compliance audit
 
         Args:
             system_description: Description of the system to audit
@@ -320,6 +317,7 @@ Make it clear, comprehensive, and legally compliant."""
 
         Returns:
             Comprehensive audit results
+
         """
         if regulations is None:
             regulations = ["GDPR", "CCPA"]
@@ -385,7 +383,7 @@ Return results in JSON format."""
                     "description": "Compliance analysis completed but requires review",
                     "recommendation": "Manual review recommended",
                     "regulation": "GENERAL",
-                }
+                },
             ],
             "recommendations": [text],
             "summary": "Compliance analysis completed - manual review recommended",

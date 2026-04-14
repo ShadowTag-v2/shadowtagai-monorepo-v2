@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Sanitize and sync Claude CLI sessions + iCloud notes to monorepo.
+"""Sanitize and sync Claude CLI sessions + iCloud notes to monorepo.
 Strips PII, secrets, and sensitive data before committing.
 """
 

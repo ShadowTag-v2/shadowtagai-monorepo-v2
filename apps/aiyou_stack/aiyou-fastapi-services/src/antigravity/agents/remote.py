@@ -1,5 +1,4 @@
-"""
-Remote Agent Implementation for Zero Trust A2A.
+"""Remote Agent Implementation for Zero Trust A2A.
 """
 
 import logging
@@ -15,8 +14,7 @@ AGENT_CARD_WELL_KNOWN_PATH = "/.well-known/agent.json"
 
 
 class RemoteA2aAgent:
-    """
-    Represents a remote agent accessible via the A2A Protocol.
+    """Represents a remote agent accessible via the A2A Protocol.
     Supports Zero Trust Authentication via Cloud Run OIDC tokens.
     """
 
@@ -49,8 +47,7 @@ class RemoteA2aAgent:
             raise
 
     async def send_message(self, message: dict[str, Any]) -> dict[str, Any]:
-        """
-        Sends a message to the remote agent.
+        """Sends a message to the remote agent.
         Note: The actual endpoint would be discovered from capability/agent card.
         For this implementation, we assume a standard /chat or /agent endpoint
         relative to the card URL base.

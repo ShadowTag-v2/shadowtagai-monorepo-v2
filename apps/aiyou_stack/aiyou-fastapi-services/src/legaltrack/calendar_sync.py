@@ -1,5 +1,4 @@
-"""
-Calendar Sync Engine for LegalTrack
+"""Calendar Sync Engine for LegalTrack
 
 Auto-sync deadlines to Google Calendar, Outlook, etc.
 

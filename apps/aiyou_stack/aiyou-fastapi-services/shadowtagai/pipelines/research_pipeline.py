@@ -1,5 +1,4 @@
-"""
-Multi-Source Research Pipeline
+"""Multi-Source Research Pipeline
 
 COR-based orchestration for parallel research across Drive, Gmail, Web.
 Integrates with ATP_519_scan for compliance validation on output.
@@ -77,8 +76,7 @@ class ResearchResult:
 
 
 class MultiSourceResearchPipeline:
-    """
-    Multi-source research orchestration using COR patterns.
+    """Multi-source research orchestration using COR patterns.
 
     ARCHITECTURE:
     Stage 1 (Concurrent): Query all sources in parallel
@@ -101,13 +99,13 @@ class MultiSourceResearchPipeline:
         enable_mcp_compression: bool = True,
         enable_atp_scan: bool = True,
     ):
-        """
-        Initialize research pipeline.
+        """Initialize research pipeline.
 
         Args:
             latency_budget_ms: Total latency budget (default 2000ms)
             enable_mcp_compression: Apply MCP semantic compression
             enable_atp_scan: Apply ATP_519_scan compliance check
+
         """
         self.latency_budget_ms = latency_budget_ms
         self.enable_mcp_compression = enable_mcp_compression
@@ -117,10 +115,9 @@ class MultiSourceResearchPipeline:
         self.tool_availability = check_tool_availability()
 
     async def execute(
-        self, query: str, intent: ResearchIntent, context: ExecutionContext | None = None
+        self, query: str, intent: ResearchIntent, context: ExecutionContext | None = None,
     ) -> ResearchResult:
-        """
-        Execute complete multi-source research workflow.
+        """Execute complete multi-source research workflow.
 
         Args:
             query: Research query
@@ -129,6 +126,7 @@ class MultiSourceResearchPipeline:
 
         Returns:
             ResearchResult with aggregated and synthesized findings
+
         """
         start_time = time.time()
 
@@ -141,7 +139,7 @@ class MultiSourceResearchPipeline:
 
         # Initialize result
         result = ResearchResult(
-            query=query, topic=intent.extracted_topic, sources_queried=[], sources_successful=[]
+            query=query, topic=intent.extracted_topic, sources_queried=[], sources_successful=[],
         )
 
         # =========================================
@@ -261,11 +259,11 @@ class MultiSourceResearchPipeline:
         # Log SLA compliance
         if result.total_latency_ms > self.latency_budget_ms:
             logger.warning(
-                f"Research pipeline exceeded SLA: {result.total_latency_ms:.1f}ms > {self.latency_budget_ms}ms"
+                f"Research pipeline exceeded SLA: {result.total_latency_ms:.1f}ms > {self.latency_budget_ms}ms",
             )
         else:
             logger.info(
-                f"Research complete: {result.total_results} results in {result.total_latency_ms:.1f}ms"
+                f"Research complete: {result.total_results} results in {result.total_latency_ms:.1f}ms",
             )
 
         return result
@@ -292,8 +290,7 @@ class MultiSourceResearchPipeline:
         return result
 
     def _apply_atp_scan(self, result: ResearchResult) -> dict[str, Any]:
-        """
-        Apply ATP 5-19 compliance scan to research output.
+        """Apply ATP 5-19 compliance scan to research output.
 
         Checks for:
         - PII exposure in results
@@ -343,8 +340,7 @@ class MultiSourceResearchPipeline:
 
         if source_counts:
             return f"Research on '{result.topic}' found {', '.join(source_counts)} across {len(result.sources_successful)} sources."
-        else:
-            return f"No results found for '{result.topic}' across queried sources."
+        return f"No results found for '{result.topic}' across queried sources."
 
     def _analyze_cross_source(self, result: ResearchResult) -> str:
         """Analyze patterns across sources."""
@@ -352,7 +348,7 @@ class MultiSourceResearchPipeline:
 
         if result.drive_results and result.web_results:
             analysis.append(
-                "Internal documentation and external sources both available - cross-reference recommended."
+                "Internal documentation and external sources both available - cross-reference recommended.",
             )
 
         if result.gmail_results:
@@ -360,7 +356,7 @@ class MultiSourceResearchPipeline:
 
         if not result.drive_results and result.web_results:
             analysis.append(
-                "Gap: External information available but no internal documentation found."
+                "Gap: External information available but no internal documentation found.",
             )
 
         return " ".join(analysis) if analysis else "Cross-source analysis pending."
@@ -384,7 +380,7 @@ class MultiSourceResearchPipeline:
         if result.risk_flags:
             actions.append(f"Address compliance flags: {', '.join(result.risk_flags)}")
 
-        return actions if actions else ["No specific actions identified"]
+        return actions or ["No specific actions identified"]
 
 
 # ============================================================================
@@ -403,10 +399,9 @@ def get_pipeline() -> MultiSourceResearchPipeline:
 
 
 async def execute_research(
-    query: str, intent: ResearchIntent, context: ExecutionContext | None = None
+    query: str, intent: ResearchIntent, context: ExecutionContext | None = None,
 ) -> ResearchResult:
-    """
-    Execute research query with multi-source orchestration.
+    """Execute research query with multi-source orchestration.
 
     Args:
         query: Research query
@@ -415,6 +410,7 @@ async def execute_research(
 
     Returns:
         ResearchResult with findings and synthesis
+
     """
     pipeline = get_pipeline()
     return await pipeline.execute(query, intent, context)

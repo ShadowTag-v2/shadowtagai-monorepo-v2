@@ -1,5 +1,4 @@
-"""
-File Utilities
+"""File Utilities
 =============
 
 Utilities for safe file handling and path manipulation.
@@ -11,8 +10,7 @@ import unicodedata
 
 
 def sanitize_filename(filename: str | None) -> str:
-    """
-    Sanitize a filename to prevent path traversal and ensure filesystem safety.
+    """Sanitize a filename to prevent path traversal and ensure filesystem safety.
 
     - Normalizes unicode characters
     - Removes dangerous characters

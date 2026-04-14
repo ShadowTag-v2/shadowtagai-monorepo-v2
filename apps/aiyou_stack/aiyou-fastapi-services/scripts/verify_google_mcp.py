@@ -1,5 +1,4 @@
-"""
-Verification Script for Google Official MCP Integration.
+"""Verification Script for Google Official MCP Integration.
 Tests BigQuery and GKE tools using GeminiFunctionCaller.
 """
 

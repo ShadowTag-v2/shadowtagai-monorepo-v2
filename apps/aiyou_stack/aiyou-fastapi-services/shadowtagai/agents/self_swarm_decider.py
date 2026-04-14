@@ -61,6 +61,7 @@ class SwarmDecisionMaker:
         str
             Formatted swarm decision report (exactly as required by the
             protocol).
+
         """
         self.last_decision = decision_str
         report = self.swarm.evaluate(decision_str)
@@ -84,7 +85,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) < 2:
         print(
-            'Usage: python self_swarm_decider.py "SWARM VOTE: <intent> | RISK: <L|M|H|EH> | BRAKES: <int>"'
+            'Usage: python self_swarm_decider.py "SWARM VOTE: <intent> | RISK: <L|M|H|EH> | BRAKES: <int>"',
         )
         sys.exit(1)
     decision_input = " ".join(sys.argv[1:])

@@ -1,5 +1,4 @@
-"""
-AI & Innovation Agents for Vertex AI Workbench
+"""AI & Innovation Agents for Vertex AI Workbench
 """
 
 from typing import Any

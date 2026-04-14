@@ -1,5 +1,4 @@
-"""
-TDD Red Phase Agent - Hybrid Implementation
+"""TDD Red Phase Agent - Hybrid Implementation
 
 Single agent with two internal phases:
 1. Test Writing Phase - Generate failing tests
@@ -58,8 +57,7 @@ class TestOutput:
 
 
 class TDDRedPhaseAgent:
-    """
-    Hybrid TDD agent combining test writing with embedded validation.
+    """Hybrid TDD agent combining test writing with embedded validation.
 
     Usage:
         agent = TDDRedPhaseAgent()
@@ -72,8 +70,7 @@ class TDDRedPhaseAgent:
         self._iteration = 0
 
     def run(self, spec: str, existing_tests: str | None = None) -> TestOutput:
-        """
-        Main entry point. Runs test writing + validation loop.
+        """Main entry point. Runs test writing + validation loop.
 
         Args:
             spec: Feature specification to write tests for
@@ -81,6 +78,7 @@ class TDDRedPhaseAgent:
 
         Returns:
             TestOutput with test code and compliance report
+
         """
         start_time = time.time()
         test_code = existing_tests or ""
@@ -108,7 +106,7 @@ class TDDRedPhaseAgent:
             if report.passed:
                 audit_path = self._write_audit_log(report, test_code)
                 return TestOutput(
-                    test_code=test_code, compliance_report=report, audit_path=audit_path
+                    test_code=test_code, compliance_report=report, audit_path=audit_path,
                 )
 
             # Fail-fast on too many violations
@@ -116,7 +114,7 @@ class TDDRedPhaseAgent:
                 report.passed = False
                 audit_path = self._write_audit_log(report, test_code)
                 return TestOutput(
-                    test_code=test_code, compliance_report=report, audit_path=audit_path
+                    test_code=test_code, compliance_report=report, audit_path=audit_path,
                 )
 
             # Phase 3: Fix violations and retry
@@ -124,18 +122,17 @@ class TDDRedPhaseAgent:
 
         # Escalation: max iterations exceeded
         final_report = self._validate(
-            test_code, MAX_ITERATIONS, int((time.time() - start_time) * 1000)
+            test_code, MAX_ITERATIONS, int((time.time() - start_time) * 1000),
         )
         final_report.passed = False
         audit_path = self._write_audit_log(final_report, test_code, escalated=True)
 
         return TestOutput(
-            test_code=test_code, compliance_report=final_report, audit_path=audit_path
+            test_code=test_code, compliance_report=final_report, audit_path=audit_path,
         )
 
     def _write_tests(self, spec: str) -> str:
-        """
-        Phase 1: Generate failing tests from specification.
+        """Phase 1: Generate failing tests from specification.
 
         This is where LLM integration would generate tests.
         Returns template for demonstration.
@@ -182,8 +179,7 @@ class Test{self._to_class_name(spec)}:
         return test_template
 
     def _validate(self, test_code: str, iteration: int, elapsed_ms: int) -> ComplianceReport:
-        """
-        Phase 2: Self-validate against TDD-Guard rules.
+        """Phase 2: Self-validate against TDD-Guard rules.
 
         Returns compliance report with pass/fail and violations.
         """
@@ -199,7 +195,7 @@ class Test{self._to_class_name(spec)}:
                     message=f"Syntax error: {e}",
                     severity=Severity.CRITICAL,
                     line=e.lineno,
-                )
+                ),
             )
             return ComplianceReport(
                 passed=False,
@@ -220,8 +216,8 @@ class Test{self._to_class_name(spec)}:
         if tests_analyzed == 0:
             violations.append(
                 Violation(
-                    rule="no_tests", message="No test functions found", severity=Severity.CRITICAL
-                )
+                    rule="no_tests", message="No test functions found", severity=Severity.CRITICAL,
+                ),
             )
             score = 0.0
         else:
@@ -255,7 +251,7 @@ class Test{self._to_class_name(spec)}:
                     severity=Severity.MAJOR,
                     line=node.lineno,
                     test_name=node.name,
-                )
+                ),
             )
 
         # Rule 2: Docstring required
@@ -267,7 +263,7 @@ class Test{self._to_class_name(spec)}:
                     severity=Severity.MAJOR,
                     line=node.lineno,
                     test_name=node.name,
-                )
+                ),
             )
 
         # Rule 3: AAA pattern (check for comments)
@@ -285,7 +281,7 @@ class Test{self._to_class_name(spec)}:
                     severity=Severity.MINOR,
                     line=node.lineno,
                     test_name=node.name,
-                )
+                ),
             )
 
         # Rule 4: Has assertions
@@ -309,14 +305,13 @@ class Test{self._to_class_name(spec)}:
                     severity=Severity.CRITICAL,
                     line=node.lineno,
                     test_name=node.name,
-                )
+                ),
             )
 
         return violations
 
     def _fix_violations(self, test_code: str, violations: list[Violation]) -> str:
-        """
-        Phase 3: Auto-fix violations where possible.
+        """Phase 3: Auto-fix violations where possible.
 
         In production, this would use LLM to intelligently fix.
         Here we apply simple fixes for demonstration.
@@ -337,7 +332,7 @@ class Test{self._to_class_name(spec)}:
         return "\n".join(lines)
 
     def _write_audit_log(
-        self, report: ComplianceReport, test_code: str, escalated: bool = False
+        self, report: ComplianceReport, test_code: str, escalated: bool = False,
     ) -> str:
         """Write audit trail for compliance decisions."""
         timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")

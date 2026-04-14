@@ -58,8 +58,7 @@ class DrillTrigger(Enum):
 
 
 class RiskManager:
-    """
-    ATP 5-19 Composite Risk Manager.
+    """ATP 5-19 Composite Risk Manager.
 
     Scaffolded stub providing the 5-step CRM interface.
     """
@@ -69,14 +68,14 @@ class RiskManager:
         self._assessments: list[dict] = []
 
     async def full_assessment(
-        self, task: str, context: dict | None = None
+        self, task: str, context: dict | None = None,
     ) -> dict:
-        """
-        Execute 5-step CRM: Identify → Assess → Develop Controls →
+        """Execute 5-step CRM: Identify → Assess → Develop Controls →
         Implement → Supervise.
 
         Returns:
             Dict with risk assessment results.
+
         """
         assessment = {
             "task": task,
@@ -103,8 +102,7 @@ class RiskManager:
 
 
 class MDMPPipeline:
-    """
-    FM 6-0 Military Decision-Making Process pipeline.
+    """FM 6-0 Military Decision-Making Process pipeline.
 
     7-step MDMP for strategic decisions.
     """
@@ -135,8 +133,7 @@ class MDMPPipeline:
 
 
 class TLPPipeline:
-    """
-    FM 6-0 Troop Leading Procedures pipeline.
+    """FM 6-0 Troop Leading Procedures pipeline.
 
     8-step TLP for tactical/operational decisions (faster than MDMP).
     """
@@ -164,8 +161,7 @@ class TLPPipeline:
 
 
 class BattleDrillRouter:
-    """
-    FM 7-8 Battle Drill Router.
+    """FM 7-8 Battle Drill Router.
 
     Routes errors and incidents through standardized battle drills
     for predictable, trained responses.
@@ -180,10 +176,9 @@ class BattleDrillRouter:
         self._loaded = True
 
     async def route(
-        self, trigger: DrillTrigger, context: dict | None = None
+        self, trigger: DrillTrigger, context: dict | None = None,
     ) -> dict:
-        """
-        Route a trigger through the appropriate battle drill.
+        """Route a trigger through the appropriate battle drill.
 
         Args:
             trigger: The drill trigger type
@@ -191,6 +186,7 @@ class BattleDrillRouter:
 
         Returns:
             Dict with drill execution results
+
         """
         drill_map = {
             DrillTrigger.EXCEPTION: "BD-001-REACT_TO_CONTACT",

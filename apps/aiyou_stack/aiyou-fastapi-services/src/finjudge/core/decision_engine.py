@@ -1,5 +1,4 @@
-"""
-FinJudge Decision Engine
+"""FinJudge Decision Engine
 Core logic for financial governance decision-making
 """
 
@@ -38,25 +37,23 @@ from .atp_risk import (
 
 
 class DecisionEngine:
-    """
-    Core decision engine for FinJudge rulings
+    """Core decision engine for FinJudge rulings
     Orchestrates risk assessment, compliance checking, and ruling synthesis
     """
 
     def __init__(self, model_version: str = "v0.1.0"):
-        """
-        Initialize decision engine
+        """Initialize decision engine
 
         Args:
             model_version: FinJudge version identifier
+
         """
         self.model_version = model_version
         self.compliance_engine = ComplianceEngine()
         self.policy_engine = PolicyEngine()
 
     def evaluate(self, request: DecisionRequest) -> DecisionRuling:
-        """
-        Main evaluation method: produce ruling from request
+        """Main evaluation method: produce ruling from request
 
         Args:
             request: Decision request
@@ -71,6 +68,7 @@ class DecisionEngine:
             4. Apply policy rules
             5. Synthesize decision
             6. Generate ruling
+
         """
         start_time = time.time()
 
@@ -86,19 +84,19 @@ class DecisionEngine:
 
         # 3. Compliance check
         compliance_flags = self.compliance_engine.check_compliance(
-            request.decision_type, request.constraints.regulatory, request.evidence
+            request.decision_type, request.constraints.regulatory, request.evidence,
         )
         rules_applied.extend([f"Compliance-{flag.regulation}" for flag in compliance_flags])
 
         # 4. Policy rules
         policy_violations = self.policy_engine.check_policies(
-            request.constraints.policy_rules, request.evidence, request.constraints.risk_limits
+            request.constraints.policy_rules, request.evidence, request.constraints.risk_limits,
         )
         rules_applied.extend(request.constraints.policy_rules)
 
         # 5. Synthesize decision
         decision, confidence = self._synthesize_decision(
-            risk_assessment, compliance_flags, policy_violations, evidence_score
+            risk_assessment, compliance_flags, policy_violations, evidence_score,
         )
 
         # 6. Generate rationale
@@ -113,7 +111,7 @@ class DecisionEngine:
 
         # 7. Determine conditions
         conditions = self._generate_conditions(
-            decision, risk_assessment, compliance_flags, policy_violations
+            decision, risk_assessment, compliance_flags, policy_violations,
         )
 
         # 8. Next steps
@@ -152,14 +150,14 @@ class DecisionEngine:
         return ruling
 
     def _assess_evidence_quality(self, evidence: list[Evidence]) -> float:
-        """
-        Assess overall evidence quality
+        """Assess overall evidence quality
 
         Args:
             evidence: List of evidence items
 
         Returns:
             Quality score (0-100)
+
         """
         if not evidence:
             return 0.0
@@ -187,14 +185,14 @@ class DecisionEngine:
         return weighted_sum / weight_total if weight_total > 0 else 0.0
 
     def _assess_risk(self, request: DecisionRequest) -> RiskAssessment:
-        """
-        Assess risk using ATP 5-19 framework
+        """Assess risk using ATP 5-19 framework
 
         Args:
             request: Decision request
 
         Returns:
             Risk assessment
+
         """
         # Extract risk metrics from evidence
         probability_pct = 50.0  # Default: occasional
@@ -244,7 +242,7 @@ class DecisionEngine:
         )
 
     def _generate_mitigation(
-        self, risk_level: RiskLevel, severity: Severity, request: DecisionRequest
+        self, risk_level: RiskLevel, severity: Severity, request: DecisionRequest,
     ) -> list[str]:
         """Generate risk mitigation measures"""
         mitigation = []
@@ -271,8 +269,7 @@ class DecisionEngine:
         policy_violations: list[str],
         evidence_score: float,
     ) -> tuple[DecisionOutcome, float]:
-        """
-        Synthesize final decision from all inputs
+        """Synthesize final decision from all inputs
 
         Args:
             risk_assessment: ATP 5-19 risk assessment
@@ -282,6 +279,7 @@ class DecisionEngine:
 
         Returns:
             Tuple of (decision, confidence)
+
         """
         # Compliance violations = immediate deny
         has_violations = any(flag.status == ComplianceStatus.VIOLATION for flag in compliance_flags)
@@ -299,8 +297,7 @@ class DecisionEngine:
         if evidence_score < 50:
             if risk_level in (RiskLevel.EH, RiskLevel.H):
                 return DecisionOutcome.DENY, 75.0
-            else:
-                return DecisionOutcome.DEFER, 60.0
+            return DecisionOutcome.DEFER, 60.0
 
         # Decision matrix
         if risk_level == RiskLevel.EH:
@@ -336,7 +333,6 @@ class DecisionEngine:
         confidence: float,
     ) -> Rationale:
         """Generate Supreme Court-style rationale"""
-
         # Summary paragraph
         "approve" if request.decision_type.value.endswith("approval") else "assess"
         risk_desc = get_risk_description(risk_assessment.level)
@@ -384,7 +380,7 @@ class DecisionEngine:
 
         if risk_assessment.mitigation:
             key_factors.append(
-                f"Mitigation measures available: {len(risk_assessment.mitigation)} identified"
+                f"Mitigation measures available: {len(risk_assessment.mitigation)} identified",
             )
 
         # Precedents (placeholder - would query ruling history)
@@ -434,12 +430,12 @@ class DecisionEngine:
                     condition="Senior management sign-off required",
                     mandatory=True,
                     responsible_party="Risk Committee",
-                )
+                ),
             )
 
         for mitigation in risk_assessment.mitigation:
             conditions.append(
-                Condition(condition=mitigation, mandatory=True, responsible_party="Trading Desk")
+                Condition(condition=mitigation, mandatory=True, responsible_party="Trading Desk"),
             )
 
         # Compliance warnings
@@ -450,7 +446,7 @@ class DecisionEngine:
                         condition=f"Address compliance warning: {flag.details}",
                         mandatory=False,
                         responsible_party="Compliance Team",
-                    )
+                    ),
                 )
 
         return conditions
@@ -510,7 +506,7 @@ class DecisionEngine:
 
         if any(x is not None for x in [estimated_pnl, capital_requirement, cost]):
             return FinancialImpact(
-                estimated_pnl=estimated_pnl, capital_requirement=capital_requirement, cost=cost
+                estimated_pnl=estimated_pnl, capital_requirement=capital_requirement, cost=cost,
             )
 
         return None

@@ -15,8 +15,7 @@ client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 @router.post("/{video_id}")
 async def run_forensic_arbiter(video_id: str, vote: str):
-    """
-    Run 1: Gemini 3 Flash Thinking. Streams via AG-UI Server-Sent Events.
+    """Run 1: Gemini 3 Flash Thinking. Streams via AG-UI Server-Sent Events.
     Run 2: ADK Recursive sub-agents if confidence is low.
     """
 

@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - AM Briefing Generator and Delivery
+"""PNKLN Core Stack - AM Briefing Generator and Delivery
 
 Generates and delivers the morning intelligence briefing based on
 ingestion pipeline results.
@@ -26,8 +25,7 @@ logger = structlog.get_logger(__name__)
 
 
 class AMBriefingGenerator:
-    """
-    Generates and delivers AM intelligence briefing.
+    """Generates and delivers AM intelligence briefing.
 
     Uses Gemini to synthesize pipeline results into a concise
     executive summary suitable for morning review.
@@ -54,14 +52,14 @@ Based on the following ingestion pipeline results, create a concise morning brie
         logger.info("briefing_generator_initialized")
 
     async def generate(self, pipeline_summary: dict) -> str:
-        """
-        Generate AM briefing from pipeline summary.
+        """Generate AM briefing from pipeline summary.
 
         Args:
             pipeline_summary: Output from IngestionPipeline.run()
 
         Returns:
             Formatted briefing text (markdown)
+
         """
         # Format pipeline summary for Gemini
         summary_text = self._format_summary(pipeline_summary)
@@ -158,8 +156,7 @@ Intelligence collection completed successfully with {summary.get("items_accepted
         return path
 
     async def _deliver_googleworkspace(self, briefing: str, run_id: str) -> None:
-        """
-        Send briefing via gws (googleworkspace/cli) Gmail send.
+        """Send briefing via gws (googleworkspace/cli) Gmail send.
 
         Requires: `gws` CLI installed + authenticated (`gws auth login`).
         Recipient from env BRIEFING_RECIPIENT_EMAIL (falls back to config).
@@ -211,13 +208,13 @@ Intelligence collection completed successfully with {summary.get("items_accepted
         format: Literal["markdown", "html", "json"] = None,
         run_id: str | None = None,
     ) -> None:
-        """
-        Deliver briefing via file sink (always) and Slack webhook (when configured).
+        """Deliver briefing via file sink (always) and Slack webhook (when configured).
 
         Args:
             briefing: Formatted briefing text
             format: Override default format from config
             run_id: Unique run identifier for filename; defaults to UTC timestamp
+
         """
         format = format or self.config.delivery.format
         run_id = run_id or datetime.utcnow().strftime("%Y%m%d_%H%M%S")

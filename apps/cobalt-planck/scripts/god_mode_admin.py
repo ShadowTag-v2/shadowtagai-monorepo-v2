@@ -73,7 +73,7 @@ class GodModeEngine:
                 time.sleep(0.1)
             return
         print(
-            f"God Mode Engine 3.0. Project: {self.project_id}. Commands: /omega-loop, /status, /help, /exit"
+            f"God Mode Engine 3.0. Project: {self.project_id}. Commands: /omega-loop, /status, /help, /exit",
         )
         while not self.stop_event.is_set():
             try:

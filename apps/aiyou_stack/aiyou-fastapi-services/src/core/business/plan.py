@@ -1,5 +1,4 @@
-"""
-AI Agent Business Plan - Core Parameters & Models
+"""AI Agent Business Plan - Core Parameters & Models
 Vertical SaaS Model for AI Agent-as-a-Service
 
 Author: ShadowTag-v2JR System
@@ -147,14 +146,14 @@ class TechStack:
             "long_term": "Pinecone",
             "short_term": "Redis",
             "episodic": "Custom PostgreSQL schema",
-        }
+        },
     )
 
     deployment: dict[str, str] = field(
         default_factory=lambda: {
             "dev": "Vertex AI Workbench",
             "prod": "GKE (Google Kubernetes Engine)",
-        }
+        },
     )
 
     security: list[str] = field(
@@ -162,7 +161,7 @@ class TechStack:
             "GCP Secret Manager",
             "Encryption at rest/transit",
             "SOC 2 Type II (Month 18 target)",
-        ]
+        ],
     )
 
     monitoring: str = "Datadog + custom dashboards"
@@ -180,7 +179,7 @@ class AgentDesignPattern:
             "Task manager loops",
             "Hallucination detection",
             "Output validation",
-        ]
+        ],
     )
     tools: str = "Custom API wrappers (Notion, Slack, HubSpot, Apollo, etc.)"
 
@@ -196,7 +195,7 @@ class KillSwitch:
     action: str = ""
 
     def evaluate(
-        self, current_mrr: int, current_pilots: int = 0, current_ltv_cac: float = 0.0
+        self, current_mrr: int, current_pilots: int = 0, current_ltv_cac: float = 0.0,
     ) -> bool:
         """Check if kill-switch triggered"""
         triggers = []
@@ -226,7 +225,7 @@ class KillSwitchGates:
             ),
             KillSwitch(month=6, mrr_threshold=35_000, action="Reassess pricing/ICP"),
             KillSwitch(
-                month=12, mrr_threshold=100_000, ltv_cac_threshold=4.0, action="Scale or sell"
+                month=12, mrr_threshold=100_000, ltv_cac_threshold=4.0, action="Scale or sell",
             ),
         ]
 

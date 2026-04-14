@@ -1,5 +1,4 @@
-"""
-Unit tests for Ethical Crawler (robots.txt + rate limiting).
+"""Unit tests for Ethical Crawler (robots.txt + rate limiting).
 """
 
 import pytest
@@ -25,7 +24,7 @@ class TestEthicalCrawler:
         self.crawler.robots_cache["example.com"] = rules
 
         allowed, reason = self.crawler.check_robots_txt_compliance(
-            "https://example.com/public/page"
+            "https://example.com/public/page",
         )
 
         assert allowed is True
@@ -38,7 +37,7 @@ class TestEthicalCrawler:
         self.crawler.robots_cache["example.com"] = rules
 
         allowed, reason = self.crawler.check_robots_txt_compliance(
-            "https://example.com/admin/users"
+            "https://example.com/admin/users",
         )
 
         assert allowed is False
@@ -117,7 +116,7 @@ class TestEthicalCrawler:
     async def test_custom_rate_limit_config(self):
         """Test custom rate limit configuration."""
         self.crawler.configure_rate_limit(
-            "custom_source", requests_per_minute=50, requests_per_hour=2000
+            "custom_source", requests_per_minute=50, requests_per_hour=2000,
         )
 
         config = self.crawler.rate_limits["custom_source"]

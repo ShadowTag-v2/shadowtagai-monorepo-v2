@@ -18,8 +18,7 @@ def wait_for_sonarqube():
                 if status == "UP":
                     print("✅ SonarQube is UP!")
                     return True
-                else:
-                    print(f"   Status: {status} (waiting...)")
+                print(f"   Status: {status} (waiting...)")
         except requests.exceptions.ConnectionError:
             print(f"   Connection refused (attempt {i + 1}/{retries})...")
 
@@ -47,12 +46,11 @@ def generate_token():
             token = response.json().get("token")
             print("✅ Token generated successfully")
             return token
-        elif response.status_code == 401:
+        if response.status_code == 401:
             print("❌ Authentication failed. Default admin:admin credentials didn't work.")
             return None
-        else:
-            print(f"❌ Failed to generate token: {response.text}")
-            return None
+        print(f"❌ Failed to generate token: {response.text}")
+        return None
     except Exception as e:
         print(f"❌ Error: {e}")
         return None
@@ -68,7 +66,7 @@ def main():
     token = generate_token()
     if not token:
         print(
-            "⚠️  Could not auto-generate token. You may need to log in to http://localhost:9000 (admin/admin) manually."
+            "⚠️  Could not auto-generate token. You may need to log in to http://localhost:9000 (admin/admin) manually.",
         )
         sys.exit(1)
 

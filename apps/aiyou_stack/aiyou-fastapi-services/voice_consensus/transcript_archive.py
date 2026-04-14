@@ -1,5 +1,4 @@
-"""
-Transcript Archive System
+"""Transcript Archive System
 Persistent storage and indexing for all consensus queries/responses
 
 Solves: GPT's memory fragmentation problem
@@ -18,8 +17,7 @@ from typing import Any
 
 
 class TranscriptArchive:
-    """
-    Persistent archive for consensus transcripts with full-text search.
+    """Persistent archive for consensus transcripts with full-text search.
 
     Features:
     - SQLite storage (local, portable, no cloud dependencies)
@@ -115,7 +113,7 @@ class TranscriptArchive:
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_timestamp ON transcripts(timestamp)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_session ON transcripts(session_id)")
         cursor.execute(
-            "CREATE INDEX IF NOT EXISTS idx_thread ON transcripts(conversation_thread_id)"
+            "CREATE INDEX IF NOT EXISTS idx_thread ON transcripts(conversation_thread_id)",
         )
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_tags ON transcripts(tags)")
 
@@ -131,8 +129,7 @@ class TranscriptArchive:
         session_id: str = None,
         conversation_thread_id: str = None,
     ) -> int:
-        """
-        Archive a consensus result.
+        """Archive a consensus result.
 
         Args:
             user_query: Original user query
@@ -145,12 +142,13 @@ class TranscriptArchive:
 
         Returns:
             Database row ID
+
         """
         cursor = self.conn.cursor()
 
         # Generate unique hash for query
         query_hash = hashlib.sha256(
-            f"{user_query}{datetime.utcnow().isoformat()}".encode()
+            f"{user_query}{datetime.utcnow().isoformat()}".encode(),
         ).hexdigest()[:16]
 
         # Extract metadata from result
@@ -159,7 +157,7 @@ class TranscriptArchive:
         summary = result.get("execution_summary", {})
         thread_count = summary.get("total_threads", 0)
         models_consulted = summary.get(
-            "total_models_consulted", len(result.get("layer2_responses", [])) + 2
+            "total_models_consulted", len(result.get("layer2_responses", [])) + 2,
         )
         peer_reviews = summary.get("total_peer_reviews", len(result.get("peer_reviews", [])))
         exec_time = summary.get("avg_execution_time", 0)
@@ -209,8 +207,7 @@ class TranscriptArchive:
         date_from: str = None,
         date_to: str = None,
     ) -> list[dict[str, Any]]:
-        """
-        Full-text search across all transcripts.
+        """Full-text search across all transcripts.
 
         Args:
             query: Search query (supports SQLite FTS5 syntax)
@@ -222,6 +219,7 @@ class TranscriptArchive:
 
         Returns:
             List of matching transcripts
+
         """
         cursor = self.conn.cursor()
 
@@ -232,7 +230,7 @@ class TranscriptArchive:
         if query:
             # Use FTS for search
             where_clauses.append(
-                "id IN (SELECT rowid FROM transcripts_fts WHERE transcripts_fts MATCH ?)"
+                "id IN (SELECT rowid FROM transcripts_fts WHERE transcripts_fts MATCH ?)",
             )
             params.append(query)
 
@@ -427,7 +425,7 @@ class TranscriptArchive:
         total = cursor.fetchone()["total"]
 
         cursor.execute(
-            "SELECT system_type, COUNT(*) as count FROM transcripts GROUP BY system_type"
+            "SELECT system_type, COUNT(*) as count FROM transcripts GROUP BY system_type",
         )
         by_system = {row["system_type"]: row["count"] for row in cursor.fetchall()}
 
@@ -473,7 +471,7 @@ def main():
     search_parser.add_argument("--limit", type=int, default=10, help="Max results")
     search_parser.add_argument("--tags", nargs="+", help="Filter by tags")
     search_parser.add_argument(
-        "--type", choices=["atomic", "simple", "message"], help="System type"
+        "--type", choices=["atomic", "simple", "message"], help="System type",
     )
 
     # Recent
@@ -503,7 +501,7 @@ def main():
 
     if args.command == "search":
         results = archive.search(
-            query=args.query, limit=args.limit, tags=args.tags, system_type=args.type
+            query=args.query, limit=args.limit, tags=args.tags, system_type=args.type,
         )
 
         print(f"\nFound {len(results)} results:\n")

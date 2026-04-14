@@ -1,5 +1,4 @@
-"""
-Router Agent - The orchestrator that analyzes tasks and delegates to specialists.
+"""Router Agent - The orchestrator that analyzes tasks and delegates to specialists.
 
 This agent acts as the "manager" in the swarm, analyzing user requests,
 determining which specialist agents to involve, and synthesizing final results.
@@ -9,8 +8,7 @@ from src.antigravity.agents.base_agent import BaseAgent
 
 
 class RouterAgent(BaseAgent):
-    """
-    Router agent responsible for task analysis and delegation.
+    """Router agent responsible for task analysis and delegation.
 
     The Router analyzes incoming tasks, determines which specialist workers
     should handle them, coordinates multi-step workflows, and synthesizes
@@ -41,14 +39,14 @@ You may delegate to multiple agents in sequence or parallel."""
         super().__init__(role="router", system_prompt=system_prompt)
 
     def analyze_and_delegate(self, user_task: str) -> list[dict[str, str]]:
-        """
-        Analyze a user task and create a delegation plan.
+        """Analyze a user task and create a delegation plan.
 
         Args:
             user_task: The task provided by the user.
 
         Returns:
             List of delegation instructions, each containing 'agent' and 'task'.
+
         """
         analysis = self.execute(user_task)
 
@@ -76,14 +74,14 @@ You may delegate to multiple agents in sequence or parallel."""
         return delegations
 
     def _simple_delegate(self, task: str) -> list[dict[str, str]]:
-        """
-        Simple keyword-based delegation as fallback.
+        """Simple keyword-based delegation as fallback.
 
         Args:
             task: The task to analyze.
 
         Returns:
             List of delegations based on keywords.
+
         """
         task_lower = task.lower()
         delegations = []
@@ -114,8 +112,7 @@ You may delegate to multiple agents in sequence or parallel."""
         return delegations
 
     def synthesize_results(self, delegations: list[dict[str, str]], results: list[str]) -> str:
-        """
-        Synthesize final response from multiple agent results.
+        """Synthesize final response from multiple agent results.
 
         Args:
             delegations: The original delegation plan.
@@ -123,6 +120,7 @@ You may delegate to multiple agents in sequence or parallel."""
 
         Returns:
             Final synthesized response.
+
         """
         synthesis_prompt = """Synthesize a final response based on the following agent outputs:
 

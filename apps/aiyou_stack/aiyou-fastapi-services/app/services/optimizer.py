@@ -1,5 +1,4 @@
-"""
-Performance optimization recommendations engine
+"""Performance optimization recommendations engine
 Automatically suggests and applies optimizations
 """
 
@@ -19,8 +18,7 @@ from app.services.bottleneck_detector import BottleneckDetector
 
 
 class PerformanceOptimizer:
-    """
-    Analyzes performance data and generates actionable optimization suggestions
+    """Analyzes performance data and generates actionable optimization suggestions
     """
 
     def __init__(self, session: AsyncSession):
@@ -28,8 +26,7 @@ class PerformanceOptimizer:
         self.detector = BottleneckDetector(session)
 
     async def generate_all_suggestions(self) -> list[dict[str, Any]]:
-        """
-        Generate all optimization suggestions based on current performance data
+        """Generate all optimization suggestions based on current performance data
         """
         suggestions = []
 
@@ -56,8 +53,7 @@ class PerformanceOptimizer:
         return suggestions
 
     async def _suggest_caching(self) -> list[dict[str, Any]]:
-        """
-        Identify endpoints that would benefit from caching
+        """Identify endpoints that would benefit from caching
         """
         suggestions = []
         cutoff_time = datetime.utcnow() - timedelta(hours=1)
@@ -102,14 +98,13 @@ async def your_endpoint():
                         "avg_duration": round(row.avg_duration, 4),
                         "potential_savings_seconds": round(potential_savings, 2),
                     },
-                }
+                },
             )
 
         return suggestions
 
     async def _suggest_database_optimizations(self) -> list[dict[str, Any]]:
-        """
-        Suggest database-related optimizations
+        """Suggest database-related optimizations
         """
         suggestions = []
 
@@ -140,7 +135,7 @@ users = await session.execute(stmt)
                         "call_count": issue["call_count"],
                         "total_time": issue["total_time"],
                     },
-                }
+                },
             )
 
         # Find slow queries
@@ -162,7 +157,7 @@ users = await session.execute(stmt)
                         Bottleneck.function_name.like("%query%")
                         | Bottleneck.function_name.like("%execute%")
                     ),
-                )
+                ),
             )
             .order_by(desc(Bottleneck.duration))
             .limit(5)
@@ -198,14 +193,13 @@ users = await session.execute(stmt)
                         "duration": round(query.duration, 4),
                         "percentage": round(query.percentage, 2),
                     },
-                }
+                },
             )
 
         return suggestions
 
     async def _suggest_async_improvements(self) -> list[dict[str, Any]]:
-        """
-        Suggest where async/await can improve performance
+        """Suggest where async/await can improve performance
         """
         suggestions = []
 
@@ -221,7 +215,7 @@ users = await session.execute(stmt)
                         | Bottleneck.function_name.like("%write%")
                         | Bottleneck.function_name.like("%fetch%")
                     ),
-                )
+                ),
             )
             .order_by(desc(Bottleneck.duration))
             .limit(5)
@@ -257,14 +251,13 @@ results = await asyncio.gather(*[fetch_data(item) for item in items])
                             "total_time": round(bottleneck.duration, 4),
                             "potential_speedup": f"{bottleneck.call_count}x",
                         },
-                    }
+                    },
                 )
 
         return suggestions
 
     async def _suggest_code_optimizations(self) -> list[dict[str, Any]]:
-        """
-        Suggest general code-level optimizations
+        """Suggest general code-level optimizations
         """
         suggestions = []
 
@@ -314,7 +307,7 @@ results = await asyncio.gather(*[fetch_data(item) for item in items])
                         "percentage": round(bottleneck.percentage, 2),
                         "duration": round(bottleneck.duration, 4),
                     },
-                }
+                },
             )
 
         return suggestions
@@ -335,8 +328,7 @@ results = await asyncio.gather(*[fetch_data(item) for item in items])
             print(f"Error storing suggestion: {e}")
 
     async def get_optimization_report(self) -> dict[str, Any]:
-        """
-        Generate a comprehensive optimization report
+        """Generate a comprehensive optimization report
         """
         suggestions = await self.generate_all_suggestions()
 

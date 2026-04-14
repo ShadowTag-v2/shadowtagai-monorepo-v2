@@ -1,5 +1,4 @@
-"""
-Vertex AI RAG Corpus Manager
+"""Vertex AI RAG Corpus Manager
 Handles creation, management, and querying of policy document corpora
 """
 
@@ -14,8 +13,7 @@ logger = structlog.get_logger(__name__)
 
 
 class CorpusManager:
-    """
-    Manages Vertex AI RAG corpora for policy documents
+    """Manages Vertex AI RAG corpora for policy documents
 
     Each vertical gets its own corpus with regulatory documents.
     Supports creating, importing, and querying document corpora.
@@ -49,10 +47,9 @@ class CorpusManager:
             raise
 
     async def create_corpus(
-        self, vertical_config: VerticalConfig, force_recreate: bool = False
+        self, vertical_config: VerticalConfig, force_recreate: bool = False,
     ) -> str:
-        """
-        Create a RAG corpus for a specific vertical
+        """Create a RAG corpus for a specific vertical
 
         Args:
             vertical_config: Configuration for the vertical
@@ -60,6 +57,7 @@ class CorpusManager:
 
         Returns:
             Corpus name (resource ID)
+
         """
         await self.initialize()
 
@@ -105,14 +103,14 @@ class CorpusManager:
         chunk_size: int | None = None,
         chunk_overlap: int | None = None,
     ) -> None:
-        """
-        Import files into a corpus
+        """Import files into a corpus
 
         Args:
             corpus_name: Target corpus resource name
             file_paths: List of GCS URIs (gs://bucket/path/file.pdf)
             chunk_size: Override default chunk size
             chunk_overlap: Override default chunk overlap
+
         """
         await self.initialize()
 
@@ -144,8 +142,7 @@ class CorpusManager:
             raise
 
     async def setup_vertical(self, vertical_name: str, document_paths: list[str]) -> str:
-        """
-        Complete setup for a vertical: create corpus and import documents
+        """Complete setup for a vertical: create corpus and import documents
 
         Args:
             vertical_name: Name of the vertical
@@ -153,6 +150,7 @@ class CorpusManager:
 
         Returns:
             Corpus name
+
         """
         vertical_config = get_vertical_config(vertical_name)
 
@@ -166,11 +164,11 @@ class CorpusManager:
         return corpus_name
 
     async def list_corpora(self) -> list[dict[str, str]]:
-        """
-        List all corpora in the project
+        """List all corpora in the project
 
         Returns:
             List of corpus metadata dicts
+
         """
         await self.initialize()
 
@@ -193,11 +191,11 @@ class CorpusManager:
             raise
 
     async def delete_corpus(self, corpus_name: str) -> None:
-        """
-        Delete a corpus
+        """Delete a corpus
 
         Args:
             corpus_name: Corpus resource name to delete
+
         """
         await self.initialize()
 
@@ -214,13 +212,13 @@ class CorpusManager:
             raise
 
     def get_corpus_name(self, vertical_name: str) -> str | None:
-        """
-        Get cached corpus name for a vertical
+        """Get cached corpus name for a vertical
 
         Args:
             vertical_name: Name of the vertical
 
         Returns:
             Corpus name if cached, None otherwise
+
         """
         return self._corpus_cache.get(vertical_name)

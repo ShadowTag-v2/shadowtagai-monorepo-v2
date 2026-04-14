@@ -1,5 +1,4 @@
-"""
-Judge #6 Validation Service
+"""Judge #6 Validation Service
 Implements PNKLN Core Stack™ Logic & Validation (L) component
 Based on docs/cor8-shadowtag_v4-global-edge-fabric/03-technical-architecture/judge-six-validation.md
 """
@@ -20,8 +19,7 @@ from app.models.schemas import (
 
 
 class ATP519RuleEngine:
-    """
-    ATP 5-19 (NATO) compliance rule engine
+    """ATP 5-19 (NATO) compliance rule engine
     Implements: Source Reliability, Credibility, Timeliness, Completeness, Relevance
     """
 
@@ -66,20 +64,19 @@ class ATP519RuleEngine:
             accuracy = source_history.get("accuracy", 0.5)
             if accuracy >= 0.95:
                 return "A (Completely Reliable)"
-            elif accuracy >= 0.85:
+            if accuracy >= 0.85:
                 return "B (Usually Reliable)"
-            elif accuracy >= 0.70:
+            if accuracy >= 0.70:
                 return "C (Fairly Reliable)"
-            elif accuracy >= 0.50:
+            if accuracy >= 0.50:
                 return "D (Not Usually Reliable)"
-            else:
-                return "E (Unreliable)"
+            return "E (Unreliable)"
 
         # Default: Fairly Reliable (C)
         return "C (Fairly Reliable)"
 
     def rate_credibility(
-        self, title: str, content: str, tags: list[str], cross_references: int = 0
+        self, title: str, content: str, tags: list[str], cross_references: int = 0,
     ) -> int:
         """Rate information credibility (1-6 scale)"""
         # If cross-referenced by multiple sources
@@ -105,12 +102,11 @@ class ATP519RuleEngine:
 
         if age < timedelta(hours=24):
             return "current (<24h)"
-        elif age < timedelta(hours=48):
+        if age < timedelta(hours=48):
             return "current (<48h)"
-        elif age < timedelta(days=7):
+        if age < timedelta(days=7):
             return "recent (<7d)"
-        else:
-            return "stale (>7d)"
+        return "stale (>7d)"
 
     def check_completeness(self, item_data: dict) -> float:
         """Check SALUTE format completeness (0.0-1.0)"""
@@ -129,8 +125,7 @@ class ATP519RuleEngine:
 
 
 class JRComplianceChecker:
-    """
-    Joint Requirements (JR) compliance checker
+    """Joint Requirements (JR) compliance checker
     Checks: ITAR, EAR, NIST RMF, OPSEC
     """
 
@@ -152,8 +147,7 @@ class JRComplianceChecker:
     ]
 
     def check_itar(self, content: str) -> tuple[str, str | None]:
-        """
-        Check for ITAR violations
+        """Check for ITAR violations
         Returns: (status, category_if_violation)
         """
         content_lower = content.lower()
@@ -199,8 +193,7 @@ class JRComplianceChecker:
 
 
 class ValidationService:
-    """
-    Main Judge #6 validation service
+    """Main Judge #6 validation service
     Coordinates ATP 5-19 and JR compliance validation
     """
 
@@ -210,8 +203,7 @@ class ValidationService:
         self.validation_cache: dict[str, ValidationResponse] = {}
 
     async def validate(self, request: ValidationRequest, item_data: dict) -> ValidationResponse:
-        """
-        Validate intelligence item against ATP 5-19 & JR compliance
+        """Validate intelligence item against ATP 5-19 & JR compliance
         Returns: ValidationResponse with PASS/FAIL/FLAG result
         """
         start_time = time.time()
@@ -253,7 +245,7 @@ class ValidationService:
                 "published_at": published_at,
                 "tags": tags,
                 "source": source,
-            }
+            },
         )
         relevance = self.atp_engine.check_relevance(tags)
 
@@ -354,8 +346,7 @@ class ValidationService:
         profile: ValidationProfile,
         _coverage_threshold: float,
     ) -> tuple[str, list[FailureReason] | None, list[FlagReason] | None, str | None, str | None]:
-        """
-        Determine validation result: PASS, FAIL, or FLAG
+        """Determine validation result: PASS, FAIL, or FLAG
         Returns: (result, failure_reasons, flag_reasons, next_action, recommended_action)
         """
         failure_reasons = []
@@ -369,7 +360,7 @@ class ValidationService:
                     severity="critical",
                     description=jr_compliance.itar_check,
                     matched_text="[Content contains export-controlled technical data]",
-                )
+                ),
             )
             return (
                 "FAIL",
@@ -387,7 +378,7 @@ class ValidationService:
                     severity="high",
                     description=f"OPSEC violations detected: {', '.join(jr_compliance.opsec_violations)}",
                     matched_text=None,
-                )
+                ),
             )
             return (
                 "FAIL",
@@ -406,7 +397,7 @@ class ValidationService:
                     severity="medium",
                     description=f"Source reliability {atp_scores.source_reliability} below threshold (C)",
                     recommendation="human_review",
-                )
+                ),
             )
 
         if atp_scores.credibility > 3:  # 4, 5, 6 = doubtful/improbable
@@ -416,7 +407,7 @@ class ValidationService:
                     severity="medium",
                     description=f"Credibility score {atp_scores.credibility} in borderline range (>3)",
                     recommendation="human_review",
-                )
+                ),
             )
 
         if atp_scores.completeness < 0.80:
@@ -426,7 +417,7 @@ class ValidationService:
                     severity="low",
                     description=f"Completeness {atp_scores.completeness:.2%} below 80% threshold",
                     recommendation="request_additional_data",
-                )
+                ),
             )
 
         # Determine final result

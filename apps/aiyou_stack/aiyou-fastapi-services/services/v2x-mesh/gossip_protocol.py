@@ -1,5 +1,4 @@
-"""
-Gossip Protocol for V2X Mesh Networking
+"""Gossip Protocol for V2X Mesh Networking
 
 Implements epidemic-style message propagation with:
 - Geo-scoped TTL (messages expire based on distance)
@@ -98,7 +97,7 @@ class GossipProtocol:
         # Message tracking
         self.message_cache: dict[str, ARMPMessage] = {}  # msg_hash -> message
         self.peer_message_versions: dict[bytes, set[str]] = defaultdict(
-            set
+            set,
         )  # peer_id -> {msg_hashes}
 
         # Rate limiting per priority
@@ -129,7 +128,7 @@ class GossipProtocol:
         """Add or update peer information"""
         if peer_id not in self.peers:
             self.peers[peer_id] = PeerInfo(
-                peer_id=peer_id, last_seen=time.time(), position=position
+                peer_id=peer_id, last_seen=time.time(), position=position,
             )
         else:
             self.peers[peer_id].last_seen = time.time()
@@ -146,8 +145,7 @@ class GossipProtocol:
         self.peer_message_versions.pop(peer_id, None)
 
     async def handle_message(self, message: ARMPMessage, from_peer: bytes | None = None) -> bool:
-        """
-        Handle incoming message
+        """Handle incoming message
         Returns True if message is new and should be processed
         """
         msg_hash = message.compute_hash()
@@ -208,7 +206,7 @@ class GossipProtocol:
             self.stats["messages_sent"] += len(tasks)
 
     def _select_gossip_targets(
-        self, message: ARMPMessage, exclude_peer: bytes | None = None
+        self, message: ARMPMessage, exclude_peer: bytes | None = None,
     ) -> list[bytes]:
         """Select peers to forward message to"""
         # Filter eligible peers
@@ -268,7 +266,7 @@ class GossipProtocol:
         # Adjust for network density
         if num_eligible < base_fanout:
             return num_eligible
-        elif num_eligible > base_fanout * 3:
+        if num_eligible > base_fanout * 3:
             # Dense network, reduce fanout to avoid congestion
             return max(self.config.min_fanout, int(base_fanout * 0.8))
 
@@ -376,8 +374,7 @@ class AntiEntropySync:
         self.gossip = gossip
 
     async def sync_with_peer(self, peer_id: bytes):
-        """
-        Perform anti-entropy sync with a peer
+        """Perform anti-entropy sync with a peer
         Exchange message digests and request missing messages
         """
         # Get our message hashes

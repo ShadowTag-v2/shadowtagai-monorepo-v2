@@ -18,7 +18,6 @@ depends_on = None
 
 def upgrade():
     """Create all tables for legal deadline management"""
-
     # Legal documents table
     op.create_table(
         "legal_documents",
@@ -49,7 +48,7 @@ def upgrade():
         "deadlines",
         sa.Column("id", sa.String(50), primary_key=True),
         sa.Column(
-            "document_id", sa.String(50), sa.ForeignKey("legal_documents.id"), nullable=False
+            "document_id", sa.String(50), sa.ForeignKey("legal_documents.id"), nullable=False,
         ),
         sa.Column("deadline_type", sa.String(50), nullable=False),
         sa.Column("deadline_date", sa.Date, nullable=False),

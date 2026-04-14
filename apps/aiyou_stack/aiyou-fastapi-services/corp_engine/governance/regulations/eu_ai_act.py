@@ -1,5 +1,4 @@
-"""
-EU AI Act Compliance Module
+"""EU AI Act Compliance Module
 ============================
 Full implementation of EU AI Act requirements.
 Focus on Article 26 and high-risk AI system regulations.
@@ -49,8 +48,7 @@ class AISystemCategory(StrEnum):
 
 
 class Article26Requirements(BaseModel):
-    """
-    Article 26 specific requirements for deployers of high-risk AI systems.
+    """Article 26 specific requirements for deployers of high-risk AI systems.
 
     Deployers must:
     1. Use AI systems in accordance with instructions
@@ -110,8 +108,7 @@ class TransparencyRequirement(BaseModel):
 
 
 class EUAIActCompliance:
-    """
-    EU AI Act Compliance Engine.
+    """EU AI Act Compliance Engine.
 
     Implements full EU AI Act compliance checking including:
     - Risk classification
@@ -160,10 +157,9 @@ class EUAIActCompliance:
     # =========================================================================
 
     def classify_system(
-        self, system_id: str, category: AISystemCategory, use_case: str, capabilities: list[str]
+        self, system_id: str, category: AISystemCategory, use_case: str, capabilities: list[str],
     ) -> RiskClassification:
-        """
-        Classify an AI system according to EU AI Act risk levels.
+        """Classify an AI system according to EU AI Act risk levels.
 
         Args:
             system_id: Unique system identifier
@@ -173,6 +169,7 @@ class EUAIActCompliance:
 
         Returns:
             Risk classification
+
         """
         # Check for prohibited uses
         for prohibited in self.PROHIBITED_USES:
@@ -204,10 +201,9 @@ class EUAIActCompliance:
     # =========================================================================
 
     def assess_article26(
-        self, system_id: str, deployer_id: str, current_state: dict[str, Any]
+        self, system_id: str, deployer_id: str, current_state: dict[str, Any],
     ) -> Article26Requirements:
-        """
-        Assess Article 26 compliance for a high-risk AI system.
+        """Assess Article 26 compliance for a high-risk AI system.
 
         Returns detailed requirements status and gaps.
         """
@@ -292,8 +288,7 @@ class EUAIActCompliance:
         disclosure_provided: bool,
         disclosure_method: str,
     ) -> TransparencyRequirement:
-        """
-        Check Article 52 transparency compliance.
+        """Check Article 52 transparency compliance.
 
         For AI systems that:
         - Interact with natural persons (chatbots)
@@ -314,11 +309,11 @@ class EUAIActCompliance:
             if not disclosure_provided:
                 logger.warning(
                     f"Transparency violation: synthetic content {content_id} "
-                    "requires disclosure (Article 52)"
+                    "requires disclosure (Article 52)",
                 )
             elif disclosure_method not in ["watermark", "label", "metadata"]:
                 logger.warning(
-                    f"Disclosure method '{disclosure_method}' may not meet Article 52 requirements"
+                    f"Disclosure method '{disclosure_method}' may not meet Article 52 requirements",
                 )
 
         self._transparency_records[content_id] = requirement
@@ -336,8 +331,7 @@ class EUAIActCompliance:
         affected_persons: int,
         severity: str,
     ) -> str:
-        """
-        Report a serious incident as required by Article 62.
+        """Report a serious incident as required by Article 62.
 
         Serious incidents must be reported within 15 days.
         """
@@ -359,7 +353,7 @@ class EUAIActCompliance:
 
         logger.critical(
             f"SERIOUS INCIDENT REPORTED: {incident_id} - {incident_type} "
-            f"affecting {affected_persons} persons"
+            f"affecting {affected_persons} persons",
         )
 
         return incident_id
@@ -369,10 +363,9 @@ class EUAIActCompliance:
     # =========================================================================
 
     async def full_compliance_check(
-        self, system_id: str, deployer_id: str, operation_data: dict[str, Any]
+        self, system_id: str, deployer_id: str, operation_data: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Full EU AI Act compliance check.
+        """Full EU AI Act compliance check.
 
         Returns comprehensive compliance status.
         """
@@ -400,7 +393,7 @@ class EUAIActCompliance:
                     "article": "Article 5",
                     "description": "Prohibited AI practice",
                     "severity": "critical",
-                }
+                },
             )
             return result
 
@@ -415,7 +408,7 @@ class EUAIActCompliance:
                             "article": "Article 26",
                             "description": gap,
                             "severity": "high",
-                        }
+                        },
                     )
 
         # Limited risk = transparency check
@@ -427,7 +420,7 @@ class EUAIActCompliance:
                             "article": "Article 52",
                             "description": "AI-generated content not disclosed",
                             "severity": "medium",
-                        }
+                        },
                     )
                     result["compliant"] = False
 

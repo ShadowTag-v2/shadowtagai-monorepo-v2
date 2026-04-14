@@ -80,7 +80,7 @@ class ParametricBenchmark(FactsBenchmark):
                     gold_answer=gold,
                     is_correct=score > 0.5,
                     score=score,
-                )
+                ),
             )
             logger.info(f"Processed {item.get('id')}: Score={score}")
 
@@ -114,7 +114,7 @@ class GroundingBenchmark(FactsBenchmark):
                     gold_answer=gold,
                     is_correct=score > 0.5,
                     score=score,
-                )
+                ),
             )
             logger.info(f"Processed {item.get('id')}: Score={score}")
 
@@ -172,7 +172,7 @@ def main():
         if total > 0:
             avg_score = sum(r.score for r in results) / total
             logger.info(
-                f"Benchmark {name} Complete. Average Score: {avg_score:.2f} ({total} examples)"
+                f"Benchmark {name} Complete. Average Score: {avg_score:.2f} ({total} examples)",
             )
 
             # Save detailed results

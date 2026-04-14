@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer API Endpoints
+"""Gemini Ingestion Layer API Endpoints
 """
 
 import logging
@@ -22,8 +21,7 @@ router = APIRouter(prefix="/ingestion", tags=["Intelligence Ingestion"])
 
 @router.post("/jobs", response_model=dict, status_code=202)
 async def start_ingestion_job(request: JobStartRequest):
-    """
-    Start a new intelligence ingestion job.
+    """Start a new intelligence ingestion job.
 
     This endpoint initiates a nightly batch intelligence collection job that:
     - Collects from 8+ intelligence sources (YouTube, Twitter, News, etc.)
@@ -59,13 +57,12 @@ async def start_ingestion_job(request: JobStartRequest):
 
     except Exception as e:
         logger.error(f"Failed to start ingestion job: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Failed to start job: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to start job: {e!s}")
 
 
 @router.get("/jobs/{job_id}/status", response_model=JobStatusResponse)
 async def get_job_status(job_id: str = Path(..., description="Job identifier")):
-    """
-    Get status of a specific ingestion job.
+    """Get status of a specific ingestion job.
 
     **Returns:**
     - Job status (pending, running, completed, failed)
@@ -88,8 +85,7 @@ async def get_job_status(job_id: str = Path(..., description="Job identifier")):
 
 @router.get("/jobs/{job_id}", response_model=JobResult)
 async def get_job_result(job_id: str = Path(..., description="Job identifier")):
-    """
-    Get full result of a completed ingestion job.
+    """Get full result of a completed ingestion job.
 
     **Returns:**
     - Complete job metrics
@@ -117,8 +113,7 @@ async def list_jobs(
     page: int = Query(1, ge=1, description="Page number (1-indexed)"),
     page_size: int = Query(10, ge=1, le=100, description="Items per page"),
 ):
-    """
-    List recent ingestion jobs with pagination.
+    """List recent ingestion jobs with pagination.
 
     **Returns:**
     - Paginated list of jobs (most recent first)
@@ -136,8 +131,7 @@ async def list_jobs(
 
 @router.get("/metrics", response_model=MetricsSummary)
 async def get_metrics_summary():
-    """
-    Get aggregated metrics across all ingestion jobs.
+    """Get aggregated metrics across all ingestion jobs.
 
     **Returns:**
     - Total/successful/failed job counts
@@ -162,8 +156,7 @@ async def get_metrics_summary():
 
 @router.get("/health", response_model=dict)
 async def ingestion_health_check():
-    """
-    Health check for ingestion service.
+    """Health check for ingestion service.
 
     **Returns:**
     - Service status

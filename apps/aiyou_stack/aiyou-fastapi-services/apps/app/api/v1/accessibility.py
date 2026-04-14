@@ -1,5 +1,4 @@
-"""
-Accessibility and safety compliance API endpoints
+"""Accessibility and safety compliance API endpoints
 Implements WCAG 2.2, COPPA, and Age Appropriate Design Code
 """
 
@@ -23,8 +22,7 @@ accessibility_engine = AccessibilityEngine()
 
 @router.post("/wcag/audit", response_model=WCAGAuditResponse)
 async def audit_wcag(request: WCAGAuditRequest):
-    """
-    WCAG 2.2 accessibility audit
+    """WCAG 2.2 accessibility audit
 
     Checks conformance to:
     - Level A (minimum)
@@ -43,8 +41,7 @@ async def audit_wcag(request: WCAGAuditRequest):
 
 @router.post("/coppa/check", response_model=COPPAComplianceResponse)
 async def check_coppa(request: COPPAComplianceRequest):
-    """
-    COPPA compliance check
+    """COPPA compliance check
 
     Verifies:
     - Age verification (under 13)
@@ -59,8 +56,7 @@ async def check_coppa(request: COPPAComplianceRequest):
 
 @router.post("/aadc/check", response_model=AADCComplianceResponse)
 async def check_aadc(request: AADCComplianceRequest):
-    """
-    Age Appropriate Design Code (UK) compliance check
+    """Age Appropriate Design Code (UK) compliance check
 
     Verifies:
     - Age-appropriate privacy settings

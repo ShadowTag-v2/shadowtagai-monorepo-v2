@@ -27,7 +27,7 @@ setup(
             "httpx>=0.26.0",
             "black>=23.12.1",
             "ruff>=0.1.9",
-        ]
+        ],
     },
     entry_points={
         "console_scripts": [

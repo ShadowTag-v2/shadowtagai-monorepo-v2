@@ -1,5 +1,4 @@
-"""
-Feature Interventions: Steering and validation experiments for QK circuits.
+"""Feature Interventions: Steering and validation experiments for QK circuits.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025).
 
@@ -36,6 +35,7 @@ class InterventionResult:
         attention_pattern_change: Change in attention patterns (if applicable)
         logit_diff: Change in logits
         top_logit_change: Change in top predicted token
+
     """
 
     intervention_type: str
@@ -71,7 +71,7 @@ class InterventionResult:
 
         if self.attention_pattern_change:
             lines.append(
-                f"  Attention pattern changes: {len(self.attention_pattern_change)} heads affected"
+                f"  Attention pattern changes: {len(self.attention_pattern_change)} heads affected",
             )
 
         return "\n".join(lines)
@@ -101,6 +101,7 @@ class FeatureIntervenor:
             sae_encoders: Dict mapping layer -> SAE encoder
             sae_decoders: Dict mapping layer -> SAE decoder
             feature_descriptions: Dict mapping layer -> list of feature descriptions
+
         """
         self.model = model
         self.sae_encoders = sae_encoders
@@ -137,6 +138,7 @@ class FeatureIntervenor:
 
         Returns:
             InterventionResult
+
         """
         # Get original output
         with torch.no_grad():
@@ -145,7 +147,7 @@ class FeatureIntervenor:
         # Register intervention hook
         if intervene_in_qk:
             hook = self._create_qk_intervention_hook(
-                layer, position, feature_idx, scale, specific_heads
+                layer, position, feature_idx, scale, specific_heads,
             )
         else:
             hook = self._create_feature_scaling_hook(layer, position, feature_idx, scale)
@@ -252,6 +254,7 @@ class FeatureIntervenor:
 
         Returns:
             InterventionResult
+
         """
         return self.steer_feature(
             input_ids,
@@ -278,6 +281,7 @@ class FeatureIntervenor:
 
         Returns:
             InterventionResult
+
         """
         return self.steer_feature(input_ids, layer, position, feature_idx, scale=0.0)
 
@@ -302,6 +306,7 @@ class FeatureIntervenor:
 
         Returns:
             List of InterventionResults for each scale value
+
         """
         scales = np.linspace(scale_range[0], scale_range[1], num_steps)
         results = []
@@ -341,6 +346,7 @@ class FeatureIntervenor:
 
         Returns:
             Dict with results for query ablation, key ablation, and both
+
         """
         results = {}
 
@@ -391,6 +397,7 @@ def steer_features(
 
     Returns:
         Model output after interventions
+
     """
     intervenor = FeatureIntervenor(model, sae_encoders, sae_decoders, {})
 
@@ -422,6 +429,7 @@ def validate_circuit(
 
     Returns:
         Dict with validation results
+
     """
     intervenor = FeatureIntervenor(model, sae_encoders, sae_decoders, {})
     results = {}
@@ -444,7 +452,7 @@ def validate_circuit(
         head_layer, head_idx = qk_interaction["head"]
 
         results[f"qk_interaction_{i}"] = intervenor.validate_qk_circuit(
-            input_ids, q_layer, q_pos, q_idx, k_layer, k_pos, k_idx, head_idx
+            input_ids, q_layer, q_pos, q_idx, k_layer, k_pos, k_idx, head_idx,
         )
 
     return results
@@ -474,6 +482,7 @@ class AttentionPatternIntervenor:
             layer: Layer index
             head: Head index
             new_pattern: New attention pattern [seq_len, seq_len] (post-softmax)
+
         """
         self.attention_overrides[(layer, head)] = new_pattern
 
@@ -496,6 +505,7 @@ class AttentionPatternIntervenor:
 
         Returns:
             Model output with interventions applied
+
         """
         # Register hooks for layers with overrides
         layers_to_hook = set(layer for layer, _ in self.attention_overrides)
@@ -527,6 +537,7 @@ def create_counterfactual_prompt(
 
     Returns:
         Modified token sequence
+
     """
     modified = original_tokens.copy()
     for pos, new_token in substitutions.items():

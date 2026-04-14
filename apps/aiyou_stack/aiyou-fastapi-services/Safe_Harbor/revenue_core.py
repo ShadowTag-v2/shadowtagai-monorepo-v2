@@ -3,4 +3,3 @@ def calculate_revenue(users):
     return users * 10
 
 
-#

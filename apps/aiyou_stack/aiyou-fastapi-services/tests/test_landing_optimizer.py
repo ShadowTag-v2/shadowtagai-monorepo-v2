@@ -82,14 +82,14 @@ class TestLandingOptimizerEndpoints:
             "social_proof_suggestions": [],
             "estimated_conversion_lift": "20-35%"
         }
-        """
-            )
+        """,
+            ),
         ]
         mock_client.messages.create.return_value = mock_message
         mock_anthropic.return_value = mock_client
 
         response = client.post(
-            "/api/v1/landing-optimizer/analyze", json=sample_optimization_request
+            "/api/v1/landing-optimizer/analyze", json=sample_optimization_request,
         )
 
         assert response.status_code == 200
@@ -131,8 +131,8 @@ class TestLandingOptimizerEndpoints:
                 "target_emotion": "relief"
             }
         ]
-        """
-            )
+        """,
+            ),
         ]
         mock_client.messages.create.return_value = mock_message
         mock_anthropic.return_value = mock_client
@@ -171,8 +171,8 @@ class TestLandingOptimizerEndpoints:
                 "reasoning": "No commitment required, action-oriented"
             }
         ]
-        """
-            )
+        """,
+            ),
         ]
         mock_client.messages.create.return_value = mock_message
         mock_anthropic.return_value = mock_client
@@ -212,8 +212,8 @@ class TestLandingOptimizerEndpoints:
                 "placement": "Header area"
             }
         ]
-        """
-            )
+        """,
+            ),
         ]
         mock_client.messages.create.return_value = mock_message
         mock_anthropic.return_value = mock_client
@@ -252,8 +252,8 @@ class TestLandingOptimizerService:
             "recommendations": [],
             "estimated_conversion_lift": "15-20%"
         }
-        """
-            )
+        """,
+            ),
         ]
         mock_client.messages.create.return_value = mock_message
         mock_anthropic.return_value = mock_client
@@ -283,8 +283,8 @@ class TestLandingOptimizerService:
                 "target_emotion": "excitement"
             }
         ]
-        """
-            )
+        """,
+            ),
         ]
         mock_client.messages.create.return_value = mock_message
         mock_anthropic.return_value = mock_client

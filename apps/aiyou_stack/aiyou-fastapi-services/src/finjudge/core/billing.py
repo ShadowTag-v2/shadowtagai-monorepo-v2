@@ -15,8 +15,7 @@ class SubscriptionStatus(BaseModel):
 
 
 class StripeManager:
-    """
-    Handles all Stripe interactions for FinJudge SaaS.
+    """Handles all Stripe interactions for FinJudge SaaS.
     """
 
     def __init__(self):
@@ -24,8 +23,7 @@ class StripeManager:
         self.domain = os.getenv("DOMAIN", "http://localhost:8000")
 
     def create_checkout_session(self, user_id: str, email: str) -> str:
-        """
-        Create a checkout session for the Pro Plan.
+        """Create a checkout session for the Pro Plan.
         Returns the checkout URL.
         """
         try:
@@ -37,7 +35,7 @@ class StripeManager:
                     {
                         "price": self.pro_price_id,
                         "quantity": 1,
-                    }
+                    },
                 ],
                 mode="subscription",
                 success_url=f"{self.domain}/success?session_id={{CHECKOUT_SESSION_ID}}",
@@ -51,8 +49,7 @@ class StripeManager:
             raise e
 
     def check_subscription(self, api_key: str) -> SubscriptionStatus:
-        """
-        Verify if an API key (mapped to a user) has an active subscription.
+        """Verify if an API key (mapped to a user) has an active subscription.
         """
         # In a real app, we'd look up the user_id from the api_key in our DB first.
         # Here we simulate the logic.
@@ -60,7 +57,7 @@ class StripeManager:
         # MOCK LOGIC for v0.2
         if api_key.startswith("sk-pro"):
             return SubscriptionStatus(
-                is_active=True, plan_id="pro_monthly", expires_at=datetime(2026, 1, 1)
+                is_active=True, plan_id="pro_monthly", expires_at=datetime(2026, 1, 1),
             )
 
         return SubscriptionStatus(is_active=False, plan_id="free", expires_at=None)

@@ -1,5 +1,4 @@
-"""
-ISO/IEC 42001 Compliance Module
+"""ISO/IEC 42001 Compliance Module
 
 Implements the ISO/IEC 42001:2023 AI Management System (AIMS) requirements.
 Focus areas:
@@ -34,8 +33,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.ISO_42001)
 class ISO42001Module(ComplianceModule):
-    """
-    ISO/IEC 42001 AI Management System Module
+    """ISO/IEC 42001 AI Management System Module
 
     Implements the requirements for establishing, implementing,
     maintaining, and continually improving an AI management system (AIMS).
@@ -300,7 +298,7 @@ class ISO42001Module(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single ISO 42001 control."""
         metadata = input_data.metadata
@@ -318,7 +316,7 @@ class ISO42001Module(ComplianceModule):
                     score=1.0,
                     evidence="AI policy established and communicated",
                 )
-            elif has_policy:
+            if has_policy:
                 return ControlResult(
                     control_id=control.control_id,
                     control_name=control.name,
@@ -328,16 +326,15 @@ class ISO42001Module(ComplianceModule):
                     findings=["AI policy exists but communication incomplete"],
                     remediation="Communicate AI policy to all relevant parties",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["AI policy not established"],
-                    remediation="Establish and document AI policy per Clause 5.2",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["AI policy not established"],
+                remediation="Establish and document AI policy per Clause 5.2",
+            )
 
         # Clause 8.2 - Impact Assessment
         if control.control_id == "ISO42001-8.2":
@@ -351,16 +348,15 @@ class ISO42001Module(ComplianceModule):
                     score=1.0,
                     evidence="AI system impact assessment completed",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["Impact assessment not conducted"],
-                    remediation="Conduct AI system impact assessment per Clause 8.2",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["Impact assessment not conducted"],
+                remediation="Conduct AI system impact assessment per Clause 8.2",
+            )
 
         # Clause 9.2 - Internal Audit
         if control.control_id == "ISO42001-9.2":
@@ -375,16 +371,15 @@ class ISO42001Module(ComplianceModule):
                     score=1.0,
                     evidence=f"Internal audit conducted: {audit_date}",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.PARTIAL,
-                    score=0.3,
-                    findings=["Internal audit program not fully implemented"],
-                    remediation="Establish and conduct internal audits per Clause 9.2",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.PARTIAL,
+                score=0.3,
+                findings=["Internal audit program not fully implemented"],
+                remediation="Establish and conduct internal audits per Clause 9.2",
+            )
 
         # Default
         return ControlResult(
@@ -405,7 +400,7 @@ class ISO42001Module(ComplianceModule):
         aims_maturity = metadata.get("aims_maturity_level", 0)
         if aims_maturity < 2:
             return RiskTier.HIGH
-        elif aims_maturity < 3:
+        if aims_maturity < 3:
             return RiskTier.LIMITED
 
         # Check for high-impact AI
@@ -420,7 +415,7 @@ class ISO42001Module(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check ISO 42001 validation rules."""
         content_lower = content.lower()

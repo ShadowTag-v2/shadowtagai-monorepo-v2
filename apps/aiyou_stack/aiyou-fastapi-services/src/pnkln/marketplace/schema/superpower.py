@@ -21,15 +21,16 @@ Base = declarative_base()
 
 
 class Superpower(Base):
-    """
-    AI superpower listing
+    """AI superpower listing
 
     A superpower is a packaged AI capability that users can purchase/subscribe to.
+
     Examples:
     - Advanced Math Tutor (AI tutor for calculus/algebra)
     - Focus Agent (workplace productivity enhancement)
     - Research Assistant (intelligence gathering and summarization)
     - Health Monitor (medical reminders and tracking)
+
     """
 
     __tablename__ = "marketplace_superpowers"

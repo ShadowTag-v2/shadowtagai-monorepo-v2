@@ -1,5 +1,4 @@
-"""
-Gemini AI Client Service
+"""Gemini AI Client Service
 Handles all interactions with Google Gemini API for content ingestion and analysis
 """
 
@@ -20,13 +19,11 @@ logger = logging.getLogger(__name__)
 class GeminiRateLimitExceeded(Exception):
     """Raised when Gemini API rate limit is hit"""
 
-    pass
 
 
 class GeminiServiceError(Exception):
     """Base exception for Gemini service errors"""
 
-    pass
 
 
 def async_retry(max_retries: int = 3, backoff_seconds: float = 1.0):
@@ -43,7 +40,7 @@ def async_retry(max_retries: int = 3, backoff_seconds: float = 1.0):
                         raise
                     wait_time = backoff_seconds * (2**attempt)
                     logger.warning(
-                        f"Rate limited, waiting {wait_time}s before retry {attempt + 1}/{max_retries}"
+                        f"Rate limited, waiting {wait_time}s before retry {attempt + 1}/{max_retries}",
                     )
                     await asyncio.sleep(wait_time)
                 except Exception as e:
@@ -59,8 +56,7 @@ def async_retry(max_retries: int = 3, backoff_seconds: float = 1.0):
 
 
 class GeminiClient:
-    """
-    Client for Google Gemini API
+    """Client for Google Gemini API
     Handles content analysis, moderation, embeddings, and text generation
     """
 
@@ -70,13 +66,13 @@ class GeminiClient:
         project_id: str | None = None,
         location: str = "us-central1",
     ):
-        """
-        Initialize Gemini client
+        """Initialize Gemini client
 
         Args:
             api_key: Google API key for genai (for prototyping)
             project_id: GCP project ID for Vertex AI (for production)
             location: GCP region for Vertex AI
+
         """
         self.api_key = api_key
         self.project_id = project_id
@@ -133,7 +129,7 @@ class GeminiClient:
 
         if current_count >= limit:
             raise GeminiRateLimitExceeded(
-                f"Rate limit exceeded for {model}: {current_count}/{limit} RPM"
+                f"Rate limit exceeded for {model}: {current_count}/{limit} RPM",
             )
 
         self._request_counts[model] = current_count + 1
@@ -147,8 +143,7 @@ class GeminiClient:
         include_text: bool = True,
         include_objects: bool = True,
     ) -> dict[str, Any]:
-        """
-        Analyze image using Gemini Vision
+        """Analyze image using Gemini Vision
 
         Args:
             image_path: GCS path or local file path
@@ -159,6 +154,7 @@ class GeminiClient:
 
         Returns:
             Dict with analysis results
+
         """
         await self._check_rate_limit("gemini-1.5-pro-vision")
 
@@ -176,11 +172,11 @@ class GeminiClient:
             prompt_parts = []
             if include_labels:
                 prompt_parts.append(
-                    "Identify and describe the main subjects, objects, and themes in this image."
+                    "Identify and describe the main subjects, objects, and themes in this image.",
                 )
             if include_objects:
                 prompt_parts.append(
-                    "List all distinct objects visible in the image with confidence scores."
+                    "List all distinct objects visible in the image with confidence scores.",
                 )
             if include_text:
                 prompt_parts.append("Extract any text visible in the image (OCR).")
@@ -221,7 +217,7 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Image analysis failed: {e}")
-            raise GeminiServiceError(f"Failed to analyze image: {str(e)}")
+            raise GeminiServiceError(f"Failed to analyze image: {e!s}")
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def analyze_video(
@@ -231,8 +227,7 @@ class GeminiClient:
         include_transcript: bool = True,
         include_moderation: bool = True,
     ) -> dict[str, Any]:
-        """
-        Analyze video using Gemini Vision
+        """Analyze video using Gemini Vision
         Samples frames and analyzes content
 
         Args:
@@ -243,6 +238,7 @@ class GeminiClient:
 
         Returns:
             Dict with video analysis results
+
         """
         await self._check_rate_limit("gemini-1.5-pro-vision")
 
@@ -290,12 +286,11 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Video analysis failed: {e}")
-            raise GeminiServiceError(f"Failed to analyze video: {str(e)}")
+            raise GeminiServiceError(f"Failed to analyze video: {e!s}")
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def moderate_text(self, text: str) -> dict[str, Any]:
-        """
-        Moderate text content for safety
+        """Moderate text content for safety
 
         Returns:
             {
@@ -304,6 +299,7 @@ class GeminiClient:
                 "details": {...},
                 "safe_to_publish": bool
             }
+
         """
         await self._check_rate_limit("gemini-1.5-pro")
 
@@ -346,14 +342,13 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Text moderation failed: {e}")
-            raise GeminiServiceError(f"Failed to moderate text: {str(e)}")
+            raise GeminiServiceError(f"Failed to moderate text: {e!s}")
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def generate_metadata(
-        self, content_description: str, content_type: str = "video"
+        self, content_description: str, content_type: str = "video",
     ) -> dict[str, Any]:
-        """
-        Generate title, description, and tags for content
+        """Generate title, description, and tags for content
 
         Args:
             content_description: Description of the content
@@ -366,6 +361,7 @@ class GeminiClient:
                 "tags": List[str],
                 "category": str
             }
+
         """
         await self._check_rate_limit("gemini-1.5-flash")  # Use faster model for metadata
 
@@ -417,14 +413,14 @@ class GeminiClient:
             }
 
     async def generate_embedding(self, text: str) -> tuple[list[float], int]:
-        """
-        Generate embedding vector for text
+        """Generate embedding vector for text
 
         Args:
             text: Text to embed
 
         Returns:
             (embedding_vector, character_count)
+
         """
         try:
             if self.mode == "vertex":
@@ -448,11 +444,10 @@ class GeminiClient:
 
         except Exception as e:
             logger.error(f"Embedding generation failed: {e}")
-            raise GeminiServiceError(f"Failed to generate embedding: {str(e)}")
+            raise GeminiServiceError(f"Failed to generate embedding: {e!s}")
 
     def calculate_cost(self, tokens_used: int, model: str, token_type: str = "total") -> float:
-        """
-        Calculate cost in USD for Gemini API usage
+        """Calculate cost in USD for Gemini API usage
 
         Args:
             tokens_used: Number of tokens consumed
@@ -461,6 +456,7 @@ class GeminiClient:
 
         Returns:
             Cost in USD
+
         """
         if model not in self.pricing:
             logger.warning(f"Unknown model for pricing: {model}")
@@ -484,9 +480,8 @@ class GeminiClient:
         if "embedding" in model:
             # Embeddings priced per 1K characters
             return (tokens_used / 1000) * rate
-        else:
-            # Models priced per 1M tokens
-            return (tokens_used / 1_000_000) * rate
+        # Models priced per 1M tokens
+        return (tokens_used / 1_000_000) * rate
 
     # Helper methods for parsing Gemini responses
 

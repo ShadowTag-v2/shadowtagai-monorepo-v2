@@ -1,5 +1,4 @@
-"""
-Tokable Gesture Streaming Platform API
+"""Tokable Gesture Streaming Platform API
 FastAPI endpoints for silent gesture-based streaming with AI interpretation
 
 Part of PNKLN Core Stack™ - Revenue-focused creator economy platform
@@ -121,7 +120,7 @@ class User(BaseModel):
                 "leaderboard_rank": 42,
                 "is_pro": True,
                 "pro_expires_at": "2026-01-01T00:00:00Z",
-            }
+            },
         }
 
 
@@ -153,7 +152,7 @@ class GestureFrame(BaseModel):
                 },
                 "interpreted_text": "Spinning with joy!",
                 "generated_art_url": "https://cdn.tokable.ai/frames/frame_12450.png",
-            }
+            },
         }
 
 
@@ -226,7 +225,7 @@ class Stream(BaseModel):
                 "highlight_clips": [],
                 "tags": ["dance", "abstract", "chill"],
                 "thumbnail_url": "https://cdn.tokable.ai/thumbs/stream_xyz789.jpg",
-            }
+            },
         }
 
 
@@ -294,7 +293,7 @@ class NFT(BaseModel):
                     "happy": 0.20,
                     "neutral": 0.05,
                 },
-            }
+            },
         }
 
 
@@ -323,7 +322,7 @@ class Tournament(BaseModel):
             "1st": Decimal("50.00"),
             "2nd": Decimal("30.00"),
             "3rd": Decimal("20.00"),
-        }
+        },
     )
 
     # Participation
@@ -362,7 +361,7 @@ class Tournament(BaseModel):
                 "is_active": True,
                 "completed": False,
                 "winners": [],
-            }
+            },
         }
 
 
@@ -404,7 +403,7 @@ class RevenueEvent(BaseModel):
                 "processed": True,
                 "processed_at": "2025-11-17T18:30:00Z",
                 "timestamp": "2025-11-17T18:29:45Z",
-            }
+            },
         }
 
 

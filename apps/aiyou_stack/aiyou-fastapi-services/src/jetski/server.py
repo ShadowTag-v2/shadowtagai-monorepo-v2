@@ -1,5 +1,4 @@
-"""
-JETSKI SIDECAR SERVICE
+"""JETSKI SIDECAR SERVICE
 Exposes browser automation as REST API
 """
 
@@ -48,8 +47,7 @@ def health_check():
 # Core endpoints
 @app.post("/verify/endpoint")
 def verify_endpoint(check: EndpointCheck):
-    """
-    Verify an API endpoint is accessible and returns expected status.
+    """Verify an API endpoint is accessible and returns expected status.
     """
     try:
         jetski = get_jetski()
@@ -66,8 +64,7 @@ def verify_endpoint(check: EndpointCheck):
 
 @app.post("/verify/render")
 def verify_render(check: PageRenderCheck):
-    """
-    Verify a page renders and element exists.
+    """Verify a page renders and element exists.
     Returns screenshot as base64.
     """
     try:
@@ -82,8 +79,7 @@ def verify_render(check: PageRenderCheck):
 
 @app.post("/intercept")
 def intercept_traffic(config: InterceptionConfig):
-    """
-    Advanced: Modify network traffic in-flight.
+    """Advanced: Modify network traffic in-flight.
     Use for testing error handling.
     """
     try:

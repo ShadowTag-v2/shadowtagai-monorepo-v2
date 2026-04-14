@@ -1,5 +1,4 @@
-"""
-RESEARCH-GRADE CITATION VALIDATION
+"""RESEARCH-GRADE CITATION VALIDATION
 Verifies legal/medical references exist and are current
 """
 
@@ -38,12 +37,11 @@ class CitationValidator:
         }
 
     def verify_case_citation(self, citation: str) -> Citation:
-        """
-        Verify a legal case citation exists.
+        """Verify a legal case citation exists.
         Example: "Smith v. Jones, 123 F.3d 456 (9th Cir. 1997)"
         """
         # Parse citation (simplified)
-        case_name = citation.split(",")[0].strip()
+        case_name = citation.split(",", maxsplit=1)[0].strip()
 
         # Search CourtListener (free API)
         search_url = f"{self.legal_sources['courtlistener']}/api/rest/v3/search/"
@@ -79,8 +77,7 @@ class CitationValidator:
         return Citation(text=citation, source_type="case_law", verified=False)
 
     def verify_medical_citation(self, citation: str) -> Citation:
-        """
-        Verify a medical journal citation exists.
+        """Verify a medical journal citation exists.
         Example: "Smith J, et al. JAMA. 2024;331(1):45-52. doi:10.1001/jama.2024.1234"
         """
         # Extract DOI

@@ -1,5 +1,4 @@
-"""
-Cor - Unified Execution Brain
+"""Cor - Unified Execution Brain
 
 Central orchestrator for task execution. Coordinates between:
 - JR Engine for validation
@@ -33,8 +32,7 @@ class ExecutionPlan:
 
 
 class CorOrchestrator:
-    """
-    Cor: The unified execution brain.
+    """Cor: The unified execution brain.
 
     Coordinates all PNKLN components to execute tasks efficiently.
     Now supports multi-provider orchestration (Gemini + Anthropic).
@@ -60,6 +58,7 @@ class CorOrchestrator:
 
         result = cor.execute("Research AI and write report")
         ```
+
     """
 
     def __init__(
@@ -72,8 +71,7 @@ class CorOrchestrator:
         enable_multi_provider: bool = False,
         default_provider: Provider = Provider.AUTO,
     ):
-        """
-        Initialize Cor orchestrator.
+        """Initialize Cor orchestrator.
 
         Args:
             function_caller: Optional GeminiFunctionCaller instance (legacy)
@@ -83,6 +81,7 @@ class CorOrchestrator:
             memory: Optional SemanticMemory (NS) instance
             enable_multi_provider: Use multi-provider mode
             default_provider: Default LLM provider
+
         """
         self.function_caller = function_caller
         self.unified_orchestrator = unified_orchestrator
@@ -102,8 +101,7 @@ class CorOrchestrator:
         self.execution_history: list[dict[str, Any]] = []
 
     def plan(self, task: str, available_tools: list[str]) -> ExecutionPlan:
-        """
-        Create execution plan for a task.
+        """Create execution plan for a task.
 
         Args:
             task: Task description
@@ -111,6 +109,7 @@ class CorOrchestrator:
 
         Returns:
             ExecutionPlan
+
         """
         # Simple planning logic (can be enhanced with LLM)
         steps = [
@@ -141,8 +140,7 @@ class CorOrchestrator:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> str:
-        """
-        Execute a task with full PNKLN stack integration.
+        """Execute a task with full PNKLN stack integration.
 
         Args:
             task: Task description
@@ -154,6 +152,7 @@ class CorOrchestrator:
 
         Returns:
             Final result (watermarked if ShadowTag enabled)
+
         """
         start_time = time.time()
         context = context or {}
@@ -190,16 +189,15 @@ class CorOrchestrator:
                     "tokens_out": unified_result.total_tokens_output,
                     "function_calls": unified_result.function_calls,
                 }
+        # Legacy mode: Gemini function calling only
+        elif self.judge:
+            result = self.judge.enforce(task)
+        elif self.function_caller:
+            result = self.function_caller.execute(task)
         else:
-            # Legacy mode: Gemini function calling only
-            if self.judge:
-                result = self.judge.enforce(task)
-            elif self.function_caller:
-                result = self.function_caller.execute(task)
-            else:
-                raise ValueError(
-                    "No execution backend available (need function_caller or unified_orchestrator)"
-                )
+            raise ValueError(
+                "No execution backend available (need function_caller or unified_orchestrator)",
+            )
 
         # 3. Watermark output if ShadowTag available
         if self.shadowtag:

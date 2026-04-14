@@ -19,8 +19,7 @@ AMBER_FILES = ["models.py", "schemas.py", "config.py"]
 
 
 def calculate_risk(request: TaskRequest) -> RiskLevel:
-    """
-    Determines the risk level of a task based on description/content and file paths.
+    """Determines the risk level of a task based on description/content and file paths.
     """
     text = request.description.lower()
 

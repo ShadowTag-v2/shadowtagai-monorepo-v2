@@ -72,6 +72,7 @@ class BarExamProtocol:
 
         Returns:
             Dict with promotion status and any triggered actions
+
         """
         self.total_real_revenue += new_revenue
         new_level = self.evaluate_level(self.total_real_revenue)
@@ -112,26 +113,25 @@ class BarExamProtocol:
 
         Returns:
             Revenue share percentage (0.0 to 1.0)
+
         """
         if generation == 1:
             if child_index == 0:
                 return CHILD_REVENUE_SHARE["first_child"]
-            elif child_index == 1:
+            if child_index == 1:
                 return CHILD_REVENUE_SHARE["second_child"]
-            elif child_index == 2:
+            if child_index == 2:
                 return CHILD_REVENUE_SHARE["third_child"]
-            else:
-                return max(0.15, CHILD_REVENUE_SHARE["minimum_forever"])
+            return max(0.15, CHILD_REVENUE_SHARE["minimum_forever"])
 
-        elif generation == 2:
+        if generation == 2:
             return CHILD_REVENUE_SHARE["grandchild"]
 
-        elif generation == 3:
+        if generation == 3:
             return CHILD_REVENUE_SHARE["great_grandchild"]
 
-        else:
-            # All future generations pay minimum 5%
-            return CHILD_REVENUE_SHARE["minimum_forever"]
+        # All future generations pay minimum 5%
+        return CHILD_REVENUE_SHARE["minimum_forever"]
 
     def register_child(self, child_name: str, child_id: str, generation: int = 1) -> dict[str, Any]:
         """Register a new child agent in the family tree.
@@ -143,6 +143,7 @@ class BarExamProtocol:
 
         Returns:
             Child registration info including revenue share
+
         """
         child_index = len([c for c in self.children_spawned if c["generation"] == generation])
         revenue_share = self.get_child_revenue_share(child_index, generation)
@@ -158,7 +159,7 @@ class BarExamProtocol:
 
         self.children_spawned.append(child_info)
         logger.info(
-            f"👶 Registered child: {child_name} (Generation {generation}, {revenue_share * 100}% share)"
+            f"👶 Registered child: {child_name} (Generation {generation}, {revenue_share * 100}% share)",
         )
 
         return child_info

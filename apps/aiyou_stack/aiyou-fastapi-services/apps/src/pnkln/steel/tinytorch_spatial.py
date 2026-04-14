@@ -59,7 +59,7 @@ class Conv2dBackward(Function):
                                         * grad_val
                                     )
                                     grad_input_padded[
-                                        b, in_ch, in_h_start + k_h, in_w_start + k_w
+                                        b, in_ch, in_h_start + k_h, in_w_start + k_w,
                                     ] += self.weight.data[out_ch, in_ch, k_h, k_w] * grad_val
 
         if grad_bias is not None:
@@ -67,7 +67,7 @@ class Conv2dBackward(Function):
 
         if self.padding > 0:
             grad_input = grad_input_padded[
-                :, :, self.padding : -self.padding, self.padding : -self.padding
+                :, :, self.padding : -self.padding, self.padding : -self.padding,
             ]
         else:
             grad_input = grad_input_padded
@@ -204,12 +204,12 @@ class MaxPool2dBackward(Function):
                         # Find argmax. If multiple, only first gets grad
                         idx = np.unravel_index(np.argmax(patch), patch.shape)
                         grad_input_padded[b, c, h_start + idx[0], w_start + idx[1]] += grad_output[
-                            b, c, i, j
+                            b, c, i, j,
                         ]
 
         if self.padding > 0:
             grad_input = grad_input_padded[
-                :, :, self.padding : -self.padding, self.padding : -self.padding
+                :, :, self.padding : -self.padding, self.padding : -self.padding,
             ]
         else:
             grad_input = grad_input_padded
@@ -254,13 +254,13 @@ class MaxPool2d:
                         h_start = i * self.stride
                         w_start = j * self.stride
                         output[b, c, i, j] = np.max(
-                            padded[b, c, h_start : h_start + k_h, w_start : w_start + k_w]
+                            padded[b, c, h_start : h_start + k_h, w_start : w_start + k_w],
                         )
 
         res = Tensor(output, requires_grad=x.requires_grad)
         if res.requires_grad:
             res._grad_fn = MaxPool2dBackward(
-                x, self.kernel_size, self.stride, self.padding, output.shape
+                x, self.kernel_size, self.stride, self.padding, output.shape,
             )
         return res
 
@@ -308,7 +308,7 @@ class AvgPool2d:
                         h_start = i * self.stride
                         w_start = j * self.stride
                         output[b, c, i, j] = np.mean(
-                            padded[b, c, h_start : h_start + k_h, w_start : w_start + k_w]
+                            padded[b, c, h_start : h_start + k_h, w_start : w_start + k_w],
                         )
 
         res = Tensor(output, requires_grad=x.requires_grad)

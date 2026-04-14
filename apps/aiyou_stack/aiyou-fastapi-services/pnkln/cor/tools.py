@@ -1,5 +1,4 @@
-"""
-Cor Tool Registry
+"""Cor Tool Registry
 
 Central registration point for all MCP tools including:
 - Internal tools (file search, code search, doc retrieval)
@@ -29,8 +28,7 @@ class ToolDefinition:
 
 
 class ToolRegistry:
-    """
-    Central registry for all available tools.
+    """Central registry for all available tools.
 
     Tools register themselves here and Cor orchestrator
     discovers and executes them based on intent routing.
@@ -41,11 +39,11 @@ class ToolRegistry:
         self._tools: dict[str, ToolDefinition] = {}
 
     def register(self, tool_def: dict) -> None:
-        """
-        Register a tool.
+        """Register a tool.
 
         Args:
             tool_def: Tool definition dict with name, description, parameters, handler
+
         """
         tool = ToolDefinition(
             name=tool_def["name"],
@@ -88,7 +86,6 @@ def get_registry() -> ToolRegistry:
 # ============================================================================
 def register_default_tools():
     """Register all default tools on module import."""
-
     # Register web search tool
     _registry.register(create_web_search_tool())
 

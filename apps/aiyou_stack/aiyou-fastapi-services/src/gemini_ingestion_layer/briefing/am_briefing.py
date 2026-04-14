@@ -1,5 +1,4 @@
-"""
-AM Briefing Generator
+"""AM Briefing Generator
 
 Generates morning intelligence briefings from ingested data.
 Delivered to services across 4 namespaces.
@@ -19,8 +18,7 @@ class AMBriefingGenerator:
         self.format = format
 
     def generate(self, items: list[IngestionItem], stats: dict[str, Any]) -> str:
-        """
-        Generate briefing from ingested items.
+        """Generate briefing from ingested items.
 
         Args:
             items: Ingested and classified items
@@ -28,6 +26,7 @@ class AMBriefingGenerator:
 
         Returns:
             Formatted briefing
+
         """
         # Filter to Tier 1 and Tier 2 items
         tier_1_items = [i for i in items if i.tier == TierLevel.TIER_1.value]
@@ -66,8 +65,7 @@ class AMBriefingGenerator:
         return "\n".join(briefing)
 
     async def deliver(self, briefing: str, recipients: list[str]) -> bool:
-        """
-        Deliver briefing to recipients.
+        """Deliver briefing to recipients.
 
         NOTE: In production, implement email/Slack/webhook delivery.
 
@@ -77,6 +75,7 @@ class AMBriefingGenerator:
 
         Returns:
             True if delivered successfully
+
         """
         # Placeholder - in production, use SendGrid, Slack API, etc.
         print(f"Delivering briefing to {len(recipients)} recipients")

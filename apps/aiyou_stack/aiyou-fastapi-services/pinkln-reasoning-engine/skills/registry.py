@@ -1,5 +1,4 @@
-"""
-Skills Registry
+"""Skills Registry
 
 Central registry for all Pinkln reasoning skills with Glicko-2 rankings
 """
@@ -25,8 +24,7 @@ class SkillRecommendation:
 
 
 class SkillRegistry:
-    """
-    Central registry for all reasoning skills
+    """Central registry for all reasoning skills
 
     Features:
     - Register/unregister skills
@@ -66,8 +64,7 @@ class SkillRegistry:
         return list(self.skills.values())
 
     def get_top_skills(self, n: int = 5, min_rating: float = 1400.0) -> list[Skill]:
-        """
-        Get top N skills by Glicko rating
+        """Get top N skills by Glicko rating
 
         Args:
             n: Number of skills to return
@@ -75,6 +72,7 @@ class SkillRegistry:
 
         Returns:
             Top skills sorted by conservative rating
+
         """
         eligible = [s for s in self.skills.values() if s.get_conservative_rating() >= min_rating]
 
@@ -84,10 +82,9 @@ class SkillRegistry:
         return sorted_skills[:n]
 
     def recommend_skill(
-        self, task: str, context: dict[str, Any] | None = None
+        self, task: str, context: dict[str, Any] | None = None,
     ) -> SkillRecommendation:
-        """
-        Recommend best skill for a task
+        """Recommend best skill for a task
 
         Uses heuristics + Glicko ratings to recommend:
         - Math/logic → ChainOfThought
@@ -101,6 +98,7 @@ class SkillRegistry:
 
         Returns:
             Skill recommendation with reasoning
+
         """
         # Heuristics for skill selection
         task_lower = task.lower()
@@ -189,23 +187,23 @@ class SkillRegistry:
         )
 
     def update_from_benchmark(self, skill_name: str, benchmark: BenchmarkScore):
-        """
-        Update skill rating from benchmark results
+        """Update skill rating from benchmark results
 
         Args:
             skill_name: Name of skill
             benchmark: Benchmark results
+
         """
         skill = self.get(skill_name)
         if skill:
             skill.update_rating_from_benchmark(benchmark)
 
     def get_leaderboard(self) -> list[dict[str, Any]]:
-        """
-        Get skills leaderboard
+        """Get skills leaderboard
 
         Returns:
             List of skills sorted by rating with stats
+
         """
         sorted_skills = sorted(self.skills.values(), key=lambda s: s.rating.mu, reverse=True)
 
@@ -235,8 +233,7 @@ class SkillRegistry:
             json.dump(stats, f, indent=2)
 
     def import_stats(self, filepath: str):
-        """
-        Import skill stats from JSON
+        """Import skill stats from JSON
 
         Note: Only updates ratings/stats, doesn't create new skills
         """
@@ -270,7 +267,7 @@ def example():
     for entry in registry.get_leaderboard():
         print(
             f"{entry['rank']}. {entry['name']}: {entry['rating']:.0f} "
-            f"(conservative: {entry['conservative_rating']:.0f})"
+            f"(conservative: {entry['conservative_rating']:.0f})",
         )
 
     print("\n=== Skill Recommendations ===")

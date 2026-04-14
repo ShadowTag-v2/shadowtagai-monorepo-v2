@@ -1,5 +1,4 @@
-"""
-COR ORCHESTRATOR - Event-Driven Multi-Agent Coordination
+"""COR ORCHESTRATOR - Event-Driven Multi-Agent Coordination
 =========================================================
 
 Thin orchestrator composing domain-specific submodules.
@@ -45,8 +44,7 @@ logger = logging.getLogger(__name__)
 
 
 class CorOrchestrator:
-    """
-    Core orchestration engine for Pnkln multi-agent system.
+    """Core orchestration engine for Pnkln multi-agent system.
 
     REPLACES: Semantic Kernel's Kernel + Planner
     PERFORMANCE: <1ms p99 coordination overhead
@@ -86,10 +84,9 @@ class CorOrchestrator:
         logger.info(f"Registered executor: {name}")
 
     async def execute_pipeline(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any
+        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
     ) -> Any:
-        """
-        Execute registered pipeline by name.
+        """Execute registered pipeline by name.
 
         Args:
             pipeline_name: Name of registered pipeline
@@ -101,6 +98,7 @@ class CorOrchestrator:
 
         Raises:
             KeyError: If pipeline not found
+
         """
         if pipeline_name not in self.pipelines:
             raise KeyError(f"Pipeline {pipeline_name} not registered")
@@ -116,8 +114,7 @@ class CorOrchestrator:
         input_data: Any,
         timeout_ms: float = 100.0,
     ) -> ConcurrentResult:
-        """
-        Execute functions concurrently using registered executor.
+        """Execute functions concurrently using registered executor.
 
         Args:
             executor_name: Name of registered executor
@@ -128,6 +125,7 @@ class CorOrchestrator:
 
         Returns:
             ConcurrentResult
+
         """
         if executor_name not in self.executors:
             raise KeyError(f"Executor {executor_name} not registered")
@@ -141,8 +139,7 @@ class CorOrchestrator:
         latency_budget_ms: float = 90.0,
         metadata: dict[str, Any] | None = None,
     ) -> ExecutionContext:
-        """
-        Create execution context for request.
+        """Create execution context for request.
 
         Args:
             request_id: Unique request identifier
@@ -151,6 +148,7 @@ class CorOrchestrator:
 
         Returns:
             ExecutionContext
+
         """
         return ExecutionContext(
             request_id=request_id,
@@ -167,10 +165,9 @@ class CorOrchestrator:
         self.tool_registry.register_tool(name, description, func)
 
     async def execute_with_tool_selection(
-        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3
+        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3,
     ) -> Any:
-        """
-        Execute using dynamically selected tools.
+        """Execute using dynamically selected tools.
 
         DeepAgent Pattern: Automatic tool selection from large toolset
 
@@ -182,6 +179,7 @@ class CorOrchestrator:
 
         Returns:
             Best result from selected tools
+
         """
         # Retrieve relevant tools
         tools = self.tool_registry.retrieve_tools(query, top_k=top_k)
@@ -194,7 +192,7 @@ class CorOrchestrator:
         # Execute best tool
         best_tool_name, score = tools[0]
         result, latency_ms = await self.tool_registry.execute_tool(
-            best_tool_name, context, input_data
+            best_tool_name, context, input_data,
         )
 
         # Store in memory
@@ -204,10 +202,9 @@ class CorOrchestrator:
         return result
 
     async def execute_pipeline_with_memory(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any
+        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
     ) -> Any:
-        """
-        Execute pipeline and store result in memory.
+        """Execute pipeline and store result in memory.
 
         Args:
             pipeline_name: Name of registered pipeline
@@ -216,6 +213,7 @@ class CorOrchestrator:
 
         Returns:
             Pipeline output
+
         """
         result = await self.execute_pipeline(pipeline_name, context, input_data)
 
@@ -252,8 +250,7 @@ class CorOrchestrator:
 
 
 async def example_usage():
-    """
-    Example: Judge #6 validation pipeline using Cor Orchestrator.
+    """Example: Judge #6 validation pipeline using Cor Orchestrator.
 
     This demonstrates Pattern 1 (Sequential Pipeline) with conditional
     stage skipping to maintain p99≤90ms SLA.
@@ -298,7 +295,7 @@ async def example_usage():
     # Execute
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
     result = await orchestrator.execute_pipeline(
-        "judge_six", context, {"user_query": "example request"}
+        "judge_six", context, {"user_query": "example request"},
     )
 
     print(f"Result: {result}")

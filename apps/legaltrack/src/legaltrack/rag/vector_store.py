@@ -4,15 +4,14 @@ from typing import Any
 
 # Replacing Pinecone with Google Cloud Native: Cloud SQL (PostgreSQL + pgvector)
 import asyncpg
-from pgvector.asyncpg import register_vector
 from google.cloud import aiplatform
+from pgvector.asyncpg import register_vector
 
 logger = logging.getLogger(__name__)
 
 
 class PGVectorStore:
-    """
-    Zero-Trust RAG Implementation utilizing GCP Native Cloud SQL (pgvector).
+    """Zero-Trust RAG Implementation utilizing GCP Native Cloud SQL (pgvector).
     Replaces Pinecone to keep the data perimeter entirely within the VPC.
     """
 
@@ -31,7 +30,7 @@ class PGVectorStore:
         host = self.db_config.get("host")  # Should be the private VPC IP
 
         self.pool = await asyncpg.create_pool(
-            user=user, password=password, database=database, host=host
+            user=user, password=password, database=database, host=host,
         )
         if self.pool is not None:
             # Register the vector type with the pool
@@ -50,8 +49,7 @@ class PGVectorStore:
                 """)
 
     async def add_documents(self, documents: list[dict[str, Any]]):
-        """
-        Ingest documents, generate embeddings via Vertex AI, and store in Cloud SQL.
+        """Ingest documents, generate embeddings via Vertex AI, and store in Cloud SQL.
         Documents should be of form {"content": "...", "metadata": {...}}
         """
         if not self.pool:
@@ -80,8 +78,7 @@ class PGVectorStore:
         logger.info(f"Ingested {len(documents)} documents securely into Cloud SQL pgvector.")
 
     async def search(self, query: str, limit: int = 5) -> list[dict[str, Any]]:
-        """
-        Perform a native cosine distance search (L2, Inner Product also supported).
+        """Perform a native cosine distance search (L2, Inner Product also supported).
         """
         if not self.pool:
             await self.connect()
@@ -111,7 +108,7 @@ class PGVectorStore:
                             "content": row["content"],
                             "metadata": json.loads(row["metadata"]),
                             "score": row["similarity"],
-                        }
+                        },
                     )
 
                 return results

@@ -1,5 +1,4 @@
-"""
-Tests for JURA Protocol: Cost-aware agent routing.
+"""Tests for JURA Protocol: Cost-aware agent routing.
 
 Tests:
 - JuraClassifier: Tier classification logic

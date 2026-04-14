@@ -1,5 +1,4 @@
-"""
-Scholarly PDF Indexer - Elasticsearch-based Academic Paper Search
+"""Scholarly PDF Indexer - Elasticsearch-based Academic Paper Search
 
 Indexes scholarly PDFs for full-text search, enabling "Sauron's Panorama"
 knowledge base where agents can research academic papers as part of OPORD execution.
@@ -22,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class ScholarlyPDFIndexer:
-    """
-    Indexes scholarly PDFs for full-text search.
+    """Indexes scholarly PDFs for full-text search.
 
     Architecture (inspired by Apertus):
     - Extract text from PDFs (PyPDF2 or pdfplumber)
@@ -36,11 +34,11 @@ class ScholarlyPDFIndexer:
     """
 
     def __init__(self, es_client=None):
-        """
-        Initialize PDF indexer.
+        """Initialize PDF indexer.
 
         Args:
             es_client: Elasticsearch client (optional, uses mock if None)
+
         """
         self.es = es_client  # TODO: Connect to actual Elasticsearch
         self.index_name = "scholarly_pdfs"
@@ -54,8 +52,7 @@ class ScholarlyPDFIndexer:
         topics: list[str] | None = None,
         abstract: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Index a scholarly PDF for search.
+        """Index a scholarly PDF for search.
 
         Args:
             pdf_content: Raw PDF bytes
@@ -67,6 +64,7 @@ class ScholarlyPDFIndexer:
 
         Returns:
             Indexing result with doc_id, page_count, index_size
+
         """
         if PdfReader is None:
             raise ImportError("PyPDF2 not installed. Run: pip install PyPDF2")
@@ -116,8 +114,7 @@ class ScholarlyPDFIndexer:
         topics: list[str] | None = None,
         limit: int = 20,
     ) -> list[dict[str, Any]]:
-        """
-        Search indexed PDFs with full-text and filters.
+        """Search indexed PDFs with full-text and filters.
 
         Uses Elasticsearch match_phrase queries with configurable slop
         (similar to Apertus implementation).
@@ -131,6 +128,7 @@ class ScholarlyPDFIndexer:
 
         Returns:
             List of matching papers with excerpts and scores
+
         """
         if self.es:
             # Build Elasticsearch query
@@ -143,15 +141,15 @@ class ScholarlyPDFIndexer:
                                     "full_text": {
                                         "query": query,
                                         "slop": 2,  # Allow 2-word gaps (Apertus pattern)
-                                    }
-                                }
-                            }
+                                    },
+                                },
+                            },
                         ],
                         "filter": [],
-                    }
+                    },
                 },
                 "highlight": {
-                    "fields": {"full_text": {"fragment_size": 150, "number_of_fragments": 3}}
+                    "fields": {"full_text": {"fragment_size": 150, "number_of_fragments": 3}},
                 },
                 "size": limit,
             }
@@ -162,7 +160,7 @@ class ScholarlyPDFIndexer:
 
             if year_range:
                 es_query["query"]["bool"]["filter"].append(
-                    {"range": {"year": {"gte": year_range[0], "lte": year_range[1]}}}
+                    {"range": {"year": {"gte": year_range[0], "lte": year_range[1]}}},
                 )
 
             if topics:
@@ -185,34 +183,32 @@ class ScholarlyPDFIndexer:
                         "score": hit["_score"],
                         "excerpts": hit.get("highlight", {}).get("full_text", []),
                         "page_count": source["page_count"],
-                    }
+                    },
                 )
 
             logger.info(f"Search for '{query}' returned {len(papers)} papers")
             return papers
 
-        else:
-            # Mock mode: return example
-            logger.info(f"Mock search for '{query}'")
-            return [
-                {
-                    "doc_id": "mock_0001",
-                    "title": "Apertus LLM Training Data Indexing (Mock)",
-                    "authors": ["Researcher A", "Researcher B"],
-                    "year": 2024,
-                    "topics": ["elasticsearch", "llm", "indexing"],
-                    "score": 10.5,
-                    "excerpts": [
-                        f"...{query} appears in the context of large-scale indexing...",
-                        f"...performance tuning for {query} workloads...",
-                    ],
-                    "page_count": 15,
-                }
-            ]
+        # Mock mode: return example
+        logger.info(f"Mock search for '{query}'")
+        return [
+            {
+                "doc_id": "mock_0001",
+                "title": "Apertus LLM Training Data Indexing (Mock)",
+                "authors": ["Researcher A", "Researcher B"],
+                "year": 2024,
+                "topics": ["elasticsearch", "llm", "indexing"],
+                "score": 10.5,
+                "excerpts": [
+                    f"...{query} appears in the context of large-scale indexing...",
+                    f"...performance tuning for {query} workloads...",
+                ],
+                "page_count": 15,
+            },
+        ]
 
     def _extract_text_from_pdf(self, pdf_content: bytes) -> list[dict[str, str]]:
-        """
-        Extract text from PDF using PyPDF2.
+        """Extract text from PDF using PyPDF2.
 
         Returns list of pages with text and page number.
 
@@ -242,8 +238,7 @@ class ScholarlyPDFIndexer:
             return []
 
     def _normalize_text(self, text: str) -> str:
-        """
-        Normalize text for indexing.
+        """Normalize text for indexing.
 
         Applies transformations similar to Apertus web_content_analyzer:
         - Remove excess whitespace
@@ -282,8 +277,7 @@ class ScholarlyPDFIndexer:
         return text
 
     def create_index_mapping(self) -> dict:
-        """
-        Create Elasticsearch index mapping.
+        """Create Elasticsearch index mapping.
 
         Defines custom analyzer similar to Apertus:
         - Tokenization
@@ -311,7 +305,7 @@ class ScholarlyPDFIndexer:
                             "text": {"type": "text", "analyzer": "scholarly_analyzer"},
                         },
                     },
-                }
+                },
             },
             "settings": {
                 "analysis": {
@@ -320,9 +314,9 @@ class ScholarlyPDFIndexer:
                             "type": "custom",
                             "tokenizer": "standard",
                             "filter": ["lowercase", "asciifolding", "stop"],
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
         }
 

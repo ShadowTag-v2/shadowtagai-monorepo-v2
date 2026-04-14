@@ -1,5 +1,4 @@
-"""
-Platform Monitoring API
+"""Platform Monitoring API
 
 Unified monitoring and cost tracking API for PNKLN Core Stack™
 
@@ -321,7 +320,7 @@ async def get_ai_recommendations():
 
     # Get AI recommendations
     recommendations = await vertex_ai_service.get_optimization_recommendations(
-        cost_data, performance_data, budget_data
+        cost_data, performance_data, budget_data,
     )
 
     return {
@@ -372,7 +371,7 @@ async def get_ai_insights():
 
     # Get AI insights
     insights = await vertex_ai_service.get_platform_insights(
-        all_metrics, cost_data, performance_data
+        all_metrics, cost_data, performance_data,
     )
 
     return insights
@@ -390,7 +389,7 @@ async def get_capacity_forecast(growth_rate: float = 0.15):
     }
 
     forecast = await vertex_ai_service.analyzer.predict_capacity_needs(
-        growth_rate, current_capacity
+        growth_rate, current_capacity,
     )
 
     return forecast
@@ -401,7 +400,7 @@ async def get_capacity_forecast(growth_rate: float = 0.15):
 async def create_customer(request: CreateCustomerRequest):
     """Create a new Stripe customer"""
     result = await billing_service.create_customer(
-        email=request.email, name=request.name, metadata=request.metadata
+        email=request.email, name=request.name, metadata=request.metadata,
     )
     return result
 
@@ -417,7 +416,7 @@ async def get_customer(customer_id: str):
 async def attach_payment_method(request: AttachPaymentMethodRequest):
     """Attach payment method to customer"""
     result = await billing_service.attach_payment_method(
-        customer_id=request.customer_id, payment_method_id=request.payment_method_id
+        customer_id=request.customer_id, payment_method_id=request.payment_method_id,
     )
     return result
 
@@ -445,7 +444,7 @@ async def get_subscription(subscription_id: str):
 async def update_subscription(request: UpdateSubscriptionRequest):
     """Update subscription vehicle count"""
     result = await billing_service.update_subscription_quantity(
-        subscription_id=request.subscription_id, new_vehicle_count=request.new_vehicle_count
+        subscription_id=request.subscription_id, new_vehicle_count=request.new_vehicle_count,
     )
     return result
 
@@ -454,7 +453,7 @@ async def update_subscription(request: UpdateSubscriptionRequest):
 async def cancel_subscription(subscription_id: str, immediate: bool = False):
     """Cancel a subscription"""
     result = await billing_service.cancel_subscription(
-        subscription_id=subscription_id, immediate=immediate
+        subscription_id=subscription_id, immediate=immediate,
     )
     return result
 
@@ -482,12 +481,10 @@ async def get_pricing(vehicle_count: int):
 
 @app.post("/billing/webhooks")
 async def handle_stripe_webhook(payload: bytes = None, stripe_signature: str = None):
-    """
-    Handle Stripe webhooks
+    """Handle Stripe webhooks
 
     Verifies signature and processes events
     """
-
     # In production, get payload from request body and signature from header
     # For now, this is a placeholder structure
     if not payload or not stripe_signature:
@@ -503,12 +500,12 @@ async def handle_stripe_webhook(payload: bytes = None, stripe_signature: str = N
 
 @app.get("/billing/revenue-report")
 async def get_revenue_report(start_date: str, end_date: str):
-    """
-    Get revenue report for date range
+    """Get revenue report for date range
 
     Args:
         start_date: ISO format date (YYYY-MM-DD)
         end_date: ISO format date (YYYY-MM-DD)
+
     """
     from datetime import datetime
 

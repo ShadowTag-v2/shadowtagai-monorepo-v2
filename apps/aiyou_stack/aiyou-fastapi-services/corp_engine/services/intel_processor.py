@@ -1,5 +1,4 @@
-"""
-Intel Processor Service
+"""Intel Processor Service
 ========================
 Consumes intel from Nightly Pipeline via Pub/Sub.
 Personalizes for each tenant based on AI config.
@@ -16,8 +15,7 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 
 class IntelProcessor:
-    """
-    Processes intel items from Nightly Pipeline for Corp Engine tenants.
+    """Processes intel items from Nightly Pipeline for Corp Engine tenants.
 
     Flow:
     1. Subscribe to pipeline output topic
@@ -34,7 +32,7 @@ class IntelProcessor:
         self.subscription_id = os.getenv("PUBSUB_SUBSCRIPTION", "intel-processor-prod")
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscription_id
+            self.project_id, self.subscription_id,
         )
         self._running = False
 
@@ -104,7 +102,6 @@ class IntelProcessor:
 
     async def _process_for_tenant(self, tenant: dict, intel_item: dict):
         """Process intel item for a specific tenant"""
-
         # 1. Calculate tenant-specific relevance
         relevance = await self._calculate_relevance(tenant, intel_item)
 

@@ -1,5 +1,4 @@
-"""
-Nightly Intel Pipeline - Main Orchestration
+"""Nightly Intel Pipeline - Main Orchestration
 Coordinates ingestion, normalization, scoring, and briefing generation
 
 Enhanced with Gemini Normalization Layer (Step 1B) for structured IntelEvent extraction.
@@ -30,8 +29,7 @@ logger = structlog.get_logger(__name__)
 
 
 class NightlyIntelPipeline:
-    """
-    Main pipeline orchestrator
+    """Main pipeline orchestrator
 
     Execution steps:
     1A. Ingestion: Discover GitHub repos, arXiv papers, industry news, Federal Register
@@ -70,12 +68,12 @@ class NightlyIntelPipeline:
         include_industry: bool = True,
         include_federal_register: bool = True,
     ) -> dict[str, list[str]]:
-        """
-        Step 1: Ingestion
+        """Step 1: Ingestion
         Discover and download content from GitHub, arXiv, industry sources, and Federal Register
 
         Returns:
             Dict with 'repos', 'papers', 'industry', and 'federal_register' file paths
+
         """
         logger.info("ingestion_started")
 
@@ -130,7 +128,7 @@ class NightlyIntelPipeline:
 
                 # Run async industry crawl
                 articles = asyncio.run(
-                    self.industry_crawler.crawl_all_verticals(days_back=industry_days_back or 30)
+                    self.industry_crawler.crawl_all_verticals(days_back=industry_days_back or 30),
                 )
                 logger.info("industry_articles_discovered", count=len(articles))
 
@@ -151,8 +149,8 @@ class NightlyIntelPipeline:
                 # Run async Federal Register fetch
                 documents = asyncio.run(
                     self.federal_register_crawler.fetch_documents(
-                        days_back=federal_register_days_back or 30
-                    )
+                        days_back=federal_register_days_back or 30,
+                    ),
                 )
                 logger.info("federal_register_documents_discovered", count=len(documents))
 
@@ -175,8 +173,7 @@ class NightlyIntelPipeline:
         return results
 
     async def run_normalization(self, ingestion_results: dict[str, list[str]]) -> IntelEventBatch:
-        """
-        Step 1B: Gemini Normalization
+        """Step 1B: Gemini Normalization
         Transform raw documents into structured IntelEvent objects
 
         Args:
@@ -184,6 +181,7 @@ class NightlyIntelPipeline:
 
         Returns:
             IntelEventBatch containing all extracted events
+
         """
         if not self.enable_gemini_normalization:
             logger.info("gemini_normalization_skipped", reason="disabled")
@@ -207,7 +205,7 @@ class NightlyIntelPipeline:
                         "text": content,
                         "url": f"github://{Path(file_path).stem}",
                         "source_hint": "github_repo",
-                    }
+                    },
                 )
             except Exception as e:
                 logger.error("doc_read_error", file=file_path, error=str(e))
@@ -220,7 +218,7 @@ class NightlyIntelPipeline:
                         "text": content,
                         "url": f"arxiv://{Path(file_path).stem}",
                         "source_hint": "academic",
-                    }
+                    },
                 )
             except Exception as e:
                 logger.error("doc_read_error", file=file_path, error=str(e))
@@ -251,7 +249,7 @@ class NightlyIntelPipeline:
 
         if not documents:
             return IntelEventBatch(
-                events=[], batch_id="empty_batch", total_raw_documents=0, extraction_errors=0
+                events=[], batch_id="empty_batch", total_raw_documents=0, extraction_errors=0,
             )
 
         # Run Gemini normalization
@@ -271,8 +269,7 @@ class NightlyIntelPipeline:
         return batch
 
     def run_scoring(self, ingestion_results: dict[str, list[str]]):
-        """
-        Steps 2-3: JR Scoring and Tier Classification
+        """Steps 2-3: JR Scoring and Tier Classification
         Score all ingested content and classify into tiers
         """
         logger.info("scoring_started")
@@ -281,7 +278,7 @@ class NightlyIntelPipeline:
         for i, repo_file in enumerate(ingestion_results["repos"], 1):
             try:
                 logger.info(
-                    "scoring_repo", index=i, total=len(ingestion_results["repos"]), file=repo_file
+                    "scoring_repo", index=i, total=len(ingestion_results["repos"]), file=repo_file,
                 )
 
                 # Read flattened content
@@ -404,13 +401,13 @@ class NightlyIntelPipeline:
         logger.info("scoring_complete")
 
     def run_scoring_with_intel_events(self, batch: IntelEventBatch):
-        """
-        Score IntelEvents using JR Engine with pre-extracted hints.
+        """Score IntelEvents using JR Engine with pre-extracted hints.
 
         Enhanced scoring path that uses Gemini-extracted metadata and hints.
 
         Args:
             batch: IntelEventBatch from run_normalization()
+
         """
         if not batch.events:
             logger.info("intel_event_scoring_skipped", reason="no_events")
@@ -456,12 +453,12 @@ class NightlyIntelPipeline:
         logger.info("intel_event_scoring_complete", count=len(batch.events))
 
     def run_briefing(self) -> str:
-        """
-        Step 5: Briefing Generation
+        """Step 5: Briefing Generation
         Generate executive briefing from scored content
 
         Returns:
             Path to briefing file
+
         """
         logger.info("briefing_generation_started")
 
@@ -478,8 +475,7 @@ class NightlyIntelPipeline:
         download_pdfs: bool = False,
         use_gemini_scoring: bool = True,
     ) -> str:
-        """
-        Execute complete pipeline with Gemini normalization
+        """Execute complete pipeline with Gemini normalization
 
         Args:
             github_topics: Topics to search for GitHub repos
@@ -489,6 +485,7 @@ class NightlyIntelPipeline:
 
         Returns:
             Path to generated briefing file
+
         """
         start_time = datetime.now()
         logger.info("pipeline_execution_started", gemini_enabled=self.enable_gemini_normalization)
@@ -578,7 +575,7 @@ class NightlyIntelPipeline:
 
         # Extract abstract
         if "## Abstract" in content:
-            abstract_section = content.split("## Abstract")[1].split("##")[0]
+            abstract_section = content.split("## Abstract")[1].split("##", maxsplit=1)[0]
             metadata["abstract"] = abstract_section.strip()
 
         return metadata
@@ -604,12 +601,12 @@ class NightlyIntelPipeline:
             elif line.startswith("**Relevance Score:**"):
                 with contextlib.suppress(BaseException):
                     metadata["relevance_score"] = float(
-                        line.split("**Relevance Score:**")[1].strip()
+                        line.split("**Relevance Score:**")[1].strip(),
                     )
 
         # Extract summary
         if "## Summary" in content:
-            summary_section = content.split("## Summary")[1].split("##")[0]
+            summary_section = content.split("## Summary")[1].split("##", maxsplit=1)[0]
             metadata["summary"] = summary_section.strip()
 
         return metadata
@@ -637,7 +634,7 @@ class NightlyIntelPipeline:
             elif line.startswith("**Relevance Score:**"):
                 with contextlib.suppress(BaseException):
                     metadata["relevance_score"] = float(
-                        line.split("**Relevance Score:**")[1].strip()
+                        line.split("**Relevance Score:**")[1].strip(),
                     )
             elif line.startswith("**Significant:**"):
                 metadata["significant"] = line.split("**Significant:**")[1].strip() == "Yes"
@@ -656,7 +653,7 @@ class NightlyIntelPipeline:
 
         # Extract abstract
         if "## Abstract" in content:
-            abstract_section = content.split("## Abstract")[1].split("##")[0]
+            abstract_section = content.split("## Abstract")[1].split("##", maxsplit=1)[0]
             metadata["abstract"] = abstract_section.strip()
 
         return metadata
@@ -669,8 +666,7 @@ def run_pipeline(
     enable_gemini_normalization: bool = True,
     use_gemini_scoring: bool = True,
 ) -> str:
-    """
-    Convenience function to run the full pipeline with Gemini normalization
+    """Convenience function to run the full pipeline with Gemini normalization
 
     Usage:
         # Full pipeline with Gemini normalization (default)

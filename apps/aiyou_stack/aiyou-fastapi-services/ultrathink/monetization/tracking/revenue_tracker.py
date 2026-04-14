@@ -1,5 +1,4 @@
-"""
-Revenue Tracker: Turn AI operations into $ insights.
+"""Revenue Tracker: Turn AI operations into $ insights.
 
 Every interaction is a potential revenue opportunity.
 Track, measure, optimize.
@@ -49,8 +48,7 @@ class UsageMetrics(BaseModel):
 
 
 class RevenueTracker:
-    """
-    Track and identify revenue opportunities.
+    """Track and identify revenue opportunities.
 
     Usage:
         tracker = RevenueTracker()
@@ -81,14 +79,14 @@ class RevenueTracker:
         self.metrics = UsageMetrics()
 
     def analyze_conversation(self, messages: list[dict]) -> list[RevenueOpportunity]:
-        """
-        Analyze conversation for revenue signals.
+        """Analyze conversation for revenue signals.
 
         Args:
             messages: List of {role, content} message dicts
 
         Returns:
             List of detected opportunities
+
         """
         opportunities = []
 
@@ -116,7 +114,7 @@ class RevenueTracker:
                     description="User mentions scale/team → enterprise candidate",
                     action="Offer enterprise demo + custom pricing",
                     priority=8,
-                )
+                ),
             )
 
         # 2. Time-saving automation
@@ -135,7 +133,7 @@ class RevenueTracker:
                     description=f"Automation saves ~{estimated_hours_saved}h/month → ${monthly_value}",
                     action="Show ROI calculator: automation value vs. subscription cost",
                     priority=9,
-                )
+                ),
             )
 
         # 3. Feature requests → new product
@@ -149,7 +147,7 @@ class RevenueTracker:
                     description="User requesting feature not in current product",
                     action="Add to product roadmap, offer beta access for feedback",
                     priority=6,
-                )
+                ),
             )
 
         self.opportunities.extend(opportunities)
@@ -163,8 +161,7 @@ class RevenueTracker:
         tokens: int = 0,
         cost_usd: float = 0.0,
     ) -> None:
-        """
-        Log a request for usage analytics.
+        """Log a request for usage analytics.
 
         Args:
             endpoint: API endpoint called
@@ -172,6 +169,7 @@ class RevenueTracker:
             latency: Response time in ms
             tokens: Tokens consumed
             cost_usd: Actual LLM cost (from LLMResponse)
+
         """
         self.metrics.total_requests += 1
 
@@ -189,7 +187,7 @@ class RevenueTracker:
                         description="Heavy usage of advanced reasoning (66%+ of requests)",
                         action="Offer premium tier with unlimited reasoning",
                         priority=9,
-                    )
+                    ),
                 )
 
         # Update metrics
@@ -212,10 +210,9 @@ class RevenueTracker:
         return self.metrics
 
     def get_opportunities(
-        self, min_priority: int = 1, min_confidence: float = 0.0
+        self, min_priority: int = 1, min_confidence: float = 0.0,
     ) -> list[RevenueOpportunity]:
-        """
-        Get detected revenue opportunities.
+        """Get detected revenue opportunities.
 
         Args:
             min_priority: Minimum priority (1-10)
@@ -223,6 +220,7 @@ class RevenueTracker:
 
         Returns:
             Filtered list of opportunities, sorted by value
+
         """
         filtered = [
             opp
@@ -234,11 +232,11 @@ class RevenueTracker:
         return sorted(filtered, key=lambda x: x.value_usd, reverse=True)
 
     def calculate_roi(self) -> dict:
-        """
-        Calculate ROI for the service.
+        """Calculate ROI for the service.
 
         Returns:
             Dict with revenue, cost, ROI ratio
+
         """
         total_opportunity_value = sum(opp.value_usd for opp in self.opportunities)
         compute_cost = self.metrics.compute_cost_usd

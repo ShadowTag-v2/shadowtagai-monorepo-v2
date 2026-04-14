@@ -20,7 +20,6 @@ class ConversationBase(BaseModel):
 class ConversationCreate(ConversationBase):
     """Schema for creating a conversation."""
 
-    pass
 
 
 class ConversationUpdate(BaseModel):

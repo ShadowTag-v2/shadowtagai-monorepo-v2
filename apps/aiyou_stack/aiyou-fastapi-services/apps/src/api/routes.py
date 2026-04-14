@@ -1,5 +1,4 @@
-"""
-FastAPI Routes for Wealth Acceleration Agent
+"""FastAPI Routes for Wealth Acceleration Agent
 
 This module defines the RESTful API endpoints for accessing the
 wealth acceleration strategist agent.
@@ -69,8 +68,7 @@ async def analyze(
     request: AnalysisRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    General analysis endpoint for custom queries
+    """General analysis endpoint for custom queries
 
     This endpoint allows you to send any custom query to the wealth acceleration agent
     along with optional business context.
@@ -83,12 +81,12 @@ async def analyze(
                 service.analyze(
                     user_prompt=request.prompt,
                     business_context=request.business_context,
-                )
+                ),
             ),
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {e!s}")
 
 
 @app.post("/analyze/monetization")
@@ -96,8 +94,7 @@ async def analyze_monetization(
     request: MonetizationStrategyRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    Analyze complete monetization strategy
+    """Analyze complete monetization strategy
 
     This endpoint provides a comprehensive analysis of your monetization strategy,
     including:
@@ -115,7 +112,7 @@ async def analyze_monetization(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Monetization analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Monetization analysis failed: {e!s}")
 
 
 @app.post("/analyze/funnel")
@@ -123,8 +120,7 @@ async def analyze_funnel(
     request: FunnelAnalysisRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    Analyze conversion funnel
+    """Analyze conversion funnel
 
     This endpoint analyzes your conversion funnel stages to identify:
     - Biggest conversion leaks
@@ -140,7 +136,7 @@ async def analyze_funnel(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Funnel analysis failed: {e!s}")
 
 
 @app.post("/analyze/pricing")
@@ -148,8 +144,7 @@ async def evaluate_pricing(
     request: PricingEvaluationRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    Evaluate pricing strategy
+    """Evaluate pricing strategy
 
     This endpoint evaluates your pricing strategy and provides:
     - Assessment of current pricing vs market
@@ -165,7 +160,7 @@ async def evaluate_pricing(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Pricing evaluation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Pricing evaluation failed: {e!s}")
 
 
 @app.post("/analyze/projections")
@@ -173,8 +168,7 @@ async def project_revenue(
     request: RevenueProjectionRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    Calculate revenue projections
+    """Calculate revenue projections
 
     This endpoint projects revenue growth based on your current metrics:
     - Baseline scenario (status quo)
@@ -191,7 +185,7 @@ async def project_revenue(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Revenue projection failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Revenue projection failed: {e!s}")
 
 
 @app.post("/analyze/ltv")
@@ -199,8 +193,7 @@ async def calculate_ltv(
     request: LTVCalculationRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    Calculate customer lifetime value
+    """Calculate customer lifetime value
 
     This endpoint calculates and optimizes customer LTV:
     - Current LTV analysis
@@ -217,7 +210,7 @@ async def calculate_ltv(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"LTV calculation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"LTV calculation failed: {e!s}")
 
 
 @app.post("/analyze/opportunities")
@@ -225,8 +218,7 @@ async def assess_opportunities(
     request: OpportunityAssessmentRequest,
     service: WealthAccelerationService = Depends(get_wealth_acceleration_service),
 ):
-    """
-    Assess market opportunities
+    """Assess market opportunities
 
     This endpoint evaluates different revenue stream opportunities:
     - Highest-leverage opportunities ranking
@@ -243,7 +235,7 @@ async def assess_opportunities(
             media_type="text/plain",
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Opportunity assessment failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Opportunity assessment failed: {e!s}")
 
 
 # Export the app

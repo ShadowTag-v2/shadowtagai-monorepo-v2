@@ -1,5 +1,4 @@
-"""
-PersistentMemory - GitHub-Attached Learning System
+"""PersistentMemory - GitHub-Attached Learning System
 Version: 1.0.0
 
 Philosophy: Always learning, always yearning, never resting, ever vesting.
@@ -71,8 +70,7 @@ class AgentProfile:
 
 
 class PersistentMemory:
-    """
-    GitHub-attached memory system for continuous agent learning.
+    """GitHub-attached memory system for continuous agent learning.
 
     Every task → Solve → Reflect → Commit → Level Up → Repeat
 
@@ -125,8 +123,7 @@ class PersistentMemory:
         confidence: float = 0.8,
         tags: list[str] = None,
     ) -> str:
-        """
-        Commit a learning to persistent memory.
+        """Commit a learning to persistent memory.
         Like git commit - builds permanent knowledge base.
         """
         # Generate unique ID
@@ -222,8 +219,7 @@ class PersistentMemory:
         min_confidence: float = 0.5,
         limit: int = 10,
     ) -> list[Insight]:
-        """
-        Search past learnings to apply to current task.
+        """Search past learnings to apply to current task.
         """
         results = []
 
@@ -268,8 +264,7 @@ class PersistentMemory:
     # =========================================================================
 
     def evolution_log(self, agent_id: str) -> dict[str, Any]:
-        """
-        Track agent's growth over time.
+        """Track agent's growth over time.
         Visualize leveling up journey.
         """
         if agent_id not in self.agents:
@@ -310,7 +305,7 @@ class PersistentMemory:
             "insights_contributed": agent.insights_contributed,
             "domains_mastered": agent.domains_mastered,
             "top_specializations": sorted(
-                agent.specializations.items(), key=lambda x: x[1], reverse=True
+                agent.specializations.items(), key=lambda x: x[1], reverse=True,
             )[:5],
             "created": agent.created_at.isoformat(),
             "last_active": agent.last_active.isoformat(),
@@ -323,7 +318,7 @@ class PersistentMemory:
     def leaderboard(self, top_n: int = 10) -> list[dict[str, Any]]:
         """Get top agents by experience points."""
         sorted_agents = sorted(
-            self.agents.values(), key=lambda a: a.experience_points, reverse=True
+            self.agents.values(), key=lambda a: a.experience_points, reverse=True,
         )
 
         return [
@@ -342,10 +337,9 @@ class PersistentMemory:
     # =========================================================================
 
     def transfer_knowledge(
-        self, from_agent_id: str, to_agent_id: str, domain: str
+        self, from_agent_id: str, to_agent_id: str, domain: str,
     ) -> dict[str, Any]:
-        """
-        Level 4 agent teaches Level 1-3 agent.
+        """Level 4 agent teaches Level 1-3 agent.
         Transfer domain knowledge.
         """
         teacher = self.agents.get(from_agent_id)
@@ -356,7 +350,7 @@ class PersistentMemory:
 
         if teacher.level.value < AgentLevel.TEACHING.value:
             return {
-                "error": f"Agent {from_agent_id} not qualified to teach (Level {teacher.level.name})"
+                "error": f"Agent {from_agent_id} not qualified to teach (Level {teacher.level.name})",
             }
 
         # Get teacher's domain insights
@@ -442,8 +436,7 @@ class PersistentMemory:
 
 
 def create_memory_system(repo_path: str = "memory") -> PersistentMemory:
-    """
-    Create persistent memory system.
+    """Create persistent memory system.
 
     "Always learning, always yearning, never resting, ever vesting."
     """

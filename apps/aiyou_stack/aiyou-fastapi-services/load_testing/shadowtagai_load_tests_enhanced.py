@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-═══════════════════════════════════════════════════════════════════
+"""═══════════════════════════════════════════════════════════════════
   SHADOWTAGAI LOAD TESTING SUITE - ENHANCED VERSION v2.0
   Production-Grade Performance Validation with Advanced Analytics
 ═══════════════════════════════════════════════════════════════════
@@ -576,7 +575,7 @@ def extract_scripts():
     }
 
     print("Extracting SHADOWTAGAI enhanced load testing scripts...")
-    print("")
+    print()
 
     for filename, content in scripts.items():
         with open(filename, "w") as f:
@@ -590,9 +589,9 @@ def extract_scripts():
 
         print(f"✓ Created: {filename}")
 
-    print("")
+    print()
     print("All scripts extracted successfully!")
-    print("")
+    print()
     print("Next steps:")
     print("1. Install dependencies: pip install -r requirements.txt")
     print("2. Update endpoint URLs in each script")

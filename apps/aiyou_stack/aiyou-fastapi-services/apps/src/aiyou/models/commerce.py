@@ -1,5 +1,4 @@
-"""
-Commerce Mall models.
+"""Commerce Mall models.
 
 Handles products, orders, payments, and virtual shopping.
 """

@@ -7,11 +7,11 @@ from pythonjsonlogger import jsonlogger
 
 
 def setup_logging(level: str = "INFO") -> None:
-    """
-    Setup structured logging with JSON format.
+    """Setup structured logging with JSON format.
 
     Args:
         level: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+
     """
     # Create logger
     logger = logging.getLogger()

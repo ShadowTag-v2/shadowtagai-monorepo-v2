@@ -1,5 +1,4 @@
-"""
-ReAct Orchestrator: Implements the Reason → Act → Observe → Reason loop.
+"""ReAct Orchestrator: Implements the Reason → Act → Observe → Reason loop.
 
 Based on the ReAct framework (arxiv 2210.03629), this orchestrator enables
 interpretable, grounded agent behavior through explicit reasoning traces,
@@ -69,8 +68,7 @@ class ReActResult:
 
 
 class ReActOrchestrator:
-    """
-    Core ReAct loop orchestrator for Kosmos-pattern agents.
+    """Core ReAct loop orchestrator for Kosmos-pattern agents.
 
     Implements the Reason → Act → Observe cycle:
     1. REASON: LLM generates thought + selects action
@@ -120,8 +118,7 @@ Thought:"""
         max_iterations: int = 50,
         temperature: float = 0.7,
     ):
-        """
-        Initialize ReAct orchestrator.
+        """Initialize ReAct orchestrator.
 
         Args:
             llm_client: Vertex AI GenerativeModel instance
@@ -129,6 +126,7 @@ Thought:"""
             world_model: Optional KosmosWorldModel for state tracking
             max_iterations: Maximum ReAct loop iterations (safety limit)
             temperature: LLM temperature for generation
+
         """
         self.llm_client = llm_client
         self.tools = tools
@@ -137,8 +135,7 @@ Thought:"""
         self.temperature = temperature
 
     def execute_cycle(self, goal: str, context: list[ReActStep] | None = None) -> ReActResult:
-        """
-        Execute a complete ReAct cycle until goal is achieved or max iterations.
+        """Execute a complete ReAct cycle until goal is achieved or max iterations.
 
         Args:
             goal: Task description / research question
@@ -146,6 +143,7 @@ Thought:"""
 
         Returns:
             ReActResult with execution trace and outcome
+
         """
         steps = context or []
         iteration = len(steps)
@@ -188,7 +186,7 @@ Thought:"""
                     observation = self._execute_tool(action, action_input)
                     step.observation = observation
                 except Exception as e:
-                    step.observation = f"Error executing {action}: {str(e)}"
+                    step.observation = f"Error executing {action}: {e!s}"
 
                 steps.append(step)
                 iteration += 1
@@ -217,8 +215,7 @@ Thought:"""
             )
 
     def _build_prompt(self, goal: str, previous_steps: list[ReActStep]) -> str:
-        """
-        Build ReAct prompt with goal, tools, world model state, and history.
+        """Build ReAct prompt with goal, tools, world model state, and history.
 
         Args:
             goal: Task description
@@ -226,10 +223,11 @@ Thought:"""
 
         Returns:
             Formatted prompt string
+
         """
         # Format tool descriptions
         tool_descriptions = "\n".join(
-            [f"- {name}: {func.__doc__ or 'No description'}" for name, func in self.tools.items()]
+            [f"- {name}: {func.__doc__ or 'No description'}" for name, func in self.tools.items()],
         )
 
         # Format previous steps
@@ -263,14 +261,14 @@ Top hypotheses:
         )
 
     def _generate_response(self, prompt: str) -> str:
-        """
-        Generate LLM response using Vertex AI Gemini.
+        """Generate LLM response using Vertex AI Gemini.
 
         Args:
             prompt: Formatted ReAct prompt
 
         Returns:
             LLM response text
+
         """
         # This will be implemented with actual Vertex AI call
         # For now, returns a placeholder that will be replaced
@@ -288,14 +286,14 @@ Top hypotheses:
             raise RuntimeError(f"LLM generation failed: {e}")
 
     def _parse_response(self, response: str) -> tuple[str, str | None, Any | None]:
-        """
-        Parse LLM response to extract Thought, Action, Action Input.
+        """Parse LLM response to extract Thought, Action, Action Input.
 
         Args:
             response: Raw LLM response text
 
         Returns:
             Tuple of (thought, action, action_input)
+
         """
         # Extract Thought
         thought_match = re.search(r"Thought:\s*(.+?)(?=\nAction:|\n*$)", response, re.DOTALL)
@@ -320,8 +318,7 @@ Top hypotheses:
         return thought, action, action_input
 
     def _execute_tool(self, action: str, action_input: Any) -> str:
-        """
-        Execute a tool and return observation.
+        """Execute a tool and return observation.
 
         Args:
             action: Tool name
@@ -329,6 +326,7 @@ Top hypotheses:
 
         Returns:
             Tool execution result as string
+
         """
         if action not in self.tools:
             return f"Error: Unknown tool '{action}'. Available tools: {list(self.tools.keys())}"
@@ -345,17 +343,15 @@ Top hypotheses:
             # Convert result to string for observation
             if isinstance(result, str):
                 return result
-            elif isinstance(result, (dict, list)):
+            if isinstance(result, (dict, list)):
                 return json.dumps(result, indent=2)
-            else:
-                return str(result)
+            return str(result)
 
         except Exception as e:
-            return f"Tool execution error: {str(e)}"
+            return f"Tool execution error: {e!s}"
 
     def _update_world_model(self, step: ReActStep):
-        """
-        Update world model based on ReAct step results.
+        """Update world model based on ReAct step results.
 
         This is where we bridge ReAct loop outputs to world model state.
         Extracts structured information from observations and updates
@@ -363,6 +359,7 @@ Top hypotheses:
 
         Args:
             step: Completed ReAct step
+
         """
         if not self.world_model:
             return
@@ -394,12 +391,12 @@ Top hypotheses:
         return "Unknown tool"
 
     def add_tool(self, name: str, func: Callable):
-        """
-        Add a new tool to the orchestrator.
+        """Add a new tool to the orchestrator.
 
         Args:
             name: Tool name (will be used in Action: field)
             func: Callable tool function
+
         """
         self.tools[name] = func
 

@@ -1,5 +1,4 @@
-"""
-Innovation Lab Service Configuration
+"""Innovation Lab Service Configuration
 """
 
 from pydantic_settings import BaseSettings

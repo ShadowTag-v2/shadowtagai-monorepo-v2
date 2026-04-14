@@ -25,7 +25,7 @@ async def run_god_mode_batch():
 
     if score.overall_score < threshold:
         logger.fatal(
-            f"🛑 ABORT: Compliance Score {score.overall_score}% is below threshold {threshold}%."
+            f"🛑 ABORT: Compliance Score {score.overall_score}% is below threshold {threshold}%.",
         )
         sys.exit(1)  # Failing here prevents the Design Agent from running
 

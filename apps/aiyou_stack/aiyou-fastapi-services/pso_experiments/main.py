@@ -1,5 +1,4 @@
-"""
-Minimal entry‑point to verify that the PSO backend works.
+"""Minimal entry‑point to verify that the PSO backend works.
 Run:
     $ python -m pso_experiments.main
 """

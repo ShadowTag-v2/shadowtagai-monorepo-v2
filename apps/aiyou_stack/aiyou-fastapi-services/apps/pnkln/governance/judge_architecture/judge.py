@@ -1,5 +1,4 @@
-"""
-JudgeArchitecture: Thin Orchestrator
+"""JudgeArchitecture: Thin Orchestrator
 =====================================
 
 The main orchestrator class that integrates all 21 governance layers.
@@ -49,8 +48,7 @@ logger = logging.getLogger(__name__)
 
 
 class JudgeArchitecture:
-    """
-    Comprehensive decision-validation framework with 21 layers.
+    """Comprehensive decision-validation framework with 21 layers.
 
     Integrates with AutoGen branch:
     - Multi-agent debate (adds RegulatoryGuardian agent)
@@ -128,8 +126,7 @@ class JudgeArchitecture:
         logger.info("Judge Architecture initialized with 21 layers + Army Doctrine")
 
     async def validate_decision(self, decision: Decision) -> JudgeVerdict:
-        """
-        Comprehensive decision validation through all 21 Judge layers.
+        """Comprehensive decision validation through all 21 Judge layers.
 
         Now includes Army Doctrine Integration:
         - Layer 0: ATP 5-19 Composite Risk Management (5-step CRM)
@@ -140,6 +137,7 @@ class JudgeArchitecture:
 
         Returns:
             JudgeVerdict with status, blockers, warnings, next actions
+
         """
         processing_start = time.time()
 
@@ -174,14 +172,14 @@ class JudgeArchitecture:
         # Warn if risk is HIGH or EXTREMELY_HIGH
         if residual_risk_str in ["HIGH", "EXTREMELY_HIGH"]:
             verdict.warnings.append(
-                f"ATP 5-19: Residual risk is {residual_risk_str} - requires {approval_auth} approval"
+                f"ATP 5-19: Residual risk is {residual_risk_str} - requires {approval_auth} approval",
             )
 
         # === Layer 0.5: FM 6-0 Mission Analysis ===
         # Strategic decisions use MDMP, tactical use TLP
         if decision.type == "strategic":
             mission_analysis = await self.mdmp.step2_mission_analysis(
-                {"task": decision.description, "decision_id": decision.id}
+                {"task": decision.description, "decision_id": decision.id},
             )
             verdict.layer_results["fm_6_0_mdmp"] = mission_analysis
         else:
@@ -239,7 +237,7 @@ class JudgeArchitecture:
         verdict.layer_results["competitive"] = competitive_analysis
         if competitive_analysis["commodity_trap_risk"]:
             verdict.warnings.append(
-                "Competitive: Decision copies incumbents without differentiation"
+                "Competitive: Decision copies incumbents without differentiation",
             )
 
         # Layer 19: Milestone Tracker
@@ -284,10 +282,9 @@ class JudgeArchitecture:
         # Simplified - production would check ATP 5-19, BJR, Bootstrap, Security, Boy Scout
         if verdict.status == DecisionStatus.APPROVED:
             return 0.95
-        elif verdict.status == DecisionStatus.DEFERRED:
+        if verdict.status == DecisionStatus.DEFERRED:
             return 0.75
-        else:
-            return 0.50
+        return 0.50
 
     def get_performance_report(self) -> dict[str, Any]:
         """Get IQ 160 lock performance report."""
@@ -303,8 +300,7 @@ class JudgeArchitecture:
         decision: Decision,
         trigger: DrillTrigger = DrillTrigger.EXCEPTION,
     ) -> dict[str, Any]:
-        """
-        Handle validation errors using FM 7-8 Battle Drills.
+        """Handle validation errors using FM 7-8 Battle Drills.
 
         Routes error to appropriate battle drill:
         - EXCEPTION/API_FAILURE → React to Contact (retry logic)
@@ -342,8 +338,7 @@ class JudgeArchitecture:
         }
 
     async def validate_with_doctrine_recovery(self, decision: Decision) -> JudgeVerdict:
-        """
-        Validate decision with automatic battle drill recovery on failure.
+        """Validate decision with automatic battle drill recovery on failure.
 
         Enhanced version that includes FM 7-8 error handling.
         """
@@ -361,7 +356,7 @@ class JudgeArchitecture:
             return JudgeVerdict(
                 decision_id=decision.id,
                 status=DecisionStatus.REJECTED,
-                reason=f"Validation failed with error: {str(e)}. Battle drill recovery failed.",
+                reason=f"Validation failed with error: {e!s}. Battle drill recovery failed.",
                 iq_level=self.iq_monitor.iq_lock_level,
                 blockers=[str(e)],
                 layer_results={"battle_drill": drill_result},

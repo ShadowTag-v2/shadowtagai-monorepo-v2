@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-GKE 4-Namespace Integration Example
+"""GKE 4-Namespace Integration Example
 
 This example demonstrates how services in different GKE namespaces
 interact with the PNKLN Core Stack™:
@@ -45,7 +44,7 @@ class IngestionNamespace(NamespaceService):
 
         # Run ingestion
         response = await self.client.post(
-            f"{self.api_base}/api/v1/ingestion/run", json={"sources": None}
+            f"{self.api_base}/api/v1/ingestion/run", json={"sources": None},
         )
         data = response.json()
 
@@ -144,7 +143,6 @@ class DeliveryNamespace(NamespaceService):
 
 async def simulate_namespace_flow():
     """Simulate complete flow through all 4 namespaces"""
-
     print("=" * 80)
     print("PNKLN Core Stack™ - 4-Namespace Integration Simulation")
     print("=" * 80)
@@ -173,7 +171,7 @@ async def simulate_namespace_flow():
         print("Step 3: Processing Namespace (Called by Validation)")
         print("-" * 80)
         quality_metrics = await processing_ns.process_validated_items(
-            validation_metrics["approved_count"]
+            validation_metrics["approved_count"],
         )
         print()
 

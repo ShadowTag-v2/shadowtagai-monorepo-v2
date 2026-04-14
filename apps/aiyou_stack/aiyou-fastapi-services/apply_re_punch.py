@@ -32,7 +32,7 @@ settings_json = {
                 "command": "workbench.action.chat.open",
                 "args": {"query": "/live-engine"},
                 "tooltip": "Initiate Autonomous Maintenance Loop",
-            }
+            },
         ],
     },
     "multiCommand.commands": [
@@ -46,7 +46,7 @@ settings_json = {
                 "workbench.action.files.saveAll",
                 "workbench.action.nextEditor",
             ],
-        }
+        },
     ],
 }
 
@@ -455,8 +455,8 @@ mcp_config = {
             "command": "python3",
             "args": ["src/governance/mcp_server.py"],
             "env": {"PYTHONPATH": "."},
-        }
-    }
+        },
+    },
 }
 
 # scripts/deploy_omega_v2.py (Already in restoration but overwriting with latest block)

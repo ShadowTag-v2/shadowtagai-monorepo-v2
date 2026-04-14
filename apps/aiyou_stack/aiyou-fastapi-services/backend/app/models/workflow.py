@@ -1,5 +1,4 @@
-"""
-Pydantic models for workflow automation system.
+"""Pydantic models for workflow automation system.
 """
 
 from datetime import datetime
@@ -66,7 +65,7 @@ class AppendToNoteAction(BaseAction):
 
 # Union type for all action types
 WorkflowAction = Union[
-    AskForInputAction, GetDateAction, OpenAppAction, CreateNoteAction, AppendToNoteAction
+    AskForInputAction, GetDateAction, OpenAppAction, CreateNoteAction, AppendToNoteAction,
 ]
 
 
@@ -90,7 +89,7 @@ class WorkflowBlock(BaseModel):
                     },
                     {"type": "GetDate", "format": "YYYY-MM-DD HH:mm"},
                 ],
-            }
+            },
         }
 
 
@@ -109,7 +108,7 @@ class WorkflowExecutionContext(BaseModel):
 
     variables: dict[str, Any] = Field(default_factory=dict, description="Template variables")
     current_action_index: int = Field(
-        default=0, description="Index of current action being executed"
+        default=0, description="Index of current action being executed",
     )
 
 
@@ -131,7 +130,7 @@ class StartWorkflowRequest(BaseModel):
 
     workflow_name: str = Field(..., description="Name of the workflow to execute")
     initial_variables: dict[str, Any] | None = Field(
-        default_factory=dict, description="Optional initial variables to populate the context"
+        default_factory=dict, description="Optional initial variables to populate the context",
     )
 
 
@@ -142,7 +141,7 @@ class StartWorkflowResponse(BaseModel):
     status: WorkflowExecutionStatus = Field(..., description="Current execution status")
     message: str = Field(..., description="Status message")
     next_action: WorkflowAction | None = Field(
-        None, description="Next action to perform if waiting for input"
+        None, description="Next action to perform if waiting for input",
     )
 
 
@@ -160,7 +159,7 @@ class ProvideInputResponse(BaseModel):
     status: WorkflowExecutionStatus = Field(..., description="Current execution status")
     message: str = Field(..., description="Status message")
     next_action: WorkflowAction | None = Field(
-        None, description="Next action to perform if waiting for input"
+        None, description="Next action to perform if waiting for input",
     )
 
 

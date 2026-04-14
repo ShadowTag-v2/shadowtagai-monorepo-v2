@@ -1,5 +1,4 @@
-"""
-Template Rendering Service
+"""Template Rendering Service
 Converts template models into formatted prompts and documents
 """
 

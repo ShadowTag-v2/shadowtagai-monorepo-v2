@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Ingest Merged Extractions into Memory Bank.
+"""Ingest Merged Extractions into Memory Bank.
 
 This script takes the output of `merge_web_extractions.py` (JSON) and folds it into
 the main system memory file (`memory/current.json`).
@@ -20,7 +19,7 @@ from typing import Any
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%H:%M:%S"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%H:%M:%S",
 )
 logger = logging.getLogger(__name__)
 
@@ -56,7 +55,6 @@ def save_json(path: Path, data: Any) -> None:
 
 def transform_to_conversation(item: dict[str, Any]) -> dict[str, Any] | None:
     """Transform a raw extraction item into a memory conversation object."""
-
     # 1. Handle Chat/Conversation types
     # Check for direct message list (ChatGPT/Claude API format)
     messages = []
@@ -81,7 +79,7 @@ def transform_to_conversation(item: dict[str, Any]) -> dict[str, Any] | None:
                 "role": "user",
                 "content": f"[Extracted from {source}]\n{item['textContent']}",
                 "timestamp": datetime.now().isoformat(),
-            }
+            },
         ]
 
     # If item is from LocalStorage (Claude)

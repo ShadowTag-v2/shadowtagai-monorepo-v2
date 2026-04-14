@@ -1,5 +1,4 @@
-"""
-NFT Minting Service for Tokable
+"""NFT Minting Service for Tokable
 Handles blockchain integration for minting stream NFTs
 
 Supported Blockchains:
@@ -40,8 +39,7 @@ class MintStatus(StrEnum):
 
 
 class NFTMinter:
-    """
-    NFT Minting Service
+    """NFT Minting Service
 
     **Minting Flow**:
     1. Compile stream media (video + AI art)
@@ -72,8 +70,7 @@ class NFTMinter:
         blockchain: Blockchain = Blockchain.POLYGON,
         price_usd: Decimal = Decimal("25.00"),
     ) -> dict[str, Any]:
-        """
-        Mint NFT from completed stream
+        """Mint NFT from completed stream
 
         Args:
             stream_id: Stream identifier
@@ -94,12 +91,13 @@ class NFTMinter:
                 "status": str,
                 "minted_at": datetime
             }
+
         """
         print(f"Starting NFT mint for stream {stream_id}...")
 
         # 1. Upload media to IPFS
         media_cid = await self._upload_media_to_ipfs(
-            stream_id, stream_data.get("video_url"), stream_data.get("thumbnail_url")
+            stream_id, stream_data.get("video_url"), stream_data.get("thumbnail_url"),
         )
 
         # 2. Generate and upload metadata
@@ -125,10 +123,9 @@ class NFTMinter:
         }
 
     async def _upload_media_to_ipfs(
-        self, stream_id: str, video_url: str, _thumbnail_url: str
+        self, stream_id: str, video_url: str, _thumbnail_url: str,
     ) -> str:
-        """
-        Upload media files to IPFS
+        """Upload media files to IPFS
 
         **IPFS Benefits**:
         - Decentralized storage
@@ -159,8 +156,7 @@ class NFTMinter:
         media_cid: str,
         price_usd: Decimal,
     ) -> dict[str, Any]:
-        """
-        Generate ERC-721 compliant metadata
+        """Generate ERC-721 compliant metadata
 
         **NFT Metadata Standard**:
         - name: NFT title
@@ -172,7 +168,7 @@ class NFTMinter:
         metadata = {
             "name": stream_data.get("title", f"Tokable Stream #{stream_id}"),
             "description": stream_data.get(
-                "description", "Silent gesture-based performance captured as NFT"
+                "description", "Silent gesture-based performance captured as NFT",
             ),
             "image": f"{self.ipfs_gateway}{media_cid}",
             "external_url": f"https://tokable.ai/streams/{stream_id}",
@@ -224,7 +220,7 @@ class NFTMinter:
                 {
                     "trait_type": f"Emotion: {emotion.capitalize()}",
                     "value": f"{int(percentage * 100)}%",
-                }
+                },
             )
 
         return metadata
@@ -244,10 +240,9 @@ class NFTMinter:
         return mock_cid
 
     async def _mint_on_blockchain(
-        self, blockchain: Blockchain, creator_id: str, metadata_cid: str
+        self, blockchain: Blockchain, creator_id: str, metadata_cid: str,
     ) -> str:
-        """
-        Mint NFT on blockchain
+        """Mint NFT on blockchain
 
         **Smart Contract Call**:
         - Function: mintNFT(address creator, string tokenURI)
@@ -279,8 +274,7 @@ class NFTMinter:
         to_address: str,
         blockchain: Blockchain = Blockchain.POLYGON,
     ) -> dict[str, Any]:
-        """
-        Transfer NFT ownership
+        """Transfer NFT ownership
 
         **Use Cases**:
         - NFT sale
@@ -307,8 +301,7 @@ class NFTMinter:
         price_usd: Decimal,
         blockchain: Blockchain = Blockchain.POLYGON,
     ) -> dict[str, Any]:
-        """
-        List NFT for sale or update price
+        """List NFT for sale or update price
 
         **Marketplace Integration**:
         - Update smart contract sale price
@@ -327,10 +320,9 @@ class NFTMinter:
         }
 
     def calculate_gas_estimate(
-        self, blockchain: Blockchain, operation: str = "mint"
+        self, blockchain: Blockchain, operation: str = "mint",
     ) -> dict[str, Any]:
-        """
-        Estimate gas costs
+        """Estimate gas costs
 
         **Gas Costs (approximate)**:
         - Polygon mint: $0.01-0.10
@@ -397,10 +389,9 @@ class NFTMarketplace:
 
     @staticmethod
     async def search_nfts(
-        filters: dict[str, Any] | None = None, _sort_by: str = "recent", limit: int = 50
+        filters: dict[str, Any] | None = None, _sort_by: str = "recent", limit: int = 50,
     ) -> list[dict[str, Any]]:
-        """
-        Search/browse NFT marketplace
+        """Search/browse NFT marketplace
 
         **Filters**:
         - creator_id
@@ -421,8 +412,7 @@ class NFTMarketplace:
 
     @staticmethod
     async def get_nft_analytics(nft_id: str) -> dict[str, Any]:
-        """
-        Get NFT performance analytics
+        """Get NFT performance analytics
 
         **Metrics**:
         - Views
@@ -457,8 +447,7 @@ class RoyaltyDistributor:
         creator_id: str,
         royalty_percentage: float = 10.0,
     ) -> dict[str, Any]:
-        """
-        Distribute royalty on secondary sale
+        """Distribute royalty on secondary sale
 
         **Royalty Flow**:
         - 10% to original creator (default)

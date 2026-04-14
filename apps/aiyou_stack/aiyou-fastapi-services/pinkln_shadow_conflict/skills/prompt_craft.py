@@ -1,5 +1,4 @@
-"""
-PromptCraftSkill - Generate elegant, structured prompts.
+"""PromptCraftSkill - Generate elegant, structured prompts.
 """
 
 import os

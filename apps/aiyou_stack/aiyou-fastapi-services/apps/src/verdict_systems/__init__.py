@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Executive Function Replacement Platform
+"""Verdict Systems - Executive Function Replacement Platform
 =========================================================
 
 Mission: Duplicate and perfect human executive function across domains—

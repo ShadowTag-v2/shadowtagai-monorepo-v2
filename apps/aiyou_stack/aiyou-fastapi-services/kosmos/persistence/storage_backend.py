@@ -1,5 +1,4 @@
-"""
-Cloud Storage Backend: Storage for artifacts (datasets, plots, reports).
+"""Cloud Storage Backend: Storage for artifacts (datasets, plots, reports).
 
 Provides:
 - Upload/download of large files (datasets, plots, PDFs)
@@ -20,15 +19,14 @@ try:
 except ImportError:
     STORAGE_AVAILABLE = False
     logging.warning(
-        "Cloud Storage SDK not installed. Install with: pip install google-cloud-storage"
+        "Cloud Storage SDK not installed. Install with: pip install google-cloud-storage",
     )
 
 logger = logging.getLogger(__name__)
 
 
 class CloudStorageBackend:
-    """
-    Cloud Storage persistence backend for large artifacts.
+    """Cloud Storage persistence backend for large artifacts.
 
     Bucket structure:
         {bucket_name}/
@@ -50,13 +48,13 @@ class CloudStorageBackend:
         bucket_name: str,
         create_bucket: bool = False,
     ):
-        """
-        Initialize Cloud Storage backend.
+        """Initialize Cloud Storage backend.
 
         Args:
             project_id: GCP project ID
             bucket_name: Storage bucket name
             create_bucket: Whether to create bucket if it doesn't exist
+
         """
         if not STORAGE_AVAILABLE:
             raise RuntimeError("Cloud Storage SDK not installed")
@@ -88,8 +86,7 @@ class CloudStorageBackend:
         artifact_type: str = "datasets",
         filename: str | None = None,
     ) -> str:
-        """
-        Upload a file to Cloud Storage.
+        """Upload a file to Cloud Storage.
 
         Args:
             session_id: Session ID
@@ -99,6 +96,7 @@ class CloudStorageBackend:
 
         Returns:
             Public URL of uploaded file
+
         """
         if filename is None:
             filename = Path(file_path).name
@@ -120,8 +118,7 @@ class CloudStorageBackend:
         artifact_type: str = "datasets",
         content_type: str | None = None,
     ) -> str:
-        """
-        Upload bytes to Cloud Storage.
+        """Upload bytes to Cloud Storage.
 
         Args:
             session_id: Session ID
@@ -132,6 +129,7 @@ class CloudStorageBackend:
 
         Returns:
             Public URL of uploaded file
+
         """
         blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
         blob = self.bucket.blob(blob_path)
@@ -152,8 +150,7 @@ class CloudStorageBackend:
         artifact_type: str = "datasets",
         local_path: str | None = None,
     ) -> str:
-        """
-        Download a file from Cloud Storage.
+        """Download a file from Cloud Storage.
 
         Args:
             session_id: Session ID
@@ -163,6 +160,7 @@ class CloudStorageBackend:
 
         Returns:
             Local file path
+
         """
         blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
         blob = self.bucket.blob(blob_path)
@@ -182,8 +180,7 @@ class CloudStorageBackend:
         filename: str,
         artifact_type: str = "datasets",
     ) -> bytes:
-        """
-        Download file as bytes.
+        """Download file as bytes.
 
         Args:
             session_id: Session ID
@@ -192,6 +189,7 @@ class CloudStorageBackend:
 
         Returns:
             File contents as bytes
+
         """
         blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
         blob = self.bucket.blob(blob_path)
@@ -207,8 +205,7 @@ class CloudStorageBackend:
         session_id: str,
         artifact_type: str | None = None,
     ) -> list[str]:
-        """
-        List artifacts for a session.
+        """List artifacts for a session.
 
         Args:
             session_id: Session ID
@@ -216,6 +213,7 @@ class CloudStorageBackend:
 
         Returns:
             List of blob paths
+
         """
         prefix = f"sessions/{session_id}/"
         if artifact_type:
@@ -232,8 +230,7 @@ class CloudStorageBackend:
         artifact_type: str = "datasets",
         expiration_hours: int = 24,
     ) -> str:
-        """
-        Get a signed public URL for sharing.
+        """Get a signed public URL for sharing.
 
         Args:
             session_id: Session ID
@@ -243,6 +240,7 @@ class CloudStorageBackend:
 
         Returns:
             Signed public URL
+
         """
         blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
         blob = self.bucket.blob(blob_path)
@@ -263,13 +261,13 @@ class CloudStorageBackend:
         filename: str,
         artifact_type: str = "datasets",
     ):
-        """
-        Delete an artifact.
+        """Delete an artifact.
 
         Args:
             session_id: Session ID
             filename: Filename
             artifact_type: Type of artifact
+
         """
         blob_path = f"sessions/{session_id}/{artifact_type}/{filename}"
         blob = self.bucket.blob(blob_path)
@@ -278,11 +276,11 @@ class CloudStorageBackend:
         logger.info(f"Deleted gs://{self.bucket_name}/{blob_path}")
 
     def delete_session_artifacts(self, session_id: str):
-        """
-        Delete all artifacts for a session.
+        """Delete all artifacts for a session.
 
         Args:
             session_id: Session ID
+
         """
         prefix = f"sessions/{session_id}/"
         blobs = self.bucket.list_blobs(prefix=prefix)

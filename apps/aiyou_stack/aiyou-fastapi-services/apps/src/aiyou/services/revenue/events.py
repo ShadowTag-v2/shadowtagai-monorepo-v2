@@ -1,5 +1,4 @@
-"""
-Revenue event definitions.
+"""Revenue event definitions.
 
 Defines the schema for all revenue-generating events across the platform.
 """
@@ -57,8 +56,7 @@ class ServiceType(StrEnum):
 
 
 class RevenueEvent(BaseModel):
-    """
-    Revenue event model.
+    """Revenue event model.
 
     Represents a single revenue-generating event in the platform.
     All events are streamed to BigQuery for analytics.

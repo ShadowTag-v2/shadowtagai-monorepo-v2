@@ -1,5 +1,4 @@
-"""
-L3: SuperGrok.2 - Static Validation (Static)
+"""L3: SuperGrok.2 - Static Validation (Static)
 
 Role: The Inspector
 - Validates draft against SPT.1 (baseline expectations)
@@ -52,8 +51,7 @@ FLAGGED_DRAFT:
 
 
 async def validate_draft(draft: str, spt1: dict, model: str, api_key: str) -> dict[str, Any]:
-    """
-    Validate draft against baseline expectations.
+    """Validate draft against baseline expectations.
 
     Args:
         draft: Converged draft from L2
@@ -69,6 +67,7 @@ async def validate_draft(draft: str, spt1: dict, model: str, api_key: str) -> di
             'overall_status': str,
             'cost': float
         }
+
     """
     spt1_text = spt1.get("raw", str(spt1))
 
@@ -129,15 +128,13 @@ def _extract_section(content: str, marker: str) -> str:
     for m in next_markers:
         if m != marker and m in content[start:]:
             pos = content.find(m, start)
-            if pos < end:
-                end = pos
+            end = min(end, pos)
 
     return content[start:end].strip()
 
 
 def _auto_flag_code_blocks(draft: str) -> str:
-    """
-    Automatically flag code blocks that likely need execution.
+    """Automatically flag code blocks that likely need execution.
 
     Heuristics:
     - Python code with imports (needs dependencies)
@@ -177,8 +174,7 @@ def _auto_flag_code_blocks(draft: str) -> str:
 
 
 def _extract_execution_flags(flagged_draft: str) -> list[dict[str, Any]]:
-    """
-    Extract all [REQ_EXECUTION] flagged code blocks.
+    """Extract all [REQ_EXECUTION] flagged code blocks.
 
     Returns list of:
     {
@@ -198,7 +194,7 @@ def _extract_execution_flags(flagged_draft: str) -> list[dict[str, Any]]:
                 "language": match.group(1) or "python",
                 "code": match.group(2).strip(),
                 "position": match.start(),
-            }
+            },
         )
 
     return flags

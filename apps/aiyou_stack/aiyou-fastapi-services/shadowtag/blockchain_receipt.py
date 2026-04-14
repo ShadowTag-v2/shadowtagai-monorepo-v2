@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - ShadowTag Blockchain Receipt System
+"""PNKLN Core Stack - ShadowTag Blockchain Receipt System
 
 Immutable proof-of-origin using:
 - Polygon L2 for fast, cheap transactions (<$0.01 gas)
@@ -46,8 +45,7 @@ class BlockchainReceipt:
 
 
 class PolygonBridge:
-    """
-    Interface to Polygon L2 for transaction recording.
+    """Interface to Polygon L2 for transaction recording.
 
     Uses Polygon PoS chain for:
     - Fast confirmations (~2 seconds)
@@ -56,11 +54,11 @@ class PolygonBridge:
     """
 
     def __init__(self, rpc_url: str = "https://polygon-rpc.com"):
-        """
-        Initialize Polygon bridge.
+        """Initialize Polygon bridge.
 
         Args:
             rpc_url: Polygon RPC endpoint
+
         """
         self.rpc_url = rpc_url
         self._tx_count = 0
@@ -79,8 +77,7 @@ class PolygonBridge:
         owner_address: str,
         private_key: str | None = None,
     ) -> dict:
-        """
-        Record asset fingerprint on Polygon.
+        """Record asset fingerprint on Polygon.
 
         Args:
             asset_id: Unique asset identifier
@@ -90,6 +87,7 @@ class PolygonBridge:
 
         Returns:
             Transaction receipt dict
+
         """
         # TODO: Implement actual Polygon transaction
         # For production:
@@ -101,7 +99,7 @@ class PolygonBridge:
 
         # Placeholder implementation
         tx_hash = hashlib.sha256(
-            f"{asset_id}{fingerprint_hash}{int(time.time())}".encode()
+            f"{asset_id}{fingerprint_hash}{int(time.time())}".encode(),
         ).hexdigest()
 
         block_number = 40000000 + self._tx_count  # Fake block number
@@ -127,14 +125,14 @@ class PolygonBridge:
         }
 
     def verify_transaction(self, tx_hash: str) -> dict:
-        """
-        Verify a Polygon transaction.
+        """Verify a Polygon transaction.
 
         Args:
             tx_hash: Transaction hash to verify
 
         Returns:
             Verification result dict
+
         """
         # TODO: Implement actual transaction lookup
         # For production:
@@ -166,8 +164,7 @@ class PolygonBridge:
 
 
 class ArweaveStorage:
-    """
-    Permanent data storage on Arweave.
+    """Permanent data storage on Arweave.
 
     Uses Arweave for:
     - Permanent data storage (200+ years)
@@ -176,11 +173,11 @@ class ArweaveStorage:
     """
 
     def __init__(self, gateway_url: str = "https://arweave.net"):
-        """
-        Initialize Arweave storage.
+        """Initialize Arweave storage.
 
         Args:
             gateway_url: Arweave gateway URL
+
         """
         self.gateway_url = gateway_url
         self._upload_count = 0
@@ -189,10 +186,9 @@ class ArweaveStorage:
         logger.info("arweave_storage_initialized", gateway=gateway_url)
 
     def store_fingerprint(
-        self, asset_id: str, fingerprint_data: dict, private_key: str | None = None
+        self, asset_id: str, fingerprint_data: dict, private_key: str | None = None,
     ) -> dict:
-        """
-        Store fingerprint data on Arweave.
+        """Store fingerprint data on Arweave.
 
         Args:
             asset_id: Unique asset identifier
@@ -201,6 +197,7 @@ class ArweaveStorage:
 
         Returns:
             Storage receipt dict
+
         """
         # TODO: Implement actual Arweave upload
         # For production:
@@ -238,14 +235,14 @@ class ArweaveStorage:
         }
 
     def retrieve_fingerprint(self, tx_id: str) -> dict | None:
-        """
-        Retrieve fingerprint data from Arweave.
+        """Retrieve fingerprint data from Arweave.
 
         Args:
             tx_id: Arweave transaction ID
 
         Returns:
             Stored fingerprint data or None
+
         """
         # TODO: Implement actual Arweave retrieval
         # For production:
@@ -276,8 +273,7 @@ class ArweaveStorage:
 
 
 class ReceiptManager:
-    """
-    Manages blockchain receipts combining Polygon + Arweave.
+    """Manages blockchain receipts combining Polygon + Arweave.
 
     Workflow:
     1. Record fingerprint hash on Polygon (fast, cheap)
@@ -294,10 +290,9 @@ class ReceiptManager:
         logger.info("receipt_manager_initialized")
 
     def create_receipt(
-        self, asset_id: str, fingerprint_hash: str, fingerprint_data: dict, owner_address: str
+        self, asset_id: str, fingerprint_hash: str, fingerprint_data: dict, owner_address: str,
     ) -> BlockchainReceipt:
-        """
-        Create blockchain receipt for authenticated asset.
+        """Create blockchain receipt for authenticated asset.
 
         Args:
             asset_id: Unique asset identifier
@@ -307,15 +302,16 @@ class ReceiptManager:
 
         Returns:
             BlockchainReceipt with both Polygon and Arweave IDs
+
         """
         # Step 1: Record on Polygon
         polygon_result = self.polygon.record_fingerprint(
-            asset_id=asset_id, fingerprint_hash=fingerprint_hash, owner_address=owner_address
+            asset_id=asset_id, fingerprint_hash=fingerprint_hash, owner_address=owner_address,
         )
 
         # Step 2: Store on Arweave
         arweave_result = self.arweave.store_fingerprint(
-            asset_id=asset_id, fingerprint_data=fingerprint_data
+            asset_id=asset_id, fingerprint_data=fingerprint_data,
         )
 
         # Step 3: Calculate total cost
@@ -356,8 +352,7 @@ class ReceiptManager:
         return receipt
 
     def verify_receipt(self, asset_id: str, polygon_tx_hash: str, arweave_tx_id: str) -> dict:
-        """
-        Verify a blockchain receipt.
+        """Verify a blockchain receipt.
 
         Args:
             asset_id: Asset identifier
@@ -366,6 +361,7 @@ class ReceiptManager:
 
         Returns:
             Verification result dict
+
         """
         # Verify Polygon transaction
         polygon_verified = self.polygon.verify_transaction(polygon_tx_hash)

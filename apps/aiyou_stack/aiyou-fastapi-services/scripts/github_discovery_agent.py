@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-GitHub Script Discovery Agent
+"""GitHub Script Discovery Agent
 Scans project for scripts that should be tracked in GitHub.
 Produces structured JSON output for pipeline integration.
 """
@@ -45,8 +44,7 @@ class RepoProposal:
 
 
 class GitHubDiscoveryAgent:
-    """
-    Automated code discovery and packaging agent.
+    """Automated code discovery and packaging agent.
 
     Searches project for scripts that should be tracked in GitHub.
     Produces actionable export plan with security scanning.
@@ -100,11 +98,11 @@ class GitHubDiscoveryAgent:
         self.candidates: list[ScriptCandidate] = []
 
     def scan(self) -> dict[str, Any]:
-        """
-        Scan project for script candidates.
+        """Scan project for script candidates.
 
         Returns:
             Dictionary with scripts and repo proposals
+
         """
         self._discover_scripts()
         repos = self._propose_repos()
@@ -217,18 +215,17 @@ class GitHubDiscoveryAgent:
 
         if "test" in name or "test" in path_str:
             return "test-util"
-        elif "cli" in name or "argparse" in content or "click" in content:
+        if "cli" in name or "argparse" in content or "click" in content:
             return "cli"
-        elif "deploy" in path_str or "k8s" in path_str or "docker" in name:
+        if "deploy" in path_str or "k8s" in path_str or "docker" in name:
             return "infra"
-        elif "pipeline" in name or "etl" in name:
+        if "pipeline" in name or "etl" in name:
             return "data-pipeline"
-        elif "scrape" in name or "crawler" in name:
+        if "scrape" in name or "crawler" in name:
             return "scraper"
-        elif "def " in content and "import " in content:
+        if "def " in content and "import " in content:
             return "library"
-        else:
-            return "other"
+        return "other"
 
     def _find_dependencies(self, content: str, language: str) -> dict[str, list[str]]:
         """Extract dependencies from imports."""
@@ -307,23 +304,21 @@ class GitHubDiscoveryAgent:
 
         if "services" in path_parts:
             return "shadowtag_v4-services"
-        elif "scripts" in path_parts:
+        if "scripts" in path_parts:
             return "shadowtag_v4-scripts"
-        elif "infra" in path_parts or "k8s" in path_parts:
+        if "infra" in path_parts or "k8s" in path_parts:
             return "shadowtag_v4-infra"
-        elif category == "test-util":
+        if category == "test-util":
             return "shadowtag_v4-tests"
-        else:
-            return "shadowtag_v4-core"
+        return "shadowtag_v4-core"
 
     def _infer_status(self, content: str, issues: list[str]) -> str:
         """Infer production readiness."""
         if len(issues) > 2:
             return "experiment"
-        elif len(issues) > 0:
+        if len(issues) > 0:
             return "prototype"
-        else:
-            return "production-ready"
+        return "production-ready"
 
     def _propose_repos(self) -> list[RepoProposal]:
         """Generate repository proposals from candidates."""
@@ -357,7 +352,7 @@ class GitHubDiscoveryAgent:
                         {"title": "docs: add README", "description": "Basic documentation"},
                     ],
                     priority="now" if len(scripts) > 3 else "later",
-                )
+                ),
             )
 
         return sorted(repos, key=lambda r: len(r.scripts_included), reverse=True)

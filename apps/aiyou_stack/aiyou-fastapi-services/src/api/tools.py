@@ -59,10 +59,10 @@ def perform_web_search(query: str) -> str:
                 [
                     f"Title: {r.get('title')}\nSnippet: {r.get('body')}\nURL: {r.get('href')}"
                     for r in results
-                ]
+                ],
             )
             if results
             else "No results."
         )
     except Exception as e:
-        return f"Search failed: {str(e)}"
+        return f"Search failed: {e!s}"

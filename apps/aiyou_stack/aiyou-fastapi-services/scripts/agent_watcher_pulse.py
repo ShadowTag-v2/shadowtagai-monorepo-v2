@@ -19,7 +19,7 @@ def pulse_agent_position(current_task_id, file_path):
             "last_touched_file": file_path,
             "last_pulse": firestore.SERVER_TIMESTAMP,
             "vibe": "operational",
-        }
+        },
     )
 
     # Create a transient 'Observation' edge in the graph
@@ -31,7 +31,7 @@ def pulse_agent_position(current_task_id, file_path):
             "target": current_task_id,  # Links Agent to the ORCID or Task node it is fixed on
             "type": "observing",
             "transient": True,
-        }
+        },
     )
 
 

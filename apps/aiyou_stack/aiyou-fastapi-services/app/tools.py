@@ -1,5 +1,4 @@
-"""
-Tools for Antigravity Orchestrator (The "Witnesses")
+"""Tools for Antigravity Orchestrator (The "Witnesses")
 """
 
 import re
@@ -12,8 +11,7 @@ POLICY_PATH = Path(__file__).parent / "policy.yaml"
 
 
 def run_policy_gate(text: str) -> dict:
-    """
-    Checks text against loaded policy (forbidden words, PII).
+    """Checks text against loaded policy (forbidden words, PII).
     Returns {"passed": bool, "issues": list}
     """
     try:
@@ -41,12 +39,11 @@ def run_policy_gate(text: str) -> dict:
         return {"passed": len(issues) == 0, "issues": issues}
 
     except Exception as e:
-        return {"passed": False, "issues": [f"Policy gate error: {str(e)}"]}
+        return {"passed": False, "issues": [f"Policy gate error: {e!s}"]}
 
 
 def run_bugbot(code: str) -> dict:
-    """
-    Simulated CI check. in reality this would trigger a docker build or pytest run.
+    """Simulated CI check. in reality this would trigger a docker build or pytest run.
     """
     # Simple heuristic check for syntax errors
     try:
@@ -59,8 +56,7 @@ def run_bugbot(code: str) -> dict:
 
 
 def run_math(expression: str) -> str:
-    """
-    Safely evaluate simple math expressions using a localized library or numexpr.
+    """Safely evaluate simple math expressions using a localized library or numexpr.
     Using `eval` is dangerous, so we'll just mock it or limit it drastically for this demo.
     """
     # For safety, strictly allow only numbers and basic operators
@@ -76,14 +72,12 @@ def run_math(expression: str) -> str:
 
 
 def run_rag(query: str) -> str:
-    """
-    Placeholder for RAG lookup.
+    """Placeholder for RAG lookup.
     """
     return f"[RAG Result] Simulated retrieval for: {query}"
 
 
 def run_shadowtag_verify(signature: str) -> bool:
-    """
-    Placeholder for cryptographic verification.
+    """Placeholder for cryptographic verification.
     """
     return signature.startswith("valid_")

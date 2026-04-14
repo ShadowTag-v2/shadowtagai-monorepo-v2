@@ -1,5 +1,4 @@
-"""
-ShadowTag cryptographic service.
+"""ShadowTag cryptographic service.
 
 Implements Ed25519 signing and verification.
 """
@@ -27,7 +26,7 @@ class CryptoService:
             encryption_algorithm=serialization.NoEncryption(),
         )
         public_bytes = public_key.public_bytes(
-            encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw
+            encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw,
         )
 
         return (
@@ -64,13 +63,11 @@ class CryptoService:
 
 
 class ShadowTagVerifier:
-    """
-    High-level verifier for content attestation workflows.
+    """High-level verifier for content attestation workflows.
     """
 
     def sign(self, payload: dict, private_key_bytes: bytes) -> dict:
-        """
-        Sign a structured payload using Ed25519.
+        """Sign a structured payload using Ed25519.
         """
         import json
         import uuid

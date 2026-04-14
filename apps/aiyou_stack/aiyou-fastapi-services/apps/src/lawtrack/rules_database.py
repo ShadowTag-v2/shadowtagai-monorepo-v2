@@ -1,5 +1,4 @@
-"""
-Live Rules Database for LawTrack
+"""Live Rules Database for LawTrack
 
 Jurisdiction-specific procedural rules with:
 - Real-time updates (when rules change)
@@ -47,5 +46,5 @@ class RulesDatabase:
                 "Answer to Complaint",
                 21,
                 "Service of Summons",
-            )
+            ),
         ]

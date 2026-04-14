@@ -1,5 +1,4 @@
-"""
-JUDGE 6: SAFETY & GOVERNANCE ENGINE
+"""JUDGE 6: SAFETY & GOVERNANCE ENGINE
 "The Stationary Sentinel"
 
 Features:
@@ -71,8 +70,7 @@ class SafetyConfig:
 
 
 class JudgeSix:
-    """
-    Judge #6 Governance Engine.
+    """Judge #6 Governance Engine.
     Enforces 'Zero-Deviation' safety policies.
     """
 
@@ -128,8 +126,7 @@ class JudgeSix:
         ]
 
     def evaluate(self, proposal: ProposedAction) -> bool:
-        """
-        Trinity Governance Loop.
+        """Trinity Governance Loop.
         Evaluates a proposal against the 'Anti-Hype' Doctrine.
         """
         print(f"\n--- JUDGE6 RISK AUDIT: {proposal.target_name} ---")
@@ -145,7 +142,7 @@ class JudgeSix:
         # Rule: Tech must be mature.
         if proposal.tech_age_months < 6:
             print(
-                f"[OPERATIONAL] [FAIL] Tech is too immature ({proposal.tech_age_months} months). Lindy Violation."
+                f"[OPERATIONAL] [FAIL] Tech is too immature ({proposal.tech_age_months} months). Lindy Violation.",
             )
             return False
 
@@ -165,8 +162,7 @@ class JudgeSix:
         return True
 
     def validate(self, content: str, context: str = "") -> JRValidation:
-        """
-        Validates content against safety policies.
+        """Validates content against safety policies.
         Returns Approved or Blocked with reason.
         """
         content_lower = content.lower()

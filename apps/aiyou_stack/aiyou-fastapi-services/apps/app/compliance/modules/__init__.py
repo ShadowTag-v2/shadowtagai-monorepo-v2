@@ -1,5 +1,4 @@
-"""
-Compliance Modules Package
+"""Compliance Modules Package
 
 Each module implements a specific regulation with:
 - Metadata (articles, sections, jurisdiction)

@@ -1,5 +1,4 @@
-"""
-Authentication routes.
+"""Authentication routes.
 
 Endpoints for login, registration, and token management.
 """
@@ -26,10 +25,9 @@ class Token(BaseModel):
 
 @router.post("/token", response_model=Token)
 async def login_for_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db),
 ):
-    """
-    Login endpoint to get JWT token.
+    """Login endpoint to get JWT token.
     """
     user = db.query(User).filter(User.email == form_data.username).first()
     if not user or not AuthService.verify_password(form_data.password, user.hashed_password):
@@ -41,7 +39,7 @@ async def login_for_access_token(
 
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
     access_token = AuthService.create_access_token(
-        data={"sub": user.email, "user_id": user.id}, expires_delta=access_token_expires
+        data={"sub": user.email, "user_id": user.id}, expires_delta=access_token_expires,
     )
 
     return {"access_token": access_token, "token_type": "bearer"}

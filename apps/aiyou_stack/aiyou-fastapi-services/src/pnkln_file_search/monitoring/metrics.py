@@ -1,5 +1,4 @@
-"""
-Metrics collection for file search and enforcement operations
+"""Metrics collection for file search and enforcement operations
 """
 
 from collections import deque
@@ -45,18 +44,17 @@ POLICY_MATCH_ACCURACY = Gauge(
 
 
 class MetricsCollector:
-    """
-    Collects and tracks metrics for file search and enforcement
+    """Collects and tracks metrics for file search and enforcement
 
     Maintains rolling windows for calculating percentiles and rates.
     """
 
     def __init__(self, window_size: int = 1000):
-        """
-        Initialize metrics collector
+        """Initialize metrics collector
 
         Args:
             window_size: Number of samples to keep for percentile calculations
+
         """
         self.window_size = window_size
 
@@ -74,11 +72,11 @@ class MetricsCollector:
         self.policy_matches_correct = 0
 
     def record_file_search_latency(self, latency_ms: float) -> None:
-        """
-        Record file search latency
+        """Record file search latency
 
         Args:
             latency_ms: Latency in milliseconds
+
         """
         latency_sec = latency_ms / 1000.0
         self.file_search_latencies.append(latency_ms)
@@ -94,11 +92,11 @@ class MetricsCollector:
         logger.warning("file_search_error_recorded", total_errors=self.file_search_errors)
 
     def record_judge_layer1_latency(self, latency_ms: float) -> None:
-        """
-        Record Judge Layer 1 latency
+        """Record Judge Layer 1 latency
 
         Args:
             latency_ms: Latency in milliseconds
+
         """
         latency_sec = latency_ms / 1000.0
         self.layer1_latencies.append(latency_ms)
@@ -107,11 +105,11 @@ class MetricsCollector:
         logger.debug("judge_layer1_latency_recorded", latency_ms=latency_ms)
 
     def record_enforcement_latency(self, latency_ms: float) -> None:
-        """
-        Record total enforcement latency (Layers 2+3)
+        """Record total enforcement latency (Layers 2+3)
 
         Args:
             latency_ms: Latency in milliseconds
+
         """
         latency_sec = latency_ms / 1000.0
         self.enforcement_latencies.append(latency_ms)
@@ -127,11 +125,11 @@ class MetricsCollector:
         logger.warning("corpus_sync_failure_recorded", total_failures=self.corpus_sync_failures)
 
     def record_policy_match(self, correct: bool) -> None:
-        """
-        Record a policy match result for accuracy tracking
+        """Record a policy match result for accuracy tracking
 
         Args:
             correct: Whether the match was correct
+
         """
         self.policy_matches_total += 1
         if correct:
@@ -142,8 +140,7 @@ class MetricsCollector:
             POLICY_MATCH_ACCURACY.set(accuracy)
 
     def get_percentile(self, values: deque[float], percentile: int) -> float:
-        """
-        Calculate percentile from rolling window
+        """Calculate percentile from rolling window
 
         Args:
             values: Deque of values
@@ -151,6 +148,7 @@ class MetricsCollector:
 
         Returns:
             Percentile value
+
         """
         if not values:
             return 0.0
@@ -160,11 +158,11 @@ class MetricsCollector:
         return sorted_values[min(index, len(sorted_values) - 1)]
 
     def get_metrics_summary(self) -> dict:
-        """
-        Get summary of all metrics
+        """Get summary of all metrics
 
         Returns:
             Dict with current metrics
+
         """
         file_search_p99 = self.get_percentile(self.file_search_latencies, 99)
         enforcement_p99 = self.get_percentile(self.enforcement_latencies, 99)

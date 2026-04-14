@@ -83,7 +83,7 @@ class FunnelService:
 
     @staticmethod
     async def update_funnel(
-        db: AsyncSession, funnel_id: UUID, funnel_data: FunnelUpdate
+        db: AsyncSession, funnel_id: UUID, funnel_data: FunnelUpdate,
     ) -> Funnel | None:
         """Update funnel"""
         funnel = await FunnelService.get_funnel(db, funnel_id)
@@ -141,8 +141,8 @@ class FunnelService:
                     Event.timestamp >= start_date,
                     Event.timestamp <= end_date,
                     Event.user_id.isnot(None),
-                )
-            )
+                ),
+            ),
         )
         total_users_entered = users_entered_result.scalar() or 0
 
@@ -159,8 +159,8 @@ class FunnelService:
                         Event.timestamp >= start_date,
                         Event.timestamp <= end_date,
                         Event.user_id.isnot(None),
-                    )
-                )
+                    ),
+                ),
             )
             users_completed = users_completed_result.scalar() or 0
 
@@ -178,7 +178,7 @@ class FunnelService:
                     conversion_rate=round(conversion_rate, 4),
                     drop_off_rate=round(drop_off_rate, 4),
                     avg_time_to_next_step=None,  # TODO: Implement time calculation
-                )
+                ),
             )
 
             previous_users = users_completed
@@ -192,8 +192,8 @@ class FunnelService:
                     Event.timestamp >= start_date,
                     Event.timestamp <= end_date,
                     Event.user_id.isnot(None),
-                )
-            )
+                ),
+            ),
         )
         total_users_completed = users_completed_funnel_result.scalar() or 0
 
@@ -244,8 +244,8 @@ class FunnelService:
                     UserFunnelProgress.funnel_id == funnel_id,
                     UserFunnelProgress.user_id == user_id,
                     not UserFunnelProgress.completed,
-                )
-            )
+                ),
+            ),
         )
         progress = result.scalar_one_or_none()
 
@@ -259,23 +259,22 @@ class FunnelService:
                 step_timestamps={str(matching_step.step_order): datetime.utcnow().isoformat()},
             )
             db.add(progress)
-        else:
-            # Update existing progress
-            if matching_step.step_order > progress.current_step:
-                progress.current_step = matching_step.step_order
-                timestamps = progress.step_timestamps or {}
-                timestamps[str(matching_step.step_order)] = datetime.utcnow().isoformat()
-                progress.step_timestamps = timestamps
+        # Update existing progress
+        elif matching_step.step_order > progress.current_step:
+            progress.current_step = matching_step.step_order
+            timestamps = progress.step_timestamps or {}
+            timestamps[str(matching_step.step_order)] = datetime.utcnow().isoformat()
+            progress.step_timestamps = timestamps
 
-                # Check if funnel is completed
-                max_step = max(step.step_order for step in funnel.steps)
-                if progress.current_step >= max_step:
-                    progress.completed = True
-                    progress.completed_at = datetime.utcnow()
+            # Check if funnel is completed
+            max_step = max(step.step_order for step in funnel.steps)
+            if progress.current_step >= max_step:
+                progress.completed = True
+                progress.completed_at = datetime.utcnow()
 
-                    # Calculate time to complete
-                    if progress.started_at:
-                        time_diff = progress.completed_at - progress.started_at
-                        progress.time_to_complete_seconds = time_diff.total_seconds()
+                # Calculate time to complete
+                if progress.started_at:
+                    time_diff = progress.completed_at - progress.started_at
+                    progress.time_to_complete_seconds = time_diff.total_seconds()
 
         await db.flush()

@@ -22,11 +22,11 @@ class AgentService:
     """Service for managing and executing agents."""
 
     def __init__(self, db: Session | None = None):
-        """
-        Initialize the agent service.
+        """Initialize the agent service.
 
         Args:
             db: Optional database session
+
         """
         self.db = db
         self.agents = {
@@ -35,23 +35,23 @@ class AgentService:
         self.tools = GROWTH_TOOLS
 
     def get_agent(self, agent_id: str) -> Any | None:
-        """
-        Get an agent by ID.
+        """Get an agent by ID.
 
         Args:
             agent_id: The agent ID
 
         Returns:
             The agent instance or None
+
         """
         return self.agents.get(agent_id)
 
     def list_agents(self) -> dict[str, Any]:
-        """
-        List all available agents.
+        """List all available agents.
 
         Returns:
             Dictionary of agent metadata
+
         """
         return {agent_id: agent.get_metadata() for agent_id, agent in self.agents.items()}
 
@@ -61,8 +61,7 @@ class AgentService:
         task: str,
         context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Execute an agent with a task.
+        """Execute an agent with a task.
 
         Args:
             agent_id: The agent ID
@@ -71,6 +70,7 @@ class AgentService:
 
         Returns:
             The execution result
+
         """
         # Get the agent
         agent = self.get_agent(agent_id)
@@ -102,7 +102,7 @@ class AgentService:
                 execution.status = ExecutionStatus.COMPLETED
                 execution.completed_at = datetime.utcnow()
                 execution.duration_seconds = int(
-                    (execution.completed_at - execution.started_at).total_seconds()
+                    (execution.completed_at - execution.started_at).total_seconds(),
                 )
 
                 # Store result
@@ -141,10 +141,9 @@ class AgentService:
             }
 
     def get_execution_history(
-        self, agent_id: str, limit: int = 10, offset: int = 0
+        self, agent_id: str, limit: int = 10, offset: int = 0,
     ) -> dict[str, Any]:
-        """
-        Get execution history for an agent.
+        """Get execution history for an agent.
 
         Args:
             agent_id: The agent ID
@@ -153,6 +152,7 @@ class AgentService:
 
         Returns:
             Dictionary containing execution history
+
         """
         if not self.db:
             return {
@@ -191,14 +191,14 @@ class AgentService:
         }
 
     def get_agent_tools(self, agent_id: str) -> dict[str, Any]:
-        """
-        Get available tools for an agent.
+        """Get available tools for an agent.
 
         Args:
             agent_id: The agent ID
 
         Returns:
             Dictionary of tools
+
         """
         agent = self.get_agent(agent_id)
         if not agent:
@@ -220,8 +220,7 @@ class AgentService:
         return {"tools": available_tools}
 
     def execute_tool(self, tool_name: str, args: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute a tool directly.
+        """Execute a tool directly.
 
         Args:
             tool_name: The tool name
@@ -229,6 +228,7 @@ class AgentService:
 
         Returns:
             The tool result
+
         """
         if tool_name not in self.tools:
             raise ValueError(f"Tool '{tool_name}' not found")

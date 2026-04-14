@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer - Multi-Source Intelligence Collection Pipeline
+"""Gemini Ingestion Layer - Multi-Source Intelligence Collection Pipeline
 
 This module provides:
 1. Ethical web crawling with robots.txt compliance
@@ -133,8 +132,7 @@ class RobotsTxtParser:
         self.cache: dict[str, dict] = {}
 
     def can_fetch(self, url: str, user_agent: str) -> bool:
-        """
-        Check if URL can be fetched based on robots.txt
+        """Check if URL can be fetched based on robots.txt
 
         Args:
             url: URL to check
@@ -142,6 +140,7 @@ class RobotsTxtParser:
 
         Returns:
             True if allowed to fetch, False otherwise
+
         """
         # Parse domain
         parsed = urlparse(url)
@@ -189,11 +188,11 @@ class TierClassifier:
     """Classify intelligence items into tiers using Gemini"""
 
     def __init__(self, gemini_api_key: str | None = None):
-        """
-        Initialize tier classifier
+        """Initialize tier classifier
 
         Args:
             gemini_api_key: Google API key for Gemini
+
         """
         self.api_key = gemini_api_key or os.environ.get("GOOGLE_API_KEY")
 
@@ -205,14 +204,13 @@ class TierClassifier:
         else:
             self.enabled = False
             logger.warning(
-                "Gemini tier classifier disabled (API key missing or package not installed)"
+                "Gemini tier classifier disabled (API key missing or package not installed)",
             )
 
     def classify_item(
-        self, title: str, content: str, source_type: SourceType
+        self, title: str, content: str, source_type: SourceType,
     ) -> tuple[DataTier, float]:
-        """
-        Classify an intelligence item into a tier
+        """Classify an intelligence item into a tier
 
         Args:
             title: Item title
@@ -221,6 +219,7 @@ class TierClassifier:
 
         Returns:
             tuple: (tier, relevance_score)
+
         """
         if not self.enabled:
             # Fallback classification
@@ -276,10 +275,9 @@ Respond with JSON:
 
         if any(kw in text for kw in strategic_keywords):
             return DataTier.TIER_1_CRITICAL, 0.8
-        elif any(kw in text for kw in important_keywords):
+        if any(kw in text for kw in important_keywords):
             return DataTier.TIER_2_IMPORTANT, 0.6
-        else:
-            return DataTier.TIER_3_BACKGROUND, 0.4
+        return DataTier.TIER_3_BACKGROUND, 0.4
 
 
 class SourceIngester:
@@ -298,14 +296,14 @@ class SourceIngester:
         self.last_request_time = 0.0
 
     def ingest(self, _source_config: dict[str, Any]) -> list[dict[str, Any]]:
-        """
-        Ingest data from source
+        """Ingest data from source
 
         Args:
             source_config: Source-specific configuration
 
         Returns:
             List of raw items
+
         """
         raise NotImplementedError("Subclasses must implement ingest()")
 
@@ -370,7 +368,7 @@ class MockTwitterIngester(SourceIngester):
                 "title": "Thread: Enterprise AI Adoption Barriers",
                 "content": "Key findings from survey of 500 CIOs on AI implementation challenges...",
                 "cost": 0.002,
-            }
+            },
         ]
 
         return items
@@ -389,27 +387,26 @@ class MockNewsIngester(SourceIngester):
                 "title": "FDA Approves New AI Diagnostic Tool",
                 "content": "First AI-powered diagnostic system receives FDA clearance for clinical use...",
                 "cost": 0.003,
-            }
+            },
         ]
 
         return items
 
 
 class GeminiIngestionPipeline:
-    """
-    Complete Gemini Ingestion Layer pipeline
+    """Complete Gemini Ingestion Layer pipeline
     Orchestrates multi-source ingestion with ethical compliance
     """
 
     def __init__(
-        self, gemini_api_key: str | None = None, ethical_config: EthicalCrawlConfig | None = None
+        self, gemini_api_key: str | None = None, ethical_config: EthicalCrawlConfig | None = None,
     ):
-        """
-        Initialize Gemini Ingestion Pipeline
+        """Initialize Gemini Ingestion Pipeline
 
         Args:
             gemini_api_key: Google API key for Gemini
             ethical_config: Ethical crawling configuration
+
         """
         self.gemini_api_key = gemini_api_key or os.environ.get("GOOGLE_API_KEY")
         self.ethical_config = ethical_config or EthicalCrawlConfig()
@@ -421,13 +418,13 @@ class GeminiIngestionPipeline:
         # Initialize source ingesters
         self.ingesters: dict[SourceType, SourceIngester] = {
             SourceType.YOUTUBE: MockYouTubeIngester(
-                SourceType.YOUTUBE, self.ethical_config, self.robots_parser
+                SourceType.YOUTUBE, self.ethical_config, self.robots_parser,
             ),
             SourceType.TWITTER: MockTwitterIngester(
-                SourceType.TWITTER, self.ethical_config, self.robots_parser
+                SourceType.TWITTER, self.ethical_config, self.robots_parser,
             ),
             SourceType.NEWS: MockNewsIngester(
-                SourceType.NEWS, self.ethical_config, self.robots_parser
+                SourceType.NEWS, self.ethical_config, self.robots_parser,
             ),
         }
 
@@ -436,16 +433,16 @@ class GeminiIngestionPipeline:
         logger.info("Gemini Ingestion Pipeline initialized")
 
     def run_ingestion_cycle(
-        self, source_configs: dict[SourceType, dict[str, Any]]
+        self, source_configs: dict[SourceType, dict[str, Any]],
     ) -> IngestionMetrics:
-        """
-        Run a complete ingestion cycle across all configured sources
+        """Run a complete ingestion cycle across all configured sources
 
         Args:
             source_configs: Configuration for each source type
 
         Returns:
             IngestionMetrics with performance data
+
         """
         start_time = time.time()
         logger.info("Starting ingestion cycle...")
@@ -542,14 +539,14 @@ class GeminiIngestionPipeline:
         return metrics
 
     def generate_am_briefing(self, date: str | None = None) -> str:
-        """
-        Generate morning briefing from ingested intelligence
+        """Generate morning briefing from ingested intelligence
 
         Args:
             date: Date for briefing (defaults to today)
 
         Returns:
             Formatted briefing text
+
         """
         target_date = date or datetime.utcnow().strftime("%Y-%m-%d")
 
@@ -595,7 +592,7 @@ class GeminiIngestionPipeline:
         return briefing
 
     def export_metrics(
-        self, metrics: IngestionMetrics, output_path: str = "ingestion_metrics.json"
+        self, metrics: IngestionMetrics, output_path: str = "ingestion_metrics.json",
     ) -> str:
         """Export ingestion metrics"""
         with open(output_path, "w") as f:

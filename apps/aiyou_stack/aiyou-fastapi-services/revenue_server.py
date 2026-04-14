@@ -1,5 +1,4 @@
-"""
-Standalone Revenue Engine Server
+"""Standalone Revenue Engine Server
 Minimal FastAPI server for whiteboard revenue simulation
 """
 

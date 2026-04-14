@@ -16,8 +16,7 @@ class TaskRequest(BaseModel):
 
 @router.post("/task")
 async def swarm_task(request: TaskRequest):
-    """
-    Simulates the minion 650-Agent Swarm processing a task.
+    """Simulates the minion 650-Agent Swarm processing a task.
     This enables the 'vote' logic to return a valid consensus.
     """
     print(f"🐒 [minion Service] Received Task: {request.task}")

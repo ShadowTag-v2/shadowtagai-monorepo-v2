@@ -10,7 +10,7 @@ default_args = {
 with DAG(
     "velocity_lake_sentinel",
     default_args=default_args,
-    schedule_interval="@hourly",
+    schedule="@hourly",
     start_date=days_ago(1),
     tags=["velocity", "biglake"],
     catchup=False,
@@ -21,6 +21,6 @@ with DAG(
             "query": {
                 "query": "CALL BQ.REFRESH_EXTERNAL_METADATA_CACHE('shadowtag-omega-v2.velocity_dataset.events_raw');",
                 "useLegacySql": False,
-            }
+            },
         },
     )

@@ -1,5 +1,4 @@
-"""
-Technical Architecture & Stack Configuration
+"""Technical Architecture & Stack Configuration
 """
 
 from dataclasses import dataclass, field
@@ -33,7 +32,7 @@ class TechStack:
             "long_term": "Pinecone",
             "short_term": "Redis",
             "episodic": "Custom PostgreSQL schema",
-        }
+        },
     )
 
     # Deployment
@@ -41,7 +40,7 @@ class TechStack:
         default_factory=lambda: {
             "dev": "Vertex AI Workbench",
             "prod": "GKE (Google Kubernetes Engine)",
-        }
+        },
     )
 
     # Security
@@ -50,7 +49,7 @@ class TechStack:
             "GCP Secret Manager",
             "Encryption at rest/transit",
             "SOC 2 Type II (Month 18 target)",
-        ]
+        ],
     )
 
     # Monitoring
@@ -74,7 +73,7 @@ class AgentDesignPattern:
             "Task manager loops",
             "Hallucination detection",
             "Output validation",
-        ]
+        ],
     )
 
     # Tools
@@ -97,7 +96,7 @@ class DevelopmentConstraints:
             "Ship fast > perfect",
             "Real utility > general-purpose",
             "Evidence-only decisions",
-        ]
+        ],
     )
 
     # Guardrails
@@ -106,7 +105,7 @@ class DevelopmentConstraints:
             "No feature without user interview (n≥10)",
             "No new vertical without $5K+ pilot demand",
             "No hire without founder doing job 3+ months first",
-        ]
+        ],
     )
 
 

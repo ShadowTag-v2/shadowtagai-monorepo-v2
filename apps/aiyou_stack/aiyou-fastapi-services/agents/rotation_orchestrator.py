@@ -1,5 +1,4 @@
-"""
-Rotation Orchestrator - Intelligent Model Pool Manager
+"""Rotation Orchestrator - Intelligent Model Pool Manager
 
 Manages 10 Antigravity instances × 3 tiers = 30 endpoints with:
 - Rate limit tracking
@@ -53,8 +52,7 @@ class ModelEndpoint:
 
 
 class RotationOrchestrator:
-    """
-    Manages model rotation across 10 instances × 3 tiers.
+    """Manages model rotation across 10 instances × 3 tiers.
 
     Always selects the highest-tier available endpoint and automatically
     switches back when higher tiers become available.
@@ -70,7 +68,6 @@ class RotationOrchestrator:
 
     def _initialize_endpoints(self):
         """Initialize the 5 Antigravity Gemini endpoint pool (3 High + 2 Low)"""
-
         # Tier 1: Gemini 3 Pro High (3 instances)
         for i in range(3):
             self.endpoints.append(
@@ -80,7 +77,7 @@ class RotationOrchestrator:
                     model_name="gemini-3-pro-high",
                     api_key=os.getenv(f"GEMINI_API_KEY_{i + 1}", os.getenv("GEMINI_API_KEY", "")),
                     provider="gemini",
-                )
+                ),
             )
 
         # Tier 2: Gemini 3 Pro Low (2 instances)
@@ -91,14 +88,14 @@ class RotationOrchestrator:
                     tier=ModelTier.GEMINI_LOW,
                     model_name="gemini-3-pro-low",
                     api_key=os.getenv(
-                        f"GEMINI_API_KEY_{i + 3 + 1}", os.getenv("GEMINI_API_KEY", "")
+                        f"GEMINI_API_KEY_{i + 3 + 1}", os.getenv("GEMINI_API_KEY", ""),
                     ),
                     provider="gemini",
-                )
+                ),
             )
 
         print(
-            f"///▞ ROTATION ORCHESTRATOR :: Initialized {len(self.endpoints)} Antigravity Gemini endpoints"
+            f"///▞ ROTATION ORCHESTRATOR :: Initialized {len(self.endpoints)} Antigravity Gemini endpoints",
         )
 
     def start_monitoring(self):
@@ -128,8 +125,7 @@ class RotationOrchestrator:
             time.sleep(10)  # Check every 10 seconds
 
     def get_best_endpoint(self) -> ModelEndpoint | None:
-        """
-        Select the best available endpoint based on tier priority.
+        """Select the best available endpoint based on tier priority.
         Returns None if all endpoints are rate limited.
         """
         with self._lock:
@@ -146,8 +142,7 @@ class RotationOrchestrator:
             return available[0]
 
     def execute_with_rotation(self, task_fn, *args, **kwargs):
-        """
-        Execute a task with automatic tier rotation on rate limits.
+        """Execute a task with automatic tier rotation on rate limits.
 
         Args:
             task_fn: Function that takes (endpoint, *args, **kwargs) and returns result
@@ -158,6 +153,7 @@ class RotationOrchestrator:
 
         Raises:
             RuntimeError: If all endpoints are rate limited
+
         """
         max_retries = 5
         retry_count = 0
@@ -195,9 +191,8 @@ class RotationOrchestrator:
                     endpoint.mark_rate_limited(duration_seconds=60)
                     retry_count += 1
                     continue
-                else:
-                    # Other error, re-raise
-                    raise
+                # Other error, re-raise
+                raise
 
         raise RuntimeError("All endpoints exhausted or rate limited")
 

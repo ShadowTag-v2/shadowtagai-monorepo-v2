@@ -8,8 +8,8 @@ from kosmos.agents.synthesis import SynthesisAgent
 
 __all__ = [
     "BaseAgent",
-    "LiteratureAgent",
     "DataAnalysisAgent",
     "HypothesisAgent",
+    "LiteratureAgent",
     "SynthesisAgent",
 ]

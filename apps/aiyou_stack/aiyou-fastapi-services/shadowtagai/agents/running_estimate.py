@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Running Estimate Manager for Flying n-autoresearch/Kosmos/BioAgents swarm.
+"""Running Estimate Manager for Flying n-autoresearch/Kosmos/BioAgents swarm.
 Implements FM 6-0 Running Estimates for continuous swarm state tracking.
 """
 
@@ -39,8 +38,7 @@ class SquadMetrics:
 
 @dataclass
 class RunningEstimate:
-    """
-    FM 6-0 Running Estimate for Flying n-autoresearch/Kosmos/BioAgents swarm.
+    """FM 6-0 Running Estimate for Flying n-autoresearch/Kosmos/BioAgents swarm.
 
     Updated continuously to reflect current operational state.
     Used for decision support and kill-switch conditions.
@@ -83,8 +81,7 @@ class RunningEstimate:
 
 
 class RunningEstimateManager:
-    """
-    Manager for FM 6-0 Running Estimates.
+    """Manager for FM 6-0 Running Estimates.
 
     Provides:
     - Real-time metrics collection
@@ -145,8 +142,7 @@ class RunningEstimateManager:
         tasks_queued: int = 0,
         agents_active: int = None,
     ):
-        """
-        Update running estimate with new metrics.
+        """Update running estimate with new metrics.
 
         Args:
             latencies: List of recent latency measurements
@@ -154,6 +150,7 @@ class RunningEstimateManager:
             tasks_completed: Tasks completed in this period
             tasks_queued: Current queue depth
             agents_active: Number of active agents
+
         """
         # Snapshot current state for history
         self._snapshot()
@@ -222,9 +219,9 @@ class RunningEstimateManager:
         """Get recommended tier to throttle based on conditions."""
         if self.estimate.kill_conditions["p99_exceeded"]:
             return "FREE"  # Throttle FREE tier first
-        elif self.estimate.kill_conditions["error_rate_exceeded"]:
+        if self.estimate.kill_conditions["error_rate_exceeded"]:
             return "FLASH"  # Then FLASH
-        elif self.estimate.kill_conditions["queue_overflow"]:
+        if self.estimate.kill_conditions["queue_overflow"]:
             return "PRO"  # Finally PRO
         return None
 
@@ -239,8 +236,7 @@ class RunningEstimateManager:
         return asdict(self.estimate)
 
     def get_decision_support(self) -> dict:
-        """
-        Get decision support summary.
+        """Get decision support summary.
 
         Returns key metrics and recommendations for operators.
         """
@@ -263,17 +259,17 @@ class RunningEstimateManager:
 
         if self.estimate.kill_conditions["p99_exceeded"]:
             recs.append(
-                f"THROTTLE FREE tier: p99 latency {self.estimate.p99_latency_ms:.0f}ms > {self.KILL_P99_LATENCY_MS}ms"
+                f"THROTTLE FREE tier: p99 latency {self.estimate.p99_latency_ms:.0f}ms > {self.KILL_P99_LATENCY_MS}ms",
             )
 
         if self.estimate.kill_conditions["error_rate_exceeded"]:
             recs.append(
-                f"INVESTIGATE errors: rate {self.estimate.error_rate:.1%} > {self.KILL_ERROR_RATE:.1%}"
+                f"INVESTIGATE errors: rate {self.estimate.error_rate:.1%} > {self.KILL_ERROR_RATE:.1%}",
             )
 
         if self.estimate.kill_conditions["queue_overflow"]:
             recs.append(
-                f"SCALE UP: queue depth {self.estimate.tasks_queued} > {self.KILL_QUEUE_DEPTH}"
+                f"SCALE UP: queue depth {self.estimate.tasks_queued} > {self.KILL_QUEUE_DEPTH}",
             )
 
         if self.estimate.agent_availability < self.TOTAL_AGENTS * 0.5:
@@ -332,7 +328,7 @@ def main():
             queued = np.random.poisson(100)
 
             manager.update(
-                latencies=latencies, errors=errors, tasks_completed=completed, tasks_queued=queued
+                latencies=latencies, errors=errors, tasks_completed=completed, tasks_queued=queued,
             )
 
             time.sleep(0.1)

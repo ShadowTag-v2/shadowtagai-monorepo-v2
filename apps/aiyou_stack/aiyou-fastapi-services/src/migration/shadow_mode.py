@@ -1,5 +1,4 @@
-"""
-Shadow Mode Framework for safe agent governance migration.
+"""Shadow Mode Framework for safe agent governance migration.
 
 Runs new agent system in parallel with existing Judge #6 without
 affecting production decisions, enabling validation before cutover.
@@ -109,8 +108,7 @@ class ShadowModeMetrics:
 
 
 class ShadowModeOrchestrator:
-    """
-    Orchestrates shadow mode deployment and validation.
+    """Orchestrates shadow mode deployment and validation.
 
     Dual-evaluates requests through both systems, compares results,
     tracks metrics, and generates migration readiness reports.
@@ -123,14 +121,14 @@ class ShadowModeOrchestrator:
         sample_rate: float = None,
         log_mismatches_only: bool = False,
     ):
-        """
-        Initialize shadow mode orchestrator.
+        """Initialize shadow mode orchestrator.
 
         Args:
             shadow_agent: New agent-based governance system
             production_client: Existing Judge #6 client
             sample_rate: Fraction of requests to shadow (0.0-1.0)
             log_mismatches_only: Only log disagreements for review
+
         """
         self.shadow_agent = shadow_agent
         self.production_client = production_client
@@ -149,8 +147,7 @@ class ShadowModeOrchestrator:
         request: dict[str, Any],
         use_shadow_decision: bool = False,
     ) -> dict[str, Any]:
-        """
-        Evaluate request through both systems.
+        """Evaluate request through both systems.
 
         Args:
             request: Governance request
@@ -158,6 +155,7 @@ class ShadowModeOrchestrator:
 
         Returns:
             Production decision (or shadow if use_shadow_decision=True)
+
         """
         # Sample rate check
         if not self._should_shadow(request):
@@ -172,7 +170,7 @@ class ShadowModeOrchestrator:
 
         # Wait for both
         shadow_result, production_result = await asyncio.gather(
-            shadow_task, production_task, return_exceptions=True
+            shadow_task, production_task, return_exceptions=True,
         )
 
         # Handle errors
@@ -196,8 +194,7 @@ class ShadowModeOrchestrator:
         # Return appropriate decision
         if use_shadow_decision:
             return self._format_decision(shadow_result)
-        else:
-            return self._format_decision(production_result)
+        return self._format_decision(production_result)
 
     def _should_shadow(self, request: dict[str, Any]) -> bool:
         """Determine if request should be shadowed based on sample rate."""
@@ -278,7 +275,7 @@ class ShadowModeOrchestrator:
 
         if not decision_matches:
             notes.append(
-                f"Decision mismatch: Shadow={shadow.decision}, Production={production.decision}"
+                f"Decision mismatch: Shadow={shadow.decision}, Production={production.decision}",
             )
 
         return ComparisonResult(
@@ -360,17 +357,15 @@ class ShadowModeOrchestrator:
                 "confidence": decision.confidence,
                 "reasoning": decision.reasoning,
             }
-        else:
-            return {
-                "decision_id": decision.decision_id,
-                "decision": decision.decision,
-                "confidence": decision.confidence,
-                "reasoning": decision.reasoning or [],
-            }
+        return {
+            "decision_id": decision.decision_id,
+            "decision": decision.decision,
+            "confidence": decision.confidence,
+            "reasoning": decision.reasoning or [],
+        }
 
     def get_migration_readiness_report(self) -> dict[str, Any]:
-        """
-        Generate migration readiness report.
+        """Generate migration readiness report.
 
         Success criteria:
         - Agreement rate >95%

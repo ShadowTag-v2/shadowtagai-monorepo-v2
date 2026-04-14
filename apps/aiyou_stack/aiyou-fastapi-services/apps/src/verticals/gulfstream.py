@@ -1,6 +1,5 @@
 class GulfstreamOffshore:
-    """
-    Vertical 1: Gulfstream Offshore Energy
+    """Vertical 1: Gulfstream Offshore Energy
     ARR 2030: $1.75B
     Moat: $17/MWh cost advantage + CAISO timing.
     """

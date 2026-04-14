@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN // PORTFOLIO MONTE CARLO SIMULATION
+"""PNKLN // PORTFOLIO MONTE CARLO SIMULATION
 Calculates expected value, standard deviation, and 5% VaR
 """
 
@@ -10,8 +9,7 @@ from math import exp
 
 
 def sim(n: int, y: int, base: float, alloc: dict, mu: dict, sigma: dict):
-    """
-    Run Monte Carlo simulation for portfolio.
+    """Run Monte Carlo simulation for portfolio.
 
     Args:
         n: Number of simulations
@@ -23,6 +21,7 @@ def sim(n: int, y: int, base: float, alloc: dict, mu: dict, sigma: dict):
 
     Returns:
         tuple: (mean, std_dev, var_5_percent)
+
     """
     results = []
     for _ in range(n):

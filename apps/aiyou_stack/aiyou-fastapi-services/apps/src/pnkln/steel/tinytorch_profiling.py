@@ -14,8 +14,7 @@ MB_TO_BYTES = 1024 * 1024  # Megabytes to bytes conversion
 
 
 class Profiler:
-    """
-    Professional-grade ML model profiler for performance analysis.
+    """Professional-grade ML model profiler for performance analysis.
 
     Measures parameters, FLOPs, memory usage, and latency with statistical rigor.
     Used for optimization guidance and deployment planning.
@@ -141,7 +140,7 @@ class Profiler:
         }
 
     def measure_latency(
-        self, model, input_tensor, warmup: int = 10, iterations: int = 100
+        self, model, input_tensor, warmup: int = 10, iterations: int = 100,
     ) -> float:
         """Measure model inference latency with statistical rigor."""
         # Warmup

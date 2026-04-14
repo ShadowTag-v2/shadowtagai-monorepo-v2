@@ -1,5 +1,4 @@
-"""
-Gemini Live API Endpoints
+"""Gemini Live API Endpoints
 
 Exposes a WebSocket endpoint for real-time multimodal interaction.
 """
@@ -18,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 @router.websocket("/ws/gemini-live")
 async def gemini_live_websocket(websocket: WebSocket):
-    """
-    WebSocket proxy for Gemini Live API.
+    """WebSocket proxy for Gemini Live API.
 
     Handles:
     1. Client connection
@@ -32,7 +30,7 @@ async def gemini_live_websocket(websocket: WebSocket):
     # Initialize service
     # Project ID is handled by ADC or env var in the service __init__
     service = GeminiLiveService(
-        location=settings.GEMINI_LIVE_LOCATION, model_id=settings.GEMINI_LIVE_MODEL
+        location=settings.GEMINI_LIVE_LOCATION, model_id=settings.GEMINI_LIVE_MODEL,
     )
 
     try:

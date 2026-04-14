@@ -1,5 +1,4 @@
-"""
-AgentSpecialization - T-Shaped Expertise Model
+"""AgentSpecialization - T-Shaped Expertise Model
 Version: 1.0.0
 
 Philosophy: Best structure is T-shaped - deep vertical in one area,
@@ -98,8 +97,7 @@ DOMAIN_ADJACENCY = {
 
 @dataclass
 class TShapedExpertise:
-    """
-    T-shaped expertise profile.
+    """T-shaped expertise profile.
 
     Primary: Deep expertise (weight 1.0)
     Secondary: Adjacent competence (weight 0.6)
@@ -118,12 +116,11 @@ class TShapedExpertise:
         """Get weight for a domain based on expertise level."""
         if domain == self.primary:
             return 1.0 * self.primary_proficiency
-        elif domain in self.secondary:
+        if domain in self.secondary:
             return 0.6 * self.secondary_proficiency.get(domain, 0.5)
-        elif self.general_competence:
+        if self.general_competence:
             return 0.3
-        else:
-            return 0.0
+        return 0.0
 
 
 @dataclass
@@ -140,8 +137,7 @@ class SpecializedAgent:
 
 
 class AgentSpecialization:
-    """
-    Manage T-shaped specialization for agents.
+    """Manage T-shaped specialization for agents.
 
     Key features:
     - Weighted consensus based on expertise
@@ -162,10 +158,9 @@ class AgentSpecialization:
     # =========================================================================
 
     def register_agent(
-        self, agent_id: str, primary: ExpertiseDomain, secondary: list[ExpertiseDomain] = None
+        self, agent_id: str, primary: ExpertiseDomain, secondary: list[ExpertiseDomain] = None,
     ) -> SpecializedAgent:
-        """
-        Register agent with T-shaped expertise.
+        """Register agent with T-shaped expertise.
 
         Auto-assigns adjacent domains if secondary not specified.
         """
@@ -174,7 +169,7 @@ class AgentSpecialization:
             secondary = DOMAIN_ADJACENCY.get(primary, [])[:3]
 
         expertise = TShapedExpertise(
-            primary=primary, secondary=secondary, secondary_proficiency={d: 0.5 for d in secondary}
+            primary=primary, secondary=secondary, secondary_proficiency=dict.fromkeys(secondary, 0.5),
         )
 
         agent = SpecializedAgent(agent_id=agent_id, expertise=expertise)
@@ -190,10 +185,9 @@ class AgentSpecialization:
     # =========================================================================
 
     def get_experts_for_domain(
-        self, domain: ExpertiseDomain, min_weight: float = 0.5
+        self, domain: ExpertiseDomain, min_weight: float = 0.5,
     ) -> list[tuple]:
-        """
-        Get agents with expertise in a domain.
+        """Get agents with expertise in a domain.
 
         Returns: List of (agent_id, weight) tuples, sorted by weight.
         """
@@ -241,10 +235,9 @@ class AgentSpecialization:
     # =========================================================================
 
     def calculate_weighted_consensus(
-        self, domain: ExpertiseDomain, opinions: dict[str, Any]
+        self, domain: ExpertiseDomain, opinions: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Calculate weighted consensus for a domain.
+        """Calculate weighted consensus for a domain.
 
         Args:
             domain: The domain being discussed
@@ -252,6 +245,7 @@ class AgentSpecialization:
 
         Returns:
             Weighted results and analysis
+
         """
         weighted_opinions = []
 
@@ -268,7 +262,7 @@ class AgentSpecialization:
                     "opinion": opinion,
                     "weight": weight,
                     "expertise_level": self._get_expertise_level(agent, domain),
-                }
+                },
             )
 
         # Sort by weight
@@ -293,20 +287,18 @@ class AgentSpecialization:
         """Get expertise level description."""
         if domain == agent.expertise.primary:
             return "PRIMARY"
-        elif domain in agent.expertise.secondary:
+        if domain in agent.expertise.secondary:
             return "SECONDARY"
-        elif agent.expertise.general_competence:
+        if agent.expertise.general_competence:
             return "GENERAL"
-        else:
-            return "NONE"
+        return "NONE"
 
     # =========================================================================
     # CROSS-DOMAIN DETECTION
     # =========================================================================
 
     def identify_cross_domain_issues(self, task_domains: list[ExpertiseDomain]) -> dict[str, Any]:
-        """
-        Identify potential cross-domain issues.
+        """Identify potential cross-domain issues.
 
         T-shaped agents catch issues that pure specialists miss.
         """
@@ -327,7 +319,7 @@ class AgentSpecialization:
                         "agent_id": agent_id,
                         "domains_covered": [d.value for d in covered],
                         "can_catch_cross_issues": True,
-                    }
+                    },
                 )
 
             for domain in covered:
@@ -347,15 +339,14 @@ class AgentSpecialization:
         }
 
     def _cross_domain_recommendation(
-        self, cross_domain_agents: list[dict], gaps: list[ExpertiseDomain]
+        self, cross_domain_agents: list[dict], gaps: list[ExpertiseDomain],
     ) -> str:
         """Generate recommendation for cross-domain coverage."""
         if gaps:
             return f"Gaps in coverage: {gaps}. Add specialists or increase general attention."
-        elif not cross_domain_agents:
+        if not cross_domain_agents:
             return "No cross-domain coverage. Risk of missing integration issues."
-        else:
-            return f"{len(cross_domain_agents)} agents can catch cross-domain issues."
+        return f"{len(cross_domain_agents)} agents can catch cross-domain issues."
 
     # =========================================================================
     # PROFICIENCY UPDATES
@@ -410,8 +401,7 @@ class AgentSpecialization:
     # =========================================================================
 
     def recommend_team(self, task_domains: list[ExpertiseDomain], team_size: int = 5) -> list[str]:
-        """
-        Recommend team composition for a task.
+        """Recommend team composition for a task.
 
         Ensures:
         - Primary coverage for all domains
@@ -516,8 +506,7 @@ def create_ux_strategist(agent_id: str) -> SpecializedAgent:
 
 
 def create_specialization_system() -> AgentSpecialization:
-    """
-    Create agent specialization system.
+    """Create agent specialization system.
 
     "T-shaped experts catch what pure specialists miss."
     """

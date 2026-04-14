@@ -1,5 +1,4 @@
-"""
-Tests for DeepAgent pattern enhancements.
+"""Tests for DeepAgent pattern enhancements.
 
 Tests dynamic tool retrieval, RL rewards, and memory persistence.
 """
@@ -235,7 +234,7 @@ class TestBenchmarks:
         # Register 100 tools
         for i in range(100):
             registry.register_tool(
-                f"tool_{i}", f"Tool number {i} for various operations", lambda x: x
+                f"tool_{i}", f"Tool number {i} for various operations", lambda x: x,
             )
 
         # Measure retrieval time

@@ -1,5 +1,4 @@
-"""
-PNKLN Marketplace - Two-sided platform for AI capabilities
+"""PNKLN Marketplace - Two-sided platform for AI capabilities
 
 Revenue streams:
 - Platform fees: 20-30% of transactions
@@ -29,16 +28,16 @@ from .schema import (
 
 __all__ = [
     "Developer",
-    "Superpower",
-    "Transaction",
-    "UserSuperpower",
-    "Review",
     "MarketplaceAnalytics",
     "PlatformFeeConfig",
+    "PricingModel",
+    "Review",
+    "Superpower",
     "SuperpowerCategory",
     "SuperpowerStatus",
-    "PricingModel",
+    "Transaction",
     "TransactionStatus",
+    "UserSuperpower",
     "calculate_platform_fee",
     "project_marketplace_revenue",
 ]

@@ -41,13 +41,13 @@ def execute_crawl_and_ingest():
                     ).decode("utf-8")
                     html_content = f"<html><body><pre>{js_data}</pre></body></html>"
                 except Exception as e:
-                    html_content = f"<html><body><p>Error: {str(e)}</p></body></html>"
+                    html_content = f"<html><body><p>Error: {e!s}</p></body></html>"
             else:
                 page = fetcher.get(url)
                 html_content = page.html
 
             with tempfile.NamedTemporaryFile(
-                "w", suffix=".html", delete=False, encoding="utf-8"
+                "w", suffix=".html", delete=False, encoding="utf-8",
             ) as f:
                 tmp_path = f.name
                 f.write(html_content)
@@ -60,7 +60,7 @@ def execute_crawl_and_ingest():
             ingest_document(WORKSPACE_ID, clean_markdown)
             print(f"     [ok] Ingested [{len(clean_markdown)} bytes] into LanceDB Schema!")
         except Exception as e:
-            print(f"     [error] Crawler Triad Exception on {url}: {str(e)}")
+            print(f"     [error] Crawler Triad Exception on {url}: {e!s}")
         finally:
             if tmp_path and os.path.exists(tmp_path):
                 os.unlink(tmp_path)

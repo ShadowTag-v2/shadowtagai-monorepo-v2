@@ -1,5 +1,4 @@
-"""
-AWS Cost Explorer client for cost analysis operations.
+"""AWS Cost Explorer client for cost analysis operations.
 """
 
 import logging
@@ -27,7 +26,7 @@ class CostExplorerClient:
                     {
                         "aws_access_key_id": settings.aws_access_key_id,
                         "aws_secret_access_key": settings.aws_secret_access_key,
-                    }
+                    },
                 )
 
             if settings.aws_session_token:
@@ -49,8 +48,7 @@ class CostExplorerClient:
         group_by: list[dict[str, str]] | None = None,
         filter_expr: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Get cost and usage data from AWS Cost Explorer.
+        """Get cost and usage data from AWS Cost Explorer.
 
         Args:
             start_date: Start date in YYYY-MM-DD format
@@ -62,6 +60,7 @@ class CostExplorerClient:
 
         Returns:
             Cost and usage data from AWS Cost Explorer
+
         """
         try:
             if metrics is None:
@@ -97,8 +96,7 @@ class CostExplorerClient:
         metric: str = "UNBLENDED_COST",
         granularity: str = "MONTHLY",
     ) -> dict[str, Any]:
-        """
-        Get cost forecast from AWS Cost Explorer.
+        """Get cost forecast from AWS Cost Explorer.
 
         Args:
             start_date: Start date in YYYY-MM-DD format
@@ -108,6 +106,7 @@ class CostExplorerClient:
 
         Returns:
             Cost forecast data
+
         """
         try:
             response = self.client.get_cost_forecast(
@@ -126,11 +125,11 @@ class CostExplorerClient:
             raise
 
     def get_rightsizing_recommendations(self) -> dict[str, Any]:
-        """
-        Get rightsizing recommendations from AWS Cost Explorer.
+        """Get rightsizing recommendations from AWS Cost Explorer.
 
         Returns:
             Rightsizing recommendations
+
         """
         try:
             response = self.client.get_rightsizing_recommendation(Service="AmazonEC2")
@@ -145,10 +144,9 @@ class CostExplorerClient:
             raise
 
     def get_savings_plans_recommendations(
-        self, lookback_period: str = "THIRTY_DAYS", payment_option: str = "NO_UPFRONT"
+        self, lookback_period: str = "THIRTY_DAYS", payment_option: str = "NO_UPFRONT",
     ) -> dict[str, Any]:
-        """
-        Get Savings Plans recommendations.
+        """Get Savings Plans recommendations.
 
         Args:
             lookback_period: SEVEN_DAYS, THIRTY_DAYS, or SIXTY_DAYS
@@ -156,6 +154,7 @@ class CostExplorerClient:
 
         Returns:
             Savings Plans recommendations
+
         """
         try:
             response = self.client.get_savings_plans_purchase_recommendation(
@@ -174,16 +173,16 @@ class CostExplorerClient:
             raise
 
     def get_reservation_recommendations(
-        self, service: str = "Amazon Elastic Compute Cloud - Compute"
+        self, service: str = "Amazon Elastic Compute Cloud - Compute",
     ) -> dict[str, Any]:
-        """
-        Get reservation purchase recommendations.
+        """Get reservation purchase recommendations.
 
         Args:
             service: AWS service name
 
         Returns:
             Reservation recommendations
+
         """
         try:
             response = self.client.get_reservation_purchase_recommendation(Service=service)
@@ -198,11 +197,11 @@ class CostExplorerClient:
             raise
 
     def get_cost_categories(self) -> list[str]:
-        """
-        List available cost categories.
+        """List available cost categories.
 
         Returns:
             List of cost category ARNs
+
         """
         try:
             response = self.client.list_cost_category_definitions()
@@ -225,11 +224,11 @@ _cost_explorer_client: CostExplorerClient | None = None
 
 
 def get_cost_explorer_client() -> CostExplorerClient:
-    """
-    Get or create the global Cost Explorer client instance.
+    """Get or create the global Cost Explorer client instance.
 
     Returns:
         CostExplorerClient instance
+
     """
     global _cost_explorer_client
 

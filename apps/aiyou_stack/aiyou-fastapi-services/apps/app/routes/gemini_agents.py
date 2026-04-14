@@ -1,5 +1,4 @@
-"""
-Gemini Multi-Agent API Routes
+"""Gemini Multi-Agent API Routes
 AutoGen → Gemini migration endpoints
 """
 
@@ -53,8 +52,7 @@ async def classify_with_debate(
     agents: list[str] | None = None,
     voting_method: str = "weighted_confidence",
 ) -> TierClassification:
-    """
-    Run multi-agent debate to classify intelligence item.
+    """Run multi-agent debate to classify intelligence item.
 
     **Example Request:**
     ```bash
@@ -110,7 +108,7 @@ async def classify_with_debate(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Debate classification failed: {str(e)}",
+            detail=f"Debate classification failed: {e!s}",
         )
 
 
@@ -147,8 +145,7 @@ async def single_agent_proposal(
     tags: list[str],
     debate_history: list[dict] | None = None,
 ):
-    """
-    Get tier proposal from single agent.
+    """Get tier proposal from single agent.
 
     **Args:**
     - agent_name: "skeptic" | "optimist" | "neutral"
@@ -198,7 +195,7 @@ async def single_agent_proposal(
 
         # Get proposal
         proposal = await agent.propose_tier(
-            title=title, content=content, tags=tags, debate_history=debate_history
+            title=title, content=content, tags=tags, debate_history=debate_history,
         )
 
         return proposal
@@ -206,7 +203,7 @@ async def single_agent_proposal(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Agent proposal failed: {str(e)}",
+            detail=f"Agent proposal failed: {e!s}",
         )
 
 
@@ -216,8 +213,7 @@ async def single_agent_proposal(
     description="Get descriptions of all available agent personas and their bias patterns",
 )
 async def list_agent_personas():
-    """
-    List all agent personas and their characteristics.
+    """List all agent personas and their characteristics.
 
     **Response:**
     ```json
@@ -272,8 +268,7 @@ async def list_agent_personas():
     """,
 )
 async def benchmark_gemini_vs_autogen():
-    """
-    Benchmark results comparing Gemini to AutoGen.
+    """Benchmark results comparing Gemini to AutoGen.
 
     **Test Dataset:** 1,000 pre-labeled intelligence items
 
@@ -364,8 +359,7 @@ async def benchmark_gemini_vs_autogen():
     """,
 )
 async def test_function_calling(domain: str, content: str, source_id: str):
-    """
-    Test Gemini function calling for ATP 5-19 tools.
+    """Test Gemini function calling for ATP 5-19 tools.
 
     **Example:**
     ```bash

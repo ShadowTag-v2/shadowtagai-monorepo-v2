@@ -1,5 +1,4 @@
-"""
-Google Drive Connector: Scan Drive for watermarked content.
+"""Google Drive Connector: Scan Drive for watermarked content.
 
 Implements OAuth2 authentication and recursive file scanning
 with support for docs, sheets, images, PDFs, and videos.
@@ -69,8 +68,7 @@ class DriveFile:
 
 
 class GoogleDriveConnector:
-    """
-    Connector for scanning Google Drive content.
+    """Connector for scanning Google Drive content.
 
     Supports:
     - OAuth2 authentication
@@ -131,14 +129,14 @@ class GoogleDriveConnector:
         mime_types: list[str] | None = None,
         max_results: int = 1000,
     ) -> AsyncIterator[DriveFile]:
-        """
-        List files in Drive folder.
+        """List files in Drive folder.
 
         Args:
             folder_id: Folder ID to scan (default: root)
             recursive: Scan subfolders
             mime_types: Filter by MIME types
             max_results: Maximum files to return
+
         """
         query_parts = [f"'{folder_id}' in parents", "trashed = false"]
 
@@ -173,12 +171,12 @@ class GoogleDriveConnector:
                     mime_type=file_data.get("mimeType", ""),
                     size=int(file_data.get("size", 0)),
                     created_time=datetime.fromisoformat(
-                        file_data.get("createdTime", "").replace("Z", "+00:00")
+                        file_data.get("createdTime", "").replace("Z", "+00:00"),
                     )
                     if file_data.get("createdTime")
                     else datetime.utcnow(),
                     modified_time=datetime.fromisoformat(
-                        file_data.get("modifiedTime", "").replace("Z", "+00:00")
+                        file_data.get("modifiedTime", "").replace("Z", "+00:00"),
                     )
                     if file_data.get("modifiedTime")
                     else datetime.utcnow(),
@@ -242,12 +240,12 @@ class GoogleDriveConnector:
             mime_type=file_data.get("mimeType", ""),
             size=int(file_data.get("size", 0)),
             created_time=datetime.fromisoformat(
-                file_data.get("createdTime", "").replace("Z", "+00:00")
+                file_data.get("createdTime", "").replace("Z", "+00:00"),
             )
             if file_data.get("createdTime")
             else datetime.utcnow(),
             modified_time=datetime.fromisoformat(
-                file_data.get("modifiedTime", "").replace("Z", "+00:00")
+                file_data.get("modifiedTime", "").replace("Z", "+00:00"),
             )
             if file_data.get("modifiedTime")
             else datetime.utcnow(),
@@ -267,8 +265,7 @@ class GoogleDriveConnector:
         folder_id: str = "root",
         file_types: list[str] | None = None,
     ) -> AsyncIterator[DriveFile]:
-        """
-        Scan Drive for files that may contain watermarks.
+        """Scan Drive for files that may contain watermarks.
 
         Default file types: images, PDFs, videos, documents
         """

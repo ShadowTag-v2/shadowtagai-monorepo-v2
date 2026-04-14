@@ -1,5 +1,4 @@
-"""
-Main Entry Point for Gemini Ingestion Layer
+"""Main Entry Point for Gemini Ingestion Layer
 
 GKE CronJob multi-container orchestration for nightly intelligence collection.
 Target runtime: ~45 minutes/night
@@ -70,8 +69,7 @@ class GeminiIngestionLayer:
         return sources
 
     async def run(self) -> dict[str, Any]:
-        """
-        Execute full ingestion pipeline.
+        """Execute full ingestion pipeline.
 
         Steps:
         1. Fetch from all enabled sources
@@ -83,6 +81,7 @@ class GeminiIngestionLayer:
 
         Returns:
             Run statistics and results
+
         """
         start_time = time.time()
         print(f"[{datetime.utcnow().isoformat()}] Starting Gemini Ingestion Layer")
@@ -117,7 +116,7 @@ class GeminiIngestionLayer:
                         "text": item.content,
                         "author": item.author,
                         "url": item.url,
-                    }
+                    },
                 )
                 item.tier = result.tier.value
                 item.relevance_score = result.confidence

@@ -17,7 +17,7 @@ class TemporalIdentityPayload(BaseModel):
 
 
 async def verify_zero_trust_token(
-    connection: ASGIConnection, _: BaseException | None = None
+    connection: ASGIConnection, _: BaseException | None = None,
 ) -> None:
     api_key = connection.headers.get(API_KEY_NAME)
     valid_key = os.getenv("DEVELOPER_KNOWLEDGE_API_KEY")
@@ -29,14 +29,13 @@ async def verify_zero_trust_token(
 
     if not api_key or api_key != valid_key:
         raise NotAuthorizedException(
-            detail="VIOLATION: Zero-Trust Ingress rejected unauthorized access. Request dropped."
+            detail="VIOLATION: Zero-Trust Ingress rejected unauthorized access. Request dropped.",
         )
 
 
 @post("/v1/system/execute/temporal", guards=[verify_zero_trust_token])
 async def execute_temporal_job(data: dict) -> dict:
-    """
-    Litestar counterpart to the FastAPI ingestion. Designed to A/B test
+    """Litestar counterpart to the FastAPI ingestion. Designed to A/B test
     Pydantic parsing overhead during high-throughput Temporal dispatch.
     """
     try:

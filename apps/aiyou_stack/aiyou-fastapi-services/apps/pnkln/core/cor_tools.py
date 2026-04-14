@@ -1,5 +1,4 @@
-"""
-COR TOOLS - Dynamic Tool Registry with Semantic Retrieval
+"""COR TOOLS - Dynamic Tool Registry with Semantic Retrieval
 ==========================================================
 
 Extracted from cor_orchestrator.py as part of the Rich Hickey refactor.
@@ -48,8 +47,7 @@ class Tool:
 
 
 class ToolRegistry:
-    """
-    Dynamic tool registry with semantic retrieval.
+    """Dynamic tool registry with semantic retrieval.
 
     DeepAgent Pattern: Scalable tool retrieval from large toolsets
     - Embedding-based similarity search
@@ -92,16 +90,15 @@ class ToolRegistry:
         if self._tool_names:
             self._embedding_matrix = np.vstack(
                 cast(
-                    list[np.ndarray],
+                    "list[np.ndarray]",
                     [self.tools[name].embedding for name in self._tool_names],
-                )
+                ),
             )
 
     def retrieve_tools(
-        self, query: str, top_k: int = 5, min_similarity: float = 0.0
+        self, query: str, top_k: int = 5, min_similarity: float = 0.0,
     ) -> list[tuple[str, float]]:
-        """
-        Retrieve most relevant tools for query.
+        """Retrieve most relevant tools for query.
 
         DeepAgent Pattern: Semantic tool retrieval
 
@@ -112,6 +109,7 @@ class ToolRegistry:
 
         Returns:
             List of (tool_name, similarity_score) tuples
+
         """
         if not self._tool_names or self._embedding_matrix is None:
             return []
@@ -129,7 +127,7 @@ class ToolRegistry:
                 self.tools[name].success_rate
                 * (1.0 / (1.0 + self.tools[name].avg_latency_ms / 100))
                 for name in self._tool_names
-            ]
+            ],
         )
         weighted_scores = similarities * 0.7 + performance_weights * 0.3
 
@@ -149,11 +147,11 @@ class ToolRegistry:
         return self.tools.get(name)
 
     async def execute_tool(self, name: str, *args, **kwargs) -> tuple[Any, float]:
-        """
-        Execute tool and track metrics.
+        """Execute tool and track metrics.
 
         Returns:
             Tuple of (result, latency_ms)
+
         """
         tool = self.tools.get(name)
         if not tool:

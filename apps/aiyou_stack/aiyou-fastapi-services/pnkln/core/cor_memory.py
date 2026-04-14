@@ -1,5 +1,4 @@
-"""
-COR Memory — Orchestrator Context Persistence
+"""COR Memory — Orchestrator Context Persistence
 ===============================================
 
 Extracted from cor_orchestrator.py (Rich Hickey refactor).
@@ -25,8 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class OrchestratorMemory:
-    """
-    Memory system for orchestrator context persistence.
+    """Memory system for orchestrator context persistence.
 
     DeepAgent Pattern: Scalable memory mechanism
     - Short-term: Recent execution contexts
@@ -90,8 +88,7 @@ class OrchestratorMemory:
         self.short_term = []
 
     def retrieve_context(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
-        """
-        Retrieve relevant memories for context.
+        """Retrieve relevant memories for context.
 
         Simple keyword matching (replace with embeddings in production).
         """

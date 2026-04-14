@@ -1,5 +1,4 @@
-"""
-Zero-Touch Legal Deadline Management (ZT) API
+"""Zero-Touch Legal Deadline Management (ZT) API
 FastAPI endpoints for automated deadline extraction, tracking, and notification
 """
 
@@ -110,7 +109,7 @@ class DeadlineRule(BaseModel):
     exclude_weekends: bool = Field(default=True, description="Exclude weekends")
     exclude_holidays: bool = Field(default=True, description="Exclude court holidays")
     service_method_additions: dict[str, int] = Field(
-        default_factory=dict, description="Additional days based on service method"
+        default_factory=dict, description="Additional days based on service method",
     )
     trigger_event: str = Field(..., description="Event that triggers deadline")
     rule_source: str = Field(..., description="Legal source (e.g., 'FRCP 12(a)(1)(A)')")
@@ -131,7 +130,7 @@ class DeadlineRule(BaseModel):
                 "trigger_event": "service_of_complaint",
                 "rule_source": "FRCP 12(a)(1)(A)",
                 "notes": "Answer to complaint deadline for federal civil cases",
-            }
+            },
         }
 
 
@@ -153,10 +152,10 @@ class ExtractedDeadline(BaseModel):
     requires_review: bool = Field(default=False, description="Flagged for human review")
     review_reason: str | None = Field(None, description="Reason for review")
     calculation_details: dict[str, Any] = Field(
-        default_factory=dict, description="Details of deadline calculation"
+        default_factory=dict, description="Details of deadline calculation",
     )
     reminder_schedule: list[date] = Field(
-        default_factory=list, description="Scheduled reminder dates"
+        default_factory=list, description="Scheduled reminder dates",
     )
     assigned_to: str | None = Field(None, description="Assigned lawyer/staff")
     extracted_at: datetime = Field(default_factory=datetime.utcnow)
@@ -188,7 +187,7 @@ class ExtractedDeadline(BaseModel):
                     "total_calendar_days": 25,
                 },
                 "reminder_schedule": ["2025-11-08", "2025-11-24", "2025-12-01", "2025-12-07"],
-            }
+            },
         }
 
 
@@ -242,7 +241,7 @@ class ReminderConfig(BaseModel):
     frequency: ReminderFrequency = Field(..., description="Reminder frequency")
     custom_days: list[int] | None = Field(None, description="Custom reminder days before deadline")
     notification_channels: list[str] = Field(
-        default_factory=lambda: ["email"], description="Notification channels"
+        default_factory=lambda: ["email"], description="Notification channels",
     )
     recipients: list[str] = Field(..., description="Recipient email/user IDs")
 
@@ -318,8 +317,7 @@ async def upload_document(
     service_method: str | None = Query(None, description="Service method"),
     uploaded_by: str = Query(..., description="User ID"),
 ):
-    """
-    Upload legal document for deadline extraction
+    """Upload legal document for deadline extraction
 
     Accepts PDF, DOCX, or image files. The system will:
     1. OCR/extract text from the document
@@ -347,11 +345,10 @@ async def upload_document(
 
 
 @app.get(
-    "/documents/{document_id}/deadlines", response_model=list[ExtractedDeadline], tags=["Documents"]
+    "/documents/{document_id}/deadlines", response_model=list[ExtractedDeadline], tags=["Documents"],
 )
 async def get_document_deadlines(document_id: str):
-    """
-    Get all deadlines extracted from a specific document
+    """Get all deadlines extracted from a specific document
     """
     # TODO: Implement actual database query
 
@@ -383,14 +380,13 @@ async def get_document_deadlines(document_id: str):
                 date(2025, 12, 1),
                 date(2025, 12, 7),
             ],
-        )
+        ),
     ]
 
 
 @app.post("/deadlines/search", response_model=list[ExtractedDeadline], tags=["Deadlines"])
 async def search_deadlines(request: DeadlineSearchRequest):
-    """
-    Search and filter deadlines
+    """Search and filter deadlines
 
     Supports filtering by:
     - Jurisdiction
@@ -410,14 +406,13 @@ async def get_deadline(deadline_id: str):
     """Get specific deadline by ID"""
     # TODO: Implement actual retrieval
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail=f"Deadline {deadline_id} not found"
+        status_code=status.HTTP_404_NOT_FOUND, detail=f"Deadline {deadline_id} not found",
     )
 
 
 @app.post("/deadlines/{deadline_id}/verify", response_model=ExtractedDeadline, tags=["Deadlines"])
 async def verify_deadline(deadline_id: str, verification: DeadlineVerification):
-    """
-    Verify or correct an extracted deadline
+    """Verify or correct an extracted deadline
 
     Allows lawyers to:
     - Approve AI-extracted deadline
@@ -430,13 +425,11 @@ async def verify_deadline(deadline_id: str, verification: DeadlineVerification):
     # Update deadline status
     # If corrected, update ML feedback loop
     # Trigger calendar sync
-    pass
 
 
 @app.get("/deadlines/review/pending", response_model=list[ExtractedDeadline], tags=["Deadlines"])
 async def get_pending_reviews(limit: int = Query(50, ge=1, le=200), offset: int = Query(0, ge=0)):
-    """
-    Get deadlines pending review
+    """Get deadlines pending review
 
     Returns deadlines flagged for human review due to:
     - Low confidence extraction
@@ -454,8 +447,7 @@ async def sync_to_calendar(
     calendar_provider: str = Query(..., description="Calendar provider"),
     calendar_id: str = Query(..., description="Calendar ID"),
 ):
-    """
-    Sync deadline to calendar
+    """Sync deadline to calendar
 
     Creates calendar event with:
     - Deadline as all-day event
@@ -475,8 +467,7 @@ async def sync_to_calendar(
 
 @app.post("/deadlines/{deadline_id}/reminders", response_model=ReminderConfig, tags=["Reminders"])
 async def configure_reminders(deadline_id: str, config: ReminderConfig):
-    """
-    Configure reminder schedule for deadline
+    """Configure reminder schedule for deadline
 
     Reminder frequencies:
     - STANDARD: 30, 14, 7, 1 days before
@@ -497,8 +488,7 @@ async def configure_reminders(deadline_id: str, config: ReminderConfig):
 
 @app.get("/rules/jurisdictions", response_model=list[str], tags=["Rules"])
 async def get_jurisdictions():
-    """
-    Get list of supported jurisdictions
+    """Get list of supported jurisdictions
 
     Returns all jurisdictions with configured deadline rules.
     """
@@ -560,8 +550,7 @@ async def get_jurisdictions():
 
 @app.get("/rules/jurisdiction/{jurisdiction}", response_model=list[DeadlineRule], tags=["Rules"])
 async def get_jurisdiction_rules(jurisdiction: str):
-    """
-    Get all deadline rules for a jurisdiction
+    """Get all deadline rules for a jurisdiction
 
     Returns comprehensive rule set including:
     - Filing deadlines
@@ -575,11 +564,10 @@ async def get_jurisdiction_rules(jurisdiction: str):
 
 
 @app.post(
-    "/rules", response_model=DeadlineRule, status_code=status.HTTP_201_CREATED, tags=["Rules"]
+    "/rules", response_model=DeadlineRule, status_code=status.HTTP_201_CREATED, tags=["Rules"],
 )
 async def create_rule(rule: DeadlineRule):
-    """
-    Create new jurisdiction rule
+    """Create new jurisdiction rule
 
     **Admin only**: Add or update deadline calculation rules.
     """
@@ -593,8 +581,7 @@ async def get_statistics(
     date_from: date | None = Query(None),
     date_to: date | None = Query(None),
 ):
-    """
-    Get deadline management statistics
+    """Get deadline management statistics
 
     Analytics for:
     - Total deadlines tracked
@@ -626,8 +613,7 @@ async def get_upcoming_deadlines(
     days: int = Query(30, ge=1, le=365, description="Days ahead to look"),
     _assigned_to: str | None = Query(None, description="Filter by assignee"),
 ):
-    """
-    Get upcoming deadlines for dashboard
+    """Get upcoming deadlines for dashboard
 
     Returns deadlines in the next N days, sorted by date.
     Used for lawyer dashboard view.
@@ -640,8 +626,7 @@ async def get_upcoming_deadlines(
 async def get_critical_deadlines(
     _assigned_to: str | None = Query(None, description="Filter by assignee"),
 ):
-    """
-    Get critical deadlines (7 days or less)
+    """Get critical deadlines (7 days or less)
 
     High-priority view for imminent deadlines.
     """

@@ -1,5 +1,4 @@
-"""
-SEO Master API Router
+"""SEO Master API Router
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -34,8 +33,7 @@ router = APIRouter(
 # SEO Analysis Endpoints
 @router.post("/analyze", response_model=SEOAnalysisResponse, status_code=status.HTTP_201_CREATED)
 def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):
-    """
-    Analyze a URL for SEO optimization.
+    """Analyze a URL for SEO optimization.
 
     Returns comprehensive SEO analysis including:
     - Page title and meta description
@@ -50,7 +48,7 @@ def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):
         return analysis
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to analyze URL: {str(e)}"
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to analyze URL: {e!s}",
         )
 
 
@@ -75,8 +73,7 @@ def list_seo_analyses(
 
 @router.post("/analyze/batch", response_model=BatchURLAnalysisResponse)
 def batch_analyze_urls(batch_request: BatchURLAnalysisRequest, db: Session = Depends(get_db)):
-    """
-    Analyze multiple URLs in batch.
+    """Analyze multiple URLs in batch.
     Maximum 100 URLs per request.
     """
     results = []
@@ -98,15 +95,14 @@ def batch_analyze_urls(batch_request: BatchURLAnalysisRequest, db: Session = Dep
         successful=successful,
         failed=failed,
         results=results,
-        errors=errors if errors else None,
+        errors=errors or None,
     )
 
 
 # Meta Tags Endpoints
 @router.post("/meta-tags", response_model=MetaTagResponse, status_code=status.HTTP_201_CREATED)
 def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)):
-    """
-    Create or update meta tags for a URL.
+    """Create or update meta tags for a URL.
 
     Includes:
     - Standard meta tags (title, description, keywords)
@@ -119,14 +115,13 @@ def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)
         return meta_tag
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to create meta tags: {str(e)}"
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to create meta tags: {e!s}",
         )
 
 
 @router.get("/meta-tags/{meta_tag_id}/html", response_model=MetaTagHTMLResponse)
 def get_meta_tags_html(meta_tag_id: int, db: Session = Depends(get_db)):
-    """
-    Generate HTML meta tags ready to be inserted in <head> section.
+    """Generate HTML meta tags ready to be inserted in <head> section.
     """
     from app.db.models.seo import MetaTag
 
@@ -141,8 +136,7 @@ def get_meta_tags_html(meta_tag_id: int, db: Session = Depends(get_db)):
 # Schema Markup Endpoints
 @router.post("/schema", response_model=SchemaMarkupResponse, status_code=status.HTTP_201_CREATED)
 def create_schema_markup(schema_data: SchemaMarkupCreate, db: Session = Depends(get_db)):
-    """
-    Create Schema.org structured data markup.
+    """Create Schema.org structured data markup.
 
     Supports types like:
     - Article
@@ -159,14 +153,13 @@ def create_schema_markup(schema_data: SchemaMarkupCreate, db: Session = Depends(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Failed to create schema markup: {str(e)}",
+            detail=f"Failed to create schema markup: {e!s}",
         )
 
 
 @router.get("/schema/{schema_id}/jsonld", response_model=SchemaMarkupJSONLDResponse)
 def get_schema_jsonld(schema_id: int, db: Session = Depends(get_db)):
-    """
-    Generate JSON-LD script tag for schema markup.
+    """Generate JSON-LD script tag for schema markup.
     Ready to be inserted in <head> or <body> section.
     """
     from app.db.models.seo import SchemaMarkup
@@ -182,8 +175,7 @@ def get_schema_jsonld(schema_id: int, db: Session = Depends(get_db)):
 # Sitemap Endpoints
 @router.post("/sitemap", response_model=SitemapResponse, status_code=status.HTTP_201_CREATED)
 def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):
-    """
-    Generate XML sitemap for a website.
+    """Generate XML sitemap for a website.
 
     Include URLs with:
     - Location (required)
@@ -196,7 +188,7 @@ def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):
         return sitemap
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to create sitemap: {str(e)}"
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to create sitemap: {e!s}",
         )
 
 
@@ -211,8 +203,7 @@ def get_sitemap(sitemap_id: int, db: Session = Depends(get_db)):
 
 @router.get("/sitemap/{sitemap_id}/xml", response_model=SitemapXMLResponse)
 def get_sitemap_xml(sitemap_id: int, db: Session = Depends(get_db)):
-    """
-    Get sitemap XML content.
+    """Get sitemap XML content.
     Ready to be saved as sitemap.xml file.
     """
     sitemap = SEOService.get_sitemap_by_id(db, sitemap_id)
@@ -234,11 +225,10 @@ def list_sitemaps(
 
 # Core Web Vitals Endpoints
 @router.post(
-    "/core-web-vitals", response_model=CoreWebVitalResponse, status_code=status.HTTP_201_CREATED
+    "/core-web-vitals", response_model=CoreWebVitalResponse, status_code=status.HTTP_201_CREATED,
 )
 def record_core_web_vitals(vitals_data: CoreWebVitalCreate, db: Session = Depends(get_db)):
-    """
-    Record Core Web Vitals metrics for a URL.
+    """Record Core Web Vitals metrics for a URL.
 
     Metrics include:
     - LCP (Largest Contentful Paint)
@@ -255,7 +245,7 @@ def record_core_web_vitals(vitals_data: CoreWebVitalCreate, db: Session = Depend
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Failed to record Core Web Vitals: {str(e)}",
+            detail=f"Failed to record Core Web Vitals: {e!s}",
         )
 
 

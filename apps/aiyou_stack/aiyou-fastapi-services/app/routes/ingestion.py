@@ -1,5 +1,4 @@
-"""
-Ingestion API Routes (PNKLN: Preparation)
+"""Ingestion API Routes (PNKLN: Preparation)
 FastAPI endpoints for intelligence collection and classification
 """
 
@@ -39,8 +38,7 @@ ingestion_service = IngestionService()
     """,
 )
 async def submit_item(request: IngestionSubmitRequest) -> IngestionSubmitResponse:
-    """
-    Submit an intelligence item for ingestion.
+    """Submit an intelligence item for ingestion.
 
     **Example Request:**
     ```json
@@ -80,7 +78,7 @@ async def submit_item(request: IngestionSubmitRequest) -> IngestionSubmitRespons
         )
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Ingestion failed: {str(e)}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Ingestion failed: {e!s}",
         )
 
 
@@ -99,8 +97,7 @@ async def submit_item(request: IngestionSubmitRequest) -> IngestionSubmitRespons
     """,
 )
 async def get_item(item_id: str) -> IngestionItemResponse:
-    """
-    Get status and classification results for an ingestion item.
+    """Get status and classification results for an ingestion item.
 
     **Example Response (Completed):**
     ```json
@@ -131,7 +128,7 @@ async def get_item(item_id: str) -> IngestionItemResponse:
 
     if not item:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Item not found: {item_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Item not found: {item_id}",
         )
 
     # Build response
@@ -166,8 +163,7 @@ async def get_item(item_id: str) -> IngestionItemResponse:
     """,
 )
 async def get_sources() -> SourceCoverageResponse:
-    """
-    Get health status of all configured data sources.
+    """Get health status of all configured data sources.
 
     **Example Response:**
     ```json
@@ -211,8 +207,7 @@ async def get_sources() -> SourceCoverageResponse:
     description="Quick health check for ingestion pipeline components",
 )
 async def health_check():
-    """
-    Health check endpoint for monitoring.
+    """Health check endpoint for monitoring.
 
     **Returns:**
     - `status`: "healthy" | "degraded" | "unhealthy"

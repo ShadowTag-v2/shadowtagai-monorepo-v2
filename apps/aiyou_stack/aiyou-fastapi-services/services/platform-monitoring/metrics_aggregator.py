@@ -1,5 +1,4 @@
-"""
-Platform Monitoring - Unified Metrics Aggregator
+"""Platform Monitoring - Unified Metrics Aggregator
 
 Aggregates metrics from:
 - V2X Mesh Network (real-time vehicle communication)
@@ -97,8 +96,7 @@ class PlatformMetrics:
 
 
 class MetricsAggregator:
-    """
-    Aggregates metrics from all platform services
+    """Aggregates metrics from all platform services
 
     Provides unified observability and cost tracking
     """
@@ -220,13 +218,12 @@ class MetricsAggregator:
 
         if error_rate > 0.10 or latency > 500 or cpu > 90:
             return HealthStatus.UNHEALTHY
-        elif error_rate > 0.05 or latency > 200 or cpu > 80:
+        if error_rate > 0.05 or latency > 200 or cpu > 80:
             return HealthStatus.DEGRADED
-        else:
-            return HealthStatus.HEALTHY
+        return HealthStatus.HEALTHY
 
     def _aggregate_metrics(
-        self, v2x: ServiceMetrics | None, ingestion: ServiceMetrics | None
+        self, v2x: ServiceMetrics | None, ingestion: ServiceMetrics | None,
     ) -> PlatformMetrics:
         """Aggregate service metrics into platform metrics"""
         platform = PlatformMetrics(timestamp=datetime.now())
@@ -250,7 +247,7 @@ class MetricsAggregator:
 
         # Aggregate resources
         platform.platform_cpu_usage_percent = sum(s.cpu_usage_percent for s in services) / max(
-            1, len(services)
+            1, len(services),
         )
         platform.platform_memory_usage_mb = sum(s.memory_usage_mb for s in services)
 
@@ -274,22 +271,22 @@ class MetricsAggregator:
 
         if metrics.platform_error_rate > self.error_rate_threshold:
             alerts.append(
-                f"HIGH_ERROR_RATE: {metrics.platform_error_rate * 100:.1f}% (threshold: {self.error_rate_threshold * 100}%)"
+                f"HIGH_ERROR_RATE: {metrics.platform_error_rate * 100:.1f}% (threshold: {self.error_rate_threshold * 100}%)",
             )
 
         if metrics.platform_avg_latency_ms > self.latency_threshold_ms:
             alerts.append(
-                f"HIGH_LATENCY: {metrics.platform_avg_latency_ms:.0f}ms (threshold: {self.latency_threshold_ms}ms)"
+                f"HIGH_LATENCY: {metrics.platform_avg_latency_ms:.0f}ms (threshold: {self.latency_threshold_ms}ms)",
             )
 
         if metrics.platform_cpu_usage_percent > self.cpu_threshold_percent:
             alerts.append(
-                f"HIGH_CPU: {metrics.platform_cpu_usage_percent:.0f}% (threshold: {self.cpu_threshold_percent}%)"
+                f"HIGH_CPU: {metrics.platform_cpu_usage_percent:.0f}% (threshold: {self.cpu_threshold_percent}%)",
             )
 
         if metrics.daily_cost_dollars > self.cost_daily_threshold:
             alerts.append(
-                f"HIGH_COST: ${metrics.daily_cost_dollars:.2f}/day (threshold: ${self.cost_daily_threshold})"
+                f"HIGH_COST: ${metrics.daily_cost_dollars:.2f}/day (threshold: ${self.cost_daily_threshold})",
             )
 
         if metrics.unhealthy_services > 0:
@@ -364,10 +361,10 @@ if __name__ == "__main__":
         print("Platform Metrics:")
         print(f"  Services: {metrics.total_services} total, {metrics.healthy_services} healthy")
         print(
-            f"  Performance: {metrics.platform_requests_per_second:.1f} req/s, {metrics.platform_avg_latency_ms:.0f}ms avg"
+            f"  Performance: {metrics.platform_requests_per_second:.1f} req/s, {metrics.platform_avg_latency_ms:.0f}ms avg",
         )
         print(
-            f"  Cost: ${metrics.daily_cost_dollars:.2f}/day (${metrics.monthly_cost_projection:.0f}/month projected)"
+            f"  Cost: ${metrics.daily_cost_dollars:.2f}/day (${metrics.monthly_cost_projection:.0f}/month projected)",
         )
         print(f"  Alerts: {len(metrics.active_alerts)}")
         for alert in metrics.active_alerts:

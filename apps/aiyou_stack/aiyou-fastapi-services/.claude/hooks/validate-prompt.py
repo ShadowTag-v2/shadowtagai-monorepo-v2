@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-UserPromptSubmit hook - Validate user prompts and add context
+"""UserPromptSubmit hook - Validate user prompts and add context
 """
 
 import datetime
@@ -46,12 +45,12 @@ def main():
     # Add project-specific context based on prompt content
     if re.search(r"(?i)\b(fastapi|api|endpoint|route)", prompt):
         context_parts.append(
-            "Note: This is a FastAPI project. Use async/await patterns and FastAPI best practices."
+            "Note: This is a FastAPI project. Use async/await patterns and FastAPI best practices.",
         )
 
     if re.search(r"(?i)\b(claude|agent|sdk)", prompt):
         context_parts.append(
-            "Note: Project uses @anthropic-ai/claude-agent-sdk (npm 0.1.30) and claude-agent-sdk (pip 0.1.6)."
+            "Note: Project uses @anthropic-ai/claude-agent-sdk (npm 0.1.30) and claude-agent-sdk (pip 0.1.6).",
         )
 
     # Output context for Claude
@@ -60,7 +59,7 @@ def main():
             "hookSpecificOutput": {
                 "hookEventName": "UserPromptSubmit",
                 "additionalContext": "\n".join(context_parts),
-            }
+            },
         }
         print(json.dumps(output))
 

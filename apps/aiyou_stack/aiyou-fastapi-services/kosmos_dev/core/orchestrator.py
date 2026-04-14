@@ -1,5 +1,4 @@
-"""
-ReAct Orchestrator: Reason → Act → Observe cycle for Shadowtag swarm.
+"""ReAct Orchestrator: Reason → Act → Observe cycle for Shadowtag swarm.
 
 Implements Kosmos patterns:
 - 200+ agent rollouts per run
@@ -63,8 +62,7 @@ class OrchestratorConfig:
 
 
 class ReActOrchestrator:
-    """
-    Orchestrates the Shadowtag agent swarm using ReAct pattern.
+    """Orchestrates the Shadowtag agent swarm using ReAct pattern.
 
     Cycle flow:
     1. SCAN: Connectors find files to analyze
@@ -113,8 +111,7 @@ class ReActOrchestrator:
         scan_targets: list[str],
         scan_type: str = "memory",  # or "drive"
     ) -> dict[str, Any]:
-        """
-        Run the full orchestration cycle.
+        """Run the full orchestration cycle.
 
         Args:
             scan_targets: List of paths or folder IDs to scan
@@ -122,6 +119,7 @@ class ReActOrchestrator:
 
         Returns:
             Final results with all findings and consensus status
+
         """
         self.state = OrchestratorState.SCANNING
         self.start_time = datetime.utcnow()
@@ -188,7 +186,6 @@ class ReActOrchestrator:
         scan_type: str,
     ) -> CycleResult:
         """Execute a single ReAct cycle."""
-
         findings_start = self.whiteboard.total_findings
         votes_start = self.whiteboard.total_votes
 

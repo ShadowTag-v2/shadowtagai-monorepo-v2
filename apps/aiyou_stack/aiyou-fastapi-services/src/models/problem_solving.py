@@ -1,5 +1,4 @@
-"""
-Structured Problem Solving Process Models
+"""Structured Problem Solving Process Models
 Based on Is/Is Not Diagram methodology
 """
 
@@ -26,8 +25,7 @@ class IsIsNotDimension(BaseModel):
 
 
 class IsIsNotDiagram(BaseModel):
-    """
-    Is/Is Not Diagram for problem definition
+    """Is/Is Not Diagram for problem definition
     Clarifies the scope and boundaries of a problem
     """
 
@@ -59,7 +57,7 @@ class IsIsNotDiagram(BaseModel):
                     "New supplier introduced in January 1999",
                     "Equipment maintenance delayed",
                 ],
-            }
+            },
         }
 
 
@@ -107,8 +105,7 @@ class ProblemSolvingStep(BaseModel):
 
 
 class StructuredProblemSolvingProcess(BaseModel):
-    """
-    Complete Structured Problem Solving Process
+    """Complete Structured Problem Solving Process
     6-step methodology with integrated tools and techniques
     """
 
@@ -120,12 +117,12 @@ class StructuredProblemSolvingProcess(BaseModel):
 
     # Step 2a: Potential Causes
     potential_causes: list[str] = Field(
-        default_factory=list, description="Identified potential causes"
+        default_factory=list, description="Identified potential causes",
     )
 
     # Step 2b: Data Analysis
     data_analysis_techniques: list[ProblemSolvingTechnique] = Field(
-        default_factory=list, description="Techniques used for data analysis"
+        default_factory=list, description="Techniques used for data analysis",
     )
     analysis_findings: str | None = None
 
@@ -161,7 +158,7 @@ class StructuredProblemSolvingProcess(BaseModel):
                             "dimension": "WHAT",
                             "is_value": "Surface finish defects",
                             "is_not_value": "Dimensional or functional defects",
-                        }
+                        },
                     ],
                 },
                 "potential_causes": [
@@ -176,7 +173,7 @@ class StructuredProblemSolvingProcess(BaseModel):
                         "description": "Install automated calibration monitoring system",
                         "responsible_party": "Maintenance Team",
                         "target_date": "2024-12-31",
-                    }
+                    },
                 ],
-            }
+            },
         }

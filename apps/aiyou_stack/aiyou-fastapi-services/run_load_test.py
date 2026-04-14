@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Load Test Runner
+"""Load Test Runner
 Comprehensive load testing tool for ShadowTag-v2 FastAPI Services
 """
 
@@ -108,8 +107,7 @@ class LoadTestRunner:
         return self.run_scenario(scenario, headless)
 
     def run_breaking_point_test(self) -> bool:
-        """
-        Run a breaking point test - incrementally increase load until system breaks
+        """Run a breaking point test - incrementally increase load until system breaks
         """
         print("\n" + "=" * 80)
         print("🔍 BREAKING POINT TEST")
@@ -273,11 +271,11 @@ Examples:
     )
 
     parser.add_argument(
-        "--list-scenarios", action="store_true", help="List all available scenarios"
+        "--list-scenarios", action="store_true", help="List all available scenarios",
     )
 
     parser.add_argument(
-        "--no-headless", action="store_true", help="Run with web UI instead of headless mode"
+        "--no-headless", action="store_true", help="Run with web UI instead of headless mode",
     )
 
     args = parser.parse_args()
@@ -302,9 +300,8 @@ Examples:
             scenario.host = args.host
             success = runner.run_scenario(scenario, headless=not args.no_headless)
             return 0 if success else 1
-        else:
-            print(f"❌ Unknown scenario: {args.scenario}")
-            return 1
+        print(f"❌ Unknown scenario: {args.scenario}")
+        return 1
 
     # Custom test
     if args.users and args.spawn_rate and args.duration:

@@ -3,8 +3,7 @@ import zlib
 
 
 def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
-    """
-    Simulates the ATP 5-19 scan which checks if a rule detects a scenario.
+    """Simulates the ATP 5-19 scan which checks if a rule detects a scenario.
     Also returns compression ratio as a proxy for 'semantic compression'.
     """
     try:
@@ -39,8 +38,7 @@ def atp_519_scan(rule_json: str, scenario_json: str) -> dict:
 
 
 def judge6_simulator(rule_json: str, scenario_json: str) -> dict:
-    """
-    Simulates Judge #6 decision based on the rule.
+    """Simulates Judge #6 decision based on the rule.
     Returns { "allowed": bool, "reason": str }
     """
     scan_result = atp_519_scan(rule_json, scenario_json)

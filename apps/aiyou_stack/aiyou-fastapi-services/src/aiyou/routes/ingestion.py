@@ -1,5 +1,4 @@
-"""
-Content Ingestion API Routes
+"""Content Ingestion API Routes
 Handles file uploads and Gemini-powered content analysis
 """
 
@@ -96,8 +95,7 @@ async def create_ingestion_job(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    Upload content for ingestion and Gemini analysis
+    """Upload content for ingestion and Gemini analysis
 
     This endpoint:
     1. Uploads file to GCS
@@ -325,8 +323,7 @@ async def get_ingestion_stats(
 
 
 async def process_ingestion_job(job_id: str, user_id: str):
-    """
-    Background task to process ingestion job with Gemini
+    """Background task to process ingestion job with Gemini
 
     This would run in a separate worker (Celery, Cloud Tasks, etc)
     """
@@ -350,7 +347,7 @@ async def process_ingestion_job(job_id: str, user_id: str):
             raise Exception("GEMINI_API_KEY not configured")
 
         gemini_client = GeminiClient(
-            api_key=settings.gemini_api_key, project_id=settings.gemini_project_id
+            api_key=settings.gemini_api_key, project_id=settings.gemini_project_id,
         )
 
         # Process based on content type
@@ -404,7 +401,7 @@ async def process_ingestion_job(job_id: str, user_id: str):
 
         # Calculate costs
         cost_usd = gemini_client.calculate_cost(
-            job.gemini_tokens_used or 0, job.gemini_model_version or "gemini-1.5-pro", "total"
+            job.gemini_tokens_used or 0, job.gemini_model_version or "gemini-1.5-pro", "total",
         )
         job.processing_cost_cents = int(cost_usd * 100)
 
@@ -466,9 +463,8 @@ def apply_moderation_rules(job: IngestionJob, db: Session) -> IngestionStatus:
     if job.moderation_category == ModerationCategory.SAFE:
         if job.moderation_confidence and job.moderation_confidence >= 80:
             return IngestionStatus.APPROVED
-        else:
-            job.requires_human_review = True
-            return IngestionStatus.REQUIRES_REVIEW
+        job.requires_human_review = True
+        return IngestionStatus.REQUIRES_REVIEW
 
     # Check for violations
     if job.moderation_confidence and job.moderation_confidence >= 90:

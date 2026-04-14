@@ -43,8 +43,7 @@ RISK_MATRIX = {
 
 
 def assess_risk(prob: Probability, sev: Severity) -> RiskLevel:
-    """
-    Calculates Risk Level based on ATP 5-19 Matrix.
+    """Calculates Risk Level based on ATP 5-19 Matrix.
     """
     if prob == Probability.FREQUENT:
         if sev == Severity.CATASTROPHIC or sev == Severity.CRITICAL:
@@ -83,8 +82,7 @@ def assess_risk(prob: Probability, sev: Severity) -> RiskLevel:
 
 
 def judge_action(action_context: str) -> RiskLevel:
-    """
-    Mock function to map an agent action to a risk level.
+    """Mock function to map an agent action to a risk level.
     In a real system, Gemini classifies the text into Prob/Sev buckets.
     """
     # Placeholder logic

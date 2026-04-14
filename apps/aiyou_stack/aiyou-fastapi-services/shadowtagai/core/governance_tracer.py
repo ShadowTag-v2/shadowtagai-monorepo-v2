@@ -1,5 +1,4 @@
-"""
-Governance Tracer - Monetizes transparency via signed audit URLs.
+"""Governance Tracer - Monetizes transparency via signed audit URLs.
 
 Captures Judge #6 decision logs, uploads to private GCS bucket,
 and mints time-limited "Teleport" URLs for paid audit trail access.
@@ -13,21 +12,20 @@ from google.cloud import storage
 
 
 class GovernanceTracer:
-    """
-    The Single Point of Truth for governance decision audit trails.
+    """The Single Point of Truth for governance decision audit trails.
     Uploads traces to GCS and generates temporary signed URLs.
     """
 
     def __init__(self, bucket_name: str = None, sa_json_path: str = None):
-        """
-        Initialize with private trace bucket.
+        """Initialize with private trace bucket.
 
         Args:
             bucket_name: GCS bucket for traces (default: from env)
             sa_json_path: Path to service account key (None for ADC)
+
         """
         self.bucket_name = bucket_name or os.getenv(
-            "GOVERNANCE_TRACES_BUCKET", "shadowtagai-governance-traces"
+            "GOVERNANCE_TRACES_BUCKET", "shadowtagai-governance-traces",
         )
 
         if sa_json_path:
@@ -38,10 +36,9 @@ class GovernanceTracer:
         self.bucket = self.client.bucket(self.bucket_name)
 
     def capture_decision(
-        self, decision_id: str, logic_log: list, inputs: dict, result: str, metadata: dict = None
+        self, decision_id: str, logic_log: list, inputs: dict, result: str, metadata: dict = None,
     ) -> dict:
-        """
-        Packages execution context into rigid audit format.
+        """Packages execution context into rigid audit format.
 
         Args:
             decision_id: Unique identifier for this decision
@@ -52,6 +49,7 @@ class GovernanceTracer:
 
         Returns:
             Structured trace data dict
+
         """
         trace_data = {
             "decision_id": decision_id,
@@ -65,8 +63,7 @@ class GovernanceTracer:
         return trace_data
 
     def upload_and_sign(self, decision_id: str, trace_data: dict, expiration_mins: int = 15) -> str:
-        """
-        Uploads trace to GCS and generates temporary signed URL.
+        """Uploads trace to GCS and generates temporary signed URL.
 
         Args:
             decision_id: Unique identifier for this decision
@@ -75,6 +72,7 @@ class GovernanceTracer:
 
         Returns:
             Signed URL for temporary read access
+
         """
         blob_name = f"traces/{datetime.date.today()}/{decision_id}.json"
         blob = self.bucket.blob(blob_name)
@@ -92,8 +90,7 @@ class GovernanceTracer:
         return url
 
     def get_or_generate_trace(self, decision_id: str, expiration_mins: int = 15) -> str:
-        """
-        Generates new signed URL for existing trace.
+        """Generates new signed URL for existing trace.
 
         Args:
             decision_id: The decision to retrieve
@@ -101,6 +98,7 @@ class GovernanceTracer:
 
         Returns:
             Signed URL or None if not found
+
         """
         # Search for the trace (could be any date)
         prefix = "traces/"
@@ -119,10 +117,9 @@ class GovernanceTracer:
 
 # Convenience function for quick integration
 def trace_judge_decision(
-    decision_id: str, logic_log: list, inputs: dict, result: str, bucket_name: str = None
+    decision_id: str, logic_log: list, inputs: dict, result: str, bucket_name: str = None,
 ) -> str:
-    """
-    One-liner to capture and sign a governance decision.
+    """One-liner to capture and sign a governance decision.
 
     Returns signed URL for the audit trail.
     """

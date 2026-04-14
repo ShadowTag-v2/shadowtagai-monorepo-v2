@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Squad Routing Optimizer using Ant Colony Optimization.
+"""Squad Routing Optimizer using Ant Colony Optimization.
 Routes tasks through 24 squads (groups of 25 agents) to minimize handoff latency.
 Based on FM 5-0 MDMP Step 4: COA Analysis (Wargaming).
 """
@@ -11,9 +10,9 @@ import numpy as np
 
 # Patch numpy for scikit-opt compatibility with NumPy 2.x
 if not hasattr(np, "int"):
-    np.int = int
+    int = int
 if not hasattr(np, "float"):
-    np.float = float
+    float = float
 
 try:
     from sko.ACA import ACA_TSP
@@ -35,8 +34,7 @@ class Squad:
 
 
 class SquadRoutingOptimizer:
-    """
-    ACO-based squad routing for Flying n-autoresearch/Kosmos/BioAgents swarm.
+    """ACO-based squad routing for Flying n-autoresearch/Kosmos/BioAgents swarm.
 
     Uses Ant Colony Optimization to find optimal routing through
     multiple squads for complex multi-stage tasks.
@@ -93,13 +91,12 @@ class SquadRoutingOptimizer:
                     avg_latency_ms=np.random.uniform(50, 200),
                     current_load=np.random.randint(0, 20),
                     max_capacity=25,
-                )
+                ),
             )
         return squads
 
     def _compute_latency_matrix(self) -> np.ndarray:
-        """
-        Compute handoff latency matrix between squads.
+        """Compute handoff latency matrix between squads.
 
         Latency depends on:
         - Physical network distance (simulated)
@@ -149,8 +146,7 @@ class SquadRoutingOptimizer:
         beta: float = 2.0,
         rho: float = 0.1,
     ) -> dict:
-        """
-        Run ACO optimization for squad routing.
+        """Run ACO optimization for squad routing.
 
         Args:
             required_squads: List of squad IDs that must be visited (in any order)
@@ -162,6 +158,7 @@ class SquadRoutingOptimizer:
 
         Returns:
             Dictionary with routing results
+
         """
         if ACA_TSP is None:
             raise ImportError("scikit-opt not installed: pip install scikit-opt")
@@ -169,7 +166,7 @@ class SquadRoutingOptimizer:
         # Default: route through 5 random squads
         if required_squads is None:
             required_squads = np.random.choice(
-                self.num_squads, size=min(5, self.num_squads), replace=False
+                self.num_squads, size=min(5, self.num_squads), replace=False,
             ).tolist()
 
         num_points = len(required_squads)
@@ -239,8 +236,7 @@ class SquadRoutingOptimizer:
         return None
 
     def plan_route(self, specialties: list[str], **kwargs) -> dict:
-        """
-        Plan route by specialty names instead of IDs.
+        """Plan route by specialty names instead of IDs.
 
         Args:
             specialties: List of specialty names (e.g., ["SECURITY", "BACKEND", "DEPLOY"])
@@ -248,6 +244,7 @@ class SquadRoutingOptimizer:
 
         Returns:
             Routing results
+
         """
         squad_ids = []
         for spec in specialties:

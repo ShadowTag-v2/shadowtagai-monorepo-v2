@@ -1,5 +1,4 @@
-"""
-Audio Steganography Endpoints
+"""Audio Steganography Endpoints
 
 API endpoints for audio encoding and decoding operations.
 """
@@ -32,8 +31,7 @@ async def encode_audio(
     use_encryption: bool = Form(default=True),
     create_receipt: bool = Form(default=True),
 ):
-    """
-    Encode (embed) data into an audio file.
+    """Encode (embed) data into an audio file.
 
     Args:
         audio: Input audio file
@@ -45,6 +43,7 @@ async def encode_audio(
 
     Returns:
         Encoding statistics
+
     """
     # Validate audio file
     if not any(audio.filename.endswith(ext) for ext in settings.ALLOWED_AUDIO_EXTENSIONS):
@@ -106,8 +105,7 @@ async def decode_audio(
     verify_hash: str | None = Form(default=None),
     create_receipt: bool = Form(default=True),
 ):
-    """
-    Decode (extract) data from an audio file.
+    """Decode (extract) data from an audio file.
 
     Args:
         audio: Audio file with embedded data
@@ -116,6 +114,7 @@ async def decode_audio(
 
     Returns:
         Extracted payload and statistics
+
     """
     # Save uploaded file
     upload_dir = Path(settings.UPLOAD_DIR)
@@ -175,7 +174,7 @@ def _create_audio_receipt(
 
     receipt = Receipt(
         operation_id=hashlib.sha256(
-            f"{datetime.utcnow().isoformat()}_{media_hash}".encode()
+            f"{datetime.utcnow().isoformat()}_{media_hash}".encode(),
         ).hexdigest()[:16],
         operation_type=operation_type,
         timestamp=datetime.utcnow().isoformat(),

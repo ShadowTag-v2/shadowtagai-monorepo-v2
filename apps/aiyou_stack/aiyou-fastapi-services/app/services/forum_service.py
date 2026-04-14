@@ -1,5 +1,4 @@
-"""
-Forum service layer.
+"""Forum service layer.
 
 Extracts all database operations from forum routes
 into a proper service/repository pattern.
@@ -60,7 +59,7 @@ class ForumService:
 
     @staticmethod
     def update_category(
-        db: Session, category: ForumCategory, category_data: ForumCategoryUpdate
+        db: Session, category: ForumCategory, category_data: ForumCategoryUpdate,
     ) -> ForumCategory:
         """Update an existing category."""
         for field, value in category_data.model_dump(exclude_unset=True).items():

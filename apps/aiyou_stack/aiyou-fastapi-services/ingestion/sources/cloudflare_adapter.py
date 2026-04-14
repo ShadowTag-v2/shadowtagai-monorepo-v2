@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Cloudflare Bypass Adapter
+"""PNKLN Core Stack - Cloudflare Bypass Adapter
 
 Wraps cloudscraper (VeNoMouS/cloudscraper) as the default HTTP client
 for any source protected by Cloudflare JS challenges.
@@ -38,7 +37,7 @@ def get_scraper(browser: str = "chrome", platform: str = "darwin") -> cloudscrap
     if not _HAS_CLOUDSCRAPER:
         raise ImportError("cloudscraper not installed. Run: pip install cloudscraper")
     scraper = cloudscraper.create_scraper(
-        browser={"browser": browser, "platform": platform, "mobile": False}
+        browser={"browser": browser, "platform": platform, "mobile": False},
     )
     return scraper
 
@@ -57,8 +56,7 @@ ANNAS_SEARCH = "https://annas-archive.org/search?q={query}&ext=pdf&lang=en"
 
 
 def search_annas_archive(query: str, max_results: int = 10) -> list[dict]:
-    """
-    Search Anna's Archive for academic/technical PDFs.
+    """Search Anna's Archive for academic/technical PDFs.
     Returns list of {title, url, author, year} dicts.
     """
     from bs4 import BeautifulSoup
@@ -78,7 +76,7 @@ def search_annas_archive(query: str, max_results: int = 10) -> list[dict]:
                     "title": title_el.get_text(strip=True) if title_el else "",
                     "url": "https://annas-archive.org" + link_el["href"] if link_el else "",
                     "meta": meta_el.get_text(strip=True) if meta_el else "",
-                }
+                },
             )
         logger.info("annas_archive_results", count=len(results))
         return results

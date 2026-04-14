@@ -1,5 +1,4 @@
-"""
-Base agent framework for Pinkln multi-agent system.
+"""Base agent framework for Pinkln multi-agent system.
 
 Agents are evolved versions of kernels with:
 - Glicko-2 ratings for performance tracking
@@ -64,8 +63,7 @@ class AgentPerformance(BaseModel):
 
 
 class Agent(ABC):
-    """
-    Base agent for Pinkln multi-agent system.
+    """Base agent for Pinkln multi-agent system.
 
     Agents extend kernels with:
     - Performance ratings (Glicko-2)
@@ -79,16 +77,15 @@ class Agent(ABC):
 
     @abstractmethod
     async def execute(self, input_data: Any) -> Any:
-        """
-        Execute agent task.
+        """Execute agent task.
 
         Args:
             input_data: Input for agent
 
         Returns:
             Agent output
+
         """
-        pass
 
     async def __call__(self, input_data: Any) -> KernelOutput:
         """Execute with performance tracking."""

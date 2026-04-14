@@ -1,5 +1,4 @@
-"""
-SHADOWTAGAI Integration Tests - Test all four pillars working together
+"""SHADOWTAGAI Integration Tests - Test all four pillars working together
 """
 
 import os
@@ -31,7 +30,7 @@ def full_stack():
             description="Double a number",
             function=simple_function,
             parameters={"x": {"type": "integer"}},
-        )
+        ),
     ]
 
     caller = GeminiFunctionCaller(model_name="gemini-2.0-flash-exp", tools=tools)

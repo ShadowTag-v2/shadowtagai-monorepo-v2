@@ -1,5 +1,4 @@
-"""
-Glicko-2 rating system for kernels, agents, and strategies.
+"""Glicko-2 rating system for kernels, agents, and strategies.
 
 Implementation with configurable tolerance (tol) parameter for convergence.
 Used to rank performance of kernels/agents across benchmarks.
@@ -11,13 +10,13 @@ from pydantic import BaseModel
 
 
 class Glicko2Player(BaseModel):
-    """
-    Glicko-2 player representation.
+    """Glicko-2 player representation.
 
     Attributes:
         mu: Rating (default 1500 on Glicko scale, 0 on Glicko-2 scale)
         phi: Rating deviation (uncertainty, default 350 → ~2.014761 on Glicko-2)
         vol: Volatility (how erratic performance is, default 0.06)
+
     """
 
     mu: float = 0.0  # Glicko-2 scale (0 = 1500 on original scale)
@@ -48,19 +47,18 @@ class Glicko2Player(BaseModel):
 
 
 class Glicko2System:
-    """
-    Glicko-2 rating system with configurable tolerance.
+    """Glicko-2 rating system with configurable tolerance.
 
     Used to rank kernels, agents, and strategies based on performance.
     """
 
     def __init__(self, tau: float = 0.5, tol: float = 1e-6):
-        """
-        Initialize Glicko-2 system.
+        """Initialize Glicko-2 system.
 
         Args:
             tau: System constant (constrains volatility changes, default 0.5)
             tol: Convergence tolerance for volatility calculation (default 1e-6)
+
         """
         self.tau = tau
         self.tol = tol
@@ -70,8 +68,7 @@ class Glicko2System:
         player: Glicko2Player,
         results: list[tuple[Glicko2Player, float]],
     ) -> Glicko2Player:
-        """
-        Update player rating based on match results.
+        """Update player rating based on match results.
 
         Args:
             player: Player to update
@@ -80,6 +77,7 @@ class Glicko2System:
 
         Returns:
             Updated Glicko2Player
+
         """
         if not results:
             # No games played: increase uncertainty
@@ -126,8 +124,7 @@ class Glicko2System:
         v: float,
         delta: float,
     ) -> float:
-        """
-        Compute new volatility using Illinois algorithm.
+        """Compute new volatility using Illinois algorithm.
 
         Args:
             player: Current player state
@@ -136,6 +133,7 @@ class Glicko2System:
 
         Returns:
             New volatility
+
         """
         phi = player.phi
         sigma = player.vol
@@ -208,11 +206,11 @@ class RatingComparison(BaseModel):
 
 
 def compare_rating_systems() -> list[RatingComparison]:
-    """
-    Compare Glicko-2 vs Elo vs PPO rating approaches.
+    """Compare Glicko-2 vs Elo vs PPO rating approaches.
 
     Returns:
         List of rating system comparisons
+
     """
     return [
         RatingComparison(

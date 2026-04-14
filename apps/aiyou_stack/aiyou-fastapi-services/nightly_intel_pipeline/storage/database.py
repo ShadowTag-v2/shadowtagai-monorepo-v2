@@ -1,5 +1,4 @@
-"""
-Intelligence Database - Local SQLite Storage
+"""Intelligence Database - Local SQLite Storage
 Stores scored content, metadata, and IntelEvents from Gemini normalization
 
 Enhanced with intel_events table for structured Gemini-extracted events.
@@ -24,8 +23,7 @@ logger = structlog.get_logger(__name__)
 
 
 class IntelDatabase:
-    """
-    Local SQLite database for intelligence storage
+    """Local SQLite database for intelligence storage
 
     Tables:
     - repositories: GitHub repo metadata and scores
@@ -203,39 +201,39 @@ class IntelDatabase:
             # Create indices
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_repos_tier ON repositories(tier)")
             cursor.execute(
-                "CREATE INDEX IF NOT EXISTS idx_repos_score ON repositories(total_score)"
+                "CREATE INDEX IF NOT EXISTS idx_repos_score ON repositories(total_score)",
             )
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_papers_tier ON papers(tier)")
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_papers_score ON papers(total_score)")
 
             # Intel events indices
             cursor.execute(
-                "CREATE INDEX IF NOT EXISTS idx_events_source_type ON intel_events(source_type)"
+                "CREATE INDEX IF NOT EXISTS idx_events_source_type ON intel_events(source_type)",
             )
             cursor.execute(
-                "CREATE INDEX IF NOT EXISTS idx_events_jurisdiction ON intel_events(jurisdiction)"
+                "CREATE INDEX IF NOT EXISTS idx_events_jurisdiction ON intel_events(jurisdiction)",
             )
             cursor.execute(
-                "CREATE INDEX IF NOT EXISTS idx_events_effective_date ON intel_events(effective_date)"
+                "CREATE INDEX IF NOT EXISTS idx_events_effective_date ON intel_events(effective_date)",
             )
             cursor.execute("CREATE INDEX IF NOT EXISTS idx_events_tier ON intel_events(jr_tier)")
             cursor.execute(
-                "CREATE INDEX IF NOT EXISTS idx_events_urgency ON intel_events(urgency_score)"
+                "CREATE INDEX IF NOT EXISTS idx_events_urgency ON intel_events(urgency_score)",
             )
             cursor.execute(
-                "CREATE INDEX IF NOT EXISTS idx_events_created ON intel_events(created_at)"
+                "CREATE INDEX IF NOT EXISTS idx_events_created ON intel_events(created_at)",
             )
 
             logger.info("database_schema_initialized")
 
     def store_repository_score(self, repo_name: str, score: JRScore, metadata: dict | None = None):
-        """
-        Store GitHub repository score
+        """Store GitHub repository score
 
         Args:
             repo_name: Repository name (owner/repo)
             score: JRScore object
             metadata: Additional repository metadata
+
         """
         metadata = metadata or {}
 
@@ -288,13 +286,13 @@ class IntelDatabase:
             )
 
     def store_paper_score(self, arxiv_id: str, score: JRScore, metadata: dict | None = None):
-        """
-        Store arXiv paper score
+        """Store arXiv paper score
 
         Args:
             arxiv_id: arXiv paper ID
             score: JRScore object
             metadata: Additional paper metadata
+
         """
         metadata = metadata or {}
 
@@ -379,11 +377,11 @@ class IntelDatabase:
             return [dict(row) for row in cursor.fetchall()]
 
     def get_tier_summary(self) -> dict[int, dict[str, int]]:
-        """
-        Get summary of content by tier
+        """Get summary of content by tier
 
         Returns:
             Dict mapping tier number to counts
+
         """
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -444,11 +442,11 @@ class IntelDatabase:
             logger.info("briefing_stored", file=briefing_file_path)
 
     def get_all_scores(self) -> tuple[list[dict], list[dict]]:
-        """
-        Get all scored content
+        """Get all scored content
 
         Returns:
             Tuple of (repositories, papers)
+
         """
         with self._get_connection() as conn:
             cursor = conn.cursor()
@@ -464,12 +462,12 @@ class IntelDatabase:
     # ========== IntelEvent Storage Methods ==========
 
     def store_intel_event(self, event: "IntelEvent", score: JRScore | None = None):
-        """
-        Store an IntelEvent from Gemini normalization
+        """Store an IntelEvent from Gemini normalization
 
         Args:
             event: IntelEvent object from Gemini normalizer
             score: Optional JRScore if already scored
+
         """
         with self._get_connection() as conn:
             cursor = conn.cursor()

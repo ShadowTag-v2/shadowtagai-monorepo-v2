@@ -1,5 +1,4 @@
-"""
-BugBot - Static analysis agent.
+"""BugBot - Static analysis agent.
 Runs without LLM - pure code analysis.
 """
 
@@ -109,7 +108,7 @@ class BugBot:
                                     "file": file,
                                     "function": func.get("name"),
                                     "complexity": func.get("complexity"),
-                                }
+                                },
                             )
                 self.results["complexity"] = high_complexity
                 return {"status": "complete", "high_complexity_functions": len(high_complexity)}

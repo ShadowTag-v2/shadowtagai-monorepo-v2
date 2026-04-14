@@ -1,5 +1,4 @@
-"""
-Growth Engineering Data Models
+"""Growth Engineering Data Models
 
 Pydantic models for growth engineering requests and responses.
 """
@@ -43,7 +42,7 @@ class UserHookAnalysisRequest(BaseModel):
                 "current_features": ["profile", "sharing", "notifications"],
                 "metrics": {"dau": 1000, "retention_d7": 0.30},
                 "goals": ["improve_activation", "increase_retention"],
-            }
+            },
         }
 
 
@@ -66,7 +65,7 @@ class ViralLoopRequest(BaseModel):
                 "current_users": 5000,
                 "sharing_incentive": "Extra storage for referrals",
                 "constraints": ["budget_limited", "mobile_first"],
-            }
+            },
         }
 
 
@@ -94,7 +93,7 @@ class ABTestRequest(BaseModel):
                 "secondary_metrics": ["time_to_first_action", "completion_rate"],
                 "expected_effect_size": 0.15,
                 "traffic_allocation": {"control": 0.5, "treatment": 0.5},
-            }
+            },
         }
 
 
@@ -119,7 +118,7 @@ class GrowthMetricsRequest(BaseModel):
                 "time_period": "last_30_days",
                 "goals": ["reach_1000_dau", "improve_retention"],
                 "benchmarks": {"retention_d7": 0.40, "viral_coefficient": 0.6},
-            }
+            },
         }
 
 
@@ -127,13 +126,13 @@ class EngagementFeatureRequest(BaseModel):
     """Request model for engagement feature design"""
 
     feature_type: str = Field(
-        ..., description="Type of feature (gamification, notifications, etc.)"
+        ..., description="Type of feature (gamification, notifications, etc.)",
     )
     objective: str = Field(..., description="Feature objective")
     target_users: str = Field(..., description="Target user segment")
     constraints: list[str] | None = Field(None, description="Design constraints")
     existing_features: list[str] | None = Field(
-        None, description="Existing features to integrate with"
+        None, description="Existing features to integrate with",
     )
 
     class Config:
@@ -144,7 +143,7 @@ class EngagementFeatureRequest(BaseModel):
                 "target_users": "Active users with 7+ day streak",
                 "constraints": ["mobile_friendly", "low_development_cost"],
                 "existing_features": ["profile", "achievements", "leaderboard"],
-            }
+            },
         }
 
 
@@ -168,7 +167,7 @@ class AnalyticsTrackingRequest(BaseModel):
                 "platform": "web",
                 "tools": ["mixpanel", "amplitude"],
                 "compliance_requirements": ["gdpr", "ccpa"],
-            }
+            },
         }
 
 
@@ -192,7 +191,7 @@ class ReferralOptimizationRequest(BaseModel):
                 "referral_flow": ["share_button", "invite_modal", "share_link", "friend_signup"],
                 "incentives": {"referrer": "10 credits", "referee": "5 credits"},
                 "issues": ["low_click_rate", "high_dropoff_at_signup"],
-            }
+            },
         }
 
 
@@ -211,7 +210,7 @@ class GeneralGrowthQuery(BaseModel):
                     "product_type": "social_app",
                     "stage": "early_growth",
                 },
-            }
+            },
         }
 
 

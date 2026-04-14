@@ -7,12 +7,10 @@ class ReasoningPattern(ABC):
     @abstractmethod
     def apply(self, input_text: str) -> str:
         """Apply the reasoning pattern to the input."""
-        pass
 
 
 class ChainOfThought(ReasoningPattern):
-    """
-    Standard Chain of Thought (CoT) pattern.
+    """Standard Chain of Thought (CoT) pattern.
     Appends a reasoning trigger to the prompt to encourage step-by-step thinking.
     """
 
@@ -24,8 +22,7 @@ class ChainOfThought(ReasoningPattern):
 
 
 class TreeOfThoughts(ReasoningPattern):
-    """
-    Tree of Thoughts (ToT) pattern.
+    """Tree of Thoughts (ToT) pattern.
     Simulates branching reasoning by exploring multiple potential next steps.
     """
 
@@ -43,8 +40,7 @@ class TreeOfThoughts(ReasoningPattern):
 
 
 class RecursiveCriticism(ReasoningPattern):
-    """
-    Recursive Criticism and Regulation (RCR) pattern.
+    """Recursive Criticism and Regulation (RCR) pattern.
     Encourages the model to critique and refine its own output.
     """
 

@@ -1,5 +1,4 @@
-"""
-The Gemini Store (Digital Mall) - Marketplace Core
+"""The Gemini Store (Digital Mall) - Marketplace Core
 Governed AI marketplace with pre-execution compliance verification.
 Ported from Legacy Archives (AiU Digital Mall).
 """
@@ -86,8 +85,7 @@ class Transaction:
 
 
 class GeminiStore:
-    """
-    The Gemini Store - Governed AI Marketplace
+    """The Gemini Store - Governed AI Marketplace
 
     Features:
     - Pre-execution compliance for all listings (JudgeSix validation)
@@ -96,11 +94,11 @@ class GeminiStore:
     """
 
     def __init__(self, fee_percentage: float = 0.12):
-        """
-        Initialize Gemini Store
+        """Initialize Gemini Store
 
         Args:
             fee_percentage: Marketplace fee (default 12%)
+
         """
         self.fee_percentage = fee_percentage
         self.vendors: dict[str, Vendor] = {}
@@ -118,8 +116,7 @@ class GeminiStore:
         }
 
     def register_vendor(self, name: str, email: str) -> Vendor:
-        """
-        Register a new vendor (initially PENDING).
+        """Register a new vendor (initially PENDING).
         """
         vendor = Vendor(name=name, email=email)
         self.vendors[vendor.vendor_id] = vendor
@@ -127,8 +124,7 @@ class GeminiStore:
         return vendor
 
     def approve_vendor(self, vendor_id: str, compliance_score: float = 1.0) -> bool:
-        """
-        Approve a vendor after verification.
+        """Approve a vendor after verification.
         """
         vendor = self.vendors.get(vendor_id)
         if not vendor:
@@ -148,8 +144,7 @@ class GeminiStore:
         price: float,
         category: str = "agent",
     ) -> Product:
-        """
-        Submit a product for listing (starts as PENDING).
+        """Submit a product for listing (starts as PENDING).
         """
         # Verify vendor exists and is verified
         vendor = self.vendors.get(vendor_id)
@@ -171,8 +166,7 @@ class GeminiStore:
         return product
 
     def approve_product(self, product_id: str, risk_score: float = 0.0) -> bool:
-        """
-        Approve a product after JudgeSix validation.
+        """Approve a product after JudgeSix validation.
         """
         product = self.products.get(product_id)
         if not product:
@@ -185,8 +179,7 @@ class GeminiStore:
         return True
 
     def purchase(self, product_id: str, buyer_id: str) -> Transaction:
-        """
-        Process purchase transaction
+        """Process purchase transaction
         """
         product = self.products.get(product_id)
         if not product or product.status != ProductStatus.ACTIVE:

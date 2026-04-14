@@ -1,5 +1,4 @@
-"""
-Judge #6 LangGraph Orchestrator
+"""Judge #6 LangGraph Orchestrator
 Multi-agent workflow for compliance document analysis
 """
 
@@ -58,8 +57,7 @@ class WorkflowStep(StrEnum):
 
 
 class Judge6State(TypedDict):
-    """
-    Shared state across all Judge #6 agents.
+    """Shared state across all Judge #6 agents.
     Uses Annotated with operator.add for list fields to enable proper state merging.
     """
 
@@ -96,8 +94,7 @@ class Judge6State(TypedDict):
 
 
 class Judge6Orchestrator:
-    """
-    LangGraph-based orchestrator for Judge #6 multi-agent compliance analysis.
+    """LangGraph-based orchestrator for Judge #6 multi-agent compliance analysis.
 
     Uses supervisor pattern with specialized agents for each workflow step.
     """
@@ -146,8 +143,7 @@ class Judge6Orchestrator:
         self.workflow = self._build_workflow()
 
     def _build_workflow(self) -> StateGraph:
-        """
-        Build the LangGraph state machine for Judge #6 workflow.
+        """Build the LangGraph state machine for Judge #6 workflow.
 
         Graph structure:
         START → Supervisor → ClassifyDocument → ParseDocument → ExtractPolicies
@@ -190,8 +186,7 @@ class Judge6Orchestrator:
         return workflow.compile(checkpointer=memory)
 
     def _supervisor_agent(self, state: Judge6State) -> Judge6State:
-        """
-        Supervisor agent that initializes and monitors the workflow.
+        """Supervisor agent that initializes and monitors the workflow.
         """
         logger.info(f"Supervisor: Processing workflow {state.get('workflow_id')}")
 
@@ -213,8 +208,7 @@ class Judge6Orchestrator:
         return state
 
     def _classify_document_agent(self, state: Judge6State) -> Judge6State:
-        """
-        Classify document and detect compliance framework.
+        """Classify document and detect compliance framework.
         """
         logger.info("Agent: Classifying document")
 
@@ -269,8 +263,7 @@ Return ONLY a JSON object with:
         return state
 
     def _parse_document_agent(self, state: Judge6State) -> Judge6State:
-        """
-        Parse document structure and extract key sections.
+        """Parse document structure and extract key sections.
         """
         logger.info("Agent: Parsing document structure")
 
@@ -314,8 +307,7 @@ Return a JSON object with:
         return state
 
     def _extract_policies_agent(self, state: Judge6State) -> Judge6State:
-        """
-        Extract compliance policies and requirements using thinking model.
+        """Extract compliance policies and requirements using thinking model.
         """
         logger.info("Agent: Extracting compliance policies")
 
@@ -342,7 +334,7 @@ Return as JSON array: {{"policies": [...]}}
 
         messages = [
             SystemMessage(
-                content=f"You are a {framework} compliance expert with deep knowledge of regulations."
+                content=f"You are a {framework} compliance expert with deep knowledge of regulations.",
             ),
             HumanMessage(content=prompt),
         ]
@@ -365,8 +357,7 @@ Return as JSON array: {{"policies": [...]}}
         return state
 
     def _check_compliance_agent(self, state: Judge6State) -> Judge6State:
-        """
-        Check extracted policies against compliance framework requirements.
+        """Check extracted policies against compliance framework requirements.
         """
         logger.info("Agent: Checking compliance")
 
@@ -421,8 +412,7 @@ Return:
         return state
 
     def _generate_recommendations_agent(self, state: Judge6State) -> Judge6State:
-        """
-        Generate remediation recommendations for violations and warnings.
+        """Generate remediation recommendations for violations and warnings.
         """
         logger.info("Agent: Generating recommendations")
 
@@ -480,21 +470,18 @@ Return: {{"recommendations": [...]}}
         return state
 
     def _route_from_supervisor(self, state: Judge6State) -> str:
-        """
-        Routing function for supervisor to next agent.
+        """Routing function for supervisor to next agent.
         """
         if state.get("current_step") == WorkflowStep.CLASSIFY:
             return "classify"
-        else:
-            return "complete"
+        return "complete"
 
     def _save_state(self, state: Judge6State):
-        """
-        Save workflow state to Firestore for durability and audit trail.
+        """Save workflow state to Firestore for durability and audit trail.
         """
         try:
             doc_ref = self.firestore_client.collection(self.firestore_collection).document(
-                state["workflow_id"]
+                state["workflow_id"],
             )
             doc_ref.set(
                 {
@@ -514,8 +501,7 @@ Return: {{"recommendations": [...]}}
             logger.error(f"Failed to save state to Firestore: {e}")
 
     def _record_metrics(self, state: Judge6State):
-        """
-        Record workflow metrics to Cloud Monitoring.
+        """Record workflow metrics to Cloud Monitoring.
         """
         try:
             duration = (state["end_time"] - state["start_time"]).total_seconds()
@@ -529,8 +515,8 @@ Return: {{"recommendations": [...]}}
                     {
                         "interval": {"end_time": {"seconds": int(datetime.utcnow().timestamp())}},
                         "value": {"double_value": duration},
-                    }
-                )
+                    },
+                ),
             ]
 
             project_name = f"projects/{self.project_id}"
@@ -541,8 +527,7 @@ Return: {{"recommendations": [...]}}
             logger.error(f"Failed to record metrics: {e}")
 
     def process_document(self, document_id: str, document_content: str) -> dict[str, Any]:
-        """
-        Process a compliance document through the Judge #6 workflow.
+        """Process a compliance document through the Judge #6 workflow.
 
         Args:
             document_id: Unique identifier for the document
@@ -550,6 +535,7 @@ Return: {{"recommendations": [...]}}
 
         Returns:
             Final workflow state with compliance analysis results
+
         """
         import uuid
 
@@ -604,7 +590,7 @@ if __name__ == "__main__":
     """
 
     result = orchestrator.process_document(
-        document_id="sample-fda-policy-001", document_content=sample_document
+        document_id="sample-fda-policy-001", document_content=sample_document,
     )
 
     print(f"Workflow ID: {result['workflow_id']}")

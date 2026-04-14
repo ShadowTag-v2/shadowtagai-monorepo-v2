@@ -1,5 +1,4 @@
-"""
-Gemini Vehicle Executor for n-autoresearch/Kosmos/BioAgents
+"""Gemini Vehicle Executor for n-autoresearch/Kosmos/BioAgents
 ==========================================
 Real Gemini API calls per vehicle crew with consensus voting.
 """
@@ -82,8 +81,7 @@ class SquadronExecutionResult:
 
 
 class GeminiVehicleExecutor:
-    """
-    Execute Gemini API calls per vehicle crew.
+    """Execute Gemini API calls per vehicle crew.
 
     Each agent in a vehicle crew gets the same prompt and task,
     votes independently, and vehicle consensus is determined.
@@ -126,8 +124,7 @@ class GeminiVehicleExecutor:
         tier: str = "flash",
         timeout_per_agent: float = 30.0,
     ) -> VehicleExecutionResult:
-        """
-        Execute task for all agents in a vehicle, return consensus.
+        """Execute task for all agents in a vehicle, return consensus.
 
         Args:
             vehicle_id: Vehicle identifier
@@ -140,6 +137,7 @@ class GeminiVehicleExecutor:
 
         Returns:
             VehicleExecutionResult with consensus decision
+
         """
         start_time = datetime.utcnow()
         model = self.MODELS.get(tier, self.MODELS["flash"])
@@ -162,11 +160,11 @@ class GeminiVehicleExecutor:
                         response_text="",
                         vote=VoteResult.ABSTAIN,
                         confidence=0.0,
-                        reasoning=f"Error: {str(response)}",
+                        reasoning=f"Error: {response!s}",
                         latency_ms=0.0,
                         model=model,
                         error=str(response),
-                    )
+                    ),
                 )
             else:
                 agent_responses.append(response)
@@ -184,7 +182,7 @@ class GeminiVehicleExecutor:
 
         # Estimate cost
         cost = self._estimate_cost(
-            tier, len(agent_ids), 500, 200
+            tier, len(agent_ids), 500, 200,
         )  # ~500 input, ~200 output per agent
 
         return VehicleExecutionResult(
@@ -217,13 +215,13 @@ class GeminiVehicleExecutor:
         if self.enabled:
             try:
                 response_text = await asyncio.wait_for(
-                    self._call_gemini(model, full_prompt), timeout=timeout
+                    self._call_gemini(model, full_prompt), timeout=timeout,
                 )
             except TimeoutError:
                 response_text = "ABSTAIN - Timeout exceeded"
             except Exception as e:
                 logger.error(f"Gemini call failed for {agent_id}: {e}")
-                response_text = f"ABSTAIN - Error: {str(e)}"
+                response_text = f"ABSTAIN - Error: {e!s}"
         else:
             # Simulation mode
             response_text = await self._simulate_response(agent_id, task)
@@ -311,7 +309,7 @@ Reason: {reasoning}
         return vote, confidence, reasoning
 
     def _estimate_cost(
-        self, tier: str, num_agents: int, input_tokens: int, output_tokens: int
+        self, tier: str, num_agents: int, input_tokens: int, output_tokens: int,
     ) -> float:
         """Estimate cost for a set of agent calls"""
         costs = self.COST_PER_1K.get(tier, self.COST_PER_1K["flash"])
@@ -321,8 +319,7 @@ Reason: {reasoning}
 
 
 class SquadronExecutor:
-    """
-    Execute missions across entire squadron.
+    """Execute missions across entire squadron.
     Coordinates vehicle execution and aggregates results.
     """
 
@@ -338,8 +335,7 @@ class SquadronExecutor:
         task: str,
         max_concurrent: int = 20,
     ) -> SquadronExecutionResult:
-        """
-        Execute mission across all vehicles.
+        """Execute mission across all vehicles.
 
         Args:
             opord_id: OPORD identifier
@@ -351,6 +347,7 @@ class SquadronExecutor:
 
         Returns:
             SquadronExecutionResult with full results
+
         """
         start_time = datetime.utcnow()
 

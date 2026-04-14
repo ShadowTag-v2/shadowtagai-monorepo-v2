@@ -85,7 +85,7 @@ def create_sinusoidal_embeddings(max_seq_len: int, embed_dim: int) -> Tensor:
     """Fixed sinusoidal positional encodings."""
     position = np.arange(max_seq_len, dtype=np.float32)[:, np.newaxis]
     div_term = np.exp(
-        np.arange(0, embed_dim, 2, dtype=np.float32) * -(math.log(10000.0) / embed_dim)
+        np.arange(0, embed_dim, 2, dtype=np.float32) * -(math.log(10000.0) / embed_dim),
     )
 
     pe = np.zeros((max_seq_len, embed_dim), dtype=np.float32)

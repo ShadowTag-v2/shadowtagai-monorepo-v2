@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Swarm Orchestrator for 600 Flying n-autoresearch/Kosmos/BioAgents agents.
+"""Swarm Orchestrator for 600 Flying n-autoresearch/Kosmos/BioAgents agents.
 Integrates PSO task allocation + ACO squad routing with FM 5-0 MDMP flow.
 Based on FM 5-0 (Operations Process) and FM 6-0 (Commander and Staff Organization).
 """
@@ -70,8 +69,7 @@ class AtomicThread:
 
 
 class SwarmOrchestrator:
-    """
-    Main orchestrator for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
+    """Main orchestrator for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
 
     Implements:
     - FM 5-0 MDMP 7-step task routing
@@ -114,8 +112,7 @@ class SwarmOrchestrator:
         required_squads: list[str] = None,
         num_tasks: int = 1,
     ) -> dict:
-        """
-        Process a mission through MDMP 7-step flow.
+        """Process a mission through MDMP 7-step flow.
 
         Args:
             mission: Mission statement
@@ -125,6 +122,7 @@ class SwarmOrchestrator:
 
         Returns:
             ATOMIC thread with allocation and routing
+
         """
         thread_id = f"ATOMIC-{int(time.time())}"
         start_time = time.time()
@@ -194,13 +192,12 @@ class SwarmOrchestrator:
                     complexity=0.5,  # Could be inferred from mission
                     required_tier=tier,
                     deadline_ms=5000.0,  # Default 5s deadline
-                )
+                ),
             )
         return tasks
 
     def _evaluate_allocation(self, allocation: dict, route: dict) -> float:
-        """
-        Evaluate allocation quality (0.0 to 1.0).
+        """Evaluate allocation quality (0.0 to 1.0).
 
         Based on:
         - Utilization (higher = better)
@@ -254,8 +251,7 @@ class SwarmOrchestrator:
         return [asdict(t) for t in threads]
 
     def execute_tlp(self, thread_id: str) -> dict:
-        """
-        Execute TLP 8-step process for a thread (agent-level).
+        """Execute TLP 8-step process for a thread (agent-level).
 
         Returns execution trace.
         """
@@ -300,7 +296,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Flying n-autoresearch/Kosmos/BioAgents Swarm Orchestrator"
+        description="Flying n-autoresearch/Kosmos/BioAgents Swarm Orchestrator",
     )
     subparsers = parser.add_subparsers(dest="command")
 
@@ -324,7 +320,7 @@ def main():
 
     if args.command == "mission":
         result = orchestrator.process_mission(
-            mission=args.text, tier=args.tier, required_squads=args.squads, num_tasks=args.tasks
+            mission=args.text, tier=args.tier, required_squads=args.squads, num_tasks=args.tasks,
         )
         print(f"\n///▞ Thread created: {result['thread_id']}")
         print(f"    Route: {' → '.join(result['route']) if result['route'] else 'N/A'}")

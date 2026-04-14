@@ -24,7 +24,7 @@ class TestJREngine:
                 "ATP519ScanKernel",
                 "JudgeSixClassifyKernel",
                 "AuditCompressKernel",
-            ]
+            ],
         )
 
         assert result.passed is True
@@ -51,7 +51,7 @@ class TestJREngine:
             [
                 "ATP519ScanKernel",
                 "UnknownKernel",  # Not in validation set
-            ]
+            ],
         )
 
         assert result.passed is False  # Unknown kernel = not fully approved

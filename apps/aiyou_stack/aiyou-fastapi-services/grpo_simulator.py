@@ -1,5 +1,4 @@
-"""
-GRPO (Group Relative Policy Optimization) Simulator
+"""GRPO (Group Relative Policy Optimization) Simulator
 
 Demonstrates key concepts of GRPO:
 1. Generate groups of trajectories (not single trajectories)
@@ -17,6 +16,7 @@ References:
 - GRPO builds on PPO but optimizes over sets of trajectories
 - Prevents mode collapse via entropy regularization
 - 2.5× faster convergence than standard PPO (per GAIN-RL research)
+
 """
 
 import math
@@ -38,8 +38,7 @@ class Trajectory:
 
 
 class GRPOSimulator:
-    """
-    Simplified GRPO simulator for educational/demo purposes.
+    """Simplified GRPO simulator for educational/demo purposes.
 
     Simulates training a policy that learns to solve a simple task:
     - Task: Select sequence of numbers that sum to a target
@@ -55,8 +54,7 @@ class GRPOSimulator:
         entropy_weight: float = 0.1,
         learning_rate: float = 0.1,
     ):
-        """
-        Initialize GRPO simulator.
+        """Initialize GRPO simulator.
 
         Args:
             target_sum: Target sum for the sequence
@@ -64,6 +62,7 @@ class GRPOSimulator:
             group_size: Number of trajectories to generate per group
             entropy_weight: Weight for entropy regularization (prevents collapse)
             learning_rate: Policy update step size
+
         """
         self.target_sum = target_sum
         self.trajectory_length = trajectory_length
@@ -76,19 +75,18 @@ class GRPOSimulator:
         self.policy = [1 / 10 for _ in range(10)]
 
     def _sample_action(self) -> tuple[int, float]:
-        """
-        Sample action from current policy.
+        """Sample action from current policy.
 
         Returns:
             (action, log_prob): Sampled action and its log probability
+
         """
         action = random.choices(range(10), weights=self.policy)[0]
         log_prob = math.log(self.policy[action] + 1e-8)  # Add epsilon to avoid log(0)
         return action, log_prob
 
     def _compute_reward(self, actions: list[int]) -> float:
-        """
-        Compute reward for a trajectory.
+        """Compute reward for a trajectory.
 
         Reward = -|sum(actions) - target_sum|
         (Closer to target = higher reward)
@@ -98,17 +96,18 @@ class GRPOSimulator:
 
         Returns:
             Reward (higher is better)
+
         """
         total = sum(actions)
         distance = abs(total - self.target_sum)
         return -distance
 
     def generate_trajectory(self) -> Trajectory:
-        """
-        Generate a single trajectory by sampling from current policy.
+        """Generate a single trajectory by sampling from current policy.
 
         Returns:
             Trajectory with actions, reward, and log probability
+
         """
         actions = []
         log_prob_total = 0
@@ -123,17 +122,16 @@ class GRPOSimulator:
         return Trajectory(actions=actions, reward=reward, log_prob=log_prob_total)
 
     def generate_group(self) -> list[Trajectory]:
-        """
-        Generate a group of trajectories.
+        """Generate a group of trajectories.
 
         Returns:
             List of trajectories
+
         """
         return [self.generate_trajectory() for _ in range(self.group_size)]
 
     def rank_trajectories(self, trajectories: list[Trajectory]) -> list[tuple[Trajectory, float]]:
-        """
-        Rank trajectories by reward (relative comparison).
+        """Rank trajectories by reward (relative comparison).
 
         Assigns relative rewards:
         - Best trajectory: +1
@@ -145,6 +143,7 @@ class GRPOSimulator:
 
         Returns:
             List of (trajectory, relative_reward) pairs
+
         """
         # Sort by reward (descending)
         sorted_traj = sorted(trajectories, key=lambda t: t.reward, reverse=True)
@@ -160,8 +159,7 @@ class GRPOSimulator:
         return ranked
 
     def _compute_entropy(self) -> float:
-        """
-        Compute entropy of current policy.
+        """Compute entropy of current policy.
 
         H(policy) = -Σ p(a) log p(a)
 
@@ -170,12 +168,12 @@ class GRPOSimulator:
 
         Returns:
             Entropy of policy
+
         """
         return -sum(p * math.log(p + 1e-8) for p in self.policy)
 
     def update_policy(self, ranked_trajectories: list[tuple[Trajectory, float]]):
-        """
-        Update policy based on ranked trajectories.
+        """Update policy based on ranked trajectories.
 
         GRPO key idea:
         1. Increase probability of actions in high-reward trajectories
@@ -184,6 +182,7 @@ class GRPOSimulator:
 
         Args:
             ranked_trajectories: List of (trajectory, relative_reward) pairs
+
         """
         # Accumulate policy gradients
         policy_gradients = [0.0 for _ in range(10)]
@@ -231,8 +230,7 @@ class GRPOSimulator:
         }
 
     def train(self, num_iterations: int = 100, verbose: bool = True) -> dict:
-        """
-        Train policy using GRPO.
+        """Train policy using GRPO.
 
         Args:
             num_iterations: Number of training iterations
@@ -240,6 +238,7 @@ class GRPOSimulator:
 
         Returns:
             Training history
+
         """
         history = {"avg_reward": [], "best_reward": [], "entropy": [], "policy_snapshots": []}
 
@@ -280,13 +279,13 @@ class GRPOSimulator:
                     f"Iter {iteration:3d} | "
                     f"Avg Reward: {avg_reward:6.2f} | "
                     f"Best: {best_reward:6.2f} | "
-                    f"Entropy: {entropy:.3f}"
+                    f"Entropy: {entropy:.3f}",
                 )
 
                 # Show example trajectory
                 best_traj = max(group, key=lambda t: t.reward)
                 print(
-                    f"         Best trajectory: {best_traj.actions} → sum={sum(best_traj.actions)}\n"
+                    f"         Best trajectory: {best_traj.actions} → sum={sum(best_traj.actions)}\n",
                 )
 
         if verbose:
@@ -302,11 +301,11 @@ class GRPOSimulator:
         return history
 
     def compare_to_ppo(self, num_iterations: int = 100) -> dict:
-        """
-        Compare GRPO to PPO-style single-trajectory optimization.
+        """Compare GRPO to PPO-style single-trajectory optimization.
 
         Returns:
             Comparison metrics
+
         """
         print("\n=== GRPO vs PPO Comparison ===\n")
 
@@ -346,13 +345,13 @@ class GRPOSimulator:
         print(f"GRPO final avg reward: {grpo_history['avg_reward'][-1]:.2f}")
         print(f"PPO  final avg reward: {ppo_history['avg_reward'][-1]:.2f}")
         print(
-            f"GRPO advantage: {grpo_history['avg_reward'][-1] - ppo_history['avg_reward'][-1]:.2f}\n"
+            f"GRPO advantage: {grpo_history['avg_reward'][-1] - ppo_history['avg_reward'][-1]:.2f}\n",
         )
 
         print(f"GRPO final entropy: {grpo_history['entropy'][-1]:.3f}")
         print(f"PPO  final entropy: {ppo_history['entropy'][-1]:.3f}")
         print(
-            f"GRPO maintains {grpo_history['entropy'][-1] / ppo_history['entropy'][-1]:.2f}× more diversity\n"
+            f"GRPO maintains {grpo_history['entropy'][-1] / ppo_history['entropy'][-1]:.2f}× more diversity\n",
         )
 
         # Compute convergence speed (iterations to reach 90% of final performance)
@@ -385,7 +384,7 @@ if __name__ == "__main__":
     # Demo 1: Basic GRPO training
     print("=== Demo 1: Basic GRPO Training ===\n")
     simulator = GRPOSimulator(
-        target_sum=15, trajectory_length=5, group_size=8, entropy_weight=0.1, learning_rate=0.1
+        target_sum=15, trajectory_length=5, group_size=8, entropy_weight=0.1, learning_rate=0.1,
     )
 
     history = simulator.train(num_iterations=100, verbose=True)
@@ -393,7 +392,7 @@ if __name__ == "__main__":
     # Demo 2: GRPO vs PPO comparison
     print("\n" + "=" * 60 + "\n")
     simulator2 = GRPOSimulator(
-        target_sum=20, trajectory_length=6, group_size=10, entropy_weight=0.15, learning_rate=0.08
+        target_sum=20, trajectory_length=6, group_size=10, entropy_weight=0.15, learning_rate=0.08,
     )
 
     comparison = simulator2.compare_to_ppo(num_iterations=100)
@@ -407,7 +406,7 @@ if __name__ == "__main__":
 
     for ew in entropy_weights:
         sim = GRPOSimulator(
-            target_sum=15, trajectory_length=5, group_size=8, entropy_weight=ew, learning_rate=0.1
+            target_sum=15, trajectory_length=5, group_size=8, entropy_weight=ew, learning_rate=0.1,
         )
         hist = sim.train(num_iterations=50, verbose=False)
         results[ew] = {"final_reward": hist["avg_reward"][-1], "final_entropy": hist["entropy"][-1]}

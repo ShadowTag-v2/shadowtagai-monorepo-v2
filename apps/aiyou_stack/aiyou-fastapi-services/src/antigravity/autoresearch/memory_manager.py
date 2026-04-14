@@ -1,5 +1,4 @@
-"""
-Persistent Memory Manager for Flying minion
+"""Persistent Memory Manager for Flying minion
 Inspired by Gemini Code Assist Memory: https://cloud.google.com/blog/products/ai-machine-learning/memory-for-ai-code-reviews-using-gemini-code-assist
 
 Capabilities:
@@ -57,10 +56,9 @@ class MemoryManager:
             logger.error(f"Failed to save memory: {e}")
 
     async def extract_rule_from_interaction(
-        self, user_feedback: str, _agent_action: str
+        self, user_feedback: str, _agent_action: str,
     ) -> LearnedRule | None:
-        """
-        Use Gemini to infer a generalized rule from interaction.
+        """Use Gemini to infer a generalized rule from interaction.
         (Stubbed LLM call for now - GCA pattern)
         """
         # TODO: Real LLM call here to generalize
@@ -84,8 +82,7 @@ class MemoryManager:
         return rule
 
     def retrieve_relevant_rules(self, context_tags: list[str]) -> list[LearnedRule]:
-        """
-        Retrieve rules relevant to the current context.
+        """Retrieve rules relevant to the current context.
         """
         # Simple set intersection for now
         relevant = []
@@ -98,8 +95,7 @@ class MemoryManager:
         return relevant
 
     def filter_suggestions(self, suggestions: list[str], context_tags: list[str]) -> list[str]:
-        """
-        Filter agent suggestions against learned rules.
+        """Filter agent suggestions against learned rules.
         """
         rules = self.retrieve_relevant_rules(context_tags)
         filtered = []

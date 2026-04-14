@@ -7,8 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class JudgeSixSentinel:
-    """
-    Sovereign OS Governance Core.
+    """Sovereign OS Governance Core.
     Gates execution via Hazard checking, Context Memory, and Swarm Consensus.
     """
 
@@ -35,9 +34,8 @@ class JudgeSixSentinel:
         if inspection["verdict"] == "APPROVED":
             logger.info("[SENTINEL] Mission Authorized by 17-Layer Gauntlet.")
             return {"status": "SUCCESS", "reason": "Gauntlet Passed"}
-        else:
-            logger.warning("[SENTINEL] Mission Denied by Gauntlet.")
-            return {
-                "status": "BLOCKED",
-                "reason": inspection.get("reason", "Gauntlet Rejected Mission"),
-            }
+        logger.warning("[SENTINEL] Mission Denied by Gauntlet.")
+        return {
+            "status": "BLOCKED",
+            "reason": inspection.get("reason", "Gauntlet Rejected Mission"),
+        }

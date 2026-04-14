@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Auto-update PKGBUILD when pyproject.toml version changes.
+"""Auto-update PKGBUILD when pyproject.toml version changes.
 Runs in GitHub Actions daily.
 
 Standard library only - no external dependencies.
@@ -151,9 +150,8 @@ def main() -> int:
                 git_commit(upstream)
 
             return 0
-        else:
-            print("No changes made to PKGBUILD")
-            return 0
+        print("No changes made to PKGBUILD")
+        return 0
 
     except RuntimeError as e:
         print(f"Error: {e}", file=sys.stderr)

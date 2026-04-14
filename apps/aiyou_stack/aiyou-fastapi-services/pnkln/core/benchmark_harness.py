@@ -1,5 +1,4 @@
-"""
-Benchmark Harness - Standard Evaluation Suite
+"""Benchmark Harness - Standard Evaluation Suite
 
 Framework for running standard code generation and software engineering
 benchmarks to evaluate agent performance.
@@ -18,6 +17,7 @@ References:
 - "Evaluating Large Language Models Trained on Code" (Chen et al., 2021)
 - "BigCodeBench: Benchmarking Code Generation with Diverse Function Calls"
 - "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?"
+
 """
 
 import statistics
@@ -46,8 +46,7 @@ class DifficultyLevel(Enum):
 
 @dataclass
 class BenchmarkProblem:
-    """
-    Single benchmark problem.
+    """Single benchmark problem.
 
     Attributes:
         problem_id: Unique problem identifier
@@ -57,6 +56,7 @@ class BenchmarkProblem:
         test_cases: List of test cases
         canonical_solution: Reference solution (if available)
         metadata: Additional metadata
+
     """
 
     problem_id: str
@@ -70,8 +70,7 @@ class BenchmarkProblem:
 
 @dataclass
 class Solution:
-    """
-    Agent-generated solution.
+    """Agent-generated solution.
 
     Attributes:
         problem_id: Problem identifier
@@ -79,6 +78,7 @@ class Solution:
         generation_time_ms: Time to generate solution
         agent_id: Agent identifier
         metadata: Additional metadata
+
     """
 
     problem_id: str
@@ -90,8 +90,7 @@ class Solution:
 
 @dataclass
 class TestResult:
-    """
-    Test execution result.
+    """Test execution result.
 
     Attributes:
         problem_id: Problem identifier
@@ -100,6 +99,7 @@ class TestResult:
         num_total: Total number of tests
         execution_time_ms: Test execution time
         error_message: Error message (if failed)
+
     """
 
     problem_id: str
@@ -112,8 +112,7 @@ class TestResult:
 
 @dataclass
 class BenchmarkResult:
-    """
-    Complete benchmark result.
+    """Complete benchmark result.
 
     Attributes:
         benchmark: Benchmark type
@@ -126,6 +125,7 @@ class BenchmarkResult:
         total_execution_time_ms: Total benchmark execution time
         results_by_difficulty: Results broken down by difficulty
         failed_problems: List of failed problem IDs
+
     """
 
     benchmark: BenchmarkType
@@ -141,8 +141,7 @@ class BenchmarkResult:
 
 
 class BenchmarkHarness:
-    """
-    Standard evaluation suite for code generation.
+    """Standard evaluation suite for code generation.
 
     Performance baselines:
     - HumanEval pass@1: ≥70%
@@ -167,14 +166,14 @@ class BenchmarkHarness:
         }
 
     def load_humaneval(self) -> list[BenchmarkProblem]:
-        """
-        Load HumanEval benchmark problems.
+        """Load HumanEval benchmark problems.
 
         In production, would load from HumanEval dataset.
         Here we create sample problems for demonstration.
 
         Returns:
             List of HumanEval problems
+
         """
         problems = [
             BenchmarkProblem(
@@ -248,9 +247,9 @@ class BenchmarkHarness:
                     {
                         "input": '{"user": "redacted@shadowtag-v4.local", "admin": "redacted@shadowtag-v4.local"}',
                         "expected": ["redacted@shadowtag-v4.local", "redacted@shadowtag-v4.local"],
-                    }
+                    },
                 ],
-            )
+            ),
         ]
 
         self.problems[BenchmarkType.BIGCODEBENCH] = problems
@@ -273,15 +272,14 @@ class BenchmarkHarness:
                 canonical_solution=(
                     "def sort_list(items):\n    return sorted(items, reverse=True)\n"
                 ),
-            )
+            ),
         ]
 
         self.problems[BenchmarkType.SWEBENCH] = problems
         return problems
 
     async def _execute_tests(self, solution: Solution, problem: BenchmarkProblem) -> TestResult:
-        """
-        Execute tests for a solution.
+        """Execute tests for a solution.
 
         In production, would use proper sandboxed execution.
 
@@ -291,6 +289,7 @@ class BenchmarkHarness:
 
         Returns:
             Test execution result
+
         """
         start_time = time.time()
 
@@ -330,8 +329,7 @@ class BenchmarkHarness:
         solution_generator: Callable[[BenchmarkProblem], str],
         max_problems: int | None = None,
     ) -> BenchmarkResult:
-        """
-        Evaluate agent on benchmark.
+        """Evaluate agent on benchmark.
 
         Args:
             benchmark: Benchmark to run
@@ -341,6 +339,7 @@ class BenchmarkHarness:
 
         Returns:
             Benchmark result
+
         """
         start_time = time.time()
 
@@ -430,14 +429,14 @@ class BenchmarkHarness:
         )
 
     def compare_to_baseline(self, result: BenchmarkResult) -> dict[str, Any]:
-        """
-        Compare result to baseline.
+        """Compare result to baseline.
 
         Args:
             result: Benchmark result
 
         Returns:
             Comparison statistics
+
         """
         baseline = self.baselines.get(result.benchmark, 0.5)
 
@@ -460,11 +459,11 @@ class BenchmarkHarness:
         }
 
     def get_statistics(self) -> dict[str, Any]:
-        """
-        Get harness statistics.
+        """Get harness statistics.
 
         Returns:
             Dictionary with statistics
+
         """
         return {
             "benchmarks_available": len(self.problems),

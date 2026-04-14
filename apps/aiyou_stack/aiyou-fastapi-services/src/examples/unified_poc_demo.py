@@ -1,5 +1,4 @@
-"""
-Unified Pinkln Proof-of-Concept Demo
+"""Unified Pinkln Proof-of-Concept Demo
 
 Demonstrates the complete integrated system:
 - AutoGen → Gemini migration (31× faster)
@@ -90,7 +89,7 @@ New Way (Unified):
     start = time.time()
     result = orchestrator.execute(
         "Analyze this military decision for ATP 5-19 compliance and provide go/no-go recommendation: "
-        + decision_context
+        + decision_context,
     )
     latency = (time.time() - start) * 1000
 
@@ -129,7 +128,7 @@ New Way (Unified):
 
     print_section("Running Multi-Agent Debate")
     result = orchestrator.execute(
-        "Have a panel of 3 experts debate: Should we prioritize latency or cost optimization?"
+        "Have a panel of 3 experts debate: Should we prioritize latency or cost optimization?",
     )
 
     print("\n📊 Debate Result:")

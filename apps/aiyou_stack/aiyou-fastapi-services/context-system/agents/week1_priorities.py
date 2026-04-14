@@ -1,5 +1,4 @@
-"""
-Current Objectives - Week 1 Execution Priorities
+"""Current Objectives - Week 1 Execution Priorities
 Immediate action items with clear deliverables and deadlines
 """
 
@@ -45,7 +44,7 @@ class Week1Priorities:
                 ),
                 SubTask(description="Integrate Apollo API for lead scraping", estimated_hours=6.0),
                 SubTask(
-                    description="Build LinkedIn → Gmail personalization flow", estimated_hours=8.0
+                    description="Build LinkedIn → Gmail personalization flow", estimated_hours=8.0,
                 ),
                 SubTask(description="Deploy on Vertex AI Workbench", estimated_hours=4.0),
                 SubTask(description="Record Loom demo (5-min walkthrough)", estimated_hours=2.0),
@@ -85,11 +84,11 @@ class Week1Priorities:
                     estimated_hours=4.0,
                 ),
                 SubTask(
-                    description="Build simple landing page (Webflow/Framer)", estimated_hours=6.0
+                    description="Build simple landing page (Webflow/Framer)", estimated_hours=6.0,
                 ),
                 SubTask(description="Set up GCP Secret Manager for API keys", estimated_hours=2.0),
                 SubTask(
-                    description="Create pilot agreement template (1-page PDF)", estimated_hours=1.0
+                    description="Create pilot agreement template (1-page PDF)", estimated_hours=1.0,
                 ),
             ],
             deadline="End of Week 1",
@@ -183,7 +182,6 @@ class PhaseTimeline:
 
 def generate_week1_action_plan() -> dict:
     """Generate actionable Week 1 execution plan"""
-
     return {
         "week": 1,
         "start_date": datetime.now().isoformat(),
@@ -226,7 +224,6 @@ def generate_week1_action_plan() -> dict:
 
 def get_immediate_next_action() -> dict:
     """Get the very next action to take right now"""
-
     return {
         "action": "Set up Python development environment",
         "command": "python3.11 -m venv venv && source venv/bin/activate && pip install langgraph openai pinecone-client redis anthropic",

@@ -1,5 +1,4 @@
-"""
-ANTIGRAVITY :: JUDGE#6 GOVERNANCE ENGINE
+"""ANTIGRAVITY :: JUDGE#6 GOVERNANCE ENGINE
 Classified: TIER 30
 Doctrine: "Never Resting, Ever Vesting."
 """
@@ -50,7 +49,7 @@ class Judge6Engine:
         self.policy = self._load_policy()
         self.brakes_enabled = True
         print(
-            f"🛡️ JUDGE#6 ONLINE: {self.policy.get('judge6_constitution', {}).get('meta', {}).get('version', 'UNKNOWN')}"
+            f"🛡️ JUDGE#6 ONLINE: {self.policy.get('judge6_constitution', {}).get('meta', {}).get('version', 'UNKNOWN')}",
         )
 
     def _load_policy(self) -> dict[str, Any]:
@@ -60,8 +59,7 @@ class Judge6Engine:
         return {"judge6_constitution": {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}}
 
     async def enforce(self, action: str, context: dict[str, Any]) -> JudgeDecision:
-        """
-        The Core Loop: Validates action against CSRMC and Policy.
+        """The Core Loop: Validates action against CSRMC and Policy.
         """
         start_time = time.time()
 
@@ -69,7 +67,7 @@ class Judge6Engine:
         threat = self._scan_insider_threats(action, context)
         if threat:
             return self._finalize(
-                False, RiskLevel.CRITICAL, Verdict.BLOCKED, f"INSIDER THREAT: {threat}", start_time
+                False, RiskLevel.CRITICAL, Verdict.BLOCKED, f"INSIDER THREAT: {threat}", start_time,
             )
 
         # 2. CSRMC DEFENSE GRID (Hard Security)
@@ -100,21 +98,20 @@ class Judge6Engine:
             # RKILL PROTOCOL
             self._trigger_shutdown("ROGUE_AGENT_DETECTED")
             return self._finalize(
-                False, RiskLevel.FATAL, Verdict.KILLED, "ROGUE AGENT TERMINATED", start_time
+                False, RiskLevel.FATAL, Verdict.KILLED, "ROGUE AGENT TERMINATED", start_time,
             )
 
         return self._finalize(True, RiskLevel.LOW, Verdict.APPROVED, "CLEAN", start_time)
 
     def _finalize(
-        self, approved: bool, risk: RiskLevel, verdict: Verdict, reason: str, start_time: float
+        self, approved: bool, risk: RiskLevel, verdict: Verdict, reason: str, start_time: float,
     ) -> JudgeDecision:
         latency = (time.time() - start_time) * 1000
         # Telemetry would go here
         return JudgeDecision(approved, risk, verdict, reason, latency)
 
     def _scan_insider_threats(self, action: str, context: dict[str, Any]) -> str | None:
-        """
-        Scans for insider threat patterns:
+        """Scans for insider threat patterns:
         - Bulk data exfiltration
         - Accessing unauthorized scopes (e.g., HR data by Dev)
         - Off-hours access (if configured)
@@ -152,20 +149,17 @@ class Judge6Engine:
         return "overwrite judge6.py" in action.lower()
 
     def _notify_supervisor(self, reason: str, context: dict[str, Any]):
-        """
-        Simulates notification to supervisor.
+        """Simulates notification to supervisor.
         Triggered on: Account Lock, Insider Threat, High-Risk blocks.
         """
         print(f"🚨 ALERT TO SUPERVISOR: {reason} | User: {context.get('user', 'unknown')}")
 
     def _trigger_shutdown(self, reason: str):
-        """
-        System Shutdown Protocol.
+        """System Shutdown Protocol.
         Triggered on: FATAL risks (Rogue Agent, CVSS 10 Exploit).
         """
         print(f"💀 SYSTEM SHUTDOWN TRIGGERED: {reason}")
         # In real life: sys.exit(1) or kubernetes pod termination
-        pass
 
 
 # Singleton Instance

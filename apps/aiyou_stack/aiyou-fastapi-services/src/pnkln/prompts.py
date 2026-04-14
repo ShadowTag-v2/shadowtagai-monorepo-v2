@@ -1,5 +1,4 @@
-"""
-Pnkln System Prompts
+"""Pnkln System Prompts
 Consolidated from pnkln_vertex_rollup.txt
 """
 

@@ -1,5 +1,4 @@
-"""
-ML-based anomaly detection for intelligence pipelines.
+"""ML-based anomaly detection for intelligence pipelines.
 
 Features:
 - Time-series anomaly detection
@@ -35,8 +34,7 @@ class Anomaly:
 
 
 class TimeSeriesAnomalyDetector:
-    """
-    Statistical anomaly detection using moving averages and standard deviation.
+    """Statistical anomaly detection using moving averages and standard deviation.
 
     Uses Z-score method:
     - Calculate rolling mean and std dev
@@ -57,8 +55,7 @@ class TimeSeriesAnomalyDetector:
         self.anomalies: list[Anomaly] = []
 
     def record_value(self, metric_name: str, value: float) -> Anomaly | None:
-        """
-        Record a new value and check for anomalies.
+        """Record a new value and check for anomalies.
 
         Args:
             metric_name: Name of the metric
@@ -66,6 +63,7 @@ class TimeSeriesAnomalyDetector:
 
         Returns:
             Anomaly if detected, None otherwise
+
         """
         # Initialize history if needed
         if metric_name not in self.history:
@@ -120,22 +118,21 @@ class TimeSeriesAnomalyDetector:
         """Calculate severity based on Z-score."""
         if zscore > 5.0:
             return "critical"
-        elif zscore > 4.0:
+        if zscore > 4.0:
             return "high"
-        elif zscore > 3.5:
+        if zscore > 3.5:
             return "medium"
-        else:
-            return "low"
+        return "low"
 
     def predict_next_value(self, metric_name: str) -> tuple[float, float]:
-        """
-        Predict next value using exponential smoothing.
+        """Predict next value using exponential smoothing.
 
         Args:
             metric_name: Name of the metric
 
         Returns:
             (predicted_value, confidence_interval)
+
         """
         if metric_name not in self.history:
             return (0.0, 0.0)
@@ -164,8 +161,7 @@ class TimeSeriesAnomalyDetector:
         since: datetime | None = None,
         severity: str | None = None,
     ) -> list[Anomaly]:
-        """
-        Get detected anomalies with optional filtering.
+        """Get detected anomalies with optional filtering.
 
         Args:
             since: Only return anomalies after this time
@@ -173,6 +169,7 @@ class TimeSeriesAnomalyDetector:
 
         Returns:
             List of anomalies
+
         """
         anomalies = self.anomalies
 
@@ -186,8 +183,7 @@ class TimeSeriesAnomalyDetector:
 
 
 class CostSpikePredictor:
-    """
-    Predict cost spikes before they happen.
+    """Predict cost spikes before they happen.
 
     Uses trend analysis to forecast when costs will exceed budget.
     """
@@ -201,11 +197,11 @@ class CostSpikePredictor:
         self.cost_history.append({"timestamp": datetime.now(), "amount": amount})
 
     def predict_end_of_month_cost(self) -> tuple[float, float]:
-        """
-        Predict total cost at end of month.
+        """Predict total cost at end of month.
 
         Returns:
             (predicted_cost, confidence)
+
         """
         if not self.cost_history:
             return (0.0, 0.0)
@@ -236,14 +232,14 @@ class CostSpikePredictor:
         return (predicted_cost, confidence)
 
     def will_exceed_budget(self, threshold: float = 0.9) -> tuple[bool, dict]:
-        """
-        Check if projected cost will exceed budget.
+        """Check if projected cost will exceed budget.
 
         Args:
             threshold: Warning threshold (0.9 = 90% of budget)
 
         Returns:
             (will_exceed, details)
+
         """
         predicted_cost, confidence = self.predict_end_of_month_cost()
 
@@ -262,8 +258,7 @@ class CostSpikePredictor:
 
 
 class SourceFailurePredictor:
-    """
-    Predict source failures based on error patterns.
+    """Predict source failures based on error patterns.
 
     Tracks error rates and predicts when a source will fail.
     """
@@ -279,14 +274,14 @@ class SourceFailurePredictor:
         self.source_health[source_name].append({"timestamp": datetime.now(), "success": success})
 
     def predict_failure_probability(self, source_name: str) -> tuple[float, str]:
-        """
-        Predict probability of source failure.
+        """Predict probability of source failure.
 
         Args:
             source_name: Name of source
 
         Returns:
             (probability, status)
+
         """
         if source_name not in self.source_health:
             return (0.0, "unknown")
@@ -303,7 +298,7 @@ class SourceFailurePredictor:
         # Weight recent failures more heavily
         very_recent = list(history)[-5:]
         recent_failure_rate = sum(1 for check in very_recent if not check["success"]) / len(
-            very_recent
+            very_recent,
         )
 
         # Combined probability
@@ -337,15 +332,14 @@ class SourceFailurePredictor:
                         "recommendation": "Enable circuit breaker"
                         if probability > 0.7
                         else "Monitor closely",
-                    }
+                    },
                 )
 
         return sorted(at_risk, key=lambda x: -x["failure_probability"])
 
 
 class MLAnomalyDetectionSystem:
-    """
-    Unified ML-based anomaly detection system.
+    """Unified ML-based anomaly detection system.
 
     Combines multiple detectors for comprehensive monitoring.
     """
@@ -356,14 +350,14 @@ class MLAnomalyDetectionSystem:
         self.failure_predictor = SourceFailurePredictor()
 
     async def analyze_metrics(self, metrics: dict) -> dict:
-        """
-        Analyze metrics and detect anomalies.
+        """Analyze metrics and detect anomalies.
 
         Args:
             metrics: Current metrics
 
         Returns:
             Analysis results with anomalies and predictions
+
         """
         results = {
             "timestamp": datetime.now().isoformat(),
@@ -385,7 +379,7 @@ class MLAnomalyDetectionSystem:
                             "severity": anomaly.severity,
                             "message": anomaly.message,
                             "confidence": anomaly.confidence,
-                        }
+                        },
                     )
 
         # Cost prediction
@@ -399,7 +393,7 @@ class MLAnomalyDetectionSystem:
                     "priority": "high",
                     "message": f"Projected to exceed budget: ${cost_details['predicted_cost']:.2f}",
                     "action": "Enable auto-throttling or reduce collection frequency",
-                }
+                },
             )
 
         # Source failure prediction
@@ -414,7 +408,7 @@ class MLAnomalyDetectionSystem:
                         "priority": "critical",
                         "message": f"Source '{source['source']}' at high risk of failure ({source['failure_probability'] * 100:.0f}%)",
                         "action": source["recommendation"],
-                    }
+                    },
                 )
 
         return results
@@ -423,7 +417,7 @@ class MLAnomalyDetectionSystem:
         """Get data for ML dashboard."""
         return {
             "anomaly_count_24h": len(
-                self.timeseries_detector.get_anomalies(since=datetime.now() - timedelta(hours=24))
+                self.timeseries_detector.get_anomalies(since=datetime.now() - timedelta(hours=24)),
             ),
             "critical_anomalies": len(self.timeseries_detector.get_anomalies(severity="critical")),
             "cost_prediction": self.cost_predictor.predict_end_of_month_cost(),

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ChatGPT Conversation Extractor
+"""ChatGPT Conversation Extractor
 Extracts conversations from ChatGPT data export
 """
 
@@ -27,7 +26,7 @@ def extract_messages(mapping: dict) -> list:
                 text = " ".join(p for p in parts if isinstance(p, str) and p.strip())
                 if text:
                     messages.append(
-                        {"role": author, "content": text, "timestamp": msg.get("create_time")}
+                        {"role": author, "content": text, "timestamp": msg.get("create_time")},
                     )
 
     return messages
@@ -82,7 +81,7 @@ def main():
                                 "conversation": title,
                                 "language": lang or "text",
                                 "code": code.strip(),
-                            }
+                            },
                         )
 
             print(f"  [{len(messages):3d} msgs] {title[:50]}...")

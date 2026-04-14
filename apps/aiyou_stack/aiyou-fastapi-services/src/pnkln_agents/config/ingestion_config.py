@@ -1,5 +1,4 @@
-"""
-Ingestion Layer Configuration
+"""Ingestion Layer Configuration
 Quality gates, sources, and operational parameters
 """
 

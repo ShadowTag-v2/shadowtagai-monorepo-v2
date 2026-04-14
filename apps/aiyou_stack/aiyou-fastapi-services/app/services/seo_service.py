@@ -1,5 +1,4 @@
-"""
-SEO Master Service - Business logic for SEO operations
+"""SEO Master Service - Business logic for SEO operations
 """
 
 import re
@@ -34,8 +33,7 @@ class SEOService:
 
     @staticmethod
     def analyze_url(db: Session, url: str) -> SEOAnalysis:
-        """
-        Perform comprehensive SEO analysis on a URL
+        """Perform comprehensive SEO analysis on a URL
         """
         try:
             # Fetch the page
@@ -96,7 +94,7 @@ class SEOService:
                     else 0,
                     "has_ssl": has_ssl,
                     "word_count": word_count,
-                }
+                },
             )
 
             # Generate issues and recommendations
@@ -109,7 +107,7 @@ class SEOService:
                     "image_count": image_count,
                     "has_ssl": has_ssl,
                     "word_count": word_count,
-                }
+                },
             )
 
             # Create analysis record
@@ -139,7 +137,7 @@ class SEOService:
             return analysis
 
         except Exception as e:
-            raise Exception(f"Failed to analyze URL: {str(e)}")
+            raise Exception(f"Failed to analyze URL: {e!s}")
 
     @staticmethod
     def _calculate_seo_score(data: dict[str, Any]) -> float:
@@ -201,7 +199,7 @@ class SEOService:
         elif len(data["title"]) > settings.SEO_MAX_TITLE_LENGTH:
             issues.append("Title too long")
             recommendations.append(
-                f"Shorten title to under {settings.SEO_MAX_TITLE_LENGTH} characters"
+                f"Shorten title to under {settings.SEO_MAX_TITLE_LENGTH} characters",
             )
 
         # Description checks
@@ -211,7 +209,7 @@ class SEOService:
         elif len(data["description"]) > settings.SEO_MAX_DESCRIPTION_LENGTH:
             issues.append("Meta description too long")
             recommendations.append(
-                f"Shorten description to under {settings.SEO_MAX_DESCRIPTION_LENGTH} characters"
+                f"Shorten description to under {settings.SEO_MAX_DESCRIPTION_LENGTH} characters",
             )
 
         # H1 checks
@@ -228,7 +226,7 @@ class SEOService:
             alt_ratio = data.get("images_with_alt", 0) / data["image_count"]
             if alt_ratio < 1.0:
                 issues.append(
-                    f"{data['image_count'] - data['images_with_alt']} images missing alt text"
+                    f"{data['image_count'] - data['images_with_alt']} images missing alt text",
                 )
                 recommendations.append("Add alt text to all images for accessibility and SEO")
 
@@ -258,13 +256,12 @@ class SEOService:
             db.commit()
             db.refresh(existing)
             return existing
-        else:
-            # Create new
-            meta_tag = MetaTag(**meta_tag_data.model_dump())
-            db.add(meta_tag)
-            db.commit()
-            db.refresh(meta_tag)
-            return meta_tag
+        # Create new
+        meta_tag = MetaTag(**meta_tag_data.model_dump())
+        db.add(meta_tag)
+        db.commit()
+        db.refresh(meta_tag)
+        return meta_tag
 
     @staticmethod
     def generate_meta_tags_html(meta_tag: MetaTag) -> str:
@@ -296,7 +293,7 @@ class SEOService:
             html_parts.append(f'<meta property="og:title" content="{meta_tag.og_title}">')
         if meta_tag.og_description:
             html_parts.append(
-                f'<meta property="og:description" content="{meta_tag.og_description}">'
+                f'<meta property="og:description" content="{meta_tag.og_description}">',
             )
         if meta_tag.og_type:
             html_parts.append(f'<meta property="og:type" content="{meta_tag.og_type}">')
@@ -320,7 +317,7 @@ class SEOService:
             html_parts.append(f'<meta name="twitter:title" content="{meta_tag.twitter_title}">')
         if meta_tag.twitter_description:
             html_parts.append(
-                f'<meta name="twitter:description" content="{meta_tag.twitter_description}">'
+                f'<meta name="twitter:description" content="{meta_tag.twitter_description}">',
             )
         if meta_tag.twitter_image:
             html_parts.append(f'<meta name="twitter:image" content="{meta_tag.twitter_image}">')

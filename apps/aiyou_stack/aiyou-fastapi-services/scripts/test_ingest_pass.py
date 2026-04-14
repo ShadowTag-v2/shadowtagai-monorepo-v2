@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Quick end-to-end ingest validation:
+"""Quick end-to-end ingest validation:
   Reddit (free) → IngestedItem → SQLite → query back
 
 Usage:

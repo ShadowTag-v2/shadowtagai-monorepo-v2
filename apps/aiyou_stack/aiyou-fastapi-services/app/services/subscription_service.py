@@ -1,5 +1,4 @@
-"""
-Subscription Service Layer
+"""Subscription Service Layer
 
 Encapsulates all database operations for subscription management,
 usage tracking, tier upgrades, and cancellations.
@@ -25,7 +24,7 @@ class SubscriptionService:
         result = await self.db.execute(
             select(Subscription)
             .where(Subscription.user_id == user_id)
-            .where(Subscription.status.in_(["active", "trialing"]))
+            .where(Subscription.status.in_(["active", "trialing"])),
         )
         return result.scalar_one_or_none()
 
@@ -34,7 +33,7 @@ class SubscriptionService:
         result = await self.db.execute(
             select(Subscription)
             .where(Subscription.user_id == user_id)
-            .where(Subscription.status == "active")
+            .where(Subscription.status == "active"),
         )
         return result.scalar_one_or_none()
 

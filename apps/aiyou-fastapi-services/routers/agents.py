@@ -1,9 +1,9 @@
+import os
+import sys
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 from temporalio.client import Client  # Temporal temporalio routing logic
-
-import sys
-import os
 
 # Add workflows to python path to avoid relative import issues during Temporal execution
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
@@ -23,8 +23,7 @@ class SwarmQuery(BaseModel):
 
 @router.post("/query")
 async def run_swarm_payload(query: SwarmQuery):
-    """
-    Invariant #2: Invincible Routing.
+    """Invariant #2: Invincible Routing.
     Heavy lift execution payloads are dispatched through temporalio.client.
     """
     task_id = f"st-swarm-{query.target}-1"
@@ -36,7 +35,7 @@ async def run_swarm_payload(query: SwarmQuery):
         # Execute the swarm logic durably in the worker cluster
         # Using string name to prevent circular imports if necessary, or actual class
         result = await client.execute_workflow(
-            "SwarmWorkflow", query.task, id=task_id, task_queue="omega-swarm-queue"
+            "SwarmWorkflow", query.task, id=task_id, task_queue="omega-swarm-queue",
         )
         status = "completed"
         message = result

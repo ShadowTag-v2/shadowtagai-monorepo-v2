@@ -1,5 +1,4 @@
-"""
-Authentication Endpoints
+"""Authentication Endpoints
 
 Security:
 - Rate limiting via middleware
@@ -44,8 +43,7 @@ async def register(
     user_data: UserCreate,
     service: AuthService = Depends(get_auth_service),
 ) -> User:
-    """
-    Register new user
+    """Register new user
 
     Security:
     - Password [VAPORIZED_PWD] validation
@@ -66,7 +64,7 @@ async def register(
     existing_user = await service.get_user_by_email(user_data.email)
     if existing_user:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered",
         )
 
     # Hash password and create user
@@ -82,8 +80,7 @@ async def login(
     credentials: LoginRequest,
     service: AuthService = Depends(get_auth_service),
 ) -> TokenResponse:
-    """
-    Login user and return JWT tokens
+    """Login user and return JWT tokens
 
     Security:
     - Account locking after 5 failed attempts
@@ -95,7 +92,7 @@ async def login(
 
     # Generic error for security (don't reveal if email exists)
     auth_error = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password"
+        status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password",
     )
 
     if user is None:
@@ -120,7 +117,7 @@ async def login(
     if not user.can_login():
         logger.warning("login_failed", user_id=user.id, reason="cannot_login")
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Account is inactive or deleted"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Account is inactive or deleted",
         )
 
     # Reset failed attempts on successful login
@@ -142,8 +139,7 @@ async def refresh_access_token(
     refresh_data: RefreshTokenRequest,
     service: AuthService = Depends(get_auth_service),
 ) -> TokenResponse:
-    """
-    Refresh access token using refresh token
+    """Refresh access token using refresh token
 
     Security:
     - Refresh token verification
@@ -154,14 +150,14 @@ async def refresh_access_token(
 
     if user_id is None:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired refresh token",
         )
 
     user = await service.get_user_by_id(int(user_id))
 
     if user is None or not user.can_login():
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found or cannot login"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found or cannot login",
         )
 
     tokens = service.create_token_pair(user.id)
@@ -180,8 +176,7 @@ async def change_password(
     current_user: User = Depends(get_current_user),
     service: AuthService = Depends(get_auth_service),
 ) -> dict:
-    """
-    Change user password
+    """Change user password
 
     [VAPORIZED_PWD]:
     - Requires authentication
@@ -192,7 +187,7 @@ async def change_password(
     # Verify current password
     if not verify_password(password_data.current_password, current_user.hashed_password):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is incorrect"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Current password is incorrect",
         )
 
     # Validate new password [VAPORIZED_PWD]

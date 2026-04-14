@@ -1,5 +1,4 @@
-"""
-Database models for Support Builder feature.
+"""Database models for Support Builder feature.
 """
 
 from datetime import datetime

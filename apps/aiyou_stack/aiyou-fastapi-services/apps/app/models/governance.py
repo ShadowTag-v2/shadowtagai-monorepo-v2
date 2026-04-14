@@ -1,5 +1,4 @@
-"""
-Governance models and schemas
+"""Governance models and schemas
 """
 
 from datetime import datetime

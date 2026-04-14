@@ -1,5 +1,4 @@
-"""
-GEMINI INGESTION LAYER - ULTRATHINK EDITION
+"""GEMINI INGESTION LAYER - ULTRATHINK EDITION
 ===========================================
 
 ENHANCEMENT: Jobs-quality obsessed intelligence collection
@@ -44,8 +43,7 @@ logger = logging.getLogger(__name__)
 
 
 class UltrathinkSourceCollector(BaseSourceCollector):
-    """
-    Base collector with Cheat Sheet Fusion integration.
+    """Base collector with Cheat Sheet Fusion integration.
 
     Jobs: "Details matter, it's worth waiting to get it right."
     """
@@ -68,30 +66,28 @@ class UltrathinkSourceCollector(BaseSourceCollector):
 
         logger.info(
             f"UltrathinkSourceCollector initialized: source={source_type.value}, "
-            f"variant={self.current_variant_id}"
+            f"variant={self.current_variant_id}",
         )
 
     def _get_preset_essentials(self) -> dict[Essential, any]:
         """Get preset cheat sheet for this source"""
         if self.source_type == SourceType.YOUTUBE:
             return PresetCheatSheets.youtube_tier_1_intelligence()
-        elif self.source_type == SourceType.TWITTER:
+        if self.source_type == SourceType.TWITTER:
             return PresetCheatSheets.twitter_governance_signals()
-        elif self.source_type == SourceType.NEWS_API:
+        if self.source_type == SourceType.NEWS_API:
             return PresetCheatSheets.news_api_compliance_tracking()
-        else:
-            # Generic preset
-            return {
-                Essential.ACT: "intelligence analyst",
-                Essential.OBJECTIVE: "collect high-quality governance intelligence",
-                Essential.TONE: "insanely great (Jobs quality)",
-                Essential.KEYWORDS: ["AI governance", "compliance", "regulation"],
-                Essential.FORMAT: "structured JSON",
-            }
+        # Generic preset
+        return {
+            Essential.ACT: "intelligence analyst",
+            Essential.OBJECTIVE: "collect high-quality governance intelligence",
+            Essential.TONE: "insanely great (Jobs quality)",
+            Essential.KEYWORDS: ["AI governance", "compliance", "regulation"],
+            Essential.FORMAT: "structured JSON",
+        }
 
     async def collect(self, _max_items: int = 100) -> SourceCoverageMetrics:
-        """
-        Collect with Cheat Sheet Fusion prompt.
+        """Collect with Cheat Sheet Fusion prompt.
 
         Jobs: "Quality is more important than quantity."
         """
@@ -100,7 +96,7 @@ class UltrathinkSourceCollector(BaseSourceCollector):
 
         logger.debug(
             f"Collecting from {self.source_type.value} with ultrathink prompt:\n"
-            f"{prompt[:200]}..."  # Log first 200 chars
+            f"{prompt[:200]}...",  # Log first 200 chars
         )
 
         # Mock collection (replace with real API calls)
@@ -119,7 +115,7 @@ class UltrathinkSourceCollector(BaseSourceCollector):
         logger.info(
             f"{self.source_type.value}: Collected {metrics.items_ingested} items, "
             f"Tier 1 ratio={metrics.tier_1_ratio:.1%}, "
-            f"cost=${metrics.total_cost_usd:.3f}"
+            f"cost=${metrics.total_cost_usd:.3f}",
         )
 
         return metrics
@@ -129,8 +125,7 @@ class UltrathinkSourceCollector(BaseSourceCollector):
         metrics: SourceCoverageMetrics,
         ground_truth_data: list[dict] | None = None,
     ):
-        """
-        Validate collection quality and evolve prompt via DTE.
+        """Validate collection quality and evolve prompt via DTE.
 
         Jobs: "We make the tools. The tools make us better."
         """
@@ -146,7 +141,7 @@ class UltrathinkSourceCollector(BaseSourceCollector):
         if accuracy < self.fusion.target_accuracy:
             logger.info(
                 f"{self.source_type.value}: Accuracy {accuracy:.1%} below target "
-                f"{self.fusion.target_accuracy:.1%}, evolving..."
+                f"{self.fusion.target_accuracy:.1%}, evolving...",
             )
             self.current_variant_id = self.fusion.evolve(direction="improve")
         else:
@@ -175,8 +170,7 @@ class NewsAPIUltrathinkCollector(UltrathinkSourceCollector):
 
 
 class GeminiIngestionUltrathink(GeminiIngestionLayer):
-    """
-    Ultrathink Edition of Gemini Ingestion Layer.
+    """Ultrathink Edition of Gemini Ingestion Layer.
 
     ENHANCEMENTS:
     - Cheat Sheet Fusion for all source collectors
@@ -229,12 +223,12 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
 
             source_metrics = {}
             for collector_type, metrics in zip(
-                self.collectors.keys(), source_metrics_list, strict=False
+                self.collectors.keys(), source_metrics_list, strict=False,
             ):
                 if isinstance(metrics, Exception):
                     logger.error(f"Collector {collector_type} failed: {metrics}")
                     source_metrics[collector_type] = SourceCoverageMetrics(
-                        source_type=collector_type
+                        source_type=collector_type,
                     )
                 else:
                     source_metrics[collector_type] = metrics
@@ -245,7 +239,7 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
 
             logger.info(
                 f"Ultrathink collection completed in {latency_minutes:.1f} min "
-                f"(Jobs: insanely great quality)"
+                f"(Jobs: insanely great quality)",
             )
 
             return {"job_config": job_config, "source_metrics": source_metrics}
@@ -298,15 +292,14 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
 
             logger.info(
                 f"Quality gates: {sum(gates_passed.values())}/{len(gates_passed)} passed "
-                f"({latency_minutes:.1f} min)"
+                f"({latency_minutes:.1f} min)",
             )
 
             return {**data, "quality_gates_passed": gates_passed}
 
         # Stage 4: Wealth analysis (NEW - ultrathink addition!)
         async def wealth_analysis(ctx: ExecutionContext, data: dict) -> dict:
-            """
-            Analyze for leaks/redesign/leverage.
+            """Analyze for leaks/redesign/leverage.
 
             Jobs: "Focus means saying no to 1000 things."
             """
@@ -347,7 +340,7 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
                 f"Wealth analysis: {len(analysis.leaks)} leaks, "
                 f"{len(analysis.redesigns)} redesigns, "
                 f"{len(analysis.leverage_opportunities)} leverage opportunities "
-                f"({latency_minutes:.1f} min)"
+                f"({latency_minutes:.1f} min)",
             )
 
             return {**data, "wealth_analysis": analysis}
@@ -369,7 +362,7 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
                 "summary": {
                     "total_items": sum(m.items_ingested for m in source_metrics.values()),
                     "active_sources": len(
-                        [m for m in source_metrics.values() if m.items_ingested > 0]
+                        [m for m in source_metrics.values() if m.items_ingested > 0],
                     ),
                     "tier_1_items": sum(m.items_tier_1 for m in source_metrics.values()),
                     "gates_passed": f"{sum(gates_passed.values())}/{len(gates_passed)}",
@@ -407,11 +400,11 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
         )
 
         self.pipeline.add_stage(
-            "tier_classification", tier_classification, timeout_ms=12 * 60 * 1000
+            "tier_classification", tier_classification, timeout_ms=12 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
-            "quality_gate_validation", quality_gate_validation, timeout_ms=3 * 60 * 1000
+            "quality_gate_validation", quality_gate_validation, timeout_ms=3 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
@@ -421,14 +414,13 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
         )
 
         self.pipeline.add_stage(
-            "am_briefing_generation", am_briefing_generation, timeout_ms=5 * 60 * 1000
+            "am_briefing_generation", am_briefing_generation, timeout_ms=5 * 60 * 1000,
         )
 
     async def run_nightly_job(
-        self, job_id: str, max_items_per_source: int = 500
+        self, job_id: str, max_items_per_source: int = 500,
     ) -> IngestionResult:
-        """
-        Execute nightly ingestion job (ultrathink edition).
+        """Execute nightly ingestion job (ultrathink edition).
 
         Jobs: "It's not just what it looks like and feels like.
                Design is how it works."
@@ -440,7 +432,7 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
             f"Ultrathink job {job_id} completed: "
             f"{result.total_items} items, "
             f"{result.tier_1_ratio:.1%} Tier 1, "
-            f"${result.total_cost_usd:.2f} cost"
+            f"${result.total_cost_usd:.2f} cost",
         )
 
         return result

@@ -1,5 +1,4 @@
-"""
-API routes for Support Builder feature.
+"""API routes for Support Builder feature.
 
 Provides REST endpoints for FAQs, help articles, chat widgets,
 and analytics.
@@ -64,7 +63,7 @@ async def get_faqs(
 ):
     """Get list of FAQs with optional filtering."""
     return await SupportBuilderService.get_faqs(
-        db, skip=skip, limit=limit, category=category, active_only=active_only
+        db, skip=skip, limit=limit, category=category, active_only=active_only,
     )
 
 
@@ -148,7 +147,7 @@ async def get_articles(
 ):
     """Get list of help articles."""
     return await SupportBuilderService.get_articles(
-        db, skip=skip, limit=limit, category=category, published_only=published_only
+        db, skip=skip, limit=limit, category=category, published_only=published_only,
     )
 
 
@@ -252,8 +251,7 @@ async def send_chat_message(
     message: ChatMessageCreate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Send a message in a chat session and get AI response with suggestions.
+    """Send a message in a chat session and get AI response with suggestions.
 
     This endpoint:
     1. Processes the user message
@@ -267,7 +265,7 @@ async def send_chat_message(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing message: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error processing message: {e!s}")
 
 
 @router.get("/chat/sessions/{session_id}/history", response_model=list[ChatMessageResponse])
@@ -288,7 +286,7 @@ async def get_chat_history(
     result = await db.execute(
         select(ChatMessage)
         .where(ChatMessage.session_id == session.id)
-        .order_by(ChatMessage.created_at)
+        .order_by(ChatMessage.created_at),
     )
     messages = result.scalars().all()
     return messages
@@ -315,8 +313,7 @@ async def get_analytics_summary(
     end_date: datetime | None = None,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get analytics summary showing ticket reduction and support metrics.
+    """Get analytics summary showing ticket reduction and support metrics.
 
     This endpoint provides insights into:
     - Total tickets and resolution methods

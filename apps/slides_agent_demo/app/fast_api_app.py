@@ -85,6 +85,7 @@ def collect_feedback(feedback: Feedback) -> dict[str, str]:
 
     Returns:
         Success message
+
     """
     logger.log_struct(feedback.model_dump(), severity="INFO")
     return {"status": "success"}

@@ -2,4 +2,4 @@
 
 from .templates import PromptTemplates, QueryClassifier, TaskType
 
-__all__ = ["PromptTemplates", "TaskType", "QueryClassifier"]
+__all__ = ["PromptTemplates", "QueryClassifier", "TaskType"]

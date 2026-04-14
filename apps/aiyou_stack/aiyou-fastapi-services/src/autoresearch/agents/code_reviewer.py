@@ -1,5 +1,4 @@
-"""
-CodeReviewer - Automated code review agent.
+"""CodeReviewer - Automated code review agent.
 Uses Jura for risk assessment + BugBot for static analysis.
 """
 
@@ -53,7 +52,7 @@ class CodeReviewer:
                             "file": file_path,
                             "risk_tier": review["jura_assessment"]["risk_tier"],
                             "issues": review["jura_assessment"].get("issues", []),
-                        }
+                        },
                     )
 
         # Run BugBot on the whole project

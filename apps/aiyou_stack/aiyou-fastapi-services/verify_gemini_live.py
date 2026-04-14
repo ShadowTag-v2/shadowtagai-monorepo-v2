@@ -21,13 +21,13 @@ async def test_live():
                             "role": "user",
                             "parts": [
                                 {
-                                    "text": "Hello Gemini, this is a test from Antigravity. Please respond with 'OK' and your name if you hear me."
-                                }
+                                    "text": "Hello Gemini, this is a test from Antigravity. Please respond with 'OK' and your name if you hear me.",
+                                },
                             ],
-                        }
+                        },
                     ],
                     "turn_complete": True,
-                }
+                },
             }
 
             await websocket.send(json.dumps(msg))
@@ -49,7 +49,7 @@ async def test_live():
                                 print(f"Gemini Text: {part['text']}")
                             if "inline_data" in part:
                                 print(
-                                    f"Gemini Audio Chunk received ({len(part['inline_data']['data'])} bytes)"
+                                    f"Gemini Audio Chunk received ({len(part['inline_data']['data'])} bytes)",
                                 )
                     else:
                         print(f"Received other data: {list(data.keys())}")

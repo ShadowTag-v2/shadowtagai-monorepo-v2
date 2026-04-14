@@ -26,8 +26,7 @@ class GeminiCodeAssistProxy:
         return f"# Generated code for: {prompt}\nprint('Hello God Mode from Proxy')"
 
     def trigger_smart_action(self, action_type, file_path, prompt, context):
-        """
-        Level 2: The 'God Mode' (Bypass the Preview)
+        """Level 2: The 'God Mode' (Bypass the Preview)
         """
         # 1. Generate the code
         # In reality, 'prompt' and 'context' would go to the model.
@@ -49,9 +48,8 @@ class GeminiCodeAssistProxy:
 
             # 4. Refresh the IDE (Return special status)
             return {"status": "APPLIED_AUTOMATICALLY"}
-        else:
-            # Only show the preview if Judge 6 is unsure
-            return {"type": "diff", "content": new_code}
+        # Only show the preview if Judge 6 is unsure
+        return {"type": "diff", "content": new_code}
 
 
 if __name__ == "__main__":

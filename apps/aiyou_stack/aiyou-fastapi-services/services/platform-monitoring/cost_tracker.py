@@ -1,5 +1,4 @@
-"""
-Cost Tracking & Optimization
+"""Cost Tracking & Optimization
 
 Monitors costs across platform services:
 - V2X Mesh: $3.17/vehicle/month (city-scale)
@@ -49,8 +48,7 @@ class BudgetAlert:
 
 
 class CostTracker:
-    """
-    Track and optimize costs across platform
+    """Track and optimize costs across platform
 
     Budget Targets:
     - Ingestion: $77/month
@@ -181,7 +179,7 @@ class CostTracker:
                         budget=data["budget"],
                         utilization_percent=data["utilization_percent"],
                         recommendation=self._get_recommendation(service, data),
-                    )
+                    ),
                 )
             elif data["health"] == "warning":
                 alerts.append(
@@ -192,7 +190,7 @@ class CostTracker:
                         budget=data["budget"],
                         utilization_percent=data["utilization_percent"],
                         recommendation=self._get_recommendation(service, data),
-                    )
+                    ),
                 )
 
         return alerts
@@ -204,12 +202,12 @@ class CostTracker:
                 return "Reduce Gemini API calls: Implement caching, batch requests, or reduce analysis frequency"
             return "Consider optimizing: Use cheaper external APIs, implement aggressive caching"
 
-        elif service == "v2x-mesh":
+        if service == "v2x-mesh":
             if data["utilization_percent"] > 90:
                 return "Scale down: Reduce peer count, implement more aggressive rate limiting, or optimize GPU usage"
             return "Optimize: Review GPU utilization, implement better compression, reduce beacon frequency"
 
-        elif service == "platform-monitoring":
+        if service == "platform-monitoring":
             if data["utilization_percent"] > 90:
                 return "Reduce metrics: Decrease collection frequency, prune unused metrics, compress storage"
             return "Optimize: Implement metric sampling, reduce retention period"
@@ -217,7 +215,7 @@ class CostTracker:
         return "Monitor closely and review cost breakdown"
 
     def get_cost_breakdown_by_category(
-        self, service: str | None = None, days: int = 30
+        self, service: str | None = None, days: int = 30,
     ) -> dict[str, float]:
         """Get cost breakdown by category"""
         cutoff = datetime.now() - timedelta(days=days)
@@ -267,7 +265,7 @@ class CostTracker:
                     "potential_savings": api_cost * 0.4,  # 40% savings
                     "action": "Implement Gemini API caching - cache repeated analyses for 24hrs",
                     "roi": "High - immediate 40% reduction in API costs",
-                }
+                },
             )
 
         # Analyze V2X costs
@@ -284,7 +282,7 @@ class CostTracker:
                     "potential_savings": compute_cost * 0.2,  # 20% savings
                     "action": "Use spot instances for non-critical pods, implement auto-scaling",
                     "roi": "Medium - 20% reduction in compute costs",
-                }
+                },
             )
 
         # Analyze storage
@@ -303,7 +301,7 @@ class CostTracker:
                     "potential_savings": storage_cost * 0.5,  # 50% savings
                     "action": "Implement data lifecycle: Archive to Nearline after 30 days, Coldline after 90 days",
                     "roi": "High - 50% reduction in storage costs",
-                }
+                },
             )
 
         return suggestions
@@ -358,11 +356,11 @@ if __name__ == "__main__":
 
     # Record some costs
     tracker.record_cost(
-        "gemini-ingestion", CostCategory.API_CALLS, 2.50, "Gemini API - 1000 items analyzed"
+        "gemini-ingestion", CostCategory.API_CALLS, 2.50, "Gemini API - 1000 items analyzed",
     )
     tracker.record_cost("v2x-mesh", CostCategory.COMPUTE, 100.0, "GKE compute - daily cost")
     tracker.record_cost(
-        "gemini-ingestion", CostCategory.EXTERNAL_SERVICES, 0.50, "NewsAPI - 100 requests"
+        "gemini-ingestion", CostCategory.EXTERNAL_SERVICES, 0.50, "NewsAPI - 100 requests",
     )
 
     # Get report
@@ -373,12 +371,12 @@ if __name__ == "__main__":
     print(f"  Alerts: {len(report['alerts'])}")
     for alert in report["alerts"]:
         print(
-            f"    - [{alert['type'].upper()}] {alert['service']}: {alert['utilization']:.0f}% of budget"
+            f"    - [{alert['type'].upper()}] {alert['service']}: {alert['utilization']:.0f}% of budget",
         )
     print(f"  Optimization Suggestions: {len(report['optimization_suggestions'])}")
     for suggestion in report["optimization_suggestions"]:
         print(
-            f"    - {suggestion['action']} (potential savings: ${suggestion['potential_savings']:.2f}/month)"
+            f"    - {suggestion['action']} (potential savings: ${suggestion['potential_savings']:.2f}/month)",
         )
 
     # Revenue requirements

@@ -1,5 +1,4 @@
-"""
-Oracle Studio — 7-Step Murder Board Pipeline
+"""Oracle Studio — 7-Step Murder Board Pipeline
 
 The Oracle Studio is the lawyer-side intelligence engine of KovelAI.
 While the client side provides "Privileged Perplexity" (search + AI chat),
@@ -35,7 +34,6 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 from agent.kinetic_action_parser import KineticActionParser, VerbLedger
 
@@ -137,7 +135,7 @@ class MurderBoardResult:
     steps_completed: list[str] = field(default_factory=list)
 
     # Step outputs
-    verb_ledger: Optional[dict] = None
+    verb_ledger: dict | None = None
     arguments: list[dict] = field(default_factory=list)
     assumptions: list[dict] = field(default_factory=list)
     relevance_scores: list[dict] = field(default_factory=list)
@@ -175,8 +173,7 @@ class MurderBoardResult:
 
 
 class OracleStudio:
-    """
-    The Oracle Studio Murder Board — 7-step legal intelligence pipeline.
+    """The Oracle Studio Murder Board — 7-step legal intelligence pipeline.
 
     Usage:
         studio = OracleStudio()
@@ -241,7 +238,7 @@ class OracleStudio:
 
         # Executive summary
         result.executive_summary = self._generate_executive_summary(
-            arguments, assumptions, scores, steelmans, actions, verb_ledger
+            arguments, assumptions, scores, steelmans, actions, verb_ledger,
         )
         result.risk_assessment = self._assess_risk(assumptions, verb_ledger)
         result.win_probability = self._estimate_win_probability(scores, steelmans)
@@ -253,8 +250,7 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _extract_arguments(self, text: str, verb_ledger: VerbLedger) -> list[Argument]:
-        """
-        Decompose legal text into discrete, atomic arguments.
+        """Decompose legal text into discrete, atomic arguments.
         Uses verb positions as anchor points for claim boundaries.
         """
         arguments = []
@@ -295,7 +291,7 @@ class OracleStudio:
                     claim=" ".join(s.strip() for s in claim_buffer if s.strip()),
                     classification="supplementary",
                     strength=0.3,
-                )
+                ),
             )
 
         return arguments
@@ -336,7 +332,7 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _audit_verbs_against_arguments(
-        self, arguments: list[Argument], verb_ledger: VerbLedger
+        self, arguments: list[Argument], verb_ledger: VerbLedger,
     ) -> None:
         """Cross-reference verb forensics against extracted arguments."""
         for arg in arguments:
@@ -350,7 +346,7 @@ class OracleStudio:
             if hedging_verbs:
                 arg.vulnerabilities.append(
                     f"Contains {len(hedging_verbs)} hedging verb(s): "
-                    f"{', '.join(v.verb for v in hedging_verbs)} — weakens assertion"
+                    f"{', '.join(v.verb for v in hedging_verbs)} — weakens assertion",
                 )
 
             # Flag passive constructions that obscure actor
@@ -360,7 +356,7 @@ class OracleStudio:
             if passive_verbs:
                 arg.vulnerabilities.append(
                     f"Contains {len(passive_verbs)} passive construction(s) — "
-                    "actor obscured, opposing counsel can challenge attribution"
+                    "actor obscured, opposing counsel can challenge attribution",
                 )
 
     # ──────────────────────────────────────
@@ -384,7 +380,7 @@ class OracleStudio:
                         is_stated=False,
                         risk_level="high",
                         challenge="Challenge applicable law if multi-jurisdictional contacts exist",
-                    )
+                    ),
                 )
 
             # Check for temporal assumptions
@@ -398,7 +394,7 @@ class OracleStudio:
                         is_stated=False,
                         risk_level="medium",
                         challenge="Request sunset clause or amendment provision",
-                    )
+                    ),
                 )
 
             # Check for factual assertions without evidentiary support
@@ -412,7 +408,7 @@ class OracleStudio:
                         is_stated=False,
                         risk_level="critical",
                         challenge="Demand documentary evidence or sworn declaration",
-                    )
+                    ),
                 )
 
             # Check for implied authority assumptions
@@ -426,7 +422,7 @@ class OracleStudio:
                         is_stated=False,
                         risk_level="high",
                         challenge="Request certificate of authority or board resolution",
-                    )
+                    ),
                 )
 
         return assumptions
@@ -436,7 +432,7 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _filter_relevance(
-        self, arguments: list[Argument], assumptions: list[Assumption]
+        self, arguments: list[Argument], assumptions: list[Assumption],
     ) -> list[RelevanceScore]:
         """Score each argument's logical nexus to the central issue."""
         scores = []
@@ -470,7 +466,7 @@ class OracleStudio:
                     evidentiary_weight=max(0, arg.strength - vulnerability_penalty),
                     composite_score=relevance,
                     recommendation=rec,
-                )
+                ),
             )
 
         return scores
@@ -480,10 +476,9 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _steelman_challenge(
-        self, arguments: list[Argument], scores: list[RelevanceScore]
+        self, arguments: list[Argument], scores: list[RelevanceScore],
     ) -> list[SteelmanResult]:
-        """
-        Adversarial dialectic: for each argument, construct the
+        """Adversarial dialectic: for each argument, construct the
         strongest possible version AND the most devastating attack.
         """
         results = []
@@ -510,12 +505,12 @@ class OracleStudio:
             if composite < 0.5:
                 attacks.append(
                     "Low composite score suggests fundamental weakness — "
-                    "opposing counsel likely to move to strike or challenge standing"
+                    "opposing counsel likely to move to strike or challenge standing",
                 )
             if arg.classification == "factual" and not arg.support:
                 attacks.append(
                     "Factual assertion without evidentiary foundation — "
-                    "challenge with Rule 56(e) (summary judgment standard)"
+                    "challenge with Rule 56(e) (summary judgment standard)",
                 )
 
             # Counter-arguments
@@ -541,7 +536,7 @@ class OracleStudio:
                     challenger_attacks=attacks,
                     counter_arguments=counters,
                     net_assessment=assessment,
-                )
+                ),
             )
 
         return results
@@ -556,8 +551,7 @@ class OracleStudio:
         steelmans: list[SteelmanResult],
         assumptions: list[Assumption],
     ) -> list[ActionItem]:
-        """
-        The 'So What?' step — synthesize all analysis into
+        """The 'So What?' step — synthesize all analysis into
         concrete next-move actions for the attorney.
         """
         actions = []
@@ -575,7 +569,7 @@ class OracleStudio:
                         priority="high",
                         rationale=f"Net assessment: {s.net_assessment}",
                         assigned_to="attorney",
-                    )
+                    ),
                 )
             elif "WEAKENED" in s.net_assessment:
                 counter += 1
@@ -586,7 +580,7 @@ class OracleStudio:
                         priority="medium",
                         rationale="Argument salvageable with additional evidence or briefing",
                         assigned_to="attorney",
-                    )
+                    ),
                 )
 
         # Actions from critical assumptions
@@ -600,7 +594,7 @@ class OracleStudio:
                         priority="critical",
                         rationale=f"Hidden premise: {a.assumption}",
                         assigned_to="attorney",
-                    )
+                    ),
                 )
 
         # Global action: document preservation
@@ -612,7 +606,7 @@ class OracleStudio:
                 priority="high",
                 rationale="Standard practice — prevents spoliation claims",
                 assigned_to="attorney",
-            )
+            ),
         )
 
         # Global action: privilege review
@@ -624,7 +618,7 @@ class OracleStudio:
                 priority="critical",
                 rationale="This analysis constitutes attorney work product — protect from discovery",
                 assigned_to="attorney",
-            )
+            ),
         )
 
         return actions
@@ -641,8 +635,7 @@ class OracleStudio:
         actions: list[ActionItem],
         doc_hash: str,
     ) -> list[PermanentNote]:
-        """
-        Build Zettelkasten-style atomic notes for the lawyer's vault.
+        """Build Zettelkasten-style atomic notes for the lawyer's vault.
         Each note is self-contained, linked, and tagged for retrieval.
         """
         notes = []
@@ -681,7 +674,7 @@ class OracleStudio:
                     links=[f"ZK-{a.id}" for a in related_assumptions],
                     created_at=timestamp,
                     note_type="legal_analysis",
-                )
+                ),
             )
 
         # Summary note
@@ -701,7 +694,7 @@ class OracleStudio:
                 links=[f"ZK-{arg.id}" for arg in arguments],
                 created_at=timestamp,
                 note_type="strategy",
-            )
+            ),
         )
 
         return notes
@@ -756,7 +749,7 @@ class OracleStudio:
         return "🟢 LOW — Document appears structurally sound"
 
     def _estimate_win_probability(
-        self, scores: list[RelevanceScore], steelmans: list[SteelmanResult]
+        self, scores: list[RelevanceScore], steelmans: list[SteelmanResult],
     ) -> float:
         """Rough win probability estimate based on argument survival rates."""
         if not scores:
@@ -764,7 +757,7 @@ class OracleStudio:
 
         avg_relevance = sum(s.composite_score for s in scores) / len(scores)
         survival_rate = sum(1 for s in steelmans if "SURVIVES" in s.net_assessment) / max(
-            len(steelmans), 1
+            len(steelmans), 1,
         )
 
         return min(0.95, max(0.05, (avg_relevance * 0.6 + survival_rate * 0.4)))

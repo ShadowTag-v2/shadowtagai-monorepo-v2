@@ -1,5 +1,4 @@
-"""
-Antigravity - The Central Brain with Kosmos Cavalry Squadron
+"""Antigravity - The Central Brain with Kosmos Cavalry Squadron
 =============================================================
 
 Orchestrates all LLMs with embedded Kosmos AI Scientist instances.
@@ -30,14 +29,14 @@ from .pipeline import AntigravityPipeline, PipelineResult
 
 __all__ = [
     "AntigravityPipeline",
-    "PipelineResult",
-    "GeminiIntake",
     "Atom",
-    "JuraTier",
-    "RiskLevel",
-    "GeminiCodeAssistPool",
-    "create_execution_pool",
     "DeployManager",
+    "GeminiCodeAssistPool",
+    "GeminiIntake",
+    "JuraTier",
+    "PipelineResult",
+    "RiskLevel",
+    "create_execution_pool",
 ]
 
 __version__ = "3.0.0"  # Major version bump: Full Army Doctrine Integration

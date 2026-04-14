@@ -69,7 +69,7 @@ class CheckpointCreate(BaseModel):
     user_message: str | None = Field(None, description="User message associated with checkpoint")
     checkpoint_type: CheckpointType = Field(CheckpointType.AUTO, description="Type of checkpoint")
     file_paths: list[str] = Field(
-        default_factory=list, description="List of file paths to checkpoint"
+        default_factory=list, description="List of file paths to checkpoint",
     )
     metadata: dict[str, Any] | None = Field(None, description="Additional metadata")
 

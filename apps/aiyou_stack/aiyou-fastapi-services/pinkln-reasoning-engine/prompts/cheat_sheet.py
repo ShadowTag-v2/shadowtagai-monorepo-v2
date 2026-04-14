@@ -1,5 +1,4 @@
-"""
-Cheat Sheet Fusion — Evolved Prompt Engineering
+"""Cheat Sheet Fusion — Evolved Prompt Engineering
 
 Condensed from 21 prompt engineering techniques to 10 essential patterns.
 Used by all Pinkln agents for consistent, high-quality outputs.
@@ -27,8 +26,7 @@ class CheatSheetTemplate:
 
 
 class CheatSheetFusion:
-    """
-    Evolved prompt engineering system
+    """Evolved prompt engineering system
 
     10 Essential Patterns:
     1. Tone → Set voice (technical/casual/formal)
@@ -58,7 +56,7 @@ class CheatSheetFusion:
             context=f"{language} best practices, type hints, error handling",
             keywords=["function", "class", "test", "docstring", "type hint"],
             examples=[
-                'def calculate(x: int) -> int:\n    """Calculate result."""\n    return x * 2'
+                'def calculate(x: int) -> int:\n    """Calculate result."""\n    return x * 2',
             ],
             audience="Senior engineers",
             citations=False,
@@ -77,7 +75,7 @@ class CheatSheetFusion:
             context="First-principles thinking, evidence-based reasoning",
             keywords=["assume", "therefore", "evidence", "conclude", "validate"],
             examples=[
-                "Given X, we can infer Y because [evidence]. However, we must verify [assumption]."
+                "Given X, we can infer Y because [evidence]. However, we must verify [assumption].",
             ],
             audience="Technical decision-makers",
             citations=True,
@@ -96,7 +94,7 @@ class CheatSheetFusion:
             context="Funnel analysis, LTV:CAC, conversion rates, upsells",
             keywords=["leak", "funnel", "recurring", "upsell", "viral", "CAC", "LTV"],
             examples=[
-                "Leak: 40% cart abandonment → Lost $250K/mo. Plan: Add exit-intent popup + email sequence. Challenge: Deploy this week or lose another $60K."
+                "Leak: 40% cart abandonment → Lost $250K/mo. Plan: Add exit-intent popup + email sequence. Challenge: Deploy this week or lose another $60K.",
             ],
             audience="Founders, revenue leaders",
             citations=True,
@@ -115,7 +113,7 @@ class CheatSheetFusion:
             context="Multi-agent debate, Glicko-ranked, peer review",
             keywords=["evidence", "counterpoint", "refute", "support", "conclude"],
             examples=[
-                "Position: X is superior to Y. Evidence: [data]. Counterargument: Some claim Y is faster. Rebuttal: Tests show X is 2× faster under load [source]."
+                "Position: X is superior to Y. Evidence: [data]. Counterargument: Some claim Y is faster. Rebuttal: Tests show X is 2× faster under load [source].",
             ],
             audience="Expert panel",
             citations=True,
@@ -126,7 +124,6 @@ class CheatSheetFusion:
 
     def _build_prompt(self, template: CheatSheetTemplate) -> str:
         """Construct final prompt from template"""
-
         prompt_parts = []
 
         # 1. Tone
@@ -164,14 +161,13 @@ class CheatSheetFusion:
 
         # 10. Meta-instruction
         prompt_parts.append(
-            "\n---\n**Instructions**: Follow the above framework precisely. Think step-by-step. Question assumptions. Provide evidence. Be concise."
+            "\n---\n**Instructions**: Follow the above framework precisely. Think step-by-step. Question assumptions. Provide evidence. Be concise.",
         )
 
         return "\n\n".join(prompt_parts)
 
     def learn_from_success(self, agent_name: str, pattern: str | None = None):
-        """
-        DTE evolution: extract patterns from high-performing agents
+        """DTE evolution: extract patterns from high-performing agents
 
         Called by DeepThinkingEnsemble after successful runs
         """

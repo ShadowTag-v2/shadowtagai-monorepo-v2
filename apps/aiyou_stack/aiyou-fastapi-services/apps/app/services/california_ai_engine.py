@@ -1,5 +1,4 @@
-"""
-California AI Compliance Engine
+"""California AI Compliance Engine
 ===============================
 Public-facing engine wrapping the NS-JR-Cor framework.
 
@@ -232,8 +231,7 @@ class ReportGenerator:
 
 
 class CaliforniaAIEngine:
-    """
-    California AI Compliance Engine.
+    """California AI Compliance Engine.
 
     Main entry point for California AI regulation compliance.
     Wraps the NS-JR-Cor framework with a clean public API.
@@ -280,8 +278,7 @@ class CaliforniaAIEngine:
         api_key: str | None = None,
         tier: UsageTier = UsageTier.FREE,
     ) -> CaliforniaAIAssessmentResult:
-        """
-        Assess content for California AI compliance.
+        """Assess content for California AI compliance.
 
         Args:
             request: Assessment request with content and context
@@ -294,6 +291,7 @@ class CaliforniaAIEngine:
         Raises:
             ValueError: If content is invalid
             RateLimitError: If tier limit exceeded
+
         """
         # Validate request
         if not request.content or not request.content.strip():
@@ -323,8 +321,7 @@ class CaliforniaAIEngine:
         api_key: str | None = None,
         tier: UsageTier = UsageTier.GROWTH,
     ) -> BatchAssessmentResult:
-        """
-        Batch assess multiple content items.
+        """Batch assess multiple content items.
 
         Args:
             request: Batch request with items
@@ -333,6 +330,7 @@ class CaliforniaAIEngine:
 
         Returns:
             BatchAssessmentResult with all results
+
         """
         if tier == UsageTier.FREE:
             raise ValueError("Batch assessment requires STARTER tier or higher")
@@ -354,13 +352,13 @@ class CaliforniaAIEngine:
         content: str,
         user_age: int | None = None,
     ) -> dict[str, Any]:
-        """
-        Quick compliance check with minimal input.
+        """Quick compliance check with minimal input.
 
         Convenience method for simple checks.
 
         Returns:
             Dict with is_compliant, risk_tier, and required_actions
+
         """
         request = CaliforniaAIAssessmentRequest(
             content=content,
@@ -426,8 +424,7 @@ async def assess_content(
     user_age: int | None = None,
     platform_id: str = "default",
 ) -> CaliforniaAIAssessmentResult:
-    """
-    SDK convenience function for content assessment.
+    """SDK convenience function for content assessment.
 
     Usage:
         from app.services.california_ai_engine import assess_content
@@ -455,11 +452,11 @@ async def assess_content(
 
 
 async def check_self_harm(content: str) -> dict[str, Any]:
-    """
-    SDK convenience function for self-harm detection.
+    """SDK convenience function for self-harm detection.
 
     Returns:
         Dict with detected (bool), confidence, and crisis_resources
+
     """
     engine = get_california_ai_engine()
     request = CaliforniaAIAssessmentRequest(

@@ -1,5 +1,4 @@
-"""
-SB 243 Compliance Engine - California AI Transparency Law
+"""SB 243 Compliance Engine - California AI Transparency Law
 ==========================================================
 
 Senate Bill 243 (California) Key Requirements:
@@ -14,6 +13,7 @@ Health tech companies face significant liability without this layer.
 References:
 - SB 243 Text: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202320240SB243
 - Effective: January 2025
+
 """
 
 import hashlib
@@ -93,8 +93,7 @@ class SB243CheckResult(BaseModel):
 
 
 class SB243ComplianceEngine:
-    """
-    SB 243 Compliance Engine for Digital Health AI
+    """SB 243 Compliance Engine for Digital Health AI
 
     SALES VALUE PROPOSITION:
     - Private right of action means users can SUE for violations
@@ -187,8 +186,7 @@ class SB243ComplianceEngine:
         context: dict[str, Any],
         is_ai_response: bool = False,
     ) -> SB243CheckResult:
-        """
-        Main SB 243 compliance check.
+        """Main SB 243 compliance check.
 
         Args:
             session_id: Unique session identifier
@@ -198,6 +196,7 @@ class SB243ComplianceEngine:
 
         Returns:
             SB243CheckResult with pass/fail and detailed violations
+
         """
         audit_id = self._generate_audit_id(session_id)
         violations = []
@@ -219,7 +218,7 @@ class SB243ComplianceEngine:
                     legal_reference="SB 243 Section 3(a) - AI Transparency Requirement",
                     remediation="Display clear AI disclosure before interaction begins",
                     evidence={"session_id": session_id, "disclosure_shown": False},
-                )
+                ),
             )
 
         # Check 2: Minor Protection
@@ -235,7 +234,7 @@ class SB243ComplianceEngine:
                         legal_reference="SB 243 Section 4(b) - Minor Protection Requirements",
                         remediation="Obtain verifiable parental consent before proceeding",
                         evidence={"user_type": "minor", "age": user_age},
-                    )
+                    ),
                 )
 
             # Check for hidden interaction attempts
@@ -249,7 +248,7 @@ class SB243ComplianceEngine:
                         legal_reference="SB 243 Section 4(c) - Parental Notification",
                         remediation="Flag session for parental notification",
                         evidence={"bypass_detected": True, "content_sample": content[:100]},
-                    )
+                    ),
                 )
 
         # Check 3: Crisis Detection (CRITICAL for health apps)
@@ -276,7 +275,7 @@ class SB243ComplianceEngine:
                         legal_reference="SB 243 Section 5 - Crisis Response Requirements",
                         remediation="Include crisis hotline (988) and escalation path",
                         evidence={"crisis_level": crisis_level.value},
-                    )
+                    ),
                 )
 
         # Check 4: AI Persona Deception (for AI responses)
@@ -292,7 +291,7 @@ class SB243ComplianceEngine:
                         legal_reference="SB 243 Section 3(b) - Deceptive Persona Prohibition",
                         remediation="Remove claims of human identity; maintain AI transparency",
                         evidence={"deceptive_content": content[:200]},
-                    )
+                    ),
                 )
 
         # Check 5: Consent Trail
@@ -306,7 +305,7 @@ class SB243ComplianceEngine:
                     legal_reference="SB 243 Section 6 + CCPA 1798.100",
                     remediation="Obtain explicit consent before health data processing",
                     evidence={"health_data_present": True, "consent": False},
-                )
+                ),
             )
 
         # Build result
@@ -316,7 +315,7 @@ class SB243ComplianceEngine:
                     v
                     for v in violations
                     if v.severity in [SB243Severity.CRITICAL, SB243Severity.HIGH]
-                ]
+                ],
             )
             == 0
         )
@@ -340,7 +339,7 @@ class SB243ComplianceEngine:
 
         if not passed:
             logger.warning(
-                f"SB243 VIOLATION: {session_id} - {[v.violation_type.value for v in violations]}"
+                f"SB243 VIOLATION: {session_id} - {[v.violation_type.value for v in violations]}",
             )
 
         if escalation_required:
@@ -542,7 +541,7 @@ class SB243ComplianceEngine:
                         "level": result.crisis_level.value,
                         "timestamp": result.checked_at.isoformat(),
                         "escalated": result.escalation_required,
-                    }
+                    },
                 )
 
         return {

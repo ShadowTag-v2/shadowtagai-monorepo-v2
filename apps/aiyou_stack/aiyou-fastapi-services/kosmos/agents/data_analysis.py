@@ -1,5 +1,4 @@
-"""
-Data Analysis Agent: Specializes in data exploration and computational analysis.
+"""Data Analysis Agent: Specializes in data exploration and computational analysis.
 
 Capabilities:
 - Load and explore datasets
@@ -17,8 +16,7 @@ from kosmos.core.vertex_client import GeminiModel
 
 
 class DataAnalysisAgent(BaseAgent):
-    """
-    Agent specialized in data analysis and code generation.
+    """Agent specialized in data analysis and code generation.
 
     Uses Gemini Pro for deep reasoning required for:
     - Choosing appropriate statistical methods
@@ -60,8 +58,7 @@ Always:
     )
 
     def execute_task(self, task: str, context: dict[str, Any] | None = None) -> ReActResult:
-        """
-        Execute data analysis task.
+        """Execute data analysis task.
 
         Example tasks:
         - "Analyze correlation between variables X and Y in dataset.csv"
@@ -74,6 +71,7 @@ Always:
 
         Returns:
             ReActResult with analysis code, results, and plots
+
         """
         goal = self._build_goal_with_instruction(task)
 
@@ -90,11 +88,11 @@ Always:
         return result
 
     def _store_analysis_results(self, result: ReActResult):
-        """
-        Extract analysis results from ReAct execution and store in world model.
+        """Extract analysis results from ReAct execution and store in world model.
 
         Args:
             result: ReAct execution result
+
         """
         for step in result.steps:
             if step.action == "execute_python" and step.observation:
@@ -115,14 +113,14 @@ Always:
                         recent_results[-1].plots.append(step.observation)
 
     def explore_dataset(self, dataset_path: str) -> ReActResult:
-        """
-        Perform exploratory data analysis on a dataset.
+        """Perform exploratory data analysis on a dataset.
 
         Args:
             dataset_path: Path to dataset file
 
         Returns:
             ReActResult with exploration results
+
         """
         return self.execute_task(
             "Perform exploratory data analysis on the dataset. "
@@ -132,8 +130,7 @@ Always:
         )
 
     def test_hypothesis(self, hypothesis_id: str, dataset_path: str) -> ReActResult:
-        """
-        Test a specific hypothesis using data analysis.
+        """Test a specific hypothesis using data analysis.
 
         Args:
             hypothesis_id: World model hypothesis ID
@@ -141,6 +138,7 @@ Always:
 
         Returns:
             ReActResult with test results
+
         """
         hypothesis = self.world_model.get_hypothesis(hypothesis_id)
         if not hypothesis:
@@ -158,10 +156,9 @@ Always:
         )
 
     def run_custom_analysis(
-        self, analysis_description: str, code_hints: str | None = None
+        self, analysis_description: str, code_hints: str | None = None,
     ) -> ReActResult:
-        """
-        Run a custom analysis based on description.
+        """Run a custom analysis based on description.
 
         Args:
             analysis_description: Description of desired analysis
@@ -169,6 +166,7 @@ Always:
 
         Returns:
             ReActResult with analysis
+
         """
         task = f"Perform the following analysis:\n{analysis_description}"
         if code_hints:

@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4 MCP Integration Module
+"""ShadowTag-v4 MCP Integration Module
 ============================
 
 Provides MCP (Model Context Protocol) tool integration for minion swarm.

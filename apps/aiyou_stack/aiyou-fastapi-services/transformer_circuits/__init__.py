@@ -1,5 +1,4 @@
-"""
-Transformer Circuits: Tracing Attention Computation Through Feature Interactions
+"""Transformer Circuits: Tracing Attention Computation Through Feature Interactions
 
 This package implements the methods described in "Tracing Attention Computation Through Feature Interactions"
 by Kamath, Ameisen, et al. (2025) from Anthropic's Transformer Circuits Thread.
@@ -33,15 +32,15 @@ from transformer_circuits.qk_attribution import (
 
 __version__ = "0.1.0"
 __all__ = [
-    "QKAttributor",
-    "compute_qk_attributions",
-    "compute_attention_scores",
-    "HeadLoadingComputer",
-    "compute_head_loadings",
+    "AttributionEdge",
     "AttributionGraph",
     "AttributionNode",
-    "AttributionEdge",
     "FeatureIntervenor",
+    "HeadLoadingComputer",
+    "QKAttributor",
+    "compute_attention_scores",
+    "compute_head_loadings",
+    "compute_qk_attributions",
     "steer_features",
     "validate_circuit",
 ]

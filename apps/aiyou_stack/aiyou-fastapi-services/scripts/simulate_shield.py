@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Simulate Shield - Defense Valuation Engine
+"""Simulate Shield - Defense Valuation Engine
 Validates the $35B valuation thesis for Pillar III (The Shield).
 """
 

@@ -2,4 +2,4 @@
 
 from .roi_calculator import CostStructure, DeploymentConfig, RevenueStructure, ROICalculator
 
-__all__ = ["ROICalculator", "DeploymentConfig", "CostStructure", "RevenueStructure"]
+__all__ = ["CostStructure", "DeploymentConfig", "ROICalculator", "RevenueStructure"]

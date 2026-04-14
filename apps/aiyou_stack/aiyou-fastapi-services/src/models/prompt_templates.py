@@ -1,5 +1,4 @@
-"""
-Prompt Engineering Template Models
+"""Prompt Engineering Template Models
 Supports: R-T-F, T-A-G, B-A-B, C-A-R-E, R-I-S-E frameworks
 """
 
@@ -17,8 +16,7 @@ class TemplateType(StrEnum):
 
 
 class RTFTemplate(BaseModel):
-    """
-    R-T-F Template: Role-Task-Format
+    """R-T-F Template: Role-Task-Format
     Simple and direct prompt structure
     """
 
@@ -32,13 +30,12 @@ class RTFTemplate(BaseModel):
                 "role": "Facebook Ad Marketer",
                 "task": "Design a compelling Facebook ad campaign to promote a new line of fitness apparel for a sports brand",
                 "format": "Create a storyboard outlining the sequence of ad creatives, including ad copy, visuals, and targeting strategy",
-            }
+            },
         }
 
 
 class TAGTemplate(BaseModel):
-    """
-    T-A-G Template: Task-Action-Goal
+    """T-A-G Template: Task-Action-Goal
     Focused on defining clear objectives and outcomes
     """
 
@@ -52,13 +49,12 @@ class TAGTemplate(BaseModel):
                 "task": "Evaluate the performance of team members",
                 "action": "Act as a Direct manager and assess the strengths and weaknesses of team members",
                 "goal": "Improve team performance so that the average user satisfaction score moves from 6 to 7.5 in the next quarter",
-            }
+            },
         }
 
 
 class BABTemplate(BaseModel):
-    """
-    B-A-B Template: Before-After-Bridge
+    """B-A-B Template: Before-After-Bridge
     Problem-solution focused prompting
     """
 
@@ -72,13 +68,12 @@ class BABTemplate(BaseModel):
                 "before": "We're nowhere to be seen on SEO rankings",
                 "after": "We want to be in top 10 SEO ranking in our niche in 90 days",
                 "bridge": "Develop a detailed plan mentioning all the measures we should take also include list of top 20 keywords",
-            }
+            },
         }
 
 
 class CARETemplate(BaseModel):
-    """
-    C-A-R-E Template: Context-Action-Result-Example
+    """C-A-R-E Template: Context-Action-Result-Example
     Comprehensive prompting with context and examples
     """
 
@@ -94,13 +89,12 @@ class CARETemplate(BaseModel):
                 "action": "Can you assist us in creating a targeted advertising campaign that emphasizes our environmental commitment?",
                 "result": "Our desired outcome is to drive product awareness and sales",
                 "example": "A good example of a similar successful initiative is Patagonia's 'Don't Buy This Jacket' campaign, which highlighted their commitment to sustainability while enhancing their brand image",
-            }
+            },
         }
 
 
 class RISETemplate(BaseModel):
-    """
-    R-I-S-E Template: Role-Input-Steps-Expectation
+    """R-I-S-E Template: Role-Input-Steps-Expectation
     Detailed step-by-step approach with clear expectations
     """
 
@@ -116,7 +110,7 @@ class RISETemplate(BaseModel):
                 "input_data": "I've gathered detailed information about our target audience, including their interests & common questions related to our industry",
                 "steps": "Provide a Step by Step content strategy plan identifying key topics based on our audience insights, creating an editorial calendar, and drafting engaging content that aligns with our brand message",
                 "expectation": "Aim is to increase our blog's monthly visitors by 40% and enhance our brand's position as a thought leader in our industry",
-            }
+            },
         }
 
 

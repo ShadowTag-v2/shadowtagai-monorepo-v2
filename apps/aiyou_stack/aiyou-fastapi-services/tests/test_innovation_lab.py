@@ -1,5 +1,4 @@
-"""
-Tests for Innovation Lab Service
+"""Tests for Innovation Lab Service
 """
 
 import pytest
@@ -91,7 +90,7 @@ class TestIdeationEndpoint:
     def test_ideate_invalid_prompt(self, client):
         """Test that too short prompt is rejected"""
         request_data = {
-            "prompt": "Test"  # Too short (< 10 chars)
+            "prompt": "Test",  # Too short (< 10 chars)
         }
         response = client.post("/v1/ideate", json=request_data)
         assert response.status_code == 422  # Validation error

@@ -82,7 +82,7 @@ class TestPKGBUILDVersioning:
         return PKGBUILD.read_text()
 
     def test_pkgver_format(self, content):
-        """pkgver must follow semver-like format."""
+        """Pkgver must follow semver-like format."""
         match = re.search(r"^pkgver=(.+)$", content, re.MULTILINE)
         assert match, "pkgver not found"
         version = match.group(1)
@@ -90,7 +90,7 @@ class TestPKGBUILDVersioning:
         assert re.match(r"^\d+\.\d+\.\d+", version), f"Invalid version format: {version}"
 
     def test_pkgrel_is_positive_integer(self, content):
-        """pkgrel must be a positive integer."""
+        """Pkgrel must be a positive integer."""
         match = re.search(r"^pkgrel=(\d+)$", content, re.MULTILINE)
         assert match, "pkgrel not found or not a positive integer"
         pkgrel = int(match.group(1))
@@ -106,28 +106,28 @@ class TestPKGBUILDMetadata:
         return PKGBUILD.read_text()
 
     def test_pkgname_valid(self, content):
-        """pkgname must be lowercase alphanumeric with hyphens."""
+        """Pkgname must be lowercase alphanumeric with hyphens."""
         match = re.search(r"^pkgname=(.+)$", content, re.MULTILINE)
         assert match, "pkgname not found"
         pkgname = match.group(1)
         assert re.match(r"^[a-z0-9][a-z0-9\-]*$", pkgname), f"Invalid pkgname: {pkgname}"
 
     def test_pkgdesc_present_and_nonempty(self, content):
-        """pkgdesc must be present and non-empty."""
+        """Pkgdesc must be present and non-empty."""
         match = re.search(r'^pkgdesc="(.+)"$', content, re.MULTILINE)
         assert match, "pkgdesc not found or empty"
         pkgdesc = match.group(1)
         assert len(pkgdesc) >= 10, f"pkgdesc too short: {pkgdesc}"
 
     def test_url_is_valid(self, content):
-        """url must be a valid HTTP(S) URL."""
+        """Url must be a valid HTTP(S) URL."""
         match = re.search(r'^url="(.+)"$', content, re.MULTILINE)
         assert match, "url not found"
         url = match.group(1)
         assert url.startswith(("http://", "https://")), f"Invalid URL: {url}"
 
     def test_arch_specified(self, content):
-        """arch must specify target architecture."""
+        """Arch must specify target architecture."""
         match = re.search(r"^arch=\((.+)\)$", content, re.MULTILINE)
         assert match, "arch not found"
         arch_content = match.group(1)
@@ -146,7 +146,7 @@ class TestPKGBUILDDependencies:
         return PKGBUILD.read_text()
 
     def test_depends_array_syntax(self, content):
-        """depends must be a valid bash array."""
+        """Depends must be a valid bash array."""
         # Check for depends=( or depends= on multiple lines
         assert "depends=" in content or "depends=(" in content, "depends array not found"
 

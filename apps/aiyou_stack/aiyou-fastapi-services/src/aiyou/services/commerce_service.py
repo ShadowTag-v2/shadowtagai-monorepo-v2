@@ -1,5 +1,4 @@
-"""
-Commerce service layer.
+"""Commerce service layer.
 
 Extracts all database operations from commerce routes
 into a proper service/repository pattern.
@@ -15,7 +14,7 @@ class CommerceService:
 
     @staticmethod
     def list_products(
-        db: Session, category: str | None = None, skip: int = 0, limit: int = 50
+        db: Session, category: str | None = None, skip: int = 0, limit: int = 50,
     ) -> list[dict]:
         """List active products with optional category filtering."""
         query = db.query(Product).filter(Product.is_active)
@@ -81,7 +80,7 @@ class CommerceService:
                         quantity=item["quantity"],
                         price_cents=prod.price_cents,
                         subtotal_cents=subtotal,
-                    )
+                    ),
                 )
 
         order = Order(

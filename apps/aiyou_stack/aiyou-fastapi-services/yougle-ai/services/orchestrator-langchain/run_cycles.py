@@ -4,8 +4,7 @@
 
 
 async def run_all(query: str, user_id: str | None, mode="default"):
-    """
-    Run1 -> Run2 -> Run3 Orchestration Loop
+    """Run1 -> Run2 -> Run3 Orchestration Loop
     """
     # Run1 – Chain A original
     # a_out = await chain_a.run1(query, mode=mode)

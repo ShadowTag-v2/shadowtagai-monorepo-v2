@@ -1,5 +1,4 @@
-"""
-Pydantic schemas for SEO Master service
+"""Pydantic schemas for SEO Master service
 """
 
 from datetime import datetime
@@ -141,7 +140,7 @@ class MetaTagHTMLResponse(BaseModel):
 class SchemaMarkupBase(BaseModel):
     url: str
     schema_type: str = Field(
-        ..., description="Schema.org type (e.g., Article, Product, Organization)"
+        ..., description="Schema.org type (e.g., Article, Product, Organization)",
     )
     schema_data: dict[str, Any] = Field(..., description="Schema markup data")
 
