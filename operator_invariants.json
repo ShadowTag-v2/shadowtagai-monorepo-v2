@@ -1,7 +1,7 @@
 {
-  "version": "8.4",
+  "version": "8.5",
   "scope": "antigravity_local_operator_invariants",
-  "locked_at": "2026-04-14T18:30:00Z",
+  "locked_at": "2026-04-14T18:50:00Z",
   "locked_by": "antigravity_session_b87c43d2",
   "purpose": "Lean core constitution. Normalized Model Doctrine, Bounded YOLO, MCP physical barriers, GitHub control plane, and Queue Doctrine.",
   "settings": {
@@ -60,7 +60,7 @@
     "documentation": "FORBIDDEN from guessing API endpoints. Execute tool call to Documentation MCP to fetch current SDK surface."
   },
   "mcp_fleet_status": {
-    "last_verified": "2026-04-14T18:30:00Z",
+    "last_verified": "2026-04-14T18:50:00Z",
     "canonical_config": "antigravity-mcp-config.json",
     "servers": {
       "google-developer-knowledge": "ONLINE",
@@ -111,7 +111,7 @@
     },
     "cloud_run": "LIVE (uphillsnowball-sovereign-767252945109.us-central1.run.app)",
     "cloud_run_verified": "2026-04-14T18:30:41Z — /health=200, /mission=MISSION_GO, attack=403_BLOCKED",
-    "skill_fleet": "116 global skills (17 new enforcement skills covering 115 invariant points)",
+    "skill_fleet": "125 global + 2 workspace = 127 total skills. v65.0 OMEGA APEX SINGULARITY + Sentinel Blueprint fully codified. 9 new architecture skills (bourne-mode-sop, sentinel-shield-doctrine, cor-cursor-vdi, triad-architecture, asymmetric-compute-model, holdco-exit-strategy, product-matrix-pricing, zeitgeist-osint-engine, go-serverless-shield). 17 enforcement skills enriched. All 115+ invariant points + Bourne SOP Pack + 17-Layer Shield + HoldCo exit strategy covered.",
     "f821_errors": 23,
     "lighthouse": {
       "shadowtagai_bp": 100,
