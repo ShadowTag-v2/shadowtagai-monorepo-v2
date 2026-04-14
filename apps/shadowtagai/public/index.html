@@ -1256,15 +1256,15 @@
         </div>
 
         <div class="hero-ctas">
-            <a href="#products" class="btn btn-primary btn-magnetic">
+            <a href="judge-6.html" class="btn btn-primary btn-magnetic" id="ab-primary-cta" onclick="gtag('event', 'click_cta_primary', {'variant': window.__ab_variant});">
                 <span class="material-symbols-outlined" style="font-size:1.125rem">shield</span>
-                Deploy Judge 6 Shield
+                <span id="ab-cta-text">Deploy Judge 6 Shield</span>
             </a>
-            <a href="#" onclick="showSection('pitch-deck'); return false;" class="btn btn-ghost btn-magnetic">
+            <a href="investors.html" onclick="gtag('event', 'click_cta_deck');" class="btn btn-ghost btn-magnetic">
                 <span class="material-symbols-outlined" style="font-size:1.125rem">slideshow</span>
                 Investor Deck
             </a>
-            <a href="#contact" class="btn btn-ghost btn-magnetic">
+            <a href="#contact" onclick="gtag('event', 'click_cta_contact');" class="btn btn-ghost btn-magnetic">
                 <span class="material-symbols-outlined" style="font-size:1.125rem">mail</span>
                 Contact Sales
             </a>
@@ -1436,7 +1436,7 @@
             <h2 class="section-title gradient-sweep">Get in Touch</h2>
             <p class="section-subtitle" style="margin: 0 auto 2.5rem;">Reach out to discuss sovereign AI deployment, partnership opportunities, or platform inquiries.</p>
         </div>
-        <form id="contactForm" class="reveal" action="https://script.google.com/macros/s/AKfycbxV1yD3_QHOnZ79N0I59bXTWAjt2tLHajRD6zNzjiogYOyPX0LaojymAXpmyfXXzJ5Nww/exec" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+        <form id="contactForm" class="reveal" style="display: flex; flex-direction: column; gap: 1rem;">
             <input type="hidden" name="sheet_name" value="ShadowTagAI">
             <input type="hidden" name="source" value="shadowtagai.com">
             <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
@@ -1676,12 +1676,25 @@ document.getElementById('contactForm').addEventListener('submit', async function
     try {
         const formData = new FormData(this);
         if (formData.get('_honey')) { btn.innerHTML = originalHTML; btn.disabled = false; btn.style.opacity = '1'; return; }
-        const urlEncoded = new URLSearchParams();
-        formData.forEach((value, key) => { if (key !== '_honey') urlEncoded.append(key, value); });
-        await fetch(this.action, { method: 'POST', mode: 'no-cors', body: urlEncoded });
+        
+        // Wait for Firebase SDK to load
+        if (typeof window.firebase === 'undefined' || typeof window.firebase.firestore === 'undefined') {
+            throw new Error("Firebase not loaded");
+        }
+        
+        const db = window.firebase.firestore();
+        
+        const payload = {};
+        formData.forEach((value, key) => { if (key !== '_honey') payload[key] = value; });
+        payload['created_at'] = window.firebase.firestore.FieldValue.serverTimestamp();
+        
+        await db.collection("contact_requests").add(payload);
+        
         this.reset(); showToast();
     } catch (err) {
-        this.reset(); showToast();
+        console.error("Form submission error:", err);
+        alert("Failed to send message. Please email us directly.");
+        this.reset();
     }
     btn.innerHTML = originalHTML; btn.disabled = false; btn.style.opacity = '1';
 });
@@ -2287,6 +2300,46 @@ if (window.location.hash) {
     const footerCanvas = document.getElementById('footerSphereCanvas');
     if (footerCanvas) renderSphere(footerCanvas, 48, primary, secondary, orbital);
 })();
+</script>
+
+<!-- Firebase SDKs (Implicit Initialization via Firebase Hosting) -->
+<script defer src="/__/firebase/10.8.0/firebase-app-compat.js"></script>
+<script defer src="/__/firebase/10.8.0/firebase-firestore-compat.js"></script>
+<script defer src="/__/firebase/init.js"></script>
+<!-- Analytics & A/B Testing -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-SHADOWTAG');
+
+  // A/B Testing: Primary CTA Copy
+  (function() {
+      const variants = [
+          "Deploy Judge 6 Shield",   // Control
+          "Get Liability Immunity",  // Variant A
+          "Schedule Risk Audit"      // Variant B
+      ];
+      
+      // Determine variant (persistent for user session)
+      let variantIndex = localStorage.getItem('ab_cta_variant');
+      if (variantIndex === null) {
+          variantIndex = Math.floor(Math.random() * variants.length);
+          localStorage.setItem('ab_cta_variant', variantIndex);
+      }
+      
+      window.__ab_variant = variantIndex;
+      const ctaText = document.getElementById('ab-cta-text');
+      if (ctaText) {
+          ctaText.textContent = variants[variantIndex % variants.length];
+      }
+      
+      // Log impression
+      gtag('event', 'ab_impression_hero_cta', {
+          'variant_id': variantIndex,
+          'variant_text': variants[variantIndex % variants.length]
+      });
+  })();
 </script>
 
 </body>
