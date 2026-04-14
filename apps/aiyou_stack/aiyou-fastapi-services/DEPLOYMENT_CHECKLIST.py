@@ -28,7 +28,8 @@ import logging
 import os
 import sys
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from datetime import datetime, timezone
+import typing
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -52,7 +53,7 @@ class DeploymentChecker:
         self.results: list[CheckResult] = []
         self.phase = 0
 
-    def run_all_checks(self) -> dict[str, any]:
+    def run_all_checks(self) -> dict[str, typing.Any]:
         """
         Run complete deployment checklist
 
@@ -663,7 +664,7 @@ class DeploymentChecker:
 
         print()
 
-    def generate_summary(self) -> dict[str, any]:
+    def generate_summary(self) -> dict[str, typing.Any]:
         """Generate deployment summary"""
         total = len(self.results)
         passed = sum(1 for r in self.results if r.passed)
@@ -713,7 +714,7 @@ class DeploymentChecker:
     def export_report(self, output_path: str = "deployment_report.json") -> str:
         """Export detailed deployment report"""
         report = {
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "deployment_checker_version": "1.0.0",
             "results": [asdict(r) for r in self.results],
         }
