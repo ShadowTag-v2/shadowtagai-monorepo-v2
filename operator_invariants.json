@@ -1,6 +1,8 @@
 {
-  "version": "8.3",
+  "version": "8.4",
   "scope": "antigravity_local_operator_invariants",
+  "locked_at": "2026-04-14T18:05:00Z",
+  "locked_by": "antigravity_session_b87c43d2",
   "purpose": "Lean core constitution. Normalized Model Doctrine, Bounded YOLO, MCP physical barriers, GitHub control plane, and Queue Doctrine.",
   "settings": {
     "authorized_gcp_project": "shadowtag-omega-v4",
@@ -23,7 +25,9 @@
       "runtime_health": "See RUNTIME_HEALTH.md",
       "boot_sequence": "See BOOT_SEQUENCE.md",
       "local_overrides": "See WORKSTATION_LOCAL_OVERRIDES.example.md",
-      "risk_register": "See RISK_REGISTER.md"
+      "risk_register": "See RISK_REGISTER.md",
+      "terms_of_service": "See TERMS.md",
+      "privacy_policy": "See PRIVACY.md"
     }
   },
   "normalized_model_doctrine": {
@@ -39,11 +43,12 @@
     "force_push_recovery": "Automated force-pushing is restricted to the Squash-Push Protocol for massive egress. MUST attempt `--force-with-lease` first. If rejected, fetch origin to verify tracking refs before falling back to `--force`."
   },
   "github_control_plane": {
-    "remote_target": "https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "remote_target": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "ssh_primary": true,
     "auth_method": "github_app_jwt",
     "app_id": "3018200",
     "client_id": "Iv23ctYqrxPQIt2ir8gY",
-    "pem_key_path": "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem",
+    "pem_key_path": "$SHADOWTAG_PEM",
     "directive": "All PR and repo truth management routes via GitHub App. `gh auth login` is strictly for manual local repair ONLY."
   },
   "the_nag_protocol": {
@@ -53,6 +58,27 @@
   "mcp_first_physical_barriers": {
     "database": "FORBIDDEN from writing SQL without first executing a tool call to the database MCP to query the live schema.",
     "documentation": "FORBIDDEN from guessing API endpoints. Execute tool call to Documentation MCP to fetch current SDK surface."
+  },
+  "mcp_fleet_status": {
+    "last_verified": "2026-04-14T18:04:30Z",
+    "canonical_config": "antigravity-mcp-config.json",
+    "servers": {
+      "google-developer-knowledge": "ONLINE",
+      "mcp-toolbox-sdk-java": "READY",
+      "mcp-toolbox-for-databases": "ONLINE",
+      "chrome-devtools-mcp": "ONLINE",
+      "github-mcp": "ONLINE",
+      "supabase-mcp": "ONLINE",
+      "sequential-thinking": "ONLINE",
+      "stitch": "ONLINE",
+      "dart-mcp-server": "ONLINE"
+    },
+    "infrastructure": {
+      "temporal": "ONLINE:7233+8233",
+      "chrome-debug": "ONLINE:9222"
+    },
+    "total_online": 9,
+    "total_dead": 0
   },
   "pre_action_memory_gate": {
     "trigger": "Before ANY repo-wide action or batch push",
@@ -65,6 +91,34 @@
       "6. Check implementation of `.beads/issues.jsonl`.",
       "7. If PII-sterile, unentangled, and authorized, proceed to Execution Phase."
     ]
+  },
+  "system_state": {
+    "hosting": {
+      "shadowtagai.com": "DEPLOYED",
+      "kovelai.com": "DEPLOYED",
+      "www.shadowtagai.com": "DEPLOYED",
+      "www.kovelai.com": "CNAME_ACTIVE"
+    },
+    "recaptcha": {
+      "shadowtagai": "PRODUCTION_V3",
+      "kovelai": "PRODUCTION_V3"
+    },
+    "lancedb": {
+      "vectors": 27108,
+      "model": "all-MiniLM-L6-v2",
+      "path": "~/.shadowtag/lancedb"
+    },
+    "cloud_run": "DEPLOYING",
+    "f821_errors": 23,
+    "lighthouse": {
+      "shadowtagai_bp": 100,
+      "shadowtagai_seo": 100,
+      "kovelai_bp": 100,
+      "kovelai_seo": 100
+    },
+    "ci_cd": "firebase-deploy.yml ACTIVE",
+    "structural_tests": "30/30",
+    "dead_code": "clean (vulture + ruff)"
   },
   "memory_state": "LOCKED"
 }
