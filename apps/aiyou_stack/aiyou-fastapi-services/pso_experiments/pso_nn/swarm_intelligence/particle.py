@@ -74,8 +74,8 @@ class Particle:
                 size=(self.dims,),
             )
         else:
-            self.position = np.asarray(position)
-            self.velocity = np.asarray(velocity)
+            self.position = np.asarray(self.position)
+            self.velocity = np.asarray(self.velocity)
             self.dims = self.position.shape[0]
 
     def update(self, c1, c2, gbest, fitness_fn, compare_fn):

@@ -26,7 +26,7 @@ class GPTRAMMemory:
         try:
             self.redis_client = await redis.from_url(
                 f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}/{settings.REDIS_DB}",
-                password=[VAPORIZED_PWD].REDIS_PASSWORD,
+                password=settings.REDIS_PASSWORD,
                 encoding="utf-8",
                 decode_responses=True,
             )
