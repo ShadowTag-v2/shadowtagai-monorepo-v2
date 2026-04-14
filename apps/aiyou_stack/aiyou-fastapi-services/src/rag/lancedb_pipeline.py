@@ -182,7 +182,7 @@ class VectorStore:
         self._connect()
         import pyarrow as pa
 
-        if self.table_name in self._db.table_names():
+        if self.table_name in self._db.list_tables():
             self._table = self._db.open_table(self.table_name)
         else:
             schema = pa.schema([
