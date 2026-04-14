@@ -1,5 +1,4 @@
-"""
-Modular Compliance Engine Service
+"""Modular Compliance Engine Service
 
 Orchestrates compliance assessments across selected regulation modules.
 Implements the core business logic for the ActiveShield MCF.
@@ -40,8 +39,7 @@ settings = get_settings()
 
 
 class ModularComplianceEngine:
-    """
-    Central compliance engine that orchestrates module assessments.
+    """Central compliance engine that orchestrates module assessments.
 
     Features:
     - Dynamic module selection based on user configuration
@@ -83,7 +81,7 @@ class ModularComplianceEngine:
         auto_register_modules()
         self._initialized = True
         logger.info(
-            f"Compliance engine initialized with {self._registry.get_module_count()} modules"
+            f"Compliance engine initialized with {self._registry.get_module_count()} modules",
         )
 
     # =========================================================================
@@ -91,16 +89,16 @@ class ModularComplianceEngine:
     # =========================================================================
 
     async def generate_blueprint(
-        self, request: ComplianceBlueprintRequest
+        self, request: ComplianceBlueprintRequest,
     ) -> ComplianceBlueprintResponse:
-        """
-        Generate a compliance blueprint based on user's selected regulations.
+        """Generate a compliance blueprint based on user's selected regulations.
 
         Args:
             request: Blueprint request with selected jurisdictions and regulations
 
         Returns:
             ComplianceBlueprintResponse with module info, endpoints, and SDK config
+
         """
         await self.initialize()
 
@@ -156,8 +154,7 @@ class ModularComplianceEngine:
     # =========================================================================
 
     async def assess(self, input_data: AssessmentInput) -> ComplianceAssessmentResult:
-        """
-        Run compliance assessment against selected modules.
+        """Run compliance assessment against selected modules.
 
         Executes assessments in parallel for performance.
 
@@ -166,6 +163,7 @@ class ModularComplianceEngine:
 
         Returns:
             ComplianceAssessmentResult with all module results and audit proof
+
         """
         await self.initialize()
 
@@ -182,7 +180,7 @@ class ModularComplianceEngine:
         # Run assessments in parallel
         assessment_tasks = [module.assess(input_data) for module in modules]
         module_results: list[ModuleResult] = await asyncio.gather(
-            *assessment_tasks, return_exceptions=True
+            *assessment_tasks, return_exceptions=True,
         )
 
         # Filter out exceptions and log errors
@@ -202,9 +200,9 @@ class ModularComplianceEngine:
                         controls_non_compliant=0,
                         controls_partial=0,
                         control_results=[],
-                        recommendations=[f"Assessment error: {str(result)}"],
+                        recommendations=[f"Assessment error: {result!s}"],
                         requires_human_review=True,
-                    )
+                    ),
                 )
             else:
                 valid_results.append(result)
@@ -219,16 +217,15 @@ class ModularComplianceEngine:
         elapsed_ms = (datetime.utcnow() - start_time).total_seconds() * 1000
         logger.info(
             f"Assessment {assessment_id} completed in {elapsed_ms:.2f}ms, "
-            f"score: {overall_result.overall_score:.2%}"
+            f"score: {overall_result.overall_score:.2%}",
         )
 
         return overall_result
 
     async def assess_batch(
-        self, inputs: list[AssessmentInput], max_concurrent: int = 10
+        self, inputs: list[AssessmentInput], max_concurrent: int = 10,
     ) -> list[ComplianceAssessmentResult]:
-        """
-        Batch assessment with MCP efficiency patterns.
+        """Batch assessment with MCP efficiency patterns.
 
         Implements progressive disclosure - first pass identifies high-risk items,
         second pass does detailed analysis on top violations.
@@ -239,6 +236,7 @@ class ModularComplianceEngine:
 
         Returns:
             List of assessment results
+
         """
         await self.initialize()
 
@@ -250,7 +248,7 @@ class ModularComplianceEngine:
                 return await self.assess(input_data)
 
         results = await asyncio.gather(
-            *[assess_with_limit(inp) for inp in inputs], return_exceptions=True
+            *[assess_with_limit(inp) for inp in inputs], return_exceptions=True,
         )
 
         # Filter and return valid results
@@ -269,8 +267,7 @@ class ModularComplianceEngine:
     # =========================================================================
 
     async def validate_response(self, request: ValidationRequest) -> ValidationResult:
-        """
-        Validate generated content against compliance rules.
+        """Validate generated content against compliance rules.
 
         Used for post-generation validation in GPT Store pattern.
 
@@ -279,6 +276,7 @@ class ModularComplianceEngine:
 
         Returns:
             ValidationResult with violations and remediated content
+
         """
         await self.initialize()
 
@@ -330,7 +328,7 @@ class ModularComplianceEngine:
     # =========================================================================
 
     def _aggregate_results(
-        self, module_results: list[ModuleResult], input_data: AssessmentInput
+        self, module_results: list[ModuleResult], input_data: AssessmentInput,
     ) -> ComplianceAssessmentResult:
         """Aggregate results from multiple module assessments."""
         if not module_results:
@@ -402,8 +400,7 @@ class ModularComplianceEngine:
         )
 
     async def _auto_remediate(self, content: str, violations: list[ValidationViolation]) -> str:
-        """
-        Attempt automatic remediation of content.
+        """Attempt automatic remediation of content.
 
         Only remediates non-critical violations with clear fixes.
         """
@@ -434,7 +431,7 @@ class ModularComplianceEngine:
         return hashlib.sha256(content.encode()).hexdigest()
 
     def _generate_validation_hash(
-        self, request: ValidationRequest, violations: list[ValidationViolation]
+        self, request: ValidationRequest, violations: list[ValidationViolation],
     ) -> str:
         """Generate SHA256 hash for validation audit."""
         audit_data = {

@@ -9,10 +9,9 @@ db = firestore.Client(project="shadowtag-omega-v4")
 
 @router.post("/vote")
 async def record_human_deception_index(
-    video_id: str, user_vote: str, actual_truth: str, latency_ms: int
+    video_id: str, user_vote: str, actual_truth: str, latency_ms: int,
 ):
-    """
-    [ THE CORE B2B ENGINE ]
+    """[ THE CORE B2B ENGINE ]
     This is the exact mechanism that generates the proprietary Human Deception Index (HDI).
     Every swipe is logged. We are mapping human susceptibility to synthetic physics.
     """
@@ -29,7 +28,7 @@ async def record_human_deception_index(
             "hesitation_latency_ms": latency_ms,
             "environment": "edge_node_chrome146",
             "timestamp": firestore.SERVER_TIMESTAMP,
-        }
+        },
     )
 
     return {"status": "HDI Matrix Updated", "user_fooled": juked}

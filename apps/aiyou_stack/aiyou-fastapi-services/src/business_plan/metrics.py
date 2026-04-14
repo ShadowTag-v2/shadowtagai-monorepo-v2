@@ -1,5 +1,4 @@
-"""
-Business Metrics & Unit Economics
+"""Business Metrics & Unit Economics
 Target State: Month 12 Financial Model
 """
 

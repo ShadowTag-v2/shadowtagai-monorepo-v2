@@ -11,8 +11,7 @@ logger = logging.getLogger("KB-Retriever")
 
 @functions_framework.http
 def retrieve(request):
-    """
-    HTTP Cloud Function to query the Knowledge Base.
+    """HTTP Cloud Function to query the Knowledge Base.
     Expects JSON: {"query": "string"}
     """
     try:

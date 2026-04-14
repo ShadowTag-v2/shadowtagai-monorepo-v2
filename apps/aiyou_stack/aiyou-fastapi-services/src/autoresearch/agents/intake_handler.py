@@ -1,5 +1,4 @@
-"""
-Intake Handler - Sonnet 4.5 Interface
+"""Intake Handler - Sonnet 4.5 Interface
 
 Receives tasks from the standalone Sonnet 4.5 instance and routes them
 to the Flying minion for processing via the Antigravity Gemini pool.
@@ -41,8 +40,7 @@ class IncomingTask:
 
 
 class IntakeHandler:
-    """
-    Handles intake from Sonnet 4.5 and routes to Flying minion.
+    """Handles intake from Sonnet 4.5 and routes to Flying minion.
 
     Pipeline: Sonnet 4.5 → IntakeHandler → minion → FinalBoss → Git
     """
@@ -75,22 +73,22 @@ class IntakeHandler:
             self.thread.join(timeout=1.0)
 
     def receive_task(self, task: IncomingTask):
-        """
-        Receive a task from Sonnet 4.5.
+        """Receive a task from Sonnet 4.5.
 
         Args:
             task: IncomingTask object
+
         """
         self.total_received += 1
         self.task_queue.put(task)
         print(f"///▞ INTAKE :: Received task {task.id} (Priority: {task.priority.name})")
 
     def receive_from_json(self, json_path: str):
-        """
-        Receive tasks from a JSON file (for batch processing).
+        """Receive tasks from a JSON file (for batch processing).
 
         Args:
             json_path: Path to JSON file with tasks
+
         """
         try:
             with open(json_path) as f:
@@ -130,14 +128,14 @@ class IntakeHandler:
             time.sleep(0.1)
 
     def _triage(self, task: IncomingTask) -> IncomingTask:
-        """
-        Triage and categorize the task.
+        """Triage and categorize the task.
 
         Args:
             task: Incoming task
 
         Returns:
             Categorized task with metadata
+
         """
         # Add categorization metadata
         task.metadata["category"] = self._categorize_content(task.content)
@@ -151,14 +149,13 @@ class IntakeHandler:
 
         if any(kw in content_lower for kw in ["bug", "fix", "error", "crash"]):
             return "bug_fix"
-        elif any(kw in content_lower for kw in ["feature", "implement", "add"]):
+        if any(kw in content_lower for kw in ["feature", "implement", "add"]):
             return "feature"
-        elif any(kw in content_lower for kw in ["refactor", "cleanup", "optimize"]):
+        if any(kw in content_lower for kw in ["refactor", "cleanup", "optimize"]):
             return "refactor"
-        elif any(kw in content_lower for kw in ["test", "verify", "validate"]):
+        if any(kw in content_lower for kw in ["test", "verify", "validate"]):
             return "testing"
-        else:
-            return "general"
+        return "general"
 
     def _estimate_complexity(self, content: str) -> str:
         """Estimate task complexity"""
@@ -166,22 +163,21 @@ class IntakeHandler:
 
         if word_count > 200:
             return "high"
-        elif word_count > 50:
+        if word_count > 50:
             return "medium"
-        else:
-            return "low"
+        return "low"
 
     def _route_to_autoresearch(self, task: IncomingTask):
-        """
-        Route the task to Flying minion for deep analysis.
+        """Route the task to Flying minion for deep analysis.
 
         Args:
             task: Categorized task
+
         """
         # In a real implementation, this would integrate with the Flying minion
         # For now, we log the routing
         print(
-            f"///▞ INTAKE :: Routing {task.id} to Flying minion ({task.metadata.get('category')})"
+            f"///▞ INTAKE :: Routing {task.id} to Flying minion ({task.metadata.get('category')})",
         )
 
     def get_stats(self) -> dict[str, Any]:

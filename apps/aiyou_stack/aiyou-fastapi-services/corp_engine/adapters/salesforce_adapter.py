@@ -1,5 +1,4 @@
-"""
-Salesforce Enterprise Adapter
+"""Salesforce Enterprise Adapter
 ==============================
 API-only integration with customer Salesforce environments.
 All processing happens in our GCP infrastructure.
@@ -145,8 +144,7 @@ class SalesforceOpportunity(BaseModel):
 
 
 class SalesforceAdapter(BaseAdapter[SFRecord]):
-    """
-    Salesforce Enterprise Adapter.
+    """Salesforce Enterprise Adapter.
 
     Connects to customer Salesforce via REST API.
     All data processing happens in our GCP infrastructure.
@@ -174,8 +172,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
     # =========================================================================
 
     async def connect(self) -> bool:
-        """
-        Connect to Salesforce via OAuth2.
+        """Connect to Salesforce via OAuth2.
         Uses JWT Bearer flow for app-only access.
         """
         self.health.status = AdapterStatus.CONNECTING
@@ -193,10 +190,9 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
                 self.health.status = AdapterStatus.CONNECTED
                 logger.info(f"Salesforce adapter connected to {self._instance_url}")
                 return True
-            else:
-                self.health.status = AdapterStatus.ERROR
-                self.health.last_error = "Failed to obtain access token"
-                return False
+            self.health.status = AdapterStatus.ERROR
+            self.health.last_error = "Failed to obtain access token"
+            return False
 
         except Exception as e:
             self.health.status = AdapterStatus.ERROR
@@ -236,8 +232,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
     # =========================================================================
 
     async def fetch_data(self, query: dict[str, Any]) -> list[SFRecord]:
-        """
-        Fetch data from Salesforce.
+        """Fetch data from Salesforce.
         Routes to appropriate object based on query.
         """
         object_type = query.get("type", "Account")
@@ -250,12 +245,10 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         # Decide between REST and Bulk API
         if self.sf_config.use_bulk_api and batch_size > self.sf_config.bulk_threshold:
             return await self._bulk_query(soql)
-        else:
-            return await self._soql_query(soql)
+        return await self._soql_query(soql)
 
     async def push_data(self, data: list[SFRecord]) -> SyncResult:
-        """
-        Push data back to Salesforce.
+        """Push data back to Salesforce.
         Creates, updates, or upserts records.
         """
         result = SyncResult(
@@ -289,7 +282,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
                 result.records_failed += batch_result.get("failed", 0)
 
             except Exception as e:
-                result.errors.append(f"{obj_type}: {str(e)}")
+                result.errors.append(f"{obj_type}: {e!s}")
 
         return result
 
@@ -297,7 +290,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         """Get Salesforce schema information"""
         # Describe global to get all objects
         response = await self._sf_request(
-            "GET", f"/services/data/{self.sf_config.api_version}/sobjects"
+            "GET", f"/services/data/{self.sf_config.api_version}/sobjects",
         )
 
         objects = {}
@@ -470,7 +463,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         # Poll for completion
         while True:
             status = await self._sf_request(
-                "GET", f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}"
+                "GET", f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}",
             )
 
             if status and status.get("state") in ["JobComplete", "Failed", "Aborted"]:
@@ -481,7 +474,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         # Get results
         if status.get("state") == "JobComplete":
             results = await self._sf_request(
-                "GET", f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}/results"
+                "GET", f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}/results",
             )
             return results if isinstance(results, list) else []
 
@@ -492,7 +485,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
     # =========================================================================
 
     async def _batch_update(
-        self, object_type: str, records: list[dict[str, Any]]
+        self, object_type: str, records: list[dict[str, Any]],
     ) -> dict[str, int]:
         """Batch update records via composite API"""
         result = {"created": 0, "updated": 0, "failed": 0}
@@ -512,7 +505,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
                         "url": f"/services/data/{self.sf_config.api_version}/sobjects/{object_type}/{record_id}",
                         "referenceId": f"update_{i}",
                         "body": clean_record,
-                    }
+                    },
                 )
             else:
                 # Create new
@@ -522,11 +515,11 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
                         "url": f"/services/data/{self.sf_config.api_version}/sobjects/{object_type}",
                         "referenceId": f"create_{i}",
                         "body": clean_record,
-                    }
+                    },
                 )
 
         response = await self._sf_request(
-            "POST", f"/services/data/{self.sf_config.api_version}/composite", json=composite_request
+            "POST", f"/services/data/{self.sf_config.api_version}/composite", json=composite_request,
         )
 
         if response and "compositeResponse" in response:
@@ -660,8 +653,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
     # =========================================================================
 
     async def _process_data(self, data: list[SFRecord]) -> list[SFRecord]:
-        """
-        Process Salesforce data through our AI pipeline.
+        """Process Salesforce data through our AI pipeline.
         This is where the Economic Juggernaut adds massive value.
         """
         processed = []
@@ -766,8 +758,7 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         return risks
 
     async def _calculate_value_added(self, original: list[Any], processed: list[Any]) -> float:
-        """
-        Calculate value added by Salesforce integration.
+        """Calculate value added by Salesforce integration.
 
         Value sources:
         - Lead scoring saves sales rep time

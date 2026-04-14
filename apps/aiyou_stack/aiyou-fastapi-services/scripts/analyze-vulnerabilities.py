@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Vulnerability Analysis Task for Gemini Code Assist
+"""Vulnerability Analysis Task for Gemini Code Assist
 Analyzes all dependency files and identifies security issues.
 
 Usage:

@@ -1,5 +1,4 @@
-"""
-API routes for file search service
+"""API routes for file search service
 """
 
 import structlog
@@ -40,8 +39,7 @@ async def process_query(
     corpus_manager: CorpusManager = Depends(get_corpus_manager),
     kill_switch: KillSwitch = Depends(get_kill_switch),
 ):
-    """
-    Process a query with file search and Judge #6 enforcement
+    """Process a query with file search and Judge #6 enforcement
 
     This endpoint orchestrates:
     1. File search for policy context (async)
@@ -80,7 +78,7 @@ async def process_query(
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error("query_processing_error", error=str(e))
-        raise HTTPException(status_code=500, detail=f"Query processing failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Query processing failed: {e!s}")
 
 
 @router.get("/corpus", response_model=list[CorpusInfo])
@@ -93,7 +91,7 @@ async def list_corpora(
         return corpora
     except Exception as e:
         logger.error("corpus_list_error", error=str(e))
-        raise HTTPException(status_code=500, detail=f"Failed to list corpora: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to list corpora: {e!s}")
 
 
 @router.post("/corpus", response_model=dict[str, str])
@@ -105,7 +103,7 @@ async def create_corpus(
     try:
         vertical_config = get_vertical_config(create_req.vertical)
         corpus_name = await corpus_manager.create_corpus(
-            vertical_config, force_recreate=create_req.force_recreate
+            vertical_config, force_recreate=create_req.force_recreate,
         )
 
         return {
@@ -118,7 +116,7 @@ async def create_corpus(
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error("corpus_creation_error", error=str(e), vertical=create_req.vertical)
-        raise HTTPException(status_code=500, detail=f"Failed to create corpus: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to create corpus: {e!s}")
 
 
 @router.post("/corpus/import")
@@ -147,7 +145,7 @@ async def import_files(
             error=str(e),
             corpus=import_req.corpus_name,
         )
-        raise HTTPException(status_code=500, detail=f"Failed to import files: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to import files: {e!s}")
 
 
 @router.delete("/corpus/{corpus_name}")
@@ -166,7 +164,7 @@ async def delete_corpus(
 
     except Exception as e:
         logger.error("corpus_deletion_error", error=str(e), corpus=corpus_name)
-        raise HTTPException(status_code=500, detail=f"Failed to delete corpus: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to delete corpus: {e!s}")
 
 
 @router.get("/verticals", response_model=list[VerticalInfo])

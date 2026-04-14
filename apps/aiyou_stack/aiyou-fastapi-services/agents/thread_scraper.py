@@ -1,5 +1,4 @@
-"""
-Thread Scraper Agent
+"""Thread Scraper Agent
 
 Automated agent for collecting AI agent knowledge threads from X/Twitter.
 Uses the n-autoresearch/Kosmos/BioAgents swarm pattern for parallel processing.
@@ -76,8 +75,7 @@ class ScrapeResult:
 
 
 class ThreadScraperAgent:
-    """
-    Agent for scraping AI agent threads from X/Twitter.
+    """Agent for scraping AI agent threads from X/Twitter.
 
     Implements the n-autoresearch/Kosmos/BioAgents agent pattern with:
     - Rate limiting and backoff
@@ -110,14 +108,14 @@ class ThreadScraperAgent:
         api_secret: str | None = None,
         bearer_token: str | None = None,
     ):
-        """
-        Initialize scraper agent.
+        """Initialize scraper agent.
 
         Args:
             db: Database session
             api_key: X API key
             api_secret: X API secret
             bearer_token: X API bearer token
+
         """
         self.db = db
         self.api_key = api_key
@@ -132,14 +130,14 @@ class ThreadScraperAgent:
         self.mock_mode = not bearer_token
 
     async def run_job(self, job_id: str) -> ScrapeResult:
-        """
-        Execute a scrape job.
+        """Execute a scrape job.
 
         Args:
             job_id: ID of the scrape job to run
 
         Returns:
             ScrapeResult with operation details
+
         """
         job = self.db.query(AIThreadScrapeJob).filter_by(id=job_id).first()
         if not job:
@@ -186,8 +184,7 @@ class ThreadScraperAgent:
         min_likes: int = 10,
         max_results: int = 100,
     ) -> ScrapeResult:
-        """
-        Scrape threads matching query.
+        """Scrape threads matching query.
 
         Args:
             query: Search query
@@ -196,6 +193,7 @@ class ThreadScraperAgent:
 
         Returns:
             ScrapeResult
+
         """
         logger.info(f"Scraping: query='{query}', min_likes={min_likes}, max_results={max_results}")
 
@@ -320,13 +318,13 @@ class ThreadScraperAgent:
                     "platform_post_id": tweet.get("id"),
                     "position": 1,
                     "content": text,
-                }
+                },
             ],
             likes=metrics.get("like_count", 0),
             retweets=metrics.get("retweet_count", 0),
             replies=metrics.get("reply_count", 0),
             published_at=datetime.fromisoformat(
-                tweet.get("created_at", datetime.utcnow().isoformat()).replace("Z", "+00:00")
+                tweet.get("created_at", datetime.utcnow().isoformat()).replace("Z", "+00:00"),
             ),
             source_url=f"https://x.com/i/status/{tweet.get('id')}",
             tags=[t.lower() for t in tags],
@@ -542,7 +540,6 @@ Validate inputs, sanitize outputs.
 class RateLimitError(Exception):
     """Raised when rate limit is exceeded."""
 
-    pass
 
 
 # Scheduled job runner

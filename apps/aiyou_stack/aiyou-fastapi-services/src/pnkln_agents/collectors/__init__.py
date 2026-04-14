@@ -1,5 +1,4 @@
-"""
-Source Collectors for Gemini Ingestion Layer
+"""Source Collectors for Gemini Ingestion Layer
 Real API integrations for YouTube, Twitter, News, Academic sources
 """
 
@@ -11,10 +10,10 @@ from .twitter_collector import TwitterCollector
 from .youtube_collector import YouTubeCollector
 
 __all__ = [
-    "BaseCollector",
-    "YouTubeCollector",
-    "TwitterCollector",
-    "NewsCollector",
     "AcademicCollector",
+    "BaseCollector",
+    "NewsCollector",
     "RedditCollector",
+    "TwitterCollector",
+    "YouTubeCollector",
 ]

@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, confloat, conlist
 
 # Define the allowed literal values for stricter validation
 SourceType = Literal[
-    "regulation", "news", "rfp", "competitor-doc", "blog", "draft_bill", "lawsuit", "guidance"
+    "regulation", "news", "rfp", "competitor-doc", "blog", "draft_bill", "lawsuit", "guidance",
 ]
 ChangeType = Literal["new_law", "amendment", "guidance", "ruling", "proposal", "cancellation"]
 RiskTag = Literal[
@@ -18,8 +18,7 @@ RiskTag = Literal[
 
 
 class IntelEvent(BaseModel):
-    """
-    A structured, comparable intelligence event generated from a raw source document.
+    """A structured, comparable intelligence event generated from a raw source document.
     """
 
     source_type: SourceType = Field(..., description="The classification of the source document.")
@@ -37,10 +36,10 @@ class IntelEvent(BaseModel):
     )
     change_type: ChangeType = Field(..., description="The nature of the change being reported.")
     summary: str = Field(
-        ..., description="A concise, human-readable summary of the event (2-3 sentences)."
+        ..., description="A concise, human-readable summary of the event (2-3 sentences).",
     )
     impacts: conlist(str, min_length=1) = Field(
-        ..., description="A list of direct, first-order consequences or requirements."
+        ..., description="A list of direct, first-order consequences or requirements.",
     )
     risk_tags: list[RiskTag] = Field(
         default_factory=list,

@@ -1,5 +1,4 @@
-"""
-Research Chain: Perplexity → SuperGrok
+"""Research Chain: Perplexity → SuperGrok
 
 Each LLM explains reasoning to the next (REASONING HANDOFF pattern).
 Research sources: all sources + X + Grokipedia.
@@ -152,7 +151,7 @@ Return ONLY valid JSON."""
         self.api_key = api_key or os.getenv("GROK_API_KEY")
 
     async def research(
-        self, atom: Atom, handoff: ReasoningHandoff, perplexity_findings: dict[str, Any]
+        self, atom: Atom, handoff: ReasoningHandoff, perplexity_findings: dict[str, Any],
     ) -> dict[str, Any]:
         """Research using SuperGrok (X + Grokipedia)"""
         if not self.api_key:
@@ -188,7 +187,7 @@ Return ONLY valid JSON."""
         return self._fallback_research(atom, handoff, perplexity_findings)
 
     def _fallback_research(
-        self, atom: Atom, handoff: ReasoningHandoff, perplexity_findings: dict[str, Any]
+        self, atom: Atom, handoff: ReasoningHandoff, perplexity_findings: dict[str, Any],
     ) -> dict[str, Any]:
         return {
             "x_findings": [],
@@ -201,8 +200,7 @@ Return ONLY valid JSON."""
 
 
 class ResearchChain:
-    """
-    Research Chain: Perplexity → SuperGrok
+    """Research Chain: Perplexity → SuperGrok
 
     Each LLM explains reasoning to the next.
     Full reasoning chain passed to Claude Code.
@@ -213,8 +211,7 @@ class ResearchChain:
         self.grok = SuperGrokClient(grok_api_key)
 
     async def enrich(self, atoms: list[Atom]) -> list[Atom]:
-        """
-        Enrich atoms with research from Perplexity → SuperGrok.
+        """Enrich atoms with research from Perplexity → SuperGrok.
         Returns atoms with updated reasoning chains.
         """
         enriched = []

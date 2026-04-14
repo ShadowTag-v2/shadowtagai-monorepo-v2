@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-═══════════════════════════════════════════════════════════════════════════════
+"""═══════════════════════════════════════════════════════════════════════════════
 PNKLN ORCHESTRATOR - Validation Test Suite
 
 Test auto-activation, skill matching, agent execution, and audit trail.

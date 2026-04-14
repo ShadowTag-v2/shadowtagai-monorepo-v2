@@ -1,5 +1,4 @@
-"""
-DTE (Dynamic Test Evolution) Engine
+"""DTE (Dynamic Test Evolution) Engine
 Self-evolving test framework with GRPO/PPO comparison
 
 Test results: +3.7% accuracy improvement with evolved prompts
@@ -49,8 +48,7 @@ class EvolutionResult:
 
 
 class DTEEngine:
-    """
-    Dynamic Test Evolution Engine
+    """Dynamic Test Evolution Engine
 
     Continuously evolves test cases and strategies
     Compares GRPO (Group Relative Policy Optimization) vs PPO
@@ -73,8 +71,7 @@ class DTEEngine:
         strategy: EvolutionStrategy = EvolutionStrategy.MUTATION,
         iterations: int = 100,
     ) -> EvolutionResult:
-        """
-        Evolve test cases using specified strategy
+        """Evolve test cases using specified strategy
 
         Args:
             evaluator: Function that scores a test case (returns 0.0 to 1.0)
@@ -83,6 +80,7 @@ class DTEEngine:
 
         Returns:
             EvolutionResult with performance metrics
+
         """
         logger.info(f"Starting DTE evolution (strategy={strategy.value}, iterations={iterations})")
 
@@ -119,7 +117,7 @@ class DTEEngine:
         logger.info(
             f"Generation {self.current_generation}: "
             f"best={best_score:.3f}, avg={average_score:.3f}, "
-            f"improvement={improvement:+.3f}"
+            f"improvement={improvement:+.3f}",
         )
 
         return result
@@ -235,8 +233,7 @@ class DTEEngine:
 
 
 class GRPOSimulator:
-    """
-    GRPO (Group Relative Policy Optimization) Simulator
+    """GRPO (Group Relative Policy Optimization) Simulator
     Compare against PPO for training effectiveness
 
     GRPO advantages:
@@ -251,10 +248,9 @@ class GRPOSimulator:
         logger.info(f"GRPO Simulator initialized (G={group_size})")
 
     def simulate_training_step(
-        self, rewards: list[float], baseline: float | None = None
+        self, rewards: list[float], baseline: float | None = None,
     ) -> dict[str, Any]:
-        """
-        Simulate GRPO training step
+        """Simulate GRPO training step
 
         Args:
             rewards: List of rewards for the group
@@ -262,6 +258,7 @@ class GRPOSimulator:
 
         Returns:
             Training metrics
+
         """
         if len(rewards) != self.group_size:
             raise ValueError(f"Expected {self.group_size} rewards, got {len(rewards)}")
@@ -289,8 +286,7 @@ class GRPOSimulator:
         }
 
     def compare_with_ppo(self, rewards: list[float], epsilon: float = 0.2) -> dict[str, Any]:
-        """
-        Compare GRPO vs PPO on same rewards
+        """Compare GRPO vs PPO on same rewards
 
         Args:
             rewards: Rewards for comparison
@@ -298,6 +294,7 @@ class GRPOSimulator:
 
         Returns:
             Comparison metrics
+
         """
         # GRPO step
         grpo_result = self.simulate_training_step(rewards)

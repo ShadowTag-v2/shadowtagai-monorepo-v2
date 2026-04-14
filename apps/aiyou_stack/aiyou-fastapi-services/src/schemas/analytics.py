@@ -49,7 +49,7 @@ class TimeSeriesResponse(BaseModel):
                 ],
                 "total": 1200,
                 "average": 171.43,
-            }
+            },
         }
 
 
@@ -93,7 +93,7 @@ class UserBehaviorResponse(BaseModel):
                     ["landing_page", "signup_form", "signup_complete"],
                     ["landing_page", "pricing_page", "signup_complete"],
                 ],
-            }
+            },
         }
 
 
@@ -131,7 +131,7 @@ class InsightResponse(BaseModel):
                             "Continue current marketing campaign",
                             "Analyze which changes contributed to the increase",
                         ],
-                    }
+                    },
                 ],
-            }
+            },
         }

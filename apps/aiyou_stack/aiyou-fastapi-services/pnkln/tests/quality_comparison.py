@@ -1,5 +1,4 @@
-"""
-Quality Comparison Test: Brave Search vs Google Grounding
+"""Quality Comparison Test: Brave Search vs Google Grounding
 
 Validates that Option 3 (Brave Search) meets >90% quality parity
 with native Google Grounding before full rollout.
@@ -88,15 +87,13 @@ class ComparisonResult:
 # QUALITY EVALUATOR
 # ============================================================================
 class QualityEvaluator:
-    """
-    Evaluates search result quality using automatic metrics.
+    """Evaluates search result quality using automatic metrics.
 
     For production, this should be supplemented with human evaluation.
     """
 
     def evaluate_brave(self, query: str, results: list[dict]) -> ResultQuality:
-        """
-        Evaluate Brave Search results.
+        """Evaluate Brave Search results.
 
         Args:
             query: Original query
@@ -104,6 +101,7 @@ class QualityEvaluator:
 
         Returns:
             ResultQuality assessment
+
         """
         if not results:
             return ResultQuality(0.0, 0.0, 0.0, 0.0)
@@ -115,14 +113,13 @@ class QualityEvaluator:
         coverage = self._score_coverage(query, results)
 
         return ResultQuality(
-            relevance=relevance, freshness=freshness, authority=authority, coverage=coverage
+            relevance=relevance, freshness=freshness, authority=authority, coverage=coverage,
         )
 
     def evaluate_grounding(
-        self, query: str, response_text: str, grounding_metadata: dict
+        self, query: str, response_text: str, grounding_metadata: dict,
     ) -> ResultQuality:
-        """
-        Evaluate Google Grounding results.
+        """Evaluate Google Grounding results.
 
         Args:
             query: Original query
@@ -131,6 +128,7 @@ class QualityEvaluator:
 
         Returns:
             ResultQuality assessment
+
         """
         # Placeholder - actual implementation needs Google Grounding API
         # For now, assume slightly higher scores as baseline
@@ -208,8 +206,7 @@ class QualityEvaluator:
 # COMPARISON RUNNER
 # ============================================================================
 class ComparisonRunner:
-    """
-    Runs systematic comparison between Brave and Google Grounding.
+    """Runs systematic comparison between Brave and Google Grounding.
 
     CRITICAL: Must verify that Brave meets >90% quality threshold
     before recommending Option 3 as ship-now path.
@@ -222,8 +219,7 @@ class ComparisonRunner:
         self.results: list[ComparisonResult] = []
 
     def run_comparison(self, queries: list[str] = None, include_grounding: bool = False) -> dict:
-        """
-        Run comparison across query set.
+        """Run comparison across query set.
 
         Args:
             queries: List of test queries (default: SAMPLE_QUERIES)
@@ -231,6 +227,7 @@ class ComparisonRunner:
 
         Returns:
             Aggregate comparison metrics
+
         """
         queries = queries or SAMPLE_QUERIES
 
@@ -246,7 +243,7 @@ class ComparisonRunner:
             brave_latency = (time.perf_counter() - brave_start) * 1000
 
             brave_quality = self.evaluator.evaluate_brave(
-                query, [r.__dict__ for r in brave_response.results]
+                query, [r.__dict__ for r in brave_response.results],
             )
 
             print(f"  Brave: {brave_quality.overall_score:.2f} ({brave_latency:.0f}ms)")
@@ -258,7 +255,7 @@ class ComparisonRunner:
                 grounding_latency = 85.0  # Typical latency
                 grounding_cost = 0.005
                 print(
-                    f"  Grounding: {grounding_quality.overall_score:.2f} ({grounding_latency:.0f}ms)"
+                    f"  Grounding: {grounding_quality.overall_score:.2f} ({grounding_latency:.0f}ms)",
                 )
             else:
                 # Use baseline scores
@@ -336,12 +333,11 @@ class ComparisonRunner:
 
         if quality_gate and latency_gate:
             return "✅ SHIP Option 3: Quality and latency gates passed"
-        elif quality_gate and not latency_gate:
+        if quality_gate and not latency_gate:
             return "⚠️  CAUTION: Quality OK but latency exceeds SLA - optimize or reject"
-        elif not quality_gate and latency_gate:
+        if not quality_gate and latency_gate:
             return "❌ BLOCK: Quality below 90% threshold - improve or use Option 1"
-        else:
-            return "❌ BLOCK: Both quality and latency fail gates"
+        return "❌ BLOCK: Both quality and latency fail gates"
 
     def export_results(self, filepath: str):
         """Export detailed results to JSON."""

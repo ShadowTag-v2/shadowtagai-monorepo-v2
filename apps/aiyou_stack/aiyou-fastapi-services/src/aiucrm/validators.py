@@ -1,5 +1,4 @@
-"""
-AiUCRM Validators
+"""AiUCRM Validators
 Specialized compliance validators for different regulatory frameworks
 """
 

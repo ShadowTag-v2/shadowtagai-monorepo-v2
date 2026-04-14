@@ -1,5 +1,4 @@
-"""
-Core data models and type definitions for Judge #6 governance system.
+"""Core data models and type definitions for Judge #6 governance system.
 """
 
 from dataclasses import dataclass, field
@@ -7,8 +6,7 @@ from enum import Enum
 
 
 class RiskLevel(Enum):
-    """
-    ATP 5-19 Risk Assessment Levels
+    """ATP 5-19 Risk Assessment Levels
 
     Maps to military risk assessment framework for operational security.
     """
@@ -30,8 +28,7 @@ class RiskLevel(Enum):
 
 @dataclass(frozen=True)
 class ConstitutionalAxiom:
-    """
-    Immutable governance rules per Cor.53 specification.
+    """Immutable governance rules per Cor.53 specification.
 
     Constitutional axioms form the foundation of the governance system
     and cannot be overridden by user input or preferences.
@@ -42,6 +39,7 @@ class ConstitutionalAxiom:
         rule: Detailed rule description
         enforcement_level: Enforcement strictness level
         violation_consequence: Risk level if violated
+
     """
 
     axiom_id: str
@@ -57,8 +55,7 @@ class ConstitutionalAxiom:
 
 @dataclass
 class ProvenanceStamp:
-    """
-    ShadowTag 2.0 cryptographic provenance for decisions.
+    """ShadowTag 2.0 cryptographic provenance for decisions.
 
     Provides tamper-evident audit trail for all governance decisions
     with cryptographic verification capabilities.
@@ -71,6 +68,7 @@ class ProvenanceStamp:
         cor_instance_id: Unique Cor instance identifier
         axioms_verified: List of verified axiom IDs
         signature: Cryptographic signature
+
     """
 
     timestamp: str
@@ -96,8 +94,7 @@ class ProvenanceStamp:
 
 @dataclass
 class JudgmentDecision:
-    """
-    Result of Judge #6 governance evaluation.
+    """Result of Judge #6 governance evaluation.
 
     Represents the complete decision output including risk assessment,
     reasoning, violations, and cryptographic provenance.
@@ -109,6 +106,7 @@ class JudgmentDecision:
         violated_axioms: List of constitutional axioms violated
         provenance_stamp: Optional cryptographic provenance
         metadata: Additional decision metadata
+
     """
 
     approved: bool
@@ -135,8 +133,7 @@ class JudgmentDecision:
 
 @dataclass
 class GovernanceWeakness:
-    """
-    Documented vulnerability in AI governance system.
+    """Documented vulnerability in AI governance system.
 
     Used for competitive analysis and test vector generation.
 
@@ -149,6 +146,7 @@ class GovernanceWeakness:
         risk_level: Associated risk level
         mitigation: How PNKLN mitigates this weakness
         evidence_source: Source of weakness documentation
+
     """
 
     provider: str
@@ -163,8 +161,7 @@ class GovernanceWeakness:
 
 @dataclass
 class TestVector:
-    """
-    Test case for governance validation.
+    """Test case for governance validation.
 
     Represents a single test case in the adversarial test suite.
 
@@ -177,6 +174,7 @@ class TestVector:
         expected_approved: Expected approval decision
         description: Test description
         targets_weakness: Optional weakness being tested
+
     """
 
     test_id: str

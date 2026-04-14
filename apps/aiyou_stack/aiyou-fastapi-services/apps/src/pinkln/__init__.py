@@ -1,5 +1,4 @@
-"""
-PINKLN ULTRATHINK CORE STACK v2.0
+"""PINKLN ULTRATHINK CORE STACK v2.0
 
 Unified infrastructure integrating:
 - Kernel Chaining (98.5% token reduction)

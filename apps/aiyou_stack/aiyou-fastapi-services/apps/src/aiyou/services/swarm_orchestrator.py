@@ -1,5 +1,4 @@
-"""
-Multi-Agent Swarm Orchestration System.
+"""Multi-Agent Swarm Orchestration System.
 
 Implements a lightweight Router-Worker pattern for coordinating multiple
 specialist agents to solve complex tasks collaboratively.
@@ -15,8 +14,7 @@ from shadowtag_v4.agents.router_agent import RouterAgent
 
 
 class MessageBus:
-    """
-    Simple message bus for agent communication.
+    """Simple message bus for agent communication.
 
     Maintains a chronological log of all inter-agent messages for context
     sharing and debugging.
@@ -27,14 +25,14 @@ class MessageBus:
         self.messages: list[dict[str, Any]] = []
 
     def send(self, from_agent: str, to_agent: str, message_type: str, content: str):
-        """
-        Send a message from one agent to another.
+        """Send a message from one agent to another.
 
         Args:
             from_agent: The sending agent's role.
             to_agent: The receiving agent's role.
             message_type: Type of message (task, result, query).
             content: The message content.
+
         """
         message = {
             "from": from_agent,
@@ -46,14 +44,14 @@ class MessageBus:
         self.messages.append(message)
 
     def get_context_for(self, agent_name: str) -> list[dict[str, Any]]:
-        """
-        Get relevant message context for a specific agent.
+        """Get relevant message context for a specific agent.
 
         Args:
             agent_name: The agent's role name.
 
         Returns:
             List of messages relevant to this agent.
+
         """
         return [
             msg for msg in self.messages if msg["to"] == agent_name or msg["from"] == agent_name
@@ -69,8 +67,7 @@ class MessageBus:
 
 
 class SwarmOrchestrator:
-    """
-    Orchestrates multi-agent collaboration using the Router-Worker pattern.
+    """Orchestrates multi-agent collaboration using the Router-Worker pattern.
 
     The orchestrator manages a router agent and multiple specialist workers,
     facilitating task delegation, execution, and result synthesis.
@@ -100,8 +97,7 @@ class SwarmOrchestrator:
         print(f"✅ Swarm initialized with {len(self.workers)} specialist agents!\n")
 
     def execute(self, user_task: str, verbose: bool = True) -> str:
-        """
-        Execute a user task using the swarm.
+        """Execute a user task using the swarm.
 
         Args:
             user_task: The task requested by the user.
@@ -109,6 +105,7 @@ class SwarmOrchestrator:
 
         Returns:
             Final synthesized result from the swarm.
+
         """
         if verbose:
             print(f"🎯 Task Received: {user_task}\n")
@@ -134,7 +131,7 @@ class SwarmOrchestrator:
             if verbose:
                 print(f"\n{'=' * 70}")
                 print(
-                    f"📤 [Router → {agent_name.capitalize()}] Delegating task {i}/{len(delegations)}"
+                    f"📤 [Router → {agent_name.capitalize()}] Delegating task {i}/{len(delegations)}",
                 )
                 print(f"   Task: {agent_task}")
 

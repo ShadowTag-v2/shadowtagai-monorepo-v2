@@ -1,5 +1,4 @@
-"""
-CineVerse streaming platform routes.
+"""CineVerse streaming platform routes.
 
 Handles video upload, transcoding, content management, and streaming.
 """
@@ -89,8 +88,7 @@ async def submit_upload(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """
-    Initialize a video upload.
+    """Initialize a video upload.
     Creates an IngestionJob and returns a signed upload URL.
     """
     # Create DB record
@@ -121,8 +119,7 @@ async def get_upload_status(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """
-    Get the status of an ingestion job.
+    """Get the status of an ingestion job.
     """
     job = db.query(IngestionJob).filter(IngestionJob.id == job_id).first()
     if not job:
@@ -138,8 +135,8 @@ async def get_upload_status(
     return UploadStatusResponse(
         job_id=job.id,
         status=job.status.value,
-        progress=None,  # Todo: track progress
-        error=None,  # Todo: track error details
+        progress=None,  # TODO: track progress
+        error=None,  # TODO: track error details
     )
 
 
@@ -155,8 +152,7 @@ async def publish_content(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """
-    Publish content from a completed ingestion job.
+    """Publish content from a completed ingestion job.
     """
     job = db.query(IngestionJob).filter(IngestionJob.id == job_id).first()
     if not job:
@@ -208,8 +204,7 @@ async def list_content(
     skip: int = 0,
     db: Session = Depends(get_db),
 ):
-    """
-    List published content.
+    """List published content.
     """
     query = db.query(Content).filter(Content.is_published)
     if content_type:
@@ -224,8 +219,7 @@ async def get_content(
     content_id: str,
     db: Session = Depends(get_db),
 ):
-    """
-    Get content details.
+    """Get content details.
     """
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
@@ -244,8 +238,7 @@ async def start_stream(
     db: Session = Depends(get_db),
     current_user: User | None = Depends(get_current_user),  # Allow anonymous
 ):
-    """
-    Start a streaming session.
+    """Start a streaming session.
     """
     content = db.query(Content).filter(Content.id == content_id).first()
     if not content:
@@ -292,8 +285,7 @@ async def transcode_complete_webhook(
     payload: TranscodeCompleteWebhook,
     db: Session = Depends(get_db),
 ):
-    """
-    Webhook to update job status.
+    """Webhook to update job status.
     """
     job = db.query(IngestionJob).filter(IngestionJob.id == payload.job_id).first()
     if not job:

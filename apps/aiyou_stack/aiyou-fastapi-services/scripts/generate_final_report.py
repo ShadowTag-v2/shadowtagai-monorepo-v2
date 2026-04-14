@@ -22,7 +22,7 @@ def upload_to_drive(report_data):
             print(f"🔑 Authenticated via Service Account Key: {KEY_PATH}")
         else:
             print(
-                f"⚠️ Key file {KEY_PATH} not found. Falling back to Application Default Credentials..."
+                f"⚠️ Key file {KEY_PATH} not found. Falling back to Application Default Credentials...",
             )
             import google.auth
 
@@ -39,7 +39,7 @@ def upload_to_drive(report_data):
             # If not found, create a new one
             spreadsheet = gc.create(REPORT_SHEET_NAME)
             spreadsheet.share(
-                None, perm_type="anyone", role="writer"
+                None, perm_type="anyone", role="writer",
             )  # Make it publicly editable for simplicity
             sheet = spreadsheet.sheet1
             print(f"✅ Created new sheet: {REPORT_SHEET_NAME}")

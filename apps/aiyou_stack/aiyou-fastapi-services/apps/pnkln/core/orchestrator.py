@@ -1,5 +1,4 @@
-"""
-Pnkln Orchestrator - Execution engine for ultrathink framework
+"""Pnkln Orchestrator - Execution engine for ultrathink framework
 Version: 1.0.0
 
 Philosophy: Steve Jobs mode - beautiful, inevitable, ruthlessly simple
@@ -137,8 +136,7 @@ class Agent:
 
 
 class PnklnOrchestrator:
-    """
-    Execution engine for pnkln ultrathink framework.
+    """Execution engine for pnkln ultrathink framework.
 
     Responsibilities:
     - Load and manage skills/agents registries
@@ -185,8 +183,7 @@ class PnklnOrchestrator:
                     self.agents[agent.id] = agent
 
     def detect_skills(self, user_input: str) -> list[Skill]:
-        """
-        Auto-detect which skills to activate based on user input.
+        """Auto-detect which skills to activate based on user input.
 
         Uses trigger keyword matching with Jobs-mode intelligence:
         - Question assumptions about keyword matching
@@ -210,8 +207,7 @@ class PnklnOrchestrator:
         return activated_skills
 
     def detect_agent(self, user_input: str) -> Agent | None:
-        """
-        Auto-detect which agent to use based on user input.
+        """Auto-detect which agent to use based on user input.
 
         Routing logic:
         - Design/architecture → ultrathink_designer
@@ -231,10 +227,9 @@ class PnklnOrchestrator:
         return self.agents.get("pnkln_orchestrator_meta")
 
     async def execute_skill(
-        self, skill: Skill, user_input: str, _llm_backend: Any | None = None
+        self, skill: Skill, user_input: str, _llm_backend: Any | None = None,
     ) -> str:
-        """
-        Execute a single skill.
+        """Execute a single skill.
 
         In production, this would integrate with Claude Agent SDK or similar.
         For now, returns the activation prompt (demonstrating the routing logic).
@@ -263,8 +258,7 @@ Activation Prompt:
         agent_id: str | None = None,
         _track_metrics: bool = True,
     ) -> dict[str, Any]:
-        """
-        Main execution method.
+        """Main execution method.
 
         Flow:
         1. Detect intent (skills/agent)
@@ -325,8 +319,7 @@ Activation Prompt:
         }
 
     def _synthesize_results(self, skill_results: list[dict[str, Any]], user_input: str) -> str:
-        """
-        Synthesize multiple skill results into coherent response.
+        """Synthesize multiple skill results into coherent response.
 
         Jobs mode: Make it feel inevitable, not assembled.
         """
@@ -342,8 +335,7 @@ Activation Prompt:
         return synthesis
 
     def get_audit_summary(self) -> dict[str, Any]:
-        """
-        Get Boy Scout Rule audit summary.
+        """Get Boy Scout Rule audit summary.
 
         Shows compound effect of all executions:
         - Total time saved
@@ -378,10 +370,9 @@ Activation Prompt:
 
 # Convenience factory
 def create_orchestrator(
-    skills_path: str | None = None, agents_path: str | None = None
+    skills_path: str | None = None, agents_path: str | None = None,
 ) -> PnklnOrchestrator:
-    """
-    Create orchestrator with default or custom registry paths.
+    """Create orchestrator with default or custom registry paths.
 
     Jobs mode: Make the common case trivial.
     """

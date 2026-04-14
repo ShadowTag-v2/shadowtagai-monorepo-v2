@@ -1,10 +1,10 @@
 import os
 
 import vertexai
-import vertexai.preview.generative_models as generative_models
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from vertexai.generative_models import GenerativeModel, Part
+from vertexai.preview import generative_models
 
 # Initialize FastAPI
 app = FastAPI(title="ShadowTag Vision Refinery (Native)")
@@ -40,7 +40,7 @@ async def parse_document(request: DocumentRequest):
         responses = model.generate_content(
             [image_part, request.prompt],
             generation_config=generative_models.GenerationConfig(
-                max_output_tokens=2048, temperature=0.2, top_p=1.0, top_k=32
+                max_output_tokens=2048, temperature=0.2, top_p=1.0, top_k=32,
             ),
             stream=False,
         )

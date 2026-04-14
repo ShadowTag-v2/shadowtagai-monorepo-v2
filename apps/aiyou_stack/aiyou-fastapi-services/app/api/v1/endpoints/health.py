@@ -1,5 +1,4 @@
-"""
-Health Check Endpoints
+"""Health Check Endpoints
 
 Operations:
 - Kubernetes readiness/liveness probes
@@ -25,8 +24,7 @@ def get_health_service(db: AsyncSession = Depends(get_db)) -> HealthService:
 
 @router.get("/health")
 async def health_check() -> dict:
-    """
-    Basic health check
+    """Basic health check
 
     Operations:
     - Used by load balancers
@@ -42,8 +40,7 @@ async def health_check() -> dict:
 
 @router.get("/readiness")
 async def readiness_check(service: HealthService = Depends(get_health_service)) -> dict:
-    """
-    Readiness check with database connectivity
+    """Readiness check with database connectivity
 
     Operations:
     - Kubernetes readiness probe

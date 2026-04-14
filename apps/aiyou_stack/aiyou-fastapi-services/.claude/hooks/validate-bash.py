@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PreToolUse hook for Bash - Validate bash commands for best practices and safety
+"""PreToolUse hook for Bash - Validate bash commands for best practices and safety
 """
 
 import json
@@ -37,8 +36,7 @@ VALIDATION_RULES = [
 
 
 def validate_command(command: str) -> tuple[list[str], list[str]]:
-    """
-    Validate a bash command against rules.
+    """Validate a bash command against rules.
     Returns (errors, warnings) tuple.
     """
     errors = []
@@ -84,7 +82,7 @@ def main():
         # Show warnings to user but allow command
         output = {
             "systemMessage": "⚠️  Command validation warnings:\n"
-            + "\n".join(f"  • {w}" for w in warnings)
+            + "\n".join(f"  • {w}" for w in warnings),
         }
         print(json.dumps(output))
 

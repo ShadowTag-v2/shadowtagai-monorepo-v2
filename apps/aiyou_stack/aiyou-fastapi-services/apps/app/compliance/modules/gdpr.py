@@ -1,5 +1,4 @@
-"""
-GDPR Compliance Module
+"""GDPR Compliance Module
 
 Implements the General Data Protection Regulation (EU) 2016/679 requirements.
 Focus areas:
@@ -34,8 +33,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.GDPR)
 class GDPRModule(ComplianceModule):
-    """
-    GDPR Compliance Module
+    """GDPR Compliance Module
 
     Covers key GDPR requirements:
     - Article 5: Principles of processing
@@ -254,7 +252,7 @@ class GDPRModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single GDPR control."""
         metadata = input_data.metadata
@@ -303,16 +301,15 @@ class GDPRModule(ComplianceModule):
                     score=1.0,
                     evidence=f"Lawful basis documented: {lawful_basis}",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["Valid lawful basis not documented"],
-                    remediation="Identify and document lawful basis per Article 6(1)",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["Valid lawful basis not documented"],
+                remediation="Identify and document lawful basis per Article 6(1)",
+            )
 
         # DPIA requirement check
         if control.control_id == "GDPR-35":
@@ -327,16 +324,15 @@ class GDPRModule(ComplianceModule):
                         score=1.0,
                         evidence="DPIA completed for high-risk processing",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["DPIA required but not completed"],
-                        remediation="Conduct Data Protection Impact Assessment per Article 35",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["DPIA required but not completed"],
+                    remediation="Conduct Data Protection Impact Assessment per Article 35",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -386,10 +382,9 @@ class GDPRModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check GDPR validation rules against content."""
-
         if rule.rule_id == "GDPR-VAL-001":
             # PII Exposure Detection
             for pii_type, pattern in self.PII_PATTERNS.items():

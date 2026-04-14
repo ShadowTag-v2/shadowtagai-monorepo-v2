@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Colab Coop: Cooperative notebook execution orchestrator.
+"""Colab Coop: Cooperative notebook execution orchestrator.
 Distributes workloads across Gemini accounts via Cloud Code API.
 
 Architecture:
@@ -60,8 +59,7 @@ class CoopResult:
 
 
 class ColabCoop:
-    """
-    Cooperative Colab notebook orchestrator.
+    """Cooperative Colab notebook orchestrator.
 
     Distributes notebook execution across multiple Gemini accounts
     via Cloud Code API, with minions routing for complex tasks.
@@ -70,12 +68,12 @@ class ColabCoop:
     """
 
     def __init__(self, num_accounts: int = 1, strategy: CoopStrategy = CoopStrategy.ROUND_ROBIN):
-        """
-        Initialize cooperative orchestrator.
+        """Initialize cooperative orchestrator.
 
         Args:
             num_accounts: Number of accounts to use (1-10)
             strategy: Task distribution strategy
+
         """
         self.num_accounts = min(num_accounts, 10)
         self.strategy = strategy
@@ -108,22 +106,20 @@ class ColabCoop:
             self.current_index = (self.current_index + 1) % len(self.pool.clients)
             return client
 
-        elif self.strategy == CoopStrategy.LOAD_BALANCED:
+        if self.strategy == CoopStrategy.LOAD_BALANCED:
             # Select account with lowest request count
             return min(self.pool.clients, key=lambda c: c.stats.requests)
 
-        elif self.strategy == CoopStrategy.GPU_PRIORITY:
+        if self.strategy == CoopStrategy.GPU_PRIORITY:
             # GPU tasks go to accounts with lower error rates
             if task and task.requires_gpu:
                 return min(self.pool.clients, key=lambda c: c.stats.errors)
             return self.pool.get_next_client()
 
-        else:
-            return self.pool.get_next_client()
+        return self.pool.get_next_client()
 
     async def execute_cell(self, code: str, context: str | None = None) -> CoopResult:
-        """
-        Execute a single notebook cell.
+        """Execute a single notebook cell.
 
         Args:
             code: Python code to execute
@@ -131,6 +127,7 @@ class ColabCoop:
 
         Returns:
             CoopResult with execution details
+
         """
         task = CoopTask(task_id=f"cell_{datetime.now().timestamp()}", notebook_code=code)
 
@@ -156,14 +153,13 @@ class ColabCoop:
         except Exception as e:
             self.stats["tasks_failed"] += 1
             return CoopResult(
-                task_id=task.task_id, account_id=client.account_id, success=False, output=str(e)
+                task_id=task.task_id, account_id=client.account_id, success=False, output=str(e),
             )
         finally:
             self.stats["tasks_distributed"] += 1
 
     async def execute_notebook(self, cells: list[str], sequential: bool = True) -> list[CoopResult]:
-        """
-        Execute a complete notebook.
+        """Execute a complete notebook.
 
         Args:
             cells: List of code cells
@@ -171,6 +167,7 @@ class ColabCoop:
 
         Returns:
             List of results for each cell
+
         """
         results = []
         context = ""
@@ -192,10 +189,9 @@ class ColabCoop:
         return results
 
     async def distribute_sharded(
-        self, notebook_template: str, data_shards: list[Any], aggregator: Callable | None = None
+        self, notebook_template: str, data_shards: list[Any], aggregator: Callable | None = None,
     ) -> dict[str, Any]:
-        """
-        Execute notebook with sharded data across accounts.
+        """Execute notebook with sharded data across accounts.
 
         Args:
             notebook_template: Notebook code with {SHARD_DATA} placeholder
@@ -204,6 +200,7 @@ class ColabCoop:
 
         Returns:
             Aggregated results from all shards
+
         """
         tasks = []
 
@@ -251,10 +248,9 @@ class ColabCoop:
         }
 
     async def execute_replicated(
-        self, notebook_code: str, num_replicas: int | None = None
+        self, notebook_code: str, num_replicas: int | None = None,
     ) -> dict[str, Any]:
-        """
-        Execute same notebook on multiple accounts for redundancy/comparison.
+        """Execute same notebook on multiple accounts for redundancy/comparison.
 
         Args:
             notebook_code: Code to execute
@@ -262,6 +258,7 @@ class ColabCoop:
 
         Returns:
             Results from all replicas with consensus analysis
+
         """
         n = num_replicas or len(self.pool.clients)
         n = min(n, len(self.pool.clients))
@@ -292,8 +289,7 @@ class ColabCoop:
         }
 
     async def route_to_minions(self, prompt: str, tier: str = "task") -> dict[str, Any]:
-        """
-        Route complex tasks to minions swarm.
+        """Route complex tasks to minions swarm.
 
         Args:
             prompt: Task description
@@ -301,6 +297,7 @@ class ColabCoop:
 
         Returns:
             minions response
+
         """
         # Use first available client for routing
         if self.pool.clients:
@@ -308,14 +305,14 @@ class ColabCoop:
         return {"error": "No clients available", "success": False}
 
     async def generate_notebook(self, description: str) -> dict[str, Any]:
-        """
-        Generate a complete notebook from description.
+        """Generate a complete notebook from description.
 
         Args:
             description: What the notebook should do
 
         Returns:
             Generated notebook cells
+
         """
         client = self._get_next_account()
 
@@ -358,11 +355,11 @@ Requirements:
         return result
 
     def scale_accounts(self, new_count: int) -> None:
-        """
-        Scale the number of active accounts.
+        """Scale the number of active accounts.
 
         Args:
             new_count: New account count (1-10)
+
         """
         new_count = max(1, min(new_count, 10))
 
@@ -415,7 +412,7 @@ print(f"Mean: {data.mean():.4f}")
 
         # Test notebook generation
         notebook = await coop.generate_notebook(
-            "Create a notebook that loads a CSV file and generates basic statistics"
+            "Create a notebook that loads a CSV file and generates basic statistics",
         )
         print("Generated notebook:", notebook)
 

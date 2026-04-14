@@ -1,5 +1,4 @@
-"""
-Feature Synthesis Layer
+"""Feature Synthesis Layer
 Derives risk signals from upstream metrics
 """
 
@@ -9,8 +8,7 @@ from ..models.judge import Flags, Metrics, Probability, Severity
 
 
 class FeatureSynthesizer:
-    """
-    Synthesizes risk features from raw metrics
+    """Synthesizes risk features from raw metrics
     All transformations are deterministic and versioned
     """
 
@@ -19,8 +17,7 @@ class FeatureSynthesizer:
         self.version = version
 
     def synthesize(self, metrics: Metrics, flags: Flags) -> dict[str, Any]:
-        """
-        Synthesize all features from metrics
+        """Synthesize all features from metrics
 
         Args:
             metrics: Upstream metrics
@@ -28,13 +25,14 @@ class FeatureSynthesizer:
 
         Returns:
             Feature dict with derived signals
+
         """
         features = {}
 
         # Capital at risk
         if metrics.exposure:
             features["capital_at_risk"] = self._capital_at_risk(
-                metrics.exposure.notional, metrics.exposure.pct_aum
+                metrics.exposure.notional, metrics.exposure.pct_aum,
             )
 
         # VaR to budget ratio
@@ -42,7 +40,7 @@ class FeatureSynthesizer:
             # Assume default budget of 5% AUM if not specified
             default_var_limit = 5_000_000  # $5M default
             features["var_to_budget"] = self._var_to_budget(
-                metrics.tail_risk.var_95, metrics.custom.get("var_limit", default_var_limit)
+                metrics.tail_risk.var_95, metrics.custom.get("var_limit", default_var_limit),
             )
 
         # Liquidity heat score
@@ -64,13 +62,13 @@ class FeatureSynthesizer:
         # Credit risk composite
         if metrics.credit_metrics:
             features["credit_risk_composite"] = self._credit_risk_composite(
-                metrics.credit_metrics.pd, metrics.credit_metrics.lgd, metrics.credit_metrics.ead
+                metrics.credit_metrics.pd, metrics.credit_metrics.lgd, metrics.credit_metrics.ead,
             )
 
         # Tail risk severity
         if metrics.pnl_distribution_summary:
             features["tail_severity"] = self._tail_severity(
-                metrics.pnl_distribution_summary.skew, metrics.pnl_distribution_summary.kurtosis
+                metrics.pnl_distribution_summary.skew, metrics.pnl_distribution_summary.kurtosis,
             )
 
         # Flag severity
@@ -83,8 +81,7 @@ class FeatureSynthesizer:
         return features
 
     def _capital_at_risk(self, notional: float, pct_aum: float) -> float:
-        """
-        Calculate capital at risk score
+        """Calculate capital at risk score
 
         Args:
             notional: Notional exposure (USD)
@@ -92,22 +89,21 @@ class FeatureSynthesizer:
 
         Returns:
             Capital at risk score (0-100)
+
         """
         # Score based on % AUM concentration
         if pct_aum > 20:
             return 100.0  # Extreme concentration
-        elif pct_aum > 10:
+        if pct_aum > 10:
             return 75.0  # High concentration
-        elif pct_aum > 5:
+        if pct_aum > 5:
             return 50.0  # Moderate concentration
-        elif pct_aum > 2:
+        if pct_aum > 2:
             return 25.0  # Low concentration
-        else:
-            return 10.0  # Minimal concentration
+        return 10.0  # Minimal concentration
 
     def _var_to_budget(self, var_usd: float, var_limit: float) -> float:
-        """
-        Calculate VaR to budget ratio
+        """Calculate VaR to budget ratio
 
         Args:
             var_usd: Value at Risk (USD)
@@ -115,16 +111,16 @@ class FeatureSynthesizer:
 
         Returns:
             Ratio (>1.0 = exceeding budget)
+
         """
         if var_limit <= 0:
             return 0.0
         return abs(var_usd) / var_limit
 
     def _liquidity_heat(
-        self, spread_bps: float | None, depth_score: float | None, days_to_liquidate: float | None
+        self, spread_bps: float | None, depth_score: float | None, days_to_liquidate: float | None,
     ) -> float:
-        """
-        Calculate liquidity heat score
+        """Calculate liquidity heat score
 
         Args:
             spread_bps: Bid-ask spread (basis points)
@@ -133,6 +129,7 @@ class FeatureSynthesizer:
 
         Returns:
             Liquidity heat score (0-100, higher = less liquid)
+
         """
         heat_components = []
 
@@ -172,10 +169,9 @@ class FeatureSynthesizer:
         return sum(heat_components) / len(heat_components)
 
     def _regime_indicator(
-        self, regime_tag: str | None, realized_vol: float | None, implied_vol: float | None
+        self, regime_tag: str | None, realized_vol: float | None, implied_vol: float | None,
     ) -> str:
-        """
-        Determine volatility regime
+        """Determine volatility regime
 
         Args:
             regime_tag: Regime tag from upstream
@@ -184,6 +180,7 @@ class FeatureSynthesizer:
 
         Returns:
             Regime indicator (low_vol, normal, high_vol, stressed)
+
         """
         if regime_tag:
             return regime_tag
@@ -192,20 +189,18 @@ class FeatureSynthesizer:
         if realized_vol is not None:
             if realized_vol > 0.50:
                 return "stressed"
-            elif realized_vol > 0.30:
+            if realized_vol > 0.30:
                 return "high_vol"
-            elif realized_vol > 0.15:
+            if realized_vol > 0.15:
                 return "normal"
-            else:
-                return "low_vol"
+            return "low_vol"
 
         return "normal"  # Default
 
     def _credit_risk_composite(
-        self, pd: float | None, lgd: float | None, ead: float | None
+        self, pd: float | None, lgd: float | None, ead: float | None,
     ) -> float:
-        """
-        Calculate composite credit risk score
+        """Calculate composite credit risk score
 
         Args:
             pd: Probability of default
@@ -214,6 +209,7 @@ class FeatureSynthesizer:
 
         Returns:
             Credit risk score (0-100)
+
         """
         if pd is None:
             return 50.0  # Unknown credit risk
@@ -223,18 +219,16 @@ class FeatureSynthesizer:
         # PD thresholds
         if pd > 0.10:  # >10% default probability
             return 100.0
-        elif pd > 0.05:  # 5-10%
+        if pd > 0.05:  # 5-10%
             return 75.0
-        elif pd > 0.02:  # 2-5%
+        if pd > 0.02:  # 2-5%
             return 50.0
-        elif pd > 0.01:  # 1-2%
+        if pd > 0.01:  # 1-2%
             return 25.0
-        else:
-            return 10.0
+        return 10.0
 
     def _tail_severity(self, skew: float, kurtosis: float) -> float:
-        """
-        Calculate tail severity from distribution moments
+        """Calculate tail severity from distribution moments
 
         Args:
             skew: Skewness (negative = left tail)
@@ -242,6 +236,7 @@ class FeatureSynthesizer:
 
         Returns:
             Tail severity score (0-100)
+
         """
         severity = 0.0
 
@@ -265,14 +260,14 @@ class FeatureSynthesizer:
         return min(severity, 100.0)
 
     def _flag_severity(self, flags: Flags) -> float:
-        """
-        Calculate severity from flags
+        """Calculate severity from flags
 
         Args:
             flags: Upstream flags
 
         Returns:
             Flag severity score (0-100)
+
         """
         severity = 0.0
 
@@ -287,14 +282,14 @@ class FeatureSynthesizer:
         return min(severity, 100.0)
 
     def infer_probability(self, features: dict[str, Any]) -> tuple[Probability, float]:
-        """
-        Infer ATP 5-19 probability from features
+        """Infer ATP 5-19 probability from features
 
         Args:
             features: Synthesized features
 
         Returns:
             Tuple of (Probability level, confidence score)
+
         """
         # Default: moderate probability
         probability_score = 30.0  # Default to C (20-49%)
@@ -332,18 +327,16 @@ class FeatureSynthesizer:
         # Map to ATP 5-19 levels
         if probability_score >= 80:
             return Probability.A, confidence
-        elif probability_score >= 50:
+        if probability_score >= 50:
             return Probability.B, confidence
-        elif probability_score >= 20:
+        if probability_score >= 20:
             return Probability.C, confidence
-        elif probability_score >= 5:
+        if probability_score >= 5:
             return Probability.D, confidence
-        else:
-            return Probability.E, confidence
+        return Probability.E, confidence
 
     def infer_severity(self, features: dict[str, Any], metrics: Metrics) -> tuple[Severity, float]:
-        """
-        Infer ATP 5-19 severity from features
+        """Infer ATP 5-19 severity from features
 
         Args:
             features: Synthesized features
@@ -351,6 +344,7 @@ class FeatureSynthesizer:
 
         Returns:
             Tuple of (Severity level, confidence score)
+
         """
         # Default: moderate severity
         max_loss_usd = 500_000.0
@@ -375,9 +369,8 @@ class FeatureSynthesizer:
         # Map to ATP 5-19 severity levels
         if max_loss_usd > 10_000_000:
             return Severity.I, confidence  # Catastrophic
-        elif max_loss_usd > 1_000_000:
+        if max_loss_usd > 1_000_000:
             return Severity.II, confidence  # Critical
-        elif max_loss_usd > 100_000:
+        if max_loss_usd > 100_000:
             return Severity.III, confidence  # Moderate
-        else:
-            return Severity.IV, confidence  # Negligible
+        return Severity.IV, confidence  # Negligible

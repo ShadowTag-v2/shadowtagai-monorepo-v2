@@ -1,5 +1,4 @@
-"""
-CORS (Cross-Origin Resource Sharing) configuration.
+"""CORS (Cross-Origin Resource Sharing) configuration.
 Enables the API to be accessed from web applications.
 """
 
@@ -10,11 +9,11 @@ from app.config import settings
 
 
 def setup_cors(app: FastAPI) -> None:
-    """
-    Configure CORS middleware for the FastAPI application.
+    """Configure CORS middleware for the FastAPI application.
 
     Args:
         app: FastAPI application instance
+
     """
     app.add_middleware(
         CORSMiddleware,

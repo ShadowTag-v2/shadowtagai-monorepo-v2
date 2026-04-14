@@ -23,7 +23,7 @@ except ImportError:
 
     def ingest_document(workspace_id: int, markdown: str) -> None:
         print(
-            f"[WARN] vector_db module unavailable. Ingestion skipped for Workspace {workspace_id}"
+            f"[WARN] vector_db module unavailable. Ingestion skipped for Workspace {workspace_id}",
         )
 
 
@@ -54,11 +54,11 @@ def execute_crawl_and_ingest(target_urls: list[str] | None = None, workspace_id:
                 js_hook: str = os.path.join(os.path.dirname(__file__), "tiktok_scraper.js")
                 try:
                     js_data: str = subprocess.check_output(
-                        ["node", js_hook, url], stderr=subprocess.DEVNULL, timeout=15
+                        ["node", js_hook, url], stderr=subprocess.DEVNULL, timeout=15,
                     ).decode("utf-8")
                     html_content = f"<html><body><pre>{js_data}</pre></body></html>"
                 except Exception as e:
-                    html_content = f"<html><body><p>Error: {str(e)}</p></body></html>"
+                    html_content = f"<html><body><p>Error: {e!s}</p></body></html>"
             else:
                 try:
                     page = fetcher.get(url)  # type: ignore
@@ -88,7 +88,7 @@ def execute_crawl_and_ingest(target_urls: list[str] | None = None, workspace_id:
                 os.remove(tmp_path)
 
         except Exception as e:
-            print(f"     [❌] Crawler Triad Exception on {url}: {str(e)}")
+            print(f"     [❌] Crawler Triad Exception on {url}: {e!s}")
 
 
 if __name__ == "__main__":

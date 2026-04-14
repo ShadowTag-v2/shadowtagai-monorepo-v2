@@ -1,5 +1,4 @@
-"""
-Ethical Compliance Checker for web crawling and data collection.
+"""Ethical Compliance Checker for web crawling and data collection.
 
 Ensures responsible intelligence gathering through:
 - robots.txt respect
@@ -41,8 +40,7 @@ class RateLimitRule:
 
 
 class EthicalComplianceChecker:
-    """
-    Ensures ethical data collection practices.
+    """Ensures ethical data collection practices.
 
     Key principles:
     1. Respect robots.txt directives
@@ -80,8 +78,7 @@ class EthicalComplianceChecker:
         }
 
     async def check_robots_txt(self, url: str, user_agent: str = None) -> bool:
-        """
-        Check if URL is allowed by robots.txt.
+        """Check if URL is allowed by robots.txt.
 
         Args:
             url: URL to check
@@ -89,6 +86,7 @@ class EthicalComplianceChecker:
 
         Returns:
             True if allowed, False if disallowed
+
         """
         self.stats["total_checks"] += 1
 
@@ -132,8 +130,7 @@ class EthicalComplianceChecker:
         return True
 
     async def _fetch_robots_txt(self, domain: str):
-        """
-        Fetch and parse robots.txt for a domain.
+        """Fetch and parse robots.txt for a domain.
 
         This is a stub - actual implementation would:
         1. Fetch {domain}/robots.txt
@@ -162,8 +159,7 @@ class EthicalComplianceChecker:
         source_name: str,
         rule: RateLimitRule = None,
     ) -> bool:
-        """
-        Check if request would exceed rate limits.
+        """Check if request would exceed rate limits.
 
         Args:
             source_name: Name of the data source
@@ -171,6 +167,7 @@ class EthicalComplianceChecker:
 
         Returns:
             True if allowed, False if rate limited
+
         """
         self.stats["total_checks"] += 1
 
@@ -196,7 +193,7 @@ class EthicalComplianceChecker:
         if requests_last_minute >= rule.requests_per_minute:
             logger.warning(
                 f"Rate limit exceeded for {source_name}: "
-                f"{requests_last_minute}/min (limit: {rule.requests_per_minute})"
+                f"{requests_last_minute}/min (limit: {rule.requests_per_minute})",
             )
             self.stats["blocked_by_rate_limit"] += 1
             return False
@@ -204,7 +201,7 @@ class EthicalComplianceChecker:
         if requests_last_hour >= rule.requests_per_hour:
             logger.warning(
                 f"Rate limit exceeded for {source_name}: "
-                f"{requests_last_hour}/hour (limit: {rule.requests_per_hour})"
+                f"{requests_last_hour}/hour (limit: {rule.requests_per_hour})",
             )
             self.stats["blocked_by_rate_limit"] += 1
             return False
@@ -212,7 +209,7 @@ class EthicalComplianceChecker:
         if requests_last_day >= rule.requests_per_day:
             logger.warning(
                 f"Rate limit exceeded for {source_name}: "
-                f"{requests_last_day}/day (limit: {rule.requests_per_day})"
+                f"{requests_last_day}/day (limit: {rule.requests_per_day})",
             )
             self.stats["blocked_by_rate_limit"] += 1
             return False
@@ -260,8 +257,7 @@ class EthicalComplianceChecker:
         }
 
     def validate_user_agent(self, user_agent: str) -> bool:
-        """
-        Validate that user agent is transparent and ethical.
+        """Validate that user agent is transparent and ethical.
 
         Good user agents:
         - Identify the bot clearly

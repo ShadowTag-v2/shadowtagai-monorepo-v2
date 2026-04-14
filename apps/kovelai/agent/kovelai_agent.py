@@ -1,5 +1,4 @@
-"""
-KovelAI ADK Agent — AG-UI SSE Endpoint with Oracle Studio Integration
+"""KovelAI ADK Agent — AG-UI SSE Endpoint with Oracle Studio Integration
 
 This is the canonical backend agent for KovelAI, exposing the CounselConduit
 S.E.U. proxy as an ADK Agent with AG-UI protocol compliance (Invariant #72).
@@ -33,11 +32,11 @@ except ImportError:
 
 # FastAPI for the SSE endpoint
 try:
-    from fastapi import FastAPI, Request
-    from fastapi.responses import StreamingResponse, JSONResponse
-    from fastapi.middleware.cors import CORSMiddleware
-    from pydantic import BaseModel, Field
     import uvicorn
+    from fastapi import FastAPI, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import JSONResponse, StreamingResponse
+    from pydantic import BaseModel, Field
 
     FASTAPI_AVAILABLE = True
 except ImportError:
@@ -46,7 +45,7 @@ except ImportError:
 # Oracle Studio imports
 try:
     from agent.kinetic_action_parser import KineticActionParser
-    from agent.oracle_studio import OracleStudio, MurderBoardStep
+    from agent.oracle_studio import MurderBoardStep, OracleStudio
 
     ORACLE_AVAILABLE = True
 except ImportError:
@@ -121,12 +120,12 @@ def run_error(run_id: str, message: str) -> str:
 
 
 def privilege_check(client_name: str, query: str) -> dict:
-    """
-    Kovel Privilege Shield — checks whether a query falls under
+    """Kovel Privilege Shield — checks whether a query falls under
     attorney-client privilege before processing.
 
     Returns:
         dict with 'privileged' (bool) and 'shield_status' (str)
+
     """
     # Heppner sanctions avoidance — flag queries that could
     # generate discoverable AI artifacts
@@ -143,8 +142,7 @@ def privilege_check(client_name: str, query: str) -> dict:
 
 
 def seu_search(query: str, client_id: str) -> dict:
-    """
-    S.E.U. (Secure Evidence Unit) search proxy.
+    """S.E.U. (Secure Evidence Unit) search proxy.
     Routes queries through the privilege shield before executing
     against the Gemini API.
 
@@ -160,7 +158,7 @@ def seu_search(query: str, client_id: str) -> dict:
                 "summary": f"Analysis of: {query}",
                 "privilege_status": "shielded",
                 "billable": True,
-            }
+            },
         ],
         "billing": {
             "tokens_used": 0,  # Populated by actual API call
@@ -176,8 +174,7 @@ def intake_form(
     matter_type: str,
     jurisdiction: str,
 ) -> dict:
-    """
-    AI-powered client intake form for CounselConduit.
+    """AI-powered client intake form for CounselConduit.
     Captures initial engagement details and generates a
     Kovel letter template.
     """
@@ -206,11 +203,11 @@ if FASTAPI_AVAILABLE:
         """Request body for Oracle Studio Murder Board execution."""
 
         document_text: str = Field(
-            ..., min_length=10, max_length=100000, description="Legal text to analyze"
+            ..., min_length=10, max_length=100000, description="Legal text to analyze",
         )
         attorney_id: str = Field(default="", description="Attorney's unique ID")
         steps: list[str] = Field(
-            default=[], description="Specific steps to run (empty = all 7 steps)"
+            default=[], description="Specific steps to run (empty = all 7 steps)",
         )
 
     class VerbAuditRequest(BaseModel):
@@ -242,8 +239,7 @@ if FASTAPI_AVAILABLE:
 
     @app.post("/api/copilotkit")
     async def copilotkit_endpoint(request: Request):
-        """
-        AG-UI SSE endpoint for CopilotKit frontend.
+        """AG-UI SSE endpoint for CopilotKit frontend.
         Receives user messages and streams back AG-UI events.
         """
         import uuid
@@ -267,7 +263,7 @@ if FASTAPI_AVAILABLE:
                     "oracle_studio": "AVAILABLE" if ORACLE_AVAILABLE else "OFFLINE",
                     "mcp_servers": 11,
                     "model": "gemini-3.1-flash-lite-preview",
-                }
+                },
             )
 
             # Get the last user message
@@ -280,7 +276,7 @@ if FASTAPI_AVAILABLE:
             if not user_msg:
                 yield text_message_start(msg_id)
                 yield text_message_content(
-                    msg_id, "How can I help you with your legal research today?"
+                    msg_id, "How can I help you with your legal research today?",
                 )
                 yield text_message_end(msg_id)
             else:
@@ -325,8 +321,7 @@ if FASTAPI_AVAILABLE:
 
     @app.post("/api/oracle-studio")
     async def oracle_studio_endpoint(req: OracleStudioRequest):
-        """
-        Oracle Studio — 7-Step Murder Board SSE Stream.
+        """Oracle Studio — 7-Step Murder Board SSE Stream.
 
         Streams each step's results as AG-UI events, giving the lawyer
         real-time visibility into the forensic analysis pipeline.
@@ -351,7 +346,7 @@ if FASTAPI_AVAILABLE:
                     "pipeline": "murder-board-7-step",
                     "document_length": len(req.document_text),
                     "attorney_id": req.attorney_id,
-                }
+                },
             )
 
             # ── Step 0: Kinetic Action Parser ──
@@ -469,7 +464,7 @@ if FASTAPI_AVAILABLE:
             )
             for act in result.action_items:
                 priority_icon = {"critical": "🔴", "high": "🟠", "medium": "🟡", "low": "🟢"}.get(
-                    act["priority"], "⚪"
+                    act["priority"], "⚪",
                 )
                 yield text_message_content(
                     msg_id,
@@ -531,8 +526,7 @@ if FASTAPI_AVAILABLE:
 
     @app.post("/api/verb-audit")
     async def verb_audit_endpoint(req: VerbAuditRequest):
-        """
-        Standalone Kinetic Action Parser endpoint.
+        """Standalone Kinetic Action Parser endpoint.
         Returns the verb ledger as JSON (no streaming).
         """
         if not ORACLE_AVAILABLE:

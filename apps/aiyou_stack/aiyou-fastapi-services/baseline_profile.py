@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Baseline profiling script for Judge#6 (pre‑Triton) workload.
+"""Baseline profiling script for Judge#6 (pre‑Triton) workload.
 
 Purpose
 -------

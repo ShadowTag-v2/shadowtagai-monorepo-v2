@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - ShadowTag Authentication API
+"""PNKLN Core Stack - ShadowTag Authentication API
 
 Complete authentication system integrating:
 - Neural fingerprinting
@@ -32,10 +31,10 @@ logger = structlog.get_logger(__name__)
 
 # Prometheus metrics
 auth_requests = Counter(
-    "shadowtag_auth_requests_total", "Total authentication requests", ["asset_type"]
+    "shadowtag_auth_requests_total", "Total authentication requests", ["asset_type"],
 )
 verify_requests = Counter(
-    "shadowtag_verify_requests_total", "Total verification requests", ["result"]
+    "shadowtag_verify_requests_total", "Total verification requests", ["result"],
 )
 auth_latency = Histogram("shadowtag_auth_latency_seconds", "Authentication latency")
 
@@ -155,8 +154,7 @@ async def authenticate_asset(
     asset_type: Literal["image", "video", "audio", "text"] = Form(...),
     embed_watermark: bool = Form(True),
 ):
-    """
-    Authenticate a new asset.
+    """Authenticate a new asset.
 
     Steps:
     1. Generate neural fingerprint (multi-hash)
@@ -256,7 +254,7 @@ async def authenticate_asset(
 
     except Exception as e:
         logger.error("authentication_failed", error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Authentication failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Authentication failed: {e!s}")
 
 
 @app.post("/verify", response_model=VerificationResponse)
@@ -265,8 +263,7 @@ async def verify_asset(
     asset_id: str | None = Form(None),
     claimed_owner: str | None = Form(None),
 ):
-    """
-    Verify asset authenticity.
+    """Verify asset authenticity.
 
     Steps:
     1. Generate fingerprint from submitted asset
@@ -363,13 +360,12 @@ async def verify_asset(
 
     except Exception as e:
         logger.error("verification_failed", error=str(e), exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Verification failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Verification failed: {e!s}")
 
 
 @app.get("/receipt/{asset_id}")
 async def get_receipt(asset_id: str):
-    """
-    Retrieve blockchain receipt for an asset.
+    """Retrieve blockchain receipt for an asset.
 
     Returns Polygon and Arweave transaction details.
     """

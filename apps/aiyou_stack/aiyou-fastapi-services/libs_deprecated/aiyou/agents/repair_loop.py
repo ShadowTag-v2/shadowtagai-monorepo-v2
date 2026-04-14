@@ -72,12 +72,12 @@ class SovereignRepairLoop:
 
             # 4. Create PR
             subprocess.run(
-                ["gh", "pr", "create", "--title", pr_title, "--body", pr_body], check=True
+                ["gh", "pr", "create", "--title", pr_title, "--body", pr_body], check=True,
             )
 
             return f"PR Created: {branch_name}"
         except subprocess.CalledProcessError as e:
-            return f"Reporter Failed: {str(e)}"
+            return f"Reporter Failed: {e!s}"
         finally:
             # Cleanup: return to main
             subprocess.run(["git", "checkout", "main"], check=False)
@@ -102,8 +102,7 @@ class SovereignRepairLoop:
                 # 3. Report
                 report = self.reporter_agent(fix, file_path, error)
                 return {"status": "SUCCESS", "fix": fix, "report": report}
-            else:
-                feedback = review.get("reason", "Unknown rejection")
-                print(f"❌ Rejected: {feedback}")
+            feedback = review.get("reason", "Unknown rejection")
+            print(f"❌ Rejected: {feedback}")
 
         return {"status": "FAILED", "reason": "Max retries exceeded"}

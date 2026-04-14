@@ -1,5 +1,4 @@
-"""
-Chain-of-Thought (CoT) Reasoning
+"""Chain-of-Thought (CoT) Reasoning
 
 The breakthrough that changed LLM capabilities.
 Simple addition: "Let's think step by step."
@@ -31,8 +30,7 @@ class CoTResult(BaseModel):
 
 
 class CoT:
-    """
-    Chain-of-Thought reasoning engine.
+    """Chain-of-Thought reasoning engine.
 
     Usage:
         >>> cot = CoT(steps=5, verify=True)
@@ -55,13 +53,13 @@ class CoT:
         verify: bool = True,
         style: Literal["detailed", "concise"] = "detailed",
     ) -> None:
-        """
-        Initialize CoT reasoner.
+        """Initialize CoT reasoner.
 
         Args:
             steps: Number of reasoning steps to use
             verify: Whether to verify the final answer
             style: How verbose the reasoning should be
+
         """
         self.steps = steps
         self.verify = verify
@@ -90,8 +88,7 @@ Let's think step by step:"""
         model: any | None = None,
         temperature: float = 0.3,
     ) -> CoTResult:
-        """
-        Execute chain-of-thought reasoning.
+        """Execute chain-of-thought reasoning.
 
         Args:
             problem: The problem to solve
@@ -100,6 +97,7 @@ Let's think step by step:"""
 
         Returns:
             CoTResult with steps and final answer
+
         """
         prompt = self.format_prompt(problem)
 
@@ -107,7 +105,7 @@ Let's think step by step:"""
         try:
             from ultrathink.llm import LLMExecutor
 
-            executor = model if model else LLMExecutor()
+            executor = model or LLMExecutor()
             llm_response = executor.execute(prompt, temperature=temperature)
 
             # Parse response into steps (simple parsing - would be more sophisticated)
@@ -123,7 +121,7 @@ Let's think step by step:"""
                             thought=line.strip(),
                             reasoning=line.strip(),
                             conclusion=None,
-                        )
+                        ),
                     )
                 if "final answer" in line.lower() or "conclusion" in line.lower():
                     final_answer = line.strip()
@@ -140,7 +138,7 @@ Let's think step by step:"""
                         thought="Generated response",
                         reasoning=llm_response.content[:500],
                         conclusion=None,
-                    )
+                    ),
                 ],
                 final_answer=final_answer,
                 confidence=0.85,  # Could parse from response
@@ -164,7 +162,7 @@ Let's think step by step:"""
                         thought=f"Error: {e}",
                         reasoning="Failed to execute",
                         conclusion=None,
-                    )
+                    ),
                 ],
                 final_answer=f"Error executing CoT: {e}",
                 confidence=0.0,

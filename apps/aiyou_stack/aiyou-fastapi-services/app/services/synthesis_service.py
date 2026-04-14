@@ -28,11 +28,11 @@ class SynthesisService:
         since: datetime | None = None,
         force: bool = False,
     ) -> dict[str, int]:
-        """
-        Synthesize memory from recent conversations.
+        """Synthesize memory from recent conversations.
 
         Returns:
             Dict with counts of entries created/updated and conversations processed.
+
         """
         # Get recent conversations
         if not since and not force:
@@ -75,7 +75,7 @@ class SynthesisService:
         # Use Claude to synthesize memory
         memory_synthesis = await claude_client.synthesize_memory(
             conversations=conversations_data,
-            existing_memory=existing_memory if existing_memory else None,
+            existing_memory=existing_memory or None,
         )
 
         # Process and store synthesized memory
@@ -136,7 +136,7 @@ class SynthesisService:
                             metadata={
                                 "synthesized_at": datetime.utcnow().isoformat(),
                             },
-                        )
+                        ),
                     )
                     entries_created += 1
 
@@ -194,5 +194,5 @@ async def run_periodic_synthesis(db: AsyncSession):
         f"Memory synthesis completed: "
         f"{result['entries_created']} created, "
         f"{result['entries_updated']} updated, "
-        f"{result['conversations_processed']} conversations processed"
+        f"{result['conversations_processed']} conversations processed",
     )

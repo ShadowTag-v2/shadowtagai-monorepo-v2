@@ -11,7 +11,7 @@ import sys
 
 # Add project root to path
 PROJECT_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
 )
 sys.path.insert(0, PROJECT_ROOT)
 
@@ -39,7 +39,7 @@ def test_workflow_initialization():
         from kosmos.workflow.research_loop import ResearchWorkflow
 
         workflow = ResearchWorkflow(
-            research_objective="Test objective", artifacts_dir="./test_artifacts"
+            research_objective="Test objective", artifacts_dir="./test_artifacts",
         )
         print("  [OK] Workflow created")
         return True
@@ -70,9 +70,8 @@ def test_provider_modules():
     if providers:
         print(f"  [OK] Loaded providers: {', '.join(providers)}")
         return True
-    else:
-        print("  [WARN] No providers loaded")
-        return True  # Not critical
+    print("  [WARN] No providers loaded")
+    return True  # Not critical
 
 
 def test_gap_modules():
@@ -117,9 +116,8 @@ async def test_simple_llm_call():
         if response and "test" in response.lower():
             print("  [OK] LLM responded")
             return True
-        else:
-            print(f"  [WARN] Unexpected response: {response[:50]}...")
-            return True
+        print(f"  [WARN] Unexpected response: {response[:50]}...")
+        return True
     except Exception as e:
         print(f"  [SKIP] LLM test skipped: {e}")
         return True  # Not critical for smoke test

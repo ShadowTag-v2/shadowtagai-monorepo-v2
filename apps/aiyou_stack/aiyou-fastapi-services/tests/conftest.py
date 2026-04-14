@@ -102,7 +102,7 @@ engine = create_async_engine(
     poolclass=StaticPool,
 )
 TestingSessionLocal = async_sessionmaker(
-    engine, class_=AsyncSession, expire_on_commit=False, autocommit=False, autoflush=False
+    engine, class_=AsyncSession, expire_on_commit=False, autocommit=False, autoflush=False,
 )
 
 

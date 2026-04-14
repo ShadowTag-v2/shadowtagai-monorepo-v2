@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN Stress Test for Judge #6
+"""PNKLN Stress Test for Judge #6
 
 Progressive load testing to find capacity limits.
 Increases load until p99 latency exceeds SLA.
@@ -23,12 +22,10 @@ async def run_stress_test(
     step_qps: int = 10,
     duration_per_step: int = 60,
 ):
-    """
-    Progressive stress test
+    """Progressive stress test
 
     Increases load in steps until SLA is violated.
     """
-
     print("\n" + "=" * 70)
     print("🔥 STRESS TEST - Progressive Load")
     print("=" * 70)
@@ -68,15 +65,14 @@ async def run_stress_test(
                 "p99": report.p99,
                 "sla_pass": report.sla_pass,
                 "success_rate": report.success_rate,
-            }
+            },
         )
 
         # Check if SLA violated
         if not report.sla_pass:
             print(f"\n   ❌ SLA violated at {current_qps} QPS")
             break
-        else:
-            print("   ✅ SLA met")
+        print("   ✅ SLA met")
 
         current_qps += step_qps
 
@@ -106,10 +102,10 @@ async def run_stress_test(
 async def main():
     parser = argparse.ArgumentParser(description="PNKLN Stress Test - Find capacity limits")
     parser.add_argument(
-        "--endpoint", default="http://judge6.pnkln.svc.cluster.local", help="Inference endpoint URL"
+        "--endpoint", default="http://judge6.pnkln.svc.cluster.local", help="Inference endpoint URL",
     )
     parser.add_argument(
-        "--p99-target-ms", type=float, default=90.0, help="p99 latency SLA target in milliseconds"
+        "--p99-target-ms", type=float, default=90.0, help="p99 latency SLA target in milliseconds",
     )
     parser.add_argument("--start-qps", type=int, default=10, help="Starting QPS")
     parser.add_argument("--max-qps", type=int, default=200, help="Maximum QPS to test")

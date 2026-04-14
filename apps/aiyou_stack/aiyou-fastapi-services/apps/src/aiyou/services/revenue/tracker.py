@@ -1,5 +1,4 @@
-"""
-Revenue tracker service.
+"""Revenue tracker service.
 
 Provides async event tracking with BigQuery streaming and local buffering.
 """
@@ -18,8 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class RevenueTracker:
-    """
-    Revenue event tracker with BigQuery streaming.
+    """Revenue event tracker with BigQuery streaming.
 
     Features:
     - Async event emission
@@ -79,12 +77,11 @@ class RevenueTracker:
 
         logger.info(
             f"RevenueTracker stopped. Total events: {self.events_tracked}, "
-            f"Flushed: {self.events_flushed}, Errors: {self.flush_errors}"
+            f"Flushed: {self.events_flushed}, Errors: {self.flush_errors}",
         )
 
     async def track(self, event: RevenueEvent):
-        """
-        Track a revenue event.
+        """Track a revenue event.
 
         Events are buffered locally and flushed to BigQuery periodically.
         """

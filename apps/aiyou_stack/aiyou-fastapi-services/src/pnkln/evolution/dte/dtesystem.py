@@ -14,8 +14,7 @@ except ImportError:
 
 
 class DTESystem:
-    """
-    Debate-Train-Evolve system for self-improvement.
+    """Debate-Train-Evolve system for self-improvement.
 
     Process:
     1. **Debate**: Multi-agent debate on improvements (RCR-MAD)
@@ -45,8 +44,7 @@ class DTESystem:
         strategy: EvolutionStrategy = EvolutionStrategy.HYBRID,
         context: str | None = None,
     ) -> EvolutionResult:
-        """
-        Evolve a prompt through DTE cycle.
+        """Evolve a prompt through DTE cycle.
 
         Args:
             current_prompt: Current prompt template
@@ -56,6 +54,7 @@ class DTESystem:
 
         Returns:
             EvolutionResult with improvement metrics
+
         """
         baseline_score = await self._evaluate_prompt(current_prompt, test_cases)
         if strategy == EvolutionStrategy.RCR_MAD or strategy == EvolutionStrategy.HYBRID:
@@ -91,10 +90,9 @@ class DTESystem:
         return result
 
     async def _run_debate(
-        self, prompt: str, test_cases: list[dict[str, Any]], context: str | None = None
+        self, prompt: str, test_cases: list[dict[str, Any]], context: str | None = None,
     ) -> DebateRound:
-        """
-        Run multi-agent debate (MAD) for prompt improvement.
+        """Run multi-agent debate (MAD) for prompt improvement.
 
         Agents:
         1. Research Explorer: Identifies weaknesses
@@ -103,6 +101,7 @@ class DTESystem:
 
         Returns:
             DebateRound with consensus synthesis
+
         """
         agents = ["Research Explorer", "Design Critic", "Monetization Architect"]
         proposals = [
@@ -126,8 +125,7 @@ class DTESystem:
         )
 
     async def _apply_grpo(self, prompt: str, test_cases: list[dict[str, Any]]) -> str:
-        """
-        Apply GRPO training to evolve prompt.
+        """Apply GRPO training to evolve prompt.
 
         Process:
         1. Generate variations of prompt (group responses)
@@ -153,8 +151,7 @@ class DTESystem:
         return variations[best_idx]
 
     def _generate_prompt_variations(self, prompt: str, num_variations: int) -> list[str]:
-        """
-        Generate variations of prompt for GRPO training.
+        """Generate variations of prompt for GRPO training.
 
         Variations:
         - Different phrasings
@@ -174,11 +171,11 @@ class DTESystem:
         return variations[:num_variations]
 
     async def _evaluate_prompt(self, prompt: str, test_cases: list[dict[str, Any]]) -> float:
-        """
-        Evaluate prompt performance on test cases.
+        """Evaluate prompt performance on test cases.
 
         Returns:
             Score 0-1 (proportion of tests passed)
+
         """
         score = 0.5
         if "1." in prompt or "2." in prompt:
@@ -194,8 +191,7 @@ class DTESystem:
         return max(0.0, min(1.0, score))
 
     async def _evolve_benchmark(self, prompt: str, test_cases: list[dict[str, Any]]) -> str:
-        """
-        Evolve prompt based on benchmark failures.
+        """Evolve prompt based on benchmark failures.
 
         Analyzes failed test cases and adjusts prompt accordingly.
         """
@@ -225,8 +221,7 @@ class DTESystem:
         return text[:max_len] + "..." if len(text) > max_len else text
 
     def _calculate_elegance(self, text: str) -> EleganceMetrics:
-        """
-        Calculate Steve Jobs elegance metrics for text.
+        """Calculate Steve Jobs elegance metrics for text.
 
         Philosophy: Perfection is achieved not when there is nothing left to add,
         but when there is nothing left to remove.
@@ -235,7 +230,7 @@ class DTESystem:
 
         nested_count = text.count("(") + text.count("[") + text.count("{")
         avg_sentence_len = len(text.split()) / max(
-            1, text.count(".") + text.count("!") + text.count("?")
+            1, text.count(".") + text.count("!") + text.count("?"),
         )
         simplicity = max(0.0, 1.0 - nested_count * 0.02 - avg_sentence_len / 100)
         has_headers = bool(re.search("^#{1,3}\\s", text, re.MULTILINE))
@@ -302,11 +297,11 @@ class DTESystem:
         )
 
     def get_evolution_summary(self) -> dict[str, Any]:
-        """
-        Get summary of evolution history.
+        """Get summary of evolution history.
 
         Returns:
             Dict with aggregate metrics
+
         """
         if not self.evolution_history:
             return {

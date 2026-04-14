@@ -1,5 +1,4 @@
-"""
-FastAPI Application for Vertex AI RAG vs Long-Context Service
+"""FastAPI Application for Vertex AI RAG vs Long-Context Service
 
 Endpoints:
 - POST /query: Process query with SELF-ROUTE
@@ -69,7 +68,7 @@ controller: SelfRouteController | None = None
 
 # Ensure root scripts can be resolved reliably
 _root_dir = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
 )
 if _root_dir not in sys.path:
     sys.path.append(_root_dir)
@@ -86,8 +85,7 @@ except ImportError as e:
 
 @app.exception_handler(Exception)
 async def cinematic_global_exception_handler(request: Request, exc: Exception):
-    """
-    Catch-all 500 exception handler that intercepts fatal runtime errors
+    """Catch-all 500 exception handler that intercepts fatal runtime errors
     and pipes them straight to the Cinematic Telemetry queue to potentially trigger
     the Temporal auto-repair swarm pipeline.
     """
@@ -111,10 +109,10 @@ class QueryRequest(BaseModel):
     context: str = Field(..., description="Full document text to search")
     document_id: str = Field(default="default", description="Document identifier")
     vertical: str | None = Field(
-        None, description="Industry vertical (e.g., 'healthcare_compliance')"
+        None, description="Industry vertical (e.g., 'healthcare_compliance')",
     )
     k: int | None = Field(
-        None, description="Number of chunks to retrieve (overrides vertical default)"
+        None, description="Number of chunks to retrieve (overrides vertical default)",
     )
     task_type: str | None = Field(None, description="Task type (legal_compliance, multi_hop, etc.)")
     model_override: str | None = Field(None, description="Override Gemini model (pro or flash)")
@@ -126,7 +124,7 @@ class QueryRequest(BaseModel):
                 "context": "HIPAA regulations specify that... [full document text]",
                 "document_id": "hipaa_regulations_2024",
                 "vertical": "healthcare_compliance",
-            }
+            },
         }
 
 
@@ -151,7 +149,7 @@ class QueryResponse(BaseModel):
                 "task_type": "legal_compliance",
                 "vertical": "healthcare_compliance",
                 "metadata": {"k": 10, "latency": 2.3, "avg_chunk_score": 0.87},
-            }
+            },
         }
 
 
@@ -254,8 +252,7 @@ async def health_check():
 
 @app.post("/query", response_model=QueryResponse, dependencies=[Depends(verify_zero_trust_token)])
 async def process_query(request: QueryRequest):
-    """
-    Process query with SELF-ROUTE logic
+    """Process query with SELF-ROUTE logic
 
     This endpoint:
     1. Applies vertical-specific configuration
@@ -292,7 +289,7 @@ async def process_query(request: QueryRequest):
                 task_type = TaskType(request.task_type)
             except ValueError:
                 raise HTTPException(
-                    status_code=400, detail=f"Invalid task_type: {request.task_type}"
+                    status_code=400, detail=f"Invalid task_type: {request.task_type}",
                 )
 
         # Override model if specified
@@ -306,7 +303,7 @@ async def process_query(request: QueryRequest):
 
         # Process query
         logger.info(
-            f"Processing query: '{request.query[:50]}...' (vertical={request.vertical}, k={k})"
+            f"Processing query: '{request.query[:50]}...' (vertical={request.vertical}, k={k})",
         )
 
         response = controller.route(
@@ -377,7 +374,7 @@ async def get_verticals():
                 model=config.model,
                 temperature=config.temperature,
                 citation_required=config.citation_required,
-            )
+            ),
         )
 
     return {
@@ -428,7 +425,7 @@ async def clear_cache(document_id: str | None = None):
 
     controller.retriever.clear_cache(document_id)
 
-    return {"message": f"Cache cleared for {document_id if document_id else 'all documents'}"}
+    return {"message": f"Cache cleared for {document_id or 'all documents'}"}
 
 
 @app.get("/cache/stats")

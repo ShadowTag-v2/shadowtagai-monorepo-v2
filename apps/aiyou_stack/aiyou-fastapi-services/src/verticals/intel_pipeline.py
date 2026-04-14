@@ -1,6 +1,5 @@
 class IntelPipeline:
-    """
-    Vertical 7: Nightly Intel Pipeline (Add-on)
+    """Vertical 7: Nightly Intel Pipeline (Add-on)
     ARR 2030: $1.65B (Upsell)
     Moat: Automated legal intelligence, 90-day regulatory lead.
     """

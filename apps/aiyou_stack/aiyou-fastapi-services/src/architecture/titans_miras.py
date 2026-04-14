@@ -1,14 +1,13 @@
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
 # Alias for strict tensor tracking
 Tensor = torch.Tensor
 
 
 class MirasCore(nn.Module):  # type: ignore[misc]
-    """
-    SHADOWTAG NEURAL MEMORY (V7)
+    """SHADOWTAG NEURAL MEMORY (V7)
     Integrates Titans (Deep MLP) with Miras (Robust Optimization).
     """
 
@@ -16,13 +15,12 @@ class MirasCore(nn.Module):  # type: ignore[misc]
         super().__init__()
         # Titans: Deep Memory for O(L) scaling
         self.memory: nn.Sequential = nn.Sequential(
-            nn.Linear(d_model, d_model * 4), nn.SiLU(), nn.Linear(d_model * 4, d_model)
+            nn.Linear(d_model, d_model * 4), nn.SiLU(), nn.Linear(d_model * 4, d_model),
         )
         self.gate: nn.Linear = nn.Linear(d_model, 1)
 
     def forward(self, x: Tensor, state: Tensor) -> Tensor:
-        """
-        Forward pass applying adaptive gating to deep memory logic.
+        """Forward pass applying adaptive gating to deep memory logic.
         """
         # Miras: Huber Loss for Robustness against "Poison" Data
         surprise: Tensor = F.huber_loss(x, state, reduction="none")

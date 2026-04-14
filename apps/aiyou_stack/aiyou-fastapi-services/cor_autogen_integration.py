@@ -1,5 +1,4 @@
-"""
-COR AutoGen Integration - Multi-Agent Orchestration with Skill Routing
+"""COR AutoGen Integration - Multi-Agent Orchestration with Skill Routing
 
 This module provides:
 1. AutoGen agent orchestration with Anthropic Claude integration
@@ -46,8 +45,7 @@ class ShadowTag:
 
     @staticmethod
     def generate(task_id: str, agent_name: str, timestamp: str | None = None) -> str:
-        """
-        Generate a ShadowTag watermark
+        """Generate a ShadowTag watermark
 
         Format: [ST:TASKID:AGENT:TIMESTAMP]
         """
@@ -65,23 +63,23 @@ class SkillRouter:
     """Routes tasks to appropriate skills based on capability matching"""
 
     def __init__(self, skill_registry: CORSkillRegistry):
-        """
-        Initialize SkillRouter
+        """Initialize SkillRouter
 
         Args:
             skill_registry: COR Skill Registry instance
+
         """
         self.registry = skill_registry
 
     def route_task(self, task_description: str) -> SkillMetadata | None:
-        """
-        Route a task to the most appropriate skill
+        """Route a task to the most appropriate skill
 
         Args:
             task_description: Natural language task description
 
         Returns:
             SkillMetadata for best-matching skill, or None if no match
+
         """
         # Simple keyword matching - in production, use embeddings/semantic search
         task_lower = task_description.lower()
@@ -98,9 +96,8 @@ class SkillRouter:
         if best_match and best_score > 0.3:  # Threshold for match confidence
             logger.info(f"Routed task to skill: {best_match.name} (score: {best_score:.2f})")
             return best_match
-        else:
-            logger.warning(f"No skill match found for task: {task_description[:50]}...")
-            return None
+        logger.warning(f"No skill match found for task: {task_description[:50]}...")
+        return None
 
     def _calculate_match_score(self, task: str, skill: SkillMetadata) -> float:
         """Calculate match score between task and skill"""
@@ -129,8 +126,7 @@ class SkillRouter:
 
 
 class ClaudeAgent:
-    """
-    Wrapper for Anthropic Claude that integrates with AutoGen
+    """Wrapper for Anthropic Claude that integrates with AutoGen
 
     This agent uses Claude as the backend LLM for AutoGen conversations
     """
@@ -142,14 +138,14 @@ class ClaudeAgent:
         model: str = "claude-sonnet-4-5-20250929",
         system_prompt: str | None = None,
     ):
-        """
-        Initialize Claude Agent
+        """Initialize Claude Agent
 
         Args:
             name: Agent name
             api_key: Anthropic API key
             model: Claude model to use
             system_prompt: System prompt for agent
+
         """
         self.name = name
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
@@ -159,8 +155,7 @@ class ClaudeAgent:
         self.conversation_history: list[dict[str, str]] = []
 
     def generate_response(self, message: str, context: list[dict] | None = None) -> str:
-        """
-        Generate a response using Claude
+        """Generate a response using Claude
 
         Args:
             message: Input message
@@ -168,6 +163,7 @@ class ClaudeAgent:
 
         Returns:
             Claude's response
+
         """
         # Build conversation context
         messages = context or self.conversation_history.copy()
@@ -175,7 +171,7 @@ class ClaudeAgent:
 
         try:
             response = self.client.messages.create(
-                model=self.model, max_tokens=4096, system=self.system_prompt, messages=messages
+                model=self.model, max_tokens=4096, system=self.system_prompt, messages=messages,
             )
 
             assistant_message = response.content[0].text
@@ -195,12 +191,12 @@ class COROrchestrator:
     """Multi-agent orchestrator with skill routing and task management"""
 
     def __init__(self, api_key: str | None = None, enable_watermarks: bool = True):
-        """
-        Initialize COR Orchestrator
+        """Initialize COR Orchestrator
 
         Args:
             api_key: Anthropic API key
             enable_watermarks: Enable ShadowTag watermarking
+
         """
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         self.enable_watermarks = enable_watermarks
@@ -217,10 +213,9 @@ class COROrchestrator:
         logger.info("COR Orchestrator initialized")
 
     def create_agent(
-        self, name: str, role: str, capabilities: list[str] | None = None
+        self, name: str, role: str, capabilities: list[str] | None = None,
     ) -> ClaudeAgent:
-        """
-        Create a specialized agent
+        """Create a specialized agent
 
         Args:
             name: Agent name
@@ -229,6 +224,7 @@ class COROrchestrator:
 
         Returns:
             ClaudeAgent instance
+
         """
         system_prompt = f"""You are {name}, a specialized AI agent.
 
@@ -252,8 +248,7 @@ Always provide clear, actionable outputs with proper reasoning.
         agent_name: str | None = None,
         enable_skill_routing: bool = True,
     ) -> dict[str, Any]:
-        """
-        Execute a task using agents and skill routing
+        """Execute a task using agents and skill routing
 
         Args:
             task_description: Task to execute
@@ -262,6 +257,7 @@ Always provide clear, actionable outputs with proper reasoning.
 
         Returns:
             Execution result dictionary
+
         """
         self.task_counter += 1
         task_id = f"TASK_{self.task_counter:04d}"
@@ -279,7 +275,7 @@ Always provide clear, actionable outputs with proper reasoning.
         else:
             # Create default execution agent
             agent = self.create_agent(
-                name=f"Agent_{task_id}", role="Task Executor", capabilities=["general_execution"]
+                name=f"Agent_{task_id}", role="Task Executor", capabilities=["general_execution"],
             )
 
         # Execute task
@@ -322,10 +318,9 @@ Execute this task using the recommended skill approach."""
         return result
 
     def execute_multi_agent_task(
-        self, task_description: str, agent_roles: list[dict[str, str]]
+        self, task_description: str, agent_roles: list[dict[str, str]],
     ) -> dict[str, Any]:
-        """
-        Execute a task using multiple agents in collaboration
+        """Execute a task using multiple agents in collaboration
 
         Args:
             task_description: Task to execute
@@ -334,6 +329,7 @@ Execute this task using the recommended skill approach."""
 
         Returns:
             Execution result with multi-agent conversation
+
         """
         if not AUTOGEN_AVAILABLE:
             logger.error("AutoGen not available for multi-agent execution")
@@ -379,7 +375,7 @@ def main():
     # Example 1: Simple task execution with skill routing
     print("\n--- Example 1: Skill-Routed Task Execution ---")
     result = orchestrator.execute_task(
-        task_description="Analyze the security vulnerabilities in a Python web application"
+        task_description="Analyze the security vulnerabilities in a Python web application",
     )
     print(f"Task ID: {result['task_id']}")
     print(f"Agent: {result['agent_name']}")
@@ -391,7 +387,7 @@ def main():
     # Example 2: High-risk task (should route to RA-1/RA-2 skill)
     print("\n--- Example 2: High-Risk Task Routing ---")
     result = orchestrator.execute_task(
-        task_description="Execute database deletion of production user records"
+        task_description="Execute database deletion of production user records",
     )
     print(f"Task ID: {result['task_id']}")
     print(f"Risk Level: {result['risk_level']}")

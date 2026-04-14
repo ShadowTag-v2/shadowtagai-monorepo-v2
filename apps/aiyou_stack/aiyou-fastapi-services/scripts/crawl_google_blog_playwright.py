@@ -92,8 +92,7 @@ def main():
     print(f"\n✅ Total Unique URLs found: {len(all_urls)}")
 
     with open(OUTPUT_FILE, "w") as f:
-        for url in sorted(all_urls):
-            f.write(url + "\n")
+        f.writelines(url + "\n" for url in sorted(all_urls))
 
     print(f"💾 Saved to: {OUTPUT_FILE}")
 

@@ -18,8 +18,7 @@ async def create_funnel(
     funnel: FunnelCreate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Create a new conversion funnel
+    """Create a new conversion funnel
 
     Define a multi-step conversion funnel to track user progression through key events.
     """
@@ -33,8 +32,7 @@ async def get_funnel(
     funnel_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get funnel by ID
+    """Get funnel by ID
 
     Retrieve detailed information about a specific funnel including all steps.
     """
@@ -54,8 +52,7 @@ async def list_funnels(
     is_active: bool = None,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    List all funnels
+    """List all funnels
 
     Retrieve all conversion funnels, optionally filtered by active status.
     """
@@ -70,8 +67,7 @@ async def update_funnel(
     funnel_data: FunnelUpdate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Update funnel
+    """Update funnel
 
     Update funnel properties such as name, description, or active status.
     """
@@ -91,8 +87,7 @@ async def delete_funnel(
     funnel_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Delete funnel
+    """Delete funnel
 
     Permanently delete a funnel and all associated data.
     """
@@ -104,7 +99,6 @@ async def delete_funnel(
             detail="Funnel not found",
         )
 
-    return None
 
 
 @router.get("/{funnel_id}/analytics", response_model=FunnelAnalyticsResponse)
@@ -113,8 +107,7 @@ async def analyze_funnel(
     days: int = 7,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Analyze funnel performance
+    """Analyze funnel performance
 
     Get detailed analytics for a funnel including conversion rates, drop-off rates,
     and step-by-step breakdown.

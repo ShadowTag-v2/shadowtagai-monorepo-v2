@@ -17,8 +17,7 @@ async def mock_auth():
 
 @router.post("/document")
 async def upload_document(file: UploadFile = File(...), auth=Depends(mock_auth)):
-    """
-    Zero-Trust ingest endpoint for native contract documentation parsing into the vector RAG loop.
+    """Zero-Trust ingest endpoint for native contract documentation parsing into the vector RAG loop.
     """
     logger.info(f"Ingesting binary payload: {file.filename}")
     if not file.filename.endswith((".pdf", ".txt", ".docx")):

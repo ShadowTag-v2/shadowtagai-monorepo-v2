@@ -1,5 +1,4 @@
-"""
-SwarmOrchestrator Integration with Context Index
+"""SwarmOrchestrator Integration with Context Index
 
 Adds atomic chat logging for task routing and revenue distribution decisions.
 """
@@ -15,8 +14,7 @@ except ImportError:
 
 
 class SwarmOrchestratorContextMixin:
-    """
-    Mixin to add Context Index logging to SwarmOrchestrator.
+    """Mixin to add Context Index logging to SwarmOrchestrator.
 
     Add this to the SwarmOrchestrator class to enable OPORD logging.
     """
@@ -27,10 +25,9 @@ class SwarmOrchestratorContextMixin:
         self.logger = logging.getLogger(__name__)
 
     def log_routing_decision(
-        self, task: dict[str, Any], assigned_agent: str, reasoning: str
+        self, task: dict[str, Any], assigned_agent: str, reasoning: str,
     ) -> int | None:
-        """
-        Log task routing decision to Context Index.
+        """Log task routing decision to Context Index.
 
         Creates OPORD for transparency and audit trail.
         """
@@ -71,8 +68,7 @@ class SwarmOrchestratorContextMixin:
         distribution: dict[str, float],
         generation: int,
     ) -> int | None:
-        """
-        Log revenue distribution decision to Context Index.
+        """Log revenue distribution decision to Context Index.
 
         Creates OPORD for financial audit trail.
         """
@@ -121,10 +117,9 @@ class SwarmOrchestratorContextMixin:
             return None
 
     def log_child_spawn(
-        self, parent_id: str, child_id: str, specialization: str, revenue_trigger: float
+        self, parent_id: str, child_id: str, specialization: str, revenue_trigger: float,
     ) -> int | None:
-        """
-        Log child agent spawning event to Context Index.
+        """Log child agent spawning event to Context Index.
 
         Creates OPORD for agent lineage tracking.
         """

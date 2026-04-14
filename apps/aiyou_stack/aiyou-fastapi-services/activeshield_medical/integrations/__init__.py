@@ -1,5 +1,4 @@
-"""
-ActiveShieldMedical Integrations
+"""ActiveShieldMedical Integrations
 =================================
 
 Integration adapters for external systems.

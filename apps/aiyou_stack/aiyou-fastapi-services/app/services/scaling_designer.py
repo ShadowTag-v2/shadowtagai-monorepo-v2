@@ -1,5 +1,4 @@
-"""
-Scaling Designer Service
+"""Scaling Designer Service
 Provides auto-scaling recommendations and configurations
 """
 
@@ -13,7 +12,6 @@ class ScalingDesignerService:
 
     def analyze_and_recommend(self, request: dict[str, Any]) -> ScalingRecommendation:
         """Analyze workload and provide scaling recommendations"""
-
         workload_type = request.get("workload_type", "web_app")
         expected_traffic = request.get("expected_traffic", 100)
         current_instances = request.get("current_instances", 2)
@@ -31,7 +29,7 @@ class ScalingDesignerService:
         scale_down_cooldown = 300  # 5 minutes - be conservative when scaling down
 
         recommendations = self._generate_scaling_recommendations(
-            workload_type, expected_traffic, min_instances, max_instances, target_cpu
+            workload_type, expected_traffic, min_instances, max_instances, target_cpu,
         )
 
         return ScalingRecommendation(
@@ -46,7 +44,6 @@ class ScalingDesignerService:
 
     def _calculate_max_instances(self, expected_traffic: int, peak_multiplier: float) -> int:
         """Calculate maximum instances needed for peak traffic"""
-
         # Assume each instance can handle ~500 RPS comfortably
         rps_per_instance = 500
 
@@ -58,7 +55,6 @@ class ScalingDesignerService:
 
     def _get_target_cpu_utilization(self, workload_type: str) -> int:
         """Get target CPU utilization based on workload type"""
-
         targets = {
             "web_app": 70,  # Conservative for web apps
             "api": 75,  # APIs can handle higher CPU
@@ -79,32 +75,31 @@ class ScalingDesignerService:
         target_cpu: int,
     ) -> list[str]:
         """Generate detailed scaling recommendations"""
-
         recommendations = []
 
         # Basic configuration
         recommendations.append(
-            f"✅ Configured for {min_instances}-{max_instances} instances with {target_cpu}% CPU target"
+            f"✅ Configured for {min_instances}-{max_instances} instances with {target_cpu}% CPU target",
         )
 
         # Traffic-based recommendations
         if expected_traffic > 1000:
             recommendations.append(
-                "📈 High traffic expected: Consider using multiple availability zones for distribution"
+                "📈 High traffic expected: Consider using multiple availability zones for distribution",
             )
             recommendations.append(
-                "🔄 Implement connection pooling and request queuing to handle traffic spikes"
+                "🔄 Implement connection pooling and request queuing to handle traffic spikes",
             )
 
         # Scaling strategy
         recommendations.append(
-            "⚡ Quick scale-up (60s cooldown) to handle sudden traffic increases"
+            "⚡ Quick scale-up (60s cooldown) to handle sudden traffic increases",
         )
         recommendations.append("🐌 Conservative scale-down (300s cooldown) to prevent flapping")
 
         # Metric recommendations
         recommendations.append(
-            "📊 Monitor additional metrics: Request latency, error rate, and queue depth"
+            "📊 Monitor additional metrics: Request latency, error rate, and queue depth",
         )
 
         # Advanced recommendations
@@ -116,7 +111,7 @@ class ScalingDesignerService:
         if max_instances > 10:
             recommendations.append("💰 Use a mix of on-demand and spot instances to reduce costs")
             recommendations.append(
-                f"💡 Reserve capacity for {min_instances} baseline instances (up to 70% savings)"
+                f"💡 Reserve capacity for {min_instances} baseline instances (up to 70% savings)",
             )
 
         # Testing recommendations

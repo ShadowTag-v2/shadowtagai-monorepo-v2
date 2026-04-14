@@ -1,5 +1,4 @@
-"""
-THE BOOKS
+"""THE BOOKS
 Sovereign Financial Ledger
 Exports transactions to Quicken (QIF) and Universal CSV.
 """
@@ -10,8 +9,7 @@ from src.economy.mall import Transaction
 
 
 class LedgerBook:
-    """
-    Manages the Sovereign Chart of Accounts and exports.
+    """Manages the Sovereign Chart of Accounts and exports.
     """
 
     # Chart of Accounts Mapping
@@ -31,8 +29,7 @@ class LedgerBook:
         return dt.strftime("%d/%m/%Y")
 
     def export_qif(self, transactions: list[Transaction]) -> str:
-        """
-        Generates a QIF file content string from a list of transactions.
+        """Generates a QIF file content string from a list of transactions.
         Simple implementation focusing on the Mall Fee collection (Income) for the platform.
         """
         qif_content = "!Type:Bank\n"
@@ -55,8 +52,7 @@ class LedgerBook:
         return qif_content
 
     def export_csv(self, transactions: list[Transaction]) -> str:
-        """
-        Generates a CSV string.
+        """Generates a CSV string.
         """
         csv_content = "Date,Description,Amount,Category,Memo\n"
 

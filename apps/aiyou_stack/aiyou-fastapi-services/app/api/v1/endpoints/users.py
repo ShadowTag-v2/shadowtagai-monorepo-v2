@@ -1,5 +1,4 @@
-"""
-User Management Endpoints
+"""User Management Endpoints
 
 Security:
 - Authentication required
@@ -26,8 +25,7 @@ def get_user_service(db: AsyncSession = Depends(get_db)) -> UserService:
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user_info(current_user: User = Depends(get_current_active_user)) -> User:
-    """
-    Get current user information
+    """Get current user information
 
     Security:
     - Authentication required
@@ -42,8 +40,7 @@ async def update_current_user(
     current_user: User = Depends(get_current_active_user),
     service: UserService = Depends(get_user_service),
 ) -> User:
-    """
-    Update current user information
+    """Update current user information
 
     Security:
     - Authentication required
@@ -58,8 +55,7 @@ async def delete_current_user(
     current_user: User = Depends(get_current_active_user),
     service: UserService = Depends(get_user_service),
 ) -> dict:
-    """
-    Soft delete current user account
+    """Soft delete current user account
 
     Security:
     - Authentication required

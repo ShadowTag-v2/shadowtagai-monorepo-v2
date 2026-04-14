@@ -15,13 +15,13 @@ from kosmos_dev.core.whiteboard import (
 )
 
 __all__ = [
-    "Whiteboard",
-    "Finding",
-    "Vote",
-    "ConsensusState",
-    "FindingType",
-    "SwarmManager",
-    "SwarmAgent",
-    "AgentType",
     "AgentPersona",
+    "AgentType",
+    "ConsensusState",
+    "Finding",
+    "FindingType",
+    "SwarmAgent",
+    "SwarmManager",
+    "Vote",
+    "Whiteboard",
 ]

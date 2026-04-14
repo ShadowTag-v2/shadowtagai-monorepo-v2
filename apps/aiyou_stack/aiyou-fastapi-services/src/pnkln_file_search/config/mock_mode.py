@@ -1,5 +1,4 @@
-"""
-Mock mode for local development without GCP credentials
+"""Mock mode for local development without GCP credentials
 """
 
 import os
@@ -106,13 +105,13 @@ class MockGroundingMetadata:
                 retrieved_context=MockRetrievedContext(
                     text="ATP 5-19 Section 2.3: Information operations require command approval.",
                     uri="gs://mock-bucket/defense/ATP_5-19.pdf",
-                )
+                ),
             ),
             MockGroundingChunk(
                 retrieved_context=MockRetrievedContext(
                     text="OPSEC guidelines mandate review before external sharing.",
                     uri="gs://mock-bucket/defense/OPSEC_Manual.pdf",
-                )
+                ),
             ),
         ]
 
@@ -143,7 +142,7 @@ def get_mock_responses() -> dict:
                     "type": "corpus",
                     "uri": "gs://mock-bucket/defense/ATP_5-19.pdf",
                     "text": "Mock citation text from policy document",
-                }
+                },
             ],
             "source_documents": ["gs://mock-bucket/defense/ATP_5-19.pdf"],
         },

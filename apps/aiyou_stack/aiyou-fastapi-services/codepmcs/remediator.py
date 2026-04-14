@@ -1,5 +1,4 @@
-"""
-CodePMCS Remediator - AI-powered auto-fix generator.
+"""CodePMCS Remediator - AI-powered auto-fix generator.
 
 Uses Gemini to generate fixes for detected issues:
 - Security patches
@@ -238,8 +237,7 @@ Return ONLY valid JSON, no other text.
             text = response.text.strip()
             if text.startswith("```"):
                 text = text.split("```")[1]
-                if text.startswith("json"):
-                    text = text[4:]
+                text = text.removeprefix("json")
 
             parsed = json.loads(text)
 

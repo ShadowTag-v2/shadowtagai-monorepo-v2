@@ -1,5 +1,4 @@
-"""
-Recommender governance and explainability API endpoints
+"""Recommender governance and explainability API endpoints
 Implements DSA-compliant recommender transparency
 """
 
@@ -70,8 +69,7 @@ class ContentRecommendation(BaseModel):
 
 @router.post("/explain", response_model=RecommenderExplanationResponse)
 async def explain_recommendation(request: RecommenderExplanationRequest):
-    """
-    Explain why content was recommended (DSA Article 27)
+    """Explain why content was recommended (DSA Article 27)
 
     Provides:
     - Main parameters used
@@ -110,8 +108,7 @@ async def explain_recommendation(request: RecommenderExplanationRequest):
 
 @router.post("/config/update", response_model=RecommenderConfigResponse)
 async def update_recommender_config(request: RecommenderConfigRequest):
-    """
-    Update user recommender preferences
+    """Update user recommender preferences
 
     Allows users to control:
     - Personalization on/off
@@ -120,7 +117,7 @@ async def update_recommender_config(request: RecommenderConfigRequest):
     - Topic preferences
     """
     return RecommenderConfigResponse(
-        user_id=request.user_id, config=request.dict(), updated_at=datetime.utcnow()
+        user_id=request.user_id, config=request.dict(), updated_at=datetime.utcnow(),
     )
 
 
@@ -142,8 +139,7 @@ async def get_recommender_config(user_id: str):
 
 @router.post("/non-profiled", response_model=list[ContentRecommendation])
 async def get_non_profiled_feed(request: NonProfiledFeedRequest):
-    """
-    Get non-profiled feed (DSA requirement)
+    """Get non-profiled feed (DSA requirement)
 
     Returns recommendations WITHOUT:
     - User profiling
@@ -169,8 +165,7 @@ async def get_non_profiled_feed(request: NonProfiledFeedRequest):
 
 @router.get("/transparency")
 async def get_transparency_info():
-    """
-    Get recommender system transparency information (DSA Article 27)
+    """Get recommender system transparency information (DSA Article 27)
 
     Explains:
     - How recommendations work

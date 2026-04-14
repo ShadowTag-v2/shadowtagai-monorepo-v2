@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Pnkln Judge #6 Hybrid Orchestrator - Vertex AI Integration
+"""Pnkln Judge #6 Hybrid Orchestrator - Vertex AI Integration
 Purpose: Coordinate 3-layer governance enforcement with <90ms p99 latency SLA
 Architecture:
   Layer 1: Fine-tuned Gemini (policy understanding)
@@ -22,7 +21,7 @@ from vertexai.generative_models import GenerationConfig, GenerativeModel
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -57,7 +56,7 @@ class Config:
     circuit_breaker_threshold_ms: int = int(os.getenv("CIRCUIT_BREAKER_THRESHOLD_MS", "100"))
     circuit_breaker_fallback_mode: str = os.getenv("CIRCUIT_BREAKER_FALLBACK_MODE", "rules-only")
     circuit_breaker_recovery_time_sec: int = int(
-        os.getenv("CIRCUIT_BREAKER_RECOVERY_TIME_SEC", "60")
+        os.getenv("CIRCUIT_BREAKER_RECOVERY_TIME_SEC", "60"),
     )
 
     # Feature flags
@@ -75,11 +74,11 @@ class Config:
 
 # Request metrics
 request_total = Counter(
-    "judge_request_total", "Total number of judge requests", ["layer", "status"]
+    "judge_request_total", "Total number of judge requests", ["layer", "status"],
 )
 
 request_errors = Counter(
-    "judge_request_errors_total", "Total number of judge request errors", ["layer", "error_type"]
+    "judge_request_errors_total", "Total number of judge request errors", ["layer", "error_type"],
 )
 
 request_duration = Histogram(
@@ -97,7 +96,7 @@ layer_duration = Histogram(
 )
 
 circuit_breaker_trips = Counter(
-    "judge_circuit_breaker_trips_total", "Total circuit breaker trips", ["layer"]
+    "judge_circuit_breaker_trips_total", "Total circuit breaker trips", ["layer"],
 )
 
 active_requests = Gauge("judge_active_requests", "Number of active judge requests")
@@ -171,7 +170,7 @@ class CircuitBreaker:
             self._is_open = True
             circuit_breaker_trips.labels(layer=layer).inc()
             logger.warning(
-                f"Circuit breaker tripped for {layer}: {duration_ms}ms > {self.threshold_ms}ms"
+                f"Circuit breaker tripped for {layer}: {duration_ms}ms > {self.threshold_ms}ms",
             )
             return True
 
@@ -208,7 +207,7 @@ class Layer1Gemini:
         vertexai.init(project=config.project_id, location=config.location)
 
         # Use tuned model if available, otherwise base model
-        model_name = config.gemini_tuned_model if config.gemini_tuned_model else config.gemini_model
+        model_name = config.gemini_tuned_model or config.gemini_model
         self.model = GenerativeModel(model_name)
 
         logger.info(f"Initialized Gemini layer with model: {model_name}")
@@ -258,7 +257,7 @@ class Layer1Gemini:
             self.circuit_breaker.record_call(duration_ms, "gemini")
 
             logger.info(
-                f"Gemini layer completed: {decision} (confidence: {confidence:.2f}, duration: {duration_ms:.1f}ms)"
+                f"Gemini layer completed: {decision} (confidence: {confidence:.2f}, duration: {duration_ms:.1f}ms)",
             )
 
         except TimeoutError:
@@ -297,7 +296,7 @@ Respond in JSON format:
         # This would ideally use aiohttp or similar for true async
         loop = asyncio.get_event_loop()
         response = await loop.run_in_executor(
-            None, lambda: self.model.generate_content(prompt, generation_config=config)
+            None, lambda: self.model.generate_content(prompt, generation_config=config),
         )
         return response.text
 
@@ -415,7 +414,7 @@ class Layer3Rules:
             request_total.labels(layer="rules", status="success").inc()
 
             logger.info(
-                f"Rules layer completed: verdict={verdict}, matched={len(matched_rules)}, duration={duration_ms:.1f}ms"
+                f"Rules layer completed: verdict={verdict}, matched={len(matched_rules)}, duration={duration_ms:.1f}ms",
             )
 
         except Exception as e:
@@ -518,7 +517,7 @@ class JudgeOrchestrator:
             # Log SLA compliance
             if duration_ms > self.config.latency_sla_p99_ms:
                 logger.warning(
-                    f"SLA BREACH: Request {request_id} took {duration_ms:.1f}ms (SLA: {self.config.latency_sla_p99_ms}ms)"
+                    f"SLA BREACH: Request {request_id} took {duration_ms:.1f}ms (SLA: {self.config.latency_sla_p99_ms}ms)",
                 )
             else:
                 logger.info(f"Request {request_id} completed in {duration_ms:.1f}ms (within SLA)")
@@ -530,7 +529,6 @@ class JudgeOrchestrator:
 
     def _make_final_decision(self, state: JudgeState) -> JudgeState:
         """Make final decision based on layer outputs"""
-
         # Check for circuit breaker fallback
         if state["gemini_timeout"] or state["pytorch_timeout"]:
             # Fallback to rules-only mode
@@ -590,7 +588,7 @@ async def main():
     logger.info(
         f"Layer breakdown: Gemini={result['gemini_duration_ms']:.1f}ms, "
         f"PyTorch={result['pytorch_duration_ms']:.1f}ms, "
-        f"Rules={result['rules_duration_ms']:.1f}ms"
+        f"Rules={result['rules_duration_ms']:.1f}ms",
     )
 
 

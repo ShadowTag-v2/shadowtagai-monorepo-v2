@@ -1,5 +1,4 @@
-"""
-GRPO (Group Relative Policy Optimization) training simulation.
+"""GRPO (Group Relative Policy Optimization) training simulation.
 
 Comparison with PPO (Proximal Policy Optimization):
 - GRPO: Uses relative advantages within groups (G responses)
@@ -33,8 +32,7 @@ class TrainingExample(BaseModel):
 
 
 class GRPOSimulator:
-    """
-    Simulate GRPO training for kernel/agent optimization.
+    """Simulate GRPO training for kernel/agent optimization.
 
     Used to evolve kernels via relative performance within groups.
     """
@@ -43,8 +41,7 @@ class GRPOSimulator:
         self.config = config
 
     def compute_advantages(self, rewards: list[float]) -> list[float]:
-        """
-        Compute relative advantages within group.
+        """Compute relative advantages within group.
 
         GRPO key insight: Advantages are relative to group mean,
         not absolute rewards. This reduces variance.
@@ -54,6 +51,7 @@ class GRPOSimulator:
 
         Returns:
             List of relative advantages (mean-centered)
+
         """
         mean_reward = sum(rewards) / len(rewards) if rewards else 0.0
         return [r - mean_reward for r in rewards]
@@ -64,8 +62,7 @@ class GRPOSimulator:
         advantages: list[float],
         old_log_probs: list[float],
     ) -> float:
-        """
-        Compute GRPO loss.
+        """Compute GRPO loss.
 
         Loss = -mean(ratio * advantage) + beta * KL
         where ratio = exp(log_prob - old_log_prob)
@@ -77,6 +74,7 @@ class GRPOSimulator:
 
         Returns:
             GRPO loss value
+
         """
         losses = []
         kl_divs = []
@@ -102,8 +100,7 @@ class GRPOSimulator:
         advantages: list[float],
         old_log_probs: list[float],
     ) -> float:
-        """
-        Compute PPO loss for comparison.
+        """Compute PPO loss for comparison.
 
         Loss = -mean(min(ratio * advantage, clip(ratio) * advantage))
 
@@ -114,6 +111,7 @@ class GRPOSimulator:
 
         Returns:
             PPO clipped loss value
+
         """
         epsilon = self.config.epsilon
         losses = []
@@ -135,8 +133,7 @@ class GRPOSimulator:
         responses: list[str],
         rewards: list[float],
     ) -> dict[str, Any]:
-        """
-        Simulate one GRPO training step.
+        """Simulate one GRPO training step.
 
         Args:
             prompt: Input prompt
@@ -145,6 +142,7 @@ class GRPOSimulator:
 
         Returns:
             Training step results with GRPO vs PPO comparison
+
         """
         # Compute relative advantages (GRPO)
         advantages_grpo = self.compute_advantages(rewards)
@@ -181,11 +179,11 @@ class GRPOvsPPOComparison(BaseModel):
 
 
 def compare_grpo_ppo() -> list[GRPOvsPPOComparison]:
-    """
-    Compare GRPO vs PPO across key dimensions.
+    """Compare GRPO vs PPO across key dimensions.
 
     Returns:
         List of comparisons
+
     """
     return [
         GRPOvsPPOComparison(

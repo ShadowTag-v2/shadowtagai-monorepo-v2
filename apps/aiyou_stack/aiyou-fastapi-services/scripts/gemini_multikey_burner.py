@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Multi-Key Burner
+"""Gemini Multi-Key Burner
 Load balances across 10 Gemini Pro accounts for maximum throughput.
 No caching, no rate limiting - burn through quotas fast.
 """
@@ -29,8 +28,7 @@ class KeyStats:
 
 
 class MultiKeyGeminiBurner:
-    """
-    Load balancer for 10 Gemini Pro accounts.
+    """Load balancer for 10 Gemini Pro accounts.
     Round-robin rotation, no caching, max throughput.
     """
 
@@ -99,12 +97,12 @@ class MultiKeyGeminiBurner:
         return await asyncio.to_thread(self.generate, prompt)
 
     async def burn_parallel(self, prompts: list[str], concurrency: int = 10) -> list[str]:
-        """
-        Burn through prompts in parallel.
+        """Burn through prompts in parallel.
 
         Args:
             prompts: List of prompts to process
             concurrency: Max concurrent requests (default 10 = all keys)
+
         """
         semaphore = asyncio.Semaphore(concurrency)
 

@@ -1,5 +1,4 @@
-"""
-UNGPT Pipeline - Minimal working version
+"""UNGPT Pipeline - Minimal working version
 10 Gemini instances → Git Push → PR
 """
 
@@ -122,7 +121,7 @@ git commit -m "feat: {atom.content[:50]}" && \
 git push -u origin {branch}
 """
             proc = await asyncio.create_subprocess_shell(
-                cmds, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+                cmds, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
             )
             await proc.communicate()
 

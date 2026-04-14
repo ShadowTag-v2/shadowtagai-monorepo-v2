@@ -1,5 +1,4 @@
-"""
-Health check implementation for liveness and readiness probes.
+"""Health check implementation for liveness and readiness probes.
 Monitors application and dependency health.
 """
 
@@ -81,8 +80,8 @@ class HealthChecker:
                     HealthCheckResult(
                         name=getattr(check, "__name__", "unknown"),
                         status=HealthStatus.UNHEALTHY,
-                        message=f"Check failed: {str(e)}",
-                    )
+                        message=f"Check failed: {e!s}",
+                    ),
                 )
 
         return results
@@ -139,14 +138,13 @@ async def check_system_resources() -> HealthCheckResult:
         return HealthCheckResult(
             name="system_resources",
             status=HealthStatus.UNHEALTHY,
-            message=f"Failed to check system resources: {str(e)}",
+            message=f"Failed to check system resources: {e!s}",
             duration=duration,
         )
 
 
 async def check_database() -> HealthCheckResult:
-    """
-    Check database connectivity.
+    """Check database connectivity.
     This is a placeholder - implement with actual database connection.
     """
     start_time = time.time()
@@ -173,21 +171,21 @@ async def check_database() -> HealthCheckResult:
         return HealthCheckResult(
             name="database",
             status=HealthStatus.UNHEALTHY,
-            message=f"Database connection failed: {str(e)}",
+            message=f"Database connection failed: {e!s}",
             duration=duration,
         )
 
 
 async def check_external_service(
-    url: str, service_name: str, timeout: int = 5
+    url: str, service_name: str, timeout: int = 5,
 ) -> HealthCheckResult:
-    """
-    Check external service availability.
+    """Check external service availability.
 
     Args:
         url: Service URL to check
         service_name: Name of the service
         timeout: Request timeout in seconds
+
     """
     start_time = time.time()
 
@@ -208,28 +206,26 @@ async def check_external_service(
                     },
                     duration=duration,
                 )
-            else:
-                return HealthCheckResult(
-                    name=service_name,
-                    status=HealthStatus.DEGRADED,
-                    message=f"{service_name} returned non-200 status",
-                    details={"url": url, "status_code": response.status_code},
-                    duration=duration,
-                )
+            return HealthCheckResult(
+                name=service_name,
+                status=HealthStatus.DEGRADED,
+                message=f"{service_name} returned non-200 status",
+                details={"url": url, "status_code": response.status_code},
+                duration=duration,
+            )
     except Exception as e:
         duration = time.time() - start_time
         return HealthCheckResult(
             name=service_name,
             status=HealthStatus.UNHEALTHY,
-            message=f"{service_name} is unreachable: {str(e)}",
+            message=f"{service_name} is unreachable: {e!s}",
             details={"url": url},
             duration=duration,
         )
 
 
 async def health_check() -> dict:
-    """
-    Liveness probe - basic health check.
+    """Liveness probe - basic health check.
     Returns simple status indicating if the application is alive.
     """
     uptime = health_checker.get_uptime_seconds()
@@ -245,8 +241,7 @@ async def health_check() -> dict:
 
 
 async def readiness_check() -> dict:
-    """
-    Readiness probe - comprehensive dependency check.
+    """Readiness probe - comprehensive dependency check.
     Returns detailed status including all dependencies.
     """
     # Run all health checks

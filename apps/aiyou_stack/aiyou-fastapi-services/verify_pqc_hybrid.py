@@ -43,9 +43,8 @@ def test_pqc_hybrid_provenance():
         print("✅ VERIFICATION :: Success. Both Ed25519 and PQC-Shim validated.")
         print(f"///▞ AUDITOR :: Consensus - {verify_result['auditor_consensus']}")
         return True
-    else:
-        print(f"❌ VERIFICATION :: Failed: {verify_result.get('status')}")
-        return False
+    print(f"❌ VERIFICATION :: Failed: {verify_result.get('status')}")
+    return False
 
 
 if __name__ == "__main__":

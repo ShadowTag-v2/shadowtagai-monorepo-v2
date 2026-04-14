@@ -79,8 +79,7 @@ async def embed_watermark(
     file: UploadFile = File(..., description="Video or audio file to watermark"),
     request: EmbedRequest = None,
 ) -> EmbedResponse:
-    """
-    Embed watermark into video or audio file.
+    """Embed watermark into video or audio file.
 
     - **file**: Video or audio file (MP4, WAV, etc.)
     - **prompt**: Prompt text to embed as watermark
@@ -153,7 +152,7 @@ async def embed_watermark(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Embedding failed: {str(e)}",
+            detail=f"Embedding failed: {e!s}",
         )
     finally:
         # Cleanup input file
@@ -176,8 +175,7 @@ async def verify_watermark(
     file: UploadFile = File(..., description="Watermarked video or audio file"),
     request: VerifyRequest = None,
 ) -> VerifyResponse:
-    """
-    Verify watermark in video or audio file.
+    """Verify watermark in video or audio file.
 
     - **file**: Watermarked video or audio file
     - **expected_prompt**: Expected prompt text
@@ -223,7 +221,7 @@ async def verify_watermark(
 
             blockchain_config = BlockchainConfig(chain=ChainType(request.chain.value))
             receipt_result = verify_blockchain_receipt(
-                request.tx_hash, request.expected_prompt, blockchain_config
+                request.tx_hash, request.expected_prompt, blockchain_config,
             )
 
         return VerifyResponse(
@@ -241,7 +239,7 @@ async def verify_watermark(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Verification failed: {str(e)}",
+            detail=f"Verification failed: {e!s}",
         )
     finally:
         # Cleanup input file

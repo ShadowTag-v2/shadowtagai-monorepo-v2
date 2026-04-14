@@ -8,8 +8,8 @@ from .dte import (
 )
 
 __all__ = [
-    "DTESystem",
-    "EvolutionStrategy",
-    "EvolutionResult",
     "CHEAT_SHEET_DTE_TEST",
+    "DTESystem",
+    "EvolutionResult",
+    "EvolutionStrategy",
 ]

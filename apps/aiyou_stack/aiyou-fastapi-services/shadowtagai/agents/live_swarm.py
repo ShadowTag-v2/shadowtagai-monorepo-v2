@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Live Swarm Orchestrator - Self-Spawning Agent Dynasty
+"""Live Swarm Orchestrator - Self-Spawning Agent Dynasty
 
 Implements:
 - Agent spawning at Level 4+
@@ -86,8 +85,7 @@ class SwarmAgent:
 
 
 class LiveSwarm:
-    """
-    Live swarm orchestrator with spawning and revenue sharing.
+    """Live swarm orchestrator with spawning and revenue sharing.
 
     This is the OVERLORD - manages the entire agent dynasty.
     """
@@ -164,10 +162,9 @@ class LiveSwarm:
             json.dump(data, f, indent=2)
 
     def spawn_agent(
-        self, parent_id: str, name: str, specialization: str = "general"
+        self, parent_id: str, name: str, specialization: str = "general",
     ) -> SwarmAgent | None:
-        """
-        Spawn a new child agent from a parent.
+        """Spawn a new child agent from a parent.
 
         Only Level 4+ (SPAWNER) agents can spawn.
         """
@@ -199,7 +196,7 @@ class LiveSwarm:
         # If grandparent exists, add cascading share
         if parent.parent_id:
             grandparent_share = DNAShare(
-                parent_id=parent.parent_id, child_id=child_id, share_bps=self.GRANDCHILD_SHARE_BPS
+                parent_id=parent.parent_id, child_id=child_id, share_bps=self.GRANDCHILD_SHARE_BPS,
             )
             child.dna_shares.append(grandparent_share)
 
@@ -217,10 +214,9 @@ class LiveSwarm:
         return child
 
     def record_revenue(
-        self, agent_id: str, amount_usd: float, simulated: bool = False
+        self, agent_id: str, amount_usd: float, simulated: bool = False,
     ) -> dict[str, float]:
-        """
-        Record revenue and distribute DNA shares.
+        """Record revenue and distribute DNA shares.
 
         Returns distribution of revenue.
         """
@@ -276,8 +272,7 @@ class LiveSwarm:
                 break
 
     async def execute_task(self, task: dict, agent_id: str | None = None) -> dict:
-        """
-        Execute a task, optionally routing to specific agent.
+        """Execute a task, optionally routing to specific agent.
 
         If agent_id is None, routes to best available agent.
         """

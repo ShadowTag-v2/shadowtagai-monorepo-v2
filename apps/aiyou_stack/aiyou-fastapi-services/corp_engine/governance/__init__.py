@@ -1,5 +1,4 @@
-"""
-Corp Engine Governance
+"""Corp Engine Governance
 =======================
 JURA Protocol compliance integration.
 "No Hot Water" principle - stay out of regulatory trouble.

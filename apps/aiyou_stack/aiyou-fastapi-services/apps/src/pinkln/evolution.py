@@ -1,5 +1,4 @@
-"""
-DTE (Dynamic Test Evolution) Self-Improvement System
+"""DTE (Dynamic Test Evolution) Self-Improvement System
 
 Strategies:
 - RCR-MAD: Recursive Critique + Multi-Agent Debate

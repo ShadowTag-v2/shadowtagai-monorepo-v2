@@ -1,5 +1,4 @@
-"""
-CARE: Context-Action-Result-Example
+"""CARE: Context-Action-Result-Example
 
 For when you need context-rich, example-driven outputs.
 Perfect for creative work, content generation, marketing.
@@ -13,8 +12,7 @@ from ultrathink.core.prompts.base import BasePrompt
 
 
 class CARE(BasePrompt):
-    """
-    Context-Action-Result-Example prompting.
+    """Context-Action-Result-Example prompting.
 
     Usage:
         >>> care = CARE(
@@ -43,14 +41,14 @@ class CARE(BasePrompt):
         result: str,
         example: dict[str, Any] | str | None = None,
     ) -> None:
-        """
-        Initialize CARE prompt.
+        """Initialize CARE prompt.
 
         Args:
             context: Background, audience, domain knowledge
             action: What to create/analyze/generate
             result: Expected output characteristics
             example: Reference example(s) to emulate
+
         """
         super().__init__(context=context, action=action, result=result, example=example)
         self.context = context

@@ -1,5 +1,4 @@
-"""
-COR ORCHESTRATOR - Event-Driven Multi-Agent Coordination
+"""COR ORCHESTRATOR - Event-Driven Multi-Agent Coordination
 =========================================================
 
 SK-INSPIRED PATTERN EXTRACTION:
@@ -95,8 +94,7 @@ class Tool:
 
 
 class ToolRegistry:
-    """
-    Dynamic tool registry with semantic retrieval.
+    """Dynamic tool registry with semantic retrieval.
 
     DeepAgent Pattern: Scalable tool retrieval from large toolsets
     - Embedding-based similarity search
@@ -111,7 +109,7 @@ class ToolRegistry:
         self._tool_names: list[str] = []
 
     def register_tool(
-        self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None
+        self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None,
     ) -> None:
         """Register tool with optional embedding."""
         if embedding is None:
@@ -134,14 +132,13 @@ class ToolRegistry:
         self._tool_names = list(self.tools.keys())
         if self._tool_names:
             self._embedding_matrix = np.vstack(
-                cast(list[np.ndarray], [self.tools[name].embedding for name in self._tool_names])
+                cast("list[np.ndarray]", [self.tools[name].embedding for name in self._tool_names]),
             )
 
     def retrieve_tools(
-        self, query: str, top_k: int = 5, min_similarity: float = 0.0
+        self, query: str, top_k: int = 5, min_similarity: float = 0.0,
     ) -> list[tuple[str, float]]:
-        """
-        Retrieve most relevant tools for query.
+        """Retrieve most relevant tools for query.
 
         DeepAgent Pattern: Semantic tool retrieval
 
@@ -152,6 +149,7 @@ class ToolRegistry:
 
         Returns:
             List of (tool_name, similarity_score) tuples
+
         """
         if not self._tool_names or self._embedding_matrix is None:
             return []
@@ -169,7 +167,7 @@ class ToolRegistry:
                 self.tools[name].success_rate
                 * (1.0 / (1.0 + self.tools[name].avg_latency_ms / 100))
                 for name in self._tool_names
-            ]
+            ],
         )
         weighted_scores = similarities * 0.7 + performance_weights * 0.3
 
@@ -189,11 +187,11 @@ class ToolRegistry:
         return self.tools.get(name)
 
     async def execute_tool(self, name: str, *args, **kwargs) -> tuple[Any, float]:
-        """
-        Execute tool and track metrics.
+        """Execute tool and track metrics.
 
         Returns:
             Tuple of (result, latency_ms)
+
         """
         tool = self.tools.get(name)
         if not tool:
@@ -224,8 +222,7 @@ class ToolRegistry:
 
 @dataclass
 class ExecutionContext:
-    """
-    Lightweight execution context for agent pipeline.
+    """Lightweight execution context for agent pipeline.
 
     SK Equivalent: KernelContext (but without DI overhead)
     Latency: <1μs creation time
@@ -258,7 +255,7 @@ class ExecutionContext:
         if self.total_latency_ms > self.latency_budget_ms:
             logger.warning(
                 f"Context {self.request_id} exceeded latency budget: "
-                f"{self.total_latency_ms:.2f}ms > {self.latency_budget_ms}ms"
+                f"{self.total_latency_ms:.2f}ms > {self.latency_budget_ms}ms",
             )
 
     def is_over_budget(self) -> bool:
@@ -275,8 +272,7 @@ U = TypeVar("U")
 
 
 class PipelineStage(Generic[T, U]):
-    """
-    Single stage in sequential pipeline.
+    """Single stage in sequential pipeline.
 
     SK Equivalent: KernelFunction in SequentialPlanner
     Improvement: Direct async execution without Kernel overhead
@@ -289,14 +285,14 @@ class PipelineStage(Generic[T, U]):
         skip_condition: Callable[[ExecutionContext], bool] | None = None,
         timeout_ms: float = 30.0,
     ):
-        """
-        Initialize pipeline stage.
+        """Initialize pipeline stage.
 
         Args:
             name: Stage identifier
             func: Async function to execute
             skip_condition: Optional predicate to skip stage
             timeout_ms: Stage-level timeout (default 30ms)
+
         """
         self.name = name
         self.func = func
@@ -304,14 +300,14 @@ class PipelineStage(Generic[T, U]):
         self.timeout_ms = timeout_ms
 
     async def execute(self, context: ExecutionContext, input_data: T) -> U:
-        """
-        Execute stage with latency tracking.
+        """Execute stage with latency tracking.
 
         Returns:
             Stage output
 
         Raises:
             asyncio.TimeoutError: If stage exceeds timeout
+
         """
         # Check skip condition
         if self.skip_condition and self.skip_condition(context):
@@ -323,7 +319,7 @@ class PipelineStage(Generic[T, U]):
         try:
             # Execute with timeout
             result = await asyncio.wait_for(
-                self.func(context, input_data), timeout=self.timeout_ms / 1000.0
+                self.func(context, input_data), timeout=self.timeout_ms / 1000.0,
             )
 
             # Record latency
@@ -331,7 +327,7 @@ class PipelineStage(Generic[T, U]):
             context.record_stage_latency(self.name, latency_ms)
 
             logger.debug(
-                f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})"
+                f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})",
             )
 
             return result
@@ -340,14 +336,13 @@ class PipelineStage(Generic[T, U]):
             latency_ms = (time.perf_counter() - start_time) * 1000
             context.record_stage_latency(self.name, latency_ms)
             logger.error(
-                f"Stage {self.name} timeout after {latency_ms:.2f}ms (limit: {self.timeout_ms}ms)"
+                f"Stage {self.name} timeout after {latency_ms:.2f}ms (limit: {self.timeout_ms}ms)",
             )
             raise
 
 
 class SequentialPipeline:
-    """
-    Sequential execution pipeline with conditional stage skipping.
+    """Sequential execution pipeline with conditional stage skipping.
 
     SK Pattern: SequentialPlanner
     Pnkln Adaptation:
@@ -363,6 +358,7 @@ class SequentialPipeline:
         pipeline.add_stage("final_decision", hybrid_judge)
 
         result = await pipeline.execute(context, request_data)
+
     """
 
     def __init__(self, name: str = "unnamed_pipeline"):
@@ -376,8 +372,7 @@ class SequentialPipeline:
         skip_condition: Callable[[ExecutionContext], bool] | None = None,
         timeout_ms: float = 30.0,
     ) -> "SequentialPipeline":
-        """
-        Add stage to pipeline (builder pattern).
+        """Add stage to pipeline (builder pattern).
 
         Args:
             name: Stage identifier
@@ -387,14 +382,14 @@ class SequentialPipeline:
 
         Returns:
             Self for method chaining
+
         """
         stage = PipelineStage(name, func, skip_condition, timeout_ms)
         self.stages.append(stage)
         return self
 
     async def execute(self, context: ExecutionContext, initial_input: Any) -> Any:
-        """
-        Execute all stages sequentially.
+        """Execute all stages sequentially.
 
         Args:
             context: Execution context for tracking
@@ -406,10 +401,11 @@ class SequentialPipeline:
         Raises:
             asyncio.TimeoutError: If any stage times out
             Exception: If any stage raises
+
         """
         logger.info(
             f"Pipeline {self.name} starting with {len(self.stages)} stages "
-            f"(context: {context.request_id})"
+            f"(context: {context.request_id})",
         )
 
         current_output = initial_input
@@ -421,13 +417,13 @@ class SequentialPipeline:
             if context.is_over_budget():
                 logger.error(
                     f"Pipeline {self.name} terminated early - budget exceeded "
-                    f"({context.total_latency_ms:.2f}ms > {context.latency_budget_ms}ms)"
+                    f"({context.total_latency_ms:.2f}ms > {context.latency_budget_ms}ms)",
                 )
                 break
 
         logger.info(
             f"Pipeline {self.name} completed in {context.total_latency_ms:.2f}ms "
-            f"(context: {context.request_id})"
+            f"(context: {context.request_id})",
         )
 
         return current_output
@@ -448,8 +444,7 @@ class ConcurrentResult:
 
 
 class ConcurrentExecutor:
-    """
-    Parallel execution of multiple agents/functions.
+    """Parallel execution of multiple agents/functions.
 
     SK Pattern: Multiple agents in parallel
     Pnkln Adaptation:
@@ -465,6 +460,7 @@ class ConcurrentExecutor:
             decision_data
         )
         # Returns all 5 probability results in parallel
+
     """
 
     def __init__(self, name: str = "concurrent_executor"):
@@ -478,8 +474,7 @@ class ConcurrentExecutor:
         timeout_ms: float = 100.0,
         return_exceptions: bool = True,
     ) -> ConcurrentResult:
-        """
-        Execute multiple functions concurrently.
+        """Execute multiple functions concurrently.
 
         Args:
             context: Execution context
@@ -490,12 +485,13 @@ class ConcurrentExecutor:
 
         Returns:
             ConcurrentResult with all results and latency
+
         """
         start_time = time.perf_counter()
 
         logger.info(
             f"ConcurrentExecutor {self.name} executing {len(functions)} functions "
-            f"(context: {context.request_id})"
+            f"(context: {context.request_id})",
         )
 
         try:
@@ -522,11 +518,11 @@ class ConcurrentExecutor:
 
             logger.info(
                 f"ConcurrentExecutor {self.name} completed in {latency_ms:.2f}ms "
-                f"({len(successful_results)} success, {len(errors)} errors)"
+                f"({len(successful_results)} success, {len(errors)} errors)",
             )
 
             return ConcurrentResult(
-                results=successful_results, latency_ms=latency_ms, errors=errors
+                results=successful_results, latency_ms=latency_ms, errors=errors,
             )
 
         except TimeoutError:
@@ -541,8 +537,7 @@ class ConcurrentExecutor:
 
 
 class OrchestratorMemory:
-    """
-    Memory system for orchestrator context persistence.
+    """Memory system for orchestrator context persistence.
 
     DeepAgent Pattern: Scalable memory mechanism
     - Short-term: Recent execution contexts
@@ -608,8 +603,7 @@ class OrchestratorMemory:
         self.short_term = []
 
     def retrieve_context(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
-        """
-        Retrieve relevant memories for context.
+        """Retrieve relevant memories for context.
 
         Simple keyword matching (replace with embeddings in production).
         """
@@ -638,8 +632,7 @@ class OrchestratorMemory:
 
 
 class CorOrchestrator:
-    """
-    Core orchestration engine for Pnkln multi-agent system.
+    """Core orchestration engine for Pnkln multi-agent system.
 
     REPLACES: Semantic Kernel's Kernel + Planner
     PERFORMANCE: <1ms p99 coordination overhead
@@ -679,10 +672,9 @@ class CorOrchestrator:
         logger.info(f"Registered executor: {name}")
 
     async def execute_pipeline(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any
+        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
     ) -> Any:
-        """
-        Execute registered pipeline by name.
+        """Execute registered pipeline by name.
 
         Args:
             pipeline_name: Name of registered pipeline
@@ -694,6 +686,7 @@ class CorOrchestrator:
 
         Raises:
             KeyError: If pipeline not found
+
         """
         if pipeline_name not in self.pipelines:
             raise KeyError(f"Pipeline {pipeline_name} not registered")
@@ -709,8 +702,7 @@ class CorOrchestrator:
         input_data: Any,
         timeout_ms: float = 100.0,
     ) -> ConcurrentResult:
-        """
-        Execute functions concurrently using registered executor.
+        """Execute functions concurrently using registered executor.
 
         Args:
             executor_name: Name of registered executor
@@ -721,6 +713,7 @@ class CorOrchestrator:
 
         Returns:
             ConcurrentResult
+
         """
         if executor_name not in self.executors:
             raise KeyError(f"Executor {executor_name} not registered")
@@ -734,8 +727,7 @@ class CorOrchestrator:
         latency_budget_ms: float = 90.0,
         metadata: dict[str, Any] | None = None,
     ) -> ExecutionContext:
-        """
-        Create execution context for request.
+        """Create execution context for request.
 
         Args:
             request_id: Unique request identifier
@@ -744,9 +736,10 @@ class CorOrchestrator:
 
         Returns:
             ExecutionContext
+
         """
         return ExecutionContext(
-            request_id=request_id, latency_budget_ms=latency_budget_ms, metadata=metadata or {}
+            request_id=request_id, latency_budget_ms=latency_budget_ms, metadata=metadata or {},
         )
 
     # ========================================================================
@@ -758,10 +751,9 @@ class CorOrchestrator:
         self.tool_registry.register_tool(name, description, func)
 
     async def execute_with_tool_selection(
-        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3
+        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3,
     ) -> Any:
-        """
-        Execute using dynamically selected tools.
+        """Execute using dynamically selected tools.
 
         DeepAgent Pattern: Automatic tool selection from large toolset
 
@@ -773,6 +765,7 @@ class CorOrchestrator:
 
         Returns:
             Best result from selected tools
+
         """
         # Retrieve relevant tools
         tools = self.tool_registry.retrieve_tools(query, top_k=top_k)
@@ -785,7 +778,7 @@ class CorOrchestrator:
         # Execute best tool
         best_tool_name, score = tools[0]
         result, latency_ms = await self.tool_registry.execute_tool(
-            best_tool_name, context, input_data
+            best_tool_name, context, input_data,
         )
 
         # Store in memory
@@ -795,10 +788,9 @@ class CorOrchestrator:
         return result
 
     async def execute_pipeline_with_memory(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any
+        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
     ) -> Any:
-        """
-        Execute pipeline and store result in memory.
+        """Execute pipeline and store result in memory.
 
         Args:
             pipeline_name: Name of registered pipeline
@@ -807,6 +799,7 @@ class CorOrchestrator:
 
         Returns:
             Pipeline output
+
         """
         result = await self.execute_pipeline(pipeline_name, context, input_data)
 
@@ -843,8 +836,7 @@ class CorOrchestrator:
 
 
 async def example_usage():
-    """
-    Example: Judge #6 validation pipeline using Cor Orchestrator.
+    """Example: Judge #6 validation pipeline using Cor Orchestrator.
 
     This demonstrates Pattern 1 (Sequential Pipeline) with conditional
     stage skipping to maintain p99≤90ms SLA.
@@ -889,7 +881,7 @@ async def example_usage():
     # Execute
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
     result = await orchestrator.execute_pipeline(
-        "judge_six", context, {"user_query": "example request"}
+        "judge_six", context, {"user_query": "example request"},
     )
 
     print(f"Result: {result}")
@@ -900,7 +892,7 @@ async def example_usage():
 if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Run example

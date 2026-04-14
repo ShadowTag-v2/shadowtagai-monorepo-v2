@@ -10,8 +10,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def perform_hybrid_routing(prompt: str, context_length: int) -> str:
-    """
-    Invariant 26: C-Bridge Failover Cascade
+    """Invariant 26: C-Bridge Failover Cascade
     Hierarchy: 1. Apple Neural Engine -> 2. Sovereign QJL GPU -> 3. Vertex Cloud
     """
     # Short bursts route entirely local to Apple Neural Engine via M-Series mapping
@@ -27,7 +26,7 @@ def perform_hybrid_routing(prompt: str, context_length: int) -> str:
         logging.info("Routing payload to QJL / Aimdo Local RAM (3-bit/4-bit KV compression)")
         return _dispatch_dynamic_local(prompt)
     except Exception:
-        logging.error("Sovereign stack failure. Initiating Vertex Cloud Failover.")
+        logging.exception("Sovereign stack failure. Initiating Vertex Cloud Failover.")
         return invoke_vertex_gemini(prompt)
 
 
@@ -61,4 +60,4 @@ def invoke_vertex_gemini(prompt: str) -> str:
         )
         return response.choices[0].message.content
     except Exception as e:
-        return f"ERROR: Vertex failover encountered HTTP disruption: {str(e)}"
+        return f"ERROR: Vertex failover encountered HTTP disruption: {e!s}"

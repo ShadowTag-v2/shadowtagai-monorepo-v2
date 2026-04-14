@@ -42,25 +42,25 @@ class Particle:
             if not isinstance(position_range, Iterable):
                 raise TypeError(
                     "When random is True position_range should be an"
-                    f" Iterable of length 2 but got {type(position_range)}."
+                    f" Iterable of length 2 but got {type(position_range)}.",
                 )
             if not isinstance(velocity_range, Iterable):
                 raise TypeError(
                     "When random is True velocity_range should be an"
-                    f" Iterable of length 2 but got {type(position_range)}."
+                    f" Iterable of length 2 but got {type(position_range)}.",
                 )
             if not isinstance(dims, int):
                 raise TypeError(
-                    f"When random is True dims should be an int but got {type(position_range)}."
+                    f"When random is True dims should be an int but got {type(position_range)}.",
                 )
         elif random is False:
             if not isinstance(position, Iterable):
                 raise TypeError(
-                    f"When random is False position should be an Iterable but got {type(position_range)}."
+                    f"When random is False position should be an Iterable but got {type(position_range)}.",
                 )
             if not isinstance(velocity, Iterable):
                 raise TypeError(
-                    f"When random is False velocity should be an Iterable but got {type(position_range)}."
+                    f"When random is False velocity should be an Iterable but got {type(position_range)}.",
                 )
 
     def _init_particle(self):
@@ -87,11 +87,11 @@ class Particle:
             raise TypeError(f"c2 should be of type float but got {type(c2)}")
         if not isinstance(gbest, type(self.position)):
             raise TypeError(
-                f"gbest should have same type as Particle's velocity,which is of type {type(self.velocity)}"
+                f"gbest should have same type as Particle's velocity,which is of type {type(self.velocity)}",
             )
         if self.position.shape[0] != gbest.shape[0]:
             raise ValueError(
-                f"gbest should have shape {self.position.shape} but got shape {gbest.shape}"
+                f"gbest should have shape {self.position.shape} but got shape {gbest.shape}",
             )
 
         self._update_velocity(c1, c2, gbest)

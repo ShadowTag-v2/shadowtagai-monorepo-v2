@@ -1,5 +1,4 @@
-"""
-Trigger system for event-based automation.
+"""Trigger system for event-based automation.
 """
 
 import logging
@@ -15,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class TriggerManager:
-    """
-    Manages triggers for event-based automation.
+    """Manages triggers for event-based automation.
     """
 
     def __init__(self):
@@ -35,11 +33,11 @@ class TriggerManager:
                 await self._register_trigger(trigger)
 
     async def _register_trigger(self, trigger: Trigger):
-        """
-        Register a trigger in memory.
+        """Register a trigger in memory.
 
         Args:
             trigger: Trigger instance to register
+
         """
         if trigger.trigger_type == TriggerType.EVENT:
             event_name = trigger.config.get("event_name")
@@ -56,11 +54,11 @@ class TriggerManager:
                 logger.info(f"Registered webhook trigger at '{webhook_path}'")
 
     async def unregister_trigger(self, trigger_id: int):
-        """
-        Unregister a trigger from memory.
+        """Unregister a trigger from memory.
 
         Args:
             trigger_id: ID of the trigger to unregister
+
         """
         # Remove from event triggers
         for event_name, triggers in list(self._event_triggers.items()):
@@ -76,10 +74,9 @@ class TriggerManager:
         logger.info(f"Unregistered trigger {trigger_id}")
 
     async def trigger_event(
-        self, event_name: str, event_data: dict[str, Any] | None = None
+        self, event_name: str, event_data: dict[str, Any] | None = None,
     ) -> list[int]:
-        """
-        Trigger all workflows associated with an event.
+        """Trigger all workflows associated with an event.
 
         Args:
             event_name: Name of the event
@@ -87,6 +84,7 @@ class TriggerManager:
 
         Returns:
             List of job execution IDs
+
         """
         triggers = self._event_triggers.get(event_name, [])
 
@@ -121,10 +119,9 @@ class TriggerManager:
         return execution_ids
 
     async def trigger_webhook(
-        self, webhook_path: str, webhook_data: dict[str, Any] | None = None
+        self, webhook_path: str, webhook_data: dict[str, Any] | None = None,
     ) -> int | None:
-        """
-        Trigger a workflow via webhook.
+        """Trigger a workflow via webhook.
 
         Args:
             webhook_path: Path of the webhook
@@ -132,6 +129,7 @@ class TriggerManager:
 
         Returns:
             Job execution ID if successful, None otherwise
+
         """
         trigger = self._webhook_triggers.get(webhook_path)
 
@@ -161,8 +159,7 @@ class TriggerManager:
             return None
 
     async def _check_conditions(self, trigger: Trigger, data: dict[str, Any] | None) -> bool:
-        """
-        Check if trigger conditions are met.
+        """Check if trigger conditions are met.
 
         Args:
             trigger: Trigger to check
@@ -170,6 +167,7 @@ class TriggerManager:
 
         Returns:
             True if conditions are met, False otherwise
+
         """
         if not trigger.conditions:
             return True

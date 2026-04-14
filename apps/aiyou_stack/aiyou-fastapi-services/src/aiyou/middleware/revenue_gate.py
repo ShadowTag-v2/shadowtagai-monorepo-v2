@@ -39,7 +39,6 @@ class RevenueGateMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable):
         """Check payment status before allowing request."""
-
         if not self.enabled:
             return await call_next(request)
 

@@ -1,5 +1,4 @@
-"""
-Kernel Adapters - Bridge between async kernel implementations and synchronous function calls.
+"""Kernel Adapters - Bridge between async kernel implementations and synchronous function calls.
 
 These adapters wrap kernel implementations to work as synchronous Gemini function tools.
 """
@@ -21,8 +20,7 @@ class KernelAdapter:
 
                 nest_asyncio.apply()
                 return loop.run_until_complete(coro)
-            else:
-                return loop.run_until_complete(coro)
+            return loop.run_until_complete(coro)
         except RuntimeError:
             # No event loop, create new one
             return asyncio.run(coro)
@@ -65,9 +63,8 @@ class ATP519ScanAdapter(KernelAdapter):
             if hasattr(self.kernel, "execute"):
                 result = self.run_async(self.kernel.execute(context))
                 return result
-            else:
-                # Direct sync execution
-                return self.kernel.scan(context)
+            # Direct sync execution
+            return self.kernel.scan(context)
         except Exception as e:
             return {"violations": [], "violation_count": 0, "error": str(e)}
 
@@ -112,8 +109,7 @@ class JudgeSixAdapter(KernelAdapter):
             if hasattr(self.kernel, "classify"):
                 result = self.run_async(self.kernel.classify(violations))
                 return result
-            else:
-                return self.kernel.predict(violations)
+            return self.kernel.predict(violations)
         except Exception as e:
             return {"decision": "no_go", "confidence": 0.0, "risk_tier": 5, "error": str(e)}
 
@@ -153,8 +149,7 @@ class AuditCompressAdapter(KernelAdapter):
             if hasattr(self.kernel, "compress"):
                 result = self.run_async(self.kernel.compress(metadata))
                 return result
-            else:
-                return self.kernel.execute(metadata)
+            return self.kernel.execute(metadata)
         except Exception as e:
             return {
                 "compressed_size": 0,
@@ -295,7 +290,7 @@ class WealthAdapter(KernelAdapter):
         try:
             accelerator = self.WealthAccelerator()
             result = accelerator.analyze_business(
-                revenue_monthly=revenue_monthly, cac=cac, ltv=ltv, churn_rate=churn_rate
+                revenue_monthly=revenue_monthly, cac=cac, ltv=ltv, churn_rate=churn_rate,
             )
             return result
         except Exception as e:

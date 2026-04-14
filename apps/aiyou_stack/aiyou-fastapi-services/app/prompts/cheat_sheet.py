@@ -1,5 +1,4 @@
-"""
-Cheat Sheet Fusion for prompt engineering.
+"""Cheat Sheet Fusion for prompt engineering.
 
 Evolved from 21 elements to 10 essentials via DTE testing (+3.7% accuracy).
 
@@ -44,8 +43,7 @@ class FormatType(StrEnum):
 
 
 class CheatSheet(BaseModel):
-    """
-    Evolved cheat sheet for prompt engineering.
+    """Evolved cheat sheet for prompt engineering.
 
     Based on DTE testing: 10 essentials reduced from original 21.
     Achieved +3.7% accuracy improvement over baseline.
@@ -114,8 +112,7 @@ class CheatSheet(BaseModel):
     )
 
     def to_system_prompt(self) -> str:
-        """
-        Convert cheat sheet to system prompt.
+        """Convert cheat sheet to system prompt.
 
         Fuses all 10 elements into optimized prompt structure.
         """
@@ -179,14 +176,14 @@ class CheatSheet(BaseModel):
         return "\n".join(parts)
 
     def to_user_prompt(self, content: str) -> str:
-        """
-        Wrap user content with cheat sheet formatting.
+        """Wrap user content with cheat sheet formatting.
 
         Args:
             content: Raw user input
 
         Returns:
             Enhanced user prompt
+
         """
         return f"{content}\n\n[Remember: {self.objective}]"
 

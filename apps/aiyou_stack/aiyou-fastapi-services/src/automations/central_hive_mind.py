@@ -16,8 +16,7 @@ MOCK_CLOUD_RUN_ANE = os.getenv("MOCK_CLOUD_RUN_ANE", "true").lower() == "true"
 
 
 def run_central_oracle_batch():
-    """
-    PHASE I: The Macro (Central Hive Mind)
+    """PHASE I: The Macro (Central Hive Mind)
     Ingests global Internet exhaust via BigQuery, computes Trend Velocity Index (TVI)
     using Vertex/GenAI, and triggers bulk execution via Stripe.
     """
@@ -43,10 +42,10 @@ def run_central_oracle_batch():
                         "user_id": user["id"],
                         "item": trend["item_name"],
                         "cost": trend["estimated_cost"],
-                    }
+                    },
                 )
                 logger.info(
-                    f"MATCH: {trend['item_name']} for User {user['id']} (TVI: {trend['tvi_score']})"
+                    f"MATCH: {trend['item_name']} for User {user['id']} (TVI: {trend['tvi_score']})",
                 )
 
     # 4. Trigger Cloud Invoicing via Stripe (Simulated Edge)
@@ -78,7 +77,7 @@ def _calculate_trend_velocity_index() -> dict[str, Any]:
                     "tvi_score": 8.9,
                     "estimated_cost": 95.00,
                 },
-            ]
+            ],
         }
 
     # Cloud Production Logic
@@ -94,7 +93,7 @@ def _execute_bulk_procurement(orders: list[dict[str, Any]]):
     if MOCK_CLOUD_RUN_ANE:
         for order in orders:
             logger.info(
-                f"[Apple Silicon Mode] Executed MOCK Stripe Charge: ${order['cost']} for {order['item']} (User {order['user_id']})"
+                f"[Apple Silicon Mode] Executed MOCK Stripe Charge: ${order['cost']} for {order['item']} (User {order['user_id']})",
             )
         return
 

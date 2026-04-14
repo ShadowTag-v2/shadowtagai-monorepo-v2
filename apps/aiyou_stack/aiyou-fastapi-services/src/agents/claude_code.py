@@ -1,5 +1,4 @@
-"""
-Claude Code-Specific Agents for Vertex AI Workbench
+"""Claude Code-Specific Agents for Vertex AI Workbench
 Specialized agents for Claude Code workflows, hooks, skills, and integration
 """
 

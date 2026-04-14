@@ -17,8 +17,7 @@ from .tools import CompetitiveAnalysisTools, MarketPositioningTools
 
 
 class MarketAnalystAgent(BaseAgent):
-    """
-    Market Analyst agent for competitive product strategy and positioning.
+    """Market Analyst agent for competitive product strategy and positioning.
 
     Capabilities:
     - Competitive analysis
@@ -47,10 +46,9 @@ class MarketAnalystAgent(BaseAgent):
         self.positioning_tools = MarketPositioningTools()
 
     async def process(
-        self, prompt: str, context: dict[str, Any] | None = None, stream: bool = False
+        self, prompt: str, context: dict[str, Any] | None = None, stream: bool = False,
     ) -> dict[str, Any]:
-        """
-        Process competitive analysis request
+        """Process competitive analysis request
 
         Args:
             prompt: User's analysis request
@@ -59,6 +57,7 @@ class MarketAnalystAgent(BaseAgent):
 
         Returns:
             Analysis results
+
         """
         if not self.validate_input(prompt, context):
             return {"error": "Invalid input", "message": "Prompt cannot be empty"}
@@ -95,8 +94,7 @@ class MarketAnalystAgent(BaseAgent):
             return {"error": str(e), "status": "failed"}
 
     def _enhance_prompt(self, prompt: str, context: dict[str, Any] | None = None) -> str:
-        """
-        Enhance user prompt with additional context and structure
+        """Enhance user prompt with additional context and structure
 
         Args:
             prompt: Original user prompt
@@ -104,6 +102,7 @@ class MarketAnalystAgent(BaseAgent):
 
         Returns:
             Enhanced prompt
+
         """
         enhanced = prompt
 
@@ -135,14 +134,14 @@ class MarketAnalystAgent(BaseAgent):
         return enhanced
 
     def _extract_structured_insights(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Extract structured insights using analysis tools
+        """Extract structured insights using analysis tools
 
         Args:
             context: Analysis context with data
 
         Returns:
             Structured insights
+
         """
         insights = {}
 
@@ -175,10 +174,9 @@ class MarketAnalystAgent(BaseAgent):
         return self.config.get("features", [])
 
     def analyze_competitors(
-        self, product: str, competitors: list[str], features: list[str]
+        self, product: str, competitors: list[str], features: list[str],
     ) -> dict[str, Any]:
-        """
-        Perform structured competitive analysis
+        """Perform structured competitive analysis
 
         Args:
             product: Your product name
@@ -187,6 +185,7 @@ class MarketAnalystAgent(BaseAgent):
 
         Returns:
             Competitive analysis results
+
         """
         # Create feature matrix
         matrix = self.tools.create_feature_matrix(product, competitors, features)
@@ -205,14 +204,14 @@ class MarketAnalystAgent(BaseAgent):
         }
 
     def _generate_recommendations(self, gaps: dict[str, Any]) -> list[str]:
-        """
-        Generate recommendations based on gap analysis
+        """Generate recommendations based on gap analysis
 
         Args:
             gaps: Gap analysis results
 
         Returns:
             List of recommendations
+
         """
         recommendations = []
 
@@ -220,19 +219,19 @@ class MarketAnalystAgent(BaseAgent):
         if gaps.get("critical_gaps"):
             recommendations.append(
                 f"Address {len(gaps['critical_gaps'])} critical feature gaps "
-                "to achieve competitive parity"
+                "to achieve competitive parity",
             )
 
         # Unique features
         if gaps.get("unique_features"):
             recommendations.append(
-                f"Leverage {len(gaps['unique_features'])} unique features for differentiation"
+                f"Leverage {len(gaps['unique_features'])} unique features for differentiation",
             )
 
         # Parity gaps
         if gaps.get("parity_gaps"):
             recommendations.append(
-                f"Consider {len(gaps['parity_gaps'])} additional features for competitive advantage"
+                f"Consider {len(gaps['parity_gaps'])} additional features for competitive advantage",
             )
 
         return recommendations

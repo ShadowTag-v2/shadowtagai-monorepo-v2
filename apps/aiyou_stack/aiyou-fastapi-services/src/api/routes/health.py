@@ -1,5 +1,4 @@
-"""
-Health check endpoints.
+"""Health check endpoints.
 
 Provides endpoints for monitoring application health and readiness.
 """
@@ -39,8 +38,7 @@ class ReadinessResponse(BaseModel):
     description="Returns the health status of the application",
 )
 async def health_check() -> HealthResponse:
-    """
-    Health check endpoint.
+    """Health check endpoint.
 
     Returns basic health information about the application.
     Used by Kubernetes liveness probes.
@@ -61,8 +59,7 @@ async def health_check() -> HealthResponse:
     description="Returns the readiness status of the application",
 )
 async def readiness_check() -> ReadinessResponse:
-    """
-    Readiness check endpoint.
+    """Readiness check endpoint.
 
     Verifies that the application is ready to serve traffic.
     Used by Kubernetes readiness probes.

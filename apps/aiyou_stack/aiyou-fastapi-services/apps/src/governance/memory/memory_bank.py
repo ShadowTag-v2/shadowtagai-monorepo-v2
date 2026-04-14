@@ -3,8 +3,7 @@ import os
 
 
 class MemoryBank:
-    """
-    Stores learned rules to suppress repetitive false positives.
+    """Stores learned rules to suppress repetitive false positives.
     Loads from 'learned_rules.json' (Ingested from Teleport Sessions).
     """
 
@@ -22,7 +21,7 @@ class MemoryBank:
                     "file_match": "test",
                     "rule": "allow_wildcard_imports",
                     "action": "suppress",
-                }
+                },
             ]
 
     def consult(self, file_path: str, finding_type: str) -> str:

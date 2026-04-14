@@ -59,8 +59,7 @@ class ClaudeClient:
         conversations: list[dict],
         existing_memory: str | None = None,
     ) -> dict:
-        """
-        Synthesize memory from conversations using Claude.
+        """Synthesize memory from conversations using Claude.
 
         Returns a dict with categorized memory entries.
         """

@@ -1,5 +1,4 @@
-"""
-Vertical Revenue Models
+"""Vertical Revenue Models
 6 productized AI agent solutions with pricing & targets
 """
 

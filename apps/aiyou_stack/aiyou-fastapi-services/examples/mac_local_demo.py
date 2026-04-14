@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Mac Local Demo - Pnkln Agent Platform v0.2.0
+"""Mac Local Demo - Pnkln Agent Platform v0.2.0
 Tests full Collection → Enforcement pipeline
 
 Run: python examples/mac_local_demo.py
@@ -80,7 +79,7 @@ def test_jr_engine():
                 risk_probability=0.05,
                 risk_severity=0.05,
                 mitigation_strategy="Isolated test environment",
-            )
+            ),
         ]
 
         decision = jr_engine.validate(purpose, reasons, context={})
@@ -212,7 +211,7 @@ def test_intelligence_agent():
                 customer_id="mac_test",
                 require_enforcement=True,
                 require_briefing=True,
-            )
+            ),
         )
 
         print_metric("Status", result.status.value)
@@ -226,12 +225,12 @@ def test_intelligence_agent():
                 print_metric("  Items collected", result.metrics["ingestion"]["items_collected"])
                 print_metric("  Unique sources", result.metrics["ingestion"]["unique_sources"])
                 print_metric(
-                    "  Avg relevance", f"{result.metrics['ingestion']['average_relevance']:.2f}"
+                    "  Avg relevance", f"{result.metrics['ingestion']['average_relevance']:.2f}",
                 )
 
                 print("\n  Enforcement Metrics:")
                 print_metric(
-                    "  Verification passed", result.metrics["enforcement"]["verification_passed"]
+                    "  Verification passed", result.metrics["enforcement"]["verification_passed"],
                 )
                 print_metric("  Violations", result.metrics["enforcement"]["violations"])
 
@@ -352,8 +351,8 @@ def main():
     print("║  Version: 0.2.0 (Collection → Enforcement)                        ║")
     print(
         "║  Date: {}                                          ║".format(
-            datetime.now().strftime("%Y-%m-%d %H:%M")
-        )
+            datetime.now().strftime("%Y-%m-%d %H:%M"),
+        ),
     )
     print("╚════════════════════════════════════════════════════════════════════╝")
 
@@ -402,15 +401,14 @@ def main():
         print("  3. Run full tests: pytest tests/")
         print("  4. Deploy to GKE: See docs/deployment.md")
         return 0
-    else:
-        print("\n" + "=" * 70)
-        print(f"  ✗ {total - passed} TEST(S) FAILED")
-        print("=" * 70)
-        print("\nTroubleshooting:")
-        print("  1. Check Python version: python3 --version (≥3.10 required)")
-        print("  2. Reinstall dependencies: pip install -r requirements.txt")
-        print("  3. Reinstall package: pip install -e .")
-        return 1
+    print("\n" + "=" * 70)
+    print(f"  ✗ {total - passed} TEST(S) FAILED")
+    print("=" * 70)
+    print("\nTroubleshooting:")
+    print("  1. Check Python version: python3 --version (≥3.10 required)")
+    print("  2. Reinstall dependencies: pip install -r requirements.txt")
+    print("  3. Reinstall package: pip install -e .")
+    return 1
 
 
 if __name__ == "__main__":

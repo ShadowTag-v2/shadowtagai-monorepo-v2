@@ -3,8 +3,7 @@ from .scanner import CodeScanner, ScanResult
 
 
 class CodePMCS:
-    """
-    Code Preventive Maintenance Checks and Services (PMCS).
+    """Code Preventive Maintenance Checks and Services (PMCS).
     Orchestrates scanning, remediation, and reporting for code quality.
     """
 

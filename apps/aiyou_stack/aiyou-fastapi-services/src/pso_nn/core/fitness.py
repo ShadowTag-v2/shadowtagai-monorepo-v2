@@ -1,5 +1,4 @@
-"""
-Fitness Functions: Loss-based fitness for neural network optimization.
+"""Fitness Functions: Loss-based fitness for neural network optimization.
 
 Converts neural network losses to PSO fitness values.
 Supports MSE, cross-entropy, and custom composed fitness functions.
@@ -18,8 +17,7 @@ class FitnessFunction(ABC):
 
     @abstractmethod
     def __call__(self, weights: np.ndarray, data: Any, labels: Any) -> float:
-        """
-        Calculate fitness (lower is better).
+        """Calculate fitness (lower is better).
 
         Args:
             weights: Flattened neural network weights
@@ -28,19 +26,17 @@ class FitnessFunction(ABC):
 
         Returns:
             Fitness score (lower = better)
+
         """
-        pass
 
     @abstractmethod
     def set_network(self, network: Any) -> None:
         """Set the neural network to evaluate."""
-        pass
 
 
 @dataclass
 class MSEFitness(FitnessFunction):
-    """
-    Mean Squared Error fitness for regression tasks.
+    """Mean Squared Error fitness for regression tasks.
 
     Fitness = MSE(predictions, targets)
     """
@@ -81,15 +77,14 @@ class MSEFitness(FitnessFunction):
         """Forward pass through network."""
         if hasattr(self.network, "forward"):
             return self.network.forward(data)
-        elif callable(self.network):
+        if callable(self.network):
             return self.network(data)
         raise ValueError("Network must have forward() method or be callable")
 
 
 @dataclass
 class CrossEntropyFitness(FitnessFunction):
-    """
-    Cross-entropy fitness for classification tasks.
+    """Cross-entropy fitness for classification tasks.
 
     Fitness = -sum(labels * log(predictions + eps))
     """
@@ -128,7 +123,7 @@ class CrossEntropyFitness(FitnessFunction):
     def _forward(self, data: np.ndarray) -> np.ndarray:
         if hasattr(self.network, "forward"):
             return self.network.forward(data)
-        elif callable(self.network):
+        if callable(self.network):
             return self.network(data)
         raise ValueError("Network must have forward() method or be callable")
 
@@ -141,8 +136,7 @@ class CrossEntropyFitness(FitnessFunction):
 
 @dataclass
 class ComposedFitness(FitnessFunction):
-    """
-    Composed fitness from multiple objectives.
+    """Composed fitness from multiple objectives.
 
     Combines multiple fitness functions with weights.
     """
@@ -173,8 +167,7 @@ class ComposedFitness(FitnessFunction):
 
 
 class SimpleFitness:
-    """
-    Simple fitness wrapper for custom functions.
+    """Simple fitness wrapper for custom functions.
 
     Usage:
         fitness = SimpleFitness(lambda w: my_loss(w, data, labels))
@@ -188,10 +181,9 @@ class SimpleFitness:
 
 
 def create_batch_fitness(
-    fitness_fn: FitnessFunction, data: np.ndarray, labels: np.ndarray, batch_size: int = 32
+    fitness_fn: FitnessFunction, data: np.ndarray, labels: np.ndarray, batch_size: int = 32,
 ) -> Callable[[np.ndarray], float]:
-    """
-    Create a fitness function that evaluates on random mini-batches.
+    """Create a fitness function that evaluates on random mini-batches.
 
     Useful for large datasets where full evaluation is expensive.
     """
@@ -208,10 +200,9 @@ def create_batch_fitness(
 
 
 def create_noisy_fitness(
-    fitness_fn: Callable[[np.ndarray], float], noise_scale: float = 0.01
+    fitness_fn: Callable[[np.ndarray], float], noise_scale: float = 0.01,
 ) -> Callable[[np.ndarray], float]:
-    """
-    Add noise to fitness evaluation for exploration.
+    """Add noise to fitness evaluation for exploration.
 
     Helps escape local minima by making the fitness landscape less smooth.
     """

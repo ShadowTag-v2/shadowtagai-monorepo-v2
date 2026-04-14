@@ -1,5 +1,4 @@
-"""
-Embeddings API endpoints for vector operations and semantic search.
+"""Embeddings API endpoints for vector operations and semantic search.
 """
 
 import structlog
@@ -31,8 +30,7 @@ def get_embeddings_service() -> EmbeddingsService:
 
 @router.post("/generate", response_model=EmbeddingResponse)
 async def generate_embeddings(request: EmbeddingRequest):
-    """
-    Generate embeddings for text(s).
+    """Generate embeddings for text(s).
 
     Supports both single text and batch processing.
     """
@@ -41,23 +39,22 @@ async def generate_embeddings(request: EmbeddingRequest):
 
         if request.text and request.texts:
             raise HTTPException(
-                status_code=400, detail="Provide either 'text' or 'texts', not both"
+                status_code=400, detail="Provide either 'text' or 'texts', not both",
             )
 
         if request.text:
             embedding = await service.generate_embedding(request.text)
             return EmbeddingResponse(
-                embedding=embedding, dimension=len(embedding), model=request.model or service.model
+                embedding=embedding, dimension=len(embedding), model=request.model or service.model,
             )
-        elif request.texts:
+        if request.texts:
             embeddings = await service.generate_embeddings(request.texts)
             return EmbeddingResponse(
                 embeddings=embeddings,
                 dimension=len(embeddings[0]) if embeddings else 0,
                 model=request.model or service.model,
             )
-        else:
-            raise HTTPException(status_code=400, detail="Either 'text' or 'texts' must be provided")
+        raise HTTPException(status_code=400, detail="Either 'text' or 'texts' must be provided")
 
     except HTTPException:
         raise
@@ -68,8 +65,7 @@ async def generate_embeddings(request: EmbeddingRequest):
 
 @router.post("/collections/{collection_name}/documents")
 async def add_documents(collection_name: str, request: DocumentAddRequest):
-    """
-    Add documents to a vector collection.
+    """Add documents to a vector collection.
 
     Creates embeddings and stores them with the documents.
     """
@@ -96,8 +92,7 @@ async def add_documents(collection_name: str, request: DocumentAddRequest):
 
 @router.post("/search", response_model=SearchResponse)
 async def search_documents(request: SearchRequest):
-    """
-    Search for similar documents using semantic search.
+    """Search for similar documents using semantic search.
 
     Uses vector similarity to find relevant documents.
     """
@@ -125,8 +120,7 @@ async def search_documents(request: SearchRequest):
 
 @router.get("/collections")
 async def list_collections():
-    """
-    List all vector collections.
+    """List all vector collections.
     """
     try:
         service = get_embeddings_service()
@@ -141,8 +135,7 @@ async def list_collections():
 
 @router.delete("/collections/{collection_name}")
 async def delete_collection(collection_name: str):
-    """
-    Delete a vector collection.
+    """Delete a vector collection.
     """
     try:
         service = get_embeddings_service()
@@ -157,8 +150,7 @@ async def delete_collection(collection_name: str):
 
 @router.post("/collections/{collection_name}")
 async def create_collection(collection_name: str, metadata: dict = None):
-    """
-    Create a new vector collection.
+    """Create a new vector collection.
     """
     try:
         service = get_embeddings_service()

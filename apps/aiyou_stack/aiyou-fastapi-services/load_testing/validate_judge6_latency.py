@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Judge #6 Latency Validation - Enhanced Version v2.0
+"""Judge #6 Latency Validation - Enhanced Version v2.0
 Target: P99 ≤90ms, P95 ≤65ms, P50 ≤40ms
 Features: Adaptive load, degradation detection, results export, warmup
 """
@@ -94,7 +93,7 @@ class AdaptiveLoadController:
                 "error_rate": error_rate,
                 "latency_p99": latency_p99,
                 "concurrency": self.current_concurrency,
-            }
+            },
         )
 
         # Reduce load if system is stressed
@@ -184,7 +183,7 @@ def export_results(results: dict, service_name: str = "judge6"):
 
 
 async def measure_latency(
-    client: httpx.AsyncClient, request_id: int
+    client: httpx.AsyncClient, request_id: int,
 ) -> tuple[float | None, bool, str | None]:
     """Measure single request latency"""
     payload = PAYLOAD.copy()
@@ -198,8 +197,7 @@ async def measure_latency(
 
         if response.status_code == 200:
             return latency_ms, True, None
-        else:
-            return latency_ms, False, f"HTTP_{response.status_code}"
+        return latency_ms, False, f"HTTP_{response.status_code}"
 
     except httpx.TimeoutException:
         latency_ms = (time.perf_counter() - start) * 1000
@@ -238,7 +236,7 @@ async def run_validation():
     print(f"Target P99:   ≤{SLA_P99_MS}ms")
     print(f"Target P95:   ≤{SLA_P95_MS}ms")
     print(f"Target P50:   ≤{SLA_P50_MS}ms")
-    print("")
+    print()
 
     limits = httpx.Limits(
         max_keepalive_connections=config.concurrency * 2,
@@ -263,7 +261,7 @@ async def run_validation():
         # Warmup phase (not counted in results)
         print(f"Warming up with {config.warmup_iterations} requests...")
         warmup_results = await run_batch(
-            client, -config.warmup_iterations, config.warmup_iterations, min(10, config.concurrency)
+            client, -config.warmup_iterations, config.warmup_iterations, min(10, config.concurrency),
         )
         warmup_success = sum(1 for _, success, _ in warmup_results if success)
         print(f"Warmup complete: {warmup_success}/{config.warmup_iterations} successful\n")
@@ -285,7 +283,7 @@ async def run_validation():
                 continue
 
             batch_results = await run_batch(
-                client, batch_num * batch_size, this_batch_size, current_concurrency
+                client, batch_num * batch_size, this_batch_size, current_concurrency,
             )
 
             # Process batch results
@@ -309,12 +307,12 @@ async def run_validation():
                 batch_error_rate = batch_errors / len(batch_results)
                 batch_p99 = np.percentile(batch_latencies, 99)
                 new_concurrency = await load_controller.adjust_concurrency(
-                    batch_error_rate, batch_p99
+                    batch_error_rate, batch_p99,
                 )
 
                 if new_concurrency != current_concurrency:
                     print(
-                        f"  Batch {batch_num + 1}/{num_batches}: Adjusting concurrency {current_concurrency} → {new_concurrency}"
+                        f"  Batch {batch_num + 1}/{num_batches}: Adjusting concurrency {current_concurrency} → {new_concurrency}",
                     )
                     current_concurrency = new_concurrency
 
@@ -330,7 +328,7 @@ async def run_validation():
             "connections_in_use": connections_in_use,
             "max_connections": limits.max_connections,
             "connection_reuse_ratio": round(
-                (config.iterations - connections_created) / config.iterations, 2
+                (config.iterations - connections_created) / config.iterations, 2,
             )
             if config.iterations > 0
             else 0,
@@ -404,7 +402,7 @@ async def run_validation():
     print(f"Throughput:       {throughput:.1f} req/s")
     print(f"Success Rate:     {success_rate:.2f}%")
     print(f"Error Rate:       {error_rate:.2f}%")
-    print("")
+    print()
 
     print("LATENCY DISTRIBUTION:")
     print(f"  P0 (Min): {p0:7.2f}ms")
@@ -414,7 +412,7 @@ async def run_validation():
     print(f"  P99:      {p99:7.2f}ms  [{'PASS' if p99_pass else 'FAIL'}] (target: ≤{SLA_P99_MS}ms)")
     print(f"  P99.9:    {p999:7.2f}ms")
     print(f"  Max:      {max_lat:7.2f}ms")
-    print("")
+    print()
 
     print("DEGRADATION ANALYSIS:")
     if degradation["degradation_detected"]:
@@ -423,19 +421,19 @@ async def run_validation():
         print(f"  P99 change: {degradation['p99_change_pct']:+.1f}%")
     else:
         print("  ✓ No significant degradation detected")
-    print("")
+    print()
 
     print("CONNECTION POOL:")
     print(f"  Active connections: {pool_stats['connections_in_use']}")
     print(f"  Max connections:    {pool_stats['max_connections']}")
     print(f"  Reuse ratio:        {pool_stats['connection_reuse_ratio']:.1%}")
-    print("")
+    print()
 
     if errors:
         print("ERRORS:")
         for error_msg, count in sorted(errors.items(), key=lambda x: x[1], reverse=True):
             print(f"  {error_msg}: {count} ({count / config.iterations * 100:.1f}%)")
-        print("")
+        print()
 
     print("═══════════════════════════════════════════════════════════════════")
     if all_pass:
@@ -444,15 +442,15 @@ async def run_validation():
         print("  ✗ SLA COMPLIANCE: FAIL")
         if not p99_pass:
             print(
-                f"    - P99 latency {p99:.2f}ms exceeds {SLA_P99_MS}ms target by {p99 - SLA_P99_MS:.2f}ms"
+                f"    - P99 latency {p99:.2f}ms exceeds {SLA_P99_MS}ms target by {p99 - SLA_P99_MS:.2f}ms",
             )
         if not p95_pass:
             print(
-                f"    - P95 latency {p95:.2f}ms exceeds {SLA_P95_MS}ms target by {p95 - SLA_P95_MS:.2f}ms"
+                f"    - P95 latency {p95:.2f}ms exceeds {SLA_P95_MS}ms target by {p95 - SLA_P95_MS:.2f}ms",
             )
         if not p50_pass:
             print(
-                f"    - P50 latency {p50:.2f}ms exceeds {SLA_P50_MS}ms target by {p50 - SLA_P50_MS:.2f}ms"
+                f"    - P50 latency {p50:.2f}ms exceeds {SLA_P50_MS}ms target by {p50 - SLA_P50_MS:.2f}ms",
             )
         if error_rate >= 1.0:
             print(f"    - Error rate {error_rate:.2f}% exceeds 1% threshold")

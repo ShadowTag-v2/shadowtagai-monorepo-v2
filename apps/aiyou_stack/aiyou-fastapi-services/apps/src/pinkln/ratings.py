@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System for AI Performance Tracking
+"""Glicko-2 Rating System for AI Performance Tracking
 
 Better than Elo for:
 - Uncertainty tracking (rating deviation)
@@ -28,7 +27,7 @@ class Glicko2System:
         self.tol = tol  # Convergence tolerance
 
     def update(
-        self, player: Glicko2Player, results: list[tuple[Glicko2Player, float]]
+        self, player: Glicko2Player, results: list[tuple[Glicko2Player, float]],
     ) -> Glicko2Player:
         # Illinois algorithm for volatility calculation
         # Tracks: Rating (μ), Uncertainty (φ), Volatility (σ)

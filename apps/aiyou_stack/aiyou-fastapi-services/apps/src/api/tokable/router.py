@@ -1,6 +1,5 @@
 # ruff: noqa: F403, F405
-"""
-Tokable Gesture Streaming Platform API
+"""Tokable Gesture Streaming Platform API
 FastAPI endpoints for silent gesture-based streaming with AI interpretation
 
 Part of PNKLN Core Stack™ - Revenue-focused creator economy platform
@@ -72,8 +71,7 @@ async def health_check():
     tags=["Streaming"],
 )
 async def create_stream(request: CreateStreamRequest, creator_id: str = Query(...)):
-    """
-    Create new streaming session
+    """Create new streaming session
 
     **Modes**:
     - **private**: Practice mode (no audio, no viewers)
@@ -115,8 +113,7 @@ async def create_stream(request: CreateStreamRequest, creator_id: str = Query(..
 
 @app.post("/streams/start", response_model=Stream, tags=["Streaming"])
 async def start_stream(request: StartStreamRequest):
-    """
-    Start live streaming
+    """Start live streaming
 
     **Actions**:
     - Begin gesture capture
@@ -144,8 +141,7 @@ async def start_stream(request: StartStreamRequest):
 
 @app.post("/streams/end", response_model=dict, tags=["Streaming"])
 async def end_stream(request: EndStreamRequest):
-    """
-    End streaming session
+    """End streaming session
 
     **Post-Stream Actions**:
     - Finalize AI-generated art compilation
@@ -195,8 +191,7 @@ async def get_stream(stream_id: str):
 
 @app.get("/streams/live", response_model=list[Stream], tags=["Streaming"])
 async def get_live_streams(limit: int = Query(50, ge=1, le=200), offset: int = Query(0, ge=0)):
-    """
-    Get currently live streams
+    """Get currently live streams
 
     **Fan Discovery**:
     - Browse active creators
@@ -214,8 +209,7 @@ async def get_live_streams(limit: int = Query(50, ge=1, le=200), offset: int = Q
 
 @app.websocket("/ws/stream/{stream_id}/creator")
 async def websocket_creator_stream(websocket: WebSocket, stream_id: str):
-    """
-    WebSocket for creator to send gesture data
+    """WebSocket for creator to send gesture data
 
     **Data Flow**:
     1. Creator sends video frames (no audio)
@@ -257,8 +251,7 @@ async def websocket_creator_stream(websocket: WebSocket, stream_id: str):
 
 @app.websocket("/ws/stream/{stream_id}/fan")
 async def websocket_fan_watch(websocket: WebSocket, stream_id: str):
-    """
-    WebSocket for fans to watch stream
+    """WebSocket for fans to watch stream
 
     **Fan Experience**:
     - Split-screen view (creator + AI art)
@@ -297,8 +290,7 @@ async def get_nfts(
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
 ):
-    """
-    Browse NFT marketplace
+    """Browse NFT marketplace
 
     **Features**:
     - Filter by creator, price range
@@ -319,8 +311,7 @@ async def list_nft(nft_id: str, request: ListNFTRequest):
 
 @app.post("/nfts/{nft_id}/buy", response_model=dict, tags=["NFT"])
 async def buy_nft(nft_id: str, buyer_id: str = Query(...)):
-    """
-    Purchase NFT
+    """Purchase NFT
 
     **Transaction Flow**:
     - Validate buyer wallet
@@ -345,8 +336,7 @@ async def buy_nft(nft_id: str, buyer_id: str = Query(...)):
     tags=["Revenue"],
 )
 async def send_tip(request: SendTipRequest, _fan_id: str = Query(...)):
-    """
-    Send tip to creator during stream
+    """Send tip to creator during stream
 
     **Platform Economics**:
     - Platform fee: 20%
@@ -378,8 +368,7 @@ async def send_tip(request: SendTipRequest, _fan_id: str = Query(...)):
 
 @app.get("/revenue/creator/{creator_id}", response_model=dict, tags=["Revenue"])
 async def get_creator_revenue(creator_id: str, days: int = Query(30, ge=1, le=365)):
-    """
-    Creator revenue dashboard
+    """Creator revenue dashboard
 
     **Metrics**:
     - Total earnings by type
@@ -411,7 +400,7 @@ async def get_creator_revenue(creator_id: str, days: int = Query(30, ge=1, le=36
 
 @app.get("/tournaments", response_model=list[Tournament], tags=["Tournaments"])
 async def get_tournaments(
-    is_active: bool | None = Query(None), limit: int = Query(20, ge=1, le=100)
+    is_active: bool | None = Query(None), limit: int = Query(20, ge=1, le=100),
 ):
     """Get active and upcoming tournaments"""
     # TODO: Implement tournament query
@@ -440,8 +429,7 @@ async def get_leaderboard(
     period: str = Query("weekly", regex="^(daily|weekly|monthly|all-time)$"),
     limit: int = Query(100, ge=10, le=500),
 ):
-    """
-    Creator leaderboard
+    """Creator leaderboard
 
     **Ranking Factors**:
     - Total revenue
@@ -463,7 +451,7 @@ async def get_leaderboard(
                 "revenue_usd": "1247.50",
                 "streams": 87,
                 "followers": 12450,
-            }
+            },
         ],
         updated_at=datetime.utcnow(),
     )
@@ -476,8 +464,7 @@ async def get_leaderboard(
 
 @app.get("/metrics", response_model=MetricsResponse, tags=["Metrics"])
 async def get_platform_metrics():
-    """
-    Platform-wide metrics
+    """Platform-wide metrics
 
     **Investor Dashboard**:
     - MAU tracking toward 500k goal
@@ -522,8 +509,7 @@ async def get_user(user_id: str):
 
 @app.post("/users/{user_id}/subscribe", response_model=dict, tags=["Users"])
 async def subscribe_pro(user_id: str):
-    """
-    Subscribe to Tokable Pro
+    """Subscribe to Tokable Pro
 
     **Pro Benefits**:
     - Extended stream duration (60min vs 15min)

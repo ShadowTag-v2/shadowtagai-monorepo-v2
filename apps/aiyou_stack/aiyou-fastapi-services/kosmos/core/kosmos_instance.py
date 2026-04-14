@@ -1,5 +1,4 @@
-"""
-Kosmos Instance - Autonomous AI Scientist per LLM
+"""Kosmos Instance - Autonomous AI Scientist per LLM
 =================================================
 Wraps an LLM + RSTA Squadron (380 agents) into a single Kosmos instance.
 Each Kosmos operates autonomously with its own agents using ONLY its own LLM.
@@ -80,8 +79,7 @@ KOSMOS_CONFIGS = {
 
 
 class KosmosInstance:
-    """
-    Autonomous AI Scientist instance with embedded RSTA Squadron.
+    """Autonomous AI Scientist instance with embedded RSTA Squadron.
 
     Each Kosmos:
     - Has 380 agents (RSTA structure)
@@ -96,13 +94,13 @@ class KosmosInstance:
         config: KosmosConfig | None = None,
         instance_id: int = 1,
     ):
-        """
-        Initialize Kosmos instance.
+        """Initialize Kosmos instance.
 
         Args:
             kosmos_type: Type of Kosmos (GEMINI_INTAKE, PERPLEXITY, etc.)
             config: Optional custom config, defaults to KOSMOS_CONFIGS
             instance_id: Instance ID (1-10 for parallel Code Assist)
+
         """
         self.kosmos_type = kosmos_type
         self.config = config or KOSMOS_CONFIGS[kosmos_type]
@@ -116,14 +114,14 @@ class KosmosInstance:
         if kosmos_type == KosmosType.GEMINI_CODE_ASSIST:
             # Try GEMINI_KEY_1, GEMINI_KEY_2, etc. for multi-account
             self.api_key = os.getenv(f"GEMINI_KEY_{instance_id}") or os.getenv(
-                self.config.api_key_env
+                self.config.api_key_env,
             )
         else:
             self.api_key = os.getenv(self.config.api_key_env)
 
         logger.info(
             f"Initialized Kosmos-{kosmos_type.value}#{instance_id} "
-            f"with {self.squadron.get_status()['total_agents']} agents"
+            f"with {self.squadron.get_status()['total_agents']} agents",
         )
 
     async def process(
@@ -132,8 +130,7 @@ class KosmosInstance:
         context: dict[str, Any] | None = None,
         risk_level: str = "MEDIUM",
     ) -> dict[str, Any]:
-        """
-        Process task through this Kosmos instance.
+        """Process task through this Kosmos instance.
 
         Workflow:
         1. RECON: Explore solution options (180 agents)
@@ -149,6 +146,7 @@ class KosmosInstance:
 
         Returns:
             Result with consensus outcome and generated content
+
         """
         start_time = datetime.utcnow()
 
@@ -194,7 +192,7 @@ class KosmosInstance:
         }
 
     async def _generate_output(
-        self, task: str, context: dict[str, Any] | None = None
+        self, task: str, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Generate final output after consensus reached"""
         if not self.api_key:
@@ -205,9 +203,9 @@ class KosmosInstance:
         try:
             if self.kosmos_type in [KosmosType.GEMINI_INTAKE, KosmosType.GEMINI_CODE_ASSIST]:
                 return await self._call_gemini(prompt)
-            elif self.kosmos_type == KosmosType.PERPLEXITY:
+            if self.kosmos_type == KosmosType.PERPLEXITY:
                 return await self._call_perplexity(prompt)
-            elif self.kosmos_type == KosmosType.SUPERGROK:
+            if self.kosmos_type == KosmosType.SUPERGROK:
                 return await self._call_grok(prompt)
         except Exception as e:
             logger.error(f"Kosmos {self.kosmos_type.value} generation failed: {e}")
@@ -319,8 +317,7 @@ class KosmosInstance:
 
 
 class KosmosPool:
-    """
-    Pool of Kosmos instances for parallel execution.
+    """Pool of Kosmos instances for parallel execution.
     Used for 10× Gemini Code Assist stage.
     """
 

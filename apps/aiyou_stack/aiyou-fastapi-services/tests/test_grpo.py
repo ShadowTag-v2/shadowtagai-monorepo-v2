@@ -1,5 +1,4 @@
-"""
-Tests for GRPO (Group Relative Policy Optimization)
+"""Tests for GRPO (Group Relative Policy Optimization)
 """
 
 import numpy as np
@@ -84,7 +83,7 @@ class TestGRPOTrainer:
         trainer = GRPOTrainer(config)
 
         batch = generate_synthetic_batch(
-            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
         )
 
         advantages = trainer.compute_advantages(batch)
@@ -104,7 +103,7 @@ class TestGRPOTrainer:
         trainer = GRPOTrainer(config)
 
         batch = generate_synthetic_batch(
-            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
         )
 
         advantages = trainer.compute_advantages(batch)
@@ -120,7 +119,7 @@ class TestGRPOTrainer:
         trainer = GRPOTrainer(config)
 
         batch = generate_synthetic_batch(
-            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
         )
 
         advantages = trainer.compute_advantages(batch)
@@ -138,7 +137,7 @@ class TestGRPOTrainer:
         trainer = GRPOTrainer(config)
 
         batch = generate_synthetic_batch(
-            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
         )
 
         # Compute advantages
@@ -165,7 +164,7 @@ class TestGRPOTrainer:
         trainer = GRPOTrainer(config)
 
         batch = generate_synthetic_batch(
-            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+            num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
         )
 
         # Execute training step
@@ -188,7 +187,7 @@ class TestGRPOTrainer:
         # Run 5 training steps
         for _ in range(5):
             batch = generate_synthetic_batch(
-                num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt
+                num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
             )
             trainer.train_step(batch)
 
@@ -303,7 +302,7 @@ class TestGRPOScenarios:
                     0.4,  # Medium group
                     0.2,
                     0.1,
-                ]
+                ],
             ),  # Hard group
             log_probs=np.ones(6) * -1.0,
             group_ids=np.array([0, 0, 1, 1, 2, 2]),

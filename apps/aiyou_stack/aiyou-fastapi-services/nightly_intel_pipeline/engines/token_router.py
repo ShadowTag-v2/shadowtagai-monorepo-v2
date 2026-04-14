@@ -1,5 +1,4 @@
-"""
-Token Router - Long⊗Short Entropy-Based Model Routing
+"""Token Router - Long⊗Short Entropy-Based Model Routing
 Routes tokens between models based on entropy for compute optimization.
 
 PRISM Integration: Long⊗Short Token Routing
@@ -141,8 +140,7 @@ TOKEN_ROUTER_CONFIG = {
 
 
 class LongShortRouter:
-    """
-    Routes tokens between models based on entropy
+    """Routes tokens between models based on entropy
 
     PRISM Algorithm:
     - Calculate token-level entropy from logits/probabilities
@@ -168,14 +166,14 @@ class LongShortRouter:
         long_model: str | None = None,
         config: dict | None = None,
     ):
-        """
-        Initialize Long⊗Short Router
+        """Initialize Long⊗Short Router
 
         Args:
             entropy_threshold: Threshold for routing (0-1, normalized)
             short_model: Model ID for short/fast model
             long_model: Model ID for long/deep reasoning model
             config: Optional configuration override
+
         """
         self.config = config or TOKEN_ROUTER_CONFIG
         self.entropy_threshold = entropy_threshold or self.config["entropy_threshold"]
@@ -205,8 +203,7 @@ class LongShortRouter:
         from_logits: bool = True,
         normalize: bool = True,
     ) -> float:
-        """
-        Calculate entropy from logits or probabilities
+        """Calculate entropy from logits or probabilities
 
         Args:
             logits_or_probs: Model output logits or probability distribution
@@ -215,6 +212,7 @@ class LongShortRouter:
 
         Returns:
             Entropy value (normalized if requested)
+
         """
         # Handle different input types
         if hasattr(logits_or_probs, "numpy"):
@@ -259,7 +257,7 @@ class LongShortRouter:
         return float(entropy)
 
     def _calculate_entropy_pure_python(
-        self, values: list[float], from_logits: bool, normalize: bool
+        self, values: list[float], from_logits: bool, normalize: bool,
     ) -> float:
         """Pure Python entropy calculation (no numpy)"""
         if from_logits:
@@ -292,8 +290,7 @@ class LongShortRouter:
         force_tier: ModelTier | None = None,
         num_tokens: int = 1,
     ) -> RoutingDecision:
-        """
-        Make routing decision based on entropy
+        """Make routing decision based on entropy
 
         Args:
             entropy: Pre-calculated entropy value (0-1)
@@ -305,6 +302,7 @@ class LongShortRouter:
 
         Returns:
             RoutingDecision with model assignment
+
         """
         # Calculate entropy if not provided
         if entropy is None:
@@ -367,10 +365,9 @@ class LongShortRouter:
         return decision
 
     def route_batch(
-        self, entropies: list[float], contexts: list[str] | None = None
+        self, entropies: list[float], contexts: list[str] | None = None,
     ) -> list[RoutingDecision]:
-        """
-        Route a batch of tokens
+        """Route a batch of tokens
 
         Args:
             entropies: List of entropy values for each token
@@ -378,6 +375,7 @@ class LongShortRouter:
 
         Returns:
             List of routing decisions
+
         """
         decisions = []
         contexts = contexts or [None] * len(entropies)
@@ -389,7 +387,7 @@ class LongShortRouter:
         return decisions
 
     def _apply_context_rules(
-        self, tier: ModelTier, entropy: float, context: str, reasoning: str
+        self, tier: ModelTier, entropy: float, context: str, reasoning: str,
     ) -> tuple[ModelTier, str]:
         """Apply context-specific routing rules"""
         # Critical contexts always use long model
@@ -436,12 +434,12 @@ class LongShortRouter:
         if current_short_ratio < target_short_ratio - 0.05:
             # Too many going to long model, increase threshold
             self._adaptive_threshold = min(
-                self.config["adaptive"]["max_threshold"], self._adaptive_threshold + adjustment_rate
+                self.config["adaptive"]["max_threshold"], self._adaptive_threshold + adjustment_rate,
             )
         elif current_short_ratio > target_short_ratio + 0.05:
             # Too many going to short model, decrease threshold
             self._adaptive_threshold = max(
-                self.config["adaptive"]["min_threshold"], self._adaptive_threshold - adjustment_rate
+                self.config["adaptive"]["min_threshold"], self._adaptive_threshold - adjustment_rate,
             )
 
         return self._adaptive_threshold
@@ -495,14 +493,14 @@ class LongShortRouter:
         self._adaptive_threshold = self.entropy_threshold
 
     def estimate_cost(self, total_tokens: int) -> dict:
-        """
-        Estimate cost with Long⊗Short routing vs baseline
+        """Estimate cost with Long⊗Short routing vs baseline
 
         Args:
             total_tokens: Total tokens to process
 
         Returns:
             Cost estimation dictionary
+
         """
         short_ratio = self.config["target_short_ratio"]
         self.config["target_long_ratio"]
@@ -532,8 +530,7 @@ class LongShortRouter:
 
 
 class TokenRouterPipeline:
-    """
-    Pipeline wrapper for integrating Token Router with inference
+    """Pipeline wrapper for integrating Token Router with inference
 
     Provides high-level API for routing-aware inference
     """
@@ -544,13 +541,13 @@ class TokenRouterPipeline:
         short_client: Any | None = None,
         long_client: Any | None = None,
     ):
-        """
-        Initialize router pipeline
+        """Initialize router pipeline
 
         Args:
             router: LongShortRouter instance
             short_client: Client for short model (e.g., Gemini Flash)
             long_client: Client for long model (e.g., Claude Sonnet)
+
         """
         self.router = router or LongShortRouter()
         self.short_client = short_client
@@ -563,10 +560,9 @@ class TokenRouterPipeline:
         )
 
     async def infer(
-        self, prompt: str, context: str | None = None, estimate_entropy: bool = True
+        self, prompt: str, context: str | None = None, estimate_entropy: bool = True,
     ) -> dict:
-        """
-        Run inference with automatic routing
+        """Run inference with automatic routing
 
         Args:
             prompt: Input prompt
@@ -575,6 +571,7 @@ class TokenRouterPipeline:
 
         Returns:
             Inference result with routing metadata
+
         """
         # Estimate entropy from prompt characteristics
         if estimate_entropy:
@@ -584,7 +581,7 @@ class TokenRouterPipeline:
 
         # Get routing decision
         decision = self.router.route(
-            entropy=entropy, context=context, num_tokens=len(prompt.split())
+            entropy=entropy, context=context, num_tokens=len(prompt.split()),
         )
 
         # Execute on appropriate model
@@ -602,8 +599,7 @@ class TokenRouterPipeline:
         }
 
     def _estimate_prompt_entropy(self, prompt: str) -> float:
-        """
-        Estimate entropy from prompt characteristics
+        """Estimate entropy from prompt characteristics
 
         Heuristics:
         - Short, structured prompts → low entropy
@@ -688,10 +684,9 @@ Generated: {datetime.now().isoformat()}
 
 # Convenience functions
 def route_token(
-    entropy: float, threshold: float = 0.3, context: str | None = None
+    entropy: float, threshold: float = 0.3, context: str | None = None,
 ) -> RoutingDecision:
-    """
-    Quick token routing
+    """Quick token routing
 
     Usage:
         decision = route_token(0.25)  # Low entropy → short model
@@ -702,8 +697,7 @@ def route_token(
 
 
 def calculate_token_entropy(logits: Union[list, "np.ndarray"]) -> float:
-    """
-    Calculate entropy from logits
+    """Calculate entropy from logits
 
     Usage:
         entropy = calculate_token_entropy([1.2, 0.5, -0.3, 0.8])
@@ -713,8 +707,7 @@ def calculate_token_entropy(logits: Union[list, "np.ndarray"]) -> float:
 
 
 def estimate_routing_cost(total_tokens: int, short_ratio: float = 0.8) -> dict:
-    """
-    Estimate routing cost savings
+    """Estimate routing cost savings
 
     Usage:
         cost = estimate_routing_cost(1_000_000)

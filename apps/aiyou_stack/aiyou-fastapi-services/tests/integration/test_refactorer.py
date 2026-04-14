@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Integration tests for Code Refactorer Agent (Python version)
+"""Integration tests for Code Refactorer Agent (Python version)
 
 Tests the refactorer's analyze and refactor capabilities from Python.
 """
@@ -57,7 +56,7 @@ class TestRefactorer:
                     "type": "complexity",
                     "description": "Nested conditionals",
                     "suggestion": "Flatten logic",
-                }
+                },
             ],
             "metrics": {"complexity": 45, "maintainability": 75, "technical_debt": "medium"},
             "recommendations": ["Add type hints", "Improve naming"],

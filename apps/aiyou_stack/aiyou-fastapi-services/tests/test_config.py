@@ -1,5 +1,4 @@
-"""
-Configuration Tests
+"""Configuration Tests
 
 Tests for application configuration and settings
 """

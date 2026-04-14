@@ -1,5 +1,4 @@
-"""
-Health check and status endpoints.
+"""Health check and status endpoints.
 """
 
 from datetime import datetime
@@ -39,8 +38,7 @@ class StatusResponse(BaseModel):
     description="Check if the API is running and healthy.",
 )
 async def health_check():
-    """
-    Simple health check endpoint.
+    """Simple health check endpoint.
     Returns basic service information.
     """
     health_data = HealthResponse(
@@ -60,8 +58,7 @@ async def health_check():
     description="Get detailed status of all service components.",
 )
 async def status_check():
-    """
-    Detailed status check endpoint.
+    """Detailed status check endpoint.
     Checks all service dependencies.
     """
     # In production, you would actually check database and redis connectivity
@@ -82,8 +79,7 @@ async def status_check():
     description="Simple ping endpoint for uptime monitoring.",
 )
 async def ping():
-    """
-    Ultra-simple ping endpoint.
+    """Ultra-simple ping endpoint.
     Returns plain text 'pong' for monitoring tools.
     """
     return Response(content="pong", media_type="text/plain")

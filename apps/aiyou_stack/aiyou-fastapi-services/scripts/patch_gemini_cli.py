@@ -7,8 +7,7 @@ import os
 
 
 def patch_gemini_env():
-    """
-    Sets environment variables to suppress specific Gemini CLI warnings
+    """Sets environment variables to suppress specific Gemini CLI warnings
     and force Antigravity mode.
     """
     print("Applying Gemini CLI / Antigravity Patches...")
@@ -26,8 +25,7 @@ def patch_gemini_env():
 
 
 def filter_debug_warnings():
-    """
-    Wrapper to filter out 'Duplicate tool registration' warnings from stderr.
+    """Wrapper to filter out 'Duplicate tool registration' warnings from stderr.
     """
 
     # This is a mock of the internal logic patch.

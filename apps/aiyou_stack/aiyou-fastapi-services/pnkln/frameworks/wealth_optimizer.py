@@ -1,5 +1,4 @@
-"""
-WEALTH OPTIMIZER - Jobs-Obsessed Financial Engineering
+"""WEALTH OPTIMIZER - Jobs-Obsessed Financial Engineering
 =======================================================
 
 PHILOSOPHY (Steve Jobs + Wealth Planning):
@@ -70,8 +69,7 @@ class LeakSeverity(StrEnum):
 
 @dataclass
 class Leak:
-    """
-    A detected leak (wasted money/value).
+    """A detected leak (wasted money/value).
 
     Jobs: "Focus is about saying no to 1000 things."
     Every leak is something we should say no to.
@@ -96,8 +94,7 @@ class Leak:
 
 @dataclass
 class RedesignProposal:
-    """
-    A proposed funnel redesign for 10x improvement.
+    """A proposed funnel redesign for 10x improvement.
 
     Jobs: "Design is not just what it looks like, design is how it works."
     """
@@ -126,8 +123,7 @@ class RedesignProposal:
 
 @dataclass
 class LeverageOpportunity:
-    """
-    A compounding leverage opportunity.
+    """A compounding leverage opportunity.
 
     Jobs: "Innovation distinguishes between a leader and a follower."
     Find what compounds exponentially.
@@ -155,8 +151,7 @@ class LeverageOpportunity:
 
 @dataclass
 class WealthAnalysis:
-    """
-    Complete wealth analysis: Leaks + Redesign + Leverage.
+    """Complete wealth analysis: Leaks + Redesign + Leverage.
 
     Structure: Hard Truth → Plan → Challenge
     """
@@ -217,7 +212,7 @@ class WealthAnalysis:
 
         if self.leverage_opportunities:
             for opp in sorted(
-                self.leverage_opportunities, key=lambda o: o.projected_3yr_value, reverse=True
+                self.leverage_opportunities, key=lambda o: o.projected_3yr_value, reverse=True,
             ):
                 lines.append(opp.to_challenge())
                 lines.append("")
@@ -237,15 +232,14 @@ class WealthAnalysis:
                 f"3-year leverage value: ${self.total_leverage_value:,.0f}",
                 f"ROI on improvements: {self.roi_on_improvements:.1f}x",
                 "=" * 80,
-            ]
+            ],
         )
 
         return "\n".join(lines)
 
 
 class WealthOptimizer:
-    """
-    Wealth Optimizer - Analyze ingestion jobs for leaks/redesign/leverage.
+    """Wealth Optimizer - Analyze ingestion jobs for leaks/redesign/leverage.
 
     Usage:
         optimizer = WealthOptimizer()
@@ -254,19 +248,19 @@ class WealthOptimizer:
     """
 
     def __init__(self, target_tier_1_ratio: float = 0.40, target_cost_per_item: float = 0.015):
-        """
-        Initialize Wealth Optimizer.
+        """Initialize Wealth Optimizer.
 
         Args:
             target_tier_1_ratio: Target Tier 1 ratio (default 40%)
             target_cost_per_item: Target cost per item (default $0.015)
+
         """
         self.target_tier_1_ratio = target_tier_1_ratio
         self.target_cost_per_item = target_cost_per_item
 
         logger.info(
             f"WealthOptimizer initialized: target_tier_1={target_tier_1_ratio:.1%}, "
-            f"target_cost={target_cost_per_item:.3f}"
+            f"target_cost={target_cost_per_item:.3f}",
         )
 
     async def analyze(
@@ -274,8 +268,7 @@ class WealthOptimizer:
         ingestion_result: Any,  # IngestionResult from gemini_ingestion_layer
         historical_data: list[Any] | None = None,
     ) -> WealthAnalysis:
-        """
-        Perform complete wealth analysis on ingestion job.
+        """Perform complete wealth analysis on ingestion job.
 
         Args:
             ingestion_result: Result from ingestion job
@@ -283,6 +276,7 @@ class WealthOptimizer:
 
         Returns:
             WealthAnalysis with leaks/redesigns/leverage
+
         """
         analysis_id = f"wealth_{ingestion_result.job_id}"
 
@@ -298,7 +292,7 @@ class WealthOptimizer:
 
         # 3. IDENTIFY LEVERAGE (Challenge)
         analysis.leverage_opportunities = await self._identify_leverage(
-            ingestion_result, historical_data
+            ingestion_result, historical_data,
         )
         analysis.total_leverage_value = sum(
             opp.projected_3yr_value for opp in analysis.leverage_opportunities
@@ -314,7 +308,7 @@ class WealthOptimizer:
 
         logger.info(
             f"Wealth analysis complete: {len(analysis.leaks)} leaks, "
-            f"{len(analysis.redesigns)} redesigns, {len(analysis.leverage_opportunities)} leverage opportunities"
+            f"{len(analysis.redesigns)} redesigns, {len(analysis.leverage_opportunities)} leverage opportunities",
         )
 
         return analysis
@@ -491,7 +485,7 @@ class WealthOptimizer:
         return redesigns
 
     async def _identify_leverage(
-        self, result: Any, historical_data: list[Any] | None
+        self, result: Any, historical_data: list[Any] | None,
     ) -> list[LeverageOpportunity]:
         """Identify compounding leverage opportunities"""
         opportunities = []
@@ -564,12 +558,11 @@ class WealthOptimizer:
         """Classify leak severity by waste percentage"""
         if waste_percentage >= 0.20:
             return LeakSeverity.CRITICAL
-        elif waste_percentage >= 0.10:
+        if waste_percentage >= 0.10:
             return LeakSeverity.HIGH
-        elif waste_percentage >= 0.05:
+        if waste_percentage >= 0.05:
             return LeakSeverity.MEDIUM
-        else:
-            return LeakSeverity.LOW
+        return LeakSeverity.LOW
 
 
 # ============================================================================

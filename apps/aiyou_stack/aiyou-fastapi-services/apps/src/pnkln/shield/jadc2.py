@@ -1,5 +1,4 @@
-"""
-JADC2 - Joint All-Domain Command & Control
+"""JADC2 - Joint All-Domain Command & Control
 Defense-Grade Wrapper for Kernels to accelerate OODA Loop.
 
 Unlocks Pillar III ($35B Valuation).
@@ -25,8 +24,7 @@ class OODAState:
 
 
 class JADC2System:
-    """
-    JADC2 Decision Logic.
+    """JADC2 Decision Logic.
     Compresses the Kill Chain using Pnkln Kernels.
     """
 
@@ -34,8 +32,7 @@ class JADC2System:
         self.kernel = DecisionKernel()
 
     def execute_ooda_loop(self, sensor_data: dict[str, Any]) -> OODAState:
-        """
-        Executes a full OODA loop for a target.
+        """Executes a full OODA loop for a target.
         """
         start = time.time()
 

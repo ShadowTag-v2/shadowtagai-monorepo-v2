@@ -1,5 +1,4 @@
-"""
-Performance monitoring API endpoints
+"""Performance monitoring API endpoints
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -16,10 +15,9 @@ router = APIRouter(prefix="/performance", tags=["performance"])
 
 @router.get("/report", response_model=PerformanceReport)
 async def get_performance_report(
-    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)
+    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session),
 ):
-    """
-    Get comprehensive performance report
+    """Get comprehensive performance report
 
     Returns:
     - Total requests
@@ -28,6 +26,7 @@ async def get_performance_report(
     - Top bottlenecks
     - Optimization suggestions
     - Cache hit rate
+
     """
     detector = BottleneckDetector(session)
     optimizer = PerformanceOptimizer(session)
@@ -82,8 +81,7 @@ async def get_bottlenecks(
     severity: str | None = None,
     session: AsyncSession = Depends(get_session),
 ):
-    """
-    Get detected bottlenecks
+    """Get detected bottlenecks
 
     Find the exact lines of code making your app slow
     """
@@ -98,8 +96,7 @@ async def get_bottlenecks(
 
 @router.get("/bottlenecks/{bottleneck_id}/fix")
 async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends(get_session)):
-    """
-    Get specific fix suggestions for a bottleneck
+    """Get specific fix suggestions for a bottleneck
 
     Returns actionable code examples and optimization strategies
     """
@@ -114,10 +111,9 @@ async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends
 
 @router.get("/slow-endpoints")
 async def get_slow_endpoints(
-    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)
+    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session),
 ):
-    """
-    Analyze slowest endpoints
+    """Analyze slowest endpoints
 
     Returns detailed statistics and bottleneck information
     """
@@ -137,8 +133,7 @@ async def get_endpoint_trends(
     hours: int = Query(default=24, ge=1, le=168),
     session: AsyncSession = Depends(get_session),
 ):
-    """
-    Get performance trends for a specific endpoint
+    """Get performance trends for a specific endpoint
 
     Shows how performance changes over time
     """
@@ -153,8 +148,7 @@ async def get_endpoint_trends(
 
 @router.get("/n-plus-one")
 async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):
-    """
-    Detect N+1 query problems
+    """Detect N+1 query problems
 
     Identifies potential database performance issues
     """
@@ -169,10 +163,9 @@ async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):
 
 @router.get("/memory-leaks")
 async def detect_memory_leaks(
-    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session)
+    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session),
 ):
-    """
-    Detect potential memory leaks
+    """Detect potential memory leaks
 
     Finds endpoints with increasing memory usage
     """
@@ -188,8 +181,7 @@ async def detect_memory_leaks(
 
 @router.get("/optimization-suggestions")
 async def get_optimization_suggestions(session: AsyncSession = Depends(get_session)):
-    """
-    Get all optimization suggestions
+    """Get all optimization suggestions
 
     AI-generated recommendations to make your app faster
     """
@@ -201,8 +193,7 @@ async def get_optimization_suggestions(session: AsyncSession = Depends(get_sessi
 
 @router.get("/cache/stats")
 async def get_cache_stats():
-    """
-    Get cache statistics
+    """Get cache statistics
 
     Returns cache hit/miss rates and suggestions
     """
@@ -217,8 +208,7 @@ async def get_cache_stats():
 
 @router.post("/cache/clear")
 async def clear_cache():
-    """
-    Clear all cache
+    """Clear all cache
 
     Warning: This will reset all cached data
     """
@@ -226,14 +216,12 @@ async def clear_cache():
 
     if success:
         return {"message": "Cache cleared successfully"}
-    else:
-        raise HTTPException(status_code=500, detail="Failed to clear cache")
+    raise HTTPException(status_code=500, detail="Failed to clear cache")
 
 
 @router.get("/summary")
 async def get_performance_summary(session: AsyncSession = Depends(get_session)):
-    """
-    Get quick performance summary
+    """Get quick performance summary
 
     The 5 most important things to fix right now
     """

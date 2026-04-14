@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - LinkedIn Source Adapter
+"""PNKLN Core Stack - LinkedIn Source Adapter
 
 Uses Scrapling StealthyFetcher (Playwright + fingerprint spoofing) as primary,
 falls back to cloudscraper on import failure.
@@ -60,8 +59,7 @@ BASE = "https://www.linkedin.com"
 
 
 class LinkedInAdapter(SourceAdapter):
-    """
-    LinkedIn public page scraper.
+    """LinkedIn public page scraper.
     Primary: Scrapling StealthyFetcher (Playwright + fingerprint spoofing).
     Fallback: cloudscraper (Cloudflare JS challenge bypass).
     """
@@ -85,7 +83,7 @@ class LinkedInAdapter(SourceAdapter):
         url = f"{BASE}/company/openai/"
         if _HAS_SCRAPLING:
             page = await asyncio.get_event_loop().run_in_executor(
-                None, lambda: StealthyFetcher.fetch(url, headless=True, network_idle=True)
+                None, lambda: StealthyFetcher.fetch(url, headless=True, network_idle=True),
             )
             if page and page.status < 400:
                 logger.info("linkedin_scrapling_reachable", status=page.status)

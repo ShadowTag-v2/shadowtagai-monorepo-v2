@@ -1,5 +1,4 @@
-"""
-Attribution Graph: Represent transformer forward pass as interpretable causal graphs.
+"""Attribution Graph: Represent transformer forward pass as interpretable causal graphs.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025).
 
@@ -34,6 +33,7 @@ class AttributionNode:
         position: Context position
         activation: Activation value of the feature
         node_id: Unique identifier for this node
+
     """
 
     feature_idx: int
@@ -66,6 +66,7 @@ class AttributionEdge:
         attribution: Total attribution value
         edge_attribution: Detailed edge attribution with head loadings
         qk_attributions: Optional QK attributions for heads mediating this edge
+
     """
 
     source: AttributionNode
@@ -121,6 +122,7 @@ class AttributionGraph:
         edges: List of all edges in the graph
         adjacency: Dict mapping node_id -> list of outgoing edges
         reverse_adjacency: Dict mapping node_id -> list of incoming edges
+
     """
 
     def __init__(self):
@@ -169,6 +171,7 @@ class AttributionGraph:
 
         Returns:
             New pruned AttributionGraph
+
         """
         pruned = AttributionGraph()
 
@@ -179,7 +182,7 @@ class AttributionGraph:
         return pruned
 
     def prune_to_path(
-        self, start_node: AttributionNode, end_node: AttributionNode, max_paths: int = 10
+        self, start_node: AttributionNode, end_node: AttributionNode, max_paths: int = 10,
     ) -> "AttributionGraph":
         """Create pruned graph containing only paths from start to end.
 
@@ -190,6 +193,7 @@ class AttributionGraph:
 
         Returns:
             New pruned AttributionGraph
+
         """
         # Find paths using DFS
         paths = self._find_paths(start_node, end_node, max_paths)
@@ -204,7 +208,7 @@ class AttributionGraph:
         return pruned
 
     def _find_paths(
-        self, start: AttributionNode, end: AttributionNode, max_paths: int
+        self, start: AttributionNode, end: AttributionNode, max_paths: int,
     ) -> list[list[AttributionEdge]]:
         """Find paths from start to end using DFS."""
         paths = []
@@ -244,7 +248,7 @@ class AttributionGraph:
         return [e for e in self.edges if e.crosses_positions]
 
     def get_attention_mediated_edges(
-        self, min_attention_fraction: float = 0.5
+        self, min_attention_fraction: float = 0.5,
     ) -> list[AttributionEdge]:
         """Get edges where attention component is dominant.
 
@@ -253,6 +257,7 @@ class AttributionGraph:
 
         Returns:
             List of attention-mediated edges
+
         """
         result = []
         for edge in self.edges:
@@ -267,6 +272,7 @@ class AttributionGraph:
 
         Returns:
             Dict mapping (layer, head) -> total contribution across all edges
+
         """
         head_contributions = defaultdict(float)
 
@@ -286,6 +292,7 @@ class AttributionGraph:
 
         Returns:
             Dict mapping node_id -> total attribution (in + out)
+
         """
         importance = defaultdict(float)
 
@@ -374,6 +381,7 @@ class AttributionGraphBuilder:
             sae_features: Dict mapping layer -> feature vectors [n_features, d_model]
             sae_descriptions: Dict mapping layer -> list of feature descriptions
             seq_length: Sequence length
+
         """
         self.sae_activations = sae_activations
         self.sae_features = sae_features
@@ -398,6 +406,7 @@ class AttributionGraphBuilder:
 
         Returns:
             List of added nodes
+
         """
         activations = self.sae_activations[layer][position]
         top_indices = torch.topk(activations, k=min(top_k, len(activations))).indices
@@ -435,6 +444,7 @@ class AttributionGraphBuilder:
 
         Returns:
             Constructed AttributionGraph
+
         """
         layer, position, feature_idx = target_logit_feature
 
@@ -468,7 +478,7 @@ class AttributionGraphBuilder:
 
         # For same position and adjacent positions
         for source_pos in range(
-            max(0, target_node.position - 1), min(self.seq_length, target_node.position + 2)
+            max(0, target_node.position - 1), min(self.seq_length, target_node.position + 2),
         ):
             # Get top-k active features at source
             activations = self.sae_activations[source_layer][source_pos]

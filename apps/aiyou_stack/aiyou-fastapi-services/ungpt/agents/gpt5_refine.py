@@ -1,5 +1,4 @@
-"""
-L2b: GPT Refine - Generation Loop
+"""L2b: GPT Refine - Generation Loop
 
 Role: Labor (GPT side)
 - Reviews Gemini's output
@@ -34,10 +33,9 @@ Your refined version:
 
 
 async def refine(
-    gemini_draft: str, previous_draft: str, model: str = "gpt-4o", api_key: str = ""
+    gemini_draft: str, previous_draft: str, model: str = "gpt-4o", api_key: str = "",
 ) -> dict[str, Any]:
-    """
-    Refine Gemini's draft and check for convergence.
+    """Refine Gemini's draft and check for convergence.
 
     Args:
         gemini_draft: Draft from Gemini
@@ -51,6 +49,7 @@ async def refine(
             'convergence_signal': str or None,
             'cost': float
         }
+
     """
     prompt = REFINE_PROMPT.format(
         gemini_draft=gemini_draft,

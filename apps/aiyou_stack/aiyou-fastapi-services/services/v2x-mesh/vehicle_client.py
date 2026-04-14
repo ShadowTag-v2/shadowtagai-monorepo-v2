@@ -1,5 +1,4 @@
-"""
-V2X On-Vehicle Client Service
+"""V2X On-Vehicle Client Service
 
 Runs on vehicle compute (Tesla HW5/HW6 or aftermarket edge box).
 Handles:
@@ -74,7 +73,7 @@ class VehicleClient:
         # Initialize protocols
         self.armp = ARMPProtocol(self.node_id)
         self.gossip = GossipProtocol(
-            node_id=self.node_id, config=GossipConfig(), send_callback=self._send_to_radio
+            node_id=self.node_id, config=GossipConfig(), send_callback=self._send_to_radio,
         )
 
         # Current vehicle state
@@ -281,7 +280,7 @@ class VehicleClient:
         if message.header.msg_type == MessageType.BEACON:
             payload = message.payload
             self.gossip.add_peer(
-                message.header.sender_id, position=(payload.position[0], payload.position[1])
+                message.header.sender_id, position=(payload.position[0], payload.position[1]),
             )
 
         # Handle critical events
@@ -408,7 +407,7 @@ if __name__ == "__main__":
         config = V2XClientConfig(vehicle_id="TEST-VEHICLE-001", vehicle_type="car")
 
         client = VehicleClient(
-            config=config, crypto_provider=MockCryptoProvider(), radio_provider=MockRadioProvider()
+            config=config, crypto_provider=MockCryptoProvider(), radio_provider=MockRadioProvider(),
         )
 
         # Define FSD planner callback
@@ -417,7 +416,7 @@ if __name__ == "__main__":
             if message.header.msg_type == MessageType.EVENT:
                 event = message.payload
                 print(
-                    f"FSD Planner: Processing event {event.event_type} (severity={event.severity})"
+                    f"FSD Planner: Processing event {event.event_type} (severity={event.severity})",
                 )
                 # In production, this would interface with actual FSD planner
                 return True  # Intervention taken

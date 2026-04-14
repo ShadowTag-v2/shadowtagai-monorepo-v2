@@ -1,5 +1,4 @@
-"""
-Gemini Deep Research Agent Wrapper
+"""Gemini Deep Research Agent Wrapper
 Wraps the Google Gemini Deep Research (Interactions API) for autonomous research tasks.
 """
 
@@ -21,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class DeepResearchAgent:
-    """
-    Antigravity wrapper for Gemini Deep Research.
+    """Antigravity wrapper for Gemini Deep Research.
     Handles:
     - Asynchronous task submission (background=True).
     - Polling for results.
@@ -42,10 +40,9 @@ class DeepResearchAgent:
             logger.warning("DeepResearchAgent disabled (missing SDK or Key).")
 
     async def standard_research(
-        self, topic: str, depth: int = 2, breadth: int = 3
+        self, topic: str, depth: int = 2, breadth: int = 3,
     ) -> dict[str, Any]:
-        """
-        Conducts deep research on a topic.
+        """Conducts deep research on a topic.
 
         Args:
             topic: The research query.
@@ -54,6 +51,7 @@ class DeepResearchAgent:
 
         Returns:
             Dictionary containing the research report.
+
         """
         if not self.enabled:
             return {"error": "DeepResearchAgent not enabled."}

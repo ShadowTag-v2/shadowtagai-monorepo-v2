@@ -1,5 +1,4 @@
-"""
-Comment service layer.
+"""Comment service layer.
 
 Extracts all database operations from comment routes
 into a proper service/repository pattern.
@@ -20,7 +19,7 @@ class CommentService:
 
     @staticmethod
     def create_comment(
-        db: Session, forum_post_id: int, author: User, content: str, parent_id: int | None = None
+        db: Session, forum_post_id: int, author: User, content: str, parent_id: int | None = None,
     ) -> Comment:
         """Create a new comment."""
         comment = Comment(

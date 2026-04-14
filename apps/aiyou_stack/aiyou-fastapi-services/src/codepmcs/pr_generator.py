@@ -1,5 +1,4 @@
-"""
-CodePMCS PR Generator - Automated PR creation for fixes.
+"""CodePMCS PR Generator - Automated PR creation for fixes.
 
 Uses GitHub CLI (gh) to create PRs with fixes.
 """
@@ -94,7 +93,7 @@ class PRGenerator:
                 )
                 review_tag = " [REVIEW REQUIRED]" if fix.requires_review else ""
                 body_parts.append(
-                    f"- {confidence_emoji} `{fix.issue_id}`: {fix.description}{review_tag}"
+                    f"- {confidence_emoji} `{fix.issue_id}`: {fix.description}{review_tag}",
                 )
             body_parts.append("")
 
@@ -113,7 +112,7 @@ class PRGenerator:
                 "",
                 "---",
                 " Generated with [CodePMCS](https://github.com/ShadowTag-v2/ShadowTag-v2-fastapi-services)",
-            ]
+            ],
         )
 
         return "\n".join(body_parts)

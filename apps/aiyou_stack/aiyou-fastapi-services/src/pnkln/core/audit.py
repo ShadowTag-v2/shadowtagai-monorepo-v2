@@ -1,5 +1,4 @@
-"""
-Boy Scout Rule Audit Trail System
+"""Boy Scout Rule Audit Trail System
 Version: 1.0.0
 
 Persistent tracking of all pnkln executions with monetization metrics.
@@ -31,8 +30,7 @@ class AuditMetrics:
 
 
 class AuditTrailPersistence:
-    """
-    Persistent audit trail with Boy Scout Rule tracking.
+    """Persistent audit trail with Boy Scout Rule tracking.
 
     Features:
     - JSON-based storage (SQLite upgrade path ready)
@@ -45,7 +43,7 @@ class AuditTrailPersistence:
     """
 
     def __init__(
-        self, audit_file: str = "/home/user/ShadowTag-v2-fastapi-services/data/audit_trail.jsonl"
+        self, audit_file: str = "/home/user/ShadowTag-v2-fastapi-services/data/audit_trail.jsonl",
     ):
         self.audit_file = Path(audit_file)
         self.audit_file.parent.mkdir(parents=True, exist_ok=True)
@@ -55,8 +53,7 @@ class AuditTrailPersistence:
             self.audit_file.touch()
 
     def append(self, audit_entry: dict[str, Any]) -> None:
-        """
-        Append audit entry to trail.
+        """Append audit entry to trail.
 
         Uses JSONL format (one JSON object per line) for append-only semantics.
         Each entry is atomic - no partial writes.
@@ -106,8 +103,7 @@ class AuditTrailPersistence:
         start_date: datetime | None = None,
         end_date: datetime | None = None,
     ) -> AuditMetrics:
-        """
-        Calculate aggregate metrics for a time period.
+        """Calculate aggregate metrics for a time period.
 
         Periods: daily, weekly, monthly, annual, lifetime
         """
@@ -167,8 +163,7 @@ class AuditTrailPersistence:
         )
 
     def get_dashboard(self) -> dict[str, Any]:
-        """
-        Get comprehensive dashboard view.
+        """Get comprehensive dashboard view.
 
         Returns metrics for all time periods plus recent activity.
         """
@@ -188,8 +183,7 @@ class AuditTrailPersistence:
             json.dump(entries, f, indent=2)
 
     def get_boy_scout_report(self) -> str:
-        """
-        Generate Boy Scout Rule report.
+        """Generate Boy Scout Rule report.
 
         Shows what we've improved and by how much.
         Jobs mode: Make the data sing.
@@ -241,7 +235,7 @@ We measure what matters: Time, Revenue, Leverage.
 def create_audit_trail(audit_file: str | None = None) -> AuditTrailPersistence:
     """Create audit trail with default or custom file path"""
     return AuditTrailPersistence(
-        audit_file=audit_file or "/home/user/ShadowTag-v2-fastapi-services/data/audit_trail.jsonl"
+        audit_file=audit_file or "/home/user/ShadowTag-v2-fastapi-services/data/audit_trail.jsonl",
     )
 
 

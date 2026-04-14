@@ -19,7 +19,6 @@ from app.schemas.forum import (
     ForumTopicResponse,
     ForumTopicUpdate,
 )
-from app.schemas.user import UserSummary
 from app.services.forum_service import ForumService
 
 router = APIRouter()
@@ -35,7 +34,7 @@ async def list_categories(db: Session = Depends(get_db)):
 
 
 @router.post(
-    "/categories", response_model=ForumCategoryResponse, status_code=status.HTTP_201_CREATED
+    "/categories", response_model=ForumCategoryResponse, status_code=status.HTTP_201_CREATED,
 )
 async def create_category(
     category_data: ForumCategoryCreate,
@@ -45,7 +44,7 @@ async def create_category(
     """Create a new forum category (admin only)."""
     if ForumService.get_category_by_slug(db, category_data.slug):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Category slug already exists"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Category slug already exists",
         )
     return ForumService.create_category(db, category_data)
 
@@ -78,7 +77,7 @@ async def update_category(
 
 @router.get("/categories/{category_id}/topics", response_model=ForumTopicListResponse)
 async def list_topics(
-    category_id: int, db: Session = Depends(get_db), page: int = 1, size: int = 20
+    category_id: int, db: Session = Depends(get_db), page: int = 1, size: int = 20,
 ):
     """List topics in a category."""
     category = ForumService.get_category(db, category_id)
@@ -145,7 +144,7 @@ async def update_topic(
 
     if topic.author_id != current_user.id and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to update this topic"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to update this topic",
         )
 
     return ForumService.update_topic(db, topic, topic_data)
@@ -219,7 +218,7 @@ async def update_post(
 
     if post.author_id != current_user.id and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to update this post"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to update this post",
         )
 
     return ForumService.update_post(db, post, post_data)
@@ -238,8 +237,7 @@ async def delete_post(
 
     if post.author_id != current_user.id and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to delete this post"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to delete this post",
         )
 
     ForumService.soft_delete_post(db, post)
-    return None

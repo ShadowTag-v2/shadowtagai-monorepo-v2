@@ -1,5 +1,4 @@
-"""
-GCS Signed URL Generation for Governance Traces.
+"""GCS Signed URL Generation for Governance Traces.
 
 Provides secure, time-limited access to governance decision traces
 stored in Google Cloud Storage. FedRAMP compliant.
@@ -17,8 +16,7 @@ DEFAULT_EXPIRATION_MINUTES = 15
 
 
 class SignedURLGenerator:
-    """
-    Generates signed URLs for GCS objects with time-limited access.
+    """Generates signed URLs for GCS objects with time-limited access.
 
     Supports both Application Default Credentials (ADC) for production
     and explicit service account credentials for local development.
@@ -46,8 +44,7 @@ class SignedURLGenerator:
         expiration_minutes: int = DEFAULT_EXPIRATION_MINUTES,
         method: str = "GET",
     ) -> str:
-        """
-        Generate a signed URL for a GCS object.
+        """Generate a signed URL for a GCS object.
 
         Args:
             blob_path: Path to the object within the bucket (e.g., "traces/abc123.json")
@@ -56,6 +53,7 @@ class SignedURLGenerator:
 
         Returns:
             Signed URL string
+
         """
         blob = self.bucket.blob(blob_path)
 
@@ -72,8 +70,7 @@ class SignedURLGenerator:
         decision_id: str,
         expiration_minutes: int = DEFAULT_EXPIRATION_MINUTES,
     ) -> str:
-        """
-        Generate a signed URL for a governance trace JSON file.
+        """Generate a signed URL for a governance trace JSON file.
 
         Args:
             decision_id: The unique decision/transaction ID
@@ -81,6 +78,7 @@ class SignedURLGenerator:
 
         Returns:
             Signed URL for the trace JSON
+
         """
         blob_path = f"traces/{decision_id}.json"
         return self.generate_signed_url(blob_path, expiration_minutes)
@@ -90,8 +88,7 @@ class SignedURLGenerator:
         decision_id: str,
         trace_data: dict,
     ) -> str:
-        """
-        Upload a governance trace to GCS.
+        """Upload a governance trace to GCS.
 
         Args:
             decision_id: The unique decision/transaction ID
@@ -99,6 +96,7 @@ class SignedURLGenerator:
 
         Returns:
             The GCS URI of the uploaded trace
+
         """
         import json
 

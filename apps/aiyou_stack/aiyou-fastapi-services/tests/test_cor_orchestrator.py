@@ -1,5 +1,4 @@
-"""
-Unit tests for Cor Orchestrator (SK-inspired patterns).
+"""Unit tests for Cor Orchestrator (SK-inspired patterns).
 """
 
 import asyncio
@@ -92,7 +91,7 @@ class TestSequentialPipeline:
 
         pipeline.add_stage("stage1", stage1)
         pipeline.add_stage(
-            "stage2", stage2, skip_condition=lambda ctx: ctx.get_variable("skip_next", False)
+            "stage2", stage2, skip_condition=lambda ctx: ctx.get_variable("skip_next", False),
         )
 
         ctx = ExecutionContext(request_id="test_skip")

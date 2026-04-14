@@ -1,5 +1,4 @@
-"""
-Operating System Execution Framework
+"""Operating System Execution Framework
 Risk assessment, decision protocols, and development constraints
 
 Author: ShadowTag-v2JR System
@@ -110,7 +109,7 @@ class DecisionProtocol:
             "High-risk actions",
             "Financial >$50K",
             "Customer-facing edge cases",
-        ]
+        ],
     )
 
     def validate_decision(
@@ -154,7 +153,7 @@ class DevelopmentConstraints:
             "Ship fast > perfect",
             "Real utility > general-purpose",
             "Evidence-only decisions",
-        ]
+        ],
     )
 
     guardrails: list[str] = field(
@@ -162,7 +161,7 @@ class DevelopmentConstraints:
             "No feature without user interview (n≥10)",
             "No new vertical without $5K+ pilot demand",
             "No hire without founder doing job 3+ months first",
-        ]
+        ],
     )
 
     def validate_function(self, line_count: int) -> bool:
@@ -225,7 +224,7 @@ class OperatingFramework:
 
         # Decision validation
         approved, message = self.decision_protocol.validate_decision(
-            action, mission_aligned, doctrine_compliant, risk_level
+            action, mission_aligned, doctrine_compliant, risk_level,
         )
 
         return {

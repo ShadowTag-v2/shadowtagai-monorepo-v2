@@ -20,8 +20,7 @@ class AnalysisRequest(BaseModel):
 
 @app.post("/analyze", response_model=WealthPlan)
 async def analyze_business(req: AnalysisRequest):
-    """
-    Analyze business metrics and return a structured Wealth Plan.
+    """Analyze business metrics and return a structured Wealth Plan.
     """
     accelerator = WealthAccelerator()
 

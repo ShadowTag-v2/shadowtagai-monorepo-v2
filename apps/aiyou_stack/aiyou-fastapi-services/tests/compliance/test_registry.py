@@ -1,5 +1,4 @@
-"""
-Tests for the Regulation Registry System
+"""Tests for the Regulation Registry System
 """
 
 from app.compliance.modules.base import ComplianceModule

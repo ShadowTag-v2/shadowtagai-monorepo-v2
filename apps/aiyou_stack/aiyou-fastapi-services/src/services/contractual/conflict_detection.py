@@ -1,5 +1,4 @@
-"""
-Conflict Detection Engine
+"""Conflict Detection Engine
 
 This module implements AI-powered conflict detection for business negotiations.
 It identifies conflicting terms between parties using Anthropic Claude API.
@@ -73,8 +72,7 @@ class Transcript(BaseModel):
 
 
 class ConflictDetector:
-    """
-    AI-powered conflict detection engine
+    """AI-powered conflict detection engine
 
     Uses Anthropic Claude to:
     1. Classify discussion topics (payment, scope, timeline, etc.)
@@ -84,17 +82,16 @@ class ConflictDetector:
     """
 
     def __init__(self, ai_client=None):
-        """
-        Initialize conflict detector
+        """Initialize conflict detector
 
         Args:
             ai_client: Anthropic Claude API client (optional for planning phase)
+
         """
         self.ai_client = ai_client
 
     async def analyze_transcript(self, transcript: Transcript) -> list[DetectedConflict]:
-        """
-        Analyze transcript for conflicting terms
+        """Analyze transcript for conflicting terms
 
         Args:
             transcript: Conversation transcript with speaker diarization
@@ -107,8 +104,8 @@ class ConflictDetector:
         2. Extract terms proposed by each party
         3. Compare terms within each topic
         4. Create conflict objects for differences
-        """
 
+        """
         # Step 1: Classify legal topics being discussed
         topics = await self.classify_topics(transcript)
 
@@ -136,8 +133,7 @@ class ConflictDetector:
         return conflicts
 
     async def classify_topics(self, transcript: Transcript) -> list[str]:
-        """
-        Use AI to classify legal topics being discussed
+        """Use AI to classify legal topics being discussed
 
         Args:
             transcript: Conversation transcript
@@ -149,8 +145,8 @@ class ConflictDetector:
         - Provide list of known legal topics
         - Ask AI to identify which are discussed
         - Return confidence scores
-        """
 
+        """
         if not self.ai_client:
             # Mock implementation for planning phase
             return [LegalTopic.PAYMENT_TERMS, LegalTopic.TIMELINE]
@@ -164,8 +160,7 @@ class ConflictDetector:
         return [LegalTopic.PAYMENT_TERMS]
 
     async def extract_terms(self, transcript: Transcript, party: str) -> dict[str, Term]:
-        """
-        Extract specific terms proposed by each party
+        """Extract specific terms proposed by each party
 
         Args:
             transcript: Conversation transcript
@@ -178,8 +173,8 @@ class ConflictDetector:
         - Filter segments to only this party's statements
         - Ask AI to extract specific values (amounts, dates, etc.)
         - Normalize values (e.g., "$500" → 500)
-        """
 
+        """
         # Filter segments to only this party
         party_segments = [seg for seg in transcript.segments if seg.speaker == f"Party {party}"]
 
@@ -198,18 +193,17 @@ class ConflictDetector:
                         normalized=500,
                         context="I can do this job for $500",
                         confidence=0.95,
-                    )
+                    ),
                 }
-            else:
-                return {
-                    LegalTopic.PAYMENT_TERMS: Term(
-                        topic=LegalTopic.PAYMENT_TERMS,
-                        value="$450",
-                        normalized=450,
-                        context="I was thinking more like $450",
-                        confidence=0.92,
-                    )
-                }
+            return {
+                LegalTopic.PAYMENT_TERMS: Term(
+                    topic=LegalTopic.PAYMENT_TERMS,
+                    value="$450",
+                    normalized=450,
+                    context="I was thinking more like $450",
+                    confidence=0.92,
+                ),
+            }
 
         # TODO: Call Anthropic Claude API
         # response = await self.ai_client.analyze(prompt)
@@ -229,8 +223,7 @@ class ConflictDetector:
         party_a_proposal: Term,
         party_b_proposal: Term,
     ) -> DetectedConflict:
-        """
-        Create conflict object with AI-generated explanation and severity
+        """Create conflict object with AI-generated explanation and severity
 
         Args:
             session_id: Negotiation session ID
@@ -245,8 +238,8 @@ class ConflictDetector:
         - Provide both proposals
         - Ask AI to explain the conflict in plain language
         - Ask AI to rate severity (high/medium/low)
-        """
 
+        """
         if not self.ai_client:
             # Mock implementation for planning phase
             from uuid import uuid4
@@ -291,8 +284,7 @@ class ConflictDetector:
         )
 
     async def suggest_compromise(self, conflict: DetectedConflict) -> list[Term]:
-        """
-        Use AI to suggest fair compromise terms
+        """Use AI to suggest fair compromise terms
 
         Args:
             conflict: Detected conflict
@@ -304,8 +296,8 @@ class ConflictDetector:
         - Provide both proposals
         - Ask AI to suggest 3 fair compromises
         - Prioritize: 50/50 split, 60/40 favoring each party
-        """
 
+        """
         if not self.ai_client:
             # Mock implementation for planning phase
             mid_value = (
@@ -319,7 +311,7 @@ class ConflictDetector:
                     normalized=mid_value,
                     context="50/50 split between proposals",
                     confidence=0.95,
-                )
+                ),
             ]
 
         # TODO: Call Anthropic Claude API

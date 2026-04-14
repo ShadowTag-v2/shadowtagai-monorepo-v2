@@ -17,10 +17,10 @@ class Loss:
         return y, X
 
     def _loss(self, y, y_hat):
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def __call__(self, wts):
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class MSELoss(Loss):

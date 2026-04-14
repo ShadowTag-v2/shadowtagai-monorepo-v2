@@ -1,5 +1,4 @@
-"""
-PNKLN Billing API Router
+"""PNKLN Billing API Router
 Exposes billing endpoints for revenue capture.
 """
 
@@ -48,14 +47,14 @@ class InvoiceResponse(BaseModel):
 
 @router.post("/events", response_model=dict)
 async def record_billing_event(request: UsageRequest):
-    """
-    Record a billing event for usage tracking.
+    """Record a billing event for usage tracking.
 
     Args:
         request: Usage details
 
     Returns:
         Confirmation with usage record ID
+
     """
     try:
         usage_id = billing_service.record_usage(
@@ -82,14 +81,14 @@ async def record_billing_event(request: UsageRequest):
 
 @router.post("/invoices", response_model=InvoiceResponse)
 async def create_invoice(request: InvoiceRequest):
-    """
-    Create an invoice for a revenue event.
+    """Create an invoice for a revenue event.
 
     Args:
         request: Invoice details
 
     Returns:
         Invoice ID and amount
+
     """
     try:
         event = RevenueEvent(
@@ -110,8 +109,7 @@ async def create_invoice(request: InvoiceRequest):
 
 @router.get("/invoices/{client_id}")
 async def list_invoices(client_id: str, limit: int = 10):
-    """
-    List invoices for a client.
+    """List invoices for a client.
 
     Args:
         client_id: Client identifier
@@ -119,6 +117,7 @@ async def list_invoices(client_id: str, limit: int = 10):
 
     Returns:
         List of invoice summaries
+
     """
     try:
         import stripe
@@ -145,10 +144,9 @@ async def list_invoices(client_id: str, limit: int = 10):
 
 @router.post("/webhooks/stripe")
 async def stripe_webhook(
-    request: Request, stripe_signature: str = Header(None, alias="Stripe-Signature")
+    request: Request, stripe_signature: str = Header(None, alias="Stripe-Signature"),
 ):
-    """
-    Handle Stripe webhook events.
+    """Handle Stripe webhook events.
 
     Args:
         request: Raw request with payload
@@ -156,6 +154,7 @@ async def stripe_webhook(
 
     Returns:
         Processing result
+
     """
     endpoint_secret = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 

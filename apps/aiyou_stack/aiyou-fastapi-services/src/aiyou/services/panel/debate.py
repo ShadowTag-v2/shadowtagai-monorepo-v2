@@ -1,5 +1,4 @@
-"""
-Panel Debate Architecture for Complex Content Moderation
+"""Panel Debate Architecture for Complex Content Moderation
 Multi-agent consensus-building for edge cases (Gemini Powered)
 """
 
@@ -51,8 +50,7 @@ class DebateResult:
 
 
 class PanelDebate:
-    """
-    Multi-agent debate system for complex moderation decisions
+    """Multi-agent debate system for complex moderation decisions
 
     Uses multiple AI perspectives:
     1. Prosecutor argues for content rejection
@@ -67,8 +65,7 @@ class PanelDebate:
         confidence_threshold: float = 0.80,
         max_rounds: int = 3,
     ):
-        """
-        Initialize panel debate system.
+        """Initialize panel debate system.
 
         Note: claude_client is deprecated and ignored.
         """
@@ -93,7 +90,7 @@ class PanelDebate:
         return initial_analysis.get("creator_tier") == "premium"
 
     async def conduct_debate(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any]
+        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
     ) -> DebateResult:
         """Conduct multi-round panel debate"""
         start_time = datetime.utcnow()
@@ -108,7 +105,7 @@ class PanelDebate:
 
         # Round 2: Defender (Gemini)
         defender_arg = await self._defender_argument(
-            content_analysis, content_metadata, prosecutor_arg
+            content_analysis, content_metadata, prosecutor_arg,
         )
         arguments_for.append(defender_arg)
 
@@ -119,7 +116,7 @@ class PanelDebate:
 
         # Judge Decision
         judge_decision = await self._judge_decision(
-            content_analysis, content_metadata, arguments_for, arguments_against
+            content_analysis, content_metadata, arguments_for, arguments_against,
         )
 
         consensus_score = self._calculate_consensus(arguments_for, arguments_against)
@@ -143,7 +140,7 @@ class PanelDebate:
         """Internal helper to generate content"""
         try:
             response = await self.model.generate_content_async(
-                prompt, generation_config={"max_output_tokens": 2048, "temperature": temperature}
+                prompt, generation_config={"max_output_tokens": 2048, "temperature": temperature},
             )
             return response.text
         except Exception as e:
@@ -151,7 +148,7 @@ class PanelDebate:
             return ""
 
     async def _prosecutor_argument(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any]
+        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
     ) -> DebateArgument:
         prompt = f"""You are a content moderation prosecutor. Build the strongest case for REJECTING this content.
 
@@ -226,7 +223,7 @@ Provide output in JSON format:
         )
 
     async def _prosecutor_rebuttal(
-        self, content_analysis: dict[str, Any], defender_arg: DebateArgument
+        self, content_analysis: dict[str, Any], defender_arg: DebateArgument,
     ) -> DebateArgument:
         prompt = f"""Prosecutor rebuttal.
 
@@ -292,7 +289,7 @@ Provide output in JSON format:
         }
 
     def _calculate_consensus(
-        self, arguments_for: list[DebateArgument], arguments_against: list[DebateArgument]
+        self, arguments_for: list[DebateArgument], arguments_against: list[DebateArgument],
     ) -> float:
         if not arguments_for and not arguments_against:
             return 0.5

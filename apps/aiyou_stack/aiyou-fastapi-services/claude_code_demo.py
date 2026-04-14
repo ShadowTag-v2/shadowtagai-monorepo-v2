@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-pinkln Agent Architecture System - Claude Code Demo
+"""pinkln Agent Architecture System - Claude Code Demo
 
 This script demonstrates the full capabilities of the pinkln Agent Architecture
 System running in Claude Code environment.
@@ -301,7 +300,7 @@ async def demo_all():
 async def main():
     """Main entry point"""
     parser = argparse.ArgumentParser(
-        description="pinkln Agent Architecture System - Claude Code Demo"
+        description="pinkln Agent Architecture System - Claude Code Demo",
     )
     parser.add_argument(
         "--demo",

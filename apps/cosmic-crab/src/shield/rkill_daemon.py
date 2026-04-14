@@ -11,8 +11,7 @@ logger = logging.getLogger("RkillDaemon")
 
 
 class RkillDaemon:
-    """
-    ShadowTag Omega V7 Rkill Daemon
+    """ShadowTag Omega V7 Rkill Daemon
     Enforces the "Three Strikes of Death" policy to prevent rogue agent behavior.
     Integrated with Memory Beads (Whiteboard Patterns).
     """
@@ -39,7 +38,7 @@ class RkillDaemon:
         while True:
             self._load_dynamic_boundaries()  # Hot-reload patterns
             for proc in psutil.process_iter(
-                ["pid", "name", "memory_info", "create_time", "open_files"]
+                ["pid", "name", "memory_info", "create_time", "open_files"],
             ):
                 try:
                     pid = proc.info["pid"]
@@ -53,7 +52,7 @@ class RkillDaemon:
                     if mem_usage > self.memory_limit:
                         self._add_strike(pid, "memory")
                         logger.warning(
-                            f"⚠️ [STRIKE] PID {pid} exceeded memory limit: {mem_usage / 1024 / 1024:.2f} MB"
+                            f"⚠️ [STRIKE] PID {pid} exceeded memory limit: {mem_usage / 1024 / 1024:.2f} MB",
                         )
 
                     # Strike 2: Temporal Violation
@@ -68,7 +67,7 @@ class RkillDaemon:
                             if any(p in f.path for p in self.blacklist_paths):
                                 self._add_strike(pid, "boundary")
                                 logger.warning(
-                                    f"⚠️ [STRIKE] PID {pid} accessed blacklisted path: {f.path}"
+                                    f"⚠️ [STRIKE] PID {pid} accessed blacklisted path: {f.path}",
                                 )
 
                     # Check for termination

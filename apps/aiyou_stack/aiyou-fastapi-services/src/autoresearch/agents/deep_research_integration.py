@@ -1,5 +1,4 @@
-"""
-Deep Research Integration for minion Cavalry Squadron.
+"""Deep Research Integration for minion Cavalry Squadron.
 Integrates M2-Deep-Research multi-agent system from DAIR-AI.
 
 Maps to AIR_CAV Troop (Aerial Reconnaissance) - Intelligence Gathering Layer
@@ -141,8 +140,7 @@ REPORT_STRUCTURE = """
 
 
 class DeepResearchIntegration:
-    """
-    Integrate M2 Deep Research system into minion.
+    """Integrate M2 Deep Research system into minion.
 
     Maps to AIR_CAV Troop (Aerial Reconnaissance) for the
     Intelligence Gathering Layer of 0% Error Rate Architecture.
@@ -184,8 +182,7 @@ class DeepResearchIntegration:
         }
 
     def generate_subqueries(self, query: str, num_queries: int = 10) -> list[ResearchSubquery]:
-        """
-        Generate Exa-optimized subqueries for a research topic.
+        """Generate Exa-optimized subqueries for a research topic.
 
         Following M2 pattern: 8-12 subqueries across multiple dimensions.
         """
@@ -265,8 +262,7 @@ class DeepResearchIntegration:
         return sorted(subqueries, key=lambda x: x.priority)
 
     def build_research_prompt(self, query: str, include_structure: bool = True) -> str:
-        """
-        Build a comprehensive research prompt for AIR_CAV agents.
+        """Build a comprehensive research prompt for AIR_CAV agents.
 
         Args:
             query: Research topic/question
@@ -274,6 +270,7 @@ class DeepResearchIntegration:
 
         Returns:
             Research prompt for deep investigation.
+
         """
         subqueries = self.generate_subqueries(query)
 
@@ -304,7 +301,7 @@ class DeepResearchIntegration:
                 "- Focus on recent sources (past 6 months) for developments",
                 "- Include academic sources for technical depth",
                 "- Cross-reference multiple sources for verification",
-            ]
+            ],
         )
 
         if include_structure:
@@ -350,8 +347,7 @@ Output valid JSON with subqueries array containing:
 - priority: 1-5 (1=highest)"""
 
     def get_agents_for_troop(self, troop_name: str = "AIR_CAV") -> list[dict]:
-        """
-        Get M2 research agents mapped to cavalry troop.
+        """Get M2 research agents mapped to cavalry troop.
 
         AIR_CAV Troop receives all M2 research agents.
         """
@@ -380,8 +376,7 @@ Output valid JSON with subqueries array containing:
         ]
 
     def get_research_checklist(self) -> list[dict]:
-        """
-        Get comprehensive research quality checklist.
+        """Get comprehensive research quality checklist.
 
         Returns checklist items for research validation.
         """
@@ -428,14 +423,14 @@ def get_deep_research_integration() -> DeepResearchIntegration:
 
 
 def get_research_prompt_for_mission(topic: str) -> str:
-    """
-    Convenience function to get research prompt for a mission.
+    """Convenience function to get research prompt for a mission.
 
     Args:
         topic: Research topic/question
 
     Returns:
         Comprehensive research prompt for AIR_CAV troop.
+
     """
     integration = get_deep_research_integration()
     return integration.build_research_prompt(topic)

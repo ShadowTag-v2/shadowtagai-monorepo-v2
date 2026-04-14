@@ -1,5 +1,4 @@
-"""
-Consolidated API - Generated from iPhone Notes Extraction
+"""Consolidated API - Generated from iPhone Notes Extraction
 177 API endpoints extracted → consolidated into modular FastAPI app
 """
 
@@ -108,8 +107,7 @@ class AskRequest(BaseModel):
 
 @app.post("/api/v1/aiucrm/validate", response_model=ValidationResponse, tags=["AiUCRM"])
 async def validate_operation(request: ValidationRequest):
-    """
-    Pre-execution compliance validation.
+    """Pre-execution compliance validation.
     Validates AI operations BEFORE they execute.
     """
     risk_score = 0.1
@@ -180,8 +178,7 @@ async def create_transaction(request: TransactionRequest):
 
 @app.post("/codepmcs/scan", tags=["CodePMCS"])
 async def scan_codebase(request: ScanRequest, background_tasks: BackgroundTasks):
-    """
-    Trigger CodePMCS 50-agent scan.
+    """Trigger CodePMCS 50-agent scan.
     Identifies security vulnerabilities, code smells, and optimization opportunities.
     """
     scan_id = str(uuid.uuid4())
@@ -284,8 +281,7 @@ async def ingestion_quality():
 
 @app.post("/governance", tags=["Governance"])
 async def evaluate_governance(action: dict[str, Any]):
-    """
-    Judge #6 governance evaluation.
+    """Judge #6 governance evaluation.
     ATP 5-19 risk assessment with <90ms latency target.
     """
     return {"verdict": "APPROVED", "confidence": 0.95, "latency_ms": 45, "risk_level": "LOW"}

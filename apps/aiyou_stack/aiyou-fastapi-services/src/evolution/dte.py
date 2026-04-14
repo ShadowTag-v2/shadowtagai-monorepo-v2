@@ -1,5 +1,4 @@
-"""
-DTE (Dynamic Test Evolution) Self-Evolution System.
+"""DTE (Dynamic Test Evolution) Self-Evolution System.
 
 Automatically evolves prompts, kernels, and agents through:
 1. RCR-MAD: Recursive Critique & Refinement with Multi-Agent Debate
@@ -38,8 +37,7 @@ class EvolutionResult(BaseModel):
 
 
 class DTESystem:
-    """
-    Dynamic Test Evolution system for self-improvement.
+    """Dynamic Test Evolution system for self-improvement.
 
     Process:
     1. Generate test cases from benchmarks
@@ -59,8 +57,7 @@ class DTESystem:
         test_cases: list[dict[str, Any]],
         strategy: EvolutionStrategy = EvolutionStrategy.RCR_MAD,
     ) -> EvolutionResult:
-        """
-        Evolve a prompt using specified strategy.
+        """Evolve a prompt using specified strategy.
 
         Args:
             current_prompt: Current prompt template
@@ -69,6 +66,7 @@ class DTESystem:
 
         Returns:
             EvolutionResult with improvement metrics
+
         """
         # Measure baseline performance
         baseline_score = await self._evaluate_prompt(current_prompt, test_cases)
@@ -107,11 +105,11 @@ class DTESystem:
         prompt: str,
         test_cases: list[dict[str, Any]],
     ) -> float:
-        """
-        Evaluate prompt performance on test cases.
+        """Evaluate prompt performance on test cases.
 
         Returns:
             Score between 0.0 and 1.0
+
         """
         # In production, this would run actual tests
         # For now, simulate based on prompt quality heuristics
@@ -136,8 +134,7 @@ class DTESystem:
         prompt: str,
         test_cases: list[dict[str, Any]],
     ) -> str:
-        """
-        Evolve prompt using Recursive Critique & Refinement + Multi-Agent Debate.
+        """Evolve prompt using Recursive Critique & Refinement + Multi-Agent Debate.
 
         Process:
         1. Multiple agents critique current prompt
@@ -169,8 +166,7 @@ class DTESystem:
         prompt: str,
         test_cases: list[dict[str, Any]],
     ) -> str:
-        """
-        Evolve prompt using GRPO (Group Relative Policy Optimization).
+        """Evolve prompt using GRPO (Group Relative Policy Optimization).
 
         Process:
         1. Generate G variations of prompt
@@ -202,8 +198,7 @@ class DTESystem:
         prompt: str,
         test_cases: list[dict[str, Any]],
     ) -> str:
-        """
-        Evolve prompt based on benchmark failures.
+        """Evolve prompt based on benchmark failures.
 
         Process:
         1. Identify failing test cases

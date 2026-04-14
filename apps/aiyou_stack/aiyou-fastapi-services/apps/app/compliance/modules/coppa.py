@@ -1,5 +1,4 @@
-"""
-COPPA Compliance Module
+"""COPPA Compliance Module
 
 Implements the Children's Online Privacy Protection Act requirements.
 Focus areas:
@@ -33,8 +32,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.COPPA)
 class COPPAModule(ComplianceModule):
-    """
-    COPPA Compliance Module
+    """COPPA Compliance Module
 
     Covers key COPPA requirements for operators of websites/online services
     directed to children under 13 or with actual knowledge of collecting
@@ -268,7 +266,7 @@ class COPPAModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single COPPA control."""
         metadata = input_data.metadata
@@ -289,7 +287,7 @@ class COPPAModule(ComplianceModule):
                         score=1.0,
                         evidence="Verifiable parental consent obtained and verified",
                     )
-                elif has_consent:
+                if has_consent:
                     return ControlResult(
                         control_id=control.control_id,
                         control_name=control.name,
@@ -299,16 +297,15 @@ class COPPAModule(ComplianceModule):
                         findings=["Parental consent obtained but verification incomplete"],
                         remediation="Implement verifiable consent method per 312.5(b)",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["Collecting child data without parental consent"],
-                        remediation="Obtain verifiable parental consent before collection",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["Collecting child data without parental consent"],
+                    remediation="Obtain verifiable parental consent before collection",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -330,16 +327,15 @@ class COPPAModule(ComplianceModule):
                     score=1.0,
                     evidence="Privacy policy posted and accessible",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["COPPA-compliant privacy policy not posted"],
-                    remediation="Post privacy policy with all COPPA-required disclosures",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["COPPA-compliant privacy policy not posted"],
+                remediation="Post privacy policy with all COPPA-required disclosures",
+            )
 
         # Data Security
         if control.control_id == "COPPA-8.1":
@@ -354,16 +350,15 @@ class COPPAModule(ComplianceModule):
                         score=1.0,
                         evidence="Security measures implemented for child data",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["Inadequate security for children's personal information"],
-                        remediation="Implement reasonable security measures per 312.8",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["Inadequate security for children's personal information"],
+                    remediation="Implement reasonable security measures per 312.8",
+                )
 
         # Default
         return ControlResult(
@@ -398,7 +393,7 @@ class COPPAModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check COPPA validation rules against content."""
         content_lower = content.lower()

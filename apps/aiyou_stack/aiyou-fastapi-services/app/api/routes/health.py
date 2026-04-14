@@ -32,8 +32,7 @@ async def health_check():
     description="Check if the service is ready to accept requests",
 )
 async def readiness_check():
-    """
-    Readiness check endpoint
+    """Readiness check endpoint
 
     Verifies that all required dependencies and configurations are available
     """

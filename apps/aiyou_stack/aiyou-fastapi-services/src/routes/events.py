@@ -16,8 +16,7 @@ async def track_event(
     event: EventCreate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Track a new event
+    """Track a new event
 
     This endpoint allows you to track user events such as page views, clicks, conversions, etc.
     """
@@ -41,8 +40,7 @@ async def get_events(
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get events with filtering
+    """Get events with filtering
 
     Query events based on various criteria such as event name, type, user, or session.
     """
@@ -65,8 +63,7 @@ async def get_event_count(
     event_name: str = None,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get count of events
+    """Get count of events
 
     Returns the total count of events, optionally filtered by event name.
     """
@@ -79,8 +76,7 @@ async def get_event_count(
 async def get_unique_users(
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get count of unique users
+    """Get count of unique users
 
     Returns the total number of unique users who have triggered events.
     """
@@ -94,8 +90,7 @@ async def get_top_events(
     limit: int = 10,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get top events by count
+    """Get top events by count
 
     Returns the most frequently occurring events.
     """

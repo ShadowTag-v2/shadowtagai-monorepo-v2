@@ -1,5 +1,4 @@
-"""
-Tree of Thoughts (ToT) Skill
+"""Tree of Thoughts (ToT) Skill
 
 Explores multiple reasoning paths, evaluates them, and selects the best
 
@@ -14,6 +13,7 @@ Example:
     Path 4: (8 - 4) × 6 = 4 × 6 = 24 ✅ (BEST)
 
 Research: https://arxiv.org/abs/2305.10601
+
 """
 
 import asyncio
@@ -37,8 +37,7 @@ class ReasoningPath:
 
 
 class TreeOfThoughts(Skill):
-    """
-    Tree of Thoughts reasoning skill
+    """Tree of Thoughts reasoning skill
 
     1. Generate N candidate next steps
     2. Evaluate each step
@@ -82,7 +81,7 @@ Best path: A
 """
 
         super().__init__(
-            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet
+            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet,
         )
 
         self.model = model
@@ -91,8 +90,7 @@ Best path: A
         self.top_k = top_k
 
     async def execute(self, task: str, context: dict[str, Any] | None = None) -> SkillResult:
-        """
-        Execute Tree of Thoughts reasoning
+        """Execute Tree of Thoughts reasoning
 
         Args:
             task: Problem to solve
@@ -100,6 +98,7 @@ Best path: A
 
         Returns:
             SkillResult with best path as reasoning trace
+
         """
         start_time = time.time()
 
@@ -128,8 +127,7 @@ Best path: A
         )
 
     async def _build_tree(self, task: str, breadth: int, depth: int, top_k: int) -> ReasoningPath:
-        """
-        Build reasoning tree and return best path
+        """Build reasoning tree and return best path
 
         Args:
             task: Problem to solve
@@ -139,6 +137,7 @@ Best path: A
 
         Returns:
             Best reasoning path
+
         """
         # Start with root
         current_paths = [ReasoningPath(steps=[], score=1.0)]
@@ -175,10 +174,9 @@ Best path: A
         return current_paths[0] if current_paths else ReasoningPath(steps=[], score=0.0)
 
     async def _generate_candidates(
-        self, task: str, current_path: ReasoningPath, breadth: int
+        self, task: str, current_path: ReasoningPath, breadth: int,
     ) -> list[str]:
-        """
-        Generate candidate next steps
+        """Generate candidate next steps
 
         In production, this would call Gemini API multiple times
         For now, mock implementation
@@ -190,8 +188,7 @@ Best path: A
         ]
 
     async def _evaluate_path(self, task: str, steps: list[str]) -> float:
-        """
-        Evaluate how promising a path is (0-1)
+        """Evaluate how promising a path is (0-1)
 
         In production:
         - Use Gemini to score: "On a scale 0-1, how likely is this path to succeed?"
@@ -202,16 +199,14 @@ Best path: A
         # Mock: Prefer paths with 3-4 steps
         if len(steps) == 0:
             return 1.0
-        elif len(steps) <= 3:
+        if len(steps) <= 3:
             return 0.8
-        elif len(steps) == 4:
+        if len(steps) == 4:
             return 0.9  # Sweet spot
-        else:
-            return 0.6  # Too long
+        return 0.6  # Too long
 
     async def _is_solution(self, task: str, steps: list[str]) -> bool:
-        """
-        Check if path is a complete solution
+        """Check if path is a complete solution
 
         In production:
         - Use Gemini to check: "Does this solve the problem? YES/NO"
@@ -237,7 +232,7 @@ async def example():
 
     result = await tot.execute(
         "Plan a 3-day trip to Tokyo with $1000 budget. Must include: transportation, "
-        "accommodation, food, and one cultural experience per day."
+        "accommodation, food, and one cultural experience per day.",
     )
 
     print(f"Best plan:\n{result.output}\n")

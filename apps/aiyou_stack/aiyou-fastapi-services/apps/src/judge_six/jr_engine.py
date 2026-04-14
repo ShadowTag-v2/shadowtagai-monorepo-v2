@@ -1,5 +1,4 @@
-"""
-JR Engine - Purpose/Reasons/Brakes Validation Framework
+"""JR Engine - Purpose/Reasons/Brakes Validation Framework
 Core orchestration for Judge #6
 """
 
@@ -10,8 +9,7 @@ from .validators import BrakesValidator, PurposeValidator, ReasonsValidator
 
 
 class JREngine:
-    """
-    JR Engine orchestrates Purpose/Reasons/Brakes validation
+    """JR Engine orchestrates Purpose/Reasons/Brakes validation
 
     Philosophy:
     - PURPOSE: What is this trying to accomplish?
@@ -25,8 +23,7 @@ class JREngine:
         self.brakes_validator = BrakesValidator()
 
     def validate(self, action: Action, policy_id: str | None = None) -> JRVerdict:
-        """
-        Run full JR validation pipeline
+        """Run full JR validation pipeline
         """
         start_time = time.time()
 

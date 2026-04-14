@@ -1,5 +1,4 @@
-"""
-MAD (Multi-Agent Debate) Orchestrator
+"""MAD (Multi-Agent Debate) Orchestrator
 
 Implements multi-agent debate pattern (PanelGPT) for reaching consensus
 through structured argumentation between 3-5 specialized agents.
@@ -17,6 +16,7 @@ References:
 - "Improving Factuality and Reasoning in Language Models through Multiagent Debate"
 - "PanelGPT: A Generative AI Ensemble Framework"
 - "Constitutional AI: Harmlessness from AI Feedback"
+
 """
 
 import asyncio
@@ -42,8 +42,7 @@ class AgentRole(Enum):
 
 @dataclass
 class AgentProfile:
-    """
-    Agent profile for debate participation.
+    """Agent profile for debate participation.
 
     Attributes:
         agent_id: Unique agent identifier
@@ -52,6 +51,7 @@ class AgentProfile:
         glicko_rating: Glicko-2 rating (optional)
         persona: Persona description for prompting
         debate_count: Total debates participated in
+
     """
 
     agent_id: str
@@ -64,8 +64,7 @@ class AgentProfile:
 
 @dataclass
 class DebatePosition:
-    """
-    Single agent's position in debate.
+    """Single agent's position in debate.
 
     Attributes:
         agent_id: Agent identifier
@@ -75,6 +74,7 @@ class DebatePosition:
         confidence: Confidence score (0.0-1.0)
         critiques: Critiques of other positions
         timestamp: Position timestamp
+
     """
 
     agent_id: str
@@ -88,8 +88,7 @@ class DebatePosition:
 
 @dataclass
 class DebateRound:
-    """
-    Single debate round results.
+    """Single debate round results.
 
     Attributes:
         round_number: Round number (1-indexed)
@@ -98,6 +97,7 @@ class DebateRound:
         avg_confidence: Average agent confidence
         disagreements: Major disagreement points
         execution_time_ms: Round execution time
+
     """
 
     round_number: int
@@ -110,8 +110,7 @@ class DebateRound:
 
 @dataclass
 class DebateResult:
-    """
-    Complete debate result.
+    """Complete debate result.
 
     Attributes:
         topic: Debate topic/question
@@ -122,6 +121,7 @@ class DebateResult:
         consensus_reached: Whether consensus threshold was met
         total_execution_time_ms: Total debate time
         winning_agent_id: Agent with best-rated position (optional)
+
     """
 
     topic: str
@@ -135,8 +135,7 @@ class DebateResult:
 
 
 class MADOrchestrator:
-    """
-    Multi-Agent Debate Orchestrator.
+    """Multi-Agent Debate Orchestrator.
 
     Performance targets:
     - Per-round latency: ~2-5s (depending on agent count)
@@ -151,14 +150,14 @@ class MADOrchestrator:
         max_rounds: int = 5,
         min_rounds: int = 3,
     ):
-        """
-        Initialize MAD orchestrator.
+        """Initialize MAD orchestrator.
 
         Args:
             glicko_engine: Optional Glicko-2 engine for rating tracking
             consensus_threshold: Minimum consensus to terminate early (0.80 = 80%)
             max_rounds: Maximum debate rounds
             min_rounds: Minimum debate rounds
+
         """
         self.glicko_engine = glicko_engine or GlickoEngine()
         self.consensus_threshold = consensus_threshold
@@ -169,10 +168,9 @@ class MADOrchestrator:
         self.agents: dict[str, AgentProfile] = {}
 
     def register_agent(
-        self, agent_id: str, role: AgentRole, expertise: str, persona: str = ""
+        self, agent_id: str, role: AgentRole, expertise: str, persona: str = "",
     ) -> AgentProfile:
-        """
-        Register agent for debate participation.
+        """Register agent for debate participation.
 
         Args:
             agent_id: Unique agent identifier
@@ -182,6 +180,7 @@ class MADOrchestrator:
 
         Returns:
             Created agent profile
+
         """
         # Get Glicko rating from engine
         glicko_rating = self.glicko_engine.get_rating(agent_id)
@@ -198,8 +197,7 @@ class MADOrchestrator:
         return profile
 
     def _compute_consensus_score(self, positions: list[DebatePosition]) -> float:
-        """
-        Compute consensus score from agent positions.
+        """Compute consensus score from agent positions.
 
         Uses agreement in confidence levels and position similarity.
         In production, would use semantic similarity (embeddings).
@@ -209,6 +207,7 @@ class MADOrchestrator:
 
         Returns:
             Consensus score (0.0-1.0, higher = more agreement)
+
         """
         if len(positions) < 2:
             return 1.0  # Single agent = perfect consensus
@@ -233,14 +232,14 @@ class MADOrchestrator:
         return min(1.0, max(0.0, consensus))
 
     def _find_disagreements(self, positions: list[DebatePosition]) -> list[str]:
-        """
-        Identify major disagreement points from critiques.
+        """Identify major disagreement points from critiques.
 
         Args:
             positions: All positions in round
 
         Returns:
             List of disagreement descriptions
+
         """
         disagreements = []
 
@@ -269,8 +268,7 @@ class MADOrchestrator:
         previous_positions: list[DebatePosition],
         position_generator: Callable[[str, str, int, list[DebatePosition]], tuple[str, str, float]],
     ) -> DebatePosition:
-        """
-        Get agent's position for current round.
+        """Get agent's position for current round.
 
         Args:
             agent: Agent profile
@@ -281,10 +279,11 @@ class MADOrchestrator:
 
         Returns:
             Agent's debate position
+
         """
         # Generate position
         position, reasoning, confidence = await position_generator(
-            agent.agent_id, topic, round_number, previous_positions
+            agent.agent_id, topic, round_number, previous_positions,
         )
 
         # Generate critiques of other agents' latest positions
@@ -303,7 +302,7 @@ class MADOrchestrator:
                         (
                             other_id,
                             f"Position lacks sufficient confidence (only {other_pos.confidence:.0%})",
-                        )
+                        ),
                     )
 
         return DebatePosition(
@@ -323,8 +322,7 @@ class MADOrchestrator:
         previous_positions: list[DebatePosition],
         position_generator: Callable[[str, str, int, list[DebatePosition]], tuple[str, str, float]],
     ) -> DebateRound:
-        """
-        Run single debate round.
+        """Run single debate round.
 
         Args:
             round_number: Round number
@@ -335,13 +333,14 @@ class MADOrchestrator:
 
         Returns:
             Debate round results
+
         """
         start_time = time.time()
 
         # Get positions from all agents in parallel
         position_tasks = [
             self._get_agent_position(
-                agent, topic, round_number, previous_positions, position_generator
+                agent, topic, round_number, previous_positions, position_generator,
             )
             for agent in agents
         ]
@@ -364,14 +363,14 @@ class MADOrchestrator:
         )
 
     def _synthesize_consensus(self, rounds: list[DebateRound]) -> tuple[str, float]:
-        """
-        Synthesize final consensus from all rounds.
+        """Synthesize final consensus from all rounds.
 
         Args:
             rounds: All debate rounds
 
         Returns:
             Tuple of (consensus_statement, confidence)
+
         """
         if not rounds:
             return ("No consensus reached (no rounds)", 0.0)
@@ -398,12 +397,12 @@ class MADOrchestrator:
         return (consensus, confidence)
 
     def _update_ratings(self, rounds: list[DebateRound], winning_agent_id: str):
-        """
-        Update Glicko-2 ratings based on debate performance.
+        """Update Glicko-2 ratings based on debate performance.
 
         Args:
             rounds: All debate rounds
             winning_agent_id: Agent with best final position
+
         """
         if not self.glicko_engine:
             return
@@ -425,8 +424,7 @@ class MADOrchestrator:
         agent_ids: list[str],
         position_generator: Callable[[str, str, int, list[DebatePosition]], tuple[str, str, float]],
     ) -> DebateResult:
-        """
-        Run multi-agent debate to reach consensus.
+        """Run multi-agent debate to reach consensus.
 
         Args:
             topic: Debate topic/question
@@ -436,6 +434,7 @@ class MADOrchestrator:
 
         Returns:
             Complete debate result
+
         """
         start_time = time.time()
 
@@ -459,7 +458,7 @@ class MADOrchestrator:
         for round_num in range(1, self.max_rounds + 1):
             # Run round
             round_result = await self._run_round(
-                round_num, topic, agents, all_positions, position_generator
+                round_num, topic, agents, all_positions, position_generator,
             )
 
             rounds.append(round_result)
@@ -503,16 +502,16 @@ class MADOrchestrator:
         )
 
     def get_leaderboard(
-        self, top_n: int | None = None
+        self, top_n: int | None = None,
     ) -> list[tuple[str, AgentProfile, GlickoRating]]:
-        """
-        Get agent leaderboard based on Glicko-2 ratings.
+        """Get agent leaderboard based on Glicko-2 ratings.
 
         Args:
             top_n: Return only top N agents (None = all)
 
         Returns:
             List of (agent_id, profile, rating) tuples
+
         """
         leaderboard = []
 
@@ -529,11 +528,11 @@ class MADOrchestrator:
         return leaderboard
 
     def get_statistics(self) -> dict[str, Any]:
-        """
-        Get orchestrator statistics.
+        """Get orchestrator statistics.
 
         Returns:
             Dictionary with statistics
+
         """
         total_debates = sum(agent.debate_count for agent in self.agents.values())
 

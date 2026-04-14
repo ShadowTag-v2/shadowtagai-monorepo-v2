@@ -1,5 +1,4 @@
-"""
-Metrics Tracker
+"""Metrics Tracker
 ================
 Enforces the "Ever Upward Sloping Graph" doctrine.
 Intervention triggered if trajectory <= 0.
@@ -95,8 +94,7 @@ class TenantMetrics(BaseModel):
 
 
 class MetricsTracker:
-    """
-    The Ever-Upward Guardian.
+    """The Ever-Upward Guardian.
 
     Core Doctrine:
     - All metrics must trend upward
@@ -126,7 +124,7 @@ class MetricsTracker:
     # =========================================================================
 
     def record(
-        self, tenant_id: str, metric_type: MetricType, value: float, source: str = "system"
+        self, tenant_id: str, metric_type: MetricType, value: float, source: str = "system",
     ) -> MetricDataPoint:
         """Record a metric data point"""
         point = MetricDataPoint(
@@ -153,7 +151,7 @@ class MetricsTracker:
         return point
 
     def record_batch(
-        self, tenant_id: str, metrics: dict[MetricType, float], source: str = "system"
+        self, tenant_id: str, metrics: dict[MetricType, float], source: str = "system",
     ) -> list[MetricDataPoint]:
         """Record multiple metrics at once"""
         points = []
@@ -221,14 +219,13 @@ class MetricsTracker:
         """Determine trajectory status from change percentage"""
         if change_pct > 5.0:
             return TrajectoryStatus.STRONG_GROWTH
-        elif change_pct > 1.0:
+        if change_pct > 1.0:
             return TrajectoryStatus.GROWTH
-        elif change_pct > 0.0:
+        if change_pct > 0.0:
             return TrajectoryStatus.STABLE
-        elif change_pct == 0.0:
+        if change_pct == 0.0:
             return TrajectoryStatus.FLAT
-        else:
-            return TrajectoryStatus.DECLINING
+        return TrajectoryStatus.DECLINING
 
     def _calculate_moving_average(self, points: list[MetricDataPoint], days: int) -> float:
         """Calculate moving average for N days"""
@@ -255,7 +252,7 @@ class MetricsTracker:
         """Trigger intervention for a problematic metric"""
         logger.warning(
             f"INTERVENTION TRIGGERED: {tenant_id} - {analysis.metric_type.value} "
-            f"- {analysis.trajectory.value}: {analysis.intervention_reason}"
+            f"- {analysis.trajectory.value}: {analysis.intervention_reason}",
         )
 
         # Execute callbacks
@@ -290,8 +287,7 @@ class MetricsTracker:
         return self._tenant_summaries.get(tenant_id, TenantMetrics(tenant_id=tenant_id))
 
     def get_dashboard_data(self, tenant_id: str) -> dict[str, Any]:
-        """
-        Get data formatted for dashboard display.
+        """Get data formatted for dashboard display.
         Always shows the positive trajectory story.
         """
         summary = self.get_tenant_metrics(tenant_id)
@@ -318,7 +314,7 @@ class MetricsTracker:
         }
 
     def get_trajectory_chart_data(
-        self, tenant_id: str, metric_type: MetricType, days: int = 30
+        self, tenant_id: str, metric_type: MetricType, days: int = 30,
     ) -> list[dict[str, Any]]:
         """Get data for trajectory chart"""
         points = self._get_points(tenant_id, metric_type)
@@ -347,12 +343,11 @@ class MetricsTracker:
 
         if declining_count > 0:
             return "critical"
-        elif flat_count > 2:
+        if flat_count > 2:
             return "warning"
-        elif flat_count > 0:
+        if flat_count > 0:
             return "attention"
-        else:
-            return "healthy"
+        return "healthy"
 
     def _get_value_created_today(self, tenant_id: str) -> float:
         """Get value created in the last 24 hours"""

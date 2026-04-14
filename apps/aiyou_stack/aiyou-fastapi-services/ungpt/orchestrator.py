@@ -1,5 +1,4 @@
-"""
-UnGPT Atomic Thread Orchestrator
+"""UnGPT Atomic Thread Orchestrator
 Implements AoT (Atom of Thoughts) with AunCRM compliance integration
 """
 
@@ -20,8 +19,7 @@ from aunccrm import Brake, ComplianceContext, Purpose, Reason, RiskLevel
 
 @dataclass
 class AtomicThread:
-    """
-    Single atomic reasoning unit with isolated context and AunCRM compliance
+    """Single atomic reasoning unit with isolated context and AunCRM compliance
     Failure in one thread does not cascade to others (ATP 5-19 risk isolation)
     """
 
@@ -87,7 +85,7 @@ class AtomicThread:
 
         brake_objs = [
             Brake(
-                constraint=brake, enforcement_method="runtime_check", violation_action="halt_thread"
+                constraint=brake, enforcement_method="runtime_check", violation_action="halt_thread",
             )
             for brake in self.brakes
         ]
@@ -99,7 +97,7 @@ class AtomicThread:
                 threshold=60.0,
                 enforcement_method="timeout",
                 violation_action="halt_thread",
-            )
+            ),
         )
 
         context = ComplianceContext(
@@ -126,8 +124,7 @@ class DecompositionResult:
 
 
 class PNKLNAtomicOrchestrator:
-    """
-    Main orchestrator for atomic thread execution
+    """Main orchestrator for atomic thread execution
     Integrates JR (Judgment Rule) + Cor (unified synthesis) + NS (execution)
     """
 
@@ -144,13 +141,11 @@ class PNKLNAtomicOrchestrator:
         self.enable_compliance = enable_compliance
 
     async def decompose_query(
-        self, query: str, max_threads: int = 10, risk_threshold: RiskLevel = RiskLevel.RA_3
+        self, query: str, max_threads: int = 10, risk_threshold: RiskLevel = RiskLevel.RA_3,
     ) -> DecompositionResult:
-        """
-        JR (Judgment Rule) decomposition: Break query into atomic threads
+        """JR (Judgment Rule) decomposition: Break query into atomic threads
         Each thread gets Purpose, Reasons, Brakes per AunCRM doctrine
         """
-
         decomposition_prompt = f"""You are a military-grade reasoning system (AunCRM Judge).
 Decompose this query into atomic, parallelizable reasoning threads.
 
@@ -232,8 +227,7 @@ Each thread's prompt should be self-contained with all necessary context.
         )
 
     async def execute_thread(self, thread: AtomicThread) -> AtomicThread:
-        """
-        Execute single atomic thread with error isolation
+        """Execute single atomic thread with error isolation
         Failures are contained and logged, not propagated
         """
         start_time = time.time()
@@ -263,7 +257,7 @@ Provide your response in structured format with clear reasoning.
 
             # Track token usage (simplified)
             thread.token_usage = {
-                "estimated_tokens": len(enforced_prompt.split()) + len(response.split())
+                "estimated_tokens": len(enforced_prompt.split()) + len(response.split()),
             }
 
         except TimeoutError:
@@ -276,11 +270,9 @@ Provide your response in structured format with clear reasoning.
         return thread
 
     async def execute_threads_concurrent(self, threads: list[AtomicThread]) -> list[AtomicThread]:
-        """
-        Execute threads concurrently respecting dependency graph
+        """Execute threads concurrently respecting dependency graph
         Implements topological execution order
         """
-
         executed = set()
         results = []
 
@@ -298,7 +290,7 @@ Provide your response in structured format with clear reasoning.
 
             # Execute ready threads concurrently
             batch_results = await asyncio.gather(
-                *[self.execute_thread(t) for t in ready], return_exceptions=True
+                *[self.execute_thread(t) for t in ready], return_exceptions=True,
             )
 
             for thread_result in batch_results:
@@ -316,11 +308,9 @@ Provide your response in structured format with clear reasoning.
         threads: list[AtomicThread],
         output_format: str = "markdown_report",
     ) -> dict[str, Any]:
-        """
-        Cor (unified brain): Stitch thread results into coherent output
+        """Cor (unified brain): Stitch thread results into coherent output
         Maintains audit trail for AunCRM compliance
         """
-
         # Separate successful and failed threads
         successful = [t for t in threads if t.error is None]
         failed = [t for t in threads if t.error is not None]
@@ -330,7 +320,7 @@ Provide your response in structured format with clear reasoning.
             [
                 f"## Thread: {t.thread_id}\n**Purpose:** {t.purpose}\n**Result:**\n{t.result['content']}"
                 for t in successful
-            ]
+            ],
         )
 
         stitching_prompt = f"""You are Cor, the unified execution brain of the PNKLN system.
@@ -387,13 +377,11 @@ Generate the final synthesized response now.
         }
 
     async def process_query(
-        self, query: str, max_threads: int = 10, output_format: str = "markdown_report"
+        self, query: str, max_threads: int = 10, output_format: str = "markdown_report",
     ) -> dict[str, Any]:
-        """
-        Full AoT pipeline with AunCRM enforcement
+        """Full AoT pipeline with AunCRM enforcement
         Decompose → Execute → Stitch
         """
-
         print("[JR] Decomposing query into atomic threads...")
         decomp_result = await self.decompose_query(query, max_threads)
 
@@ -404,7 +392,7 @@ Generate the final synthesized response now.
         # Gate check: Abort if cost too high
         if decomp_result.estimated_cost > 1.0:  # $1 threshold
             raise ValueError(
-                f"Estimated cost ${decomp_result.estimated_cost:.2f} exceeds gate threshold"
+                f"Estimated cost ${decomp_result.estimated_cost:.2f} exceeds gate threshold",
             )
 
         print(f"\n[NS] Executing {len(decomp_result.threads)} threads concurrently...")
@@ -418,7 +406,7 @@ Generate the final synthesized response now.
         final_result = await self.stitch_results(query, executed_threads, output_format)
 
         print(
-            f"[Cor] Stitching complete. Total execution time: {final_result['audit_trail']['total_execution_time']:.2f}s"
+            f"[Cor] Stitching complete. Total execution time: {final_result['audit_trail']['total_execution_time']:.2f}s",
         )
 
         return final_result
@@ -426,8 +414,7 @@ Generate the final synthesized response now.
     # Helper methods
 
     async def _call_model(self, prompt: str) -> str:
-        """
-        Abstract model calling - override based on your LLM provider
+        """Abstract model calling - override based on your LLM provider
         This is a placeholder that should be replaced with actual API calls
         """
         # This will be overridden by specific implementations
@@ -437,11 +424,8 @@ Generate the final synthesized response now.
         """Extract JSON from model response"""
         # Remove markdown code blocks if present
         text = text.strip()
-        if text.startswith("```json"):
-            text = text[7:]
-        if text.startswith("```"):
-            text = text[3:]
-        if text.endswith("```"):
-            text = text[:-3]
+        text = text.removeprefix("```json")
+        text = text.removeprefix("```")
+        text = text.removesuffix("```")
 
         return json.loads(text.strip())

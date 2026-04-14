@@ -4,8 +4,7 @@ import os
 class CryptoGate:
     @staticmethod
     def get_deposit_address(currency: str = "BTC") -> str:
-        """
-        The Bag Man.
+        """The Bag Man.
         Returns a direct deposit address from Environment.
         """
         # Default to the burn address if not set (Safety)

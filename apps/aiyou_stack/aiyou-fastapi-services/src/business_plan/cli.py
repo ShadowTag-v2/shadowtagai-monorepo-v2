@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Business Plan CLI Interface
+"""Business Plan CLI Interface
 Query and export business plan parameters
 """
 

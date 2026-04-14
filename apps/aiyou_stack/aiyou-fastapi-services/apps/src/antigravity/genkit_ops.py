@@ -1,5 +1,4 @@
-"""
-Antigravity Genkit Ops.
+"""Antigravity Genkit Ops.
 Defines Genkit flows for operational tasks within the Antigravity ecosystem.
 """
 
@@ -27,8 +26,7 @@ class OpsResult(BaseModel):
 
 
 def antigravity_ops_flow(query: str) -> str:
-    """
-    Analyzes an operational query and returns a status report.
+    """Analyzes an operational query and returns a status report.
     In a real scenario, this would interact with the Swarm or JURA.
     """
     logger.info(f"Executing Antigravity Ops Flow with query: {query}")
@@ -36,15 +34,13 @@ def antigravity_ops_flow(query: str) -> str:
     # Mock logic for demonstration
     if "status" in query.lower():
         return "System Status: NORMAL. Swarm Active: 650 Agents."
-    elif "deploy" in query.lower():
+    if "deploy" in query.lower():
         return "Deployment Status: PENDING Governance Review."
-    else:
-        return f"Processed Ops Query: {query}"
+    return f"Processed Ops Query: {query}"
 
 
 def define_ops_flows() -> None:
-    """
-    Define and register operational flows with Genkit.
+    """Define and register operational flows with Genkit.
     """
     gk = get_genkit()
 

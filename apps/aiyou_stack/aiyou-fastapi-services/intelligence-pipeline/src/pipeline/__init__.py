@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Pipeline Stages
+"""PNKLN Intelligence Pipeline - Pipeline Stages
 """
 
 from .ingestion import IntelligenceIngestion

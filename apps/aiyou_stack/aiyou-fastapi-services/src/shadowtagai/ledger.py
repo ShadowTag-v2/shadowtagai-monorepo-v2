@@ -1,5 +1,4 @@
-"""
-ShadowTag Immutable Ledger (BigQuery Implementation)
+"""ShadowTag Immutable Ledger (BigQuery Implementation)
 
 Implements a secure, append-only ledger for ShadowTag verification events using Google BigQuery.
 Future upgrades can bridge this to public chains (Ethereum/Solana) via Oracle.
@@ -53,13 +52,12 @@ class ShadowLedger:
             ]
             table = bigquery.Table(self.table_ref, schema=schema)
             table.time_partitioning = bigquery.TimePartitioning(
-                type_=bigquery.TimePartitioningType.DAY, field="timestamp"
+                type_=bigquery.TimePartitioningType.DAY, field="timestamp",
             )
             self.client.create_table(table)
 
     def record_verification(self, verification_result: dict[str, Any]) -> bool:
-        """
-        Record a verification event to the immutable ledger.
+        """Record a verification event to the immutable ledger.
 
         Args:
             verification_result: Dict containing:
@@ -71,6 +69,7 @@ class ShadowLedger:
 
         Returns:
             bool: True if recorded successfully.
+
         """
         rows_to_insert = [
             {
@@ -80,16 +79,15 @@ class ShadowLedger:
                 "judge_six_verdict": verification_result.get("judge_six_verdict"),
                 "trust_score": verification_result.get("trust_score"),
                 "provenance_chain": verification_result.get("provenance_chain", []),
-            }
+            },
         ]
 
         errors = self.client.insert_rows_json(self.table_ref, rows_to_insert)
         if errors == []:
             logger.info(f"Ledger Entry Recorded: {verification_result.get('content_id')}")
             return True
-        else:
-            logger.error(f"Ledger Write Failed: {errors}")
-            return False
+        logger.error(f"Ledger Write Failed: {errors}")
+        return False
 
 
 # Singleton

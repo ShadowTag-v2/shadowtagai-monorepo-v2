@@ -1,5 +1,4 @@
-"""
-Judge #6 Tests - Validate Purpose/Reasons/Brakes enforcement
+"""Judge #6 Tests - Validate Purpose/Reasons/Brakes enforcement
 """
 
 import os
@@ -102,7 +101,7 @@ def test_brakes_block_sql_injection(judge_six):
     """Test that brakes block SQL injection attempts."""
     # Create validation directly
     validation = judge_six._validate(
-        "safe_function", {"text": "'; DROP TABLE users; --"}, "Process some text"
+        "safe_function", {"text": "'; DROP TABLE users; --"}, "Process some text",
     )
 
     # Should trigger brakes

@@ -1,5 +1,4 @@
-"""
-Tests for Individual Compliance Modules
+"""Tests for Individual Compliance Modules
 """
 
 import pytest

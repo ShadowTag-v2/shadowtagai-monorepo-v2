@@ -1,5 +1,4 @@
-"""
-LAWTRACK (LT): Live Rules Database + Dynamic Timelines
+"""LAWTRACK (LT): Live Rules Database + Dynamic Timelines
 
 Rules DB → Timeline Engine → Configurable Enforcement + Mobile Critical Tiles
 

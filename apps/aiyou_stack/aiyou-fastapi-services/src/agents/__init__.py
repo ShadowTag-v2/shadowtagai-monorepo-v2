@@ -3,9 +3,9 @@
 from .base import AgentMetrics, BaseGovernanceAgent, DecisionStatus, GovernanceDecision, RiskLevel
 
 __all__ = [
+    "AgentMetrics",
     "BaseGovernanceAgent",
     "DecisionStatus",
     "GovernanceDecision",
     "RiskLevel",
-    "AgentMetrics",
 ]

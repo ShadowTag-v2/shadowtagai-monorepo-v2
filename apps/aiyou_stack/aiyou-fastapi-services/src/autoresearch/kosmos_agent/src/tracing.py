@@ -8,14 +8,13 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExport
 
 
 def setup_tracing(service_name: str = "kosmos-agent"):
-    """
-    Configures OpenTelemetry tracing with Google Cloud Trace.
+    """Configures OpenTelemetry tracing with Google Cloud Trace.
     If GOOGLE_CLOUD_PROJECT is not set, falls back to Console exporter.
     """
     resource = Resource.create(
         {
             "service.name": service_name,
-        }
+        },
     )
 
     provider = TracerProvider(resource=resource)

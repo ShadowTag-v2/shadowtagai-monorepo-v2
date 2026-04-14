@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Twitter/X Bypass Adapter
+"""PNKLN Core Stack - Twitter/X Bypass Adapter
 
 Zero-cost Twitter signal extraction via:
   1. Nitter RSS mirrors — no API key, no OAuth
@@ -64,8 +63,7 @@ RATE_DELAY = 2.0
 
 
 class TwitterBypassAdapter(SourceAdapter):
-    """
-    Free Twitter signal extraction via Nitter RSS + Google News RSS.
+    """Free Twitter signal extraction via Nitter RSS + Google News RSS.
     No API key, no OAuth, no cost.
     Falls back to next Nitter instance on failure.
     """

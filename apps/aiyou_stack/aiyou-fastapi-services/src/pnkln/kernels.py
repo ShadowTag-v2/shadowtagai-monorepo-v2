@@ -1,5 +1,4 @@
-"""
-Pinkln Kernels: Specialized prompt functions
+"""Pinkln Kernels: Specialized prompt functions
 
 3-kernel decision pipeline:
 1. ATP 519 Scan: Extract violations
@@ -27,8 +26,7 @@ class ViolationResult:
 
 
 class ATP519ScanKernel:
-    """
-    Kernel 1: ATP 5-19 Violation Scanner
+    """Kernel 1: ATP 5-19 Violation Scanner
 
     Extracts compliance violations from decision context
 
@@ -46,14 +44,14 @@ class ATP519ScanKernel:
         }
 
     def execute(self, context: str) -> ViolationResult:
-        """
-        Scan context for ATP 5-19 violations
+        """Scan context for ATP 5-19 violations
 
         Args:
             context: Decision context text
 
         Returns:
             ViolationResult with extracted violations
+
         """
         violations = []
         severity_breakdown = {"critical": 0, "high": 0, "medium": 0, "low": 0}
@@ -110,8 +108,7 @@ class JudgeSixResult:
 
 
 class JudgeSixKernel:
-    """
-    Kernel 2: Judge Six Classifier
+    """Kernel 2: Judge Six Classifier
 
     Hybrid enforcement: Gemini + PyTorch + Rules
 
@@ -130,14 +127,14 @@ class JudgeSixKernel:
         }
 
     def execute(self, violations: ViolationResult) -> JudgeSixResult:
-        """
-        Make binary decision based on violations
+        """Make binary decision based on violations
 
         Args:
             violations: Output from ATP519ScanKernel
 
         Returns:
             JudgeSixResult with decision
+
         """
         import time
 
@@ -152,14 +149,14 @@ class JudgeSixKernel:
             decision = False
             risk_tier = "EH"
             reasoning_parts.append(
-                f"{violations.severity_breakdown['critical']} critical violations found"
+                f"{violations.severity_breakdown['critical']} critical violations found",
             )
 
         elif violations.severity_breakdown["high"] >= 3:
             decision = False
             risk_tier = "H"
             reasoning_parts.append(
-                f"{violations.severity_breakdown['high']} high-severity violations"
+                f"{violations.severity_breakdown['high']} high-severity violations",
             )
 
         elif violations.severity_breakdown["high"] > 0:
@@ -205,8 +202,7 @@ class AuditTrail:
 
 
 class AuditCompressKernel:
-    """
-    Kernel 3: Audit Trail Compressor
+    """Kernel 3: Audit Trail Compressor
 
     Compresses decision audit to 487 bytes using zstd
 
@@ -220,8 +216,7 @@ class AuditCompressKernel:
         judge_result: JudgeSixResult,
         violations: ViolationResult,
     ) -> AuditTrail:
-        """
-        Compress audit trail
+        """Compress audit trail
 
         Args:
             judge_result: Decision from JudgeSixKernel
@@ -229,6 +224,7 @@ class AuditCompressKernel:
 
         Returns:
             AuditTrail with compressed data
+
         """
         import time
 

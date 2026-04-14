@@ -1,5 +1,4 @@
-"""
-Research Query Router
+"""Research Query Router
 
 Routes research queries to appropriate sources based on keyword detection
 and intent analysis. Determines which combination of Drive, Gmail, and Web
@@ -37,8 +36,7 @@ class ResearchIntent:
 
 
 class ResearchQueryRouter:
-    """
-    Routes research queries to appropriate sources.
+    """Routes research queries to appropriate sources.
 
     Uses keyword detection and heuristics to determine:
     - Which sources to query (Drive, Gmail, Web, Memory, Codebase)
@@ -50,6 +48,7 @@ class ResearchQueryRouter:
         intent = router.route("What do we know about competitor pricing?")
         # intent.recommended_sources = {DRIVE, GMAIL, WEB}
         # intent.intent_type = "comprehensive"
+
     """
 
     # Keywords suggesting INTERNAL sources needed
@@ -159,14 +158,14 @@ class ResearchQueryRouter:
     }
 
     def route(self, query: str) -> ResearchIntent:
-        """
-        Determine which sources to query based on input.
+        """Determine which sources to query based on input.
 
         Args:
             query: User's research query
 
         Returns:
             ResearchIntent with recommended sources and metadata
+
         """
         query_lower = query.lower()
         sources: set[ResearchSourceType] = set()
@@ -232,14 +231,14 @@ class ResearchQueryRouter:
         )
 
     def is_research_query(self, query: str) -> bool:
-        """
-        Quick check if query is likely a research query.
+        """Quick check if query is likely a research query.
 
         Args:
             query: User input
 
         Returns:
             True if research intent detected
+
         """
         query_lower = query.lower()
 
@@ -266,8 +265,7 @@ class ResearchQueryRouter:
         return bool(has_internal and has_external)
 
     def _extract_topic(self, query: str) -> str:
-        """
-        Extract the main topic from a research query.
+        """Extract the main topic from a research query.
 
         Simple heuristic: remove common trigger words and return remainder.
         """
@@ -309,14 +307,14 @@ class ResearchQueryRouter:
         return " ".join(topic_words) if topic_words else query
 
     def get_source_priority(self, sources: set[ResearchSourceType]) -> list[ResearchSourceType]:
-        """
-        Get sources in priority order for sequential fallback.
+        """Get sources in priority order for sequential fallback.
 
         Args:
             sources: Set of sources to query
 
         Returns:
             List in priority order (most important first)
+
         """
         priority_order = [
             ResearchSourceType.DRIVE,  # Internal docs first
@@ -334,26 +332,26 @@ router = ResearchQueryRouter()
 
 
 def detect_research_intent(query: str) -> ResearchIntent:
-    """
-    Convenience function to detect research intent.
+    """Convenience function to detect research intent.
 
     Args:
         query: User input
 
     Returns:
         ResearchIntent with source recommendations
+
     """
     return router.route(query)
 
 
 def is_research_query(query: str) -> bool:
-    """
-    Convenience function to check if query is research-related.
+    """Convenience function to check if query is research-related.
 
     Args:
         query: User input
 
     Returns:
         True if research intent detected
+
     """
     return router.is_research_query(query)

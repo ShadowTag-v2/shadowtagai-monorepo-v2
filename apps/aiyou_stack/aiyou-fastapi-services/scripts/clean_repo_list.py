@@ -22,8 +22,7 @@ def clean_repos(input_file, output_file):
                 continue
 
             # Clean up repo name (remove .git suffix if present)
-            if repo.endswith(".git"):
-                repo = repo[:-4]
+            repo = repo.removesuffix(".git")
 
             full_name = f"{owner}/{repo}"
             repos.add(full_name)

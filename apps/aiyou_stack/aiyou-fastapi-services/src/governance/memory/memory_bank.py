@@ -1,12 +1,11 @@
 class MemoryBank:
-    """
-    Sovereign OS Memory Layer.
+    """Sovereign OS Memory Layer.
     Suppresses/Overrides specific codebase heuristics using learned context.
     """
 
     def __init__(self):
         self.learned_rules = [
-            {"pattern": "from * import", "action": "suppress", "context": "tests"}
+            {"pattern": "from * import", "action": "suppress", "context": "tests"},
         ]
 
     def consult(self, code_snippet: str, context: str) -> str:

@@ -1,5 +1,4 @@
-"""
-ShadowTag 2.0 Cryptographic Provenance Engine
+"""ShadowTag 2.0 Cryptographic Provenance Engine
 
 Provides cryptographic watermarking, content-addressable hashing,
 and tamper-evident audit trails for governance decisions.
@@ -19,18 +18,15 @@ logger = logging.getLogger(__name__)
 class ProvenanceError(Exception):
     """Raised when provenance operations fail."""
 
-    pass
 
 
 class SignatureVerificationError(ProvenanceError):
     """Raised when signature verification fails."""
 
-    pass
 
 
 class ShadowTagEngine:
-    """
-    ShadowTag 2.0 Watermarking & Provenance System
+    """ShadowTag 2.0 Watermarking & Provenance System
 
     Provides cryptographic guarantees for:
     - Decision provenance (who, what, when, why)
@@ -40,12 +36,12 @@ class ShadowTagEngine:
     """
 
     def __init__(self, cor_instance_id: str | None = None):
-        """
-        Initialize ShadowTag engine.
+        """Initialize ShadowTag engine.
 
         Args:
             cor_instance_id: Unique Cor instance identifier.
                            If None, uses config default.
+
         """
         config = get_config()
         self.cor_instance_id = cor_instance_id or config.COR_INSTANCE_ID
@@ -60,10 +56,9 @@ class ShadowTagEngine:
         )
 
     def generate_stamp(
-        self, purpose: str, reasoning_chain: str, risk_level: RiskLevel, axioms_verified: list[str]
+        self, purpose: str, reasoning_chain: str, risk_level: RiskLevel, axioms_verified: list[str],
     ) -> ProvenanceStamp:
-        """
-        Generate cryptographic provenance stamp for a decision.
+        """Generate cryptographic provenance stamp for a decision.
 
         Args:
             purpose: Declared purpose of the request
@@ -76,6 +71,7 @@ class ShadowTagEngine:
 
         Raises:
             ProvenanceError: If stamp generation fails
+
         """
         try:
             timestamp = datetime.utcnow().isoformat() + "Z"
@@ -86,7 +82,7 @@ class ShadowTagEngine:
 
             # Generate cryptographic signature
             signature = self._generate_signature(
-                timestamp, purpose_hash, reasoning_hash, axioms_verified
+                timestamp, purpose_hash, reasoning_hash, axioms_verified,
             )
 
             stamp = ProvenanceStamp(
@@ -103,11 +99,10 @@ class ShadowTagEngine:
             return stamp
 
         except Exception as e:
-            raise ProvenanceError(f"Failed to generate provenance stamp: {str(e)}") from e
+            raise ProvenanceError(f"Failed to generate provenance stamp: {e!s}") from e
 
     def verify_stamp(self, stamp: ProvenanceStamp, purpose: str, reasoning_chain: str) -> bool:
-        """
-        Verify cryptographic integrity of provenance stamp.
+        """Verify cryptographic integrity of provenance stamp.
 
         Args:
             stamp: Provenance stamp to verify
@@ -119,6 +114,7 @@ class ShadowTagEngine:
 
         Raises:
             SignatureVerificationError: If verification process fails
+
         """
         try:
             # Verify purpose hash
@@ -154,30 +150,28 @@ class ShadowTagEngine:
             return True
 
         except Exception as e:
-            raise SignatureVerificationError(f"Stamp verification failed: {str(e)}") from e
+            raise SignatureVerificationError(f"Stamp verification failed: {e!s}") from e
 
     def _compute_hash(self, content: str) -> str:
-        """
-        Compute cryptographic hash of content.
+        """Compute cryptographic hash of content.
 
         Args:
             content: Content to hash
 
         Returns:
             Hexadecimal hash string
+
         """
         if self.hash_algorithm == "sha256":
             return hashlib.sha256(content.encode("utf-8")).hexdigest()
-        elif self.hash_algorithm == "sha512":
+        if self.hash_algorithm == "sha512":
             return hashlib.sha512(content.encode("utf-8")).hexdigest()
-        else:
-            raise ProvenanceError(f"Unsupported hash algorithm: {self.hash_algorithm}")
+        raise ProvenanceError(f"Unsupported hash algorithm: {self.hash_algorithm}")
 
     def _generate_signature(
-        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str]
+        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str],
     ) -> str:
-        """
-        Generate cryptographic signature.
+        """Generate cryptographic signature.
 
         Note: This is a simplified implementation. Production systems
         should use proper PKI with Ed25519 or RSA signatures.
@@ -190,23 +184,22 @@ class ShadowTagEngine:
 
         Returns:
             Cryptographic signature (hex string)
+
         """
         if self.enable_pki:
             return self._generate_pki_signature(
-                timestamp, purpose_hash, reasoning_hash, axioms_verified
+                timestamp, purpose_hash, reasoning_hash, axioms_verified,
             )
-        else:
-            # Simplified signature for demonstration
-            signature_input = self._build_signature_input(
-                timestamp, purpose_hash, reasoning_hash, axioms_verified
-            )
-            return self._compute_hash(signature_input)
+        # Simplified signature for demonstration
+        signature_input = self._build_signature_input(
+            timestamp, purpose_hash, reasoning_hash, axioms_verified,
+        )
+        return self._compute_hash(signature_input)
 
     def _build_signature_input(
-        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str]
+        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str],
     ) -> str:
-        """
-        Build canonical signature input string.
+        """Build canonical signature input string.
 
         Args:
             timestamp: ISO 8601 timestamp
@@ -216,15 +209,15 @@ class ShadowTagEngine:
 
         Returns:
             Canonical signature input string
+
         """
         axioms_str = ",".join(sorted(axioms_verified))
         return f"{timestamp}:{purpose_hash}:{reasoning_hash}:{self.cor_instance_id}:{axioms_str}"
 
     def _generate_pki_signature(
-        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str]
+        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str],
     ) -> str:
-        """
-        Generate PKI-based cryptographic signature.
+        """Generate PKI-based cryptographic signature.
 
         Note: Placeholder for production PKI implementation.
 
@@ -239,28 +232,28 @@ class ShadowTagEngine:
 
         Raises:
             NotImplementedError: PKI not implemented in this version
+
         """
         # TODO: Implement Ed25519 or RSA signature generation
         raise NotImplementedError(
             "PKI signature generation not implemented. "
-            "Set ENABLE_PKI=False in config for demo mode."
+            "Set ENABLE_PKI=False in config for demo mode.",
         )
 
     def export_stamp(self, stamp: ProvenanceStamp) -> str:
-        """
-        Export provenance stamp as JSON.
+        """Export provenance stamp as JSON.
 
         Args:
             stamp: Provenance stamp to export
 
         Returns:
             JSON string representation
+
         """
         return json.dumps(stamp.to_dict(), indent=2)
 
     def import_stamp(self, json_str: str) -> ProvenanceStamp:
-        """
-        Import provenance stamp from JSON.
+        """Import provenance stamp from JSON.
 
         Args:
             json_str: JSON string representation
@@ -270,6 +263,7 @@ class ShadowTagEngine:
 
         Raises:
             ProvenanceError: If import fails
+
         """
         try:
             data = json.loads(json_str)
@@ -285,4 +279,4 @@ class ShadowTagEngine:
                 signature=data["signature"],
             )
         except Exception as e:
-            raise ProvenanceError(f"Failed to import stamp: {str(e)}") from e
+            raise ProvenanceError(f"Failed to import stamp: {e!s}") from e

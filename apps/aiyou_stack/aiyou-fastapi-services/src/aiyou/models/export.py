@@ -1,5 +1,4 @@
-"""
-Export Models - Pydantic schemas for thread export functionality.
+"""Export Models - Pydantic schemas for thread export functionality.
 
 Provides request/response models for exporting AI conversation threads
 in various formats (JSON, Markdown, Text compilation).
@@ -23,13 +22,13 @@ class ThreadExportRequest(BaseModel):
     """Request model for exporting threads."""
 
     format: ExportFormat = Field(
-        ExportFormat.JSON, description="Export format: json, markdown, or text (compilation)"
+        ExportFormat.JSON, description="Export format: json, markdown, or text (compilation)",
     )
     thread_ids: list[int] | None = Field(
-        None, description="Specific thread/OPORD IDs to export. If None, exports based on filters."
+        None, description="Specific thread/OPORD IDs to export. If None, exports based on filters.",
     )
     date_from: str | None = Field(
-        None, description="Start date for filtering (ISO format: YYYY-MM-DD)"
+        None, description="Start date for filtering (ISO format: YYYY-MM-DD)",
     )
     date_to: str | None = Field(None, description="End date for filtering (ISO format: YYYY-MM-DD)")
     tags: list[str] | None = Field(None, description="Filter by tags")
@@ -37,7 +36,7 @@ class ThreadExportRequest(BaseModel):
     shift_number: int | None = Field(None, ge=0, le=2, description="Filter by shift number (0-2)")
     status: str | None = Field(None, description="Filter by status (active, completed, archived)")
     include_metadata: bool = Field(
-        True, description="Include metadata in export (timestamps, stats, etc.)"
+        True, description="Include metadata in export (timestamps, stats, etc.)",
     )
     limit: int = Field(1000, ge=1, le=10000, description="Maximum number of threads to export")
 
@@ -84,7 +83,7 @@ class ThreadExportResponse(BaseModel):
     success: bool = Field(True, description="Whether export succeeded")
     stats: ExportStats = Field(..., description="Export statistics")
     content: Any = Field(
-        ..., description="Export content (JSON array, markdown string, or text compilation)"
+        ..., description="Export content (JSON array, markdown string, or text compilation)",
     )
 
 
@@ -104,7 +103,7 @@ class BulkExportRequest(BaseModel):
     include_raw_json: bool = Field(False, description="Include raw JSON data in export")
     compilation_title: str | None = Field(None, description="Title for text compilation format")
     compilation_description: str | None = Field(
-        None, description="Description for text compilation header"
+        None, description="Description for text compilation header",
     )
 
 

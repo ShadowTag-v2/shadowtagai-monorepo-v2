@@ -1,5 +1,4 @@
-"""
-Voice Capture Client for Multi-LLM Consensus Orchestrator
+"""Voice Capture Client for Multi-LLM Consensus Orchestrator
 Cross-platform voice capture using Whisper for transcription
 """
 
@@ -19,8 +18,7 @@ console = Console()
 
 
 class VoiceCapture:
-    """
-    Cross-platform voice capture using system microphone.
+    """Cross-platform voice capture using system microphone.
     Supports push-to-talk or continuous listening.
     """
 
@@ -44,7 +42,7 @@ class VoiceCapture:
                 console.print("[green]✓ Whisper model loaded[/green]")
             except ImportError:
                 console.print(
-                    "[red]ERROR: openai-whisper not installed. Run: pip install openai-whisper[/red]"
+                    "[red]ERROR: openai-whisper not installed. Run: pip install openai-whisper[/red]",
                 )
                 sys.exit(1)
         else:
@@ -59,7 +57,7 @@ class VoiceCapture:
         except Exception as e:
             console.print(f"[red]ERROR: Could not access microphone: {e}[/red]")
             console.print(
-                "[yellow]Make sure your microphone is connected and permissions are granted[/yellow]"
+                "[yellow]Make sure your microphone is connected and permissions are granted[/yellow]",
             )
             sys.exit(1)
 
@@ -70,28 +68,27 @@ class VoiceCapture:
             console.print(f"  [{index}] {name}")
 
     def capture_audio(self, timeout: int = None, phrase_time_limit: int = None) -> str:
-        """
-        Capture audio from microphone and transcribe.
+        """Capture audio from microphone and transcribe.
 
         Args:
             timeout: Max seconds to wait for speech to start (None = infinite)
             phrase_time_limit: Max seconds for entire phrase (None = infinite)
+
         """
         with sr.Microphone() as source:
             console.print("\n[bold green]🎤 Listening... (speak now)[/bold green]")
             try:
                 audio = self.recognizer.listen(
-                    source, timeout=timeout, phrase_time_limit=phrase_time_limit
+                    source, timeout=timeout, phrase_time_limit=phrase_time_limit,
                 )
                 console.print("[yellow]⏳ Transcribing...[/yellow]")
 
                 # Transcribe based on selected engine
                 if self.engine == "whisper_local":
                     return self._transcribe_whisper_local(audio)
-                elif self.engine == "google":
+                if self.engine == "google":
                     return self._transcribe_google(audio)
-                else:
-                    raise ValueError(f"Unknown engine: {self.engine}")
+                raise ValueError(f"Unknown engine: {self.engine}")
 
             except sr.WaitTimeoutError:
                 console.print("[red]✗ No speech detected (timeout)[/red]")
@@ -102,7 +99,6 @@ class VoiceCapture:
 
     def _transcribe_whisper_local(self, audio: sr.AudioData) -> str:
         """Use local Whisper model (most reliable, works offline)"""
-
         # Save audio to temp file
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
             f.write(audio.get_wav_data())
@@ -130,8 +126,7 @@ class VoiceCapture:
 
 
 class VoiceConsensusClient:
-    """
-    Desktop client that captures voice and sends to consensus orchestrator.
+    """Desktop client that captures voice and sends to consensus orchestrator.
     """
 
     def __init__(
@@ -150,8 +145,7 @@ class VoiceConsensusClient:
         return result
 
     def run_push_to_talk(self):
-        """
-        Run in push-to-talk mode: Hold hotkey to speak.
+        """Run in push-to-talk mode: Hold hotkey to speak.
         Note: Keyboard hotkeys may require elevated permissions on Mac.
         """
         console.print(
@@ -163,7 +157,7 @@ class VoiceConsensusClient:
                 f"[yellow]Press and hold {self.hotkey} to speak[/yellow]\n"
                 f"[dim]Press Ctrl+C to exit[/dim]",
                 border_style="cyan",
-            )
+            ),
         )
 
         try:
@@ -181,7 +175,7 @@ class VoiceConsensusClient:
                         while keyboard.is_pressed(self.hotkey):
                             try:
                                 chunk = self.voice.recognizer.listen(
-                                    source, timeout=0.5, phrase_time_limit=0.5
+                                    source, timeout=0.5, phrase_time_limit=0.5,
                                 )
                                 audio_chunks.append(chunk)
                             except sr.WaitTimeoutError:
@@ -210,7 +204,7 @@ class VoiceConsensusClient:
 
                         # Send to orchestrator
                         console.print(
-                            "[yellow]🤖 Processing with Consensus Orchestrator...[/yellow]"
+                            "[yellow]🤖 Processing with Consensus Orchestrator...[/yellow]",
                         )
                         result = asyncio.run(self.send_to_orchestrator(transcript))
 
@@ -222,10 +216,10 @@ class VoiceConsensusClient:
         except Exception as e:
             console.print(f"\n[red]ERROR: {e}[/red]")
             console.print(
-                "[yellow]Note: On Mac, hotkeys may require accessibility permissions.[/yellow]"
+                "[yellow]Note: On Mac, hotkeys may require accessibility permissions.[/yellow]",
             )
             console.print(
-                "[yellow]Try running in single-query mode instead: --mode single[/yellow]"
+                "[yellow]Try running in single-query mode instead: --mode single[/yellow]",
             )
 
     def run_continuous(self):
@@ -241,7 +235,7 @@ class VoiceConsensusClient:
                 f"[yellow]Say '{wake_word}' followed by your query[/yellow]\n"
                 f"[dim]Press Ctrl+C to exit[/dim]",
                 border_style="cyan",
-            )
+            ),
         )
 
         try:
@@ -261,13 +255,13 @@ class VoiceConsensusClient:
 
                             # Process
                             console.print(
-                                "[yellow]🤖 Processing with Consensus Orchestrator...[/yellow]"
+                                "[yellow]🤖 Processing with Consensus Orchestrator...[/yellow]",
                             )
                             result = asyncio.run(self.send_to_orchestrator(query))
                             self._display_result(result)
                         else:
                             console.print(
-                                "[yellow]⚠️  Wake word detected but no query provided[/yellow]"
+                                "[yellow]⚠️  Wake word detected but no query provided[/yellow]",
                             )
 
         except KeyboardInterrupt:
@@ -280,7 +274,7 @@ class VoiceConsensusClient:
                 "[bold cyan]Voice Consensus Orchestrator[/bold cyan]\n"
                 "[yellow]Speak your query now...[/yellow]",
                 border_style="cyan",
-            )
+            ),
         )
 
         transcript = self.voice.capture_audio(phrase_time_limit=30)
@@ -300,7 +294,7 @@ class VoiceConsensusClient:
                 result["final_synthesis"],
                 title="[bold green]✓ CONSENSUS RESULT[/bold green]",
                 border_style="green",
-            )
+            ),
         )
 
         # Show execution summary
@@ -312,7 +306,7 @@ class VoiceConsensusClient:
         console.print(
             f"\n[dim]Models: {len(result['layer2_responses']) + 2} | "
             f"Tokens: {total_input + total_output} | "
-            f"Peer Reviews: {sum(len(v) for v in result['peer_reviews'].values()) if result['peer_reviews'] else 0}[/dim]"
+            f"Peer Reviews: {sum(len(v) for v in result['peer_reviews'].values()) if result['peer_reviews'] else 0}[/dim]",
         )
 
 
@@ -342,7 +336,7 @@ def main():
         help="Whisper model size: tiny/base/small/medium/large (default: base)",
     )
     parser.add_argument(
-        "--list-mics", action="store_true", help="List available microphones and exit"
+        "--list-mics", action="store_true", help="List available microphones and exit",
     )
     parser.add_argument(
         "--hotkey",
@@ -366,7 +360,7 @@ def main():
     orchestrator = ConsensusOrchestrator()
 
     client = VoiceConsensusClient(
-        voice_capture=voice_capture, orchestrator=orchestrator, hotkey=args.hotkey
+        voice_capture=voice_capture, orchestrator=orchestrator, hotkey=args.hotkey,
     )
 
     # Run selected mode

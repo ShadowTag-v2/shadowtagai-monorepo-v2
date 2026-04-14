@@ -97,10 +97,10 @@ def upgrade():
 
 def downgrade():
     op.drop_index(
-        "ix_activeshield_adverse_events_audit_log_id", table_name="activeshield_adverse_events"
+        "ix_activeshield_adverse_events_audit_log_id", table_name="activeshield_adverse_events",
     )
     op.drop_index(
-        "ix_activeshield_adverse_events_session_id", table_name="activeshield_adverse_events"
+        "ix_activeshield_adverse_events_session_id", table_name="activeshield_adverse_events",
     )
     op.drop_table("activeshield_adverse_events")
 

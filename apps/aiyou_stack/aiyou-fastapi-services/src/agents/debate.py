@@ -1,5 +1,4 @@
-"""
-PanelGPT/MAD (Multi-Agent Debate) framework.
+"""PanelGPT/MAD (Multi-Agent Debate) framework.
 
 Multiple agents debate a problem, refining solutions through iteration.
 Inspired by "Improving Factuality and Reasoning in LLMs with Multi-Agent Debate".
@@ -30,8 +29,7 @@ class DebateResult(BaseModel):
 
 
 class DebateAgent(Agent):
-    """
-    Agent capable of participating in multi-agent debates.
+    """Agent capable of participating in multi-agent debates.
 
     Uses MAD (Multi-Agent Debate) framework:
     1. Each agent proposes initial answer
@@ -65,8 +63,7 @@ class DebateAgent(Agent):
 
 
 class DebateOrchestrator:
-    """
-    Orchestrates multi-agent debates using MAD framework.
+    """Orchestrates multi-agent debates using MAD framework.
 
     Process:
     1. Round 1: Each agent proposes initial answer
@@ -85,14 +82,14 @@ class DebateOrchestrator:
         self.consensus_threshold = consensus_threshold
 
     async def run_debate(self, question: str) -> DebateResult:
-        """
-        Run full multi-agent debate.
+        """Run full multi-agent debate.
 
         Args:
             question: Question to debate
 
         Returns:
             DebateResult with rounds and final answer
+
         """
         rounds: list[DebateRound] = []
         current_answers: dict[str, str] = {}
@@ -108,7 +105,7 @@ class DebateOrchestrator:
                 agents=[a.config.name for a in self.agents],
                 arguments=current_answers.copy(),
                 consensus_score=self._calculate_consensus(list(current_answers.values())),
-            )
+            ),
         )
 
         # Rounds 2-N: Revisions
@@ -130,7 +127,7 @@ class DebateOrchestrator:
                     agents=[a.config.name for a in self.agents],
                     arguments=new_answers.copy(),
                     consensus_score=consensus,
-                )
+                ),
             )
 
             current_answers = new_answers
@@ -152,8 +149,7 @@ class DebateOrchestrator:
         )
 
     def _calculate_consensus(self, answers: list[str]) -> float:
-        """
-        Calculate consensus score among answers.
+        """Calculate consensus score among answers.
 
         In production, use semantic similarity or agreement metrics.
         """
@@ -171,8 +167,7 @@ class DebateOrchestrator:
         return consensus
 
     def _aggregate_answers(self, answers: dict[str, str]) -> str:
-        """
-        Aggregate final answers from all agents.
+        """Aggregate final answers from all agents.
 
         Strategies:
         - Voting (if multiple choice)

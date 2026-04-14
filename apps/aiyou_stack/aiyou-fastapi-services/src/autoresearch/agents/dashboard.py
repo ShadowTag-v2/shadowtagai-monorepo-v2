@@ -54,7 +54,7 @@ class SwarmDashboard:
                 f" (vs {entry.get('competitor', 'Unknown')})" if "competitor" in entry else ""
             )
             log_text.append(
-                f"[{color}]{entry['agent']}: {entry['decision']} - {entry['score']}{competitor_info}[/{color}]\n"
+                f"[{color}]{entry['agent']}: {entry['decision']} - {entry['score']}{competitor_info}[/{color}]\n",
             )
 
         return Panel(
@@ -85,7 +85,7 @@ class SwarmDashboard:
 
                 # Right Panel (Placeholder for future expansion or Boss status)
                 self.layout["right"].update(
-                    Panel("Boss Status: Active\nMonitoring Flying minion...", title="Swarm Boss")
+                    Panel("Boss Status: Active\nMonitoring Flying minion...", title="Swarm Boss"),
                 )
 
                 # Footer

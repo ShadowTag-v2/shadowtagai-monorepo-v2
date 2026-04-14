@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Tier Classification
+"""PNKLN Intelligence Pipeline - Tier Classification
 
 Classifies scored intelligence items into three tiers:
 - Tier 1 (Score ≥ 0.7): CEO briefing - critical/strategic
@@ -22,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class TierClassificationEngine:
-    """
-    Tier classification engine using Claude API
+    """Tier classification engine using Claude API
     """
 
     # Score thresholds
@@ -31,11 +29,11 @@ class TierClassificationEngine:
     TIER_2_THRESHOLD = 0.4
 
     def __init__(self, api_key: str | None = None):
-        """
-        Initialize tier classification engine
+        """Initialize tier classification engine
 
         Args:
             api_key: Anthropic API key (defaults to env var)
+
         """
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -45,14 +43,14 @@ class TierClassificationEngine:
         logger.info("TierClassificationEngine initialized")
 
     async def classify_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Classify all intelligence items into tiers
+        """Classify all intelligence items into tiers
 
         Args:
             items: List of scored intelligence items
 
         Returns:
             Same list with tier and tier_reasoning populated
+
         """
         logger.info(f"=== Tier Classification for {len(items)} items ===")
         start_time = datetime.now()
@@ -73,14 +71,14 @@ class TierClassificationEngine:
 
                 logger.info(
                     f"[{i + 1}/{len(items)}] {item.title[:50]}... "
-                    f"→ {classification.tier.value.upper()} (score: {item.jr_score:.2f})"
+                    f"→ {classification.tier.value.upper()} (score: {item.jr_score:.2f})",
                 )
 
             except Exception as e:
                 logger.error(f"Error classifying item {item.id}: {e}")
                 # Default to Tier 3 on error
                 item.tier = IntelligenceTier.TIER_3
-                item.tier_reasoning = f"Classification failed: {str(e)}"
+                item.tier_reasoning = f"Classification failed: {e!s}"
                 tier_counts[IntelligenceTier.TIER_3] += 1
 
         duration = (datetime.now() - start_time).total_seconds()
@@ -88,20 +86,20 @@ class TierClassificationEngine:
             f"✓ Classification complete in {duration:.1f}s\n"
             f"  Tier 1: {tier_counts[IntelligenceTier.TIER_1]} items\n"
             f"  Tier 2: {tier_counts[IntelligenceTier.TIER_2]} items\n"
-            f"  Tier 3: {tier_counts[IntelligenceTier.TIER_3]} items"
+            f"  Tier 3: {tier_counts[IntelligenceTier.TIER_3]} items",
         )
 
         return items
 
     async def classify_item(self, item: IntelligenceItem) -> TierClassification:
-        """
-        Classify a single intelligence item
+        """Classify a single intelligence item
 
         Args:
             item: Scored intelligence item
 
         Returns:
             TierClassification with tier and reasoning
+
         """
         # Initial classification based on score thresholds
         if item.jr_score >= self.TIER_1_THRESHOLD:
@@ -146,10 +144,9 @@ class TierClassificationEngine:
             )
 
     def _build_classification_prompt(
-        self, item: IntelligenceItem, initial_tier: IntelligenceTier
+        self, item: IntelligenceItem, initial_tier: IntelligenceTier,
     ) -> str:
-        """
-        Build classification prompt for Claude
+        """Build classification prompt for Claude
 
         Args:
             item: Intelligence item
@@ -157,6 +154,7 @@ class TierClassificationEngine:
 
         Returns:
             Prompt string
+
         """
         return f"""You are a tier classification specialist for PNKLN's intelligence pipeline.
 
@@ -191,11 +189,10 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """
-    Main tier classification entry point
+    """Main tier classification entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load scored items

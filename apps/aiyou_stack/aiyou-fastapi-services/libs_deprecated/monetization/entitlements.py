@@ -2,8 +2,7 @@ from libs.monetization.pricing_matrix import SubscriptionTier
 
 
 class EntitlementManager:
-    """
-    The Gatekeeper.
+    """The Gatekeeper.
     Determines which layers of the 'Onion' are accessible based on Payment Tier.
     Supports Admin Overrides (Severability).
     """
@@ -66,8 +65,7 @@ class EntitlementManager:
         return features
 
     def admin_override(self, feature: str, enable: bool):
-        """
-        Severability Switch.
+        """Severability Switch.
         Allows Admin to turn specific layers ON/OFF regardless of tier.
         """
         print(f"   🔧 ADMIN OVERRIDE: {feature} -> {enable}")

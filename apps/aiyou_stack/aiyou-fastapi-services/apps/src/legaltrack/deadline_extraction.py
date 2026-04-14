@@ -1,5 +1,4 @@
-"""
-Deadline Extraction Engine for LegalTrack
+"""Deadline Extraction Engine for LegalTrack
 
 ML-powered extraction of legal deadlines from court emails
 
@@ -45,5 +44,5 @@ class DeadlineExtractor:
                 type=DeadlineType.COURT_FILING,
                 confidence=0.98,
                 source_email_id=email_id,
-            )
+            ),
         ]

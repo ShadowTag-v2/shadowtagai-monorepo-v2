@@ -1,5 +1,4 @@
-"""
-Knowledge ingestion route.
+"""Knowledge ingestion route.
 
 POST /api/v1/workspaces/{workspace_id}/knowledge
     — uploads a plain-text or markdown file, chunks it, embeds with
@@ -58,7 +57,7 @@ async def ingest_document(workspace_id: str = Path(...), file: UploadFile = File
                     "source": file.filename or "",
                     "text": chunk,
                     "vector": emb_vector,
-                }
+                },
             )
 
         if documents:

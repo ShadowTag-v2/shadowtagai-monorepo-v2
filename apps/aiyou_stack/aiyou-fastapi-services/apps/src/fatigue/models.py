@@ -1,5 +1,4 @@
-"""
-Fatigue Prediction Models
+"""Fatigue Prediction Models
 Edge-optimized ML models for real-time fatigue prediction (100-500ms latency)
 
 Model Tiers:
@@ -60,11 +59,9 @@ class FatiguePredictor(ABC):
     @abstractmethod
     def predict(self, features: dict[str, float]) -> FatiguePrediction:
         """Predict fatigue from features"""
-        pass
 
     def extract_features(self, sensor_fusion) -> dict[str, float]:
         """Extract features from SensorFusion object"""
-
         blink_metrics = sensor_fusion.blink_detector.get_metrics()
         pupil_metrics = sensor_fusion.pupil_tracker.get_metrics()
         hrv_metrics = sensor_fusion.hrv_monitor.get_metrics()
@@ -132,19 +129,17 @@ class FatiguePredictor(ABC):
         """Convert fatigue score to level"""
         if score < 0.2:
             return "fresh"
-        elif score < 0.4:
+        if score < 0.4:
             return "mild"
-        elif score < 0.6:
+        if score < 0.6:
             return "moderate"
-        elif score < 0.8:
+        if score < 0.8:
             return "severe"
-        else:
-            return "critical"
+        return "critical"
 
 
 class LogisticFatigueModel(FatiguePredictor):
-    """
-    Logistic Regression model (v1)
+    """Logistic Regression model (v1)
 
     Size: ~10 KB
     Latency: 50-100 ms
@@ -181,7 +176,7 @@ class LogisticFatigueModel(FatiguePredictor):
                 0.20,  # session_duration (longer = more fatigue)
                 0.15,  # time_since_last_break
                 0.05,  # time_of_day (slight circadian effect)
-            ]
+            ],
         )
 
         self.bias = -1.0  # Bias term
@@ -219,8 +214,7 @@ class LogisticFatigueModel(FatiguePredictor):
 
 
 class GBDTFatigueModel(FatiguePredictor):
-    """
-    Gradient Boosted Decision Tree model (v1.5)
+    """Gradient Boosted Decision Tree model (v1.5)
 
     Size: 50-200 KB
     Latency: 100-200 ms
@@ -305,8 +299,7 @@ class GBDTFatigueModel(FatiguePredictor):
 
 
 class NeuralFatigueModel(FatiguePredictor):
-    """
-    Distilled Neural Network model (v2)
+    """Distilled Neural Network model (v2)
 
     Size: 1-5 MB
     Latency: 200-500 ms
@@ -377,8 +370,7 @@ class NeuralFatigueModel(FatiguePredictor):
 
 
 class AdaptiveFatiguePredictor:
-    """
-    Adaptive model selector based on device capabilities
+    """Adaptive model selector based on device capabilities
 
     Automatically chooses best model for available compute:
     - Glasses chip (milliwatts): Logistic
@@ -387,9 +379,9 @@ class AdaptiveFatiguePredictor:
     """
 
     def __init__(self, device_tier: str = "mid"):
-        """
-        Args:
-            device_tier: "low" (glasses), "mid" (phone), "high" (cloud)
+        """Args:
+        device_tier: "low" (glasses), "mid" (phone), "high" (cloud)
+
         """
         self.device_tier = device_tier
 
@@ -414,8 +406,7 @@ class AdaptiveFatiguePredictor:
 
 
 class FatigueSessionTracker:
-    """
-    Tracks fatigue progression over entire session
+    """Tracks fatigue progression over entire session
 
     Features:
     - Session duration tracking
@@ -489,5 +480,5 @@ class FatigueSessionTracker:
             return True
 
         return bool(
-            stats["time_since_last_break_min"] > 30 and stats["current_fatigue_score"] >= 0.4
+            stats["time_since_last_break_min"] > 30 and stats["current_fatigue_score"] >= 0.4,
         )

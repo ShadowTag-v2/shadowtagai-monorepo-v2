@@ -1,5 +1,4 @@
-"""
-KovelAI FastAPI Backend — S.E.U. Proxy + Stripe Connect + Kovel Enclave
+"""KovelAI FastAPI Backend — S.E.U. Proxy + Stripe Connect + Kovel Enclave
 
 Architecture:
     Client (CC login) → S.E.U. Token → AI/Search APIs → Evaporation
@@ -20,15 +19,13 @@ import logging
 import os
 import secrets
 import time
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
 
+from api.stripe_connect import StripeConnect
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
-
-from api.stripe_connect import StripeConnect
 
 logger = logging.getLogger("kovelai.api")
 
@@ -57,7 +54,7 @@ class MagicLinkRequest(BaseModel):
     attorney_id: str = Field(..., description="Attorney's unique ID")
     client_email: str = Field(..., description="Client's email for Magic Link delivery")
     session_rate_cents: int = Field(
-        default=1500, description="Per-query rate in cents ($15 default)"
+        default=1500, description="Per-query rate in cents ($15 default)",
     )
     session_ttl_seconds: int = Field(default=1800, description="Session timeout (30 min default)")
 
@@ -67,7 +64,7 @@ class ClientQuery(BaseModel):
 
     query: str = Field(..., max_length=4000, description="Client's natural language query")
     query_type: str = Field(
-        default="ai_chat", description="ai_chat | web_search | translation | osint"
+        default="ai_chat", description="ai_chat | web_search | translation | osint",
     )
 
 
@@ -108,8 +105,7 @@ class LawyerTranscript(BaseModel):
 
 
 class SEUProxyEngine:
-    """
-    Sandbox-bound, Ephemeral, User-billed token management.
+    """Sandbox-bound, Ephemeral, User-billed token management.
     Mathematically immune to supply-chain API key exfiltration.
     """
 
@@ -120,7 +116,7 @@ class SEUProxyEngine:
         """Mint an ephemeral token bound to session + IP."""
         session_id = secrets.token_hex(16)
         token = secrets.token_urlsafe(48)
-        expires_at = datetime.now(timezone.utc).isoformat()
+        expires_at = datetime.now(UTC).isoformat()
 
         cls._active_sessions[token] = {
             "session_id": session_id,
@@ -148,7 +144,7 @@ class SEUProxyEngine:
             raise HTTPException(status_code=401, detail="S.E.U. REJECTED: Token expired or invalid")
         if session["bound_ip"] != client_ip:
             raise HTTPException(
-                status_code=403, detail="S.E.U. REJECTED: IP mismatch — possible exfiltration"
+                status_code=403, detail="S.E.U. REJECTED: IP mismatch — possible exfiltration",
             )
         return session
 
@@ -195,8 +191,7 @@ class KovelShield:
 
 
 class BillingEngine:
-    """
-    Track A: Client CC → Stripe Connect → Lawyer's bank (we don't touch it)
+    """Track A: Client CC → Stripe Connect → Lawyer's bank (we don't touch it)
     Track B: Lawyer's corporate card → KovelAI monthly tier
     """
 
@@ -208,8 +203,7 @@ class BillingEngine:
 
     @classmethod
     def bill_client_query(cls, attorney_id: str, rate_cents: int, query_type: str) -> dict:
-        """
-        Bill the client's credit card via Stripe Connect.
+        """Bill the client's credit card via Stripe Connect.
         Payment routes DIRECTLY to the lawyer's bank. We never touch it.
         """
         # In production: stripe.PaymentIntent.create(
@@ -221,12 +215,12 @@ class BillingEngine:
             "attorney_id": attorney_id,
             "amount_cents": rate_cents,
             "query_type": query_type,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "note": "Routed via Stripe Connect to lawyer's bank account",
         }
 
     @classmethod
-    def check_tier_upgrade(cls, attorney_id: str, session_count: int) -> Optional[str]:
+    def check_tier_upgrade(cls, attorney_id: str, session_count: int) -> str | None:
         """Auto-upgrade lawyer's tier if they exceed session cap."""
         if session_count > 250:
             return "sovereign"
@@ -273,8 +267,7 @@ async def execute_privileged_query(
     request: Request,
     x_seu_token: str = Header(..., alias="X-SEU-Token"),
 ):
-    """
-    Client executes a privileged query through the S.E.U. proxy.
+    """Client executes a privileged query through the S.E.U. proxy.
     Query is processed in RAM, result delivered, data evaporated.
     """
     client_ip = request.client.host if request.client else "unknown"
@@ -357,8 +350,7 @@ class OnboardFirmRequest(BaseModel):
 
 @app.post("/api/v1/stripe/onboard")
 async def onboard_firm(req: OnboardFirmRequest):
-    """
-    Create a Stripe Express Connected Account for a new law firm.
+    """Create a Stripe Express Connected Account for a new law firm.
     Returns an onboarding link the firm owner clicks to complete KYC.
     """
     account = StripeConnect.create_connected_account(
@@ -379,8 +371,7 @@ async def onboard_firm(req: OnboardFirmRequest):
 
 @app.post("/api/v1/stripe/webhook")
 async def stripe_webhook(request: Request):
-    """
-    Stripe webhook handler. Processes:
+    """Stripe webhook handler. Processes:
     - payment_intent.succeeded → log client payment
     - account.updated → track onboarding completion
     - invoice.paid → confirm SaaS tier payment
@@ -430,8 +421,7 @@ async def stripe_webhook(request: Request):
 
 @app.get("/api/v1/stripe/balance/{account_id}")
 async def get_firm_balance(account_id: str):
-    """
-    Get the balance for a connected account.
+    """Get the balance for a connected account.
     Used in the lawyer dashboard to show earnings.
     """
     balance = StripeConnect.get_account_balance(account_id)
@@ -443,13 +433,12 @@ class SubscribeRequest(BaseModel):
 
     email: str = Field(..., description="Firm billing email")
     tier: str = Field(default="starter", description="starter | pro | sovereign")
-    payment_method: Optional[str] = Field(default=None, description="Stripe payment method ID")
+    payment_method: str | None = Field(default=None, description="Stripe payment method ID")
 
 
 @app.post("/api/v1/stripe/subscribe")
 async def subscribe_firm(req: SubscribeRequest):
-    """
-    Create or update a KovelAI SaaS subscription for the firm.
+    """Create or update a KovelAI SaaS subscription for the firm.
     This is Track B: Lawyer pays US for platform access.
     """
     result = StripeConnect.create_firm_subscription(

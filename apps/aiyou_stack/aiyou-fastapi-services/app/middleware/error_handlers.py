@@ -1,5 +1,4 @@
-"""
-Error handling middleware for consistent, accessible error responses.
+"""Error handling middleware for consistent, accessible error responses.
 
 All errors are transformed into a standard format following WCAG 2.1 principles:
 - Clear, user-friendly messages
@@ -22,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 async def api_exception_handler(request: Request, exc: APIException) -> JSONResponse:
-    """
-    Handle custom API exceptions.
+    """Handle custom API exceptions.
 
     Args:
         request: Incoming request
@@ -31,6 +29,7 @@ async def api_exception_handler(request: Request, exc: APIException) -> JSONResp
 
     Returns:
         JSONResponse with standardized error format
+
     """
     request_id = getattr(request.state, "request_id", "unknown")
 
@@ -60,10 +59,9 @@ async def api_exception_handler(request: Request, exc: APIException) -> JSONResp
 
 
 async def validation_exception_handler(
-    request: Request, exc: RequestValidationError | PydanticValidationError
+    request: Request, exc: RequestValidationError | PydanticValidationError,
 ) -> JSONResponse:
-    """
-    Handle Pydantic validation errors with user-friendly messages.
+    """Handle Pydantic validation errors with user-friendly messages.
 
     Args:
         request: Incoming request
@@ -71,6 +69,7 @@ async def validation_exception_handler(
 
     Returns:
         JSONResponse with standardized error format
+
     """
     request_id = getattr(request.state, "request_id", "unknown")
 
@@ -83,7 +82,7 @@ async def validation_exception_handler(
                 "field": field,
                 "message": error["msg"],
                 "type": error["type"],
-            }
+            },
         )
 
     error_response = {
@@ -110,8 +109,7 @@ async def validation_exception_handler(
 
 
 async def general_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    """
-    Handle unexpected exceptions.
+    """Handle unexpected exceptions.
 
     Args:
         request: Incoming request
@@ -119,12 +117,13 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
 
     Returns:
         JSONResponse with standardized error format (no sensitive details)
+
     """
     request_id = getattr(request.state, "request_id", "unknown")
 
     # Log the full exception for debugging (but don't expose to client)
     logger.error(
-        f"Unhandled Exception | {request_id} | {str(exc)}",
+        f"Unhandled Exception | {request_id} | {exc!s}",
         extra={"request_id": request_id},
         exc_info=True,
     )

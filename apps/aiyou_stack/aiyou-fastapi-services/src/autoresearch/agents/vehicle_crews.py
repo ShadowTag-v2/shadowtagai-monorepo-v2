@@ -1,5 +1,4 @@
-"""
-Vehicle Crews with Anonymous Voting
+"""Vehicle Crews with Anonymous Voting
 ===================================
 Implements anonymous voting at vehicle level for 0% error rate.
 Based on Kosmos Paper consensus mechanism.
@@ -57,8 +56,7 @@ class AgentVote:
 
 @dataclass
 class VehicleVote:
-    """
-    Aggregated vote from vehicle crew.
+    """Aggregated vote from vehicle crew.
     Individual votes NOT exposed - maintains anonymity.
     """
 
@@ -119,8 +117,7 @@ class SquadronConsensus:
 
 
 class VehicleCrew:
-    """
-    Manages agents in a vehicle and their anonymous voting.
+    """Manages agents in a vehicle and their anonymous voting.
 
     Kosmos Paper Integration:
     - 0% error rate via unanimous vehicle consensus
@@ -163,8 +160,7 @@ class VehicleCrew:
         decision: dict[str, Any],
         vote_fn: Callable[[str, dict[str, Any]], VoteOption],
     ) -> bool:
-        """
-        Collect vote from a single agent.
+        """Collect vote from a single agent.
 
         Args:
             agent_id: Agent casting vote
@@ -173,6 +169,7 @@ class VehicleCrew:
 
         Returns:
             True if vote collected successfully
+
         """
         if agent_id not in self.agents:
             logger.warning(f"Agent {agent_id} not in vehicle {self.vehicle_id}")
@@ -202,8 +199,7 @@ class VehicleCrew:
         return True
 
     def aggregate_votes(self) -> VehicleVote:
-        """
-        Aggregate all agent votes into anonymous vehicle vote.
+        """Aggregate all agent votes into anonymous vehicle vote.
 
         Individual votes are NOT exposed - only aggregates.
         0% error rate via unanimous consensus requirement.
@@ -223,7 +219,7 @@ class VehicleCrew:
 
         # Generate verification hash (proves votes happened without revealing them)
         verification = hashlib.sha256(
-            f"{self.vehicle_id}:{self._vote_session_id}:{[v.vote_hash for v in self._votes.values()]}".encode()
+            f"{self.vehicle_id}:{self._vote_session_id}:{[v.vote_hash for v in self._votes.values()]}".encode(),
         ).hexdigest()[:24]
 
         vehicle_vote = VehicleVote(
@@ -241,16 +237,15 @@ class VehicleCrew:
 
         logger.info(
             f"Vehicle {self.callsign} vote: {decision.value} "
-            f"({approve_count}A/{reject_count}R/{abstain_count}X)"
+            f"({approve_count}A/{reject_count}R/{abstain_count}X)",
         )
 
         return vehicle_vote
 
     def _determine_decision(
-        self, approve: int, reject: int, abstain: int, total: int
+        self, approve: int, reject: int, abstain: int, total: int,
     ) -> VoteOption:
-        """
-        Determine vehicle decision based on consensus type.
+        """Determine vehicle decision based on consensus type.
 
         For UNANIMOUS (0% error rate):
         - ALL must approve for vehicle to approve
@@ -263,42 +258,36 @@ class VehicleCrew:
             # 0% error rate: Require unanimous approval
             if approve == total:
                 return VoteOption.APPROVE
-            elif reject > 0:
+            if reject > 0:
                 return VoteOption.REJECT
-            else:
-                return VoteOption.ABSTAIN
+            return VoteOption.ABSTAIN
 
-        elif self.consensus_type == ConsensusType.SUPERMAJORITY:
+        if self.consensus_type == ConsensusType.SUPERMAJORITY:
             # 2/3 must agree
             threshold = (total * 2) // 3
             if approve >= threshold:
                 return VoteOption.APPROVE
-            elif reject >= threshold:
+            if reject >= threshold:
                 return VoteOption.REJECT
-            else:
-                return VoteOption.ABSTAIN
+            return VoteOption.ABSTAIN
 
-        elif self.consensus_type == ConsensusType.MAJORITY:
+        if self.consensus_type == ConsensusType.MAJORITY:
             # >50% must agree
             if approve > total // 2:
                 return VoteOption.APPROVE
-            elif reject > total // 2:
+            if reject > total // 2:
                 return VoteOption.REJECT
-            else:
-                return VoteOption.ABSTAIN
+            return VoteOption.ABSTAIN
 
-        else:  # PLURALITY
-            if approve > reject and approve > abstain:
-                return VoteOption.APPROVE
-            elif reject > approve and reject > abstain:
-                return VoteOption.REJECT
-            else:
-                return VoteOption.ABSTAIN
+        if approve > reject and approve > abstain:
+            return VoteOption.APPROVE
+        if reject > approve and reject > abstain:
+            return VoteOption.REJECT
+        return VoteOption.ABSTAIN
 
 
 class SquadronVotingEngine:
-    """
-    Squadron-level voting coordination.
+    """Squadron-level voting coordination.
 
     Collects vehicle votes and determines squadron consensus.
     Maintains full anonymity while achieving 0% error rate.
@@ -324,10 +313,9 @@ class SquadronVotingEngine:
         return crew
 
     async def conduct_vote(
-        self, decision: dict[str, Any], timeout_seconds: float = 30.0
+        self, decision: dict[str, Any], timeout_seconds: float = 30.0,
     ) -> SquadronConsensus:
-        """
-        Conduct squadron-wide vote on a decision.
+        """Conduct squadron-wide vote on a decision.
 
         Args:
             decision: The decision to vote on
@@ -335,6 +323,7 @@ class SquadronVotingEngine:
 
         Returns:
             SquadronConsensus with result
+
         """
         self._current_decision = decision
         self._vehicle_votes = {}
@@ -348,7 +337,7 @@ class SquadronVotingEngine:
         # Collect votes from all vehicles (with timeout)
         try:
             await asyncio.wait_for(
-                self._collect_all_vehicle_votes(decision), timeout=timeout_seconds
+                self._collect_all_vehicle_votes(decision), timeout=timeout_seconds,
             )
         except TimeoutError:
             logger.warning("Vote collection timed out")
@@ -358,7 +347,6 @@ class SquadronVotingEngine:
 
     async def _collect_all_vehicle_votes(self, decision: dict[str, Any]) -> None:
         """Collect votes from all vehicle crews"""
-
         for vehicle_id, crew in self.vehicle_crews.items():
             # Simulate agent voting (in production, this calls actual agents)
             for agent_id in crew.agents:
@@ -370,8 +358,7 @@ class SquadronVotingEngine:
             self._vehicle_votes[vehicle_id] = crew.aggregate_votes()
 
     def _simulate_agent_vote(self, agent_id: str, decision: dict[str, Any]) -> VoteOption:
-        """
-        Simulate agent voting (placeholder for real LLM calls).
+        """Simulate agent voting (placeholder for real LLM calls).
 
         In production, this would call the actual Gemini model to decide.
         """
@@ -384,10 +371,9 @@ class SquadronVotingEngine:
 
         if agent_hash < threshold:
             return VoteOption.APPROVE
-        elif agent_hash > 0xFFFFFFFF - threshold // 10:
+        if agent_hash > 0xFFFFFFFF - threshold // 10:
             return VoteOption.REJECT
-        else:
-            return VoteOption.ABSTAIN
+        return VoteOption.ABSTAIN
 
     def _aggregate_squadron_votes(self) -> SquadronConsensus:
         """Aggregate all vehicle votes into squadron consensus"""
@@ -413,7 +399,7 @@ class SquadronVotingEngine:
 
         # Determine squadron decision
         decision, consensus_achieved = self._determine_squadron_decision(
-            vehicles_approve, vehicles_reject, vehicles_abstain, total_vehicles
+            vehicles_approve, vehicles_reject, vehicles_abstain, total_vehicles,
         )
 
         consensus = SquadronConsensus(
@@ -431,13 +417,13 @@ class SquadronVotingEngine:
         logger.info(
             f"Squadron consensus: {decision.value} "
             f"(vehicles: {vehicles_approve}A/{vehicles_reject}R/{vehicles_abstain}X) "
-            f"achieved={consensus_achieved}"
+            f"achieved={consensus_achieved}",
         )
 
         return consensus
 
     def _determine_squadron_decision(
-        self, approve: int, reject: int, abstain: int, total: int
+        self, approve: int, reject: int, abstain: int, total: int,
     ) -> tuple[VoteOption, bool]:
         """Determine squadron decision and whether consensus was achieved"""
         if total == 0:
@@ -446,35 +432,30 @@ class SquadronVotingEngine:
         if self.consensus_type == ConsensusType.UNANIMOUS:
             if approve == total:
                 return VoteOption.APPROVE, True
-            elif reject > 0:
+            if reject > 0:
                 return VoteOption.REJECT, True
-            else:
-                return VoteOption.ABSTAIN, False
+            return VoteOption.ABSTAIN, False
 
-        elif self.consensus_type == ConsensusType.SUPERMAJORITY:
+        if self.consensus_type == ConsensusType.SUPERMAJORITY:
             threshold = (total * 2) // 3
             if approve >= threshold:
                 return VoteOption.APPROVE, True
-            elif reject >= threshold:
+            if reject >= threshold:
                 return VoteOption.REJECT, True
-            else:
-                return VoteOption.ABSTAIN, False
+            return VoteOption.ABSTAIN, False
 
-        elif self.consensus_type == ConsensusType.MAJORITY:
+        if self.consensus_type == ConsensusType.MAJORITY:
             if approve > total // 2:
                 return VoteOption.APPROVE, True
-            elif reject > total // 2:
+            if reject > total // 2:
                 return VoteOption.REJECT, True
-            else:
-                return VoteOption.ABSTAIN, False
+            return VoteOption.ABSTAIN, False
 
-        else:  # PLURALITY
-            if approve > reject and approve > abstain:
-                return VoteOption.APPROVE, approve > (total // 3)
-            elif reject > approve and reject > abstain:
-                return VoteOption.REJECT, reject > (total // 3)
-            else:
-                return VoteOption.ABSTAIN, False
+        if approve > reject and approve > abstain:
+            return VoteOption.APPROVE, approve > (total // 3)
+        if reject > approve and reject > abstain:
+            return VoteOption.REJECT, reject > (total // 3)
+        return VoteOption.ABSTAIN, False
 
     def get_vote_summary(self) -> dict[str, Any]:
         """Get summary of last vote"""

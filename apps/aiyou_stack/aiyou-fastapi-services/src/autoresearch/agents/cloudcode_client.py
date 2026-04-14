@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Cloud Code API Client: Wrapper for Antigravity Cloud Code API
+"""Cloud Code API Client: Wrapper for Antigravity Cloud Code API
 Supports single account operation with scaling to 10 accounts.
 
 Part of Colab Coop automation stack.
@@ -30,8 +29,7 @@ class AccountStats:
 
 
 class CloudCodeClient:
-    """
-    Cloud Code API client for Antigravity integration.
+    """Cloud Code API client for Antigravity integration.
 
     Endpoints:
     - cloudcode-pa.googleapis.com (Cloud Code)
@@ -47,11 +45,11 @@ class CloudCodeClient:
     GEMINI_API_URL = "https://generativelanguage.googleapis.com"
 
     def __init__(self, account_id: int = 1):
-        """
-        Initialize client with specific account.
+        """Initialize client with specific account.
 
         Args:
             account_id: Account number 1-10, maps to GEMINI_KEY_{n}
+
         """
         self.account_id = account_id
         self.api_key = self._load_api_key(account_id)
@@ -82,8 +80,7 @@ class CloudCodeClient:
         return os.getenv("GOOGLE_API_KEY")
 
     async def code_assist(self, context: str, instruction: str) -> dict[str, Any]:
-        """
-        Get code assistance from Cloud Code API.
+        """Get code assistance from Cloud Code API.
 
         Args:
             context: Current code context (file content, cursor position)
@@ -91,6 +88,7 @@ class CloudCodeClient:
 
         Returns:
             dict with response, tokens, cost
+
         """
         if not self.model:
             return {"error": "No API key configured", "response": ""}
@@ -128,8 +126,7 @@ Provide your response in a format suitable for IDE integration."""
             }
 
     async def generate_code(self, prompt: str, language: str = "python") -> dict[str, Any]:
-        """
-        Generate code from natural language description.
+        """Generate code from natural language description.
 
         Args:
             prompt: Description of what to generate
@@ -137,6 +134,7 @@ Provide your response in a format suitable for IDE integration."""
 
         Returns:
             dict with generated code
+
         """
         if not self.model:
             return {"error": "No API key configured", "code": ""}
@@ -166,8 +164,7 @@ Return ONLY the code, no explanations."""
                 lines = code.split("```")
                 if len(lines) >= 2:
                     code_block = lines[1]
-                    if code_block.startswith(language):
-                        code_block = code_block[len(language) :]
+                    code_block = code_block.removeprefix(language)
                     code = code_block.strip()
 
             return {
@@ -181,10 +178,9 @@ Return ONLY the code, no explanations."""
             return {"error": str(e), "code": "", "success": False}
 
     async def execute_notebook_cell(
-        self, code: str, notebook_context: str | None = None
+        self, code: str, notebook_context: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Prepare code for Colab notebook execution.
+        """Prepare code for Colab notebook execution.
 
         Args:
             code: Code to execute
@@ -192,6 +188,7 @@ Return ONLY the code, no explanations."""
 
         Returns:
             dict with prepared code and execution hints
+
         """
         if not self.model:
             return {"error": "No API key configured"}
@@ -238,8 +235,7 @@ Return JSON with:
             return {"error": str(e)}
 
     async def route_to_minions(self, prompt: str, tier: str = "task") -> dict[str, Any]:
-        """
-        Route request to minions server for distributed execution.
+        """Route request to minions server for distributed execution.
 
         Args:
             prompt: Task prompt
@@ -247,6 +243,7 @@ Return JSON with:
 
         Returns:
             minions response
+
         """
         minions_url = os.getenv("minionS_URL", "http://localhost:8600")
 
@@ -282,17 +279,16 @@ Return JSON with:
 
 
 class CloudCodePool:
-    """
-    Pool of CloudCodeClients for multi-account operations.
+    """Pool of CloudCodeClients for multi-account operations.
     Start with 1, scale to 10.
     """
 
     def __init__(self, num_accounts: int = 1):
-        """
-        Initialize pool with specified number of accounts.
+        """Initialize pool with specified number of accounts.
 
         Args:
             num_accounts: Number of accounts to use (1-10)
+
         """
         self.num_accounts = min(num_accounts, 10)
         self.clients: list[CloudCodeClient] = []
@@ -315,14 +311,14 @@ class CloudCodePool:
         return client
 
     async def distribute_tasks(self, prompts: list[str]) -> list[dict[str, Any]]:
-        """
-        Distribute tasks across all accounts in parallel.
+        """Distribute tasks across all accounts in parallel.
 
         Args:
             prompts: List of prompts to process
 
         Returns:
             List of results
+
         """
         tasks = []
         for i, prompt in enumerate(prompts):
@@ -361,7 +357,7 @@ if __name__ == "__main__":
 
         # Test code generation
         result = await client.generate_code(
-            "Create a function that calculates fibonacci numbers", language="python"
+            "Create a function that calculates fibonacci numbers", language="python",
         )
         print("Generated Code:", result)
 

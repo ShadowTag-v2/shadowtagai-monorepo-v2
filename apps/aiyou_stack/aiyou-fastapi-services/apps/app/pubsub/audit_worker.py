@@ -1,5 +1,4 @@
-"""
-Audit Event Worker - Resilient processor with DLQ support.
+"""Audit Event Worker - Resilient processor with DLQ support.
 
 Governance-grade message processing that never loses an audit trail.
 """
@@ -13,8 +12,7 @@ from google.cloud import pubsub_v1, storage
 
 
 class AuditWorker:
-    """
-    Resilient audit event processor with DLQ support.
+    """Resilient audit event processor with DLQ support.
 
     Features:
     - Automatic retry with exponential backoff
@@ -35,21 +33,21 @@ class AuditWorker:
 
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscription_id
+            self.project_id, self.subscription_id,
         )
 
         # GCS client for audit storage
         self.storage_client = storage.Client()
 
     def generate_signed_trace(self, trace_data: dict) -> str:
-        """
-        Store audit trace in GCS and return signed URL.
+        """Store audit trace in GCS and return signed URL.
 
         Args:
             trace_data: The audit trace data
 
         Returns:
             Signed URL valid for 7 days
+
         """
         decision_id = trace_data.get("decision_id", "unknown")
         timestamp = datetime.utcnow().strftime("%Y/%m/%d")
@@ -65,14 +63,13 @@ class AuditWorker:
 
         # Generate signed URL (7 days)
         signed_url = blob.generate_signed_url(
-            version="v4", expiration=timedelta(days=7), method="GET"
+            version="v4", expiration=timedelta(days=7), method="GET",
         )
 
         return signed_url
 
     def deliver_webhook(self, decision_id: str, signed_url: str) -> bool:
-        """
-        Deliver audit notification via webhook.
+        """Deliver audit notification via webhook.
 
         Args:
             decision_id: The decision identifier
@@ -80,6 +77,7 @@ class AuditWorker:
 
         Returns:
             True if delivery succeeded
+
         """
         webhook_url = os.environ.get("AUDIT_WEBHOOK_URL")
         if not webhook_url:
@@ -103,8 +101,7 @@ class AuditWorker:
             return False
 
     def process_message(self, message: pubsub_v1.subscriber.message.Message) -> None:
-        """
-        Process a single audit message with failure classification.
+        """Process a single audit message with failure classification.
 
         Failure types:
         - Transient (network): nack() -> retry immediately
@@ -140,17 +137,17 @@ class AuditWorker:
             message.nack()
 
     def start(self, timeout: float | None = None) -> None:
-        """
-        Start the worker with streaming pull.
+        """Start the worker with streaming pull.
 
         Args:
             timeout: Optional timeout in seconds (None = run forever)
+
         """
         print(f"Starting Audit Worker on {self.subscription_path}")
         print("Waiting for messages...")
 
         streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path, callback=self.process_message
+            self.subscription_path, callback=self.process_message,
         )
 
         try:
@@ -161,19 +158,19 @@ class AuditWorker:
             streaming_pull_future.result()
 
     def start_with_callback(
-        self, callback: Callable[[dict], None], timeout: float | None = None
+        self, callback: Callable[[dict], None], timeout: float | None = None,
     ) -> None:
-        """
-        Start worker with custom callback for processing.
+        """Start worker with custom callback for processing.
 
         Args:
             callback: Function to call with parsed trace data
             timeout: Optional timeout in seconds
+
         """
 
         def wrapped_callback(message: pubsub_v1.subscriber.message.Message) -> None:
             print(
-                f"\n[RECEIVED] Msg ID: {message.message_id} | Attempt: {message.delivery_attempt}"
+                f"\n[RECEIVED] Msg ID: {message.message_id} | Attempt: {message.delivery_attempt}",
             )
 
             try:
@@ -197,7 +194,7 @@ class AuditWorker:
         print(f"Starting Audit Worker (custom callback) on {self.subscription_path}")
 
         streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path, callback=wrapped_callback
+            self.subscription_path, callback=wrapped_callback,
         )
 
         try:

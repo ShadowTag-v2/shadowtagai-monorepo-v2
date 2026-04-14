@@ -26,8 +26,7 @@ logger = setup_logger(__name__)
 
 
 class LandingPageOptimizerService:
-    """
-    Service for optimizing landing pages using Claude Agent SDK
+    """Service for optimizing landing pages using Claude Agent SDK
 
     This service acts as a conversion copywriting expert that:
     - Analyzes landing page content for conversion opportunities
@@ -60,19 +59,18 @@ Your role is to analyze landing pages and provide specific, actionable recommend
 Provide concrete examples and prioritize recommendations by expected impact on conversions."""
 
     def __init__(self, api_key: str | None = None):
-        """
-        Initialize the Landing Page Optimizer service
+        """Initialize the Landing Page Optimizer service
 
         Args:
             api_key: Anthropic API key (uses settings.ANTHROPIC_API_KEY if not provided)
+
         """
         self.api_key = api_key or settings.ANTHROPIC_API_KEY
         if not self.api_key:
             logger.warning("ANTHROPIC_API_KEY not set - service will not function properly")
 
     async def optimize_page(self, request: OptimizePageRequest) -> OptimizationAnalysis:
-        """
-        Analyze and optimize a landing page
+        """Analyze and optimize a landing page
 
         Args:
             request: Optimization request with page content and parameters
@@ -83,6 +81,7 @@ Provide concrete examples and prioritize recommendations by expected impact on c
         Raises:
             AgentException: If Claude Agent SDK encounters an error
             ValidationException: If request validation fails
+
         """
         try:
             start_time = datetime.now()
@@ -103,23 +102,23 @@ Provide concrete examples and prioritize recommendations by expected impact on c
             return analysis
 
         except Exception as e:
-            logger.exception(f"Error during landing page optimization: {str(e)}")
+            logger.exception(f"Error during landing page optimization: {e!s}")
             raise AgentException(
-                message=f"Failed to optimize landing page: {str(e)}",
+                message=f"Failed to optimize landing page: {e!s}",
                 details={"request": request.model_dump()},
             )
 
     async def generate_headlines(
-        self, request: GenerateHeadlinesRequest
+        self, request: GenerateHeadlinesRequest,
     ) -> list[HeadlineVariation]:
-        """
-        Generate headline variations
+        """Generate headline variations
 
         Args:
             request: Headline generation request
 
         Returns:
             List of headline variations
+
         """
         prompt = f"""Generate {request.count} compelling headline variations for a landing page.
 
@@ -148,18 +147,18 @@ Format your response as a JSON array of objects with fields: text, reasoning, ta
                 for h in headlines[: request.count]
             ]
         except Exception as e:
-            logger.exception(f"Error generating headlines: {str(e)}")
-            raise AgentException(f"Failed to generate headlines: {str(e)}")
+            logger.exception(f"Error generating headlines: {e!s}")
+            raise AgentException(f"Failed to generate headlines: {e!s}")
 
     async def generate_ctas(self, request: GenerateCTARequest) -> list[CTAVariation]:
-        """
-        Generate CTA variations
+        """Generate CTA variations
 
         Args:
             request: CTA generation request
 
         Returns:
             List of CTA variations
+
         """
         prompt = f"""Generate {request.count} compelling call-to-action (CTA) variations for a landing page.
 
@@ -189,20 +188,20 @@ Format your response as a JSON array of objects with fields: text, color_suggest
                 for c in ctas[: request.count]
             ]
         except Exception as e:
-            logger.exception(f"Error generating CTAs: {str(e)}")
-            raise AgentException(f"Failed to generate CTAs: {str(e)}")
+            logger.exception(f"Error generating CTAs: {e!s}")
+            raise AgentException(f"Failed to generate CTAs: {e!s}")
 
     async def generate_social_proof(
-        self, request: GenerateSocialProofRequest
+        self, request: GenerateSocialProofRequest,
     ) -> list[SocialProofSuggestion]:
-        """
-        Generate social proof suggestions
+        """Generate social proof suggestions
 
         Args:
             request: Social proof generation request
 
         Returns:
             List of social proof suggestions
+
         """
         prompt = f"""Generate social proof element suggestions for a landing page.
 
@@ -230,12 +229,11 @@ Format your response as a JSON array of objects with fields: type, content, plac
                 for s in suggestions
             ]
         except Exception as e:
-            logger.exception(f"Error generating social proof: {str(e)}")
-            raise AgentException(f"Failed to generate social proof: {str(e)}")
+            logger.exception(f"Error generating social proof: {e!s}")
+            raise AgentException(f"Failed to generate social proof: {e!s}")
 
     def _build_optimization_prompt(self, request: OptimizePageRequest) -> str:
         """Build the optimization prompt from request parameters"""
-
         focus_areas_str = ", ".join([area.value for area in request.focus_areas])
 
         prompt = f"""Analyze this landing page and provide a comprehensive optimization report.
@@ -310,14 +308,14 @@ Focus on providing specific, actionable recommendations that can be implemented 
         return prompt
 
     async def _query_claude(self, prompt: str) -> str:
-        """
-        Query Claude Agent SDK
+        """Query Claude Agent SDK
 
         Args:
             prompt: User prompt
 
         Returns:
             Response text from Claude
+
         """
         try:
             # Import here to avoid circular dependencies and allow for lazy loading
@@ -342,14 +340,13 @@ Focus on providing specific, actionable recommendations that can be implemented 
             return response_text.strip()
 
         except Exception as e:
-            logger.exception(f"Error querying Claude: {str(e)}")
-            raise AgentException(f"Failed to query Claude Agent: {str(e)}")
+            logger.exception(f"Error querying Claude: {e!s}")
+            raise AgentException(f"Failed to query Claude Agent: {e!s}")
 
     def _parse_optimization_response(
-        self, response_text: str, request: OptimizePageRequest
+        self, response_text: str, request: OptimizePageRequest,
     ) -> OptimizationAnalysis:
-        """
-        Parse Claude's response into structured OptimizationAnalysis
+        """Parse Claude's response into structured OptimizationAnalysis
 
         Args:
             response_text: Raw response from Claude
@@ -357,6 +354,7 @@ Focus on providing specific, actionable recommendations that can be implemented 
 
         Returns:
             Structured OptimizationAnalysis
+
         """
         try:
             # Try to extract JSON from the response
@@ -379,17 +377,17 @@ Focus on providing specific, actionable recommendations that can be implemented 
 
             # Parse headline variations if present
             headline_variations = None
-            if "headline_variations" in data and data["headline_variations"]:
+            if data.get("headline_variations"):
                 headline_variations = [HeadlineVariation(**h) for h in data["headline_variations"]]
 
             # Parse CTA variations if present
             cta_variations = None
-            if "cta_variations" in data and data["cta_variations"]:
+            if data.get("cta_variations"):
                 cta_variations = [CTAVariation(**c) for c in data["cta_variations"]]
 
             # Parse social proof suggestions if present
             social_proof_suggestions = None
-            if "social_proof_suggestions" in data and data["social_proof_suggestions"]:
+            if data.get("social_proof_suggestions"):
                 social_proof_suggestions = [
                     SocialProofSuggestion(**s) for s in data["social_proof_suggestions"]
                 ]
@@ -406,7 +404,7 @@ Focus on providing specific, actionable recommendations that can be implemented 
             )
 
         except Exception as e:
-            logger.exception(f"Error parsing optimization response: {str(e)}")
+            logger.exception(f"Error parsing optimization response: {e!s}")
             # Return a basic analysis if parsing fails
             return OptimizationAnalysis(
                 overall_score=50.0,
@@ -415,18 +413,17 @@ Focus on providing specific, actionable recommendations that can be implemented 
                 recommendations=[
                     Recommendation(
                         title="Analysis Error",
-                        description=f"Failed to parse analysis: {str(e)}. Raw response available in logs.",
+                        description=f"Failed to parse analysis: {e!s}. Raw response available in logs.",
                         category=FocusArea.ALL,
                         priority=Priority.HIGH,
                         expected_impact="N/A",
                         implementation_steps=["Contact support with error details"],
-                    )
+                    ),
                 ],
             )
 
     def _parse_json_response(self, response_text: str, expected_type: type) -> Any:
-        """
-        Extract and parse JSON from Claude's response
+        """Extract and parse JSON from Claude's response
 
         Args:
             response_text: Raw response text that may contain JSON
@@ -434,6 +431,7 @@ Focus on providing specific, actionable recommendations that can be implemented 
 
         Returns:
             Parsed JSON object
+
         """
         # Try to find JSON in markdown code blocks first
         json_match = re.search(r"```(?:json)?\s*(\{.*?\}|\[.*?\])\s*```", response_text, re.DOTALL)
@@ -453,5 +451,5 @@ Focus on providing specific, actionable recommendations that can be implemented 
                 raise ValueError(f"Expected {expected_type.__name__}, got {type(data).__name__}")
             return data
         except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse JSON: {str(e)}\nContent: {json_str[:500]}")
-            raise ValueError(f"Invalid JSON in response: {str(e)}")
+            logger.error(f"Failed to parse JSON: {e!s}\nContent: {json_str[:500]}")
+            raise ValueError(f"Invalid JSON in response: {e!s}")

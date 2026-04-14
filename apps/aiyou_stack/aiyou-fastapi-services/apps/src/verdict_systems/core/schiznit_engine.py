@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Schiznit Engine
+"""Verdict Systems - Schiznit Engine
 Core executive function orchestration layer
 
 The Schiznit engine is the heart of Verdict Systems, managing task

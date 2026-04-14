@@ -36,8 +36,7 @@ def find_extraction_files(input_dir: Path, pattern: str) -> list[Path]:
 
 
 def extract_conversations_from_data(data: Any, filename: str) -> list[dict[str, Any]]:
-    """
-    Intelligently extracts conversation lists from various extraction formats.
+    """Intelligently extracts conversation lists from various extraction formats.
     """
     conversations = []
 
@@ -110,7 +109,7 @@ def extract_conversations_from_data(data: Any, filename: str) -> list[dict[str, 
 
     # Case 4: Generic Dict - try to find any list values
     logging.warning(
-        f"File '{filename}' structure unknown. Searching for lists within top-level keys."
+        f"File '{filename}' structure unknown. Searching for lists within top-level keys.",
     )
     for key, value in data.items():
         if isinstance(value, list) and len(value) > 0:
@@ -121,10 +120,9 @@ def extract_conversations_from_data(data: Any, filename: str) -> list[dict[str, 
 
 
 def filter_conversations(
-    conversations: list[dict[str, Any]], exclude_keywords: list[str]
+    conversations: list[dict[str, Any]], exclude_keywords: list[str],
 ) -> list[dict[str, Any]]:
-    """
-    Filters out conversations that contain any of the exclusion keywords.
+    """Filters out conversations that contain any of the exclusion keywords.
     """
     if not exclude_keywords:
         return conversations
@@ -151,16 +149,15 @@ def filter_conversations(
         filtered.append(conv)
 
     logging.info(
-        f"Privacy Filter: Kept {len(filtered)}/{len(conversations)} conversations. (Excluded {skipped_count})"
+        f"Privacy Filter: Kept {len(filtered)}/{len(conversations)} conversations. (Excluded {skipped_count})",
     )
     return filtered
 
 
 def merge_json_files(
-    file_paths: list[Path], exclude_keywords: list[str] = []
+    file_paths: list[Path], exclude_keywords: list[str] = [],
 ) -> list[dict[str, Any]]:
-    """
-    Merges content from a list of JSON files.
+    """Merges content from a list of JSON files.
     """
     merged_data = []
     for file_path in file_paths:
@@ -170,9 +167,9 @@ def merge_json_files(
                 file_conversations = extract_conversations_from_data(data, file_path.name)
                 merged_data.extend(file_conversations)
         except json.JSONDecodeError:
-            logging.error(f"Error decoding JSON from '{file_path}'. Skipping this file.")
+            logging.exception(f"Error decoding JSON from '{file_path}'. Skipping this file.")
         except Exception as e:
-            logging.error(f"An unexpected error occurred with file '{file_path}': {e}")
+            logging.exception(f"An unexpected error occurred with file '{file_path}': {e}")
 
     # Apply filtering
     if exclude_keywords:
@@ -189,13 +186,13 @@ def save_merged_data(output_file: Path, data: list[dict[str, Any]]):
             json.dump(data, f, indent=2, ensure_ascii=False)
         logging.info(f"Successfully saved {len(data)} merged records to '{output_file}'.")
     except Exception as e:
-        logging.error(f"Failed to save merged data to '{output_file}': {e}")
+        logging.exception(f"Failed to save merged data to '{output_file}': {e}")
 
 
 def main():
     """Main function to orchestrate the file merging process."""
     parser = argparse.ArgumentParser(
-        description="Merge multiple web extraction JSON files into a single file."
+        description="Merge multiple web extraction JSON files into a single file.",
     )
     parser.add_argument(
         "--input-dir",
@@ -263,7 +260,7 @@ def main():
 
     if len(unique_data) < len(merged_data):
         logging.info(
-            f"Removed {len(merged_data) - len(unique_data)} duplicate records based on ID."
+            f"Removed {len(merged_data) - len(unique_data)} duplicate records based on ID.",
         )
 
     save_merged_data(args.output_file, unique_data)

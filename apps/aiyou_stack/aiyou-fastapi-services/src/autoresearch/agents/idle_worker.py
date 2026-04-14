@@ -1,5 +1,4 @@
-"""
-Idle Worker - 24/7 Maintenance & Intelligence Ingestion
+"""Idle Worker - 24/7 Maintenance & Intelligence Ingestion
 
 Keeps all paid instances busy during downtime with:
 - System maintenance (logs, deps, security)
@@ -39,8 +38,7 @@ class MaintenanceTask:
 
 
 class IdleWorker:
-    """
-    Keeps instances busy 24/7 with maintenance and intelligence ingestion.
+    """Keeps instances busy 24/7 with maintenance and intelligence ingestion.
 
     Tasks run during idle periods to maximize license utilization.
     """

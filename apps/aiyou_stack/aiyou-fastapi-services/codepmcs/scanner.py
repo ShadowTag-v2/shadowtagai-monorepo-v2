@@ -1,5 +1,4 @@
-"""
-CodePMCS Scanner - Gemini-powered code quality scanner.
+"""CodePMCS Scanner - Gemini-powered code quality scanner.
 
 Uses Gemini function calling for intelligent issue detection:
 - Security vulnerabilities (OWASP Top 10)
@@ -127,7 +126,7 @@ class ScanResult:
                             "name": "CodePMCS",
                             "version": "1.0.0",
                             "informationUri": "https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services",
-                        }
+                        },
                     },
                     "results": [
                         {
@@ -142,13 +141,13 @@ class ScanResult:
                                             "startLine": issue.line_start,
                                             "endLine": issue.line_end,
                                         },
-                                    }
-                                }
+                                    },
+                                },
                             ],
                         }
                         for issue in self.issues
                     ],
-                }
+                },
             ],
         }
 
@@ -303,7 +302,7 @@ class CodeScanner:
                                 title=ri.get("code", "Style Issue"),
                                 description=ri.get("message", ""),
                                 rule_id=ri.get("code"),
-                            )
+                            ),
                         )
             except (subprocess.TimeoutExpired, FileNotFoundError, json.JSONDecodeError):
                 pass  # ruff not available or failed
@@ -314,10 +313,9 @@ class CodeScanner:
         """Map ruff error code to severity."""
         if code.startswith("S"):  # Security
             return Severity.HIGH
-        elif code.startswith("E") or code.startswith("F"):  # Errors
+        if code.startswith("E") or code.startswith("F"):  # Errors
             return Severity.MEDIUM
-        else:
-            return Severity.LOW
+        return Severity.LOW
 
     async def _scan_todos(self, files: list[Path]) -> list[Issue]:
         """Scan for TODO, FIXME, HACK, XXX comments."""
@@ -343,7 +341,7 @@ class CodeScanner:
                                     title=f"{pattern} found",
                                     description=line.strip(),
                                     code_snippet=line.strip(),
-                                )
+                                ),
                             )
                             break  # Only report once per line
             except Exception:
@@ -417,8 +415,7 @@ Return ONLY the JSON array, no other text. If no issues found, return [].
             text = response.text.strip()
             if text.startswith("```"):
                 text = text.split("```")[1]
-                if text.startswith("json"):
-                    text = text[4:]
+                text = text.removeprefix("json")
 
             parsed = json.loads(text)
 
@@ -435,7 +432,7 @@ Return ONLY the JSON array, no other text. If no issues found, return [].
                         title=item.get("title", "Issue detected"),
                         description=item.get("description", ""),
                         suggestion=item.get("suggestion"),
-                    )
+                    ),
                 )
 
             return issues

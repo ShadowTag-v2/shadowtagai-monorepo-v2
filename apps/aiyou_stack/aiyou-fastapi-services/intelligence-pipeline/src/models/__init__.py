@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Data Models
+"""PNKLN Intelligence Pipeline - Data Models
 """
 
 from .intelligence_item import (
@@ -12,10 +11,10 @@ from .intelligence_item import (
 )
 
 __all__ = [
+    "CorSynthesis",
     "IntelligenceItem",
     "IntelligenceSource",
     "IntelligenceTier",
     "JRScore",
     "TierClassification",
-    "CorSynthesis",
 ]

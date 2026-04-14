@@ -13,8 +13,7 @@ class ReceiptPayload(BaseModel):
 
 @router.post("/log-receipt")
 async def secure_shadowtag_receipt(payload: ReceiptPayload):
-    """
-    Immutable cryptographic ledger tracking AI asset generation.
+    """Immutable cryptographic ledger tracking AI asset generation.
     """
     try:
         spanner_client = spanner.Client(project="shadowtag-omega-v4")
@@ -32,10 +31,10 @@ async def secure_shadowtag_receipt(payload: ReceiptPayload):
                         payload.video_uri,
                         spanner.COMMIT_TIMESTAMP,
                         True,
-                    )
+                    ),
                 ],
             )
 
         return {"status": "success", "message": "ShadowTag receipt irrevocably logged."}
     except Exception as e:
-        return {"status": "error", "message": f"Failed writing to Spanner: {str(e)}"}
+        return {"status": "error", "message": f"Failed writing to Spanner: {e!s}"}

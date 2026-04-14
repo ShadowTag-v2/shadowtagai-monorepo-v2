@@ -2,8 +2,7 @@ from pydantic import BaseModel
 
 
 class RateCard(BaseModel):
-    """
-    Pnkln Monetization Model (v1 - Dec 2025)
+    """Pnkln Monetization Model (v1 - Dec 2025)
     """
 
     currency: str = "USD"
@@ -44,11 +43,11 @@ class RevenueEvent(BaseModel):
         return savings_fee + compute_fee
 
     def submit_to_billing(self) -> str:
-        """
-        Submit this revenue event to the billing service.
+        """Submit this revenue event to the billing service.
 
         Returns:
             Invoice ID from the billing service
+
         """
         from src.pnkln.services.billing_service import BillingService
 

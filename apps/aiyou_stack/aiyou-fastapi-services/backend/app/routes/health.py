@@ -1,5 +1,4 @@
-"""
-Health check endpoints.
+"""Health check endpoints.
 """
 
 from datetime import datetime
@@ -20,16 +19,14 @@ class HealthResponse(BaseModel):
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
-    """
-    Health check endpoint.
+    """Health check endpoint.
     """
     return HealthResponse(status="healthy", timestamp=datetime.utcnow(), version="1.0.0")
 
 
 @router.get("/", response_model=dict)
 async def root():
-    """
-    Root endpoint.
+    """Root endpoint.
     """
     return {
         "message": "AI Issue Chat Workflow API",

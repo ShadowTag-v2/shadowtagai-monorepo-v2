@@ -1,5 +1,4 @@
-"""
-Basic usage example for Vertex AI Agents
+"""Basic usage example for Vertex AI Agents
 Demonstrates how to load and use agents with Vertex AI
 """
 

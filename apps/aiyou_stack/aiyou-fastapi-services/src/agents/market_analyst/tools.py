@@ -8,8 +8,7 @@ class CompetitiveAnalysisTools:
 
     @staticmethod
     def create_feature_matrix(product: str, competitors: list[str], features: list[str]) -> dict:
-        """
-        Create a feature comparison matrix
+        """Create a feature comparison matrix
 
         Args:
             product: Your product name
@@ -18,6 +17,7 @@ class CompetitiveAnalysisTools:
 
         Returns:
             Dictionary with matrix structure
+
         """
         matrix = {
             "product": product,
@@ -29,20 +29,20 @@ class CompetitiveAnalysisTools:
 
         # Initialize empty comparison grid
         for feature in features:
-            matrix["comparison"][feature] = {product: None, **{comp: None for comp in competitors}}
+            matrix["comparison"][feature] = {product: None, **dict.fromkeys(competitors)}
 
         return matrix
 
     @staticmethod
     def calculate_feature_coverage(feature_matrix: dict) -> dict:
-        """
-        Calculate feature coverage statistics
+        """Calculate feature coverage statistics
 
         Args:
             feature_matrix: Feature comparison matrix
 
         Returns:
             Coverage statistics
+
         """
         total_features = len(feature_matrix.get("features", []))
         product = feature_matrix.get("product", "Unknown")
@@ -66,8 +66,7 @@ class CompetitiveAnalysisTools:
 
     @staticmethod
     def identify_gaps(feature_matrix: dict, product: str) -> dict:
-        """
-        Identify feature gaps where competitors have features you don't
+        """Identify feature gaps where competitors have features you don't
 
         Args:
             feature_matrix: Feature comparison matrix
@@ -75,6 +74,7 @@ class CompetitiveAnalysisTools:
 
         Returns:
             Gap analysis results
+
         """
         gaps = {"critical_gaps": [], "parity_gaps": [], "unique_features": []}
 
@@ -107,8 +107,7 @@ class CompetitiveAnalysisTools:
 
     @staticmethod
     def prioritize_features(features: list[dict], criteria: dict = None) -> list[dict]:
-        """
-        Prioritize features based on impact and effort
+        """Prioritize features based on impact and effort
 
         Args:
             features: List of features with impact/effort ratings
@@ -116,6 +115,7 @@ class CompetitiveAnalysisTools:
 
         Returns:
             Prioritized feature list
+
         """
         if criteria is None:
             criteria = {"impact_weight": 0.6, "effort_weight": 0.4}
@@ -147,10 +147,9 @@ class CompetitiveAnalysisTools:
 
     @staticmethod
     def generate_swot_matrix(
-        strengths: list[str], weaknesses: list[str], opportunities: list[str], threats: list[str]
+        strengths: list[str], weaknesses: list[str], opportunities: list[str], threats: list[str],
     ) -> dict:
-        """
-        Generate a SWOT analysis matrix
+        """Generate a SWOT analysis matrix
 
         Args:
             strengths: List of strengths
@@ -160,6 +159,7 @@ class CompetitiveAnalysisTools:
 
         Returns:
             SWOT matrix dictionary
+
         """
         return {
             "swot_analysis": {
@@ -187,10 +187,9 @@ class MarketPositioningTools:
 
     @staticmethod
     def define_positioning_statement(
-        target_market: str, category: str, unique_benefit: str, reason_to_believe: str
+        target_market: str, category: str, unique_benefit: str, reason_to_believe: str,
     ) -> str:
-        """
-        Generate a positioning statement
+        """Generate a positioning statement
 
         Args:
             target_market: Target customer segment
@@ -200,6 +199,7 @@ class MarketPositioningTools:
 
         Returns:
             Positioning statement
+
         """
         return (
             f"For {target_market} who need {category}, "
@@ -209,14 +209,14 @@ class MarketPositioningTools:
 
     @staticmethod
     def identify_unfair_advantages(capabilities: list[dict]) -> list[dict]:
-        """
-        Identify potential unfair advantages
+        """Identify potential unfair advantages
 
         Args:
             capabilities: List of capabilities with attributes
 
         Returns:
             Ranked unfair advantages
+
         """
         unfair_advantages = []
 
@@ -230,7 +230,7 @@ class MarketPositioningTools:
 
             if score >= 7:
                 unfair_advantages.append(
-                    {**cap, "advantage_score": score, "is_unfair_advantage": True}
+                    {**cap, "advantage_score": score, "is_unfair_advantage": True},
                 )
 
         return sorted(unfair_advantages, key=lambda x: x["advantage_score"], reverse=True)

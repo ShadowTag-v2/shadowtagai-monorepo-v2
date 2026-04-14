@@ -2,8 +2,7 @@ from agents.autoresearch import minion
 
 
 class LLMChorus:
-    """
-    The Horseshoe Loop Orchestrator
+    """The Horseshoe Loop Orchestrator
     - Utilizes 10 Gemini Pro Licenses
     - 3-Pass Verification
     - Antigravity -> Swarm -> Antigravity

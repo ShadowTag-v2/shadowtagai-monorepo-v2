@@ -1,5 +1,4 @@
-"""
-Ecosystem - Unified Legal-Linguistic Multi-Agent System
+"""Ecosystem - Unified Legal-Linguistic Multi-Agent System
 Version: 1.0.0
 
 Philosophy: Legal precision meets agent coordination for 99%+ accuracy.
@@ -82,8 +81,7 @@ class TaskResult:
 
 
 class Ecosystem:
-    """
-    Unified Legal-Linguistic Multi-Agent System.
+    """Unified Legal-Linguistic Multi-Agent System.
 
     Combines:
     - LegalWhiteboard: Single point of truth
@@ -130,8 +128,7 @@ class Ecosystem:
         primary_domain: ExpertiseDomain,
         secondary_domains: list[ExpertiseDomain] = None,
     ) -> EcosystemAgent:
-        """
-        Register agent in ecosystem.
+        """Register agent in ecosystem.
 
         Integrates with all subsystems.
         """
@@ -175,8 +172,7 @@ class Ecosystem:
         audience: str = "technical",
         agent_ids: list[str] = None,
     ) -> TaskResult:
-        """
-        Execute task using full ecosystem.
+        """Execute task using full ecosystem.
 
         Workflow:
         1. Parse input using California Bar Method
@@ -194,6 +190,7 @@ class Ecosystem:
 
         Returns:
             TaskResult with solution and metrics
+
         """
         # Create task
         self.task_counter += 1
@@ -254,7 +251,7 @@ class Ecosystem:
 
         except Exception as e:
             result.status = TaskStatus.FAILED
-            result.solution = f"Error: {str(e)}"
+            result.solution = f"Error: {e!s}"
             result.completed_at = datetime.now()
 
         # Record result
@@ -277,7 +274,7 @@ class Ecosystem:
                         input_data=test.get("input", {}),
                         expected_output=test.get("expected", {}),
                         validation_fn=test.get("validation"),
-                    )
+                    ),
                 )
 
         # Parse input using bar method
@@ -308,7 +305,7 @@ class Ecosystem:
 
         # Get recommended team
         team = self.specialization.recommend_team(
-            list(domains), max(self.min_agents_per_task, len(domains))
+            list(domains), max(self.min_agents_per_task, len(domains)),
         )
 
         return team
@@ -339,8 +336,7 @@ class Ecosystem:
             self.wellness.supplement(agent_id, VitaminType.C_IMMUNITY, 0.5)
 
     def _run_debate(self, agent_ids: list[str], decomposition) -> dict[str, Any]:
-        """
-        Run phased debate.
+        """Run phased debate.
 
         Phases:
         1. ISOLATED: Independent answers
@@ -412,8 +408,7 @@ class Ecosystem:
         }
 
     def _agent_solve(self, agent_id: str, decomposition) -> dict[str, Any]:
-        """
-        Agent generates solution.
+        """Agent generates solution.
 
         In production, this calls actual LLM.
         Here we return placeholder.
@@ -475,7 +470,7 @@ class Ecosystem:
         }
 
     def _record_learnings(
-        self, task_id: str, agent_ids: list[str], debate_result: dict, validation: dict
+        self, task_id: str, agent_ids: list[str], debate_result: dict, validation: dict,
     ) -> int:
         """Record learnings to persistent memory."""
         insights = 0
@@ -584,7 +579,7 @@ class Ecosystem:
             },
             "memory": {
                 "insights_created": len(
-                    [i for i in self.memory.insights if i.agent_id == agent_id]
+                    [i for i in self.memory.insights if i.agent_id == agent_id],
                 ),
                 "knowledge_level": self.memory.get_agent_level(agent_id).name,
             },
@@ -595,8 +590,7 @@ class Ecosystem:
     # =========================================================================
 
     def maintenance_cycle(self) -> dict[str, Any]:
-        """
-        Run maintenance on ecosystem.
+        """Run maintenance on ecosystem.
 
         Checks:
         - Agent regeneration needs
@@ -639,8 +633,7 @@ class Ecosystem:
 
 
 def create_ecosystem(github_repo: str = "", default_agents: bool = True) -> Ecosystem:
-    """
-    Create ecosystem with optional default agents.
+    """Create ecosystem with optional default agents.
 
     "Legal precision meets agent coordination for 99%+ accuracy."
     """
@@ -720,7 +713,7 @@ if __name__ == "__main__":
                 "description": "Should reject invalid tokens",
                 "input": {"token": "invalid"},
                 "expected": {"status": 401},
-            }
+            },
         ],
         audience="technical",
     )

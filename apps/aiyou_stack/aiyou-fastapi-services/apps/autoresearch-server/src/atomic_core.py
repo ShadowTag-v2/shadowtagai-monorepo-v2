@@ -10,7 +10,7 @@ from google import genai
 try:
     if os.environ.get("GEMINI_API_KEY"):
         client = genai.Client(
-            api_key=os.environ["GEMINI_API_KEY"], http_options={"api_version": "v1beta"}
+            api_key=os.environ["GEMINI_API_KEY"], http_options={"api_version": "v1beta"},
         )
     else:
         # Fallback to Vertex AI (Enterprise / Cloud Run Mode)
@@ -26,8 +26,7 @@ except Exception:
 
 
 def initiate_research_omega(query: str, file_store: str | None = None) -> str:
-    """
-    Starts a stateful research interaction using the Deep Research Agent.
+    """Starts a stateful research interaction using the Deep Research Agent.
     Returns: interaction_id (str)
     """
     tools = [{"type": "google_search"}]
@@ -53,8 +52,7 @@ def initiate_research_omega(query: str, file_store: str | None = None) -> str:
 
 
 def monitor_and_capture_omega(interaction_id: str) -> str:
-    """
-    Polls the interaction until complete.
+    """Polls the interaction until complete.
     Implements the 'Elegance of the Polling & Synthesis Loop'.
     """
     print(f"🔍 Shadowtag-Omega-V2: Investigating Interaction {interaction_id}...")
@@ -69,7 +67,7 @@ def monitor_and_capture_omega(interaction_id: str) -> str:
                 print("✅ Omega Research Complete.")
                 return result
 
-            elif interaction.status == "failed":
+            if interaction.status == "failed":
                 error_msg = getattr(interaction, "error", "Unknown Error")
                 raise Exception(f"Omega Execution Error: {error_msg}")
 
@@ -84,8 +82,7 @@ def monitor_and_capture_omega(interaction_id: str) -> str:
 
 # MCP "USB-C" Integration
 def execute_mcp_tool_call(interaction_id: str, service: str = "bigquery") -> str:
-    """
-    Leverages official MCP support for managed Google Services.
+    """Leverages official MCP support for managed Google Services.
     """
     response = client.interactions.create(
         model="gemini-3-pro-preview",

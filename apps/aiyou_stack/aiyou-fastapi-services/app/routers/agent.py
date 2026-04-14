@@ -31,8 +31,7 @@ class QueryResponse(BaseModel):
 
 @router.post("/query", response_model=QueryResponse)
 async def query_agent(request: QueryRequest):
-    """
-    Query the Claude Agent
+    """Query the Claude Agent
 
     - **prompt**: The query or task to send to the agent
     - **system_prompt**: Optional custom system prompt
@@ -77,5 +76,5 @@ async def list_models():
                 "name": "Claude 3.5 Sonnet",
                 "description": "Fast and capable",
             },
-        ]
+        ],
     }

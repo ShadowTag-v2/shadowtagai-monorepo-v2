@@ -1,5 +1,4 @@
-"""
-Gmail Sent Folder Ingestor
+"""Gmail Sent Folder Ingestor
 Target: redacted@shadowtag-v4.local
 Purpose: Extract business & tech plans from Sent Items.
 """
@@ -27,7 +26,7 @@ def get_service():
         else:
             if not os.path.exists(CREDENTIALS_FILE):
                 raise FileNotFoundError(
-                    f"Missing {CREDENTIALS_FILE}. Please download OAuth 2.0 Client ID from GCP Console."
+                    f"Missing {CREDENTIALS_FILE}. Please download OAuth 2.0 Client ID from GCP Console.",
                 )
             flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_FILE, SCOPES)
             # Reverting to local server (Desktop App flow)

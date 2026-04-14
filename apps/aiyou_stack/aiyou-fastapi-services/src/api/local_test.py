@@ -20,7 +20,7 @@ def test_api():
     print("\n[+] Executing Sovereign Payload Drop against Zero-Trust Port (8181)...")
 
     files = {
-        "file": ("contract_matrix.pdf", b"%PDF-1.4 mock binary matrix data", "application/pdf")
+        "file": ("contract_matrix.pdf", b"%PDF-1.4 mock binary matrix data", "application/pdf"),
     }
     try:
         response = requests.post("http://127.0.0.1:8181/upload/document", files=files)

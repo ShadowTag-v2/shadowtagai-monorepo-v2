@@ -1,5 +1,4 @@
-"""
-Multi-LLM Router - Pure Gemini Brain & Brawn Architecture
+"""Multi-LLM Router - Pure Gemini Brain & Brawn Architecture
 
 Routes requests to appropriate Gemini model based on task type:
 - Brain (Planning/Reasoning): gemini-2.0-flash-thinking-exp
@@ -77,8 +76,7 @@ class LLMResponse:
 
 
 class LLMRouter:
-    """
-    Routes LLM requests based on Pure Gemini architecture.
+    """Routes LLM requests based on Pure Gemini architecture.
     """
 
     # Routing table: task_type -> preferred provider (Always Gemini now)
@@ -99,7 +97,7 @@ class LLMRouter:
             "quick": "gemini-2.0-flash-exp",
             "governance": "gemini-1.5-pro",
             "default": "gemini-1.5-pro",
-        }
+        },
     }
 
     # Pricing (USD per 1M tokens) - Updated for Gemini
@@ -187,14 +185,13 @@ class LLMRouter:
 
         if task_type == TaskType.PLANNING:
             return config.get("planning", default)
-        elif task_type == TaskType.CODING:
+        if task_type == TaskType.CODING:
             return config.get("coding", default)
-        elif task_type == TaskType.QUICK_FIX:
+        if task_type == TaskType.QUICK_FIX:
             return config.get("quick", default)
-        elif task_type == TaskType.GOVERNANCE:
+        if task_type == TaskType.GOVERNANCE:
             return config.get("governance", default)
-        else:
-            return default
+        return default
 
     def _calculate_token_entropy(self, text: str) -> float:
         """Calculate Shannon entropy of character distribution."""
@@ -240,9 +237,8 @@ class LLMRouter:
         if k == 1:
             self.single_provider_count += 1
             return await self.generate(request)
-        else:
-            self.multi_provider_count += 1
-            return await self._generate_ensemble(request, k)
+        self.multi_provider_count += 1
+        return await self._generate_ensemble(request, k)
 
     async def _generate_ensemble(self, request: LLMRequest, k: int) -> LLMResponse:
         """Query multiple Gemini models and return best response."""
@@ -493,7 +489,7 @@ if __name__ == "__main__":
         # Test standard generation
         print("\\n=== Testing Standard Generation ===")
         response = await router.generate(
-            LLMRequest(prompt="Hello Gemini", task_type=TaskType.QUICK_FIX)
+            LLMRequest(prompt="Hello Gemini", task_type=TaskType.QUICK_FIX),
         )
         print(f"Response: {response.text}")
 
@@ -505,7 +501,7 @@ if __name__ == "__main__":
             * 10
         )
         response = await router.generate_adaptive(
-            LLMRequest(prompt=complex_prompt, task_type=TaskType.PLANNING)
+            LLMRequest(prompt=complex_prompt, task_type=TaskType.PLANNING),
         )
         print(f"Ensemble Models Used: {response.metadata.get('ensemble_models')}")
         print(f"Response: {response.text[:100]}...")

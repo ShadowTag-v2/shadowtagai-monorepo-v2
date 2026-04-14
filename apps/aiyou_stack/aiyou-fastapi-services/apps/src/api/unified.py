@@ -1,5 +1,4 @@
-"""
-Unified API for Complete $715B Ecosystem Integration
+"""Unified API for Complete $715B Ecosystem Integration
 
 Combines all 8 architectural layers:
 1. Layer 0: Optimization (Aegaeon GPU pooling, DeepSeek compression, monetization)
@@ -206,8 +205,7 @@ class ValuationResponse(BaseModel):
 
 @router.get("/health", response_model=SystemHealthResponse)
 async def get_system_health():
-    """
-    Get complete system health across all 8 layers.
+    """Get complete system health across all 8 layers.
 
     Returns health status, GPU utilization, cost savings, and per-layer metrics.
     """
@@ -224,7 +222,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=2.5,
             message="82% GPU savings active, 7+ models per GPU",
-        )
+        ),
     )
 
     # Aerospace Layer
@@ -234,7 +232,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=45.0,
             message="Satellite + cell tower + vehicle mesh operational",
-        )
+        ),
     )
 
     # Pinkln AI
@@ -244,7 +242,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=35.0,
             message="MAD debates, COR orchestration, 31× faster than AutoGen",
-        )
+        ),
     )
 
     # Memory System
@@ -254,7 +252,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=120.0,
             message="2,121+ conversations persisted, auto-load active",
-        )
+        ),
     )
 
     # Kernel Framework
@@ -264,7 +262,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=35.0,
             message="95% compression, 10:1 audit ratio, DO-178C compliant",
-        )
+        ),
     )
 
     # Ratings
@@ -274,7 +272,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=5.0,
             message="Performance tracking active across kernels/agents",
-        )
+        ),
     )
 
     # Training
@@ -284,7 +282,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=1200.0,
             message="Group relative policy optimization (G=8) ready",
-        )
+        ),
     )
 
     # Evolution
@@ -294,7 +292,7 @@ async def get_system_health():
             status=HealthStatus.HEALTHY,
             latency_ms=350.0,
             message="+3.7% accuracy improvement validated",
-        )
+        ),
     )
 
     return SystemHealthResponse(
@@ -309,8 +307,7 @@ async def get_system_health():
 
 @router.post("/inference", response_model=InferenceResponse)
 async def unified_inference(request: InferenceRequest, api_key: str = Header(alias="X-API-Key")):
-    """
-    Unified inference endpoint with all optimizations.
+    """Unified inference endpoint with all optimizations.
 
     Features:
     - Layer 0: Aegaeon GPU pooling (82% savings)
@@ -361,10 +358,9 @@ async def unified_inference(request: InferenceRequest, api_key: str = Header(ali
 
 @router.post("/aerospace/deployment", response_model=AerospaceDeploymentResponse)
 async def analyze_aerospace_deployment(
-    request: AerospaceDeploymentRequest, api_key: str = Header(alias="X-API-Key")
+    request: AerospaceDeploymentRequest, api_key: str = Header(alias="X-API-Key"),
 ):
-    """
-    Analyze aerospace edge mesh deployment economics.
+    """Analyze aerospace edge mesh deployment economics.
 
     Calculates:
     - Total investment (satellites + cell towers + vehicles)
@@ -411,8 +407,7 @@ async def analyze_aerospace_deployment(
 
 @router.post("/evolution/dte", response_model=DTEEvolutionResponse)
 async def evolve_with_dte(request: DTEEvolutionRequest, api_key: str = Header(alias="X-API-Key")):
-    """
-    Evolve prompts/kernels/agents using DTE (Dynamic Test Evolution).
+    """Evolve prompts/kernels/agents using DTE (Dynamic Test Evolution).
 
     Process:
     1. Run test cases on current version (baseline)
@@ -455,10 +450,9 @@ async def evolve_with_dte(request: DTEEvolutionRequest, api_key: str = Header(al
 
 @router.post("/valuation", response_model=ValuationResponse)
 async def calculate_enterprise_valuation(
-    request: ValuationRequest, api_key: str = Header(alias="X-API-Key")
+    request: ValuationRequest, api_key: str = Header(alias="X-API-Key"),
 ):
-    """
-    Calculate complete $715B enterprise valuation.
+    """Calculate complete $715B enterprise valuation.
 
     Combines:
     - Aerospace ARR: $440M (7-phase rollout through 2031)
@@ -541,8 +535,7 @@ async def get_pricing_tiers():
 
 
 async def validate_api_key(api_key: str) -> PricingTier:
-    """
-    Validate API key and return pricing tier.
+    """Validate API key and return pricing tier.
 
     In production, this would:
     1. Check Stripe subscription status
@@ -552,11 +545,10 @@ async def validate_api_key(api_key: str) -> PricingTier:
     # Mock validation - in production, check database/Stripe
     if api_key.startswith("sk_test_"):
         return PricingTier.ENTERPRISE
-    elif api_key.startswith("sk_pro_"):
+    if api_key.startswith("sk_pro_"):
         return PricingTier.PROFESSIONAL
-    elif api_key.startswith("sk_starter_"):
+    if api_key.startswith("sk_starter_"):
         return PricingTier.STARTER
-    elif api_key == "demo":
+    if api_key == "demo":
         return PricingTier.FREE
-    else:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+    raise HTTPException(status_code=401, detail="Invalid API key")

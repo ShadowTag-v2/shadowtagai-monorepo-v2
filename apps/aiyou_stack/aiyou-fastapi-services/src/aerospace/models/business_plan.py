@@ -1,5 +1,4 @@
-"""
-AiY Aerospace Business Plan Model
+"""AiY Aerospace Business Plan Model
 ==================================
 
 Complete aerospace expansion business plan with:
@@ -76,8 +75,7 @@ class FinancialSummary:
 
 
 class AerospaceBusinessPlan:
-    """
-    Complete AiY Aerospace Expansion Business Plan
+    """Complete AiY Aerospace Expansion Business Plan
 
     USD valuation, solo-founder optimized structure integrating
     civil aviation rollout into global AiY roadmap.

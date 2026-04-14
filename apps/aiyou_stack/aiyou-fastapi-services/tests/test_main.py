@@ -44,8 +44,7 @@ client = TestClient(app)
 # ==============================================================================
 @pytest.fixture(autouse=True)
 def setup_and_teardown_database():
-    """
-    This runs automatically before and after EVERY single test.
+    """This runs automatically before and after EVERY single test.
     It creates the tables, runs the test, and then drops the tables.
     This guarantees every test starts with a 100% clean slate.
     """
@@ -67,7 +66,7 @@ def test_health_check():
 
 def test_create_user():
     response = client.post(
-        "/users", json={"email": "redacted@shadowtag-v4.local", "password": "[VAPORIZED_PWD]"}
+        "/users", json={"email": "redacted@shadowtag-v4.local", "password": "[VAPORIZED_PWD]"},
     )
     assert response.status_code == 201
 
@@ -83,12 +82,12 @@ def test_create_user():
 def test_create_existing_user():
     # 1. Create the first user
     client.post(
-        "/users", json={"email": "redacted@shadowtag-v4.local", "password": "[VAPORIZED_PWD]"}
+        "/users", json={"email": "redacted@shadowtag-v4.local", "password": "[VAPORIZED_PWD]"},
     )
 
     # 2. Try to create the exact same user again
     response = client.post(
-        "/users", json={"email": "redacted@shadowtag-v4.local", "password": "[VAPORIZED_PWD]"}
+        "/users", json={"email": "redacted@shadowtag-v4.local", "password": "[VAPORIZED_PWD]"},
     )
 
     # 3. Verify the API successfully rejected it

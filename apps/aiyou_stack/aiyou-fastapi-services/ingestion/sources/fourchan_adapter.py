@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - 4chan Source Adapter
+"""PNKLN Core Stack - 4chan Source Adapter
 
 Uses the official 4chan JSON API (no auth, no cost).
 Targets boards relevant to AI, tech, business, security intel.
@@ -33,8 +32,7 @@ RATE_DELAY = 1.0  # 4chan ToS: 1 req/sec max
 
 
 class FourChanAdapter(SourceAdapter):
-    """
-    Ingests 4chan threads via official JSON API.
+    """Ingests 4chan threads via official JSON API.
     Free, no credentials required. Rate-limited to 1 req/sec per ToS.
     """
 
@@ -68,7 +66,7 @@ class FourChanAdapter(SourceAdapter):
             return resp.json().get("posts", [])
         except Exception as e:
             logger.warning(
-                "fourchan_thread_fetch_failed", board=board, thread=thread_no, error=str(e)
+                "fourchan_thread_fetch_failed", board=board, thread=thread_no, error=str(e),
             )
             return []
 

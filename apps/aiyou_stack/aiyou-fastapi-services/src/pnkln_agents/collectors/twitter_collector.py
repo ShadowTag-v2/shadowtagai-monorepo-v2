@@ -1,5 +1,4 @@
-"""
-Twitter API v2 Collector
+"""Twitter API v2 Collector
 Collects tweets using Twitter API v2
 """
 
@@ -18,8 +17,7 @@ from .base import BaseCollector
 
 
 class TwitterCollector(BaseCollector):
-    """
-    Twitter API v2 collector
+    """Twitter API v2 collector
 
     Pricing: Essential ($100/mo for 10K tweets/month), Basic ($100/mo for 50K/month)
     Rate Limits: 180 requests per 15 min window (Essential tier)
@@ -39,8 +37,7 @@ class TwitterCollector(BaseCollector):
         self.cost_per_tweet = 0.01  # $100/mo for 10K tweets = $0.01/tweet
 
     def collect(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect tweets from Twitter
+        """Collect tweets from Twitter
 
         Searches for AI-related tweets from past 7 days
         """
@@ -117,9 +114,8 @@ class TwitterCollector(BaseCollector):
 
         if age_hours <= 6:
             return 1.0
-        elif age_hours <= 24:
+        if age_hours <= 24:
             return 0.9
-        elif age_hours <= 72:
+        if age_hours <= 72:
             return 0.7
-        else:
-            return 0.5
+        return 0.5

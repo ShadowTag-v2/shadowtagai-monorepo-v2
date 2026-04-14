@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Locust-based load testing for PNKLN inference endpoint
+"""Locust-based load testing for PNKLN inference endpoint
 
 Usage:
     # Web UI mode
@@ -64,13 +63,13 @@ class InferenceUser(HttpUser):
         payload = {"prompt": "Test prompt for load testing", "max_tokens": 100, "temperature": 0.7}
 
         with self.client.post(
-            "/infer", json=payload, catch_response=True, name="inference"
+            "/infer", json=payload, catch_response=True, name="inference",
         ) as response:
             if response.status_code == 200:
                 # Check if latency exceeds SLA
                 if response.elapsed.total_seconds() * 1000 > 90:
                     response.failure(
-                        f"Latency {response.elapsed.total_seconds() * 1000:.2f}ms exceeds 90ms SLA"
+                        f"Latency {response.elapsed.total_seconds() * 1000:.2f}ms exceeds 90ms SLA",
                     )
                 else:
                     response.success()

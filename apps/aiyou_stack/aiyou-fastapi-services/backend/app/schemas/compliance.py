@@ -108,7 +108,7 @@ class ComplianceCheckRequest(BaseModel):
     """Request schema for compliance check"""
 
     check_type: str = Field(
-        ..., description="Type of compliance check: gdpr, ccpa, data_retention, consent"
+        ..., description="Type of compliance check: gdpr, ccpa, data_retention, consent",
     )
     resource_type: str | None = Field(None, description="Type of resource to check")
     resource_id: str | None = Field(None, description="ID of specific resource")

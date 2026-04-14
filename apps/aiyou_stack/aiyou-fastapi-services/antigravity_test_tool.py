@@ -27,7 +27,7 @@ class TestAntigravityLogic(unittest.TestCase):
     def test_agent_loop_simple(self, mock_gemini):
         # Mock a simple response with no tool calls
         mock_gemini.return_value = {
-            "candidates": [{"content": {"parts": [{"text": "Hello world"}]}}]
+            "candidates": [{"content": {"parts": [{"text": "Hello world"}]}}],
         }
 
         with patch.dict("os.environ", {"GEMINI_API_KEY": "test"}):
@@ -42,11 +42,11 @@ class TestAntigravityLogic(unittest.TestCase):
                 {
                     "content": {
                         "parts": [
-                            {"functionCall": {"name": "code_search_tool", "args": {"query": "foo"}}}
-                        ]
-                    }
-                }
-            ]
+                            {"functionCall": {"name": "code_search_tool", "args": {"query": "foo"}}},
+                        ],
+                    },
+                },
+            ],
         }
         # Mock turn 2: Final answer
         resp2 = {"candidates": [{"content": {"parts": [{"text": "I found foo."}]}}]}

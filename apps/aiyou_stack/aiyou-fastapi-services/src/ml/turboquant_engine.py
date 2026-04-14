@@ -1,5 +1,4 @@
-"""
-TurboQuant KV cache v2: Asymmetric attention & Unbiased Inner Products
+"""TurboQuant KV cache v2: Asymmetric attention & Unbiased Inner Products
 Drop-in replacement for Dynamic VRAM (AimdoAllocator)
 """
 
@@ -9,8 +8,7 @@ import torch
 
 
 class TurboQuantCompressorV2:
-    """
-    Stage 2 QJL Compressor for Key vectors.
+    """Stage 2 QJL Compressor for Key vectors.
     Stores compressed representations AND supports direct inner product
     computation without full decompression via asymmetric estimator.
     """
@@ -120,8 +118,7 @@ class TurboQuantCompressorV2:
 
 
 class TurboQuantCompressorMSE:
-    """
-    MSE-only compressor for values. Unbiased dot product is not required
+    """MSE-only compressor for values. Unbiased dot product is not required
     for Values due to Softmax bounds averaging out error.
     """
 
@@ -189,17 +186,16 @@ class TurboQuantCompressorMSE:
 
 
 class TurboQuantKVCache:
-    """
-    Seamless Wrapper to sit inside `zero_cpu_router.py`.
+    """Seamless Wrapper to sit inside `zero_cpu_router.py`.
     Exposes identical API signatures for local ML inference logic.
     """
 
     def __init__(self, key_dim: int, val_dim: int, bits: int = 3, device: str = "cpu"):
         self.key_quantizer = TurboQuantCompressorV2(
-            head_dim=key_dim, bits=bits, seed=42, device=device
+            head_dim=key_dim, bits=bits, seed=42, device=device,
         )
         self.val_quantizer = TurboQuantCompressorMSE(
-            head_dim=val_dim, bits=bits, seed=100, device=device
+            head_dim=val_dim, bits=bits, seed=100, device=device,
         )
         self.k_cache = []
         self.v_cache = []

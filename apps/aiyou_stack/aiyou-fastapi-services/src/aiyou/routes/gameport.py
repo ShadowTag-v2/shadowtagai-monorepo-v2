@@ -1,5 +1,4 @@
-"""
-GamePort API Routes.
+"""GamePort API Routes.
 
 Handles game sessions, matchmaking, and SDK integration.
 """

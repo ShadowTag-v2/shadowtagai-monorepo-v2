@@ -34,11 +34,11 @@ def init_db():
 
 
 def get_db() -> Generator[Session, None, None]:
-    """
-    Dependency for getting database sessions in FastAPI routes.
+    """Dependency for getting database sessions in FastAPI routes.
 
     Yields:
         Database session
+
     """
     db = SessionLocal()
     try:
@@ -49,11 +49,11 @@ def get_db() -> Generator[Session, None, None]:
 
 @contextmanager
 def get_db_context():
-    """
-    Context manager for getting database sessions outside of FastAPI.
+    """Context manager for getting database sessions outside of FastAPI.
 
     Yields:
         Database session
+
     """
     db = SessionLocal()
     try:

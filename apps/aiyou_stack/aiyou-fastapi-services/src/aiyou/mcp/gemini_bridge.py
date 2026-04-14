@@ -1,5 +1,4 @@
-"""
-Gemini MCP Bridge for minion
+"""Gemini MCP Bridge for minion
 ====================================
 
 Bridges minion agents to Gemini CLI MCP tools with JURA cost tracking.
@@ -90,19 +89,18 @@ class MCPToolResponse:
 
 
 class GeminiMCPBridge:
-    """
-    Bridge minion agents to Gemini CLI MCP tools.
+    """Bridge minion agents to Gemini CLI MCP tools.
 
     Integrates with JURA for cost-aware routing and agent assignment.
     """
 
     def __init__(self, project_id: str | None = None, location: str = "us-central1"):
-        """
-        Initialize bridge with Vertex AI.
+        """Initialize bridge with Vertex AI.
 
         Args:
             project_id: GCP project ID (default: acquired-jet-478701-b3)
             location: GCP region for Vertex AI
+
         """
         import os
 
@@ -137,14 +135,14 @@ class GeminiMCPBridge:
         self,
         request: MCPToolRequest,
     ) -> MCPToolResponse:
-        """
-        Execute an MCP tool with JURA cost tracking.
+        """Execute an MCP tool with JURA cost tracking.
 
         Args:
             request: Tool request with args
 
         Returns:
             Tool response with results and metrics
+
         """
         start_time = time.time()
         self.total_requests += 1
@@ -208,7 +206,6 @@ class GeminiMCPBridge:
         model: str,
     ) -> dict[str, Any]:
         """Execute the actual tool logic using Vertex AI."""
-
         if not VertexModel:
             raise RuntimeError("vertexai not installed - required for Vertex-only mode")
 
@@ -219,21 +216,21 @@ class GeminiMCPBridge:
             response = await asyncio.to_thread(model_instance.generate_content, prompt)
             return {"text": response.text, "tokens": self._count_tokens(response)}
 
-        elif tool == MCPTool.GEMINI_SUMMARIZE:
+        if tool == MCPTool.GEMINI_SUMMARIZE:
             content = args.get("content", "")
             focus = args.get("focus", "key points")
             prompt = f"Summarize this content, focusing on {focus}:\n\n{content}"
             response = await asyncio.to_thread(model_instance.generate_content, prompt)
             return {"text": response.text, "tokens": self._count_tokens(response)}
 
-        elif tool == MCPTool.GEMINI_ANALYZE:
+        if tool == MCPTool.GEMINI_ANALYZE:
             content = args.get("content", "")
             analysis_type = args.get("analysis_type", "comprehensive")
             prompt = f"Perform a {analysis_type} analysis:\n\n{content}"
             response = await asyncio.to_thread(model_instance.generate_content, prompt)
             return {"text": response.text, "tokens": self._count_tokens(response)}
 
-        elif tool == MCPTool.GEMINI_SANDBOX:
+        if tool == MCPTool.GEMINI_SANDBOX:
             code = args.get("code", "")
             language = args.get("language", "python")
             prompt = (
@@ -242,28 +239,28 @@ class GeminiMCPBridge:
             response = await asyncio.to_thread(model_instance.generate_content, prompt)
             return {"text": response.text, "tokens": self._count_tokens(response)}
 
-        elif tool == MCPTool.GEMINI_EVAL_PLAN:
+        if tool == MCPTool.GEMINI_EVAL_PLAN:
             plan = args.get("plan", "")
             context = args.get("context", "")
             prompt = f"Evaluate this implementation plan:\n\nContext: {context}\n\nPlan:\n{plan}"
             response = await asyncio.to_thread(model_instance.generate_content, prompt)
             return {"text": response.text, "tokens": self._count_tokens(response)}
 
-        elif tool == MCPTool.GEMINI_REVIEW_CODE:
+        if tool == MCPTool.GEMINI_REVIEW_CODE:
             code = args.get("code", "")
             review_type = args.get("review_type", "full")
             prompt = f"Perform a {review_type} code review:\n\n{code}"
             response = await asyncio.to_thread(model_instance.generate_content, prompt)
             return {"text": response.text, "tokens": self._count_tokens(response)}
 
-        elif tool == MCPTool.GEMINI_MODELS:
+        if tool == MCPTool.GEMINI_MODELS:
             # Return available Vertex AI models (static list)
             return {
                 "text": list(TIER_MODELS.values()),
                 "tokens": 0,
             }
 
-        elif tool == MCPTool.GEMINI_METRICS:
+        if tool == MCPTool.GEMINI_METRICS:
             return {
                 "text": {
                     "total_requests": self.total_requests,
@@ -273,8 +270,7 @@ class GeminiMCPBridge:
                 "tokens": 0,
             }
 
-        else:
-            raise ValueError(f"Unhandled tool: {tool}")
+        raise ValueError(f"Unhandled tool: {tool}")
 
     def _count_tokens(self, response) -> int:
         """Extract token count from response."""

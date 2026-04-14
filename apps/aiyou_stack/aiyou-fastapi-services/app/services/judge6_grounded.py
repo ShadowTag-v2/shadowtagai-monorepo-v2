@@ -1,5 +1,4 @@
-"""
-Judge #6 Grounded Governance Client
+"""Judge #6 Grounded Governance Client
 
 Layer 3 (JURA) implementation with Vertex AI Search grounding.
 All governance queries go through doctrine datastore for citation-backed decisions.
@@ -86,8 +85,7 @@ class GroundedGovernanceResult:
 
 
 class Judge6Grounded:
-    """
-    Grounded governance scoring using Vertex AI Search.
+    """Grounded governance scoring using Vertex AI Search.
 
     "Always Grounded" mode: Every governance query retrieves from
     the doctrine datastore for citation-backed, auditable decisions.
@@ -107,6 +105,7 @@ class Judge6Grounded:
         print(f"Citations: {len(result.citations)}")
         for cite in result.citations:
             print(f"  - {cite.source}: {cite.content[:100]}")
+
     """
 
     # Compliance domain keywords
@@ -146,7 +145,7 @@ class Judge6Grounded:
         self.project_id = project_id or os.getenv("VERTEX_PROJECT_ID", "acquired-jet-478701-b3")
         self.location = location
         self.datastore_id = datastore_id or os.getenv(
-            "JUDGE6_DATASTORE_ID", "judge6-doctrine-store"
+            "JUDGE6_DATASTORE_ID", "judge6-doctrine-store",
         )
 
         # Derived paths
@@ -187,7 +186,7 @@ class Judge6Grounded:
 
             # Create grounding tool from datastore
             self._grounding_tool = Tool.from_retrieval(
-                grounding.Retrieval(source=grounding.VertexAISearch(datastore=self.datastore_path))
+                grounding.Retrieval(source=grounding.VertexAISearch(datastore=self.datastore_path)),
             )
 
             # Initialize Gemini model with grounding
@@ -253,15 +252,14 @@ class Judge6Grounded:
         """Make governance decision based on risk score."""
         if risk_score <= 25:
             return GovernanceDecision.APPROVE, "Low risk - auto-approved"
-        elif risk_score <= 50:
+        if risk_score <= 50:
             return GovernanceDecision.APPROVE, "Medium risk - approved with monitoring"
-        elif risk_score <= 75:
+        if risk_score <= 75:
             return GovernanceDecision.REVIEW, "High risk - requires human review"
-        else:
-            return GovernanceDecision.DENY, "Critical risk - auto-denied"
+        return GovernanceDecision.DENY, "Critical risk - auto-denied"
 
     async def _retrieve_grounding(
-        self, query: str, compliance_flags: ComplianceFlags
+        self, query: str, compliance_flags: ComplianceFlags,
     ) -> list[GroundingChunk]:
         """Retrieve grounding from Vertex AI Search."""
         if not self._genai_model:
@@ -303,7 +301,7 @@ Be specific and cite relevant doctrine sections."""
                                     content=getattr(chunk, "web", {}).get("title", "")[:200],
                                     relevance_score=getattr(chunk, "relevance_score", 0.8),
                                     document_id=hashlib.sha256(str(chunk).encode()).hexdigest()[:8],
-                                )
+                                ),
                             )
 
             return citations
@@ -320,8 +318,7 @@ Be specific and cite relevant doctrine sections."""
         transaction_value: float | None = None,
         use_cache: bool = True,
     ) -> GroundedGovernanceResult:
-        """
-        Score governance request with Vertex AI Search grounding.
+        """Score governance request with Vertex AI Search grounding.
 
         Args:
             request_type: Type of request (purchase, checkout, query, generate, delete)
@@ -332,6 +329,7 @@ Be specific and cite relevant doctrine sections."""
 
         Returns:
             GroundedGovernanceResult with decision, risk score, citations, and reasoning
+
         """
         if not self._initialized:
             await self.initialize()
@@ -340,7 +338,7 @@ Be specific and cite relevant doctrine sections."""
 
         # Check cache
         cache_key = hashlib.sha256(
-            f"{request_type}{content}{user_region}{transaction_value}".encode()
+            f"{request_type}{content}{user_region}{transaction_value}".encode(),
         ).hexdigest()
         if use_cache and cache_key in self._cache:
             self.cache_hits += 1
@@ -402,7 +400,7 @@ Be specific and cite relevant doctrine sections."""
 
         logger.info(
             f"Governance scored: {decision.value} (risk={risk_score}, "
-            f"latency={latency_ms:.0f}ms, citations={len(citations)})"
+            f"latency={latency_ms:.0f}ms, citations={len(citations)})",
         )
 
         return result

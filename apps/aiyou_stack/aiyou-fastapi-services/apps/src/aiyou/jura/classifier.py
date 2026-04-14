@@ -1,5 +1,4 @@
-"""
-JuraClassifier: Classifies requests into cost tiers.
+"""JuraClassifier: Classifies requests into cost tiers.
 
 Classification logic:
 1. User override (if provided)
@@ -33,8 +32,7 @@ class ClassificationResult:
 
 
 class JuraClassifier:
-    """
-    Classifies requests into cost tiers based on:
+    """Classifies requests into cost tiers based on:
     - Task complexity (keyword analysis)
     - Context size (token count)
     - Task type (governance vs execution)
@@ -91,10 +89,10 @@ class JuraClassifier:
 
     def __init__(self):
         self._high_pattern = re.compile(
-            r"\b(" + "|".join(self.HIGH_COMPLEXITY_KEYWORDS) + r")\b", re.IGNORECASE
+            r"\b(" + "|".join(self.HIGH_COMPLEXITY_KEYWORDS) + r")\b", re.IGNORECASE,
         )
         self._low_pattern = re.compile(
-            r"\b(" + "|".join(self.LOW_COMPLEXITY_KEYWORDS) + r")\b", re.IGNORECASE
+            r"\b(" + "|".join(self.LOW_COMPLEXITY_KEYWORDS) + r")\b", re.IGNORECASE,
         )
 
     def classify(
@@ -104,8 +102,7 @@ class JuraClassifier:
         task_type: str = "execution",
         override: CostTier | None = None,
     ) -> ClassificationResult:
-        """
-        Classify a request into a cost tier.
+        """Classify a request into a cost tier.
 
         Args:
             task: The task description/prompt
@@ -115,6 +112,7 @@ class JuraClassifier:
 
         Returns:
             ClassificationResult with tier, reason, and metrics
+
         """
         # 1. User override
         if override and override != CostTier.AUTO:
@@ -185,11 +183,11 @@ class JuraClassifier:
         )
 
     def _estimate_complexity(self, task: str) -> float:
-        """
-        Estimate task complexity (0.0-1.0) based on keywords.
+        """Estimate task complexity (0.0-1.0) based on keywords.
 
         Returns:
             Complexity score between 0.0 and 1.0
+
         """
         if not task:
             return 0.0
@@ -216,8 +214,7 @@ class JuraClassifier:
         return max(0.0, min(1.0, base_score))
 
     def estimate_tokens(self, text: str) -> int:
-        """
-        Rough token count estimation.
+        """Rough token count estimation.
         Rule of thumb: ~4 characters per token for English.
         """
         return len(text) // 4

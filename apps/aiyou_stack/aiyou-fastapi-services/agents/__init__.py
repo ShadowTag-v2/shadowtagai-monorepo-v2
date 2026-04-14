@@ -14,14 +14,14 @@ from .tdd_red_phase import (
 )
 
 __all__ = [
-    "TDDRedPhaseAgent",
-    "run_tdd_red_phase",
-    "ComplianceReport",
-    "TestOutput",
-    "Violation",
-    "Severity",
     "COMPLIANCE_THRESHOLD",
+    "FAIL_FAST_THRESHOLD",
     "MAX_ITERATIONS",
     "TIMEOUT_SECONDS",
-    "FAIL_FAST_THRESHOLD",
+    "ComplianceReport",
+    "Severity",
+    "TDDRedPhaseAgent",
+    "TestOutput",
+    "Violation",
+    "run_tdd_red_phase",
 ]

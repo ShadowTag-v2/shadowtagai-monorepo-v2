@@ -1,5 +1,4 @@
-"""
-Delta Detector - Change Detection Between Document Versions
+"""Delta Detector - Change Detection Between Document Versions
 ============================================================
 Detects and summarizes changes between previous and current versions.
 """
@@ -84,8 +83,7 @@ class DeltaSummary:
 
 
 class DeltaDetector:
-    """
-    Detects changes between document versions using Gemini.
+    """Detects changes between document versions using Gemini.
 
     Used to surface "what's new vs yesterday" for the AM briefing.
     """
@@ -100,8 +98,7 @@ class DeltaDetector:
         current_text: str,
         content_id: str = "",
     ) -> DeltaSummary:
-        """
-        Detect changes between previous and current versions.
+        """Detect changes between previous and current versions.
 
         Args:
             previous_text: Previous version text
@@ -110,6 +107,7 @@ class DeltaDetector:
 
         Returns:
             DeltaSummary with detected changes
+
         """
         if not self.config.get("enable_delta_detection", True):
             logger.warning("delta_detection_disabled")
@@ -166,7 +164,7 @@ class DeltaDetector:
                         type=dc.get("type", "unknown"),
                         date=dc_date,
                         description=dc.get("description", ""),
-                    )
+                    ),
                 )
 
             summary = DeltaSummary(
@@ -197,7 +195,7 @@ class DeltaDetector:
             # Return a summary indicating detection failed
             return DeltaSummary(
                 has_changes=True,  # Assume changes to be safe
-                change_summary=f"Delta detection failed: {str(e)}",
+                change_summary=f"Delta detection failed: {e!s}",
                 urgency=2,  # Medium urgency - needs manual review
                 action_required="review",
             )
@@ -228,8 +226,7 @@ def detect_delta(
     current_text: str,
     content_id: str = "",
 ) -> DeltaSummary:
-    """
-    Detect changes between document versions.
+    """Detect changes between document versions.
 
     Convenience wrapper around DeltaDetector.
 
@@ -249,6 +246,7 @@ def detect_delta(
         )
         if delta.is_urgent():
             alert_executive()
+
     """
     detector = DeltaDetector()
     try:

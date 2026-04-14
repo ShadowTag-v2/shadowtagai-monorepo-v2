@@ -1,5 +1,4 @@
-"""
-MonetizationArchitectSkill - Revenue system design.
+"""MonetizationArchitectSkill - Revenue system design.
 """
 
 import os

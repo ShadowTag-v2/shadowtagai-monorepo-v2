@@ -31,6 +31,6 @@ class VideoEconomics:
 
         # If Gideon Guard passes, this prints. If not, Guard blocks it.
         print(
-            f"💰 UNIT ECON: Price ${price_per_video} | Cost ${total_cogs:.4f} | Margin {margin:.1%}"
+            f"💰 UNIT ECON: Price ${price_per_video} | Cost ${total_cogs:.4f} | Margin {margin:.1%}",
         )
         return metrics

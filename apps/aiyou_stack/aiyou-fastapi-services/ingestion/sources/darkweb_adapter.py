@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Dark Web / Onion Source Adapter
+"""PNKLN Core Stack - Dark Web / Onion Source Adapter
 
 Routes requests through Tor (localhost:9050 SOCKS5).
 Uses Scrapegraph-ai SmartScraperGraph for structured LLM extraction when
@@ -69,8 +68,7 @@ ONION_SOURCES = [
 
 
 class DarkWebAdapter(SourceAdapter):
-    """
-    Fetches from open .onion sites via Tor SOCKS5 proxy.
+    """Fetches from open .onion sites via Tor SOCKS5 proxy.
     Only targets publicly accessible OSINT/news sources.
     """
 
@@ -145,7 +143,7 @@ class DarkWebAdapter(SourceAdapter):
                     resp.raise_for_status()
                     if use_llm:
                         text = await asyncio.get_event_loop().run_in_executor(
-                            None, self._extract_with_scrapegraph, resp.text, source["url"]
+                            None, self._extract_with_scrapegraph, resp.text, source["url"],
                         )
                     if not use_llm or len(text) < 200:
                         text = self._strip_html(resp.text)

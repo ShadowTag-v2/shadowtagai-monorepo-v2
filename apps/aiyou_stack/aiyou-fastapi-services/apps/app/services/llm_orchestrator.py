@@ -1,5 +1,4 @@
-"""
-LLM Orchestrator - Integration Layer
+"""LLM Orchestrator - Integration Layer
 Connects PNKLN Multi-Agent System with LLM Memory Persistence
 
 Architecture:
@@ -95,11 +94,11 @@ class GrokIntake:
     """Grok handles query intake and decomposition"""
 
     async def decompose_query(self, query: str) -> list[dict[str, Any]]:
-        """
-        Decompose user query into discrete threads
+        """Decompose user query into discrete threads
 
         Returns:
             List of thread specifications
+
         """
         # For now, use heuristic decomposition
         # TODO: Integrate actual Grok API when available
@@ -112,29 +111,27 @@ class GrokIntake:
                     "content": query,
                     "complexity": 7,
                     "domain": "intelligence",
-                }
+                },
             ]
 
         # Code-related queries
-        elif any(kw in query.lower() for kw in ["code", "implement", "function", "api"]):
+        if any(kw in query.lower() for kw in ["code", "implement", "function", "api"]):
             return [{"thread_id": "code_1", "content": query, "complexity": 8, "domain": "code"}]
 
         # Research queries
-        elif any(kw in query.lower() for kw in ["research", "search", "find", "web"]):
+        if any(kw in query.lower() for kw in ["research", "search", "find", "web"]):
             return [
-                {"thread_id": "research_1", "content": query, "complexity": 6, "domain": "research"}
+                {"thread_id": "research_1", "content": query, "complexity": 6, "domain": "research"},
             ]
 
         # Default: analysis
-        else:
-            return [
-                {"thread_id": "analysis_1", "content": query, "complexity": 5, "domain": "analysis"}
-            ]
+        return [
+            {"thread_id": "analysis_1", "content": query, "complexity": 5, "domain": "analysis"},
+        ]
 
 
 class PNKLNCoordinator:
-    """
-    PNKLN-aware coordinator using Sonnet 4.5
+    """PNKLN-aware coordinator using Sonnet 4.5
     Leverages existing multi-agent system for intelligence classification
     """
 
@@ -143,8 +140,7 @@ class PNKLNCoordinator:
         self.gemini_chat = None  # Initialized lazily
 
     async def assign_threads(self, threads: list[dict[str, Any]]) -> list[Thread]:
-        """
-        Assign threads to appropriate LLM providers based on domain
+        """Assign threads to appropriate LLM providers based on domain
 
         Intelligence threads → Gemini multi-agent debate
         Code threads → GPT-5
@@ -179,8 +175,7 @@ class PNKLNCoordinator:
 
 
 class PNKLNOrchestrator:
-    """
-    Main orchestrator integrating LLM Memory System with PNKLN Core Stack
+    """Main orchestrator integrating LLM Memory System with PNKLN Core Stack
 
     Usage:
         orchestrator = PNKLNOrchestrator()
@@ -196,10 +191,9 @@ class PNKLNOrchestrator:
         self.gemini_chat = GeminiGroupChat(api_key=self.gemini_api_key)
 
     async def process_query(
-        self, query: str, enable_review_rotation: bool = False
+        self, query: str, enable_review_rotation: bool = False,
     ) -> OrchestrationResult:
-        """
-        Process a user query through the full LLM orchestration pipeline
+        """Process a user query through the full LLM orchestration pipeline
 
         Args:
             query: User query
@@ -207,6 +201,7 @@ class PNKLNOrchestrator:
 
         Returns:
             OrchestrationResult with threads, synthesis, and metadata
+
         """
         import time
 
@@ -279,7 +274,7 @@ class PNKLNOrchestrator:
                 thread.round_1_response = response
                 thread.cost = 0.008
             except Exception as e:
-                thread.round_1_response = f"[Error calling GPT-5] {str(e)}"
+                thread.round_1_response = f"[Error calling GPT-5] {e!s}"
                 thread.cost = 0.0
 
         elif thread.assigned_llm == LLMProvider.PERPLEXITY:
@@ -289,7 +284,7 @@ class PNKLNOrchestrator:
                 thread.round_1_response = response
                 thread.cost = 0.005
             except Exception as e:
-                thread.round_1_response = f"[Error calling Perplexity] {str(e)}"
+                thread.round_1_response = f"[Error calling Perplexity] {e!s}"
                 thread.cost = 0.0
 
         else:
@@ -339,8 +334,7 @@ class PNKLNOrchestrator:
             return response.json()["choices"][0]["message"]["content"]
 
     async def _execute_gemini_agents(self, thread: Thread) -> dict[str, Any]:
-        """
-        Execute intelligence classification using Gemini multi-agent debate
+        """Execute intelligence classification using Gemini multi-agent debate
 
         Leverages existing GeminiGroupChat with skeptic, optimist, neutral agents
         """
@@ -360,7 +354,7 @@ class PNKLNOrchestrator:
 
         # Run multi-agent debate (2 rounds)
         tier_result = await self.gemini_chat.classify_with_debate(
-            title=title, content=content, tags=tags, rounds=2, voting_method="weighted_confidence"
+            title=title, content=content, tags=tags, rounds=2, voting_method="weighted_confidence",
         )
 
         response = f"""Intelligence Classification Result:
@@ -378,8 +372,7 @@ Tags: {", ".join(tier_result.tags)}
         return f"[Gemini Pro Analysis] {thread.content}"
 
     async def _execute_review_rounds(self, threads: list[Thread]):
-        """
-        Execute 3-round peer review rotation
+        """Execute 3-round peer review rotation
 
         Round 2: Rotate reviewers right
         Round 3: Rotate reviewers right again
@@ -401,8 +394,7 @@ Tags: {", ".join(tier_result.tags)}
                 thread.round_3_review = f"[{thread.round_2_reviewer.value} review] Confirmed"
 
     async def _synthesize_results(self, query: str, threads: list[Thread]) -> str:
-        """
-        Synthesize final answer from all thread results
+        """Synthesize final answer from all thread results
 
         Uses PNKLN validation for intelligence classification
         """
@@ -416,7 +408,7 @@ Tags: {", ".join(tier_result.tags)}
             if thread.tier_classification:
                 synthesis_parts.append(
                     f"Classification: Tier {thread.tier_classification.tier} "
-                    f"({thread.tier_classification.confidence:.0%} confidence)"
+                    f"({thread.tier_classification.confidence:.0%} confidence)",
                 )
 
             if thread.round_2_review:

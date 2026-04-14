@@ -1,5 +1,4 @@
-"""
-Vertex Workbench / GKE Native Deployment
+"""Vertex Workbench / GKE Native Deployment
 Memory-enabled consensus system for Google Cloud Platform
 
 Architecture:
@@ -16,8 +15,7 @@ from pathlib import Path
 
 
 class VertexMemoryManager:
-    """
-    Manages memory persistence for Vertex Workbench and GKE deployments.
+    """Manages memory persistence for Vertex Workbench and GKE deployments.
 
     Uses Google Cloud Storage for centralized memory storage,
     accessible from any Vertex notebook or GKE pod.
@@ -48,8 +46,7 @@ class VertexMemoryManager:
             print(f"[WARNING] Failed to initialize GCS client: {e}")
 
     def upload_memory(self, memory_content: str, filename: str = "current_memory.md") -> bool:
-        """
-        Upload memory content to GCS.
+        """Upload memory content to GCS.
 
         Args:
             memory_content: Markdown formatted memory
@@ -57,6 +54,7 @@ class VertexMemoryManager:
 
         Returns:
             True if successful
+
         """
         if not self.bucket:
             print("[ERROR] GCS bucket not initialized")
@@ -83,14 +81,14 @@ class VertexMemoryManager:
             return False
 
     def download_memory(self, filename: str = "current_memory.md") -> str | None:
-        """
-        Download memory content from GCS.
+        """Download memory content from GCS.
 
         Args:
             filename: Name of memory file
 
         Returns:
             Memory content or None
+
         """
         if not self.bucket:
             print("[ERROR] GCS bucket not initialized")
@@ -113,11 +111,11 @@ class VertexMemoryManager:
             return None
 
     def sync_local_to_gcs(self, local_path: str = "~/.claude-code/memory.md"):
-        """
-        Sync local memory file to GCS.
+        """Sync local memory file to GCS.
 
         Args:
             local_path: Path to local memory file
+
         """
         local_file = Path(local_path).expanduser()
 
@@ -129,11 +127,11 @@ class VertexMemoryManager:
         return self.upload_memory(content)
 
     def sync_gcs_to_local(self, local_path: str = "~/.claude-code/memory.md"):
-        """
-        Sync GCS memory to local file.
+        """Sync GCS memory to local file.
 
         Args:
             local_path: Path to local memory file
+
         """
         content = self.download_memory()
 
@@ -147,14 +145,14 @@ class VertexMemoryManager:
         return True
 
     def create_configmap_yaml(self, output_path: str = "k8s/memory-configmap.yaml") -> bool:
-        """
-        Generate Kubernetes ConfigMap YAML for memory.
+        """Generate Kubernetes ConfigMap YAML for memory.
 
         Args:
             output_path: Where to save ConfigMap YAML
 
         Returns:
             True if successful
+
         """
         memory_content = self.download_memory()
 
@@ -187,8 +185,7 @@ class VertexMemoryManager:
 
 
 def generate_gke_deployment_yaml(output_path: str = "k8s/consensus-deployment.yaml"):
-    """
-    Generate complete GKE deployment YAML with memory init container.
+    """Generate complete GKE deployment YAML with memory init container.
     """
     deployment_yaml = """apiVersion: apps/v1
 kind: Deployment
@@ -324,8 +321,7 @@ spec:
 
 
 def generate_vertex_notebook_startup():
-    """
-    Generate Vertex Workbench startup script for memory sync.
+    """Generate Vertex Workbench startup script for memory sync.
     """
     startup_script = """#!/bin/bash
 # Vertex Workbench Startup Script

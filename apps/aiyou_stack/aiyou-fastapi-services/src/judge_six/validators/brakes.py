@@ -1,5 +1,4 @@
-"""
-Brakes Validator - JR Engine Component 3
+"""Brakes Validator - JR Engine Component 3
 
 Validates the BRAKES (risks) of an action:
 - What could go wrong?
@@ -12,8 +11,7 @@ from ..models import Action, BrakesVerdict, Severity, VerdictStatus
 
 
 class BrakesValidator:
-    """
-    Validates the BRAKES dimension of an action (risk detection)
+    """Validates the BRAKES dimension of an action (risk detection)
     """
 
     def validate(self, action: Action) -> BrakesVerdict:

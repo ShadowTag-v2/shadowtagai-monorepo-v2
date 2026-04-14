@@ -20,8 +20,7 @@ class RiskLevel(IntEnum):
 
 @dataclass
 class DecisionPacket:
-    """
-    Fixed-size: 487 bytes max.
+    """Fixed-size: 487 bytes max.
     Layout: Header(32) + Decision(4) + Policy(32) + Reason(256) + Audit(163)
     """
 
@@ -45,21 +44,21 @@ class DecisionPacket:
     def to_bytes(self) -> bytes:
         header = self.HEADER_FMT.pack(1, self.timestamp, self.session_hash[:16])
         decision_block = self.DECISION_FMT.pack(
-            self.decision.value, self.risk_level.value, self.confidence
+            self.decision.value, self.risk_level.value, self.confidence,
         )
 
         # Zero-pad strings strictly
         policy = self.policy_hash[:32].ljust(32, b"\x00")
         reason_b = self.reason.encode("utf-8")[: self.REASON_SIZE].ljust(self.REASON_SIZE, b"\x00")
         audit_b = self.audit_context.encode("utf-8")[: self.AUDIT_SIZE].ljust(
-            self.AUDIT_SIZE, b"\x00"
+            self.AUDIT_SIZE, b"\x00",
         )
 
         return header + decision_block + policy + reason_b + audit_b
 
     @classmethod
     def create(
-        cls, decision, risk_level, confidence_pct, policies, reason, audit_context, session_id
+        cls, decision, risk_level, confidence_pct, policies, reason, audit_context, session_id,
     ):
         # Deterministic hashing ensures audit capability
         p_hash = hashlib.sha256(",".join(sorted(policies)).encode()).digest()

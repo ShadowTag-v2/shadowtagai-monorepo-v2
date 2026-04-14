@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4 Middleware Package
+"""ShadowTag-v4 Middleware Package
 """
 
 from .revenue_gate import RevenueGateMiddleware
@@ -11,7 +10,7 @@ from .security import (
 
 __all__ = [
     "RateLimitMiddleware",
-    "SecurityHeadersMiddleware",
     "RequestValidationMiddleware",
     "RevenueGateMiddleware",
+    "SecurityHeadersMiddleware",
 ]

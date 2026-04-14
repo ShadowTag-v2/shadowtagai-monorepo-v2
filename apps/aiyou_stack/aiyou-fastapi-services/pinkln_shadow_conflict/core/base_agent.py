@@ -1,5 +1,4 @@
-"""
-Base Agent class for the pinkln Agent Architecture System.
+"""Base Agent class for the pinkln Agent Architecture System.
 
 Agents are autonomous personas that use one or more Skills to execute tasks.
 They inherit the "pnkln OS" philosophy and apply it to specific domains.
@@ -36,8 +35,7 @@ class AgentMetadata:
 
 
 class BaseAgent(ABC):
-    """
-    Base class for all pinkln Agents.
+    """Base class for all pinkln Agents.
 
     An Agent incorporates skills and executes tasks. Every agent:
     - Channels the "Steve Jobs" philosophy
@@ -62,8 +60,7 @@ class BaseAgent(ABC):
         version: str = "1.0",
         description: str = "",
     ):
-        """
-        Initialize an agent.
+        """Initialize an agent.
 
         Args:
             name: Agent name
@@ -71,9 +68,10 @@ class BaseAgent(ABC):
             agent_type: Type of agent
             version: Version number
             description: Description of agent's purpose
+
         """
         self.metadata = AgentMetadata(
-            name=name, role=role, agent_type=agent_type, version=version, description=description
+            name=name, role=role, agent_type=agent_type, version=version, description=description,
         )
         self.skills: list[BaseSkill] = []
         self.skill_registry = SkillRegistry()
@@ -82,8 +80,7 @@ class BaseAgent(ABC):
 
     @abstractmethod
     async def execute(self, task: str, **kwargs) -> dict[str, Any]:
-        """
-        Execute a task.
+        """Execute a task.
 
         Args:
             task: Task description
@@ -95,25 +92,24 @@ class BaseAgent(ABC):
             - metadata: Execution metadata
             - boy_scout: Boy Scout Rule metadata
             - wealth_insight: Revenue/monetization insights (when applicable)
+
         """
-        pass
 
     @abstractmethod
     def get_system_prompt(self) -> str:
-        """
-        Get the system prompt for this agent.
+        """Get the system prompt for this agent.
 
         Returns:
             Formatted system prompt
+
         """
-        pass
 
     def add_skill(self, skill: BaseSkill):
-        """
-        Add a skill to this agent.
+        """Add a skill to this agent.
 
         Args:
             skill: Skill to add
+
         """
         self.skills.append(skill)
         self.skill_registry.register(skill)
@@ -124,8 +120,7 @@ class BaseAgent(ABC):
         return self.skill_registry.get(name)
 
     async def use_skill(self, skill_name: str, input_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Use a specific skill.
+        """Use a specific skill.
 
         Args:
             skill_name: Name of skill to use
@@ -133,6 +128,7 @@ class BaseAgent(ABC):
 
         Returns:
             Skill execution result
+
         """
         skill = self.get_skill(skill_name)
         if not skill:
@@ -157,11 +153,11 @@ class BaseAgent(ABC):
         self.context = context
 
     def reflect(self) -> dict[str, Any]:
-        """
-        Reflect on recent performance (RCR framework).
+        """Reflect on recent performance (RCR framework).
 
         Returns:
             Reflection dictionary
+
         """
         return {
             "assumptions_made": [],
@@ -171,20 +167,19 @@ class BaseAgent(ABC):
         }
 
     def critique(self, _other_agent_output: dict[str, Any]) -> dict[str, Any]:
-        """
-        Critique another agent's output (for multi-agent systems).
+        """Critique another agent's output (for multi-agent systems).
 
         Args:
             other_agent_output: Output from another agent
 
         Returns:
             Critique dictionary
+
         """
         return {"strengths": [], "weaknesses": [], "suggestions": []}
 
     async def refine(self, output: dict[str, Any], critique: dict[str, Any]) -> dict[str, Any]:
-        """
-        Refine output based on critique.
+        """Refine output based on critique.
 
         Args:
             output: Original output
@@ -192,6 +187,7 @@ class BaseAgent(ABC):
 
         Returns:
             Refined output
+
         """
         # Base implementation - override in subclasses
         return output
@@ -214,8 +210,7 @@ class BaseAgent(ABC):
 
 
 class SubAgent(BaseAgent):
-    """
-    Sub-Agent: Specialized agent under a parent agent.
+    """Sub-Agent: Specialized agent under a parent agent.
 
     Sub-agents handle well-defined sub-tasks so the parent doesn't need to
     micromanage. Examples:
@@ -230,8 +225,7 @@ class SubAgent(BaseAgent):
 
 
 class DeepAgent(BaseAgent):
-    """
-    Deep Agent: Higher-order agent architecture.
+    """Deep Agent: Higher-order agent architecture.
 
     Deep agents:
     - Orchestrate other agents/sub-agents
@@ -252,8 +246,7 @@ class DeepAgent(BaseAgent):
         self.sub_agents.append(sub_agent)
 
     async def orchestrate(self, task: str, **kwargs) -> dict[str, Any]:
-        """
-        Orchestrate multiple sub-agents to complete a complex task.
+        """Orchestrate multiple sub-agents to complete a complex task.
 
         Args:
             task: Complex task description
@@ -261,6 +254,7 @@ class DeepAgent(BaseAgent):
 
         Returns:
             Orchestrated result
+
         """
         # Base orchestration logic - override in subclasses
         results = {}

@@ -1,5 +1,4 @@
-"""
-Layer 14–15: Infrastructure Optimizer & Supply Chain Security
+"""Layer 14–15: Infrastructure Optimizer & Supply Chain Security
 =============================================================
 
 Extracted from layers.py monolith per Rich Hickey doctrine.
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class InfrastructureOptimizer:
-    """
-    Layer 14: Multi-silicon strategy for 25-30% cost savings.
+    """Layer 14: Multi-silicon strategy for 25-30% cost savings.
 
     Backends:
     - NVIDIA Blackwell (B200/GB200): Latency-critical (<200ms)
@@ -29,8 +27,7 @@ class InfrastructureOptimizer:
     """
 
     def route_workload(self, workload_type: str, slo_requirements: Any) -> str:
-        """
-        Route workload to optimal backend based on SLO requirements.
+        """Route workload to optimal backend based on SLO requirements.
 
         Args:
             workload_type: "recsys_inference", "batch_training", "embeddings", etc.
@@ -38,21 +35,20 @@ class InfrastructureOptimizer:
 
         Returns:
             Backend identifier: "nvidia_blackwell", "aws_trainium2", "azure_maia"
+
         """
         if workload_type == "recsys_inference" and slo_requirements.p95_latency < 200:
             return "nvidia_blackwell"  # Premium tier, <200ms
-        elif workload_type == "batch_training":
+        if workload_type == "batch_training":
             return "aws_trainium2"  # Cost-optimized
-        elif workload_type == "burst_capacity":
+        if workload_type == "burst_capacity":
             return "azure_maia"  # Elastic overflow
-        else:
-            return "default_neuron_onnx"  # Portable fallback
+        return "default_neuron_onnx"  # Portable fallback
 
     def project_savings(
-        self, current_spend: float, _multi_silicon_mix: dict[str, float]
+        self, current_spend: float, _multi_silicon_mix: dict[str, float],
     ) -> dict[str, float]:
-        """
-        Project cost savings from multi-silicon strategy.
+        """Project cost savings from multi-silicon strategy.
 
         Args:
             current_spend: Current monthly spend (single-vendor baseline)
@@ -64,6 +60,7 @@ class InfrastructureOptimizer:
                 "complexity_cost": float,    # +5% ops overhead
                 "net_savings": float         # Gross - complexity
             }
+
         """
         gross_savings = current_spend * 0.25  # 25% baseline savings
         complexity_cost = current_spend * 0.05  # +5% ops overhead
@@ -90,8 +87,7 @@ class InfrastructureOptimizer:
 
 
 class SupplyChainSecurityGate:
-    """
-    Layer 15: SBOM, SLSA L3+, Sigstore enforcement.
+    """Layer 15: SBOM, SLSA L3+, Sigstore enforcement.
 
     "Ship it like a bank" — zero tolerance for supply chain vulnerabilities.
     """
@@ -103,8 +99,7 @@ class SupplyChainSecurityGate:
         _sbom: dict[str, Any] = None,
         decision: Decision = None,
     ) -> dict[str, Any]:
-        """
-        Validate supply chain security for function or decision.
+        """Validate supply chain security for function or decision.
 
         Returns:
             {
@@ -113,6 +108,7 @@ class SupplyChainSecurityGate:
                 "cve_vulnerabilities": List[str],
                 "reason": str
             }
+
         """
         # Simplified placeholder - production would integrate with Sigstore, SBOM tools
         return {

@@ -1,5 +1,4 @@
-"""
-Wealth-Planning Model Component.
+"""Wealth-Planning Model Component.
 
 Structured approach to wealth optimization:
 1. Spot leaks (revenue drains)
@@ -56,8 +55,7 @@ class LeverageStrategy(BaseModel):
 
 
 class WealthPlan(BaseModel):
-    """
-    Structured wealth planning response.
+    """Structured wealth planning response.
 
     Format: Hard Truth → Plan → Challenge
     """
@@ -92,8 +90,7 @@ class WealthPlan(BaseModel):
 
 
 class WealthAccelerator:
-    """
-    Wealth planning accelerator agent.
+    """Wealth planning accelerator agent.
 
     Analyzes business metrics and generates structured wealth plans.
     """
@@ -106,8 +103,7 @@ class WealthAccelerator:
         churn_rate: float,
         conversion_rates: dict[str, float],
     ) -> WealthPlan:
-        """
-        Analyze business and generate wealth plan.
+        """Analyze business and generate wealth plan.
 
         Args:
             revenue_monthly: Monthly recurring revenue
@@ -118,6 +114,7 @@ class WealthAccelerator:
 
         Returns:
             Structured WealthPlan with leaks, plan, and challenge
+
         """
         leaks = []
         funnel_redesigns = []
@@ -131,7 +128,7 @@ class WealthAccelerator:
                     description=f"{churn_rate}% monthly churn is bleeding revenue",
                     estimated_impact_usd_monthly=revenue_monthly * (churn_rate / 100),
                     confidence=0.95,
-                )
+                ),
             )
             funnel_redesigns.append(
                 FunnelRedesign(
@@ -144,7 +141,7 @@ class WealthAccelerator:
                         "Create retention playbook for at-risk customers",
                     ],
                     estimated_lift_usd_monthly=revenue_monthly * ((churn_rate - 3.0) / 100),
-                )
+                ),
             )
 
         if cac / ltv > 0.33:
@@ -154,7 +151,7 @@ class WealthAccelerator:
                     description=f"CAC/LTV ratio {cac / ltv:.2f} is unsustainable (target <0.33)",
                     estimated_impact_usd_monthly=revenue_monthly * 0.2,  # Estimated impact
                     confidence=0.85,
-                )
+                ),
             )
 
         # Add leverage strategies
@@ -165,7 +162,7 @@ class WealthAccelerator:
                 viral_coefficient=1.2,
                 implementation_effort="medium",
                 estimated_roi=3.5,
-            )
+            ),
         )
 
         # Calculate totals

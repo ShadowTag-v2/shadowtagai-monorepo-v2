@@ -1,5 +1,4 @@
-"""
-GamePort service layer.
+"""GamePort service layer.
 
 Extracts all database operations from gameport routes
 into a proper service/repository pattern.
@@ -29,7 +28,7 @@ class GameportService:
 
     @staticmethod
     def create_session(
-        db: Session, game: Game, user: User, gpu_region: str | None = "us-east-1"
+        db: Session, game: Game, user: User, gpu_region: str | None = "us-east-1",
     ) -> GameSession:
         """Create a new cloud gaming session."""
         session = GameSession(

@@ -1,5 +1,4 @@
-"""
-Grok Code Fast 1 API Client
+"""Grok Code Fast 1 API Client
 ============================
 xAI's agentic coding model optimized for rapid code generation.
 
@@ -57,8 +56,7 @@ class GrokResponse(BaseModel):
 
 
 class GrokClient:
-    """
-    Grok Code Fast 1 API Client.
+    """Grok Code Fast 1 API Client.
 
     Used in the atomic pipeline for:
     - Real-time trend analysis from X
@@ -98,8 +96,7 @@ class GrokClient:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> GrokResponse:
-        """
-        Generate a completion from Grok.
+        """Generate a completion from Grok.
 
         Args:
             prompt: User prompt
@@ -109,6 +106,7 @@ class GrokClient:
 
         Returns:
             GrokResponse with content and metadata
+
         """
         messages = []
 
@@ -142,8 +140,7 @@ class GrokClient:
         topic: str,
         context: str | None = None,
     ) -> GrokResponse:
-        """
-        Analyze current X/Twitter trends for a topic.
+        """Analyze current X/Twitter trends for a topic.
 
         Args:
             topic: Topic to analyze trends for
@@ -151,6 +148,7 @@ class GrokClient:
 
         Returns:
             GrokResponse with trend analysis
+
         """
         system_prompt = """You are a trend analyst with real-time access to X (Twitter).
 Analyze current discussions, trending topics, and sentiment around the given topic.
@@ -176,8 +174,7 @@ Provide:
         style_guide: str | None = None,
         test_requirements: bool = True,
     ) -> GrokResponse:
-        """
-        Generate code rapidly with Grok Code Fast.
+        """Generate code rapidly with Grok Code Fast.
 
         Args:
             task: Code generation task description
@@ -187,6 +184,7 @@ Provide:
 
         Returns:
             GrokResponse with generated code
+
         """
         system_prompt = f"""You are an expert {language} developer optimized for rapid, accurate code generation.
 Generate production-ready code that follows best practices.
@@ -211,8 +209,7 @@ Output format: Code blocks with explanations."""
         prompt: str,
         system_prompt: str | None = None,
     ) -> AsyncIterator[str]:
-        """
-        Stream a completion from Grok.
+        """Stream a completion from Grok.
 
         Args:
             prompt: User prompt
@@ -220,6 +217,7 @@ Output format: Code blocks with explanations."""
 
         Yields:
             Content chunks as they arrive
+
         """
         messages = []
 

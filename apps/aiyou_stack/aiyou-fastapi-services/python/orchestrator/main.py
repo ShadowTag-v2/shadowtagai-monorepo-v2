@@ -1,5 +1,4 @@
-"""
-PNKLN Inference Orchestrator
+"""PNKLN Inference Orchestrator
 Main entry point for LLM routing and Judge #6 integration
 """
 
@@ -16,13 +15,13 @@ from pydantic import BaseModel, Field
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 # Prometheus metrics
 REQUEST_COUNT = Counter(
-    "http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"]
+    "http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"],
 )
 REQUEST_LATENCY = Histogram("http_request_duration_seconds", "HTTP request latency", ["endpoint"])
 JUDGE_COVERAGE = Gauge("judge_coverage_ratio", "Judge #6 coverage ratio")
@@ -129,9 +128,8 @@ async def route_to_judge(request: InferenceRequest, layer: int = 1) -> dict[str,
 
         if response.status_code == 200:
             return response.json()
-        else:
-            logger.warning(f"Judge Layer {layer} returned {response.status_code}")
-            return {"decision": "allow", "layer": layer, "confidence": 0.5}
+        logger.warning(f"Judge Layer {layer} returned {response.status_code}")
+        return {"decision": "allow", "layer": layer, "confidence": 0.5}
 
     except Exception as e:
         logger.error(f"Judge Layer {layer} error: {e}")

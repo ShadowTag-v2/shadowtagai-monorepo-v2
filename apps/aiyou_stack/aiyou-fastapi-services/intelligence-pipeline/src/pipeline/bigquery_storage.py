@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - BigQuery Storage
+"""PNKLN Intelligence Pipeline - BigQuery Storage
 
 Stores intelligence items in BigQuery for:
 - Historical analysis
@@ -22,17 +21,16 @@ logger = logging.getLogger(__name__)
 
 
 class BigQueryStorage:
-    """
-    BigQuery storage handler for intelligence items
+    """BigQuery storage handler for intelligence items
     """
 
     def __init__(self, project_id: str = None, dataset_id: str = None):
-        """
-        Initialize BigQuery storage
+        """Initialize BigQuery storage
 
         Args:
             project_id: GCP project ID
             dataset_id: BigQuery dataset ID
+
         """
         self.project_id = project_id or os.getenv("PROJECT_ID")
         self.dataset_id = dataset_id or os.getenv("BIGQUERY_DATASET", "pnkln_intelligence")
@@ -42,14 +40,14 @@ class BigQueryStorage:
         logger.info(f"BigQueryStorage initialized: {self.project_id}.{self.dataset_id}")
 
     async def store_items(self, items: list[IntelligenceItem]) -> int:
-        """
-        Store intelligence items in BigQuery
+        """Store intelligence items in BigQuery
 
         Args:
             items: List of processed intelligence items
 
         Returns:
             Number of items stored
+
         """
         logger.info(f"=== Storing {len(items)} items in BigQuery ===")
         start_time = datetime.now()
@@ -116,19 +114,19 @@ class BigQueryStorage:
 
             table = bigquery.Table(table_ref, schema=schema)
             table.time_partitioning = bigquery.TimePartitioning(
-                type_=bigquery.TimePartitioningType.DAY, field="published_date"
+                type_=bigquery.TimePartitioningType.DAY, field="published_date",
             )
             self.client.create_table(table)
 
     def _item_to_row(self, item: IntelligenceItem) -> dict:
-        """
-        Convert IntelligenceItem to BigQuery row
+        """Convert IntelligenceItem to BigQuery row
 
         Args:
             item: Intelligence item
 
         Returns:
             Dictionary suitable for BigQuery insert
+
         """
         return {
             "id": item.id,
@@ -149,11 +147,10 @@ class BigQueryStorage:
 
 
 async def main():
-    """
-    Main BigQuery storage entry point
+    """Main BigQuery storage entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load processed items

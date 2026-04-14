@@ -1,7 +1,8 @@
+import logging
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
-import logging
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -15,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 async def verify_activeshield_jwt(token: str = Depends(oauth2_scheme)):
-    """
-    ActiveShield MCF Zero-Trust Policy Layer (L2.3).
+    """ActiveShield MCF Zero-Trust Policy Layer (L2.3).
     All microservices operating via aiyou-fastapi-services must
     route through this gateway to ensure strict token authentication
     before engaging domain logic.

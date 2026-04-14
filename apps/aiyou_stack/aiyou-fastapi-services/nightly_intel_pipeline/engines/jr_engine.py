@@ -1,5 +1,4 @@
-"""
-JR Engine - Purpose → Reasons → Brakes Scoring System
+"""JR Engine - Purpose → Reasons → Brakes Scoring System
 Evaluates content for strategic value and tier classification
 
 Enhanced to consume structured IntelEvent objects from Gemini normalization layer.
@@ -32,8 +31,7 @@ class Tier(Enum):
 
 @dataclass
 class JRScore:
-    """
-    JR Engine scoring result
+    """JR Engine scoring result
 
     Purpose → Reasons → Brakes framework evaluation
     """
@@ -72,8 +70,7 @@ class JRScore:
 
 
 class JREngine:
-    """
-    Judge #6 Governance Engine - JR Scoring System
+    """Judge #6 Governance Engine - JR Scoring System
 
     Implements Purpose → Reasons → Brakes framework using Claude API
     """
@@ -82,7 +79,7 @@ class JREngine:
         self.api_key = api_key or JR_ENGINE_CONFIG["api_key"]
         if not self.api_key:
             raise ValueError(
-                "Anthropic API key required. Set ANTHROPIC_API_KEY environment variable."
+                "Anthropic API key required. Set ANTHROPIC_API_KEY environment variable.",
             )
 
         self.model = model or JR_ENGINE_CONFIG["model"]
@@ -92,8 +89,7 @@ class JREngine:
         logger.info("jr_engine_initialized", model=self.model)
 
     def _build_scoring_prompt(self, content: str, content_type: str, content_id: str) -> str:
-        """
-        Build prompt for JR scoring
+        """Build prompt for JR scoring
 
         Uses Purpose → Reasons → Brakes framework
         """
@@ -168,8 +164,7 @@ Respond with ONLY the JSON object, no additional text.
         return prompt
 
     def score_content(self, content: str, content_type: str, content_id: str) -> JRScore:
-        """
-        Score content using JR Engine
+        """Score content using JR Engine
 
         Args:
             content: Text content to evaluate
@@ -178,6 +173,7 @@ Respond with ONLY the JSON object, no additional text.
 
         Returns:
             JRScore object with evaluation results
+
         """
         try:
             logger.info("jr_scoring_started", content_type=content_type, content_id=content_id)
@@ -187,7 +183,7 @@ Respond with ONLY the JSON object, no additional text.
 
             # Call Claude API
             response = self.client.messages.create(
-                model=self.model, max_tokens=2000, messages=[{"role": "user", "content": prompt}]
+                model=self.model, max_tokens=2000, messages=[{"role": "user", "content": prompt}],
             )
 
             # Parse response
@@ -247,8 +243,7 @@ Respond with ONLY the JSON object, no additional text.
             return self._create_error_score(content_type, content_id, str(e))
 
     def _classify_tier(self, total_score: float) -> Tier:
-        """
-        Classify content into tier based on total score
+        """Classify content into tier based on total score
 
         Tier 1: >= 85 (Executive review)
         Tier 2: >= 70 (Auto-action)
@@ -259,12 +254,11 @@ Respond with ONLY the JSON object, no additional text.
 
         if total_score >= thresholds["tier_1"]:
             return Tier.TIER_1
-        elif total_score >= thresholds["tier_2"]:
+        if total_score >= thresholds["tier_2"]:
             return Tier.TIER_2
-        elif total_score >= thresholds["tier_3"]:
+        if total_score >= thresholds["tier_3"]:
             return Tier.TIER_3
-        else:
-            return Tier.TIER_4
+        return Tier.TIER_4
 
     def _create_error_score(self, content_type: str, content_id: str, error: str) -> JRScore:
         """Create a default error score"""
@@ -286,8 +280,7 @@ Respond with ONLY the JSON object, no additional text.
         )
 
     def score_github_repo(self, flattened_content: str, repo_name: str) -> JRScore:
-        """
-        Score a GitHub repository
+        """Score a GitHub repository
 
         Args:
             flattened_content: Flattened repository content
@@ -295,14 +288,14 @@ Respond with ONLY the JSON object, no additional text.
 
         Returns:
             JRScore object
+
         """
         return self.score_content(
-            content=flattened_content, content_type="github_repo", content_id=repo_name
+            content=flattened_content, content_type="github_repo", content_id=repo_name,
         )
 
     def score_arxiv_paper(self, paper_metadata: str, paper_id: str) -> JRScore:
-        """
-        Score an arXiv paper
+        """Score an arXiv paper
 
         Args:
             paper_metadata: Paper metadata and abstract
@@ -310,14 +303,14 @@ Respond with ONLY the JSON object, no additional text.
 
         Returns:
             JRScore object
+
         """
         return self.score_content(
-            content=paper_metadata, content_type="arxiv_paper", content_id=paper_id
+            content=paper_metadata, content_type="arxiv_paper", content_id=paper_id,
         )
 
     def score_intel_event(self, event: "IntelEvent") -> JRScore:
-        """
-        Score an IntelEvent from Gemini normalization layer.
+        """Score an IntelEvent from Gemini normalization layer.
 
         Uses pre-extracted jr_hints for faster, more accurate scoring.
 
@@ -326,6 +319,7 @@ Respond with ONLY the JSON object, no additional text.
 
         Returns:
             JRScore object with enhanced scoring from hints
+
         """
         # Build enriched content from structured event
         enriched_content = self._build_enriched_content(event)
@@ -348,7 +342,7 @@ Respond with ONLY the JSON object, no additional text.
         content_type = content_type_map.get(event.source_type.value, "web_content")
 
         return self.score_content(
-            content=enriched_content, content_type=content_type, content_id=event.id
+            content=enriched_content, content_type=content_type, content_id=event.id,
         )
 
     def _build_enriched_content(self, event: "IntelEvent") -> str:
@@ -403,14 +397,14 @@ Respond with ONLY the JSON object, no additional text.
         return "\n".join(parts)
 
     def batch_score_intel_events(self, events: list["IntelEvent"]) -> list[JRScore]:
-        """
-        Score multiple IntelEvents
+        """Score multiple IntelEvents
 
         Args:
             events: List of IntelEvent objects
 
         Returns:
             List of JRScore objects
+
         """
         scores = []
 
@@ -429,14 +423,14 @@ Respond with ONLY the JSON object, no additional text.
         return scores
 
     def batch_score(self, items: list[tuple[str, str, str]]) -> list[JRScore]:
-        """
-        Score multiple items
+        """Score multiple items
 
         Args:
             items: List of (content, content_type, content_id) tuples
 
         Returns:
             List of JRScore objects
+
         """
         scores = []
 
@@ -455,11 +449,11 @@ Respond with ONLY the JSON object, no additional text.
         return scores
 
     def generate_tier_report(self, scores: list[JRScore]) -> str:
-        """
-        Generate a tier-based report of scores
+        """Generate a tier-based report of scores
 
         Returns:
             Markdown-formatted report
+
         """
         # Group by tier
         by_tier: dict[Tier, list[JRScore]] = {
@@ -492,7 +486,7 @@ Respond with ONLY the JSON object, no additional text.
             }
 
             report_parts.append(
-                f"## Tier {tier.value}: {tier_desc[tier]} ({len(tier_scores)} items)"
+                f"## Tier {tier.value}: {tier_desc[tier]} ({len(tier_scores)} items)",
             )
             report_parts.append("")
 
@@ -504,16 +498,16 @@ Respond with ONLY the JSON object, no additional text.
                 report_parts.append("")
                 report_parts.append("**Scores:**")
                 report_parts.append(
-                    f"- Purpose Alignment: {score.purpose_alignment:.0f} - {score.purpose_reasoning}"
+                    f"- Purpose Alignment: {score.purpose_alignment:.0f} - {score.purpose_reasoning}",
                 )
                 report_parts.append(
-                    f"- Technical Merit: {score.technical_merit:.0f} - {score.technical_reasoning}"
+                    f"- Technical Merit: {score.technical_merit:.0f} - {score.technical_reasoning}",
                 )
                 report_parts.append(
-                    f"- Adoption Potential: {score.adoption_potential:.0f} - {score.adoption_reasoning}"
+                    f"- Adoption Potential: {score.adoption_potential:.0f} - {score.adoption_reasoning}",
                 )
                 report_parts.append(
-                    f"- Risk Assessment: {score.risk_assessment:.0f} - {score.risk_reasoning}"
+                    f"- Risk Assessment: {score.risk_assessment:.0f} - {score.risk_reasoning}",
                 )
                 report_parts.append("")
 
@@ -531,8 +525,7 @@ Respond with ONLY the JSON object, no additional text.
 
 # Convenience functions
 def score_content(content: str, content_type: str, content_id: str) -> JRScore:
-    """
-    Score content using JR Engine
+    """Score content using JR Engine
 
     Usage:
         score = score_content(repo_content, "github_repo", "owner/repo")
@@ -542,8 +535,7 @@ def score_content(content: str, content_type: str, content_id: str) -> JRScore:
 
 
 def classify_tier(total_score: float) -> Tier:
-    """
-    Classify a score into a tier
+    """Classify a score into a tier
 
     Usage:
         tier = classify_tier(87.5)  # Returns Tier.TIER_1

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Loop Agent: Architect/Critic/Refiner pattern
+"""Loop Agent: Architect/Critic/Refiner pattern
 Based on Google Cloud ADK Loop Agent architecture
 
 Implements iterative refinement until critic is satisfied.
@@ -47,13 +46,12 @@ class LoopState:
                 "iteration": self.iteration,
                 "phase": phase,
                 "content": content[:2000],  # Truncate for memory
-            }
+            },
         )
 
 
 class LoopAgent:
-    """
-    Architect/Critic/Refiner loop using minions backend.
+    """Architect/Critic/Refiner loop using minions backend.
 
     Flow:
     1. Architect: Initial design based on requirements
@@ -132,7 +130,7 @@ Explain what changed for each feedback item.
 
         except requests.RequestException as e:
             print(f"minions error: {e}")
-            return f"Error: {str(e)}"
+            return f"Error: {e!s}"
 
     def architect(self, requirement: str) -> str:
         """Initial architecture design (Stage 1)."""
@@ -151,7 +149,7 @@ Explain what changed for each feedback item.
         self.state.status = LoopStatus.CRITIQUING
 
         prompt = self.CRITIC_PROMPT.format(
-            architecture=self.state.current_doc, requirement=requirement
+            architecture=self.state.current_doc, requirement=requirement,
         )
 
         # Use governance endpoint for critical evaluation
@@ -172,7 +170,7 @@ Explain what changed for each feedback item.
         self.state.status = LoopStatus.REFINING
 
         prompt = self.REFINER_PROMPT.format(
-            architecture=self.state.current_doc, feedback=self.state.feedback
+            architecture=self.state.current_doc, feedback=self.state.feedback,
         )
 
         self.state.current_doc = self._call_minions(prompt, "task")
@@ -182,11 +180,11 @@ Explain what changed for each feedback item.
         return self.state.current_doc
 
     def run(self, requirement: str) -> dict[str, Any]:
-        """
-        Execute the full Architect/Critic/Refiner loop.
+        """Execute the full Architect/Critic/Refiner loop.
 
         Returns:
             dict with final architecture, iteration count, and status
+
         """
         print(f"///▞ LOOP AGENT :: Starting (max {self.state.max_iterations} iterations)")
 

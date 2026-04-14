@@ -1,5 +1,4 @@
-"""
-Gemini-Native Panel Debate Architecture
+"""Gemini-Native Panel Debate Architecture
 Multi-agent consensus using Gemini 1.5 Pro (no framework overhead)
 
 This is the optimized implementation that replaces AutoGen/Claude-based
@@ -76,8 +75,7 @@ class GeminiDebateResult:
 
 
 class GeminiPanelDebate:
-    """
-    Gemini-native multi-agent panel debate
+    """Gemini-native multi-agent panel debate
 
     Replaces AutoGen framework with direct Gemini 1.5 Pro API calls.
     Uses multi-turn conversation pattern with role-based personas.
@@ -92,13 +90,13 @@ class GeminiPanelDebate:
         model_name: str = "gemini-1.5-pro",
         confidence_threshold: float = 0.80,
     ):
-        """
-        Initialize Gemini-native panel debate
+        """Initialize Gemini-native panel debate
 
         Args:
             api_key: Gemini API key (defaults to settings)
             model_name: Gemini model to use
             confidence_threshold: When to trigger debate (<80% confidence)
+
         """
         if not GEMINI_AVAILABLE:
             raise ImportError("google-generativeai package not installed")
@@ -170,8 +168,7 @@ You make the final call."""
         }
 
     async def should_debate(self, initial_analysis: dict[str, Any]) -> bool:
-        """
-        Determine if content requires panel debate
+        """Determine if content requires panel debate
 
         Triggers when:
         1. Single-model confidence < threshold (80%)
@@ -196,10 +193,9 @@ You make the final call."""
         return bool(initial_analysis.get("requires_debate"))
 
     async def conduct_debate(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any]
+        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
     ) -> GeminiDebateResult:
-        """
-        Conduct 3-round panel debate using Gemini
+        """Conduct 3-round panel debate using Gemini
 
         Process:
         1. Prosecutor argues for rejection (Gemini call 1)
@@ -208,6 +204,7 @@ You make the final call."""
 
         Returns:
             GeminiDebateResult with decision, reasoning, and metrics
+
         """
         start_time = datetime.utcnow()
         total_tokens = 0
@@ -231,14 +228,14 @@ You make the final call."""
 
             # Round 3: Judge (with both arguments)
             judge_decision = await self._judge_decision(
-                debate_context, prosecutor_arg.argument, defender_arg.argument
+                debate_context, prosecutor_arg.argument, defender_arg.argument,
             )
             total_tokens += judge_decision["tokens_used"]
             total_cost += self._calculate_cost(judge_decision["tokens_used"], "input_output")
 
             # Calculate consensus score
             consensus_score = self._calculate_consensus(
-                prosecutor_arg.confidence, defender_arg.confidence
+                prosecutor_arg.confidence, defender_arg.confidence,
             )
 
             # Calculate total duration
@@ -261,7 +258,7 @@ You make the final call."""
                 f"Gemini debate concluded: {result.decision} "
                 f"(confidence: {result.confidence:.2f}, "
                 f"cost: ${result.cost_usd:.4f}, "
-                f"latency: {result.duration_ms:.0f}ms)"
+                f"latency: {result.duration_ms:.0f}ms)",
             )
 
             return result
@@ -272,7 +269,7 @@ You make the final call."""
             return GeminiDebateResult(
                 decision="ESCALATE",
                 confidence=0.5,
-                reasoning=f"Debate failed due to error: {str(e)}. Human review required.",
+                reasoning=f"Debate failed due to error: {e!s}. Human review required.",
                 prosecutor_argument="",
                 defender_argument="",
                 consensus_score=0.5,
@@ -283,8 +280,7 @@ You make the final call."""
             )
 
     async def _prosecutor_argument(self, debate_context: str) -> GeminiDebateArgument:
-        """
-        Generate prosecutor's argument for content rejection
+        """Generate prosecutor's argument for content rejection
 
         Uses Gemini 1.5 Pro to build case for rejection
         """
@@ -341,10 +337,9 @@ Be thorough and cite specific evidence from the content analysis."""
             )
 
     async def _defender_argument(
-        self, debate_context: str, prosecutor_argument: str
+        self, debate_context: str, prosecutor_argument: str,
     ) -> GeminiDebateArgument:
-        """
-        Generate defender's argument for content approval
+        """Generate defender's argument for content approval
 
         Uses Gemini 1.5 Pro to counter prosecutor's case
         """
@@ -403,10 +398,9 @@ Be balanced but advocate for creator freedom within policy."""
             )
 
     async def _judge_decision(
-        self, debate_context: str, prosecutor_argument: str, defender_argument: str
+        self, debate_context: str, prosecutor_argument: str, defender_argument: str,
     ) -> dict[str, Any]:
-        """
-        Judge synthesizes arguments and makes final decision
+        """Judge synthesizes arguments and makes final decision
 
         Uses Gemini 1.5 Pro with structured JSON output
         """
@@ -472,10 +466,9 @@ Decision criteria:
             }
 
     def _build_debate_context(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any]
+        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
     ) -> str:
-        """
-        Build shared context for all debate rounds
+        """Build shared context for all debate rounds
 
         This context is cached by Gemini for efficiency
         """
@@ -505,10 +498,9 @@ DECISION FRAMEWORK:
 - Maintain brand safety for advertisers"""
 
     def _calculate_consensus(
-        self, prosecutor_confidence: float, defender_confidence: float
+        self, prosecutor_confidence: float, defender_confidence: float,
     ) -> float:
-        """
-        Calculate consensus score between prosecutor and defender
+        """Calculate consensus score between prosecutor and defender
 
         High consensus (>0.8): Strong agreement one way
         Low consensus (<0.5): Strong disagreement, needs review
@@ -547,8 +539,7 @@ DECISION FRAMEWORK:
         return 0.6
 
     def _calculate_cost(self, tokens: int, operation: str) -> float:
-        """
-        Calculate cost for Gemini API usage
+        """Calculate cost for Gemini API usage
 
         Gemini 1.5 Pro pricing:
         - Input: $0.0025 per 1K tokens

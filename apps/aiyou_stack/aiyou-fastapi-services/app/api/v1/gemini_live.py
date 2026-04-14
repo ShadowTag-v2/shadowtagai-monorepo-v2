@@ -1,5 +1,4 @@
-"""
-Gemini Live API Endpoints (v1)
+"""Gemini Live API Endpoints (v1)
 """
 
 import contextlib
@@ -16,14 +15,13 @@ logger = logging.getLogger(__name__)
 
 @router.websocket("/ws/live")
 async def gemini_live_websocket(websocket: WebSocket):
-    """
-    WebSocket proxy for Gemini Live API.
+    """WebSocket proxy for Gemini Live API.
     """
     await websocket.accept()
     logger.info("Client connected to Gemini Live WebSocket")
 
     service = GeminiLiveService(
-        location=settings.GEMINI_LIVE_LOCATION, model_id=settings.GEMINI_LIVE_MODEL
+        location=settings.GEMINI_LIVE_LOCATION, model_id=settings.GEMINI_LIVE_MODEL,
     )
 
     try:

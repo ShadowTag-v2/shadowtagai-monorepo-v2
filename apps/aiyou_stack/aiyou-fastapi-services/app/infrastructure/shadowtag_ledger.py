@@ -1,5 +1,4 @@
-"""
-ShadowTag v2 Ledger
+"""ShadowTag v2 Ledger
 
 Immutable audit ledger for compliance evidence.
 Implements Compliance-as-Documentation™ with cryptographic proof chains.
@@ -50,8 +49,7 @@ class ChainStats:
 
 
 class ShadowTagLedger:
-    """
-    Immutable audit ledger with hash chain integrity.
+    """Immutable audit ledger with hash chain integrity.
 
     Provides cryptographic proof of compliance events for
     Compliance-as-Documentation™ approach.
@@ -67,13 +65,13 @@ class ShadowTagLedger:
     CHAIN_PREFIX = "shadowtag:chain"
 
     def __init__(self, firestore_client=None, bigquery_client=None, enable_ipfs: bool = False):
-        """
-        Initialize ShadowTag ledger.
+        """Initialize ShadowTag ledger.
 
         Args:
             firestore_client: Optional Firestore client for persistence
             bigquery_client: Optional BigQuery client for analytics
             enable_ipfs: Enable IPFS hash pinning
+
         """
         self.firestore = firestore_client
         self.bigquery = bigquery_client
@@ -118,8 +116,7 @@ class ShadowTagLedger:
         data: dict[str, Any],
         actor: str = "system",
     ) -> LedgerEntry:
-        """
-        Record an event in the ledger.
+        """Record an event in the ledger.
 
         Args:
             event_type: Type of event (assessment, validation, etc.)
@@ -130,6 +127,7 @@ class ShadowTagLedger:
 
         Returns:
             LedgerEntry with hash chain info
+
         """
         entry_id = str(uuid4())
         timestamp = datetime.now(UTC).isoformat()
@@ -195,7 +193,7 @@ class ShadowTagLedger:
                 logger.error(f"BigQuery write failed: {e}")
 
     async def record_assessment(
-        self, assessment_id: str, result: dict[str, Any], actor: str = "system"
+        self, assessment_id: str, result: dict[str, Any], actor: str = "system",
     ) -> LedgerEntry:
         """Record a compliance assessment."""
         return await self.record_event(
@@ -213,7 +211,7 @@ class ShadowTagLedger:
         )
 
     async def record_validation(
-        self, validation_id: str, result: dict[str, Any], actor: str = "system"
+        self, validation_id: str, result: dict[str, Any], actor: str = "system",
     ) -> LedgerEntry:
         """Record a content validation."""
         return await self.record_event(
@@ -231,7 +229,7 @@ class ShadowTagLedger:
         )
 
     async def record_evidence(
-        self, artifact_id: str, artifact_type: str, metadata: dict[str, Any], actor: str = "system"
+        self, artifact_id: str, artifact_type: str, metadata: dict[str, Any], actor: str = "system",
     ) -> LedgerEntry:
         """Record an evidence artifact upload."""
         return await self.record_event(
@@ -243,7 +241,7 @@ class ShadowTagLedger:
         )
 
     async def record_attestation(
-        self, dossier_id: str, signatory: str, signature_hash: str, actor: str = "system"
+        self, dossier_id: str, signatory: str, signature_hash: str, actor: str = "system",
     ) -> LedgerEntry:
         """Record a compliance attestation."""
         return await self.record_event(
@@ -260,14 +258,14 @@ class ShadowTagLedger:
         )
 
     async def verify_chain(self, full_verification: bool = False) -> ChainStats:
-        """
-        Verify the integrity of the hash chain.
+        """Verify the integrity of the hash chain.
 
         Args:
             full_verification: If True, verify entire chain. If False, verify last 100 entries.
 
         Returns:
             ChainStats with verification results
+
         """
         self.stats["verifications"] += 1
 
@@ -309,15 +307,14 @@ class ShadowTagLedger:
         return None
 
     async def get_entries_for_resource(
-        self, resource_id: str, limit: int = 100
+        self, resource_id: str, limit: int = 100,
     ) -> list[LedgerEntry]:
         """Get all ledger entries for a specific resource."""
         entries = [e for e in self._chain if e.resource_id == resource_id]
         return entries[-limit:]
 
     async def get_chain_proof(self, entry_id: str) -> dict[str, Any]:
-        """
-        Generate a cryptographic proof for an entry.
+        """Generate a cryptographic proof for an entry.
 
         Returns the entry with its position in the chain and
         the hashes needed to verify its inclusion.
@@ -344,8 +341,7 @@ class ShadowTagLedger:
         }
 
     async def generate_signed_url(self, entry_id: str, expires_minutes: int = 15) -> str | None:
-        """
-        Generate a signed URL for accessing an entry.
+        """Generate a signed URL for accessing an entry.
 
         In production, this would generate a cryptographically
         signed URL using cloud storage signing.

@@ -1,5 +1,4 @@
-"""
-AgentCoder: Producer-Tester-Optimizer for code generation.
+"""AgentCoder: Producer-Tester-Optimizer for code generation.
 
 Three specialized agents collaborate:
 - Producer: Writes code
@@ -23,7 +22,7 @@ class CodeIteration(BaseModel):
     test_results: dict[str, bool] = Field(description="test_name -> passed")
     optimizations: list[str] = Field(default_factory=list)
     metrics: dict[str, float] = Field(
-        default_factory=dict, description="Coverage, complexity, etc."
+        default_factory=dict, description="Coverage, complexity, etc.",
     )
 
 
@@ -39,8 +38,7 @@ class AgentCoderResult(BaseModel):
 
 
 class AgentCoder:
-    """
-    AgentCoder: Multi-agent code generation.
+    """AgentCoder: Multi-agent code generation.
 
     Usage:
         >>> coder = AgentCoder(max_iterations=5, test_coverage_target=0.9)
@@ -67,13 +65,13 @@ class AgentCoder:
         test_coverage_target: float = 0.9,
         optimization_focus: Literal["speed", "memory", "readability"] = "readability",
     ) -> None:
-        """
-        Initialize AgentCoder.
+        """Initialize AgentCoder.
 
         Args:
             max_iterations: Max refinement cycles
             test_coverage_target: Stop when coverage >= this (0-1)
             optimization_focus: What to optimize for
+
         """
         self.max_iterations = max_iterations
         self.test_coverage_target = test_coverage_target
@@ -157,8 +155,7 @@ Suggest specific improvements."""
         model: any | None = None,
         temperature: float = 0.3,
     ) -> AgentCoderResult:
-        """
-        Generate code using multi-agent collaboration.
+        """Generate code using multi-agent collaboration.
 
         Args:
             task: Code generation task
@@ -167,6 +164,7 @@ Suggest specific improvements."""
 
         Returns:
             AgentCoderResult with iterations and final code
+
         """
         # Placeholder implementation
         # In production:
@@ -187,7 +185,7 @@ Suggest specific improvements."""
                     test_results={"test_basic": False, "test_edge_cases": False},
                     optimizations=[],
                     metrics={"coverage": 0.0, "complexity": 0},
-                )
+                ),
             ],
             final_code="# Final code placeholder",
             final_tests=[],

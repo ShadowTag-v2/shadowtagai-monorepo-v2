@@ -4,8 +4,7 @@ import logging
 
 
 class KafkaConnector:
-    """
-    Connects to Google Cloud Managed Service for Apache Kafka.
+    """Connects to Google Cloud Managed Service for Apache Kafka.
     Used for high-throughput event streaming in the Antigravity Mesh.
     """
 
@@ -21,4 +20,3 @@ class KafkaConnector:
 
     def consume_messages(self, topic: str, group_id: str):
         """Consume messages from a topic."""
-        pass

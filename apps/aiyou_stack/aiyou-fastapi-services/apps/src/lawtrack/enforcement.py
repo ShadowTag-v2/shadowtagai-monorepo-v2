@@ -1,5 +1,4 @@
-"""
-Enforcement Engine for LawTrack
+"""Enforcement Engine for LawTrack
 
 Configurable compliance checking and enforcement actions
 

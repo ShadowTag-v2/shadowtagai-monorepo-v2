@@ -1,5 +1,4 @@
-"""
-Context Management Service
+"""Context Management Service
 
 Business logic for managing AI analysis sessions and context indices
 """
@@ -21,19 +20,18 @@ from .models import (
 
 
 class ContextManager:
-    """
-    Manages AI analysis sessions and context indices
+    """Manages AI analysis sessions and context indices
 
     Provides CRUD operations and search functionality for tracking
     conversation history across multiple AI analysis sessions.
     """
 
     def __init__(self, storage_path: str = "./data/context_indices"):
-        """
-        Initialize the context manager
+        """Initialize the context manager
 
         Args:
             storage_path: Directory to store context indices (JSON files)
+
         """
         self.storage_path = Path(storage_path)
         self.storage_path.mkdir(parents=True, exist_ok=True)
@@ -81,14 +79,14 @@ class ContextManager:
             json.dump(summaries_list, f, indent=2, default=str)
 
     def create_session(self, request: CreateSessionRequest) -> AnalysisSession:
-        """
-        Create a new analysis session
+        """Create a new analysis session
 
         Args:
             request: Session creation request
 
         Returns:
             Created AnalysisSession
+
         """
         session_id = self._generate_session_id(request.issue_title)
 
@@ -114,14 +112,14 @@ class ContextManager:
         return session
 
     def get_session(self, session_id: str) -> AnalysisSession | None:
-        """
-        Retrieve a session by ID
+        """Retrieve a session by ID
 
         Args:
             session_id: Session identifier
 
         Returns:
             AnalysisSession if found, None otherwise
+
         """
         for session in self._index.sessions:
             if session.session_id == session_id:
@@ -135,8 +133,7 @@ class ContextManager:
         total_tokens: int | None = None,
         completed_at: datetime | None = None,
     ) -> AnalysisSession | None:
-        """
-        Update an existing session
+        """Update an existing session
 
         Args:
             session_id: Session to update
@@ -146,6 +143,7 @@ class ContextManager:
 
         Returns:
             Updated AnalysisSession if found, None otherwise
+
         """
         session = self.get_session(session_id)
         if not session:
@@ -184,8 +182,7 @@ class ContextManager:
         status: SessionStatus | None = None,
         limit: int = 100,
     ) -> list[AnalysisSession]:
-        """
-        List sessions with optional filtering
+        """List sessions with optional filtering
 
         Args:
             role: Filter by analysis role
@@ -194,6 +191,7 @@ class ContextManager:
 
         Returns:
             List of matching sessions
+
         """
         sessions = self._index.sessions
 
@@ -209,14 +207,14 @@ class ContextManager:
         return sessions[:limit]
 
     def create_summary(self, request: CreateSummaryRequest) -> ChatSummary:
-        """
-        Create a summary for a completed session
+        """Create a summary for a completed session
 
         Args:
             request: Summary creation request
 
         Returns:
             Created ChatSummary
+
         """
         summary = ChatSummary(
             session_id=request.session_id,
@@ -244,14 +242,14 @@ class ContextManager:
         return summary
 
     def get_summary(self, session_id: str) -> ChatSummary | None:
-        """
-        Retrieve a summary by session ID
+        """Retrieve a summary by session ID
 
         Args:
             session_id: Session identifier
 
         Returns:
             ChatSummary if found, None otherwise
+
         """
         return self._summaries.get(session_id)
 
@@ -260,8 +258,7 @@ class ContextManager:
         query: str,
         search_in: list[str] = None,
     ) -> list[AnalysisSession]:
-        """
-        Search sessions by text query
+        """Search sessions by text query
 
         Args:
             query: Search term
@@ -269,6 +266,7 @@ class ContextManager:
 
         Returns:
             List of matching sessions
+
         """
         if search_in is None:
             search_in = ["issue_title", "goal", "constraints"]
@@ -285,23 +283,23 @@ class ContextManager:
         return sorted(results, key=lambda s: s.created_at, reverse=True)
 
     def get_index(self) -> ContextIndex:
-        """
-        Get the full context index
+        """Get the full context index
 
         Returns:
             ContextIndex with all sessions
+
         """
         return self._index
 
     def export_session_context(self, session_id: str) -> dict | None:
-        """
-        Export a session with its summary for AI context loading
+        """Export a session with its summary for AI context loading
 
         Args:
             session_id: Session to export
 
         Returns:
             Dictionary with session and summary data
+
         """
         session = self.get_session(session_id)
         if not session:
@@ -316,14 +314,14 @@ class ContextManager:
         }
 
     def _generate_session_id(self, issue_title: str) -> str:
-        """
-        Generate a unique session ID
+        """Generate a unique session ID
 
         Args:
             issue_title: Issue title for ID generation
 
         Returns:
             Session ID in format: {slug}-{date}-{uuid}
+
         """
         # Create slug from title
         slug = issue_title.lower()[:30].replace(" ", "-").replace("_", "-")
@@ -338,22 +336,22 @@ class ContextManager:
         return f"{slug}-{date_str}-{short_uuid}"
 
     def get_active_sessions(self) -> list[AnalysisSession]:
-        """
-        Get all currently active sessions
+        """Get all currently active sessions
 
         Returns:
             List of active sessions
+
         """
         return self.list_sessions(status=SessionStatus.ACTIVE)
 
     def archive_session(self, session_id: str) -> AnalysisSession | None:
-        """
-        Archive a completed session
+        """Archive a completed session
 
         Args:
             session_id: Session to archive
 
         Returns:
             Archived session if found
+
         """
         return self.update_session(session_id, status=SessionStatus.ARCHIVED)

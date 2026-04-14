@@ -1,5 +1,4 @@
-"""
-Kosmos - Army Doctrine-Aligned Multi-Agent AI Framework
+"""Kosmos - Army Doctrine-Aligned Multi-Agent AI Framework
 ========================================================
 
 Implements ATP 3-20.96 Cavalry Squadron structure (430 agents) with

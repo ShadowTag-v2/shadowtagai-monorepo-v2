@@ -1,5 +1,4 @@
-"""
-LangGraph State Models for Judge #6 Governance Engine
+"""LangGraph State Models for Judge #6 Governance Engine
 
 Defines the three-phase state machine:
 1. AssessmentState - OPA Fast Check (JREngine)
@@ -68,8 +67,7 @@ class RiskLevel(StrEnum):
 
 @dataclass
 class AssessmentState:
-    """
-    Assessment state for OPA Fast Check phase.
+    """Assessment state for OPA Fast Check phase.
     Wraps existing JREngine validation.
     Target latency: <500μs (deterministic, no LLM calls)
     """
@@ -137,8 +135,7 @@ class DebateRound:
 
 @dataclass
 class DebateState:
-    """
-    Debate/Voting state for Judge#6 Reasoning phase.
+    """Debate/Voting state for Judge#6 Reasoning phase.
 
     Supports two modes:
     - SINGLE_ROUND (default): Memory-augmented single vote using precedents
@@ -229,8 +226,7 @@ class DebateState:
 
 @dataclass
 class SwarmVoteState:
-    """
-    Swarm voting state for n-autoresearch/Kosmos/BioAgents2 integration.
+    """Swarm voting state for n-autoresearch/Kosmos/BioAgents2 integration.
 
     Cost: $0.00006/decision average (5x under $0.0003 target)
     - 80% clear consensus: $0 (heuristic only)
@@ -296,8 +292,7 @@ class AuditEntry:
 
 @dataclass
 class AuditState:
-    """
-    Audit state for Audit Logger phase.
+    """Audit state for Audit Logger phase.
     Wraps existing AuditCompressKernel.
     Compresses to ATP 5-19 format (≤487 bytes target).
     """
@@ -332,7 +327,7 @@ class AuditState:
                 event_type=event_type,
                 details=details,
                 severity=severity,
-            )
+            ),
         )
         self.updated_at = datetime.utcnow()
 
@@ -363,8 +358,7 @@ class AuditState:
 
 @dataclass
 class GovernanceState:
-    """
-    Complete governance state machine state.
+    """Complete governance state machine state.
     This is what LangGraph's StateGraph manages.
     """
 

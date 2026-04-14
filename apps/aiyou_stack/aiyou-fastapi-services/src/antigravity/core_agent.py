@@ -20,8 +20,7 @@ from src.tools.openai_proxy import call_openai_chat
 
 
 class GeminiAgent:
-    """
-    A production-grade agent wrapper for Gemini 3.
+    """A production-grade agent wrapper for Gemini 3.
     Implements the Think-Act-Reflect loop with MCP integration.
 
     The agent supports two types of tools:
@@ -55,10 +54,10 @@ class GeminiAgent:
             print("⚠️ Skills loader not found, skipping skills.")
 
         print(
-            f"🤖 Initializing {self.settings.AGENT_NAME} with model {self.settings.GEMINI_MODEL_NAME}..."
+            f"🤖 Initializing {self.settings.AGENT_NAME} with model {self.settings.GEMINI_MODEL_NAME}...",
         )
         print(
-            f"   📦 Discovered {len(self.available_tools)} tools: {', '.join(list(self.available_tools.keys())[:10])}{'...' if len(self.available_tools) > 10 else ''}"
+            f"   📦 Discovered {len(self.available_tools)} tools: {', '.join(list(self.available_tools.keys())[:10])}{'...' if len(self.available_tools) > 10 else ''}",
         )
 
         # Initialize the GenAI client if credentials are available. Some test
@@ -88,18 +87,17 @@ class GeminiAgent:
                 # If a Google API key is provided, prefer Gemini.
                 if self.settings.GOOGLE_API_KEY:
                     self.client = genai.Client(api_key=self.settings.GOOGLE_API_KEY)
+                # If no Google key but an OpenAI-compatible endpoint is set,
+                # route generations through the OpenAI proxy (e.g., local Ollama).
+                elif self.settings.OPENAI_BASE_URL:
+                    self.use_openai_backend = True
+                    print(
+                        f"🔄 Using OpenAI-compatible backend at {self.settings.OPENAI_BASE_URL} "
+                        f"with model {self.settings.OPENAI_MODEL}",
+                    )
+                    self.client = None  # Not used when proxying to OpenAI
                 else:
-                    # If no Google key but an OpenAI-compatible endpoint is set,
-                    # route generations through the OpenAI proxy (e.g., local Ollama).
-                    if self.settings.OPENAI_BASE_URL:
-                        self.use_openai_backend = True
-                        print(
-                            f"🔄 Using OpenAI-compatible backend at {self.settings.OPENAI_BASE_URL} "
-                            f"with model {self.settings.OPENAI_MODEL}"
-                        )
-                        self.client = None  # Not used when proxying to OpenAI
-                    else:
-                        raise ValueError("No GOOGLE_API_KEY or OPENAI_BASE_URL configured")
+                    raise ValueError("No GOOGLE_API_KEY or OPENAI_BASE_URL configured")
             except Exception as e:
                 print(f"⚠️ genai client not initialized: {e}")
 
@@ -117,8 +115,7 @@ class GeminiAgent:
                 self.client = _DummyClientFallback()
 
     def _initialize_mcp(self) -> None:
-        """
-        Initialize MCP (Model Context Protocol) integration.
+        """Initialize MCP (Model Context Protocol) integration.
 
         This method:
         1. Creates an MCP client manager
@@ -153,8 +150,7 @@ class GeminiAgent:
             print(f"   ⚠️ Failed to initialize MCP: {e}")
 
     def _load_tools(self) -> dict[str, Callable[..., Any]]:
-        """
-        Automatically discover and load tools from src/tools/ directory.
+        """Automatically discover and load tools from src/tools/ directory.
 
         Scans the tools directory for Python modules, imports them dynamically,
         and registers any public functions (not starting with _) as available tools.
@@ -163,6 +159,7 @@ class GeminiAgent:
 
         Returns:
             Dictionary mapping tool names to callable functions.
+
         """
         tools = {}
 
@@ -204,8 +201,7 @@ class GeminiAgent:
         return tools
 
     def _load_context(self) -> str:
-        """
-        Automatically load and concatenate all markdown files from .context/ directory.
+        """Automatically load and concatenate all markdown files from .context/ directory.
 
         This allows users to add project-specific knowledge, coding standards, or
         custom rules by simply dropping .md files into .context/. The content is
@@ -213,6 +209,7 @@ class GeminiAgent:
 
         Returns:
             Concatenated content of all .md files in .context/ directory.
+
         """
         context_parts = []
 
@@ -241,8 +238,7 @@ class GeminiAgent:
         return "\n".join(context_parts)
 
     def _get_tool_descriptions(self) -> str:
-        """
-        Dynamically builds a list of available tools and their docstrings for prompt injection.
+        """Dynamically builds a list of available tools and their docstrings for prompt injection.
         """
         descriptions: list[str] = []
         for name, fn in self.available_tools.items():
@@ -251,8 +247,7 @@ class GeminiAgent:
         return "\n".join(descriptions)
 
     def _format_context_messages(self, context_messages: list[dict[str, Any]]) -> str:
-        """
-        Flattens structured context into a plain-text prompt block.
+        """Flattens structured context into a plain-text prompt block.
         """
         lines = [
             f"{msg.get('role', '').upper()}: {msg.get('content', '')}" for msg in context_messages
@@ -294,8 +289,7 @@ class GeminiAgent:
         return text.strip()
 
     def _extract_tool_call(self, response_text: str) -> tuple[str | None, dict[str, Any]]:
-        """
-        Parses a model response to detect a tool invocation request.
+        """Parses a model response to detect a tool invocation request.
 
         Supports two patterns:
         1) JSON object: {"action": "tool_name", "args": {...}}
@@ -322,11 +316,10 @@ class GeminiAgent:
         return None, {}
 
     def summarize_memory(self, old_messages: list[dict[str, Any]], previous_summary: str) -> str:
-        """
-        Summarize older history into a concise buffer using Gemini.
+        """Summarize older history into a concise buffer using Gemini.
         """
         history_block = "\n".join(
-            [f"- {m.get('role', 'unknown')}: {m.get('content', '')}" for m in old_messages]
+            [f"- {m.get('role', 'unknown')}: {m.get('content', '')}" for m in old_messages],
         )
         prompt = (
             "You are an expert conversation summarizer for an autonomous agent.\n"
@@ -345,8 +338,7 @@ class GeminiAgent:
         return self._call_gemini(prompt)
 
     def _generate_thought(self, task: str) -> str:
-        """
-        Generates a Chain-of-Thought plan using the specific Deep Think prompt.
+        """Generates a Chain-of-Thought plan using the specific Deep Think prompt.
         """
         context_knowledge = self._load_context()
 
@@ -369,14 +361,12 @@ class GeminiAgent:
         return thought_response
 
     def think(self, task: str) -> str:
-        """
-        Simulates the 'Deep Think' process of Gemini 3.
+        """Simulates the 'Deep Think' process of Gemini 3.
         """
         return self._generate_thought(task)
 
     def act(self, task: str) -> str:
-        """
-        Executes the task using available tools and generates a real response.
+        """Executes the task using available tools and generates a real response.
         """
         # 1) Record user input
         self.memory.add_entry("user", task)
@@ -450,13 +440,12 @@ class GeminiAgent:
             return final_response
 
         except Exception as e:
-            response = f"Error generating response: {str(e)}"
+            response = f"Error generating response: {e!s}"
             print(f"❌ API Error: {e}")
             return response
 
     def reflect(self):
-        """
-        Review past actions to improve future performance.
+        """Review past actions to improve future performance.
         """
         history = self.memory.get_history()
         print(f"Reflecting on {len(history)} past interactions...")
@@ -469,8 +458,7 @@ class GeminiAgent:
         self.reflect()
 
     def shutdown(self) -> None:
-        """
-        Gracefully shutdown the agent and cleanup resources.
+        """Gracefully shutdown the agent and cleanup resources.
 
         This method should be called when the agent is no longer needed,
         especially when MCP integration is enabled to properly close
@@ -482,14 +470,14 @@ class GeminiAgent:
         print("👋 Agent shutdown complete.")
 
     def get_mcp_status(self) -> dict[str, Any]:
-        """
-        Get the status of MCP integration.
+        """Get the status of MCP integration.
 
         Returns:
             Dictionary with MCP status information including:
             - enabled: Whether MCP is enabled in settings
             - initialized: Whether MCP manager is initialized
             - servers: Status of each connected server
+
         """
         if not self.mcp_manager:
             return {

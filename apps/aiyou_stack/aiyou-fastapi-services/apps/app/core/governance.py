@@ -5,8 +5,7 @@ import time
 
 
 class GovernanceTracer:
-    """
-    Manages audit trail traces and signed URLs.
+    """Manages audit trail traces and signed URLs.
     """
 
     def __init__(self):
@@ -14,8 +13,7 @@ class GovernanceTracer:
         self._expirations: dict[str, float] = {}
 
     def get_or_generate_trace(self, decision_id: str) -> str:
-        """
-        Get existing active trace URL or generate new one.
+        """Get existing active trace URL or generate new one.
         Returns a mock signed URL for now.
         """
         now = time.time()
@@ -24,9 +22,8 @@ class GovernanceTracer:
         if decision_id in self._traces:
             if self._expirations[decision_id] > now:
                 return self._traces[decision_id]
-            else:
-                del self._traces[decision_id]
-                del self._expirations[decision_id]
+            del self._traces[decision_id]
+            del self._expirations[decision_id]
 
         # Generate new mock signed URL
         token = secrets.token_urlsafe(32)

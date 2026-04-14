@@ -1,5 +1,4 @@
-"""
-Swiper Adaptive Shoppable Video Platform - Database Models
+"""Swiper Adaptive Shoppable Video Platform - Database Models
 
 This module implements the core database models for the Swiper platform:
 - Premium Beacons: Time-collapsing movies for retail
@@ -120,8 +119,7 @@ class InteractionType(StrEnum):
 
 
 class Video(Base):
-    """
-    Core video entity for Swiper platform
+    """Core video entity for Swiper platform
     Supports adaptive runtime, shoppable overlays, and multi-format content
     """
 
@@ -146,7 +144,7 @@ class Video(Base):
 
     # AI and personalization
     personalization_stage = Column(
-        SQLEnum(PersonalizationStage), default=PersonalizationStage.RULES
+        SQLEnum(PersonalizationStage), default=PersonalizationStage.RULES,
     )
     available_runtimes = Column(JSON)  # List of supported runtime modes
     narrative_arcs = Column(JSON)  # Story branch definitions
@@ -186,8 +184,7 @@ class Video(Base):
 
 
 class Product(Base):
-    """
-    Shoppable products linked to videos
+    """Shoppable products linked to videos
     Supports multi-retailer, affiliate links, and dynamic pricing
     """
 
@@ -236,8 +233,7 @@ class Product(Base):
 
 
 class ProductOverlay(Base):
-    """
-    Time-based product overlays within videos
+    """Time-based product overlays within videos
     Defines when/where products appear and how they're presented
     """
 
@@ -281,8 +277,7 @@ class ProductOverlay(Base):
 
 
 class PersuasionPoint(Base):
-    """
-    Persuasion layer: Talking points embedded in narrative
+    """Persuasion layer: Talking points embedded in narrative
     Targets different household decision-makers (kids → parents, spouses, etc.)
     """
 
@@ -325,8 +320,7 @@ class PersuasionPoint(Base):
 
 
 class User(Base):
-    """
-    User profiles for personalization and tracking
+    """User profiles for personalization and tracking
     """
 
     __tablename__ = "users"
@@ -362,8 +356,7 @@ class User(Base):
 
 
 class UserInteraction(Base):
-    """
-    Granular tracking of all user interactions with videos
+    """Granular tracking of all user interactions with videos
     Powers AI personalization and analytics
     """
 
@@ -414,8 +407,7 @@ class UserInteraction(Base):
 
 
 class Retailer(Base):
-    """
-    Retail partners sponsoring Premium Beacons and shoppable content
+    """Retail partners sponsoring Premium Beacons and shoppable content
     """
 
     __tablename__ = "retailers"
@@ -449,8 +441,7 @@ class Retailer(Base):
 
 
 class VideoAnalytics(Base):
-    """
-    Time-series analytics for video performance
+    """Time-series analytics for video performance
     Tracks engagement, conversions, and AI optimization metrics
     """
 

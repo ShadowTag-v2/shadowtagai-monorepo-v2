@@ -1,7 +1,7 @@
 import os
 import sys
 
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Ensure libs path is discoverable for swarm integration later
@@ -22,7 +22,7 @@ app.add_middleware(
 
 
 app.include_router(
-    agents.router, prefix="/api/v1/agents", dependencies=[Depends(verify_activeshield_jwt)]
+    agents.router, prefix="/api/v1/agents", dependencies=[Depends(verify_activeshield_jwt)],
 )
 
 

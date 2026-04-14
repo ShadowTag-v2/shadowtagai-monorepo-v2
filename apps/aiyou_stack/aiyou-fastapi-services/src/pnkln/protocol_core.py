@@ -1,5 +1,4 @@
-"""
-PNKLN CORE PROTOCOL V2.0 (Real Mode)
+"""PNKLN CORE PROTOCOL V2.0 (Real Mode)
 -----------------------------------
 This module implements the core Pnkln logic blocks:
 1. Verdict Engine (p-verdict)

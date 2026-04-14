@@ -1,5 +1,4 @@
-"""
-Training modules for Nightly Intel Pipeline
+"""Training modules for Nightly Intel Pipeline
 GAIN-RL, Entropy-Targeted Loss, and other training utilities
 """
 

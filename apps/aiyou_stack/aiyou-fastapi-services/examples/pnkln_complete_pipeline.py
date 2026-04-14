@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN Core Stack™ Complete Pipeline Example
+"""PNKLN Core Stack™ Complete Pipeline Example
 
 This example demonstrates the full end-to-end flow through the PNKLN stack:
 1. Gemini Ingestion Layer - Collect data from multiple sources
@@ -166,7 +165,7 @@ class PNKLNPipelineDemo:
         print(f"  New Items: {briefing['new_items_count']}")
         print(f"  Tier 1 Highlights: {len(briefing['tier_1_highlights'])}")
         print(
-            f"  Quality Gate: {'✓ PASSED' if briefing['quality_gate']['all_gates_passed'] else '✗ FAILED'}"
+            f"  Quality Gate: {'✓ PASSED' if briefing['quality_gate']['all_gates_passed'] else '✗ FAILED'}",
         )
         print(f"  Delivered: {'Yes' if briefing['delivered'] else 'No'}")
 
@@ -181,7 +180,7 @@ class PNKLNPipelineDemo:
 
         print("\n  Performance Metrics:")
         print(
-            f"    Ingestion Runtime: {metrics['performance']['ingestion_runtime_minutes']:.2f} min"
+            f"    Ingestion Runtime: {metrics['performance']['ingestion_runtime_minutes']:.2f} min",
         )
         print(f"    Validation P99: {metrics['performance']['validation_p99_latency_ms']:.2f}ms")
         print(f"    Delivery Success: {metrics['performance']['delivery_success_rate']:.2%}")
@@ -202,7 +201,7 @@ class PNKLNPipelineDemo:
         for check_name, check_data in sla["checks"].items():
             status = "✓" if check_data["met"] else "✗"
             print(
-                f"    {status} {check_name}: {check_data['actual']} (target: {check_data['target']}) {check_data['unit']}"
+                f"    {status} {check_name}: {check_data['actual']} (target: {check_data['target']}) {check_data['unit']}",
             )
 
     async def close(self):

@@ -9,8 +9,7 @@ from typing import Any
 
 
 class RealtimeSync:
-    """
-    Firebase-based state synchronization for the Antigravity UI.
+    """Firebase-based state synchronization for the Antigravity UI.
     Provides live status updates to the Verification Portal without polling.
     """
 

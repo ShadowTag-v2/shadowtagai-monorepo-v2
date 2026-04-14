@@ -1,5 +1,4 @@
-"""
-FastAPI routes for AWS Cost Optimizer Operations.
+"""FastAPI routes for AWS Cost Optimizer Operations.
 
 Endpoints for cost analysis, optimization recommendations, and waste elimination.
 """
@@ -169,17 +168,17 @@ async def get_insights(
         start_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
 
         analysis = await service.analyze_costs(
-            start_date=start_date, end_date=end_date, granularity="DAILY"
+            start_date=start_date, end_date=end_date, granularity="DAILY",
         )
 
         # Calculate trend
         if len(analysis.data_points) >= 2:
             recent_avg = sum(dp.amount for dp in analysis.data_points[-7:]) / min(
-                7, len(analysis.data_points[-7:])
+                7, len(analysis.data_points[-7:]),
             )
 
             earlier_avg = sum(dp.amount for dp in analysis.data_points[:7]) / min(
-                7, len(analysis.data_points[:7])
+                7, len(analysis.data_points[:7]),
             )
 
             trend = "increasing" if recent_avg > earlier_avg else "decreasing"

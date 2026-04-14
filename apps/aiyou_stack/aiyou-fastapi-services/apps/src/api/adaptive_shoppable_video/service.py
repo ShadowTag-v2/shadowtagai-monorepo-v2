@@ -1,6 +1,5 @@
 # ruff: noqa: F403, F405
-"""
-Adaptive Shoppable Video Platform (Amazon Challenger) - FastAPI Service
+"""Adaptive Shoppable Video Platform (Amazon Challenger) - FastAPI Service
 
 This is brilliantly inventive ✅ — merging adtech + streaming + commerce into one seamless loop.
 
@@ -113,8 +112,7 @@ def calculate_adaptive_runtime(
     eta_minutes: int | None = None,
     behavioral_signals: dict | None = None,
 ) -> int:
-    """
-    Calculate adaptive runtime based on user context and AI personalization
+    """Calculate adaptive runtime based on user context and AI personalization
 
     Stage 1 (Rules): Simple logic based on explicit signals
     Stage 2 (Bandits): Would use conversion history
@@ -131,11 +129,11 @@ def calculate_adaptive_runtime(
     # User-controlled modes
     if mode == RuntimeMode.QUICK_CUT:
         return min_duration or int(base_duration * 0.3)
-    elif mode == RuntimeMode.STANDARD:
+    if mode == RuntimeMode.STANDARD:
         return base_duration
-    elif mode == RuntimeMode.EXTENDED:
+    if mode == RuntimeMode.EXTENDED:
         return max_duration or int(base_duration * 1.5)
-    elif mode == RuntimeMode.FULL_FEATURE:
+    if mode == RuntimeMode.FULL_FEATURE:
         return max_duration or base_duration
 
     # Auto-adaptive based on behavioral signals
@@ -147,7 +145,7 @@ def calculate_adaptive_runtime(
         if scroll_speed == "fast":
             return min_duration or int(base_duration * 0.5)
         # Lingering users get deeper content
-        elif hover_time > 5:
+        if hover_time > 5:
             return max_duration or int(base_duration * 1.3)
 
     return base_duration
@@ -159,8 +157,7 @@ def select_narrative_arc(
     personalization_stage: PersonalizationStage,
     user_interests: list[ProductCategory] | None = None,
 ) -> dict:
-    """
-    Select narrative arc based on AI personalization stage
+    """Select narrative arc based on AI personalization stage
 
     Stage 1 (Rules): Category matching
     Stage 2 (Bandits): Conversion-optimized selection
@@ -174,7 +171,7 @@ def select_narrative_arc(
                 "scenes": ["intro", "product_demo", "family_interaction", "cta"],
                 "emphasis": "safety_and_fun",
             }
-        elif user_interests and ProductCategory.ELECTRONICS in user_interests:
+        if user_interests and ProductCategory.ELECTRONICS in user_interests:
             return {
                 "arc_id": "tech_specs",
                 "scenes": [
@@ -186,15 +183,14 @@ def select_narrative_arc(
                 ],
                 "emphasis": "performance_and_value",
             }
-        else:
-            return {
-                "arc_id": "general",
-                "scenes": ["intro", "product_showcase", "benefits", "cta"],
-                "emphasis": "quality",
-            }
+        return {
+            "arc_id": "general",
+            "scenes": ["intro", "product_showcase", "benefits", "cta"],
+            "emphasis": "quality",
+        }
 
     # Stage 2: Multi-armed bandit (would query conversion history)
-    elif personalization_stage == PersonalizationStage.BANDITS:
+    if personalization_stage == PersonalizationStage.BANDITS:
         # In production: Query analytics to find best-converting arc for user segment
         return {
             "arc_id": "high_conversion_arc",
@@ -210,7 +206,7 @@ def select_narrative_arc(
         }
 
     # Stage 3: Generative AI
-    elif personalization_stage == PersonalizationStage.GENERATIVE:
+    if personalization_stage == PersonalizationStage.GENERATIVE:
         # In production: Generate custom narrative using Claude/Gemini
         return {
             "arc_id": "ai_generated",
@@ -223,10 +219,9 @@ def select_narrative_arc(
 
 
 def select_persuasion_points(
-    video_id: str, household_type: str | None = None, user_context: dict | None = None
+    video_id: str, household_type: str | None = None, user_context: dict | None = None,
 ) -> list[dict]:
-    """
-    Select targeted persuasion points based on household dynamics
+    """Select targeted persuasion points based on household dynamics
 
     Returns talking points optimized for:
     - Kids → Parents (toys, safety, education)
@@ -277,10 +272,9 @@ def select_persuasion_points(
 
 
 def calculate_geofence_distance(
-    user_lat: float, user_lon: float, store_lat: float, store_lon: float
+    user_lat: float, user_lon: float, store_lat: float, store_lon: float,
 ) -> float:
-    """
-    Calculate distance between user and store location (Haversine formula)
+    """Calculate distance between user and store location (Haversine formula)
     Returns distance in meters
     """
     R = 6371000  # Earth's radius in meters

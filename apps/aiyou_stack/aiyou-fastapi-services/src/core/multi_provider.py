@@ -1,5 +1,4 @@
-"""
-Multi-Provider LLM Support: Anthropic Claude + Google Gemini
+"""Multi-Provider LLM Support: Anthropic Claude + Google Gemini
 
 Unified interface supporting:
 - Anthropic Claude (Sonnet 4.5, Opus 4, Haiku 3.5)
@@ -47,8 +46,7 @@ class LLMResponse:
 
 
 class MultiProviderExecutor:
-    """
-    Unified LLM executor supporting Anthropic + Gemini.
+    """Unified LLM executor supporting Anthropic + Gemini.
 
     Automatic provider selection based on task type:
     - Function calling → Gemini (12x faster)
@@ -93,13 +91,13 @@ class MultiProviderExecutor:
         gemini_api_key: str | None = None,
         default_provider: Provider = Provider.AUTO,
     ):
-        """
-        Initialize multi-provider executor.
+        """Initialize multi-provider executor.
 
         Args:
             anthropic_api_key: Anthropic API key (or from ANTHROPIC_API_KEY env)
             gemini_api_key: Google API key (or from GOOGLE_API_KEY env)
             default_provider: Default provider when not specified
+
         """
         self.default_provider = default_provider
 
@@ -134,11 +132,10 @@ class MultiProviderExecutor:
             # Auto-select based on task
             if task_type == "function_calling":
                 return Provider.GEMINI if self.gemini_available else Provider.ANTHROPIC
-            elif task_type == "reasoning":
+            if task_type == "reasoning":
                 return Provider.ANTHROPIC if self.anthropic_client else Provider.GEMINI
-            else:
-                # Default: Gemini for cost/speed
-                return Provider.GEMINI if self.gemini_available else Provider.ANTHROPIC
+            # Default: Gemini for cost/speed
+            return Provider.GEMINI if self.gemini_available else Provider.ANTHROPIC
 
         return provider
 
@@ -158,8 +155,7 @@ class MultiProviderExecutor:
         task_type: Literal["function_calling", "reasoning", "general"] | None = None,
         fallback_provider: Provider | str | None = None,
     ) -> LLMResponse:
-        """
-        Execute prompt with automatic provider selection.
+        """Execute prompt with automatic provider selection.
 
         Args:
             prompt: User query
@@ -173,14 +169,14 @@ class MultiProviderExecutor:
 
         Returns:
             LLMResponse with content, tokens, cost, latency
+
         """
         selected_provider = self._select_provider(provider, task_type, fallback_provider)
 
         try:
             if selected_provider == Provider.ANTHROPIC:
                 return self._execute_anthropic(prompt, system, model, temperature, max_tokens)
-            else:
-                return self._execute_gemini(prompt, system, model, temperature, max_tokens)
+            return self._execute_gemini(prompt, system, model, temperature, max_tokens)
 
         except Exception:
             # Try fallback if specified
@@ -192,8 +188,7 @@ class MultiProviderExecutor:
                 )
                 if fallback == Provider.ANTHROPIC:
                     return self._execute_anthropic(prompt, system, model, temperature, max_tokens)
-                else:
-                    return self._execute_gemini(prompt, system, model, temperature, max_tokens)
+                return self._execute_gemini(prompt, system, model, temperature, max_tokens)
             raise
 
     def _execute_anthropic(
@@ -269,7 +264,7 @@ class MultiProviderExecutor:
         response = model_instance.generate_content(prompt)
         latency = (time.time() - start_time) * 1000
 
-        content = response.text if response.text else ""
+        content = response.text or ""
 
         # Gemini usage metadata
         tokens_in = (

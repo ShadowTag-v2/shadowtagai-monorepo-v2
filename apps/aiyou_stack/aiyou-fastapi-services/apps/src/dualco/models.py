@@ -1,5 +1,4 @@
-"""
-DualCo Database Models
+"""DualCo Database Models
 """
 
 import uuid

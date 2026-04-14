@@ -1,5 +1,4 @@
-"""
-SHADOWTAGAI Kernel Chaining Architecture
+"""SHADOWTAGAI Kernel Chaining Architecture
 ===================================
 Sequential specialized prompts for efficient decision-making.
 """

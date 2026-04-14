@@ -1,5 +1,4 @@
-"""
-ActiveShield Medical - API Integration Tests
+"""ActiveShield Medical - API Integration Tests
 =============================================
 
 Test coverage for API endpoints:
@@ -40,7 +39,7 @@ class TestPreHocScanEndpoint:
     async def test_scan_clean_input(self):
         """Clean input should return allow status"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/scan",
@@ -60,7 +59,7 @@ class TestPreHocScanEndpoint:
     async def test_scan_crisis_content(self):
         """Crisis content should trigger escalation"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/scan",
@@ -79,7 +78,7 @@ class TestPreHocScanEndpoint:
     async def test_scan_missing_session_id(self):
         """Missing session_id should return 422"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/scan",
@@ -98,7 +97,7 @@ class TestMidHocMonitorEndpoint:
     async def test_monitor_safe_response(self):
         """Safe AI response should pass"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/monitor",
@@ -118,7 +117,7 @@ class TestMidHocMonitorEndpoint:
     async def test_monitor_phi_in_response(self):
         """PHI in response should be flagged/redacted"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/monitor",
@@ -143,7 +142,7 @@ class TestPostHocAuditEndpoint:
     async def test_audit_creates_trail(self):
         """Audit endpoint should create audit trail"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/audit",
@@ -168,7 +167,7 @@ class TestTraceEndpoint:
         """Trace endpoint should retrieve audit trail"""
         # First create an audit entry
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             # Create audit
             await client.post(
@@ -189,7 +188,7 @@ class TestTraceEndpoint:
     async def test_trace_not_found(self):
         """Non-existent trace should return 404"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.get("/api/v1/activeshield/trace/non-existent-session")
 
@@ -203,7 +202,7 @@ class TestCertificateEndpoint:
     async def test_certificate_generation(self):
         """Certificate endpoint should generate compliance cert"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/certificate",
@@ -226,7 +225,7 @@ class TestHealthEndpoint:
     async def test_health_check(self):
         """Health endpoint should return healthy"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.get("/api/v1/activeshield/health")
 
@@ -247,7 +246,7 @@ class TestSB243DirectEndpoint:
     async def test_sb243_direct_check(self):
         """Direct SB243 check should work"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/sb243/check",
@@ -269,7 +268,7 @@ class TestDLPDirectEndpoint:
     async def test_dlp_direct_scan(self):
         """Direct DLP scan should work"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/dlp/scan",
@@ -291,7 +290,7 @@ class TestClinicalDirectEndpoint:
     async def test_clinical_direct_evaluate(self):
         """Direct clinical evaluation should work"""
         async with AsyncClient(
-            transport=ASGITransport(app=test_app), base_url="http://test"
+            transport=ASGITransport(app=test_app), base_url="http://test",
         ) as client:
             response = await client.post(
                 "/api/v1/activeshield/clinical/evaluate",

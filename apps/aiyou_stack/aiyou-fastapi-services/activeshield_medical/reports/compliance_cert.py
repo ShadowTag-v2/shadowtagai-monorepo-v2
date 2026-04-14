@@ -1,5 +1,4 @@
-"""
-Compliance Certificate Generator
+"""Compliance Certificate Generator
 =================================
 
 Generates formal compliance certificates for ActiveShieldMedical clients.
@@ -16,8 +15,7 @@ from typing import Any
 
 
 class ComplianceCertificateGenerator:
-    """
-    Generates compliance certificates for ActiveShieldMedical sessions.
+    """Generates compliance certificates for ActiveShieldMedical sessions.
 
     Certificate Types:
     1. Session Certificate - Per-session compliance attestation
@@ -38,8 +36,7 @@ class ComplianceCertificateGenerator:
         metrics: dict[str, Any],
         frameworks_checked: list[str],
     ) -> dict[str, Any]:
-        """
-        Generate certificate for a single session.
+        """Generate certificate for a single session.
 
         Args:
             session_id: The session identifier
@@ -49,6 +46,7 @@ class ComplianceCertificateGenerator:
 
         Returns:
             Formal certificate document
+
         """
         cert_id = self._generate_cert_id(session_id)
         issued_at = datetime.utcnow()
@@ -105,8 +103,7 @@ class ComplianceCertificateGenerator:
         period_end: datetime,
         aggregate_metrics: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Generate periodic (weekly/monthly) compliance certificate.
+        """Generate periodic (weekly/monthly) compliance certificate.
         """
         cert_id = self._generate_cert_id(f"{customer_id}:{period_start.isoformat()}")
         issued_at = datetime.utcnow()
@@ -168,8 +165,7 @@ class ComplianceCertificateGenerator:
         incident_details: dict[str, Any],
         remediation_taken: list[str],
     ) -> dict[str, Any]:
-        """
-        Generate incident report for compliance violation or crisis.
+        """Generate incident report for compliance violation or crisis.
         """
         cert_id = self._generate_cert_id(f"incident:{incident_id}")
         issued_at = datetime.utcnow()

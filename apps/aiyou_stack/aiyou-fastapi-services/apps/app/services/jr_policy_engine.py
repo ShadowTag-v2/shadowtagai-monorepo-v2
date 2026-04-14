@@ -1,5 +1,4 @@
-"""
-JR (Judgment Rule) Policy Engine
+"""JR (Judgment Rule) Policy Engine
 ================================
 Second layer of the NS-JR-Cor compliance framework.
 
@@ -89,11 +88,11 @@ class PolicyRuleEvaluator:
         is_conversation_start: bool = False,
         data_collection: bool = False,
     ) -> PolicyEvaluation:
-        """
-        Evaluate a single policy rule.
+        """Evaluate a single policy rule.
 
         Returns:
             PolicyEvaluation with pass/fail and any violations
+
         """
         # Map UserAgeCategory to MinorProtectionLevel
         protection_level = self._map_age_to_protection(user_age)
@@ -205,18 +204,17 @@ class PolicyRuleEvaluator:
 
         if "SELF_HARM" in rule_id:
             return CARegulationType.SELF_HARM_DETECTION
-        elif "DISCLOSURE" in rule_id:
+        if "DISCLOSURE" in rule_id:
             return CARegulationType.AI_DISCLOSURE
-        elif "BREAK" in rule_id:
+        if "BREAK" in rule_id:
             return CARegulationType.BREAK_REMINDER
-        elif "EXPLICIT" in rule_id:
+        if "EXPLICIT" in rule_id:
             return CARegulationType.EXPLICIT_CONTENT
-        elif "MEDICAL" in rule_id:
+        if "MEDICAL" in rule_id:
             return CARegulationType.MEDICAL_IMPERSONATION
-        elif "PRIVACY" in rule_id:
+        if "PRIVACY" in rule_id:
             return CARegulationType.DATA_PRIVACY
-        else:
-            return CARegulationType.MINOR_PROTECTION
+        return CARegulationType.MINOR_PROTECTION
 
     def _map_severity(self, severity: str) -> ViolationSeverity:
         """Map string severity to enum"""
@@ -250,8 +248,7 @@ class PolicyRuleEvaluator:
 
 
 class JRPolicyEngine:
-    """
-    Judgment Rule Policy Engine.
+    """Judgment Rule Policy Engine.
 
     Second layer of NS-JR-Cor framework.
     Evaluates NS detection signals against California AI regulations
@@ -311,8 +308,7 @@ class JRPolicyEngine:
         is_conversation_start: bool = False,
         data_collection: bool = False,
     ) -> JRPolicyOutput:
-        """
-        Evaluate NS output against all policies.
+        """Evaluate NS output against all policies.
 
         Args:
             content_id: Content identifier
@@ -324,6 +320,7 @@ class JRPolicyEngine:
 
         Returns:
             JRPolicyOutput with compliance decision
+
         """
         import time
 
@@ -409,7 +406,7 @@ class JRPolicyEngine:
         )
 
     def _calculate_risk_tier(
-        self, ns_output: NSDetectionOutput, violations: list[PolicyViolation]
+        self, ns_output: NSDetectionOutput, violations: list[PolicyViolation],
     ) -> RiskTier:
         """Calculate risk tier based on signals and violations"""
         # Critical violations = Tier 5
@@ -447,7 +444,7 @@ class JRPolicyEngine:
         violation_summary = []
         for v in violations:
             violation_summary.append(
-                f"- {v.rule_id}: {v.description} (severity: {v.severity.value})"
+                f"- {v.rule_id}: {v.description} (severity: {v.severity.value})",
             )
 
         action = "ALLOWED with modifications" if go_decision else "BLOCKED"

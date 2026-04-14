@@ -1,5 +1,4 @@
-"""
-AM Briefing Generator - Morning Intelligence Summary.
+"""AM Briefing Generator - Morning Intelligence Summary.
 
 Generates daily briefings from collected and classified intelligence:
 - Executive summary
@@ -72,8 +71,7 @@ class DailyBriefing:
 
 
 class BriefingGenerator:
-    """
-    Generates daily AM briefings from intelligence data.
+    """Generates daily AM briefings from intelligence data.
 
     Features:
     - Executive summary
@@ -105,8 +103,7 @@ class BriefingGenerator:
         source_stats: dict,
         compliance_stats: dict,
     ) -> DailyBriefing:
-        """
-        Generate a daily briefing.
+        """Generate a daily briefing.
 
         Args:
             classified_items: Classified intelligence items
@@ -115,6 +112,7 @@ class BriefingGenerator:
 
         Returns:
             DailyBriefing ready for delivery
+
         """
         logger.info(f"Generating briefing for {len(classified_items)} items...")
 
@@ -127,7 +125,7 @@ class BriefingGenerator:
 
         # 1. Executive Summary
         sections.append(
-            self._generate_executive_summary(tier1_items, tier2_items, tier3_items, source_stats)
+            self._generate_executive_summary(tier1_items, tier2_items, tier3_items, source_stats),
         )
 
         # 2. Top Tier 1 Items

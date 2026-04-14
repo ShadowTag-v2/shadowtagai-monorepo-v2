@@ -1,5 +1,4 @@
-"""
-California AI Comprehensive Regulations
+"""California AI Comprehensive Regulations
 ========================================
 Complete implementation of California's AI chatbot regulations.
 
@@ -341,7 +340,7 @@ CALIFORNIA_AI_REGULATIONS: list[RegulationRule] = [
         action=ActionType.WARN,
         severity="high",
         parameters={
-            "disclaimer": "I am an AI and cannot provide medical advice. Please consult a healthcare professional."
+            "disclaimer": "I am an AI and cannot provide medical advice. Please consult a healthcare professional.",
         },
         legal_reference="AB 3030 - AI Healthcare Restrictions",
     ),
@@ -409,8 +408,7 @@ class ComprehensiveComplianceResult:
 
 
 class CaliforniaAIComprehensiveCompliance:
-    """
-    Comprehensive California AI Compliance Engine.
+    """Comprehensive California AI Compliance Engine.
 
     Extends CaliforniaAIMinorCompliance with full regulation coverage:
     - Self-harm detection and crisis response
@@ -449,11 +447,11 @@ class CaliforniaAIComprehensiveCompliance:
     # =========================================================================
 
     def detect_self_harm(self, text: str) -> dict[str, Any]:
-        """
-        Detect self-harm or suicidal ideation in text.
+        """Detect self-harm or suicidal ideation in text.
 
         Returns:
             Dict with detected patterns and confidence score
+
         """
         detections = []
         max_confidence = 0.0
@@ -471,7 +469,7 @@ class CaliforniaAIComprehensiveCompliance:
                             "pattern": pattern.pattern,
                             "matches": matches,
                             "confidence": confidence,
-                        }
+                        },
                     )
 
         return {
@@ -513,7 +511,7 @@ class CaliforniaAIComprehensiveCompliance:
                 matches = pattern.findall(text)
                 if matches:
                     detections.append(
-                        {"category": category, "pattern": pattern.pattern, "matches": matches}
+                        {"category": category, "pattern": pattern.pattern, "matches": matches},
                     )
 
         return {
@@ -538,7 +536,7 @@ class CaliforniaAIComprehensiveCompliance:
         return int(duration.total_seconds() / 60)
 
     def check_break_reminder(
-        self, session_id: str, protection_level: MinorProtectionLevel
+        self, session_id: str, protection_level: MinorProtectionLevel,
     ) -> dict[str, Any]:
         """Check if break reminder is due"""
         duration = self.get_session_duration_minutes(session_id)
@@ -573,8 +571,7 @@ class CaliforniaAIComprehensiveCompliance:
         is_conversation_start: bool = False,
         data_collection: bool = False,
     ) -> ComprehensiveComplianceResult:
-        """
-        Main comprehensive compliance check.
+        """Main comprehensive compliance check.
 
         Args:
             content_id: Unique content identifier
@@ -586,6 +583,7 @@ class CaliforniaAIComprehensiveCompliance:
 
         Returns:
             ComprehensiveComplianceResult with all evaluations and required actions
+
         """
         import time
 
@@ -625,7 +623,7 @@ class CaliforniaAIComprehensiveCompliance:
                         "details": evaluation.details,
                         "legal_reference": rule.legal_reference,
                         "remediation": rule.remediation,
-                    }
+                    },
                 )
                 if evaluation.action_taken not in required_actions:
                     required_actions.append(evaluation.action_taken)
@@ -684,7 +682,6 @@ class CaliforniaAIComprehensiveCompliance:
         data_collection: bool,
     ) -> RuleEvaluation:
         """Evaluate a single rule"""
-
         # Check if rule applies to this user
         if not rule.applies_to_user(protection_level):
             return RuleEvaluation(

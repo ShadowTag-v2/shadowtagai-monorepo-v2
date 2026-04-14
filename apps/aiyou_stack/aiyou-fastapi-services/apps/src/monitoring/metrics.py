@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class MetricsCollector:
-    """
-    Prometheus metrics collector for LLM serving.
+    """Prometheus metrics collector for LLM serving.
 
     Tracks:
     - Request counts and latencies

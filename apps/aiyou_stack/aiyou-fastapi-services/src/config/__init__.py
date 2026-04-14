@@ -5,9 +5,9 @@ from .verticals import VerticalConfig, VerticalType, get_vertical_by_name, get_v
 
 __all__ = [
     "Settings",
-    "settings",
-    "VerticalType",
     "VerticalConfig",
-    "get_vertical_config",
+    "VerticalType",
     "get_vertical_by_name",
+    "get_vertical_config",
+    "settings",
 ]

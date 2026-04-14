@@ -1,5 +1,4 @@
-"""
-Moondream Vision Ingestion Pipeline
+"""Moondream Vision Ingestion Pipeline
 
 Processes images/documents with Moondream vision model and outputs structured JSON.
 Integrates with safety controls and audit logging.
@@ -24,14 +23,14 @@ def sha256(data: bytes) -> str:
 
 
 def parse_with_moondream(file_path: Path) -> dict[str, Any]:
-    """
-    Parse a file with Moondream vision model.
+    """Parse a file with Moondream vision model.
 
     Args:
         file_path: Path to image/PDF file
 
     Returns:
         Parsed data structure with text, JSON, and metadata
+
     """
     # PLACEHOLDER: In production, call Moondream model here
     # md = Moondream(model="moondream2")
@@ -69,8 +68,7 @@ def parse_with_moondream(file_path: Path) -> dict[str, Any]:
 
 
 def ingest_directory(root: Path, output: Path, seen_path: Path | None = None) -> int:
-    """
-    Ingest all supported files from a directory.
+    """Ingest all supported files from a directory.
 
     Args:
         root: Root directory to scan
@@ -79,6 +77,7 @@ def ingest_directory(root: Path, output: Path, seen_path: Path | None = None) ->
 
     Returns:
         Number of files processed
+
     """
     # Supported extensions
     exts = {

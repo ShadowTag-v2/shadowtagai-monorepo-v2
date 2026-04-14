@@ -9,7 +9,7 @@ APPROVAL_MESSAGE = "Auto‑approved by admin script."
 if not REPO_NAME:
     # Try to infer from current directory if not set, or just warn
     print(
-        "Warning: GITHUB_REPO not set. Assuming current directory is the repo or 'gh' context is set."
+        "Warning: GITHUB_REPO not set. Assuming current directory is the repo or 'gh' context is set.",
     )
 
 
@@ -55,7 +55,7 @@ def main():
             approved += 1
         except subprocess.CalledProcessError:
             print(
-                f" -> Failed to approve PR #{number}. It might be already approved or you can't approve your own PR."
+                f" -> Failed to approve PR #{number}. It might be already approved or you can't approve your own PR.",
             )
             # print(e.stderr)
 

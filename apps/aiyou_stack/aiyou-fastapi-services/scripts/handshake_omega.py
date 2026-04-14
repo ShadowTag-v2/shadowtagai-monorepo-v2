@@ -5,8 +5,8 @@ import time
 # Add the apps path to sys.path so we can import from src
 sys.path.append(
     os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "../apps/n-autoresearch/Kosmos/BioAgents-server")
-    )
+        os.path.join(os.path.dirname(__file__), "../apps/n-autoresearch/Kosmos/BioAgents-server"),
+    ),
 )
 try:
     from src.atomic_core import initiate_research_omega, monitor_and_capture_omega
@@ -15,9 +15,9 @@ except ImportError:
     sys.path.append(
         os.path.abspath(
             os.path.join(
-                os.path.dirname(__file__), "../apps/n-autoresearch/Kosmos/BioAgents-server/src"
-            )
-        )
+                os.path.dirname(__file__), "../apps/n-autoresearch/Kosmos/BioAgents-server/src",
+            ),
+        ),
     )
     from atomic_core import initiate_research_omega
 

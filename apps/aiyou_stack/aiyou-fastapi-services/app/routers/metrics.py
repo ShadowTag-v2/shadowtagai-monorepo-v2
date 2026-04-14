@@ -64,8 +64,7 @@ class StackMetrics(BaseModel):
 
 @router.get("/overview", response_model=StackMetrics)
 async def get_metrics_overview():
-    """
-    Get comprehensive metrics overview for PNKLN stack
+    """Get comprehensive metrics overview for PNKLN stack
 
     Returns cost, performance, quality, and compliance metrics
     """
@@ -107,7 +106,7 @@ async def get_metrics_overview():
     )
 
     compliance_metrics = ComplianceMetrics(
-        robots_txt_violations=0, rate_limit_violations=0, compliance_score=1.0, flagged_domains=0
+        robots_txt_violations=0, rate_limit_violations=0, compliance_score=1.0, flagged_domains=0,
     )
 
     return StackMetrics(
@@ -121,8 +120,7 @@ async def get_metrics_overview():
 
 @router.get("/cost")
 async def get_cost_metrics(period: str = "daily"):
-    """
-    Get cost metrics
+    """Get cost metrics
 
     - **period**: Either 'daily' or 'monthly'
     """
@@ -154,7 +152,6 @@ async def get_cost_metrics(period: str = "daily"):
 @router.get("/performance")
 async def get_performance_metrics():
     """Get performance metrics across the stack"""
-
     return PerformanceMetrics(
         ingestion_runtime_minutes=42.5,  # Within 45-min target
         validation_average_latency_ms=45.0,
@@ -183,14 +180,13 @@ async def get_quality_metrics():
 async def get_compliance_metrics():
     """Get ethical compliance metrics"""
     return ComplianceMetrics(
-        robots_txt_violations=0, rate_limit_violations=0, compliance_score=1.0, flagged_domains=0
+        robots_txt_violations=0, rate_limit_violations=0, compliance_score=1.0, flagged_domains=0,
     )
 
 
 @router.get("/sla-status")
 async def get_sla_status():
-    """
-    Get SLA compliance status
+    """Get SLA compliance status
 
     Returns whether key metrics meet SLA thresholds
     """

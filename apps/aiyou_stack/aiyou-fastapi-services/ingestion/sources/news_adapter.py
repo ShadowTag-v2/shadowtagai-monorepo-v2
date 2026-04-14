@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - News/RSS Source Adapter
+"""PNKLN Core Stack - News/RSS Source Adapter
 
 Fetches news articles from RSS feeds and news APIs.
 Supports major tech and business news sources.
@@ -44,8 +43,7 @@ logger = structlog.get_logger(__name__)
 
 
 class NewsAdapter(SourceAdapter):
-    """
-    News/RSS feed adapter for ingesting news articles.
+    """News/RSS feed adapter for ingesting news articles.
 
     Fetches from:
     - RSS/Atom feeds from major news sources
@@ -136,10 +134,9 @@ class NewsAdapter(SourceAdapter):
             logger.info("feed_added", url=feed_url)
 
     async def fetch_items(
-        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None
+        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None,
     ) -> AsyncIterator[IngestedItem]:
-        """
-        Fetch news articles from RSS feeds.
+        """Fetch news articles from RSS feeds.
 
         Args:
             queries: Topic filters (optional, used for filtering)
@@ -148,6 +145,7 @@ class NewsAdapter(SourceAdapter):
 
         Yields:
             IngestedItem objects representing news articles
+
         """
         since = since or (datetime.utcnow() - timedelta(hours=24))
         items_fetched = 0

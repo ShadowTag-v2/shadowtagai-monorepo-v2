@@ -1,5 +1,4 @@
-"""
-Cor.17 AI Architecture Integration Routes
+"""Cor.17 AI Architecture Integration Routes
 GPTRAM Memory + Semantic Search + Content Safety
 
 Integrated from Cor.17 for PNKLN Core Stack™
@@ -68,8 +67,7 @@ class ModerateContentRequest(BaseModel):
 
 @router.post("/memory/store")
 async def store_interaction(request: StoreInteractionRequest):
-    """
-    Store an interaction in GPTRAM temporal memory
+    """Store an interaction in GPTRAM temporal memory
 
     Example:
         POST /api/v1/cor17/memory/store
@@ -83,9 +81,10 @@ async def store_interaction(request: StoreInteractionRequest):
           },
           "ttl": 86400
         }
+
     """
     success = await gptram.store_interaction(
-        session_id=request.session_id, interaction=request.interaction, ttl=request.ttl
+        session_id=request.session_id, interaction=request.interaction, ttl=request.ttl,
     )
 
     if success:
@@ -94,8 +93,7 @@ async def store_interaction(request: StoreInteractionRequest):
             "session_id": request.session_id,
             "stored_at": datetime.utcnow().isoformat(),
         }
-    else:
-        raise HTTPException(status_code=500, detail="Failed to store interaction")
+    raise HTTPException(status_code=500, detail="Failed to store interaction")
 
 
 @router.get("/memory/{session_id}")
@@ -103,8 +101,7 @@ async def get_session_memory(
     session_id: str,
     limit: int = Query(default=100, description="Max interactions to retrieve"),
 ):
-    """
-    Retrieve session memory from GPTRAM
+    """Retrieve session memory from GPTRAM
 
     Returns interaction history and reasoning graphs
     """
@@ -125,8 +122,7 @@ async def clear_session_memory(session_id: str):
             "session_id": session_id,
             "cleared_at": datetime.utcnow().isoformat(),
         }
-    else:
-        raise HTTPException(status_code=500, detail="Failed to clear session")
+    raise HTTPException(status_code=500, detail="Failed to clear session")
 
 
 # ============================================================================
@@ -136,8 +132,7 @@ async def clear_session_memory(session_id: str):
 
 @router.post("/search/index")
 async def create_search_index(request: CreateIndexRequest):
-    """
-    Create a semantic search index
+    """Create a semantic search index
 
     Example:
         POST /api/v1/cor17/search/index
@@ -149,6 +144,7 @@ async def create_search_index(request: CreateIndexRequest):
           ],
           "content_field": "content"
         }
+
     """
     result = await search_service.create_index(
         index_name=request.index_name,
@@ -164,8 +160,7 @@ async def create_search_index(request: CreateIndexRequest):
 
 @router.post("/search/query")
 async def semantic_search(request: SearchRequest):
-    """
-    Perform semantic search
+    """Perform semantic search
 
     Example:
         POST /api/v1/cor17/search/query
@@ -175,6 +170,7 @@ async def semantic_search(request: SearchRequest):
           "top_k": 5,
           "min_score": 0.5
         }
+
     """
     result = await search_service.search(
         index_name=request.index_name,
@@ -207,8 +203,7 @@ async def delete_search_index(index_name: str):
             "index_name": index_name,
             "deleted_at": datetime.utcnow().isoformat(),
         }
-    else:
-        raise HTTPException(status_code=404, detail=f"Index '{index_name}' not found")
+    raise HTTPException(status_code=404, detail=f"Index '{index_name}' not found")
 
 
 # ============================================================================
@@ -218,8 +213,7 @@ async def delete_search_index(index_name: str):
 
 @router.post("/safety/moderate")
 async def moderate_content(request: ModerateContentRequest):
-    """
-    Moderate content for PII and safety
+    """Moderate content for PII and safety
 
     Example:
         POST /api/v1/cor17/safety/moderate
@@ -238,6 +232,7 @@ async def moderate_content(request: ModerateContentRequest):
           "safety_level": "safe",
           "compliance_passed": true
         }
+
     """
     result = await safety_service.moderate_content(
         content=request.content,

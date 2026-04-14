@@ -1,5 +1,4 @@
-"""
-Compliance Middleware - Enforce compliance policies
+"""Compliance Middleware - Enforce compliance policies
 """
 
 import logging
@@ -17,7 +16,6 @@ class ComplianceMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         """Process request and enforce compliance"""
-
         # Get user location from headers or GeoIP
         user_location = request.headers.get("cf-ipcountry")  # Cloudflare header
         if not user_location:
@@ -72,7 +70,7 @@ class ComplianceMiddleware(BaseHTTPMiddleware):
 
             if not cookie_consent and request.url.path not in allowed_paths:
                 logger.warning(
-                    f"Request without cookie consent from GDPR region: {request.url.path}"
+                    f"Request without cookie consent from GDPR region: {request.url.path}",
                 )
                 # In production, you might want to enforce this more strictly
                 # For now, we just log it

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-omega_auth_daemon.py
+"""omega_auth_daemon.py
 --------------------
 A persistent daemon that ensures the "headless-runner" service account
 remains authenticated by triggering the `gcloud_auth_solver.py` every 3 minutes.

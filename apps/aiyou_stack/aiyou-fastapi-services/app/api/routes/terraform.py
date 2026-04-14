@@ -1,5 +1,4 @@
-"""
-Terraform infrastructure as code endpoints
+"""Terraform infrastructure as code endpoints
 """
 
 from fastapi import APIRouter, HTTPException
@@ -18,8 +17,7 @@ terraform_service = TerraformGeneratorService()
 
 @router.post("/generate", response_model=TerraformGenerateResponse)
 async def generate_terraform(request: TerraformGenerateRequest):
-    """
-    Generate Terraform configuration from infrastructure design.
+    """Generate Terraform configuration from infrastructure design.
     Returns complete .tf files ready to deploy.
     """
     try:
@@ -31,8 +29,7 @@ async def generate_terraform(request: TerraformGenerateRequest):
 
 @router.post("/validate", response_model=TerraformValidateResponse)
 async def validate_terraform(request: TerraformValidateRequest):
-    """
-    Validate Terraform configuration.
+    """Validate Terraform configuration.
     Checks syntax and best practices.
     """
     try:
@@ -77,5 +74,5 @@ async def list_terraform_modules():
                 "description": "Object storage bucket",
                 "providers": ["aws", "gcp", "azure"],
             },
-        ]
+        ],
     }

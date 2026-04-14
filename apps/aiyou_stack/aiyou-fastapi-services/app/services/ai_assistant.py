@@ -1,5 +1,4 @@
-"""
-AI Assistant service with conversation management and context handling.
+"""AI Assistant service with conversation management and context handling.
 """
 
 import uuid
@@ -60,12 +59,12 @@ class AIAssistant:
     async def get_conversation(self, session_id: str) -> Conversation | None:
         """Get a conversation by session ID."""
         result = await self.db.execute(
-            select(Conversation).where(Conversation.session_id == session_id)
+            select(Conversation).where(Conversation.session_id == session_id),
         )
         return result.scalar_one_or_none()
 
     async def get_conversation_history(
-        self, session_id: str, limit: int | None = None
+        self, session_id: str, limit: int | None = None,
     ) -> list[Message]:
         """Get conversation message history."""
         conversation = await self.get_conversation(session_id)
@@ -85,7 +84,7 @@ class AIAssistant:
         messages = result.scalars().all()
 
         logger.info(
-            "Retrieved conversation history", session_id=session_id, message_count=len(messages)
+            "Retrieved conversation history", session_id=session_id, message_count=len(messages),
         )
 
         return list(messages)
@@ -131,11 +130,11 @@ class AIAssistant:
         save_history: bool = True,
         user_id: str | None = None,
     ) -> tuple[str, str]:
-        """
-        Send a chat message and get a response.
+        """Send a chat message and get a response.
 
         Returns:
             Tuple of (response_text, session_id)
+
         """
         # Get or create conversation
         if session_id:
@@ -144,7 +143,7 @@ class AIAssistant:
                 raise ValueError(f"Conversation not found: {session_id}")
         else:
             conversation = await self.create_conversation(
-                user_id=user_id, system_prompt=system_prompt
+                user_id=user_id, system_prompt=system_prompt,
             )
             session_id = conversation.session_id
 
@@ -154,7 +153,7 @@ class AIAssistant:
 
         # Get conversation history
         history = await self.get_conversation_history(
-            session_id, limit=settings.MAX_CONVERSATION_HISTORY
+            session_id, limit=settings.MAX_CONVERSATION_HISTORY,
         )
 
         # Format messages for LLM
@@ -171,7 +170,7 @@ class AIAssistant:
         # Save assistant response
         if save_history:
             await self.add_message(
-                conversation_id=conversation.id, role="assistant", content=response
+                conversation_id=conversation.id, role="assistant", content=response,
             )
 
         # Update conversation timestamp
@@ -197,11 +196,11 @@ class AIAssistant:
         save_history: bool = True,
         user_id: str | None = None,
     ) -> AsyncIterator[tuple[str, str]]:
-        """
-        Send a chat message and stream the response.
+        """Send a chat message and stream the response.
 
         Yields:
             Tuples of (text_chunk, session_id)
+
         """
         # Get or create conversation
         if session_id:
@@ -210,7 +209,7 @@ class AIAssistant:
                 raise ValueError(f"Conversation not found: {session_id}")
         else:
             conversation = await self.create_conversation(
-                user_id=user_id, system_prompt=system_prompt
+                user_id=user_id, system_prompt=system_prompt,
             )
             session_id = conversation.session_id
 
@@ -220,7 +219,7 @@ class AIAssistant:
 
         # Get conversation history
         history = await self.get_conversation_history(
-            session_id, limit=settings.MAX_CONVERSATION_HISTORY
+            session_id, limit=settings.MAX_CONVERSATION_HISTORY,
         )
 
         # Format messages for LLM
@@ -241,7 +240,7 @@ class AIAssistant:
         if save_history and full_response:
             complete_response = "".join(full_response)
             await self.add_message(
-                conversation_id=conversation.id, role="assistant", content=complete_response
+                conversation_id=conversation.id, role="assistant", content=complete_response,
             )
 
         # Update conversation timestamp
@@ -263,7 +262,7 @@ class AIAssistant:
         return True
 
     async def list_conversations(
-        self, user_id: str | None = None, limit: int = 50, offset: int = 0
+        self, user_id: str | None = None, limit: int = 50, offset: int = 0,
     ) -> list[Conversation]:
         """List conversations for a user."""
         query = select(Conversation)

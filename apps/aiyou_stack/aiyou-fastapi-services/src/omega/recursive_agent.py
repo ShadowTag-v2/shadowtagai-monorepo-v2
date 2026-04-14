@@ -5,8 +5,7 @@ class LLMClient:
         self.api_key = api_key
 
     def get_response(self, prompt: str, context: str) -> str:
-        """
-        In a real scenario, this sends the prompt + context to GPT-4o or Gemini 1.5.
+        """In a real scenario, this sends the prompt + context to GPT-4o or Gemini 1.5.
         Returns a structured command string.
         """
         # REAL IMPLEMENTATION:
@@ -16,15 +15,13 @@ class LLMClient:
         # DUMMY LOGIC FOR DEMO:
         if "Table of Contents" in context:
             return "JUMP 15000"  # Simulating finding the right chapter
-        elif "Specific Answer" in context:
+        if "Specific Answer" in context:
             return "ANSWER The solution is 42."
-        else:
-            return "READ_NEXT"
+        return "READ_NEXT"
 
 
 class TextEnvironment:
-    """
-    Represents the 'World' the model lives in.
+    """Represents the 'World' the model lives in.
     This allows the model to access a massive file without loading it all into memory.
     """
 
@@ -69,15 +66,14 @@ class RecursiveAgent:
         """
 
     def solve(self, query: str, start_index: int = 0, depth: int = 0) -> str:
-        """
-        The recursive loop. The agent reads, thinks, and moves.
+        """The recursive loop. The agent reads, thinks, and moves.
         """
         current_pos = start_index
         steps_taken = 0
         max_steps = 10  # Safety limit
 
         print(
-            f"{'  ' * depth}➤ [Depth {depth}] Agent started at index {current_pos} for query: '{query}'"
+            f"{'  ' * depth}➤ [Depth {depth}] Agent started at index {current_pos} for query: '{query}'",
         )
 
         while steps_taken < max_steps:
@@ -96,7 +92,7 @@ class RecursiveAgent:
             if decision.startswith("ANSWER"):
                 return decision.replace("ANSWER ", "")
 
-            elif decision.startswith("JUMP"):
+            if decision.startswith("JUMP"):
                 try:
                     target = int(decision.split()[1])
                     current_pos = target
@@ -116,8 +112,7 @@ class RecursiveAgent:
                     print(f"{'  ' * depth}  Sub-agent returned: {sub_answer}")
                     # We might assume the sub-agent answered the question, or we continue
                     return sub_answer
-                else:
-                    return "Error: Max recursion depth reached."
+                return "Error: Max recursion depth reached."
 
             steps_taken += 1
 

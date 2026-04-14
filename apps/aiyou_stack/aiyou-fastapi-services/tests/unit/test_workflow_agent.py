@@ -1,5 +1,4 @@
-"""
-Unit tests for Workflow Agent
+"""Unit tests for Workflow Agent
 
 Tests workflow pattern implementation including:
 - Step execution
@@ -45,7 +44,7 @@ class TestWorkflowSteps:
     async def test_step_validation_failure(self):
         """Test that invalid step results fail validation"""
         result = {
-            "format": "json"
+            "format": "json",
             # Missing schema and rules
         }
 
@@ -278,8 +277,8 @@ def sample_valid_data():
     """Sample valid data for testing"""
     return {
         "users": [
-            {"name": "John Doe", "email": "redacted@shadowtag-v4.local", "age": 30, "role": "admin"}
-        ]
+            {"name": "John Doe", "email": "redacted@shadowtag-v4.local", "age": 30, "role": "admin"},
+        ],
     }
 
 

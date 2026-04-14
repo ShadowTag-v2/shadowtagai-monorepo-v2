@@ -1,5 +1,4 @@
-"""
-Accessibility and Safety Compliance Engine
+"""Accessibility and Safety Compliance Engine
 Implements WCAG 2.2, COPPA, and Age Appropriate Design Code
 """
 
@@ -31,8 +30,7 @@ class AccessibilityEngine:
         logger.info(f"Accessibility Engine initialized with Persona IQ: {self.persona_iq}")
 
     async def audit_wcag(self, request: WCAGAuditRequest) -> WCAGAuditResponse:
-        """
-        WCAG 2.2 accessibility audit
+        """WCAG 2.2 accessibility audit
 
         Running at IQ {self.persona_iq} for comprehensive accessibility analysis
         """
@@ -59,7 +57,7 @@ class AccessibilityEngine:
                         impact="serious",
                         element="img",
                         remediation="Add descriptive alt text to all images",
-                    )
+                    ),
                 )
 
             if "<input" in request.html_content and "aria-label" not in request.html_content:
@@ -73,7 +71,7 @@ class AccessibilityEngine:
                         impact="serious",
                         element="input",
                         remediation="Add aria-label or associated label elements",
-                    )
+                    ),
                 )
 
             if "tabindex" not in request.html_content:
@@ -139,7 +137,7 @@ class AccessibilityEngine:
                     "Provide clear privacy policy in plain language",
                     "Enable data deletion requests",
                     "Limit data collection to what's necessary",
-                ]
+                ],
             )
 
         compliant = len(violations) == 0
@@ -182,7 +180,7 @@ class AccessibilityEngine:
             # Check profiling
             if request.profiling_enabled:
                 violations.append(
-                    "Profiling not permitted for children without exceptional circumstances"
+                    "Profiling not permitted for children without exceptional circumstances",
                 )
                 required_controls.append("Disable profiling and personalized advertising")
 

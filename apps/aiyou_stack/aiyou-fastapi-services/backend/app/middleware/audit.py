@@ -1,5 +1,4 @@
-"""
-Audit Middleware - Automatically log all API requests for compliance
+"""Audit Middleware - Automatically log all API requests for compliance
 """
 
 import logging
@@ -22,7 +21,6 @@ class AuditMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         """Process request and create audit log"""
-
         start_time = time.time()
         request_id = str(uuid.uuid4())
 
@@ -122,8 +120,8 @@ class AuditMiddleware(BaseHTTPMiddleware):
             if ":" in ip:  # IPv6
                 parts = ip.split(":")
                 return ":".join(parts[:4]) + ":0:0:0:0"
-            else:  # IPv4
-                parts = ip.split(".")
-                return ".".join(parts[:3]) + ".0"
+            # IPv4
+            parts = ip.split(".")
+            return ".".join(parts[:3]) + ".0"
         except Exception:
             return "anonymized"

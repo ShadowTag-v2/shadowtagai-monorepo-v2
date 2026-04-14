@@ -1,5 +1,4 @@
-"""
-AiUCRM Core Engine
+"""AiUCRM Core Engine
 Military Composite Risk Management System adapted for AI governance
 
 Pre-execution validation framework that gates all AI operations.
@@ -69,8 +68,7 @@ class ComplianceResult:
 
 
 class AiUCRM:
-    """
-    AI Unified Compliance & Risk Management Engine
+    """AI Unified Compliance & Risk Management Engine
 
     Implements pre-execution validation for all AI operations across:
     - Legal compliance (EU AI Act, FAA, DoD, HIPAA, MDR)
@@ -104,6 +102,7 @@ class AiUCRM:
             # Block and log violation
             logger.warning(f"Blocked: {result.explanation}")
         ```
+
     """
 
     def __init__(
@@ -113,8 +112,7 @@ class AiUCRM:
         audit_enabled: bool = True,
         strict_mode: bool = False,
     ):
-        """
-        Initialize AiUCRM engine
+        """Initialize AiUCRM engine
 
         Args:
             legal_frameworks: List of applicable legal frameworks
@@ -122,6 +120,7 @@ class AiUCRM:
             risk_threshold: Maximum acceptable risk score (0.0-1.0)
             audit_enabled: Whether to generate audit trails
             strict_mode: If True, blocks on ANY violation; if False, allows conditional approval
+
         """
         self.legal_frameworks = legal_frameworks or ["EU_AI_ACT"]
         self.risk_threshold = risk_threshold
@@ -147,8 +146,7 @@ class AiUCRM:
         logger.info(f"Risk threshold: {self.risk_threshold}, Strict mode: {self.strict_mode}")
 
     def validate(self, request: dict[str, Any]) -> ComplianceResult:
-        """
-        Validate AI operation request against AiUCRM framework
+        """Validate AI operation request against AiUCRM framework
 
         Args:
             request: AI operation request containing:
@@ -161,6 +159,7 @@ class AiUCRM:
 
         Returns:
             ComplianceResult with validation outcome
+
         """
         self.stats["total_validations"] += 1
         start_time = datetime.utcnow()
@@ -179,7 +178,7 @@ class AiUCRM:
 
         # Step 5: Calculate aggregated risk score
         risk_score = self._calculate_risk_score(
-            legal_result, ethical_result, safety_result, sovereignty_result
+            legal_result, ethical_result, safety_result, sovereignty_result,
         )
 
         # Step 6: Determine risk level
@@ -196,10 +195,10 @@ class AiUCRM:
 
         # Step 8: Generate explanation and recommendations
         explanation = self._generate_explanation(
-            status, legal_result, ethical_result, safety_result, sovereignty_result
+            status, legal_result, ethical_result, safety_result, sovereignty_result,
         )
         recommendations = self._generate_recommendations(
-            legal_result, ethical_result, safety_result, sovereignty_result
+            legal_result, ethical_result, safety_result, sovereignty_result,
         )
 
         # Step 9: Build audit trail
@@ -238,7 +237,7 @@ class AiUCRM:
         )
 
         logger.info(
-            f"AiUCRM validation: {status.value} (risk={risk_level.value}, score={risk_score:.3f})"
+            f"AiUCRM validation: {status.value} (risk={risk_level.value}, score={risk_score:.3f})",
         )
 
         return result
@@ -321,8 +320,7 @@ class AiUCRM:
         safety_result: dict[str, Any],
         sovereignty_result: dict[str, Any],
     ) -> float:
-        """
-        Calculate aggregated risk score (0.0-1.0)
+        """Calculate aggregated risk score (0.0-1.0)
         Lower score = higher risk
         """
         weights = {"legal": 0.35, "ethical": 0.25, "safety": 0.25, "sovereignty": 0.15}
@@ -341,14 +339,13 @@ class AiUCRM:
         """Classify risk based on score"""
         if risk_score >= 0.95:
             return RiskLevel.MINIMAL
-        elif risk_score >= 0.85:
+        if risk_score >= 0.85:
             return RiskLevel.LOW
-        elif risk_score >= 0.70:
+        if risk_score >= 0.70:
             return RiskLevel.MODERATE
-        elif risk_score >= 0.50:
+        if risk_score >= 0.50:
             return RiskLevel.HIGH
-        else:
-            return RiskLevel.CRITICAL
+        return RiskLevel.CRITICAL
 
     def _determine_status(
         self,
@@ -373,8 +370,7 @@ class AiUCRM:
         if risk_score < self.risk_threshold:
             if self.strict_mode:
                 return ComplianceStatus.BLOCKED_SAFETY
-            else:
-                return ComplianceStatus.CONDITIONAL
+            return ComplianceStatus.CONDITIONAL
 
         # All checks passed
         return ComplianceStatus.APPROVED
@@ -396,28 +392,27 @@ class AiUCRM:
                 f"safety: {safety_result['score']:.2f}, "
                 f"sovereignty: {sovereignty_result['score']:.2f})"
             )
-        elif status == ComplianceStatus.CONDITIONAL:
+        if status == ComplianceStatus.CONDITIONAL:
             return (
                 "Operation approved with conditions. "
                 "Risk score below threshold but all compliance checks passed. "
                 "Enhanced monitoring recommended."
             )
-        elif status == ComplianceStatus.BLOCKED_LEGAL:
+        if status == ComplianceStatus.BLOCKED_LEGAL:
             violations = legal_result.get("violations", [])
             return f"Blocked: Legal compliance violations detected: {', '.join(violations)}"
-        elif status == ComplianceStatus.BLOCKED_ETHICAL:
+        if status == ComplianceStatus.BLOCKED_ETHICAL:
             return "Blocked: Ethical compliance failure (Purpose/Reasons/Brakes validation failed)"
-        elif status == ComplianceStatus.BLOCKED_SAFETY:
+        if status == ComplianceStatus.BLOCKED_SAFETY:
             risk_factors = safety_result.get("risk_factors", [])
             return f"Blocked: Operational safety risks detected: {', '.join(risk_factors)}"
-        elif status == ComplianceStatus.BLOCKED_SOVEREIGNTY:
+        if status == ComplianceStatus.BLOCKED_SOVEREIGNTY:
             return (
                 f"Blocked: Data sovereignty violation "
                 f"(data region: {sovereignty_result['data_region']}, "
                 f"operation region: {sovereignty_result['operation_region']})"
             )
-        else:
-            return "Unknown compliance status"
+        return "Unknown compliance status"
 
     def _generate_recommendations(
         self,
@@ -451,7 +446,7 @@ class AiUCRM:
         if not sovereignty_result["compliant"]:
             recommendations.append(
                 f"Migrate operation to {sovereignty_result['data_region']} region "
-                f"or obtain cross-border transfer approval"
+                f"or obtain cross-border transfer approval",
             )
 
         return recommendations

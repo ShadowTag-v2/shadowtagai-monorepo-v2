@@ -1,5 +1,4 @@
-"""
-Training Job Dashboard
+"""Training Job Dashboard
 =======================
 Rich terminal UI for GPU cluster job management.
 
@@ -95,8 +94,7 @@ class TrainingMetrics(BaseModel):
 
 
 class TrainingDashboard:
-    """
-    Rich terminal dashboard for training job management.
+    """Rich terminal dashboard for training job management.
 
     Pattern from @ramith__: cluster-agnostic prototyping -> production submission.
 

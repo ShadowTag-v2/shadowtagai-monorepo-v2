@@ -41,7 +41,7 @@ class AuditLog(Base, TimestampMixin):
     # What action was performed
     action = Column(SQLEnum(ActionType), nullable=False, index=True)
     resource_type = Column(
-        String(100), nullable=False, index=True
+        String(100), nullable=False, index=True,
     )  # e.g., "user", "consent", "data"
     resource_id = Column(String(255), index=True)
 

@@ -1,5 +1,4 @@
-"""
-Gemini 2.0 Pro Multi-Agent System (AutoGen → Gemini Migration)
+"""Gemini 2.0 Pro Multi-Agent System (AutoGen → Gemini Migration)
 Replaces custom PanelDebateClassifier with native Gemini agents
 
 Based on migration from:
@@ -24,8 +23,7 @@ from app.models.schemas import TierClassification
 
 
 class GeminiAgent:
-    """
-    Single Gemini agent with persona and tools
+    """Single Gemini agent with persona and tools
     Replaces AutoGen's ConversableAgent
     """
 
@@ -38,8 +36,7 @@ class GeminiAgent:
         temperature: float = 0.7,
         api_key: str | None = None,
     ):
-        """
-        Initialize Gemini agent
+        """Initialize Gemini agent
 
         Args:
             name: Agent identifier (e.g., "skeptic", "optimist", "neutral")
@@ -47,6 +44,7 @@ class GeminiAgent:
             tools: Function calling tools (ATP 5-19 rules, Glicko ratings)
             model_name: Gemini model variant
             temperature: Sampling temperature (0.0-1.0)
+
         """
         self.name = name
         self.persona = persona
@@ -55,7 +53,7 @@ class GeminiAgent:
         if genai and api_key:
             genai.configure(api_key=api_key)
             self.model = genai.GenerativeModel(
-                model_name=model_name, system_instruction=persona, tools=self.tools
+                model_name=model_name, system_instruction=persona, tools=self.tools,
             )
         else:
             self.model = None
@@ -74,8 +72,7 @@ class GeminiAgent:
         tags: list[str],
         debate_history: list[dict] = None,
     ) -> dict[str, Any]:
-        """
-        Generate tier proposal with reasoning
+        """Generate tier proposal with reasoning
 
         Args:
             title: Article title
@@ -91,6 +88,7 @@ class GeminiAgent:
               "reasoning": "Source reliability C, credibility 3...",
               "rebuttals": ["Optimist overstated strategic value", ...]
             }
+
         """
         if not self.model:
             # Fallback to rule-based
@@ -119,7 +117,6 @@ class GeminiAgent:
         debate_history: list[dict] | None,
     ) -> str:
         """Build debate prompt with history context"""
-
         prompt = f"""
 You are participating in a multi-agent intelligence classification debate.
 
@@ -189,8 +186,7 @@ OUTPUT (JSON only, no markdown):
 
 
 class GeminiGroupChat:
-    """
-    Multi-agent debate orchestrator using Gemini 2.0 Pro
+    """Multi-agent debate orchestrator using Gemini 2.0 Pro
     Replaces AutoGen's GroupChat with native Gemini multi-turn
     """
 
@@ -226,12 +222,12 @@ Decision Tendency: No bias, pure evidence-based classification.""",
     }
 
     def __init__(self, api_key: str | None = None, agents: list[str] | None = None):
-        """
-        Initialize multi-agent group chat
+        """Initialize multi-agent group chat
 
         Args:
             api_key: Gemini API key
             agents: List of agent names to include (default: all 3)
+
         """
         self.api_key = api_key
         agent_names = agents or ["skeptic", "optimist", "neutral"]
@@ -257,8 +253,7 @@ Decision Tendency: No bias, pure evidence-based classification.""",
         rounds: int = 2,
         voting_method: str = "weighted_confidence",
     ) -> TierClassification:
-        """
-        Run multi-agent debate to classify intelligence item
+        """Run multi-agent debate to classify intelligence item
 
         Args:
             title: Article title
@@ -280,6 +275,7 @@ Decision Tendency: No bias, pure evidence-based classification.""",
             ... )
             >>> print(result.tier)  # 1 (high-value)
             >>> print(result.confidence)  # 0.87 (high consensus)
+
         """
         debate_rounds = []
 
@@ -301,7 +297,7 @@ Decision Tendency: No bias, pure evidence-based classification.""",
 
         # Aggregate votes
         final_tier, final_confidence, reasoning = self._aggregate_votes(
-            debate_rounds, method=voting_method
+            debate_rounds, method=voting_method,
         )
 
         # Extract common tags from all proposals
@@ -323,10 +319,9 @@ Decision Tendency: No bias, pure evidence-based classification.""",
         )
 
     def _aggregate_votes(
-        self, debate_rounds: list[list[dict]], method: str = "weighted_confidence"
+        self, debate_rounds: list[list[dict]], method: str = "weighted_confidence",
     ) -> tuple[int, float, str]:
-        """
-        Aggregate agent votes into final tier classification
+        """Aggregate agent votes into final tier classification
 
         Args:
             debate_rounds: All rounds of proposals
@@ -334,6 +329,7 @@ Decision Tendency: No bias, pure evidence-based classification.""",
 
         Returns:
             (final_tier, final_confidence, reasoning)
+
         """
         # Use final round proposals
         final_round = debate_rounds[-1]
@@ -409,7 +405,7 @@ Decision Tendency: No bias, pure evidence-based classification.""",
             for agent_name, proposal in round_data.items():
                 summary.append(
                     f"  {agent_name.capitalize()}: Tier {proposal['tier']} "
-                    f"({proposal['confidence']:.0%} confidence)"
+                    f"({proposal['confidence']:.0%} confidence)",
                 )
                 summary.append(f"    Reasoning: {proposal['reasoning'][:100]}...")
             summary.append("")
@@ -423,8 +419,7 @@ Decision Tendency: No bias, pure evidence-based classification.""",
 
 
 def create_atp_519_tools() -> list[dict]:
-    """
-    Create Gemini function calling tools for ATP 5-19 validation
+    """Create Gemini function calling tools for ATP 5-19 validation
     Replaces AutoGen's code_execution_config with native function calling
     """
     return [
@@ -437,7 +432,7 @@ def create_atp_519_tools() -> list[dict]:
                     "domain": {
                         "type": "string",
                         "description": "Source domain (e.g., 'reuters.com', 'twitter.com')",
-                    }
+                    },
                 },
                 "required": ["domain"],
             },
@@ -474,14 +469,13 @@ def create_atp_519_tools() -> list[dict]:
 
 # Example usage function
 async def example_usage():
-    """
-    Example: AutoGen → Gemini migration in action
+    """Example: AutoGen → Gemini migration in action
     """
     import os
 
     # Initialize group chat
     chat = GeminiGroupChat(
-        api_key=os.getenv("GEMINI_API_KEY"), agents=["skeptic", "optimist", "neutral"]
+        api_key=os.getenv("GEMINI_API_KEY"), agents=["skeptic", "optimist", "neutral"],
     )
 
     # Classify intelligence item

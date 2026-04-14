@@ -32,5 +32,5 @@ class PerplexityClient:
             response.raise_for_status()
             return response.json()
         except Exception as e:
-            logging.error(f"❌ Perplexity API Error: {e}")
+            logging.exception(f"❌ Perplexity API Error: {e}")
             return {"error": str(e)}

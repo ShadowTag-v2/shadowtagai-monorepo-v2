@@ -1,5 +1,4 @@
-"""
-Run MCP Server for ShadowTag + ShadowTag-v4
+"""Run MCP Server for ShadowTag + ShadowTag-v4
 
 Starts FastAPI server with all MCP tool endpoints
 

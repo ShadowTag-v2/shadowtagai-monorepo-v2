@@ -2,8 +2,7 @@ from .ledger import Ledger
 
 
 class BudgetEnforcer:
-    """
-    Enforces spending rules based on the Ledger.
+    """Enforces spending rules based on the Ledger.
     """
 
     def __init__(self, ledger: Ledger):
@@ -23,7 +22,7 @@ class BudgetEnforcer:
         return self.ledger.get_balance() >= amount
 
     def approve_transaction(
-        self, amount: float, requester: str, category: str, reason: str
+        self, amount: float, requester: str, category: str, reason: str,
     ) -> bool:
         """Attempt to authorize and execute a debit."""
         if self.can_spend(amount, category):

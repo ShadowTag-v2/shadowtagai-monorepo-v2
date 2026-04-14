@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-gcloud_auth_solver.py
+"""gcloud_auth_solver.py
 ---------------------
 Implements the "Loop & Review" methodology for reliable GCloud Authentication.
 Optimized for headless-runner service account in ShadowTag Omega V4.
@@ -68,9 +67,8 @@ def attempt_auth_strategy(strategy_name: str) -> bool:
     if result.returncode == 0:
         log(f"Strategy {strategy_name} check command executed successfully.")
         return True
-    else:
-        log(f"Strategy {strategy_name} failed: {result.stderr}", "ERROR")
-        return False
+    log(f"Strategy {strategy_name} failed: {result.stderr}", "ERROR")
+    return False
 
 
 def solve_auth():
@@ -89,15 +87,14 @@ def solve_auth():
             if verify_token():
                 log(f"✅ [SOLVER] Success via {strategy}.")
                 print(
-                    json.dumps({"status": "success", "method": strategy, "timestamp": time.time()})
+                    json.dumps({"status": "success", "method": strategy, "timestamp": time.time()}),
                 )
                 return
-            else:
-                log("⚠️ [SOLVER] Critique: Strategy succeeded, but token is still invalid.")
+            log("⚠️ [SOLVER] Critique: Strategy succeeded, but token is still invalid.")
 
     log("⛔ [SOLVER] All strategies exhausted. Auth is BROKEN.", "CRITICAL")
     print(
-        json.dumps({"status": "failed", "error": "All strategies failed", "timestamp": time.time()})
+        json.dumps({"status": "failed", "error": "All strategies failed", "timestamp": time.time()}),
     )
     sys.exit(1)
 

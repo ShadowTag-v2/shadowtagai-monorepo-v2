@@ -1,5 +1,4 @@
-"""
-Crisis Alert Webhook Service
+"""Crisis Alert Webhook Service
 ============================
 Webhook notifications for crisis events detected by California AI compliance.
 
@@ -91,8 +90,7 @@ class WebhookDeliveryResult:
 
 
 class CrisisAlertWebhook:
-    """
-    Crisis Alert Webhook Service.
+    """Crisis Alert Webhook Service.
 
     Sends real-time notifications when self-harm or other
     crisis events are detected by the compliance system.
@@ -147,8 +145,7 @@ class CrisisAlertWebhook:
         user_context: dict | None = None,
         crisis_resources_provided: bool = True,
     ) -> list[WebhookDeliveryResult]:
-        """
-        Send crisis alert to all registered endpoints.
+        """Send crisis alert to all registered endpoints.
 
         Args:
             content_id: ID of content that triggered alert
@@ -159,6 +156,7 @@ class CrisisAlertWebhook:
 
         Returns:
             List of delivery results
+
         """
         event_id = self._generate_event_id()
 
@@ -291,8 +289,7 @@ class CrisisAlertWebhook:
                         response_code=response_code,
                         delivered_at=datetime.utcnow(),
                     )
-                else:
-                    last_error = f"HTTP {response_code}"
+                last_error = f"HTTP {response_code}"
 
             except Exception as e:
                 last_error = str(e)
@@ -317,8 +314,7 @@ class CrisisAlertWebhook:
         headers: dict,
         timeout: int,
     ) -> int:
-        """
-        HTTP POST request.
+        """HTTP POST request.
 
         In production, replace with actual HTTP client (aiohttp/httpx).
         """

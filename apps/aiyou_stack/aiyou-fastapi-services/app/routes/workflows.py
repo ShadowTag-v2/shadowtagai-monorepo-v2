@@ -1,5 +1,4 @@
-"""
-API routes for workflow management.
+"""API routes for workflow management.
 """
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -74,4 +73,3 @@ async def delete_workflow(
         raise HTTPException(status_code=404, detail="Workflow not found")
 
     await service.delete(workflow)
-    return None

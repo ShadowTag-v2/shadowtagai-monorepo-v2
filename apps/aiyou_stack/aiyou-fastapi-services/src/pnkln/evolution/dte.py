@@ -14,8 +14,7 @@ except ImportError:
 
 
 def create_dte_system(improvement_threshold: float = 3.0, max_iterations: int = 10) -> DTESystem:
-    """
-    Create DTE system with defaults.
+    """Create DTE system with defaults.
 
     Jobs mode: Make the common case trivial.
     """
@@ -45,7 +44,7 @@ if __name__ == "__main__":
 
     async def run_test():
         result = await dte.evolve_prompt(
-            current_prompt=test_prompt, test_cases=test_cases, strategy=EvolutionStrategy.HYBRID
+            current_prompt=test_prompt, test_cases=test_cases, strategy=EvolutionStrategy.HYBRID,
         )
         return result
 

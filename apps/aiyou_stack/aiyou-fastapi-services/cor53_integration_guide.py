@@ -1,5 +1,6 @@
-"""
-COR.53 Integration Guide - Complete Unified Workflow
+import logging
+logger = logging.getLogger(__name__)
+"""COR.53 Integration Guide - Complete Unified Workflow
 
 This module provides the complete end-to-end integration of:
 - Gemini Ingestion Layer (multi-source intelligence collection)
@@ -90,8 +91,7 @@ class ExecutionResult:
 
 
 class COR53UnifiedPipeline:
-    """
-    Complete COR.53 integration pipeline
+    """Complete COR.53 integration pipeline
     Option C: Full Stack - Balanced velocity + compliance
 
     Now includes Gemini Ingestion Layer (Phase 0) for intelligence-driven operations
@@ -105,8 +105,7 @@ class COR53UnifiedPipeline:
         enable_strict_mode: bool = True,
         enable_ingestion: bool = True,
     ):
-        """
-        Initialize COR.53 unified pipeline
+        """Initialize COR.53 unified pipeline
 
         Args:
             anthropic_api_key: Anthropic API key
@@ -114,6 +113,7 @@ class COR53UnifiedPipeline:
             doctrine: Doctrine constraints
             enable_strict_mode: Enable strict enforcement (recommended for production)
             enable_ingestion: Enable Gemini Ingestion Layer (Phase 0)
+
         """
         self.anthropic_api_key = anthropic_api_key or os.environ.get("ANTHROPIC_API_KEY")
         self.gemini_api_key = gemini_api_key or os.environ.get("GOOGLE_API_KEY")
@@ -149,18 +149,18 @@ class COR53UnifiedPipeline:
         logger.info(f"Ingestion Mode: {'ENABLED' if self.enable_ingestion else 'DISABLED'}")
         logger.info(
             f"Doctrine Constraints: {self.doctrine.vertical_target}-vertical target, "
-            f"${self.doctrine.bootstrap_limit}K bootstrap"
+            f"${self.doctrine.bootstrap_limit}K bootstrap",
         )
 
     def process_task(self, task_request: TaskRequest) -> ExecutionResult:
-        """
-        Process a task through the complete COR.53 pipeline
+        """Process a task through the complete COR.53 pipeline
 
         Args:
             task_request: Structured task request
 
         Returns:
             ExecutionResult with complete audit trail
+
         """
         start_time = datetime.utcnow()
         logger.info(f"Processing task {task_request.task_id}: {task_request.description[:50]}...")
@@ -218,7 +218,7 @@ class COR53UnifiedPipeline:
 
             try:
                 execution_output = self.orchestrator.execute_task(
-                    task_description=task_request.description, enable_skill_routing=True
+                    task_description=task_request.description, enable_skill_routing=True,
                 )
 
                 overall_status = "COMPLETED"
@@ -249,20 +249,20 @@ class COR53UnifiedPipeline:
 
         # Log completion
         logger.info(
-            f"Task {task_request.task_id} complete: {overall_status} in {execution_time:.2f}s"
+            f"Task {task_request.task_id} complete: {overall_status} in {execution_time:.2f}s",
         )
 
         return result
 
     def batch_process_tasks(self, tasks: list[TaskRequest]) -> list[ExecutionResult]:
-        """
-        Process multiple tasks in batch
+        """Process multiple tasks in batch
 
         Args:
             tasks: List of task requests
 
         Returns:
             List of execution results
+
         """
         logger.info(f"Batch processing {len(tasks)} tasks...")
 
@@ -279,22 +279,22 @@ class COR53UnifiedPipeline:
 
         logger.info(
             f"Batch complete: {completed} completed, {blocked} blocked, "
-            f"{failed} failed, {review_required} need review"
+            f"{failed} failed, {review_required} need review",
         )
 
         return results
 
     def run_intelligence_ingestion(
-        self, source_configs: dict[SourceType, dict[str, Any]]
+        self, source_configs: dict[SourceType, dict[str, Any]],
     ) -> IngestionMetrics:
-        """
-        Run PHASE 0: Intelligence ingestion cycle
+        """Run PHASE 0: Intelligence ingestion cycle
 
         Args:
             source_configs: Configuration for each source type
 
         Returns:
             IngestionMetrics with performance data
+
         """
         if not self.enable_ingestion or not self.ingestion_pipeline:
             logger.error("Ingestion layer not enabled")
@@ -308,20 +308,20 @@ class COR53UnifiedPipeline:
 
         logger.info(
             f"Ingestion complete: {metrics.items_ingested} items, "
-            f"{metrics.tier_1_count} Tier 1, ${metrics.total_cost:.4f} cost"
+            f"{metrics.tier_1_count} Tier 1, ${metrics.total_cost:.4f} cost",
         )
 
         return metrics
 
     def generate_intelligence_briefing(self, date: str | None = None) -> str:
-        """
-        Generate AM briefing from ingested intelligence
+        """Generate AM briefing from ingested intelligence
 
         Args:
             date: Date for briefing (defaults to today)
 
         Returns:
             Formatted briefing text
+
         """
         if not self.enable_ingestion or not self.ingestion_pipeline:
             logger.error("Ingestion layer not enabled")
@@ -330,10 +330,9 @@ class COR53UnifiedPipeline:
         return self.ingestion_pipeline.generate_am_briefing(date)
 
     def intelligence_to_tasks(
-        self, min_tier: DataTier = DataTier.TIER_1_CRITICAL, auto_execute: bool = False
+        self, min_tier: DataTier = DataTier.TIER_1_CRITICAL, auto_execute: bool = False,
     ) -> list[TaskRequest]:
-        """
-        Convert ingested intelligence items to task requests
+        """Convert ingested intelligence items to task requests
 
         Args:
             min_tier: Minimum tier level to convert (default: Tier 1 only)
@@ -341,6 +340,7 @@ class COR53UnifiedPipeline:
 
         Returns:
             List of generated TaskRequest objects
+
         """
         if not self.enable_ingestion or not self.ingestion_pipeline:
             logger.error("Ingestion layer not enabled")
@@ -399,14 +399,14 @@ class COR53UnifiedPipeline:
         return tasks
 
     def export_execution_report(self, output_path: str = "cor53_execution_report.json") -> str:
-        """
-        Export comprehensive execution report
+        """Export comprehensive execution report
 
         Args:
             output_path: Path to write report
 
         Returns:
             Path to report file
+
         """
         report = {
             "generated_at": datetime.utcnow().isoformat(),
@@ -440,7 +440,7 @@ class COR53UnifiedPipeline:
             violation_counts[level] = violation_counts.get(level, 0) + 1
 
         avg_execution_time = sum(r.execution_time_seconds for r in self.execution_history) / len(
-            self.execution_history
+            self.execution_history,
         )
 
         return {
@@ -565,7 +565,7 @@ def example_batch_vertical_expansion():
     for result in results:
         print(
             f"  {result.task_request.task_id}: {result.overall_status} "
-            f"({result.validation.violation_level.value})"
+            f"({result.validation.violation_level.value})",
         )
 
     # Export report
@@ -588,11 +588,11 @@ def initialize_cor53(
     gemini_api_key: str | None = None,
     strict_mode: bool = True,
 ) -> dict[str, Any]:
-    """
-    Initialize COR.53 global singleton
+    """Initialize COR.53 global singleton
 
     Returns:
         Dictionary with initialized components for easy access
+
     """
     global COR_INSTANCE
 

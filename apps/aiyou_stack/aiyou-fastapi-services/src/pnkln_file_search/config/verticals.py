@@ -1,5 +1,4 @@
-"""
-Vertical-specific configuration for regulatory compliance
+"""Vertical-specific configuration for regulatory compliance
 Defines the 30 verticals with their regulatory requirements
 """
 

@@ -1,5 +1,4 @@
-"""
-Federal Register API Crawler
+"""Federal Register API Crawler
 Discovers and ingests regulatory intelligence from 530+ federal agencies
 No authentication required - free public API
 """
@@ -150,8 +149,7 @@ class FederalDocument:
 
 
 class FederalRegisterCrawler:
-    """
-    Federal Register API crawler for regulatory intelligence
+    """Federal Register API crawler for regulatory intelligence
 
     Features:
     - No authentication required
@@ -168,7 +166,7 @@ class FederalRegisterCrawler:
             STORAGE_CONFIG.get("federal_register", {}).get(
                 "path",
                 str(Path(STORAGE_CONFIG["briefing_output"]["path"]).parent / "federal_register"),
-            )
+            ),
         )
         self.storage_path.mkdir(parents=True, exist_ok=True)
 
@@ -187,22 +185,21 @@ class FederalRegisterCrawler:
         # Vertical classification rules
         if any(x in agencies for x in ["defense", "army", "navy", "air force", "darpa"]):
             return "gov_defense"
-        elif any(x in agencies for x in ["energy", "ferc", "nuclear"]):
+        if any(x in agencies for x in ["energy", "ferc", "nuclear"]):
             return "energy"
-        elif (
+        if (
             any(x in agencies for x in ["nasa", "faa"]) or "satellite" in text or "orbital" in text
         ):
             return "orbital"
-        elif any(x in agencies for x in ["fda", "health"]) or "medical device" in text:
+        if any(x in agencies for x in ["fda", "health"]) or "medical device" in text:
             return "digital_mall"  # Healthcare SaaS
-        elif any(x in text for x in ["autonomous vehicle", "self-driving", "adas"]):
+        if any(x in text for x in ["autonomous vehicle", "self-driving", "adas"]):
             return "roadmesh"
-        elif any(x in text for x in ["artificial intelligence", "machine learning", "neural"]):
+        if any(x in text for x in ["artificial intelligence", "machine learning", "neural"]):
             return "core_stack"
-        elif any(x in agencies for x in ["homeland", "cyber"]) or "cybersecurity" in text:
+        if any(x in agencies for x in ["homeland", "cyber"]) or "cybersecurity" in text:
             return "gov_defense"
-        else:
-            return "gov_defense"  # Default for federal
+        return "gov_defense"  # Default for federal
 
     def _calculate_relevance(self, doc: FederalDocument) -> float:
         """Calculate document relevance to PNKLN business"""
@@ -285,12 +282,12 @@ class FederalRegisterCrawler:
                     await asyncio.sleep(self.config["rate_limit"])
 
                     response = await client.get(
-                        f"{self.base_url}/documents", params=params, timeout=30.0
+                        f"{self.base_url}/documents", params=params, timeout=30.0,
                     )
 
                     if response.status_code != 200:
                         logger.warning(
-                            "federal_register_api_error", status=response.status_code, page=page
+                            "federal_register_api_error", status=response.status_code, page=page,
                         )
                         break
 
@@ -326,7 +323,7 @@ class FederalRegisterCrawler:
         documents.sort(key=lambda x: x.relevance_score, reverse=True)
 
         logger.info(
-            "federal_register_fetch_complete", total_documents=len(documents), days_back=days_back
+            "federal_register_fetch_complete", total_documents=len(documents), days_back=days_back,
         )
 
         return documents
@@ -395,7 +392,7 @@ class FederalRegisterCrawler:
                 }
 
                 response = await client.get(
-                    f"{self.base_url}/documents", params=params, timeout=30.0
+                    f"{self.base_url}/documents", params=params, timeout=30.0,
                 )
 
                 if response.status_code == 200:
@@ -423,7 +420,7 @@ class FederalRegisterCrawler:
                 await asyncio.sleep(self.config["rate_limit"])
 
                 response = await client.get(
-                    f"{self.base_url}/public-inspection-documents/current", timeout=30.0
+                    f"{self.base_url}/public-inspection-documents/current", timeout=30.0,
                 )
 
                 if response.status_code == 200:
@@ -481,7 +478,7 @@ class FederalRegisterCrawler:
                 doc.abstract,
                 "",
                 "---",
-            ]
+            ],
         )
 
         return "\n".join(parts)
@@ -506,11 +503,11 @@ class FederalRegisterCrawler:
                 saved_files.append(str(filepath))
 
                 logger.debug(
-                    "document_saved", document_number=doc.document_number, file=str(filepath)
+                    "document_saved", document_number=doc.document_number, file=str(filepath),
                 )
             except Exception as e:
                 logger.error(
-                    "document_save_error", document_number=doc.document_number, error=str(e)
+                    "document_save_error", document_number=doc.document_number, error=str(e),
                 )
 
         logger.info("documents_saved", count=len(saved_files))
@@ -546,7 +543,7 @@ class FederalRegisterCrawler:
 
         for vertical, vert_docs in sorted(by_vertical.items()):
             summary_parts.append(
-                f"## {vertical.replace('_', ' ').title()} ({len(vert_docs)} documents)"
+                f"## {vertical.replace('_', ' ').title()} ({len(vert_docs)} documents)",
             )
             summary_parts.append("")
 
@@ -556,7 +553,7 @@ class FederalRegisterCrawler:
                 summary_parts.append(
                     f"- **[{doc.document_type}]** {doc.title[:60]}... "
                     f"({doc.publication_date.strftime('%Y-%m-%d')}) "
-                    f"[{doc.relevance_score:.0%}]"
+                    f"[{doc.relevance_score:.0%}]",
                 )
 
             if len(vert_docs) > 5:
@@ -570,7 +567,7 @@ class FederalRegisterCrawler:
             summary_parts.append("")
             for doc in significant[:10]:
                 summary_parts.append(
-                    f"- **{doc.title[:60]}...** - {', '.join(doc.agency_names[:2])}"
+                    f"- **{doc.title[:60]}...** - {', '.join(doc.agency_names[:2])}",
                 )
             summary_parts.append("")
 
@@ -584,7 +581,7 @@ class FederalRegisterCrawler:
             summary_parts.append("")
             for doc in deadlines[:10]:
                 summary_parts.append(
-                    f"- **{doc.comment_deadline.strftime('%Y-%m-%d')}**: {doc.title[:50]}..."
+                    f"- **{doc.comment_deadline.strftime('%Y-%m-%d')}**: {doc.title[:50]}...",
                 )
             summary_parts.append("")
 
@@ -593,8 +590,7 @@ class FederalRegisterCrawler:
 
 # Convenience functions
 async def crawl_federal_register(days_back: int = 30) -> list[str]:
-    """
-    Crawl Federal Register for PNKLN-relevant regulatory intel
+    """Crawl Federal Register for PNKLN-relevant regulatory intel
 
     Usage:
         files = await crawl_federal_register(days_back=30)
@@ -605,8 +601,7 @@ async def crawl_federal_register(days_back: int = 30) -> list[str]:
 
 
 async def search_federal_register(keyword: str, days_back: int = 30) -> list[str]:
-    """
-    Search Federal Register by keyword
+    """Search Federal Register by keyword
 
     Usage:
         files = await search_federal_register("artificial intelligence", days_back=30)
@@ -617,8 +612,7 @@ async def search_federal_register(keyword: str, days_back: int = 30) -> list[str
 
 
 async def get_upcoming_regulations() -> list[str]:
-    """
-    Get pre-publication regulatory documents
+    """Get pre-publication regulatory documents
 
     Usage:
         files = await get_upcoming_regulations()

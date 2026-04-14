@@ -10,8 +10,8 @@ from .dte import (
 
 __all__ = [
     "DTESystem",
-    "create_dte_system",
-    "EvolutionStrategy",
-    "EvolutionResult",
     "DebateRound",
+    "EvolutionResult",
+    "EvolutionStrategy",
+    "create_dte_system",
 ]

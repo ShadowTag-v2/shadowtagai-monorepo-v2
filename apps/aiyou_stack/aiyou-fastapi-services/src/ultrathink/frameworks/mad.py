@@ -17,8 +17,7 @@ class DebateResult(BaseModel):
 
 
 class MultiAgentDebate:
-    """
-    Orchestrates a debate between multiple agents to reach a consensus or refined answer.
+    """Orchestrates a debate between multiple agents to reach a consensus or refined answer.
     """
 
     def __init__(self, agents: list[AgentProfile]):
@@ -26,8 +25,7 @@ class MultiAgentDebate:
         self.transcript: list[DebateTurn] = []
 
     def run_debate(self, topic: str, rounds: int = 3) -> DebateResult:
-        """
-        Simulates a debate execution.
+        """Simulates a debate execution.
         Note: In a real system, this would call the LLM for each agent turn.
         For this v0 logic implementation, it constructs the structure.
         """
@@ -48,7 +46,7 @@ class MultiAgentDebate:
                 # Agents criticize previous round
                 mock_content = f"[{agent.name}] Critique of Round {r - 1}: ..."
                 self.transcript.append(
-                    DebateTurn(agent_name=agent.name, content=mock_content, round=r)
+                    DebateTurn(agent_name=agent.name, content=mock_content, round=r),
                 )
 
         return DebateResult(

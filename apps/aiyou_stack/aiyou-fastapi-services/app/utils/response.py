@@ -1,5 +1,4 @@
-"""
-Response formatting utilities.
+"""Response formatting utilities.
 Makes it easy to return consistent API responses.
 """
 
@@ -11,8 +10,7 @@ T = TypeVar("T")
 
 
 def success_response(data: T | None = None, message: str | None = None) -> APIResponse[T]:
-    """
-    Create a successful API response.
+    """Create a successful API response.
 
     Args:
         data: Response data
@@ -20,15 +18,15 @@ def success_response(data: T | None = None, message: str | None = None) -> APIRe
 
     Returns:
         APIResponse object
+
     """
     return APIResponse(success=True, message=message, data=data)
 
 
 def error_response(
-    error: str, message: str, details: Any | None = None, path: str | None = None
+    error: str, message: str, details: Any | None = None, path: str | None = None,
 ) -> ErrorResponse:
-    """
-    Create an error response.
+    """Create an error response.
 
     Args:
         error: Error type or code
@@ -38,15 +36,15 @@ def error_response(
 
     Returns:
         ErrorResponse object
+
     """
     return ErrorResponse(success=False, error=error, message=message, details=details, path=path)
 
 
 def paginated_response(
-    data: list[T], pagination: PaginationMeta, message: str | None = None
+    data: list[T], pagination: PaginationMeta, message: str | None = None,
 ) -> PaginatedResponse[T]:
-    """
-    Create a paginated API response.
+    """Create a paginated API response.
 
     Args:
         data: List of items
@@ -55,5 +53,6 @@ def paginated_response(
 
     Returns:
         PaginatedResponse object
+
     """
     return PaginatedResponse(success=True, message=message, data=data, pagination=pagination)

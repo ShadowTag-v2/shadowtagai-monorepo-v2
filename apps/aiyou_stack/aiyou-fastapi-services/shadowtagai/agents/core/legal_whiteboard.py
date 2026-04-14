@@ -1,5 +1,4 @@
-"""
-Legal Whiteboard - Persistent Agent Evolution System
+"""Legal Whiteboard - Persistent Agent Evolution System
 
 GitHub-based persistent memory for agent evolution across context windows.
 Implements "Never Resting, Ever Vesting" principle.
@@ -90,7 +89,7 @@ class AgentState:
                 "success": task_result.get("success", False),
                 "duration_ms": task_result.get("duration_ms", 0),
                 "learnings": task_result.get("learnings", {}),
-            }
+            },
         )
         if len(self.task_history) > 100:
             self.task_history = self.task_history[-100:]
@@ -136,8 +135,7 @@ class Whiteboard:
         self.base_path.mkdir(parents=True, exist_ok=True)
 
     def load_agent_state(self, agent_id: str, create_if_missing: bool = False) -> AgentState:
-        """
-        Load agent state from GitHub repo.
+        """Load agent state from GitHub repo.
 
         Args:
             agent_id: Agent identifier
@@ -145,6 +143,7 @@ class Whiteboard:
 
         Returns:
             AgentState object
+
         """
         state_file = self.base_path / f"{agent_id}.json"
 
@@ -158,15 +157,14 @@ class Whiteboard:
                 state = AgentState(agent_id=agent_id)
                 self.save_agent_state(state)
                 return state
-            else:
-                raise ValueError(f"Agent state not found: {agent_id}")
+            raise ValueError(f"Agent state not found: {agent_id}")
 
     def save_agent_state(self, state: AgentState) -> None:
-        """
-        Save agent state to disk.
+        """Save agent state to disk.
 
         Args:
             state: AgentState to persist
+
         """
         state_file = self.base_path / f"{state.agent_id}.json"
 
@@ -180,11 +178,11 @@ class Whiteboard:
         print(f"   ✓ Saved agent state: {state.agent_id}")
 
     def git_commit_state(self, commit_message: str) -> None:
-        """
-        Commit all agent states to git.
+        """Commit all agent states to git.
 
         Args:
             commit_message: Git commit message
+
         """
         max_retries = 3
 
@@ -199,7 +197,7 @@ class Whiteboard:
                 self._handle_git_error(e, attempt, max_retries)
 
     def _handle_git_error(
-        self, error: subprocess.CalledProcessError, attempt: int, max_retries: int
+        self, error: subprocess.CalledProcessError, attempt: int, max_retries: int,
     ) -> None:
         """Handle git failure with retry logic"""
         import random
@@ -208,7 +206,7 @@ class Whiteboard:
         if attempt < max_retries - 1:
             wait_time = 1.0 + random.random()
             print(
-                f"⚠️  Git operation failed (attempt {attempt + 1}/{max_retries}). Retrying in {wait_time:.1f}s..."
+                f"⚠️  Git operation failed (attempt {attempt + 1}/{max_retries}). Retrying in {wait_time:.1f}s...",
             )
             time.sleep(wait_time)
 
@@ -228,17 +226,17 @@ class Whiteboard:
                 print(f"Failed to clear lock: {exc}")
 
     def add_task(self, agent_id: str, task_id: str, success: bool) -> None:
-        """
-        Add task result to agent's history.
+        """Add task result to agent's history.
 
         Args:
             agent_id: Agent identifier
             task_id: Task identifier
             success: Whether task was successful
+
         """
         state = self.load_agent_state(agent_id)
         state.update_after_task(
-            {"task_type": task_id, "success": success, "duration_ms": 100, "learnings": {}}
+            {"task_type": task_id, "success": success, "duration_ms": 100, "learnings": {}},
         )
         self.save_agent_state(state)
 
@@ -299,7 +297,7 @@ if __name__ == "__main__":
                 "pattern_1": "Always validate input before processing",
                 "optimization_1": "Use EMA checkpoints for +2-3% accuracy",
             },
-        }
+        },
     )
 
     # Save to git

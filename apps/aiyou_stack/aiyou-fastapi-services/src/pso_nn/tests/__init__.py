@@ -1,3 +1,2 @@
-"""
-PSO-NN Tests.
+"""PSO-NN Tests.
 """

@@ -1,5 +1,4 @@
-"""
-ROI Calculator
+"""ROI Calculator
 ==============
 
 Comprehensive return on investment calculations for:
@@ -44,8 +43,7 @@ class RevenueStructure:
 
 
 class ROICalculator:
-    """
-    Comprehensive ROI calculator for ShadowTag-v4 infrastructure deployments
+    """Comprehensive ROI calculator for ShadowTag-v4 infrastructure deployments
 
     Handles multiple revenue streams and deployment scenarios.
     """
@@ -167,21 +165,19 @@ class ROICalculator:
         }
 
     def calculate_pilot_economics(self) -> dict:
-        """
-        Calculate economics for pilot deployment
+        """Calculate economics for pilot deployment
 
         Pilot: 10 towers, 100 vehicles, 3 months
         """
         pilot_config = DeploymentConfig(
-            num_cell_towers=10, num_vehicles=100, num_satellites=3, deployment_months=3
+            num_cell_towers=10, num_vehicles=100, num_satellites=3, deployment_months=3,
         )
 
         pilot_calc = ROICalculator(pilot_config, self.costs, self.revenue)
         return pilot_calc.calculate_roi()
 
     def calculate_regional_economics(self) -> dict:
-        """
-        Calculate economics for regional deployment
+        """Calculate economics for regional deployment
 
         Regional: 100 towers, 10k vehicles, 9 months
         """
@@ -196,8 +192,7 @@ class ROICalculator:
         return regional_calc.calculate_roi()
 
     def calculate_national_economics(self) -> dict:
-        """
-        Calculate economics for national deployment
+        """Calculate economics for national deployment
 
         National: 20,000 towers, 1M vehicles, 36 months
         """
@@ -220,8 +215,7 @@ class ROICalculator:
         return national_calc.calculate_roi()
 
     def calculate_global_economics(self) -> dict:
-        """
-        Calculate economics for global deployment
+        """Calculate economics for global deployment
 
         Global: 100k towers, 10M vehicles, 60 months
         """
@@ -297,7 +291,7 @@ class ROICalculator:
                     },
                     "economics": roi,
                     "valuation_usd": phase["valuation_usd"],
-                }
+                },
             )
 
         return results

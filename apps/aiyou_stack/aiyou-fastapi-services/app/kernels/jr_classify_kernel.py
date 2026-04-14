@@ -1,5 +1,4 @@
-"""
-JR Classify Kernel - California AI Regulations
+"""JR Classify Kernel - California AI Regulations
 ==============================================
 Kernel 2 of NS-JR-Cor pipeline for California AI compliance.
 
@@ -59,8 +58,7 @@ class JRClassifyInput:
 
 
 class JRClassifyKernel(Kernel):
-    """
-    Kernel 2: JR (Judgment Rule) Policy Classification.
+    """Kernel 2: JR (Judgment Rule) Policy Classification.
 
     Takes NS detection output and applies policy rules to:
     - Generate binary go/no-go decision
@@ -78,14 +76,14 @@ class JRClassifyKernel(Kernel):
         self.jr_engine = jr_engine or create_jr_engine()
 
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Execute JR classification.
+        """Execute JR classification.
 
         Args:
             kernel_input: Contains JRClassifyInput or NS output dict
 
         Returns:
             KernelOutput with JRPolicyOutput
+
         """
         try:
             # Extract input
@@ -97,7 +95,7 @@ class JRClassifyKernel(Kernel):
                 jr_input = JRClassifyInput(
                     ns_output=ns_output,
                     user_age_category=UserAgeCategory(
-                        kernel_input.data.get("user_age_category", "unknown")
+                        kernel_input.data.get("user_age_category", "unknown"),
                     ),
                     session_duration_minutes=kernel_input.data.get("session_duration_minutes", 0),
                     is_conversation_start=kernel_input.data.get("is_conversation_start", False),
@@ -110,7 +108,7 @@ class JRClassifyKernel(Kernel):
             else:
                 raise KernelChainError(
                     f"Invalid input type: expected JRClassifyInput, dict, or NSDetectionOutput, "
-                    f"got {type(kernel_input.data)}"
+                    f"got {type(kernel_input.data)}",
                 )
 
             # Run policy evaluation
@@ -140,7 +138,7 @@ class JRClassifyKernel(Kernel):
             )
 
         except Exception as e:
-            raise KernelChainError(f"JR classification failed: {str(e)}") from e
+            raise KernelChainError(f"JR classification failed: {e!s}") from e
 
 
 # =============================================================================
@@ -149,8 +147,7 @@ class JRClassifyKernel(Kernel):
 
 
 class FastPathClassifier:
-    """
-    Fast-path classifier for common cases.
+    """Fast-path classifier for common cases.
 
     Bypasses full kernel chain for:
     - Clean content (no signals)
@@ -160,11 +157,11 @@ class FastPathClassifier:
 
     @staticmethod
     def classify(ns_output: NSDetectionOutput, user_age: UserAgeCategory) -> JRPolicyOutput | None:
-        """
-        Try fast-path classification.
+        """Try fast-path classification.
 
         Returns:
             JRPolicyOutput if fast path applies, None otherwise
+
         """
         import time
 
@@ -275,7 +272,7 @@ class EnhancedJRClassifyKernel(JRClassifyKernel):
 
             if jr_input:
                 fast_result = self.fast_classifier.classify(
-                    jr_input.ns_output, jr_input.user_age_category
+                    jr_input.ns_output, jr_input.user_age_category,
                 )
 
                 if fast_result:

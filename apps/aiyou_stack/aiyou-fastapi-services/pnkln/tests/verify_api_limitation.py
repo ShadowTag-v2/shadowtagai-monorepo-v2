@@ -1,5 +1,4 @@
-"""
-Test script to verify if Gemini API actually blocks simultaneous use of
+"""Test script to verify if Gemini API actually blocks simultaneous use of
 custom tools and Google Search grounding.
 
 CRITICAL: This must be run FIRST before implementing any workaround.
@@ -58,7 +57,7 @@ def test_tools_only():
         return True
 
     except Exception as e:
-        print(f"❌ FAILED: {str(e)}")
+        print(f"❌ FAILED: {e!s}")
         return False
 
 
@@ -82,7 +81,7 @@ def test_grounding_only():
         return True
 
     except Exception as e:
-        print(f"❌ FAILED: {str(e)}")
+        print(f"❌ FAILED: {e!s}")
         return False
 
 
@@ -99,7 +98,7 @@ def test_both_combined():
 
         test_tool = create_test_tool()
         search_grounding = grounding.Tool.from_google_search_retrieval(
-            grounding.GoogleSearchRetrieval()
+            grounding.GoogleSearchRetrieval(),
         )
 
         response = model.generate_content(
@@ -119,11 +118,10 @@ def test_both_combined():
         if "mutually exclusive" in error_msg or "cannot use both" in error_msg:
             print("❌ CONFIRMED: Gemini API blocks tools + grounding")
             print("🚨 ACTION: Must implement workaround (Option 3 → Option 1)")
-            print(f"Error: {str(e)}")
+            print(f"Error: {e!s}")
             return False
-        else:
-            print(f"❌ FAILED with unexpected error: {str(e)}")
-            return False
+        print(f"❌ FAILED with unexpected error: {e!s}")
+        return False
 
 
 # ============================================================================
@@ -141,7 +139,7 @@ def run_verification():
     if not PROJECT_ID:
         print("\n❌ ERROR: GCP_PROJECT_ID environment variable not set")
         print("Set it with: export GCP_PROJECT_ID='your-project-id'")
-        return
+        return None
 
     results = {
         "tools_only": test_tools_only(),

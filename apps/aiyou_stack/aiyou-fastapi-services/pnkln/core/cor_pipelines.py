@@ -1,5 +1,4 @@
-"""
-COR Pipelines — Sequential & Concurrent Execution Patterns
+"""COR Pipelines — Sequential & Concurrent Execution Patterns
 ============================================================
 
 Extracted from cor_orchestrator.py (Rich Hickey refactor).
@@ -29,8 +28,7 @@ U = TypeVar("U")
 
 
 class PipelineStage(Generic[T, U]):
-    """
-    Single stage in sequential pipeline.
+    """Single stage in sequential pipeline.
 
     SK Equivalent: KernelFunction in SequentialPlanner
     Improvement: Direct async execution without Kernel overhead
@@ -58,13 +56,13 @@ class PipelineStage(Generic[T, U]):
 
         try:
             result = await asyncio.wait_for(
-                self.func(context, input_data), timeout=self.timeout_ms / 1000.0
+                self.func(context, input_data), timeout=self.timeout_ms / 1000.0,
             )
             latency_ms = (time.perf_counter() - start_time) * 1000
             context.record_stage_latency(self.name, latency_ms)
 
             logger.debug(
-                f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})"
+                f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})",
             )
             return result
 
@@ -72,14 +70,13 @@ class PipelineStage(Generic[T, U]):
             latency_ms = (time.perf_counter() - start_time) * 1000
             context.record_stage_latency(self.name, latency_ms)
             logger.error(
-                f"Stage {self.name} timeout after {latency_ms:.2f}ms (limit: {self.timeout_ms}ms)"
+                f"Stage {self.name} timeout after {latency_ms:.2f}ms (limit: {self.timeout_ms}ms)",
             )
             raise
 
 
 class SequentialPipeline:
-    """
-    Sequential execution pipeline with conditional stage skipping.
+    """Sequential execution pipeline with conditional stage skipping.
 
     SK Pattern: SequentialPlanner
     Pnkln Adaptation: Deterministic stage execution, sub-millisecond overhead.
@@ -105,7 +102,7 @@ class SequentialPipeline:
         """Execute all stages sequentially."""
         logger.info(
             f"Pipeline {self.name} starting with {len(self.stages)} stages "
-            f"(context: {context.request_id})"
+            f"(context: {context.request_id})",
         )
 
         current_output = initial_input
@@ -116,13 +113,13 @@ class SequentialPipeline:
             if context.is_over_budget():
                 logger.error(
                     f"Pipeline {self.name} terminated early - budget exceeded "
-                    f"({context.total_latency_ms:.2f}ms > {context.latency_budget_ms}ms)"
+                    f"({context.total_latency_ms:.2f}ms > {context.latency_budget_ms}ms)",
                 )
                 break
 
         logger.info(
             f"Pipeline {self.name} completed in {context.total_latency_ms:.2f}ms "
-            f"(context: {context.request_id})"
+            f"(context: {context.request_id})",
         )
 
         return current_output
@@ -143,8 +140,7 @@ class ConcurrentResult:
 
 
 class ConcurrentExecutor:
-    """
-    Parallel execution of multiple agents/functions.
+    """Parallel execution of multiple agents/functions.
 
     SK Pattern: Multiple agents in parallel
     Pnkln Adaptation: AsyncIO gather() for <500μs overhead.
@@ -166,7 +162,7 @@ class ConcurrentExecutor:
 
         logger.info(
             f"ConcurrentExecutor {self.name} executing {len(functions)} functions "
-            f"(context: {context.request_id})"
+            f"(context: {context.request_id})",
         )
 
         try:
@@ -189,11 +185,11 @@ class ConcurrentExecutor:
 
             logger.info(
                 f"ConcurrentExecutor {self.name} completed in {latency_ms:.2f}ms "
-                f"({len(successful_results)} success, {len(errors)} errors)"
+                f"({len(successful_results)} success, {len(errors)} errors)",
             )
 
             return ConcurrentResult(
-                results=successful_results, latency_ms=latency_ms, errors=errors
+                results=successful_results, latency_ms=latency_ms, errors=errors,
             )
 
         except TimeoutError:

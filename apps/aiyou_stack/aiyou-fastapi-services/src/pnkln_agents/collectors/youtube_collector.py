@@ -1,5 +1,4 @@
-"""
-YouTube Data API Collector
+"""YouTube Data API Collector
 Collects videos using YouTube Data API v3
 """
 
@@ -19,8 +18,7 @@ from .base import BaseCollector
 
 
 class YouTubeCollector(BaseCollector):
-    """
-    YouTube Data API v3 collector
+    """YouTube Data API v3 collector
 
     Pricing: $0 for first 10K requests/day, then $0.20/1K requests
     Quota: 10,000 units/day (search = 100 units, video details = 1 unit)
@@ -31,7 +29,7 @@ class YouTubeCollector(BaseCollector):
 
         if not YOUTUBE_AVAILABLE:
             raise ImportError(
-                "google-api-python-client not installed. Run: pip install google-api-python-client"
+                "google-api-python-client not installed. Run: pip install google-api-python-client",
             )
 
         if not self.api_key:
@@ -42,8 +40,7 @@ class YouTubeCollector(BaseCollector):
         self.quota_cost_per_video = 1
 
     def collect(self, source: Source, target_count: int) -> list[IngestedItem]:
-        """
-        Collect videos from YouTube
+        """Collect videos from YouTube
 
         Uses search API to find recent AI/tech videos
         """
@@ -133,20 +130,17 @@ class YouTubeCollector(BaseCollector):
 
         if age_days <= 1:
             return 1.0
-        elif age_days <= 3:
+        if age_days <= 3:
             return 0.9
-        elif age_days <= 7:
+        if age_days <= 7:
             return 0.7
-        else:
-            return 0.5
+        return 0.5
 
     def _calculate_cost(self, api_calls: int, quota_units: int) -> float:
-        """
-        YouTube pricing: $0.20 per 1K quota units after free tier (10K/day)
+        """YouTube pricing: $0.20 per 1K quota units after free tier (10K/day)
         For simplicity, assume average cost across free+paid
         """
         if quota_units <= 10000:  # Within free tier
             return 0.0
-        else:
-            paid_units = quota_units - 10000
-            return (paid_units / 1000) * 0.20
+        paid_units = quota_units - 10000
+        return (paid_units / 1000) * 0.20

@@ -1,5 +1,4 @@
-"""
-Pnkln Geos Vertical
+"""Pnkln Geos Vertical
 Summarize geo/polygon events and economic triggers.
 """
 

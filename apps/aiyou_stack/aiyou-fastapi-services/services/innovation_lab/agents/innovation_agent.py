@@ -1,5 +1,4 @@
-"""
-Innovation Agent - Core AI agent for innovation tasks
+"""Innovation Agent - Core AI agent for innovation tasks
 
 This agent specializes in:
 - Cutting-edge technology exploration
@@ -24,8 +23,7 @@ from ..models import (
 
 
 class InnovationAgent:
-    """
-    Innovation specialist exploring emerging technologies.
+    """Innovation specialist exploring emerging technologies.
     Experiments with cutting-edge tech. Tries the crazy ideas so you don't have to.
     """
 
@@ -68,13 +66,11 @@ Be enthusiastic about innovation while remaining realistic about challenges.
 """
 
     async def ideate(self, request: InnovationRequest) -> InnovationResponse:
-        """
-        Generate innovative ideas based on the request.
+        """Generate innovative ideas based on the request.
 
         This method would integrate with Claude Agent SDK for actual AI generation.
         For now, providing a structured framework.
         """
-
         # Build the ideation prompt
         self._build_ideation_prompt(request)
 
@@ -129,17 +125,15 @@ Be enthusiastic about innovation while remaining realistic about challenges.
                 "- Relevant emerging tech trends",
                 "",
                 "Think big, be creative, and don't hold back on innovative ideas!",
-            ]
+            ],
         )
 
         return "\n".join(prompt_parts)
 
     def _generate_mock_innovation_response(self, request: InnovationRequest) -> InnovationResponse:
-        """
-        Generate a structured mock response.
+        """Generate a structured mock response.
         This will be replaced with actual Claude AI generation.
         """
-
         # Example ideas based on request type
         ideas = []
 
@@ -174,7 +168,7 @@ Be enthusiastic about innovation while remaining realistic about challenges.
                         "Measure learning velocity improvements",
                         "Evaluate cognitive load reduction",
                     ],
-                )
+                ),
             )
 
         if request.max_ideas >= 2:
@@ -208,7 +202,7 @@ Be enthusiastic about innovation while remaining realistic about challenges.
                         "Run pilot with 100 innovators",
                         "Test governance mechanisms",
                     ],
-                )
+                ),
             )
 
         return InnovationResponse(
@@ -242,7 +236,6 @@ Be enthusiastic about innovation while remaining realistic about challenges.
 
     async def design_prototype(self, request: PrototypeRequest) -> PrototypeDesign:
         """Design a rapid prototype for a concept"""
-
         # Build prototype design prompt
         f"""Design a rapid prototype for the following concept:
 
@@ -313,7 +306,6 @@ Focus on building a minimal viable prototype that can validate the core concept 
 
     async def evaluate_technology(self, request: TechEvaluationRequest) -> TechEvaluationResponse:
         """Evaluate an emerging technology"""
-
         f"""Evaluate the following technology:
 
 Technology: {request.technology}

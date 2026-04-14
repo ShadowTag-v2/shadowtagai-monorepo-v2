@@ -1,5 +1,4 @@
-"""
-JR ENGINE - ATP 5-19 Risk Assessment Framework
+"""JR ENGINE - ATP 5-19 Risk Assessment Framework
 ===============================================
 
 PURPOSE → REASONS → BRAKES (PRB) Decision Framework
@@ -97,8 +96,7 @@ class RiskLevel(StrEnum):
 
 @dataclass
 class PRBDecision:
-    """
-    Purpose-Reasons-Brakes decision result.
+    """Purpose-Reasons-Brakes decision result.
 
     Attributes:
         purpose_met: Does this advance Pnkln mission/revenue?
@@ -109,6 +107,7 @@ class PRBDecision:
         action: Recommended action (APPROVE/REJECT/ESCALATE)
         execution_time_us: Time to compute decision (target <500μs)
         metadata: Additional context
+
     """
 
     purpose_met: bool
@@ -165,8 +164,7 @@ RISK_MATRIX: dict[tuple[ProbabilityLevel, SeverityLevel], RiskLevel] = {
 
 
 class JREngine:
-    """
-    Justice/Judgment Reasoning Engine with ATP 5-19 risk framework.
+    """Justice/Judgment Reasoning Engine with ATP 5-19 risk framework.
 
     DETERMINISTIC DECISION FLOW:
     ----------------------------
@@ -194,8 +192,7 @@ class JREngine:
         logger.info("JREngine initialized with ATP 5-19 risk matrix")
 
     def assess_risk(self, probability: ProbabilityLevel, severity: SeverityLevel) -> RiskLevel:
-        """
-        Look up risk level from ATP 5-19 matrix.
+        """Look up risk level from ATP 5-19 matrix.
 
         Args:
             probability: Probability assessment
@@ -206,6 +203,7 @@ class JREngine:
 
         Raises:
             KeyError: If invalid probability/severity combination
+
         """
         risk_level = self.risk_matrix.get((probability, severity))
         if risk_level is None:
@@ -213,14 +211,14 @@ class JREngine:
         return risk_level
 
     def determine_action(self, risk_level: RiskLevel) -> str:
-        """
-        Map risk level to enforcement action.
+        """Map risk level to enforcement action.
 
         Args:
             risk_level: ATP 5-19 risk assessment
 
         Returns:
             Action string: "APPROVE" | "REJECT" | "ESCALATE"
+
         """
         action_map = {
             RiskLevel.EXTREMELY_HIGH: "REJECT",
@@ -238,8 +236,7 @@ class JREngine:
         severity: SeverityLevel,
         metadata: dict | None = None,
     ) -> PRBDecision:
-        """
-        Execute full PRB (Purpose-Reasons-Brakes) decision.
+        """Execute full PRB (Purpose-Reasons-Brakes) decision.
 
         Args:
             purpose_met: Does action advance Pnkln goals?
@@ -253,6 +250,7 @@ class JREngine:
 
         Performance:
             Target <500μs execution time
+
         """
         start_time = time.perf_counter()
 
@@ -286,14 +284,13 @@ class JREngine:
         else:
             logger.debug(
                 f"JR Engine decision in {execution_time_us:.1f}μs: {action} "
-                f"(risk: {risk_level.value})"
+                f"(risk: {risk_level.value})",
             )
 
         return decision
 
     def quick_scan(self, request: dict, violation_keywords: list | None = None) -> PRBDecision:
-        """
-        Fast keyword-based risk scan for 80%+ LOW risk cases.
+        """Fast keyword-based risk scan for 80%+ LOW risk cases.
 
         This is the entry point for Judge #6 pipeline:
         - <500μs execution
@@ -306,6 +303,7 @@ class JREngine:
 
         Returns:
             PRBDecision (typically LOW risk for fast path)
+
         """
         start_time = time.perf_counter()
 
@@ -401,6 +399,6 @@ def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
     example_usage()

@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline
+"""PNKLN Intelligence Pipeline
 GKE-Native Nightly Intelligence Pipeline | ATP 5-19 RA-1 Compliant
 """
 

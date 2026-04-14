@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-GUARDIAN :: SELF-HEALING WATCHDOG
+"""GUARDIAN :: SELF-HEALING WATCHDOG
 Monitors the n-autoresearch/Kosmos/BioAgents Server.
 If it crashes, it captures the stack trace, consults Gemini (Simulated), patches the code, and restarts.
 """
@@ -36,8 +35,7 @@ def log(msg, tier="INFO"):
 
 
 def mock_gemini_fix(error_trace):
-    """
-    Simulates the 'Fix Selbst' loop.
+    """Simulates the 'Fix Selbst' loop.
     In production, this sends 'error_trace' to Gemini 1.5 Pro via Vertex AI.
     """
     log("Consulting Gemini 1.5 Pro for fix...", "RECOVERY")

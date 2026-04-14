@@ -1,5 +1,4 @@
-"""
-Code Refactorer Agent - Python Example
+"""Code Refactorer Agent - Python Example
 
 This example demonstrates how to use the Code Refactorer agent
 to improve code quality, readability, and maintainability.

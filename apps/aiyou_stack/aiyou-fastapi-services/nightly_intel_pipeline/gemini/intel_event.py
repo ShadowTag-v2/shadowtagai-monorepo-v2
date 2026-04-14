@@ -1,5 +1,4 @@
-"""
-IntelEvent Schema - Structured Intelligence Event
+"""IntelEvent Schema - Structured Intelligence Event
 =================================================
 Core dataclass for normalized intelligence events.
 
@@ -63,8 +62,7 @@ class Jurisdiction(StrEnum):
 
 @dataclass
 class IntelEvent:
-    """
-    Structured intelligence event - output from Gemini extraction.
+    """Structured intelligence event - output from Gemini extraction.
 
     This is the core data structure for the semantic ingestion layer.
     Raw documents are converted to IntelEvents before JR Engine scoring.
@@ -84,6 +82,7 @@ class IntelEvent:
         raw_text_hash: SHA-256 hash of source text
         gemini_model: Model used for extraction
         created_at: When this event was created
+
     """
 
     # Core identifiers
@@ -120,8 +119,7 @@ class IntelEvent:
 
     @classmethod
     def from_raw_text(cls, text: str, source_url: str = "", content_id: str = "") -> "IntelEvent":
-        """
-        Create a minimal IntelEvent from raw text.
+        """Create a minimal IntelEvent from raw text.
 
         This creates a placeholder that will be enriched by Gemini.
 
@@ -132,6 +130,7 @@ class IntelEvent:
 
         Returns:
             IntelEvent with hash and minimal fields populated
+
         """
         text_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
 
@@ -211,11 +210,11 @@ class IntelEvent:
         return bool(set(self.risk_tags) & high_priority_tags)
 
     def get_jr_hints(self) -> dict:
-        """
-        Get pre-filled hints for JR Engine scoring.
+        """Get pre-filled hints for JR Engine scoring.
 
         Returns:
             Dict with purpose_hint, reasons_hint, brakes_hint
+
         """
         return {
             "purpose_hint": self.purpose_hint,

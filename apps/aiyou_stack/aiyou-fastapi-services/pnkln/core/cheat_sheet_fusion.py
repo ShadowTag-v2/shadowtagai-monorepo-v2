@@ -1,5 +1,4 @@
-"""
-Cheat Sheet Fusion - 21 Essentials → 10 Core Elements
+"""Cheat Sheet Fusion - 21 Essentials → 10 Core Elements
 
 Intelligent fusion of prompting techniques to achieve 52% memory reduction
 while maintaining ≥98% accuracy vs full 21-technique set.
@@ -90,8 +89,7 @@ class ComplexityLevel(Enum):
 
 @dataclass
 class TechniqueMapping:
-    """
-    Mapping of fused technique to original techniques.
+    """Mapping of fused technique to original techniques.
 
     Attributes:
         fused: Fused technique
@@ -99,6 +97,7 @@ class TechniqueMapping:
         description: What this fusion does
         template: Prompt template
         optimal_for: Task types this works best for
+
     """
 
     fused: FusedTechnique
@@ -110,8 +109,7 @@ class TechniqueMapping:
 
 @dataclass
 class FusionResult:
-    """
-    Technique fusion result.
+    """Technique fusion result.
 
     Attributes:
         selected_techniques: Techniques selected for task
@@ -120,6 +118,7 @@ class FusionResult:
         complexity_level: Detected task complexity
         confidence: Selection confidence (0.0-1.0)
         selection_time_us: Selection time in microseconds
+
     """
 
     selected_techniques: list[FusedTechnique]
@@ -262,8 +261,7 @@ TECHNIQUE_MAPPINGS = [
 
 
 class CheatSheetFusion:
-    """
-    Intelligent fusion of 21 prompting techniques into 10 core elements.
+    """Intelligent fusion of 21 prompting techniques into 10 core elements.
 
     Performance targets:
     - Memory reduction: 21→10 (52%)
@@ -320,8 +318,7 @@ class CheatSheetFusion:
         }
 
     def _detect_task_type(self, task: str) -> TaskType:
-        """
-        Detect task type from task description.
+        """Detect task type from task description.
 
         In production, would use classifier model.
 
@@ -330,6 +327,7 @@ class CheatSheetFusion:
 
         Returns:
             Detected task type
+
         """
         task_lower = task.lower()
 
@@ -359,26 +357,25 @@ class CheatSheetFusion:
         return TaskType.REASONING
 
     def _estimate_complexity(self, task: str) -> ComplexityLevel:
-        """
-        Estimate task complexity.
+        """Estimate task complexity.
 
         Args:
             task: Task description
 
         Returns:
             Complexity level
+
         """
         # Simple heuristics
         length = len(task.split())
 
         if length < 20:
             return ComplexityLevel.SIMPLE
-        elif length < 50:
+        if length < 50:
             return ComplexityLevel.MODERATE
-        elif length < 100:
+        if length < 100:
             return ComplexityLevel.COMPLEX
-        else:
-            return ComplexityLevel.VERY_COMPLEX
+        return ComplexityLevel.VERY_COMPLEX
 
     def select_techniques(
         self,
@@ -387,8 +384,7 @@ class CheatSheetFusion:
         complexity: ComplexityLevel | None = None,
         max_techniques: int = 3,
     ) -> FusionResult:
-        """
-        Select optimal fused techniques for task.
+        """Select optimal fused techniques for task.
 
         Performance target: <1ms selection overhead
 
@@ -400,6 +396,7 @@ class CheatSheetFusion:
 
         Returns:
             Fusion result with selected techniques
+
         """
         start_time = time.perf_counter()
 
@@ -459,8 +456,7 @@ class CheatSheetFusion:
         )
 
     def _build_combined_prompt(self, task: str, techniques: list[FusedTechnique]) -> str:
-        """
-        Build combined prompt from multiple techniques.
+        """Build combined prompt from multiple techniques.
 
         Args:
             task: Task description
@@ -468,6 +464,7 @@ class CheatSheetFusion:
 
         Returns:
             Combined prompt template
+
         """
         if not techniques:
             return task
@@ -488,32 +485,32 @@ class CheatSheetFusion:
         return "\n".join(prompt_parts)
 
     def get_technique_info(self, technique: FusedTechnique) -> TechniqueMapping:
-        """
-        Get information about a fused technique.
+        """Get information about a fused technique.
 
         Args:
             technique: Fused technique
 
         Returns:
             Technique mapping with details
+
         """
         return self.mappings.get(technique)
 
     def get_all_techniques(self) -> list[TechniqueMapping]:
-        """
-        Get all fused technique mappings.
+        """Get all fused technique mappings.
 
         Returns:
             List of all technique mappings
+
         """
         return list(self.mappings.values())
 
     def get_statistics(self) -> dict[str, Any]:
-        """
-        Get fusion statistics.
+        """Get fusion statistics.
 
         Returns:
             Dictionary with statistics
+
         """
         total_original = sum(len(m.originals) for m in self.mappings.values())
         total_fused = len(self.mappings)

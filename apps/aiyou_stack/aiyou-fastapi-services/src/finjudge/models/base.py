@@ -1,5 +1,4 @@
-"""
-FinJudge Base Models
+"""FinJudge Base Models
 Pydantic models for financial governance decisions
 """
 
@@ -272,13 +271,13 @@ class DecisionRequest(BaseModel):
                         "source": "Bloomberg",
                         "data": {"symbol": "AAPL", "price": 175.50, "volume": 85000000},
                         "confidence": 95.0,
-                    }
+                    },
                 ],
                 "constraints": {
                     "regulatory": ["SEC Rule 15c3-1"],
                     "risk_limits": {"position_limit": 50000},
                 },
-            }
+            },
         }
 
 
@@ -296,7 +295,7 @@ class DecisionRuling(BaseModel):
     next_steps: list[str] = Field(default_factory=list, description="Recommended actions")
     audit_trail: AuditTrail = Field(..., description="Audit trail")
     compliance_flags: list[ComplianceFlag] = Field(
-        default_factory=list, description="Compliance flags"
+        default_factory=list, description="Compliance flags",
     )
     financial_impact: FinancialImpact | None = None
 
@@ -324,5 +323,5 @@ class DecisionRuling(BaseModel):
                     "rules_applied": ["RiskLimit-001", "RegCompliance-SEC"],
                     "computation_time_ms": 142.5,
                 },
-            }
+            },
         }

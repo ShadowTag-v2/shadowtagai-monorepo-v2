@@ -1,5 +1,4 @@
-"""
-JudgeVerdictFormatter: ASCII Art Verdict Display
+"""JudgeVerdictFormatter: ASCII Art Verdict Display
 =================================================
 
 Extracted from layers.py monolith per Rich Hickey doctrine.

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-CPU-bound threading benchmark for Python 3.14 free-threaded vs GIL builds.
+"""CPU-bound threading benchmark for Python 3.14 free-threaded vs GIL builds.
 
 Measures the scaling of multi-threaded CPU work.
 Expected behavior:
@@ -24,8 +23,7 @@ def cpu_work() -> int:
 
 
 def run_threads(num_threads: int) -> float:
-    """
-    Run cpu_work in parallel across num_threads threads.
+    """Run cpu_work in parallel across num_threads threads.
     Returns wall-clock time in seconds.
     """
     results: list[int] = [0] * num_threads

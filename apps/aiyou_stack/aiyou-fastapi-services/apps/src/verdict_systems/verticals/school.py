@@ -1,5 +1,4 @@
-"""
-Verdict Systems - School/Student Vertical (MVP)
+"""Verdict Systems - School/Student Vertical (MVP)
 Academic scheduling, lockouts, AI tutoring, and teacher oversight
 
 This is the MVP vertical for Verdict Systems, targeting:

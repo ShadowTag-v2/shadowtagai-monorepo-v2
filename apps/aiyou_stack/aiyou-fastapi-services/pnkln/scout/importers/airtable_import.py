@@ -1,5 +1,4 @@
-"""
-Airtable Import Script for Boy Scout Rule Registry
+"""Airtable Import Script for Boy Scout Rule Registry
 
 Imports skills and agents from registry.json to Airtable.
 
@@ -53,7 +52,7 @@ class AirtableImporter:
         }
 
     def _make_request(
-        self, method: str, endpoint: str, data: dict | None = None, retries: int = 3
+        self, method: str, endpoint: str, data: dict | None = None, retries: int = 3,
     ) -> dict[str, Any]:
         """Make API request with retry logic"""
         url = f"{self.base_url}/{endpoint}"
@@ -99,8 +98,8 @@ class AirtableImporter:
                         "Description": skill["description"],
                         "Triggers": ", ".join(skill.get("triggers", [])),
                         "Version": skill.get("version", "1.0"),
-                    }
-                }
+                    },
+                },
             )
 
         # Airtable batch limit is 10 records
@@ -128,8 +127,8 @@ class AirtableImporter:
                         "Skills": ", ".join(agent.get("skills", [])),
                         "Metadata Template": metadata_json,
                         "Boy Scout Enabled": True,
-                    }
-                }
+                    },
+                },
             )
 
         created_ids = []
@@ -164,10 +163,9 @@ class AirtableImporter:
 
 
 def import_registry(
-    api_key: str | None = None, base_id: str | None = None, registry_path: Path | None = None
+    api_key: str | None = None, base_id: str | None = None, registry_path: Path | None = None,
 ) -> dict[str, Any]:
-    """
-    Convenience function to import registry to Airtable.
+    """Convenience function to import registry to Airtable.
 
     Args:
         api_key: Airtable Personal Access Token (or set AIRTABLE_API_KEY env var)
@@ -180,14 +178,14 @@ def import_registry(
     Example:
         >>> result = import_registry()
         >>> print(f"Imported {result['skills_imported']} skills")
+
     """
     importer = AirtableImporter(api_key=api_key, base_id=base_id)
     return importer.import_from_registry(registry_path)
 
 
 def create_base_schema() -> str:
-    """
-    Return Airtable base schema instructions.
+    """Return Airtable base schema instructions.
 
     Before running import, create these tables in your Airtable base:
 

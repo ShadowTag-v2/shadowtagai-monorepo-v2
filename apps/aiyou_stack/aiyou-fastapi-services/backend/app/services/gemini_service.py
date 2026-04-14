@@ -1,5 +1,4 @@
-"""
-Gemini AI integration service for intelligent analysis.
+"""Gemini AI integration service for intelligent analysis.
 """
 
 import json
@@ -26,17 +25,16 @@ from app.models.gemini import (
 
 
 class GeminiService:
-    """
-    Service for interacting with Google Gemini AI for analysis tasks.
+    """Service for interacting with Google Gemini AI for analysis tasks.
     """
 
     def __init__(self, api_key: str | None = None, model_name: str = "gemini-2.0-flash-exp"):
-        """
-        Initialize the Gemini service.
+        """Initialize the Gemini service.
 
         Args:
             api_key: Google AI API key
             model_name: Gemini model to use
+
         """
         self.api_key = api_key
         self.model_name = model_name
@@ -51,8 +49,7 @@ class GeminiService:
         return GEMINI_AVAILABLE and self.model is not None
 
     async def analyze(self, request: GeminiAnalysisRequest) -> GeminiAnalysisResponse:
-        """
-        Perform analysis using Gemini AI.
+        """Perform analysis using Gemini AI.
 
         Args:
             request: Analysis request
@@ -62,6 +59,7 @@ class GeminiService:
 
         Raises:
             ValueError: If Gemini is not available
+
         """
         if not self.is_available():
             raise ValueError("Gemini AI is not available. Check API key configuration.")
@@ -76,7 +74,7 @@ class GeminiService:
             response = self.model.generate_content(prompt)
             analysis_text = response.text
         except Exception as e:
-            raise ValueError(f"Gemini API error: {str(e)}")
+            raise ValueError(f"Gemini API error: {e!s}")
 
         # Parse the response
         sections = self._parse_analysis_sections(analysis_text, request.confidence_threshold)
@@ -109,15 +107,13 @@ class GeminiService:
 
     def _build_prompt(self, request: GeminiAnalysisRequest) -> str:
         """Build the analysis prompt for Gemini."""
-
         if request.analysis_type == AnalysisType.INGESTION_LAYER:
             return self._build_ingestion_layer_prompt(request)
-        elif request.analysis_type == AnalysisType.COMPLIANCE_AUDIT:
+        if request.analysis_type == AnalysisType.COMPLIANCE_AUDIT:
             return self._build_compliance_audit_prompt(request)
-        elif request.analysis_type == AnalysisType.COVERAGE_ANALYSIS:
+        if request.analysis_type == AnalysisType.COVERAGE_ANALYSIS:
             return self._build_coverage_analysis_prompt(request)
-        else:
-            return self._build_generic_prompt(request)
+        return self._build_generic_prompt(request)
 
     def _build_ingestion_layer_prompt(self, request: GeminiAnalysisRequest) -> str:
         """Build prompt for ingestion layer analysis."""
@@ -330,7 +326,7 @@ Minimum confidence: {request.confidence_threshold * 100}%
         return prompt.strip()
 
     def _parse_analysis_sections(
-        self, analysis_text: str, confidence_threshold: float
+        self, analysis_text: str, confidence_threshold: float,
     ) -> list[AnalysisSection]:
         """Parse analysis text into sections."""
         # Simple section parsing (can be enhanced)
@@ -350,29 +346,28 @@ Minimum confidence: {request.confidence_threshold * 100}%
                 if current_section and current_content:
                     sections.append(
                         self._create_section(
-                            current_section, "\n".join(current_content), confidence_threshold
-                        )
+                            current_section, "\n".join(current_content), confidence_threshold,
+                        ),
                     )
 
                 # Start new section
                 current_section = line.strip().lstrip("#").strip("*").strip()
                 current_content = []
-            else:
-                if line.strip():
-                    current_content.append(line)
+            elif line.strip():
+                current_content.append(line)
 
         # Add final section
         if current_section and current_content:
             sections.append(
                 self._create_section(
-                    current_section, "\n".join(current_content), confidence_threshold
-                )
+                    current_section, "\n".join(current_content), confidence_threshold,
+                ),
             )
 
         return sections
 
     def _create_section(
-        self, section_name: str, content: str, base_confidence: float
+        self, section_name: str, content: str, base_confidence: float,
     ) -> AnalysisSection:
         """Create an analysis section."""
         # Extract findings and recommendations
@@ -403,7 +398,7 @@ Minimum confidence: {request.confidence_threshold * 100}%
         return sum(s.confidence for s in sections) / len(sections)
 
     def _extract_insights(
-        self, sections: list[AnalysisSection]
+        self, sections: list[AnalysisSection],
     ) -> tuple[list[str], list[str], list[str]]:
         """Extract key findings, recommendations, and risks from sections."""
         findings = []
@@ -439,22 +434,21 @@ Minimum confidence: {request.confidence_threshold * 100}%
         """Convert numeric confidence to level."""
         if confidence >= 0.7:
             return ConfidenceLevel.HIGH
-        elif confidence >= 0.6:
+        if confidence >= 0.6:
             return ConfidenceLevel.MEDIUM
-        else:
-            return ConfidenceLevel.LOW
+        return ConfidenceLevel.LOW
 
     async def compare_systems(
-        self, request: ComparisonAnalysisRequest
+        self, request: ComparisonAnalysisRequest,
     ) -> ComparisonAnalysisResponse:
-        """
-        Compare two systems (e.g., Judge #6 vs Ingestion Layer).
+        """Compare two systems (e.g., Judge #6 vs Ingestion Layer).
 
         Args:
             request: Comparison request
 
         Returns:
             Comparison analysis
+
         """
         if not self.is_available():
             raise ValueError("Gemini AI is not available.")
@@ -488,7 +482,7 @@ Provide structured output with clear sections.
             response = self.model.generate_content(prompt)
             analysis_text = response.text
         except Exception as e:
-            raise ValueError(f"Gemini API error: {str(e)}")
+            raise ValueError(f"Gemini API error: {e!s}")
 
         # Parse comparison (simplified)
         comparisons = {}

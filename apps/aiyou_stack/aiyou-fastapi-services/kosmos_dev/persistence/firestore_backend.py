@@ -1,5 +1,4 @@
-"""
-Firestore backend for Shadowtag whiteboard persistence.
+"""Firestore backend for Shadowtag whiteboard persistence.
 
 Provides real-time sync capabilities for the shared whiteboard.
 """
@@ -94,7 +93,7 @@ class FirestoreBackend:
                     "session_id": doc.id,
                     "total_findings": data.get("metrics", {}).get("total_findings", 0),
                     "consensus_reached": data.get("metrics", {}).get("consensus_reached", 0),
-                }
+                },
             )
 
         return sessions

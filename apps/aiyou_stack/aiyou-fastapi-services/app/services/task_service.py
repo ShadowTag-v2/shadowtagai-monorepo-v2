@@ -1,5 +1,4 @@
-"""
-Task service layer.
+"""Task service layer.
 
 Extracts all database operations from task routes
 into a proper service/repository pattern.

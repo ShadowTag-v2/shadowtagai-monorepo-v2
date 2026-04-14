@@ -1,5 +1,4 @@
-"""
-Revenue Tier Implementation
+"""Revenue Tier Implementation
 
 Implements Free/Pro/Enterprise tiers with feature gates and monetization hooks.
 
@@ -89,8 +88,7 @@ class UsageRecord:
 
 
 class UsageTracker:
-    """
-    Tracks usage for billing and upsell triggers.
+    """Tracks usage for billing and upsell triggers.
 
     CRITICAL: This is the revenue engine data source.
     Must be reliable, auditable, and tamper-proof.
@@ -102,10 +100,9 @@ class UsageTracker:
         self._user_quotas: dict[str, int] = {}  # user_id -> remaining quota
 
     def record_usage(
-        self, user_id: str, query: str, intent: str, tier: str, cost_usd: float, latency_ms: float
+        self, user_id: str, query: str, intent: str, tier: str, cost_usd: float, latency_ms: float,
     ) -> None:
-        """
-        Record a usage event.
+        """Record a usage event.
 
         Args:
             user_id: User identifier
@@ -114,6 +111,7 @@ class UsageTracker:
             tier: User's revenue tier
             cost_usd: Cost of this query
             latency_ms: Execution latency
+
         """
         record = UsageRecord(
             user_id=user_id,
@@ -154,11 +152,11 @@ class UsageTracker:
         return [r for r in self.records if r.user_id == user_id and r.timestamp >= start_date]
 
     def calculate_bill(self, user_id: str, tier: str) -> dict:
-        """
-        Calculate monthly bill for user.
+        """Calculate monthly bill for user.
 
         Returns:
             Dict with base_price, usage_charges, total, query_count
+
         """
         # Get current month usage
         month_start = datetime.utcnow().replace(day=1, hour=0, minute=0, second=0)
@@ -184,8 +182,7 @@ class UsageTracker:
 # FEATURE GATES
 # ============================================================================
 class FeatureGate:
-    """
-    Enforces tier-based feature access.
+    """Enforces tier-based feature access.
 
     CRITICAL: This protects revenue by blocking free users
     from premium features.
@@ -216,11 +213,11 @@ class FeatureGate:
 
     @staticmethod
     def validate_request(tier: str, intent: str, user_id: str, tracker: UsageTracker) -> dict:
-        """
-        Validate if request is allowed for tier.
+        """Validate if request is allowed for tier.
 
         Returns:
             Dict with allowed (bool), reason (str), upsell_trigger (bool)
+
         """
         # Check quota
         if not tracker.has_quota(user_id, tier):
@@ -253,18 +250,16 @@ class FeatureGate:
 # MONETIZATION ANALYTICS
 # ============================================================================
 class RevenueAnalytics:
-    """
-    Analytics for revenue optimization and bootstrap validation.
+    """Analytics for revenue optimization and bootstrap validation.
 
     CRITICAL: Must validate ROI ≥3× (18mo) and LTV:CAC ≥4:1 (12mo)
     """
 
     @staticmethod
     def calculate_ltv(
-        avg_monthly_revenue: float, avg_customer_lifetime_months: float, gross_margin: float = 0.80
+        avg_monthly_revenue: float, avg_customer_lifetime_months: float, gross_margin: float = 0.80,
     ) -> float:
-        """
-        Calculate customer lifetime value.
+        """Calculate customer lifetime value.
 
         Args:
             avg_monthly_revenue: Average monthly revenue per customer
@@ -273,13 +268,13 @@ class RevenueAnalytics:
 
         Returns:
             LTV in USD
+
         """
         return avg_monthly_revenue * avg_customer_lifetime_months * gross_margin
 
     @staticmethod
     def calculate_cac(total_acquisition_cost: float, customers_acquired: int) -> float:
-        """
-        Calculate customer acquisition cost.
+        """Calculate customer acquisition cost.
 
         Args:
             total_acquisition_cost: Total spent on acquisition
@@ -287,6 +282,7 @@ class RevenueAnalytics:
 
         Returns:
             CAC in USD
+
         """
         if customers_acquired == 0:
             return 0.0
@@ -294,8 +290,7 @@ class RevenueAnalytics:
 
     @staticmethod
     def validate_bootstrap_gates(ltv: float, cac: float, roi_18mo: float) -> dict:
-        """
-        Validate against bootstrap discipline gates.
+        """Validate against bootstrap discipline gates.
 
         Gates:
         - ROI ≥3× in 18 months
@@ -303,6 +298,7 @@ class RevenueAnalytics:
 
         Returns:
             Dict with pass/fail and recommendations
+
         """
         ltv_cac_ratio = ltv / cac if cac > 0 else 0
 
@@ -337,8 +333,7 @@ class RevenueAnalytics:
 
     @staticmethod
     def calculate_pricing_optimization(usage_data: list[UsageRecord], current_price: float) -> dict:
-        """
-        Suggest pricing optimization based on usage patterns.
+        """Suggest pricing optimization based on usage patterns.
 
         Uses Van Westendorp Price Sensitivity Meter approach.
         """

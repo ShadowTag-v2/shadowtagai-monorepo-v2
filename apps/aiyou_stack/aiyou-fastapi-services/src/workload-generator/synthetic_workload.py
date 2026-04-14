@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Pnkln Judge #6 Synthetic Workload Generator
+"""Pnkln Judge #6 Synthetic Workload Generator
 Purpose: Generate realistic request patterns to validate p99 ≤ 90ms SLA
 """
 
@@ -18,7 +17,7 @@ import aiohttp
 import numpy as np
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -28,7 +27,7 @@ class WorkloadConfig:
     """Configuration for workload generator"""
 
     judge_endpoint: str = os.getenv(
-        "JUDGE_ENDPOINT", "http://judge-6-service.pnkln-core.svc.cluster.local"
+        "JUDGE_ENDPOINT", "http://judge-6-service.pnkln-core.svc.cluster.local",
     )
     duration_seconds: int = int(os.getenv("WORKLOAD_DURATION_SEC", "3600"))  # 1 hour default
 
@@ -51,7 +50,7 @@ class WorkloadConfig:
             "api_call",
             "admin_action",
             "batch_job",
-        ]
+        ],
     )
 
     # SLA tracking
@@ -105,7 +104,7 @@ class SyntheticWorkloadGenerator:
                 },
             }
 
-        elif scenario == "data_access":
+        if scenario == "data_access":
             return {
                 **base_request,
                 "action": "access_data",
@@ -117,7 +116,7 @@ class SyntheticWorkloadGenerator:
                 },
             }
 
-        elif scenario == "api_call":
+        if scenario == "api_call":
             return {
                 **base_request,
                 "action": "api_call",
@@ -129,18 +128,18 @@ class SyntheticWorkloadGenerator:
                 },
             }
 
-        elif scenario == "admin_action":
+        if scenario == "admin_action":
             return {
                 **base_request,
                 "action": random.choice(
-                    ["create_user", "delete_user", "modify_policy", "grant_access"]
+                    ["create_user", "delete_user", "modify_policy", "grant_access"],
                 ),
                 "user": f"admin_{random.randint(1, 5)}@pnkln.com",
                 "resource": f"system/{random.choice(['users', 'policies', 'roles'])}",
                 "metadata": {"critical": True, "requires_approval": random.choice([True, False])},
             }
 
-        elif scenario == "batch_job":
+        if scenario == "batch_job":
             return {
                 **base_request,
                 "action": "run_batch_job",
@@ -156,7 +155,7 @@ class SyntheticWorkloadGenerator:
         return base_request
 
     async def _send_request(
-        self, session: aiohttp.ClientSession, request_data: dict[str, Any]
+        self, session: aiohttp.ClientSession, request_data: dict[str, Any],
     ) -> RequestResult:
         """Send a single request and measure latency"""
         request_id = request_data["id"]
@@ -206,11 +205,11 @@ class SyntheticWorkloadGenerator:
             )
 
     async def _run_workload_phase(
-        self, phase_name: str, duration_sec: int, target_rps: float, session: aiohttp.ClientSession
+        self, phase_name: str, duration_sec: int, target_rps: float, session: aiohttp.ClientSession,
     ):
         """Run a workload phase with specified RPS"""
         logger.info(
-            f"Starting phase: {phase_name} (duration={duration_sec}s, target_rps={target_rps})"
+            f"Starting phase: {phase_name} (duration={duration_sec}s, target_rps={target_rps})",
         )
 
         phase_start = time.time()
@@ -245,7 +244,7 @@ class SyntheticWorkloadGenerator:
             if request_count % (int(target_rps) * 10) == 0:
                 elapsed = time.time() - phase_start
                 logger.info(
-                    f"Phase {phase_name}: {request_count} requests sent, {elapsed:.1f}s elapsed"
+                    f"Phase {phase_name}: {request_count} requests sent, {elapsed:.1f}s elapsed",
                 )
 
         logger.info(f"Completed phase: {phase_name} ({request_count} requests)")
@@ -265,28 +264,28 @@ class SyntheticWorkloadGenerator:
             if self.config.enable_ramp_up:
                 ramp_duration = int(self.config.duration_seconds * 0.25)
                 await self._run_workload_phase(
-                    "ramp-up", ramp_duration, self.config.base_rps, session
+                    "ramp-up", ramp_duration, self.config.base_rps, session,
                 )
 
             # Phase 2: Steady state (40% of duration)
             if self.config.enable_steady_state:
                 steady_duration = int(self.config.duration_seconds * 0.40)
                 await self._run_workload_phase(
-                    "steady-state", steady_duration, self.config.peak_rps, session
+                    "steady-state", steady_duration, self.config.peak_rps, session,
                 )
 
             # Phase 3: Burst mode (20% of duration)
             if self.config.enable_burst_mode:
                 burst_duration = int(self.config.duration_seconds * 0.20)
                 await self._run_workload_phase(
-                    "burst", burst_duration, self.config.burst_rps, session
+                    "burst", burst_duration, self.config.burst_rps, session,
                 )
 
             # Phase 4: Ramp-down (15% of duration)
             if self.config.enable_ramp_down:
                 rampdown_duration = int(self.config.duration_seconds * 0.15)
                 await self._run_workload_phase(
-                    "ramp-down", rampdown_duration, self.config.base_rps, session
+                    "ramp-down", rampdown_duration, self.config.base_rps, session,
                 )
 
         # Analyze results
@@ -330,13 +329,13 @@ class SyntheticWorkloadGenerator:
         logger.info(f"  Mean: {mean:.2f}ms")
         logger.info(f"  Std Dev: {std:.2f}ms")
         logger.info(
-            f"  p50: {p50:.2f}ms (SLA: ≤{self.config.sla_p50_ms}ms) {'✓' if p50 <= self.config.sla_p50_ms else '✗ BREACH'}"
+            f"  p50: {p50:.2f}ms (SLA: ≤{self.config.sla_p50_ms}ms) {'✓' if p50 <= self.config.sla_p50_ms else '✗ BREACH'}",
         )
         logger.info(
-            f"  p95: {p95:.2f}ms (SLA: ≤{self.config.sla_p95_ms}ms) {'✓' if p95 <= self.config.sla_p95_ms else '✗ BREACH'}"
+            f"  p95: {p95:.2f}ms (SLA: ≤{self.config.sla_p95_ms}ms) {'✓' if p95 <= self.config.sla_p95_ms else '✗ BREACH'}",
         )
         logger.info(
-            f"  p99: {p99:.2f}ms (SLA: ≤{self.config.sla_p99_ms}ms) {'✓' if p99 <= self.config.sla_p99_ms else '✗ BREACH'}"
+            f"  p99: {p99:.2f}ms (SLA: ≤{self.config.sla_p99_ms}ms) {'✓' if p99 <= self.config.sla_p99_ms else '✗ BREACH'}",
         )
         logger.info("")
 

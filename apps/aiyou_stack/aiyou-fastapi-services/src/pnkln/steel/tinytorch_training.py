@@ -105,7 +105,7 @@ class Trainer:
 
         for batch_idx, (inputs, targets) in enumerate(dataloader):
             scaled_loss, batch_loss = self._train_step(
-                inputs, targets, accumulation_steps, batch_idx
+                inputs, targets, accumulation_steps, batch_idx,
             )
             accumulated_loss += scaled_loss
 
@@ -140,9 +140,8 @@ class Trainer:
             preds = np.argmax(outputs.data, axis=1)
             if len(targets.data.shape) == 1:
                 return int(np.sum(preds == targets.data))
-            else:
-                # One-hot
-                return int(np.sum(preds == np.argmax(targets.data, axis=1)))
+            # One-hot
+            return int(np.sum(preds == np.argmax(targets.data, axis=1)))
         return 0
 
     def evaluate(self, dataloader):

@@ -1,5 +1,4 @@
-"""
-AI Personalization Engine for Swiper Platform
+"""AI Personalization Engine for Swiper Platform
 
 Three-stage evolution:
 1. Rules (Day 1): Simple deterministic branching
@@ -20,8 +19,7 @@ from typing import Any
 
 
 class PersonalizationEngine:
-    """
-    Core AI personalization engine for Swiper adaptive videos
+    """Core AI personalization engine for Swiper adaptive videos
 
     Implements three-stage maturity model:
     - Rules: Lightweight, deterministic
@@ -39,10 +37,9 @@ class PersonalizationEngine:
     # ========================================================================
 
     def rules_personalize(
-        self, user_context: dict[str, Any], video_metadata: dict[str, Any]
+        self, user_context: dict[str, Any], video_metadata: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Stage 1: Simple rule-based personalization
+        """Stage 1: Simple rule-based personalization
 
         Cost: Minimal (no GPU, no ML inference)
         Timeline: Ship with MVP
@@ -117,8 +114,7 @@ class PersonalizationEngine:
         user_segment: str,
         exploration_mode: bool = True,
     ) -> tuple[str, dict[str, Any]]:
-        """
-        Stage 2: Multi-armed bandit for narrative arc selection
+        """Stage 2: Multi-armed bandit for narrative arc selection
 
         Cost: Moderate (analytics infra, lightweight ML)
         Timeline: After 10K+ daily sessions
@@ -180,8 +176,7 @@ class PersonalizationEngine:
         converted: bool,
         revenue: float = 0.0,
     ):
-        """
-        Record outcome for bandit learning
+        """Record outcome for bandit learning
 
         Call this after user completes session to update arm statistics
         """
@@ -192,8 +187,7 @@ class PersonalizationEngine:
         self.arm_stats[key]["revenue"] += revenue
 
     def bandits_get_performance(self, video_id: str) -> dict[str, Any]:
-        """
-        Get bandit performance statistics for a video
+        """Get bandit performance statistics for a video
 
         Shows which arcs are winning for different user segments
         """
@@ -232,8 +226,7 @@ class PersonalizationEngine:
         product_info: dict[str, Any],
         video_metadata: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Stage 3: Fully AI-generated personalized content
+        """Stage 3: Fully AI-generated personalized content
 
         Cost: High ($5k-$20k/mo at scale before optimization)
         Timeline: Year 3+ after ARR + dataset make it sustainable
@@ -286,25 +279,23 @@ class PersonalizationEngine:
         """Generate personalized intro script"""
         if household_type == "family_with_kids":
             return f"Hey {name}! Looking for something the whole family will love? You're in the right place."
-        elif interests and "sports" in interests:
+        if interests and "sports" in interests:
             return (
                 f"Hi {name}! As a sports enthusiast, you'll appreciate what we have for you today."
             )
-        else:
-            return f"Welcome {name}! Let's find something perfect for you."
+        return f"Welcome {name}! Let's find something perfect for you."
 
     def _select_demo_focus(
-        self, interests: list[str], product_category: str, purchase_history: list[str]
+        self, interests: list[str], product_category: str, purchase_history: list[str],
     ) -> str:
         """Select which product aspects to emphasize"""
         if "technology" in interests or "electronics" in interests:
             return "technical_specifications"
-        elif "sustainability" in interests:
+        if "sustainability" in interests:
             return "eco_friendly_features"
-        elif product_category == "toys" and "family" in str(purchase_history):
+        if product_category == "toys" and "family" in str(purchase_history):
             return "safety_and_educational_value"
-        else:
-            return "quality_and_value"
+        return "quality_and_value"
 
     def _generate_benefits(self, household_type: str, category: str, price: float) -> list[str]:
         """Generate personalized benefits messaging"""
@@ -316,7 +307,7 @@ class PersonalizationEngine:
                     "Safe for all ages",
                     "Built to last through years of use",
                     "Educational and fun",
-                ]
+                ],
             )
         elif household_type == "couple":
             benefits.extend(
@@ -324,7 +315,7 @@ class PersonalizationEngine:
                     "Premium quality that looks great in any home",
                     "Energy efficient - saves money long-term",
                     "Stylish design you'll both love",
-                ]
+                ],
             )
         else:
             benefits.extend(
@@ -332,7 +323,7 @@ class PersonalizationEngine:
                     "Exceptional quality at a fair price",
                     "Trusted by thousands of satisfied customers",
                     "Hassle-free returns and warranty",
-                ]
+                ],
             )
 
         if price < 50:
@@ -346,19 +337,17 @@ class PersonalizationEngine:
         """Generate personalized call-to-action"""
         if household_type == "family_with_kids":
             return f"{name}, give your family the gift they deserve. Get your {product_name} today!"
-        else:
-            return f"Ready to upgrade, {name}? Add {product_name} to your cart now."
+        return f"Ready to upgrade, {name}? Add {product_name} to your cart now."
 
     def _select_soundtrack(self, interests: list[str], household_type: str) -> str:
         """Select personalized background music"""
         if household_type == "family_with_kids":
             return "upbeat_family_friendly"
-        elif "sports" in interests:
+        if "sports" in interests:
             return "energetic_motivational"
-        elif "luxury" in interests:
+        if "luxury" in interests:
             return "elegant_sophisticated"
-        else:
-            return "modern_uplifting"
+        return "modern_uplifting"
 
     def _select_visual_style(self, user_profile: dict) -> str:
         """Select visual style based on user preferences"""
@@ -366,13 +355,12 @@ class PersonalizationEngine:
 
         if age_range.startswith("18-") or age_range.startswith("25-"):
             return "fast_paced_modern"
-        elif age_range.startswith("45-") or age_range.startswith("55-"):
+        if age_range.startswith("45-") or age_range.startswith("55-"):
             return "classic_trustworthy"
-        else:
-            return "balanced_professional"
+        return "balanced_professional"
 
     def _generate_scene_sequence(
-        self, user_profile: dict, product_info: dict, video_metadata: dict
+        self, user_profile: dict, product_info: dict, video_metadata: dict,
     ) -> list[dict[str, Any]]:
         """Generate personalized scene sequence"""
         scenes = [
@@ -411,8 +399,7 @@ class PersonalizationEngine:
         return scenes
 
     def _generate_cache_key(self, user_profile: dict, product_info: dict) -> str:
-        """
-        Generate cache key for generative content reuse
+        """Generate cache key for generative content reuse
 
         Same user segment + product → reuse generated content
         """
@@ -471,7 +458,7 @@ if __name__ == "__main__":
     engine.bandits_record_outcome("video123", "emotional_story", "family_segment", True, 29.99)
 
     selected_arc, bandit_info = engine.bandits_select_arc(
-        "video123", available_arcs, "family_segment"
+        "video123", available_arcs, "family_segment",
     )
 
     print(f"Selected Arc: {selected_arc}")
@@ -506,7 +493,7 @@ if __name__ == "__main__":
     video_metadata = {"format": "premium_beacon", "duration": 5400}
 
     generative_result = engine.generative_create_narrative(
-        user_profile, product_info, video_metadata
+        user_profile, product_info, video_metadata,
     )
 
     print(f'Intro Script: "{generative_result["intro_script"]}"')

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-DTE: Difficulty-Tracking Evolution
+"""DTE: Difficulty-Tracking Evolution
 
 Adaptive difficulty management for Agent0 co-evolution.
 Implements curriculum learning with dynamic difficulty adjustment.
@@ -124,7 +123,7 @@ class DifficultyTracker:
             self.metrics.difficulty_changes += 1
             self.metrics.current_difficulty = next_difficulty
             self.metrics.max_difficulty_reached = max(
-                self.metrics.max_difficulty_reached, next_difficulty
+                self.metrics.max_difficulty_reached, next_difficulty,
             )
             self.streak_count = 0
         return next_difficulty
@@ -132,9 +131,9 @@ class DifficultyTracker:
     def _calculate_next_difficulty(self) -> int:
         if self.strategy == DifficultyStrategy.STREAK:
             return self._streak_strategy()
-        elif self.strategy == DifficultyStrategy.WINDOW:
+        if self.strategy == DifficultyStrategy.WINDOW:
             return self._window_strategy()
-        elif self.strategy == DifficultyStrategy.ADAPTIVE:
+        if self.strategy == DifficultyStrategy.ADAPTIVE:
             return self._adaptive_strategy()
         return self.metrics.current_difficulty
 
@@ -143,8 +142,7 @@ class DifficultyTracker:
         if self.streak_count >= self.streak_threshold:
             if self.streak_type:
                 return min(current + 1, self.max_difficulty)
-            else:
-                return max(current - 1, self.min_difficulty)
+            return max(current - 1, self.min_difficulty)
         return current
 
     def _window_strategy(self) -> int:
@@ -154,7 +152,7 @@ class DifficultyTracker:
         success_rate = sum(self.recent_outcomes) / len(self.recent_outcomes)
         if success_rate > self.TARGET_HIGH:
             return min(current + 1, self.max_difficulty)
-        elif success_rate < self.TARGET_LOW:
+        if success_rate < self.TARGET_LOW:
             return max(current - 1, self.min_difficulty)
         return current
 
@@ -173,11 +171,11 @@ class DifficultyTracker:
         upper_bound = center + margin
         if lower_bound > self.TARGET_HIGH:
             return min(current + 1, self.max_difficulty)
-        elif upper_bound < self.TARGET_LOW:
+        if upper_bound < self.TARGET_LOW:
             return max(current - 1, self.min_difficulty)
-        elif center > self.TARGET_OPTIMAL and level.attempts >= 10:
+        if center > self.TARGET_OPTIMAL and level.attempts >= 10:
             return min(current + 1, self.max_difficulty)
-        elif center < self.TARGET_OPTIMAL - 0.1 and level.attempts >= 10:
+        if center < self.TARGET_OPTIMAL - 0.1 and level.attempts >= 10:
             return max(current - 1, self.min_difficulty)
         return current
 

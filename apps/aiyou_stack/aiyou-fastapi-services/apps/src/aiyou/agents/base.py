@@ -7,8 +7,7 @@ from src.shadowtag_v4.tools.registry import registry
 
 
 class SandboxedExecutor:
-    """
-    Restricted Python executor for orchestration scripts.
+    """Restricted Python executor for orchestration scripts.
     Provides a safe subset of Python for tool orchestration.
     """
 
@@ -74,11 +73,11 @@ class SandboxedExecutor:
     }
 
     def __init__(self, tool_executor: callable):
-        """
-        Initialize sandbox with a tool executor function.
+        """Initialize sandbox with a tool executor function.
 
         Args:
             tool_executor: Function that takes (tool_name, **kwargs) and returns result
+
         """
         self.tool_executor = tool_executor
         self.execution_log = []
@@ -131,15 +130,14 @@ class SandboxedExecutor:
             {
                 "tool": tool_name,
                 "inputs": kwargs,
-            }
+            },
         )
         result = self.tool_executor(tool_name, **kwargs)
         self.execution_log[-1]["output"] = result
         return result
 
     def execute(self, script: str, timeout: float = 30.0) -> dict[str, Any]:
-        """
-        Execute a sandboxed Python script.
+        """Execute a sandboxed Python script.
 
         Args:
             script: Python code to execute
@@ -147,6 +145,7 @@ class SandboxedExecutor:
 
         Returns:
             Dict with 'output', 'results', 'log', and 'error' keys
+
         """
         import signal
 
@@ -213,12 +212,10 @@ class SandboxedExecutor:
 class SecurityError(Exception):
     """Raised when sandbox detects forbidden operations."""
 
-    pass
 
 
 class AntigravityAgent:
-    """
-    Base agent class supporting Advanced Tool Use patterns.
+    """Base agent class supporting Advanced Tool Use patterns.
     """
 
     def __init__(self, name: str, model: str = "claude-3-5-sonnet-20241022"):
@@ -237,7 +234,7 @@ class AntigravityAgent:
                     "query": {
                         "type": "string",
                         "description": "Search query for tool capabilities",
-                    }
+                    },
                 },
                 "required": ["query"],
             },
@@ -253,8 +250,7 @@ class AntigravityAgent:
         return f"Found and loaded {len(found_tools)} tools: {[t['name'] for t in found_tools]}"
 
     def _execute_tool(self, tool_name: str, **kwargs) -> Any:
-        """
-        Execute a tool by name. Override this for actual tool implementations.
+        """Execute a tool by name. Override this for actual tool implementations.
         """
         tool_def = registry.get_tool(tool_name)
         if not tool_def:
@@ -267,8 +263,7 @@ class AntigravityAgent:
         return {"status": "executed", "tool": tool_name, "inputs": kwargs}
 
     def execute_python_orchestration(self, script: str, timeout: float = 30.0) -> dict[str, Any]:
-        """
-        Executes a sandboxed Python script that orchestrates multiple tool calls.
+        """Executes a sandboxed Python script that orchestrates multiple tool calls.
         This keeps intermediate data out of the LLM context.
 
         The script has access to:
@@ -302,6 +297,7 @@ class AntigravityAgent:
             - results: The 'results' dict from script execution
             - log: List of tool calls made [{tool, inputs, output}, ...]
             - error: Error message if execution failed, else None
+
         """
         sandbox = SandboxedExecutor(tool_executor=self._execute_tool)
         result = sandbox.execute(script, timeout=timeout)

@@ -7,8 +7,7 @@ import networkx as nx
 
 
 class SovereignMemory:
-    """
-    The 'Intelligence' Layer (ATP 2-01.3)
+    """The 'Intelligence' Layer (ATP 2-01.3)
     Integrates Mem0 (Session/User Context) and Custom GraphRAG (Knowledge Graph).
     """
 
@@ -30,8 +29,7 @@ class SovereignMemory:
         self.knowledge_graph.add_edge("RiskScoring", "ATP_5_19", relation="based_on")
 
     def add_context(self, text: str, metadata: dict[str, Any] = None):
-        """
-        Ingest new intelligence into the system.
+        """Ingest new intelligence into the system.
         """
         print(f"📥 [Memory] Ingesting: '{text[:50]}...'")
         self.mem0.add(text, user_id=self.user_id, metadata=metadata)
@@ -41,8 +39,7 @@ class SovereignMemory:
             self.knowledge_graph.add_edge("Transaction", "AuditLog", relation="recorded_in")
 
     def recall(self, query: str) -> dict[str, Any]:
-        """
-        Retrieve intelligence using Hybrid Search (Vector + Graph).
+        """Retrieve intelligence using Hybrid Search (Vector + Graph).
         """
         print(f"🔍 [Memory] Recalling: '{query}'")
 

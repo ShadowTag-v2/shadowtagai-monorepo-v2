@@ -1,5 +1,4 @@
-"""
-Autonomous Flight Service using GAAS
+"""Autonomous Flight Service using GAAS
 AiU Aero: FAA-certified autonomous flight with pre-execution compliance
 
 CRITICAL SAFETY NOTICE:
@@ -39,8 +38,7 @@ class FlightStatus(Enum):
 
 
 class AutonomousFlightService:
-    """
-    FAA-certified autonomous flight with AiUCRM validation
+    """FAA-certified autonomous flight with AiUCRM validation
 
     Features:
     - Pre-execution compliance (DO-178C)
@@ -69,6 +67,7 @@ class AutonomousFlightService:
             {"lat": 37.7849, "lon": -122.4294, "alt": 100},
         ])
         ```
+
     """
 
     def __init__(
@@ -77,13 +76,13 @@ class AutonomousFlightService:
         mode: FlightMode = FlightMode.SEMI_AUTONOMOUS,
         human_operator_id: str | None = None,
     ):
-        """
-        Initialize autonomous flight service
+        """Initialize autonomous flight service
 
         Args:
             drone_id: Unique drone identifier
             mode: Flight operation mode
             human_operator_id: Required for fully autonomous ops
+
         """
         self.drone_id = drone_id
         self.mode = mode
@@ -154,8 +153,7 @@ class AutonomousFlightService:
         max_speed_mps: float = 10.0,
         return_to_home: bool = True,
     ) -> dict[str, Any]:
-        """
-        Execute autonomous flight plan
+        """Execute autonomous flight plan
 
         Args:
             waypoints: List of {"lat": float, "lon": float, "alt": float}
@@ -164,6 +162,7 @@ class AutonomousFlightService:
 
         Returns:
             Flight result with log and compliance checks
+
         """
         self.stats["total_flights"] += 1
         start_time = datetime.utcnow()
@@ -192,7 +191,7 @@ class AutonomousFlightService:
                     "max_speed_mps": max_speed_mps,
                     "flight_mode": self.mode.value,
                 },
-            }
+            },
         )
 
         if validation.status != ComplianceStatus.APPROVED:
@@ -245,7 +244,7 @@ class AutonomousFlightService:
                         "purpose": "navigation",
                         "fallback_mechanism": True,
                         "metadata": {"waypoint_index": i, "waypoint": waypoint},
-                    }
+                    },
                 )
 
                 if wp_validation.status != ComplianceStatus.APPROVED:
@@ -266,7 +265,7 @@ class AutonomousFlightService:
                         "compliance_check": "PASSED",
                         "altitude_actual": wp_result.get("altitude"),
                         "speed_actual": wp_result.get("speed"),
-                    }
+                    },
                 )
 
             # Step 6: Land at final position
@@ -295,7 +294,7 @@ class AutonomousFlightService:
                 "waypoints": path,
                 "log": flight_log,
                 "compliance_validation": validation.to_dict(),
-            }
+            },
         )
 
         return {
@@ -310,11 +309,11 @@ class AutonomousFlightService:
         }
 
     async def _perform_preflight_checks(self) -> bool:
-        """
-        Perform pre-flight safety checks
+        """Perform pre-flight safety checks
 
         Returns:
             True if all checks pass, False otherwise
+
         """
         logger.info("Performing pre-flight checks...")
 
@@ -343,11 +342,11 @@ class AutonomousFlightService:
         return True
 
     async def _emergency_land(self, reason: str):
-        """
-        Execute emergency landing procedure
+        """Execute emergency landing procedure
 
         Args:
             reason: Reason for emergency landing
+
         """
         logger.critical(f"EMERGENCY LANDING initiated: {reason}")
 

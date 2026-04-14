@@ -1,5 +1,4 @@
-"""
-Base Compliance Module Class
+"""Base Compliance Module Class
 
 Abstract base class for all regulation compliance modules.
 Each module follows single responsibility principle:
@@ -33,8 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 class ComplianceModule(ABC):
-    """
-    Abstract base class for compliance regulation modules.
+    """Abstract base class for compliance regulation modules.
 
     Each module represents a single regulation (EU AI Act, GDPR, etc.)
     and provides:
@@ -58,40 +56,36 @@ class ComplianceModule(ABC):
 
     @abstractmethod
     def _define_metadata(self) -> ModuleMetadata:
-        """
-        Define the module's metadata.
+        """Define the module's metadata.
 
         Returns:
             ModuleMetadata containing regulation info, jurisdiction, etc.
+
         """
-        pass
 
     @abstractmethod
     def _define_controls(self) -> list[ControlDefinition]:
-        """
-        Define the compliance controls/requirements for this regulation.
+        """Define the compliance controls/requirements for this regulation.
 
         Returns:
             List of control definitions with validation rules
+
         """
-        pass
 
     @abstractmethod
     def _define_validation_rules(self) -> list[ValidationRule]:
-        """
-        Define validation rules for post-generation content checking.
+        """Define validation rules for post-generation content checking.
 
         Returns:
             List of validation rules for content validation
+
         """
-        pass
 
     @abstractmethod
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
-        """
-        Assess a single control against the input data.
+        """Assess a single control against the input data.
 
         Args:
             control: The control definition to assess
@@ -99,21 +93,20 @@ class ComplianceModule(ABC):
 
         Returns:
             ControlResult with compliance status and findings
+
         """
-        pass
 
     @abstractmethod
     def determine_risk_tier(self, input_data: AssessmentInput) -> RiskTier | None:
-        """
-        Determine the risk tier for the input (if applicable to this regulation).
+        """Determine the risk tier for the input (if applicable to this regulation).
 
         Args:
             input_data: Assessment input
 
         Returns:
             RiskTier classification or None if not applicable
+
         """
-        pass
 
     # =========================================================================
     # PUBLIC PROPERTIES
@@ -144,14 +137,14 @@ class ComplianceModule(ABC):
     # =========================================================================
 
     async def assess(self, input_data: AssessmentInput) -> ModuleResult:
-        """
-        Run full assessment against all controls in this module.
+        """Run full assessment against all controls in this module.
 
         Args:
             input_data: Assessment input containing content and metadata
 
         Returns:
             ModuleResult with all control assessments and recommendations
+
         """
         logger.info(f"Running {self.module_id.value} assessment")
 
@@ -169,9 +162,9 @@ class ComplianceModule(ABC):
                         module_id=self.module_id,
                         status=ComplianceStatus.PENDING_REVIEW,
                         score=0.0,
-                        findings=[f"Assessment error: {str(e)}"],
+                        findings=[f"Assessment error: {e!s}"],
                         remediation="Manual review required",
-                    )
+                    ),
                 )
 
         # Calculate aggregate stats
@@ -221,10 +214,9 @@ class ComplianceModule(ABC):
         )
 
     async def validate_content(
-        self, content: str, context: str | None = None
+        self, content: str, context: str | None = None,
     ) -> list[ValidationViolation]:
-        """
-        Validate generated content against this module's rules.
+        """Validate generated content against this module's rules.
 
         Used for post-generation validation (GPT Store pattern).
 
@@ -234,6 +226,7 @@ class ComplianceModule(ABC):
 
         Returns:
             List of violations found in the content
+
         """
         violations = []
 
@@ -252,11 +245,11 @@ class ComplianceModule(ABC):
     # =========================================================================
 
     def generate_checklist(self) -> list[dict[str, Any]]:
-        """
-        Generate a compliance checklist for this regulation.
+        """Generate a compliance checklist for this regulation.
 
         Returns:
             List of checklist items with control info and status placeholders
+
         """
         checklist = []
         for control in self._controls:
@@ -270,16 +263,16 @@ class ComplianceModule(ABC):
                     "status": "pending",
                     "evidence_provided": False,
                     "notes": "",
-                }
+                },
             )
         return checklist
 
     def generate_report_template(self) -> dict[str, Any]:
-        """
-        Generate an audit report template for this regulation.
+        """Generate an audit report template for this regulation.
 
         Returns:
             Report template structure with placeholders
+
         """
         return {
             "report_type": f"{self._metadata.short_name} Compliance Report",
@@ -298,11 +291,11 @@ class ComplianceModule(ABC):
         }
 
     def get_required_evidence(self) -> list[dict[str, Any]]:
-        """
-        Get list of all required evidence artifacts for compliance.
+        """Get list of all required evidence artifacts for compliance.
 
         Returns:
             List of evidence requirements with descriptions
+
         """
         evidence_list = []
         for control in self._controls:
@@ -312,7 +305,7 @@ class ComplianceModule(ABC):
                         "control_id": control.control_id,
                         "evidence_type": evidence_item,
                         "description": f"Evidence for {control.name}",
-                    }
+                    },
                 )
         return evidence_list
 
@@ -321,7 +314,7 @@ class ComplianceModule(ABC):
     # =========================================================================
 
     async def _generate_recommendations(
-        self, control_results: list[ControlResult], input_data: AssessmentInput
+        self, control_results: list[ControlResult], input_data: AssessmentInput,
     ) -> list[str]:
         """Generate recommendations based on assessment results."""
         recommendations = []
@@ -335,13 +328,13 @@ class ComplianceModule(ABC):
         partial_count = sum(1 for r in control_results if r.status == ComplianceStatus.PARTIAL)
         if partial_count > 0:
             recommendations.append(
-                f"Complete implementation of {partial_count} partially compliant controls"
+                f"Complete implementation of {partial_count} partially compliant controls",
             )
 
         return recommendations
 
     def _requires_human_review(
-        self, control_results: list[ControlResult], input_data: AssessmentInput
+        self, control_results: list[ControlResult], input_data: AssessmentInput,
     ) -> bool:
         """Determine if human review is required."""
         # High-risk content always requires review
@@ -362,10 +355,9 @@ class ComplianceModule(ABC):
         return avg_score < 0.5
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
-        """
-        Check a single validation rule against content.
+        """Check a single validation rule against content.
 
         Override in specific modules for custom validation logic.
         """

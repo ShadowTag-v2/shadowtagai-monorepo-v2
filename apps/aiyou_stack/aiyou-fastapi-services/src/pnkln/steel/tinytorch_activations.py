@@ -7,8 +7,7 @@ TOLERANCE = 1e-10
 
 
 class Sigmoid:
-    """
-    Sigmoid activation: σ(x) = 1/(1 + e^(-x))
+    """Sigmoid activation: σ(x) = 1/(1 + e^(-x))
     Maps any real number to (0, 1) range.
     """
 
@@ -36,8 +35,7 @@ class Sigmoid:
 
 
 class ReLU:
-    """
-    ReLU activation: f(x) = max(0, x)
+    """ReLU activation: f(x) = max(0, x)
     Sets negative values to zero.
     """
 
@@ -53,8 +51,7 @@ class ReLU:
 
 
 class Tanh:
-    """
-    Tanh activation: f(x) = (e^x - e^(-x))/(e^x + e^(-x))
+    """Tanh activation: f(x) = (e^x - e^(-x))/(e^x + e^(-x))
     Maps to (-1, 1).
     """
 
@@ -70,8 +67,7 @@ class Tanh:
 
 
 class GELU:
-    """
-    GELU activation: f(x) = x * Φ(x) ≈ x * Sigmoid(1.702 * x)
+    """GELU activation: f(x) = x * Φ(x) ≈ x * Sigmoid(1.702 * x)
     Smooth approximation to ReLU.
     """
 
@@ -88,8 +84,7 @@ class GELU:
 
 
 class Softmax:
-    """
-    Softmax activation: f(x_i) = e^(x_i) / Σ(e^(x_j))
+    """Softmax activation: f(x_i) = e^(x_i) / Σ(e^(x_j))
     Converts vector to probability distribution.
     """
 

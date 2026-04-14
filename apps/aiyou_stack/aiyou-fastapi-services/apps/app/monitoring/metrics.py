@@ -6,8 +6,7 @@ from app.config import settings
 
 
 class MetricsCollector:
-    """
-    Centralized metrics collector for kernel chain.
+    """Centralized metrics collector for kernel chain.
 
     Tracks:
     - Latency per kernel and total chain (p50, p99)
@@ -104,7 +103,7 @@ class MetricsCollector:
                 "gemini_model": settings.gemini_model,
                 "max_latency_p99_ms": str(settings.max_latency_p99_ms),
                 "confidence_threshold": str(settings.confidence_threshold),
-            }
+            },
         )
 
     def record_decision(
@@ -153,7 +152,7 @@ class MetricsCollector:
 
         if tokens_output is not None:
             self.kernel_tokens.labels(kernel_name=kernel_name, direction="output").inc(
-                tokens_output
+                tokens_output,
             )
 
     def record_compression(self, compression_ratio: float):

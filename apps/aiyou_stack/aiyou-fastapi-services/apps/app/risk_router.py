@@ -39,8 +39,7 @@ class Judgment(BaseModel):
 
 
 class Judge6:
-    """
-    COR.JUDGE.6 - The Governance Layer.
+    """COR.JUDGE.6 - The Governance Layer.
     Implements the DoD Cybersecurity Risk Management Construct (CSRMC) 2026.
 
     Philosophy: "Ultrathink" - Elegant, ruthless simplification.
@@ -61,13 +60,11 @@ class Judge6:
             return {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}
 
     def evaluate(
-        self, prompt: str, file_paths: list[str] = None, mission_id: str = "default"
+        self, prompt: str, file_paths: list[str] = None, mission_id: str = "default",
     ) -> Judgment:
-        """
-        The Main Gavel. Evaluates a prompt/action against the 5 Layers of the Constitution.
+        """The Main Gavel. Evaluates a prompt/action against the 5 Layers of the Constitution.
         Now strictly enforces CSRMC "High-Signal" Controls.
         """
-
         # 0. Track Iteration & Phase
         if file_paths is None:
             file_paths = []
@@ -116,15 +113,14 @@ class Judge6:
             reason="cATO Granted. Policy Compliant. Ready for Code Punch.",
             iteration_count=current_iter,
             csrmc_status=CSRMCStatus(
-                cato_valid=True, phase=phase, high_signal_controls=["MFA", "EDR", "Logs"]
+                cato_valid=True, phase=phase, high_signal_controls=["MFA", "EDR", "Logs"],
             ),
         )
 
     # --- CSRMC ENFORCEMENT ---
 
     def _check_csrmc_compliance(self, prompt: str, files: list[str], phase: str) -> Judgment:
-        """
-        Enforces the 10 Strategic Tenets and Critical Controls.
+        """Enforces the 10 Strategic Tenets and Critical Controls.
         """
         prompt_lower = prompt.lower()
 

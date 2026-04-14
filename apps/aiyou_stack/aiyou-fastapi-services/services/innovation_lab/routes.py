@@ -1,5 +1,4 @@
-"""
-Innovation Lab Service - API Routes
+"""Innovation Lab Service - API Routes
 
 Endpoints for AI-powered innovation, ideation, prototyping, and tech evaluation.
 """
@@ -28,18 +27,16 @@ innovation_agent = InnovationAgent()
 
 @router.get("/health", response_model=HealthCheckResponse, tags=["System"])
 async def health_check():
-    """
-    Health check endpoint for the Innovation Lab service.
+    """Health check endpoint for the Innovation Lab service.
     """
     return HealthCheckResponse(
-        status="healthy", service=config.service_name, version=config.version, innovation_ready=True
+        status="healthy", service=config.service_name, version=config.version, innovation_ready=True,
     )
 
 
 @router.get("/", tags=["System"])
 async def root():
-    """
-    Root endpoint with service information.
+    """Root endpoint with service information.
     """
     return {
         "service": config.service_name,
@@ -66,8 +63,7 @@ async def root():
 
 @router.post("/ideate", response_model=InnovationResponse, tags=["Innovation"])
 async def generate_ideas(request: InnovationRequest):
-    """
-    Generate innovative ideas based on your challenge.
+    """Generate innovative ideas based on your challenge.
 
     This endpoint uses AI to explore cutting-edge approaches, generate creative solutions,
     and provide actionable next steps for innovation.
@@ -104,14 +100,13 @@ async def generate_ideas(request: InnovationRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error generating ideas: {str(e)}",
+            detail=f"Error generating ideas: {e!s}",
         )
 
 
 @router.post("/prototype", response_model=PrototypeDesign, tags=["Innovation"])
 async def design_prototype(request: PrototypeRequest):
-    """
-    Design a rapid prototype for your concept.
+    """Design a rapid prototype for your concept.
 
     Get a comprehensive prototype design including architecture, components,
     tech stack, implementation phases, and success metrics.
@@ -136,14 +131,13 @@ async def design_prototype(request: PrototypeRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error designing prototype: {str(e)}",
+            detail=f"Error designing prototype: {e!s}",
         )
 
 
 @router.post("/evaluate", response_model=TechEvaluationResponse, tags=["Innovation"])
 async def evaluate_technology(request: TechEvaluationRequest):
-    """
-    Evaluate an emerging technology.
+    """Evaluate an emerging technology.
 
     Get a comprehensive SWOT analysis, maturity assessment, adoption readiness,
     and recommended use cases for any technology.
@@ -167,14 +161,13 @@ async def evaluate_technology(request: TechEvaluationRequest):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error evaluating technology: {str(e)}",
+            detail=f"Error evaluating technology: {e!s}",
         )
 
 
 @router.post("/experiment", tags=["Innovation"])
 async def design_experiment(hypothesis: str, variables: list[str], success_criteria: list[str]):
-    """
-    Design an experiment to test an innovation hypothesis.
+    """Design an experiment to test an innovation hypothesis.
 
     **Use Cases:**
     - Hypothesis testing
@@ -239,14 +232,13 @@ async def design_experiment(hypothesis: str, variables: list[str], success_crite
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error designing experiment: {str(e)}",
+            detail=f"Error designing experiment: {e!s}",
         )
 
 
 @router.get("/trends", tags=["Innovation"])
 async def get_tech_trends(domain: str = "general", limit: int = 10):
-    """
-    Get current technology trends for a domain.
+    """Get current technology trends for a domain.
 
     **Parameters:**
     - **domain**: Technology domain (ai_ml, blockchain, iot, etc.)
@@ -313,5 +305,5 @@ async def get_tech_trends(domain: str = "general", limit: int = 10):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error fetching trends: {str(e)}",
+            detail=f"Error fetching trends: {e!s}",
         )

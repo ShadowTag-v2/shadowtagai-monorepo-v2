@@ -1,5 +1,4 @@
-"""
-Contractual-Pinkln Integration Adapter
+"""Contractual-Pinkln Integration Adapter
 
 This module integrates the Contractual AI negotiation platform with the
 Pinkln Ultrathink ecosystem, enabling:
@@ -32,8 +31,7 @@ from src.training.grpo import GRPOTrainer
 
 
 class ContractualPinklnAdapter:
-    """
-    Unified adapter for Contractual + Pinkln integration
+    """Unified adapter for Contractual + Pinkln integration
 
     Architecture Evolution:
     - Contractual 1.0: Single Claude API → Conflict detection
@@ -65,8 +63,7 @@ class ContractualPinklnAdapter:
         enable_grpo: bool = False,  # Requires training data
         enable_dte: bool = False,  # Requires benchmark dataset
     ):
-        """
-        Initialize Contractual-Pinkln adapter
+        """Initialize Contractual-Pinkln adapter
 
         Args:
             gemini_api_key: Google API key (defaults to env var)
@@ -75,6 +72,7 @@ class ContractualPinklnAdapter:
             enable_glicko: Track quality with Glicko-2 ratings
             enable_grpo: Enable GRPO training (requires negotiation outcomes)
             enable_dte: Enable DTE prompt evolution (requires benchmark dataset)
+
         """
         self.gemini_api_key = gemini_api_key or os.environ.get("GOOGLE_API_KEY")
 
@@ -114,8 +112,7 @@ class ContractualPinklnAdapter:
         )
 
     def _build_function_tools(self) -> list[FunctionTool]:
-        """
-        Build Gemini function tools for Contractual operations
+        """Build Gemini function tools for Contractual operations
 
         Tools:
         1. detect_conflicts: Multi-agent debate for conflict detection
@@ -151,7 +148,7 @@ class ContractualPinklnAdapter:
                         "description": "Unique session ID for tracking",
                     },
                 },
-            )
+            ),
         )
 
         # Tool 2: Resolution Suggestions (GRPO-trained)
@@ -180,7 +177,7 @@ class ContractualPinklnAdapter:
                             "description": "Conflict details (topic, proposals, context)",
                         },
                     },
-                )
+                ),
             )
 
         # Tool 3: Quality Rating (Glicko-2)
@@ -217,7 +214,7 @@ class ContractualPinklnAdapter:
                             "description": "User satisfaction score (0-10)",
                         },
                     },
-                )
+                ),
             )
 
         # Tool 4: Prompt Evolution (DTE)
@@ -247,7 +244,7 @@ class ContractualPinklnAdapter:
                             "description": "Current accuracy, latency, cost metrics",
                         },
                     },
-                )
+                ),
             )
 
         # Tool 5: Judge #6 Validation (always available)
@@ -276,7 +273,7 @@ class ContractualPinklnAdapter:
                             "description": "Operation type (detect, resolve, document)",
                         },
                     },
-                )
+                ),
             )
 
         return tools
@@ -310,8 +307,7 @@ Performance targets:
     # Function wrappers for Gemini tools
 
     def _detect_conflicts_wrapper(self, transcript_text: str, session_id: str) -> dict[str, Any]:
-        """
-        Wrapper for multi-agent conflict detection
+        """Wrapper for multi-agent conflict detection
 
         Executes through Cor orchestrator for Judge #6 validation
         """
@@ -373,12 +369,11 @@ Performance targets:
                 "watermark": watermark,
                 "session_id": session_id,
             }
-        else:
-            return {
-                "conflicts": conflicts_json,
-                "count": len(conflicts_json),
-                "session_id": session_id,
-            }
+        return {
+            "conflicts": conflicts_json,
+            "count": len(conflicts_json),
+            "session_id": session_id,
+        }
 
     def _suggest_resolutions_wrapper(self, conflict_id: str, conflict_data: dict) -> dict[str, Any]:
         """Wrapper for GRPO-trained resolution suggestions"""
@@ -387,13 +382,13 @@ Performance targets:
 
         # Use GRPO to generate suggestions
         suggestions = self.grpo_trainer.suggest_resolutions(
-            conflict_id=conflict_id, conflict_data=conflict_data
+            conflict_id=conflict_id, conflict_data=conflict_data,
         )
 
         return {"conflict_id": conflict_id, "suggestions": suggestions, "count": len(suggestions)}
 
     def _rate_quality_wrapper(
-        self, strategy_id: str, user_agreed: bool, resolution_success: bool, nps_score: int
+        self, strategy_id: str, user_agreed: bool, resolution_success: bool, nps_score: int,
     ) -> dict[str, Any]:
         """Wrapper for Glicko-2 quality rating"""
         if not self.glicko_system:
@@ -415,7 +410,7 @@ Performance targets:
         }
 
     def _evolve_prompt_wrapper(
-        self, current_prompt: str, performance_metrics: dict
+        self, current_prompt: str, performance_metrics: dict,
     ) -> dict[str, Any]:
         """Wrapper for DTE prompt evolution"""
         if not self.dte_evolver:
@@ -423,7 +418,7 @@ Performance targets:
 
         # Evolve prompt
         evolved_prompt = self.dte_evolver.evolve(
-            current_prompt=current_prompt, performance_metrics=performance_metrics
+            current_prompt=current_prompt, performance_metrics=performance_metrics,
         )
 
         return {
@@ -455,10 +450,9 @@ Performance targets:
     # High-level API methods
 
     async def detect_conflicts(
-        self, transcript_text: str, session_id: UUID
+        self, transcript_text: str, session_id: UUID,
     ) -> list[dict[str, Any]]:
-        """
-        High-level API: Detect conflicts in negotiation transcript
+        """High-level API: Detect conflicts in negotiation transcript
 
         Uses Gemini function calling to orchestrate multi-agent debate
 
@@ -468,6 +462,7 @@ Performance targets:
 
         Returns:
             List of detected conflicts with confidence scores
+
         """
         prompt = f"""
         Analyze this business negotiation transcript for conflicting terms.
@@ -484,7 +479,7 @@ Performance targets:
         """
 
         result = self.gemini_caller.execute(
-            prompt=prompt, validation_callback=self._judge_six_callback if self.judge_six else None
+            prompt=prompt, validation_callback=self._judge_six_callback if self.judge_six else None,
         )
 
         # Parse result (Gemini returns JSON from function calls)
@@ -498,10 +493,9 @@ Performance targets:
             return self._extract_conflicts_from_text(result)
 
     async def suggest_resolution(
-        self, conflict_id: UUID, conflict_data: dict
+        self, conflict_id: UUID, conflict_data: dict,
     ) -> list[dict[str, Any]]:
-        """
-        High-level API: Suggest resolutions for conflict
+        """High-level API: Suggest resolutions for conflict
 
         Uses GRPO-trained model to maximize acceptance rate
 
@@ -511,6 +505,7 @@ Performance targets:
 
         Returns:
             Top 3 resolution suggestions with predicted acceptance probability
+
         """
         if not self.grpo_trainer:
             # Fallback to simple compromise
@@ -531,7 +526,7 @@ Performance targets:
         """
 
         result = self.gemini_caller.execute(
-            prompt=prompt, validation_callback=self._judge_six_callback if self.judge_six else None
+            prompt=prompt, validation_callback=self._judge_six_callback if self.judge_six else None,
         )
 
         # Parse result
@@ -544,8 +539,7 @@ Performance targets:
             return self._extract_suggestions_from_text(result)
 
     def _judge_six_callback(self, function_name: str, args: dict[str, Any]) -> bool:
-        """
-        Validation callback for Judge #6
+        """Validation callback for Judge #6
 
         Args:
             function_name: Name of function being called
@@ -553,12 +547,13 @@ Performance targets:
 
         Returns:
             True if validation passes, False otherwise
+
         """
         if not self.judge_six:
             return True
 
         validation = self.judge_six.validate(
-            output=args, operation=function_name, context={"platform": "Contractual"}
+            output=args, operation=function_name, context={"platform": "Contractual"},
         )
 
         return validation.is_valid
@@ -580,7 +575,7 @@ Performance targets:
                         "normalized": mid_val,
                         "rationale": "50/50 split between proposals",
                         "acceptance_probability": 0.65,
-                    }
+                    },
                 ]
         except (KeyError, TypeError):
             pass
@@ -590,7 +585,7 @@ Performance targets:
                 "value": "Custom negotiation required",
                 "rationale": "Cannot compute simple compromise - values not numeric",
                 "acceptance_probability": 0.5,
-            }
+            },
         ]
 
     def _extract_conflicts_from_text(self, text: str) -> list[dict[str, Any]]:
@@ -645,7 +640,7 @@ if __name__ == "__main__":
         # Detect conflicts
         print("Detecting conflicts via Gemini + multi-agent debate...\n")
         conflicts = await adapter.detect_conflicts(
-            transcript_text=transcript, session_id=session_id
+            transcript_text=transcript, session_id=session_id,
         )
 
         print(f"Found {len(conflicts)} conflict(s):")
@@ -660,7 +655,7 @@ if __name__ == "__main__":
         if conflicts:
             print("\n\nSuggesting resolution for first conflict...")
             suggestions = await adapter.suggest_resolution(
-                conflict_id=UUID(conflicts[0]["id"]), conflict_data=conflicts[0]
+                conflict_id=UUID(conflicts[0]["id"]), conflict_data=conflicts[0],
             )
 
             print(f"\nTop {len(suggestions)} suggestion(s):")

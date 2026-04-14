@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Quality Testing Example
+"""Quality Testing Example
 
 Demonstrates comprehensive quality evaluation of watermarked content.
 """
@@ -43,7 +42,7 @@ def main():
     print("=" * 60)
 
     video_quality = evaluate_video_quality(
-        original_path="input_video.mp4", watermarked_path="watermarked_test.mp4", num_frames=30
+        original_path="input_video.mp4", watermarked_path="watermarked_test.mp4", num_frames=30,
     )
 
     print("\nPSNR (Peak Signal-to-Noise Ratio):")
@@ -64,7 +63,7 @@ def main():
     print("=" * 60)
 
     audio_quality = evaluate_audio_quality(
-        original_path="input_audio.wav", watermarked_path="watermarked_test.wav"
+        original_path="input_audio.wav", watermarked_path="watermarked_test.wav",
     )
 
     print("\nSNR (Signal-to-Noise Ratio):")
@@ -91,13 +90,13 @@ def main():
     from shadowtag_v2.security.crypto_payload import generate_watermark_payload
 
     original_bits, _ = generate_watermark_payload(
-        prompt="Quality test content", model_id="test-model", params={"seed": 999}
+        prompt="Quality test content", model_id="test-model", params={"seed": 999},
     )
 
     extracted_bits = verification["video_bits"]
 
     robustness = evaluate_watermark_robustness(
-        original_bits=original_bits, extracted_bits=extracted_bits
+        original_bits=original_bits, extracted_bits=extracted_bits,
     )
 
     print("\nBit Error Rate (BER):")

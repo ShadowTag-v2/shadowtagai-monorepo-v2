@@ -1,5 +1,4 @@
-"""
-Layer 18–20: Competitive Reality, Milestone Tracker, Impact Model
+"""Layer 18–20: Competitive Reality, Milestone Tracker, Impact Model
 =================================================================
 
 Extracted from layers.py monolith per Rich Hickey doctrine.
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class CompetitiveRealityCheck:
-    """
-    Layer 18: Benchmark vs incumbents (YouTube, TikTok, Odysee).
+    """Layer 18: Benchmark vs incumbents (YouTube, TikTok, Odysee).
 
     Differentiation:
     - What incumbents do better: Feed quality, scale
@@ -29,8 +27,7 @@ class CompetitiveRealityCheck:
     """
 
     async def benchmark(self, decision: Decision) -> dict[str, Any]:
-        """
-        Benchmark decision against competitive landscape.
+        """Benchmark decision against competitive landscape.
 
         Returns:
             {
@@ -39,6 +36,7 @@ class CompetitiveRealityCheck:
                 "commodity_trap_risk": bool,
                 "verdict": "PRIORITIZE" | "DOUBLE DOWN" | "REJECT"
             }
+
         """
         # Simplified placeholder
         return {
@@ -55,8 +53,7 @@ class CompetitiveRealityCheck:
 
 
 class MilestoneTracker:
-    """
-    Layer 19: Convert "all hands scrub" into executable milestones.
+    """Layer 19: Convert "all hands scrub" into executable milestones.
 
     Phases:
     - Day 1-30: Doctrine hardening (EU AI Act, DSA, WCAG, VAST)
@@ -172,8 +169,7 @@ class MilestoneTracker:
 
 
 class QuantifiedImpactModel:
-    """
-    Layer 20: Translate decisions into $ and valuation multiples.
+    """Layer 20: Translate decisions into $ and valuation multiples.
 
     Before (no governance):
     - CPM: +30% unverified → +18% realized (40% rejection risk)
@@ -187,8 +183,7 @@ class QuantifiedImpactModel:
     """
 
     async def calculate(self, decision: Decision) -> dict[str, Any]:
-        """
-        Calculate financial impact of decision.
+        """Calculate financial impact of decision.
 
         Returns:
             {
@@ -198,6 +193,7 @@ class QuantifiedImpactModel:
                 "multiple_expansion": float,     # Turn change
                 "infra_savings": float          # Monthly infra savings
             }
+
         """
         # Simplified placeholder - production would use detailed financial models
         return {

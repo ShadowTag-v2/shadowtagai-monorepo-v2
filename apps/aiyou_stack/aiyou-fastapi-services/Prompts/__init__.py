@@ -1,5 +1,4 @@
-"""
-Prompts package for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
+"""Prompts package for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
 Contains Antigravity system prompt and battle drills.
 """
 

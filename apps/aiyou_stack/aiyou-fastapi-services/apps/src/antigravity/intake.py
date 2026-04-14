@@ -1,5 +1,4 @@
-"""
-Gemini 3 Pro Intake - 2M Context Window
+"""Gemini 3 Pro Intake - 2M Context Window
 
 Atomizes input into discrete tasks with:
 - Tests for each atom
@@ -45,8 +44,7 @@ class Atom:
 
 
 class GeminiIntake:
-    """
-    Gemini 3 Pro Intake Layer
+    """Gemini 3 Pro Intake Layer
 
     2M token context window for massive input processing.
     Atomizes complex tasks into discrete, testable units.
@@ -105,8 +103,7 @@ Return ONLY valid JSON array, no markdown."""
         genai.configure(api_key=self.api_key)
 
     async def decompose(self, input_text: str) -> list[Atom]:
-        """
-        Atomize input into discrete tasks using Gemini 3 Pro's 2M context.
+        """Atomize input into discrete tasks using Gemini 3 Pro's 2M context.
         """
         # Alias for pipeline compatibility
         return await self._atomize_impl(input_text)
@@ -158,8 +155,7 @@ Return ONLY valid JSON array, no markdown."""
         )
 
     async def search_context(self, query: str) -> dict[str, Any]:
-        """
-        Search pipeline/drive/memory/web for context before atomizing.
+        """Search pipeline/drive/memory/web for context before atomizing.
         This runs BEFORE atomization to inform the breakdown.
         """
         # TODO: Implement full context search

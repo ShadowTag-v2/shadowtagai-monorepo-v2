@@ -1,5 +1,4 @@
-"""
-Contractual Service Engine
+"""Contractual Service Engine
 "The Digital Napkin" / "The AI Lawyer"
 
 Implements the core logic for:
@@ -22,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class ContractualEngine:
-    """
-    The brain of the Contractual product.
+    """The brain of the Contractual product.
     Analyses text streams for binding agreement terms.
     """
 
@@ -31,8 +29,7 @@ class ContractualEngine:
         self.version = "Contractual-1.0-Alpha"
 
     async def analyze_transcript(self, transcript: str, location: str = "US-CA") -> dict[str, Any]:
-        """
-        The 'Lawyer Meter': Analyzes a conversation for legal bindingness and risks.
+        """The 'Lawyer Meter': Analyzes a conversation for legal bindingness and risks.
         """
         # 1. Log the 'Input' to Universal Tape (Immutable Record)
         log_event(
@@ -67,8 +64,7 @@ class ContractualEngine:
         }
 
     def _extract_terms_heuristic(self, text: str) -> list[dict[str, str]]:
-        """
-        Simple heuristic extraction for Alpha.
+        """Simple heuristic extraction for Alpha.
         Attributes sentences to 'Vendor' or 'Client'.
         """
         # Placeholder logic
@@ -84,8 +80,7 @@ class ContractualEngine:
         return terms
 
     def _calculate_risk(self, terms: list[dict[str, str]], location: str) -> float:
-        """
-        Calculates risk based on ambiguity and missing terms.
+        """Calculates risk based on ambiguity and missing terms.
         """
         risk = 0.0
         # Risk 1: Verbal Agreement without Price
@@ -105,8 +100,7 @@ class ContractualEngine:
         return min(risk, 1.0)
 
     def _generate_napkin(self, terms: list[dict[str, str]]) -> str:
-        """
-        Generates the simple "Butcher Block" summary.
+        """Generates the simple "Butcher Block" summary.
         """
         if not terms:
             return "No binding terms detected."

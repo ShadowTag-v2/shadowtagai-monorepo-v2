@@ -14,8 +14,7 @@ class HDISignal(BaseModel):
 
 @router.post("/process-dataset")
 async def process_b2b_dataset(daily_comments: list[str]):
-    """
-    Nightly CRON endpoint. Extracts chaos into the Human Deception Index.
+    """Nightly CRON endpoint. Extracts chaos into the Human Deception Index.
     """
     extracted_data = []
 
@@ -60,6 +59,6 @@ async def process_b2b_dataset(daily_comments: list[str]):
         if errors:
             return {"status": "error", "message": str(errors)}
     except Exception as e:
-        return {"status": "error", "message": f"BigQuery routing failed: {str(e)}"}
+        return {"status": "error", "message": f"BigQuery routing failed: {e!s}"}
 
     return {"status": "success", "message": "B2B Refinery pipeline generated anonymized dataset."}

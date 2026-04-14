@@ -1,5 +1,4 @@
-"""
-Workflow Execution Engine - Process Atomic Chat JSON Action Blocks
+"""Workflow Execution Engine - Process Atomic Chat JSON Action Blocks
 
 Executes workflow definitions like:
 {
@@ -23,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class WorkflowExecutionEngine:
-    """
-    Executes JSON-defined workflows for atomic chat operations.
+    """Executes JSON-defined workflows for atomic chat operations.
 
     Supports actions:
     - AskForInput: Collect user input (maps to mission fields)
@@ -39,10 +37,9 @@ class WorkflowExecutionEngine:
         self.workflow_state = {}  # Stores variables during execution
 
     def execute_workflow(
-        self, workflow: dict[str, Any], inputs: dict[str, str] | None = None
+        self, workflow: dict[str, Any], inputs: dict[str, str] | None = None,
     ) -> dict[str, Any]:
-        """
-        Execute a workflow definition.
+        """Execute a workflow definition.
 
         Args:
             workflow: JSON workflow with "block_name", "description", "actions"
@@ -50,6 +47,7 @@ class WorkflowExecutionEngine:
 
         Returns:
             Execution results with opord_number, status, outputs
+
         """
         block_name = workflow.get("block_name", "Unnamed Workflow")
         actions = workflow.get("actions", [])
@@ -102,8 +100,7 @@ class WorkflowExecutionEngine:
         return handler(action)
 
     def _handle_ask_for_input(self, action: dict) -> str:
-        """
-        Handle AskForInput action.
+        """Handle AskForInput action.
 
         In API mode, inputs are pre-filled. In interactive mode,
         this would prompt the user.
@@ -122,8 +119,7 @@ class WorkflowExecutionEngine:
         return value
 
     def _handle_get_date(self, action: dict) -> str:
-        """
-        Handle GetDate action.
+        """Handle GetDate action.
 
         Generates current timestamp in specified format.
         """
@@ -140,8 +136,7 @@ class WorkflowExecutionEngine:
         return timestamp
 
     def _handle_create_note(self, action: dict) -> dict:
-        """
-        Handle CreateNote action.
+        """Handle CreateNote action.
 
         Creates OPORD context in Context Index.
         Maps note content to OPORD structure.
@@ -164,8 +159,7 @@ class WorkflowExecutionEngine:
         return result
 
     def _handle_append_to_note(self, action: dict) -> dict:
-        """
-        Handle AppendToNote action.
+        """Handle AppendToNote action.
 
         Updates existing OPORD context with summary/decisions.
         """
@@ -185,15 +179,14 @@ class WorkflowExecutionEngine:
 
         # Update context
         success = self.context_service.update_context(
-            opord_number=opord_number, summary=summary, decisions=decisions
+            opord_number=opord_number, summary=summary, decisions=decisions,
         )
 
         logger.info(f"Updated OPORD {opord_number:05d} with append")
         return {"opord_number": opord_number, "updated": success}
 
     def _handle_open_app(self, action: dict) -> dict:
-        """
-        Handle OpenApp action.
+        """Handle OpenApp action.
 
         Triggers external integrations (e.g., ChatGPT, Slack, GitHub).
         For now, just logs the action.
@@ -206,8 +199,7 @@ class WorkflowExecutionEngine:
         return {"app": app_name, "status": "simulated"}
 
     def _expand_template(self, template: str) -> str:
-        """
-        Expand template variables like {{Issue Title}}.
+        """Expand template variables like {{Issue Title}}.
 
         Replaces with values from workflow_state.
         """
@@ -220,8 +212,7 @@ class WorkflowExecutionEngine:
         return expanded
 
     def _parse_note_to_opord(self, note_title: str, content: str) -> dict[str, Any]:
-        """
-        Parse note content into OPORD structure.
+        """Parse note content into OPORD structure.
 
         Content format:
         Issue: <title>
@@ -261,8 +252,7 @@ class WorkflowExecutionEngine:
         }
 
     def _parse_append_content(self, content: str) -> tuple:
-        """
-        Parse append content into summary and decisions.
+        """Parse append content into summary and decisions.
 
         Format:
         Summary: <text>

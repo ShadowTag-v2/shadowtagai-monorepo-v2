@@ -1,5 +1,4 @@
-"""
-Pinkln Kernels: Specialized prompt functions
+"""Pinkln Kernels: Specialized prompt functions
 
 3-kernel decision pipeline:
 1. ATP 519 Scan: Extract violations

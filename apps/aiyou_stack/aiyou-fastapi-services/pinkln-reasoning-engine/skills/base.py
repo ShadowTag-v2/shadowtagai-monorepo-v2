@@ -1,5 +1,4 @@
-"""
-Base Skill class for Pinkln reasoning skills
+"""Base Skill class for Pinkln reasoning skills
 
 All skills have:
 - Glicko-2 rating (performance-based)
@@ -38,8 +37,7 @@ class BenchmarkScore:
 
 
 class Skill:
-    """
-    Base class for all Pinkln reasoning skills
+    """Base class for all Pinkln reasoning skills
 
     Skills are reusable reasoning patterns (CoT, ToT, RCR, etc.)
     that can be:
@@ -80,16 +78,14 @@ class Skill:
         self.successful_uses = 0
 
     async def execute(self, task: str, context: dict[str, Any] | None = None) -> SkillResult:
-        """
-        Execute this skill on a task
+        """Execute this skill on a task
 
         Must be implemented by subclasses
         """
         raise NotImplementedError(f"{self.__class__.__name__} must implement execute()")
 
     def update_rating_from_benchmark(self, benchmark: BenchmarkScore):
-        """
-        Update Glicko rating based on benchmark performance
+        """Update Glicko rating based on benchmark performance
 
         Treats benchmark as a match against a standardized opponent:
         - Benchmark score 1.0 (100%) → Rating 2000
@@ -117,14 +113,14 @@ class Skill:
         self.benchmarks.append(benchmark)
 
     def get_benchmark_avg(self, suite: str | None = None) -> float:
-        """
-        Get average benchmark score
+        """Get average benchmark score
 
         Args:
             suite: Filter by benchmark suite (optional)
 
         Returns:
             Average score (0-1)
+
         """
         filtered = [b for b in self.benchmarks if b.suite == suite] if suite else self.benchmarks
 
@@ -134,8 +130,7 @@ class Skill:
         return sum(b.score for b in filtered) / len(filtered)
 
     def get_conservative_rating(self) -> float:
-        """
-        Get conservative rating estimate (μ - 2σ)
+        """Get conservative rating estimate (μ - 2σ)
 
         Used for ranking when uncertainty is high
         """

@@ -131,15 +131,15 @@ async def websocket_endpoint(websocket: WebSocket):
                             "type": "SYSTEM_LOG",
                             "msg": f"COMMAND EXECUTED: {action} by {agent_id}",
                             "status": "SUCCESS",
-                        }
+                        },
                     )
                     if agent_id == "agent-023" and action == "read_lake":
                         await manager.broadcast(
-                            {"type": "AGENT_UPDATE", "id": "agent-023", "status": "WORKING"}
+                            {"type": "AGENT_UPDATE", "id": "agent-023", "status": "WORKING"},
                         )
                         await asyncio.sleep(1)
                         await manager.broadcast(
-                            {"type": "AGENT_UPDATE", "id": "agent-023", "status": "IDLE"}
+                            {"type": "AGENT_UPDATE", "id": "agent-023", "status": "IDLE"},
                         )
                 else:
                     await manager.broadcast(
@@ -147,7 +147,7 @@ async def websocket_endpoint(websocket: WebSocket):
                             "type": "SYSTEM_LOG",
                             "msg": f"COMMAND BLOCKED: {action} by {agent_id}",
                             "status": "DENIED",
-                        }
+                        },
                     )
             except Exception as e:
                 logger.error(f"Error: {e}")
@@ -178,7 +178,7 @@ async def run_world_simulation():
                     "type": "SYSTEM_LOG",
                     "msg": f"{event['id']} attempting {event['action']}...",
                     "status": "PENDING",
-                }
+                },
             )
             if judge.adjudicate(event["id"], event["action"]):
                 await manager.broadcast(
@@ -187,7 +187,7 @@ async def run_world_simulation():
                         "id": event["id"],
                         "status": "ACTIVE",
                         "log": f"Executing {event['action']}",
-                    }
+                    },
                 )
                 await asyncio.sleep(1)
                 await manager.broadcast(
@@ -196,14 +196,14 @@ async def run_world_simulation():
                         "id": event["id"],
                         "status": "IDLE",
                         "log": f"Finished {event['action']}",
-                    }
+                    },
                 )
             else:
                 await manager.broadcast(
                     {
                         "type": "RISK_ALERT",
                         "msg": f"JUDGE6 INTERVENTION: {event['id']} denied for {event['action']}",
-                    }
+                    },
                 )
 
 

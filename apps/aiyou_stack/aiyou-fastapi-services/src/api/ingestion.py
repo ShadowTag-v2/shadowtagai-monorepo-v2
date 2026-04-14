@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer API
+"""Gemini Ingestion Layer API
 FastAPI endpoints for the PNKLN intelligence collection pipeline.
 """
 
@@ -253,7 +252,7 @@ async def get_ingested_items(
     tier: int | None = Query(None, ge=1, le=3, description="Filter by tier (1/2/3)"),
     source: str | None = Query(None, description="Filter by source prefix (e.g. 'reddit')"),
     since: datetime | None = Query(
-        None, description="Only items ingested after this UTC timestamp"
+        None, description="Only items ingested after this UTC timestamp",
     ),
     limit: int = Query(100, ge=1, le=1000),
     offset: int = Query(0, ge=0),
@@ -289,7 +288,7 @@ async def get_metrics():
     job = store.latest_job()
 
     sources_row = store._conn.execute(
-        "SELECT DISTINCT source FROM items ORDER BY source"
+        "SELECT DISTINCT source FROM items ORDER BY source",
     ).fetchall()
 
     return MetricsResponse(

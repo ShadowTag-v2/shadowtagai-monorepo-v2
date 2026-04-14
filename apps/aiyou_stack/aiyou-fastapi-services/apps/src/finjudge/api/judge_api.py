@@ -17,8 +17,7 @@ billing = StripeManager()
 
 
 async def check_revenue_leaks(tokens: int, tier: str):
-    """
-    Background task to check for revenue leaks without blocking the response.
+    """Background task to check for revenue leaks without blocking the response.
     """
     # Simulate looking up revenue from billing system based on tier/tokens
     revenue = 0.0 if tier == "free" else (tokens / 1000) * 0.01  # Mock revenue calc
@@ -28,7 +27,7 @@ async def check_revenue_leaks(tokens: int, tier: str):
     warning = revenue_guard.analyze_transaction(log_entry)
     if warning:
         logger.warning(
-            f"REVENUE LEAK DETECTED: {warning.description} [Severity: {warning.severity}]"
+            f"REVENUE LEAK DETECTED: {warning.description} [Severity: {warning.severity}]",
         )
 
 
@@ -38,8 +37,7 @@ async def judge_decision(
     background_tasks: BackgroundTasks,
     x_api_key: str | None = Header(None),
 ):
-    """
-    Execute a ruling via the FinJudge Pure Engine.
+    """Execute a ruling via the FinJudge Pure Engine.
     Includes Revenue Guard checks in the background.
     """
     # 1. Evaluate
@@ -61,8 +59,7 @@ async def judge_decision(
 
 @router.post("/v1/subscribe")
 async def create_subscription(email: str, x_api_key: str = Header(...)):
-    """
-    Generate a Stripe Checkout link for upgrading to Pro.
+    """Generate a Stripe Checkout link for upgrading to Pro.
     """
     # Use API key as user ID proxy for now
     checkout_url = billing.create_checkout_session(user_id=x_api_key, email=email)

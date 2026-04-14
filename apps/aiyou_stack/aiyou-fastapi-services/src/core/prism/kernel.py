@@ -1,5 +1,4 @@
-"""
-PRISM Kernel - Core Operating System Framework
+"""PRISM Kernel - Core Operating System Framework
 Position • Role • Intent • Structure • Modality
 
 Author: ShadowTag-v2JR System

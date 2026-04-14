@@ -1,5 +1,4 @@
-"""
-Judge #6 - ATP 5-19 Compliance & Enforcement Engine
+"""Judge #6 - ATP 5-19 Compliance & Enforcement Engine
 PNKLN Core Stack™ - Enforcement Layer
 
 This module implements the Purpose/Reasons/Brakes (JR Engine) validation framework
@@ -13,9 +12,9 @@ from .jr_engine import JREngine, JRVerdict
 from .validators import BrakesValidator, PurposeValidator, ReasonsValidator
 
 __all__ = [
+    "BrakesValidator",
     "JREngine",
     "JRVerdict",
     "PurposeValidator",
     "ReasonsValidator",
-    "BrakesValidator",
 ]

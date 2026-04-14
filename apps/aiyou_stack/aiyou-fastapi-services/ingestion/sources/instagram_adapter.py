@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Instagram Source Adapter
+"""PNKLN Core Stack - Instagram Source Adapter
 
 Uses instagrapi (unofficial Instagram private API client).
 No official API key required; uses session cookies.
@@ -43,8 +42,7 @@ MAX_POSTS_PER_ACCOUNT = 12
 
 
 class InstagramAdapter(SourceAdapter):
-    """
-    Instagram ingestion via instagrapi (unofficial private API).
+    """Instagram ingestion via instagrapi (unofficial private API).
     Targets public tech/AI profiles only.
     Requires IG_USERNAME + IG_PASSWORD [VAPORIZED_PWD] variables.
     """
@@ -111,7 +109,7 @@ class InstagramAdapter(SourceAdapter):
                         "like_count": m.like_count or 0,
                         "comment_count": m.comment_count or 0,
                         "taken_at": str(m.taken_at),
-                    }
+                    },
                 )
             return results
         except Exception as e:

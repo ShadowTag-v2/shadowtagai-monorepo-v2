@@ -1,5 +1,4 @@
-"""
-Main FastAPI server for multi-model LLM serving.
+"""Main FastAPI server for multi-model LLM serving.
 
 Implements Aegaeon-inspired architecture:
 - Token-level auto-scaling
@@ -213,8 +212,7 @@ async def health():
 
 @app.post("/v1/completions", response_model=CompletionResponse)
 async def create_completion(request: CompletionRequest):
-    """
-    Create a text completion.
+    """Create a text completion.
 
     This endpoint implements Aegaeon-style token-level routing across multiple models.
     """
@@ -238,7 +236,7 @@ async def create_completion(request: CompletionRequest):
         model = registry.get_model(decision.model_name)
         if not model or not model.backend:
             raise HTTPException(
-                status_code=503, detail=f"Model {decision.model_name} not available"
+                status_code=503, detail=f"Model {decision.model_name} not available",
             )
 
         # Update metrics
@@ -326,7 +324,7 @@ async def list_models():
                 active_requests=model.metrics.active_requests,
                 avg_latency_ms=model.metrics.avg_latency_ms,
                 gpu_id=model.gpu_id,
-            )
+            ),
         )
 
     return {"models": models}

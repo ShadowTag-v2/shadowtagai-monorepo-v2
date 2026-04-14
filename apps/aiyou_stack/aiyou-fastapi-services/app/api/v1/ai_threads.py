@@ -1,5 +1,4 @@
-"""
-AI Threads API endpoints
+"""AI Threads API endpoints
 
 REST API for managing curated AI agent knowledge threads:
 - CRUD operations for threads, authors, and posts
@@ -64,8 +63,7 @@ async def create_thread(
     data: ThreadCreate,
     service: ThreadService = Depends(get_thread_service),
 ):
-    """
-    Create a new AI agent thread.
+    """Create a new AI agent thread.
 
     The thread must include author information (either existing author_id or new author data)
     and can optionally include individual posts.
@@ -78,7 +76,7 @@ async def create_thread(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create thread: {str(e)}",
+            detail=f"Failed to create thread: {e!s}",
         )
 
 
@@ -91,7 +89,7 @@ async def get_thread(
     thread = await service.get_thread(thread_id)
     if not thread:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
         )
     return thread
 
@@ -106,7 +104,7 @@ async def update_thread(
     thread = await service.update_thread(thread_id, data)
     if not thread:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
         )
     return thread
 
@@ -120,7 +118,7 @@ async def delete_thread(
     deleted = await service.delete_thread(thread_id)
     if not deleted:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
         )
 
 
@@ -136,8 +134,7 @@ async def list_threads(
     sort: SortOrder = SortOrder.LIKES_DESC,
     service: ThreadService = Depends(get_thread_service),
 ):
-    """
-    List threads with pagination and filters.
+    """List threads with pagination and filters.
 
     Supports filtering by category, status, minimum likes, tags, and author.
     Results can be sorted by likes, date, or relevance.
@@ -168,8 +165,7 @@ async def search_threads(
     request: SearchRequest,
     service: ThreadService = Depends(get_thread_service),
 ):
-    """
-    Semantic search for threads.
+    """Semantic search for threads.
 
     Uses vector embeddings to find threads matching the query.
     Supports filtering by category, likes, tags, and date range.
@@ -230,8 +226,7 @@ async def bulk_import_threads(
     request: BulkImportRequest,
     service: ThreadService = Depends(get_thread_service),
 ):
-    """
-    Bulk import threads from a raw compilation.
+    """Bulk import threads from a raw compilation.
 
     Parses the compilation text to extract threads, authors, and posts.
     Supports auto-categorization and optional embedding generation.
@@ -266,7 +261,7 @@ async def bulk_import_threads(
 
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Import failed: {str(e)}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Import failed: {e!s}",
         )
 
 
@@ -275,8 +270,7 @@ async def export_threads(
     request: ExportRequest,
     service: ThreadService = Depends(get_thread_service),
 ):
-    """
-    Export threads to specified format.
+    """Export threads to specified format.
 
     Supported formats:
     - JSON: Structured data with all fields
@@ -298,7 +292,7 @@ async def export_threads(
 
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Export failed: {str(e)}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Export failed: {e!s}",
         )
 
 
@@ -355,8 +349,7 @@ async def create_scrape_job(
     data: ScrapeJobCreate,
     service: ScrapeJobService = Depends(get_scrape_job_service),
 ):
-    """
-    Create a new scrape job to collect threads.
+    """Create a new scrape job to collect threads.
 
     Jobs can be scheduled for later or run immediately.
     The scraper will search for threads matching the query
@@ -384,7 +377,7 @@ async def get_scrape_job(
     job = service.get(job_id)
     if not job:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Scrape job not found: {job_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Scrape job not found: {job_id}",
         )
     return job
 
@@ -428,6 +421,6 @@ async def mark_thread_indexed(
     success = await service.mark_thread_indexed(thread_id, embedding_id)
     if not success:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
         )
     return {"status": "indexed", "embedding_id": embedding_id}

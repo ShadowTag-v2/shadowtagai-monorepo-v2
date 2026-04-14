@@ -1,5 +1,4 @@
-"""
-Authentication Schemas
+"""Authentication Schemas
 
 Security:
 - Input validation
@@ -18,8 +17,7 @@ class LoginRequest(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    """
-    Token response schema
+    """Token response schema
 
     Security:
     - Separate access and refresh tokens
@@ -43,7 +41,7 @@ class PasswordChangeRequest(BaseModel):
 
     current_password: str = Field(..., min_length=1, max_length=128)
     new_password: str = Field(
-        ..., min_length=12, max_length=128, description="Password must be at least 12 characters"
+        ..., min_length=12, max_length=128, description="Password must be at least 12 characters",
     )
 
 

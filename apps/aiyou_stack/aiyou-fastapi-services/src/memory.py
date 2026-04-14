@@ -28,8 +28,7 @@ class FirestoreMemory:
             doc = doc_ref.get()
             if doc.exists:
                 return doc.to_dict()
-            else:
-                return {"status": "EMPTY", "detail": "No memory found"}
+            return {"status": "EMPTY", "detail": "No memory found"}
         except Exception as e:
             print(f"❌ Error loading from Firestore: {e}")
             return {"status": "ERROR", "detail": str(e)}

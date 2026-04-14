@@ -6,8 +6,8 @@ from .medical_dlp import MedicalDLPEngine
 from .sb243_compliance import SB243ComplianceEngine
 
 __all__ = [
-    "SB243ComplianceEngine",
-    "MedicalDLPEngine",
     "ClinicalDecisionGateway",
     "LiabilityShield",
+    "MedicalDLPEngine",
+    "SB243ComplianceEngine",
 ]

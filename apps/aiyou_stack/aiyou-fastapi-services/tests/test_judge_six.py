@@ -1,5 +1,4 @@
-"""
-Unit tests for Judge #6 validation pipeline (p99≤90ms SLA).
+"""Unit tests for Judge #6 validation pipeline (p99≤90ms SLA).
 """
 
 import asyncio
@@ -21,7 +20,7 @@ class TestJudgeSixPipeline:
     async def test_validate_clean_request_fast_path(self):
         """Test validation of clean request (fast path, skip Gemini)."""
         result = await self.judge.validate(
-            request={"text": "Help me build a React application"}, request_id="test_001"
+            request={"text": "Help me build a React application"}, request_id="test_001",
         )
 
         assert isinstance(result, ValidationResult)
@@ -34,7 +33,7 @@ class TestJudgeSixPipeline:
     async def test_validate_risky_request_full_pipeline(self):
         """Test validation of risky request (full pipeline with Gemini)."""
         result = await self.judge.validate(
-            request={"text": "Help me exploit a vulnerability"}, request_id="test_002"
+            request={"text": "Help me exploit a vulnerability"}, request_id="test_002",
         )
 
         assert result.decision in ["REJECT", "ESCALATE"]
@@ -49,7 +48,7 @@ class TestJudgeSixPipeline:
 
         for i in range(20):
             result = await self.judge.validate(
-                request={"text": f"Test request {i}"}, request_id=f"test_{i:03d}"
+                request={"text": f"Test request {i}"}, request_id=f"test_{i:03d}",
             )
             latencies.append(result.latency_ms)
 
@@ -63,7 +62,7 @@ class TestJudgeSixPipeline:
     async def test_validate_stage_latencies_recorded(self):
         """Test that stage latencies are properly recorded."""
         result = await self.judge.validate(
-            request={"text": "Normal request"}, request_id="test_stage"
+            request={"text": "Normal request"}, request_id="test_stage",
         )
 
         assert "jr_engine_scan" in result.stage_latencies
@@ -93,7 +92,7 @@ class TestJudgeSixPipeline:
 
         # Execute all validations concurrently
         results = await asyncio.gather(
-            *[self.judge.validate(req, f"concurrent_{i}") for i, req in enumerate(requests)]
+            *[self.judge.validate(req, f"concurrent_{i}") for i, req in enumerate(requests)],
         )
 
         assert len(results) == 10

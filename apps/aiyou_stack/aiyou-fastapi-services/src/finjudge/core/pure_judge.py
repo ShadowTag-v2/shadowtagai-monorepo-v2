@@ -1,5 +1,4 @@
-"""
-Pure Judge Engine (v0.2)
+"""Pure Judge Engine (v0.2)
 Risk classification without compliance/policy enforcement
 """
 
@@ -29,8 +28,7 @@ from .feature_synthesis import FeatureSynthesizer
 
 
 class PureJudge:
-    """
-    Pure judge engine - classifies risk, does not enforce policy
+    """Pure judge engine - classifies risk, does not enforce policy
     Consumes metrics from upstream, produces risk assessment
     """
 
@@ -40,8 +38,7 @@ class PureJudge:
         self.synthesizer = FeatureSynthesizer(version=version)
 
     def judge(self, request: JudgeRequest) -> JudgeRuling:
-        """
-        Main judging method: classify risk and provide recommendation
+        """Main judging method: classify risk and provide recommendation
 
         Args:
             request: Judge request with metrics from upstream
@@ -56,6 +53,7 @@ class PureJudge:
             4. Determine disposition
             5. Generate controls and explanation
             6. Create audit trail
+
         """
         start_time = time.time()
 
@@ -75,7 +73,7 @@ class PureJudge:
             severity_class=severity,
             risk_level=risk_level,
             rationale_summary=self._generate_rationale_summary(
-                probability, severity, risk_level, request
+                probability, severity, risk_level, request,
             ),
         )
 
@@ -84,7 +82,7 @@ class PureJudge:
 
         # 6. Recommendation
         recommendation = self._generate_recommendation(
-            risk_level, features, request.flags, prob_confidence, sev_confidence
+            risk_level, features, request.flags, prob_confidence, sev_confidence,
         )
 
         # 7. Precedent links (placeholder - would query history)
@@ -92,7 +90,7 @@ class PureJudge:
 
         # 8. Natural language explanation
         explanation_nl = self._generate_explanation(
-            request, risk_matrix, features, numeric_overview
+            request, risk_matrix, features, numeric_overview,
         )
 
         # 9. Audit trail
@@ -134,7 +132,6 @@ class PureJudge:
         request: JudgeRequest,
     ) -> str:
         """Generate concise rationale summary"""
-
         prob_desc = {
             Probability.A: "Frequent (≥80% probability)",
             Probability.B: "Likely (50-79% probability)",
@@ -164,7 +161,6 @@ class PureJudge:
 
     def _generate_numeric_overview(self, features: dict[str, Any], metrics) -> NumericOverview:
         """Generate numeric overview of key metrics"""
-
         key_metrics = {}
 
         # Extract most relevant metrics
@@ -190,7 +186,6 @@ class PureJudge:
 
     def _identify_primary_driver(self, features: dict[str, Any]) -> str:
         """Identify primary risk driver from features"""
-
         drivers = []
 
         # Score each potential driver
@@ -228,7 +223,6 @@ class PureJudge:
         sev_confidence: float,
     ) -> Recommendation:
         """Generate recommendation based on risk level"""
-
         # Disposition logic
         if flags.regulatory_flags:
             # Regulatory flags = immediate escalate or reject
@@ -260,10 +254,9 @@ class PureJudge:
         )
 
     def _generate_controls(
-        self, risk_level: RiskLevel, features: dict[str, Any], flags
+        self, risk_level: RiskLevel, features: dict[str, Any], flags,
     ) -> list[str]:
         """Generate required risk controls"""
-
         controls = []
 
         # Risk level based controls
@@ -304,23 +297,21 @@ class PureJudge:
         return controls
 
     def _generate_time_boundaries(
-        self, risk_level: RiskLevel, features: dict[str, Any]
+        self, risk_level: RiskLevel, features: dict[str, Any],
     ) -> TimeBoundary | None:
         """Generate time-based review boundaries"""
-
         if risk_level in (RiskLevel.LOW, RiskLevel.MODERATE):
             # Moderate/low risk = monthly review
             return TimeBoundary(re_review_if="position size increases >20%", reassess_in_days=30)
-        elif risk_level == RiskLevel.HIGH:
+        if risk_level == RiskLevel.HIGH:
             # High risk = weekly review
             return TimeBoundary(re_review_if="drawdown exceeds 5%", reassess_in_days=7)
-        else:  # EXTREME
-            # Extreme risk = daily review
-            return TimeBoundary(re_review_if="any adverse movement", reassess_in_days=1)
+        # EXTREME
+        # Extreme risk = daily review
+        return TimeBoundary(re_review_if="any adverse movement", reassess_in_days=1)
 
     def _find_precedents(self, precedent_ids: list[str]) -> list[PrecedentLink]:
         """Find similar past decisions (placeholder)"""
-
         # In production, would query decision history database
         # For MVP, return empty list or mock data
         return []
@@ -333,7 +324,6 @@ class PureJudge:
         numeric_overview: NumericOverview,
     ) -> ExplanationNL:
         """Generate natural language explanation"""
-
         # Short summary (≤3 sentences)
         risk_desc = {
             RiskLevel.EXTREME: "EXTREME risk",
@@ -378,7 +368,7 @@ class PureJudge:
             why_parts.append("WHY RISKY:")
             if features.get("var_to_budget", 0) > 1.0:
                 why_parts.append(
-                    f"VaR exceeds budget by {int((features['var_to_budget'] - 1) * 100)}%"
+                    f"VaR exceeds budget by {int((features['var_to_budget'] - 1) * 100)}%",
                 )
             if features.get("capital_at_risk", 0) > 75:
                 why_parts.append("High portfolio concentration")
@@ -410,10 +400,9 @@ class PureJudge:
         )
 
     def _create_audit_trail(
-        self, request: JudgeRequest, features: dict[str, Any], computation_time_ms: float
+        self, request: JudgeRequest, features: dict[str, Any], computation_time_ms: float,
     ) -> AuditTrail:
         """Create audit trail for decision"""
-
         # Hash input
         input_json = request.model_dump_json()
         input_hash = hashlib.sha256(input_json.encode()).hexdigest()
@@ -423,5 +412,5 @@ class PureJudge:
         feature_vector_hash = hashlib.sha256(feature_json.encode()).hexdigest()
 
         return AuditTrail(
-            input_hash=input_hash, feature_vector_hash=feature_vector_hash, overrides=[]
+            input_hash=input_hash, feature_vector_hash=feature_vector_hash, overrides=[],
         )

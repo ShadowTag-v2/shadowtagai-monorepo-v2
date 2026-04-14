@@ -30,7 +30,7 @@ class TensorDataset(Dataset):
         for i, tensor in enumerate(tensors):
             if len(tensor.data) != first_size:
                 raise ValueError(
-                    f"Tensor {i} size {len(tensor.data)} mismatch with first tensor {first_size}"
+                    f"Tensor {i} size {len(tensor.data)} mismatch with first tensor {first_size}",
                 )
 
     def __len__(self) -> int:
@@ -85,8 +85,7 @@ class RandomHorizontalFlip:
         if np.random.random() < self.p:
             if isinstance(x, Tensor):
                 return Tensor(np.flip(x.data, axis=-1).copy())
-            else:
-                return np.flip(x, axis=-1).copy()
+            return np.flip(x, axis=-1).copy()
         return x
 
 

@@ -7,9 +7,9 @@ from app.models.user import User
 
 __all__ = [
     "AuditLog",
-    "UserConsent",
     "ConsentType",
-    "DataRetentionPolicy",
     "DataCategory",
+    "DataRetentionPolicy",
     "User",
+    "UserConsent",
 ]

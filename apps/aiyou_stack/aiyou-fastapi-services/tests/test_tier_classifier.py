@@ -44,7 +44,7 @@ async def test_tier_distribution_targets():
                 "title": f"Article {i}",
                 "text": "Content",
                 "author": "Author",
-            }
+            },
         )
 
     # 50 Tier 2
@@ -56,7 +56,7 @@ async def test_tier_distribution_targets():
                 "title": f"Article {i}",
                 "text": "Content",
                 "author": "Author",
-            }
+            },
         )
 
     # 20 Tier 3
@@ -68,7 +68,7 @@ async def test_tier_distribution_targets():
                 "title": f"Post {i}",
                 "text": "Content",
                 "author": "User",
-            }
+            },
         )
 
     distribution = classifier.check_tier_distribution()

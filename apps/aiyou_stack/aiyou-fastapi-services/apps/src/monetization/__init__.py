@@ -1,5 +1,4 @@
-"""
-Monetization layer for ShadowTag-v2 Intelligence Services.
+"""Monetization layer for ShadowTag-v2 Intelligence Services.
 
 Implements:
 - Stripe payment integration
@@ -144,8 +143,7 @@ class UsageMetrics:
 
 
 class StripeIntegration:
-    """
-    Stripe payment integration.
+    """Stripe payment integration.
 
     Handles:
     - Subscription creation and management
@@ -174,8 +172,7 @@ class StripeIntegration:
         tier: PricingTier,
         billing_period: str = "monthly",
     ) -> dict:
-        """
-        Create a new subscription.
+        """Create a new subscription.
 
         Args:
             customer_email: Customer email
@@ -184,6 +181,7 @@ class StripeIntegration:
 
         Returns:
             Subscription details
+
         """
         plan = PRICING_PLANS[tier]
 
@@ -220,8 +218,7 @@ class StripeIntegration:
         subscription_id: str,
         usage_metrics: UsageMetrics,
     ) -> dict:
-        """
-        Record usage for billing period.
+        """Record usage for billing period.
 
         Args:
             subscription_id: Stripe subscription ID
@@ -229,12 +226,13 @@ class StripeIntegration:
 
         Returns:
             Updated usage record
+
         """
         if self.test_mode:
             logger.info(
                 f"Recording usage for {subscription_id}: "
                 f"{usage_metrics.items_collected} items, "
-                f"{usage_metrics.api_calls_made} API calls"
+                f"{usage_metrics.api_calls_made} API calls",
             )
 
             return {
@@ -259,8 +257,7 @@ class StripeIntegration:
         payload: bytes,
         signature: str,
     ) -> bool:
-        """
-        Verify Stripe webhook signature.
+        """Verify Stripe webhook signature.
 
         Args:
             payload: Webhook payload
@@ -268,6 +265,7 @@ class StripeIntegration:
 
         Returns:
             True if valid
+
         """
         expected_signature = hmac.new(
             self.webhook_secret.encode(),
@@ -278,8 +276,7 @@ class StripeIntegration:
         return hmac.compare_digest(signature, expected_signature)
 
     async def handle_webhook(self, event_type: str, data: dict) -> dict:
-        """
-        Handle Stripe webhook event.
+        """Handle Stripe webhook event.
 
         Args:
             event_type: Event type (e.g., 'invoice.paid')
@@ -287,6 +284,7 @@ class StripeIntegration:
 
         Returns:
             Processing result
+
         """
         logger.info(f"Processing webhook: {event_type}")
 
@@ -355,8 +353,7 @@ class StripeIntegration:
 
 
 class UsageTracker:
-    """
-    Track usage for billing and limits.
+    """Track usage for billing and limits.
 
     Features:
     - Real-time usage tracking
@@ -408,26 +405,26 @@ class UsageTracker:
         """Track ML anomaly detection."""
         if not self.plan.ml_anomaly_detection:
             raise ValueError(
-                "ML detection not included in plan. Upgrade to Professional or higher."
+                "ML detection not included in plan. Upgrade to Professional or higher.",
             )
 
         self.current_usage.ml_detections_run += 1
 
     def check_limit(self, resource: str) -> bool:
-        """
-        Check if resource limit reached.
+        """Check if resource limit reached.
 
         Args:
             resource: items, api_calls, sources
 
         Returns:
             True if under limit
+
         """
         if resource == "items":
             return self.current_usage.items_collected < self.plan.max_items_per_day
-        elif resource == "api_calls":
+        if resource == "api_calls":
             return self.current_usage.api_calls_made < self.plan.max_api_calls_per_month
-        elif resource == "sources":
+        if resource == "sources":
             return self.current_usage.sources_used < self.plan.max_sources
 
         return False
@@ -442,7 +439,7 @@ class UsageTracker:
                 "items_collected": self.current_usage.items_collected,
                 "items_limit": self.plan.max_items_per_day,
                 "items_remaining": max(
-                    0, self.plan.max_items_per_day - self.current_usage.items_collected
+                    0, self.plan.max_items_per_day - self.current_usage.items_collected,
                 ),
                 "api_calls": self.current_usage.api_calls_made,
                 "api_calls_limit": self.plan.max_api_calls_per_month,
@@ -469,8 +466,7 @@ def calculate_revenue_projections(
     months: int = 12,
     churn_rate: float = 0.05,
 ) -> dict:
-    """
-    Calculate revenue projections.
+    """Calculate revenue projections.
 
     Args:
         monthly_customers_by_tier: Customer count per tier
@@ -479,6 +475,7 @@ def calculate_revenue_projections(
 
     Returns:
         Revenue projections
+
     """
     monthly_revenue = []
     cumulative_customers = {tier: count for tier, count in monthly_customers_by_tier.items()}

@@ -6,4 +6,4 @@ from .kosmos_instance import (
     create_kosmos_pool,
 )
 
-__all__ = ["KosmosInstance", "KosmosType", "KosmosPool", "create_kosmos", "create_kosmos_pool"]
+__all__ = ["KosmosInstance", "KosmosPool", "KosmosType", "create_kosmos", "create_kosmos_pool"]

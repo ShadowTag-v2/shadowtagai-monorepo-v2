@@ -1,5 +1,4 @@
-"""
-Revenue Model Configuration
+"""Revenue Model Configuration
 Defines pricing tiers and projections for ShadowTagAi agent platform
 """
 
@@ -70,7 +69,7 @@ class RevenueModel:
         return ltv / cac if cac > 0 else float("inf")
 
     def calculate_break_even_timeline_days(
-        self, tier: PricingTier, actual_cac: float = None
+        self, tier: PricingTier, actual_cac: float = None,
     ) -> int:
         """Calculate days to break even on CAC"""
         cac = actual_cac or self.target_cac_usd
@@ -191,5 +190,5 @@ COMPETITIVE_BASELINE = {
             "No audit trails",
             "No compliance value",
         ],
-    }
+    },
 }

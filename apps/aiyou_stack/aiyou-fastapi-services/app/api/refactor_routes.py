@@ -14,8 +14,7 @@ refactorer_service = CodeRefactorerService()
     description="Refactor code to improve quality, readability, performance, or maintainability",
 )
 async def refactor_code(request: RefactorRequest) -> RefactorResponse:
-    """
-    Refactor code based on specified parameters.
+    """Refactor code based on specified parameters.
 
     - **code**: The source code to refactor
     - **language**: Programming language of the code
@@ -29,7 +28,7 @@ async def refactor_code(request: RefactorRequest) -> RefactorResponse:
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Refactoring failed: {str(e)}",
+            detail=f"Refactoring failed: {e!s}",
         )
 
 
@@ -40,8 +39,7 @@ async def refactor_code(request: RefactorRequest) -> RefactorResponse:
     description="Analyze code for quality issues, metrics, and improvement suggestions",
 )
 async def analyze_code(request: AnalyzeRequest) -> AnalyzeResponse:
-    """
-    Analyze code without performing refactoring.
+    """Analyze code without performing refactoring.
 
     - **code**: The source code to analyze
     - **language**: Programming language of the code
@@ -57,12 +55,12 @@ async def analyze_code(request: AnalyzeRequest) -> AnalyzeResponse:
         return result
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Analysis failed: {str(e)}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Analysis failed: {e!s}",
         )
 
 
 @router.get(
-    "/health", summary="Health check", description="Check if the refactoring service is operational"
+    "/health", summary="Health check", description="Check if the refactoring service is operational",
 )
 async def health_check():
     """Health check endpoint for the refactoring service."""

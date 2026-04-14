@@ -18,8 +18,7 @@ publisher = pubsub_v1.PublisherClient()
 
 @functions_framework.cloud_event
 def dispatch_swarm(cloud_event):
-    """
-    Triggered by 'monkey-summons'.
+    """Triggered by 'monkey-summons'.
     Dispatches the Swarm (Agents) based on the mission context.
     Orchestrates the loop: Agent -> Judge -> Agent.
     """

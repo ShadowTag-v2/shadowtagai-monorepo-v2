@@ -1,5 +1,4 @@
-"""
-Thread Service for AI agent knowledge threads.
+"""Thread Service for AI agent knowledge threads.
 
 Business logic for:
 - Thread CRUD operations
@@ -180,7 +179,7 @@ class ThreadService:
             query = query.filter(AIThread.likes >= request.min_likes)
         if request.author_username:
             query = query.join(AIThreadAuthor).filter(
-                AIThreadAuthor.username.ilike(f"%{request.author_username}%")
+                AIThreadAuthor.username.ilike(f"%{request.author_username}%"),
             )
         if request.tags:
             # Filter threads that have any of the specified tags
@@ -252,7 +251,7 @@ class ThreadService:
                             platform_post_id=thread_data["platform_post_id"],
                             success=False,
                             error="Thread already exists",
-                        )
+                        ),
                     )
                     continue
 
@@ -269,7 +268,7 @@ class ThreadService:
                         platform_post_id=thread_data["platform_post_id"],
                         success=True,
                         thread_id=thread.id,
-                    )
+                    ),
                 )
 
             except Exception as e:
@@ -279,7 +278,7 @@ class ThreadService:
                         platform_post_id=thread_data.get("platform_post_id", "unknown"),
                         success=False,
                         error=str(e),
-                    )
+                    ),
                 )
 
         return results
@@ -352,7 +351,7 @@ class ThreadService:
                         "platform": ThreadSource.TWITTER_X,
                     },
                     "posts": posts,
-                }
+                },
             )
 
         return threads
@@ -374,7 +373,7 @@ class ThreadService:
                     "content": content.strip(),
                     "has_code": self._has_code(content),
                     "code_language": self._detect_code_language(content),
-                }
+                },
             ]
 
         for i, match in enumerate(matches):
@@ -390,7 +389,7 @@ class ThreadService:
                     "content": post_content,
                     "has_code": self._has_code(post_content),
                     "code_language": self._detect_code_language(post_content),
-                }
+                },
             )
 
         return posts
@@ -450,7 +449,7 @@ class ThreadService:
             ThreadCategory.AGENT_BASICS: ["agent", "getting started", "beginner", "basic", "first"],
         }
 
-        scores = {cat: 0 for cat in ThreadCategory}
+        scores = dict.fromkeys(ThreadCategory, 0)
         for category, keywords in category_keywords.items():
             for keyword in keywords:
                 if keyword in content_lower:
@@ -540,10 +539,10 @@ class ThreadService:
             lines.append(f"\n## Thread {i}: {thread.title}\n")
             lines.append(f"**Author:** {thread.author.display_name} (@{thread.author.username})\n")
             lines.append(
-                f"**Likes:** {thread.likes:,} | **Category:** {thread.category.value if thread.category else 'N/A'}\n"
+                f"**Likes:** {thread.likes:,} | **Category:** {thread.category.value if thread.category else 'N/A'}\n",
             )
             lines.append(
-                f"**Published:** {thread.published_at.strftime('%B %d, %Y') if thread.published_at else 'N/A'}\n"
+                f"**Published:** {thread.published_at.strftime('%B %d, %Y') if thread.published_at else 'N/A'}\n",
             )
 
             if thread.tags:

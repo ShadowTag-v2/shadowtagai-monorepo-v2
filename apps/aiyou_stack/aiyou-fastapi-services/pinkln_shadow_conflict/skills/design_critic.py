@@ -1,5 +1,4 @@
-"""
-DesignCriticSkill - Evaluate designs against "Jobs-style" criteria.
+"""DesignCriticSkill - Evaluate designs against "Jobs-style" criteria.
 
 Reviews designs, UI/UX, code structure with focus on beauty, simplicity, and function.
 """

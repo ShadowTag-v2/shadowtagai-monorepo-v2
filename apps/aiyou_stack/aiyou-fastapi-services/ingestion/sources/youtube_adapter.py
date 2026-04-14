@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - YouTube Source Adapter
+"""PNKLN Core Stack - YouTube Source Adapter
 
 Fetches videos from YouTube using the YouTube Data API v3.
 Supports searching by keywords, channels, and filtering by date.
@@ -20,8 +19,7 @@ logger = structlog.get_logger(__name__)
 
 
 class YouTubeAdapter(SourceAdapter):
-    """
-    YouTube Data API v3 adapter for ingesting video content.
+    """YouTube Data API v3 adapter for ingesting video content.
 
     Fetches:
     - Video metadata (title, description, published date)
@@ -46,7 +44,7 @@ class YouTubeAdapter(SourceAdapter):
         try:
             # Try a simple search query
             request = self.youtube.search().list(
-                part="snippet", q="test", maxResults=1, type="video"
+                part="snippet", q="test", maxResults=1, type="video",
             )
             request.execute()
             logger.info("youtube_credentials_valid")
@@ -60,10 +58,9 @@ class YouTubeAdapter(SourceAdapter):
         return num_items * self.config.ingestion.cost_per_youtube_item
 
     async def fetch_items(
-        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None
+        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None,
     ) -> AsyncIterator[IngestedItem]:
-        """
-        Fetch videos from YouTube.
+        """Fetch videos from YouTube.
 
         Args:
             queries: Search keywords (e.g., ["AI research", "machine learning"])
@@ -72,6 +69,7 @@ class YouTubeAdapter(SourceAdapter):
 
         Yields:
             IngestedItem objects representing YouTube videos
+
         """
         if not queries:
             queries = ["artificial intelligence", "machine learning", "technology news"]
@@ -111,7 +109,7 @@ class YouTubeAdapter(SourceAdapter):
 
                 # Fetch detailed video information
                 videos_request = self.youtube.videos().list(
-                    part="snippet,contentDetails,statistics", id=",".join(video_ids)
+                    part="snippet,contentDetails,statistics", id=",".join(video_ids),
                 )
 
                 videos_response = videos_request.execute()
@@ -125,7 +123,7 @@ class YouTubeAdapter(SourceAdapter):
                     except Exception as e:
                         self._record_error()
                         logger.error(
-                            "youtube_parse_error", video_id=video_data.get("id"), error=str(e)
+                            "youtube_parse_error", video_id=video_data.get("id"), error=str(e),
                         )
 
             except HttpError as e:

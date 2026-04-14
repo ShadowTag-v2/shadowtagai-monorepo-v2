@@ -1,5 +1,4 @@
-"""
-OEM Integration Layer
+"""OEM Integration Layer
 SDK interfaces for Meta Ray-Ban, Apple Vision Pro, Samsung AR, etc.
 
 Integration Pathways:
@@ -63,32 +62,26 @@ class OEMIntegration(ABC):
     @abstractmethod
     async def connect(self) -> bool:
         """Connect to device/SDK"""
-        pass
 
     @abstractmethod
     async def disconnect(self):
         """Disconnect from device"""
-        pass
 
     @abstractmethod
     async def get_capabilities(self) -> DeviceCapabilities:
         """Query device capabilities"""
-        pass
 
     @abstractmethod
     async def set_display_parameters(self, params: dict) -> bool:
         """Apply display adjustments"""
-        pass
 
     @abstractmethod
     async def read_sensors(self) -> dict | None:
         """Read device sensors (if available)"""
-        pass
 
 
 class MetaRayBanAdapter(OEMIntegration):
-    """
-    Meta Ray-Ban Stories / Smart Glasses integration
+    """Meta Ray-Ban Stories / Smart Glasses integration
 
     Current API Access (as of 2024):
     - Limited: Can access camera, microphone via companion app
@@ -149,8 +142,7 @@ class MetaRayBanAdapter(OEMIntegration):
         return self.capabilities
 
     async def set_display_parameters(self, params: dict) -> bool:
-        """
-        Apply display adjustments via companion app
+        """Apply display adjustments via companion app
 
         Strategy: Adjust phone screen brightness/hue, which affects
         glasses usage patterns (user looks at phone to check notifications)
@@ -170,8 +162,7 @@ class MetaRayBanAdapter(OEMIntegration):
         return True
 
     async def read_sensors(self) -> dict | None:
-        """
-        Read available sensors
+        """Read available sensors
 
         Limited in Gen 1 - mostly accelerometer for gesture detection
         """
@@ -187,8 +178,7 @@ class MetaRayBanAdapter(OEMIntegration):
         }
 
     async def request_oem_partnership(self) -> dict:
-        """
-        Mock: Request OEM SDK access from Meta Reality Labs
+        """Mock: Request OEM SDK access from Meta Reality Labs
 
         Pitch:
         - Fatigue is #1 barrier to AR adoption
@@ -205,8 +195,7 @@ class MetaRayBanAdapter(OEMIntegration):
 
 
 class AppleVisionProAdapter(OEMIntegration):
-    """
-    Apple Vision Pro integration
+    """Apple Vision Pro integration
 
     Current API Access (visionOS 1.0+):
     - Full eye-tracking via ARKit (iris tracking, gaze direction)
@@ -336,8 +325,7 @@ class AppleVisionProAdapter(OEMIntegration):
 
 
 class SamsungARAdapter(OEMIntegration):
-    """
-    Samsung AR Glasses integration (rumored, not yet released)
+    """Samsung AR Glasses integration (rumored, not yet released)
 
     Expected API (based on Android XR):
     - Eye tracking via Android XR APIs
@@ -403,7 +391,7 @@ class SamsungARAdapter(OEMIntegration):
         color_temp_kelvin = samsung_params.get("color_temp_kelvin", 6500)
 
         print(
-            f"[Samsung AR] Setting brightness={brightness_nits} nits, color_temp={color_temp_kelvin}K"
+            f"[Samsung AR] Setting brightness={brightness_nits} nits, color_temp={color_temp_kelvin}K",
         )
 
         await asyncio.sleep(0.1)
@@ -446,8 +434,7 @@ class SamsungARAdapter(OEMIntegration):
 
 
 class AppOverlayService:
-    """
-    Companion app service for near-term deployment
+    """Companion app service for near-term deployment
 
     Works WITHOUT OEM partnership by:
     - Running as phone companion app
@@ -533,8 +520,7 @@ class AppOverlayService:
 
 
 class CloudAICompanion:
-    """
-    Cloud-based AI agent integration
+    """Cloud-based AI agent integration
 
     Works if glasses ship with AI runtime (ChatGPT-like):
     - Dreamlight runs as LLM plugin/agent
@@ -600,7 +586,7 @@ class CloudAICompanion:
     async def end_session(self):
         """End session and get summary analytics"""
         if not self.session_id:
-            return
+            return None
 
         print(f"[Cloud AI] Ending session {self.session_id}")
         await asyncio.sleep(0.1)

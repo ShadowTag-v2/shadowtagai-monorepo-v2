@@ -51,8 +51,7 @@ async def dispatch_task(r: RequestModel):
 
 @api_router.post("/dispatch/recursive")
 async def dispatch_recursive(r: RequestModel):
-    """
-    Triggers the Self-Correcting Recursive RLM Agent.
+    """Triggers the Self-Correcting Recursive RLM Agent.
     """
     from libs.shadowtag_v4.agents.recursive_rlm import agent
 

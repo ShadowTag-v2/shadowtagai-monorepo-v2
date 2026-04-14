@@ -1,5 +1,4 @@
-"""
-PNKLN FastAPI Governance Engine
+"""PNKLN FastAPI Governance Engine
 Sub-90ms p99 latency | 100% security gate | Zero external deps in core logic
 """
 
@@ -52,8 +51,7 @@ async def health() -> dict[str, str]:
 
 @app.post("/decide", response_model=DecisionResponse, dependencies=[validate_key])
 async def decide(request: DecisionRequest) -> DecisionResponse:
-    """
-    AI governance decision endpoint
+    """AI governance decision endpoint
     SLA: p99 <90ms | p95 <50ms
     Security: API key required via X-API-Key header
     """

@@ -1,5 +1,4 @@
-"""
-SwarmBoss - 10-Finger Audit Team Orchestrator with Army Doctrine Integration.
+"""SwarmBoss - 10-Finger Audit Team Orchestrator with Army Doctrine Integration.
 
 Army Doctrine Integration (v3.0.0):
 - FM 6-0: MDMP (7-step) for strategic planning, TLP (8-step) for execution
@@ -106,8 +105,7 @@ class CRM:
 
 
 class SwarmBoss:
-    """
-    The Boss. Oversees the Kosmos Swarm (10 Domain Agents).
+    """The Boss. Oversees the Kosmos Swarm (10 Domain Agents).
 
     Army Doctrine Integration:
     - FM 6-0: MDMP for strategic planning, TLP for tactical execution
@@ -130,7 +128,7 @@ class SwarmBoss:
 
         # Swarm Intelligence
         self.optimizer = HybridSwarmOptimizer(
-            num_agents=len(self.units), num_tasks=50, num_squads=1
+            num_agents=len(self.units), num_tasks=50, num_squads=1,
         )
         self.optimization_result = {}
 
@@ -151,7 +149,7 @@ class SwarmBoss:
             self.consensus_threshold = 0.60
 
             print(
-                f"///▞ SWARM BOSS :: Army Doctrine Integration ENABLED (session: {self.session_id})"
+                f"///▞ SWARM BOSS :: Army Doctrine Integration ENABLED (session: {self.session_id})",
             )
         else:
             self.mdmp = None
@@ -188,8 +186,7 @@ class SwarmBoss:
             print("Warning: No LLM model could be initialized.")
 
     def _initialize_roster(self):
-        """
-        Creates the 10-Finger Audit Team.
+        """Creates the 10-Finger Audit Team.
         Each agent corresponds to one of the 10 Fingers of the PNKLN audit.
         """
         fingers = [
@@ -215,7 +212,7 @@ class SwarmBoss:
                     status="Idle",
                     current_task="Awaiting Orders",
                     credits_burned=0.0,
-                )
+                ),
             )
 
     def receive_mission(self, mission: str):
@@ -252,8 +249,7 @@ class SwarmBoss:
             unit.status = "Planning"
 
     def _make_tentative_plan(self):
-        """
-        Phase 1 & 2 of Swarm Intelligence:
+        """Phase 1 & 2 of Swarm Intelligence:
         PSO (Task Allocation) + ACO (Routing)
         """
         time.sleep(1)
@@ -334,7 +330,7 @@ class SwarmBoss:
         log_path = os.path.join(self.crm.doctrine_dir, "audit_log.md")
         with open(log_path, "a") as log:
             log.write(
-                f"\n\n## {aar_text}\n- Findings: Deep structural analysis of all 10 domains.\n- Recommendation: Proceed to Phase 2 if Score > 75."
+                f"\n\n## {aar_text}\n- Findings: Deep structural analysis of all 10 domains.\n- Recommendation: Proceed to Phase 2 if Score > 75.",
             )
 
         # Reload CRM
@@ -370,7 +366,7 @@ class SwarmBoss:
                     # Use modern OpenAI SDK (v1.0+)
                     # self.model is already an OpenAI() client instance
                     response = self.model.chat.completions.create(
-                        model="gpt-oss-120b", messages=[{"role": "user", "content": prompt}]
+                        model="gpt-oss-120b", messages=[{"role": "user", "content": prompt}],
                     )
                     # Modern SDK returns an object with choices
                     if response and response.choices:
@@ -419,8 +415,7 @@ class SwarmBoss:
     # =========================================================================
 
     async def receive_mission_with_mdmp(self, mission: str) -> dict[str, Any]:
-        """
-        FM 6-0 MDMP-enhanced mission reception.
+        """FM 6-0 MDMP-enhanced mission reception.
 
         Executes full 7-step MDMP process:
         1. Receipt of Mission
@@ -451,7 +446,7 @@ class SwarmBoss:
             self.consensus_threshold = 0.60
 
         print(
-            f"///▞ BOSS [MDMP 0] :: Risk: {residual_risk} → Consensus: {self.consensus_threshold:.0%}"
+            f"///▞ BOSS [MDMP 0] :: Risk: {residual_risk} → Consensus: {self.consensus_threshold:.0%}",
         )
 
         # === MDMP Step 1: Receipt of Mission ===
@@ -462,7 +457,7 @@ class SwarmBoss:
         # === MDMP Step 2: Mission Analysis ===
         print("///▞ BOSS [MDMP 2/7] :: Mission Analysis")
         analysis = await self.mdmp.step2_mission_analysis(
-            {"mission": mission, "risk_level": residual_risk, "units_available": len(self.units)}
+            {"mission": mission, "risk_level": residual_risk, "units_available": len(self.units)},
         )
 
         # === MDMP Step 3: COA Development ===
@@ -501,10 +496,9 @@ class SwarmBoss:
         }
 
     async def handle_error_with_drill(
-        self, error: Exception, context: dict[str, Any] | None = None
+        self, error: Exception, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Handle errors using FM 7-8 Battle Drills.
+        """Handle errors using FM 7-8 Battle Drills.
 
         Routes error to appropriate drill:
         - EXCEPTION → React to Contact (retry)

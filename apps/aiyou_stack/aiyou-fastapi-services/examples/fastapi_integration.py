@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-FastAPI Integration Example
+"""FastAPI Integration Example
 
 This example demonstrates how to integrate Claude Agent SDK with FastAPI
 for building AI-powered APIs.
@@ -30,8 +29,7 @@ class QueryResponse(BaseModel):
 
 @app.post("/query", response_model=QueryResponse)
 async def query_endpoint(request: QueryRequest):
-    """
-    Query Claude Agent
+    """Query Claude Agent
 
     - **prompt**: Your question or task
     - **temperature**: Sampling temperature (0-1)

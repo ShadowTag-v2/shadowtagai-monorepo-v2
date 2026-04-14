@@ -9,8 +9,7 @@ mcp = FastMCP("Ironwood-MCP")
 
 @mcp.tool()
 def get_ironwood_status() -> str:
-    """
-    Returns the current operational status of the Ironwood TPU Stack.
+    """Returns the current operational status of the Ironwood TPU Stack.
     Use this to check if JAX/Flax are ready before attempting training tasks.
     """
     # In a real scenario, this would check /dev/accel0 or standard JAX diagnostics
@@ -29,13 +28,14 @@ def get_ironwood_status() -> str:
 
 @mcp.tool()
 def read_pipeline_metrics(_lookback_hours: int = 1) -> str:
-    """
-    Reads the latest training metrics from the JAX optimization loop.
+    """Reads the latest training metrics from the JAX optimization loop.
+
     Args:
         lookback_hours: How far back to fetch metrics.
+
     """
     return json.dumps(
-        {"loss": 0.42, "step": 15000, "throughput_tokens_sec": 45000, "utilization_tpu": "94.5%"}
+        {"loss": 0.42, "step": 15000, "throughput_tokens_sec": 45000, "utilization_tpu": "94.5%"},
     )
 
 
@@ -47,8 +47,7 @@ TAPE_FILE = os.path.expanduser("~/antigravity-flattened/universal_tape.jsonl")
 
 @mcp.tool()
 def log_event(source: str, event_type: str, content: str) -> str:
-    """
-    The Scribe: Appends an event to the Universal Tape.
+    """The Scribe: Appends an event to the Universal Tape.
     All Agents must call this to record their actions.
     """
     from src.antigravity.schema.stream_event import StreamEvent
@@ -75,8 +74,7 @@ def log_event(source: str, event_type: str, content: str) -> str:
 
 @mcp.tool()
 def read_tape(lines: int = 50) -> str:
-    """
-    Reads the tail of the Universal Tape (Context Injection).
+    """Reads the tail of the Universal Tape (Context Injection).
     """
     if not os.path.exists(TAPE_FILE):
         return "[]"
@@ -92,10 +90,11 @@ def read_tape(lines: int = 50) -> str:
 
 @mcp.tool()
 def search_gcp_docs(service_name: str) -> str:
-    """
-    GCP Omni-Tool: Searches the local google-cloud-python monorepo for API definitions.
+    """GCP Omni-Tool: Searches the local google-cloud-python monorepo for API definitions.
+
     Args:
         service_name: e.g., 'compute', 'storage', 'vision'
+
     """
     monorepo = os.path.expanduser("~/antigravity-flattened/google-cloud-python")
     target_dir = os.path.join(monorepo, "packages", f"google-cloud-{service_name}")

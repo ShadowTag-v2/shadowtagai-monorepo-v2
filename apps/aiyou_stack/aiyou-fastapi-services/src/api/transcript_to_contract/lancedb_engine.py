@@ -12,7 +12,7 @@ SCHEMA = pa.schema(
         pa.field("filename", pa.string()),
         pa.field("content_size", pa.int32()),
         pa.field("id", pa.string()),
-    ]
+    ],
 )
 
 
@@ -39,7 +39,7 @@ def physical_ingest(filename: str, content_size: int):
             "filename": filename,
             "content_size": content_size,
             "id": f"doc_{filename}",
-        }
+        },
     ]
 
     table.add(data)

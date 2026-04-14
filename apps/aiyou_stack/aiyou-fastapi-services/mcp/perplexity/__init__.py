@@ -1,5 +1,4 @@
-"""
-Perplexity MCP Server - Governance Bridge for Comet Browser & AI Shopping
+"""Perplexity MCP Server - Governance Bridge for Comet Browser & AI Shopping
 
 Integrates:
 - Judge #6 compliance scoring for transaction governance
@@ -17,6 +16,6 @@ from mcp.perplexity.tools import (
 __all__ = [
     "PerplexityMCPServer",
     "governance_score",
-    "watermark_content",
     "log_to_manifest",
+    "watermark_content",
 ]

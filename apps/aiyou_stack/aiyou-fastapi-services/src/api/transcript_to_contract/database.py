@@ -5,8 +5,7 @@ from .schemas import ContractDraft
 
 
 class InMemoryDB:
-    """
-    Simulates a persistent database/storage layer for development/testing.
+    """Simulates a persistent database/storage layer for development/testing.
     Replace with SQLAlchemy/PostgreSQL + GCS in production.
     """
 

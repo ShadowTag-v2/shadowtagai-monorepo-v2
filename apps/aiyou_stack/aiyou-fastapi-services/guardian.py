@@ -1,5 +1,4 @@
-"""
-Guardian - Self-Healing Code Loop & Watchdog
+"""Guardian - Self-Healing Code Loop & Watchdog
 Part of the Omega Protocol.
 
 Monitors execution, catches errors, and prompts Gemini for fixes.
@@ -14,8 +13,7 @@ GEMINI_MODEL = "gemini-3.0-flash"  # Fast model for quick fixes
 
 
 def run_with_guardian(command: str):
-    """
-    Run a command with Guardian monitoring.
+    """Run a command with Guardian monitoring.
     """
     print(f"🛡️ Guardian watching: {command}")
 
@@ -47,8 +45,7 @@ def run_with_guardian(command: str):
 
 
 def _ask_gemini_for_fix(command: str, error_log: str) -> str:
-    """
-    Simulate asking Gemini for a fix.
+    """Simulate asking Gemini for a fix.
     In production, this would call the actual Vertex AI/Gemini API.
     """
     # Mock response for now

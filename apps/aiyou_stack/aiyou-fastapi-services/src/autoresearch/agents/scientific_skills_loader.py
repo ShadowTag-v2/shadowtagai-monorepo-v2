@@ -1,5 +1,4 @@
-"""
-Scientific Skills Loader for minion Cavalry Squadron.
+"""Scientific Skills Loader for minion Cavalry Squadron.
 Loads and injects 119 scientific skills from claude-scientific-skills repo.
 
 Maps skills to Troop specializations:
@@ -214,8 +213,7 @@ TROOP_DOMAINS: dict[str, list[SkillDomain]] = {
 
 
 class ScientificSkillsLoader:
-    """
-    Load and inject 119 scientific skills into minion squadron.
+    """Load and inject 119 scientific skills into minion squadron.
 
     Skills are loaded from claude-scientific-skills/scientific-skills/ and
     mapped to cavalry troops based on domain specialization.
@@ -269,7 +267,7 @@ class ScientificSkillsLoader:
 
             # Extract description
             desc_match = re.search(
-                r'^description:\s*["\']?(.+?)["\']?\s*$', frontmatter, re.MULTILINE | re.DOTALL
+                r'^description:\s*["\']?(.+?)["\']?\s*$', frontmatter, re.MULTILINE | re.DOTALL,
             )
             if desc_match:
                 description = desc_match.group(1).strip().strip("\"'")
@@ -305,11 +303,11 @@ class ScientificSkillsLoader:
             return None
 
     def load_all_skills(self) -> int:
-        """
-        Load all 119 skills from the scientific-skills directory.
+        """Load all 119 skills from the scientific-skills directory.
 
         Returns:
             Number of skills loaded successfully.
+
         """
         if not self.skills_path.exists():
             raise FileNotFoundError(f"Skills directory not found: {self.skills_path}")
@@ -335,14 +333,14 @@ class ScientificSkillsLoader:
         return self.skills_by_domain.get(domain, [])
 
     def get_skills_for_troop(self, troop_name: str) -> list[ScientificSkill]:
-        """
-        Get relevant skills for a cavalry troop.
+        """Get relevant skills for a cavalry troop.
 
         Args:
             troop_name: One of HHT, AIR_CAV, ALPHA, BRAVO, CHARLIE
 
         Returns:
             List of ScientificSkill objects relevant to the troop.
+
         """
         domains = TROOP_DOMAINS.get(troop_name, [])
         skills = []
@@ -353,8 +351,7 @@ class ScientificSkillsLoader:
         return skills
 
     def get_skill_summary_block(self, troop_name: str, max_skills: int = 20) -> str:
-        """
-        Generate a compact skill summary block for prompt injection.
+        """Generate a compact skill summary block for prompt injection.
 
         Args:
             troop_name: Troop to generate summary for
@@ -362,6 +359,7 @@ class ScientificSkillsLoader:
 
         Returns:
             Formatted string block for Antigravity prompt injection.
+
         """
         skills = self.get_skills_for_troop(troop_name)[:max_skills]
 
@@ -385,8 +383,7 @@ class ScientificSkillsLoader:
         max_skills: int = 15,
         injection_marker: str = "{{SCIENTIFIC_SKILLS}}",
     ) -> str:
-        """
-        Inject relevant scientific skills into an Antigravity prompt.
+        """Inject relevant scientific skills into an Antigravity prompt.
 
         Args:
             troop_name: Troop receiving the prompt
@@ -396,18 +393,17 @@ class ScientificSkillsLoader:
 
         Returns:
             Enhanced prompt with scientific skills injected.
+
         """
         skill_block = self.get_skill_summary_block(troop_name, max_skills)
 
         if injection_marker in base_prompt:
             return base_prompt.replace(injection_marker, skill_block)
-        else:
-            # Append skills before the final instruction block
-            return f"{base_prompt}\n{skill_block}"
+        # Append skills before the final instruction block
+        return f"{base_prompt}\n{skill_block}"
 
     def get_full_skill_content(self, skill_name: str) -> str:
-        """
-        Get the full SKILL.md content for a specific skill.
+        """Get the full SKILL.md content for a specific skill.
 
         Used when an agent needs deep expertise in a particular area.
         """
@@ -450,8 +446,7 @@ def get_skills_loader() -> ScientificSkillsLoader:
 
 
 def inject_skills_for_mission(troop_name: str, base_prompt: str) -> str:
-    """
-    Convenience function to inject skills for a mission.
+    """Convenience function to inject skills for a mission.
 
     Args:
         troop_name: Troop executing the mission
@@ -459,6 +454,7 @@ def inject_skills_for_mission(troop_name: str, base_prompt: str) -> str:
 
     Returns:
         Enhanced prompt with scientific skills.
+
     """
     loader = get_skills_loader()
     return loader.inject_skills_to_prompt(troop_name, base_prompt)

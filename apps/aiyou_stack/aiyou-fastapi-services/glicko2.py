@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System Implementation
+"""Glicko-2 Rating System Implementation
 
 A chess-style rating system that tracks:
 - Rating (skill strength): 1500 = average, 2000 = expert, 2500 = world-class
@@ -15,6 +14,7 @@ Use cases:
 References:
 - Original paper: Glickman (2012) "Example of the Glicko-2 system"
 - http://www.glicko.net/glicko/glicko2.pdf
+
 """
 
 import math
@@ -36,8 +36,7 @@ class Player:
 
 
 class Glicko2:
-    """
-    Glicko-2 rating system implementation.
+    """Glicko-2 rating system implementation.
 
     Key parameters:
     - tau (τ): System volatility constraint (0.3-1.2, default 0.6)
@@ -50,26 +49,24 @@ class Glicko2:
     SCALE = 173.7178
 
     def __init__(self, tau: float = 0.6, epsilon: float = 0.000001):
-        """
-        Initialize Glicko-2 system.
+        """Initialize Glicko-2 system.
 
         Args:
             tau: System volatility constraint (0.3-1.2)
             epsilon: Convergence tolerance for volatility calculation
+
         """
         self.tau = tau
         self.epsilon = epsilon
 
     def _g(self, phi: float) -> float:
-        """
-        g(φ) function from Glicko-2 paper.
+        """g(φ) function from Glicko-2 paper.
         Measures impact of opponent's RD on rating change.
         """
         return 1 / math.sqrt(1 + 3 * phi**2 / math.pi**2)
 
     def _E(self, mu: float, mu_j: float, phi_j: float) -> float:
-        """
-        E(μ, μ_j, φ_j) function from Glicko-2 paper.
+        """E(μ, μ_j, φ_j) function from Glicko-2 paper.
         Expected score against opponent j.
         """
         return 1 / (1 + math.exp(-self._g(phi_j) * (mu - mu_j)))
@@ -87,8 +84,7 @@ class Glicko2:
         return rating, rd
 
     def _compute_variance(self, mu: float, opponents: list[tuple[float, float]]) -> float:
-        """
-        Compute variance v from Step 3 of Glicko-2 algorithm.
+        """Compute variance v from Step 3 of Glicko-2 algorithm.
 
         Args:
             mu: Player's rating (Glicko-2 scale)
@@ -96,6 +92,7 @@ class Glicko2:
 
         Returns:
             Variance v
+
         """
         v_inv = 0
         for mu_j, phi_j in opponents:
@@ -106,10 +103,9 @@ class Glicko2:
         return 1 / v_inv if v_inv > 0 else float("inf")
 
     def _compute_delta(
-        self, mu: float, opponents: list[tuple[float, float]], outcomes: list[float], v: float
+        self, mu: float, opponents: list[tuple[float, float]], outcomes: list[float], v: float,
     ) -> float:
-        """
-        Compute delta (Δ) from Step 4 of Glicko-2 algorithm.
+        """Compute delta (Δ) from Step 4 of Glicko-2 algorithm.
         Measures improvement in rating.
 
         Args:
@@ -120,6 +116,7 @@ class Glicko2:
 
         Returns:
             Delta (Δ)
+
         """
         delta_sum = 0
         for (mu_j, phi_j), outcome in zip(opponents, outcomes, strict=False):
@@ -130,8 +127,7 @@ class Glicko2:
         return v * delta_sum
 
     def _compute_new_volatility(self, phi: float, sigma: float, v: float, delta: float) -> float:
-        """
-        Compute new volatility σ' using Illinois algorithm (Step 5).
+        """Compute new volatility σ' using Illinois algorithm (Step 5).
 
         This is the most complex part of Glicko-2, involving iterative
         solving of a non-linear equation.
@@ -144,6 +140,7 @@ class Glicko2:
 
         Returns:
             New volatility σ'
+
         """
         # Step 5.1
         a = math.log(sigma**2)
@@ -192,10 +189,9 @@ class Glicko2:
         return math.exp(A / 2)
 
     def update_rating(
-        self, player: Player, opponents: list[Player], outcomes: list[float]
+        self, player: Player, opponents: list[Player], outcomes: list[float],
     ) -> Player:
-        """
-        Update player rating based on match outcomes.
+        """Update player rating based on match outcomes.
 
         Args:
             player: Player whose rating to update
@@ -211,6 +207,7 @@ class Glicko2:
             >>> bob = Player(rating=1600, rd=150, volatility=0.06)
             >>> outcomes = [1.0]  # Alice beat Bob
             >>> alice_new = system.update_rating(alice, [bob], outcomes)
+
         """
         assert len(opponents) == len(outcomes), "Must have one outcome per opponent"
 
@@ -249,8 +246,7 @@ class Glicko2:
         return Player(rating=rating_new, rd=rd_new, volatility=sigma_prime)
 
     def update_rd_if_inactive(self, player: Player, periods: int = 1) -> Player:
-        """
-        Increase RD if player has been inactive (no matches).
+        """Increase RD if player has been inactive (no matches).
 
         Called once per rating period for inactive players.
         RD increases to reflect growing uncertainty.
@@ -261,6 +257,7 @@ class Glicko2:
 
         Returns:
             Player with increased RD
+
         """
         mu, phi = self._to_glicko2_scale(player.rating, player.rd)
         sigma = player.volatility
@@ -298,7 +295,7 @@ if __name__ == "__main__":
     # Update Alice's rating
     alice_new = system.update_rating(alice, opponents, outcomes)
     print(
-        f"Alice (after):  Rating={alice_new.rating:.1f}, RD={alice_new.rd:.1f}, σ={alice_new.volatility:.4f}\n"
+        f"Alice (after):  Rating={alice_new.rating:.1f}, RD={alice_new.rd:.1f}, σ={alice_new.volatility:.4f}\n",
     )
 
     # Demonstrate RD increase for inactive player
@@ -334,7 +331,7 @@ if __name__ == "__main__":
             else "Volatile"
         )
         print(
-            f"{rank}. {name:6s} - Rating: {agent.rating:4.0f} (RD: {agent.rd:3.0f}, {confidence:6s} conf, {stability})"
+            f"{rank}. {name:6s} - Rating: {agent.rating:4.0f} (RD: {agent.rd:3.0f}, {confidence:6s} conf, {stability})",
         )
 
     print("\n✅ Glicko-2 implementation complete")

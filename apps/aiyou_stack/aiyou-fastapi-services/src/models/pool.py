@@ -24,8 +24,7 @@ class GPUInfo:
 
 
 class GPUPool:
-    """
-    GPU pool manager for multi-model serving.
+    """GPU pool manager for multi-model serving.
 
     Implements Aegaeon-style GPU pooling:
     - Packs 7+ models per GPU
@@ -114,8 +113,7 @@ class GPUPool:
             )
 
     def get_best_gpu_for_model(self, model_name: str, required_memory_gb: float = 4.0) -> int:
-        """
-        Find the best GPU to load a model on.
+        """Find the best GPU to load a model on.
 
         Strategy:
         1. Prefer GPUs with available memory
@@ -135,7 +133,7 @@ class GPUPool:
         if not candidates:
             raise RuntimeError(
                 f"No GPU with {required_memory_gb}GB available memory and "
-                f"<{self.max_models_per_gpu} models loaded"
+                f"<{self.max_models_per_gpu} models loaded",
             )
 
         # Pick GPU with most available memory and fewest models
@@ -158,7 +156,7 @@ class GPUPool:
 
         logger.info(
             f"Allocated {memory_gb}GB on GPU {gpu_id} for {model_name}. "
-            f"Available: {gpu_info.available_memory_gb:.2f}GB"
+            f"Available: {gpu_info.available_memory_gb:.2f}GB",
         )
 
     async def deallocate_model(self, model_name: str, gpu_id: int, memory_gb: float):
@@ -173,7 +171,7 @@ class GPUPool:
 
         logger.info(
             f"Deallocated {memory_gb}GB on GPU {gpu_id} from {model_name}. "
-            f"Available: {gpu_info.available_memory_gb:.2f}GB"
+            f"Available: {gpu_info.available_memory_gb:.2f}GB",
         )
 
     async def _monitor_loop(self):
@@ -217,13 +215,13 @@ class GPUPool:
         if avg_utilization > self.scale_up_threshold:
             logger.warning(
                 f"High GPU utilization ({avg_utilization:.2%}), "
-                "consider scaling up or offloading models"
+                "consider scaling up or offloading models",
             )
             # In production, trigger model offloading or request new GPUs
 
         elif avg_utilization < self.scale_down_threshold:
             logger.info(
-                f"Low GPU utilization ({avg_utilization:.2%}), consider consolidating models"
+                f"Low GPU utilization ({avg_utilization:.2%}), consider consolidating models",
             )
             # In production, consolidate models to fewer GPUs
 

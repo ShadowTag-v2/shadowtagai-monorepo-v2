@@ -1,5 +1,4 @@
-"""
-AI Threads API Schemas
+"""AI Threads API Schemas
 
 Pydantic models for AI thread API request/response handling.
 Supports thread creation, search, export, and import operations.

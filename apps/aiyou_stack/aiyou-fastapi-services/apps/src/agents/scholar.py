@@ -17,7 +17,7 @@ class Autoresearch_Triad_Scholar:
 
     def fetch_intelligence(self):
         print(
-            f"[{datetime.now().strftime('%H:%M:%S')}] [SENSOR] Spinning up arXiv harvester for targets: {self.target_ids}..."
+            f"[{datetime.now().strftime('%H:%M:%S')}] [SENSOR] Spinning up arXiv harvester for targets: {self.target_ids}...",
         )
 
         # 1. Query arXiv API

@@ -1,5 +1,4 @@
-"""
-DEPLOYMENT CHECKLIST - COR.53 Integration Tactical Execution Guide
+"""DEPLOYMENT CHECKLIST - COR.53 Integration Tactical Execution Guide
 
 This module provides:
 1. Automated deployment verification
@@ -27,9 +26,9 @@ import json
 import logging
 import os
 import sys
-from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
 import typing
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -54,11 +53,11 @@ class DeploymentChecker:
         self.phase = 0
 
     def run_all_checks(self) -> dict[str, typing.Any]:
-        """
-        Run complete deployment checklist
+        """Run complete deployment checklist
 
         Returns:
             Summary of all checks
+
         """
         print("=" * 80)
         print("COR.53 DEPLOYMENT CHECKLIST - Tactical Execution Guide")
@@ -298,7 +297,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="Skill Registry: Smoke Test",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="HIGH",
                 remediation="Check cor_skill_registry.py for errors",
             )
@@ -313,7 +312,7 @@ class DeploymentChecker:
 
             # Create a test agent
             agent = orchestrator.create_agent(
-                name="TestAgent", role="Smoke Test", capabilities=["testing"]
+                name="TestAgent", role="Smoke Test", capabilities=["testing"],
             )
 
             self.add_result(
@@ -348,7 +347,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="AutoGen: Smoke Test",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="HIGH",
                 remediation="Check cor_autogen_integration.py for errors",
             )
@@ -412,7 +411,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="Judge #6: Smoke Test",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="CRITICAL",
                 remediation="Check judge6_enforcement.py for errors",
             )
@@ -459,7 +458,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="COR.53: Integration Test",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="HIGH",
                 remediation="Check COR.53 integration for errors",
             )
@@ -492,7 +491,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="E2E: Workflow Test",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="MEDIUM",
                 remediation="Check end-to-end integration",
             )
@@ -534,7 +533,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="Production: Doctrine Validation",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="CRITICAL",
                 remediation="Check doctrine constraints configuration",
             )
@@ -579,7 +578,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="Production: Watermark Validation",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="HIGH",
                 remediation="Check watermark injection logic",
             )
@@ -623,7 +622,7 @@ class DeploymentChecker:
             self.add_result(
                 check_name="Production: Audit Trail Validation",
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
                 severity="HIGH",
                 remediation="Check audit trail generation logic",
             )
@@ -714,7 +713,7 @@ class DeploymentChecker:
     def export_report(self, output_path: str = "deployment_report.json") -> str:
         """Export detailed deployment report"""
         report = {
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": datetime.now(UTC).isoformat(),
             "deployment_checker_version": "1.0.0",
             "results": [asdict(r) for r in self.results],
         }

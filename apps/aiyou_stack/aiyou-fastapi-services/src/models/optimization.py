@@ -1,5 +1,4 @@
-"""
-Doing Less Better Results - Life/Work Optimization Framework
+"""Doing Less Better Results - Life/Work Optimization Framework
 8 key areas for focused improvement
 """
 
@@ -45,7 +44,7 @@ class LifeArea(BaseModel):
                     "Track consistency in habit tracker",
                 ],
                 "priority_level": 8,
-            }
+            },
         }
 
 
@@ -66,15 +65,14 @@ class OptimizationStrategy(BaseModel):
     mental_clarity: LifeArea | None = None
 
     focus_areas: list[AreaType] = Field(
-        ..., description="Primary areas of focus (2-3 recommended)", max_length=3
+        ..., description="Primary areas of focus (2-3 recommended)", max_length=3,
     )
     timeline: str | None = Field(None, description="Timeline for this optimization period")
     success_metrics: list[str] | None = Field(None, description="How to measure success")
 
 
 class DoingLessBetterResults(BaseModel):
-    """
-    Complete Doing Less Better Results Framework
+    """Complete Doing Less Better Results Framework
     Focuses on doing less but achieving better outcomes
     """
 
@@ -87,52 +85,52 @@ class DoingLessBetterResults(BaseModel):
                 "strategies": [
                     "Focus on the five people who inspire and energise you",
                     "Step back from connections that drain your energy",
-                ]
+                ],
             },
             "PERSONAL_GOALS": {
                 "strategies": [
                     "Choose one or two goals that truly matter",
                     "Break them into small, actionable steps",
-                ]
+                ],
             },
             "HEALTH_FITNESS": {
                 "strategies": [
                     "Consistency beats intensity",
                     "Aim for 3 x 30-minute sessions a week",
                     "Focus on activities you enjoy for long-term success",
-                ]
+                ],
             },
             "LEARNING": {
                 "strategies": [
                     "Commit to learning one skill that aligns with your biggest goal",
                     "Decide the outcome you want and stick with it until you see results",
-                ]
+                ],
             },
             "WORK_TASKS": {
                 "strategies": [
                     "Prioritize the three tasks that create the most value",
                     "Delegate or eliminate what doesn't move the needle",
-                ]
+                ],
             },
             "ENERGY": {
                 "strategies": [
                     "Protect your time & energy by saying 'no' to things you don't want to do",
                     "Channel your energy into high impact tasks",
-                ]
+                ],
             },
             "MONEY": {
                 "strategies": [
                     "Track your spending and cut three unnecessary expenses",
                     "Redirect savings to investments or experiences with long-term value",
-                ]
+                ],
             },
             "MENTAL_CLARITY": {
                 "strategies": [
                     "Start your day with journaling or a quiet moment",
                     "Keep your workspace simple and organized to minimize distractions",
-                ]
+                ],
             },
-        }
+        },
     )
 
     class Config:
@@ -156,6 +154,6 @@ class DoingLessBetterResults(BaseModel):
                         ],
                         "priority_level": 9,
                     },
-                }
-            }
+                },
+            },
         }

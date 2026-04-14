@@ -1,5 +1,4 @@
-"""
-DTE (Dynamic Tree Exploration) Engine for Prompt Self-Evolution
+"""DTE (Dynamic Tree Exploration) Engine for Prompt Self-Evolution
 
 Implements tree-based exploration of solution space with automatic prompt
 optimization, achieving +3.7% accuracy improvement over baseline approaches.
@@ -16,6 +15,7 @@ References:
 - "Tree of Thoughts: Deliberate Problem Solving with Large Language Models"
 - "Self-Refine: Iterative Refinement with Self-Feedback"
 - "Constitutional AI: Harmlessness from AI Feedback"
+
 """
 
 import asyncio
@@ -47,8 +47,7 @@ class NodeStatus(Enum):
 
 @dataclass
 class TreeNode:
-    """
-    Single node in exploration tree.
+    """Single node in exploration tree.
 
     Attributes:
         node_id: Unique node identifier
@@ -62,6 +61,7 @@ class TreeNode:
         metadata: Additional metadata
         created_at: Creation timestamp
         explored_at: Exploration timestamp
+
     """
 
     node_id: str
@@ -79,8 +79,7 @@ class TreeNode:
 
 @dataclass
 class EvolutionRound:
-    """
-    Single evolution round results.
+    """Single evolution round results.
 
     Attributes:
         round_number: Round number (1-indexed)
@@ -91,6 +90,7 @@ class EvolutionRound:
         avg_score: Average score across nodes
         execution_time_ms: Round execution time
         improvements: List of improvements made
+
     """
 
     round_number: int
@@ -105,8 +105,7 @@ class EvolutionRound:
 
 @dataclass
 class DTEResult:
-    """
-    Complete DTE exploration result.
+    """Complete DTE exploration result.
 
     Attributes:
         initial_prompt: Starting prompt
@@ -118,6 +117,7 @@ class DTEResult:
         evolution_rounds: List of evolution rounds
         total_execution_time_ms: Total execution time
         tree: Complete exploration tree
+
     """
 
     initial_prompt: str
@@ -132,8 +132,7 @@ class DTEResult:
 
 
 class DTEEngine:
-    """
-    Dynamic Tree Exploration Engine for prompt self-evolution.
+    """Dynamic Tree Exploration Engine for prompt self-evolution.
 
     Performance targets:
     - Exploration phase: ~500ms for 10 nodes
@@ -149,8 +148,7 @@ class DTEEngine:
         score_threshold: float = 0.7,
         improvement_threshold: float = 0.01,  # 1% minimum improvement to continue
     ):
-        """
-        Initialize DTE engine.
+        """Initialize DTE engine.
 
         Args:
             max_depth: Maximum tree depth
@@ -158,6 +156,7 @@ class DTEEngine:
             strategy: Exploration strategy
             score_threshold: Minimum score to explore children
             improvement_threshold: Minimum improvement to continue evolution
+
         """
         self.max_depth = max_depth
         self.branching_factor = branching_factor
@@ -175,7 +174,7 @@ class DTEEngine:
         return f"node_{self.node_counter}"
 
     def _create_node(
-        self, prompt: str, depth: int, parent_id: str | None = None, metadata: dict | None = None
+        self, prompt: str, depth: int, parent_id: str | None = None, metadata: dict | None = None,
     ) -> TreeNode:
         """Create and register new tree node."""
         node_id = self._generate_node_id()
@@ -196,10 +195,9 @@ class DTEEngine:
         return node
 
     async def _evaluate_node(
-        self, node: TreeNode, evaluator: Callable[[str], tuple[str, float]]
+        self, node: TreeNode, evaluator: Callable[[str], tuple[str, float]],
     ) -> TreeNode:
-        """
-        Evaluate a single node by generating response and scoring.
+        """Evaluate a single node by generating response and scoring.
 
         Args:
             node: Node to evaluate
@@ -207,6 +205,7 @@ class DTEEngine:
 
         Returns:
             Updated node with response and score
+
         """
         time.time()
 
@@ -223,10 +222,9 @@ class DTEEngine:
         return node
 
     async def _explore_nodes_parallel(
-        self, nodes: list[TreeNode], evaluator: Callable[[str], tuple[str, float]]
+        self, nodes: list[TreeNode], evaluator: Callable[[str], tuple[str, float]],
     ) -> list[TreeNode]:
-        """
-        Explore multiple nodes in parallel.
+        """Explore multiple nodes in parallel.
 
         Performance target: ~500ms for 10 nodes
 
@@ -236,16 +234,16 @@ class DTEEngine:
 
         Returns:
             Explored nodes with responses and scores
+
         """
         tasks = [self._evaluate_node(node, evaluator) for node in nodes]
         results = await asyncio.gather(*tasks)
         return results
 
     def _generate_variations(
-        self, base_prompt: str, parent_node: TreeNode, count: int
+        self, base_prompt: str, parent_node: TreeNode, count: int,
     ) -> list[str]:
-        """
-        Generate prompt variations for exploration.
+        """Generate prompt variations for exploration.
 
         This is a simplified version. In production, this would use:
         - LLM-based prompt rewriting
@@ -260,6 +258,7 @@ class DTEEngine:
 
         Returns:
             List of prompt variations
+
         """
         variations = []
 
@@ -269,7 +268,7 @@ class DTEEngine:
                 f"{base_prompt}\n\nLet's approach this step by step:\n"
                 f"1. First, analyze the key components\n"
                 f"2. Then, consider edge cases\n"
-                f"3. Finally, synthesize the solution"
+                f"3. Finally, synthesize the solution",
             )
 
         # Strategy 2: Add examples
@@ -277,7 +276,7 @@ class DTEEngine:
             variations.append(
                 f"{base_prompt}\n\nFor example, similar problems have been "
                 f"solved by breaking them into smaller sub-problems and "
-                f"combining the results."
+                f"combining the results.",
             )
 
         # Strategy 3: Add critique/reflection
@@ -286,13 +285,13 @@ class DTEEngine:
                 f"{base_prompt}\n\nBefore answering, let's verify:\n"
                 f"- Have we considered all constraints?\n"
                 f"- Are there any assumptions we should question?\n"
-                f"- What could go wrong with our approach?"
+                f"- What could go wrong with our approach?",
             )
 
         # Strategy 4: Simplification (if parent had additions)
         if len(variations) < count and parent_node.depth > 0:
             # Try removing some complexity
-            variations.append(base_prompt.split("\n")[0])  # Just first line
+            variations.append(base_prompt.split("\n", maxsplit=1)[0])  # Just first line
 
         # Strategy 5: Expansion with details
         if len(variations) < count:
@@ -300,7 +299,7 @@ class DTEEngine:
                 f"{base_prompt}\n\nProvide a detailed answer that includes:\n"
                 f"- Core reasoning\n"
                 f"- Supporting evidence\n"
-                f"- Potential limitations"
+                f"- Potential limitations",
             )
 
         # Pad with slight rephrases if needed
@@ -310,14 +309,14 @@ class DTEEngine:
         return variations[:count]
 
     def _select_nodes_to_explore(self, pending_nodes: list[TreeNode]) -> list[TreeNode]:
-        """
-        Select next nodes to explore based on strategy.
+        """Select next nodes to explore based on strategy.
 
         Args:
             pending_nodes: All pending nodes
 
         Returns:
             Nodes to explore in this iteration
+
         """
         if not pending_nodes:
             return []
@@ -327,12 +326,12 @@ class DTEEngine:
             pending_nodes.sort(key=lambda n: n.depth)
             return pending_nodes
 
-        elif self.strategy == ExplorationStrategy.DFS:
+        if self.strategy == ExplorationStrategy.DFS:
             # Explore deepest nodes first
             pending_nodes.sort(key=lambda n: -n.depth)
             return pending_nodes
 
-        elif self.strategy == ExplorationStrategy.BEST_FIRST:
+        if self.strategy == ExplorationStrategy.BEST_FIRST:
             # Explore children of highest-scoring completed nodes
             # Get parent scores
             node_priority = []
@@ -347,12 +346,12 @@ class DTEEngine:
             node_priority.sort(key=lambda x: -x[0])
             return [n for _, n in node_priority]
 
-        else:  # MONTE_CARLO
-            # Random sampling (simplified - would use UCB1 in production)
-            import random
+        # MONTE_CARLO
+        # Random sampling (simplified - would use UCB1 in production)
+        import random
 
-            random.shuffle(pending_nodes)
-            return pending_nodes
+        random.shuffle(pending_nodes)
+        return pending_nodes
 
     async def evolve_prompt(
         self,
@@ -361,8 +360,7 @@ class DTEEngine:
         max_rounds: int = 5,
         max_nodes_per_round: int = 10,
     ) -> DTEResult:
-        """
-        Evolve prompt through DTE exploration.
+        """Evolve prompt through DTE exploration.
 
         Args:
             initial_prompt: Starting prompt
@@ -372,6 +370,7 @@ class DTEEngine:
 
         Returns:
             Complete DTE result with evolved prompt
+
         """
         start_time = time.time()
 
@@ -481,11 +480,11 @@ class DTEEngine:
         )
 
     def get_best_path(self) -> list[TreeNode]:
-        """
-        Get path from root to best leaf node.
+        """Get path from root to best leaf node.
 
         Returns:
             List of nodes from root to best leaf
+
         """
         if not self.tree:
             return []
@@ -508,11 +507,11 @@ class DTEEngine:
         return path
 
     def get_statistics(self) -> dict[str, Any]:
-        """
-        Get tree exploration statistics.
+        """Get tree exploration statistics.
 
         Returns:
             Dictionary with statistics
+
         """
         if not self.tree:
             return {}

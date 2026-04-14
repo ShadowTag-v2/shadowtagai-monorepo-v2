@@ -1,5 +1,4 @@
-"""
-Base Enterprise Adapter Framework
+"""Base Enterprise Adapter Framework
 ==================================
 Foundation for all enterprise system integrations.
 Stay Current Doctrine: Continuous improvement, invisible to end users.
@@ -110,8 +109,7 @@ class SyncResult(BaseModel):
 
 
 class BaseAdapter(ABC, Generic[T]):
-    """
-    Abstract base class for all enterprise adapters.
+    """Abstract base class for all enterprise adapters.
 
     Stay Current Doctrine Implementation:
     - Continuous background sync
@@ -148,40 +146,33 @@ class BaseAdapter(ABC, Generic[T]):
     @abstractmethod
     async def connect(self) -> bool:
         """Establish connection to external system"""
-        pass
 
     @abstractmethod
     async def disconnect(self) -> bool:
         """Gracefully disconnect from external system"""
-        pass
 
     @abstractmethod
     async def test_connection(self) -> ConnectionHealth:
         """Test connection and return health status"""
-        pass
 
     @abstractmethod
     async def fetch_data(self, query: dict[str, Any]) -> list[T]:
         """Fetch data from external system"""
-        pass
 
     @abstractmethod
     async def push_data(self, data: list[T]) -> SyncResult:
         """Push data to external system"""
-        pass
 
     @abstractmethod
     async def get_schema(self) -> dict[str, Any]:
         """Get schema/structure of external system data"""
-        pass
 
     # =========================================================================
     # Core Sync Methods
     # =========================================================================
 
     async def sync(self, full_sync: bool = False) -> SyncResult:
-        """
-        Main sync operation - pulls data, processes, and pushes changes.
+        """Main sync operation - pulls data, processes, and pushes changes.
         All processing happens in GCP, only API calls to customer system.
         """
         start_time = datetime.utcnow()
@@ -212,7 +203,7 @@ class BaseAdapter(ABC, Generic[T]):
 
             # Calculate value added
             result.estimated_value_added_usd = await self._calculate_value_added(
-                original=data, processed=processed_data
+                original=data, processed=processed_data,
             )
 
             # Push changes back if write is enabled
@@ -250,8 +241,7 @@ class BaseAdapter(ABC, Generic[T]):
         return result
 
     async def start_continuous_sync(self) -> None:
-        """
-        Start continuous background sync.
+        """Start continuous background sync.
         Stay Current Doctrine: Always improving, never resting.
         """
         if self._sync_task and not self._sync_task.done():
@@ -271,8 +261,7 @@ class BaseAdapter(ABC, Generic[T]):
             logger.info(f"Stopped continuous sync for {self.config.adapter_id}")
 
     async def _continuous_sync_loop(self) -> None:
-        """
-        Background sync loop - the heart of Stay Current Doctrine.
+        """Background sync loop - the heart of Stay Current Doctrine.
         Like upgrading your gaming rig - always getting better.
         """
         while True:
@@ -291,8 +280,7 @@ class BaseAdapter(ABC, Generic[T]):
     # =========================================================================
 
     async def _process_data(self, data: list[T]) -> list[T]:
-        """
-        Process data using our GCP infrastructure.
+        """Process data using our GCP infrastructure.
         This is where the Economic Juggernaut does its magic.
         Customer system untouched - we just API in/out.
         """
@@ -300,8 +288,7 @@ class BaseAdapter(ABC, Generic[T]):
         return data
 
     async def _calculate_value_added(self, original: list[Any], processed: list[Any]) -> float:
-        """
-        Calculate the value we've added through our processing.
+        """Calculate the value we've added through our processing.
         This feeds the metrics tracker for the "ever upward graph".
         """
         # Default: $0.01 per record processed (conservative estimate)
@@ -313,8 +300,7 @@ class BaseAdapter(ABC, Generic[T]):
     # =========================================================================
 
     async def _check_compliance_gates(self) -> bool:
-        """
-        Check all compliance gates before any operation.
+        """Check all compliance gates before any operation.
         JURA Protocol: No Hot Water principle.
         """
         for gate in self.config.compliance_gates:
@@ -385,8 +371,7 @@ class BaseAdapter(ABC, Generic[T]):
 
 
 class AdapterRegistry:
-    """
-    Central registry for all enterprise adapters.
+    """Central registry for all enterprise adapters.
     Manages lifecycle and provides unified access.
     """
 

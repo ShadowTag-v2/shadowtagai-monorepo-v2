@@ -1,5 +1,4 @@
-"""
-Dynamic Timeline Engine for LawTrack
+"""Dynamic Timeline Engine for LawTrack
 
 Generates procedural timelines based on jurisdiction rules
 

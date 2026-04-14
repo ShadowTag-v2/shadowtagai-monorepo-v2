@@ -5,8 +5,7 @@ from .skills_registry import ScientificSkillsRegistry
 
 
 class ScientificAgent(AgentUnit):
-    """
-    Specialized agent for scientific research and tool execution.
+    """Specialized agent for scientific research and tool execution.
     Integrates 'Claude Scientific Skills' via a registry wrapper.
     """
 

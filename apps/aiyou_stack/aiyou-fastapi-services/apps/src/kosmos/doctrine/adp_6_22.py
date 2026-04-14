@@ -1,5 +1,4 @@
-"""
-ADP 6-22: Army Leadership and the Profession
+"""ADP 6-22: Army Leadership and the Profession
 =============================================
 
 Source: ADP 6-22 (July 2019, Change 1)
@@ -101,8 +100,7 @@ class LeadershipLevel(Enum):
 
 @dataclass
 class AgentAttributes:
-    """
-    ADP 6-22 Leadership Attributes mapped to AI agent metrics.
+    """ADP 6-22 Leadership Attributes mapped to AI agent metrics.
 
     Each agent should exhibit these attributes in their behavior.
     """
@@ -177,8 +175,7 @@ class AgentAttributes:
 
 @dataclass
 class LeaderCompetencies:
-    """
-    ADP 6-22 Leader Competencies mapped to agent behaviors.
+    """ADP 6-22 Leader Competencies mapped to agent behaviors.
 
     Competencies are actions - what leaders DO.
     """
@@ -249,8 +246,7 @@ def create_agent_profile(
     level: LeadershipLevel = LeadershipLevel.DIRECT,
     expertise: list[str] | None = None,
 ) -> tuple[AgentAttributes, LeaderCompetencies]:
-    """
-    Create a complete ADP 6-22 aligned agent profile.
+    """Create a complete ADP 6-22 aligned agent profile.
 
     Args:
         agent_id: Unique agent identifier
@@ -259,9 +255,10 @@ def create_agent_profile(
 
     Returns:
         Tuple of (AgentAttributes, LeaderCompetencies)
+
     """
     attributes = AgentAttributes(
-        agent_id=agent_id, leadership_level=level, expertise_domains=expertise or []
+        agent_id=agent_id, leadership_level=level, expertise_domains=expertise or [],
     )
 
     competencies = LeaderCompetencies(agent_id=agent_id)

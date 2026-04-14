@@ -1,5 +1,4 @@
-"""
-BarExamProtocol - "Judge6" Gatekeeper.
+"""BarExamProtocol - "Judge6" Gatekeeper.
 Prevents dumb agents from polluting memory.
 """
 
@@ -39,7 +38,7 @@ class BarExamProtocol:
             response = self.judge.model.generate_content(
                 prompt,
                 generation_config=self.judge._get_generation_config(
-                    thinking_level="high", json_output=True
+                    thinking_level="high", json_output=True,
                 ),
             )
             raw = response.text.replace("```json", "").replace("```", "")
@@ -47,12 +46,12 @@ class BarExamProtocol:
 
             if result.get("verdict") == "PASS":
                 self.whiteboard.record_learning(
-                    candidate_id, f"Passed Level {target_level}", result
+                    candidate_id, f"Passed Level {target_level}", result,
                 )
                 return True, result.get("reasoning")
             return False, result.get("reasoning")
         except Exception as e:
-            return False, f"System Error: {str(e)}"
+            return False, f"System Error: {e!s}"
 
     @staticmethod
     def spawn_first_child():

@@ -1,5 +1,4 @@
-"""
-FM 7-8 / Ranger Handbook: Battle Drills
+"""FM 7-8 / Ranger Handbook: Battle Drills
 ========================================
 
 Source: FM 7-8 Infantry Rifle Platoon and Squad / Ranger Handbook
@@ -45,8 +44,7 @@ class DrillPhase(Enum):
 
 @dataclass
 class BattleDrill(ABC):
-    """
-    Base class for all Battle Drills.
+    """Base class for all Battle Drills.
 
     A battle drill is a collective action rapidly executed
     without applying a deliberate decision-making process.
@@ -66,7 +64,6 @@ class BattleDrill(ABC):
     @abstractmethod
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
         """Execute the battle drill"""
-        pass
 
     def log_action(self, action: str):
         """Log action taken during drill"""
@@ -75,7 +72,7 @@ class BattleDrill(ABC):
                 "action": action,
                 "phase": self.current_phase.value,
                 "timestamp": datetime.utcnow().isoformat(),
-            }
+            },
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -92,8 +89,7 @@ class BattleDrill(ABC):
 
 @dataclass
 class ReactToContact(BattleDrill):
-    """
-    Battle Drill 1: React to Contact
+    """Battle Drill 1: React to Contact
 
     FM 7-8 Trigger: Enemy contact (direct fire)
     AI Trigger: Exception, API failure, error
@@ -113,8 +109,7 @@ class ReactToContact(BattleDrill):
     current_retry: int = 0
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute React to Contact drill.
+        """Execute React to Contact drill.
 
         Algorithm:
         1. ALERT: Log the contact (error)
@@ -148,13 +143,12 @@ class ReactToContact(BattleDrill):
                     await context["retry_func"]()
                     self.success = True
                     break
-                else:
-                    # Simulate retry delay
-                    await asyncio.sleep(self.retry_delay * self.current_retry)
-                    self.success = True
-                    break
+                # Simulate retry delay
+                await asyncio.sleep(self.retry_delay * self.current_retry)
+                self.success = True
+                break
             except Exception as e:
-                self.log_action(f"Retry {self.current_retry} failed: {str(e)}")
+                self.log_action(f"Retry {self.current_retry} failed: {e!s}")
 
         # Phase 4: RECOVER
         self.current_phase = DrillPhase.RECOVER
@@ -181,19 +175,18 @@ class ReactToContact(BattleDrill):
         error_lower = error.lower()
         if "timeout" in error_lower:
             return "Network timeout - external service unavailable"
-        elif "rate" in error_lower or "429" in error_lower:
+        if "rate" in error_lower or "429" in error_lower:
             return "Rate limit exceeded"
-        elif "auth" in error_lower or "401" in error_lower:
+        if "auth" in error_lower or "401" in error_lower:
             return "Authentication failure"
-        elif "permission" in error_lower or "403" in error_lower:
+        if "permission" in error_lower or "403" in error_lower:
             return "Authorization failure"
         return "Unknown error type"
 
 
 @dataclass
 class BreakContact(BattleDrill):
-    """
-    Battle Drill 2: Break Contact
+    """Battle Drill 2: Break Contact
 
     FM 7-8 Trigger: Overwhelming force, need to disengage
     AI Trigger: Cost spike, security alert, kill switch
@@ -212,8 +205,7 @@ class BreakContact(BattleDrill):
     force_terminate: bool = False
 
     async def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute Break Contact drill.
+        """Execute Break Contact drill.
 
         Algorithm:
         1. ALERT: Broadcast "CEASE FIRE"
@@ -266,8 +258,7 @@ class BreakContact(BattleDrill):
 
 @dataclass
 class ReactToAmbush(BattleDrill):
-    """
-    Battle Drill 3: React to Ambush
+    """Battle Drill 3: React to Ambush
 
     FM 7-8 Trigger: Surprise attack from concealed positions
     AI Trigger: Unexpected behavior, cascade failure
@@ -318,8 +309,7 @@ class ReactToAmbush(BattleDrill):
 
 @dataclass
 class ReactToIED(BattleDrill):
-    """
-    Battle Drill 4: React to IED/Mine
+    """Battle Drill 4: React to IED/Mine
 
     FM 7-8 Trigger: IED detonation or discovery
     AI Trigger: Malicious input, injection attempt
@@ -373,8 +363,7 @@ class ReactToIED(BattleDrill):
 
 @dataclass
 class KnockOutBunker(BattleDrill):
-    """
-    Battle Drill 5: Knock Out Bunker
+    """Battle Drill 5: Knock Out Bunker
 
     FM 7-8 Trigger: Fortified enemy position
     AI Trigger: Hard problem requiring concentrated effort
@@ -425,8 +414,7 @@ class KnockOutBunker(BattleDrill):
 
 @dataclass
 class EnterClearRoom(BattleDrill):
-    """
-    Battle Drill 6: Enter and Clear a Room
+    """Battle Drill 6: Enter and Clear a Room
 
     FM 7-8 Trigger: Building/room clearing operation
     AI Trigger: New feature, pipeline processing
@@ -479,8 +467,7 @@ class EnterClearRoom(BattleDrill):
 
 
 class BattleDrillRouter:
-    """
-    Routes events to appropriate battle drills.
+    """Routes events to appropriate battle drills.
 
     Monitors for triggers and automatically executes drills.
     """
@@ -511,7 +498,7 @@ class BattleDrillRouter:
         if drill:
             # Create fresh instance for execution
             drill_instance = type(drill)(
-                name=drill.name, drill_number=drill.drill_number, triggers=drill.triggers
+                name=drill.name, drill_number=drill.drill_number, triggers=drill.triggers,
             )
             return await drill_instance.execute(context)
         return {"error": f"No drill registered for trigger: {trigger.value}"}

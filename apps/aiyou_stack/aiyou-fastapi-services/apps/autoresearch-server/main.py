@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-▛///▞ ANTIGRAVITY :: n-autoresearch/Kosmos/BioAgents SERVER
+"""▛///▞ ANTIGRAVITY :: n-autoresearch/Kosmos/BioAgents SERVER
 :: 650-Agent Swarm with AG-UI Protocol Support
 :: Integrates with CopilotKit and Modern Frontends
 
@@ -131,8 +130,7 @@ def chat(r: Query):
 # ==============================================================================
 @app.post("/")
 async def agui_endpoint(request: Request):
-    """
-    AG-UI Protocol Endpoint for CopilotKit integration.
+    """AG-UI Protocol Endpoint for CopilotKit integration.
     """
     try:
         body = await request.json()
@@ -177,7 +175,7 @@ async def agui_endpoint(request: Request):
                 return f"⚠️ BLOCKED by Judge#6: {decision.reasoning}"
 
             result_parts.append(
-                f"✅ Judge#6: {decision.verdict.value} ({decision.latency_ms:.1f}ms)"
+                f"✅ Judge#6: {decision.verdict.value} ({decision.latency_ms:.1f}ms)",
             )
 
         # RLM Processing

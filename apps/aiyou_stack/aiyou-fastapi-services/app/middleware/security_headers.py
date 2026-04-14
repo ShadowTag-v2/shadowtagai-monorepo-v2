@@ -1,5 +1,4 @@
-"""
-Security Headers Middleware
+"""Security Headers Middleware
 
 Implements OWASP recommended security headers:
 - Content-Security-Policy (CSP)
@@ -17,8 +16,7 @@ from starlette.responses import Response
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
-    """
-    Add security headers to all responses
+    """Add security headers to all responses
 
     Security Benefits:
     - Prevents clickjacking (X-Frame-Options)

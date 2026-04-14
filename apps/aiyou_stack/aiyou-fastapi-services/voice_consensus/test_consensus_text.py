@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Simple text-based consensus tester (no voice required)
+"""Simple text-based consensus tester (no voice required)
 Useful for testing API configuration and consensus logic
 """
 
@@ -12,7 +11,6 @@ from consensus_orchestrator import ConsensusOrchestrator
 
 async def main():
     """Run a simple text query through the consensus system"""
-
     print("\n" + "=" * 80)
     print("Multi-LLM Consensus Orchestrator - Text Mode")
     print("=" * 80 + "\n")

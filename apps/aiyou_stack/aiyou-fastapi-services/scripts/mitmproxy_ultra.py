@@ -1,5 +1,4 @@
-"""
-🚀 ANTIGRAVITY ULTRA PROXY - Production-Grade Rate Limit Mitigation
+"""🚀 ANTIGRAVITY ULTRA PROXY - Production-Grade Rate Limit Mitigation
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Advanced Features:
@@ -120,7 +119,7 @@ class SmartKeyPool:
             key.failed_requests += 1
             key.consecutive_failures += 1
             print(
-                f"🛑 Key {key.key_id} rate-limited for {duration_seconds}s (failures: {key.consecutive_failures})"
+                f"🛑 Key {key.key_id} rate-limited for {duration_seconds}s (failures: {key.consecutive_failures})",
             )
 
     def record_success(self, key: KeyHealth, latency_ms: float):
@@ -211,7 +210,7 @@ class CircuitBreaker:
     """Circuit breaker for API protection"""
 
     def __init__(
-        self, failure_threshold: int = 5, timeout_seconds: int = 60, success_threshold: int = 2
+        self, failure_threshold: int = 5, timeout_seconds: int = 60, success_threshold: int = 2,
     ):
         self.failure_threshold = failure_threshold
         self.timeout = timedelta(seconds=timeout_seconds)
@@ -323,7 +322,7 @@ class RateLimitDetector:
         if self.detected_rpm > 0:
             self.adaptive_delay = 60.0 / self.detected_rpm
             print(
-                f"📊 Detected RPM limit: ~{self.detected_rpm}, adaptive delay: {self.adaptive_delay:.2f}s"
+                f"📊 Detected RPM limit: ~{self.detected_rpm}, adaptive delay: {self.adaptive_delay:.2f}s",
             )
 
     def get_recommended_delay(self) -> float:
@@ -388,10 +387,9 @@ class ResponseCache:
                     self.access_times[cache_key] = time.time()
                     self.hits += 1
                     return entry["response"]
-                else:
-                    # Expired
-                    del self.cache[cache_key]
-                    del self.access_times[cache_key]
+                # Expired
+                del self.cache[cache_key]
+                del self.access_times[cache_key]
 
             self.misses += 1
             return None
@@ -453,7 +451,7 @@ class MetricsCollector:
                     "rate_limits": 0,
                     "avg_latency_ms": 0,
                     "total_latency_ms": 0,
-                }
+                },
             ),
             "hourly_requests": defaultdict(int),
             "status_codes": defaultdict(int),
@@ -652,11 +650,11 @@ class EnhancedKeyRotator:
         print(f"💾 Response Caching: {'✅ Enabled' if self.cache_enabled else '❌ Disabled'}")
         print(f"📊 Metrics Collection: {'✅ Enabled' if self.enable_metrics else '❌ Disabled'}")
         print(
-            f"🔧 Payload Optimization: {'✅ Enabled' if self.enable_payload_optimization else '❌ Disabled'}"
+            f"🔧 Payload Optimization: {'✅ Enabled' if self.enable_payload_optimization else '❌ Disabled'}",
         )
         print(f"🔄 Model Fallback: {'✅ Enabled' if self.enable_model_fallback else '❌ Disabled'}")
         print(
-            f"🛡️  Safety Injection: {'✅ Enabled' if self.enable_safety_injection else '❌ Disabled'}"
+            f"🛡️  Safety Injection: {'✅ Enabled' if self.enable_safety_injection else '❌ Disabled'}",
         )
         print(f"🔁 Max Retries: {self.max_retries}")
         print(f"⏱️  Cache TTL: {self.cache_ttl}s")
@@ -680,7 +678,7 @@ class EnhancedKeyRotator:
             cached = self.cache.get(flow)
             if cached:
                 flow.response = http.Response.make(
-                    200, cached, {"X-Cache": "HIT", "Content-Type": "application/json"}
+                    200, cached, {"X-Cache": "HIT", "Content-Type": "application/json"},
                 )
                 if self.metrics:
                     self.metrics.metrics["cache_hits"] += 1
@@ -725,7 +723,7 @@ class EnhancedKeyRotator:
                 # Check if key is stressed (high failure rate)
                 if key_health.consecutive_failures >= 2:
                     flow.request.path = flow.request.path.replace(
-                        "gemini-1.5-pro", "gemini-1.5-flash"
+                        "gemini-1.5-pro", "gemini-1.5-flash",
                     )
                     flow.request.path = flow.request.path.replace("gemini-pro", "gemini-flash")
                     print("🔄 Model fallback: pro → flash (key stress)")
@@ -775,7 +773,7 @@ class EnhancedKeyRotator:
         # FEATURE 4: Record for rate limit detection
         is_rate_limited = status_code == 429
         self.rate_detector.record_request(
-            success=(status_code == 200), is_rate_limited=is_rate_limited
+            success=(status_code == 200), is_rate_limited=is_rate_limited,
         )
 
         # Handle different status codes
@@ -841,7 +839,7 @@ class EnhancedKeyRotator:
                     (stats["successes"] / stats["requests"] * 100) if stats["requests"] > 0 else 0
                 )
                 print(
-                    f"   {key_id}: {stats['requests']} reqs, {success_rate:.1f}% success, {stats['avg_latency_ms']:.0f}ms avg"
+                    f"   {key_id}: {stats['requests']} reqs, {success_rate:.1f}% success, {stats['avg_latency_ms']:.0f}ms avg",
                 )
 
         if self.cache:

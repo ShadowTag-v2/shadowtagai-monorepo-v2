@@ -1,11 +1,11 @@
 import logging
-from fastapi import FastAPI, BackgroundTasks
-from pydantic import BaseModel
 
+from fastapi import BackgroundTasks, FastAPI
 from legaltrack.autopilot.glicko_router import UltrathinkRouter
+from legaltrack.enforcement.device_sdk import DeviceEnforcementSDK
 from legaltrack.events.event_bus import TelemetryEventBus
 from legaltrack.telemetry.metrics import ROIProjector
-from legaltrack.enforcement.device_sdk import DeviceEnforcementSDK
+from pydantic import BaseModel
 
 # Initialize logger
 logging.basicConfig(level=logging.INFO)
@@ -46,8 +46,7 @@ async def check_health():
 
 @app.post("/api/v1/ingest/webhook")
 async def process_court_filing(payload: IngestionPayload, bg_tasks: BackgroundTasks):
-    """
-    Primary ingestion endpoint receiving payloads from Mailgun/Sendgrid/Gmail.
+    """Primary ingestion endpoint receiving payloads from Mailgun/Sendgrid/Gmail.
     """
     # 1. Route the intelligence path based on Glicko-2 ratings
     path, latency_cost = router_engine.route_task(payload.complexity_heuristic)
@@ -65,7 +64,7 @@ async def process_court_filing(payload: IngestionPayload, bg_tasks: BackgroundTa
 
     # Execute prod in the background to maintain p99 < 90ms response times
     bg_tasks.add_task(
-        device_sdk.dispatch_prod, {"message": f"DUE {calculated_deadline} - {rule_found}"}
+        device_sdk.dispatch_prod, {"message": f"DUE {calculated_deadline} - {rule_found}"},
     )
 
     # 5. Log ROI projection
@@ -81,7 +80,6 @@ async def process_court_filing(payload: IngestionPayload, bg_tasks: BackgroundTa
 
 @app.get("/api/v1/telemetry/roi")
 async def get_roi_metrics():
-    """
-    Returns the real-time proof of value metric block.
+    """Returns the real-time proof of value metric block.
     """
     return roi_calc.get_roi_report()

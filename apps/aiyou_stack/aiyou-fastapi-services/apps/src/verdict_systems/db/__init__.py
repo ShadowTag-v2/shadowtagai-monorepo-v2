@@ -11,11 +11,11 @@ from .models import (
 )
 
 __all__ = [
-    "Base",
-    "User",
-    "TaskDB",
-    "Notification",
-    "LockoutEvent",
     "AISession",
+    "Base",
     "FamilyGroup",
+    "LockoutEvent",
+    "Notification",
+    "TaskDB",
+    "User",
 ]

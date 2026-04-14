@@ -1,5 +1,4 @@
-"""
-Monitoring and Observability Module
+"""Monitoring and Observability Module
 
 Provides comprehensive monitoring capabilities including:
 - Structured logging
@@ -15,12 +14,12 @@ from app.monitoring.logger import get_logger, setup_logging
 from app.monitoring.metrics import metrics_registry, record_error, record_request
 
 __all__ = [
-    "setup_logging",
-    "get_logger",
-    "metrics_registry",
-    "record_request",
-    "record_error",
-    "health_check",
-    "readiness_check",
     "AlertManager",
+    "get_logger",
+    "health_check",
+    "metrics_registry",
+    "readiness_check",
+    "record_error",
+    "record_request",
+    "setup_logging",
 ]

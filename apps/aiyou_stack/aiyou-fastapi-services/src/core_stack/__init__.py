@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack™
+"""PNKLN Core Stack™
 GKE-Native AI Infrastructure
 """
 

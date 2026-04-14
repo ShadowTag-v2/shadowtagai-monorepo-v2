@@ -1,5 +1,4 @@
-"""
-AI Thread models for storing and managing curated AI agent knowledge threads.
+"""AI Thread models for storing and managing curated AI agent knowledge threads.
 
 Handles storage for threads scraped from X/Twitter, including:
 - Thread metadata (author, date, likes, tags)
@@ -62,8 +61,7 @@ class ThreadCategory(StrEnum):
 
 
 class AIThreadAuthor(Base):
-    """
-    Author model for thread creators.
+    """Author model for thread creators.
 
     Tracks authors across multiple threads for attribution and filtering.
     """
@@ -98,8 +96,7 @@ class AIThreadAuthor(Base):
 
 
 class AIThread(Base):
-    """
-    Main thread model representing a complete AI agent knowledge thread.
+    """Main thread model representing a complete AI agent knowledge thread.
 
     A thread contains multiple posts and metadata for search/filtering.
     """
@@ -165,7 +162,7 @@ class AIThread(Base):
         order_by="AIThreadPost.position",
     )
     embeddings = relationship(
-        "AIThreadEmbedding", back_populates="thread", cascade="all, delete-orphan"
+        "AIThreadEmbedding", back_populates="thread", cascade="all, delete-orphan",
     )
 
     def __repr__(self):
@@ -173,8 +170,7 @@ class AIThread(Base):
 
 
 class AIThreadPost(Base):
-    """
-    Individual post within a thread.
+    """Individual post within a thread.
 
     Represents a single tweet/post in the thread sequence.
     """
@@ -186,7 +182,7 @@ class AIThreadPost(Base):
 
     # Foreign keys
     thread_id = Column(
-        String(36), ForeignKey("ai_threads.id", ondelete="CASCADE"), nullable=False, index=True
+        String(36), ForeignKey("ai_threads.id", ondelete="CASCADE"), nullable=False, index=True,
     )
 
     # Platform reference
@@ -222,8 +218,7 @@ class AIThreadPost(Base):
 
 
 class AIThreadEmbedding(Base):
-    """
-    Vector embeddings for semantic search.
+    """Vector embeddings for semantic search.
 
     Stores embeddings at thread and post level for granular retrieval.
     """
@@ -235,10 +230,10 @@ class AIThreadEmbedding(Base):
 
     # Foreign keys
     thread_id = Column(
-        String(36), ForeignKey("ai_threads.id", ondelete="CASCADE"), nullable=False, index=True
+        String(36), ForeignKey("ai_threads.id", ondelete="CASCADE"), nullable=False, index=True,
     )
     post_id = Column(
-        String(36), ForeignKey("ai_thread_posts.id", ondelete="SET NULL"), index=True
+        String(36), ForeignKey("ai_thread_posts.id", ondelete="SET NULL"), index=True,
     )  # Null = full thread embedding
 
     # Embedding metadata
@@ -266,8 +261,7 @@ class AIThreadEmbedding(Base):
 
 
 class AIThreadScrapeJob(Base):
-    """
-    Scrape job tracking for thread collection.
+    """Scrape job tracking for thread collection.
 
     Manages scheduled and on-demand scraping operations.
     """
@@ -284,7 +278,7 @@ class AIThreadScrapeJob(Base):
 
     # Status
     status = Column(
-        String(50), default="pending", index=True
+        String(50), default="pending", index=True,
     )  # pending, running, completed, failed
     threads_found = Column(Integer, default=0)
     threads_saved = Column(Integer, default=0)

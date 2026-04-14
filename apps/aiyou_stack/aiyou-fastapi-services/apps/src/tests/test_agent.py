@@ -1,5 +1,4 @@
-"""
-Test Suite for Wealth Acceleration Agent
+"""Test Suite for Wealth Acceleration Agent
 
 This module contains unit and integration tests for the wealth acceleration
 service and its components.

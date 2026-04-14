@@ -1,5 +1,4 @@
-"""
-Judge Architecture: Comprehensive Decision-Validation Framework
+"""Judge Architecture: Comprehensive Decision-Validation Framework
 ================================================================
 
 This module implements the complete Judge Architecture with 21 layers of
@@ -55,8 +54,7 @@ class DecisionStatus(Enum):
 
 
 class RiskLevel(Enum):
-    """
-    Risk classification (ATP 5-19 aligned).
+    """Risk classification (ATP 5-19 aligned).
 
     Maps to doctrine RiskLevel for consensus threshold calculation.
     See ATP 5-19 Figure 1-3 for risk matrix.

@@ -1,5 +1,4 @@
-"""
-FinJudge Pure Judge Models (v0.2)
+"""FinJudge Pure Judge Models (v0.2)
 Simplified input/output for pure risk classification
 """
 
@@ -101,7 +100,7 @@ class DecisionContext(BaseModel):
     time_horizon: TimeHorizon = Field(..., description="Decision time horizon")
     objective: Objective = Field(..., description="Decision objective")
     constraints: list[str] = Field(
-        default_factory=list, description="Constraints (e.g., 'no leverage', 'max 2% capital risk')"
+        default_factory=list, description="Constraints (e.g., 'no leverage', 'max 2% capital risk')",
     )
 
 
@@ -137,7 +136,7 @@ class Volatility(BaseModel):
     realized_vol: float | None = Field(None, description="Realized volatility")
     implied_vol: float | None = Field(None, description="Implied volatility")
     regime_tag: str | None = Field(
-        None, description="Volatility regime (low_vol, normal, high_vol, stressed)"
+        None, description="Volatility regime (low_vol, normal, high_vol, stressed)",
     )
 
 
@@ -177,7 +176,7 @@ class Flags(BaseModel):
         description="Regulatory flags (e.g., 'concentration_breach', 'UCITS_limit')",
     )
     policy_flags: list[str] = Field(
-        default_factory=list, description="Policy flags (e.g., 'outside_risk_budget')"
+        default_factory=list, description="Policy flags (e.g., 'outside_risk_budget')",
     )
 
 
@@ -195,7 +194,7 @@ class NumericOverview(BaseModel):
 
     key_metrics: dict[str, Any] = Field(..., description="Redacted subset of input metrics")
     primary_risk_driver: str = Field(
-        ..., description="Primary risk driver (tail_risk, credit, liquidity, etc.)"
+        ..., description="Primary risk driver (tail_risk, credit, liquidity, etc.)",
     )
 
 
@@ -227,7 +226,7 @@ class ExplanationNL(BaseModel):
 
     short_summary: str = Field(..., max_length=500, description="≤3 sentences")
     detail_bullets: list[str] = Field(
-        ..., min_items=1, description="Detail bullets (what/why/where)"
+        ..., min_items=1, description="Detail bullets (what/why/where)",
     )
 
 
@@ -248,7 +247,7 @@ class JudgeRequest(BaseModel):
     """Judge decision request (pure judge v0.2)"""
 
     decision_id: str = Field(
-        default_factory=lambda: str(uuid4()), description="Decision identifier"
+        default_factory=lambda: str(uuid4()), description="Decision identifier",
     )
     module: str = Field(..., description="Calling module (e.g., 'financial_runway_monitor')")
     actor: Actor = Field(..., description="Decision actor")
@@ -257,7 +256,7 @@ class JudgeRequest(BaseModel):
     metrics: Metrics = Field(..., description="Metrics from upstream systems")
     flags: Flags = Field(default_factory=Flags, description="Flags from upstream")
     prior_precedent_ids: list[str] = Field(
-        default_factory=list, description="Similar past decisions"
+        default_factory=list, description="Similar past decisions",
     )
     user_notes: str | None = Field(None, description="Additional user notes")
 
@@ -282,7 +281,7 @@ class JudgeRequest(BaseModel):
                     },
                 },
                 "flags": {"policy_flags": ["approaching_12mo_runway_threshold"]},
-            }
+            },
         }
 
 
@@ -296,7 +295,7 @@ class JudgeRuling(BaseModel):
     numeric_overview: NumericOverview = Field(..., description="Key metrics overview")
     recommendation: Recommendation = Field(..., description="Judge recommendation")
     precedent_links: list[PrecedentLink] = Field(
-        default_factory=list, description="Similar decisions"
+        default_factory=list, description="Similar decisions",
     )
     explanation_nl: ExplanationNL = Field(..., description="Natural language explanation")
     audit_trail: AuditTrail = Field(..., description="Audit trail")
@@ -341,5 +340,5 @@ class JudgeRuling(BaseModel):
                     ],
                 },
                 "audit_trail": {"input_hash": "sha256_placeholder", "overrides": []},
-            }
+            },
         }

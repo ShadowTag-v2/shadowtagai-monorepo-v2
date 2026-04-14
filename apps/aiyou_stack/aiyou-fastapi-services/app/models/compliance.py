@@ -1,5 +1,4 @@
-"""
-ActiveShield Modular Compliance Framework (MCF v1.0) - Data Models
+"""ActiveShield Modular Compliance Framework (MCF v1.0) - Data Models
 
 Core Principle: "Users select which laws apply to them. ActiveShield assembles
 the exact compliance modules needed — nothing more, nothing less."
@@ -127,20 +126,20 @@ class ComplianceBlueprintRequest(BaseModel):
     """Request to generate a compliance blueprint based on user selections"""
 
     jurisdictions: list[Jurisdiction] = Field(
-        default=[Jurisdiction.US], description="Selected geographic jurisdictions"
+        default=[Jurisdiction.US], description="Selected geographic jurisdictions",
     )
     regulations: list[RegulationId] = Field(
-        ..., description="Selected regulation modules to enforce"
+        ..., description="Selected regulation modules to enforce",
     )
     organization_type: str | None = Field(
-        None, description="Type of organization (startup, enterprise, government)"
+        None, description="Type of organization (startup, enterprise, government)",
     )
     ai_system_type: str | None = Field(None, description="Type of AI system being assessed")
     handles_minors: bool = Field(
-        default=False, description="Whether the system handles data from minors"
+        default=False, description="Whether the system handles data from minors",
     )
     handles_health_data: bool = Field(
-        default=False, description="Whether the system handles health/PHI data"
+        default=False, description="Whether the system handles health/PHI data",
     )
 
 
@@ -174,7 +173,7 @@ class AssessmentInput(BaseModel):
 
     # Selected modules for assessment
     modules: list[RegulationId] = Field(
-        default=[RegulationId.EU_AI_ACT], description="Modules to assess against"
+        default=[RegulationId.EU_AI_ACT], description="Modules to assess against",
     )
 
 

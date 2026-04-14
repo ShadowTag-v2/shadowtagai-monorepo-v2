@@ -1,5 +1,4 @@
-"""
-Verdict Systems - SQLAlchemy Database Models
+"""Verdict Systems - SQLAlchemy Database Models
 PostgreSQL schema for production deployment
 """
 

@@ -1,5 +1,4 @@
-"""
-ShadowTagAI Corp Engine - Main API
+"""ShadowTagAI Corp Engine - Main API
 ===================================
 Cloud-native, login-and-run enterprise SaaS platform.
 """
@@ -78,8 +77,7 @@ async def get_license_tiers():
 
 @app.post("/auth/provision")
 async def provision_tenant(tenant: TenantCreate):
-    """
-    Provision a new tenant - the only setup needed.
+    """Provision a new tenant - the only setup needed.
     Customer gets login, platform runs immediately.
     """
     tenant_id = str(uuid.uuid4())

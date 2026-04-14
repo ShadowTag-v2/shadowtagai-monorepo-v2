@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Twitter/X Source Adapter
+"""PNKLN Core Stack - Twitter/X Source Adapter
 
 Fetches tweets using the Twitter API v2 via Tweepy.
 Supports searching by keywords, hashtags, and filtering by engagement.
@@ -20,8 +19,7 @@ logger = structlog.get_logger(__name__)
 
 
 class TwitterAdapter(SourceAdapter):
-    """
-    Twitter API v2 adapter for ingesting tweets.
+    """Twitter API v2 adapter for ingesting tweets.
 
     Fetches:
     - Tweet text and metadata
@@ -59,10 +57,9 @@ class TwitterAdapter(SourceAdapter):
         return num_items * self.config.ingestion.cost_per_twitter_item
 
     async def fetch_items(
-        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None
+        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None,
     ) -> AsyncIterator[IngestedItem]:
-        """
-        Fetch tweets from Twitter.
+        """Fetch tweets from Twitter.
 
         Args:
             queries: Search queries/hashtags (e.g., ["#AI", "machine learning"])
@@ -71,6 +68,7 @@ class TwitterAdapter(SourceAdapter):
 
         Yields:
             IngestedItem objects representing tweets
+
         """
         if not queries:
             queries = ["artificial intelligence", "#MachineLearning", "#TechNews", "#AI"]
@@ -150,7 +148,7 @@ class TwitterAdapter(SourceAdapter):
                     media_item = media[key]
                     media_urls.append(
                         getattr(media_item, "url", None)
-                        or getattr(media_item, "preview_image_url", None)
+                        or getattr(media_item, "preview_image_url", None),
                     )
 
         # Build metadata

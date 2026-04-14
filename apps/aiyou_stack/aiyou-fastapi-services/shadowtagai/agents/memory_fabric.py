@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Memory Fabric for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
+"""Memory Fabric for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
 Implements 3-tier coordination: global, team, agent.
 Based on patterns from yyz-agentics-june SPARC orchestrator.
 """
@@ -29,8 +28,7 @@ class MemoryEntry:
 
 
 class MemoryFabric:
-    """
-    3-tier memory coordination for Flying n-autoresearch/Kosmos/BioAgents swarm.
+    """3-tier memory coordination for Flying n-autoresearch/Kosmos/BioAgents swarm.
 
     Tiers:
     - Global: Shared by all 600 agents (fitness landscape, best positions)
@@ -46,13 +44,13 @@ class MemoryFabric:
         num_squads: int = 24,
         default_ttl: float = 3600.0,  # 1 hour
     ):
-        """
-        Initialize memory fabric.
+        """Initialize memory fabric.
 
         Args:
             num_agents: Total agents in swarm
             num_squads: Number of squads (teams)
             default_ttl: Default time to live for entries
+
         """
         self.num_agents = num_agents
         self.num_squads = num_squads
@@ -164,7 +162,7 @@ class MemoryFabric:
         if fitness < current_best:
             self.set_global("best_fitness", fitness)
             self.set_global(
-                "best_position", position.tolist() if isinstance(position, np.ndarray) else position
+                "best_position", position.tolist() if isinstance(position, np.ndarray) else position,
             )
 
             # Update history
@@ -174,7 +172,7 @@ class MemoryFabric:
                     "iteration": self.get_global("iteration", 0),
                     "fitness": fitness,
                     "timestamp": time.time(),
-                }
+                },
             )
             self.set_global("convergence_history", history)
             return True
@@ -204,7 +202,7 @@ class MemoryFabric:
 
     # PSO-specific operations
     def store_particle_state(
-        self, agent_id: int, position: np.ndarray, velocity: np.ndarray, fitness: float
+        self, agent_id: int, position: np.ndarray, velocity: np.ndarray, fitness: float,
     ):
         """Store full particle state."""
         self.set_agent(agent_id, "position", position.tolist())
@@ -236,7 +234,7 @@ class MemoryFabric:
 
     # ACO-specific operations
     def update_pheromones(
-        self, squad_id: int, route: list[int], quality: float, evaporation: float = 0.1
+        self, squad_id: int, route: list[int], quality: float, evaporation: float = 0.1,
     ):
         """Update pheromone trails for a squad."""
         pheromones = self.get_team(squad_id, "pheromone_trail")

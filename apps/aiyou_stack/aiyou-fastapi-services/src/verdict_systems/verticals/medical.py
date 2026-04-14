@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Medical & Senior Care Vertical
+"""Verdict Systems - Medical & Senior Care Vertical
 Appointment reminders, medication tracking, senior independence support
 
 Features:

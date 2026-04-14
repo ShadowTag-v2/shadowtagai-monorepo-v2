@@ -1,5 +1,4 @@
-"""
-L2a: Gemini Refine - Generation Loop
+"""L2a: Gemini Refine - Generation Loop
 
 Role: Labor (Gemini side)
 - Collaborative writing and code generation
@@ -41,8 +40,7 @@ async def refine(
     model: str = "gemini-2.0-flash-exp",
     api_key: str = "",
 ) -> dict[str, Any]:
-    """
-    Refine the draft using Gemini.
+    """Refine the draft using Gemini.
 
     Args:
         current_draft: Current version of the draft
@@ -57,6 +55,7 @@ async def refine(
             'tools_used': list,
             'cost': float
         }
+
     """
     tools_section = ""
     if tools:
@@ -69,7 +68,7 @@ async def refine(
         )
 
     prompt = REFINE_PROMPT.format(
-        current_draft=current_draft, tools_section=tools_section, feedback_section=feedback_section
+        current_draft=current_draft, tools_section=tools_section, feedback_section=feedback_section,
     )
 
     async with httpx.AsyncClient(timeout=120.0) as client:
@@ -86,7 +85,7 @@ async def refine(
 
     # Extract content
     content = ""
-    if "candidates" in data and data["candidates"]:
+    if data.get("candidates"):
         parts = data["candidates"][0].get("content", {}).get("parts", [])
         if parts:
             content = parts[0].get("text", "")

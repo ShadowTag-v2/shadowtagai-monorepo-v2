@@ -23,8 +23,7 @@ async def create_dashboard(
     dashboard: DashboardCreate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Create a new dashboard
+    """Create a new dashboard
 
     Create a custom analytics dashboard with widgets for visualizing metrics.
     """
@@ -35,8 +34,7 @@ async def create_dashboard(
 
 @router.get("/default", response_model=DashboardResponse)
 async def get_default_dashboard(db: AsyncSession = Depends(get_db)):
-    """
-    Get the default dashboard
+    """Get the default dashboard
 
     Retrieve the dashboard marked as default.
     """
@@ -56,8 +54,7 @@ async def get_dashboard(
     dashboard_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Get dashboard by ID
+    """Get dashboard by ID
 
     Retrieve detailed information about a specific dashboard including all widgets.
     """
@@ -77,8 +74,7 @@ async def list_dashboards(
     is_public: bool = None,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    List all dashboards
+    """List all dashboards
 
     Retrieve all dashboards, optionally filtered by public status.
     """
@@ -93,8 +89,7 @@ async def update_dashboard(
     dashboard_data: DashboardUpdate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Update dashboard
+    """Update dashboard
 
     Update dashboard properties such as name, description, or layout.
     """
@@ -114,8 +109,7 @@ async def delete_dashboard(
     dashboard_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Delete dashboard
+    """Delete dashboard
 
     Permanently delete a dashboard and all associated widgets.
     """
@@ -127,19 +121,17 @@ async def delete_dashboard(
             detail="Dashboard not found",
         )
 
-    return None
 
 
 @router.post(
-    "/{dashboard_id}/widgets", response_model=WidgetResponse, status_code=status.HTTP_201_CREATED
+    "/{dashboard_id}/widgets", response_model=WidgetResponse, status_code=status.HTTP_201_CREATED,
 )
 async def add_widget(
     dashboard_id: UUID,
     widget: WidgetCreate,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Add widget to dashboard
+    """Add widget to dashboard
 
     Create a new widget on the specified dashboard.
     """
@@ -159,8 +151,7 @@ async def delete_widget(
     widget_id: UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    """
-    Delete widget
+    """Delete widget
 
     Remove a widget from its dashboard.
     """
@@ -172,4 +163,3 @@ async def delete_widget(
             detail="Widget not found",
         )
 
-    return None

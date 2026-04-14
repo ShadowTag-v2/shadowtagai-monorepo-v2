@@ -12,12 +12,10 @@ from app.models.kernel import KernelInput, KernelMetrics, KernelOutput
 class KernelChainError(Exception):
     """Base exception for kernel chain errors."""
 
-    pass
 
 
 class Kernel(ABC):
-    """
-    Base class for all kernels in the chain.
+    """Base class for all kernels in the chain.
 
     Each kernel follows single responsibility principle:
     - Receives structured input
@@ -32,8 +30,7 @@ class Kernel(ABC):
 
     @abstractmethod
     async def execute(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Execute the kernel transformation.
+        """Execute the kernel transformation.
 
         Args:
             kernel_input: Structured input data
@@ -43,12 +40,11 @@ class Kernel(ABC):
 
         Raises:
             KernelChainError: If execution fails
+
         """
-        pass
 
     async def __call__(self, kernel_input: KernelInput) -> KernelOutput:
-        """
-        Execute kernel with timing and error handling.
+        """Execute kernel with timing and error handling.
 
         This wrapper provides:
         - Latency measurement
@@ -73,7 +69,7 @@ class Kernel(ABC):
             if self.max_latency_ms and latency_ms > self.max_latency_ms:
                 raise KernelChainError(
                     f"{self.name} exceeded max latency: "
-                    f"{latency_ms:.2f}ms > {self.max_latency_ms}ms"
+                    f"{latency_ms:.2f}ms > {self.max_latency_ms}ms",
                 )
 
             # Attach metrics
@@ -97,7 +93,7 @@ class Kernel(ABC):
             raise
         except Exception as e:
             latency_ms = (time.perf_counter() - start_time) * 1000
-            raise KernelChainError(f"{self.name} failed after {latency_ms:.2f}ms: {str(e)}") from e
+            raise KernelChainError(f"{self.name} failed after {latency_ms:.2f}ms: {e!s}") from e
 
     @staticmethod
     def _hash_data(data: Any) -> str:

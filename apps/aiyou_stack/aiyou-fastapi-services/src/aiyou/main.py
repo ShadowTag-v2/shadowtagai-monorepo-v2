@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4 FastAPI Main Application
+"""ShadowTag-v4 FastAPI Main Application
 
 This is the main entry point for the ShadowTag-v4 platform API services.
 """
@@ -15,6 +14,9 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
+from .database import Base, engine
+
+logger = logging.getLogger(__name__)
 from .middleware import (
     RateLimitMiddleware,
     RequestValidationMiddleware,
@@ -96,11 +98,11 @@ async def add_process_time_header(request: Request, call_next):
 # Root endpoint
 @app.get("/", tags=["System"])
 async def root() -> dict[str, Any]:
-    """
-    Root endpoint providing basic API information.
+    """Root endpoint providing basic API information.
 
     Returns:
         Dict containing API metadata and service status
+
     """
     return {
         "name": "ShadowTag-v4 Platform API",
@@ -121,11 +123,11 @@ async def root() -> dict[str, Any]:
 # Health check endpoint
 @app.get("/health", tags=["System"])
 async def health_check() -> dict[str, str]:
-    """
-    Health check endpoint for load balancers and monitoring.
+    """Health check endpoint for load balancers and monitoring.
 
     Returns:
         Dict with status indicator
+
     """
     return {"status": "healthy", "service": "shadowtag_v4-api"}
 
@@ -133,11 +135,11 @@ async def health_check() -> dict[str, str]:
 # Service status endpoint
 @app.get("/status", tags=["System"])
 async def service_status() -> dict[str, Any]:
-    """
-    Detailed service status endpoint.
+    """Detailed service status endpoint.
 
     Returns:
         Dict with detailed status of all services
+
     """
     return {
         "api": "operational",

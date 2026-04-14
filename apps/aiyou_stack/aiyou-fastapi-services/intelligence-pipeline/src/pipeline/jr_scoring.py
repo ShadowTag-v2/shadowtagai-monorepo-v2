@@ -1,6 +1,5 @@
-from typing import Optional
-"""
-PNKLN Intelligence Pipeline - JR Engine Scoring
+
+"""PNKLN Intelligence Pipeline - JR Engine Scoring
 
 JR (Junior) Engine provides initial scoring and reasoning for intelligence items.
 Uses Claude API (Haiku for cost efficiency) to analyze relevance and impact.
@@ -28,16 +27,15 @@ logger = logging.getLogger(__name__)
 
 
 class JRScoringEngine:
-    """
-    JR Engine for scoring intelligence items using Claude API
+    """JR Engine for scoring intelligence items using Claude API
     """
 
-    def __init__(self, api_key: Optional[str] = None):
-        """
-        Initialize JR scoring engine
+    def __init__(self, api_key: str | None = None):
+        """Initialize JR scoring engine
 
         Args:
             api_key: Anthropic API key (defaults to env var)
+
         """
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -47,14 +45,14 @@ class JRScoringEngine:
         logger.info("JRScoringEngine initialized")
 
     async def score_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Score all intelligence items
+        """Score all intelligence items
 
         Args:
             items: List of intelligence items to score
 
         Returns:
             Same list with jr_score and jr_reasoning populated
+
         """
         logger.info(f"=== JR Engine Scoring {len(items)} items ===")
         start_time = datetime.now()
@@ -66,13 +64,13 @@ class JRScoringEngine:
                 item.jr_reasoning = jr_score.reasoning
 
                 logger.info(
-                    f"[{i + 1}/{len(items)}] {item.title[:50]}... → Score: {jr_score.score:.2f}"
+                    f"[{i + 1}/{len(items)}] {item.title[:50]}... → Score: {jr_score.score:.2f}",
                 )
 
             except Exception as e:
                 logger.error(f"Error scoring item {item.id}: {e}")
                 item.jr_score = 0.0
-                item.jr_reasoning = f"Scoring failed: {str(e)}"
+                item.jr_reasoning = f"Scoring failed: {e!s}"
 
         duration = (datetime.now() - start_time).total_seconds()
         logger.info(f"✓ JR Scoring complete in {duration:.1f}s")
@@ -80,14 +78,14 @@ class JRScoringEngine:
         return items
 
     async def score_item(self, item: IntelligenceItem) -> JRScore:
-        """
-        Score a single intelligence item using Claude
+        """Score a single intelligence item using Claude
 
         Args:
             item: Intelligence item to score
 
         Returns:
             JRScore with score and reasoning
+
         """
         prompt = self._build_scoring_prompt(item)
 
@@ -122,14 +120,14 @@ class JRScoringEngine:
             )
 
     def _build_scoring_prompt(self, item: IntelligenceItem) -> str:
-        """
-        Build scoring prompt for Claude
+        """Build scoring prompt for Claude
 
         Args:
             item: Intelligence item
 
         Returns:
             Prompt string
+
         """
         return f"""You are JR, the Junior Intelligence Analyst for PNKLN, an AI governance platform startup.
 
@@ -174,11 +172,10 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """
-    Main JR scoring entry point
+    """Main JR scoring entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load items from ingestion

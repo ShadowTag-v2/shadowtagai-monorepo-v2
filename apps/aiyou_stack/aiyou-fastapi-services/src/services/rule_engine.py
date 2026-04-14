@@ -1,5 +1,4 @@
-"""
-Jurisdiction-Specific Rule Engine
+"""Jurisdiction-Specific Rule Engine
 Handles complex deadline calculations with jurisdiction-specific rules
 """
 
@@ -45,8 +44,7 @@ class DeadlineCalculation:
 
 
 class JurisdictionRuleEngine:
-    """
-    Calculates deadlines according to jurisdiction-specific rules
+    """Calculates deadlines according to jurisdiction-specific rules
 
     Handles:
     - Weekend exclusions
@@ -79,8 +77,7 @@ class JurisdictionRuleEngine:
         exclude_holidays: bool = True,
         additional_context: dict[str, Any] | None = None,
     ) -> DeadlineCalculation:
-        """
-        Calculate deadline with all jurisdiction-specific rules applied
+        """Calculate deadline with all jurisdiction-specific rules applied
 
         Args:
             trigger_date: Date that triggers the deadline
@@ -94,6 +91,7 @@ class JurisdictionRuleEngine:
 
         Returns:
             DeadlineCalculation with full details
+
         """
         notes = []
         rule_citations = []
@@ -106,7 +104,7 @@ class JurisdictionRuleEngine:
         # Apply service method additions
         if service_method:
             service_addition = self._get_service_method_addition(
-                jurisdiction, service_method, deadline_type
+                jurisdiction, service_method, deadline_type,
             )
             notes.append(f"Service method '{service_method.value}' adds {service_addition} days")
 
@@ -132,7 +130,7 @@ class JurisdictionRuleEngine:
 
         # Apply jurisdiction-specific adjustments
         current_date = self._apply_jurisdiction_specific_rules(
-            current_date, jurisdiction, deadline_type, notes, rule_citations
+            current_date, jurisdiction, deadline_type, notes, rule_citations,
         )
 
         # Calculate total calendar days
@@ -140,7 +138,7 @@ class JurisdictionRuleEngine:
 
         # Calculate confidence
         confidence = self._calculate_calculation_confidence(
-            jurisdiction, deadline_type, service_method
+            jurisdiction, deadline_type, service_method,
         )
 
         return DeadlineCalculation(
@@ -156,53 +154,48 @@ class JurisdictionRuleEngine:
         )
 
     def _get_service_method_addition(
-        self, jurisdiction: str, service_method: ServiceMethod, deadline_type: str
+        self, jurisdiction: str, service_method: ServiceMethod, deadline_type: str,
     ) -> int:
         """Get additional days based on service method"""
-
         # Federal rules (FRCP)
         if jurisdiction == "federal":
             if service_method == ServiceMethod.MAIL:
                 return 3  # FRCP 6(d)
-            elif service_method == ServiceMethod.CERTIFIED_MAIL:
+            if service_method == ServiceMethod.CERTIFIED_MAIL:
                 return 3
-            elif service_method == ServiceMethod.ELECTRONIC:
+            if service_method == ServiceMethod.ELECTRONIC:
                 return 0  # No addition for e-service
-            elif service_method == ServiceMethod.PERSONAL:
+            if service_method == ServiceMethod.PERSONAL:
                 return 0
-            else:
-                return 0
+            return 0
 
         # California state courts
-        elif jurisdiction == "CA":
+        if jurisdiction == "CA":
             if service_method == ServiceMethod.MAIL:
                 return 5  # CCP § 1013(a)
-            elif service_method == ServiceMethod.ELECTRONIC:
+            if service_method == ServiceMethod.ELECTRONIC:
                 return 2  # CCP § 1010.6(a)(3)(B)
-            elif service_method == ServiceMethod.PERSONAL:
+            if service_method == ServiceMethod.PERSONAL:
                 return 0
-            else:
-                return 0
+            return 0
 
         # New York state courts
-        elif jurisdiction == "NY":
+        if jurisdiction == "NY":
             if service_method == ServiceMethod.MAIL:
                 return 5  # CPLR 2103(b)(2)
-            elif service_method == ServiceMethod.PERSONAL:
+            if service_method == ServiceMethod.PERSONAL:
                 return 0
-            else:
-                return 0
+            return 0
 
         # Texas state courts
-        elif jurisdiction == "TX":
+        if jurisdiction == "TX":
             if service_method == ServiceMethod.MAIL:
                 return 4  # TRCP 21a
-            elif service_method == ServiceMethod.CERTIFIED_MAIL:
+            if service_method == ServiceMethod.CERTIFIED_MAIL:
                 return 4
-            elif service_method == ServiceMethod.PERSONAL:
+            if service_method == ServiceMethod.PERSONAL:
                 return 0
-            else:
-                return 0
+            return 0
 
         # Default: no addition
         return 0
@@ -240,19 +233,17 @@ class JurisdictionRuleEngine:
         notes: list[str],
         rule_citations: list[str],
     ) -> date:
-        """
-        Apply jurisdiction-specific adjustments to calculated date
+        """Apply jurisdiction-specific adjustments to calculated date
 
         Some jurisdictions have special rules like:
         - If deadline falls on weekend, move to next Monday
         - Specific rules for certain types of filings
         - Local court rules
         """
-
         # Federal courts: If deadline falls on weekend or holiday, move to next business day
         if jurisdiction == "federal":
             while self._is_weekend(calculated_date) or self._is_holiday(
-                calculated_date, jurisdiction
+                calculated_date, jurisdiction,
             ):
                 calculated_date += timedelta(days=1)
                 notes.append("Moved to next business day (federal rule)")
@@ -261,7 +252,7 @@ class JurisdictionRuleEngine:
         # California: If last day is holiday/weekend, extends to next court day
         elif jurisdiction == "CA":
             while self._is_weekend(calculated_date) or self._is_holiday(
-                calculated_date, jurisdiction
+                calculated_date, jurisdiction,
             ):
                 calculated_date += timedelta(days=1)
                 notes.append("Extended to next court day (CCP § 12)")
@@ -270,7 +261,7 @@ class JurisdictionRuleEngine:
         # New York: Similar rule
         elif jurisdiction == "NY":
             while self._is_weekend(calculated_date) or self._is_holiday(
-                calculated_date, jurisdiction
+                calculated_date, jurisdiction,
             ):
                 calculated_date += timedelta(days=1)
                 notes.append("Extended to next business day (CPLR 2)")
@@ -279,10 +270,9 @@ class JurisdictionRuleEngine:
         return calculated_date
 
     def _calculate_calculation_confidence(
-        self, jurisdiction: str, deadline_type: str, service_method: ServiceMethod | None
+        self, jurisdiction: str, deadline_type: str, service_method: ServiceMethod | None,
     ) -> float:
-        """
-        Calculate confidence in the deadline calculation
+        """Calculate confidence in the deadline calculation
 
         Factors:
         - Rule coverage for jurisdiction
@@ -346,13 +336,11 @@ class JurisdictionRuleEngine:
         """Load state-specific holidays from database"""
         # TODO: Implement database loading
         # This would load jurisdiction-specific holidays from a JSON/DB file
-        pass
 
     def get_rule_citation(
-        self, jurisdiction: str, deadline_type: str, service_method: ServiceMethod | None = None
+        self, jurisdiction: str, deadline_type: str, service_method: ServiceMethod | None = None,
     ) -> str:
         """Get the legal rule citation for a deadline calculation"""
-
         citations = []
 
         # Federal citations
@@ -437,7 +425,6 @@ class RuleDatabase:
 
     def _initialize_state_rules(self):
         """Initialize state-specific rules"""
-
         # California
         self.rules["CA"] = [
             {
@@ -499,11 +486,11 @@ class RuleDatabase:
                 "exclude_weekends": True,
                 "exclude_holidays": True,
                 "service_additions": {ServiceMethod.MAIL: 4, ServiceMethod.PERSONAL: 0},
-            }
+            },
         ]
 
     def get_rule(
-        self, jurisdiction: str, deadline_type: str, trigger: str | None = None
+        self, jurisdiction: str, deadline_type: str, trigger: str | None = None,
     ) -> dict[str, Any] | None:
         """Retrieve specific rule from database"""
         if jurisdiction not in self.rules:

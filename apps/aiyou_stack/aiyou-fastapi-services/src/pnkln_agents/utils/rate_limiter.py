@@ -1,5 +1,4 @@
-"""
-Redis-backed Rate Limiter
+"""Redis-backed Rate Limiter
 Persists rate limiting state across pod restarts
 """
 
@@ -14,8 +13,7 @@ except ImportError:
 
 
 class RedisRateLimiter:
-    """
-    Redis-backed rate limiter for distributed systems
+    """Redis-backed rate limiter for distributed systems
 
     Uses sliding window algorithm for accurate rate limiting
     Persists state across application restarts
@@ -35,8 +33,7 @@ class RedisRateLimiter:
         self.default_window = default_window
 
     def is_allowed(self, key: str, limit: int | None = None, window: int | None = None) -> bool:
-        """
-        Check if action is allowed under rate limit
+        """Check if action is allowed under rate limit
 
         Args:
             key: Rate limit key (e.g., 'domain:example.com')
@@ -45,6 +42,7 @@ class RedisRateLimiter:
 
         Returns:
             True if allowed, False if rate limit exceeded
+
         """
         limit = limit or self.default_limit
         window = window or self.default_window
@@ -70,19 +68,18 @@ class RedisRateLimiter:
         return True
 
     def record_request(self, key: str):
-        """
-        Record a request (for manual rate limiting)
+        """Record a request (for manual rate limiting)
 
         Args:
             key: Rate limit key
+
         """
         now = time.time()
         self.redis_client.zadd(key, {str(now): now})
         self.redis_client.expire(key, self.default_window * 2)
 
     def get_remaining(self, key: str, limit: int | None = None, window: int | None = None) -> int:
-        """
-        Get remaining requests in current window
+        """Get remaining requests in current window
 
         Args:
             key: Rate limit key
@@ -91,6 +88,7 @@ class RedisRateLimiter:
 
         Returns:
             Number of remaining requests
+
         """
         limit = limit or self.default_limit
         window = window or self.default_window
@@ -105,18 +103,17 @@ class RedisRateLimiter:
         return max(0, limit - current_count)
 
     def reset(self, key: str):
-        """
-        Reset rate limit for a key
+        """Reset rate limit for a key
 
         Args:
             key: Rate limit key to reset
+
         """
         self.redis_client.delete(key)
 
 
 class InMemoryRateLimiter:
-    """
-    Fallback in-memory rate limiter (for development/testing)
+    """Fallback in-memory rate limiter (for development/testing)
 
     WARNING: Does not persist across restarts
     Use RedisRateLimiter for production

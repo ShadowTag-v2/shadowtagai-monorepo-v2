@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gate 0: Tesla Fleet API viability test (1Hz for 60s)
+"""Gate 0: Tesla Fleet API viability test (1Hz for 60s)
 ---------------------------------------------------
 PREREQS (one-time):
   1) Register app at https://developer.tesla.com

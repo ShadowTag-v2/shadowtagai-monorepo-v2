@@ -1,5 +1,4 @@
-"""
-Antigravity Agent Framework - Self-Applied Multi-Agent Architecture
+"""Antigravity Agent Framework - Self-Applied Multi-Agent Architecture
 =====================================================================
 
 ARCHITECTURE INTERNALIZATION:
@@ -58,8 +57,7 @@ class RiskLevel(StrEnum):
 
 @dataclass
 class JRAssessment:
-    """
-    Judge #6 assessment result: Purpose → Reasons → Brakes.
+    """Judge #6 assessment result: Purpose → Reasons → Brakes.
 
     Target latency: <500μs (deterministic, no LLM calls)
     """
@@ -81,8 +79,7 @@ class JRAssessment:
 
 
 class JREngine:
-    """
-    Deterministic Purpose/Reasons/Brakes evaluation engine.
+    """Deterministic Purpose/Reasons/Brakes evaluation engine.
 
     TARGET: <500μs per assessment
     PATTERN: Kernel-based (no LLM overhead)
@@ -111,8 +108,7 @@ class JREngine:
         }
 
     def assess(self, purpose: Purpose, context: dict[str, Any], confidence: float) -> JRAssessment:
-        """
-        Perform JR assessment on proposed action.
+        """Perform JR assessment on proposed action.
 
         Args:
             purpose: High-level purpose of action
@@ -121,6 +117,7 @@ class JREngine:
 
         Returns:
             JRAssessment with risk level and reasoning
+
         """
         start_time = time.perf_counter()
 
@@ -190,7 +187,6 @@ class JREngine:
 
     def _calculate_risk(self, purpose: Purpose, context: dict, brakes: list[str]) -> RiskLevel:
         """Calculate risk level using ATP 5-19 matrix logic."""
-
         # Count severity of brakes
         critical_brakes = sum(
             1 for b in brakes if "authentication" in b.lower() or "database" in b.lower()
@@ -239,8 +235,7 @@ class ModelRating:
 
 
 class GlickoAgentSelector:
-    """
-    Dynamic agent selection based on Glicko-2 competitive ratings.
+    """Dynamic agent selection based on Glicko-2 competitive ratings.
 
     BENEFIT: 78% cost reduction via smart routing
     PATTERN: Best agent wins via historical performance
@@ -255,14 +250,14 @@ class GlickoAgentSelector:
         }
 
     def select_best_agent(self, task_type: Purpose) -> str:
-        """
-        Select highest-rated agent for task type.
+        """Select highest-rated agent for task type.
 
         Args:
             task_type: Type of task to perform
 
         Returns:
             Agent ID with highest rating for this task
+
         """
         # Map task type to relevant agents
         agent_pool = self._get_agent_pool(task_type)
@@ -272,7 +267,7 @@ class GlickoAgentSelector:
 
         logger.info(
             f"Selected {best_agent} (rating: {self.ratings[best_agent].rating:.0f}) "
-            f"for {task_type.value}"
+            f"for {task_type.value}",
         )
 
         return best_agent
@@ -327,8 +322,7 @@ class PanelDebateResult:
 
 
 class PanelDebateSystem:
-    """
-    Multi-agent debate for edge cases (<80% confidence).
+    """Multi-agent debate for edge cases (<80% confidence).
 
     ARCHITECTURE:
         Prosecutor (argues against) → Defender (argues for) → Judge (decides)
@@ -342,10 +336,9 @@ class PanelDebateSystem:
         self.jr_engine = JREngine()
 
     async def debate(
-        self, action: str, context: dict[str, Any], _initial_confidence: float
+        self, action: str, context: dict[str, Any], _initial_confidence: float,
     ) -> PanelDebateResult:
-        """
-        Run 3-round panel debate for edge case decision.
+        """Run 3-round panel debate for edge case decision.
 
         Args:
             action: Proposed action to debate
@@ -354,6 +347,7 @@ class PanelDebateSystem:
 
         Returns:
             PanelDebateResult with final decision and reasoning
+
         """
         start_time = time.perf_counter()
 
@@ -408,7 +402,7 @@ class PanelDebateSystem:
         )
 
     async def _defender_argument(
-        self, action: str, context: dict, prosecutor: DebateArgument
+        self, action: str, context: dict, prosecutor: DebateArgument,
     ) -> DebateArgument:
         """Counter prosecutor, provide context (Claude Sonnet equivalent)."""
         await asyncio.sleep(0.020)  # Simulate 20ms Sonnet call
@@ -439,7 +433,7 @@ class PanelDebateSystem:
         )
 
     async def _judge_decision(
-        self, action: str, context: dict, prosecutor: DebateArgument, defender: DebateArgument
+        self, action: str, context: dict, prosecutor: DebateArgument, defender: DebateArgument,
     ) -> DebateArgument:
         """Synthesize arguments and make final decision (Claude Opus equivalent)."""
         await asyncio.sleep(0.060)  # Simulate 60ms Opus call
@@ -477,8 +471,7 @@ class PanelDebateSystem:
 
 
 class AntigravityAgent:
-    """
-    Self-aware coding agent using optimized multi-agent patterns.
+    """Self-aware coding agent using optimized multi-agent patterns.
 
     APPLIES:
     - Judge #6: Purpose/Reasons/Brakes assessment
@@ -498,10 +491,9 @@ class AntigravityAgent:
         self.debate_system = PanelDebateSystem()
 
     async def execute_action(
-        self, purpose: Purpose, action: str, context: dict[str, Any], confidence: float
+        self, purpose: Purpose, action: str, context: dict[str, Any], confidence: float,
     ) -> dict[str, Any]:
-        """
-        Execute coding action with full governance pipeline.
+        """Execute coding action with full governance pipeline.
 
         PIPELINE:
         1. JR Assessment (<500μs)
@@ -518,6 +510,7 @@ class AntigravityAgent:
 
         Returns:
             Decision result with reasoning and metrics
+
         """
         start_time = time.perf_counter()
 
@@ -527,7 +520,7 @@ class AntigravityAgent:
         logger.info(
             f"JR Assessment: {jr_assessment.risk_level.value} risk "
             f"({jr_assessment.latency_us:.0f}μs) - "
-            f"{len(jr_assessment.reasons)} reasons, {len(jr_assessment.brakes)} brakes"
+            f"{len(jr_assessment.reasons)} reasons, {len(jr_assessment.brakes)} brakes",
         )
 
         # Stage 2: Check if should proceed

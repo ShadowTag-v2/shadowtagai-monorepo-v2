@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Generate PWA icons in various sizes
+"""Generate PWA icons in various sizes
 This creates simple SVG-based placeholder icons
 For production, replace with your actual app icons
 """

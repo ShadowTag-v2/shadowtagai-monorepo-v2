@@ -40,7 +40,7 @@ def chat(r: ChatRequest):
     if needs_browsing:
         # 3. DISPATCH TO HANDS (Firestore Queue)
         db.collection("agent_queue").document(task_id).set(
-            {"status": "queued", "goal": r.query, "created_at": firestore.SERVER_TIMESTAMP}
+            {"status": "queued", "goal": r.query, "created_at": firestore.SERVER_TIMESTAMP},
         )
 
         # 4. RETURN OPTIMISTIC UI

@@ -41,16 +41,16 @@ class GeminiIngestionService:
         return sources
 
     async def run_ingestion_pipeline(
-        self, sources: list[SourceType] | None = None
+        self, sources: list[SourceType] | None = None,
     ) -> IngestionMetrics:
-        """
-        Run the complete ingestion pipeline
+        """Run the complete ingestion pipeline
 
         Args:
             sources: Optional list of sources to ingest from. Defaults to all enabled.
 
         Returns:
             IngestionMetrics with pipeline results
+
         """
         start_time = datetime.utcnow()
         sources = sources or self.enabled_sources
@@ -71,20 +71,20 @@ class GeminiIngestionService:
         logger.info(
             f"Ingestion complete: {metrics.items_ingested} items, "
             f"{metrics.runtime_minutes:.2f} min, "
-            f"${metrics.average_cost_per_item:.4f}/item"
+            f"${metrics.average_cost_per_item:.4f}/item",
         )
 
         return metrics
 
     async def _ingest_from_source(self, source: SourceType) -> list[IngestedItem]:
-        """
-        Ingest data from a specific source
+        """Ingest data from a specific source
 
         Args:
             source: The source type to ingest from
 
         Returns:
             List of ingested items
+
         """
         # Simulate source-specific ingestion
         # In production, this would call actual APIs, crawlers, etc.
@@ -140,7 +140,7 @@ class GeminiIngestionService:
         return True
 
     def _calculate_metrics(
-        self, items: list[IngestedItem], runtime_minutes: float
+        self, items: list[IngestedItem], runtime_minutes: float,
     ) -> IngestionMetrics:
         """Calculate ingestion metrics from items"""
         if not items:

@@ -1,5 +1,4 @@
-"""
-Function Registry for managing tool functions.
+"""Function Registry for managing tool functions.
 
 Provides a centralized registry for all tool functions that can be called
 by the Gemini model.
@@ -12,8 +11,7 @@ from .gemini_function_calling import FunctionTool
 
 
 class FunctionRegistry:
-    """
-    Centralized registry for managing function tools.
+    """Centralized registry for managing function tools.
 
     Example:
         ```python
@@ -28,6 +26,7 @@ class FunctionRegistry:
 
         tools = registry.get_all_tools()
         ```
+
     """
 
     def __init__(self):
@@ -35,8 +34,7 @@ class FunctionRegistry:
         self.tools: list[FunctionTool] = []
 
     def register(self, description: str, parameters: dict[str, Any], name: str = None) -> Callable:
-        """
-        Decorator to register a function as a tool.
+        """Decorator to register a function as a tool.
 
         Args:
             description: Human-readable description of what the function does
@@ -45,6 +43,7 @@ class FunctionRegistry:
 
         Returns:
             Decorator function
+
         """
 
         def decorator(func: Callable) -> Callable:
@@ -52,7 +51,7 @@ class FunctionRegistry:
 
             # Create FunctionTool
             tool = FunctionTool(
-                name=func_name, description=description, function=func, parameters=parameters
+                name=func_name, description=description, function=func, parameters=parameters,
             )
 
             # Register

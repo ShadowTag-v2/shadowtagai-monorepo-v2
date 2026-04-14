@@ -1,5 +1,4 @@
-"""
-Growth Engineer Agent
+"""Growth Engineer Agent
 
 A specialized agent that implements viral mechanics and finds where users get hooked
 in your app to build viral loops that actually work.
@@ -20,8 +19,7 @@ from claude_agent_sdk import ClaudeAgentOptions, query
 
 
 class GrowthEngineerAgent:
-    """
-    Growth engineering specialist who implements viral mechanics.
+    """Growth engineering specialist who implements viral mechanics.
     Finds where users get hooked in your app and builds viral loops that actually work.
     """
 
@@ -103,14 +101,14 @@ Always provide:
 """
 
     async def analyze_user_hooks(self, app_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Analyze application to find where users get hooked and engaged.
+        """Analyze application to find where users get hooked and engaged.
 
         Args:
             app_data: Application data including user flows, features, and metrics
 
         Returns:
             Analysis of user hooks with recommendations
+
         """
         prompt = f"""Analyze this application data to identify user hooks and engagement opportunities:
 
@@ -128,7 +126,7 @@ Focus on finding genuine value moments, not manipulative tactics."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -139,14 +137,14 @@ Focus on finding genuine value moments, not manipulative tactics."""
         }
 
     async def design_viral_loop(self, product_info: dict[str, Any]) -> dict[str, Any]:
-        """
-        Design a viral loop mechanism for the product.
+        """Design a viral loop mechanism for the product.
 
         Args:
             product_info: Information about the product, users, and value proposition
 
         Returns:
             Viral loop design with implementation plan
+
         """
         prompt = f"""Design a viral loop for this product:
 
@@ -165,7 +163,7 @@ Design for sustainable, user-value-aligned growth."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -176,14 +174,14 @@ Design for sustainable, user-value-aligned growth."""
         }
 
     async def create_ab_test(self, experiment_config: dict[str, Any]) -> dict[str, Any]:
-        """
-        Create and configure an A/B test experiment.
+        """Create and configure an A/B test experiment.
 
         Args:
             experiment_config: Test configuration including hypothesis, variants, and metrics
 
         Returns:
             A/B test setup with statistical parameters
+
         """
         prompt = f"""Design an A/B test for this experiment:
 
@@ -203,7 +201,7 @@ Ensure statistical rigor and practical feasibility."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -214,14 +212,14 @@ Ensure statistical rigor and practical feasibility."""
         }
 
     async def analyze_growth_metrics(self, metrics_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Analyze growth metrics and provide optimization recommendations.
+        """Analyze growth metrics and provide optimization recommendations.
 
         Args:
             metrics_data: Current growth metrics and analytics data
 
         Returns:
             Analysis with actionable recommendations
+
         """
         prompt = f"""Analyze these growth metrics and provide optimization recommendations:
 
@@ -240,7 +238,7 @@ Focus on highest-leverage opportunities first."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -251,14 +249,14 @@ Focus on highest-leverage opportunities first."""
         }
 
     async def design_engagement_feature(self, feature_request: dict[str, Any]) -> dict[str, Any]:
-        """
-        Design an engagement feature with viral potential.
+        """Design an engagement feature with viral potential.
 
         Args:
             feature_request: Feature requirements and context
 
         Returns:
             Feature design with implementation plan
+
         """
         prompt = f"""Design an engagement feature for this request:
 
@@ -278,7 +276,7 @@ Balance engagement with user value and ethical design."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -289,16 +287,16 @@ Balance engagement with user value and ethical design."""
         }
 
     async def implement_analytics_tracking(
-        self, tracking_requirements: dict[str, Any]
+        self, tracking_requirements: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Implement analytics tracking for growth metrics.
+        """Implement analytics tracking for growth metrics.
 
         Args:
             tracking_requirements: Requirements for tracking events and metrics
 
         Returns:
             Analytics implementation plan and code
+
         """
         prompt = f"""Implement analytics tracking for these requirements:
 
@@ -317,7 +315,7 @@ Use industry best practices and ensure GDPR/privacy compliance."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -328,14 +326,14 @@ Use industry best practices and ensure GDPR/privacy compliance."""
         }
 
     async def optimize_referral_system(self, referral_data: dict[str, Any]) -> dict[str, Any]:
-        """
-        Optimize an existing referral system for better performance.
+        """Optimize an existing referral system for better performance.
 
         Args:
             referral_data: Current referral system data and performance
 
         Returns:
             Optimization recommendations and implementation plan
+
         """
         prompt = f"""Optimize this referral system:
 
@@ -354,7 +352,7 @@ Focus on improving conversion at each step of the referral funnel."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -365,10 +363,9 @@ Focus on improving conversion at each step of the referral funnel."""
         }
 
     async def general_growth_query(
-        self, user_query: str, context: dict[str, Any] | None = None
+        self, user_query: str, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Handle general growth engineering queries with optional context.
+        """Handle general growth engineering queries with optional context.
 
         Args:
             user_query: The growth engineering question or request
@@ -376,6 +373,7 @@ Focus on improving conversion at each step of the referral funnel."""
 
         Returns:
             Agent response with recommendations
+
         """
         context_str = f"\n\nContext:\n{context}" if context else ""
 
@@ -383,7 +381,7 @@ Focus on improving conversion at each step of the referral funnel."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt)
+            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 

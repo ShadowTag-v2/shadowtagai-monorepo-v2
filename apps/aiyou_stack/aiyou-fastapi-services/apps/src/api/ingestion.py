@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer API
+"""Gemini Ingestion Layer API
 FastAPI endpoints for interfacing with the ingestion pipeline
 """
 
@@ -88,7 +87,7 @@ class IngestedItem(BaseModel):
                     "author": "AP News",
                     "tags": ["politics", "breaking"],
                 },
-            }
+            },
         }
 
 
@@ -117,7 +116,7 @@ class JobStatusResponse(BaseModel):
                 "items_by_tier": {"tier_1": 487, "tier_2": 1156, "tier_3": 1602},
                 "sources_active": 6,
                 "errors": [],
-            }
+            },
         }
 
 
@@ -144,7 +143,7 @@ class MetricsResponse(BaseModel):
                 "avg_relevance": 62.3,
                 "uptime_percentage": 99.3,
                 "avg_runtime_minutes": 43.2,
-            }
+            },
         }
 
 
@@ -224,8 +223,7 @@ async def health_check():
     tags=["Ingestion"],
 )
 async def trigger_ingestion(request: TriggerRequest):
-    """
-    Manually trigger an ingestion job
+    """Manually trigger an ingestion job
 
     This endpoint allows on-demand triggering of the ingestion CronJob,
     bypassing the normal schedule. Useful for:
@@ -260,8 +258,7 @@ async def trigger_ingestion(request: TriggerRequest):
 async def get_ingestion_status(
     job_id: str | None = Query(None, description="Specific job ID (default: latest)"),
 ):
-    """
-    Get status of an ingestion job
+    """Get status of an ingestion job
 
     Returns the current or historical status of an ingestion job.
     If no job_id is provided, returns the status of the most recent job.
@@ -290,8 +287,7 @@ async def get_ingested_items(
     limit: int = Query(100, ge=1, le=1000, description="Max items to return"),
     offset: int = Query(0, ge=0, description="Pagination offset"),
 ):
-    """
-    Query ingested items
+    """Query ingested items
 
     Retrieve ingested intelligence items with optional filters.
     Supports pagination for large result sets.
@@ -317,7 +313,7 @@ async def get_ingested_items(
             published_at=datetime.utcnow() - timedelta(hours=2),
             ingested_at=datetime.utcnow(),
             metadata={"author": "AP News", "tags": ["politics", "breaking"]},
-        )
+        ),
     ]
 
     # Apply filters
@@ -337,8 +333,7 @@ async def get_ingested_items(
 async def get_metrics(
     days: int = Query(7, ge=1, le=90, description="Number of days for metrics calculation"),
 ):
-    """
-    Get performance metrics
+    """Get performance metrics
 
     Returns aggregated performance metrics over the specified time period.
 
@@ -366,8 +361,7 @@ async def get_metrics(
 
 @app.get("/ingestion/sources", response_model=list[SourceConfig], tags=["Configuration"])
 async def get_sources():
-    """
-    Get source configuration
+    """Get source configuration
 
     Returns the current configuration for all data sources.
     """
@@ -408,8 +402,7 @@ async def get_sources():
     tags=["Configuration"],
 )
 async def update_source(config: SourceConfig):
-    """
-    Update source configuration
+    """Update source configuration
 
     Updates the configuration for a specific data source.
     Changes take effect on the next CronJob run.
@@ -427,8 +420,7 @@ async def get_source_stats(
     source_type: SourceType,
     days: int = Query(7, ge=1, le=90, description="Number of days for stats"),
 ):
-    """
-    Get source-specific statistics
+    """Get source-specific statistics
 
     Returns detailed statistics for a specific source type.
     """

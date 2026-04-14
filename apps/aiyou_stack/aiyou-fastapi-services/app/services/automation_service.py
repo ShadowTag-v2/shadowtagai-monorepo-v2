@@ -1,5 +1,4 @@
-"""
-Automation Service Layer
+"""Automation Service Layer
 
 Encapsulates all database operations for the automation subsystem:
 scheduled jobs, workflows, triggers, and job executions.

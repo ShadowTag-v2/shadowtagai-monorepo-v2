@@ -13,7 +13,7 @@ from google.genai import types
 # =====================================================================
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - [%(levelname)s] - OMEGA_INGEST - %(message)s"
+    level=logging.INFO, format="%(asctime)s - [%(levelname)s] - OMEGA_INGEST - %(message)s",
 )
 logger = logging.getLogger("DriveIngestDaemon")
 
@@ -41,7 +41,7 @@ class sovereign_ingestor:
                 model=MODEL_ID,
                 contents=f"Extract the sovereign entities, sentiment, and core directives from this text. Output pure JSON: {raw_content}",
                 config=types.GenerateContentConfig(
-                    response_mime_type="application/json", temperature=0.1
+                    response_mime_type="application/json", temperature=0.1,
                 ),
             )
 

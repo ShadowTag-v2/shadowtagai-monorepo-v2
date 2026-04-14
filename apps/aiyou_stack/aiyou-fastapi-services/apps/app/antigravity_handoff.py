@@ -1,5 +1,4 @@
-"""
-Antigravity Handoff Router - Cross-Model Orchestration
+"""Antigravity Handoff Router - Cross-Model Orchestration
 
 Intelligent routing between Claude Sonnet 4.5 and Gemini 2.0 Flash based on:
 - Task type (deep analysis vs fast execution)
@@ -70,8 +69,7 @@ class HandoffResult:
 
 
 class AntigravityRouter:
-    """
-    Cross-model orchestration router.
+    """Cross-model orchestration router.
 
     ROUTING MATRIX:
     - Production Inference    → Gemini (40%)   p99≤100ms, $0.002/1K
@@ -130,8 +128,7 @@ class AntigravityRouter:
         sla_ms: int | None = None,
         cost_limit_usd: float | None = None,
     ) -> RoutingDecision:
-        """
-        Decide which model to route to based on task characteristics.
+        """Decide which model to route to based on task characteristics.
 
         Args:
             task_type: Type of task (from TaskType enum)
@@ -141,6 +138,7 @@ class AntigravityRouter:
 
         Returns:
             RoutingDecision with model choice and reasoning
+
         """
         # Default routing based on task type
         routing_map = {
@@ -200,10 +198,9 @@ class AntigravityRouter:
         return decision
 
     async def execute_handoff(
-        self, prompt: str, context: dict[str, Any], routing: RoutingDecision
+        self, prompt: str, context: dict[str, Any], routing: RoutingDecision,
     ) -> HandoffResult:
-        """
-        Execute model handoff based on routing decision.
+        """Execute model handoff based on routing decision.
 
         Args:
             prompt: User prompt
@@ -212,6 +209,7 @@ class AntigravityRouter:
 
         Returns:
             HandoffResult with response and metrics
+
         """
         start_time = time.time()
 
@@ -303,7 +301,7 @@ class AntigravityRouter:
                             {
                                 "role": "user",
                                 "content": f"{prompt}\n\nContext: {context}",
-                            }
+                            },
                         ],
                     },
                     timeout=30.0,
@@ -337,7 +335,7 @@ class AntigravityRouter:
                             {
                                 "role": "user",
                                 "content": f"{prompt}\n\nContext: {context}",
-                            }
+                            },
                         ],
                     },
                     timeout=30.0,
@@ -362,7 +360,7 @@ class AntigravityRouter:
         avg_latency = sum(r.latency_ms for r in self.handoff_results) / len(self.handoff_results)
         avg_cost = sum(r.cost_usd for r in self.handoff_results) / len(self.handoff_results)
         compression_rate = sum(1 for r in self.handoff_results if r.compressed) / len(
-            self.handoff_results
+            self.handoff_results,
         )
 
         return {
@@ -388,7 +386,7 @@ async def test_antigravity_router():
     # Test 1: Production inference (should route to Gemini)
     print("Test 1: Production Inference")
     routing = router.decide_routing(
-        task_type=TaskType.PRODUCTION_INFERENCE, context_size_bytes=5000, sla_ms=100
+        task_type=TaskType.PRODUCTION_INFERENCE, context_size_bytes=5000, sla_ms=100,
     )
 
     result = await router.execute_handoff(
@@ -408,7 +406,7 @@ async def test_antigravity_router():
     )
 
     result = await router.execute_handoff(
-        prompt="Analyze this large dataset", context=large_context, routing=routing
+        prompt="Analyze this large dataset", context=large_context, routing=routing,
     )
     print(f"   Compressed: {result.compressed}, Ratio: {result.compression_ratio}")
 

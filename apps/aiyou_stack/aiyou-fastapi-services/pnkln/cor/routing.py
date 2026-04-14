@@ -1,5 +1,4 @@
-"""
-Option 1: Sequential Orchestration with Cor Routing (Long-term Architecture)
+"""Option 1: Sequential Orchestration with Cor Routing (Long-term Architecture)
 
 Intent classifier routes queries to:
   - internal-only: File/doc/repo search via MCP tools
@@ -42,8 +41,7 @@ class IntentClassification:
 
 
 class IntentClassifier:
-    """
-    Classifies query intent using Gemini Flash.
+    """Classifies query intent using Gemini Flash.
 
     ROUTING LOGIC:
     - INTERNAL: "How do I use feature X?", "What's in our docs about Y?"
@@ -82,8 +80,7 @@ Respond in JSON format:
 }}"""
 
     def classify(self, query: str) -> IntentClassification:
-        """
-        Classify query intent.
+        """Classify query intent.
 
         Args:
             query: User query string
@@ -94,6 +91,7 @@ Respond in JSON format:
         Raises:
             ValueError: Invalid response from model
             TimeoutError: Classification exceeds budget
+
         """
         start_time = time.perf_counter()
 
@@ -133,7 +131,7 @@ Respond in JSON format:
             print(f"⚠️  WARNING: Intent classification slow: {latency_ms:.1f}ms")
 
         return IntentClassification(
-            intent=intent, confidence=confidence, reasoning=reasoning, latency_ms=latency_ms
+            intent=intent, confidence=confidence, reasoning=reasoning, latency_ms=latency_ms,
         )
 
 
@@ -155,8 +153,7 @@ class OrchestrationResult:
 
 
 class CorOrchestrator:
-    """
-    Main orchestration engine for sequential tool execution.
+    """Main orchestration engine for sequential tool execution.
 
     EXECUTION FLOW (HYBRID):
     1. Classify intent (Gemini Flash)
@@ -178,14 +175,14 @@ class CorOrchestrator:
         internal_tool_handler=None,
         web_tool_handler=None,
     ):
-        """
-        Initialize orchestrator.
+        """Initialize orchestrator.
 
         Args:
             project_id: GCP project ID
             location: GCP region
             internal_tool_handler: Handler for internal MCP tools
             web_tool_handler: BraveSearchTool instance
+
         """
         self.classifier = IntentClassifier(project_id, location)
         self.internal_tool = internal_tool_handler
@@ -198,10 +195,9 @@ class CorOrchestrator:
         self.executions = []
 
     def execute(
-        self, query: str, user_tier: str = "free", force_intent: str | None = None
+        self, query: str, user_tier: str = "free", force_intent: str | None = None,
     ) -> OrchestrationResult:
-        """
-        Execute query with appropriate routing.
+        """Execute query with appropriate routing.
 
         Args:
             query: User query
@@ -214,6 +210,7 @@ class CorOrchestrator:
         Raises:
             TimeoutError: Exceeds p99 + synthesis budget
             ValueError: Invalid tier or missing tools
+
         """
         start_time = time.perf_counter()
 
@@ -231,7 +228,7 @@ class CorOrchestrator:
         # Gate: Free tier must pick single mode
         if user_tier == "free" and intent.intent == QueryIntent.HYBRID:
             raise ValueError(
-                "HYBRID mode requires Pro tier. Free users must select INTERNAL or WEB explicitly."
+                "HYBRID mode requires Pro tier. Free users must select INTERNAL or WEB explicitly.",
             )
 
         # Gate: Low confidence classification
@@ -265,7 +262,7 @@ class CorOrchestrator:
         max_allowed = P99_LATENCY_MS + MAX_SYNTHESIS_OVERHEAD_MS
         if total_latency_ms > max_allowed:
             print(
-                f"⚠️  WARNING: Total latency {total_latency_ms:.1f}ms exceeds gate {max_allowed}ms"
+                f"⚠️  WARNING: Total latency {total_latency_ms:.1f}ms exceeds gate {max_allowed}ms",
             )
 
         result = OrchestrationResult(
@@ -277,7 +274,7 @@ class CorOrchestrator:
             total_latency_ms=total_latency_ms,
             cost_usd=cost_usd,
             metrics=self._collect_metrics(
-                intent, internal_results, web_results, total_latency_ms, cost_usd
+                intent, internal_results, web_results, total_latency_ms, cost_usd,
             ),
         )
 
@@ -298,8 +295,7 @@ class CorOrchestrator:
         return response.to_dict()
 
     def _synthesize(self, query: str, internal: dict | None, web: dict | None) -> str:
-        """
-        Synthesize internal + web results into unified response.
+        """Synthesize internal + web results into unified response.
 
         CRITICAL: This is where hallucination risk exists.
         Target: <5% hallucination rate.
@@ -326,7 +322,7 @@ Provide a unified answer that:
 Response:"""
 
         response = self.synthesis_model.generate_content(
-            synthesis_prompt, generation_config={"temperature": 0.3, "max_output_tokens": 500}
+            synthesis_prompt, generation_config={"temperature": 0.3, "max_output_tokens": 500},
         )
 
         latency_ms = (time.perf_counter() - start_time) * 1000
@@ -335,13 +331,13 @@ Response:"""
         if latency_ms > MAX_SYNTHESIS_OVERHEAD_MS:
             print(
                 f"⚠️  WARNING: Synthesis {latency_ms:.1f}ms "
-                f"exceeds gate {MAX_SYNTHESIS_OVERHEAD_MS}ms"
+                f"exceeds gate {MAX_SYNTHESIS_OVERHEAD_MS}ms",
             )
 
         return response.text.strip()
 
     def _calculate_cost(
-        self, intent: IntentClassification, internal: dict | None, web: dict | None
+        self, intent: IntentClassification, internal: dict | None, web: dict | None,
     ) -> float:
         """Calculate total execution cost."""
         cost = 0.0
