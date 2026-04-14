@@ -26,22 +26,47 @@ MANIFEST_DIR="$REPO_ROOT/apps/data/lancedb"
 mkdir -p "$MANIFEST_DIR"
 
 MANIFEST="$MANIFEST_DIR/skill_manifest.jsonl"
-> "$MANIFEST"
 
-for skill_file in "${SKILL_FILES[@]}"; do
-    # Extract skill name from directory
-    skill_dir=$(dirname "$skill_file")
-    skill_name=$(basename "$skill_dir")
-    
-    # Extract description from YAML frontmatter
-    description=$(sed -n '/^description:/p' "$skill_file" | head -1 | sed 's/^description: *//' | sed 's/^"//' | sed 's/"$//')
-    
-    # Get file size
-    file_size=$(wc -c < "$skill_file" | tr -d ' ')
-    
-    # Create JSONL entry
-    echo "{\"skill_name\": \"$skill_name\", \"path\": \"$skill_file\", \"size_bytes\": $file_size, \"description\": \"$description\"}" >> "$MANIFEST"
-done
+# Use Python to safely generate JSONL (shell echo breaks on quotes/special chars in descriptions)
+python3 - "$MANIFEST" "${SKILL_FILES[@]}" << 'MANIFEST_EOF'
+import json, sys, os, re
+
+manifest_path = sys.argv[1]
+skill_files = sys.argv[2:]
+
+with open(manifest_path, 'w') as out:
+    for skill_file in skill_files:
+        skill_dir = os.path.dirname(skill_file)
+        skill_name = os.path.basename(skill_dir)
+        
+        # Extract description from YAML frontmatter
+        description = ""
+        try:
+            with open(skill_file) as f:
+                content = f.read()
+            # Match description field in YAML frontmatter
+            m = re.search(r'^description:\s*["\']?(.*?)(?:["\']?\s*$)', content, re.MULTILINE)
+            if m:
+                description = m.group(1).strip().strip('"').strip("'")
+            # Handle multi-line descriptions with >
+            m2 = re.search(r'^description:\s*>\s*\n((?:\s{2,}.*\n?)+)', content, re.MULTILINE)
+            if m2:
+                description = ' '.join(line.strip() for line in m2.group(1).strip().splitlines())
+        except Exception:
+            pass
+        
+        file_size = os.path.getsize(skill_file)
+        
+        entry = {
+            "skill_name": skill_name,
+            "path": skill_file,
+            "size_bytes": file_size,
+            "description": description[:500],  # Cap at 500 chars
+        }
+        out.write(json.dumps(entry) + '\n')
+
+print(f"Wrote {len(skill_files)} entries to {manifest_path}")
+MANIFEST_EOF
 
 echo "Manifest written to: $MANIFEST"
 echo "Entries: $(wc -l < "$MANIFEST")"
