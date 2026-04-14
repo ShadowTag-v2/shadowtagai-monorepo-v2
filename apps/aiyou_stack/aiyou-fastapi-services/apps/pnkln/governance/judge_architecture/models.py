@@ -17,6 +17,8 @@ Date: 2025-11-17
 Status: Phase 1 Implementation Specification + Doctrine Integration
 """
 
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -84,7 +86,7 @@ class RiskLevel(Enum):
         return APPROVAL_AUTHORITY.get(self.to_doctrine_level(), "Commander")
 
     @staticmethod
-    def from_probability_severity(prob: Probability, sev: Severity) -> "RiskLevel":
+    def from_probability_severity(prob: Probability, sev: Severity) -> RiskLevel:
         """Calculate risk level from ATP 5-19 probability × severity matrix."""
         doctrine_level = RISK_MATRIX.get((prob, sev), DoctrineRiskLevel.MEDIUM)
         reverse_mapping = {

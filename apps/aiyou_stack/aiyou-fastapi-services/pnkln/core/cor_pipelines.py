@@ -1,13 +1,14 @@
 """
-COR PIPELINES - Sequential & Concurrent Execution Patterns
+COR Pipelines — Sequential & Concurrent Execution Patterns
 ============================================================
 
-Extracted from cor_orchestrator.py as part of the Rich Hickey refactor.
+Extracted from cor_orchestrator.py (Rich Hickey refactor).
 
-Pattern 1: Sequential Pipeline (Maps to Judge #6 validation)
-Pattern 2: Concurrent Execution (Maps to Monte Carlo decisions)
+Pattern 1: Sequential Pipeline (Judge #6 validation)
+Pattern 2: Concurrent Execution (Monte Carlo decisions)
 
 Author: Pnkln Architecture Team
+Version: 2.0.0 — Rich Hickey Refactor
 """
 
 from __future__ import annotations
@@ -22,11 +23,6 @@ from typing import Any, Generic, TypeVar
 from .cor_context import ExecutionContext
 
 logger = logging.getLogger(__name__)
-
-
-# ============================================================================
-# PATTERN 1: SEQUENTIAL PIPELINE
-# ============================================================================
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -47,31 +43,13 @@ class PipelineStage(Generic[T, U]):
         skip_condition: Callable[[ExecutionContext], bool] | None = None,
         timeout_ms: float = 30.0,
     ):
-        """
-        Initialize pipeline stage.
-
-        Args:
-            name: Stage identifier
-            func: Async function to execute
-            skip_condition: Optional predicate to skip stage
-            timeout_ms: Stage-level timeout (default 30ms)
-        """
         self.name = name
         self.func = func
         self.skip_condition = skip_condition
         self.timeout_ms = timeout_ms
 
     async def execute(self, context: ExecutionContext, input_data: T) -> U:
-        """
-        Execute stage with latency tracking.
-
-        Returns:
-            Stage output
-
-        Raises:
-            asyncio.TimeoutError: If stage exceeds timeout
-        """
-        # Check skip condition
+        """Execute stage with latency tracking."""
         if self.skip_condition and self.skip_condition(context):
             logger.info(f"Stage {self.name} skipped for context {context.request_id}")
             return input_data  # type: ignore
@@ -79,19 +57,15 @@ class PipelineStage(Generic[T, U]):
         start_time = time.perf_counter()
 
         try:
-            # Execute with timeout
             result = await asyncio.wait_for(
                 self.func(context, input_data), timeout=self.timeout_ms / 1000.0
             )
-
-            # Record latency
             latency_ms = (time.perf_counter() - start_time) * 1000
             context.record_stage_latency(self.name, latency_ms)
 
             logger.debug(
                 f"Stage {self.name} completed in {latency_ms:.2f}ms (context: {context.request_id})"
             )
-
             return result
 
         except TimeoutError:
@@ -108,19 +82,7 @@ class SequentialPipeline:
     Sequential execution pipeline with conditional stage skipping.
 
     SK Pattern: SequentialPlanner
-    Pnkln Adaptation:
-    - Deterministic stage execution (no LLM planning)
-    - Sub-millisecond overhead
-    - Conditional skipping for efficiency (e.g., skip Gemini if LOW risk)
-
-    Example:
-        pipeline = SequentialPipeline()
-        pipeline.add_stage("risk_scan", jr_engine_scan)
-        pipeline.add_stage("semantic_check", gemini_validate,
-                          skip_if=lambda ctx: ctx.get_variable("risk") == "LOW")
-        pipeline.add_stage("final_decision", hybrid_judge)
-
-        result = await pipeline.execute(context, request_data)
+    Pnkln Adaptation: Deterministic stage execution, sub-millisecond overhead.
     """
 
     def __init__(self, name: str = "unnamed_pipeline"):
@@ -134,37 +96,13 @@ class SequentialPipeline:
         skip_condition: Callable[[ExecutionContext], bool] | None = None,
         timeout_ms: float = 30.0,
     ) -> SequentialPipeline:
-        """
-        Add stage to pipeline (builder pattern).
-
-        Args:
-            name: Stage identifier
-            func: Async function to execute
-            skip_condition: Optional predicate to skip stage
-            timeout_ms: Stage-level timeout
-
-        Returns:
-            Self for method chaining
-        """
+        """Add stage to pipeline (builder pattern)."""
         stage = PipelineStage(name, func, skip_condition, timeout_ms)
         self.stages.append(stage)
         return self
 
     async def execute(self, context: ExecutionContext, initial_input: Any) -> Any:
-        """
-        Execute all stages sequentially.
-
-        Args:
-            context: Execution context for tracking
-            initial_input: Input to first stage
-
-        Returns:
-            Output of final stage
-
-        Raises:
-            asyncio.TimeoutError: If any stage times out
-            Exception: If any stage raises
-        """
+        """Execute all stages sequentially."""
         logger.info(
             f"Pipeline {self.name} starting with {len(self.stages)} stages "
             f"(context: {context.request_id})"
@@ -175,7 +113,6 @@ class SequentialPipeline:
         for stage in self.stages:
             current_output = await stage.execute(context, current_output)
 
-            # Early termination if over budget
             if context.is_over_budget():
                 logger.error(
                     f"Pipeline {self.name} terminated early - budget exceeded "
@@ -192,7 +129,7 @@ class SequentialPipeline:
 
 
 # ============================================================================
-# PATTERN 2: CONCURRENT EXECUTION
+# CONCURRENT EXECUTION
 # ============================================================================
 
 
@@ -210,19 +147,7 @@ class ConcurrentExecutor:
     Parallel execution of multiple agents/functions.
 
     SK Pattern: Multiple agents in parallel
-    Pnkln Adaptation:
-    - AsyncIO gather() for Python native concurrency
-    - <500μs overhead for 5 parallel calls
-    - Aggregation logic built-in (vs SK's external composition)
-
-    Example:
-        executor = ConcurrentExecutor()
-        results = await executor.execute(
-            context,
-            [prob_a_func, prob_b_func, prob_c_func, prob_d_func, prob_e_func],
-            decision_data
-        )
-        # Returns all 5 probability results in parallel
+    Pnkln Adaptation: AsyncIO gather() for <500μs overhead.
     """
 
     def __init__(self, name: str = "concurrent_executor"):
@@ -236,19 +161,7 @@ class ConcurrentExecutor:
         timeout_ms: float = 100.0,
         return_exceptions: bool = True,
     ) -> ConcurrentResult:
-        """
-        Execute multiple functions concurrently.
-
-        Args:
-            context: Execution context
-            functions: List of async functions to execute
-            input_data: Input passed to all functions
-            timeout_ms: Total timeout for all executions
-            return_exceptions: If True, return exceptions instead of raising
-
-        Returns:
-            ConcurrentResult with all results and latency
-        """
+        """Execute multiple functions concurrently."""
         start_time = time.perf_counter()
 
         logger.info(
@@ -257,16 +170,12 @@ class ConcurrentExecutor:
         )
 
         try:
-            # Create tasks
             tasks = [func(input_data) for func in functions]
-
-            # Execute with timeout
             results = await asyncio.wait_for(
                 asyncio.gather(*tasks, return_exceptions=return_exceptions),
                 timeout=timeout_ms / 1000.0,
             )
 
-            # Separate results and errors
             successful_results = []
             errors = []
 

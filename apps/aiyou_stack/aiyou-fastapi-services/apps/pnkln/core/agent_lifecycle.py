@@ -8,6 +8,8 @@ Design: Time-based, performance-based, and corruption-detection triggers.
 Like jury rotation: Fresh eyes prevent institutional bias.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import StrEnum
