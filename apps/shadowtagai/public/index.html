@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         /* ===== SHADOW OBSIDIAN DESIGN SYSTEM ===== */
         :root {
@@ -1224,7 +1225,7 @@
         <div class="hero-logo-container">
             <canvas class="hero-logo-canvas" id="heroSphereCanvas" width="440" height="440"></canvas>
         </div>
-        <div class="hero-badge">Liability Immunity as a Service</div>
+        <div class="hero-badge">Digital Liability Protection as a Service</div>
         <h1 id="heroTitle">THE AI LIABILITY FIREWALL</h1>
 
         <!-- Rotating tagline cycle -->
@@ -1232,7 +1233,7 @@
             <div class="hero-rotate-line active">One bad prompt away from €35M in EU AI Act fines.</div>
             <div class="hero-rotate-line">NY S7263 civil liability is already enforceable.</div>
             <div class="hero-rotate-line">Passive guardrails block. We rewrite, reroute, and prove compliance.</div>
-            <div class="hero-rotate-line">Deploy once → liability immunity forever.</div>
+            <div class="hero-rotate-line">Deploy once → digital liability protection forever.</div>
         </div>
 
         <p class="hero-sub">
@@ -1272,11 +1273,7 @@
         <div class="hero-ctas">
             <a href="judge-6.html" class="btn btn-primary btn-magnetic" id="ab-primary-cta" onclick="gtag('event', 'click_cta_primary', {'variant': window.__ab_variant});">
                 <span class="material-symbols-outlined" style="font-size:1.125rem">shield</span>
-                <span id="ab-cta-text">Deploy Judge 6 Shield</span>
-            </a>
-            <a href="investors.html" onclick="gtag('event', 'click_cta_deck');" class="btn btn-ghost btn-magnetic">
-                <span class="material-symbols-outlined" style="font-size:1.125rem">slideshow</span>
-                Investor Deck
+                <span id="ab-cta-text">Get Digital Liability Protection</span>
             </a>
             <a href="#contact" onclick="gtag('event', 'click_cta_contact');" class="btn btn-ghost btn-magnetic">
                 <span class="material-symbols-outlined" style="font-size:1.125rem">mail</span>
@@ -1460,6 +1457,7 @@
             </div>
             <input type="text" name="company" placeholder="Organization (optional)" style="padding: 0.875rem 1rem; background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 4px; color: var(--on-surface); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s ease;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--outline-variant)'">
             <textarea name="message" placeholder="Your Message" rows="5" required style="padding: 0.875rem 1rem; background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 4px; color: var(--on-surface); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; resize: vertical; transition: border-color 0.2s ease;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--outline-variant)'"></textarea>
+            <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-theme="dark" style="margin: 0.5rem 0; transform: scale(0.9); transform-origin: left;"></div>
             <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; justify-content: center;">
                 <span class="material-symbols-outlined" style="font-size: 1.125rem">send</span>
                 Send Message
@@ -2291,7 +2289,7 @@ if (window.location.hash) {
   (function() {
       const variants = [
           "Deploy Judge 6 Shield",   // Control
-          "Get Liability Immunity",  // Variant A
+          "Get Digital Liability Protection",  // Variant A
           "Schedule Risk Audit"      // Variant B
       ];
       
