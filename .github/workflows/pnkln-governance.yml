@@ -19,7 +19,11 @@ jobs:
       - uses: actions/setup-python@v5
         if: ${{ hashFiles('pyproject.toml') != '' || hashFiles('requirements.txt') != '' }}
         with:
-          python-version: '3.11'
+          python-version: '3.13'
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: 'latest'
 
       - name: Install pre-commit
         run: python -m pip install pre-commit detect-secrets
@@ -31,14 +35,32 @@ jobs:
         if: ${{ hashFiles('package.json') != '' }}
         run: npm ci || npm install
 
-      - name: Typecheck
+      - name: Typecheck (JS)
         if: ${{ hashFiles('package.json') != '' }}
         run: npm run typecheck --if-present
 
-      - name: Test
+      - name: Typecheck (Python — ty)
+        if: ${{ hashFiles('ty.toml') != '' }}
+        run: uvx ty check --warn-level error
+
+      - name: Test (JS)
         if: ${{ hashFiles('package.json') != '' }}
         run: npm test --if-present
 
       - name: Python test
         if: ${{ hashFiles('pyproject.toml') != '' || hashFiles('requirements.txt') != '' }}
         run: pytest -q || true
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://shadowtagai.web.app/
+            https://kovelai.web.app/
+          configPath: '.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
