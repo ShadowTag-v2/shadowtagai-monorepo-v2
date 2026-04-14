@@ -103,10 +103,8 @@ with open(manifest_path) as f:
             "size_bytes": entry["size_bytes"],
         })
 
-# Create/overwrite table
-if "skills" in db.list_tables():
-    db.drop_table("skills")
-table = db.create_table("skills", records)
+# Create/overwrite table (use mode='overwrite' to avoid drop+create race)
+table = db.create_table("skills", records, mode="overwrite")
 print(f"✅ Ingested {len(records)} skills into LanceDB")
 print(f"   Table: skills")
 print(f"   Records: {table.count_rows()}")
