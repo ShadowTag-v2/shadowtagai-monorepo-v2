@@ -44,7 +44,7 @@ async def assert_visuals():
             # 2. Assert button is within viewport (structurally visible)
             try:
                 await expect(cta_obj).to_be_in_viewport()
-                print(f"✅ Element is visible in viewport.")
+                print("✅ Element is visible in viewport.")
             except AssertionError:
                 print(f"❌ Visual overlap/invisible for {v_key}")
 

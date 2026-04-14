@@ -27,6 +27,39 @@ db.serialize(() => {
     stmt.finalize();
 });
 
+// ── Legal Intake Table ──
+db.run(`CREATE TABLE IF NOT EXISTS intake (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT,
+    matter TEXT,
+    created_at TEXT DEFAULT (datetime('now'))
+)`);
+
+app.post('/api/v1/intake', (req, res) => {
+    const { name, email, matter } = req.body;
+    if (!name) {
+        return res.status(400).json({ error: 'Name is required.' });
+    }
+    db.run(
+        `INSERT INTO intake (name, email, matter) VALUES (?, ?, ?)`,
+        [name, email || null, matter || null],
+        function (err) {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.status(201).json({ id: this.lastID, status: 'intake_received' });
+        }
+    );
+});
+
+app.get('/api/v1/intake', (req, res) => {
+    db.all('SELECT * FROM intake ORDER BY id DESC', [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ data: rows });
+    });
+});
+
 app.get('/api/v1/analytics', (req, res) => {
     db.all("SELECT * FROM analytics ORDER BY id ASC", [], (err, rows) => {
         if (err) {
