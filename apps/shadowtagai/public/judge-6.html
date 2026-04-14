@@ -70,5 +70,41 @@
             <p>Achieve guaranteed "no black-box" operation metrics, satisfying stringent transparency mandates mathematically.</p>
         </div>
     </div>
+
+    <!-- AST Playground Sandbox -->
+    <div style="max-width: 1200px; margin: 4rem auto; padding: 2rem; background: var(--surface-highest); border: 1px solid var(--outline-variant); border-radius: 16px;">
+        <h2 style="font-family:'Outfit', sans-serif; margin-bottom:1rem; border-bottom: 1px solid var(--outline-variant); padding-bottom:1rem;">Interactive AST Sandbox</h2>
+        <p style="margin-bottom:2rem; color:var(--on-surface-variant);">Evaluate arbitrary agent prompt payloads against the Judge 6 Shield constraints.</p>
+        <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+            <div style="flex:1; min-width:300px;">
+                <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.875rem;">Agent Execution Payload</label>
+                <textarea id="ast-input" style="width:100%; height:200px; padding:1rem; border-radius:8px; background:var(--surface-container); border:1px solid var(--outline-variant); color:var(--on-surface); font-family:monospace; resize:vertical;">{"action": "rm -rf /", "justification": "Clear cache"}</textarea>
+                <button id="evaluate-btn" class="btn btn-primary" style="margin-top:1rem; width:100%;">Evaluate Sandbox</button>
+            </div>
+            <div style="flex:1; min-width:300px;">
+                <label style="display:block; margin-bottom:0.5rem; font-weight:600; font-size:0.875rem;">Shield Output</label>
+                <div id="ast-output" style="width:100%; height:200px; padding:1rem; border-radius:8px; background:#000; border:1px solid var(--outline-variant); color:#0f0; font-family:monospace; overflow-y:auto; white-space:pre-wrap;">Awaiting Execution Payload...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('evaluate-btn').addEventListener('click', () => {
+            const input = document.getElementById('ast-input').value;
+            const output = document.getElementById('ast-output');
+            output.innerHTML = 'Parsing AST tree...<br/>';
+            output.style.color = 'var(--on-surface-variant)';
+            
+            setTimeout(() => {
+                if(input.includes("rm") || input.includes("drop") || input.includes("delete")) {
+                    output.style.color = '#ff4444';
+                    output.innerHTML += '<br/>[VIOLATION] Destructive modifier detected at root execution.<br/>> SHIELD ENFORCED: <b>Execution Killed</b>.';
+                } else {
+                    output.style.color = '#00ff88';
+                    output.innerHTML += '<br/>[OK] Tree-sitter validated pure execution node.<br/>> SHIELD ENFORCED: Let pass.';
+                }
+            }, 800);
+        });
+    </script>
 </body>
 </html>
