@@ -445,8 +445,8 @@
         /* Glassmorphic Content Container */
         .hero-content {
             position: relative; z-index: 5;
-            max-width: 900px;
-            padding: 3rem;
+            max-width: 960px;
+            padding: 3.5rem 3rem 3rem;
             background: rgba(15, 19, 31, 0.35);
             backdrop-filter: blur(20px) saturate(150%);
             -webkit-backdrop-filter: blur(20px) saturate(150%);
@@ -456,6 +456,96 @@
                 0 0 80px -20px rgba(0, 255, 136, 0.06),
                 0 32px 64px -16px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+        }
+
+        /* Hero rotating tagline */
+        .hero-rotate-wrap {
+            position: relative;
+            height: 1.8em;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        .hero-rotate-line {
+            position: absolute; width: 100%; left: 0;
+            font-size: 1.05rem; font-weight: 500;
+            color: var(--on-surface-variant);
+            line-height: 1.8;
+            opacity: 0; transform: translateY(100%);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .hero-rotate-line.active {
+            opacity: 1; transform: translateY(0);
+        }
+        .hero-rotate-line.exit {
+            opacity: 0; transform: translateY(-100%);
+        }
+
+        /* Hero sub-headline */
+        .hero-sub {
+            font-size: 1.125rem; line-height: 1.7;
+            color: var(--on-surface-variant);
+            max-width: 720px; margin: 0 auto 1.5rem;
+            opacity: 0; transform: translateY(16px);
+            animation: fadeSlideUp 0.8s 0.5s ease-out forwards;
+        }
+        .hero-sub strong {
+            color: var(--on-surface); font-weight: 600;
+        }
+        .hero-sub .hero-accent {
+            color: var(--primary); font-weight: 700;
+        }
+
+        /* Hero urgency bar */
+        .hero-urgency {
+            display: inline-flex; align-items: center; gap: 0.625rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 60, 60, 0.06);
+            border: 1px solid rgba(255, 60, 60, 0.18);
+            border-radius: 6px;
+            font-size: 0.75rem; font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #ff6b6b;
+            margin-bottom: 2rem;
+            opacity: 0; transform: translateY(16px);
+            animation: fadeSlideUp 0.8s 0.7s ease-out forwards;
+        }
+        .hero-urgency .urgency-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #ff6b6b;
+            animation: urgencyPulse 2s ease-in-out infinite;
+        }
+        @keyframes urgencyPulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,107,107,0.4); }
+            50% { opacity: 0.6; box-shadow: 0 0 8px 2px rgba(255,107,107,0.2); }
+        }
+
+        /* Hero social proof strip */
+        .hero-proof {
+            display: flex; align-items: center; justify-content: center;
+            gap: 2.5rem; flex-wrap: wrap;
+            margin-bottom: 2rem;
+            opacity: 0; transform: translateY(16px);
+            animation: fadeSlideUp 0.8s 0.9s ease-out forwards;
+        }
+        .hero-proof-item {
+            text-align: center;
+        }
+        .hero-proof-num {
+            font-size: 1.5rem; font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--tertiary) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-proof-label {
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--on-surface-dim);
+            margin-top: 0.125rem;
+        }
+        .hero-proof-divider {
+            width: 1px; height: 32px;
+            background: linear-gradient(180deg, transparent, var(--outline-variant), transparent);
         }
 
         .hero-logo-container {
@@ -557,7 +647,7 @@
             display: flex; align-items: center; justify-content: center;
             gap: 1rem; flex-wrap: wrap;
             opacity: 0; transform: translateY(16px);
-            animation: fadeSlideUp 0.8s 0.8s ease-out forwards;
+            animation: fadeSlideUp 0.8s 1.0s ease-out forwards;
         }
 
         /* ===== BUTTONS (2026 Magnetic + Glass) ===== */
@@ -1120,17 +1210,63 @@
         <div class="hero-logo-container">
             <canvas class="hero-logo-canvas" id="heroSphereCanvas" width="440" height="440"></canvas>
         </div>
-        <div class="hero-badge">UphillSnowball</div>
-        <h1 id="heroTitle">SOVEREIGN AI INFRASTRUCTURE</h1>
-        <p>Building autonomous intelligence systems for institutions that demand total data sovereignty.</p>
+        <div class="hero-badge">Liability Immunity as a Service</div>
+        <h1 id="heroTitle">THE AI LIABILITY FIREWALL</h1>
+
+        <!-- Rotating tagline cycle -->
+        <div class="hero-rotate-wrap" id="heroRotate">
+            <div class="hero-rotate-line active">One bad prompt away from €35M in EU AI Act fines.</div>
+            <div class="hero-rotate-line">NY S7263 civil liability is already enforceable.</div>
+            <div class="hero-rotate-line">Passive guardrails block. We rewrite, reroute, and prove compliance.</div>
+            <div class="hero-rotate-line">Deploy once → liability immunity forever.</div>
+        </div>
+
+        <p class="hero-sub">
+            <strong>Judge 6 Shield</strong> is the <span class="hero-accent">active mitigation firewall</span> for AI.
+            It doesn't just block harmful outputs — it rewrites, reroutes, and generates
+            <strong>real-time compliance proofs</strong> so your enterprise is legally untouchable.
+        </p>
+
+        <div class="hero-urgency">
+            <span class="urgency-dot"></span>
+            EU AI Act enforcement live — enterprises without active mitigation face €35M+ penalties
+        </div>
+
+        <!-- Social proof strip -->
+        <div class="hero-proof">
+            <div class="hero-proof-item">
+                <div class="hero-proof-num">$15B+</div>
+                <div class="hero-proof-label">Addressable Market</div>
+            </div>
+            <div class="hero-proof-divider"></div>
+            <div class="hero-proof-item">
+                <div class="hero-proof-num">100%</div>
+                <div class="hero-proof-label">Data Sovereignty</div>
+            </div>
+            <div class="hero-proof-divider"></div>
+            <div class="hero-proof-item">
+                <div class="hero-proof-num">Zero</div>
+                <div class="hero-proof-label">Data Egress</div>
+            </div>
+            <div class="hero-proof-divider"></div>
+            <div class="hero-proof-item">
+                <div class="hero-proof-num">5</div>
+                <div class="hero-proof-label">Exit Verticals</div>
+            </div>
+        </div>
+
         <div class="hero-ctas">
             <a href="#products" class="btn btn-primary btn-magnetic">
-                <span class="material-symbols-outlined" style="font-size:1.125rem">explore</span>
-                Explore the Platform
+                <span class="material-symbols-outlined" style="font-size:1.125rem">shield</span>
+                Deploy Judge 6 Shield
             </a>
             <a href="#" onclick="showSection('pitch-deck'); return false;" class="btn btn-ghost btn-magnetic">
                 <span class="material-symbols-outlined" style="font-size:1.125rem">slideshow</span>
                 Investor Deck
+            </a>
+            <a href="#contact" class="btn btn-ghost btn-magnetic">
+                <span class="material-symbols-outlined" style="font-size:1.125rem">mail</span>
+                Contact Sales
             </a>
         </div>
     </div>
@@ -1630,6 +1766,22 @@ window.addEventListener('scroll', () => {
     setTimeout(() => {
         heroTitle.querySelectorAll('.kinetic-word').forEach(w => w.classList.add('active'));
     }, 400);
+})();
+
+/* ===== HERO ROTATING TAGLINE ===== */
+(function() {
+    const wrap = document.getElementById('heroRotate');
+    if (!wrap) return;
+    const lines = wrap.querySelectorAll('.hero-rotate-line');
+    if (lines.length < 2) return;
+    let current = 0;
+    setInterval(() => {
+        lines[current].classList.remove('active');
+        lines[current].classList.add('exit');
+        setTimeout(() => lines[current].classList.remove('exit'), 600);
+        current = (current + 1) % lines.length;
+        lines[current].classList.add('active');
+    }, 3500);
 })();
 
 /* ===== GRADIENT SWEEP TRIGGER ===== */
