@@ -8,8 +8,10 @@
     <link rel="icon" href="sphere-logo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet"></noscript>
     <script src="https://www.google.com/recaptcha/api.js?render=6LfEP7EsAAAAAAhpXrmostlrS7OcxbV68crAduuW" async defer></script>
     <style>
         /* ===== SHADOW OBSIDIAN DESIGN SYSTEM ===== */
@@ -1481,7 +1483,7 @@
             <p class="section-subtitle">The leadership team building the future of sovereign AI infrastructure.</p>
         </div>
         <div class="management-card reveal visible">
-            <img src="founder.jpeg" alt="Founder portrait" class="management-photo">
+            <img src="founder.jpeg" alt="Founder portrait" class="management-photo" loading="lazy" decoding="async">
             <div class="management-info">
                 <h3>Founder &amp; Chief Executive Officer</h3>
                 <div class="management-title">CEO — ShadowTag AI, Inc.</div>
@@ -2299,7 +2301,7 @@ if (window.location.hash) {
 <script defer src="/__/firebase/10.8.0/firebase-app-compat.js"></script>
 <script defer src="/__/firebase/10.8.0/firebase-firestore-compat.js"></script>
 <script defer src="/__/firebase/init.js"></script>
-<script type="module" src="js/parallax.js"></script>
+<script defer src="js/parallax.js"></script>
 <!-- Analytics & A/B Testing -->
 <script>
   window.dataLayer = window.dataLayer || [];

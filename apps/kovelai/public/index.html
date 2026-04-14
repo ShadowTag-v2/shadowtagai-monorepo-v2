@@ -5,10 +5,15 @@
 <title>KovelAI | Post-Heppner Privileged Client AI and Web Search Through Your Firm, While You Get Paid</title>
 <meta name="description" content="KovelAI protects post-Heppner client internet searches from discovery while helping law firms get paid on the front end. Secure AI intake, after-hours capture, and revenue acceleration for modern practices."/>
 <link rel="canonical" href="https://kovelai.com/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.tailwindcss.com" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="/js/three.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="/js/three.min.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/></noscript>
 <script src="https://www.google.com/recaptcha/api.js?render=6LfLP7EsAAAAAAXMAb0d47AyLjtsqQSqU_MG4Z27" async defer></script>
 <script id="tailwind-config">
       tailwind.config = {
@@ -688,7 +693,8 @@ Submit Inquiry
 <video class="hero-video-bg"
        id="heroVideo"
        autoplay loop muted playsinline
-       preload="metadata"
+       preload="none"
+       loading="lazy"
        onloadeddata="this.classList.add('loaded')">
     <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4" type="video/mp4">
     <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.webm" type="video/webm">
@@ -725,7 +731,7 @@ Submit Inquiry
 </div>
 <!-- Hero Image -->
 <div class="mt-16 w-full rounded-xl overflow-hidden shadow-2xl bg-surface-container-lowest h-[420px] relative border border-outline-variant/10 animate-fade-in-up animate-delay-3" style="opacity:0">
-<img class="w-full h-full object-cover" alt="Premium law office with encrypted data visualization on screen, dark ambient gold lighting, cityscape through floor-to-ceiling windows" src="/img/hero.png"/>
+<img class="w-full h-full object-cover" alt="Premium law office with encrypted data visualization on screen, dark ambient gold lighting, cityscape through floor-to-ceiling windows" src="/img/hero.png" fetchpriority="high" decoding="async"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
 <div class="absolute bottom-8 left-8 p-6 bg-surface-container-highest/70 backdrop-blur-xl rounded-lg max-w-md border border-outline-variant/10">
 <div class="flex items-center gap-3 mb-2">
@@ -799,7 +805,7 @@ Submit Inquiry
 <!-- Shield Image Card -->
 <div class="md:col-span-7 md:-mt-32 bg-surface-container-lowest p-1 rounded-xl reveal">
 <div class="relative rounded-lg overflow-hidden">
-<img src="/img/shield.png" alt="Golden digital shield with scales of justice, circuit board encryption patterns, flowing blue and gold data streams" class="w-full h-64 object-cover"/>
+<img src="/img/shield.png" alt="Golden digital shield with scales of justice, circuit board encryption patterns, flowing blue and gold data streams" class="w-full h-64 object-cover" loading="lazy" decoding="async"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent"></div>
 <div class="absolute bottom-4 left-6">
 <span class="text-xs font-label text-primary tracking-widest uppercase">Privilege-Preserving Architecture</span>
@@ -889,7 +895,7 @@ Submit Inquiry
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 <!-- Left: Risk visual -->
 <div class="relative reveal">
-<img src="/img/risk-layers.png" alt="Concentric rings of golden light showing layers of digital protection — fragmented outer ring representing exposed searches, solid inner ring representing full privilege" class="w-full max-w-md mx-auto"/>
+<img src="/img/risk-layers.png" alt="Concentric rings of golden light showing layers of digital protection — fragmented outer ring representing exposed searches, solid inner ring representing full privilege" class="w-full max-w-md mx-auto" loading="lazy" decoding="async"/>
 <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-background/50"></div>
 </div>
 <!-- Right: Legal analysis content -->
@@ -2161,7 +2167,7 @@ Submit Inquiry
 <div class="p-10 md:p-16 flex flex-col md:flex-row items-center md:items-start gap-10">
 <!-- Headshot -->
 <div class="shrink-0 text-center">
-<img src="/img/ceo-headshot.jpg" alt="Erik Hancock, Founder and CEO of KovelAI" class="ceo-headshot" />
+<img src="/img/ceo-headshot.jpg" alt="Erik Hancock, Founder and CEO of KovelAI" class="ceo-headshot" loading="lazy" decoding="async" />
 <div class="mt-4 flex justify-center gap-3">
 <a href="https://www.linkedin.com/in/erik-hancock-80442476" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-primary transition-colors">
 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -2703,6 +2709,25 @@ document.addEventListener('DOMContentLoaded', initCookieBanner);
     }, { passive: true });
 })();
 
+</script>
+
+<!-- Video Lazy-Load Observer -->
+<script>
+(function() {
+  const heroVideo = document.getElementById('heroVideo');
+  if (!heroVideo) return;
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        heroVideo.preload = 'auto';
+        heroVideo.load();
+        heroVideo.play().catch(function() {});
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '200px' });
+  observer.observe(heroVideo);
+})();
 </script>
 
 <!-- Global Site Tag (gtag.js) - Google Analytics -->
