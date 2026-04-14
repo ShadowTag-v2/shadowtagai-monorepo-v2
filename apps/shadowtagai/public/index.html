@@ -1110,7 +1110,15 @@
         </button>
 
         <ul class="nav-menu" id="navMenu">
-            <li><a href="#products" onclick="showSection('home')">Products</a></li>
+            <li>
+                <a href="#">Products <span class="material-symbols-outlined">expand_more</span></a>
+                <ul class="nav-dropdown">
+                    <li><a href="#products" onclick="showSection('home')">Platform Overview</a></li>
+                    <li><a href="#products" onclick="showSection('home')">Sovereign Inference</a></li>
+                    <li><a href="#products" onclick="showSection('home')">Agent Swarm</a></li>
+                    <li><a href="#products" onclick="showSection('home')">RAG Pipeline</a></li>
+                </ul>
+            </li>
 
             <li>
                 <a href="#">Media & Events <span class="material-symbols-outlined">expand_more</span></a>
@@ -1151,7 +1159,14 @@
                 </ul>
             </li>
 
-            <li><a href="https://apply.workable.com/" target="_blank" rel="noopener">Careers</a></li>
+            <li>
+                <a href="#">Careers <span class="material-symbols-outlined">expand_more</span></a>
+                <ul class="nav-dropdown">
+                    <li><a href="#contact" onclick="showSection('home')">Open Positions</a></li>
+                    <li><a href="#contact" onclick="showSection('home')">Engineering</a></li>
+                    <li><a href="#contact" onclick="showSection('home')">Culture</a></li>
+                </ul>
+            </li>
 
             <li>
                 <a href="#">About Us <span class="material-symbols-outlined">expand_more</span></a>
