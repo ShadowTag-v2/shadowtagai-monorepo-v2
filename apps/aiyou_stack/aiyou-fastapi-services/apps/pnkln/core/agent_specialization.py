@@ -14,6 +14,8 @@ Like law firms: Securities partner knows securities deeply,
 but also understands corporate, tax, regulatory enough to spot issues.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any

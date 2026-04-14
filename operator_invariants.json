@@ -6,8 +6,14 @@
     "authorized_gcp_project": "shadowtag-omega-v4",
     "gemini_context_resolution": "global_overrides_in_~/.gemini/GEMINI.md; project_guardrails_in_working_directory; context_files_override_general_prompts",
     "gemini_yolo_mode_setting": "geminicodeassist.agentYoloMode=true",
-    "allowed_tool_classes": ["command(*)", "mcp(*)"],
-    "excluded_destructive_tools": ["ShellTool(rm -rf)", "ShellTool(sudo)"],
+    "allowed_tool_classes": [
+      "command(*)",
+      "mcp(*)"
+    ],
+    "excluded_destructive_tools": [
+      "ShellTool(rm -rf)",
+      "ShellTool(sudo)"
+    ],
     "queue_doctrine": "Serverless Google Cloud Tasks ONLY. BullMQ is EXPLICITLY BANNED.",
     "companion_file_pointers": {
       "business_context": "See BUSINESS_CONTEXT_LOCKED.md",

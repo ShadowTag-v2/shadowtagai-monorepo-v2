@@ -1,14 +1,14 @@
 """
-COR CONTEXT - Lightweight Execution Context
+COR Context — Lightweight Execution Context
 =============================================
 
-Extracted from cor_orchestrator.py as part of the Rich Hickey refactor.
+Extracted from cor_orchestrator.py (Rich Hickey refactor).
 
-Replaces SK's KernelContext with a zero-overhead dataclass.
-Latency: <1μs creation time.
-Memory: ~500 bytes per context.
+Replaces SK's KernelContext with a sub-microsecond creation time
+dataclass for agent pipeline tracking.
 
 Author: Pnkln Architecture Team
+Version: 2.0.0 — Rich Hickey Refactor
 """
 
 from __future__ import annotations
