@@ -13,6 +13,7 @@ from app.security.middleware import (
     RequestValidationMiddleware,
     SandboxMiddleware,
 )
+from app.webhooks.stripe_handler import router as stripe_router
 
 # Configure structured logging
 structlog.configure(
@@ -73,6 +74,12 @@ def create_app() -> FastAPI:
         router,
         prefix=settings.api_prefix,
         tags=["api"],
+    )
+
+    # Stripe webhook handler (signature-verified, idempotent)
+    app.include_router(
+        stripe_router,
+        tags=["webhooks"],
     )
 
     logger.info(

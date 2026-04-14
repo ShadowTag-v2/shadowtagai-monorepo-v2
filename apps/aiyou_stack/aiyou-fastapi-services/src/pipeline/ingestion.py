@@ -1,4 +1,4 @@
-from src.config.squadron import FLYING_MONKEYS_SQUADRON
+from src.config.squadron import AUTORESEARCH_TRIAD_SQUADRON
 from src.governance.judge import Judge6
 
 # DOCTRINE: Cor.58 "Control Loop"
@@ -8,7 +8,7 @@ from src.governance.judge import Judge6
 class IngestionPipeline:
     def __init__(self):
         self.judge = Judge6()
-        self.squadron = FLYING_MONKEYS_SQUADRON
+        self.squadron = AUTORESEARCH_TRIAD_SQUADRON
 
     def receive(self, source_path: str):
         """WHO: Alpha Agents (Intake)
