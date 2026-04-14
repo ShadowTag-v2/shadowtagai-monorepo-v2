@@ -1,5 +1,4 @@
-"""
-PNKLN Revenue Platform
+"""PNKLN Revenue Platform
 Branch consolidation for revenue generation
 
 Modules:

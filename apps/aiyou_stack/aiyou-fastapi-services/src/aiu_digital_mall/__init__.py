@@ -1,5 +1,4 @@
-"""
-AiU Digital Mall
+"""AiU Digital Mall
 Governed AI Marketplace with Pre-execution Compliance
 
 The world's first AI marketplace where every model, dataset, and service
@@ -23,9 +22,9 @@ from .verification import ProductVerification, VendorVerification
 __version__ = "1.0.0"
 __all__ = [
     "DigitalMall",
-    "Vendor",
     "Product",
-    "Transaction",
-    "VendorVerification",
     "ProductVerification",
+    "Transaction",
+    "Vendor",
+    "VendorVerification",
 ]

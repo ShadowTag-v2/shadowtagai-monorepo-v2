@@ -1,5 +1,4 @@
-"""
-Health Service Layer
+"""Health Service Layer
 
 Encapsulates database connectivity checks for readiness probes.
 Route handlers must delegate here — no raw DB calls in routes.

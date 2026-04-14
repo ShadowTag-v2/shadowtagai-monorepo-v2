@@ -1,5 +1,4 @@
-"""
-Business logic layer for Support Builder feature.
+"""Business logic layer for Support Builder feature.
 
 Handles database operations, AI integration, and core functionality.
 """
@@ -114,7 +113,7 @@ class SupportBuilderService:
                         FAQ.question.ilike(search_pattern),
                         FAQ.answer.ilike(search_pattern),
                     ),
-                )
+                ),
             )
             .order_by(FAQ.priority.desc(), FAQ.helpful_count.desc())
             .limit(limit)
@@ -187,7 +186,7 @@ class SupportBuilderService:
 
     @staticmethod
     async def update_article(
-        db: AsyncSession, article_id: int, article_data: HelpArticleUpdate
+        db: AsyncSession, article_id: int, article_data: HelpArticleUpdate,
     ) -> HelpArticle | None:
         """Update a help article."""
         article = await SupportBuilderService.get_article(db, article_id)
@@ -225,7 +224,7 @@ class SupportBuilderService:
                         HelpArticle.title.ilike(search_pattern),
                         HelpArticle.content.ilike(search_pattern),
                     ),
-                )
+                ),
             )
             .order_by(HelpArticle.helpful_count.desc(), HelpArticle.views.desc())
             .limit(limit)
@@ -238,7 +237,7 @@ class SupportBuilderService:
 
     @staticmethod
     async def create_widget_config(
-        db: AsyncSession, config_data: ChatWidgetConfigCreate
+        db: AsyncSession, config_data: ChatWidgetConfigCreate,
     ) -> ChatWidgetConfig:
         """Create a new chat widget configuration."""
         config = ChatWidgetConfig(**config_data.model_dump())
@@ -279,8 +278,7 @@ class SupportBuilderService:
         session_id: str,
         user_message: str,
     ) -> dict:
-        """
-        Process a chat message and generate AI response with suggestions.
+        """Process a chat message and generate AI response with suggestions.
 
         Returns a dictionary with the AI response and suggested FAQs/articles.
         """
@@ -330,7 +328,7 @@ class SupportBuilderService:
             keywords = await support_agent.generate_faq_suggestion_keywords(user_message)
             search_query = " ".join(keywords)
             suggested_articles = await SupportBuilderService.search_articles(
-                db, search_query, limit=3
+                db, search_query, limit=3,
             )
 
         # Save AI response message
@@ -360,13 +358,13 @@ class SupportBuilderService:
 
     @staticmethod
     async def get_conversation_history(
-        db: AsyncSession, session_db_id: int
+        db: AsyncSession, session_db_id: int,
     ) -> list[dict[str, str]]:
         """Get conversation history for a session."""
         result = await db.execute(
             select(ChatMessage)
             .where(ChatMessage.session_id == session_db_id)
-            .order_by(ChatMessage.created_at)
+            .order_by(ChatMessage.created_at),
         )
         messages = result.scalars().all()
 
@@ -405,7 +403,7 @@ class SupportBuilderService:
             and_(
                 SupportTicket.created_at >= start_date,
                 SupportTicket.created_at <= end_date,
-            )
+            ),
         )
         result = await db.execute(ticket_query)
         tickets = list(result.scalars().all())
@@ -433,7 +431,7 @@ class SupportBuilderService:
             and_(
                 ChatSession.created_at >= start_date,
                 ChatSession.created_at <= end_date,
-            )
+            ),
         )
         result = await db.execute(session_query)
         total_sessions = result.scalar() or 0
@@ -444,7 +442,7 @@ class SupportBuilderService:
                 ChatSession.created_at >= start_date,
                 ChatSession.created_at <= end_date,
                 ChatSession.satisfaction_rating.isnot(None),
-            )
+            ),
         )
         result = await db.execute(satisfaction_query)
         avg_satisfaction = result.scalar()

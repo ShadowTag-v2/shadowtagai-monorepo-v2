@@ -1,5 +1,4 @@
-"""
-SkyNode Architecture - The Steel
+"""SkyNode Architecture - The Steel
 Defines the physical infrastructure classes for Sovereign Compute.
 """
 

@@ -1,5 +1,4 @@
-"""
-AR Glasses Fatigue Detection - Quick Start Example
+"""AR Glasses Fatigue Detection - Quick Start Example
 
 This example demonstrates how to use the fatigue detection SDK
 to monitor a simulated AR glasses session.
@@ -20,8 +19,7 @@ from fatigue.sensors import SensorFusion
 
 
 async def simulate_ar_session():
-    """
-    Simulate a 5-minute AR glasses session with fatigue detection
+    """Simulate a 5-minute AR glasses session with fatigue detection
 
     Simulates:
     - Eye tracking (blink detection, pupil diameter)
@@ -30,7 +28,6 @@ async def simulate_ar_session():
     - Real-time fatigue prediction
     - Adaptive display adjustments
     """
-
     print("=" * 70)
     print("AR Glasses Fatigue Detection - Quick Start")
     print("=" * 70)
@@ -145,7 +142,7 @@ async def simulate_ar_session():
         rr_interval = 60000 / (70 + fatigue_progression * 10)  # HR increases slightly
 
         sensor_fusion.hrv_monitor.add_rr_interval(
-            interval_ms=rr_interval, timestamp=datetime.utcnow()
+            interval_ms=rr_interval, timestamp=datetime.utcnow(),
         )
 
         # Head pose: Forward tilt increases with fatigue
@@ -188,7 +185,7 @@ async def simulate_ar_session():
                 f"Blink: {current_blink_rate:.0f} bpm | "
                 f"Pupil: {pupil_diameter:.1f}mm | "
                 f"HRV: {current_rmssd:.0f}ms | "
-                f"Tilt: {head_tilt:.0f}°"
+                f"Tilt: {head_tilt:.0f}°",
             )
 
             # Show display adjustments
@@ -197,7 +194,7 @@ async def simulate_ar_session():
                     f"   📺 Display: "
                     f"Brightness {display_params['brightness']:.0%}, "
                     f"Hue {display_params['hue_shift_degrees']:.0f}°, "
-                    f"Contrast {display_params['contrast']:.2f}x"
+                    f"Contrast {display_params['contrast']:.2f}x",
                 )
 
             # Show interventions

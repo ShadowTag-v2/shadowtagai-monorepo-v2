@@ -1,5 +1,4 @@
-"""
-Observability layer for agent governance system.
+"""Observability layer for agent governance system.
 
 Integrates AgentOps for LLM-specific tracing, Cloud Logging for audit trails,
 and custom metrics for cost/performance tracking.
@@ -20,8 +19,7 @@ from src.gov_config import settings
 
 
 class AuditLogEntry(BaseModel):
-    """
-    Structured audit log entry for governance decisions.
+    """Structured audit log entry for governance decisions.
 
     Complies with EU AI Act (6-month retention), GDPR Article 22
     (automated decision transparency), and NIST AI RMF requirements.
@@ -64,8 +62,7 @@ class AuditLogEntry(BaseModel):
 
 
 class ObservabilityManager:
-    """
-    Manages observability for governance system.
+    """Manages observability for governance system.
 
     Integrates:
     - AgentOps for session replay and LLM tracing
@@ -127,11 +124,11 @@ class ObservabilityManager:
             self.tracer = None
 
     def log_decision(self, decision: GovernanceDecision) -> None:
-        """
-        Log governance decision to audit trail.
+        """Log governance decision to audit trail.
 
         Args:
             decision: Governance decision to log
+
         """
         # Build audit log entry
         audit_entry = AuditLogEntry(
@@ -189,11 +186,11 @@ class ObservabilityManager:
             print(f"⚠️  AgentOps logging failed: {e}")
 
     def trace_decision(self, decision: GovernanceDecision) -> None:
-        """
-        Create distributed trace span for decision.
+        """Create distributed trace span for decision.
 
         Args:
             decision: Governance decision to trace
+
         """
         if not self.tracer:
             return
@@ -215,7 +212,7 @@ class ObservabilityManager:
                 if decision.requires_escalation:
                     span.set_attribute("decision.escalated", True)
                     span.set_attribute(
-                        "decision.escalation_reason", decision.escalation_reason or ""
+                        "decision.escalation_reason", decision.escalation_reason or "",
                     )
 
         except Exception as e:
@@ -227,8 +224,7 @@ class ObservabilityManager:
         end_time: datetime,
         filters: dict[str, str] | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Query audit logs for compliance reporting.
+        """Query audit logs for compliance reporting.
 
         Args:
             start_time: Start of time range
@@ -237,6 +233,7 @@ class ObservabilityManager:
 
         Returns:
             List of audit log entries
+
         """
         if not self.logging_client:
             return []
@@ -267,8 +264,7 @@ class ObservabilityManager:
 
 
 class MetricsCollector:
-    """
-    Collects and aggregates metrics for cost/performance monitoring.
+    """Collects and aggregates metrics for cost/performance monitoring.
 
     Tracks:
     - Cost per decision (target: <$0.01)
@@ -297,7 +293,7 @@ class MetricsCollector:
                 "cache_hit": decision.metrics.get("cache_hit", False),
                 "confidence": decision.confidence_score,
                 "status": decision.status.value,
-            }
+            },
         )
 
     def get_summary_metrics(self) -> dict[str, Any]:

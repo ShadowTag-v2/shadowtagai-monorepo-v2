@@ -1,5 +1,4 @@
-"""
-LanceDB vector store for the ShadowTag-v4 FastAPI workspace knowledge base.
+"""LanceDB vector store for the ShadowTag-v4 FastAPI workspace knowledge base.
 
 Embedding: Vertex AI text-embedding-004 (768-dim) via ADC.
 DB path:   <monorepo_root>/data/lancedb/   (canonical, consistent across callers)
@@ -32,7 +31,7 @@ SCHEMA = pa.schema(
         pa.field("source", pa.string()),
         pa.field("text", pa.string()),
         pa.field("vector", pa.list_(pa.float32(), EMBED_DIM)),
-    ]
+    ],
 )
 
 
@@ -103,7 +102,7 @@ def ingest_document(workspace_id: int, text: str, source: str = "") -> int:
                 "source": source,
                 "text": chunk,
                 "vector": get_gemini_embedding(chunk),
-            }
+            },
         )
 
     tbl.add(rows)
@@ -141,7 +140,7 @@ class _VectorDbManager:
                     "source": str(doc.get("source", "")),
                     "text": str(doc.get("text", doc.get("id", ""))),
                     "vector": [float(v) for v in doc["vector"]],
-                }
+                },
             )
         if rows:
             tbl.add(rows)

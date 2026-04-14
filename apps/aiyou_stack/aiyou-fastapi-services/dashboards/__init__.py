@@ -1,5 +1,4 @@
-"""
-Dashboards Module
+"""Dashboards Module
 =================
 Rich terminal dashboards for monitoring and management.
 
@@ -17,10 +16,10 @@ from .training_dashboard import (
 )
 
 __all__ = [
+    "GPUCluster",
+    "GPUType",
+    "JobStatus",
     "TrainingDashboard",
     "TrainingJob",
-    "GPUCluster",
-    "JobStatus",
-    "GPUType",
     "TrainingMetrics",
 ]

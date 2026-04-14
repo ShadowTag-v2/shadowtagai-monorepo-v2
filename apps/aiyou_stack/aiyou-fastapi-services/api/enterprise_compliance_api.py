@@ -1,5 +1,4 @@
-"""
-Enterprise Compliance Certificate API
+"""Enterprise Compliance Certificate API
 "AI that passes audit" vs "AI that answers fast"
 
 Wedge 1: Target regulated industries with blockchain-verified compliance.
@@ -134,7 +133,7 @@ class ComplianceCertificateRequest(BaseModel):
 
     # Regulatory context
     frameworks: list[str] = Field(
-        default=["EU_AI_ACT", "NIST_RMF", "ISO_42001"], description="Frameworks to validate against"
+        default=["EU_AI_ACT", "NIST_RMF", "ISO_42001"], description="Frameworks to validate against",
     )
     jurisdiction: str = Field(default="global", description="Primary jurisdiction")
 
@@ -294,8 +293,7 @@ class BlockchainAuditChain:
 
 
 class EnterpriseComplianceEngine:
-    """
-    Enterprise compliance engine integrating 21-layer Judge Architecture.
+    """Enterprise compliance engine integrating 21-layer Judge Architecture.
 
     Competitive Advantages vs Perplexity:
     - 21x deeper governance (21 layers vs basic safety)
@@ -324,7 +322,7 @@ class EnterpriseComplianceEngine:
         self.total_tokens_saved = 0
 
     async def generate_certificate(
-        self, request: ComplianceCertificateRequest
+        self, request: ComplianceCertificateRequest,
     ) -> ComplianceCertificate:
         """Generate compliance certificate with blockchain verification"""
         start_time = time.time()
@@ -398,7 +396,7 @@ class EnterpriseComplianceEngine:
         cert_data = certificate.model_dump()
         cert_data.pop("certificate_hash")
         certificate.certificate_hash = hashlib.sha256(
-            json.dumps(cert_data, default=str, sort_keys=True).encode()
+            json.dumps(cert_data, default=str, sort_keys=True).encode(),
         ).hexdigest()
 
         # Final audit entry
@@ -415,8 +413,7 @@ class EnterpriseComplianceEngine:
         return certificate
 
     async def batch_governance(self, request: BatchGovernanceRequest) -> BatchGovernanceResult:
-        """
-        Batch governance for 90-95% token savings.
+        """Batch governance for 90-95% token savings.
 
         Instead of validating each item separately (expensive),
         we validate the batch with shared context (cheap).
@@ -455,7 +452,7 @@ class EnterpriseComplianceEngine:
                 conditional += 1
 
             results.append(
-                {"item_id": item.get("id", str(uuid.uuid4())[:8]), "status": status, "score": score}
+                {"item_id": item.get("id", str(uuid.uuid4())[:8]), "status": status, "score": score},
             )
 
         tokens_saved = estimated_single_tokens - actual_tokens
@@ -574,10 +571,9 @@ class EnterpriseComplianceEngine:
         """Map verdict status to certificate status"""
         if status == DecisionStatus.APPROVED:
             return "APPROVED"
-        elif status == DecisionStatus.DEFERRED:
+        if status == DecisionStatus.DEFERRED:
             return "CONDITIONAL"
-        else:
-            return "REJECTED"
+        return "REJECTED"
 
     def _calculate_confidence(self, verdict) -> float:
         """Calculate confidence score"""
@@ -688,8 +684,7 @@ def root():
 
 @app.post("/certificate", response_model=ComplianceCertificate)
 async def generate_certificate(request: ComplianceCertificateRequest):
-    """
-    Generate a blockchain-verified compliance certificate.
+    """Generate a blockchain-verified compliance certificate.
 
     Runs content through 21-layer Judge Architecture and issues
     cryptographically signed certificate with audit trail.
@@ -706,14 +701,14 @@ async def generate_certificate(request: ComplianceCertificateRequest):
         "involves_pii": true
     }
     ```
+
     """
     return await engine.generate_certificate(request)
 
 
 @app.post("/batch", response_model=BatchGovernanceResult)
 async def batch_governance(request: BatchGovernanceRequest):
-    """
-    Batch governance for 90-95% token savings.
+    """Batch governance for 90-95% token savings.
 
     Instead of validating each item separately, validates batch
     with shared context for dramatic cost reduction.
@@ -734,14 +729,14 @@ async def batch_governance(request: BatchGovernanceRequest):
     - 10 items: 85% savings
     - 100 items: 93% savings
     - 1000 items: 96% savings
+
     """
     return await engine.batch_governance(request)
 
 
 @app.get("/dashboard", response_model=RegulatoryDashboardData)
 async def regulatory_dashboard():
-    """
-    Get regulatory compliance dashboard.
+    """Get regulatory compliance dashboard.
 
     Shows real-time compliance status across all 6 frameworks:
     - EU AI Act
@@ -756,8 +751,7 @@ async def regulatory_dashboard():
 
 @app.post("/verify/{certificate_id}")
 async def verify_certificate(certificate_id: str, _certificate_hash: str):
-    """
-    Verify a compliance certificate's authenticity.
+    """Verify a compliance certificate's authenticity.
 
     Checks:
     1. Certificate hash matches
@@ -775,8 +769,7 @@ async def verify_certificate(certificate_id: str, _certificate_hash: str):
 
 @app.get("/audit/{content_id}")
 async def get_audit_trail(content_id: str):
-    """
-    Get complete audit trail for content.
+    """Get complete audit trail for content.
 
     Returns immutable chain of all governance actions
     with cryptographic verification.

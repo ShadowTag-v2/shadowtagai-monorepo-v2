@@ -19,7 +19,7 @@ print(f"--- PROBING INTELLIGENCE SPECTRUM ({PROJECT_ID}) ---")
 for model in CANDIDATES:
     try:
         response = client.models.generate_content(
-            model=model, contents="Confirm functional status."
+            model=model, contents="Confirm functional status.",
         )
         print(f"✅ {model}: ACTIVE")
     except Exception as e:

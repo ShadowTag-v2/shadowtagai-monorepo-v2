@@ -1,5 +1,4 @@
-"""
-JR Rules Loader - Policy-as-Code for Judge #6
+"""JR Rules Loader - Policy-as-Code for Judge #6
 
 Loads JR validation rules from YAML configuration, enabling policy changes
 without code deployment.
@@ -48,8 +47,7 @@ class JREscalation:
 
 @dataclass
 class JRConfig:
-    """
-    Complete JR configuration loaded from YAML.
+    """Complete JR configuration loaded from YAML.
 
     Attributes:
         purpose_allowlist: Valid purposes that advance the mission
@@ -62,6 +60,7 @@ class JRConfig:
         sql_injection_patterns: SQL patterns that trigger BRAKES block
         audit: Audit logging configuration
         escalation: Escalation contacts
+
     """
 
     purpose_allowlist: list[str] = field(
@@ -70,7 +69,7 @@ class JRConfig:
             "customer_acquisition",
             "google_partnership",
             "gate_progress",
-        ]
+        ],
     )
     min_expected_roi: float = 3.0
     min_ltv_cac: float = 4.0
@@ -91,10 +90,10 @@ class JRConfig:
             "exec",
             "eval",
             "system",
-        ]
+        ],
     )
     sql_injection_patterns: list[str] = field(
-        default_factory=lambda: ["drop table", "delete from", "1=1", "or 1=1"]
+        default_factory=lambda: ["drop table", "delete from", "1=1", "or 1=1"],
     )
     audit: JRAuditConfig = field(default_factory=JRAuditConfig)
     escalation: JREscalation = field(default_factory=JREscalation)
@@ -129,8 +128,7 @@ class JRConfig:
 
 
 def load_jr_config(path: str | Path | None = None) -> JRConfig:
-    """
-    Load JR configuration from YAML file.
+    """Load JR configuration from YAML file.
 
     Args:
         path: Path to YAML file. If None, looks for jr_rules.yaml in:
@@ -144,6 +142,7 @@ def load_jr_config(path: str | Path | None = None) -> JRConfig:
     Raises:
         FileNotFoundError: If config file not found
         yaml.YAMLError: If YAML parsing fails
+
     """
     if path is None:
         # Try multiple locations
@@ -158,7 +157,7 @@ def load_jr_config(path: str | Path | None = None) -> JRConfig:
                 break
         else:
             raise FileNotFoundError(
-                "jr_rules.yaml not found. Set JR_RULES_PATH or place in current directory."
+                "jr_rules.yaml not found. Set JR_RULES_PATH or place in current directory.",
             )
 
     path = Path(path)
@@ -204,8 +203,7 @@ def load_jr_config(path: str | Path | None = None) -> JRConfig:
 
 # Convenience: pre-flight check function
 def jr_preflight_check(action: dict[str, Any], config: JRConfig | None = None) -> tuple[bool, str]:
-    """
-    Run JR pre-flight validation on an action.
+    """Run JR pre-flight validation on an action.
 
     Args:
         action: Action dict with keys like purpose, expected_roi, cost_usd, etc.
@@ -213,6 +211,7 @@ def jr_preflight_check(action: dict[str, Any], config: JRConfig | None = None) -
 
     Returns:
         (approved: bool, message: str)
+
     """
     if config is None:
         config = load_jr_config()

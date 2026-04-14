@@ -1,5 +1,4 @@
-"""
-Predictive Alerting System - Proactive problem detection and notification.
+"""Predictive Alerting System - Proactive problem detection and notification.
 
 Features:
 - Predictive alerts before failures occur
@@ -92,8 +91,7 @@ class AlertRule:
 
 
 class PredictiveAlertingSystem:
-    """
-    ML-powered predictive alerting system.
+    """ML-powered predictive alerting system.
 
     Generates alerts before problems occur using:
     - Cost spike predictor (alert 24h before overrun)
@@ -166,11 +164,11 @@ class PredictiveAlertingSystem:
         ]
 
     async def check_and_alert(self) -> list[PredictiveAlert]:
-        """
-        Check all rules and generate alerts.
+        """Check all rules and generate alerts.
 
         Returns:
             List of newly generated alerts
+
         """
         new_alerts = []
 
@@ -246,7 +244,7 @@ class PredictiveAlertingSystem:
         # ML anomalies
         if self.ml_detector:
             recent_anomalies = self.ml_detector.timeseries_detector.get_anomalies(
-                since=datetime.now() - timedelta(hours=1)
+                since=datetime.now() - timedelta(hours=1),
             )
             context["anomalies"] = {
                 "recent": recent_anomalies,
@@ -420,12 +418,12 @@ class PredictiveAlertingSystem:
         )
 
     def register_notification_handler(self, channel: AlertChannel, handler: Callable):
-        """
-        Register custom notification handler.
+        """Register custom notification handler.
 
         Args:
             channel: AlertChannel to handle
             handler: Async function(alert: PredictiveAlert) -> None
+
         """
         self.notification_handlers[channel] = handler
         logger.info(f"Registered notification handler for {channel.value}")
@@ -459,7 +457,7 @@ class PredictiveAlertingSystem:
         return False
 
     def get_active_alerts(
-        self, category: str | None = None, priority: AlertPriority | None = None
+        self, category: str | None = None, priority: AlertPriority | None = None,
     ) -> list[PredictiveAlert]:
         """Get active alerts with optional filtering."""
         alerts = self.active_alerts

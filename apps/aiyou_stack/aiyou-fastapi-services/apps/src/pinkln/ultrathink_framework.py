@@ -1,5 +1,4 @@
-"""
-Pinkln Ultrathink Framework - Complete Rebuild
+"""Pinkln Ultrathink Framework - Complete Rebuild
 Integrates: CoT/ToT/RCR/Glicko-2/MAD/DTE/GRPO/PPO
 
 Skills: Chain-of-Thought, Tree-of-Thought, Recursive Critique & Refinement,
@@ -46,15 +45,13 @@ class ThoughtStep:
 
 
 class ChainOfThoughtSkill:
-    """
-    Chain-of-Thought (CoT) Reasoning
+    """Chain-of-Thought (CoT) Reasoning
     Linear, step-by-step problem decomposition
     """
 
     @staticmethod
     def execute(problem: str, max_steps: int = 10) -> list[ThoughtStep]:
-        """
-        Execute CoT reasoning
+        """Execute CoT reasoning
 
         Args:
             problem: Problem to solve
@@ -62,6 +59,7 @@ class ChainOfThoughtSkill:
 
         Returns:
             List of thought steps
+
         """
         steps = []
 
@@ -71,12 +69,12 @@ class ChainOfThoughtSkill:
                 content=f"Understanding problem: {problem}",
                 confidence=0.9,
                 step_number=1,
-            )
+            ),
         )
 
         # Step 2: Decomposition
         steps.append(
-            ThoughtStep(content="Breaking into sub-problems", confidence=0.85, step_number=2)
+            ThoughtStep(content="Breaking into sub-problems", confidence=0.85, step_number=2),
         )
 
         # Step 3-N: Sequential solving
@@ -86,7 +84,7 @@ class ChainOfThoughtSkill:
                     content=f"Solving sub-problem {i - 2}",
                     confidence=0.9 - (i * 0.05),  # Confidence decays
                     step_number=i,
-                )
+                ),
             )
 
         # Final: Synthesis
@@ -95,22 +93,20 @@ class ChainOfThoughtSkill:
                 content="Synthesizing solution",
                 confidence=0.95,
                 step_number=len(steps) + 1,
-            )
+            ),
         )
 
         return steps
 
 
 class TreeOfThoughtSkill:
-    """
-    Tree-of-Thought (ToT) Reasoning
+    """Tree-of-Thought (ToT) Reasoning
     Branching exploration with backtracking
     """
 
     @staticmethod
     def execute(problem: str, branch_factor: int = 3, depth: int = 4) -> ThoughtStep:
-        """
-        Execute ToT reasoning with branching
+        """Execute ToT reasoning with branching
 
         Args:
             problem: Problem to solve
@@ -119,6 +115,7 @@ class TreeOfThoughtSkill:
 
         Returns:
             Root thought step with tree structure
+
         """
         root = ThoughtStep(content=f"Root: {problem}", confidence=1.0, step_number=0)
 
@@ -155,15 +152,13 @@ class TreeOfThoughtSkill:
 
 
 class RecursiveCritiqueRefinementSkill:
-    """
-    Recursive Critique & Refinement (RCR)
+    """Recursive Critique & Refinement (RCR)
     Self-improving reasoning loop
     """
 
     @staticmethod
     def execute(initial_solution: str, max_iterations: int = 5) -> list[ThoughtStep]:
-        """
-        Execute RCR loop
+        """Execute RCR loop
 
         Args:
             initial_solution: Starting solution
@@ -171,6 +166,7 @@ class RecursiveCritiqueRefinementSkill:
 
         Returns:
             List of refinement steps
+
         """
         steps = []
         current_solution = initial_solution
@@ -202,8 +198,7 @@ class RecursiveCritiqueRefinementSkill:
 
 
 class CheatSheetFusionSkill:
-    """
-    Cheat Sheet Fusion
+    """Cheat Sheet Fusion
     Compress knowledge to 10 essentials
     """
 
@@ -222,14 +217,14 @@ class CheatSheetFusionSkill:
 
     @staticmethod
     def generate_cheat_sheet(domain: str) -> dict[str, str]:
-        """
-        Generate 10-essential cheat sheet
+        """Generate 10-essential cheat sheet
 
         Args:
             domain: Knowledge domain
 
         Returns:
             Dict of 10 essentials
+
         """
         if domain == "legal_deadlines":
             return CheatSheetFusionSkill.LEGAL_DEADLINE_ESSENTIALS
@@ -245,8 +240,7 @@ class CheatSheetFusionSkill:
 
 @dataclass
 class Glicko2Rating:
-    """
-    Glicko-2 rating with uncertainty and volatility
+    """Glicko-2 rating with uncertainty and volatility
 
     Superior to Elo because it tracks:
     - Rating: Skill level
@@ -278,12 +272,12 @@ class Glicko2Rating:
         opponent_rating: "Glicko2Rating",
         score: float,  # 1.0 = win, 0.5 = draw, 0.0 = loss
     ):
-        """
-        Update rating after match against opponent
+        """Update rating after match against opponent
 
         Args:
             opponent_rating: Opponent's Glicko-2 rating
             score: Match outcome (1.0/0.5/0.0)
+
         """
         # Convert to Glicko-2 scale
         mu, phi = self.to_glicko_scale()
@@ -312,8 +306,7 @@ class Glicko2Rating:
         self.volatility = sigma_prime
 
     def _update_volatility(self, phi: float, v: float, delta: float) -> float:
-        """
-        Illinois algorithm for volatility update
+        """Illinois algorithm for volatility update
 
         Most complex part of Glicko-2
         """
@@ -357,11 +350,11 @@ class Glicko2Rating:
         return math.exp(A / 2)
 
     def decay_rd(self, time_periods: int = 1):
-        """
-        Increase rating deviation due to inactivity
+        """Increase rating deviation due to inactivity
 
         Args:
             time_periods: Number of rating periods inactive
+
         """
         mu, phi = self.to_glicko_scale()
 
@@ -372,8 +365,7 @@ class Glicko2Rating:
 
 
 class Glicko2System:
-    """
-    Glicko-2 rating system for agents/models
+    """Glicko-2 rating system for agents/models
 
     Tracks performance with uncertainty
     """
@@ -393,13 +385,13 @@ class Glicko2System:
         entity2_id: str,
         score1: float,  # 1.0 = entity1 wins, 0.0 = entity2 wins, 0.5 = draw
     ):
-        """
-        Record match result and update ratings
+        """Record match result and update ratings
 
         Args:
             entity1_id: First entity ID
             entity2_id: Second entity ID
             score1: Entity 1's score (1.0/0.5/0.0)
+
         """
         rating1 = self.get_rating(entity1_id)
         rating2 = self.get_rating(entity2_id)
@@ -430,8 +422,7 @@ class AgentType(StrEnum):
 
 @dataclass
 class Agent:
-    """
-    Base agent with Glicko-2 rating and DTE evolution
+    """Base agent with Glicko-2 rating and DTE evolution
     """
 
     id: str
@@ -446,12 +437,12 @@ class Agent:
         return f"[{self.type.value}] Executing: {task}"
 
     def evolve_template(self, feedback: str, strategy: str = "RCR_MAD"):
-        """
-        Evolve prompt template using DTE (Dynamic Template Evolution)
+        """Evolve prompt template using DTE (Dynamic Template Evolution)
 
         Args:
             feedback: Performance feedback
             strategy: Evolution strategy (RCR_MAD, GRPO, etc.)
+
         """
         evolution = {
             "timestamp": datetime.now().isoformat(),
@@ -473,8 +464,7 @@ class Agent:
 
 
 class DesignerAgent(Agent):
-    """
-    Architecture & Planning Agent
+    """Architecture & Planning Agent
     Specializes in: System design, architecture decisions, planning
     """
 
@@ -490,8 +480,7 @@ Pause → Breathe → Design → Urgency → Insanely Great.
 
 
 class AcceleratorAgent(Agent):
-    """
-    Speed Optimization Agent
+    """Speed Optimization Agent
     Specializes in: Performance, latency reduction, optimization
     """
 
@@ -508,8 +497,7 @@ Gemini 2.0 Flash → Function calling → Kernel chain.
 
 
 class DeepAgent(Agent):
-    """
-    Deep Analysis Agent
+    """Deep Analysis Agent
     Specializes in: Research, deep thinking, complex reasoning
     """
 
@@ -526,8 +514,7 @@ Uncover hidden insights.
 
 
 class PanelAgent(Agent):
-    """
-    Panel Debate Agent
+    """Panel Debate Agent
     Specializes in: Multi-agent deliberation, consensus building
     """
 
@@ -544,8 +531,7 @@ Glicko-2 rated performance.
 
 
 class CodeAgent(Agent):
-    """
-    Code Generation Agent
+    """Code Generation Agent
     Specializes in: Writing code, technical implementation
     """
 
@@ -568,17 +554,16 @@ Tests as excellence commitment.
 
 @dataclass
 class FrameworkComparison:
-    """
-    Compare reinforcement learning & evolution frameworks
+    """Compare reinforcement learning & evolution frameworks
     """
 
     @staticmethod
     def compare_all() -> dict[str, dict[str, Any]]:
-        """
-        Compare MAD, DTE, GRPO, PPO frameworks
+        """Compare MAD, DTE, GRPO, PPO frameworks
 
         Returns:
             Comparison matrix
+
         """
         return {
             "MAD": {
@@ -661,25 +646,24 @@ class FrameworkComparison:
 
     @staticmethod
     def recommend_for_use_case(use_case: str) -> str:
-        """
-        Recommend framework for use case
+        """Recommend framework for use case
 
         Args:
             use_case: Description of use case
 
         Returns:
             Recommended framework
+
         """
         if "complex" in use_case.lower() or "debate" in use_case.lower():
             return "MAD"
-        elif "improve" in use_case.lower() or "evolve" in use_case.lower():
+        if "improve" in use_case.lower() or "evolve" in use_case.lower():
             return "DTE"
-        elif "training" in use_case.lower() and "efficient" in use_case.lower():
+        if "training" in use_case.lower() and "efficient" in use_case.lower():
             return "GRPO"
-        elif "training" in use_case.lower() and "stable" in use_case.lower():
+        if "training" in use_case.lower() and "stable" in use_case.lower():
             return "PPO"
-        else:
-            return "DTE (default for online improvement)"
+        return "DTE (default for online improvement)"
 
 
 # ============================================================================
@@ -698,8 +682,7 @@ class TrainingExample:
 
 
 class GRPOSimulator:
-    """
-    Group Relative Policy Optimization Simulator
+    """Group Relative Policy Optimization Simulator
 
     Key idea: Train on highest-reward examples first
     (vs random sampling in standard RL)
@@ -710,11 +693,11 @@ class GRPOSimulator:
         self.training_order: list[int] = []
 
     def prioritize_examples(self) -> list[TrainingExample]:
-        """
-        Sort examples by reward (GRPO key insight)
+        """Sort examples by reward (GRPO key insight)
 
         Returns:
             Sorted examples (highest reward first)
+
         """
         sorted_examples = sorted(
             self.examples,
@@ -727,8 +710,7 @@ class GRPOSimulator:
         return sorted_examples
 
     def simulate_training(self, epochs: int = 10, batch_size: int = 32) -> dict[str, Any]:
-        """
-        Simulate GRPO training
+        """Simulate GRPO training
 
         Args:
             epochs: Training epochs
@@ -736,6 +718,7 @@ class GRPOSimulator:
 
         Returns:
             Training metrics
+
         """
         prioritized = self.prioritize_examples()
 
@@ -762,7 +745,7 @@ class GRPOSimulator:
             "accuracy_curve": accuracy_curve,
             "examples_processed": min(epochs * batch_size, len(prioritized)),
             "convergence_epoch": next(
-                (i for i, acc in enumerate(accuracy_curve) if acc >= 0.9), epochs
+                (i for i, acc in enumerate(accuracy_curve) if acc >= 0.9), epochs,
             ),
         }
 
@@ -784,8 +767,7 @@ class WealthLeak:
 
 
 class WealthAnalyzer:
-    """
-    Analyze business for wealth leaks
+    """Analyze business for wealth leaks
 
     Categories:
     - Customer Acquisition (CAC too high)
@@ -804,14 +786,14 @@ class WealthAnalyzer:
 
     @staticmethod
     def analyze_zt_legal(current_metrics: dict[str, float]) -> list[WealthLeak]:
-        """
-        Analyze Zero-Touch Legal for wealth leaks
+        """Analyze Zero-Touch Legal for wealth leaks
 
         Args:
             current_metrics: Current business metrics
 
         Returns:
             List of identified leaks
+
         """
         leaks = []
 
@@ -824,7 +806,7 @@ class WealthAnalyzer:
                     monthly_loss_usd=50000,  # 100 customers × $500 left on table
                     fix_difficulty="easy",
                     fix_action="Introduce $999/mo tier with API access + white-label",
-                )
+                ),
             )
 
         # Leak 2: No API monetization
@@ -836,7 +818,7 @@ class WealthAnalyzer:
                     monthly_loss_usd=100000,  # Missed opportunity
                     fix_difficulty="medium",
                     fix_action="Launch API marketplace: $0.0003/call, target 500M calls/month",
-                )
+                ),
             )
 
         # Leak 3: Manual onboarding (labor intensive)
@@ -848,7 +830,7 @@ class WealthAnalyzer:
                     monthly_loss_usd=30000,  # 50 hours/month @ $600/hr
                     fix_difficulty="medium",
                     fix_action="Build self-serve onboarding: video tutorials + automated setup",
-                )
+                ),
             )
 
         # Leak 4: No data licensing
@@ -860,7 +842,7 @@ class WealthAnalyzer:
                     monthly_loss_usd=20000,  # $250K/year ÷ 12
                     fix_difficulty="hard",
                     fix_action="Package anonymized deadline patterns, sell to legal tech companies",
-                )
+                ),
             )
 
         # Leak 5: Underutilized infrastructure
@@ -872,7 +854,7 @@ class WealthAnalyzer:
                     monthly_loss_usd=15000,
                     fix_difficulty="medium",
                     fix_action="White-label platform for practice management companies",
-                )
+                ),
             )
 
         return leaks
@@ -941,7 +923,7 @@ if __name__ == "__main__":
     leaderboard = glicko_system.get_leaderboard()
     for rank, (entity, rating) in enumerate(leaderboard, 1):
         print(
-            f"{rank}. {entity}: {rating.rating:.0f} ± {rating.rd:.0f} (σ={rating.volatility:.3f})"
+            f"{rank}. {entity}: {rating.rating:.0f} ± {rating.rd:.0f} (σ={rating.volatility:.3f})",
         )
     print()
 

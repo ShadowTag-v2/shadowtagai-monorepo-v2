@@ -24,7 +24,7 @@ class FixRequest(BaseModel):
     original_code: str
     error_message: str
     rejection_reason: str | None = Field(
-        None, description="Feedback from the Reviewer on a previous failed attempt."
+        None, description="Feedback from the Reviewer on a previous failed attempt.",
     )
 
 
@@ -34,8 +34,7 @@ class FixResponse(BaseModel):
 
 @app.post("/", response_model=FixResponse)
 async def create_code_fix(request: FixRequest):
-    """
-    Receives a code problem and uses Gemini to generate a fix.
+    """Receives a code problem and uses Gemini to generate a fix.
     If a rejection_reason is provided, it incorporates the feedback.
     """
     try:
@@ -72,5 +71,5 @@ async def create_code_fix(request: FixRequest):
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"An error occurred in the Fixer Agent: {str(e)}"
+            status_code=500, detail=f"An error occurred in the Fixer Agent: {e!s}",
         )

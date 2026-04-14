@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Ensemble Distillation for Flying n-autoresearch/Kosmos/BioAgents swarm.
+"""Ensemble Distillation for Flying n-autoresearch/Kosmos/BioAgents swarm.
 Implements CIKD pattern: score → elect best → distill → repeat.
 Based on Hong et al., NeurIPS 2019 Deep RL Workshop.
 """
@@ -51,8 +50,7 @@ class EnsembleMember:
 
 
 class EnsembleDistillation:
-    """
-    CIKD-style ensemble learning for 600-agent swarm.
+    """CIKD-style ensemble learning for 600-agent swarm.
 
     Core loop:
     1. Score all ensemble members
@@ -70,14 +68,14 @@ class EnsembleDistillation:
         exploration_boost: float = 1.1,
         score_window: int = 100,
     ):
-        """
-        Initialize ensemble distillation.
+        """Initialize ensemble distillation.
 
         Args:
             num_members: Number of ensemble members (squads)
             distillation_alpha: Strength of distillation (0 = no change, 1 = full copy)
             exploration_boost: Multiplier for exploration after distillation
             score_window: Rolling window for score averaging
+
         """
         self.num_members = num_members
         self.alpha = distillation_alpha
@@ -106,16 +104,16 @@ class EnsembleDistillation:
                     pheromone_trail=np.random.uniform(0.5, 1.5, (25, 25)),
                     routing_weights=np.random.dirichlet(np.ones(24)),
                     exploration_rate=np.random.uniform(0.05, 0.15),
-                )
+                ),
             )
         return members
 
     def score_all(self, weights: dict[str, float] = None) -> list[tuple[int, float]]:
-        """
-        Score all ensemble members.
+        """Score all ensemble members.
 
         Returns:
             List of (member_id, score) tuples, sorted by score descending
+
         """
         scores = []
         for member in self.members:
@@ -125,8 +123,7 @@ class EnsembleDistillation:
         return sorted(scores, key=lambda x: x[1], reverse=True)
 
     def elect_teacher(self, scores: list[tuple[int, float]] = None) -> int:
-        """
-        Elect best-performing member as teacher.
+        """Elect best-performing member as teacher.
 
         Uses rolling window of scores for stability.
         """
@@ -150,8 +147,7 @@ class EnsembleDistillation:
         return self.teacher_id
 
     def distill(self, teacher_id: int = None):
-        """
-        Distill teacher's knowledge to all students.
+        """Distill teacher's knowledge to all students.
 
         Soft alignment: students move toward teacher while retaining exploration.
         """
@@ -181,11 +177,11 @@ class EnsembleDistillation:
             )
 
     def run_cycle(self, weights: dict[str, float] = None) -> dict:
-        """
-        Run one complete CIKD cycle: score → elect → distill.
+        """Run one complete CIKD cycle: score → elect → distill.
 
         Returns:
             Cycle summary with metrics
+
         """
         start = time.time()
         self.cycle_count += 1
@@ -220,8 +216,7 @@ class EnsembleDistillation:
         return cycle_summary
 
     def get_ensemble_health(self) -> dict:
-        """
-        Get ensemble health metrics.
+        """Get ensemble health metrics.
 
         Healthy ensemble:
         - Teacher changes occasionally
@@ -258,8 +253,7 @@ class EnsembleDistillation:
         }
 
     def emergency_distillation(self):
-        """
-        Emergency distillation: align all to most stable member.
+        """Emergency distillation: align all to most stable member.
 
         Triggered by kill conditions in running_estimate.
         """
@@ -318,14 +312,13 @@ class EnsembleDistillation:
                     "success_rate": member.success_rate,
                     "exploration_rate": member.exploration_rate,
                     "times_teacher": member.was_teacher,
-                }
+                },
             )
         return rankings
 
 
 def main():
     """Demo of ensemble distillation."""
-
     print("///▞ Initializing ensemble with 24 members...")
     ensemble = EnsembleDistillation(num_members=24)
 
@@ -342,7 +335,7 @@ def main():
         result = ensemble.run_cycle()
         print(
             f"    Cycle {result['cycle']}: Teacher={result['teacher_name']}, "
-            f"Score={result['teacher_score']:.3f}, Var={result['score_variance']:.4f}"
+            f"Score={result['teacher_score']:.3f}, Var={result['score_variance']:.4f}",
         )
 
     # Get health

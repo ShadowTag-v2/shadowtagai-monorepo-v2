@@ -1,5 +1,4 @@
-"""
-Validation API Routes (PNKLN: Judge #6)
+"""Validation API Routes (PNKLN: Judge #6)
 FastAPI endpoints for ATP 5-19 compliance and JR validation
 """
 
@@ -46,8 +45,7 @@ ingestion_service = IngestionService()  # Needed to fetch items
     """,
 )
 async def validate_item(request: ValidationRequest) -> ValidationResponse:
-    """
-    Validate intelligence item against ATP 5-19 & JR compliance.
+    """Validate intelligence item against ATP 5-19 & JR compliance.
 
     **Example Request:**
     ```json
@@ -120,7 +118,7 @@ async def validate_item(request: ValidationRequest) -> ValidationResponse:
 
     if not item:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Item not found: {request.item_id}"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Item not found: {request.item_id}",
         )
 
     # Perform validation
@@ -129,7 +127,7 @@ async def validate_item(request: ValidationRequest) -> ValidationResponse:
         return result
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Validation failed: {str(e)}"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Validation failed: {e!s}",
         )
 
 
@@ -158,8 +156,7 @@ async def validate_item(request: ValidationRequest) -> ValidationResponse:
     """,
 )
 async def get_rules() -> RulesResponse:
-    """
-    List all ATP 5-19 rules and JR compliance checks.
+    """List all ATP 5-19 rules and JR compliance checks.
 
     **Example Response:**
     ```json
@@ -280,8 +277,7 @@ async def get_rules() -> RulesResponse:
     """,
 )
 async def batch_validate(request: BatchValidationRequest) -> BatchValidationResponse:
-    """
-    Validate multiple items in parallel.
+    """Validate multiple items in parallel.
 
     **Example Request:**
     ```json
@@ -359,7 +355,7 @@ async def batch_validate(request: BatchValidationRequest) -> BatchValidationResp
                     validation_id=validation_result.validation_id,
                     result=validation_result.result,
                     latency_ms=validation_result.latency_ms,
-                )
+                ),
             )
         except Exception:
             continue
@@ -374,7 +370,7 @@ async def batch_validate(request: BatchValidationRequest) -> BatchValidationResp
         if results
         else 0,
         "p99_latency_ms": round(
-            sorted([r.latency_ms for r in results])[int(len(results) * 0.99)], 1
+            sorted([r.latency_ms for r in results])[int(len(results) * 0.99)], 1,
         )
         if results
         else 0,
@@ -389,8 +385,7 @@ async def batch_validate(request: BatchValidationRequest) -> BatchValidationResp
     description="Quick health check for Judge #6 validation pipeline",
 )
 async def health_check():
-    """
-    Health check endpoint for monitoring.
+    """Health check endpoint for monitoring.
 
     **Returns:**
     - `status`: "healthy" | "degraded" | "unhealthy"

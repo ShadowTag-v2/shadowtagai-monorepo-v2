@@ -1,5 +1,4 @@
-"""
-NIST AI Risk Management Framework Module
+"""NIST AI Risk Management Framework Module
 
 Implements the NIST AI RMF 1.0 requirements.
 Focus areas:
@@ -31,8 +30,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.NIST_RMF)
 class NISTRMFModule(ComplianceModule):
-    """
-    NIST AI Risk Management Framework Module
+    """NIST AI Risk Management Framework Module
 
     Implements the four core functions of the AI RMF:
     1. GOVERN - Cultivate a culture of risk management
@@ -230,7 +228,7 @@ class NISTRMFModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single NIST AI RMF control."""
         metadata = input_data.metadata
@@ -247,16 +245,15 @@ class NISTRMFModule(ComplianceModule):
                     score=1.0,
                     evidence="AI risk management policy established",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["AI risk management policy not established"],
-                    remediation="Develop and document AI risk management policy",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["AI risk management policy not established"],
+                remediation="Develop and document AI risk management policy",
+            )
 
         # MAP - Context
         if control.control_id == "NIST-MAP-1.1":
@@ -270,16 +267,15 @@ class NISTRMFModule(ComplianceModule):
                     score=1.0,
                     evidence="AI system context documented",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.PARTIAL,
-                    score=0.5,
-                    findings=["System context documentation incomplete"],
-                    remediation="Document intended purpose, users, and deployment context",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.PARTIAL,
+                score=0.5,
+                findings=["System context documentation incomplete"],
+                remediation="Document intended purpose, users, and deployment context",
+            )
 
         # MEASURE - Trustworthiness
         if control.control_id == "NIST-MEA-2.1":
@@ -335,10 +331,9 @@ class NISTRMFModule(ComplianceModule):
             avg_score = sum(scores.values()) / len(scores)
             if avg_score < 0.4:
                 return RiskTier.HIGH
-            elif avg_score < 0.7:
+            if avg_score < 0.7:
                 return RiskTier.LIMITED
-            else:
-                return RiskTier.MINIMAL
+            return RiskTier.MINIMAL
 
         # High-impact decisions
         if input_data.is_high_risk_decision:
@@ -348,13 +343,13 @@ class NISTRMFModule(ComplianceModule):
         impact_level = metadata.get("impact_level", "low")
         if impact_level == "high":
             return RiskTier.HIGH
-        elif impact_level == "moderate":
+        if impact_level == "moderate":
             return RiskTier.LIMITED
 
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check NIST AI RMF validation rules."""
         content_lower = content.lower()
@@ -415,11 +410,10 @@ class NISTRMFModule(ComplianceModule):
         avg = sum(scores.values()) / len(scores)
         if avg >= 0.90:
             return "optimizing"
-        elif avg >= 0.75:
+        if avg >= 0.75:
             return "managed"
-        elif avg >= 0.60:
+        if avg >= 0.60:
             return "defined"
-        elif avg >= 0.40:
+        if avg >= 0.40:
             return "developing"
-        else:
-            return "initial"
+        return "initial"

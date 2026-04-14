@@ -1,5 +1,4 @@
-"""
-Ingestion Service - Wraps Gemini Ingestion Layer for FastAPI
+"""Ingestion Service - Wraps Gemini Ingestion Layer for FastAPI
 """
 
 import asyncio
@@ -30,8 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 class IngestionService:
-    """
-    Service layer for managing ingestion jobs.
+    """Service layer for managing ingestion jobs.
 
     Wraps the GeminiIngestionLayer from PNKLN Core Stack and provides:
     - Job lifecycle management
@@ -98,7 +96,7 @@ class IngestionService:
         try:
             logger.info(f"Starting job {job_id}")
             result = await self.ingestion_layer.run_nightly_job(
-                job_id=job_id, max_items_per_source=max_items_per_source
+                job_id=job_id, max_items_per_source=max_items_per_source,
             )
             self.jobs[job_id] = result
             logger.info(f"Job {job_id} completed with status: {result.status}")
@@ -112,14 +110,14 @@ class IngestionService:
                 del self.running_jobs[job_id]
 
     def start_job(self, max_items_per_source: int = 500) -> str:
-        """
-        Start a new ingestion job.
+        """Start a new ingestion job.
 
         Args:
             max_items_per_source: Max items to collect per source
 
         Returns:
             Job ID
+
         """
         job_id = f"job_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid4().hex[:8]}"
 
@@ -131,14 +129,14 @@ class IngestionService:
         return job_id
 
     def get_job_status(self, job_id: str) -> JobStatusResponse | None:
-        """
-        Get status of a specific job.
+        """Get status of a specific job.
 
         Args:
             job_id: Job identifier
 
         Returns:
             Job status or None if not found
+
         """
         # Check if job is running
         if job_id in self.running_jobs:
@@ -159,7 +157,7 @@ class IngestionService:
                         job_id=job_id,
                         status=IngestionStatus.FAILED,
                         started_at=datetime.utcnow(),
-                        message=f"Failed: {str(e)}",
+                        message=f"Failed: {e!s}",
                     )
             else:
                 return JobStatusResponse(
@@ -185,14 +183,14 @@ class IngestionService:
         return None
 
     def get_job_result(self, job_id: str) -> JobResult | None:
-        """
-        Get full result of a completed job.
+        """Get full result of a completed job.
 
         Args:
             job_id: Job identifier
 
         Returns:
             Job result or None if not found/completed
+
         """
         if job_id in self.jobs:
             return self._convert_result_to_job_result(self.jobs[job_id])
@@ -210,8 +208,7 @@ class IngestionService:
         return None
 
     def list_jobs(self, page: int = 1, page_size: int = 10) -> JobListResponse:
-        """
-        List recent jobs with pagination.
+        """List recent jobs with pagination.
 
         Args:
             page: Page number (1-indexed)
@@ -219,6 +216,7 @@ class IngestionService:
 
         Returns:
             Paginated job list
+
         """
         # Combine running and completed jobs
         all_job_ids = list(self.running_jobs.keys()) + list(self.jobs.keys())
@@ -237,15 +235,15 @@ class IngestionService:
                 jobs_status.append(status)
 
         return JobListResponse(
-            jobs=jobs_status, total=len(all_job_ids), page=page, page_size=page_size
+            jobs=jobs_status, total=len(all_job_ids), page=page, page_size=page_size,
         )
 
     def get_metrics_summary(self) -> MetricsSummary:
-        """
-        Get aggregated metrics across all jobs.
+        """Get aggregated metrics across all jobs.
 
         Returns:
             Metrics summary
+
         """
         completed_jobs = list(self.jobs.values())
 

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Hybrid Orchestrator: Routes tasks to appropriate execution layer
+"""Hybrid Orchestrator: Routes tasks to appropriate execution layer
 Combines: rtrvr.ai (web) + E2B (sandbox) + CI pipeline + minions
 
 Part of 4-Module Agent Stack
@@ -40,8 +39,7 @@ class TaskResult:
 
 
 class HybridOrchestrator:
-    """
-    Routes tasks to the most appropriate execution layer.
+    """Routes tasks to the most appropriate execution layer.
 
     Layers:
     - minions: 600 agent swarm for general tasks
@@ -101,11 +99,11 @@ class HybridOrchestrator:
 
         if any(kw in prompt for kw in ["browse", "website", "url", "scrape"]):
             return ExecutionLayer.RTRVR
-        elif any(kw in prompt for kw in ["execute", "run", "code", "python", "sandbox"]):
+        if any(kw in prompt for kw in ["execute", "run", "code", "python", "sandbox"]):
             return ExecutionLayer.E2B
-        elif any(kw in prompt for kw in ["review", "pr", "diff", "analyze"]):
+        if any(kw in prompt for kw in ["review", "pr", "diff", "analyze"]):
             return ExecutionLayer.CI
-        elif any(kw in prompt for kw in ["design", "architect", "infrastructure"]):
+        if any(kw in prompt for kw in ["design", "architect", "infrastructure"]):
             return ExecutionLayer.LOOP
 
         return ExecutionLayer.minionS
@@ -136,7 +134,7 @@ class HybridOrchestrator:
         """Execute code in E2B sandbox."""
         if not self.E2B_API_KEY:
             return TaskResult(
-                layer=ExecutionLayer.E2B, success=False, output="E2B_API_KEY not configured"
+                layer=ExecutionLayer.E2B, success=False, output="E2B_API_KEY not configured",
             )
 
         try:
@@ -185,14 +183,13 @@ class HybridOrchestrator:
                     cost=0.0,
                     metadata={"status_code": response.status_code},
                 )
-            else:
-                # Complex browser automation would use MCP
-                # Placeholder for full rtrvr.ai integration
-                return TaskResult(
-                    layer=ExecutionLayer.RTRVR,
-                    success=False,
-                    output="Complex browser automation requires MCP server",
-                )
+            # Complex browser automation would use MCP
+            # Placeholder for full rtrvr.ai integration
+            return TaskResult(
+                layer=ExecutionLayer.RTRVR,
+                success=False,
+                output="Complex browser automation requires MCP server",
+            )
         except Exception as e:
             return TaskResult(layer=ExecutionLayer.RTRVR, success=False, output=str(e))
 
@@ -212,7 +209,7 @@ class HybridOrchestrator:
                 else:
                     # Get diff from git
                     result = subprocess.run(
-                        ["git", "diff", diff_range], capture_output=True, text=True
+                        ["git", "diff", diff_range], capture_output=True, text=True,
                     )
                     f.write(result.stdout)
                 diff_file = f.name
@@ -287,7 +284,7 @@ class HybridOrchestrator:
             code = task.get("code", task.get("prompt", ""))
 
             result = subprocess.run(
-                ["python3", "-c", code], capture_output=True, text=True, timeout=30
+                ["python3", "-c", code], capture_output=True, text=True, timeout=30,
             )
 
             return TaskResult(
@@ -301,8 +298,7 @@ class HybridOrchestrator:
             return TaskResult(layer=ExecutionLayer.LOCAL, success=False, output=str(e))
 
     async def execute(self, task: dict[str, Any]) -> TaskResult:
-        """
-        Execute task on appropriate layer.
+        """Execute task on appropriate layer.
 
         Routing logic:
         1. Check explicit layer override

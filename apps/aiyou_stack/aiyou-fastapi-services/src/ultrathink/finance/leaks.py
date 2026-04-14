@@ -12,8 +12,7 @@ class LeakWarning(BaseModel):
 
 
 class RevenueLeakDetector:
-    """
-    Analyzes system logs to identify unmonetized value and revenue leaks.
+    """Analyzes system logs to identify unmonetized value and revenue leaks.
     """
 
     def __init__(self, token_cost_per_1k: float = 0.002, min_margin: float = 0.5):
@@ -21,8 +20,7 @@ class RevenueLeakDetector:
         self.min_margin = min_margin
 
     def analyze_transaction(self, log_entry: dict) -> LeakWarning | None:
-        """
-        Analyze a single transaction log for revenue leaks.
+        """Analyze a single transaction log for revenue leaks.
         Expected log_entry format:
         {
             "timestamp": "iso-str",

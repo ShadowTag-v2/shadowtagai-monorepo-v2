@@ -1,5 +1,4 @@
-"""
-Wealth Planning and Financial Optimization Models
+"""Wealth Planning and Financial Optimization Models
 Based on Pinkln Ultrathink wealth acceleration framework
 """
 
@@ -42,7 +41,7 @@ class FinancialLeak(BaseModel):
                     "15% monthly churn vs industry average of 5%",
                     "Exit survey shows 60% leave due to lack of onboarding",
                 ],
-            }
+            },
         }
 
 
@@ -81,7 +80,7 @@ class FunnelRedesign(BaseModel):
                 ],
                 "expected_roi": 4.2,
                 "implementation_difficulty": 3,
-            }
+            },
         }
 
 
@@ -98,8 +97,7 @@ class WealthAccelerationAction(BaseModel):
 
 
 class WealthAnalysis(BaseModel):
-    """
-    Complete wealth planning analysis
+    """Complete wealth planning analysis
     Structure: Spot leaks → Redesign funnels → Leverage viral/conversion
     """
 
@@ -162,7 +160,7 @@ class WealthAnalysis(BaseModel):
                         "projected_revenue_impact": 15000,
                         "roi_months": 1,
                         "priority": 10,
-                    }
+                    },
                 ],
                 "projected_monthly_impact": 60000,
                 "challenge_statement": "Cut churn from 15% to 7% in 90 days or you're out of business. Your runway depends on it.",
@@ -178,13 +176,12 @@ class WealthAnalysis(BaseModel):
                     "CAC/LTV ratio: 0.67 → 0.30",
                     "Runway: 6 months → 12 months",
                 ],
-            }
+            },
         }
 
 
 class MoneyOptimizationStrategy(BaseModel):
-    """
-    Enhanced money optimization combining 'Doing Less Better Results'
+    """Enhanced money optimization combining 'Doing Less Better Results'
     with Pinkln wealth acceleration
     """
 
@@ -195,13 +192,13 @@ class MoneyOptimizationStrategy(BaseModel):
         default=[
             "Track your spending and cut three unnecessary expenses",
             "Redirect savings to investments or experiences with long-term value",
-        ]
+        ],
     )
     action_items: list[str] = Field(default_factory=list)
 
     # Advanced wealth analysis (Pinkln framework)
     wealth_analysis: WealthAnalysis | None = Field(
-        None, description="Deep wealth planning analysis (for businesses/serious optimization)"
+        None, description="Deep wealth planning analysis (for businesses/serious optimization)",
     )
 
     # Integration

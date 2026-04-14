@@ -1,5 +1,4 @@
-"""
-Prompt Engineering Templates API Routes
+"""Prompt Engineering Templates API Routes
 Endpoints for R-T-F, T-A-G, B-A-B, C-A-R-E, R-I-S-E templates
 """
 
@@ -55,73 +54,68 @@ async def list_prompt_templates():
                 "description": "Detailed step-by-step approach with clear expectations",
                 "components": ["role", "input", "steps", "expectation"],
             },
-        ]
+        ],
     }
 
 
 @router.post("/rtf", response_model=PromptTemplateResponse, summary="Render R-T-F template")
 async def render_rtf_template(template: RTFTemplate):
-    """
-    Render a Role-Task-Format (R-T-F) prompt template
+    """Render a Role-Task-Format (R-T-F) prompt template
 
     Simple and direct prompt structure ideal for straightforward tasks.
     """
     try:
         return renderer.render_rtf(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
 
 
 @router.post("/tag", response_model=PromptTemplateResponse, summary="Render T-A-G template")
 async def render_tag_template(template: TAGTemplate):
-    """
-    Render a Task-Action-Goal (T-A-G) prompt template
+    """Render a Task-Action-Goal (T-A-G) prompt template
 
     Focused on defining clear objectives and measurable outcomes.
     """
     try:
         return renderer.render_tag(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
 
 
 @router.post("/bab", response_model=PromptTemplateResponse, summary="Render B-A-B template")
 async def render_bab_template(template: BABTemplate):
-    """
-    Render a Before-After-Bridge (B-A-B) prompt template
+    """Render a Before-After-Bridge (B-A-B) prompt template
 
     Problem-solution focused prompting that clearly defines current state and desired outcome.
     """
     try:
         return renderer.render_bab(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
 
 
 @router.post("/care", response_model=PromptTemplateResponse, summary="Render C-A-R-E template")
 async def render_care_template(template: CARETemplate):
-    """
-    Render a Context-Action-Result-Example (C-A-R-E) prompt template
+    """Render a Context-Action-Result-Example (C-A-R-E) prompt template
 
     Comprehensive prompting with full context and reference examples.
     """
     try:
         return renderer.render_care(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
 
 
 @router.post("/rise", response_model=PromptTemplateResponse, summary="Render R-I-S-E template")
 async def render_rise_template(template: RISETemplate):
-    """
-    Render a Role-Input-Steps-Expectation (R-I-S-E) prompt template
+    """Render a Role-Input-Steps-Expectation (R-I-S-E) prompt template
 
     Detailed step-by-step approach with clear expectations and specific role definition.
     """
     try:
         return renderer.render_rise(template)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error rendering template: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error rendering template: {e!s}")
 
 
 @router.get("/examples/{template_type}", summary="Get example for specific template")
@@ -159,7 +153,7 @@ async def get_template_example(template_type: TemplateType):
 
     if template_type not in examples:
         raise HTTPException(
-            status_code=404, detail=f"No example found for template type: {template_type}"
+            status_code=404, detail=f"No example found for template type: {template_type}",
         )
 
     return {"template_type": template_type, "example": examples[template_type]}

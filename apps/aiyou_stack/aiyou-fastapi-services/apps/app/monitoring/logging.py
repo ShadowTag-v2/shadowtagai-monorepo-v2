@@ -9,8 +9,7 @@ from app.config import settings
 
 
 def setup_logging():
-    """
-    Configure structured JSON logging.
+    """Configure structured JSON logging.
 
     Logs include:
     - Timestamp

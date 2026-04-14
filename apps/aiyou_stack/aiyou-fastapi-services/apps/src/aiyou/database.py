@@ -1,5 +1,4 @@
-"""
-Database connection and session management.
+"""Database connection and session management.
 
 Provides SQLAlchemy engine, session factory, and base declarative class.
 """
@@ -56,8 +55,7 @@ Base = declarative_base()
 
 
 def get_db() -> Generator[Session, None, None]:
-    """
-    Dependency for FastAPI routes to get database session.
+    """Dependency for FastAPI routes to get database session.
 
     Yields:
         Database session
@@ -66,6 +64,7 @@ def get_db() -> Generator[Session, None, None]:
         @app.get("/users")
         def get_users(db: Session = Depends(get_db)):
             return db.query(User).all()
+
     """
     db = SessionLocal()
     try:
@@ -76,8 +75,7 @@ def get_db() -> Generator[Session, None, None]:
 
 @contextmanager
 def get_db_context() -> Generator[Session, None, None]:
-    """
-    Context manager for database sessions outside FastAPI routes.
+    """Context manager for database sessions outside FastAPI routes.
 
     Yields:
         Database session
@@ -85,6 +83,7 @@ def get_db_context() -> Generator[Session, None, None]:
     Example:
         with get_db_context() as db:
             user = db.query(User).first()
+
     """
     db = SessionLocal()
     try:
@@ -98,8 +97,7 @@ def get_db_context() -> Generator[Session, None, None]:
 
 
 def init_db() -> None:
-    """
-    Initialize database by creating all tables.
+    """Initialize database by creating all tables.
 
     Should be called during application startup.
     """
@@ -109,11 +107,11 @@ def init_db() -> None:
 
 
 def check_db_connection() -> bool:
-    """
-    Check if database connection is healthy.
+    """Check if database connection is healthy.
 
     Returns:
         True if connection is healthy, False otherwise
+
     """
     try:
         with get_db_context() as db:

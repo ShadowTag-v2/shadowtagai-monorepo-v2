@@ -1,5 +1,4 @@
-"""
-SpaceX Starlink Client Stub
+"""SpaceX Starlink Client Stub
 Simulates interacting with a Starlink Flat High Performance Dish.
 """
 

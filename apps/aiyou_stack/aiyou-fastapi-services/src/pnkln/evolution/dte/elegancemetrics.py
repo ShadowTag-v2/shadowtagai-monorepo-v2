@@ -3,8 +3,7 @@ from dataclasses import dataclass
 
 @dataclass
 class EleganceMetrics:
-    """
-    Steve Jobs Elegance Metrics for DTE.
+    """Steve Jobs Elegance Metrics for DTE.
 
     Philosophy: Perfection is not when there's nothing left to add,
     but when there's nothing left to remove.

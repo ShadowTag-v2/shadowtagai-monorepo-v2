@@ -7,8 +7,7 @@ from src.pnkln.steel.tinytorch_transformer import MLP, GeminiMini, LayerNorm
 
 
 class MemoryMLP(Layer):
-    """
-    The 'Fast Weights' network acting as the Neural Memory.
+    """The 'Fast Weights' network acting as the Neural Memory.
     Simple MLP: Input -> Linear -> Activation -> Linear -> Output.
     """
 
@@ -33,8 +32,7 @@ class MemoryMLP(Layer):
         return [self.w1, self.b1, self.w2, self.b2]
 
     def update_weights(self, lr: float, grads: list[Tensor | None]):
-        """
-        Manually update weights for test-time training / surprise minimization.
+        """Manually update weights for test-time training / surprise minimization.
         This creates NEW tensors for the weights, effectively detaching history
         for the next step, which is standard for practical TTT to avoid checking
         gradients through thousands of steps.
@@ -60,8 +58,7 @@ class MemoryMLP(Layer):
 
 
 class NeuralMemory(Layer):
-    """
-    Titans Neural Memory Module.
+    """Titans Neural Memory Module.
 
     Mechanism:
     1. Project sequence to Q, K, V.
@@ -220,8 +217,7 @@ class NeuralMemory(Layer):
 
 
 class TitansBlock(Layer):
-    """
-    Hybrid Block: Attention + Neural Memory.
+    """Hybrid Block: Attention + Neural Memory.
     """
 
     def __init__(self, embed_dim, num_heads, _dropout_prob=0.1):
@@ -269,8 +265,7 @@ class TitansBlock(Layer):
 
 
 class TitansGemini(GeminiMini):
-    """
-    Titans Architecture adapted for Gemini-Mini.
+    """Titans Architecture adapted for Gemini-Mini.
     Integrates NeuralMemory into the transformer stack.
     """
 
@@ -314,8 +309,7 @@ class TitansGemini(GeminiMini):
         return params
 
     def generate(self, prompt_tokens, max_new_tokens=50, temperature=1.0):
-        """
-        Generate text autoregressively.
+        """Generate text autoregressively.
         """
         current_tokens = Tensor(prompt_tokens.data.copy())
 

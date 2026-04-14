@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Task Allocation Optimizer using Particle Swarm Optimization.
+"""Task Allocation Optimizer using Particle Swarm Optimization.
 Allocates N tasks to 600 Flying n-autoresearch/Kosmos/BioAgents agents minimizing latency + cost + load variance.
 Based on FM 5-0 MDMP Step 3: COA Development.
 """
@@ -39,8 +38,7 @@ class Task:
 
 
 class TaskAllocationOptimizer:
-    """
-    PSO-based task allocation for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
+    """PSO-based task allocation for 600-agent Flying n-autoresearch/Kosmos/BioAgents swarm.
 
     Objective function minimizes:
     - Total latency across all tasks
@@ -88,7 +86,7 @@ class TaskAllocationOptimizer:
                     latency_ms=np.random.uniform(10, 100),  # Simulated
                     shift_end=datetime.now(),  # Will be set properly
                     available=True,
-                )
+                ),
             )
         return agents
 
@@ -98,8 +96,7 @@ class TaskAllocationOptimizer:
         self.num_tasks = len(tasks)
 
     def _objective_function(self, x: np.ndarray) -> float:
-        """
-        PSO objective function to minimize.
+        """PSO objective function to minimize.
 
         Args:
             x: Array of shape (num_tasks,) with values in [0, num_agents)
@@ -107,6 +104,7 @@ class TaskAllocationOptimizer:
 
         Returns:
             Total cost = latency + tier_cost + load_variance + penalties
+
         """
         # Convert continuous values to agent indices
         allocation = np.clip(x.astype(int), 0, self.num_agents - 1)
@@ -156,8 +154,7 @@ class TaskAllocationOptimizer:
         c1: float = 0.5,
         c2: float = 0.5,
     ) -> dict:
-        """
-        Run PSO optimization for task allocation.
+        """Run PSO optimization for task allocation.
 
         Args:
             max_iter: Maximum iterations
@@ -168,6 +165,7 @@ class TaskAllocationOptimizer:
 
         Returns:
             Dictionary with allocation results
+
         """
         if PSO is None:
             raise ImportError("scikit-opt not installed: pip install scikit-opt")
@@ -229,14 +227,14 @@ class TaskAllocationOptimizer:
         }
 
     def get_agent_assignments(self, allocation: list[int]) -> dict[int, list[int]]:
-        """
-        Convert allocation to agent-centric view.
+        """Convert allocation to agent-centric view.
 
         Args:
             allocation: List where allocation[task_id] = agent_id
 
         Returns:
             Dictionary mapping agent_id to list of task_ids
+
         """
         assignments = {}
         for task_id, agent_id in enumerate(allocation):

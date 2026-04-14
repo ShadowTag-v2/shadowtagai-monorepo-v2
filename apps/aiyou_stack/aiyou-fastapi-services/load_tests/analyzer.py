@@ -1,5 +1,4 @@
-"""
-Performance analysis and breaking point detection
+"""Performance analysis and breaking point detection
 """
 
 import json
@@ -60,10 +59,9 @@ class PerformanceAnalyzer:
         return analysis
 
     def detect_breaking_points(
-        self, response_time_threshold: float = 2000, error_rate_threshold: float = 0.05
+        self, response_time_threshold: float = 2000, error_rate_threshold: float = 0.05,
     ) -> list[dict]:
-        """
-        Detect breaking points based on response times and error rates
+        """Detect breaking points based on response times and error rates
 
         Breaking point indicators:
         - Response time > threshold
@@ -105,14 +103,14 @@ class PerformanceAnalyzer:
                 "🔧 Add CDN for static content",
                 "🔧 Optimize serialization (use faster JSON libraries)",
                 "🔧 Monitor and optimize memory usage",
-            ]
+            ],
         )
 
         self.recommendations = recommendations
         return recommendations
 
     def calculate_capacity(
-        self, target_response_time_ms: float = 500, max_error_rate: float = 0.01
+        self, target_response_time_ms: float = 500, max_error_rate: float = 0.01,
     ) -> dict:
         """Calculate system capacity within acceptable parameters"""
         capacity = {

@@ -10,7 +10,7 @@ def test_router_packages_expose_agent_contracts() -> None:
     os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///:memory:"
     os.environ["DEBUG"] = "release"
 
-    import src.schemas as schemas
+    from src import schemas
 
     assert hasattr(schemas, "AIAgentCreate")
     assert hasattr(schemas, "AIAgentResponse")
@@ -23,7 +23,7 @@ def test_knowledge_router_imports_under_src_package() -> None:
     os.environ["DEBUG"] = "release"
 
     sys.modules.setdefault(
-        "src.vector_db", SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None)
+        "src.vector_db", SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None),
     )
 
     knowledge = importlib.import_module("src.routers.knowledge")
@@ -36,7 +36,7 @@ def test_main_app_imports_and_registers_knowledge_route() -> None:
     os.environ["DEBUG"] = "release"
 
     sys.modules.setdefault(
-        "src.vector_db", SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None)
+        "src.vector_db", SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None),
     )
 
     main = importlib.import_module("src.main")

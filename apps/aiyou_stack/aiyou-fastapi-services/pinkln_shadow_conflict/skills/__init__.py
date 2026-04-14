@@ -1,5 +1,4 @@
-"""
-Skills library for the pinkln Agent Architecture System.
+"""Skills library for the pinkln Agent Architecture System.
 
 Core skills implementing reusable expertise modules.
 """
@@ -12,10 +11,10 @@ from .research_explorer import ResearchExplorerSkill
 from .workflow_refiner import WorkflowRefinerSkill
 
 __all__ = [
-    "ResearchExplorerSkill",
-    "DesignCriticSkill",
     "CopyConverterSkill",
+    "DesignCriticSkill",
     "MonetizationArchitectSkill",
-    "WorkflowRefinerSkill",
     "PromptCraftSkill",
+    "ResearchExplorerSkill",
+    "WorkflowRefinerSkill",
 ]

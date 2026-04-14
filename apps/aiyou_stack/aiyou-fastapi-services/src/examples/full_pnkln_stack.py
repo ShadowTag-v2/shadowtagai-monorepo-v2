@@ -1,5 +1,4 @@
-"""
-Full PNKLN Stack Example
+"""Full PNKLN Stack Example
 
 Demonstrates all four pillars working together:
 1. JR Engine - Purpose/Reasons/Brakes validation
@@ -150,7 +149,7 @@ def main():
             print(
                 f"  Purpose: {validation.purpose_score:.2f} | "
                 f"Reasons: {validation.reasons_score:.2f} | "
-                f"Brakes: {validation.brakes_score:.2f}"
+                f"Brakes: {validation.brakes_score:.2f}",
             )
         print()
 

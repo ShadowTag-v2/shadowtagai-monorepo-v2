@@ -1,5 +1,4 @@
-"""
-Recursive Critique and Refinement (RCR) Skill
+"""Recursive Critique and Refinement (RCR) Skill
 
 Iteratively improve responses through self-critique
 
@@ -16,6 +15,7 @@ Example:
   Final: "The code passes all unit tests, runs in O(n log n) time, and handles empty inputs gracefully."
 
 Research: Self-Refine (https://arxiv.org/abs/2303.17651)
+
 """
 
 import asyncio
@@ -39,8 +39,7 @@ class CritiqueResult:
 
 
 class RecursiveCritique(Skill):
-    """
-    Recursive Critique and Refinement skill
+    """Recursive Critique and Refinement skill
 
     1. Generate initial response
     2. Critique the response
@@ -92,7 +91,7 @@ Critique V2:
 """
 
         super().__init__(
-            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet
+            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet,
         )
 
         self.model = model
@@ -100,8 +99,7 @@ Critique V2:
         self.acceptance_threshold = acceptance_threshold
 
     async def execute(self, task: str, context: dict[str, Any] | None = None) -> SkillResult:
-        """
-        Execute Recursive Critique and Refinement
+        """Execute Recursive Critique and Refinement
 
         Args:
             task: Problem to solve
@@ -109,6 +107,7 @@ Critique V2:
 
         Returns:
             SkillResult with refinement trace
+
         """
         start_time = time.time()
 
@@ -131,7 +130,7 @@ Critique V2:
             # Critique current response
             critique = await self._critique(task, current_response)
             reasoning_trace.append(
-                f"Critique V{iteration}: Score {critique.score:.2f}, Issues: {', '.join(critique.issues) if critique.issues else 'None'}"
+                f"Critique V{iteration}: Score {critique.score:.2f}, Issues: {', '.join(critique.issues) if critique.issues else 'None'}",
             )
 
             # Check if acceptable
@@ -164,8 +163,7 @@ Critique V2:
         )
 
     async def _generate_initial(self, task: str) -> str:
-        """
-        Generate initial response
+        """Generate initial response
 
         In production, call Gemini API
         """
@@ -173,8 +171,7 @@ Critique V2:
         return "Initial response to the task (placeholder)"
 
     async def _critique(self, task: str, response: str) -> CritiqueResult:
-        """
-        Critique a response
+        """Critique a response
 
         In production:
         ```python
@@ -212,12 +209,11 @@ Critique V2:
             issues.append("Could be more concise")
 
         return CritiqueResult(
-            issues=issues, score=score, is_acceptable=score >= self.acceptance_threshold
+            issues=issues, score=score, is_acceptable=score >= self.acceptance_threshold,
         )
 
     async def _refine(self, task: str, current_response: str, critique: CritiqueResult) -> str:
-        """
-        Refine response based on critique
+        """Refine response based on critique
 
         In production:
         ```python
@@ -256,7 +252,7 @@ async def example():
         "Review this Python function:\n\n"
         "def add(a, b):\n"
         "    return a + b\n\n"
-        "Provide feedback on correctness, type safety, and documentation."
+        "Provide feedback on correctness, type safety, and documentation.",
     )
 
     print(f"Final response:\n{result.output}\n")

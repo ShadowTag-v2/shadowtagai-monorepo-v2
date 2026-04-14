@@ -22,7 +22,7 @@ try:
             "requests",
             "psutil",
             "-q",
-        ]
+        ],
     )
 except subprocess.CalledProcessError as e:
     print(f"Warning: Pip install failed with {e}. Continuing, hoping dependencies exist...")
@@ -32,7 +32,7 @@ print("⚡️ [2/4] Scanning for Pipeline Components...")
 
 if not os.path.exists("n-autoresearch/Kosmos/BioAgents.py"):
     print(
-        "   >> 'n-autoresearch/Kosmos/BioAgents.py' missing. Generating from Commit a54683e specs..."
+        "   >> 'n-autoresearch/Kosmos/BioAgents.py' missing. Generating from Commit a54683e specs...",
     )
     with open("n-autoresearch/Kosmos/BioAgents.py", "w") as f:
         f.write("""

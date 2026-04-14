@@ -25,7 +25,7 @@ def test_logging():
             risk_probability=0.1,
             risk_severity=0.1,
             mitigation_strategy="None",
-        )
+        ),
     ]
 
     print("running validate()...")

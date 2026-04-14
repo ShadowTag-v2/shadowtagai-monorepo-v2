@@ -165,19 +165,16 @@ def main():
         f.write(f"**Missing (Remote):** {len(skipped_no_remote)}\n\n")
 
         f.write("## Successful Merges\n")
-        for b in success:
-            f.write(f"- {b}\n")
+        f.writelines(f"- {b}\n" for b in success)
 
         f.write("\n## Conflicts (Skipped)\n")
-        for b in failed:
-            f.write(f"- {b}\n")
+        f.writelines(f"- {b}\n" for b in failed)
 
         f.write("\n## Missing on Remote\n")
-        for b in skipped_no_remote:
-            f.write(f"- {b}\n")
+        f.writelines(f"- {b}\n" for b in skipped_no_remote)
 
     print(
-        f"Done. Report saved to branch_merge_report.md. Success: {len(success)}, Failed: {len(failed)}"
+        f"Done. Report saved to branch_merge_report.md. Success: {len(success)}, Failed: {len(failed)}",
     )
 
 

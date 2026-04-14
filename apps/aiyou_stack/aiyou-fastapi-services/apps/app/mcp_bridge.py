@@ -1,5 +1,4 @@
-"""
-MCP Bridge - Model Context Protocol for Semantic Compression
+"""MCP Bridge - Model Context Protocol for Semantic Compression
 
 Implements 40-60% token reduction via:
 - ATP 5-19 risk scanning (military framework adapted for AI governance)
@@ -22,8 +21,7 @@ from typing import Any
 
 @dataclass
 class ATP519Kernel:
-    """
-    Compressed 487-byte kernel from ATP 5-19 risk assessment.
+    """Compressed 487-byte kernel from ATP 5-19 risk assessment.
 
     Military risk framework adapted for AI governance:
     SEVERITY × PROBABILITY = RISK SCORE
@@ -40,8 +38,7 @@ class ATP519Kernel:
 
 @dataclass
 class Judge6Decision:
-    """
-    Binary decision from Judge#6 governance system.
+    """Binary decision from Judge#6 governance system.
 
     Target: <35ms latency, $0.0003 cost
     """
@@ -55,8 +52,7 @@ class Judge6Decision:
 
 
 class MCPBridge:
-    """
-    Model Context Protocol bridge for semantic compression.
+    """Model Context Protocol bridge for semantic compression.
 
     COMPRESSION PIPELINE:
     1. ATP_519_scan(): 50KB context → 487-byte kernel
@@ -93,10 +89,9 @@ class MCPBridge:
         print(f"   Max kernel bytes: {max_kernel_bytes}")
 
     async def atp_519_scan(
-        self, input_context: dict[str, Any], _target_bytes: int = 487
+        self, input_context: dict[str, Any], _target_bytes: int = 487,
     ) -> ATP519Kernel:
-        """
-        ATP 5-19 Risk Assessment Scan.
+        """ATP 5-19 Risk Assessment Scan.
 
         Compresses input context to 487-byte semantic kernel using
         military risk framework adapted for AI governance.
@@ -115,12 +110,13 @@ class MCPBridge:
 
         Returns:
             ATP519Kernel with 487-byte payload
+
         """
         start_time = time.time()
 
         # Hash for cache lookup
         context_hash = hashlib.sha256(
-            json.dumps(input_context, sort_keys=True).encode()
+            json.dumps(input_context, sort_keys=True).encode(),
         ).hexdigest()
 
         # Check cache
@@ -168,16 +164,15 @@ class MCPBridge:
 
         elapsed_ms = (time.time() - start_time) * 1000
         print(
-            f"   ✓ ATP_519_scan: {input_bytes:,} → {kernel_bytes} bytes ({compression_ratio:.0%} reduction, {elapsed_ms:.1f}ms)"
+            f"   ✓ ATP_519_scan: {input_bytes:,} → {kernel_bytes} bytes ({compression_ratio:.0%} reduction, {elapsed_ms:.1f}ms)",
         )
 
         return kernel
 
     async def judge_six_binary(
-        self, kernel: ATP519Kernel, max_latency_ms: int = 35
+        self, kernel: ATP519Kernel, max_latency_ms: int = 35,
     ) -> Judge6Decision:
-        """
-        Judge#6 binary decision from compressed kernel.
+        """Judge#6 binary decision from compressed kernel.
 
         Target: <35ms latency, $0.0003 cost
 
@@ -193,6 +188,7 @@ class MCPBridge:
 
         Returns:
             Judge6Decision with binary output (0=DENY, 1=APPROVE)
+
         """
         start_time = time.time()
 
@@ -272,7 +268,7 @@ class MCPBridge:
         ]
 
     def _calculate_risk_score(
-        self, threat_level: int, compliance: list[int], context: dict[str, Any]
+        self, threat_level: int, compliance: list[int], context: dict[str, Any],
     ) -> int:
         """Calculate risk score (0-100)"""
         # Base risk from threat level
@@ -323,7 +319,7 @@ class MCPBridge:
             if not obj:
                 return depth
             return max(self._calculate_nesting_depth(v, depth + 1) for v in obj.values())
-        elif isinstance(obj, list):
+        if isinstance(obj, list):
             if not obj:
                 return depth
             return max(self._calculate_nesting_depth(item, depth + 1) for item in obj)

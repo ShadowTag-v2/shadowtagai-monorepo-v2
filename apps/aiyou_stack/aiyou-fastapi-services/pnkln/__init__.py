@@ -1,5 +1,4 @@
-"""
-Pnkln - Unified Search API
+"""Pnkln - Unified Search API
 
 Solves Gemini API limitation where custom tools and Google Search grounding
 are mutually exclusive.

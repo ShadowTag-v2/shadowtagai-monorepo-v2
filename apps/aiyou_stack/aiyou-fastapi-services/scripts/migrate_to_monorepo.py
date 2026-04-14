@@ -13,18 +13,17 @@ def check_governance(operation: str):
     print(f"⚖️  Asking Judge #6 for permission to: {operation}...")
     try:
         resp = requests.post(
-            f"{BASE_URL}/risk", json={"query": operation, "mission_id": "MIGRATE-001"}
+            f"{BASE_URL}/risk", json={"query": operation, "mission_id": "MIGRATE-001"},
         )
         resp.raise_for_status()
         decision = resp.json()
         if decision.get("approved"):
             print(
-                f"   ✅ APPROVED by {decision.get('authority')} (Risk: {decision.get('risk_tier')})"
+                f"   ✅ APPROVED by {decision.get('authority')} (Risk: {decision.get('risk_tier')})",
             )
             return True
-        else:
-            print(f"   ⛔ DENIED by {decision.get('authority')}")
-            return False
+        print(f"   ⛔ DENIED by {decision.get('authority')}")
+        return False
     except Exception as e:
         print(f"   ⚠️  Governance Offline or Error: {e}")
         # Fail safe or proceed? Let's fail safe for "God Mode" strictness.

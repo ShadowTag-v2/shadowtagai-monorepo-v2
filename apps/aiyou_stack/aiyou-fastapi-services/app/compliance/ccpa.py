@@ -1,5 +1,4 @@
-"""
-CCPA (California Consumer Privacy Act) Compliance Implementation
+"""CCPA (California Consumer Privacy Act) Compliance Implementation
 
 Provides:
 - Data access/export (right to know)
@@ -54,8 +53,7 @@ class CCPARequest(BaseModel):
 
 
 class CCPACompliance:
-    """
-    CCPA Compliance Implementation
+    """CCPA Compliance Implementation
 
     Features:
     - Data access (export user data in JSON/CSV/XML)
@@ -67,12 +65,12 @@ class CCPACompliance:
     """
 
     def __init__(self, database_client, audit_logger=None):
-        """
-        Initialize CCPA compliance handler
+        """Initialize CCPA compliance handler
 
         Args:
             database_client: Database connection for data access/deletion
             audit_logger: Logger for compliance audit trail
+
         """
         self.db = database_client
         self.audit_logger = audit_logger or logger
@@ -81,10 +79,9 @@ class CCPACompliance:
         self.response_deadline_days = 45
 
     async def submit_request(
-        self, user_id: str, request_type: CCPARequestType, metadata: dict | None = None
+        self, user_id: str, request_type: CCPARequestType, metadata: dict | None = None,
     ) -> CCPARequest:
-        """
-        Submit a CCPA consumer request
+        """Submit a CCPA consumer request
 
         Args:
             user_id: User ID making the request
@@ -93,6 +90,7 @@ class CCPACompliance:
 
         Returns:
             CCPARequest object with request details
+
         """
         request_id = f"CCPA-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}-{user_id}"
 
@@ -105,7 +103,7 @@ class CCPACompliance:
 
         # Log request for audit trail
         self.audit_logger.info(
-            f"CCPA request submitted: {request_id} ({request_type.value}) by user {user_id}"
+            f"CCPA request submitted: {request_id} ({request_type.value}) by user {user_id}",
         )
 
         # Store request in database
@@ -117,10 +115,9 @@ class CCPACompliance:
         return request
 
     async def process_access_request(
-        self, request_id: str, export_format: DataExportFormat = DataExportFormat.JSON
+        self, request_id: str, export_format: DataExportFormat = DataExportFormat.JSON,
     ) -> dict[str, Any]:
-        """
-        Process a data access request (right to know)
+        """Process a data access request (right to know)
 
         Args:
             request_id: CCPA request ID
@@ -128,6 +125,7 @@ class CCPACompliance:
 
         Returns:
             Dict containing user data in requested format
+
         """
         request = await self._get_request(request_id)
 
@@ -151,7 +149,7 @@ class CCPACompliance:
         await self._update_request_status(request_id, "completed")
 
         self.audit_logger.info(
-            f"CCPA access request completed: {request_id} for user {request.user_id}"
+            f"CCPA access request completed: {request_id} for user {request.user_id}",
         )
 
         return {
@@ -163,14 +161,14 @@ class CCPACompliance:
         }
 
     async def process_deletion_request(self, request_id: str) -> dict[str, Any]:
-        """
-        Process a data deletion request (right to delete)
+        """Process a data deletion request (right to delete)
 
         Args:
             request_id: CCPA request ID
 
         Returns:
             Dict with deletion confirmation details
+
         """
         request = await self._get_request(request_id)
 
@@ -185,7 +183,7 @@ class CCPACompliance:
 
         self.audit_logger.warning(
             f"CCPA deletion request completed: {request_id} for user {request.user_id}. "
-            f"Deleted: {deletion_summary}"
+            f"Deleted: {deletion_summary}",
         )
 
         return {
@@ -196,14 +194,14 @@ class CCPACompliance:
         }
 
     async def process_opt_out_request(self, request_id: str) -> dict[str, Any]:
-        """
-        Process an opt-out request (do not sell my personal information)
+        """Process an opt-out request (do not sell my personal information)
 
         Args:
             request_id: CCPA request ID
 
         Returns:
             Dict with opt-out confirmation
+
         """
         request = await self._get_request(request_id)
 
@@ -217,7 +215,7 @@ class CCPACompliance:
         await self._update_request_status(request_id, "completed")
 
         self.audit_logger.info(
-            f"CCPA opt-out request completed: {request_id} for user {request.user_id}"
+            f"CCPA opt-out request completed: {request_id} for user {request.user_id}",
         )
 
         return {
@@ -228,25 +226,25 @@ class CCPACompliance:
         }
 
     async def check_opt_out_status(self, user_id: str) -> bool:
-        """
-        Check if user has opted out of data sales
+        """Check if user has opted out of data sales
 
         Args:
             user_id: User ID to check
 
         Returns:
             True if user has opted out, False otherwise
+
         """
         # Query database for opt-out status
         user = await self.db.query("SELECT opt_out FROM users WHERE user_id = ?", user_id)
         return user.get("opt_out", False) if user else False
 
     async def get_privacy_disclosures(self) -> dict[str, Any]:
-        """
-        Get CCPA privacy disclosures
+        """Get CCPA privacy disclosures
 
         Returns:
             Dict with all required CCPA disclosures
+
         """
         return {
             "disclosure_version": "1.0",
@@ -314,7 +312,7 @@ class CCPACompliance:
                 user_id,
             ),
             "preferences": await self.db.query(
-                "SELECT * FROM user_preferences WHERE user_id = ?", user_id
+                "SELECT * FROM user_preferences WHERE user_id = ?", user_id,
             ),
             "api_usage": await self.db.query(
                 "SELECT * FROM api_usage WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1000",

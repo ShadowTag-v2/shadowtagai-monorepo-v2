@@ -25,8 +25,7 @@ def load_issues():
 def save_issues(issues):
     ensure_beads_dir()
     with open(BEADS_FILE, "w") as f:
-        for issue in issues:
-            f.write(json.dumps(issue) + "\n")
+        f.writelines(json.dumps(issue) + "\n" for issue in issues)
 
 
 def create_issue(title, description, labels):
@@ -63,7 +62,7 @@ def update_issue(issue_id, status=None, note=None):
                 issue["status"] = status
             if note:
                 issue["notes"].append(
-                    {"timestamp": datetime.datetime.now().isoformat(), "text": note}
+                    {"timestamp": datetime.datetime.now().isoformat(), "text": note},
                 )
             updated = True
             print(json.dumps(issue, indent=2))

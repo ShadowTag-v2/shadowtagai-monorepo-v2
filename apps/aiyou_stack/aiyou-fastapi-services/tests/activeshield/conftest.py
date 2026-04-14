@@ -1,5 +1,4 @@
-"""
-ActiveShield Medical - Local Test Configuration
+"""ActiveShield Medical - Local Test Configuration
 
 This conftest overrides the global conftest to allow running
 ActiveShield tests without full project configuration.

@@ -1,5 +1,4 @@
-"""
-ShadowTag-v4 PNKLN Core Stack™ API
+"""ShadowTag-v4 PNKLN Core Stack™ API
 FastAPI application for intelligence collection and validation
 
 Based on Cor.8 ShadowTag-v4 Global Edge Fabric documentation:
@@ -212,8 +211,7 @@ app.include_router(cor17.router, prefix="/api/v1")
 
 @app.get("/", tags=["Root"])
 async def root():
-    """
-    API root endpoint with quick links.
+    """API root endpoint with quick links.
     """
     return {
         "service": "ShadowTag-v4 PNKLN Core Stack™ API",
@@ -244,8 +242,7 @@ async def root():
 
 @app.get("/health", response_model=HealthResponse, tags=["Health"])
 async def health_check():
-    """
-    Global health check for all PNKLN services.
+    """Global health check for all PNKLN services.
 
     **Components:**
     - Gemini Ingestion Layer (crawler, classifier, validator)
@@ -266,8 +263,7 @@ async def health_check():
 
 @app.get("/metrics", tags=["Metrics"])
 async def metrics():
-    """
-    Prometheus-compatible metrics endpoint.
+    """Prometheus-compatible metrics endpoint.
 
     **Metrics:**
     - `pnkln_ingestion_items_total`: Total items ingested
@@ -301,7 +297,7 @@ async def not_found_handler(request: Request, exc):
                 "code": "not_found",
                 "message": f"Endpoint not found: {request.url.path}",
                 "suggestion": "Visit /docs for API documentation",
-            }
+            },
         },
     )
 
@@ -316,7 +312,7 @@ async def internal_error_handler(request: Request, exc):
                 "code": "internal_server_error",
                 "message": "An unexpected error occurred",
                 "timestamp": datetime.utcnow().isoformat(),
-            }
+            },
         },
     )
 

@@ -1,5 +1,4 @@
-"""
-Google Cloud Docs MCP Integration
+"""Google Cloud Docs MCP Integration
 Enables AI agents to read/write Google Docs for:
 - Cor state management
 - Documentation updates
@@ -20,7 +19,7 @@ except ImportError:
     service_account = None
     build = None
     logger.warning(
-        "Google API client not installed. Run: pip install google-api-python-client google-auth"
+        "Google API client not installed. Run: pip install google-api-python-client google-auth",
     )
 
 
@@ -78,7 +77,7 @@ class GoogleDocsMCP:
         """Append content to a Google Doc."""
         requests = [{"insertText": {"location": {"index": 1}, "text": content}}]
         self.docs_service.documents().batchUpdate(
-            documentId=doc_id, body={"requests": requests}
+            documentId=doc_id, body={"requests": requests},
         ).execute()
         return True
 
@@ -95,7 +94,7 @@ class GoogleDocsMCP:
         # Move to target folder if configured
         if self.folder_id:
             self.drive_service.files().update(
-                fileId=doc_id, addParents=self.folder_id, fields="id, parents"
+                fileId=doc_id, addParents=self.folder_id, fields="id, parents",
             ).execute()
 
         logger.info(f"Created Cor snapshot: {doc_id}")

@@ -86,7 +86,7 @@ class TestJudgeSixClassifyKernel:
                     description="Required stakeholder not consulted",
                     severity="major",
                 ),
-            ]
+            ],
         )
 
         kernel_input = KernelInput(data=violations_output)
@@ -136,7 +136,7 @@ class TestAuditCompressKernel:
         )
 
         kernel_input = KernelInput(
-            data=classification, trace_id="test-trace-123", metadata={"test": "metadata"}
+            data=classification, trace_id="test-trace-123", metadata={"test": "metadata"},
         )
 
         output = await kernel(kernel_input)

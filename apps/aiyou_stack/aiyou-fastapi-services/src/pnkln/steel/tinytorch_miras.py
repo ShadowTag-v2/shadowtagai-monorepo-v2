@@ -14,8 +14,7 @@ from src.pnkln.steel.tinytorch_transformer import GeminiMini, LayerNorm
 
 
 class AssociativeMemory:
-    """
-    Abstract base (duck typing in Python) for Associative Memory modules.
+    """Abstract base (duck typing in Python) for Associative Memory modules.
 
     The core idea of Miras is that sequence models are Associative Memory systems
     that map keys to values, governed by an attentional bias and retention gate.
@@ -29,8 +28,7 @@ class AssociativeMemory:
 
 
 class AttentionalBias:
-    """
-    Defines the bias/decay mechanism for the memory.
+    """Defines the bias/decay mechanism for the memory.
     In the paper, this replaces the standard dot-product attention in some cases,
     or augments it (like ALiBi or exponential decay).
     """
@@ -43,8 +41,7 @@ class AttentionalBias:
 
 
 class RetentionGate:
-    """
-    Controls the "forgetting" mechanism of the memory.
+    """Controls the "forgetting" mechanism of the memory.
     Re-interpreted as L2-regularization in the paper.
     """
 
@@ -64,8 +61,7 @@ class RetentionGate:
 
 
 class ExponentialDecayBias(AttentionalBias):
-    """
-    Simple exponential decay bias, similar to ALiBi or Mamba's decay.
+    """Simple exponential decay bias, similar to ALiBi or Mamba's decay.
     """
 
     def __init__(self, decay_rate: float = 0.9):
@@ -82,8 +78,7 @@ class ExponentialDecayBias(AttentionalBias):
 
 
 class LearnedDecayBias(AttentionalBias):
-    """
-    Learned exponential decay.
+    """Learned exponential decay.
     """
 
     def __init__(self, dim: int):
@@ -95,8 +90,7 @@ class LearnedDecayBias(AttentionalBias):
 
 
 class SimpleRetentionGate(RetentionGate):
-    """
-    Standard sigmoidal forget gate.
+    """Standard sigmoidal forget gate.
     """
 
     def __init__(self, input_dim: int):
@@ -119,8 +113,7 @@ class SimpleRetentionGate(RetentionGate):
 
 
 class MirasLayer:
-    """
-    A single layer of the Miras framework.
+    """A single layer of the Miras framework.
     Operates as a Linear Recurrent Unit (Linear RNN).
 
     h_t = \\lambda_t \\odot h_{t-1} + k_t \\odot v_t
@@ -146,8 +139,7 @@ class MirasLayer:
         self.act = GELU()
 
     def forward(self, x: Tensor, state: Tensor | None = None):
-        """
-        Forward pass for a sequence using explicit recurrence (slow but educational).
+        """Forward pass for a sequence using explicit recurrence (slow but educational).
         x shape: (batch_size, seq_len, embed_dim)
         """
         batch_size, seq_len, dim = x.shape
@@ -321,8 +313,7 @@ class MirasLayer:
         return self.parallel_forward(k_seq, v_seq, ret_seq, state)
 
     def parallel_forward(self, k, v, r, state=None):
-        """
-        Parallel associative memory update using matrix multiplication.
+        """Parallel associative memory update using matrix multiplication.
         Computes h_t = sum_{j<=t} decay(t, j) * (k_j * v_j)
         """
         batch_size, seq_len, dim = k.shape
@@ -385,12 +376,11 @@ class MirasLayer:
 
 
 class MirasGemini(GeminiMini):
-    """
-    Miras Architecture applied to Gemini-Mini.
+    """Miras Architecture applied to Gemini-Mini.
     """
 
     def __init__(
-        self, vocab_size, embed_dim, num_layers, num_heads, max_seq_len=1024, hidden_dim=None
+        self, vocab_size, embed_dim, num_layers, num_heads, max_seq_len=1024, hidden_dim=None,
     ):
         super().__init__(vocab_size, embed_dim, num_layers, num_heads, max_seq_len)
         self.max_seq_len = max_seq_len
@@ -398,7 +388,7 @@ class MirasGemini(GeminiMini):
         # Embeddings
         self.token_embedding = Embedding(vocab_size, embed_dim)
         self.pos_embedding = Embedding(
-            max_seq_len, embed_dim
+            max_seq_len, embed_dim,
         )  # Optional for RNNs but keeping for parity
 
         d_inner = hidden_dim if hidden_dim is not None else 4 * embed_dim
@@ -433,8 +423,7 @@ class MirasGemini(GeminiMini):
         return self.forward(tokens)
 
     def generate(self, prompt_tokens, max_new_tokens=50, temperature=1.0):
-        """
-        Generate text autoregressively (inefficient O(L^2) due to parallel forward).
+        """Generate text autoregressively (inefficient O(L^2) due to parallel forward).
         """
         current_tokens = Tensor(prompt_tokens.data.copy())
 
@@ -472,16 +461,13 @@ class MirasModelBase(MirasGemini):
 class Moneta(MirasModelBase):
     """High Recall model."""
 
-    pass
 
 
 class Yaad(MirasModelBase):
     """Balanced Reasoning model."""
 
-    pass
 
 
 class Memora(MirasModelBase):
     """Long-term Retention model."""
 
-    pass

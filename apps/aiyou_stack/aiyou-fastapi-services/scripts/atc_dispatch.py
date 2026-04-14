@@ -7,8 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def dispatch_to_kosmos(bar_exam_json):
-    """
-    Takes the structured 'Whiteboard' from Gemini Code Assist (ATC)
+    """Takes the structured 'Whiteboard' from Gemini Code Assist (ATC)
     and publishes it to the Beads Memory System.
     """
     try:

@@ -1,5 +1,4 @@
-"""
-Monitoring endpoints for health checks, metrics, and observability.
+"""Monitoring endpoints for health checks, metrics, and observability.
 """
 
 from fastapi import APIRouter, Response
@@ -13,8 +12,7 @@ router = APIRouter(tags=["monitoring"])
 
 @router.get("/health", summary="Liveness Probe")
 async def liveness() -> dict:
-    """
-    Liveness probe endpoint.
+    """Liveness probe endpoint.
 
     Returns basic health status indicating the application is alive.
     Used by orchestrators (K8s, Docker) to determine if the app should be restarted.
@@ -24,8 +22,7 @@ async def liveness() -> dict:
 
 @router.get("/ready", summary="Readiness Probe")
 async def readiness() -> dict:
-    """
-    Readiness probe endpoint.
+    """Readiness probe endpoint.
 
     Returns comprehensive health status including all dependencies.
     Used by orchestrators to determine if the app can receive traffic.
@@ -35,8 +32,7 @@ async def readiness() -> dict:
 
 @router.get("/metrics", summary="Prometheus Metrics")
 async def metrics() -> Response:
-    """
-    Prometheus metrics endpoint.
+    """Prometheus metrics endpoint.
 
     Returns metrics in Prometheus text format for scraping.
     """
@@ -46,14 +42,14 @@ async def metrics() -> Response:
 
 @router.get("/monitoring/alerts", summary="Recent Alerts")
 async def get_alerts(limit: int = 100) -> dict:
-    """
-    Get recent alerts.
+    """Get recent alerts.
 
     Args:
         limit: Maximum number of alerts to return (default: 100)
 
     Returns:
         List of recent alerts
+
     """
     alerts = alert_manager.get_recent_alerts(limit=limit)
     return {"alerts": alerts, "total": len(alerts)}

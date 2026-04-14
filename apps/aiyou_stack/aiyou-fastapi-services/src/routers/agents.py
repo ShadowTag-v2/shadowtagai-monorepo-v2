@@ -70,7 +70,7 @@ async def process_matrix_query(
         task_query = payload.q
 
         await client.start_workflow(
-            "OmegaPayloadOrchestrator", task_query, id=workflow_id, task_queue="omega-swarm-queue"
+            "OmegaPayloadOrchestrator", task_query, id=workflow_id, task_queue="omega-swarm-queue",
         )
         return {
             "status": "Matrix accepted heavy lift via Temporal.io",
@@ -103,14 +103,13 @@ async def chat_with_agent(request: ChatRequest):
         return ChatResponse(reply=f"Here is your request:\n\n{image_markdown}")
 
     return ChatResponse(
-        reply=f"Agent {request.agent_id} received your message. I have access to Workspace {request.workspace_id} via LanceDB."
+        reply=f"Agent {request.agent_id} received your message. I have access to Workspace {request.workspace_id} via LanceDB.",
     )
 
 
 @agents_router.post("/stream")
 async def chat_with_agent_agui(request: ChatRequest):
-    """
-    Cor.Firebase / AG-UI standard streaming protocol.
+    """Cor.Firebase / AG-UI standard streaming protocol.
     Kosmos natively emits standard events instead of massive text blocks.
     """
 

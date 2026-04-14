@@ -43,7 +43,7 @@ async def query_with_memory(
             ConversationCreate(
                 title=request.prompt[:100],  # Use first 100 chars as title
                 project_id=request.project_id,
-            )
+            ),
         )
 
     # Add user message
@@ -85,7 +85,7 @@ async def query_with_memory(
                         {
                             "role": msg["role"],
                             "content": msg["content"],
-                        }
+                        },
                     )
 
     # Query Claude
@@ -143,7 +143,7 @@ async def stream_with_memory(
             ConversationCreate(
                 title=request.prompt[:100],
                 project_id=request.project_id,
-            )
+            ),
         )
 
     # Add user message
@@ -176,7 +176,7 @@ async def stream_with_memory(
                         {
                             "role": msg["role"],
                             "content": msg["content"],
-                        }
+                        },
                     )
 
     async def generate_stream():

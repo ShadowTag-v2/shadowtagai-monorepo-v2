@@ -18,7 +18,7 @@ class minion_Scholar:
 
     def fetch_intelligence(self) -> list[ProposedAction]:
         print(
-            f"[{datetime.now().strftime('%H:%M:%S')}] [SENSOR] Spinning up arXiv harvester for targets: {self.target_ids}..."
+            f"[{datetime.now().strftime('%H:%M:%S')}] [SENSOR] Spinning up arXiv harvester for targets: {self.target_ids}...",
         )
 
         # 1. Query arXiv API

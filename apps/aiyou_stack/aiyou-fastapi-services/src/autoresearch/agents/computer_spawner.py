@@ -4,8 +4,7 @@ from agents.autoresearch import AgentState
 
 
 class ComputerUseSpawner:
-    """
-    Manages Docker containers for Flying minion agents.
+    """Manages Docker containers for Flying minion agents.
     Enables VNC and Browser access for each agent.
     """
 
@@ -13,8 +12,7 @@ class ComputerUseSpawner:
         self.base_image = base_image
 
     def spawn_agent_container(self, agent: AgentState) -> str:
-        """
-        Spawns a Docker container for a single agent.
+        """Spawns a Docker container for a single agent.
         Returns the container ID.
         """
         container_name = f"flying_monkey_{agent.name}"

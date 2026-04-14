@@ -32,8 +32,7 @@ FAILURE_TAG = "failure"
 
 
 class ValidateTransactionFn(beam.DoFn):
-    """
-    Validates the structure and type integrity of an incoming transaction log.
+    """Validates the structure and type integrity of an incoming transaction log.
     Routes invalid records to a Dead Letter Queue via TaggedOutput.
     """
 

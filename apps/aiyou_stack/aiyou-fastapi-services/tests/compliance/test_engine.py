@@ -1,5 +1,4 @@
-"""
-Tests for the Modular Compliance Engine
+"""Tests for the Modular Compliance Engine
 """
 
 import pytest

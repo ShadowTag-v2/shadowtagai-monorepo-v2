@@ -1,5 +1,4 @@
-"""
-Main FastAPI application for agent-based governance system.
+"""Main FastAPI application for agent-based governance system.
 
 Production-ready API with hybrid OPA + agent architecture,
 circuit breaker fallback, observability, and shadow mode support.
@@ -65,7 +64,7 @@ async def lifespan(app: FastAPI):
     global policy_retriever, policy_agent, trust_manager, circuit_breaker, shadow_orchestrator
 
     print(
-        f"DEBUG SETTINGS TYPE: {type(settings)} from {getattr(type(settings), '__module__', 'unknown')}"
+        f"DEBUG SETTINGS TYPE: {type(settings)} from {getattr(type(settings), '__module__', 'unknown')}",
     )
     print("🚀 Starting Agent Governance System...")
     print(f"   Environment: {settings.environment}")
@@ -214,8 +213,7 @@ class MissionRequest(BaseModel):
 
 @app.post("/mission")
 async def launch_mission(req: MissionRequest):
-    """
-    Sovereign OS Mission Entrypoint.
+    """Sovereign OS Mission Entrypoint.
     Guarded by Judge #6 Sentinel and the CavMTOE Army Consensus.
     """
     verdict = judge_sentinel.evaluate(req.query, req.context)
@@ -234,8 +232,7 @@ async def launch_mission(req: MissionRequest):
 # Main governance endpoint
 @app.post("/v1/governance/evaluate", response_model=GovernanceResponse)
 async def evaluate_governance_request(request: GovernanceRequest):
-    """
-    Evaluate governance request through agent system.
+    """Evaluate governance request through agent system.
 
     Implements:
     - Circuit breaker with OPA fallback
@@ -349,7 +346,7 @@ async def evaluate_governance_request(request: GovernanceRequest):
             decision_id=f"error_{request.request_id[:8]}",
             decision="ERROR",
             confidence_score=0.0,
-            reasoning=[f"System error: {str(e)}"],
+            reasoning=[f"System error: {e!s}"],
             requires_escalation=True,
         )
 

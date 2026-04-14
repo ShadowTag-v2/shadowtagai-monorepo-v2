@@ -27,7 +27,7 @@ def clone_missing():
         print(f"Repairing {repo_name}...")
         try:
             subprocess.run(
-                ["gh", "repo", "fork", url, "--clone", "--remote"], cwd=TARGET_DIR, check=True
+                ["gh", "repo", "fork", url, "--clone", "--remote"], cwd=TARGET_DIR, check=True,
             )
         except subprocess.CalledProcessError:
             print(f"gh fork failed for {repo_name}, trying git clone...")

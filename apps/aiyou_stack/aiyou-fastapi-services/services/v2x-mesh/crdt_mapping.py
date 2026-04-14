@@ -1,5 +1,4 @@
-"""
-CRDT-based Collaborative Mapping System
+"""CRDT-based Collaborative Mapping System
 
 Implements conflict-free replicated data types (CRDTs) for:
 - Distributed map updates (work zones, hazards, POIs)
@@ -45,8 +44,7 @@ class MapDelta:
 
 
 class LWWElementSet:
-    """
-    Last-Write-Wins Element Set CRDT
+    """Last-Write-Wins Element Set CRDT
 
     Each element has a timestamp. On conflict, newest wins.
     Handles additions and removals with causal ordering.
@@ -117,8 +115,7 @@ class LWWElementSet:
 
 
 class CRDTMapStore:
-    """
-    CRDT-based map store for collaborative mapping
+    """CRDT-based map store for collaborative mapping
 
     Uses LWW-Element-Set CRDT for conflict-free updates
     """
@@ -141,8 +138,7 @@ class CRDTMapStore:
         }
 
     def apply_delta(self, delta: MapDelta) -> bool:
-        """
-        Apply map delta
+        """Apply map delta
 
         Returns True if delta was newly applied
         """
@@ -230,7 +226,7 @@ class CRDTMapStore:
                     if feature_types is None or feature.feature_type in feature_types:
                         # Check not expired
                         if feature.valid_until is None or feature.valid_until > int(
-                            time.time() * 1000
+                            time.time() * 1000,
                         ):
                             features.append(feature)
 
@@ -249,7 +245,7 @@ class CRDTMapStore:
                 self.stats["merge_conflicts"] += 1
 
     def create_delta(
-        self, operation: str, feature: MapFeature, parent_deltas: list[str] | None = None
+        self, operation: str, feature: MapFeature, parent_deltas: list[str] | None = None,
     ) -> MapDelta:
         """Create new map delta"""
         delta = MapDelta(
@@ -294,11 +290,11 @@ class CRDTMapStore:
         if geom_type == "Point":
             lon, lat = coords
             return (lat, lat, lon, lon)
-        elif geom_type == "LineString" or geom_type == "MultiPoint":
+        if geom_type == "LineString" or geom_type == "MultiPoint":
             lats = [c[1] for c in coords]
             lons = [c[0] for c in coords]
             return (min(lats), max(lats), min(lons), max(lons))
-        elif geom_type == "Polygon":
+        if geom_type == "Polygon":
             # Exterior ring
             lats = [c[1] for c in coords[0]]
             lons = [c[0] for c in coords[0]]
@@ -329,7 +325,7 @@ class CRDTMapStore:
         return cells
 
     def _in_bounds(
-        self, feature: MapFeature, min_lat: float, max_lat: float, min_lon: float, max_lon: float
+        self, feature: MapFeature, min_lat: float, max_lat: float, min_lon: float, max_lon: float,
     ) -> bool:
         """Check if feature is in bounds"""
         bbox = self._get_bbox(feature.geometry)
@@ -385,7 +381,7 @@ class CRDTMapStore:
                         "feature": asdict(delta.feature),
                         "timestamp": delta.timestamp,
                         "node_id": delta.node_id,
-                    }
+                    },
                 )
 
         return deltas
@@ -406,8 +402,7 @@ class MapSyncProtocol:
         self.map_store = map_store
 
     async def sync_with_peer(self, peer_deltas: list[dict]) -> dict:
-        """
-        Sync with peer's map state
+        """Sync with peer's map state
 
         Returns: sync statistics
         """
@@ -465,7 +460,7 @@ if __name__ == "__main__":
                     [-122.4193, 37.7750],
                     [-122.4193, 37.7749],
                     [-122.4194, 37.7749],
-                ]
+                ],
             ],
         },
         properties={"name": "Road Construction", "severity": "high", "lanes_closed": 2},

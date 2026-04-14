@@ -10,12 +10,10 @@ logger = logging.getLogger("GroundedAgent")
 class GroundingError(Exception):
     """Raised when safety blockations or lack of candidates occur during generation."""
 
-    pass
 
 
 class GroundedAgent:
-    """
-    Agent implementation wrapper around genai.GenerativeModel.generate_content
+    """Agent implementation wrapper around genai.GenerativeModel.generate_content
     equipped with robust response.parts validation and integrated grounding metadata extraction.
     """
 
@@ -25,15 +23,14 @@ class GroundedAgent:
         logger.info(f"GroundedAgent initialized with model: {model_name}")
 
     def generate_grounded_response(self, prompt: str) -> dict[str, Any]:
-        """
-        Executes Google Search grounded queries using generate_content, validating
+        """Executes Google Search grounded queries using generate_content, validating
         that the response contains valid parts and safety filters were not violated.
         Returns the stripped response payload along with extracted citations.
         """
         try:
             # Enable Google Search grounding dynamically via tools
             response = self.model.generate_content(
-                prompt, tools=[genai.Tool(google_search=genai.GoogleSearch())]
+                prompt, tools=[genai.Tool(google_search=genai.GoogleSearch())],
             )
         except Exception as e:
             logger.error(f"Failed to reach Generative API: {e}")
@@ -78,7 +75,7 @@ class GroundedAgent:
             block_reason = getattr(response.prompt_feedback, "block_reason", None)
             if block_reason and block_reason != 0:  # 0 implies no block
                 raise GroundingError(
-                    f"Prompt triggered safety filters. Reason Code: {block_reason}"
+                    f"Prompt triggered safety filters. Reason Code: {block_reason}",
                 )
 
         if not response.parts:

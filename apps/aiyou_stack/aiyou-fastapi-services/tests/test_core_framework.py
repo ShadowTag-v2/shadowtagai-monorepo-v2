@@ -1,5 +1,4 @@
-"""
-Unit tests for ShadowTag-v2JR Core Framework
+"""Unit tests for ShadowTag-v2JR Core Framework
 Testing PRISM, Business Plan, Framework, and Context modules
 
 Author: ShadowTag-v2JR System

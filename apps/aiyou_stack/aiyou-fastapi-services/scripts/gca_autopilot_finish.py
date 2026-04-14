@@ -12,7 +12,7 @@ from datetime import datetime
 def run_cmd(args, fail_exit=True):
     try:
         result = subprocess.run(
-            args, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            args, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
         )
         return result.stdout.strip()
     except subprocess.CalledProcessError as e:

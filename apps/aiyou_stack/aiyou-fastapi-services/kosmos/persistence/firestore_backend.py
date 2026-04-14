@@ -1,5 +1,4 @@
-"""
-Firestore Backend: Persistent storage for world model state.
+"""Firestore Backend: Persistent storage for world model state.
 
 Provides:
 - World model serialization to Firestore
@@ -32,8 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 class FirestoreBackend:
-    """
-    Firestore persistence backend for world model state.
+    """Firestore persistence backend for world model state.
 
     Schema:
         /sessions/{session_id}
@@ -51,12 +49,12 @@ class FirestoreBackend:
         project_id: str,
         database: str = "(default)",
     ):
-        """
-        Initialize Firestore backend.
+        """Initialize Firestore backend.
 
         Args:
             project_id: GCP project ID
             database: Firestore database name
+
         """
         if not FIRESTORE_AVAILABLE:
             raise RuntimeError("Firestore SDK not installed")
@@ -67,11 +65,11 @@ class FirestoreBackend:
         logger.info(f"Firestore backend initialized for project {project_id}")
 
     def save_world_model(self, world_model: KosmosWorldModel):
-        """
-        Save complete world model state to Firestore.
+        """Save complete world model state to Firestore.
 
         Args:
             world_model: KosmosWorldModel instance to save
+
         """
         session_id = world_model.session_id
 
@@ -111,18 +109,18 @@ class FirestoreBackend:
             f"Saved world model for session {session_id}: "
             f"{len(world_model.hypotheses)} hypotheses, "
             f"{len(world_model.analysis_results)} results, "
-            f"{len(world_model.literature_refs)} literature"
+            f"{len(world_model.literature_refs)} literature",
         )
 
     def load_world_model(self, session_id: str) -> KosmosWorldModel | None:
-        """
-        Load world model state from Firestore.
+        """Load world model state from Firestore.
 
         Args:
             session_id: Session ID to load
 
         Returns:
             KosmosWorldModel instance or None if not found
+
         """
         session_ref = self.db.collection("sessions").document(session_id)
         session_doc = session_ref.get()
@@ -169,7 +167,7 @@ class FirestoreBackend:
             f"Loaded world model for session {session_id}: "
             f"{len(world_model.hypotheses)} hypotheses, "
             f"{len(world_model.analysis_results)} results, "
-            f"{len(world_model.literature_refs)} literature"
+            f"{len(world_model.literature_refs)} literature",
         )
 
         return world_model
@@ -179,8 +177,7 @@ class FirestoreBackend:
         limit: int = 100,
         status: str | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        List available sessions.
+        """List available sessions.
 
         Args:
             limit: Maximum number of sessions to return
@@ -188,6 +185,7 @@ class FirestoreBackend:
 
         Returns:
             List of session metadata dictionaries
+
         """
         query = self.db.collection("sessions").limit(limit)
 
@@ -201,11 +199,11 @@ class FirestoreBackend:
         return sessions
 
     def delete_session(self, session_id: str):
-        """
-        Delete a session and all its subcollections.
+        """Delete a session and all its subcollections.
 
         Args:
             session_id: Session ID to delete
+
         """
         session_ref = self.db.collection("sessions").document(session_id)
 
@@ -233,19 +231,18 @@ class FirestoreBackend:
             return self._delete_collection(collection_ref, batch_size)
 
     def update_session_status(self, session_id: str, status: str):
-        """
-        Update session status.
+        """Update session status.
 
         Args:
             session_id: Session ID
             status: New status
+
         """
         session_ref = self.db.collection("sessions").document(session_id)
         session_ref.update({"status": status})
 
     def get_hypothesis(self, session_id: str, hypothesis_id: str) -> Hypothesis | None:
-        """
-        Get a specific hypothesis.
+        """Get a specific hypothesis.
 
         Args:
             session_id: Session ID
@@ -253,6 +250,7 @@ class FirestoreBackend:
 
         Returns:
             Hypothesis instance or None
+
         """
         hyp_ref = (
             self.db.collection("sessions")
@@ -273,8 +271,7 @@ class FirestoreBackend:
         min_confidence: float | None = None,
         tested: bool | None = None,
     ) -> list[Hypothesis]:
-        """
-        Query hypotheses with filters.
+        """Query hypotheses with filters.
 
         Args:
             session_id: Session ID
@@ -283,6 +280,7 @@ class FirestoreBackend:
 
         Returns:
             List of matching Hypothesis instances
+
         """
         query = self.db.collection("sessions").document(session_id).collection("hypotheses")
 

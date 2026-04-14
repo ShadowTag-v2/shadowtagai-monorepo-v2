@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ANTIGRAVITY // MISSION LAUNCHER
+"""ANTIGRAVITY // MISSION LAUNCHER
 Integrates with pnkln_tasks.sh and SOP Snippets
 """
 

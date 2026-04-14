@@ -1,5 +1,4 @@
-"""
-JR Engine: Purpose-Reasons-Brakes validation framework.
+"""JR Engine: Purpose-Reasons-Brakes validation framework.
 
 Validates each kernel against three criteria:
 - Purpose: Does this kernel advance revenue/security?
@@ -47,8 +46,7 @@ class ValidationResult(BaseModel):
 
 
 class JREngine:
-    """
-    JR Engine validator for kernel chain architecture.
+    """JR Engine validator for kernel chain architecture.
 
     Example usage:
         engine = JREngine()
@@ -160,14 +158,14 @@ class JREngine:
     )
 
     def validate_kernel_chain(self, kernel_names: list[str]) -> ValidationResult:
-        """
-        Validate a proposed kernel chain.
+        """Validate a proposed kernel chain.
 
         Args:
             kernel_names: List of kernel names to validate
 
         Returns:
             ValidationResult with per-kernel validations and overall verdict
+
         """
         validations = []
         approved_count = 0
@@ -191,7 +189,7 @@ class JREngine:
                     overall_notes="Kernel not in predefined validation set",
                 )
                 recommendations.append(
-                    f"Manual review required for {name}: Apply JR Engine criteria"
+                    f"Manual review required for {name}: Apply JR Engine criteria",
                 )
 
             validations.append(validation)
@@ -209,7 +207,7 @@ class JREngine:
         if len(kernel_names) > 5:
             recommendations.append(
                 f"Chain has {len(kernel_names)} kernels. "
-                "Consider reducing for lower latency/complexity."
+                "Consider reducing for lower latency/complexity.",
             )
 
         return ValidationResult(
@@ -222,14 +220,14 @@ class JREngine:
         )
 
     def validate_kernel(self, kernel_name: str) -> KernelValidation:
-        """
-        Validate a single kernel.
+        """Validate a single kernel.
 
         Args:
             kernel_name: Name of kernel to validate
 
         Returns:
             KernelValidation for this kernel
+
         """
         return self.KERNEL_VALIDATIONS.get(
             kernel_name,
@@ -250,16 +248,16 @@ class YRMClient:
     """Client for Omega Risk Engine (YRM) integration."""
 
     def report_hazard(
-        self, category: str, severity: str, description: str, details: dict[str, Any]
+        self, category: str, severity: str, description: str, details: dict[str, Any],
     ):
-        """
-        Report a hazard to the YRM.
+        """Report a hazard to the YRM.
 
         Args:
             category: Hazard category (e.g., "code_quality")
             severity: Risk level (EH, H, M, L)
             description: Short description
             details: Additional context
+
         """
         print(f"🚨 [YRM] Hazard Reported: [{severity}] {description}")
         print(f"   Category: {category}")

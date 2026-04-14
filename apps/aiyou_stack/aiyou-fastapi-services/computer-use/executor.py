@@ -1,5 +1,4 @@
-"""
-Computer-Use Agent Action Executor
+"""Computer-Use Agent Action Executor
 
 Translates Gemini Computer-Use API function calls to Playwright actions.
 """
@@ -13,8 +12,7 @@ VW, VH = 1440, 900
 
 
 def _px(x_norm: float, y_norm: float) -> tuple[int, int]:
-    """
-    Convert normalized coordinates (0-999) to pixel coordinates.
+    """Convert normalized coordinates (0-999) to pixel coordinates.
 
     Args:
         x_norm: Normalized X coordinate (0-999)
@@ -22,6 +20,7 @@ def _px(x_norm: float, y_norm: float) -> tuple[int, int]:
 
     Returns:
         Tuple of (x_pixels, y_pixels)
+
     """
     x = int(max(0, min(VW - 1, x_norm * VW / 999)))
     y = int(max(0, min(VH - 1, y_norm * VH / 999)))
@@ -29,8 +28,7 @@ def _px(x_norm: float, y_norm: float) -> tuple[int, int]:
 
 
 def run_action(page: Page, name: str, args: dict) -> str:
-    """
-    Execute a single Computer-Use action on the page.
+    """Execute a single Computer-Use action on the page.
 
     Args:
         page: Playwright Page instance
@@ -39,6 +37,7 @@ def run_action(page: Page, name: str, args: dict) -> str:
 
     Returns:
         Result string describing what was executed
+
     """
     if name == "open_web_browser":
         # No-op (browser managed externally)

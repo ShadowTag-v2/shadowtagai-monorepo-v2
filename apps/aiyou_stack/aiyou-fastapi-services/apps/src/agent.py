@@ -9,8 +9,7 @@ from src.memory import MemoryManager
 
 
 class GeminiAgent:
-    """
-    A production-grade agent wrapper for Gemini 3.
+    """A production-grade agent wrapper for Gemini 3.
     Implements the Think-Act-Reflect loop compliant with Antigravity Enterprise standards.
     Orchestrates the Flying n-autoresearch/Kosmos/BioAgents swarm via Tools.
     """
@@ -19,7 +18,7 @@ class GeminiAgent:
         self.settings = settings
         self.memory = MemoryManager()
         print(
-            f"🤖 Initializing {self.settings.AGENT_NAME} with model {self.settings.GEMINI_MODEL_NAME}..."
+            f"🤖 Initializing {self.settings.AGENT_NAME} with model {self.settings.GEMINI_MODEL_NAME}...",
         )
 
         # Swarm is now managed by src.tools.swarm_tools._SWARM
@@ -34,8 +33,7 @@ class GeminiAgent:
         }
 
     def think(self, task: str) -> str:
-        """
-        Simulates the 'Deep Think' process of Gemini 3.
+        """Simulates the 'Deep Think' process of Gemini 3.
         Generates a plan artifact before execution.
         """
         print(f"\n🤔 <thought> Analyzing task: '{task}'")
@@ -49,7 +47,7 @@ class GeminiAgent:
             f.write(f"# Plan for Task: {task}\n\n")
             f.write(f"## Context\n{self.memory.get_context()}\n\n")
             f.write(
-                "## Execution Strategy\n1. Activate Flying n-autoresearch/Kosmos/BioAgents Swarm\n2. Audit Governance Status\n3. Execute Revenue Actions"
+                "## Execution Strategy\n1. Activate Flying n-autoresearch/Kosmos/BioAgents Swarm\n2. Audit Governance Status\n3. Execute Revenue Actions",
             )
 
         print(f"   - Generated Artifact: {plan_path}")
@@ -58,8 +56,7 @@ class GeminiAgent:
         return "Plan formulated."
 
     def act(self, task: str) -> str:
-        """
-        Executes the task using the Flying n-autoresearch/Kosmos/BioAgents Swarm via Tools.
+        """Executes the task using the Flying n-autoresearch/Kosmos/BioAgents Swarm via Tools.
         """
         self.memory.add_entry("user", task)
 
@@ -84,15 +81,13 @@ class GeminiAgent:
         return response
 
     def reflect(self):
-        """
-        Review past actions to improve future performance.
+        """Review past actions to improve future performance.
         """
         history = self.memory.get_history()
         print(f"🧠 Reflecting on {len(history)} past interactions...")
 
         # Check if we need to stop the swarm based on history/mission (simplified)
         # In a real scenario, this would analyze the 'brakes' score from Judge #6
-        pass
 
     def run(self, task: str):
         """Main entry point for the agent."""

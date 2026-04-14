@@ -20,8 +20,7 @@ class JudgeSixEngine:
             self.model = None
 
     def execute_mission(self, mission_id, telemetry, priority, payload):
-        """
-        Gemini 2.5 Pro (via 1.5 Pro) Decisional Authority.
+        """Gemini 2.5 Pro (via 1.5 Pro) Decisional Authority.
         Returns: Decision(approved=bool, risk_tier=str, authority=str, shadowtag_hash=str)
         """
         if not self.model:

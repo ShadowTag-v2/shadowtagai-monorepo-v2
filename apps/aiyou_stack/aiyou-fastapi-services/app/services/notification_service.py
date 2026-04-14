@@ -1,5 +1,4 @@
-"""
-Notification service layer.
+"""Notification service layer.
 
 Extracts all database operations from notification routes
 into a proper service/repository pattern.
@@ -20,7 +19,7 @@ class NotificationService:
 
     @staticmethod
     def list_notifications(
-        db: Session, user_id: int, page: int = 1, size: int = 20, unread_only: bool = False
+        db: Session, user_id: int, page: int = 1, size: int = 20, unread_only: bool = False,
     ) -> dict:
         """List notifications for a user with pagination."""
         query = db.query(Notification).filter(Notification.user_id == user_id)
@@ -74,7 +73,7 @@ class NotificationService:
     def mark_all_read(db: Session, user_id: int) -> None:
         """Mark all notifications as read for a user."""
         db.query(Notification).filter(
-            Notification.user_id == user_id, not Notification.is_read
+            Notification.user_id == user_id, not Notification.is_read,
         ).update({"is_read": True, "read_at": datetime.utcnow()})
         db.commit()
 
@@ -101,7 +100,7 @@ class NotificationService:
 
     @staticmethod
     def update_preferences(
-        db: Session, user_id: int, prefs_data: NotificationPreferenceUpdate
+        db: Session, user_id: int, prefs_data: NotificationPreferenceUpdate,
     ) -> NotificationPreference:
         """Update notification preferences."""
         prefs = (

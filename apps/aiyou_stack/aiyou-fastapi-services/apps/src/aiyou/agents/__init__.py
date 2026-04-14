@@ -1,5 +1,4 @@
-"""
-Agents package for multi-agent swarm orchestration.
+"""Agents package for multi-agent swarm orchestration.
 
 Contains specialized agents that work together to solve complex tasks:
 - RouterAgent: Analyzes tasks and delegates to specialists

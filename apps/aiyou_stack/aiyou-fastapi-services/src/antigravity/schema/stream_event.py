@@ -5,8 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class StreamEvent(BaseModel):
-    """
-    The Atomic Unit of the Universal Tape.
+    """The Atomic Unit of the Universal Tape.
     Every action, thought, or data point is normalized into this structure.
     """
 

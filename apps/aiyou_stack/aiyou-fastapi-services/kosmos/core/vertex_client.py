@@ -1,5 +1,4 @@
-"""
-Vertex AI Gemini Client: Wrapper for Google Vertex AI generative models.
+"""Vertex AI Gemini Client: Wrapper for Google Vertex AI generative models.
 
 Provides cost tracking, model selection logic, and error handling for
 Gemini 2.5 Pro and Flash models.
@@ -18,7 +17,7 @@ try:
     from vertexai.preview.generative_models import FunctionDeclaration, Tool
 except ImportError:
     raise ImportError(
-        "Vertex AI SDK not installed. Install with: pip install google-cloud-aiplatform"
+        "Vertex AI SDK not installed. Install with: pip install google-cloud-aiplatform",
     )
 
 logger = logging.getLogger(__name__)
@@ -73,8 +72,7 @@ class GenerationResult:
 
 
 class VertexAIClient:
-    """
-    Client for Vertex AI Gemini models with cost tracking and smart routing.
+    """Client for Vertex AI Gemini models with cost tracking and smart routing.
 
     Features:
     - Automatic model selection based on context size and task complexity
@@ -90,14 +88,14 @@ class VertexAIClient:
         default_model: GeminiModel = GeminiModel.PRO,
         cost_tracker: Any | None = None,  # CostMonitor instance
     ):
-        """
-        Initialize Vertex AI client.
+        """Initialize Vertex AI client.
 
         Args:
             project_id: GCP project ID
             location: GCP region for Vertex AI
             default_model: Default Gemini model to use
             cost_tracker: Optional CostMonitor for budget tracking
+
         """
         self.project_id = project_id
         self.location = location
@@ -116,8 +114,7 @@ class VertexAIClient:
         model: GeminiModel | None = None,
         tools: list[FunctionDeclaration] | None = None,
     ) -> GenerativeModel:
-        """
-        Get or create a Gemini model instance.
+        """Get or create a Gemini model instance.
 
         Args:
             model: Gemini model type (defaults to client default)
@@ -125,6 +122,7 @@ class VertexAIClient:
 
         Returns:
             GenerativeModel instance
+
         """
         model = model or self.default_model
         model_name = model.value
@@ -154,8 +152,7 @@ class VertexAIClient:
         tools: list[FunctionDeclaration] | None = None,
         **kwargs,
     ) -> GenerationResult:
-        """
-        Generate text using Gemini model.
+        """Generate text using Gemini model.
 
         Args:
             prompt: Input prompt text
@@ -170,6 +167,7 @@ class VertexAIClient:
 
         Raises:
             RuntimeError: If generation fails after retries
+
         """
         model = model or self.default_model
         gemini_model = self.get_model(model, tools)
@@ -221,7 +219,7 @@ class VertexAIClient:
 
             logger.info(
                 f"Generated {output_tokens} tokens with {model.value} "
-                f"(cost: ${cost:.4f}, input: {input_tokens} tokens)"
+                f"(cost: ${cost:.4f}, input: {input_tokens} tokens)",
             )
 
             return GenerationResult(
@@ -246,8 +244,7 @@ class VertexAIClient:
         complexity: str = "medium",
         **kwargs,
     ) -> GenerationResult:
-        """
-        Generate with automatic model selection based on context and complexity.
+        """Generate with automatic model selection based on context and complexity.
 
         Routing logic:
         - Flash: Short context (<5k tokens) + low complexity
@@ -261,6 +258,7 @@ class VertexAIClient:
 
         Returns:
             GenerationResult
+
         """
         # Estimate context length if not provided
         if context_length is None:
@@ -273,14 +271,13 @@ class VertexAIClient:
         else:
             model = GeminiModel.PRO
             logger.debug(
-                f"Auto-routing: Selected Pro (context={context_length}, complexity={complexity})"
+                f"Auto-routing: Selected Pro (context={context_length}, complexity={complexity})",
             )
 
         return self.generate(prompt, model=model, **kwargs)
 
     def _estimate_cost(self, input_tokens: int, output_tokens: int, model: GeminiModel) -> float:
-        """
-        Estimate cost for a generation.
+        """Estimate cost for a generation.
 
         Args:
             input_tokens: Estimated input tokens
@@ -289,14 +286,14 @@ class VertexAIClient:
 
         Returns:
             Estimated cost in USD
+
         """
         input_cost = (input_tokens / 1_000_000) * model.cost_per_1m_input
         output_cost = (output_tokens / 1_000_000) * model.cost_per_1m_output
         return input_cost + output_cost
 
     def _calculate_cost(self, input_tokens: int, output_tokens: int, model: GeminiModel) -> float:
-        """
-        Calculate actual cost from token counts.
+        """Calculate actual cost from token counts.
 
         Args:
             input_tokens: Actual input tokens
@@ -305,6 +302,7 @@ class VertexAIClient:
 
         Returns:
             Cost in USD
+
         """
         return self._estimate_cost(input_tokens, output_tokens, model)
 
@@ -314,8 +312,7 @@ class VertexAIClient:
         description: str,
         parameters: dict[str, Any],
     ) -> FunctionDeclaration:
-        """
-        Create a function declaration for tool calling.
+        """Create a function declaration for tool calling.
 
         Args:
             name: Function name
@@ -338,6 +335,7 @@ class VertexAIClient:
             ...         "required": ["query"],
             ...     },
             ... )
+
         """
         return FunctionDeclaration(
             name=name,

@@ -34,4 +34,4 @@ for i, query in enumerate(test_cases, 1):
         print(f"OUTPUT: {decision['route']} -> {decision['target']}")
     except Exception as e:
         print(f"ERROR: {e}")
-    print("")
+    print()

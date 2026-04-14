@@ -1,5 +1,4 @@
-"""
-Glass Box Indexer - Full-Text Compliance Search
+"""Glass Box Indexer - Full-Text Compliance Search
 
 Based on ArXiv 2510.09471 (Apertus Methodology):
 - Parquet streaming for efficient ingestion
@@ -47,8 +46,7 @@ class IndexStats:
 
 
 class GlassBoxIndexer:
-    """
-    Full-text indexer for governance decision chains.
+    """Full-text indexer for governance decision chains.
 
     Implements the Apertus methodology for large-scale
     reasoning chain indexing with compliance search.
@@ -118,8 +116,7 @@ class GlassBoxIndexer:
             logger.error(f"Index creation failed: {e}")
 
     async def index_document(self, doc: dict) -> bool:
-        """
-        Index a single governance decision document.
+        """Index a single governance decision document.
 
         Args:
             doc: Document with fields:
@@ -132,6 +129,7 @@ class GlassBoxIndexer:
 
         Returns:
             Success boolean
+
         """
         # Scrub PII if enabled
         if self.scrub_pii and self.pii_scrubber:
@@ -155,10 +153,9 @@ class GlassBoxIndexer:
             return False
 
     async def bulk_index(
-        self, documents: AsyncIterator[dict], progress_callback=None
+        self, documents: AsyncIterator[dict], progress_callback=None,
     ) -> IndexStats:
-        """
-        Bulk index documents with Apertus-style parallel processing.
+        """Bulk index documents with Apertus-style parallel processing.
 
         Args:
             documents: Async iterator of documents
@@ -166,6 +163,7 @@ class GlassBoxIndexer:
 
         Returns:
             IndexStats with results
+
         """
         stats = IndexStats()
         batch = []
@@ -228,8 +226,7 @@ class GlassBoxIndexer:
         limit: int = 100,
         filters: dict | None = None,
     ) -> list[dict]:
-        """
-        Search for a phrase with configurable slop.
+        """Search for a phrase with configurable slop.
 
         Slop allows words to be out of order or have
         words between them. slop=5 means up to 5 words
@@ -244,6 +241,7 @@ class GlassBoxIndexer:
 
         Returns:
             List of matching documents
+
         """
         if not self._es_client:
             logger.warning("ES not connected, returning empty results")
@@ -272,10 +270,9 @@ class GlassBoxIndexer:
             return []
 
     async def search_verdict(
-        self, verdict: str, component: str | None = None, limit: int = 100
+        self, verdict: str, component: str | None = None, limit: int = 100,
     ) -> list[dict]:
-        """
-        Search by verdict (ALLOW, BLOCK, etc.)
+        """Search by verdict (ALLOW, BLOCK, etc.)
 
         Args:
             verdict: Verdict to search for
@@ -284,6 +281,7 @@ class GlassBoxIndexer:
 
         Returns:
             List of matching documents
+
         """
         filters = {"verdict": verdict}
         if component:

@@ -22,14 +22,14 @@ def generate_grounded_content(prompt="How much is Google stock?"):
             discoveryengine.GroundedGenerationContent(
                 role="user",
                 parts=[discoveryengine.GroundedGenerationContent.Part(text=prompt)],
-            )
+            ),
         ],
         system_instruction=discoveryengine.GroundedGenerationContent(
             parts=[
                 discoveryengine.GroundedGenerationContent.Part(
-                    text="Be comprehensive and cite sources."
-                )
-            ]
+                    text="Be comprehensive and cite sources.",
+                ),
+            ],
         ),
         grounding_spec=discoveryengine.GenerateGroundedContentRequest.GroundingSpec(
             grounding_sources=[
@@ -37,12 +37,12 @@ def generate_grounded_content(prompt="How much is Google stock?"):
                     google_search_source=discoveryengine.GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource(
                         dynamic_retrieval_config=discoveryengine.GenerateGroundedContentRequest.DynamicRetrievalConfiguration(
                             predictor=discoveryengine.GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor(
-                                threshold=0.7
-                            )
-                        )
-                    )
-                )
-            ]
+                                threshold=0.7,
+                            ),
+                        ),
+                    ),
+                ),
+            ],
         ),
     )
 

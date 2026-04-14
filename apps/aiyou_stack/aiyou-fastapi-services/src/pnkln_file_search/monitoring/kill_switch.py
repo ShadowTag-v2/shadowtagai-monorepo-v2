@@ -1,5 +1,4 @@
-"""
-Kill Switch Monitoring
+"""Kill Switch Monitoring
 Automatic fallback when file search degrades or fails
 """
 
@@ -22,8 +21,7 @@ class KillSwitchState(Enum):
 
 
 class KillSwitch:
-    """
-    Monitors file search health and automatically disables on degradation
+    """Monitors file search health and automatically disables on degradation
 
     Monitors:
     1. File search P99 latency threshold
@@ -35,11 +33,11 @@ class KillSwitch:
     """
 
     def __init__(self, metrics_collector: MetricsCollector | None = None):
-        """
-        Initialize kill switch
+        """Initialize kill switch
 
         Args:
             metrics_collector: Optional metrics collector (creates new if None)
+
         """
         self.settings = get_settings()
         self.metrics = metrics_collector or MetricsCollector()
@@ -62,11 +60,11 @@ class KillSwitch:
         )
 
     def check_health(self) -> dict:
-        """
-        Check file search health against thresholds
+        """Check file search health against thresholds
 
         Returns:
             Health check results with status and violations
+
         """
         metrics_summary = self.metrics.get_metrics_summary()
 
@@ -82,7 +80,7 @@ class KillSwitch:
                     "actual": file_search_p99,
                     "message": f"File search P99 latency ({file_search_p99:.1f}ms) "
                     f"exceeds threshold ({self.max_p99_latency}ms)",
-                }
+                },
             )
 
         # Check corpus sync failure rate
@@ -95,7 +93,7 @@ class KillSwitch:
                     "actual": sync_failure_rate,
                     "message": f"Corpus sync failure rate ({sync_failure_rate:.2%}) "
                     f"exceeds threshold ({self.max_sync_failure_rate:.2%})",
-                }
+                },
             )
 
         # Check false positive rate
@@ -108,7 +106,7 @@ class KillSwitch:
                     "actual": false_positive_rate,
                     "message": f"False positive rate ({false_positive_rate:.2%}) "
                     f"exceeds threshold ({self.max_false_positive_rate:.2%})",
-                }
+                },
             )
 
         # Update state based on violations
@@ -165,11 +163,11 @@ class KillSwitch:
             )
 
     def is_enabled(self) -> bool:
-        """
-        Check if file search is enabled
+        """Check if file search is enabled
 
         Returns:
             True if file search should be used, False for fallback
+
         """
         return self.state in [KillSwitchState.ACTIVE, KillSwitchState.DEGRADED]
 

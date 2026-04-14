@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Main FastAPI Application
+"""Verdict Systems - Main FastAPI Application
 Executive Function Replacement Platform
 
 Mission: Duplicate and perfect human executive function across domains—

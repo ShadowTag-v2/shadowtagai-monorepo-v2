@@ -31,8 +31,7 @@ class GenerationResponse:
 
 
 class VLLMBackend:
-    """
-    vLLM backend for high-throughput LLM serving.
+    """vLLM backend for high-throughput LLM serving.
 
     Provides 2-4x faster inference than HuggingFace Transformers
     through continuous batching and optimized attention kernels.

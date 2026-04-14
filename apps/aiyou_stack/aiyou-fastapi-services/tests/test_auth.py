@@ -19,11 +19,11 @@ async def test_register_user_success(async_client: AsyncClient):
 async def test_register_duplicate_email(async_client: AsyncClient):
     # First, register the user
     await async_client.post(
-        "/api/v1/auth/register", json={"email": "redacted@shadowtag-v4.local", "password": "pass"}
+        "/api/v1/auth/register", json={"email": "redacted@shadowtag-v4.local", "password": "pass"},
     )
     # Attempt duplicate
     response = await async_client.post(
-        "/api/v1/auth/register", json={"email": "redacted@shadowtag-v4.local", "password": "pass"}
+        "/api/v1/auth/register", json={"email": "redacted@shadowtag-v4.local", "password": "pass"},
     )
     assert response.status_code == 400
     assert response.json()["detail"] == "Email already registered"
@@ -75,10 +75,10 @@ async def test_protected_route_dependency(async_client: AsyncClient):
 
     # Register & Login to get token
     await async_client.post(
-        "/api/v1/auth/register", json={"email": "redacted@shadowtag-v4.local", "password": "pass"}
+        "/api/v1/auth/register", json={"email": "redacted@shadowtag-v4.local", "password": "pass"},
     )
     login_response = await async_client.post(
-        "/api/v1/auth/login", data={"username": "redacted@shadowtag-v4.local", "password": "pass"}
+        "/api/v1/auth/login", data={"username": "redacted@shadowtag-v4.local", "password": "pass"},
     )
     token = login_response.json()["access_token"]
 
@@ -88,7 +88,7 @@ async def test_protected_route_dependency(async_client: AsyncClient):
 
     # Test with token
     success_response = await async_client.get(
-        "/api/v1/test_protected", headers={"Authorization": f"Bearer {token}"}
+        "/api/v1/test_protected", headers={"Authorization": f"Bearer {token}"},
     )
     assert success_response.status_code == 200
     assert success_response.json()["user_email"] == "redacted@shadowtag-v4.local"

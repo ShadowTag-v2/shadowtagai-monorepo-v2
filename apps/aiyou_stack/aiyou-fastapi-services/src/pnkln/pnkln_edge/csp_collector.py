@@ -13,8 +13,8 @@ async def csp_report(req: Request):
     payload = await req.json()
     print(
         json.dumps(
-            {"ts": datetime.datetime.utcnow().isoformat(), "type": "csp", "payload": payload}
-        )
+            {"ts": datetime.datetime.utcnow().isoformat(), "type": "csp", "payload": payload},
+        ),
     )
     return {"ok": True}
 

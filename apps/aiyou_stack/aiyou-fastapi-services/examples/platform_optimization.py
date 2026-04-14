@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Platform Optimization Example
+"""Platform Optimization Example
 
 Demonstrates platform-specific watermarking for different social media platforms.
 """
@@ -11,7 +10,6 @@ from shadowtag_v2.config.presets import get_preset, get_preset_info, list_preset
 
 def watermark_for_platform(platform, video_path, audio_path):
     """Watermark content optimized for specific platform."""
-
     print(f"\n{'=' * 60}")
     print(f"WATERMARKING FOR: {platform.upper()}")
     print(f"{'=' * 60}")

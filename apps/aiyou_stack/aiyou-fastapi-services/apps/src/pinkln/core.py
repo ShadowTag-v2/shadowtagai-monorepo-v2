@@ -1,5 +1,4 @@
-"""
-Pinkln Core: Unified orchestration layer
+"""Pinkln Core: Unified orchestration layer
 
 Integrates:
 - Gemini Function Calling (1 API call, local execution)
@@ -33,8 +32,7 @@ class ShadowTag:
 
 
 class JREngine:
-    """
-    Judge Reasoning Engine
+    """Judge Reasoning Engine
     Validates decisions against:
     - Purpose: ShadowTag-v2JR (mission alignment)
     - Reasons: Doctrine (strategic fit)
@@ -42,15 +40,14 @@ class JREngine:
     """
 
     def validate(
-        self, purpose: str, reasons: list[str], risks: list[dict[str, Any]]
+        self, purpose: str, reasons: list[str], risks: list[dict[str, Any]],
     ) -> dict[str, Any]:
         # Implementation of validation logic
         return {"status": "validated", "risk_level": RiskLevel.LOW.value}
 
 
 class GeminiFunctionCaller:
-    """
-    Native function calling wrapper for Gemini
+    """Native function calling wrapper for Gemini
     Performance: 31x faster than AutoGen
     """
 

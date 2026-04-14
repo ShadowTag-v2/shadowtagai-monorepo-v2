@@ -1,5 +1,4 @@
-"""
-DualCo service layer.
+"""DualCo service layer.
 
 Extracts all database operations from DualCo routes
 into a proper service/repository pattern.

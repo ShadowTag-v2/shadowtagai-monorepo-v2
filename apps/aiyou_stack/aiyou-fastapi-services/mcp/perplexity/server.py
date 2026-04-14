@@ -1,5 +1,4 @@
-"""
-Perplexity MCP Server - Model Context Protocol Server for Perplexity Integration
+"""Perplexity MCP Server - Model Context Protocol Server for Perplexity Integration
 
 Routes Comet browser queries through Judge #6 for compliance scoring,
 stamps SHADOWTAG watermarks on AI-generated content, and logs all
@@ -60,8 +59,7 @@ class ManifestEntry:
 
 
 class PerplexityMCPServer:
-    """
-    MCP Server for Perplexity Comet Browser Integration.
+    """MCP Server for Perplexity Comet Browser Integration.
 
     Provides three core tools:
     1. governance_score - Judge #6 compliance check
@@ -88,6 +86,7 @@ class PerplexityMCPServer:
         # Log to manifest
         await server.log_to_manifest(result, watermarked)
         ```
+
     """
 
     def __init__(
@@ -133,8 +132,7 @@ class PerplexityMCPServer:
         user_context: dict[str, Any],
         transaction_value: float | None = None,
     ) -> GovernanceResult:
-        """
-        Judge #6 governance scoring for Perplexity requests.
+        """Judge #6 governance scoring for Perplexity requests.
 
         Evaluates compliance requirements and risk level for:
         - Shopping transactions (Comet checkout)
@@ -149,6 +147,7 @@ class PerplexityMCPServer:
 
         Returns:
             GovernanceResult with decision, risk score, and reasoning
+
         """
         start_time = time.time()
         request_id = hashlib.sha256(f"{content}{time.time()}".encode()).hexdigest()[:16]
@@ -158,7 +157,7 @@ class PerplexityMCPServer:
 
         # Calculate risk score
         risk_score = self._calculate_risk_score(
-            request_type, content, user_context, compliance_flags, transaction_value
+            request_type, content, user_context, compliance_flags, transaction_value,
         )
 
         # Make decision
@@ -186,7 +185,7 @@ class PerplexityMCPServer:
         # SLA check
         if latency_ms > self.judge6_latency_target:
             print(
-                f"  SLA BREACH: Judge #6 took {latency_ms:.1f}ms (target: {self.judge6_latency_target}ms)"
+                f"  SLA BREACH: Judge #6 took {latency_ms:.1f}ms (target: {self.judge6_latency_target}ms)",
             )
 
         return GovernanceResult(
@@ -199,7 +198,7 @@ class PerplexityMCPServer:
         )
 
     def _check_compliance_domains(
-        self, content: str, user_context: dict[str, Any]
+        self, content: str, user_context: dict[str, Any],
     ) -> dict[str, bool]:
         """Check which compliance domains apply."""
         flags = {}
@@ -256,8 +255,7 @@ class PerplexityMCPServer:
         source: str,
         metadata: dict[str, Any] | None = None,
     ) -> WatermarkResult:
-        """
-        Apply SHADOWTAG watermark to AI-generated content.
+        """Apply SHADOWTAG watermark to AI-generated content.
 
         Creates cryptographic signature and Merkle root for:
         - Provenance tracking
@@ -271,6 +269,7 @@ class PerplexityMCPServer:
 
         Returns:
             WatermarkResult with signature and merkle root
+
         """
         start_time = time.time()
 
@@ -313,8 +312,7 @@ class PerplexityMCPServer:
         watermark_result: WatermarkResult | None = None,
         context_id: str = "perplexity_comet",
     ) -> str:
-        """
-        Log transaction to Apertus-compatible JSONL manifest.
+        """Log transaction to Apertus-compatible JSONL manifest.
 
         Creates entry for future Elasticsearch indexing with:
         - Full-text searchable content
@@ -328,6 +326,7 @@ class PerplexityMCPServer:
 
         Returns:
             Run ID for the logged entry
+
         """
         run_id = governance_result.request_id
         timestamp = datetime.utcnow().isoformat() + "Z"

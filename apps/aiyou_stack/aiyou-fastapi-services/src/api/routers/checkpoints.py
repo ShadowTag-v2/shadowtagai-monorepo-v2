@@ -38,6 +38,7 @@ async def create_checkpoint(
 
     Returns:
         Created checkpoint details
+
     """
     try:
         checkpoint = await service.create_checkpoint(checkpoint_data)
@@ -45,13 +46,13 @@ async def create_checkpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create checkpoint: {str(e)}",
+            detail=f"Failed to create checkpoint: {e!s}",
         )
 
 
 @router.get("/{checkpoint_id}", response_model=CheckpointResponse)
 async def get_checkpoint(
-    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service)
+    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Get checkpoint details by ID.
 
@@ -64,12 +65,13 @@ async def get_checkpoint(
 
     Raises:
         HTTPException: If checkpoint not found
+
     """
     checkpoint = service.get_checkpoint(checkpoint_id)
 
     if not checkpoint:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found",
         )
 
     return checkpoint
@@ -92,6 +94,7 @@ async def list_checkpoints(
 
     Returns:
         List of checkpoints and total count
+
     """
     checkpoints, total = service.list_checkpoints(session_id=session_id, limit=limit, offset=offset)
 
@@ -119,6 +122,7 @@ async def restore_checkpoint(
 
     Raises:
         HTTPException: If checkpoint not found or restore fails
+
     """
     try:
         checkpoint = await service.restore_checkpoint(checkpoint_id, restore_data)
@@ -128,13 +132,13 @@ async def restore_checkpoint(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to restore checkpoint: {str(e)}",
+            detail=f"Failed to restore checkpoint: {e!s}",
         )
 
 
 @router.get("/{checkpoint_id}/files", response_model=list[FileSnapshotResponse])
 async def get_checkpoint_files(
-    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service)
+    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Get all file snapshots for a checkpoint.
 
@@ -147,12 +151,13 @@ async def get_checkpoint_files(
 
     Raises:
         HTTPException: If checkpoint not found
+
     """
     # Verify checkpoint exists
     checkpoint = service.get_checkpoint(checkpoint_id)
     if not checkpoint:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found",
         )
 
     # Get file snapshots
@@ -162,7 +167,7 @@ async def get_checkpoint_files(
 
 @router.delete("/{checkpoint_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_checkpoint(
-    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service)
+    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Delete a checkpoint.
 
@@ -174,18 +179,19 @@ async def delete_checkpoint(
 
     Raises:
         HTTPException: If checkpoint not found
+
     """
     deleted = service.delete_checkpoint(checkpoint_id)
 
     if not deleted:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found",
         )
 
 
 @router.get("/sessions/{session_id}/stats")
 async def get_session_stats(
-    session_id: str, service: CheckpointingService = Depends(get_checkpoint_service)
+    session_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Get checkpoint statistics for a session.
 
@@ -195,6 +201,7 @@ async def get_session_stats(
 
     Returns:
         Session statistics including checkpoint count and storage usage
+
     """
     return service.get_session_stats(session_id)
 
@@ -213,6 +220,7 @@ async def cleanup_expired_checkpoints(
 
     Returns:
         Number of checkpoints cleaned up
+
     """
     cleanup_count = service.cleanup_expired_checkpoints()
 

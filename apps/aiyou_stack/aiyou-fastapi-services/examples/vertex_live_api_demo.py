@@ -18,8 +18,7 @@ MODEL_ID = "gemini-2.0-flash-exp"  # Or appropriate model version
 
 
 async def main() -> None:
-    """
-    Demonstrates a basic connection to the Gemini Live API.
+    """Demonstrates a basic connection to the Gemini Live API.
     This example establishes a session and sends a text message to trigger an audio response.
     """
     print("--- Vertex AI Live API Demo ---")

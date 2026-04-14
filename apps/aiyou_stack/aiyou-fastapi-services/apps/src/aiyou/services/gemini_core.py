@@ -1,5 +1,4 @@
-"""
-GeminiAntigravity - Core intelligence engine.
+"""GeminiAntigravity - Core intelligence engine.
 Replaces MediaPipe/Emotion/Text pipelines with native Gemini multimodal.
 Supports both Vertex AI and direct API key authentication.
 
@@ -46,8 +45,7 @@ class GeminiAntigravity:
         redis_port: int = 6379,
         cache_ttl: int = 3600,
     ):
-        """
-        Initialize Gemini engine.
+        """Initialize Gemini engine.
 
         Args:
             project_id: GCP project ID for Vertex AI (optional if using API key)
@@ -56,6 +54,7 @@ class GeminiAntigravity:
             redis_host: Redis host for caching
             redis_port: Redis port
             cache_ttl: Cache TTL in seconds (default 1 hour)
+
         """
         self.use_vertex = False
         self.cache_ttl = cache_ttl
@@ -110,18 +109,18 @@ class GeminiAntigravity:
                 SafetySetting(
                     category=SafetySetting.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
                     threshold=SafetySetting.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-                )
+                ),
             ]
         else:
             raise ValueError("Either api_key or project_id must be provided")
 
     def _get_generation_config(self, thinking_level: str = "high", json_output: bool = False):
-        """
-        Get generation config with Gemini 3 Deep Think mode.
+        """Get generation config with Gemini 3 Deep Think mode.
 
         Args:
             thinking_level: "high" (Deep Think) or "low" (fast response)
             json_output: Return JSON formatted output
+
         """
         # Gemini 3 Deep Think mode for complex reasoning
         config = {"thinking_level": thinking_level}
@@ -173,8 +172,7 @@ class GeminiAntigravity:
         logger.warning(f"Model {model_name} rate limited, reset in {retry_after}s")
 
     def _get_next_available_model(self) -> str:
-        """
-        Get next available model in fallback chain.
+        """Get next available model in fallback chain.
 
         ID → EGO → SUPEREGO pattern:
         - ID (Pro): Maximum capability, aggressive optimization
@@ -204,8 +202,7 @@ class GeminiAntigravity:
         self.current_model_name = model_name
 
     def _execute_with_fallback(self, execute_fn, *args, **kwargs):
-        """
-        Execute a function with automatic rate-limit fallback.
+        """Execute a function with automatic rate-limit fallback.
 
         ID/EGO/SUPEREGO Decision Framework:
         - ID: Try maximum capability first (gemini-2.5-pro-preview)
@@ -241,9 +238,8 @@ class GeminiAntigravity:
                     last_error = e
                     logger.warning(f"Rate limit on {model_name}, trying next tier...")
                     continue
-                else:
-                    # Non-rate-limit error, propagate
-                    raise
+                # Non-rate-limit error, propagate
+                raise
 
         # All models exhausted - raise last error
         if last_error:
@@ -264,8 +260,7 @@ class GeminiAntigravity:
         }
 
     def analyze_video_stream(self, video_uri: str, mime_type: str = "video/mp4") -> dict:
-        """
-        Multimodal analysis: Single pass extraction of gestures, emotions, transcript.
+        """Multimodal analysis: Single pass extraction of gestures, emotions, transcript.
         """
         prompt = """
         Analyze this video segment for the 'ShadowTagAi' platform.
@@ -298,8 +293,7 @@ class GeminiAntigravity:
             return {"raw_output": response.text}
 
     def generate_governance_decision(self, conflict_data: dict) -> str:
-        """
-        The 'Living Regulator' logic: Proposes binding resolutions.
+        """The 'Living Regulator' logic: Proposes binding resolutions.
         """
         response = self.model.generate_content(
             f"Act as a neutral arbitrator. Review this conflict data: {conflict_data}. "
@@ -309,8 +303,7 @@ class GeminiAntigravity:
         return response.text
 
     def generate_text(self, prompt: str, json_output: bool = False, use_cache: bool = True) -> str:
-        """
-        Text generation with automatic rate-limit fallback.
+        """Text generation with automatic rate-limit fallback.
 
         ID/EGO/SUPEREGO Decision Framework:
         - ID (gemini-2.5-pro-preview): Maximum capability, try first
@@ -324,6 +317,7 @@ class GeminiAntigravity:
 
         Returns:
             Generated text response
+
         """
         cache_key = self._cache_key("text", f"{prompt}:{json_output}")
 
@@ -351,14 +345,14 @@ class GeminiAntigravity:
         return result
 
     def chat(self, messages: list[dict]) -> str:
-        """
-        Multi-turn chat conversation.
+        """Multi-turn chat conversation.
 
         Args:
             messages: List of {"role": "user"|"model", "parts": ["text"]}
 
         Returns:
             Model response text
+
         """
         chat_session = self.model.start_chat(history=messages[:-1] if len(messages) > 1 else [])
         response = chat_session.send_message(

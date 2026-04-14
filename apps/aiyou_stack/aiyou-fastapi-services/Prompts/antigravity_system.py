@@ -1,5 +1,4 @@
-"""
-Antigravity System Prompt for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
+"""Antigravity System Prompt for n-autoresearch/Kosmos/BioAgents Cavalry Squadron
 =============================================================
 ID/EGO/SUPEREGO architecture with METT-TC dynamic injection.
 
@@ -179,8 +178,7 @@ def build_prompt(
     inject_review_layer: bool = True,
     max_skills: int = 15,
 ) -> str:
-    """
-    Build complete prompt with METT-TC injection.
+    """Build complete prompt with METT-TC injection.
 
     Args:
         troop_name: HHT, AIR_CAV, ALPHA_ARMOR, BRAVO_STRYKER, CHARLIE_BRADLEY
@@ -202,6 +200,7 @@ def build_prompt(
         compact: Use compressed prompt format
         inject_skills: Inject scientific skills for troop (Phase 3)
         inject_review_layer: Inject 0% error rate review layer (Phase 3)
+
     """
     # PROMPT: ANTIGRAVITY_SYSTEM_V2 (ULTRATHINK v2.0)
     #
@@ -254,8 +253,7 @@ def build_prompt(
 
 
 def _build_skill_injection(troop_name: str, max_skills: int = 15) -> str:
-    """
-    Build scientific skill injection block for troop.
+    """Build scientific skill injection block for troop.
 
     Maps troops to skill domains:
     - HHT: Discovery, Evaluation, Writing (7 skills)
@@ -291,8 +289,7 @@ def _build_skill_injection(troop_name: str, max_skills: int = 15) -> str:
 
 
 def _build_review_layer(troop_name: str, mission_type: str) -> str:
-    """
-    Build 0% error rate review layer block.
+    """Build 0% error rate review layer block.
 
     CHARLIE troop gets full compounding review panel.
     AIR_CAV gets M2 deep research layer.
@@ -330,8 +327,7 @@ def _build_review_layer(troop_name: str, mission_type: str) -> str:
 
 
 def build_task_prompt(prompt: str, task: str, agent_id: str) -> str:
-    """
-    Build final prompt with task injection.
+    """Build final prompt with task injection.
 
     Args:
         prompt: Base prompt from build_prompt()
@@ -340,6 +336,7 @@ def build_task_prompt(prompt: str, task: str, agent_id: str) -> str:
 
     Returns:
         Complete prompt ready for Gemini API
+
     """
     return f"""{prompt}
 

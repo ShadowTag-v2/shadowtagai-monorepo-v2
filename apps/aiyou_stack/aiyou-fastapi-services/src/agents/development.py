@@ -1,5 +1,4 @@
-"""
-Development Agents for Vertex AI Workbench
+"""Development Agents for Vertex AI Workbench
 """
 
 from typing import Any

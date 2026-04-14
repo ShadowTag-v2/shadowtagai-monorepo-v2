@@ -1,5 +1,4 @@
-"""
-ShadowTag Cryptographic Attestation Integration
+"""ShadowTag Cryptographic Attestation Integration
 ===============================================
 Integration with ShadowTag for cryptographic compliance attestations.
 
@@ -131,8 +130,7 @@ class ComplianceProof:
 
 
 class ShadowTagClient:
-    """
-    ShadowTag Attestation Client.
+    """ShadowTag Attestation Client.
 
     Creates cryptographic attestations for compliance decisions.
 
@@ -181,8 +179,7 @@ class ShadowTagClient:
         level: AttestationLevel | None = None,
         metadata: dict | None = None,
     ) -> ShadowTagAttestation:
-        """
-        Create a new compliance attestation.
+        """Create a new compliance attestation.
 
         Args:
             content_hash: Hash of the content being attested
@@ -192,6 +189,7 @@ class ShadowTagClient:
 
         Returns:
             ShadowTagAttestation
+
         """
         level = level or self.config.default_level
         now = datetime.utcnow()
@@ -252,9 +250,8 @@ class ShadowTagClient:
             # L0: Simple hash
             return self._compute_content_hash(attestation_data)[:32]
 
-        else:
-            # L1+: HMAC signature
-            return self._sign_attestation(attestation_data)
+        # L1+: HMAC signature
+        return self._sign_attestation(attestation_data)
 
     async def _enhance_attestation(
         self,
@@ -262,7 +259,6 @@ class ShadowTagClient:
         level: AttestationLevel,
     ) -> ShadowTagAttestation:
         """Enhance attestation with higher-level proofs"""
-
         if level >= AttestationLevel.L2_WITNESSED:
             # In production, request witness signatures from other services
             # For now, simulate with additional signature
@@ -271,7 +267,7 @@ class ShadowTagClient:
                     "attestation_id": attestation.attestation_id,
                     "witness": "witness-service-1",
                     "timestamp": datetime.utcnow().isoformat(),
-                }
+                },
             )
             attestation.witness_signatures.append(witness_sig)
 
@@ -282,7 +278,7 @@ class ShadowTagClient:
                 {
                     "attestation_id": attestation.attestation_id,
                     "notary_timestamp": attestation.notary_timestamp.isoformat(),
-                }
+                },
             )
 
         if level >= AttestationLevel.L4_ANCHORED and self.config.enable_blockchain:
@@ -299,11 +295,11 @@ class ShadowTagClient:
         self,
         attestation: ShadowTagAttestation,
     ) -> tuple[bool, AttestationStatus]:
-        """
-        Verify an attestation is valid.
+        """Verify an attestation is valid.
 
         Returns:
             Tuple of (is_valid, status)
+
         """
         # Check expiration
         if datetime.utcnow() > attestation.expires_at:
@@ -351,8 +347,7 @@ class ShadowTagClient:
         framework: str = "CA_AI_CHATBOT",
         level: AttestationLevel | None = None,
     ) -> ComplianceProof:
-        """
-        Create a complete compliance proof for an assessment.
+        """Create a complete compliance proof for an assessment.
 
         Args:
             assessment_result: Full assessment result
@@ -361,6 +356,7 @@ class ShadowTagClient:
 
         Returns:
             ComplianceProof with attestation
+
         """
         # Hash the assessment result
         content_hash = self._compute_content_hash(assessment_result)
@@ -429,6 +425,6 @@ def configure_shadowtag(
             signing_key=signing_key,
             enable_notarization=enable_notarization,
             enable_blockchain=enable_blockchain,
-        )
+        ),
     )
     return _shadowtag_client

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-UserPromptSubmit hook - Adds contextual information to user prompts
+"""UserPromptSubmit hook - Adds contextual information to user prompts
 """
 
 import json

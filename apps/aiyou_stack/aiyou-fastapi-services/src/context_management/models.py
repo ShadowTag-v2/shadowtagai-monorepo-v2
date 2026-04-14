@@ -1,5 +1,4 @@
-"""
-Pydantic models for Context Window Management
+"""Pydantic models for Context Window Management
 """
 
 from datetime import datetime
@@ -31,8 +30,7 @@ class SessionStatus(StrEnum):
 
 
 class AnalysisSession(BaseModel):
-    """
-    Represents a single AI analysis session
+    """Represents a single AI analysis session
 
     Tracks metadata for a conversation with an AI assistant
     about a specific analysis topic (e.g., Gemini Ingestion Layer review)
@@ -53,7 +51,7 @@ class AnalysisSession(BaseModel):
     # AI Model information
     model_name: str = Field(default="gemini-2.0-pro", description="AI model used")
     confidence_threshold: float = Field(
-        default=0.60, ge=0.0, le=1.0, description="Minimum confidence threshold"
+        default=0.60, ge=0.0, le=1.0, description="Minimum confidence threshold",
     )
 
     # Token usage tracking
@@ -77,13 +75,12 @@ class AnalysisSession(BaseModel):
                 "total_tokens": 45000,
                 "context_window_size": 2_000_000,
                 "status": "active",
-            }
+            },
         }
 
 
 class ChatSummary(BaseModel):
-    """
-    Summary of a completed chat session
+    """Summary of a completed chat session
 
     Captures key outcomes, decisions, and insights from an AI analysis
     """
@@ -93,15 +90,15 @@ class ChatSummary(BaseModel):
     key_decisions: list[str] = Field(default_factory=list, description="Key decisions made")
     findings: list[str] = Field(default_factory=list, description="Important findings")
     recommendations: list[str] = Field(
-        default_factory=list, description="Action items and recommendations"
+        default_factory=list, description="Action items and recommendations",
     )
     risks_identified: list[str] = Field(
-        default_factory=list, description="Risks or blockers identified"
+        default_factory=list, description="Risks or blockers identified",
     )
 
     # Metadata
     related_threads: list[str] = Field(
-        default_factory=list, description="Related discussion threads or URLs"
+        default_factory=list, description="Related discussion threads or URLs",
     )
     tags: list[str] = Field(default_factory=list, description="Categorization tags")
 
@@ -137,13 +134,12 @@ class ChatSummary(BaseModel):
                     "https://pnkln.ai/docs/ingestion-layer",
                 ],
                 "tags": ["ingestion", "gemini-2.0-pro", "pre-production", "architecture"],
-            }
+            },
         }
 
 
 class ContextIndex(BaseModel):
-    """
-    Master index of all analysis sessions
+    """Master index of all analysis sessions
 
     Provides a searchable, chronological record of AI analysis activities
     """
@@ -156,7 +152,7 @@ class ContextIndex(BaseModel):
     )
 
     sessions: list[AnalysisSession] = Field(
-        default_factory=list, description="All tracked sessions"
+        default_factory=list, description="All tracked sessions",
     )
 
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -175,7 +171,7 @@ class ContextIndex(BaseModel):
                 "total_sessions": 42,
                 "active_sessions": 3,
                 "total_tokens_consumed": 1_250_000,
-            }
+            },
         }
 
 

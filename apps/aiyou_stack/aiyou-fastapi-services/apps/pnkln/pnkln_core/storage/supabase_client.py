@@ -11,6 +11,7 @@ def get_supabase_client() -> Client:
 
     Returns:
         An authenticated Supabase client instance.
+
     """
     url = os.getenv("SUPABASE_URL")
     key = os.getenv("SUPABASE_KEY")

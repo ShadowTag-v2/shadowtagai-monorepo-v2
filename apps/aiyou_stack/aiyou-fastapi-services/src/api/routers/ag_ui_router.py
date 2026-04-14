@@ -19,7 +19,7 @@ except ImportError:
         name: str = "mock_agent"
 
         async def _run_async_impl(
-            self, *args: Any, **kwargs: Any
+            self, *args: Any, **kwargs: Any,
         ) -> AsyncGenerator[dict[str, Any], None]:
             yield {}
 
@@ -34,7 +34,7 @@ class OmegaSwarmBridgeAgent(BaseAgent):
     name: str = "omega_swarm_bridge_agent"
 
     async def _run_async_impl(
-        self, request: Any, *args: Any, **kwargs: Any
+        self, request: Any, *args: Any, **kwargs: Any,
     ) -> AsyncGenerator[dict[str, Any], None]:
         # Synthesized context stream for Aegaeon Copilot feedback
         prompt_text = getattr(request, "prompt", "UNKNOWN_QUERY")
@@ -53,7 +53,7 @@ class OmegaSwarmBridgeAgent(BaseAgent):
                     "varAllocation": 77.21,
                     "quarterKelly": 12.04,
                     "actionVerdict": "EXECUTING AST SWARM INFERENCING",
-                }
+                },
             ),
         }
 
@@ -71,7 +71,7 @@ else:
     @app.get("/")
     def health() -> dict[str, str]:
         return {
-            "status": "ADK wrapper running in headless mode. Install ag_ui_adk for full CopilotKit Event streaming."
+            "status": "ADK wrapper running in headless mode. Install ag_ui_adk for full CopilotKit Event streaming.",
         }
 
 

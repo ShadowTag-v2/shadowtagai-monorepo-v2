@@ -1,5 +1,4 @@
-"""
-Verdict Systems - Core Enumerations
+"""Verdict Systems - Core Enumerations
 Executive function replacement platform enums
 """
 

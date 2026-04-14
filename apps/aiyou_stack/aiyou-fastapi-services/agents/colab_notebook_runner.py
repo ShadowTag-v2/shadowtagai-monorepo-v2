@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Colab Notebook Runner: Execute notebooks in Google Colab environment.
+"""Colab Notebook Runner: Execute notebooks in Google Colab environment.
 Handles actual Colab integration via API or browser automation.
 
 Part of Cloud Code API + Colab Coop automation stack.
@@ -61,8 +60,7 @@ class NotebookResult:
 
 
 class ColabNotebookRunner:
-    """
-    Execute notebooks in Colab or locally.
+    """Execute notebooks in Colab or locally.
 
     Supports:
     - Local Python execution (for testing)
@@ -71,14 +69,14 @@ class ColabNotebookRunner:
     """
 
     def __init__(
-        self, mode: ExecutionMode = ExecutionMode.LOCAL, runtime: RuntimeType = RuntimeType.CPU
+        self, mode: ExecutionMode = ExecutionMode.LOCAL, runtime: RuntimeType = RuntimeType.CPU,
     ):
-        """
-        Initialize notebook runner.
+        """Initialize notebook runner.
 
         Args:
             mode: How to execute notebooks
             runtime: Colab runtime type (for COLAB_API/BROWSER modes)
+
         """
         self.mode = mode
         self.runtime = runtime
@@ -104,7 +102,7 @@ class ColabNotebookRunner:
                     outputs=cell.get("outputs", []),
                     execution_count=cell.get("execution_count"),
                     metadata=cell.get("metadata", {}),
-                )
+                ),
             )
 
         return cells
@@ -158,12 +156,12 @@ class ColabNotebookRunner:
                     temp_file = f.name
 
                 result = subprocess.run(
-                    [sys.executable, temp_file], capture_output=True, text=True, timeout=60
+                    [sys.executable, temp_file], capture_output=True, text=True, timeout=60,
                 )
 
                 output = result.stdout or result.stderr
                 outputs.append(
-                    {"cell_index": i, "output": output, "return_code": result.returncode}
+                    {"cell_index": i, "output": output, "return_code": result.returncode},
                 )
 
                 executed_cell = NotebookCell(
@@ -184,7 +182,7 @@ class ColabNotebookRunner:
                 errors.append(f"Cell {i}: Execution timeout")
                 executed_cells.append(cell)
             except Exception as e:
-                errors.append(f"Cell {i}: {str(e)}")
+                errors.append(f"Cell {i}: {e!s}")
                 executed_cells.append(cell)
                 self.stats["errors"] += 1
 
@@ -203,7 +201,7 @@ class ColabNotebookRunner:
         )
 
     async def execute_cloud_code(
-        self, cells: list[NotebookCell], client: Any | None = None
+        self, cells: list[NotebookCell], client: Any | None = None,
     ) -> NotebookResult:
         """Execute via Cloud Code API."""
         from agents.cloudcode_client import CloudCodeClient
@@ -233,7 +231,7 @@ class ColabNotebookRunner:
                     "safe_to_execute": result.get("safe_to_execute", True),
                     "dependencies": result.get("dependencies", []),
                     "modified_code": result.get("modified_code", cell.source),
-                }
+                },
             )
 
             executed_cell = NotebookCell(
@@ -276,7 +274,7 @@ class ColabNotebookRunner:
                 duration_seconds=0,
                 outputs=[],
                 errors=[
-                    "playwright not installed. Run: pip install playwright && playwright install"
+                    "playwright not installed. Run: pip install playwright && playwright install",
                 ],
             )
 
@@ -326,7 +324,7 @@ class ColabNotebookRunner:
                     self.stats["cells_executed"] += 1
 
             except Exception as e:
-                errors.append(f"Browser automation error: {str(e)}")
+                errors.append(f"Browser automation error: {e!s}")
                 self.stats["errors"] += 1
             finally:
                 await browser.close()
@@ -346,10 +344,9 @@ class ColabNotebookRunner:
         )
 
     async def run(
-        self, notebook: str | list[NotebookCell] | dict[str, Any], **kwargs
+        self, notebook: str | list[NotebookCell] | dict[str, Any], **kwargs,
     ) -> NotebookResult:
-        """
-        Execute a notebook.
+        """Execute a notebook.
 
         Args:
             notebook: Path to .ipynb, list of cells, or notebook dict
@@ -357,6 +354,7 @@ class ColabNotebookRunner:
 
         Returns:
             NotebookResult with execution details
+
         """
         # Parse input
         if isinstance(notebook, str):
@@ -375,12 +373,11 @@ class ColabNotebookRunner:
         # Execute based on mode
         if self.mode == ExecutionMode.LOCAL:
             return await self.execute_local(cells)
-        elif self.mode == ExecutionMode.CLOUD_CODE:
+        if self.mode == ExecutionMode.CLOUD_CODE:
             return await self.execute_cloud_code(cells, kwargs.get("client"))
-        elif self.mode == ExecutionMode.BROWSER:
+        if self.mode == ExecutionMode.BROWSER:
             return await self.execute_browser(cells)
-        else:
-            return await self.execute_local(cells)
+        return await self.execute_local(cells)
 
     def _parse_notebook_dict(self, nb_dict: dict[str, Any]) -> list[NotebookCell]:
         """Parse notebook dictionary into cells."""
@@ -395,15 +392,14 @@ class ColabNotebookRunner:
                     cell_type=cell.get("cell_type", "code"),
                     source=source,
                     outputs=cell.get("outputs", []),
-                )
+                ),
             )
         return cells
 
     async def run_from_template(
-        self, template_name: str, variables: dict[str, Any]
+        self, template_name: str, variables: dict[str, Any],
     ) -> NotebookResult:
-        """
-        Run notebook from template with variable substitution.
+        """Run notebook from template with variable substitution.
 
         Args:
             template_name: Name of template (looks in templates/ directory)
@@ -411,6 +407,7 @@ class ColabNotebookRunner:
 
         Returns:
             NotebookResult
+
         """
         template_path = Path(__file__).parent.parent / "templates" / f"{template_name}.ipynb"
 
@@ -473,7 +470,7 @@ if __name__ == "__main__":
             NotebookCell(cell_type="code", source="print('Hello from Colab Coop!')"),
             NotebookCell(cell_type="code", source="import sys; print(f'Python {sys.version}')"),
             NotebookCell(
-                cell_type="code", source="result = sum(range(100)); print(f'Sum: {result}')"
+                cell_type="code", source="result = sum(range(100)); print(f'Sum: {result}')",
             ),
         ]
 

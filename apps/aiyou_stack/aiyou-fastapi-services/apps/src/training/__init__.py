@@ -10,8 +10,8 @@ from .grpo import (
 
 __all__ = [
     "GRPOConfig",
-    "TrainingExample",
     "GRPOSimulator",
     "GRPOvsPPOComparison",
+    "TrainingExample",
     "compare_grpo_ppo",
 ]

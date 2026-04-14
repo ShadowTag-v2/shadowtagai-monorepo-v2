@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Integration tests for business plan module
+"""Integration tests for business plan module
 Validates all components work together correctly
 """
 

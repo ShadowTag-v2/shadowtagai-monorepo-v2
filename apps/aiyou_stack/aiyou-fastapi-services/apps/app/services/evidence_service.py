@@ -1,5 +1,4 @@
-"""
-Evidence Service
+"""Evidence Service
 
 Generates compliance dossiers and audit reports.
 Implements Compliance-as-Documentation™ approach.
@@ -33,8 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 class EvidenceService:
-    """
-    Service for generating compliance evidence and documentation.
+    """Service for generating compliance evidence and documentation.
 
     Produces audit-ready reports with cryptographic attestation
     via ShadowTag ledger integration.
@@ -62,8 +60,7 @@ class EvidenceService:
         modules: list[RegulationId],
         assessment_result: ComplianceAssessmentResult | None = None,
     ) -> ComplianceDossier:
-        """
-        Create a compliance dossier for an organization.
+        """Create a compliance dossier for an organization.
 
         Args:
             organization_name: Name of the organization
@@ -74,6 +71,7 @@ class EvidenceService:
 
         Returns:
             ComplianceDossier with all documentation
+
         """
         dossier_id = str(uuid4())
 
@@ -113,8 +111,7 @@ class EvidenceService:
         content: Any,
         linked_controls: list[str] = None,
     ) -> EvidenceArtifact:
-        """
-        Add evidence artifact to a dossier.
+        """Add evidence artifact to a dossier.
 
         Args:
             dossier: The dossier to add evidence to
@@ -126,17 +123,18 @@ class EvidenceService:
 
         Returns:
             EvidenceArtifact with hash
+
         """
         artifact_id = str(uuid4())
 
         # Hash the content
         if isinstance(content, (str, bytes)):
             content_hash = hashlib.sha256(
-                content if isinstance(content, bytes) else content.encode()
+                content if isinstance(content, bytes) else content.encode(),
             ).hexdigest()
         else:
             content_hash = hashlib.sha256(
-                json.dumps(content, sort_keys=True, default=str).encode()
+                json.dumps(content, sort_keys=True, default=str).encode(),
             ).hexdigest()
 
         artifact = EvidenceArtifact(
@@ -166,10 +164,9 @@ class EvidenceService:
         return artifact
 
     async def attest_dossier(
-        self, dossier: ComplianceDossier, signatory: str, signature: str
+        self, dossier: ComplianceDossier, signatory: str, signature: str,
     ) -> ComplianceDossier:
-        """
-        Attest to a compliance dossier.
+        """Attest to a compliance dossier.
 
         Adds cryptographic attestation that the signatory has reviewed
         and approved the dossier contents.
@@ -181,6 +178,7 @@ class EvidenceService:
 
         Returns:
             Updated dossier with attestation
+
         """
         signature_hash = hashlib.sha256(signature.encode()).hexdigest()
 
@@ -200,10 +198,9 @@ class EvidenceService:
         return dossier
 
     async def generate_report(
-        self, assessment_result: ComplianceAssessmentResult, report_type: str = "full"
+        self, assessment_result: ComplianceAssessmentResult, report_type: str = "full",
     ) -> dict[str, Any]:
-        """
-        Generate a compliance report from assessment results.
+        """Generate a compliance report from assessment results.
 
         Args:
             assessment_result: The assessment result to report on
@@ -211,6 +208,7 @@ class EvidenceService:
 
         Returns:
             Report structure with all sections
+
         """
         report = {
             "report_id": str(uuid4()),
@@ -227,7 +225,7 @@ class EvidenceService:
             {
                 "title": "Executive Summary",
                 "content": self._generate_executive_summary(assessment_result),
-            }
+            },
         )
 
         # Scope and Methodology
@@ -235,7 +233,7 @@ class EvidenceService:
             {
                 "title": "Scope and Methodology",
                 "content": self._generate_scope_section(assessment_result),
-            }
+            },
         )
 
         # Per-module results
@@ -258,7 +256,7 @@ class EvidenceService:
                         for c in module_result.control_results
                     ],
                     "recommendations": module_result.recommendations,
-                }
+                },
             )
 
         # Critical Findings
@@ -267,12 +265,12 @@ class EvidenceService:
                 {
                     "title": "Critical Findings",
                     "findings": assessment_result.critical_findings,
-                }
+                },
             )
 
         # Recommendations
         report["sections"].append(
-            {"title": "Recommendations", "items": assessment_result.recommendations}
+            {"title": "Recommendations", "items": assessment_result.recommendations},
         )
 
         # Audit Trail
@@ -281,7 +279,7 @@ class EvidenceService:
                 "title": "Audit Trail",
                 "audit_hash": assessment_result.audit_hash,
                 "timestamp": assessment_result.timestamp.isoformat(),
-            }
+            },
         )
 
         # Record report generation in ledger
@@ -345,10 +343,9 @@ class EvidenceService:
         )
 
     async def generate_module_report(
-        self, module_result: ModuleResult, include_checklist: bool = True
+        self, module_result: ModuleResult, include_checklist: bool = True,
     ) -> dict[str, Any]:
-        """
-        Generate a detailed report for a single module.
+        """Generate a detailed report for a single module.
 
         Args:
             module_result: The module assessment result
@@ -356,6 +353,7 @@ class EvidenceService:
 
         Returns:
             Module-specific report
+
         """
         report = {
             "report_id": str(uuid4()),
@@ -395,8 +393,7 @@ class EvidenceService:
         return report
 
     async def get_audit_proof(self, assessment_id: str) -> dict[str, Any]:
-        """
-        Get cryptographic audit proof for an assessment.
+        """Get cryptographic audit proof for an assessment.
 
         Returns the chain of custody proof from ShadowTag ledger.
         """

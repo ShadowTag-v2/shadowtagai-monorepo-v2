@@ -1,5 +1,4 @@
-"""
-California SB 243 Compliance Module
+"""California SB 243 Compliance Module
 
 Implements California Senate Bill 243 - AI harm detection and minor protection.
 Focus areas:
@@ -33,8 +32,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.CA_SB_243)
 class CASB243Module(ComplianceModule):
-    """
-    California SB 243 Compliance Module
+    """California SB 243 Compliance Module
 
     Focus on AI systems interacting with minors and detecting self-harm:
     - Self-harm and suicide prevention
@@ -251,7 +249,7 @@ class CASB243Module(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single CA SB 243 control."""
         metadata = input_data.metadata
@@ -270,16 +268,15 @@ class CASB243Module(ComplianceModule):
                     score=1.0,
                     evidence="Self-harm detection system implemented",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["Self-harm detection not implemented"],
-                    remediation="Implement self-harm detection per Section 1",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["Self-harm detection not implemented"],
+                remediation="Implement self-harm detection per Section 1",
+            )
 
         # Age Verification
         if control.control_id == "SB243-2.1":
@@ -293,16 +290,15 @@ class CASB243Module(ComplianceModule):
                     score=1.0,
                     evidence="Age verification mechanism in place",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["Age verification not implemented"],
-                    remediation="Implement age verification before AI interaction",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["Age verification not implemented"],
+                remediation="Implement age verification before AI interaction",
+            )
 
         # Parental Consent for under 13
         if control.control_id == "SB243-3.1":
@@ -317,16 +313,15 @@ class CASB243Module(ComplianceModule):
                         score=1.0,
                         evidence="Parental consent obtained for user under 13",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["Parental consent required but not obtained"],
-                        remediation="Obtain verifiable parental consent per Section 3",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["Parental consent required but not obtained"],
+                    remediation="Obtain verifiable parental consent per Section 3",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -348,16 +343,15 @@ class CASB243Module(ComplianceModule):
                     score=1.0,
                     evidence="AI disclosure provided to minor",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["AI disclosure not shown to minor user"],
-                    remediation="Display clear AI disclosure per Section 4",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["AI disclosure not shown to minor user"],
+                remediation="Display clear AI disclosure per Section 4",
+            )
 
         # Default
         return ControlResult(
@@ -392,7 +386,7 @@ class CASB243Module(ComplianceModule):
         return RiskTier.LIMITED
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check CA SB 243 validation rules against content."""
         content_lower = content.lower()

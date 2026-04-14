@@ -1,5 +1,4 @@
-"""
-Compliance Rule Engine
+"""Compliance Rule Engine
 Regulatory compliance checking for financial decisions
 """
 
@@ -7,8 +6,7 @@ from ..models.base import ComplianceFlag, ComplianceStatus, DecisionType, Eviden
 
 
 class ComplianceEngine:
-    """
-    Regulatory compliance checking engine
+    """Regulatory compliance checking engine
     Validates decisions against financial regulations
     """
 
@@ -17,8 +15,7 @@ class ComplianceEngine:
         self.regulation_db = self._initialize_regulations()
 
     def _initialize_regulations(self) -> dict:
-        """
-        Initialize regulatory rule database
+        """Initialize regulatory rule database
         In production, this would load from external compliance system
         """
         return {
@@ -58,10 +55,9 @@ class ComplianceEngine:
         }
 
     def check_compliance(
-        self, decision_type: DecisionType, regulations: list[str], evidence: list[Evidence]
+        self, decision_type: DecisionType, regulations: list[str], evidence: list[Evidence],
     ) -> list[ComplianceFlag]:
-        """
-        Check compliance with specified regulations
+        """Check compliance with specified regulations
 
         Args:
             decision_type: Type of decision being evaluated
@@ -70,6 +66,7 @@ class ComplianceEngine:
 
         Returns:
             List of compliance flags
+
         """
         flags = []
 
@@ -89,7 +86,7 @@ class ComplianceEngine:
                     regulation="General Compliance",
                     status=ComplianceStatus.COMPLIANT,
                     details="No specific regulatory violations detected",
-                )
+                ),
             )
 
         return flags
@@ -103,17 +100,15 @@ class ComplianceEngine:
         return applicable
 
     def _check_regulation(
-        self, regulation: str, decision_type: DecisionType, evidence: list[Evidence]
+        self, regulation: str, decision_type: DecisionType, evidence: list[Evidence],
     ) -> ComplianceFlag | None:
-        """
-        Check specific regulation compliance
+        """Check specific regulation compliance
 
         In production, this would integrate with:
         - Regulatory compliance databases
         - Real-time rule engines
         - External compliance APIs
         """
-
         # Check if regulation exists in database
         if regulation not in self.regulation_db:
             return ComplianceFlag(
@@ -135,31 +130,29 @@ class ComplianceEngine:
         # Perform regulation-specific checks
         if regulation == "SEC Rule 15c3-1":
             return self._check_sec_15c3_1(evidence)
-        elif regulation == "MiFID II":
+        if regulation == "MiFID II":
             return self._check_mifid_ii(evidence)
-        elif regulation == "Dodd-Frank":
+        if regulation == "Dodd-Frank":
             return self._check_dodd_frank(evidence)
-        elif regulation == "FINRA Rule 4210":
+        if regulation == "FINRA Rule 4210":
             return self._check_finra_4210(evidence)
-        elif regulation == "Regulation T":
+        if regulation == "Regulation T":
             return self._check_regulation_t(evidence)
-        elif regulation == "Basel III":
+        if regulation == "Basel III":
             return self._check_basel_iii(evidence)
-        else:
-            # Default: assume compliant if no specific check
-            return ComplianceFlag(
-                regulation=regulation,
-                status=ComplianceStatus.COMPLIANT,
-                details=f"{reg_info['name']} check passed (default)",
-            )
+        # Default: assume compliant if no specific check
+        return ComplianceFlag(
+            regulation=regulation,
+            status=ComplianceStatus.COMPLIANT,
+            details=f"{reg_info['name']} check passed (default)",
+        )
 
     # ========================================================================
     # Regulation-Specific Checks
     # ========================================================================
 
     def _check_sec_15c3_1(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """
-        Check SEC Rule 15c3-1 (Net Capital Rule)
+        """Check SEC Rule 15c3-1 (Net Capital Rule)
         Ensures broker-dealers maintain minimum net capital
         """
         # In production: query firm's net capital from accounting system
@@ -184,8 +177,7 @@ class ComplianceEngine:
         )
 
     def _check_mifid_ii(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """
-        Check MiFID II compliance
+        """Check MiFID II compliance
         EU trading transparency and best execution requirements
         """
         # Check for best execution evidence
@@ -205,8 +197,7 @@ class ComplianceEngine:
         )
 
     def _check_dodd_frank(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """
-        Check Dodd-Frank compliance
+        """Check Dodd-Frank compliance
         Focus on systemic risk and swap dealer requirements
         """
         # Check if counterparty is properly documented
@@ -227,8 +218,7 @@ class ComplianceEngine:
         )
 
     def _check_finra_4210(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """
-        Check FINRA Rule 4210 (Margin Requirements)
+        """Check FINRA Rule 4210 (Margin Requirements)
         """
         for item in evidence:
             if "margin" in item.data:
@@ -249,8 +239,7 @@ class ComplianceEngine:
         )
 
     def _check_regulation_t(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """
-        Check Federal Reserve Regulation T
+        """Check Federal Reserve Regulation T
         Credit extension by brokers
         """
         # Simplified: check if leverage within limits
@@ -273,8 +262,7 @@ class ComplianceEngine:
         )
 
     def _check_basel_iii(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """
-        Check Basel III capital and liquidity requirements
+        """Check Basel III capital and liquidity requirements
         """
         for item in evidence:
             if "capital_ratio" in item.data:

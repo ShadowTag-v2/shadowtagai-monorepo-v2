@@ -1,5 +1,4 @@
-"""
-PART 3: RESTART PROMPT GENERATOR
+"""PART 3: RESTART PROMPT GENERATOR
 Generates context restoration block for new conversations
 """
 
@@ -7,13 +6,11 @@ from datetime import datetime
 
 
 def generate_restart_prompt() -> str:
-    """
-    Generate complete restart prompt for context restoration
+    """Generate complete restart prompt for context restoration
 
     This prompt is designed to be copy-pasted into a new Claude conversation
     to restore full project context with zero loss.
     """
-
     prompt = """# CONTEXT RESTORATION BLOCK
 
 **Project**: AI Agent Business Plan Execution (ShadowTag-v2JR Vertical Expansion)
@@ -133,12 +130,10 @@ What do you need me to do next? Options:
 
 
 def generate_handoff_variables() -> dict:
-    """
-    Generate dictionary of all key variables for programmatic handoff
+    """Generate dictionary of all key variables for programmatic handoff
 
     This can be serialized to JSON and consumed by other systems
     """
-
     return {
         "metadata": {
             "generated_date": datetime.now().isoformat(),

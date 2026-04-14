@@ -5,8 +5,7 @@ import zipfile
 
 
 def deploy_kosmos_core():
-    """
-    Packages the Kosmos Swarm Core for transfer to other LLM instances.
+    """Packages the Kosmos Swarm Core for transfer to other LLM instances.
     Includes:
     - Doctrine (Knowledge Base)
     - Invisible Swarm (Audit Layer)
@@ -55,7 +54,7 @@ def deploy_kosmos_core():
         print("2. Unzip the contents.")
         print("3. Ensure 'agents/' and 'doctrine/' directories are placed correctly.")
         print(
-            "4. Run 'python3 run_operation_glow_up.py' (or integrate InvisibleSwarm into your main loop)."
+            "4. Run 'python3 run_operation_glow_up.py' (or integrate InvisibleSwarm into your main loop).",
         )
         print("5. Verify 'Make Cash' governance via Judge #6.")
 

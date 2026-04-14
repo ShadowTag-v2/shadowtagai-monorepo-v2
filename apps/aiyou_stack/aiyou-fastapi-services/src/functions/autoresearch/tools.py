@@ -9,8 +9,7 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 
 
 def bash_exec(command: str):
-    """
-    Executes a bash command safely.
+    """Executes a bash command safely.
     Includes Judge #6 Guardrails.
     """
     # Safety Check: Judge #6 Logic
@@ -30,8 +29,7 @@ def bash_exec(command: str):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 def jetski_browse(url: str):
-    """
-    High-Speed Extraction using JetSki logic.
+    """High-Speed Extraction using JetSki logic.
     """
     print(f"🏄 JetSki Browsing: {url}")
     try:

@@ -1,5 +1,4 @@
-"""
-GPTRAM - GPT Retrieval Augmented Memory
+"""GPTRAM - GPT Retrieval Augmented Memory
 Temporal agent memory with Redis backend
 """
 
@@ -44,10 +43,9 @@ class GPTRAMMemory:
             logger.info("GPTRAM memory connection closed")
 
     async def store_interaction(
-        self, session_id: str, interaction: dict[str, Any], ttl: int | None = None
+        self, session_id: str, interaction: dict[str, Any], ttl: int | None = None,
     ) -> bool:
-        """
-        Store an interaction in temporal memory
+        """Store an interaction in temporal memory
 
         Args:
             session_id: Unique session identifier
@@ -56,6 +54,7 @@ class GPTRAMMemory:
 
         Returns:
             Success status
+
         """
         try:
             key = f"gptram:session:{session_id}:{interaction.get('timestamp', datetime.utcnow().isoformat())}"
@@ -65,7 +64,7 @@ class GPTRAMMemory:
 
             # Add to session index
             await self.redis_client.zadd(
-                f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()}
+                f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()},
             )
 
             return True
@@ -74,10 +73,9 @@ class GPTRAMMemory:
             return False
 
     async def retrieve_session_history(
-        self, session_id: str, limit: int = 100, min_timestamp: datetime | None = None
+        self, session_id: str, limit: int = 100, min_timestamp: datetime | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Retrieve session interaction history
+        """Retrieve session interaction history
 
         Args:
             session_id: Session identifier
@@ -86,12 +84,13 @@ class GPTRAMMemory:
 
         Returns:
             List of interactions
+
         """
         try:
             # Get keys from session index
             min_score = min_timestamp.timestamp() if min_timestamp else 0
             keys = await self.redis_client.zrangebyscore(
-                f"gptram:index:{session_id}", min_score, "+inf", start=0, num=limit
+                f"gptram:index:{session_id}", min_score, "+inf", start=0, num=limit,
             )
 
             # Retrieve interaction data
@@ -107,8 +106,7 @@ class GPTRAMMemory:
             return []
 
     async def store_reasoning_graph(self, session_id: str, graph: dict[str, Any]) -> bool:
-        """
-        Store reasoning graph for RoT (Retrieval-of-Thought)
+        """Store reasoning graph for RoT (Retrieval-of-Thought)
 
         Args:
             session_id: Session identifier
@@ -116,6 +114,7 @@ class GPTRAMMemory:
 
         Returns:
             Success status
+
         """
         try:
             key = f"gptram:rot:graph:{session_id}"
@@ -127,14 +126,14 @@ class GPTRAMMemory:
             return False
 
     async def retrieve_reasoning_graph(self, session_id: str) -> dict[str, Any] | None:
-        """
-        Retrieve reasoning graph for RoT
+        """Retrieve reasoning graph for RoT
 
         Args:
             session_id: Session identifier
 
         Returns:
             Reasoning graph or None
+
         """
         try:
             key = f"gptram:rot:graph:{session_id}"

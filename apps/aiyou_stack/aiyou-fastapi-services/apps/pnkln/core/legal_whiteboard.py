@@ -1,5 +1,4 @@
-"""
-LegalWhiteboard - Single Point of Truth for Multi-Agent Coordination
+"""LegalWhiteboard - Single Point of Truth for Multi-Agent Coordination
 Version: 1.0.0
 
 Philosophy: Legal-linguistic precision meets AI coordination.
@@ -115,8 +114,7 @@ class OutlineSection:
 
 
 class LegalWhiteboard:
-    """
-    Single point of truth for multi-agent coordination.
+    """Single point of truth for multi-agent coordination.
 
     Layout:
     ┌─────────────────────────────────────────────────────────────┐
@@ -163,8 +161,7 @@ class LegalWhiteboard:
     # =========================================================================
 
     def set_tests(self, tests: list[dict[str, str]]):
-        """
-        Set pre-written tests - the call of the question.
+        """Set pre-written tests - the call of the question.
         Answer = make these tests pass.
         """
         self.tests = [
@@ -206,8 +203,7 @@ class LegalWhiteboard:
     # =========================================================================
 
     def parse_input(self, text: str):
-        """
-        Parse input sentence-by-sentence.
+        """Parse input sentence-by-sentence.
         Each period = stop and highlight.
         """
         sentences = [s.strip() for s in text.split(".") if s.strip()]
@@ -217,8 +213,7 @@ class LegalWhiteboard:
             self.facts[fact_id] = WhiteboardFact(id=fact_id, content=sentence)
 
     def split_compound_subjects(self, sentence: str) -> list[str]:
-        """
-        Split compound subjects into simple sentences.
+        """Split compound subjects into simple sentences.
         'Dan and Dave went to burglarize' →
         ['Dan went to burglarize', 'Dave went to burglarize']
         """
@@ -259,8 +254,7 @@ class LegalWhiteboard:
     # =========================================================================
 
     def flatten_codebase(self, files: dict[str, str]):
-        """
-        Flatten all relevant code into single reference.
+        """Flatten all relevant code into single reference.
         Agents can glance up and see everything.
         """
         sections = []
@@ -287,8 +281,7 @@ class LegalWhiteboard:
     # =========================================================================
 
     def create_outline_from_verbs(self, verbs: list[str]):
-        """
-        Create outline structure from action verbs.
+        """Create outline structure from action verbs.
         Notes ARE the outline - fill in place.
         """
         self.outline = [OutlineSection(verb=verb.upper()) for verb in verbs]
@@ -322,8 +315,7 @@ class LegalWhiteboard:
     # =========================================================================
 
     def add_note(self, agent_id: str, fact_id: str, content: str):
-        """
-        Agent adds private note (in outline form).
+        """Agent adds private note (in outline form).
         Note remains private until committed.
         """
         if agent_id not in self.notes:
@@ -411,12 +403,12 @@ class LegalWhiteboard:
         """Format output for target audience."""
         if self.audience == "public":
             return self._simplify_for_public(content)
-        elif self.audience == "executive":
+        if self.audience == "executive":
             return self._summarize_for_executive(content)
-        elif self.audience == "legal":
+        if self.audience == "legal":
             return self._formalize_for_legal(content)
-        else:  # technical
-            return content
+        # technical
+        return content
 
     def _simplify_for_public(self, content: str) -> str:
         """Remove jargon for public audience."""
@@ -470,8 +462,7 @@ class LegalWhiteboard:
         }
 
     def comprehension_check(self, agent_id: str) -> dict[str, Any]:
-        """
-        Verify agent has read every word.
+        """Verify agent has read every word.
         Bar exam: Must read every single word.
         """
         total_facts = len(self.facts)
@@ -508,8 +499,7 @@ def create_whiteboard(
     verbs: list[str],
     audience: str = "technical",
 ) -> LegalWhiteboard:
-    """
-    Create fully configured whiteboard.
+    """Create fully configured whiteboard.
 
     Jobs mode: Make the common case trivial.
     """

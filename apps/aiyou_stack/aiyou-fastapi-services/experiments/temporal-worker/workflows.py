@@ -30,7 +30,7 @@ class IndexingWorkflow:
                     index_connection,
                     connection,
                     start_to_close_timeout=timedelta(minutes=30),
-                )
+                ),
             )
 
         # Wait for all to complete

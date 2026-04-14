@@ -1,5 +1,4 @@
-"""
-PSO-NN: Particle Swarm Optimization for Neural Networks.
+"""PSO-NN: Particle Swarm Optimization for Neural Networks.
 
 This module provides PSO-based optimization for neural network weights,
 hyperparameters, and topology evolution. Integrates with n-autoresearch/Kosmos/BioAgents
@@ -30,13 +29,13 @@ from .optimizers.weight_optimizer import WeightOptimizer
 
 __version__ = "0.1.0"
 __all__ = [
+    "ComposedFitness",
+    "CrossEntropyFitness",
+    "FitnessFunction",
+    "MSEFitness",
     "Particle",
     "ParticleState",
     "ParticleSwarm",
-    "FitnessFunction",
-    "MSEFitness",
-    "CrossEntropyFitness",
-    "ComposedFitness",
-    "WeightOptimizer",
     "PsoModel",
+    "WeightOptimizer",
 ]

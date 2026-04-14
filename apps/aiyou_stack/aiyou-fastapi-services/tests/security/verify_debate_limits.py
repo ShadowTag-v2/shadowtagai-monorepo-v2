@@ -22,7 +22,7 @@ class EvolutionStrategy(StrEnum):
 class ValidationResult(BaseModel):
     passed: bool = True
     approved_kernels: list[str] = []
-    dict: Any = lambda: {}
+    dict: Any = dict
 
 
 class DecisionContext(BaseModel):

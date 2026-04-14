@@ -1,5 +1,4 @@
-"""
-Subscription Schemas for Revenue Management
+"""Subscription Schemas for Revenue Management
 
 Monetization:
 - Tier selection
@@ -19,8 +18,7 @@ class SubscriptionBase(BaseModel):
 
 
 class SubscriptionCreate(SubscriptionBase):
-    """
-    Subscription creation schema
+    """Subscription creation schema
 
     Revenue:
     - Tier selection
@@ -28,7 +26,7 @@ class SubscriptionCreate(SubscriptionBase):
     """
 
     payment_method_id: str | None = Field(
-        None, description="Stripe payment method ID (required for pro/enterprise)"
+        None, description="Stripe payment method ID (required for pro/enterprise)",
     )
 
 
@@ -40,8 +38,7 @@ class SubscriptionUpdate(BaseModel):
 
 
 class SubscriptionResponse(SubscriptionBase):
-    """
-    Subscription response schema
+    """Subscription response schema
 
     Revenue tracking:
     - Current tier and status

@@ -1,5 +1,4 @@
-"""
-Ethical Crawling Module
+"""Ethical Crawling Module
 
 Implements responsible web scraping practices:
 - robots.txt compliance (REP - Robots Exclusion Protocol)
@@ -11,4 +10,4 @@ Implements responsible web scraping practices:
 from .ethical_crawler import CrawlResult, EthicalCrawler
 from .rate_limiter import DomainRateLimiter, RateLimiter
 
-__all__ = ["EthicalCrawler", "CrawlResult", "RateLimiter", "DomainRateLimiter"]
+__all__ = ["CrawlResult", "DomainRateLimiter", "EthicalCrawler", "RateLimiter"]

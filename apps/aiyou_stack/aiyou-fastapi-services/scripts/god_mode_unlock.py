@@ -9,7 +9,7 @@ import time
 # Timestamp: 2026-01-29
 
 CONTRACT_PATH = os.path.join(
-    os.path.dirname(__file__), "../src/governance/contracts/GOD_MODE_CONTRACT.md"
+    os.path.dirname(__file__), "../src/governance/contracts/GOD_MODE_CONTRACT.md",
 )
 PASSPHRASE = "I AM OMEGA"
 
@@ -93,8 +93,7 @@ def set_autonomy_flags():
     try:
         with open(rc_file, "a") as f:
             f.write("\n# GOD MODE AUTONOMY FLAGS\n")
-            for flag in flags:
-                f.write(f"{flag}\n")
+            f.writelines(f"{flag}\n" for flag in flags)
         print(f"    -> Flags appended to {rc_file}. Please source it or restart shell.")
     except Exception as e:
         print(f"    [!] Failed to update {rc_file}: {e}")

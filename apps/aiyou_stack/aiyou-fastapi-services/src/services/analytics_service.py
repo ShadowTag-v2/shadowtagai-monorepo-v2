@@ -79,7 +79,7 @@ class AnalyticsService:
                 and_(
                     Event.timestamp >= query.start_date,
                     Event.timestamp <= query.end_date,
-                )
+                ),
             )
             .group_by("period")
             .order_by("period")
@@ -108,7 +108,7 @@ class AnalyticsService:
                     Event.timestamp >= query.start_date,
                     Event.timestamp <= query.end_date,
                     Event.user_id.isnot(None),
-                )
+                ),
             )
             .group_by("period")
             .order_by("period")
@@ -137,7 +137,7 @@ class AnalyticsService:
                     Event.timestamp >= query.start_date,
                     Event.timestamp <= query.end_date,
                     Event.revenue.isnot(None),
-                )
+                ),
             )
             .group_by("period")
             .order_by("period")
@@ -181,7 +181,7 @@ class AnalyticsService:
             select(
                 func.count(func.distinct(Event.session_id)).label("session_count"),
                 func.count(Event.id).label("event_count"),
-            ).where(and_(*conditions))
+            ).where(and_(*conditions)),
         )
         session_row = session_result.first()
 
@@ -196,7 +196,7 @@ class AnalyticsService:
             .where(and_(*conditions))
             .group_by(Event.event_name)
             .order_by(func.count(Event.id).desc())
-            .limit(10)
+            .limit(10),
         )
         most_common_events = [
             {"event_name": row.event_name, "count": row.count} for row in top_events_result.all()
@@ -208,7 +208,7 @@ class AnalyticsService:
             .where(and_(*conditions, Event.page_url.isnot(None)))
             .group_by(Event.page_url)
             .order_by(func.count(Event.id).desc())
-            .limit(10)
+            .limit(10),
         )
         most_visited_pages = [
             {"page_url": row.page_url, "count": row.count} for row in top_pages_result.all()
@@ -255,15 +255,15 @@ class AnalyticsService:
         # Event count comparison
         current_events = await db.execute(
             select(func.count(Event.id)).where(
-                and_(Event.timestamp >= start_date, Event.timestamp <= end_date)
-            )
+                and_(Event.timestamp >= start_date, Event.timestamp <= end_date),
+            ),
         )
         current_count = current_events.scalar() or 0
 
         previous_events = await db.execute(
             select(func.count(Event.id)).where(
-                and_(Event.timestamp >= prev_start, Event.timestamp <= prev_end)
-            )
+                and_(Event.timestamp >= prev_start, Event.timestamp <= prev_end),
+            ),
         )
         previous_count = previous_events.scalar() or 0
 
@@ -286,7 +286,7 @@ class AnalyticsService:
                             "Investigate what caused this change",
                             "Review marketing campaigns or product changes",
                         ],
-                    )
+                    ),
                 )
 
         # User engagement insight
@@ -296,8 +296,8 @@ class AnalyticsService:
                     Event.timestamp >= start_date,
                     Event.timestamp <= end_date,
                     Event.user_id.isnot(None),
-                )
-            )
+                ),
+            ),
         )
         user_count = unique_users.scalar() or 0
 
@@ -319,7 +319,7 @@ class AnalyticsService:
                         "Monitor this metric to track engagement trends",
                         "Consider strategies to increase user engagement if low",
                     ],
-                )
+                ),
             )
 
         return InsightResponse(

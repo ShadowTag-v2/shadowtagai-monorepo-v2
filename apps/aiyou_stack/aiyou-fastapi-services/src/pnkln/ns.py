@@ -1,5 +1,4 @@
-"""
-NS - Semantic Memory Retrieval
+"""NS - Semantic Memory Retrieval
 
 Semantic memory system for storing and retrieving contextually relevant
 information. Replaces AutoGen's conversation history with efficient
@@ -30,8 +29,8 @@ class Memory:
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
     id: str = field(
         default_factory=lambda: hashlib.sha256(
-            f"{datetime.now().isoformat()}".encode()
-        ).hexdigest()[:16]
+            f"{datetime.now().isoformat()}".encode(),
+        ).hexdigest()[:16],
     )
 
     def to_dict(self) -> dict[str, Any]:
@@ -57,8 +56,7 @@ class Memory:
 
 
 class SemanticMemory:
-    """
-    NS - Semantic Memory System.
+    """NS - Semantic Memory System.
 
     Stores and retrieves memories using semantic similarity.
 
@@ -75,6 +73,7 @@ class SemanticMemory:
         # Retrieve similar memories
         results = ns.retrieve("Tell me about quantum physics")
         ```
+
     """
 
     def __init__(
@@ -82,12 +81,12 @@ class SemanticMemory:
         db_path: str | None = None,
         embedding_model: str = "simple",  # "simple" or "gemini"
     ):
-        """
-        Initialize semantic memory.
+        """Initialize semantic memory.
 
         Args:
             db_path: Path to persistent storage file
             embedding_model: Embedding model to use ("simple" or "gemini")
+
         """
         self.db_path = db_path or os.environ.get("NS_VECTOR_DB_PATH", "./data/ns_vectors.db")
         self.embedding_model = embedding_model
@@ -97,8 +96,7 @@ class SemanticMemory:
         self._load_memories()
 
     def store(self, content: str, metadata: dict[str, Any] | None = None) -> str:
-        """
-        Store a new memory.
+        """Store a new memory.
 
         Args:
             content: Memory content
@@ -106,6 +104,7 @@ class SemanticMemory:
 
         Returns:
             Memory ID
+
         """
         # Generate embedding
         embedding = self._embed(content)
@@ -122,10 +121,9 @@ class SemanticMemory:
         return memory.id
 
     def retrieve(
-        self, query: str, top_k: int = 5, similarity_threshold: float = 0.5
+        self, query: str, top_k: int = 5, similarity_threshold: float = 0.5,
     ) -> list[dict[str, Any]]:
-        """
-        Retrieve memories semantically similar to query.
+        """Retrieve memories semantically similar to query.
 
         Args:
             query: Query text
@@ -134,6 +132,7 @@ class SemanticMemory:
 
         Returns:
             List of memories with similarity scores
+
         """
         if not self.memories:
             return []
@@ -155,14 +154,14 @@ class SemanticMemory:
         return results[:top_k]
 
     def _embed(self, text: str) -> list[float]:
-        """
-        Generate embedding for text.
+        """Generate embedding for text.
 
         Args:
             text: Text to embed
 
         Returns:
             Embedding vector
+
         """
         if self.embedding_model == "simple":
             # Simple word-based embedding (for demo)
@@ -179,13 +178,12 @@ class SemanticMemory:
 
             return embedding
 
-        elif self.embedding_model == "gemini":
+        if self.embedding_model == "gemini":
             # Use Gemini embeddings (requires API call)
             # TODO: Implement Gemini embedding API
             raise NotImplementedError("Gemini embeddings not yet implemented")
 
-        else:
-            raise ValueError(f"Unknown embedding model: {self.embedding_model}")
+        raise ValueError(f"Unknown embedding model: {self.embedding_model}")
 
     def _cosine_similarity(self, vec1: list[float], vec2: list[float]) -> float:
         """Calculate cosine similarity between two vectors."""

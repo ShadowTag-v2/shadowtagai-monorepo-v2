@@ -1,5 +1,4 @@
-"""
-Gemini 2.5 Pro Preview API Client
+"""Gemini 2.5 Pro Preview API Client
 ==================================
 Design wizard for creative direction and test generation.
 
@@ -91,8 +90,7 @@ class DesignSpec(BaseModel):
 
 
 class GeminiClient:
-    """
-    Gemini 2.5 Pro Preview API Client - Design Wizard.
+    """Gemini 2.5 Pro Preview API Client - Design Wizard.
 
     Used in the atomic pipeline for:
     - Creative direction and design leadership
@@ -134,8 +132,7 @@ class GeminiClient:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> GeminiResponse:
-        """
-        Generate a completion from Gemini.
+        """Generate a completion from Gemini.
 
         Args:
             prompt: User prompt
@@ -145,6 +142,7 @@ class GeminiClient:
 
         Returns:
             GeminiResponse with content and metadata
+
         """
         payload: dict[str, Any] = {
             "contents": [{"parts": [{"text": prompt}]}],
@@ -187,8 +185,7 @@ class GeminiClient:
         framework: str = "React",
         style_system: str = "MUI",
     ) -> DesignSpec:
-        """
-        Generate a frontend component design specification.
+        """Generate a frontend component design specification.
 
         This implements the @omarsar0 pattern where Gemini leads creative
         direction and generates the design spec (~$0.087 per design).
@@ -200,6 +197,7 @@ class GeminiClient:
 
         Returns:
             DesignSpec with complete component specification
+
         """
         system_instruction = f"""You are a senior frontend architect specializing in {framework} and {style_system}.
 Your role is CREATIVE DIRECTION - you design components, another AI will implement them.
@@ -235,7 +233,7 @@ Output a JSON object with this structure:
 }}"""
 
         response = await self.generate(
-            prompt, system_instruction=system_instruction, temperature=0.8
+            prompt, system_instruction=system_instruction, temperature=0.8,
         )
 
         # Parse JSON from response
@@ -266,14 +264,14 @@ Output a JSON object with this structure:
         self,
         requirements: str,
     ) -> dict[str, Any]:
-        """
-        Parse complex requirements into structured atomic tasks.
+        """Parse complex requirements into structured atomic tasks.
 
         Args:
             requirements: Raw requirements text
 
         Returns:
             Structured requirements breakdown
+
         """
         system_instruction = """You are a requirements analyst. Parse requirements into:
 1. Atomic tasks (smallest implementable units)
@@ -305,7 +303,7 @@ Output JSON:
 }}"""
 
         response = await self.generate(
-            prompt, system_instruction=system_instruction, temperature=0.3
+            prompt, system_instruction=system_instruction, temperature=0.3,
         )
 
         try:
@@ -324,8 +322,7 @@ Output JSON:
         framework: str = "pytest",
         coverage_target: str = "comprehensive",
     ) -> str:
-        """
-        Generate test cases for given code.
+        """Generate test cases for given code.
 
         Args:
             code: Source code to test
@@ -334,6 +331,7 @@ Output JSON:
 
         Returns:
             Generated test code
+
         """
         coverage_instructions = {
             "basic": "Cover happy path and one error case.",
@@ -359,7 +357,7 @@ Requirements:
 - Assertions with helpful error messages"""
 
         response = await self.generate(
-            prompt, system_instruction=system_instruction, temperature=0.3
+            prompt, system_instruction=system_instruction, temperature=0.3,
         )
         return response.content
 
@@ -368,8 +366,7 @@ Requirements:
         prompt: str,
         system_instruction: str | None = None,
     ) -> AsyncIterator[str]:
-        """
-        Stream a completion from Gemini.
+        """Stream a completion from Gemini.
 
         Args:
             prompt: User prompt
@@ -377,6 +374,7 @@ Requirements:
 
         Yields:
             Content chunks as they arrive
+
         """
         payload: dict[str, Any] = {
             "contents": [{"parts": [{"text": prompt}]}],

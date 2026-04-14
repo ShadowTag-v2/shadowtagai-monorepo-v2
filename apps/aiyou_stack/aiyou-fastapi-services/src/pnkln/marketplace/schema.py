@@ -8,10 +8,9 @@ Base = declarative_base()
 
 
 def calculate_platform_fee(
-    amount: float, category: SuperpowerCategory, developer_gmv: float = 0
+    amount: float, category: SuperpowerCategory, developer_gmv: float = 0,
 ) -> dict[str, float]:
-    """
-    Calculate platform fee and splits
+    """Calculate platform fee and splits
 
     Args:
         amount: Transaction amount
@@ -20,6 +19,7 @@ def calculate_platform_fee(
 
     Returns:
         Dict with platform_fee, developer_share, fee_pct
+
     """
     fee_pct = 25.0
     category_fees = {
@@ -50,8 +50,7 @@ def project_marketplace_revenue(
     conversion_rate: float = 0.1,
     platform_fee_pct: float = 25.0,
 ) -> dict[str, float]:
-    """
-    Project marketplace revenue
+    """Project marketplace revenue
 
     Example Year 1:
     - 50 superpowers

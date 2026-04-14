@@ -1,5 +1,4 @@
-"""
-EU AI Act Compliance Module
+"""EU AI Act Compliance Module
 
 Implements the European Union Artificial Intelligence Act requirements.
 Focus areas:
@@ -34,8 +33,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.EU_AI_ACT)
 class EUAIActModule(ComplianceModule):
-    """
-    EU AI Act Compliance Module
+    """EU AI Act Compliance Module
 
     Covers Articles 1-113 with focus on:
     - Article 5: Prohibited AI practices
@@ -259,7 +257,7 @@ class EUAIActModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single EU AI Act control."""
         # Determine risk tier first
@@ -280,16 +278,15 @@ class EUAIActModule(ComplianceModule):
                         score=1.0,
                         evidence="AI disclosure mechanism verified",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["AI-generated content lacks required disclosure"],
-                        remediation="Implement AI disclosure mechanism per Article 50(1-2)",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["AI-generated content lacks required disclosure"],
+                    remediation="Implement AI disclosure mechanism per Article 50(1-2)",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -312,16 +309,15 @@ class EUAIActModule(ComplianceModule):
                         score=1.0,
                         evidence="Human oversight mechanisms in place",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["High-risk AI system lacks human oversight mechanisms"],
-                        remediation="Implement human oversight per Article 14",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["High-risk AI system lacks human oversight mechanisms"],
+                    remediation="Implement human oversight per Article 14",
+                )
 
         # Default: Partial compliance with documentation required
         return ControlResult(
@@ -365,7 +361,7 @@ class EUAIActModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check EU AI Act validation rules against content."""
         content_lower = content.lower()

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-MCP Code Execution Validation Notebook
+"""MCP Code Execution Validation Notebook
 Run in Vertex AI Workbench for Hour 0-24 technical validation
 
 Tests:
@@ -298,7 +297,7 @@ class MCPClient:
         self.client = httpx.AsyncClient(timeout=30.0)
 
     async def execute_code(
-        self, code: str, user_id: str, session_id: str, context: dict[str, Any] | None = None
+        self, code: str, user_id: str, session_id: str, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Execute code via MCP server"""
         request = {
@@ -513,7 +512,7 @@ class ValidationRunner:
 
         # GO/NO-GO decision
         go_decision, decision_rationale = self._make_go_decision(
-            p99_latency, success_rate, security_tests_failed
+            p99_latency, success_rate, security_tests_failed,
         )
 
         return ValidationSummary(
@@ -535,10 +534,9 @@ class ValidationRunner:
         )
 
     def _make_go_decision(
-        self, p99_latency: float, success_rate: float, security_failures: int
+        self, p99_latency: float, success_rate: float, security_failures: int,
     ) -> tuple[str, str]:
         """Determine GO/NO-GO decision based on validation results"""
-
         # ABORT criteria
         if p99_latency > 90:
             return "ABORT", f"p99 latency ({p99_latency:.1f}ms) exceeds 90ms SLA"
@@ -578,7 +576,7 @@ class ValidationRunner:
         print(f"  p50:  {summary.p50_latency_ms:7.2f} ms")
         print(f"  p90:  {summary.p90_latency_ms:7.2f} ms")
         print(
-            f"  p99:  {summary.p99_latency_ms:7.2f} ms {'✓' if summary.p99_latency_ms <= 75 else '✗ EXCEEDS TARGET'}"
+            f"  p99:  {summary.p99_latency_ms:7.2f} ms {'✓' if summary.p99_latency_ms <= 75 else '✗ EXCEEDS TARGET'}",
         )
         print(f"  p999: {summary.p999_latency_ms:7.2f} ms")
         print(f"  Mean: {summary.mean_latency_ms:7.2f} ms")
@@ -591,7 +589,7 @@ class ValidationRunner:
         print(f"  Failed:          {summary.failed_runs}")
         print(f"  Blocked:         {summary.blocked_runs}")
         print(
-            f"  Success rate:    {summary.success_rate:.2f}% {'✓' if summary.success_rate >= 99.9 else '✗ BELOW TARGET'}"
+            f"  Success rate:    {summary.success_rate:.2f}% {'✓' if summary.success_rate >= 99.9 else '✗ BELOW TARGET'}",
         )
         print()
 
@@ -601,7 +599,7 @@ class ValidationRunner:
             print(
                 f"  {category:20s}: {stats['count']:4d} runs, "
                 f"p99={stats['p99_latency_ms']:6.2f}ms, "
-                f"success={stats['success_rate']:5.1f}%"
+                f"success={stats['success_rate']:5.1f}%",
             )
         print()
 
@@ -609,7 +607,7 @@ class ValidationRunner:
         print("-" * 80)
         print(f"  Tests passed (blocked): {summary.security_tests_passed}")
         print(
-            f"  Tests failed (allowed): {summary.security_tests_failed} {'✓' if summary.security_tests_failed == 0 else '✗ SECURITY RISK'}"
+            f"  Tests failed (allowed): {summary.security_tests_failed} {'✓' if summary.security_tests_failed == 0 else '✗ SECURITY RISK'}",
         )
         print()
 

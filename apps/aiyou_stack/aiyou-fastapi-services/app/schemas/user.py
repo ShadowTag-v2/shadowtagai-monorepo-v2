@@ -1,5 +1,4 @@
-"""
-User Schemas with Input Validation
+"""User Schemas with Input Validation
 
 Security:
 - Email validation
@@ -21,8 +20,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    """
-    User creation schema
+    """User creation schema
 
     Security:
     - Email validation (EmailStr)
@@ -31,7 +29,7 @@ class UserCreate(UserBase):
     """
 
     password: str = Field(
-        ..., min_length=12, max_length=128, description="Password must be at least 12 characters"
+        ..., min_length=12, max_length=128, description="Password must be at least 12 characters",
     )
 
     @field_validator("full_name")
@@ -64,8 +62,7 @@ class UserUpdate(BaseModel):
 
 
 class UserResponse(UserBase):
-    """
-    User response schema
+    """User response schema
 
     Security:
     - NO password hash exposed

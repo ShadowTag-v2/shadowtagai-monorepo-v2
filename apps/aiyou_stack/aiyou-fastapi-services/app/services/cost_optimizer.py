@@ -1,5 +1,4 @@
-"""
-Cost Optimizer Service
+"""Cost Optimizer Service
 Analyzes and optimizes cloud infrastructure costs
 """
 
@@ -41,7 +40,6 @@ class CostOptimizerService:
 
     def calculate_costs(self, request: CostEstimateRequest) -> CostEstimateResponse:
         """Calculate detailed cost estimate with optimization opportunities"""
-
         breakdown = self._calculate_breakdown(request)
         total_cost = sum(item.monthly_cost for item in breakdown)
 
@@ -57,7 +55,6 @@ class CostOptimizerService:
 
     def _calculate_breakdown(self, request: CostEstimateRequest) -> list[CostBreakdown]:
         """Calculate cost breakdown by component"""
-
         breakdown = []
         pricing = self.PRICING.get(request.cloud_provider, self.PRICING[CloudProvider.AWS])
 
@@ -115,16 +112,15 @@ class CostOptimizerService:
                     component=component.get("name", component_type),
                     monthly_cost=cost,
                     cost_drivers=cost_drivers,
-                )
+                ),
             )
 
         return breakdown
 
     def _identify_optimizations(
-        self, request: CostEstimateRequest, breakdown: list[CostBreakdown]
+        self, request: CostEstimateRequest, breakdown: list[CostBreakdown],
     ) -> list[str]:
         """Identify cost optimization opportunities"""
-
         optimizations = []
 
         # Compute optimizations
@@ -134,11 +130,11 @@ class CostOptimizerService:
             if total_compute > 100:
                 optimizations.append(
                     f"💰 Reserved Instances: Save up to 70% on ${total_compute:.2f}/month compute costs "
-                    "(1-year commitment: 40% savings, 3-year: 70% savings)"
+                    "(1-year commitment: 40% savings, 3-year: 70% savings)",
                 )
                 optimizations.append(
                     "⚡ Spot Instances: Use for non-critical workloads to save up to 90% "
-                    "(potential savings: ${total_compute * 0.7:.2f}/month)"
+                    "(potential savings: ${total_compute * 0.7:.2f}/month)",
                 )
 
         # Storage optimizations
@@ -148,7 +144,7 @@ class CostOptimizerService:
             if total_storage > 50:
                 optimizations.append(
                     "📦 Storage Tiering: Move infrequently accessed data to cheaper tiers "
-                    "(potential savings: ${total_storage * 0.3:.2f}/month)"
+                    "(potential savings: ${total_storage * 0.3:.2f}/month)",
                 )
 
         # Database optimizations
@@ -158,11 +154,11 @@ class CostOptimizerService:
             if total_db > 100:
                 optimizations.append(
                     "🗄️ Database Right-sizing: Analyze actual usage to downsize instances "
-                    "(typical savings: 20-40%)"
+                    "(typical savings: 20-40%)",
                 )
                 optimizations.append(
                     "⏰ Database Scheduling: Stop non-production databases during off-hours "
-                    "(potential savings: ${total_db * 0.5:.2f}/month for dev/test)"
+                    "(potential savings: ${total_db * 0.5:.2f}/month for dev/test)",
                 )
 
         # General optimizations
@@ -171,18 +167,17 @@ class CostOptimizerService:
         if request.hours_per_month < 730:
             optimizations.append(
                 f"⏸️ Auto-shutdown: You're only running {request.hours_per_month} hours/month. "
-                "Ensure auto-shutdown is configured for non-business hours"
+                "Ensure auto-shutdown is configured for non-business hours",
             )
 
         optimizations.append(
-            "🏷️ Tagging Strategy: Implement resource tagging for better cost allocation and tracking"
+            "🏷️ Tagging Strategy: Implement resource tagging for better cost allocation and tracking",
         )
 
         return optimizations
 
     def _calculate_savings(self, optimizations: list[str], total_cost: float) -> float:
         """Calculate estimated potential savings from optimizations"""
-
         # Conservative estimate: 20-30% savings from listed optimizations
         base_savings_rate = 0.25
 

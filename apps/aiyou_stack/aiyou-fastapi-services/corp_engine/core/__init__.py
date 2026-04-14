@@ -18,11 +18,11 @@ def get_engine() -> SelfConfiguringEngine:
 
 
 __all__ = [
-    "SelfConfiguringEngine",
-    "self_config_engine",
-    "get_engine",
     "INDUSTRY_CONFIGS",
-    "IndustryVertical",
-    "CompanySize",
     "AIConfigProfile",
+    "CompanySize",
+    "IndustryVertical",
+    "SelfConfiguringEngine",
+    "get_engine",
+    "self_config_engine",
 ]

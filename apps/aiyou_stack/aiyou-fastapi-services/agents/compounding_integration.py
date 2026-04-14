@@ -1,5 +1,4 @@
-"""
-Compounding Engineering Integration for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
+"""Compounding Engineering Integration for n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
 Integrates 24 specialized review agents from compounding-engineering-plugin.
 
 Maps to CHARLIE Troop (Bradley IFV) - "Zero Error Rate Review Layer"
@@ -178,8 +177,7 @@ COMPOUNDING_AGENTS: dict[str, dict] = {
 
 
 class CompoundingIntegration:
-    """
-    Integrate 24 compounding engineering agents into n-autoresearch/Kosmos/BioAgents.
+    """Integrate 24 compounding engineering agents into n-autoresearch/Kosmos/BioAgents.
 
     Maps to CHARLIE Troop (Bradley IFV) for the 0% Error Rate Review Layer.
 
@@ -271,11 +269,11 @@ class CompoundingIntegration:
             return None
 
     def load_all_agents(self) -> int:
-        """
-        Load all 24 compounding engineering agents.
+        """Load all 24 compounding engineering agents.
 
         Returns:
             Number of agents loaded successfully.
+
         """
         loaded_count = 0
 
@@ -303,8 +301,7 @@ class CompoundingIntegration:
         return self.agents_by_category.get(ReviewerCategory.WORKFLOW, [])
 
     def get_all_agents_for_troop(self, troop_name: str = "CHARLIE") -> list[ReviewerAgent]:
-        """
-        Get all agents mapped to a cavalry troop.
+        """Get all agents mapped to a cavalry troop.
 
         CHARLIE Troop (Bradley IFV) receives all compounding agents
         for the 0% Error Rate Review Layer.
@@ -314,8 +311,7 @@ class CompoundingIntegration:
         return []
 
     def build_review_panel_prompt(self, task_description: str) -> str:
-        """
-        Build a multi-reviewer prompt for unanimous consensus.
+        """Build a multi-reviewer prompt for unanimous consensus.
 
         Following Kosmos paper: All reviewers must agree before approval.
         """
@@ -349,14 +345,13 @@ class CompoundingIntegration:
                 "- REJECT: Fundamental issues, requires rework",
                 "",
                 "Begin review...",
-            ]
+            ],
         )
 
         return "\n".join(prompt_parts)
 
     def get_review_checklist(self) -> list[dict]:
-        """
-        Get a comprehensive review checklist combining all reviewer perspectives.
+        """Get a comprehensive review checklist combining all reviewer perspectives.
 
         Returns checklist items with reviewer attribution.
         """
@@ -434,14 +429,14 @@ def get_compounding_integration() -> CompoundingIntegration:
 
 
 def get_review_panel_for_mission(task_description: str) -> str:
-    """
-    Convenience function to get review panel prompt for a mission.
+    """Convenience function to get review panel prompt for a mission.
 
     Args:
         task_description: Description of the task to review
 
     Returns:
         Multi-reviewer prompt for unanimous consensus.
+
     """
     integration = get_compounding_integration()
     return integration.build_review_panel_prompt(task_description)

@@ -1,5 +1,4 @@
-"""
-AgentLifecycle - Regeneration and Corruption Prevention
+"""AgentLifecycle - Regeneration and Corruption Prevention
 Version: 1.0.0
 
 Philosophy: Agents degrade over time. Regenerate before corruption spreads.
@@ -61,8 +60,7 @@ class RegenerationEvent:
 
 
 class AgentLifecycle:
-    """
-    Manage agent lifecycle, regeneration, and corruption prevention.
+    """Manage agent lifecycle, regeneration, and corruption prevention.
 
     Regeneration triggers:
     1. Time-based: After N tasks
@@ -111,14 +109,14 @@ class AgentLifecycle:
         followed_others: bool = False,
         high_confidence: bool = False,
     ):
-        """
-        Record task completion and update metrics.
+        """Record task completion and update metrics.
 
         Args:
             agent_id: Agent identifier
             success: Whether task was successful
             followed_others: Whether agent adopted others' answers
             high_confidence: Whether agent expressed high confidence
+
         """
         if agent_id not in self.agents:
             self.register_agent(agent_id)
@@ -160,8 +158,7 @@ class AgentLifecycle:
     # =========================================================================
 
     def should_regenerate(self, agent_id: str) -> RegenerationTrigger | None:
-        """
-        Check if agent should be regenerated.
+        """Check if agent should be regenerated.
 
         Returns trigger type if regeneration needed, None otherwise.
         """
@@ -204,10 +201,9 @@ class AgentLifecycle:
     # =========================================================================
 
     def regenerate(
-        self, agent_id: str, trigger: RegenerationTrigger = RegenerationTrigger.MANUAL
+        self, agent_id: str, trigger: RegenerationTrigger = RegenerationTrigger.MANUAL,
     ) -> dict[str, Any]:
-        """
-        Regenerate an agent.
+        """Regenerate an agent.
 
         Resets state while preserving identity and learned knowledge.
         """
@@ -249,8 +245,7 @@ class AgentLifecycle:
         }
 
     def rolling_replacement(self, agent_ids: list[str]) -> str | None:
-        """
-        Perform rolling replacement - regenerate one agent per cycle.
+        """Perform rolling replacement - regenerate one agent per cycle.
 
         Returns agent_id that was regenerated, if any.
         """
@@ -284,8 +279,7 @@ class AgentLifecycle:
     # =========================================================================
 
     def get_temperature(self, agent_id: str) -> float:
-        """
-        Get temperature for agent based on lifecycle stage.
+        """Get temperature for agent based on lifecycle stage.
 
         Temperature annealing: Start exploratory (0.7), become focused (0.3).
         Helps small models avoid forgetting during evolution.
@@ -314,8 +308,7 @@ class AgentLifecycle:
     # =========================================================================
 
     def assess_health(self, agent_id: str) -> dict[str, Any]:
-        """
-        Comprehensive health assessment for agent.
+        """Comprehensive health assessment for agent.
 
         Returns status and recommendations.
         """
@@ -358,7 +351,7 @@ class AgentLifecycle:
         if metrics.error_propagation_count > 0:
             recommendations.append(
                 f"Error propagation detected ({metrics.error_propagation_count}x) - "
-                "review outputs carefully"
+                "review outputs carefully",
             )
 
         # Check for regeneration trigger
@@ -431,8 +424,7 @@ class AgentLifecycle:
 
 
 def create_lifecycle_manager() -> AgentLifecycle:
-    """
-    Create agent lifecycle manager.
+    """Create agent lifecycle manager.
 
     "Fresh eyes prevent institutional bias."
     """

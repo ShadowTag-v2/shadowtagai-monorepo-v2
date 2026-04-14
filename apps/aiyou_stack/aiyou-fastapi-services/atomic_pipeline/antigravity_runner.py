@@ -1,5 +1,4 @@
-"""
-Headless Antigravity Runner
+"""Headless Antigravity Runner
 ============================
 Runs Antigravity IDE instances in headless mode for distributed execution.
 
@@ -102,8 +101,7 @@ class ExecutionResult(BaseModel):
 
 
 class AntigravityRunner:
-    """
-    Headless Antigravity Runner for distributed code generation.
+    """Headless Antigravity Runner for distributed code generation.
 
     Manages a fleet of headless Antigravity instances organized as:
     - 3 pods × 3 instances (9 total) for heavy workloads
@@ -124,11 +122,11 @@ class AntigravityRunner:
     # =========================================================================
 
     async def start(self) -> dict[str, Any]:
-        """
-        Start all Antigravity instances.
+        """Start all Antigravity instances.
 
         Returns:
             Status of all started instances
+
         """
         self._running = True
         started = {"pods": [], "inline": []}
@@ -158,7 +156,7 @@ class AntigravityRunner:
             started["inline"].append(instance.id)
 
         logger.info(
-            f"Started {len(self._instances)} pod instances and {len(self._inline_instances)} inline instances"
+            f"Started {len(self._instances)} pod instances and {len(self._inline_instances)} inline instances",
         )
 
         return started
@@ -223,8 +221,7 @@ class AntigravityRunner:
         task: dict[str, Any],
         use_inline: bool = False,
     ) -> ExecutionResult:
-        """
-        Execute a task on an available instance.
+        """Execute a task on an available instance.
 
         Args:
             task: Task definition with code/requirements
@@ -232,6 +229,7 @@ class AntigravityRunner:
 
         Returns:
             ExecutionResult with output and status
+
         """
         # Find available instance
         instances = self._inline_instances if use_inline else self._instances
@@ -295,8 +293,7 @@ class AntigravityRunner:
         instance: HeadlessInstance,
         task: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Run a task inside an Antigravity instance.
+        """Run a task inside an Antigravity instance.
 
         In production, this would:
         1. Send task to the instance via API/socket
@@ -343,8 +340,7 @@ class AntigravityRunner:
         tasks: list[dict[str, Any]],
         parallel: int = 3,
     ) -> list[ExecutionResult]:
-        """
-        Execute multiple tasks in parallel across instances.
+        """Execute multiple tasks in parallel across instances.
 
         Args:
             tasks: List of task definitions
@@ -352,6 +348,7 @@ class AntigravityRunner:
 
         Returns:
             List of ExecutionResults
+
         """
         semaphore = asyncio.Semaphore(parallel)
 
@@ -374,7 +371,7 @@ class AntigravityRunner:
                         task_id=tasks[i].get("id", f"task_{i}"),
                         success=False,
                         error=str(result),
-                    )
+                    ),
                 )
             else:
                 processed_results.append(result)
@@ -389,14 +386,14 @@ class AntigravityRunner:
         self,
         task: dict[str, Any],
     ) -> dict[str, Any]:
-        """
-        Dispatch a task to the n-autoresearch/Kosmos/BioAgents swarm.
+        """Dispatch a task to the n-autoresearch/Kosmos/BioAgents swarm.
 
         Args:
             task: Task definition
 
         Returns:
             Swarm execution result
+
         """
         try:
             async with httpx.AsyncClient() as client:
@@ -481,7 +478,7 @@ class AntigravityRunner:
                     "status": instance.status.value,
                     "port": instance.port,
                     "tasks_completed": instance.tasks_completed,
-                }
+                },
             )
 
         inline_status = [

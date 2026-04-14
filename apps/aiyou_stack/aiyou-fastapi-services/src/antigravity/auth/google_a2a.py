@@ -1,5 +1,4 @@
-"""
-Zero Trust Agent-to-Agent (A2A) Authentication Module for Cloud Run.
+"""Zero Trust Agent-to-Agent (A2A) Authentication Module for Cloud Run.
 
 Implements the "Can I see some ID, please?" pattern using Google ID Tokens.
 Ref: https://medium.com/@daniel.strebel/implementing-zero-trust-a2a-with-adk-in-cloud-run-12345
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class GoogleIdTokenAuth(httpx.Auth):
-    """
-    Google ID token auth implementation for httpx.
+    """Google ID token auth implementation for httpx.
 
     Generates an OIDC ID Token signed by Google, with the target service
     URL as the 'audience'. This is the standard for Cloud Run service-to-service auth.
@@ -60,11 +58,11 @@ class ClientConfig:
 
 
 def get_cloud_run_client_factory(agent_path: str) -> ClientFactory:
-    """
-    Client Factory that authenticates A2A requests for remote agents on Cloud Run.
+    """Client Factory that authenticates A2A requests for remote agents on Cloud Run.
 
     Args:
         agent_path (str): The full URL of the remote agent (e.g., https://scholar-agent-xyz.a.run.app)
+
     """
     parsed_url = urlparse(agent_path)
     # The audience for Cloud Run is typically the root service URL

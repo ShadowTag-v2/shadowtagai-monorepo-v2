@@ -1,5 +1,4 @@
-"""
-Pydantic schemas for PNKLN Core Stack™ API
+"""Pydantic schemas for PNKLN Core Stack™ API
 Matches API specs from docs/cor8-shadowtag_v4-global-edge-fabric/09-implementation/api-schemas.md
 """
 
@@ -65,7 +64,7 @@ class IngestionSubmitResponse(BaseModel):
     message: str = "Item queued for classification"
     estimated_processing_time_ms: int = 5000
     next_steps: list[str] = Field(
-        default_factory=lambda: ["tier_classification", "validation", "attestation"]
+        default_factory=lambda: ["tier_classification", "validation", "attestation"],
     )
 
 
@@ -127,7 +126,7 @@ class SourceCoverageResponse(BaseModel):
             "healthy": 0,
             "degraded": 0,
             "failed": 0,
-        }
+        },
     )
 
 
@@ -279,5 +278,5 @@ class HealthResponse(BaseModel):
             "ingestion": "operational",
             "validation": "operational",
             "gemini_api": "operational",
-        }
+        },
     )

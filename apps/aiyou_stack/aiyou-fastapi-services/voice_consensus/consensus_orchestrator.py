@@ -1,5 +1,4 @@
-"""
-Multi-LLM Consensus Orchestrator with Cross-Validation
+"""Multi-LLM Consensus Orchestrator with Cross-Validation
 =======================================================
 Architecture: Claude → [Grok, Gemini, GPT-4] → Peer Review → Claude Synthesis
 
@@ -77,8 +76,7 @@ class PeerReview:
 
 
 class ConsensusOrchestrator:
-    """
-    Multi-LLM consensus system with cross-validation and Army Doctrine Integration.
+    """Multi-LLM consensus system with cross-validation and Army Doctrine Integration.
 
     Layer 1: Claude initial reasoning
     Layer 2: Parallel analysis (Grok, Gemini, GPT-4)
@@ -188,7 +186,7 @@ Be thorough but concise. Show your reasoning clearly."""
             )
 
     async def layer2_parallel_analysis(
-        self, claude_response: str, original_query: str
+        self, claude_response: str, original_query: str,
     ) -> list[ModelResponse]:
         """Layer 2: Broadcast Claude's response to 3 models for parallel analysis"""
         base_prompt = f"""You are participating in a multi-model consensus system.
@@ -228,7 +226,7 @@ Be thorough. Your response will be peer-reviewed by other advanced models."""
         return valid_responses
 
     async def layer2_5_cross_validation(
-        self, responses: list[ModelResponse]
+        self, responses: list[ModelResponse],
     ) -> dict[ModelType, list[PeerReview]]:
         """Layer 2.5: Cross-validation - each model reviews the other two"""
         reviews = {}
@@ -240,7 +238,7 @@ Be thorough. Your response will be peer-reviewed by other advanced models."""
                     continue  # Don't review yourself
 
                 review = await self._get_peer_review(
-                    reviewer=reviewer_response.model, target_response=target_response
+                    reviewer=reviewer_response.model, target_response=target_response,
                 )
                 peer_reviews.append(review)
 
@@ -249,7 +247,7 @@ Be thorough. Your response will be peer-reviewed by other advanced models."""
         return reviews
 
     async def _get_peer_review(
-        self, reviewer: ModelType, target_response: ModelResponse
+        self, reviewer: ModelType, target_response: ModelResponse,
     ) -> PeerReview:
         """Get one model to review another model's response"""
         review_prompt = f"""You are peer-reviewing another advanced AI model's response.
@@ -338,7 +336,7 @@ Return JSON:
                     synthesis_sections.append(
                         f"  From {review.reviewer_model.value} "
                         f"(agreement: {review.agreement_score:.2f}):\n"
-                        f"  {review.critique}\n"
+                        f"  {review.critique}\n",
                     )
 
         full_context = "\n".join(synthesis_sections)
@@ -410,7 +408,7 @@ This is your final output - make it authoritative and actionable."""
             print("[Layer 2.5] Cross-validation peer reviews...")
             peer_reviews = await self.layer2_5_cross_validation(layer2)
             print(
-                f"[Layer 2.5] Completed {sum(len(v) for v in peer_reviews.values())} peer reviews"
+                f"[Layer 2.5] Completed {sum(len(v) for v in peer_reviews.values())} peer reviews",
             )
         else:
             peer_reviews = {}
@@ -535,8 +533,7 @@ This is your final output - make it authoritative and actionable."""
     # =========================================================================
 
     async def assess_risk_and_set_threshold(self, query: str) -> dict[str, Any]:
-        """
-        Assess query risk using ATP 5-19 and set consensus threshold.
+        """Assess query risk using ATP 5-19 and set consensus threshold.
 
         Risk levels and thresholds:
         - LOW: 50% consensus required
@@ -546,6 +543,7 @@ This is your final output - make it authoritative and actionable."""
 
         Returns:
             Dict with risk_level, consensus_threshold, and approval_authority
+
         """
         if DOCTRINE_AVAILABLE and self.risk_manager:
             try:
@@ -576,16 +574,16 @@ This is your final output - make it authoritative and actionable."""
         }
 
     def check_consensus_reached(
-        self, peer_reviews: dict[ModelType, list[PeerReview]]
+        self, peer_reviews: dict[ModelType, list[PeerReview]],
     ) -> dict[str, Any]:
-        """
-        Check if consensus threshold is met based on ATP 5-19 risk level.
+        """Check if consensus threshold is met based on ATP 5-19 risk level.
 
         Args:
             peer_reviews: Dictionary of peer reviews from Layer 2.5
 
         Returns:
             Dict with consensus_reached, average_agreement, and threshold_used
+
         """
         if not peer_reviews:
             return {
@@ -625,8 +623,7 @@ This is your final output - make it authoritative and actionable."""
         }
 
     async def execute_full_consensus_with_doctrine(self, query: str) -> dict[str, Any]:
-        """
-        Execute full consensus pipeline with ATP 5-19 risk-based thresholds.
+        """Execute full consensus pipeline with ATP 5-19 risk-based thresholds.
 
         Enhanced version that includes:
         1. Pre-assessment risk evaluation
@@ -636,7 +633,7 @@ This is your final output - make it authoritative and actionable."""
         print("[DOCTRINE] Assessing query risk using ATP 5-19...")
         risk_assessment = await self.assess_risk_and_set_threshold(query)
         print(
-            f"[DOCTRINE] Risk: {risk_assessment['risk_level']} → Consensus threshold: {self.consensus_threshold:.0%}"
+            f"[DOCTRINE] Risk: {risk_assessment['risk_level']} → Consensus threshold: {self.consensus_threshold:.0%}",
         )
 
         # Execute standard consensus pipeline
@@ -697,7 +694,7 @@ async def main():
     print("=" * 80)
     print(f"Total Tokens Used: {json.dumps(result['token_usage'], indent=2)}")
     print(
-        f"Models Consulted: {len(result['layer2_responses']) + 2}"
+        f"Models Consulted: {len(result['layer2_responses']) + 2}",
     )  # +2 for Layer 1 and Layer 3 Claude
     if result["peer_reviews"]:
         print(f"Peer Reviews Conducted: {sum(len(v) for v in result['peer_reviews'].values())}")

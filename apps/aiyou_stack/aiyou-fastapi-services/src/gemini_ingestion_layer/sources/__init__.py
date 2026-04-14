@@ -1,5 +1,4 @@
-"""
-Multi-Source Ingestion Module
+"""Multi-Source Ingestion Module
 
 Supports ingestion from multiple platforms:
 - YouTube: Video metadata and transcripts
@@ -16,4 +15,4 @@ from .news import NewsSource
 from .twitter import TwitterSource
 from .youtube import YouTubeSource
 
-__all__ = ["BaseSource", "IngestionItem", "YouTubeSource", "TwitterSource", "NewsSource"]
+__all__ = ["BaseSource", "IngestionItem", "NewsSource", "TwitterSource", "YouTubeSource"]

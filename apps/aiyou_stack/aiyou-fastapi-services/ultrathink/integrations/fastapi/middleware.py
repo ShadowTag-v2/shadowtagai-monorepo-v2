@@ -1,5 +1,4 @@
-"""
-Ultrathink middleware for FastAPI.
+"""Ultrathink middleware for FastAPI.
 
 Global enhancements for all routes.
 """
@@ -13,8 +12,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class UltrathinkMiddleware(BaseHTTPMiddleware):
-    """
-    Global middleware for ultrathink enhancements.
+    """Global middleware for ultrathink enhancements.
 
     Features:
     - Request ID tracking
@@ -42,7 +40,6 @@ class UltrathinkMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """Process each request through ultrathink pipeline."""
-
         # Generate request ID
         request_id = str(uuid.uuid4())
         request.state.request_id = request_id

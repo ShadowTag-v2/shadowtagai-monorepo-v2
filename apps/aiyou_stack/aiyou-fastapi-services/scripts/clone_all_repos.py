@@ -10,8 +10,7 @@ import requests
 
 
 def get_repos_for_entity(entity_name: str, entity_type: str, token: str) -> list[dict]:
-    """
-    Fetches a list of repositories for a user or organization from the GitHub API.
+    """Fetches a list of repositories for a user or organization from the GitHub API.
 
     :param entity_name: The username or organization name.
     :param entity_type: The type of entity, either 'users' or 'orgs'.
@@ -80,15 +79,14 @@ def clone_or_update_repo(repo_info: dict, target_base: Path):
                 text=True,
             )
             return f"Updated: {owner}/{repo_name}"
-        else:
-            print(f"[{owner}/{repo_name}] Cloning from {clone_url}...")
-            subprocess.run(
-                ["git", "clone", clone_url, str(repo_path)],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            return f"Cloned: {owner}/{repo_name}"
+        print(f"[{owner}/{repo_name}] Cloning from {clone_url}...")
+        subprocess.run(
+            ["git", "clone", clone_url, str(repo_path)],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return f"Cloned: {owner}/{repo_name}"
     except subprocess.CalledProcessError as e:
         error_message = f"[{owner}/{repo_name}] Failed.\n  - Command: {' '.join(e.cmd)}\n  - Stderr: {e.stderr.strip()}"
         print(error_message, file=sys.stderr)
@@ -103,7 +101,7 @@ def main():
     )
     parser.add_argument("--users", nargs="+", metavar="USER", help="One or more GitHub usernames.")
     parser.add_argument(
-        "--orgs", nargs="+", metavar="ORG", help="One or more GitHub organization names."
+        "--orgs", nargs="+", metavar="ORG", help="One or more GitHub organization names.",
     )
     parser.add_argument(
         "--dest-dir",
@@ -128,7 +126,7 @@ def main():
 
     if not args.token:
         parser.error(
-            "GitHub token not found. Please set the GITHUB_TOKEN environment variable or use the --token argument."
+            "GitHub token not found. Please set the GITHUB_TOKEN environment variable or use the --token argument.",
         )
 
     if not args.users and not args.orgs:
@@ -150,7 +148,7 @@ def main():
         return
 
     print(
-        f"\nStarting processing of {len(all_repos)} total repositories with {args.workers} threads..."
+        f"\nStarting processing of {len(all_repos)} total repositories with {args.workers} threads...",
     )
 
     # Use a ThreadPoolExecutor to run tasks in parallel

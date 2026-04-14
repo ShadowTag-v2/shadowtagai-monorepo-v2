@@ -4,8 +4,7 @@ from .base_agent import BaseAgent
 
 
 class GrowthEngineerAgent(BaseAgent):
-    """
-    Growth Engineering specialist who implements viral mechanics.
+    """Growth Engineering specialist who implements viral mechanics.
     Finds where users get hooked in your app and builds viral loops that actually work.
     """
 

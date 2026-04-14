@@ -110,7 +110,7 @@ class CodeSandbox:
                             success=False,
                             output="",
                             error="\n".join(byte_code.errors),
-                        )
+                        ),
                     )
                     return
 
@@ -134,7 +134,7 @@ class CodeSandbox:
                         execution_time=execution_time,
                         memory_used_mb=memory_mb,
                         cpu_percent=cpu_percent,
-                    )
+                    ),
                 )
 
             except Exception as e:
@@ -142,8 +142,8 @@ class CodeSandbox:
                     ExecutionResult(
                         success=False,
                         output="",
-                        error=f"{type(e).__name__}: {str(e)}",
-                    )
+                        error=f"{type(e).__name__}: {e!s}",
+                    ),
                 )
             finally:
                 sys.stdout = old_stdout
@@ -177,8 +177,7 @@ class CodeSandbox:
         code: str,
         timeout: int | None = None,
     ) -> ExecutionResult:
-        """
-        Execute Python code in a sandboxed environment.
+        """Execute Python code in a sandboxed environment.
 
         Args:
             code: Python code to execute
@@ -186,6 +185,7 @@ class CodeSandbox:
 
         Returns:
             ExecutionResult containing output and execution metrics
+
         """
         if not self.settings.enabled:
             return ExecutionResult(
@@ -224,7 +224,7 @@ class CodeSandbox:
             return ExecutionResult(
                 success=False,
                 output="",
-                error=f"Sandbox error: {type(e).__name__}: {str(e)}",
+                error=f"Sandbox error: {type(e).__name__}: {e!s}",
             )
 
 
@@ -240,8 +240,7 @@ class SandboxExecutor:
         code: str,
         timeout: int | None = None,
     ) -> ExecutionResult:
-        """
-        Execute code asynchronously in sandbox.
+        """Execute code asynchronously in sandbox.
 
         Args:
             code: Python code to execute
@@ -249,6 +248,7 @@ class SandboxExecutor:
 
         Returns:
             ExecutionResult
+
         """
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(

@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Gemini Ingestion Layer Entry Point
+"""PNKLN Core Stack - Gemini Ingestion Layer Entry Point
 
 Main entry point for running the ingestion pipeline.
 Can be run as a standalone script or deployed as a GKE CronJob.
@@ -48,8 +47,7 @@ logger = structlog.get_logger(__name__)
 
 
 async def main(queries: list[str] | None = None, since: datetime | None = None) -> int:
-    """
-    Run the ingestion pipeline.
+    """Run the ingestion pipeline.
 
     Args:
         queries: Search queries/topics
@@ -57,6 +55,7 @@ async def main(queries: list[str] | None = None, since: datetime | None = None) 
 
     Returns:
         Exit code (0 = success, 1 = failure)
+
     """
     config = get_config()
 
@@ -131,7 +130,7 @@ async def main(queries: list[str] | None = None, since: datetime | None = None) 
 def parse_args():
     """Parse command-line arguments."""
     parser = ArgumentParser(
-        description="PNKLN Gemini Ingestion Layer - Intelligence collection pipeline"
+        description="PNKLN Gemini Ingestion Layer - Intelligence collection pipeline",
     )
 
     parser.add_argument(

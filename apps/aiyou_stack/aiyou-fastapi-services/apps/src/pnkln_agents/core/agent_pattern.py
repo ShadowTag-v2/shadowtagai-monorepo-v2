@@ -1,5 +1,4 @@
-"""
-ShadowTagAi Agent Pattern: Enforcement-First Agent Architecture
+"""ShadowTagAi Agent Pattern: Enforcement-First Agent Architecture
 
 Pattern:
     task = parse_user_intent()
@@ -63,8 +62,7 @@ class AgentResult:
 
 
 class ShadowTagAiAgent:
-    """
-    Base class for ShadowTagAi enforcement-first agents
+    """Base class for ShadowTagAi enforcement-first agents
 
     All agents follow the pattern:
     1. Parse user intent → AgentTask
@@ -88,14 +86,14 @@ class ShadowTagAiAgent:
         self.execution_history: list[AgentResult] = []
 
     def execute(self, task: AgentTask) -> AgentResult:
-        """
-        Execute agent task with enforcement-first pattern
+        """Execute agent task with enforcement-first pattern
 
         Args:
             task: AgentTask with intent, customer_id, and context
 
         Returns:
             AgentResult with status, output, and audit trail
+
         """
         start_time = time.perf_counter()
         audit_trail = {
@@ -130,7 +128,7 @@ class ShadowTagAiAgent:
             # Step 5: Check verification
             if not verification_result.passed:
                 return self._rollback_and_log(
-                    task, raw_result, verification_result, audit_trail, start_time
+                    task, raw_result, verification_result, audit_trail, start_time,
                 )
 
             # Step 6: Apply watermark and return
@@ -194,12 +192,11 @@ class ShadowTagAiAgent:
                 risk_probability=0.1,
                 risk_severity=0.2,
                 mitigation_strategy="Automated verification with Judge #6",
-            )
+            ),
         ]
 
     def _execute_task(self, task: AgentTask, constraints: dict[str, Any]) -> Any:
-        """
-        Execute the actual task (must be implemented by subclasses)
+        """Execute the actual task (must be implemented by subclasses)
 
         Args:
             task: AgentTask to execute
@@ -207,6 +204,7 @@ class ShadowTagAiAgent:
 
         Returns:
             Raw result of task execution
+
         """
         raise NotImplementedError("Subclasses must implement _execute_task")
 
@@ -295,7 +293,6 @@ class ShadowTagAiAgent:
 
     def _perform_rollback(self, task: AgentTask, result: Any):
         """Perform rollback (override in subclasses for specific rollback logic)"""
-        pass
 
     def _apply_watermark(self, result: Any) -> Any:
         """Apply ShadowTag v2 watermark (placeholder)"""
@@ -320,16 +317,14 @@ class ShadowTagAiAgent:
 
         if format == "json":
             return json.dumps(audit_trail, indent=2).encode("utf-8")
-        elif format == "pdf":
+        if format == "pdf":
             # TODO: Implement PDF export
             return json.dumps(audit_trail, indent=2).encode("utf-8")
-        else:
-            raise ValueError(f"Unsupported format: {format}")
+        raise ValueError(f"Unsupported format: {format}")
 
 
 class SimpleAgent(ShadowTagAiAgent):
-    """
-    Simple example agent that demonstrates the enforcement-first pattern
+    """Simple example agent that demonstrates the enforcement-first pattern
     """
 
     def __init__(self, executor: Callable[[AgentTask, dict[str, Any]], Any], **kwargs):

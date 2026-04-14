@@ -1,5 +1,4 @@
-"""
-PII Scrubber for Forensic Index
+"""PII Scrubber for Forensic Index
 
 Removes personally identifiable information before indexing.
 Uses pattern matching and optional Presidio integration.
@@ -54,10 +53,9 @@ REPLACEMENTS = {
 
 
 def scrub_pii(
-    text: str, patterns: dict[str, str] | None = None, _return_matches: bool = False
+    text: str, patterns: dict[str, str] | None = None, _return_matches: bool = False,
 ) -> tuple[str, list[PIIMatch]]:
-    """
-    Scrub PII from text using regex patterns.
+    """Scrub PII from text using regex patterns.
 
     Args:
         text: Input text to scrub
@@ -66,6 +64,7 @@ def scrub_pii(
 
     Returns:
         Tuple of (scrubbed_text, list_of_matches)
+
     """
     if patterns is None:
         patterns = PII_PATTERNS
@@ -84,7 +83,7 @@ def scrub_pii(
                     start=match.start(),
                     end=match.end(),
                     replacement=replacement,
-                )
+                ),
             )
 
         # Replace in scrubbed text
@@ -94,14 +93,14 @@ def scrub_pii(
 
 
 def scrub_document(doc: dict) -> tuple[dict, dict]:
-    """
-    Scrub PII from a document dict.
+    """Scrub PII from a document dict.
 
     Args:
         doc: Document with text fields
 
     Returns:
         Tuple of (scrubbed_doc, pii_report)
+
     """
     text_fields = ["full_prompt", "reasoning_chain", "final_output", "code_blocks"]
 
@@ -109,7 +108,7 @@ def scrub_document(doc: dict) -> tuple[dict, dict]:
     pii_report = {"total_matches": 0, "by_type": {}, "by_field": {}}
 
     for field in text_fields:
-        if field in doc and doc[field]:
+        if doc.get(field):
             scrubbed_text, matches = scrub_pii(doc[field])
             scrubbed_doc[field] = scrubbed_text
 
@@ -126,8 +125,7 @@ def scrub_document(doc: dict) -> tuple[dict, dict]:
 
 
 class PIIScrubber:
-    """
-    Stateful PII scrubber with statistics tracking.
+    """Stateful PII scrubber with statistics tracking.
     """
 
     def __init__(self, custom_patterns: dict[str, str] | None = None):

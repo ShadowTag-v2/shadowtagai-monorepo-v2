@@ -1,5 +1,4 @@
-"""
-Judge #6 Integration for End-to-End Flow Analysis.
+"""Judge #6 Integration for End-to-End Flow Analysis.
 
 Bridges validation (Judge #6) with intelligence gathering (Ingestion Layer):
 - Analyzes data handoffs between collection → validation
@@ -54,8 +53,7 @@ class ValidationResult:
 
 
 class Judge6Integrator:
-    """
-    Integrates Ingestion Layer with Judge #6 validation framework.
+    """Integrates Ingestion Layer with Judge #6 validation framework.
 
     Functions:
     1. Pre-ingestion validation (source health checks)
@@ -133,14 +131,14 @@ class Judge6Integrator:
         self,
         ingestion_metrics: dict,
     ) -> list[ValidationResult]:
-        """
-        Validate ingestion pipeline output (Judge #6 style).
+        """Validate ingestion pipeline output (Judge #6 style).
 
         Args:
             ingestion_metrics: Metrics from ingestion pipeline
 
         Returns:
             List of validation results
+
         """
         self.stats["total_validations"] += 1
 
@@ -187,14 +185,13 @@ class Judge6Integrator:
         if passed:
             status = ValidationStatus.PASS
             message = f"✓ {rule.description}: {value:.2f} {rule.comparator} {rule.threshold:.2f}"
+        # Determine if fail or warning
+        elif rule.severity == "critical" or rule.severity == "high":
+            status = ValidationStatus.FAIL
+            message = f"✗ {rule.description}: {value:.2f} (expected {rule.comparator} {rule.threshold:.2f})"
         else:
-            # Determine if fail or warning
-            if rule.severity == "critical" or rule.severity == "high":
-                status = ValidationStatus.FAIL
-                message = f"✗ {rule.description}: {value:.2f} (expected {rule.comparator} {rule.threshold:.2f})"
-            else:
-                status = ValidationStatus.WARNING
-                message = f"⚠ {rule.description}: {value:.2f} (expected {rule.comparator} {rule.threshold:.2f})"
+            status = ValidationStatus.WARNING
+            message = f"⚠ {rule.description}: {value:.2f} (expected {rule.comparator} {rule.threshold:.2f})"
 
         return ValidationResult(
             rule_name=rule.name,
@@ -213,10 +210,10 @@ class Judge6Integrator:
                 m.get("tier_distribution", {}).get("tier_1", {}).get("percentage", 0)
             ),
             "total_items_minimum": lambda m: m.get("coverage_stats", {}).get(
-                "total_items_collected", 0
+                "total_items_collected", 0,
             ),
             "compliance_score": lambda m: m.get("compliance_stats", {}).get(
-                "allowed_percentage", 0
+                "allowed_percentage", 0,
             ),
             "source_diversity": lambda m: m.get("coverage_stats", {}).get("enabled_sources", 0),
             "cost_per_item": lambda m: self._calculate_cost_per_item(m),
@@ -248,15 +245,14 @@ class Judge6Integrator:
         """Compare value to threshold."""
         if comparator == ">=":
             return value >= threshold
-        elif comparator == "<=":
+        if comparator == "<=":
             return value <= threshold
-        elif comparator == "==":
+        if comparator == "==":
             return abs(value - threshold) < 0.01
-        elif comparator == "!=":
+        if comparator == "!=":
             return abs(value - threshold) >= 0.01
-        else:
-            logger.warning(f"Unknown comparator: {comparator}")
-            return False
+        logger.warning(f"Unknown comparator: {comparator}")
+        return False
 
     async def analyze_handoff(
         self,
@@ -264,8 +260,7 @@ class Judge6Integrator:
         validation_start_time: datetime,
         data_size_bytes: int,
     ) -> dict:
-        """
-        Analyze data handoff from ingestion to validation.
+        """Analyze data handoff from ingestion to validation.
 
         Tracks:
         - Handoff latency
@@ -294,10 +289,9 @@ class Judge6Integrator:
         }
 
     def get_unified_metrics(
-        self, ingestion_metrics: dict, validation_results: list[ValidationResult]
+        self, ingestion_metrics: dict, validation_results: list[ValidationResult],
     ) -> dict:
-        """
-        Generate unified metrics dashboard combining ingestion + validation.
+        """Generate unified metrics dashboard combining ingestion + validation.
 
         This provides end-to-end visibility from collection to validation.
         """
@@ -354,10 +348,9 @@ class Judge6Integrator:
         }
 
     def _calculate_health_score(
-        self, validation_results: list[ValidationResult], metrics: dict
+        self, validation_results: list[ValidationResult], metrics: dict,
     ) -> float:
-        """
-        Calculate overall health score (0-100).
+        """Calculate overall health score (0-100).
 
         Weighted by:
         - Validation pass rate: 40%

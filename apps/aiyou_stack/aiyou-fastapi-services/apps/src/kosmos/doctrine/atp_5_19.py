@@ -1,5 +1,4 @@
-"""
-ATP 5-19: Composite Risk Management — Scaffolded Stubs
+"""ATP 5-19: Composite Risk Management — Scaffolded Stubs
 =========================================================
 
 Provides the Army Doctrine constants for the Judge Architecture.
@@ -39,8 +38,7 @@ def _get_risk_level():
 
 
 def _build_risk_matrix():
-    """
-    ATP 5-19 Figure 1-3: Risk Assessment Matrix.
+    """ATP 5-19 Figure 1-3: Risk Assessment Matrix.
 
     Maps (Probability, Severity) → RiskLevel.
     Lazily built to avoid circular imports.

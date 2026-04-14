@@ -1,5 +1,4 @@
-"""
-PNKLN Attestation Pipeline
+"""PNKLN Attestation Pipeline
 
 Handles the end-to-end flow of media attestation:
 1. Ingestion
@@ -34,8 +33,7 @@ class AttestationResult:
 
 
 class AttestationPipeline:
-    """
-    Pipeline for processing media assets through Neural Hash attestation
+    """Pipeline for processing media assets through Neural Hash attestation
     and Judge #6 Governance.
     """
 
@@ -44,14 +42,14 @@ class AttestationPipeline:
         self.judge = get_judge()
 
     async def run_pipeline(
-        self, input_path: Path, metadata: dict[str, Any] | None = None
+        self, input_path: Path, metadata: dict[str, Any] | None = None,
     ) -> AttestationResult:
-        """
-        Run the full Iron Core attestation loop.
+        """Run the full Iron Core attestation loop.
 
         Args:
             input_path: Path to the media file
             metadata: Additional metadata (provenance info, user ID, etc.)
+
         """
         metadata = metadata or {}
         if not input_path.exists():
@@ -111,10 +109,9 @@ class AttestationPipeline:
 
     # Legacy wrapper for backward compatibility if needed
     def process_asset(
-        self, file_path: str | Path, metadata: dict[str, Any] | None = None
+        self, file_path: str | Path, metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Synchronous wrapper for run_pipeline (or legacy implementation).
+        """Synchronous wrapper for run_pipeline (or legacy implementation).
         Modified to use the new flow synchronously if possible, or just legacy logic.
         For now, we'll map to the new logic but since run_pipeline is async,
         we might need to run it in loop or just keep sync logic here dupe.
@@ -146,10 +143,9 @@ class AttestationPipeline:
         }
 
     def verify_asset(
-        self, file_path: str | Path, original_hash: str, threshold: float = 0.90
+        self, file_path: str | Path, original_hash: str, threshold: float = 0.90,
     ) -> dict[str, Any]:
-        """
-        Verify if an asset matches a claimed original hash semantically.
+        """Verify if an asset matches a claimed original hash semantically.
         """
         # Re-compute hash of the current file
         # We can reuse NeuralHash directly here to avoid async complexity of pipeline

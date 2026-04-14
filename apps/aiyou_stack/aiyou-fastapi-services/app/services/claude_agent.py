@@ -24,8 +24,7 @@ class ClaudeAgentService:
         max_tokens: int | None = None,
         temperature: float = 1.0,
     ) -> dict[str, Any]:
-        """
-        Query Claude Agent
+        """Query Claude Agent
 
         Args:
             prompt: The user prompt
@@ -36,6 +35,7 @@ class ClaudeAgentService:
 
         Returns:
             Dict containing response content and metadata
+
         """
         try:
             # Import here to avoid issues if SDK not installed

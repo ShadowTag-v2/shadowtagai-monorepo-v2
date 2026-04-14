@@ -22,6 +22,7 @@ def record_real_revenue(amount: float, source: str) -> None:
     Args:
         amount: Positive amount in USD.
         source: Identifier of the revenue source (e.g., "stripe", "onchain").
+
     """
     if amount <= 0:
         raise ValueError("Revenue amount must be positive")

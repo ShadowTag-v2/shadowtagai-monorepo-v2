@@ -1,5 +1,4 @@
-"""
-FinJudge CLI
+"""FinJudge CLI
 Command-line interface for FinJudge Pure Judge API
 """
 

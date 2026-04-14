@@ -5,8 +5,7 @@ from .source import Source, SourceTier
 
 
 class TierClassifier:
-    """
-    Classifies data sources into tiers based on quality and authority
+    """Classifies data sources into tiers based on quality and authority
 
     Tier 1: High-value, authoritative sources (e.g., .gov, major news, academic)
     Tier 2: Moderate-value, verified sources (e.g., established blogs, verified accounts)

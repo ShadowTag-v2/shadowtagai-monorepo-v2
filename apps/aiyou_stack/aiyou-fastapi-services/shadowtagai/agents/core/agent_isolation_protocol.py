@@ -1,5 +1,4 @@
-"""
-Agent Isolation Protocol - Silo Analysis
+"""Agent Isolation Protocol - Silo Analysis
 
 Critical architectural decision: How much should agents be isolated from each
 other during deliberation?
@@ -47,8 +46,7 @@ class AgentContribution:
 
 
 class SiloAnalysis:
-    """
-    Analysis of different isolation levels.
+    """Analysis of different isolation levels.
 
     KEY INSIGHT FROM 11 BAR ATTEMPTS:
     Reading comprehension suffers when you see others' answers first.
@@ -63,7 +61,6 @@ class SiloAnalysis:
     @staticmethod
     def analyze_isolation_levels() -> dict[IsolationLevel, dict[str, Any]]:
         """Compare all isolation levels with trade-offs"""
-
         return {
             IsolationLevel.COMPLETE: {
                 "description": "Zero communication until final consensus vote",
@@ -184,8 +181,7 @@ class SiloAnalysis:
 
 
 class JuryDeliberationProtocol:
-    """
-    Implements MEDIUM isolation level (Jury Model).
+    """Implements MEDIUM isolation level (Jury Model).
 
     THREE PHASES:
     1. Blind Analysis (15 minutes)
@@ -202,10 +198,9 @@ class JuryDeliberationProtocol:
         self.anonymous_mapping: dict[str, str] = {}  # agent_id -> anonymous_id
 
     def phase_1_submit_blind(
-        self, agent_id: str, analysis: str, proposed_answer: str, confidence: float
+        self, agent_id: str, analysis: str, proposed_answer: str, confidence: float,
     ):
-        """
-        Phase 1: Agent submits blind analysis.
+        """Phase 1: Agent submits blind analysis.
 
         RULES:
         - Cannot see other agents' submissions yet
@@ -237,8 +232,7 @@ class JuryDeliberationProtocol:
         print("   (Agent identity hidden from others)")
 
     def phase_1_close_and_reveal(self):
-        """
-        Close Phase 1 and reveal all blind submissions.
+        """Close Phase 1 and reveal all blind submissions.
 
         NOW agents can see:
         - Anonymous analyses from all agents
@@ -266,8 +260,7 @@ class JuryDeliberationProtocol:
         self.current_phase = 2
 
     def phase_2_debate(self, agent_id: str, comment: str):
-        """
-        Phase 2: Agents can debate and refine reasoning.
+        """Phase 2: Agents can debate and refine reasoning.
 
         RULES:
         - Still anonymous
@@ -279,7 +272,7 @@ class JuryDeliberationProtocol:
         anonymous_id = self.anonymous_mapping.get(agent_id, "Unknown")
 
         self.phase_2_debate.append(
-            {"anonymous_id": anonymous_id, "comment": comment, "timestamp": "now"}
+            {"anonymous_id": anonymous_id, "comment": comment, "timestamp": "now"},
         )
 
         print(f"\n💬 {anonymous_id}: {comment}")
@@ -293,8 +286,7 @@ class JuryDeliberationProtocol:
         self.current_phase = 3
 
     def phase_3_vote(self, agent_id: str, final_answer: str):
-        """
-        Phase 3: Anonymous final vote.
+        """Phase 3: Anonymous final vote.
 
         RULES:
         - Vote is completely anonymous
@@ -308,11 +300,11 @@ class JuryDeliberationProtocol:
         print(f"✅ {anonymous_id} voted (vote hidden)")
 
     def phase_3_tally_and_reveal(self) -> str:
-        """
-        Tally votes and reveal final answer.
+        """Tally votes and reveal final answer.
 
         Returns:
             Winning answer with vote breakdown
+
         """
         print("\n" + "=" * 80)
         print("📊 FINAL VOTE TALLY")
@@ -339,8 +331,7 @@ class JuryDeliberationProtocol:
 
 
 class DifferentiationAnalysis:
-    """
-    Should agents be MORE differentiated or LESS?
+    """Should agents be MORE differentiated or LESS?
 
     TRADE-OFF:
     - High differentiation = diverse perspectives, risk of siloing

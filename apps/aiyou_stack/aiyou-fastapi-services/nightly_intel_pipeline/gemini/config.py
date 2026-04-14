@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Layer Configuration
+"""Gemini Ingestion Layer Configuration
 ====================================
 Configuration for Gemini-powered semantic extraction.
 """
@@ -111,8 +110,7 @@ def get_model_pricing(model: str) -> dict:
 
 
 def estimate_cost(input_tokens: int, output_tokens: int, model: str = None) -> float:
-    """
-    Estimate cost for a Gemini API call.
+    """Estimate cost for a Gemini API call.
 
     Args:
         input_tokens: Number of input tokens
@@ -121,6 +119,7 @@ def estimate_cost(input_tokens: int, output_tokens: int, model: str = None) -> f
 
     Returns:
         Estimated cost in USD
+
     """
     model = model or GEMINI_INGESTION_CONFIG["model"]
     pricing = get_model_pricing(model)

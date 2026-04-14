@@ -1,5 +1,4 @@
-"""
-Database models for all ShadowTag-v4 services.
+"""Database models for all ShadowTag-v4 services.
 
 This package contains SQLAlchemy ORM models for:
 - User authentication and profiles

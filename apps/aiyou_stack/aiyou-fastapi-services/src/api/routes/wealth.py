@@ -1,5 +1,4 @@
-"""
-Wealth Planning and Financial Optimization API Routes
+"""Wealth Planning and Financial Optimization API Routes
 Based on Pinkln Ultrathink wealth acceleration framework
 """
 
@@ -41,8 +40,7 @@ async def get_wealth_planning_overview():
 
 @router.post("/analyze", response_model=WealthAnalysis, summary="Generate wealth analysis")
 async def create_wealth_analysis(request: WealthPlanningRequest):
-    """
-    Generate a comprehensive wealth planning analysis
+    """Generate a comprehensive wealth planning analysis
 
     This analyzes your business for financial leaks, redesigns your funnel,
     and provides brutal honesty + actionable plan + accountability challenge.
@@ -96,7 +94,7 @@ async def create_wealth_analysis(request: WealthPlanningRequest):
                         f"Revenue loss: ${leak_cost:,.0f}/month",
                         f"Churn rate {churn_rate / 0.05:.1f}x industry average",
                     ],
-                )
+                ),
             )
             total_monthly_leak += leak_cost
 
@@ -114,7 +112,7 @@ async def create_wealth_analysis(request: WealthPlanningRequest):
                         f"LTV: ${ltv:,.0f}",
                         f"Ratio: {cac_ltv_ratio:.2f} (target: <0.33)",
                     ],
-                )
+                ),
             )
             total_monthly_leak += leak_cost
 
@@ -230,7 +228,7 @@ This is not optional. Your runway depends on it."""
         return analysis
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error generating analysis: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating analysis: {e!s}")
 
 
 @router.get("/leaks", summary="List common financial leak types")
@@ -274,7 +272,7 @@ async def list_leak_types():
                 "typical_impact": "Medium",
                 "detection": "ROI analysis by marketing channel",
             },
-        ]
+        ],
     }
 
 
@@ -345,8 +343,7 @@ async def track_strategy_performance(
     strategy_name: str = None,
     opponent_name: str = None,
 ):
-    """
-    Track performance of different wealth strategies using Glicko-2 ratings
+    """Track performance of different wealth strategies using Glicko-2 ratings
 
     Compare strategies A/B and track which performs better over time.
     Accounts for uncertainty and volatility.
@@ -384,8 +381,7 @@ async def track_strategy_performance(
 
 @router.get("/performance/leaderboard", summary="Get strategy performance leaderboard")
 async def get_performance_leaderboard(min_games: int = 3):
-    """
-    Get leaderboard of strategies ranked by Glicko-2 rating
+    """Get leaderboard of strategies ranked by Glicko-2 rating
 
     Higher rating = better performing strategy
     Lower uncertainty = more confident in rating

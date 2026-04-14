@@ -1,5 +1,4 @@
-"""
-Structured logging configuration with JSON formatting and correlation IDs.
+"""Structured logging configuration with JSON formatting and correlation IDs.
 Provides context-aware logging with automatic request tracking.
 """
 
@@ -44,7 +43,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
     """Custom JSON formatter with additional context fields."""
 
     def add_fields(
-        self, log_record: dict[str, Any], record: logging.LogRecord, message_dict: dict[str, Any]
+        self, log_record: dict[str, Any], record: logging.LogRecord, message_dict: dict[str, Any],
     ):
         """Add custom fields to the log record."""
         super().add_fields(log_record, record, message_dict)
@@ -66,8 +65,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
 
 
 def setup_logging() -> None:
-    """
-    Configure structured logging for the application.
+    """Configure structured logging for the application.
     Sets up both console and file handlers with JSON formatting.
     """
     # Create logs directory if it doesn't exist
@@ -84,12 +82,12 @@ def setup_logging() -> None:
     if settings.log_format.lower() == "json":
         # JSON formatter for structured logging
         formatter = CustomJsonFormatter(
-            "%(timestamp)s %(level)s %(logger)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+            "%(timestamp)s %(level)s %(logger)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
         )
     else:
         # Standard text formatter
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
         )
 
     # Console handler
@@ -135,20 +133,20 @@ def setup_logging() -> None:
                 "log_level": settings.log_level,
                 "log_format": settings.log_format,
                 "log_file": str(settings.log_file_path),
-            }
+            },
         },
     )
 
 
 def get_logger(name: str) -> structlog.BoundLogger:
-    """
-    Get a structured logger instance.
+    """Get a structured logger instance.
 
     Args:
         name: Logger name (typically __name__ of the calling module)
 
     Returns:
         Configured structlog logger instance
+
     """
     return structlog.get_logger(name)
 
@@ -171,8 +169,7 @@ class LogContext:
 
 
 def log_with_context(**context_kwargs):
-    """
-    Decorator to add context to all logs within a function.
+    """Decorator to add context to all logs within a function.
 
     Usage:
         @log_with_context(user_id="123", operation="payment")

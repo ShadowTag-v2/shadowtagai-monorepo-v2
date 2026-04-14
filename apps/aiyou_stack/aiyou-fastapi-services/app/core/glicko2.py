@@ -1,5 +1,4 @@
-"""
-Glicko-2 Rating System
+"""Glicko-2 Rating System
 Superior to Elo for AI agent ranking with volatility tracking
 
 Advantages over Elo/PPO:
@@ -18,13 +17,13 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Glicko2Player:
-    """
-    Glicko-2 player/agent with rating, deviation, and volatility
+    """Glicko-2 player/agent with rating, deviation, and volatility
 
     Attributes:
         mu: Rating (mean skill level)
         phi: Rating deviation (uncertainty)
         sigma: Volatility (consistency of performance)
+
     """
 
     mu: float = 1500.0  # Initial rating (Glicko scale)
@@ -56,12 +55,13 @@ class Glicko2Player:
 
 
 class Glicko2System:
-    """
-    Glicko-2 rating system for AI agent ranking
+    """Glicko-2 rating system for AI agent ranking
 
-    Parameters:
+    Parameters
+    ----------
         tau: System constant (constrains volatility change) - default 0.5
         tol: Convergence tolerance for volatility calculation - default 1e-6
+
     """
 
     def __init__(self, tau: float = 0.5, tol: float = 1e-6):
@@ -76,8 +76,7 @@ class Glicko2System:
         opponent_rds: list[float],
         scores: list[float],
     ) -> Glicko2Player:
-        """
-        Update player rating based on match results
+        """Update player rating based on match results
 
         Args:
             player: Player to update
@@ -87,6 +86,7 @@ class Glicko2System:
 
         Returns:
             Updated player with new rating, RD, and volatility
+
         """
         if len(opponent_ratings) != len(opponent_rds) != len(scores):
             raise ValueError("Opponent ratings, RDs, and scores must have same length")
@@ -149,7 +149,7 @@ class Glicko2System:
         return 1 / v_inv if v_inv > 0 else float("inf")
 
     def _calculate_delta(
-        self, mu: float, opponents: list[tuple[float, float]], scores: list[float], v: float
+        self, mu: float, opponents: list[tuple[float, float]], scores: list[float], v: float,
     ) -> float:
         """Calculate improvement (delta)"""
         return v * sum(
@@ -158,8 +158,7 @@ class Glicko2System:
         )
 
     def _calculate_new_volatility(self, phi: float, delta: float, v: float, sigma: float) -> float:
-        """
-        Calculate new volatility using Illinois algorithm
+        """Calculate new volatility using Illinois algorithm
         This is the complex part with the f function
         """
         # Initial values
@@ -209,8 +208,7 @@ class Glicko2System:
         return self._E(mu1, mu2, phi2)
 
     def match_quality(self, player1: Glicko2Player, player2: Glicko2Player) -> float:
-        """
-        Calculate match quality (0 to 1)
+        """Calculate match quality (0 to 1)
         Higher = more competitive/uncertain outcome
         """
         expected = self.expected_score(player1, player2)
@@ -247,7 +245,7 @@ class AgentRanking:
 
         # Update opponent rating (inverse score)
         self.agents[opponent_id] = self.system.update(
-            opponent, [agent.mu], [agent.phi], [1 - score]
+            opponent, [agent.mu], [agent.phi], [1 - score],
         )
 
     def get_rankings(self) -> list[tuple[str, float, float]]:

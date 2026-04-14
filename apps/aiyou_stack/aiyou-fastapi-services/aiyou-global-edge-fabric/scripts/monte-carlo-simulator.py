@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ShadowTag-v4 Monte Carlo Valuation Simulator
+"""ShadowTag-v4 Monte Carlo Valuation Simulator
 
 Runs 10,000 simulations to model exit valuation uncertainty.
 Accounts for revenue volatility, margin variance, and multiple ranges.
@@ -30,17 +29,17 @@ def load_projections():
 
 
 def simulate_exit_value(base_revenue, base_margin, n_sims=SIMULATIONS):
-    """
-    Run Monte Carlo simulation for exit valuation
+    """Run Monte Carlo simulation for exit valuation
 
     Returns:
         dict with percentiles (p10, p50, p90) and full distribution
+
     """
     np.random.seed(42)  # Reproducible
 
     # Generate revenue samples (lognormal distribution)
     revenue_samples = np.random.lognormal(
-        mean=np.log(base_revenue), sigma=REVENUE_VOLATILITY, size=n_sims
+        mean=np.log(base_revenue), sigma=REVENUE_VOLATILITY, size=n_sims,
     )
 
     # Generate margin samples (normal, clipped to [0, 1])
@@ -71,7 +70,6 @@ def simulate_exit_value(base_revenue, base_margin, n_sims=SIMULATIONS):
 
 def generate_report(results, projections):
     """Generate markdown report"""
-
     print("\n" + "=" * 60)
     print(f"ShadowTag-v4 Monte Carlo Simulation Results ({SIMULATIONS:,} runs)")
     print("=" * 60 + "\n")
@@ -116,21 +114,20 @@ def generate_report(results, projections):
 
 def plot_distribution(results):
     """Generate histogram of valuation distribution"""
-
     plt.figure(figsize=(12, 6))
 
     # Histogram
     plt.hist(
-        results["distribution"] / 1e9, bins=50, alpha=0.7, color="steelblue", edgecolor="black"
+        results["distribution"] / 1e9, bins=50, alpha=0.7, color="steelblue", edgecolor="black",
     )
 
     # Add percentile lines
     plt.axvline(results["p10"] / 1e9, color="red", linestyle="--", linewidth=2, label="p10 (bear)")
     plt.axvline(
-        results["p50"] / 1e9, color="green", linestyle="--", linewidth=2, label="p50 (base)"
+        results["p50"] / 1e9, color="green", linestyle="--", linewidth=2, label="p50 (base)",
     )
     plt.axvline(
-        results["p90"] / 1e9, color="orange", linestyle="--", linewidth=2, label="p90 (bull)"
+        results["p90"] / 1e9, color="orange", linestyle="--", linewidth=2, label="p90 (bull)",
     )
 
     plt.xlabel("Exit Valuation ($B)", fontsize=12)

@@ -7,8 +7,7 @@ class NewsSource(BaseSource):
     """News article ingestion from trusted sources"""
 
     async def fetch(self, limit: int = 1000) -> list[IngestionItem]:
-        """
-        Fetch news articles from trusted domains.
+        """Fetch news articles from trusted domains.
 
         Sources:
         - Reuters, AP News, BBC, Bloomberg

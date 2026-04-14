@@ -1,5 +1,4 @@
-"""
-Gemini Normalization Layer - Semantic Extraction Service
+"""Gemini Normalization Layer - Semantic Extraction Service
 
 Transforms raw scraped documents into structured IntelEvent objects
 with metadata, classifications, and JR Engine hints.
@@ -126,8 +125,7 @@ Output a JSON object:
 
 
 class GeminiNormalizer:
-    """
-    Transforms raw documents into structured IntelEvent objects using Gemini.
+    """Transforms raw documents into structured IntelEvent objects using Gemini.
 
     Features:
     - Document classification (regulation, news, RFP, etc.)
@@ -295,8 +293,7 @@ class GeminiNormalizer:
         source_hint: str = "",
         event_id: str | None = None,
     ) -> IntelEvent:
-        """
-        Extract a structured IntelEvent from raw document text.
+        """Extract a structured IntelEvent from raw document text.
 
         Args:
             raw_text: Raw document text (will be truncated if too long)
@@ -306,6 +303,7 @@ class GeminiNormalizer:
 
         Returns:
             IntelEvent with all extracted fields
+
         """
         # Prepare text
         clean_text = self._redact_secrets(raw_text)
@@ -350,7 +348,7 @@ class GeminiNormalizer:
                         affected_area=imp.get("affected_area", "general"),
                         severity=imp.get("severity", "medium"),
                         timeline=imp.get("timeline"),
-                    )
+                    ),
                 )
 
         # Parse JR hints
@@ -390,8 +388,7 @@ class GeminiNormalizer:
         previous_id: str,
         current_id: str,
     ) -> DeltaResult:
-        """
-        Detect changes between two document versions.
+        """Detect changes between two document versions.
 
         Args:
             previous_text: Previous version text
@@ -401,6 +398,7 @@ class GeminiNormalizer:
 
         Returns:
             DeltaResult with changes, tags, and urgency
+
         """
         prev_truncated = self._truncate_text(self._redact_secrets(previous_text))
         curr_truncated = self._truncate_text(self._redact_secrets(current_text))
@@ -441,8 +439,7 @@ class GeminiNormalizer:
         batch_id: str | None = None,
         job_id: str | None = None,
     ) -> IntelEventBatch:
-        """
-        Extract IntelEvents from a batch of documents.
+        """Extract IntelEvents from a batch of documents.
 
         Args:
             documents: List of dicts with 'text', 'url', 'source_hint' keys
@@ -451,6 +448,7 @@ class GeminiNormalizer:
 
         Returns:
             IntelEventBatch with all extracted events and metrics
+
         """
         batch_id = batch_id or str(uuid.uuid4())
         events = []

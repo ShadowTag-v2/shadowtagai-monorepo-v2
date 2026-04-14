@@ -1,5 +1,4 @@
-"""
-GEMINI INGESTION LAYER - Batch Intelligence Collection Pipeline
+"""GEMINI INGESTION LAYER - Batch Intelligence Collection Pipeline
 ================================================================
 
 ARCHITECTURE: GKE CronJob Multi-Container (vs Judge #6 Real-Time)
@@ -106,8 +105,7 @@ class IngestionStatus(StrEnum):
 
 @dataclass
 class IntelligenceItem:
-    """
-    Single intelligence item ingested from source.
+    """Single intelligence item ingested from source.
 
     Attributes:
         item_id: Unique identifier
@@ -118,6 +116,7 @@ class IntelligenceItem:
         relevance_score: 0.0-1.0 score for relevance
         timestamp: When ingested
         cost_usd: Cost to ingest this item
+
     """
 
     item_id: str
@@ -166,8 +165,7 @@ class SourceCoverageMetrics:
 
 @dataclass
 class IngestionResult:
-    """
-    Result from nightly ingestion job.
+    """Result from nightly ingestion job.
 
     Attributes:
         job_id: Unique job identifier
@@ -179,6 +177,7 @@ class IngestionResult:
         total_cost_usd: Total job cost
         am_briefing_delivered: Was morning briefing sent?
         errors: List of errors encountered
+
     """
 
     job_id: str
@@ -233,14 +232,14 @@ class BaseSourceCollector:
         self.cost_per_api_call = 0.001  # Mock cost
 
     async def collect(self, max_items: int = 100) -> SourceCoverageMetrics:
-        """
-        Collect items from source.
+        """Collect items from source.
 
         Args:
             max_items: Max items to collect
 
         Returns:
             SourceCoverageMetrics with results
+
         """
         raise NotImplementedError
 
@@ -317,8 +316,7 @@ class NewsAPICollector(BaseSourceCollector):
 
 
 class QualityGates:
-    """
-    Quality gates for ingestion pipeline.
+    """Quality gates for ingestion pipeline.
 
     Gates replace Judge #6's 98% coverage with multi-dimensional checks:
     - Items/day: 1000-5000 (quality over quantity)
@@ -339,14 +337,14 @@ class QualityGates:
         }
 
     def evaluate(self, result: IngestionResult) -> dict[str, bool]:
-        """
-        Evaluate all quality gates.
+        """Evaluate all quality gates.
 
         Args:
             result: Ingestion result to check
 
         Returns:
             Dict of gate_name → passed (bool)
+
         """
         gates_passed = {}
 
@@ -368,7 +366,7 @@ class QualityGates:
 
         # Gate 5: Average relevance score
         avg_relevance = sum(m.avg_relevance_score for m in result.source_metrics.values()) / max(
-            len(result.source_metrics), 1
+            len(result.source_metrics), 1,
         )
         gates_passed["avg_relevance"] = avg_relevance >= self.gates["min_avg_relevance"]
 
@@ -381,8 +379,7 @@ class QualityGates:
 
 
 class GeminiIngestionLayer:
-    """
-    Batch intelligence collection pipeline using SK Sequential Pattern.
+    """Batch intelligence collection pipeline using SK Sequential Pattern.
 
     RUNTIME: ~45 min/night (vs Judge #6 p99≤90ms)
     PATTERN: Sequential Pipeline with quality gates
@@ -433,12 +430,12 @@ class GeminiIngestionLayer:
             # Build metrics dict
             source_metrics = {}
             for collector_type, metrics in zip(
-                self.collectors.keys(), source_metrics_list, strict=False
+                self.collectors.keys(), source_metrics_list, strict=False,
             ):
                 if isinstance(metrics, Exception):
                     logger.error(f"Collector {collector_type} failed: {metrics}")
                     source_metrics[collector_type] = SourceCoverageMetrics(
-                        source_type=collector_type
+                        source_type=collector_type,
                     )
                 else:
                     source_metrics[collector_type] = metrics
@@ -496,7 +493,7 @@ class GeminiIngestionLayer:
 
             logger.info(
                 f"Quality gates: {sum(gates_passed.values())}/{len(gates_passed)} passed "
-                f"({latency_minutes:.1f} min)"
+                f"({latency_minutes:.1f} min)",
             )
 
             return {**data, "quality_gates_passed": gates_passed}
@@ -516,7 +513,7 @@ class GeminiIngestionLayer:
                 "summary": {
                     "total_items": sum(m.items_ingested for m in source_metrics.values()),
                     "active_sources": len(
-                        [m for m in source_metrics.values() if m.items_ingested > 0]
+                        [m for m in source_metrics.values() if m.items_ingested > 0],
                     ),
                     "tier_1_items": sum(m.items_tier_1 for m in source_metrics.values()),
                     "gates_passed": f"{sum(gates_passed.values())}/{len(gates_passed)}",
@@ -563,10 +560,9 @@ class GeminiIngestionLayer:
         )
 
     async def run_nightly_job(
-        self, job_id: str, max_items_per_source: int = 500
+        self, job_id: str, max_items_per_source: int = 500,
     ) -> IngestionResult:
-        """
-        Execute nightly ingestion job.
+        """Execute nightly ingestion job.
 
         Args:
             job_id: Unique job identifier
@@ -577,6 +573,7 @@ class GeminiIngestionLayer:
 
         Runtime Target:
             ≤45 minutes total
+
         """
         start_time = time.perf_counter()
 
@@ -616,7 +613,7 @@ class GeminiIngestionLayer:
                 logger.warning(f"Job {job_id} exceeded 45 min target: {runtime_minutes:.1f} min")
             else:
                 logger.info(
-                    f"Job {job_id} completed in {runtime_minutes:.1f} min (under 45 min target)"
+                    f"Job {job_id} completed in {runtime_minutes:.1f} min (under 45 min target)",
                 )
 
             return result
@@ -660,7 +657,7 @@ async def example_usage():
     print(f"AM Briefing Delivered: {result.am_briefing_delivered}")
 
     print(
-        f"\nQuality Gates ({sum(result.quality_gates_passed.values())}/{len(result.quality_gates_passed)} passed):"
+        f"\nQuality Gates ({sum(result.quality_gates_passed.values())}/{len(result.quality_gates_passed)} passed):",
     )
     for gate, passed in result.quality_gates_passed.items():
         status = "✅" if passed else "❌"
@@ -677,7 +674,7 @@ async def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     asyncio.run(example_usage())

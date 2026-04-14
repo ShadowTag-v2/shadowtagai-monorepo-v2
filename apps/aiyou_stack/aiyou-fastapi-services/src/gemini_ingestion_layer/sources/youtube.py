@@ -7,8 +7,7 @@ class YouTubeSource(BaseSource):
     """YouTube video ingestion"""
 
     async def fetch(self, limit: int = 500) -> list[IngestionItem]:
-        """
-        Fetch YouTube videos matching criteria.
+        """Fetch YouTube videos matching criteria.
 
         Uses YouTube Data API v3 to fetch:
         - Video metadata (title, description, channel)

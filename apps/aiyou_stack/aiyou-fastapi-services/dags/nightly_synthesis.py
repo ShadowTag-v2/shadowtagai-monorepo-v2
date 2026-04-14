@@ -28,7 +28,7 @@ with DAG(
     "nightly_synthesis",
     default_args=default_args,
     description="The Omega Monolith Nightly Synthesis Orchestrator",
-    schedule_interval="0 2 * * *",  # 2 AM Daily
+    schedule="0 2 * * *",  # 2 AM Daily
     start_date=pendulum.datetime(2025, 11, 24, tz="UTC"),
     catchup=False,
     tags=["omega", "core"],

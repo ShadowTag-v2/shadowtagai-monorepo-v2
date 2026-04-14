@@ -1,5 +1,4 @@
-"""
-Accessibility middleware for adding WCAG-compliant HTTP headers.
+"""Accessibility middleware for adding WCAG-compliant HTTP headers.
 
 This middleware adds headers that improve accessibility for:
 - Screen readers
@@ -19,8 +18,7 @@ class AccessibilityMiddleware(BaseHTTPMiddleware):
     """Add accessibility-related HTTP headers to all responses."""
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """
-        Process request and add accessibility headers to response.
+        """Process request and add accessibility headers to response.
 
         Args:
             request: Incoming HTTP request
@@ -28,6 +26,7 @@ class AccessibilityMiddleware(BaseHTTPMiddleware):
 
         Returns:
             Response with accessibility headers added
+
         """
         response = await call_next(request)
 

@@ -26,8 +26,7 @@ class RiskLevel(Enum):
 
 
 class RiskAssessmentMatrix:
-    """
-    US Army ATP 5-19 Risk Assessment Matrix Implementation.
+    """US Army ATP 5-19 Risk Assessment Matrix Implementation.
     """
 
     _matrix = {
@@ -59,13 +58,11 @@ class RiskAssessmentMatrix:
 
 
 class JudgeSentinel:
-    """
-    Judge 6 Implementation: Enforces Risk Gates.
+    """Judge 6 Implementation: Enforces Risk Gates.
     """
 
     def vet_code(self, code: str) -> dict[str, Any]:
-        """
-        Analyzes code for risks and assigns a Risk Level.
+        """Analyzes code for risks and assigns a Risk Level.
         """
         hazards = []
 
@@ -75,9 +72,9 @@ class JudgeSentinel:
                 {
                     "hazard": "Private Key Exposed",
                     "risk": RiskAssessmentMatrix.assess(
-                        Severity.CATASTROPHIC, Probability.FREQUENT
+                        Severity.CATASTROPHIC, Probability.FREQUENT,
                     ).value,
-                }
+                },
             )
 
         # Hazard 2: Low Entropy Keys (Severity: II, Probability: B) -> H (High)
@@ -86,9 +83,9 @@ class JudgeSentinel:
                 {
                     "hazard": "Hardcoded API Token",
                     "risk": RiskAssessmentMatrix.assess(
-                        Severity.CRITICAL, Probability.LIKELY
+                        Severity.CRITICAL, Probability.LIKELY,
                     ).value,
-                }
+                },
             )
 
         # Decision Logic

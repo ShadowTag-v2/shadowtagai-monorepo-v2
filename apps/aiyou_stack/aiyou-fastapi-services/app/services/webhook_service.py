@@ -114,7 +114,7 @@ class WebhookService:
         # Check if event type is subscribed
         if webhook.events and event_data.event_type not in webhook.events:
             logger.info(
-                f"Event type {event_data.event_type} not subscribed for webhook {webhook_id}"
+                f"Event type {event_data.event_type} not subscribed for webhook {webhook_id}",
             )
             return None
 
@@ -175,13 +175,13 @@ class WebhookService:
 
         start_time = datetime.utcnow()
         delivery = WebhookDelivery(
-            event_id=event.id, request_headers=request_headers, request_body=request_body
+            event_id=event.id, request_headers=request_headers, request_body=request_body,
         )
 
         try:
             async with httpx.AsyncClient(timeout=webhook.timeout) as client:
                 response = await client.post(
-                    webhook.url, content=request_body_str, headers=request_headers
+                    webhook.url, content=request_body_str, headers=request_headers,
                 )
 
                 duration = (datetime.utcnow() - start_time).total_seconds() * 1000
@@ -227,7 +227,7 @@ class WebhookService:
             event.next_retry_at = datetime.utcnow() + timedelta(seconds=delay)
             event.status = WebhookEventStatus.RETRYING
             logger.info(
-                f"Scheduled retry {event.retry_count} for event {event.id} at {event.next_retry_at}"
+                f"Scheduled retry {event.retry_count} for event {event.id} at {event.next_retry_at}",
             )
         else:
             event.status = WebhookEventStatus.FAILED
@@ -265,7 +265,7 @@ class WebhookService:
         )
 
     async def test_webhook(
-        self, webhook_id: int, user_id: int, test_payload: dict[str, Any]
+        self, webhook_id: int, user_id: int, test_payload: dict[str, Any],
     ) -> dict[str, Any]:
         """Test webhook delivery"""
         webhook = self.get_webhook(webhook_id, user_id)

@@ -1,5 +1,4 @@
-"""
-LEGALTRACK: AI-Powered Legal Calendar
+"""LEGALTRACK: AI-Powered Legal Calendar
 
 Email ingestion → Deadline extraction → Auto-sync calendars
 

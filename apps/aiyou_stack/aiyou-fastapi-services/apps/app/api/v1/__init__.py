@@ -1,5 +1,4 @@
-"""
-API v1 Router
+"""API v1 Router
 
 Includes all API sub-routers including the ActiveShield Modular Compliance Framework (MCF).
 """
@@ -30,5 +29,5 @@ api_router.include_router(recommender.router, prefix="/recommender", tags=["Reco
 api_router.include_router(kpi.router, prefix="/kpi", tags=["KPI Tracking"])
 api_router.include_router(orchestrator.router, prefix="/orchestrator", tags=["Orchestrator"])
 api_router.include_router(
-    california_ai.router, prefix="/california-ai", tags=["California AI Compliance"]
+    california_ai.router, prefix="/california-ai", tags=["California AI Compliance"],
 )

@@ -1,5 +1,4 @@
-"""
-California AI Compliance API Endpoints
+"""California AI Compliance API Endpoints
 ======================================
 REST API endpoints for California AI regulation compliance.
 
@@ -138,7 +137,7 @@ async def assess_endpoint(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Assessment failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Assessment failed: {e!s}")
 
 
 @router.post(
@@ -178,7 +177,7 @@ async def quick_assess(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Assessment failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Assessment failed: {e!s}")
 
 
 @router.post(
@@ -215,7 +214,7 @@ async def batch_assess(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Batch assessment failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Batch assessment failed: {e!s}")
 
 
 @router.get(
@@ -254,7 +253,7 @@ async def get_report(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Report generation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Report generation failed: {e!s}")
 
 
 @router.post(
@@ -273,7 +272,7 @@ async def certify_content(
 
         if tier not in [UsageTier.GROWTH, UsageTier.ENTERPRISE]:
             raise HTTPException(
-                status_code=402, detail="Certification requires GROWTH tier or higher"
+                status_code=402, detail="Certification requires GROWTH tier or higher",
             )
 
         engine = get_california_ai_engine()
@@ -296,7 +295,7 @@ async def certify_content(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Certification failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Certification failed: {e!s}")
 
 
 @router.get(
@@ -316,7 +315,7 @@ async def get_usage(
         return usage
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get usage: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get usage: {e!s}")
 
 
 @router.get(
@@ -343,7 +342,7 @@ async def get_stats(
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get stats: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get stats: {e!s}")
 
 
 @router.get(

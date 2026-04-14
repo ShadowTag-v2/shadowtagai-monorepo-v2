@@ -1,5 +1,4 @@
-"""
-HIPAA Compliance Module
+"""HIPAA Compliance Module
 
 Implements the Health Insurance Portability and Accountability Act requirements.
 Focus areas:
@@ -33,8 +32,7 @@ from app.models.compliance import (
 
 @register_module(RegulationId.HIPAA)
 class HIPAAModule(ComplianceModule):
-    """
-    HIPAA Compliance Module
+    """HIPAA Compliance Module
 
     Covers the three main HIPAA Rules:
     - Privacy Rule (45 CFR Part 164 Subpart E)
@@ -287,7 +285,7 @@ class HIPAAModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput
+        self, control: ControlDefinition, input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single HIPAA control."""
         metadata = input_data.metadata
@@ -305,16 +303,15 @@ class HIPAAModule(ComplianceModule):
                         score=1.0,
                         evidence="Privacy policies in place for PHI handling",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["PHI present but privacy policies not documented"],
-                        remediation="Implement and document PHI use/disclosure policies",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["PHI present but privacy policies not documented"],
+                    remediation="Implement and document PHI use/disclosure policies",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -337,7 +334,7 @@ class HIPAAModule(ComplianceModule):
                     score=1.0,
                     evidence=f"PHI limited to minimum necessary for: {purpose}",
                 )
-            elif len(phi_elements) > 3:
+            if len(phi_elements) > 3:
                 return ControlResult(
                     control_id=control.control_id,
                     control_name=control.name,
@@ -345,7 +342,7 @@ class HIPAAModule(ComplianceModule):
                     status=ComplianceStatus.PARTIAL,
                     score=0.5,
                     findings=[
-                        f"Multiple PHI elements ({len(phi_elements)}) may exceed minimum necessary"
+                        f"Multiple PHI elements ({len(phi_elements)}) may exceed minimum necessary",
                     ],
                     remediation="Review and limit PHI to minimum necessary for purpose",
                 )
@@ -364,16 +361,15 @@ class HIPAAModule(ComplianceModule):
                         score=1.0,
                         evidence="BAA executed with business associate",
                     )
-                else:
-                    return ControlResult(
-                        control_id=control.control_id,
-                        control_name=control.name,
-                        module_id=self.module_id,
-                        status=ComplianceStatus.NON_COMPLIANT,
-                        score=0.0,
-                        findings=["Business associate used without BAA"],
-                        remediation="Execute Business Associate Agreement before sharing PHI",
-                    )
+                return ControlResult(
+                    control_id=control.control_id,
+                    control_name=control.name,
+                    module_id=self.module_id,
+                    status=ComplianceStatus.NON_COMPLIANT,
+                    score=0.0,
+                    findings=["Business associate used without BAA"],
+                    remediation="Execute Business Associate Agreement before sharing PHI",
+                )
             return ControlResult(
                 control_id=control.control_id,
                 control_name=control.name,
@@ -395,16 +391,15 @@ class HIPAAModule(ComplianceModule):
                     score=1.0,
                     evidence="ePHI encryption implemented",
                 )
-            else:
-                return ControlResult(
-                    control_id=control.control_id,
-                    control_name=control.name,
-                    module_id=self.module_id,
-                    status=ComplianceStatus.NON_COMPLIANT,
-                    score=0.0,
-                    findings=["ePHI not encrypted"],
-                    remediation="Implement encryption for ePHI at rest and in transit",
-                )
+            return ControlResult(
+                control_id=control.control_id,
+                control_name=control.name,
+                module_id=self.module_id,
+                status=ComplianceStatus.NON_COMPLIANT,
+                score=0.0,
+                findings=["ePHI not encrypted"],
+                remediation="Implement encryption for ePHI at rest and in transit",
+            )
 
         # Default
         return ControlResult(
@@ -436,7 +431,7 @@ class HIPAAModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None
+        self, rule: ValidationRule, content: str, context: str | None,
     ) -> ValidationViolation | None:
         """Check HIPAA validation rules against content."""
         content_lower = content.lower()

@@ -1,5 +1,4 @@
-"""
-Prefetch Pipeline - Minimize LLM Usage
+"""Prefetch Pipeline - Minimize LLM Usage
 
 Exports:
 - PrefetchPipeline: Main pipeline for query optimization
@@ -22,13 +21,13 @@ from .pipeline import (
 )
 
 __all__ = [
-    "PrefetchPipeline",
-    "SemanticCache",
-    "WebPrefetcher",
+    "CacheEntry",
+    "CacheHitType",
     "PrefetchChain",
+    "PrefetchPipeline",
     "PrefetchResult",
     "PrefetchStrategy",
-    "CacheHitType",
-    "CacheEntry",
+    "SemanticCache",
+    "WebPrefetcher",
     "create_prefetch_pipeline",
 ]

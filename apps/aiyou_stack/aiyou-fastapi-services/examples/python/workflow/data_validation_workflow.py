@@ -1,5 +1,4 @@
-"""
-Workflow Pattern Reference Implementation
+"""Workflow Pattern Reference Implementation
 
 This example demonstrates a production-ready workflow agent for data validation.
 Key features:
@@ -33,7 +32,7 @@ class WorkflowContext:
     input: Any
     results: dict[str, Any] = field(default_factory=dict)
     metadata: dict[str, Any] = field(
-        default_factory=lambda: {"start_time": time.time(), "step_results": []}
+        default_factory=lambda: {"start_time": time.time(), "step_results": []},
     )
 
 
@@ -186,7 +185,7 @@ def classify_input_validate(result: Any) -> bool:
 
 
 classify_input_step = WorkflowStep(
-    name="classify_input", execute=classify_input_execute, validate=classify_input_validate
+    name="classify_input", execute=classify_input_execute, validate=classify_input_validate,
 )
 
 
@@ -231,7 +230,7 @@ def schema_validation_validate(result: Any) -> bool:
 
 
 schema_validation_step = WorkflowStep(
-    name="schema_validation", execute=schema_validation_execute, validate=schema_validation_validate
+    name="schema_validation", execute=schema_validation_execute, validate=schema_validation_validate,
 )
 
 
@@ -308,7 +307,7 @@ def quality_checks_validate(result: Any) -> bool:
 
 
 quality_checks_step = WorkflowStep(
-    name="quality_checks", execute=quality_checks_execute, validate=quality_checks_validate
+    name="quality_checks", execute=quality_checks_execute, validate=quality_checks_validate,
 )
 
 
@@ -361,7 +360,7 @@ def generate_report_validate(result: Any) -> bool:
 
 
 generate_report_step = WorkflowStep(
-    name="generate_report", execute=generate_report_execute, validate=generate_report_validate
+    name="generate_report", execute=generate_report_execute, validate=generate_report_validate,
 )
 
 # ==================== Workflow Engine ====================
@@ -392,7 +391,7 @@ class WorkflowEngine:
 
                 duration = time.time() - step_start_time
                 context.metadata["step_results"].append(
-                    StepResult(step=step.name, success=True, duration=duration)
+                    StepResult(step=step.name, success=True, duration=duration),
                 )
 
                 print(f"✓ {step.name} completed in {duration:.2f}s")
@@ -400,10 +399,10 @@ class WorkflowEngine:
             except Exception as error:
                 duration = time.time() - step_start_time
 
-                print(f"✗ {step.name} failed: {str(error)}")
+                print(f"✗ {step.name} failed: {error!s}")
 
                 context.metadata["step_results"].append(
-                    StepResult(step=step.name, success=False, duration=duration, error=str(error))
+                    StepResult(step=step.name, success=False, duration=duration, error=str(error)),
                 )
 
                 if step.on_error:
@@ -450,7 +449,7 @@ async def main():
                 "age": 30,
                 "role": "admin",
             },
-        ]
+        ],
     }
 
     # Create and execute workflow
@@ -461,7 +460,7 @@ async def main():
             business_rule_validation_step,
             quality_checks_step,
             generate_report_step,
-        ]
+        ],
     )
 
     try:
@@ -483,7 +482,7 @@ async def main():
             print("\n✗ Data validation failed")
 
     except Exception as error:
-        print(f"\n✗ Workflow execution failed: {str(error)}")
+        print(f"\n✗ Workflow execution failed: {error!s}")
         raise
 
 

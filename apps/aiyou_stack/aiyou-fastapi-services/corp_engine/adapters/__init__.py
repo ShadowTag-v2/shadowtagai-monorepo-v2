@@ -1,5 +1,4 @@
-"""
-Corp Engine Enterprise Adapters
+"""Corp Engine Enterprise Adapters
 ================================
 Plug-and-play connectors for enterprise systems.
 GCP-centric architecture - all processing on our managed infrastructure.

@@ -9,8 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def apply_mixquant_blocks(tensor: torch.Tensor, block_size=32) -> torch.Tensor:
-    """
-    Applies blockwise orthogonal rotation (MixQuant / Quarot) to suppress outlier features.
+    """Applies blockwise orthogonal rotation (MixQuant / Quarot) to suppress outlier features.
     Matches Apple Silicon SIMD boundaries (block_size=32).
     """
     if tensor.dim() != 2:
@@ -38,8 +37,7 @@ def apply_mixquant_blocks(tensor: torch.Tensor, block_size=32) -> torch.Tensor:
 
 
 class AimdoAllocator:
-    """
-    Dynamic VRAM Allocator (ComfyUI Aimdo Architecture).
+    """Dynamic VRAM Allocator (ComfyUI Aimdo Architecture).
     Maps local Deep Learning model file assets (like .safetensors) to uncommitted Virtual Base Address Registers (VBARs).
     Instead of heavily allocating PyTorch tensors and overloading RAM,
     it simply assigns pointers to uncommitted file streams exactly when the execution graph faults during calc.
@@ -65,11 +63,11 @@ class AimdoAllocator:
         }
         self.priority_stack.append(model_id)
         logger.info(
-            f"[Aimdo] Mapped VBAR uncommitted memory block for {model_id} ({len(mapped_data)} bytes)"
+            f"[Aimdo] Mapped VBAR uncommitted memory block for {model_id} ({len(mapped_data)} bytes)",
         )
 
     def fault(
-        self, model_id: str, layer_name: str, tensor_shape: tuple, dtype: torch.dtype, offset: int
+        self, model_id: str, layer_name: str, tensor_shape: tuple, dtype: torch.dtype, offset: int,
     ):
         if model_id not in self._vbars:
             raise KeyError(f"[Aimdo] Attempted to fault an unregistered model_id: {model_id}")
@@ -89,8 +87,7 @@ class AimdoAllocator:
         return uncommitted_tensor
 
     def evaluate_watermark_eviction(self, eviction_target_bytes: int = 0):
-        """
-        Smart Offload (ComfyUI Logic):
+        """Smart Offload (ComfyUI Logic):
         If OS Available_RAM drops below config threshold, we FORCE unmap non-active layers immediately.
         """
         mem_info = psutil.virtual_memory()
@@ -100,22 +97,22 @@ class AimdoAllocator:
         # If memory is critically low, escalate eviction limits to protect Apple Silicon responsiveness
         if available_gb < HEADROOM_GB:
             logger.warning(
-                f"[Aimdo] CRITICAL VRAM PRESSURE: only {available_gb:.2f}GB available! Initiating ComfyUI Smart Offload."
+                f"[Aimdo] CRITICAL VRAM PRESSURE: only {available_gb:.2f}GB available! Initiating ComfyUI Smart Offload.",
             )
             eviction_target_bytes = max(
-                eviction_target_bytes, int((HEADROOM_GB - available_gb) * (1024**3))
+                eviction_target_bytes, int((HEADROOM_GB - available_gb) * (1024**3)),
             )
 
         cleared_bytes = 0
         for layer, size in list(self._watermarks.items()):
-            if cleared_bytes >= eviction_target_bytes and eviction_target_bytes > 0:
+            if cleared_bytes >= eviction_target_bytes > 0:
                 break
             del self._watermarks[layer]
             cleared_bytes += size
 
         if cleared_bytes > 0:
             logger.info(
-                f"[Aimdo] Watermark hit. Force evicted {cleared_bytes} bytes from cached fault states."
+                f"[Aimdo] Watermark hit. Force evicted {cleared_bytes} bytes from cached fault states.",
             )
 
     def close(self, model_id: str):

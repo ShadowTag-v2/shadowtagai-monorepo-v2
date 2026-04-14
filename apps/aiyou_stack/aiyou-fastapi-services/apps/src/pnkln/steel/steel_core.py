@@ -1,5 +1,4 @@
-"""
-Pnkln Steel Core - SkyNode Infrastructure Logic
+"""Pnkln Steel Core - SkyNode Infrastructure Logic
 Target Valuation: $100.0B
 """
 
@@ -13,8 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class SkyNode:
-    """
-    Represents a sovereign compute node (Twitter/Nuclear/Offshore).
+    """Represents a sovereign compute node (Twitter/Nuclear/Offshore).
     """
 
     def __init__(self, node_id: str, capacity_mw: float):
@@ -24,8 +22,7 @@ class SkyNode:
         self.workload: list[str] = []
 
     def activate(self) -> str:
-        """
-        Activates the node if permitted by Judge #6.
+        """Activates the node if permitted by Judge #6.
         """
         # TODO: Judge #6 Validation Check
         # if not JudgeSix.approve(action="ACTIVATE_NODE", context=self.node_id):
@@ -36,8 +33,7 @@ class SkyNode:
         return "ACTIVATED"
 
     def assign_workload(self, task: str) -> bool:
-        """
-        Orchestrates workload distribution (e.g. Starlink/CoreWeave).
+        """Orchestrates workload distribution (e.g. Starlink/CoreWeave).
         """
         if self.status != "ONLINE":
             logger.warning(f"Cannot assign task to offline node {self.node_id}")
@@ -48,8 +44,7 @@ class SkyNode:
         return True
 
     def get_telemetry(self) -> dict[str, Any]:
-        """
-        Returns sovereign observability metrics.
+        """Returns sovereign observability metrics.
         """
         return {
             "id": self.node_id,

@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Gemini Ingestion Layer Configuration
+"""PNKLN Core Stack - Gemini Ingestion Layer Configuration
 
 This module manages configuration for the ingestion pipeline using Pydantic Settings.
 All settings can be overridden via environment variables.
@@ -125,8 +124,46 @@ class DatabaseSettings(BaseSettings):
     """Database connection settings."""
 
     url: str = Field(
-        default="postgresql://REDACTED_USER:redacted@shadowtag-v4.local"
+        default="postgresql://REDACTED_USER:redacted@shadowtag-v4.local",
     )  # comma-separated
+    format: Literal["html", "markdown", "json"] = Field(default="markdown")
+
+    @field_validator("delivery_time")
+    @classmethod
+    def validate_time_format(cls, v: str) -> str:
+        """Validate HH:MM time format."""
+        try:
+            hour, minute = map(int, v.split(":"))
+            if not (0 <= hour < 24 and 0 <= minute < 60):
+                raise ValueError
+        except (ValueError, AttributeError):
+            raise ValueError("delivery_time must be in HH:MM format (e.g., '06:00')")
+        return v
+
+    @property
+    def recipient_list(self) -> list[str]:
+        """Parse comma-separated recipients into a list."""
+        return [r.strip() for r in self.recipients.split(",") if r.strip()]
+
+    model_config = SettingsConfigDict(env_prefix="AM_BRIEFING_")
+
+
+class MonitoringSettings(BaseSettings):
+    """Monitoring and observability settings."""
+
+    enable_metrics: bool = Field(default=True)
+    metrics_port: int = Field(default=9090)
+    log_level: str = Field(default="INFO")
+    enable_tracing: bool = Field(default=False)
+
+    model_config = SettingsConfigDict(env_prefix="MONITORING_")
+
+
+class DeliverySettings(BaseSettings):
+    """Briefing delivery configuration."""
+
+    delivery_time: str = Field(default="06:00")
+    recipients: str = Field(default="founder@shadowtagai.com")
     format: Literal["html", "markdown", "json"] = Field(default="markdown")
 
     @field_validator("delivery_time")
@@ -161,6 +198,7 @@ class FeatureFlags(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="ENABLE_")
 
 
+
 class Config(BaseSettings):
     """Master configuration combining all settings."""
 
@@ -177,7 +215,7 @@ class Config(BaseSettings):
     features: FeatureFlags = Field(default_factory=FeatureFlags)
 
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore"
+        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore",
     )
 
     def validate_api_keys(self) -> list[str]:

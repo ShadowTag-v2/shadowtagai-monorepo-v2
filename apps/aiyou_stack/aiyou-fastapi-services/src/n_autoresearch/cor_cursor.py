@@ -7,8 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class DemoDirector:
-    """
-    Cor.Cursor Cinematic VDI Engine.
+    """Cor.Cursor Cinematic VDI Engine.
     Uses Xvfb and ffmpeg to physically record Playwright operations inside the Cloud Run worker.
     """
 
@@ -35,7 +34,7 @@ class DemoDirector:
             self.output_path,
         ]
         self._ffmpeg_process = subprocess.Popen(
-            cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+            cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
         time.sleep(2)  # Give ffmpeg buffer time
 
@@ -48,8 +47,7 @@ class DemoDirector:
 
 
 def Judge_6_1_Critique(video_path: str) -> Literal["PASS", "FAIL"]:
-    """
-    Multimodal Auto-Critique using `gemini-3.1-flash-lite-preview`.
+    """Multimodal Auto-Critique using `gemini-3.1-flash-lite-preview`.
     Watches its own video artifact and judges compliance, CSS overlaps, and behavior.
     """
     logger.info(f"[JUDGE 6.1] Ingesting Video Tensor: {video_path}")
@@ -61,7 +59,7 @@ def Judge_6_1_Critique(video_path: str) -> Literal["PASS", "FAIL"]:
     css_overlap_detected = False
     if css_overlap_detected:
         logger.warning(
-            "[JUDGE 6.1 VERDICT] FAIL. CSS overlapping detected across component boundaries."
+            "[JUDGE 6.1 VERDICT] FAIL. CSS overlapping detected across component boundaries.",
         )
         return "FAIL"
 

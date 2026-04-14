@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Visualize latency test results
+"""Visualize latency test results
 """
 
 import argparse
@@ -24,7 +23,7 @@ def plot_latency_distribution(report: dict, output_path: Path):
 
     # Histogram
     ax1.hist(
-        [latency["p50"], latency["p90"], latency["p99"]], bins=20, edgecolor="black", alpha=0.7
+        [latency["p50"], latency["p90"], latency["p99"]], bins=20, edgecolor="black", alpha=0.7,
     )
     ax1.axvline(report["config"]["p99_target_ms"], color="r", linestyle="--", label="P99 Target")
     ax1.set_xlabel("Latency (ms)")
@@ -96,7 +95,7 @@ def main():
     parser = argparse.ArgumentParser(description="Visualize latency test results")
     parser.add_argument("report", type=Path, help="Path to JSON report file")
     parser.add_argument(
-        "--output-dir", type=Path, default=Path("results"), help="Output directory for plots"
+        "--output-dir", type=Path, default=Path("results"), help="Output directory for plots",
     )
 
     args = parser.parse_args()

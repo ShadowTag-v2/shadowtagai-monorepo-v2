@@ -1,5 +1,4 @@
-"""
-Basic tests for workflow engine.
+"""Basic tests for workflow engine.
 """
 
 import pytest
@@ -21,7 +20,7 @@ def test_workflow_registration():
         block_name="Test Workflow",
         description="A test workflow",
         actions=[
-            {"type": ActionType.ASK_FOR_INPUT, "title": "Test Input", "prompt": "Enter test value"}
+            {"type": ActionType.ASK_FOR_INPUT, "title": "Test Input", "prompt": "Enter test value"},
         ],
     )
 

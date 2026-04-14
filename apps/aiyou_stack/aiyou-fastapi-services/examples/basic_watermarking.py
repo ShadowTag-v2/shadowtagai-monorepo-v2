@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Basic Watermarking Example
+"""Basic Watermarking Example
 
 Demonstrates basic watermarking and verification workflow.
 """

@@ -1,5 +1,4 @@
-"""
-Cavalry Squadron Structure for minion
+"""Cavalry Squadron Structure for minion
 =============================================
 Implements Cavalry Squadron organization with Air, Armor, Stryker, and Bradley elements.
 Agents "ride" in virtual vehicles for companionship, safety, and redundancy.
@@ -88,8 +87,7 @@ class Agent:
 
 @dataclass
 class Vehicle:
-    """
-    Virtual vehicle containing agents.
+    """Virtual vehicle containing agents.
     Agents never operate alone - always in vehicle crews.
     """
 
@@ -132,14 +130,13 @@ class Vehicle:
                 agent.model = self.model
                 self.crew.append(agent)
                 return True
-        else:
-            if len(self.dismounts) < specs["dismount"]:
-                agent.vehicle_id = self.vehicle_id
-                agent.role = "dismount"
-                agent.troop = self.troop
-                agent.model = self.model
-                self.dismounts.append(agent)
-                return True
+        elif len(self.dismounts) < specs["dismount"]:
+            agent.vehicle_id = self.vehicle_id
+            agent.role = "dismount"
+            agent.troop = self.troop
+            agent.model = self.model
+            self.dismounts.append(agent)
+            return True
 
         return False
 
@@ -187,8 +184,7 @@ class Platoon:
 
 @dataclass
 class Troop:
-    """
-    Troop (Company-level element) in Cavalry Squadron.
+    """Troop (Company-level element) in Cavalry Squadron.
     Contains 3 platoons plus command element.
     """
 
@@ -239,8 +235,7 @@ class Troop:
 
 
 class CavalrySquadron:
-    """
-    Cavalry Squadron "minion" - 600 agents
+    """Cavalry Squadron "minion" - 600 agents
 
     Structure:
     - HHT (90 agents): Headquarters & Headquarters Troop
@@ -380,7 +375,7 @@ class CavalrySquadron:
         return troop
 
     def _create_platoon(
-        self, troop_type: TroopType, name: str, strength: int, vehicle_type: VehicleType
+        self, troop_type: TroopType, name: str, strength: int, vehicle_type: VehicleType,
     ) -> Platoon:
         """Create a platoon with vehicles and agents"""
         platoon = Platoon(
@@ -420,7 +415,7 @@ class CavalrySquadron:
         return platoon
 
     def _create_vehicle(
-        self, troop_type: TroopType, vehicle_type: VehicleType, index: int
+        self, troop_type: TroopType, vehicle_type: VehicleType, index: int,
     ) -> Vehicle:
         """Create a new vehicle"""
         self._vehicle_counter += 1
@@ -491,7 +486,7 @@ class CavalrySquadron:
         return []
 
     def get_available_agents(
-        self, troop_type: TroopType | None = None, count: int = 1
+        self, troop_type: TroopType | None = None, count: int = 1,
     ) -> list[Agent]:
         """Get available agents for tasking"""
         available = []
@@ -508,10 +503,9 @@ class CavalrySquadron:
         return available
 
     def dispatch_mission(
-        self, task: str, troop_assignments: dict[TroopType, list[str]]
+        self, task: str, troop_assignments: dict[TroopType, list[str]],
     ) -> dict[str, Any]:
-        """
-        Dispatch mission to troops per OPORD assignments.
+        """Dispatch mission to troops per OPORD assignments.
 
         Args:
             task: Mission task
@@ -519,6 +513,7 @@ class CavalrySquadron:
 
         Returns:
             Dispatch result with agents assigned
+
         """
         dispatched = {}
 

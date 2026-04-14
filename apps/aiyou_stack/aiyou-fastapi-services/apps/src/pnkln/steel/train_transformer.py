@@ -56,7 +56,7 @@ def train_gpt():
     if not os.path.exists(DATA_PATH):
         print(f"❌ Data file not found at {DATA_PATH}")
         print(
-            "Run: curl -o src/pnkln/steel/tinyshakespeare.txt https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt"
+            "Run: curl -o src/pnkln/steel/tinyshakespeare.txt https://raw.githubusercontent.com/karpathy/char-rnn/master/data/tinyshakespeare/input.txt",
         )
         return
 
@@ -89,7 +89,7 @@ def train_gpt():
 
     train_dataset = CharDataset(train_text, SEQ_LEN, tokenizer)
     val_dataset = CharDataset(
-        val_text[: demo_limit // 10], SEQ_LEN, tokenizer
+        val_text[: demo_limit // 10], SEQ_LEN, tokenizer,
     )  # Small validation set
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
@@ -101,7 +101,7 @@ def train_gpt():
     # 4. Initialize Model
     print("\n🏗️  Initializing GPT Model...")
     print(
-        f"   Embed Dim: {EMBED_DIM}, Heads: {NUM_HEADS}, Layers: {NUM_LAYERS}, Seq Len: {SEQ_LEN}"
+        f"   Embed Dim: {EMBED_DIM}, Heads: {NUM_HEADS}, Layers: {NUM_LAYERS}, Seq Len: {SEQ_LEN}",
     )
 
     model = GeminiMini(
@@ -156,7 +156,7 @@ def train_gpt():
 
             B, S, V = outputs.shape
             flat_outputs = Tensor(
-                outputs.data.reshape(B * S, V), requires_grad=outputs.requires_grad
+                outputs.data.reshape(B * S, V), requires_grad=outputs.requires_grad,
             )
             flat_targets = Tensor(targets.data.flatten())
 

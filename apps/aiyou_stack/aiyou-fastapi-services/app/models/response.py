@@ -1,5 +1,4 @@
-"""
-Standard API response models for consistent formatting.
+"""Standard API response models for consistent formatting.
 """
 
 from typing import Any, Generic, TypeVar
@@ -10,8 +9,7 @@ T = TypeVar("T")
 
 
 class APIResponse(BaseModel, Generic[T]):
-    """
-    Standard API response wrapper.
+    """Standard API response wrapper.
     Provides consistent response format across all endpoints.
     """
 
@@ -25,13 +23,12 @@ class APIResponse(BaseModel, Generic[T]):
                 "success": True,
                 "message": "Operation completed successfully",
                 "data": {"id": 1, "name": "Example"},
-            }
+            },
         }
 
 
 class ErrorResponse(BaseModel):
-    """
-    Standard error response.
+    """Standard error response.
     Provides detailed error information.
     """
 
@@ -49,7 +46,7 @@ class ErrorResponse(BaseModel):
                 "message": "Invalid input data",
                 "details": {"field": "email", "issue": "Invalid email format"},
                 "path": "/api/v1/users",
-            }
+            },
         }
 
 
@@ -65,8 +62,7 @@ class PaginationMeta(BaseModel):
 
 
 class PaginatedResponse(BaseModel, Generic[T]):
-    """
-    Paginated API response.
+    """Paginated API response.
     Used for endpoints that return lists of items.
     """
 
@@ -89,5 +85,5 @@ class PaginatedResponse(BaseModel, Generic[T]):
                     "has_next": True,
                     "has_previous": False,
                 },
-            }
+            },
         }

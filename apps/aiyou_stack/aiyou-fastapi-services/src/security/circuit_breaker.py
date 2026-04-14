@@ -1,5 +1,4 @@
-"""
-Circuit Breaker pattern for agent governance with graceful degradation.
+"""Circuit Breaker pattern for agent governance with graceful degradation.
 
 Implements resilient fallback when agent system experiences failures,
 with automatic recovery testing and OPA rule engine fallback.
@@ -52,8 +51,7 @@ class CircuitMetrics:
 
 
 class AgentCircuitBreaker:
-    """
-    Circuit breaker for agent governance system.
+    """Circuit breaker for agent governance system.
 
     Monitors agent health and automatically fails over to OPA rules
     when error thresholds exceeded.
@@ -78,8 +76,7 @@ class AgentCircuitBreaker:
         half_open_max_calls: int = 3,
         redis_client: redis.Redis | None = None,
     ):
-        """
-        Initialize circuit breaker.
+        """Initialize circuit breaker.
 
         Args:
             name: Identifier for this circuit
@@ -87,6 +84,7 @@ class AgentCircuitBreaker:
             timeout_seconds: Seconds before attempting recovery
             half_open_max_calls: Test calls in half-open state
             redis_client: Redis for distributed state (optional)
+
         """
         self.name = name
         self.failure_threshold = failure_threshold or settings.circuit_breaker_failure_threshold
@@ -110,8 +108,7 @@ class AgentCircuitBreaker:
         *args,
         **kwargs,
     ) -> Any:
-        """
-        Execute function through circuit breaker.
+        """Execute function through circuit breaker.
 
         Args:
             func: Primary function to call (agent decision)
@@ -123,6 +120,7 @@ class AgentCircuitBreaker:
 
         Raises:
             Exception if circuit open and no fallback provided
+
         """
         # Check if circuit is open
         if self.state == CircuitState.OPEN:
@@ -291,8 +289,7 @@ class AgentCircuitBreaker:
 
 
 class AgentHealthChecker:
-    """
-    Health checker for agent governance system.
+    """Health checker for agent governance system.
 
     Monitors agent performance metrics and opens circuit if degraded.
     """
@@ -308,14 +305,14 @@ class AgentHealthChecker:
         self.min_confidence = min_confidence
 
     def check_health(self, agent_metrics: dict[str, Any]) -> bool:
-        """
-        Check if agent is healthy based on metrics.
+        """Check if agent is healthy based on metrics.
 
         Args:
             agent_metrics: Metrics from agent execution
 
         Returns:
             True if healthy, False if degraded
+
         """
         # Check latency
         if agent_metrics.get("latency_ms", 0) > self.max_latency_ms:

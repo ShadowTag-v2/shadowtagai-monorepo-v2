@@ -3,8 +3,7 @@ class EchoProtocol:
         self.max_tokens = max_tokens
 
     def amplify(self, query: str, context: str = "") -> str:
-        """
-        Applies the Leviathan 'Prompt Repetition' technique.
+        """Applies the Leviathan 'Prompt Repetition' technique.
         TVR (Trust-Verify-Repeat) Protocol.
         Transforms: [QUERY] -> [QUERY][QUERY]
 

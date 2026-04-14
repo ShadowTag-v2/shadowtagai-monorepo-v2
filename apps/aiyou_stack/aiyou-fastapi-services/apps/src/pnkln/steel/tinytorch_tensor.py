@@ -47,29 +47,25 @@ class Tensor:
         """Add two tensors element-wise with broadcasting support."""
         if isinstance(other, Tensor):
             return Tensor(self.data + other.data)
-        else:
-            return Tensor(self.data + other)
+        return Tensor(self.data + other)
 
     def __sub__(self, other):
         """Subtract two tensors element-wise."""
         if isinstance(other, Tensor):
             return Tensor(self.data - other.data)
-        else:
-            return Tensor(self.data - other)
+        return Tensor(self.data - other)
 
     def __mul__(self, other):
         """Multiply two tensors element-wise (NOT matrix multiplication)."""
         if isinstance(other, Tensor):
             return Tensor(self.data * other.data)
-        else:
-            return Tensor(self.data * other)
+        return Tensor(self.data * other)
 
     def __truediv__(self, other):
         """Divide two tensors element-wise."""
         if isinstance(other, Tensor):
             return Tensor(self.data / other.data)
-        else:
-            return Tensor(self.data / other)
+        return Tensor(self.data / other)
 
     def matmul(self, other):
         """Matrix multiplication of two tensors."""
@@ -83,7 +79,7 @@ class Tensor:
             if self.shape[-1] != other.shape[-2]:
                 raise ValueError(
                     f"Cannot perform matrix multiplication: {self.shape} @ {other.shape}. "
-                    f"Inner dimensions must match: {self.shape[-1]} ≠ {other.shape[-2]}"
+                    f"Inner dimensions must match: {self.shape[-1]} ≠ {other.shape[-2]}",
                 )
 
         a = self.data
@@ -147,10 +143,9 @@ class Tensor:
         if dim0 is None and dim1 is None:
             if len(self.shape) < 2:
                 return Tensor(self.data.copy())
-            else:
-                axes = list(range(len(self.shape)))
-                axes[-2], axes[-1] = axes[-1], axes[-2]
-                transposed_data = np.transpose(self.data, axes)
+            axes = list(range(len(self.shape)))
+            axes[-2], axes[-1] = axes[-1], axes[-2]
+            transposed_data = np.transpose(self.data, axes)
         else:
             if dim0 is None or dim1 is None:
                 raise ValueError("Both dim0 and dim1 must be specified")
@@ -181,4 +176,3 @@ class Tensor:
 
     def backward(self):
         """Compute gradients (implemented in Module 05: Autograd)."""
-        pass

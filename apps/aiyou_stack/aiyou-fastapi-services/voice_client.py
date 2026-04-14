@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Voice-Enabled UnGPT Client
+"""Voice-Enabled UnGPT Client
 Cross-platform voice capture for Mac/PC with hotkey activation
 Integrates with UnGPT atomic orchestrator and consensus system
 """
@@ -34,8 +33,7 @@ except ImportError:
 
 
 class VoiceCapture:
-    """
-    Cross-platform voice capture using system microphone
+    """Cross-platform voice capture using system microphone
     Supports push-to-talk or continuous listening
     """
 
@@ -79,22 +77,21 @@ class VoiceCapture:
             self._print(f"  [{index}] {name}")
 
     def capture_audio(
-        self, timeout: int | None = None, phrase_time_limit: int | None = None
+        self, timeout: int | None = None, phrase_time_limit: int | None = None,
     ) -> str | None:
-        """
-        Capture audio from microphone and transcribe
+        """Capture audio from microphone and transcribe
 
         Args:
             timeout: Max seconds to wait for speech to start (None = infinite)
             phrase_time_limit: Max seconds for entire phrase (None = infinite)
-        """
 
+        """
         with sr.Microphone() as source:
             self._print("\n[bold green]🎤 Listening... (speak now)[/bold green]")
 
             try:
                 audio = self.recognizer.listen(
-                    source, timeout=timeout, phrase_time_limit=phrase_time_limit
+                    source, timeout=timeout, phrase_time_limit=phrase_time_limit,
                 )
 
                 self._print("[yellow]⏳ Transcribing...[/yellow]")
@@ -102,10 +99,9 @@ class VoiceCapture:
                 # Transcribe based on selected engine
                 if self.engine == "whisper_local":
                     return self._transcribe_whisper_local(audio)
-                elif self.engine == "google":
+                if self.engine == "google":
                     return self._transcribe_google(audio)
-                else:
-                    raise ValueError(f"Unknown engine: {self.engine}")
+                raise ValueError(f"Unknown engine: {self.engine}")
 
             except sr.WaitTimeoutError:
                 self._print("[red]✗ No speech detected (timeout)[/red]")
@@ -116,7 +112,6 @@ class VoiceCapture:
 
     def _transcribe_whisper_local(self, audio: sr.AudioData) -> str:
         """Use local Whisper model (most reliable, works offline)"""
-
         # Save audio to temp file
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
             f.write(audio.get_wav_data())
@@ -144,8 +139,7 @@ class VoiceCapture:
 
 
 class VoiceUnGPTClient:
-    """
-    Desktop client that captures voice and sends to UnGPT orchestrator
+    """Desktop client that captures voice and sends to UnGPT orchestrator
     """
 
     def __init__(
@@ -172,26 +166,22 @@ class VoiceUnGPTClient:
 
     async def send_to_orchestrator(self, query: str) -> dict[str, Any]:
         """Send transcribed query to orchestrator"""
-
         if self.use_consensus and self.consensus_orchestrator:
             # Use multi-LLM consensus
             return await self.consensus_orchestrator.execute_full_consensus(query)
-        else:
-            # Use standard atomic orchestrator
-            return await self.orchestrator.process_query(query)
+        # Use standard atomic orchestrator
+        return await self.orchestrator.process_query(query)
 
     def run_single_query(self):
+        """Capture single query and exit (useful for testing)
         """
-        Capture single query and exit (useful for testing)
-        """
-
         if RICH_AVAILABLE and console:
             console.print(
                 Panel.fit(
                     "[bold cyan]Voice UnGPT Orchestrator[/bold cyan]\n"
                     "[yellow]Speak your query now...[/yellow]",
                     border_style="cyan",
-                )
+                ),
             )
         else:
             print("=" * 60)
@@ -210,10 +200,8 @@ class VoiceUnGPTClient:
             self._display_result(result)
 
     def run_continuous(self):
+        """Run in continuous listening mode: Say wake word to activate
         """
-        Run in continuous listening mode: Say wake word to activate
-        """
-
         wake_word = "hey ungpt"
 
         if RICH_AVAILABLE and console:
@@ -226,7 +214,7 @@ class VoiceUnGPTClient:
                     f"[yellow]Say '{wake_word}' followed by your query[/yellow]\n"
                     f"[dim]Press Ctrl+C to exit[/dim]",
                     border_style="cyan",
-                )
+                ),
             )
         else:
             print("=" * 60)
@@ -257,7 +245,7 @@ class VoiceUnGPTClient:
                             self._display_result(result)
                         else:
                             self._print(
-                                "[yellow]⚠️  Wake word detected but no query provided[/yellow]"
+                                "[yellow]⚠️  Wake word detected but no query provided[/yellow]",
                             )
 
         except KeyboardInterrupt:
@@ -265,7 +253,6 @@ class VoiceUnGPTClient:
 
     def _display_result(self, result: dict[str, Any]):
         """Pretty-print orchestrator result"""
-
         self._print("\n" + "=" * 80)
 
         if "final_synthesis" in result:
@@ -288,18 +275,16 @@ class VoiceUnGPTClient:
             self._print(
                 f"\n[dim]Execution Time: {summary.get('avg_execution_time', 0):.2f}s | "
                 f"Success Rate: {summary.get('success_rate', 0) * 100:.0f}% | "
-                f"Threads: {result.get('audit_trail', {}).get('total_threads', 0)}[/dim]"
+                f"Threads: {result.get('audit_trail', {}).get('total_threads', 0)}[/dim]",
             )
 
 
 def main():
+    """Main CLI for voice-enabled UnGPT orchestrator
     """
-    Main CLI for voice-enabled UnGPT orchestrator
-    """
-
     parser = argparse.ArgumentParser(description="Voice UnGPT Orchestrator")
     parser.add_argument(
-        "--mode", choices=["single", "continuous"], default="single", help="Voice capture mode"
+        "--mode", choices=["single", "continuous"], default="single", help="Voice capture mode",
     )
     parser.add_argument(
         "--engine",
@@ -308,13 +293,13 @@ def main():
         help="Transcription engine",
     )
     parser.add_argument(
-        "--model", default="base", help="Whisper model size (tiny/base/small/medium/large)"
+        "--model", default="base", help="Whisper model size (tiny/base/small/medium/large)",
     )
     parser.add_argument(
-        "--list-mics", action="store_true", help="List available microphones and exit"
+        "--list-mics", action="store_true", help="List available microphones and exit",
     )
     parser.add_argument(
-        "--consensus", action="store_true", help="Use multi-LLM consensus mode (requires API keys)"
+        "--consensus", action="store_true", help="Use multi-LLM consensus mode (requires API keys)",
     )
 
     args = parser.parse_args()

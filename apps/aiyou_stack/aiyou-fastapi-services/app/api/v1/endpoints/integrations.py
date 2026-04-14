@@ -49,7 +49,7 @@ def list_integrations(
     user_id = int(current_user.get("sub"))
     service = IntegrationService(db)
     integrations = service.list_integrations(
-        user_id=user_id, provider=provider, status=status_filter, skip=skip, limit=limit
+        user_id=user_id, provider=provider, status=status_filter, skip=skip, limit=limit,
     )
     return integrations
 
@@ -103,7 +103,6 @@ def delete_integration(
     if not success:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Integration not found")
 
-    return None
 
 
 @router.post("/{integration_id}/credentials", response_model=IntegrationCredentialResponse)
@@ -197,7 +196,7 @@ async def oauth_callback(
 
     oauth_service = OAuthService(db)
     integration = await oauth_service.handle_oauth_callback(
-        code=callback_data.code, state=callback_data.state, user_id=user_id
+        code=callback_data.code, state=callback_data.state, user_id=user_id,
     )
 
     if not integration:
@@ -220,7 +219,7 @@ async def refresh_oauth_token(
 
     if not credential:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to refresh token"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to refresh token",
         )
 
     return credential

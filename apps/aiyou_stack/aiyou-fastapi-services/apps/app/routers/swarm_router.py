@@ -1,5 +1,4 @@
-"""
-Swarm API Router - REST endpoints for LiveSwarm orchestration.
+"""Swarm API Router - REST endpoints for LiveSwarm orchestration.
 
 Endpoints:
 - GET /swarm/status - Swarm status
@@ -122,8 +121,7 @@ async def get_dynasty_tree() -> dict[str, Any]:
 
 @router.post("/activate")
 async def activate_swarm() -> dict[str, Any]:
-    """
-    Activate the swarm and spawn initial agents.
+    """Activate the swarm and spawn initial agents.
 
     This bootstraps the swarm with core specialization agents.
     """

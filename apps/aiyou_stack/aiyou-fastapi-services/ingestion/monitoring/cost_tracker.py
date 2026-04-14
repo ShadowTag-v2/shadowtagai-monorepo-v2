@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Cost Tracking and Budget Monitoring
+"""PNKLN Core Stack - Cost Tracking and Budget Monitoring
 
 Tracks costs across all pipeline operations and alerts when approaching budget limits.
 
@@ -25,7 +24,7 @@ logger = structlog.get_logger(__name__)
 cost_total_usd = Gauge("ingestion_cost_total_usd", "Total cumulative cost in USD")
 cost_by_source = Gauge("ingestion_cost_by_source_usd", "Cost by source in USD", ["source"])
 cost_budget_utilization_pct = Gauge(
-    "ingestion_cost_budget_utilization_pct", "Percentage of monthly budget used"
+    "ingestion_cost_budget_utilization_pct", "Percentage of monthly budget used",
 )
 cost_overage_events = Counter("ingestion_cost_overage_total", "Number of times budget was exceeded")
 
@@ -60,8 +59,7 @@ class BudgetStatus:
 
 
 class CostTracker:
-    """
-    Tracks and monitors pipeline costs against budget.
+    """Tracks and monitors pipeline costs against budget.
 
     Features:
     - Real-time cost tracking per source
@@ -118,8 +116,7 @@ class CostTracker:
         classification_cost: float = 0.0,
         items_processed: int = 0,
     ) -> CostBreakdown:
-        """
-        Record costs from a pipeline run.
+        """Record costs from a pipeline run.
 
         Args:
             youtube_cost: Cost of YouTube API calls
@@ -130,6 +127,7 @@ class CostTracker:
 
         Returns:
             CostBreakdown with totals
+
         """
         self._check_month_rollover()
 
@@ -178,14 +176,13 @@ class CostTracker:
         """Get total spend for a specific source this month."""
         if source == "youtube":
             return sum(c.youtube_cost for c in self._current_month_costs)
-        elif source == "twitter":
+        if source == "twitter":
             return sum(c.twitter_cost for c in self._current_month_costs)
-        elif source == "news":
+        if source == "news":
             return sum(c.news_cost for c in self._current_month_costs)
-        elif source == "classification":
+        if source == "classification":
             return sum(c.classification_cost for c in self._current_month_costs)
-        else:
-            return 0.0
+        return 0.0
 
     def get_budget_status(self) -> BudgetStatus:
         """Get current budget utilization status."""
@@ -252,8 +249,7 @@ class CostTracker:
         news_items: int = 0,
         classify_all: bool = True,
     ) -> dict:
-        """
-        Estimate cost for a planned pipeline run.
+        """Estimate cost for a planned pipeline run.
 
         Args:
             youtube_items: Number of YouTube videos to fetch
@@ -263,6 +259,7 @@ class CostTracker:
 
         Returns:
             Cost estimate breakdown
+
         """
         return self.config.get_cost_estimate(
             youtube_items=youtube_items,

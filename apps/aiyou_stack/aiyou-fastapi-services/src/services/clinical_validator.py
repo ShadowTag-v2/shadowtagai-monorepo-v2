@@ -1,5 +1,4 @@
-"""
-Clinical Validator & Liability Shield
+"""Clinical Validator & Liability Shield
 ====================================
 
 Gating mechanism for AI-generated clinical interpretations.
@@ -29,8 +28,7 @@ class ValidationResult(BaseModel):
 
 
 class ClinicalValidator:
-    """
-    Final gatekeeper for AI Interpreter outputs.
+    """Final gatekeeper for AI Interpreter outputs.
     """
 
     def __init__(self):
@@ -42,12 +40,11 @@ class ClinicalValidator:
         session_id: str = "default_interpreter_session",
         context: dict[str, Any] | None = None,
     ) -> ValidationResult:
-        """
-        Validate interpretation against medical safety standards.
+        """Validate interpretation against medical safety standards.
         """
         # 1. Liability Shield (Unified Mid-check)
         shield_result = await self.shield.mid_check(
-            session_id=session_id, ai_response=raw_text, patient_context=context or {}
+            session_id=session_id, ai_response=raw_text, patient_context=context or {},
         )
 
         # 2. Judge #6 Grounding Check
@@ -86,8 +83,7 @@ class ClinicalValidator:
         )
 
     def _get_liability_disclaimer(self, is_safe: bool) -> str:
-        """
-        Standard medical liability disclaimer based on safety status.
+        """Standard medical liability disclaimer based on safety status.
         """
         base = "DISCLAIMER: This AI-generated interpretation is for informational purposes only. "
         if not is_safe:

@@ -1,5 +1,4 @@
-"""
-Governance API Routes.
+"""Governance API Routes.
 
 Provides endpoints for governance trace viewing and decision auditing.
 FedRAMP compliant with OMB M-25-22 audit trail requirements.
@@ -64,8 +63,7 @@ class TraceUploadResponse(BaseModel):
 
 @router.get("/trace/{decision_id}", response_class=HTMLResponse)
 async def view_trace(request: Request, decision_id: str):
-    """
-    Render the governance trace viewer.
+    """Render the governance trace viewer.
 
     Returns an HTML page that fetches and displays the decision trace
     with animated replay of the logic steps.
@@ -89,8 +87,7 @@ async def view_trace(request: Request, decision_id: str):
 
 @router.post("/trace", response_model=TraceUploadResponse)
 async def upload_trace(trace: TraceUploadRequest):
-    """
-    Upload a new governance decision trace.
+    """Upload a new governance decision trace.
 
     Stores the trace in GCS and returns URLs for accessing it.
     Required for High-Impact AI audit compliance per OMB M-25-22.
@@ -112,7 +109,7 @@ async def upload_trace(trace: TraceUploadRequest):
         gcs_uri = generator.upload_trace(decision_id, trace_record)
         trace_url = generator.generate_trace_url(decision_id)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to upload trace: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to upload trace: {e!s}")
 
     # Build viewer URL (relative)
     viewer_url = f"/governance/trace/{decision_id}"
@@ -126,15 +123,14 @@ async def upload_trace(trace: TraceUploadRequest):
 
 @router.get("/trace/{decision_id}/json")
 async def get_trace_url(decision_id: str, expiration_minutes: int = 15):
-    """
-    Get a signed URL for the trace JSON file.
+    """Get a signed URL for the trace JSON file.
 
     Returns a time-limited URL that can be used to fetch the raw trace data.
     """
     try:
         trace_url = generate_trace_url(decision_id, expiration_minutes)
     except Exception as e:
-        raise HTTPException(status_code=404, detail=f"Trace not found or expired: {str(e)}")
+        raise HTTPException(status_code=404, detail=f"Trace not found or expired: {e!s}")
 
     return {
         "decision_id": decision_id,

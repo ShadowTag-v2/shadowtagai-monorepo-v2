@@ -1,5 +1,4 @@
-"""
-PNKLN Marketplace - Two-sided platform for AI capabilities
+"""PNKLN Marketplace - Two-sided platform for AI capabilities
 
 Revenue streams:
 - Platform fees: 20-30% of transactions

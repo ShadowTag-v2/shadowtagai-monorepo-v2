@@ -1,5 +1,4 @@
-"""
-Shift Management - Agent Pool Rotation
+"""Shift Management - Agent Pool Rotation
 
 Implements 8-hour shifts for 200+ agent swarm to prevent:
 - Token limit exhaustion
@@ -56,8 +55,7 @@ class ShiftManager:
         self.current_shift: ShiftSlot = self._get_current_shift()
 
     def assign_agents_to_shifts(self, agent_ids: list[str], agent_levels: dict[str, int]):
-        """
-        Distribute agents across shifts based on level and load requirements.
+        """Distribute agents across shifts based on level and load requirements.
 
         STRATEGY:
         - Day shift gets 50% of agents (peak activity)
@@ -103,8 +101,7 @@ class ShiftManager:
         return [a.agent_id for a in self.shifts[current]]
 
     def perform_shift_handoff(self, outgoing_shift: ShiftSlot, incoming_shift: ShiftSlot):
-        """
-        Execute shift handoff protocol.
+        """Execute shift handoff protocol.
 
         STEPS:
         1. Outgoing shift commits final state to whiteboard
@@ -153,10 +150,9 @@ class ShiftManager:
 
         if 0 <= hour < 8:
             return ShiftSlot.NIGHT
-        elif 8 <= hour < 16:
+        if 8 <= hour < 16:
             return ShiftSlot.DAY
-        else:
-            return ShiftSlot.EVENING
+        return ShiftSlot.EVENING
 
     def _generate_shift_summary(self, shift: ShiftSlot) -> dict[str, Any]:
         """Generate summary report for completed shift"""

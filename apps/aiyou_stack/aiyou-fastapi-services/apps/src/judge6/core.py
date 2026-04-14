@@ -20,8 +20,7 @@ def health_check():
 
 @app.post("/validate")
 def validate_operation(check: RiskCheck):
-    """
-    Judge#6 Brakes Logic:
+    """Judge#6 Brakes Logic:
     If Confidence < 0.75 -> FREEZE
     """
     if check.confidence < 0.75:

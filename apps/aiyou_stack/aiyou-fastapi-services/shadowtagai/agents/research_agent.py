@@ -1,5 +1,4 @@
-"""
-Gemini Research Agent
+"""Gemini Research Agent
 
 Multi-source research orchestration using native Gemini function calling.
 Integrates with COR orchestrator for parallel execution and ATP_519_scan
@@ -79,8 +78,7 @@ Flag any compliance concerns (GDPR, HIPAA, SOC2, security risks) for ATP 5-19 re
 
 
 class GeminiResearchAgent:
-    """
-    Gemini-native research agent with multi-source orchestration.
+    """Gemini-native research agent with multi-source orchestration.
 
     Capabilities:
     - Native Gemini function calling for Drive, Gmail, Web search
@@ -91,6 +89,7 @@ class GeminiResearchAgent:
     Example:
         agent = GeminiResearchAgent()
         result = await agent.research("What do we know about competitor pricing?")
+
     """
 
     def __init__(
@@ -101,8 +100,7 @@ class GeminiResearchAgent:
         timeout_seconds: int = 60,
         enable_atp_scan: bool = True,
     ):
-        """
-        Initialize Gemini Research Agent.
+        """Initialize Gemini Research Agent.
 
         Args:
             model_name: Gemini model (default gemini-2.0-flash-exp for speed)
@@ -110,6 +108,7 @@ class GeminiResearchAgent:
             max_function_calls: Max function calls per research (default 10)
             timeout_seconds: Total timeout (default 60s)
             enable_atp_scan: Apply ATP_519_scan to output (default True)
+
         """
         self.model_name = model_name
         self.api_key = api_key or os.environ.get("GOOGLE_API_KEY")
@@ -139,8 +138,7 @@ class GeminiResearchAgent:
         self.pipeline = MultiSourceResearchPipeline(enable_atp_scan=self.enable_atp_scan)
 
     async def research(self, query: str, context: ExecutionContext | None = None) -> dict[str, Any]:
-        """
-        Execute research query with multi-source orchestration.
+        """Execute research query with multi-source orchestration.
 
         This method:
         1. Detects research intent and recommended sources
@@ -155,6 +153,7 @@ class GeminiResearchAgent:
 
         Returns:
             Dict with research_output, metrics, and compliance status
+
         """
         datetime.utcnow()
 
@@ -179,7 +178,7 @@ class GeminiResearchAgent:
 
             try:
                 gemini_response = self.gemini_caller.execute(
-                    prompt=synthesis_prompt, validation_callback=self._validate_function_call
+                    prompt=synthesis_prompt, validation_callback=self._validate_function_call,
                 )
                 research_output = gemini_response
             except Exception as e:
@@ -207,8 +206,7 @@ class GeminiResearchAgent:
         }
 
     def _validate_function_call(self, fn_name: str, args: dict[str, Any]) -> bool:
-        """
-        Validate function calls before execution.
+        """Validate function calls before execution.
 
         Integration point for JR Engine / Judge #6 validation.
 
@@ -218,6 +216,7 @@ class GeminiResearchAgent:
 
         Returns:
             True if call is approved, False to block
+
         """
         # Allow all research tool calls by default
         allowed_functions = {"drive_search", "gmail_search", "web_search"}
@@ -320,8 +319,7 @@ def get_research_agent() -> GeminiResearchAgent:
 
 
 async def research(query: str) -> dict[str, Any]:
-    """
-    Execute research query.
+    """Execute research query.
 
     Convenience function for quick research execution.
 
@@ -330,6 +328,7 @@ async def research(query: str) -> dict[str, Any]:
 
     Returns:
         Research results dict
+
     """
     agent = get_research_agent()
     return await agent.research(query)

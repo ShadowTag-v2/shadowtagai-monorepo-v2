@@ -1,5 +1,4 @@
-"""
-Enterprise Valuation Model
+"""Enterprise Valuation Model
 ==========================
 
 Comprehensive valuation engine for ShadowTag-v4 aerospace and infrastructure divisions.
@@ -76,8 +75,7 @@ class MonteCarloResult:
 
 
 class EnterpriseValuationModel:
-    """
-    Comprehensive enterprise valuation for ShadowTag-v4
+    """Comprehensive enterprise valuation for ShadowTag-v4
 
     Integrates:
     - Infrastructure Mesh (Starlink + CoreWeave + Telecom + Vehicles + Buoys)
@@ -145,7 +143,7 @@ class EnterpriseValuationModel:
         }
 
     def calculate_division_value(
-        self, division_key: str, scenario: MarketScenario = MarketScenario.BASE
+        self, division_key: str, scenario: MarketScenario = MarketScenario.BASE,
     ) -> float:
         """Calculate single division valuation"""
         division = self.divisions[division_key]
@@ -162,7 +160,7 @@ class EnterpriseValuationModel:
         return ebitda * adjusted_ebitda_multiple
 
     def calculate_total_enterprise_value(
-        self, scenario: MarketScenario = MarketScenario.BASE
+        self, scenario: MarketScenario = MarketScenario.BASE,
     ) -> float:
         """Calculate total enterprise value across all divisions"""
         total = 0.0
@@ -171,7 +169,7 @@ class EnterpriseValuationModel:
         return total
 
     def calculate_aerospace_contribution(
-        self, scenario: MarketScenario = MarketScenario.BASE
+        self, scenario: MarketScenario = MarketScenario.BASE,
     ) -> float:
         """Calculate aerospace division contribution to enterprise value"""
         # Aerospace is part of defense_pnt + infrastructure_mesh
@@ -181,14 +179,14 @@ class EnterpriseValuationModel:
         return aerospace_uplift
 
     def run_monte_carlo(
-        self, iterations: int = 10_000, target_valuation_usd: float = 12_000_000_000
+        self, iterations: int = 10_000, target_valuation_usd: float = 12_000_000_000,
     ) -> MonteCarloResult:
-        """
-        Run Monte Carlo simulation for valuation range
+        """Run Monte Carlo simulation for valuation range
 
         Args:
             iterations: Number of simulation runs
             target_valuation_usd: Threshold for probability calculation
+
         """
         results = []
 
@@ -246,14 +244,14 @@ class EnterpriseValuationModel:
         )
 
     def calculate_founder_value(
-        self, equity_percent: float = 60.0, scenario: MarketScenario = MarketScenario.BASE
+        self, equity_percent: float = 60.0, scenario: MarketScenario = MarketScenario.BASE,
     ) -> dict:
-        """
-        Calculate founder equity value and cash flow
+        """Calculate founder equity value and cash flow
 
         Args:
             equity_percent: Founder equity percentage (default 60%)
             scenario: Market scenario
+
         """
         total_ev = self.calculate_total_enterprise_value(scenario)
         total_arr = sum(div.arr_usd for div in self.divisions.values() if div.arr_usd > 0)
@@ -319,10 +317,10 @@ class EnterpriseValuationModel:
                 "mean_usd": monte_carlo.mean,
                 "std_dev_usd": monte_carlo.std_dev,
                 "probability_ge_12b": monte_carlo.probability_above_threshold.get(
-                    12_000_000_000, 0
+                    12_000_000_000, 0,
                 ),
                 "probability_ge_20b": monte_carlo.probability_above_threshold.get(
-                    20_000_000_000, 0
+                    20_000_000_000, 0,
                 ),
             },
             "founder_value": self.calculate_founder_value(),

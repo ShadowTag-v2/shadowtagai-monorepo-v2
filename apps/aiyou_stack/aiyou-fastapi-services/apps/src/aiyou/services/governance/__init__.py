@@ -1,5 +1,4 @@
-"""
-Governance service for FedRAMP-compliant AI decision auditing.
+"""Governance service for FedRAMP-compliant AI decision auditing.
 
 Provides:
 - Signed URL generation for trace access
@@ -15,6 +14,6 @@ from .signed_urls import (
 
 __all__ = [
     "SignedURLGenerator",
-    "get_signed_url_generator",
     "generate_trace_url",
+    "get_signed_url_generator",
 ]

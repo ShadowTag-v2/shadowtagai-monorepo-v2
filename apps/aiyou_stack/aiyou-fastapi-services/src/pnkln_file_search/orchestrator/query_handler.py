@@ -1,5 +1,4 @@
-"""
-Query Handler with File Search Integration
+"""Query Handler with File Search Integration
 Orchestrates parallel execution of file search and Judge #6 enforcement
 """
 
@@ -35,8 +34,7 @@ class PolicyContext:
 
 
 class QueryHandler:
-    """
-    Handles query processing with integrated file search and Judge #6
+    """Handles query processing with integrated file search and Judge #6
 
     Architecture:
     1. Parallel execution: File search + Judge #6 Layer 1 (Gemini)
@@ -64,10 +62,9 @@ class QueryHandler:
             logger.info("query_handler_initialized", model=self.settings.vertex_ai_model)
 
     async def get_policy_context(
-        self, corpus_name: str, query: str, top_k: int | None = None
+        self, corpus_name: str, query: str, top_k: int | None = None,
     ) -> PolicyContext:
-        """
-        Query File Search API with retrieval config
+        """Query File Search API with retrieval config
 
         Args:
             corpus_name: Corpus to query
@@ -76,6 +73,7 @@ class QueryHandler:
 
         Returns:
             PolicyContext with citations and source attribution
+
         """
         start_time = time.time()
         top_k = top_k or self.settings.file_search_top_k
@@ -88,7 +86,7 @@ class QueryHandler:
                         rag_corpora=[corpus_name],
                     ),
                     similarity_top_k=top_k,
-                )
+                ),
             )
 
             # Generate content with file search
@@ -113,7 +111,7 @@ class QueryHandler:
                             "type": "web",
                             "uri": chunk.web.uri,
                             "title": chunk.web.title or "",
-                        }
+                        },
                     )
                     source_docs.add(chunk.web.uri)
                 elif hasattr(chunk, "retrieved_context"):
@@ -123,7 +121,7 @@ class QueryHandler:
                             "type": "corpus",
                             "text": chunk.retrieved_context.text,
                             "uri": getattr(chunk.retrieved_context, "uri", ""),
-                        }
+                        },
                     )
                     if hasattr(chunk.retrieved_context, "uri"):
                         source_docs.add(chunk.retrieved_context.uri)
@@ -163,8 +161,7 @@ class QueryHandler:
             raise
 
     async def judge_gemini_layer1(self, query: str) -> dict:
-        """
-        Execute Judge #6 Layer 1 (Gemini fine-tuned model)
+        """Execute Judge #6 Layer 1 (Gemini fine-tuned model)
 
         This is a placeholder for your actual Judge #6 Layer 1 implementation.
         Replace with real ATP 5-19 compliance checks.
@@ -174,6 +171,7 @@ class QueryHandler:
 
         Returns:
             Assessment with risk signals
+
         """
         start_time = time.time()
 
@@ -205,14 +203,14 @@ class QueryHandler:
             raise
 
     async def judge_hybrid_enforce(self, enhanced_context: dict) -> dict:
-        """
-        Execute Judge #6 Layers 2+3 sequentially (deterministic)
+        """Execute Judge #6 Layers 2+3 sequentially (deterministic)
 
         Args:
             enhanced_context: Merged context from file search and Layer 1
 
         Returns:
             Final enforcement decision
+
         """
         start_time = time.time()
 
@@ -254,8 +252,7 @@ class QueryHandler:
         vertical: str,
         corpus_name: str | None = None,
     ) -> dict:
-        """
-        Process query with file search and Judge #6 enforcement
+        """Process query with file search and Judge #6 enforcement
 
         Step 1: Parallel execution - File search + Judge #6 Layer 1
         Step 2: Merge contexts
@@ -268,6 +265,7 @@ class QueryHandler:
 
         Returns:
             Complete response with enforcement decision and context
+
         """
         overall_start = time.time()
 

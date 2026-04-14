@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Integration Tests for LLM Orchestrator + PNKLN Integration
+"""Integration Tests for LLM Orchestrator + PNKLN Integration
 Tests the Superpowers Marketplace integration with PNKLN Core Stack
 """
 
@@ -26,7 +25,7 @@ async def test_grok_intake():
 
     # Test intelligence query
     threads = await intake.decompose_query(
-        "Classify this intelligence item: FAA proposes new DO-178D regulation"
+        "Classify this intelligence item: FAA proposes new DO-178D regulation",
     )
 
     print("Query: 'Classify this intelligence item: FAA proposes new DO-178D regulation'")
@@ -43,7 +42,7 @@ async def test_grok_intake():
 
     # Test code query
     threads = await intake.decompose_query(
-        "Implement a FastAPI endpoint for user authentication with JWT tokens"
+        "Implement a FastAPI endpoint for user authentication with JWT tokens",
     )
 
     print("Query: 'Implement a FastAPI endpoint for user authentication with JWT tokens'")
@@ -102,7 +101,7 @@ async def test_intelligence_classification():
     result = await orchestrator.process_query(
         query="Classify: FAA Proposes DO-178D Update | "
         "The FAA announced new AI regulations for aviation systems | "
-        "aviation, regulation, AI"
+        "aviation, regulation, AI",
     )
 
     print(f"Query: {result.query[:80]}...")
@@ -169,7 +168,7 @@ async def test_review_rotation():
 
     # Test without review
     result_no_review = await orchestrator.process_query(
-        query="Analyze financial data trends", enable_review_rotation=False
+        query="Analyze financial data trends", enable_review_rotation=False,
     )
 
     print("Without Review Rotation:")
@@ -183,7 +182,7 @@ async def test_review_rotation():
 
     # Test with review
     result_with_review = await orchestrator.process_query(
-        query="Analyze financial data trends", enable_review_rotation=True
+        query="Analyze financial data trends", enable_review_rotation=True,
     )
 
     print("\nWith Review Rotation:")

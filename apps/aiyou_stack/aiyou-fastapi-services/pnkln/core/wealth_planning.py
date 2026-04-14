@@ -1,5 +1,4 @@
-"""
-Wealth Planning Analyzer - Jobs-Inspired Financial Strategy
+"""Wealth Planning Analyzer - Jobs-Inspired Financial Strategy
 
 Identifies revenue leaks, optimizes conversion funnels, and recommends
 leverage strategies for business growth. Integrates with JR Engine for
@@ -55,8 +54,7 @@ class LeverageType(Enum):
 
 @dataclass
 class RevenueLeak:
-    """
-    Identified revenue leak.
+    """Identified revenue leak.
 
     Attributes:
         leak_id: Unique leak identifier
@@ -68,6 +66,7 @@ class RevenueLeak:
         fix_difficulty: Difficulty to fix (1-5, 1=easy, 5=hard)
         fix_timeframe_days: Estimated days to fix
         risk_assessment: JR Engine ATP 5-19 risk assessment
+
     """
 
     leak_id: str
@@ -83,8 +82,7 @@ class RevenueLeak:
 
 @dataclass
 class FunnelStage:
-    """
-    Single stage in conversion funnel.
+    """Single stage in conversion funnel.
 
     Attributes:
         stage_name: Stage name (e.g., "Trial", "Paid", "Enterprise")
@@ -93,6 +91,7 @@ class FunnelStage:
         monthly_volume: Monthly users at this stage
         potential_lift_pct: Potential improvement % points
         optimization_tactics: Recommended tactics
+
     """
 
     stage_name: str
@@ -105,8 +104,7 @@ class FunnelStage:
 
 @dataclass
 class FunnelRedesign:
-    """
-    Funnel redesign recommendation.
+    """Funnel redesign recommendation.
 
     Attributes:
         current_funnel: Current funnel stages
@@ -116,6 +114,7 @@ class FunnelRedesign:
         implementation_complexity: Complexity (1-5)
         roi_projection: ROI projection (X:1 ratio)
         risk_assessment: JR Engine ATP 5-19 risk assessment
+
     """
 
     current_funnel: list[FunnelStage]
@@ -129,8 +128,7 @@ class FunnelRedesign:
 
 @dataclass
 class LeverageStrategy:
-    """
-    Growth leverage strategy.
+    """Growth leverage strategy.
 
     Attributes:
         strategy_id: Unique strategy identifier
@@ -141,6 +139,7 @@ class LeverageStrategy:
         required_investment_usd: Required investment
         confidence: Confidence in projection (0.0-1.0)
         risk_assessment: JR Engine ATP 5-19 risk assessment
+
     """
 
     strategy_id: str
@@ -155,8 +154,7 @@ class LeverageStrategy:
 
 @dataclass
 class WealthPlanningResult:
-    """
-    Complete wealth planning analysis.
+    """Complete wealth planning analysis.
 
     Attributes:
         revenue_leaks: Identified revenue leaks
@@ -166,6 +164,7 @@ class WealthPlanningResult:
         total_opportunity_usd: Total opportunity (leaks fixed + funnel + leverage)
         execution_priority: Ordered list of actions
         analysis_time_ms: Analysis execution time
+
     """
 
     revenue_leaks: list[RevenueLeak]
@@ -178,8 +177,7 @@ class WealthPlanningResult:
 
 
 class WealthPlanningAnalyzer:
-    """
-    Jobs-Inspired Wealth Planning Analyzer.
+    """Jobs-Inspired Wealth Planning Analyzer.
 
     Performance targets:
     - Leak detection accuracy: ≥90%
@@ -189,11 +187,11 @@ class WealthPlanningAnalyzer:
     """
 
     def __init__(self, jr_engine: JREngine | None = None):
-        """
-        Initialize wealth planning analyzer.
+        """Initialize wealth planning analyzer.
 
         Args:
             jr_engine: Optional JR Engine for risk assessment (creates new if None)
+
         """
         self.jr_engine = jr_engine or JREngine()
 
@@ -219,8 +217,7 @@ class WealthPlanningAnalyzer:
         churn_rate: float,
         industry: str = "saas_b2b",
     ) -> list[RevenueLeak]:
-        """
-        Detect revenue leaks.
+        """Detect revenue leaks.
 
         Args:
             monthly_revenue: Current monthly revenue
@@ -231,6 +228,7 @@ class WealthPlanningAnalyzer:
 
         Returns:
             List of detected revenue leaks
+
         """
         leaks = []
         leak_counter = 0
@@ -263,7 +261,7 @@ class WealthPlanningAnalyzer:
                     fix_difficulty=4,  # Hard to fix
                     fix_timeframe_days=90,
                     risk_assessment=risk_decision,
-                )
+                ),
             )
 
         # Leak 2: Burn rate too high relative to revenue
@@ -294,7 +292,7 @@ class WealthPlanningAnalyzer:
                     fix_difficulty=3,  # Moderate
                     fix_timeframe_days=60,
                     risk_assessment=risk_decision,
-                )
+                ),
             )
 
         # Leak 3: Low ARPU (if customer count > 10)
@@ -325,20 +323,20 @@ class WealthPlanningAnalyzer:
                         fix_difficulty=2,  # Moderate-easy (pricing change)
                         fix_timeframe_days=30,
                         risk_assessment=risk_decision,
-                    )
+                    ),
                 )
 
         return leaks
 
     def _design_funnel(self, current_metrics: dict[str, float]) -> FunnelRedesign | None:
-        """
-        Design optimized funnel.
+        """Design optimized funnel.
 
         Args:
             current_metrics: Current funnel metrics
 
         Returns:
             Funnel redesign recommendation
+
         """
         # Extract current funnel
         current_trial_to_paid = current_metrics.get("trial_to_paid_rate", 0.10)
@@ -383,7 +381,7 @@ class WealthPlanningAnalyzer:
                         "A/B test onboarding flow",
                         "Add success case studies",
                         "Implement value demonstration",
-                    ]
+                    ],
                 )
 
             # Additional tactics for specific stages
@@ -404,7 +402,7 @@ class WealthPlanningAnalyzer:
                     monthly_volume=stage.monthly_volume,
                     potential_lift_pct=potential_lift * 100,
                     optimization_tactics=tactics,
-                )
+                ),
             )
 
             total_lift_pct += potential_lift * 100
@@ -438,14 +436,14 @@ class WealthPlanningAnalyzer:
         )
 
     def _identify_leverage(self, current_state: dict[str, Any]) -> list[LeverageStrategy]:
-        """
-        Identify growth leverage strategies.
+        """Identify growth leverage strategies.
 
         Args:
             current_state: Current business state
 
         Returns:
             List of leverage strategies
+
         """
         strategies = []
         strategy_counter = 0
@@ -479,7 +477,7 @@ class WealthPlanningAnalyzer:
                     required_investment_usd=required_investment,
                     confidence=0.80,
                     risk_assessment=risk_decision,
-                )
+                ),
             )
 
         # Strategy 2: Pricing power
@@ -508,7 +506,7 @@ class WealthPlanningAnalyzer:
                     required_investment_usd=required_investment,
                     confidence=0.75,
                     risk_assessment=risk_decision,
-                )
+                ),
             )
 
         # Strategy 3: Content marketing leverage
@@ -537,7 +535,7 @@ class WealthPlanningAnalyzer:
                     required_investment_usd=required_investment,
                     confidence=0.70,
                     risk_assessment=risk_decision,
-                )
+                ),
             )
 
         return strategies
@@ -552,8 +550,7 @@ class WealthPlanningAnalyzer:
         team_size: int = 10,
         industry: str = "saas_b2b",
     ) -> WealthPlanningResult:
-        """
-        Complete wealth planning analysis.
+        """Complete wealth planning analysis.
 
         Args:
             monthly_revenue: Current monthly revenue
@@ -566,6 +563,7 @@ class WealthPlanningAnalyzer:
 
         Returns:
             Complete wealth planning result
+
         """
         start_time = time.time()
 
@@ -606,14 +604,14 @@ class WealthPlanningAnalyzer:
             [
                 f"Fix {l.category.value}: {l.description} (${l.annual_impact_usd:,.0f}/year)"
                 for l in quick_win_leaks
-            ]
+            ],
         )
 
         # Funnel optimization (high ROI, moderate effort)
         if funnel_redesign and funnel_redesign.projected_lift_pct > 5:
             execution_priority.append(
                 f"Optimize funnel: +{funnel_redesign.projected_lift_pct:.1f}% lift "
-                f"(${funnel_redesign.projected_revenue_impact_usd * 12:,.0f}/year)"
+                f"(${funnel_redesign.projected_revenue_impact_usd * 12:,.0f}/year)",
             )
 
         # High ROI leverage strategies
@@ -623,7 +621,7 @@ class WealthPlanningAnalyzer:
             [
                 f"Execute {s.leverage_type.value}: {s.description} (ROI {s.projected_roi:.1f}:1)"
                 for s in high_roi_strategies
-            ]
+            ],
         )
 
         # Remaining leaks
@@ -633,7 +631,7 @@ class WealthPlanningAnalyzer:
             [
                 f"Fix {l.category.value}: {l.description} (${l.annual_impact_usd:,.0f}/year, difficulty {l.fix_difficulty}/5)"
                 for l in remaining_leaks
-            ]
+            ],
         )
 
         analysis_time_ms = (time.time() - start_time) * 1000

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Legal Evidence Query Interface.
+"""Legal Evidence Query Interface.
 
 Queries the ChromaDB knowledge graph populated by evidence_pipeline.py.
 """

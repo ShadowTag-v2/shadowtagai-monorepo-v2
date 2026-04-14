@@ -1,5 +1,4 @@
-"""
-Judge #6 Enforcement - ShadowTag-v2JR Doctrine Compliance & Gemini Integration
+"""Judge #6 Enforcement - ShadowTag-v2JR Doctrine Compliance & Gemini Integration
 
 This module implements the Judge #6 enforcement layer from ShadowTag-v2JR doctrine:
 1. Purpose, Reasons, Brakes (PRB) validation gates
@@ -95,11 +94,11 @@ class PurposeGate:
         self.doctrine = doctrine
 
     def validate(self, task_description: str, context: dict[str, Any]) -> tuple[float, list[str]]:
-        """
-        Validate task aligns with strategic purpose
+        """Validate task aligns with strategic purpose
 
         Returns:
             tuple: (score, violations)
+
         """
         score = 1.0
         violations = []
@@ -111,7 +110,7 @@ class PurposeGate:
             if context.get("cost_estimate", 0) > self.doctrine.bootstrap_limit:
                 score -= 0.4
                 violations.append(
-                    f"Capital expenditure violates ${self.doctrine.bootstrap_limit}K bootstrap constraint"
+                    f"Capital expenditure violates ${self.doctrine.bootstrap_limit}K bootstrap constraint",
                 )
 
         # Check for strategic alignment with 30-vertical expansion
@@ -140,13 +139,13 @@ class ReasonsGate:
         self.skill_registry = skill_registry
 
     def validate(
-        self, task_description: str, justification: str, risk_level: str
+        self, task_description: str, justification: str, risk_level: str,
     ) -> tuple[float, list[str]]:
-        """
-        Validate task justification is sound
+        """Validate task justification is sound
 
         Returns:
             tuple: (score, violations)
+
         """
         score = 1.0
         violations = []
@@ -183,13 +182,13 @@ class BrakesGate:
         self.doctrine = doctrine
 
     def validate(
-        self, task_description: str, skill: SkillMetadata | None, context: dict[str, Any]
+        self, task_description: str, skill: SkillMetadata | None, context: dict[str, Any],
     ) -> tuple[bool, list[str]]:
-        """
-        Check if brakes should be triggered
+        """Check if brakes should be triggered
 
         Returns:
             tuple: (brakes_triggered, violations)
+
         """
         brakes_triggered = False
         violations = []
@@ -226,7 +225,7 @@ class BrakesGate:
         if compliance_violations:
             brakes_triggered = True
             violations.append(
-                f"BRAKE TRIGGERED: Compliance violations: {', '.join(compliance_violations)}"
+                f"BRAKE TRIGGERED: Compliance violations: {', '.join(compliance_violations)}",
             )
 
         # BRAKE 4: Execution time exceeds doctrine limits
@@ -234,7 +233,7 @@ class BrakesGate:
         if estimated_hours > self.doctrine.max_execution_hours:
             brakes_triggered = True
             violations.append(
-                f"BRAKE TRIGGERED: Estimated execution time ({estimated_hours}h) exceeds limit ({self.doctrine.max_execution_hours}h)"
+                f"BRAKE TRIGGERED: Estimated execution time ({estimated_hours}h) exceeds limit ({self.doctrine.max_execution_hours}h)",
             )
 
         # BRAKE 5: Missing watermark requirement
@@ -249,11 +248,11 @@ class GeminiValidator:
     """Google Gemini secondary validation layer"""
 
     def __init__(self, api_key: str | None = None):
-        """
-        Initialize Gemini validator
+        """Initialize Gemini validator
 
         Args:
             api_key: Google API key (defaults to GOOGLE_API_KEY env var)
+
         """
         self.api_key = api_key or os.environ.get("GOOGLE_API_KEY")
 
@@ -267,13 +266,13 @@ class GeminiValidator:
             logger.warning("Gemini validator disabled (API key missing or package not installed)")
 
     def validate_task(
-        self, task_description: str, justification: str, risk_level: str
+        self, task_description: str, justification: str, risk_level: str,
     ) -> dict[str, Any] | None:
-        """
-        Perform secondary validation using Gemini
+        """Perform secondary validation using Gemini
 
         Returns:
             Validation results or None if Gemini unavailable
+
         """
         if not self.enabled:
             return None
@@ -323,8 +322,7 @@ Provide scores and brief rationale. Format response as JSON:
 
 
 class Judge6Enforcer:
-    """
-    Judge #6 Enforcement Engine - Complete PRB validation and enforcement
+    """Judge #6 Enforcement Engine - Complete PRB validation and enforcement
     """
 
     def __init__(
@@ -333,13 +331,13 @@ class Judge6Enforcer:
         gemini_api_key: str | None = None,
         doctrine: DoctrineConstraints | None = None,
     ):
-        """
-        Initialize Judge #6 Enforcer
+        """Initialize Judge #6 Enforcer
 
         Args:
             api_key: Anthropic API key
             gemini_api_key: Google API key for Gemini
             doctrine: Doctrine constraints (uses defaults if not provided)
+
         """
         self.doctrine = doctrine or DoctrineConstraints()
         self.skill_registry = CORSkillRegistry(api_key=api_key)
@@ -358,10 +356,9 @@ class Judge6Enforcer:
         logger.info("Judge #6 Enforcer initialized with PRB gates")
 
     def validate_task(
-        self, task_description: str, justification: str = "", context: dict[str, Any] | None = None
+        self, task_description: str, justification: str = "", context: dict[str, Any] | None = None,
     ) -> ValidationResult:
-        """
-        Perform complete PRB validation on a task
+        """Perform complete PRB validation on a task
 
         Args:
             task_description: Task to validate
@@ -370,6 +367,7 @@ class Judge6Enforcer:
 
         Returns:
             ValidationResult with enforcement decision
+
         """
         context = context or {}
         violations = []
@@ -390,13 +388,13 @@ class Judge6Enforcer:
 
         # GATE 2: REASONS validation
         reasons_score, reasons_violations = self.reasons_gate.validate(
-            task_description, justification, risk_level
+            task_description, justification, risk_level,
         )
         violations.extend(reasons_violations)
 
         # GATE 3: BRAKES check
         brakes_triggered, brakes_violations = self.brakes_gate.validate(
-            task_description, skill, context
+            task_description, skill, context,
         )
         violations.extend(brakes_violations)
 
@@ -404,12 +402,12 @@ class Judge6Enforcer:
         gemini_result = None
         if self.gemini_validator.enabled:
             gemini_result = self.gemini_validator.validate_task(
-                task_description, justification, risk_level
+                task_description, justification, risk_level,
             )
 
             if gemini_result and gemini_result.get("recommendation") == "REJECT":
                 violations.append(
-                    f"Gemini validation rejected: {gemini_result.get('rationale', 'No rationale')}"
+                    f"Gemini validation rejected: {gemini_result.get('rationale', 'No rationale')}",
                 )
 
         # Determine overall validation result
@@ -469,20 +467,20 @@ class Judge6Enforcer:
         self.audit_log.append(result)
 
         logger.info(
-            f"Validation complete: {violation_level.value} - {'BLOCKED' if not is_valid else 'APPROVED'}"
+            f"Validation complete: {violation_level.value} - {'BLOCKED' if not is_valid else 'APPROVED'}",
         )
 
         return result
 
     def export_audit_log(self, output_path: str = "judge6_audit_log.json") -> str:
-        """
-        Export comprehensive audit log
+        """Export comprehensive audit log
 
         Args:
             output_path: Path to write audit log
 
         Returns:
             Path to audit log file
+
         """
         audit_data = {
             "generated_at": datetime.utcnow().isoformat(),

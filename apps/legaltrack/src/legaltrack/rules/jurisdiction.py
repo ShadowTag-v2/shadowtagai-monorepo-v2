@@ -1,5 +1,4 @@
-"""
-Jurisdiction Rule Engine — LegalTrack (Cloud Run Native)
+"""Jurisdiction Rule Engine — LegalTrack (Cloud Run Native)
 ================================
 Applies jurisdiction-specific deadline math over a trigger date.
 MVP baseline: FRCP (Federal Rules of Civil Procedure).
@@ -38,7 +37,7 @@ _FEDERAL_HOLIDAYS: frozenset[datetime.date] = frozenset(
         datetime.date(2026, 11, 11),
         datetime.date(2026, 11, 26),
         datetime.date(2026, 12, 25),
-    }
+    },
 )
 
 
@@ -111,8 +110,7 @@ FRCP_RULES: list[RulePack] = [
 
 
 class JurisdictionEngine:
-    """
-    Applies deadline math to a trigger date under a specific jurisdiction.
+    """Applies deadline math to a trigger date under a specific jurisdiction.
 
     Usage:
         engine = JurisdictionEngine()

@@ -1,5 +1,4 @@
-"""
-GAIN-RL Loss Module
+"""GAIN-RL Loss Module
 Gradient-Aware Informed Negation for Reinforcement Learning
 
 Entropy-targeted gradient masking for stable RL training.
@@ -11,8 +10,8 @@ from typing import Optional, Union
 
 try:
     import torch
-    import torch.nn as nn
     import torch.nn.functional as F
+    from torch import nn
 
     TORCH_AVAILABLE = True
 except ImportError:
@@ -25,8 +24,7 @@ except ImportError:
 
 
 class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
-    """
-    Gradient-Aware Informed Negation (GAIN) RL Loss
+    """Gradient-Aware Informed Negation (GAIN) RL Loss
 
     Combines:
     - Entropy-targeted loss for exploration/exploitation balance
@@ -55,8 +53,7 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         min_temperature: float = 0.1,
         max_temperature: float = 2.0,
     ):
-        """
-        Initialize GAIN-RL Loss
+        """Initialize GAIN-RL Loss
 
         Args:
             alpha: Weight for entropy regularization term
@@ -67,6 +64,7 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
             adaptive_temperature: Enable automatic temperature adjustment
             min_temperature: Minimum allowed temperature
             max_temperature: Maximum allowed temperature
+
         """
         if TORCH_AVAILABLE:
             super().__init__()
@@ -92,8 +90,7 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         old_log_probs: Optional["torch.Tensor"] = None,
         mask: Optional["torch.Tensor"] = None,
     ) -> "torch.Tensor":
-        """
-        Compute GAIN-RL loss
+        """Compute GAIN-RL loss
 
         Args:
             logits: Model output logits [batch, seq_len, vocab] or [batch, num_actions]
@@ -104,6 +101,7 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
 
         Returns:
             Scalar loss tensor
+
         """
         if not TORCH_AVAILABLE:
             raise RuntimeError("PyTorch is required for GAIN-RL loss computation")
@@ -191,10 +189,9 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         return total_loss
 
     def _compute_gradient_penalty(
-        self, logits: "torch.Tensor", probs: "torch.Tensor"
+        self, logits: "torch.Tensor", probs: "torch.Tensor",
     ) -> "torch.Tensor":
-        """
-        Compute gradient penalty for regularization
+        """Compute gradient penalty for regularization
 
         Penalizes sharp probability distributions to encourage smoother gradients
         """
@@ -208,8 +205,7 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         return penalty
 
     def _update_temperature(self, current_entropy: float):
-        """
-        Update temperature based on entropy EMA
+        """Update temperature based on entropy EMA
 
         If entropy is below target, increase temperature to encourage exploration.
         If entropy is above target, decrease temperature to encourage exploitation.
@@ -225,7 +221,7 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         # Proportional control
         adjustment = 0.01 * entropy_error
         self.temperature = max(
-            self.min_temperature, min(self.max_temperature, self.temperature + adjustment)
+            self.min_temperature, min(self.max_temperature, self.temperature + adjustment),
         )
 
     def get_stats(self) -> dict:
@@ -248,8 +244,7 @@ def gain_rl_loss(
     entropy_target: float = 0.5,
     temperature: float = 1.0,
 ) -> "torch.Tensor":
-    """
-    Functional interface for GAIN-RL loss
+    """Functional interface for GAIN-RL loss
 
     Args:
         logits: Model output logits
@@ -266,6 +261,7 @@ def gain_rl_loss(
     Usage:
         loss = gain_rl_loss(logits, targets, advantages)
         loss.backward()
+
     """
     loss_fn = GAINRLLoss(
         alpha=alpha,
@@ -278,8 +274,7 @@ def gain_rl_loss(
 
 
 class GAINRLTrainer:
-    """
-    Training wrapper for GAIN-RL optimization
+    """Training wrapper for GAIN-RL optimization
 
     Provides high-level API for training with GAIN-RL loss
     """
@@ -292,8 +287,7 @@ class GAINRLTrainer:
         gradient_accumulation_steps: int = 1,
         max_grad_norm: float = 1.0,
     ):
-        """
-        Initialize GAIN-RL trainer
+        """Initialize GAIN-RL trainer
 
         Args:
             model: PyTorch model to train
@@ -301,6 +295,7 @@ class GAINRLTrainer:
             loss_fn: GAIN-RL loss function (created if not provided)
             gradient_accumulation_steps: Steps before optimizer update
             max_grad_norm: Maximum gradient norm for clipping
+
         """
         if not TORCH_AVAILABLE:
             raise RuntimeError("PyTorch is required for GAIN-RL training")
@@ -320,8 +315,7 @@ class GAINRLTrainer:
         targets: "torch.Tensor",
         advantages: Optional["torch.Tensor"] = None,
     ) -> tuple[float, dict]:
-        """
-        Execute single training step
+        """Execute single training step
 
         Args:
             inputs: Model inputs
@@ -330,6 +324,7 @@ class GAINRLTrainer:
 
         Returns:
             Tuple of (loss value, statistics dict)
+
         """
         self.model.train()
 
@@ -387,8 +382,7 @@ class GAINRLTrainer:
 
 
 class EntropyTargetedLoss(nn.Module if TORCH_AVAILABLE else object):
-    """
-    Entropy-Targeted RL Training Loss
+    """Entropy-Targeted RL Training Loss
 
     PRISM Integration: Focus compute only on high-entropy "critical fork" tokens.
     Achieves 2.5x faster training by ignoring predictable tokens.
@@ -422,8 +416,7 @@ class EntropyTargetedLoss(nn.Module if TORCH_AVAILABLE else object):
         temperature: float = 1.0,
         warmup_steps: int = 1000,
     ):
-        """
-        Initialize Entropy-Targeted Loss
+        """Initialize Entropy-Targeted Loss
 
         Args:
             entropy_threshold: Threshold for identifying critical forks (0-1)
@@ -431,6 +424,7 @@ class EntropyTargetedLoss(nn.Module if TORCH_AVAILABLE else object):
             scale_by_entropy: Scale loss by entropy magnitude
             temperature: Temperature for entropy calculation
             warmup_steps: Steps to gradually increase threshold
+
         """
         if TORCH_AVAILABLE:
             super().__init__()
@@ -453,8 +447,7 @@ class EntropyTargetedLoss(nn.Module if TORCH_AVAILABLE else object):
         attention_mask: Optional["torch.Tensor"] = None,
         return_stats: bool = False,
     ) -> Union["torch.Tensor", tuple["torch.Tensor", dict]]:
-        """
-        Compute entropy-targeted loss
+        """Compute entropy-targeted loss
 
         Args:
             logits: Model logits [batch, seq_len, vocab_size]
@@ -464,6 +457,7 @@ class EntropyTargetedLoss(nn.Module if TORCH_AVAILABLE else object):
 
         Returns:
             Loss tensor (and optionally stats dict)
+
         """
         if not TORCH_AVAILABLE:
             raise RuntimeError("PyTorch is required for EntropyTargetedLoss")
@@ -588,8 +582,7 @@ class EntropyTargetedLoss(nn.Module if TORCH_AVAILABLE else object):
 
 
 class CriticalForkScheduler:
-    """
-    Dynamic scheduler for entropy threshold based on training progress
+    """Dynamic scheduler for entropy threshold based on training progress
 
     Adjusts threshold to maintain optimal active ratio during training
     """
@@ -602,8 +595,7 @@ class CriticalForkScheduler:
         min_threshold: float = 0.1,
         max_threshold: float = 0.9,
     ):
-        """
-        Initialize scheduler
+        """Initialize scheduler
 
         Args:
             loss_fn: EntropyTargetedLoss instance to control
@@ -611,6 +603,7 @@ class CriticalForkScheduler:
             adjustment_rate: Rate of threshold adjustment
             min_threshold: Minimum allowed threshold
             max_threshold: Maximum allowed threshold
+
         """
         self.loss_fn = loss_fn
         self.target_active_ratio = target_active_ratio
@@ -626,12 +619,12 @@ class CriticalForkScheduler:
         if current_ratio < self.target_active_ratio - 0.05:
             # Too few critical forks, lower threshold
             new_threshold = max(
-                self.min_threshold, self.loss_fn.entropy_threshold - self.adjustment_rate
+                self.min_threshold, self.loss_fn.entropy_threshold - self.adjustment_rate,
             )
         elif current_ratio > self.target_active_ratio + 0.05:
             # Too many critical forks, raise threshold
             new_threshold = min(
-                self.max_threshold, self.loss_fn.entropy_threshold + self.adjustment_rate
+                self.max_threshold, self.loss_fn.entropy_threshold + self.adjustment_rate,
             )
         else:
             return  # No adjustment needed
@@ -645,8 +638,7 @@ def entropy_targeted_loss(
     entropy_threshold: float = 0.5,
     attention_mask: Optional["torch.Tensor"] = None,
 ) -> "torch.Tensor":
-    """
-    Functional interface for entropy-targeted loss
+    """Functional interface for entropy-targeted loss
 
     Usage:
         loss = entropy_targeted_loss(logits, targets, entropy_threshold=0.5)

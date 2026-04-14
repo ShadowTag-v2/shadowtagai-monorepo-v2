@@ -1,5 +1,4 @@
-"""
-Example client script demonstrating how to interact with the Automation Builder API.
+"""Example client script demonstrating how to interact with the Automation Builder API.
 """
 
 import asyncio
@@ -27,7 +26,7 @@ async def create_workflow():
                     "type": "log",
                     "config": {"message": "Workflow completed", "level": "INFO"},
                 },
-            ]
+            ],
         },
     }
 
@@ -121,7 +120,7 @@ async def list_executions():
             print(
                 f"  - Execution {execution['id']}: "
                 f"Workflow {execution['workflow_id']} - "
-                f"Status: {execution['status']}"
+                f"Status: {execution['status']}",
             )
         return executions
 

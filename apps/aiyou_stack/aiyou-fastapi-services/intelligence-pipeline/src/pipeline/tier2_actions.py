@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Tier 2 Auto-Actions
+"""PNKLN Intelligence Pipeline - Tier 2 Auto-Actions
 
 Automated actions for Tier 2 items (medium priority):
 - Create GitHub issues for product team
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class Tier2AutoActions:
-    """
-    Automated action handler for Tier 2 items
+    """Automated action handler for Tier 2 items
     """
 
     def __init__(self):
@@ -30,14 +28,14 @@ class Tier2AutoActions:
         logger.info("Tier2AutoActions initialized")
 
     async def process_tier2_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Process Tier 2 items with automated actions
+        """Process Tier 2 items with automated actions
 
         Args:
             items: List of classified intelligence items
 
         Returns:
             Same list with action metadata added
+
         """
         tier2_items = [item for item in items if item.tier == IntelligenceTier.TIER_2]
 
@@ -70,7 +68,7 @@ class Tier2AutoActions:
 
             except Exception as e:
                 logger.error(f"Error processing Tier 2 item {item.id}: {e}")
-                item.action_items = [f"Action failed: {str(e)}"]
+                item.action_items = [f"Action failed: {e!s}"]
 
         duration = (datetime.now() - start_time).total_seconds()
         logger.info(f"✓ Tier 2 actions complete in {duration:.1f}s")
@@ -78,14 +76,14 @@ class Tier2AutoActions:
         return items
 
     async def create_github_issue(self, item: IntelligenceItem) -> str:
-        """
-        Create GitHub issue for Tier 2 item
+        """Create GitHub issue for Tier 2 item
 
         Args:
             item: Intelligence item
 
         Returns:
             Issue URL or empty string
+
         """
         logger.info(f"📝 Creating GitHub issue for: {item.title[:50]}...")
 
@@ -116,14 +114,14 @@ class Tier2AutoActions:
         return "https://github.com/pnkln/intelligence/issues/new"
 
     async def send_slack_notification(self, item: IntelligenceItem) -> bool:
-        """
-        Send Slack notification for Tier 2 item
+        """Send Slack notification for Tier 2 item
 
         Args:
             item: Intelligence item
 
         Returns:
             True if sent successfully
+
         """
         logger.info(f"💬 Sending Slack notification for: {item.title[:50]}...")
 
@@ -147,14 +145,14 @@ class Tier2AutoActions:
         return True
 
     async def schedule_monitoring(self, item: IntelligenceItem) -> bool:
-        """
-        Schedule follow-up monitoring for item
+        """Schedule follow-up monitoring for item
 
         Args:
             item: Intelligence item
 
         Returns:
             True if scheduled successfully
+
         """
         logger.info(f"📅 Scheduling monitoring for: {item.title[:50]}...")
 
@@ -165,11 +163,10 @@ class Tier2AutoActions:
 
 
 async def main():
-    """
-    Main Tier 2 actions entry point
+    """Main Tier 2 actions entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load synthesized items

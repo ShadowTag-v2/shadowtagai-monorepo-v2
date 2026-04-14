@@ -14,7 +14,7 @@ def main(repository: Path | None, verbose: bool) -> None:
     """MCP Git Server - Git functionality for MCP"""
     import asyncio
 
-    logging_level = logging.WARN
+    logging_level = logging.WARNING
     if verbose == 1:
         logging_level = logging.INFO
     elif verbose >= 2:

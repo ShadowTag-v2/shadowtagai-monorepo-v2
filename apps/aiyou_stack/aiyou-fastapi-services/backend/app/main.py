@@ -1,5 +1,4 @@
-"""
-Main FastAPI application for AI Issue Chat Workflow API.
+"""Main FastAPI application for AI Issue Chat Workflow API.
 """
 
 from collections.abc import AsyncGenerator
@@ -26,8 +25,7 @@ gemini_service: GeminiService = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator:
-    """
-    Lifespan context manager for application startup and shutdown.
+    """Lifespan context manager for application startup and shutdown.
     """
     global storage_service, workflow_engine, ingestion_service, gemini_service
 
@@ -46,7 +44,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     # Initialize Gemini service
     gemini_api_key = getattr(settings, "gemini_api_key", None)
     gemini_service = GeminiService(
-        api_key=gemini_api_key, model_name=getattr(settings, "gemini_model", "gemini-2.0-flash-exp")
+        api_key=gemini_api_key, model_name=getattr(settings, "gemini_model", "gemini-2.0-flash-exp"),
     )
 
     # Register the predefined workflows
@@ -71,7 +69,6 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
 
 def _register_workflows(engine: WorkflowEngine):
     """Register the predefined workflow blocks."""
-
     # New AI Issue Chat workflow
     new_issue_chat_workflow = WorkflowBlock(
         block_name="New AI Issue Chat",
@@ -278,7 +275,7 @@ app.include_router(gemini.router)
 async def global_exception_handler(request, exc):
     """Handle uncaught exceptions."""
     return JSONResponse(
-        status_code=500, content={"detail": "Internal server error", "error": str(exc)}
+        status_code=500, content={"detail": "Internal server error", "error": str(exc)},
     )
 
 

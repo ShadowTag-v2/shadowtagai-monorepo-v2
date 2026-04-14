@@ -1,5 +1,4 @@
-"""
-Technical Architecture & Agent Design Patterns
+"""Technical Architecture & Agent Design Patterns
 Production-ready stack for AI agent deployment
 """
 
@@ -29,14 +28,14 @@ class TechStack:
             "long_term": "Pinecone",
             "short_term": "Redis",
             "episodic": "Custom PostgreSQL schema",
-        }
+        },
     )
 
     deployment: dict[str, str] = field(
         default_factory=lambda: {
             "dev": "Vertex AI Workbench",
             "prod": "GKE (Google Kubernetes Engine)",
-        }
+        },
     )
 
     security: list[str] = field(
@@ -44,7 +43,7 @@ class TechStack:
             "GCP Secret Manager",
             "Encryption at rest/transit",
             "SOC 2 Type II (Month 18 target)",
-        ]
+        ],
     )
 
     monitoring: str = "Datadog + custom dashboards"
@@ -82,7 +81,7 @@ class AgentDesignPattern:
             "Task manager loops",
             "Hallucination detection",
             "Output validation",
-        ]
+        ],
     )
 
     tools: str = "Custom API wrappers (Notion, Slack, HubSpot, Apollo, etc.)"
@@ -106,7 +105,7 @@ class IntegrationCatalog:
             "LinkedIn Sales Navigator",
             "Gmail API",
             "HubSpot CRM",
-        ]
+        ],
     )
 
     content_repurposing: list[str] = field(
@@ -115,19 +114,19 @@ class IntegrationCatalog:
             "Twitter/X API",
             "LinkedIn Publishing",
             "Medium API",
-        ]
+        ],
     )
 
     customer_support: list[str] = field(
-        default_factory=lambda: ["Zendesk", "Intercom", "Slack", "Help Scout"]
+        default_factory=lambda: ["Zendesk", "Intercom", "Slack", "Help Scout"],
     )
 
     meeting_intelligence: list[str] = field(
-        default_factory=lambda: ["Zoom API", "Google Meet", "Calendly", "Notion"]
+        default_factory=lambda: ["Zoom API", "Google Meet", "Calendly", "Notion"],
     )
 
     market_research: list[str] = field(
-        default_factory=lambda: ["Crunchbase", "SimilarWeb", "SEMrush API", "Google Trends"]
+        default_factory=lambda: ["Crunchbase", "SimilarWeb", "SEMrush API", "Google Trends"],
     )
 
     workflow_orchestration: list[str] = field(
@@ -136,7 +135,7 @@ class IntegrationCatalog:
             "Make (Integromat)",
             "Airtable",
             "Google Sheets API",
-        ]
+        ],
     )
 
 

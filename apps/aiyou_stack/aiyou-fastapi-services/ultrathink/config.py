@@ -1,5 +1,4 @@
-"""
-Configuration management for Ultrathink framework.
+"""Configuration management for Ultrathink framework.
 
 Handles:
 - Environment variables
@@ -18,8 +17,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    """
-    Global settings for Ultrathink framework.
+    """Global settings for Ultrathink framework.
 
     Loads from:
     1. Environment variables

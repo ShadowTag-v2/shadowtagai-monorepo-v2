@@ -1,5 +1,4 @@
-"""
-Edge Mesh Architecture: Starlink + CoreWeave + Tesla + Cell Tower Integration
+"""Edge Mesh Architecture: Starlink + CoreWeave + Tesla + Cell Tower Integration
 ==============================================================================
 
 Implements the unified sky-ground GPU mesh connecting:
@@ -146,8 +145,7 @@ class LatencyProfile:
 
 
 class EdgeMeshArchitecture:
-    """
-    Unified Sky-Ground GPU Mesh Architecture
+    """Unified Sky-Ground GPU Mesh Architecture
 
     Integrates Starlink orbital layer, CoreWeave cell tower nodes,
     Tesla vehicle fleet, and satellite uplinks into single coordinated
@@ -297,11 +295,11 @@ class EdgeMeshArchitecture:
         return sum(node.total_monthly_cost_usd for node in self.tower_nodes)
 
     def calculate_monthly_revenue_usd(self, arpu: float = 10.0) -> float:
-        """
-        Calculate monthly revenue
+        """Calculate monthly revenue
 
         Args:
             arpu: Average revenue per user (default $10/month)
+
         """
         # Estimate users per tower (10k average)
         users_per_tower = 10_000
@@ -343,13 +341,13 @@ class EdgeMeshArchitecture:
         }
 
     def project_deployment_roi(self, num_towers: int, num_vehicles: int, months: int = 36) -> dict:
-        """
-        Project ROI for deployment
+        """Project ROI for deployment
 
         Args:
             num_towers: Number of cell tower nodes
             num_vehicles: Number of vehicle nodes
             months: Projection timeframe (default 36 months)
+
         """
         # Per-tower costs and revenue
         tower_capex = 50_000  # $50k CAPEX per tower

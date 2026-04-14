@@ -3,8 +3,7 @@ import functools
 
 
 class GideonGuard:
-    """
-    The 'Judge 6' Protocol Enforcement Layer.
+    """The 'Judge 6' Protocol Enforcement Layer.
     Refuses to execute functions if financial/risk gates are not met.
     """
 
@@ -24,7 +23,7 @@ class GideonGuard:
             violations = []
             if "margin" in metrics and metrics["margin"] < self.gates["MIN_MARGIN"]:
                 violations.append(
-                    f"Margin {metrics['margin']:.2%} < {self.gates['MIN_MARGIN']:.0%}"
+                    f"Margin {metrics['margin']:.2%} < {self.gates['MIN_MARGIN']:.0%}",
                 )
 
             if "ltv_cac" in metrics and metrics["ltv_cac"] < self.gates["MIN_LTV_CAC"]:

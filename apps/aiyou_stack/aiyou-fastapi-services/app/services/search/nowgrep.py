@@ -1,5 +1,4 @@
-"""
-Nowgrep - Ultra-fast Neural Grep
+"""Nowgrep - Ultra-fast Neural Grep
 Semantic search for text, code, and multimodal content
 Quantitative Effect: ↑ Query speed +60%, ↓ Index size –40%
 """
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class NowgrepService:
-    """
-    Ultra-fast neural search service with vector indexing
+    """Ultra-fast neural search service with vector indexing
     Supports text, code, and multimodal search
     """
 
@@ -56,10 +54,9 @@ class NowgrepService:
             logger.error(f"Error during Nowgrep shutdown: {e}")
 
     async def create_index(
-        self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content"
+        self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content",
     ) -> dict[str, Any]:
-        """
-        Create a new search index
+        """Create a new search index
 
         Args:
             index_name: Name of the index
@@ -68,6 +65,7 @@ class NowgrepService:
 
         Returns:
             Index creation result
+
         """
         try:
             start_time = datetime.utcnow()
@@ -93,7 +91,7 @@ class NowgrepService:
             elapsed = (datetime.utcnow() - start_time).total_seconds()
 
             logger.info(
-                f"Created index '{index_name}' with {len(documents)} documents in {elapsed:.2f}s"
+                f"Created index '{index_name}' with {len(documents)} documents in {elapsed:.2f}s",
             )
 
             return {
@@ -114,8 +112,7 @@ class NowgrepService:
         top_k: int = 10,
         filter_criteria: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Perform semantic search on an index
+        """Perform semantic search on an index
 
         Args:
             index_name: Name of the index to search
@@ -125,6 +122,7 @@ class NowgrepService:
 
         Returns:
             Search results with scores
+
         """
         try:
             if index_name not in self.indices:
@@ -153,7 +151,7 @@ class NowgrepService:
                     continue
 
                 results.append(
-                    {"document": doc, "score": float(scores[idx]), "rank": len(results) + 1}
+                    {"document": doc, "score": float(scores[idx]), "rank": len(results) + 1},
                 )
 
             elapsed = (datetime.utcnow() - start_time).total_seconds()
@@ -171,10 +169,9 @@ class NowgrepService:
             return {"status": "error", "error": str(e)}
 
     async def multimodal_search(
-        self, index_name: str, query: str, modalities: list[str] = None, top_k: int = 10
+        self, index_name: str, query: str, modalities: list[str] = None, top_k: int = 10,
     ) -> dict[str, Any]:
-        """
-        Perform multimodal semantic search
+        """Perform multimodal semantic search
 
         Args:
             index_name: Index to search
@@ -184,6 +181,7 @@ class NowgrepService:
 
         Returns:
             Multimodal search results
+
         """
         if modalities is None:
             modalities = ["text", "code"]
@@ -235,7 +233,7 @@ class NowgrepService:
             raise
 
     def _compute_similarity(
-        self, query_vector: np.ndarray, document_vectors: list[np.ndarray]
+        self, query_vector: np.ndarray, document_vectors: list[np.ndarray],
     ) -> np.ndarray:
         """Compute cosine similarity between query and documents"""
         # Stack document vectors

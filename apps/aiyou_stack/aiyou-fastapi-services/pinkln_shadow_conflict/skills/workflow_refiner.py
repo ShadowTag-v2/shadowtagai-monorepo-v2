@@ -1,5 +1,4 @@
-"""
-WorkflowRefinerSkill - Ruthless workflow simplification.
+"""WorkflowRefinerSkill - Ruthless workflow simplification.
 """
 
 import os
@@ -52,7 +51,7 @@ Task:
                     "steps": ["Step 4", "Step 5"],
                     "into": "Combined validation",
                     "reason": "Same context",
-                }
+                },
             ],
             "time_saved": "8 hours/week",
             "complexity_reduction": "42%",

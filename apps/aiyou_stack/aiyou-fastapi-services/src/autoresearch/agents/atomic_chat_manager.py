@@ -1,5 +1,4 @@
-"""
-Atomic Chat Manager - OPORD-Based Context Management
+"""Atomic Chat Manager - OPORD-Based Context Management
 
 Manages per-agent atomic contexts using Army Operations Order format.
 Every chat thread follows the 5-paragraph OPORD structure for uniformity.
@@ -63,8 +62,7 @@ class OPORDContext:
 
 
 class AtomicChatManager:
-    """
-    Manages atomic chat contexts with OPORD format.
+    """Manages atomic chat contexts with OPORD format.
 
     Integrates with minion for shift-based memory isolation.
     """
@@ -161,8 +159,7 @@ class AtomicChatManager:
         command_signal: dict[str, Any] | None = None,
         tags: list[str] | None = None,
     ) -> int:
-        """
-        Create new OPORD-formatted atomic chat context.
+        """Create new OPORD-formatted atomic chat context.
 
         Args:
             task_title: Brief task description
@@ -177,6 +174,7 @@ class AtomicChatManager:
 
         Returns:
             OPORD number
+
         """
         opord_num = self.opord_counter
         self.opord_counter += 1
@@ -243,7 +241,7 @@ class AtomicChatManager:
         conn.close()
 
         logger.info(
-            f"Created OPORD {opord_num:05d}: {task_title} (Agent: {agent_id}, Shift: {shift_number})"
+            f"Created OPORD {opord_num:05d}: {task_title} (Agent: {agent_id}, Shift: {shift_number})",
         )
         return opord_num
 
@@ -253,7 +251,7 @@ class AtomicChatManager:
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT acknowledgments FROM opord_contexts WHERE opord_number = ?", (opord_number,)
+            "SELECT acknowledgments FROM opord_contexts WHERE opord_number = ?", (opord_number,),
         )
         result = cursor.fetchone()
 

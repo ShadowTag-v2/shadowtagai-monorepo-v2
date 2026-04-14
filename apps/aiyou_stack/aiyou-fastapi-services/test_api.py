@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Quick API test script for Omega Governance Service
+"""Quick API test script for Omega Governance Service
 """
 
 import asyncio
@@ -134,9 +133,8 @@ async def main():
             print("✅ All tests passed!")
             print("\n🚀 Service is ready for deployment")
             return 0
-        else:
-            print("❌ Some tests failed")
-            return 1
+        print("❌ Some tests failed")
+        return 1
 
     except Exception as e:
         print(f"\n❌ Test failed with error: {e}")

@@ -1,5 +1,4 @@
-"""
-Authentication service.
+"""Authentication service.
 
 Handles JWT issuing, password hashing, and user validation.
 """

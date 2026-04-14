@@ -9,8 +9,7 @@ SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 
 def get_service(subject_email, credentials_path):
-    """
-    Authenticates as the Service Account and then 'impersonates' (delegates to)
+    """Authenticates as the Service Account and then 'impersonates' (delegates to)
     the subject_email using Domain-Wide Delegation.
     """
     if not os.path.exists(credentials_path):
@@ -19,7 +18,7 @@ def get_service(subject_email, credentials_path):
     try:
         # Load Service Account Credentials
         creds = service_account.Credentials.from_service_account_file(
-            credentials_path, scopes=SCOPES
+            credentials_path, scopes=SCOPES,
         )
 
         # Create a delegated credential for the specific user
@@ -62,7 +61,7 @@ def search_inbox(service, target_email, query):
 
     except Exception as e:
         print(f"⚠️  Search failed for {target_email}: {e}")
-        hits.append(f"ERROR searching {target_email}: {str(e)}\n")
+        hits.append(f"ERROR searching {target_email}: {e!s}\n")
 
     return hits
 
@@ -70,14 +69,14 @@ def search_inbox(service, target_email, query):
 def main():
     parser = argparse.ArgumentParser(description="Antigravity Multi-Inbox Search")
     parser.add_argument(
-        "--targets", nargs="+", help="List of email addresses to search", required=True
+        "--targets", nargs="+", help="List of email addresses to search", required=True,
     )
     parser.add_argument("--query", help="Gmail search query", required=True)
     parser.add_argument(
-        "--creds", help="Path to Service Account JSON", default="credentials/service_account.json"
+        "--creds", help="Path to Service Account JSON", default="credentials/service_account.json",
     )
     parser.add_argument(
-        "--output", help="Output file for results", default="multi_search_results.md"
+        "--output", help="Output file for results", default="multi_search_results.md",
     )
 
     args = parser.parse_args()

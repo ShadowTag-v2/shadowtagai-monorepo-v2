@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Antigravity Uni-Script: Google Cloud Centric Universal Prompt Framework
+"""Antigravity Uni-Script: Google Cloud Centric Universal Prompt Framework
 Erik Hancock | ShadowTag-v4 Global | Pipeline → JudgeJura → n-autoresearch/Kosmos/BioAgents → ShadowTag
 
 Usage:
@@ -177,8 +176,8 @@ def generate():
             role="model",
             parts=[
                 types.Part.from_text(
-                    text="Optimize for addressing more use cases, and generating better output."
-                )
+                    text="Optimize for addressing more use cases, and generating better output.",
+                ),
             ],
         ),
         types.Content(role="user", parts=[types.Part.from_text(text=ULTRATHINK_PROMPT)]),

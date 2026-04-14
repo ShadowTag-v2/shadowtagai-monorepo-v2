@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Agent0 POC: Self-Evolving Framework for ATP 5-19 Rule Synthesis
+"""Agent0 POC: Self-Evolving Framework for ATP 5-19 Rule Synthesis
 
 Based on arXiv:2511.16043v1 - Symbiotic dual-agent co-evolution:
 - Curriculum Agent: Generates increasingly difficult violation scenarios
@@ -83,8 +82,7 @@ class EvolutionState:
 
 
 class Agent0POC:
-    """
-    Agent0 Proof of Concept for ATP 5-19 rule synthesis.
+    """Agent0 Proof of Concept for ATP 5-19 rule synthesis.
 
     Implements self-evolving dual-agent architecture:
     - Curriculum Agent: Proposes violation scenarios at current difficulty
@@ -124,13 +122,13 @@ class Agent0POC:
         max_iterations: int = 100,
         confidence_threshold: float = 0.8,
     ):
-        """
-        Initialize Agent0 POC.
+        """Initialize Agent0 POC.
 
         Args:
             minions_url: minions server URL
             max_iterations: Maximum evolution iterations
             confidence_threshold: Minimum confidence for rule acceptance
+
         """
         self.fm_url = minions_url
         self.max_iterations = max_iterations
@@ -156,7 +154,7 @@ class Agent0POC:
         """Call minions API."""
         try:
             response = requests.post(
-                f"{self.fm_url}/{endpoint}", json={"prompt": prompt}, timeout=60
+                f"{self.fm_url}/{endpoint}", json={"prompt": prompt}, timeout=60,
             )
             response.raise_for_status()
             return response.json()
@@ -164,8 +162,7 @@ class Agent0POC:
             return {"error": str(e), "response": ""}
 
     async def curriculum_agent(self, difficulty: int, domain: str = "general") -> ViolationScenario:
-        """
-        Curriculum Agent: Generate violation scenario at given difficulty.
+        """Curriculum Agent: Generate violation scenario at given difficulty.
 
         Higher difficulty = more nuanced edge cases, ambiguous situations,
         multi-factor violations, or cross-domain scenarios.
@@ -241,8 +238,7 @@ Be creative but realistic. Make difficulty {difficulty} scenarios appropriately 
             )
 
     async def executor_agent(self, scenario: ViolationScenario) -> DetectionRule:
-        """
-        Executor Agent: Generate detection rule for violation scenario.
+        """Executor Agent: Generate detection rule for violation scenario.
 
         Creates ATP_519_scan pattern that can identify the violation.
         """
@@ -354,10 +350,9 @@ Confidence should reflect how reliably the pattern catches true violations."""
                 print(f"///▞ AGENT0 :: Difficulty ↓ to {self.state.difficulty}")
 
     async def evolve(
-        self, iterations: int | None = None, domain: str = "general", verbose: bool = True
+        self, iterations: int | None = None, domain: str = "general", verbose: bool = True,
     ) -> list[DetectionRule]:
-        """
-        Run the co-evolution loop.
+        """Run the co-evolution loop.
 
         Args:
             iterations: Number of iterations (default: max_iterations)
@@ -366,6 +361,7 @@ Confidence should reflect how reliably the pattern catches true violations."""
 
         Returns:
             List of accepted detection rules
+
         """
         iterations = iterations or self.max_iterations
 
@@ -399,7 +395,7 @@ Confidence should reflect how reliably the pattern catches true violations."""
                 print(
                     f"///▞ AGENT0 :: Iteration {i + 1}/{iterations} | "
                     f"Difficulty: {self.state.difficulty} | "
-                    f"Rules: {len(self.state.rules_generated)}"
+                    f"Rules: {len(self.state.rules_generated)}",
                 )
 
         if verbose:
@@ -444,7 +440,7 @@ Confidence should reflect how reliably the pattern catches true violations."""
                     "reasoning": rule.reasoning,
                     "false_positive_rate": rule.false_positive_rate,
                     "metadata": rule.metadata,
-                }
+                },
             )
 
         with open(output_path, "w") as f:
@@ -463,7 +459,7 @@ Confidence should reflect how reliably the pattern catches true violations."""
 
 # Convenience function
 def create_agent0(
-    minions_url: str = "http://localhost:8600", max_iterations: int = 100
+    minions_url: str = "http://localhost:8600", max_iterations: int = 100,
 ) -> Agent0POC:
     """Create an Agent0 instance."""
     return Agent0POC(minions_url=minions_url, max_iterations=max_iterations)

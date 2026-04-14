@@ -1,5 +1,4 @@
-"""
-RSTA Squadron - 650 Agent Hunter-Killer Structure
+"""RSTA Squadron - 650 Agent Hunter-Killer Structure
 =================================================
 OPORD 2511-ALPHA // ATP 3-20.96 Aligned
 
@@ -182,8 +181,7 @@ class Troop:
 
 
 class RSTASquadron:
-    """
-    OPORD 2511-ALPHA Hunter-Killer RSTA Squadron - 650 agents
+    """OPORD 2511-ALPHA Hunter-Killer RSTA Squadron - 650 agents
 
     Implements Protocol 2511 (arXiv:2511.02824) entropy-targeted compute
     with ATP 3-20.96 Cavalry Squadron doctrine alignment.
@@ -386,11 +384,11 @@ class RSTASquadron:
     }
 
     def __init__(self, model_override: str | None = None):
-        """
-        Initialize RSTA Squadron.
+        """Initialize RSTA Squadron.
 
         Args:
             model_override: If provided, all agents use this model (for per-LLM Kosmos)
+
         """
         self.troops: dict[TroopType, Troop] = {}
         self.all_agents: dict[str, Agent] = {}
@@ -409,7 +407,7 @@ class RSTASquadron:
 
         total = sum(t.current_strength for t in self.troops.values())
         logger.info(
-            f"OPORD 2511-ALPHA RSTA Squadron initialized: {total} agents in {len(self.troops)} troops"
+            f"OPORD 2511-ALPHA RSTA Squadron initialized: {total} agents in {len(self.troops)} troops",
         )
 
         return self
@@ -429,14 +427,14 @@ class RSTASquadron:
 
         for section_name, strength, role, function in config["sections"]:
             section = self._create_section(
-                troop_type, section_name, strength, role, function, model
+                troop_type, section_name, strength, role, function, model,
             )
             troop.sections.append(section)
 
         return troop
 
     def _create_section(
-        self, troop_type: TroopType, name: str, strength: int, role: str, function: str, model: str
+        self, troop_type: TroopType, name: str, strength: int, role: str, function: str, model: str,
     ) -> Section:
         """Create a section with agents"""
         section = Section(
@@ -479,7 +477,7 @@ class RSTASquadron:
         return agents
 
     def get_available_agents(
-        self, count: int = 1, troop_type: TroopType | None = None
+        self, count: int = 1, troop_type: TroopType | None = None,
     ) -> list[Agent]:
         """Get available agents for tasking"""
         available = []
@@ -504,8 +502,7 @@ class RSTASquadron:
         recon_task: ReconTaskType | None = None,
         security_task: SecurityTaskType | None = None,
     ) -> dict[str, Any]:
-        """
-        Execute task with ATP 3-20.96 Cavalry Squadron consensus voting.
+        """Execute task with ATP 3-20.96 Cavalry Squadron consensus voting.
         Replaces static allow/deny lists with dynamic, differentiated consensus.
 
         Args:
@@ -518,6 +515,7 @@ class RSTASquadron:
 
         Returns:
             Result with consensus outcome per ATP doctrine
+
         """
         # Use security task threshold if specified (ATP Chapter 4)
         if security_task:
@@ -567,10 +565,9 @@ class RSTASquadron:
         }
 
     async def _execute_reconnaissance(
-        self, task: str, execute_fn: Callable, recon_task: ReconTaskType | None = None
+        self, task: str, execute_fn: Callable, recon_task: ReconTaskType | None = None,
     ) -> list[dict[str, Any]]:
-        """
-        Execute differentiated reconnaissance per ATP 3-20.96 Chapter 3.
+        """Execute differentiated reconnaissance per ATP 3-20.96 Chapter 3.
 
         - ZONE (RECON ALPHA): Comprehensive search - find ALL info
         - AREA (RECON BRAVO): Focused analysis on specific objectives
@@ -608,10 +605,9 @@ class RSTASquadron:
         return results
 
     async def _execute_security_voting(
-        self, task: str, prior_results: list[dict], security_task: SecurityTaskType | None = None
+        self, task: str, prior_results: list[dict], security_task: SecurityTaskType | None = None,
     ) -> dict[str, int]:
-        """
-        Execute differentiated security voting per ATP 3-20.96 Chapter 4.
+        """Execute differentiated security voting per ATP 3-20.96 Chapter 4.
 
         - SCREEN: Early warning, observe only (50% threshold) - ATP 4-17
         - GUARD: Fight for time, deny observation (75% threshold) - ATP 4-38
@@ -645,7 +641,7 @@ class RSTASquadron:
         return []
 
     async def _parallel_execute(
-        self, agents: list[Agent], task: str, execute_fn: Callable
+        self, agents: list[Agent], task: str, execute_fn: Callable,
     ) -> list[dict[str, Any]]:
         """Execute task across agents in parallel"""
         tasks = []
@@ -665,7 +661,7 @@ class RSTASquadron:
         ]
 
     async def _vote_on_security(
-        self, agents: list[Agent], task: str, prior_results: list[dict]
+        self, agents: list[Agent], task: str, prior_results: list[dict],
     ) -> dict[str, int]:
         """MFRC agents vote on security (replaces static allow/deny)"""
         approve = 0
@@ -741,8 +737,7 @@ class RSTASquadron:
     # =========================================================================
 
     def check_entropy_threshold(self, confidence: float) -> dict[str, Any]:
-        """
-        Protocol 2511: Check if confidence triggers long-thought compute.
+        """Protocol 2511: Check if confidence triggers long-thought compute.
 
         At critical forks (confidence < 0.75), escalate to Gemini 3 Pro
         for extended reasoning chains.
@@ -752,6 +747,7 @@ class RSTASquadron:
 
         Returns:
             Dict with escalation decision and target model
+
         """
         if confidence < self.PROTOCOL_2511_THRESHOLDS["critical_fork"]:
             return {
@@ -762,7 +758,7 @@ class RSTASquadron:
                 "confidence": confidence,
                 "threshold": self.PROTOCOL_2511_THRESHOLDS["critical_fork"],
             }
-        elif confidence < self.PROTOCOL_2511_THRESHOLDS["high_entropy"]:
+        if confidence < self.PROTOCOL_2511_THRESHOLDS["high_entropy"]:
             return {
                 "escalate": False,
                 "reason": "high_entropy_warning",
@@ -771,15 +767,14 @@ class RSTASquadron:
                 "confidence": confidence,
                 "threshold": self.PROTOCOL_2511_THRESHOLDS["high_entropy"],
             }
-        else:
-            return {
-                "escalate": False,
-                "reason": "standard_operation",
-                "target_model": None,
-                "target_troop": None,
-                "confidence": confidence,
-                "threshold": self.PROTOCOL_2511_THRESHOLDS["standard"],
-            }
+        return {
+            "escalate": False,
+            "reason": "standard_operation",
+            "target_model": None,
+            "target_troop": None,
+            "confidence": confidence,
+            "threshold": self.PROTOCOL_2511_THRESHOLDS["standard"],
+        }
 
     async def execute_4_phase_operation(
         self,
@@ -787,8 +782,7 @@ class RSTASquadron:
         execute_fn: Callable,
         context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Execute OPORD 2511-ALPHA 4-Phase Operation.
+        """Execute OPORD 2511-ALPHA 4-Phase Operation.
 
         Phase 1: SCREEN - Troop A scans market/codebase
         Phase 2: LOWEST-CONFIDENCE CHECK - Protocol 2511 entropy detection
@@ -802,6 +796,7 @@ class RSTASquadron:
 
         Returns:
             Full operation result with all phase outcomes
+
         """
         operation_start = datetime.utcnow()
         results = {

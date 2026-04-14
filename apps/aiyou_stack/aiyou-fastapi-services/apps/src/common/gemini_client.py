@@ -21,5 +21,5 @@ class GeminiClient:
             response = model.generate_content(prompt)
             return {"content": response.text}
         except Exception as e:
-            logging.error(f"❌ Gemini API Error: {e}")
+            logging.exception(f"❌ Gemini API Error: {e}")
             return {"error": str(e)}

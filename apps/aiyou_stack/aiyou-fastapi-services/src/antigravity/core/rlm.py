@@ -1,5 +1,4 @@
-"""
-Recursive Language Model (RLM) - Core Logic
+"""Recursive Language Model (RLM) - Core Logic
 Ported from legacy minion v8.
 
 Purpose: Handle unbounded context by treating it as a variable in a REPL environment.
@@ -12,8 +11,7 @@ from typing import Any
 
 
 class RecursiveLanguageModel:
-    """
-    RLM implementation for unbounded context handling.
+    """RLM implementation for unbounded context handling.
     """
 
     def __init__(
@@ -42,10 +40,9 @@ class RecursiveLanguageModel:
             print(f"Warning: RLM context save failed: {e}")
 
     async def query(
-        self, prompt: str, context: Any, llm_call_fn: callable, context_id: str | None = None
+        self, prompt: str, context: Any, llm_call_fn: callable, context_id: str | None = None,
     ) -> str:
-        """
-        RLM query with REPL environment.
+        """RLM query with REPL environment.
         """
         # Save context to disk if ID provided, to avoid memory pressure
         if context_id:

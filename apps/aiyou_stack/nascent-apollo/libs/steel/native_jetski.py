@@ -12,8 +12,7 @@ logger = logging.getLogger("NativeJetski")
 
 
 class NativeJetski:
-    """
-    The 'Clean' Jetski: Connects to a native browser instance via CDP.
+    """The 'Clean' Jetski: Connects to a native browser instance via CDP.
     Bypasses extension detection by behaving like a standard debugger.
     Augmented with pip install playwright-stealth.
     """

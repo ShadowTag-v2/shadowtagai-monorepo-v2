@@ -1,5 +1,4 @@
-"""
-Chain of Thought (CoT) reasoning framework.
+"""Chain of Thought (CoT) reasoning framework.
 
 CoT is a linear, step-by-step reasoning approach that makes the thought process
 transparent. It's effective for math, logic, and problems requiring sequential steps.
@@ -25,8 +24,7 @@ class ThoughtStep:
 
 
 class ChainOfThought:
-    """
-    Chain of Thought reasoning implementation.
+    """Chain of Thought reasoning implementation.
 
     This framework breaks down complex problems into transparent, sequential steps,
     reducing hallucinations and improving accuracy.
@@ -51,8 +49,7 @@ Think step-by-step:
         self.thought_chain: list[ThoughtStep] = []
 
     async def reason(self, problem: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
-        """
-        Apply chain of thought reasoning to a problem.
+        """Apply chain of thought reasoning to a problem.
 
         Args:
             problem: Problem to solve
@@ -60,6 +57,7 @@ Think step-by-step:
 
         Returns:
             Result with thought chain
+
         """
         self.thought_chain = []
 
@@ -77,16 +75,16 @@ Think step-by-step:
         }
 
     def add_step(
-        self, description: str, reasoning: str, result: Any = None, confidence: float = 1.0
+        self, description: str, reasoning: str, result: Any = None, confidence: float = 1.0,
     ):
-        """
-        Add a step to the thought chain.
+        """Add a step to the thought chain.
 
         Args:
             description: Step description
             reasoning: Reasoning for this step
             result: Intermediate result
             confidence: Confidence level (0-1)
+
         """
         step = ThoughtStep(
             step_number=len(self.thought_chain) + 1,
@@ -129,8 +127,7 @@ Think step-by-step:
 
 
 class SelfAskCoT(ChainOfThought):
-    """
-    Self-Ask variant of CoT.
+    """Self-Ask variant of CoT.
 
     This variant explicitly asks and answers sub-questions before tackling
     the main problem.
@@ -151,8 +148,7 @@ Sub-questions and answers:
 
 
 class PlanAndSolveCoT(ChainOfThought):
-    """
-    Plan-and-Solve variant of CoT.
+    """Plan-and-Solve variant of CoT.
 
     This variant first creates a plan, then executes it step-by-step.
     """
@@ -174,8 +170,7 @@ Let's begin:
 """
 
     async def reason(self, problem: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
-        """
-        Apply plan-and-solve reasoning.
+        """Apply plan-and-solve reasoning.
 
         Args:
             problem: Problem to solve
@@ -183,6 +178,7 @@ Let's begin:
 
         Returns:
             Result with plan and execution
+
         """
         # Phase 1: Planning
         plan = await self._create_plan(problem, context)
@@ -206,7 +202,7 @@ Let's begin:
         return {"steps": [], "dependencies": [], "estimated_complexity": 0.5}
 
     async def _execute_plan(
-        self, plan: dict[str, Any], context: dict[str, Any] | None
+        self, plan: dict[str, Any], context: dict[str, Any] | None,
     ) -> dict[str, Any]:
         """Execute the plan step-by-step."""
         return {"executed_steps": [], "final_result": None}

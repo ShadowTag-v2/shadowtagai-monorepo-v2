@@ -1,5 +1,4 @@
-"""
-Live Rules Database for LawTrack
+"""Live Rules Database for LawTrack
 
 Jurisdiction-specific procedural rules with:
 - Real-time updates (when rules change)
@@ -40,5 +39,5 @@ class RulesDatabase:
     def get_rules(self, jurisdiction: Jurisdiction) -> list[Rule]:
         # Mock rules
         return [
-            Rule("r1", jurisdiction, "FRCP 12(a)", "Answer to Complaint", 21, "Service of Summons")
+            Rule("r1", jurisdiction, "FRCP 12(a)", "Answer to Complaint", 21, "Service of Summons"),
         ]

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Corpus Indexer for Elasticsearch
+"""Corpus Indexer for Elasticsearch
 Indexes documents for Flying minion searchable corpus.
 Apertus-style 8.6T token indexing pattern.
 """
@@ -35,8 +34,7 @@ class Document:
 
 
 class CorpusIndexer:
-    """
-    Elasticsearch indexer for Flying minion corpus.
+    """Elasticsearch indexer for Flying minion corpus.
 
     Pipeline:
     GitHub Discovery Agent → Safety Scanner → Corpus Indexer → Judge #6
@@ -73,7 +71,7 @@ class CorpusIndexer:
                         "tokens": {"type": "integer"},
                         "indexed_at": {"type": "date"},
                         "metadata": {"type": "object", "enabled": False},
-                    }
+                    },
                 },
                 "settings": {"number_of_shards": 1, "number_of_replicas": 0},
             }
@@ -98,8 +96,7 @@ class CorpusIndexer:
         language: str = None,
         metadata: dict = None,
     ) -> str:
-        """
-        Index a single document.
+        """Index a single document.
 
         Args:
             content: Document text
@@ -111,6 +108,7 @@ class CorpusIndexer:
 
         Returns:
             Document ID
+
         """
         doc_id = self._generate_doc_id(content, source_path)
 
@@ -163,14 +161,14 @@ class CorpusIndexer:
         )
 
     def index_from_discovery(self, discovery_json: dict) -> list[str]:
-        """
-        Index scripts from GitHub Discovery Agent output.
+        """Index scripts from GitHub Discovery Agent output.
 
         Args:
             discovery_json: Output from github_discovery_agent.py
 
         Returns:
             List of indexed document IDs
+
         """
         indexed = []
 
@@ -196,10 +194,9 @@ class CorpusIndexer:
         return indexed
 
     def search(
-        self, query: str, doc_type: str = None, language: str = None, limit: int = 10
+        self, query: str, doc_type: str = None, language: str = None, limit: int = 10,
     ) -> list[dict]:
-        """
-        Search the corpus.
+        """Search the corpus.
 
         Args:
             query: Search query
@@ -209,6 +206,7 @@ class CorpusIndexer:
 
         Returns:
             List of matching documents
+
         """
         if not self.es:
             return []

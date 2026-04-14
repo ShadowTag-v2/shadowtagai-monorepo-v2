@@ -1,5 +1,4 @@
-"""
-Medical DLP (Data Loss Prevention) Engine
+"""Medical DLP (Data Loss Prevention) Engine
 ==========================================
 
 PHI Detection and Redaction with Clinical Context Awareness.
@@ -116,8 +115,7 @@ class DLPResult(BaseModel):
 
 
 class MedicalDLPEngine:
-    """
-    Medical Data Loss Prevention Engine
+    """Medical Data Loss Prevention Engine
 
     SALES VALUE PROPOSITION:
     - HIPAA violations can cost $100K-$1.5M per violation
@@ -245,8 +243,7 @@ class MedicalDLPEngine:
         redact: bool = True,
         sensitivity_threshold: SensitivityLevel = SensitivityLevel.CONFIDENTIAL,
     ) -> DLPResult:
-        """
-        Scan text for PHI and clinical data.
+        """Scan text for PHI and clinical data.
 
         Args:
             text: Text to scan
@@ -255,6 +252,7 @@ class MedicalDLPEngine:
 
         Returns:
             DLPResult with detections and optional redacted text
+
         """
         audit_id = self._generate_audit_id(text)
         phi_detected = []
@@ -268,7 +266,7 @@ class MedicalDLPEngine:
                 for match in pattern.finditer(text):
                     sensitivity = self.SENSITIVITY_MAP.get(phi_type, SensitivityLevel.CONFIDENTIAL)
                     if self._sensitivity_rank(sensitivity) > self._sensitivity_rank(
-                        highest_sensitivity
+                        highest_sensitivity,
                     ):
                         highest_sensitivity = sensitivity
 
@@ -290,7 +288,7 @@ class MedicalDLPEngine:
                 for match in pattern.finditer(text):
                     sensitivity = self.SENSITIVITY_MAP.get(data_type, SensitivityLevel.CONFIDENTIAL)
                     if self._sensitivity_rank(sensitivity) > self._sensitivity_rank(
-                        highest_sensitivity
+                        highest_sensitivity,
                     ):
                         highest_sensitivity = sensitivity
 
@@ -336,7 +334,7 @@ class MedicalDLPEngine:
 
         if phi_detected:
             logger.info(
-                f"DLP: Detected {len(phi_detected)} PHI elements, {len(clinical_detected)} clinical elements"
+                f"DLP: Detected {len(phi_detected)} PHI elements, {len(clinical_detected)} clinical elements",
             )
 
         return result
@@ -381,18 +379,17 @@ class MedicalDLPEngine:
 
         if phi_type == "ssn":
             return "[SSN_REDACTED_XXX-XX-XXXX]"
-        elif phi_type == "mrn":
+        if phi_type == "mrn":
             return f"[MRN_REDACTED_{length}chars]"
-        elif phi_type == "email":
+        if phi_type == "email":
             return "[EMAIL_REDACTED]"
-        elif phi_type == "phone":
+        if phi_type == "phone":
             return "[PHONE_REDACTED]"
-        elif phi_type == "dates":
+        if phi_type == "dates":
             return "[DATE_REDACTED]"
-        elif phi_type == "address":
+        if phi_type == "address":
             return "[ADDRESS_REDACTED]"
-        else:
-            return f"[{type_label}_REDACTED]"
+        return f"[{type_label}_REDACTED]"
 
     def _sensitivity_rank(self, level: SensitivityLevel) -> int:
         """Convert sensitivity level to numeric rank"""
@@ -420,8 +417,7 @@ class MedicalDLPEngine:
         text: str,
         recipient_type: str = "internal",
     ) -> dict[str, Any]:
-        """
-        Scan text before external disclosure.
+        """Scan text before external disclosure.
 
         This is the "minimum necessary" check - ensures only
         required PHI is shared based on recipient type.
@@ -438,7 +434,7 @@ class MedicalDLPEngine:
         ]:
             disclosure_allowed = False
             warnings.append(
-                "External disclosure of restricted data requires explicit authorization"
+                "External disclosure of restricted data requires explicit authorization",
             )
 
         # Check for genetic data (GINA)

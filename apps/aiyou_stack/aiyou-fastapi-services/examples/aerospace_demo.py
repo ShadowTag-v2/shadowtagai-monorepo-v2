@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Aerospace Module Demo
+"""Aerospace Module Demo
 =====================
 
 Demonstrates the Cor.19 Aerospace Expansion capabilities:
@@ -155,7 +154,7 @@ def demo_roi_calculator():
 
     # National scale deployment
     config = DeploymentConfig(
-        num_cell_towers=20_000, num_vehicles=1_000_000, num_satellites=20, deployment_months=36
+        num_cell_towers=20_000, num_vehicles=1_000_000, num_satellites=20, deployment_months=36,
     )
 
     calculator = ROICalculator(config)

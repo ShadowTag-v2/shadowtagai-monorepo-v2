@@ -1,5 +1,4 @@
-"""
-minions Client - 650-Agent Consensus Voting
+"""minions Client - 650-Agent Consensus Voting
 
 Calls the minions Cloud Run service for swarm voting.
 Bottom-up CAV MTOE structure: soldiers vote, leaders coalesce.
@@ -11,8 +10,7 @@ import httpx
 
 
 class minionsClient:
-    """
-    minions 650-Agent Swarm Client
+    """minions 650-Agent Swarm Client
 
     Structure:
     - HHT: 90 (Headquarters, Judge #6)
@@ -32,10 +30,9 @@ class minionsClient:
         self.base_url = base_url.rstrip("/")
 
     async def vote(
-        self, code: str, task: str, threshold: float = 0.75, jura_tier: str = "FLASH"
+        self, code: str, task: str, threshold: float = 0.75, jura_tier: str = "FLASH",
     ) -> dict[str, Any]:
-        """
-        Submit code for 650-agent consensus voting.
+        """Submit code for 650-agent consensus voting.
 
         Args:
             code: The code to vote on
@@ -50,6 +47,7 @@ class minionsClient:
                 "votes": {"approve": int, "reject": int, "abstain": int},
                 "breakdown": {...by troop...}
             }
+
         """
         async with httpx.AsyncClient(timeout=60.0) as client:
             try:
@@ -68,8 +66,7 @@ class minionsClient:
                     data = response.json()
                     # Extract voting results from minions response
                     return self._parse_vote_result(data, threshold)
-                else:
-                    return self._fallback_vote(threshold)
+                return self._fallback_vote(threshold)
 
             except Exception as e:
                 print(f"[minions] Vote error: {e}")

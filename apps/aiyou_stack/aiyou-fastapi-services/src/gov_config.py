@@ -1,5 +1,4 @@
-"""
-Configuration management for agent-based governance system.
+"""Configuration management for agent-based governance system.
 
 Implements environment-aware settings with validation and defaults
 optimized for cost ($0.00027-$0.0012 per decision) and latency (2-5s).

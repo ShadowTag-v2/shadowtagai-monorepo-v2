@@ -1,5 +1,4 @@
-"""
-GAAS Integration for AiU+ShadowTag-v4 Platform
+"""GAAS Integration for AiU+ShadowTag-v4 Platform
 Generalized Autonomy Aviation System
 
 Provides:
@@ -20,6 +19,6 @@ from .perception.infrastructure_mapping import InfrastructureMappingService
 __version__ = "1.0.0"
 __all__ = [
     "AutonomousFlightService",
-    "TowerDeploymentDrone",
     "InfrastructureMappingService",
+    "TowerDeploymentDrone",
 ]

@@ -1,5 +1,4 @@
-"""
-Health Check Endpoints
+"""Health Check Endpoints
 
 Provides health and readiness checks for the service.
 """
@@ -15,11 +14,11 @@ router = APIRouter()
 
 @router.get("/health")
 async def health_check():
-    """
-    Basic health check endpoint.
+    """Basic health check endpoint.
 
     Returns:
         Health status and basic system information
+
     """
     return {
         "status": "healthy",
@@ -31,11 +30,11 @@ async def health_check():
 
 @router.get("/health/detailed")
 async def detailed_health():
-    """
-    Detailed health check with system metrics.
+    """Detailed health check with system metrics.
 
     Returns:
         Comprehensive health status including resource usage
+
     """
     cpu_percent = psutil.cpu_percent(interval=1)
     memory = psutil.virtual_memory()
@@ -66,11 +65,11 @@ async def detailed_health():
 
 @router.get("/ready")
 async def readiness_check():
-    """
-    Readiness check endpoint.
+    """Readiness check endpoint.
 
     Returns:
         Service readiness status
+
     """
     # TODO: Add checks for database connectivity, etc.
     return {"ready": True, "timestamp": datetime.utcnow().isoformat()}

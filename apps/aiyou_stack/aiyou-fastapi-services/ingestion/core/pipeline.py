@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Gemini Ingestion Layer Pipeline
+"""PNKLN Core Stack - Gemini Ingestion Layer Pipeline
 
 Main orchestration pipeline that:
 1. Fetches items from multiple sources (YouTube, Twitter, News)
@@ -39,8 +38,7 @@ pipeline_cost = Gauge("ingestion_pipeline_cost_usd", "Estimated cost of last pip
 
 
 class IngestionPipeline:
-    """
-    Main ingestion pipeline orchestrator.
+    """Main ingestion pipeline orchestrator.
 
     Coordinates fetching, classification, and delivery of intelligence items
     across multiple sources while respecting ethical, cost, and runtime constraints.
@@ -100,10 +98,9 @@ class IngestionPipeline:
         return results
 
     async def fetch_all_sources(
-        self, queries: list[str] | None = None, since: datetime | None = None
+        self, queries: list[str] | None = None, since: datetime | None = None,
     ) -> list[IngestedItem]:
-        """
-        Fetch items from all enabled sources concurrently.
+        """Fetch items from all enabled sources concurrently.
 
         Args:
             queries: Search queries/topics
@@ -111,6 +108,7 @@ class IngestionPipeline:
 
         Returns:
             List of all fetched items
+
         """
         # Calculate items per source
         total_budget = self.config.ingestion.max_items_per_run
@@ -122,8 +120,8 @@ class IngestionPipeline:
         for name, adapter in self.adapters.items():
             task = asyncio.create_task(
                 self._fetch_from_source(
-                    name, adapter, queries=queries, max_items=items_per_source, since=since
-                )
+                    name, adapter, queries=queries, max_items=items_per_source, since=since,
+                ),
             )
             fetch_tasks.append(task)
 
@@ -155,7 +153,7 @@ class IngestionPipeline:
 
         try:
             async for item in adapter.fetch_items(
-                queries=queries, max_items=max_items, since=since
+                queries=queries, max_items=max_items, since=since,
             ):
                 items.append(item)
                 items_fetched.labels(source=source_name).inc()
@@ -168,14 +166,14 @@ class IngestionPipeline:
         return items
 
     async def classify_items(self, items: list[IngestedItem]) -> dict[str, TierScore]:
-        """
-        Classify all items using Gemini.
+        """Classify all items using Gemini.
 
         Args:
             items: List of items to classify
 
         Returns:
             Dictionary mapping item IDs to TierScores
+
         """
         if not self.config.features.enable_tier_classification:
             logger.warning("tier_classification_disabled")
@@ -198,10 +196,9 @@ class IngestionPipeline:
         return scores
 
     def apply_quality_gates(
-        self, items: list[IngestedItem], scores: dict[str, TierScore]
+        self, items: list[IngestedItem], scores: dict[str, TierScore],
     ) -> tuple[list[IngestedItem], list[IngestedItem]]:
-        """
-        Apply quality gates to filter low-quality items.
+        """Apply quality gates to filter low-quality items.
 
         Quality gates:
         - Relevance score ≥ 70%
@@ -210,6 +207,7 @@ class IngestionPipeline:
 
         Returns:
             Tuple of (accepted_items, rejected_items)
+
         """
         accepted = []
         rejected = []
@@ -233,7 +231,7 @@ class IngestionPipeline:
 
             if completeness < self.config.classification.completeness_min_pct:
                 logger.debug(
-                    "item_rejected_completeness", item_id=item.id, completeness=completeness
+                    "item_rejected_completeness", item_id=item.id, completeness=completeness,
                 )
                 rejected.append(item)
                 continue
@@ -287,8 +285,7 @@ class IngestionPipeline:
 
     @pipeline_duration.time()
     async def run(self, queries: list[str] | None = None, since: datetime | None = None) -> dict:
-        """
-        Execute the full ingestion pipeline.
+        """Execute the full ingestion pipeline.
 
         Args:
             queries: Search queries/topics
@@ -296,6 +293,7 @@ class IngestionPipeline:
 
         Returns:
             Pipeline execution summary
+
         """
         start_time = datetime.utcnow()
 

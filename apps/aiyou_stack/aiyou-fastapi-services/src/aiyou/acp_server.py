@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-ACP (Agent Client Protocol) Server
+"""ACP (Agent Client Protocol) Server
 JSON-RPC server for IDE integration (JetBrains, Zed, VSCode).
 """
 
@@ -35,8 +34,7 @@ class ACPResponse:
 
 
 class ACPServer:
-    """
-    Agent Client Protocol server.
+    """Agent Client Protocol server.
     Provides cursor-style code intelligence backed by Gemini.
     """
 
@@ -59,14 +57,14 @@ class ACPServer:
         }
 
     async def handle_request(self, request_data: str) -> str:
-        """
-        Handle incoming JSON-RPC request.
+        """Handle incoming JSON-RPC request.
 
         Args:
             request_data: JSON string
 
         Returns:
             JSON response string
+
         """
         try:
             req = json.loads(request_data)
@@ -79,18 +77,18 @@ class ACPServer:
                 response = ACPResponse(id=req_id, result=result)
             else:
                 response = ACPResponse(
-                    id=req_id, error={"code": -32601, "message": f"Method not found: {method}"}
+                    id=req_id, error={"code": -32601, "message": f"Method not found: {method}"},
                 )
 
             return json.dumps(asdict(response))
 
         except json.JSONDecodeError as e:
             return json.dumps(
-                asdict(ACPResponse(error={"code": -32700, "message": f"Parse error: {e}"}))
+                asdict(ACPResponse(error={"code": -32700, "message": f"Parse error: {e}"})),
             )
         except Exception as e:
             return json.dumps(
-                asdict(ACPResponse(error={"code": -32603, "message": f"Internal error: {e}"}))
+                asdict(ACPResponse(error={"code": -32603, "message": f"Internal error: {e}"})),
             )
 
     async def handle_initialize(self, params: dict) -> dict:
@@ -107,8 +105,7 @@ class ACPServer:
         }
 
     async def handle_complete(self, params: dict) -> dict:
-        """
-        Code completion at cursor.
+        """Code completion at cursor.
 
         Params:
             file_path: Current file
@@ -122,7 +119,7 @@ class ACPServer:
 
         # Generate context
         prompt = self.cursor.generate_prompt_context(
-            file_path, line, f"Complete the code after: {prefix}"
+            file_path, line, f"Complete the code after: {prefix}",
         )
 
         # Get completion from Gemini
@@ -131,8 +128,7 @@ class ACPServer:
         return {"completions": [{"text": result, "kind": "snippet"}]}
 
     async def handle_generate(self, params: dict) -> dict:
-        """
-        Generate code based on task description.
+        """Generate code based on task description.
 
         Params:
             file_path: Current file
@@ -149,8 +145,7 @@ class ACPServer:
         return {"code": result}
 
     async def handle_explain(self, params: dict) -> dict:
-        """
-        Explain selected code.
+        """Explain selected code.
 
         Params:
             code: Code to explain
@@ -177,8 +172,7 @@ Provide:
         return {"explanation": result}
 
     async def handle_refactor(self, params: dict) -> dict:
-        """
-        Refactor code with specific instruction.
+        """Refactor code with specific instruction.
 
         Params:
             code: Code to refactor
@@ -200,8 +194,7 @@ Return only the refactored code, no explanations.
         return {"refactored": result}
 
     async def handle_search(self, params: dict) -> dict:
-        """
-        Search codebase or GitHub.
+        """Search codebase or GitHub.
 
         Params:
             query: Search query
@@ -220,8 +213,7 @@ Return only the refactored code, no explanations.
         return {"results": results}
 
     async def handle_find_symbol(self, params: dict) -> dict:
-        """
-        Find symbol definition.
+        """Find symbol definition.
 
         Params:
             symbol: Symbol name
@@ -239,12 +231,11 @@ Return only the refactored code, no explanations.
                     "signature": s.signature,
                 }
                 for s in symbols
-            ]
+            ],
         }
 
     async def handle_get_context(self, params: dict) -> dict:
-        """
-        Get code context for current position.
+        """Get code context for current position.
 
         Params:
             file_path: Current file
@@ -268,8 +259,7 @@ Return only the refactored code, no explanations.
         }
 
     async def handle_chat(self, params: dict) -> dict:
-        """
-        Chat with context.
+        """Chat with context.
 
         Params:
             message: User message

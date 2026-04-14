@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Revenue Analysis Script
+"""Revenue Analysis Script
 Generates a detailed financial analysis report based on the Revenue Model.
 """
 
@@ -46,7 +45,7 @@ def analyze_revenue():
 
     print("\n=== Usage-Based Revenue ===")
     print(
-        f"  Price per Validated Lead: {format_currency(data['tiers']['usage']['price_per_validated_lead'])}"
+        f"  Price per Validated Lead: {format_currency(data['tiers']['usage']['price_per_validated_lead'])}",
     )
 
     print("\n=== Competitive Baseline ===")

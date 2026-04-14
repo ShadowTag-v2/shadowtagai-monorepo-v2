@@ -62,7 +62,7 @@ def eval(intent: str, risk_score: float = 0.5, user: str = "cli_user"):
                     f"[italic]{ruling['decision_memo']}[/italic]",
                     title="FinJudge Ruling",
                     border_style=risk_color,
-                )
+                ),
             )
 
             if ruling["controls_required"]:
@@ -87,7 +87,7 @@ def upgrade(email: str):
     try:
         headers = {"x-api-key": api_key}
         response = requests.post(
-            f"{API_URL}/v1/subscribe", params={"email": email}, headers=headers
+            f"{API_URL}/v1/subscribe", params={"email": email}, headers=headers,
         )
         response.raise_for_status()
         url = response.json()["checkout_url"]

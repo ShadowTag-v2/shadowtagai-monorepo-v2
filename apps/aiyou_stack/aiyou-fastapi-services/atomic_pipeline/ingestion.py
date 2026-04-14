@@ -10,10 +10,9 @@ logger = logging.getLogger(__name__)
 
 
 async def extract_intel_event(
-    text: str, model_name: str = GeminiModel.GEMINI_20_FLASH.value
+    text: str, model_name: str = GeminiModel.GEMINI_20_FLASH.value,
 ) -> IntelEvent | None:
-    """
-    Calls Gemini to extract a structured IntelEvent from raw text.
+    """Calls Gemini to extract a structured IntelEvent from raw text.
 
     Args:
         text: The raw text content to be analyzed.
@@ -21,6 +20,7 @@ async def extract_intel_event(
 
     Returns:
         An IntelEvent object on success, or None if parsing or validation fails.
+
     """
     # Construct the prompt with the document text
     # Note: We use double braces {{ }} to escape them in the f-string for the JSON schema
@@ -52,13 +52,13 @@ The JSON object must conform to the following schema:
         try:
             model_enum = GeminiModel(model_name)
             config = GeminiConfig(
-                model=model_enum, temperature=0.0
+                model=model_enum, temperature=0.0,
             )  # Low temperature for extraction
         except ValueError:
             # Fallback or error if model_name is not in GeminiModel
             # For now, we'll log a warning and try to proceed if we can, or just default to Flash
             logger.warning(
-                f"Model '{model_name}' not found in GeminiModel enum. Using default Gemini 2.0 Flash."
+                f"Model '{model_name}' not found in GeminiModel enum. Using default Gemini 2.0 Flash.",
             )
             config = GeminiConfig(model=GeminiModel.GEMINI_20_FLASH, temperature=0.0)
 

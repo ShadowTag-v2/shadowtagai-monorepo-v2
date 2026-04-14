@@ -1,5 +1,4 @@
-"""
-Video Steganography Endpoints
+"""Video Steganography Endpoints
 
 API endpoints for video encoding and decoding operations.
 """
@@ -32,8 +31,7 @@ async def encode_video(
     error_correction: bool = Form(default=True),
     create_receipt: bool = Form(default=True),
 ):
-    """
-    Encode (embed) data into a video file.
+    """Encode (embed) data into a video file.
 
     Args:
         video: Input video file
@@ -45,6 +43,7 @@ async def encode_video(
 
     Returns:
         Encoding statistics and verification hash
+
     """
     # Validate video file
     if not any(video.filename.endswith(ext) for ext in settings.ALLOWED_VIDEO_EXTENSIONS):
@@ -111,8 +110,7 @@ async def decode_video(
     verify_hash: str | None = Form(default=None),
     create_receipt: bool = Form(default=True),
 ):
-    """
-    Decode (extract) data from a video file.
+    """Decode (extract) data from a video file.
 
     Args:
         video: Video file with embedded data
@@ -121,6 +119,7 @@ async def decode_video(
 
     Returns:
         Extracted payload and statistics
+
     """
     # Save uploaded file
     upload_dir = Path(settings.UPLOAD_DIR)
@@ -171,14 +170,14 @@ async def decode_video(
 async def estimate_capacity(
     video: UploadFile = File(..., description="Video file to analyze"),
 ):
-    """
-    Estimate the embedding capacity of a video file.
+    """Estimate the embedding capacity of a video file.
 
     Args:
         video: Video file to analyze
 
     Returns:
         Capacity estimates
+
     """
     # Save uploaded file
     upload_dir = Path(settings.UPLOAD_DIR)
@@ -209,7 +208,7 @@ def _create_video_receipt(
 
     receipt = Receipt(
         operation_id=hashlib.sha256(
-            f"{datetime.utcnow().isoformat()}_{media_hash}".encode()
+            f"{datetime.utcnow().isoformat()}_{media_hash}".encode(),
         ).hexdigest()[:16],
         operation_type=operation_type,
         timestamp=datetime.utcnow().isoformat(),

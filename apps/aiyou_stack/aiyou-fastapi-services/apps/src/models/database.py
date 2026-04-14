@@ -1,5 +1,4 @@
-"""
-Database Models for Zero-Touch Legal Deadline Management
+"""Database Models for Zero-Touch Legal Deadline Management
 SQLAlchemy ORM models
 """
 
@@ -155,7 +154,7 @@ class Deadline(Base):
     # Relationships
     document = relationship("LegalDocument", back_populates="deadlines")
     calendar_entries = relationship(
-        "CalendarEntry", back_populates="deadline", cascade="all, delete-orphan"
+        "CalendarEntry", back_populates="deadline", cascade="all, delete-orphan",
     )
     reminders = relationship("ReminderLog", back_populates="deadline", cascade="all, delete-orphan")
 

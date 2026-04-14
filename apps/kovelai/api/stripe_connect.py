@@ -1,5 +1,4 @@
-"""
-KovelAI Stripe Connect Module — Payment Routing Engine
+"""KovelAI Stripe Connect Module — Payment Routing Engine
 
 Track A: Client CC → Stripe Connect → Lawyer's Bank Account
 Track B: Lawyer's firm card → KovelAI Monthly SaaS Tier
@@ -28,7 +27,6 @@ from __future__ import annotations
 
 import logging
 import os
-from typing import Optional
 
 logger = logging.getLogger("kovelai.stripe")
 
@@ -57,12 +55,12 @@ class StripeConnect:
         email: str,
         country: str = "US",
     ) -> dict:
-        """
-        Create a Stripe Express Connected Account for a law firm.
+        """Create a Stripe Express Connected Account for a law firm.
         The firm completes KYC through Stripe's hosted onboarding.
 
         Returns:
             dict with account_id and onboarding status
+
         """
         if not STRIPE_AVAILABLE:
             logger.warning("Stripe not configured — returning mock account")
@@ -105,12 +103,12 @@ class StripeConnect:
         refresh_url: str = "https://kovelai.com/onboard/refresh",
         return_url: str = "https://kovelai.com/onboard/complete",
     ) -> dict:
-        """
-        Generate a Stripe-hosted onboarding link for the law firm.
+        """Generate a Stripe-hosted onboarding link for the law firm.
         The firm owner clicks this to complete KYC, add bank info, etc.
 
         Returns:
             dict with url and expires_at
+
         """
         if not STRIPE_AVAILABLE:
             return {
@@ -141,8 +139,7 @@ class StripeConnect:
         query_type: str = "ai_chat",
         application_fee_cents: int = 0,
     ) -> dict:
-        """
-        Bill the client's credit card and route payment DIRECTLY
+        """Bill the client's credit card and route payment DIRECTLY
         to the lawyer's bank via Stripe Connect.
 
         The application_fee_cents (our take-rate, 0.5% default) is
@@ -158,6 +155,7 @@ class StripeConnect:
 
         Returns:
             dict with payment_intent_id, status, and routing info
+
         """
         if not application_fee_cents:
             # Default 0.5% platform fee (minimum 1 cent)
@@ -229,10 +227,9 @@ class StripeConnect:
     def create_firm_subscription(
         firm_email: str,
         tier: str = "starter",
-        payment_method: Optional[str] = None,
+        payment_method: str | None = None,
     ) -> dict:
-        """
-        Create a KovelAI SaaS subscription for the law firm.
+        """Create a KovelAI SaaS subscription for the law firm.
         This is Track B — the firm pays US for platform access.
 
         Tiers auto-scale based on usage (like Claude Code).
@@ -296,12 +293,12 @@ class StripeConnect:
     # ── Webhook Verification ────────────────────────────
 
     @staticmethod
-    def verify_webhook(payload: bytes, sig_header: str) -> Optional[dict]:
-        """
-        Verify a Stripe webhook signature and return the event.
+    def verify_webhook(payload: bytes, sig_header: str) -> dict | None:
+        """Verify a Stripe webhook signature and return the event.
 
         Returns:
             Parsed event dict, or None if verification fails
+
         """
         if not STRIPE_AVAILABLE or not WEBHOOK_SECRET:
             logger.warning("Webhook verification skipped — Stripe not configured")

@@ -1,20 +1,19 @@
-"""
-SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
+"""SYSTEM PROMPT (ArXiv 2512.14982 - PROMPT REPETITION ENFORCEMENT):
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 Ensure you reprint all thread code, number of atomic code blocks being irrelevant. In so doing, Be elegant and Steve Jobs-esque, to thereby generate us the best uplift in performance, accuracy, and financial output possible.
 """
 
 import logging
-import httpx
 from typing import Any
+
+import httpx
 
 logger = logging.getLogger(__name__)
 
 
 class UphillsnowballEducationParser:
-    """
-    Education Vertical ($1.2B SaaS Extension).
+    """Education Vertical ($1.2B SaaS Extension).
     Adapts the Legal Zero-Touch engine for Academic / LMS (Canvas, Blackboard) environments.
     Translates raw syllabus PDFs into strict timeline enforcement for students and teachers.
     """
@@ -23,8 +22,7 @@ class UphillsnowballEducationParser:
         self.tenant_id = tenant_id
 
     async def parse_lms_webhook(self, payload: dict[str, Any]) -> dict[str, Any]:
-        """
-        Ingests native Canvas/Blackboard webhooks (e.g. 'Assignment Created').
+        """Ingests native Canvas/Blackboard webhooks (e.g. 'Assignment Created').
         """
         course_id = payload.get("course_id")
         due_date = payload.get("due_date")
@@ -39,7 +37,7 @@ class UphillsnowballEducationParser:
                     headers={"Authorization": "Bearer ENV_CANVAS_TOKEN"},
                 )
                 logger.info(
-                    f"EDU Vertical: Canvas API retrieved {len(resp.json())} assignments from upstream lock."
+                    f"EDU Vertical: Canvas API retrieved {len(resp.json())} assignments from upstream lock.",
                 )
             except Exception as e:
                 logger.error(f"EDU Vertical: Canvas Sync failed - {e}")
@@ -52,8 +50,7 @@ class UphillsnowballEducationParser:
         }
 
     async def scan_syllabus_for_deadlines(self, _syllabus_text: str) -> list[dict[str, Any]]:
-        """
-        Utilizes the Glicko-2 router to extract academic milestones (Midterms, Papers)
+        """Utilizes the Glicko-2 router to extract academic milestones (Midterms, Papers)
         from unstructured text, applying the exact same logic used for court rules.
         """
         logger.debug("EDU Vertical: RAG parsing syllabus for milestone extraction...")

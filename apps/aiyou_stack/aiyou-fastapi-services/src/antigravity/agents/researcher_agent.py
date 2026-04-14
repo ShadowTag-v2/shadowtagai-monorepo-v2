@@ -1,5 +1,4 @@
-"""
-Researcher Agent - Specialist in information gathering and analysis.
+"""Researcher Agent - Specialist in information gathering and analysis.
 
 Focuses on finding relevant information, synthesizing knowledge, and providing insights.
 """
@@ -8,8 +7,7 @@ from src.antigravity.agents.base_agent import BaseAgent
 
 
 class ResearcherAgent(BaseAgent):
-    """
-    Researcher agent specialized in information gathering and analysis.
+    """Researcher agent specialized in information gathering and analysis.
 
     This agent researches topics, gathers information, analyzes data, and
     synthesizes findings into actionable insights.

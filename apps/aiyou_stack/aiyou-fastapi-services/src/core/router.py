@@ -1,5 +1,4 @@
-"""
-SELF-ROUTE Controller Implementation
+"""SELF-ROUTE Controller Implementation
 Intelligent routing between RAG and Long-Context modes
 
 Key Features:
@@ -53,8 +52,7 @@ class RouteResponse:
 
 
 class SelfRouteController:
-    """
-    Main controller implementing SELF-ROUTE logic
+    """Main controller implementing SELF-ROUTE logic
 
     Architecture:
     1. Query classification (complexity, task type)
@@ -72,8 +70,7 @@ class SelfRouteController:
         cost_threshold: float = 0.5,
         default_k: int = 5,
     ):
-        """
-        Initialize SELF-ROUTE controller
+        """Initialize SELF-ROUTE controller
 
         Args:
             gemini_model: Gemini model name (pro or flash)
@@ -82,6 +79,7 @@ class SelfRouteController:
             location: GCP region
             cost_threshold: Max acceptable cost ratio vs LC
             default_k: Default number of chunks to retrieve
+
         """
         self.gemini_model = gemini_model
         self.project_id = project_id
@@ -107,7 +105,7 @@ class SelfRouteController:
 
         logger.info(
             f"Initialized SelfRouteController: model={gemini_model}, "
-            f"k={default_k}, cost_threshold={cost_threshold}"
+            f"k={default_k}, cost_threshold={cost_threshold}",
         )
 
     @property
@@ -134,14 +132,14 @@ class SelfRouteController:
         return self._model
 
     def _get_generation_config(self, mode: str = "rag") -> dict:
-        """
-        Get generation configuration for RAG or LC mode
+        """Get generation configuration for RAG or LC mode
 
         Args:
             mode: "rag" or "lc"
 
         Returns:
             Generation config dict
+
         """
         if mode == "rag":
             return {
@@ -150,29 +148,28 @@ class SelfRouteController:
                 "top_k": 40,
                 "max_output_tokens": 512,  # Short answers expected
             }
-        else:  # LC mode
-            return {
-                "temperature": 0.2,  # Slightly higher for reasoning
-                "top_p": 0.95,
-                "top_k": 40,
-                "max_output_tokens": 1024,  # Longer reasoning chains
-            }
+        # LC mode
+        return {
+            "temperature": 0.2,  # Slightly higher for reasoning
+            "top_p": 0.95,
+            "top_k": 40,
+            "max_output_tokens": 1024,  # Longer reasoning chains
+        }
 
     def _estimate_tokens(self, text: str) -> int:
-        """
-        Estimate token count (approximate: 1.3 tokens per word)
+        """Estimate token count (approximate: 1.3 tokens per word)
 
         Args:
             text: Input text
 
         Returns:
             Estimated token count
+
         """
         return int(len(text.split()) * 1.3)
 
     def _generate(self, prompt: str, mode: str = "rag") -> str:
-        """
-        Generate response using Gemini
+        """Generate response using Gemini
 
         Args:
             prompt: Input prompt
@@ -180,6 +177,7 @@ class SelfRouteController:
 
         Returns:
             Generated text
+
         """
         try:
             from vertexai.generative_models import GenerationConfig
@@ -196,10 +194,9 @@ class SelfRouteController:
             raise
 
     def classify_query(
-        self, query: str, domain_hint: str | None = None
+        self, query: str, domain_hint: str | None = None,
     ) -> tuple[TaskType, str, bool]:
-        """
-        Classify query for routing strategy
+        """Classify query for routing strategy
 
         Args:
             query: User query
@@ -207,13 +204,14 @@ class SelfRouteController:
 
         Returns:
             Tuple of (task_type, complexity, force_lc)
+
         """
         task_type = QueryClassifier.detect_task_type(query, domain_hint)
         complexity = QueryClassifier.classify_complexity(query)
         force_lc = QueryClassifier.should_force_lc(query)
 
         logger.debug(
-            f"Query classification: task={task_type}, complexity={complexity}, force_lc={force_lc}"
+            f"Query classification: task={task_type}, complexity={complexity}, force_lc={force_lc}",
         )
 
         return task_type, complexity, force_lc
@@ -227,8 +225,7 @@ class SelfRouteController:
         task_type: TaskType | None = None,
         domain_hint: str | None = None,
     ) -> RouteResponse:
-        """
-        Main routing logic: RAG-and-Route implementation
+        """Main routing logic: RAG-and-Route implementation
 
         Args:
             query: User query
@@ -240,6 +237,7 @@ class SelfRouteController:
 
         Returns:
             RouteResponse with answer and metadata
+
         """
         start_time = time.time()
 
@@ -257,7 +255,7 @@ class SelfRouteController:
         if force_lc:
             logger.info(f"Forcing LC due to query complexity: {complexity}")
             return self._route_to_lc(
-                query, context, task_type, method=RoutingMethod.FORCED_LC, start_time=start_time
+                query, context, task_type, method=RoutingMethod.FORCED_LC, start_time=start_time,
             )
 
         # STEP 1: RAG-and-Route
@@ -266,7 +264,7 @@ class SelfRouteController:
         # Retrieve chunks
         try:
             retrieved_chunks = self.retriever.retrieve(
-                query=query, document_text=context, document_id=document_id, k=k
+                query=query, document_text=context, document_id=document_id, k=k,
             )
 
             chunk_texts = [chunk.text for chunk in retrieved_chunks]
@@ -285,7 +283,7 @@ class SelfRouteController:
 
         # Generate RAG prompt
         rag_prompt = PromptTemplates.get_rag_prompt(
-            task_type=task_type, query=query, chunks=chunk_texts, indices=chunk_indices
+            task_type=task_type, query=query, chunks=chunk_texts, indices=chunk_indices,
         )
 
         # Try RAG
@@ -303,34 +301,33 @@ class SelfRouteController:
                     start_time=start_time,
                     retrieved_chunks=retrieved_chunks,
                 )
-            else:
-                # RAG succeeded
-                tokens_used = self._estimate_tokens(rag_prompt) + self._estimate_tokens(
-                    rag_response
-                )
+            # RAG succeeded
+            tokens_used = self._estimate_tokens(rag_prompt) + self._estimate_tokens(
+                rag_response,
+            )
 
-                latency = time.time() - start_time
+            latency = time.time() - start_time
 
-                # Update stats
-                self._update_stats(RoutingMethod.RAG, tokens_used, latency)
+            # Update stats
+            self._update_stats(RoutingMethod.RAG, tokens_used, latency)
 
-                logger.info(f"RAG success: {tokens_used} tokens, {latency:.2f}s")
+            logger.info(f"RAG success: {tokens_used} tokens, {latency:.2f}s")
 
-                return RouteResponse(
-                    answer=rag_response,
-                    method=RoutingMethod.RAG,
-                    tokens_used=tokens_used,
-                    confidence="MEDIUM",
-                    task_type=task_type,
-                    retrieved_chunks=retrieved_chunks,
-                    metadata={
-                        "k": k,
-                        "complexity": complexity,
-                        "latency": latency,
-                        "avg_chunk_score": sum(c.score for c in retrieved_chunks)
-                        / len(retrieved_chunks),
-                    },
-                )
+            return RouteResponse(
+                answer=rag_response,
+                method=RoutingMethod.RAG,
+                tokens_used=tokens_used,
+                confidence="MEDIUM",
+                task_type=task_type,
+                retrieved_chunks=retrieved_chunks,
+                metadata={
+                    "k": k,
+                    "complexity": complexity,
+                    "latency": latency,
+                    "avg_chunk_score": sum(c.score for c in retrieved_chunks)
+                    / len(retrieved_chunks),
+                },
+            )
 
         except Exception as e:
             logger.error(f"RAG generation failed: {e}, falling back to LC")
@@ -353,8 +350,7 @@ class SelfRouteController:
         retrieved_chunks: list[RetrievedChunk] | None = None,
         error: str | None = None,
     ) -> RouteResponse:
-        """
-        Route to Long-Context mode
+        """Route to Long-Context mode
 
         Args:
             query: User query
@@ -367,10 +363,11 @@ class SelfRouteController:
 
         Returns:
             RouteResponse
+
         """
         # Generate LC prompt
         lc_prompt = PromptTemplates.get_lc_prompt(
-            task_type=task_type, query=query, full_context=context
+            task_type=task_type, query=query, full_context=context,
         )
 
         try:
@@ -420,11 +417,11 @@ class SelfRouteController:
         self.stats["avg_latency"] = (self.stats["avg_latency"] * (total - 1) + latency) / total
 
     def get_stats(self) -> dict:
-        """
-        Get routing statistics
+        """Get routing statistics
 
         Returns:
             Dictionary with performance metrics
+
         """
         total = self.stats["total_queries"]
 

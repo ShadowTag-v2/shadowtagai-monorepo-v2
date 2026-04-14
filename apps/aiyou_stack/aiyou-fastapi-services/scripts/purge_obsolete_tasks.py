@@ -1,5 +1,4 @@
-"""
-PURGE SCRIPT
+"""PURGE SCRIPT
 Target: Batch-mark legacy action items as [OBSOLETE].
 Preserves: Files identified in MISSION_CRITICAL.md.
 """

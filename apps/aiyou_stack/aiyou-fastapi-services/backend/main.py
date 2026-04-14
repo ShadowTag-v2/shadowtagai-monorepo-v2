@@ -1,5 +1,4 @@
-"""
-AI You FastAPI Services - Compliance Expert
+"""AI You FastAPI Services - Compliance Expert
 Main application entry point
 """
 
@@ -76,7 +75,7 @@ async def add_process_time_header(request: Request, call_next):
 async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Global exception: {exc}", exc_info=True)
     return JSONResponse(
-        status_code=500, content={"detail": "Internal server error", "type": "internal_error"}
+        status_code=500, content={"detail": "Internal server error", "type": "internal_error"},
     )
 
 

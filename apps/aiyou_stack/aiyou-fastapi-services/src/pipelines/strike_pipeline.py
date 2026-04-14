@@ -60,7 +60,7 @@ def pipeline(target_url: str) -> None:
                 a11y_data: dict[str, Any] = json.loads(out_str)
                 link_count = int(a11y_data.get("extracted_links", 0))
                 print(
-                    f"[+] Stealth penetration successful. Extracted {link_count} structural nodes and A11y payload."
+                    f"[+] Stealth penetration successful. Extracted {link_count} structural nodes and A11y payload.",
                 )
             else:
                 raise ValueError("Empty output from scraper")

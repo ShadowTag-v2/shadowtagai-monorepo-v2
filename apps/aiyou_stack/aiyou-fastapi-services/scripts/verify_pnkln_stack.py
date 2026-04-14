@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-PNKLN Stack Verification Script
+"""PNKLN Stack Verification Script
 
 Verifies all 6 layers are properly installed and configured.
 Reports health status and integration points.
@@ -254,7 +253,7 @@ def check_testing_suite() -> tuple[bool, list[str]]:
     if integration_tests.exists():
         checks.append(f"{GREEN}✓{RESET} ACE integration tests exist")
         test_count = len(list(integration_tests.glob("test_*.mjs"))) + len(
-            list(integration_tests.glob("test_*.py"))
+            list(integration_tests.glob("test_*.py")),
         )
         checks.append(f"  {BLUE}ℹ{RESET} {test_count} integration tests found")
     else:

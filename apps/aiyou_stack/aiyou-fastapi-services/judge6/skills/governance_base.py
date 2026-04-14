@@ -1,5 +1,4 @@
-"""
-Judge #6 Governance Skill Structure
+"""Judge #6 Governance Skill Structure
 Adapted from K-Dense-AI/claude-scientific-skills
 
 This module defines the schema and base class for "Governance Skills".
@@ -19,8 +18,7 @@ class GovernanceSkill(BaseModel):
     tags: list[str] = []
 
     def execute(self, context: dict[str, Any]) -> dict[str, Any]:
-        """
-        Execute the governance check.
+        """Execute the governance check.
         Must be implemented by subclasses.
         """
         raise NotImplementedError("Skill must implement execute()")

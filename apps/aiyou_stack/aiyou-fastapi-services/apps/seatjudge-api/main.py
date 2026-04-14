@@ -55,10 +55,9 @@ def calculate_risk(seat: SeatRequest) -> RiskAssessment:
     # 3. Decision
     if base_score > 80:
         return RiskAssessment(score=base_score, decision="BLOCK", reason="High Risk Profile")
-    elif base_score > 50:
+    if base_score > 50:
         return RiskAssessment(score=base_score, decision="FLAG", reason="Manual Review Needed")
-    else:
-        return RiskAssessment(score=base_score, decision="APPROVE", reason="Low Risk")
+    return RiskAssessment(score=base_score, decision="APPROVE", reason="Low Risk")
 
 
 # --- Endpoints ---
@@ -71,8 +70,7 @@ def health_check():
 
 @app.post("/assess", response_model=RiskAssessment)
 def assess_risk(seat: SeatRequest):
-    """
-    Judge #6 Endpoint: Scores a specific seat transaction in real-time.
+    """Judge #6 Endpoint: Scores a specific seat transaction in real-time.
     """
     risk = calculate_risk(seat)
 
@@ -92,8 +90,7 @@ def assess_risk(seat: SeatRequest):
 
 @app.get("/map/{venue_id}", response_model=list[SeatStatus])
 def get_liquid_seat_map(venue_id: str):
-    """
-    Returns the real-time 'Liquid' status of the venue.
+    """Returns the real-time 'Liquid' status of the venue.
     """
     # Return Ingested Data + Some Mock Data if empty
     ingested_seats = []
@@ -109,7 +106,7 @@ def get_liquid_seat_map(venue_id: str):
                     status=random.choice(["AVAILABLE", "BOOKED", "LOCKED"]),
                     price=random.uniform(50.0, 250.0),
                     risk_score=random.randint(0, 30),
-                )
+                ),
             )
 
     return ingested_seats

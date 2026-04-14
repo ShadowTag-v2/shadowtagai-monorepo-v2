@@ -1,5 +1,4 @@
-"""
-Ironwood Transformer Block
+"""Ironwood Transformer Block
 Architectural Equivalent to tinytorch_transformer.py but powered by JAX/Flax.
 Optimized for Google Cloud TPU v5e/v6.
 
@@ -24,8 +23,7 @@ Dtype = Any
 
 
 class MLP(nn.Module):
-    """
-    Ironwood Multi-Layer Perceptron.
+    """Ironwood Multi-Layer Perceptron.
     """
 
     hidden_dim: int
@@ -49,8 +47,7 @@ class MLP(nn.Module):
 
 
 class IronwoodAttention(nn.Module):
-    """
-    Ironwood Multi-Head Self-Attention.
+    """Ironwood Multi-Head Self-Attention.
     """
 
     num_heads: int
@@ -76,8 +73,7 @@ class IronwoodAttention(nn.Module):
 
 
 class IronwoodBlock(nn.Module):
-    """
-    Complete Ironwood Transformer Block (Flax).
+    """Complete Ironwood Transformer Block (Flax).
     x -> LN -> Attn -> + -> LN -> MLP -> + -> Out
     """
 
@@ -112,8 +108,7 @@ class IronwoodBlock(nn.Module):
 
 
 class IronwoodGemini(nn.Module):
-    """
-    Ironwood JAX/Flax Gemini-Style Model.
+    """Ironwood JAX/Flax Gemini-Style Model.
     """
 
     vocab_size: int
@@ -159,7 +154,7 @@ class IronwoodGemini(nn.Module):
 
         for _ in range(self.num_layers):
             x = IronwoodBlock(
-                embed_dim=self.embed_dim, num_heads=self.num_heads, dropout_rate=self.dropout_rate
+                embed_dim=self.embed_dim, num_heads=self.num_heads, dropout_rate=self.dropout_rate,
             )(x, mask=mask, deterministic=deterministic)
 
         # 3. Final Norm

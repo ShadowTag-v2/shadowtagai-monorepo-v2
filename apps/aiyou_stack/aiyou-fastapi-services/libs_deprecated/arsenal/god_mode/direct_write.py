@@ -4,16 +4,14 @@ from src.governance.judge_six.sentinel import JudgeSentinel
 
 
 class GeminiCodeAssistProxy:
-    """
-    GOD MODE: Direct Write Capability.
+    """GOD MODE: Direct Write Capability.
     """
 
     def __init__(self):
         self.judge = JudgeSentinel()
 
     def trigger_smart_action(self, file_path: str, new_content: str):
-        """
-        The 'Throttle' mentioned in the Walkthrough.
+        """The 'Throttle' mentioned in the Walkthrough.
         Writes code to disk ONLY if Judge 6 approves.
         """
         logging.info(f"⚡ GOD MODE: Attempting write to {file_path}")

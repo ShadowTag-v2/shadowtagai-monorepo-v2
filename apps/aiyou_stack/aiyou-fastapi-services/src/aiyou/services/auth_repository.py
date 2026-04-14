@@ -1,5 +1,4 @@
-"""
-Auth service layer addendum.
+"""Auth service layer addendum.
 
 Extracts the remaining db.query from the auth route.
 The existing AuthService handles password/token operations;

@@ -1,5 +1,4 @@
-"""
-Optimization and General Template API Routes
+"""Optimization and General Template API Routes
 Endpoints for Doing Less Better Results and other templates
 """
 
@@ -35,14 +34,13 @@ async def list_templates():
                 "templates": ["Doing Less Better Results"],
                 "description": "Life and work optimization frameworks",
             },
-        ]
+        ],
     }
 
 
 @router.post("/optimization", summary="Create optimization strategy")
 async def create_optimization_strategy(optimization: DoingLessBetterResults):
-    """
-    Create a Doing Less Better Results optimization strategy
+    """Create a Doing Less Better Results optimization strategy
 
     Focus on 2-3 key areas and implement targeted strategies for better outcomes.
     """
@@ -54,7 +52,7 @@ async def create_optimization_strategy(optimization: DoingLessBetterResults):
             "framework": "Doing Less Better Results",
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating strategy: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating strategy: {e!s}")
 
 
 @router.get("/optimization/framework", summary="Get optimization framework overview")
@@ -193,7 +191,7 @@ async def get_optimization_example():
                 "Work: Ship all 3 priority projects by March 31",
                 "Overall: Feel less overwhelmed, more energized by end of Q1",
             ],
-        }
+        },
     }
 
 

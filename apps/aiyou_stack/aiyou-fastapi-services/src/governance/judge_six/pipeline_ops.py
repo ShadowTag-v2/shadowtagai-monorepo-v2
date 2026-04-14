@@ -7,8 +7,7 @@ logger = logging.getLogger("JudgeSix.PipelineOps")
 
 
 def calculate_hot_risk(transactions: list[dict[str, Any]]) -> float:
-    """
-    Scans a batch of transactions and computes the aggregate 'hot' risk.
+    """Scans a batch of transactions and computes the aggregate 'hot' risk.
     If 'risk_score' is not present in a transaction, it evaluates to 0.0.
     """
     if not isinstance(transactions, list):
@@ -22,7 +21,7 @@ def calculate_hot_risk(transactions: list[dict[str, Any]]) -> float:
             total_risk += float(score)
         except (ValueError, TypeError) as e:
             logger.warning(
-                f"Invalid risk score at index {idx} ({tx.get('risk_score')}): {e}. Defaulting to 0.0"
+                f"Invalid risk score at index {idx} ({tx.get('risk_score')}): {e}. Defaulting to 0.0",
             )
 
     logger.debug(f"Calculated hot risk: {total_risk} over {len(transactions)} transactions.")
@@ -30,10 +29,9 @@ def calculate_hot_risk(transactions: list[dict[str, Any]]) -> float:
 
 
 def watch_stream(
-    db_ref: Any, collection_name: str, callback: Callable[[list[dict[str, Any]], Any, Any], None]
+    db_ref: Any, collection_name: str, callback: Callable[[list[dict[str, Any]], Any, Any], None],
 ) -> Any:
-    """
-    Wraps db.collection(...).on_snapshot to provide real-time updates to the active session.
+    """Wraps db.collection(...).on_snapshot to provide real-time updates to the active session.
     Expects db_ref to be a mocked or live firestore.Client instance.
     """
     try:

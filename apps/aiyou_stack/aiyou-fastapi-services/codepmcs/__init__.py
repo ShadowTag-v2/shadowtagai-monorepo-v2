@@ -1,5 +1,4 @@
-"""
-CodePMCS - AI-Powered Code Quality & Remediation Platform
+"""CodePMCS - AI-Powered Code Quality & Remediation Platform
 
 Part of the n-autoresearch/Kosmos/BioAgents Cavalry Squadron.
 Provides automated code scanning, remediation, and PR generation.
@@ -22,14 +21,14 @@ from .scanner import CodeScanner, Issue, ScanResult, Severity
 
 __all__ = [
     "CodeScanner",
-    "ScanResult",
-    "Issue",
-    "Severity",
-    "Remediator",
     "Fix",
-    "RemediationResult",
+    "Issue",
     "PRGenerator",
     "PRResult",
+    "RemediationResult",
+    "Remediator",
+    "ScanResult",
+    "Severity",
 ]
 
 
@@ -46,7 +45,7 @@ class CodePMCS:
         return await self.scanner.scan(repo_path, rules)
 
     async def remediate(
-        self, scan_result: "ScanResult", auto_fix: bool = True
+        self, scan_result: "ScanResult", auto_fix: bool = True,
     ) -> "RemediationResult":
         """Generate fixes for detected issues."""
         return await self.remediator.remediate(scan_result, auto_fix)

@@ -6,7 +6,6 @@ import urllib.request
 
 def generate_local_image(prompt: str) -> str:
     """Sends a generation request to the local ComfyUI instance and returns the image URL."""
-
     workflow = {
         "3": {
             "class_type": "KSampler",
@@ -68,7 +67,7 @@ def generate_local_image(prompt: str) -> str:
 
         return "Image generation timed out or is taking too long."
     except Exception as e:
-        return f"Failed to connect to ComfyUI. Is the server running on http://127.0.0.1:8188? Error: {str(e)}"
+        return f"Failed to connect to ComfyUI. Is the server running on http://127.0.0.1:8188? Error: {e!s}"
 
 
 def search_workspace_knowledge(workspace_id: int, query: str) -> str:
@@ -92,7 +91,7 @@ COMFYUI_IMAGE_TOOL_SCHEMA = {
                 "prompt": {
                     "type": "string",
                     "description": "A highly descriptive, comma-separated list of visual keywords to generate the image (e.g., 'cyberpunk city, neon lights, 4k, masterpiece, highly detailed').",
-                }
+                },
             },
             "required": ["prompt"],
         },
@@ -110,7 +109,7 @@ WORKSPACE_SEARCH_TOOL_SCHEMA = {
                 "query": {
                     "type": "string",
                     "description": "The semantic search query to find relevant documents.",
-                }
+                },
             },
             "required": ["query"],
         },

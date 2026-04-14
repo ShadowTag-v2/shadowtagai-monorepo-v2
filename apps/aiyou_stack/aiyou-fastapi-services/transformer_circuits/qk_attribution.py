@@ -1,5 +1,4 @@
-"""
-QK Attribution: Decompose attention scores as bilinear functions of feature activations.
+"""QK Attribution: Decompose attention scores as bilinear functions of feature activations.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025)
 by Kamath, Ameisen, et al.
@@ -45,6 +44,7 @@ class QKAttribution:
         key_activation: Key-side feature activation
         query_feature_desc: Description of query feature
         key_feature_desc: Description of key feature
+
     """
 
     query_feature_idx: int | None
@@ -85,6 +85,7 @@ class QKAttributionResult:
         total_score: Total attention score (should equal sum of attributions)
         attributions: List of individual attribution terms
         attention_pattern: Full attention pattern for this head (after softmax)
+
     """
 
     query_pos: int
@@ -104,6 +105,7 @@ class QKAttributionResult:
 
         Returns:
             List of top-k QKAttribution objects
+
         """
         attributions = self.attributions
         if only_features:
@@ -135,7 +137,7 @@ class QKAttributionResult:
         for i, attr in enumerate(self.get_top_k(k=k), 1):
             lines.append(
                 f"  {i}. {attr.query_feature_desc} × {attr.key_feature_desc}: "
-                f"{attr.contribution:.4f}"
+                f"{attr.contribution:.4f}",
             )
 
         return "\n".join(lines)
@@ -153,6 +155,7 @@ class QKAttributor:
         feature_vectors: Decoder vectors from SAE [n_features, d_model]
         feature_descriptions: Human-readable descriptions of each feature
         normalize_before_qk: If True, apply layer normalization before QK (e.g., for RoPE)
+
     """
 
     def __init__(
@@ -227,6 +230,7 @@ class QKAttributor:
 
         Returns:
             Total attention score (pre-softmax)
+
         """
         # Get feature projections for this head
         if self.feature_projections.dim() == 3:
@@ -237,7 +241,7 @@ class QKAttributor:
 
         # Feature-feature interactions: Σ_i Σ_j a_i^k * a_j^q * (v_i^T W_QK v_j)
         score = torch.sum(
-            key_activations.unsqueeze(1) * query_activations.unsqueeze(0) * feat_proj
+            key_activations.unsqueeze(1) * query_activations.unsqueeze(0) * feat_proj,
         ).item()
 
         # Add bias terms if provided
@@ -294,6 +298,7 @@ class QKAttributor:
 
         Returns:
             QKAttributionResult with full decomposition
+
         """
         # Get feature projections for this head
         if self.feature_projections.dim() == 3:
@@ -321,7 +326,7 @@ class QKAttributor:
                             key_activation=key_activations[i].item(),
                             query_feature_desc=self.feature_descriptions[j],
                             key_feature_desc=self.feature_descriptions[i],
-                        )
+                        ),
                     )
 
         # Bias terms
@@ -342,7 +347,7 @@ class QKAttributor:
                                 key_activation=1.0,
                                 query_feature_desc=self.feature_descriptions[j],
                                 key_feature_desc="[BIAS]",
-                            )
+                            ),
                         )
 
             if query_bias is not None:
@@ -359,7 +364,7 @@ class QKAttributor:
                                 key_activation=key_activations[i].item(),
                                 query_feature_desc="[BIAS]",
                                 key_feature_desc=self.feature_descriptions[i],
-                            )
+                            ),
                         )
 
         # Compute total score
@@ -400,6 +405,7 @@ def compute_qk_attributions(
 
     Returns:
         QKAttributionResult
+
     """
     # Extract attention weights
     # This is model-specific - adjust based on your model architecture
@@ -446,6 +452,7 @@ def compute_attention_scores(
 
     Returns:
         Attention scores [seq_len_q, seq_len_k] or pattern after softmax
+
     """
     seq_len_k, n_features_k = key_activations.shape
     seq_len_q, n_features_q = query_activations.shape
@@ -462,7 +469,7 @@ def compute_attention_scores(
     # feat_proj: [n_feat, n_feat]
     # Result: [seq_q, seq_k]
     scores = einsum(
-        query_activations, feat_proj, key_activations, "sq nf1, nf1 nf2, sk nf2 -> sq sk"
+        query_activations, feat_proj, key_activations, "sq nf1, nf1 nf2, sk nf2 -> sq sk",
     )
 
     if apply_softmax:

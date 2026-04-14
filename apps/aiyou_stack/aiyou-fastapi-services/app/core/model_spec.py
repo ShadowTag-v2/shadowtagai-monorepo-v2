@@ -1,5 +1,4 @@
-"""
-OpenAI Model Spec v2 Extract
+"""OpenAI Model Spec v2 Extract
 Pinned to Feb 12, 2025 release.
 """
 

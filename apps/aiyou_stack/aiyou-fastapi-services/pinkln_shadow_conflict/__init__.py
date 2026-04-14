@@ -1,5 +1,4 @@
-"""
-pinkln Agent Architecture System™
+"""pinkln Agent Architecture System™
 "Insanely Great AI Systems Through Elegant Orchestration"
 
 A comprehensive framework for building Skills, Agents, Sub-Agents, Deep Agents,
@@ -30,9 +29,9 @@ from .core.validation import BoyScoutRule, ValidationLayer
 
 # Export main components
 __all__ = [
-    "PnklnOS",
     "BaseAgent",
     "BaseSkill",
-    "ValidationLayer",
     "BoyScoutRule",
+    "PnklnOS",
+    "ValidationLayer",
 ]

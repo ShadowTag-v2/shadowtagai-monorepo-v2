@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Sync Claude Code session to memory bank (GCS + Firestore + CLAUDE.md)
+"""Sync Claude Code session to memory bank (GCS + Firestore + CLAUDE.md)
 
 Usage:
     python3 scripts/sync_claude_memory.py
@@ -144,12 +143,11 @@ def update_claude_md(session_summary: str) -> bool:
                 content,
                 flags=re.DOTALL,
             )
+        # Insert before "Last updated" line if it exists
+        elif "*Last updated:" in content:
+            content = content.replace("*Last updated:", f"{section}*Last updated:")
         else:
-            # Insert before "Last updated" line if it exists
-            if "*Last updated:" in content:
-                content = content.replace("*Last updated:", f"{section}*Last updated:")
-            else:
-                content += section
+            content += section
 
         CLAUDE_MD_PATH.write_text(content)
         print(f"  Updated {CLAUDE_MD_PATH}")
@@ -206,7 +204,7 @@ def main():
     print("\n[1/4] Loading memory...")
     memory = load_memory()
     print(
-        f"  Loaded {len(memory.get('conversations', []))} conversations, {len(memory.get('knowledge', []))} knowledge items"
+        f"  Loaded {len(memory.get('conversations', []))} conversations, {len(memory.get('knowledge', []))} knowledge items",
     )
 
     print("\n[2/4] Merging session...")

@@ -1,5 +1,4 @@
-"""
-Kosmos Doctrine Module - Army FM/ATP/ADP Integration
+"""Kosmos Doctrine Module - Army FM/ATP/ADP Integration
 =====================================================
 
 Integrates complete Army leadership and command doctrine:

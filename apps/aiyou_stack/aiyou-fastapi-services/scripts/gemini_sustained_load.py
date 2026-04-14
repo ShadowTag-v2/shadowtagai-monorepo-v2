@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Sustained Load Calculator & Runner
+"""Gemini Sustained Load Calculator & Runner
 Maximum indefinite throughput without quota exhaustion.
 """
 
@@ -28,8 +27,7 @@ class QuotaLimits:
 
 
 class SustainedLoadEngine:
-    """
-    Maximum sustained load without quota exhaustion.
+    """Maximum sustained load without quota exhaustion.
 
     Math for 10 accounts:
     - 60 RPM × 10 = 600 RPM total
@@ -108,7 +106,7 @@ class SustainedLoadEngine:
 
         try:
             response = await asyncio.to_thread(
-                model.generate_content, prompt, safety_settings=self.safety_config
+                model.generate_content, prompt, safety_settings=self.safety_config,
             )
             self.total_requests += 1
             return response.text
@@ -117,12 +115,12 @@ class SustainedLoadEngine:
             return f"[Error: {e}]"
 
     async def run_sustained(self, prompt_generator, duration_hours: float = None):
-        """
-        Run sustained load indefinitely or for specified duration.
+        """Run sustained load indefinitely or for specified duration.
 
         Args:
             prompt_generator: Callable that returns next prompt
             duration_hours: None for indefinite, or hours to run
+
         """
         self.start_time = time.time()
         end_time = None
@@ -130,7 +128,7 @@ class SustainedLoadEngine:
             end_time = self.start_time + (duration_hours * 3600)
 
         print(
-            f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run"
+            f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run",
         )
         print("///▞ SUSTAINED :: Press Ctrl+C to stop\n")
 
@@ -151,7 +149,7 @@ class SustainedLoadEngine:
                     print(
                         f"///▞ SUSTAINED :: {self.total_requests} requests, "
                         f"{actual_rpm:.1f} actual RPM, "
-                        f"{self.total_errors} errors"
+                        f"{self.total_errors} errors",
                     )
 
                 # Rate limit
@@ -163,12 +161,12 @@ class SustainedLoadEngine:
         self.print_stats()
 
     async def run_batch_sustained(self, prompts: list[str], loop: bool = True):
-        """
-        Run through a batch of prompts at sustained rate.
+        """Run through a batch of prompts at sustained rate.
 
         Args:
             prompts: List of prompts
             loop: Whether to loop through prompts indefinitely
+
         """
         idx = 0
 
@@ -231,10 +229,10 @@ async def main():
 
     parser = argparse.ArgumentParser(description="Gemini Sustained Load Runner")
     parser.add_argument(
-        "--mode", choices=["safe", "aggressive"], default="safe", help="Rate limiting mode"
+        "--mode", choices=["safe", "aggressive"], default="safe", help="Rate limiting mode",
     )
     parser.add_argument(
-        "--hours", type=float, default=None, help="Duration in hours (default: indefinite)"
+        "--hours", type=float, default=None, help="Duration in hours (default: indefinite)",
     )
     args = parser.parse_args()
 

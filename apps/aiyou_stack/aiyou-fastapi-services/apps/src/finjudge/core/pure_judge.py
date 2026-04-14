@@ -25,8 +25,7 @@ class JudgeRuling(BaseModel):
 
 
 class PureJudgeEngine:
-    """
-    FinJudge Pure Judge (v0.2) powered by Ultrathink.
+    """FinJudge Pure Judge (v0.2) powered by Ultrathink.
     Uses 'CRITIC' agent and CoT reasoning to classify risk.
     """
 
@@ -40,7 +39,7 @@ class PureJudgeEngine:
     async def evaluate(self, request: JudgeRequest) -> JudgeRuling:
         # 1. Expand Intent with CoT
         reasoning_prompt = self.cot.apply(
-            f"Intent: {request.intent_nl}\nMetrics: {request.metrics}\nContext: {request.context}"
+            f"Intent: {request.intent_nl}\nMetrics: {request.metrics}\nContext: {request.context}",
         )
 
         # 2. Mock Agent Reasoning (Simulating LLM Call)

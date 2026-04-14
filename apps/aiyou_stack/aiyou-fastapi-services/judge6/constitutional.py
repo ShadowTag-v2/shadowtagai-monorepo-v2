@@ -1,5 +1,4 @@
-"""
-Cor.53 Constitutional Layer - Immutable Governance Axioms
+"""Cor.53 Constitutional Layer - Immutable Governance Axioms
 
 These axioms form the foundational governance rules that cannot be
 overridden by user input, preferences, or runtime configuration.
@@ -59,8 +58,7 @@ AXIOM_BY_ID = {axiom.axiom_id: axiom for axiom in COR53_AXIOMS}
 
 
 def get_axiom(axiom_id: str) -> ConstitutionalAxiom:
-    """
-    Retrieve constitutional axiom by ID.
+    """Retrieve constitutional axiom by ID.
 
     Args:
         axiom_id: Axiom identifier (e.g., "A1")
@@ -70,6 +68,7 @@ def get_axiom(axiom_id: str) -> ConstitutionalAxiom:
 
     Raises:
         KeyError: If axiom_id not found
+
     """
     if axiom_id not in AXIOM_BY_ID:
         raise KeyError(f"Unknown axiom ID: {axiom_id}")
@@ -77,23 +76,23 @@ def get_axiom(axiom_id: str) -> ConstitutionalAxiom:
 
 
 def get_immutable_axioms() -> list[ConstitutionalAxiom]:
-    """
-    Get all axioms with IMMUTABLE enforcement level.
+    """Get all axioms with IMMUTABLE enforcement level.
 
     Returns:
         List of immutable constitutional axioms
+
     """
     return [ax for ax in COR53_AXIOMS if ax.enforcement_level == "IMMUTABLE"]
 
 
 def get_axioms_by_risk_level(risk_level: RiskLevel) -> list[ConstitutionalAxiom]:
-    """
-    Get all axioms that result in specified risk level if violated.
+    """Get all axioms that result in specified risk level if violated.
 
     Args:
         risk_level: Target risk level
 
     Returns:
         List of matching constitutional axioms
+
     """
     return [ax for ax in COR53_AXIOMS if ax.violation_consequence == risk_level]

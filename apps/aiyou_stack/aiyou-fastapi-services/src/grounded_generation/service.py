@@ -74,7 +74,7 @@ class GroundedGenerationService:
         logger.info(f"Generating grounded content for prompt: '{prompt}'")
 
         location_path = self.client.common_location_path(
-            project=self.project_number, location=self.location
+            project=self.project_number, location=self.location,
         )
 
         request = discoveryengine.GenerateGroundedContentRequest(
@@ -86,14 +86,14 @@ class GroundedGenerationService:
                 discoveryengine.GroundedGenerationContent(
                     role="user",
                     parts=[discoveryengine.GroundedGenerationContent.Part(text=prompt)],
-                )
+                ),
             ],
             system_instruction=discoveryengine.GroundedGenerationContent(
                 parts=[
                     discoveryengine.GroundedGenerationContent.Part(
-                        text="Be comprehensive and cite sources."
-                    )
-                ]
+                        text="Be comprehensive and cite sources.",
+                    ),
+                ],
             ),
             grounding_spec=discoveryengine.GenerateGroundedContentRequest.GroundingSpec(
                 grounding_sources=[
@@ -101,12 +101,12 @@ class GroundedGenerationService:
                         google_search_source=discoveryengine.GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource(
                             dynamic_retrieval_config=discoveryengine.GenerateGroundedContentRequest.DynamicRetrievalConfiguration(
                                 predictor=discoveryengine.GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor(
-                                    threshold=0.7
-                                )
-                            )
-                        )
-                    )
-                ]
+                                    threshold=0.7,
+                                ),
+                            ),
+                        ),
+                    ),
+                ],
             ),
         )
 
@@ -119,7 +119,7 @@ class GroundedGenerationService:
 
         loop = asyncio.get_running_loop()
         response = await loop.run_in_executor(
-            None, partial(self.client.generate_grounded_content, request)
+            None, partial(self.client.generate_grounded_content, request),
         )
 
         # Parse response
@@ -133,8 +133,8 @@ class GroundedGenerationService:
             if candidate.grounding_metadata.search_entry_point:
                 citations.append(
                     {
-                        "search_entry_point": candidate.grounding_metadata.search_entry_point.rendered_content
-                    }
+                        "search_entry_point": candidate.grounding_metadata.search_entry_point.rendered_content,
+                    },
                 )
 
             # Extract support chunks if needed, but text + search entry point is usually enough for display

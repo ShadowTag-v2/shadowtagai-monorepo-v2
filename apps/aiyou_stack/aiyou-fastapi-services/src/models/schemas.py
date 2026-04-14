@@ -22,7 +22,7 @@ class AgentRequest(BaseModel):
 
     prompt: str = Field(..., description="User prompt or question")
     context: dict[str, Any] | None = Field(
-        default={}, description="Additional context for the request"
+        default={}, description="Additional context for the request",
     )
     stream: bool = Field(default=False, description="Whether to stream the response")
 
@@ -47,7 +47,7 @@ class MarketAnalysisRequest(BaseModel):
         example=["API Access", "Real-time Analytics", "Custom Reports"],
     )
     analysis_type: AnalysisType | None = Field(
-        default=AnalysisType.COMPETITIVE, description="Type of analysis to perform"
+        default=AnalysisType.COMPETITIVE, description="Type of analysis to perform",
     )
 
 
@@ -73,10 +73,10 @@ class FeaturePrioritizationRequest(BaseModel):
     """Request for feature prioritization"""
 
     features: list[FeatureItem] = Field(
-        ..., description="List of features to prioritize", min_length=1
+        ..., description="List of features to prioritize", min_length=1,
     )
     criteria: dict[str, float] | None = Field(
-        default=None, description="Custom prioritization criteria weights"
+        default=None, description="Custom prioritization criteria weights",
     )
 
 

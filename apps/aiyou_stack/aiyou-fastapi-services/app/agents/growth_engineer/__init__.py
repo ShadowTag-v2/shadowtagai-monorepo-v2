@@ -1,5 +1,4 @@
-"""
-Growth Engineer Agent Module
+"""Growth Engineer Agent Module
 
 Exports the Growth Engineer agent for use in the application.
 """

@@ -11,8 +11,7 @@ class CurriculumTask:
 
 
 class CurriculumAgent:
-    """
-    Generates violation scenarios to test the governance rules.
+    """Generates violation scenarios to test the governance rules.
     """
 
     def __init__(self, model_client=None):
@@ -20,8 +19,7 @@ class CurriculumAgent:
         self.history: list[CurriculumTask] = []
 
     def generate_task(self, iteration: int, difficulty: float) -> CurriculumTask:
-        """
-        Generates a new task (violation scenario).
+        """Generates a new task (violation scenario).
         In a real impl, this calls the LLM.
         For POC, we'll return a template-based scenario.
         """
@@ -48,7 +46,5 @@ class CurriculumAgent:
         return task
 
     def feedback(self, task: CurriculumTask, executor_success: bool):
+        """Receives feedback on whether the Executor caught the violation.
         """
-        Receives feedback on whether the Executor caught the violation.
-        """
-        pass

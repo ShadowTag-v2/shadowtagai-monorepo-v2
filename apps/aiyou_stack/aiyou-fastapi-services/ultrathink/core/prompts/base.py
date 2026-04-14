@@ -1,5 +1,4 @@
-"""
-Base prompt class for all prompting techniques.
+"""Base prompt class for all prompting techniques.
 
 Design principle: Every prompt technique should be:
 1. Self-documenting (the structure explains the intent)
@@ -19,13 +18,12 @@ class PromptResult(BaseModel):
     prompt: str = Field(description="The formatted prompt sent to the model")
     response: str | None = Field(default=None, description="Model response")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Tracking data (tokens, cost, timing)"
+        default_factory=dict, description="Tracking data (tokens, cost, timing)",
     )
 
 
 class BasePrompt(ABC):
-    """
-    Base class for all prompting techniques.
+    """Base class for all prompting techniques.
 
     Philosophy: A prompt is a contract between human intent and machine execution.
     Make that contract crystal clear.
@@ -37,8 +35,7 @@ class BasePrompt(ABC):
 
     @abstractmethod
     def format(self, user_input: str) -> str:
-        """
-        Format the user input into a structured prompt.
+        """Format the user input into a structured prompt.
 
         Args:
             user_input: The raw user query or content
@@ -50,8 +47,8 @@ class BasePrompt(ABC):
             >>> prompt = SomePromptTechnique(role="expert")
             >>> prompt.format("Analyze this data")
             "You are an expert. Analyze this data..."
+
         """
-        pass
 
     def execute(
         self,
@@ -59,8 +56,7 @@ class BasePrompt(ABC):
         model: Any | None = None,
         **execution_kwargs: Any,
     ) -> PromptResult:
-        """
-        Format and execute the prompt against a model.
+        """Format and execute the prompt against a model.
 
         Args:
             user_input: The raw user query
@@ -72,6 +68,7 @@ class BasePrompt(ABC):
 
         Note:
             Override this in subclasses for custom execution logic.
+
         """
         formatted_prompt = self.format(user_input)
 
@@ -79,7 +76,7 @@ class BasePrompt(ABC):
         try:
             from ultrathink.llm import LLMExecutor
 
-            executor = model if model else LLMExecutor()
+            executor = model or LLMExecutor()
             llm_response = executor.execute(formatted_prompt, **execution_kwargs)
 
             result = PromptResult(

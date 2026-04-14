@@ -25,7 +25,7 @@ async def shoot_request(session, req_id):
 async def main():
     print(f"🚀 Benchmarking n-autoresearch/Kosmos/BioAgents Swarm at {SERVER_URL}")
     print(
-        f"   Configuration: {CONCURRENT_REQUESTS} concurrent agents, {TOTAL_REQUESTS} total requests"
+        f"   Configuration: {CONCURRENT_REQUESTS} concurrent agents, {TOTAL_REQUESTS} total requests",
     )
 
     start_time = time.time()

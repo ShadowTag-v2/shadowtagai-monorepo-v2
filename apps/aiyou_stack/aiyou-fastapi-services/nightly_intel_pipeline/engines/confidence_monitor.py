@@ -1,5 +1,4 @@
-"""
-Confidence Monitor - SOP-C Decision Protocol
+"""Confidence Monitor - SOP-C Decision Protocol
 Lowest-Confidence Check for Auto-Triggering Branch/Review
 
 PRISM Integration: Identifies lowest-confidence tokens to predict errors
@@ -135,8 +134,7 @@ CONFIDENCE_CONFIG = {
 
 
 class ConfidenceMonitor:
-    """
-    SOP-C Confidence Monitor
+    """SOP-C Confidence Monitor
 
     Monitors token-level confidence to identify potential errors before they occur.
     Implements the Lowest-Confidence Check for 75% error prediction accuracy.
@@ -165,13 +163,13 @@ class ConfidenceMonitor:
         on_critical: Callable[[ConfidenceResult], None] | None = None,
         on_low: Callable[[ConfidenceResult], None] | None = None,
     ):
-        """
-        Initialize Confidence Monitor
+        """Initialize Confidence Monitor
 
         Args:
             config: Optional configuration override
             on_critical: Callback for critical confidence events
             on_low: Callback for low confidence events
+
         """
         self.config = config or CONFIDENCE_CONFIG
         self.thresholds = self.config["thresholds"]
@@ -205,8 +203,7 @@ class ConfidenceMonitor:
         context: str | None = None,
         sequence_id: str | None = None,
     ) -> ConfidenceResult:
-        """
-        Analyze confidence levels and determine action
+        """Analyze confidence levels and determine action
 
         Args:
             logits: Model output logits [seq_len, vocab_size] or [batch, seq_len, vocab_size]
@@ -217,6 +214,7 @@ class ConfidenceMonitor:
 
         Returns:
             ConfidenceResult with analysis and recommended action
+
         """
         # Compute confidence scores
         if confidences is not None:
@@ -246,7 +244,7 @@ class ConfidenceMonitor:
 
         # Build reasoning
         reasoning = self._build_reasoning(
-            min_conf, min_pos, level, action, len(critical_positions), context
+            min_conf, min_pos, level, action, len(critical_positions), context,
         )
 
         # Create result
@@ -324,24 +322,22 @@ class ConfidenceMonitor:
             if len(probs.shape) == 3:
                 probs = probs[0]
             return np.max(probs, axis=-1).tolist()
-        else:
-            return [max(p) if isinstance(p, (list, tuple)) else float(p) for p in probs]
+        return [max(p) if isinstance(p, (list, tuple)) else float(p) for p in probs]
 
     def _classify_level(self, min_confidence: float) -> ConfidenceLevel:
         """Classify confidence level"""
         if min_confidence < self.thresholds["critical"]:
             return ConfidenceLevel.CRITICAL
-        elif min_confidence < self.thresholds["low"]:
+        if min_confidence < self.thresholds["low"]:
             return ConfidenceLevel.LOW
-        elif min_confidence < self.thresholds["moderate"]:
+        if min_confidence < self.thresholds["moderate"]:
             return ConfidenceLevel.MODERATE
-        elif min_confidence < self.thresholds["high"]:
+        if min_confidence < self.thresholds["high"]:
             return ConfidenceLevel.HIGH
-        else:
-            return ConfidenceLevel.VERY_HIGH
+        return ConfidenceLevel.VERY_HIGH
 
     def _determine_action(
-        self, level: ConfidenceLevel, critical_positions: list[int]
+        self, level: ConfidenceLevel, critical_positions: list[int],
     ) -> ActionType:
         """Determine action based on confidence level"""
         # Check for multiple critical positions
@@ -355,10 +351,9 @@ class ConfidenceMonitor:
         # Level-based actions
         if level == ConfidenceLevel.CRITICAL:
             return self.actions["critical_action"]
-        elif level == ConfidenceLevel.LOW:
+        if level == ConfidenceLevel.LOW:
             return self.actions["low_action"]
-        else:
-            return ActionType.PROCEED
+        return ActionType.PROCEED
 
     def _build_reasoning(
         self,
@@ -412,7 +407,7 @@ class ConfidenceMonitor:
         # Update running average
         if self._confidence_history:
             self._stats.average_confidence = sum(self._confidence_history) / len(
-                self._confidence_history
+                self._confidence_history,
             )
 
         # Limit history size
@@ -445,12 +440,12 @@ class ConfidenceMonitor:
         self._review_queue = []
 
     def record_error_outcome(self, position: int, was_error: bool):
-        """
-        Record actual error outcome for accuracy tracking
+        """Record actual error outcome for accuracy tracking
 
         Args:
             position: Position that was flagged
             was_error: Whether it actually was an error
+
         """
         self._error_predictions.append((position, was_error))
 
@@ -510,8 +505,7 @@ Generated: {datetime.now().isoformat()}
 
 
 class SOPCDecisionProtocol:
-    """
-    SOP-C Decision Protocol Implementation
+    """SOP-C Decision Protocol Implementation
 
     Implements the full Standard Operating Procedure for Confidence-based
     decision making with branching and review capabilities.
@@ -523,13 +517,13 @@ class SOPCDecisionProtocol:
         branch_handler: Callable[[ConfidenceResult], Any] | None = None,
         escalation_handler: Callable[[ConfidenceResult], Any] | None = None,
     ):
-        """
-        Initialize SOP-C Protocol
+        """Initialize SOP-C Protocol
 
         Args:
             monitor: ConfidenceMonitor instance
             branch_handler: Handler for branch creation
             escalation_handler: Handler for escalations
+
         """
         self.monitor = monitor or ConfidenceMonitor()
         self.branch_handler = branch_handler
@@ -543,8 +537,7 @@ class SOPCDecisionProtocol:
         context: str = "inference",
         sequence_id: str | None = None,
     ) -> dict:
-        """
-        Execute SOP-C decision protocol
+        """Execute SOP-C decision protocol
 
         Args:
             logits: Model output logits
@@ -553,6 +546,7 @@ class SOPCDecisionProtocol:
 
         Returns:
             Decision result with action taken
+
         """
         # Analyze confidence
         result = self.monitor.analyze(logits=logits, context=context, sequence_id=sequence_id)
@@ -594,10 +588,9 @@ class SOPCDecisionProtocol:
 
 # Convenience functions
 def analyze_confidence(
-    logits: Union[list, "np.ndarray"], threshold: float = 0.3
+    logits: Union[list, "np.ndarray"], threshold: float = 0.3,
 ) -> ConfidenceResult:
-    """
-    Quick confidence analysis
+    """Quick confidence analysis
 
     Usage:
         result = analyze_confidence(model_logits)
@@ -611,10 +604,9 @@ def analyze_confidence(
 
 
 def check_lowest_confidence(
-    confidences: list[float], threshold: float = 0.3
+    confidences: list[float], threshold: float = 0.3,
 ) -> tuple[bool, int, float]:
-    """
-    Check for lowest confidence token
+    """Check for lowest confidence token
 
     Returns:
         Tuple of (needs_review, position, confidence)
@@ -622,6 +614,7 @@ def check_lowest_confidence(
     Usage:
         needs_review, pos, conf = check_lowest_confidence([0.9, 0.2, 0.8])
         # needs_review=True, pos=1, conf=0.2
+
     """
     min_conf = min(confidences)
     min_pos = confidences.index(min_conf)

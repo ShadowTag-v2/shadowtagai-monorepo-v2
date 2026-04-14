@@ -1,5 +1,4 @@
-"""
-Innovation Lab Service - Data Models
+"""Innovation Lab Service - Data Models
 """
 
 from enum import StrEnum
@@ -37,17 +36,17 @@ class InnovationRequest(BaseModel):
 
     prompt: str = Field(..., description="The innovation challenge or question", min_length=10)
     innovation_type: InnovationType = Field(
-        default=InnovationType.IDEATION, description="Type of innovation exploration"
+        default=InnovationType.IDEATION, description="Type of innovation exploration",
     )
     tech_domain: TechDomain | None = Field(
-        default=TechDomain.GENERAL, description="Primary technology domain"
+        default=TechDomain.GENERAL, description="Primary technology domain",
     )
     context: str | None = Field(None, description="Additional context or constraints")
     max_ideas: int = Field(
-        default=5, ge=1, le=10, description="Maximum number of ideas to generate"
+        default=5, ge=1, le=10, description="Maximum number of ideas to generate",
     )
     risk_tolerance: float = Field(
-        default=0.7, ge=0.0, le=1.0, description="Risk tolerance (0=safe, 1=crazy)"
+        default=0.7, ge=0.0, le=1.0, description="Risk tolerance (0=safe, 1=crazy)",
     )
 
 
@@ -66,7 +65,7 @@ class InnovationIdea(BaseModel):
     title: str = Field(..., description="Brief title for the idea")
     description: str = Field(..., description="Detailed description")
     key_features: list[str] = Field(
-        default_factory=list, description="Key features or capabilities"
+        default_factory=list, description="Key features or capabilities",
     )
     tech_stack: list[str] = Field(default_factory=list, description="Technologies involved")
     metrics: IdeaMetrics = Field(..., description="Evaluation metrics")
@@ -81,10 +80,10 @@ class InnovationResponse(BaseModel):
     ideas: list[InnovationIdea] = Field(default_factory=list, description="Generated ideas")
     key_insights: list[str] = Field(default_factory=list, description="Key insights discovered")
     recommended_experiments: list[str] = Field(
-        default_factory=list, description="Recommended experiments to validate ideas"
+        default_factory=list, description="Recommended experiments to validate ideas",
     )
     tech_trends: list[str] = Field(
-        default_factory=list, description="Relevant emerging tech trends"
+        default_factory=list, description="Relevant emerging tech trends",
     )
     confidence: float = Field(default=0.8, ge=0.0, le=1.0, description="Confidence in analysis")
 
@@ -117,7 +116,7 @@ class TechEvaluationRequest(BaseModel):
     technology: str = Field(..., description="Technology to evaluate")
     use_case: str | None = Field(None, description="Specific use case to evaluate")
     comparison_with: list[str] | None = Field(
-        default_factory=list, description="Technologies to compare against"
+        default_factory=list, description="Technologies to compare against",
     )
 
 

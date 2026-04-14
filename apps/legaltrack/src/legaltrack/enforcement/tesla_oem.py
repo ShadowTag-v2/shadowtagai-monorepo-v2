@@ -4,8 +4,7 @@ logger = logging.getLogger(__name__)
 
 
 class TeslaOemIntegration:
-    """
-    OEM Vehicle bindings for Autopilot ambient nudges (CEOTrack/Schiznit).
+    """OEM Vehicle bindings for Autopilot ambient nudges (CEOTrack/Schiznit).
     If a user has an extreme "No-Slack" deadline approaching in 30 minutes,
     the system interfaces directly via the Owner API to prep the vehicle
     and set the navigation boundary to the courthouse.
@@ -27,7 +26,7 @@ class TeslaOemIntegration:
         success = await self.wake_vehicle()
         if success:
             logger.info(
-                f"Tesla SDK: Climate control set to {target_temp_c}C. Implicit nudge activated."
+                f"Tesla SDK: Climate control set to {target_temp_c}C. Implicit nudge activated.",
             )
 
     async def sound_horn(self):

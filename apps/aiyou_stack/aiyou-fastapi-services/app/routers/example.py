@@ -1,5 +1,4 @@
-"""
-Example API endpoints demonstrating monitoring integration.
+"""Example API endpoints demonstrating monitoring integration.
 """
 
 import asyncio
@@ -43,7 +42,7 @@ async def create_item(item: Item):
 
     # Simulate business operation
     MetricsCollector.record_business_operation(
-        operation_type="item_creation", status="success", duration=0.1
+        operation_type="item_creation", status="success", duration=0.1,
     )
 
     return {
@@ -69,8 +68,7 @@ async def get_item(item_id: int):
 
 @router.get("/slow-endpoint", summary="Slow Endpoint (Testing)")
 async def slow_endpoint():
-    """
-    Intentionally slow endpoint for testing monitoring and alerts.
+    """Intentionally slow endpoint for testing monitoring and alerts.
     This will trigger slow request alerts.
     """
     logger.info("Processing slow endpoint")
@@ -83,8 +81,7 @@ async def slow_endpoint():
 
 @router.get("/error-endpoint", summary="Error Endpoint (Testing)")
 async def error_endpoint():
-    """
-    Intentionally failing endpoint for testing error tracking.
+    """Intentionally failing endpoint for testing error tracking.
     This will trigger error alerts.
     """
     logger.error("Simulating error")

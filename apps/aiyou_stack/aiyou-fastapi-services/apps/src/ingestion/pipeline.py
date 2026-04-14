@@ -1,5 +1,4 @@
-"""
-Gemini Ingestion Pipeline - Main Orchestrator.
+"""Gemini Ingestion Pipeline - Main Orchestrator.
 
 Coordinates the nightly intelligence collection run:
 1. Collect from multiple sources (with ethics checks)
@@ -29,8 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 class IngestionPipeline:
-    """
-    Main orchestrator for intelligence ingestion.
+    """Main orchestrator for intelligence ingestion.
 
     Architecture: GKE CronJob Multi-Container
     Schedule: Nightly (typically 2-3 AM)
@@ -68,8 +66,7 @@ class IngestionPipeline:
         max_items_per_source: int = 100,
         output_path: str | None = None,
     ) -> DailyBriefing:
-        """
-        Run the complete nightly ingestion pipeline.
+        """Run the complete nightly ingestion pipeline.
 
         Steps:
         1. Collect from all sources (with ethical compliance)
@@ -83,6 +80,7 @@ class IngestionPipeline:
 
         Returns:
             DailyBriefing for the day
+
         """
         self.metrics["start_time"] = datetime.now()
         start_perf = time.perf_counter()
@@ -134,7 +132,7 @@ class IngestionPipeline:
 
                 if lid:
                     self.lineage_tracker.update_item(
-                        lid, stage="classified", metadata={"tier": tier}
+                        lid, stage="classified", metadata={"tier": tier},
                     )
 
             self.metrics["total_items_classified"] = len(classified_items)
@@ -142,13 +140,13 @@ class IngestionPipeline:
             tier_dist = self.tier_classifier.get_tier_distribution()
             logger.info(f"✓ Classified {len(classified_items)} items:")
             logger.info(
-                f"  - Tier 1 (High): {tier_dist['tier_1']['count']} ({tier_dist['tier_1']['percentage']:.1f}%)"
+                f"  - Tier 1 (High): {tier_dist['tier_1']['count']} ({tier_dist['tier_1']['percentage']:.1f}%)",
             )
             logger.info(
-                f"  - Tier 2 (Med):  {tier_dist['tier_2']['count']} ({tier_dist['tier_2']['percentage']:.1f}%)"
+                f"  - Tier 2 (Med):  {tier_dist['tier_2']['count']} ({tier_dist['tier_2']['percentage']:.1f}%)",
             )
             logger.info(
-                f"  - Tier 3 (Low):  {tier_dist['tier_3']['count']} ({tier_dist['tier_3']['percentage']:.1f}%)"
+                f"  - Tier 3 (Low):  {tier_dist['tier_3']['count']} ({tier_dist['tier_3']['percentage']:.1f}%)",
             )
 
             # Step 3: Generate briefing
@@ -183,8 +181,7 @@ class IngestionPipeline:
         self,
         max_items_per_source: int,
     ) -> dict[str, list[dict]]:
-        """
-        Collect from sources with ethical compliance checks.
+        """Collect from sources with ethical compliance checks.
 
         For each source:
         1. Check rate limits

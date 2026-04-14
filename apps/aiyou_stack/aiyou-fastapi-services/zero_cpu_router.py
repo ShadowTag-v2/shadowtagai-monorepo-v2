@@ -1,5 +1,4 @@
-"""
-Zero-CPU Master Router
+"""Zero-CPU Master Router
 ======================
 Dispatches inference to the appropriate zero-CPU backend:
 
@@ -75,10 +74,9 @@ def _init_ane() -> None:
 
 
 def _dispatch_ane(
-    text: str, prompt_description: str, examples: list[Any], file_name: str
+    text: str, prompt_description: str, examples: list[Any], file_name: str,
 ) -> list[dict[str, Any]]:
-    """
-    Route through Apple MLX Unified Memory pipeline natively.
+    """Route through Apple MLX Unified Memory pipeline natively.
     Replaces the stub proxies with actual physical Mac Silicon NPU/GPU execution frames.
     """
     _init_ane()
@@ -101,7 +99,7 @@ def _dispatch_ane(
         real_response = f"ANE Native Execution Success. MLX Tensor sum: {eval_metric:.4f}. Unified Memory Mapped."
     except ImportError:
         logger.warning(
-            "[ANE] MLX framework not found. Ensure `pip install mlx` is run on Mac Silicon. Falling back to stub."
+            "[ANE] MLX framework not found. Ensure `pip install mlx` is run on Mac Silicon. Falling back to stub.",
         )
         real_response = "ANE Native MLX Execution Attempted - mlx not installed."
     except Exception as e:
@@ -113,13 +111,12 @@ def _dispatch_ane(
             "text": real_response,
             "attrs": {"compute_target": "ANE-NPU", "framework": "MLX", "cost": "$0.00"},
             "source": file_name,
-        }
+        },
     ]
 
 
 def _dispatch_sovereign_gpu(text: str, file_name: str) -> list[dict[str, Any]]:
-    """
-    Tier 2: The Sovereign Pipeline.
+    """Tier 2: The Sovereign Pipeline.
     Heavy lifting natively passed onto physical desktop GPU/CUDA cores before VRAM limits trigger.
     """
     logger.info(f"[Sovereign GPU] Firing standard 8-bit pipeline fallback | {file_name}")
@@ -136,7 +133,7 @@ def _dispatch_sovereign_gpu(text: str, file_name: str) -> list[dict[str, Any]]:
                 "text": response,
                 "attrs": {"compute_target": "Sovereign-GPU", "cost": "$0.00"},
                 "source": file_name,
-            }
+            },
         ]
     except Exception as e:
         logger.error(f"[Sovereign GPU] Device offline/fault: {e}")
@@ -144,12 +141,11 @@ def _dispatch_sovereign_gpu(text: str, file_name: str) -> list[dict[str, Any]]:
 
 
 def _dispatch_dynamic_local(text: str, file_name: str) -> list[dict[str, Any]]:
-    """
-    Extremely large open-source diffusion/LLM fallback natively avoiding RAM exhaustion.
+    """Extremely large open-source diffusion/LLM fallback natively avoiding RAM exhaustion.
     Implemented via ComfyUI Aimdo Dynamic VRAM (Virtual Base Address Registers) combined with TurboQuant.
     """
     logger.info(
-        f"[Aimdo] Initializing uncommitted VBAR mapping for massive diffusion/LLM inference | {file_name}"
+        f"[Aimdo] Initializing uncommitted VBAR mapping for massive diffusion/LLM inference | {file_name}",
     )
 
     # 1. We map the oversized model file to a VBAR without actually allocating physical PyTorch layout constraints.
@@ -189,7 +185,7 @@ def _dispatch_dynamic_local(text: str, file_name: str) -> list[dict[str, Any]]:
                 "text": "Aimdo Dynamic VRAM + TurboQuant Offline Generation Successful",
                 "attrs": {"compute_target": "Dynamic-Local-VRAM", "cost": "$0.00"},
                 "source": file_name,
-            }
+            },
         ]
     except Exception as e:
         logger.error(f"[Aimdo] Fault Allocation or Execution failed: {e}")
@@ -217,7 +213,7 @@ def _dispatch_vertex(text: str, file_name: str) -> list[dict[str, Any]]:
                 "text": content,
                 "attrs": {"compute_target": "Vertex-API", "model": "gemini-3.1-flash-lite"},
                 "source": file_name,
-            }
+            },
         ]
     except Exception as exc:
         logger.error(f"[Vertex] Fallback inference failed: {exc}")
@@ -230,8 +226,7 @@ def _dispatch_compute_internal(
     examples: list[Any],
     file_name: str,
 ) -> list[dict[str, Any]]:
-    """
-    Hardware-aware Zero-CPU dispatch internal worker.
+    """Hardware-aware Zero-CPU dispatch internal worker.
     Strict 4-Tier Cascade: ANE -> Sovereign GPU -> TurboQuant -> Vertex
     """
     if len(text) < 2000 and _has_ane():
@@ -240,7 +235,7 @@ def _dispatch_compute_internal(
             return _dispatch_ane(text, prompt_description, examples, file_name)
         except Exception as e:
             logger.warning(
-                f"[router] ANE Bridge Fault or Timeout: {e}. Cascading to Sovereign GPU..."
+                f"[router] ANE Bridge Fault or Timeout: {e}. Cascading to Sovereign GPU...",
             )
 
     try:
@@ -255,18 +250,18 @@ def _dispatch_compute_internal(
             return _dispatch_dynamic_local(text, file_name)
         except Exception as e:
             logger.warning(
-                f"[router] Dynamic VRAM Local Fault or Missing Models: {e}. Cascading to Vertex API..."
+                f"[router] Dynamic VRAM Local Fault or Missing Models: {e}. Cascading to Vertex API...",
             )
 
     logger.warning(
-        "[router] No local fast-inference available or all failed. Failing over to Vertex API fallback."
+        "[router] No local fast-inference available or all failed. Failing over to Vertex API fallback.",
     )
     return _dispatch_vertex(text, file_name)
 
 
 # Register scripts directory for sqlite metrics insertion
 _root_dir = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
 )
 if _root_dir not in sys.path:
     sys.path.append(_root_dir)
@@ -285,8 +280,7 @@ def dispatch_compute(
     examples: list[Any],
     file_name: str,
 ) -> list[dict[str, Any]]:
-    """
-    Wraps the computation with physical metrics tracking for the IDE testbed proxy.
+    """Wraps the computation with physical metrics tracking for the IDE testbed proxy.
     """
     start_time = time.time()
 
@@ -304,7 +298,7 @@ def dispatch_compute(
     log_metric(approx_tokens, latency_ms, target_hw)
 
     logger.info(
-        f"[TELEMETRY] Request executed on {target_hw} in {latency_ms:.2f}ms. Approx Tokens: {approx_tokens}"
+        f"[TELEMETRY] Request executed on {target_hw} in {latency_ms:.2f}ms. Approx Tokens: {approx_tokens}",
     )
 
     return result

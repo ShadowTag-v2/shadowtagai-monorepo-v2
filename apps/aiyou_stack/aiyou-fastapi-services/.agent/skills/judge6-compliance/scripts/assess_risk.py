@@ -2,12 +2,12 @@ import sys
 
 
 def assess_risk(phase, margin=0.0):
-    """
-    Judge 6 Validation Logic.
+    """Judge 6 Validation Logic.
 
     Args:
         phase: '1' (Wet Fleece), '2' (Dry Ground), '3' (Battle)
         margin: Float (e.g. 0.35 for 35%)
+
     """
     print(f"⚖️ JUDGE 6 ASSESSMENT [Phase {phase}]")
 

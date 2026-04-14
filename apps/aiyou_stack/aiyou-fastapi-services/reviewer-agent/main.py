@@ -40,8 +40,7 @@ class ReviewRequest(BaseModel):
 
 @app.post("/")
 async def review_code_fix(request: ReviewRequest):
-    """
-    Receives a proposed code fix and uses Gemini to approve or reject it
+    """Receives a proposed code fix and uses Gemini to approve or reject it
     based on a predefined constitution.
     """
     try:
@@ -82,5 +81,5 @@ async def review_code_fix(request: ReviewRequest):
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"An error occurred in the Reviewer Agent: {str(e)}"
+            status_code=500, detail=f"An error occurred in the Reviewer Agent: {e!s}",
         )

@@ -1,5 +1,4 @@
-"""
-Tower Monitoring Service using Tegu Object Detection
+"""Tower Monitoring Service using Tegu Object Detection
 AiU Orbital: Visual verification of tower equipment health
 """
 
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class TowerMonitoringService:
-    """
-    Monitor tower equipment using Tegu YOLOv3 object detection
+    """Monitor tower equipment using Tegu YOLOv3 object detection
 
     Detects:
     - Antennas and their condition
@@ -35,19 +33,20 @@ class TowerMonitoringService:
             # Trigger maintenance workflow
             dispatch_maintenance_crew(result['tower_id'])
         ```
+
     """
 
     def __init__(self, model_weights: str | None = None):
-        """
-        Initialize tower monitoring service
+        """Initialize tower monitoring service
 
         Args:
             model_weights: Path to custom-trained YOLOv3 weights
                           If None, uses default tower equipment model
+
         """
         # Initialize AiUCRM for compliance validation
         self.aiucrm = AiUCRM(
-            legal_frameworks=["FAA", "FCC"], risk_threshold=0.3, audit_enabled=True
+            legal_frameworks=["FAA", "FCC"], risk_threshold=0.3, audit_enabled=True,
         )
 
         # Initialize Tegu YOLOv3 model (lazy loading)
@@ -91,10 +90,9 @@ class TowerMonitoringService:
             raise
 
     async def inspect_tower(
-        self, tower_id: str, image_path: str, metadata: dict[str, Any] | None = None
+        self, tower_id: str, image_path: str, metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Perform visual inspection of tower equipment
+        """Perform visual inspection of tower equipment
 
         Args:
             tower_id: Unique tower identifier
@@ -103,6 +101,7 @@ class TowerMonitoringService:
 
         Returns:
             Inspection result with detected objects and damage assessment
+
         """
         self.stats["total_inspections"] += 1
         start_time = datetime.utcnow()
@@ -116,7 +115,7 @@ class TowerMonitoringService:
                 "user_consent": True,  # Tower owner consent
                 "fallback_mechanism": True,  # Human review if confidence <70%
                 "metadata": metadata or {},
-            }
+            },
         )
 
         if validation.status != ComplianceStatus.APPROVED:
@@ -169,14 +168,14 @@ class TowerMonitoringService:
             return {"status": "error", "tower_id": tower_id, "error": str(e)}
 
     def _analyze_detections(self, detections: list[dict[str, Any]]) -> dict[str, Any]:
-        """
-        Analyze detection results for equipment health
+        """Analyze detection results for equipment health
 
         Args:
             detections: List of detected objects from YOLOv3
 
         Returns:
             Analysis with equipment counts, damage assessment, confidence
+
         """
         # Count equipment types
         equipment_counts = {}
@@ -244,10 +243,9 @@ class TowerMonitoringService:
         }
 
     async def batch_inspect_towers(
-        self, tower_images: list[dict[str, str]], max_concurrent: int = 5
+        self, tower_images: list[dict[str, str]], max_concurrent: int = 5,
     ) -> list[dict[str, Any]]:
-        """
-        Batch inspect multiple towers
+        """Batch inspect multiple towers
 
         Args:
             tower_images: List of {"tower_id": str, "image_path": str}
@@ -255,6 +253,7 @@ class TowerMonitoringService:
 
         Returns:
             List of inspection results
+
         """
         import asyncio
 

@@ -1,5 +1,4 @@
-"""
-Latency Tests - Validate p99≤90ms SLA
+"""Latency Tests - Validate p99≤90ms SLA
 
 Tests to ensure the native Gemini function calling meets the
 p99 latency SLA of ≤90ms.

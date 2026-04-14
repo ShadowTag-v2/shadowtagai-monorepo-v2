@@ -4,8 +4,7 @@ from typing import Any
 
 
 class TroopBAgent:
-    """
-    TROOP B: RANGER ENGINEERS
+    """TROOP B: RANGER ENGINEERS
     Mission: Direct Action / Hunter-Killer
     Doctrine: "Find Gaps, Kill Debt."
     """
@@ -15,8 +14,7 @@ class TroopBAgent:
         self.killer_path = "tools/killer.py"
 
     def execute_mission(self, mission_profile: str) -> dict[str, Any]:
-        """
-        Executes a Hunter/Killer mission.
+        """Executes a Hunter/Killer mission.
         Payload: "Clean up all TODOs in main.py" -> Hunts "TODO" -> Kills (if authorized)
         """
         # 1. Parse Mission (Simple Heuristics for MVP)

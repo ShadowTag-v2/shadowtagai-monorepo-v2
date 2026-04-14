@@ -1,5 +1,4 @@
-"""
-Infrastructure design and management endpoints
+"""Infrastructure design and management endpoints
 """
 
 from typing import Any
@@ -25,8 +24,7 @@ scaling_service = ScalingDesignerService()
 
 @router.post("/design", response_model=InfrastructureDesignResponse)
 async def design_infrastructure(request: InfrastructureDesignRequest):
-    """
-    Design cloud infrastructure based on requirements.
+    """Design cloud infrastructure based on requirements.
     Returns architecture design with components and recommendations.
     """
     try:
@@ -38,8 +36,7 @@ async def design_infrastructure(request: InfrastructureDesignRequest):
 
 @router.post("/cost-estimate", response_model=CostEstimateResponse)
 async def estimate_costs(request: CostEstimateRequest):
-    """
-    Estimate monthly costs for infrastructure design.
+    """Estimate monthly costs for infrastructure design.
     Includes cost optimization recommendations.
     """
     try:
@@ -51,8 +48,7 @@ async def estimate_costs(request: CostEstimateRequest):
 
 @router.post("/scaling-recommendations", response_model=ScalingRecommendation)
 async def get_scaling_recommendations(request: dict[str, Any]):
-    """
-    Get scaling recommendations for infrastructure.
+    """Get scaling recommendations for infrastructure.
     Analyzes workload and provides auto-scaling configurations.
     """
     try:
@@ -91,7 +87,7 @@ async def list_templates():
                 "description": "Serverless functions with API Gateway and managed services",
                 "cloud_providers": ["aws", "gcp", "azure"],
             },
-        ]
+        ],
     }
 
 
@@ -127,5 +123,5 @@ async def list_cloud_providers():
                 ],
                 "regions": 60,
             },
-        }
+        },
     }

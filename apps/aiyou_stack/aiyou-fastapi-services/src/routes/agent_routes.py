@@ -16,11 +16,11 @@ router = APIRouter(prefix="/agents", tags=["agents"])
 
 @router.get("/")
 async def list_agents(db: Session = Depends(get_db)) -> dict[str, Any]:
-    """
-    List all available agents.
+    """List all available agents.
 
     Returns:
         Dictionary of agents with their metadata
+
     """
     service = AgentService(db)
     return {"agents": service.list_agents()}
@@ -28,14 +28,14 @@ async def list_agents(db: Session = Depends(get_db)) -> dict[str, Any]:
 
 @router.get("/{agent_id}")
 async def get_agent(agent_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:
-    """
-    Get agent details.
+    """Get agent details.
 
     Args:
         agent_id: The agent ID
 
     Returns:
         Agent metadata
+
     """
     service = AgentService(db)
     agent = service.get_agent(agent_id)
@@ -52,8 +52,7 @@ async def execute_agent(
     request: AgentExecuteRequest,
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Execute an agent with a task.
+    """Execute an agent with a task.
 
     Args:
         agent_id: The agent ID
@@ -61,6 +60,7 @@ async def execute_agent(
 
     Returns:
         Execution result
+
     """
     service = AgentService(db)
 
@@ -74,7 +74,7 @@ async def execute_agent(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Execution failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Execution failed: {e!s}")
 
 
 @router.get("/{agent_id}/history")
@@ -84,8 +84,7 @@ async def get_agent_history(
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Get execution history for an agent.
+    """Get execution history for an agent.
 
     Args:
         agent_id: The agent ID
@@ -94,6 +93,7 @@ async def get_agent_history(
 
     Returns:
         Execution history
+
     """
     service = AgentService(db)
     return service.get_execution_history(agent_id, limit, offset)
@@ -101,14 +101,14 @@ async def get_agent_history(
 
 @router.get("/{agent_id}/tools")
 async def get_agent_tools(agent_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:
-    """
-    Get available tools for an agent.
+    """Get available tools for an agent.
 
     Args:
         agent_id: The agent ID
 
     Returns:
         Dictionary of tools
+
     """
     service = AgentService(db)
 
@@ -124,8 +124,7 @@ async def execute_tool(
     args: dict[str, Any],
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """
-    Execute a tool directly.
+    """Execute a tool directly.
 
     Args:
         tool_name: The tool name
@@ -133,6 +132,7 @@ async def execute_tool(
 
     Returns:
         Tool result
+
     """
     service = AgentService(db)
 
@@ -141,4 +141,4 @@ async def execute_tool(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Tool execution failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Tool execution failed: {e!s}")

@@ -1,5 +1,4 @@
-"""
-Request models for the Database Expert API
+"""Request models for the Database Expert API
 """
 
 from typing import Any
@@ -20,7 +19,7 @@ class QueryAnalysisRequest(BaseModel):
                 "sql_query": "SELECT * FROM users WHERE email LIKE '%@gmail.com'",
                 "row_count": 1000000,
                 "has_indexes": False,
-            }
+            },
         }
 
 
@@ -41,9 +40,9 @@ class SchemaAnalysisRequest(BaseModel):
                         ],
                         "indexes": [{"name": "idx_email", "columns": ["email"]}],
                         "row_count": 5000000,
-                    }
-                }
-            }
+                    },
+                },
+            },
         }
 
 
@@ -60,7 +59,7 @@ class SchemaDesignRequest(BaseModel):
                 "requirements": "E-commerce platform with users, products, orders, and reviews",
                 "expected_scale": "10 million users, 100 million orders",
                 "database_type": "postgresql",
-            }
+            },
         }
 
 
@@ -73,8 +72,8 @@ class IndexSuggestionRequest(BaseModel):
     class Config:
         json_schema_extra = {
             "example": {
-                "sql_query": "SELECT u.name, o.total FROM users u JOIN orders o ON u.id = o.user_id WHERE o.status = 'pending' ORDER BY o.created_at DESC"
-            }
+                "sql_query": "SELECT u.name, o.total FROM users u JOIN orders o ON u.id = o.user_id WHERE o.status = 'pending' ORDER BY o.created_at DESC",
+            },
         }
 
 
@@ -83,7 +82,7 @@ class ChatRequest(BaseModel):
 
     message: str = Field(..., description="User message", min_length=1)
     conversation_history: list[dict[str, str]] | None = Field(
-        None, description="Conversation history"
+        None, description="Conversation history",
     )
 
     class Config:
@@ -97,7 +96,7 @@ class ChatRequest(BaseModel):
                         "content": "Hello! I'd be happy to help with database optimization. What specific issues are you experiencing?",
                     },
                 ],
-            }
+            },
         }
 
 
@@ -114,5 +113,5 @@ class PerformanceEstimationRequest(BaseModel):
                 "sql_query": "SELECT COUNT(*) FROM orders WHERE status = 'pending' AND created_at > NOW() - INTERVAL '30 days'",
                 "row_count": 50000000,
                 "has_indexes": True,
-            }
+            },
         }

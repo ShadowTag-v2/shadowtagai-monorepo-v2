@@ -1,6 +1,5 @@
 # /antigravity/core/guard.py
-"""
-THE GIDEON GUARD
+"""THE GIDEON GUARD
 Doctrine: 2026 CSRMC (Continuous Authority to Operate)
 Function: The absolute veto power over all enterprise actions.
 """
@@ -21,8 +20,7 @@ class GideonGuard:
         }
 
     def audit(self, domain: str):
-        """
-        The Decorator: Grants 'Authority to Operate' (cATO) per function call.
+        """The Decorator: Grants 'Authority to Operate' (cATO) per function call.
         """
 
         def decorator(func):

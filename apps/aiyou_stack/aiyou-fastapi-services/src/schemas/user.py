@@ -26,7 +26,7 @@ class UserCreate(BaseModel):
                 "name": "John Doe",
                 "properties": {"plan": "premium", "signup_source": "landing_page"},
                 "segment": "power_users",
-            }
+            },
         }
 
 

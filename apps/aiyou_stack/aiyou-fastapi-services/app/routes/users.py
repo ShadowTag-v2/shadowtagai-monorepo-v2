@@ -1,5 +1,4 @@
-"""
-User management endpoints.
+"""User management endpoints.
 Demonstrates pagination, filtering, and CRUD operations.
 """
 
@@ -47,8 +46,7 @@ async def list_users(
     is_active: Annotated[bool | None, Query(description="Filter by active status")] = None,
     api_key: Annotated[str | None, Depends(verify_api_key)] = None,
 ):
-    """
-    Get paginated list of users.
+    """Get paginated list of users.
 
     Requires API key authentication.
 
@@ -107,8 +105,7 @@ async def get_user(
     user_id: Annotated[int, Path(ge=1, description="User ID")],
     current_user: Annotated[User, Depends(get_current_active_user)],
 ):
-    """
-    Get user by ID.
+    """Get user by ID.
 
     Requires JWT authentication.
     """
@@ -117,7 +114,7 @@ async def get_user(
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user_id} not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user_id} not found",
         )
 
     user_response = UserResponse(
@@ -145,8 +142,7 @@ async def delete_user(
     user_id: Annotated[int, Path(ge=1, description="User ID")],
     current_user: Annotated[User, Depends(get_current_active_user)],
 ):
-    """
-    Delete user by ID.
+    """Delete user by ID.
 
     Requires JWT authentication.
     Has stricter rate limiting (10 requests per minute).
@@ -156,7 +152,7 @@ async def delete_user(
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user_id} not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user_id} not found",
         )
 
     # In production, delete from database

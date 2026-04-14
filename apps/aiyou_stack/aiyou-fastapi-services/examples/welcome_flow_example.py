@@ -1,5 +1,4 @@
-"""
-Example: Creating a Welcome Email Flow
+"""Example: Creating a Welcome Email Flow
 
 This example demonstrates how to:
 1. Create email templates
@@ -16,7 +15,6 @@ API_BASE_URL = "http://localhost:8000/api/v1/email"
 
 async def create_welcome_flow_example():
     """Create a complete welcome email flow"""
-
     async with httpx.AsyncClient() as client:
         # Step 1: Create email templates
         print("Creating email templates...")

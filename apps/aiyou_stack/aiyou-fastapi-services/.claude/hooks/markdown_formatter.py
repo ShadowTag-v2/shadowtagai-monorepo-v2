@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Markdown formatter for Claude Code output.
+"""Markdown formatter for Claude Code output.
 Fixes missing language tags and spacing issues while preserving code content.
 """
 
@@ -23,23 +22,23 @@ def detect_language(code):
             pass
 
     # Python detection
-    if re.search(r"^\s*def\s+\w+\s*\(", s, re.M) or re.search(r"^\s*(import|from)\s+\w+", s, re.M):
+    if re.search(r"^\s*def\s+\w+\s*\(", s, re.MULTILINE) or re.search(r"^\s*(import|from)\s+\w+", s, re.MULTILINE):
         return "python"
 
     # JavaScript detection
     if re.search(r"\b(function\s+\w+\s*\(|const\s+\w+\s*=)", s) or re.search(
-        r"=>|console\.(log|error)", s
+        r"=>|console\.(log|error)", s,
     ):
         return "javascript"
 
     # Bash detection
-    if re.search(r"^#!.*\b(bash|sh)\b", s, re.M) or re.search(
-        r"\b(if|then|fi|for|in|do|done)\b", s
+    if re.search(r"^#!.*\b(bash|sh)\b", s, re.MULTILINE) or re.search(
+        r"\b(if|then|fi|for|in|do|done)\b", s,
     ):
         return "bash"
 
     # SQL detection
-    if re.search(r"\b(SELECT|INSERT|UPDATE|DELETE|CREATE)\s+", s, re.I):
+    if re.search(r"\b(SELECT|INSERT|UPDATE|DELETE|CREATE)\s+", s, re.IGNORECASE):
         return "sql"
 
     return "text"

@@ -1,5 +1,4 @@
-"""
-PiCO::PRISM Framework - Production Module
+"""PiCO::PRISM Framework - Production Module
 Extracted from Vertex AI Workbench for GKE deployment
 
 Mission: Maximize mission advancement, revenue, and survivability ethically and legally
@@ -242,7 +241,6 @@ class DecisionEngine:
         ltv_cac_baseline: float = 4.0,
     ) -> dict[str, Any]:
         """Evaluate decision through purpose-reason-brakes framework"""
-
         # Apply risk brakes
         risk_assessment = RiskAssessment.assess(probability, severity)
 
@@ -277,7 +275,7 @@ class DecisionEngine:
 
     @staticmethod
     def monte_carlo_simulation(
-        n_simulations: int, base_roi: float, roi_std: float, base_cost: float, cost_std: float
+        n_simulations: int, base_roi: float, roi_std: float, base_cost: float, cost_std: float,
     ) -> dict[str, Any]:
         """Run Monte Carlo simulation for decision confidence"""
         roi_samples = np.random.normal(base_roi, roi_std, n_simulations)
@@ -322,7 +320,7 @@ class HashTooling:
     def verify_hash(data: bytes, expected_hash: str, algorithm: str) -> bool:
         """Verify data against expected hash"""
         computed_hash, algo_used = HashTooling.compute_hash(
-            data, prefer_blake3=(algorithm == "blake3")
+            data, prefer_blake3=(algorithm == "blake3"),
         )
         return computed_hash == expected_hash and algo_used == algorithm
 
@@ -333,7 +331,7 @@ class HashTooling:
         for idx, item in enumerate(items):
             hash_val, algo = HashTooling.compute_hash(item)
             results.append(
-                {"index": idx, "hash": hash_val, "algorithm": algo, "size_bytes": len(item)}
+                {"index": idx, "hash": hash_val, "algorithm": algo, "size_bytes": len(item)},
             )
         return results
 
@@ -395,13 +393,13 @@ class ResearchDeltas:
 
 
 __all__ = [
+    "DecisionEngine",
+    "HashTooling",
     "PicoTrace",
     "PrismKernel",
     "Probability",
-    "Severity",
-    "RiskLevel",
-    "RiskAssessment",
-    "DecisionEngine",
-    "HashTooling",
     "ResearchDeltas",
+    "RiskAssessment",
+    "RiskLevel",
+    "Severity",
 ]

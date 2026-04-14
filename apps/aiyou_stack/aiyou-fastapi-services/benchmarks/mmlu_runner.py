@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-MMLU Benchmark Runner for n-autoresearch/Kosmos/BioAgents Swarm
+"""MMLU Benchmark Runner for n-autoresearch/Kosmos/BioAgents Swarm
 
 Tests the swarm's accuracy on MMLU (Massive Multitask Language Understanding).
 Target: 79.4% accuracy (Kosmos benchmark).
@@ -85,8 +84,7 @@ TIER_WEIGHTS = {
 
 
 def swarm_vote_mmlu(question: str, choices: list[str]) -> tuple[int, float, str]:
-    """
-    Internal swarm vote on MMLU multiple choice question.
+    """Internal swarm vote on MMLU multiple choice question.
 
     For MMLU, we adapt the swarm to vote on answer choices.
     Each agent evaluates the question and votes for an answer.
@@ -219,10 +217,9 @@ MMLU_SUBJECTS = [
 
 
 async def run_benchmark(
-    subjects: list[str] = None, limit: int = 100, output_dir: str = "benchmarks/results"
+    subjects: list[str] = None, limit: int = 100, output_dir: str = "benchmarks/results",
 ) -> BenchmarkResults:
-    """
-    Run MMLU benchmark on specified subjects.
+    """Run MMLU benchmark on specified subjects.
 
     Args:
         subjects: List of MMLU subjects to test (None = all)
@@ -231,6 +228,7 @@ async def run_benchmark(
 
     Returns:
         BenchmarkResults with accuracy metrics
+
     """
     if not DATASETS_AVAILABLE:
         print("Error: 'datasets' package required. Run: pip install datasets")
@@ -354,14 +352,14 @@ async def run_benchmark(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="MMLU Benchmark for n-autoresearch/Kosmos/BioAgents"
+        description="MMLU Benchmark for n-autoresearch/Kosmos/BioAgents",
     )
     parser.add_argument(
-        "--subjects", type=str, default="all", help="Comma-separated list of subjects or 'all'"
+        "--subjects", type=str, default="all", help="Comma-separated list of subjects or 'all'",
     )
     parser.add_argument("--limit", type=int, default=100, help="Max questions per subject")
     parser.add_argument(
-        "--output", type=str, default="benchmarks/results", help="Output directory for results"
+        "--output", type=str, default="benchmarks/results", help="Output directory for results",
     )
 
     args = parser.parse_args()
@@ -376,7 +374,7 @@ def main():
             subjects=subjects,
             limit=args.limit,
             output_dir=args.output,
-        )
+        ),
     )
 
 

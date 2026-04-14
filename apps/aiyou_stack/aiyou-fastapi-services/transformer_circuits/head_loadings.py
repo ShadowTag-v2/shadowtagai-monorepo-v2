@@ -1,5 +1,4 @@
-"""
-Head Loadings: Compute attention head contributions to attribution graph edges.
+"""Head Loadings: Compute attention head contributions to attribution graph edges.
 
 Based on the paper "Tracing Attention Computation Through Feature Interactions" (2025).
 
@@ -36,6 +35,7 @@ class HeadLoading:
         contribution: Contribution to the edge (can be positive or negative)
         attention_weight: Attention pattern value at (source_pos, target_pos)
         ov_projection: v_target^T O_h V_h v_source (OV circuit projection)
+
     """
 
     layer: int
@@ -68,6 +68,7 @@ class EdgeAttribution:
         mlp_component: MLP-mediated component
         residual_component: Residual connection component
         head_loadings: Individual head contributions
+
     """
 
     source_feature: str
@@ -111,7 +112,7 @@ class EdgeAttribution:
                 else 0
             )
             lines.append(
-                f"  {i}. L{head.layer}H{head.head}: {head.contribution:.4f} ({pct:.1f}% of attn)"
+                f"  {i}. L{head.layer}H{head.head}: {head.contribution:.4f} ({pct:.1f}% of attn)",
             )
 
         return "\n".join(lines)
@@ -128,6 +129,7 @@ class HeadLoadingComputer:
         W_O: Output weight matrices [n_layers, n_heads, d_model, d_head]
         attention_patterns: Attention patterns [n_layers, n_heads, seq_len, seq_len]
         feature_vectors: SAE decoder vectors per layer, dict: layer -> [n_features, d_model]
+
     """
 
     def __init__(
@@ -165,6 +167,7 @@ class HeadLoadingComputer:
 
         Returns:
             OV projections for all heads [n_heads]
+
         """
         # [n_heads, d_model, d_model] @ [d_model] -> [n_heads, d_model]
         ov_source = einsum(self.W_OV[layer], source_feature_vec, "h dm1 dm2, dm2 -> h dm1")
@@ -199,6 +202,7 @@ class HeadLoadingComputer:
 
         Returns:
             List of HeadLoading objects for each head
+
         """
         assert target_layer == source_layer + 1, "Head loadings only defined for adjacent layers"
 
@@ -234,7 +238,7 @@ class HeadLoadingComputer:
                     contribution=contribution,
                     attention_weight=attention_weights[head_idx].item(),
                     ov_projection=ov_projections[head_idx].item(),
-                )
+                ),
             )
 
         return head_loadings
@@ -272,6 +276,7 @@ class HeadLoadingComputer:
 
         Returns:
             EdgeAttribution object
+
         """
         # Compute head loadings
         head_loadings = self.compute_head_loadings(
@@ -340,6 +345,7 @@ def compute_head_loadings(
 
     Returns:
         EdgeAttribution object
+
     """
     # Extract model components (model-specific)
     W_V = {}
@@ -355,7 +361,7 @@ def compute_head_loadings(
         # Get attention pattern (would need to run forward pass with hooks)
         # This is a placeholder - actual implementation would capture from forward pass
         attention_patterns[layer] = torch.zeros(
-            attn.num_heads, len(input_ids[0]), len(input_ids[0])
+            attn.num_heads, len(input_ids[0]), len(input_ids[0]),
         )
 
         # Get feature vectors
@@ -447,6 +453,7 @@ class MultiLayerHeadLoadingComputer:
 
         Returns:
             List of EdgeAttribution objects for the important paths
+
         """
         if target_layer == source_layer + 1:
             # Direct edge - use single-layer computation
@@ -460,7 +467,7 @@ class MultiLayerHeadLoadingComputer:
                     target_pos,
                     source_layer,
                     target_layer,
-                )
+                ),
             ]
 
         # Multi-hop: need to find important intermediate features

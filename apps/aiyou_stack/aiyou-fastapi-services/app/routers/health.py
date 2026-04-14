@@ -1,5 +1,4 @@
-"""
-Health check endpoint for service monitoring.
+"""Health check endpoint for service monitoring.
 
 Provides:
 - Service availability status
@@ -46,8 +45,7 @@ router = APIRouter(
     response_description="Service health information including status, timestamp, and version",
 )
 async def health_check() -> HealthResponse:
-    """
-    Check service health and return status information.
+    """Check service health and return status information.
 
     Returns:
         HealthResponse: Service status, timestamp, and version
@@ -60,7 +58,8 @@ async def health_check() -> HealthResponse:
             "version": "1.0.0"
         }
         ```
+
     """
     return HealthResponse(
-        status="healthy", timestamp=datetime.utcnow(), version=settings.APP_VERSION
+        status="healthy", timestamp=datetime.utcnow(), version=settings.APP_VERSION,
     )

@@ -1,6 +1,5 @@
 class RoadMeshFreeways:
-    """
-    Vertical 4: RoadMesh Digital Freeways
+    """Vertical 4: RoadMesh Digital Freeways
     ARR 2030: $2.5B
     Moat: 100,000+ cell towers, C-V2X coordination.
     """

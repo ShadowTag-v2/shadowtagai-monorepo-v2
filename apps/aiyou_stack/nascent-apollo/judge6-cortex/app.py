@@ -11,8 +11,7 @@ def health_check():
 
 @app.post("/judge")
 def judge_command(command: dict):
-    """
-    The Main Entry Point for the HUD.
+    """The Main Entry Point for the HUD.
     """
     result = evaluate_verdict(command.get("input", ""))
     return result

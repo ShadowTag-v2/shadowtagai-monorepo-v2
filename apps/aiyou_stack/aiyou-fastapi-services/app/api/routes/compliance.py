@@ -1,5 +1,4 @@
-"""
-FastAPI routes for privacy compliance (CCPA, GDPR)
+"""FastAPI routes for privacy compliance (CCPA, GDPR)
 """
 
 from datetime import datetime, timedelta
@@ -40,7 +39,7 @@ async def get_current_user():
 
 async def get_database():
     """TODO: Implement database connection"""
-    return None
+    return
 
 
 @router.post("/ccpa/request", response_model=CCPARequestResponse)
@@ -49,8 +48,7 @@ async def submit_ccpa_request(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Submit a CCPA consumer request
+    """Submit a CCPA consumer request
 
     **Request Types:**
     - `access`: Request access to your personal data (right to know)
@@ -87,8 +85,7 @@ async def get_ccpa_request_status(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Get the status of a CCPA request
+    """Get the status of a CCPA request
     """
     ccpa = CCPACompliance(db)
 
@@ -117,8 +114,7 @@ async def export_my_data(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Export all your personal data (CCPA right to know)
+    """Export all your personal data (CCPA right to know)
 
     **Formats:**
     - `json`: JSON format (default, machine-readable)
@@ -145,8 +141,7 @@ async def delete_my_data(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Request deletion of all your personal data (CCPA right to delete)
+    """Request deletion of all your personal data (CCPA right to delete)
 
     **Warning:** This action cannot be undone. All your data will be permanently deleted.
     """
@@ -170,8 +165,7 @@ async def opt_out_of_sale(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Opt-out of personal data sales (CCPA "Do Not Sell My Personal Information")
+    """Opt-out of personal data sales (CCPA "Do Not Sell My Personal Information")
     """
     ccpa = CCPACompliance(db)
 
@@ -196,8 +190,7 @@ async def check_opt_out_status(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Check if you have opted out of data sales
+    """Check if you have opted out of data sales
     """
     ccpa = CCPACompliance(db)
 
@@ -212,8 +205,7 @@ async def check_opt_out_status(
 
 @router.get("/ccpa/disclosures")
 async def get_privacy_disclosures():
-    """
-    Get CCPA privacy disclosures (public endpoint, no authentication required)
+    """Get CCPA privacy disclosures (public endpoint, no authentication required)
 
     Returns information about:
     - Categories of personal information collected
@@ -233,8 +225,7 @@ async def check_consent_status(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Check your consent status for a specific purpose (GDPR)
+    """Check your consent status for a specific purpose (GDPR)
 
     **Common purposes:**
     - `marketing`: Email marketing and promotional communications
@@ -262,8 +253,7 @@ async def update_consent(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """
-    Update your consent for a specific purpose (GDPR)
+    """Update your consent for a specific purpose (GDPR)
     """
     from app.compliance import GDPRCompliance
 

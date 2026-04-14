@@ -1,5 +1,4 @@
-"""
-Gemini Vertex AI Client
+"""Gemini Vertex AI Client
 =======================
 
 Vertex AI-only Gemini client with GCP credits utilization.
@@ -46,7 +45,6 @@ logger = logging.getLogger(__name__)
 class GeminiFailoverError(Exception):
     """Raised when all failover attempts fail."""
 
-    pass
 
 
 class KeyStatus(Enum):
@@ -108,8 +106,7 @@ class APIKeyMetrics:
 
 
 class GeminiFailoverClient:
-    """
-    Vertex AI-only Gemini client utilizing GCP credits.
+    """Vertex AI-only Gemini client utilizing GCP credits.
 
     Uses Vertex AI directly for all requests - leverages $350K GCP credits.
     No standard API keys needed.
@@ -119,6 +116,7 @@ class GeminiFailoverClient:
 
         client = GeminiFailoverClient()
         response = await client.generate_content("Hello, Gemini!")
+
     """
 
     def __init__(
@@ -133,8 +131,7 @@ class GeminiFailoverClient:
         circuit_threshold: int = 5,
         **kwargs,  # Ignore legacy api_keys parameter
     ):
-        """
-        Initialize Vertex AI client.
+        """Initialize Vertex AI client.
 
         Args:
             project_id: GCP project ID (default: acquired-jet-478701-b3)
@@ -145,6 +142,7 @@ class GeminiFailoverClient:
             max_retries: Maximum retry attempts per request
             base_backoff: Base backoff time in seconds (exponential)
             circuit_threshold: Failures before opening circuit breaker
+
         """
         self.model_name = model_name
         self.max_retries = max_retries
@@ -201,7 +199,6 @@ class GeminiFailoverClient:
                 self.rate_limit_hits += 1
 
         # Persistence logic removed - local metrics only
-        pass
 
     async def generate_content(
         self,
@@ -210,8 +207,7 @@ class GeminiFailoverClient:
         json_output: bool = False,
         **kwargs,
     ) -> Any:
-        """
-        Generate content using Vertex AI.
+        """Generate content using Vertex AI.
 
         Args:
             prompt: The input prompt
@@ -224,6 +220,7 @@ class GeminiFailoverClient:
 
         Raises:
             Exception: If Vertex AI fails after retries
+
         """
         last_error = None
 
@@ -238,7 +235,7 @@ class GeminiFailoverClient:
                 response = await asyncio.to_thread(
                     self.vertex_model.generate_content,
                     prompt,
-                    generation_config=gen_config if gen_config else None,
+                    generation_config=gen_config or None,
                     **kwargs,
                 )
 
@@ -266,7 +263,7 @@ class GeminiFailoverClient:
 
         # Complete failure
         raise Exception(
-            f"Vertex AI failed after {self.max_retries} attempts. Last error: {last_error}"
+            f"Vertex AI failed after {self.max_retries} attempts. Last error: {last_error}",
         )
 
     def get_metrics(self) -> dict[str, Any]:

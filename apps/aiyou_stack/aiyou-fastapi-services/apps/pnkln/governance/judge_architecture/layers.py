@@ -1,6 +1,4 @@
-# ruff: noqa: F401, F403
-"""
-Judge Architecture: Backward-Compatibility Barrel File
+"""Judge Architecture: Backward-Compatibility Barrel File
 =======================================================
 
 Original monolith (1192 lines) decomposed into domain-specific modules:

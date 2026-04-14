@@ -1,6 +1,5 @@
 # apps/counselconduit/api/fastapi_kovel_enclave.py
-"""
-CounselConduit: Kovel Enclave v2.0
+"""CounselConduit: Kovel Enclave v2.0
 Cryptographic timestamping + Triple-Dip billing + Anti-forensic evaporation.
 
 Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
@@ -57,13 +56,12 @@ async def execute_privileged_compute(
     request: Request,
     x_kovel_auth: str = Header(None),
 ):
-    """
-    Execute an AI query under the strict protection of the Kovel Doctrine.
+    """Execute an AI query under the strict protection of the Kovel Doctrine.
     Zero-retention architecture. RAM is forcefully dropped post-execution.
     """
     if not x_kovel_auth:
         raise HTTPException(
-            status_code=403, detail="Kovel Authentication Missing. Operation Terminated."
+            status_code=403, detail="Kovel Authentication Missing. Operation Terminated.",
         )
 
     # 1. Triple-Dip Telemetry / Billing

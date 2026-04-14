@@ -1,5 +1,4 @@
-"""
-Logging Configuration
+"""Logging Configuration
 
 Security:
 - Structured logging
@@ -19,8 +18,7 @@ settings = get_settings()
 
 
 def setup_logging() -> None:
-    """
-    Configure structured logging
+    """Configure structured logging
 
     Features:
     - JSON format (for GCP Cloud Logging)
@@ -28,7 +26,6 @@ def setup_logging() -> None:
     - No PII in logs
     - Configurable log level
     """
-
     # Configure structlog
     structlog.configure(
         processors=[
@@ -58,21 +55,20 @@ def setup_logging() -> None:
 
 
 def get_logger(name: str) -> Any:
-    """
-    Get logger instance
+    """Get logger instance
 
     Args:
         name: Logger name (usually __name__)
 
     Returns:
         Structlog logger instance
+
     """
     return structlog.get_logger(name)
 
 
 def sanitize_log_data(data: dict) -> dict:
-    """
-    Remove sensitive data from log entries
+    """Remove sensitive data from log entries
 
     Security:
     - Redact passwords, tokens, keys
@@ -83,6 +79,7 @@ def sanitize_log_data(data: dict) -> dict:
 
     Returns:
         Sanitized dictionary
+
     """
     sensitive_keys = {
         "password",

@@ -1,5 +1,4 @@
-"""
-SHADOWTAGAI - Precision AI Orchestration Platform
+"""SHADOWTAGAI - Precision AI Orchestration Platform
 ============================================
 
 Core modules:

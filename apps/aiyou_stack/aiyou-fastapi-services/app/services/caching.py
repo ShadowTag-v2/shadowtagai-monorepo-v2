@@ -1,5 +1,4 @@
-"""
-Intelligent caching system with Redis support
+"""Intelligent caching system with Redis support
 Automatically caches responses and provides cache statistics
 """
 
@@ -15,8 +14,7 @@ from app.core.config import settings
 
 
 class IntelligentCache:
-    """
-    Intelligent caching system that:
+    """Intelligent caching system that:
     - Automatically caches frequently accessed data
     - Tracks cache hit/miss rates
     - Suggests what should be cached
@@ -80,9 +78,8 @@ class IntelligentCache:
                 # Track access pattern
                 self.access_patterns[key] = self.access_patterns.get(key, 0) + 1
                 return pickle.loads(value)
-            else:
-                self.stats["misses"] += 1
-                return None
+            self.stats["misses"] += 1
+            return None
         except Exception as e:
             print(f"Cache get error: {e}")
             self.stats["misses"] += 1
@@ -141,8 +138,7 @@ class IntelligentCache:
         }
 
     def get_cache_suggestions(self) -> list:
-        """
-        Suggest what should be cached based on access patterns
+        """Suggest what should be cached based on access patterns
         Returns keys that are accessed frequently but not cached
         """
         suggestions = []
@@ -157,7 +153,7 @@ class IntelligentCache:
                         "key": key,
                         "access_count": count,
                         "suggestion": f"Cache this key - accessed {count} times",
-                    }
+                    },
                 )
 
         return suggestions
@@ -165,8 +161,7 @@ class IntelligentCache:
 
 # Decorator for automatic caching
 def cache_response(prefix: str, ttl: int | None = None, key_builder=None):
-    """
-    Decorator to automatically cache function responses
+    """Decorator to automatically cache function responses
 
     Usage:
         @cache_response('user', ttl=300)

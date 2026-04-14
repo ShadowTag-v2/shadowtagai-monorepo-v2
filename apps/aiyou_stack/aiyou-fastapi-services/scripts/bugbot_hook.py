@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-BugBot PR Hook: Wires BugBot into GitHub PR events
+"""BugBot PR Hook: Wires BugBot into GitHub PR events
 Integrates with Dual-Model CI pipeline
 
 Part of 4-Module Agent Stack
@@ -23,7 +22,7 @@ def get_changed_files(diff_range: str = "origin/main...HEAD") -> list:
     """Get list of changed Python files."""
     try:
         result = subprocess.run(
-            ["git", "diff", diff_range, "--name-only"], capture_output=True, text=True, check=True
+            ["git", "diff", diff_range, "--name-only"], capture_output=True, text=True, check=True,
         )
         files = [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
         return [f for f in files if f.endswith(".py")]
@@ -120,7 +119,6 @@ def post_github_comment(comment: str, pr_number: str = None):
 
 def main(diff_range: str = "origin/main...HEAD", target: str = None):
     """Run BugBot analysis and post results."""
-
     # Get changed files
     changed_files = get_changed_files(diff_range)
 

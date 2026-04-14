@@ -10,8 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class GoogleCalendarController:
-    """
-    Idempotent abstraction for interacting with Google Calendar API.
+    """Idempotent abstraction for interacting with Google Calendar API.
     Acts as the source of truth for LegalTrack + CEOTrack convergence.
     """
 
@@ -23,8 +22,7 @@ class GoogleCalendarController:
             self.service = None
 
     def _generate_idempotency_key(self, source_system: str, event_hash: str) -> str:
-        """
-        Ensures we never duplicate events if LegalTrack calculations vary.
+        """Ensures we never duplicate events if LegalTrack calculations vary.
         Output: e.g. "legaltrackfrcp12a54321" (Must be base32-hex for GCal ID)
         """
         raw_key = f"{source_system}_{event_hash}"
@@ -40,14 +38,13 @@ class GoogleCalendarController:
         event_hash: str,
         location: str | None = None,
     ) -> dict[str, Any]:
-        """
-        Checks if the event ID exists. If yes, updates it. If no, creates it.
+        """Checks if the event ID exists. If yes, updates it. If no, creates it.
         """
         event_id = self._generate_idempotency_key(source_system, event_hash)
 
         if not self.service:
             logger.warning(
-                f"GoogleCalendarController: No credentials provided. Mocking upsert for {title} at {start_iso}"
+                f"GoogleCalendarController: No credentials provided. Mocking upsert for {title} at {start_iso}",
             )
             return {"status": "success", "event_id": event_id, "idempotent": True}
 

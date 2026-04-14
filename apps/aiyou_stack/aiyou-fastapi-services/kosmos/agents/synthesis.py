@@ -1,5 +1,4 @@
-"""
-Synthesis Agent: Specializes in synthesizing findings into structured reports.
+"""Synthesis Agent: Specializes in synthesizing findings into structured reports.
 
 Capabilities:
 - Synthesize results from multiple sources
@@ -17,8 +16,7 @@ from kosmos.core.vertex_client import GeminiModel
 
 
 class SynthesisAgent(BaseAgent):
-    """
-    Agent specialized in synthesis and report writing.
+    """Agent specialized in synthesis and report writing.
 
     Uses Gemini Pro for high-quality scientific writing.
     Produces structured reports that synthesize findings from
@@ -70,8 +68,7 @@ Always:
     )
 
     def execute_task(self, task: str, context: dict[str, Any] | None = None) -> ReActResult:
-        """
-        Execute synthesis/writing task.
+        """Execute synthesis/writing task.
 
         Example tasks:
         - "Write research report synthesizing all findings"
@@ -84,6 +81,7 @@ Always:
 
         Returns:
             ReActResult with generated report
+
         """
         goal = self._build_goal_with_instruction(task)
 
@@ -116,8 +114,7 @@ Always:
         title: str | None = None,
         citation_style: str = "APA",
     ) -> ReActResult:
-        """
-        Write a complete research report synthesizing all findings.
+        """Write a complete research report synthesizing all findings.
 
         Args:
             title: Optional report title (auto-generated if None)
@@ -125,6 +122,7 @@ Always:
 
         Returns:
             ReActResult with full report
+
         """
         if title is None:
             title = f"Research Report: {self.world_model.goal}"
@@ -139,14 +137,14 @@ Always:
         )
 
     def write_executive_summary(self, max_words: int = 500) -> ReActResult:
-        """
-        Write an executive summary for non-technical audiences.
+        """Write an executive summary for non-technical audiences.
 
         Args:
             max_words: Maximum word count
 
         Returns:
             ReActResult with executive summary
+
         """
         return self.execute_task(
             f"Write an executive summary (max {max_words} words) for a general audience.\n\n"
@@ -163,8 +161,7 @@ Always:
         section_name: str,
         content_focus: str | None = None,
     ) -> ReActResult:
-        """
-        Write a specific report section.
+        """Write a specific report section.
 
         Args:
             section_name: Section to write (e.g., "Methods", "Discussion")
@@ -172,6 +169,7 @@ Always:
 
         Returns:
             ReActResult with section content
+
         """
         task = f"Write the {section_name} section of a research report."
 
@@ -183,14 +181,14 @@ Always:
         return self.execute_task(task)
 
     def format_references(self, citation_style: str = "APA") -> ReActResult:
-        """
-        Generate properly formatted reference list from world model literature.
+        """Generate properly formatted reference list from world model literature.
 
         Args:
             citation_style: Citation format (APA, IEEE, Nature, etc.)
 
         Returns:
             ReActResult with formatted references
+
         """
         lit_refs = self.world_model.literature_refs
 
@@ -204,7 +202,7 @@ Always:
             )
 
         refs_text = "\n".join(
-            [f"{i + 1}. {ref.title} - {', '.join(ref.authors)}" for i, ref in enumerate(lit_refs)]
+            [f"{i + 1}. {ref.title} - {', '.join(ref.authors)}" for i, ref in enumerate(lit_refs)],
         )
 
         return self.execute_task(
@@ -215,11 +213,11 @@ Always:
         )
 
     def create_figures_and_tables(self) -> ReActResult:
-        """
-        Generate publication-ready figures and tables from analysis results.
+        """Generate publication-ready figures and tables from analysis results.
 
         Returns:
             ReActResult with figure/table descriptions and references
+
         """
         return self.execute_task(
             "Review all analysis results and create:\n"
@@ -229,5 +227,5 @@ Always:
             "For each figure/table, provide:\n"
             "- Descriptive caption\n"
             "- Data source\n"
-            "- Key takeaway message"
+            "- Key takeaway message",
         )

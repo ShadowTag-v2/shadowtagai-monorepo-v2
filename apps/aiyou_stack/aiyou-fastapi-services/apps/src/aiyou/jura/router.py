@@ -1,5 +1,4 @@
-"""
-JuraRouter: Orchestrates cost-aware request routing.
+"""JuraRouter: Orchestrates cost-aware request routing.
 
 Combines:
 - JuraClassifier for tier assignment
@@ -38,8 +37,7 @@ class RouteResult:
 
 
 class JuraRouter:
-    """
-    Main orchestrator for JURA protocol.
+    """Main orchestrator for JURA protocol.
 
     Usage:
         router = JuraRouter()
@@ -64,13 +62,13 @@ class JuraRouter:
         self._executor: Callable[[str, int, str, int], Awaitable[dict[str, Any]]] | None = None
 
     def set_executor(
-        self, executor: Callable[[str, int, str, int], Awaitable[dict[str, Any]]]
+        self, executor: Callable[[str, int, str, int], Awaitable[dict[str, Any]]],
     ) -> None:
-        """
-        Set the agent executor function.
+        """Set the agent executor function.
 
         Args:
             executor: Async function(task, num_agents, model, timeout_ms) -> response
+
         """
         self._executor = executor
 
@@ -83,8 +81,7 @@ class JuraRouter:
         requested_agents: int = 1,
         metadata: dict[str, Any] | None = None,
     ) -> RouteResult:
-        """
-        Route a request through JURA protocol.
+        """Route a request through JURA protocol.
 
         Args:
             task: The task/prompt to execute
@@ -96,6 +93,7 @@ class JuraRouter:
 
         Returns:
             RouteResult with response, cost, and metrics
+
         """
         start_time = time.time()
         request_id = f"jura_{int(start_time * 1000)}"
@@ -206,8 +204,7 @@ class JuraRouter:
         context_size: int = 0,
         metadata: dict[str, Any] | None = None,
     ) -> RouteResult:
-        """
-        Route a governance request (always uses PRO tier).
+        """Route a governance request (always uses PRO tier).
 
         Args:
             task: The governance task
@@ -216,6 +213,7 @@ class JuraRouter:
 
         Returns:
             RouteResult
+
         """
         return await self.route(
             task=task,
@@ -243,8 +241,7 @@ class JuraRouter:
         }
 
     def get_tier_recommendation(self, task: str, context_size: int = 0) -> dict[str, Any]:
-        """
-        Get tier recommendation without routing.
+        """Get tier recommendation without routing.
 
         Useful for showing users what tier would be selected.
         """

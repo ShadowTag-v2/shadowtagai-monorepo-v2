@@ -1,5 +1,4 @@
-"""
-Digital Freeway Coordination API
+"""Digital Freeway Coordination API
 Pure software coordination layer for autonomous vehicles.
 """
 
@@ -106,8 +105,7 @@ async def health_check():
 
 @app.post("/telemetry", response_model=CoordinationVector)
 async def receive_telemetry(telemetry: VehicleTelemetry, background_tasks: BackgroundTasks):
-    """
-    Receive vehicle telemetry and return coordination vector.
+    """Receive vehicle telemetry and return coordination vector.
 
     This is the main API endpoint - vehicles send their state,
     we return optimal behavior recommendations.
@@ -127,8 +125,7 @@ async def receive_telemetry(telemetry: VehicleTelemetry, background_tasks: Backg
 
 
 async def compute_coordination(telemetry: VehicleTelemetry) -> CoordinationVector:
-    """
-    Compute coordination vector for a vehicle.
+    """Compute coordination vector for a vehicle.
 
     TODO: This will be replaced by the 3-agent chain:
     1. Ingest Agent - normalize telemetry

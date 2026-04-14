@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack™ — Integration Pipeline Orchestrator
+"""PNKLN Core Stack™ — Integration Pipeline Orchestrator
 Handles data flow: Gemini Ingestion → Cloud Storage → Judge #6 → Services
 """
 
@@ -40,8 +39,7 @@ class PipelineConfig:
 
 
 class IngestionPublisher:
-    """
-    Publishes completed ingestion briefing to Cloud Storage and Pub/Sub.
+    """Publishes completed ingestion briefing to Cloud Storage and Pub/Sub.
     Runs at end of Gemini Ingestion CronJob (inside quality-gate container).
     """
 
@@ -52,8 +50,7 @@ class IngestionPublisher:
         self.bucket = self.gcs_client.bucket(config.gcs_bucket)
 
     def publish_briefing(self, briefing: IngestionBriefing) -> str:
-        """
-        Publish briefing to Cloud Storage and trigger Pub/Sub event.
+        """Publish briefing to Cloud Storage and trigger Pub/Sub event.
         Returns: GCS path (gs://bucket/path)
         """
         # Validate quality gates first
@@ -81,7 +78,7 @@ class IngestionPublisher:
 
         # Trigger Pub/Sub event for Judge #6 to consume
         topic_path = self.pubsub_client.topic_path(
-            self.config.pubsub_project, self.config.pubsub_topic
+            self.config.pubsub_project, self.config.pubsub_topic,
         )
 
         message_data = {
@@ -100,8 +97,7 @@ class IngestionPublisher:
 
 
 class Judge6Updater:
-    """
-    Subscribes to Pub/Sub events and updates Judge #6 Redis cache.
+    """Subscribes to Pub/Sub events and updates Judge #6 Redis cache.
     Runs as sidecar in Judge #6 StatefulSet (gke-inference-system).
     """
 
@@ -111,19 +107,18 @@ class Judge6Updater:
         self.redis_client: redis.Redis | None = None
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(
-            config.pubsub_project, config.pubsub_subscription
+            config.pubsub_project, config.pubsub_subscription,
         )
 
     async def connect_redis(self):
         """Establish Redis connection (Judge #6 cache)"""
         self.redis_client = await redis.from_url(
-            f"redis://{self.config.redis_host}:{self.config.redis_port}/{self.config.redis_db}"
+            f"redis://{self.config.redis_host}:{self.config.redis_port}/{self.config.redis_db}",
         )
         logger.info("Connected to Judge #6 Redis cache")
 
     async def load_briefing_to_cache(self, gcs_path: str) -> bool:
-        """
-        Load ingestion briefing from GCS into Judge #6 Redis cache.
+        """Load ingestion briefing from GCS into Judge #6 Redis cache.
         Returns: True if successful, False if quality gates failed
         """
         # Download from GCS
@@ -137,13 +132,13 @@ class Judge6Updater:
         logger.info(
             f"Loading briefing {briefing.briefing_date}: "
             f"{briefing.total_items} items, "
-            f"quality gates: {briefing.meets_quality_gates()}"
+            f"quality gates: {briefing.meets_quality_gates()}",
         )
 
         # Check quality gates
         if not briefing.meets_quality_gates():
             logger.warning(
-                f"Briefing {briefing.briefing_date} failed quality gates, using as fallback only"
+                f"Briefing {briefing.briefing_date} failed quality gates, using as fallback only",
             )
             # Store with "stale" prefix for manual review
             await self.redis_client.set(
@@ -186,7 +181,7 @@ class Judge6Updater:
         await pipeline.execute()
 
         logger.info(
-            f"Loaded {briefing.total_items} items into Judge #6 cache ({briefing.briefing_date})"
+            f"Loaded {briefing.total_items} items into Judge #6 cache ({briefing.briefing_date})",
         )
 
         return True
@@ -220,7 +215,7 @@ class Judge6Updater:
         """Start Pub/Sub subscription (blocking)"""
         logger.info(f"Listening to {self.subscription_path}")
         streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path, callback=lambda msg: asyncio.run(self.pubsub_callback(msg))
+            self.subscription_path, callback=lambda msg: asyncio.run(self.pubsub_callback(msg)),
         )
 
         try:
@@ -231,8 +226,7 @@ class Judge6Updater:
 
 
 class Judge6Client:
-    """
-    Client for services to query Judge #6 (real-time validation).
+    """Client for services to query Judge #6 (real-time validation).
     Runs in gke-inference-system, gke-gateway-system, etc.
     """
 
@@ -243,13 +237,12 @@ class Judge6Client:
     async def connect(self):
         """Establish Redis connection to Judge #6 cache"""
         self.redis_client = await redis.from_url(
-            f"redis://{self.config.redis_host}:{self.config.redis_port}/{self.config.redis_db}"
+            f"redis://{self.config.redis_host}:{self.config.redis_port}/{self.config.redis_db}",
         )
         logger.info("Connected to Judge #6")
 
     async def validate_item(self, item_id: str) -> JudgeDecision:
-        """
-        Validate item against Judge #6 policies.
+        """Validate item against Judge #6 policies.
         SLA: <500μs p99 latency, ≥98% coverage
         """
         start_time = datetime.now()
@@ -312,7 +305,7 @@ class Judge6Client:
         # Log if SLA violated
         if not decision.meets_sla():
             logger.error(
-                f"Judge #6 SLA violation: {latency_us}μs latency, {decision.coverage:.2%} coverage"
+                f"Judge #6 SLA violation: {latency_us}μs latency, {decision.coverage:.2%} coverage",
             )
 
         return decision
@@ -336,8 +329,7 @@ class Judge6Client:
 
 # Example usage / integration test
 async def integration_test():
-    """
-    Simulate end-to-end pipeline:
+    """Simulate end-to-end pipeline:
     1. Gemini Ingestion publishes briefing
     2. Judge #6 Updater loads to cache
     3. Service validates item
@@ -366,7 +358,7 @@ async def integration_test():
                 metadata={},
                 ingestion_score=0.92,
                 ingestion_timestamp=datetime.now(),
-            )
+            ),
         ],
         runtime_minutes=44.5,
         crawler_version="v1.0.0",

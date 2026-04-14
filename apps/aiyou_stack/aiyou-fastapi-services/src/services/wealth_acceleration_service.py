@@ -1,5 +1,4 @@
-"""
-Wealth Acceleration Service - FastAPI Integration
+"""Wealth Acceleration Service - FastAPI Integration
 
 This service provides FastAPI endpoints for the wealth acceleration strategist agent,
 enabling RESTful API access to monetization analysis and strategic recommendations.
@@ -39,7 +38,7 @@ class BusinessContext(BaseModel):
 
     niche: str | None = Field(None, description="Primary niche or industry")
     current_monthly_revenue: float | None = Field(
-        None, description="Current monthly revenue in dollars"
+        None, description="Current monthly revenue in dollars",
     )
     audience_size: int | None = Field(None, description="Total audience size across all platforms")
     engagement_level: EngagementLevel | None = Field(None, description="Audience engagement level")
@@ -69,7 +68,7 @@ class AnalysisRequest(BaseModel):
     """Base request for analysis"""
 
     business_context: BusinessContext | None = Field(
-        None, description="Business context for the analysis"
+        None, description="Business context for the analysis",
     )
     prompt: str = Field(..., description="Specific query or request")
 
@@ -109,7 +108,7 @@ class RevenueProjectionRequest(BaseModel):
     current_monthly_revenue: float
     current_audience_size: int
     monthly_audience_growth: float = Field(
-        ..., description="Monthly audience growth rate as percentage"
+        ..., description="Monthly audience growth rate as percentage",
     )
     current_conversion_rate: float = Field(..., description="Current conversion rate as percentage")
     projection_months: int = Field(12, description="Number of months to project")
@@ -196,16 +195,15 @@ The goal: turn attention into a self-scaling income engine where revenue grows f
 
 
 class WealthAccelerationService:
-    """
-    Service class for wealth acceleration analysis using Gemini
+    """Service class for wealth acceleration analysis using Gemini
     """
 
     def __init__(self, api_key: str | None = None):
-        """
-        Initialize the wealth acceleration service
+        """Initialize the wealth acceleration service
 
         Args:
             api_key: Optional API key (can also use environment variable)
+
         """
         project_id = os.getenv("GOOGLE_CLOUD_PROJECT")
         location = os.getenv("CLOUD_ML_REGION", "us-central1")
@@ -214,7 +212,7 @@ class WealthAccelerationService:
             vertexai.init(project=project_id, location=location)
 
         self.model = GenerativeModel(
-            "gemini-1.5-pro-001", system_instruction=[WEALTH_ACCELERATION_PROMPT]
+            "gemini-1.5-pro-001", system_instruction=[WEALTH_ACCELERATION_PROMPT],
         )
 
     def _format_business_context(self, context: BusinessContext | None) -> str:
@@ -255,8 +253,7 @@ class WealthAccelerationService:
         business_context: BusinessContext | None = None,
         stream: bool = True,
     ) -> AsyncIterator[str]:
-        """
-        Run analysis with the wealth acceleration agent
+        """Run analysis with the wealth acceleration agent
 
         Args:
             user_prompt: The user's query or request
@@ -265,6 +262,7 @@ class WealthAccelerationService:
 
         Yields:
             Response chunks from the agent
+
         """
         contextual_prompt = user_prompt
         if business_context:
@@ -283,10 +281,9 @@ class WealthAccelerationService:
                 yield chunk.text
 
     async def analyze_monetization_strategy(
-        self, request: MonetizationStrategyRequest
+        self, request: MonetizationStrategyRequest,
     ) -> AsyncIterator[str]:
-        """
-        Analyze complete monetization strategy
+        """Analyze complete monetization strategy
         """
         focus = ""
         if request.focus_areas:
@@ -309,8 +306,7 @@ Give me the full strategic analysis with brutal honesty about what's missing.
             yield chunk
 
     async def analyze_funnel(self, request: FunnelAnalysisRequest) -> AsyncIterator[str]:
-        """
-        Analyze conversion funnel
+        """Analyze conversion funnel
         """
         stages_data = [
             {
@@ -339,8 +335,7 @@ Provide:
             yield chunk
 
     async def evaluate_pricing(self, request: PricingEvaluationRequest) -> AsyncIterator[str]:
-        """
-        Evaluate pricing strategy
+        """Evaluate pricing strategy
         """
         prompt = f"""
 Evaluate my pricing strategy:
@@ -364,8 +359,7 @@ Be brutally honest about whether I'm underpricing.
             yield chunk
 
     async def project_revenue(self, request: RevenueProjectionRequest) -> AsyncIterator[str]:
-        """
-        Project revenue growth
+        """Project revenue growth
         """
         prompt = f"""
 Calculate revenue projections:
@@ -390,8 +384,7 @@ Make it real. Show me the dollar difference between mediocre execution and excel
             yield chunk
 
     async def calculate_ltv(self, request: LTVCalculationRequest) -> AsyncIterator[str]:
-        """
-        Calculate customer lifetime value
+        """Calculate customer lifetime value
         """
         prompt = f"""
 Calculate customer lifetime value:
@@ -415,10 +408,9 @@ Don't just give me numbers—tell me exactly how to engineer higher customer val
             yield chunk
 
     async def assess_opportunities(
-        self, request: OpportunityAssessmentRequest
+        self, request: OpportunityAssessmentRequest,
     ) -> AsyncIterator[str]:
-        """
-        Assess market opportunities
+        """Assess market opportunities
         """
         prompt = f"""
 Assess market opportunities:
@@ -450,8 +442,7 @@ _service_instance: WealthAccelerationService | None = None
 def get_wealth_acceleration_service(
     api_key: str | None = None,
 ) -> WealthAccelerationService:
-    """
-    Get or create the global wealth acceleration service instance
+    """Get or create the global wealth acceleration service instance
     """
     global _service_instance
     if _service_instance is None:

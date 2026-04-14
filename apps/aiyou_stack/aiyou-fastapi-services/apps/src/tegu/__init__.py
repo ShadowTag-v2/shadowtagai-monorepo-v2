@@ -1,5 +1,4 @@
-"""
-Tegu Integration for AiU+ShadowTag-v4 Platform
+"""Tegu Integration for AiU+ShadowTag-v4 Platform
 Machine Learning Toolbox for Computer Vision
 
 Provides:
@@ -18,8 +17,8 @@ from .services.vendor_verification import VendorVerificationService
 
 __version__ = "1.0.0"
 __all__ = [
-    "TowerMonitoringService",
-    "VendorVerificationService",
     "ContentModerationService",
     "LicensePlateRecognitionService",
+    "TowerMonitoringService",
+    "VendorVerificationService",
 ]

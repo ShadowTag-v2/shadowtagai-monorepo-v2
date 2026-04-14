@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - ShadowTag-v4 Feed Ranking Engine
+"""PNKLN Core Stack - ShadowTag-v4 Feed Ranking Engine
 
 AI-presumed ranking (not engagement-based):
 - Energy-based neural models
@@ -19,7 +18,7 @@ from datetime import datetime
 import numpy as np
 import structlog
 import torch
-import torch.nn as nn
+from torch import nn
 
 from ingestion.classification.tier_classifier import IngestedItem, TierScore
 from shadowtag.neural_hash import NeuralFingerprint
@@ -51,8 +50,7 @@ class ContentItem:
 
 
 class EnergyRankingModel(nn.Module):
-    """
-    Energy-based model for content ranking.
+    """Energy-based model for content ranking.
 
     Based on energy models from neural PDF research:
     - Lower energy = higher quality content
@@ -75,21 +73,20 @@ class EnergyRankingModel(nn.Module):
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Compute energy for content features.
+        """Compute energy for content features.
 
         Args:
             x: Content features (batch_size, input_dim)
 
         Returns:
             Energy scores (batch_size, 1) - lower is better
+
         """
         return self.energy_network(x)
 
 
 class NoveltyDetector(nn.Module):
-    """
-    Detects content novelty for ranking.
+    """Detects content novelty for ranking.
 
     Prevents redundant/repetitive content from dominating feed:
     - Semantic similarity to recent content
@@ -101,7 +98,7 @@ class NoveltyDetector(nn.Module):
         super().__init__()
 
         self.encoder = nn.Sequential(
-            nn.Linear(512, embedding_dim), nn.LayerNorm(embedding_dim), nn.ReLU()
+            nn.Linear(512, embedding_dim), nn.LayerNorm(embedding_dim), nn.ReLU(),
         )
 
         # Memory bank of recent embeddings
@@ -109,14 +106,14 @@ class NoveltyDetector(nn.Module):
         self.memory = None  # Initialized on first use
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        Compute novelty score.
+        """Compute novelty score.
 
         Args:
             x: Content features (batch_size, 512)
 
         Returns:
             Novelty scores (batch_size, 1) - higher is more novel
+
         """
         embeddings = self.encoder(x)
 
@@ -140,8 +137,7 @@ class NoveltyDetector(nn.Module):
 
 
 class FeedRankingEngine:
-    """
-    Main AI-presumed feed ranking engine.
+    """Main AI-presumed feed ranking engine.
 
     Combines multiple signals:
     - Energy-based content quality
@@ -180,14 +176,14 @@ class FeedRankingEngine:
         logger.info("feed_ranking_engine_initialized", weights=self.weights)
 
     def rank_item(self, item: ContentItem) -> ContentItem:
-        """
-        Compute AI-presumed rank for a single content item.
+        """Compute AI-presumed rank for a single content item.
 
         Args:
             item: Content item to rank
 
         Returns:
             Same item with ai_presumed_rank filled in
+
         """
         # Extract features
         features = self._extract_features(item)
@@ -244,14 +240,14 @@ class FeedRankingEngine:
         return item
 
     def rank_batch(self, items: list[ContentItem]) -> list[ContentItem]:
-        """
-        Rank multiple items in batch.
+        """Rank multiple items in batch.
 
         Args:
             items: List of content items
 
         Returns:
             Same items with rankings, sorted by ai_presumed_rank (desc)
+
         """
         # Rank each item
         ranked_items = [self.rank_item(item) for item in items]
@@ -262,10 +258,9 @@ class FeedRankingEngine:
         return ranked_items
 
     def generate_feed(
-        self, candidate_items: list[ContentItem], max_items: int = 50, diversity_factor: float = 0.8
+        self, candidate_items: list[ContentItem], max_items: int = 50, diversity_factor: float = 0.8,
     ) -> list[ContentItem]:
-        """
-        Generate personalized feed from candidate items.
+        """Generate personalized feed from candidate items.
 
         Args:
             candidate_items: Pool of items to rank
@@ -274,6 +269,7 @@ class FeedRankingEngine:
 
         Returns:
             Ordered feed items
+
         """
         # Rank all candidates
         ranked = self.rank_batch(candidate_items)
@@ -295,8 +291,7 @@ class FeedRankingEngine:
         return feed
 
     def _extract_features(self, item: ContentItem) -> torch.Tensor:
-        """
-        Extract feature vector for ranking models.
+        """Extract feature vector for ranking models.
 
         In production, this would use:
         - Pre-trained vision models (e.g., CLIP)
@@ -313,10 +308,9 @@ class FeedRankingEngine:
         return features
 
     def _apply_diversity(
-        self, ranked_items: list[ContentItem], diversity_factor: float
+        self, ranked_items: list[ContentItem], diversity_factor: float,
     ) -> list[ContentItem]:
-        """
-        Apply diversity filtering to prevent similar content clustering.
+        """Apply diversity filtering to prevent similar content clustering.
 
         Uses Maximum Marginal Relevance (MMR):
         - Balance relevance (AI rank) with diversity
@@ -354,8 +348,7 @@ class FeedRankingEngine:
         return selected
 
     def _content_similarity(self, item1: ContentItem, item2: ContentItem) -> float:
-        """
-        Calculate similarity between two content items.
+        """Calculate similarity between two content items.
 
         Returns 0.0-1.0 (1.0 = identical)
         """
@@ -364,8 +357,7 @@ class FeedRankingEngine:
         # Placeholder: simple heuristic
         if item1.source_item.source == item2.source_item.source:
             return 0.7  # Same source = somewhat similar
-        else:
-            return 0.3
+        return 0.3
 
     def get_stats(self) -> dict:
         """Get ranking engine statistics."""

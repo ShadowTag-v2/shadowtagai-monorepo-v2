@@ -1,5 +1,4 @@
-"""
-Child Spawner: Dynamic agent spawning and lifecycle management.
+"""Child Spawner: Dynamic agent spawning and lifecycle management.
 
 Partners (L3+) can spawn child agents to handle subtasks. This module
 manages the spawning, supervision, and retirement of child agents.
@@ -129,8 +128,7 @@ class ChildAgent:
 
 
 class ChildSpawner:
-    """
-    Manages spawning and lifecycle of child agents.
+    """Manages spawning and lifecycle of child agents.
 
     Partners (L3+) can spawn children to parallelize work. This class
     enforces limits, tracks relationships, and handles cleanup.
@@ -149,13 +147,13 @@ class ChildSpawner:
         default_ttl_seconds: int = 3600,
         executor_factory: Callable | None = None,
     ):
-        """
-        Initialize child spawner.
+        """Initialize child spawner.
 
         Args:
             max_children_per_parent: Global max children per parent
             default_ttl_seconds: Default time-to-live for children
             executor_factory: Factory to create child executors
+
         """
         self.max_children = max_children_per_parent
         self.default_ttl = default_ttl_seconds
@@ -194,8 +192,7 @@ class ChildSpawner:
         return min(self.MAX_CHILDREN.get(level, 0), self.max_children)
 
     def can_spawn(self, parent_id: str) -> tuple[bool, str]:
-        """
-        Check if parent can spawn a new child.
+        """Check if parent can spawn a new child.
 
         Returns: (can_spawn, reason)
         """
@@ -215,8 +212,7 @@ class ChildSpawner:
         return True, "Can spawn"
 
     async def spawn(self, request: SpawnRequest, executor: Callable | None = None) -> ChildAgent:
-        """
-        Spawn a new child agent.
+        """Spawn a new child agent.
 
         Args:
             request: SpawnRequest with parent info and task type
@@ -227,6 +223,7 @@ class ChildSpawner:
 
         Raises:
             PermissionError: If parent cannot spawn
+
         """
         can, reason = self.can_spawn(request.parent_id)
         if not can:
@@ -278,8 +275,7 @@ class ChildSpawner:
         await asyncio.sleep(0.01)  # Minimal warm-up
 
     async def retire(self, agent_id: str, force: bool = False) -> bool:
-        """
-        Retire a child agent.
+        """Retire a child agent.
 
         Args:
             agent_id: ID of child to retire
@@ -287,6 +283,7 @@ class ChildSpawner:
 
         Returns:
             True if retired successfully
+
         """
         lifecycle = self.lifecycles.get(agent_id)
         if not lifecycle:
@@ -386,14 +383,13 @@ class ChildSpawner:
                     for c in children
                 ],
             }
-        else:
-            total_children = sum(len(c) for c in self.children.values())
-            total_parents = len(self.children)
-            return {
-                "total_parents": total_parents,
-                "total_active_children": total_children,
-                "total_lifecycles": len(self.lifecycles),
-            }
+        total_children = sum(len(c) for c in self.children.values())
+        total_parents = len(self.children)
+        return {
+            "total_parents": total_parents,
+            "total_active_children": total_children,
+            "total_lifecycles": len(self.lifecycles),
+        }
 
     def attribute_revenue(self, agent_id: str, amount: float) -> bool:
         """Attribute revenue to a child agent."""

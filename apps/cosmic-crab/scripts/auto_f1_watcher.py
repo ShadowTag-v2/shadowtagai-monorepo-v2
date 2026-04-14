@@ -11,8 +11,7 @@ logger = logging.getLogger("F1Watcher")
 
 
 class F1Handler(FileSystemEventHandler):
-    """
-    ShadowTag Omega V7 F1 Watcher
+    """ShadowTag Omega V7 F1 Watcher
     Automatically triggers the F1 -> GCA (Finish Changes) cycle on modification.
     """
 

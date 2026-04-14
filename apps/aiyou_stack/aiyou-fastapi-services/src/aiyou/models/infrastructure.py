@@ -1,5 +1,4 @@
-"""
-Infrastructure mesh models.
+"""Infrastructure mesh models.
 
 Manages edge nodes, POPs, and distributed compute resources.
 """
@@ -37,8 +36,7 @@ class NodeStatus(StrEnum):
 
 
 class Node(Base):
-    """
-    Infrastructure node model.
+    """Infrastructure node model.
 
     Represents individual edge compute + PNT nodes.
     """
@@ -107,8 +105,7 @@ class Node(Base):
 
 
 class EdgePop(Base):
-    """
-    Edge Point of Presence model.
+    """Edge Point of Presence model.
 
     Groups nodes into regional compute clusters.
     """

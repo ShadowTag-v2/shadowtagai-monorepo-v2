@@ -1,5 +1,4 @@
-"""
-LangChain Orchestrator
+"""LangChain Orchestrator
 Chain orchestration with temporal agent memory integration
 Quantitative Effect: ↑ Reasoning depth +45%, ↓ Token waste –35%
 """
@@ -20,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class LangChainOrchestrator:
-    """
-    LangChain-based orchestration layer with GPTRAM integration
+    """LangChain-based orchestration layer with GPTRAM integration
     Manages reasoning chains and agent coordination
     """
 
@@ -60,10 +58,9 @@ class LangChainOrchestrator:
         logger.info("LangChain orchestrator shutdown")
 
     async def orchestrate_reasoning_chain(
-        self, session_id: str, query: str, context: dict[str, Any] | None = None
+        self, session_id: str, query: str, context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Orchestrate a reasoning chain with memory integration
+        """Orchestrate a reasoning chain with memory integration
 
         Args:
             session_id: Session identifier for memory retrieval
@@ -72,6 +69,7 @@ class LangChainOrchestrator:
 
         Returns:
             Reasoning chain result with metadata
+
         """
         try:
             # Retrieve session history from GPTRAM
@@ -107,7 +105,7 @@ Response:
 
             # Execute chain
             result = await chain.arun(
-                query=query, history=self._format_history(history), context=str(context or {})
+                query=query, history=self._format_history(history), context=str(context or {}),
             )
 
             # Store interaction in GPTRAM
@@ -133,10 +131,9 @@ Response:
             return {"status": "error", "error": str(e), "session_id": session_id}
 
     async def orchestrate_multi_agent(
-        self, session_id: str, task: str, tools: list[Tool]
+        self, session_id: str, task: str, tools: list[Tool],
     ) -> dict[str, Any]:
-        """
-        Orchestrate multiple agents for complex tasks
+        """Orchestrate multiple agents for complex tasks
 
         Args:
             session_id: Session identifier
@@ -145,6 +142,7 @@ Response:
 
         Returns:
             Multi-agent execution result
+
         """
         try:
             # Create agent with tools
@@ -187,7 +185,7 @@ Response:
         formatted = []
         for item in history[-5:]:  # Last 5 interactions
             formatted.append(
-                f"- {item.get('type', 'unknown')}: {item.get('query', item.get('task', 'N/A'))[:100]}"
+                f"- {item.get('type', 'unknown')}: {item.get('query', item.get('task', 'N/A'))[:100]}",
             )
 
         return "\n".join(formatted)

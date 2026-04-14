@@ -1,5 +1,4 @@
-"""
-Antigravity Pipeline - Full Wire with ATP 3-20.96 Cavalry Squadron
+"""Antigravity Pipeline - Full Wire with ATP 3-20.96 Cavalry Squadron
 ===================================================================
 
 Flow (Kosmos embedded per stage - ATP 3-20.96 aligned):
@@ -59,8 +58,7 @@ DOCTRINE_AVAILABLE = True  # Assuming Doctrine is available or should be default
 
 
 class AntigravityPipeline:
-    """
-    The Central Brain - Orchestrates all LLMs with ATP 3-20.96 Cavalry Squadron
+    """The Central Brain - Orchestrates all LLMs with ATP 3-20.96 Cavalry Squadron
 
     - Gemini 1.5 Pro: Intake & Execution
     - Flying minion: Autonomous Research & Tool Use
@@ -103,8 +101,7 @@ class AntigravityPipeline:
         # self.memory = MemoryPersistence(repo_path="output/memory") # Legacy removed
 
     async def run(self, task: str) -> PipelineResult:
-        """
-        Execute the full cavalry squadron pipeline
+        """Execute the full cavalry squadron pipeline
         1. Intake (Gemini 1.5 Pro)
         2. Research (Flying minion)
         3. Execution (Gemini 2.0 Flash)
@@ -149,7 +146,7 @@ class AntigravityPipeline:
 
         # Agent Response Event (Intake thought process)
         current_session.add_event(
-            "model", f"Decomposed task into {len(atoms)} atoms.", type="message"
+            "model", f"Decomposed task into {len(atoms)} atoms.", type="message",
         )
 
         # ... (rest of pipeline)
@@ -180,7 +177,7 @@ class AntigravityPipeline:
                     for res in monkey_result.get("results", []):
                         current_session.add_event("tool", res, type="tool_output")
                         atom.reasoning_chain.append(
-                            f"Tool ({res.get('tool')}): {res.get('result')}"
+                            f"Tool ({res.get('tool')}): {res.get('result')}",
                         )
 
             except Exception as e:

@@ -1,5 +1,4 @@
-"""
-AiURCM Document AI Integration
+"""AiURCM Document AI Integration
 Processes compliance documents using Google Document AI and triggers Judge #6 analysis
 """
 
@@ -29,8 +28,7 @@ class DocumentProcessingResult:
 
 
 class DocumentAIProcessor:
-    """
-    Google Document AI integration for AiURCM compliance pipeline.
+    """Google Document AI integration for AiURCM compliance pipeline.
 
     Handles:
     - Document upload and processing
@@ -69,8 +67,7 @@ class DocumentAIProcessor:
         mime_type: str = "application/pdf",
         use_form_parser: bool = False,
     ) -> DocumentProcessingResult:
-        """
-        Process a document from Cloud Storage using Document AI.
+        """Process a document from Cloud Storage using Document AI.
 
         Args:
             bucket_name: GCS bucket name
@@ -80,6 +77,7 @@ class DocumentAIProcessor:
 
         Returns:
             DocumentProcessingResult with extracted content
+
         """
         start_time = datetime.utcnow()
 
@@ -91,7 +89,7 @@ class DocumentAIProcessor:
         # Select processor
         processor_id = self.form_parser_processor_id if use_form_parser else self.ocr_processor_id
         processor_name = self.documentai_client.processor_path(
-            self.project_id, self.location, processor_id
+            self.project_id, self.location, processor_id,
         )
 
         # Create request
@@ -123,7 +121,7 @@ class DocumentAIProcessor:
             f"Processed {result.pages} pages, "
             f"extracted {len(entities)} entities, "
             f"confidence: {result.confidence:.2f}, "
-            f"time: {result.processing_time_ms}ms"
+            f"time: {result.processing_time_ms}ms",
         )
 
         return result
@@ -134,8 +132,7 @@ class DocumentAIProcessor:
         mime_type: str = "application/pdf",
         use_form_parser: bool = False,
     ) -> DocumentProcessingResult:
-        """
-        Process a document synchronously (for small documents < 20MB).
+        """Process a document synchronously (for small documents < 20MB).
 
         Args:
             document_content: Raw document bytes
@@ -144,12 +141,13 @@ class DocumentAIProcessor:
 
         Returns:
             DocumentProcessingResult
+
         """
         start_time = datetime.utcnow()
 
         processor_id = self.form_parser_processor_id if use_form_parser else self.ocr_processor_id
         processor_name = self.documentai_client.processor_path(
-            self.project_id, self.location, processor_id
+            self.project_id, self.location, processor_id,
         )
 
         raw_document = documentai.RawDocument(content=document_content, mime_type=mime_type)
@@ -177,8 +175,7 @@ class DocumentAIProcessor:
         use_form_parser: bool = False,
         metadata: dict[str, Any] | None = None,
     ) -> str:
-        """
-        Process document and publish to Pub/Sub for Judge #6 analysis.
+        """Process document and publish to Pub/Sub for Judge #6 analysis.
 
         Args:
             bucket_name: GCS bucket
@@ -189,6 +186,7 @@ class DocumentAIProcessor:
 
         Returns:
             Pub/Sub message ID
+
         """
         # Process document
         result = self.process_document_from_gcs(
@@ -221,14 +219,14 @@ class DocumentAIProcessor:
         return message_id
 
     def _extract_entities(self, document: documentai.Document) -> list[dict[str, Any]]:
-        """
-        Extract entities from Document AI result.
+        """Extract entities from Document AI result.
 
         Args:
             document: Document AI document
 
         Returns:
             List of entities with type, text, confidence
+
         """
         entities = []
 
@@ -247,7 +245,7 @@ class DocumentAIProcessor:
                     ]
                     if entity.page_anchor
                     else [],
-                }
+                },
             )
 
         return entities
@@ -275,8 +273,7 @@ class DocumentAIProcessor:
 
 
 class CloudFunctionHandler:
-    """
-    Cloud Function handler for processing documents uploaded to GCS.
+    """Cloud Function handler for processing documents uploaded to GCS.
 
     Triggered by Cloud Storage object finalization events.
     """
@@ -285,8 +282,7 @@ class CloudFunctionHandler:
         self.processor = DocumentAIProcessor(project_id=project_id)
 
     def handle_gcs_event(self, event: dict[str, Any], context: Any):
-        """
-        Handle Cloud Storage trigger event.
+        """Handle Cloud Storage trigger event.
 
         Event structure:
         {
@@ -327,8 +323,7 @@ class CloudFunctionHandler:
 
 # Cloud Function entry point
 def process_compliance_document(event, context):
-    """
-    Cloud Function entry point for Document AI processing.
+    """Cloud Function entry point for Document AI processing.
 
     Triggered by: Cloud Storage object finalization
     Triggers: Pub/Sub message to Judge #6 orchestrator

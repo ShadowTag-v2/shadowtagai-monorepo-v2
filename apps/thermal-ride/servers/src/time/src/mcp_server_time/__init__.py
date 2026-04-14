@@ -7,7 +7,7 @@ def main():
     import asyncio
 
     parser = argparse.ArgumentParser(
-        description="give a model the ability to handle time queries and timezone conversions"
+        description="give a model the ability to handle time queries and timezone conversions",
     )
     parser.add_argument("--local-timezone", type=str, help="Override local timezone")
 

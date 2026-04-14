@@ -1,5 +1,4 @@
-"""
-Performance profiling middleware
+"""Performance profiling middleware
 Automatically profiles every request and stores metrics
 """
 
@@ -22,8 +21,7 @@ from app.models.performance import Bottleneck, PerformanceMetric
 
 
 class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
-    """
-    Middleware that profiles every request and identifies bottlenecks
+    """Middleware that profiles every request and identifies bottlenecks
     """
 
     def __init__(self, app):
@@ -32,7 +30,6 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """Profile the request and store metrics"""
-
         if not settings.ENABLE_PROFILING:
             return await call_next(request)
 
@@ -66,7 +63,7 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
             response = await call_next(request)
             status_code = response.status_code
         except Exception as e:
-            error = f"{type(e).__name__}: {str(e)}\n{traceback.format_exc()}"
+            error = f"{type(e).__name__}: {e!s}\n{traceback.format_exc()}"
             raise
         finally:
             # Stop profiling
@@ -95,7 +92,7 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
                     cpu_usage=cpu_usage,
                     error=error,
                     profile_data=profile_data,
-                )
+                ),
             )
 
         # Add performance headers to response
@@ -123,7 +120,7 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
                     "cumulative_time": ct,
                     "total_time": tt,
                     "calls": cc,
-                }
+                },
             )
 
         return {"top_functions": top_functions}
@@ -163,7 +160,7 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
             print(f"Error storing metrics: {e}")
 
     async def _store_bottlenecks(
-        self, session, endpoint: str, profile_data: dict[str, Any], total_duration: float
+        self, session, endpoint: str, profile_data: dict[str, Any], total_duration: float,
     ):
         """Store detected bottlenecks"""
         for func_data in profile_data.get("top_functions", [])[:5]:

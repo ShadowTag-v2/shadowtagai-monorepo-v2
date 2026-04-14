@@ -1,5 +1,4 @@
-"""
-Purpose Validator - JR Engine Component 1
+"""Purpose Validator - JR Engine Component 1
 
 Validates the PURPOSE of an action:
 - What is this action trying to accomplish?
@@ -12,8 +11,7 @@ from ..models import Action, PurposeVerdict, VerdictStatus
 
 
 class PurposeValidator:
-    """
-    Validates the PURPOSE dimension of an action
+    """Validates the PURPOSE dimension of an action
     """
 
     def validate(self, action: Action) -> PurposeVerdict:

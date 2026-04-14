@@ -18,8 +18,7 @@ class TestKernelChain:
     @pytest.mark.asyncio
     @pytest.mark.skipif(not settings.gemini_api_key, reason="Gemini API key not configured")
     async def test_full_chain_execution(self, sample_decision_context):
-        """
-        Test full 3-kernel chain execution.
+        """Test full 3-kernel chain execution.
 
         COMPLETION CRITERIA (from architecture):
         - 3 kernels operational end-to-end ✓
@@ -86,8 +85,7 @@ class TestKernelChain:
 
     @pytest.mark.asyncio
     async def test_token_reduction(self, sample_decision_context):
-        """
-        Test token reduction across chain.
+        """Test token reduction across chain.
 
         Target: ≥90% reduction (50KB → 2.5KB → 1 bit)
         """

@@ -1,5 +1,4 @@
-"""
-L7: SuperGrok.4 - Voice (Static)
+"""L7: SuperGrok.4 - Voice (Static)
 
 Role: The Announcer
 - Converts executive briefing to speech-ready text
@@ -31,10 +30,9 @@ VOICE SCRIPT:
 
 
 async def generate_voice(
-    briefing: str, model: str, api_key: str, generate_audio: bool = False
+    briefing: str, model: str, api_key: str, generate_audio: bool = False,
 ) -> dict[str, Any]:
-    """
-    Generate voice-ready script from briefing.
+    """Generate voice-ready script from briefing.
 
     Args:
         briefing: Executive briefing from L5
@@ -50,6 +48,7 @@ async def generate_voice(
             'audio_url': str or None,
             'cost': float
         }
+
     """
     prompt = VOICE_PROMPT.format(briefing=briefing)
 
@@ -104,8 +103,7 @@ async def generate_voice(
 
 
 async def _generate_tts(script: str) -> str | None:
-    """
-    Generate TTS audio from script.
+    """Generate TTS audio from script.
 
     Placeholder - would integrate with:
     - ElevenLabs

@@ -1,5 +1,4 @@
-"""
-Ultrathink Framework
+"""Ultrathink Framework
 
 An insanely elegant AI prompting and multi-agent framework.
 
@@ -14,12 +13,12 @@ from ultrathink.core.prompts import BAB, CARE, RISE, RTF, TAG
 from ultrathink.core.reasoning import RCR, CoT, ToT
 
 __all__ = [
-    "RTF",
-    "TAG",
     "BAB",
     "CARE",
+    "RCR",
     "RISE",
+    "RTF",
+    "TAG",
     "CoT",
     "ToT",
-    "RCR",
 ]

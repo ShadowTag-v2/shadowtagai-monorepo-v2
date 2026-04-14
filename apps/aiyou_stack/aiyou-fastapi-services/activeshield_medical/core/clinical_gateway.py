@@ -1,5 +1,4 @@
-"""
-Clinical Decision Gateway
+"""Clinical Decision Gateway
 ==========================
 
 Governance layer for AI-driven clinical decisions.
@@ -121,8 +120,7 @@ class AdverseEventReport(BaseModel):
 
 
 class ClinicalDecisionGateway:
-    """
-    Clinical Decision Gateway
+    """Clinical Decision Gateway
 
     SALES VALUE PROPOSITION:
     - Misdiagnosis liability can exceed $1M per incident
@@ -195,8 +193,7 @@ class ClinicalDecisionGateway:
         decision: ClinicalDecision,
         patient_context: dict[str, Any] | None = None,
     ) -> GatewayResult:
-        """
-        Evaluate a clinical decision through the gateway.
+        """Evaluate a clinical decision through the gateway.
 
         Args:
             decision: The clinical decision to evaluate
@@ -204,6 +201,7 @@ class ClinicalDecisionGateway:
 
         Returns:
             GatewayResult with approval status and required actions
+
         """
         audit_id = self._generate_audit_id(decision.decision_id)
         escalation_reasons = []
@@ -221,7 +219,7 @@ class ClinicalDecisionGateway:
         if decision.confidence_score < threshold:
             escalation_reasons.append(EscalationReason.CONFIDENCE_LOW)
             warnings.append(
-                f"Confidence {decision.confidence_score:.0%} below {threshold:.0%} threshold"
+                f"Confidence {decision.confidence_score:.0%} below {threshold:.0%} threshold",
             )
 
         # Check 3: Emergency pattern detection
@@ -245,7 +243,7 @@ class ClinicalDecisionGateway:
                     if interaction:
                         escalation_reasons.append(EscalationReason.DRUG_INTERACTION)
                         warnings.append(
-                            f"Drug interaction: {patient_med} + {rec_med} = {interaction}"
+                            f"Drug interaction: {patient_med} + {rec_med} = {interaction}",
                         )
                         required_actions.append(f"REVIEW: Potential {interaction}")
 
@@ -320,7 +318,7 @@ class ClinicalDecisionGateway:
 
         if not approved:
             logger.warning(
-                f"CLINICAL GATEWAY BLOCKED: {decision.decision_id} - {escalation_reasons}"
+                f"CLINICAL GATEWAY BLOCKED: {decision.decision_id} - {escalation_reasons}",
             )
         elif human_review_required:
             logger.info(f"CLINICAL GATEWAY FLAGGED: {decision.decision_id} - {escalation_reasons}")
@@ -419,8 +417,7 @@ class ClinicalDecisionGateway:
         ai_recommendation_id: str | None = None,
         patient_id: str | None = None,
     ) -> AdverseEventReport:
-        """
-        Report a Serious Adverse Event (SAE).
+        """Report a Serious Adverse Event (SAE).
 
         Required for regulatory compliance and liability protection.
         """
@@ -431,7 +428,7 @@ class ClinicalDecisionGateway:
         if ai_recommendation_id:
             # Check if recommendation was approved by gateway
             related_result = next(
-                (r for r in self._audit_log if r.decision_id == ai_recommendation_id), None
+                (r for r in self._audit_log if r.decision_id == ai_recommendation_id), None,
             )
             if related_result:
                 if not related_result.approved:

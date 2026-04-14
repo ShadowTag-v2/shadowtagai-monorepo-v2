@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - Reddit Source Adapter
+"""PNKLN Core Stack - Reddit Source Adapter
 
 Uses Reddit's public JSON API (no auth, free).
 Append .json to any Reddit URL — no OAuth needed for read-only.

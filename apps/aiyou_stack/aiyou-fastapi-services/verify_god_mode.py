@@ -18,7 +18,7 @@ TEST_FILE = "god_mode_test.py"
 # Trigger Smart Action
 print(f"⚡️ Triggering God Mode on {TEST_FILE}...")
 result = gemini_proxy.trigger_smart_action(
-    action_type="TEST_REFACTOR", file_path=TEST_FILE, context="Test Context"
+    action_type="TEST_REFACTOR", file_path=TEST_FILE, context="Test Context",
 )
 
 print(f"📄 Result: {result}")

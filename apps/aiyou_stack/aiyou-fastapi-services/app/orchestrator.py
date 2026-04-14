@@ -1,5 +1,4 @@
-"""
-Antigravity Orchestrator (The Nervous System)
+"""Antigravity Orchestrator (The Nervous System)
 Implements the "Courtroom" and "Explain-to-Peer" patterns via LangGraph.
 """
 
@@ -52,7 +51,7 @@ def node_drafter(state: AgentState) -> dict:
         [
             SystemMessage(content="You are a precise coding assistant. Draft a solution."),
             HumanMessage(content=state["task"].description),
-        ]
+        ],
     )
     return {"draft": response.content}
 
@@ -63,10 +62,10 @@ def node_critic(state: AgentState) -> dict:
     response = llm.invoke(
         [
             SystemMessage(
-                content="You are a hostile critic. Find security flaws and logic errors."
+                content="You are a hostile critic. Find security flaws and logic errors.",
             ),
             HumanMessage(content=f"Review this draft:\n{state['draft']}"),
-        ]
+        ],
     )
     return {"critique": response.content}
 
@@ -139,7 +138,7 @@ workflow.add_edge("router", "drafter")
 workflow.add_edge("drafter", "policy_gate")
 
 workflow.add_conditional_edges(
-    "policy_gate", route_after_gate, {"critic": "critic", "arbiter": "arbiter"}
+    "policy_gate", route_after_gate, {"critic": "critic", "arbiter": "arbiter"},
 )
 
 workflow.add_edge("critic", "arbiter")

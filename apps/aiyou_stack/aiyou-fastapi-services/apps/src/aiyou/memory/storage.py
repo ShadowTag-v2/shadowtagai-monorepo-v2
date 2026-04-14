@@ -32,8 +32,7 @@ class MemoryStorage:
         return self._firestore_client
 
     def load_from_gcs(self, blob_name: str = "memory/current.json") -> dict[str, Any]:
-        """
-        Loads memory from GCS (GKE pods).
+        """Loads memory from GCS (GKE pods).
         Bucket: acquired-jet-478701-b3-workbench-memory
         """
         if not self.storage_client:
@@ -50,10 +49,9 @@ class MemoryStorage:
             return {"status": "ERROR", "ui_payload": self._get_mock_payload("ERROR (GCS)")}
 
     def load_from_firestore(
-        self, collection: str = "claude_memory", document: str = "current"
+        self, collection: str = "claude_memory", document: str = "current",
     ) -> dict[str, Any]:
-        """
-        Loads memory from Firestore (real-time).
+        """Loads memory from Firestore (real-time).
         Collection: claude_memory
         Document: current
         """
@@ -69,12 +67,11 @@ class MemoryStorage:
             doc = doc_ref.get()
             if doc.exists:
                 return doc.to_dict()
-            else:
-                logger.warning(f"Document {collection}/{document} does not exist.")
-                return {
-                    "status": "EMPTY",
-                    "ui_payload": self._get_mock_payload("EMPTY (Firestore)"),
-                }
+            logger.warning(f"Document {collection}/{document} does not exist.")
+            return {
+                "status": "EMPTY",
+                "ui_payload": self._get_mock_payload("EMPTY (Firestore)"),
+            }
         except Exception as e:
             logger.error(f"Failed to load memory from Firestore: {e}")
             return {"status": "ERROR", "ui_payload": self._get_mock_payload("ERROR (Firestore)")}
@@ -104,7 +101,7 @@ class MemoryStorage:
                     "id": "desc",
                     "type": "Text",
                     "props": {
-                        "content": "The Sovereign Swarm is standing by for instructions. Use the terminal or /agent/dispatch to interact."
+                        "content": "The Sovereign Swarm is standing by for instructions. Use the terminal or /agent/dispatch to interact.",
                     },
                 },
             ],
@@ -115,8 +112,7 @@ def get_memory_from_gcs(
     bucket_name: str = "acquired-jet-478701-b3-workbench-memory",
     blob_name: str = "memory/current.json",
 ):
-    """
-    Direct implementation of user snippet for GCS.
+    """Direct implementation of user snippet for GCS.
     """
     if not storage:
         raise ImportError("google-cloud-storage is required")
@@ -125,8 +121,7 @@ def get_memory_from_gcs(
 
 
 def get_memory_from_firestore(collection: str = "claude_memory", document: str = "current"):
-    """
-    Direct implementation of user snippet for Firestore.
+    """Direct implementation of user snippet for Firestore.
     """
     if not firestore:
         raise ImportError("google-cloud-firestore is required")

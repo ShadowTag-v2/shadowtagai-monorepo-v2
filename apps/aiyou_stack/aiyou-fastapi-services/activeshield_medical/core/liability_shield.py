@@ -1,5 +1,4 @@
-"""
-Liability Shield - Unified Protection Layer
+"""Liability Shield - Unified Protection Layer
 =============================================
 
 Orchestrates all ActiveShieldMedical components into a single
@@ -93,8 +92,7 @@ from ..models import ActiveShieldAdverseEvent, ActiveShieldAuditLog
 
 
 class LiabilityShield:
-    """
-    Unified Liability Shield
+    """Unified Liability Shield
 
     This is the primary integration point for ActiveShieldMedical.
     Clients call this for complete AI safety coverage.
@@ -135,8 +133,7 @@ class LiabilityShield:
         user_input: str,
         context: dict[str, Any] | None = None,
     ) -> ShieldResult:
-        """
-        PRE-HOC: Check user input before AI processing.
+        """PRE-HOC: Check user input before AI processing.
 
         Detects:
         - Crisis/self-harm indicators
@@ -171,14 +168,14 @@ class LiabilityShield:
                         "severity": v.severity.value,
                     }
                     for v in sb243_result.violations
-                ]
+                ],
             )
         warnings.extend(sb243_result.warnings)
 
         # Step 2: DLP Scan (detect PHI in user input)
         dlp_result = await self.dlp.scan(user_input, redact=False)
         audit_trail.append(
-            f"DLP scan: {dlp_result.total_phi_count} PHI, {dlp_result.total_clinical_count} clinical"
+            f"DLP scan: {dlp_result.total_phi_count} PHI, {dlp_result.total_clinical_count} clinical",
         )
 
         if dlp_result.total_phi_count > 0:
@@ -204,7 +201,7 @@ class LiabilityShield:
                 [
                     f"RESOLVE: {v.violation_type.value} - {v.remediation}"
                     for v in sb243_result.violations
-                ]
+                ],
             )
 
         # Check for warnings
@@ -269,8 +266,7 @@ class LiabilityShield:
         patient_context: dict[str, Any] | None = None,
         session_context: dict[str, Any] | None = None,
     ) -> ShieldResult:
-        """
-        MID-HOC: Check AI response before sending to user.
+        """MID-HOC: Check AI response before sending to user.
 
         Validates:
         - Clinical decision appropriateness
@@ -311,7 +307,7 @@ class LiabilityShield:
                         "severity": v.severity.value,
                     }
                     for v in sb243_result.violations
-                ]
+                ],
             )
 
         # Step 2: DLP - Redact PHI from AI response
@@ -342,7 +338,7 @@ class LiabilityShield:
             patient_context=patient_context,
         )
         audit_trail.append(
-            f"Gateway: approved={gateway_result.approved}, escalate={gateway_result.human_review_required}"
+            f"Gateway: approved={gateway_result.approved}, escalate={gateway_result.human_review_required}",
         )
 
         warnings.extend(gateway_result.warnings)
@@ -354,7 +350,7 @@ class LiabilityShield:
                     "source": "gateway",
                     "type": "clinical_decision_blocked",
                     "reasons": [r.value for r in gateway_result.escalation_reasons],
-                }
+                },
             )
 
             # Persist Adverse Event if Blocked
@@ -443,8 +439,7 @@ class LiabilityShield:
         outcome: str = "completed",
         metadata: dict[str, Any] | None = None,
     ) -> ShieldResult:
-        """
-        POST-HOC: Log session for compliance and audit.
+        """POST-HOC: Log session for compliance and audit.
 
         Creates:
         - Immutable audit record
@@ -570,8 +565,7 @@ class LiabilityShield:
         session_id: str,
         customer_name: str = "Client",
     ) -> dict[str, Any]:
-        """
-        Generate compliance certification for a session.
+        """Generate compliance certification for a session.
 
         This is the deliverable that proves due diligence.
         """
@@ -637,11 +631,11 @@ class LiabilityShield:
                 for r in results
                 if r.sb243_result
                 and r.sb243_result.crisis_level in [CrisisLevel.CRITICAL, CrisisLevel.SEVERE]
-            ]
+            ],
         )
 
         blocked_decisions = len(
-            [r for r in results if r.gateway_result and not r.gateway_result.approved]
+            [r for r in results if r.gateway_result and not r.gateway_result.approved],
         )
 
         return {

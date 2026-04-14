@@ -1,5 +1,4 @@
-"""
-Whiteboard: Shared world model that all agents can see and write to.
+"""Whiteboard: Shared world model that all agents can see and write to.
 
 This is the 'single source of truth' for the Shadowtag swarm.
 Implements event-driven updates so agents see changes immediately.
@@ -126,8 +125,7 @@ class Finding:
 
 
 class Whiteboard:
-    """
-    Shared world model for Shadowtag agent swarm.
+    """Shared world model for Shadowtag agent swarm.
 
     All agents can:
     - Read all findings
@@ -182,7 +180,7 @@ class Whiteboard:
 
             # Check if agent already voted
             existing = next(
-                (i for i, v in enumerate(finding.votes) if v.agent_id == vote.agent_id), None
+                (i for i, v in enumerate(finding.votes) if v.agent_id == vote.agent_id), None,
             )
             if existing is not None:
                 finding.votes[existing] = vote
@@ -218,12 +216,11 @@ class Whiteboard:
 
         if ratio >= self.consensus_threshold:
             return ConsensusState.AGREED
-        elif ratio <= (1 - self.consensus_threshold):
+        if ratio <= (1 - self.consensus_threshold):
             # Strong disagreement - also consensus but negative
             return ConsensusState.AGREED
-        else:
-            # Significant disagreement triggers deeper investigation
-            return ConsensusState.CONTESTED
+        # Significant disagreement triggers deeper investigation
+        return ConsensusState.CONTESTED
 
     def get_finding(self, finding_id: str) -> Finding | None:
         """Get a specific finding by ID."""

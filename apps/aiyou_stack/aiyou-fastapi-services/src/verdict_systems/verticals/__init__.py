@@ -2,4 +2,4 @@
 
 from . import family, medical, school, workplace
 
-__all__ = ["school", "family", "workplace", "medical"]
+__all__ = ["family", "medical", "school", "workplace"]

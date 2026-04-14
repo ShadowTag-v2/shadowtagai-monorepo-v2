@@ -40,7 +40,7 @@ async def search_conversations(
                 conversation=result["conversation"],
                 score=result["score"],
                 matched_messages=result["matched_messages"],
-            )
+            ),
         )
 
     return SearchResponse(
@@ -72,7 +72,7 @@ async def search_messages(
                 message=result["message"],
                 score=result["score"],
                 conversation_id=result["conversation_id"],
-            )
+            ),
         )
 
     return SearchResponse(

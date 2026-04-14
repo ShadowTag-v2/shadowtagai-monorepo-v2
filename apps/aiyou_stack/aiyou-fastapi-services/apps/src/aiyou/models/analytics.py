@@ -1,5 +1,4 @@
-"""
-Analytics and revenue tracking models.
+"""Analytics and revenue tracking models.
 
 Captures user events, revenue attribution, and performance metrics.
 """
@@ -13,8 +12,7 @@ from ..database import Base
 
 
 class RevenueEvent(Base):
-    """
-    Revenue event tracking.
+    """Revenue event tracking.
 
     Every revenue-generating action is logged here for analytics.
     """
@@ -26,7 +24,7 @@ class RevenueEvent(Base):
 
     # Event classification
     event_type = Column(
-        String(100), nullable=False, index=True
+        String(100), nullable=False, index=True,
     )  # subscription, purchase, stream, etc.
     service = Column(String(50), nullable=False, index=True)  # cineverse, gameport, commerce
 
@@ -50,7 +48,7 @@ class RevenueEvent(Base):
 
     # Timestamp
     occurred_at = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
+        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True,
     )
 
     def __repr__(self):
@@ -63,8 +61,7 @@ class RevenueEvent(Base):
 
 
 class UserEvent(Base):
-    """
-    User behavior event tracking.
+    """User behavior event tracking.
 
     Logs user actions for funnel analysis and product optimization.
     """
@@ -96,7 +93,7 @@ class UserEvent(Base):
 
     # Timestamp
     occurred_at = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
+        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True,
     )
 
     def __repr__(self):
@@ -109,8 +106,7 @@ class UserEvent(Base):
 
 
 class PerformanceMetric(Base):
-    """
-    System performance metrics.
+    """System performance metrics.
 
     Tracks latency, throughput, and reliability across services.
     """

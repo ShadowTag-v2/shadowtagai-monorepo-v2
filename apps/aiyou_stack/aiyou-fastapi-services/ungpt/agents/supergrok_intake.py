@@ -1,5 +1,4 @@
-"""
-L0: SuperGrok.1 - Intake & SPT.1 (Static)
+"""L0: SuperGrok.1 - Intake & SPT.1 (Static)
 
 Role: The Gatekeeper
 - Normalizes speech to text
@@ -37,8 +36,7 @@ ESTIMATED_COMPLEXITY: [LOW | MEDIUM | HIGH]
 
 
 async def process_voice(voice_input: str, model: str, api_key: str) -> dict[str, Any]:
-    """
-    Process voice/text input through SuperGrok.
+    """Process voice/text input through SuperGrok.
 
     Args:
         voice_input: Raw voice transcription or text
@@ -53,6 +51,7 @@ async def process_voice(voice_input: str, model: str, api_key: str) -> dict[str,
             'complexity': str,
             'cost': float
         }
+
     """
     prompt = INTAKE_PROMPT.format(voice_input=voice_input)
 
@@ -116,7 +115,6 @@ def _extract_section(content: str, marker: str) -> str:
     for m in next_markers:
         if m != marker and m in content[start:]:
             pos = content.find(m, start)
-            if pos < end:
-                end = pos
+            end = min(end, pos)
 
     return content[start:end].strip()

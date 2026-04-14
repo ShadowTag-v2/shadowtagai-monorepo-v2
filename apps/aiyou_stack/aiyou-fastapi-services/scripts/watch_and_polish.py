@@ -53,7 +53,7 @@ class PolishHandler(FileSystemEventHandler):
             logging.info(f"✅ Polished & Staged: {filepath}")
 
         except Exception as e:
-            logging.error(f"❌ Failed to polish {filepath}: {e}")
+            logging.exception(f"❌ Failed to polish {filepath}: {e}")
 
 
 if __name__ == "__main__":

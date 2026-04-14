@@ -34,8 +34,7 @@ CONSTITUTION = load_constitution()
 
 @functions_framework.cloud_event
 def session(cloud_event):
-    """
-    Triggered by 'judgment-call'.
+    """Triggered by 'judgment-call'.
     Evaluates the 'Agent Proposal' against the Constitution.
     """
     try:

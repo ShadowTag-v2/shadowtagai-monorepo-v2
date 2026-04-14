@@ -4,8 +4,7 @@ from datetime import datetime
 
 
 class Ledger:
-    """
-    The War Chest Ledger.
+    """The War Chest Ledger.
     Tracks inflows (Revenue) and outflows (Costs).
     """
 
@@ -63,7 +62,7 @@ class Ledger:
                 "entity": entity,
                 "description": description,
                 "balance_after": self.balance,
-            }
+            },
         )
 
     def get_balance(self) -> float:

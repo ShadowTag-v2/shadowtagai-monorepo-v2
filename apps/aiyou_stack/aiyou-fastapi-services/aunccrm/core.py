@@ -1,5 +1,4 @@
-"""
-AunCRM Core Framework
+"""AunCRM Core Framework
 Implements Purpose-Reasons-Brakes (PRB) compliance system
 Based on ATP 5-19 risk stratification and Business Judgment Rule
 """
@@ -22,8 +21,7 @@ class RiskLevel(Enum):
 
 @dataclass
 class Purpose:
-    """
-    PURPOSE: What specific problem does this action solve?
+    """PURPOSE: What specific problem does this action solve?
     First-principles thinking: Strip to core objective
     """
 
@@ -41,8 +39,7 @@ class Purpose:
 
 @dataclass
 class Reason:
-    """
-    REASONS: Why is this approach valid? What assumptions hold?
+    """REASONS: Why is this approach valid? What assumptions hold?
     Evidence-based justification with confidence intervals
     """
 
@@ -61,8 +58,7 @@ class Reason:
 
 @dataclass
 class Brake:
-    """
-    BRAKES: What constraints/limits must be respected?
+    """BRAKES: What constraints/limits must be respected?
     Hard stops, thresholds, and kill-switch conditions
     """
 
@@ -83,8 +79,7 @@ class Brake:
 
 @dataclass
 class ComplianceContext:
-    """
-    Complete AunCRM context for a single decision/action
+    """Complete AunCRM context for a single decision/action
     Combines Purpose + Reasons + Brakes with audit trail
     """
 
@@ -114,8 +109,7 @@ class ComplianceContext:
         return hashlib.sha256(content.encode()).hexdigest()[:16]
 
     def validate_all(self) -> tuple[bool, list[str]]:
-        """
-        Validate entire compliance context
+        """Validate entire compliance context
         Returns (is_valid, violations_list)
         """
         violations = []
@@ -131,7 +125,7 @@ class ComplianceContext:
         for i, reason in enumerate(self.reasons):
             if not reason.validate():
                 violations.append(
-                    f"Reason {i + 1} validation failed: insufficient evidence or invalid confidence"
+                    f"Reason {i + 1} validation failed: insufficient evidence or invalid confidence",
                 )
 
         # Validate brakes
@@ -159,7 +153,7 @@ class ComplianceContext:
                 "type": violation_type,
                 "details": details,
                 "risk_level": self.risk_level.value,
-            }
+            },
         )
 
     def to_audit_record(self) -> dict[str, Any]:
@@ -192,8 +186,7 @@ class ComplianceContext:
 
 
 class AunCRMValidator:
-    """
-    Main validator class for AunCRM compliance
+    """Main validator class for AunCRM compliance
     Implements Business Judgment Rule decision framework
     """
 
@@ -203,13 +196,13 @@ class AunCRMValidator:
         self.validated_contexts: list[ComplianceContext] = []
 
     def validate_context(
-        self, context: ComplianceContext
+        self, context: ComplianceContext,
     ) -> tuple[bool, list[str], dict[str, Any]]:
-        """
-        Validate compliance context against AunCRM rules
+        """Validate compliance context against AunCRM rules
 
         Returns:
             (is_valid, violations, recommendations)
+
         """
         is_valid, violations = context.validate_all()
         recommendations = []
@@ -228,7 +221,7 @@ class AunCRMValidator:
         # Check financial gates for any monetary decisions
         if any(b.roi_threshold for b in context.brakes):
             recommendations.append(
-                f"ROI gate: Must achieve ≥{context.brakes[0].roi_threshold}x within {context.brakes[0].time_horizon_months} months"
+                f"ROI gate: Must achieve ≥{context.brakes[0].roi_threshold}x within {context.brakes[0].time_horizon_months} months",
             )
 
         if is_valid:
@@ -241,8 +234,7 @@ class AunCRMValidator:
         )
 
     def _apply_business_judgment_gates(self, context: ComplianceContext) -> dict[str, Any]:
-        """
-        Apply Business Judgment Rule decision gates
+        """Apply Business Judgment Rule decision gates
         Based on user's framework: ROI, LTV:CAC, kill-switch thresholds
         """
         gates = {"passes": True, "failures": [], "warnings": []}
@@ -256,7 +248,7 @@ class AunCRMValidator:
 
         if avg_confidence < 0.70:
             gates["failures"].append(
-                f"Average confidence {avg_confidence:.2f} below 0.70 threshold"
+                f"Average confidence {avg_confidence:.2f} below 0.70 threshold",
             )
             gates["passes"] = False
 

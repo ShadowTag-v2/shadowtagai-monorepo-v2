@@ -1,5 +1,4 @@
-"""
-ActiveShieldMedical API Routes
+"""ActiveShieldMedical API Routes
 ===============================
 
 FastAPI endpoints for ActiveShieldMedical integration.
@@ -71,7 +70,7 @@ class ScanRequest(BaseModel):
     session_id: str = Field(..., description="Unique session identifier")
     user_input: str = Field(..., description="User input to validate")
     context: dict[str, Any] = Field(
-        default_factory=dict, description="Session context (ai_disclosure_shown, user_age, etc.)"
+        default_factory=dict, description="Session context (ai_disclosure_shown, user_age, etc.)",
     )
 
 
@@ -150,8 +149,7 @@ async def pre_hoc_scan(
     request: ScanRequest,
     shield: LiabilityShield = Depends(get_shield),
 ):
-    """
-    PRE-HOC: Validate user input before AI processing.
+    """PRE-HOC: Validate user input before AI processing.
 
     Detects:
     - Crisis/self-harm indicators (triggers emergency protocol)
@@ -184,8 +182,7 @@ async def mid_hoc_monitor(
     request: MonitorRequest,
     shield: LiabilityShield = Depends(get_shield),
 ):
-    """
-    MID-HOC: Validate AI response before sending to user.
+    """MID-HOC: Validate AI response before sending to user.
 
     Checks:
     - Clinical decision appropriateness
@@ -230,8 +227,7 @@ async def post_hoc_audit(
     request: AuditRequest,
     shield: LiabilityShield = Depends(get_shield),
 ):
-    """
-    POST-HOC: Log session for compliance audit.
+    """POST-HOC: Log session for compliance audit.
 
     Creates immutable audit record for:
     - Litigation defense
@@ -258,8 +254,7 @@ async def get_audit_trace(
     session_id: str,
     shield: LiabilityShield = Depends(get_shield),
 ):
-    """
-    Get complete audit trail for a session.
+    """Get complete audit trail for a session.
 
     Returns all shield events (pre-hoc, mid-hoc, post-hoc) for the session.
     """
@@ -291,8 +286,7 @@ async def generate_certificate(
     request: CertificateRequest,
     shield: LiabilityShield = Depends(get_shield),
 ):
-    """
-    Generate compliance certificate for a session.
+    """Generate compliance certificate for a session.
 
     This is the deliverable that proves due diligence for:
     - Insurance claims
@@ -315,8 +309,7 @@ async def get_liability_report(
     since_days: int = Query(default=30, description="Report period in days"),
     shield: LiabilityShield = Depends(get_shield),
 ):
-    """
-    Generate liability exposure report.
+    """Generate liability exposure report.
 
     Summarizes:
     - Total protection events
@@ -341,8 +334,7 @@ async def sb243_check(
     request: SB243CheckRequest,
     engine: SB243ComplianceEngine = Depends(get_sb243),
 ):
-    """
-    Direct SB 243 compliance check.
+    """Direct SB 243 compliance check.
 
     Use for:
     - Standalone transparency compliance
@@ -382,8 +374,7 @@ async def get_ai_disclosure(
     platform_name: str = Query(default="this platform"),
     engine: SB243ComplianceEngine = Depends(get_sb243),
 ):
-    """
-    Get compliant AI disclosure statement.
+    """Get compliant AI disclosure statement.
 
     Display this to users before AI interaction begins.
     """
@@ -400,8 +391,7 @@ async def dlp_scan(
     request: DLPScanRequest,
     engine: MedicalDLPEngine = Depends(get_dlp),
 ):
-    """
-    Scan text for PHI and clinical data.
+    """Scan text for PHI and clinical data.
 
     Returns detected PHI with optional redaction.
     """
@@ -436,8 +426,7 @@ async def clinical_evaluate(
     request: ClinicalEvaluateRequest,
     gateway: ClinicalDecisionGateway = Depends(get_gateway),
 ):
-    """
-    Evaluate a clinical decision through the gateway.
+    """Evaluate a clinical decision through the gateway.
 
     Checks:
     - Risk level appropriateness
@@ -474,8 +463,7 @@ async def clinical_evaluate(
 
 @router.get("/health", response_model=dict[str, Any])
 async def health_check():
-    """
-    Health check endpoint.
+    """Health check endpoint.
 
     Returns system status and version.
     """

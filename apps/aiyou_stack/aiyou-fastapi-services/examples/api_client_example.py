@@ -11,7 +11,6 @@ BASE_URL = "http://localhost:8000/api/v1"
 
 async def main():
     """Demonstrate API usage."""
-
     print("=== Checkpointing API Client Demo ===\n")
 
     async with httpx.AsyncClient() as client:
@@ -105,7 +104,7 @@ async def main():
             restore_data = {"restore_code": True, "restore_conversation": False}
 
             response = await client.post(
-                f"{BASE_URL}/checkpoints/{checkpoint_id}/restore", json=restore_data
+                f"{BASE_URL}/checkpoints/{checkpoint_id}/restore", json=restore_data,
             )
 
             if response.status_code == 200:

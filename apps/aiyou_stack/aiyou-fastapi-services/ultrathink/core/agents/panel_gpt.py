@@ -1,5 +1,4 @@
-"""
-PanelGPT: Expert Panel Discussion
+"""PanelGPT: Expert Panel Discussion
 
 Simulates a panel of domain experts discussing a topic.
 With moderator to guide and synthesize.
@@ -39,8 +38,7 @@ class PanelGPTResult(BaseModel):
 
 
 class PanelGPT:
-    """
-    PanelGPT expert panel engine.
+    """PanelGPT expert panel engine.
 
     Usage:
         >>> panel = PanelGPT(
@@ -75,13 +73,13 @@ class PanelGPT:
         rounds: int = 3,
         moderator_role: str = "synthesize and guide",
     ) -> None:
-        """
-        Initialize expert panel.
+        """Initialize expert panel.
 
         Args:
             members: List of panel members with expertise
             rounds: Number of discussion rounds
             moderator_role: What the moderator should do
+
         """
         self.members = members
         self.rounds = rounds
@@ -147,8 +145,7 @@ Synthesize:
         model: any | None = None,
         temperature: float = 0.6,
     ) -> PanelGPTResult:
-        """
-        Run panel discussion.
+        """Run panel discussion.
 
         Args:
             topic: What to discuss
@@ -157,6 +154,7 @@ Synthesize:
 
         Returns:
             PanelGPTResult with rounds and synthesis
+
         """
         # Placeholder implementation
         # In production:
@@ -175,7 +173,7 @@ Synthesize:
                         m.name: f"Contribution placeholder from {m.name}" for m in self.members
                     },
                     moderator_summary="Round 1 summary placeholder",
-                )
+                ),
             ],
             synthesis="Final synthesis placeholder",
             key_insights=[],

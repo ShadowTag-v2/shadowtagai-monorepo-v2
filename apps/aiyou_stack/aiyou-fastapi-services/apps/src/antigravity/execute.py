@@ -1,5 +1,4 @@
-"""
-Gemini Code Assist Pool - 10× Parallel Execution with Kosmos RSTA
+"""Gemini Code Assist Pool - 10× Parallel Execution with Kosmos RSTA
 =================================================================
 Routes atoms to 10 Gemini Code Assist Enterprise licenses.
 Each license has embedded Kosmos (380 agents) for consensus.
@@ -41,8 +40,7 @@ class CodeResult:
 
 
 class GeminiCodeAssistPool:
-    """
-    10× Gemini Code Assist Enterprise Licenses Pool with Kosmos RSTA
+    """10× Gemini Code Assist Enterprise Licenses Pool with Kosmos RSTA
 
     Each license has embedded Kosmos (380 agents) using RSTA structure:
     - HHT: 80 agents (Command, S-2/S-3/S-6, FSE)
@@ -110,7 +108,7 @@ Return ONLY valid JSON with working code."""
         # Initialize Kosmos pool if available
         if self.use_kosmos:
             self.kosmos_pool = create_kosmos_pool(
-                KosmosType.GEMINI_CODE_ASSIST, pool_size=pool_size
+                KosmosType.GEMINI_CODE_ASSIST, pool_size=pool_size,
             )
         else:
             self.kosmos_pool = None
@@ -145,12 +143,10 @@ Return ONLY valid JSON with working code."""
                 if result["consensus"]["consensus_reached"]:
                     # Generate code after consensus
                     return await self._generate_single(atom, api_key)
-                else:
-                    # Blocked by RSTA consensus
-                    return self._blocked_response(atom, result["consensus"])
-            else:
-                # Direct generation without Kosmos
-                return await self._generate_single(atom, api_key)
+                # Blocked by RSTA consensus
+                return self._blocked_response(atom, result["consensus"])
+            # Direct generation without Kosmos
+            return await self._generate_single(atom, api_key)
 
     async def _generate_single(self, atom: Atom, api_key: str) -> str:
         """Single code generation call to Gemini"""
@@ -267,10 +263,9 @@ raise SecurityError("Task blocked by RSTA consensus - security validation failed
 
 # Factory function with environment-based selection
 def create_execution_pool(
-    pool_size: int = 10, model: str = "gemini-2.0-flash-exp"
+    pool_size: int = 10, model: str = "gemini-2.0-flash-exp",
 ) -> GeminiCodeAssistPool:
-    """
-    Create execution pool based on environment config.
+    """Create execution pool based on environment config.
 
     Returns GeminiCodeAssistPool by default.
     Using Gemini 2.0 Flash for heavy lifting.

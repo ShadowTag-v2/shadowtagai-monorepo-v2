@@ -6,8 +6,7 @@ LOCATION = "us-central1"
 
 
 def generate_grounded_content(prompt="How much is Google stock?"):
-    """
-    Generates content grounded in Google Search.
+    """Generates content grounded in Google Search.
     """
     print(f"--- Generating content for: '{prompt}' ---")
 
@@ -27,13 +26,13 @@ def generate_grounded_content(prompt="How much is Google stock?"):
             discoveryengine.GroundedGenerationContent(
                 role="user",
                 parts=[discoveryengine.GroundedGenerationContent.Part(text=prompt)],
-            )
+            ),
         ],
         system_instruction=discoveryengine.GroundedGenerationContent(
             parts=[
                 discoveryengine.GroundedGenerationContent.Part(
-                    text="Be comprehensive and cite your sources."
-                )
+                    text="Be comprehensive and cite your sources.",
+                ),
             ],
         ),
         grounding_spec=discoveryengine.GenerateGroundedContentRequest.GroundingSpec(
@@ -42,12 +41,12 @@ def generate_grounded_content(prompt="How much is Google stock?"):
                     google_search_source=discoveryengine.GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource(
                         dynamic_retrieval_config=discoveryengine.GenerateGroundedContentRequest.DynamicRetrievalConfiguration(
                             predictor=discoveryengine.GenerateGroundedContentRequest.DynamicRetrievalConfiguration.DynamicRetrievalPredictor(
-                                threshold=0.7
-                            )
-                        )
-                    )
+                                threshold=0.7,
+                            ),
+                        ),
+                    ),
                 ),
-            ]
+            ],
         ),
     )
 
@@ -67,7 +66,7 @@ def generate_grounded_content(prompt="How much is Google stock?"):
     except Exception as e:
         print(f"Error: {e}")
         print(
-            "\nNote: If this failed with a 403 or 404, it might be because we need the Project Number instead of Project ID, or the API is not enabled."
+            "\nNote: If this failed with a 403 or 404, it might be because we need the Project Number instead of Project ID, or the API is not enabled.",
         )
 
 

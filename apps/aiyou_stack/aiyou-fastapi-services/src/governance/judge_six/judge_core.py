@@ -1,5 +1,4 @@
-"""
-Judge #6 Core - The Governance Engine
+"""Judge #6 Core - The Governance Engine
 Combined Implementation: Legacy Logic + CSRMC 2026 + Omega Protocol
 
 Authority:
@@ -45,8 +44,7 @@ class JudgeReceipt:
 
 
 class JudgeSixEngine:
-    """
-    The centralized governance authority.
+    """The centralized governance authority.
     Enforces ATP 5-19, Purpose/Reasons/Brakes, and CSRMC.
     """
 
@@ -54,7 +52,7 @@ class JudgeSixEngine:
         self.policy_path = policy_path
         self.constitution = self._load_constitution_from_file() or self._load_default_constitution()
         logger.info(
-            f"⚖️  Judge #6 Engine Online - CSRMC Active (Constitution v{self.constitution.get('judge6_constitution', {}).get('version', 'Unknown')})"
+            f"⚖️  Judge #6 Engine Online - CSRMC Active (Constitution v{self.constitution.get('judge6_constitution', {}).get('version', 'Unknown')})",
         )
 
     def _load_constitution_from_file(self) -> dict[str, Any] | None:
@@ -79,8 +77,7 @@ class JudgeSixEngine:
         }
 
     def validate_action(self, action: str, context: dict[str, Any]) -> JudgeReceipt:
-        """
-        Validates an action against the Doctrine.
+        """Validates an action against the Doctrine.
         Returns a receipt.
         """
         decision_id = hashlib.sha256(f"{action}{time.time()}".encode()).hexdigest()[:12]
@@ -123,7 +120,7 @@ class JudgeSixEngine:
         return self._mint_receipt(decision_id, action, verdict, risk_score, notes)
 
     def _mint_receipt(
-        self, decision_id: str, action: str, verdict: Verdict, risk: float, notes: list[str]
+        self, decision_id: str, action: str, verdict: Verdict, risk: float, notes: list[str],
     ) -> JudgeReceipt:
         """Create the immutable receipt"""
         receipt = JudgeReceipt(
@@ -139,7 +136,7 @@ class JudgeSixEngine:
         # Audit Log
         symbol = "✅" if verdict == Verdict.APPROVED else "❌"
         logger.info(
-            f"Decision {decision_id}: {symbol} {verdict.value} (Risk: {risk}) | {action[:50]}"
+            f"Decision {decision_id}: {symbol} {verdict.value} (Risk: {risk}) | {action[:50]}",
         )
         return receipt
 

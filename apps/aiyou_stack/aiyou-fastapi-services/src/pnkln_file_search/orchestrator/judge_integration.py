@@ -1,5 +1,4 @@
-"""
-Judge #6 Integration Stub
+"""Judge #6 Integration Stub
 Placeholder for actual Judge #6 hybrid architecture implementation
 """
 
@@ -9,8 +8,7 @@ logger = structlog.get_logger(__name__)
 
 
 class JudgeIntegration:
-    """
-    Integration point for Judge #6 Hybrid Architecture
+    """Integration point for Judge #6 Hybrid Architecture
 
     This is a placeholder/stub for your actual Judge #6 implementation.
     Replace with your real ATP 5-19 compliance checking system.
@@ -27,8 +25,7 @@ class JudgeIntegration:
         logger.info("judge_integration_initialized")
 
     async def assess_layer1_gemini(self, query: str, context: dict) -> dict:
-        """
-        Layer 1: Gemini fine-tuned model for initial risk assessment
+        """Layer 1: Gemini fine-tuned model for initial risk assessment
 
         Args:
             query: User query
@@ -36,6 +33,7 @@ class JudgeIntegration:
 
         Returns:
             Layer 1 assessment with ATP 5-19 flags
+
         """
         # TODO: Implement actual Gemini fine-tuned model call
         return {
@@ -46,8 +44,7 @@ class JudgeIntegration:
         }
 
     async def assess_layer2_pytorch(self, query: str, _layer1_result: dict) -> dict:
-        """
-        Layer 2: PyTorch model for deep pattern analysis
+        """Layer 2: PyTorch model for deep pattern analysis
 
         Args:
             query: User query
@@ -55,6 +52,7 @@ class JudgeIntegration:
 
         Returns:
             Layer 2 assessment
+
         """
         # TODO: Implement actual PyTorch model inference
         return {
@@ -65,10 +63,9 @@ class JudgeIntegration:
         }
 
     async def assess_layer3_rules(
-        self, query: str, _layer1_result: dict, _layer2_result: dict
+        self, query: str, _layer1_result: dict, _layer2_result: dict,
     ) -> dict:
-        """
-        Layer 3: Rules engine for deterministic compliance checks
+        """Layer 3: Rules engine for deterministic compliance checks
 
         Args:
             query: User query
@@ -77,6 +74,7 @@ class JudgeIntegration:
 
         Returns:
             Final enforcement decision
+
         """
         # TODO: Implement actual rules engine
         return {
@@ -88,8 +86,7 @@ class JudgeIntegration:
         }
 
     async def enforce(self, query: str, enhanced_context: dict) -> dict:
-        """
-        Full enforcement pipeline: Layer 1 → Layer 2 → Layer 3
+        """Full enforcement pipeline: Layer 1 → Layer 2 → Layer 3
 
         Args:
             query: User query
@@ -97,6 +94,7 @@ class JudgeIntegration:
 
         Returns:
             Complete enforcement decision
+
         """
         # Execute layers sequentially
         layer1 = await self.assess_layer1_gemini(query, enhanced_context)

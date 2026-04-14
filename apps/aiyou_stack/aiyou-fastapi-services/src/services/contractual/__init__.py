@@ -1,5 +1,4 @@
-"""
-Contractual Services Package
+"""Contractual Services Package
 
 This package contains core business logic for the Contractual platform:
 - conflict_detection.py: AI-powered conflict detection engine

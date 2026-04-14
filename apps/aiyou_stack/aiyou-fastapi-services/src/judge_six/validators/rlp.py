@@ -1,5 +1,4 @@
-"""
-minion Five: RLP (Dense Rewards) Validator
+"""minion Five: RLP (Dense Rewards) Validator
 Implements Paper 4: Per-token 'think-before-predict' rewards.
 Integrates with Judge #6 to kill processes if reasoning drifts.
 """
@@ -10,15 +9,14 @@ class RLPValidator:
         self.brakes_confidence_threshold = 0.75
 
     def validate_reasoning_step(self, step_content: str, confidence_score: float) -> bool:
-        """
-        Validates a single step of a reasoning chain.
+        """Validates a single step of a reasoning chain.
         Returns True if safe to proceed, False if Brakes should engage.
         """
         print(f"[*] Validating Step: '{step_content[:50]}...' (Confidence: {confidence_score})")
 
         if confidence_score < self.brakes_confidence_threshold:
             print(
-                f"🚨 BRAKES ENGAGED: Confidence {confidence_score} < {self.brakes_confidence_threshold}"
+                f"🚨 BRAKES ENGAGED: Confidence {confidence_score} < {self.brakes_confidence_threshold}",
             )
             return False
 

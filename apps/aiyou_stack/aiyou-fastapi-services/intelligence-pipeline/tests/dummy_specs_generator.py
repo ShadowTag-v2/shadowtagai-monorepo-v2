@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Dummy Specs Generator for Testing Gemini Analysis Prompt
+"""Dummy Specs Generator for Testing Gemini Analysis Prompt
 
 Generates synthetic pipeline specifications to test the analysis framework
 without requiring a real deployment. Useful for:
@@ -26,11 +25,11 @@ class DummySpecsGenerator:
     """Generates realistic synthetic specifications for testing"""
 
     def __init__(self, variant: str = "baseline"):
-        """
-        Initialize generator with a specific variant
+        """Initialize generator with a specific variant
 
         Args:
             variant: One of "baseline", "degraded", "optimal", "edge_case"
+
         """
         self.variant = variant
         self.variants = {
@@ -260,7 +259,7 @@ RISK:     ATP 5-19 RA-1 (Low - Compliant)
                 "cost_tracking": {
                     "monthly_budget": params["monthly_cost"],
                     "roi_target": 3.3,
-                }
+                },
             },
         }
         return yaml.dump(config, default_flow_style=False, sort_keys=False)
@@ -346,7 +345,7 @@ RISK:     ATP 5-19 RA-1 (Low - Compliant)
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate dummy specs for testing Gemini analysis prompt"
+        description="Generate dummy specs for testing Gemini analysis prompt",
     )
     parser.add_argument(
         "--variant",

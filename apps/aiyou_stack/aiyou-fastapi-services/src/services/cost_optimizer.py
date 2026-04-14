@@ -1,5 +1,4 @@
-"""
-AWS Cost Optimizer service - Core business logic for cost optimization.
+"""AWS Cost Optimizer service - Core business logic for cost optimization.
 
 This service analyzes AWS costs, identifies waste, provides right-sizing
 recommendations, and implements auto-scaling strategies.
@@ -25,8 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class CostOptimizerService:
-    """
-    AWS Cost Optimizer service for analyzing and optimizing cloud costs.
+    """AWS Cost Optimizer service for analyzing and optimizing cloud costs.
 
     Capabilities:
     - Cost analysis and reporting
@@ -50,8 +48,7 @@ class CostOptimizerService:
         group_by: list[str] | None = None,
         service_filter: list[str] | None = None,
     ) -> CostAnalysisResponse:
-        """
-        Analyze AWS costs for a given period.
+        """Analyze AWS costs for a given period.
 
         Args:
             start_date: Analysis start date (defaults to 30 days ago)
@@ -62,6 +59,7 @@ class CostOptimizerService:
 
         Returns:
             CostAnalysisResponse with detailed cost breakdown
+
         """
         try:
             # Set default date range if not provided
@@ -98,7 +96,7 @@ class CostOptimizerService:
             summary = self._calculate_cost_summary(data_points, start_date, end_date, cost_data)
 
             return CostAnalysisResponse(
-                summary=summary, data_points=data_points, granularity=granularity
+                summary=summary, data_points=data_points, granularity=granularity,
             )
 
         except Exception as e:
@@ -111,8 +109,7 @@ class CostOptimizerService:
         min_savings_threshold: float = 100.0,
         include_forecast: bool = False,
     ) -> RecommendationsResponse:
-        """
-        Generate cost optimization recommendations.
+        """Generate cost optimization recommendations.
 
         Args:
             optimization_types: Types of optimizations to analyze
@@ -121,6 +118,7 @@ class CostOptimizerService:
 
         Returns:
             RecommendationsResponse with actionable recommendations
+
         """
         try:
             logger.info("Generating optimization recommendations")
@@ -138,14 +136,14 @@ class CostOptimizerService:
             # Get right-sizing recommendations
             if OptimizationType.RIGHT_SIZING in optimization_types:
                 rightsizing_recs = await self._get_rightsizing_recommendations(
-                    min_savings_threshold
+                    min_savings_threshold,
                 )
                 recommendations.extend(rightsizing_recs)
 
             # Get Savings Plans recommendations
             if OptimizationType.SAVINGS_PLANS in optimization_types:
                 savings_plans_recs = await self._get_savings_plans_recommendations(
-                    min_savings_threshold
+                    min_savings_threshold,
                 )
                 recommendations.extend(savings_plans_recs)
 
@@ -174,11 +172,11 @@ class CostOptimizerService:
             raise
 
     async def analyze_waste(self) -> WasteAnalysisResponse:
-        """
-        Analyze AWS resource waste and identify optimization opportunities.
+        """Analyze AWS resource waste and identify optimization opportunities.
 
         Returns:
             WasteAnalysisResponse with waste breakdown and recommendations
+
         """
         try:
             logger.info("Analyzing resource waste")
@@ -227,12 +225,12 @@ class CostOptimizerService:
             if "Groups" in result:
                 for group in result["Groups"]:
                     amount = float(
-                        group.get("Metrics", {}).get("UnblendedCost", {}).get("Amount", 0)
+                        group.get("Metrics", {}).get("UnblendedCost", {}).get("Amount", 0),
                     )
                     service = group.get("Keys", ["Unknown"])[0]
 
                     data_points.append(
-                        CostDataPoint(date=date, amount=round(amount, 2), service=service)
+                        CostDataPoint(date=date, amount=round(amount, 2), service=service),
                     )
             else:
                 # Ungrouped data
@@ -278,7 +276,7 @@ class CostOptimizerService:
         )
 
     async def _get_rightsizing_recommendations(
-        self, min_savings: float
+        self, min_savings: float,
     ) -> list[OptimizationRecommendation]:
         """Get EC2 right-sizing recommendations."""
         try:
@@ -290,7 +288,7 @@ class CostOptimizerService:
                 savings = float(
                     rec.get("ModifyRecommendationDetail", {})
                     .get("TargetInstances", [{}])[0]
-                    .get("EstimatedMonthlySavings", 0)
+                    .get("EstimatedMonthlySavings", 0),
                 )
 
                 if savings >= min_savings:
@@ -302,7 +300,7 @@ class CostOptimizerService:
                             current_cost=float(current_instance.get("MonthlyCost", 0)),
                             estimated_savings=round(savings, 2),
                             savings_percentage=round(
-                                (savings / float(current_instance.get("MonthlyCost", 1))) * 100, 2
+                                (savings / float(current_instance.get("MonthlyCost", 1))) * 100, 2,
                             ),
                             description=f"Right-size {current_instance.get('ResourceId')}",
                             action_items=[
@@ -311,7 +309,7 @@ class CostOptimizerService:
                                 "Apply new instance type",
                             ],
                             priority="HIGH" if savings > 500 else "MEDIUM",
-                        )
+                        ),
                     )
 
             return recommendations
@@ -321,7 +319,7 @@ class CostOptimizerService:
             return []
 
     async def _get_savings_plans_recommendations(
-        self, min_savings: float
+        self, min_savings: float,
     ) -> list[OptimizationRecommendation]:
         """Get Savings Plans recommendations."""
         try:
@@ -329,7 +327,7 @@ class CostOptimizerService:
             recommendations = []
 
             for rec in data.get("SavingsPlansPurchaseRecommendation", {}).get(
-                "SavingsPlansPurchaseRecommendationDetails", []
+                "SavingsPlansPurchaseRecommendationDetails", [],
             ):
                 savings = float(rec.get("EstimatedMonthlySavingsAmount", 0))
 
@@ -342,7 +340,7 @@ class CostOptimizerService:
                             current_cost=float(rec.get("EstimatedOnDemandCost", 0)),
                             estimated_savings=round(savings, 2),
                             savings_percentage=round(
-                                float(rec.get("EstimatedSavingsPercentage", 0)), 2
+                                float(rec.get("EstimatedSavingsPercentage", 0)), 2,
                             ),
                             description=f"Purchase {rec.get('SavingsPlansType')} Savings Plan",
                             action_items=[
@@ -351,7 +349,7 @@ class CostOptimizerService:
                                 "Purchase Savings Plan",
                             ],
                             priority="HIGH" if savings > 1000 else "MEDIUM",
-                        )
+                        ),
                     )
 
             return recommendations
@@ -361,7 +359,7 @@ class CostOptimizerService:
             return []
 
     async def _get_reservation_recommendations(
-        self, min_savings: float
+        self, min_savings: float,
     ) -> list[OptimizationRecommendation]:
         """Get Reserved Instance recommendations."""
         try:
@@ -381,7 +379,7 @@ class CostOptimizerService:
                             current_cost=float(details.get("EstimatedOnDemandCost", 0)),
                             estimated_savings=round(savings, 2),
                             savings_percentage=round(
-                                float(details.get("EstimatedSavingsPercentage", 0)), 2
+                                float(details.get("EstimatedSavingsPercentage", 0)), 2,
                             ),
                             description="Purchase Reserved Instances",
                             action_items=[
@@ -390,7 +388,7 @@ class CostOptimizerService:
                                 "Purchase Reserved Instances",
                             ],
                             priority="MEDIUM",
-                        )
+                        ),
                     )
 
             return recommendations
@@ -419,8 +417,7 @@ class CostOptimizerService:
             return {}
 
     async def _identify_idle_resources(self) -> list[dict[str, Any]]:
-        """
-        Identify idle resources.
+        """Identify idle resources.
 
         In production, this would integrate with CloudWatch metrics,
         AWS Compute Optimizer, and Trusted Advisor.
@@ -430,8 +427,7 @@ class CostOptimizerService:
         return []
 
     async def _identify_unused_resources(self) -> list[dict[str, Any]]:
-        """
-        Identify unused resources.
+        """Identify unused resources.
 
         In production, this would check for unattached EBS volumes,
         unused Elastic IPs, orphaned snapshots, etc.
@@ -446,11 +442,11 @@ _cost_optimizer_service: CostOptimizerService | None = None
 
 
 def get_cost_optimizer_service() -> CostOptimizerService:
-    """
-    Get or create the global Cost Optimizer service instance.
+    """Get or create the global Cost Optimizer service instance.
 
     Returns:
         CostOptimizerService instance
+
     """
     global _cost_optimizer_service
 

@@ -1,5 +1,4 @@
-"""
-LLM Orchestrator API Routes
+"""LLM Orchestrator API Routes
 Endpoints for multi-LLM orchestration with PNKLN integration
 """
 
@@ -26,10 +25,10 @@ class ProcessQueryRequest(BaseModel):
 
     query: str = Field(..., description="User query to process", min_length=1)
     enable_review_rotation: bool = Field(
-        default=False, description="Enable 3-round peer review (slower, more accurate)"
+        default=False, description="Enable 3-round peer review (slower, more accurate)",
     )
     metadata: dict[str, Any] | None = Field(
-        default=None, description="Optional metadata for tracking"
+        default=None, description="Optional metadata for tracking",
     )
 
 
@@ -68,7 +67,7 @@ class IntelligenceClassificationRequest(BaseModel):
     content: str = Field(..., description="Full content text")
     tags: list[str] = Field(default_factory=list, description="Metadata tags")
     enable_debate: bool = Field(
-        default=True, description="Use multi-agent debate (3 agents, 2 rounds)"
+        default=True, description="Use multi-agent debate (3 agents, 2 rounds)",
     )
 
 
@@ -89,8 +88,7 @@ class BenchmarkResponse(BaseModel):
 
 @router.post("/process", response_model=ProcessQueryResponse)
 async def process_query(request: ProcessQueryRequest):
-    """
-    Process a user query through the LLM orchestration pipeline
+    """Process a user query through the LLM orchestration pipeline
 
     Flow:
     1. Grok Intake: Decompose query into threads
@@ -123,10 +121,11 @@ async def process_query(request: ProcessQueryRequest):
           "total_latency_ms": 1234,
           "confidence": 0.87
         }
+
     """
     try:
         result = await orchestrator.process_query(
-            query=request.query, enable_review_rotation=request.enable_review_rotation
+            query=request.query, enable_review_rotation=request.enable_review_rotation,
         )
 
         # Convert Thread dataclasses to Pydantic models
@@ -154,7 +153,7 @@ async def process_query(request: ProcessQueryRequest):
                     cost=thread.cost,
                     latency_ms=thread.latency_ms,
                     tier_classification=tier_class,
-                )
+                ),
             )
 
         return ProcessQueryResponse(
@@ -168,13 +167,12 @@ async def process_query(request: ProcessQueryRequest):
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Orchestration failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Orchestration failed: {e!s}")
 
 
 @router.post("/intelligence/classify", response_model=ProcessQueryResponse)
 async def classify_intelligence(request: IntelligenceClassificationRequest):
-    """
-    Specialized endpoint for intelligence classification
+    """Specialized endpoint for intelligence classification
 
     Uses Gemini multi-agent debate system (skeptic, optimist, neutral)
     for high-accuracy tier classification.
@@ -200,6 +198,7 @@ async def classify_intelligence(request: IntelligenceClassificationRequest):
           "total_cost": 0.00375,
           "confidence": 0.87
         }
+
     """
     # Format as orchestrator query
     query = f"Classify: {request.title} | {request.content} | {','.join(request.tags)}"
@@ -235,7 +234,7 @@ async def classify_intelligence(request: IntelligenceClassificationRequest):
                     cost=thread.cost,
                     latency_ms=thread.latency_ms,
                     tier_classification=tier_class,
-                )
+                ),
             )
 
         return ProcessQueryResponse(
@@ -253,13 +252,12 @@ async def classify_intelligence(request: IntelligenceClassificationRequest):
         )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Intelligence classification failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Intelligence classification failed: {e!s}")
 
 
 @router.get("/providers", response_model=list[BenchmarkResponse])
 async def list_providers():
-    """
-    List available LLM providers with benchmarks
+    """List available LLM providers with benchmarks
 
     Returns provider capabilities, costs, and recommended use cases
     """
@@ -349,8 +347,7 @@ async def health_check():
 
 @router.get("/example")
 async def example_queries():
-    """
-    Get example queries for different domains
+    """Get example queries for different domains
 
     Useful for testing and understanding how to format queries
     """

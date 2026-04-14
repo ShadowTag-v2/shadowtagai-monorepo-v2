@@ -1,5 +1,4 @@
-"""
-FinJudge Python SDK - Usage Examples
+"""FinJudge Python SDK - Usage Examples
 """
 
 from finjudge.client import FinJudgeClient, judge
@@ -148,11 +147,11 @@ def example_error_handling():
         print(f"Ruling: {ruling.decision_id}")
 
     except ValueError as e:
-        print(f"Validation error: {str(e)}")
+        print(f"Validation error: {e!s}")
     except RuntimeError as e:
-        print(f"Judge engine error: {str(e)}")
+        print(f"Judge engine error: {e!s}")
     except Exception as e:
-        print(f"Unexpected error: {str(e)}")
+        print(f"Unexpected error: {e!s}")
 
 
 if __name__ == "__main__":

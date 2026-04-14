@@ -6,8 +6,7 @@ logger = logging.getLogger("VelocityEngine")
 
 
 class VelocityEngine:
-    """
-    ShadowTag Omega V7 Engine
+    """ShadowTag Omega V7 Engine
     - auto_apply=True: Bypasses Human Confirmation
     - Headless: Runs in terminal/background
     """
@@ -24,8 +23,7 @@ class VelocityEngine:
             # capture_output prevents it from hanging on stdin.
             result = subprocess.run(command, shell=True, text=True, capture_output=True)
             return result.stdout if result.returncode == 0 else result.stderr
-        else:
-            return "SKIPPED (Auto-Apply Disabled)"
+        return "SKIPPED (Auto-Apply Disabled)"
 
     def write_file(self, path, content):
         """Writes files directly to disk (Bypasses VS Code Editor API)."""

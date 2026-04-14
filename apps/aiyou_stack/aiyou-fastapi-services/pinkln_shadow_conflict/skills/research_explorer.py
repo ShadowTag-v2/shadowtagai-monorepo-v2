@@ -1,5 +1,4 @@
-"""
-ResearchExplorerSkill - Deep topic exploration and insight discovery.
+"""ResearchExplorerSkill - Deep topic exploration and insight discovery.
 
 This skill performs web searches, extracts key insights, highlights assumptions,
 and surfaces hidden opportunities.
@@ -15,8 +14,7 @@ from core.base_skill import BaseSkill
 
 
 class ResearchExplorerSkill(BaseSkill):
-    """
-    Research Explorer Skill.
+    """Research Explorer Skill.
 
     Given a topic, this skill:
     - Performs deep exploration (web search in production)
@@ -66,8 +64,7 @@ Task: Given topic: {topic}
         ]
 
     async def execute(self, input_data: dict[str, Any], **kwargs) -> dict[str, Any]:
-        """
-        Execute research exploration.
+        """Execute research exploration.
 
         Args:
             input_data: Must contain 'topic' key
@@ -75,6 +72,7 @@ Task: Given topic: {topic}
 
         Returns:
             Research results
+
         """
         if not self.validate_input(input_data):
             return {"error": "Invalid input: 'topic' required"}

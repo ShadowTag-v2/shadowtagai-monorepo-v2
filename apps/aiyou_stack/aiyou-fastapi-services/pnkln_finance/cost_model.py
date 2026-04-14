@@ -5,7 +5,7 @@ class PnklnCostEstimator:
     def __init__(self, path="pnkln_config/pricing.yaml"):
         self.tiers = yaml.safe_load(open(path))["pricing_tiers"]
         self.tiers.sort(
-            key=lambda t: t["max_requests"] if t["max_requests"] is not None else 10**18
+            key=lambda t: t["max_requests"] if t["max_requests"] is not None else 10**18,
         )
 
     def estimate(self, n: int):

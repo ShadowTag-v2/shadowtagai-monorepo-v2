@@ -1,5 +1,4 @@
-"""
-ShadowTag - DCT Watermarking & Cryptographic Audit Trail
+"""ShadowTag - DCT Watermarking & Cryptographic Audit Trail
 
 Applies cryptographic watermarks to all outputs for:
 1. Provenance tracking
@@ -68,8 +67,7 @@ class Watermark:
 
 
 class ShadowTag:
-    """
-    ShadowTag watermarking system.
+    """ShadowTag watermarking system.
 
     Applies cryptographic watermarks to all outputs for audit trail
     and tamper detection.
@@ -86,14 +84,15 @@ class ShadowTag:
         # Verify later
         is_valid = shadowtag.verify(watermarked)
         ```
+
     """
 
     def __init__(self, key_path: str | None = None):
-        """
-        Initialize ShadowTag.
+        """Initialize ShadowTag.
 
         Args:
             key_path: Path to ed25519 private key (generates new if not provided)
+
         """
         self.key_path = key_path
 
@@ -125,8 +124,7 @@ class ShadowTag:
             f.write(self.private_key.export_key(format="PEM").encode())
 
     def watermark(self, content: str, metadata: dict[str, Any]) -> str:
-        """
-        Apply cryptographic watermark to content.
+        """Apply cryptographic watermark to content.
 
         Args:
             content: Content to watermark
@@ -134,6 +132,7 @@ class ShadowTag:
 
         Returns:
             Original content (watermark stored separately)
+
         """
         # Create watermark object
         watermark = Watermark(
@@ -150,11 +149,11 @@ class ShadowTag:
         return content
 
     def _sign(self, content: str, metadata: dict[str, Any]) -> str:
-        """
-        Sign content with ed25519.
+        """Sign content with ed25519.
 
         Returns:
             Signature in format "ed25519:<hex>"
+
         """
         # Construct message
         message = json.dumps(
@@ -172,11 +171,11 @@ class ShadowTag:
         return f"ed25519:{signature.hex()}"
 
     def _compute_merkle_root(self, content: str, metadata: dict[str, Any]) -> str:
-        """
-        Compute Merkle tree root hash.
+        """Compute Merkle tree root hash.
 
         Returns:
             Merkle root in format "sha256:<hex>"
+
         """
         # Simple Merkle tree (single leaf for demo)
         # In production, build full tree from content chunks
@@ -189,26 +188,26 @@ class ShadowTag:
         return f"sha256:{h}"
 
     def verify(self, watermark: Watermark) -> bool:
-        """
-        Verify watermark integrity.
+        """Verify watermark integrity.
 
         Args:
             watermark: Watermark to verify
 
         Returns:
             True if valid, False otherwise
+
         """
         return watermark.verify(self.public_key)
 
     def get_watermark_for_content(self, content: str) -> Watermark | None:
-        """
-        Retrieve watermark for specific content.
+        """Retrieve watermark for specific content.
 
         Args:
             content: Content to find watermark for
 
         Returns:
             Watermark if found, None otherwise
+
         """
         for wm in self.watermarks:
             if wm.content == content:
@@ -216,11 +215,11 @@ class ShadowTag:
         return None
 
     def export_audit_trail(self) -> List[dict[str, Any]]:
-        """
-        Export full audit trail.
+        """Export full audit trail.
 
         Returns:
             List of all watermarks as dictionaries
+
         """
         return [wm.to_dict() for wm in self.watermarks]
 

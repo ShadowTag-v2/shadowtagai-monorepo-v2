@@ -1,5 +1,4 @@
-"""
-Tests for QueryHandler
+"""Tests for QueryHandler
 """
 
 from unittest.mock import AsyncMock, Mock, patch
@@ -107,7 +106,7 @@ async def test_process_query_with_context(mock_corpus_manager, mock_generative_m
     handler._model = mock_model_instance
 
     result = await handler.process_query_with_context(
-        user_query="test query", vertical="defense", corpus_name="test-corpus"
+        user_query="test query", vertical="defense", corpus_name="test-corpus",
     )
 
     assert "query" in result

@@ -1,5 +1,4 @@
-"""
-Infrastructure Builder Service
+"""Infrastructure Builder Service
 Core service for designing cloud architecture
 """
 
@@ -18,10 +17,9 @@ class InfrastructureBuilderService:
     """Cloud infrastructure expert optimizing for scale and cost"""
 
     def design_architecture(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> InfrastructureDesignResponse:
         """Design cloud architecture based on requirements"""
-
         design_id = str(uuid.uuid4())
         components = self._generate_components(request)
         total_cost = sum(comp.estimated_monthly_cost for comp in components)
@@ -42,26 +40,23 @@ class InfrastructureBuilderService:
         )
 
     def _generate_components(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Generate infrastructure components based on workload type"""
-
         if request.workload_type == WorkloadType.WEB_APP:
             return self._web_app_components(request)
-        elif request.workload_type == WorkloadType.MICROSERVICES:
+        if request.workload_type == WorkloadType.MICROSERVICES:
             return self._microservices_components(request)
-        elif request.workload_type == WorkloadType.API:
+        if request.workload_type == WorkloadType.API:
             return self._api_components(request)
-        elif request.workload_type == WorkloadType.DATA_PIPELINE:
+        if request.workload_type == WorkloadType.DATA_PIPELINE:
             return self._data_pipeline_components(request)
-        else:
-            return self._default_components(request)
+        return self._default_components(request)
 
     def _web_app_components(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for web application workload"""
-
         provider = request.cloud_provider
         components = []
 
@@ -83,12 +78,12 @@ class InfrastructureBuilderService:
                     "cross_zone": request.high_availability,
                 },
                 estimated_monthly_cost=25.0,
-            )
+            ),
         )
 
         # Compute instances
         instance_count = max(
-            2 if request.high_availability else 1, request.expected_traffic // 1000
+            2 if request.high_availability else 1, request.expected_traffic // 1000,
         )
 
         compute_service = {
@@ -112,7 +107,7 @@ class InfrastructureBuilderService:
                     "max_instances": instance_count * 3,
                 },
                 estimated_monthly_cost=50.0 * instance_count,
-            )
+            ),
         )
 
         # Database
@@ -136,7 +131,7 @@ class InfrastructureBuilderService:
                     "storage_gb": 100,
                 },
                 estimated_monthly_cost=150.0 if request.high_availability else 75.0,
-            )
+            ),
         )
 
         # Object Storage
@@ -153,7 +148,7 @@ class InfrastructureBuilderService:
                 provider_service=storage_service[provider],
                 configuration={"versioning": True, "encryption": True, "lifecycle_policy": True},
                 estimated_monthly_cost=10.0,
-            )
+            ),
         )
 
         # CDN
@@ -174,16 +169,15 @@ class InfrastructureBuilderService:
                     "cache_behavior": "optimized",
                 },
                 estimated_monthly_cost=20.0,
-            )
+            ),
         )
 
         return components
 
     def _microservices_components(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for microservices architecture"""
-
         provider = request.cloud_provider
         components = []
 
@@ -210,7 +204,7 @@ class InfrastructureBuilderService:
                     "network_policy": True,
                 },
                 estimated_monthly_cost=150.0 * node_count,
-            )
+            ),
         )
 
         # Service mesh
@@ -221,7 +215,7 @@ class InfrastructureBuilderService:
                 provider_service="Istio",
                 configuration={"mTLS": True, "telemetry": True, "circuit_breaking": True},
                 estimated_monthly_cost=50.0,
-            )
+            ),
         )
 
         # Container registry
@@ -241,16 +235,15 @@ class InfrastructureBuilderService:
                     "geo_replication": request.high_availability,
                 },
                 estimated_monthly_cost=20.0,
-            )
+            ),
         )
 
         return components
 
     def _api_components(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for API workload"""
-
         provider = request.cloud_provider
         components = []
 
@@ -273,7 +266,7 @@ class InfrastructureBuilderService:
                     "throttling": True,
                 },
                 estimated_monthly_cost=30.0,
-            )
+            ),
         )
 
         # Add compute and database similar to web app
@@ -282,10 +275,9 @@ class InfrastructureBuilderService:
         return components
 
     def _data_pipeline_components(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for data pipeline workload"""
-
         provider = request.cloud_provider
         components = []
 
@@ -303,7 +295,7 @@ class InfrastructureBuilderService:
                 provider_service=dw_service[provider],
                 configuration={"node_type": "dc2.large", "node_count": 2, "encryption": True},
                 estimated_monthly_cost=300.0,
-            )
+            ),
         )
 
         # ETL service
@@ -320,13 +312,13 @@ class InfrastructureBuilderService:
                 provider_service=etl_service[provider],
                 configuration={"workers": 10, "schedule": "hourly"},
                 estimated_monthly_cost=100.0,
-            )
+            ),
         )
 
         return components
 
     def _default_components(
-        self, request: InfrastructureDesignRequest
+        self, request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Default components for unknown workload types"""
         return self._web_app_components(request)
@@ -338,7 +330,6 @@ class InfrastructureBuilderService:
         total_cost: float,
     ) -> list[str]:
         """Generate architecture recommendations"""
-
         recommendations = []
 
         # Budget recommendations
@@ -346,7 +337,7 @@ class InfrastructureBuilderService:
             over_budget = total_cost - request.budget_limit
             recommendations.append(
                 f"⚠️ Estimated cost ${total_cost:.2f} exceeds budget by ${over_budget:.2f}. "
-                "Consider using spot instances or reserved pricing."
+                "Consider using spot instances or reserved pricing.",
             )
 
         # High availability recommendations
@@ -354,7 +345,7 @@ class InfrastructureBuilderService:
             recommendations.append("✅ Multi-AZ deployment configured for high availability")
         else:
             recommendations.append(
-                "💡 Consider enabling high availability for production workloads"
+                "💡 Consider enabling high availability for production workloads",
             )
 
         # Scaling recommendations
@@ -367,17 +358,16 @@ class InfrastructureBuilderService:
 
         # Cost optimization
         recommendations.append(
-            "💰 Use reserved instances for baseline capacity (up to 70% savings)"
+            "💰 Use reserved instances for baseline capacity (up to 70% savings)",
         )
         recommendations.append("📊 Enable cloud cost monitoring and set up budget alerts")
 
         return recommendations
 
     def _calculate_scalability_score(
-        self, request: InfrastructureDesignRequest, components: list[InfrastructureComponent]
+        self, request: InfrastructureDesignRequest, components: list[InfrastructureComponent],
     ) -> float:
         """Calculate scalability score (0-10)"""
-
         score = 5.0  # Base score
 
         # Check for auto-scaling
@@ -397,21 +387,19 @@ class InfrastructureBuilderService:
         return min(10.0, score)
 
     def _calculate_cost_efficiency(
-        self, request: InfrastructureDesignRequest, total_cost: float
+        self, request: InfrastructureDesignRequest, total_cost: float,
     ) -> float:
         """Calculate cost efficiency score (0-10)"""
-
         # Calculate cost per expected RPS
         cost_per_rps = total_cost / max(1, request.expected_traffic)
 
         # Lower cost per RPS is better
         if cost_per_rps < 0.05:
             return 10.0
-        elif cost_per_rps < 0.1:
+        if cost_per_rps < 0.1:
             return 8.0
-        elif cost_per_rps < 0.2:
+        if cost_per_rps < 0.2:
             return 6.0
-        elif cost_per_rps < 0.5:
+        if cost_per_rps < 0.5:
             return 4.0
-        else:
-            return 2.0
+        return 2.0

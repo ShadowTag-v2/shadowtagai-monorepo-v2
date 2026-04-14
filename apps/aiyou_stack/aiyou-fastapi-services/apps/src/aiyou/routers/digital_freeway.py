@@ -1,5 +1,4 @@
-"""
-Digital Freeway ROI Calculator API Routes
+"""Digital Freeway ROI Calculator API Routes
 =========================================
 
 FastAPI router for traffic congestion and crash cost savings ROI calculations.
@@ -126,7 +125,7 @@ async def compare_scenarios(
     """Compare multiple scenarios"""
     try:
         result = calculator.calculate_scenario_comparison(
-            fleet_size=request.fleet_size, location=request.location.value
+            fleet_size=request.fleet_size, location=request.location.value,
         )
 
         return ScenarioComparisonResponse(

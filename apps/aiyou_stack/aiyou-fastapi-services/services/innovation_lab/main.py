@@ -1,5 +1,4 @@
-"""
-Innovation Lab Service - Main Application
+"""Innovation Lab Service - Main Application
 
 FastAPI application for AI-powered innovation, experimentation, and tech exploration.
 """
@@ -22,13 +21,12 @@ logger = logging.getLogger(__name__)
 
 
 def create_innovation_app() -> FastAPI:
-    """
-    Create and configure the Innovation Lab FastAPI application.
+    """Create and configure the Innovation Lab FastAPI application.
 
     Returns:
         FastAPI: Configured FastAPI application instance
-    """
 
+    """
     app = FastAPI(
         title=config.service_name,
         version=config.version,

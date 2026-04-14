@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-THE ANTIGRAVITY UNIBODY (v3.0)
+"""THE ANTIGRAVITY UNIBODY (v3.0)
 ------------------------------
 "Simplicity is the ultimate sophistication." - Da Vinci / Jobs
 
@@ -294,7 +293,7 @@ class Gucci:
                     "command": "./scripts/gucci_lifecycle.sh",
                     "group": {"kind": "build", "isDefault": True},
                     "presentation": {"reveal": "always", "panel": "dedicated"},
-                }
+                },
             ],
         }
         with open(vscode_dir / "tasks.json", "w") as f:

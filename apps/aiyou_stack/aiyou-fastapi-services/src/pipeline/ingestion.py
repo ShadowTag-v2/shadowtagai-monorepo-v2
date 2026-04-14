@@ -11,8 +11,7 @@ class IngestionPipeline:
         self.squadron = FLYING_MONKEYS_SQUADRON
 
     def receive(self, source_path: str):
-        """
-        WHO: Alpha Agents (Intake)
+        """WHO: Alpha Agents (Intake)
         WHEN: On 'ingest' trigger or nightly cron.
         """
         print(f"📥 ALPHA RECEIVING: {source_path}")
@@ -21,8 +20,7 @@ class IngestionPipeline:
         self.process(content_preview)
 
     def process(self, content: str):
-        """
-        WHO: Bravo Agents (Engineering)
+        """WHO: Bravo Agents (Engineering)
         HOW: Generate code/plan via Gemini Flash.
         """
         print("⚙️ BRAVO PROCESSING: Generates Plan...")
@@ -31,8 +29,7 @@ class IngestionPipeline:
         self.decide(plan)
 
     def decide(self, plan: str):
-        """
-        WHO: Judge 6 (Governance) + HHT (Strategy)
+        """WHO: Judge 6 (Governance) + HHT (Strategy)
         IF: Plan passes Filters (Regulatory + Risk).
         """
         print("⚖️ JUDGE DECIDING...")
@@ -45,8 +42,7 @@ class IngestionPipeline:
             print(f"🛑 JUDGE BLOCKED: {verdict}")
 
     def apply(self, plan: str):
-        """
-        WHO: Charlie Agents (CI/CD) + Antigravity (God Mode)
+        """WHO: Charlie Agents (CI/CD) + Antigravity (God Mode)
         HOW: Commit code, deploy container.
         """
         print(f"🚀 CHARLIE APPLYING: {plan} -> Committed to Repo.")

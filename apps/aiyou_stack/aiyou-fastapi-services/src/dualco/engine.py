@@ -1,5 +1,4 @@
-"""
-DualCo Strategy Engine Core Logic
+"""DualCo Strategy Engine Core Logic
 """
 
 import json
@@ -39,7 +38,7 @@ class DualCoEngine:
         )
         if not state:
             state = DualCoGateState(
-                gate_name=gate_name.value, status="PENDING", consecutive_failures=0
+                gate_name=gate_name.value, status="PENDING", consecutive_failures=0,
             )
             self.db.add(state)
             self.db.flush()
@@ -172,15 +171,13 @@ class DualCoEngine:
         )
 
     def run_evaluation_cycle(self, metrics: MetricsInput) -> DualCoStatus:
-        """
-        Main engine execution:
+        """Main engine execution:
         1. Access persistence (Gate States).
         2. Evaluate all Gates against MetricsInput.
         3. Update Persistence (increment/reset failure counts).
         4. Determine Kill Switch State.
         5. Persist Metric History.
         """
-
         # 1. Persist History
         history = DualCoMetricHistory(
             period_start=metrics.period_start,

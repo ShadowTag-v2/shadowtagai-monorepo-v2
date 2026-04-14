@@ -1,5 +1,4 @@
-"""
-Thread Rollup & Transfer Package System
+"""Thread Rollup & Transfer Package System
 Context preservation and session continuity
 
 Author: ShadowTag-v2JR System

@@ -76,7 +76,7 @@ class IntegrationService:
         return query.offset(skip).limit(limit).all()
 
     def update_integration(
-        self, integration_id: int, user_id: int, data: IntegrationUpdate
+        self, integration_id: int, user_id: int, data: IntegrationUpdate,
     ) -> Integration | None:
         """Update integration"""
         integration = self.get_integration(integration_id, user_id)
@@ -107,7 +107,7 @@ class IntegrationService:
         return True
 
     def add_credentials(
-        self, integration_id: int, user_id: int, credentials: IntegrationCredentialCreate
+        self, integration_id: int, user_id: int, credentials: IntegrationCredentialCreate,
     ) -> IntegrationCredential | None:
         """Add or update integration credentials"""
         integration = self.get_integration(integration_id, user_id)
@@ -116,12 +116,12 @@ class IntegrationService:
 
         # Delete existing credentials
         self.db.query(IntegrationCredential).filter(
-            IntegrationCredential.integration_id == integration_id
+            IntegrationCredential.integration_id == integration_id,
         ).delete()
 
         # Create new credentials
         credential = IntegrationCredential(
-            integration_id=integration_id, **credentials.model_dump()
+            integration_id=integration_id, **credentials.model_dump(),
         )
 
         self.db.add(credential)
@@ -188,7 +188,7 @@ class IntegrationService:
         try:
             async with httpx.AsyncClient(timeout=integration.timeout) as client:
                 response = await client.request(
-                    method=method, url=url, headers=request_headers, json=json_data, params=params
+                    method=method, url=url, headers=request_headers, json=json_data, params=params,
                 )
                 response.raise_for_status()
 
@@ -216,7 +216,7 @@ class IntegrationService:
             raise
 
     async def test_integration(
-        self, integration_id: int, user_id: int, test_request: IntegrationTestRequest | None = None
+        self, integration_id: int, user_id: int, test_request: IntegrationTestRequest | None = None,
     ) -> dict[str, Any]:
         """Test integration connection"""
         integration = self.get_integration(integration_id, user_id)

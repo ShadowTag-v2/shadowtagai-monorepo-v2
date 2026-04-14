@@ -14,20 +14,20 @@ class WidgetCreate(BaseModel):
     description: str | None = Field(None, description="Widget description")
     widget_type: str = Field(..., description="Widget type (chart, table, metric, funnel)")
     visualization_type: str | None = Field(
-        None, description="Visualization type (line, bar, pie, area)"
+        None, description="Visualization type (line, bar, pie, area)",
     )
     metric_type: str | None = Field(
-        None, description="Metric type (event_count, user_count, conversion_rate)"
+        None, description="Metric type (event_count, user_count, conversion_rate)",
     )
     event_filters: dict[str, Any] | None = Field(default_factory=dict, description="Event filters")
     time_range: str | None = Field(default="7d", description="Time range (7d, 30d, 90d)")
     group_by: list[str] | None = Field(default_factory=list, description="Fields to group by")
     position: dict[str, int] | None = Field(default_factory=dict, description="Widget position")
     chart_config: dict[str, Any] | None = Field(
-        default_factory=dict, description="Chart configuration"
+        default_factory=dict, description="Chart configuration",
     )
     refresh_interval_seconds: int | None = Field(
-        default=300, description="Refresh interval in seconds"
+        default=300, description="Refresh interval in seconds",
     )
 
 
@@ -63,7 +63,7 @@ class DashboardCreate(BaseModel):
     layout: dict[str, Any] | None = Field(default_factory=dict, description="Layout configuration")
     tags: list[str] | None = Field(default_factory=list, description="Tags")
     widgets: list[WidgetCreate] | None = Field(
-        default_factory=list, description="Dashboard widgets"
+        default_factory=list, description="Dashboard widgets",
     )
 
     class Config:
@@ -79,9 +79,9 @@ class DashboardCreate(BaseModel):
                         "visualization_type": "line",
                         "metric_type": "user_count",
                         "time_range": "30d",
-                    }
+                    },
                 ],
-            }
+            },
         }
 
 

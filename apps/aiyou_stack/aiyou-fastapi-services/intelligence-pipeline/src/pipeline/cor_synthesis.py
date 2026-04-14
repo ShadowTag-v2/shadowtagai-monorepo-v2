@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence Pipeline - Cor Brain Synthesis
+"""PNKLN Intelligence Pipeline - Cor Brain Synthesis
 
 Cor Brain provides executive-level synthesis for Tier 1 items.
 Uses Claude Sonnet for high-quality strategic analysis.
@@ -25,16 +24,15 @@ logger = logging.getLogger(__name__)
 
 
 class CorBrainEngine:
-    """
-    Cor Brain synthesis engine for Tier 1 items
+    """Cor Brain synthesis engine for Tier 1 items
     """
 
     def __init__(self, api_key: str | None = None):
-        """
-        Initialize Cor Brain engine
+        """Initialize Cor Brain engine
 
         Args:
             api_key: Anthropic API key (defaults to env var)
+
         """
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -44,14 +42,14 @@ class CorBrainEngine:
         logger.info("CorBrainEngine initialized")
 
     async def synthesize_tier1_items(self, items: list[IntelligenceItem]) -> list[IntelligenceItem]:
-        """
-        Synthesize Tier 1 items using Cor Brain
+        """Synthesize Tier 1 items using Cor Brain
 
         Args:
             items: List of classified intelligence items
 
         Returns:
             Same list with cor_synthesis populated for Tier 1 items
+
         """
         tier1_items = [item for item in items if item.tier == IntelligenceTier.TIER_1]
 
@@ -68,7 +66,7 @@ class CorBrainEngine:
 
             except Exception as e:
                 logger.error(f"Error synthesizing item {item.id}: {e}")
-                item.cor_synthesis = f"Synthesis failed: {str(e)}"
+                item.cor_synthesis = f"Synthesis failed: {e!s}"
                 item.action_items = []
 
         duration = (datetime.now() - start_time).total_seconds()
@@ -77,14 +75,14 @@ class CorBrainEngine:
         return items
 
     async def synthesize_item(self, item: IntelligenceItem) -> CorSynthesis:
-        """
-        Synthesize a single Tier 1 item
+        """Synthesize a single Tier 1 item
 
         Args:
             item: Tier 1 intelligence item
 
         Returns:
             CorSynthesis with executive summary and recommendations
+
         """
         prompt = self._build_synthesis_prompt(item)
 
@@ -123,14 +121,14 @@ class CorBrainEngine:
             )
 
     def _build_synthesis_prompt(self, item: IntelligenceItem) -> str:
-        """
-        Build synthesis prompt for Cor Brain
+        """Build synthesis prompt for Cor Brain
 
         Args:
             item: Tier 1 intelligence item
 
         Returns:
             Prompt string
+
         """
         return f"""You are Cor, the Chief Intelligence Officer for PNKLN, providing executive briefings.
 
@@ -182,11 +180,10 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """
-    Main Cor Brain synthesis entry point
+    """Main Cor Brain synthesis entry point
     """
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load classified items

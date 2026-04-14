@@ -1,5 +1,4 @@
-"""
-PNKLN Core Stack - ShadowTag Neural Hash
+"""PNKLN Core Stack - ShadowTag Neural Hash
 
 Multi-hash fingerprinting system for media authentication:
 - Perceptual hashing (robust to minor edits)
@@ -19,7 +18,7 @@ from typing import Literal
 import numpy as np
 import structlog
 import torch
-import torch.nn as nn
+from torch import nn
 
 logger = structlog.get_logger(__name__)
 
@@ -50,8 +49,7 @@ class NeuralFingerprint:
 
 
 class PerceptualHasher:
-    """
-    Perceptual hashing for robust media fingerprinting.
+    """Perceptual hashing for robust media fingerprinting.
 
     Generates hashes that are:
     - Resilient to minor edits (compression, resize, color adjust)
@@ -61,14 +59,14 @@ class PerceptualHasher:
 
     @staticmethod
     def hash_image(image_data: bytes) -> str:
-        """
-        Generate perceptual hash for image using difference hash (dHash).
+        """Generate perceptual hash for image using difference hash (dHash).
 
         Args:
             image_data: Raw image bytes
 
         Returns:
             64-character hex string
+
         """
         # TODO: Implement actual perceptual hashing with PIL/OpenCV
         # For now, use placeholder SHA-256 (replace with real dHash)
@@ -79,8 +77,7 @@ class PerceptualHasher:
 
     @staticmethod
     def hash_video(video_data: bytes, _sample_frames: int = 10) -> str:
-        """
-        Generate perceptual hash for video by sampling keyframes.
+        """Generate perceptual hash for video by sampling keyframes.
 
         Args:
             video_data: Raw video bytes
@@ -88,6 +85,7 @@ class PerceptualHasher:
 
         Returns:
             64-character hex string
+
         """
         # TODO: Implement video frame sampling + aggregated hash
         hasher = hashlib.sha256()
@@ -96,14 +94,14 @@ class PerceptualHasher:
 
     @staticmethod
     def hash_audio(audio_data: bytes) -> str:
-        """
-        Generate perceptual hash for audio using acoustic fingerprinting.
+        """Generate perceptual hash for audio using acoustic fingerprinting.
 
         Args:
             audio_data: Raw audio bytes
 
         Returns:
             64-character hex string
+
         """
         # TODO: Implement acoustic fingerprinting (e.g., Chromaprint)
         hasher = hashlib.sha256()
@@ -112,14 +110,14 @@ class PerceptualHasher:
 
     @staticmethod
     def hash_text(text: str) -> str:
-        """
-        Generate perceptual hash for text using SimHash.
+        """Generate perceptual hash for text using SimHash.
 
         Args:
             text: Text content
 
         Returns:
             64-character hex string
+
         """
         # TODO: Implement SimHash for near-duplicate text detection
         hasher = hashlib.sha256()
@@ -128,8 +126,7 @@ class PerceptualHasher:
 
 
 class SemanticEmbedder(nn.Module):
-    """
-    Neural network for semantic content embedding.
+    """Neural network for semantic content embedding.
 
     Based on "neural PDF" concept from your research papers:
     - Latent density scoring
@@ -151,18 +148,18 @@ class SemanticEmbedder(nn.Module):
 
         # Energy model head (for density scoring)
         self.energy_head = nn.Sequential(
-            nn.Linear(embedding_dim, 128), nn.ReLU(), nn.Linear(128, 1)
+            nn.Linear(embedding_dim, 128), nn.ReLU(), nn.Linear(128, 1),
         )
 
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        """
-        Forward pass.
+        """Forward pass.
 
         Args:
             x: Input features (batch_size, input_dim)
 
         Returns:
             Tuple of (embeddings, energy_scores)
+
         """
         embeddings = self.encoder(x)
         energy_scores = self.energy_head(embeddings)
@@ -171,8 +168,7 @@ class SemanticEmbedder(nn.Module):
 
 
 class NeuralHasher:
-    """
-    Main neural hashing engine combining multiple hash types.
+    """Main neural hashing engine combining multiple hash types.
 
     Implements the "Neural Hash" layer from ShadowTag architecture:
     - Perceptual hashing for robustness
@@ -203,8 +199,7 @@ class NeuralHasher:
         asset_id: str | None = None,
         metadata: dict | None = None,
     ) -> NeuralFingerprint:
-        """
-        Generate multi-hash fingerprint for a media asset.
+        """Generate multi-hash fingerprint for a media asset.
 
         Args:
             data: Raw asset bytes
@@ -214,6 +209,7 @@ class NeuralHasher:
 
         Returns:
             NeuralFingerprint containing all hash types
+
         """
         # Generate asset ID if not provided
         if asset_id is None:
@@ -269,11 +265,11 @@ class NeuralHasher:
         return fingerprint
 
     def _generate_semantic_hash(self, data: bytes, asset_type: str) -> tuple[str, float]:
-        """
-        Generate semantic hash and density score using neural model.
+        """Generate semantic hash and density score using neural model.
 
         Returns:
             Tuple of (base64_encoded_embedding, density_score)
+
         """
         # TODO: Implement actual feature extraction per asset type
         # For now, use random features as placeholder
@@ -296,10 +292,9 @@ class NeuralHasher:
         return semantic_hash, float(density_score)
 
     def verify_fingerprint(
-        self, data: bytes, fingerprint: NeuralFingerprint, tolerance: float = 0.95
+        self, data: bytes, fingerprint: NeuralFingerprint, tolerance: float = 0.95,
     ) -> dict:
-        """
-        Verify asset against stored fingerprint.
+        """Verify asset against stored fingerprint.
 
         Args:
             data: Asset bytes to verify
@@ -308,6 +303,7 @@ class NeuralHasher:
 
         Returns:
             Verification result dict
+
         """
         # Generate new fingerprint
         new_fp = self.hash_asset(data, fingerprint.asset_type, asset_id=fingerprint.asset_id)
@@ -317,12 +313,12 @@ class NeuralHasher:
 
         # Check perceptual hash (Hamming distance)
         perceptual_similarity = self._hamming_similarity(
-            new_fp.perceptual_hash, fingerprint.perceptual_hash
+            new_fp.perceptual_hash, fingerprint.perceptual_hash,
         )
 
         # Check semantic hash (cosine similarity)
         semantic_similarity = self._cosine_similarity(
-            new_fp.semantic_hash, fingerprint.semantic_hash
+            new_fp.semantic_hash, fingerprint.semantic_hash,
         )
 
         # Overall match decision

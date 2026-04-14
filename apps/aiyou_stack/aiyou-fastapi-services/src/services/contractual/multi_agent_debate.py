@@ -1,5 +1,4 @@
-"""
-Multi-Agent Debate (MAD) System for Conflict Detection
+"""Multi-Agent Debate (MAD) System for Conflict Detection
 
 This module implements a panel debate system where multiple AI agents
 analyze negotiations from different perspectives and reach consensus.
@@ -30,8 +29,7 @@ from pydantic import BaseModel
 
 
 class Glicko2Player:
-    """
-    Glicko-2 rating system for tracking AI strategy quality
+    """Glicko-2 rating system for tracking AI strategy quality
 
     Improvements over Elo:
     - Tracks rating deviation (RD) - uncertainty in rating
@@ -47,13 +45,13 @@ class Glicko2Player:
     """
 
     def __init__(self, rating: float = 1500, rd: float = 350, vol: float = 0.06):
-        """
-        Initialize Glicko-2 player
+        """Initialize Glicko-2 player
 
         Args:
             rating: Initial rating (μ), default 1500
             rd: Initial rating deviation, default 350 (high uncertainty)
             vol: Initial volatility (σ), default 0.06
+
         """
         # Convert to Glicko-2 scale
         self.mu = (rating - 1500) / 173.7178
@@ -73,8 +71,7 @@ class Glicko2Player:
         return self.sigma
 
     def update(self, opponents: list[tuple], tau: float = 0.5, tol: float = 1e-6) -> None:
-        """
-        Update rating based on match results
+        """Update rating based on match results
 
         Args:
             opponents: List of (opponent_rating, opponent_rd, score) tuples
@@ -89,8 +86,8 @@ class Glicko2Player:
         4. Update volatility σ using iterative algorithm
         5. Update RD ϕ
         6. Update rating μ
-        """
 
+        """
         # Step 1: Convert opponent ratings
         g_list = []
         e_list = []
@@ -184,8 +181,7 @@ class Glicko2Player:
 
 @dataclass
 class CheatSheetPrompt:
-    """
-    DTE-evolved Cheat Sheet prompt for conflict detection
+    """DTE-evolved Cheat Sheet prompt for conflict detection
 
     10 essential elements (evolved from 21):
     1. Objective
@@ -415,8 +411,7 @@ class DetectedConflict(BaseModel):
 
 
 class MultiAgentDebateSystem:
-    """
-    Panel debate system for conflict detection
+    """Panel debate system for conflict detection
 
     Uses 3 agents with different perspectives:
     - Conservative: High sensitivity, flags everything
@@ -432,11 +427,11 @@ class MultiAgentDebateSystem:
     """
 
     def __init__(self, ai_client=None):
-        """
-        Initialize multi-agent debate system
+        """Initialize multi-agent debate system
 
         Args:
             ai_client: Anthropic Claude API client (optional for planning phase)
+
         """
         self.ai_client = ai_client
 
@@ -460,8 +455,7 @@ class MultiAgentDebateSystem:
         }
 
     async def analyze_with_panel(self, transcript) -> list[DetectedConflict]:
-        """
-        Analyze transcript using multi-agent panel debate
+        """Analyze transcript using multi-agent panel debate
 
         Args:
             transcript: Transcript object with text and segments
@@ -475,8 +469,8 @@ class MultiAgentDebateSystem:
         3. Identify disputed conflicts (agents disagree)
         4. Debate disputed conflicts
         5. Neutral agent synthesizes final list
-        """
 
+        """
         # Step 1: Independent analysis by each agent
         analyses = {}
         for role, agent in self.agents.items():
@@ -492,12 +486,12 @@ class MultiAgentDebateSystem:
         # Step 4: Debate disputed conflicts
         if disputed_conflicts:
             debate_result = await self._conduct_debate(
-                transcript=transcript, disputed=disputed_conflicts, analyses=analyses
+                transcript=transcript, disputed=disputed_conflicts, analyses=analyses,
             )
 
             # Step 5: Neutral agent synthesizes
             final_conflicts = await self._synthesize_consensus(
-                consensus=consensus_conflicts, debate_result=debate_result
+                consensus=consensus_conflicts, debate_result=debate_result,
             )
         else:
             final_conflicts = consensus_conflicts
@@ -505,8 +499,7 @@ class MultiAgentDebateSystem:
         return final_conflicts
 
     async def _analyze_with_agent(self, transcript, agent: DebateAgent) -> list[DetectedConflict]:
-        """
-        Single agent analyzes transcript
+        """Single agent analyzes transcript
 
         Args:
             transcript: Transcript object
@@ -514,8 +507,8 @@ class MultiAgentDebateSystem:
 
         Returns:
             List of conflicts detected by this agent
-        """
 
+        """
         if not self.ai_client:
             # Mock implementation for planning phase
             return self._mock_agent_analysis(transcript, agent)
@@ -548,17 +541,15 @@ class MultiAgentDebateSystem:
         return conflicts
 
     def _find_consensus(
-        self, analyses: dict[AgentRole, list[DetectedConflict]]
+        self, analyses: dict[AgentRole, list[DetectedConflict]],
     ) -> list[DetectedConflict]:
-        """
-        Find conflicts where all 3 agents agree
+        """Find conflicts where all 3 agents agree
 
         Two conflicts are "the same" if they have:
         - Same topic
         - Same party A proposal value (within 5%)
         - Same party B proposal value (within 5%)
         """
-
         conservative = set(
             (c.topic, c.party_a_proposal.value, c.party_b_proposal.value)
             for c in analyses[AgentRole.CONSERVATIVE]
@@ -585,13 +576,12 @@ class MultiAgentDebateSystem:
         return consensus_conflicts
 
     def _find_disputes(self, analyses: dict[AgentRole, list[DetectedConflict]]) -> list[tuple]:
-        """
-        Find conflicts where agents disagree
+        """Find conflicts where agents disagree
 
         Returns:
             List of (topic, agents_who_flagged) tuples
-        """
 
+        """
         all_conflicts = {}  # {(topic, a_val, b_val): [agents who flagged]}
 
         for role, conflicts in analyses.items():
@@ -611,10 +601,9 @@ class MultiAgentDebateSystem:
         return disputes
 
     async def _conduct_debate(
-        self, transcript, disputed: list[tuple], analyses: dict[AgentRole, list[DetectedConflict]]
+        self, transcript, disputed: list[tuple], analyses: dict[AgentRole, list[DetectedConflict]],
     ) -> dict[str, Any]:
-        """
-        Conduct panel debate on disputed conflicts
+        """Conduct panel debate on disputed conflicts
 
         Args:
             transcript: Original transcript
@@ -623,8 +612,8 @@ class MultiAgentDebateSystem:
 
         Returns:
             Debate result with consensus recommendations
-        """
 
+        """
         if not self.ai_client:
             # Mock implementation
             return {"resolved": [], "escalate_to_human": []}
@@ -674,10 +663,9 @@ OUTPUT FORMAT:
         return debate_result
 
     async def _synthesize_consensus(
-        self, consensus: list[DetectedConflict], debate_result: dict[str, Any]
+        self, consensus: list[DetectedConflict], debate_result: dict[str, Any],
     ) -> list[DetectedConflict]:
-        """
-        Synthesize final conflict list from consensus + debate
+        """Synthesize final conflict list from consensus + debate
 
         Args:
             consensus: Conflicts where all agents initially agreed
@@ -685,8 +673,8 @@ OUTPUT FORMAT:
 
         Returns:
             Final list of conflicts to present to user
-        """
 
+        """
         final_conflicts = list(consensus)  # Start with consensus conflicts
 
         # Add resolved conflicts from debate (where is_conflict = true)
@@ -746,7 +734,7 @@ OUTPUT FORMAT:
                         confidence=0.85,
                     ),
                     party_b_proposal=Term(
-                        topic="timeline", value="ASAP", normalized=7, context="...", confidence=0.70
+                        topic="timeline", value="ASAP", normalized=7, context="...", confidence=0.70,
                     ),
                     confidence=0.78,
                     explanation="Timeline ambiguity",
@@ -756,7 +744,7 @@ OUTPUT FORMAT:
             ]
 
         # Liberal finds fewer (only clear conflicts)
-        elif agent.role == AgentRole.LIBERAL:
+        if agent.role == AgentRole.LIBERAL:
             return [
                 DetectedConflict(
                     id=uuid4(),
@@ -780,42 +768,40 @@ OUTPUT FORMAT:
                     explanation="Payment amount conflict",
                     severity="high",
                     detected_by=AgentRole.LIBERAL,
-                )
+                ),
             ]
 
         # Neutral is balanced
-        else:
-            return [
-                DetectedConflict(
-                    id=uuid4(),
-                    session_id=transcript.id,
+        return [
+            DetectedConflict(
+                id=uuid4(),
+                session_id=transcript.id,
+                topic="payment_terms",
+                party_a_proposal=Term(
                     topic="payment_terms",
-                    party_a_proposal=Term(
-                        topic="payment_terms",
-                        value="$500",
-                        normalized=500,
-                        context="...",
-                        confidence=0.95,
-                    ),
-                    party_b_proposal=Term(
-                        topic="payment_terms",
-                        value="$450",
-                        normalized=450,
-                        context="...",
-                        confidence=0.92,
-                    ),
-                    confidence=0.93,
-                    explanation="Payment amount conflict",
-                    severity="high",
-                    detected_by=AgentRole.NEUTRAL,
-                )
-            ]
+                    value="$500",
+                    normalized=500,
+                    context="...",
+                    confidence=0.95,
+                ),
+                party_b_proposal=Term(
+                    topic="payment_terms",
+                    value="$450",
+                    normalized=450,
+                    context="...",
+                    confidence=0.92,
+                ),
+                confidence=0.93,
+                explanation="Payment amount conflict",
+                severity="high",
+                detected_by=AgentRole.NEUTRAL,
+            ),
+        ]
 
     async def update_glicko_ratings(
-        self, conflicts: list[DetectedConflict], user_feedback: dict[UUID, bool]
+        self, conflicts: list[DetectedConflict], user_feedback: dict[UUID, bool],
     ) -> None:
-        """
-        Update Glicko-2 ratings based on user feedback
+        """Update Glicko-2 ratings based on user feedback
 
         Args:
             conflicts: List of detected conflicts
@@ -826,8 +812,8 @@ OUTPUT FORMAT:
         - Update that agent's Glicko rating based on user agreement
         - Agents that detect conflicts users agree with gain rating
         - Agents that flag false positives lose rating
-        """
 
+        """
         for conflict in conflicts:
             agent_role = conflict.detected_by
             agent = self.agents[agent_role]

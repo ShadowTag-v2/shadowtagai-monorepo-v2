@@ -2,8 +2,7 @@ import re
 
 
 def scrub_code(code_str: str) -> str:
-    """
-    Removes attribution, timestamps, and metadata to ensure a 'White Label' artifact.
+    """Removes attribution, timestamps, and metadata to ensure a 'White Label' artifact.
     Essential for Tier 3 'Sovereign' clients.
     """
     # Remove shebangs and author tags

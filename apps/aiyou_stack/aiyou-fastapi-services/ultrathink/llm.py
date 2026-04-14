@@ -1,5 +1,4 @@
-"""
-LLM Executor: Unified interface for calling LLMs (Anthropic, OpenAI, Vertex AI).
+"""LLM Executor: Unified interface for calling LLMs (Anthropic, OpenAI, Vertex AI).
 
 Design principles:
 - Single interface for all providers
@@ -42,8 +41,7 @@ class LLMResponse(BaseModel):
 
 
 class LLMExecutor:
-    """
-    Unified LLM executor with retry logic and cost tracking.
+    """Unified LLM executor with retry logic and cost tracking.
 
     Usage:
         executor = LLMExecutor()
@@ -86,12 +84,12 @@ class LLMExecutor:
         api_key: str | None = None,
         provider: Literal["anthropic", "openai", "vertex"] = "anthropic",
     ):
-        """
-        Initialize LLM executor.
+        """Initialize LLM executor.
 
         Args:
             api_key: API key (defaults to settings)
             provider: Which LLM provider to use
+
         """
         self.provider = provider
         self.api_key = api_key or settings.anthropic_api_key
@@ -120,8 +118,7 @@ class LLMExecutor:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> LLMResponse:
-        """
-        Execute a prompt against the LLM.
+        """Execute a prompt against the LLM.
 
         Args:
             prompt: User prompt/query
@@ -136,6 +133,7 @@ class LLMExecutor:
         Raises:
             ValueError: If no API key in production
             anthropic.APIError: If API call fails after retries
+
         """
         # Use defaults from settings
         model = model or settings.anthropic_model
@@ -238,8 +236,7 @@ class LLMExecutor:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> AsyncIterator[str]:
-        """
-        Stream LLM response token by token.
+        """Stream LLM response token by token.
 
         Usage:
             async for chunk in executor.stream("Tell me a story"):

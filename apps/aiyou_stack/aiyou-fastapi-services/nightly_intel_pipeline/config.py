@@ -1,5 +1,4 @@
-"""
-Configuration for Nightly Intel Pipeline
+"""Configuration for Nightly Intel Pipeline
 ATP 5-19 Risk Management Framework Implementation
 """
 

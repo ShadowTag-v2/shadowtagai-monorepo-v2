@@ -1,5 +1,4 @@
-"""
-Unit tests for Monte Carlo risk assessment (concurrent execution pattern).
+"""Unit tests for Monte Carlo risk assessment (concurrent execution pattern).
 """
 
 import asyncio

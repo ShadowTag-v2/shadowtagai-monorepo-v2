@@ -1,5 +1,4 @@
-"""
-Retry Logic with Exponential Backoff
+"""Retry Logic with Exponential Backoff
 
 Used across all UnGPT layers for resilient API calls.
 """
@@ -16,7 +15,6 @@ T = TypeVar("T")
 class RetryExhausted(Exception):
     """All retry attempts exhausted"""
 
-    pass
 
 
 async def with_retry(
@@ -29,8 +27,7 @@ async def with_retry(
     jitter: bool = True,
     **kwargs,
 ) -> T:
-    """
-    Execute async function with exponential backoff retry.
+    """Execute async function with exponential backoff retry.
 
     Args:
         func: Async function to execute
@@ -47,6 +44,7 @@ async def with_retry(
 
     Raises:
         RetryExhausted: If all retries fail
+
     """
     last_exception = None
 
@@ -55,8 +53,7 @@ async def with_retry(
             # Call the function
             if asyncio.iscoroutinefunction(func):
                 return await func(*args, **kwargs)
-            else:
-                return func(*args, **kwargs)
+            return func(*args, **kwargs)
 
         except Exception as e:
             last_exception = e
@@ -81,8 +78,7 @@ async def with_retry(
 
 
 def retry_decorator(max_retries: int = 3, base_delay: float = 1.0, max_delay: float = 30.0):
-    """
-    Decorator version of retry logic.
+    """Decorator version of retry logic.
 
     Usage:
         @retry_decorator(max_retries=3)

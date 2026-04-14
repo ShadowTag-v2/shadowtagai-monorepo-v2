@@ -1,5 +1,4 @@
-"""
-AgentOps Integration: Full observability for autonomous agents.
+"""AgentOps Integration: Full observability for autonomous agents.
 
 Provides:
 - Session tracking across multi-cycle workflows
@@ -43,8 +42,7 @@ class AgentSession:
 
 
 class AgentOpsTracker:
-    """
-    AgentOps integration for Kosmos agents.
+    """AgentOps integration for Kosmos agents.
 
     Tracks:
     - Multi-agent sessions across workflow phases
@@ -60,13 +58,13 @@ class AgentOpsTracker:
         auto_start_session: bool = True,
         tags: list[str] | None = None,
     ):
-        """
-        Initialize AgentOps tracker.
+        """Initialize AgentOps tracker.
 
         Args:
             api_key: AgentOps API key (reads from AGENTOPS_API_KEY env var if None)
             auto_start_session: Whether to auto-start a session
             tags: Default tags for all sessions
+
         """
         if not AGENTOPS_AVAILABLE:
             logger.warning("AgentOps not available - tracking will be no-op")
@@ -95,8 +93,7 @@ class AgentOpsTracker:
         session_id: str | None = None,
         tags: list[str] | None = None,
     ) -> str:
-        """
-        Start a new AgentOps session for tracking.
+        """Start a new AgentOps session for tracking.
 
         Args:
             goal: Research goal/task description
@@ -106,6 +103,7 @@ class AgentOpsTracker:
 
         Returns:
             Session ID
+
         """
         if not self.enabled:
             return "no-op"
@@ -144,12 +142,12 @@ class AgentOpsTracker:
         result: str = "success",
         final_output: str | None = None,
     ):
-        """
-        End the current AgentOps session.
+        """End the current AgentOps session.
 
         Args:
             result: Session result ("success", "failure", "timeout")
             final_output: Optional final output/answer
+
         """
         if not self.enabled or not self.current_session:
             return
@@ -169,17 +167,17 @@ class AgentOpsTracker:
         agentops.end_session(result)
 
         logger.info(
-            f"Ended AgentOps session: {self.current_session.session_id} with result: {result}"
+            f"Ended AgentOps session: {self.current_session.session_id} with result: {result}",
         )
         self.current_session = None
 
     def record_thought(self, iteration: int, thought: str):
-        """
-        Record a reasoning thought from ReAct loop.
+        """Record a reasoning thought from ReAct loop.
 
         Args:
             iteration: Loop iteration number
             thought: Thought/reasoning text
+
         """
         self.record_event(
             event_type="thought",
@@ -195,13 +193,13 @@ class AgentOpsTracker:
         action: str,
         action_input: Any,
     ):
-        """
-        Record an action (tool invocation) from ReAct loop.
+        """Record an action (tool invocation) from ReAct loop.
 
         Args:
             iteration: Loop iteration number
             action: Tool name
             action_input: Tool parameters
+
         """
         self.record_event(
             event_type="action",
@@ -219,14 +217,14 @@ class AgentOpsTracker:
         tokens: int | None = None,
         cost: float | None = None,
     ):
-        """
-        Record an observation (tool result) from ReAct loop.
+        """Record an observation (tool result) from ReAct loop.
 
         Args:
             iteration: Loop iteration number
             observation: Tool result text
             tokens: Optional token count
             cost: Optional cost in USD
+
         """
         self.record_event(
             event_type="observation",
@@ -240,12 +238,12 @@ class AgentOpsTracker:
         )
 
     def record_react_step(self, step: ReActStep, cost: float | None = None):
-        """
-        Record a complete ReAct step (thought + action + observation).
+        """Record a complete ReAct step (thought + action + observation).
 
         Args:
             step: ReActStep instance
             cost: Optional cost for this step
+
         """
         if not self.enabled:
             return
@@ -259,11 +257,11 @@ class AgentOpsTracker:
             self.record_observation(step.iteration, step.observation, cost=cost)
 
     def record_react_result(self, result: ReActResult):
-        """
-        Record a complete ReAct cycle result.
+        """Record a complete ReAct cycle result.
 
         Args:
             result: ReActResult instance
+
         """
         if not self.enabled:
             return
@@ -284,12 +282,12 @@ class AgentOpsTracker:
         event_type: str,
         data: dict[str, Any],
     ):
-        """
-        Record a custom event.
+        """Record a custom event.
 
         Args:
             event_type: Type of event
             data: Event data dictionary
+
         """
         if not self.enabled:
             return
@@ -299,7 +297,7 @@ class AgentOpsTracker:
                 agentops.Event(
                     event_type=event_type,
                     **data,
-                )
+                ),
             )
         except Exception as e:
             logger.error(f"Failed to record AgentOps event: {e}")
@@ -310,13 +308,13 @@ class AgentOpsTracker:
         error_message: str,
         context: dict[str, Any] | None = None,
     ):
-        """
-        Record an error event.
+        """Record an error event.
 
         Args:
             error_type: Error type/category
             error_message: Error message
             context: Optional error context
+
         """
         self.record_event(
             event_type="error",

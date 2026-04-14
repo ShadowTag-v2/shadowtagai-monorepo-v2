@@ -1,5 +1,4 @@
-"""
-LLM Client Factory
+"""LLM Client Factory
 """
 
 # Conditional imports to avoid hard crashes if packages missing,
@@ -24,8 +23,7 @@ settings = get_settings()
 
 
 def get_cheap_llm(temperature: float = 0.0):
-    """
-    Returns the 'Tier 0' cheap model (Gemini Flash).
+    """Returns the 'Tier 0' cheap model (Gemini Flash).
     Fails over to OpenAI if configured/needed, or raises error.
     """
     if HAS_GOOGLE and settings.gemini_api_key:
@@ -39,15 +37,14 @@ def get_cheap_llm(temperature: float = 0.0):
     # Fallback to OpenAI if configured (e.g. gpt-4o-mini or similar cheap model)
     if HAS_OPENAI and settings.openai_api_key:
         return ChatOpenAI(
-            model="gpt-4o-mini", api_key=settings.openai_api_key, temperature=temperature
+            model="gpt-4o-mini", api_key=settings.openai_api_key, temperature=temperature,
         )
 
     raise RuntimeError("No cheap LLM provider configured (Gemini or OpenAI)")
 
 
 def get_strong_llm(temperature: float = 0.0):
-    """
-    Returns the 'Tier 2' strong model (GPT-4o or similar).
+    """Returns the 'Tier 2' strong model (GPT-4o or similar).
     """
     if HAS_OPENAI and settings.openai_api_key:
         return ChatOpenAI(model="gpt-4o", api_key=settings.openai_api_key, temperature=temperature)

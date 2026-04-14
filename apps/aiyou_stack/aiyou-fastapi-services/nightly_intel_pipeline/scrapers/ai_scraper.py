@@ -1,5 +1,4 @@
-"""
-AI-Powered Scraper Client
+"""AI-Powered Scraper Client
 Unified interface for AI-powered web scraping services
 Supports Firecrawl and Browse AI for 95%+ extraction accuracy
 """
@@ -86,8 +85,7 @@ class StructuredData:
 
 
 class AIScraperClient:
-    """
-    Unified interface for AI-powered scrapers
+    """Unified interface for AI-powered scrapers
 
     Features:
     - Automatic provider selection based on availability
@@ -106,12 +104,12 @@ class AIScraperClient:
     """
 
     def __init__(self, provider: str | None = None, config: dict | None = None):
-        """
-        Initialize AI scraper client
+        """Initialize AI scraper client
 
         Args:
             provider: Specific provider to use (firecrawl, browse_ai, httpx)
             config: Optional override configuration
+
         """
         self.config = config or AI_SCRAPER_CONFIG
         self.provider = provider or self.config["default_provider"]
@@ -159,10 +157,9 @@ class AIScraperClient:
         return "httpx"  # Always have httpx
 
     async def scrape(
-        self, url: str, wait_for: str | None = None, include_html: bool = False
+        self, url: str, wait_for: str | None = None, include_html: bool = False,
     ) -> ScrapeResult:
-        """
-        Scrape URL using AI-powered extraction
+        """Scrape URL using AI-powered extraction
 
         Args:
             url: URL to scrape
@@ -171,6 +168,7 @@ class AIScraperClient:
 
         Returns:
             ScrapeResult with extracted content
+
         """
         provider = self._get_best_provider()
         start_time = datetime.now()
@@ -219,11 +217,11 @@ class AIScraperClient:
 
             # Return error result
             return ScrapeResult(
-                url=url, title="", content="", markdown="", success=False, error=str(e)
+                url=url, title="", content="", markdown="", success=False, error=str(e),
             )
 
     async def _scrape_firecrawl(
-        self, url: str, wait_for: str | None, include_html: bool
+        self, url: str, wait_for: str | None, include_html: bool,
     ) -> ScrapeResult:
         """Scrape using Firecrawl API"""
         api_key = self._api_keys["firecrawl"]
@@ -261,7 +259,7 @@ class AIScraperClient:
             )
 
     async def _scrape_browse_ai(
-        self, url: str, wait_for: str | None, include_html: bool
+        self, url: str, wait_for: str | None, include_html: bool,
     ) -> ScrapeResult:
         """Scrape using Browse AI API"""
         api_key = self._api_keys["browse_ai"]
@@ -323,7 +321,7 @@ class AIScraperClient:
             # Remove script and style tags
             clean_html = re.sub(r"<script.*?</script>", "", html, flags=re.IGNORECASE | re.DOTALL)
             clean_html = re.sub(
-                r"<style.*?</style>", "", clean_html, flags=re.IGNORECASE | re.DOTALL
+                r"<style.*?</style>", "", clean_html, flags=re.IGNORECASE | re.DOTALL,
             )
 
             # Extract text content
@@ -343,8 +341,7 @@ class AIScraperClient:
             )
 
     async def extract_structured(self, url: str, schema: dict[str, str]) -> StructuredData:
-        """
-        Extract structured data using AI
+        """Extract structured data using AI
 
         Args:
             url: URL to extract from
@@ -353,15 +350,15 @@ class AIScraperClient:
 
         Returns:
             StructuredData with extracted fields
+
         """
         provider = self._get_best_provider()
 
         if provider == "firecrawl":
             return await self._extract_firecrawl(url, schema)
-        else:
-            # Fall back to basic scrape + heuristic extraction
-            result = await self.scrape(url)
-            return self._heuristic_extract(result, schema)
+        # Fall back to basic scrape + heuristic extraction
+        result = await self.scrape(url)
+        return self._heuristic_extract(result, schema)
 
     async def _extract_firecrawl(self, url: str, schema: dict[str, str]) -> StructuredData:
         """Use Firecrawl's extraction mode"""
@@ -385,7 +382,7 @@ class AIScraperClient:
             extracted = data.get("data", {}).get("llm_extraction", {})
 
             return StructuredData(
-                url=url, schema_name="custom", data=extracted, confidence=0.94, provider="firecrawl"
+                url=url, schema_name="custom", data=extracted, confidence=0.94, provider="firecrawl",
             )
 
     def _heuristic_extract(self, result: ScrapeResult, schema: dict[str, str]) -> StructuredData:
@@ -449,8 +446,7 @@ class AIScraperClient:
 
 # Convenience functions
 async def ai_scrape(url: str, provider: str | None = None) -> ScrapeResult:
-    """
-    Quick AI-powered scrape
+    """Quick AI-powered scrape
 
     Usage:
         result = await ai_scrape("https://example.com")
@@ -461,8 +457,7 @@ async def ai_scrape(url: str, provider: str | None = None) -> ScrapeResult:
 
 
 async def ai_extract(url: str, schema: dict[str, str]) -> StructuredData:
-    """
-    Quick structured extraction
+    """Quick structured extraction
 
     Usage:
         data = await ai_extract(

@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 # This URL will be updated once the Cloud Run deployment finishes
 # For now, we use a placeholder or env var
 VERIFIER_SERVICE_URL = os.getenv(
-    "SHADOWTAG_VERIFIER_URL", "https://shadowtag-verifier-placeholder-uc.a.run.app/verify"
+    "SHADOWTAG_VERIFIER_URL", "https://shadowtag-verifier-placeholder-uc.a.run.app/verify",
 )
 
 
@@ -26,12 +26,11 @@ class ChirpReport(BaseModel):
 
 @router.post("/shadowtag/report")
 async def forward_report(payload: ChirpReport):
-    """
-    Forward a chirp report to the ShadowTag Verifier Service (Cloud Run).
+    """Forward a chirp report to the ShadowTag Verifier Service (Cloud Run).
     Enforces UCMJ-style discipline: 5s timeout or die.
     """
     logger.info(
-        f"Received chirp report from witness {payload.witness_id} for device {payload.device_id}"
+        f"Received chirp report from witness {payload.witness_id} for device {payload.device_id}",
     )
 
     try:
@@ -41,9 +40,8 @@ async def forward_report(payload: ChirpReport):
 
         if resp.status_code == 200:
             return resp.json()
-        else:
-            logger.warning(f"Verifier returned error: {resp.status_code} - {resp.text}")
-            raise HTTPException(status_code=502, detail=f"Verifier rejected report: {resp.text}")
+        logger.warning(f"Verifier returned error: {resp.status_code} - {resp.text}")
+        raise HTTPException(status_code=502, detail=f"Verifier rejected report: {resp.text}")
 
     except httpx.TimeoutException:
         logger.error("Verifier timed out (UCMJ Violation). Aborting.")

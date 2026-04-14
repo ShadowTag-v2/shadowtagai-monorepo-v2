@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Gemini Ingestion Layer - Nightly Intelligence Collection Orchestrator
+"""Gemini Ingestion Layer - Nightly Intelligence Collection Orchestrator
 
 ARCHITECTURE: GKE CronJob Multi-Container
 RUNTIME: ~45 minutes/night target
@@ -50,13 +49,13 @@ try:
 except ImportError as e:
     print(f"ERROR: Missing required packages: {e}")
     print(
-        "Install with: pip install google-cloud-aiplatform google-cloud-storage google-cloud-bigquery httpx"
+        "Install with: pip install google-cloud-aiplatform google-cloud-storage google-cloud-bigquery httpx",
     )
     sys.exit(1)
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -187,12 +186,11 @@ class GeminiIngestionOrchestrator:
         logger.info(
             f"Quality gates: items>={self.min_items_per_day}, "
             f"sources>={self.min_source_diversity}, "
-            f"cost<=${self.max_cost_per_item}"
+            f"cost<=${self.max_cost_per_item}",
         )
 
     async def run_collection(self) -> CollectionMetrics:
         """Execute the nightly intelligence collection"""
-
         logger.info("=" * 60)
         logger.info("GEMINI INGESTION LAYER - Nightly Collection Starting")
         logger.info("=" * 60)
@@ -236,7 +234,6 @@ class GeminiIngestionOrchestrator:
 
     async def collect_from_sources(self):
         """Collect intelligence from all configured sources"""
-
         logger.info("Phase 1: Collecting from sources...")
 
         # Read collected items from sidecar containers
@@ -271,7 +268,7 @@ class GeminiIngestionOrchestrator:
                         content=raw.get("content", ""),
                         url=raw.get("url", ""),
                         timestamp=datetime.fromisoformat(
-                            raw.get("timestamp", datetime.utcnow().isoformat())
+                            raw.get("timestamp", datetime.utcnow().isoformat()),
                         ),
                         tier=ItemTier.TIER3,  # Default, will be reclassified
                         relevance_score=0.0,
@@ -287,12 +284,11 @@ class GeminiIngestionOrchestrator:
 
         self.metrics.total_items = len(self.items)
         logger.info(
-            f"✓ Collected {self.metrics.total_items} items from {self.metrics.sources_successful} sources"
+            f"✓ Collected {self.metrics.total_items} items from {self.metrics.sources_successful} sources",
         )
 
     async def classify_items(self):
         """Use Gemini to classify items and assign tier/scores"""
-
         logger.info("Phase 2: Classifying items with Gemini...")
 
         # Batch classify for efficiency (10 items at a time)
@@ -304,20 +300,19 @@ class GeminiIngestionOrchestrator:
             # Progress logging
             if (i + batch_size) % 50 == 0:
                 logger.info(
-                    f"Classified {min(i + batch_size, len(self.items))}/{len(self.items)} items"
+                    f"Classified {min(i + batch_size, len(self.items))}/{len(self.items)} items",
                 )
 
         logger.info("✓ Classification complete")
 
     async def classify_batch(self, items: list[IntelligenceItem]):
         """Classify a batch of items using Gemini"""
-
         # Build prompt for batch classification
         items_text = "\n\n".join(
             [
                 f"Item {i + 1}:\nTitle: {item.title}\nContent: {item.content[:500]}..."
                 for i, item in enumerate(items)
-            ]
+            ],
         )
 
         prompt = f"""Analyze these intelligence items and provide classification scores.
@@ -345,7 +340,7 @@ Items:
             )
 
             response = await asyncio.to_thread(
-                self.gemini.generate_content, prompt, generation_config=generation_config
+                self.gemini.generate_content, prompt, generation_config=generation_config,
             )
 
             scores = json.loads(response.text)
@@ -387,7 +382,6 @@ Items:
 
     def calculate_quality_metrics(self):
         """Calculate aggregate quality metrics"""
-
         logger.info("Phase 3: Calculating quality metrics...")
 
         if not self.items:
@@ -401,13 +395,13 @@ Items:
 
         # Average scores
         self.metrics.avg_relevance = sum(item.relevance_score for item in self.items) / len(
-            self.items
+            self.items,
         )
         self.metrics.avg_timeliness = sum(item.timeliness_score for item in self.items) / len(
-            self.items
+            self.items,
         )
         self.metrics.avg_completeness = sum(item.completeness_score for item in self.items) / len(
-            self.items
+            self.items,
         )
 
         # Cost metrics
@@ -418,7 +412,6 @@ Items:
 
     async def save_results(self):
         """Save results to GCS and BigQuery"""
-
         logger.info("Phase 4: Saving results...")
 
         # Save to GCS
@@ -435,7 +428,7 @@ Items:
             ]
 
             blob.upload_from_string(
-                json.dumps(items_data, indent=2, default=str), content_type="application/json"
+                json.dumps(items_data, indent=2, default=str), content_type="application/json",
             )
 
             logger.info(f"✓ Saved to GCS: gs://{bucket.name}/{blob_name}")
@@ -445,7 +438,6 @@ Items:
 
     async def generate_am_briefing(self):
         """Generate AM briefing from high-tier items"""
-
         logger.info("Phase 5: Generating AM briefing...")
 
         # Get Tier 1 items for briefing
@@ -460,7 +452,7 @@ Items:
             [
                 f"- {item.title}\n  Source: {item.source.value}\n  URL: {item.url}"
                 for item in tier1_items[:10]  # Top 10
-            ]
+            ],
         )
 
         prompt = f"""Generate a concise AM intelligence briefing from these high-value items:
@@ -486,7 +478,6 @@ Format: Executive summary (3-5 bullets), key takeaways, recommended actions."""
 
     def validate_quality_gates(self):
         """Validate quality gates and set flags"""
-
         logger.info("Phase 6: Validating quality gates...")
 
         self.metrics.meets_items_gate = self.metrics.total_items >= self.min_items_per_day
@@ -506,7 +497,7 @@ Format: Executive summary (3-5 bullets), key takeaways, recommended actions."""
                 self.metrics.meets_cost_gate,
                 self.metrics.meets_relevance_gate,
                 self.metrics.meets_runtime_gate,
-            ]
+            ],
         )
 
         if all_gates_pass:
@@ -516,7 +507,6 @@ Format: Executive summary (3-5 bullets), key takeaways, recommended actions."""
 
     def print_metrics(self):
         """Print final metrics"""
-
         logger.info("\n" + "=" * 60)
         logger.info("COLLECTION METRICS")
         logger.info("=" * 60)
@@ -547,19 +537,19 @@ Format: Executive summary (3-5 bullets), key takeaways, recommended actions."""
 
         logger.info("\nQuality Gates:")
         logger.info(
-            f"  Items >= {self.min_items_per_day}:     {'✓ PASS' if self.metrics.meets_items_gate else '✗ FAIL'}"
+            f"  Items >= {self.min_items_per_day}:     {'✓ PASS' if self.metrics.meets_items_gate else '✗ FAIL'}",
         )
         logger.info(
-            f"  Sources >= {self.min_source_diversity}:    {'✓ PASS' if self.metrics.meets_source_diversity_gate else '✗ FAIL'}"
+            f"  Sources >= {self.min_source_diversity}:    {'✓ PASS' if self.metrics.meets_source_diversity_gate else '✗ FAIL'}",
         )
         logger.info(
-            f"  Cost <= ${self.max_cost_per_item}:   {'✓ PASS' if self.metrics.meets_cost_gate else '✗ FAIL'}"
+            f"  Cost <= ${self.max_cost_per_item}:   {'✓ PASS' if self.metrics.meets_cost_gate else '✗ FAIL'}",
         )
         logger.info(
-            f"  Relevance >= {self.min_relevance_score}: {'✓ PASS' if self.metrics.meets_relevance_gate else '✗ FAIL'}"
+            f"  Relevance >= {self.min_relevance_score}: {'✓ PASS' if self.metrics.meets_relevance_gate else '✗ FAIL'}",
         )
         logger.info(
-            f"  Runtime <= {self.target_runtime_minutes}min: {'✓ PASS' if self.metrics.meets_runtime_gate else '✗ FAIL'}"
+            f"  Runtime <= {self.target_runtime_minutes}min: {'✓ PASS' if self.metrics.meets_runtime_gate else '✗ FAIL'}",
         )
 
         logger.info("=" * 60 + "\n")
@@ -567,7 +557,6 @@ Format: Executive summary (3-5 bullets), key takeaways, recommended actions."""
 
 async def main():
     """Main entry point"""
-
     orchestrator = GeminiIngestionOrchestrator()
 
     try:
@@ -581,7 +570,7 @@ async def main():
                 metrics.meets_cost_gate,
                 metrics.meets_relevance_gate,
                 metrics.meets_runtime_gate,
-            ]
+            ],
         )
 
         sys.exit(0 if all_gates_pass else 1)

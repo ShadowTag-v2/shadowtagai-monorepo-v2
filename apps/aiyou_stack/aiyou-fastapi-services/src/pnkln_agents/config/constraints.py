@@ -1,5 +1,4 @@
-"""
-Bootstrap Constraints Configuration
+"""Bootstrap Constraints Configuration
 Enforces operational gates for ShadowTagAi agent platform
 """
 
@@ -67,10 +66,9 @@ class BootstrapConstraints:
         """Validate latency against SLA"""
         if percentile == "p99":
             return latency_ms <= self.sla_p99_ms
-        elif percentile == "p50":
+        if percentile == "p50":
             return latency_ms <= self.sla_p50_ms
-        else:
-            raise ValueError(f"Unknown percentile: {percentile}")
+        raise ValueError(f"Unknown percentile: {percentile}")
 
     def validate_ltv_cac(self, ltv: float, cac: float) -> bool:
         """Validate LTV:CAC ratio meets gate"""

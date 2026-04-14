@@ -1,5 +1,4 @@
-"""
-KPI tracking and reporting API endpoints
+"""KPI tracking and reporting API endpoints
 Tracks governance, safety, and monetization metrics
 """
 
@@ -54,8 +53,7 @@ class KPIDashboardResponse(BaseModel):
 
 @router.get("/dashboard", response_model=KPIDashboardResponse)
 async def get_kpi_dashboard(time_range: TimeRange = TimeRange.DAY):
-    """
-    Get comprehensive KPI dashboard
+    """Get comprehensive KPI dashboard
 
     Categories:
     - Safety/Compliance: C2PA coverage, DSA compliance, brand safety
@@ -212,10 +210,9 @@ async def get_category_kpis(category: KPICategory, time_range: TimeRange = TimeR
 
 @router.get("/metric/{metric_name}")
 async def get_metric_history(
-    metric_name: str, time_range: TimeRange = TimeRange.WEEK, granularity: str = "hour"
+    metric_name: str, time_range: TimeRange = TimeRange.WEEK, granularity: str = "hour",
 ):
-    """
-    Get historical data for specific metric
+    """Get historical data for specific metric
 
     Returns time-series data for trending and analysis
     """
@@ -236,8 +233,7 @@ async def get_metric_history(
 
 @router.get("/report/30-60-90")
 async def get_gap_closure_report():
-    """
-    30-60-90 day gap closure plan status
+    """30-60-90 day gap closure plan status
 
     Tracks implementation of:
     - Governance frameworks

@@ -1,5 +1,4 @@
-"""
-NS (Neural System) Detection Engine
+"""NS (Neural System) Detection Engine
 ====================================
 First layer of the NS-JR-Cor compliance framework.
 
@@ -287,9 +286,8 @@ class NSCacheManager:
             result, timestamp = cached
             if time.time() - timestamp < self.ttl_seconds:
                 return result
-            else:
-                # Expired
-                del self._cache[content_hash]
+            # Expired
+            del self._cache[content_hash]
 
         return None
 
@@ -319,8 +317,7 @@ class NSCacheManager:
 
 
 class NSDetectionEngine:
-    """
-    Neural System Detection Engine.
+    """Neural System Detection Engine.
 
     First layer of NS-JR-Cor framework.
     Detects risk signals in content using multiple detection methods:
@@ -345,15 +342,15 @@ class NSDetectionEngine:
 
         # External APIs
         self.google_client = GoogleSafetyClient(
-            api_key=google_api_key, threshold=self.config.explicit_content_threshold
+            api_key=google_api_key, threshold=self.config.explicit_content_threshold,
         )
         self.hive_client = HiveModerationClient(
-            api_key=hive_api_key, threshold=self.config.explicit_content_threshold
+            api_key=hive_api_key, threshold=self.config.explicit_content_threshold,
         )
 
         # Cache
         self.cache = NSCacheManager(
-            enabled=self.config.cache_enabled, ttl_seconds=self.config.cache_ttl_seconds
+            enabled=self.config.cache_enabled, ttl_seconds=self.config.cache_ttl_seconds,
         )
 
         # Stats
@@ -375,8 +372,7 @@ class NSDetectionEngine:
         media_data: bytes | None = None,
         skip_cache: bool = False,
     ) -> NSDetectionOutput:
-        """
-        Main detection method.
+        """Main detection method.
 
         Args:
             content: Text content to analyze
@@ -386,6 +382,7 @@ class NSDetectionEngine:
 
         Returns:
             NSDetectionOutput with all detected signals
+
         """
         start_time = time.time()
         self._stats["total_requests"] += 1
@@ -435,7 +432,7 @@ class NSDetectionEngine:
                                 evidence="",
                                 detector="google_safety_api",
                                 metadata={"category": category, "score": score},
-                            )
+                            ),
                         )
 
         # Hive API for images/video
@@ -453,7 +450,7 @@ class NSDetectionEngine:
                                     detector="hive_api",
                                     content_categories=[category],
                                     metadata={"category": category, "score": score},
-                                )
+                                ),
                             )
 
         # Calculate overall risk score

@@ -1,5 +1,4 @@
-"""
-Authentication endpoints.
+"""Authentication endpoints.
 Provides login, registration, token refresh, and logout functionality.
 """
 
@@ -39,8 +38,7 @@ class LoginResponse(BaseModel):
     description="Create a new user account with username, email, and password.",
 )
 async def register(user_data: UserCreate):
-    """
-    Register a new user.
+    """Register a new user.
 
     This is a simplified example. In production, you would:
     - Check if username/email already exists
@@ -70,8 +68,7 @@ async def register(user_data: UserCreate):
     description="Authenticate with username and password to receive access tokens.",
 )
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    """
-    Login with username and password.
+    """Login with username and password.
 
     Returns:
     - User information
@@ -83,6 +80,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     - Verify password hash
     - Check if user is active
     - Create and return tokens
+
     """
     # Mock user authentication
     # In production, fetch user from database
@@ -124,8 +122,7 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     description="Use a refresh token to obtain a new access token.",
 )
 async def refresh_access_token(refresh_data: RefreshToken):
-    """
-    Refresh access token using refresh token.
+    """Refresh access token using refresh token.
 
     This extends the user's session without requiring re-authentication.
     """
@@ -150,7 +147,7 @@ async def refresh_access_token(refresh_data: RefreshToken):
 
     except HTTPException:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
         )
 
 
@@ -161,8 +158,7 @@ async def refresh_access_token(refresh_data: RefreshToken):
     description="Get information about the currently authenticated user.",
 )
 async def get_me(current_user: Annotated[User, Depends(get_current_active_user)]):
-    """
-    Get current authenticated user information.
+    """Get current authenticated user information.
 
     Requires valid JWT access token in Authorization header.
     """
@@ -176,8 +172,7 @@ async def get_me(current_user: Annotated[User, Depends(get_current_active_user)]
     description="Logout the current user (client-side token removal).",
 )
 async def logout(current_user: Annotated[User, Depends(get_current_active_user)]):
-    """
-    Logout endpoint.
+    """Logout endpoint.
 
     In stateless JWT auth, logout is typically handled client-side by removing tokens.
     For additional security, you could:

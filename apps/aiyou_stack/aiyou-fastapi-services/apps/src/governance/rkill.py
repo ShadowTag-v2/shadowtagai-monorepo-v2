@@ -9,8 +9,7 @@ logger = logging.getLogger("rkill-monitor")
 
 
 class RKillMonitor:
-    """
-    Rogue Agent Squashing Policy ('The Three Strikes of Death').
+    """Rogue Agent Squashing Policy ('The Three Strikes of Death').
     Monitors process health and kills if thresholds are exceeded.
     """
 
@@ -33,7 +32,7 @@ class RKillMonitor:
             if mem_mb > 1024:
                 self.strikes["memory"] += 1
                 logger.warning(
-                    f"[RKILL] Memory Warning: {mem_mb:.1f}MB used. Strike {self.strikes['memory']}."
+                    f"[RKILL] Memory Warning: {mem_mb:.1f}MB used. Strike {self.strikes['memory']}.",
                 )
                 if self.strikes["memory"] >= 1:  # Strict Mode
                     self._kill("Memory exceeded 1GB")

@@ -1,5 +1,4 @@
-"""
-PNKLN Intelligence-as-a-Service API
+"""PNKLN Intelligence-as-a-Service API
 Monetize the intelligence pipeline (currently $77/mo cost, $0 revenue)
 
 Revenue model:
@@ -66,7 +65,7 @@ class IntelligenceAPI:
     def log_usage(self, customer_id: str, enrichment: EnrichmentType | None = None):
         if customer_id not in self.usage_db:
             self.usage_db[customer_id] = UsageRecord(
-                customer_id=customer_id, timestamp=datetime.now()
+                customer_id=customer_id, timestamp=datetime.now(),
             )
 
         record = self.usage_db[customer_id]
@@ -87,8 +86,8 @@ class IntelligenceAPI:
                 "support": "dedicated_engineer",
                 "features": ["full_source_code", "white_label", "custom_models"],
             }
-        elif tier == IntelligenceTier.TIER_1_PRIORITY:
+        if tier == IntelligenceTier.TIER_1_PRIORITY:
             return {"latency": "realtime", "sources": "all", "support": "24/7"}
-        elif tier == IntelligenceTier.TIER_2_STANDARD:
+        if tier == IntelligenceTier.TIER_2_STANDARD:
             return {"latency": "15min", "sources": "major", "support": "email"}
         return {"latency": "daily", "sources": "public", "support": "community"}

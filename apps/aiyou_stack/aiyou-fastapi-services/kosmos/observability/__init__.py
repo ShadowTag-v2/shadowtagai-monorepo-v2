@@ -7,6 +7,6 @@ from kosmos.observability.telemetry import get_tracer, setup_telemetry
 __all__ = [
     "AgentOpsTracker",
     "CostMonitor",
-    "setup_telemetry",
     "get_tracer",
+    "setup_telemetry",
 ]

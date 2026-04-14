@@ -1,5 +1,4 @@
-"""
-Pnkln Context Engine
+"""Pnkln Context Engine
 ====================
 
 Implements the "Sessions & Memory" pattern from the Context Engineering whitepaper.
@@ -25,8 +24,7 @@ logger = logging.getLogger(__name__)
 
 # --- 1. Session Layer (Short-Term Working Memory) ---
 class Session:
-    """
-    The 'RAM'. Manages the sliding window of the immediate conversation.
+    """The 'RAM'. Manages the sliding window of the immediate conversation.
     """
 
     def __init__(self, user_id: str, max_turns: int = 5):
@@ -36,13 +34,12 @@ class Session:
 
     def add_message(self, role: str, content: str):
         self.history.append(
-            {"role": role, "content": content, "timestamp": datetime.datetime.now().isoformat()}
+            {"role": role, "content": content, "timestamp": datetime.datetime.now().isoformat()},
         )
         self._prune()
 
     def _prune(self):
-        """
-        Implements 'Compaction'. Keeps the session within context limits.
+        """Implements 'Compaction'. Keeps the session within context limits.
         """
         if len(self.history) > self.max_turns * 2:
             # Keep the last N turns (*2 because user+ai = 1 turn)
@@ -54,8 +51,7 @@ class Session:
 
 # --- 2. Memory Layer (Long-Term Storage) ---
 class MemoryLayer:
-    """
-    The 'Hard Drive'. Implements the ETL pattern.
+    """The 'Hard Drive'. Implements the ETL pattern.
     Stores facts that survive beyond the immediate session.
     Protected by Judge #6 validation.
     """
@@ -69,8 +65,7 @@ class MemoryLayer:
         self.judge = get_judge()
 
     async def retrieve(self, query: str) -> list[str]:
-        """
-        Retrieves relevant memories.
+        """Retrieves relevant memories.
         In production, this is a Vector DB (Pinecone/Chroma) search.
         """
         # Simple keyword matching for demo
@@ -79,8 +74,7 @@ class MemoryLayer:
         return relevant_facts
 
     async def extract_and_save(self, user_input: str):
-        """
-        The ETL Pipeline: 'Reads' input and extracts permanent facts.
+        """The ETL Pipeline: 'Reads' input and extracts permanent facts.
         This runs asynchronously to avoid latency on the main chat path.
         """
         extraction_prompt = f"""

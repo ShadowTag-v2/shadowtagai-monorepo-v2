@@ -29,7 +29,7 @@ async def process_prompt(session: aiohttp.ClientSession, prompt: str, model_id: 
 
 
 async def run_batch(
-    input_file: str, output_file: str, model_id: str, concurrency: int, template: str = None
+    input_file: str, output_file: str, model_id: str, concurrency: int, template: str = None,
 ):
     # Read input
     try:
@@ -66,7 +66,7 @@ async def run_batch(
             prompts = data["prompts"]
         else:
             print(
-                "Error: Input file must be a JSON list of strings/objects, or a dict with a 'prompts' key."
+                "Error: Input file must be a JSON list of strings/objects, or a dict with a 'prompts' key.",
             )
             sys.exit(1)
 
@@ -85,7 +85,7 @@ async def run_batch(
         sys.exit(0)
 
     print(
-        f"Loaded {len(prompt_texts)} prompts. Starting batch processing with concurrency {concurrency}..."
+        f"Loaded {len(prompt_texts)} prompts. Starting batch processing with concurrency {concurrency}...",
     )
 
     results = []
@@ -96,7 +96,7 @@ async def run_batch(
             result = await future
             results.append(result)
             print(
-                f"[{i + 1}/{len(prompt_texts)}] Processed: {result.get('status')} ({result.get('latency', 0):.2f}s)"
+                f"[{i + 1}/{len(prompt_texts)}] Processed: {result.get('status')} ({result.get('latency', 0):.2f}s)",
             )
 
     # Save results
@@ -111,10 +111,10 @@ async def run_batch(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run batch grounded generation.")
     parser.add_argument(
-        "input_file", help="Path to JSON input file containing prompts or variables."
+        "input_file", help="Path to JSON input file containing prompts or variables.",
     )
     parser.add_argument(
-        "--output_file", default="batch_results.json", help="Path to output JSON file."
+        "--output_file", default="batch_results.json", help="Path to output JSON file.",
     )
     parser.add_argument("--model_id", default="gemini-1.5-pro", help="Model ID to use.")
     parser.add_argument("--concurrency", type=int, default=5, help="Number of concurrent requests.")
@@ -126,5 +126,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     asyncio.run(
-        run_batch(args.input_file, args.output_file, args.model_id, args.concurrency, args.template)
+        run_batch(args.input_file, args.output_file, args.model_id, args.concurrency, args.template),
     )

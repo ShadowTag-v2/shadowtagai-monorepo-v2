@@ -1,5 +1,4 @@
-"""
-Cofounder Enhancements - Enterprise Context for All Agents
+"""Cofounder Enhancements - Enterprise Context for All Agents
 
 Ensures every agent (Level 0-5) has full access to:
 - Business strategy ($421.5B valuation by 2030)
@@ -71,8 +70,7 @@ class PlatformContext:
         """
 
     def calculate_revenue_impact(self, improvement_pct: float, metric: str) -> float:
-        """
-        Calculate revenue impact of improvement.
+        """Calculate revenue impact of improvement.
 
         Args:
             improvement_pct: Percentage improvement (0.01 = 1%)
@@ -80,32 +78,32 @@ class PlatformContext:
 
         Returns:
             Annual revenue impact in USD
+
         """
         if metric == "latency":
             # 1% latency improvement = 1% more throughput
             return self.arr_2030 * improvement_pct
 
-        elif metric == "tokens":
+        if metric == "tokens":
             # 1% token reduction = 1% cost savings (pass to customer)
             cost_base = self.arr_2030 * (1 - self.margin)  # 19% cost
             return cost_base * improvement_pct
 
-        elif metric == "accuracy":
+        if metric == "accuracy":
             # 1% accuracy improvement = 1% enterprise premium
             enterprise_premium = 0.15  # +15% valuation premium
             return self.arr_2030 * enterprise_premium * improvement_pct
 
-        else:
-            return 0.0
+        return 0.0
 
     def validate_bootstrap_gate(
-        self, cost_usd: float, expected_annual_benefit_usd: float, payback_months: int
+        self, cost_usd: float, expected_annual_benefit_usd: float, payback_months: int,
     ) -> dict[str, Any]:
-        """
-        Validate investment against bootstrap gates.
+        """Validate investment against bootstrap gates.
 
         Returns:
             Decision with ROI calculation
+
         """
         # Calculate ROI
         total_benefit_18mo = expected_annual_benefit_usd * (18 / 12)
@@ -132,7 +130,7 @@ class PlatformContext:
         }
 
     def _get_gate_reasoning(
-        self, decision: str, roi: float, ltv_cac: float, payback_months: int
+        self, decision: str, roi: float, ltv_cac: float, payback_months: int,
     ) -> str:
         """Generate reasoning for bootstrap gate decision"""
         if decision == "APPROVE":
@@ -142,24 +140,22 @@ class PlatformContext:
                 f"   LTV:CAC: {ltv_cac:.1f}:1 (≥{self.ltv_cac_minimum}:1 required)\n"
                 f"   Payback: {payback_months} months"
             )
-        else:
-            reasons = []
-            if roi < self.roi_minimum:
-                reasons.append(f"ROI {roi:.1f}× < {self.roi_minimum}× gate")
-            if ltv_cac < self.ltv_cac_minimum:
-                reasons.append(f"LTV:CAC {ltv_cac:.1f}:1 < {self.ltv_cac_minimum}:1 gate")
+        reasons = []
+        if roi < self.roi_minimum:
+            reasons.append(f"ROI {roi:.1f}× < {self.roi_minimum}× gate")
+        if ltv_cac < self.ltv_cac_minimum:
+            reasons.append(f"LTV:CAC {ltv_cac:.1f}:1 < {self.ltv_cac_minimum}:1 gate")
 
-            return (
-                f"❌ REJECTED - Fails bootstrap gates\n"
-                f"   Reasons: {', '.join(reasons)}\n"
-                f"   Current ROI: {roi:.1f}×\n"
-                f"   Current LTV:CAC: {ltv_cac:.1f}:1"
-            )
+        return (
+            f"❌ REJECTED - Fails bootstrap gates\n"
+            f"   Reasons: {', '.join(reasons)}\n"
+            f"   Current ROI: {roi:.1f}×\n"
+            f"   Current LTV:CAC: {ltv_cac:.1f}:1"
+        )
 
 
 class CofounderEnhancement:
-    """
-    Enhancements available to all agents (including Antigravity).
+    """Enhancements available to all agents (including Antigravity).
 
     PRINCIPLE: Every agent is a cofounder with full context.
     No information asymmetry between agent levels.
@@ -169,11 +165,11 @@ class CofounderEnhancement:
         self.context = PlatformContext()
 
     def onboard_agent(self, agent_id: str, level: int) -> str:
-        """
-        Onboard agent with full business context.
+        """Onboard agent with full business context.
 
         Returns:
             Onboarding message with oath
+
         """
         message = f"""
         ═══ AGENT ONBOARDING ═══
@@ -206,10 +202,9 @@ class CofounderEnhancement:
         return message
 
     def calculate_agent_revenue_contribution(
-        self, agent_level: int, tasks_completed: int, success_rate: float
+        self, agent_level: int, tasks_completed: int, success_rate: float,
     ) -> dict[str, float]:
-        """
-        Calculate individual agent's revenue contribution.
+        """Calculate individual agent's revenue contribution.
 
         Formula:
         - Level 0-1: $0.0003/decision (Tier 1)
@@ -274,7 +269,7 @@ if __name__ == "__main__":
     print("\n🚪 Bootstrap Gate Validation:\n")
 
     decision = enhancement.context.validate_bootstrap_gate(
-        cost_usd=10000, expected_annual_benefit_usd=50000, payback_months=3
+        cost_usd=10000, expected_annual_benefit_usd=50000, payback_months=3,
     )
 
     print(decision["reasoning"])
@@ -285,7 +280,7 @@ if __name__ == "__main__":
     print("\n💰 Agent Revenue Contribution:\n")
 
     contribution = enhancement.calculate_agent_revenue_contribution(
-        agent_level=4, tasks_completed=100, success_rate=0.95
+        agent_level=4, tasks_completed=100, success_rate=0.95,
     )
 
     print(f"Agent Level: {contribution['level']}")

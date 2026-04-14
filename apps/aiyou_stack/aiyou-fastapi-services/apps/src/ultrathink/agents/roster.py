@@ -12,8 +12,7 @@ class AgentCapability(StrEnum):
 
 
 class AgentProfile(BaseModel):
-    """
-    Defines the persona and configuration for an Ultrathink agent.
+    """Defines the persona and configuration for an Ultrathink agent.
     """
 
     name: str
@@ -26,8 +25,7 @@ class AgentProfile(BaseModel):
 
 
 class StandardRoster:
-    """
-    Pre-configured roster of specialized agents.
+    """Pre-configured roster of specialized agents.
     """
 
     @staticmethod

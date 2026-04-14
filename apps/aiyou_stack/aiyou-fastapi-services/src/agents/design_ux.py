@@ -1,5 +1,4 @@
-"""
-Design & UX Agents for Vertex AI Workbench
+"""Design & UX Agents for Vertex AI Workbench
 """
 
 from typing import Any

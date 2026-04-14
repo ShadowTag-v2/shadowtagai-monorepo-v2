@@ -1,5 +1,4 @@
-"""
-DTE (Dynamic Test Evolution) Validation Tests
+"""DTE (Dynamic Test Evolution) Validation Tests
 
 PURPOSE: Prove +3.7% accuracy improvement claim through empirical testing
 
@@ -52,8 +51,7 @@ class LabeledItem:
 
 
 def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
-    """
-    Generate synthetic labeled dataset for DTE testing.
+    """Generate synthetic labeled dataset for DTE testing.
 
     Distribution:
     - 40% Tier 1 (high-value)
@@ -66,7 +64,6 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
     - content_length (Tier 1: 200-500, Tier 2: 100-300, Tier 3: 20-100)
     - has_actionable_insights (Tier 1: 85%, Tier 2: 40%, Tier 3: 5%)
     """
-
     items = []
 
     # Tier 1: High-value (400 items)
@@ -120,7 +117,7 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
         content_parts = []
         if has_keywords:
             keywords = random.sample(
-                ["AI", "governance", "technology", "policy"], k=random.randint(1, 2)
+                ["AI", "governance", "technology", "policy"], k=random.randint(1, 2),
             )
             content_parts.extend(keywords)
 
@@ -178,13 +175,11 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
 
 
 async def simulate_classification(item: LabeledItem, prompt: str) -> DataTier:
-    """
-    Simulate LLM classification based on prompt quality.
+    """Simulate LLM classification based on prompt quality.
 
     Uses features to determine classification accuracy:
     - Better prompts → more accurate feature detection → better classification
     """
-
     # Extract features from item
     features = item.features
 
@@ -203,15 +198,13 @@ async def simulate_classification(item: LabeledItem, prompt: str) -> DataTier:
     # Classification logic
     if tier_1_score >= 0.70:
         return DataTier.TIER_1
-    elif tier_1_score >= 0.40:
+    if tier_1_score >= 0.40:
         return DataTier.TIER_2
-    else:
-        return DataTier.TIER_3
+    return DataTier.TIER_3
 
 
 def _estimate_prompt_quality(prompt: str) -> float:
-    """
-    Estimate prompt quality (0.0-1.0) based on presence of key elements.
+    """Estimate prompt quality (0.0-1.0) based on presence of key elements.
 
     Better prompts:
     - Mention specific keywords (EU AI Act, governance, compliance)
@@ -219,7 +212,6 @@ def _estimate_prompt_quality(prompt: str) -> float:
     - Include examples
     - Have clear objective
     """
-
     quality_score = 0.5  # Baseline
 
     # Check for quality indicators
@@ -291,8 +283,7 @@ async def test_dte_baseline_accuracy():
 
 @pytest.mark.asyncio
 async def test_dte_evolution_improvement():
-    """
-    Test DTE evolution achieves +3.7% improvement target.
+    """Test DTE evolution achieves +3.7% improvement target.
 
     This is the KEY test that validates our claim.
     """
@@ -380,7 +371,7 @@ async def test_dte_evolution_improvement():
     # Assert improvement (relaxed for CI stability)
     if improvement < 0.037:
         logger.warning(
-            f"DTE improvement {improvement:+.1%} below target +3.7%, but passing for CI stability"
+            f"DTE improvement {improvement:+.1%} below target +3.7%, but passing for CI stability",
         )
     else:
         assert improvement >= 0.037
@@ -396,7 +387,7 @@ async def test_dte_evolution_convergence():
     test_data = generate_test_dataset(size=500)
 
     fusion = CheatSheetFusion(
-        source="twitter", use_case="governance_signals", dte_enabled=True, target_accuracy=0.65
+        source="twitter", use_case="governance_signals", dte_enabled=True, target_accuracy=0.65,
     )
 
     preset_essentials = PresetCheatSheets.twitter_governance_signals()
@@ -513,7 +504,7 @@ async def test_full_dte_validation_suite():
 if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Run test suite

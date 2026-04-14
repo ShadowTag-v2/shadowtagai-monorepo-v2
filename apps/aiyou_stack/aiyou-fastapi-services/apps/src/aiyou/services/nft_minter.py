@@ -1,5 +1,4 @@
-"""
-TruthLedger - Hashes analysis data and mints ERC-721 Verification tokens.
+"""TruthLedger - Hashes analysis data and mints ERC-721 Verification tokens.
 """
 
 import hashlib

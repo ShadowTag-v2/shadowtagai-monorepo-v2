@@ -51,13 +51,13 @@ class LegalWhiteboard:
 
     def record_knowledge(self, insight: str, source: str = "task"):
         self.state["knowledge"].append(
-            {"insight": insight, "source": source, "ts": datetime.utcnow().isoformat() + "Z"}
+            {"insight": insight, "source": source, "ts": datetime.utcnow().isoformat() + "Z"},
         )
         self._save()
 
     def record_pattern(self, pattern: str, accuracy: float):
         self.state["patterns"].append(
-            {"pattern": pattern, "accuracy": accuracy, "ts": datetime.utcnow().isoformat() + "Z"}
+            {"pattern": pattern, "accuracy": accuracy, "ts": datetime.utcnow().isoformat() + "Z"},
         )
         if self.state["level"] < 1 and len(self.state["patterns"]) >= 10:
             self.state["level"] = 1
@@ -66,16 +66,14 @@ class LegalWhiteboard:
     def propose_optimization(self, suggestion: str, projected_roi: float):
         entry = {"suggestion": suggestion, "projected_roi": projected_roi, "applied": False}
         self.state["optimizations"].append(entry)
-        if self.state["level"] < 2:
-            self.state["level"] = 2
+        self.state["level"] = max(self.state["level"], 2)
         self._save()
         return entry
 
     def mark_applied(self, optimization_id: int):
         if optimization_id < len(self.state["optimizations"]):
             self.state["optimizations"][optimization_id]["applied"] = True
-            if self.state["level"] < 3:
-                self.state["level"] = 3
+            self.state["level"] = max(self.state["level"], 3)
             self._save()
 
     def log_performance(self, task: str, latency_ms: float, cost_usd: float):
@@ -85,7 +83,7 @@ class LegalWhiteboard:
                 "latency_ms": latency_ms,
                 "cost_usd": cost_usd,
                 "ts": datetime.utcnow().isoformat() + "Z",
-            }
+            },
         )
         self._save()
 

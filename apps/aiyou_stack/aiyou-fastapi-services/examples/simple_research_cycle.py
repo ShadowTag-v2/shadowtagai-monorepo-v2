@@ -1,5 +1,4 @@
-"""
-Example: Simple Kosmos Research Cycle
+"""Example: Simple Kosmos Research Cycle
 
 Demonstrates a complete autonomous research workflow:
 1. Initialize world model
@@ -37,7 +36,6 @@ from kosmos.persistence.storage_backend import CloudStorageBackend
 
 def main():
     """Run a simple Kosmos research cycle."""
-
     # Configuration from environment
     PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "your-project-id")
     BUCKET_NAME = os.getenv("STORAGE_BUCKET", f"{PROJECT_ID}-kosmos-artifacts")
@@ -261,7 +259,7 @@ def main():
     # Display budget status
     budget_status = cost_monitor.get_budget_status()
     print(
-        f"  Daily Budget: ${budget_status['daily']['burned']:.2f} / ${budget_status['daily']['budget']:.2f}"
+        f"  Daily Budget: ${budget_status['daily']['burned']:.2f} / ${budget_status['daily']['budget']:.2f}",
     )
     print(f"  Utilization: {budget_status['daily']['utilization_pct']:.1f}%")
     print()
