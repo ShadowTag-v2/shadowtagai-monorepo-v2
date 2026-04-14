@@ -1,3 +1,4 @@
+from .transactionstatus import TransactionStatus
 from datetime import datetime
 
 from sqlalchemy import (
