@@ -27,6 +27,8 @@
 | 20 | `shadowtagai.com` ACME 403 — conflicting Squarespace DNS | 🟠 High | KNOWN | Squarespace retains A/CNAME records that override Firebase Hosting verification. Manual DNS cleanup required in Squarespace admin. |
 | 21 | `knowledge-base-database` — undocumented, empty, no delete protection | 🟡 Medium | KNOWN | Empty Firestore database with no collections and `deletionPolicy: ABANDON`. Candidate for deletion or documentation. |
 | 22 | No Firestore monitoring alerts deployed | 🟡 Medium | OPEN | Cloud Monitoring alerting policies for read/write volume and error rates not yet configured for `shadowtag-omega-v4`. |
+| 23 | Firebase Hosting auto-gzip breaks video playback | 🟠 High | RESOLVED | Firebase Hosting applies `Content-Encoding: gzip/br` to MP4 files, causing `ERR_CONTENT_DECODING_FAILED` in Chrome's video decoder. **Fix:** Serve video assets from GCS (`gs://shadowtag-omega-v4-archive/hero-videos/`) instead. CSP `media-src` updated to whitelist `https://storage.googleapis.com`. |
+| 24 | GCS bucket CORS not configured for cross-origin streaming | 🟡 Medium | RESOLVED | `shadowtag-omega-v4-archive` bucket had no CORS policy. Configured `GET`/`HEAD` from all 5 production origins with `Content-Range`/`Accept-Ranges` response headers. Max-age 86400s. |
 
 ## Review Policy
 

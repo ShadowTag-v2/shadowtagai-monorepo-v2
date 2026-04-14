@@ -119,8 +119,8 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
     - --force-with-lease is the ONLY permitted force mechanism
     - Raw --force is FORBIDDEN on main and shared branches
     """
-    import tempfile
     import stat
+    import tempfile
 
     ssh_url = f"git@github.com:{org}/{repo}.git"
     https_url = f"https://github.com/{org}/{repo}.git"
@@ -198,10 +198,10 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
         if result.returncode == 0:
             print(f"  ✅ HTTPS push successful: {org}/{repo} @ {branch}")
         else:
-            print(f"  ❌ Push failed on both SSH and HTTPS.")
+            print("  ❌ Push failed on both SSH and HTTPS.")
             print(f"     HTTPS error: {result.stderr}")
-            print(f"     NOTE: Raw --force is FORBIDDEN on shared branches.")
-            print(f"     Per DOCTRINE_EXTENDED.md Section X, escalate to State B.")
+            print("     NOTE: Raw --force is FORBIDDEN on shared branches.")
+            print("     Per DOCTRINE_EXTENDED.md Section X, escalate to State B.")
             sys.exit(1)
 
     finally:

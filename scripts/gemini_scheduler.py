@@ -4,14 +4,15 @@ Gemini Scheduler - Run workflows via Gemini Layer instead of GitHub Actions.
 Bypasses GitHub Actions billing by using Gemini API directly.
 """
 
-import time
 import json
-import schedule
-from datetime import datetime
-from pathlib import Path
 
 # Add project root to path
 import sys
+import time
+from datetime import datetime
+from pathlib import Path
+
+import schedule
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 

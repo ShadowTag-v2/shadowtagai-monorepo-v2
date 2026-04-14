@@ -1,34 +1,16 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
-  "editor.formatOnSave": true,
-  "files.exclude": {
-    "**/archive/**": true,
-    "**/node_modules/**": true,
-    "**/.venv/**": true,
-    "**/control/**": true,
-    "**/external_sdks/**": true,
-    "**/uvicorn/**": true,
-    "**/*.proto": true
-  },
-  "python.analysis.exclude": [
-    "**/control/**",
-    "**/external_sdks/**",
-    "**/uvicorn/**"
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python Debugger: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    }
   ],
-  "python.testing.autoTestDiscoverOnSaveEnabled": false,
-  "java.server.launchMode": "LightWeight",
-  "java.autobuild.enabled": false,
-  "java.completion.enabled": false,
-  "java.project.importOnFirstTimeStartup": "disabled",
-  "bazel.enableCodeLens": false,
-  "bazel.disableUpdateCheck": true,
-  "gradle.autoDetect": "off",
-  "antigravity.dangerMode": "auto",
-  "cmake.sourceDirectory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/control/legacy_workspaces/vllm",
-  "git.detectSubmodulesLimit": 20,
-  "ty.enable": true,
-  "python.languageServer": "None",
-  "[python]": {
-    "editor.defaultFormatter": "astral-sh.ruff"
-  }
+  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.env"
 }
