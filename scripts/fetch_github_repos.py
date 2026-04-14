@@ -5,7 +5,7 @@ import jwt
 import requests
 
 
-def get_repos(app_id, pem_path, owner_type, owner_name):
+def get_repos(app_id, pem_path, _owner_type, owner_name):
     with open(pem_path, "rb") as f:
         pem_data = f.read()
 
