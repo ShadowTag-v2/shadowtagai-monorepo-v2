@@ -1,6 +1,8 @@
 import re
 from urllib.parse import urlparse
 
+from .source import Source, SourceTier
+
 
 class TierClassifier:
     """

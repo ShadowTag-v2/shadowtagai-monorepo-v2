@@ -4,7 +4,18 @@ import logging
 from datetime import datetime
 from typing import Any
 
+try:
+    import google.generativeai as genai
+    from google.generativeai import GenerationConfig
+    from google.generativeai.types import HarmBlockThreshold, HarmCategory
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+
 from ..config import settings
+from .debaterole import DebateRole
+from .geminidebateargument import GeminiDebateArgument
+from .geminidebateresult import GeminiDebateResult
 
 logger = logging.getLogger(__name__)
 

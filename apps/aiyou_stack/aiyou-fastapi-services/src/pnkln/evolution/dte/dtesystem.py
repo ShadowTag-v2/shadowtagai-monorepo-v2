@@ -2,6 +2,16 @@ from typing import Any
 
 import numpy as np
 
+from .debateround import DebateRound
+from .elegancemetrics import EleganceMetrics
+from .evolutionresult import EvolutionResult
+from .evolutionstrategy import EvolutionStrategy
+
+try:
+    from ...grpo import GRPOBatch, GRPOConfig, GRPOTrainer
+except ImportError:
+    GRPOBatch = GRPOConfig = GRPOTrainer = None
+
 
 class DTESystem:
     """
