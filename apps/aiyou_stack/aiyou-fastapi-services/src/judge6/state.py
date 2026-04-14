@@ -150,7 +150,7 @@ class DebateState:
     voting_mode: VotingMode = VotingMode.SWARM  # Default to swarm voting
 
     # === SWARM MODE FIELDS (Default) ===
-    swarm_vote: SwarmVoteState | None = None
+    swarm_vote: "SwarmVoteState | None" = None
 
     # Debate execution
     status: DebateStatus = DebateStatus.NOT_TRIGGERED
