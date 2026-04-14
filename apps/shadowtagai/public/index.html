@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfEP7EsAAAAAAhpXrmostlrS7OcxbV68crAduuW" async defer></script>
     <style>
         /* ===== SHADOW OBSIDIAN DESIGN SYSTEM ===== */
         :root {
@@ -1457,7 +1457,8 @@
             </div>
             <input type="text" name="company" placeholder="Organization (optional)" style="padding: 0.875rem 1rem; background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 4px; color: var(--on-surface); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; transition: border-color 0.2s ease;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--outline-variant)'">
             <textarea name="message" placeholder="Your Message" rows="5" required style="padding: 0.875rem 1rem; background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 4px; color: var(--on-surface); font-family: 'Inter', sans-serif; font-size: 0.875rem; outline: none; resize: vertical; transition: border-color 0.2s ease;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--outline-variant)'"></textarea>
-            <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-theme="dark" style="margin: 0.5rem 0; transform: scale(0.9); transform-origin: left;"></div>
+            <input type="hidden" name="recaptcha_token" id="recaptchaToken">
+            <!-- reCAPTCHA v3 — invisible, score-based (no checkbox) -->
             <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; justify-content: center;">
                 <span class="material-symbols-outlined" style="font-size: 1.125rem">send</span>
                 Send Message
@@ -1689,6 +1690,12 @@ document.getElementById('contactForm').addEventListener('submit', async function
         const formData = new FormData(this);
         if (formData.get('_honey')) { btn.innerHTML = originalHTML; btn.disabled = false; btn.style.opacity = '1'; return; }
         
+        // reCAPTCHA v3 — get invisible token
+        let recaptchaToken = '';
+        if (typeof grecaptcha !== 'undefined') {
+            recaptchaToken = await grecaptcha.execute('6LfEP7EsAAAAAAhpXrmostlrS7OcxbV68crAduuW', {action: 'contact_submit'});
+        }
+        
         // Wait for Firebase SDK to load
         if (typeof window.firebase === 'undefined' || typeof window.firebase.firestore === 'undefined') {
             throw new Error("Firebase not loaded");
@@ -1697,8 +1704,10 @@ document.getElementById('contactForm').addEventListener('submit', async function
         const db = window.firebase.firestore();
         
         const payload = {};
-        formData.forEach((value, key) => { if (key !== '_honey') payload[key] = value; });
+        formData.forEach((value, key) => { if (key !== '_honey' && key !== 'recaptcha_token') payload[key] = value; });
         payload['created_at'] = window.firebase.firestore.FieldValue.serverTimestamp();
+        payload['recaptcha_token'] = recaptchaToken;
+        payload['recaptcha_action'] = 'contact_submit';
         
         await db.collection("contact_requests").add(payload);
         
