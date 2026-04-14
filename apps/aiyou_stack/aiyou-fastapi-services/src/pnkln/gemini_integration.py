@@ -405,8 +405,8 @@ class {agent_name.capitalize()}Agent:
             use_case="{agent_name}"
         )
 
-        print(f"Cost: ${response['cost_usd']:.4f}")
-        print(f"Savings vs GPT-4: ${response['savings_usd']:.4f} ({response['savings_pct']:.1f}%)")
+        print(f"Cost: ${{response['cost_usd']:.4f}}")
+        print(f"Savings vs GPT-4: ${{response['savings_usd']:.4f}} ({{response['savings_pct']:.1f}}%)")
 
         return response["text"]
 '''
