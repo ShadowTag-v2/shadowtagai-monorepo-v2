@@ -32,6 +32,11 @@ async def run_all(query: str, user_id: str | None, mode="default"):
     }
 
 
+async def _merge(a_out, b_out):
+    """Merge two outputs when neither is clearly better. Placeholder."""
+    return a_out  # Default: prefer A until real merge logic is implemented
+
+
 async def _adjudicate(a_out, b_out, tests):
     # 1) quick tests from Run2
     a_ok = await tests.run(a_out.artifact)

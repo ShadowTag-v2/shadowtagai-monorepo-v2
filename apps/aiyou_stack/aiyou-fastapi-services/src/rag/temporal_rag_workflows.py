@@ -16,7 +16,6 @@ Usage:
 import asyncio
 import logging
 from dataclasses import dataclass
-from datetime import timedelta
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
