@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Deck | ShadowTag AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .deck-container {
+            max-width: 1000px;
+            margin: 120px auto 60px;
+            padding: 0 2rem;
+        }
+        .slide {
+            background: var(--surface-container);
+            border: 1px solid var(--outline-variant);
+            border-radius: 24px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at top right, rgba(0, 255, 136, 0.05), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.05), transparent 50%);
+            pointer-events: none;
+        }
+        .slide-number {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+            opacity: 0.5;
+        }
+        .slide h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+        .slide p {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--on-surface-variant);
+            max-width: 800px;
+        }
+        .nav-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 80px;
+            background: rgba(10, 15, 23, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <header class="nav-header">
+        <a href="index.html" class="logo-group">
+            <span class="material-symbols-outlined" style="color: var(--primary);">shield</span>
+            ShadowTag AI
+        </a>
+        <a href="/" class="btn btn-ghost">Back to Home</a>
+    </header>
+
+    <div class="deck-container">
+        <div class="slide">
+            <div class="slide-number">01</div>
+            <h2>UphillSnowball: Sovereign AI Infrastructure</h2>
+            <p>The AI liability firewall. We provide air-gapped sovereign execution, zero-knowledge temporal pipelines, and active risk mitigation for enterprise LLM workloads.</p>
+        </div>
+
+        <div class="slide">
+            <div class="slide-number">02</div>
+            <h2>The Approaching Liability Cliff</h2>
+            <p>The EU AI Act and NY S7263 are live. Generic wrappers expose enterprises to catastrophic compliance fines. The market demands Sovereign-by-Default architecture.</p>
+        </div>
+
+        <div class="slide">
+            <div class="slide-number">03</div>
+            <h2>Judge 6 Shield Framework</h2>
+            <p>Zero-egress hardware isolation. If a prompt violates institutional rules, our pre-flight AST analysis aborts execution before network traversal. Total immunity.</p>
+        </div>
+
+        <div class="slide">
+            <div class="slide-number">04</div>
+            <h2>$15B+ Addressable Market</h2>
+            <p>Targeting top 100 global law firms, financial institutions, and defense contractors. Delivering defense-in-depth where conventional API keys fundamentally fail.</p>
+        </div>
+    </div>
+</body>
+</html>
