@@ -15,7 +15,7 @@ class ComputerUseSpawner:
         """Spawns a Docker container for a single agent.
         Returns the container ID.
         """
-        container_name = f"flying_monkey_{agent.name}"
+        container_name = f"autoresearch_agent_{agent.name}"
         vnc_port = agent.vnc_port
         http_port = 8000 + (vnc_port - 5900)  # Map HTTP port based on agent index
 
