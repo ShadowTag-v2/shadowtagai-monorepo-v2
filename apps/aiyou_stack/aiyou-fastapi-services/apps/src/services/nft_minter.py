@@ -398,7 +398,7 @@ class NFTMarketplace:
     @staticmethod
     async def search_nfts(
         filters: dict[str, Any] | None = None, _sort_by: str = "recent", limit: int = 50
-    ) -> List[dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Search/browse NFT marketplace
 
