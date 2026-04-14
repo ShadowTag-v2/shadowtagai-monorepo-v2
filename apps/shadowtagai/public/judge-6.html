@@ -88,22 +88,35 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById('evaluate-btn').addEventListener('click', () => {
+    <script type="module">
+        import { evaluateAST, evaluateWASM } from './judge-6-ast.js';
+
+        document.getElementById('evaluate-btn').addEventListener('click', async () => {
             const input = document.getElementById('ast-input').value;
             const output = document.getElementById('ast-output');
-            output.innerHTML = 'Parsing AST tree...<br/>';
+            output.innerHTML = 'Connecting to Judge-6 AST Indexer...<br/>';
             output.style.color = 'var(--on-surface-variant)';
             
-            setTimeout(() => {
-                if(input.includes("rm") || input.includes("drop") || input.includes("delete")) {
+            try {
+                const result = await evaluateAST(input);
+                if(result.status === "VIOLATION") {
                     output.style.color = '#ff4444';
-                    output.innerHTML += '<br/>[VIOLATION] Destructive modifier detected at root execution.<br/>> SHIELD ENFORCED: <b>Execution Killed</b>.';
+                    output.innerHTML += '<br/>[VIOLATION] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
                 } else {
                     output.style.color = '#00ff88';
-                    output.innerHTML += '<br/>[OK] Tree-sitter validated pure execution node.<br/>> SHIELD ENFORCED: Let pass.';
+                    output.innerHTML += '<br/>[OK] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
                 }
-            }, 800);
+            } catch (err) {
+                output.innerHTML += '<br/>WARN: Local API unavailable. Running deterministic WASM tree-sitter fallback...<br/>';
+                const result = await evaluateWASM(input);
+                if(result.status === "VIOLATION") {
+                    output.style.color = '#ff4444';
+                    output.innerHTML += '<br/>[VIOLATION] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
+                } else {
+                    output.style.color = '#00ff88';
+                    output.innerHTML += '<br/>[OK] ' + result.message + '<br/>> SHIELD ENFORCED: <b>' + result.shield + '</b>.';
+                }
+            }
         });
     </script>
 </body>

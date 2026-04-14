@@ -9,7 +9,7 @@ sys.path.append(root_dir)
 
 env_path = os.path.join(root_dir, ".env")
 if os.path.exists(env_path):
-    with open(env_path, "r") as f:
+    with open(env_path) as f:
         for line in f:
             if line.strip() and not line.startswith("#"):
                 try:

@@ -47,7 +47,7 @@ def process_batch(parent, dirs, batch_size=2):
             msg = f"chore(sync): monorepo chunk {parent} batch {i // batch_size} ({batch[0]} to {batch[-1]})"
             run(f'git commit -m "{msg}"')
             run(
-                "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python scripts/push_monorepo.py"
+                ".venv/bin/python scripts/push_monorepo.py"
             )
             time.sleep(1)
         else:
@@ -70,5 +70,5 @@ res = subprocess.run("git diff --cached --quiet", shell=True)
 if res.returncode != 0:
     run('git commit -m "chore(sync): monorepo chunk FINAL (root, docs, scripts)"')
     run(
-        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python scripts/push_monorepo.py"
+        ".venv/bin/python scripts/push_monorepo.py"
     )

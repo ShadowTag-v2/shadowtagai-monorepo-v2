@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+
 import argparse
 import os
+
 import lancedb
 import vertexai
 from lancedb.pydantic import LanceModel, Vector
@@ -39,7 +41,7 @@ class PnklnDoc(LanceModel):
 
 
 def smoke_test() -> int:
-    db = lancedb.connect(DB_URI)
+    lancedb.connect(DB_URI)
     print(f"✅ LanceDB + Vertex AI [{EMBED_MODEL_NAME}] Smoke Test Passed. DB URI: {DB_URI}")
     return 0
 

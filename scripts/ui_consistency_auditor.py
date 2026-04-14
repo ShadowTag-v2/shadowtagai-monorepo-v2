@@ -81,7 +81,7 @@ def scan_file(filepath: str) -> list[dict]:
     """Scan a single file for rule violations."""
     findings = []
     try:
-        with open(filepath, "r", errors="ignore") as f:
+        with open(filepath, errors="ignore") as f:
             for lineno, line in enumerate(f, 1):
                 for rule in RULES:
                     if rule["pattern"].search(line):

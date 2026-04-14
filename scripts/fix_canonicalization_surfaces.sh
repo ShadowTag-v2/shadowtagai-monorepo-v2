@@ -112,7 +112,7 @@ log "Ensuring canonical root .vscode/settings.json"
 if [[ ! -f "$ROOT_SETTINGS" ]]; then
   cat > "$ROOT_SETTINGS" <<'EOF'
 {
-  "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+  "python.defaultInterpreterPath": ".venv/bin/python",
   "python.terminal.activateEnvInCurrentTerminal": true,
   "python.analysis.typeCheckingMode": "basic",
   "jupyter.jupyterServerType": "local",

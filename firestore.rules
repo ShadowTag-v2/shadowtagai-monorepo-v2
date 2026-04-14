@@ -1,23 +1,37 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // RBAC Custom Functions
+    function hasRole(role) {
+      return request.auth != null && request.auth.token.role == role;
+    }
+    function isAdmin() {
+      return hasRole('admin') || request.auth.token.admin == true;
+    }
+    function isPartner() {
+      return isAdmin() || hasRole('partner');
+    }
+    function isAnalyst() {
+      return isPartner() || hasRole('analyst');
+    }
+
     // Default: deny all access
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // KovelAI leads — authenticated create, admin read/update/delete
+    // KovelAI leads — analysts can read/update; partners/admins can delete.
     match /kovelai_leads/{leadId} {
-      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow read, update: if isAnalyst();
       allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && request.auth.token.admin == true;
+      allow delete: if isPartner();
     }
 
-    // KovelAI firms — authenticated create, admin read/update/delete
+    // KovelAI firms — structured access.
     match /kovelai_firms/{firmId} {
-      allow read: if request.auth != null && request.auth.token.admin == true;
+      allow read, update: if isAnalyst();
       allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && request.auth.token.admin == true;
+      allow delete: if isAdmin();
     }
 
     // UphillSnowball analyses — strict admin-only
