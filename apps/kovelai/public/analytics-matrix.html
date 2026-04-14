@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Matrix | KovelAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for data viz -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-container { max-width: 1200px; margin: 120px auto 4rem; padding: 0 2rem; }
+        .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .chart-card { background: var(--surface-container); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--outline-variant); }
+        .chart-card h3 { margin-top: 0; font-weight: 500; font-size: 1.25rem; color: var(--on-surface); }
+    </style>
+</head>
+<body>
+    <header class="nav-header">
+        <a href="index.html" class="logo-group">
+            <span class="material-symbols-outlined nav-icon" style="color: var(--primary);">query_stats</span>
+            KovelAI Matrix
+        </a>
+    </header>
+
+    <div class="dashboard-container">
+        <h1 class="section-title gradient-sweep">Unified Analytics Matrix</h1>
+        <p class="section-subtitle">Real-time G-K8M57QXYZ endpoint convergence across KovelAI and ShadowTag AI.</p>
+        
+        <div class="matrix-grid">
+            <div class="chart-card">
+                <h3>ShadowTag API Conversions (A/B)</h3>
+                <canvas id="abTestChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>KovelAI Intake Flow</h3>
+                <canvas id="intakeChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data logic for unified dashboard representation
+        const ctxAB = document.getElementById('abTestChart').getContext('2d');
+        new Chart(ctxAB, {
+            type: 'bar',
+            data: {
+                labels: ['Deploy Shield (Control)', 'Get Immunity (A)', 'Risk Audit (B)'],
+                datasets: [{
+                    label: 'Click-Through Rate (%)',
+                    data: [12.5, 18.2, 9.4],
+                    backgroundColor: ['rgba(0, 255, 136, 0.5)', 'rgba(0, 200, 255, 0.5)', 'rgba(255, 100, 100, 0.5)'],
+                    borderColor: ['#00ff88', '#00c8ff', '#ff6464'],
+                    borderWidth: 1
+                }]
+            },
+            options: { 
+                responsive: true, 
+                scales: { y: { beginAtZero: true } },
+                animation: {
+                    duration: 2500,
+                    easing: 'easeOutExpo'
+                }
+            }
+        });
+
+        async function loadIntakeData() {
+            try {
+                // Fetch direct from SQLite node wrapper
+                const res = await fetch('http://localhost:3001/api/v1/analytics');
+                const parsed = await res.json();
+                const counts = parsed.data.map(row => row.count);
+                
+                const ctxIntake = document.getElementById('intakeChart').getContext('2d');
+                new Chart(ctxIntake, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Inbound Intakes',
+                            data: counts,
+                            borderColor: '#00ff88',
+                            tension: 0.4,
+                            fill: true,
+                            backgroundColor: 'rgba(0, 255, 136, 0.1)'
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        scales: { y: { beginAtZero: true } },
+                        animation: {
+                            duration: 3000,
+                            easing: 'easeOutQuart'
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn("SQLite Node offline. Chart generation skipped.");
+            }
+        }
+        
+        loadIntakeData();
+    </script>
+</body>
+</html>

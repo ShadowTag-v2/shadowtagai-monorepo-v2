@@ -2,6 +2,11 @@
   "ci": {
     "collect": {
       "numberOfRuns": 1,
+      "url": [
+        "http://localhost:5000/?variant=0",
+        "http://localhost:5000/?variant=1",
+        "http://localhost:5000/?variant=2"
+      ],
       "settings": {
         "chromeFlags": "--no-sandbox --headless"
       }

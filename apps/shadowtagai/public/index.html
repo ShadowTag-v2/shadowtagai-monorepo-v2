@@ -2154,25 +2154,64 @@ if (window.location.hash) {
 
     initParticleNetwork('heroParticlesCanvas');
 
-    // ===== HERO VIDEO — Reduced Motion & Error Handling =====
+    // ===== HERO VIDEO — Seamless Crossfade Looper =====
     (function initHeroVideo() {
-        const video = document.getElementById('heroVideo');
-        if (!video) return;
+        const v1 = document.getElementById('heroVideo');
+        if (!v1) return;
 
         // Respect reduced-motion preferences
         const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         let isReducedMotion = motionQuery.matches;
         let isInView = true;
 
+        // Clone video to achieve seamless crossfade jumping
+        const v2 = v1.cloneNode(true);
+        v2.id = 'heroVideo2';
+        v2.removeAttribute('id');
+        v2.classList.remove('loaded');
+        // Ensure styling matches perfectly
+        v1.style.transition = 'opacity 0.4s ease-in-out';
+        v2.style.transition = 'opacity 0.4s ease-in-out';
+        v2.style.opacity = '0';
+        v1.parentNode.insertBefore(v2, v1.nextSibling);
+
+        let activeVideo = v1;
+        let inactiveVideo = v2;
+        const FADE_OFFSET = 0.35; // Crossfade 350ms before hit
+
+        function onTimeUpdate(e) {
+            const vid = e.target;
+            // Only trigger if this is the currently active playing node
+            if (vid !== activeVideo) return;
+            
+            if (vid.duration && vid.currentTime >= vid.duration - FADE_OFFSET) {
+                // Spin up secondary buffer and crossfade
+                inactiveVideo.currentTime = 0;
+                inactiveVideo.play().catch(() => {});
+                inactiveVideo.style.opacity = '0.55';
+                activeVideo.style.opacity = '0';
+                
+                // Swap active state tracking
+                [activeVideo, inactiveVideo] = [inactiveVideo, activeVideo];
+            }
+        }
+
+        v1.addEventListener('timeupdate', onTimeUpdate);
+        v2.addEventListener('timeupdate', onTimeUpdate);
+        
+        // Remove native loop to prevent internal seeking stutters
+        v1.removeAttribute('loop');
+        v2.removeAttribute('loop');
+
         function updatePlayback() {
             if (isReducedMotion) {
-                video.pause();
-                video.style.display = 'none';
+                v1.pause(); v2.pause();
+                v1.style.display = 'none'; v2.style.display = 'none';
             } else if (isInView) {
-                video.play().catch(() => {});
-                video.style.display = '';
+                activeVideo.play().catch(() => {});
+                v1.style.display = ''; v2.style.display = '';
             } else {
-                video.pause();
+                v1.pause(); v2.pause();
             }
         }
 
@@ -2181,7 +2220,6 @@ if (window.location.hash) {
             updatePlayback();
         });
 
-        // Intersection Observer — pause video when scrolled out of view
         if ('IntersectionObserver' in window) {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
@@ -2189,15 +2227,16 @@ if (window.location.hash) {
                     updatePlayback();
                 });
             }, { threshold: 0.1 });
-            observer.observe(video.closest('.hero') || video);
+            observer.observe(v1.closest('.hero') || v1);
         }
 
         updatePlayback();
 
-        // Graceful fallback if video fails to load
-        video.addEventListener('error', () => {
+        // Graceful fallback
+        v1.addEventListener('error', () => {
             console.warn('Hero video failed to load — falling back to CSS aurora.');
-            video.style.display = 'none';
+            v1.style.display = 'none';
+            v2.style.display = 'none';
             const vignette = document.querySelector('.hero-video-vignette');
             if (vignette) vignette.style.display = 'none';
         });
@@ -2242,11 +2281,17 @@ if (window.location.hash) {
           "Schedule Risk Audit"      // Variant B
       ];
       
-      // Determine variant (persistent for user session)
-      let variantIndex = localStorage.getItem('ab_cta_variant');
-      if (variantIndex === null) {
-          variantIndex = Math.floor(Math.random() * variants.length);
+      const urlParams = new URLSearchParams(window.location.search);
+      let variantIndex = urlParams.get('variant');
+      
+      if (variantIndex !== null) {
           localStorage.setItem('ab_cta_variant', variantIndex);
+      } else {
+          variantIndex = localStorage.getItem('ab_cta_variant');
+          if (variantIndex === null) {
+              variantIndex = Math.floor(Math.random() * variants.length);
+              localStorage.setItem('ab_cta_variant', variantIndex);
+          }
       }
       
       window.__ab_variant = variantIndex;
