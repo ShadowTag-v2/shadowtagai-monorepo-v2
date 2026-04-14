@@ -18,7 +18,12 @@ import time
 from fastapi import FastAPI, Header, HTTPException, Request
 from pydantic import BaseModel
 
+from apps.counselconduit.api.stripe_handler import router as stripe_router
+
 app = FastAPI(title="CounselConduit: Kovel Enclave", version="2.0.0")
+
+# ── Webhook Routes ──
+app.include_router(stripe_router)
 
 
 class MalpracticePayload(BaseModel):
