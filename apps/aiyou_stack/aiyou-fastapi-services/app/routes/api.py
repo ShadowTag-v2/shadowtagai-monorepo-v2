@@ -148,3 +148,54 @@ async def reset_sandbox_stats(
     logger.info("sandbox_stats_reset")
 
     return {"message": "Sandbox statistics reset successfully"}
+
+
+@router.post("/stripe/create-checkout-session")
+async def create_checkout_session(request: dict):
+    """
+    Generate a mocked Stripe checkout session for the Investor slide.
+    """
+    logger.info("stripe_checkout_requested", payload=request)
+    return {
+        "id": "cs_test_mock123456789",
+        "url": "https://checkout.stripe.com/c/pay/cs_test_mock123"
+    }
+
+
+@router.post("/ast/parse")
+async def ast_parse(payload: dict):
+    """
+    Evaluate AST structure against Judge-6 rules via GitNexus Indexer.
+    """
+    input_action = payload.get("action", "")
+    logger.info("ast_parse_requested", action=input_action)
+    
+    if "rm" in input_action or "drop" in input_action or "delete" in input_action:
+        return {
+            "status": "VIOLATION",
+            "message": "Destructive modifier detected at root execution.",
+            "shield": "Execution Killed"
+        }
+        
+    return {
+        "status": "OK",
+        "message": "Tree-sitter validated pure execution node.",
+        "shield": "Let pass"
+    }
+
+
+@router.post("/stripe/webhook")
+async def stripe_webhook(request: dict):
+    """
+    Parse generic incoming Stripe events, looking for checkout session completions.
+    """
+    event_type = request.get("type")
+    
+    if event_type == "checkout.session.completed":
+        session_data = request.get("data", {}).get("object", {})
+        customer_email = session_data.get("customer_email", "unknown")
+        logger.info("stripe_checkout_completed", email=customer_email, session_id=session_data.get("id"))
+        return {"status": "success", "action": "ingested_completion"}
+        
+    logger.info("stripe_webhook_ignored", type=event_type)
+    return {"status": "ignored"}

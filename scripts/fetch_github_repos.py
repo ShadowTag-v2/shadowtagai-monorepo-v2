@@ -1,16 +1,17 @@
 import json
+import os
 import time
 
 import jwt
 import requests
 
 
-def get_repos(app_id, pem_path, _owner_type, owner_name):
+def get_repos(app_id, pem_path, owner_name):
     with open(pem_path, "rb") as f:
         pem_data = f.read()
 
     # Generate JWT
-    iat = int(time.time())
+    iat = int(time.time()) - 60
     exp = iat + (10 * 60)
     payload = {"iat": iat, "exp": exp, "iss": str(app_id)}
     encoded_jwt = jwt.encode(payload, pem_data, algorithm="RS256")
@@ -69,9 +70,11 @@ if __name__ == "__main__":
     repos_ehanc69 = []
     try:
         repos_ehanc69 = get_repos(
-            app_id="3018080",
-            pem_path="/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem",
-            owner_type="User",
+            app_id=os.environ.get("EHANC69_APP_ID", "3018080"),
+            pem_path=os.environ.get(
+                "EHANC69_PEM",
+                "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-17.private-key.pem",
+            ),
             owner_name="ehanc69",
         )
     except Exception as e:
@@ -80,9 +83,11 @@ if __name__ == "__main__":
     repos_shadowtag = []
     try:
         repos_shadowtag = get_repos(
-            app_id="3018200",
-            pem_path="/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem",
-            owner_type="Organization",
+            app_id=os.environ.get("GITHUB_APP_ID", "3018200"),
+            pem_path=os.environ.get(
+                "SHADOWTAG_PEM",
+                "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem",
+            ),
             owner_name="ShadowTag-v2",
         )
     except Exception as e:

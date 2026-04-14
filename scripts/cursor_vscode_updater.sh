@@ -85,7 +85,7 @@ VSCODE_SETTINGS='{
     "source.fixAll.ruff": "explicit",
     "source.organizeImports.ruff": "explicit"
   },
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.defaultInterpreterPath": ".venv/bin/python",
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": ["--cov", "--cov-fail-under=98"],
   "mypy-type-checker.args": ["--strict"],
@@ -118,7 +118,7 @@ CURSOR_SETTINGS='{
     "source.fixAll.ruff": "explicit",
     "source.organizeImports.ruff": "explicit"
   },
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.defaultInterpreterPath": ".venv/bin/python",
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": ["--cov", "--cov-fail-under=98"],
   "mypy-type-checker.args": ["--strict"],
