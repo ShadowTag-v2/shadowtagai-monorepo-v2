@@ -16,7 +16,7 @@ provider "google" {
 }
 
 # 1. Instance Template (The Swarm Unit)
-resource "google_compute_instance_template" "monkey_template" {
+resource "google_compute_instance_template" "autoresearch_template" {
   name_prefix  = "n-autoresearch/Kosmos/BioAgents-tpl-"
   machine_type = "e2-standard-4"
   region       = var.region
@@ -61,25 +61,25 @@ resource "google_compute_resource_policy" "unified_maintenance" {
 }
 
 # 2. Managed Instance Group (The Swarm)
-resource "google_compute_region_instance_group_manager" "monkey_swarm" {
-  name               = "n-autoresearch/Kosmos/BioAgents-swarm"
-  base_instance_name = "monkey"
+resource "google_compute_region_instance_group_manager" "autoresearch_swarm" {
+  name               = "autoresearch-triad-swarm"
+  base_instance_name = "autoresearch"
   region            = var.region
   target_size       = 3
 
   version {
-    instance_template = google_compute_instance_template.monkey_template.id
+    instance_template = google_compute_instance_template.autoresearch_template.id
   }
 
   auto_healing_policies {
-    health_check      = google_compute_health_check.monkey_health.id
+    health_check      = google_compute_health_check.autoresearch_health.id
     initial_delay_sec = 300
   }
 }
 
 # 3. Health Check
-resource "google_compute_health_check" "monkey_health" {
-  name = "monkey-health"
+resource "google_compute_health_check" "autoresearch_health" {
+  name = "autoresearch-health"
 
   http_health_check {
     port = 8600
@@ -88,15 +88,15 @@ resource "google_compute_health_check" "monkey_health" {
 }
 
 # 4. Load Balancer (The Gate)
-resource "google_compute_region_backend_service" "monkey_backend" {
-  name                  = "monkey-backend"
+resource "google_compute_region_backend_service" "autoresearch_backend" {
+  name                  = "autoresearch-backend"
   region                = var.region
   load_balancing_scheme = "EXTERNAL"
   protocol              = "HTTP"
 
   backend {
-    group = google_compute_region_instance_group_manager.monkey_swarm.instance_group
+    group = google_compute_region_instance_group_manager.autoresearch_swarm.instance_group
   }
 
-  health_checks = [google_compute_health_check.monkey_health.id]
+  health_checks = [google_compute_health_check.autoresearch_health.id]
 }

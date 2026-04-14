@@ -20,7 +20,7 @@ class SquadronConfig(BaseModel):
 
 
 # The "Cor.86" Definition
-FLYING_MONKEYS_SQUADRON = SquadronConfig(
+AUTORESEARCH_TRIAD_SQUADRON = SquadronConfig(
     troops={
         "HHT": Troop(
             name="HHT",
