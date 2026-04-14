@@ -68,7 +68,8 @@
         }
 
         /* ===== ACCESSIBILITY TOOLBAR ===== */
-        .a11y-toolbar {
+        /* ===== UTILITY BAR (Unusual Machines Style) ===== */
+        .utility-bar {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 200;
@@ -77,10 +78,45 @@
             height: 32px;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
             padding: 0 1.5rem;
+        }
+        .utility-bar__left {
+            display: flex;
+            align-items: center;
             gap: 0.25rem;
         }
+        .utility-bar__right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .utility-bar__link {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.625rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .utility-bar__link:hover { color: var(--primary); }
+        .utility-bar__cta {
+            background: linear-gradient(135deg, var(--primary-dim), var(--primary));
+            color: var(--on-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.625rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 4px 16px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .utility-bar__cta:hover { opacity: 0.85; }
         .a11y-btn {
             background: transparent;
             border: 1px solid var(--outline-variant);
@@ -105,7 +141,6 @@
             border-color: var(--primary);
         }
         .a11y-link {
-            margin-left: auto;
             font-size: 0.65rem;
             color: var(--outline);
             display: flex;
@@ -115,6 +150,14 @@
         }
         .a11y-link:hover { color: var(--primary); }
         .a11y-link .material-symbols-outlined { font-size: 0.85rem; }
+
+        /* Investor Deck highlight */
+        .nav-dropdown-highlight {
+            color: var(--primary) !important;
+            font-weight: 700 !important;
+            border-left: 3px solid var(--primary);
+            padding-left: calc(0.75rem - 3px) !important;
+        }
 
         /* ===== UNDULATING BACKGROUND ===== */
         .aurora-bg {
@@ -377,6 +420,8 @@
             pointer-events: none;
             filter: brightness(0.5) saturate(1.5) hue-rotate(-5deg);
             mix-blend-mode: screen;
+            will-change: transform;
+            transform: translateZ(0);
         }
         .hero-video-bg.loaded {
             opacity: 0.55;
@@ -922,7 +967,8 @@
             .hero-logo-container { width: 100px; height: 100px; }
             .section { padding: 4rem 1.5rem; }
             .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
-            .a11y-toolbar { padding: 0 0.75rem; }
+            .utility-bar { padding: 0 0.75rem; }
+            .utility-bar__right { display: none; }
             .cookie-banner { left: 0.75rem; right: 0.75rem; max-width: none; }
         }
         @media (min-width: 769px) and (max-width: 1024px) {
@@ -936,16 +982,22 @@
 <!-- ===== SCROLL PROGRESS BAR ===== -->
 <div class="scroll-progress" id="scrollProgress"></div>
 
-<!-- ===== ACCESSIBILITY TOOLBAR ===== -->
-<div class="a11y-toolbar" id="a11yToolbar">
-    <button class="a11y-btn" id="fontDecrease" title="Decrease font size" aria-label="Decrease font size">A-</button>
-    <button class="a11y-btn" id="fontReset" title="Reset font size" aria-label="Reset font size">A=</button>
-    <button class="a11y-btn" id="fontIncrease" title="Increase font size" aria-label="Increase font size">A+</button>
-    <button class="a11y-btn" id="contrastToggle" title="Toggle high contrast" aria-label="Toggle high contrast">Contrast</button>
-    <a href="#" class="a11y-link" id="a11yLink" aria-label="Accessibility statement">
-        <span class="material-symbols-outlined">accessibility_new</span>
-        Accessibility
-    </a>
+<!-- ===== UTILITY BAR (Unusual Machines Style) ===== -->
+<div class="utility-bar" id="utilityBar">
+    <div class="utility-bar__left">
+        <button class="a11y-btn" id="fontDecrease" title="Decrease font size" aria-label="Decrease font size">A-</button>
+        <button class="a11y-btn" id="fontReset" title="Reset font size" aria-label="Reset font size">A=</button>
+        <button class="a11y-btn" id="fontIncrease" title="Increase font size" aria-label="Increase font size">A+</button>
+        <button class="a11y-btn" id="contrastToggle" title="Toggle high contrast" aria-label="Toggle high contrast">Contrast</button>
+        <a href="#" class="a11y-link" id="a11yLink" aria-label="Accessibility statement">
+            <span class="material-symbols-outlined">accessibility_new</span>
+        </a>
+    </div>
+    <div class="utility-bar__right">
+        <a href="#" class="utility-bar__link" onclick="showSection('management'); return false;">Corporate Governance</a>
+        <a href="mailto:investors@shadowtagai.com" class="utility-bar__link">Investor Relations</a>
+        <button class="utility-bar__cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'}); showSection('home');">Contact Sales</button>
+    </div>
 </div>
 
 <!-- ===== UNDULATING AURORA BACKGROUND ===== -->
@@ -985,7 +1037,7 @@
                 <ul class="nav-dropdown">
                     <li><a href="#" onclick="showSection('home')">Stock Information</a></li>
                     <li><a href="#media" onclick="showSection('home')">Press Releases</a></li>
-                    <li><a href="#" onclick="showSection('pitch-deck')">Investor Deck</a></li>
+                    <li><a href="#" onclick="showSection('pitch-deck')" class="nav-dropdown-highlight">★ Investor Deck</a></li>
                     <li><a href="#">Analyst Coverage</a></li>
                     <li><a href="#">SEC Filings</a></li>
                     <li>
@@ -1058,8 +1110,7 @@
            poster="hero-bg.png"
            onloadeddata="this.classList.add('loaded')">
         <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/fluid-kinetic-aura.mp4" type="video/mp4">
-        <source src="hero-bg-video-web.mp4" type="video/mp4">
-        <source src="hero-bg-video.webm" type="video/webm">
+        <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/fluid-kinetic-aura.webm" type="video/webm">
     </video>
     <div class="hero-video-vignette"></div>
     <!-- Layer 2: Particle Network -->
@@ -1985,6 +2036,89 @@ if (window.location.hash) {
             const vignette = document.querySelector('.hero-video-vignette');
             if (vignette) vignette.style.display = 'none';
         });
+    })();
+
+    // ===== PHASE 2: Scroll-Triggered Parallax Controller =====
+    (function initHeroParallax() {
+        const hero = document.querySelector('.hero');
+        if (!hero) return;
+
+        // Respect reduced-motion
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        const video = hero.querySelector('.hero-video-bg');
+        const particles = hero.querySelector('.hero-particles-canvas');
+        const content = hero.querySelector('.hero-content');
+        const grain = hero.querySelector('.hero-grain');
+        const vignette = hero.querySelector('.hero-video-vignette');
+
+        let ticking = false;
+        let lastScrollY = 0;
+
+        function lerp(start, end, factor) {
+            return start + (end - start) * factor;
+        }
+
+        // Track smoothed values for buttery motion
+        let smoothY = 0;
+
+        function onScroll() {
+            lastScrollY = window.scrollY;
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }
+
+        function updateParallax() {
+            const heroHeight = hero.offsetHeight;
+            // Normalize scroll to 0-1 range within hero bounds
+            const scrollRatio = Math.min(lastScrollY / heroHeight, 1.5);
+            smoothY = lerp(smoothY, scrollRatio, 0.12);
+
+            // Layer 1: Video moves slowest (depth illusion)
+            if (video) {
+                const videoShift = smoothY * 60; // max 60px
+                const videoScale = 1 + smoothY * 0.05; // subtle zoom
+                video.style.transform = `translate3d(0, ${videoShift}px, 0) scale(${videoScale})`;
+            }
+
+            // Layer 2: Particles move at medium speed
+            if (particles) {
+                const particleShift = smoothY * 35;
+                particles.style.transform = `translate3d(0, ${particleShift}px, 0)`;
+            }
+
+            // Layer 3: Content moves fastest (foreground)
+            if (content) {
+                const contentShift = smoothY * -20;
+                const contentOpacity = Math.max(1 - smoothY * 0.6, 0);
+                content.style.transform = `translate3d(0, ${contentShift}px, 0)`;
+                content.style.opacity = contentOpacity;
+            }
+
+            // Grain and vignette: subtle scale
+            if (grain) {
+                grain.style.transform = `translate3d(0, ${smoothY * 20}px, 0)`;
+            }
+            if (vignette) {
+                const vignetteOpacity = Math.min(1 + smoothY * 0.3, 1.3);
+                vignette.style.opacity = vignetteOpacity;
+            }
+
+            ticking = false;
+        }
+
+        // Use passive listener for performance
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Also handle resize to recalculate hero height
+        window.addEventListener('resize', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }, { passive: true });
     })();
 
     // Render all spheres

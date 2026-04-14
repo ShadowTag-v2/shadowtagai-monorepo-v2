@@ -368,6 +368,38 @@
       .nav-dropdown a:hover {
           background: #211d14; color: #e6c487;
       }
+      /* Level 2 Sub-Dropdown (Corporate Governance flyout) */
+      .nav-sub-item { position: relative; }
+      .nav-sub-item > a { display: flex !important; justify-content: space-between; align-items: center; }
+      .nav-sub-dropdown {
+          position: absolute; top: 0; left: 100%;
+          min-width: 220px; padding: 8px 0;
+          background: #1a170f; border: 1px solid #554c38;
+          border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+          opacity: 0; visibility: hidden;
+          transform: translateX(8px);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 70;
+      }
+      .nav-sub-item:hover > .nav-sub-dropdown {
+          opacity: 1; visibility: visible; transform: translateX(0);
+      }
+      .nav-sub-dropdown a {
+          display: block; padding: 10px 20px;
+          font-size: 0.8125rem; color: #d8ccb5;
+          transition: background 0.15s, color 0.15s;
+          white-space: nowrap;
+      }
+      .nav-sub-dropdown a:hover {
+          background: #211d14; color: #e6c487;
+      }
+      /* Investor Deck highlight */
+      .nav-dropdown-highlight {
+          color: #e6c487 !important;
+          font-weight: 700 !important;
+          border-left: 3px solid #e6c487;
+          padding-left: calc(20px - 3px) !important;
+      }
       /* ── Corporate Section Styles ── */
       .ceo-card {
           background: linear-gradient(145deg, #211d14 0%, #1a170f 100%);
@@ -587,20 +619,20 @@ Submit Inquiry
 <div class="nav-item">
 <span class="nav-link">Investors <span class="material-symbols-outlined chevron" style="font-size:16px">expand_more</span></span>
 <div class="nav-dropdown">
-<a href="#retention">Retention Engine</a>
-<a href="#avvo">Market Position</a>
-<a href="#">Investor Deck</a>
-<a href="#contact-ir">IR Contact</a>
-</div>
-</div>
-
-<!-- Corporate Governance -->
-<div class="nav-item">
-<span class="nav-link">Governance <span class="material-symbols-outlined chevron" style="font-size:16px">expand_more</span></span>
-<div class="nav-dropdown">
+<a href="#retention">Stock Information</a>
+<a href="#avvo">Press Releases</a>
+<a href="#" class="nav-dropdown-highlight">★ Investor Deck</a>
+<a href="#">Analyst Coverage</a>
+<a href="#">SEC Filings</a>
+<div class="nav-sub-item">
+<a href="#">Corporate Governance <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span></a>
+<div class="nav-sub-dropdown">
 <a href="#management">Management</a>
 <a href="#">Board of Directors</a>
-<a href="#">Corporate Charter</a>
+<a href="#">Board Committees</a>
+<a href="#">Governance Documents</a>
+</div>
+</div>
 </div>
 </div>
 
@@ -608,19 +640,24 @@ Submit Inquiry
 <div class="nav-item">
 <span class="nav-link">Contact <span class="material-symbols-outlined chevron" style="font-size:16px">expand_more</span></span>
 <div class="nav-dropdown">
-<a href="#contact-ir">Investor Relations</a>
-<a href="#" onclick="openContactModal(event)">Sales Inquiries</a>
-<a href="#" onclick="openContactModal(event)">General Contact</a>
+<a href="#contact-ir">Contact Sales</a>
+<a href="mailto:investors@kovelai.com">Contact IR</a>
+<a href="#contact-ir">Investor FAQs</a>
+<a href="mailto:alerts@kovelai.com">Email Alerts</a>
 </div>
+</div>
+
+<!-- Careers -->
+<div class="nav-item">
+<a class="nav-link" href="https://apply.workable.com/" target="_blank" rel="noopener" style="text-decoration:none">Careers</a>
 </div>
 
 <!-- About Us -->
 <div class="nav-item">
-<span class="nav-link">About <span class="material-symbols-outlined chevron" style="font-size:16px">expand_more</span></span>
+<span class="nav-link">About Us <span class="material-symbols-outlined chevron" style="font-size:16px">expand_more</span></span>
 <div class="nav-dropdown">
 <a href="#">Overview</a>
 <a href="#management">Management</a>
-<a href="#">Careers</a>
 </div>
 </div>
 
@@ -646,7 +683,7 @@ Submit Inquiry
        preload="metadata"
        onloadeddata="this.classList.add('loaded')">
     <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4" type="video/mp4">
-    <source src="hero-bg-video-web.mp4" type="video/mp4">
+    <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.webm" type="video/webm">
 </video>
 <div class="hero-video-vignette"></div>
 <!-- Layer 2: Three.js Wireframe Shield -->
