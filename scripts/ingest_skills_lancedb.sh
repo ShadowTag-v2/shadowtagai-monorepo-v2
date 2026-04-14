@@ -104,7 +104,7 @@ with open(manifest_path) as f:
         })
 
 # Create/overwrite table
-if "skills" in db.table_names():
+if "skills" in db.list_tables():
     db.drop_table("skills")
 table = db.create_table("skills", records)
 print(f"✅ Ingested {len(records)} skills into LanceDB")
