@@ -13,7 +13,7 @@ from app.security.middleware import (
     RequestValidationMiddleware,
     SandboxMiddleware,
 )
-from app.webhooks.stripe_handler import router as stripe_router
+from app.routers.stripe_handler import router as stripe_router
 
 # Configure structured logging
 structlog.configure(
