@@ -1,46 +1,51 @@
-#!/usr/bin/env bash
-# Sovereign State Protocol — Hunter-Killer Stack Installation
-# The Hunter: rg (ripgrep) — blazing fast text search
-# The Universal: ugrep — interactive + fuzzy matching
-# The Killer: sg (ast-grep) — structural/AST search
+#!/bin/bash
+# HUNTER-KILLER STACK INSTALLER
+# Usage: ./scripts/install_hunter_killer.sh
+# Installs: rg (ripgrep), ugrep, sg (ast-grep)
+
 set -euo pipefail
 
-echo "=== HUNTER-KILLER STACK INSTALL ==="
+echo "=== INSTALLING HUNTER-KILLER STACK ==="
+echo "The Hunter (rg) | The Universal (ugrep) | The Killer (sg)"
+echo ""
 
-# Detect package manager
-if command -v brew &>/dev/null; then
-  PKG="brew install"
-else
-  echo "ERROR: Homebrew not found. Install from https://brew.sh"
-  exit 1
+# Check for Homebrew
+if ! command -v brew &>/dev/null; then
+    echo "❌ Homebrew not found. Install: /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+    exit 1
 fi
 
-# 1. ripgrep (rg)
+# The Hunter: ripgrep
+echo "[1/3] Installing ripgrep (The Hunter)..."
 if command -v rg &>/dev/null; then
-  echo "[rg] Already installed: $(rg --version | head -1)"
+    echo "  ✅ ripgrep already installed: $(rg --version | head -1)"
 else
-  echo "[rg] Installing ripgrep..."
-  $PKG ripgrep
+    brew install ripgrep
+    echo "  ✅ ripgrep installed: $(rg --version | head -1)"
 fi
 
-# 2. ugrep
+# The Universal: ugrep
+echo "[2/3] Installing ugrep (The Universal)..."
 if command -v ugrep &>/dev/null; then
-  echo "[ugrep] Already installed: $(ugrep --version | head -1)"
+    echo "  ✅ ugrep already installed: $(ugrep --version | head -1)"
 else
-  echo "[ugrep] Installing ugrep..."
-  $PKG ugrep
+    brew install ugrep
+    echo "  ✅ ugrep installed: $(ugrep --version | head -1)"
 fi
 
-# 3. ast-grep (sg)
+# The Killer: ast-grep
+echo "[3/3] Installing ast-grep (The Killer)..."
 if command -v sg &>/dev/null; then
-  echo "[sg] Already installed: $(sg --version)"
+    echo "  ✅ ast-grep already installed: $(sg --version 2>/dev/null || echo 'version unknown')"
 else
-  echo "[sg] Installing ast-grep..."
-  $PKG ast-grep
+    brew install ast-grep
+    echo "  ✅ ast-grep installed: $(sg --version 2>/dev/null || echo 'version unknown')"
 fi
 
 echo ""
-echo "=== HUNTER-KILLER STACK READY ==="
-echo "  rg  → ripgrep (fast text search):        rg 'pattern' ."
-echo "  ug  → ugrep (interactive/fuzzy):          ug -Q 'pattern'"
-echo "  sg  → ast-grep (structural/AST search):   sg run -p 'console.log(\$X)'"
+echo "=== HUNTER-KILLER STACK VERIFICATION ==="
+echo "  rg: $(command -v rg 2>/dev/null && echo '✅' || echo '❌')"
+echo "  ugrep: $(command -v ugrep 2>/dev/null && echo '✅' || echo '❌')"
+echo "  sg: $(command -v sg 2>/dev/null && echo '✅' || echo '❌')"
+echo ""
+echo "=== INSTALLATION COMPLETE ==="
