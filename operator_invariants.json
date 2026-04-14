@@ -1,7 +1,7 @@
 {
   "version": "8.4",
   "scope": "antigravity_local_operator_invariants",
-  "locked_at": "2026-04-14T18:05:00Z",
+  "locked_at": "2026-04-14T18:30:00Z",
   "locked_by": "antigravity_session_b87c43d2",
   "purpose": "Lean core constitution. Normalized Model Doctrine, Bounded YOLO, MCP physical barriers, GitHub control plane, and Queue Doctrine.",
   "settings": {
@@ -60,7 +60,7 @@
     "documentation": "FORBIDDEN from guessing API endpoints. Execute tool call to Documentation MCP to fetch current SDK surface."
   },
   "mcp_fleet_status": {
-    "last_verified": "2026-04-14T18:13:00Z",
+    "last_verified": "2026-04-14T18:30:00Z",
     "canonical_config": "antigravity-mcp-config.json",
     "servers": {
       "google-developer-knowledge": "ONLINE",
@@ -109,7 +109,9 @@
       "model": "all-MiniLM-L6-v2",
       "path": "~/.shadowtag/lancedb"
     },
-    "cloud_run": "DEPLOYING",
+    "cloud_run": "LIVE (uphillsnowball-sovereign-767252945109.us-central1.run.app)",
+    "cloud_run_verified": "2026-04-14T18:30:41Z — /health=200, /mission=MISSION_GO, attack=403_BLOCKED",
+    "skill_fleet": "116 global skills (17 new enforcement skills covering 115 invariant points)",
     "f821_errors": 23,
     "lighthouse": {
       "shadowtagai_bp": 100,
