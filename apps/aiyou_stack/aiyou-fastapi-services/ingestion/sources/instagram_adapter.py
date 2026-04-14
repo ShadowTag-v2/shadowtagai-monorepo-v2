@@ -16,8 +16,12 @@ import asyncio
 import os
 from collections.abc import AsyncIterator
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 import structlog
+
+if TYPE_CHECKING:
+    import instagrapi
 
 from ingestion.classification.tier_classifier import IngestedItem
 from ingestion.sources.base import SourceAdapter
