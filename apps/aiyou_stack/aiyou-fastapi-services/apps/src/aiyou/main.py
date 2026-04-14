@@ -15,6 +15,9 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from .config import settings
+from .database import Base, engine
+
+logger = logging.getLogger(__name__)
 from .middleware import (
     RateLimitMiddleware,
     RequestValidationMiddleware,
