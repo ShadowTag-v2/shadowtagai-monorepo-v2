@@ -4,17 +4,6 @@
       "serverUrl": "https://developer-knowledge.googleapis.com/mcp/",
       "authProviderType": "google_credentials"
     },
-    "mcp-toolbox-sdk-java": {
-      "command": "java",
-      "args": [
-        "-jar",
-        "/Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-0.2.1-SNAPSHOT.jar"
-      ],
-      "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "use_default_adc",
-        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/jdk-26.jdk/Contents/Home"
-      }
-    },
     "firebase": {
       "command": "npx",
       "args": ["-y", "firebase-tools@latest", "mcp"],
@@ -22,6 +11,10 @@
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "GCLOUD_PROJECT": "shadowtag-omega-v4"
       }
+    },
+    "firestore": {
+      "serverUrl": "https://firestore.googleapis.com/mcp",
+      "authProviderType": "google_credentials"
     },
     "chrome-devtools-mcp": {
       "command": "npx",
@@ -34,9 +27,20 @@
         "clientSecret": "OMITTED_FOR_SECURITY_USE_ENV_VAR"
       }
     },
-    "supabase-mcp": {
-      "serverUrl": "https://api.supabase.com/mcp/",
-      "authProviderType": "oauth"
+    "stitch": {
+      "command": "npx",
+      "args": ["-y", "stitch-mcp"],
+      "env": {
+        "STITCH_API_KEY": "${STITCH_API_KEY}",
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
+      }
+    },
+    "gemini": {
+      "command": "npx",
+      "args": ["-y", "@houtini/gemini-mcp"],
+      "env": {
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
+      }
     },
     "gcloud-mcp": {
       "command": "gcloud-mcp",
@@ -44,6 +48,17 @@
       "env": {
         "CLOUDSDK_CORE_PROJECT": "shadowtag-omega-v4",
         "PATH": "/opt/homebrew/bin:/usr/local/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/bin:/bin"
+      }
+    },
+    "mcp-toolbox-sdk-java": {
+      "command": "java",
+      "args": [
+        "-jar",
+        "/Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-0.2.1-SNAPSHOT.jar"
+      ],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "use_default_adc",
+        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/jdk-26.jdk/Contents/Home"
       }
     }
   }
