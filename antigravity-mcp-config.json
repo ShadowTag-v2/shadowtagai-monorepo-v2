@@ -1,12 +1,12 @@
 {
   "mcpServers": {
     "google-developer-knowledge": {
-      "serverUrl": "https://developer-knowledge.googleapis.com/mcp/",
+      "serverUrl": "https://developerknowledge.googleapis.com/mcp",
       "authProviderType": "google_credentials"
     },
     "firebase": {
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
-      "args": ["-y", "firebase-tools@latest", "mcp"],
+      "args": ["-y", "firebase-tools@latest", "mcp", "--only", "auth,firestore,storage,dataconnect,functions,apphosting,messaging,remoteconfig,realtimedatabase,hosting"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
         "GCLOUD_PROJECT": "shadowtag-omega-v4",
@@ -17,6 +17,26 @@
     },
     "firestore": {
       "serverUrl": "https://firestore.googleapis.com/mcp",
+      "authProviderType": "google_credentials"
+    },
+    "cloud-run": {
+      "serverUrl": "https://run.googleapis.com/mcp",
+      "authProviderType": "google_credentials"
+    },
+    "cloud-sql": {
+      "serverUrl": "https://sqladmin.googleapis.com/mcp",
+      "authProviderType": "google_credentials"
+    },
+    "cloud-monitoring": {
+      "serverUrl": "https://monitoring.googleapis.com/mcp",
+      "authProviderType": "google_credentials"
+    },
+    "cloud-logging": {
+      "serverUrl": "https://logging.googleapis.com/mcp",
+      "authProviderType": "google_credentials"
+    },
+    "vertex-ai": {
+      "serverUrl": "https://aiplatform.googleapis.com/mcp/generate",
       "authProviderType": "google_credentials"
     },
     "chrome-devtools-mcp": {
