@@ -2,6 +2,10 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="version" content="2026.04.15.v6"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
 <title>KovelAI | Post-Heppner Privileged Client AI and Web Search Through Your Firm, While You Get Paid</title>
 <meta name="description" content="KovelAI protects post-Heppner client internet searches from discovery while helping law firms get paid on the front end. Secure AI intake, after-hours capture, and revenue acceleration for modern practices."/>
 <link rel="canonical" href="https://kovelai.com/" />
@@ -423,6 +427,17 @@
                font:600 12px/1 'Inter',sans-serif; letter-spacing:0.06em; text-transform:uppercase;
                cursor:pointer; border:none; transition:all 0.2s; }
       .cc-modal-foot .cc-btn--save:hover { background:#e6c487; }
+      /* Persistent Cookie Settings Button */
+      .cc-float {
+          position:fixed; bottom:20px; left:20px; z-index:8999;
+          width:44px; height:44px; border-radius:50%;
+          background:#1a1714; border:1px solid rgba(230,196,135,0.25);
+          display:none; align-items:center; justify-content:center;
+          cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.4);
+          transition:all 0.3s; font-size:20px; color:#e6c487;
+      }
+      .cc-float:hover { background:#2a2520; border-color:#e6c487; transform:scale(1.1); }
+      .cc-float.visible { display:flex; }
       /* Toast */
       .toast {
           position: fixed; top: 80px; right: 24px; z-index: 110;
@@ -2533,6 +2548,10 @@ Sign Up for Alerts
 </div>
 </div>
 </div>
+</div>
+
+<!-- Persistent Cookie Settings Float Button -->
+<button id="ccFloat" class="cc-float" onclick="ccReopenBanner()" aria-label="Cookie settings" title="Cookie settings">🍪</button>
 
 <script>
 // ===== Contact Modal =====
@@ -2623,26 +2642,40 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ===== Cookie Consent (Unusual Machines Style) =====
 function ccInit() {
     const c = localStorage.getItem('kovelai_cc');
-    if (!c) { setTimeout(() => document.getElementById('ccBanner').classList.add('visible'), 1200); }
+    if (!c) {
+        setTimeout(() => document.getElementById('ccBanner').classList.add('visible'), 1200);
+    } else {
+        // Already consented — show float button
+        document.getElementById('ccFloat').classList.add('visible');
+    }
 }
-function ccDismiss() { document.getElementById('ccBanner').classList.remove('visible'); }
+function ccShowFloat() { document.getElementById('ccFloat').classList.add('visible'); }
+function ccHideFloat() { document.getElementById('ccFloat').classList.remove('visible'); }
+function ccDismiss() {
+    document.getElementById('ccBanner').classList.remove('visible');
+    ccShowFloat();
+}
 function ccAcceptAll() {
     ccStore({ necessary:true, performance:true, targeting:true, functionality:true });
     document.getElementById('ccBanner').classList.remove('visible');
+    ccShowFloat();
 }
 function ccDeclineAll() {
     ccStore({ necessary:true, performance:false, targeting:false, functionality:false });
     document.getElementById('ccBanner').classList.remove('visible');
-    // Uncheck banner checkboxes
     ['ccPerf','ccTarget','ccFunc'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
+    ccShowFloat();
 }
 function ccStore(prefs) {
     prefs.timestamp = new Date().toISOString();
     localStorage.setItem('kovelai_cc', JSON.stringify(prefs));
     console.log('[KovelAI] Cookie consent:', prefs);
 }
+function ccReopenBanner() {
+    ccHideFloat();
+    document.getElementById('ccBanner').classList.add('visible');
+}
 function ccOpenModal() {
-    // Sync modal toggles with banner checkboxes
     document.getElementById('ccModalPerf').checked = document.getElementById('ccPerf').checked;
     document.getElementById('ccModalTarget').checked = document.getElementById('ccTarget').checked;
     document.getElementById('ccModalFunc').checked = document.getElementById('ccFunc').checked;
@@ -2660,12 +2693,12 @@ function ccSavePrefs() {
         targeting: document.getElementById('ccModalTarget').checked,
         functionality: document.getElementById('ccModalFunc').checked
     });
-    // Sync back to banner
     document.getElementById('ccPerf').checked = document.getElementById('ccModalPerf').checked;
     document.getElementById('ccTarget').checked = document.getElementById('ccModalTarget').checked;
     document.getElementById('ccFunc').checked = document.getElementById('ccModalFunc').checked;
     ccCloseModal();
     document.getElementById('ccBanner').classList.remove('visible');
+    ccShowFloat();
 }
 function ccSwitchTab(btn, showId) {
     document.querySelectorAll('.cc-modal-tab').forEach(t => t.classList.remove('active'));
