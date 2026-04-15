@@ -47,10 +47,7 @@
         "HOME": "/Users/pikeymickey"
       }
     },
-    "github-mcp": {
-      "serverUrl": "https://api.github.com/mcp/",
-      "authProviderType": "github"
-    },
+
     "stitch": {
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
       "args": ["-y", "stitch-mcp"],
