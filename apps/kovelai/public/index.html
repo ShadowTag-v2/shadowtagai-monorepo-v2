@@ -346,26 +346,83 @@
       }
       .modal-input:focus { border-color: #e6c487; }
       .modal-input::placeholder { color: #9e9380; }
-      /* Cookie Consent */
-      .cookie-banner {
-          position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
-          background: #110f09;
-          border-top: 1px solid rgba(85, 76, 56, 0.15);
-          transform: translateY(100%);
-          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 -10px 40px rgba(11,9,5,0.6);
+      /* ── Cookie Consent (Unusual Machines Style) ── */
+      .cc-banner {
+          position: fixed; bottom: 0; left: 0; right: 0; z-index: 9000;
+          background: #0d0b07; border-top: 1px solid rgba(230,196,135,0.12);
+          transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+          box-shadow: 0 -10px 40px rgba(0,0,0,0.6); padding: 24px 32px;
       }
-      .cookie-banner.visible { transform: translateY(0); }
-      .cookie-btn {
-          padding: 10px 24px;
-          border-radius: 8px;
-          font-family: 'Inter', sans-serif;
-          font-size: 13px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-          border: none;
-      }
+      .cc-banner.visible { transform: translateY(0); }
+      .cc-banner h3 { font:700 16px/1.3 'Inter',sans-serif; color:#fff; margin:0 0 6px; }
+      .cc-banner p  { font:400 13px/1.5 'Inter',sans-serif; color:#999; margin:0 0 12px; }
+      .cc-banner a  { color:#e6c487; text-decoration:underline; }
+      .cc-cats { display:flex; flex-wrap:wrap; gap:16px; margin-bottom:12px; }
+      .cc-cat { display:flex; align-items:center; gap:6px; font:600 11px/1 'Inter',sans-serif;
+               color:#fff; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; user-select:none; }
+      .cc-cat input[type=checkbox] { appearance:none; -webkit-appearance:none; width:18px; height:18px;
+               background:#1a1714; border:2px solid #e6c487; border-radius:4px; cursor:pointer; position:relative; }
+      .cc-cat input[type=checkbox]:checked { background:#e6c487; }
+      .cc-cat input[type=checkbox]:checked::after { content:'✓'; position:absolute; top:-1px; left:3px;
+               font-size:13px; color:#0d0b07; font-weight:700; }
+      .cc-cat input[type=checkbox]:disabled { opacity:0.6; cursor:default; }
+      .cc-show-details { font:600 12px/1 'Inter',sans-serif; color:#e6c487; cursor:pointer;
+               background:none; border:none; padding:0; display:flex; align-items:center; gap:4px; }
+      .cc-show-details:hover { color:#fff; }
+      .cc-actions { display:flex; gap:12px; align-items:center; }
+      .cc-btn { padding:10px 28px; border-radius:50px; font:600 12px/1 'Inter',sans-serif;
+               letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; border:none; }
+      .cc-btn--accept { background:transparent; border:2px solid rgba(255,255,255,0.25); color:#fff; }
+      .cc-btn--accept:hover { border-color:#e6c487; color:#e6c487; }
+      .cc-btn--decline { background:#e6c487; color:#0d0b07; }
+      .cc-btn--decline:hover { background:#d4b070; }
+      .cc-close { position:absolute; top:16px; right:20px; background:none; border:none;
+               color:#666; font-size:20px; cursor:pointer; line-height:1; padding:4px; }
+      .cc-close:hover { color:#fff; }
+      /* Cookie Modal */
+      .cc-modal-overlay { position:fixed; inset:0; z-index:9500; background:rgba(0,0,0,0.7);
+               backdrop-filter:blur(4px); display:none; justify-content:center; align-items:center; }
+      .cc-modal-overlay.active { display:flex; }
+      .cc-modal { background:#fafafa; border-radius:12px; max-width:620px; width:90%; max-height:80vh;
+               display:flex; flex-direction:column; box-shadow:0 24px 80px rgba(0,0,0,0.4); position:relative; }
+      .cc-modal-close { position:absolute; top:16px; right:20px; background:none; border:none;
+               font-size:24px; cursor:pointer; color:#333; line-height:1; }
+      .cc-modal-close:hover { color:#000; }
+      .cc-modal-head { padding:24px 28px 0; }
+      .cc-modal-head h3 { font:700 18px/1.3 'Inter',sans-serif; color:#111; margin:0 0 8px; }
+      .cc-modal-head p  { font:400 13px/1.6 'Inter',sans-serif; color:#555; margin:0 0 16px; }
+      .cc-modal-tabs { display:flex; border-bottom:2px solid #e0e0e0; }
+      .cc-modal-tab { flex:1; padding:12px 0; font:600 12px/1 'Inter',sans-serif; letter-spacing:0.06em;
+               text-transform:uppercase; text-align:center; cursor:pointer; color:#888; border:none;
+               background:none; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; }
+      .cc-modal-tab.active { color:#c9a96e; border-bottom-color:#c9a96e; }
+      .cc-modal-body { padding:20px 28px; overflow-y:auto; flex:1; }
+      .cc-modal-category { border-bottom:1px solid #e8e8e8; padding:16px 0; }
+      .cc-modal-category:last-child { border-bottom:none; }
+      .cc-modal-cat-head { display:flex; justify-content:space-between; align-items:center; }
+      .cc-modal-cat-head h4 { font:600 14px/1 'Inter',sans-serif; color:#222; margin:0; }
+      .cc-modal-cat-desc { font:400 13px/1.5 'Inter',sans-serif; color:#666; margin:8px 0 0; }
+      .cc-toggle { position:relative; width:44px; height:24px; }
+      .cc-toggle input { opacity:0; width:0; height:0; }
+      .cc-toggle-slider { position:absolute; inset:0; background:#ccc; border-radius:24px; cursor:pointer; transition:0.3s; }
+      .cc-toggle-slider::before { content:''; position:absolute; height:18px; width:18px; left:3px; bottom:3px;
+               background:#fff; border-radius:50%; transition:0.3s; }
+      .cc-toggle input:checked + .cc-toggle-slider { background:#c9a96e; }
+      .cc-toggle input:checked + .cc-toggle-slider::before { transform:translateX(20px); }
+      .cc-toggle input:disabled + .cc-toggle-slider { opacity:0.5; cursor:default; }
+      .cc-show-cookies { font:600 12px/1 'Inter',sans-serif; color:#c9a96e; cursor:pointer;
+               background:none; border:none; padding:6px 0 0; display:flex; align-items:center; gap:4px; }
+      .cc-show-cookies:hover { color:#e6c487; }
+      .cc-modal-foot { padding:16px 28px; border-top:1px solid #e0e0e0; display:flex; justify-content:space-between; align-items:center; }
+      .cc-modal-foot .cc-btn--accept, .cc-modal-foot .cc-btn--decline-outline {
+               background:transparent; border:2px solid #ccc; color:#333; padding:10px 24px;
+               border-radius:50px; font:600 12px/1 'Inter',sans-serif; letter-spacing:0.06em;
+               text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+      .cc-modal-foot .cc-btn--accept:hover, .cc-modal-foot .cc-btn--decline-outline:hover { border-color:#c9a96e; color:#c9a96e; }
+      .cc-modal-foot .cc-btn--save { background:#c9a96e; color:#fff; padding:10px 28px; border-radius:50px;
+               font:600 12px/1 'Inter',sans-serif; letter-spacing:0.06em; text-transform:uppercase;
+               cursor:pointer; border:none; transition:all 0.2s; }
+      .cc-modal-foot .cc-btn--save:hover { background:#e6c487; }
       /* Toast */
       .toast {
           position: fixed; top: 80px; right: 24px; z-index: 110;
@@ -2387,20 +2444,92 @@ Sign Up for Alerts
 </div>
 </footer>
 
-<!-- EU Cookie Consent -->
-<div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="Cookie consent">
-<div class="max-w-7xl mx-auto px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
-<div class="flex-1">
-<p class="text-sm text-on-surface-variant leading-relaxed">
-<span class="text-on-surface font-semibold">Cookie Preferences.</span> 
-We use essential cookies to ensure our site functions properly. Analytics cookies help us understand how visitors interact with our site. 
-<a href="/privacy" class="text-primary underline hover:text-on-surface transition-colors">Privacy Policy</a>
-</p>
+<!-- ══ Cookie Consent Banner (Unusual Machines Style) ══ -->
+<div id="ccBanner" class="cc-banner" role="dialog" aria-label="Cookie consent">
+<button class="cc-close" onclick="ccDismiss()" aria-label="Close">✕</button>
+<h3>This website uses cookies</h3>
+<p>This website uses cookies to improve user experience. By using our website you consent to all cookies in accordance with our Cookie Policy. <a href="/privacy">Read more</a></p>
+<div class="cc-cats">
+<label class="cc-cat"><input type="checkbox" checked disabled> STRICTLY NECESSARY</label>
+<label class="cc-cat"><input type="checkbox" id="ccPerf" checked> PERFORMANCE</label>
+<label class="cc-cat"><input type="checkbox" id="ccTarget" checked> TARGETING</label>
+<label class="cc-cat"><input type="checkbox" id="ccFunc" checked> FUNCTIONALITY</label>
 </div>
-<div class="flex flex-wrap gap-3 shrink-0">
-<button onclick="handleCookieConsent('reject')" class="cookie-btn bg-transparent border border-outline-variant text-on-surface-variant hover:bg-surface-container">Reject All</button>
-<button onclick="handleCookieConsent('essential')" class="cookie-btn bg-surface-container text-on-surface-variant hover:bg-surface-container-high">Essential Only</button>
-<button onclick="handleCookieConsent('accept')" class="cookie-btn gradient-primary text-on-primary hover:brightness-110">Accept All</button>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+<button class="cc-show-details" onclick="ccOpenModal()">⚙ SHOW DETAILS</button>
+<div class="cc-actions">
+<button class="cc-btn cc-btn--accept" onclick="ccAcceptAll()">ACCEPT ALL</button>
+<button class="cc-btn cc-btn--decline" onclick="ccDeclineAll()">DECLINE ALL</button>
+</div>
+</div>
+</div>
+
+<!-- Cookie Details Modal -->
+<div id="ccModalOverlay" class="cc-modal-overlay" role="dialog" aria-label="Cookie details">
+<div class="cc-modal">
+<button class="cc-modal-close" onclick="ccCloseModal()" aria-label="Close">✕</button>
+<div class="cc-modal-head">
+<h3>This website uses cookies</h3>
+<p>This website uses cookies to improve user experience. By using our website you consent to all cookies in accordance with our Cookie Policy. <a href="/privacy" style="color:#c9a96e">Read more</a></p>
+<div class="cc-modal-tabs">
+<button class="cc-modal-tab active" onclick="ccSwitchTab(this,'ccTabDecl')">COOKIE DECLARATION</button>
+<button class="cc-modal-tab" onclick="ccSwitchTab(this,'ccTabAbout')">ABOUT COOKIES</button>
+</div>
+</div>
+<div class="cc-modal-body">
+<div id="ccTabDecl">
+<div class="cc-modal-category">
+<div class="cc-modal-cat-head">
+<h4>Strictly necessary</h4>
+<label class="cc-toggle"><input type="checkbox" checked disabled><span class="cc-toggle-slider"></span></label>
+</div>
+<p class="cc-modal-cat-desc">Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.</p>
+<button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
+<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">Session ID, CSRF Token, Load Balancer Affinity</div>
+</div>
+<div class="cc-modal-category">
+<div class="cc-modal-cat-head">
+<h4>Performance</h4>
+<label class="cc-toggle"><input type="checkbox" id="ccModalPerf" checked><span class="cc-toggle-slider"></span></label>
+</div>
+<p class="cc-modal-cat-desc">Performance cookies help us understand how visitors interact with the website by collecting and reporting information anonymously.</p>
+<button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
+<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">Google Analytics (_ga, _gid), Page Load Metrics</div>
+</div>
+<div class="cc-modal-category">
+<div class="cc-modal-cat-head">
+<h4>Targeting</h4>
+<label class="cc-toggle"><input type="checkbox" id="ccModalTarget" checked><span class="cc-toggle-slider"></span></label>
+</div>
+<p class="cc-modal-cat-desc">Targeting cookies are used to identify visitors between different websites, e.g. content partners, banner networks. They may be used by companies to build a profile of visitor interests or show relevant ads.</p>
+<button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
+<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">LinkedIn Insight, Meta Pixel</div>
+</div>
+<div class="cc-modal-category">
+<div class="cc-modal-cat-head">
+<h4>Functionality</h4>
+<label class="cc-toggle"><input type="checkbox" id="ccModalFunc" checked><span class="cc-toggle-slider"></span></label>
+</div>
+<p class="cc-modal-cat-desc">Functionality cookies enable helpful but non-essential features like remembering your preferences, language selection, and personalized content.</p>
+<button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
+<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">Language Preference, Font Size, Contrast Mode</div>
+</div>
+</div>
+<div id="ccTabAbout" class="hidden">
+<div style="padding:16px 0;font:400 13px/1.7 'Inter',sans-serif;color:#555">
+<p style="margin:0 0 12px"><strong style="color:#222">What are cookies?</strong></p>
+<p style="margin:0 0 12px">Cookies are small text files that are stored on your computer or mobile device when you visit a website. They are widely used to make websites work more efficiently and provide information to the owners of the site.</p>
+<p style="margin:0 0 12px"><strong style="color:#222">How do we use cookies?</strong></p>
+<p style="margin:0">We use cookies to improve your experience on our site, understand how our site is used, and personalize the content shown to you. Some cookies are essential for the site to function, while others help us optimize performance and relevance.</p>
+</div>
+</div>
+</div>
+<div class="cc-modal-foot">
+<div style="display:flex;gap:12px">
+<button class="cc-btn--accept" onclick="ccAcceptAll();ccCloseModal()">ACCEPT ALL</button>
+<button class="cc-btn--decline-outline" onclick="ccDeclineAll();ccCloseModal()">DECLINE ALL</button>
+</div>
+<button class="cc-btn--save" onclick="ccSavePrefs()">SAVE & CLOSE</button>
 </div>
 </div>
 </div>
@@ -2491,33 +2620,60 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ===== EU Cookie Consent =====
-function initCookieBanner() {
-    const consent = localStorage.getItem('kovelai_cookie_consent');
-    if (!consent) {
-        setTimeout(() => {
-            document.getElementById('cookieBanner').classList.add('visible');
-        }, 1500);
-    }
+// ===== Cookie Consent (Unusual Machines Style) =====
+function ccInit() {
+    const c = localStorage.getItem('kovelai_cc');
+    if (!c) { setTimeout(() => document.getElementById('ccBanner').classList.add('visible'), 1200); }
 }
-
-function handleCookieConsent(type) {
-    const consent = {
-        essential: true,
-        analytics: type === 'accept',
-        marketing: type === 'accept',
-        timestamp: new Date().toISOString(),
-        type: type
-    };
-    localStorage.setItem('kovelai_cookie_consent', JSON.stringify(consent));
-    document.getElementById('cookieBanner').classList.remove('visible');
-    
-    if (type === 'accept') {
-        console.log('[KovelAI] Analytics consent granted');
-    }
+function ccDismiss() { document.getElementById('ccBanner').classList.remove('visible'); }
+function ccAcceptAll() {
+    ccStore({ necessary:true, performance:true, targeting:true, functionality:true });
+    document.getElementById('ccBanner').classList.remove('visible');
 }
-
-document.addEventListener('DOMContentLoaded', initCookieBanner);
+function ccDeclineAll() {
+    ccStore({ necessary:true, performance:false, targeting:false, functionality:false });
+    document.getElementById('ccBanner').classList.remove('visible');
+    // Uncheck banner checkboxes
+    ['ccPerf','ccTarget','ccFunc'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
+}
+function ccStore(prefs) {
+    prefs.timestamp = new Date().toISOString();
+    localStorage.setItem('kovelai_cc', JSON.stringify(prefs));
+    console.log('[KovelAI] Cookie consent:', prefs);
+}
+function ccOpenModal() {
+    // Sync modal toggles with banner checkboxes
+    document.getElementById('ccModalPerf').checked = document.getElementById('ccPerf').checked;
+    document.getElementById('ccModalTarget').checked = document.getElementById('ccTarget').checked;
+    document.getElementById('ccModalFunc').checked = document.getElementById('ccFunc').checked;
+    document.getElementById('ccModalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function ccCloseModal() {
+    document.getElementById('ccModalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+function ccSavePrefs() {
+    ccStore({
+        necessary: true,
+        performance: document.getElementById('ccModalPerf').checked,
+        targeting: document.getElementById('ccModalTarget').checked,
+        functionality: document.getElementById('ccModalFunc').checked
+    });
+    // Sync back to banner
+    document.getElementById('ccPerf').checked = document.getElementById('ccModalPerf').checked;
+    document.getElementById('ccTarget').checked = document.getElementById('ccModalTarget').checked;
+    document.getElementById('ccFunc').checked = document.getElementById('ccModalFunc').checked;
+    ccCloseModal();
+    document.getElementById('ccBanner').classList.remove('visible');
+}
+function ccSwitchTab(btn, showId) {
+    document.querySelectorAll('.cc-modal-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('ccTabDecl').classList.toggle('hidden', showId !== 'ccTabDecl');
+    document.getElementById('ccTabAbout').classList.toggle('hidden', showId !== 'ccTabAbout');
+}
+document.addEventListener('DOMContentLoaded', ccInit);
 
 // ===== Hero Hybrid Visual System =====
 (function initHeroVisuals() {
