@@ -25,7 +25,15 @@ const SubmissionSchema = z.object({
  */
 export const captureLead = onRequest(
   {
-    cors: ["https://kovelai.web.app", "https://shadowtagai.web.app", /localhost:\d+/],
+    cors: [
+      "https://kovelai.web.app",
+      "https://kovelai.com",
+      "https://www.kovelai.com",
+      "https://shadowtagai.web.app",
+      "https://shadowtagai.com",
+      "https://www.shadowtagai.com",
+      /localhost:\d+/,
+    ],
     maxInstances: 10,
     memory: "256MiB",
   },
@@ -50,16 +58,21 @@ export const captureLead = onRequest(
         deviceUserAgent: request.headers["user-agent"] || "unknown",
       };
 
-      // 3. Store in the default ShadowTag-v2 Firestore instance
-      // Using write batches or direct inserts
-      const docRef = await db.collection("leads").add(leadDocument);
+      // 3. Store in Firestore (collection matches security rules: kovelai_leads)
+      const requestId = crypto.randomUUID();
+      const docRef = await db.collection("kovelai_leads").add({
+        ...leadDocument,
+        requestId, // Internal audit trail ID (NOT the Firestore doc ID)
+      });
 
-      logger.info(`Lead committed to Firestore successfully: ${docRef.id}`);
+      logger.info(`Lead committed to Firestore successfully: ${docRef.id} (requestId: ${requestId})`);
 
       // 4. (Optional Placeholder): Trigger Google Cloud Tasks / PubSub for Slack notification
       // Example: await notifySlackWebhook(leadDocument);
 
-      response.status(200).json({ success: true, id: docRef.id });
+      // SECURITY: Never return Firestore document IDs to clients (prevents IDOR enumeration)
+      response.set("X-Request-ID", requestId);
+      response.status(200).json({ success: true, requestId });
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Safe 400 response for client-side structural errors

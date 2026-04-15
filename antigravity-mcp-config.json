@@ -5,11 +5,14 @@
       "authProviderType": "google_credentials"
     },
     "firebase": {
-      "command": "npx",
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
       "args": ["-y", "firebase-tools@latest", "mcp"],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
-        "GCLOUD_PROJECT": "shadowtag-omega-v4"
+        "GCLOUD_PROJECT": "shadowtag-omega-v4",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
+        "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
       }
     },
     "firestore": {
@@ -17,48 +20,51 @@
       "authProviderType": "google_credentials"
     },
     "chrome-devtools-mcp": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools", "--browser-url=http://127.0.0.1:9222", "--no-usage-statistics"]
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
+      "args": ["-y", "chrome-devtools-mcp"],
+      "env": {
+        "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
     },
     "github-mcp": {
       "serverUrl": "https://api.github.com/mcp/",
-      "oauth": {
-        "clientId": "Iv23ctYqrxPQIt2ir8gY",
-        "clientSecret": "OMITTED_FOR_SECURITY_USE_ENV_VAR"
-      }
+      "authProviderType": "github"
     },
     "stitch": {
-      "command": "npx",
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
       "args": ["-y", "stitch-mcp"],
       "env": {
-        "STITCH_API_KEY": "${STITCH_API_KEY}",
-        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4"
-      }
-    },
-    "gemini": {
-      "command": "npx",
-      "args": ["-y", "@houtini/gemini-mcp"],
-      "env": {
-        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
+        "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/pikeymickey/.config/gcloud/application_default_credentials.json",
+        "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
       }
     },
     "gcloud-mcp": {
-      "command": "gcloud-mcp",
+      "command": "/opt/homebrew/bin/gcloud-mcp",
       "args": [],
       "env": {
         "CLOUDSDK_CORE_PROJECT": "shadowtag-omega-v4",
-        "PATH": "/opt/homebrew/bin:/usr/local/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/bin:/bin"
+        "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/Users/pikeymickey/google-cloud-sdk/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
       }
     },
-    "mcp-toolbox-sdk-java": {
-      "command": "java",
-      "args": [
-        "-jar",
-        "/Users/pikeymickey/mcp-toolbox-sdk-java/target/mcp-toolbox-sdk-java-0.2.1-SNAPSHOT.jar"
-      ],
+    "google-maps-code-assist": {
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
+      "args": ["-y", "@googlemaps/code-assist-mcp@latest"],
       "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "use_default_adc",
-        "JAVA_HOME": "/Library/Java/JavaVirtualMachines/jdk-26.jdk/Contents/Home"
+        "GOOGLE_MAPS_API_KEY": "***REMOVED_GOOGLE_API_KEY***",
+        "PATH": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
+      }
+    },
+    "dart-mcp": {
+      "command": "/opt/homebrew/bin/dart",
+      "args": ["mcp-server"],
+      "env": {
+        "PATH": "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
+        "HOME": "/Users/pikeymickey"
       }
     }
   }
