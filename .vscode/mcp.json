@@ -1,6 +1,7 @@
 {
-  "mcpServers": {
+  "servers": {
     "sequential-thinking": {
+      "type": "stdio",
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/@modelcontextprotocol/server-sequential-thinking/dist/index.js"
@@ -11,13 +12,12 @@
       }
     },
     "firebase-mcp-server": {
+      "type": "stdio",
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
         "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/firebase-mcp-fast.js",
-        "--only",
-        "auth,firestore,storage,dataconnect,functions,apphosting,messaging,remoteconfig,realtimedatabase,hosting",
-        "--dir",
-        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
+        "--only", "auth,firestore,storage,dataconnect,functions,apphosting,messaging,remoteconfig,realtimedatabase,hosting",
+        "--dir", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball"
       ],
       "env": {
         "GOOGLE_CLOUD_PROJECT": "shadowtag-omega-v4",
@@ -29,12 +29,12 @@
       }
     },
     "google-developer-knowledge": {
+      "type": "stdio",
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/mcp-remote/dist/proxy.js",
         "https://developerknowledge.googleapis.com/mcp",
-        "--header",
-        "X-Goog-Api-Key: ***REMOVED_GOOGLE_API_KEY***"
+        "--header", "X-Goog-Api-Key: ***REMOVED_GOOGLE_API_KEY***"
       ],
       "env": {
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
@@ -42,12 +42,12 @@
       }
     },
     "StitchMCP": {
+      "type": "stdio",
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/mcp-remote/dist/proxy.js",
         "https://stitch.googleapis.com/mcp",
-        "--header",
-        "X-Goog-Api-Key: ***REMOVED_STITCH_API_KEY***"
+        "--header", "X-Goog-Api-Key: ***REMOVED_STITCH_API_KEY***"
       ],
       "env": {
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
@@ -55,6 +55,7 @@
       }
     },
     "chrome-devtools-mcp": {
+      "type": "stdio",
       "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
       "args": [
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js"
