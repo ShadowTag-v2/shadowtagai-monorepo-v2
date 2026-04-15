@@ -7,6 +7,54 @@ import { z } from "zod";
 admin.initializeApp();
 const db = admin.firestore();
 
+// ─── Rate Limiting (In-Memory Sliding Window) ────────────────────────────
+// Cloud Run instances are ephemeral, so this rate limit is per-instance.
+// For distributed rate limiting, use Firestore or Redis. This is a
+// first-line defense against rapid abuse from a single IP.
+const RATE_LIMIT_WINDOW_MS = 60_000; // 60 seconds
+const RATE_LIMIT_MAX_REQUESTS = 10;   // max 10 submissions per window
+
+interface RateLimitEntry {
+  timestamps: number[];
+}
+
+const rateLimitMap = new Map<string, RateLimitEntry>();
+
+// Periodic cleanup to prevent memory leak on long-lived instances
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    entry.timestamps = entry.timestamps.filter(
+      (t) => now - t < RATE_LIMIT_WINDOW_MS
+    );
+    if (entry.timestamps.length === 0) {
+      rateLimitMap.delete(ip);
+    }
+  }
+}, RATE_LIMIT_WINDOW_MS);
+
+/**
+ * Checks if the given IP has exceeded rate limits.
+ * Returns true if the request should be BLOCKED.
+ */
+function isRateLimited(clientIp: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(clientIp) || { timestamps: [] };
+
+  // Prune expired timestamps
+  entry.timestamps = entry.timestamps.filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS
+  );
+
+  if (entry.timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
+    return true; // blocked
+  }
+
+  entry.timestamps.push(now);
+  rateLimitMap.set(clientIp, entry);
+  return false; // allowed
+}
+
 // Strict runtime schema validation for zero-trust posture
 // Extensible for CSRMC (Cyber Security Risk Management) or generic KovelAI contact routing
 const SubmissionSchema = z.object({
@@ -20,7 +68,7 @@ const SubmissionSchema = z.object({
 
 /**
  * Gen 2 Cloud Run Function (Lead Capture Router)
- * Allows up to 1000 concurrent connections, optimized for unexpected traffic surges.
+ * Rate-limited (10 req/60s per IP), schema-validated, IDOR-hardened.
  * Validates payload directly at the edge, routes structured data to Firestore.
  */
 export const captureLead = onRequest(
@@ -44,6 +92,15 @@ export const captureLead = onRequest(
       return;
     }
 
+    // ─── Rate Limit Check ──────────────────────────────────────────
+    const clientIp = request.ip || request.headers["x-forwarded-for"] as string || "unknown";
+    if (isRateLimited(clientIp)) {
+      logger.warn(`Rate limit exceeded for IP: ${clientIp}`);
+      response.set("Retry-After", "60");
+      response.status(429).json({ error: "Too Many Requests" });
+      return;
+    }
+
     try {
       // 1. Zod runtime schema validation
       const payload = SubmissionSchema.parse(request.body);
@@ -56,6 +113,7 @@ export const captureLead = onRequest(
         status: "NEW", // NEW | CONTACTED | DISQUALIFIED
         receivedAt: admin.firestore.FieldValue.serverTimestamp(),
         deviceUserAgent: request.headers["user-agent"] || "unknown",
+        clientIp, // Stored for abuse tracking, never returned to client
       };
 
       // 3. Store in Firestore (collection matches security rules: kovelai_leads)
@@ -66,9 +124,6 @@ export const captureLead = onRequest(
       });
 
       logger.info(`Lead committed to Firestore successfully: ${docRef.id} (requestId: ${requestId})`);
-
-      // 4. (Optional Placeholder): Trigger Google Cloud Tasks / PubSub for Slack notification
-      // Example: await notifySlackWebhook(leadDocument);
 
       // SECURITY: Never return Firestore document IDs to clients (prevents IDOR enumeration)
       response.set("X-Request-ID", requestId);
