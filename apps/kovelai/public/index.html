@@ -186,53 +186,72 @@
       .gradient-primary {
         background: linear-gradient(135deg, #e6c487 0%, #c9a96e 100%);
       }
-      /* ── Hero Hybrid Visual System ── */
-      .hero-aurora {
-        position: absolute; inset: 0; z-index: -20;
-        overflow: hidden; pointer-events: none;
-      }
-      .hero-aurora::before,
-      .hero-aurora::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
+      /* ── Hero Fluid Kinetic Aura — Calm Design Mesh Gradient ── */
+      .hero-mesh-aura {
+        position: absolute; inset: -20%; z-index: -20;
+        pointer-events: none;
         filter: blur(120px);
-        will-change: transform, opacity;
+        will-change: transform;
       }
-      .hero-aurora::before {
-        width: 800px; height: 800px;
-        top: -20%; left: -15%;
-        background: radial-gradient(ellipse at center, rgba(230,196,135,0.12) 0%, rgba(201,169,110,0.06) 40%, transparent 70%);
-        animation: auroraShift1 12s ease-in-out infinite;
+      .hero-mesh-aura .aura-blob {
+        position: absolute; border-radius: 50%;
       }
-      .hero-aurora::after {
-        width: 600px; height: 600px;
-        bottom: -10%; right: -10%;
-        background: radial-gradient(ellipse at center, rgba(170,199,255,0.08) 0%, rgba(62,144,255,0.04) 40%, transparent 70%);
-        animation: auroraShift2 15s ease-in-out infinite;
+      .hero-mesh-aura .aura-blob--1 {
+        width: 60vw; height: 60vw; top: -10%; left: -15%;
+        background: radial-gradient(ellipse at center, rgba(230,196,135,0.10) 0%, transparent 70%);
+        animation: auraUndulate1 32s ease-in-out infinite;
       }
-      @keyframes auroraShift1 {
-        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
-        33%      { transform: translate(60px, 40px) scale(1.1); opacity: 1; }
-        66%      { transform: translate(-30px, 20px) scale(0.95); opacity: 0.8; }
+      .hero-mesh-aura .aura-blob--2 {
+        width: 50vw; height: 50vw; top: 30%; right: -10%;
+        background: radial-gradient(ellipse at center, rgba(170,199,255,0.07) 0%, transparent 70%);
+        animation: auraUndulate2 38s ease-in-out infinite;
       }
-      @keyframes auroraShift2 {
-        0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
-        50%      { transform: translate(-50px, -30px) scale(1.15); opacity: 0.9; }
+      .hero-mesh-aura .aura-blob--3 {
+        width: 40vw; height: 40vw; bottom: -5%; left: 30%;
+        background: radial-gradient(ellipse at center, rgba(201,169,110,0.06) 0%, transparent 70%);
+        animation: auraUndulate3 28s ease-in-out infinite;
       }
-      .hero-aurora-mid {
-        position: absolute;
-        width: 500px; height: 500px;
-        top: 30%; left: 40%;
-        border-radius: 50%;
-        background: radial-gradient(ellipse at center, rgba(230,196,135,0.06) 0%, transparent 60%);
-        filter: blur(100px);
-        animation: auroraShift3 18s ease-in-out infinite;
-        z-index: -19; pointer-events: none;
+      .hero-mesh-aura .aura-blob--4 {
+        width: 45vw; height: 45vw; top: 50%; left: -5%;
+        background: radial-gradient(ellipse at center, rgba(255,170,50,0.05) 0%, transparent 70%);
+        animation: auraUndulate4 35s ease-in-out infinite;
       }
-      @keyframes auroraShift3 {
-        0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-        50%      { transform: translate(40px, -40px) rotate(15deg) scale(1.08); }
+      .hero-mesh-aura .aura-blob--5 {
+        width: 35vw; height: 35vw; top: 5%; right: 10%;
+        background: radial-gradient(ellipse at center, rgba(120,90,200,0.04) 0%, transparent 70%);
+        animation: auraUndulate5 30s ease-in-out infinite;
+      }
+      @keyframes auraUndulate1 {
+        0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        33% { transform: translate(4vw, 2vh) scale(1.08) rotate(3deg); }
+        66% { transform: translate(-2vw, -1vh) scale(0.96) rotate(-2deg); }
+      }
+      @keyframes auraUndulate2 {
+        0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate(-3vw, 4vh) scale(1.06) rotate(-5deg); }
+      }
+      @keyframes auraUndulate3 {
+        0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        33% { transform: translate(2vw, -3vh) scale(1.04) rotate(3deg); }
+        66% { transform: translate(-1vw, 1vh) scale(0.94) rotate(-4deg); }
+      }
+      @keyframes auraUndulate4 {
+        0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        40% { transform: translate(3vw, 5vh) scale(1.1) rotate(6deg); }
+        80% { transform: translate(-4vw, -2vh) scale(0.9) rotate(-3deg); }
+      }
+      @keyframes auraUndulate5 {
+        0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate(-5vw, 3vh) scale(1.12) rotate(-7deg); }
+      }
+      /* Grain / Noise Overlay — premium tactile texture */
+      .hero-grain {
+        position: absolute; inset: 0; z-index: -19;
+        pointer-events: none;
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        mix-blend-mode: overlay;
       }
       #hero-shield-canvas {
         position: absolute; inset: 0;
@@ -258,7 +277,7 @@
         mix-blend-mode: screen;
       }
       .hero-video-bg.loaded {
-        opacity: 0.5;
+        opacity: 0.65;
       }
       .hero-video-vignette {
         position: absolute; inset: 0; z-index: -17;
@@ -303,7 +322,7 @@
       .modal-overlay.active { opacity: 1; pointer-events: auto; }
       .modal-content {
           background: #211d14;
-          border: 1px solid rgba(230, 196, 135, 0.2);
+          border: 1px solid rgba(230, 196, 135, 0.08);
           border-radius: 16px;
           padding: 40px;
           max-width: 520px;
@@ -316,7 +335,7 @@
       .modal-input {
           width: 100%;
           background: #0b0905;
-          border: 1px solid #554c38;
+          border: 1px solid rgba(85, 76, 56, 0.3);
           color: #f5ede0;
           padding: 14px 16px;
           border-radius: 8px;
@@ -331,9 +350,10 @@
       .cookie-banner {
           position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
           background: #110f09;
+          border-top: 1px solid rgba(85, 76, 56, 0.15);
           transform: translateY(100%);
           transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 -10px 40px rgba(11,9,5,0.5);
+          box-shadow: 0 -10px 40px rgba(11,9,5,0.6);
       }
       .cookie-banner.visible { transform: translateY(0); }
       .cookie-btn {
@@ -414,7 +434,7 @@
       .nav-dropdown {
           position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
           min-width: 220px; padding: 8px 0;
-          background: #1a170f; border: 1px solid #554c38;
+          background: #1a170f; border: 1px solid rgba(85, 76, 56, 0.15);
           border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
           opacity: 0; visibility: hidden;
           transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
@@ -440,7 +460,7 @@
       .nav-sub-dropdown {
           position: absolute; top: 0; left: 100%;
           min-width: 220px; padding: 8px 0;
-          background: #1a170f; border: 1px solid #554c38;
+          background: #1a170f; border: 1px solid rgba(85, 76, 56, 0.15);
           border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.6);
           opacity: 0; visibility: hidden;
           transform: translateX(8px);
@@ -469,7 +489,7 @@
       /* ── Corporate Section Styles ── */
       .ceo-card {
           background: linear-gradient(145deg, #211d14 0%, #1a170f 100%);
-          border: 1px solid #554c38;
+          border: 1px solid rgba(85, 76, 56, 0.12);
           border-radius: 16px; overflow: hidden;
           transition: box-shadow 0.3s;
       }
@@ -477,7 +497,7 @@
       .ceo-headshot {
           width: 200px; height: 200px;
           border-radius: 50%; object-fit: cover;
-          border: 3px solid #e6c487;
+          border: 2px solid rgba(230, 196, 135, 0.35);
           box-shadow: 0 0 30px rgba(230,196,135,0.15);
       }
       @media (max-width: 768px) {
@@ -646,12 +666,13 @@ Submit Inquiry
 <!-- CORPORATE TOP NAV (Unusual Machines Style)       -->
 <!-- ════════════════════════════════════════════════ -->
 <nav class="fixed top-0 w-full z-50 bg-surface-container-lowest/95 backdrop-blur-xl">
-<!-- Utility Bar -->
-<div>
-<div class="max-w-7xl mx-auto px-8 py-2 flex justify-end items-center gap-6">
-<a class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant hover:text-primary transition-colors" href="#management">Corporate Governance</a>
-<a class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant hover:text-primary transition-colors" href="#contact-ir">Investor Relations</a>
-<button onclick="openContactModal(event)" class="gradient-primary text-on-primary px-5 py-1.5 rounded text-[10px] uppercase tracking-[0.15em] font-bold hover:opacity-90 transition-all">Contact Sales</button>
+<div class="border-b border-outline-variant/10">
+<div class="max-w-7xl mx-auto px-8 py-1.5 flex justify-end items-center gap-4">
+<button id="kovelFontDec" class="text-[10px] text-on-surface-variant border border-outline-variant/30 px-2 py-0.5 rounded hover:bg-primary hover:text-on-primary hover:border-primary transition-all" aria-label="Decrease font size">A<sup>−</sup></button>
+<button id="kovelFontInc" class="text-[10px] text-on-surface-variant border border-outline-variant/30 px-2 py-0.5 rounded hover:bg-primary hover:text-on-primary hover:border-primary transition-all" aria-label="Increase font size">A<sup>+</sup></button>
+<button id="kovelContrastBtn" class="text-[10px] text-on-surface-variant border border-outline-variant/30 px-2 py-0.5 rounded hover:bg-primary hover:text-on-primary hover:border-primary transition-all flex items-center gap-1" aria-label="Toggle contrast"><span class="material-symbols-outlined" style="font-size:12px">contrast</span> Contrast</button>
+<a href="#" class="text-[10px] text-outline hover:text-primary transition-colors flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:12px">accessibility_new</span> Accessibility</a>
+<button onclick="openContactModal(event)" class="bg-transparent text-on-surface border border-white/50 px-4 py-1 rounded text-[10px] uppercase tracking-[0.15em] font-bold hover:bg-primary hover:text-on-primary hover:border-primary transition-all">Contact Sales</button>
 </div>
 </div>
 <!-- Main Nav -->
@@ -745,10 +766,19 @@ Submit Inquiry
 <!-- ════════════════════════════════════════════════ -->
 <!-- HERO SECTION                                    -->
 <!-- ════════════════════════════════════════════════ -->
-<header id="hero-header" class="relative min-h-screen flex flex-col justify-center items-start pt-20 px-8 max-w-7xl mx-auto overflow-hidden">
-<!-- Layer 1: CSS Aurora Gradient Base -->
-<div class="hero-aurora"></div>
-<div class="hero-aurora-mid"></div>
+<header id="hero-header" class="relative min-h-screen flex flex-col justify-center items-start pt-20 px-8 overflow-hidden" style="background: url('images/hero-bg.png') center/cover no-repeat;">
+<!-- Bottom Fade Gradient - blends hero into the stats section -->
+<div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/60 to-transparent z-10 pointer-events-none"></div>
+<!-- Layer 0: Fluid Kinetic Aura — 5 organic mesh gradient blobs -->
+<div class="hero-mesh-aura">
+    <div class="aura-blob aura-blob--1"></div>
+    <div class="aura-blob aura-blob--2"></div>
+    <div class="aura-blob aura-blob--3"></div>
+    <div class="aura-blob aura-blob--4"></div>
+    <div class="aura-blob aura-blob--5"></div>
+</div>
+<!-- Layer 0.5: Grain Overlay -->
+<div class="hero-grain"></div>
 <!-- Layer 1.5: Veo 3.1 Legal Data Architecture Video Background -->
 <video class="hero-video-bg"
        id="heroVideo"
@@ -772,7 +802,7 @@ Submit Inquiry
             POST-HEPPNER · PRIVILEGED · REVENUE-FIRST
         </span>
 </div>
-<div class="max-w-4xl space-y-8 animate-fade-in-up">
+<div class="max-w-7xl mx-auto space-y-8 animate-fade-in-up">
 <h1 id="heroTitle" class="text-on-surface font-headline font-extrabold text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[0.95] uppercase">
             POST-HEPPNER PRIVILEGED CLIENT AI AND WEB SEARCH THROUGH YOUR FIRM,<br/>
 <span class="text-primary">WHILE YOU GET PAID</span>
@@ -806,7 +836,7 @@ Submit Inquiry
 <!-- ════════════════════════════════════════════════ -->
 <!-- KEY STATS BAR                                   -->
 <!-- ════════════════════════════════════════════════ -->
-<section class="bg-surface-container-lowest border-y border-outline-variant/5">
+<section class="bg-surface-container-lowest">
 <div class="max-w-7xl mx-auto px-8 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center reveal">
 <div>
 <div class="text-3xl font-extrabold text-primary stat-number">97%+</div>
