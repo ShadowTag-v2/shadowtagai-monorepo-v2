@@ -77,7 +77,6 @@
             top: 0; left: 0; right: 0;
             z-index: 200;
             background: var(--surface-lowest);
-            border-bottom: 1px solid rgba(59, 75, 61, 0.2);
             height: 32px;
             display: flex;
             align-items: center;
@@ -221,7 +220,6 @@
             background: rgba(15, 19, 31, 0.85);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(59, 75, 61, 0.15);
             transition: background 0.3s ease;
         }
         .nav-inner {
@@ -849,13 +847,11 @@
         /* ===== CAREERS ===== */
         .careers-section {
             background: linear-gradient(135deg, rgba(0, 228, 121, 0.06) 0%, rgba(124, 58, 237, 0.06) 100%);
-            border-top: 1px solid rgba(0, 255, 136, 0.05);
-            border-bottom: 1px solid rgba(124, 58, 237, 0.05);
         }
         .careers-inner { text-align: center; }
 
         /* ===== FOOTER ===== */
-        .footer { position: relative; z-index: 1; padding: 3rem 2rem; border-top: 1px solid rgba(59, 75, 61, 0.1); }
+        .footer { position: relative; z-index: 1; padding: 3rem 2rem; }
         .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
         .footer-left { display: flex; align-items: center; gap: 0.75rem; }
         .footer-left img { width: 24px; height: 24px; border-radius: 50%; }
@@ -966,7 +962,8 @@
         .glow-divider {
             height: 1px; margin: 0;
             background: linear-gradient(90deg, transparent, var(--primary), var(--tertiary), var(--secondary), transparent);
-            opacity: 0.4;
+            opacity: 0;
+            pointer-events: none;
         }
 
         /* ===== FLOATING BADGE PULSE ===== */
@@ -997,33 +994,38 @@
         /* ===== 3D TILT ON CARDS ===== */
         .tilt-card { transform-style: preserve-3d; perspective: 1000px; }
 
-        /* ===== COOKIE CONSENT ===== */
+        /* ===== COOKIE CONSENT (Unusual Machines Style) ===== */
         .cookie-banner {
-            position: fixed; bottom: 1.5rem; left: 1.5rem;
+            position: fixed; bottom: 0; left: 0; right: 0;
             z-index: 300;
-            background: var(--surface);
-            border: 1px solid var(--outline-variant);
-            border-radius: 8px;
-            padding: 1.25rem 1.5rem;
-            max-width: 420px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 0.75rem;
-            transition: transform 0.4s ease, opacity 0.4s ease;
+            background: var(--surface-lowest);
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+            transform: translateY(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .cookie-banner.hidden { transform: translateY(120%); opacity: 0; pointer-events: none; }
-        .cookie-banner p { font-size: 0.8rem; color: var(--on-surface-variant); line-height: 1.6; }
-        .cookie-banner p a { color: var(--primary); text-decoration: underline; }
-        .cookie-btns { display: flex; gap: 0.5rem; }
+        .cookie-banner.hidden { transform: translateY(100%); pointer-events: none; }
+        .cookie-inner {
+            max-width: 1280px; margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+        }
+        .cookie-text { flex: 1; font-size: 0.8rem; color: var(--on-surface-variant); line-height: 1.6; }
+        .cookie-text strong { color: var(--on-surface); font-weight: 700; }
+        .cookie-text a { color: var(--primary); text-decoration: underline; }
+        .cookie-btns { display: flex; gap: 0.5rem; flex-shrink: 0; }
         .cookie-btn {
-            flex: 1; padding: 0.5rem 1rem; border-radius: 4px;
+            padding: 0.5rem 1.25rem; border-radius: 4px;
             font-family: 'Inter', sans-serif; font-size: 0.75rem;
             font-weight: 600; cursor: pointer; border: none;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
+        .cookie-reject { background: transparent; color: var(--on-surface-variant); border: 1px solid var(--outline-variant); }
+        .cookie-reject:hover { border-color: var(--on-surface); color: var(--on-surface); }
+        .cookie-essential { background: var(--surface-high); color: var(--on-surface); }
+        .cookie-essential:hover { background: var(--surface-highest); }
         .cookie-accept { background: var(--primary); color: var(--on-primary); }
         .cookie-accept:hover { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-        .cookie-decline { background: var(--surface-high); color: var(--on-surface); border: 1px solid var(--outline-variant); }
-        .cookie-decline:hover { border-color: var(--on-surface); }
 
         /* ===== TOAST ===== */
         .toast {
@@ -1061,7 +1063,10 @@
             .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
             .utility-bar { padding: 0 0.75rem; }
             .utility-bar__right { display: none; }
-            .cookie-banner { left: 0.75rem; right: 0.75rem; max-width: none; }
+            .cookie-banner { left: 0; right: 0; }
+            .cookie-inner { flex-direction: column; padding: 1rem 1.5rem; gap: 1rem; }
+            .cookie-btns { width: 100%; justify-content: stretch; }
+            .cookie-btn { flex: 1; }
         }
         @media (min-width: 769px) and (max-width: 1024px) {
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1077,17 +1082,11 @@
 <!-- ===== UTILITY BAR (Unusual Machines Style) ===== -->
 <div class="utility-bar" id="utilityBar">
     <div class="utility-bar__left">
-        <button class="a11y-btn" id="fontDecrease" title="Decrease font size" aria-label="Decrease font size">A-</button>
-        <button class="a11y-btn" id="fontReset" title="Reset font size" aria-label="Reset font size">A=</button>
-        <button class="a11y-btn" id="fontIncrease" title="Increase font size" aria-label="Increase font size">A+</button>
-        <button class="a11y-btn" id="contrastToggle" title="Toggle high contrast" aria-label="Toggle high contrast">Contrast</button>
-        <a href="#" class="a11y-link" id="a11yLink" aria-label="Accessibility statement">
-            <span class="material-symbols-outlined">accessibility_new</span>
-        </a>
-    </div>
-    <div class="utility-bar__right">
         <a href="#" class="utility-bar__link" onclick="showSection('management'); return false;">Corporate Governance</a>
         <a href="mailto:investors@shadowtagai.com" class="utility-bar__link">Investor Relations</a>
+    </div>
+    <div class="utility-bar__right">
+        <a href="privacy.html" class="utility-bar__link">Privacy</a>
         <button class="utility-bar__cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'}); showSection('home');">Contact Sales</button>
     </div>
 </div>
@@ -1611,12 +1610,19 @@
     </div>
 </footer>
 
-<!-- ===== COOKIE CONSENT ===== -->
+<!-- ===== COOKIE CONSENT (Unusual Machines Style) ===== -->
 <div class="cookie-banner" id="cookieBanner">
-    <p>🍪 We use cookies to improve your experience and analyze site traffic. By clicking "Accept," you consent to our <a href="#">Cookie Policy</a>.</p>
-    <div class="cookie-btns">
-        <button class="cookie-btn cookie-accept" id="cookieAccept">Accept All</button>
-        <button class="cookie-btn cookie-decline" id="cookieDecline">Decline</button>
+    <div class="cookie-inner">
+        <p class="cookie-text">
+            <strong>Cookie Preferences.</strong> We use essential cookies to ensure our site functions properly.
+            Analytics cookies help us understand how visitors interact with our site.
+            <a href="privacy.html">Privacy Policy</a>
+        </p>
+        <div class="cookie-btns">
+            <button class="cookie-btn cookie-reject" id="cookieReject">Reject All</button>
+            <button class="cookie-btn cookie-essential" id="cookieEssential">Essential Only</button>
+            <button class="cookie-btn cookie-accept" id="cookieAccept">Accept All</button>
+        </div>
     </div>
 </div>
 
@@ -1642,42 +1648,18 @@ document.getElementById('navToggle').addEventListener('click', function() {
     document.getElementById('navMenu').classList.toggle('open');
 });
 
-/* ===== ACCESSIBILITY TOOLBAR ===== */
-(function() {
-    let scale = 1;
-    const root = document.documentElement;
-
-    document.getElementById('fontDecrease').addEventListener('click', function() {
-        scale = Math.max(0.8, scale - 0.1);
-        root.style.setProperty('--font-scale', scale);
-    });
-    document.getElementById('fontIncrease').addEventListener('click', function() {
-        scale = Math.min(1.4, scale + 0.1);
-        root.style.setProperty('--font-scale', scale);
-    });
-    document.getElementById('fontReset').addEventListener('click', function() {
-        scale = 1;
-        root.style.setProperty('--font-scale', scale);
-    });
-    document.getElementById('contrastToggle').addEventListener('click', function() {
-        document.body.classList.toggle('high-contrast');
-        this.classList.toggle('active');
-    });
-})();
-
-/* ===== COOKIE CONSENT ===== */
+/* ===== COOKIE CONSENT (Unusual Machines Style) ===== */
 (function() {
     if (localStorage.getItem('cookie-consent')) {
         document.getElementById('cookieBanner').classList.add('hidden');
     }
-    document.getElementById('cookieAccept').addEventListener('click', function() {
-        localStorage.setItem('cookie-consent', 'accepted');
+    function setCookie(level) {
+        localStorage.setItem('cookie-consent', level);
         document.getElementById('cookieBanner').classList.add('hidden');
-    });
-    document.getElementById('cookieDecline').addEventListener('click', function() {
-        localStorage.setItem('cookie-consent', 'declined');
-        document.getElementById('cookieBanner').classList.add('hidden');
-    });
+    }
+    document.getElementById('cookieReject').addEventListener('click', function() { setCookie('rejected'); });
+    document.getElementById('cookieEssential').addEventListener('click', function() { setCookie('essential'); });
+    document.getElementById('cookieAccept').addEventListener('click', function() { setCookie('accepted'); });
 })();
 
 /* ===== Form Submission ===== */
