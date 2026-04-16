@@ -100,7 +100,7 @@ async def main():
 
                 if prompt_str.lower() == 'q':
                     print("Sending STOP command.")
-                    await session.stop();
+                    await session.stop()
                     return False
 
                 if prompt_str.lower() == 'play':
