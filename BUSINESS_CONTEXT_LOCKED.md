@@ -31,20 +31,37 @@
 Do not mix these lanes casually. Consumer and enterprise economics are different products.
 
 ## Hardened State
-- v8.4 canonicalized: 2026-04-13
-- Latest production commit: `c76b496fdd4` (2026-04-16)
-- Lighthouse: A97 / BP100 / SEO100
+- v8.5 canonicalized: 2026-04-16
+- Latest production commit: `32fb1341fc6` (2026-04-16)
+- Lighthouse: A100 / BP100 / SEO100 (desktop)
 - Structural tests: 30/30
-- Dead code: clean (vulture + ruff)
+- Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
 
 ### Production Hardening (2026-04-16)
 - **CSP Headers**: Strict Content-Security-Policy deployed on both KovelAI and ShadowTagAI
+- **CSP connect-src**: googletagmanager.com added to ShadowTagAI (BP 96→100 fix)
 - **Permissions-Policy**: Camera, microphone, geolocation denied by default
 - **WebP Optimization**: All hero/pitch images converted (79–98% payload reduction)
-- **Custom 404 Pages**: Premium branded 404.html for both sites (navy/gold + purple/pink)
+- **Custom 404 Pages**: Premium branded 404.html for both sites
 - **DNS Prefetch**: `dns-prefetch` hints for CDN resources
-- **Git Auth**: SSH deploy key `148811352` registered via GitHub App API (write access)
+- **Preview Channels**: kovelai-preview + shadowtagai-preview (7d TTL)
+- **Google Search Console**: Verification meta tags added (placeholder — replace with actual codes)
+- **Firebase Storage**: Initialized with zero-trust deny-all rules
+- **GCS CORS**: Hotlink protection — 5 authorized origins only
+- **Cloud Monitoring**: Error rate alert policy + email notification channel
+- **captureLead**: ACTIVE v2 Cloud Function (reCAPTCHA-gated)
+- **Hero Preload**: `<link rel="preload">` for ShadowTagAI hero image (LCP improvement)
+- **Git Auth**: SSH deploy key registered via GitHub App API (write access)
 - **Remote**: `git@github-shadowtag:ShadowTag-v2/Monorepo-Uphillsnowball.git`
+
+### Deployed Hosting Targets (2026-04-16)
+| Target | URL | Status |
+|--------|-----|--------|
+| KovelAI Live | https://kovelai.web.app | ✅ |
+| ShadowTagAI Live | https://shadowtagai.web.app | ✅ |
+| Default Site | https://shadowtag-omega-v4.web.app | ✅ |
+| KovelAI Preview | https://kovelai--preview-8ezcbvse.web.app | ✅ 7d |
+| ShadowTagAI Preview | https://shadowtagai--preview-32m75f3r.web.app | ✅ 7d |
 
 ## Webhook vs Firestore Pricing Matrix
 Because we moved away from Redis cache over to Firestore `system_idempotency_keys` for Zod validation locks, high frequency polling will cost approximately $0.18 per 100k requests read/writes against the GCP document quota. We remain heavily profitable beneath the $5K Base Tier barrier. Edge Sovereign node ingress remains $0.00 bandwidth locked within our private peering subnet.
