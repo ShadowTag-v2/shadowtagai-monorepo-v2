@@ -1,4 +1,0 @@
-load("@gazelle//:def.bzl", "gazelle")
-
-# gazelle:prefix github.com/uphillsnowball/monorepo
-gazelle(name = "gazelle")

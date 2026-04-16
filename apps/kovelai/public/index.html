@@ -2,7 +2,7 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta name="version" content="2026.04.16.v7"/>
+<meta name="version" content="2026.04.16.v9"/>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
 <meta http-equiv="Pragma" content="no-cache"/>
 <meta http-equiv="Expires" content="0"/>
@@ -70,9 +70,28 @@
     ]
 }
 </script>
+<!-- ═══ GA4 Consent Mode v2 — Default Denied Until Cookie Consent ═══ -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Set default consent to denied — respects cookie banner
+  gtag('consent', 'default', {
+    'analytics_storage': 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'functionality_storage': 'denied',
+    'personalization_storage': 'denied',
+    'security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  gtag('set', 'url_passthrough', true);
+  gtag('set', 'ads_data_redaction', true);
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+<link rel="preconnect" href="https://www.googletagmanager.com" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/js/three.min.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
@@ -1341,7 +1360,7 @@ Submit Inquiry
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-status-error text-3xl mt-1" style="font-variation-settings: 'FILL' 1;">warning</span>
 <div>
-<h4 class="text-on-surface font-bold text-lg mb-2">Why Competitors Fail InfoSec Audits</h4>
+<h3 class="text-on-surface font-bold text-lg mb-2">Why Competitors Fail InfoSec Audits</h3>
 <p class="text-on-surface-variant text-sm leading-relaxed">Public AI companies like Perplexity inject <strong class="text-on-surface">Unbound Proxy Tokens</strong> — long-lived, master-billed credentials sitting in shared filesystems. A basic <code class="text-secondary bg-surface-container px-1.5 py-0.5 rounded text-xs">.npmrc</code> preload script can exfiltrate them. Kovelai is the only platform engineered to handle privileged legal data without risking a catastrophic credential leak. We don't just patch the vulnerability — we make it <strong class="text-primary">architecturally impossible</strong>.</p>
 </div>
 </div>
@@ -1365,21 +1384,21 @@ Submit Inquiry
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">memory</span>
 <div>
-<h4 class="text-on-surface font-semibold mb-1">Sandboxed Code Execution</h4>
+<p class="text-on-surface font-semibold mb-1">Sandboxed Code Execution</p>
 <p class="text-on-surface-variant text-sm">Run Python, parse Excel, analyze CSVs — inside isolated microVMs using commodity open-source infrastructure (Docker, GCP gVisor, E2B). No proprietary lock-in.</p>
 </div>
 </div>
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
 <div>
-<h4 class="text-on-surface font-semibold mb-1">Omni-Model Access</h4>
+<p class="text-on-surface font-semibold mb-1">Omni-Model Access</p>
 <p class="text-on-surface-variant text-sm">ChatGPT, Claude, Gemini, Grok, and Perplexity — all five major AI models inside a single, privileged wrapper. Let your clients and Computer Agents use the best model for each task.</p>
 </div>
 </div>
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">auto_delete</span>
 <div>
-<h4 class="text-on-surface font-semibold mb-1">Zero Artifact Residue</h4>
+<p class="text-on-surface font-semibold mb-1">Zero Artifact Residue</p>
 <p class="text-on-surface-variant text-sm">When the Heppner session ends, the sandbox is destroyed. No temp files, no logs, no discoverable artifacts. The only output is the curated work product delivered to the attorney's vault.</p>
 </div>
 </div>
@@ -1954,7 +1973,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-primary/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">biotech</span>
-<h4 class="text-on-surface font-bold">Kinetic Action Parser</h4>
+<p class="text-on-surface font-bold">Kinetic Action Parser</p>
 <span class="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-label tracking-wider uppercase">Pre-Processing</span>
 </div>
 <p class="text-on-surface-variant text-sm">Syntactic autopsy of every verb. 9-layer classification: performative, prohibitive, mandatory, conditional, hedging, passive, epistemic, temporal, and meta-linguistic. Generates a <strong class="text-on-surface">Verb Ledger</strong> with red-flag detection before any analyst touches the document.</p>
@@ -1969,7 +1988,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-secondary/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">account_tree</span>
-<h4 class="text-on-surface font-bold">Argument Extraction</h4>
+<p class="text-on-surface font-bold">Argument Extraction</p>
 </div>
 <p class="text-on-surface-variant text-sm">Decomposes the document into discrete, individually-addressable arguments. Each claim is classified (factual, legal, mixed), graded for strength (1-5), and tagged with supporting/opposing evidence references.</p>
 </div>
@@ -1983,7 +2002,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-primary/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">spellcheck</span>
-<h4 class="text-on-surface font-bold">Verb Auditing</h4>
+<p class="text-on-surface font-bold">Verb Auditing</p>
 </div>
 <p class="text-on-surface-variant text-sm">Cross-references the Verb Ledger against each argument. Flags ambiguous obligations, passive voice evasions, and hedging language that could weaken enforceability or create interpretation disputes.</p>
 </div>
@@ -1997,7 +2016,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-status-warning/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-status-warning" style="font-variation-settings: 'FILL' 1;">psychology</span>
-<h4 class="text-on-surface font-bold">Assumption Auditing</h4>
+<p class="text-on-surface font-bold">Assumption Auditing</p>
 </div>
 <p class="text-on-surface-variant text-sm">Excavates hidden premises that opposing counsel will exploit. Each assumption is risk-graded (critical/high/medium/low) and paired with a pre-drafted challenge strategy.</p>
 </div>
@@ -2011,7 +2030,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-tertiary/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">filter_alt</span>
-<h4 class="text-on-surface font-bold">Relevance Filtering</h4>
+<p class="text-on-surface font-bold">Relevance Filtering</p>
 </div>
 <p class="text-on-surface-variant text-sm">Composite scoring across three axes: <strong class="text-on-surface">legal strength</strong>, <strong class="text-on-surface">factual support</strong>, and <strong class="text-on-surface">strategic value</strong>. Arguments below threshold are flagged for deprioritization.</p>
 </div>
@@ -2025,7 +2044,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-status-error/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-status-error" style="font-variation-settings: 'FILL' 1;">swords</span>
-<h4 class="text-on-surface font-bold">Steelman / Challenger</h4>
+<p class="text-on-surface font-bold">Steelman / Challenger</p>
 <span class="text-[10px] bg-status-error/10 text-status-error px-2 py-0.5 rounded-full font-label tracking-wider uppercase">Adversarial</span>
 </div>
 <p class="text-on-surface-variant text-sm">Deploys a red-team dialectic. First <strong class="text-on-surface">steelmans</strong> each argument to its strongest form, then launches formal attacks: counterexamples, logical fallacy identification, and precedent-based rebuttals. Generates a net vulnerability assessment.</p>
@@ -2040,7 +2059,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-status-success/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-status-success" style="font-variation-settings: 'FILL' 1;">target</span>
-<h4 class="text-on-surface font-bold">Action Extraction</h4>
+<p class="text-on-surface font-bold">Action Extraction</p>
 </div>
 <p class="text-on-surface-variant text-sm">Synthesizes concrete next-move actions with priority grading (🔴 critical, 🟠 high, 🟡 medium, 🟢 low), owner assignment, deadline suggestions, and Clio CRM task integration.</p>
 </div>
@@ -2054,7 +2073,7 @@ Submit Inquiry
 <div class="flex-1 bg-surface-container rounded-xl p-6 border border-outline-variant/10 group-hover:border-primary/20 transition-all">
 <div class="flex items-center gap-3 mb-2">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">book_5</span>
-<h4 class="text-on-surface font-bold">Permanent Note Building</h4>
+<p class="text-on-surface font-bold">Permanent Note Building</p>
 </div>
 <p class="text-on-surface-variant text-sm">Auto-generates Zettelkasten-format permanent notes for your knowledge vault. Each insight is atomic, interconnected, and tagged for retrieval. Your institutional memory compounds with every document processed.</p>
 </div>
@@ -2088,21 +2107,21 @@ Submit Inquiry
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-status-error mt-0.5" style="font-variation-settings: 'FILL' 1;">warning</span>
 <div>
-<h4 class="text-on-surface font-semibold mb-1">Red-Flag Detection</h4>
+<p class="text-on-surface font-semibold mb-1">Red-Flag Detection</p>
 <p class="text-on-surface-variant text-sm">Passive voice above 40%? Hedging language in key provisions? Mandatory obligations buried under conditional qualifiers? The parser flags it before you read a single page.</p>
 </div>
 </div>
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-primary mt-0.5" style="font-variation-settings: 'FILL' 1;">analytics</span>
 <div>
-<h4 class="text-on-surface font-semibold mb-1">9-Layer Verb Classification</h4>
+<p class="text-on-surface font-semibold mb-1">9-Layer Verb Classification</p>
 <p class="text-on-surface-variant text-sm">Performative · Prohibitive · Mandatory · Conditional · Hedging · Passive · Epistemic · Temporal · Meta-linguistic — each verb is forensically classified and scored.</p>
 </div>
 </div>
 <div class="flex items-start gap-4">
 <span class="material-symbols-outlined text-status-success mt-0.5" style="font-variation-settings: 'FILL' 1;">verified</span>
 <div>
-<h4 class="text-on-surface font-semibold mb-1">Obligation Grading</h4>
+<p class="text-on-surface font-semibold mb-1">Obligation Grading</p>
 <p class="text-on-surface-variant text-sm">Every verb receives an obligation grade: hard (SHALL/MUST), soft (SHOULD/MAY), or contingent (IF...THEN). You see the enforceability map before the deposition.</p>
 </div>
 </div>
@@ -2463,7 +2482,7 @@ Sign Up for Alerts
 <div id="ccBanner" class="cc-banner" role="dialog" aria-label="Cookie consent">
 <button class="cc-close" onclick="ccDismiss()" aria-label="Close">✕</button>
 <h3>This website uses cookies</h3>
-<p>This website uses cookies to improve user experience. By using our website you consent to all cookies in accordance with our Cookie Policy. <a href="/privacy">Read more</a></p>
+<p>This website uses cookies to improve user experience. By using our website you consent to all cookies in accordance with our Cookie Policy. <a href="/privacy" aria-label="Read our Cookie and Privacy Policy">Read our Cookie and Privacy Policy</a></p>
 <div class="cc-cats">
 <label class="cc-cat"><input type="checkbox" checked disabled> STRICTLY NECESSARY</label>
 <label class="cc-cat"><input type="checkbox" id="ccPerf" checked> PERFORMANCE</label>
@@ -2485,7 +2504,7 @@ Sign Up for Alerts
 <button class="cc-modal-close" onclick="ccCloseModal()" aria-label="Close">✕</button>
 <div class="cc-modal-head">
 <h3>This website uses cookies</h3>
-<p>This website uses cookies to improve user experience. By using our website you consent to all cookies in accordance with our Cookie Policy. <a href="/privacy" style="color:#c9a96e">Read more</a></p>
+<p>This website uses cookies to improve user experience. By using our website you consent to all cookies in accordance with our Cookie Policy. <a href="/privacy" style="color:#c9a96e" aria-label="Read our Cookie and Privacy Policy">Read our Cookie and Privacy Policy</a></p>
 <div class="cc-modal-tabs">
 <button class="cc-modal-tab active" onclick="ccSwitchTab(this,'ccTabDecl')">COOKIE DECLARATION</button>
 <button class="cc-modal-tab" onclick="ccSwitchTab(this,'ccTabAbout')">ABOUT COOKIES</button>
@@ -2500,7 +2519,21 @@ Sign Up for Alerts
 </div>
 <p class="cc-modal-cat-desc">Strictly necessary cookies allow core website functionality such as user login and account management. The website cannot be used properly without strictly necessary cookies.</p>
 <button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
-<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">Session ID, CSRF Token, Load Balancer Affinity</div>
+<div class="hidden" style="padding:8px 0;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font:400 11px/1.5 'Inter',sans-serif;color:#666">
+<thead><tr style="text-align:left;border-bottom:1px solid #ddd">
+<th style="padding:6px 8px;font-weight:600;color:#333">Name</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Provider</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Purpose</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Expiry</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Type</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_cc</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Stores cookie consent preferences</td><td style="padding:5px 8px">1 year</td><td style="padding:5px 8px">LocalStorage</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">__session</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Firebase session management</td><td style="padding:5px 8px">Session</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">__Host-CSRF</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Cross-site request forgery protection</td><td style="padding:5px 8px">Session</td><td style="padding:5px 8px">HTTP</td></tr>
+</tbody></table>
+</div>
 </div>
 <div class="cc-modal-category">
 <div class="cc-modal-cat-head">
@@ -2509,16 +2542,48 @@ Sign Up for Alerts
 </div>
 <p class="cc-modal-cat-desc">Performance cookies help us understand how visitors interact with the website by collecting and reporting information anonymously.</p>
 <button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
-<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">Google Analytics (_ga, _gid), Page Load Metrics</div>
+<div class="hidden" style="padding:8px 0;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font:400 11px/1.5 'Inter',sans-serif;color:#666">
+<thead><tr style="text-align:left;border-bottom:1px solid #ddd">
+<th style="padding:6px 8px;font-weight:600;color:#333">Name</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Provider</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Purpose</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Expiry</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Type</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">_ga</td><td style="padding:5px 8px">Google</td><td style="padding:5px 8px">Distinguishes unique users by assigning a randomly generated number as a client identifier</td><td style="padding:5px 8px">2 years</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">_ga_5QW1DZL23V</td><td style="padding:5px 8px">Google</td><td style="padding:5px 8px">Used by GA4 to store and count pageviews</td><td style="padding:5px 8px">2 years</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">_gid</td><td style="padding:5px 8px">Google</td><td style="padding:5px 8px">Distinguishes users for 24h analytics window</td><td style="padding:5px 8px">24 hours</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">_gat_gtag</td><td style="padding:5px 8px">Google</td><td style="padding:5px 8px">Throttles request rate to limit data collection on high-traffic sites</td><td style="padding:5px 8px">1 minute</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_sid</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">First-party session identifier for engagement metrics</td><td style="padding:5px 8px">30 minutes</td><td style="padding:5px 8px">LocalStorage</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_fpt</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">First-party visitor fingerprint for session continuity</td><td style="padding:5px 8px">1 year</td><td style="padding:5px 8px">LocalStorage</td></tr>
+</tbody></table>
+</div>
 </div>
 <div class="cc-modal-category">
 <div class="cc-modal-cat-head">
 <h4>Targeting</h4>
 <label class="cc-toggle"><input type="checkbox" id="ccModalTarget" checked><span class="cc-toggle-slider"></span></label>
 </div>
-<p class="cc-modal-cat-desc">Targeting cookies are used to identify visitors between different websites, e.g. content partners, banner networks. They may be used by companies to build a profile of visitor interests or show relevant ads.</p>
+<p class="cc-modal-cat-desc">Targeting cookies are used to identify visitors between different websites, e.g. content partners, banner networks. They may be used by companies to build a profile of visitor interests or show relevant ads on other websites.</p>
 <button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
-<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">LinkedIn Insight, Meta Pixel</div>
+<div class="hidden" style="padding:8px 0;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font:400 11px/1.5 'Inter',sans-serif;color:#666">
+<thead><tr style="text-align:left;border-bottom:1px solid #ddd">
+<th style="padding:6px 8px;font-weight:600;color:#333">Name</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Provider</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Purpose</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Expiry</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Type</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">_gcl_au</td><td style="padding:5px 8px">Google</td><td style="padding:5px 8px">Used by Google Ads to store conversion data</td><td style="padding:5px 8px">90 days</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">NID</td><td style="padding:5px 8px">Google</td><td style="padding:5px 8px">Stores visitor preferences and personalizes ads on Google properties</td><td style="padding:5px 8px">6 months</td><td style="padding:5px 8px">HTTP</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_utm</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Stores UTM campaign parameters for attribution</td><td style="padding:5px 8px">30 days</td><td style="padding:5px 8px">LocalStorage</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_ref</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">First-touch referrer source for lead attribution</td><td style="padding:5px 8px">90 days</td><td style="padding:5px 8px">LocalStorage</td></tr>
+</tbody></table>
+</div>
 </div>
 <div class="cc-modal-category">
 <div class="cc-modal-cat-head">
@@ -2527,7 +2592,21 @@ Sign Up for Alerts
 </div>
 <p class="cc-modal-cat-desc">Functionality cookies enable helpful but non-essential features like remembering your preferences, language selection, and personalized content.</p>
 <button class="cc-show-cookies" onclick="this.nextElementSibling.classList.toggle('hidden')">SHOW COOKIES ▾</button>
-<div class="hidden" style="font:400 12px/1.6 'Inter',sans-serif;color:#888;padding:8px 0">Language Preference, Font Size, Contrast Mode</div>
+<div class="hidden" style="padding:8px 0;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font:400 11px/1.5 'Inter',sans-serif;color:#666">
+<thead><tr style="text-align:left;border-bottom:1px solid #ddd">
+<th style="padding:6px 8px;font-weight:600;color:#333">Name</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Provider</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Purpose</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Expiry</th>
+<th style="padding:6px 8px;font-weight:600;color:#333">Type</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_theme</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Remembers user's preferred display theme</td><td style="padding:5px 8px">1 year</td><td style="padding:5px 8px">LocalStorage</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_ux</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Stores UI personalization preferences (font size, contrast)</td><td style="padding:5px 8px">1 year</td><td style="padding:5px 8px">LocalStorage</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:5px 8px">kovelai_dismissed</td><td style="padding:5px 8px">kovelai.com</td><td style="padding:5px 8px">Tracks dismissed UI elements to avoid re-showing</td><td style="padding:5px 8px">30 days</td><td style="padding:5px 8px">LocalStorage</td></tr>
+</tbody></table>
+</div>
 </div>
 </div>
 <div id="ccTabAbout" class="hidden">
@@ -2670,7 +2749,422 @@ function ccStore(prefs) {
     prefs.timestamp = new Date().toISOString();
     localStorage.setItem('kovelai_cc', JSON.stringify(prefs));
     console.log('[KovelAI] Cookie consent:', prefs);
+    // Activate/deactivate analytics based on consent
+    ccActivateAnalytics(prefs);
 }
+// ===== Analytics ↔ Cookie Consent Bridge =====
+var _kovelGtagLoaded = false;
+function ccActivateAnalytics(prefs) {
+    // Update Google Consent Mode v2
+    if (typeof gtag === 'function') {
+        gtag('consent', 'update', {
+            'analytics_storage': prefs.performance ? 'granted' : 'denied',
+            'ad_storage': prefs.targeting ? 'granted' : 'denied',
+            'ad_user_data': prefs.targeting ? 'granted' : 'denied',
+            'ad_personalization': prefs.targeting ? 'granted' : 'denied',
+            'functionality_storage': prefs.functionality ? 'granted' : 'denied',
+            'personalization_storage': prefs.functionality ? 'granted' : 'denied'
+        });
+    }
+    // Lazy-load GA4 gtag.js only on first Performance consent
+    if (prefs.performance && !_kovelGtagLoaded) {
+        _kovelGtagLoaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-5QW1DZL23V';
+        document.head.appendChild(s);
+        s.onload = function() {
+            gtag('js', new Date());
+            gtag('config', 'G-5QW1DZL23V', {
+                'anonymize_ip': true,
+                'cookie_flags': 'SameSite=None;Secure',
+                'send_page_view': true
+            });
+            // First-party engagement metrics
+            ccTrackEngagement();
+        };
+        console.log('[KovelAI] GA4 loaded (Performance consent granted)');
+    }
+    // Log consent state for auditing
+    console.log('[KovelAI] Consent state updated:', {
+        analytics: prefs.performance ? 'granted' : 'denied',
+        ads: prefs.targeting ? 'granted' : 'denied',
+        functionality: prefs.functionality ? 'granted' : 'denied'
+    });
+}
+// ===== First-Party Data Harvesting Engine =====
+// Declared cookies: kovelai_sid, kovelai_fpt, kovelai_utm, kovelai_ref
+
+// ── Session & Visitor Identity ──
+var _kovelSessionId = null;
+var _kovelVisitorId = null;
+
+function ccGenerateId() {
+    return 'xxxx-xxxx-xxxx'.replace(/x/g, function() {
+        return Math.floor(Math.random() * 16).toString(16);
+    }) + '-' + Date.now().toString(36);
+}
+
+function ccInitSession() {
+    // Visitor ID (persistent, 1 year) — first-party fingerprint
+    _kovelVisitorId = localStorage.getItem('kovelai_fpt');
+    if (!_kovelVisitorId) {
+        _kovelVisitorId = 'kv_' + ccGenerateId();
+        localStorage.setItem('kovelai_fpt', _kovelVisitorId);
+    }
+
+    // Session ID (30min window)
+    var sidData = localStorage.getItem('kovelai_sid');
+    if (sidData) {
+        try {
+            var parsed = JSON.parse(sidData);
+            // Refresh if within 30min
+            if (Date.now() - parsed.ts < 1800000) {
+                _kovelSessionId = parsed.id;
+                parsed.ts = Date.now();
+                parsed.pageviews = (parsed.pageviews || 0) + 1;
+                localStorage.setItem('kovelai_sid', JSON.stringify(parsed));
+            } else {
+                sidData = null; // Expired, create new
+            }
+        } catch(e) { sidData = null; }
+    }
+    if (!sidData) {
+        _kovelSessionId = 'ks_' + ccGenerateId();
+        localStorage.setItem('kovelai_sid', JSON.stringify({
+            id: _kovelSessionId,
+            ts: Date.now(),
+            pageviews: 1,
+            landing: window.location.pathname,
+            started: new Date().toISOString()
+        }));
+    }
+}
+
+// ── UTM & Referrer Capture ──
+function ccCaptureAttribution() {
+    var params = new URLSearchParams(window.location.search);
+    var utmKeys = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+    var utmData = {};
+    var hasUtm = false;
+
+    utmKeys.forEach(function(key) {
+        var val = params.get(key);
+        if (val) { utmData[key] = val; hasUtm = true; }
+    });
+
+    // Store UTMs (30 day window, first-touch)
+    if (hasUtm && !localStorage.getItem('kovelai_utm')) {
+        utmData.captured_at = new Date().toISOString();
+        utmData.landing_page = window.location.pathname;
+        localStorage.setItem('kovelai_utm', JSON.stringify(utmData));
+    }
+
+    // Referrer capture (90 day, first-touch)
+    if (document.referrer && !localStorage.getItem('kovelai_ref')) {
+        try {
+            var refUrl = new URL(document.referrer);
+            if (refUrl.hostname !== window.location.hostname) {
+                localStorage.setItem('kovelai_ref', JSON.stringify({
+                    source: refUrl.hostname,
+                    full: document.referrer.substring(0, 500),
+                    captured_at: new Date().toISOString()
+                }));
+            }
+        } catch(e) {}
+    }
+
+    // Send attribution data to GA4 if available
+    if (typeof gtag === 'function' && hasUtm) {
+        gtag('event', 'campaign_attribution', utmData);
+    }
+}
+
+// ── Device & Viewport Profiling ──
+function ccProfileDevice() {
+    return {
+        screen_w: screen.width,
+        screen_h: screen.height,
+        viewport_w: window.innerWidth,
+        viewport_h: window.innerHeight,
+        dpr: window.devicePixelRatio || 1,
+        platform: navigator.platform || 'unknown',
+        lang: navigator.language || 'en',
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+        connection: (navigator.connection && navigator.connection.effectiveType) || 'unknown',
+        touch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+        cores: navigator.hardwareConcurrency || 'unknown'
+    };
+}
+
+// ── Core Engagement Tracking ──
+function ccTrackEngagement() {
+    ccInitSession();
+    ccCaptureAttribution();
+
+    var deviceProfile = ccProfileDevice();
+
+    // Set GA4 user properties for audience building
+    if (typeof gtag === 'function') {
+        gtag('set', 'user_properties', {
+            'visitor_id': _kovelVisitorId,
+            'device_type': deviceProfile.viewport_w < 768 ? 'mobile' : deviceProfile.viewport_w < 1024 ? 'tablet' : 'desktop',
+            'visitor_timezone': deviceProfile.tz,
+            'visitor_language': deviceProfile.lang,
+            'visitor_connection': deviceProfile.connection,
+            'referrer_source': (function() {
+                try { var r = localStorage.getItem('kovelai_ref'); return r ? JSON.parse(r).source : 'direct'; } catch(e) { return 'direct'; }
+            })(),
+            'utm_source': (function() {
+                try { var u = localStorage.getItem('kovelai_utm'); return u ? JSON.parse(u).utm_source : 'organic'; } catch(e) { return 'organic'; }
+            })(),
+            'session_count': (function() {
+                var c = parseInt(localStorage.getItem('kovelai_sc') || '0') + 1;
+                localStorage.setItem('kovelai_sc', c.toString());
+                return c;
+            })()
+        });
+
+        // Page view with enriched data
+        gtag('event', 'page_view_enriched', {
+            'page_title': document.title,
+            'page_path': window.location.pathname,
+            'visitor_id': _kovelVisitorId,
+            'session_id': _kovelSessionId,
+            'screen_resolution': deviceProfile.screen_w + 'x' + deviceProfile.screen_h,
+            'viewport': deviceProfile.viewport_w + 'x' + deviceProfile.viewport_h,
+            'device_pixel_ratio': deviceProfile.dpr,
+            'is_touch': deviceProfile.touch,
+            'cpu_cores': deviceProfile.cores
+        });
+    }
+
+    // ── Scroll Depth (25%, 50%, 75%, 100%) ──
+    var scrollThresholds = [25, 50, 75, 100];
+    var scrollFired = {};
+    var maxScroll = 0;
+    window.addEventListener('scroll', function() {
+        var scrollPct = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPct > maxScroll) maxScroll = scrollPct;
+        scrollThresholds.forEach(function(t) {
+            if (scrollPct >= t && !scrollFired[t]) {
+                scrollFired[t] = true;
+                if (typeof gtag === 'function') {
+                    gtag('event', 'scroll_depth', {
+                        'depth': t + '%',
+                        'page': window.location.pathname,
+                        'session_id': _kovelSessionId
+                    });
+                }
+            }
+        });
+    }, { passive: true });
+
+    // ── CTA Click Tracking (enhanced) ──
+    document.querySelectorAll('[onclick*="openContactModal"], a[href="#discovery"], .btn-magnetic, a[href*="schedule"], a[href*="demo"]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'cta_click', {
+                    'cta_text': btn.textContent.trim().substring(0, 50),
+                    'cta_location': btn.closest('section,header,footer')?.id || 'unknown',
+                    'cta_href': btn.href || 'action',
+                    'visitor_id': _kovelVisitorId,
+                    'session_id': _kovelSessionId
+                });
+            }
+        });
+    });
+
+    // ── Time on Page (30s, 60s, 120s, 300s, 600s) ──
+    [30, 60, 120, 300, 600].forEach(function(sec) {
+        setTimeout(function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'time_on_page', {
+                    'seconds': sec,
+                    'max_scroll': maxScroll + '%',
+                    'session_id': _kovelSessionId
+                });
+            }
+        }, sec * 1000);
+    });
+
+    // ── Form Submissions → Lead Generation ──
+    var contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    'event_category': 'engagement',
+                    'event_label': 'contact_form_submit',
+                    'visitor_id': _kovelVisitorId,
+                    'session_id': _kovelSessionId,
+                    'utm_source': (function() {
+                        try { var u = localStorage.getItem('kovelai_utm'); return u ? JSON.parse(u).utm_source : 'organic'; } catch(e) { return 'organic'; }
+                    })()
+                });
+            }
+        });
+    }
+
+    // ── Section Visibility Tracking (conversion funnel) ──
+    var sectionIds = ['hero-header','features','how-it-works','pricing','ceo-card','testimonials','discovery'];
+    var visibilityFired = {};
+    var sectionObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting && !visibilityFired[entry.target.id]) {
+                visibilityFired[entry.target.id] = true;
+                if (typeof gtag === 'function') {
+                    gtag('event', 'section_view', {
+                        'section_id': entry.target.id,
+                        'section_title': entry.target.querySelector('h1,h2,h3')?.textContent?.trim().substring(0, 80) || entry.target.id,
+                        'time_to_view': Math.round(performance.now() / 1000) + 's',
+                        'session_id': _kovelSessionId
+                    });
+                }
+            }
+        });
+    }, { threshold: 0.3 });
+    sectionIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) sectionObserver.observe(el);
+    });
+
+    // ── Exit Intent Detection ──
+    var exitFired = false;
+    document.addEventListener('mouseout', function(e) {
+        if (!exitFired && e.clientY < 5 && e.relatedTarget == null) {
+            exitFired = true;
+            if (typeof gtag === 'function') {
+                gtag('event', 'exit_intent', {
+                    'page': window.location.pathname,
+                    'max_scroll': maxScroll + '%',
+                    'time_on_page': Math.round(performance.now() / 1000) + 's',
+                    'visitor_id': _kovelVisitorId
+                });
+            }
+        }
+    });
+
+    // ── Rage Click Detection (3+ clicks within 500ms in same area) ──
+    var clickLog = [];
+    document.addEventListener('click', function(e) {
+        var now = Date.now();
+        clickLog.push({ x: e.clientX, y: e.clientY, t: now });
+        // Keep only last 2 seconds
+        clickLog = clickLog.filter(function(c) { return now - c.t < 2000; });
+        // Detect 3+ clicks within 500ms within 50px radius
+        var recent = clickLog.filter(function(c) { return now - c.t < 500; });
+        if (recent.length >= 3) {
+            var dx = Math.abs(recent[0].x - recent[recent.length - 1].x);
+            var dy = Math.abs(recent[0].y - recent[recent.length - 1].y);
+            if (dx < 50 && dy < 50) {
+                if (typeof gtag === 'function') {
+                    gtag('event', 'rage_click', {
+                        'x': e.clientX,
+                        'y': e.clientY,
+                        'element': (e.target.tagName + '.' + (e.target.className || '').toString().substring(0, 40)).substring(0, 60),
+                        'page': window.location.pathname
+                    });
+                }
+                clickLog = []; // Reset after detecting
+            }
+        }
+    });
+
+    // ── Video Engagement Tracking ──
+    var heroVideo = document.getElementById('heroVideo');
+    if (heroVideo) {
+        var videoMilestones = [25, 50, 75, 100];
+        var videoFired = {};
+        heroVideo.addEventListener('timeupdate', function() {
+            if (heroVideo.duration && heroVideo.duration > 0) {
+                var pct = Math.round((heroVideo.currentTime / heroVideo.duration) * 100);
+                videoMilestones.forEach(function(m) {
+                    if (pct >= m && !videoFired[m]) {
+                        videoFired[m] = true;
+                        if (typeof gtag === 'function') {
+                            gtag('event', 'video_progress', {
+                                'video_id': 'hero_video',
+                                'progress': m + '%',
+                                'session_id': _kovelSessionId
+                            });
+                        }
+                    }
+                });
+            }
+        });
+        heroVideo.addEventListener('play', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'video_start', { 'video_id': 'hero_video', 'session_id': _kovelSessionId });
+            }
+        });
+        heroVideo.addEventListener('pause', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'video_pause', {
+                    'video_id': 'hero_video',
+                    'progress': heroVideo.duration ? Math.round((heroVideo.currentTime / heroVideo.duration) * 100) + '%' : '0%',
+                    'session_id': _kovelSessionId
+                });
+            }
+        });
+    }
+
+    // ── Outbound Link Click Tracking ──
+    document.querySelectorAll('a[href^="http"]').forEach(function(link) {
+        if (link.hostname !== window.location.hostname) {
+            link.addEventListener('click', function() {
+                if (typeof gtag === 'function') {
+                    gtag('event', 'outbound_click', {
+                        'link_url': link.href.substring(0, 200),
+                        'link_text': link.textContent.trim().substring(0, 50),
+                        'page': window.location.pathname,
+                        'session_id': _kovelSessionId
+                    });
+                }
+            });
+        }
+    });
+
+    // ── Page Unload: Final Session Summary ──
+    window.addEventListener('beforeunload', function() {
+        if (typeof gtag === 'function' && navigator.sendBeacon) {
+            // Use sendBeacon for reliability
+            var summary = {
+                event: 'session_end',
+                session_id: _kovelSessionId,
+                visitor_id: _kovelVisitorId,
+                max_scroll: maxScroll + '%',
+                time_on_page: Math.round(performance.now() / 1000) + 's',
+                sections_viewed: Object.keys(visibilityFired).join(',')
+            };
+            // GA4 event via Measurement Protocol would go here
+            // For now, fire a gtag event (may not always send)
+            gtag('event', 'session_summary', summary);
+        }
+    });
+
+    console.log('[KovelAI] Data harvesting engine active:', {
+        visitor: _kovelVisitorId,
+        session: _kovelSessionId,
+        device: deviceProfile.viewport_w < 768 ? 'mobile' : 'desktop',
+        utm: localStorage.getItem('kovelai_utm') ? 'captured' : 'none',
+        referrer: localStorage.getItem('kovelai_ref') ? 'captured' : 'direct'
+    });
+}
+
+// ===== Re-activate on page load if consent already given =====
+(function() {
+    var stored = localStorage.getItem('kovelai_cc');
+    if (stored) {
+        try {
+            var prefs = JSON.parse(stored);
+            ccActivateAnalytics(prefs);
+        } catch(e) {}
+    }
+    // Always capture UTM/referrer even before full consent (first-party, necessary)
+    ccCaptureAttribution();
+    ccInitSession();
+})();
 function ccReopenBanner() {
     ccHideFloat();
     document.getElementById('ccBanner').classList.add('visible');
@@ -3009,12 +3503,4 @@ document.addEventListener('DOMContentLoaded', ccInit);
 })();
 </script>
 
-<!-- Global Site Tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K8M57QXYZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-K8M57QXYZ');
-</script>
 </body></html>
