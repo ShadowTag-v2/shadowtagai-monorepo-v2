@@ -1,6 +1,8 @@
+from enum import StrEnum
+
 from fastapi import APIRouter
 from pydantic import BaseModel
-from enum import StrEnum
+
 
 class HealthStatus(StrEnum):
     HEALTHY = "healthy"

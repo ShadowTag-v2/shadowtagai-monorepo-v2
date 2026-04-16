@@ -1,6 +1,7 @@
-from .ethicalviolationtype import EthicalViolationType
 from dataclasses import dataclass
 from datetime import datetime
+
+from .ethicalviolationtype import EthicalViolationType
 
 
 @dataclass

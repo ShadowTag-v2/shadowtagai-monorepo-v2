@@ -91,7 +91,7 @@ class Subscription(Base):
     )
 
     # Relationships
-    user: Mapped["User"] = relationship("User", back_populates="subscriptions")
+    user: Mapped[User] = relationship("User", back_populates="subscriptions")
 
     def __repr__(self) -> str:
         return f"<Subscription(id={self.id}, user_id={self.user_id}, tier={self.tier}, status={self.status})>"
