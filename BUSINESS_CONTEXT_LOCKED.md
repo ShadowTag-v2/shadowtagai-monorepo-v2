@@ -32,11 +32,19 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 
 ## Hardened State
 - v8.4 canonicalized: 2026-04-13
-- Commit: `c279f820037`
+- Latest production commit: `c76b496fdd4` (2026-04-16)
 - Lighthouse: A97 / BP100 / SEO100
 - Structural tests: 30/30
 - Dead code: clean (vulture + ruff)
 
+### Production Hardening (2026-04-16)
+- **CSP Headers**: Strict Content-Security-Policy deployed on both KovelAI and ShadowTagAI
+- **Permissions-Policy**: Camera, microphone, geolocation denied by default
+- **WebP Optimization**: All hero/pitch images converted (79–98% payload reduction)
+- **Custom 404 Pages**: Premium branded 404.html for both sites (navy/gold + purple/pink)
+- **DNS Prefetch**: `dns-prefetch` hints for CDN resources
+- **Git Auth**: SSH deploy key `148811352` registered via GitHub App API (write access)
+- **Remote**: `git@github-shadowtag:ShadowTag-v2/Monorepo-Uphillsnowball.git`
 
 ## Webhook vs Firestore Pricing Matrix
 Because we moved away from Redis cache over to Firestore `system_idempotency_keys` for Zod validation locks, high frequency polling will cost approximately $0.18 per 100k requests read/writes against the GCP document quota. We remain heavily profitable beneath the $5K Base Tier barrier. Edge Sovereign node ingress remains $0.00 bandwidth locked within our private peering subnet.
