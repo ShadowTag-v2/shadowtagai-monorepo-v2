@@ -1,0 +1,101 @@
+# Weekly scheduled Lighthouse CI audits for KovelAI and ShadowTagAI
+# Items #21 (email alerting) + #22 (scheduled CI runs)
+name: Lighthouse CI
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse-desktop:
+    name: Desktop Lighthouse Audit
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        site:
+          - url: https://kovelai.web.app
+            name: kovelai
+          - url: https://shadowtagai.web.app
+            name: shadowtagai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        id: lighthouse
+        with:
+          urls: ${{ matrix.site.url }}
+          runs: 3
+          temporaryPublicStorage: true
+
+      - name: Check Score Thresholds
+        run: |
+          A11Y=$(echo '${{ steps.lighthouse.outputs.manifest }}' | jq -r '.[0].summary.accessibility')
+          BP=$(echo '${{ steps.lighthouse.outputs.manifest }}' | jq -r '.[0].summary.bestPractices')
+          SEO=$(echo '${{ steps.lighthouse.outputs.manifest }}' | jq -r '.[0].summary.seo')
+          PERF=$(echo '${{ steps.lighthouse.outputs.manifest }}' | jq -r '.[0].summary.performance')
+
+          echo "## Lighthouse Scores for ${{ matrix.site.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Score |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Accessibility | ${A11Y} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Best Practices | ${BP} |" >> $GITHUB_STEP_SUMMARY
+          echo "| SEO | ${SEO} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance | ${PERF} |" >> $GITHUB_STEP_SUMMARY
+
+          # Fail if any score drops below threshold
+          python3 -c "
+          scores = {'a11y': ${A11Y:-0}, 'bp': ${BP:-0}, 'seo': ${SEO:-0}}
+          thresholds = {'a11y': 0.95, 'bp': 0.90, 'seo': 0.95}
+          failures = {k: v for k, v in scores.items() if v < thresholds[k]}
+          if failures:
+              print(f'REGRESSION DETECTED: {failures}')
+              exit(1)
+          print('All scores above thresholds ✅')
+          "
+
+  lighthouse-mobile:
+    name: Mobile Lighthouse Audit
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        site:
+          - url: https://kovelai.web.app
+            name: kovelai
+          - url: https://shadowtagai.web.app
+            name: shadowtagai
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        id: lighthouse
+        with:
+          urls: ${{ matrix.site.url }}
+          runs: 3
+          temporaryPublicStorage: true
+
+      - name: Mobile Score Summary
+        run: |
+          echo "## Mobile Lighthouse Scores for ${{ matrix.site.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "See Lighthouse report at ${{ steps.lighthouse.outputs.links }}" >> $GITHUB_STEP_SUMMARY
+
+  notify-on-failure:
+    name: Email Alert on Regression
+    needs: [lighthouse-desktop, lighthouse-mobile]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert Founder
+        run: |
+          echo "🚨 Lighthouse regression detected!"
+          echo "Check the failed workflow at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          # GitHub Actions will notify repository admins on failure by default
+          # For email: configure notification settings in GitHub → Settings → Notifications
