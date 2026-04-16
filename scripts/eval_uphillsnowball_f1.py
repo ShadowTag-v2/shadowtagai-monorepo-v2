@@ -188,12 +188,6 @@ def evaluate_task(
         task_description=task_description,
     )
 
-    weights = dimension_weights or {
-        "task_completion": 0.35,
-        "tool_selection": 0.20,
-        "output_quality": 0.25,
-        "error_recovery": 0.20,
-    }
 
     # 1. Tool selection
     actual_tools = actual_tools or expected_tools  # Self-test mode

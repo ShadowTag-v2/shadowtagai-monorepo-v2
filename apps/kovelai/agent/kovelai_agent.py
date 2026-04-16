@@ -45,7 +45,7 @@ except ImportError:
 # Oracle Studio imports
 try:
     from agent.kinetic_action_parser import KineticActionParser
-    from agent.oracle_studio import MurderBoardStep, OracleStudio
+    from agent.oracle_studio import OracleStudio
 
     ORACLE_AVAILABLE = True
 except ImportError:
