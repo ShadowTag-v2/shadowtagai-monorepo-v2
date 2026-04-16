@@ -145,7 +145,7 @@ def process_file(service, file_item: dict[str, Any]) -> dict[str, Any]:
     if mime == MIME_PDF:
         text = extract_text_pdf(file_content)
     elif (
-        mime == MIME_DOCX or mime == MIME_GOOGLE_DOC
+        mime in (MIME_DOCX, MIME_GOOGLE_DOC)
     ):  # Google Doc exported as text/plain is handled below?
         if mime == MIME_DOCX:
             text = extract_text_docx(file_content)

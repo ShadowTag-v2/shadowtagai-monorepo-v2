@@ -14,7 +14,7 @@ def patch_gemini_env():
 
     # 1. Suppress GRPC and Abseil warnings
     os.environ["GRPC_VERBOSITY"] = "ERROR"
-    os.environ["GLOG_minloglevel"] = "2"  # Error only
+    os.environ["GLOG_MINLOGLEVEL"] = "2"  # Error only
 
     # 2. Force Antigravity Detection
     # Simulating the PR's logic where it likely checks for strict env vars

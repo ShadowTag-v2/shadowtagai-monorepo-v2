@@ -1,3 +1,4 @@
+import contextlib
 import shutil
 import sys
 from pathlib import Path
@@ -66,10 +67,8 @@ def migrate_repos():
     print(f"\n🎉 Migration Complete. Moved {count} repositories.")
 
     # Generate Report via UI
-    try:
+    with contextlib.suppress(BaseException):
         requests.post(f"{BASE_URL}/ui", json={"intent": f"Migration Report: {count} repos moved"})
-    except:
-        pass
 
 
 if __name__ == "__main__":

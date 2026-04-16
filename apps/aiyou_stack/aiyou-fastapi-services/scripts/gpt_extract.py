@@ -15,7 +15,7 @@ def extract_messages(mapping: dict) -> list:
     """Extract messages from conversation mapping"""
     messages = []
 
-    for node_id, node in mapping.items():
+    for _node_id, node in mapping.items():
         if node.get("message"):
             msg = node["message"]
             author = msg.get("author", {}).get("role", "unknown")

@@ -203,7 +203,7 @@ class VectorStore:
         self._get_or_create_table(len(embeddings[0]) if embeddings else 384)
 
         records = []
-        for chunk, emb in zip(chunks, embeddings):
+        for chunk, emb in zip(chunks, embeddings, strict=False):
             records.append({
                 "vector": emb,
                 "text": chunk.text,
