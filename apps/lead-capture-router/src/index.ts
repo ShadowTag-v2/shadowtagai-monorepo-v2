@@ -159,6 +159,9 @@ export const captureContact = onRequest(
   }
 );
 
+// ─── CSP Violation Report Endpoint ─────────────────────────────
+export { cspReport } from "./cspReport";
+
 // ─── Analytics Webhook Worker ──────────────────────────────────
 export const analyticalWebhook = onRequest(
   {

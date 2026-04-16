@@ -32,8 +32,10 @@ def get_all_remote_branches() -> list[str]:
         return []
 
 
-def list_files_in_branch(branch: str, extensions=[".md", ".txt", ".rst"]) -> list[str]:
+def list_files_in_branch(branch: str, extensions=None) -> list[str]:
     """Lists relevant doc files in a specific branch."""
+    if extensions is None:
+        extensions = [".md", ".txt", ".rst"]
     files = []
     try:
         # git ls-tree -r --name-only BRANCH

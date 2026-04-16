@@ -105,7 +105,7 @@ class SmartKeyPool:
             # Weighted random selection
             threshold = random.uniform(0, total_weight)
             cumulative = 0
-            for key, weight in zip(available, weights):
+            for key, weight in zip(available, weights, strict=False):
                 cumulative += weight
                 if cumulative >= threshold:
                     return key

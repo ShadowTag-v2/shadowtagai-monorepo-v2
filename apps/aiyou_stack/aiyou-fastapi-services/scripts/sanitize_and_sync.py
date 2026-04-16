@@ -177,7 +177,7 @@ def main():
 
     # Show sample redactions
     print("\n=== Redaction patterns active ===")
-    for pattern, replacement in REDACT_PATTERNS[:5]:
+    for _pattern, replacement in REDACT_PATTERNS[:5]:
         print(f"  {replacement}")
     print(f"  ... and {len(REDACT_PATTERNS) - 5} more patterns")
 

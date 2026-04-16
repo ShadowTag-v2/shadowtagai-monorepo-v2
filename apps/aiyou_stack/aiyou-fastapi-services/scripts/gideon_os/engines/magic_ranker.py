@@ -29,8 +29,10 @@ class ModernMagicFormula:
                 continue
         return pd.DataFrame(data)
 
-    def get_crypto_metrics(self, coins=["bitcoin", "ethereum", "solana", "cardano"]):
+    def get_crypto_metrics(self, coins=None):
         """Modern Crypto: Staking Yield + Inverse NVT"""
+        if coins is None:
+            coins = ["bitcoin", "ethereum", "solana", "cardano"]
         data = []
         market_data = self.cg.get_coins_markets(vs_currency="usd", ids=",".join(coins))
 
