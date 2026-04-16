@@ -389,7 +389,6 @@ class FeedbackLoop:
         self,
         signal: FeedbackSignal,
         hypotheses: list[Hypothesis],
-        strategy_weights: dict[str, float] | None = None,
     ) -> dict[str, Any]:
         """
         Apply feedback signal to update system state.
@@ -427,7 +426,7 @@ class FeedbackLoop:
 
         elif signal.signal_type == FeedbackSignalType.SUCCESS_PATTERN:
             # Apply success pattern learning
-            signal.data.get("pattern", {})
+            # Success pattern data available via signal.data["pattern"]
             # Would increase priority of hypotheses matching pattern characteristics
             changes["strategies_adjusted"].append("success_pattern_applied")
 

@@ -17,7 +17,7 @@ from kosmos.utils.compat import model_to_dict
 
 # Import profiling utilities
 try:
-    from kosmos.core.profiling import ProfileResult, format_profile_summary
+    from kosmos.core.profiling import ProfileResult
 
     PROFILING_AVAILABLE = True
 except ImportError:
