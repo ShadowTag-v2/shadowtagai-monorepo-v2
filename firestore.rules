@@ -23,7 +23,7 @@ service cloud.firestore {
     // KovelAI leads — analysts can read/update; partners/admins can delete.
     match /kovelai_leads/{leadId} {
       allow read, update: if isAnalyst();
-      allow create: if request.auth != null;
+      allow create: if true;
       allow delete: if isPartner();
     }
 
