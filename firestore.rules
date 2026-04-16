@@ -23,7 +23,7 @@ service cloud.firestore {
     // KovelAI leads — analysts can read/update; partners/admins can delete.
     match /kovelai_leads/{leadId} {
       allow read, update: if isAnalyst();
-      allow create: if true;
+      allow create: if false;
       allow delete: if isPartner();
     }
 
@@ -59,7 +59,7 @@ service cloud.firestore {
     // ShadowTag AI public contact form — unauthenticated create, admin manage
     match /contact_requests/{requestId} {
       allow read, update, delete: if request.auth != null && request.auth.token.admin == true;
-      allow create: if true; // Public web form
+      allow create: if false; // Migrated to Edge Router
     }
   }
 }

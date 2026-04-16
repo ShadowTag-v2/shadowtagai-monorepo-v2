@@ -28,6 +28,11 @@ repo_roots:
     path: apps/aiyou_stack/nascent-apollo
     notes: Live canonical root for nascent-apollo.
 
+  - name: lead-capture-router
+    status: canonical
+    path: apps/lead-capture-router
+    notes: Gen 2 Firebase Functions Cloud Router handling captureLead and captureContact endpoints.
+
   # ─── Folded-in (labs/data/control) ───
   - name: uphillsnowball
     status: folded-in
