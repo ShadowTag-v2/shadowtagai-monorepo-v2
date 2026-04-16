@@ -47,6 +47,14 @@
         { "fieldPath": "firm_id", "order": "ASCENDING" },
         { "fieldPath": "billed_at", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "kovelai_leads",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "receivedAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
