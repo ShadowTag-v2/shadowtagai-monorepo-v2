@@ -52,8 +52,8 @@
     "directive": "All PR and repo truth management routes via GitHub App. `gh auth login` is strictly for manual local repair ONLY."
   },
   "the_nag_protocol": {
-    "count": 12,
-    "directive": "End EVERY runtime response with EXACTLY 12 explicitly selectable actionable prompts. Accumulate until resolved."
+    "count": 22,
+    "directive": "End EVERY runtime response with EXACTLY 22 explicitly selectable actionable prompts. Accumulate until resolved."
   },
   "mcp_first_physical_barriers": {
     "database": "FORBIDDEN from writing SQL without first executing a tool call to the database MCP to query the live schema.",
