@@ -95,7 +95,7 @@ class AudioLoop:
         setup_msg = {"setup": {"model": f"models/{model}"}}
         await self.ws.send(json.dumps(setup_msg))
         raw_response = await self.ws.recv(decode=False)
-        setup_response = json.loads(raw_response.decode("ascii"))
+        json.loads(raw_response.decode("ascii"))
 
     async def send_text(self):
         while True:

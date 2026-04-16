@@ -186,7 +186,7 @@ class GeminiHandler(StreamHandler):
             except TimeoutError:
                 print("Timeout waiting for server response")
                 yield None
-            except Exception as e:
+            except Exception:
                 yield None
 
     def emit(self) -> tuple[int, np.ndarray] | None:

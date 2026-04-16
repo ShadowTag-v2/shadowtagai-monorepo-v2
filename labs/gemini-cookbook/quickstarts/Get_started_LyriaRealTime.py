@@ -116,7 +116,7 @@ async def main():
                 if prompt_str.startswith('bpm='):
                   if prompt_str.strip().endswith('AUTO'):
                     del config.bpm
-                    print(f"Setting BPM to AUTO, which requires resetting context.")
+                    print("Setting BPM to AUTO, which requires resetting context.")
                   else:
                     bpm_value = int(prompt_str.removeprefix('bpm='))
                     print(f"Setting BPM to {bpm_value}, which requires resetting context.")
@@ -128,7 +128,7 @@ async def main():
                 if prompt_str.startswith('scale='):
                   if prompt_str.strip().endswith('AUTO'):
                     del config.scale
-                    print(f"Setting Scale to AUTO, which requires resetting context.")
+                    print("Setting Scale to AUTO, which requires resetting context.")
                   else:
                     found_scale_enum_member = None
                     for scale_member in types.Scale: # types.Scale is an enum
@@ -216,7 +216,7 @@ async def main():
         print(f"Setting initial BPM to {config.bpm} and scale to {config.scale.name}")
         await session.set_music_generation_config(config=config)
 
-        print(f"Let's get the party started!")
+        print("Let's get the party started!")
         await session.play()
 
         send_task = asyncio.create_task(send())
