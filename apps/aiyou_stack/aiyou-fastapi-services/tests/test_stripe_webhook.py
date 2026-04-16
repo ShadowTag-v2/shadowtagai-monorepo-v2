@@ -34,7 +34,7 @@ WEBHOOK_SECRET = "whsec_test_secret_for_unit_tests_only"
 def _make_signed_payload(
     payload_dict: dict,
     secret: str = WEBHOOK_SECRET,
-    timestamp: Optional[int] = None,
+    timestamp: int | None = None,
 ) -> tuple[bytes, str]:
     """Construct a signed payload and Stripe-Signature header.
 
