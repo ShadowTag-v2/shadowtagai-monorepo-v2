@@ -15,10 +15,8 @@ Pricing tiers (from BUSINESS_CONTEXT_LOCKED.md):
 
 from __future__ import annotations
 
-import json
 import logging
 import os
-from datetime import datetime, timezone
 from typing import Any
 
 import stripe

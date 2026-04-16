@@ -493,7 +493,6 @@ class LiteratureAnalyzerAgent(BaseAgent):
         self,
         papers: list[PaperMetadata],
         query: str,
-        reference_papers: list[PaperMetadata] | None = None,
     ) -> list[tuple[PaperMetadata, float]]:
         """
         Multi-faceted relevance scoring.
