@@ -596,6 +596,11 @@
           .ceo-headshot { width: 140px; height: 140px; }
           .mobile-nav-toggle { display: block !important; }
           .desktop-nav { display: none !important; }
+          /* Hero responsive: prevent title/body overflow on tablet */
+          #heroTitle { font-size: clamp(1.5rem, 3vw + 0.25rem, 2.5rem) !important; }
+          #heroTitle + p,
+          header p.text-on-surface-variant { max-width: 90vw !important; font-size: 1rem !important; }
+          header .max-w-7xl { overflow: hidden; }
       }
 
       /* ═══════════════════════════════════════════════════
