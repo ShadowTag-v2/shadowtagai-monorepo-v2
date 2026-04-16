@@ -1,170 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>404 — Page Not Found | Kovelai</title>
-  <meta name="description" content="The page you requested was not found. Kovelai — Sovereign AI for Law Firms." />
-  <meta name="robots" content="noindex" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --navy: #0a0f1e;
-      --navy-mid: #131c31;
-      --gold: #c9a96e;
-      --gold-dim: rgba(201,169,110,0.15);
-      --white: #f5ede0;
-      --slate: #8da3be;
-    }
-    html, body {
-      min-height: 100vh;
-      background: var(--navy);
-      color: var(--white);
-      font-family: 'Inter', system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-    }
-    /* animated gold grid lines */
-    canvas#grid {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.25;
-      pointer-events: none;
-    }
-    .card {
-      position: relative;
-      z-index: 10;
-      padding: 3rem 2.5rem;
-      background: rgba(19,28,49,0.8);
-      border: 1px solid var(--gold-dim);
-      border-radius: 1.25rem;
-      backdrop-filter: blur(24px);
-      max-width: 480px;
-      width: 90%;
-    }
-    .code {
-      font-size: clamp(5rem, 15vw, 8rem);
-      font-weight: 800;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--gold), #f5ede0 60%, var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.04em;
-    }
-    .label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.25em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin: 1rem 0 0.5rem;
-    }
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 0.75rem;
-    }
-    p {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--slate);
-      margin-bottom: 2rem;
-    }
-    .btn {
-      display: inline-block;
-      padding: 0.75rem 2rem;
-      background: linear-gradient(135deg, var(--gold) 0%, #a07840 100%);
-      color: var(--navy);
-      font-weight: 700;
-      font-size: 0.875rem;
-      text-decoration: none;
-      border-radius: 0.5rem;
-      letter-spacing: 0.04em;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .logo {
-      font-size: 0.8rem;
-      color: var(--slate);
-      margin-top: 2rem;
-      letter-spacing: 0.06em;
-    }
-    .logo span { color: var(--gold); font-weight: 700; }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Page Not Found — KovelAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;background:#0a0e1a;color:#e2e8f0;overflow:hidden}
+.container{text-align:center;max-width:520px;padding:2rem;position:relative;z-index:2}
+.code{font-size:8rem;font-weight:700;background:linear-gradient(135deg,#c9a84c 0%,#f5e6a3 50%,#c9a84c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:.5rem;animation:pulse 3s ease-in-out infinite}
+h1{font-size:1.5rem;font-weight:600;margin-bottom:1rem;color:#94a3b8}
+p{font-size:1rem;color:#64748b;line-height:1.6;margin-bottom:2rem}
+a{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 2rem;border-radius:8px;background:linear-gradient(135deg,#c9a84c,#b8922f);color:#0a0e1a;font-weight:600;text-decoration:none;transition:all .3s ease;font-size:.95rem}
+a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.12;pointer-events:none}
+.orb-1{width:400px;height:400px;background:#c9a84c;top:-100px;right:-100px;animation:float 8s ease-in-out infinite}
+.orb-2{width:300px;height:300px;background:#1e3a5f;bottom:-80px;left:-80px;animation:float 10s ease-in-out infinite reverse}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
+</style>
 </head>
 <body>
-  <canvas id="grid"></canvas>
-  <div class="card">
-    <div class="code">404</div>
-    <p class="label">Access Denied — Route Not Found</p>
-    <h1>This corridor doesn't exist.</h1>
-    <p>The page you're looking for may have been moved, restricted, or never existed inside our encrypted data architecture. Every route in Kovelai is sealed by design.</p>
-    <a href="/" class="btn">Return to Secure Home</a>
-    <div class="logo"><span>Kovelai</span> — Sovereign AI for Law Firms</div>
-  </div>
-
-  <script>
-    // Animated gold neural network background
-    const canvas = document.getElementById('grid');
-    const ctx = canvas.getContext('2d');
-    let nodes = [];
-    const N = 35;
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    for (let i = 0; i < N; i++) {
-      nodes.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: (Math.random() - 0.5) * 0.35,
-      });
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const gold = 'rgba(201,169,110,';
-      nodes.forEach(n => {
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
-        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-      });
-      for (let i = 0; i < N; i++) {
-        for (let j = i + 1; j < N; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < 200) {
-            ctx.beginPath();
-            ctx.strokeStyle = gold + (1 - dist/200) * 0.6 + ')';
-            ctx.lineWidth = 0.8;
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-        ctx.beginPath();
-        ctx.arc(nodes[i].x, nodes[i].y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = gold + '0.8)';
-        ctx.fill();
-      }
-      requestAnimationFrame(draw);
-    }
-    draw();
-  </script>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="container">
+<div class="code">404</div>
+<h1>Page Not Found</h1>
+<p>The page you're looking for doesn't exist or has been moved. Let's get you back to privileged territory.</p>
+<a href="/">← Back to KovelAI</a>
+</div>
 </body>
 </html>
