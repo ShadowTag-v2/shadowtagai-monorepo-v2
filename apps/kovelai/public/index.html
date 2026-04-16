@@ -90,9 +90,10 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="preconnect" href="https://cdn.tailwindcss.com" />
 <link rel="preconnect" href="https://www.googletagmanager.com" />
 <link rel="preconnect" href="https://storage.googleapis.com" />
+<link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+<link rel="preload" as="image" href="/images/hero-poster-opt.webp" />
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="/js/three.min.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
@@ -899,7 +900,7 @@ Submit Inquiry
 <!-- ════════════════════════════════════════════════ -->
 <!-- HERO SECTION                                    -->
 <!-- ════════════════════════════════════════════════ -->
-<header id="hero-header" class="relative min-h-screen flex flex-col justify-center items-center pt-20 px-8 overflow-hidden" style="background: url('images/hero-bg.png') center/cover no-repeat;">
+<header id="hero-header" class="relative min-h-screen flex flex-col justify-center items-center pt-20 px-8 overflow-hidden" style="background: url('images/hero-bg-opt.webp') center/cover no-repeat;">
 <!-- Bottom Fade Gradient - blends hero into the stats section -->
 <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/60 to-transparent z-10 pointer-events-none"></div>
 <!-- Layer 0: Fluid Kinetic Aura — 5 organic mesh gradient blobs -->
@@ -918,7 +919,7 @@ Submit Inquiry
        autoplay loop muted playsinline
        preload="none"
        loading="lazy"
-       poster="/images/hero-poster.jpg"
+       poster="/images/hero-poster-opt.webp"
        onloadeddata="this.classList.add('loaded')">
     <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4" type="video/mp4">
     <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.webm" type="video/webm">
