@@ -1,65 +1,9 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // RBAC Custom Functions
-    function hasRole(role) {
-      return request.auth != null && request.auth.token.role == role;
-    }
-    function isAdmin() {
-      return hasRole('admin') || request.auth.token.admin == true;
-    }
-    function isPartner() {
-      return isAdmin() || hasRole('partner');
-    }
-    function isAnalyst() {
-      return isPartner() || hasRole('analyst');
-    }
-
-    // Default: deny all access
-    match /{document=**} {
-      allow read, write: if false;
-    }
-
-    // KovelAI leads — analysts can read/update; partners/admins can delete.
-    match /kovelai_leads/{leadId} {
-      allow read, update: if isAnalyst();
-      allow create: if false;
-      allow delete: if isPartner();
-    }
-
-    // KovelAI firms — structured access.
-    match /kovelai_firms/{firmId} {
-      allow read, update: if isAnalyst();
-      allow create: if request.auth != null;
-      allow delete: if isAdmin();
-    }
-
-    // UphillSnowball analyses — strict admin-only
-    match /uphillsnowball_analyses/{docId} {
-      allow read, write: if request.auth != null && request.auth.token.admin == true;
-    }
-
-    // UphillSnowball billing — strict admin-only (contains rate/cost data)
-    match /uphillsnowball_billing/{docId} {
-      allow read, write: if request.auth != null && request.auth.token.admin == true;
-    }
-
-    // UphillSnowball intakes — authenticated create, admin manage
-    match /uphillsnowball_intakes/{docId} {
-      allow read: if request.auth != null && request.auth.token.admin == true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null && request.auth.token.admin == true;
-    }
-
-    // UphillSnowball screenings — strict admin-only
-    match /uphillsnowball_screenings/{docId} {
-      allow read, write: if request.auth != null && request.auth.token.admin == true;
-    }
-
-    // ShadowTag AI public contact form — unauthenticated create, admin manage
-    match /contact_requests/{requestId} {
-      allow read, update, delete: if request.auth != null && request.auth.token.admin == true;
-      allow create: if false; // Migrated to Edge Router
+    match /system_idempotency_keys/{key} {
+      allow read: if false; // Zero trust
+      allow write: if request.auth != null && request.time < resource.data.expiresAt;
     }
   }
 }
