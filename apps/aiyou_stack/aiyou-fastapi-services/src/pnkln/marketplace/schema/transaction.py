@@ -1,4 +1,3 @@
-from .transactionstatus import TransactionStatus
 from datetime import datetime
 
 from sqlalchemy import (
@@ -16,6 +15,8 @@ from sqlalchemy import (
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+from .transactionstatus import TransactionStatus
 
 Base = declarative_base()
 

@@ -14,7 +14,7 @@ import math
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Union
 
 import structlog
 
@@ -204,7 +204,7 @@ class LongShortRouter:
 
     def calculate_entropy(
         self,
-        logits_or_probs: Union[list, "np.ndarray", "torch.Tensor"],
+        logits_or_probs: list | np.ndarray | torch.Tensor,
         from_logits: bool = True,
         normalize: bool = True,
     ) -> float:
@@ -289,8 +289,8 @@ class LongShortRouter:
     def route(
         self,
         entropy: float | None = None,
-        logits: Union[list, "np.ndarray"] | None = None,
-        probs: Union[list, "np.ndarray"] | None = None,
+        logits: list | np.ndarray | None = None,
+        probs: list | np.ndarray | None = None,
         context: str | None = None,
         force_tier: ModelTier | None = None,
         num_tokens: int = 1,
@@ -701,7 +701,7 @@ def route_token(
     return router.route(entropy=entropy, context=context)
 
 
-def calculate_token_entropy(logits: Union[list, "np.ndarray"]) -> float:
+def calculate_token_entropy(logits: list | np.ndarray) -> float:
     """Calculate entropy from logits
 
     Usage:

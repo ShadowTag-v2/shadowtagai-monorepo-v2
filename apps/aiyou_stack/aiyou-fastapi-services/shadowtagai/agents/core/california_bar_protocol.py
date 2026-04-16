@@ -14,11 +14,9 @@ Author: Antigravity (Gemini 2.0 Flash Experimental)
 Based on: 11 CA Bar attempts + 9 years college experience
 Created: 2025-11-22
 """
-from typing import Optional, Any
-
 import re
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Optional
 
 
 @dataclass
@@ -366,7 +364,7 @@ class WhiteboardProtocol:
     """
 
     def __init__(self):
-        self.question: Optional[MBEQuestion] = None
+        self.question: MBEQuestion | None = None
         self.background_law: dict[str, str] = {}
         self.agent_contributions: list[dict[str, Any]] = []
         self.time_remaining_seconds: int = 300  # 5 minutes per question
