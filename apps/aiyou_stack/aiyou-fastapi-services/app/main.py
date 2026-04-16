@@ -8,12 +8,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
+from app.routers.stripe_handler import router as stripe_router
 from app.routes import router
 from app.security.middleware import (
     RequestValidationMiddleware,
     SandboxMiddleware,
 )
-from app.routers.stripe_handler import router as stripe_router
 
 # Configure structured logging
 structlog.configure(
