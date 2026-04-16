@@ -1,8 +1,9 @@
-from .debaterole import DebateRole
 import logging
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
+
+from .debaterole import DebateRole
 
 logger = logging.getLogger(__name__)
 

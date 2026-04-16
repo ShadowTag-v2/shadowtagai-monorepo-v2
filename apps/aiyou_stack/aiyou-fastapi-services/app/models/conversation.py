@@ -62,7 +62,7 @@ class Conversation(Base):
     )
 
     # Relationships
-    messages: Mapped[list["Message"]] = relationship(
+    messages: Mapped[list[Message]] = relationship(
         "Message",
         back_populates="conversation",
         cascade="all, delete-orphan",

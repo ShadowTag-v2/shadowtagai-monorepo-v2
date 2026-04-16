@@ -1,6 +1,3 @@
-from .superpowercategory import SuperpowerCategory
-from .superpowerstatus import SuperpowerStatus
-from .pricingmodel import PricingModel
 from datetime import datetime
 
 from sqlalchemy import (
@@ -19,6 +16,10 @@ from sqlalchemy import (
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+from .pricingmodel import PricingModel
+from .superpowercategory import SuperpowerCategory
+from .superpowerstatus import SuperpowerStatus
 
 Base = declarative_base()
 

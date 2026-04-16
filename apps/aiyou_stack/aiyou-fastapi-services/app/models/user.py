@@ -68,7 +68,7 @@ class User(Base):
     )
 
     # Relationships
-    subscriptions: Mapped[list["Subscription"]] = relationship(
+    subscriptions: Mapped[list[Subscription]] = relationship(
         "Subscription", back_populates="user", lazy="selectin",
     )
 
