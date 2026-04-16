@@ -162,4 +162,84 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
     }
+
+    // -------------------------------------------
+    // 7. A/B Testing Framework — Hero CTA Variants
+    // -------------------------------------------
+    (function initABTest() {
+        var STORAGE_KEY = 'kovel_ab_variant';
+        var variants = {
+            A: { text: 'Schedule a Demo', subtext: null },
+            B: { text: 'See KovelAI in Action', subtext: null },
+            C: { text: 'Start Free Pilot', subtext: '14-day trial · No credit card' }
+        };
+        var variantKeys = Object.keys(variants);
+
+        // Persist variant assignment across sessions
+        var assigned = localStorage.getItem(STORAGE_KEY);
+        if (!assigned || variantKeys.indexOf(assigned) === -1) {
+            assigned = variantKeys[Math.floor(Math.random() * variantKeys.length)];
+            localStorage.setItem(STORAGE_KEY, assigned);
+        }
+
+        var variant = variants[assigned];
+        var heroBtn = document.querySelector('#hero-header .btn-magnetic');
+        if (heroBtn && variant) {
+            heroBtn.textContent = variant.text;
+            if (variant.subtext) {
+                var sub = document.createElement('span');
+                sub.className = 'block text-xs font-normal opacity-75 mt-1';
+                sub.textContent = variant.subtext;
+                heroBtn.appendChild(sub);
+            }
+        }
+
+        // Fire GA4 experiment exposure event
+        if (typeof gtag === 'function') {
+            gtag('event', 'experiment_impression', {
+                'experiment_id': 'hero_cta_v1',
+                'variant_id': assigned,
+                'cta_text': variant ? variant.text : 'unknown'
+            });
+        }
+    })();
+
+    // -------------------------------------------
+    // 8. captureLead Cloud Function Integration
+    // -------------------------------------------
+    window._kovelCaptureLead = function(formData) {
+        var ENDPOINT = 'https://us-central1-shadowtag-omega-v4.cloudfunctions.net/captureLead';
+
+        // Attach reCAPTCHA token if available
+        var tokenPromise;
+        if (typeof grecaptcha !== 'undefined' && grecaptcha.execute) {
+            tokenPromise = grecaptcha.execute('6LfEP7EsAAAAAAhpXrmostlrS7OcxbV68crAduuW', { action: 'submit' });
+        } else {
+            tokenPromise = Promise.resolve(null);
+        }
+
+        return tokenPromise.then(function(token) {
+            var payload = Object.assign({}, formData, {
+                recaptchaToken: token,
+                source: 'kovelai_web',
+                ab_variant: localStorage.getItem('kovel_ab_variant') || 'unknown',
+                timestamp: new Date().toISOString()
+            });
+
+            return fetch(ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        }).then(function(resp) {
+            if (!resp.ok) throw new Error('Lead capture failed: ' + resp.status);
+            if (typeof gtag === 'function') {
+                gtag('event', 'lead_captured', {
+                    'source': formData.source || 'contact_modal',
+                    'ab_variant': localStorage.getItem('kovel_ab_variant') || 'unknown'
+                });
+            }
+            return resp.json();
+        });
+    };
 });
