@@ -556,7 +556,7 @@ class OracleStudio:
         """
         actions = []
         counter = 0
-        steelman_map = {s.argument_id: s for s in steelmans}
+        {s.argument_id: s for s in steelmans}
 
         # Actions from defeated arguments
         for s in steelmans:
@@ -715,7 +715,7 @@ class OracleStudio:
         """Generate the executive summary paragraph."""
         total_args = len(arguments)
         strong_args = sum(1 for s in scores if s.composite_score >= 0.7)
-        weak_args = sum(1 for s in scores if s.composite_score < 0.3)
+        sum(1 for s in scores if s.composite_score < 0.3)
         defeated = sum(1 for s in steelmans if "DEFEATED" in s.net_assessment)
         critical_assumptions = sum(1 for a in assumptions if a.risk_level == "critical")
         critical_actions = sum(1 for a in actions if a.priority == "critical")

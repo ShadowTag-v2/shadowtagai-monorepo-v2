@@ -144,12 +144,6 @@ def evaluate_query(
         result.f1 = 2 * (result.precision * result.recall) / (result.precision + result.recall)
 
     # Dimension scores (simplified — full implementation would check each dimension)
-    weights = dimension_weights or {
-        "citation_accuracy": 0.30,
-        "citation_relevance": 0.25,
-        "citation_completeness": 0.25,
-        "shepardization_status": 0.20,
-    }
 
     result.dimension_scores = {
         "citation_accuracy": result.precision,
