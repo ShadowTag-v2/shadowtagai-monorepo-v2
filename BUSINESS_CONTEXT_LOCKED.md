@@ -40,3 +40,27 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 
 ## Webhook vs Firestore Pricing Matrix
 Because we moved away from Redis cache over to Firestore `system_idempotency_keys` for Zod validation locks, high frequency polling will cost approximately $0.18 per 100k requests read/writes against the GCP document quota. We remain heavily profitable beneath the $5K Base Tier barrier. Edge Sovereign node ingress remains $0.00 bandwidth locked within our private peering subnet.
+
+---
+
+## Canonical Production Assets (Locked 2026-04-16)
+
+### KovelAI Hero Video
+| Property | Value |
+|----------|-------|
+| GCS Object | `gs://shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4` |
+| CDN Public URL | `https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4` |
+| Generation Model | `veo-3.1-generate-preview` |
+| Duration | 8 seconds, seamless 4K loop |
+| Visual Concept | "Abstract Data Architecture" — navy+gold neural lattice |
+| Live Deployment | https://kovelai.web.app |
+| Spec Document | `apps/kovelai/.stitch/kovelai-hero-video-spec.md` |
+
+### KovelAI Design System
+| Property | Value |
+|----------|-------|
+| Document | `apps/kovelai/DESIGN_SYSTEM.md` |
+| Primary | `#0a0f1e` (deep navy) |
+| Accent | `#c9a96e` (glowing gold) |
+| Font | Inter 300–800 |
+| Aesthetic | Structured Precision — Legal Tech |
