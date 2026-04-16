@@ -16,7 +16,7 @@ Created: 2025-11-22
 """
 import re
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 
 @dataclass
