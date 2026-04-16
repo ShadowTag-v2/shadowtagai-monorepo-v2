@@ -24,8 +24,8 @@ describe("KovelAI Institutional RBAC", () => {
         const unauthedDb = testEnv.unauthenticatedContext().firestore();
         const docRef = unauthedDb.collection("kovelai_leads").doc("public_lead_123");
         
-        // Assert CAN create
-        await assertSucceeds(docRef.set({ email: "test@domain.com", risk: "high" }));
+        // Assert CANNOT create (zero-trust ensures edge router handles it)
+        await assertFails(docRef.set({ email: "test@domain.com", risk: "high" }));
         
         // Assert CANNOT read
         await assertFails(docRef.get());
