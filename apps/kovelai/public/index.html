@@ -467,6 +467,8 @@
           box-shadow: 0 0 20px rgba(170, 199, 255, 0.15);
           transform: translateX(120%);
           transition: transform 0.3s ease;
+          max-width: calc(100vw - 48px);
+          box-sizing: border-box;
       }
       .toast.show { transform: translateX(0); }
       /* Scroll-triggered visibility */
@@ -596,11 +598,44 @@
           .ceo-headshot { width: 140px; height: 140px; }
           .mobile-nav-toggle { display: block !important; }
           .desktop-nav { display: none !important; }
-          /* Hero responsive: prevent title/body overflow on tablet */
-          #heroTitle { font-size: clamp(1.5rem, 3vw + 0.25rem, 2.5rem) !important; }
-          #heroTitle + p,
-          header p.text-on-surface-variant { max-width: 90vw !important; font-size: 1rem !important; }
-          header .max-w-7xl { overflow: hidden; }
+          /* Hero responsive: hard-contain all hero content within viewport */
+          header .max-w-7xl {
+              max-width: 100vw !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+              padding-left: 1rem !important;
+              padding-right: 1rem !important;
+          }
+          #heroTitle {
+              font-size: clamp(1.4rem, 4.5vw, 2.2rem) !important;
+              word-break: break-word !important;
+              overflow-wrap: break-word !important;
+              max-width: 100% !important;
+              hyphens: auto !important;
+          }
+          header p.text-on-surface-variant,
+          #heroTitle + p {
+              max-width: 92vw !important;
+              font-size: 0.95rem !important;
+              word-break: break-word !important;
+          }
+          /* Overflow containment: aurora orbs, toast, modal */
+          .kovel-aurora-orb {
+              max-width: 100vw !important;
+              overflow: hidden !important;
+          }
+          .toast {
+              right: 12px !important;
+              max-width: calc(100vw - 24px) !important;
+          }
+          .modal-content {
+              max-width: calc(100vw - 2rem) !important;
+              padding: 24px !important;
+              box-sizing: border-box !important;
+          }
+          .modal-content .grid-cols-2 {
+              grid-template-columns: 1fr !important;
+          }
       }
 
       /* ═══════════════════════════════════════════════════
@@ -690,7 +725,7 @@
 
       /* Aurora Parallax Orbs */
       .kovel-aurora-orb {
-          position: absolute; border-radius: 50%;
+          position: fixed; border-radius: 50%;
           filter: blur(100px);
           pointer-events: none; z-index: -5;
           will-change: transform;
@@ -919,13 +954,7 @@ Submit Inquiry
 <div class="mt-16 w-full rounded-xl overflow-hidden shadow-2xl bg-surface-container-lowest h-[420px] relative ring-1 ring-white/5 animate-fade-in-up animate-delay-3">
 <img class="w-full h-full object-cover" alt="Premium law office with encrypted data visualization on screen, dark ambient gold lighting, cityscape through floor-to-ceiling windows" src="/img/hero.png" fetchpriority="high" decoding="async"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
-<div class="absolute bottom-8 left-8 p-6 bg-surface-container-highest/70 backdrop-blur-xl rounded-lg max-w-md border border-outline-variant/10">
-<div class="flex items-center gap-3 mb-2">
-<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
-<span class="text-xs font-label uppercase tracking-widest text-secondary">Zero-Data Router Active</span>
-</div>
-<p class="text-sm text-on-surface">Privilege shield online. All client queries routed through Kovel safe harbor. No data retained. No discoverable artifacts created.</p>
-</div>
+
 </div>
 </header>
 
@@ -2753,7 +2782,7 @@ function ccDeclineAll() {
 function ccStore(prefs) {
     prefs.timestamp = new Date().toISOString();
     localStorage.setItem('kovelai_cc', JSON.stringify(prefs));
-    console.log('[KovelAI] Cookie consent:', prefs);
+
     // Activate/deactivate analytics based on consent
     ccActivateAnalytics(prefs);
 }
@@ -2788,14 +2817,10 @@ function ccActivateAnalytics(prefs) {
             // First-party engagement metrics
             ccTrackEngagement();
         };
-        console.log('[KovelAI] GA4 loaded (Performance consent granted)');
+
     }
     // Log consent state for auditing
-    console.log('[KovelAI] Consent state updated:', {
-        analytics: prefs.performance ? 'granted' : 'denied',
-        ads: prefs.targeting ? 'granted' : 'denied',
-        functionality: prefs.functionality ? 'granted' : 'denied'
-    });
+
 }
 // ===== First-Party Data Harvesting Engine =====
 // Declared cookies: kovelai_sid, kovelai_fpt, kovelai_utm, kovelai_ref
@@ -3148,13 +3173,7 @@ function ccTrackEngagement() {
         }
     });
 
-    console.log('[KovelAI] Data harvesting engine active:', {
-        visitor: _kovelVisitorId,
-        session: _kovelSessionId,
-        device: deviceProfile.viewport_w < 768 ? 'mobile' : 'desktop',
-        utm: localStorage.getItem('kovelai_utm') ? 'captured' : 'none',
-        referrer: localStorage.getItem('kovelai_ref') ? 'captured' : 'direct'
-    });
+
 }
 
 // ===== Re-activate on page load if consent already given =====
