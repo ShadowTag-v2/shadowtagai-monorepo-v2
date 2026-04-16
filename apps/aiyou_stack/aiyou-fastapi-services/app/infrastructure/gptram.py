@@ -294,9 +294,8 @@ class GPTRAM:
                 print(f"///▞ GPTRAM :: Redis scan error: {e}")
         else:
             for key, value in self._memory.items():
-                if "violation:" in key:
-                    if rule_id is None or rule_id in key:
-                        violations.append(value)
+                if "violation:" in key and (rule_id is None or rule_id in key):
+                    violations.append(value)
                 if len(violations) >= limit:
                     break
 

@@ -155,10 +155,12 @@ def filter_conversations(
 
 
 def merge_json_files(
-    file_paths: list[Path], exclude_keywords: list[str] = [],
+    file_paths: list[Path], exclude_keywords: list[str] = None,
 ) -> list[dict[str, Any]]:
     """Merges content from a list of JSON files.
     """
+    if exclude_keywords is None:
+        exclude_keywords = []
     merged_data = []
     for file_path in file_paths:
         try:
