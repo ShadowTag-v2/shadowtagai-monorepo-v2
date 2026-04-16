@@ -28,9 +28,8 @@ class PolishHandler(FileSystemEventHandler):
 
         # Debounce
         now = time.time()
-        if filepath in self.last_run:
-            if now - self.last_run[filepath] < self.cooldown:
-                return
+        if filepath in self.last_run and now - self.last_run[filepath] < self.cooldown:
+            return
         self.last_run[filepath] = now
 
         logging.info(f"⚡ Detected change in: {filepath}")

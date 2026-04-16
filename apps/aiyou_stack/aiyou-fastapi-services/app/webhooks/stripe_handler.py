@@ -55,19 +55,19 @@ def verify_stripe_signature(
     tolerance: int = 300,
 ) -> dict[str, Any]:
     """Verify Stripe webhook signature (v1 scheme).
-    
+
     Implementation of Stripe's signature verification without requiring
     the stripe Python package. Uses raw HMAC-SHA256.
-    
+
     Args:
         payload: Raw request body bytes.
         sig_header: Stripe-Signature header value.
         webhook_secret: Webhook endpoint secret (whsec_...).
         tolerance: Maximum age of event in seconds (default 5 min).
-    
+
     Returns:
         Parsed event object.
-    
+
     Raises:
         HTTPException: If signature verification fails.
     """
@@ -269,7 +269,7 @@ async def handle_checkout_completed(event_data: dict[str, Any]) -> dict:
 
 def _map_amount_to_tier(amount_cents: int) -> str:
     """Map subscription amount to product tier.
-    
+
     Product Matrix:
     - $149/mo ($14900) → consumer (Vanguard Box)
     - $5000/mo ($500000) → foundation_base
@@ -309,7 +309,7 @@ async def stripe_webhook(
     stripe_signature: str = Header(alias="Stripe-Signature"),
 ) -> dict:
     """Stripe webhook endpoint with signature verification.
-    
+
     Security:
     - Verifies HMAC-SHA256 signature
     - Rejects events older than 5 minutes

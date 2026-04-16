@@ -15,10 +15,7 @@ preserved_files = [
 
 
 def is_preserved(filepath):
-    for p in preserved_files:
-        if filepath.endswith(p):
-            return True
-    return False
+    return any(filepath.endswith(p) for p in preserved_files)
 
 
 def process_file(filepath):
