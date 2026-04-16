@@ -36,3 +36,7 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 - Lighthouse: A97 / BP100 / SEO100
 - Structural tests: 30/30
 - Dead code: clean (vulture + ruff)
+
+
+## Webhook vs Firestore Pricing Matrix
+Because we moved away from Redis cache over to Firestore `system_idempotency_keys` for Zod validation locks, high frequency polling will cost approximately $0.18 per 100k requests read/writes against the GCP document quota. We remain heavily profitable beneath the $5K Base Tier barrier. Edge Sovereign node ingress remains $0.00 bandwidth locked within our private peering subnet.
