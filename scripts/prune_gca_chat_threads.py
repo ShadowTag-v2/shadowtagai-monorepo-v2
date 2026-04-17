@@ -312,7 +312,7 @@ def cli_dry_run() -> None:
     print(f"Preserved keys: {metrics['other_keys'][:5]}...")
 
     would_free = metrics["threads_bytes"]
-    print(f"\n──── DRY RUN (no changes made) ────")
+    print("\n──── DRY RUN (no changes made) ────")
     print(f"Would free:    ~{would_free:,} bytes ({would_free / 1024 / 1024:.1f} MB)")
     print("Run with --write to prune (IDE must be closed first).")
 
