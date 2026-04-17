@@ -692,25 +692,27 @@
 
         /* Kinetic Typography */
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-size: clamp(2rem, 5vw, 4rem);
             font-weight: 800; letter-spacing: -0.04em;
             line-height: 1.05; margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--on-surface) 0%, var(--on-surface-variant) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text;
             perspective: 600px;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
-        .kinetic-word {
+        .hero h1 .kinetic-word {
             display: inline-block;
             opacity: 0; transform: translateY(25px) rotateX(-15deg);
             transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
                         transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
                         letter-spacing 0.3s ease;
+            background: linear-gradient(135deg, var(--on-surface) 0%, var(--on-surface-variant) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .kinetic-word.active {
+        .hero h1 .kinetic-word.active {
             opacity: 1; transform: translateY(0) rotateX(0);
         }
-        .kinetic-word:hover {
+        .hero h1 .kinetic-word:hover {
             letter-spacing: 0.06em;
             -webkit-text-fill-color: transparent;
             background: linear-gradient(135deg, var(--primary), var(--tertiary));
@@ -1923,18 +1925,27 @@ window.addEventListener('scroll', () => {
 (function() {
     const heroTitle = document.getElementById('heroTitle');
     if (!heroTitle) return;
-    const text = heroTitle.textContent.trim();
-    const words = text.split(' ');
+    // Preserve <br> tags by processing each line separately
+    const originalHTML = heroTitle.innerHTML;
+    const lines = originalHTML.split(/<br\s*\/?>/i);
     heroTitle.innerHTML = '';
-    heroTitle.style.cssText = heroTitle.style.cssText || '';
+    let wordIndex = 0;
 
-    words.forEach((word, i) => {
-        const span = document.createElement('span');
-        span.className = 'kinetic-word';
-        span.textContent = word;
-        span.style.transitionDelay = (i * 0.12) + 's';
-        heroTitle.appendChild(span);
-        if (i < words.length - 1) heroTitle.appendChild(document.createTextNode(' '));
+    lines.forEach((line, lineIdx) => {
+        const words = line.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(Boolean);
+        words.forEach((word, i) => {
+            const span = document.createElement('span');
+            span.className = 'kinetic-word';
+            span.textContent = word;
+            span.style.transitionDelay = (wordIndex * 0.12) + 's';
+            heroTitle.appendChild(span);
+            wordIndex++;
+            if (i < words.length - 1) heroTitle.appendChild(document.createTextNode(' '));
+        });
+        // Insert <br> between lines (not after the last line)
+        if (lineIdx < lines.length - 1) {
+            heroTitle.appendChild(document.createElement('br'));
+        }
     });
 
     // Trigger after a small delay for initial load
