@@ -8,9 +8,9 @@ test:
 coverage:
 	python3 -m pytest tests/ -v --tb=short --cov=control/pnkln --cov=scripts --cov-report=term-missing --cov-fail-under=60
 
-# Dead code sweep
+# Dead code sweep (with whitelist for false positives)
 vulture:
-	python3 -m vulture control/pnkln/ scripts/ --min-confidence 80
+	python3 -m vulture control/pnkln/ scripts/ .vulture_whitelist.py --min-confidence 80
 
 # Lint check (no fix)
 lint:
