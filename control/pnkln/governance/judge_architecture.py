@@ -23,7 +23,7 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 import numpy as np
 
@@ -522,7 +522,7 @@ class SupplyChainSecurityGate:
             {
                 "risk_score": "L" | "M" | "H" | "EH",
                 "slsa_provenance_verified": bool,
-                "cve_vulnerabilities": List[str],
+                "cve_vulnerabilities": list[str],
                 "reason": str
             }
         """
@@ -558,7 +558,7 @@ class ProductDeliveryGate:
         Returns:
             {
                 "status": "APPROVED" | "BLOCKED",
-                "blockers": List[str],
+                "blockers": list[str],
                 "checklist_complete": bool
             }
         """
@@ -599,8 +599,8 @@ class BlockchainIntegrationEvaluator:
             {
                 "recommendation": "PRIORITIZE" | "EVALUATE" | "DEFER",
                 "reason": str,
-                "approved_features": List[str],
-                "deferred_features": List[str]
+                "approved_features": list[str],
+                "deferred_features": list[str]
             }
         """
         # Simplified placeholder

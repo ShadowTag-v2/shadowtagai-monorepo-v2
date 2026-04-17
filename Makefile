@@ -4,9 +4,9 @@
 test:
 	python3 -m pytest tests/ -v --tb=short
 
-# Run test suite with coverage
+# Run test suite with coverage (60% minimum threshold)
 coverage:
-	python3 -m pytest tests/ -v --tb=short --cov=control/pnkln --cov=scripts --cov-report=term-missing
+	python3 -m pytest tests/ -v --tb=short --cov=control/pnkln --cov=scripts --cov-report=term-missing --cov-fail-under=60
 
 # Dead code sweep
 vulture:

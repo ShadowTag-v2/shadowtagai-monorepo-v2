@@ -1,4 +1,4 @@
-from typing import Dict, Any
+from typing import Any
 
 
 def run_ml_workflow(params: dict[str, Any]) -> dict[str, str]:

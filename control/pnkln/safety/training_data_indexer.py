@@ -33,7 +33,7 @@ import asyncio
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import List, Dict, Optional, Set
+from typing import Optional
 from collections.abc import AsyncIterator
 from pathlib import Path
 import logging
@@ -518,7 +518,7 @@ class SafetyGate:
                 "passed": bool,
                 "blocked_reason": str or None,
                 "severity": float,
-                "hits": List[SafetyHit],
+                "hits": list[SafetyHit],
                 "requires_review": bool
             }
         """
