@@ -5,6 +5,14 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
+        "source": "**/*.@(mp4|webm|ogg)",
+        "headers": [{ "key": "Cache-Control", "value": "max-age=31536000, immutable" }]
+      },
+      {
+        "source": "**/*.@(woff|woff2|ttf|otf)",
+        "headers": [{ "key": "Cache-Control", "value": "max-age=31536000, immutable" }]
+      },
+      {
         "source": "**/*.@(jpg|jpeg|gif|png|svg|webp|avif|ico)",
         "headers": [{ "key": "Cache-Control", "value": "max-age=31536000, immutable" }]
       },
