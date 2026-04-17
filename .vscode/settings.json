@@ -126,5 +126,23 @@
 
   "antigravity.dangerMode": "auto",
   "cmake.sourceDirectory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/control/legacy_workspaces/vllm",
-  "git.detectSubmodulesLimit": 20
+  "git.detectSubmodulesLimit": 20,
+
+  "workbench.trustedDomains.promptInTrustedWorkspace": true,
+  "workbench.externalUriOpeners": {
+    "accounts.google.com": "default"
+  },
+  "trusted.domains": [
+    "https://accounts.google.com",
+    "https://*.google.com",
+    "https://*.googleapis.com",
+    "https://*.firebaseapp.com",
+    "https://*.web.app",
+    "https://github.com",
+    "https://*.github.com",
+    "https://kovelai.com",
+    "https://shadowtagai.com",
+    "https://pagespeed.web.dev",
+    "https://notebooklm.google.com"
+  ]
 }

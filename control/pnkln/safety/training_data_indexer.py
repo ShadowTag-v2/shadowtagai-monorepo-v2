@@ -33,7 +33,6 @@ import asyncio
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 from collections.abc import AsyncIterator
 from pathlib import Path
 import logging

@@ -14,7 +14,6 @@ Part of PNKLN evolution stack.
 """
 
 import math
-from typing import Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
