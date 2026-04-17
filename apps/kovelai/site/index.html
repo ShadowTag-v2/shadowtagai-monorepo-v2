@@ -55,11 +55,27 @@
         "name": "KovelAI",
         "applicationCategory": "LegalService",
         "operatingSystem": "Web",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Contact for pricing" }
+        "offers": [
+          { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Trial — 10,000 tokens/month" },
+          { "@type": "Offer", "price": "149", "priceCurrency": "USD", "description": "Professional — 100,000 tokens/month" },
+          { "@type": "Offer", "price": "20000", "priceCurrency": "USD", "description": "Enterprise — Unlimited" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://kovelai.com/#faq",
+        "mainEntity": [
+          {"@type":"Question","name":"What is the Kovel Doctrine?","acceptedAnswer":{"@type":"Answer","text":"The Kovel Doctrine extends attorney-client privilege to non-attorney agents working under the attorney's direction. KovelAI operates under this doctrine."}},
+          {"@type":"Question","name":"Is my client data stored?","acceptedAnswer":{"@type":"Answer","text":"No. KovelAI uses zero-retention architecture. All data is processed in RAM only and never written to disk."}},
+          {"@type":"Question","name":"How much does KovelAI cost?","acceptedAnswer":{"@type":"Answer","text":"Trial (free), Professional ($149/mo), Enterprise ($20K/mo). All include Kovel Doctrine protection."}},
+          {"@type":"Question","name":"What AI model does KovelAI use?","acceptedAnswer":{"@type":"Answer","text":"Google Gemini 2.5 Flash via Vertex AI, governed by the Judge #6 ATP 5-19 risk matrix."}},
+          {"@type":"Question","name":"Is KovelAI HIPAA compliant?","acceptedAnswer":{"@type":"Answer","text":"KovelAI's zero-retention architecture ensures no PHI is stored, supporting HIPAA compliance for healthcare law practices."}}
+        ]
       }
     ]
   }
   </script>
+  <link rel="manifest" href="/manifest.json"/>
   <link rel="icon" href="/favicon.ico"/>
   <!-- Preconnect: saves ~100ms on font fetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
