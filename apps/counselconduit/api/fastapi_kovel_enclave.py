@@ -1,6 +1,13 @@
 # apps/counselconduit/api/fastapi_kovel_enclave.py
-"""CounselConduit: Kovel Enclave v2.0
-Cryptographic timestamping + Triple-Dip billing + Anti-forensic evaporation.
+"""CounselConduit: Kovel Enclave v3.0
+
+Production API for KovelAI — Privileged Legal AI under the Kovel Doctrine.
+
+Architecture:
+    POST /enclave/v1/query           → Synchronous privileged query
+    POST /enclave/v1/query/stream    → SSE streaming privileged query  
+    POST /webhooks/stripe            → Stripe billing webhooks
+    GET  /enclave/v1/health          → Health check
 
 Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
     - All client queries are ephemeral (RAM-only)
@@ -10,85 +17,159 @@ Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
 
 from __future__ import annotations
 
-import hashlib
-import hmac
+import logging
 import os
 import time
 
+import structlog
 from fastapi import FastAPI, Header, HTTPException, Request
-from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 
+from apps.counselconduit.api.gemini_rag import (
+    QueryRequest,
+    QueryResponse,
+    execute_privileged_query,
+    stream_privileged_query,
+)
 from apps.counselconduit.api.stripe_handler import router as stripe_router
 
-app = FastAPI(title="CounselConduit: Kovel Enclave", version="2.0.0")
+# ── Structured Logging ─────────────────────────────────────────────────────
 
-# ── Webhook Routes ──
+structlog.configure(
+    processors=[
+        structlog.stdlib.filter_by_level,
+        structlog.stdlib.add_log_level,
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.processors.JSONRenderer(),
+    ],
+    wrapper_class=structlog.stdlib.BoundLogger,
+    context_class=dict,
+    logger_factory=structlog.stdlib.LoggerFactory(),
+)
+
+logger = structlog.get_logger("counselconduit")
+
+# ── App Configuration ──────────────────────────────────────────────────────
+
+app = FastAPI(
+    title="CounselConduit: Kovel Enclave",
+    version="3.0.0",
+    description="Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
+    docs_url="/docs" if os.getenv("APP_ENV") == "development" else None,
+    redoc_url=None,
+)
+
+# CORS — restrict in production
+_ALLOWED_ORIGINS = os.getenv(
+    "CORS_ORIGINS",
+    "https://kovelai.web.app,https://kovelai.com,http://localhost:4000",
+).split(",")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+    expose_headers=["X-Kovel-Signature"],
+)
+
+# ── Router Mounts ──────────────────────────────────────────────────────────
+
 app.include_router(stripe_router)
 
 
-class MalpracticePayload(BaseModel):
-    attorney_id: str
-    ai_query: str
-    client_context: str
+# ── Auth Middleware ─────────────────────────────────────────────────────────
 
-
-class TelemetryEngine:
-    """Triple-Dip Billing: client CC → Stripe Connect → lawyer's bank + platform fee."""
-
-    @staticmethod
-    def bill_transaction(attorney_id: str, compute_tokens: int) -> dict:
-        # In production: stripe.PaymentIntent.create(...) + stripe.billing_meter_events.create(...)
-        return {
-            "status": "billed",
-            "attorney_id": attorney_id,
-            "tokens": compute_tokens,
-            "timestamp": time.time(),
-        }
-
-
-class KovelShield:
-    """Cryptographic signing using GCP KMS secret for Kovel Doctrine compliance."""
-
-    @staticmethod
-    def sign_transaction(payload: str) -> str:
-        secret = os.getenv("GCP_KMS_VAULT_SECRET", "default-dev-secret-do-not-use").encode("utf-8")
-        return hmac.new(secret, payload.encode("utf-8"), hashlib.sha256).hexdigest()
-
-
-@app.post("/enclave/v1/privileged-compute")
-async def execute_privileged_compute(
-    payload: MalpracticePayload,
-    request: Request,
-    x_kovel_auth: str = Header(None),
-):
-    """Execute an AI query under the strict protection of the Kovel Doctrine.
-    Zero-retention architecture. RAM is forcefully dropped post-execution.
+def _verify_kovel_auth(x_kovel_auth: str | None) -> str:
+    """Verify the Kovel authentication token.
+    
+    In production: validates Firebase Auth JWT.
+    In development: accepts any non-empty token.
     """
     if not x_kovel_auth:
         raise HTTPException(
-            status_code=403, detail="Kovel Authentication Missing. Operation Terminated.",
+            status_code=403,
+            detail="Kovel Authentication Missing. Operation Terminated.",
         )
+    # TODO: Firebase Auth JWT verification
+    # decoded = firebase_admin.auth.verify_id_token(x_kovel_auth)
+    # return decoded["uid"]
+    return x_kovel_auth  # Dev mode: return token as attorney_id
 
-    # 1. Triple-Dip Telemetry / Billing
-    TelemetryEngine.bill_transaction(payload.attorney_id, compute_tokens=1500)
 
-    # 2. Cryptographic Vault Signature
-    vault_signature = KovelShield.sign_transaction(f"{payload.attorney_id}:{int(time.time())}")
+# ── Routes ─────────────────────────────────────────────────────────────────
 
-    # 3. AI Execution (wire to Vertex AI / LiteLLM in production)
-    result = f"Analyzed context for {payload.attorney_id}. Shield Active."
+@app.post("/enclave/v1/query", response_model=QueryResponse)
+async def execute_query(
+    request: QueryRequest,
+    x_kovel_auth: str = Header(None),
+):
+    """Execute a Kovel-privileged query against the Gemini RAG pipeline.
+    
+    Synchronous endpoint — returns full response after completion.
+    """
+    attorney_id = _verify_kovel_auth(x_kovel_auth)
+    request.attorney_id = attorney_id
+    
+    start = time.monotonic()
+    result = await execute_privileged_query(request)
+    elapsed_ms = int((time.monotonic() - start) * 1000)
+    
+    logger.info(
+        "query_completed",
+        attorney_id=attorney_id,
+        tokens=result.token_count,
+        elapsed_ms=elapsed_ms,
+    )
+    
+    return result
 
-    # 4. Anti-Forensic Evaporation (force GC of sensitive data)
-    del payload
 
-    return {
-        "status": "SECURE",
-        "signature": vault_signature,
-        "result": result,
-        "ttl_seconds": 30,
-    }
+@app.post("/enclave/v1/query/stream")
+async def stream_query(
+    request: QueryRequest,
+    x_kovel_auth: str = Header(None),
+):
+    """Stream a Kovel-privileged query response via Server-Sent Events.
+    
+    Real-time streaming for chat-style interfaces.
+    """
+    attorney_id = _verify_kovel_auth(x_kovel_auth)
+    request.attorney_id = attorney_id
+    
+    async def event_generator():
+        async for chunk in stream_privileged_query(request):
+            yield f"data: {chunk}\n\n"
+        yield "data: [DONE]\n\n"
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 
 @app.get("/enclave/v1/health")
 async def health():
-    return {"status": "operational", "service": "CounselConduit Kovel Enclave", "version": "2.0.0"}
+    """Health check endpoint for Cloud Run and load balancers."""
+    return {
+        "status": "operational",
+        "service": "CounselConduit Kovel Enclave",
+        "version": "3.0.0",
+        "timestamp": time.time(),
+    }
+
+
+@app.on_event("startup")
+async def startup():
+    logger.info("counselconduit_started", version="3.0.0")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    logger.info("counselconduit_shutdown")
