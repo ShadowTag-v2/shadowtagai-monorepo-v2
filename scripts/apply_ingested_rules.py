@@ -38,6 +38,4 @@ for ex_dir in extract_dirs:
 
 # Special cases: move trailing isolated JSONs into correct config dirs if applicable,
 # but for now just leave them in the archive unless specified.
-print(
-    "Successfully overlaid the control plane architectures and Superpowers/Antigravity Agent Skills."
-)
+print("Successfully overlaid the control plane architectures and Superpowers/Antigravity Agent Skills.")

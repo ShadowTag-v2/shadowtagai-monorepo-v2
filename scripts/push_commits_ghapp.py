@@ -7,9 +7,7 @@ import jwt
 import requests
 
 APP_ID = "3018200"
-PRIVATE_KEY_PATH = (
-    "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
-)
+PRIVATE_KEY_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
 REPO_OWNER = "ShadowTag-v2"
 REPO_NAME = "Monorepo-Uphillsnowball"
 

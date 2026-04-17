@@ -25,9 +25,7 @@ if not target_inst:
     exit(1)
 
 inst_id = target_inst["id"]
-res2 = requests.post(
-    f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
-)
+res2 = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
 res2.raise_for_status()
 token = res2.json()["token"]
 

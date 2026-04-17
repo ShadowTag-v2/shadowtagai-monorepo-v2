@@ -91,9 +91,7 @@ def scrub_content():
 
     # Model replacements (`gemini-3.1-family`, `gemini-3.1-family`, `gemini-3.1-family`, etc -> `gemini-3.1-family`)
     # Exception: we don't want to replace "gemini-3.1-family" itself if it's partially matched, so we look for older gemini tags
-    model_regex = re.compile(
-        r"gemini-(pro|1\.[0-9]+(-pro|-flash)?(-latest|-00[1-9])?)", re.IGNORECASE
-    )
+    model_regex = re.compile(r"gemini-(pro|1\.[0-9]+(-pro|-flash)?(-latest|-00[1-9])?)", re.IGNORECASE)
 
     mod_count = 0
 

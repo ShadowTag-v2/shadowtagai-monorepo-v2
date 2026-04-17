@@ -2,13 +2,7 @@ import os
 import sys
 
 # Append internal paths for ANE bridge and local libraries
-sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), "../apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
-        )
-    )
-)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../libs/kvcached")))
 
 try:
@@ -50,9 +44,7 @@ class PnklnHybridEngine:
         # 2. Fallback / Scaling to Virtualized GPU KV Cache
         elif kvcached and LLM:
             print("[Boot] ANE disabled or unavailable. Spinning up Elastic GPU (kvcached)...")
-            kvcached.init(
-                enable_virtual_memory=True, max_logical_cache_size_gb=120, eviction_policy="lru"
-            )
+            kvcached.init(enable_virtual_memory=True, max_logical_cache_size_gb=120, eviction_policy="lru")
             self.gpu_engine = LLM(
                 model=self.model_path,
                 trust_remote_code=True,
@@ -62,9 +54,7 @@ class PnklnHybridEngine:
             self.mode = "ELASTIC_GPU"
 
         else:
-            raise RuntimeError(
-                "[Boot Error] No inferrence backbone available (ANE or GPU/KVCached)."
-            )
+            raise RuntimeError("[Boot Error] No inferrence backbone available (ANE or GPU/KVCached).")
 
     def generate(self, prompt: str):
         """

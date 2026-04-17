@@ -9,17 +9,13 @@ os.chdir(ROOT)
 gitignore_path = ".gitignore"
 # Blanket directory exclusions removed per operator override
 print("[sanitize] Running gitleaks...")
-subprocess.run(
-    ["gitleaks", "detect", "--no-git", "-f", "json", "-r", "secrets_report.json"], check=False
-)
+subprocess.run(["gitleaks", "detect", "--no-git", "-f", "json", "-r", "secrets_report.json"], check=False)
 
 if os.path.exists("secrets_report.json"):
     with open("secrets_report.json") as f:
         try:
             data = json.load(f)
-            files_with_secrets = sorted(
-                list(set([item.get("File") for item in data if item.get("File")]))
-            )
+            files_with_secrets = sorted(list(set([item.get("File") for item in data if item.get("File")])))
             if files_with_secrets:
                 with open(gitignore_path, "a") as gf:
                     gf.write("\n# Gitleaks Auto-Ignored Secret Files\n")

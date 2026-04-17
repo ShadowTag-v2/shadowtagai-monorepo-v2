@@ -46,9 +46,7 @@ def get_installation_token():
         sys.exit(1)
 
     # 2. Get access token
-    resp = requests.post(
-        f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
-    )
+    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
     resp.raise_for_status()
     return resp.json()["token"]
 
@@ -103,9 +101,7 @@ def main():
     if not manifest_path.exists():
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         with open(manifest_path, "w") as f:
-            f.write(
-                "# Assimilation Manifest\n\n| Source Repo | Canonical Path | Method | Status |\n|---|---|---|---|\n"
-            )
+            f.write("# Assimilation Manifest\n\n| Source Repo | Canonical Path | Method | Status |\n|---|---|---|---|\n")
 
     success_count = 0
     fail_count = 0
@@ -160,21 +156,15 @@ def main():
                     if res.returncode == 0:
                         success_count += 1
                         with open(manifest_path, "a") as f:
-                            f.write(
-                                f"| {clone_url} | {target_dir} | git subtree add (master) | SUCCESS |\n"
-                            )
+                            f.write(f"| {clone_url} | {target_dir} | git subtree add (master) | SUCCESS |\n")
                     else:
                         fail_count += 1
                         with open(manifest_path, "a") as f:
-                            f.write(
-                                f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n"
-                            )
+                            f.write(f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n")
                 else:
                     fail_count += 1
                     with open(manifest_path, "a") as f:
-                        f.write(
-                            f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n"
-                        )
+                        f.write(f"| {clone_url} | {target_dir} | git subtree add failed | ERROR |\n")
         finally:
             # 4. Remove temporary remote
             run_cmd(f"git remote remove {repo_name}", cwd=monorepo_root)

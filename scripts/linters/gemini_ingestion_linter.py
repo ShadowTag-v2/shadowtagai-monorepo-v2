@@ -31,11 +31,7 @@ class GeminiIngestionLinter(ast.NodeVisitor):
         if any(keyword in node.name.lower() for keyword in ["crawl", "fetch", "scrape", "collect"]):
             has_rate_limit = any(
                 (isinstance(dec, ast.Name) and "rate_limit" in dec.id.lower())
-                or (
-                    isinstance(dec, ast.Call)
-                    and isinstance(dec.func, ast.Name)
-                    and "rate_limit" in dec.func.id.lower()
-                )
+                or (isinstance(dec, ast.Call) and isinstance(dec.func, ast.Name) and "rate_limit" in dec.func.id.lower())
                 for dec in node.decorator_list
             )
             if not has_rate_limit:
@@ -53,21 +49,14 @@ class GeminiIngestionLinter(ast.NodeVisitor):
             if not has_source_param:
                 # Check body for source tracking
                 has_source_tracking = any(
-                    isinstance(stmt, ast.Assign)
-                    and any(
-                        isinstance(target, ast.Attribute) and target.attr == "source"
-                        for target in stmt.targets
-                    )
+                    isinstance(stmt, ast.Assign) and any(isinstance(target, ast.Attribute) and target.attr == "source" for target in stmt.targets)
                     for stmt in ast.walk(node)
                 )
                 if not has_source_tracking:
                     self.errors.append(
                         (
                             node.lineno,
-                            (
-                                f"GIL002: Data collection function '{node.name}' "
-                                "must track source (parameter or attribute)"
-                            ),
+                            (f"GIL002: Data collection function '{node.name}' must track source (parameter or attribute)"),
                         ),
                     )
 
@@ -81,21 +70,14 @@ class GeminiIngestionLinter(ast.NodeVisitor):
                 and "cost" in str(node.body[0].value.value).lower()
             ) or any(
                 (isinstance(dec, ast.Name) and "cost" in dec.id.lower())
-                or (
-                    isinstance(dec, ast.Call)
-                    and isinstance(dec.func, ast.Name)
-                    and "cost" in dec.func.id.lower()
-                )
+                or (isinstance(dec, ast.Call) and isinstance(dec.func, ast.Name) and "cost" in dec.func.id.lower())
                 for dec in node.decorator_list
             )
             if not has_cost_tracking:
                 self.errors.append(
                     (
                         node.lineno,
-                        (
-                            f"GIL003: API function '{node.name}' must have "
-                            "cost monitoring (decorator or docstring)"
-                        ),
+                        (f"GIL003: API function '{node.name}' must have cost monitoring (decorator or docstring)"),
                     ),
                 )
 
@@ -107,18 +89,12 @@ class GeminiIngestionLinter(ast.NodeVisitor):
         if any(keyword in node.name.lower() for keyword in ["crawler", "scraper", "spider"]):
             self.in_crawler_class = True
             # Look for robots.txt check method
-            has_robots_check = any(
-                isinstance(item, ast.FunctionDef) and "robot" in item.name.lower()
-                for item in node.body
-            )
+            has_robots_check = any(isinstance(item, ast.FunctionDef) and "robot" in item.name.lower() for item in node.body)
             if not has_robots_check:
                 self.errors.append(
                     (
                         node.lineno,
-                        (
-                            f"GIL004: Crawler class '{node.name}' must "
-                            "implement robots.txt checking method"
-                        ),
+                        (f"GIL004: Crawler class '{node.name}' must implement robots.txt checking method"),
                     ),
                 )
             self.in_crawler_class = False
@@ -132,18 +108,12 @@ class GeminiIngestionLinter(ast.NodeVisitor):
             if isinstance(target, ast.Name) and "item" in target.id.lower():
                 # Check if tier is assigned in the same scope
                 if isinstance(node.value, ast.Dict):
-                    has_tier = any(
-                        isinstance(key, ast.Constant) and key.value == "tier"
-                        for key in node.value.keys
-                    )
+                    has_tier = any(isinstance(key, ast.Constant) and key.value == "tier" for key in node.value.keys)
                     if not has_tier:
                         self.errors.append(
                             (
                                 node.lineno,
-                                (
-                                    "GIL005: Ingested items must include "
-                                    "'tier' classification (1, 2, or 3)"
-                                ),
+                                ("GIL005: Ingested items must include 'tier' classification (1, 2, or 3)"),
                             ),
                         )
 
@@ -151,11 +121,7 @@ class GeminiIngestionLinter(ast.NodeVisitor):
         if isinstance(node.value, ast.Dict):
             for key, val in zip(node.value.keys, node.value.values, strict=False):
                 if (
-                    (
-                        isinstance(key, ast.Constant)
-                        and key.value == "User-Agent"
-                        and isinstance(val, ast.Constant)
-                    )
+                    (isinstance(key, ast.Constant) and key.value == "User-Agent" and isinstance(val, ast.Constant))
                     and "bot" not in val.value.lower()
                     and "crawler" not in val.value.lower()
                 ):

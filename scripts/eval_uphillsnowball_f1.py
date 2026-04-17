@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+
 """UphillSnowball Agent Task F1 Evaluation Harness
 
 Measures agent task completion accuracy using precision, recall, and F1 scoring
@@ -53,11 +54,11 @@ def evaluate_tool_selection(
     actual_tools: list[str],
 ) -> tuple[float, list[str]]:
     """Evaluate whether the agent selected correct tools.
-    
+
     Args:
         expected_tools: Tools the ground truth expects.
         actual_tools: Tools the agent actually used.
-    
+
     Returns:
         Tuple of (precision score, list of notes).
     """
@@ -87,11 +88,11 @@ def evaluate_output(
     actual_output: dict,
 ) -> float:
     """Evaluate output quality against expected criteria.
-    
+
     Args:
         expected_output: Dictionary of expected output properties (key: bool).
         actual_output: Dictionary of actual output properties.
-    
+
     Returns:
         Quality score 0-1.
     """
@@ -116,11 +117,11 @@ def evaluate_behaviors(
     observed_behaviors: list[str],
 ) -> tuple[float, float, float]:
     """Evaluate agent behaviors against expected list.
-    
+
     Args:
         expected_behaviors: List of expected behavior descriptions.
         observed_behaviors: List of observed behavior descriptions.
-    
+
     Returns:
         Tuple of (precision, recall, f1).
     """
@@ -146,11 +147,7 @@ def evaluate_behaviors(
 
     recall = matched / total_expected if total_expected > 0 else 0.0
     precision = matched / total_observed if total_observed > 0 else 0.0
-    f1 = (
-        2 * precision * recall / (precision + recall)
-        if precision + recall > 0
-        else 0.0
-    )
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0.0
 
     return precision, recall, f1
 
@@ -169,7 +166,7 @@ def evaluate_task(
     dimension_weights: dict[str, float] | None = None,
 ) -> TaskEvalResult:
     """Evaluate a single agent task execution.
-    
+
     Args:
         task_id: Unique task identifier.
         task_description: Description of the task.
@@ -188,7 +185,6 @@ def evaluate_task(
         task_description=task_description,
     )
 
-
     # 1. Tool selection
     actual_tools = actual_tools or expected_tools  # Self-test mode
     tool_precision, tool_notes = evaluate_tool_selection(expected_tools, actual_tools)
@@ -202,7 +198,8 @@ def evaluate_task(
     # 3. Behavior matching
     observed_behaviors = observed_behaviors or expected_behaviors  # Self-test mode
     beh_precision, beh_recall, beh_f1 = evaluate_behaviors(
-        expected_behaviors, observed_behaviors,
+        expected_behaviors,
+        observed_behaviors,
     )
     result.precision = beh_precision
     result.recall = beh_recall
@@ -234,7 +231,7 @@ def evaluate_all(
     results_path: str | Path | None = None,
 ) -> AgentEvalSummary:
     """Run full evaluation against ground truth dataset.
-    
+
     Args:
         ground_truth_path: Path to ground truth JSON file.
         results_path: Path to agent results JSON file.
@@ -305,10 +302,7 @@ def evaluate_all(
         # Weighted F1
         weighted_scores = []
         for r in summary.results:
-            query_weighted = sum(
-                weights.get(dim, 0.25) * score
-                for dim, score in r.dimension_scores.items()
-            )
+            query_weighted = sum(weights.get(dim, 0.25) * score for dim, score in r.dimension_scores.items())
             weighted_scores.append(query_weighted)
         summary.weighted_f1 = sum(weighted_scores) / len(weighted_scores)
 
@@ -349,8 +343,7 @@ def print_report(summary: AgentEvalSummary) -> None:
 
     for r in summary.results:
         print(f"\n  [{r.task_id}] {r.task_description[:55]}...")
-        print(f"    F1: {r.f1:.3f}  Tool: {r.tool_precision:.3f}  "
-              f"Output: {r.output_quality:.3f}  Recovery: {r.error_recovery:.3f}")
+        print(f"    F1: {r.f1:.3f}  Tool: {r.tool_precision:.3f}  Output: {r.output_quality:.3f}  Recovery: {r.error_recovery:.3f}")
         if r.notes:
             for note in r.notes:
                 print(f"    ⚠ {note}")

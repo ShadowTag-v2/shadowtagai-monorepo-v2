@@ -109,9 +109,7 @@ class DifficultyTracker:
         else:
             level.failures += 1
             self.metrics.total_failures += 1
-        level.avg_confidence = (
-            level.avg_confidence * (level.attempts - 1) + confidence
-        ) / level.attempts
+        level.avg_confidence = (level.avg_confidence * (level.attempts - 1) + confidence) / level.attempts
         self.recent_outcomes.append(success)
         if len(self.recent_outcomes) > self.window_size:
             self.recent_outcomes.pop(0)
@@ -124,9 +122,7 @@ class DifficultyTracker:
         if next_difficulty != self.metrics.current_difficulty:
             self.metrics.difficulty_changes += 1
             self.metrics.current_difficulty = next_difficulty
-            self.metrics.max_difficulty_reached = max(
-                self.metrics.max_difficulty_reached, next_difficulty
-            )
+            self.metrics.max_difficulty_reached = max(self.metrics.max_difficulty_reached, next_difficulty)
             self.streak_count = 0
         return next_difficulty
 

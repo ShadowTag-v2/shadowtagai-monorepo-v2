@@ -5,13 +5,7 @@ import os
 import sys
 
 # Bind the ANE bridge path
-sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), "../apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
-        )
-    )
-)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services")))
 
 try:
     from zero_cpu_router import dispatch_compute

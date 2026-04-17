@@ -85,10 +85,7 @@ class GeminiScheduler:
         self._log("Running Jura assessment")
         try:
             # Quick assessment of recent changes
-            assessment = self.jura.quick_assess(
-                "Review codebase health based on BugBot results: "
-                + json.dumps(bugbot_results, default=str)[:1000]
-            )
+            assessment = self.jura.quick_assess("Review codebase health based on BugBot results: " + json.dumps(bugbot_results, default=str)[:1000])
         except Exception as e:
             assessment = {"error": str(e)}
 
@@ -118,9 +115,7 @@ class GeminiScheduler:
         self._log(f"Ingestion complete: {result['health_score']}/100")
 
         # Save results
-        results_file = (
-            self.log_file.parent / f"ingestion_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
-        )
+        results_file = self.log_file.parent / f"ingestion_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
         with open(results_file, "w") as f:
             json.dump(result, f, indent=2)
 
@@ -158,9 +153,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Gemini Scheduler")
     parser.add_argument("--run-once", action="store_true", help="Run ingestion once and exit")
-    parser.add_argument(
-        "--interval", type=int, default=60, help="Interval in minutes (default: 60)"
-    )
+    parser.add_argument("--interval", type=int, default=60, help="Interval in minutes (default: 60)")
 
     args = parser.parse_args()
 

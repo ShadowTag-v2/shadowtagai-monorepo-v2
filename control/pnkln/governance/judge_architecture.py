@@ -462,9 +462,7 @@ class InfrastructureOptimizer:
         else:
             return "default_neuron_onnx"  # Portable fallback
 
-    def project_savings(
-        self, current_spend: float, multi_silicon_mix: dict[str, float]
-    ) -> dict[str, float]:
+    def project_savings(self, current_spend: float, multi_silicon_mix: dict[str, float]) -> dict[str, float]:
         """
         Project cost savings from multi-silicon strategy.
 
@@ -553,9 +551,7 @@ class ProductDeliveryGate:
     - Accessibility: WCAG 2.2, ASR subtitles, age-appropriate defaults
     """
 
-    async def validate(
-        self, feature: str, variant_id: str = None, metrics: dict[str, Any] = None
-    ) -> dict[str, Any]:
+    async def validate(self, feature: str, variant_id: str = None, metrics: dict[str, Any] = None) -> dict[str, Any]:
         """
         Validate product delivery readiness.
 
@@ -787,9 +783,7 @@ class JudgeArchitectureMonitor:
             "processing_time_ms": [],
         }
 
-    def log_decision(
-        self, decision_id: str, decision_type: str, iq_level: int, outcome: dict[str, Any]
-    ):
+    def log_decision(self, decision_id: str, decision_type: str, iq_level: int, outcome: dict[str, Any]):
         """Log decision with quality metrics."""
         self.decision_log.append(
             {
@@ -818,15 +812,9 @@ class JudgeArchitectureMonitor:
         return {
             "decision_accuracy_mean": float(np.mean(self.iq_160_metrics["decision_accuracy"])),
             "doctrine_alignment_mean": float(np.mean(self.iq_160_metrics["doctrine_alignment"])),
-            "regulatory_gaps_per_decision": float(
-                np.mean(self.iq_160_metrics["regulatory_gap_detection"])
-            ),
-            "processing_time_p50_ms": float(
-                np.percentile(self.iq_160_metrics["processing_time_ms"], 50)
-            ),
-            "processing_time_p95_ms": float(
-                np.percentile(self.iq_160_metrics["processing_time_ms"], 95)
-            ),
+            "regulatory_gaps_per_decision": float(np.mean(self.iq_160_metrics["regulatory_gap_detection"])),
+            "processing_time_p50_ms": float(np.percentile(self.iq_160_metrics["processing_time_ms"], 50)),
+            "processing_time_p95_ms": float(np.percentile(self.iq_160_metrics["processing_time_ms"], 95)),
             "total_decisions": len(self.iq_160_metrics["decision_accuracy"]),
         }
 
@@ -960,16 +948,12 @@ class JudgeArchitecture:
 
         # Warn if risk is HIGH or EXTREMELY_HIGH
         if residual_risk_str in ["HIGH", "EXTREMELY_HIGH"]:
-            verdict.warnings.append(
-                f"ATP 5-19: Residual risk is {residual_risk_str} - requires {approval_auth} approval"
-            )
+            verdict.warnings.append(f"ATP 5-19: Residual risk is {residual_risk_str} - requires {approval_auth} approval")
 
         # === Layer 0.5: FM 6-0 Mission Analysis ===
         # Strategic decisions use MDMP, tactical use TLP
         if decision.type == "strategic":
-            mission_analysis = await self.mdmp.step2_mission_analysis(
-                {"task": decision.description, "decision_id": decision.id}
-            )
+            mission_analysis = await self.mdmp.step2_mission_analysis({"task": decision.description, "decision_id": decision.id})
             verdict.layer_results["fm_6_0_mdmp"] = mission_analysis
         else:
             # Tactical/operational decisions use faster TLP
@@ -1025,9 +1009,7 @@ class JudgeArchitecture:
         competitive_analysis = await self.competitive_analyzer.benchmark(decision)
         verdict.layer_results["competitive"] = competitive_analysis
         if competitive_analysis["commodity_trap_risk"]:
-            verdict.warnings.append(
-                "Competitive: Decision copies incumbents without differentiation"
-            )
+            verdict.warnings.append("Competitive: Decision copies incumbents without differentiation")
 
         # Layer 19: Milestone Tracker
         milestone_impact = await self.milestone_tracker.assess_impact(decision)
@@ -1084,9 +1066,7 @@ class JudgeArchitecture:
     # Army Doctrine Integration Methods (ATP 5-19, FM 6-0, FM 7-8)
     # =========================================================================
 
-    async def handle_error_with_drill(
-        self, error: Exception, decision: Decision, trigger: DrillTrigger = DrillTrigger.EXCEPTION
-    ) -> dict[str, Any]:
+    async def handle_error_with_drill(self, error: Exception, decision: Decision, trigger: DrillTrigger = DrillTrigger.EXCEPTION) -> dict[str, Any]:
         """
         Handle validation errors using FM 7-8 Battle Drills.
 

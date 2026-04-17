@@ -95,9 +95,7 @@ class Finding:
 
 def load_yaml(path: Path) -> Any:
     if yaml is None:
-        raise RuntimeError(
-            "pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml"
-        )
+        raise RuntimeError("pyyaml is required for manifest-aware checks. Install with: python3 -m pip install pyyaml")
     with path.open("r", encoding="utf-8") as file:
         return yaml.safe_load(file)
 
@@ -150,9 +148,7 @@ def iter_text_files(root: Path):
                 yield path
 
 
-def search_patterns(
-    root: Path, patterns: list[str], kind: str, severity: str, detail_prefix: str
-) -> list[Finding]:
+def search_patterns(root: Path, patterns: list[str], kind: str, severity: str, detail_prefix: str) -> list[Finding]:
     findings: list[Finding] = []
     compiled = [re.compile(p) for p in patterns]
     for path in iter_text_files(root):
@@ -163,9 +159,7 @@ def search_patterns(
             match = rx.search(text)
             if match:
                 rel = str(path.relative_to(root))
-                findings.append(
-                    Finding(kind, severity, rel, f"{detail_prefix}: {match.group(0)[:160]}")
-                )
+                findings.append(Finding(kind, severity, rel, f"{detail_prefix}: {match.group(0)[:160]}"))
                 break
     return findings
 
@@ -195,9 +189,7 @@ def compare_manifests(paths: list[Path]) -> list[Finding]:
         try:
             loaded.append((path, load_yaml(path)))
         except Exception as exc:
-            findings.append(
-                Finding("manifest_parse", "high", str(path), f"Failed to parse manifest: {exc}")
-            )
+            findings.append(Finding("manifest_parse", "high", str(path), f"Failed to parse manifest: {exc}"))
             return findings
     first_path, first_doc = loaded[0]
     for path, doc in loaded[1:]:
@@ -228,11 +220,7 @@ def check_destination_conflict(dest_rel: str, manifest_paths: list[Path]) -> lis
     try:
         root_manifest = load_yaml(manifest_paths[0])
     except Exception as exc:
-        findings.append(
-            Finding(
-                "manifest_parse", "high", str(manifest_paths[0]), f"Failed to parse manifest: {exc}"
-            )
-        )
+        findings.append(Finding("manifest_parse", "high", str(manifest_paths[0]), f"Failed to parse manifest: {exc}"))
         return findings
     destinations = canonical_destinations(root_manifest)
     norm = dest_rel.strip().strip("/")
@@ -288,11 +276,7 @@ def main() -> int:
             f"Stale model reference; migrate to {CURRENT_MODEL_HINT}",
         )
     )
-    findings.extend(
-        search_patterns(
-            incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"
-        )
-    )
+    findings.extend(search_patterns(incoming, STALE_MCP_PATTERNS, "stale_mcp", "medium", "Stale MCP/control-plane reference"))
     findings.extend(
         search_patterns(
             incoming,

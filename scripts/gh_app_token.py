@@ -33,9 +33,7 @@ if resp.status_code != 200:
 install_id = resp.json()["id"]
 
 # Get access token
-resp = requests.post(
-    f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers
-)
+resp = requests.post(f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers)
 if resp.status_code != 201:
     print(f"Failed to get access token: {resp.text}")
     sys.exit(1)

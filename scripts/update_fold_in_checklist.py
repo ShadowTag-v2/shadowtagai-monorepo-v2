@@ -71,9 +71,7 @@ def write_back(data: Any, items: list[dict[str, Any]]) -> Any:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Update fold_in_checklist.yaml from physical reality"
-    )
+    parser = argparse.ArgumentParser(description="Update fold_in_checklist.yaml from physical reality")
     parser.add_argument("--checklist", required=True, help="Path to fold_in_checklist.yaml")
     parser.add_argument("--root", required=True, help="Canonical monorepo root")
     args = parser.parse_args()
@@ -106,11 +104,7 @@ def main() -> int:
                     updated += 1
 
             if status in {"blocked", "queued_for_fold_in", "pending"}:
-                item["status"] = (
-                    "canonical_in_monorepo"
-                    if "reference/public-demos/" not in str(dest)
-                    else "reference_only"
-                )
+                item["status"] = "canonical_in_monorepo" if "reference/public-demos/" not in str(dest) else "reference_only"
                 updated += 1
 
             item["physical_state"] = "present"

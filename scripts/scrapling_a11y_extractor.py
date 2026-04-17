@@ -16,9 +16,7 @@ def bypass_cloudflare_a11y(url: str):
     and directly extract the Accessibility (A11y) tree.
     """
     if not HAS_SCRAPLING:
-        print(
-            json.dumps({"error": "Scrapling library not installed. Please pip install scrapling."})
-        )
+        print(json.dumps({"error": "Scrapling library not installed. Please pip install scrapling."}))
         return
 
     print(f"[*] Initializing StealthyFetcher for {url}", file=sys.stderr)
@@ -41,9 +39,7 @@ def bypass_cloudflare_a11y(url: str):
         markdown_content = page.markdown()
 
         # We can also pull strict structured data using CSS/XPath
-        structured_links = [
-            {"text": a.text, "href": a.get("href")} for a in page.css("a") if a.text.strip()
-        ]
+        structured_links = [{"text": a.text, "href": a.get("href")} for a in page.css("a") if a.text.strip()]
 
         result = {
             "url": url,
