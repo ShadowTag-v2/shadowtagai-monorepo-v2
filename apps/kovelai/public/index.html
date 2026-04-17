@@ -94,26 +94,20 @@
 <link rel="preconnect" href="https://www.googletagmanager.com" />
 <link rel="preconnect" href="https://storage.googleapis.com" />
 <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+<link rel="preconnect" href="https://cdn.tailwindcss.com" />
 <link rel="preload" as="image" href="/images/hero-poster-opt.webp" fetchpriority="high" />
-<script src="/js/three.min.js" defer></script>
-<!-- Critical above-fold CSS (hero renders before Tailwind loads) -->
+<!-- Critical CSS: body + hero styles paint before Tailwind resolves -->
 <style id="critical-css">
-  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#110f09;color:#f5ede0;overflow-x:hidden}
+  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#110f09;color:#f5ede0;overflow-x:hidden;-webkit-font-smoothing:antialiased}
   *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   .hero-section{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
   img,video{max-width:100%;height:auto}
-  /* font-display: swap for all custom fonts */
   @font-face{font-family:'Inter';font-display:swap;src:local('Inter')}
 </style>
-<!-- Tailwind CDN loaded async — non-render-blocking -->
-<script>
-(function(){
-  var s=document.createElement('script');
-  s.src='https://cdn.tailwindcss.com?plugins=forms,container-queries';
-  s.onload=function(){if(window.tailwind&&tailwind.config)tailwind.config=window.__tw_cfg};
-  document.head.appendChild(s);
-})();
-</script>
+<!-- Tailwind CDN (synchronous — required before DOM parses class names) -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="/js/three.min.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/></noscript>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
