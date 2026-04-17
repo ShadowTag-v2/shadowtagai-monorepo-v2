@@ -1,0 +1,3 @@
+# apps/counselconduit/Procfile
+# Cloud Run source-based deployment (no Docker per saas-architecture-gate)
+web: uvicorn apps.counselconduit.api.fastapi_kovel_enclave:app --host 0.0.0.0 --port $PORT --workers 2
