@@ -1,0 +1,83 @@
+# labs/uphillsnowball/triad_config.yaml
+# Autoresearch Triad Configuration
+# Architecture: Direction (Kosmos) → Scale (BioAgents) → Execution (n-autoresearch)
+
+triad:
+  version: "1.0.0"
+  enabled: true
+
+  # Layer 1: Kosmos (Direction / Hypothesis Generator)
+  kosmos:
+    model: "gemini-3.1-flash-lite-preview-thinking"
+    purpose: "Strategic hypothesis generation and research direction"
+    max_hypotheses_per_batch: 5
+    hypothesis_loop:
+      enabled: true
+      interval_minutes: 30
+      auto_prune_below_score: 0.3
+    output_format: "structured_hypothesis"
+
+  # Layer 2: BioAgents (Scale / Domain Specialists)
+  bioagents:
+    count: 6
+    agents:
+      - name: "JUSTITIA"
+        domain: "Legal compliance"
+        focus: ["Kovel doctrine", "privilege", "regulatory"]
+      - name: "CADUCEUS"
+        domain: "Healthcare law"
+        focus: ["HIPAA", "informed consent", "administrative"]
+      - name: "GALILEO"
+        domain: "Technology law"
+        focus: ["IP", "patent", "trade secret"]
+      - name: "OMNISCIENCE"
+        domain: "Corporate governance"
+        focus: ["M&A", "securities", "board duties"]
+      - name: "SENTINEL"
+        domain: "Risk assessment"
+        focus: ["ATP 5-19", "threat modeling", "compliance scoring"]
+      - name: "MINERVA"
+        domain: "Research synthesis"
+        focus: ["case law", "statute analysis", "precedent mining"]
+
+    seam:
+      # BioAgent Seam: communication protocol between agents
+      protocol: "structured_json"
+      max_context_tokens: 16384
+      handoff_format: "hypothesis_with_evidence"
+
+  # Layer 3: n-autoresearch (Execution / Parallel Workers)
+  n_autoresearch:
+    runtime: "local_apple_silicon"
+    hardware:
+      ane: true           # Apple Neural Engine
+      gpu: "mlx"          # MLX framework
+      max_concurrent: 4
+    
+    execution:
+      timeout_seconds: 300
+      retry_count: 2
+      checkpoint_every_n_steps: 10
+
+    # Cor.autoresearch bridge
+    bridge:
+      lancedb_path: "${LANCEDB_PATH}"
+      alloydb_enabled: false  # Local-only for UphillSnowball
+      grounding_threshold: 0.7
+
+  # Inter-layer communication
+  pipeline:
+    kosmos_to_bioagents: "broadcast"     # All agents receive hypothesis
+    bioagents_to_execution: "selective"  # Only relevant agents dispatch
+    execution_to_kosmos: "feedback"      # Results refine next hypothesis cycle
+    max_pipeline_depth: 3                # Prevent infinite loops
+
+# Monkey Ban enforcement
+monkey_ban:
+  enabled: true
+  banned_patterns:
+    - "flying_monkeys"
+    - "monkey_swarm"
+    - "MonkeyAgent"
+    - "primate"
+  replacement: "Autoresearch Triad"
