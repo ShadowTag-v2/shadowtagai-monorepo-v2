@@ -1,0 +1,29 @@
+name: Scheduled PageSpeed Monitor
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 8am UTC
+  workflow_dispatch:
+
+jobs:
+  pagespeed:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        site: [kovelai.com, shadowtagai.web.app]
+        strategy: [mobile, desktop]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run PageSpeed Insights
+        id: psi
+        uses: jakepartusch/psi-action@v1
+        with:
+          url: https://${{ matrix.site }}/
+          strategy: ${{ matrix.strategy }}
+          threshold: 50
+
+      - name: Log results
+        run: |
+          echo "## PageSpeed: ${{ matrix.site }} (${{ matrix.strategy }})" >> $GITHUB_STEP_SUMMARY
+          echo "Score: ${{ steps.psi.outputs.score }}" >> $GITHUB_STEP_SUMMARY
