@@ -7,8 +7,7 @@
   "settings": {
     "liveServer.settings.root": "/",
     "liveServer.settings.port": 5508,
-    "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.env",
-
+    "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
     "java.import.generatesSources": false,
     "java.import.exclusions": [
       "**/*.proto",
@@ -24,7 +23,6 @@
       "**/tools/java-firestore/**",
       "**/tools/google-cloud-dart/**"
     ],
-
     "files.exclude": {
       "**/*.proto": true,
       "**/node_modules/**": true,
@@ -61,7 +59,6 @@
       "**/.pytest_cache/**": true,
       "**/.ruff_cache/**": true
     },
-
     "search.exclude": {
       "**/node_modules/**": true,
       "**/external_repos/**": true,
@@ -84,7 +81,6 @@
       "**/tools/java-firestore/**": true,
       "**/test-results/**": true
     },
-
     "python.analysis.exclude": [
       "**/archive",
       "**/node_modules",
@@ -99,7 +95,6 @@
       "**/tools/google-cloud-dart",
       "**/tools/dio"
     ],
-
     "dart.analysisExcludedFolders": [
       "archive",
       "external_repos",
@@ -114,12 +109,10 @@
       "tools/PureMac",
       "node_modules"
     ],
-
     "java.server.launchMode": "LightWeight",
     "java.autobuild.enabled": false,
     "java.completion.enabled": false,
     "java.project.importOnFirstTimeStartup": "disabled",
-
     "antigravity.ai.primaryEndpoint": "Anthropic Cloud",
     "antigravity.ai.fallbackEndpoint": "http://localhost:11434/v1",
     "antigravity.ai.fallbackApiKey": "ollama-local",
@@ -130,6 +123,8 @@
     "cline.openai.modelId": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
     "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable",
     "java.configuration.updateBuildConfiguration": "automatic",
-    "git.detectSubmodulesLimit": 20
+    "git.detectSubmodulesLimit": 20,
+    "update.mode": "manual",
+    "cloudcode.enableExperiments": false
   }
 }
