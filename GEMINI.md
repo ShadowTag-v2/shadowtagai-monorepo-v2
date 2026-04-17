@@ -107,7 +107,7 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 ## .env Master Environment Doctrine
 
 **Canonical path:** `.env` (repo root, gitignored)
-**Created:** 2026-04-13 | **Sections:** 10
+**Created:** 2026-04-13 | **Sections:** 11
 
 ### Section Map
 | § | Variable | Purpose | Consumer |
@@ -125,23 +125,44 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 | 8 | `DISABLE_TELEMETRY` / `DISABLE_ERROR_REPORTING` | Kovel Mode telemetry blackout | All services |
 | 9 | `NODE_OPTIONS` | V8 punycode deprecation mute | VS Code Extension Host |
 | 10 | `NANO_BANANA_2_MODEL` | Image generation model ID | Nano Banana 2 |
+| 11 | `STRIPE_PUBLISHABLE_KEY` | Stripe frontend key (public) | Pricing page checkout |
+| 11 | `STRIPE_SECRET_KEY` | Stripe backend key (NEVER expose) | CounselConduit API |
+| 11 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signature | Webhook handler |
 
 ### Auth Chain
 - **MCP servers** authenticate via Google ADC (`~/.config/gcloud/`) + `GEMINI_API_KEY` from `.env`
 - **Firebase MCP** uses its own OAuth session (not `.env`)
 - **GitHub** uses SSH keys + GitHub App PEM (`$SHADOWTAG_PEM`)
 - **Stitch MCP** uses `STITCH_API_KEY` from `.env`
+- **Stripe** uses `STRIPE_SECRET_KEY` from `.env` (backend) and `STRIPE_PUBLISHABLE_KEY` (frontend)
 
-### Missing Keys (NOT in .env)
-> [!WARNING]
-> The following keys are required for CounselConduit production but are NOT yet provisioned:
-> - `STRIPE_SECRET_KEY` — needed for billing
-> - `STRIPE_WEBHOOK_SECRET` — needed for webhook verification
-> - See `apps/counselconduit/.env.example` for the full CounselConduit-specific config
+### Stripe Live Configuration
+- Account: `acct_1Syh9JEHnWpykeMi` (US, charges+payouts enabled)
+- Products: `prod_UM2XwCF1byjegL` (Trial), `prod_UM2X10cpyay52e` (Pro), `prod_UM2XMVp9Er7A0i` (Enterprise)
+- Pro Monthly: `price_1TNKSREHnWpykeMiRMDlVgLl` ($149/mo)
+- Pro Annual: `price_1TNKSjEHnWpykeMi0S9GCVjy` ($1,428/yr)
+- Enterprise: `price_1TNKSREHnWpykeMi8mrDf4rI` ($20K/mo)
+- Beta Coupon: `3wseBY7Z` (50% off, 3 months, max 100)
+- Portal: `bpc_1TNKSjEHnWpykeMi0qQPoaHm`
+- Webhook: `we_1TNKSjEHnWpykeMiQZqmpy3X` → `https://counselconduit-api.run.app/webhooks/stripe`
+
+### Cor.env Lock Doctrine
+- `.env` is protected by `chflags uchg` (macOS kernel immutable flag)
+- AI blindfolds: `.aiexclude`, `.geminiignore`, `.clineignore`, `.rooignore` all contain `.env`
+- To edit: `chflags nouchg .env` → edit → `chflags uchg .env`
+- Validate: `bash scripts/validate_env.sh`
+
+### Cloud Run Secrets Architecture
+- **Google services** (Vertex AI, Firestore, Translate) use **ADC** via service account — NO API keys needed
+- **External services** (Stripe) use **GCP Secret Manager** → Cloud Run `valueFrom.secretKeyRef`
+- Upload script: `bash scripts/upload_secrets_to_gcp.sh`
+- SA role required: `roles/secretmanager.secretAccessor`
 
 ### Rules
 - `.env` is gitignored. NEVER commit it.
 - `apps/counselconduit/.env.example` is the template for product-specific vars.
 - All MCP servers MUST read from `.env` or ADC. No hardcoded keys in source.
+- The `STRIPE_PUBLISHABLE_KEY` is the ONLY key safe to embed in frontend HTML.
 </env_master_doctrine>
 </system_directive>
+
