@@ -20,7 +20,12 @@ import stripe
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from apps.counselconduit.api.auth import get_current_attorney
+try:
+    from apps.counselconduit.api.auth import get_current_attorney
+    from apps.counselconduit.api.stripe_config import PRICE_PRO_MONTHLY, PRICE_PRO_ANNUAL, PRICE_ENT_MONTHLY
+except ImportError:
+    from api.auth import get_current_attorney  # type: ignore[no-redef]
+    from api.stripe_config import PRICE_PRO_MONTHLY, PRICE_PRO_ANNUAL, PRICE_ENT_MONTHLY  # type: ignore[no-redef]
 
 logger = logging.getLogger("counselconduit.stripe_connect")
 
@@ -28,11 +33,12 @@ router = APIRouter(prefix="/billing", tags=["billing"])
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
 
-# Price IDs from .env
+# Live Stripe price IDs from stripe_config.py
 _PRICE_IDS = {
-    "trial": os.getenv("STRIPE_PRICE_TRIAL", "price_FREE"),
-    "professional": os.getenv("STRIPE_PRICE_PROFESSIONAL", ""),
-    "enterprise": os.getenv("STRIPE_PRICE_ENTERPRISE", ""),
+    "trial": "price_FREE",  # Trial is free, no checkout needed
+    "professional_monthly": PRICE_PRO_MONTHLY,
+    "professional_annual": PRICE_PRO_ANNUAL,
+    "enterprise": PRICE_ENT_MONTHLY,
 }
 
 _SUCCESS_URL = os.getenv("STRIPE_SUCCESS_URL", "https://kovelai.web.app/chat.html?session=success")
@@ -56,8 +62,13 @@ async def create_checkout_session(
     attorney: dict[str, Any] = Depends(get_current_attorney),
 ):
     """Create a Stripe Checkout session for subscription."""
-    price_id = _PRICE_IDS.get(req.tier)
-    if not price_id or req.tier == "trial":
+    if req.tier == "trial":
+        raise HTTPException(status_code=400, detail="Trial does not require checkout.")
+    price_key = f"{req.tier}_annual" if req.annual and req.tier == "professional" else req.tier
+    if req.tier == "professional" and not req.annual:
+        price_key = "professional_monthly"
+    price_id = _PRICE_IDS.get(price_key)
+    if not price_id:
         raise HTTPException(status_code=400, detail="Invalid tier for checkout.")
 
     try:
