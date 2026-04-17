@@ -35,9 +35,7 @@ def get_repos_with_client_id(client_id, pem_path, owner_name):
     if not target_installation_id:
         if installations:
             target_installation_id = installations[0]["id"]
-            print(
-                f"Using installation {target_installation_id} for {installations[0]['account']['login']}"
-            )
+            print(f"Using installation {target_installation_id} for {installations[0]['account']['login']}")
         else:
             print(f"Could not find installation for {owner_name} and no other installations found.")
             return []

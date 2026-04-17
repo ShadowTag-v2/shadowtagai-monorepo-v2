@@ -56,9 +56,7 @@ def delete_repo(token, owner, repo):
 
 if __name__ == "__main__":
     APP_ID = "3018200"
-    KEY_PATH = (
-        "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem"
-    )
+    KEY_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem"
 
     repos_to_delete = [
         "ShadowTag-v2-sops",

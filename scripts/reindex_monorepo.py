@@ -109,11 +109,7 @@ def get_collection(recreate: bool = False):
 
 
 def chunk_text(text: str) -> list[str]:
-    return [
-        text[i : i + CHUNK_SIZE]
-        for i in range(0, len(text), CHUNK_SIZE)
-        if text[i : i + CHUNK_SIZE].strip()
-    ]
+    return [text[i : i + CHUNK_SIZE] for i in range(0, len(text), CHUNK_SIZE) if text[i : i + CHUNK_SIZE].strip()]
 
 
 def flush_batch(
@@ -204,12 +200,8 @@ def crawl(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Re-index monorepo into local RAG engine")
     parser.add_argument("--dirs", nargs="+", default=DEFAULT_DIRS, help="Directories to crawl")
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Scan only, no writes to Chroma/SQLite"
-    )
-    parser.add_argument(
-        "--recreate", action="store_true", help="Delete and recreate ChromaDB collection"
-    )
+    parser.add_argument("--dry-run", action="store_true", help="Scan only, no writes to Chroma/SQLite")
+    parser.add_argument("--recreate", action="store_true", help="Delete and recreate ChromaDB collection")
     args = parser.parse_args()
 
     print(f"[INDEX] Monorepo root : {MONOREPO_ROOT}")

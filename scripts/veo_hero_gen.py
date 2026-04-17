@@ -34,23 +34,23 @@ from dataclasses import dataclass
 @dataclass
 class VeoHeroConfig:
     """Configuration for Veo 3.1 hero video generation."""
-    
+
     # Model
     model: str = "veo-3.1"
-    
+
     # Video parameters
     duration_seconds: int = 8
     resolution: str = "4k"  # 3840x2160
     fps: int = 30
     aspect_ratio: str = "16:9"
-    
+
     # Output
     output_format: str = "mp4"
     codec: str = "h264"
-    
+
     # GCS output paths
     gcs_bucket: str = "shadowtag-omega-v4-hero-videos"
-    
+
     def get_sites(self) -> list[dict]:
         """Return site-specific generation configs."""
         return [
@@ -79,7 +79,7 @@ class VeoHeroConfig:
                 "negative_prompt": "text, watermark, logo, cartoon, low quality, blurry",
             },
         ]
-    
+
     def to_api_request(self, site_config: dict) -> dict:
         """Build the Veo 3.1 API request payload."""
         return {
@@ -103,18 +103,18 @@ def main():
     """Print generation configs for verification."""
     config = VeoHeroConfig()
     sites = config.get_sites()
-    
+
     print("═" * 60)
     print("  Veo 3.1 Hero Video Generation Config")
     print("═" * 60)
-    
+
     for site in sites:
         print(f"\n  Site: {site['site']}")
         print(f"  Output: {site['output_path']}")
         print(f"  Prompt: {site['prompt'][:80]}...")
         req = config.to_api_request(site)
         print(f"  Request: {json.dumps(req, indent=2)[:200]}...")
-    
+
     print(f"\n  Resolution: {config.resolution} @ {config.fps}fps")
     print(f"  Duration: {config.duration_seconds}s")
     print("═" * 60)

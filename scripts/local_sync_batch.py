@@ -71,9 +71,7 @@ for rep_dir in Path(CACHE_DIR).iterdir():
 
     print(f"[{repo_name}] Synchronizing to {dest_sub}...")
     os.makedirs(dest_abs, exist_ok=True)
-    subprocess.run(
-        ["rsync", "-a", "--exclude=.git", f"{str(rep_dir)}/", dest_abs], capture_output=True
-    )
+    subprocess.run(["rsync", "-a", "--exclude=.git", f"{str(rep_dir)}/", dest_abs], capture_output=True)
     synced_count += 1
 
 print(f"Synchronized {synced_count} repositories.")
@@ -86,9 +84,7 @@ try:
         pk = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
     enc = jwt.encode(payload, pk, algorithm="RS256")
-    r = requests.get(
-        "https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"}
-    )
+    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"})
     r.raise_for_status()
     inst = r.json()[0]
     r2 = requests.post(
@@ -99,9 +95,7 @@ try:
     token = r2.json()["token"]
 
     print("Setting remote and Executing Egress...")
-    remote_url = (
-        f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
-    )
+    remote_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
 
     subprocess.run(["git", "add", "-A"], check=False)

@@ -150,9 +150,7 @@ def group_into_chunks(files: list[tuple[str, int]], chunk_mb: int) -> list[list[
     return chunks
 
 
-def push_chunk(
-    chunk: list[tuple[str, int]], chunk_idx: int, token: str, dry_run: bool
-) -> list[dict]:
+def push_chunk(chunk: list[tuple[str, int]], chunk_idx: int, token: str, dry_run: bool) -> list[dict]:
     """Push a chunk of files as blobs, return tree items."""
     tree_items = []
     chunk_size_mb = sum(s for _, s in chunk) / 1024 / 1024
@@ -182,9 +180,7 @@ def main():
     parser = argparse.ArgumentParser(description="Chunked Git Data API Push")
     parser.add_argument("--dry-run", action="store_true", help="Don't actually push")
     parser.add_argument("--chunk-size-mb", type=int, default=CHUNK_SIZE_MB, help="MB per chunk")
-    parser.add_argument(
-        "--batch-size", type=int, default=BATCH_SIZE, help="Chunks per token window"
-    )
+    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE, help="Chunks per token window")
     args = parser.parse_args()
 
     print("=" * 60)
@@ -200,9 +196,7 @@ def main():
     # 2. Group into chunks
     chunks = group_into_chunks(files, args.chunk_size_mb)
     print(f"Chunks ({args.chunk_size_mb}MB each): {len(chunks)}")
-    print(
-        f"Batch windows ({args.batch_size} chunks/window): {(len(chunks) + args.batch_size - 1) // args.batch_size}"
-    )
+    print(f"Batch windows ({args.batch_size} chunks/window): {(len(chunks) + args.batch_size - 1) // args.batch_size}")
 
     if args.dry_run:
         print("\n🔸 DRY RUN — no changes will be pushed")

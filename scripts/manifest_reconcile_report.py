@@ -47,9 +47,7 @@ def classify_path(path: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Compare two manifest files and emit a reconcile report"
-    )
+    parser = argparse.ArgumentParser(description="Compare two manifest files and emit a reconcile report")
     parser.add_argument("primary_manifest")
     parser.add_argument("secondary_manifest")
     parser.add_argument("--markdown-out", default=None)
@@ -65,11 +63,7 @@ def main() -> int:
 
     only_primary = sorted(set(flat_primary) - set(flat_secondary))
     only_secondary = sorted(set(flat_secondary) - set(flat_primary))
-    differing = sorted(
-        key
-        for key in set(flat_primary).intersection(flat_secondary)
-        if flat_primary[key] != flat_secondary[key]
-    )
+    differing = sorted(key for key in set(flat_primary).intersection(flat_secondary) if flat_primary[key] != flat_secondary[key])
 
     classified = []
     for key in differing:

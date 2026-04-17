@@ -387,9 +387,7 @@ class TrainingDataIndexer:
             seen_hashes.add(doc_hash)
 
             # Safety scan
-            scan_result = await self.scan_document(
-                doc.get("content", ""), doc.get("id", doc_hash), doc.get("language", "en")
-            )
+            scan_result = await self.scan_document(doc.get("content", ""), doc.get("id", doc_hash), doc.get("language", "en"))
 
             # Prepare for indexing
             index_doc = {
@@ -479,10 +477,7 @@ class TrainingDataIndexer:
             total = result["hits"]["total"]["value"]
             report["by_category"][category.value] = {
                 "total": total,
-                "by_language": {
-                    b["key"]: b["doc_count"]
-                    for b in result["aggregations"]["by_language"]["buckets"]
-                },
+                "by_language": {b["key"]: b["doc_count"] for b in result["aggregations"]["by_language"]["buckets"]},
             }
 
         return report
@@ -569,9 +564,7 @@ async def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Training Data Safety Indexer")
-    parser.add_argument(
-        "command", choices=["scan", "search", "report", "index"], help="Command to run"
-    )
+    parser.add_argument("command", choices=["scan", "search", "report", "index"], help="Command to run")
     parser.add_argument("--file", "-f", help="File to scan")
     parser.add_argument("--query", "-q", help="Search query")
     parser.add_argument("--language", "-l", default="en", help="Language code")

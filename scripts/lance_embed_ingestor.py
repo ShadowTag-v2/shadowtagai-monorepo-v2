@@ -89,10 +89,7 @@ def _upsert_lance(db_name: str, rows: list[dict], vectors: list[list[float]]) ->
             pa.field("vector", pa.list_(pa.float32(), EMBED_DIM)),
         ]
     )
-    records = [
-        {"id": r["id"], "name": r["name"], "text": r["text"][:500], "vector": v}
-        for r, v in zip(rows, vectors)
-    ]
+    records = [{"id": r["id"], "name": r["name"], "text": r["text"][:500], "vector": v} for r, v in zip(rows, vectors)]
     # list_tables() returns ListTablesResponse with .tables list in lancedb>=0.20
     tbl_response = db.list_tables()
     existing = getattr(tbl_response, "tables", None) or list(tbl_response)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+
 """CounselConduit F1 Evaluation Harness
 
 Measures legal citation accuracy using precision, recall, and F1 scoring
@@ -47,7 +48,7 @@ class EvalSummary:
 
 def normalize_citation(citation: str) -> str:
     """Normalize a citation for comparison.
-    
+
     Strips whitespace, lowercases, and removes common formatting differences.
     """
     normalized = citation.strip().lower()
@@ -60,7 +61,7 @@ def normalize_citation(citation: str) -> str:
 
 def citation_matches(predicted: str, expected: str, fuzzy: bool = True) -> bool:
     """Check if a predicted citation matches an expected one.
-    
+
     Args:
         predicted: The citation produced by the system.
         expected: The ground truth citation.
@@ -98,7 +99,7 @@ def evaluate_query(
     dimension_weights: dict[str, float] | None = None,
 ) -> CitationEvalResult:
     """Evaluate a single query's citations.
-    
+
     Args:
         query_id: Unique identifier for the query.
         query_text: The legal question asked.
@@ -160,7 +161,7 @@ def evaluate_all(
     predictions_path: str | Path | None = None,
 ) -> EvalSummary:
     """Run full evaluation against ground truth dataset.
-    
+
     Args:
         ground_truth_path: Path to ground truth JSON file.
         predictions_path: Path to predictions JSON file.
@@ -177,10 +178,7 @@ def evaluate_all(
             predictions = json.load(f)
     else:
         # Self-test: use ground truth as predictions (should get F1 = 1.0)
-        predictions = {
-            ex["id"]: ex["expected_citations"]
-            for ex in ground_truth["ground_truth_examples"]
-        }
+        predictions = {ex["id"]: ex["expected_citations"] for ex in ground_truth["ground_truth_examples"]}
 
     # Get dimension weights
     weights = {d["dimension"]: d["weight"] for d in ground_truth["evaluation_dimensions"]}
@@ -215,10 +213,7 @@ def evaluate_all(
         # Weighted F1 across dimensions
         weighted_scores = []
         for r in summary.results:
-            query_weighted = sum(
-                weights.get(dim, 0.25) * score
-                for dim, score in r.dimension_scores.items()
-            )
+            query_weighted = sum(weights.get(dim, 0.25) * score for dim, score in r.dimension_scores.items())
             weighted_scores.append(query_weighted)
         summary.weighted_f1 = sum(weighted_scores) / len(weighted_scores)
 

@@ -113,17 +113,11 @@ class ConsolidatedReview:
                 parts.append("### 🔴 ANE Budget Gate: FAILED\n")
                 for v in self.ane_report.get("violations", []):
                     ratio = v.get("ratio", 0)
-                    parts.append(
-                        f"- `{v['file']}:{v['line']}` — "
-                        f"{ratio}x over budget ({v['estimated_bytes']:,} bytes)"
-                    )
+                    parts.append(f"- `{v['file']}:{v['line']}` — {ratio}x over budget ({v['estimated_bytes']:,} bytes)")
                 parts.append("")
 
         # Summary stats
-        parts.append(
-            f"**Total:** {len(self.comments)} findings "
-            f"({self.error_count} errors, {self.warning_count} warnings)"
-        )
+        parts.append(f"**Total:** {len(self.comments)} findings ({self.error_count} errors, {self.warning_count} warnings)")
 
         for line in self.summary_lines:
             parts.append(line)
@@ -210,10 +204,7 @@ def post_review(
     import urllib.request
 
     owner, repo_name = repo.split("/")
-    url = (
-        f"https://api.github.com/repos/{owner}/{repo_name}"
-        f"/pulls/{pr_number}/reviews"
-    )
+    url = f"https://api.github.com/repos/{owner}/{repo_name}/pulls/{pr_number}/reviews"
 
     github_comments = [c.to_github_comment() for c in review.comments if c.line > 0]
 

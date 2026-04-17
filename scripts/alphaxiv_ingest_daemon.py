@@ -78,15 +78,9 @@ async def run_alpha_xiv_mcp():
                 logger.info(f"Querying alphaXiv for: {concept}")
 
                 # Use the agentic_paper_retrieval tool exposed by the MCP
-                result = await session.call_tool(
-                    "agentic_paper_retrieval", arguments={"query": concept, "top_k": 3}
-                )
+                result = await session.call_tool("agentic_paper_retrieval", arguments={"query": concept, "top_k": 3})
 
-                papers = (
-                    json.loads(result.text)
-                    if hasattr(result, "text")
-                    else getattr(result, "content", [])
-                )
+                papers = json.loads(result.text) if hasattr(result, "text") else getattr(result, "content", [])
 
                 # Store extractions
                 with open(JSONL_PATH, "a") as jsonl:

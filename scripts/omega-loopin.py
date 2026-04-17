@@ -301,12 +301,8 @@ def phase_7(dry_run: bool = False):
 def main():
     parser = argparse.ArgumentParser(description="Omega Loopin — Unified Monorepo Egress")
     parser.add_argument("--dry-run", action="store_true", help="Preview without executing")
-    parser.add_argument(
-        "--skip-push", action="store_true", help="Run everything except Phase 5 (push)"
-    )
-    parser.add_argument(
-        "--phase", type=str, help="Comma-separated phase numbers to run (e.g., '1,2,3')"
-    )
+    parser.add_argument("--skip-push", action="store_true", help="Run everything except Phase 5 (push)")
+    parser.add_argument("--phase", type=str, help="Comma-separated phase numbers to run (e.g., '1,2,3')")
     args = parser.parse_args()
 
     phases = {
@@ -330,9 +326,7 @@ def main():
     print("╔═══════════════════════════════════════════════════╗")
     print("║     OMEGA LOOPIN — Monorepo Egress Protocol      ║")
     print("║     Per Invariants #55, #56, #58                  ║")
-    print(
-        f"║     Mode: {'DRY RUN' if args.dry_run else 'LIVE FIRE'}                              ║"
-    )
+    print(f"║     Mode: {'DRY RUN' if args.dry_run else 'LIVE FIRE'}                              ║")
     print("╚═══════════════════════════════════════════════════╝")
 
     for num in sorted(selected):

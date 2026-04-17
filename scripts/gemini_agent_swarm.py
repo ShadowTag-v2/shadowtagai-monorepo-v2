@@ -107,9 +107,7 @@ async def run_swarm(query: str) -> dict:
 
     # Phase 1 — Research (Fast Path): pull corpus hits
     hits = search_corpus(query, top_k=8)
-    corpus_text = "\n".join(
-        f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits
-    )
+    corpus_text = "\n".join(f"[{h.get('class', '?')}] {h.get('name', '?')}: {h.get('text', '')[:300]}" for h in hits)
 
     # Extract actual GitNexus localized structural intelligence
     import subprocess
@@ -126,9 +124,7 @@ async def run_swarm(query: str) -> dict:
 
     research_task = SwarmTask(
         "research",
-        _RESEARCH_TMPL.format(
-            query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result
-        ),
+        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result),
         tier=SwarmTier.FAST,
     )
     [research_result] = await router.dispatch([research_task])
@@ -215,9 +211,7 @@ async def _loop(query: str, interval: int) -> None:
                 check=False,
             )
             if git_status.stdout.strip():
-                logger.info(
-                    "YOLO MODE: Swarm detected architectural drift. Firing Payload 4 (Boy Scout Sweep)."
-                )
+                logger.info("YOLO MODE: Swarm detected architectural drift. Firing Payload 4 (Boy Scout Sweep).")
                 dispatch_payload_by_id(4)
 
             result = await run_swarm(query)
@@ -225,9 +219,7 @@ async def _loop(query: str, interval: int) -> None:
             logger.info("Loop result: %s", directive)
 
             if directive and ("vector" in directive.lower() or "ingest" in directive.lower()):
-                logger.info(
-                    "YOLO MODE: Architecture blueprint requested ingest. Firing Payload 2 (Vector Sync)."
-                )
+                logger.info("YOLO MODE: Architecture blueprint requested ingest. Firing Payload 2 (Vector Sync).")
                 dispatch_payload_by_id(2)
 
         except Exception as exc:

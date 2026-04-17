@@ -86,9 +86,7 @@ def extract_repo_path(remote_url: str):
 def process_git_directory(repo_path: str, token: str):
     print(f"\n--- Processing: {repo_path} ---")
     if repo_path == "/Users/pikeymickey" or repo_path == "/Users/Deleted Users/pikeymickey":
-        print(
-            "⏭️ DANGER: Target is the system user home directory. Hard-skipping to prevent massive secrets leak."
-        )
+        print("⏭️ DANGER: Target is the system user home directory. Hard-skipping to prevent massive secrets leak.")
         return
 
     if not os.path.isdir(os.path.join(repo_path, ".git")):

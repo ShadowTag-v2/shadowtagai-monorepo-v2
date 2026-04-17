@@ -23,9 +23,7 @@ def generate_four_file_proof():
                 "github_present": True,
                 "monorepo_present": True,
                 "destination_path": c["destination_path"],
-                "disposition": c["desired_status"]
-                if c["desired_status"] != "unclassified"
-                else "canonical_in_monorepo",
+                "disposition": c["desired_status"] if c["desired_status"] != "unclassified" else "canonical_in_monorepo",
                 "latest_sha": c["latest_sha"],
                 "duplicate_family": c["duplicate_family"],
                 "blocker": "none",
@@ -61,13 +59,7 @@ def generate_four_file_proof():
 
     # 04_canonical_state.md
     total_repos = len(census)
-    len(
-        [
-            c
-            for c in census
-            if c["desired_status"] in ["canonical_in_monorepo", "queued_for_fold_in"]
-        ]
-    ) + len(delta)
+    len([c for c in census if c["desired_status"] in ["canonical_in_monorepo", "queued_for_fold_in"]]) + len(delta)
     # The script made everything canonical.
     with open("04_canonical_state.md", "w") as f:
         f.write("# Executive Truth File\n\n")
@@ -89,9 +81,7 @@ def generate_four_file_proof():
         f.write("- **nested-git result:** NO NESTED GIT\n")
         f.write("- **final verdict:** COMPLETE\n")
 
-    print(
-        "FOUR_FILE_REPORT_READY\n- 01_repo_census.json\n- 02_merge_plan.md\n- 03_execution_log.md\n- 04_canonical_state.md"
-    )
+    print("FOUR_FILE_REPORT_READY\n- 01_repo_census.json\n- 02_merge_plan.md\n- 03_execution_log.md\n- 04_canonical_state.md")
 
 
 if __name__ == "__main__":

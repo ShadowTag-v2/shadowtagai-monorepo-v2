@@ -180,9 +180,7 @@ def push_commits_individually(
             print(f"    ↳ [{j + 1}/{len(commits)}] ⚠️ failed — escalating (fresh token + 600s)...")
             time.sleep(5)
             current_token, _ = token_issuer(target)
-            ok = push_chunk(
-                sha, branch, current_token, force=force, timeout=600, post_buffer=52428800
-            )
+            ok = push_chunk(sha, branch, current_token, force=force, timeout=600, post_buffer=52428800)
             if ok:
                 pushed += 1
                 print(f"    ↳ [{j + 1}/{len(commits)}] ✅ pushed (escalation succeeded)")
@@ -292,9 +290,7 @@ def main():
 
         target_sha = chunk_commits[-1]
         short_sha = target_sha[:12]
-        print(
-            f"\n  [{chunk_num}/{total_chunks}] Pushing {len(chunk_commits)} commits up to {short_sha}..."
-        )
+        print(f"\n  [{chunk_num}/{total_chunks}] Pushing {len(chunk_commits)} commits up to {short_sha}...")
 
         # Try the batch push
         success = push_chunk(target_sha, args.branch, access_token, force=force, timeout=300)
@@ -304,9 +300,7 @@ def main():
             print(f"  [{chunk_num}/{total_chunks}] ✅ Batch pushed ({pushed} chunks done)")
         else:
             # === ADAPTIVE SPLIT: push commits individually ===
-            print(
-                f"  [{chunk_num}/{total_chunks}] ⚠️ Batch failed — splitting into {len(chunk_commits)} individual commits..."
-            )
+            print(f"  [{chunk_num}/{total_chunks}] ⚠️ Batch failed — splitting into {len(chunk_commits)} individual commits...")
             time.sleep(3)
             access_token, org = issue_token(args.target)
             chunks_since_token = 0
@@ -322,9 +316,7 @@ def main():
             if ok:
                 pushed += 1
                 chunks_since_token += 1
-                print(
-                    f"  [{chunk_num}/{total_chunks}] ✅ All {sub_pushed} sub-commits pushed (adaptive split)"
-                )
+                print(f"  [{chunk_num}/{total_chunks}] ✅ All {sub_pushed} sub-commits pushed (adaptive split)")
             else:
                 print(f"  ABORT: Chunk {chunk_num} failed even with individual commits.")
                 print(f"  💡 Hint: resume later with --resume-from {chunk_num}")

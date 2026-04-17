@@ -42,11 +42,7 @@ for root_dir in scan_dirs:
         # Determine status
         status = "Unknown"
         ds_path = str(repo_dir)
-        if (
-            "Monorepo-Uphillsnowball" in ds_path
-            and "external_sdks" not in ds_path
-            and "incoming_repos" not in ds_path
-        ):
+        if "Monorepo-Uphillsnowball" in ds_path and "external_sdks" not in ds_path and "incoming_repos" not in ds_path:
             status = "**Canonical (Monorepo Root)**"
         elif "archive_legacy_" in ds_path or "archive" in ds_path:
             status = "Archive"
@@ -58,9 +54,7 @@ for root_dir in scan_dirs:
             status = "Duplicate Git Clone"
 
         clean_path = ds_path.replace(os.path.expanduser("~"), "~")
-        markdown_rows.append(
-            f"| `{clean_path}` | `{remote_url if remote_url else 'NONE'}` | {status} |"
-        )
+        markdown_rows.append(f"| `{clean_path}` | `{remote_url if remote_url else 'NONE'}` | {status} |")
 
 # Also find raw non-git folders that match the target names
 target_names = [
@@ -76,11 +70,7 @@ for root_dir in scan_dirs:
         continue
     for path in root_path.rglob("*"):
         if path.is_dir() and path.name in target_names and not (path / ".git").exists():
-            if (
-                "node_modules" in str(path)
-                or ".venv" in str(path)
-                or "apps/ShadowTag-v2_stack" in str(path)
-            ):
+            if "node_modules" in str(path) or ".venv" in str(path) or "apps/ShadowTag-v2_stack" in str(path):
                 continue
             clean_path = str(path).replace(os.path.expanduser("~"), "~")
             markdown_rows.append(f"| `{clean_path}` | `NONE` | Non-Git Folder / Flat Copy |")

@@ -4,6 +4,7 @@ Nano Banana 2 — Batch Image Regeneration
 Model: gemini-3.1-flash-image-preview
 Regenerates ALL website graphics + pitch deck assets.
 """
+
 import os
 import sys
 import time
@@ -166,6 +167,7 @@ IMAGES = [
     },
 ]
 
+
 def generate_image(item):
     """Generate a single image and save it."""
     print(f"\n🎨 Generating: {item['name']}...")
@@ -188,6 +190,7 @@ def generate_image(item):
     except Exception as e:
         print(f"   ❌ Error: {e}")
         return False
+
 
 if __name__ == "__main__":
     print("=" * 60)

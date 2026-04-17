@@ -20,9 +20,7 @@ res.raise_for_status()
 installations = res.json()
 
 inst_id = installations[0]["id"]
-res2 = requests.post(
-    f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers
-)
+res2 = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
 token = res2.json()["token"]
 
 remote_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"

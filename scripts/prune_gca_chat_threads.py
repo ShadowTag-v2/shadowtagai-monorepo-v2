@@ -185,18 +185,10 @@ def vacuum_db(db_path: Path | str) -> dict:
 def trigger_mac_notification(size_mb: float) -> None:
     """Fires a macOS notification and text-to-speech sound."""
     title = "🚨 IDE Bloat Alert"
-    message = (
-        f"state.vscdb has ballooned to {size_mb:.1f} MB! "
-        "Cmd+Q your IDE and run the prune script."
-    )
+    message = f"state.vscdb has ballooned to {size_mb:.1f} MB! Cmd+Q your IDE and run the prune script."
     print(f"\n🔊 Triggering alert! DB is {size_mb:.1f} MB.")
-    subprocess.run(
-        ["osascript", "-e",
-         f'display notification "{message}" with title "{title}" sound name "Basso"']
-    )
-    subprocess.run(
-        ["say", "Warning. IDE database is bloated. Please close the editor and vacuum."]
-    )
+    subprocess.run(["osascript", "-e", f'display notification "{message}" with title "{title}" sound name "Basso"'])
+    subprocess.run(["say", "Warning. IDE database is bloated. Please close the editor and vacuum."])
 
 
 def monitor_mode(threshold_mb: float = 20.0) -> None:
@@ -278,11 +270,7 @@ def cli_write(keep: int = 0) -> None:
     vac = vacuum_db(db_path)
     if vac["success"]:
         pct = (vac["recovered"] / vac["before_size"] * 100) if vac["before_size"] > 0 else 0
-        print(
-            f"VACUUM recovered {pct:.1f}% — "
-            f"from {vac['before_size'] / 1024 / 1024:.1f} MB "
-            f"down to {vac['after_size'] / 1024 / 1024:.1f} MB"
-        )
+        print(f"VACUUM recovered {pct:.1f}% — from {vac['before_size'] / 1024 / 1024:.1f} MB down to {vac['after_size'] / 1024 / 1024:.1f} MB")
 
 
 def cli_dry_run() -> None:

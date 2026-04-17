@@ -46,12 +46,12 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, List, Optional, Any
-from enum import Enum
+from enum import Enum, StrEnum
 
 logger = logging.getLogger(__name__)
 
 
-class WealthLens(str, Enum):
+class WealthLens(StrEnum):
     """The 3 wealth analysis lenses"""
 
     LEAKS = "leaks"  # Waste detection
@@ -59,7 +59,7 @@ class WealthLens(str, Enum):
     LEVERAGE = "leverage"  # Compounding effects
 
 
-class LeakSeverity(str, Enum):
+class LeakSeverity(StrEnum):
     """Severity of detected leak"""
 
     CRITICAL = "critical"  # >20% waste
@@ -216,9 +216,7 @@ class WealthAnalysis:
         lines.extend(["", "", "SECTION 3: CHALLENGE (Leverage)", "-" * 80, ""])
 
         if self.leverage_opportunities:
-            for opp in sorted(
-                self.leverage_opportunities, key=lambda o: o.projected_3yr_value, reverse=True
-            ):
+            for opp in sorted(self.leverage_opportunities, key=lambda o: o.projected_3yr_value, reverse=True):
                 lines.append(opp.to_challenge())
                 lines.append("")
             lines.append(f"🚀 TOTAL 3-YEAR LEVERAGE VALUE: ${self.total_leverage_value:,.0f}")
@@ -264,10 +262,7 @@ class WealthOptimizer:
         self.target_tier_1_ratio = target_tier_1_ratio
         self.target_cost_per_item = target_cost_per_item
 
-        logger.info(
-            f"WealthOptimizer initialized: target_tier_1={target_tier_1_ratio:.1%}, "
-            f"target_cost={target_cost_per_item:.3f}"
-        )
+        logger.info(f"WealthOptimizer initialized: target_tier_1={target_tier_1_ratio:.1%}, target_cost={target_cost_per_item:.3f}")
 
     async def analyze(
         self,
@@ -297,12 +292,8 @@ class WealthOptimizer:
         analysis.total_projected_gain = sum(r.projected_gain for r in analysis.redesigns)
 
         # 3. IDENTIFY LEVERAGE (Challenge)
-        analysis.leverage_opportunities = await self._identify_leverage(
-            ingestion_result, historical_data
-        )
-        analysis.total_leverage_value = sum(
-            opp.projected_3yr_value for opp in analysis.leverage_opportunities
-        )
+        analysis.leverage_opportunities = await self._identify_leverage(ingestion_result, historical_data)
+        analysis.total_leverage_value = sum(opp.projected_3yr_value for opp in analysis.leverage_opportunities)
 
         # Calculate summary metrics
         analysis.net_monthly_improvement = analysis.total_projected_gain - analysis.total_leak_cost
@@ -490,9 +481,7 @@ class WealthOptimizer:
 
         return redesigns
 
-    async def _identify_leverage(
-        self, result: Any, historical_data: list[Any] | None
-    ) -> list[LeverageOpportunity]:
+    async def _identify_leverage(self, result: Any, historical_data: list[Any] | None) -> list[LeverageOpportunity]:
         """Identify compounding leverage opportunities"""
         opportunities = []
 

@@ -81,9 +81,7 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
 
     print(f"❓ Question: {query}")
     try:
-        response = model.generate_content(
-            query, tools=[grounding_tool], generation_config={"temperature": 0.0}
-        )
+        response = model.generate_content(query, tools=[grounding_tool], generation_config={"temperature": 0.0})
         print("\n⚖️  Judge #6 Verdict:")
         print(response.text)
 

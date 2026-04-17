@@ -46,9 +46,7 @@ def get_app_token(app_id, pem_path):
 def push_repo():
     # ShadowTag-v2 App Configuration
     APP_ID = "3018200"
-    PEM_PATH = (
-        "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
-    )
+    PEM_PATH = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
     # Fallback to ehanc69 App if needed:
     # EHANC69_APP_ID = '3018080'
     # EHANC69_PEM_PATH = '/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem'
@@ -61,9 +59,7 @@ def push_repo():
 
     try:
         print("[-] Transmitting Omega-Loop commit upstream...")
-        push_proc = subprocess.run(
-            ["git", "push", "origin", "HEAD:main"], capture_output=True, text=True
-        )
+        push_proc = subprocess.run(["git", "push", "origin", "HEAD:main"], capture_output=True, text=True)
 
         if push_proc.returncode == 0:
             print("[+] Transmission Complete. Codebase successfully synchronized.")
