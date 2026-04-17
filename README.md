@@ -25,3 +25,62 @@ Use the existing monorepo control-plane files as workspace/root truth.
 Install v10 as the memory-first control and enforcement layer.
 Use operator invariants as startup law.
 Use the fold-in checklist as the 56-repo migration control file.
+
+---
+
+## Maintenance
+
+### GCA State DB Pruner (`scripts/prune_gca_chat_threads.py`)
+
+Gemini Code Assist stores unbounded chat history in the IDE's SQLite state
+database (`state.vscdb`), which can balloon to 60+ MB and cause
+"Unresponsive Extension Host" crashes. This script surgically prunes only the
+`geminiCodeAssist.chatThreads` payload — all auth, project, and survey state
+is preserved byte-for-byte.
+
+**Usage:**
+
+```bash
+# Inspect without touching anything
+python3 scripts/prune_gca_chat_threads.py --dry-run
+
+# Prune + VACUUM (IDE MUST BE CLOSED)
+python3 scripts/prune_gca_chat_threads.py --write
+
+# Keep the 5 newest threads
+python3 scripts/prune_gca_chat_threads.py --write --keep 5
+
+# Only reclaim SQLite dead space (no prune)
+python3 scripts/prune_gca_chat_threads.py --vacuum-only
+
+# Background watchdog (macOS notifications + speech)
+python3 scripts/prune_gca_chat_threads.py --monitor --threshold 20
+```
+
+### Automation
+
+| Method | Schedule | What |
+|--------|----------|------|
+| `launchd` | Login | `--monitor --threshold 20` (alerts if DB > 20MB) |
+| `cron` | Sunday 3AM | `--write` (prune + VACUUM) |
+
+**launchd plist:** `~/Library/LaunchAgents/com.shadowtag.gca-monitor.plist`
+
+### Manual Escape Hatch
+
+If the IDE is completely unresponsive and you can't run the script, use this
+raw SQLite one-liner from a standalone terminal:
+
+```bash
+# 1. QUIT the IDE completely (Cmd+Q)
+# 2. Run this:
+DB="$HOME/Library/Application Support/Antigravity/User/globalStorage/state.vscdb"
+cp "$DB" "$DB.emergency-backup"
+sqlite3 "$DB" "UPDATE ItemTable SET value = json_set(value, '$.\"geminiCodeAssist.chatThreads\"', json('[]')) WHERE key = 'google.geminicodeassist';"
+sqlite3 "$DB" "VACUUM;"
+echo "Done. Reopen IDE."
+```
+
+> **Warning:** This bypasses the script's safety checks. Use only as a
+> last resort. The script (`--write`) is always preferred because it
+> creates timestamped backups and validates JSON integrity first.
