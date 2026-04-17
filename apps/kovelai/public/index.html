@@ -94,16 +94,33 @@
 <link rel="preconnect" href="https://www.googletagmanager.com" />
 <link rel="preconnect" href="https://storage.googleapis.com" />
 <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
-<link rel="preload" as="image" href="/images/hero-poster-opt.webp" />
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="preload" as="image" href="/images/hero-poster-opt.webp" fetchpriority="high" />
 <script src="/js/three.min.js" defer></script>
+<!-- Critical above-fold CSS (hero renders before Tailwind loads) -->
+<style id="critical-css">
+  body{margin:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#110f09;color:#f5ede0;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  .hero-section{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden}
+  img,video{max-width:100%;height:auto}
+  /* font-display: swap for all custom fonts */
+  @font-face{font-family:'Inter';font-display:swap;src:local('Inter')}
+</style>
+<!-- Tailwind CDN loaded async — non-render-blocking -->
+<script>
+(function(){
+  var s=document.createElement('script');
+  s.src='https://cdn.tailwindcss.com?plugins=forms,container-queries';
+  s.onload=function(){if(window.tailwind&&tailwind.config)tailwind.config=window.__tw_cfg};
+  document.head.appendChild(s);
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/></noscript>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/></noscript>
 <script src="https://www.google.com/recaptcha/api.js?render=6LfLP7EsAAAAAAXMAb0d47AyLjtsqQSqU_MG4Z27" async defer></script>
 <script id="tailwind-config">
-      tailwind.config = {
+    window.__tw_cfg = {
         darkMode: "class",
         theme: {
           extend: {
@@ -199,7 +216,10 @@
             }
           }
         }
-      }
+      };
+      // Apply config immediately if Tailwind already loaded (cached), 
+      // otherwise async loader will apply via window.__tw_cfg
+      try { if(typeof tailwind !== 'undefined') tailwind.config = window.__tw_cfg; } catch(e){}
     </script>
 <style>
       html, body { overflow-x: hidden; }
@@ -922,8 +942,8 @@ Submit Inquiry
        loading="lazy"
        poster="/images/hero-poster-opt.webp"
        onloadeddata="this.classList.add('loaded')">
-    <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4" type="video/mp4">
     <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/shadowtag-omega-v4-archive/hero-videos/legal-data-arch-compressed.mp4" type="video/mp4">
 </video>
 <div class="hero-video-vignette"></div>
 <!-- Layer 2: Three.js Wireframe Shield -->
