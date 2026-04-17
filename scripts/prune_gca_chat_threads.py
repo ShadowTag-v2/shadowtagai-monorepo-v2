@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
-"""Surgical pruner for geminiCodeAssist.chatThreads in Antigravity/VS Code state DB.
+"""Dual-mode surgical pruner for geminiCodeAssist.chatThreads in IDE state DB.
 
 Removes only the chat-thread history payload from the global state database,
 preserving all other Gemini Code Assist settings (auth, projects, survey state, etc.).
 
-Usage:
+Two modes:
+    1. MONITOR — Runs in the background and yells at you (Mac notifications + speech)
+       if the state DB crosses a size threshold.
+
+       python3 scripts/prune_gca_chat_threads.py --monitor
+
+    2. WRITE — Safely performs backup, surgical JSON prune, and SQLite VACUUM.
+       IDE MUST BE CLOSED.
+
+       python3 scripts/prune_gca_chat_threads.py --write
+
+Other usage:
     # Dry run (default) — shows what would change
     python3 scripts/prune_gca_chat_threads.py --dry-run
-
-    # Actually prune (creates timestamped backup first)
-    python3 scripts/prune_gca_chat_threads.py --write
 
     # Custom file target
     python3 scripts/prune_gca_chat_threads.py --file ~/path/to/state.vscdb --write
@@ -26,7 +34,9 @@ import json
 import os
 import shutil
 import sqlite3
+import subprocess
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -34,9 +44,13 @@ from pathlib import Path
 # ── Constants ──────────────────────────────────────────────────────────────────
 STATE_KEY = "google.geminicodeassist"
 THREADS_FIELD = "geminiCodeAssist.chatThreads"
+BLOAT_THRESHOLD_MB = 20.0
+MONITOR_INTERVAL_SECONDS = 600  # 10 minutes
+MONITOR_COOLDOWN_SECONDS = 3600  # 1 hour after alert
 
 DEFAULT_PATHS = [
     "~/Library/Application Support/Antigravity/User/globalStorage/state.vscdb",
+    "~/.antigravity/data/User/globalStorage/state.vscdb",
     "~/Library/Application Support/Code/User/globalStorage/state.vscdb",
     "~/.config/Antigravity/User/globalStorage/state.vscdb",
     "~/.config/Code/User/globalStorage/state.vscdb",
@@ -176,6 +190,83 @@ def prune(db_path: Path, keep: int = 0) -> dict:
     }
 
 
+def vacuum_db(db_path: Path) -> dict:
+    """Run VACUUM on the SQLite database to reclaim dead space."""
+    before_size = db_path.stat().st_size
+    try:
+        conn = sqlite3.connect(str(db_path))
+        conn.execute("VACUUM")
+        conn.close()
+        after_size = db_path.stat().st_size
+        return {
+            "success": True,
+            "before_size": before_size,
+            "after_size": after_size,
+            "reclaimed": before_size - after_size,
+        }
+    except sqlite3.OperationalError as e:
+        return {"success": False, "reason": str(e)}
+
+
+# ── Monitor Mode ──────────────────────────────────────────────────────────────
+def trigger_mac_notification(size_mb: float) -> None:
+    """Fires a loud macOS notification and text-to-speech sound."""
+    title = "🚨 IDE Bloat Alert"
+    message = (
+        f"state.vscdb has ballooned to {size_mb:.1f} MB! "
+        "Cmd+Q your IDE and run the prune script."
+    )
+    print(f"\n🔊 Triggering alert! DB is {size_mb:.1f} MB.")
+
+    try:
+        subprocess.run(
+            [
+                "osascript", "-e",
+                f'display notification "{message}" with title "{title}" '
+                f'sound name "Basso"'
+            ],
+            check=False, capture_output=True, timeout=5,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass  # Not on macOS or osascript hung
+
+    try:
+        subprocess.run(
+            ["say", "Warning. IDE database is bloated. "
+             "Please close the editor and vacuum."],
+            check=False, capture_output=True, timeout=15,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass  # Not on macOS or say hung
+
+
+def monitor_mode(db_path: Path) -> None:
+    """Runs a noisy background monitor to check DB size."""
+    print(f"👁️  Monitoring: {db_path}")
+    print(f"   Threshold: {BLOAT_THRESHOLD_MB} MB")
+    print(f"   Check interval: {MONITOR_INTERVAL_SECONDS}s")
+    print(f"   Cooldown after alert: {MONITOR_COOLDOWN_SECONDS}s")
+    print()
+
+    while True:
+        try:
+            size_bytes = db_path.stat().st_size
+            size_mb = size_bytes / (1024 * 1024)
+            ts = datetime.now().strftime("%H:%M:%S")
+
+            if size_mb > BLOAT_THRESHOLD_MB:
+                print(f"[{ts}] ⚠️  {size_mb:.1f} MB — OVER THRESHOLD!")
+                trigger_mac_notification(size_mb)
+                time.sleep(MONITOR_COOLDOWN_SECONDS)
+            else:
+                print(f"[{ts}] ✅ {size_mb:.1f} MB — OK")
+                time.sleep(MONITOR_INTERVAL_SECONDS)
+        except FileNotFoundError:
+            print(f"[{datetime.now():%H:%M:%S}] ❓ DB not found, retrying...")
+            time.sleep(MONITOR_INTERVAL_SECONDS)
+
+
+# ── CLI ───────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(
         description="Prune geminiCodeAssist.chatThreads from IDE state DB"
@@ -185,7 +276,12 @@ def main():
         "--dry-run", action="store_true", help="Inspect only, no changes"
     )
     mode.add_argument(
-        "--write", action="store_true", help="Actually prune (creates backup first)"
+        "--write", action="store_true",
+        help="Prune DB & reclaim space. IDE MUST BE CLOSED!",
+    )
+    mode.add_argument(
+        "--monitor", action="store_true",
+        help="Run in background & yell if DB > threshold",
     )
     parser.add_argument("--file", type=str, help="Explicit path to state.vscdb")
     parser.add_argument(
@@ -201,15 +297,23 @@ def main():
 
     db_path = locate_db(args.file)
     if not db_path:
-        print("ERROR: Could not locate state.vscdb")
+        print("❌ Error: Could not locate state.vscdb.")
         print("Searched:", DEFAULT_PATHS)
         sys.exit(1)
 
+    # ── Monitor mode ──────────────────────────────────────────────────────
+    if args.monitor:
+        try:
+            monitor_mode(db_path)
+        except KeyboardInterrupt:
+            print("\nExiting monitor.")
+        return
+
+    # ── Inspect + Write/DryRun ────────────────────────────────────────────
     print(f"State DB: {db_path}")
     print(f"File size: {db_path.stat().st_size:,} bytes")
     print()
 
-    # ── Inspect ────────────────────────────────────────────────────────────
     metrics = inspect(db_path)
     if not metrics["found"]:
         print(f"Key '{STATE_KEY}' not found in database. Nothing to do.")
@@ -235,7 +339,7 @@ def main():
         print("Run with --write to apply.")
         sys.exit(0)
 
-    # ── Write ──────────────────────────────────────────────────────────────
+    # ── Write mode ────────────────────────────────────────────────────────
     print("──── WRITE MODE ────")
     backup = backup_db(db_path, args.backup_dir)
     print(f"Backup created: {backup}")
@@ -245,12 +349,10 @@ def main():
     except sqlite3.OperationalError as e:
         if "database is locked" in str(e).lower():
             print()
-            print("⚠️  DATABASE IS LOCKED by the running IDE.")
-            print("   Close Antigravity completely, then re-run this script")
-            print("   from a standalone Terminal:")
-            print()
+            print("⚠️  ERROR: Database is locked by the active IDE instance.")
             print(
-                "   python3 scripts/prune_gca_chat_threads.py --write"
+                "🚨 USER ACTION REQUIRED: Cmd+Q to completely quit "
+                "Antigravity, then run this script again."
             )
             sys.exit(1)
         raise
@@ -260,13 +362,27 @@ def main():
         sys.exit(1)
 
     print()
-    print(f"Before:  {result['before_bytes']:>12,} bytes")
-    print(f"After:   {result['after_bytes']:>12,} bytes")
-    print(f"Freed:   {result['freed_bytes']:>12,} bytes")
+    print(f"📉 Before:    {result['before_bytes']:>12,} bytes")
+    print(f"🔥 After:     {result['after_bytes']:>12,} bytes")
+    print(f"⚡ Freed:     {result['freed_bytes']:>12,} bytes")
     print(
-        f"Threads: {result['threads_before_bytes']:>12,} → "
+        f"   Threads:   {result['threads_before_bytes']:>12,} → "
         f"{result['threads_after_bytes']:,} bytes"
     )
+
+    # ── VACUUM ────────────────────────────────────────────────────────────
+    print()
+    print("Running VACUUM to reclaim SQLite dead space...")
+    vac = vacuum_db(db_path)
+    if vac["success"]:
+        print(f"   DB file before VACUUM: {vac['before_size']:>12,} bytes")
+        print(f"   DB file after VACUUM:  {vac['after_size']:>12,} bytes")
+        print(f"   Disk reclaimed:        {vac['reclaimed']:>12,} bytes")
+    else:
+        print(f"   ⚠️  VACUUM failed: {vac['reason']}")
+        if "locked" in vac.get("reason", "").lower():
+            print("   Close the IDE and re-run to VACUUM.")
+
     print()
     print("✅ Successfully pruned geminiCodeAssist.chatThreads")
     print("   Reopen the IDE to verify GCA still loads and auth is intact.")
