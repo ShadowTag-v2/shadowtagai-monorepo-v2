@@ -15,7 +15,8 @@
 from __future__ import annotations
 
 import itertools
-from typing import TYPE_CHECKING, Iterator, List, Optional
+from typing import TYPE_CHECKING, List, Optional
+from collections.abc import Iterator
 
 from google.cloud.firestore import DocumentReference  # type: ignore
 from langchain_community.document_loaders.base import BaseLoader
@@ -44,8 +45,8 @@ class FirestoreLoader(BaseLoader):
     def __init__(
         self,
         source: Query | CollectionGroup | DocumentReference | str,
-        page_content_fields: List[str] = [],
-        metadata_fields: List[str] = [],
+        page_content_fields: list[str] = [],
+        metadata_fields: list[str] = [],
         client: Client = None,
     ) -> None:
         """Document Loader for Google Cloud Firestore.
@@ -66,7 +67,7 @@ class FirestoreLoader(BaseLoader):
         self.page_content_fields = page_content_fields
         self.metadata_fields = metadata_fields
 
-    def load(self) -> List[Document]:
+    def load(self) -> list[Document]:
         """Load Documents."""
         return list(self.lazy_load())
 
@@ -98,8 +99,8 @@ class FirestoreSaver:
 
     def __init__(
         self,
-        collection: Optional[str] = None,
-        client: Optional[Client] = None,
+        collection: str | None = None,
+        client: Client | None = None,
     ) -> None:
         """Document Saver for Google Cloud Firestore.
 
@@ -113,9 +114,9 @@ class FirestoreSaver:
 
     def upsert_documents(
         self,
-        documents: List[Document],
-        merge: Optional[bool] = False,
-        document_ids: Optional[List[str]] = None,
+        documents: list[Document],
+        merge: bool | None = False,
+        document_ids: list[str] | None = None,
     ) -> None:
         """Create / merge documents into the Firestore database.
 
@@ -162,8 +163,8 @@ class FirestoreSaver:
 
     def delete_documents(
         self,
-        documents: List[Document],
-        document_ids: Optional[List[str]] = None,
+        documents: list[Document],
+        document_ids: list[str] | None = None,
     ) -> None:
         """Delete documents from the Firestore database.
 

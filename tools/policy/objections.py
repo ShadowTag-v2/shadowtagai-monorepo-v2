@@ -18,7 +18,7 @@ import json
 import logging
 import os
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
@@ -61,7 +61,7 @@ class Objection:
     context: dict[str, Any] = field(default_factory=dict)
     resolution: ObjectionResolution = ObjectionResolution.PENDING
     timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        default_factory=lambda: datetime.now(UTC).isoformat(),
     )
 
 

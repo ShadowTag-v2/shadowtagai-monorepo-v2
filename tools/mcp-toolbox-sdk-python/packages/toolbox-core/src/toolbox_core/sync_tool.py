@@ -17,7 +17,8 @@ import asyncio
 from asyncio import AbstractEventLoop
 from inspect import Signature
 from threading import Thread
-from typing import Any, Awaitable, Callable, Mapping, Sequence, Union
+from typing import Any, Union
+from collections.abc import Awaitable, Callable, Mapping, Sequence
 
 from .protocol import ParameterSchema
 from .tool import ToolboxTool
@@ -72,7 +73,7 @@ class ToolboxSyncTool:
         return self.__async_tool.__name__
 
     @property
-    def __doc__(self) -> Union[str, None]:  # type: ignore[override]
+    def __doc__(self) -> str | None:  # type: ignore[override]
         # Standard Python object attributes like __doc__ are technically "writable".
         # But not defining a setter function makes this a read-only property.
         # Mypy flags this issue in the type checks.
@@ -104,7 +105,7 @@ class ToolboxSyncTool:
     @property
     def _bound_params(
         self,
-    ) -> Mapping[str, Union[Callable[[], Any], Callable[[], Awaitable[Any]], Any]]:
+    ) -> Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any]:
         return self.__async_tool._bound_params
 
     @property
@@ -118,13 +119,13 @@ class ToolboxSyncTool:
     @property
     def _auth_service_token_getters(
         self,
-    ) -> Mapping[str, Union[Callable[[], str], Callable[[], Awaitable[str]]]]:
+    ) -> Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]]:
         return self.__async_tool._auth_service_token_getters
 
     @property
     def _client_headers(
         self,
-    ) -> Mapping[str, Union[Callable[[], str], Callable[[], Awaitable[str]], str]]:
+    ) -> Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str]:
         return self.__async_tool._client_headers
 
     def __call__(self, *args: Any, **kwargs: Any) -> str:
@@ -147,7 +148,7 @@ class ToolboxSyncTool:
     def add_auth_token_getters(
         self,
         auth_token_getters: Mapping[
-            str, Union[Callable[[], str], Callable[[], Awaitable[str]]]
+            str, Callable[[], str] | Callable[[], Awaitable[str]]
         ],
     ) -> "ToolboxSyncTool":
         """
@@ -173,7 +174,7 @@ class ToolboxSyncTool:
     def add_auth_token_getter(
         self,
         auth_source: str,
-        get_id_token: Union[Callable[[], str], Callable[[], Awaitable[str]]],
+        get_id_token: Callable[[], str] | Callable[[], Awaitable[str]],
     ) -> "ToolboxSyncTool":
         """
         Registers an auth token getter function that is used for AuthService
@@ -197,7 +198,7 @@ class ToolboxSyncTool:
     def bind_params(
         self,
         bound_params: Mapping[
-            str, Union[Callable[[], Any], Callable[[], Awaitable[Any]], Any]
+            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
         ],
     ) -> "ToolboxSyncTool":
         """
@@ -221,7 +222,7 @@ class ToolboxSyncTool:
     def bind_param(
         self,
         param_name: str,
-        param_value: Union[Callable[[], Any], Callable[[], Awaitable[Any]], Any],
+        param_value: Callable[[], Any] | Callable[[], Awaitable[Any]] | Any,
     ) -> "ToolboxSyncTool":
         """
         Binds a parameter to the value or callable that produce the value.

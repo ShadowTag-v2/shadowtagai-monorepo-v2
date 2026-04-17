@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from contextvars import ContextVar
-from typing import Any, Awaitable, Callable, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
+from collections.abc import Awaitable, Callable
 
 import google.auth
 import toolbox_core
@@ -22,7 +23,7 @@ from google.oauth2 import id_token
 
 from .credentials import CredentialConfig, CredentialType
 
-USER_TOKEN_CONTEXT_VAR: ContextVar[Optional[str]] = ContextVar(
+USER_TOKEN_CONTEXT_VAR: ContextVar[str | None] = ContextVar(
     "toolbox_user_token", default=None
 )
 
@@ -35,10 +36,8 @@ class ToolboxClient:
     def __init__(
         self,
         server_url: str,
-        credentials: Optional[CredentialConfig] = None,
-        additional_headers: Optional[
-            Dict[str, Union[str, Callable[[], str], Callable[[], Awaitable[str]]]]
-        ] = None,
+        credentials: CredentialConfig | None = None,
+        additional_headers: dict[str, str | Callable[[], str] | Callable[[], Awaitable[str]]] | None = None,
         telemetry_enabled: bool = False,
         **kwargs: Any,
     ):
@@ -50,8 +49,8 @@ class ToolboxClient:
             telemetry_enabled: Whether to enable OpenTelemetry tracing and metrics. (Default: False)
             **kwargs: Additional arguments passed to toolbox_core.ToolboxClient.
         """
-        self._core_client_headers: Dict[
-            str, Union[str, Callable[[], str], Callable[[], Awaitable[str]]]
+        self._core_client_headers: dict[
+            str, str | Callable[[], str] | Callable[[], Awaitable[str]]
         ] = {}
         self._credentials = credentials
 
@@ -156,11 +155,11 @@ class ToolboxClient:
         return get_token
 
     @property
-    def credential_config(self) -> Optional[CredentialConfig]:
+    def credential_config(self) -> CredentialConfig | None:
         return self._credentials
 
     async def load_toolset(
-        self, toolset_name: Optional[str] = None, **kwargs: Any
+        self, toolset_name: str | None = None, **kwargs: Any
     ) -> Any:
         return await self._client.load_toolset(toolset_name, **kwargs)
 

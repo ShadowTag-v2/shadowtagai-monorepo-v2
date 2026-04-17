@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Awaitable, Callable, Mapping, Optional, Union
+from typing import Any, Optional, Union
+from collections.abc import Awaitable, Callable, Mapping
 from warnings import warn
 
 from aiohttp import ClientSession
@@ -32,9 +33,7 @@ class AsyncToolboxClient:
         self,
         url: str,
         session: ClientSession,
-        client_headers: Optional[
-            Mapping[str, Union[Callable[[], str], Callable[[], Awaitable[str]], str]]
-        ] = None,
+        client_headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str] | None = None,
         protocol: Protocol = Protocol.MCP,
         telemetry_enabled: bool = False,
     ):
@@ -60,9 +59,9 @@ class AsyncToolboxClient:
         self,
         tool_name: str,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
     ) -> AsyncToolboxTool:
         """
         Loads the tool with the given tool name from the Toolbox service.
@@ -114,11 +113,11 @@ class AsyncToolboxClient:
 
     async def aload_toolset(
         self,
-        toolset_name: Optional[str] = None,
+        toolset_name: str | None = None,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
         strict: bool = False,
     ) -> list[AsyncToolboxTool]:
         """
@@ -185,19 +184,19 @@ class AsyncToolboxClient:
         self,
         tool_name: str,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
     ) -> AsyncToolboxTool:
         raise NotImplementedError("Synchronous methods not supported by async client.")
 
     def load_toolset(
         self,
-        toolset_name: Optional[str] = None,
+        toolset_name: str | None = None,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
         strict: bool = False,
     ) -> list[AsyncToolboxTool]:
         raise NotImplementedError("Synchronous methods not supported by async client.")

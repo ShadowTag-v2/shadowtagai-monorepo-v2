@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import time
-from typing import Mapping, Optional, TypeVar
+from typing import Optional, TypeVar
+from collections.abc import Mapping
 
 from pydantic import BaseModel
 
@@ -31,13 +32,13 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._session_id: Optional[str] = None
+        self._session_id: str | None = None
 
     async def _send_request(
         self,
         url: str,
         request: types.MCPRequest[ReceiveResultT] | types.MCPNotification,
-        headers: Optional[Mapping[str, str]] = None,
+        headers: Mapping[str, str] | None = None,
     ) -> ReceiveResultT | None:
         """Sends a JSON-RPC request to the MCP server."""
         params = (
@@ -100,10 +101,10 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
             return None
 
     async def _initialize_session(
-        self, headers: Optional[Mapping[str, str]] = None
+        self, headers: Mapping[str, str] | None = None
     ) -> None:
         """Initializes the MCP session."""
-        meta: Optional[types.MCPMeta] = None
+        meta: types.MCPMeta | None = None
 
         if self._telemetry_enabled:
             self._session_start_time = time.time()
@@ -131,7 +132,7 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
             field_meta=meta,
         )
 
-        error: Optional[Exception] = None
+        error: Exception | None = None
         try:
             result = await self._send_request(
                 url=self._mcp_base_url,
@@ -192,15 +193,15 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
 
     async def tools_list(
         self,
-        toolset_name: Optional[str] = None,
-        headers: Optional[Mapping[str, str]] = None,
+        toolset_name: str | None = None,
+        headers: Mapping[str, str] | None = None,
     ) -> ManifestSchema:
         """Lists available tools from the server using the MCP protocol."""
         await self._ensure_initialized(headers=headers)
 
         url = self._mcp_base_url + (toolset_name if toolset_name else "")
 
-        meta: Optional[types.MCPMeta] = None
+        meta: types.MCPMeta | None = None
 
         if self._telemetry_enabled:
             operation_start = time.time()
@@ -217,7 +218,7 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
                     tracestate=tracestate or None,
                 )
 
-        error: Optional[Exception] = None
+        error: Exception | None = None
         try:
             result = await self._send_request(
                 url=url,
@@ -262,7 +263,7 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
                 telemetry.end_span(span, error=error)
 
     async def tool_get(
-        self, tool_name: str, headers: Optional[Mapping[str, str]] = None
+        self, tool_name: str, headers: Mapping[str, str] | None = None
     ) -> ManifestSchema:
         """Gets a single tool from the server by listing all and filtering."""
         manifest = await self.tools_list(headers=headers)
@@ -292,12 +293,12 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
         await super().close()
 
     async def tool_invoke(
-        self, tool_name: str, arguments: dict, headers: Optional[Mapping[str, str]]
+        self, tool_name: str, arguments: dict, headers: Mapping[str, str] | None
     ) -> str:
         """Invokes a specific tool on the server using the MCP protocol."""
         await self._ensure_initialized(headers=headers)
 
-        meta: Optional[types.MCPMeta] = None
+        meta: types.MCPMeta | None = None
 
         if self._telemetry_enabled:
             operation_start = time.time()
@@ -315,7 +316,7 @@ class McpHttpTransportV20250326(_McpHttpTransportBase):
                     tracestate=tracestate or None,
                 )
 
-        error: Optional[Exception] = None
+        error: Exception | None = None
         try:
             result = await self._send_request(
                 url=self._mcp_base_url,

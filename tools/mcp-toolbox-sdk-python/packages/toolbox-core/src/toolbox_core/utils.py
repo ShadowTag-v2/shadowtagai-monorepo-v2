@@ -17,15 +17,11 @@ import asyncio
 import warnings
 from typing import (
     Any,
-    Awaitable,
-    Callable,
-    Iterable,
-    Mapping,
-    Sequence,
     Type,
     Union,
     cast,
 )
+from collections.abc import Awaitable, Callable, Iterable, Mapping, Sequence
 
 from pydantic import BaseModel, Field, create_model
 
@@ -120,7 +116,7 @@ def identify_auth_requirements(
 
 def params_to_pydantic_model(
     tool_name: str, params: Sequence[ParameterSchema]
-) -> Type[BaseModel]:
+) -> type[BaseModel]:
     """Converts the given parameters to a Pydantic BaseModel class."""
     field_definitions = {}
     for field in params:
@@ -145,7 +141,7 @@ def params_to_pydantic_model(
 
 
 async def resolve_value(
-    source: Union[Callable[[], Any], Callable[[], Awaitable[Any]], Any],
+    source: Callable[[], Any] | Callable[[], Awaitable[Any]] | Any,
 ) -> Any:
     """
     Asynchronously or synchronously resolves a given source to its value.

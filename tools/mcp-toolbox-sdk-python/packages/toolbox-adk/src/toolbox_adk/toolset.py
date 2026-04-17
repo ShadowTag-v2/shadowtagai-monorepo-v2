@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Awaitable, Callable, Dict, List, Mapping, Optional, Union
+from typing import Any, Dict, List, Optional, Union
+from collections.abc import Awaitable, Callable, Mapping
 
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools.base_tool import BaseTool
@@ -34,24 +35,12 @@ class ToolboxToolset(BaseToolset):
     def __init__(
         self,
         server_url: str,
-        toolset_name: Optional[str] = None,
-        tool_names: Optional[List[str]] = None,
-        credentials: Optional[CredentialConfig] = None,
-        additional_headers: Optional[
-            Dict[str, Union[str, Callable[[], str], Callable[[], Awaitable[str]]]]
-        ] = None,
-        bound_params: Optional[Mapping[str, Union[Callable[[], Any], Any]]] = None,
-        auth_token_getters: Optional[
-            Mapping[
-                str,
-                Union[
-                    Callable[[], str],
-                    Callable[[], Awaitable[str]],
-                    Callable[[ToolContext], str],
-                    Callable[[ToolContext], Awaitable[str]],
-                ],
-            ]
-        ] = None,
+        toolset_name: str | None = None,
+        tool_names: list[str] | None = None,
+        credentials: CredentialConfig | None = None,
+        additional_headers: dict[str, str | Callable[[], str] | Callable[[], Awaitable[str]]] | None = None,
+        bound_params: Mapping[str, Callable[[], Any] | Any] | None = None,
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | Callable[[ToolContext], str] | Callable[[ToolContext], Awaitable[str]]] | None = None,
         **kwargs: Any,
     ):
         """
@@ -69,7 +58,7 @@ class ToolboxToolset(BaseToolset):
         self.__credentials = credentials
         self.__additional_headers = additional_headers
         self.__kwargs = kwargs
-        self.__client: Optional[ToolboxClient] = None
+        self.__client: ToolboxClient | None = None
 
         self.__toolset_name = toolset_name
         self.__tool_names = tool_names
@@ -89,8 +78,8 @@ class ToolboxToolset(BaseToolset):
 
     @override
     async def get_tools(
-        self, readonly_context: Optional[ReadonlyContext] = None
-    ) -> List[BaseTool]:
+        self, readonly_context: ReadonlyContext | None = None
+    ) -> list[BaseTool]:
         """Loads tools from the toolbox server and wraps them."""
         # Note: We don't close the client after get_tools because tools might need it.
 

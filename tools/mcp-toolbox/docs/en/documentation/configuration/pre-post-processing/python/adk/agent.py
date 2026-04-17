@@ -24,8 +24,8 @@ SYSTEM_PROMPT = """
 
 # Pre processing
 async def enfore_business_rules(
-    tool: ToolboxTool, args: Dict[str, Any], tool_context: ToolContext
-) -> Optional[Dict[str, Any]]:
+    tool: ToolboxTool, args: dict[str, Any], tool_context: ToolContext
+) -> dict[str, Any] | None:
     """
     Callback fired before a tool is executed.
     Enforces business logic: Max stay duration is 14 days.
@@ -47,10 +47,10 @@ async def enfore_business_rules(
 # Post processing
 async def enrich_response(
     tool: ToolboxTool,
-    args: Dict[str, Any],
+    args: dict[str, Any],
     tool_context: ToolContext,
     tool_response: Any,
-) -> Optional[Any]:
+) -> Any | None:
     """
     Callback fired after a tool execution.
     Enriches response for successful bookings.

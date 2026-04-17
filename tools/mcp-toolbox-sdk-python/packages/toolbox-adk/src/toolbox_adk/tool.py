@@ -14,7 +14,8 @@
 
 import inspect
 import logging
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, Optional
+from collections.abc import Mapping
 
 from fastapi.openapi.models import (
     OAuth2,
@@ -45,8 +46,8 @@ class ToolboxTool(BaseTool):
     def __init__(
         self,
         core_tool: CoreToolboxTool,
-        auth_config: Optional[CredentialConfig] = None,
-        adk_token_getters: Optional[Mapping[str, Any]] = None,
+        auth_config: CredentialConfig | None = None,
+        adk_token_getters: Mapping[str, Any] | None = None,
     ):
         """
         Args:
@@ -118,7 +119,7 @@ class ToolboxTool(BaseTool):
         )
 
     @override
-    def _get_declaration(self) -> Optional[FunctionDeclaration]:
+    def _get_declaration(self) -> FunctionDeclaration | None:
         """Gets the function declaration for the tool."""
         properties = {}
         required = []
@@ -149,7 +150,7 @@ class ToolboxTool(BaseTool):
     @override
     async def run_async(
         self,
-        args: Dict[str, Any],
+        args: dict[str, Any],
         tool_context: ToolContext,
     ) -> Any:
         # Check if USER_IDENTITY is configured
@@ -286,8 +287,8 @@ class ToolboxTool(BaseTool):
                         service, bound_getter
                     )
 
-        result: Optional[Any] = None
-        error: Optional[Exception] = None
+        result: Any | None = None
+        error: Exception | None = None
 
         try:
             # Execute the core tool
@@ -301,7 +302,7 @@ class ToolboxTool(BaseTool):
             if reset_token:
                 USER_TOKEN_CONTEXT_VAR.reset(reset_token)
 
-    def bind_params(self, bounded_params: Dict[str, Any]) -> "ToolboxTool":
+    def bind_params(self, bounded_params: dict[str, Any]) -> "ToolboxTool":
         """Allows runtime binding of parameters, delegating to core tool."""
         new_core_tool = self._core_tool.bind_params(bounded_params)
         # Return a new wrapper

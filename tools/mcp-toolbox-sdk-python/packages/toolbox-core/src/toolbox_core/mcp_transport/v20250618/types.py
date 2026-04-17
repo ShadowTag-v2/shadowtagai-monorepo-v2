@@ -133,7 +133,7 @@ class MCPRequest(_BaseMCPModel, Generic[ResultT]):
     method: str
     params: dict[str, Any] | BaseModel | None = None
 
-    def get_result_model(self) -> Type[ResultT]:
+    def get_result_model(self) -> type[ResultT]:
         raise NotImplementedError
 
 
@@ -146,7 +146,7 @@ class InitializeRequest(MCPRequest[InitializeResult]):
     method: Literal["initialize"] = "initialize"
     params: InitializeRequestParams
 
-    def get_result_model(self) -> Type[InitializeResult]:
+    def get_result_model(self) -> type[InitializeResult]:
         return InitializeResult
 
 
@@ -159,7 +159,7 @@ class ListToolsRequest(MCPRequest[ListToolsResult]):
     method: Literal["tools/list"] = "tools/list"
     params: ListToolsRequestParams = Field(default_factory=ListToolsRequestParams)
 
-    def get_result_model(self) -> Type[ListToolsResult]:
+    def get_result_model(self) -> type[ListToolsResult]:
         return ListToolsResult
 
 
@@ -175,5 +175,5 @@ class CallToolRequest(MCPRequest[CallToolResult]):
     method: Literal["tools/call"] = "tools/call"
     params: CallToolRequestParams
 
-    def get_result_model(self) -> Type[CallToolResult]:
+    def get_result_model(self) -> type[CallToolResult]:
         return CallToolResult

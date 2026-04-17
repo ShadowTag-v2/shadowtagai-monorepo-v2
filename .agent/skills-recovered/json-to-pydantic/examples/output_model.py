@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class Preferences(BaseModel):
     theme: str
-    notifications: List[str]
+    notifications: list[str]
 
 
 class User(BaseModel):
@@ -13,5 +13,5 @@ class User(BaseModel):
     username: str
     is_active: bool
     preferences: Preferences
-    last_login: Optional[str] = None
-    meta_tags: Optional[List[str]] = None
+    last_login: str | None = None
+    meta_tags: list[str] | None = None

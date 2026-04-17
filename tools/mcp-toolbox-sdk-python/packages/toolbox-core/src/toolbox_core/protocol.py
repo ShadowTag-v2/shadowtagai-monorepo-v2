@@ -47,7 +47,7 @@ __TYPE_MAP = {
 }
 
 
-def _get_python_type(type_name: str) -> Type:
+def _get_python_type(type_name: str) -> type:
     """
     A helper function to convert a schema type string to a Python type.
     """
@@ -64,7 +64,7 @@ class AdditionalPropertiesSchema(BaseModel):
 
     type: str
 
-    def get_value_type(self) -> Type:
+    def get_value_type(self) -> type:
         """Converts the string type to a Python type."""
         return _get_python_type(self.type)
 
@@ -78,18 +78,18 @@ class ParameterSchema(BaseModel):
     type: str
     required: bool = True
     description: str
-    authSources: Optional[list[str]] = None
+    authSources: list[str] | None = None
     items: Optional["ParameterSchema"] = None
-    additionalProperties: Optional[Union[bool, AdditionalPropertiesSchema]] = None
-    default: Optional[Any] = None
+    additionalProperties: bool | AdditionalPropertiesSchema | None = None
+    default: Any | None = None
 
     @property
     def has_default(self) -> bool:
         """Returns True if `default` was explicitly provided in schema input."""
         return "default" in self.model_fields_set
 
-    def __get_type(self) -> Type:
-        base_type: Type
+    def __get_type(self) -> type:
+        base_type: type
         if self.type == "array":
             if self.items is None:
                 base_type = list[Any]
