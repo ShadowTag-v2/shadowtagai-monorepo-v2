@@ -176,3 +176,7 @@ third_party/the-art-of-command-line/
 apps/data/staging/
 apps/kovelai/public/hero-videos/legal-data-arch.mp4
 !apps/kovelai/public/images/hero-poster.jpg
+
+# Scripts cache and dumps
+scripts/.*
+.lancedb/
