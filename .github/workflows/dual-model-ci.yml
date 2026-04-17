@@ -10,7 +10,7 @@ env:
 jobs:
   implementer:
     name: "Stage 1: Implementer"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       test_plan: ${{ steps.impl.outputs.plan }}
     steps:
@@ -32,7 +32,7 @@ jobs:
       - name: Implementer Analysis
         id: impl
         env:
-          https://github.com/karpathy/autoresearchS_URL: ${{ secrets.https://github.com/karpathy/autoresearchS_URL }}
+          AUTORESEARCH_URL: ${{ secrets.AUTORESEARCH_URL }}
         run: |
           python scripts/implementer.py diff.txt > test_plan.json
           echo "plan=$(cat test_plan.json | base64 -w 0)" >> $GITHUB_OUTPUT
@@ -40,7 +40,7 @@ jobs:
   critic:
     name: "Stage 2: Critic"
     needs: implementer
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -88,7 +88,7 @@ jobs:
 
   archlint:
     name: "ArchLint"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -104,7 +104,7 @@ jobs:
 
   scope-lint:
     name: "Scope Lint"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
