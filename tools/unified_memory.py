@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -133,7 +133,7 @@ def cmd_hydrate(_args: argparse.Namespace) -> int:
             entities = d.get("entities", [])
             print(f"    → {action} ({', '.join(entities) if entities else 'no entities'})")
 
-    ts = datetime.now(timezone.utc).isoformat()
+    ts = datetime.now(UTC).isoformat()
     print(f"\n  ⏱ Hydration complete at {ts}")
     print(f"{GREEN}═══ HOT STORE PRIMED ═══{NC}")
     return 0

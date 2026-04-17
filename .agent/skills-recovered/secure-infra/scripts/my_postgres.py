@@ -16,7 +16,7 @@ def get_db_url():
     url = os.environ.get("DATABASE_URL")
     if not url:
         try:
-            with open(".env", "r") as f:
+            with open(".env") as f:
                 for line in f:
                     if line.startswith("DATABASE_URL="):
                         return line.strip().split("=", 1)[1].strip("\"'")

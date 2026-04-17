@@ -21,7 +21,7 @@ import argparse
 import json
 import re
 import hashlib
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -147,7 +147,7 @@ def cmd_scan(dry_run: bool = False) -> int:
                 "title": comp["title"],
                 "source": comp["source"],
                 "status": "closed",
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "_dedup_key": comp["_dedup_key"],
             }
             _append_bead(entry)

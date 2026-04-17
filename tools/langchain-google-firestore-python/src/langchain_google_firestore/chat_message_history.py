@@ -35,7 +35,7 @@ class FirestoreChatMessageHistory(BaseChatMessageHistory):
         self,
         session_id: str,
         collection: str = DEFAULT_COLLECTION,
-        client: Optional[Client] = None,
+        client: Client | None = None,
         encode_message: bool = True,
     ) -> None:
         """Chat Message History for Google Cloud Firestore.
@@ -51,7 +51,7 @@ class FirestoreChatMessageHistory(BaseChatMessageHistory):
         self.client = client_with_user_agent(USER_AGENT, client)
         self.session_id = session_id
         self.doc_ref = self.client.collection(collection).document(session_id)
-        self.messages: List[BaseMessage] = []
+        self.messages: list[BaseMessage] = []
         self._load_messages()
 
     def _load_messages(self) -> None:
@@ -78,13 +78,13 @@ class FirestoreChatMessageHistory(BaseChatMessageHistory):
         self.doc_ref.delete()
 
 
-def encode_messages(messages: List[BaseMessage]) -> List[bytes]:
+def encode_messages(messages: list[BaseMessage]) -> list[bytes]:
     return [str.encode(m.json()) for m in messages]
 
 
 def convert_messages_to_langchain(
-    is_encoded: bool, messages: List[bytes]
-) -> List[BaseMessage]:
+    is_encoded: bool, messages: list[bytes]
+) -> list[BaseMessage]:
     if is_encoded:
         dict_messages = [json.loads(m.decode()) for m in messages]
     else:

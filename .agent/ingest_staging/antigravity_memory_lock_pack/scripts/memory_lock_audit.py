@@ -6,7 +6,7 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Iterable
+from collections.abc import Iterable
 
 CANONICAL_FILES = [
     "monorepo_manifest.yaml",

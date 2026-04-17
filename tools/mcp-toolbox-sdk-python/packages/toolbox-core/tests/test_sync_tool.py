@@ -16,7 +16,8 @@
 import asyncio
 from inspect import Parameter, Signature
 from threading import Thread
-from typing import Any, Callable, Mapping, Union
+from typing import Any, Union
+from collections.abc import Callable, Mapping
 from unittest.mock import MagicMock, Mock, create_autospec, patch
 
 import pytest
@@ -288,7 +289,7 @@ def test_toolbox_sync_tool_bind_params(
     mock_thread: MagicMock,
 ):
     """Tests the bind_params method."""
-    bound_params: Mapping[str, Union[Callable[[], Any], Any]] = {
+    bound_params: Mapping[str, Callable[[], Any] | Any] = {
         "param1": "value1",
         "param2": lambda: "value2",
     }

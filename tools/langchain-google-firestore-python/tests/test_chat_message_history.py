@@ -79,7 +79,7 @@ def test_firestore_load_messages(test_case: TestCase) -> None:
         session_id=session_id, collection="HistoryLoad"
     )
 
-    expected_messages: List[AIMessage | HumanMessage] = []
+    expected_messages: list[AIMessage | HumanMessage] = []
 
     for i in range(NUM_MESSAGES):
         ai_m = AIMessage(content=f"AI message: {i}")

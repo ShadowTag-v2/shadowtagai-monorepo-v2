@@ -66,7 +66,7 @@ def main():
     client = genai.Client(api_key=api_key)
 
     print("▶  Submitting Veo 3.1 generation request...")
-    print(f"   Model  : veo-3.1-generate-preview")
+    print("   Model  : veo-3.1-generate-preview")
     print(f"   Output : {OUTPUT_FILE}")
     print()
 

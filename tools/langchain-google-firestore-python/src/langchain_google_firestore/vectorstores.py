@@ -17,7 +17,8 @@ from __future__ import annotations
 import base64
 import inspect
 import re
-from typing import Any, Iterable, List, Optional, Type
+from typing import Any, List, Optional, Type
+from collections.abc import Iterable
 
 import more_itertools
 import numpy as np
@@ -52,12 +53,12 @@ class FirestoreVectorStore(VectorStore):
         self,
         collection: CollectionReference | str,
         embedding_service: Embeddings,
-        client: Optional[Client] = None,
+        client: Client | None = None,
         content_field: str = "content",
         metadata_field: str = "metadata",
         embedding_field: str = "embedding",
-        distance_strategy: Optional[DistanceMeasure] = DistanceMeasure.COSINE,
-        filters: Optional[BaseFilter] = None,
+        distance_strategy: DistanceMeasure | None = DistanceMeasure.COSINE,
+        filters: BaseFilter | None = None,
     ) -> None:
         """Constructor for FirestoreVectorStore.
 
@@ -90,16 +91,16 @@ class FirestoreVectorStore(VectorStore):
         self.filters = filters
 
     @property
-    def embeddings(self) -> Optional[Embeddings]:
+    def embeddings(self) -> Embeddings | None:
         return self.embedding_service
 
     def add_texts(
         self,
         texts: Iterable[str],
-        metadatas: Optional[List[dict]] = None,
-        ids: Optional[List[str]] = None,
+        metadatas: list[dict] | None = None,
+        ids: list[str] | None = None,
         **kwargs: Any,
-    ) -> List[str]:
+    ) -> list[str]:
         """Add or update texts in the vector store. If the `ids` are provided, and
         a Firestore document with the same id exists, it will be updated.
         Otherwise, a new Firestore document will be created.
@@ -130,7 +131,7 @@ class FirestoreVectorStore(VectorStore):
                 "The length of ids must be the same as the length of texts or zero."
             )
 
-        _ids: List[str] = []
+        _ids: list[str] = []
         db_batch = self.client.batch()
 
         for batch in more_itertools.chunked(texts, WRITE_BATCH_SIZE):
@@ -155,11 +156,11 @@ class FirestoreVectorStore(VectorStore):
     def add_images(
         self,
         uris: Iterable[str],
-        metadatas: Optional[List[dict]] = None,
-        ids: Optional[List[str]] = None,
+        metadatas: list[dict] | None = None,
+        ids: list[str] | None = None,
         store_encodings: bool = False,
         **kwargs: Any,
-    ) -> List[str]:
+    ) -> list[str]:
         """Adds image embeddings to Firestore vector store.
 
         Args:
@@ -193,7 +194,7 @@ class FirestoreVectorStore(VectorStore):
         if metadatas is None:
             metadatas = [{"image_uri": uri} for uri in uris]
 
-        _ids: List[str] = []
+        _ids: list[str] = []
         db_batch = self.client.batch()
 
         for batch in more_itertools.chunked(uris, WRITE_BATCH_SIZE):
@@ -218,7 +219,7 @@ class FirestoreVectorStore(VectorStore):
 
         return _ids
 
-    def delete(self, ids: Optional[List[str]] = None, **kwargs: Any) -> None:
+    def delete(self, ids: list[str] | None = None, **kwargs: Any) -> None:
         """Delete documents from the vector store.
 
         Args:
@@ -237,10 +238,10 @@ class FirestoreVectorStore(VectorStore):
 
     def _similarity_search(
         self,
-        query: List[float],
+        query: list[float],
         k: int = DEFAULT_TOP_K,
-        filters: Optional[BaseFilter] = None,
-    ) -> List[DocumentSnapshot]:
+        filters: BaseFilter | None = None,
+    ) -> list[DocumentSnapshot]:
         _filters = filters or self.filters
 
         wfilters = None
@@ -261,9 +262,9 @@ class FirestoreVectorStore(VectorStore):
         self,
         query: str,
         k: int = DEFAULT_TOP_K,
-        filters: Optional[BaseFilter] = None,
+        filters: BaseFilter | None = None,
         **kwargs: Any,
-    ) -> List[Document]:
+    ) -> list[Document]:
         """Run similarity search with Firestore.
 
         Raises:
@@ -288,11 +289,11 @@ class FirestoreVectorStore(VectorStore):
 
     def similarity_search_by_vector(
         self,
-        embedding: List[float],
+        embedding: list[float],
         k: int = 4,
-        filters: Optional[BaseFilter] = None,
+        filters: BaseFilter | None = None,
         **kwargs: Any,
-    ) -> List[Document]:
+    ) -> list[Document]:
         """Run similarity search with Firestore using a vector.
 
         Raises:
@@ -317,9 +318,9 @@ class FirestoreVectorStore(VectorStore):
         self,
         image_uri: str,
         k: int = DEFAULT_TOP_K,
-        filters: Optional[BaseFilter] = None,
+        filters: BaseFilter | None = None,
         **kwargs: Any,
-    ) -> List[Document]:
+    ) -> list[Document]:
         """Run image similarity search with Firestore.
 
         Raises:
@@ -347,9 +348,9 @@ class FirestoreVectorStore(VectorStore):
         k: int = 4,
         fetch_k: int = 20,
         lambda_mult: float = 0.5,
-        filters: Optional[BaseFilter] = None,
+        filters: BaseFilter | None = None,
         **kwargs: Any,
-    ) -> List[Document]:
+    ) -> list[Document]:
         """Run max marginal relevance search on the results of Firestore nearest
         neighbor search.
 
@@ -377,13 +378,13 @@ class FirestoreVectorStore(VectorStore):
 
     def max_marginal_relevance_search_by_vector(
         self,
-        embedding: List[float],
+        embedding: list[float],
         k: int = 4,
         fetch_k: int = 20,
         lambda_mult: float = 0.5,
-        filters: Optional[BaseFilter] = None,
+        filters: BaseFilter | None = None,
         **kwargs: Any,
-    ) -> List[Document]:
+    ) -> list[Document]:
         """Run max marginal relevance search on the results of Firestore nearest
         neighbor search using a vector. This method will throw if the index is
         not created, in which case you will be prompted to create the index.
@@ -415,12 +416,12 @@ class FirestoreVectorStore(VectorStore):
 
     @classmethod
     def from_texts(
-        cls: Type[FirestoreVectorStore],
-        texts: List[str],
+        cls: type[FirestoreVectorStore],
+        texts: list[str],
         embedding: Embeddings,
-        metadatas: Optional[List[dict]] = None,
-        ids: Optional[List[str]] = None,
-        collection: Optional[str | CollectionReference] = None,
+        metadatas: list[dict] | None = None,
+        ids: list[str] | None = None,
+        collection: str | CollectionReference | None = None,
         **kwargs: Any,
     ) -> FirestoreVectorStore:
         """Create a FirestoreVectorStore instance and add texts to it.
@@ -459,7 +460,7 @@ class FirestoreVectorStore(VectorStore):
         with open(uri, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode("utf-8")
 
-    def _images_embedding_helper(self, image_uris: List[str]) -> List[List[float]]:
+    def _images_embedding_helper(self, image_uris: list[str]) -> list[list[float]]:
         # check if either `embed_images()` or `embed_image()` API is supported by the embedding service used
         if hasattr(self.embedding_service, "embed_images"):
             try:
@@ -477,7 +478,7 @@ class FirestoreVectorStore(VectorStore):
                 first_param = parameters[0]
 
                 if (
-                    first_param.annotation == List[str]
+                    first_param.annotation == list[str]
                     or first_param.annotation == list
                 ):
                     embeddings = self.embedding_service.embed_image(image_uris)
@@ -496,5 +497,5 @@ class FirestoreVectorStore(VectorStore):
             )
         return embeddings
 
-    def _vector_to_list(self, vector: Vector) -> List[float]:
+    def _vector_to_list(self, vector: Vector) -> list[float]:
         return vector.to_map_value()["value"]

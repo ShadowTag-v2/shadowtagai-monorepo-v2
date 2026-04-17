@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from asyncio import to_thread
-from typing import Any, Callable, Union
+from typing import Any, Union
+from collections.abc import Callable
 
 from deprecated import deprecated
 from llama_index.core.tools import ToolMetadata
@@ -131,7 +132,7 @@ class ToolboxTool(AsyncBaseTool):
 
     def bind_params(
         self,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]],
+        bound_params: dict[str, Any | Callable[[], Any]],
     ) -> "ToolboxTool":
         """
         Registers values or functions to retrieve the value for the
@@ -154,7 +155,7 @@ class ToolboxTool(AsyncBaseTool):
     def bind_param(
         self,
         param_name: str,
-        param_value: Union[Any, Callable[[], Any]],
+        param_value: Any | Callable[[], Any],
     ) -> "ToolboxTool":
         """
         Registers a value or a function to retrieve the value for a given bound

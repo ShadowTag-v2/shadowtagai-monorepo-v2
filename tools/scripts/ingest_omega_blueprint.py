@@ -32,11 +32,11 @@ class LocalVectorIngester:
             """)
             conn.commit()
 
-    def chunk_markdown(self, filepath: str, chunk_size: int = 1000) -> List[str]:
+    def chunk_markdown(self, filepath: str, chunk_size: int = 1000) -> list[str]:
         """Naively chunk markdown files by semantic headers or length."""
         chunks = []
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
+            with open(filepath, encoding="utf-8") as f:
                 content = f.read()
 
             paragraphs = content.split("\n\n")
@@ -55,7 +55,7 @@ class LocalVectorIngester:
 
         return chunks
 
-    def mock_embed(self, text: str) -> List[float]:
+    def mock_embed(self, text: str) -> list[float]:
         """Mock embedding generation for local prototyping."""
         return [0.0] * 1536
 

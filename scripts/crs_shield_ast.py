@@ -13,7 +13,7 @@ class ShieldVisitor(ast.NodeVisitor):
 
 def run_ast_shield(filepath):
     try:
-        with open(filepath, 'r') as f:
+        with open(filepath) as f:
             tree = ast.parse(f.read())
         visitor = ShieldVisitor()
         visitor.visit(tree)

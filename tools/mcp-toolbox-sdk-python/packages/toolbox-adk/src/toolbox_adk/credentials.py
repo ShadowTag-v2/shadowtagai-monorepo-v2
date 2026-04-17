@@ -34,20 +34,20 @@ class CredentialType(Enum):
 class CredentialConfig:
     type: CredentialType
     # For WORKLOAD_IDENTITY
-    target_audience: Optional[str] = None
+    target_audience: str | None = None
     # For USER_IDENTITY
-    client_id: Optional[str] = None
-    client_secret: Optional[str] = None
-    scopes: Optional[List[str]] = None
+    client_id: str | None = None
+    client_secret: str | None = None
+    scopes: list[str] | None = None
     # For MANUAL_TOKEN
-    token: Optional[str] = None
-    scheme: Optional[str] = None
+    token: str | None = None
+    scheme: str | None = None
     # For MANUAL_CREDS
-    credentials: Optional[google_creds.Credentials] = None
+    credentials: google_creds.Credentials | None = None
     # For API_KEY
-    api_key: Optional[str] = None
+    api_key: str | None = None
     # Common
-    header_name: Optional[str] = None
+    header_name: str | None = None
 
 
 class CredentialStrategy:
@@ -82,8 +82,8 @@ class CredentialStrategy:
     def user_identity(
         client_id: str,
         client_secret: str,
-        scopes: Optional[List[str]] = None,
-        header_name: Optional[str] = None,
+        scopes: list[str] | None = None,
+        header_name: str | None = None,
     ) -> CredentialConfig:
         """
         Configures the ADK-native interactive 3-legged OAuth flow to get consent
@@ -150,7 +150,7 @@ class CredentialStrategy:
 
     @staticmethod
     def from_adk_credentials(
-        auth_credential: AuthCredential, auth_scheme: Optional[AuthScheme] = None
+        auth_credential: AuthCredential, auth_scheme: AuthScheme | None = None
     ) -> CredentialConfig:
         """
         Creates a CredentialConfig from ADK AuthScheme and AuthCredential objects.

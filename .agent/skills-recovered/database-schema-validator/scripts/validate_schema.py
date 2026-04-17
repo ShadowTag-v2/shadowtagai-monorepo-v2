@@ -10,7 +10,7 @@ def validate_schema(filename):
     3. No 'DROP TABLE' statements allowed (safety).
     """
     try:
-        with open(filename, "r") as f:
+        with open(filename) as f:
             content = f.read()
 
         lines = content.split("\n")

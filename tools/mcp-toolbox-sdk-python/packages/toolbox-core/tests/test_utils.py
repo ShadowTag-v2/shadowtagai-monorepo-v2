@@ -31,7 +31,7 @@ from toolbox_core.utils import (
 )
 
 
-def create_param_mock(name: str, description: str, annotation: Type) -> Mock:
+def create_param_mock(name: str, description: str, annotation: type) -> Mock:
     """Creates a mock for ParameterSchema."""
     param_mock = Mock(spec=ParameterSchema)
     param_mock.name = name
