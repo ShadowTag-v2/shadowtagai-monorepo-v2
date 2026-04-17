@@ -6,10 +6,8 @@
   "targets": {
     "shadowtag-omega-v4": {
       "hosting": {
-        "kovelai": ["shadowtag-omega-v4-kovelai"],
-        "shadowtagai": ["shadowtag-omega-v4-shadowtagai"],
-        "kovelai-staging": ["shadowtag-omega-v4-kovelai-staging"],
-        "shadowtagai-staging": ["shadowtag-omega-v4-shadowtagai-staging"],
+        "kovelai": ["kovelai"],
+        "shadowtagai": ["shadowtagai"],
         "default-site": ["shadowtag-omega-v4"]
       }
     }
