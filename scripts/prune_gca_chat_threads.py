@@ -29,6 +29,8 @@ IMPORTANT: Close the IDE completely before running with --write.
 The SQLite DB is locked while the IDE is open.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import shutil
