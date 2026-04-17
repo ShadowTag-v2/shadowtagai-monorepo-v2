@@ -248,6 +248,31 @@ def test_locate_db_with_explicit_path():
         os.unlink(db)
 
 
+def test_vacuum_standalone():
+    """vacuum_db works on a clean DB without prune (--vacuum-only mode)."""
+    db = _create_test_db(FIXTURE_STATE)
+    try:
+        result = vacuum_db(db)
+        assert result["success"] is True
+        assert result["before_size"] > 0
+        assert result["after_size"] > 0
+        # Should not crash on unpruned DB
+        print("✅ test_vacuum_standalone")
+    finally:
+        os.unlink(db)
+
+
+def test_monitor_mode_accepts_threshold():
+    """monitor_mode function should accept a custom threshold parameter."""
+    from prune_gca_chat_threads import monitor_mode
+    import inspect as ins
+
+    sig = ins.signature(monitor_mode)
+    assert "threshold_mb" in sig.parameters
+    assert sig.parameters["threshold_mb"].default == 20.0
+    print("✅ test_monitor_mode_accepts_threshold")
+
+
 if __name__ == "__main__":
     test_inspect_reports_correct_metrics()
     test_prune_removes_only_chat_threads()
@@ -256,5 +281,6 @@ if __name__ == "__main__":
     test_missing_key_fails_gracefully()
     test_vacuum_reclaims_space()
     test_locate_db_with_explicit_path()
-    print("\n🎉 All 7 tests passed.")
-
+    test_vacuum_standalone()
+    test_monitor_mode_accepts_threshold()
+    print("\n🎉 All 9 tests passed.")
