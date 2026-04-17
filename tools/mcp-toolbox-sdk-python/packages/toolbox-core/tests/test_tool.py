@@ -14,7 +14,7 @@
 
 
 import inspect
-from typing import AsyncGenerator, Callable, Mapping
+from collections.abc import AsyncGenerator, Callable, Mapping
 from unittest.mock import AsyncMock, Mock
 from warnings import catch_warnings, simplefilter
 

@@ -15,7 +15,8 @@
 
 from asyncio import AbstractEventLoop, new_event_loop, run_coroutine_threadsafe
 from threading import Lock, Thread
-from typing import Any, Awaitable, Callable, Mapping, Optional, Union
+from typing import Any, Optional, Union
+from collections.abc import Awaitable, Callable, Mapping
 
 from deprecated import deprecated
 
@@ -32,19 +33,17 @@ class ToolboxSyncClient:
     service endpoint.
     """
 
-    __loop: Optional[AbstractEventLoop] = None
-    __thread: Optional[Thread] = None
+    __loop: AbstractEventLoop | None = None
+    __thread: Thread | None = None
     __lock: Lock = Lock()
 
     def __init__(
         self,
         url: str,
-        client_headers: Optional[
-            Mapping[str, Union[Callable[[], str], Callable[[], Awaitable[str]], str]]
-        ] = None,
+        client_headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str] | None = None,
         protocol: Protocol = Protocol.MCP,
-        client_name: Optional[str] = None,
-        client_version: Optional[str] = None,
+        client_name: str | None = None,
+        client_version: str | None = None,
         telemetry_enabled: bool = False,
     ):
         """
@@ -95,10 +94,10 @@ class ToolboxSyncClient:
         self,
         name: str,
         auth_token_getters: Mapping[
-            str, Union[Callable[[], str], Callable[[], Awaitable[str]]]
+            str, Callable[[], str] | Callable[[], Awaitable[str]]
         ] = {},
         bound_params: Mapping[
-            str, Union[Callable[[], Any], Callable[[], Awaitable[Any]], Any]
+            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
         ] = {},
     ) -> ToolboxSyncTool:
         """
@@ -130,12 +129,12 @@ class ToolboxSyncClient:
 
     def load_toolset(
         self,
-        name: Optional[str] = None,
+        name: str | None = None,
         auth_token_getters: Mapping[
-            str, Union[Callable[[], str], Callable[[], Awaitable[str]]]
+            str, Callable[[], str] | Callable[[], Awaitable[str]]
         ] = {},
         bound_params: Mapping[
-            str, Union[Callable[[], Any], Callable[[], Awaitable[Any]], Any]
+            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
         ] = {},
         strict: bool = False,
     ) -> list[ToolboxSyncTool]:
@@ -180,7 +179,7 @@ class ToolboxSyncClient:
     def add_headers(
         self,
         headers: Mapping[
-            str, Union[Callable[[], str], Callable[[], Awaitable[str]], str]
+            str, Callable[[], str] | Callable[[], Awaitable[str]] | str
         ],
     ) -> None:
         """

@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from asyncio import to_thread
-from typing import Any, Awaitable, Callable, Mapping, Optional, Union
+from typing import Any, Optional, Union
+from collections.abc import Awaitable, Callable, Mapping
 from warnings import warn
 
 from toolbox_core.protocol import Protocol
@@ -28,9 +29,7 @@ class ToolboxClient:
     def __init__(
         self,
         url: str,
-        client_headers: Optional[
-            Mapping[str, Union[Callable[[], str], Callable[[], Awaitable[str]], str]]
-        ] = None,
+        client_headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str] | None = None,
         protocol: Protocol = Protocol.MCP,
         telemetry_enabled: bool = False,
     ) -> None:
@@ -54,9 +53,9 @@ class ToolboxClient:
         self,
         tool_name: str,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
     ) -> ToolboxTool:
         """
         Loads the tool with the given tool name from the Toolbox service.
@@ -109,11 +108,11 @@ class ToolboxClient:
 
     async def aload_toolset(
         self,
-        toolset_name: Optional[str] = None,
+        toolset_name: str | None = None,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
         strict: bool = False,
     ) -> list[ToolboxTool]:
         """
@@ -181,9 +180,9 @@ class ToolboxClient:
         self,
         tool_name: str,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
     ) -> ToolboxTool:
         """
         Loads the tool with the given tool name from the Toolbox service.
@@ -235,11 +234,11 @@ class ToolboxClient:
 
     def load_toolset(
         self,
-        toolset_name: Optional[str] = None,
+        toolset_name: str | None = None,
         auth_token_getters: dict[str, Callable[[], str]] = {},
-        auth_tokens: Optional[dict[str, Callable[[], str]]] = None,
-        auth_headers: Optional[dict[str, Callable[[], str]]] = None,
-        bound_params: dict[str, Union[Any, Callable[[], Any]]] = {},
+        auth_tokens: dict[str, Callable[[], str]] | None = None,
+        auth_headers: dict[str, Callable[[], str]] | None = None,
+        bound_params: dict[str, Any | Callable[[], Any]] = {},
         strict: bool = False,
     ) -> list[ToolboxTool]:
         """

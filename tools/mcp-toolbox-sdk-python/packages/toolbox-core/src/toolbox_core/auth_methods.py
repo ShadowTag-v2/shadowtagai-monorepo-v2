@@ -30,8 +30,9 @@ as toolbox:
 """
 
 import asyncio
-from datetime import datetime, timedelta, timezone
-from typing import Any, Callable, Coroutine, Dict, Optional
+from datetime import datetime, timedelta, timezone, UTC
+from typing import Any, Dict, Optional
+from collections.abc import Callable, Coroutine
 
 import google.auth
 from google.auth.exceptions import GoogleAuthError
@@ -43,9 +44,9 @@ BEARER_TOKEN_PREFIX = "Bearer "
 CACHE_REFRESH_MARGIN = timedelta(seconds=60)
 DEFAULT_CLOCK_SKEW = 0
 
-_token_cache: Dict[str, Any] = {
+_token_cache: dict[str, Any] = {
     "token": None,
-    "expires_at": datetime.min.replace(tzinfo=timezone.utc),
+    "expires_at": datetime.min.replace(tzinfo=UTC),
 }
 
 
@@ -53,7 +54,7 @@ def _is_token_valid() -> bool:
     """Checks if the cached token exists and is not nearing expiry."""
     if not _token_cache["token"]:
         return False
-    return datetime.now(timezone.utc) < (
+    return datetime.now(UTC) < (
         _token_cache["expires_at"] - CACHE_REFRESH_MARGIN
     )
 
@@ -82,18 +83,18 @@ def _update_cache(new_token: str, clock_skew_in_seconds: int) -> None:
 
         _token_cache["token"] = new_token
         _token_cache["expires_at"] = datetime.fromtimestamp(
-            expiry_timestamp, tz=timezone.utc
+            expiry_timestamp, tz=UTC
         )
 
     except (ValueError, GoogleAuthError) as e:
         # Clear cache on failure to prevent using a stale or invalid token
         _token_cache["token"] = None
-        _token_cache["expires_at"] = datetime.min.replace(tzinfo=timezone.utc)
+        _token_cache["expires_at"] = datetime.min.replace(tzinfo=UTC)
         raise ValueError(f"Failed to validate and cache the new token: {e}") from e
 
 
 def get_google_token_from_aud(
-    clock_skew_in_seconds: int = 0, audience: Optional[str] = None
+    clock_skew_in_seconds: int = 0, audience: str | None = None
 ) -> str:
     if clock_skew_in_seconds < 0 or clock_skew_in_seconds > 60:
         raise ValueError(
@@ -136,7 +137,7 @@ def get_google_token_from_aud(
 
 
 def get_google_id_token(
-    audience: Optional[str] = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW
+    audience: str | None = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW
 ) -> Callable[[], str]:
     """
     Returns a SYNC function that, when called, fetches a Google ID token.
@@ -165,7 +166,7 @@ def get_google_id_token(
 
 
 def aget_google_id_token(
-    audience: Optional[str] = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW
+    audience: str | None = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW
 ) -> Callable[[], Coroutine[Any, Any, str]]:
     """
     Returns an ASYNC function that, when called, fetches a Google ID token.

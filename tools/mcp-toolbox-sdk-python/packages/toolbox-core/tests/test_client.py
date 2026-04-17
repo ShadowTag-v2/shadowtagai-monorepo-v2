@@ -15,7 +15,8 @@
 
 import inspect
 import warnings
-from typing import Mapping, Optional
+from typing import Optional
+from collections.abc import Mapping
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -43,14 +44,14 @@ class MockTransport(ITransport):
         return self._base_url
 
     async def tool_get(
-        self, tool_name: str, headers: Optional[Mapping[str, str]] = None
+        self, tool_name: str, headers: Mapping[str, str] | None = None
     ) -> ManifestSchema:
         return await self.tool_get_mock(tool_name, headers)
 
     async def tools_list(
         self,
-        toolset_name: Optional[str] = None,
-        headers: Optional[Mapping[str, str]] = None,
+        toolset_name: str | None = None,
+        headers: Mapping[str, str] | None = None,
     ) -> ManifestSchema:
         return await self.tools_list_mock(toolset_name, headers)
 

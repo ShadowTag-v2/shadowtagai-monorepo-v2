@@ -37,7 +37,7 @@ def ingest_directory(db, directory_path="."):
             continue
             
         try:
-            with open(filepath, 'r', encoding='utf-8') as f:
+            with open(filepath, encoding='utf-8') as f:
                 content = f.read()
                 docs_to_ingest.append({
                     "vector": [0.1, 0.2],  # Stubbed embedding, substitute with local model

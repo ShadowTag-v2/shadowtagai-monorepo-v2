@@ -13,7 +13,8 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
-from typing import Mapping, Optional
+from typing import Optional
+from collections.abc import Mapping
 
 from .protocol import ManifestSchema
 
@@ -31,7 +32,7 @@ class ITransport(ABC):
 
     @abstractmethod
     async def tool_get(
-        self, tool_name: str, headers: Optional[Mapping[str, str]] = None
+        self, tool_name: str, headers: Mapping[str, str] | None = None
     ) -> ManifestSchema:
         """Gets a single tool from the server."""
         pass
@@ -39,8 +40,8 @@ class ITransport(ABC):
     @abstractmethod
     async def tools_list(
         self,
-        toolset_name: Optional[str] = None,
-        headers: Optional[Mapping[str, str]] = None,
+        toolset_name: str | None = None,
+        headers: Mapping[str, str] | None = None,
     ) -> ManifestSchema:
         """Lists available tools from the server."""
         pass

@@ -15,7 +15,8 @@
 import asyncio
 import json
 from abc import ABC, abstractmethod
-from typing import Mapping, Optional, Union
+from typing import Optional, Union
+from collections.abc import Mapping
 
 from aiohttp import ClientSession
 
@@ -31,23 +32,23 @@ class _McpHttpTransportBase(ITransport, ABC):
     def __init__(
         self,
         base_url: str,
-        session: Optional[ClientSession] = None,
+        session: ClientSession | None = None,
         protocol: Protocol = Protocol.MCP,
-        client_name: Optional[str] = None,
-        client_version: Optional[str] = None,
+        client_name: str | None = None,
+        client_version: str | None = None,
         telemetry_enabled: bool = False,
     ):
         self._mcp_base_url = f"{base_url}/mcp/"
         self._protocol_version = protocol.value
-        self._server_version: Optional[str] = None
+        self._server_version: str | None = None
 
         self._client_name = client_name
         self._client_version = client_version
         self._telemetry_enabled = telemetry.resolve_telemetry_enabled(telemetry_enabled)
 
-        self._tracer: Optional[telemetry.Tracer] = None
-        self._operation_duration_histogram: Optional[telemetry.Histogram] = None
-        self._session_duration_histogram: Optional[telemetry.Histogram] = None
+        self._tracer: telemetry.Tracer | None = None
+        self._operation_duration_histogram: telemetry.Histogram | None = None
+        self._session_duration_histogram: telemetry.Histogram | None = None
         if self._telemetry_enabled:
             self._tracer = telemetry.get_tracer("toolbox.mcp.sdk", version.__version__)
             meter = telemetry.get_meter("toolbox.mcp.sdk", version.__version__)
@@ -57,15 +58,15 @@ class _McpHttpTransportBase(ITransport, ABC):
             self._session_duration_histogram = (
                 telemetry.create_session_duration_histogram(meter)
             )
-        self._session_start_time: Optional[float] = None
+        self._session_start_time: float | None = None
 
         self._manage_session = session is None
         self._session = session or ClientSession()
         self._init_lock = asyncio.Lock()
-        self._init_task: Optional[asyncio.Task] = None
+        self._init_task: asyncio.Task | None = None
 
     async def _ensure_initialized(
-        self, headers: Optional[Mapping[str, str]] = None
+        self, headers: Mapping[str, str] | None = None
     ) -> None:
         """Ensures the session is initialized before making requests."""
         async with self._init_lock:
@@ -105,7 +106,7 @@ class _McpHttpTransportBase(ITransport, ABC):
         # https://modelcontextprotocol.io/specification/2025-11-25/server/tools#tool
         # This dictates using `items` for array types (https://json-schema.org/understanding-json-schema/reference/array#items)
         # and `additionalProperties` for maps (https://json-schema.org/understanding-json-schema/reference/object#additionalproperties).
-        items_schema: Optional[ParameterSchema] = None
+        items_schema: ParameterSchema | None = None
         if param_type == "array" and "items" in schema:
             items_data = schema["items"]
 
@@ -114,7 +115,7 @@ class _McpHttpTransportBase(ITransport, ABC):
             if isinstance(items_data, dict):
                 items_schema = self._convert_parameter_schema("", items_data, [])
 
-        additional_properties: Optional[Union[AdditionalPropertiesSchema, bool]] = None
+        additional_properties: AdditionalPropertiesSchema | bool | None = None
         if param_type == "object":
             add_props = schema.get("additionalProperties")
             if isinstance(add_props, dict) and "type" in add_props:
@@ -190,7 +191,7 @@ class _McpHttpTransportBase(ITransport, ABC):
 
     @abstractmethod
     async def _initialize_session(
-        self, headers: Optional[Mapping[str, str]] = None
+        self, headers: Mapping[str, str] | None = None
     ) -> None:
         """Initializes the MCP session."""
         pass

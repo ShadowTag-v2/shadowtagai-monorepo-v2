@@ -14,10 +14,10 @@ from typing import Dict, Optional
 MEMORY_FILE = ".claude/plugins/erik-interaction/.memory.json"
 
 
-def load_memory() -> Dict:
+def load_memory() -> dict:
     """Load current memory state."""
     try:
-        with open(MEMORY_FILE, "r") as f:
+        with open(MEMORY_FILE) as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {
@@ -29,7 +29,7 @@ def load_memory() -> Dict:
         }
 
 
-def save_memory(memory: Dict):
+def save_memory(memory: dict):
     """Save memory state."""
     memory["last_updated"] = datetime.now().isoformat()
     try:
@@ -40,7 +40,7 @@ def save_memory(memory: Dict):
         pass
 
 
-def extract_component_info(tool_output: str) -> Optional[Dict]:
+def extract_component_info(tool_output: str) -> dict | None:
     """Extract component information from tool output."""
     info = {}
 
@@ -67,7 +67,7 @@ def extract_component_info(tool_output: str) -> Optional[Dict]:
     return info if info else None
 
 
-def extract_cost_info(tool_output: str) -> Optional[Dict]:
+def extract_cost_info(tool_output: str) -> dict | None:
     """Extract cost information from tool output."""
     costs = {}
 
@@ -84,7 +84,7 @@ def extract_cost_info(tool_output: str) -> Optional[Dict]:
     return costs if costs else None
 
 
-def extract_metrics(tool_output: str) -> Optional[Dict]:
+def extract_metrics(tool_output: str) -> dict | None:
     """Extract performance metrics from tool output."""
     metrics = {}
 
@@ -106,7 +106,7 @@ def extract_metrics(tool_output: str) -> Optional[Dict]:
     return metrics if metrics else None
 
 
-def update_memory_from_tool(memory: Dict, tool_name: str, tool_output: str):
+def update_memory_from_tool(memory: dict, tool_name: str, tool_output: str):
     """Update memory based on tool execution."""
 
     # Update component info from deployments

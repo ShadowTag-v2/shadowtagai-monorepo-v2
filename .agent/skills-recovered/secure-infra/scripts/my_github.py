@@ -10,7 +10,7 @@ def get_github_token():
     if not token:
         # Fallback for agent execution
         try:
-            with open(".env", "r") as f:
+            with open(".env") as f:
                 for line in f:
                     if line.startswith("GITHUB_PAT="):
                         return line.strip().split("=", 1)[1].strip("\"'")
