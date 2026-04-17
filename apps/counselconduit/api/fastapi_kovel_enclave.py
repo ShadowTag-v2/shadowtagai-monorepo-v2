@@ -26,21 +26,40 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from apps.counselconduit.api.auth import get_current_attorney
-from apps.counselconduit.api.firestore_client import (
-    update_attorney_usage,
-    write_audit_log,
-    AuditEntry,
-)
-from apps.counselconduit.api.gemini_rag import (
-    QueryRequest,
-    QueryResponse,
-    execute_privileged_query,
-    stream_privileged_query,
-)
-from apps.counselconduit.api.judge6 import evaluate as judge6_evaluate
-from apps.counselconduit.api.stripe_connect import router as billing_router
-from apps.counselconduit.api.stripe_handler import router as stripe_router
+try:
+    # Monorepo context (running from repo root)
+    from apps.counselconduit.api.auth import get_current_attorney
+    from apps.counselconduit.api.firestore_client import (
+        update_attorney_usage,
+        write_audit_log,
+        AuditEntry,
+    )
+    from apps.counselconduit.api.gemini_rag import (
+        QueryRequest,
+        QueryResponse,
+        execute_privileged_query,
+        stream_privileged_query,
+    )
+    from apps.counselconduit.api.judge6 import evaluate as judge6_evaluate
+    from apps.counselconduit.api.stripe_connect import router as billing_router
+    from apps.counselconduit.api.stripe_handler import router as stripe_router
+except ImportError:
+    # Docker/Cloud Run context (running from /app/)
+    from api.auth import get_current_attorney  # type: ignore[no-redef]
+    from api.firestore_client import (  # type: ignore[no-redef]
+        update_attorney_usage,
+        write_audit_log,
+        AuditEntry,
+    )
+    from api.gemini_rag import (  # type: ignore[no-redef]
+        QueryRequest,
+        QueryResponse,
+        execute_privileged_query,
+        stream_privileged_query,
+    )
+    from api.judge6 import evaluate as judge6_evaluate  # type: ignore[no-redef]
+    from api.stripe_connect import router as billing_router  # type: ignore[no-redef]
+    from api.stripe_handler import router as stripe_router  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -87,6 +106,23 @@ app.add_middleware(
 
 app.include_router(stripe_router)
 app.include_router(billing_router)
+
+
+@app.get("/")
+async def root():
+    """Root endpoint — API discovery."""
+    return {
+        "service": "CounselConduit",
+        "version": "3.0.0",
+        "status": "operational",
+        "docs": "/docs" if os.getenv("APP_ENV") == "development" else "disabled",
+    }
+
+
+@app.get("/health")
+async def health():
+    """Health check for Cloud Run / load balancer probes."""
+    return {"status": "healthy", "service": "counselconduit", "version": "3.0.0"}
 
 
 # ── Auth Middleware ─────────────────────────────────────────────────────────
