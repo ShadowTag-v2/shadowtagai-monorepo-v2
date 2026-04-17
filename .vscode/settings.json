@@ -144,5 +144,11 @@
     "https://shadowtagai.com",
     "https://pagespeed.web.dev",
     "https://notebooklm.google.com"
-  ]
+  ],
+
+  "update.mode": "manual",
+  "extensions.autoUpdate": "onlyEnabledExtensions",
+  "cloudcode.enableExperiments": false,
+  "cloudcode.enableTelemetry": false,
+  "vim.enableNeovim": false
 }
