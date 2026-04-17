@@ -106,7 +106,7 @@ def verify_stripe_signature(
             detail="Malformed Stripe-Signature header: non-integer timestamp.",
         ) from exc
 
-    signed_payload = f"{timestamp}.".encode("utf-8") + payload
+    signed_payload = f"{timestamp}.".encode() + payload
     expected = hmac.new(
         secret.encode("utf-8"),
         signed_payload,
