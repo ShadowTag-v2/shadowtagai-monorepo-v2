@@ -31,7 +31,6 @@ The SQLite DB is locked while the IDE is open.
 
 import argparse
 import json
-import os
 import shutil
 import sqlite3
 import subprocess
@@ -240,10 +239,10 @@ def trigger_mac_notification(size_mb: float) -> None:
         pass  # Not on macOS or say hung
 
 
-def monitor_mode(db_path: Path) -> None:
+def monitor_mode(db_path: Path, threshold_mb: float = BLOAT_THRESHOLD_MB) -> None:
     """Runs a noisy background monitor to check DB size."""
     print(f"👁️  Monitoring: {db_path}")
-    print(f"   Threshold: {BLOAT_THRESHOLD_MB} MB")
+    print(f"   Threshold: {threshold_mb} MB")
     print(f"   Check interval: {MONITOR_INTERVAL_SECONDS}s")
     print(f"   Cooldown after alert: {MONITOR_COOLDOWN_SECONDS}s")
     print()
@@ -254,7 +253,7 @@ def monitor_mode(db_path: Path) -> None:
             size_mb = size_bytes / (1024 * 1024)
             ts = datetime.now().strftime("%H:%M:%S")
 
-            if size_mb > BLOAT_THRESHOLD_MB:
+            if size_mb > threshold_mb:
                 print(f"[{ts}] ⚠️  {size_mb:.1f} MB — OVER THRESHOLD!")
                 trigger_mac_notification(size_mb)
                 time.sleep(MONITOR_COOLDOWN_SECONDS)
@@ -283,6 +282,10 @@ def main():
         "--monitor", action="store_true",
         help="Run in background & yell if DB > threshold",
     )
+    mode.add_argument(
+        "--vacuum-only", action="store_true",
+        help="Only run VACUUM to reclaim dead space (no prune). IDE MUST BE CLOSED!",
+    )
     parser.add_argument("--file", type=str, help="Explicit path to state.vscdb")
     parser.add_argument(
         "--backup-dir", type=str, help="Directory for backups (default: same as DB)"
@@ -292,6 +295,12 @@ def main():
         type=int,
         default=0,
         help="Keep the N newest threads (default: 0 = remove all)",
+    )
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=BLOAT_THRESHOLD_MB,
+        help=f"Bloat threshold in MB for --monitor mode (default: {BLOAT_THRESHOLD_MB})",
     )
     args = parser.parse_args()
 
@@ -304,9 +313,28 @@ def main():
     # ── Monitor mode ──────────────────────────────────────────────────────
     if args.monitor:
         try:
-            monitor_mode(db_path)
+            monitor_mode(db_path, threshold_mb=args.threshold)
         except KeyboardInterrupt:
             print("\nExiting monitor.")
+        return
+
+    # ── Vacuum-only mode ──────────────────────────────────────────────────
+    if args.vacuum_only:
+        print(f"State DB: {db_path}")
+        print(f"File size: {db_path.stat().st_size:,} bytes")
+        print()
+        print("──── VACUUM ONLY ────")
+        vac = vacuum_db(db_path)
+        if vac["success"]:
+            print(f"   DB file before VACUUM: {vac['before_size']:>12,} bytes")
+            print(f"   DB file after VACUUM:  {vac['after_size']:>12,} bytes")
+            print(f"   Disk reclaimed:        {vac['reclaimed']:>12,} bytes")
+            print("\n✅ VACUUM complete.")
+        else:
+            print(f"   ⚠️  VACUUM failed: {vac['reason']}")
+            if "locked" in vac.get("reason", "").lower():
+                print("   Close the IDE and re-run.")
+            sys.exit(1)
         return
 
     # ── Inspect + Write/DryRun ────────────────────────────────────────────
