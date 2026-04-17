@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 
-def orchestrate_task(task_input: Dict[str, Any]) -> Dict[str, Any]:
+def orchestrate_task(task_input: dict[str, Any]) -> dict[str, Any]:
     """Stub for the CognitiveInfra agent."""
     return {
         "orchestration_plan": [

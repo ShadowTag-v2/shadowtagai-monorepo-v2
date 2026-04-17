@@ -43,7 +43,7 @@ def _make_stripe_signature(
     """Build a valid Stripe-Signature header for testing."""
     if timestamp is None:
         timestamp = int(time.time())
-    signed_payload = f"{timestamp}.".encode("utf-8") + payload
+    signed_payload = f"{timestamp}.".encode() + payload
     sig = hmac_module.new(
         secret.encode("utf-8"), signed_payload, hashlib.sha256
     ).hexdigest()

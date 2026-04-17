@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 
-def run_ml_workflow(params: Dict[str, Any]) -> Dict[str, str]:
+def run_ml_workflow(params: dict[str, Any]) -> dict[str, str]:
     """Stub for the MLOps agent."""
     dataset_name = params.get("dataset", "unknown_dataset")
     return {

@@ -38,7 +38,7 @@ class DifficultyLevel:
     successes: int = 0
     failures: int = 0
     avg_confidence: float = 0.0
-    last_attempt: Optional[datetime] = None
+    last_attempt: datetime | None = None
 
     @property
     def success_rate(self) -> float:
@@ -63,7 +63,7 @@ class EvolutionMetrics:
     difficulty_changes: int = 0
     total_successes: int = 0
     total_failures: int = 0
-    levels: Dict[int, DifficultyLevel] = field(default_factory=dict)
+    levels: dict[int, DifficultyLevel] = field(default_factory=dict)
 
     def __post_init__(self):
         for i in range(1, 11):
@@ -92,9 +92,9 @@ class DifficultyTracker:
         self.streak_threshold = streak_threshold
         self.window_size = window_size
         self.metrics = EvolutionMetrics()
-        self.recent_outcomes: List[bool] = []
+        self.recent_outcomes: list[bool] = []
         self.streak_count = 0
-        self.streak_type: Optional[bool] = None
+        self.streak_type: bool | None = None
         print(f"///▞ DTE :: Strategy: {strategy.value}")
 
     def record_outcome(self, success: bool, confidence: float = 0.0) -> int:
@@ -182,7 +182,7 @@ class DifficultyTracker:
             return max(current - 1, self.min_difficulty)
         return current
 
-    def get_metrics(self) -> Dict:
+    def get_metrics(self) -> dict:
         return {
             "strategy": self.strategy.value,
             "current_difficulty": self.metrics.current_difficulty,

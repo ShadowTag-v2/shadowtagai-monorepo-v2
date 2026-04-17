@@ -1,6 +1,6 @@
 import re
 
-with open("antigravity-mcp-config.json", "r") as f:
+with open("antigravity-mcp-config.json") as f:
     content = f.read()
 
 pattern = re.compile(r"<<<<<<< HEAD.*?=======\n(.*?)\n>>>>>>> fix-invariants-103-105", re.DOTALL)

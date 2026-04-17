@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 
-def calculate_deadlines(case_filing: Dict[str, Any]) -> Dict[str, Any]:
+def calculate_deadlines(case_filing: dict[str, Any]) -> dict[str, Any]:
     """Stub for the LegalOps agent to process filing deadlines."""
     return {
         "case_details": case_filing,
@@ -15,7 +15,7 @@ def calculate_deadlines(case_filing: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def reason_about_case(case_facts: Dict[str, Any]) -> Dict[str, Any]:
+def reason_about_case(case_facts: dict[str, Any]) -> dict[str, Any]:
     """Stub for the LegalReasoner agent."""
     return {
         "input_facts": case_facts,
