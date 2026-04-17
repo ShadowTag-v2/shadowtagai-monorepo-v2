@@ -102,4 +102,46 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 - Step 0 of any refactor is DELETION. You MUST run `vulture` and `ruff --fix` together to purge dead AST nodes.
 - Queue Doctrine: Google Cloud Tasks is the EXCLUSIVE queue broker. BullMQ is banned.
 </rich_hickey_vulture_doctrine>
+
+<env_master_doctrine>
+## .env Master Environment Doctrine
+
+**Canonical path:** `.env` (repo root, gitignored)
+**Created:** 2026-04-13 | **Sections:** 10
+
+### Section Map
+| § | Variable | Purpose | Consumer |
+|---|----------|---------|----------|
+| 1 | `GCP_PROJECT_ID` | Active GCP project (`shadowtag-omega-v4`) | All services |
+| 1 | `VITE_API_URL` | Local dev API URL | KovelAI frontend |
+| 1 | `BRAIN_DIR` | Antigravity persistent brain directory | Agent memory |
+| 2 | `DEVELOPER_KNOWLEDGE_API_KEY` | Google AI API key (zero-trust gate) | Developer Knowledge MCP, FastAPI `Depends(verify_zero_trust)` |
+| 2 | `API_KEY` | Same key, alias | litellm fallback |
+| 3 | `STITCH_API_KEY` | Stitch MCP authentication | Stitch design-to-code pipeline |
+| 4 | `GEMINI_API_KEY` | Gemini inference + Nano Banana 2 | litellm, image generation, MCP servers |
+| 5 | `KVCACHED_PORT` / `KVCACHED_MODEL` | Local sovereign inference routing | `zero_cpu_router.py` |
+| 6 | `ROTATING_PROXIES` | Jetski/Scrapling stealth proxies | Web scraping sandbox |
+| 7 | `TEMPORAL_HOST` | Temporal.io local server | Omega-Swarm workers |
+| 8 | `DISABLE_TELEMETRY` / `DISABLE_ERROR_REPORTING` | Kovel Mode telemetry blackout | All services |
+| 9 | `NODE_OPTIONS` | V8 punycode deprecation mute | VS Code Extension Host |
+| 10 | `NANO_BANANA_2_MODEL` | Image generation model ID | Nano Banana 2 |
+
+### Auth Chain
+- **MCP servers** authenticate via Google ADC (`~/.config/gcloud/`) + `GEMINI_API_KEY` from `.env`
+- **Firebase MCP** uses its own OAuth session (not `.env`)
+- **GitHub** uses SSH keys + GitHub App PEM (`$SHADOWTAG_PEM`)
+- **Stitch MCP** uses `STITCH_API_KEY` from `.env`
+
+### Missing Keys (NOT in .env)
+> [!WARNING]
+> The following keys are required for CounselConduit production but are NOT yet provisioned:
+> - `STRIPE_SECRET_KEY` — needed for billing
+> - `STRIPE_WEBHOOK_SECRET` — needed for webhook verification
+> - See `apps/counselconduit/.env.example` for the full CounselConduit-specific config
+
+### Rules
+- `.env` is gitignored. NEVER commit it.
+- `apps/counselconduit/.env.example` is the template for product-specific vars.
+- All MCP servers MUST read from `.env` or ADC. No hardcoded keys in source.
+</env_master_doctrine>
 </system_directive>

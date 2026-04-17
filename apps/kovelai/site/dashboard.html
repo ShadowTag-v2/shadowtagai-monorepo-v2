@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KovelAI | Dashboard</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0d14;--surface:#12161f;--surface-2:#1a1f2e;--border:#2a3042;--text:#e4e8f7;--muted:#8b92a8;--primary:#c9a14a;--green:#34d399;--red:#f87171;--amber:#fbbf24;--mono:'JetBrains Mono',monospace;--font:'Inter',sans-serif}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+    .dash-nav{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--border)}
+    .dash-nav h1{font-size:1rem;font-weight:600}
+    .dash-nav .nav-links{display:flex;gap:1.5rem;font-size:0.85rem}
+    .dash-nav .nav-links a{color:var(--muted);text-decoration:none;transition:color 0.2s}
+    .dash-nav .nav-links a:hover,.dash-nav .nav-links a.active{color:var(--primary)}
+    .dash-content{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+    .dash-content h2{font-size:1.3rem;font-weight:600;margin-bottom:1.5rem}
+
+    /* Stats Row */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center;transition:all 0.2s}
+    .stat-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+    .stat-value{font-size:2rem;font-weight:700}
+    .stat-label{font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:0.25rem}
+
+    /* Usage Bar */
+    .usage-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+    .usage-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+    .usage-header h3{font-size:0.9rem}
+    .usage-header span{font-family:var(--mono);font-size:0.8rem;color:var(--muted)}
+    .usage-bar{height:12px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+    .usage-bar .fill{height:100%;border-radius:6px;transition:width 0.5s ease}
+    .fill-green{background:linear-gradient(90deg,var(--green),#10b981)}
+    .fill-amber{background:linear-gradient(90deg,var(--amber),#f59e0b)}
+    .fill-red{background:linear-gradient(90deg,var(--red),#ef4444)}
+
+    /* Activity Table */
+    .activity-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+    .activity-section h3{font-size:0.9rem;margin-bottom:1rem}
+    table{width:100%;border-collapse:collapse}
+    th{text-align:left;font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;padding:0.5rem 0.75rem;border-bottom:1px solid var(--border)}
+    td{padding:0.6rem 0.75rem;font-size:0.85rem;border-bottom:1px solid rgba(42,48,66,0.4)}
+    .risk-badge{display:inline-block;padding:1px 8px;border-radius:4px;font-size:0.7rem;font-weight:600}
+    .risk-green{background:rgba(52,211,153,0.12);color:var(--green)}
+    .risk-amber{background:rgba(251,191,36,0.12);color:var(--amber)}
+
+    @media (max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <nav class="dash-nav">
+    <h1>🛡️ KovelAI</h1>
+    <div class="nav-links">
+      <a href="/dashboard.html" class="active">Dashboard</a>
+      <a href="/chat.html">Chat</a>
+      <a href="/pricing.html">Billing</a>
+    </div>
+  </nav>
+
+  <div class="dash-content">
+    <h2>Practice Overview</h2>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-value" style="color:var(--primary)">847</div><div class="stat-label">Queries This Month</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--green)">63.2K</div><div class="stat-label">Tokens Used</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--text)">$149</div><div class="stat-label">Current Plan</div></div>
+      <div class="stat-card"><div class="stat-value" style="color:var(--green)">100%</div><div class="stat-label">Uptime</div></div>
+    </div>
+
+    <div class="usage-section">
+      <div class="usage-header">
+        <h3>Token Usage</h3>
+        <span>63,200 / 100,000 tokens</span>
+      </div>
+      <div class="usage-bar"><div class="fill fill-amber" style="width:63.2%"></div></div>
+    </div>
+
+    <div class="activity-section">
+      <h3>Recent Activity</h3>
+      <table>
+        <thead><tr><th>Time</th><th>Query</th><th>Tokens</th><th>Risk</th><th>Model</th></tr></thead>
+        <tbody>
+          <tr><td>2:34 PM</td><td>Contract review for Smith v. Jones merger</td><td>1,240</td><td><span class="risk-badge risk-green">GREEN (3)</span></td><td>gemini-2.5-flash</td></tr>
+          <tr><td>1:12 PM</td><td>Discovery motion template for patent case</td><td>890</td><td><span class="risk-badge risk-green">GREEN (5)</span></td><td>gemini-2.5-flash</td></tr>
+          <tr><td>11:45 AM</td><td>Employment law precedents in CA jurisdiction</td><td>2,100</td><td><span class="risk-badge risk-amber">AMBER (12)</span></td><td>gemini-2.5-flash</td></tr>
+          <tr><td>10:20 AM</td><td>HIPAA compliance checklist for medical records</td><td>650</td><td><span class="risk-badge risk-green">GREEN (8)</span></td><td>gemini-2.5-flash</td></tr>
+          <tr><td>9:05 AM</td><td>IP assignment clause analysis</td><td>1,450</td><td><span class="risk-badge risk-green">GREEN (2)</span></td><td>gemini-2.5-flash</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
