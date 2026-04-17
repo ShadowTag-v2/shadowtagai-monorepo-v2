@@ -33,7 +33,8 @@ import asyncio
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import List, Dict, Optional, Set, AsyncIterator
+from typing import List, Dict, Optional, Set
+from collections.abc import AsyncIterator
 from pathlib import Path
 import logging
 
@@ -72,9 +73,9 @@ class SafetyScanResult:
     doc_id: str
     doc_hash: str  # SHA-256
     scanned_at: datetime
-    hits: List[SafetyHit] = field(default_factory=list)
+    hits: list[SafetyHit] = field(default_factory=list)
     total_tokens: int = 0
-    languages_detected: Set[str] = field(default_factory=set)
+    languages_detected: set[str] = field(default_factory=set)
 
     @property
     def is_clean(self) -> bool:
@@ -102,7 +103,7 @@ class SafetyLexicon:
     """
 
     def __init__(self):
-        self._lexicons: Dict[SafetyCategory, Dict[str, Set[str]]] = {}
+        self._lexicons: dict[SafetyCategory, dict[str, set[str]]] = {}
         self._load_lexicons()
 
     def _load_lexicons(self):
@@ -135,11 +136,11 @@ class SafetyLexicon:
         self._lexicons[SafetyCategory.LDNOOBW] = {"en": set()}
         self._lexicons[SafetyCategory.PII] = {"en": set()}
 
-    def get_terms(self, category: SafetyCategory, language: str = "en") -> Set[str]:
+    def get_terms(self, category: SafetyCategory, language: str = "en") -> set[str]:
         """Get terms for a category and language"""
         return self._lexicons.get(category, {}).get(language, set())
 
-    def all_languages(self, category: SafetyCategory) -> Set[str]:
+    def all_languages(self, category: SafetyCategory) -> set[str]:
         """Get all languages available for a category"""
         return set(self._lexicons.get(category, {}).keys())
 
@@ -244,7 +245,7 @@ class TrainingDataIndexer:
         content: str,
         doc_id: str,
         language: str = "en",
-        categories: Optional[List[SafetyCategory]] = None,
+        categories: list[SafetyCategory] | None = None,
     ) -> SafetyScanResult:
         """
         Scan a document for safety issues.
@@ -336,7 +337,7 @@ class TrainingDataIndexer:
 
         return min(1.0, base_severity)
 
-    async def search_phrase(self, phrase: str, slop: int = 0, limit: int = 100) -> List[Dict]:
+    async def search_phrase(self, phrase: str, slop: int = 0, limit: int = 100) -> list[dict]:
         """
         Search for a phrase with configurable slop.
 
@@ -356,7 +357,7 @@ class TrainingDataIndexer:
 
         return [hit["_source"] for hit in result["hits"]["hits"]]
 
-    async def bulk_index(self, documents: AsyncIterator[Dict], progress_callback=None) -> Dict:
+    async def bulk_index(self, documents: AsyncIterator[dict], progress_callback=None) -> dict:
         """
         Bulk index documents with parallel processing.
 
@@ -445,7 +446,7 @@ class TrainingDataIndexer:
         stats["end_time"] = datetime.utcnow().isoformat()
         return stats
 
-    async def generate_safety_report(self, languages: Optional[List[str]] = None) -> Dict:
+    async def generate_safety_report(self, languages: list[str] | None = None) -> dict:
         """
         Generate safety report similar to Apertus Table 5.
 
@@ -504,7 +505,7 @@ class SafetyGate:
         self,
         indexer: TrainingDataIndexer,
         max_severity: float = 0.7,
-        auto_block_categories: Optional[List[SafetyCategory]] = None,
+        auto_block_categories: list[SafetyCategory] | None = None,
     ):
         self.indexer = indexer
         self.max_severity = max_severity
@@ -513,7 +514,7 @@ class SafetyGate:
             SafetyCategory.CHEMICAL_WEAPONS,
         ]
 
-    async def evaluate(self, content: str, doc_id: str, language: str = "en") -> Dict:
+    async def evaluate(self, content: str, doc_id: str, language: str = "en") -> dict:
         """
         Evaluate content through safety gate.
 

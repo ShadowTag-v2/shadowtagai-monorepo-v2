@@ -1,6 +1,6 @@
 import re
 
-with open("monorepo_manifest.yaml", "r") as f:
+with open("monorepo_manifest.yaml") as f:
     content = f.read()
 
 # Replace all conflict blocks by picking the bottom section (after =======)

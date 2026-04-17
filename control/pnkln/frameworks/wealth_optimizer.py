@@ -82,7 +82,7 @@ class Leak:
     cost_per_month: float  # Wasted cost
     percentage_of_total: float  # Waste as % of total spend
     description: str  # What's happening
-    evidence: Dict[str, Any]  # Supporting data
+    evidence: dict[str, Any]  # Supporting data
     detected_at: datetime = field(default_factory=datetime.utcnow)
 
     def to_hard_truth(self) -> str:
@@ -109,8 +109,8 @@ class RedesignProposal:
     implementation_cost: float  # One-time cost
     implementation_time_weeks: int  # Time to implement
     description: str  # What to do
-    steps: List[str]  # Specific actions
-    risks: List[str]  # What could go wrong
+    steps: list[str]  # Specific actions
+    risks: list[str]  # What could go wrong
 
     def to_plan(self) -> str:
         """Convert to actionable plan"""
@@ -138,7 +138,7 @@ class LeverageOpportunity:
     initial_value: float  # Starting value
     projected_1yr_value: float  # Value after 1 year compounding
     projected_3yr_value: float  # Value after 3 years compounding
-    activation_requirements: List[str]  # What's needed to activate
+    activation_requirements: list[str]  # What's needed to activate
     description: str
 
     def to_challenge(self) -> str:
@@ -166,15 +166,15 @@ class WealthAnalysis:
     timestamp: datetime = field(default_factory=datetime.utcnow)
 
     # 1. HARD TRUTH (Leaks)
-    leaks: List[Leak] = field(default_factory=list)
+    leaks: list[Leak] = field(default_factory=list)
     total_leak_cost: float = 0.0
 
     # 2. PLAN (Redesigns)
-    redesigns: List[RedesignProposal] = field(default_factory=list)
+    redesigns: list[RedesignProposal] = field(default_factory=list)
     total_projected_gain: float = 0.0
 
     # 3. CHALLENGE (Leverage)
-    leverage_opportunities: List[LeverageOpportunity] = field(default_factory=list)
+    leverage_opportunities: list[LeverageOpportunity] = field(default_factory=list)
     total_leverage_value: float = 0.0
 
     # Summary metrics
@@ -272,7 +272,7 @@ class WealthOptimizer:
     async def analyze(
         self,
         ingestion_result: Any,  # IngestionResult from gemini_ingestion_layer
-        historical_data: Optional[List[Any]] = None,
+        historical_data: list[Any] | None = None,
     ) -> WealthAnalysis:
         """
         Perform complete wealth analysis on ingestion job.
@@ -319,7 +319,7 @@ class WealthOptimizer:
 
         return analysis
 
-    async def _detect_leaks(self, result: Any) -> List[Leak]:
+    async def _detect_leaks(self, result: Any) -> list[Leak]:
         """Detect all leaks in ingestion job"""
         leaks = []
 
@@ -386,7 +386,7 @@ class WealthOptimizer:
 
         return leaks
 
-    async def _propose_redesigns(self, result: Any, leaks: List[Leak]) -> List[RedesignProposal]:
+    async def _propose_redesigns(self, result: Any, leaks: list[Leak]) -> list[RedesignProposal]:
         """Propose funnel redesigns to fix leaks and increase revenue"""
         redesigns = []
 
@@ -491,8 +491,8 @@ class WealthOptimizer:
         return redesigns
 
     async def _identify_leverage(
-        self, result: Any, historical_data: Optional[List[Any]]
-    ) -> List[LeverageOpportunity]:
+        self, result: Any, historical_data: list[Any] | None
+    ) -> list[LeverageOpportunity]:
         """Identify compounding leverage opportunities"""
         opportunities = []
 

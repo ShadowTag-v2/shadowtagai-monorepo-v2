@@ -135,9 +135,9 @@ class Decision:
     involves_blockchain: bool = False
 
     # Feature-specific metadata
-    feature_name: Optional[str] = None
-    variant_id: Optional[str] = None
-    metrics: Dict[str, Any] = field(default_factory=dict)
+    feature_name: str | None = None
+    variant_id: str | None = None
+    metrics: dict[str, Any] = field(default_factory=dict)
 
     # Context
     submitted_by: str = "system"
@@ -151,11 +151,11 @@ class JudgeVerdict:
     decision_id: str
     status: DecisionStatus
     reason: str
-    layer_results: Dict[str, Any] = field(default_factory=dict)
-    blockers: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    next_actions: List[str] = field(default_factory=list)
-    valuation_impact: Optional[float] = None
+    layer_results: dict[str, Any] = field(default_factory=dict)
+    blockers: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    next_actions: list[str] = field(default_factory=list)
+    valuation_impact: float | None = None
     processing_time_ms: float = 0.0
     iq_level: int = 160
 
@@ -171,8 +171,8 @@ class ComplianceCheck:
 
     framework: RegulatoryFramework
     compliant: bool
-    gaps: List[str] = field(default_factory=list)
-    remediation: List[str] = field(default_factory=list)
+    gaps: list[str] = field(default_factory=list)
+    remediation: list[str] = field(default_factory=list)
     risk_level: RiskLevel = RiskLevel.LOW
 
 
@@ -199,7 +199,7 @@ class RegulatoryComplianceEngine:
             RegulatoryFramework.APP_STORE_ATT: self._check_app_store,
         }
 
-    async def validate_decision(self, decision: Decision) -> Dict[str, Any]:
+    async def validate_decision(self, decision: Decision) -> dict[str, Any]:
         """
         Validate decision against all applicable regulatory frameworks.
 
@@ -235,7 +235,7 @@ class RegulatoryComplianceEngine:
             "reason": reason,
         }
 
-    def _map_decision_to_frameworks(self, decision: Decision) -> List[RegulatoryFramework]:
+    def _map_decision_to_frameworks(self, decision: Decision) -> list[RegulatoryFramework]:
         """Map decision type to applicable regulatory frameworks."""
         frameworks = []
 
@@ -360,7 +360,7 @@ class RegulatoryComplianceEngine:
             risk_level=RiskLevel.LOW,
         )
 
-    def _calculate_highest_risk(self, compliance_profile: Dict[str, ComplianceCheck]) -> RiskLevel:
+    def _calculate_highest_risk(self, compliance_profile: dict[str, ComplianceCheck]) -> RiskLevel:
         """Calculate overall risk from compliance checks."""
         risk_priority = {
             RiskLevel.EXTREMELY_HIGH: 4,
@@ -398,7 +398,7 @@ class AdtechStandardsValidator:
     - SKAN (iOS attribution)
     """
 
-    async def validate(self, decision: Decision) -> Dict[str, Any]:
+    async def validate(self, decision: Decision) -> dict[str, Any]:
         """
         Validate adtech standards compliance.
 
@@ -422,7 +422,7 @@ class AdtechStandardsValidator:
             "cpm_impact": "+40-50% (IAB/OM verified)",
         }
 
-    async def scan(self, ingestion_result: Any) -> Dict[str, Any]:
+    async def scan(self, ingestion_result: Any) -> dict[str, Any]:
         """Scan ingestion job for adtech compliance (Wealth Optimizer integration)."""
         return await self.validate(ingestion_result)
 
@@ -463,8 +463,8 @@ class InfrastructureOptimizer:
             return "default_neuron_onnx"  # Portable fallback
 
     def project_savings(
-        self, current_spend: float, multi_silicon_mix: Dict[str, float]
-    ) -> Dict[str, float]:
+        self, current_spend: float, multi_silicon_mix: dict[str, float]
+    ) -> dict[str, float]:
         """
         Project cost savings from multi-silicon strategy.
 
@@ -489,7 +489,7 @@ class InfrastructureOptimizer:
             "net_savings": net_savings,
         }
 
-    async def analyze(self, decision: Decision) -> Dict[str, Any]:
+    async def analyze(self, decision: Decision) -> dict[str, Any]:
         """Analyze infrastructure impact of decision."""
         return {
             "vendor_lock_in_risk": 0.0,  # Multi-silicon eliminates lock-in
@@ -514,9 +514,9 @@ class SupplyChainSecurityGate:
         self,
         function_name: str = None,
         callable: Any = None,
-        sbom: Dict[str, Any] = None,
+        sbom: dict[str, Any] = None,
         decision: Decision = None,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Validate supply chain security for function or decision.
 
@@ -554,8 +554,8 @@ class ProductDeliveryGate:
     """
 
     async def validate(
-        self, feature: str, variant_id: str = None, metrics: Dict[str, Any] = None
-    ) -> Dict[str, Any]:
+        self, feature: str, variant_id: str = None, metrics: dict[str, Any] = None
+    ) -> dict[str, Any]:
         """
         Validate product delivery readiness.
 
@@ -595,7 +595,7 @@ class BlockchainIntegrationEvaluator:
     - DID for creator identity (pilot only, avoid PII sprawl)
     """
 
-    async def evaluate(self, decision: Decision) -> Dict[str, Any]:
+    async def evaluate(self, decision: Decision) -> dict[str, Any]:
         """
         Evaluate blockchain integration decision.
 
@@ -631,7 +631,7 @@ class CompetitiveRealityCheck:
     - Rug-pull risk we eliminate: Volatility, demonetization
     """
 
-    async def benchmark(self, decision: Decision) -> Dict[str, Any]:
+    async def benchmark(self, decision: Decision) -> dict[str, Any]:
         """
         Benchmark decision against competitive landscape.
 
@@ -671,7 +671,7 @@ class MilestoneTracker:
         self.milestones = self._initialize_milestones()
         self.progress = {}
 
-    def _initialize_milestones(self) -> Dict[str, List[Dict[str, Any]]]:
+    def _initialize_milestones(self) -> dict[str, list[dict[str, Any]]]:
         """Initialize 30-60-90 day milestones."""
         return {
             "days_1_30": [
@@ -708,7 +708,7 @@ class MilestoneTracker:
             ],
         }
 
-    async def assess_impact(self, decision: Decision) -> Dict[str, Any]:
+    async def assess_impact(self, decision: Decision) -> dict[str, Any]:
         """Assess decision impact on milestones."""
         return {
             "tasks": ["Update 30-60-90 tracker with new tasks from this decision"],
@@ -737,7 +737,7 @@ class QuantifiedImpactModel:
     - Multiple: 10-12× revenue (governance premium)
     """
 
-    async def calculate(self, decision: Decision) -> Dict[str, Any]:
+    async def calculate(self, decision: Decision) -> dict[str, Any]:
         """
         Calculate financial impact of decision.
 
@@ -788,7 +788,7 @@ class JudgeArchitectureMonitor:
         }
 
     def log_decision(
-        self, decision_id: str, decision_type: str, iq_level: int, outcome: Dict[str, Any]
+        self, decision_id: str, decision_type: str, iq_level: int, outcome: dict[str, Any]
     ):
         """Log decision with quality metrics."""
         self.decision_log.append(
@@ -810,7 +810,7 @@ class JudgeArchitectureMonitor:
             self.iq_160_metrics["regulatory_gap_detection"].append(len(outcome["regulatory_gaps"]))
             self.iq_160_metrics["processing_time_ms"].append(outcome["processing_time_ms"])
 
-    def get_performance_summary(self) -> Dict[str, Any]:
+    def get_performance_summary(self) -> dict[str, Any]:
         """Get IQ 160 performance summary."""
         if not self.iq_160_metrics["decision_accuracy"]:
             return {"status": "No IQ 160 decisions logged yet"}
@@ -869,7 +869,7 @@ class JudgeArchitecture:
             logger.warning(f"Decision blocked: {verdict.blockers}")
     """
 
-    def __init__(self, session_id: Optional[str] = None):
+    def __init__(self, session_id: str | None = None):
         self.session_id = session_id or datetime.now().strftime("%Y%m%d_%H%M%S")
 
         # === Army Doctrine Integration (ATP 5-19, FM 6-0, FM 7-8) ===
@@ -1076,7 +1076,7 @@ class JudgeArchitecture:
         else:
             return 0.50
 
-    def get_performance_report(self) -> Dict[str, Any]:
+    def get_performance_report(self) -> dict[str, Any]:
         """Get IQ 160 lock performance report."""
         return self.iq_monitor.get_performance_summary()
 
@@ -1086,7 +1086,7 @@ class JudgeArchitecture:
 
     async def handle_error_with_drill(
         self, error: Exception, decision: Decision, trigger: DrillTrigger = DrillTrigger.EXCEPTION
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Handle validation errors using FM 7-8 Battle Drills.
 
@@ -1104,7 +1104,7 @@ class JudgeArchitecture:
 
         return await self.battle_drills.route(trigger, context)
 
-    def get_doctrine_status(self) -> Dict[str, Any]:
+    def get_doctrine_status(self) -> dict[str, Any]:
         """Get current Army Doctrine integration status."""
         return {
             "session_id": self.session_id,

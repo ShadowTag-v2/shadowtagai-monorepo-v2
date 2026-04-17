@@ -1,6 +1,6 @@
 import re
 
-with open("scripts/ai-validate.sh", "r") as f:
+with open("scripts/ai-validate.sh") as f:
     content = f.read()
 
 # Replace block by keeping incoming branch content
