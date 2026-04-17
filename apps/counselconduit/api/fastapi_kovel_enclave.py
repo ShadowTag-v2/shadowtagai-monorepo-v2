@@ -61,6 +61,14 @@ except ImportError:
     from api.stripe_connect import router as billing_router  # type: ignore[no-redef]
     from api.stripe_handler import router as stripe_router  # type: ignore[no-redef]
 
+# Middleware + Error handlers (same path in both contexts)
+try:
+    from apps.counselconduit.api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
+    from apps.counselconduit.api.app_error import AppError, app_error_handler, unhandled_error_handler
+except ImportError:
+    from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
+    from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
+
 # ── Structured Logging ─────────────────────────────────────────────────────
 
 structlog.configure(
@@ -99,8 +107,18 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
-    expose_headers=["X-Kovel-Signature"],
+    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining"],
 )
+
+# Cor.30 R31: Security headers on every response
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Cor.30 R14-R15: Per-IP + per-route rate limiting
+app.add_middleware(RateLimitMiddleware)
+
+# Cor.30: Opaque error handling — never expose stack traces
+app.add_exception_handler(AppError, app_error_handler)
+app.add_exception_handler(Exception, unhandled_error_handler)
 
 # ── Router Mounts ──────────────────────────────────────────────────────────
 
