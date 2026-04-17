@@ -17,7 +17,14 @@ from pathlib import Path
 
 # Add scripts/ to path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-from prune_gca_chat_threads import THREADS_FIELD, STATE_KEY, inspect, prune
+from prune_gca_chat_threads import (
+    THREADS_FIELD,
+    STATE_KEY,
+    inspect,
+    prune,
+    vacuum_db,
+    locate_db,
+)
 
 
 def _create_test_db(state_dict: dict) -> Path:
@@ -213,10 +220,41 @@ def test_missing_key_fails_gracefully():
         os.unlink(db)
 
 
+def test_vacuum_reclaims_space():
+    """VACUUM should reduce file size after prune deletes large blobs."""
+    db = _create_test_db(FIXTURE_STATE)
+    try:
+        # Prune first to create dead pages
+        prune(db, keep=0)
+        # VACUUM to reclaim
+        result = vacuum_db(db)
+        assert result["success"] is True
+        assert result["after_size"] <= result["before_size"]
+        print("✅ test_vacuum_reclaims_space")
+    finally:
+        os.unlink(db)
+
+
+def test_locate_db_with_explicit_path():
+    """locate_db should return the explicit path if it exists."""
+    db = _create_test_db(FIXTURE_STATE)
+    try:
+        found = locate_db(str(db))
+        assert found == db
+        # Non-existent path should return None
+        assert locate_db("/tmp/nonexistent_state_db_xyz.vscdb") is None
+        print("✅ test_locate_db_with_explicit_path")
+    finally:
+        os.unlink(db)
+
+
 if __name__ == "__main__":
     test_inspect_reports_correct_metrics()
     test_prune_removes_only_chat_threads()
     test_prune_keep_newest()
     test_invalid_json_fails_safely()
     test_missing_key_fails_gracefully()
-    print("\n🎉 All 5 tests passed.")
+    test_vacuum_reclaims_space()
+    test_locate_db_with_explicit_path()
+    print("\n🎉 All 7 tests passed.")
+
