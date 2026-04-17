@@ -180,3 +180,6 @@ apps/kovelai/public/hero-videos/legal-data-arch.mp4
 # Scripts cache and dumps
 scripts/.*
 .lancedb/
+
+# Live Server Plus Plus reference fork (external repo)
+tools/vscode-live-server-plus-plus/
