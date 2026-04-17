@@ -902,8 +902,8 @@ Submit Inquiry
 <!-- HERO SECTION                                    -->
 <!-- ════════════════════════════════════════════════ -->
 <header id="hero-header" class="relative min-h-screen flex flex-col justify-center items-center pt-20 px-8 overflow-hidden" style="background: url('images/hero-bg-opt.webp') center/cover no-repeat;">
-<!-- Bottom Fade Gradient - blends hero into the stats section -->
-<div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/60 to-transparent z-10 pointer-events-none"></div>
+<!-- Bottom Fade Gradient - blends hero into the stats section (extended for Firefox parity) -->
+<div class="absolute bottom-0 left-0 right-0 h-80 z-10 pointer-events-none" style="background: linear-gradient(to top, #0b0905 0%, #0b0905 8%, rgba(11,9,5,0.85) 25%, rgba(11,9,5,0.5) 50%, rgba(11,9,5,0.15) 75%, transparent 100%);"></div>
 <!-- Layer 0: Fluid Kinetic Aura — 5 organic mesh gradient blobs -->
 <div class="hero-mesh-aura">
     <div class="aura-blob aura-blob--1"></div>
@@ -955,7 +955,7 @@ Submit Inquiry
 </div>
 </div>
 <!-- Hero Image -->
-<div class="mt-16 w-full rounded-xl overflow-hidden shadow-2xl bg-surface-container-lowest h-[420px] relative ring-1 ring-white/5 animate-fade-in-up animate-delay-3">
+<div class="mt-16 w-full rounded-xl overflow-hidden shadow-2xl bg-surface-container-lowest h-[420px] relative ring-1 ring-white/5 animate-fade-in-up animate-delay-3" style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%); mask-image: linear-gradient(to bottom, black 0%, black 55%, transparent 100%);">
 <img class="w-full h-full object-cover" alt="Premium law office with encrypted data visualization on screen, dark ambient gold lighting, cityscape through floor-to-ceiling windows" src="/img/hero.png" fetchpriority="high" decoding="async"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent"></div>
 
