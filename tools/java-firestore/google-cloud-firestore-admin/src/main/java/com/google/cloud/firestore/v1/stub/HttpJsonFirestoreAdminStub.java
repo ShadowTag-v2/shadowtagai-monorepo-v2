@@ -111,6 +111,7 @@ import javax.annotation.Generated;
  * <p>This class is for advanced usage and reflects the underlying API directly.
  */
 @Generated("by gapic-generator-java")
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class HttpJsonFirestoreAdminStub extends FirestoreAdminStub {
   private static final TypeRegistry typeRegistry =
       TypeRegistry.newBuilder()
@@ -2004,8 +2005,8 @@ public class HttpJsonFirestoreAdminStub extends FirestoreAdminStub {
   }
 
   @InternalApi
-  public static List<ApiMethodDescriptor> getMethodDescriptors() {
-    List<ApiMethodDescriptor> methodDescriptors = new ArrayList<>();
+  public static List<ApiMethodDescriptor<?, ?>> getMethodDescriptors() {
+    List<ApiMethodDescriptor<?, ?>> methodDescriptors = new ArrayList<>();
     methodDescriptors.add(createIndexMethodDescriptor);
     methodDescriptors.add(listIndexesMethodDescriptor);
     methodDescriptors.add(getIndexMethodDescriptor);

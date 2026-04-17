@@ -3,7 +3,12 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /system_idempotency_keys/{key} {
       allow read: if false; // Zero trust
-      allow write: if request.auth != null && request.time < resource.data.expiresAt;
+      allow create: if request.auth != null && request.time < request.resource.data.expiresAt;
+      allow update: if request.auth != null && request.time < resource.data.expiresAt;
+    }
+
+    match /{document=**} {
+      allow read, write: if request.auth != null && request.auth.token.admin == true; // Zero-trust default
     }
   }
 }
