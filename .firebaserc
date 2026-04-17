@@ -1,21 +1,17 @@
 {
   "projects": {
-    "default": "shadowtag-omega-v4"
+    "default": "shadowtag-omega-v4",
+    "staging": "shadowtag-omega-v4"
   },
   "targets": {
     "shadowtag-omega-v4": {
       "hosting": {
-        "kovelai": [
-          "kovelai"
-        ],
-        "shadowtagai": [
-          "shadowtagai"
-        ],
-        "default-site": [
-          "shadowtag-omega-v4"
-        ]
+        "kovelai": ["shadowtag-omega-v4-kovelai"],
+        "shadowtagai": ["shadowtag-omega-v4-shadowtagai"],
+        "kovelai-staging": ["shadowtag-omega-v4-kovelai-staging"],
+        "shadowtagai-staging": ["shadowtag-omega-v4-shadowtagai-staging"],
+        "default-site": ["shadowtag-omega-v4"]
       }
     }
-  },
-  "etags": {}
+  }
 }
