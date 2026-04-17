@@ -4,6 +4,7 @@ Nano Banana 2 — Gemini 3.1 Flash Image Generation Test
 Model: gemini-3.1-flash-image-preview
 SDK: google-genai
 """
+
 import os
 from io import BytesIO
 

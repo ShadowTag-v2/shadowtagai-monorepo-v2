@@ -44,12 +44,7 @@ for root, dirs, files in os.walk(ROOT, topdown=False):
     # Rename files
     for name in files:
         if "pnkln" in name.lower() or "pnkln" in name.lower():
-            new_name = (
-                name.replace("pnkln", "pnkln")
-                .replace("pnkln", "pnkln")
-                .replace("pnkln", "pnkln")
-                .replace("pnkln", "pnkln")
-            )
+            new_name = name.replace("pnkln", "pnkln").replace("pnkln", "pnkln").replace("pnkln", "pnkln").replace("pnkln", "pnkln")
             old_path = os.path.join(root, name)
             new_path = os.path.join(root, new_name)
             if old_path != new_path and not os.path.exists(new_path):
@@ -61,12 +56,7 @@ for root, dirs, files in os.walk(ROOT, topdown=False):
         if name in EXCLUDE_DIRS:
             continue
         if "pnkln" in name.lower() or "pnkln" in name.lower():
-            new_name = (
-                name.replace("pnkln", "pnkln")
-                .replace("pnkln", "pnkln")
-                .replace("pnkln", "pnkln")
-                .replace("pnkln", "pnkln")
-            )
+            new_name = name.replace("pnkln", "pnkln").replace("pnkln", "pnkln").replace("pnkln", "pnkln").replace("pnkln", "pnkln")
             old_path = os.path.join(root, name)
             new_path = os.path.join(root, new_name)
             if old_path != new_path:

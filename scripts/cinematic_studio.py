@@ -52,9 +52,7 @@ class CinematicTelemetry:
             last_error_time = self.recent_500s[-1][0]
 
             if (last_error_time - first_error_time) <= self.time_window_seconds:
-                logger.critical(
-                    "🔥 3 Concurrent HTTP 500s Detected! Triggering God Mode Auto-Repair Sequence."
-                )
+                logger.critical("🔥 3 Concurrent HTTP 500s Detected! Triggering God Mode Auto-Repair Sequence.")
 
                 # Combine stack traces to give context to the Swarm
                 combined_stack = " | ".join([err[2] for err in self.recent_500s if err[2]])
@@ -71,12 +69,6 @@ class CinematicTelemetry:
 if __name__ == "__main__":
     # Test harness
     telemetry = CinematicTelemetry()
-    telemetry.log_http_response(
-        500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline"
-    )
-    telemetry.log_http_response(
-        500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline"
-    )
-    telemetry.log_http_response(
-        500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline"
-    )
+    telemetry.log_http_response(500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline")
+    telemetry.log_http_response(500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline")
+    telemetry.log_http_response(500, "/api/v1/render", "Traceback: ZeroDivisionError in render_pipeline")

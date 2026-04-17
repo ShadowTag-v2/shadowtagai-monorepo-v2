@@ -41,18 +41,14 @@ def verify_assimilation():
                     nested_gits.append(str(sub.relative_to(root_dir)))
 
     if nested_gits:
-        print(
-            f"❌ FAILED: Found nested .git repositories (unassimilated modules): {', '.join(nested_gits)}"
-        )
+        print(f"❌ FAILED: Found nested .git repositories (unassimilated modules): {', '.join(nested_gits)}")
         issues += 1
     else:
         print("✅ No nested .git repositories found in apps/ or libs/. Assimilation clean.")
 
     # 3. Check for Pyright isolation (performance)
     if not (root_dir / "pyrightconfig.json").exists():
-        print(
-            "⚠️ WARNING: pyrightconfig.json missing. Type checking may scan external/vendor folders."
-        )
+        print("⚠️ WARNING: pyrightconfig.json missing. Type checking may scan external/vendor folders.")
     else:
         print("✅ Pyright isolation config (`pyrightconfig.json`) is present.")
 

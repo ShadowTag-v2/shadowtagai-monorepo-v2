@@ -40,9 +40,7 @@ def biome_check(filepath: str) -> str:
 
     # Run Biome natively for extreme speed
     try:
-        result = subprocess.run(
-            ["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True
-        )
+        result = subprocess.run(["npx", "@biomejs/biome", "check", filepath], capture_output=True, text=True)
         return "PASS" if result.returncode == 0 else "FAIL_SYNTAX"
     except Exception as e:
         return f"ERROR: {str(e)}"
@@ -72,9 +70,7 @@ else:
     cat = "UNCATEGORIZED_INTELLIGENCE"
 print(json.dumps({{"category": cat}}))
 """
-    result = dispatch_compute(
-        text=ane_code, prompt_description=f"bead_{filename[:10]}", examples=[], file_name=filename
-    )
+    result = dispatch_compute(text=ane_code, prompt_description=f"bead_{filename[:10]}", examples=[], file_name=filename)
     if isinstance(result, list) and len(result) > 0:
         result_dict = result[0]
         if result_dict.get("attrs", {}).get("compute_target") == "ANE-NPU":

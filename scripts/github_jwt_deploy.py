@@ -59,9 +59,7 @@ def push_to_remote(token):
     print(f"Pushing branch {branch_output} to remote...")
 
     subprocess.run(["git", "remote", "set-url", "origin", remote_url], check=True)
-    push_result = subprocess.run(
-        ["git", "push", "--no-verify", "origin", branch_output], capture_output=True, text=True
-    )
+    push_result = subprocess.run(["git", "push", "--no-verify", "origin", branch_output], capture_output=True, text=True)
 
     if push_result.returncode != 0:
         print(f"Error pushing: {push_result.stderr}", file=sys.stderr)

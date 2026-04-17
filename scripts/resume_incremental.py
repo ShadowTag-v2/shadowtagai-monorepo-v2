@@ -11,27 +11,9 @@ def run(cmd):
 
 
 # Define all the chunks we want to push
-dirs_libs = sorted(
-    [
-        d
-        for d in os.listdir("libs")
-        if os.path.isdir(os.path.join("libs", d)) and not d.startswith(".")
-    ]
-)
-dirs_apps = sorted(
-    [
-        d
-        for d in os.listdir("apps")
-        if os.path.isdir(os.path.join("apps", d)) and not d.startswith(".")
-    ]
-)
-dirs_external = sorted(
-    [
-        d
-        for d in os.listdir("external_sdks")
-        if os.path.isdir(os.path.join("external_sdks", d)) and not d.startswith(".")
-    ]
-)
+dirs_libs = sorted([d for d in os.listdir("libs") if os.path.isdir(os.path.join("libs", d)) and not d.startswith(".")])
+dirs_apps = sorted([d for d in os.listdir("apps") if os.path.isdir(os.path.join("apps", d)) and not d.startswith(".")])
+dirs_external = sorted([d for d in os.listdir("external_sdks") if os.path.isdir(os.path.join("external_sdks", d)) and not d.startswith(".")])
 
 
 def process_batch(parent, dirs, batch_size=2):
@@ -46,9 +28,7 @@ def process_batch(parent, dirs, batch_size=2):
             # Changes exist!
             msg = f"chore(sync): monorepo chunk {parent} batch {i // batch_size} ({batch[0]} to {batch[-1]})"
             run(f'git commit -m "{msg}"')
-            run(
-                ".venv/bin/python scripts/push_monorepo.py"
-            )
+            run(".venv/bin/python scripts/push_monorepo.py")
             time.sleep(1)
         else:
             print(f"No changes for {parent} batch {i // batch_size}")
@@ -69,6 +49,4 @@ run("git add .")
 res = subprocess.run("git diff --cached --quiet", shell=True)
 if res.returncode != 0:
     run('git commit -m "chore(sync): monorepo chunk FINAL (root, docs, scripts)"')
-    run(
-        ".venv/bin/python scripts/push_monorepo.py"
-    )
+    run(".venv/bin/python scripts/push_monorepo.py")

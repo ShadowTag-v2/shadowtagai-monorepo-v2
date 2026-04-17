@@ -128,10 +128,7 @@ def main():
     low = [f for f in all_findings if f["severity"] == "LOW"]
 
     print(f"**Scanned:** {scanned} files")
-    print(
-        f"**Total findings:** {len(all_findings)} "
-        f"(🔴 {len(high)} HIGH, 🟡 {len(med)} MEDIUM, 🔵 {len(low)} LOW)\n"
-    )
+    print(f"**Total findings:** {len(all_findings)} (🔴 {len(high)} HIGH, 🟡 {len(med)} MEDIUM, 🔵 {len(low)} LOW)\n")
 
     if high:
         print("## 🔴 HIGH Severity\n")

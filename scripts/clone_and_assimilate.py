@@ -61,9 +61,7 @@ def get_token(client_id, pem_path, owner_name):
             print(f"No installation ID found in API response for {owner_name}")
             return None
 
-        print(
-            f"Found installation ID {target_installation_id} for {owner_name}, requesting access token..."
-        )
+        print(f"Found installation ID {target_installation_id} for {owner_name}, requesting access token...")
         resp = session.post(
             f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
             headers=headers,
@@ -135,18 +133,14 @@ if __name__ == "__main__":
         # Try ehanc69 token first
         if token_e:
             cmd = f"git clone https://x-access-token:{token_e}@github.com/ehanc69/{repo}.git {dest}"
-            res = subprocess.run(
-                cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )
+            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             if res.returncode == 0:
                 success = True
 
         # Fallback to ShadowTag-v2 token
         if not success and token_s:
             cmd = f"git clone https://x-access-token:{token_s}@github.com/ShadowTag-v2/{repo}.git {dest}"
-            res = subprocess.run(
-                cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )
+            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             if res.returncode == 0:
                 success = True
 
@@ -180,9 +174,7 @@ if __name__ == "__main__":
         if not os.path.exists(dest):
             print(f"Cloning external: {name}...")
             cmd = f"git clone {url} {dest}"
-            res = subprocess.run(
-                cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )
+            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             if res.returncode == 0:
                 git_dir = os.path.join(dest, ".git")
                 if os.path.exists(git_dir):

@@ -21,10 +21,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from google import genai
 
 # ─── Output Configuration ────────────────────────────────────────────────────
-OUTPUT_DIR = os.path.join(
-    os.path.dirname(__file__),
-    "..", "apps", "kovelai", "public", "hero-videos"
-)
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "apps", "kovelai", "public", "hero-videos")
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "legal-data-arch.mp4")
 
 # ─── Veo 3.1 Prompt ──────────────────────────────────────────────────────────
@@ -53,13 +50,11 @@ The animation loops seamlessly: the final frame visually matches the first frame
 Duration: 8 seconds. 4K resolution. Cinematic, photorealistic render quality.
 """.strip()
 
+
 def main():
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        raise RuntimeError(
-            "GEMINI_API_KEY environment variable not set.\n"
-            "Run: export GEMINI_API_KEY=your_key_here"
-        )
+        raise RuntimeError("GEMINI_API_KEY environment variable not set.\nRun: export GEMINI_API_KEY=your_key_here")
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -103,6 +98,7 @@ def main():
     print("     gs://shadowtag-omega-v4-archive/hero-videos/legal-data-arch.mp4")
     print("  3. firebase deploy --only hosting:kovelai")
     print("━" * 60)
+
 
 if __name__ == "__main__":
     main()

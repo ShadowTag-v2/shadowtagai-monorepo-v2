@@ -4,6 +4,7 @@ Veo 3.1 Hero Video Generator — Full Design-to-Video Pipeline
 Generates Fluid Kinetic Aura (ShadowTag) and Legal Data Architecture (KovelAI)
 background loops using brand colors extracted from Stitch MCP design tokens.
 """
+
 import os
 import sys
 import time
@@ -60,11 +61,12 @@ KOVELAI_PROMPT = (
     "4K resolution, 24fps, seamless loop."
 )
 
+
 def generate_video(prompt: str, output_path: str, label: str):
     """Generate a video with Veo 3.1 and save it."""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  🎬 Generating: {label}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"  Prompt: {prompt[:120]}...")
     print(f"  Output: {output_path}")
     print()
@@ -97,7 +99,7 @@ def generate_video(prompt: str, output_path: str, label: str):
             return True
         else:
             print(f"  ❌ [{label}] No video in response")
-            if hasattr(operation, 'error') and operation.error:
+            if hasattr(operation, "error") and operation.error:
                 print(f"     Error: {operation.error}")
             return False
 
@@ -119,9 +121,9 @@ def main():
         kv_path = os.path.join(OUTPUT_DIR, "kovelai", "public", "legal-data-arch.mp4")
         results["kovelai"] = generate_video(KOVELAI_PROMPT, kv_path, "KovelAI — Legal Data Architecture")
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("  📊 Results Summary")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     for name, success in results.items():
         status = "✅ SUCCESS" if success else "❌ FAILED"
         print(f"  {name}: {status}")

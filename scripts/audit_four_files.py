@@ -16,9 +16,7 @@ def audit_four_files():
             # Check false canonical
             if disp == "canonical_in_monorepo":
                 if not os.path.exists(dest):
-                    issues.append(
-                        f"FALSE CLAIM: {repo['repo_name']} marked canonical but path {dest} does not exist!"
-                    )
+                    issues.append(f"FALSE CLAIM: {repo['repo_name']} marked canonical but path {dest} does not exist!")
     except Exception as e:
         issues.append(f"01_repo_census.json could not be read: {e}")
 

@@ -22,9 +22,7 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-MANIFEST_PATH = (
-    REPO_ROOT / "apps" / "ShadowTag-v2_stack" / "nascent-apollo" / "Docs" / "TELEPORT_MANIFEST.json"
-)
+MANIFEST_PATH = REPO_ROOT / "apps" / "ShadowTag-v2_stack" / "nascent-apollo" / "Docs" / "TELEPORT_MANIFEST.json"
 
 # Priority order for groups
 GROUP_PRIORITY = {
@@ -133,9 +131,7 @@ def merge_with_existing(new_manifest: dict, existing_path: Path) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Build TELEPORT_MANIFEST.json from raw session list"
-    )
+    parser = argparse.ArgumentParser(description="Build TELEPORT_MANIFEST.json from raw session list")
     parser.add_argument("raw_file", type=Path, help="Path to raw_sessions.txt")
     parser.add_argument("--merge", action="store_true", help="Merge with existing manifest")
     parser.add_argument("--dry-run", action="store_true", help="Print manifest without writing")

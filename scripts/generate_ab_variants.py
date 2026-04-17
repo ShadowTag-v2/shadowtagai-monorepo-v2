@@ -115,25 +115,19 @@ def main():
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-    variants_to_gen = (
-        list(VARIANTS.keys()) if args.variant == "all" else [args.variant]
-    )
+    variants_to_gen = list(VARIANTS.keys()) if args.variant == "all" else [args.variant]
 
     for variant_name in variants_to_gen:
         prompts = VARIANTS[variant_name]
         print(f"\n=== Variant: {variant_name} ===")
 
         for platform, prompt in prompts.items():
-            output_path = os.path.join(
-                args.output_dir, f"{platform}-{variant_name}.mp4"
-            )
+            output_path = os.path.join(args.output_dir, f"{platform}-{variant_name}.mp4")
             generate_variant(prompt, output_path)
 
     print(f"\n✅ All variants saved to {args.output_dir}")
     print("Upload to GCS with:")
-    print(
-        f"  gcloud storage cp {args.output_dir}/*.mp4 gs://shadowtag-omega-v4-archive/hero-videos/variants/"
-    )
+    print(f"  gcloud storage cp {args.output_dir}/*.mp4 gs://shadowtag-omega-v4-archive/hero-videos/variants/")
 
 
 if __name__ == "__main__":

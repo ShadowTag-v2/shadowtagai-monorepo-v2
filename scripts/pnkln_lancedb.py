@@ -11,9 +11,7 @@ from vertexai.language_models import TextEmbeddingModel
 
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
 LOCATION = os.environ.get("GOOGLE_CLOUD_LOCATION", "us-central1")
-DB_URI = os.environ.get(
-    "LANCEDB_URI", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/lancedb"
-)
+DB_URI = os.environ.get("LANCEDB_URI", "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/data/lancedb")
 TABLE_NAME = os.environ.get("LANCEDB_TABLE", "pnkln_knowledge")
 EMBED_MODEL_NAME = os.environ.get("VERTEX_EMBED_MODEL", "gemini-embedding-001")
 EMBED_DIM = int(os.environ.get("VERTEX_EMBED_DIM", "768"))

@@ -32,9 +32,7 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-MANIFEST_PATH = (
-    REPO_ROOT / "apps" / "ShadowTag-v2_stack" / "nascent-apollo" / "Docs" / "TELEPORT_MANIFEST.json"
-)
+MANIFEST_PATH = REPO_ROOT / "apps" / "ShadowTag-v2_stack" / "nascent-apollo" / "Docs" / "TELEPORT_MANIFEST.json"
 CLAUDE_PROJECTS = Path.home() / ".claude" / "projects" / "-Users-pikeymickey"
 API_BASE = os.getenv("VITE_API_URL", "http://localhost:8000")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
@@ -124,19 +122,14 @@ def extract_text_from_jsonl(path: Path) -> str:
 def embed_gemini(text: str) -> list[float]:
     if not GEMINI_API_KEY:
         raise RuntimeError("GEMINI_API_KEY not set")
-    url = (
-        f"https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{EMBED_MODEL}:embedContent?key={GEMINI_API_KEY}"
-    )
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{EMBED_MODEL}:embedContent?key={GEMINI_API_KEY}"
     body = json.dumps(
         {
             "model": f"models/{EMBED_MODEL}",
             "content": {"parts": [{"text": text}]},
         }
     ).encode()
-    req = urllib.request.Request(
-        url, data=body, headers={"Content-Type": "application/json"}, method="POST"
-    )
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = json.loads(resp.read())
     return data["embedding"]["values"]
@@ -292,9 +285,7 @@ def main() -> None:
     ingest_status: dict[str, Any] = manifest.get("ingest_status", {})
 
     print("[ingestor] NOTE: manifest session IDs (session_01XXXX) are Anthropic cloud IDs.")
-    print(
-        "[ingestor] Local ~/.claude/projects/ uses UUID format. Use --local-only for local sessions."
-    )
+    print("[ingestor] Local ~/.claude/projects/ uses UUID format. Use --local-only for local sessions.")
 
     # Sort groups by priority
     sorted_groups = sorted(groups.items(), key=lambda x: x[1].get("priority", 99))
@@ -303,9 +294,7 @@ def main() -> None:
         if args.group and group_name != args.group:
             continue
         sessions = group_data.get("sessions", [])
-        print(
-            f"\n[ingestor] group={group_name} priority={group_data.get('priority')} sessions={len(sessions)}"
-        )
+        print(f"\n[ingestor] group={group_name} priority={group_data.get('priority')} sessions={len(sessions)}")
 
         for sid in sessions:
             # Skip already ingested
@@ -326,9 +315,7 @@ def main() -> None:
     total_not_found = sum(1 for v in ingest_status.values() if v.get("status") == "not_found")
     print(f"\n[ingestor] done. ingested={total_ingested} not_found={total_not_found}")
     if total_not_found > 0:
-        print(
-            f"[ingestor] {total_not_found} not_found = cloud IDs with no local JSONL. Run --local-only instead."
-        )
+        print(f"[ingestor] {total_not_found} not_found = cloud IDs with no local JSONL. Run --local-only instead.")
 
 
 if __name__ == "__main__":

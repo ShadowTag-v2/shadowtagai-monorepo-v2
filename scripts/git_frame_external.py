@@ -87,9 +87,7 @@ def main():
 
     for t in targets:
         # Resolve 'ast-grep-mcp' typo organically if present
-        if t.endswith(
-            "ast-grep-mcp/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"
-        ):
+        if t.endswith("ast-grep-mcp/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"):
             t = "/Users/pikeymickey/.gemini/antigravity/playground/molten-universe/ast-grep-mcp"
 
         frame_git_repo(t)

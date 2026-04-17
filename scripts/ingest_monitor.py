@@ -170,9 +170,7 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
     # Stage 2
     print("[monitor] Stage 2: web_to_corpus …")
     corpus_stats = run_web_to_corpus()
-    print(
-        f"  processed={corpus_stats.get('processed')} skipped={corpus_stats.get('skipped')} errors={corpus_stats.get('errors')}"
-    )
+    print(f"  processed={corpus_stats.get('processed')} skipped={corpus_stats.get('skipped')} errors={corpus_stats.get('errors')}")
 
     # Stage 3
     print("[monitor] Stage 3: gemini agent swarm …")
@@ -210,9 +208,7 @@ def run_once(sources: list[str], verified_only: bool) -> dict:
 
 
 def run_loop(interval: int, sources: list[str], verified_only: bool) -> None:
-    print(
-        f"[monitor] Loop mode: interval={interval}s sources={sources or 'all'} verified_only={verified_only}"
-    )
+    print(f"[monitor] Loop mode: interval={interval}s sources={sources or 'all'} verified_only={verified_only}")
     while True:
         run_once(sources, verified_only)
         print(f"[monitor] Sleeping {interval}s …")
@@ -232,9 +228,7 @@ def main() -> None:
         metavar="SECONDS",
         help="Loop cadence (default 3600)",
     )
-    ap.add_argument(
-        "--verified-only", action="store_true", help="Pass --verified-only to rag_evolve / swarm"
-    )
+    ap.add_argument("--verified-only", action="store_true", help="Pass --verified-only to rag_evolve / swarm")
     ap.add_argument(
         "--sources",
         default="",

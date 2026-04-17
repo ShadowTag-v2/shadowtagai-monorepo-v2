@@ -52,13 +52,13 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, List, Optional, Any
-from enum import Enum
+from enum import Enum, StrEnum
 import json
 
 logger = logging.getLogger(__name__)
 
 
-class Essential(str, Enum):
+class Essential(StrEnum):
     """The 10 essential prompt elements"""
 
     TONE = "tone"  # Voice/personality
@@ -107,9 +107,7 @@ class CheatSheetVariant:
         self.last_tested = datetime.utcnow()
 
         logger.info(
-            f"Variant {self.variant_id}: Test #{self.tests_run} "
-            f"accuracy={accuracy:.1%}, avg={self.avg_accuracy:.1%}, "
-            f"best={self.best_accuracy:.1%}"
+            f"Variant {self.variant_id}: Test #{self.tests_run} accuracy={accuracy:.1%}, avg={self.avg_accuracy:.1%}, best={self.best_accuracy:.1%}"
         )
 
     def get_improvement(self) -> float:
@@ -200,9 +198,7 @@ class CheatSheetFusion:
             f"DTE={'enabled' if dte_enabled else 'disabled'}, target={target_accuracy:.1%}"
         )
 
-    def create_variant(
-        self, essentials: dict[Essential, Any], parent_id: str | None = None
-    ) -> str:
+    def create_variant(self, essentials: dict[Essential, Any], parent_id: str | None = None) -> str:
         """Create a new cheat sheet variant"""
         # Generate variant ID from essentials hash
         essentials_str = json.dumps(essentials, sort_keys=True, default=str)
@@ -228,10 +224,7 @@ class CheatSheetFusion:
         self.variants[variant_id] = variant
         self.current_variant_id = variant_id
 
-        logger.info(
-            f"Created variant {variant_id}: gen={self.generation}, "
-            f"parent={parent_id}, mutations={mutations}"
-        )
+        logger.info(f"Created variant {variant_id}: gen={self.generation}, parent={parent_id}, mutations={mutations}")
 
         return variant_id
 
@@ -247,9 +240,7 @@ class CheatSheetFusion:
             return self.variants.get(self.best_variant_id)
         return None
 
-    async def test_variant(
-        self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None
-    ) -> DTETestResult:
+    async def test_variant(self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None) -> DTETestResult:
         """
         Test a variant against ground truth using DTE.
 
@@ -303,16 +294,10 @@ class CheatSheetFusion:
         else:
             gain = accuracy - self.baseline_accuracy
             self.total_accuracy_gain += gain
-            logger.info(
-                f"Accuracy gain: {gain:+.1%} "
-                f"(total: {self.total_accuracy_gain:+.1%}, target: +3.7%)"
-            )
+            logger.info(f"Accuracy gain: {gain:+.1%} (total: {self.total_accuracy_gain:+.1%}, target: +3.7%)")
 
         # Update best variant
-        if (
-            self.best_variant_id is None
-            or accuracy > self.variants[self.best_variant_id].best_accuracy
-        ):
+        if self.best_variant_id is None or accuracy > self.variants[self.best_variant_id].best_accuracy:
             self.best_variant_id = variant_id
             logger.info(f"New best variant: {variant_id} ({accuracy:.1%})")
 
@@ -365,9 +350,7 @@ class CheatSheetFusion:
 
             essential_to_mutate = random.choice(list(Essential))
             # Apply random change (simplified for demo)
-            new_essentials[essential_to_mutate] = (
-                f"mutated_{new_essentials.get(essential_to_mutate, 'default')}"
-            )
+            new_essentials[essential_to_mutate] = f"mutated_{new_essentials.get(essential_to_mutate, 'default')}"
 
         elif direction == "simplify":
             # Remove least important essentials (Jobs: simplicity)
@@ -384,19 +367,14 @@ class CheatSheetFusion:
                 Essential.CITATIONS: 2,
                 Essential.CALL: 1,
             }
-            keep_essentials = sorted(
-                new_essentials.keys(), key=lambda e: essential_importance.get(e, 0), reverse=True
-            )[:7]
+            keep_essentials = sorted(new_essentials.keys(), key=lambda e: essential_importance.get(e, 0), reverse=True)[:7]
             new_essentials = {e: new_essentials[e] for e in keep_essentials}
 
         # Create new variant
         self.generation += 1
         new_variant_id = self.create_variant(new_essentials, parent_id=parent_id)
 
-        logger.info(
-            f"Evolved from {parent_id} → {new_variant_id} "
-            f"(direction={direction}, gen={self.generation})"
-        )
+        logger.info(f"Evolved from {parent_id} → {new_variant_id} (direction={direction}, gen={self.generation})")
 
         return new_variant_id
 
@@ -497,18 +475,12 @@ class CheatSheetFusion:
             "target_accuracy_gain": 0.037,  # +3.7%
             "best_variant": {
                 "id": self.best_variant_id,
-                "accuracy": self.variants[self.best_variant_id].best_accuracy
-                if self.best_variant_id
-                else None,
-                "tests_run": self.variants[self.best_variant_id].tests_run
-                if self.best_variant_id
-                else 0,
+                "accuracy": self.variants[self.best_variant_id].best_accuracy if self.best_variant_id else None,
+                "tests_run": self.variants[self.best_variant_id].tests_run if self.best_variant_id else 0,
             }
             if self.best_variant_id
             else None,
-            "progress_to_target": (self.total_accuracy_gain / 0.037 * 100)
-            if self.baseline_accuracy
-            else 0,
+            "progress_to_target": (self.total_accuracy_gain / 0.037 * 100) if self.baseline_accuracy else 0,
         }
 
 

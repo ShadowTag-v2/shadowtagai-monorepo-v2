@@ -61,9 +61,7 @@ class AntigravitySwarm:
             "active_agents": len(self.units),
             "approved_actions": sum(1 for u in self.units if u.status == "Approved"),
             "blocked_actions": sum(1 for u in self.units if u.status == "Blocked"),
-            "avg_viability": sum(u.viability_score for u in self.units) / len(self.units)
-            if self.units
-            else 0,
+            "avg_viability": sum(u.viability_score for u in self.units) / len(self.units) if self.units else 0,
             "recent_decisions": self.governance_log[-5:],
         }
 
@@ -194,9 +192,7 @@ if __name__ == "__main__":
 
             if status["recent_decisions"]:
                 last_decision = status["recent_decisions"][-1]
-                print(
-                    f"Latest Decision: {last_decision['agent']} -> {last_decision['decision']} ({last_decision['proposal']})"
-                )
+                print(f"Latest Decision: {last_decision['agent']} -> {last_decision['decision']} ({last_decision['proposal']})")
 
     except KeyboardInterrupt:
         print("\nStopping swarm...")

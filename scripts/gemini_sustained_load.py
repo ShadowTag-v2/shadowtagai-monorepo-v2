@@ -107,9 +107,7 @@ class SustainedLoadEngine:
         model = self._get_model(key)
 
         try:
-            response = await asyncio.to_thread(
-                model.generate_content, prompt, safety_settings=self.safety_config
-            )
+            response = await asyncio.to_thread(model.generate_content, prompt, safety_settings=self.safety_config)
             self.total_requests += 1
             return response.text
         except Exception as e:
@@ -129,9 +127,7 @@ class SustainedLoadEngine:
         if duration_hours:
             end_time = self.start_time + (duration_hours * 3600)
 
-        print(
-            f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run"
-        )
+        print(f"\n///▞ SUSTAINED :: Starting {'indefinite' if not end_time else f'{duration_hours}h'} run")
         print("///▞ SUSTAINED :: Press Ctrl+C to stop\n")
 
         try:
@@ -148,11 +144,7 @@ class SustainedLoadEngine:
                 if self.total_requests % 100 == 0:
                     elapsed = time.time() - self.start_time
                     actual_rpm = (self.total_requests / elapsed) * 60
-                    print(
-                        f"///▞ SUSTAINED :: {self.total_requests} requests, "
-                        f"{actual_rpm:.1f} actual RPM, "
-                        f"{self.total_errors} errors"
-                    )
+                    print(f"///▞ SUSTAINED :: {self.total_requests} requests, {actual_rpm:.1f} actual RPM, {self.total_errors} errors")
 
                 # Rate limit
                 await asyncio.sleep(self.interval)
@@ -230,12 +222,8 @@ async def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Gemini Sustained Load Runner")
-    parser.add_argument(
-        "--mode", choices=["safe", "aggressive"], default="safe", help="Rate limiting mode"
-    )
-    parser.add_argument(
-        "--hours", type=float, default=None, help="Duration in hours (default: indefinite)"
-    )
+    parser.add_argument("--mode", choices=["safe", "aggressive"], default="safe", help="Rate limiting mode")
+    parser.add_argument("--hours", type=float, default=None, help="Duration in hours (default: indefinite)")
     args = parser.parse_args()
 
     engine = SustainedLoadEngine(mode=args.mode)
