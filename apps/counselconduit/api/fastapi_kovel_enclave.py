@@ -26,12 +26,20 @@ from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
+from apps.counselconduit.api.auth import get_current_attorney
+from apps.counselconduit.api.firestore_client import (
+    update_attorney_usage,
+    write_audit_log,
+    AuditEntry,
+)
 from apps.counselconduit.api.gemini_rag import (
     QueryRequest,
     QueryResponse,
     execute_privileged_query,
     stream_privileged_query,
 )
+from apps.counselconduit.api.judge6 import evaluate as judge6_evaluate
+from apps.counselconduit.api.stripe_connect import router as billing_router
 from apps.counselconduit.api.stripe_handler import router as stripe_router
 
 # ── Structured Logging ─────────────────────────────────────────────────────
@@ -78,6 +86,7 @@ app.add_middleware(
 # ── Router Mounts ──────────────────────────────────────────────────────────
 
 app.include_router(stripe_router)
+app.include_router(billing_router)
 
 
 # ── Auth Middleware ─────────────────────────────────────────────────────────
@@ -109,6 +118,7 @@ async def execute_query(
     """Execute a Kovel-privileged query against the Gemini RAG pipeline.
     
     Synchronous endpoint — returns full response after completion.
+    All responses pass through Judge #6 governance before returning.
     """
     attorney_id = _verify_kovel_auth(x_kovel_auth)
     request.attorney_id = attorney_id
@@ -117,11 +127,31 @@ async def execute_query(
     result = await execute_privileged_query(request)
     elapsed_ms = int((time.monotonic() - start) * 1000)
     
+    # Judge #6 governance gate
+    governance = judge6_evaluate(result.response)
+    if not governance.assessment.approved:
+        result.response = governance.output_text  # Replace with blocked message
+    elif governance.output_text != governance.input_text:
+        result.response = governance.output_text  # Apply warnings
+    
+    # Audit log (async, non-blocking)
+    try:
+        await write_audit_log(AuditEntry(
+            attorney_id=attorney_id,
+            action="query",
+            tokens_used=result.token_count,
+            model=result.model,
+        ))
+        await update_attorney_usage(attorney_id, result.token_count)
+    except Exception as e:
+        logger.warning("audit_log_failed", error=str(e))
+    
     logger.info(
         "query_completed",
         attorney_id=attorney_id,
         tokens=result.token_count,
         elapsed_ms=elapsed_ms,
+        risk_score=governance.assessment.risk_score,
     )
     
     return result

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UphillSnowball | Sovereign Agent Dashboard</title>
+  <meta name="description" content="Command and monitor the sovereign AI agent swarm."/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080b12; --surface: #0f1219; --surface-2: #171c28;
+      --border: #242938; --text: #e0e4ef; --text-muted: #6b7394;
+      --cyan: #22d3ee; --cyan-glow: rgba(34,211,238,0.08);
+      --green: #10b981; --red: #ef4444; --amber: #f59e0b;
+      --purple: #a78bfa;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Top Bar ── */
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .topbar h1 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+    .topbar .dot { width: 8px; height: 8px; border-radius: 50%; animation: blink 2s infinite; }
+    .topbar .dot.live { background: var(--green); }
+    .topbar .dot.idle { background: var(--amber); }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .topbar-right { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ── Dashboard Grid ── */
+    .dashboard { display: grid; grid-template-columns: 280px 1fr 300px; grid-template-rows: auto 1fr; gap: 0; min-height: calc(100vh - 48px); }
+
+    /* ── Left: Agent Roster ── */
+    .agent-roster { background: var(--surface); border-right: 1px solid var(--border); padding: 1rem; overflow-y: auto; }
+    .roster-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .agent-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; }
+    .agent-card:hover { border-color: var(--cyan); }
+    .agent-card .name { font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+    .agent-card .role { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+    .agent-card .stats { display: flex; gap: 0.75rem; margin-top: 0.5rem; font-size: 0.7rem; color: var(--text-muted); }
+    .agent-card .stats span { display: flex; align-items: center; gap: 3px; }
+
+    /* ── Center: Task Feed ── */
+    .task-feed { padding: 1.5rem; overflow-y: auto; }
+    .feed-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .feed-header h2 { font-size: 1rem; font-weight: 600; }
+    .task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; transition: all 0.2s; }
+    .task-card:hover { border-color: var(--cyan); transform: translateY(-1px); }
+    .task-card .task-header { display: flex; align-items: center; justify-content: space-between; }
+    .task-card .task-id { font-family: var(--mono); font-size: 0.75rem; color: var(--cyan); }
+    .task-card .task-status { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+    .status-planned { background: rgba(34,211,238,0.1); color: var(--cyan); }
+    .status-running { background: rgba(16,185,129,0.1); color: var(--green); }
+    .status-completed { background: rgba(167,139,250,0.1); color: var(--purple); }
+    .status-blocked { background: rgba(239,68,68,0.1); color: var(--red); }
+    .task-card .task-desc { font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5; }
+    .task-card .task-meta { display: flex; gap: 1rem; margin-top: 0.75rem; font-size: 0.7rem; color: var(--text-muted); }
+
+    /* ── Right: Gauntlet Monitor ── */
+    .gauntlet-panel { background: var(--surface); border-left: 1px solid var(--border); padding: 1rem; overflow-y: auto; }
+    .gauntlet-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem; }
+    .layer-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0; font-size: 0.75rem; border-bottom: 1px solid rgba(36,41,56,0.5); }
+    .layer-num { font-family: var(--mono); color: var(--text-muted); width: 24px; text-align: right; }
+    .layer-name { flex: 1; }
+    .layer-status { width: 8px; height: 8px; border-radius: 50%; }
+    .layer-status.pass { background: var(--green); }
+    .layer-status.warn { background: var(--amber); }
+    .layer-status.block { background: var(--red); }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; }
+    .stat-box { background: var(--surface-2); border-radius: 8px; padding: 0.75rem; text-align: center; }
+    .stat-box .value { font-size: 1.5rem; font-weight: 700; }
+    .stat-box .label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    @media (max-width: 1024px) {
+      .dashboard { grid-template-columns: 1fr; }
+      .agent-roster, .gauntlet-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1><span class="dot live"></span> UphillSnowball</h1>
+    <div class="topbar-right">
+      <span>Sovereign Mode</span>
+      <span>|</span>
+      <span id="uptime">Uptime: 0h</span>
+    </div>
+  </div>
+
+  <div class="dashboard">
+    <!-- Left: Agents -->
+    <div class="agent-roster">
+      <div class="roster-title">Agent Swarm (4 Active)</div>
+      
+      <div class="agent-card">
+        <div class="name"><span class="dot live" style="width:6px;height:6px"></span> Kosmos</div>
+        <div class="role">Director — Strategic Planning</div>
+        <div class="stats"><span>📋 42 tasks</span><span>🔥 127K tokens</span></div>
+      </div>
+      
+      <div class="agent-card">
+        <div class="name"><span class="dot live" style="width:6px;height:6px"></span> BioAgent</div>
+        <div class="role">Researcher — Deep Analysis</div>
+        <div class="stats"><span>📋 38 tasks</span><span>🔥 89K tokens</span></div>
+      </div>
+      
+      <div class="agent-card">
+        <div class="name"><span class="dot idle" style="width:6px;height:6px"></span> n-autoresearch</div>
+        <div class="role">Executor — Code & Builds</div>
+        <div class="stats"><span>📋 67 tasks</span><span>🔥 201K tokens</span></div>
+      </div>
+      
+      <div class="agent-card">
+        <div class="name"><span class="dot live" style="width:6px;height:6px"></span> Judge #6</div>
+        <div class="role">Reviewer — Governance Gate</div>
+        <div class="stats"><span>📋 147 reviews</span><span>⛔ 3 blocked</span></div>
+      </div>
+    </div>
+
+    <!-- Center: Tasks -->
+    <div class="task-feed">
+      <div class="feed-header">
+        <h2>Task Feed</h2>
+        <button style="background:var(--cyan);color:var(--bg);border:none;padding:0.4rem 1rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.8rem">+ New Task</button>
+      </div>
+
+      <div class="task-card">
+        <div class="task-header">
+          <span class="task-id">task_1713390000</span>
+          <span class="task-status status-running">Running</span>
+        </div>
+        <div class="task-desc">Build CounselConduit Gemini RAG pipeline with SSE streaming</div>
+        <div class="task-meta"><span>Agent: n-autoresearch</span><span>Tokens: 4,200</span><span>Risk: 3/25</span></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-header">
+          <span class="task-id">task_1713389500</span>
+          <span class="task-status status-completed">Completed</span>
+        </div>
+        <div class="task-desc">Implement 17-Layer Gauntlet with RKILL circuit breaker</div>
+        <div class="task-meta"><span>Agent: Kosmos → n-autoresearch</span><span>Tokens: 8,100</span><span>Duration: 2.3s</span></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-header">
+          <span class="task-id">task_1713389000</span>
+          <span class="task-status status-blocked">Blocked</span>
+        </div>
+        <div class="task-desc">Deploy to Cloud Run with Stripe production keys</div>
+        <div class="task-meta"><span>Blocked by: Judge #6 (risk 18/25)</span><span>Requires: Human review</span></div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-header">
+          <span class="task-id">task_1713388500</span>
+          <span class="task-status status-planned">Planned</span>
+        </div>
+        <div class="task-desc">Wire Firestore document ingestion for attorney uploads</div>
+        <div class="task-meta"><span>Assigned: BioAgent (research) → n-autoresearch (implement)</span></div>
+      </div>
+    </div>
+
+    <!-- Right: Gauntlet -->
+    <div class="gauntlet-panel">
+      <div class="gauntlet-title">17-Layer Gauntlet</div>
+      
+      <div class="layer-item"><span class="layer-num">01</span><span class="layer-name">Identity Check</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">02</span><span class="layer-name">Role Authorization</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">03</span><span class="layer-name">Session Validity</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">04</span><span class="layer-name">Rate Limit</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">05</span><span class="layer-name">Content Safety</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">06</span><span class="layer-name">Command Safety</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">07</span><span class="layer-name">Path Protection</span><span class="layer-status warn"></span></div>
+      <div class="layer-item"><span class="layer-num">08</span><span class="layer-name">Gemini Zone</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">09</span><span class="layer-name">LOC Ceiling</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">10</span><span class="layer-name">Dependency Check</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">11</span><span class="layer-name">Model Isolation</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">12</span><span class="layer-name">Output Size</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">13</span><span class="layer-name">Network Egress</span><span class="layer-status warn"></span></div>
+      <div class="layer-item"><span class="layer-num">14</span><span class="layer-name">Cost Guard</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">15</span><span class="layer-name">Git Safety</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">16</span><span class="layer-name">Telemetry Airgap</span><span class="layer-status pass"></span></div>
+      <div class="layer-item"><span class="layer-num">17</span><span class="layer-name">RKILL Switch</span><span class="layer-status pass"></span></div>
+
+      <div class="stats-grid">
+        <div class="stat-box"><div class="value" style="color:var(--green)">294</div><div class="label">Tasks Complete</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--red)">3</div><div class="label">Blocked</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--cyan)">417K</div><div class="label">Tokens Used</div></div>
+        <div class="stat-box"><div class="value" style="color:var(--amber)">2</div><div class="label">Warnings</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Live uptime counter
+    const start = Date.now();
+    setInterval(() => {
+      const h = Math.floor((Date.now() - start) / 3600000);
+      const m = Math.floor(((Date.now() - start) % 3600000) / 60000);
+      document.getElementById('uptime').textContent = `Uptime: ${h}h ${m}m`;
+    }, 60000);
+  </script>
+</body>
+</html>
