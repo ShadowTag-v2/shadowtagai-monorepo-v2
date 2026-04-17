@@ -14,7 +14,8 @@
       "**/node_modules/**",
       "**/external_repos/**",
       "**/control/legacy_workspaces/**",
-      "**/apps/devrel-demos/**"
+      "**/apps/devrel-demos/**",
+      "**/tools/java-firestore/**"
     ],
     "files.exclude": {
       "**/*.proto": true,
