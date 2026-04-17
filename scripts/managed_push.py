@@ -29,9 +29,7 @@ from urllib3.util.retry import Retry
 
 # ── Config ────────────────────────────────────────────────────────────────────
 APP_ID = "3018200"
-PEM_PATH = os.path.expanduser(
-    "~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem"
-)
+PEM_PATH = os.path.expanduser("~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem")
 OWNER = "ShadowTag-v2"
 REPO = "Monorepo-Uphillsnowball"
 REMOTE = f"https://github.com/{OWNER}/{REPO}.git"
@@ -215,9 +213,7 @@ def main() -> int:  # returns exit code
         if not token:
             log.error("Cannot obtain token. Aborting.")
             return 1
-        run(
-            f"git remote set-url origin https://x-access-token:{token}@{REMOTE.split('https://')[1]}"
-        )
+        run(f"git remote set-url origin https://x-access-token:{token}@{REMOTE.split('https://')[1]}")
 
         # Push with exponential backoff
         pushed = False
@@ -240,9 +236,7 @@ def main() -> int:  # returns exit code
             # Force-refresh token on retry in case the failure was 401
             token = token_mgr.get(force=True)
             if token:
-                run(
-                    f"git remote set-url origin https://x-access-token:{token}@{REMOTE.split('https://')[1]}"
-                )
+                run(f"git remote set-url origin https://x-access-token:{token}@{REMOTE.split('https://')[1]}")
 
         if not pushed:
             log.error(

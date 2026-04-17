@@ -86,10 +86,7 @@ def get_installation_id(jwt_token: str, org: str) -> int:
         if account.get("login", "").lower() == org.lower():
             return inst["id"]
 
-    raise RuntimeError(
-        f"No installation found for org '{org}'. "
-        f"Found: {[i['account']['login'] for i in installations]}"
-    )
+    raise RuntimeError(f"No installation found for org '{org}'. Found: {[i['account']['login'] for i in installations]}")
 
 
 def get_access_token(jwt_token: str, installation_id: int) -> str:
@@ -162,16 +159,8 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
             check=True,
         )
 
-        askpass_script = tempfile.NamedTemporaryFile(
-            mode="w", suffix=".sh", prefix="git_askpass_", delete=False
-        )
-        askpass_script.write(
-            '#!/bin/sh\n'
-            'case "$1" in\n'
-            '  *sername*) echo "x-access-token" ;;\n'
-            f'  *) echo "{token}" ;;\n'
-            'esac\n'
-        )
+        askpass_script = tempfile.NamedTemporaryFile(mode="w", suffix=".sh", prefix="git_askpass_", delete=False)
+        askpass_script.write(f'#!/bin/sh\ncase "$1" in\n  *sername*) echo "x-access-token" ;;\n  *) echo "{token}" ;;\nesac\n')
         askpass_script.close()
         os.chmod(askpass_script.name, stat.S_IRWXU)
 
@@ -183,8 +172,10 @@ def push_with_token(token: str, org: str, repo: str, branch: str = None):
 
         git_base = [
             "git",
-            "-c", "credential.helper=",
-            "-c", "credential.https://github.com.helper=",
+            "-c",
+            "credential.helper=",
+            "-c",
+            "credential.https://github.com.helper=",
         ]
 
         print("  📤 HTTPS push with --force-with-lease...")

@@ -58,9 +58,7 @@ def manage_protection(token, action="delete"):
         "Accept": "application/vnd.github+json",
         "Content-Type": "application/json",
     }
-    url = (
-        "https://api.github.com/repos/ShadowTag-v2/Monorepo-Uphillsnowball/branches/main/protection"
-    )
+    url = "https://api.github.com/repos/ShadowTag-v2/Monorepo-Uphillsnowball/branches/main/protection"
 
     if action == "delete":
         req = urllib.request.Request(url, method="DELETE", headers=headers)
@@ -82,9 +80,7 @@ def manage_protection(token, action="delete"):
             "required_pull_request_reviews": None,
             "restrictions": None,
         }
-        req = urllib.request.Request(
-            url, data=json.dumps(protection).encode(), method="PUT", headers=headers
-        )
+        req = urllib.request.Request(url, data=json.dumps(protection).encode(), method="PUT", headers=headers)
         try:
             urllib.request.urlopen(req)
             print("  ✓ Branch protection restored")
@@ -108,12 +104,8 @@ def main():
         print("No changes to push. Trying direct push...")
         token = get_token()
         manage_protection(token, "delete")
-        push_url = (
-            f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
-        )
-        out, rc = run(
-            f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force'
-        )
+        push_url = f"https://x-access-token:{token}@github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git"
+        out, rc = run(f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force')
         print(out)
         manage_protection(token, "restore")
         return
@@ -132,8 +124,7 @@ def main():
     run("git config sendpack.sideband false")
 
     out, rc = run(
-        f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" '
-        f'push "{push_url}" fix-invariants-103-105:main --force 2>&1',
+        f'GIT_ASKPASS="" GIT_TERMINAL_PROMPT=0 git -c credential.helper="" push "{push_url}" fix-invariants-103-105:main --force 2>&1',
         timeout=600,
     )
     print(out[-500:] if len(out) > 500 else out)

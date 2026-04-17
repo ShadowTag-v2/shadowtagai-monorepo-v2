@@ -13,11 +13,7 @@ def run_cmd(cmd):
 def main():
     import sys
 
-    targets = (
-        " ".join(sys.argv[1:])
-        if len(sys.argv) > 1
-        else "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
-    )
+    targets = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
     print(f"Initiating Omega Loop / Egress Protocol targeting: {targets}\n")
 
     # 1. Lint / Format Phase
@@ -48,9 +44,7 @@ def main():
     )
 
     # 3. Commit with standard convention
-    run_cmd(
-        "git commit -m \"chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules\" --no-verify || echo 'Clean working tree.'"
-    )
+    run_cmd("git commit -m \"chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules\" --no-verify || echo 'Clean working tree.'")
 
     # 4. Push
     run_cmd("git push origin main || echo 'Push failed or branch up to date.'")

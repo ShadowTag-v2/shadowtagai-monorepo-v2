@@ -76,9 +76,7 @@ def trigger_daemon(continuous=False):
 
     try:
         if continuous:
-            print(
-                "[SENTINEL] Continuous monitoring enabled. AST is physically locked to Sovereign Doctrine."
-            )
+            print("[SENTINEL] Continuous monitoring enabled. AST is physically locked to Sovereign Doctrine.")
             while True:
                 time.time()
                 time.sleep(1)

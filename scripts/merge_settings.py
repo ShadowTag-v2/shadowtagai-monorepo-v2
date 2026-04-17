@@ -1,11 +1,7 @@
 import json
 
-ws_settings_path = (
-    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.vscode/settings.json"
-)
-global_settings_path = (
-    "/Users/pikeymickey/Library/Application Support/Antigravity/User/settings.json"
-)
+ws_settings_path = "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.vscode/settings.json"
+global_settings_path = "/Users/pikeymickey/Library/Application Support/Antigravity/User/settings.json"
 default_interpreter_path = "${workspaceFolder}/.venv"
 
 with open(ws_settings_path, encoding="utf-8") as f:

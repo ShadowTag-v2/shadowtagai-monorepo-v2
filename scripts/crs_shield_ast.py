@@ -1,15 +1,17 @@
 import ast
 import sys
 
+
 class ShieldVisitor(ast.NodeVisitor):
     def __init__(self):
         self.violations = []
 
     def visit_Call(self, node):
         if isinstance(node.func, ast.Name):
-            if node.func.id in ['eval', 'exec']:
+            if node.func.id in ["eval", "exec"]:
                 self.violations.append(f"CRITICAL: Found {node.func.id}() at line {node.lineno}")
         self.generic_visit(node)
+
 
 def run_ast_shield(filepath):
     try:
@@ -26,6 +28,7 @@ def run_ast_shield(filepath):
     except Exception as e:
         print(f"Error parsing {filepath}: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

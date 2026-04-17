@@ -79,26 +79,20 @@ class AtomicThreadManager:
         template = template.replace("YYYY-MM-DD HH:MM UTC", created)
         template = template.replace("status: ACTIVE | COMPLETE | BLOCKED", "status: ACTIVE")
         template = template.replace("parent: null | ATOMIC-XXX", f"parent: {parent or 'null'}")
-        template = template.replace(
-            "insert_type: PROMPT | BUGFIX | OPTIMIZE | GENERAL", f"insert_type: {insert_type}"
-        )
+        template = template.replace("insert_type: PROMPT | BUGFIX | OPTIMIZE | GENERAL", f"insert_type: {insert_type}")
 
         if mission:
             template = template.replace("[One sentence: Action verb + object + outcome]", mission)
 
         if situation:
-            template = template.replace(
-                "[One paragraph: What is broken/missing/needed? Be specific.]", situation
-            )
+            template = template.replace("[One paragraph: What is broken/missing/needed? Be specific.]", situation)
 
         if insert_type != "GENERAL":
             insert_file = TEMPLATES_DIR / "inserts" / f"{insert_type}_INSERT.md"
             if insert_file.exists():
                 with open(insert_file) as f:
                     insert_content = f.read()
-                template = template.replace(
-                    "<!-- Include appropriate insert based on insert_type -->", insert_content
-                )
+                template = template.replace("<!-- Include appropriate insert based on insert_type -->", insert_content)
 
         thread_file = THREADS_DIR / f"{thread_id}.md"
         with open(thread_file, "w") as f:
@@ -184,9 +178,7 @@ def main():
 
     create_parser = subparsers.add_parser("create", help="Create new thread")
     create_parser.add_argument("--tier", choices=["FREE", "FLASH", "PRO"], default="FREE")
-    create_parser.add_argument(
-        "--type", choices=["PROMPT", "BUGFIX", "OPTIMIZE", "GENERAL"], default="GENERAL"
-    )
+    create_parser.add_argument("--type", choices=["PROMPT", "BUGFIX", "OPTIMIZE", "GENERAL"], default="GENERAL")
     create_parser.add_argument("--parent", help="Parent thread ID")
     create_parser.add_argument("--mission", help="Brief mission statement")
     create_parser.add_argument("--situation", help="Problem description")
@@ -223,9 +215,7 @@ def main():
     elif args.command == "list":
         threads = manager.list_threads(args.status)
         for t in threads:
-            print(
-                f"{t['thread_id']} [{t['status']}] {t['tier']}/{t['insert_type']}: {t['summary'][:50]}"
-            )
+            print(f"{t['thread_id']} [{t['status']}] {t['tier']}/{t['insert_type']}: {t['summary'][:50]}")
     elif args.command == "stats":
         stats = manager.get_stats()
         print(json.dumps(stats, indent=2))

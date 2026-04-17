@@ -83,15 +83,9 @@ def _trust_for(source: str) -> dict:
 
 # ── Class Heuristic ───────────────────────────────────────────────────────────
 
-_STAT_RE = re.compile(
-    r"\b\d+\.?\d*\s*%|\b\d{4,}\b|\bpercent\b|\bGDP\b|\bmillion\b|\bbillion\b", re.I
-)
-_RESEARCH_RE = re.compile(
-    r"\bstudy\b|\bpaper\b|\bresearch\b|\bjournal\b|\barXiv\b|\bpreprint\b", re.I
-)
-_SOCIAL_RE = re.compile(
-    r"\bthink\b|\bfeel\b|\bIMO\b|\bLMK\b|\breddit\b|\b4chan\b|\bunpopular opinion\b", re.I
-)
+_STAT_RE = re.compile(r"\b\d+\.?\d*\s*%|\b\d{4,}\b|\bpercent\b|\bGDP\b|\bmillion\b|\bbillion\b", re.I)
+_RESEARCH_RE = re.compile(r"\bstudy\b|\bpaper\b|\bresearch\b|\bjournal\b|\barXiv\b|\bpreprint\b", re.I)
+_SOCIAL_RE = re.compile(r"\bthink\b|\bfeel\b|\bIMO\b|\bLMK\b|\breddit\b|\b4chan\b|\bunpopular opinion\b", re.I)
 
 
 def _classify(text: str, source: str) -> str:
@@ -138,19 +132,12 @@ def _ensure_langextract_tables(conn: sqlite3.Connection) -> None:
         );
     """)
     # FTS5 — build only if absent
-    row = conn.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='extractions_fts'"
-    ).fetchone()
+    row = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='extractions_fts'").fetchone()
     if not row:
-        conn.execute(
-            "CREATE VIRTUAL TABLE extractions_fts "
-            "USING fts5(text, name, class, content='extractions', content_rowid='id')"
-        )
+        conn.execute("CREATE VIRTUAL TABLE extractions_fts USING fts5(text, name, class, content='extractions', content_rowid='id')")
         conn.execute("INSERT INTO extractions_fts(extractions_fts) VALUES('rebuild')")
     # Trigger — create only if absent
-    trg = conn.execute(
-        "SELECT name FROM sqlite_master WHERE type='trigger' AND name='extractions_ai'"
-    ).fetchone()
+    trg = conn.execute("SELECT name FROM sqlite_master WHERE type='trigger' AND name='extractions_ai'").fetchone()
     if not trg:
         conn.execute("""
             CREATE TRIGGER extractions_ai AFTER INSERT ON extractions BEGIN
@@ -262,9 +249,7 @@ def show_stats() -> None:
         print("DB not found.")
         return
     conn = sqlite3.connect(str(WEB_DB))
-    rows = conn.execute(
-        "SELECT source, COUNT(*) FROM items GROUP BY source ORDER BY COUNT(*) DESC"
-    ).fetchall()
+    rows = conn.execute("SELECT source, COUNT(*) FROM items GROUP BY source ORDER BY COUNT(*) DESC").fetchall()
     ext = conn.execute("SELECT COUNT(*) FROM extractions").fetchone()
     items_total = conn.execute("SELECT COUNT(*) FROM items").fetchone()
     conn.close()
@@ -281,9 +266,7 @@ def show_stats() -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Normalize web scrape items into corpus extractions")
     ap.add_argument("--once", action="store_true", help="Run one pass (default behavior)")
-    ap.add_argument(
-        "--dry-run", action="store_true", help="Print what would be written, no DB writes"
-    )
+    ap.add_argument("--dry-run", action="store_true", help="Print what would be written, no DB writes")
     ap.add_argument("--stats", action="store_true", help="Show extraction counts by source")
     args = ap.parse_args()
 
@@ -294,9 +277,7 @@ def main() -> None:
     label = "[DRY RUN] " if args.dry_run else ""
     print(f"{label}web_to_corpus: scanning {WEB_DB} ...")
     stats = normalize(dry_run=args.dry_run)
-    print(
-        f"{label}Done — processed={stats['processed']} skipped={stats['skipped']} errors={stats['errors']}"
-    )
+    print(f"{label}Done — processed={stats['processed']} skipped={stats['skipped']} errors={stats['errors']}")
 
 
 if __name__ == "__main__":

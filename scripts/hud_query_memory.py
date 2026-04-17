@@ -53,9 +53,7 @@ def query_chroma(query: str, top_k: int) -> list[dict]:
         )
         return []
     n = min(top_k, count)
-    results = col.query(
-        query_embeddings=[vec], n_results=n, include=["documents", "metadatas", "distances"]
-    )
+    results = col.query(query_embeddings=[vec], n_results=n, include=["documents", "metadatas", "distances"])
     hits = []
     for doc, meta, dist in zip(
         results["documents"][0],

@@ -9,9 +9,7 @@ from collections.abc import Iterable
 from pathlib import Path
 
 DEFAULT_SRC_ROOT = Path("/Users/pikeymickey/shadowtag-omega-v4-stack")
-DEFAULT_DST_ROOT = Path(
-    "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack"
-)
+DEFAULT_DST_ROOT = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
 EXCLUDE_DIRS = {
     ".git",
     "__pycache__",

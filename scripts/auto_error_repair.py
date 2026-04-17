@@ -151,19 +151,14 @@ def collect_errors() -> list[Error]:
 def _gemini_generate(prompt: str) -> str:
     if not GEMINI_API_KEY:
         raise RuntimeError("GEMINI_API_KEY not set")
-    url = (
-        f"https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{GEMINI_GEN_MODEL}:generateContent?key={GEMINI_API_KEY}"
-    )
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_GEN_MODEL}:generateContent?key={GEMINI_API_KEY}"
     body = json.dumps(
         {
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": 0, "maxOutputTokens": 2048},
         }
     ).encode()
-    req = urllib.request.Request(
-        url, data=body, headers={"Content-Type": "application/json"}, method="POST"
-    )
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
     with urllib.request.urlopen(req, timeout=60) as resp:
         data = json.loads(resp.read())
     return data["candidates"][0]["content"]["parts"][0]["text"]
@@ -220,9 +215,7 @@ def build_repair_prompt(errors: list[Error]) -> str:
     sections = []
     for file, file_errors in list(by_file.items())[:5]:  # cap at 5 files per round
         context = read_file_context(file, file_errors[0].line)
-        err_lines = "\n".join(
-            f"  [{e.source}:{e.code}] line {e.line}: {e.message}" for e in file_errors[:10]
-        )
+        err_lines = "\n".join(f"  [{e.source}:{e.code}] line {e.line}: {e.message}" for e in file_errors[:10])
         sections.append(
             textwrap.dedent(f"""
             ### File: {file}

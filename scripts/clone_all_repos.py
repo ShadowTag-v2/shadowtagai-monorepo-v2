@@ -31,9 +31,7 @@ def get_installations(client_id, pem_path):
 
 
 def get_access_token(installation_id, headers):
-    resp = requests.post(
-        f"https://api.github.com/app/installations/{installation_id}/access_tokens", headers=headers
-    )
+    resp = requests.post(f"https://api.github.com/app/installations/{installation_id}/access_tokens", headers=headers)
     if resp.status_code != 201:
         print(f"Failed to get access token: {resp.status_code} {resp.text}")
         return None
@@ -50,9 +48,7 @@ def clone_repo(repo_name, owner, token, target_dir):
 
     print(f"[{repo_name}] Cloning...")
     # Hide output unless it fails to avoid spam, but hide the token!
-    result = subprocess.run(
-        ["git", "clone", clone_url, str(repo_path)], capture_output=True, text=True
-    )
+    result = subprocess.run(["git", "clone", clone_url, str(repo_path)], capture_output=True, text=True)
 
     if result.returncode != 0:
         print(f"[{repo_name}] ❌ Clone failed.")
@@ -98,9 +94,7 @@ def process_identity(client_id, pem_path, owner_name, repos_to_clone, target_dir
 
 
 if __name__ == "__main__":
-    target_dir = Path(
-        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack"
-    )
+    target_dir = Path("/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/apps/ShadowTag-v2_stack")
     target_dir.mkdir(parents=True, exist_ok=True)
 
     with open("fetched_repos_client_id.json") as f:
@@ -118,9 +112,7 @@ if __name__ == "__main__":
     ehanc69_pem = "/Users/pikeymickey/Downloads/antigravity-manager.2026-03-13.private-key.pem"
 
     shadowtag_client_id = "Iv23ctYqrxPQIt2ir8gY"
-    shadowtag_pem = (
-        "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem"
-    )
+    shadowtag_pem = "/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-13.private-key.pem"
 
     # Note: Since we don't know which repo belongs to which owner easily from the list,
     # we can try both or use the GitHub API to check.
@@ -168,9 +160,7 @@ if __name__ == "__main__":
         return [r["name"] for r in repos], token
 
     ehanc69_repos, ehanc69_token = get_repo_list(ehanc69_client_id, ehanc69_pem, "ehanc69")
-    shadowtag_repos, shadowtag_token = get_repo_list(
-        shadowtag_client_id, shadowtag_pem, "ShadowTag-v2"
-    )
+    shadowtag_repos, shadowtag_token = get_repo_list(shadowtag_client_id, shadowtag_pem, "ShadowTag-v2")
 
     for repo in all_repos:
         if repo in ehanc69_repos:

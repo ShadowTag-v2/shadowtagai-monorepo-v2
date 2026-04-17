@@ -1,4 +1,4 @@
-"""  # noqa: INP001
+"""# noqa: INP001
 scripts/generate_hero_video.py
 
 Veo 3.1 Hero Video Generator for ShadowTag AI
@@ -61,10 +61,7 @@ DEFAULT_IMAGE_PROMPT = (
     "Bioluminescent aurora currents on deep black (#080c18). Ultra high resolution, 16:9."
 )
 
-DEFAULT_OUTPUT = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)),
-    "apps", "shadowtagai", "public", "hero-bg-video.mp4"
-)
+DEFAULT_OUTPUT = os.path.join(os.path.dirname(os.path.dirname(__file__)), "apps", "shadowtagai", "public", "hero-bg-video.mp4")
 
 # Image gen model (Nano Banana 2)
 IMAGE_MODEL = "gemini-3.1-flash-image-preview"
@@ -82,9 +79,7 @@ class Veo31Pipeline:
     def __init__(self, api_key: str | None = None):
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY")
         if not self.api_key:
-            raise ValueError(
-                "GEMINI_API_KEY not set. Export it or pass via --api-key."
-            )
+            raise ValueError("GEMINI_API_KEY not set. Export it or pass via --api-key.")
         self.client = genai.Client(api_key=self.api_key)
 
     def generate_reference_image(self, prompt: str, output_path: str = "reference_frame.png") -> str:
@@ -185,9 +180,7 @@ class Veo31Pipeline:
 
         # Extract result
         if not operation.response or not operation.response.generated_videos:
-            raise RuntimeError(
-                f"Video generation failed. Operation result: {operation}"
-            )
+            raise RuntimeError(f"Video generation failed. Operation result: {operation}")
 
         video = operation.response.generated_videos[0]
 
@@ -301,10 +294,7 @@ class Veo31Pipeline:
         # Step 1: Generate reference image
         ref_path = None
         if not skip_reference:
-            ref_dir = os.path.join(
-                os.path.dirname(os.path.dirname(__file__)),
-                "apps", "shadowtagai", "public"
-            )
+            ref_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "apps", "shadowtagai", "public")
             ref_path = os.path.join(ref_dir, "hero-ref-frame.png")
             try:
                 self.generate_reference_image(image_prompt, ref_path)
@@ -339,9 +329,7 @@ class Veo31Pipeline:
 # CLI Entry Point
 # ──────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate Veo 3.1 hero background video for ShadowTag AI"
-    )
+    parser = argparse.ArgumentParser(description="Generate Veo 3.1 hero background video for ShadowTag AI")
     parser.add_argument(
         "--prompt",
         default=DEFAULT_VIDEO_PROMPT,

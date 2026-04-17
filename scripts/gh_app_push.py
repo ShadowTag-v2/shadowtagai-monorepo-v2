@@ -5,9 +5,7 @@ try:
     import jwt
     import requests
 except ImportError:
-    subprocess.run(
-        [sys.executable, "-m", "pip", "install", "PyJWT", "cryptography", "requests"], check=True
-    )
+    subprocess.run([sys.executable, "-m", "pip", "install", "PyJWT", "cryptography", "requests"], check=True)
     import jwt
     import requests
 
@@ -38,9 +36,7 @@ install_id = data[0]["id"]
 print(f"Installation ID: {install_id}")
 
 print("Fetching access token...")
-resp = requests.post(
-    f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers
-)
+resp = requests.post(f"https://api.github.com/app/installations/{install_id}/access_tokens", headers=headers)
 resp.raise_for_status()
 token = resp.json()["token"]
 

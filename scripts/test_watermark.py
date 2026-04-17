@@ -10,7 +10,7 @@ def test_watermark():
         "content_path": "/mock/video.mp4",
         "content_type": "video",
         "metadata": {"payload": "test_payload"},
-        "output_path": "/mock/video_watermarked.mp4"
+        "output_path": "/mock/video_watermarked.mp4",
     }
 
     print(f"Sending request to {url}...")
@@ -23,6 +23,7 @@ def test_watermark():
             print(f"Response text: {response.text}")
     except Exception as e:
         print(f"Error: {e}")
+
 
 if __name__ == "__main__":
     # Wait for server to start

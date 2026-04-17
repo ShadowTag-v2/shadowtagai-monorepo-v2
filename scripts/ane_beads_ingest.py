@@ -131,16 +131,12 @@ def execute_ingestion():
                 ),
             )
             conn.commit()
-            print(
-                f"    ✅ Bead Written: {insights.get('semantic_type')} -> {insights.get('neural_summary')}"
-            )
+            print(f"    ✅ Bead Written: {insights.get('semantic_type')} -> {insights.get('neural_summary')}")
         except Exception as e:
             print(f"    ❌ Failed to write bead for {folder_name}: {e}")
 
     conn.close()
-    print(
-        "\n✅ [ANE BEADS INGESTER] Complete. Legacy Intelligence successfully mapped to memory_beads UUIDs."
-    )
+    print("\n✅ [ANE BEADS INGESTER] Complete. Legacy Intelligence successfully mapped to memory_beads UUIDs.")
 
 
 if __name__ == "__main__":

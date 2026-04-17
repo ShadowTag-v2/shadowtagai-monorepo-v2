@@ -148,9 +148,7 @@ def main():
     with open(checklist_path, "w") as f:
         yaml.dump(checklist, f, sort_keys=False)
 
-    print(
-        f"\n✅ Fold-in complete. {total_copied} mechanical copying ops succeeded. All {len(repos)} repos mechanically stamped."
-    )
+    print(f"\n✅ Fold-in complete. {total_copied} mechanical copying ops succeeded. All {len(repos)} repos mechanically stamped.")
 
 
 if __name__ == "__main__":

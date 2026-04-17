@@ -43,9 +43,7 @@ async def fetch(session: aiohttp.ClientSession, url: str) -> tuple[int, float]:
         return 0, elapsed
 
 
-async def run_load_test(
-    url: str, concurrency: int, total_requests: int
-) -> dict:
+async def run_load_test(url: str, concurrency: int, total_requests: int) -> dict:
     """Execute load test against a single URL."""
     results: list[tuple[int, float]] = []
     semaphore = asyncio.Semaphore(concurrency)
@@ -97,9 +95,11 @@ def print_report(metrics: dict):
     print(f"  Throughput:  {metrics['rps']} req/s")
     print(f"  Success:     {metrics['success']}/{metrics['total_requests']} ({metrics['success_rate']}%)")
     print(f"  Errors:      {metrics['errors']}")
-    print(f"  Latency (ms): min={metrics['latency_min_ms']}  mean={metrics['latency_mean_ms']}  "
-          f"median={metrics['latency_median_ms']}  p95={metrics['latency_p95_ms']}  "
-          f"p99={metrics['latency_p99_ms']}  max={metrics['latency_max_ms']}")
+    print(
+        f"  Latency (ms): min={metrics['latency_min_ms']}  mean={metrics['latency_mean_ms']}  "
+        f"median={metrics['latency_median_ms']}  p95={metrics['latency_p95_ms']}  "
+        f"p99={metrics['latency_p99_ms']}  max={metrics['latency_max_ms']}"
+    )
     print(f"{'═' * 60}")
 
 

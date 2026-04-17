@@ -62,9 +62,7 @@ def check_stage_3():
     print("3. Auditing Nested Git Roots...")
     # we can use find across domains
     search_dirs = " ".join([d for d in domains if os.path.exists(d)])
-    nested_git = (
-        os.popen(f"find {search_dirs} -mindepth 2 -type d -name '.git' 2>/dev/null").read().strip()
-    )
+    nested_git = os.popen(f"find {search_dirs} -mindepth 2 -type d -name '.git' 2>/dev/null").read().strip()
     if nested_git:
         lines = nested_git.split("\n")
         print(f" [DRIFT] Found {len(lines)} nested `.git` folders in live trees.")
@@ -75,9 +73,7 @@ def check_stage_3():
     result = "\nSTAGE_3_PASS" if drift == 0 else f"\nSTAGE_3_FAIL (drift count: {drift})"
     print(result)
     if drift == 0:
-        print(
-            "0 drift items found. Manifest truth perfectly aligns with physical workspace layout."
-        )
+        print("0 drift items found. Manifest truth perfectly aligns with physical workspace layout.")
 
 
 if __name__ == "__main__":
