@@ -1,7 +1,7 @@
 # Cor.30 — Security Definition of Done
 
 **Stack:** Next.js frontend · FastAPI backend · Cloud Run · Firestore · Stripe · GCP Secret Manager
-**Version:** 1.0.0 — April 17, 2026
+**Version:** 2.5.0 — April 17, 2026
 **Authority:** This document is the canonical security gate for every PR, deployment, and AI-generated feature.
 
 > [!CAUTION]
@@ -17,8 +17,10 @@
 - [ ] **R1** Token versioning or revocation blocklist implemented — expiry alone does not cover forced logout.
 - [ ] **R2** Auth provider: Firebase Auth / Clerk / Supabase Auth ONLY. Never AI-built auth.
 - [ ] **R2** MFA mandated for admin and billing roles.
+- [ ] **R2** Passwords: Argon2id for new systems. Bcrypt min 10 rounds for legacy. Never store/log/return plaintext.
 - [ ] **R13** All redirect URLs validated against explicit allow-list.
 - [ ] **R32** CSRF protection: `SameSite=Strict` cookies + CSRF double-submit tokens (if cookie-based sessions).
+- [ ] **NEW** Data minimization: never collect SSNs, raw card details, or data you don't need. If you don't store it, you can't leak it.
 
 ---
 
@@ -43,11 +45,14 @@
 - [ ] **R9** Validation covers webhook bodies, query params, path variables — not just forms.
 - [ ] **R12** CORS locked to production domains only. No wildcard. Ever.
 - [ ] **R14** Auth + rate limits on every endpoint, including mobile APIs.
+- [ ] **R14** Deny-by-default: every route requires auth middleware. Public routes must be explicitly commented `@public` with a security justification.
 - [ ] **R15** Rate limit by IP + authenticated user + route. Stricter for auth/payment/export/reset.
-- [ ] **R15** Exponential backoff + CAPTCHA on repeated violations.
+- [ ] **R15** Exponential backoff + CAPTCHA (reCAPTCHA v3 / Cloudflare Turnstile) on repeated violations.
 - [ ] **R16** Password reset: 3 attempts/email/hour. Links expire in 15 min, single-use, new link invalidates prior.
 - [ ] **R23** Server-side permission checks on every request via FastAPI dependency injection.
 - [ ] **R31** Security headers set: CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
+- [ ] **NEW** Serialization: NEVER return raw DB objects in API responses. Always use explicit DTOs (Pydantic BaseModel / Zod schema) with selected fields only.
+- [ ] **NEW** Opaque errors: Use centralized `AppError` class → structured RFC 9457 JSON. Never expose stack traces, SQL, or system internals to clients.
 
 ---
 
@@ -95,6 +100,24 @@
 - [ ] **R27** GDPR: Full account deletion flow (30-day deadline, automated, email receipt).
 - [ ] **R28** Automated backups + monthly restore drill. Untested backup = no backup.
 - [ ] **R29** Test/prod completely separated (VPCs, DB instances, service accounts).
+- [ ] **NEW** Observability: Sentry or Datadog integrated. We know when the app breaks before the client does.
+
+---
+
+## 8. UI & Async Resilience
+
+- [ ] **NEW** Every async UI operation must have explicit `loading` state, `error` state, and timeout fallback. No dead spinners.
+- [ ] **NEW** LLM calls: `Promise.race` timeout (45s max). Graceful degradation UI if model hangs.
+- [ ] **NEW** File uploads: progress indicator + size validation + cancel button.
+- [ ] **NEW** Stripe flows: Loading skeleton during checkout redirect. Error recovery if session creation fails.
+
+---
+
+## 9. Code Quality (Affects Security Surface)
+
+- [ ] **NEW** Write small, single-responsibility functions. If a function does more than one thing, split it.
+- [ ] **NEW** Before writing new code, search the codebase for existing utilities. Duplication is forbidden.
+- [ ] **NEW** AI self-audit: Before completing a feature, run internal prompt: "Review the code I just wrote for security risks, data exposure, and logical bugs."
 
 ---
 
