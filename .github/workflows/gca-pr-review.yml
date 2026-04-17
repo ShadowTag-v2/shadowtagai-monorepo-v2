@@ -1,4 +1,4 @@
-name: GCA PR Review
+name: GCA PR Review (Multi-Agent)
 
 on:
   pull_request:
@@ -8,74 +8,258 @@ permissions:
   contents: read
   pull-requests: write
 
-jobs:
-  gca-review:
-    runs-on: ubuntu-latest
-    container:
-      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+# Cancel in-progress runs for the same PR
+concurrency:
+  group: gca-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
+jobs:
+  # ──────────────────────────────────────────────
+  # Stage 1: Prepare the diff (shared by all agents)
+  # ──────────────────────────────────────────────
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      diff_lines: ${{ steps.diff.outputs.lines }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Get PR diff
+      - name: Generate PR diff
+        id: diff
         run: |
           git diff origin/${{ github.base_ref }}...HEAD > /tmp/pr_diff.txt
-          echo "Lines in diff: $(wc -l < /tmp/pr_diff.txt)"
+          echo "lines=$(wc -l < /tmp/pr_diff.txt)" >> "$GITHUB_OUTPUT"
 
-      - name: Run GCA PR Review
+      - name: Upload diff artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-diff
+          path: /tmp/pr_diff.txt
+          retention-days: 1
+
+  # ──────────────────────────────────────────────
+  # Stage 2: 4 Parallel Gemini Agent Reviews
+  # ──────────────────────────────────────────────
+  review-correctness:
+    needs: prepare
+    runs-on: ubuntu-latest
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: pr-diff, path: /tmp }
+      - name: Analyze correctness
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          REVIEW_CONTRACT=$(cat .agent/bundles/antigravity_gca_repo_bundle/antigravity_gca_repo_bundle/REVIEW.md)
-          PROMPT=$(cat .agent/bundles/antigravity_gca_repo_bundle/antigravity_gca_repo_bundle/.gemini/commands/pr-review.md)
           DIFF=$(cat /tmp/pr_diff.txt)
+          gemini --yolo > /tmp/review_correctness.txt 2>&1 <<GEMINI_EOF
+          You are a code correctness reviewer. Analyze this PR diff for:
+          - Logic errors, off-by-one errors, null/undefined handling
+          - Missing error handling, unchecked return values
+          - Race conditions, deadlocks, resource leaks
+          - Type mismatches, incorrect API usage
 
-          gemini --yolo > /tmp/gca_review.txt 2>&1 <<GEMINI_EOF
-          ${REVIEW_CONTRACT}
+          Output ONLY structured findings in this exact format (one per finding):
+          FILE: path/to/file.ext
+          LINE: 42
+          SEVERITY: error|warning|info
+          COMMENT: Description of the issue
 
-          ---
-
-          ${PROMPT}
-
-          ## PR Diff
+          If no issues found, output: NO_ISSUES_FOUND
 
           \`\`\`diff
           ${DIFF}
           \`\`\`
           GEMINI_EOF
-
-          cat /tmp/gca_review.txt
-
-      - name: Post review comment
-        uses: actions/github-script@v7
+      - uses: actions/upload-artifact@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const review = fs.readFileSync('/tmp/gca_review.txt', 'utf8').trim();
-            if (!review) { core.warning('Empty review output'); return; }
+          name: review-correctness
+          path: /tmp/review_correctness.txt
+          retention-days: 1
 
-            const comments = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-            for (const c of comments.data) {
-              if (c.body.startsWith('## \uD83D\uDD0D GCA Review')) {
-                await github.rest.issues.deleteComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: c.id,
-                });
-              }
-            }
+  review-security:
+    needs: prepare
+    runs-on: ubuntu-latest
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: pr-diff, path: /tmp }
+      - name: Analyze security
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          DIFF=$(cat /tmp/pr_diff.txt)
+          gemini --yolo > /tmp/review_security.txt 2>&1 <<GEMINI_EOF
+          You are a security auditor. Analyze this PR diff for:
+          - SQL injection, XSS, CSRF, SSRF vulnerabilities
+          - Hardcoded secrets, API keys, tokens, passwords
+          - Insecure deserialization, path traversal, command injection
+          - Missing authentication/authorization checks
+          - Insecure cryptographic usage, weak randomness
 
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: '## \uD83D\uDD0D GCA Review\n\n' + review,
-            });
+          Output ONLY structured findings in this exact format (one per finding):
+          FILE: path/to/file.ext
+          LINE: 42
+          SEVERITY: error|warning|info
+          COMMENT: Description of the vulnerability
+
+          If no issues found, output: NO_ISSUES_FOUND
+
+          \`\`\`diff
+          ${DIFF}
+          \`\`\`
+          GEMINI_EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-security
+          path: /tmp/review_security.txt
+          retention-days: 1
+
+  review-performance:
+    needs: prepare
+    runs-on: ubuntu-latest
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: pr-diff, path: /tmp }
+      - name: Analyze performance
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          DIFF=$(cat /tmp/pr_diff.txt)
+          gemini --yolo > /tmp/review_performance.txt 2>&1 <<GEMINI_EOF
+          You are a performance engineer. Analyze this PR diff for:
+          - O(n²) or worse algorithmic complexity where O(n) is possible
+          - Unnecessary memory allocations, copies, or large object creation
+          - Missing caching, redundant computations, N+1 queries
+          - Blocking I/O in async contexts, missing pagination
+          - Bundle size regressions, unoptimized imports
+
+          Output ONLY structured findings in this exact format (one per finding):
+          FILE: path/to/file.ext
+          LINE: 42
+          SEVERITY: error|warning|info
+          COMMENT: Description of the performance issue
+
+          If no issues found, output: NO_ISSUES_FOUND
+
+          \`\`\`diff
+          ${DIFF}
+          \`\`\`
+          GEMINI_EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-performance
+          path: /tmp/review_performance.txt
+          retention-days: 1
+
+  review-architecture:
+    needs: prepare
+    runs-on: ubuntu-latest
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: pr-diff, path: /tmp }
+      - name: Analyze architecture
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          DIFF=$(cat /tmp/pr_diff.txt)
+          AGENTS_MD=$(cat AGENTS.md 2>/dev/null || echo "No AGENTS.md found")
+          gemini --yolo > /tmp/review_architecture.txt 2>&1 <<GEMINI_EOF
+          You are an architecture reviewer for the UphillSnowball monorepo.
+          Review this PR diff against these architectural constraints:
+
+          ${AGENTS_MD}
+
+          Check for:
+          - Violations of the canonical truth hierarchy
+          - Duplicate sources of truth being introduced
+          - Complected (entangled) concerns that should be separated
+          - Missing or incorrect module boundaries
+          - Changes to immutable zone files without explicit authorization
+
+          Output ONLY structured findings in this exact format (one per finding):
+          FILE: path/to/file.ext
+          LINE: 42
+          SEVERITY: error|warning|info
+          COMMENT: Description of the architectural concern
+
+          If no issues found, output: NO_ISSUES_FOUND
+
+          \`\`\`diff
+          ${DIFF}
+          \`\`\`
+          GEMINI_EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-architecture
+          path: /tmp/review_architecture.txt
+          retention-days: 1
+
+  # ──────────────────────────────────────────────
+  # Stage 2b: ANE Budget Gate (parallel with agents)
+  # ──────────────────────────────────────────────
+  ane-budget-check:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: pr-diff, path: /tmp }
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run ANE budget gate
+        run: |
+          python scripts/ane_budget.py /tmp/pr_diff.txt > /tmp/ane_report.json || true
+          cat /tmp/ane_report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ane-report
+          path: /tmp/ane_report.json
+          retention-days: 1
+
+  # ──────────────────────────────────────────────
+  # Stage 3: Verify, Deduplicate, and Post
+  # ──────────────────────────────────────────────
+  verify-and-post:
+    needs:
+      - review-correctness
+      - review-security
+      - review-performance
+      - review-architecture
+      - ane-budget-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download all review artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/reviews
+
+      - name: Consolidate and post review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/post_review.py \
+            --repo "${{ github.repository }}" \
+            --pr "${{ github.event.pull_request.number }}" \
+            --commit "${{ github.event.pull_request.head.sha }}" \
+            --reviews "/tmp/reviews/review-*/*.txt" \
+            --ane-report "/tmp/reviews/ane-report/ane_report.json"

@@ -183,3 +183,7 @@ scripts/.*
 
 # Live Server Plus Plus reference fork (external repo)
 tools/vscode-live-server-plus-plus/
+
+# Cloned macOS system tools (external repos)
+tools/Mole/
+tools/PureMac/
