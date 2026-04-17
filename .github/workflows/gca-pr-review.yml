@@ -1,0 +1,81 @@
+name: GCA PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  gca-review:
+    runs-on: ubuntu-latest
+    container:
+      image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        run: |
+          git diff origin/${{ github.base_ref }}...HEAD > /tmp/pr_diff.txt
+          echo "Lines in diff: $(wc -l < /tmp/pr_diff.txt)"
+
+      - name: Run GCA PR Review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          REVIEW_CONTRACT=$(cat .agent/bundles/antigravity_gca_repo_bundle/antigravity_gca_repo_bundle/REVIEW.md)
+          PROMPT=$(cat .agent/bundles/antigravity_gca_repo_bundle/antigravity_gca_repo_bundle/.gemini/commands/pr-review.md)
+          DIFF=$(cat /tmp/pr_diff.txt)
+
+          gemini --yolo > /tmp/gca_review.txt 2>&1 <<GEMINI_EOF
+          ${REVIEW_CONTRACT}
+
+          ---
+
+          ${PROMPT}
+
+          ## PR Diff
+
+          \`\`\`diff
+          ${DIFF}
+          \`\`\`
+          GEMINI_EOF
+
+          cat /tmp/gca_review.txt
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('/tmp/gca_review.txt', 'utf8').trim();
+            if (!review) { core.warning('Empty review output'); return; }
+
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            for (const c of comments.data) {
+              if (c.body.startsWith('## \uD83D\uDD0D GCA Review')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: c.id,
+                });
+              }
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '## \uD83D\uDD0D GCA Review\n\n' + review,
+            });
