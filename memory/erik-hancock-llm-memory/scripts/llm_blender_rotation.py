@@ -43,7 +43,7 @@ class LLMConfig:
     allocation: float
     cost_per_1k_tokens: float
     api_key_env: str
-    endpoint: Optional[str] = None
+    endpoint: str | None = None
 
 
 # LLM Configurations
@@ -93,11 +93,11 @@ class Thread:
     thread_id: str
     content: str
     assigned_llm: LLMProvider
-    round_1_response: Optional[str] = None
-    round_2_review: Optional[str] = None
-    round_3_review: Optional[str] = None
-    round_1_reviewer: Optional[LLMProvider] = None
-    round_2_reviewer: Optional[LLMProvider] = None
+    round_1_response: str | None = None
+    round_2_review: str | None = None
+    round_3_review: str | None = None
+    round_1_reviewer: LLMProvider | None = None
+    round_2_reviewer: LLMProvider | None = None
 
 
 class GrokIntake:

@@ -78,7 +78,7 @@ def main():
         os.path.join(os.path.dirname(__file__), "..", "CMakeLists.txt")
     )
     print("Updating %s..." % cmake_lists_path)
-    with open(cmake_lists_path, "r") as cmake_lists_file:
+    with open(cmake_lists_path) as cmake_lists_file:
         cmake_lists = cmake_lists_file.readlines()
     counter = 2
     for i, line in enumerate(cmake_lists):

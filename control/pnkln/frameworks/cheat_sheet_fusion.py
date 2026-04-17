@@ -82,7 +82,7 @@ class CheatSheetVariant:
     """
 
     variant_id: str
-    essentials: Dict[Essential, Any]
+    essentials: dict[Essential, Any]
 
     # DTE tracking
     tests_run: int = 0
@@ -92,11 +92,11 @@ class CheatSheetVariant:
 
     # Evolution metadata
     generation: int = 1  # Which evolution cycle created this
-    parent_id: Optional[str] = None
-    mutations: List[str] = field(default_factory=list)
+    parent_id: str | None = None
+    mutations: list[str] = field(default_factory=list)
 
     created_at: datetime = field(default_factory=datetime.utcnow)
-    last_tested: Optional[datetime] = None
+    last_tested: datetime | None = None
 
     def record_test_result(self, accuracy: float) -> None:
         """Record DTE test result and update metrics"""
@@ -185,15 +185,15 @@ class CheatSheetFusion:
         self.target_accuracy = target_accuracy
 
         # Variant tracking
-        self.variants: Dict[str, CheatSheetVariant] = {}
-        self.current_variant_id: Optional[str] = None
-        self.best_variant_id: Optional[str] = None
+        self.variants: dict[str, CheatSheetVariant] = {}
+        self.current_variant_id: str | None = None
+        self.best_variant_id: str | None = None
         self.generation = 1
 
         # DTE metrics
         self.total_tests_run = 0
         self.total_accuracy_gain = 0.0
-        self.baseline_accuracy: Optional[float] = None
+        self.baseline_accuracy: float | None = None
 
         logger.info(
             f"CheatSheetFusion initialized: source={source}, use_case={use_case}, "
@@ -201,7 +201,7 @@ class CheatSheetFusion:
         )
 
     def create_variant(
-        self, essentials: Dict[Essential, Any], parent_id: Optional[str] = None
+        self, essentials: dict[Essential, Any], parent_id: str | None = None
     ) -> str:
         """Create a new cheat sheet variant"""
         # Generate variant ID from essentials hash
@@ -235,20 +235,20 @@ class CheatSheetFusion:
 
         return variant_id
 
-    def get_current_variant(self) -> Optional[CheatSheetVariant]:
+    def get_current_variant(self) -> CheatSheetVariant | None:
         """Get currently active variant"""
         if self.current_variant_id:
             return self.variants.get(self.current_variant_id)
         return None
 
-    def get_best_variant(self) -> Optional[CheatSheetVariant]:
+    def get_best_variant(self) -> CheatSheetVariant | None:
         """Get best-performing variant"""
         if self.best_variant_id:
             return self.variants.get(self.best_variant_id)
         return None
 
     async def test_variant(
-        self, variant_id: str, ground_truth_data: List[Dict], test_fn: Optional[Any] = None
+        self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None
     ) -> DTETestResult:
         """
         Test a variant against ground truth using DTE.
@@ -400,7 +400,7 @@ class CheatSheetFusion:
 
         return new_variant_id
 
-    def generate_prompt(self, variant_id: Optional[str] = None) -> str:
+    def generate_prompt(self, variant_id: str | None = None) -> str:
         """
         Generate final prompt from variant.
 
@@ -421,7 +421,7 @@ class CheatSheetFusion:
         return variant.to_prompt()
 
     @staticmethod
-    def _compile_prompt(essentials: Dict[Essential, Any]) -> str:
+    def _compile_prompt(essentials: dict[Essential, Any]) -> str:
         """
         Compile essentials into final prompt.
 
@@ -484,7 +484,7 @@ class CheatSheetFusion:
         # Keep it clean, focused, beautiful
         return prompt.strip()
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get DTE evolution statistics"""
         return {
             "source": self.source,
@@ -525,7 +525,7 @@ class PresetCheatSheets:
     """
 
     @staticmethod
-    def youtube_tier_1_intelligence() -> Dict[Essential, Any]:
+    def youtube_tier_1_intelligence() -> dict[Essential, Any]:
         """YouTube collection optimized for Tier 1 intelligence"""
         return {
             Essential.ACT: "elite intelligence analyst specializing in AI governance",
@@ -555,7 +555,7 @@ class PresetCheatSheets:
         }
 
     @staticmethod
-    def twitter_governance_signals() -> Dict[Essential, Any]:
+    def twitter_governance_signals() -> dict[Essential, Any]:
         """Twitter collection for early governance signals"""
         return {
             Essential.ACT: "early warning analyst for AI governance trends",
@@ -584,7 +584,7 @@ class PresetCheatSheets:
         }
 
     @staticmethod
-    def news_api_compliance_tracking() -> Dict[Essential, Any]:
+    def news_api_compliance_tracking() -> dict[Essential, Any]:
         """News API for compliance enforcement tracking"""
         return {
             Essential.ACT: "compliance enforcement tracker",
