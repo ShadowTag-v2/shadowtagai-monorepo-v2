@@ -1,15 +1,33 @@
+# Cor.30: Security Rules for AI Vibe Coding — Pre-Commit Enforcement
+# See docs/SECURITY_DOD.md for the full checklist.
+
 repos:
+  # ── Secrets Detection (Cor.30 Rule 33) ───────────────────────────────────
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+        name: "🔒 Gitleaks — Block hardcoded secrets"
+
+  # ── Standard Hygiene ─────────────────────────────────────────────────────
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
+        args: ['--maxkb=5000']
       - id: end-of-file-fixer
         exclude: ^docs/bundles/
       - id: trailing-whitespace
         exclude: ^(docs/bundles/|apps/pnkln-stack_stack/cosmic-crab-payload/)
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-json
+      - id: detect-private-key
+        name: "🔑 Detect private keys"
 
+  # ── Python Linting + Formatting ──────────────────────────────────────────
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.1
+    rev: v0.8.6
     hooks:
       - id: ruff
         args:
@@ -21,9 +39,7 @@ repos:
         args: [--line-length=150]
         exclude: "^(docs/bundles/|apps/pnkln-stack_stack/cosmic-crab-payload/|apps/.*/external_repos/|control/pnkln/semgrep/|packages/|apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/)"
 
-  # biome-check disabled: --write flag incompatible with this biome version
-  # - repo: https://github.com/biomejs/pre-commit
-
+  # ── Local Tests ──────────────────────────────────────────────────────────
   - repo: local
     hooks:
       - id: prism-tests
@@ -32,3 +48,4 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+

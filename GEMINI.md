@@ -1,5 +1,5 @@
 ---
-version: 8.5
+version: 8.6
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
@@ -164,5 +164,78 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 - All MCP servers MUST read from `.env` or ADC. No hardcoded keys in source.
 - The `STRIPE_PUBLISHABLE_KEY` is the ONLY key safe to embed in frontend HTML.
 </env_master_doctrine>
+
+<cor30_security_doctrine>
+## Cor.30 — Security Rules for AI Vibe Coding
+
+**Canonical checklist:** `docs/SECURITY_DOD.md`
+**Enforcer skill:** `skills/cor30-security-enforcer/SKILL.md`
+**CI gate:** `.github/workflows/security-audit.yml`
+**Pre-commit:** `.pre-commit-config.yaml` (Gitleaks + detect-private-key)
+
+### Core Principle
+AI velocity does not excuse missing security hygiene — it multiplies the cost of skipping it.
+
+### 6-Pillar Framework
+1. **Identity & Session** (R1–2, 13, 32): Short-lived access tokens (15–60 min), rotated refresh, MFA for admin/billing, CSRF protection, redirect allow-lists.
+2. **Secrets & Supply Chain** (R3–8, 33–35): Secret Manager only, Gitleaks pre-commit, pinned deps, verified packages, no blind npm audit fix.
+3. **API Hardening** (R9, 12, 14–16, 23, 31): Pydantic/Zod validation, per-user+route rate limits, server-side authz, security headers (CSP/HSTS).
+4. **Storage & Uploads** (R10, 19–20): Tenant isolation, signed URLs, magic-byte file validation, malware scan.
+5. **Payments & Webhooks** (R21–22, 30): HMAC signature verification, idempotency keys, SPF/DKIM/DMARC, test/prod separation.
+6. **Ops & Audit** (R11, 17–18, 24–30): Structured logging (no PII), token budget caps, audit logs, GDPR deletion flow, backup+restore drills.
+
+### OWASP LLM Top 10 (2025)
+| # | Risk | Mandatory Control |
+|---|------|-------------------|
+| LLM01 | Prompt Injection | System prompts isolated from user input |
+| LLM02 | Sensitive Info Disclosure | PII stripped from context windows |
+| LLM05 | Improper Output | All LLM output treated as untrusted |
+| LLM06 | Excessive Agency | Minimum-permission tool manifests |
+| LLM07 | Prompt Leakage | Prompts encrypted, never in responses/logs |
+| LLM10 | Unbounded Consumption | Token budget + rate limits + circuit breaker |
+
+### Threat Model Defenses
+- **Voice AI IDOR/BAC**: UUIDv7 IDs, tenant-scoped queries, admin role isolation.
+- **Perplexity .npmrc preload**: Sandbox-bound ephemeral tokens, no shared FS, user-billed proxy, egress restrictions.
+- **Vibe-coded sinking ship**: Full Cor.30 checklist enforcement in CI.
+</cor30_security_doctrine>
+
+<counselconduit_architecture>
+## CounselConduit Business Architecture
+
+### Product Identity
+CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing tier between law firms and foundational LLMs (Gemini, Claude, ChatGPT, Grok, Perplexity) protected under *United States v. Heppner* (S.D.N.Y., Feb. 10, 2026).
+
+### Dual-Billing Engine (Stripe Connect)
+1. **Client → Lawyer**: Client subscribes to AI portal with their credit card. Funds flow to lawyer's Stripe account. Lawyer gets paid upfront for each query.
+2. **Lawyer → Us**: Auto-scaling tiered subscription (Solo $299, Practice $599, Enterprise $999). Tiers cover ALL LLM API costs + 85%+ margin. Auto-bump on usage (like Claude Code billing).
+3. **Fee Isolation**: We never touch the client-lawyer fee arrangement. Lawyer bills client separately for work product.
+
+### Heppner Privilege UX
+- **Client View (Ephemeral)**: Research portal with multi-model selector. Auto-logout + screen wipe after inactivity. No export. No copy. Dead-man's switch.
+- **Lawyer View (Persistent)**: Immutable transcripts, Oracle Memo with citations, oversight dashboard.
+- **Kovel Attestation Receipt**: Cryptographic hash per session proving privileged communication.
+
+### Cloud Run Target Architecture
+- **Control Plane**: Tenant registry, plan/tier logic, billing orchestration, model routing policy, audit metadata.
+- **Data Plane**: Per-firm storage namespace, per-firm transcript path, per-firm model policy, per-firm billing attribution.
+- **LiteLLM Proxy**: Ephemeral sandbox-bound tokens (tied to tenant + session + TTL). User-billed. No master keys in sandbox.
+- **Judge #6**: Mandatory policy gate on model routing, export, transcript generation, and regulated-domain answers.
+
+### Cloud Run Service URLs
+- **Production**: `https://counselconduit-767252945109.us-central1.run.app`
+- **Service Account**: `counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com`
+- **Staging SA**: `counselconduit-staging-sa@shadowtag-omega-v4.iam.gserviceaccount.com`
+
+### Implementation Phases
+1. **Phase 1 (Secure MVP)**: Cloud Run + tenant auth + RBAC + billing tiers + proxy tokens + Cloud Armor + webhook verification.
+2. **Phase 2 (Privilege)**: Judge #6 gate + transcript split (ephemeral client / persistent lawyer) + session expiry + audit trails.
+3. **Phase 3 (Sandbox)**: Isolated tool runners + read-only FS + short-lived proxy tokens + tenant-billed token issuance.
+4. **Phase 4 (Enterprise)**: BYOC/BYOK + regional isolation + custom retention + FedRAMP + evidence-grade audit exports.
+
+### Timeline
+- Day 0–30: Core fork + security hardening.
+- Day 31–45: First paid customer live.
+</counselconduit_architecture>
 </system_directive>
 
