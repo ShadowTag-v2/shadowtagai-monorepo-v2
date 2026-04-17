@@ -33,8 +33,8 @@ VECTOR = "vector"
 
 def convert_firestore_document(
     document: DocumentSnapshot,
-    page_content_fields: Optional[List[str]] = None,
-    metadata_fields: Optional[List[str]] = None,
+    page_content_fields: list[str] | None = None,
+    metadata_fields: list[str] | None = None,
 ) -> Document:
     data_doc = document.to_dict()
     metadata = {

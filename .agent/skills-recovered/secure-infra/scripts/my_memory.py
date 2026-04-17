@@ -21,7 +21,7 @@ def ensure_file_exists():
 
 def read_memory():
     ensure_file_exists()
-    with open(MEMORY_FILE, "r") as f:
+    with open(MEMORY_FILE) as f:
         # Acquire a shared lock
         fcntl.flock(f, fcntl.LOCK_SH)
         try:

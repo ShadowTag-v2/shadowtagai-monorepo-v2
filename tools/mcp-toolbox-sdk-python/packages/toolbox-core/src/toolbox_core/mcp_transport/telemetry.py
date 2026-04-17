@@ -80,7 +80,7 @@ METRIC_CLIENT_SESSION_DURATION = "mcp.client.session.duration"
 MCP_DURATION_BUCKETS = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 30, 60, 120, 300]
 
 
-def get_tracer(name: str = "toolbox.mcp.sdk", version: Optional[str] = None) -> Tracer:
+def get_tracer(name: str = "toolbox.mcp.sdk", version: str | None = None) -> Tracer:
     """Get a tracer from the global TracerProvider.
 
     This function retrieves a tracer from the globally configured TracerProvider.
@@ -106,7 +106,7 @@ def get_tracer(name: str = "toolbox.mcp.sdk", version: Optional[str] = None) -> 
     return trace.get_tracer(name, version)
 
 
-def get_meter(name: str = "toolbox.mcp.sdk", version: Optional[str] = None) -> Meter:
+def get_meter(name: str = "toolbox.mcp.sdk", version: str | None = None) -> Meter:
     """Get a meter from the global MeterProvider.
 
     This function retrieves a meter from the globally configured MeterProvider.
@@ -132,7 +132,7 @@ def get_meter(name: str = "toolbox.mcp.sdk", version: Optional[str] = None) -> M
     return metrics.get_meter(name, version or "")
 
 
-def create_operation_duration_histogram(meter: Meter) -> Optional[Histogram]:
+def create_operation_duration_histogram(meter: Meter) -> Histogram | None:
     """Create histogram for MCP client operation duration.
 
     Bucket boundaries are configured via Views in setup_telemetry() to match
@@ -155,7 +155,7 @@ def create_operation_duration_histogram(meter: Meter) -> Optional[Histogram]:
         return None
 
 
-def create_session_duration_histogram(meter: Meter) -> Optional[Histogram]:
+def create_session_duration_histogram(meter: Meter) -> Histogram | None:
     """Create histogram for MCP client session duration.
 
     Bucket boundaries are configured via Views in setup_telemetry() to match
@@ -178,7 +178,7 @@ def create_session_duration_histogram(meter: Meter) -> Optional[Histogram]:
         return None
 
 
-def extract_server_info(url: str) -> tuple[str, Optional[int], str]:
+def extract_server_info(url: str) -> tuple[str, int | None, str]:
     """Extract server address, port, and protocol from URL.
 
     Args:
@@ -224,13 +224,13 @@ def create_tracestate_from_context() -> str:
 
 
 def start_span(
-    tracer: Optional[Tracer],
+    tracer: Tracer | None,
     method_name: str,
     protocol_version: str,
     server_url: str,
-    tool_name: Optional[str] = None,
-    network_transport: Optional[str] = None,
-) -> tuple[Optional[Span], str, str]:
+    tool_name: str | None = None,
+    network_transport: str | None = None,
+) -> tuple[Span | None, str, str]:
     """Start a telemetry span for MCP operations and extract W3C propagation headers.
 
     The span is briefly activated to extract traceparent/tracestate for context
@@ -291,7 +291,7 @@ def start_span(
         return None, "", ""
 
 
-def end_span(span: Optional[Span], error: Optional[Exception] = None) -> None:
+def end_span(span: Span | None, error: Exception | None = None) -> None:
     """End a telemetry span. Safe to call with None span.
 
     Args:
@@ -322,14 +322,14 @@ def record_error_from_jsonrpc(span: Span, error_code: int, error_message: str) -
 
 
 def record_operation_duration(
-    histogram: Optional[Histogram],
+    histogram: Histogram | None,
     duration_seconds: float,
     method_name: str,
     protocol_version: str,
     server_url: str,
-    tool_name: Optional[str] = None,
-    network_transport: Optional[str] = None,
-    error: Optional[Exception] = None,
+    tool_name: str | None = None,
+    network_transport: str | None = None,
+    error: Exception | None = None,
 ) -> None:
     """Record MCP client operation duration metric.
 
@@ -380,12 +380,12 @@ def record_operation_duration(
 
 
 def record_session_duration(
-    histogram: Optional[Histogram],
+    histogram: Histogram | None,
     duration_seconds: float,
     protocol_version: str,
     server_url: str,
-    network_transport: Optional[str] = None,
-    error: Optional[Exception] = None,
+    network_transport: str | None = None,
+    error: Exception | None = None,
 ) -> None:
     """Record MCP client session duration metric.
 

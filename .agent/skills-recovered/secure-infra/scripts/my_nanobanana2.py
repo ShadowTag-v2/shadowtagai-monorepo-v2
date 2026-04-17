@@ -8,7 +8,7 @@ def get_nanobanana_token():
     token = os.environ.get("NANO_BANANA_API_KEY")
     if not token:
         try:
-            with open(".env", "r") as f:
+            with open(".env") as f:
                 for line in f:
                     if line.startswith("NANO_BANANA_API_KEY="):
                         return line.strip().split("=", 1)[1].strip("\"'")

@@ -89,7 +89,7 @@ def is_mid_context_question(question: str) -> bool:
     return False
 
 
-def extract_technical_terms(question: str) -> List[str]:
+def extract_technical_terms(question: str) -> list[str]:
     """Extract technical terms from question."""
     # Simple extraction: words that are capitalized or contain technical patterns
     words = question.split()
@@ -126,7 +126,7 @@ def build_search_query(question: str) -> str:
     return " ".join(query_parts) if query_parts else question
 
 
-def search_conversations(query: str, session_id: str) -> Dict:
+def search_conversations(query: str, session_id: str) -> dict:
     """
     Search past conversations (placeholder implementation).
     In production, this would search actual conversation history.

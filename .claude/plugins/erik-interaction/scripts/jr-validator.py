@@ -25,7 +25,7 @@ DEPLOYMENT_TOOLS = ["Bash", "Write", "Edit"]
 SKIP_VALIDATION_TOOLS = ["Read", "Glob", "Grep", "WebFetch"]
 
 
-def extract_metrics_from_input(tool_input: str) -> Dict:
+def extract_metrics_from_input(tool_input: str) -> dict:
     """Extract JR-relevant metrics from tool input."""
     metrics = {}
 
@@ -68,7 +68,7 @@ def extract_metrics_from_input(tool_input: str) -> Dict:
     return metrics
 
 
-def validate_jr(metrics: Dict) -> List[str]:
+def validate_jr(metrics: dict) -> list[str]:
     """Validate metrics against JR constraints."""
     violations = []
 

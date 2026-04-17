@@ -21,7 +21,7 @@ Source-verified constants from the actual CC codebase:
 import json
 import sys
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Optional
 
@@ -117,7 +117,7 @@ def should_withhold(message: dict) -> bool:
     return is_prompt_too_long(message) or is_media_size_error(message)
 
 
-def try_reactive_compact(messages: list, state: dict) -> Optional[dict]:
+def try_reactive_compact(messages: list, state: dict) -> dict | None:
     """Simulate tryReactiveCompact from the CC source.
     Reconstructed from query.ts:1119-1132.
 
@@ -131,7 +131,7 @@ def try_reactive_compact(messages: list, state: dict) -> Optional[dict]:
 
     state["has_attempted"] = True
     state["total_reactive_compacts"] += 1
-    state["last_compact_at"] = datetime.now(timezone.utc).isoformat()
+    state["last_compact_at"] = datetime.now(UTC).isoformat()
 
     # In the real CC, this forks an agent to run compactConversation().
     # Here we just mark the state and return metadata for the caller.

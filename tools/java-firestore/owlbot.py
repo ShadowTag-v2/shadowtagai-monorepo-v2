@@ -103,7 +103,7 @@ java.common_templates(excludes=[
 # instead of the default artifactId (google-cloud-firestore).
 metadata_path = ".repo-metadata.json"
 try:
-    with open(metadata_path, "r") as f:
+    with open(metadata_path) as f:
         metadata = json.load(f)
 
     # Add the override map if it doesn't exist or update it
