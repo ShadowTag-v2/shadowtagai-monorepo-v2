@@ -199,7 +199,7 @@ async def startup_event():
 
     try:
         controller = SelfRouteController(
-            gemini_model="gemini-1.5-pro-001",  # Default to Pro
+            gemini_model="gemini-3.1-flash-lite-preview",  # Default to Pro
             project_id=project_id,
             location=location,
             default_k=5,

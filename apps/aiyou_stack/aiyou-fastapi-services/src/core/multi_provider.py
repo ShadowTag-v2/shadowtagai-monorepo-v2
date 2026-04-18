@@ -81,7 +81,7 @@ class MultiProviderExecutor:
         "claude-opus-4-20250514": {"input": 15.00, "output": 75.00},
         "claude-3-5-haiku-20241022": {"input": 0.80, "output": 4.00},
         "gemini-2.0-flash-exp": {"input": 0.0, "output": 0.0},  # Free tier
-        "gemini-1.5-pro": {"input": 1.25, "output": 5.00},
+        "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},
         "gemini-1.5-flash": {"input": 0.075, "output": 0.30},
     }
 

@@ -85,7 +85,7 @@ class TrainingConfig:
     staging_bucket: str = ""  # Will be set to gs://{project_id}-training
 
     # Model Settings
-    base_model: str = "gemini-1.5-pro-002"
+    base_model: str = "gemini-3.1-flash-lite-preview"
     model_name: str = "gemini-policy-v1"
 
     # Training Hyperparameters
@@ -592,7 +592,7 @@ class ModelEvaluator:
         # In practice, would load from GCS using Vertex AI SDK
         logger.info(f"Loading checkpoint: {checkpoint_url}")
         # Return mock model for now
-        return genai.GenerativeModel("gemini-1.5-pro-002")
+        return genai.GenerativeModel("gemini-3.1-flash-lite-preview")
 
     def _extract_prompt(self, example: dict[str, Any]) -> str:
         """Extract prompt from training example."""
@@ -1024,7 +1024,7 @@ class TrainingPipeline:
 @click.option(
     "--base_model",
     type=str,
-    default="gemini-1.5-pro-002",
+    default="gemini-3.1-flash-lite-preview",
     help="Base Gemini model to fine-tune",
 )
 @click.option("--learning_rate", type=float, default=1e-5, help="Learning rate for fine-tuning")

@@ -105,7 +105,7 @@ class JudgeSixEngine:
 
         # 3. Model Governance (Gemini 3.0 Doctrine)
         model_requested = context.get("model")
-        if model_requested == "gemini-1.5-pro":
+        if model_requested == "gemini-3.1-flash-lite-preview":
             notes.append("Governance: Gemini 1.5 is DEPRECATED. Use Gemini 3.0.")
             return self._mint_receipt(decision_id, action, Verdict.DENIED, 90.0, notes)
 
@@ -159,5 +159,5 @@ if __name__ == "__main__":
     judge.validate_action("os.system('rm -rf /')", ctx2)
 
     # Test 3: Deprecated Model
-    ctx3 = {"purpose": "Legacy", "reasons": "Old Code", "model": "gemini-1.5-pro"}
+    ctx3 = {"purpose": "Legacy", "reasons": "Old Code", "model": "gemini-3.1-flash-lite-preview"}
     judge.validate_action("GENERATE_CODE", ctx3)

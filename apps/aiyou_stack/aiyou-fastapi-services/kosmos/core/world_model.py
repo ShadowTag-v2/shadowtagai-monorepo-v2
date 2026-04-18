@@ -304,7 +304,7 @@ class KosmosWorldModel:
 
         Args:
             tokens: Number of tokens consumed
-            model: Model name (gemini-2.5-pro, gemini-2.5-flash)
+            model: Model name (gemini-3.1-flash-lite-preview, gemini-2.5-flash)
             cost: Cost in USD
 
         """

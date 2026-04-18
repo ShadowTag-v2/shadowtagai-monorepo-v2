@@ -19,7 +19,7 @@ class JudgeSixAgent(Agent):
 
     def __init__(self):
         # Configure the Brain (Gemini 1.5 Pro)
-        model = ModelArgs(model_name="gemini-1.5-pro")
+        model = ModelArgs(model_name="gemini-3.1-flash-lite-preview")
         # ALIAS: Naming it 'default' ensures CopilotKit frontend connects automatically
         super().__init__(name="default", model=model, prompt=JUDGE_SIX_PROMPT)
 

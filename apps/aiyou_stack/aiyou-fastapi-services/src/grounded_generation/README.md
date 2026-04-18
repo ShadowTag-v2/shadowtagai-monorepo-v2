@@ -4,7 +4,7 @@ This module provides a service and API endpoint for generating content grounded 
 
 ## Features
 
-- **Model**: `gemini-1.5-pro` (default)
+- **Model**: `gemini-3.1-flash-lite-preview` (default)
 - **Caching**: SQLite caching to avoid redundant API calls.
 - **Batch Processing**: Script for high-concurrency batch generation with templating support.
 - **IAM**: Automated setup script for Google Cloud permissions.
@@ -40,7 +40,7 @@ Generate content:
 ```bash
 curl -X POST "http://localhost:8000/api/v1/grounded-generation/generate" \
      -H "Content-Type: application/json" \
-     -d '{"prompt": "Who won the 2024 Super Bowl?", "model_id": "gemini-1.5-pro"}'
+     -d '{"prompt": "Who won the 2024 Super Bowl?", "model_id": "gemini-3.1-flash-lite-preview"}'
 ```
 
 ### Batch Processing

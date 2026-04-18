@@ -12,8 +12,8 @@ data:
   # Vertex AI Configuration
   VERTEX_AI_ENDPOINT: "https://us-central1-aiplatform.googleapis.com"
   VERTEX_AI_LOCATION: "us-central1"
-  GEMINI_MODEL_NAME: "gemini-1.5-pro-002"
-  GEMINI_TUNED_MODEL_NAME: "gemini-1.5-pro-002-tuned"
+  GEMINI_MODEL_NAME: "gemini-3.1-flash-lite-preview"
+  GEMINI_TUNED_MODEL_NAME: "gemini-3.1-flash-lite-preview-tuned"
 
   # Judge #6 Hybrid Architecture
   ENABLE_LAYER_1_GEMINI: "true"

@@ -90,7 +90,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.95,  # High-stakes queries
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-pro-001",  # Pro required
+        model="gemini-3.1-flash-lite-preview",  # Pro required
         max_output_tokens=1024,
     ),
     VerticalType.DEFENSE_CONTRACTS: VerticalConfig(
@@ -103,7 +103,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.98,  # Extreme accuracy required
         enable_reranking=True,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=1024,
     ),
     VerticalType.FINANCIAL_REGULATIONS: VerticalConfig(
@@ -116,7 +116,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.95,
         enable_reranking=True,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=1024,
     ),
     VerticalType.AEROSPACE_ENGINEERING: VerticalConfig(
@@ -129,7 +129,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.95,
         enable_reranking=True,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=1024,
     ),
     VerticalType.NUCLEAR_SAFETY: VerticalConfig(
@@ -142,7 +142,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.98,
         enable_reranking=True,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=1024,
     ),
     # ------------------------------------------------------------------------
@@ -158,7 +158,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.90,
         enable_reranking=True,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=768,
     ),
     VerticalType.MEDICAL_DEVICES: VerticalConfig(
@@ -171,7 +171,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.90,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=768,
     ),
     VerticalType.CYBERSECURITY: VerticalConfig(
@@ -184,7 +184,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=False,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=768,
     ),
     VerticalType.ENVIRONMENTAL_COMPLIANCE: VerticalConfig(
@@ -197,7 +197,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=768,
     ),
     VerticalType.ENERGY_REGULATIONS: VerticalConfig(
@@ -210,7 +210,7 @@ VERTICAL_CONFIGS: dict[VerticalType, VerticalConfig] = {
         force_lc_threshold=0.85,
         enable_reranking=False,
         citation_required=True,
-        model="gemini-1.5-pro-001",
+        model="gemini-3.1-flash-lite-preview",
         max_output_tokens=768,
     ),
     # ------------------------------------------------------------------------

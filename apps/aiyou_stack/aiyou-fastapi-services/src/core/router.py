@@ -63,7 +63,7 @@ class SelfRouteController:
 
     def __init__(
         self,
-        gemini_model: str = "gemini-1.5-pro-001",
+        gemini_model: str = "gemini-3.1-flash-lite-preview",
         retriever: VertexRAGRetriever | None = None,
         project_id: str | None = None,
         location: str = "us-central1",

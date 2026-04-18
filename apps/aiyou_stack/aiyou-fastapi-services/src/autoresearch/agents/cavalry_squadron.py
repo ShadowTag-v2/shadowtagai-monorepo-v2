@@ -57,7 +57,7 @@ VEHICLE_SPECS = {
 
 # Model mapping by tier
 TIER_MODELS = {
-    JURATier.PRO: "gemini-2.5-pro-preview-06-05",
+    JURATier.PRO: "gemini-3.1-flash-lite-preview-preview-06-05",
     JURATier.FLASH: "gemini-2.5-flash",
     JURATier.FREE: "gemini-2.0-flash",
 }
@@ -251,7 +251,7 @@ class CavalrySquadron:
         TroopType.HHT: {
             "name": "HHT - Headquarters & Headquarters Troop",
             "target_strength": 90,
-            "model": "gemini-2.5-pro-preview-06-05",
+            "model": "gemini-3.1-flash-lite-preview-preview-06-05",
             "commander": "Judge #6",
             "platoons": [
                 ("S-1 Personnel", 12),
@@ -268,7 +268,7 @@ class CavalrySquadron:
         TroopType.AIR_CAV: {
             "name": "AIR CAV - Aerial Scouts",
             "target_strength": 120,
-            "model": "gemini-2.5-pro-preview-06-05",
+            "model": "gemini-3.1-flash-lite-preview-preview-06-05",
             "commander": "Apache Lead",
             "platoons": [
                 ("Attack Helo PLT", 40),
@@ -316,7 +316,7 @@ class CavalrySquadron:
         TroopType.CODEPMCS: {
             "name": "CODEPMCS - Code Quality & Remediation",
             "target_strength": 50,
-            "model": "gemini-2.5-pro-preview-06-05",
+            "model": "gemini-3.1-flash-lite-preview-preview-06-05",
             "commander": "CodePMCS Lead",
             "platoons": [
                 ("Scanner PLT", 20),

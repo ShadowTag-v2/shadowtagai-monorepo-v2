@@ -44,9 +44,9 @@ class CostMonitor:
     # Gemini model pricing (per 1M tokens)
     PRICING = {
         "gemini-2.0-flash-exp": {"input": 0.075, "output": 0.30},
-        "gemini-1.5-pro": {"input": 1.25, "output": 5.00},
+        "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},
         "gemini-2.5-flash": {"input": 0.075, "output": 0.30},  # When available
-        "gemini-2.5-pro": {"input": 1.25, "output": 5.00},  # When available
+        "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},  # When available
     }
 
     def __init__(
@@ -212,8 +212,8 @@ class CostMonitor:
 
         """
         if model not in self.PRICING:
-            logger.warning(f"Unknown model {model}, using gemini-1.5-pro pricing")
-            model = "gemini-1.5-pro"
+            logger.warning(f"Unknown model {model}, using gemini-3.1-flash-lite-preview pricing")
+            model = "gemini-3.1-flash-lite-preview"
 
         pricing = self.PRICING[model]
         input_cost = (input_tokens / 1_000_000) * pricing["input"]

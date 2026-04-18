@@ -122,7 +122,7 @@ TOKEN_ROUTER_CONFIG = {
         },
         "long": {
             "default": "claude-3-5-sonnet-20241022",
-            "alternatives": ["gpt-4o", "gemini-1.5-pro"],
+            "alternatives": ["gpt-4o", "gemini-3.1-flash-lite-preview"],
             "cost_per_1k_tokens": 0.003,
             "latency_ms": 500,
         },

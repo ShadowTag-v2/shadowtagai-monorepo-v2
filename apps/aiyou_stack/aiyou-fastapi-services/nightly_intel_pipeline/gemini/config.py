@@ -93,7 +93,7 @@ GEMINI_INGESTION_CONFIG = {
             "input_per_million": 0.0375,
             "output_per_million": 0.15,
         },
-        "gemini-2.5-pro-preview-06-05": {
+        "gemini-3.1-flash-lite-preview-preview-06-05": {
             "input_per_million": 1.25,
             "output_per_million": 10.0,
         },

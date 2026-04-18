@@ -83,7 +83,7 @@ class ServerConfig(BaseSettings):
 
     # --- Agent Swarm Configuration (Added for Antigravity Upgrade) ---
     AGENT_NAME: str = "n-autoresearch/Kosmos/BioAgents"
-    GEMINI_MODEL_NAME: str = "gemini-1.5-pro-002"
+    GEMINI_MODEL_NAME: str = "gemini-3.1-flash-lite-preview"
     JUDGE6_ENABLED: bool = True
     CORPUS_GUARD_ENABLED: bool = True
     ARTIFACTS_DIR: str = "artifacts"

@@ -78,7 +78,7 @@ class IngestionJob(Base):
     completed_at = Column(DateTime(timezone=True), nullable=True)
 
     # Gemini analysis results
-    gemini_model_version = Column(String(50))  # e.g., "gemini-1.5-pro"
+    gemini_model_version = Column(String(50))  # e.g., "gemini-3.1-flash-lite-preview"
     gemini_analysis_id = Column(String(100), index=True)  # Vertex AI request ID
     gemini_tokens_used = Column(Integer, default=0)  # For cost tracking
 

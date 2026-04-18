@@ -146,7 +146,7 @@ WEALTH_ACCELERATION_PROMPT = """
   <metadata>
     <agent_name>Wealth Acceleration Strategist</agent_name>
     <version>1.0.0</version>
-    <model>gemini-1.5-pro</model>
+    <model>gemini-3.1-flash-lite-preview</model>
     <last_updated>2025-12-12</last_updated>
   </metadata>
 
@@ -214,7 +214,7 @@ class WealthAccelerationService:
             vertexai.init(project=project_id, location=location)
 
         self.model = GenerativeModel(
-            "gemini-1.5-pro-001",
+            "gemini-3.1-flash-lite-preview",
             system_instruction=[WEALTH_ACCELERATION_PROMPT],
         )
 

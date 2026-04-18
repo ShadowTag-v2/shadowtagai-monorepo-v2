@@ -185,7 +185,7 @@ class CodeScanner:
                 "build",
             ],
             "max_file_size_kb": 500,
-            "gemini_model": "gemini-2.5-pro-preview-06-05",
+            "gemini_model": "gemini-3.1-flash-lite-preview-preview-06-05",
             "enable_security": True,
             "enable_quality": True,
             "enable_style": True,

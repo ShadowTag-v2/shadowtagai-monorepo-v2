@@ -241,7 +241,7 @@ async def get_intel_feed(
                 "summary": "Google released Gemini 2.5 Pro with 40% faster inference",
                 "relevance_score": 95,
                 "recommendations": [
-                    "Consider upgrading primary model to gemini-2.5-pro",
+                    "Consider upgrading primary model to gemini-3.1-flash-lite-preview",
                     "Test new capabilities in staging environment",
                 ],
                 "shadowtag_signature": "c2pa:ed25519:abc123...",
