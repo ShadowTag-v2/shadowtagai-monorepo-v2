@@ -103,6 +103,18 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 - Queue Doctrine: Google Cloud Tasks is the EXCLUSIVE queue broker. BullMQ is banned.
 </rich_hickey_vulture_doctrine>
 
+<prompt_repetition_doctrine>
+## Prompt Repetition — Zero-Cost Accuracy Boost
+
+**Source:** Leviathan, Kalman, Matias (Google Research) — [arXiv 2512.14982](https://arxiv.org/abs/2512.14982)
+
+**Rule:** When routing prompts to non-reasoning model tiers (flash, lite, mini, haiku), repeat the user's instruction in the context to boost accuracy by 1–8% with zero additional output tokens or latency.
+
+**Apply to:** Oracle Studio stages, CounselConduit model_router, Vent Mode, Autoresearch Triad prompts.
+**Do NOT apply to:** Reasoning/thinking models (Gemini thinking, Claude extended thinking, DeepSeek-R1).
+
+**Skill reference:** `skills/prompt-repetition-boost/SKILL.md`
+</prompt_repetition_doctrine>
 <env_master_doctrine>
 ## .env Master Environment Doctrine
 

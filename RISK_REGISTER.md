@@ -1,4 +1,4 @@
-# RISK_REGISTER — v8.4
+# RISK_REGISTER — v8.6
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.
@@ -29,6 +29,7 @@
 | 22 | No Firestore monitoring alerts deployed | 🟡 Medium | MITIGATED | Alerting requires: (1) `metric.type="firestore.googleapis.com/document/read_count"` threshold alert at 10K/5min, (2) `metric.type="firestore.googleapis.com/document/write_count"` threshold at 5K/5min, (3) `metric.type="firestore.googleapis.com/api/request_count"` with `response_code!=200` for error rates. Configure via Cloud Console → Monitoring → Alerting → Create Policy. Notification channel: `founder@shadowtagai.com`. |
 | 23 | Firebase Hosting auto-gzip breaks video playback | 🟠 High | RESOLVED | Firebase Hosting applies `Content-Encoding: gzip/br` to MP4 files, causing `ERR_CONTENT_DECODING_FAILED` in Chrome's video decoder. **Fix:** Serve video assets from GCS (`gs://shadowtag-omega-v4-archive/hero-videos/`) instead. CSP `media-src` updated to whitelist `https://storage.googleapis.com`. |
 | 24 | GCS bucket CORS not configured for cross-origin streaming | 🟡 Medium | RESOLVED | `shadowtag-omega-v4-archive` bucket had no CORS policy. Configured `GET`/`HEAD` from all 5 production origins with `Content-Range`/`Accept-Ranges` response headers. Max-age 86400s. |
+| 25 | `pip.conf` global `user=true` breaks virtualenv installs | 🟡 Medium | RESOLVED | `~/.config/pip/pip.conf` had `[install] user = true` which forces `--user` in all pip installs, breaking virtualenvs and pre-commit hooks. **Fix:** Removed the `user = true` directive. Use explicit `--user` flag when needed for system Python. |
 
 ## Review Policy
 
