@@ -97,3 +97,6 @@ unless the user explicitly directs a control plane change:
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
 - Nested `.git` directories: 0 (33 removed in v8.6 hardening)
 - Ruff F-violations: 628 (340 F401, 149 F841 — mostly in external/vendored code)
+- CounselConduit: v3.1.0 on Cloud Run (Phase 1 + 2 LIVE, 16 API modules)
+- Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml`
+- Prompt Repetition: wired into Oracle Studio + Vent Mode (arXiv 2512.14982)

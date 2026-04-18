@@ -1,5 +1,5 @@
 # apps/counselconduit/api/oracle_studio.py
-"""Oracle Studio — 7-Prompt Legal Research System.
+"""Oracle Studio — 7-Prompt Legal Research System with LiteLLM + Prompt Repetition.
 
 The Oracle Studio runs a multi-prompt pipeline for deep legal research:
 
@@ -13,11 +13,15 @@ The Oracle Studio runs a multi-prompt pipeline for deep legal research:
 
 Each prompt is structurally isolated from user input (OWASP LLM01).
 The system prompt is injected server-side, never from the client.
+
+Prompt Repetition (arXiv 2512.14982) is applied at each stage for
+non-reasoning models to boost accuracy by 1-8% at zero cost.
 """
 
 from __future__ import annotations
 
 import logging
+import os
 from enum import Enum
 from typing import Any
 
@@ -78,6 +82,16 @@ _SYSTEM_PROMPTS: dict[OracleStage, str] = {
     ),
 }
 
+# Non-reasoning models where prompt repetition improves accuracy
+_NON_REASONING_MODELS = {
+    "gemini-3.1-flash-lite-preview",
+    "gemini-2.5-flash",
+    "gpt-4.1",
+    "gpt-4o-mini",
+    "claude-3.5-haiku",
+    "pplx-api",
+}
+
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
@@ -112,6 +126,82 @@ class OracleResponse(BaseModel):
     citations: list[str] = Field(default_factory=list)
 
 
+# ── Prompt Repetition (arXiv 2512.14982) ──────────────────────────────────
+
+def _apply_prompt_repetition(
+    system_prompt: str,
+    user_content: str,
+    model_id: str,
+    stage: OracleStage,
+) -> tuple[str, str]:
+    """Apply prompt repetition for non-reasoning models.
+
+    Returns (system_prompt, user_content) — either original or with
+    the user content repeated for accuracy boost.
+    """
+    if model_id not in _NON_REASONING_MODELS:
+        return system_prompt, user_content
+
+    # Repeat the instruction at the end of user content
+    repeated = (
+        f"{user_content}\n\n"
+        f"---\n\n"
+        f"[INSTRUCTION REPEAT — {stage.value.upper()}]\n"
+        f"{system_prompt}\n\n"
+        f"Analyze the above content and respond precisely."
+    )
+    return system_prompt, repeated
+
+
+# ── LiteLLM Integration ──────────────────────────────────────────────────
+
+async def _call_llm(
+    system_prompt: str,
+    user_content: str,
+    model_id: str,
+    stage: OracleStage,
+) -> tuple[str, int]:
+    """Call LLM via LiteLLM with prompt repetition for non-reasoning models.
+
+    Returns (response_text, tokens_consumed).
+    """
+    # Apply prompt repetition
+    sys_prompt, user_msg = _apply_prompt_repetition(
+        system_prompt, user_content, model_id, stage
+    )
+
+    try:
+        import litellm
+
+        response = await litellm.acompletion(
+            model=model_id,
+            messages=[
+                {"role": "system", "content": sys_prompt},
+                {"role": "user", "content": user_msg},
+            ],
+            max_tokens=4096,
+            temperature=0.3,  # Lower temp for legal precision
+        )
+
+        content = response.choices[0].message.content or ""
+        tokens = response.usage.total_tokens if response.usage else 0
+
+        logger.info(
+            "LLM call: stage=%s model=%s tokens=%d",
+            stage.value,
+            model_id,
+            tokens,
+        )
+        return content, tokens
+
+    except ImportError:
+        logger.warning("litellm not installed — returning placeholder")
+        return f"[{stage.value}] Analysis pending — litellm not installed", 0
+    except Exception as e:
+        logger.error("LLM call failed: stage=%s error=%s", stage.value, e)
+        return f"[{stage.value}] Error: LLM call failed", 0
+
+
 # ── Pipeline Execution ────────────────────────────────────────────────────
 
 async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
@@ -119,7 +209,14 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
 
     Each stage passes its output to the next stage as context.
     System prompts are structurally isolated (OWASP LLM01).
+    Prompt repetition applied for non-reasoning models (arXiv 2512.14982).
     """
+    from apps.counselconduit.api.model_router import (
+        AVAILABLE_MODELS,
+        ModelRequest,
+        select_model,
+    )
+
     stages: list[OracleStageResult] = []
     total_tokens = 0
     context = req.question
@@ -127,6 +224,16 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
     # Add jurisdiction hint if provided
     if req.jurisdiction_hint:
         context = f"[Jurisdiction: {req.jurisdiction_hint}]\n\n{context}"
+
+    # Select model
+    model_config = select_model(
+        ModelRequest(
+            preferred_model=req.model_preference,
+            query_complexity="high",  # Legal research = always high
+            user_tier="professional",
+        )
+    )
+    model_id = model_config.model_id
 
     for stage in OracleStage:
         if stage == OracleStage.COUNTER and not req.include_counter:
@@ -137,21 +244,26 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
 
         system_prompt = _SYSTEM_PROMPTS[stage]
 
-        # TODO: Route to selected model via model_router.py
-        # TODO: Call LLM with system_prompt (isolated) + context (user data)
-        # For now, placeholder
+        # Call LLM with prompt repetition
+        content, tokens = await _call_llm(
+            system_prompt=system_prompt,
+            user_content=context,
+            model_id=model_id,
+            stage=stage,
+        )
+
         result = OracleStageResult(
             stage=stage,
-            content=f"[{stage.value}] Analysis pending — model routing not yet wired",
-            model_used=req.model_preference or "gemini-flash",
-            tokens_consumed=0,
+            content=content,
+            model_used=model_id,
+            tokens_consumed=tokens,
         )
 
         stages.append(result)
-        total_tokens += result.tokens_consumed
+        total_tokens += tokens
 
         # Chain: each stage's output becomes next stage's context
-        context = f"{context}\n\n--- {stage.value.upper()} ---\n{result.content}"
+        context = f"{context}\n\n--- {stage.value.upper()} ---\n{content}"
 
     # Extract memo from synthesis stage
     memo = next(
@@ -163,6 +275,25 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
     all_citations = []
     for stage_result in stages:
         all_citations.extend(stage_result.citations)
+
+    # Store session in Firestore
+    try:
+        from apps.counselconduit.api.firestore_client import store_session
+
+        await store_session(
+            req.firm_id,
+            {
+                "session_id": req.session_id,
+                "attorney_id": req.attorney_id,
+                "client_id": req.client_id,
+                "model_used": model_id,
+                "total_tokens": total_tokens,
+                "stage_count": len(stages),
+                "type": "oracle_studio",
+            },
+        )
+    except Exception as e:
+        logger.warning("Firestore store failed (non-fatal): %s", e)
 
     return OracleResponse(
         session_id=req.session_id,
