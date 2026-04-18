@@ -47,8 +47,8 @@ def main():
     stable_versions = [v for v in versions if "dev" not in v]
     latest_dev_version = dev_versions[-1] if len(dev_versions) > 0 else None
     latest_stable_version = stable_versions[-1] if len(stable_versions) > 0 else None
-    print("Latest dev version: %s." % str(latest_dev_version))
-    print("Latest stable version: %s." % str(latest_stable_version))
+    print(f"Latest dev version: {str(latest_dev_version)}.")
+    print(f"Latest stable version: {str(latest_stable_version)}.")
     if latest_dev_version is None and latest_stable_version is None:
         print("No versions found. Defaulting to 0.0.1.dev1.")
         dev_version = "0.0.1.dev1"
@@ -63,11 +63,11 @@ def main():
         latest_dev_version_split = latest_dev_version.split(".")
         latest_dev_version_split[-1] = "dev" + str(int(latest_dev_version_split[-1][3:]) + 1)
         dev_version = ".".join(latest_dev_version_split)
-    print("New Python dev version: %s." % dev_version)
+    print(f"New Python dev version: {dev_version}.")
     cmake_version = dev_version.replace("dev", "")
-    print("New CMake version: %s." % cmake_version)
+    print(f"New CMake version: {cmake_version}.")
     cmake_lists_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "CMakeLists.txt"))
-    print("Updating %s..." % cmake_lists_path)
+    print(f"Updating {cmake_lists_path}...")
     with open(cmake_lists_path) as cmake_lists_file:
         cmake_lists = cmake_lists_file.readlines()
     counter = 2
@@ -86,8 +86,8 @@ def main():
     sys.stdout.flush()
     os.system("git config user.email ci@ladybugdb.com")
     os.system('git config user.name "Lbug CI"')
-    os.system("git add %s" % cmake_lists_path)
-    os.system('git commit -m "Update CMake version to %s and change extension version to dev."' % cmake_version)
+    os.system(f"git add {cmake_lists_path}")
+    os.system(f'git commit -m "Update CMake version to {cmake_version} and change extension version to dev."')
     sys.stdout.flush()
     sys.stderr.flush()
     print("All done!")

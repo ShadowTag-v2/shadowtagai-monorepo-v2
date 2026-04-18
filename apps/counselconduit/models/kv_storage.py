@@ -12,23 +12,25 @@ Per AGENTS.md §Security:
 """
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
 
-class KVNamespace(str, Enum):
+class KVNamespace(StrEnum):
     """Scoped namespaces for KV storage isolation."""
-    SESSION = "session"          # Per-session ephemeral state
-    MEMORY = "memory"            # Cross-session persistent memory
-    PREFERENCE = "preference"    # User/tenant preferences
-    ARTIFACT = "artifact"        # Generated artifacts (memos, attestations)
-    CACHE = "cache"              # TTL-bound cache entries
+
+    SESSION = "session"  # Per-session ephemeral state
+    MEMORY = "memory"  # Cross-session persistent memory
+    PREFERENCE = "preference"  # User/tenant preferences
+    ARTIFACT = "artifact"  # Generated artifacts (memos, attestations)
+    CACHE = "cache"  # TTL-bound cache entries
 
 
 class KVEntryCreate(BaseModel):
     """Request model: create or update a KV entry."""
+
     key: str = Field(
         ...,
         min_length=1,
@@ -60,6 +62,7 @@ class KVEntryCreate(BaseModel):
     def validate_value_size(cls, v: Any) -> Any:
         """Enforce max value size (1MB serialized)."""
         import json
+
         serialized = json.dumps(v, default=str)
         if len(serialized) > 1_048_576:
             msg = "Value exceeds 1MB serialized limit"
@@ -69,6 +72,7 @@ class KVEntryCreate(BaseModel):
 
 class KVEntryResponse(BaseModel):
     """Response model: a stored KV entry."""
+
     key: str
     namespace: KVNamespace
     value: Any
@@ -88,6 +92,7 @@ class KVEntryResponse(BaseModel):
 
 class KVListRequest(BaseModel):
     """Request model: list entries in a namespace."""
+
     namespace: KVNamespace = Field(
         default=KVNamespace.SESSION,
         description="Namespace to list",
@@ -111,6 +116,7 @@ class KVListRequest(BaseModel):
 
 class KVListResponse(BaseModel):
     """Response model: paginated list of KV entries."""
+
     entries: list[KVEntryResponse]
     next_cursor: str | None = None
     total_count: int = Field(
@@ -121,6 +127,7 @@ class KVListResponse(BaseModel):
 
 class KVDeleteRequest(BaseModel):
     """Request model: delete a KV entry."""
+
     key: str = Field(
         ...,
         min_length=1,
@@ -134,6 +141,7 @@ class KVDeleteRequest(BaseModel):
 
 class KVDeleteResponse(BaseModel):
     """Response model: deletion confirmation."""
+
     key: str
     namespace: KVNamespace
     deleted: bool = True

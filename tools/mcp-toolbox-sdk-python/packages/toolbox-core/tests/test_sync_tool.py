@@ -214,7 +214,9 @@ def test_toolbox_sync_tool_add_auth_token_getter(
 ):
     """Tests the add_auth_token_getter method."""
     auth_service = "service1"
-    auth_token_getter = lambda: "token1"
+
+    def auth_token_getter():
+        return "token1"
 
     new_mock_async_tool = mock_async_tool.add_auth_token_getters.return_value
     new_mock_async_tool.__name__ = "new_async_tool_with_auth"

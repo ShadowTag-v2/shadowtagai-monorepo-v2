@@ -21,7 +21,7 @@ non-reasoning models to boost accuracy by 1-8% at zero cost.
 from __future__ import annotations
 
 import logging
-from enum import Enum
+from enum import Enum, StrEnum
 
 from opentelemetry import trace
 from pydantic import BaseModel, Field
@@ -33,7 +33,7 @@ tracer = trace.get_tracer("counselconduit.oracle_studio")
 # ── Oracle Stages ─────────────────────────────────────────────────────────
 
 
-class OracleStage(str, Enum):
+class OracleStage(StrEnum):
     INTAKE = "intake"
     JURISDICTION = "jurisdiction"
     AUTHORITY = "authority"

@@ -11,14 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from enum import Enum
+from enum import Enum, StrEnum
 from inspect import Parameter
 from typing import Any, Optional
 
 from pydantic import BaseModel
 
 
-class Protocol(str, Enum):
+class Protocol(StrEnum):
     """Defines how the client should choose between communication protocols."""
 
     MCP_v20250618 = "2025-06-18"
