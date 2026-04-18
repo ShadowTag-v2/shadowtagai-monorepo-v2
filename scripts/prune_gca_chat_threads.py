@@ -38,7 +38,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-BLOAT_THRESHOLD_MB = 20.0
+BLOAT_THRESHOLD_MB = 5.0
 
 STATE_KEY = "google.geminicodeassist"
 THREADS_FIELD = "geminiCodeAssist.chatThreads"
@@ -135,6 +135,13 @@ def prune(db_path: Path | str, keep: int = 0) -> dict:
             state_dict[THREADS_FIELD] = threads[-keep:]
         else:
             state_dict[THREADS_FIELD] = [] if keep == 0 else threads
+
+        # Prune error-stack keys that accumulate as Memento key names
+        error_keys = [k for k in state_dict if k.startswith(("Error:", "TypeError:", "RangeError:"))]
+        for k in error_keys:
+            del state_dict[k]
+        if error_keys:
+            print(f"Pruned {len(error_keys)} error-stack keys")
 
         new_value = json.dumps(state_dict)
         after_bytes = len(new_value.encode("utf-8"))
