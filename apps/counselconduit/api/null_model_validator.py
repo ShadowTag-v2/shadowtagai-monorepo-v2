@@ -11,12 +11,13 @@ This is the epistemological rigor layer of the Cor.Uphillsnowball doctrine.
 import random
 import statistics
 from dataclasses import dataclass
-from typing import Callable
+from collections.abc import Callable
 
 
 @dataclass(frozen=True)
 class NullTestResult:
     """Immutable record of a null-model validation run."""
+
     real_mean: float
     null_mean: float
     null_std: float

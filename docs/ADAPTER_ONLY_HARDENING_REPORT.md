@@ -1,5 +1,5 @@
 # Adapter-Only Hardening Report
-Generated: 2026-04-18T09:09:26Z
+Generated: 2026-04-18T16:49:57Z
 
 ## MCP Truth Surface
 - Canonical MCP: canonical
