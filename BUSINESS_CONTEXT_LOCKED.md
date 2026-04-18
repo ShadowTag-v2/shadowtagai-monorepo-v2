@@ -31,11 +31,39 @@
 Do not mix these lanes casually. Consumer and enterprise economics are different products.
 
 ## Hardened State
-- v8.6 canonicalized: 2026-04-17
-- Latest production commit: `f2aba7896c2` (2026-04-17)
-- Lighthouse: A100 / BP100 / SEO100 (desktop)
-- Structural tests: 55/55
+- v8.6 canonicalized: 2026-04-18
+- Latest production commit: `ccb291e322d` (2026-04-18)
+- Lighthouse Desktop (KovelAI): P98 / A100 / BP100 / SEO100
+- Lighthouse Mobile (ShadowTagAI): P93 / A93 / BP100 / SEO100
+- Structural tests: 64/64
 - Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
+- CounselConduit: v3.1.0 LIVE on Cloud Run (20 API modules)
+- Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi rules active)
+- Cloud Monitoring: 5xx alert policy active (ID: 18301790723072591820)
+- Security: Cor.30 v2.5 + OWASP LLM10 enforced (docs/SECURITY_DOD.md)
+- Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
+
+### CounselConduit Cloud Run (2026-04-18)
+| Service | URL | Rev |
+|---------|-----|-----|
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00006-jpl |
+| Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
+
+### Wave 4-5 Deliverables (2026-04-18)
+- **Firebase Auth JWT**: Server-side verification via firebase-admin SDK
+- **Docker Import Paths**: try/except fallbacks for monorepo vs /app/ Docker context
+- **Video Compression**: hero-bg 82% smaller, sphere-holo 83% smaller (ffmpeg CRF 30-32)
+- **Transcript Viewer**: 7-stage Oracle Studio viewer (transcripts.html)
+- **GDPR Export UI**: Article 20 data portability page (export.html)
+- **Dead-Man's Switch**: Client portal session replay protection + DevTools defeat
+- **Attorney Onboarding**: 4-step wizard (firm info → plan → models → Stripe Connect)
+- **Discord Alerts**: Payment failure, security event, GDPR deletion notifications
+- **Intake Summarizer**: LLM-powered intake extraction for Vent Mode
+- **Webhook Signatures**: Stripe + Kovel + Resend HMAC verification tests (9 tests)
+- **Mobile Spec**: Flutter/Dio interceptor stack (auth, Kovel, rate limit, dead-man's switch)
+- **OpenTelemetry**: Instrumentation added to requirements
+- **Firestore Health**: /health endpoint verifies Firestore connectivity
+- **Session Heartbeat**: /heartbeat endpoint for client keep-alive
 
 ### Production Hardening (2026-04-16)
 - **CSP Headers**: Strict Content-Security-Policy deployed on both KovelAI and ShadowTagAI
