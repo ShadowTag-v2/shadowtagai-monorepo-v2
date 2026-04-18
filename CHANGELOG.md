@@ -2,6 +2,31 @@
 
 All notable changes to the ShadowTag-v2 monorepo.
 
+## [v9.3] — 2026-04-18
+
+### Canonicalization (Stage 3)
+- **Truth Surface Alignment**: AGENTS.md + monorepo_manifest.yaml updated from v8.6 → v9.3
+- **Version Parity**: All 6 truth surfaces now internally consistent
+- **Stale Branches**: `feat/agent-external-43` + `feat/gca-multi-agent-review` deleted from remote
+- **Test Count**: Corrected from "55/55" → "77 passed, 5 E2E skipped"
+- **API Modules**: Updated from 16 → 33
+
+### Hardening (Stage 4)
+- **GitHub App PEM Exclusive**: `gh auth login` / PATs / deploy keys prohibited
+- **PEM Canonical Path**: `~/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem`
+- **Vulture Exclusions**: `external_repos/`, `control/legacy_workspaces/`, `reference_architectures/` added
+- **Ruff 0.11.8**: 1211 total violations, 33 F401 (down from 340)
+- **Bandit**: 0 high / 0 medium on CounselConduit (4,402 LOC)
+- **Pre-commit**: Gitleaks v8.22.1 + Ruff v0.11.8 + Bandit v1.8.3 + detect-private-key
+- **Merge Conflict**: `.agent/hybrid_scraper.py` resolved
+- **SOVEREIGN_GOLD_MASTER**: Updated to latest HEAD
+
+### CI/CD
+- **GCA PR Review**: Security + perf agent prompts inlined (removed $BUNDLE dependency)
+- **WebPageTest CI**: `.github/workflows/webpagetest-ci.yml` created
+
+---
+
 ## [v9.0] — 2026-04-18
 
 ### Infrastructure

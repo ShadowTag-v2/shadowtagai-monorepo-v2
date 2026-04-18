@@ -21,7 +21,7 @@ import argparse
 import json
 import re
 import hashlib
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent

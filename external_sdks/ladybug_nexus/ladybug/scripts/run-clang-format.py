@@ -14,7 +14,6 @@ import codecs
 import difflib
 import errno
 import fnmatch
-import io
 import multiprocessing
 import os
 import signal

@@ -21,9 +21,8 @@ Source-verified constants from the actual CC codebase:
 import json
 import sys
 import os
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
-from typing import Optional
 
 # Source-verified constants from CC
 MAX_PTL_RETRIES = 3

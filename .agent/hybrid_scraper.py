@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# Alpha-Omega recovery scaffold\n
-||||||| empty tree
-=======
 import json
 import os
 import random
@@ -71,4 +67,3 @@ class AntigravityHybridScraper:
 
         deduped = {item.get("id", i): item for i, item in enumerate(items)}
         return list(deduped.values())
->>>>>>> 5003ee8144b25604e711ef88a2d161f951a40419

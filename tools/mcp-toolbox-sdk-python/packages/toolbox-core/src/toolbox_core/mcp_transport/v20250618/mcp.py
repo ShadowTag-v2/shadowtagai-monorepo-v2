@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import time
-from typing import Optional, TypeVar
+from typing import TypeVar
 from collections.abc import Mapping
 
 from pydantic import BaseModel

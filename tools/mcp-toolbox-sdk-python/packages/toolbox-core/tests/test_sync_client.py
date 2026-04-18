@@ -14,7 +14,6 @@
 
 
 import inspect
-from typing import Optional
 from collections.abc import Mapping
 from unittest.mock import AsyncMock, Mock, patch
 

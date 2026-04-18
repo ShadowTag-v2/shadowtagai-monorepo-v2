@@ -12,7 +12,6 @@ import hmac
 import json
 import time
 
-import pytest
 
 
 class TestStripeWebhookSignature:

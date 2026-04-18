@@ -8,7 +8,6 @@ import argparse
 import json
 import re
 from datetime import datetime
-from typing import Dict, Optional
 
 # Memory database (in production, would use persistent storage)
 MEMORY_FILE = ".claude/plugins/erik-interaction/.memory.json"

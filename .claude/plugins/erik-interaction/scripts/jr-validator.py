@@ -7,7 +7,6 @@ Validates tool usage against JR (Purpose/Reasons/Brakes) framework constraints
 import argparse
 import json
 import re
-from typing import Dict, List
 
 # JR Framework constraints
 JR_CONSTRAINTS = {
