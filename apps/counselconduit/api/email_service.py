@@ -1,7 +1,8 @@
 # apps/counselconduit/api/email_service.py
 """Email service for magic-link delivery and lifecycle notifications.
 
-Uses Resend as primary provider. Falls back to structlog for dev mode.
+Uses Gmail API (via workspace_alerts.py) as primary provider.
+Falls back to structlog for dev mode.
 
 Templates:
 - magic_link: client onboarding invitation
@@ -18,7 +19,6 @@ from typing import Any
 
 logger = logging.getLogger("counselconduit.email_service")
 
-_RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
 _FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@kovelai.com")
 _FROM_NAME = os.getenv("FROM_NAME", "KovelAI")
 
@@ -30,40 +30,33 @@ async def send_email(
     reply_to: str | None = None,
     tags: list[dict[str, str]] | None = None,
 ) -> dict[str, Any]:
-    """Send an email via Resend.
+    """Send an email via Gmail API (Google Workspace).
 
     Returns {"id": "email_id"} on success, {"error": "..."} on failure.
+    Delegates to workspace_alerts.send_email() which uses ADC + Gmail API.
     """
-    if not _RESEND_API_KEY:
-        logger.info("DEV_MODE: email to=%s subject=%s (no RESEND_API_KEY)", to, subject)
-        return {"id": "dev-mode-no-send", "to": to, "subject": subject}
-
     try:
-        import resend
+        try:
+            from apps.counselconduit.api.workspace_alerts import send_email as _gws_send
+        except ImportError:
+            from api.workspace_alerts import send_email as _gws_send  # type: ignore[no-redef]
 
-        resend.api_key = _RESEND_API_KEY
+        success = await _gws_send(
+            to=to,
+            subject=subject,
+            body_html=html,
+            reply_to=reply_to,
+        )
+        if success:
+            logger.info("Email sent via Gmail: to=%s subject=%s", to, subject)
+            return {"id": "gmail-sent", "to": to, "subject": subject}
+        else:
+            logger.warning("Gmail send returned False: to=%s subject=%s", to, subject)
+            return {"error": "gmail_send_failed", "to": to}
 
-        params: dict[str, Any] = {
-            "from_": f"{_FROM_NAME} <{_FROM_EMAIL}>",
-            "to": [to],
-            "subject": subject,
-            "html": html,
-        }
-        if reply_to:
-            params["reply_to"] = reply_to
-        if tags:
-            params["tags"] = tags
-
-        email = resend.Emails.send(params)
-        logger.info("Email sent: to=%s subject=%s id=%s", to, subject, email.get("id"))
-        return email
-
-    except ImportError:
-        logger.warning("resend not installed — email not sent")
-        return {"error": "resend not installed", "to": to}
     except Exception as e:
-        logger.error("Email send failed: %s", e)
-        return {"error": str(e), "to": to}
+        logger.info("DEV_MODE: email to=%s subject=%s (Gmail not configured: %s)", to, subject, e)
+        return {"id": "dev-mode-no-send", "to": to, "subject": subject}
 
 
 # ── Pre-built Email Templates ─────────────────────────────────────────────

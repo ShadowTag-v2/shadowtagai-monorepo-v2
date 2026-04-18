@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Any
 
 from fastapi import HTTPException, Request, status
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint

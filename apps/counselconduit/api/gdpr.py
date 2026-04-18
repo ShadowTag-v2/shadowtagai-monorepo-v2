@@ -14,12 +14,10 @@ Architecture:
 from __future__ import annotations
 
 import logging
-import os
-import time
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger("counselconduit.gdpr")
