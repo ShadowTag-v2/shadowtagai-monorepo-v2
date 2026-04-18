@@ -33,12 +33,12 @@ import hashlib
 import time
 import uuid
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, StrEnum
 
 from agent.kinetic_action_parser import KineticActionParser, VerbLedger
 
 
-class MurderBoardStep(str, Enum):
+class MurderBoardStep(StrEnum):
     """The 7 canonical steps of the Oracle Studio Murder Board."""
 
     ARGUMENT_EXTRACTION = "argument_extraction"

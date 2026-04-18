@@ -259,7 +259,9 @@ class ToolboxTool(BaseTool):
                     sig = inspect.signature(getter)
 
                     if len(sig.parameters) == 1:
-                        bound_getter = lambda t=getter, ctx=tool_context: t(ctx)
+
+                        def bound_getter(t=getter, ctx=tool_context):
+                            return t(ctx)
                     else:
                         bound_getter = getter
 

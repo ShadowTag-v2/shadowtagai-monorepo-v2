@@ -1,29 +1,91 @@
 {
   "folders": [
     {
+      "name": "Monorepo-Uphillsnowball",
       "path": "."
     }
   ],
   "settings": {
-    "liveServer.settings.root": "/",
-    "liveServer.settings.port": 5508,
-    "python.defaultInterpreterPath": ".venv/bin/python",
+    "workbench.settings.editor": "json",
+    "security.workspace.trust.enabled": true,
+    "security.workspace.trust.startupPrompt": "never",
+    "security.workspace.trust.emptyWindow": false,
+    "git.defaultCloneDirectory": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball",
 
-    "java.import.generatesSources": false,
-    "java.import.exclusions": [
-      "**/*.proto",
-      "**/node_modules/**",
-      "**/external_repos/**",
-      "**/external_sdks/**",
-      "**/control/legacy_workspaces/**",
-      "**/apps/devrel-demos/**",
-      "**/archive/**",
-      "**/build/**",
-      "**/third_party/**",
-      "**/reference_architectures/**",
-      "**/tools/java-firestore/**",
-      "**/tools/google-cloud-dart/**"
+    "geminicodeassist.updateChannel": "Insiders",
+    "cloudcode.updateChannel": "Insiders",
+    "geminicodeassist.agentYoloMode": true,
+
+    "geminicodeassist.customInstructions": "*** PRE-ACTION MEMORY GATE ***Location: `/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/operator_invariants.json`Before doing any repo-wide action:1. Acknowledge whether memory is LOCKED or DRIFTED.3. If DRIFTED, stop immediately and request re-lock.4. Verify the presence of `DEVELOPER_KNOWLEDGE_API_KEY` in the environment to ensure MCP access is authorized. See: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.env.,5. Always reference: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/CLAUDE.md.,6. If LOCKED and authorized, proceed immediately to the Execution Phase below.*** DONT RE-PRINT THE WHOLE LIST ***",
+
+    "cline.autoApprovalSettings": {
+      "enabled": true,
+      "actions": {
+        "readFiles": true,
+        "editFiles": true,
+        "executeCommands": true,
+        "useBrowser": true,
+        "useMcp": true
+      },
+      "maxRequests": 50
+    },
+    "roo-cline.autoApprovalSettings": {
+      "enabled": true,
+      "actions": {
+        "readFiles": true,
+        "editFiles": true,
+        "executeCommands": true,
+        "useBrowser": true,
+        "useMcp": true
+      },
+      "maxRequests": 50
+    },
+
+    "python.defaultInterpreterPath": "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python",
+    "python.locator": "native",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.terminal.useEnvFile": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "jupyter.jupyterServerType": "local",
+
+    "python.analysis.exclude": [
+      "**/archive",
+      "**/node_modules",
+      "**/external_repos",
+      "**/external_sdks",
+      "**/.venv*",
+      "**/bazel-*",
+      "**/control/legacy_workspaces",
+      "**/build",
+      "**/third_party",
+      "**/reference_architectures",
+      "**/tools/google-cloud-dart",
+      "**/tools/dio"
     ],
+
+    "dart.analysisExcludedFolders": [
+      "archive",
+      "external_repos",
+      "external_sdks",
+      "build",
+      "third_party",
+      "reference_architectures",
+      "control",
+      "tools/google-cloud-dart",
+      "tools/dio",
+      "tools/Mole",
+      "tools/PureMac",
+      "node_modules"
+    ],
+
+    "files.autoSave": "onFocusChange",
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+
+    "git.mergeEditor": true,
+    "git.ignoreLimitWarning": true,
+    "git.detectSubmodulesLimit": 20,
 
     "files.exclude": {
       "**/*.proto": true,
@@ -59,7 +121,15 @@
       "**/.benchmarks/**": true,
       "**/.mypy_cache/**": true,
       "**/.pytest_cache/**": true,
-      "**/.ruff_cache/**": true
+      "**/.ruff_cache/**": true,
+      "**/vendor/**": true,
+      "**/tools/legacy/**": true,
+      "**/docs/legacy_shadowtag_v2/**": true,
+      "**/apps/aiyou_ecosystem/raw_ingest/**": true,
+      "**/_PRE_OMEGA_BACKUP_*/**": true,
+      "**/ShadowTag-Omega/**": true,
+      "**/arsenal_recovered/**": true,
+      "**/repos/*-legacy/**": true
     },
 
     "search.exclude": {
@@ -82,43 +152,114 @@
       "**/tools/google-cloud-dart/**": true,
       "**/tools/dio/**": true,
       "**/tools/java-firestore/**": true,
-      "**/test-results/**": true
+      "**/test-results/**": true,
+      "**/vendor/**": true,
+      "**/tools/legacy/**": true,
+      "**/docs/legacy_shadowtag_v2/**": true,
+      "**/apps/aiyou_ecosystem/raw_ingest/**": true,
+      "**/_PRE_OMEGA_BACKUP_*/**": true,
+      "**/ShadowTag-Omega/**": true,
+      "**/arsenal_recovered/**": true,
+      "**/repos/*-legacy/**": true
     },
 
-    "python.analysis.exclude": [
-      "**/archive",
-      "**/node_modules",
-      "**/external_repos",
-      "**/external_sdks",
-      "**/.venv*",
-      "**/bazel-*",
-      "**/control/legacy_workspaces",
-      "**/build",
-      "**/third_party",
-      "**/reference_architectures",
-      "**/tools/google-cloud-dart",
-      "**/tools/dio"
-    ],
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/.hg/store/**": true,
+      "**/node_modules/**": true,
+      "**/.venv/**": true,
+      "**/archive/**": true,
+      "**/legacy/**": true,
+      "**/raw_ingest/**": true,
+      "**/recovered/**": true,
+      "**/backup/**": true,
+      "**/data/lancedb/**": true,
+      "**/bazel-*/**": true,
+      "**/vendor/**": true,
+      "**/third_party/**": true,
+      "**/tools/legacy/**": true,
+      "**/docs/legacy_shadowtag_v2/**": true,
+      "**/apps/aiyou_ecosystem/raw_ingest/**": true,
+      "**/_PRE_OMEGA_BACKUP_*/**": true,
+      "**/ShadowTag-Omega/**": true,
+      "**/arsenal_recovered/**": true,
+      "**/repos/*-legacy/**": true
+    },
 
-    "dart.analysisExcludedFolders": [
-      "archive",
-      "external_repos",
-      "external_sdks",
-      "build",
-      "third_party",
-      "reference_architectures",
-      "control",
-      "tools/google-cloud-dart",
-      "tools/dio",
-      "tools/Mole",
-      "tools/PureMac",
-      "node_modules"
-    ],
+    "json.trace.server": "off",
+    "todo-tree.general.debug": false,
+    "cSpell.logLevel": "Warning",
 
+    "[markdown]": {
+      "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[yaml]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[rust]": {
+      "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "[go]": {
+      "editor.defaultFormatter": "golang.go"
+    },
+
+    "java.import.generatesSources": false,
+    "java.import.exclusions": [
+      "**/*.proto",
+      "**/node_modules/**",
+      "**/external_repos/**",
+      "**/external_sdks/**",
+      "**/control/legacy_workspaces/**",
+      "**/apps/devrel-demos/**",
+      "**/archive/**",
+      "**/build/**",
+      "**/third_party/**",
+      "**/reference_architectures/**",
+      "**/tools/java-firestore/**",
+      "**/tools/google-cloud-dart/**"
+    ],
     "java.server.launchMode": "LightWeight",
     "java.autobuild.enabled": false,
     "java.completion.enabled": false,
     "java.project.importOnFirstTimeStartup": "disabled",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx16G -Xms100m -Xlog:disable",
+    "java.compile.nullAnalysis.mode": "automatic",
+
+    "bazel.projectview.open": false,
+    "liveServer.settings.root": "/",
+    "liveServer.settings.port": 5505,
+
+    "editor.defaultFoldingRangeProvider": "ms-vscode.hexeditor",
+    "editor.foldingImportsByDefault": true,
+    "editor.peekWidgetDefaultFocus": "editor",
+    "editor.stickyScroll.defaultModel": "foldingProviderModel",
+    "editor.defaultColorDecorators": "always",
+    "editor.defaultFormatter": "google.geminicodeassist",
+
+    "workbench.colorTheme": "Tokyo Night Light",
+    "workbench.editor.defaultBinaryEditor": "default",
 
     "antigravity.ai.primaryEndpoint": "Anthropic Cloud",
     "antigravity.ai.fallbackEndpoint": "http://localhost:11434/v1",
@@ -126,8 +267,16 @@
     "cline.apiProvider": "openai",
     "cline.openai.baseUrl": "http://localhost:11434/v1",
     "cline.openai.apiKey": "ollama-local",
-    "cline.openai.modelId": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
-    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx16G -Xms100m -Xlog:disable",
-    "git.detectSubmodulesLimit": 20
+    "cline.openai.modelId": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF"
+  },
+  "extensions": {
+    "recommendations": [
+      "google.geminicodeassist",
+      "googlecloudtools.cloudcode",
+      "ms-python.python",
+      "ms-toolsai.jupyter",
+      "eamodio.gitlens",
+      "saoudrizwan.claude-dev"
+    ]
   }
 }

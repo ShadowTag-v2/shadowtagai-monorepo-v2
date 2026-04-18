@@ -131,7 +131,10 @@ class TestAsyncToolboxClient:
 
     async def test_aload_tool_auth_headers_deprecated(self, mock_client):
         tool_name = "test_tool_1"
-        auth_lambda = lambda: "Bearer token"
+
+        def auth_lambda():
+            return "Bearer token"
+
         with catch_warnings(record=True) as w:
             simplefilter("always")
             await mock_client.aload_tool(
@@ -152,7 +155,9 @@ class TestAsyncToolboxClient:
     async def test_aload_tool_auth_headers_and_getters_precedence(self, mock_client):
         tool_name = "test_tool_1"
         auth_getters = {"test_source": lambda: "id_token_from_getters"}
-        auth_headers_lambda = lambda: "Bearer token_from_headers"
+
+        def auth_headers_lambda():
+            return "Bearer token_from_headers"
 
         with catch_warnings(record=True) as w:
             simplefilter("always")
@@ -172,7 +177,10 @@ class TestAsyncToolboxClient:
 
     async def test_aload_tool_auth_tokens_deprecated(self, mock_client):
         tool_name = "test_tool_1"
-        token_lambda = lambda: "id_token"
+
+        def token_lambda():
+            return "id_token"
+
         with catch_warnings(record=True) as w:
             simplefilter("always")
             await mock_client.aload_tool(
@@ -193,7 +201,9 @@ class TestAsyncToolboxClient:
     async def test_aload_tool_auth_tokens_and_getters_precedence(self, mock_client):
         tool_name = "test_tool_1"
         auth_getters = {"real_source": lambda: "token_from_getters"}
-        token_lambda = lambda: "token_from_auth_tokens"
+
+        def token_lambda():
+            return "token_from_auth_tokens"
 
         with catch_warnings(record=True) as w:
             simplefilter("always")
@@ -238,7 +248,9 @@ class TestAsyncToolboxClient:
             assert isinstance(tool, AsyncToolboxTool)
 
     async def test_aload_toolset_auth_headers_deprecated(self, mock_client):
-        auth_lambda = lambda: "Bearer token"
+        def auth_lambda():
+            return "Bearer token"
+
         with catch_warnings(record=True) as w:
             simplefilter("always")
             await mock_client.aload_toolset(auth_headers={"Authorization": auth_lambda})
@@ -258,7 +270,10 @@ class TestAsyncToolboxClient:
         self, mock_client
     ):
         auth_getters = {"test_source": lambda: "id_token_from_getters"}
-        auth_headers_lambda = lambda: "Bearer token_from_headers"
+
+        def auth_headers_lambda():
+            return "Bearer token_from_headers"
+
         with catch_warnings(record=True) as w:
             simplefilter("always")
             await mock_client.aload_toolset(
@@ -278,7 +293,9 @@ class TestAsyncToolboxClient:
         )
 
     async def test_aload_toolset_auth_tokens_deprecated(self, mock_client):
-        token_lambda = lambda: "id_token"
+        def token_lambda():
+            return "id_token"
+
         with catch_warnings(record=True) as w:
             simplefilter("always")
             await mock_client.aload_toolset(auth_tokens={"some_token_key": token_lambda})
@@ -296,7 +313,10 @@ class TestAsyncToolboxClient:
 
     async def test_aload_toolset_auth_tokens_and_getters_precedence(self, mock_client):
         auth_getters = {"real_source": lambda: "token_from_getters"}
-        token_lambda = lambda: "token_from_auth_tokens"
+
+        def token_lambda():
+            return "token_from_auth_tokens"
+
         with catch_warnings(record=True) as w:
             simplefilter("always")
             await mock_client.aload_toolset(
