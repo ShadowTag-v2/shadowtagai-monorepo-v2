@@ -58,8 +58,6 @@ def run_batch(runtime, batch_size, seq_len):
     _ = runtime.process_batch(inputs)
 
     if torch.cuda.is_available():
-        import torch
-
         torch.cuda.synchronize()
     start = time.perf_counter()
     _ = runtime.process_batch(inputs)
