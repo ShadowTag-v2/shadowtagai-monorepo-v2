@@ -114,20 +114,24 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v8.6 canonicalized: 2026-04-17
-- Commit: `f2aba7896c2`
+- v9.3 canonicalized: 2026-04-18
+- Commit: `e21af38f05f`
 - CI Python: 3.13 (all 3 workflows)
+- venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
-- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v8.6)
+- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.0)
 - Semantic Kernel: .NET 11.0 Preview 2
-- Structural tests: 55/55
-- Lighthouse: A97 / BP100 / SEO100
-- Dead code: clean (vulture + ruff — external/vendored findings only)
-- CSP headers: full parity across kovelai + shadowtagai
+- Tests: 77 passed, 5 E2E skipped (live Cloud Run endpoints — expected)
+- Lighthouse: P93+ / A93+ / BP100 / SEO100
+- Dead code: clean (vulture + ruff — Kosmos dead code noted, production paths clean)
+- CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
-- Nested `.git` directories: 0 (33 removed in v8.6 hardening)
-- Ruff F-violations: 628 (340 F401, 149 F841 — mostly in external/vendored code)
-- CounselConduit: v3.1.0 on Cloud Run (Phase 1 + 2 LIVE, 16 API modules)
+- Nested `.git` directories: 0 (reference_architectures/ clones are gitignored)
+- Ruff violations: 1211 total, 33 F401 (ruff 0.11.8 — expanded rule set)
+- CounselConduit: v3.1.0 on Cloud Run (Phase 1 + 2 LIVE, 33 API modules)
 - Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml`
 - Prompt Repetition: wired into Oracle Studio + Vent Mode (arXiv 2512.14982)
+- OG Social Images: generated + deployed for both sites
+- Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
+- OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
