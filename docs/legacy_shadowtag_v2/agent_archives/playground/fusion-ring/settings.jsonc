@@ -482,7 +482,7 @@
             "google-developer-knowledge": {
                 "serverUrl": "https://developerknowledge.googleapis.com/mcp",
                 "headers": {
-                    "X-Goog-Api-Key": "***REMOVED_GOOGLE_API_KEY***"
+                    "X-Goog-Api-Key": "AIzaSyBAJuLUQwDtMVSM5YPHpEaRVLXwuRuH7UI"
                 }
             },
             "postgres": {

@@ -184,7 +184,7 @@ Task → OPORD → METT-TC → Battle Drill
 │      │                                                                       │
 │      ├── ALPHA (130) ──── Heavy Compute + Scientific Skills                  │
 │      │                    - Bioinformatics, Cheminformatics, ML             │
-│      │                    - gemini-2.5-pro-preview-06-05                     │
+│      │                    - gemini-3.1-flash-lite-preview-preview-06-05                     │
 │      │                                                                       │
 │      ├── BRAVO (130) ──── Rapid Deployment + Scientific Skills               │
 │      │                    - `/work` integration from compounding-engineering │
@@ -376,7 +376,7 @@ class GeminiVehicleExecutor:
     """Execute Gemini calls per vehicle crew"""
 
     MODELS = {
-        "pro": "gemini-2.5-pro-preview-06-05",
+        "pro": "gemini-3.1-flash-lite-preview-preview-06-05",
         "flash": "gemini-2.5-flash-preview-05-20",
     }
 
@@ -437,7 +437,7 @@ Per mission with 134 vehicles, ~600 agents:
 
 | Tier      | Model            | Agents | Input Tokens | Output Tokens | Cost               |
 | --------- | ---------------- | ------ | ------------ | ------------- | ------------------ |
-| PRO       | gemini-2.5-pro   | 210    | ~500 each    | ~200 each     | ~$0.50             |
+| PRO       | gemini-3.1-flash-lite-preview   | 210    | ~500 each    | ~200 each     | ~$0.50             |
 | FLASH     | gemini-2.5-flash | 390    | ~500 each    | ~200 each     | ~$0.05             |
 | **Total** |                  | 600    | 300K         | 120K          | **~$0.55/mission** |
 
@@ -474,7 +474,7 @@ Rate limit fallback: ID → EGO → SUPEREGO chain already implemented.
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │  HHT (HEADQUARTERS & HEADQUARTERS TROOP) - 90 agents                        │
-│  Model: gemini-2.5-pro-preview-06-05 (Governance tier)                       │
+│  Model: gemini-3.1-flash-lite-preview-preview-06-05 (Governance tier)                       │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  Squadron Commander: Judge #6 (1 master agent - FINAL AUTHORITY)            │
 │  XO: JR Engine (1 agent - Purpose/Reasons/Brakes)                           │
@@ -495,7 +495,7 @@ Rate limit fallback: ID → EGO → SUPEREGO chain already implemented.
 │ AIR CAV TROOP     │    │ ALPHA TROOP       │    │ BRAVO TROOP       │
 │ "AERIAL SCOUTS"   │    │ "ARMOR" (Abrams)  │    │ "STRYKER"         │
 │ 120 agents        │    │ 130 agents        │    │ 130 agents        │
-│ gemini-2.5-pro    │    │ gemini-2.5-flash  │    │ gemini-2.5-flash  │
+│ gemini-3.1-flash-lite-preview    │    │ gemini-2.5-flash  │    │ gemini-2.5-flash  │
 ├───────────────────┤    ├───────────────────┤    ├───────────────────┤
 │ Attack Helo (40)  │    │ Tank PLT (43)     │    │ Scout PLT (43)    │
 │ - Apache pairs    │    │ - Heavy compute   │    │ - Fast recon      │
@@ -791,7 +791,7 @@ ARMY DOCTRINE (Structure) + OODA (Speed) + SRE (Reliability)
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  BATTALION HEADQUARTERS (BN HQ) - 60 agents                         │
-│  Model: gemini-2.5-pro-preview-06-05 (Governance tier)              │
+│  Model: gemini-3.1-flash-lite-preview-preview-06-05 (Governance tier)              │
 ├─────────────────────────────────────────────────────────────────────┤
 │  S-1 (Personnel):    10 agents - Agent lifecycle, shift rotation    │
 │  S-2 (Intel):        10 agents - Research, competitive analysis     │
@@ -830,7 +830,7 @@ ARMY DOCTRINE (Structure) + OODA (Speed) + SRE (Reliability)
                      └─────────────────────┘
 
 Model Distribution:
-- HQ Company (60): gemini-2.5-pro-preview-06-05 (Governance)
+- HQ Company (60): gemini-3.1-flash-lite-preview-preview-06-05 (Governance)
 - Line Companies (540): gemini-2.5-flash-preview-05-20 (Execution)
 ```
 
@@ -857,10 +857,10 @@ Model Distribution:
 # Proposed mapping in bin/n-autoresearch/Kosmos/BioAgents-server
 
 BATTALION_JURA_MAPPING = {
-    "S3_OPS": {"tier": "pro", "model": "gemini-2.5-pro-preview-06-05"},
+    "S3_OPS": {"tier": "pro", "model": "gemini-3.1-flash-lite-preview-preview-06-05"},
     "ALPHA_CO": {"tier": "flash", "model": "gemini-2.5-flash-preview-05-20"},
     "BRAVO_CO": {"tier": "flash", "model": "gemini-2.5-flash-preview-05-20"},
-    "CHARLIE_CO": {"tier": "pro", "model": "gemini-2.5-pro-preview-06-05"},  # Security = Pro
+    "CHARLIE_CO": {"tier": "pro", "model": "gemini-3.1-flash-lite-preview-preview-06-05"},  # Security = Pro
     "DELTA_CO": {"tier": "flash", "model": "gemini-2.5-flash-preview-05-20"},
 }
 ```
@@ -906,7 +906,7 @@ Currently active in:
 
 All using rate-limit fallback chain:
 
-1. gemini-2.5-pro-preview-06-05 (ID tier)
+1. gemini-3.1-flash-lite-preview-preview-06-05 (ID tier)
 2. gemini-2.5-flash-preview-05-20 (EGO tier)
 3. gemini-2.0-flash (SUPEREGO tier - guaranteed)
 

@@ -85,7 +85,7 @@ class AntigravityPipeline:
 
         # Stage 2: Flying minion Autonomous Research (Gemini 1.5 Pro)
         # Replaces Perplexity/Grok with Google MCP-enabled agents
-        self.minion = minion(model="gemini-1.5-pro-001")
+        self.minion = minion(model="gemini-3.1-flash-lite-preview")
 
         # Stage 3: 10× Gemini Code Assist (Gemini 2.0 Flash - "Heavy Lifting")
         self.executor = create_execution_pool(pool_size=10, model="gemini-2.0-flash-exp")
@@ -200,12 +200,12 @@ class AntigravityPipeline:
             # ... (existing fields)
             "stages": {
                 "intake": {
-                    "model": "gemini-1.5-pro",
+                    "model": "gemini-3.1-flash-lite-preview",
                     # ...
                 },
-                "autoresearch": {"model": "gemini-1.5-pro", "status": "active"},
+                "autoresearch": {"model": "gemini-3.1-flash-lite-preview", "status": "active"},
                 "execute": {
-                    "model": "gemini-1.5-pro",
+                    "model": "gemini-3.1-flash-lite-preview",
                     # ...
                 },
             },

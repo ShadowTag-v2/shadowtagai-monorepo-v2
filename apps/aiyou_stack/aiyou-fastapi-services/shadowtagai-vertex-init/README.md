@@ -110,7 +110,7 @@ a.init(project="YOUR_PROJECT", location="us-central1")
 # 3. Load Gemini models
 
 from vertexai.generative_models import GenerativeModel
-g = GenerativeModel("gemini-1.5-pro")
+g = GenerativeModel("gemini-3.1-flash-lite-preview")
 g1 = GenerativeModel("gemini-1.5-flash")
 
 # 4. Import ShadowTagAi agents (see notebook for full code)
@@ -312,7 +312,7 @@ export GCS_BUCKET="shadowtagai-bucket"
 
 # Optional
 
-export GEMINI_PRO_MODEL="gemini-1.5-pro"
+export GEMINI_PRO_MODEL="gemini-3.1-flash-lite-preview"
 export GEMINI_FLASH_MODEL="gemini-1.5-flash"
 export IMAGEGEN_MODEL="imagegeneration@006"
 

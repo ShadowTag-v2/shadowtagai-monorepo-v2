@@ -1173,7 +1173,7 @@ gcloud pubsub topics list --format="table(name)"
 
 1. **n-autoresearch/Kosmos/BioAgents Upgraded to Gemini 2.5**
    - Bulk (570 agents): `gemini-2.5-flash`
-   - Governance (30 agents): `gemini-2.5-pro`
+   - Governance (30 agents): `gemini-3.1-flash-lite-preview`
    - Server running on port 8600
 
 2. **Corp Engine Structure Created**
@@ -3628,7 +3628,7 @@ class DeployReadyOrchestrator:
 class GeminiModel(str, Enum):
     """Updated with Gemini 3 Pro"""
     GEMINI_3_PRO = "gemini-3-pro-preview"      # Latest: 1M+ context
-    GEMINI_PRO = "gemini-2.5-pro-preview-06-05"
+    GEMINI_PRO = "gemini-3.1-flash-lite-preview-preview-06-05"
     GEMINI_FLASH = "gemini-2.0-flash"
     GEMINI_FLASH_LITE = "gemini-2.0-flash-lite"
 

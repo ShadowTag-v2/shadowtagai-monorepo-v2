@@ -92,7 +92,7 @@ class Remediator:
     def _load_config(self, config_path: str) -> dict:
         """Load remediator configuration."""
         default_config = {
-            "gemini_model": "gemini-2.5-pro-preview-06-05",
+            "gemini_model": "gemini-3.1-flash-lite-preview-preview-06-05",
             "min_severity": "medium",  # Only fix medium+ severity
             "auto_fix_types": ["style", "quality", "todo"],
             "review_required_types": ["security", "bug"],

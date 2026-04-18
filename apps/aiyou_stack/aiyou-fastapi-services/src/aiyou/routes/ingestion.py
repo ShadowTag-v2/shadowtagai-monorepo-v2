@@ -403,7 +403,7 @@ async def process_ingestion_job(job_id: str, user_id: str):
         # Calculate costs
         cost_usd = gemini_client.calculate_cost(
             job.gemini_tokens_used or 0,
-            job.gemini_model_version or "gemini-1.5-pro",
+            job.gemini_model_version or "gemini-3.1-flash-lite-preview",
             "total",
         )
         job.processing_cost_cents = int(cost_usd * 100)

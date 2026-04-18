@@ -256,7 +256,7 @@ LOCATION = "{REGION}"
 class Judge6:
     def __init__(self):
         vertexai.init(project=PROJECT_ID, location=LOCATION)
-        self.model = GenerativeModel("gemini-1.5-pro-002")
+        self.model = GenerativeModel("gemini-3.1-flash-lite-preview")
         print(">>> 🌍 Judge 6 Online.")
 
     def fix(self, path):

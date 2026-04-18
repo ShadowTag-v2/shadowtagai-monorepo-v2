@@ -9,7 +9,7 @@ from vertexai.generative_models import GenerativeModel, Part
 # --- Configuration ---
 PROJECT_ID = os.environ.get("GOOGLE_CLOUD_PROJECT_ID")
 LOCATION = "us-central1"
-MODEL_ID = "gemini-1.5-pro-001"
+MODEL_ID = "gemini-3.1-flash-lite-preview"
 
 # --- Load Constitution ---
 CONSTITUTION_TEXT = ""

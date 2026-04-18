@@ -123,7 +123,7 @@ if __name__ == "__main__":
         default="batch_results.json",
         help="Path to output JSON file.",
     )
-    parser.add_argument("--model_id", default="gemini-1.5-pro", help="Model ID to use.")
+    parser.add_argument("--model_id", default="gemini-3.1-flash-lite-preview", help="Model ID to use.")
     parser.add_argument("--concurrency", type=int, default=5, help="Number of concurrent requests.")
     parser.add_argument(
         "--template",

@@ -45,7 +45,7 @@ async def judge_gemini_layer1(self, query: str) -> Dict:
     from vertexai.generative_models import GenerativeModel
 
     # Your fine-tuned model ID
-    JUDGE_LAYER1_MODEL = "gemini-1.5-pro-002"  # Replace with your fine-tuned model
+    JUDGE_LAYER1_MODEL = "gemini-3.1-flash-lite-preview"  # Replace with your fine-tuned model
 
     # Construct ATP 5-19 assessment prompt
     assessment_prompt = f"""

@@ -15,7 +15,7 @@ data:
 
       # Model allocation (must sum to 100%)
       allocation:
-        - model: "gemini-1.5-pro-002"
+        - model: "gemini-3.1-flash-lite-preview"
           provider: "vertex-ai"
           weight: 40
           endpoint: "us-central1-aiplatform.googleapis.com"
@@ -52,14 +52,14 @@ data:
 
       # Failover cascade
       failover:
-        - primary: "gemini-1.5-pro-002"
+        - primary: "gemini-3.1-flash-lite-preview"
           fallback: "claude-3-5-sonnet-20241022"
         - primary: "claude-3-5-sonnet-20241022"
           fallback: "gpt-4"
         - primary: "gpt-4"
           fallback: "llama-3.1-70b"
         - primary: "grok-beta"
-          fallback: "gemini-1.5-pro-002"
+          fallback: "gemini-3.1-flash-lite-preview"
 
     # Performance targets
     sla:
@@ -90,7 +90,7 @@ data:
       budget_usd_per_month: 65000
       alert_thresholds: [0.5, 0.75, 0.9, 1.0]
       cost_per_1k_tokens:
-        gemini-1.5-pro-002: 0.0025
+        gemini-3.1-flash-lite-preview: 0.0025
         claude-3-5-sonnet-20241022: 0.003
         gpt-4: 0.006
         grok-beta: 0.004

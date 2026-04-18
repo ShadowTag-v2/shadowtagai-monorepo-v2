@@ -112,7 +112,7 @@ class LiteratureAgent(BaseAgent):
 
 ```python
 class DataAnalysisAgent(BaseAgent):
-    model = "gemini-2.5-pro"  # Deep reasoning for code generation
+    model = "gemini-3.1-flash-lite-preview"  # Deep reasoning for code generation
     tools = [execute_python, plot_generator, statistical_test]
     instruction = "Analyze datasets, generate analysis code, produce visualizations"
 
@@ -122,7 +122,7 @@ class DataAnalysisAgent(BaseAgent):
 
 ```python
 class HypothesisAgent(BaseAgent):
-    model = "gemini-2.5-pro"
+    model = "gemini-3.1-flash-lite-preview"
     tools = [world_model_query, literature_query]
     instruction = "Generate testable hypotheses from literature + data patterns"
 
@@ -132,7 +132,7 @@ class HypothesisAgent(BaseAgent):
 
 ```python
 class SynthesisAgent(BaseAgent):
-    model = "gemini-2.5-pro"
+    model = "gemini-3.1-flash-lite-preview"
     tools = [report_writer, citation_formatter]
     instruction = "Synthesize findings into structured scientific reports with citations"
 
@@ -179,7 +179,7 @@ vertexai.init(project=PROJECT_ID, location="us-central1")
 # Create model with function calling
 
 model = GenerativeModel(
-    "gemini-2.5-pro",
+    "gemini-3.1-flash-lite-preview",
     tools=[Tool(function_declarations=[
         FunctionDeclaration(name="execute_python", parameters=...),
         FunctionDeclaration(name="search_papers", parameters=...),

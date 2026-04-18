@@ -62,7 +62,7 @@ class GroundedGenerationService:
                 (key, prompt, model_id, json.dumps(response), datetime.now()),
             )
 
-    async def generate(self, prompt: str, model_id: str = "gemini-1.5-pro") -> dict:
+    async def generate(self, prompt: str, model_id: str = "gemini-3.1-flash-lite-preview") -> dict:
         # Check cache first
         cached_result = self._get_from_cache(prompt, model_id)
         if cached_result:

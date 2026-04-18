@@ -66,7 +66,7 @@ class Config:
 
     # Model allocation (weights)
     MODEL_WEIGHTS = {
-        "gemini-1.5-pro-002": 0.40,
+        "gemini-3.1-flash-lite-preview": 0.40,
         "claude-3-5-sonnet-20241022": 0.35,
         "gpt-4": 0.15,
         "grok-beta": 0.05,
@@ -75,7 +75,7 @@ class Config:
 
     # Cost per 1K tokens
     COST_PER_1K_TOKENS = {
-        "gemini-1.5-pro-002": 0.0025,
+        "gemini-3.1-flash-lite-preview": 0.0025,
         "claude-3-5-sonnet-20241022": 0.003,
         "gpt-4": 0.006,
         "grok-beta": 0.004,
@@ -156,7 +156,7 @@ async def select_model(request: InferenceRequest) -> str:
         if rand <= cumulative:
             return model
 
-    return "gemini-1.5-pro-002"  # Default fallback
+    return "gemini-3.1-flash-lite-preview"  # Default fallback
 
 
 async def call_llm(model: str, prompt: str, max_tokens: int, temperature: float) -> dict[str, Any]:

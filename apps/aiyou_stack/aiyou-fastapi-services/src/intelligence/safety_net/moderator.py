@@ -7,7 +7,7 @@ class ContentModerator:
     def __init__(self):
         # Initialize Gemini 2.5 Pro
         self.client = genai.Client(vertexai=True, location="us-central1")
-        self.model = "gemini-2.5-pro"
+        self.model = "gemini-3.1-flash-lite-preview"
 
     def scan_content(self, payload: dict) -> dict:
         print("    [SafetyNet] specialized_scan: Analyzing content with Gemini 2.5 Pro...")

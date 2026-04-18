@@ -3,7 +3,7 @@ from vertexai.preview.language_models import ChatModel, ChatSession
 
 def get_chat_session() -> ChatSession:
     """Initializes and returns a new Gemini 1.5 Pro chat session."""
-    model = ChatModel.from_pretrained("gemini-1.5-pro")
+    model = ChatModel.from_pretrained("gemini-3.1-flash-lite-preview")
     chat = model.start_chat()
     return chat
 

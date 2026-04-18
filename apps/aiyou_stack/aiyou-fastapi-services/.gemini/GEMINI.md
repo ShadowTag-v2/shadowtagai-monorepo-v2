@@ -153,7 +153,7 @@ async with GeminiClient() as client:
 |-------|----------|------|
 | gemini-3-pro-preview | Design, complex reasoning | ~$14/M |
 | gemini-3-flash | Fast inference, 1M context | ~$0.15/M |
-| gemini-2.5-pro-preview | Stable production | ~$7/M |
+| gemini-3.1-flash-lite-preview-preview | Stable production | ~$7/M |
 | gemini-2.0-flash | Economical | ~$0.075/M |
 | gemini-2.0-flash-lite | Ultra-fast | ~$0.02/M |
 

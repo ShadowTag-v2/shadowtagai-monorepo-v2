@@ -1,10 +1,10 @@
 ---
-version: 9.4
+version: 9.5
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v9.4
+# GEMINI.md — v9.5
 
 <system_directive>
 <workspace_alignment>
@@ -66,9 +66,19 @@ Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 <capability_resolution_doctrine>
 ## Capability Resolution
 
-- `GEMINI.md` defines operator invariants, not capability ownership.
-- Capability ownership, precedence, conflict denial, and fallback behavior live only in `antigravity-mcp-config.json`.
+- `GEMINI.md` defines operator invariants, NOT capability ownership or routing.
+- Capability ownership, precedence, conflict denial, and fallback behavior live ONLY in `antigravity-mcp-config.json`.
 - If a verification task and a debugging tool both appear able to perform the work, MCP truth decides the owner.
+- All 5 MCP servers MUST be used: Firebase, Chrome DevTools, Stitch, Developer Knowledge, Sequential Thinking.
+- If an operation CAN be performed by an MCP server, it MUST be. No terminal fallbacks for MCP-capable operations.
+
+### Anti-Patterns (PROHIBITED)
+- Defining routing tables in prose doctrine (GEMINI.md, AGENTS.md, skills)
+- Using `search_web` for Google API documentation (use `google-developer-knowledge` MCP)
+- Running `firebase deploy` in terminal (use `firebase-mcp-server` MCP)
+- Taking screenshots with external tools (use `chrome-devtools-mcp` MCP)
+- Hand-coding design tokens from memory (use `StitchMCP`)
+- Ad-hoc reasoning lists for architecture (use `sequential-thinking` MCP)
 </capability_resolution_doctrine>
 
 <github_doctrine>
@@ -148,38 +158,31 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 
 **Skill reference:** `skills/prompt-repetition-boost/SKILL.md`
 </prompt_repetition_doctrine>
-<env_master_doctrine>
-## .env Master Environment Doctrine
+<secrets_manager_doctrine>
+## Secrets Manager Doctrine
 
-**Canonical path:** `.env` (repo root, gitignored)
-**Created:** 2026-04-13 | **Sections:** 11
+**Reference:** [GCP Secret Manager](https://docs.cloud.google.com/code/docs/vscode/secret-manager)
+**Canonical rule:** Secrets only via GCP Secret Manager for production. No hardcoded keys in source or config.
 
-### Section Map
-| § | Variable | Purpose | Consumer |
-|---|----------|---------|----------|
-| 1 | `GCP_PROJECT_ID` | Active GCP project (`shadowtag-omega-v4`) | All services |
-| 1 | `VITE_API_URL` | Local dev API URL | KovelAI frontend |
-| 1 | `BRAIN_DIR` | Antigravity persistent brain directory | Agent memory |
-| 2 | `DEVELOPER_KNOWLEDGE_API_KEY` | Google AI API key (zero-trust gate) | Developer Knowledge MCP, FastAPI `Depends(verify_zero_trust)` |
-| 2 | `API_KEY` | Same key, alias | litellm fallback |
-| 3 | `STITCH_API_KEY` | Stitch MCP authentication | Stitch design-to-code pipeline |
-| 4 | `GEMINI_API_KEY` | Gemini inference + Nano Banana 2 | litellm, image generation, MCP servers |
-| 5 | `KVCACHED_PORT` / `KVCACHED_MODEL` | Local sovereign inference routing | `zero_cpu_router.py` |
-| 6 | `ROTATING_PROXIES` | Jetski/Scrapling stealth proxies | Web scraping sandbox |
-| 7 | `TEMPORAL_HOST` | Temporal.io local server | Omega-Swarm workers |
-| 8 | `DISABLE_TELEMETRY` / `DISABLE_ERROR_REPORTING` | Kovel Mode telemetry blackout | All services |
-| 9 | `NODE_OPTIONS` | V8 punycode deprecation mute | VS Code Extension Host |
-| 10 | `NANO_BANANA_2_MODEL` | Image generation model ID | Nano Banana 2 |
-| 11 | `STRIPE_PUBLISHABLE_KEY` | Stripe frontend key (public) | Pricing page checkout |
-| 11 | `STRIPE_SECRET_KEY` | Stripe backend key (NEVER expose) | CounselConduit API |
-| 11 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signature | Webhook handler |
+### Production (Cloud Run, deployed services)
+- **ONLY** GCP Secret Manager → `valueFrom.secretKeyRef`
+- Google services (Vertex AI, Firestore, Translate) use **ADC** via service account — NO API keys
+- External services (Stripe, GitHub App PEM) use Secret Manager
+- SA role required: `roles/secretmanager.secretAccessor`
+- Upload script: `bash scripts/upload_secrets_to_gcp.sh`
+
+### Local Development (MCP servers, agent, scripts)
+- `.env` (repo root, gitignored, `chflags uchg` kernel-locked) — for local dev ONLY
+- MCP config uses `${VAR}` references that resolve from environment
+- AI blindfolds: `.aiexclude`, `.geminiignore`, `.clineignore`, `.rooignore` all exclude `.env`
+- Validate: `bash scripts/validate_env.sh`
 
 ### Auth Chain
-- **MCP servers** authenticate via Google ADC (`~/.config/gcloud/`) + `GEMINI_API_KEY` from `.env`
+- **MCP servers** authenticate via Google ADC (`~/.config/gcloud/`) + env vars from `.env`
 - **Firebase MCP** uses its own OAuth session (not `.env`)
 - **GitHub** uses SSH keys + GitHub App PEM (`$SHADOWTAG_PEM`)
 - **Stitch MCP** uses `STITCH_API_KEY` from `.env`
-- **Stripe** uses `STRIPE_SECRET_KEY` from `.env` (backend) and `STRIPE_PUBLISHABLE_KEY` (frontend)
+- **Stripe** uses `STRIPE_SECRET_KEY` from Secret Manager (prod) / `.env` (local)
 
 ### Stripe Live Configuration
 - Account: `acct_1Syh9JEHnWpykeMi` (US, charges+payouts enabled)
@@ -191,24 +194,13 @@ End every runtime response with EXACTLY 22 explicitly selectable actionable prom
 - Portal: `bpc_1TNKSjEHnWpykeMi0qQPoaHm`
 - Webhook: `we_1TNKSjEHnWpykeMiQZqmpy3X` → `https://counselconduit-api.run.app/webhooks/stripe`
 
-### Cor.env Lock Doctrine
-- `.env` is protected by `chflags uchg` (macOS kernel immutable flag)
-- AI blindfolds: `.aiexclude`, `.geminiignore`, `.clineignore`, `.rooignore` all contain `.env`
-- To edit: `chflags nouchg .env` → edit → `chflags uchg .env`
-- Validate: `bash scripts/validate_env.sh`
-
-### Cloud Run Secrets Architecture
-- **Google services** (Vertex AI, Firestore, Translate) use **ADC** via service account — NO API keys needed
-- **External services** (Stripe) use **GCP Secret Manager** → Cloud Run `valueFrom.secretKeyRef`
-- Upload script: `bash scripts/upload_secrets_to_gcp.sh`
-- SA role required: `roles/secretmanager.secretAccessor`
-
-### Rules
-- `.env` is gitignored. NEVER commit it.
-- `apps/counselconduit/.env.example` is the template for product-specific vars.
-- All MCP servers MUST read from `.env` or ADC. No hardcoded keys in source.
-- The `STRIPE_PUBLISHABLE_KEY` is the ONLY key safe to embed in frontend HTML.
-</env_master_doctrine>
+### NEVER (Absolute Prohibitions)
+- Hardcoded API keys in source files or committed config
+- API keys in logs, chat messages, or frontend code (except `STRIPE_PUBLISHABLE_KEY`)
+- `.env` committed to git (it is gitignored and kernel-locked)
+- Secrets in MCP config inline args (use `${VAR}` references only)
+- Secrets guessed from memory or documentation
+</secrets_manager_doctrine>
 
 <cor30_security_doctrine>
 ## Cor.30 — Security Rules for AI Vibe Coding

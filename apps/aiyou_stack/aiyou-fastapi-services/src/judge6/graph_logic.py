@@ -54,7 +54,7 @@ def judge6_reasoning(state: FinancialDecisionState):
     print("🧠 [Judge#6] Deliberating on complex case...")
 
     # TODO: Replace with actual Gemini call
-    # model = ChatVertexAI(model="gemini-1.5-pro")
+    # model = ChatVertexAI(model="gemini-3.1-flash-lite-preview")
     # response = model.invoke(...)
 
     # Mock logic for "Gucci" demo
