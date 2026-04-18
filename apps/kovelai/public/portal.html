@@ -313,9 +313,81 @@
       }
     }
 
+    // ─── Dead-Man's Switch Telemetry ──────────────────────────────────
+    async function reportTelemetry(eventType) {
+      try {
+        await fetch(`${API_BASE}/vent/telemetry`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            session_id: sessionId,
+            event: eventType,
+            timestamp: new Date().toISOString(),
+            elapsed_ms: Date.now() - sessionStart,
+          }),
+          keepalive: true,  // Sends even on page unload
+        });
+      } catch (_) { /* Non-critical — fire and forget */ }
+    }
+
+    // Report key lifecycle events
+    window.addEventListener('beforeunload', () => reportTelemetry('session_exit'));
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        reportTelemetry('tab_hidden');
+        // Auto-wipe after being hidden for 60 seconds
+        setTimeout(() => {
+          if (document.hidden) wipeAndExit();
+        }, 60000);
+      }
+    });
+
+    // ─── Session Replay Protection ──────────────────────────────────
+    // Block common session replay / screen recording tools
+    (function blockReplayTools() {
+      // 1. Detect DevTools open (triggers wipe)
+      const devtoolsThreshold = 160;
+      const checkDevTools = () => {
+        if (
+          window.outerWidth - window.innerWidth > devtoolsThreshold ||
+          window.outerHeight - window.innerHeight > devtoolsThreshold
+        ) {
+          reportTelemetry('devtools_detected');
+          wipeAndExit();
+        }
+      };
+      setInterval(checkDevTools, 2000);
+
+      // 2. Block drag-and-drop (prevents content extraction)
+      document.addEventListener('dragstart', (e) => e.preventDefault());
+
+      // 3. Block Print (Ctrl+P, Cmd+P)
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+          e.preventDefault();
+          reportTelemetry('print_blocked');
+        }
+        // Block screenshot shortcuts (varies by OS)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === 's' || e.key === 'S')) {
+          e.preventDefault();
+          reportTelemetry('screenshot_blocked');
+        }
+      });
+
+      // 4. Detect recording API (getDisplayMedia)
+      if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+        const original = navigator.mediaDevices.getDisplayMedia.bind(navigator.mediaDevices);
+        navigator.mediaDevices.getDisplayMedia = function() {
+          reportTelemetry('screen_recording_blocked');
+          return Promise.reject(new Error('Screen recording is not permitted in privileged sessions.'));
+        };
+      }
+    })();
+
     // ─── Init ────────────────────────────────────────────────────────
     resetInactivity();
     updateTimer();
+    reportTelemetry('session_start');
     addMessage('system', `Connected to secure session. Your attorney has configured this portal for confidential research.`);
   </script>
 </body>

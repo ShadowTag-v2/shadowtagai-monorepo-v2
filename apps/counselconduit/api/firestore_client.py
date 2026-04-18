@@ -175,3 +175,78 @@ async def append_session_message(
             )
         }
     )
+
+
+# ── Attorney Usage Tracking ────────────────────────────────────────────────
+
+
+async def update_attorney_usage(
+    attorney_id: str,
+    tokens_used: int = 0,
+    queries: int = 1,
+) -> None:
+    """Increment token and query counters for billing attribution.
+
+    Stored in attorneys/{attorney_id}/usage/{month} for per-month tracking.
+    """
+    from google.cloud import firestore as fs
+
+    db = _get_client()
+    month_key = datetime.now(UTC).strftime("%Y-%m")
+    doc_ref = db.collection("attorneys").document(attorney_id).collection(
+        "usage"
+    ).document(month_key)
+    await doc_ref.set(
+        {
+            "tokens_used": fs.Increment(tokens_used),
+            "query_count": fs.Increment(queries),
+            "_updated_at": datetime.now(UTC).isoformat(),
+        },
+        merge=True,
+    )
+
+
+# ── Audit Log ──────────────────────────────────────────────────────────────
+
+
+class AuditEntry:
+    """Structured audit log entry for compliance."""
+
+    def __init__(
+        self,
+        action: str,
+        actor_id: str,
+        resource_type: str,
+        resource_id: str,
+        details: dict[str, Any] | None = None,
+    ):
+        self.action = action
+        self.actor_id = actor_id
+        self.resource_type = resource_type
+        self.resource_id = resource_id
+        self.details = details or {}
+        self.timestamp = datetime.now(UTC).isoformat()
+
+
+async def write_audit_log(entry: AuditEntry) -> None:
+    """Write an immutable audit log entry."""
+    db = _get_client()
+    await db.collection("audit_log").add(
+        {
+            "action": entry.action,
+            "actor_id": entry.actor_id,
+            "resource_type": entry.resource_type,
+            "resource_id": entry.resource_id,
+            "details": entry.details,
+            "timestamp": entry.timestamp,
+            "_immutable": True,
+        }
+    )
+    logger.info(
+        "Audit: action=%s actor=%s resource=%s/%s",
+        entry.action,
+        entry.actor_id,
+        entry.resource_type,
+        entry.resource_id,
+    )
+
