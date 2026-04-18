@@ -25,13 +25,19 @@ shipping. No exceptions. AI velocity does not excuse missing security hygiene �
 ## Pillar 2: Secrets & Supply Chain (R3–8, R33–35)
 
 - [ ] All secrets in Google Secret Manager (never in `.env` in production)
+- [ ] Cloud Run: secrets mounted via `--set-secrets` (not env vars in YAML)
+- [ ] Secret Manager audit logging: ADMIN_READ + DATA_READ + DATA_WRITE enabled
+- [ ] Secret rotation: Stripe keys rotated every 90 days (Terraform `rotation` block)
+- [ ] Secret access: only `secretAccessor` role, scoped to specific SAs
+- [ ] Secret IaC: all secrets declared in `infra/terraform/secrets.tf`
 - [ ] Gitleaks pre-commit hook active (`.pre-commit-config.yaml`)
 - [ ] Dependencies pinned with exact versions in `requirements.txt`
 - [ ] No `npm audit fix --force` (manual review only)
 - [ ] Package provenance verified (PyPI/npm signatures)
-- [ ] `.env` never committed (gitignored + `chflags uchg` locked)
+- [ ] `.env` deleted from production workstations (Secret Manager is source of truth)
 - [ ] No hardcoded API keys, connection strings, or JWTs in source
 - [ ] Stripe keys: only `STRIPE_PUBLISHABLE_KEY` in frontend HTML
+- [ ] Org policy `storage.publicAccessPrevention` enforced
 
 ## Pillar 3: API Hardening (R9, R12, R14–16, R23, R31)
 
