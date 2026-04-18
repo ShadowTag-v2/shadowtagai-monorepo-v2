@@ -102,16 +102,22 @@ class SettingsNotifier extends ChangeNotifier {
 }
 
 // ── Stub types for compilation (not real Flutter) ──────────────────────
-class StatelessWidget {}
-class StatefulWidget {}
+class StatelessWidget {
+  const StatelessWidget();
+}
+class StatefulWidget {
+  const StatefulWidget();
+}
 class State<T> {
   void initState() {}
   void dispose() {}
 }
-class Widget {}
+class Widget {
+  const Widget();
+}
 class BuildContext {}
 class Text extends Widget {
-  Text(String text);
+  const Text(String text);
 }
 class Bloc<E, S> {
   void onEvent(E event) {}
