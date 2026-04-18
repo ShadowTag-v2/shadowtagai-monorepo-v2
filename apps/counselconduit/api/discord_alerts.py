@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import os
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 
 import httpx
 
@@ -42,7 +42,7 @@ async def send_alert(
         "title": f"🚨 {title}",
         "description": description,
         "color": color,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "footer": {"text": "CounselConduit Alert System"},
     }
     if fields:

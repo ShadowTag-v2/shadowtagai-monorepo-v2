@@ -1,0 +1,173 @@
+# apps/counselconduit/api/oracle_studio.py
+"""Oracle Studio — 7-Prompt Legal Research System.
+
+The Oracle Studio runs a multi-prompt pipeline for deep legal research:
+
+1. INTAKE — Parse the raw client question into structured legal issues
+2. JURISDICTION — Identify applicable jurisdictions + governing law
+3. AUTHORITY — Find primary authorities (statutes, regulations, case law)
+4. ANALYSIS — Apply authorities to facts (IRAC/CREAC method)
+5. COUNTER — Identify opposing arguments and weaknesses
+6. SYNTHESIS — Generate the Oracle Memo with citations
+7. ATTESTATION — Generate Kovel attestation receipt
+
+Each prompt is structurally isolated from user input (OWASP LLM01).
+The system prompt is injected server-side, never from the client.
+"""
+
+from __future__ import annotations
+
+import logging
+from enum import Enum
+from typing import Any
+
+from pydantic import BaseModel, Field
+
+logger = logging.getLogger("counselconduit.oracle_studio")
+
+
+# ── Oracle Stages ─────────────────────────────────────────────────────────
+
+class OracleStage(str, Enum):
+    INTAKE = "intake"
+    JURISDICTION = "jurisdiction"
+    AUTHORITY = "authority"
+    ANALYSIS = "analysis"
+    COUNTER = "counter"
+    SYNTHESIS = "synthesis"
+    ATTESTATION = "attestation"
+
+
+# System prompts — NEVER exposed to client, NEVER in logs (OWASP LLM07)
+_SYSTEM_PROMPTS: dict[OracleStage, str] = {
+    OracleStage.INTAKE: (
+        "You are a legal intake specialist. Parse the following question into "
+        "structured legal issues. Identify: (1) parties involved, (2) legal "
+        "theories, (3) relevant facts, (4) relief sought. Output as structured JSON."
+    ),
+    OracleStage.JURISDICTION: (
+        "You are a jurisdictional analyst. Given the legal issues identified, "
+        "determine: (1) applicable jurisdictions (federal, state, international), "
+        "(2) governing statutes, (3) any conflict of laws issues. Be precise."
+    ),
+    OracleStage.AUTHORITY: (
+        "You are a legal research specialist. Find the most relevant primary "
+        "authorities: (1) statutes and regulations, (2) binding case law, "
+        "(3) persuasive authority. Provide full citations in Bluebook format."
+    ),
+    OracleStage.ANALYSIS: (
+        "You are a legal analyst using the IRAC method. For each issue: "
+        "(1) state the Issue, (2) identify the Rule from authorities, "
+        "(3) Apply the rule to the facts, (4) state your Conclusion. "
+        "Be objective and acknowledge uncertainty where it exists."
+    ),
+    OracleStage.COUNTER: (
+        "You are an opposing counsel simulator. For each conclusion reached, "
+        "identify: (1) the strongest counter-arguments, (2) distinguishing "
+        "cases, (3) factual weaknesses, (4) procedural vulnerabilities."
+    ),
+    OracleStage.SYNTHESIS: (
+        "You are drafting the Oracle Memo. Synthesize all preceding analysis "
+        "into a professional legal memorandum with: (1) executive summary, "
+        "(2) questions presented, (3) brief answers, (4) discussion with "
+        "inline citations, (5) conclusion and recommendations. Use formal "
+        "legal writing style. Every citation must be verifiable."
+    ),
+    OracleStage.ATTESTATION: (
+        "Generate the Kovel attestation metadata for this session."
+    ),
+}
+
+
+# ── Models ─────────────────────────────────────────────────────────────────
+
+class OracleRequest(BaseModel):
+    """Client's research request to Oracle Studio."""
+    session_id: str
+    attorney_id: str
+    firm_id: str
+    client_id: str
+    question: str = Field(..., min_length=10, max_length=10000)
+    model_preference: str | None = None
+    include_counter: bool = True
+    jurisdiction_hint: str | None = None
+
+
+class OracleStageResult(BaseModel):
+    """Result from a single Oracle stage."""
+    stage: OracleStage
+    content: str
+    model_used: str
+    tokens_consumed: int
+    citations: list[str] = Field(default_factory=list)
+
+
+class OracleResponse(BaseModel):
+    """Complete Oracle Studio response."""
+    session_id: str
+    stages: list[OracleStageResult]
+    memo: str  # The final synthesized memo
+    total_tokens: int
+    attestation_id: str | None = None
+    citations: list[str] = Field(default_factory=list)
+
+
+# ── Pipeline Execution ────────────────────────────────────────────────────
+
+async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
+    """Execute the full 7-stage Oracle Studio pipeline.
+
+    Each stage passes its output to the next stage as context.
+    System prompts are structurally isolated (OWASP LLM01).
+    """
+    stages: list[OracleStageResult] = []
+    total_tokens = 0
+    context = req.question
+
+    # Add jurisdiction hint if provided
+    if req.jurisdiction_hint:
+        context = f"[Jurisdiction: {req.jurisdiction_hint}]\n\n{context}"
+
+    for stage in OracleStage:
+        if stage == OracleStage.COUNTER and not req.include_counter:
+            continue
+        if stage == OracleStage.ATTESTATION:
+            # Attestation is handled separately by kovel_attestation.py
+            break
+
+        system_prompt = _SYSTEM_PROMPTS[stage]
+
+        # TODO: Route to selected model via model_router.py
+        # TODO: Call LLM with system_prompt (isolated) + context (user data)
+        # For now, placeholder
+        result = OracleStageResult(
+            stage=stage,
+            content=f"[{stage.value}] Analysis pending — model routing not yet wired",
+            model_used=req.model_preference or "gemini-flash",
+            tokens_consumed=0,
+        )
+
+        stages.append(result)
+        total_tokens += result.tokens_consumed
+
+        # Chain: each stage's output becomes next stage's context
+        context = f"{context}\n\n--- {stage.value.upper()} ---\n{result.content}"
+
+    # Extract memo from synthesis stage
+    memo = next(
+        (s.content for s in stages if s.stage == OracleStage.SYNTHESIS),
+        "Oracle memo generation pending.",
+    )
+
+    # Collect all citations
+    all_citations = []
+    for stage_result in stages:
+        all_citations.extend(stage_result.citations)
+
+    return OracleResponse(
+        session_id=req.session_id,
+        stages=stages,
+        memo=memo,
+        total_tokens=total_tokens,
+        citations=list(set(all_citations)),
+    )
