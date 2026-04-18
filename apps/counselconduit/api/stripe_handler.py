@@ -201,21 +201,22 @@ def _handle_invoice_payment_failed(event: dict[str, Any]) -> dict[str, str]:
         attempt_count,
     )
 
-    # Fire Discord alert (async — fire and forget in background)
+    # Fire Google Chat alert (async — fire and forget in background)
     import asyncio
 
     try:
-        from apps.counselconduit.api.discord_alerts import alert_payment_failed
+        from apps.counselconduit.api.workspace_alerts import alert_payment_failure
 
         asyncio.create_task(
-            alert_payment_failed(
+            alert_payment_failure(
                 attorney_id=customer,
-                attempt=attempt_count,
-                amount=f"${amount / 100:.2f}" if amount else "unknown",
+                firm_id="",
+                amount_cents=amount or 0,
+                error=f"Payment attempt #{attempt_count} failed",
             )
         )
     except Exception as e:
-        logger.warning("Discord alert failed (non-fatal): %s", e)
+        logger.warning("Chat alert failed (non-fatal): %s", e)
 
     # TODO: Set grace period flag in Firestore via MCP
     return {"action": "payment_failed", "customer": customer, "attempt": attempt_count}
