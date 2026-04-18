@@ -25,7 +25,7 @@ import logging
 from typing import Any
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 

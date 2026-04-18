@@ -1,7 +1,6 @@
 # apps/counselconduit/tests/test_judge6.py
 """Tests for the Judge #6 governance pipeline."""
 
-import pytest
 from apps.counselconduit.api.judge6 import evaluate, RiskLevel
 
 

@@ -26,7 +26,6 @@ except ImportError:
         WELCOME_EMAIL,
         PAYMENT_SUCCESS_EMAIL,
         PAYMENT_FAILED_EMAIL,
-        TOKEN_LIMIT_WARNING_EMAIL,
     )
     from api.workspace_alerts import (  # type: ignore[no-redef]
         alert_payment_failure as alert_payment_failed,

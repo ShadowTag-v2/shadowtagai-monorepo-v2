@@ -15,7 +15,7 @@ import logging
 import os
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Request, status
+from fastapi import APIRouter, Request, status
 
 logger = logging.getLogger("counselconduit.resend_webhook")
 
