@@ -21,6 +21,19 @@ All notable changes to the ShadowTag-v2 monorepo.
 - **Merge Conflict**: `.agent/hybrid_scraper.py` resolved
 - **SOVEREIGN_GOLD_MASTER**: Updated to latest HEAD
 
+### Competitive Intelligence (CL4R1T4S)
+- **Repos Cloned**: `CL4R1T4S` + `claude-code-system-prompts` v2.1.91 (271 files)
+- **Prompts Analyzed**: Claude Opus 4.7 (150K chars), Cursor 2.0, Devin 2.0, Gemini 2.5 Pro
+- **Competitive Matrix**: 6 adoptable patterns identified (BLOCK/ALLOW monitor, tool search, autonomous loop, context editing, LSP, planning modes)
+- **Risk #33**: Competitor extraction risk documented in RISK_REGISTER
+- **KI Archived**: `knowledge/cl4r1t4s_competitive_intel/`
+
+### Phase 3 Prep
+- **KV Storage Models**: `apps/counselconduit/models/kv_storage.py` — Pydantic models for tenant-scoped persistent storage
+- **Verification Skill Hardened**: Self-awareness block, adversarial probes, change-type strategies (from CL4R1T4S intel)
+- **GitNexus Reindexed**: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows
+- **OpenTofu Drift**: 1 change applied (notification channel sync)
+
 ### CI/CD
 - **GCA PR Review**: Security + perf agent prompts inlined (removed $BUNDLE dependency)
 - **WebPageTest CI**: `.github/workflows/webpagetest-ci.yml` created
