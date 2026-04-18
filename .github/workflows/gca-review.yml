@@ -1,0 +1,55 @@
+# .github/workflows/gca-review.yml
+# GCA Local Orchestrator — CI Fallback
+# Runs 4-agent code review on every PR targeting main.
+# Uses GitHub App JWT for authentication (not GITHUB_TOKEN).
+#
+# NOTE: This workflow is dormant until Actions credits are available.
+# The GCA script runs locally via pre-push hook in the meantime.
+
+name: GCA Code Review
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  gca-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          pip install google-genai requests PyJWT cryptography
+
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PEM }}
+
+      - name: Run GCA Review
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          python3 scripts/run_gca_local.py \
+            --pr "$PR_NUMBER" \
+            --agents correctness,security,perf,arch
