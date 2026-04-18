@@ -17,8 +17,6 @@ import asyncio
 import warnings
 from typing import (
     Any,
-    Type,
-    Union,
     cast,
 )
 from collections.abc import Awaitable, Callable, Iterable, Mapping, Sequence

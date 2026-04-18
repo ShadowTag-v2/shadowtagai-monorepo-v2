@@ -13,7 +13,7 @@
 # limitations under the License.
 from enum import Enum
 from inspect import Parameter
-from typing import Any, Optional, Type, Union
+from typing import Any, Optional
 
 from pydantic import BaseModel
 

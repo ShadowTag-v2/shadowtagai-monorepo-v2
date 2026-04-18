@@ -14,7 +14,6 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional
 
 from google.adk.auth.auth_credential import AuthCredential, AuthCredentialTypes
 from google.adk.auth.auth_tool import AuthConfig, AuthScheme

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 from collections.abc import Awaitable, Callable, Mapping
 
 from google.adk.agents.readonly_context import ReadonlyContext

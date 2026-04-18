@@ -18,7 +18,6 @@ import hashlib
 import hmac as hmac_module
 import json
 import time
-from unittest.mock import patch
 
 import pytest
 
@@ -62,7 +61,6 @@ def _make_event(event_type: str, event_id: str = "evt_test_123", **data) -> dict
 # ── Import the module under test ────────────────────────────────────────────
 
 # We import the verification function directly (no FastAPI server needed)
-import importlib
 import sys
 import os
 

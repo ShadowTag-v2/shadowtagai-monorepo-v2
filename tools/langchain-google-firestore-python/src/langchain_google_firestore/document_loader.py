@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import itertools
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 from collections.abc import Iterator
 
 from google.cloud.firestore import DocumentReference  # type: ignore

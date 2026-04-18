@@ -12,7 +12,6 @@ import hashlib
 import hmac
 import json
 import time
-from typing import Optional
 
 import pytest
 from fastapi import HTTPException

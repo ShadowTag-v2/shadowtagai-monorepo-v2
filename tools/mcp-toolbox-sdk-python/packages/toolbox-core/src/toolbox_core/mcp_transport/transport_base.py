@@ -15,7 +15,6 @@
 import asyncio
 import json
 from abc import ABC, abstractmethod
-from typing import Optional, Union
 from collections.abc import Mapping
 
 from aiohttp import ClientSession

@@ -1,5 +1,4 @@
 # Neurosymbolic Core Engine
-import sys
 def strict_format(output_str: str) -> str:
     # 486 branch point simulation
     if "error" in output_str.lower(): return "SYS_ERROR_HANDLED"

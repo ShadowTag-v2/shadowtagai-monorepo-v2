@@ -52,7 +52,7 @@ import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
-from enum import Enum, StrEnum
+from enum import StrEnum
 import json
 
 logger = logging.getLogger(__name__)

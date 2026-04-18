@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any
 
 from google.cloud.firestore import DocumentReference, GeoPoint  # type: ignore
 from google.cloud.firestore_v1.vector import Vector  # type: ignore

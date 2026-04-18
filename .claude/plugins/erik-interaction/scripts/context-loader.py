@@ -7,7 +7,6 @@ Auto-searches past conversations when question assumes prior context
 import argparse
 import json
 import re
-from typing import Dict, List
 
 # Trigger patterns from past-conversation-auto-search skill
 EXPLICIT_REFERENCES = [

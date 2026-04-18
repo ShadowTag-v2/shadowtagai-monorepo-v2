@@ -16,7 +16,7 @@ import copy
 from collections import OrderedDict
 from inspect import Parameter, Signature
 from types import MappingProxyType
-from typing import Any, Optional, Union
+from typing import Any
 from collections.abc import Awaitable, Callable, Mapping, Sequence
 
 from .itransport import ITransport

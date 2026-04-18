@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import uuid
-from typing import Any, Generic, Literal, Type, TypeVar
+from typing import Any, Generic, Literal, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field
 

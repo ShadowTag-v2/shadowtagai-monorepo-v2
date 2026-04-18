@@ -15,7 +15,7 @@
 
 import logging
 from types import MappingProxyType
-from typing import Any, Optional, Union
+from typing import Any
 from collections.abc import Awaitable, Callable, Mapping
 
 from aiohttp import ClientSession

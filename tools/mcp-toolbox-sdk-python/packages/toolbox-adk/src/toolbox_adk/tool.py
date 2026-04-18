@@ -14,7 +14,7 @@
 
 import inspect
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
 from collections.abc import Mapping
 
 from fastapi.openapi.models import (

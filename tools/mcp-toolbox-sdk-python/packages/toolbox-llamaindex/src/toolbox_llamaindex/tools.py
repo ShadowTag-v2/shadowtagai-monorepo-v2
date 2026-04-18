@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from asyncio import to_thread
-from typing import Any, Union
+from typing import Any
 from collections.abc import Callable
 
 from deprecated import deprecated
