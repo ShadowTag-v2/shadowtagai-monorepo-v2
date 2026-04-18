@@ -77,20 +77,19 @@ def _handle_account_updated(event: dict[str, Any]) -> dict[str, Any]:
         account_id, charges, payouts, details,
     )
 
-    # Alert Discord when attorney completes onboarding
+    # Alert Google Chat when attorney completes onboarding
     if charges and payouts and details:
         import asyncio
         try:
             try:
-                from apps.counselconduit.api.discord_alerts import send_alert
+                from apps.counselconduit.api.workspace_alerts import send_chat_alert
             except ImportError:
-                from api.discord_alerts import send_alert  # type: ignore[no-redef]
+                from api.workspace_alerts import send_chat_alert  # type: ignore[no-redef]
 
             asyncio.create_task(
-                send_alert(
-                    title="🎉 Attorney Onboarding Complete",
-                    message=f"Account {account_id} is now live — charges and payouts enabled.",
-                    color=0x34d399,
+                send_chat_alert(
+                    text=f"🎉 *Attorney Onboarding Complete*\nAccount `{account_id}` is now live — charges and payouts enabled.",
+                    thread_key="attorney-onboarding",
                 )
             )
         except Exception:

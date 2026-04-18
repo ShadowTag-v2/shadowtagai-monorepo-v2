@@ -54,19 +54,18 @@ def _handle_bounced(data: dict[str, Any]) -> dict[str, Any]:
     to = data.get("to", "unknown")
     logger.warning("Email BOUNCED: to=%s — invalidating magic link", to)
 
-    # Fire Discord alert for bounced emails
+    # Fire Google Chat alert for bounced emails
     import asyncio
     try:
         try:
-            from apps.counselconduit.api.discord_alerts import send_alert
+            from apps.counselconduit.api.workspace_alerts import send_chat_alert
         except ImportError:
-            from api.discord_alerts import send_alert  # type: ignore[no-redef]
+            from api.workspace_alerts import send_chat_alert  # type: ignore[no-redef]
 
         asyncio.create_task(
-            send_alert(
-                title="📧 Email Bounced",
-                message=f"Magic link email to {to} bounced. Address may be invalid.",
-                color=0xfbbf24,
+            send_chat_alert(
+                text=f"📧 *Email Bounced*\nMagic link email to `{to}` bounced. Address may be invalid.",
+                thread_key="email-delivery",
             )
         )
     except Exception:

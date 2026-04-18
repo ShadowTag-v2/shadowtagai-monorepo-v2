@@ -18,9 +18,8 @@ try:
         PAYMENT_FAILED_EMAIL,
         TOKEN_LIMIT_WARNING_EMAIL,
     )
-    from apps.counselconduit.api.discord_alerts import (
-        alert_payment_failed,
-        alert_token_budget,
+    from apps.counselconduit.api.workspace_alerts import (
+        alert_payment_failure as alert_payment_failed,
     )
 except ImportError:
     from api.email_templates import (  # type: ignore[no-redef]
@@ -29,9 +28,8 @@ except ImportError:
         PAYMENT_FAILED_EMAIL,
         TOKEN_LIMIT_WARNING_EMAIL,
     )
-    from api.discord_alerts import (  # type: ignore[no-redef]
-        alert_payment_failed,
-        alert_token_budget,
+    from api.workspace_alerts import (  # type: ignore[no-redef]
+        alert_payment_failure as alert_payment_failed,
     )
 
 logger = logging.getLogger(__name__)
@@ -112,11 +110,12 @@ async def handle_payment_failed(event: dict) -> None:
     template = PAYMENT_FAILED_EMAIL.copy()
     template["html"] = template["html"].format(attempt=attempt)
 
-    # Discord alert
+    # Google Chat alert
     await alert_payment_failed(
         attorney_id=customer_id,
-        attempt=attempt,
-        amount=f"${amount:.2f}",
+        firm_id="",
+        amount_cents=int(amount * 100),
+        error=f"Payment attempt #{attempt} failed",
     )
 
 

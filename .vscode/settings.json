@@ -150,5 +150,7 @@
   "extensions.autoUpdate": "onlyEnabledExtensions",
   "cloudcode.enableExperiments": false,
   "cloudcode.enableTelemetry": false,
+  "cloudcode.autoDependencies": "off",
+  "cloudcode.customGcloudPath": "/opt/homebrew/share/google-cloud-sdk/bin/gcloud",
   "vim.enableNeovim": false
 }
