@@ -111,6 +111,17 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+# ── OpenTelemetry (Cloud Trace) ────────────────────────────────────────────
+try:
+    from api.telemetry import setup_telemetry
+    setup_telemetry(app)
+except ImportError:
+    try:
+        from apps.counselconduit.api.telemetry import setup_telemetry
+        setup_telemetry(app)
+    except ImportError:
+        pass  # OTEL optional — runs without tracing if deps missing
+
 # CORS — restrict in production (explicit allow-list, no wildcard)
 _ALLOWED_ORIGINS = os.getenv(
     "CORS_ORIGINS",
