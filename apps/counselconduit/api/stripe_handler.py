@@ -35,7 +35,7 @@ logger = logging.getLogger("counselconduit.stripe")
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 # Stripe sends events signed with this secret.
-# Set via: STRIPE_WEBHOOK_SECRET=whsec_... in .env
+# Reads from env (--set-secrets in Cloud Run) with SM API fallback.
 _WEBHOOK_SECRET: str | None = None
 
 # Maximum age (seconds) of a webhook event before rejection.
@@ -43,10 +43,11 @@ _MAX_AGE_SECONDS = 300
 
 
 def _get_webhook_secret() -> str:
-    """Lazy-load webhook secret from environment."""
+    """Lazy-load webhook secret from environment or Secret Manager."""
     global _WEBHOOK_SECRET  # noqa: PLW0603
     if _WEBHOOK_SECRET is None:
-        _WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+        from api.secret_client import get_secret
+        _WEBHOOK_SECRET = get_secret("STRIPE_WEBHOOK_SECRET") or ""
     return _WEBHOOK_SECRET
 
 
