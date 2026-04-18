@@ -1,126 +1,32 @@
 {
-  "version": "8.6",
+  "version": 1,
   "scope": "antigravity_local_operator_invariants",
-  "locked_at": "2026-04-18T02:20:00Z",
-  "locked_by": "antigravity_session_25e77ad2",
-  "purpose": "Lean core constitution. Normalized Model Doctrine, Bounded YOLO, MCP physical barriers, GitHub control plane, and Queue Doctrine.",
+  "purpose": "Canonical startup invariants for GitHub auth, git transport, clone/sync policy, and hydration order.",
   "settings": {
-    "authorized_gcp_project": "shadowtag-omega-v4",
-    "gemini_context_resolution": "global_overrides_in_~/.gemini/GEMINI.md; project_guardrails_in_working_directory; context_files_override_general_prompts",
-    "gemini_yolo_mode_setting": "geminicodeassist.agentYoloMode=true",
-    "allowed_tool_classes": [
-      "command(*)",
-      "mcp(*)"
-    ],
-    "excluded_destructive_tools": [
-      "ShellTool(rm -rf)",
-      "ShellTool(sudo)"
-    ],
-    "queue_doctrine": "Serverless Google Cloud Tasks ONLY. BullMQ is EXPLICITLY BANNED.",
-    "companion_file_pointers": {
-      "business_context": "See BUSINESS_CONTEXT_LOCKED.md",
-      "pricing_doctrine": "See pricing_doctrine.md",
-      "release_checklist": "See release_checklist.md",
-      "extended_doctrine": "See DOCTRINE_EXTENDED.md",
-      "runtime_health": "See RUNTIME_HEALTH.md",
-      "boot_sequence": "See BOOT_SEQUENCE.md",
-      "local_overrides": "See WORKSTATION_LOCAL_OVERRIDES.example.md",
-      "risk_register": "See RISK_REGISTER.md",
-      "terms_of_service": "See TERMS.md",
-      "privacy_policy": "See PRIVACY.md"
-    }
+    "github_control_plane": "github_app",
+    "git_remote_preference": "ssh",
+    "git_https_repair_command": "gh auth login && gh auth setup-git",
+    "git_push_precondition": "valid_auth_and_correct_remote",
+    "local_clone_role": "indexed_working_copy",
+    "github_app_role": "freshness_and_repo_truth",
+    "monorepo_primary_workspace": "ShadowTag-v2/Monorepo-Uphillsnowball",
+    "monorepo_primary_remote": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
+    "fallback_backend": "metal",
+    "default_inference_backend": "ane"
   },
-  "normalized_model_doctrine": {
-    "authorized_external_model": "gemini-3.1-flash-lite-preview-thinking",
-    "directive": "You operate exclusively as gemini-3.1-flash-lite-preview-thinking. This is the single, unified Sovereign Edge Model. Legacy model routing is fully deprecated."
+  "startup_contract": {
+    "hydrate_before_reasoning": true,
+    "ignore_codebase_as_authority": true,
+    "upgrade_codebase_from_memory": true,
+    "load_github_git_invariants_before_repo_actions": true
   },
-  "bounded_autonomy_policy": {
-    "STATE_A_PURE_YOLO": "Routine UI, standard logic, workspace reads/writes. Execute unconstrained. Do not stop.",
-    "STATE_B_CLUTCH": "Destructive shell commands (rm -rf), DB schema drops, complex auth migrations, external network egress. Drop to Planning Mode, lock -plan.md, request explicit human authorization."
-  },
-  "governed_dangerous_defaults": {
-    "temporal_reversal": "DO NOT execute `git reset --hard latest-stable` blindly. It is authorized ONLY IF: (1) The execution phase exits with a non-zero code via the Guillotine, (2) a `latest-stable` tag exists prior to the action. If triggered, branch reality, fix via TDD, and merge.",
-    "force_push_recovery": "Automated force-pushing is restricted to the Squash-Push Protocol for massive egress. MUST attempt `--force-with-lease` first. If rejected, fetch origin to verify tracking refs before falling back to `--force`."
-  },
-  "github_control_plane": {
-    "remote_target": "git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git",
-    "ssh_primary": true,
-    "auth_method": "github_app_jwt",
-    "app_id": "3018200",
-    "client_id": "Iv23ctYqrxPQIt2ir8gY",
-    "pem_key_path": "$SHADOWTAG_PEM",
-    "directive": "All PR and repo truth management routes via GitHub App. `gh auth login` is strictly for manual local repair ONLY."
-  },
-  "the_nag_protocol": {
-    "count": 22,
-    "directive": "End EVERY runtime response with EXACTLY 22 explicitly selectable actionable prompts. Accumulate until resolved."
-  },
-  "mcp_first_physical_barriers": {
-    "database": "FORBIDDEN from writing SQL without first executing a tool call to the database MCP to query the live schema.",
-    "documentation": "FORBIDDEN from guessing API endpoints. Execute tool call to Documentation MCP to fetch current SDK surface."
-  },
-  "mcp_fleet_status": {
-    "last_verified": "2026-04-18T02:20:00Z",
-    "canonical_config": "antigravity-mcp-config.json",
-    "servers": {
-      "sequential-thinking": "ONLINE",
-      "firebase-mcp-server": "ONLINE (stdio, 49 tools)",
-      "google-developer-knowledge": "ONLINE (remote proxy)",
-      "StitchMCP": "ONLINE (remote proxy)",
-      "chrome-devtools-mcp": "ONLINE (stdio)"
-    },
-    "infrastructure": {
-      "temporal": "ONLINE:7233+8233",
-      "chrome-debug": "ONLINE:9222"
-    },
-    "total_online": 5,
-    "total_dead": 0,
-    "note": "Reconciled v8.6: removed 5 phantom servers not in canonical config (github-mcp, supabase-mcp, dart-mcp-server, gcloud-mcp, mcp-toolbox-sdk-java)"
-  },
-  "pre_action_memory_gate": {
-    "trigger": "Before ANY repo-wide action or batch push",
-    "steps": [
-      "1. Acknowledge active invariants WITHOUT reprinting the entire list.",
-      "2. State whether memory is LOCKED or DRIFTED.",
-      "3. Execute `python3 tools/unified_memory.py status` and `hydrate` to confirm caches.",
-      "4. Execute `scripts/dead-code-audit.sh` to enforce the 30-Point Tech Debt Guillotine.",
-      "5. Explicitly verify canonicalization: AGENTS.md (Truth) vs CLAUDE.md (Shim).",
-      "6. Check implementation of `.beads/issues.jsonl`.",
-      "7. If PII-sterile, unentangled, and authorized, proceed to Execution Phase."
-    ]
-  },
-  "system_state": {
-    "hosting": {
-      "shadowtagai.com": "DEPLOYED",
-      "kovelai.com": "DEPLOYED",
-      "www.shadowtagai.com": "DEPLOYED",
-      "www.kovelai.com": "CNAME_ACTIVE"
-    },
-    "recaptcha": {
-      "shadowtagai": "PRODUCTION_V3",
-      "kovelai": "PRODUCTION_V3"
-    },
-    "lancedb": {
-      "vectors": 27108,
-      "model": "all-MiniLM-L6-v2",
-      "path": "~/.shadowtag/lancedb"
-    },
-    "cloud_run": "LIVE (uphillsnowball-sovereign-767252945109.us-central1.run.app)",
-    "cloud_run_verified": "2026-04-14T18:30:41Z — /health=200, /mission=MISSION_GO, attack=403_BLOCKED",
-    "skill_fleet": "125 global + 2 workspace = 127 total skills. Sovereign State Protocol fully integrated. Gold Master + Sandbox/ADHD Mode + God Mode + Jetski + Hunter-Killer + Finish Protocol folded into 7 existing skills (temporal-rollback-doctrine, state-machine-autonomy, yolo-mode-operator, runtime-health-watchdog, cor-cursor-vdi, compiler-guillotine, sovereign-monorepo-hygiene). Zero duplication — each concept has exactly one canonical owner.",
-    "f_violations": 628,
-    "lighthouse": {
-      "shadowtagai_bp": 100,
-      "shadowtagai_seo": 100,
-      "kovelai_bp": 100,
-      "kovelai_seo": 100
-    },
-    "ci_cd": "firebase-deploy.yml ACTIVE",
-    "structural_tests": "55/55",
-    "dead_code": "clean (vulture + ruff — external/vendored findings only)",
-    "nested_git_dirs": 0,
-    "dotnet_sdk": "11.0.100-preview.2.26159.112",
-    "venv_tools": "pytest 9.0.3, ruff 0.15.11, vulture 2.16"
-  },
-  "memory_state": "LOCKED"
+  "procedures": [
+    "Load authority memory first",
+    "Load operator invariants second",
+    "Load monorepo control-plane truth third",
+    "Load active tasks and drift reports fourth",
+    "Only then inspect code or perform Git/GitHub operations",
+    "If remote uses HTTPS and auth fails, repair with gh auth login && gh auth setup-git or switch remote to SSH",
+    "Use GitHub app for repo freshness and truth; use local clones for indexing and execution only"
+  ]
 }
