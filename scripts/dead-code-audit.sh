@@ -33,7 +33,7 @@ fi
 if [[ -x "$VULTURE" ]]; then
     echo ">>> Running vulture sweep (minimum confidence 80%)..."
     # Exclude standard directories and potential noise
-    "$VULTURE" . --min-confidence 80 --exclude "archive,**/node_modules,**/venv"
+    "$VULTURE" . --min-confidence 80 --exclude "archive,**/node_modules,**/venv,external_repos,control/legacy_workspaces,reference_architectures,apps/kovelai/venv,packages,apps/aiyou_stack/aiyou-fastapi-services/external_repos"
 else
     echo "⚠️ vulture not found. Skipping."
 fi
