@@ -25,7 +25,7 @@ Note: OpenTelemetry is an optional dependency. Install with:
 """
 
 import logging
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlparse
 
 # Try to import OpenTelemetry - it's an optional dependency

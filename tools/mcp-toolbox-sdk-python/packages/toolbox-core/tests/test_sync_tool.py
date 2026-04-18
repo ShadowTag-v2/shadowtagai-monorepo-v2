@@ -16,7 +16,7 @@
 import asyncio
 from inspect import Parameter, Signature
 from threading import Thread
-from typing import Any, Union
+from typing import Any
 from collections.abc import Callable, Mapping
 from unittest.mock import MagicMock, Mock, create_autospec, patch
 

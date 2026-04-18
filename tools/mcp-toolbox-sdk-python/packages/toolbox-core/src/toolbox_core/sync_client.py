@@ -15,7 +15,7 @@
 
 from asyncio import AbstractEventLoop, new_event_loop, run_coroutine_threadsafe
 from threading import Lock, Thread
-from typing import Any, Optional, Union
+from typing import Any
 from collections.abc import Awaitable, Callable, Mapping
 
 from deprecated import deprecated

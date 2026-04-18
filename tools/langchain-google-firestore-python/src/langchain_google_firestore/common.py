@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional
 
 from google.cloud import firestore  # type: ignore
 from google.cloud.firestore_v1.services.firestore.transports.base import (  # type: ignore

@@ -17,7 +17,7 @@ from __future__ import annotations
 import base64
 import inspect
 import re
-from typing import Any, List, Optional, Type
+from typing import Any
 from collections.abc import Iterable
 
 import more_itertools
