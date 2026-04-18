@@ -1,4 +1,4 @@
-# BUSINESS_CONTEXT_LOCKED — v8.4
+# BUSINESS_CONTEXT_LOCKED — v8.8
 
 ## Consumer Syndicate
 - Price: `$149/mo`
@@ -32,8 +32,8 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 
 ## Hardened State
 - v8.6 canonicalized: 2026-04-18
-- Latest production commit: `ccb291e322d` (2026-04-18)
-- Lighthouse Desktop (KovelAI): P98 / A100 / BP100 / SEO100
+- Latest production commit: `7e40a3d98b1` (2026-04-18)
+- Lighthouse Mobile (KovelAI): P93 / A93 / BP100 / SEO100
 - Lighthouse Mobile (ShadowTagAI): P93 / A93 / BP100 / SEO100
 - Structural tests: 64/64
 - Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
@@ -46,9 +46,25 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 ### CounselConduit Cloud Run (2026-04-18)
 | Service | URL | Rev |
 |---------|-----|-----|
-| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00008-wpf |
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00010-s74 (canary 90/10) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
+
+### Wave 8 Deliverables (2026-04-18)
+- **25-Rule Security Contract**: Non-negotiable security canon in AGENTS.md (auth, input validation, secrets)
+- **15 Security Defaults**: Tokens, CORS, CSP, HSTS, rate limits, RLS, webhook HMAC, backups
+- **Headless CLI Protocol**: PTY Buffer Trap prevention doctrine in GEMINI.md + SKILL.md
+- **Cloud Run Rev 00010-s74**: Health probes (liveness + startup), autoscale 1-10, concurrency 80
+- **Canary Traffic Split**: 90% rev-00009 / 10% rev-00010 (progressive rollout)
+- **GDPR Cleanup Cron**: Cloud Scheduler `gdpr-30day-cleanup` daily 02:00 UTC (OIDC auth)
+- **OpenTelemetry Cloud Trace**: telemetry.py OTLP exporter wired into FastAPI app
+- **OpenTofu 1.11.6**: infra/terraform/ initialized, Google provider 7.28.0, plan: 19 resources
+- **Staging .env.example**: 37-variable template for staging environment
+- **Mobile Networking Spec**: Flutter/Dio 6-interceptor stack (docs/mobile_networking_spec.md)
+- **OAuth Fix**: Desktop client g8e1 for gws CLI (redirect_uri_mismatch resolved)
+- **Pitch-deck-agent Bucket**: Archived to ARCHIVE storage class
+- **40 Reference Repos**: Terraform, Lighthouse, Flagger, OpenTofu, Semaphore (gitignored)
+- **Lighthouse Post-Deploy**: P93 / A93 / BP100 / SEO100 (kovelai.web.app)
 ### Wave 7 Deliverables (2026-04-18)
 - **Google Workspace Alerts**: Gmail API + Google Chat API replace Discord + Resend (workspace_alerts.py)
 - **Secret Manager Migration**: 20+ secrets migrated from .env to Google Secret Manager
