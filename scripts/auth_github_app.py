@@ -29,12 +29,40 @@ TOKEN_EXPIRY_CACHE = Path("/tmp/gh_token_shadowtag_exp.txt")
 
 
 def _load_pem() -> str:
+    """Load GitHub App PEM. Priority: Secret Manager → keys/ → ~/Downloads → $SHADOWTAG_PEM."""
+    # 1. Secret Manager (production + CI)
+    try:
+        import subprocess
+        result = subprocess.run(
+            ["/opt/homebrew/share/google-cloud-sdk/bin/gcloud", "secrets", "versions", "access", "latest",
+             "--secret=github-app-shadowtag-v2-pem", "--project=shadowtag-omega-v4"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout
+    except Exception:
+        pass
+
+    # 2. Local keys/ directory
     if PEM_PATH.exists():
         return PEM_PATH.read_text()
+
+    # 3. Downloads fallback
     fallback = Path.home() / "Downloads" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem"
     if fallback.exists():
         return fallback.read_text()
-    sys.exit(f"ERROR: PEM not found at {PEM_PATH} or {fallback}")
+
+    # 4. SSH directory fallback
+    ssh_fallback = Path.home() / ".ssh" / "antigravity-shadowtag-manager.2026-03-17.private-key.pem"
+    if ssh_fallback.exists():
+        return ssh_fallback.read_text()
+
+    # 5. Environment variable
+    env_pem = os.environ.get("SHADOWTAG_PEM")
+    if env_pem and Path(env_pem).exists():
+        return Path(env_pem).read_text()
+
+    sys.exit(f"ERROR: PEM not found. Checked: SM, {PEM_PATH}, {fallback}, $SHADOWTAG_PEM")
 
 
 def _generate_jwt(pem: str) -> str:
