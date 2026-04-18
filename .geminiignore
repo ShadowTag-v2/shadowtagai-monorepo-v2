@@ -1,2 +1,50 @@
+# Gemini: Ignore heavy directories to prevent RAG indexing CPU spikes
+# Mirrors .aiexclude for full coverage
+
+# Secrets
 .env
+.env.local
+.env.production
+
+# Design SDK cache
 .stitch-sdk
+
+# Package managers & dependencies
+**/node_modules/**
+**/.pnpm-store/**
+
+# Python environments
+**/.venv/**
+**/venv/**
+**/__pycache__/**
+
+# Build artifacts
+**/.next/**
+**/dist/**
+**/build/**
+**/out/**
+
+# Version control
+**/.git/**
+
+# Large media & binaries
+**/*.mp4
+**/*.webm
+**/*.pdf
+**/*.zip
+**/*.tar.gz
+
+# Database & caches
+**/.firebase/**
+**/.lancedb/**
+**/*.sqlite3
+**/state.vscdb*
+**/.cache/**
+**/.gradle/**
+
+# Monorepo heavy zones
+**/external_repos/**
+**/legacy_workspaces/**
+**/external_payloads/**
+**/devrel-demos/**
+**/deep-archive/**

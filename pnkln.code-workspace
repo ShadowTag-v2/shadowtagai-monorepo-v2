@@ -21,7 +21,9 @@
       "**/third_party/**",
       "**/reference_architectures/**",
       "**/tools/java-firestore/**",
-      "**/tools/google-cloud-dart/**"
+      "**/tools/google-cloud-dart/**",
+      "**/deep-archive/**",
+      "**/.gradle/**"
     ],
     "files.exclude": {
       "**/*.proto": true,
@@ -57,7 +59,12 @@
       "**/.benchmarks/**": true,
       "**/.mypy_cache/**": true,
       "**/.pytest_cache/**": true,
-      "**/.ruff_cache/**": true
+      "**/.ruff_cache/**": true,
+      "**/deep-archive/**": true,
+      "**/.gradle/**": true,
+      "**/dist/**": true,
+      "**/.next/**": true,
+      "**/.firebase/**": true
     },
     "search.exclude": {
       "**/node_modules/**": true,
@@ -79,7 +86,11 @@
       "**/tools/google-cloud-dart/**": true,
       "**/tools/dio/**": true,
       "**/tools/java-firestore/**": true,
-      "**/test-results/**": true
+      "**/test-results/**": true,
+      "**/deep-archive/**": true,
+      "**/.gradle/**": true,
+      "**/dist/**": true,
+      "**/.next/**": true
     },
     "python.analysis.exclude": [
       "**/archive",
@@ -125,6 +136,8 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "git.detectSubmodulesLimit": 20,
     "update.mode": "manual",
-    "cloudcode.enableExperiments": false
+    "cloudcode.enableExperiments": false,
+    "gradle.nestedProjects": false,
+    "java.gradle.enabled": false
   }
 }
