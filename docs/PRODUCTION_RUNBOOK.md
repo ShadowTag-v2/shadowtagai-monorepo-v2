@@ -1,132 +1,156 @@
-# CounselConduit Production Runbook v1.0
+# Production Runbook — CounselConduit + ShadowTag Portfolio
 
-## Service Overview
-- **Service**: CounselConduit API
-- **URL**: https://counselconduit-767252945109.us-central1.run.app
-- **Staging**: https://counselconduit-staging-767252945109.us-central1.run.app
-- **Region**: us-central1
-- **SA**: counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com
-- **Current Rev**: 00010-s74 (100% traffic)
+> Last updated: 2026-04-18 | Version: v9.3 | Commit: `7d2a2e180f9`
 
-## Health Endpoints
-| Endpoint | Expected | Purpose |
-|----------|----------|---------|
-| `/enclave/v1/health` | 200 | Liveness + Firestore connectivity |
-| `/enclave/v1/docs` | 200 | OpenAPI documentation |
-| `/enclave/v1/openapi.json` | 200 | Machine-readable spec |
+## Service Inventory
+
+| Service | URL | Runtime | Status |
+|---------|-----|---------|--------|
+| CounselConduit API | `counselconduit-767252945109.us-central1.run.app` | Cloud Run | ✅ LIVE (v3.1.0) |
+| KovelAI Landing | `kovelai.web.app` | Firebase Hosting | ✅ LIVE |
+| ShadowTagAI Landing | `shadowtagai.web.app` | Firebase Hosting | ✅ LIVE |
+| ShadowTag Omega | `shadowtag-omega-v4.web.app` | Firebase Hosting | ✅ LIVE |
+| Firestore (default) | GCP Console | Firestore | ✅ Active |
+| Firestore (shadowtag-engine) | GCP Console | Firestore | ✅ Active |
+
+## Critical Credentials
+
+| Credential | Location | Rotation Schedule |
+|-----------|----------|-------------------|
+| GitHub App PEM | `$SHADOWTAG_PEM` → `~/Downloads/antigravity-shadowtag-*.pem` | On exposure/incident |
+| Gemini API Key | `.env` → `GEMINI_API_KEY` | Quarterly |
+| Stripe Secret Key | GCP Secret Manager → `stripe-secret-key` | On exposure/incident |
+| Stripe Webhook Secret | GCP Secret Manager → `stripe-webhook-secret` | On exposure/incident |
+| Developer Knowledge API Key | GCP Secret Manager → `developer-knowledge-api-key` | Quarterly |
+
+> **Full rotation procedure**: `docs/SECRET_ROTATION.md`
+
+## Deployment Procedures
+
+### Cloud Run (CounselConduit)
+
+```bash
+# 1. Verify auth
+gcloud auth print-identity-token --quiet
+
+# 2. Deploy from source (NO Docker — per SaaS Architecture Gate)
+gcloud run deploy counselconduit \
+  --project shadowtag-omega-v4 \
+  --region us-central1 \
+  --source apps/counselconduit/ \
+  --service-account counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com \
+  --allow-unauthenticated=false \
+  --memory 512Mi \
+  --cpu 1 \
+  --min-instances 0 \
+  --max-instances 10
+
+# 3. Verify
+curl -s -o /dev/null -w "%{http_code}" https://counselconduit-767252945109.us-central1.run.app/health
+```
+
+### Firebase Hosting (KovelAI / ShadowTagAI)
+
+```bash
+# Per Firebase MCP-First Deployment Protocol (GEMINI.md v9.0):
+# 1. Verify MCP auth (call firebase_get_environment)
+# 2. Read hosting guide (firebase://guides/init/hosting)
+# 3. Initialize (firebase_init)
+# 4. Deploy
+
+firebase deploy --only hosting:kovelai --project shadowtag-omega-v4
+firebase deploy --only hosting:shadowtagai --project shadowtag-omega-v4
+```
+
+## Monitoring & Alerts
+
+### GCP Alert Policies (8 active)
+| Alert | Threshold | Channel |
+|-------|-----------|---------|
+| Cloud Run Error Rate | > 5% in 5min | founder@shadowtagai.com |
+| Cloud Run Latency | > 2s p95 in 5min | founder@shadowtagai.com |
+| Firestore Read Spike | > 10K reads/5min | founder@shadowtagai.com |
+| Firestore Write Spike | > 5K writes/5min | founder@shadowtagai.com |
+| Secret Access Anomaly | Log metric | founder@shadowtagai.com |
+| Budget Alert | 50%/90%/100% | founder@shadowtagai.com |
+| Cloud Armor WAF Block | > 100 blocks/5min | founder@shadowtagai.com |
+| Uptime Check Failure | 2 consecutive | founder@shadowtagai.com |
+
+### Cloud Armor WAF Rules
+| Rule | Action | Priority |
+|------|--------|----------|
+| Rate limit | 100 req/min/IP, 5min ban | 1000 |
+| SQL injection | Block | 2000 |
+| XSS | Block | 2001 |
+| Remote file inclusion | Block | 2002 |
 
 ## Incident Response
 
 ### Severity Levels
-| Level | Examples | Response Time |
-|-------|----------|--------------|
-| SEV1 | Service down, data breach, auth bypass | < 15 min |
-| SEV2 | Degraded performance, partial failure | < 1 hour |
-| SEV3 | Non-critical feature broken | < 4 hours |
-| SEV4 | Cosmetic, logging, monitoring gap | Next business day |
+| Level | Definition | Response Time |
+|-------|-----------|---------------|
+| P0 — Critical | Service down, data breach, credential exposure | Immediate |
+| P1 — High | Degraded service, elevated error rate | 1 hour |
+| P2 — Medium | Feature broken, non-critical service issue | 4 hours |
+| P3 — Low | Cosmetic, documentation, minor bug | Next business day |
 
-### SEV1: Service Down
+### P0 Response Checklist
+1. **Triage**: Check GCP Console → Cloud Run → Logs
+2. **Contain**: If credential exposure → rotate immediately (`docs/SECRET_ROTATION.md`)
+3. **Communicate**: Alert founder via Google Chat space
+4. **Fix**: Hotfix branch → test → deploy
+5. **Post-mortem**: Document in `RISK_REGISTER.md`
+
+### Rollback Procedure
 ```bash
-# 1. Verify outage
-curl -s https://counselconduit-767252945109.us-central1.run.app/enclave/v1/health
+# List revisions
+gcloud run revisions list --service counselconduit --project shadowtag-omega-v4
 
-# 2. Check Cloud Run logs
-gcloud run services logs read counselconduit --region=us-central1 --limit=50
-
-# 3. Check for recent deploys
-gcloud run revisions list --service=counselconduit --region=us-central1 --limit=5
-
-# 4. Rollback to previous revision
+# Route traffic to previous revision
 gcloud run services update-traffic counselconduit \
-  --region=us-central1 \
-  --to-revisions=counselconduit-00009=100
-
-# 5. Notify via Chat
-# Message CounselConduit Ops space
-
-# 6. Post-mortem within 24h
+  --project shadowtag-omega-v4 \
+  --region us-central1 \
+  --to-revisions PREVIOUS_REVISION=100
 ```
 
-### SEV2: Degraded Performance
-```bash
-# 1. Check current metrics
-gcloud monitoring dashboards list --project=shadowtag-omega-v4
+## Infrastructure Verification
 
-# 2. Check Cloud Trace for slow spans
-# Console: https://console.cloud.google.com/traces?project=shadowtag-omega-v4
+### Daily Automated Checks
+- Cloud Scheduler: `counselconduit-backup-verify` (weekly probe)
+- Pre-commit hooks: Gitleaks + Ruff + Bandit + detect-private-key
+- CI: Python tests on push to main
 
-# 3. Scale up if needed
-gcloud run services update counselconduit \
-  --region=us-central1 \
-  --min-instances=2 --max-instances=20
+### Manual Verification Cadence
+| Check | Frequency | Command |
+|-------|-----------|---------|
+| OpenTofu drift | Weekly | `cd infra/terraform && tofu plan` |
+| Vulture dead code | Per commit (pre-commit) | `bash scripts/dead-code-audit.sh` |
+| Bandit security | Per commit (pre-commit) | `bandit -r apps/counselconduit/ -ll` |
+| Lighthouse | Per deploy | Browser → Lighthouse audit |
+| GitNexus freshness | Weekly | `npx gitnexus analyze .` |
+| Secret rotation status | Monthly | Check Secret Manager versions |
 
-# 4. Check Firestore quotas
-gcloud firestore operations list --project=shadowtag-omega-v4
-```
+## Environment Variables (.env)
 
-### SEV1: Auth/Payment Breach
-```bash
-# 1. Rotate ALL secrets immediately
-gcloud secrets versions add stripe-secret-key --data-file=- --project=shadowtag-omega-v4
-gcloud secrets versions add stripe-webhook-secret --data-file=- --project=shadowtag-omega-v4
+> See `GEMINI.md` §env_master_doctrine for the full 11-section map.
+> `.env` is kernel-locked (`chflags uchg`). To edit: `chflags nouchg .env` → edit → `chflags uchg .env`
 
-# 2. Rotate GitHub App PEMs
-# See docs/SECRET_ROTATION.md
+## Stripe Configuration
 
-# 3. Review audit logs
-gcloud logging read 'resource.type="audited_resource"' --project=shadowtag-omega-v4 --limit=100
+| Item | Value |
+|------|-------|
+| Account | `acct_1Syh9JEHnWpykeMi` |
+| Pro Monthly | `price_1TNKSREHnWpykeMiRMDlVgLl` ($149/mo) |
+| Pro Annual | `price_1TNKSjEHnWpykeMi0S9GCVjy` ($1,428/yr) |
+| Enterprise | `price_1TNKSREHnWpykeMi8mrDf4rI` ($20K/mo) |
+| Beta Coupon | `3wseBY7Z` (50% off, 3 months, max 100) |
+| Webhook | `we_1TNKSjEHnWpykeMiQZqmpy3X` |
 
-# 4. Disable compromised accounts
-# 5. Legal notification (if PII involved)
-```
+## Contact Chain
 
-## Deployment
-
-### Standard Deploy (via Cloud Build)
-```bash
-git push origin main  # Triggers cloudbuild.yaml
-```
-
-### Manual Deploy
-```bash
-gcloud run deploy counselconduit \
-  --source=apps/counselconduit \
-  --region=us-central1 \
-  --project=shadowtag-omega-v4 \
-  --quiet
-```
-
-### Canary Deploy
-```bash
-# 1. Deploy new revision (0% traffic)
-gcloud run deploy counselconduit --source=apps/counselconduit \
-  --region=us-central1 --no-traffic
-
-# 2. Split traffic 90/10
-gcloud run services update-traffic counselconduit \
-  --region=us-central1 --to-revisions=LATEST=10
-
-# 3. Monitor for 30 minutes
-# 4. Promote or rollback
-gcloud run services update-traffic counselconduit \
-  --region=us-central1 --to-latest
-```
-
-## Monitoring
-
-### Alert Policies (7 active)
-1. Secret Manager Access Anomaly (>100 ops/5min)
-2. Firestore High Read Volume (>10K/5min)
-3. Firestore High Write Volume (>5K/5min)
-4. Cloud Run Error Rate
-5. Cloud Run Latency P99
-6. Uptime Check: kovelai.web.app
-7. Uptime Check: shadowtagai.web.app
-
-### Notification Channel
-- Email: founder@shadowtagai.com (ID: 17531835029676919705)
-- Chat: CounselConduit Ops (pending scope configuration)
-
-## Contacts
-- **On-call**: founder@shadowtagai.com
-- **Escalation**: Same (solo founder stage)
+| Role | Contact |
+|------|---------|
+| Founder / Admin | founder@shadowtagai.com |
+| GCP Project | shadowtag-omega-v4 |
+| GitHub Org | ShadowTag-v2 |
+| Repo | Monorepo-Uphillsnowball |
