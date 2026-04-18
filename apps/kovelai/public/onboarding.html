@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attorney Onboarding — CounselConduit</title>
+  <meta name="description" content="Set up your CounselConduit practice portal in minutes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --accent: #6366f1;
+      --accent-glow: rgba(99,102,241,0.15);
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --success: #22c55e;
+      --error: #ef4444;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .wizard { max-width: 540px; width: 100%; padding: 2rem; }
+    .logo { font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 2rem; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .progress { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .progress-dot { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
+    .progress-dot.active { background: var(--accent); }
+    .progress-dot.done { background: var(--success); }
+    .step { display: none; animation: fadeIn 0.3s ease; }
+    .step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .step h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .step p.desc { color: var(--muted); font-size: 0.875rem; margin-bottom: 1.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.9rem; font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .checkbox-group { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .checkbox-group input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+    .checkbox-group label { font-size: 0.85rem; color: var(--text); text-transform: none; letter-spacing: normal; }
+    .btn-row { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+    .btn { flex: 1; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #5558e6; transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .plan-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+    .plan-card { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .plan-card:hover { border-color: var(--accent); }
+    .plan-card.selected { border-color: var(--accent); background: var(--accent-glow); }
+    .plan-card h3 { font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .plan-card .price { font-size: 1.25rem; font-weight: 700; color: var(--accent); }
+    .plan-card .period { font-size: 0.75rem; color: var(--muted); }
+    .success-screen { text-align: center; padding: 2rem 0; }
+    .success-screen .check { font-size: 3rem; margin-bottom: 1rem; }
+    .success-screen h2 { margin-bottom: 0.5rem; }
+    .success-screen p { color: var(--muted); }
+    .success-screen .portal-link { display: inline-block; margin-top: 1.5rem; padding: 0.75rem 2rem; background: var(--accent); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; }
+    .error-msg { color: var(--error); font-size: 0.8rem; margin-top: 0.25rem; display: none; }
+  </style>
+</head>
+<body>
+  <div class="wizard" id="onboarding-wizard">
+    <div class="logo">CounselConduit</div>
+    <div class="progress" id="progress">
+      <div class="progress-dot active" data-step="0"></div>
+      <div class="progress-dot" data-step="1"></div>
+      <div class="progress-dot" data-step="2"></div>
+      <div class="progress-dot" data-step="3"></div>
+    </div>
+
+    <!-- Step 1: Firm Info -->
+    <div class="step active" id="step-0">
+      <h2>Your Practice</h2>
+      <p class="desc">Tell us about your firm so we can configure your portal.</p>
+      <div class="form-group">
+        <label for="firm-name">Firm Name</label>
+        <input type="text" id="firm-name" placeholder="Smith & Associates LLP" required>
+      </div>
+      <div class="form-group">
+        <label for="attorney-name">Your Name</label>
+        <input type="text" id="attorney-name" placeholder="Jane Smith, Esq." required>
+      </div>
+      <div class="form-group">
+        <label for="attorney-email">Email</label>
+        <input type="email" id="attorney-email" placeholder="jane@smithlaw.com" required>
+      </div>
+      <div class="form-group">
+        <label for="bar-number">Bar Number</label>
+        <input type="text" id="bar-number" placeholder="CA 123456">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Plan Selection -->
+    <div class="step" id="step-1">
+      <h2>Select Your Plan</h2>
+      <p class="desc">All plans include unlimited AI models, Kovel attestation, and privileged transcripts.</p>
+      <div class="plan-cards">
+        <div class="plan-card" onclick="selectPlan(this, 'solo')" data-plan="solo">
+          <h3>Solo</h3>
+          <div class="price">$299</div>
+          <div class="period">/month</div>
+        </div>
+        <div class="plan-card selected" onclick="selectPlan(this, 'practice')" data-plan="practice">
+          <h3>Practice</h3>
+          <div class="price">$599</div>
+          <div class="period">/month</div>
+        </div>
+        <div class="plan-card" onclick="selectPlan(this, 'enterprise')" data-plan="enterprise">
+          <h3>Enterprise</h3>
+          <div class="price">$999</div>
+          <div class="period">/month</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3: AI Models -->
+    <div class="step" id="step-2">
+      <h2>Configure AI Models</h2>
+      <p class="desc">Select which models your clients can access. All queries are privileged under Kovel doctrine.</p>
+      <div class="checkbox-group">
+        <input type="checkbox" id="model-gemini" checked>
+        <label for="model-gemini">Gemini 2.5 Flash (fastest, recommended)</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="model-claude" checked>
+        <label for="model-claude">Claude Sonnet 4.5 (detailed analysis)</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="model-gpt">
+        <label for="model-gpt">GPT-4.1 (general purpose)</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="model-perplexity">
+        <label for="model-perplexity">Perplexity (research + citations)</label>
+      </div>
+      <div class="form-group" style="margin-top:1rem;">
+        <label for="practice-area">Primary Practice Area</label>
+        <select id="practice-area">
+          <option value="general">General Practice</option>
+          <option value="corporate">Corporate / Business</option>
+          <option value="litigation">Litigation</option>
+          <option value="family">Family Law</option>
+          <option value="ip">Intellectual Property</option>
+          <option value="criminal">Criminal Defense</option>
+          <option value="immigration">Immigration</option>
+          <option value="real-estate">Real Estate</option>
+        </select>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+        <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Stripe Connect -->
+    <div class="step" id="step-3">
+      <h2>Connect Payments</h2>
+      <p class="desc">Link your Stripe account to receive client payments directly. We never touch the client-lawyer fee arrangement.</p>
+      <div class="form-group">
+        <label>Billing Model</label>
+        <p style="font-size:0.85rem;color:var(--text);margin-top:0.25rem;">Clients pay you per query via Stripe. Your subscription covers all AI costs + margin.</p>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree-terms" required>
+        <label for="agree-terms">I agree to the <a href="#" style="color:var(--accent)">Terms of Service</a> and <a href="#" style="color:var(--accent)">Kovel Privilege Agreement</a></label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+        <button class="btn btn-primary" id="submit-btn" onclick="submitOnboarding()">Complete Setup</button>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="step" id="step-success">
+      <div class="success-screen">
+        <div class="check">✓</div>
+        <h2>Portal Created</h2>
+        <p>Your CounselConduit practice portal is ready. We've sent a confirmation to your email with your client magic link generator.</p>
+        <a href="/dashboard.html" class="portal-link">Go to Dashboard →</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 0;
+    let selectedPlan = 'practice';
+    const totalSteps = 4;
+
+    function updateProgress() {
+      document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+        dot.className = 'progress-dot';
+        if (i < currentStep) dot.classList.add('done');
+        else if (i === currentStep) dot.classList.add('active');
+      });
+      document.querySelectorAll('.step').forEach((s, i) => {
+        s.classList.toggle('active', i === currentStep);
+      });
+    }
+
+    function nextStep() {
+      if (currentStep < totalSteps - 1) { currentStep++; updateProgress(); }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) { currentStep--; updateProgress(); }
+    }
+
+    function selectPlan(el, plan) {
+      document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPlan = plan;
+    }
+
+    async function submitOnboarding() {
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = 'Creating portal...';
+
+      const payload = {
+        firm_name: document.getElementById('firm-name').value,
+        attorney_name: document.getElementById('attorney-name').value,
+        attorney_email: document.getElementById('attorney-email').value,
+        bar_number: document.getElementById('bar-number').value,
+        plan: selectedPlan,
+        practice_area: document.getElementById('practice-area').value,
+        allowed_models: [
+          ...(document.getElementById('model-gemini').checked ? ['gemini-flash'] : []),
+          ...(document.getElementById('model-claude').checked ? ['claude-sonnet'] : []),
+          ...(document.getElementById('model-gpt').checked ? ['gpt-4.1'] : []),
+          ...(document.getElementById('model-perplexity').checked ? ['perplexity'] : []),
+        ],
+      };
+
+      try {
+        const API = window.location.hostname === 'localhost'
+          ? 'http://localhost:8080'
+          : 'https://counselconduit-767252945109.us-central1.run.app';
+        const r = await fetch(`${API}/onboarding/attorney-setup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        currentStep = totalSteps;
+        document.querySelectorAll('.progress-dot').forEach(d => d.classList.add('done'));
+        document.getElementById('step-success').classList.add('active');
+        document.getElementById(`step-${totalSteps - 1}`).classList.remove('active');
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Complete Setup';
+        alert('Setup failed: ' + e.message);
+      }
+    }
+  </script>
+</body>
+</html>
