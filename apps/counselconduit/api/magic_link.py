@@ -24,7 +24,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
@@ -41,8 +41,10 @@ _BASE_URL = os.getenv("KOVELAI_BASE_URL", "https://kovelai.web.app")
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
+
 class MatterCreateRequest(BaseModel):
     """Attorney creates a new matter for client onboarding."""
+
     attorney_id: str
     firm_id: str
     client_name: str
@@ -54,6 +56,7 @@ class MatterCreateRequest(BaseModel):
 
 class MagicLinkResponse(BaseModel):
     """Response containing the generated magic link."""
+
     matter_id: str
     magic_link: str
     expires_at: str  # ISO 8601
@@ -63,6 +66,7 @@ class MagicLinkResponse(BaseModel):
 
 class MagicLinkVerification(BaseModel):
     """Result of verifying a magic link token."""
+
     valid: bool
     matter_id: str | None = None
     firm_id: str | None = None
@@ -72,6 +76,7 @@ class MagicLinkVerification(BaseModel):
 
 
 # ── Core Functions ─────────────────────────────────────────────────────────
+
 
 def _sign_token(payload: dict[str, Any]) -> str:
     """Generate HMAC-SHA256 signature for a magic link token."""
@@ -112,6 +117,7 @@ def _create_token(req: MatterCreateRequest) -> tuple[str, str, int]:
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
 
+
 @router.post("/create-matter", response_model=MagicLinkResponse)
 async def create_matter(req: MatterCreateRequest) -> MagicLinkResponse:
     """Create a new matter and generate a magic link for client onboarding.
@@ -121,7 +127,7 @@ async def create_matter(req: MatterCreateRequest) -> MagicLinkResponse:
     """
     matter_id, token, expires_unix = _create_token(req)
     magic_link = f"{_BASE_URL}/portal?token={token}"
-    expires_at = datetime.fromtimestamp(expires_unix, tz=timezone.utc).isoformat()
+    expires_at = datetime.fromtimestamp(expires_unix, tz=UTC).isoformat()
 
     # TODO: Store matter in Firestore
     # TODO: Send email to client via Resend/SendGrid

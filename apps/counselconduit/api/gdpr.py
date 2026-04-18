@@ -16,7 +16,7 @@ from __future__ import annotations
 import logging
 import os
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -29,8 +29,10 @@ router = APIRouter(prefix="/account", tags=["GDPR"])
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
+
 class DeletionRequest(BaseModel):
     """User-initiated account deletion request."""
+
     confirmation: str = Field(
         ...,
         description="Must be 'DELETE MY ACCOUNT' to confirm",
@@ -44,21 +46,23 @@ class DeletionRequest(BaseModel):
 
 class DeletionReceipt(BaseModel):
     """Receipt confirming deletion was scheduled."""
+
     status: str = "scheduled"
     deletion_date: str  # ISO 8601 — 30 days from now
     receipt_id: str
     message: str = (
-        "Your account and all associated data will be permanently deleted "
-        "within 30 days. You will receive a confirmation email when complete."
+        "Your account and all associated data will be permanently deleted " "within 30 days. You will receive a confirmation email when complete."
     )
 
 
 class DataExportRequest(BaseModel):
     """GDPR Article 20 — Right to data portability."""
+
     format: str = Field(default="json", pattern="^(json|csv)$")
 
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
+
 
 @router.post(
     "/delete",
@@ -88,7 +92,7 @@ async def request_account_deletion(
     from apps.counselconduit.api.uuid7 import uuid7_str
 
     receipt_id = uuid7_str()
-    deletion_date = datetime.now(timezone.utc).isoformat()
+    deletion_date = datetime.now(UTC).isoformat()
 
     # TODO: Wire to Firestore soft-delete + Cloud Tasks 30-day trigger
     # TODO: Wire to email service for receipt delivery

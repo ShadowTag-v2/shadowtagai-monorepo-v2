@@ -18,7 +18,7 @@ import json
 import logging
 import os
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -34,8 +34,10 @@ _ATTESTATION_SECRET = os.getenv("KOVEL_ATTESTATION_SECRET", "kovel-dev-secret")
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
+
 class SessionAttestation(BaseModel):
     """Kovel Attestation Receipt — cryptographic proof of privileged session."""
+
     attestation_id: str
     session_id: str
     attorney_id: str
@@ -52,6 +54,7 @@ class SessionAttestation(BaseModel):
 
 class AttestationRequest(BaseModel):
     """Request to generate an attestation receipt."""
+
     session_id: str
     attorney_id: str
     firm_id: str
@@ -62,6 +65,7 @@ class AttestationRequest(BaseModel):
 
 
 # ── Core Functions ─────────────────────────────────────────────────────────
+
 
 def _hash_text(text: str) -> str:
     """SHA-256 hash of text — for content attestation without storing content."""
@@ -83,7 +87,7 @@ def generate_attestation(req: AttestationRequest) -> SessionAttestation:
     from apps.counselconduit.api.uuid7 import uuid7_str
 
     attestation_id = uuid7_str()
-    timestamp = datetime.now(timezone.utc).isoformat()
+    timestamp = datetime.now(UTC).isoformat()
 
     receipt_body = {
         "attestation_id": attestation_id,
@@ -114,6 +118,7 @@ def verify_attestation(attestation: SessionAttestation) -> bool:
 
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
+
 
 @router.post("/generate", response_model=SessionAttestation)
 async def create_attestation(req: AttestationRequest) -> SessionAttestation:
