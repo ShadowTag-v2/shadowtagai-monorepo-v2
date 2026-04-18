@@ -16,7 +16,6 @@ try:
         WELCOME_EMAIL,
         PAYMENT_SUCCESS_EMAIL,
         PAYMENT_FAILED_EMAIL,
-        TOKEN_LIMIT_WARNING_EMAIL,
     )
     from apps.counselconduit.api.workspace_alerts import (
         alert_payment_failure as alert_payment_failed,

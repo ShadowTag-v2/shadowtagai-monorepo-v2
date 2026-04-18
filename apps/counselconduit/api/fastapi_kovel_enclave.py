@@ -33,7 +33,6 @@ from fastapi.responses import StreamingResponse
 
 try:
     # Monorepo context (running from repo root)
-    from apps.counselconduit.api.auth import get_current_attorney
     from apps.counselconduit.api.firestore_client import (
         update_attorney_usage,
         write_audit_log,
