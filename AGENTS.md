@@ -114,15 +114,15 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v9.3 canonicalized: 2026-04-18
-- Commit: `1bcd395a87c`
+- v9.4 canonicalized: 2026-04-18
+- Commit: `eaa313da449`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
-- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.0)
+- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.1)
 - Semantic Kernel: .NET 11.0 Preview 2
-- Tests: 77 passed, 5 E2E skipped (live Cloud Run endpoints — expected)
+- Tests: 32 unit passed (E2E skipped — live Cloud Run endpoints)
 - Lighthouse: P93+ / A93+ / BP100 / SEO100
 - Dead code: clean (vulture + ruff — Kosmos dead code noted, production paths clean)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
@@ -136,8 +136,12 @@ unless the user explicitly directs a control plane change:
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
 - GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
-- Risk Register: 33 risks tracked (0 critical open)
-- CL4R1T4S: competitive intel archived, 6 adoptable patterns identified
+- Risk Register: 35 risks tracked (0 critical open)
+- CL4R1T4S: competitive intel archived, 6 adoptable patterns identified, source code (1,902 files) extracted
+- Architecture docs: 7 specs (compaction, flags, memory, Judge #6, steward, AGNT comparison, GrowthBook)
+- Daemons: Dream consolidation (nightly) + Loop steward (5-min) — both tested
+- Reference architectures: 29 repos cloned (gitignored)
+- CLAUDE.md: 4-layer hierarchy (global 13KB + user 4.8KB + project 5.3KB + 51 rules)
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
