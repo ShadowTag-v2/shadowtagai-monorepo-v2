@@ -21,7 +21,7 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -31,14 +31,17 @@ from pathlib import Path
 
 CYCLE_INTERVAL = int(os.environ.get("STEWARD_CYCLE_INTERVAL", "300"))  # 5 min
 MAX_IDLE_CYCLES = int(os.environ.get("STEWARD_MAX_IDLE", "3"))
-REPO_ROOT = Path(os.environ.get(
-    "REPO_ROOT",
-    os.path.expanduser("~/.gemini/antigravity/Monorepo-Uphillsnowball"),
-))
+REPO_ROOT = Path(
+    os.environ.get(
+        "REPO_ROOT",
+        os.path.expanduser("~/.gemini/antigravity/Monorepo-Uphillsnowball"),
+    )
+)
 DRY_RUN = "--dry-run" in sys.argv
 
 
 # --- Enums -------------------------------------------------------------------
+
 
 class ActionVerdict(Enum):
     PROCEED = "proceed"
@@ -59,9 +62,11 @@ class ActionType(Enum):
 
 # --- Data Models -------------------------------------------------------------
 
+
 @dataclass
 class Action:
     """Represents a single steward action."""
+
     action_type: ActionType
     description: str
     reversible: bool = True
@@ -71,6 +76,7 @@ class Action:
 @dataclass
 class CycleReport:
     """Tracks a single steward cycle."""
+
     timestamp: str = ""
     cycle_number: int = 0
     actions_evaluated: int = 0
@@ -98,6 +104,7 @@ def is_reversible(action: Action) -> bool:
 
 # --- Action Evaluator --------------------------------------------------------
 
+
 def evaluate_action(action: Action, consecutive_idles: int) -> ActionVerdict:
     """Determine whether to proceed with an action."""
 
@@ -118,6 +125,7 @@ def evaluate_action(action: Action, consecutive_idles: int) -> ActionVerdict:
 
 # --- Steward Actions ---------------------------------------------------------
 
+
 def check_git_status() -> list[Action]:
     """Check for uncommitted changes or pending work."""
     actions = []
@@ -132,12 +140,14 @@ def check_git_status() -> list[Action]:
         )
         if result.stdout.strip():
             dirty_count = len(result.stdout.strip().splitlines())
-            actions.append(Action(
-                action_type=ActionType.LINT_FIX,
-                description=f"{dirty_count} uncommitted files detected",
-                reversible=True,
-                risk_level="low",
-            ))
+            actions.append(
+                Action(
+                    action_type=ActionType.LINT_FIX,
+                    description=f"{dirty_count} uncommitted files detected",
+                    reversible=True,
+                    risk_level="low",
+                )
+            )
     except (subprocess.TimeoutExpired, FileNotFoundError):
         pass
 
@@ -151,26 +161,26 @@ def check_test_status() -> list[Action]:
     # Check if test results are stale (>1 hour since last run)
     test_marker = REPO_ROOT / ".beads" / "last_test_run"
     if test_marker.exists():
-        last_run = datetime.fromtimestamp(
-            test_marker.stat().st_mtime, tz=timezone.utc
-        )
-        age_hours = (
-            datetime.now(timezone.utc) - last_run
-        ).total_seconds() / 3600
+        last_run = datetime.fromtimestamp(test_marker.stat().st_mtime, tz=UTC)
+        age_hours = (datetime.now(UTC) - last_run).total_seconds() / 3600
         if age_hours > 1:
-            actions.append(Action(
+            actions.append(
+                Action(
+                    action_type=ActionType.TEST_RUN,
+                    description=f"Tests stale ({age_hours:.1f}h since last run)",
+                    reversible=True,
+                    risk_level="low",
+                )
+            )
+    else:
+        actions.append(
+            Action(
                 action_type=ActionType.TEST_RUN,
-                description=f"Tests stale ({age_hours:.1f}h since last run)",
+                description="No test run marker found",
                 reversible=True,
                 risk_level="low",
-            ))
-    else:
-        actions.append(Action(
-            action_type=ActionType.TEST_RUN,
-            description="No test run marker found",
-            reversible=True,
-            risk_level="low",
-        ))
+            )
+        )
 
     return actions
 
@@ -181,31 +191,32 @@ def check_dream_schedule() -> list[Action]:
 
     dream_marker = REPO_ROOT / ".beads" / "last_dream_run"
     if dream_marker.exists():
-        last_run = datetime.fromtimestamp(
-            dream_marker.stat().st_mtime, tz=timezone.utc
-        )
-        age_hours = (
-            datetime.now(timezone.utc) - last_run
-        ).total_seconds() / 3600
+        last_run = datetime.fromtimestamp(dream_marker.stat().st_mtime, tz=UTC)
+        age_hours = (datetime.now(UTC) - last_run).total_seconds() / 3600
         if age_hours > 24:
-            actions.append(Action(
+            actions.append(
+                Action(
+                    action_type=ActionType.DREAM,
+                    description=f"Dream consolidation due ({age_hours:.0f}h since last)",
+                    reversible=True,
+                    risk_level="low",
+                )
+            )
+    else:
+        actions.append(
+            Action(
                 action_type=ActionType.DREAM,
-                description=f"Dream consolidation due ({age_hours:.0f}h since last)",
+                description="No Dream cycle recorded — initial run",
                 reversible=True,
                 risk_level="low",
-            ))
-    else:
-        actions.append(Action(
-            action_type=ActionType.DREAM,
-            description="No Dream cycle recorded — initial run",
-            reversible=True,
-            risk_level="low",
-        ))
+            )
+        )
 
     return actions
 
 
 # --- Execute Actions ---------------------------------------------------------
+
 
 def execute_action(action: Action) -> bool:
     """Execute a steward action. Returns True if successful."""
@@ -216,8 +227,7 @@ def execute_action(action: Action) -> bool:
     if action.action_type == ActionType.TEST_RUN:
         try:
             result = subprocess.run(
-                [sys.executable, "-m", "pytest", "tests/unit/", "-x",
-                 "--tb=short", "-q"],
+                [sys.executable, "-m", "pytest", "tests/unit/", "-x", "--tb=short", "-q"],
                 cwd=REPO_ROOT,
                 capture_output=True,
                 text=True,
@@ -247,7 +257,7 @@ def execute_action(action: Action) -> bool:
                 marker = REPO_ROOT / ".beads" / "last_dream_run"
                 marker.parent.mkdir(parents=True, exist_ok=True)
                 marker.touch()
-                print(f"  [EXEC] Dream cycle complete")
+                print("  [EXEC] Dream cycle complete")
                 return result.returncode == 0
         except subprocess.TimeoutExpired:
             print("  [EXEC] Dream cycle timed out")
@@ -262,10 +272,11 @@ def execute_action(action: Action) -> bool:
 
 # --- Main Loop ---------------------------------------------------------------
 
+
 def run_cycle(cycle_number: int, consecutive_idles: int) -> CycleReport:
     """Run a single steward cycle."""
     report = CycleReport(
-        timestamp=datetime.now(timezone.utc).isoformat(),
+        timestamp=datetime.now(UTC).isoformat(),
         cycle_number=cycle_number,
     )
 
@@ -310,7 +321,7 @@ def run_cycle(cycle_number: int, consecutive_idles: int) -> CycleReport:
 def main():
     """Main steward loop."""
     print("=" * 60)
-    print(f"Loop Steward — Started {datetime.now(timezone.utc).isoformat()}")
+    print(f"Loop Steward — Started {datetime.now(UTC).isoformat()}")
     print(f"Cycle interval: {CYCLE_INTERVAL}s | Max idle: {MAX_IDLE_CYCLES}")
     print(f"Repo: {REPO_ROOT}")
     print(f"Mode: {'DRY RUN' if DRY_RUN else 'LIVE'}")
@@ -322,8 +333,7 @@ def main():
     # Single cycle mode for testing
     if "--once" in sys.argv:
         report = run_cycle(1, 0)
-        print(f"\nCycle 1: {report.actions_evaluated} evaluated, "
-              f"{report.actions_taken} taken")
+        print(f"\nCycle 1: {report.actions_evaluated} evaluated, {report.actions_taken} taken")
         for detail in report.details:
             print(f"  {detail}")
         return
@@ -341,8 +351,7 @@ def main():
             else:
                 consecutive_idles = 0
 
-            print(f"Actions: {report.actions_taken}/{report.actions_evaluated} | "
-                  f"Idle streak: {consecutive_idles}/{MAX_IDLE_CYCLES}")
+            print(f"Actions: {report.actions_taken}/{report.actions_evaluated} | Idle streak: {consecutive_idles}/{MAX_IDLE_CYCLES}")
             for detail in report.details:
                 print(f"  {detail}")
 

@@ -1,4 +1,4 @@
-# RISK_REGISTER — v9.0
+# RISK_REGISTER — v9.4
 
 > Operational risks tracked as part of the sovereign monorepo governance.
 > Reviewed on each version bump. Mitigations are enforced, not advisory.

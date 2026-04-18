@@ -1,10 +1,10 @@
 ---
-version: 9.0
+version: 9.4
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v9.0
+# GEMINI.md — v9.4
 
 <system_directive>
 <workspace_alignment>
@@ -342,4 +342,3 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 | pnkln-evolve | `scripts/pnkln-evolve.py` | Background | Recursive self-improvement loop |
 </daemon_fleet_registry>
 </system_directive>
-
