@@ -5,9 +5,15 @@ Production API for KovelAI — Privileged Legal AI under the Kovel Doctrine.
 
 Architecture:
     POST /enclave/v1/query           → Synchronous privileged query
-    POST /enclave/v1/query/stream    → SSE streaming privileged query  
+    POST /enclave/v1/query/stream    → SSE streaming privileged query
     POST /webhooks/stripe            → Stripe billing webhooks
     GET  /enclave/v1/health          → Health check
+    POST /account/delete             → GDPR Article 17 — Right to Erasure (30-day grace)
+    POST /account/export             → GDPR Article 20 — Right to Data Portability
+    GET  /account/deletion-status    → Check pending deletion status
+    POST /onboarding/magic-link      → Magic link email authentication
+    POST /kovel/attest               → Kovel attestation receipt (HMAC-SHA256)
+    POST /vent                       → Vent Mode SSE streaming
 
 Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
     - All client queries are ephemeral (RAM-only)
@@ -114,10 +120,12 @@ app = FastAPI(
 # ── OpenTelemetry (Cloud Trace) ────────────────────────────────────────────
 try:
     from api.telemetry import setup_telemetry
+
     setup_telemetry(app)
 except ImportError:
     try:
         from apps.counselconduit.api.telemetry import setup_telemetry
+
         setup_telemetry(app)
     except ImportError:
         pass  # OTEL optional — runs without tracing if deps missing
@@ -191,6 +199,7 @@ async def health():
     }
     try:
         from google.cloud import firestore as _fs
+
         db = _fs.AsyncClient()
         # Lightweight read to verify connectivity
         await db.collection("_health").document("ping").get()
@@ -214,6 +223,7 @@ async def heartbeat(request: Request):
 
 
 # ── Auth Middleware ─────────────────────────────────────────────────────────
+
 
 def _verify_kovel_auth(x_kovel_auth: str | None) -> str:
     """Verify the Kovel authentication token.
@@ -258,42 +268,45 @@ def _verify_kovel_auth(x_kovel_auth: str | None) -> str:
 
 # ── Routes ─────────────────────────────────────────────────────────────────
 
+
 @app.post("/enclave/v1/query", response_model=QueryResponse)
 async def execute_query(
     request: QueryRequest,
     x_kovel_auth: str = Header(None),
 ):
     """Execute a Kovel-privileged query against the Gemini RAG pipeline.
-    
+
     Synchronous endpoint — returns full response after completion.
     All responses pass through Judge #6 governance before returning.
     """
     attorney_id = _verify_kovel_auth(x_kovel_auth)
     request.attorney_id = attorney_id
-    
+
     start = time.monotonic()
     result = await execute_privileged_query(request)
     elapsed_ms = int((time.monotonic() - start) * 1000)
-    
+
     # Judge #6 governance gate
     governance = judge6_evaluate(result.response)
     if not governance.assessment.approved:
         result.response = governance.output_text  # Replace with blocked message
     elif governance.output_text != governance.input_text:
         result.response = governance.output_text  # Apply warnings
-    
+
     # Audit log (async, non-blocking)
     try:
-        await write_audit_log(AuditEntry(
-            attorney_id=attorney_id,
-            action="query",
-            tokens_used=result.token_count,
-            model=result.model,
-        ))
+        await write_audit_log(
+            AuditEntry(
+                attorney_id=attorney_id,
+                action="query",
+                tokens_used=result.token_count,
+                model=result.model,
+            )
+        )
         await update_attorney_usage(attorney_id, result.token_count)
     except Exception as e:
         logger.warning("audit_log_failed", error=str(e))
-    
+
     logger.info(
         "query_completed",
         attorney_id=attorney_id,
@@ -301,7 +314,7 @@ async def execute_query(
         elapsed_ms=elapsed_ms,
         risk_score=governance.assessment.risk_score,
     )
-    
+
     return result
 
 
@@ -311,17 +324,17 @@ async def stream_query(
     x_kovel_auth: str = Header(None),
 ):
     """Stream a Kovel-privileged query response via Server-Sent Events.
-    
+
     Real-time streaming for chat-style interfaces.
     """
     attorney_id = _verify_kovel_auth(x_kovel_auth)
     request.attorney_id = attorney_id
-    
+
     async def event_generator():
         async for chunk in stream_privileged_query(request):
             yield f"data: {chunk}\n\n"
         yield "data: [DONE]\n\n"
-    
+
     return StreamingResponse(
         event_generator(),
         media_type="text/event-stream",
