@@ -1946,7 +1946,7 @@ app = FastAPI(title="CodeAct Orchestrator")
 llm_pool = {
     "claude": anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY")),
     "gpt4": openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY")),
-    "gemini": GenerativeModel("gemini-1.5-pro-002")
+    "gemini": GenerativeModel("gemini-3.1-flash-lite-preview")
 }
 
 # Initialize Vertex AI

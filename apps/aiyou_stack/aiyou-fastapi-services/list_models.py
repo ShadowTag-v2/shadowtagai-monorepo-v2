@@ -26,7 +26,7 @@ def list_models():
         print(f"Error listing models: {e}")
         # Fallback: try using 'gemini-1.0-pro' as a test content generation
         print("Attempting fallbacks...")
-        fallbacks = ["gemini-1.0-pro", "gemini-pro", "gemini-1.5-pro-preview-0409"]
+        fallbacks = ["gemini-1.0-pro", "gemini-pro", "gemini-3.1-flash-lite-preview-preview-0409"]
         for m in fallbacks:
             print(f"Testing {m}...")
             try:

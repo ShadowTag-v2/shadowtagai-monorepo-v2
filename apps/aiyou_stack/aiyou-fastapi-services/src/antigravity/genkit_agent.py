@@ -52,7 +52,7 @@ def sovereign_agent_flow(user_input: str) -> str:
     # if tools are provided.
 
     model_response = ai.generate(
-        model="gemini-1.5-pro",
+        model="gemini-3.1-flash-lite-preview",
         prompt=user_input,
         tools=[search_knowledge, trigger_transformation],
         config={"temperature": 0.2},  # Low temp for deterministic actions

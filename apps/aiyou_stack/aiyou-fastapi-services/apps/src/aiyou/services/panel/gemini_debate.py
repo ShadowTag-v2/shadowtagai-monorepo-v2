@@ -87,7 +87,7 @@ class GeminiPanelDebate:
     def __init__(
         self,
         api_key: str | None = None,
-        model_name: str = "gemini-1.5-pro",
+        model_name: str = "gemini-3.1-flash-lite-preview",
         confidence_threshold: float = 0.80,
     ):
         """Initialize Gemini-native panel debate

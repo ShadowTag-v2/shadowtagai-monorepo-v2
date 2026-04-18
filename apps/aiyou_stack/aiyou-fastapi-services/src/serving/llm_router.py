@@ -3,7 +3,7 @@
 Routes requests to appropriate Gemini model based on task type:
 - Brain (Planning/Reasoning): gemini-2.0-flash-thinking-exp
 - Brawn (Coding/Execution): gemini-2.0-flash-exp
-- Grounding (Governance): gemini-1.5-pro
+- Grounding (Governance): gemini-3.1-flash-lite-preview
 
 Target latencies:
 - Planning: 2-5s
@@ -94,8 +94,8 @@ class LLMRouter:
             "planning": "gemini-2.0-flash-thinking-exp",
             "coding": "gemini-2.0-flash-exp",
             "quick": "gemini-2.0-flash-exp",
-            "governance": "gemini-1.5-pro",
-            "default": "gemini-1.5-pro",
+            "governance": "gemini-3.1-flash-lite-preview",
+            "default": "gemini-3.1-flash-lite-preview",
         },
     }
 
@@ -103,7 +103,7 @@ class LLMRouter:
     PRICING = {
         "gemini-2.0-flash-exp": {"input": 0.075, "output": 0.30},
         "gemini-2.0-flash-thinking-exp": {"input": 0.075, "output": 0.30},
-        "gemini-1.5-pro": {"input": 3.50, "output": 10.50},
+        "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},
     }
 
     # Ada-K: Entropy thresholds for adaptive routing
@@ -150,7 +150,7 @@ class LLMRouter:
                 for model_name in [
                     "gemini-2.0-flash-exp",
                     "gemini-2.0-flash-thinking-exp",
-                    "gemini-1.5-pro",
+                    "gemini-3.1-flash-lite-preview",
                 ]:
                     try:
                         self._gemini_models[model_name] = genai.GenerativeModel(model_name)
@@ -180,7 +180,7 @@ class LLMRouter:
     def _select_model(self, provider: LLMProvider, task_type: TaskType) -> str:
         """Select the best model for provider and task."""
         config = self.MODEL_CONFIG.get(provider, {})
-        default = config.get("default", "gemini-1.5-pro")
+        default = config.get("default", "gemini-3.1-flash-lite-preview")
 
         if task_type == TaskType.PLANNING:
             return config.get("planning", default)
@@ -245,7 +245,7 @@ class LLMRouter:
         models = [
             "gemini-2.0-flash-thinking-exp",
             "gemini-2.0-flash-exp",
-            "gemini-1.5-pro",
+            "gemini-3.1-flash-lite-preview",
         ][:k]
 
         async def generate_for_model(model_name: str) -> LLMResponse | None:
@@ -308,8 +308,8 @@ class LLMRouter:
                 self._gemini_models[model] = genai.GenerativeModel(model)
             except Exception as e:
                 # Fallback to default if specific model fails load
-                logger.warning(f"Failed to load {model}: {e}. Fallback to gemini-1.5-pro")
-                model = "gemini-1.5-pro"
+                logger.warning(f"Failed to load {model}: {e}. Fallback to gemini-3.1-flash-lite-preview")
+                model = "gemini-3.1-flash-lite-preview"
                 if model not in self._gemini_models:
                     self._gemini_models[model] = genai.GenerativeModel(model)
 
@@ -379,7 +379,7 @@ class LLMRouter:
             try:
                 self._gemini_models[model] = genai.GenerativeModel(model)
             except:
-                model = "gemini-1.5-pro"
+                model = "gemini-3.1-flash-lite-preview"
                 if model not in self._gemini_models:
                     self._gemini_models[model] = genai.GenerativeModel(model)
 

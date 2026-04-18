@@ -31,7 +31,7 @@ scanner:
   max_file_size_kb: 500
 
   # Gemini model for AI analysis
-  gemini_model: gemini-2.5-pro-preview-06-05
+  gemini_model: gemini-3.1-flash-lite-preview-preview-06-05
 
   # Enable/disable scan types
   enable_security: true
@@ -42,7 +42,7 @@ scanner:
 # Remediator settings
 remediator:
   # Gemini model for fix generation
-  gemini_model: gemini-2.5-pro-preview-06-05
+  gemini_model: gemini-3.1-flash-lite-preview-preview-06-05
 
   # Minimum severity to auto-fix
   min_severity: medium
@@ -104,7 +104,7 @@ n-autoresearch/Kosmos/BioAgentss:
   strength: 50
 
   # Model to use
-  model: gemini-2.5-pro-preview-06-05
+  model: gemini-3.1-flash-lite-preview-preview-06-05
 
   # Capabilities
   capabilities:

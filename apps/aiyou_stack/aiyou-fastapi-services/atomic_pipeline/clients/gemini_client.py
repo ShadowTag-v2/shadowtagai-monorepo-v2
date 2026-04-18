@@ -3,14 +3,14 @@
 Design wizard for creative direction and test generation.
 
 Specs (Gemini 2.5 Pro Preview - Default):
-- Model: gemini-2.5-pro-preview-06-05 (latest)
+- Model: gemini-3.1-flash-lite-preview-preview-06-05 (latest)
 - Context: 1M+ tokens
 - Pricing: ~$1.25/M input, ~$10/M output (preview)
 - Features: Extended thinking, code execution, web grounding, JSON mode
 - Strengths: Design, complex reasoning, parsing, test generation
 
 Available Models:
-- gemini-2.5-pro-preview-06-05    - Best quality, extended thinking (1M context)
+- gemini-3.1-flash-lite-preview-preview-06-05    - Best quality, extended thinking (1M context)
 - gemini-2.5-flash-preview-05-20  - Fast inference, 1M context
 - gemini-2.0-flash                - Fast, economical
 - gemini-2.0-flash-lite           - Ultra-fast, minimal cost
@@ -38,7 +38,7 @@ class GeminiModel(StrEnum):
     """Available Gemini models - Gemini 2.5 Preview (latest)"""
 
     # Gemini 2.5 Preview series (latest - 1M context)
-    GEMINI_25_PRO = "gemini-2.5-pro-preview-06-05"  # 1M+ context, best design/reasoning
+    GEMINI_25_PRO = "gemini-3.1-flash-lite-preview-preview-06-05"  # 1M+ context, best design/reasoning
     GEMINI_25_FLASH = "gemini-2.5-flash-preview-05-20"  # Fast inference, 1M context
 
     # Gemini 2.0 series (stable)
@@ -46,7 +46,7 @@ class GeminiModel(StrEnum):
     GEMINI_20_FLASH_LITE = "gemini-2.0-flash-lite"  # Ultra-fast, minimal
 
     # Aliases for backwards compatibility
-    GEMINI_PRO = "gemini-2.5-pro-preview-06-05"
+    GEMINI_PRO = "gemini-3.1-flash-lite-preview-preview-06-05"
     GEMINI_FLASH = "gemini-2.5-flash-preview-05-20"
 
 

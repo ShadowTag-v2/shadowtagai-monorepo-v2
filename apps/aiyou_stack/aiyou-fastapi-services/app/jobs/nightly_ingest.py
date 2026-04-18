@@ -33,9 +33,9 @@ async def run_god_mode_batch():
     analyzer = IngestionAnalyzer()
 
     # Explicitly requesting the 2.5 Pro model version via Vertex AI
-    # This assumes the environment variable MODEL_ID="gemini-2.5-pro" is set
+    # This assumes the environment variable MODEL_ID="gemini-3.1-flash-lite-preview" is set
     report = await analyzer.execute_nightly_batch(
-        model_version=os.getenv("MODEL_VERSION", "gemini-2.5-pro"),
+        model_version=os.getenv("MODEL_VERSION", "gemini-3.1-flash-lite-preview"),
         optimize_for="runtime_efficiency",
     )
 

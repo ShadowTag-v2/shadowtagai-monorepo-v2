@@ -27,7 +27,7 @@ class GeminiModel(Enum):
     """Available Gemini models with cost characteristics."""
 
     FLASH = "gemini-2.5-flash"  # Fast, cheap - upgraded to 2.5
-    PRO = "gemini-1.5-pro"  # Deep reasoning (using 1.5 until 2.5 GA)
+    PRO = "gemini-3.1-flash-lite-preview"  # Deep reasoning (using 1.5 until 2.5 GA)
 
     @property
     def cost_per_1m_input(self) -> float:

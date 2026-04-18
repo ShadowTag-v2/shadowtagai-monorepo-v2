@@ -21,7 +21,7 @@ class ReviewRequest(BaseModel):
 
 @app.post("/review")
 async def review_fix(request: ReviewRequest):
-    model = GenerativeModel("gemini-1.5-pro-001")
+    model = GenerativeModel("gemini-3.1-flash-lite-preview")
 
     prompt = f"""
     You are a Senior Principal Software Engineer. Review this code fix.

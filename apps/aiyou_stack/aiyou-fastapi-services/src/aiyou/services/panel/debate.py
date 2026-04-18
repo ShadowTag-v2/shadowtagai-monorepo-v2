@@ -75,7 +75,7 @@ class PanelDebate:
 
         # We reuse one model instance if possible, or create new ones if client is just a config wrapper
         # For this implementation, we assume `gemini_client` is a ready-to-use vertexai object or we use the global vertexai
-        self.model = GenerativeModel("gemini-1.5-pro-001")
+        self.model = GenerativeModel("gemini-3.1-flash-lite-preview")
 
     async def should_debate(self, initial_analysis: dict[str, Any]) -> bool:
         """Determine if content requires panel debate"""
@@ -137,7 +137,7 @@ class PanelDebate:
             arguments_against=arguments_against,
             consensus_score=consensus_score,
             duration_seconds=duration,
-            models_used=["gemini-1.5-pro", "gemini-1.5-pro", "gemini-1.5-pro"],
+            models_used=["gemini-3.1-flash-lite-preview", "gemini-3.1-flash-lite-preview", "gemini-3.1-flash-lite-preview"],
         )
 
         logger.info(f"Debate concluded: {result.decision} (confidence: {result.confidence:.2f})")
@@ -187,7 +187,7 @@ Provide output in JSON format:
 
         return DebateArgument(
             role=DebateRole.PROSECUTOR,
-            model_name="gemini-1.5-pro",
+            model_name="gemini-3.1-flash-lite-preview",
             argument=parsed.get("reasoning", "Error generating argument"),
             evidence=parsed.get("violations", {}),
             confidence=parsed.get("confidence", 50) / 100.0,
@@ -225,7 +225,7 @@ Provide output in JSON format:
 
         return DebateArgument(
             role=DebateRole.DEFENDER,
-            model_name="gemini-1.5-pro",
+            model_name="gemini-3.1-flash-lite-preview",
             argument=parsed.get("reasoning", "Error generating defense"),
             evidence=parsed.get("counter_arguments", {}),
             confidence=parsed.get("confidence", 50) / 100.0,
@@ -255,7 +255,7 @@ Provide output in JSON format:
 
         return DebateArgument(
             role=DebateRole.PROSECUTOR,
-            model_name="gemini-1.5-pro",
+            model_name="gemini-3.1-flash-lite-preview",
             argument=parsed.get("reasoning", "Maintain rejection recommendation"),
             evidence={},
             confidence=parsed.get("confidence", 60) / 100.0,

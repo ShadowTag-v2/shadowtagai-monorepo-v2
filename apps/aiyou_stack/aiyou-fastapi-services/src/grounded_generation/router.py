@@ -13,7 +13,7 @@ def get_service():
 
 class GenerateRequest(BaseModel):
     prompt: str = Field(..., description="The user prompt to generate content for.")
-    model_id: str = Field("gemini-1.5-pro", description="The model ID to use.")
+    model_id: str = Field("gemini-3.1-flash-lite-preview", description="The model ID to use.")
 
 
 class Citation(BaseModel):

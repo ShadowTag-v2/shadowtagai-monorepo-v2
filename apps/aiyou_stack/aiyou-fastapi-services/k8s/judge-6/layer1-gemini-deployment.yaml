@@ -10,7 +10,7 @@ metadata:
 data:
   config.yaml: |
     layer: 1
-    model: "gemini-1.5-pro-002-tuned-prb"
+    model: "gemini-3.1-flash-lite-preview-tuned-prb"
     endpoint: "us-central1-aiplatform.googleapis.com"
     project_id: "${PROJECT_ID}"  # Replace with actual project ID
     region: "us-central1"
@@ -143,7 +143,7 @@ spec:
         - name: LAYER
           value: "1"
         - name: MODEL_NAME
-          value: "gemini-1.5-pro-002-tuned-prb"
+          value: "gemini-3.1-flash-lite-preview-tuned-prb"
         - name: PROJECT_ID
           valueFrom:
             fieldRef:

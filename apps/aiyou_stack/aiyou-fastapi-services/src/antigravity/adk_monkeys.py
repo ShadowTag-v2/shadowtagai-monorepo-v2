@@ -31,7 +31,7 @@ class ADKminion:
     2. Uses Gemini 2.0 Flash / Pro via Vertex AI.
     """
 
-    def __init__(self, project_id: str | None = None, model: str = "gemini-1.5-pro-001"):
+    def __init__(self, project_id: str | None = None, model: str = "gemini-3.1-flash-lite-preview"):
         self.project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT")
         self.location = os.getenv("CLOUD_ML_REGION", "us-central1")
         self.model_name = model

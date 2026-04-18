@@ -125,7 +125,7 @@ services:
       TROOP: "B"
       CALLSIGN: "BRAVO"
       AGENT_COUNT: "32"  # Per replica (4 replicas ≈ 130)
-      MODEL_PRIMARY: "gemini-1.5-pro"
+      MODEL_PRIMARY: "gemini-3.1-flash-lite-preview"
       MODEL_SECONDARY: "gemini-2.5-flash"
       COMPUTE_PROFILE: "HIGH_MEMORY"
       # Engineering Tasks

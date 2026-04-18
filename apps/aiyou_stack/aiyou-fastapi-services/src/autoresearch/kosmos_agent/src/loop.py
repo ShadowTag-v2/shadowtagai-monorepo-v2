@@ -11,7 +11,7 @@ console = Console()
 class KosmosAgent:
     def __init__(
         self,
-        model_reasoning: str = "gemini-1.5-pro",
+        model_reasoning: str = "gemini-3.1-flash-lite-preview",
         _model_tools: str = "gemini-1.5-flash",
     ):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))

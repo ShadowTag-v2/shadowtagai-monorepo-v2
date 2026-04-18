@@ -26,7 +26,7 @@ USAGE:
         --aiurcm_tests=../tests/aiurcm/test_suite.json \\
         --num_synthetic=5000 \\
         --output_dir=./datasets \\
-        --gemini_model=gemini-1.5-pro-002
+        --gemini_model=gemini-3.1-flash-lite-preview
 
 COST:
     ~$3-10 per dataset generation (Gemini API calls)
@@ -391,7 +391,7 @@ class ScenarioGenerator:
 class CodeGenerator:
     """Use Gemini to generate orchestration code from scenarios."""
 
-    def __init__(self, model_name: str = "gemini-1.5-pro-002", api_key: str | None = None):
+    def __init__(self, model_name: str = "gemini-3.1-flash-lite-preview", api_key: str | None = None):
         """Initialize Gemini client."""
         if api_key:
             genai.configure(api_key=api_key)
@@ -1415,7 +1415,7 @@ class DatasetPipeline:
 @click.option(
     "--gemini_model",
     type=str,
-    default="gemini-1.5-pro-002",
+    default="gemini-3.1-flash-lite-preview",
     help="Gemini model to use for code generation",
 )
 @click.option(
