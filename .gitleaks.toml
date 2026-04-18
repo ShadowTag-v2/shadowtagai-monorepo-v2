@@ -1,0 +1,80 @@
+# Gitleaks Configuration
+# Ref: https://github.com/gitleaks/gitleaks
+# Applied globally to the monorepo
+
+title = "Monorepo-Uphillsnowball Gitleaks Config"
+
+[allowlist]
+  description = "Global allowlist"
+  # Paths that are third-party or archived
+  paths = [
+    '''node_modules/''',
+    '''\.git/''',
+    '''reference_architectures/''',
+    '''external_repos/''',
+    '''\.claude_legacy_plans/''',
+    '''data/sovereign_mlx/''',
+    '''\.venv/''',
+    '''venv/''',
+    '''__pycache__/''',
+    '''\.pytest_cache/''',
+    # Third-party tools and snippets (not our code)
+    '''tools/firebase-snippets-web/''',
+    '''tools/GitNexus/''',
+    '''tools/firebase-snippets/''',
+    # Test fixtures and examples
+    '''tests?/fixtures?/''',
+    '''tests?/e2e/''',
+    # Archived memory
+    '''memory/erik-hancock-llm-memory/''',
+    # Recovered architecture docs (archived references)
+    '''docs/atlantis/''',
+    '''docs/Cor\.Atlantis/''',
+    # Lock files
+    '''pnpm-lock\.yaml''',
+    '''package-lock\.json''',
+    '''yarn\.lock''',
+    '''poetry\.lock''',
+    # Claude legacy plans
+    '''\.claude/''',
+    '''\.agents/''',
+  ]
+
+# Allow Stripe publishable keys (public by design)
+[[rules]]
+  id = "stripe-publishable-key"
+  description = "Stripe publishable key (public, safe to commit)"
+  regex = '''pk_(test|live)_[a-zA-Z0-9]{24,}'''
+  [rules.allowlist]
+    regexTarget = "match"
+    regexes = ['''pk_(test|live)_''']
+
+# Detect Stripe secret keys
+[[rules]]
+  id = "stripe-secret-key"
+  description = "Stripe secret key (NEVER commit)"
+  regex = '''sk_(test|live)_[a-zA-Z0-9]{24,}'''
+
+# Detect Google API keys
+[[rules]]
+  id = "google-api-key"
+  description = "Google API Key"
+  regex = '''AIza[0-9A-Za-z_-]{35}'''
+
+# Detect GitHub tokens
+[[rules]]
+  id = "github-token"
+  description = "GitHub Personal Access Token or App Token"
+  regex = '''(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36,}'''
+
+# Detect generic high-entropy secrets
+[[rules]]
+  id = "generic-api-key-inline"
+  description = "Inline API key assignment"
+  regex = '''(?i)(api[_-]?key|apikey|secret[_-]?key)\s*[:=]\s*['"][a-zA-Z0-9_\-]{20,}['"]'''
+  [rules.allowlist]
+    paths = [
+      '''\.env\.example''',
+      '''README''',
+      '''docs/''',
+    ]

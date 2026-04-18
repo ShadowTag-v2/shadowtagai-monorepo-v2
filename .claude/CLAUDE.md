@@ -1,6 +1,6 @@
-# .claude/CLAUDE.md — Module-Level Overrides
+# .claude/CLAUDE.md — Module-Level Overrides (v9.5)
 
-Follow `AGENTS.md` as the canonical project guide.
+Follow `AGENTS.md` as the canonical project guide. Hardened state: v9.5 (2026-04-18).
 
 ## Claude-Specific Rules
 - Prefer concise plans over verbose explanations
