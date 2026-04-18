@@ -36,19 +36,19 @@ Here's a minimal example to get you started. Ensure your Toolbox service is runn
 
 ```javascript
 
-import { ToolboxClient } from '@toolbox-sdk/core';  
+import { ToolboxClient } from '@toolbox-sdk/core';
 const URL = 'http://127.0.0.1:5000'; // Replace with your Toolbox service URL
 const client = new ToolboxClient(URL);
 
-async function quickstart() {  
-  try {  
-      const tools = await client.loadToolset();  
-      // Use tools  
-  } catch (error) {  
-      console.error("unable to load toolset:", error.message);  
-  }  
-}  
-quickstart();  
+async function quickstart() {
+  try {
+      const tools = await client.loadToolset();
+      // Use tools
+  } catch (error) {
+      console.error("unable to load toolset:", error.message);
+  }
+}
+quickstart();
 ```
 
 {{< notice note>}}
@@ -278,7 +278,7 @@ async function getAuthToken() {
     // ... Logic to retrieve ID token (e.g., from local storage, OAuth flow)
     // This example just returns a placeholder. Replace with your actual token retrieval.
     return "YOUR_ID_TOKEN" // Placeholder
-}    
+}
 ```
 {{< notice tip>}}
 Your token retriever function is invoked every time an authenticated parameter requires a token for a tool call. Consider implementing caching logic within this function to avoid redundant token fetching or generation, especially for tokens with longer validity periods or if the retrieval process is resource-intensive.

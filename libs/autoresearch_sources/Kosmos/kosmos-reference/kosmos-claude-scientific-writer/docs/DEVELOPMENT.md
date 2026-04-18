@@ -106,5 +106,3 @@ from scientific_writer import generate_paper
 - `Docs/SKILLS.md` — skills overview
 - `CHANGELOG.md` — release history
 - `CLAUDE.md` — system instructions (kept at root)
-
-

@@ -16,9 +16,9 @@ At the end of your response when concluding a task, you MUST append this exact Y
 
 ```yaml
 ---
-filesTouched: 
+filesTouched:
   - [List of paths you modified]
-cleanupActions: 
+cleanupActions:
   - [List of small refactors, e.g., 'Renamed variable d to displayDate']
   - [e.g., 'Extracted helper functions']
   - [e.g., 'Removed legacy commented-out code']

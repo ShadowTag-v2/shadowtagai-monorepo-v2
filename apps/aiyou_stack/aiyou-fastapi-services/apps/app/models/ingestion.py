@@ -1,5 +1,4 @@
-"""Data models for Gemini Ingestion Layer API
-"""
+"""Data models for Gemini Ingestion Layer API"""
 
 from datetime import datetime
 from enum import StrEnum
@@ -42,10 +41,14 @@ class JobStartRequest(BaseModel):
     """Request to start an ingestion job"""
 
     max_items_per_source: int = Field(
-        default=500, ge=100, le=1000, description="Max items to collect per source",
+        default=500,
+        ge=100,
+        le=1000,
+        description="Max items to collect per source",
     )
     enable_ethical_checks: bool = Field(
-        default=True, description="Enable ethical crawling compliance",
+        default=True,
+        description="Enable ethical crawling compliance",
     )
 
 

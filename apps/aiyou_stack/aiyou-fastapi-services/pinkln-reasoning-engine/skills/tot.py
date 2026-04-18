@@ -81,7 +81,10 @@ Best path: A
 """
 
         super().__init__(
-            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet,
+            name=name,
+            description=description,
+            initial_rating=initial_rating,
+            cheatsheet=cheatsheet,
         )
 
         self.model = model
@@ -174,7 +177,10 @@ Best path: A
         return current_paths[0] if current_paths else ReasoningPath(steps=[], score=0.0)
 
     async def _generate_candidates(
-        self, task: str, current_path: ReasoningPath, breadth: int,
+        self,
+        task: str,
+        current_path: ReasoningPath,
+        breadth: int,
     ) -> list[str]:
         """Generate candidate next steps
 

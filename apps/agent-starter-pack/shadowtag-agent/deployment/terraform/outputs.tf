@@ -31,4 +31,3 @@ output "artifact_registry_repository" {
   description = "Artifact Registry repository ID"
   value       = google_artifact_registry_repository.repo-artifacts-genai.repository_id
 }
-

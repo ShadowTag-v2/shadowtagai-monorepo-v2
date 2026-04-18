@@ -1,5 +1,4 @@
-"""Logging configuration for the pipeline
-"""
+"""Logging configuration for the pipeline"""
 
 from pathlib import Path
 

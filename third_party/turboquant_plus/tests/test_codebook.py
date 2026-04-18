@@ -37,9 +37,7 @@ class TestOptimalCentroids:
         for b in [1, 2, 3, 4]:
             for d in [64, 128, 256]:
                 centroids = optimal_centroids(b, d)
-                assert np.all(np.diff(centroids) > 0), (
-                    f"Centroids not sorted for b={b}, d={d}: {centroids}"
-                )
+                assert np.all(np.diff(centroids) > 0), f"Centroids not sorted for b={b}, d={d}: {centroids}"
 
     def test_correct_count(self):
         """Should have exactly 2^b centroids."""
@@ -55,10 +53,7 @@ class TestOptimalCentroids:
 
         for b in [1, 2, 3, 4]:
             centroids = optimal_centroids(b, 128)
-            np.testing.assert_allclose(
-                centroids, -centroids[::-1], atol=1e-10,
-                err_msg=f"Centroids not symmetric for b={b}"
-            )
+            np.testing.assert_allclose(centroids, -centroids[::-1], atol=1e-10, err_msg=f"Centroids not symmetric for b={b}")
 
     def test_lloyd_converges_3bit(self):
         """3-bit Lloyd's should produce 8 reasonable centroids."""
@@ -92,9 +87,7 @@ class TestOptimalCentroids:
             c_large = optimal_centroids(b, 256)
             # Max centroid should be ~2× smaller for 4× larger d
             ratio = np.max(np.abs(c_small)) / np.max(np.abs(c_large))
-            assert 1.5 < ratio < 2.5, (
-                f"Scale ratio {ratio:.2f} unexpected for b={b}"
-            )
+            assert 1.5 < ratio < 2.5, f"Scale ratio {ratio:.2f} unexpected for b={b}"
 
 
 class TestGaussianConditionalExpectation:
@@ -211,8 +204,8 @@ class TestNearestCentroidIndices:
         centroids = np.array([-1.0, 0.0, 1.0])
         values = np.array([-100.0, 100.0])
         indices = nearest_centroid_indices(values, centroids)
-        assert indices[0] == 0   # far left → first centroid
-        assert indices[1] == 2   # far right → last centroid
+        assert indices[0] == 0  # far left → first centroid
+        assert indices[1] == 2  # far right → last centroid
 
     def test_batch_shape_preserved(self):
         """Output shape should match input shape."""

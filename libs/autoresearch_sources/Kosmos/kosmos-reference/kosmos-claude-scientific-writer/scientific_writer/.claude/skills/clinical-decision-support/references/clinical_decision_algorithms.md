@@ -90,7 +90,7 @@ Entry: Suspected PE
 Step 1: Calculate Wells Score
   Clinical features points:
   - Clinical signs of DVT: 3 points
-  - PE more likely than alternative diagnosis: 3 points  
+  - PE more likely than alternative diagnosis: 3 points
   - Heart rate >100: 1.5 points
   - Immobilization/surgery in past 4 weeks: 1.5 points
   - Previous PE/DVT: 1.5 points
@@ -178,7 +178,7 @@ Step 4: Platinum Doublet Selection (if applicable)
   │  └─ Carboplatin AUC 6 + paclitaxel 200 mg/m² Q3W (4 cycles)
   │      or Carboplatin AUC 5 + nab-paclitaxel 100 mg/m² D1,8,15 Q4W
   │
-  └─ Non-squamous histology  
+  └─ Non-squamous histology
      └─ Carboplatin AUC 6 + pemetrexed 500 mg/m² Q3W (4 cycles)
          Continue pemetrexed maintenance if responding
          Add bevacizumab 15 mg/kg if eligible (no hemoptysis, brain mets)
@@ -451,7 +451,7 @@ Clinical Application:
     \node [alert, below of=decision1, node distance=2.5cm] (alert1) {Immediate action};
     \node [process, right of=decision1, node distance=4cm] (process1) {Standard evaluation};
     \node [terminal, below of=process1, node distance=2.5cm] (end) {Outcome};
-    
+
     % Arrows
     \draw [arrow] (start) -- (decision1);
     \draw [arrow] (decision1) -- node {Yes} (alert1);
@@ -601,4 +601,3 @@ Next Review Date: July 1, 2024
 - Drug shortage requiring alternative pathways
 - Drug recall or safety withdrawal
 - Outbreak or pandemic requiring modified protocols
-

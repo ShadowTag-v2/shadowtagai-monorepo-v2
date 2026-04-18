@@ -2059,19 +2059,19 @@
 
 #### Query Partition API
 
-New API and backend RPC which allows for fetching a set of cursor keys for a 
-Collection Group Query. Accessible via the new [`CollectionGroup#getPartitions(long,ApiStreamObserver)`](https://googleapis.dev/java/google-cloud-firestore/2.0.0/com/google/cloud/firestore/CollectionGroup.html#getPartitions-long-com.google.api.gax.rpc.ApiStreamObserver-) method. 
+New API and backend RPC which allows for fetching a set of cursor keys for a
+Collection Group Query. Accessible via the new [`CollectionGroup#getPartitions(long,ApiStreamObserver)`](https://googleapis.dev/java/google-cloud-firestore/2.0.0/com/google/cloud/firestore/CollectionGroup.html#getPartitions-long-com.google.api.gax.rpc.ApiStreamObserver-) method.
 
 #### Read-Only Transaction Options
 
 [`TransactionOptions`](https://googleapis.dev/java/google-cloud-firestore/2.0.0/com/google/cloud/firestore/TransactionOptions.html)
-has been refactored to provide the ability to configure options for read-only 
+has been refactored to provide the ability to configure options for read-only
 transactions along with the existing configuration for read-write transactions.
 
-This new ability is provided via the new [`TransactionOptions.createReadOnlyOptionsBuilder()`](https://googleapis.dev/java/google-cloud-firestore/2.0.0/com/google/cloud/firestore/TransactionOptions.html#createReadOnlyOptionsBuilder--) 
+This new ability is provided via the new [`TransactionOptions.createReadOnlyOptionsBuilder()`](https://googleapis.dev/java/google-cloud-firestore/2.0.0/com/google/cloud/firestore/TransactionOptions.html#createReadOnlyOptionsBuilder--)
 type safe builder.
 
-Along with the new type safe builder for read-only options, there is a new type 
+Along with the new type safe builder for read-only options, there is a new type
 safe builder for read-write options as well accessible via [`TransactionOptions.createReadWriteOptionsBuilder()`](https://googleapis.dev/java/google-cloud-firestore/2.0.0/com/google/cloud/firestore/TransactionOptions.html#createReadWriteOptionsBuilder--). Each of the existing `TransactionOptions.create(...)`
 methods for configuring read-write options has been deprecated in favor of the new builder.
 
@@ -2084,7 +2084,7 @@ allowing instantiation outside `FirestoreOptions.Builder`.
 When connecting to the Cloud Firestore Emulator via `FirestoreOptions` rather than
 the environment variable `FIRESTORE_EMULATOR_HOST`, a custom credential implementation
 must be specified to allow various admin operations in the emulator. Previously
-this required users to create their own implementation due to it not being 
+this required users to create their own implementation due to it not being
 possible to construct a `FakeCredential`. As part of this change, `EmulatorCredentials`
 is static and therefore able to be constructed from any location.
 
@@ -2093,11 +2093,11 @@ is static and therefore able to be constructed from any location.
 #### New Firestore Admin Client API Artifact
 
 The Cloud Firestore Admin Client has been migrated to its own maven artifact `com.google.cloud:google-cloud-firestore-admin`
-rather than being bundled in `com.google.cloud:google-cloud-firestore`. All 
+rather than being bundled in `com.google.cloud:google-cloud-firestore`. All
 packages and classes have retained their existing names.
 
-The new artifact is included in the `com.google.cloud:google-cloud-firestore-bom`, 
-`com.google.cloud:google-cloud-bom` and `com.google.cloud:libraries-bom` 
+The new artifact is included in the `com.google.cloud:google-cloud-firestore-bom`,
+`com.google.cloud:google-cloud-bom` and `com.google.cloud:libraries-bom`
 artifacts and is accessible by adding the new dependency to your `pom.xml` file:
 
 ```xml
@@ -2109,8 +2109,8 @@ artifacts and is accessible by adding the new dependency to your `pom.xml` file:
 
 #### Removal of v1beta1
 
-Cloud Firestore has been GA for some time now, and the `google-cloud-firestore` 
-code base has been using the protos and generated classes for the v1 api since 
+Cloud Firestore has been GA for some time now, and the `google-cloud-firestore`
+code base has been using the protos and generated classes for the v1 api since
 that time. As such, we will no longer be publishing artifacts for the deprecated
 v1beta1 protos. All functionality from v1beta1 is present in v1, and all users
 should update any code to use v1.
@@ -2130,9 +2130,9 @@ behavior must be updated to use Timestamps instead of Date.
 #### ⚠ BREAKING CHANGES
 
 * add support for the Query Partition API (#202)
-  * `Firestore#collectionGroup(...)` has a new return type `CollectionGroup` 
+  * `Firestore#collectionGroup(...)` has a new return type `CollectionGroup`
     which requires any code that previously used the method be re-compiled to
-    pick up the new signature. `CollectionGroup` extends `Query` and as such 
+    pick up the new signature. `CollectionGroup` extends `Query` and as such
     does not require your code to be updated, only the compiled class files.
 * move FirestoreAdminClient and associated classes to new artifact google-cloud-firestore-admin (#311)
 * remove deprecated v1beta1 protos and grpc client (#305)

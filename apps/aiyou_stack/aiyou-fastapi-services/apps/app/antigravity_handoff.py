@@ -198,7 +198,10 @@ class AntigravityRouter:
         return decision
 
     async def execute_handoff(
-        self, prompt: str, context: dict[str, Any], routing: RoutingDecision,
+        self,
+        prompt: str,
+        context: dict[str, Any],
+        routing: RoutingDecision,
     ) -> HandoffResult:
         """Execute model handoff based on routing decision.
 
@@ -386,7 +389,9 @@ async def test_antigravity_router():
     # Test 1: Production inference (should route to Gemini)
     print("Test 1: Production Inference")
     routing = router.decide_routing(
-        task_type=TaskType.PRODUCTION_INFERENCE, context_size_bytes=5000, sla_ms=100,
+        task_type=TaskType.PRODUCTION_INFERENCE,
+        context_size_bytes=5000,
+        sla_ms=100,
     )
 
     result = await router.execute_handoff(
@@ -406,7 +411,9 @@ async def test_antigravity_router():
     )
 
     result = await router.execute_handoff(
-        prompt="Analyze this large dataset", context=large_context, routing=routing,
+        prompt="Analyze this large dataset",
+        context=large_context,
+        routing=routing,
     )
     print(f"   Compressed: {result.compressed}, Ratio: {result.compression_ratio}")
 

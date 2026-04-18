@@ -21,7 +21,8 @@ from vertexai.generative_models import GenerationConfig, GenerativeModel
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -74,11 +75,15 @@ class Config:
 
 # Request metrics
 request_total = Counter(
-    "judge_request_total", "Total number of judge requests", ["layer", "status"],
+    "judge_request_total",
+    "Total number of judge requests",
+    ["layer", "status"],
 )
 
 request_errors = Counter(
-    "judge_request_errors_total", "Total number of judge request errors", ["layer", "error_type"],
+    "judge_request_errors_total",
+    "Total number of judge request errors",
+    ["layer", "error_type"],
 )
 
 request_duration = Histogram(
@@ -96,7 +101,9 @@ layer_duration = Histogram(
 )
 
 circuit_breaker_trips = Counter(
-    "judge_circuit_breaker_trips_total", "Total circuit breaker trips", ["layer"],
+    "judge_circuit_breaker_trips_total",
+    "Total circuit breaker trips",
+    ["layer"],
 )
 
 active_requests = Gauge("judge_active_requests", "Number of active judge requests")
@@ -296,7 +303,8 @@ Respond in JSON format:
         # This would ideally use aiohttp or similar for true async
         loop = asyncio.get_event_loop()
         response = await loop.run_in_executor(
-            None, lambda: self.model.generate_content(prompt, generation_config=config),
+            None,
+            lambda: self.model.generate_content(prompt, generation_config=config),
         )
         return response.text
 

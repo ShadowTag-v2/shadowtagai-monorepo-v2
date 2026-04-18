@@ -1,5 +1,4 @@
-"""Common dependencies for FastAPI routes
-"""
+"""Common dependencies for FastAPI routes"""
 
 from app.db.session import SessionLocal
 

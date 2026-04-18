@@ -498,7 +498,7 @@ boundTool, err := client.LoadTool("my-tool", ctx, core.WithBindParamString("para
 boundTool, err := client.LoadToolset("", ctx, core.WithBindParamString("param", "value"))
 ```
 
-{{< notice note >}} 
+{{< notice note >}}
 Bound values during loading only affect the tools loaded in that call.
 {{< /notice >}}
 
@@ -515,7 +515,7 @@ getDynamicValue := func() (string, error) { return "req-123", nil }
 dynamicBoundTool, err := tool.ToolFrom(core.WithBindParamStringFunc("param", getDynamicValue))
 ```
 
-{{< notice info >}} 
+{{< notice info >}}
 You don't need to modify tool configurations to bind parameter values.
 {{< /notice >}}
 

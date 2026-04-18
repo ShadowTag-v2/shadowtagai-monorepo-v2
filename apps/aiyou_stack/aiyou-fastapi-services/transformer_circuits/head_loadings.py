@@ -361,7 +361,9 @@ def compute_head_loadings(
         # Get attention pattern (would need to run forward pass with hooks)
         # This is a placeholder - actual implementation would capture from forward pass
         attention_patterns[layer] = torch.zeros(
-            attn.num_heads, len(input_ids[0]), len(input_ids[0]),
+            attn.num_heads,
+            len(input_ids[0]),
+            len(input_ids[0]),
         )
 
         # Get feature vectors

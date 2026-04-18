@@ -252,7 +252,7 @@ You can configure these dynamic headers as follows:
 from toolbox_langchain import ToolboxClient
 
 async with ToolboxClient(
-    "toolbox-url", 
+    "toolbox-url",
     client_headers={"header1": header1_getter, "header2": header2_getter, ...}
 ) as client:
 ```

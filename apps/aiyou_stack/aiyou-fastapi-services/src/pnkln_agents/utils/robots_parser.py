@@ -49,7 +49,9 @@ class RobotsParser:
             try:
                 # Fetch with timeout
                 response = requests.get(
-                    robots_url, timeout=5, headers={"User-Agent": self.user_agent},
+                    robots_url,
+                    timeout=5,
+                    headers={"User-Agent": self.user_agent},
                 )
 
                 if response.status_code == 200:

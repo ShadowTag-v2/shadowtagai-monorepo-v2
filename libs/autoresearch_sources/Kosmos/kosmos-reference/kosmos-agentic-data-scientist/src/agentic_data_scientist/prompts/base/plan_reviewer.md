@@ -78,4 +78,3 @@ A separate confirmation agent will analyze your feedback to determine whether to
 - Focus on strategic completeness, not implementation details
 - Trust that downstream agents will handle technical specifics
 - Be decisive - approve plans that adequately address the request
-

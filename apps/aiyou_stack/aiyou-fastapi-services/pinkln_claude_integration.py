@@ -182,7 +182,11 @@ class ClaudePnklnAgent:
         return result
 
     async def _call_claude_sdk(
-        self, prompt: str, system_prompt: str, max_tokens: int, temperature: float,
+        self,
+        prompt: str,
+        system_prompt: str,
+        max_tokens: int,
+        temperature: float,
     ) -> dict[str, Any]:
         """Call Claude via Agent SDK.
 
@@ -199,7 +203,11 @@ class ClaudePnklnAgent:
         }
 
     async def _iterate_to_excellence(
-        self, initial_solution: dict[str, Any], challenge: str, role: str, max_iterations: int = 3,
+        self,
+        initial_solution: dict[str, Any],
+        challenge: str,
+        role: str,
+        max_iterations: int = 3,
     ) -> dict[str, Any]:
         """Apply the pinkln 'Iterate Relentlessly' principle.
 
@@ -253,7 +261,10 @@ Provide an improved solution.
         return current_solution
 
     async def multi_agent_debate(
-        self, challenge: str, perspectives: list[dict[str, str]], synthesize: bool = True,
+        self,
+        challenge: str,
+        perspectives: list[dict[str, str]],
+        synthesize: bool = True,
     ) -> dict[str, Any]:
         """Run a multi-agent debate using different perspectives.
 
@@ -336,7 +347,9 @@ Synthesize these perspectives into:
         }
 
     async def skill_execution(
-        self, skill_name: str, task_context: dict[str, Any],
+        self,
+        skill_name: str,
+        task_context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a specific pinkln skill.
 

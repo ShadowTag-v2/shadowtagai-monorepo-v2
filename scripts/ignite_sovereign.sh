@@ -82,7 +82,7 @@ if command -v ruff &>/dev/null || [ -f "$HOME/.local/bin/ruff" ]; then
     RUFF_CMD="${HOME}/.local/bin/ruff"
     F821_COUNT=$($RUFF_CMD check --select F821 --exclude "*/external_repos/*" --exclude "*/archive/*" --exclude "*/node_modules/*" --exclude "*/.venv/*" --exclude "*/ShadowMobile/*" apps/ tools/ scripts/ 2>/dev/null | grep -c "F821" || echo "0")
     echo "  📊 F821 (undefined names): $F821_COUNT"
-    
+
     F401_COUNT=$($RUFF_CMD check --select F401 --exclude "*/external_repos/*" --exclude "*/archive/*" --exclude "*/node_modules/*" --exclude "*/.venv/*" --exclude "*/ShadowMobile/*" apps/ tools/ scripts/ 2>/dev/null | grep -c "F401" || echo "0")
     echo "  📊 F401 (unused imports): $F401_COUNT"
 else

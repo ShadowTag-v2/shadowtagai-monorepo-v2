@@ -2,7 +2,7 @@
 Antigravity Swarm - Judge #6 Governed Agent Orchestration
 
 Purpose: shadowtag-omega-v4JR doctrine enforcement
-Reason: SOP compliance + research delta application  
+Reason: SOP compliance + research delta application
 Brakes: Judge #6 validation (p99 ≤90ms target)
 """
 
@@ -115,7 +115,7 @@ logger = logging.getLogger(__name__)
 class AntigravitySwarm(n-autoresearch/Kosmos/BioAgents):
     """
     Judge #6 governed agent swarm.
-    
+
     Extends n-autoresearch/Kosmos/BioAgents with Antigravity doctrine:
     - Purpose: shadowtag-omega-v4JR mission alignment
     - Reason: SOP + research delta compliance
@@ -126,7 +126,7 @@ class AntigravitySwarm(n-autoresearch/Kosmos/BioAgents):
         super().__init__()
         self.config = config or SwarmConfig()
         self._lock = threading.RLock()
-        
+
         self.judge = JudgeSix(
             caller=self.orchestrator,
             mission_statement=self.config.mission,
@@ -135,7 +135,7 @@ class AntigravitySwarm(n-autoresearch/Kosmos/BioAgents):
             reasons_threshold=self.config.reasons_threshold,
             brakes_threshold=self.config.brakes_threshold,
         )
-        
+
         self.units: list[AgentUnit] = []
         self._init_roster()
 
@@ -143,10 +143,10 @@ class AntigravitySwarm(n-autoresearch/Kosmos/BioAgents):
         """Initialize agent roster from pillars and capabilities."""
         for unit_id, role in PILLARS:
             self.units.append(AgentUnit(id=unit_id, role=f"Pillar: {role}"))
-        
+
         for unit_id, role in CAPABILITIES:
             self.units.append(AgentUnit(id=unit_id, role=f"Capability: {role}"))
-        
+
         logger.info("Roster initialized: %d agents", len(self.units))
 
     def _get_context(self, unit: AgentUnit) -> str:
@@ -192,7 +192,7 @@ class AntigravitySwarm(n-autoresearch/Kosmos/BioAgents):
                 validation = self.judge.validate(fn_name, fn_args, context=context)
             else:
                 validation = self.judge._validate(fn_name, fn_args, context=context)
-            
+
             decision = validation.result.name if hasattr(validation.result, 'name') else str(validation.result).replace("ValidationResult.", "")
             score = int(validation.purpose_score * 100)
 

@@ -41,13 +41,13 @@ export const WebGPUFallbackDialog = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div 
+      <div
         className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-200 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
         onClick={onClose}
       />
-      
+
       {/* Dialog */}
-      <div 
+      <div
         className={`relative bg-surface border border-border-subtle rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden transition-all duration-200 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
       >
         {/* Header with scratching emoji */}
@@ -58,10 +58,10 @@ export const WebGPUFallbackDialog = ({
           >
             <X className="w-5 h-5" />
           </button>
-          
+
           <div className="flex items-center gap-4">
             {/* Animated emoji */}
-            <div 
+            <div
               className={`text-5xl ${isAnimating ? 'animate-bounce' : ''}`}
               onAnimationEnd={() => setIsAnimating(false)}
               onClick={() => setIsAnimating(true)}
@@ -82,10 +82,10 @@ export const WebGPUFallbackDialog = ({
         {/* Content */}
         <div className="px-6 py-5 space-y-4">
           <p className="text-sm text-text-secondary leading-relaxed">
-            Couldn't create embeddings with WebGPU, so semantic search (Graph RAG) 
-            won't be as smart. The graph still works fine though! 
+            Couldn't create embeddings with WebGPU, so semantic search (Graph RAG)
+            won't be as smart. The graph still works fine though!
           </p>
-          
+
           <div className="bg-elevated/50 rounded-lg p-4 border border-border-subtle">
             <p className="text-sm text-text-secondary">
               <span className="font-medium text-text-primary">Your options:</span>
@@ -146,4 +146,3 @@ export const WebGPUFallbackDialog = ({
     </div>
   );
 };
-

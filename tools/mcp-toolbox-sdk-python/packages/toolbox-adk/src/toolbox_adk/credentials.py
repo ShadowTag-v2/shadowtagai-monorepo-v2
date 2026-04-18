@@ -148,9 +148,7 @@ class CredentialStrategy:
         )
 
     @staticmethod
-    def from_adk_credentials(
-        auth_credential: AuthCredential, auth_scheme: AuthScheme | None = None
-    ) -> CredentialConfig:
+    def from_adk_credentials(auth_credential: AuthCredential, auth_scheme: AuthScheme | None = None) -> CredentialConfig:
         """
         Creates a CredentialConfig from ADK AuthScheme and AuthCredential objects.
 
@@ -166,10 +164,7 @@ class CredentialStrategy:
             ValueError: If the credential type is not supported or required scheme is missing.
         """
         # Handle OAuth2
-        if (
-            auth_credential.auth_type == AuthCredentialTypes.OAUTH2
-            and auth_credential.oauth2
-        ):
+        if auth_credential.auth_type == AuthCredentialTypes.OAUTH2 and auth_credential.oauth2:
             # Extract client_id, client_secret, and scopes from the credential object.
             return CredentialStrategy.user_identity(
                 client_id=auth_credential.oauth2.client_id or "",
@@ -178,30 +173,16 @@ class CredentialStrategy:
             )
 
         # Handle HTTP Bearer
-        if (
-            auth_credential.auth_type == AuthCredentialTypes.HTTP
-            and auth_credential.http
-        ):
+        if auth_credential.auth_type == AuthCredentialTypes.HTTP and auth_credential.http:
             scheme_type = (auth_credential.http.scheme or "").lower()
-            if (
-                scheme_type == "bearer"
-                and auth_credential.http.credentials
-                and auth_credential.http.credentials.token
-            ):
-                return CredentialStrategy.manual_token(
-                    token=auth_credential.http.credentials.token, scheme="Bearer"
-                )
+            if scheme_type == "bearer" and auth_credential.http.credentials and auth_credential.http.credentials.token:
+                return CredentialStrategy.manual_token(token=auth_credential.http.credentials.token, scheme="Bearer")
 
             raise ValueError(f"Unsupported HTTP authentication scheme: {scheme_type}")
 
-        if (
-            auth_credential.auth_type == AuthCredentialTypes.API_KEY
-            and auth_credential.api_key
-        ):
+        if auth_credential.auth_type == AuthCredentialTypes.API_KEY and auth_credential.api_key:
             if not auth_scheme:
-                raise ValueError(
-                    "API Key credentials require the auth_scheme definition."
-                )
+                raise ValueError("API Key credentials require the auth_scheme definition.")
 
             header_name = getattr(auth_scheme, "name", None)
             if not header_name:
@@ -214,15 +195,11 @@ class CredentialStrategy:
                 location_str = location_str.split(".")[-1]
 
             if location_str.lower() != "header":
-                raise ValueError(
-                    f"Unsupported API Key location: {location}. Only 'header' is supported."
-                )
+                raise ValueError(f"Unsupported API Key location: {location}. Only 'header' is supported.")
 
             return CredentialStrategy.api_key(
                 key=auth_credential.api_key,
                 header_name=header_name,
             )
 
-        raise ValueError(
-            f"Unsupported ADK credential type: {auth_credential.auth_type}"
-        )
+        raise ValueError(f"Unsupported ADK credential type: {auth_credential.auth_type}")

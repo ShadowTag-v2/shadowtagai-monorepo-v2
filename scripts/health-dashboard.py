@@ -15,9 +15,7 @@ from datetime import datetime
 
 def run(cmd: str, cwd: str = ".") -> tuple[int, str]:
     """Run a command and return (exit_code, stdout)."""
-    result = subprocess.run(
-        cmd, shell=True, capture_output=True, text=True, cwd=cwd, timeout=30
-    )
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd, timeout=30)
     return result.returncode, result.stdout.strip()
 
 
@@ -34,9 +32,7 @@ def check_ruff() -> dict:
 
 
 def check_vulture() -> dict:
-    code, out = run(
-        "python3 -m vulture control/pnkln/ scripts/ .vulture_whitelist.py --min-confidence 80 2>/dev/null"
-    )
+    code, out = run("python3 -m vulture control/pnkln/ scripts/ .vulture_whitelist.py --min-confidence 80 2>/dev/null")
     return {"status": "✅" if code == 0 else "⚠️", "detail": out or "No dead code", "code": code}
 
 
@@ -126,10 +122,7 @@ def main():
     print(f"  {'Disk:':<20} {checks['disk']['status']}")
     print(f"  {'Git Pack:':<20} {checks['git_pack']['status']}")
     print()
-    overall = all(
-        c.get("code", 0) == 0 if "code" in c else True
-        for c in [checks["tests"], checks["lint"]]
-    )
+    overall = all(c.get("code", 0) == 0 if "code" in c else True for c in [checks["tests"], checks["lint"]])
     print(f"  Overall: {'🟢 HEALTHY' if overall else '🔴 ISSUES DETECTED'}")
 
 

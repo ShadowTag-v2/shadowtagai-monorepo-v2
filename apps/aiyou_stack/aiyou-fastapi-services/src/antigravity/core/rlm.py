@@ -11,8 +11,7 @@ from typing import Any
 
 
 class RecursiveLanguageModel:
-    """RLM implementation for unbounded context handling.
-    """
+    """RLM implementation for unbounded context handling."""
 
     def __init__(
         self,
@@ -40,10 +39,13 @@ class RecursiveLanguageModel:
             print(f"Warning: RLM context save failed: {e}")
 
     async def query(
-        self, prompt: str, context: Any, llm_call_fn: callable, context_id: str | None = None,
+        self,
+        prompt: str,
+        context: Any,
+        llm_call_fn: callable,
+        context_id: str | None = None,
     ) -> str:
-        """RLM query with REPL environment.
-        """
+        """RLM query with REPL environment."""
         # Save context to disk if ID provided, to avoid memory pressure
         if context_id:
             self._save_context(context_id, context)

@@ -170,7 +170,9 @@ class ShadowModeOrchestrator:
 
         # Wait for both
         shadow_result, production_result = await asyncio.gather(
-            shadow_task, production_task, return_exceptions=True,
+            shadow_task,
+            production_task,
+            return_exceptions=True,
         )
 
         # Handle errors

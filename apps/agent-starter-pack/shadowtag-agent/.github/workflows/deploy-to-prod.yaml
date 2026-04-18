@@ -67,4 +67,3 @@ jobs:
             --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
             --region ${{ vars.REGION }} \
             --project ${{ vars.PROD_PROJECT_ID }}
-

@@ -1,6 +1,6 @@
 /**
  * LLM Prompt Templates for Wiki Generation
- * 
+ *
  * All prompts produce deterministic, source-grounded documentation.
  * Templates use {{PLACEHOLDER}} substitution.
  */

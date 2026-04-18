@@ -79,8 +79,7 @@ def log_event(source: str, event_type: str, content: str) -> str:
 
 @mcp.tool()
 def read_tape(lines: int = 50) -> str:
-    """Reads the tail of the Universal Tape (Context Injection).
-    """
+    """Reads the tail of the Universal Tape (Context Injection)."""
     if not os.path.exists(TAPE_FILE):
         return "[]"
 

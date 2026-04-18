@@ -59,8 +59,7 @@ class JudgeSix:
                 logger.error(f"Failed to load laws: {e}")
 
     async def evaluate(self, action: str, payload: dict) -> dict:
-        """The Universal Gating Function.
-        """
+        """The Universal Gating Function."""
         # 1. Safety Gate (ATP 5-19)
         safety_risk = self._assess_safety(action)
 
@@ -120,8 +119,7 @@ class JudgeSix:
 
 # --- SHADOWTAG: THE TRUTH PROTOCOL ---
 class ShadowTag:
-    """v2.0: Invisible Watermarking + Polygon Anchor.
-    """
+    """v2.0: Invisible Watermarking + Polygon Anchor."""
 
     def sign(self, content: str, user_id: str) -> dict:
         timestamp = str(time.time())

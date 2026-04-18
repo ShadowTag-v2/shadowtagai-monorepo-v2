@@ -37,7 +37,7 @@ utils:
           any:
           - has:
              stopBy: neighbor
-             nthChild: 
+             nthChild:
               position: 1
               ofRule:
                 not:
@@ -57,7 +57,7 @@ utils:
           - has:
               stopBy: neighbor
               kind: interpreted_string_literal
-              nthChild: 
+              nthChild:
                position: 1
                ofRule:
                 not:

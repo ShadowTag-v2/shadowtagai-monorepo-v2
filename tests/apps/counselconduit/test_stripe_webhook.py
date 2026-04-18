@@ -36,16 +36,12 @@ def mock_recaptcha_token() -> str:
     return "03AGdBq24_mock_recaptcha_v3_token_for_testing"
 
 
-def _make_stripe_signature(
-    payload: bytes, secret: str, timestamp: int | None = None
-) -> str:
+def _make_stripe_signature(payload: bytes, secret: str, timestamp: int | None = None) -> str:
     """Build a valid Stripe-Signature header for testing."""
     if timestamp is None:
         timestamp = int(time.time())
     signed_payload = f"{timestamp}.".encode() + payload
-    sig = hmac_module.new(
-        secret.encode("utf-8"), signed_payload, hashlib.sha256
-    ).hexdigest()
+    sig = hmac_module.new(secret.encode("utf-8"), signed_payload, hashlib.sha256).hexdigest()
     return f"t={timestamp},v1={sig}"
 
 
@@ -80,6 +76,7 @@ def _import_handler():
             _handle_invoice_payment_failed,
             _EVENT_HANDLERS,
         )
+
         return {
             "verify": verify_stripe_signature,
             "checkout": _handle_checkout_completed,

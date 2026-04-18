@@ -219,7 +219,9 @@ def select_narrative_arc(
 
 
 def select_persuasion_points(
-    video_id: str, household_type: str | None = None, user_context: dict | None = None,
+    video_id: str,
+    household_type: str | None = None,
+    user_context: dict | None = None,
 ) -> list[dict]:
     """Select targeted persuasion points based on household dynamics
 
@@ -272,7 +274,10 @@ def select_persuasion_points(
 
 
 def calculate_geofence_distance(
-    user_lat: float, user_lon: float, store_lat: float, store_lon: float,
+    user_lat: float,
+    user_lon: float,
+    store_lat: float,
+    store_lon: float,
 ) -> float:
     """Calculate distance between user and store location (Haversine formula)
     Returns distance in meters

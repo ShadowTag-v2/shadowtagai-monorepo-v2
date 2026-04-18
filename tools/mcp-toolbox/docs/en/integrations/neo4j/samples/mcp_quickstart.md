@@ -44,7 +44,7 @@ export OS="linux/amd64" # one of linux/amd64, darwin/arm64, darwin/amd64, or win
 curl -O [https://storage.googleapis.com/mcp-toolbox-for-databases/v0.16.0/$OS/toolbox](https://storage.googleapis.com/mcp-toolbox-for-databases/v0.16.0/$OS/toolbox)
 ```
 
-  + 
+  +
 . Make the binary executable:
 \+
 
@@ -141,4 +141,3 @@ Starting MCP inspector...
 1. Select `List Tools`, you will see a list of tools configured in `tools.yaml`.
 
 1. Test out your tools here\!
-

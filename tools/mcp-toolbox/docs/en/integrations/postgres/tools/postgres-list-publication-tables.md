@@ -10,8 +10,8 @@ description: >
 
 The `postgres-list-publication-tables` tool lists all publication tables in the database.
 
-`postgres-list-publication-tables` lists detailed information as JSON for publication tables. A publication table in PostgreSQL is a 
-table that is explicitly included as a source for replication within a publication (a set of changes generated from a table or group 
+`postgres-list-publication-tables` lists detailed information as JSON for publication tables. A publication table in PostgreSQL is a
+table that is explicitly included as a source for replication within a publication (a set of changes generated from a table or group
 of tables) as part of the logical replication feature. The tool takes the following input parameters:
 
 - `table_names` (optional): Filters by a comma-separated list of table names. Default: `""`

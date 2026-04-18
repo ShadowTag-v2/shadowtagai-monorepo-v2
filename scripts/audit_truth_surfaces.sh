@@ -38,7 +38,7 @@ skip_dirs = {".git", "node_modules", ".venv", ".beads", "dist", "build"}
 for path in root.rglob("*"):
     if not path.is_file() or path.suffix.lower() in skip_suffixes:
         continue
-    
+
     # Skip ignored directories
     if any(part in skip_dirs for part in path.parts):
         continue
@@ -47,7 +47,7 @@ for path in root.rglob("*"):
         text = path.read_text(encoding="utf-8", errors="ignore")
     except Exception:
         continue
-        
+
     for key, needles in patterns.items():
         for needle in needles:
             if needle in text:
@@ -55,4 +55,3 @@ for path in root.rglob("*"):
 
 print(json.dumps({k: v for k, v in hits.items() if v}, indent=2))
 PY
-

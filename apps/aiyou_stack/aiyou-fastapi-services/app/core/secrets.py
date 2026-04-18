@@ -211,8 +211,7 @@ class SecretManager:
         return default_url
 
     def clear_cache(self):
-        """Clear the secret cache (useful for testing or forcing refresh)
-        """
+        """Clear the secret cache (useful for testing or forcing refresh)"""
         self.cache.clear()
         logger.info("🔄 Secret cache cleared")
 

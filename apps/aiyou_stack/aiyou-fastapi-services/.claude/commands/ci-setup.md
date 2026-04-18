@@ -47,17 +47,17 @@ Follow this systematic approach to implement CI/CD: **$ARGUMENTS**
 
 
 4. **Build Pipeline Configuration**
-   
+
    **GitHub Actions Example:**
    ```yaml
    name: CI/CD Pipeline
-   
+
    on:
      push:
        branches: [ main, develop ]
      pull_request:
        branches: [ main ]
-   
+
    jobs:
      test:
        runs-on: ubuntu-latest
@@ -87,7 +87,7 @@ Follow this systematic approach to implement CI/CD: **$ARGUMENTS**
      - build
 
      - deploy
-   
+
    test:
      stage: test
      script:
@@ -194,7 +194,7 @@ Follow this systematic approach to implement CI/CD: **$ARGUMENTS**
    WORKDIR /app
    COPY package*.json ./
    RUN npm ci --only=production
-   
+
    FROM node:18-alpine AS runtime
    WORKDIR /app
    COPY --from=builder /app/node_modules ./node_modules
@@ -305,7 +305,7 @@ Follow this systematic approach to implement CI/CD: **$ARGUMENTS**
        - name: Deploy to staging
          run: |
            # Deploy to staging environment
-   
+
    deploy-production:
      needs: test
      if: github.ref == 'refs/heads/main'

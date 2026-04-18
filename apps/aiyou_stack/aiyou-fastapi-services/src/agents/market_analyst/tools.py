@@ -147,7 +147,10 @@ class CompetitiveAnalysisTools:
 
     @staticmethod
     def generate_swot_matrix(
-        strengths: list[str], weaknesses: list[str], opportunities: list[str], threats: list[str],
+        strengths: list[str],
+        weaknesses: list[str],
+        opportunities: list[str],
+        threats: list[str],
     ) -> dict:
         """Generate a SWOT analysis matrix
 
@@ -187,7 +190,10 @@ class MarketPositioningTools:
 
     @staticmethod
     def define_positioning_statement(
-        target_market: str, category: str, unique_benefit: str, reason_to_believe: str,
+        target_market: str,
+        category: str,
+        unique_benefit: str,
+        reason_to_believe: str,
     ) -> str:
         """Generate a positioning statement
 

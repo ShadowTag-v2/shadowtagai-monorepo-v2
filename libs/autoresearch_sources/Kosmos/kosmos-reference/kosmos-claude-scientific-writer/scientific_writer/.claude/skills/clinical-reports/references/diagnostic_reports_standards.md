@@ -626,4 +626,3 @@ Family testing should be considered.
 ---
 
 This reference provides comprehensive standards for diagnostic reporting across radiology, pathology, and laboratory medicine. Refer to these guidelines to ensure reports meet professional standards and regulatory requirements.
-

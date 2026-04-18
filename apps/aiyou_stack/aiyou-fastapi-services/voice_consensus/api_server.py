@@ -18,7 +18,8 @@ from pydantic import BaseModel, Field
 
 # Setup logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -163,7 +164,8 @@ async def check_rate_limit(request: Request, api_key: str = Depends(verify_api_k
     # Check limit
     if len(request_counts[client_id]) >= RATE_LIMIT:
         raise HTTPException(
-            status_code=429, detail=f"Rate limit exceeded. Max {RATE_LIMIT} requests per minute.",
+            status_code=429,
+            detail=f"Rate limit exceeded. Max {RATE_LIMIT} requests per minute.",
         )
 
     # Add current request
@@ -256,7 +258,11 @@ async def readiness_check():
 
     # Check at least one model is available
     models_ready = any(
-        [orch.gemini_model is not None, orch.anthropic_key is not None, orch.openai_key is not None],
+        [
+            orch.gemini_model is not None,
+            orch.anthropic_key is not None,
+            orch.openai_key is not None,
+        ],
     )
 
     if not models_ready:

@@ -37,7 +37,7 @@ tools:
       7. Count streams: `count(avg_over_time({"__name__"="cloudsql.googleapis.com/database/cpu/utilization","monitored_resource"="cloudsql_database","project_id"="my-projectId","database_id"="my-projectId:my-instanceId"}[5m]))`
       8. Percentile with groupby on database_id: `quantile by ("database_id")(0.99,avg_over_time({"__name__"="cloudsql.googleapis.com/database/cpu/utilization","monitored_resource"="cloudsql_database","project_id"="my-projectId","database_id"="my-projectId:my-instanceId"}[5m]))`
 
-      Available Metrics List: metricname. description. monitored resource. labels. database_id is actually the instance id and the format is `project_id:instance_id`. 
+      Available Metrics List: metricname. description. monitored resource. labels. database_id is actually the instance id and the format is `project_id:instance_id`.
       1. `cloudsql.googleapis.com/database/cpu/utilization`: Current CPU utilization as a percentage of the reserved CPU. `cloudsql_database`. `database`, `project_id`, `database_id`.
       2. `cloudsql.googleapis.com/database/memory/usage`: RAM usage in bytes, excluding buffer/cache. `cloudsql_database`. `database`, `project_id`, `database_id`.
       3. `cloudsql.googleapis.com/database/memory/total_usage`: Total RAM usage in bytes, including buffer/cache. `cloudsql_database`. `database`, `project_id`, `database_id`.

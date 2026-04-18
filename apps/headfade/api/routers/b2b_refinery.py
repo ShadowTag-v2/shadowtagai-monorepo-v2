@@ -14,8 +14,7 @@ class HDISignal(BaseModel):
 
 @router.post("/process-dataset")
 async def process_b2b_dataset(daily_comments: list[str]):
-    """Nightly CRON endpoint. Extracts chaos into the Human Deception Index.
-    """
+    """Nightly CRON endpoint. Extracts chaos into the Human Deception Index."""
     extracted_data = []
 
     # 1. Pipeline: LangExtract parsing of chaotic unstructured comments

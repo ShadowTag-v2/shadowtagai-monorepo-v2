@@ -109,7 +109,8 @@ Provide concrete examples and prioritize recommendations by expected impact on c
             )
 
     async def generate_headlines(
-        self, request: GenerateHeadlinesRequest,
+        self,
+        request: GenerateHeadlinesRequest,
     ) -> list[HeadlineVariation]:
         """Generate headline variations
 
@@ -192,7 +193,8 @@ Format your response as a JSON array of objects with fields: text, color_suggest
             raise AgentException(f"Failed to generate CTAs: {e!s}")
 
     async def generate_social_proof(
-        self, request: GenerateSocialProofRequest,
+        self,
+        request: GenerateSocialProofRequest,
     ) -> list[SocialProofSuggestion]:
         """Generate social proof suggestions
 
@@ -344,7 +346,9 @@ Focus on providing specific, actionable recommendations that can be implemented 
             raise AgentException(f"Failed to query Claude Agent: {e!s}")
 
     def _parse_optimization_response(
-        self, response_text: str, request: OptimizePageRequest,
+        self,
+        response_text: str,
+        request: OptimizePageRequest,
     ) -> OptimizationAnalysis:
         """Parse Claude's response into structured OptimizationAnalysis
 

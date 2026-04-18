@@ -43,7 +43,8 @@ class AuditTrailPersistence:
     """
 
     def __init__(
-        self, audit_file: str = "/home/user/ShadowTag-v2-fastapi-services/data/audit_trail.jsonl",
+        self,
+        audit_file: str = "/home/user/ShadowTag-v2-fastapi-services/data/audit_trail.jsonl",
     ):
         self.audit_file = Path(audit_file)
         self.audit_file.parent.mkdir(parents=True, exist_ok=True)

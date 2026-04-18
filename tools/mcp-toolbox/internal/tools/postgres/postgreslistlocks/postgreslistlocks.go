@@ -47,7 +47,7 @@ const listLocks = `
         FROM
           pg_stat_activity a
           JOIN pg_locks l ON l.pid = a.pid  AND a.pid != pg_backend_pid()) as locked
-    GROUP BY 
+    GROUP BY
         locked.pid, locked.usename, locked.query;
 `
 

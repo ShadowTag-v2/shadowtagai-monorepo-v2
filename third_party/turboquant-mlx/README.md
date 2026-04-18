@@ -264,7 +264,7 @@ cache.save(kv_states, "my-project", metadata={"tokens": 4096, "model": "Qwen3.5-
 # Saved: 26.6 MB → 6.7 MB (4x), 0.002s
 
 # Next session (instant):
-kv_states, meta = cache.load("my-project")  
+kv_states, meta = cache.load("my-project")
 # Loaded in 0.0003s vs 1.01s reprocessing
 
 # Cross-device sync via Cloudflare R2:

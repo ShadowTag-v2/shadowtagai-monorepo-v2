@@ -16,7 +16,7 @@ def apply_mixquant_blocks(tensor, block_size=32):
     # Reshape to isolate groups of 32 channels
     # Apply orthogonal rotation per block to make distribution isotropic
     # This prevents 'outlier leakage' across the hardware scales
-    pass 
+    pass
 ```
 
 ### B. Dynamic VRAM Management (Reference: ComfyUI Logic)

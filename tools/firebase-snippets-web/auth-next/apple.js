@@ -108,7 +108,7 @@ function appleReauthenticatePopup() {
       // User is re-authenticated with fresh tokens minted and can perform
       // sensitive operations like account deletion, or updating their email
       // address or password.
-  
+
       // The signed-in user info.
       const user = result.user;
 
@@ -116,7 +116,7 @@ function appleReauthenticatePopup() {
       const credential = OAuthProvider.credentialFromResult(result);
       const accessToken = credential.accessToken;
       const idToken = credential.idToken;
-  
+
       // ...
     })
     .catch((error) => {
@@ -127,7 +127,7 @@ function appleReauthenticatePopup() {
       const email = error.customData.email;
       // The credential that was used.
       const credential = OAuthProvider.credentialFromError(error);
-  
+
       // ...
     });
   // [END auth_apple_reauthenticate_popup]
@@ -146,7 +146,7 @@ function appleLinkFacebook() {
       .then((result) => {
         // Facebook credential is linked to the current Apple user.
         // ...
-  
+
         // The user can now sign in to the same account
         // with either Apple or Facebook.
       })
@@ -172,7 +172,7 @@ function appleNonceNode() {
     }
     return nonce.slice(0, length);
   };
-  
+
   const unhashedNonce = generateNonce(10);
 
   // SHA256-hashed nonce in hex

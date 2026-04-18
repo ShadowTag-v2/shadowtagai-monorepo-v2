@@ -164,4 +164,3 @@ async def handle(session: SessionInfo, params: dict[str, Any]) -> Any:
 		logger.info(f'Running agent task: {task}')
 ...
 ```
-

@@ -11,7 +11,7 @@ import { getAuth, signInWithCredential } from "firebase/auth";
 const auth = getAuth();
 signInWithCredential(auth, credential)
   .then((result) => {
-    // Signed in 
+    // Signed in
     // ...
   })
   .catch((error) => {

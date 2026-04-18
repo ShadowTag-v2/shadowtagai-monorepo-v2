@@ -106,4 +106,3 @@ class DocumentTransform extends \Google\Protobuf\Internal\Message
     }
 
 }
-

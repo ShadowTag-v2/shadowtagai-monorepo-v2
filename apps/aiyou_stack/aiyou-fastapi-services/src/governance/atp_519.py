@@ -43,8 +43,7 @@ RISK_MATRIX = {
 
 
 def assess_risk(prob: Probability, sev: Severity) -> RiskLevel:
-    """Calculates Risk Level based on ATP 5-19 Matrix.
-    """
+    """Calculates Risk Level based on ATP 5-19 Matrix."""
     if prob == Probability.FREQUENT:
         if sev == Severity.CATASTROPHIC or sev == Severity.CRITICAL:
             return RiskLevel.EXTREMELY_HIGH

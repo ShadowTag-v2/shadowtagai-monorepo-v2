@@ -16,7 +16,7 @@ Run this automatically at the end of **every** major task that produces long-for
 Since the Drag-and-Drop UI is for human interaction, you as an agent can interact directly with the backend API to inject context:
 
 ### The Injection Script
-Use your `run_command` tool to execute a headless python push using the native FastAPI schema. 
+Use your `run_command` tool to execute a headless python push using the native FastAPI schema.
 
 ```bash
 python3 -c "

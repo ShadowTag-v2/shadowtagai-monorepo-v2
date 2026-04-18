@@ -89,7 +89,8 @@ class ModularComplianceEngine:
     # =========================================================================
 
     async def generate_blueprint(
-        self, request: ComplianceBlueprintRequest,
+        self,
+        request: ComplianceBlueprintRequest,
     ) -> ComplianceBlueprintResponse:
         """Generate a compliance blueprint based on user's selected regulations.
 
@@ -180,7 +181,8 @@ class ModularComplianceEngine:
         # Run assessments in parallel
         assessment_tasks = [module.assess(input_data) for module in modules]
         module_results: list[ModuleResult] = await asyncio.gather(
-            *assessment_tasks, return_exceptions=True,
+            *assessment_tasks,
+            return_exceptions=True,
         )
 
         # Filter out exceptions and log errors
@@ -223,7 +225,9 @@ class ModularComplianceEngine:
         return overall_result
 
     async def assess_batch(
-        self, inputs: list[AssessmentInput], max_concurrent: int = 10,
+        self,
+        inputs: list[AssessmentInput],
+        max_concurrent: int = 10,
     ) -> list[ComplianceAssessmentResult]:
         """Batch assessment with MCP efficiency patterns.
 
@@ -248,7 +252,8 @@ class ModularComplianceEngine:
                 return await self.assess(input_data)
 
         results = await asyncio.gather(
-            *[assess_with_limit(inp) for inp in inputs], return_exceptions=True,
+            *[assess_with_limit(inp) for inp in inputs],
+            return_exceptions=True,
         )
 
         # Filter and return valid results
@@ -328,7 +333,9 @@ class ModularComplianceEngine:
     # =========================================================================
 
     def _aggregate_results(
-        self, module_results: list[ModuleResult], input_data: AssessmentInput,
+        self,
+        module_results: list[ModuleResult],
+        input_data: AssessmentInput,
     ) -> ComplianceAssessmentResult:
         """Aggregate results from multiple module assessments."""
         if not module_results:
@@ -431,7 +438,9 @@ class ModularComplianceEngine:
         return hashlib.sha256(content.encode()).hexdigest()
 
     def _generate_validation_hash(
-        self, request: ValidationRequest, violations: list[ValidationViolation],
+        self,
+        request: ValidationRequest,
+        violations: list[ValidationViolation],
     ) -> str:
         """Generate SHA256 hash for validation audit."""
         audit_data = {

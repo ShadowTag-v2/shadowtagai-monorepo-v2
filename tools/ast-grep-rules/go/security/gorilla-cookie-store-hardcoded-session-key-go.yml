@@ -55,7 +55,7 @@ utils:
                       stopBy: neighbor
                       kind: interpreted_string_literal
            - has:
-               nthChild: 
+               nthChild:
                 position: 1
                 ofRule:
                   not:

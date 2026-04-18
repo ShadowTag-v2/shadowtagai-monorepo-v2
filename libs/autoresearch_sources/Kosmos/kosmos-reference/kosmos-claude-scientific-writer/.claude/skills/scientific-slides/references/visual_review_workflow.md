@@ -333,7 +333,7 @@ Slide # | Issue Category | Description | Severity | Status
 **Good Documentation**:
 ```
 Slide 8: Text Overflow Issue
-- Description: Last bullet point "...implementation details" 
+- Description: Last bullet point "...implementation details"
   extends ~0.5 inches beyond right margin of text box
 - Cause: Bullet text too long for available width
 - Fix: Reduce text to "...implementation" or increase box width
@@ -610,16 +610,16 @@ def detect_edge_content(image_path, threshold=10):
     """
     img = Image.open(image_path).convert('L')  # Grayscale
     arr = np.array(img)
-    
+
     # Check edges (10 pixel border)
     left_edge = arr[:, :threshold]
     right_edge = arr[:, -threshold:]
     top_edge = arr[:threshold, :]
     bottom_edge = arr[-threshold:, :]
-    
+
     # Look for non-white pixels (content)
     white_threshold = 240
-    
+
     issues = []
     if np.any(left_edge < white_threshold):
         issues.append("Left edge")
@@ -629,7 +629,7 @@ def detect_edge_content(image_path, threshold=10):
         issues.append("Top edge")
     if np.any(bottom_edge < white_threshold):
         issues.append("Bottom edge")
-    
+
     return issues
 
 # Usage
@@ -652,14 +652,14 @@ def check_contrast(image_path):
     """
     img = Image.open(image_path).convert('L')
     arr = np.array(img)
-    
+
     # Get brightness values
     bright = np.percentile(arr, 95)
     dark = np.percentile(arr, 5)
-    
+
     # Rough contrast ratio
     contrast = (bright + 0.05) / (dark + 0.05)
-    
+
     if contrast < 4.5:
         return f"Low contrast: {contrast:.1f}:1 (minimum 4.5:1)"
     return f"OK: {contrast:.1f}:1"

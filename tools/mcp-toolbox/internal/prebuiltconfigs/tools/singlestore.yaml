@@ -176,7 +176,7 @@ tools:
         WHERE
             T.TABLE_SCHEMA NOT IN ('cluster', 'information_schema', 'memsql')
             AND T.TABLE_TYPE = 'BASE TABLE'
-            AND (NULLIF(TRIM(variables.table_names_param), '') IS NULL OR 
+            AND (NULLIF(TRIM(variables.table_names_param), '') IS NULL OR
                 CONCAT(',', variables.table_names_param, ',') LIKE CONCAT('%,', T.TABLE_NAME, ',%'))
         ORDER BY
             T.TABLE_SCHEMA, T.TABLE_NAME

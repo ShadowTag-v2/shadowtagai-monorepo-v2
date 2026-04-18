@@ -35,7 +35,10 @@ async def create_comment(
 
 @router.get("/post/{post_id}", response_model=CommentListResponse)
 async def list_comments_for_post(
-    post_id: int, db: Session = Depends(get_db), page: int = 1, size: int = 20,
+    post_id: int,
+    db: Session = Depends(get_db),
+    page: int = 1,
+    size: int = 20,
 ):
     """List comments for a forum post."""
     result = CommentService.list_comments_for_post(db, post_id, page, size)
@@ -79,7 +82,8 @@ async def update_comment(
 
     if comment.author_id != current_user.id and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to update this comment",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to update this comment",
         )
 
     return CommentService.update_comment(db, comment, comment_data.content)
@@ -98,7 +102,8 @@ async def delete_comment(
 
     if comment.author_id != current_user.id and not current_user.is_superuser:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to delete this comment",
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to delete this comment",
         )
 
     CommentService.soft_delete_comment(db, comment)

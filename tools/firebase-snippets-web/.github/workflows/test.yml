@@ -42,4 +42,3 @@ jobs:
         run: |
           npm run snippets
           ./scripts/checkdirty.sh
-      

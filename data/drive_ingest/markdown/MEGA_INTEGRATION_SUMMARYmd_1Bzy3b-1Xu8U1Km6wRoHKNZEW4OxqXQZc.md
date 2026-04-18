@@ -1466,4 +1466,4 @@ AutoGen → Native Gemini with kernel-as-functions architecture:
 
 - `src/examples/unified_poc_demo.py` - Full stack demo (382 lines)
 - `src/examples/judge_six_example.py` - Judge Six usage (141 lines)
-- `src/examples/basic_function_calling.py` - 
+- `src/examples/basic_function_calling.py` -

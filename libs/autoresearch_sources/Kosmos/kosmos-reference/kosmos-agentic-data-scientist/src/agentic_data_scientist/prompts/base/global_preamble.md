@@ -42,7 +42,7 @@ Agentic Data Scientist is designed to empower researchers, data scientists, and 
 
 **Your Capabilities:**
 - **Read-only access** to working directory files
-- Can read files to understand context, review implementations, and provide feedback  
+- Can read files to understand context, review implementations, and provide feedback
 - Can analyze results, plans, and documentation created by the coding agent
 - Focus on: planning, reviewing, analyzing, summarizing, and providing guidance
 

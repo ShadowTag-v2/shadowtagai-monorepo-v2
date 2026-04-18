@@ -295,7 +295,8 @@ class DecisionRuling(BaseModel):
     next_steps: list[str] = Field(default_factory=list, description="Recommended actions")
     audit_trail: AuditTrail = Field(..., description="Audit trail")
     compliance_flags: list[ComplianceFlag] = Field(
-        default_factory=list, description="Compliance flags",
+        default_factory=list,
+        description="Compliance flags",
     )
     financial_impact: FinancialImpact | None = None
 

@@ -87,17 +87,20 @@ async def verify_zero_trust_token(api_key: str = Security(api_key_header)) -> Ze
     except ValueError as e:
         # Invalid token
         raise HTTPException(
-            status_code=401, detail=f"VIOLATION: Zero-Trust JWT Signature Verification Failed: {e}",
+            status_code=401,
+            detail=f"VIOLATION: Zero-Trust JWT Signature Verification Failed: {e}",
         )
     except ValidationError as e:
         # Missing JWT schema claims (not a real GCP token)
         raise HTTPException(
-            status_code=422, detail=f"VIOLATION: Zero-Trust Identity structure invalid: {e}",
+            status_code=422,
+            detail=f"VIOLATION: Zero-Trust Identity structure invalid: {e}",
         )
 
 
 async def parse_and_lock_identity(
-    request: Request, identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),
+    request: Request,
+    identity: ZeroTrustIdentity = Depends(verify_zero_trust_token),
 ) -> TemporalIdentityPayload:
     """Intercepts the raw JSON payload in FastAPI and maps it to the Pydantic identity schema.
     If the JSON is poisoned or lacks mandatory Pinkln doctrine metadata, the node throws an error.

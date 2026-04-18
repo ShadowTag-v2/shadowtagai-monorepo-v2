@@ -157,7 +157,10 @@ class AIScraperClient:
         return "httpx"  # Always have httpx
 
     async def scrape(
-        self, url: str, wait_for: str | None = None, include_html: bool = False,
+        self,
+        url: str,
+        wait_for: str | None = None,
+        include_html: bool = False,
     ) -> ScrapeResult:
         """Scrape URL using AI-powered extraction
 
@@ -217,11 +220,19 @@ class AIScraperClient:
 
             # Return error result
             return ScrapeResult(
-                url=url, title="", content="", markdown="", success=False, error=str(e),
+                url=url,
+                title="",
+                content="",
+                markdown="",
+                success=False,
+                error=str(e),
             )
 
     async def _scrape_firecrawl(
-        self, url: str, wait_for: str | None, include_html: bool,
+        self,
+        url: str,
+        wait_for: str | None,
+        include_html: bool,
     ) -> ScrapeResult:
         """Scrape using Firecrawl API"""
         api_key = self._api_keys["firecrawl"]
@@ -259,7 +270,10 @@ class AIScraperClient:
             )
 
     async def _scrape_browse_ai(
-        self, url: str, wait_for: str | None, include_html: bool,
+        self,
+        url: str,
+        wait_for: str | None,
+        include_html: bool,
     ) -> ScrapeResult:
         """Scrape using Browse AI API"""
         api_key = self._api_keys["browse_ai"]
@@ -321,7 +335,10 @@ class AIScraperClient:
             # Remove script and style tags
             clean_html = re.sub(r"<script.*?</script>", "", html, flags=re.IGNORECASE | re.DOTALL)
             clean_html = re.sub(
-                r"<style.*?</style>", "", clean_html, flags=re.IGNORECASE | re.DOTALL,
+                r"<style.*?</style>",
+                "",
+                clean_html,
+                flags=re.IGNORECASE | re.DOTALL,
             )
 
             # Extract text content
@@ -382,7 +399,11 @@ class AIScraperClient:
             extracted = data.get("data", {}).get("llm_extraction", {})
 
             return StructuredData(
-                url=url, schema_name="custom", data=extracted, confidence=0.94, provider="firecrawl",
+                url=url,
+                schema_name="custom",
+                data=extracted,
+                confidence=0.94,
+                provider="firecrawl",
             )
 
     def _heuristic_extract(self, result: ScrapeResult, schema: dict[str, str]) -> StructuredData:

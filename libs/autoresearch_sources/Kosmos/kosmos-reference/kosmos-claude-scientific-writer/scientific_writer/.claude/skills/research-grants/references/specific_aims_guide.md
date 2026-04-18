@@ -9,7 +9,7 @@ The **Specific Aims page** is the most important page of your entire NIH grant a
 **Font**: 11-point Arial, Helvetica, or similar (no smaller)
 **Line spacing**: Must be readable
 
-**Purpose**: 
+**Purpose**:
 - Communicate your research vision clearly and compellingly
 - Establish significance and innovation
 - Demonstrate feasibility
@@ -21,7 +21,7 @@ The **Specific Aims page** is the most important page of your entire NIH grant a
 ### Essential Components (in order)
 
 1. **Opening Hook** (2-4 sentences)
-2. **Gap/Problem Statement** (2-4 sentences)  
+2. **Gap/Problem Statement** (2-4 sentences)
 3. **Long-Term Goal** (1 sentence)
 4. **Objective** (1-2 sentences)
 5. **Central Hypothesis** (1 sentence) [or Research Questions]
@@ -145,7 +145,7 @@ The **Specific Aims page** is the most important page of your entire NIH grant a
 
 **Aim 1: Identify CAF-secreted factors that mediate gemcitabine resistance.**
 
-*Rationale*: CAF-conditioned medium confers significant protection against gemcitabine (Fig. 1), suggesting secreted factors are responsible. We have identified 15 candidate proteins enriched in CAF secretomes from resistant versus sensitive contexts (Table 1). 
+*Rationale*: CAF-conditioned medium confers significant protection against gemcitabine (Fig. 1), suggesting secreted factors are responsible. We have identified 15 candidate proteins enriched in CAF secretomes from resistant versus sensitive contexts (Table 1).
 
 *Working Hypothesis*: CAFs secrete specific growth factors and cytokines (including IL-6, CXCL12, and HGF) that activate pro-survival pathways in tumor cells.
 
@@ -455,4 +455,3 @@ The Specific Aims page is where grants are won or lost. **Invest time in getting
 ---
 
 **Key Takeaway**: The perfect Specific Aims page tells a compelling story in exactly one page—establishing a significant problem, presenting an innovative and feasible solution, showing preliminary evidence of success, and articulating transformative impact. Every sentence must earn its place.
-

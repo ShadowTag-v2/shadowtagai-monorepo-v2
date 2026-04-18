@@ -272,7 +272,9 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
     # =========================================================================
 
     async def _fetch_users(
-        self, batch_size: int, modified_since: str | None,
+        self,
+        batch_size: int,
+        modified_since: str | None,
     ) -> list[dict[str, Any]]:
         """Fetch users from Azure AD"""
         endpoint = "/users"
@@ -306,7 +308,9 @@ class MS365Adapter(BaseAdapter[MS365Entity]):
         return users
 
     async def _fetch_groups(
-        self, batch_size: int, modified_since: str | None,
+        self,
+        batch_size: int,
+        modified_since: str | None,
     ) -> list[dict[str, Any]]:
         """Fetch groups from Azure AD"""
         endpoint = "/groups"

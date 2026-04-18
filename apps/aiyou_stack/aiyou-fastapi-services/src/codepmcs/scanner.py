@@ -16,7 +16,10 @@ class CodeScanner:
         # Simulated findings
         return [
             ScanResult(
-                "src/main.py", 10, "MEDIUM", "Use of print() statement detected in production code.",
+                "src/main.py",
+                10,
+                "MEDIUM",
+                "Use of print() statement detected in production code.",
             ),
             ScanResult("src/auth.py", 42, "HIGH", "Hardcoded secret potential (Judge 6 warning)."),
         ]

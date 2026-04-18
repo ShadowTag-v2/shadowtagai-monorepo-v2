@@ -96,7 +96,9 @@ def analyze_database_schema(schema: dict[str, Any]) -> dict[str, Any]:
 
 @tool
 def estimate_query_performance(
-    sql_query: str, row_count: int, has_indexes: bool = True,
+    sql_query: str,
+    row_count: int,
+    has_indexes: bool = True,
 ) -> dict[str, Any]:
     """Estimate query execution time and provide performance recommendations.
 
@@ -125,8 +127,7 @@ def estimate_query_performance(
 
 
 class DatabaseExpert:
-    """Database Expert Agent - specializes in database optimization and performance tuning
-    """
+    """Database Expert Agent - specializes in database optimization and performance tuning"""
 
     SYSTEM_PROMPT = """You are a Database Expert - a specialized AI assistant focused on database optimization,
 performance tuning, and scalable schema design.
@@ -174,7 +175,9 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
         ]
 
     async def chat(
-        self, user_message: str, conversation_history: list[dict[str, str]] | None = None,
+        self,
+        user_message: str,
+        conversation_history: list[dict[str, str]] | None = None,
     ) -> AsyncGenerator[str, None]:
         """Chat with the Database Expert agent
 
@@ -192,7 +195,10 @@ Your goal is to fix those queries that take 30 seconds and design schemas that s
 
         # Configure agent options
         options = ClaudeAgentOptions(
-            system_prompt=self.SYSTEM_PROMPT, model=self.model, tools=self.tools, max_tokens=4096,
+            system_prompt=self.SYSTEM_PROMPT,
+            model=self.model,
+            tools=self.tools,
+            max_tokens=4096,
         )
 
         # Stream responses from the agent
@@ -243,7 +249,9 @@ Please provide:
 
         # Get expert analysis from Claude
         options = ClaudeAgentOptions(
-            system_prompt=self.SYSTEM_PROMPT, model=self.model, max_tokens=2048,
+            system_prompt=self.SYSTEM_PROMPT,
+            model=self.model,
+            max_tokens=2048,
         )
 
         expert_analysis = ""
@@ -255,7 +263,9 @@ Please provide:
         return result
 
     async def design_schema(
-        self, requirements: str, expected_scale: str | None = None,
+        self,
+        requirements: str,
+        expected_scale: str | None = None,
     ) -> dict[str, Any]:
         """Get expert schema design recommendations
 
@@ -283,7 +293,9 @@ Please provide:
 """
 
         options = ClaudeAgentOptions(
-            system_prompt=self.SYSTEM_PROMPT, model=self.model, max_tokens=4096,
+            system_prompt=self.SYSTEM_PROMPT,
+            model=self.model,
+            max_tokens=4096,
         )
 
         design_recommendations = ""

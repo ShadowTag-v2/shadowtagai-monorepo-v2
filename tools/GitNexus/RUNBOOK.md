@@ -4,8 +4,8 @@ Short, copy-paste operations for **local development**, **MCP**, and **CI**. Com
 
 ## Prerequisites
 
-- **Node.js** ≥ 20 (`gitnexus-web/package.json` `engines`).  
-- **Git** (analyze requires a git repository).  
+- **Node.js** ≥ 20 (`gitnexus-web/package.json` `engines`).
+- **Git** (analyze requires a git repository).
 - From repo root, install and build the CLI package:
 
 ```bash
@@ -158,6 +158,6 @@ Only one process should open a repo’s `.gitnexus/lbug` store at a time. If MCP
 
 ## Where to dig deeper
 
-- Architecture overview: [ARCHITECTURE.md](ARCHITECTURE.md)  
-- Agent safety rules: [GUARDRAILS.md](GUARDRAILS.md)  
+- Architecture overview: [ARCHITECTURE.md](ARCHITECTURE.md)
+- Agent safety rules: [GUARDRAILS.md](GUARDRAILS.md)
 - Tests: [TESTING.md](TESTING.md)

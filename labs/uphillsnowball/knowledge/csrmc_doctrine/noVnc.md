@@ -15,14 +15,14 @@ cloud-workstations-custom-image-examples/examples/images/gnome/noVnc at main · 
 You signed in with another tab or window. Reload to refresh your session.
 You signed out in another tab or window. Reload to refresh your session.
 You switched accounts on another tab or window. Reload to refresh your session.
- 
+
 
 
 Dismiss alert
 
 {{ message }}
 
-[GoogleCloudPlatform](/GoogleCloudPlatform) 
+[GoogleCloudPlatform](/GoogleCloudPlatform)
 /
 **[cloud-workstations-custom-image-examples](/GoogleCloudPlatform/cloud-workstations-custom-image-examples)**
 Public

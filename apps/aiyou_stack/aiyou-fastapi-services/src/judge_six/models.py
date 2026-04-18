@@ -1,5 +1,4 @@
-"""Data models for Judge #6
-"""
+"""Data models for Judge #6"""
 
 from dataclasses import dataclass, field
 from datetime import datetime

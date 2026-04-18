@@ -54,7 +54,9 @@ def execute_crawl_and_ingest(target_urls: list[str] | None = None, workspace_id:
                 js_hook: str = os.path.join(os.path.dirname(__file__), "tiktok_scraper.js")
                 try:
                     js_data: str = subprocess.check_output(
-                        ["node", js_hook, url], stderr=subprocess.DEVNULL, timeout=15,
+                        ["node", js_hook, url],
+                        stderr=subprocess.DEVNULL,
+                        timeout=15,
                     ).decode("utf-8")
                     html_content = f"<html><body><pre>{js_data}</pre></body></html>"
                 except Exception as e:

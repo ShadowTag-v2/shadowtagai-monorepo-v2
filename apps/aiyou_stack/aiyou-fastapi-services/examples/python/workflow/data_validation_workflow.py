@@ -185,7 +185,9 @@ def classify_input_validate(result: Any) -> bool:
 
 
 classify_input_step = WorkflowStep(
-    name="classify_input", execute=classify_input_execute, validate=classify_input_validate,
+    name="classify_input",
+    execute=classify_input_execute,
+    validate=classify_input_validate,
 )
 
 
@@ -230,7 +232,9 @@ def schema_validation_validate(result: Any) -> bool:
 
 
 schema_validation_step = WorkflowStep(
-    name="schema_validation", execute=schema_validation_execute, validate=schema_validation_validate,
+    name="schema_validation",
+    execute=schema_validation_execute,
+    validate=schema_validation_validate,
 )
 
 
@@ -307,7 +311,9 @@ def quality_checks_validate(result: Any) -> bool:
 
 
 quality_checks_step = WorkflowStep(
-    name="quality_checks", execute=quality_checks_execute, validate=quality_checks_validate,
+    name="quality_checks",
+    execute=quality_checks_execute,
+    validate=quality_checks_validate,
 )
 
 
@@ -360,7 +366,9 @@ def generate_report_validate(result: Any) -> bool:
 
 
 generate_report_step = WorkflowStep(
-    name="generate_report", execute=generate_report_execute, validate=generate_report_validate,
+    name="generate_report",
+    execute=generate_report_execute,
+    validate=generate_report_validate,
 )
 
 # ==================== Workflow Engine ====================

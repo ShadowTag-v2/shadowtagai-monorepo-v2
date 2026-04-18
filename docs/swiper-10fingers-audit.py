@@ -87,10 +87,7 @@ def print_detailed_audit(scores):
         else:
             status = "🚨 CRITICAL"
 
-        print(
-            f"{finger:25} | Score: {score:2}/10 | Weight: {weight:3} | "
-            f"Weighted: {weighted:4.1f}/{max_possible:4.1f} | {status}"
-        )
+        print(f"{finger:25} | Score: {score:2}/10 | Weight: {weight:3} | Weighted: {weighted:4.1f}/{max_possible:4.1f} | {status}")
         print(f"  └─ {description}")
         print()
 

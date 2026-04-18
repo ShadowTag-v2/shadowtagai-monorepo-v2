@@ -156,7 +156,9 @@ Always:
         )
 
     def run_custom_analysis(
-        self, analysis_description: str, code_hints: str | None = None,
+        self,
+        analysis_description: str,
+        code_hints: str | None = None,
     ) -> ReActResult:
         """Run a custom analysis based on description.
 

@@ -93,7 +93,10 @@ class TerraformGeneratorService:
         valid = all(issue.severity != "error" for issue in issues)
 
         return TerraformValidateResponse(
-            valid=valid, issues=issues, best_practices=best_practices, suggestions=suggestions,
+            valid=valid,
+            issues=issues,
+            best_practices=best_practices,
+            suggestions=suggestions,
         )
 
     def _generate_provider_config(self, provider: CloudProvider) -> TerraformFile:
@@ -165,7 +168,9 @@ provider "azurerm" {
 """
 
         return TerraformFile(
-            filename="provider.tf", content=content, description="Terraform provider configuration",
+            filename="provider.tf",
+            content=content,
+            description="Terraform provider configuration",
         )
 
     def _generate_backend_config(self, backend_config: dict[str, str]) -> TerraformFile:
@@ -269,11 +274,15 @@ variable "{key}" {{
 """
 
         return TerraformFile(
-            filename="variables.tf", content=content, description="Terraform input variables",
+            filename="variables.tf",
+            content=content,
+            description="Terraform input variables",
         )
 
     def _generate_main_config(
-        self, components: list[dict[str, Any]], provider: CloudProvider,
+        self,
+        components: list[dict[str, Any]],
+        provider: CloudProvider,
     ) -> TerraformFile:
         """Generate main infrastructure configuration"""
         content = "# Main Infrastructure Configuration\n\n"
@@ -293,7 +302,9 @@ variable "{key}" {{
                 content += self._generate_k8s_resource(component, provider)
 
         return TerraformFile(
-            filename="main.tf", content=content, description="Main infrastructure resources",
+            filename="main.tf",
+            content=content,
+            description="Main infrastructure resources",
         )
 
     def _generate_compute_resource(self, component: dict[str, Any], provider: CloudProvider) -> str:
@@ -352,7 +363,9 @@ data "aws_ami" "ubuntu" {
         return ""
 
     def _generate_database_resource(
-        self, component: dict[str, Any], provider: CloudProvider,
+        self,
+        component: dict[str, Any],
+        provider: CloudProvider,
     ) -> str:
         """Generate database resource configuration"""
         if provider == CloudProvider.AWS:

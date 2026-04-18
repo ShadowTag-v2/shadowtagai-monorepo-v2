@@ -45,7 +45,7 @@ The tool returns a `ValidationResult` object containing:
 
 ```json
 {
-  "valid": "boolean",      
+  "valid": "boolean",
   "issueCount": "number",
   "formattedIssues": "string",
   "rawIssues": [

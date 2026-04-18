@@ -92,7 +92,8 @@ class BaseAgent:
         # Call Gemini API
         try:
             response = self.client.models.generate_content(
-                model=settings.GEMINI_MODEL_NAME, contents=full_prompt,
+                model=settings.GEMINI_MODEL_NAME,
+                contents=full_prompt,
             )
             result = getattr(response, "text", str(response)).strip()
 

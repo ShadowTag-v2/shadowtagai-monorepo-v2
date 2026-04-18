@@ -1,5 +1,4 @@
-"""Compliance Middleware - Enforce compliance policies
-"""
+"""Compliance Middleware - Enforce compliance policies"""
 
 import logging
 

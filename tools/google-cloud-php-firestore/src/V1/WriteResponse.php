@@ -200,4 +200,3 @@ class WriteResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

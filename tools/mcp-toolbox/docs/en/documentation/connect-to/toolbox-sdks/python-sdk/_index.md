@@ -51,7 +51,7 @@ This repository hosts the following Python packages. See the package-specific
 README for detailed installation and usage instructions:
 
 | Package | Target Use Case | Integration | Path | Details (README) | PyPI Status |
-| :------ | :---------- | :---------- | :---------------------- | :---------- | :--------- 
+| :------ | :---------- | :---------- | :---------------------- | :---------- | :---------
 | `toolbox-adk` | Google ADK applications | Google ADK | `packages/toolbox-adk/` | 📄 [View README](https://github.com/googleapis/mcp-toolbox-sdk-python/blob/main/packages/toolbox-adk/README.md) | ![pypi version](https://img.shields.io/pypi/v/toolbox-adk.svg) |
 | `toolbox-core` | Framework-agnostic / Custom applications | Use directly / Custom | `packages/toolbox-core/` | 📄 [View README](https://github.com/googleapis/mcp-toolbox-sdk-python/blob/main/packages/toolbox-core/README.md) | ![pypi version](https://img.shields.io/pypi/v/toolbox-core.svg) |
 | `toolbox-langchain` | LangChain / LangGraph applications | LangChain / LangGraph | `packages/toolbox-langchain/` | 📄 [View README](https://github.com/googleapis/mcp-toolbox-sdk-python/blob/main/packages/toolbox-langchain/README.md) | ![pypi version](https://img.shields.io/pypi/v/toolbox-langchain.svg) |
@@ -77,7 +77,7 @@ To get started using Toolbox tools with an application, follow these general ste
     pip install google-adk[toolbox]
 
     # OR
-    
+
     # For the core, framework-agnostic SDK
     pip install toolbox-core
 

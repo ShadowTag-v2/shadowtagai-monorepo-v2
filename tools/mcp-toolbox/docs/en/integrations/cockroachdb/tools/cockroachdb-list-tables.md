@@ -292,7 +292,7 @@ tools:
       - Data types and constraints
       - Relationships between tables (foreign keys)
       - Available indexes
-      
+
       Always call this tool before generating SQL queries to ensure
       you use correct table and column names.
 ```

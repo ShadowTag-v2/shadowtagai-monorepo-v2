@@ -115,7 +115,9 @@ class QualityGates:
         self.max_runtime_minutes = max_runtime_minutes
 
     def evaluate(
-        self, ingestion_stats: dict[str, Any], run_metadata: dict[str, Any] | None = None,
+        self,
+        ingestion_stats: dict[str, Any],
+        run_metadata: dict[str, Any] | None = None,
     ) -> QualityGateResult:
         """Evaluate all quality gates.
 

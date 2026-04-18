@@ -52,7 +52,8 @@ async def validate_single_item(request: ValidateItemRequest):
     try:
         service = JudgeSixService()
         status, confidence = await service.validate_item(
-            item=request.item, use_hybrid=request.use_hybrid,
+            item=request.item,
+            use_hybrid=request.use_hybrid,
         )
 
         return ValidateItemResponse(status=status, confidence=confidence, item_id=request.item.id)

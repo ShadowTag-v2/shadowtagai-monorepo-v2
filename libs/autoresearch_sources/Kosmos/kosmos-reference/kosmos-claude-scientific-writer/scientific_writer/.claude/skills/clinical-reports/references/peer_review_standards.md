@@ -582,4 +582,3 @@ Peer review ensures that clinical manuscripts meet standards for scientific rigo
 ---
 
 This reference provides comprehensive peer review standards for clinical manuscripts including case reports, clinical trials, diagnostic studies, observational studies, and systematic reviews. Use these criteria to conduct thorough, constructive peer reviews.
-

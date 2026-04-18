@@ -382,7 +382,8 @@ Performance targets:
 
         # Use GRPO to generate suggestions
         suggestions = self.grpo_trainer.suggest_resolutions(
-            conflict_id=conflict_id, conflict_data=conflict_data,
+            conflict_id=conflict_id,
+            conflict_data=conflict_data,
         )
 
         return {
@@ -418,7 +419,9 @@ Performance targets:
         }
 
     def _evolve_prompt_wrapper(
-        self, current_prompt: str, performance_metrics: dict,
+        self,
+        current_prompt: str,
+        performance_metrics: dict,
     ) -> dict[str, Any]:
         """Wrapper for DTE prompt evolution"""
         if not self.dte_evolver:
@@ -426,7 +429,8 @@ Performance targets:
 
         # Evolve prompt
         evolved_prompt = self.dte_evolver.evolve(
-            current_prompt=current_prompt, performance_metrics=performance_metrics,
+            current_prompt=current_prompt,
+            performance_metrics=performance_metrics,
         )
 
         return {
@@ -458,7 +462,9 @@ Performance targets:
     # High-level API methods
 
     async def detect_conflicts(
-        self, transcript_text: str, session_id: UUID,
+        self,
+        transcript_text: str,
+        session_id: UUID,
     ) -> list[dict[str, Any]]:
         """High-level API: Detect conflicts in negotiation transcript
 
@@ -502,7 +508,9 @@ Performance targets:
             return self._extract_conflicts_from_text(result)
 
     async def suggest_resolution(
-        self, conflict_id: UUID, conflict_data: dict,
+        self,
+        conflict_id: UUID,
+        conflict_data: dict,
     ) -> list[dict[str, Any]]:
         """High-level API: Suggest resolutions for conflict
 
@@ -563,7 +571,9 @@ Performance targets:
             return True
 
         validation = self.judge_six.validate(
-            output=args, operation=function_name, context={"platform": "Contractual"},
+            output=args,
+            operation=function_name,
+            context={"platform": "Contractual"},
         )
 
         return validation.is_valid
@@ -650,7 +660,8 @@ if __name__ == "__main__":
         # Detect conflicts
         print("Detecting conflicts via Gemini + multi-agent debate...\n")
         conflicts = await adapter.detect_conflicts(
-            transcript_text=transcript, session_id=session_id,
+            transcript_text=transcript,
+            session_id=session_id,
         )
 
         print(f"Found {len(conflicts)} conflict(s):")
@@ -665,7 +676,8 @@ if __name__ == "__main__":
         if conflicts:
             print("\n\nSuggesting resolution for first conflict...")
             suggestions = await adapter.suggest_resolution(
-                conflict_id=UUID(conflicts[0]["id"]), conflict_data=conflicts[0],
+                conflict_id=UUID(conflicts[0]["id"]),
+                conflict_data=conflicts[0],
             )
 
             print(f"\nTop {len(suggestions)} suggestion(s):")

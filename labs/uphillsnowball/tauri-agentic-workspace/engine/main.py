@@ -42,15 +42,11 @@ def node_search(state: AgentState) -> AgentState:
 
     logs = [f"[SEARCH NODE] Executing targeted query against Google: {url}"]
     try:
-        req = urllib.request.Request(
-            url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-        )
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
         urllib.request.urlopen(req, timeout=5).read()
         logs.append("[SEARCH NODE] Success: Acquired target vectors from Google Search.")
     except Exception as e:
-        logs.append(
-            f"[SEARCH NODE] Note: Google block/timeout: {str(e)}. Proceeding with fallback payload."
-        )
+        logs.append(f"[SEARCH NODE] Note: Google block/timeout: {str(e)}. Proceeding with fallback payload.")
 
     return {"urls": [url], "logs": logs}
 
@@ -72,9 +68,7 @@ def node_extract(state: AgentState) -> AgentState:
 def node_synthesize(state: AgentState) -> AgentState:
     logs = ["[SYNTHESIZE NODE] Compiling Triad consensus report..."]
     if state.get("use_ane"):
-        logs.append(
-            "-> [ANE ROUTER] Zero-latency inference engaged via `local-ane-infer.py` mapping."
-        )
+        logs.append("-> [ANE ROUTER] Zero-latency inference engaged via `local-ane-infer.py` mapping.")
 
     logs.append("[SYNTHESIZE NODE] Final intelligence product complete.")
     return {"final_synthesis": f"Triad Consensus for {state['task']} finalized.", "logs": logs}
@@ -134,9 +128,7 @@ async def dispatch_agent_stream(req: AgentRequest):
                 for node_name, state_update in output.items():
                     if "logs" in state_update and state_update["logs"]:
                         for log_entry in state_update["logs"]:
-                            payload = json.dumps(
-                                {"log": log_entry, "node": node_name, "status": "running"}
-                            )
+                            payload = json.dumps({"log": log_entry, "node": node_name, "status": "running"})
                             loop.call_soon_threadsafe(queue.put_nowait, payload)
             # Sentinel: signals the async generator that graph is done
             loop.call_soon_threadsafe(queue.put_nowait, None)

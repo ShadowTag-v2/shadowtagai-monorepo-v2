@@ -52,7 +52,6 @@ def base_url():
 
 
 class TestHealthAndDiscovery:
-
     def test_health_endpoint(self, base_url):
         """Verify /health returns 200 with correct structure."""
         r = httpx.get(f"{base_url}/health", timeout=10)
@@ -97,7 +96,6 @@ class TestHealthAndDiscovery:
 
 
 class TestMagicLinkOnboarding:
-
     def test_create_matter(self, base_url):
         """Attorney creates a matter and receives a magic link."""
         payload = {
@@ -140,7 +138,6 @@ class TestMagicLinkOnboarding:
 
 
 class TestVentMode:
-
     def test_start_vent_session(self, base_url):
         """Client starts a Vent Mode intake session."""
         payload = {
@@ -174,7 +171,6 @@ class TestVentMode:
 
 
 class TestAttestation:
-
     def test_generate_attestation(self, base_url):
         """Generate a Kovel attestation receipt."""
         payload = {
@@ -204,7 +200,6 @@ class TestAttestation:
 
 
 class TestGDPR:
-
     def test_deletion_request(self, base_url):
         """Client requests account deletion (Article 17)."""
         params = {"user_id": "client_test_001"}
@@ -234,7 +229,6 @@ class TestGDPR:
 
 
 class TestStripeWebhook:
-
     def test_webhook_rejects_get(self, base_url):
         """Stripe webhook only accepts POST (security check)."""
         r = httpx.get(f"{base_url}/webhooks/stripe", timeout=10)

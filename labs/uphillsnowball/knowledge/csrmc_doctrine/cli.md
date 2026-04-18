@@ -184,7 +184,7 @@ follow these steps:
 
 1. Install [Node.js](https://www.nodejs.org/) using
    [nvm](https://github.com/creationix/nvm/blob/master/README.md)
-   (the Node Version Manager).  
+   (the Node Version Manager).
    Installing Node.js automatically installs
    the `npm` command tools.
 
@@ -347,7 +347,7 @@ than Application Default Credentials and is no longer recommended.
    * **Option 1:** Store the token as the environment variable
      `FIREBASE_TOKEN`. Your system will automatically use the token.
    * **Option 2:** Run all `firebase` commands with the
-     `--token TOKEN` flag in your CI system.  
+     `--token TOKEN` flag in your CI system.
      This is the order of precedence for token loading: flag, environment
      variable, desired Firebase project.
 

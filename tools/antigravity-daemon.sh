@@ -25,21 +25,21 @@ case "$MODE" in
             if ! launchctl list | grep -q "com.antigravity.gitsync"; then
                 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] WARN: gitsync not loaded" >> "$LOG"
             fi
-            
+
             # Check: temporal still running
             if ! launchctl list | grep -q "com.pnkln.temporal-server"; then
                 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] WARN: temporal not loaded" >> "$LOG"
             fi
-            
+
             # Check disk space
             DISK_FREE=$(df -g "$REPO" | tail -1 | awk '{print $4}')
             if [ "${DISK_FREE:-0}" -lt 5 ]; then
                 echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] CRITICAL: <5GB free disk" >> "$LOG"
             fi
-            
+
             # Heartbeat
             echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] OK: heartbeat" >> "$LOG"
-            
+
             sleep 300  # 5-minute intervals
         done
         ;;

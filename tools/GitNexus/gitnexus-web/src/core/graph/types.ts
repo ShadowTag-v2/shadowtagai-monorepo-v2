@@ -60,11 +60,11 @@ export type NodeProperties = {
   entryPointReason?: string,
 }
 
-export type RelationshipType = 
-  | 'CONTAINS' 
-  | 'CALLS' 
-  | 'INHERITS' 
-  | 'OVERRIDES' 
+export type RelationshipType =
+  | 'CONTAINS'
+  | 'CALLS'
+  | 'INHERITS'
+  | 'OVERRIDES'
   | 'IMPORTS'
   | 'USES'
   | 'DEFINES'
@@ -80,7 +80,7 @@ export type RelationshipType =
 export interface GraphNode {
   id:  string,
   label: NodeLabel,
-  properties: NodeProperties,  
+  properties: NodeProperties,
 }
 
 export interface GraphRelationship {

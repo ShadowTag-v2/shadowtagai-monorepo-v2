@@ -63,7 +63,10 @@ class ContentSafetyService:
         logger.info("Content Safety service shutdown")
 
     async def moderate_content(
-        self, content: str, scrub_pii: bool = True, check_safety: bool = True,
+        self,
+        content: str,
+        scrub_pii: bool = True,
+        check_safety: bool = True,
     ) -> dict[str, Any]:
         """Moderate content for PII and safety
 

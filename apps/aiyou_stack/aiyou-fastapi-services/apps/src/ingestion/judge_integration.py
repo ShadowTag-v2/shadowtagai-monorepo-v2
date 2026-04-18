@@ -210,10 +210,12 @@ class Judge6Integrator:
                 m.get("tier_distribution", {}).get("tier_1", {}).get("percentage", 0)
             ),
             "total_items_minimum": lambda m: m.get("coverage_stats", {}).get(
-                "total_items_collected", 0,
+                "total_items_collected",
+                0,
             ),
             "compliance_score": lambda m: m.get("compliance_stats", {}).get(
-                "allowed_percentage", 0,
+                "allowed_percentage",
+                0,
             ),
             "source_diversity": lambda m: m.get("coverage_stats", {}).get("enabled_sources", 0),
             "cost_per_item": lambda m: self._calculate_cost_per_item(m),
@@ -289,7 +291,9 @@ class Judge6Integrator:
         }
 
     def get_unified_metrics(
-        self, ingestion_metrics: dict, validation_results: list[ValidationResult],
+        self,
+        ingestion_metrics: dict,
+        validation_results: list[ValidationResult],
     ) -> dict:
         """Generate unified metrics dashboard combining ingestion + validation.
 
@@ -348,7 +352,9 @@ class Judge6Integrator:
         }
 
     def _calculate_health_score(
-        self, validation_results: list[ValidationResult], metrics: dict,
+        self,
+        validation_results: list[ValidationResult],
+        metrics: dict,
     ) -> float:
         """Calculate overall health score (0-100).
 

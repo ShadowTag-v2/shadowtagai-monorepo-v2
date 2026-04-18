@@ -2,8 +2,7 @@ from typing import Any
 
 
 class ScientificSkillsRegistry:
-    """Registry for 123+ Scientific Skills (Simulated/Mapped).
-    """
+    """Registry for 123+ Scientific Skills (Simulated/Mapped)."""
 
     def __init__(self):
         self._skills = {

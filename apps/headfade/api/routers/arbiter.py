@@ -81,7 +81,8 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
             model="gemini-3.1-flash-lite-preview",
             contents=[types.Part.from_uri(file_uri=req.video_uri, mime_type="video/mp4"), prompt],
             config=types.GenerateContentConfig(
-                temperature=0.2, thinking_config=types.ThinkingConfig(include_thoughts=True),
+                temperature=0.2,
+                thinking_config=types.ThinkingConfig(include_thoughts=True),
             ),
         )
 
@@ -90,11 +91,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
         final_verdict = ""
 
         # Depending on how the GenAI SDK unrolls the parts
-        if (
-            response.candidates
-            and response.candidates[0].content
-            and response.candidates[0].content.parts
-        ):
+        if response.candidates and response.candidates[0].content and response.candidates[0].content.parts:
             for part in response.candidates[0].content.parts:
                 if getattr(part, "thought", False) and part.text:
                     ai_thoughts += part.text
@@ -103,9 +100,7 @@ async def generate_forensic_reveal(req: AnalyzeRequest):
 
         return {
             "status": "success",
-            "gemini_thoughts": ai_thoughts.strip()
-            if ai_thoughts
-            else "[FATAL DECEPTION: NO THOUGHTS DETECTED.]",
+            "gemini_thoughts": ai_thoughts.strip() if ai_thoughts else "[FATAL DECEPTION: NO THOUGHTS DETECTED.]",
             "gemini_verdict": final_verdict.strip(),
         }
     except Exception as e:

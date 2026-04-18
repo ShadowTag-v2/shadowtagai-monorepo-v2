@@ -55,7 +55,9 @@ class UserService:
 
     @staticmethod
     async def get_or_create_user(
-        db: AsyncSession, user_id: str, user_data: UserCreate | None = None,
+        db: AsyncSession,
+        user_id: str,
+        user_data: UserCreate | None = None,
     ) -> User:
         """Get existing user or create new one"""
         user = await UserService.get_user_by_id(db, user_id)

@@ -44,4 +44,3 @@ jobs:
           --repo ${{ github.repository }}
       env:
         GH_TOKEN: ${{ secrets.CLOUD_JAVA_BOT_GITHUB_TOKEN }}
-

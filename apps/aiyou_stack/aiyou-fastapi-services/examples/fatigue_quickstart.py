@@ -142,7 +142,8 @@ async def simulate_ar_session():
         rr_interval = 60000 / (70 + fatigue_progression * 10)  # HR increases slightly
 
         sensor_fusion.hrv_monitor.add_rr_interval(
-            interval_ms=rr_interval, timestamp=datetime.utcnow(),
+            interval_ms=rr_interval,
+            timestamp=datetime.utcnow(),
         )
 
         # Head pose: Forward tilt increases with fatigue

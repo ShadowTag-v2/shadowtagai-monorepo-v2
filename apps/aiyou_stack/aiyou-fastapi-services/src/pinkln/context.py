@@ -56,7 +56,11 @@ class Session:
         self.start_time = datetime.now()
 
     def add_event(
-        self, role: str, content: Any, type: str = "message", metadata: dict[str, Any] | None = None,
+        self,
+        role: str,
+        content: Any,
+        type: str = "message",
+        metadata: dict[str, Any] | None = None,
     ):
         # Cast strings to Literals for type safety
         safe_role = cast("Literal['user', 'model', 'tool']", role)
@@ -97,8 +101,7 @@ class MemoryManager:
         self.memories: list[MemoryItem] = []
 
     def retrieve(self, query: str, limit: int = 5) -> list[MemoryItem]:
-        """Retrieves relevant memories based on semantic similarity (Simulated).
-        """
+        """Retrieves relevant memories based on semantic similarity (Simulated)."""
         # TODO: Implement actual vector search
         _ = query
         return sorted(self.memories, key=lambda x: x.created_at, reverse=True)[:limit]
@@ -141,10 +144,13 @@ class ContextCompiler:
         self.memory = memory_manager
 
     def compile(
-        self, session: Session, query: str, system_instruction: str, max_turns: int = 20,
+        self,
+        session: Session,
+        query: str,
+        system_instruction: str,
+        max_turns: int = 20,
     ) -> str:
-        """Fetches Memory -> Compacts Session -> Assembles Prompt.
-        """
+        """Fetches Memory -> Compacts Session -> Assembles Prompt."""
         # 1. Fetch Relevant Memory (Proactive Retrieval)
         # We query memory using the user's latest input
         relevant_memories = self.memory.retrieve(query)

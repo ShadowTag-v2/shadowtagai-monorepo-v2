@@ -177,7 +177,9 @@ async def check_database() -> HealthCheckResult:
 
 
 async def check_external_service(
-    url: str, service_name: str, timeout: int = 5,
+    url: str,
+    service_name: str,
+    timeout: int = 5,
 ) -> HealthCheckResult:
     """Check external service availability.
 

@@ -272,7 +272,7 @@ Your title slide should include:
 - **Optional**: Compelling background image related to research
 
 **Title Crafting**:
-- Be specific: "Machine Learning Predicts Alzheimer's Risk from Retinal Images" 
+- Be specific: "Machine Learning Predicts Alzheimer's Risk from Retinal Images"
 - Not vague: "Applications of AI in Healthcare"
 - Include key method and outcome
 - Maximum 15 words

@@ -1,5 +1,4 @@
-"""Workflow execution engine for running automation workflows.
-"""
+"""Workflow execution engine for running automation workflows."""
 
 import asyncio
 import logging
@@ -16,8 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class WorkflowEngine:
-    """Engine for executing automation workflows.
-    """
+    """Engine for executing automation workflows."""
 
     def __init__(self):
         self.action_handlers = {}
@@ -91,7 +89,8 @@ class WorkflowEngine:
                 # Execute workflow
                 logger.info(f"Executing workflow {workflow_id}: {workflow.name}")
                 output = await self._execute_workflow_definition(
-                    workflow.definition, input_data or {},
+                    workflow.definition,
+                    input_data or {},
                 )
 
                 # Mark as successful
@@ -125,7 +124,9 @@ class WorkflowEngine:
             return execution
 
     async def _execute_workflow_definition(
-        self, definition: dict[str, Any], input_data: dict[str, Any],
+        self,
+        definition: dict[str, Any],
+        input_data: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute the workflow definition.
 
@@ -175,7 +176,9 @@ class WorkflowEngine:
         return context["output"]
 
     async def _execute_http_request(
-        self, config: dict[str, Any], context: dict[str, Any],
+        self,
+        config: dict[str, Any],
+        context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute an HTTP request action."""
         import httpx
@@ -202,7 +205,9 @@ class WorkflowEngine:
             }
 
     async def _execute_delay(
-        self, config: dict[str, Any], context: dict[str, Any],
+        self,
+        config: dict[str, Any],
+        context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a delay action."""
         seconds = config.get("seconds", 1)
@@ -220,7 +225,9 @@ class WorkflowEngine:
         return {"logged": message}
 
     async def _execute_condition(
-        self, config: dict[str, Any], context: dict[str, Any],
+        self,
+        config: dict[str, Any],
+        context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a conditional action."""
         condition = config.get("condition")
@@ -235,7 +242,9 @@ class WorkflowEngine:
         return if_false
 
     async def _execute_transform(
-        self, config: dict[str, Any], context: dict[str, Any],
+        self,
+        config: dict[str, Any],
+        context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute a data transformation action."""
         transformation = config.get("transformation", {})

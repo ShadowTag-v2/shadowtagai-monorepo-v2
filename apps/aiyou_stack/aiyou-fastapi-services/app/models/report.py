@@ -41,10 +41,14 @@ class Report(Base):
 
     # Reported content (one of these will be set)
     reported_post_id = Column(
-        Integer, ForeignKey("forum_posts.id", ondelete="CASCADE"), nullable=True,
+        Integer,
+        ForeignKey("forum_posts.id", ondelete="CASCADE"),
+        nullable=True,
     )
     reported_comment_id = Column(
-        Integer, ForeignKey("comments.id", ondelete="CASCADE"), nullable=True,
+        Integer,
+        ForeignKey("comments.id", ondelete="CASCADE"),
+        nullable=True,
     )
     reported_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=True)
 

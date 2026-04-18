@@ -22,7 +22,7 @@ export const LoadingOverlay = ({ progress }: LoadingOverlayProps) => {
       {/* Progress bar */}
       <div className="w-80 mb-4">
         <div className="h-1.5 bg-elevated rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-accent to-node-interface rounded-full transition-all duration-300 ease-out"
             style={{ width: `${progress.percent}%` }}
           />
@@ -63,4 +63,3 @@ export const LoadingOverlay = ({ progress }: LoadingOverlayProps) => {
     </div>
   );
 };
-

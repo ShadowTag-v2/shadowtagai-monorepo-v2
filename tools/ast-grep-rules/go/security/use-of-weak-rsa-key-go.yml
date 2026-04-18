@@ -149,7 +149,7 @@ utils:
      - not:
          inside:
            stopBy: end
-           kind: binary_expression     
+           kind: binary_expression
   statement_match_pattern_float_literal:
     kind: float_literal
     pattern: $BITS
@@ -186,7 +186,7 @@ utils:
      - not:
          inside:
            stopBy: end
-           kind: call_expression  
+           kind: call_expression
            inside:
              stopBy: end
              kind: call_expression
@@ -198,7 +198,7 @@ utils:
       inside:
         stopBy: end
         any:
-        - kind: binary_expression 
+        - kind: binary_expression
         - kind: unary_expression
   statement_match_pattern_binary_expression:
     kind: binary_expression
@@ -236,7 +236,7 @@ utils:
      - not:
          inside:
            stopBy: end
-           kind: call_expression  
+           kind: call_expression
            inside:
              stopBy: end
              kind: call_expression
@@ -267,4 +267,3 @@ constraints:
     any:
     - regex: ^([+-]?(0|[1-9][0-9]?|[1-9][0-9]{2}|1[0-9]{3}|20[0-3][0-9]|204[0-7])(\.[0-9]+)?|([+-]?(0|[1-9][0-9]?|[1-9][0-9]{2}|1[0-9]{3}|20[0-3][0-9]|204[0-7])(\.[0-9]+)?\/[1-9][0-9]*)|[+-]?(\.[0-9]+)|([+-]?\.[0-9]+\/[1-9][0-9]*))$
     - regex: ^-\d+(\.\d+)?(/(\d+(\.\d+)?))?$
-

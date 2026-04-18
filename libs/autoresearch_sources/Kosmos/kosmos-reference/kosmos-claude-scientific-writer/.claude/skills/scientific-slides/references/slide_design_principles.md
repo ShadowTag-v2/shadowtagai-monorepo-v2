@@ -188,11 +188,11 @@ Caption: 16pt
 **Example Transformation**:
 ```
 TOO MUCH TEXT:
-• Our study examined the relationship between dietary interventions 
+• Our study examined the relationship between dietary interventions
   and cardiovascular outcomes in 1,500 participants over 5 years
-• We found that participants in the intervention group showed 
+• We found that participants in the intervention group showed
   significantly reduced risk compared to controls
-• The effect size was larger than previous studies and persisted 
+• The effect size was larger than previous studies and persisted
   at long-term follow-up
 
 BETTER:

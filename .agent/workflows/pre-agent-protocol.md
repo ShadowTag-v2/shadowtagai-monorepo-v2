@@ -1,6 +1,6 @@
 # Pre-Agent Decision Protocol
 
-> Source: NotebookLM × Antigravity Pre-Agent Protocol  
+> Source: NotebookLM × Antigravity Pre-Agent Protocol
 > Purpose: Tests the IDEA before launching agent execution — prevents "perfect execution of the wrong thing"
 
 ## When to Use

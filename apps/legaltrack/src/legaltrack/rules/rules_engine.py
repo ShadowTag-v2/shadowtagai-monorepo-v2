@@ -74,7 +74,8 @@ class FilingIngestRequest(BaseModel):
     source: str = Field(..., description="email_webhook | manual_upload | api")
     jurisdiction: str = Field(default="FRCP")
     trigger_date: datetime.date = Field(
-        ..., description="The date the filing was served / received",
+        ...,
+        description="The date the filing was served / received",
     )
 
 
@@ -136,7 +137,8 @@ async def ingest_filing(
     rule = engine.resolve_rule("service_of_complaint", req.jurisdiction)
     if not rule:
         raise HTTPException(
-            status_code=400, detail=f"Unknown rule for jurisdiction {req.jurisdiction}",
+            status_code=400,
+            detail=f"Unknown rule for jurisdiction {req.jurisdiction}",
         )
 
     due_date = engine.calculate(req.trigger_date, rule.math)
@@ -168,7 +170,8 @@ async def ingest_filing(
     )
     conn.commit()
     row = conn.execute(
-        "SELECT * FROM deadline_extractions WHERE extraction_id=?", (extraction_id,),
+        "SELECT * FROM deadline_extractions WHERE extraction_id=?",
+        (extraction_id,),
     ).fetchone()
     conn.close()
     return [_record_to_response(_row_to_dict(row))]
@@ -201,7 +204,8 @@ async def approve_extraction(
 ) -> ExtractionResponse:
     conn = _get_conn()
     row = conn.execute(
-        "SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),),
+        "SELECT * FROM deadline_extractions WHERE extraction_id=?",
+        (str(extraction_id),),
     ).fetchone()
     if not row:
         conn.close()
@@ -218,7 +222,8 @@ async def approve_extraction(
     conn.commit()
     rec = _row_to_dict(
         conn.execute(
-            "SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),),
+            "SELECT * FROM deadline_extractions WHERE extraction_id=?",
+            (str(extraction_id),),
         ).fetchone(),
     )
     conn.close()
@@ -247,7 +252,8 @@ async def reject_extraction(
 ) -> ExtractionResponse:
     conn = _get_conn()
     row = conn.execute(
-        "SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),),
+        "SELECT * FROM deadline_extractions WHERE extraction_id=?",
+        (str(extraction_id),),
     ).fetchone()
     if not row:
         conn.close()
@@ -264,7 +270,8 @@ async def reject_extraction(
     conn.commit()
     rec = _row_to_dict(
         conn.execute(
-            "SELECT * FROM deadline_extractions WHERE extraction_id=?", (str(extraction_id),),
+            "SELECT * FROM deadline_extractions WHERE extraction_id=?",
+            (str(extraction_id),),
         ).fetchone(),
     )
     conn.close()

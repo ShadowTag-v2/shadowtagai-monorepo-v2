@@ -88,7 +88,8 @@ class PipelineOrchestrator:
         # Step 1: Jura pre-gate (if enabled)
         if task.jura_gate:
             pre_eval = self.jura.inject_context(
-                "system", "Pre-evaluate this task for safety and feasibility",
+                "system",
+                "Pre-evaluate this task for safety and feasibility",
             ).evaluate_with_context(task.query)
 
             if pre_eval.get("verdict") == "DENY":
@@ -181,7 +182,8 @@ class PipelineOrchestrator:
             # Inject previous result as context
             if i > 0 and results:
                 self.jura.inject_context(
-                    "assistant", f"Previous task result: {json.dumps(results[-1], default=str)}",
+                    "assistant",
+                    f"Previous task result: {json.dumps(results[-1], default=str)}",
                 )
 
             result = self.execute_task(task)
@@ -200,7 +202,10 @@ class PipelineOrchestrator:
     # === CONVENIENCE METHODS ===
 
     def ask_swarm(
-        self, query: str, specializations: list[str] = None, min_agents: int = 5,
+        self,
+        query: str,
+        specializations: list[str] = None,
+        min_agents: int = 5,
     ) -> dict[str, Any]:
         """Quick method to ask the swarm a question."""
         task = PipelineTask(

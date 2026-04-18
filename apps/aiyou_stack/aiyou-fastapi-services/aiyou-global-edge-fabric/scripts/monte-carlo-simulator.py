@@ -39,7 +39,9 @@ def simulate_exit_value(base_revenue, base_margin, n_sims=SIMULATIONS):
 
     # Generate revenue samples (lognormal distribution)
     revenue_samples = np.random.lognormal(
-        mean=np.log(base_revenue), sigma=REVENUE_VOLATILITY, size=n_sims,
+        mean=np.log(base_revenue),
+        sigma=REVENUE_VOLATILITY,
+        size=n_sims,
     )
 
     # Generate margin samples (normal, clipped to [0, 1])
@@ -118,16 +120,28 @@ def plot_distribution(results):
 
     # Histogram
     plt.hist(
-        results["distribution"] / 1e9, bins=50, alpha=0.7, color="steelblue", edgecolor="black",
+        results["distribution"] / 1e9,
+        bins=50,
+        alpha=0.7,
+        color="steelblue",
+        edgecolor="black",
     )
 
     # Add percentile lines
     plt.axvline(results["p10"] / 1e9, color="red", linestyle="--", linewidth=2, label="p10 (bear)")
     plt.axvline(
-        results["p50"] / 1e9, color="green", linestyle="--", linewidth=2, label="p50 (base)",
+        results["p50"] / 1e9,
+        color="green",
+        linestyle="--",
+        linewidth=2,
+        label="p50 (base)",
     )
     plt.axvline(
-        results["p90"] / 1e9, color="orange", linestyle="--", linewidth=2, label="p90 (bull)",
+        results["p90"] / 1e9,
+        color="orange",
+        linestyle="--",
+        linewidth=2,
+        label="p90 (bull)",
     )
 
     plt.xlabel("Exit Valuation ($B)", fontsize=12)

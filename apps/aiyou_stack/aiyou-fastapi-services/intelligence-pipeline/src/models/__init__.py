@@ -1,5 +1,4 @@
-"""PNKLN Intelligence Pipeline - Data Models
-"""
+"""PNKLN Intelligence Pipeline - Data Models"""
 
 from .intelligence_item import (
     CorSynthesis,

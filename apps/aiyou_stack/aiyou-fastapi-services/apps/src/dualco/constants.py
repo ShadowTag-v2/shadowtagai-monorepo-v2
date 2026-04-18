@@ -1,5 +1,4 @@
-"""DualCo Strategy Constants (Bourne/160)
-"""
+"""DualCo Strategy Constants (Bourne/160)"""
 
 from enum import StrEnum
 

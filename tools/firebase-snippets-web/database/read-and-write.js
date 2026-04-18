@@ -101,8 +101,8 @@ function socialCompletionCallback() {
 }
 
 /**
- * @param {firebase.database.Reference} postRef 
- * @param {string} uid 
+ * @param {firebase.database.Reference} postRef
+ * @param {string} uid
  */
 // [START rtdb_social_star_transaction]
 function toggleStar(postRef, uid) {
@@ -125,8 +125,8 @@ function toggleStar(postRef, uid) {
 // [END rtdb_social_star_transaction]
 
 /**
- * @param {string} uid 
- * @param {string} key 
+ * @param {string} uid
+ * @param {string} key
  */
 // [START rtdb_social_star_increment]
 function addStar(uid, key) {

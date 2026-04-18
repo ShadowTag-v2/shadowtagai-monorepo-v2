@@ -9,7 +9,7 @@ function initialize() {
   const app = initializeApp({
     // Your firebase configuration object
   });
-  
+
   // Pass your reCAPTCHA v3 site key (public key) to activate(). Make sure this
   // key is the counterpart to the secret key you set in the Firebase console.
   const appCheck = initializeAppCheck(app, {
@@ -25,7 +25,7 @@ function initialize() {
 function customProvider() {
   // [START appcheck_custom_provider]
   const { CustomProvider } = require("firebase/app-check");
-  
+
   const appCheckCustomProvider = new CustomProvider({
     getToken: () => {
       return new Promise((resolve, _reject) => {
@@ -36,12 +36,12 @@ function customProvider() {
         const tokenFromServer = "abc1234";
         const expirationFromServer = 1234;
         // [END_EXCLUDE]
-  
+
         const appCheckToken = {
           token: tokenFromServer,
           expireTimeMillis: expirationFromServer * 1000
         };
-  
+
         resolve(appCheckToken);
       });
     }
@@ -61,13 +61,13 @@ function initializeCustomProvider() {
   const app = initializeApp({
     // Your firebase configuration object
   });
-  
+
   const appCheck = initializeAppCheck(app, {
     provider: appCheckCustomProvider,
 
     // Optional argument. If true, the SDK automatically refreshes App Check
     // tokens as needed.
-    isTokenAutoRefreshEnabled: true    
+    isTokenAutoRefreshEnabled: true
   });
   // [END appcheck_initialize_custom_provider]
 }

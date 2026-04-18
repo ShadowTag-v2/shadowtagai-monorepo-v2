@@ -14,6 +14,7 @@ Author: Antigravity (Gemini 2.0 Flash Experimental)
 Based on: 11 CA Bar attempts + 9 years college experience
 Created: 2025-11-22
 """
+
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -387,7 +388,11 @@ class WhiteboardProtocol:
         print("\n" + "=" * 80)
 
     def add_agent_contribution(
-        self, agent_id: str, house: str, analysis: str, proposed_answer: str,
+        self,
+        agent_id: str,
+        house: str,
+        analysis: str,
+        proposed_answer: str,
     ):
         """Add agent's analysis to whiteboard"""
         self.agent_contributions.append(

@@ -24,4 +24,3 @@ class UserCreds
         static::$is_initialized = true;
     }
 }
-

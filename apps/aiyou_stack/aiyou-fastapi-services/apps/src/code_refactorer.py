@@ -481,7 +481,8 @@ Provide a detailed analysis including:
 
 
 async def refactor_interactive(
-    code: str, config: RefactorConfig | None = None,
+    code: str,
+    config: RefactorConfig | None = None,
 ) -> AsyncGenerator[str, str | None]:
     """Interactive refactoring session.
 

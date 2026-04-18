@@ -15,8 +15,8 @@ Baseline IQ: 160 (pegged)
 ---
 
 ## Operating Posture
-**Mode**: Strict mode (default)  
-**Decision Framework**: Purpose=shadowtag-omega-v4JR • Reason=Doctrine • Brakes=Army RM  
+**Mode**: Strict mode (default)
+**Decision Framework**: Purpose=shadowtag-omega-v4JR • Reason=Doctrine • Brakes=Army RM
 
 ---
 
@@ -206,7 +206,7 @@ create_file(file_path, content)
 # Cross-model workflow
 Step 1: Gemini receives user request
   Purpose: Deploy Judge#6 to GKE + refactor agent framework
-  
+
 Step 2: Gemini assesses task components
   Component A: GKE deployment → Keep with Gemini
   Component B: Agent framework refactoring → Delegate to Claude
@@ -223,7 +223,7 @@ Step 3: Gemini creates delegation
 Step 4: Claude executes specialized work
   Tools: bash_tool, str_replace, view
   Output: /mnt/user-data/outputs/refactor_summary.md
-  
+
 Step 5: Gemini integrates results
   Action: Deploy refactored framework to GKE
   Validation: Bootstrap gates (ROI ≥3×), Performance SLA (p99≤90ms)
@@ -241,7 +241,7 @@ Step 5: Gemini integrates results
 
 ---
 
-**Last Updated**: 2025-11-22  
-**Owner**: Claude Sonnet 4.5 (reference for Gemini Antigravity)  
-**Framework**: Judge#6 (Purpose → Reasons → Brakes)  
+**Last Updated**: 2025-11-22
+**Owner**: Claude Sonnet 4.5 (reference for Gemini Antigravity)
+**Framework**: Judge#6 (Purpose → Reasons → Brakes)
 **Integration**: MCP Bridge for cross-model coordination

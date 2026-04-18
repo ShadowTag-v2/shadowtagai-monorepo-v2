@@ -1,5 +1,4 @@
-"""Pydantic schemas for Support Builder API request/response validation.
-"""
+"""Pydantic schemas for Support Builder API request/response validation."""
 
 from datetime import datetime
 
@@ -20,7 +19,6 @@ class FAQBase(BaseModel):
 
 class FAQCreate(FAQBase):
     """Schema for creating a new FAQ."""
-
 
 
 class FAQUpdate(BaseModel):
@@ -66,7 +64,6 @@ class HelpArticleBase(BaseModel):
 
 class HelpArticleCreate(HelpArticleBase):
     """Schema for creating a help article."""
-
 
 
 class HelpArticleUpdate(BaseModel):
@@ -120,7 +117,6 @@ class ChatWidgetConfigBase(BaseModel):
 
 class ChatWidgetConfigCreate(ChatWidgetConfigBase):
     """Schema for creating a chat widget configuration."""
-
 
 
 class ChatWidgetConfigUpdate(BaseModel):
@@ -232,7 +228,6 @@ class SupportTicketBase(BaseModel):
 
 class SupportTicketCreate(SupportTicketBase):
     """Schema for creating a support ticket."""
-
 
 
 class SupportTicketUpdate(BaseModel):

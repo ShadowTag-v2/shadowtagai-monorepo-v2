@@ -5,7 +5,7 @@ set -e
 PROJECT_ID="shadowtag-omega-v2"
 REGION="us-central1"
 SERVICE_NAME="n-autoresearch/Kosmos/BioAgents-server"
-TARGET_MODEL="gemini-2.5-flash"  
+TARGET_MODEL="gemini-2.5-flash"
 
 echo ">>> 🧠 INITIATING MEMORY IMPLANT (Cloud Run Native)..."
 
@@ -84,12 +84,12 @@ class MemoryService:
     def get_context_block(self) -> str:
         """Retrieves and formats all memory for the prompt."""
         memory_block = "\\n--- 🧠 MEMORY & STANDARDS ---\\n"
-        
+
         # 1. Load Manual Styleguide
         if os.path.exists(self.styleguide_path):
             with open(self.styleguide_path, "r") as f:
                 memory_block += f"[MANUAL RULES]\\n{f.read()}\\n"
-        
+
         # 2. Load Learned Memory
         if os.path.exists(self.learned_path):
             try:
@@ -100,7 +100,7 @@ class MemoryService:
                         memory_block += f"- {r['rule']} (Confidence: {r.get('weight', 0.5)})\\n"
             except:
                 pass
-                
+
         memory_block += "------------------------------\\n"
         return memory_block
 
@@ -130,10 +130,10 @@ class RecursiveAgent:
         # Inject Memory into every call
         memory_context = self.memory.get_context_block()
         full_prompt = f"{memory_context}\\n{prompt}\\n\\n--- DOC CHUNK ---\\n{context_chunk}\\n----------------"
-        
+
         try:
             response = self.client.models.generate_content(
-                model=MODEL_ID, 
+                model=MODEL_ID,
                 contents=full_prompt,
                 config=types.GenerateContentConfig(temperature=0.0, max_output_tokens=100)
             )
@@ -146,16 +146,16 @@ class RecursiveAgent:
         GOAL: Answer "{query}"
         STATUS: Doc Size: {total_len}, Pos: {current_pos}
         HISTORY: {history[-3:]}
-        
+
         INSTRUCTIONS:
         Use the MEMORY RULES above to guide your decision.
-        
+
         COMMANDS:
         1. READ_NEXT
         2. JUMP <int>
         3. RECURSE <query>
         4. ANSWER <text>
-        
+
         OUTPUT ONLY THE COMMAND.
         """
 
@@ -163,7 +163,7 @@ class RecursiveAgent:
         current_pos = start_index
         history = []
         steps = 0
-        
+
         print(f"  ➤ [Depth {depth}] Agent with Memory active. Searching...")
 
         while steps < 10:
@@ -173,7 +173,7 @@ class RecursiveAgent:
             history.append(decision)
 
             if decision.startswith("ANSWER"): return decision.replace("ANSWER ", "")
-            elif decision.startswith("JUMP"): 
+            elif decision.startswith("JUMP"):
                 try: current_pos = int(decision.split()[1])
                 except: current_pos += env.chunk_size
             elif decision.startswith("READ_NEXT"): current_pos += env.chunk_size
@@ -182,7 +182,7 @@ class RecursiveAgent:
                     sub_res = self.solve(decision.replace("RECURSE ", ""), env, current_pos, depth + 1)
                     if "could not find" not in sub_res: return sub_res
             else: current_pos += env.chunk_size
-            
+
             steps += 1
             if current_pos >= env.total_length: return "End of document."
         return "Not found."
@@ -217,7 +217,7 @@ def chat(request: QueryRequest):
     temp_path = "/tmp/request_doc.txt"
     with open(temp_path, "w") as f:
         f.write(request.doc_content)
-    
+
     env = TextEnvironment(temp_path)
     answer = agent.solve(request.query, env)
     return {"answer": answer}

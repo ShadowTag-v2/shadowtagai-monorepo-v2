@@ -17,7 +17,7 @@ This script lets you to talk to a Gemini native audio model using the Live API.
 
 Important: **Use headphones**. This script uses the system default audio
 input and output, which often won't include echo cancellation. So to prevent
-the model from interrupting itself it is important that you use headphones. 
+the model from interrupting itself it is important that you use headphones.
 
 ## Setup
 
@@ -81,11 +81,7 @@ with an engaging follow-up question to keep the conversation flowing.
 """
 
 MODEL = "gemini-2.5-flash-native-audio-preview-12-2025"
-CONFIG = {
-    "system_instruction": system_instruction,
-    "response_modalities": ["AUDIO"],
-    "proactivity": {'proactive_audio': True}
-}
+CONFIG = {"system_instruction": system_instruction, "response_modalities": ["AUDIO"], "proactivity": {"proactive_audio": True}}
 
 
 class AudioLoop:
@@ -96,7 +92,6 @@ class AudioLoop:
         self.audio_stream = None
         self.receive_audio_task = None
         self.play_audio_task = None
-
 
     async def listen_audio(self):
         mic_info = pya.get_default_input_device_info()

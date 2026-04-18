@@ -94,7 +94,10 @@ class JREngine:
         self.strict_mode = self.config.get("strict_mode", True)
 
     def validate(
-        self, purpose: Purpose, reasons: list[Reason], context: dict[str, Any] | None = None,
+        self,
+        purpose: Purpose,
+        reasons: list[Reason],
+        context: dict[str, Any] | None = None,
     ) -> JRDecision:
         """Validates an agent action using Purpose/Reasons/Brakes framework
 
@@ -188,7 +191,10 @@ class JREngine:
         return None
 
     def _validate_reasons(
-        self, reasons: list[Reason], purpose: Purpose, context: dict[str, Any],
+        self,
+        reasons: list[Reason],
+        purpose: Purpose,
+        context: dict[str, Any],
     ) -> Brake | None:
         """Validate reasons and assess risk using ATP 5-19"""
         if not reasons:
@@ -283,7 +289,10 @@ class JREngine:
         return None
 
     def _build_constraints(
-        self, purpose: Purpose, reasons: list[Reason], context: dict[str, Any],
+        self,
+        purpose: Purpose,
+        reasons: list[Reason],
+        context: dict[str, Any],
     ) -> dict[str, Any]:
         """Build constraints for approved actions"""
         constraints = {
@@ -305,7 +314,11 @@ class JREngine:
         return constraints
 
     def _build_audit_trail(
-        self, purpose: Purpose, reasons: list[Reason], brakes: list[Brake], context: dict[str, Any],
+        self,
+        purpose: Purpose,
+        reasons: list[Reason],
+        brakes: list[Brake],
+        context: dict[str, Any],
     ) -> dict[str, Any]:
         """Build comprehensive audit trail"""
         return {

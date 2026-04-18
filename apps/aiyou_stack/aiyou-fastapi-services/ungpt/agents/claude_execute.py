@@ -101,7 +101,9 @@ async def execute_and_publish(
     client = anthropic.Anthropic(api_key=api_key)
 
     message = client.messages.create(
-        model=model, max_tokens=8000, messages=[{"role": "user", "content": prompt}],
+        model=model,
+        max_tokens=8000,
+        messages=[{"role": "user", "content": prompt}],
     )
 
     content = message.content[0].text
@@ -286,12 +288,14 @@ async def _push_to_github(
     async with httpx.AsyncClient(timeout=30.0) as client:
         # Get default branch SHA
         ref_resp = await client.get(
-            f"https://api.github.com/repos/{repo}/git/ref/heads/main", headers=headers,
+            f"https://api.github.com/repos/{repo}/git/ref/heads/main",
+            headers=headers,
         )
         if ref_resp.status_code != 200:
             # Try master
             ref_resp = await client.get(
-                f"https://api.github.com/repos/{repo}/git/ref/heads/master", headers=headers,
+                f"https://api.github.com/repos/{repo}/git/ref/heads/master",
+                headers=headers,
             )
 
         if ref_resp.status_code == 200:

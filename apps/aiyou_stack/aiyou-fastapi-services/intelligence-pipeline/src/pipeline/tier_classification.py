@@ -21,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class TierClassificationEngine:
-    """Tier classification engine using Claude API
-    """
+    """Tier classification engine using Claude API"""
 
     # Score thresholds
     TIER_1_THRESHOLD = 0.7
@@ -144,7 +143,9 @@ class TierClassificationEngine:
             )
 
     def _build_classification_prompt(
-        self, item: IntelligenceItem, initial_tier: IntelligenceTier,
+        self,
+        item: IntelligenceItem,
+        initial_tier: IntelligenceTier,
     ) -> str:
         """Build classification prompt for Claude
 
@@ -189,10 +190,10 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """Main tier classification entry point
-    """
+    """Main tier classification entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load scored items

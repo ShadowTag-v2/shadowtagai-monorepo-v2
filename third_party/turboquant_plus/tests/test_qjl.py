@@ -55,9 +55,7 @@ class TestQJLRoundTrip:
         mean_error = np.mean(errors)
         # Standard error of mean: σ/√n. With 500 samples, allow 3 SE
         std_error = np.std(errors) / np.sqrt(len(errors))
-        assert abs(mean_error) < 3 * std_error + 0.1, (
-            f"Mean IP error {mean_error:.4f} ± {std_error:.4f} — QJL should be unbiased (single-side)"
-        )
+        assert abs(mean_error) < 3 * std_error + 0.1, f"Mean IP error {mean_error:.4f} ± {std_error:.4f} — QJL should be unbiased (single-side)"
 
     def test_signs_are_binary(self):
         """All sign values should be exactly +1 or -1."""

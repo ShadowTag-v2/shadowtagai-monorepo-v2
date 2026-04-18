@@ -16,9 +16,7 @@ add_event(
     "assistant",
     "Understood. We will treat ANE as first choice with Metal fallback.",
 )
-write_summary(
-    s.postgres_dsn, thread_id, "ANE-first policy with fallback is active for M1 Pro validation."
-)
+write_summary(s.postgres_dsn, thread_id, "ANE-first policy with fallback is active for M1 Pro validation.")
 upsert_master_memory(
     s.postgres_dsn,
     user_id,

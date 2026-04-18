@@ -66,7 +66,9 @@ class Particle:
     def _init_particle(self):
         if self.random:
             self.position = np.random.uniform(
-                low=self.position_range[0], high=self.position_range[1], size=(self.dims,),
+                low=self.position_range[0],
+                high=self.position_range[1],
+                size=(self.dims,),
             )
             self.velocity = np.random.uniform(
                 low=-abs(self.velocity_range[1] - self.velocity_range[0]),

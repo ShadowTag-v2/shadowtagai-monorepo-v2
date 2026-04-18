@@ -52,4 +52,4 @@ USER nonroot
 
 LABEL io.modelcontextprotocol.server.name="io.github.googleapis/mcp-toolbox"
 
-ENTRYPOINT ["/toolbox"] 
+ENTRYPOINT ["/toolbox"]

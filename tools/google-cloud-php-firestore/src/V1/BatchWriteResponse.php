@@ -115,4 +115,3 @@ class BatchWriteResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -25,7 +25,11 @@ class TestRunner:
 
         try:
             result = subprocess.run(
-                args, capture_output=True, text=True, cwd=self.repo_path, timeout=300,
+                args,
+                capture_output=True,
+                text=True,
+                cwd=self.repo_path,
+                timeout=300,
             )
 
             # Parse output

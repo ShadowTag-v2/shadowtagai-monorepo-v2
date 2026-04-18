@@ -33,13 +33,16 @@ class RefactorRequest(BaseModel):
     code: str = Field(..., description="The code to refactor")
     language: CodeLanguage = Field(..., description="Programming language of the code")
     refactor_type: RefactorType = Field(
-        default=RefactorType.FULL, description="Type of refactoring to perform",
+        default=RefactorType.FULL,
+        description="Type of refactoring to perform",
     )
     context: str | None = Field(
-        None, description="Additional context about the code (e.g., purpose, constraints)",
+        None,
+        description="Additional context about the code (e.g., purpose, constraints)",
     )
     preserve_functionality: bool = Field(
-        default=True, description="Ensure refactored code maintains original functionality",
+        default=True,
+        description="Ensure refactored code maintains original functionality",
     )
 
 

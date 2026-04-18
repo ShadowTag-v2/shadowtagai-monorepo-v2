@@ -1,8 +1,8 @@
 # ShadowTag Agent — Coding Guide
 
-> **Project**: `shadowtag-omega-v4`  
-> **Authorized Runtime Model**: `gemini-3.1-flash-lite-preview-thinking`  
-> **Agent Framework**: Google ADK  
+> **Project**: `shadowtag-omega-v4`
+> **Authorized Runtime Model**: `gemini-3.1-flash-lite-preview-thinking`
+> **Agent Framework**: Google ADK
 > **Queue Broker**: Google Cloud Tasks (BullMQ BANNED)
 
 ---

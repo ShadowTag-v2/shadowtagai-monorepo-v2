@@ -18,18 +18,18 @@ const RATE_LIMIT_MAX_REQUESTS = 10;
 async function isRateLimited(clientIp: string): Promise<boolean> {
   const now = Date.now();
   const limitRef = db.collection("system_rate_limits").doc(clientIp.replace(/[^a-zA-Z0-9]/g, "_"));
-  
+
   try {
     return await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(limitRef);
       let timestamps: number[] = doc.exists ? doc.data()?.timestamps || [] : [];
-      
+
       timestamps = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
-      
+
       if (timestamps.length >= RATE_LIMIT_MAX_REQUESTS) {
         return true;
       }
-      
+
       timestamps.push(now);
       transaction.set(limitRef, { timestamps }, { merge: true });
       return false;
@@ -120,7 +120,7 @@ export const captureLead = onRequest(
         response.status(400).json({ error: "Validation Failed", details: error.errors });
         return;
       }
-      
+
       // Generic fallback for unhandled 500 scenarios
       logger.error("Unhandled exception routing lead capture", error);
       response.status(500).json({ error: "Internal Server Error" });

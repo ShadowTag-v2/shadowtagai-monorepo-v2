@@ -16,7 +16,7 @@ I have updated this documentation to keep up with the changes Google has made to
 *  On the live form page where you can submit responses, view the source of the page, and capture the URL in the `action` attribute of the `form` tag: ex:
 `https://docs.google.com/forms/d/18LD6ueL10_lLVAKpDgfmLpUBlzoRFEZSoMod57MXfH0/formResponse?hl=en_US` getting rid of everything after `formResponse?`.
 
-* Now search the source of the page for this: 
+* Now search the source of the page for this:
 
 ```
 <input type="hidden" name="entry.
@@ -24,9 +24,9 @@ I have updated this documentation to keep up with the changes Google has made to
 
 Google hides the actual form input fields, so you have to search for them this way, in the source, not the web inspector (note that you cannot just do the typical "inspect" of the input element in the form, as this will not be the correct input field).
 
-the `name` attribute, ex: `entry.1000000`. 
+the `name` attribute, ex: `entry.1000000`.
 
-They do the same with the submit button, but it should be just before the closing form tag, with a name (which I think stays the same) like: `<input type="hidden" name="fbzx" value="7262277203133674908">`. That value 
+They do the same with the submit button, but it should be just before the closing form tag, with a name (which I think stays the same) like: `<input type="hidden" name="fbzx" value="7262277203133674908">`. That value
 
 * Replace the `baseURL` in the index.html file with the form action URL you copied from your Google Form.
 
@@ -62,5 +62,3 @@ entry.1=answer1&entry.2=answer2&entry3=answer3
 etc.
 
 Good luck! I have put my own sample form online [here](http://mikeheavers.com/lab/google/forms/custom-form.html) and you can view the spreadsheet with the form responses [here](https://docs.google.com/spreadsheets/d/1mzPTZC2YbQpN5IK07Fj4sENj6zajNu6TbFcHo7lD45o).
-
-

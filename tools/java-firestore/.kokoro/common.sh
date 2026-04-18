@@ -22,7 +22,7 @@ function retry_with_backoff {
 
     # store current flag state
     flags=$-
-    
+
     # allow a failures to continue
     set +e
     ${command}

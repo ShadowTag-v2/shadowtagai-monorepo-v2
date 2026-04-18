@@ -97,7 +97,9 @@ class NFTMinter:
 
         # 1. Upload media to IPFS
         media_cid = await self._upload_media_to_ipfs(
-            stream_id, stream_data.get("video_url"), stream_data.get("thumbnail_url"),
+            stream_id,
+            stream_data.get("video_url"),
+            stream_data.get("thumbnail_url"),
         )
 
         # 2. Generate and upload metadata
@@ -123,7 +125,10 @@ class NFTMinter:
         }
 
     async def _upload_media_to_ipfs(
-        self, stream_id: str, video_url: str, _thumbnail_url: str,
+        self,
+        stream_id: str,
+        video_url: str,
+        _thumbnail_url: str,
     ) -> str:
         """Upload media files to IPFS
 
@@ -168,7 +173,8 @@ class NFTMinter:
         metadata = {
             "name": stream_data.get("title", f"Tokable Stream #{stream_id}"),
             "description": stream_data.get(
-                "description", "Silent gesture-based performance captured as NFT",
+                "description",
+                "Silent gesture-based performance captured as NFT",
             ),
             "image": f"{self.ipfs_gateway}{media_cid}",
             "external_url": f"https://tokable.ai/streams/{stream_id}",
@@ -240,7 +246,10 @@ class NFTMinter:
         return mock_cid
 
     async def _mint_on_blockchain(
-        self, blockchain: Blockchain, creator_id: str, metadata_cid: str,
+        self,
+        blockchain: Blockchain,
+        creator_id: str,
+        metadata_cid: str,
     ) -> str:
         """Mint NFT on blockchain
 
@@ -320,7 +329,9 @@ class NFTMinter:
         }
 
     def calculate_gas_estimate(
-        self, blockchain: Blockchain, operation: str = "mint",
+        self,
+        blockchain: Blockchain,
+        operation: str = "mint",
     ) -> dict[str, Any]:
         """Estimate gas costs
 
@@ -389,7 +400,9 @@ class NFTMarketplace:
 
     @staticmethod
     async def search_nfts(
-        filters: dict[str, Any] | None = None, _sort_by: str = "recent", limit: int = 50,
+        filters: dict[str, Any] | None = None,
+        _sort_by: str = "recent",
+        limit: int = 50,
     ) -> list[dict[str, Any]]:
         """Search/browse NFT marketplace
 

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START fs_collection_group_query_modular]
-import { collectionGroup, query, where, getDocs } from "firebase/firestore";  
+import { collectionGroup, query, where, getDocs } from "firebase/firestore";
 
 const museums = query(collectionGroup(db, 'landmarks'), where('type', '==', 'museum'));
 const querySnapshot = await getDocs(museums);

@@ -177,7 +177,10 @@ class PinklnFramework:
         return base_prompt + enhancement
 
     def detect_wealth_leak(
-        self, leak_type: str, current_rate: float, target_rate: float,
+        self,
+        leak_type: str,
+        current_rate: float,
+        target_rate: float,
     ) -> WealthLeakDetection:
         """Detect and diagnose wealth leaks
         Running at IQ {self.persona_iq} for maximum foresight
@@ -227,7 +230,8 @@ class PinklnFramework:
         }
 
         base_plan = plans.get(
-            leak_type, "1. Diagnose root cause, 2. Test solutions, 3. Scale what works",
+            leak_type,
+            "1. Diagnose root cause, 2. Test solutions, 3. Scale what works",
         )
 
         if severity > 0.5:

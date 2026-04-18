@@ -23,7 +23,6 @@ from toolbox_adk.toolset import ToolboxToolset
 
 
 class TestToolboxToolset:
-
     @patch("toolbox_adk.toolset.ToolboxClient")
     @pytest.mark.asyncio
     async def test_get_tools_load_set_and_list(self, mock_client_cls):
@@ -39,9 +38,7 @@ class TestToolboxToolset:
         mock_client.load_toolset = AsyncMock(return_value=[t1])
         mock_client.load_tool = AsyncMock(return_value=t2)
 
-        toolset = ToolboxToolset(
-            "url", toolset_name="set1", tool_names=["toolA"], bound_params={"p": 1}
-        )
+        toolset = ToolboxToolset("url", toolset_name="set1", tool_names=["toolA"], bound_params={"p": 1})
 
         tools = await toolset.get_tools()
 
@@ -66,9 +63,7 @@ class TestToolboxToolset:
         mock_client.load_tool = AsyncMock(return_value=t1)
 
         auth_getters = {"service": lambda: "token"}
-        toolset = ToolboxToolset(
-            "url", tool_names=["toolA"], auth_token_getters=auth_getters
-        )
+        toolset = ToolboxToolset("url", tool_names=["toolA"], auth_token_getters=auth_getters)
 
         tools = await toolset.get_tools()
 
@@ -101,9 +96,7 @@ class TestToolboxToolset:
             ),  # Requirements exist, but token is unused by both
         ],
     )
-    async def test_get_tools_auth_validation(
-        self, mock_client_cls, authn, authz, should_raise
-    ):
+    async def test_get_tools_auth_validation(self, mock_client_cls, authn, authz, should_raise):
         mock_client = mock_client_cls.return_value
 
         t1 = MagicMock()
@@ -113,9 +106,7 @@ class TestToolboxToolset:
         mock_client.load_tool = AsyncMock(return_value=t1)
 
         auth_getters = {"service": lambda: "token"}
-        toolset = ToolboxToolset(
-            "url", tool_names=["toolA"], auth_token_getters=auth_getters
-        )
+        toolset = ToolboxToolset("url", tool_names=["toolA"], auth_token_getters=auth_getters)
 
         if should_raise:
             with pytest.raises(

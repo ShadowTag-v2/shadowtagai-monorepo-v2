@@ -27,7 +27,7 @@ public class Program
             Handler = async (toolArgs) => {
                 var tableId = toolArgs.GetValueOrDefault("table_id")?.ToString();
                 var userId = toolArgs.GetValueOrDefault("user_id")?.ToString();
-                
+
                 if (string.IsNullOrEmpty(tableId) || string.IsNullOrEmpty(userId))
                     return "ERROR: Missing parameters";
 
@@ -51,13 +51,13 @@ public class McpServer(string name, string version)
     public string Name { get; } = name;
     public string Version { get; } = version;
 
-    public void AddTool(Tool tool) 
-    { 
-        Console.WriteLine($"Registered tool: {tool.Name}"); 
+    public void AddTool(Tool tool)
+    {
+        Console.WriteLine($"Registered tool: {tool.Name}");
     }
 
-    public async Task StartAsync() 
-    { 
+    public async Task StartAsync()
+    {
         // Simulate a running server loop
         Console.WriteLine($"Starting {Name} v{Version}...");
         await Task.Delay(-1); // Block indefinitely

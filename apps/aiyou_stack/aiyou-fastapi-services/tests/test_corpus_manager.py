@@ -1,5 +1,4 @@
-"""Tests for CorpusManager
-"""
+"""Tests for CorpusManager"""
 
 from unittest.mock import Mock, patch
 

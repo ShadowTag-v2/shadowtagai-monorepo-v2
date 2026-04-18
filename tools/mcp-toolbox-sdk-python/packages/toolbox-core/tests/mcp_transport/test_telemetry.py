@@ -159,9 +159,7 @@ class TestCreateTraceparentFromContext:
     def test_returns_traceparent_when_available(self):
         with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True):
             mock_propagator = MagicMock()
-            mock_propagator.inject.side_effect = lambda carrier: carrier.update(
-                {"traceparent": "00-abc-def-01"}
-            )
+            mock_propagator.inject.side_effect = lambda carrier: carrier.update({"traceparent": "00-abc-def-01"})
             with patch.object(
                 telemetry_module,
                 "TraceContextTextMapPropagator",
@@ -192,9 +190,7 @@ class TestCreateTracestateFromContext:
     def test_returns_tracestate_when_available(self):
         with patch.object(telemetry_module, "TELEMETRY_AVAILABLE", True):
             mock_propagator = MagicMock()
-            mock_propagator.inject.side_effect = lambda carrier: carrier.update(
-                {"tracestate": "vendor=value"}
-            )
+            mock_propagator.inject.side_effect = lambda carrier: carrier.update({"tracestate": "vendor=value"})
             with patch.object(
                 telemetry_module,
                 "TraceContextTextMapPropagator",
@@ -328,9 +324,7 @@ class TestStartSpan:
                 protocol_version="2025-06-18",
                 server_url="http://example.com",
             )
-        port_calls = [
-            c for c in span.set_attribute.call_args_list if c[0][0] == ATTR_SERVER_PORT
-        ]
+        port_calls = [c for c in span.set_attribute.call_args_list if c[0][0] == ATTR_SERVER_PORT]
         assert len(port_calls) == 0
 
 
@@ -348,9 +342,7 @@ class TestEndSpan:
     def test_ends_span_with_error(self):
         mock_span = MagicMock()
         error = ValueError("something went wrong")
-        with patch.multiple(
-            telemetry_module, Status=MagicMock(), StatusCode=MagicMock()
-        ):
+        with patch.multiple(telemetry_module, Status=MagicMock(), StatusCode=MagicMock()):
             end_span(mock_span, error=error)
         mock_span.set_status.assert_called_once()
         mock_span.set_attribute.assert_any_call(ATTR_ERROR_TYPE, "ValueError")
@@ -366,24 +358,16 @@ class TestEndSpan:
 class TestRecordErrorFromJsonrpc:
     def test_sets_error_status_and_attribute(self):
         mock_span = MagicMock()
-        with patch.multiple(
-            telemetry_module, Status=MagicMock(), StatusCode=MagicMock()
-        ):
-            record_error_from_jsonrpc(
-                mock_span, error_code=-32600, error_message="Invalid Request"
-            )
+        with patch.multiple(telemetry_module, Status=MagicMock(), StatusCode=MagicMock()):
+            record_error_from_jsonrpc(mock_span, error_code=-32600, error_message="Invalid Request")
         mock_span.set_status.assert_called_once()
-        mock_span.set_attribute.assert_called_once_with(
-            ATTR_ERROR_TYPE, "jsonrpc.error.-32600"
-        )
+        mock_span.set_attribute.assert_called_once_with(ATTR_ERROR_TYPE, "jsonrpc.error.-32600")
 
 
 class TestRecordOperationDuration:
     def test_does_nothing_with_none_histogram(self):
         # Should not raise
-        record_operation_duration(
-            None, 1.5, "tools/call", "2025-06-18", "http://example.com"
-        )
+        record_operation_duration(None, 1.5, "tools/call", "2025-06-18", "http://example.com")
 
     def test_records_basic_operation(self):
         mock_histogram = MagicMock()
@@ -458,9 +442,7 @@ class TestRecordOperationDuration:
         mock_histogram = MagicMock()
         mock_histogram.record.side_effect = Exception("record failed")
         # Should not raise
-        record_operation_duration(
-            mock_histogram, 0.5, "tools/list", "2025-06-18", "http://example.com"
-        )
+        record_operation_duration(mock_histogram, 0.5, "tools/list", "2025-06-18", "http://example.com")
 
 
 class TestRecordSessionDuration:
@@ -479,9 +461,7 @@ class TestRecordSessionDuration:
 
     def test_records_with_server_port(self):
         mock_histogram = MagicMock()
-        record_session_duration(
-            mock_histogram, 5.0, "2025-06-18", "http://example.com:8080"
-        )
+        record_session_duration(mock_histogram, 5.0, "2025-06-18", "http://example.com:8080")
         attrs = mock_histogram.record.call_args[0][1]
         assert attrs[ATTR_SERVER_PORT] == 8080
 
@@ -500,9 +480,7 @@ class TestRecordSessionDuration:
     def test_records_with_error(self):
         mock_histogram = MagicMock()
         error = ConnectionError("disconnected")
-        record_session_duration(
-            mock_histogram, 2.0, "2025-06-18", "http://example.com", error=error
-        )
+        record_session_duration(mock_histogram, 2.0, "2025-06-18", "http://example.com", error=error)
         attrs = mock_histogram.record.call_args[0][1]
         assert attrs[ATTR_ERROR_TYPE] == "ConnectionError"
 

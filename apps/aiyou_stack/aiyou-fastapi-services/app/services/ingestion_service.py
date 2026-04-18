@@ -1,5 +1,4 @@
-"""Ingestion Service - Wraps Gemini Ingestion Layer for FastAPI
-"""
+"""Ingestion Service - Wraps Gemini Ingestion Layer for FastAPI"""
 
 import asyncio
 import logging
@@ -96,7 +95,8 @@ class IngestionService:
         try:
             logger.info(f"Starting job {job_id}")
             result = await self.ingestion_layer.run_nightly_job(
-                job_id=job_id, max_items_per_source=max_items_per_source,
+                job_id=job_id,
+                max_items_per_source=max_items_per_source,
             )
             self.jobs[job_id] = result
             logger.info(f"Job {job_id} completed with status: {result.status}")
@@ -235,7 +235,10 @@ class IngestionService:
                 jobs_status.append(status)
 
         return JobListResponse(
-            jobs=jobs_status, total=len(all_job_ids), page=page, page_size=page_size,
+            jobs=jobs_status,
+            total=len(all_job_ids),
+            page=page,
+            page_size=page_size,
         )
 
     def get_metrics_summary(self) -> MetricsSummary:

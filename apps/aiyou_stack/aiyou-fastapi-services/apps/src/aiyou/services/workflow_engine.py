@@ -37,7 +37,9 @@ class WorkflowExecutionEngine:
         self.workflow_state = {}  # Stores variables during execution
 
     def execute_workflow(
-        self, workflow: dict[str, Any], inputs: dict[str, str] | None = None,
+        self,
+        workflow: dict[str, Any],
+        inputs: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Execute a workflow definition.
 
@@ -179,7 +181,9 @@ class WorkflowExecutionEngine:
 
         # Update context
         success = self.context_service.update_context(
-            opord_number=opord_number, summary=summary, decisions=decisions,
+            opord_number=opord_number,
+            summary=summary,
+            decisions=decisions,
         )
 
         logger.info(f"Updated OPORD {opord_number:05d} with append")

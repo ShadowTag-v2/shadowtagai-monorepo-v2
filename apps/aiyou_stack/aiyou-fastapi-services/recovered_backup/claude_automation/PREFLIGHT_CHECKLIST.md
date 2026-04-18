@@ -1,6 +1,6 @@
 # PNKLN Multi-Agent Deployment - Pre-Flight Checklist
 
-**Target:** Vertex AI Workbench (rust_scriptbots/Bevy integration)  
+**Target:** Vertex AI Workbench (rust_scriptbots/Bevy integration)
 **Execution:** Bootstrap from $0K with zero manual drift
 
 ---
@@ -41,7 +41,7 @@
     - [ ] Public repo (no auth needed)
     - [ ] Private repo - SSH key configured
     - [ ] Private repo - PAT token ready
-  
+
 - [ ] **Test clone locally** (optional but recommended)
   ```bash
   git clone <REPO_URL> /tmp/test_clone
@@ -58,10 +58,10 @@
   # Set environment variables
   export GCP_PROJECT_ID="<YOUR_PROJECT_ID>"
   export RUST_SCRIPTBOTS_REPO="<YOUR_REPO_URL>"  # Optional
-  
+
   # Make executable
   chmod +x deploy_pnkln_agents.sh
-  
+
   # Execute
   ./deploy_pnkln_agents.sh
   ```
@@ -276,15 +276,15 @@ gsutil iam ch serviceAccount:<SA_EMAIL>:objectAdmin gs://pnkln-agent-mail
 
 ## Success Criteria
 
-✅ All phases complete without errors  
-✅ Agents coordinate via Agent Mail  
-✅ Governance logs appear in GCS  
-✅ First task executes with Judge #6 validation  
-✅ rust_scriptbots compiles on instance  
-✅ Bevy integration tasks claimed and in progress  
+✅ All phases complete without errors
+✅ Agents coordinate via Agent Mail
+✅ Governance logs appear in GCS
+✅ First task executes with Judge #6 validation
+✅ rust_scriptbots compiles on instance
+✅ Bevy integration tasks claimed and in progress
 
-**Time to Production:** < 1 hour (assuming no quota/auth issues)  
-**Bootstrap Cost:** ~$0.50/hr for n1-standard-8 + ~$0.10/day for GCS  
+**Time to Production:** < 1 hour (assuming no quota/auth issues)
+**Bootstrap Cost:** ~$0.50/hr for n1-standard-8 + ~$0.10/day for GCS
 
 ---
 

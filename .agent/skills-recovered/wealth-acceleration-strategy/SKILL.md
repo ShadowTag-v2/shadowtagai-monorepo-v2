@@ -22,7 +22,7 @@ Whenever this skill is triggered, you MUST structure your response into these th
 Identify exactly where the user is leaving money on the table right now regarding the current feature, project, or pipeline. Expose weak offers, bad positioning, or low-converting funnels with surgical precision.
 
 ### 2. Executive Summary (Boardroom Style)
-Redesign the monetization strategy so every view, click, and user has maximum dollar value. 
+Redesign the monetization strategy so every view, click, and user has maximum dollar value.
 - Map out backend revenue systems: upsells, continuity, high-ticket offers.
 - Explain what you redesigned and why, communicating like a Sequoia/McKinsey partner.
 

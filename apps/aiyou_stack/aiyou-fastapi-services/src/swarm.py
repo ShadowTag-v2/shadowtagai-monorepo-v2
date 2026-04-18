@@ -6,8 +6,7 @@ MAX_CONCURRENT_MONKEYS = 5  # The "Bouncer" for your API Quota
 
 
 async def spawn_monkey(sem: asyncio.Semaphore, task: str):
-    """Spawns a single monkey process, respecting the semaphore limit.
-    """
+    """Spawns a single monkey process, respecting the semaphore limit."""
     async with sem:
         mission_id = str(uuid.uuid4())[:8]
         print(f"🌖 [Swarm] Dispatching Monkey {mission_id}...")
@@ -34,8 +33,7 @@ async def spawn_monkey(sem: asyncio.Semaphore, task: str):
 
 
 async def run_swarm(tasks: list[str]):
-    """The Main Loop: Takes a list of raw tasks and manages the fleet.
-    """
+    """The Main Loop: Takes a list of raw tasks and manages the fleet."""
     sem = asyncio.Semaphore(MAX_CONCURRENT_MONKEYS)
 
     print(f"🚀 [Command] Releasing Swarm on {len(tasks)} targets.")

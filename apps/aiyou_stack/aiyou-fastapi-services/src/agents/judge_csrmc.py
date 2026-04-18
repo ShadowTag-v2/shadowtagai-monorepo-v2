@@ -69,8 +69,7 @@ class JudgeCSRMC:
         self.cATO_active = False
 
     def _load_critical_controls(self) -> dict[str, CriticalControl]:
-        """Loads the 'High Signal' Critical Controls defined in CSRMC.
-        """
+        """Loads the 'High Signal' Critical Controls defined in CSRMC."""
         return {
             "MFA": CriticalControl(
                 "ID-01",
@@ -103,10 +102,11 @@ class JudgeCSRMC:
         }
 
     def evaluate_lifecycle_phase(
-        self, phase: RiskPhase, artifacts: dict[str, Any],
+        self,
+        phase: RiskPhase,
+        artifacts: dict[str, Any],
     ) -> SecurityPosture:
-        """Evaluates the system posture based on the 5-Phase CSRMC Lifecycle.
-        """
+        """Evaluates the system posture based on the 5-Phase CSRMC Lifecycle."""
         print(f"🛡️ [Judge 7] Evaluating Phase: {phase.value.upper()}...")
 
         # 1. VALIDATE CONTROLS (Policy-as-Code Simulation)
@@ -165,28 +165,31 @@ class JudgeCSRMC:
         )
 
     def _run_ai_attack_simulation(self) -> CriticalControl:
-        """Simulates the 'Threat-Informed Assessment' tenet.
-        """
+        """Simulates the 'Threat-Informed Assessment' tenet."""
         print("⚔️ [Judge 7] Running AI Attack Simulation (Volt Typhoon Profile)...")
         # Mock simulation logic
         time.sleep(0.5)
         passed = True
         status = ControlStatus.COMPLIANT if passed else ControlStatus.NON_COMPLIANT
         return CriticalControl(
-            "SIM-01", "AI Attack Sim (Volt Typhoon)", "Test", status, "NodeZero Report",
+            "SIM-01",
+            "AI Attack Sim (Volt Typhoon)",
+            "Test",
+            status,
+            "NodeZero Report",
         )
 
     def get_dashboard_link(self) -> str:
-        """Returns the link to the Real-Time Ops Dashboard.
-        """
+        """Returns the link to the Real-Time Ops Dashboard."""
         return "https://regscale.internal.army.mil/dashboard/csrmc-live"
         return "https://regscale.internal.army.mil/dashboard/csrmc-live"
 
     def evaluate_compliance(
-        self, profile: ComplianceProfile, artifacts: dict[str, Any],
+        self,
+        profile: ComplianceProfile,
+        artifacts: dict[str, Any],
     ) -> ComplianceReport:
-        """Evaluates artifacts against a specific Compliance Profile.
-        """
+        """Evaluates artifacts against a specific Compliance Profile."""
         status = ControlStatus.COMPLIANT
         gaps = []
         details = ""
@@ -311,8 +314,7 @@ class JudgeCSRMC:
         return ComplianceReport(profile, status, details, gaps)
 
     def trigger_rmf_validation(self, artifacts: dict[str, Any]) -> str:
-        """Triggers the RMF Control Layer Check (Brake System) for ShadowTag-v2JR Extension.
-        """
+        """Triggers the RMF Control Layer Check (Brake System) for ShadowTag-v2JR Extension."""
         print("🚦 [ShadowTag-v2JR] RMF Brake System Engaged...")
 
         # 1. NIST 800-53 Check

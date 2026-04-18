@@ -31,4 +31,3 @@ class DailyRecurrence extends \Google\Protobuf\Internal\Message
     }
 
 }
-

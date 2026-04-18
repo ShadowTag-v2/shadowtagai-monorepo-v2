@@ -33,7 +33,8 @@ class ResearchRequest(BaseModel):
 
     query: str = Field(..., description="Research query", min_length=3, max_length=1000)
     sources: list[str] | None = Field(
-        None, description="Override source selection (drive, gmail, web)",
+        None,
+        description="Override source selection (drive, gmail, web)",
     )
     max_results_per_source: int = Field(10, description="Maximum results per source", ge=1, le=50)
     enable_synthesis: bool = Field(True, description="Use Gemini to synthesize results into report")

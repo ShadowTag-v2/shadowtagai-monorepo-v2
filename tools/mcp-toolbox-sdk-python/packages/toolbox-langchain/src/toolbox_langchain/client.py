@@ -25,7 +25,6 @@ from .version import __version__
 
 
 class ToolboxClient:
-
     def __init__(
         self,
         url: str,

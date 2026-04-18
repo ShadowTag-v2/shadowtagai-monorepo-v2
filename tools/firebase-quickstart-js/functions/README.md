@@ -26,7 +26,7 @@ Getting Started
       - You should be getting the result of the addition.
  11. Write a message in the Box below and Click the "Add Message" button.
       - The message is added below but if it contains [bad words](https://github.com/web-mech/badwords-list) or SHOUTING!! it will be sanitized.
- 
+
 To run the sample app locally during development:
 1. Run `npm install` to install dependencies.
 2. Run `npm --prefix functions run build` to build the functions using Vite.

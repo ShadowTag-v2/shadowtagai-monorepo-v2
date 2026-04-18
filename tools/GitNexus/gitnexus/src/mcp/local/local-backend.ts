@@ -1,6 +1,6 @@
 /**
  * Local Backend (Multi-Repo)
- * 
+ *
  * Provides tool implementations using local .gitnexus/ indexes.
  * Supports multiple indexed repositories via a global registry.
  * LadybugDB connections are opened lazily per repo on first query.
@@ -417,7 +417,7 @@ export class LocalBackend {
 
   /**
    * Query tool — process-grouped search.
-   * 
+   *
    * 1. Hybrid search (BM25 + semantic) to find matching symbols
    * 2. Trace each match to its process(es) via STEP_IN_PROCESS
    * 3. Group by process, rank by aggregate relevance + internal cluster cohesion
@@ -434,14 +434,14 @@ export class LocalBackend {
     if (!params.query?.trim()) {
       return { error: 'query parameter is required and cannot be empty.' };
     }
-    
+
     await this.ensureInitialized(repo.id);
-    
+
     const processLimit = params.limit || 5;
     const maxSymbolsPerProcess = params.max_symbols || 10;
     const includeContent = params.include_content ?? false;
     const searchQuery = params.query.trim();
-    
+
     // Step 1: Run hybrid search to get matching symbols
     const searchLimit = processLimit * maxSymbolsPerProcess; // fetch enough raw results
     const [bm25SearchResult, semanticResults] = await Promise.all([
@@ -451,10 +451,10 @@ export class LocalBackend {
 
     const bm25Results = bm25SearchResult.results;
     const ftsUsed = bm25SearchResult.ftsUsed;
-    
+
     // Merge via reciprocal rank fusion
     const scoreMap = new Map<string, { score: number; data: any }>();
-    
+
     for (let i = 0; i < bm25Results.length; i++) {
       const result = bm25Results[i];
       const key = result.nodeId || result.filePath;
@@ -466,7 +466,7 @@ export class LocalBackend {
         scoreMap.set(key, { score: rrfScore, data: result });
       }
     }
-    
+
     for (let i = 0; i < semanticResults.length; i++) {
       const result = semanticResults[i];
       const key = result.nodeId || result.filePath;
@@ -478,15 +478,15 @@ export class LocalBackend {
         scoreMap.set(key, { score: rrfScore, data: result });
       }
     }
-    
+
     const merged = Array.from(scoreMap.entries())
       .sort((a, b) => b[1].score - a[1].score)
       .slice(0, searchLimit);
-    
+
     // Step 2: For each match with a nodeId, trace to process(es)
     const processMap = new Map<string, { id: string; label: string; heuristicLabel: string; processType: string; stepCount: number; totalScore: number; cohesionBoost: number; symbols: any[] }>();
     const definitions: any[] = []; // standalone symbols not in any process
-    
+
     for (const [_, item] of merged) {
       const sym = item.data;
       if (!sym.nodeId) {
@@ -498,7 +498,7 @@ export class LocalBackend {
         });
         continue;
       }
-      
+
       // Find processes this symbol participates in
       let processRows: any[] = [];
       try {
@@ -547,7 +547,7 @@ export class LocalBackend {
         ...(module ? { module } : {}),
         ...(includeContent && content ? { content } : {}),
       };
-      
+
       if (processRows.length === 0) {
         // Symbol not in any process — goes to definitions
         definitions.push(symbolEntry);
@@ -560,7 +560,7 @@ export class LocalBackend {
           const pType = row.processType ?? row[3];
           const stepCount = row.stepCount ?? row[4];
           const step = row.step ?? row[5];
-          
+
           if (!processMap.has(pid)) {
             processMap.set(pid, {
               id: pid,
@@ -573,7 +573,7 @@ export class LocalBackend {
               symbols: [],
             });
           }
-          
+
           const proc = processMap.get(pid)!;
           proc.totalScore += item.score;
           proc.cohesionBoost = Math.max(proc.cohesionBoost, cohesion);
@@ -585,7 +585,7 @@ export class LocalBackend {
         }
       }
     }
-    
+
     // Step 3: Rank processes by aggregate score + internal cohesion boost
     const rankedProcesses = Array.from(processMap.values())
       .map(p => ({
@@ -594,7 +594,7 @@ export class LocalBackend {
       }))
       .sort((a, b) => b.priority - a.priority)
       .slice(0, processLimit);
-    
+
     // Step 4: Build response
     const processes = rankedProcesses.map(p => ({
       id: p.id,
@@ -604,14 +604,14 @@ export class LocalBackend {
       process_type: p.processType,
       step_count: p.stepCount,
     }));
-    
+
     const processSymbols = rankedProcesses.flatMap(p =>
       p.symbols.slice(0, maxSymbolsPerProcess).map(s => ({
         ...s,
         // remove internal fields
       }))
     );
-    
+
     // Deduplicate process_symbols by id
     const seen = new Set<string>();
     const dedupedSymbols = processSymbols.filter(s => {
@@ -619,7 +619,7 @@ export class LocalBackend {
       seen.add(s.id);
       return true;
     });
-    
+
     return {
       processes,
       process_symbols: dedupedSymbols,
@@ -642,9 +642,9 @@ export class LocalBackend {
     }
 
     const ftsUsed = bm25Results.length === 0 || (bm25Results[0]?.ftsUsed !== false);
-    
+
     const results: any[] = [];
-    
+
     for (const bm25Result of bm25Results) {
       const fullPath = bm25Result.filePath;
       try {
@@ -654,7 +654,7 @@ export class LocalBackend {
           RETURN n.id AS id, n.name AS name, labels(n)[0] AS type, n.filePath AS filePath, n.startLine AS startLine, n.endLine AS endLine
           LIMIT 3
         `, { filePath: fullPath });
-        
+
         if (symbols.length > 0) {
           for (const sym of symbols) {
             results.push({
@@ -686,7 +686,7 @@ export class LocalBackend {
         });
       }
     }
-    
+
     return { results, ftsUsed };
   }
 
@@ -703,9 +703,9 @@ export class LocalBackend {
       const queryVec = await embedQuery(query);
       const dims = getEmbeddingDims();
       const queryVecStr = `[${queryVec.join(',')}]`;
-      
+
       const vectorQuery = `
-        CALL QUERY_VECTOR_INDEX('CodeEmbedding', 'code_embedding_idx', 
+        CALL QUERY_VECTOR_INDEX('CodeEmbedding', 'code_embedding_idx',
           CAST(${queryVecStr} AS FLOAT[${dims}]), ${limit})
         YIELD node AS emb, distance
         WITH emb, distance
@@ -713,23 +713,23 @@ export class LocalBackend {
         RETURN emb.nodeId AS nodeId, distance
         ORDER BY distance
       `;
-      
+
       const embResults = await executeQuery(repo.id, vectorQuery);
-      
+
       if (embResults.length === 0) return [];
-      
+
       const results: any[] = [];
-      
+
       for (const embRow of embResults) {
         const nodeId = embRow.nodeId ?? embRow[0];
         const distance = embRow.distance ?? embRow[1];
-        
+
         const labelEndIdx = nodeId.indexOf(':');
         const label = labelEndIdx > 0 ? nodeId.substring(0, labelEndIdx) : 'Unknown';
-        
+
         // Validate label against known node types to prevent Cypher injection
         if (!VALID_NODE_LABELS.has(label)) continue;
-        
+
         try {
           const nodeQuery = label === 'File'
             ? `MATCH (n:File {id: $nodeId}) RETURN n.name AS name, n.filePath AS filePath`
@@ -750,7 +750,7 @@ export class LocalBackend {
           }
         } catch {}
       }
-      
+
       return results;
     } catch {
       // Expected when embeddings are disabled — silently fall back to BM25-only
@@ -854,7 +854,7 @@ export class LocalBackend {
 
   private async overview(repo: RepoHandle, params: { showClusters?: boolean; showProcesses?: boolean; limit?: number }): Promise<any> {
     await this.ensureInitialized(repo.id);
-    
+
     const limit = params.limit || 20;
     const result: any = {
       repo: repo.name,
@@ -863,7 +863,7 @@ export class LocalBackend {
       indexedAt: repo.indexedAt,
       lastCommit: repo.lastCommit,
     };
-    
+
     if (params.showClusters !== false) {
       try {
         // Fetch more raw communities than the display limit so aggregation has enough data
@@ -886,7 +886,7 @@ export class LocalBackend {
         result.clusters = [];
       }
     }
-    
+
     if (params.showProcesses !== false) {
       try {
         const processes = await executeQuery(repo.id, `
@@ -906,7 +906,7 @@ export class LocalBackend {
         result.processes = [];
       }
     }
-    
+
     return result;
   }
 
@@ -922,16 +922,16 @@ export class LocalBackend {
     include_content?: boolean;
   }): Promise<any> {
     await this.ensureInitialized(repo.id);
-    
+
     const { name, uid, file_path, include_content } = params;
-    
+
     if (!name && !uid) {
       return { error: 'Either "name" or "uid" parameter is required.' };
     }
-    
+
     // Step 1: Find the symbol
     let symbols: any[];
-    
+
     if (uid) {
       symbols = await executeParameterized(repo.id, `
         MATCH (n {id: $uid})
@@ -960,11 +960,11 @@ export class LocalBackend {
         LIMIT 10
       `, queryParams);
     }
-    
+
     if (symbols.length === 0) {
       return { error: `Symbol '${name || uid}' not found` };
     }
-    
+
     // Step 2: Disambiguation
     // When multiple nodes share the same name (e.g. a Java Class and its
     // Constructor both named 'SessionTracker'), prefer the Class node so
@@ -1017,7 +1017,7 @@ export class LocalBackend {
         })),
       };
     }
-    
+
     // Step 3: Build full context
     const sym = symbols[0];
     const symId = sym.id || sym[0];
@@ -1107,7 +1107,7 @@ export class LocalBackend {
         RETURN p.id AS pid, p.heuristicLabel AS label, r.step AS step, p.stepCount AS stepCount
       `, { symId });
     } catch (e) { logQueryError('context:process-participation', e); }
-    
+
     // Helper to categorize refs
     const categorize = (rows: any[]) => {
       const cats: Record<string, any[]> = {};
@@ -1124,7 +1124,7 @@ export class LocalBackend {
       }
       return cats;
     };
-    
+
     return {
       status: 'found',
       symbol: {
@@ -1154,11 +1154,11 @@ export class LocalBackend {
   private async explore(repo: RepoHandle, params: { name: string; type: 'symbol' | 'cluster' | 'process' }): Promise<any> {
     await this.ensureInitialized(repo.id);
     const { name, type } = params;
-    
+
     if (type === 'symbol') {
       return this.context(repo, { name });
     }
-    
+
     if (type === 'cluster') {
       const clusters = await executeParameterized(repo.id, `
         MATCH (c:Community)
@@ -1185,7 +1185,7 @@ export class LocalBackend {
         RETURN DISTINCT n.name AS name, labels(n)[0] AS type, n.filePath AS filePath
         LIMIT 30
       `, { clusterName: name });
-      
+
       return {
         cluster: {
           id: rawClusters[0].id,
@@ -1200,7 +1200,7 @@ export class LocalBackend {
         })),
       };
     }
-    
+
     if (type === 'process') {
       const processes = await executeParameterized(repo.id, `
         MATCH (p:Process)
@@ -1217,7 +1217,7 @@ export class LocalBackend {
         RETURN n.name AS name, labels(n)[0] AS type, n.filePath AS filePath, r.step AS step
         ORDER BY r.step
       `, { procId });
-      
+
       return {
         process: {
           id: procId, label: proc.label || proc[1], heuristicLabel: proc.heuristicLabel || proc[2],
@@ -1228,7 +1228,7 @@ export class LocalBackend {
         })),
       };
     }
-    
+
     return { error: 'Invalid type. Use: symbol, cluster, or process' };
   }
 
@@ -1241,7 +1241,7 @@ export class LocalBackend {
     base_ref?: string;
   }): Promise<any> {
     await this.ensureInitialized(repo.id);
-    
+
     const scope = params.scope || 'unstaged';
     const { execFileSync } = await import('child_process');
 
@@ -1271,7 +1271,7 @@ export class LocalBackend {
     } catch (err: any) {
       return { error: `Git diff failed: ${err.message}` };
     }
-    
+
     if (changedFiles.length === 0) {
       return {
         summary: { changed_count: 0, affected_count: 0, risk_level: 'none', message: 'No changes detected.' },
@@ -1279,7 +1279,7 @@ export class LocalBackend {
         affected_processes: [],
       };
     }
-    
+
     // Map changed files to indexed symbols
     const changedSymbols: any[] = [];
     for (const file of changedFiles) {
@@ -1331,7 +1331,7 @@ export class LocalBackend {
 
     const processCount = affectedProcesses.size;
     const risk = processCount === 0 ? 'low' : processCount <= 5 ? 'medium' : processCount <= 15 ? 'high' : 'critical';
-    
+
     return {
       summary: {
         changed_count: changedSymbols.length,
@@ -1357,7 +1357,7 @@ export class LocalBackend {
     dry_run?: boolean;
   }): Promise<any> {
     await this.ensureInitialized(repo.id);
-    
+
     const { new_name, file_path } = params;
     const dry_run = params.dry_run ?? true;
 
@@ -1373,38 +1373,38 @@ export class LocalBackend {
       }
       return full;
     };
-    
+
     // Step 1: Find the target symbol (reuse context's lookup)
     const lookupResult = await this.context(repo, {
       name: params.symbol_name,
       uid: params.symbol_uid,
       file_path,
     });
-    
+
     if (lookupResult.status === 'ambiguous') {
       return lookupResult; // pass disambiguation through
     }
     if (lookupResult.error) {
       return lookupResult;
     }
-    
+
     const sym = lookupResult.symbol;
     const oldName = sym.name;
-    
+
     if (oldName === new_name) {
       return { error: 'New name is the same as the current name.' };
     }
-    
+
     // Step 2: Collect edits from graph (high confidence)
     const changes = new Map<string, { file_path: string; edits: any[] }>();
-    
+
     const addEdit = (filePath: string, line: number, oldText: string, newText: string, confidence: string) => {
       if (!changes.has(filePath)) {
         changes.set(filePath, { file_path: filePath, edits: [] });
       }
       changes.get(filePath)!.edits.push({ line, old_text: oldText, new_text: newText, confidence });
     };
-    
+
     // The definition itself
     if (sym.filePath && sym.startLine) {
       try {
@@ -1425,9 +1425,9 @@ export class LocalBackend {
       ...(lookupResult.incoming.extends || []),
       ...(lookupResult.incoming.implements || []),
     ];
-    
+
     let graphEdits = changes.size > 0 ? 1 : 0; // count definition edit
-    
+
     for (const ref of allIncoming) {
       if (!ref.filePath) continue;
       try {
@@ -1446,7 +1446,7 @@ export class LocalBackend {
     // Step 3: Text search for refs the graph might have missed
     let astSearchEdits = 0;
     const graphFiles = new Set([sym.filePath, ...allIncoming.map(r => r.filePath)].filter(Boolean));
-    
+
     // Simple text search across the repo for the old name (in files not already covered by graph)
     try {
       const { execFileSync } = await import('child_process');
@@ -1459,11 +1459,11 @@ export class LocalBackend {
       ];
       const output = execFileSync('rg', rgArgs, { cwd: repo.repoPath, encoding: 'utf-8', timeout: 5000 });
       const files = output.trim().split('\n').filter(f => f.length > 0);
-      
+
       for (const file of files) {
         const normalizedFile = file.replace(/\\/g, '/').replace(/^\.\//, '');
         if (graphFiles.has(normalizedFile)) continue; // already covered by graph
-        
+
         try {
           const content = await fs.readFile(assertSafePath(normalizedFile), 'utf-8');
           const lines = content.split('\n');
@@ -1479,11 +1479,11 @@ export class LocalBackend {
         } catch (e) { logQueryError('rename:text-search-read', e); }
       }
     } catch (e) { logQueryError('rename:ripgrep', e); }
-    
+
     // Step 4: Apply or preview
     const allChanges = Array.from(changes.values());
     const totalEdits = allChanges.reduce((sum, c) => sum + c.edits.length, 0);
-    
+
     if (!dry_run) {
       // Apply edits to files
       for (const change of allChanges) {
@@ -1496,7 +1496,7 @@ export class LocalBackend {
         } catch (e) { logQueryError('rename:apply-edit', e); }
       }
     }
-    
+
     return {
       status: 'success',
       old_name: oldName,
@@ -1542,7 +1542,7 @@ export class LocalBackend {
     minConfidence?: number;
   }): Promise<any> {
     await this.ensureInitialized(repo.id);
-    
+
     const { target, direction } = params;
     const maxDepth = params.maxDepth || 3;
     const rawRelTypes = params.relationTypes && params.relationTypes.length > 0
@@ -1652,25 +1652,25 @@ export class LocalBackend {
         logQueryError('impact:class-node-expansion', e);
       }
     }
-    
+
     for (let depth = 1; depth <= maxDepth && frontier.length > 0; depth++) {
       const nextFrontier: string[] = [];
-      
+
       // Batch frontier nodes into a single Cypher query per depth level
       const idList = frontier.map(id => `'${id.replace(/'/g, "''")}'`).join(', ');
       const query = direction === 'upstream'
         ? `MATCH (caller)-[r:CodeRelation]->(n) WHERE n.id IN [${idList}] AND r.type IN [${relTypeFilter}]${confidenceFilter} RETURN n.id AS sourceId, caller.id AS id, caller.name AS name, labels(caller)[0] AS type, caller.filePath AS filePath, r.type AS relType, r.confidence AS confidence`
         : `MATCH (n)-[r:CodeRelation]->(callee) WHERE n.id IN [${idList}] AND r.type IN [${relTypeFilter}]${confidenceFilter} RETURN n.id AS sourceId, callee.id AS id, callee.name AS name, labels(callee)[0] AS type, callee.filePath AS filePath, r.type AS relType, r.confidence AS confidence`;
-      
+
       try {
         const related = await executeQuery(repo.id, query);
-        
+
         for (const rel of related) {
           const relId = rel.id || rel[1];
           const filePath = rel.filePath || rel[4] || '';
-          
+
           if (!includeTests && isTestFilePath(filePath)) continue;
-          
+
           if (!visited.has(relId)) {
             visited.add(relId);
             nextFrontier.push(relId);
@@ -1700,10 +1700,10 @@ export class LocalBackend {
         traversalComplete = false;
         break;
       }
-      
+
       frontier = nextFrontier;
     }
-    
+
     const grouped: Record<number, any[]> = {};
     for (const item of impacted) {
       if (!grouped[item.depth]) grouped[item.depth] = [];

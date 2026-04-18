@@ -19,7 +19,7 @@ The tool contextually understands requirements such as distance functions, quant
 
 ## Requirements
 
-{{< notice tip >}} 
+{{< notice tip >}}
 Ensure that your target PostgreSQL database has the required `vector_assist` extension installed, in order for this tool to execute successfully.
 {{< /notice >}}
 
@@ -42,8 +42,8 @@ The tool takes the following input parameters:
 | `iterative_index_search` | boolean | Enables iterative search for filtered queries to guarantee results. | No       |
 
 > Note
-> Parameters are marked as required or optional based on the vector assist function definitions. 
-> The function may perform further validation on optional parameters to ensure all necessary 
+> Parameters are marked as required or optional based on the vector assist function definitions.
+> The function may perform further validation on optional parameters to ensure all necessary
 > data is available before returning a response.
 
 ## Example

@@ -4,6 +4,7 @@ import pytest
 # Assumes the firebase emulator is running locally
 EMULATOR_URL = "http://127.0.0.1:5001/shadowtag-omega-v4/us-central1/captureLead"
 
+
 @pytest.mark.asyncio
 async def test_valid_submission():
     payload = {
@@ -19,6 +20,7 @@ async def test_valid_submission():
     assert response.status_code == 200
     assert response.json().get("success") is True
 
+
 @pytest.mark.asyncio
 async def test_invalid_email_boundary():
     payload = {
@@ -32,10 +34,11 @@ async def test_invalid_email_boundary():
     details = response.json().get("details", [])
     assert any("Invalid email" in str(d) for d in details)
 
+
 @pytest.mark.asyncio
 async def test_short_name_boundary():
     payload = {
-        "name": "A", # Under 2 chars
+        "name": "A",  # Under 2 chars
         "email": "valid@email.com",
         "message": "This is another valid message.",
     }
@@ -43,16 +46,18 @@ async def test_short_name_boundary():
         response = await client.post(EMULATOR_URL, json=payload)
     assert response.status_code == 400
 
+
 @pytest.mark.asyncio
 async def test_short_message_boundary():
     payload = {
         "name": "Jane Doe",
         "email": "valid@email.com",
-        "message": "Too short", # Under 10 chars
+        "message": "Too short",  # Under 10 chars
     }
     async with httpx.AsyncClient() as client:
         response = await client.post(EMULATOR_URL, json=payload)
     assert response.status_code == 400
+
 
 @pytest.mark.asyncio
 async def test_missing_required_fields():

@@ -16,9 +16,7 @@ SA_EMAIL = "redacted@shadowtag-v4.local"
 KEY_FILE_PATH = os.path.expanduser("~/.gcp/headless-runner-key.json")
 
 # --- Environment Setup ---
-WORKSPACE_CONFIG = (
-    "/Users/pikeymickey/.gemini/antigravity/playground/ultraviolet-zodiac/.gcloud_config"
-)
+WORKSPACE_CONFIG = "/Users/pikeymickey/.gemini/antigravity/playground/ultraviolet-zodiac/.gcloud_config"
 os.environ["CLOUDSDK_CONFIG"] = WORKSPACE_CONFIG
 
 

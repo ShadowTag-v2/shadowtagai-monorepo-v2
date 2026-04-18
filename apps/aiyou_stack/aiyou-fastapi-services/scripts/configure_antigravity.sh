@@ -23,7 +23,7 @@ fi
 
 # 3. Validation
 echo "🔍 Verifying detection markers..."
-if [ -n "$ANTIGRAVITY_CLI_ALIAS" ]; then 
+if [ -n "$ANTIGRAVITY_CLI_ALIAS" ]; then
     echo "   -> ANTIGRAVITY_CLI_ALIAS is set."
 else
     echo "   -> ANTIGRAVITY_CLI_ALIAS is NOT set."

@@ -51,9 +51,7 @@ async def transport(mocker):
     """
     base_url = "http://fake-server.com"
     transport_instance = ConcreteTransport(base_url)
-    mocker.patch.object(
-        transport_instance, "_initialize_session", new_callable=AsyncMock
-    )
+    mocker.patch.object(transport_instance, "_initialize_session", new_callable=AsyncMock)
     mocker.patch.object(transport_instance, "_send_request", new_callable=AsyncMock)
 
     yield transport_instance

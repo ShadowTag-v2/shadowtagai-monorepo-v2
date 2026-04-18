@@ -61,4 +61,3 @@ class DatabaseType
         return constant($const);
     }
 }
-

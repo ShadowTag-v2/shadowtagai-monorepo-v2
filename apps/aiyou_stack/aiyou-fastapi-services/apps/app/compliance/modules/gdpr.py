@@ -252,7 +252,9 @@ class GDPRModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput,
+        self,
+        control: ControlDefinition,
+        input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single GDPR control."""
         metadata = input_data.metadata
@@ -382,7 +384,10 @@ class GDPRModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None,
+        self,
+        rule: ValidationRule,
+        content: str,
+        context: str | None,
     ) -> ValidationViolation | None:
         """Check GDPR validation rules against content."""
         if rule.rule_id == "GDPR-VAL-001":

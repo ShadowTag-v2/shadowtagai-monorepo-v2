@@ -20,7 +20,9 @@ def generate_grounded_content(prompt="How much is Google stock?"):
 
     try:
         response = model.generate_content(
-            prompt, tools=[tool], generation_config={"temperature": 0.0},
+            prompt,
+            tools=[tool],
+            generation_config={"temperature": 0.0},
         )
 
         print("\nResponse:")

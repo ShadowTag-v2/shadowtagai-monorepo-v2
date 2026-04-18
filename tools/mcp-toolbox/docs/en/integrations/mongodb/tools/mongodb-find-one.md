@@ -42,7 +42,7 @@ filterParams:
     type: string
     description: The email address of the user to find.
 projectPayload: |
-    { 
+    {
       "password_hash": 0,
       "login_history": 0
     }

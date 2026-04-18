@@ -89,9 +89,7 @@ def main():
     # Filter strictly for private repos
     private_repos = [r for r in all_repos if r.get("private") is True]
 
-    logging.info(
-        f"Discovered {len(private_repos)} Private Repositories linked to the Installation."
-    )
+    logging.info(f"Discovered {len(private_repos)} Private Repositories linked to the Installation.")
 
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -124,9 +122,7 @@ def main():
         except subprocess.CalledProcessError as e:
             logging.error(f"Failed to clone {repo_name}: {e.stderr.decode('utf-8')}")
 
-    logging.info(
-        f"INGESTION COMPLETE. Successfully pulled {successful_clones} private repositories into {TARGET_DIR}"
-    )
+    logging.info(f"INGESTION COMPLETE. Successfully pulled {successful_clones} private repositories into {TARGET_DIR}")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 # Copyright 2026 Google LLC
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,7 @@ install_system_packages() {
     wget \
     gettext-base  \
     netcat-openbsd
-    
+
   if [[ "$TARGET_LANG" == "python" ]]; then
     apt-get install -y python3-venv
   fi
@@ -70,7 +70,7 @@ setup_toolbox() {
   chmod +x "/toolbox"
   /toolbox --tools-file "$TOOLBOX_YAML" > "$TOOLBOX_LOG" 2>&1 &
   TOOLBOX_PID=$!
-  
+
   # Health Check
   for i in {1..15}; do
     if nc -z 127.0.0.1 5000; then
@@ -99,7 +99,7 @@ run_python_test() {
     python3 -m venv .venv
     source .venv/bin/activate
     pip install -q -r requirements.txt pytest
-    
+
     cd ..
     local test_file=$(find . -maxdepth 1 -name "*test.py" | head -n 1)
     if [ -n "$test_file" ]; then
@@ -123,7 +123,7 @@ run_js_test() {
   (
     cd "$dir"
     if [ -f "package-lock.json" ]; then npm ci -q; else npm install -q; fi
-    
+
     cd ..
     # Looking for a JS test file in the parent directory
     local test_file=$(find . -maxdepth 1 -name "*test.js" | head -n 1)
@@ -154,7 +154,7 @@ run_go_test() {
     if [ -f "go.mod" ]; then
       go mod tidy
     fi
-    
+
     cd ..
     local test_file=$(find . -maxdepth 1 -name "*test.go" | head -n 1)
     if [ -n "$test_file" ]; then

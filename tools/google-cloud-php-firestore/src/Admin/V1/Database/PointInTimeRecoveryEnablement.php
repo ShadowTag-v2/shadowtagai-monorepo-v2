@@ -64,4 +64,3 @@ class PointInTimeRecoveryEnablement
         return constant($const);
     }
 }
-

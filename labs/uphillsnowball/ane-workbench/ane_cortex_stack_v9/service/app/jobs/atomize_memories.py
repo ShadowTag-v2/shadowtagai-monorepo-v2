@@ -16,9 +16,7 @@ RULE_HINTS = {
 }
 
 
-def extract_candidate_atoms_from_text(
-    text: str, repo_id: str, source_type: str, source_ref: str | None = None
-) -> list[dict[str, Any]]:
+def extract_candidate_atoms_from_text(text: str, repo_id: str, source_type: str, source_ref: str | None = None) -> list[dict[str, Any]]:
     atoms = []
     lower = text.lower()
     if "prettier-vscode" in lower:
@@ -94,9 +92,7 @@ def atomize_jsonl_memory():
     store = JsonMemoryStore(s.json_memory_path)
     inserted = 0
     for item in store.all():
-        text = " ".join(
-            [str(item.get("subject", "")), str(item.get("summary", "")), str(item.get("body", ""))]
-        )
+        text = " ".join([str(item.get("subject", "")), str(item.get("summary", "")), str(item.get("body", ""))])
         atoms = extract_candidate_atoms_from_text(text, s.repo_id, "jsonl", item.get("id"))
         for atom in atoms:
             insert_atom(

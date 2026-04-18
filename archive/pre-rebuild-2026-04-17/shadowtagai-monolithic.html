@@ -1832,28 +1832,28 @@ document.getElementById('contactForm').addEventListener('submit', async function
     try {
         const formData = new FormData(this);
         if (formData.get('_honey')) { btn.innerHTML = originalHTML; btn.disabled = false; btn.style.opacity = '1'; return; }
-        
+
         // reCAPTCHA v3 — get invisible token
         let recaptchaToken = '';
         if (typeof grecaptcha !== 'undefined') {
             recaptchaToken = await grecaptcha.execute('6LfEP7EsAAAAAAhpXrmostlrS7OcxbV68crAduuW', {action: 'contact_submit'});
         }
-        
+
         // Wait for Firebase SDK to load
         if (typeof window.firebase === 'undefined' || typeof window.firebase.firestore === 'undefined') {
             throw new Error("Firebase not loaded");
         }
-        
+
         const db = window.firebase.firestore();
-        
+
         const payload = {};
         formData.forEach((value, key) => { if (key !== '_honey' && key !== 'recaptcha_token') payload[key] = value; });
         payload['created_at'] = window.firebase.firestore.FieldValue.serverTimestamp();
         payload['recaptcha_token'] = recaptchaToken;
         payload['recaptcha_action'] = 'contact_submit';
-        
+
         await db.collection("contact_requests").add(payload);
-        
+
         this.reset(); showToast();
     } catch (err) {
         console.error("Form submission error:", err);
@@ -2143,7 +2143,7 @@ if (window.location.hash) {
                 ctx.beginPath(); ctx.arc(size/2, size/2, r*1.3, 0, Math.PI*2); ctx.fill();
             }
 
-            // Draw wireframe edges with depth-based opacity  
+            // Draw wireframe edges with depth-based opacity
             sphere.edges.forEach(([a, b]) => {
                 const pa = project(sphere.verts[a], angle);
                 const pb = project(sphere.verts[b], angle);
@@ -2178,7 +2178,7 @@ if (window.location.hash) {
                 ctx.fillRect(size/2 - r, scanY - 1.5, r * 2, 3);
             }
 
-            // Orbital ring 1 
+            // Orbital ring 1
             ctx.save();
             ctx.translate(size/2, size/2);
             ctx.rotate(angle * 1.5);
@@ -2356,14 +2356,14 @@ if (window.location.hash) {
             const vid = e.target;
             // Only trigger if this is the currently active playing node
             if (vid !== activeVideo) return;
-            
+
             if (vid.duration && vid.currentTime >= vid.duration - FADE_OFFSET) {
                 // Spin up secondary buffer and crossfade
                 inactiveVideo.currentTime = 0;
                 inactiveVideo.play().catch(() => {});
                 inactiveVideo.style.opacity = '0.55';
                 activeVideo.style.opacity = '0';
-                
+
                 // Swap active state tracking
                 [activeVideo, inactiveVideo] = [inactiveVideo, activeVideo];
             }
@@ -2371,7 +2371,7 @@ if (window.location.hash) {
 
         v1.addEventListener('timeupdate', onTimeUpdate);
         v2.addEventListener('timeupdate', onTimeUpdate);
-        
+
         // Remove native loop to prevent internal seeking stutters
         v1.removeAttribute('loop');
         v2.removeAttribute('loop');
@@ -2466,10 +2466,10 @@ if (window.location.hash) {
           "Get Digital Liability Protection",  // Variant A
           "Schedule Risk Audit"      // Variant B
       ];
-      
+
       const urlParams = new URLSearchParams(window.location.search);
       let variantIndex = urlParams.get('variant');
-      
+
       if (variantIndex !== null) {
           localStorage.setItem('ab_cta_variant', variantIndex);
       } else {
@@ -2479,13 +2479,13 @@ if (window.location.hash) {
               localStorage.setItem('ab_cta_variant', variantIndex);
           }
       }
-      
+
       window.__ab_variant = variantIndex;
       const ctaText = document.getElementById('ab-cta-text');
       if (ctaText) {
           ctaText.textContent = variants[variantIndex % variants.length];
       }
-      
+
       // Log impression
       gtag('event', 'ab_impression_hero_cta', {
           'variant_id': variantIndex,

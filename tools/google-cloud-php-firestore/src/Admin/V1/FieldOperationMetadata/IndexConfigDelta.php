@@ -108,4 +108,3 @@ class IndexConfigDelta extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -25,7 +25,7 @@ export default function TeamSection() {
            <ShieldCheck className="w-6 h-6 text-accent" />
            <h2 className="text-2xl font-mono text-starlight tracking-tight">COMMAND_STRUCTURE</h2>
         </div>
-        
+
         <div className="grid md:grid-cols-2 gap-8">
           {founders.map((f, i) => (
             <div key={i} className="group relative p-6 bg-surface border border-tension rounded-xl hover:border-accent transition-colors duration-300">

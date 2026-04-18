@@ -105,8 +105,7 @@ class Content(Base):
 
 
 class Creator(Base):
-    """Content creator model with Verification Index.
-    """
+    """Content creator model with Verification Index."""
 
     __tablename__ = "cineverse_creators"
 
@@ -138,7 +137,8 @@ class Creator(Base):
     shadowtag_hash_history_score = Column(Integer, default=0)  # Provenance reliability
     audience_energy_rank = Column(Integer, default=0)  # "Cognition score"
     ai_authenticity_rank = Column(
-        Integer, default=0,
+        Integer,
+        default=0,
     )  # 100 = Human Verified, 0 = Unmarked Synthetic
 
     # Revenue share settings
@@ -164,8 +164,7 @@ class Creator(Base):
 
 
 class Stream(Base):
-    """Streaming session model.
-    """
+    """Streaming session model."""
 
     __tablename__ = "cineverse_streams"
 
@@ -207,8 +206,7 @@ class Stream(Base):
 
 
 class Subscription(Base):
-    """User subscription to a Creator.
-    """
+    """User subscription to a Creator."""
 
     __tablename__ = "cineverse_subscriptions"
 

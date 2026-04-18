@@ -32,7 +32,8 @@ class IntelProcessor:
         self.subscription_id = os.getenv("PUBSUB_SUBSCRIPTION", "intel-processor-prod")
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscription_id,
+            self.project_id,
+            self.subscription_id,
         )
         self._running = False
 

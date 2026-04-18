@@ -84,4 +84,3 @@ class DeleteIndexRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

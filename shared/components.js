@@ -14,7 +14,7 @@ function initCookieConsent() {
   banner.innerHTML = `
     <div class="cookie-inner">
       <div class="cookie-text">
-        We use essential cookies to operate this service. Analytics cookies help us improve 
+        We use essential cookies to operate this service. Analytics cookies help us improve
         your experience. Read our <a href="/privacy">Privacy Policy</a> for details.
       </div>
       <div class="cookie-actions">

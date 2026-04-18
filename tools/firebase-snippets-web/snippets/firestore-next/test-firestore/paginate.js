@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START paginate_modular]
-import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";  
+import { collection, query, orderBy, startAfter, limit, getDocs } from "firebase/firestore";
 
 // Query the first page of docs
 const first = query(collection(db, "cities"), orderBy("population"), limit(25));

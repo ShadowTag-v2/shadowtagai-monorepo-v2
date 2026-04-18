@@ -141,7 +141,9 @@ workflow.add_edge("router", "drafter")
 workflow.add_edge("drafter", "policy_gate")
 
 workflow.add_conditional_edges(
-    "policy_gate", route_after_gate, {"critic": "critic", "arbiter": "arbiter"},
+    "policy_gate",
+    route_after_gate,
+    {"critic": "critic", "arbiter": "arbiter"},
 )
 
 workflow.add_edge("critic", "arbiter")

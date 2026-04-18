@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START example_data_modular]
-import { collection, doc, setDoc } from "firebase/firestore"; 
+import { collection, doc, setDoc } from "firebase/firestore";
 
 const citiesRef = collection(db, "cities");
 

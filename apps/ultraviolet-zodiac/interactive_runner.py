@@ -10,12 +10,8 @@ command = [
 
 # Set the environment variables
 os.environ["GCP_PROJECT_ID"] = "shadowtag-omega-v4"
-os.environ["PYTHONPATH"] = (
-    os.environ.get("PYTHONPATH", "") + ":/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2"
-)
-os.environ["BRAIN_DIR"] = (
-    "/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"
-)
+os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + ":/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2"
+os.environ["BRAIN_DIR"] = "/Users/pikeymickey/.gemini/antigravity/brain/0f155a4e-36e6-4528-a693-619a039e50"
 os.environ["EXTERNAL_SDKS"] = "/Users/pikeymickey/shadowtag_v4-stack/ShadowTag-v2"
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
     "/Users/pikeymickey/Library/Application Support/google-vscode-extension/auth/application_default_credentials.json"

@@ -12,7 +12,8 @@ class EventCreate(BaseModel):
 
     event_name: str = Field(..., description="Name of the event")
     event_type: str | None = Field(
-        None, description="Type of event (page_view, click, conversion, etc.)",
+        None,
+        description="Type of event (page_view, click, conversion, etc.)",
     )
 
     # User identification

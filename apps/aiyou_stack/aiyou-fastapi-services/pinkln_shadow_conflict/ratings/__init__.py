@@ -1,5 +1,4 @@
-"""Rating systems for the pinkln Agent Architecture System.
-"""
+"""Rating systems for the pinkln Agent Architecture System."""
 
 from .glicko import GlickoRating, GlickoSystem
 

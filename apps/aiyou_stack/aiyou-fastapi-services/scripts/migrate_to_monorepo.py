@@ -14,7 +14,8 @@ def check_governance(operation: str):
     print(f"⚖️  Asking Judge #6 for permission to: {operation}...")
     try:
         resp = requests.post(
-            f"{BASE_URL}/risk", json={"query": operation, "mission_id": "MIGRATE-001"},
+            f"{BASE_URL}/risk",
+            json={"query": operation, "mission_id": "MIGRATE-001"},
         )
         resp.raise_for_status()
         decision = resp.json()

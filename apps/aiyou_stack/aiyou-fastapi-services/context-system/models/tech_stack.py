@@ -1,5 +1,4 @@
-"""Technical Architecture & Stack Configuration
-"""
+"""Technical Architecture & Stack Configuration"""
 
 from dataclasses import dataclass, field
 from enum import Enum

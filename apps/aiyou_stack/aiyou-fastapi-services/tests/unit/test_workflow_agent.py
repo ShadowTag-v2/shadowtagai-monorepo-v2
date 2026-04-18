@@ -277,7 +277,12 @@ def sample_valid_data():
     """Sample valid data for testing"""
     return {
         "users": [
-            {"name": "John Doe", "email": "redacted@shadowtag-v4.local", "age": 30, "role": "admin"},
+            {
+                "name": "John Doe",
+                "email": "redacted@shadowtag-v4.local",
+                "age": 30,
+                "role": "admin",
+            },
         ],
     }
 

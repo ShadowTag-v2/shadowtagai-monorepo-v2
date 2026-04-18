@@ -1,5 +1,4 @@
-"""DualCo Pydantic Schemas
-"""
+"""DualCo Pydantic Schemas"""
 
 from datetime import datetime
 

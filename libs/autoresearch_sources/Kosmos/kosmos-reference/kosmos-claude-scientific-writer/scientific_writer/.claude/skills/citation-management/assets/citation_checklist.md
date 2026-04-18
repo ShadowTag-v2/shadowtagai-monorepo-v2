@@ -383,4 +383,3 @@ python scripts/format_bibtex.py references.bib \
 5. Final validation 1-3 days before submission
 
 **Remember**: Citation errors reflect poorly on your scholarship. Taking time to ensure accuracy is worthwhile!
-

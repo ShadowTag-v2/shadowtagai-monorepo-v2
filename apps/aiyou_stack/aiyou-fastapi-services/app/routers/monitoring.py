@@ -1,5 +1,4 @@
-"""Monitoring endpoints for health checks, metrics, and observability.
-"""
+"""Monitoring endpoints for health checks, metrics, and observability."""
 
 from fastapi import APIRouter, Response
 

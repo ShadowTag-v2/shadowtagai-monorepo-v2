@@ -3,7 +3,7 @@ title: "snowflake-sql"
 type: docs
 weight: 1
 description: >
-  A "snowflake-sql" tool executes a pre-defined SQL statement against a 
+  A "snowflake-sql" tool executes a pre-defined SQL statement against a
   Snowflake database.
 ---
 

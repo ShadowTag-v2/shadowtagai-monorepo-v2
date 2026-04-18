@@ -14,7 +14,7 @@ jobs:
   lint-and-typecheck:
     name: Lint, Format, and Type Check
     runs-on: ubuntu-latest
-    
+
     # Set the default directory so we don't have to `cd` in every single step
     defaults:
       run:
@@ -34,7 +34,7 @@ jobs:
 
       - name: 🐍 Set up Python
         # uv is so fast it handles its own python downloads. Adjust the version if needed.
-        run: uv python install 3.11 
+        run: uv python install 3.11
 
       - name: 📦 Install dependencies
         # --frozen ensures CI fails if the agent forgot to commit the updated uv.lock file

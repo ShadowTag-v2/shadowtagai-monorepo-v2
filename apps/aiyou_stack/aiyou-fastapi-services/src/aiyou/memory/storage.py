@@ -49,7 +49,9 @@ class MemoryStorage:
             return {}
 
     def load_from_firestore(
-        self, collection: str = "claude_memory", document: str = "current",
+        self,
+        collection: str = "claude_memory",
+        document: str = "current",
     ) -> dict[str, Any]:
         """Loads memory from Firestore (real-time).
         Collection: claude_memory
@@ -75,8 +77,7 @@ def get_memory_from_gcs(
     bucket_name: str = "acquired-jet-478701-b3-workbench-memory",
     blob_name: str = "memory/current.json",
 ):
-    """Direct implementation of user snippet for GCS.
-    """
+    """Direct implementation of user snippet for GCS."""
     if not storage:
         raise ImportError("google-cloud-storage is required")
     blob = storage.Client().bucket(bucket_name).blob(blob_name)
@@ -84,8 +85,7 @@ def get_memory_from_gcs(
 
 
 def get_memory_from_firestore(collection: str = "claude_memory", document: str = "current"):
-    """Direct implementation of user snippet for Firestore.
-    """
+    """Direct implementation of user snippet for Firestore."""
     if not firestore:
         raise ImportError("google-cloud-firestore is required")
     doc = firestore.Client().collection(collection).document(document).get()

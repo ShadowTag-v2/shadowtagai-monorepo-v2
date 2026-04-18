@@ -19,10 +19,10 @@ import { enrichClustersBatch, ClusterMemberInfo, ClusterEnrichment } from '../co
 import { CommunityNode } from '../core/ingestion/community-processor';
 import { PipelineResult } from '../types/pipeline';
 import { buildCodebaseContext, type CodebaseContext } from '../core/llm/context-builder';
-import { 
-  buildBM25Index, 
-  searchBM25, 
-  isBM25Ready, 
+import {
+  buildBM25Index,
+  searchBM25,
+  isBM25Ready,
   getBM25Stats,
   mergeWithRRF,
   type HybridSearchResult,
@@ -198,7 +198,7 @@ const createHttpHybridSearch = (backendUrl: string, repo: string) => {
 
 /**
  * Worker API exposed via Comlink
- * 
+ *
  * Note: The onProgress callback is passed as a Comlink.proxy() from the main thread,
  * allowing it to be called from the worker and have it execute on the main thread.
  */
@@ -378,7 +378,7 @@ const workerApi = {
       console.log('⏭️ No pending enrichment config, skipping');
       return { enriched: 0, skipped: true };
     }
-    
+
     console.log('✨ Starting background LLM enrichment...');
     try {
       await workerApi.enrichCommunities(
@@ -454,7 +454,7 @@ const workerApi = {
   /**
    * Perform hybrid search combining BM25 (keyword) and semantic (embedding) search
    * Uses Reciprocal Rank Fusion (RRF) to merge results
-   * 
+   *
    * @param query - Search query
    * @param k - Number of results to return (default: 10)
    * @returns Hybrid search results with RRF scores
@@ -466,10 +466,10 @@ const workerApi = {
     if (!isBM25Ready()) {
       throw new Error('Search index not ready. Please load a repository first.');
     }
-    
+
     // Get BM25 results (always available after ingestion)
     const bm25Results = searchBM25(query, k * 3);  // Get more for better RRF merge
-    
+
     // Get semantic results if embeddings are ready
     let semanticResults: SemanticSearchResult[] = [];
     if (isEmbeddingComplete) {
@@ -482,7 +482,7 @@ const workerApi = {
         // Semantic search failed, continue with BM25 only
       }
     }
-    
+
     // Merge with RRF
     return mergeWithRRF(bm25Results, semanticResults, k);
   },
@@ -599,7 +599,7 @@ const workerApi = {
       if (import.meta.env.DEV) {
         console.log('📛 Project name received:', { provided: projectName, resolved: resolvedProjectName });
       }
-      
+
       let codebaseContext;
       try {
         codebaseContext = await buildCodebaseContext(lbug.executeQuery, resolvedProjectName);
@@ -812,10 +812,10 @@ const workerApi = {
 
     // Build member map: CommunityID -> Member Info
     const memberMap = new Map<string, ClusterMemberInfo[]>();
-    
+
     // Initialize map
     communityNodes.forEach(c => memberMap.set(c.id, []));
-    
+
     // Build a Map for O(1) node lookups instead of O(N) find per relationship
     const nodeById = new Map(graph.nodes.map(n => [n.id, n]));
 
@@ -905,15 +905,15 @@ const workerApi = {
     } catch (err) {
       console.error('Failed to update LadybugDB with enrichment:', err);
     }
-    
+
     // Convert Map to Record for serialization
     const enrichmentsRecord: Record<string, ClusterEnrichment> = {};
     for (const [id, val] of enrichments.entries()) {
       enrichmentsRecord[id] = val;
     }
-     
+
     return { enrichments: enrichmentsRecord, tokensUsed };
-  
+
   },
 };
 
@@ -922,4 +922,3 @@ Comlink.expose(workerApi);
 
 // TypeScript type for the exposed API (used by the hook)
 export type IngestionWorkerApi = typeof workerApi;
-

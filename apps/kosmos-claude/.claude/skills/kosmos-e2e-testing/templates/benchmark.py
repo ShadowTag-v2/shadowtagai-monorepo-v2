@@ -144,7 +144,8 @@ def print_results(all_results: list):
             if "error" in result:
                 continue
             prompt_result = next(
-                (p for p in result["prompts"] if p["name"] == prompt["name"]), None,
+                (p for p in result["prompts"] if p["name"] == prompt["name"]),
+                None,
             )
             if prompt_result and prompt_result.get("success"):
                 print(

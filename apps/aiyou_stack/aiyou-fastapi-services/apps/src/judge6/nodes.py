@@ -194,7 +194,9 @@ def node_assessment(state: GovernanceState) -> GovernanceState:
         state.assessment = assessment
 
         state.audit.add_entry(
-            event_type="assessment_failed", details={"error": str(e)}, severity="ERROR",
+            event_type="assessment_failed",
+            details={"error": str(e)},
+            severity="ERROR",
         )
 
         return state
@@ -529,7 +531,9 @@ async def _async_swarm_vote(state: GovernanceState) -> GovernanceState:
         state.debate = debate
 
         state.audit.add_entry(
-            event_type="swarm_vote_failed", details={"error": str(e)}, severity="ERROR",
+            event_type="swarm_vote_failed",
+            details={"error": str(e)},
+            severity="ERROR",
         )
 
         return state
@@ -568,7 +572,8 @@ async def _async_debate_legacy(state: GovernanceState) -> GovernanceState:
         # Round 3: Judge synthesizes and decides
         await asyncio.sleep(0.060)  # Simulate Opus call
         judge_analysis, final_decision, final_confidence = _build_judge_decision(
-            prosecutor_argument, defender_argument,
+            prosecutor_argument,
+            defender_argument,
         )
 
         # Record debate round
@@ -613,7 +618,9 @@ async def _async_debate_legacy(state: GovernanceState) -> GovernanceState:
         state.debate = debate
 
         state.audit.add_entry(
-            event_type="debate_failed", details={"error": str(e)}, severity="ERROR",
+            event_type="debate_failed",
+            details={"error": str(e)},
+            severity="ERROR",
         )
 
         return state

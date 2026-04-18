@@ -128,7 +128,9 @@ class GossipProtocol:
         """Add or update peer information"""
         if peer_id not in self.peers:
             self.peers[peer_id] = PeerInfo(
-                peer_id=peer_id, last_seen=time.time(), position=position,
+                peer_id=peer_id,
+                last_seen=time.time(),
+                position=position,
             )
         else:
             self.peers[peer_id].last_seen = time.time()
@@ -206,7 +208,9 @@ class GossipProtocol:
             self.stats["messages_sent"] += len(tasks)
 
     def _select_gossip_targets(
-        self, message: ARMPMessage, exclude_peer: bytes | None = None,
+        self,
+        message: ARMPMessage,
+        exclude_peer: bytes | None = None,
     ) -> list[bytes]:
         """Select peers to forward message to"""
         # Filter eligible peers

@@ -37,9 +37,7 @@ class ToolboxSyncTool:
     and `inspect` work as expected.
     """
 
-    def __init__(
-        self, async_tool: ToolboxTool, loop: AbstractEventLoop, thread: Thread
-    ):
+    def __init__(self, async_tool: ToolboxTool, loop: AbstractEventLoop, thread: Thread):
         """
         Initializes a callable that will trigger the tool invocation through the
         Toolbox server.
@@ -64,9 +62,7 @@ class ToolboxSyncTool:
         # itself is being processed during module import or class definition.
         # Defining __qualname__ as a property leads to a TypeError because the class object needs
         # a string value immediately, not a descriptor that evaluates later.
-        self.__qualname__ = (
-            f"{self.__class__.__qualname__}.{self.__async_tool.__name__}"
-        )
+        self.__qualname__ = f"{self.__class__.__qualname__}.{self.__async_tool.__name__}"
 
     @property
     def __name__(self) -> str:
@@ -147,9 +143,7 @@ class ToolboxSyncTool:
 
     def add_auth_token_getters(
         self,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ],
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]],
     ) -> "ToolboxSyncTool":
         """
         Registers auth token getter functions that are used for AuthServices
@@ -197,9 +191,7 @@ class ToolboxSyncTool:
 
     def bind_params(
         self,
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ],
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any],
     ) -> "ToolboxSyncTool":
         """
         Binds parameters to values or callables that produce values.

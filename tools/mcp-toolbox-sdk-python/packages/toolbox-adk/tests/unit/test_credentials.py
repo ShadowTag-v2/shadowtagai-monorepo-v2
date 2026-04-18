@@ -33,9 +33,7 @@ class TestCredentialStrategy:
         assert config.target_audience == audience
 
     def test_user_identity(self):
-        config = CredentialStrategy.user_identity(
-            client_id="id", client_secret="secret", scopes=["scope1"]
-        )
+        config = CredentialStrategy.user_identity(client_id="id", client_secret="secret", scopes=["scope1"])
         assert config.type == CredentialType.USER_IDENTITY
         assert config.client_id == "id"
         assert config.client_secret == "secret"
@@ -75,9 +73,7 @@ class TestCredentialStrategy:
             oauth2=OAuth2Auth(client_id="cid", client_secret="csec", scopes=["scope"]),
         )
         # Call without auth_scheme
-        config = CredentialStrategy.from_adk_credentials(
-            auth_credential=auth_credential
-        )
+        config = CredentialStrategy.from_adk_credentials(auth_credential=auth_credential)
         assert config.type == CredentialType.USER_IDENTITY
         assert config.client_id == "cid"
         assert config.client_secret == "csec"
@@ -93,14 +89,10 @@ class TestCredentialStrategy:
 
         auth_credential = AuthCredential(
             auth_type=AuthCredentialTypes.HTTP,
-            http=HttpAuth(
-                scheme="Bearer", credentials=HttpCredentials(token="my-token")
-            ),
+            http=HttpAuth(scheme="Bearer", credentials=HttpCredentials(token="my-token")),
         )
         # Call without auth_scheme
-        config = CredentialStrategy.from_adk_credentials(
-            auth_credential=auth_credential
-        )
+        config = CredentialStrategy.from_adk_credentials(auth_credential=auth_credential)
         assert config.type == CredentialType.MANUAL_TOKEN
         assert config.token == "my-token"
         assert config.scheme == "Bearer"
@@ -112,15 +104,11 @@ class TestCredentialStrategy:
             AuthCredentialTypes,
         )
 
-        auth_credential = AuthCredential(
-            auth_type=AuthCredentialTypes.API_KEY, api_key="abc"
-        )
+        auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY, api_key="abc")
         # Pass 'in' directly via dict unpacking to avoid alias issues
         auth_scheme = APIKey(type="apiKey", name="x-api-key", **{"in": APIKeyIn.header})
 
-        config = CredentialStrategy.from_adk_credentials(
-            auth_credential=auth_credential, auth_scheme=auth_scheme
-        )
+        config = CredentialStrategy.from_adk_credentials(auth_credential=auth_credential, auth_scheme=auth_scheme)
         assert config.type == CredentialType.API_KEY
         assert config.api_key == "abc"
         assert config.header_name == "x-api-key"
@@ -132,22 +120,16 @@ class TestCredentialStrategy:
             AuthCredentialTypes,
         )
 
-        auth_credential = AuthCredential(
-            auth_type=AuthCredentialTypes.API_KEY, api_key="abc"
-        )
+        auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY, api_key="abc")
         # Omit 'in' / 'in_' to test default location (header)
-        auth_scheme = APIKey(
-            type="apiKey", name="x-api-key", **{"in": "header"}
-        )  # This is explicit.
+        auth_scheme = APIKey(type="apiKey", name="x-api-key", **{"in": "header"})  # This is explicit.
         # To test DEFAULT, we need an object that returns None for .in_
 
         class MockScheme:
             name = "x-api-key"
             in_ = None
 
-        config = CredentialStrategy.from_adk_credentials(
-            auth_credential=auth_credential, auth_scheme=MockScheme()
-        )
+        config = CredentialStrategy.from_adk_credentials(auth_credential=auth_credential, auth_scheme=MockScheme())
         assert config.type == CredentialType.API_KEY
         assert config.api_key == "abc"
         assert config.header_name == "x-api-key"
@@ -164,9 +146,7 @@ class TestCredentialStrategy:
         scheme = APIKey(type="apiKey", name="key", **{"in": APIKeyIn.query})
 
         with pytest.raises(ValueError, match="Unsupported API Key location"):
-            CredentialStrategy.from_adk_credentials(
-                auth_credential=cred, auth_scheme=scheme
-            )
+            CredentialStrategy.from_adk_credentials(auth_credential=cred, auth_scheme=scheme)
 
     def test_from_adk_credentials_api_key_no_scheme_raises(self):
         import pytest
@@ -175,12 +155,8 @@ class TestCredentialStrategy:
             AuthCredentialTypes,
         )
 
-        auth_credential = AuthCredential(
-            auth_type=AuthCredentialTypes.API_KEY, api_key="my-key"
-        )
-        with pytest.raises(
-            ValueError, match="API Key credentials require the auth_scheme definition"
-        ):
+        auth_credential = AuthCredential(auth_type=AuthCredentialTypes.API_KEY, api_key="my-key")
+        with pytest.raises(ValueError, match="API Key credentials require the auth_scheme definition"):
             CredentialStrategy.from_adk_credentials(auth_credential=auth_credential)
 
     def test_from_adk_credentials_unsupported(self):
@@ -190,9 +166,7 @@ class TestCredentialStrategy:
             AuthCredentialTypes,
         )
 
-        auth_credential = AuthCredential(
-            auth_type=AuthCredentialTypes.OAUTH2
-        )  # No oauth2 data
+        auth_credential = AuthCredential(auth_type=AuthCredentialTypes.OAUTH2)  # No oauth2 data
         with pytest.raises(ValueError, match="Unsupported ADK credential type"):
             # Scheme is optional now, so we can omit it here too
             CredentialStrategy.from_adk_credentials(auth_credential=auth_credential)

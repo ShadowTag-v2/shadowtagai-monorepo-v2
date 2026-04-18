@@ -2330,8 +2330,8 @@ func RunPostgresListPgSettingsTest(t *testing.T, ctx context.Context, pool *pgxp
 	// We query the raw pg_settings to get the data needed to reconstruct the logic
 	// defined in your listPgSettingQuery.
 	err := pool.QueryRow(ctx, `
-		SELECT name, setting, unit, short_desc, source, context 
-		FROM pg_settings 
+		SELECT name, setting, unit, short_desc, source, context
+		FROM pg_settings
 		WHERE name = $1
 	`, targetSetting).Scan(&name, &setting, &unit, &shortDesc, &source, &contextVal)
 

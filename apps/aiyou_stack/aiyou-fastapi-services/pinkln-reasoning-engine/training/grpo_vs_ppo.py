@@ -73,7 +73,10 @@ class PPOTrainer:
 
         losses = []
         for old_log_prob, new_log_prob, advantage in zip(
-            trajectory.log_probs, new_log_probs, advantages, strict=False,
+            trajectory.log_probs,
+            new_log_probs,
+            advantages,
+            strict=False,
         ):
             # Probability ratio
             ratio = math.exp(new_log_prob - old_log_prob)
@@ -135,7 +138,9 @@ class GRPOTrainer:
         return advantages
 
     def compute_loss(
-        self, group_trajectories: list[Trajectory], new_log_probs_group: list[list[float]],
+        self,
+        group_trajectories: list[Trajectory],
+        new_log_probs_group: list[list[float]],
     ) -> float:
         """GRPO loss
 
@@ -146,7 +151,10 @@ class GRPOTrainer:
 
         total_loss = 0.0
         for _trajectory, new_log_probs, advantage in zip(
-            group_trajectories, new_log_probs_group, advantages, strict=False,
+            group_trajectories,
+            new_log_probs_group,
+            advantages,
+            strict=False,
         ):
             # Policy gradient with relative advantage
             for log_prob in new_log_probs:
@@ -159,7 +167,8 @@ class GRPOTrainer:
 
 
 def simulate_trajectories(
-    n: int, quality_range: tuple[float, float] = (0.0, 1.0),
+    n: int,
+    quality_range: tuple[float, float] = (0.0, 1.0),
 ) -> list[Trajectory]:
     """Generate synthetic trajectories for testing"""
     trajectories = []

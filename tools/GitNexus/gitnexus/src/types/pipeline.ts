@@ -59,4 +59,3 @@ export const deserializePipelineResult = (
     totalFileCount: serialized.totalFileCount,
   };
 };
-

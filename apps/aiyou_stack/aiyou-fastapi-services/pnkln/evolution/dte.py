@@ -123,7 +123,8 @@ class DifficultyTracker:
             self.metrics.difficulty_changes += 1
             self.metrics.current_difficulty = next_difficulty
             self.metrics.max_difficulty_reached = max(
-                self.metrics.max_difficulty_reached, next_difficulty,
+                self.metrics.max_difficulty_reached,
+                next_difficulty,
             )
             self.streak_count = 0
         return next_difficulty

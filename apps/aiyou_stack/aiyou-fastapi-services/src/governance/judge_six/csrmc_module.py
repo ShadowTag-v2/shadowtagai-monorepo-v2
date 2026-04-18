@@ -42,7 +42,10 @@ class CSRMCEngine:
         return SurvivabilityState.GREEN
 
     def execute_operational_logic(
-        self, system_id: str, survivability: SurvivabilityState, criticality: MissionCriticality,
+        self,
+        system_id: str,
+        survivability: SurvivabilityState,
+        criticality: MissionCriticality,
     ) -> str:
         if survivability == SurvivabilityState.GREEN:
             return "MAINTAIN_ATO"

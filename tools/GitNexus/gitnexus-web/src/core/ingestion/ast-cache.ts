@@ -29,11 +29,11 @@ export const createASTCache = (maxSize: number = 50): ASTCache => {
       const tree = cache.get(filePath);
       return tree; // Returns undefined if not found
     },
-    
+
     set: (filePath: string, tree: Parser.Tree) => {
       cache.set(filePath, tree);
     },
-    
+
     clear: () => {
       cache.clear();
     },
@@ -44,4 +44,3 @@ export const createASTCache = (maxSize: number = 50): ASTCache => {
     })
   };
 };
-

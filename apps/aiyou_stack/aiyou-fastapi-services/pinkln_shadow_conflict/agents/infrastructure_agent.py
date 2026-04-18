@@ -162,7 +162,8 @@ class InfrastructureAgent(BaseAgent):
         print("\n🔍 Performing Comparative Analysis...")
 
         comparison = self.skill.comparative_analysis(
-            self.skill.JUDGE_SIX_SPEC, self.skill.GEMINI_INGESTION_SPEC,
+            self.skill.JUDGE_SIX_SPEC,
+            self.skill.GEMINI_INGESTION_SPEC,
         )
 
         # Enhance with pinkln insights
@@ -200,7 +201,8 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def optimize_infrastructure(
-        self, context: dict[str, Any] | None = None,
+        self,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Generate optimization recommendations for infrastructure.
 
@@ -336,7 +338,9 @@ class InfrastructureAgent(BaseAgent):
         }
 
     async def general_infrastructure_review(
-        self, task: str, context: dict[str, Any] | None = None,
+        self,
+        task: str,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Perform general infrastructure review based on task description.
 

@@ -28,7 +28,7 @@ const getWasmPath = (language: SupportedLanguages, filePath?: string): string =>
         }
         return '/wasm/typescript/tree-sitter-typescript.wasm';
     }
-    
+
     const languageFileMap: Record<SupportedLanguages, string> = {
         [SupportedLanguages.JavaScript]: '/wasm/javascript/tree-sitter-javascript.wasm',
         [SupportedLanguages.TypeScript]: '/wasm/typescript/tree-sitter-typescript.wasm',
@@ -45,14 +45,14 @@ const getWasmPath = (language: SupportedLanguages, filePath?: string): string =>
         [SupportedLanguages.Swift]: '/wasm/swift/tree-sitter-swift.wasm',
         [SupportedLanguages.Dart]: '/wasm/dart/tree-sitter-dart.wasm',
     };
-    
+
     return languageFileMap[language];
 };
 
 export const loadLanguage = async (language: SupportedLanguages, filePath?: string): Promise<void> => {
     if (!parser) await loadParser();
     const wasmPath = getWasmPath(language, filePath);
-    
+
     if (languageCache.has(wasmPath)) {
         parser!.setLanguage(languageCache.get(wasmPath)!);
         return;
@@ -62,9 +62,9 @@ export const loadLanguage = async (language: SupportedLanguages, filePath?: stri
         console.error(`❌ [Parser] No WASM path configured for language: ${language}`);
         throw new Error(`Unsupported language: ${language}`);
     }
-    
+
     try {
-        const loadedLanguage = await Parser.Language.load(wasmPath);    
+        const loadedLanguage = await Parser.Language.load(wasmPath);
         languageCache.set(wasmPath, loadedLanguage);
         parser!.setLanguage(loadedLanguage);
     } catch (error: unknown) {

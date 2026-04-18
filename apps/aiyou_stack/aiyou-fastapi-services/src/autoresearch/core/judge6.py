@@ -88,7 +88,9 @@ class Judge6:
 
         if action.seller_reputation < 0.85:
             self.log(
-                "IDENTITY", "FAIL", f"Reputation {action.seller_reputation} below safety threshold.",
+                "IDENTITY",
+                "FAIL",
+                f"Reputation {action.seller_reputation} below safety threshold.",
             )
             return False
 
@@ -161,6 +163,5 @@ class Judge6:
         return bool(any(t in vector_str.lower() for t in triggers))
 
     def _trigger_intervention_protocol(self):
-        """If Self-Harm or Harm detected, lock account and notify resources.
-        """
+        """If Self-Harm or Harm detected, lock account and notify resources."""
         self.log("SAFETY", "INTERVENTION", "Account Locked. Resources dispatched.")

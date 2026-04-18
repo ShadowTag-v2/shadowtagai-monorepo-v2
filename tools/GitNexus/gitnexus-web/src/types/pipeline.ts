@@ -47,10 +47,9 @@ export const deserializePipelineResult = (
   const graph = createGraph();
   serialized.nodes.forEach(node => graph.addNode(node));
   serialized.relationships.forEach(rel => graph.addRelationship(rel));
-  
+
   return {
     graph,
     fileContents: new Map(Object.entries(serialized.fileContents)),
   };
 };
-

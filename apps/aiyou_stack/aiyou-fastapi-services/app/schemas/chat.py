@@ -1,5 +1,4 @@
-"""Pydantic schemas for chat and conversation endpoints.
-"""
+"""Pydantic schemas for chat and conversation endpoints."""
 
 from datetime import datetime
 from typing import Any
@@ -36,7 +35,8 @@ class ConversationCreate(BaseModel):
     title: str | None = None
     system_prompt: str | None = None
     model_provider: str = Field(
-        default="anthropic", description="LLM provider: anthropic or openai",
+        default="anthropic",
+        description="LLM provider: anthropic or openai",
     )
     model_name: str | None = None
     metadata: dict[str, Any] | None = None
@@ -70,7 +70,10 @@ class ChatRequest(BaseModel):
     model_provider: str | None = Field(None, description="LLM provider: anthropic or openai")
     model_name: str | None = Field(None, description="Specific model name")
     temperature: float = Field(
-        default=0.7, ge=0.0, le=2.0, description="Temperature for generation",
+        default=0.7,
+        ge=0.0,
+        le=2.0,
+        description="Temperature for generation",
     )
     max_tokens: int | None = Field(None, gt=0, description="Maximum tokens to generate")
     stream: bool = Field(default=False, description="Enable streaming response")

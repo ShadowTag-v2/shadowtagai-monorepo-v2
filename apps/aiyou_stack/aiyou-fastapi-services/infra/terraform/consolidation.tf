@@ -55,7 +55,7 @@ resource "google_firestore_database" "shadowtag_engine" {
   name        = "shadowtag-engine"
   location_id = "us-central1"
   type        = "FIRESTORE_NATIVE"
-  
+
   # Enabling the new Pipeline Operations engine
   # Note: Enterprise edition is required for the advanced query engine optimizations
   # and predictable cost model.
@@ -109,7 +109,7 @@ resource "google_storage_bucket" "iceberg_lake" {
   location      = "US"
   force_destroy = false
   uniform_bucket_level_access = true
-  
+
   versioning {
     enabled = true
   }
@@ -130,9 +130,9 @@ resource "google_discovery_engine_data_store" "shadowtag_knowledge" {
   industry_vertical = "GENERIC"
   content_config    = "CONTENT_REQUIRED"
   solution_types    = ["SOLUTION_TYPE_SEARCH"]
-  
-  # Note: Actual schema mapping / linking to GCS/BQ usually happens via API or Console 
-  # for the initial sync, or via a special resource link. 
+
+  # Note: Actual schema mapping / linking to GCS/BQ usually happens via API or Console
+  # for the initial sync, or via a special resource link.
   # We establish the container here.
 }
 
@@ -156,7 +156,7 @@ resource "google_dataform_repository" "transformation_repo" {
   provider = google-beta
   name     = "shadowtag-transformations"
   region   = "us-central1"
-  
+
   git_remote_settings {
     url = "https://github.com/ShadowTag-v2/aiyou-fastapi-services.git"
     default_branch = "main"
@@ -182,7 +182,7 @@ resource "google_secret_manager_secret" "github_token" {
 
 resource "google_secret_manager_secret_version" "github_token_version" {
   secret      = google_secret_manager_secret.github_token.id
-  secret_data = "placeholder-token-must-be-updated-manually" 
+  secret_data = "placeholder-token-must-be-updated-manually"
   # Note: In production, this data should not be in TF state.
   # User must update this secret version via Console or CLI with valid GH PAT.
 }

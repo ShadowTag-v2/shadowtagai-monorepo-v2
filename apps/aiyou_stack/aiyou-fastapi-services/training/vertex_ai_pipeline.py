@@ -282,11 +282,13 @@ class GCSDatasetManager:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
         train_gcs = self.upload_dataset(
-            train_path, f"datasets/{self.config.model_name}/{timestamp}/train.jsonl",
+            train_path,
+            f"datasets/{self.config.model_name}/{timestamp}/train.jsonl",
         )
 
         val_gcs = self.upload_dataset(
-            val_path, f"datasets/{self.config.model_name}/{timestamp}/val.jsonl",
+            val_path,
+            f"datasets/{self.config.model_name}/{timestamp}/val.jsonl",
         )
 
         console.print("[green]✓ Training data prepared[/green]")
@@ -484,7 +486,10 @@ class ModelEvaluator:
         self.config = config
 
     def evaluate_checkpoint(
-        self, checkpoint_url: str, eval_dataset: list[dict[str, Any]], sample_size: int = 100,
+        self,
+        checkpoint_url: str,
+        eval_dataset: list[dict[str, Any]],
+        sample_size: int = 100,
     ) -> dict[str, Any]:
         """Evaluate a model checkpoint on key metrics.
 
@@ -679,7 +684,10 @@ class ModelEvaluator:
         sec_status = "✓ PASS" if sec_viols == 0 else "✗ FAIL"
         sec_color = "green" if sec_viols == 0 else "red"
         table.add_row(
-            "Security Violations", str(sec_viols), "0", f"[{sec_color}]{sec_status}[/{sec_color}]",
+            "Security Violations",
+            str(sec_viols),
+            "0",
+            f"[{sec_color}]{sec_status}[/{sec_color}]",
         )
 
         # Latency p99
@@ -687,7 +695,10 @@ class ModelEvaluator:
         lat_status = "✓ PASS" if lat_p99 <= 100 else "✗ FAIL"
         lat_color = "green" if lat_p99 <= 100 else "red"
         table.add_row(
-            "Latency p99", f"{lat_p99:.1f}ms", "≤100ms", f"[{lat_color}]{lat_status}[/{lat_color}]",
+            "Latency p99",
+            f"{lat_p99:.1f}ms",
+            "≤100ms",
+            f"[{lat_color}]{lat_status}[/{lat_color}]",
         )
 
         # Error Rate
@@ -695,7 +706,10 @@ class ModelEvaluator:
         err_status = "✓ PASS" if err_rate < 0.005 else "⚠ WARN"
         err_color = "green" if err_rate < 0.005 else "yellow"
         table.add_row(
-            "Error Rate", f"{err_rate:.1%}", "<0.5%", f"[{err_color}]{err_status}[/{err_color}]",
+            "Error Rate",
+            f"{err_rate:.1%}",
+            "<0.5%",
+            f"[{err_color}]{err_status}[/{err_color}]",
         )
 
         console.print(table)
@@ -861,7 +875,9 @@ class TrainingPipeline:
             eval_results = []
             for checkpoint in checkpoints:
                 eval_result = self.evaluator.evaluate_checkpoint(
-                    checkpoint, val_examples, sample_size=self.config.eval_sample_size,
+                    checkpoint,
+                    val_examples,
+                    sample_size=self.config.eval_sample_size,
                 )
                 eval_results.append(eval_result)
 
@@ -1000,15 +1016,23 @@ class TrainingPipeline:
     help="Path to multi-turn training data (JSONL)",
 )
 @click.option(
-    "--model_name", type=str, default="gemini-policy-v1", help="Name for fine-tuned model",
+    "--model_name",
+    type=str,
+    default="gemini-policy-v1",
+    help="Name for fine-tuned model",
 )
 @click.option(
-    "--base_model", type=str, default="gemini-1.5-pro-002", help="Base Gemini model to fine-tune",
+    "--base_model",
+    type=str,
+    default="gemini-1.5-pro-002",
+    help="Base Gemini model to fine-tune",
 )
 @click.option("--learning_rate", type=float, default=1e-5, help="Learning rate for fine-tuning")
 @click.option("--num_epochs", type=int, default=3, help="Number of training epochs")
 @click.option(
-    "--auto_deploy", is_flag=True, help="Automatically deploy best checkpoint to endpoint",
+    "--auto_deploy",
+    is_flag=True,
+    help="Automatically deploy best checkpoint to endpoint",
 )
 @click.option("--setup_only", is_flag=True, help="Only setup GCS infrastructure (no training)")
 @click.option("--evaluate_only", is_flag=True, help="Only evaluate existing checkpoint")

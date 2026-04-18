@@ -5,7 +5,7 @@ main:
         assign:
           - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
           - location: "us-central1"
-          - fixer_agent_url: "https://fixer-agent-abc123xyz-uc.a.run.app" 
+          - fixer_agent_url: "https://fixer-agent-abc123xyz-uc.a.run.app"
           - reviewer_agent_url: "https://reviewer-agent-abc123xyz-uc.a.run.app"
           - max_attempts: 3
           - last_rejection_reason: ""

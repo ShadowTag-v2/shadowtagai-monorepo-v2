@@ -31,4 +31,3 @@ class SourceEncryptionOptions extends \Google\Protobuf\Internal\Message
     }
 
 }
-

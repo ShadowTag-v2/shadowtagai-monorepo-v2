@@ -198,7 +198,6 @@ class FeatureFlags(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="ENABLE_")
 
 
-
 class Config(BaseSettings):
     """Master configuration combining all settings."""
 
@@ -215,7 +214,10 @@ class Config(BaseSettings):
     features: FeatureFlags = Field(default_factory=FeatureFlags)
 
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8", case_sensitive=False, extra="ignore",
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
     )
 
     def validate_api_keys(self) -> list[str]:

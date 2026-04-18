@@ -55,6 +55,7 @@ def uuid7_str() -> str:
 
 # ── Pydantic Integration ──────────────────────────────────────────────────
 
+
 def new_entity_id() -> str:
     """Generate a new entity ID. Use this for ALL new records.
 

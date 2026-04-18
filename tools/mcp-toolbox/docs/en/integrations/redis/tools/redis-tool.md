@@ -28,10 +28,10 @@ following config for example:
   parameters:
     - name: userNames
       type: array
-      description: The user names to be set.  
+      description: The user names to be set.
       items:
           name: userName # the item name doesn't matter but it has to exist
-          type: string 
+          type: string
           description: username
 ```
 
@@ -61,5 +61,5 @@ parameters:
     description: The unique identifier for the user.
   - name: userNames
     type: array
-    description: The user names to be set.  
+    description: The user names to be set.
 ```

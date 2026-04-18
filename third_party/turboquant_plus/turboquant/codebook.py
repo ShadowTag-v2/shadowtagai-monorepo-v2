@@ -47,9 +47,7 @@ def _lloyds_gaussian(n_centroids: int, sigma: float, n_iter: int = 100) -> np.nd
         Sorted array of optimal centroids.
     """
     # Initialize boundary positions from uniform quantiles
-    boundaries = stats.norm.ppf(
-        np.linspace(0, 1, n_centroids + 1)[1:-1], scale=sigma
-    )
+    boundaries = stats.norm.ppf(np.linspace(0, 1, n_centroids + 1)[1:-1], scale=sigma)
     centroids = np.zeros(n_centroids)
 
     # Initial centroids: conditional expectations within each region

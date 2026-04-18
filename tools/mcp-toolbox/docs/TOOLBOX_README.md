@@ -18,7 +18,7 @@ The MCP Toolbox for Databases Server gives AI-powered development tools the abil
     > `>=0.26.0`. To update MCP Toolbox, use:
     > ```npm i -g @toolbox-sdk/server@latest```
     > To always run the latest version, update the MCP server configuration to use:
-    > ```npx -y @toolbox-sdk/server@latest```. 
+    > ```npx -y @toolbox-sdk/server@latest```.
 
 3.  Create your [`tools.yaml` configuration file](https://mcp-toolbox.dev/documentation/configuration/).
 

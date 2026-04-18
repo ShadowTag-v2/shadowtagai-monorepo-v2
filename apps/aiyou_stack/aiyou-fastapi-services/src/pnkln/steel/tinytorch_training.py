@@ -105,7 +105,10 @@ class Trainer:
 
         for batch_idx, (inputs, targets) in enumerate(dataloader):
             scaled_loss, batch_loss = self._train_step(
-                inputs, targets, accumulation_steps, batch_idx,
+                inputs,
+                targets,
+                accumulation_steps,
+                batch_idx,
             )
             accumulated_loss += scaled_loss
 

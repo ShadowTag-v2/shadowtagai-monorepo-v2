@@ -24,8 +24,7 @@ class Tokenizer:
 
 
 class CharTokenizer(Tokenizer):
-    """Character-level tokenizer that treats each character as a separate token.
-    """
+    """Character-level tokenizer that treats each character as a separate token."""
 
     def __init__(self, vocab: list[str] | None = None):
         """Initialize character tokenizer."""
@@ -79,8 +78,7 @@ class CharTokenizer(Tokenizer):
 
 
 class BPETokenizer(Tokenizer):
-    """Byte Pair Encoding (BPE) tokenizer that learns subword units.
-    """
+    """Byte Pair Encoding (BPE) tokenizer that learns subword units."""
 
     def __init__(self, vocab_size: int = 1000):
         """Initialize BPE tokenizer."""
@@ -254,7 +252,9 @@ class BPETokenizer(Tokenizer):
 
 
 def create_tokenizer(
-    strategy: str = "char", vocab_size: int = 1000, corpus: list[str] = None,
+    strategy: str = "char",
+    vocab_size: int = 1000,
+    corpus: list[str] = None,
 ) -> Tokenizer:
     """Factory function to create and train tokenizers."""
     if strategy == "char":
@@ -276,7 +276,9 @@ def create_tokenizer(
 
 
 def tokenize_dataset(
-    texts: list[str], tokenizer: Tokenizer, max_length: int = None,
+    texts: list[str],
+    tokenizer: Tokenizer,
+    max_length: int = None,
 ) -> list[list[int]]:
     """Tokenize a dataset with optional length limits."""
     tokenized = []

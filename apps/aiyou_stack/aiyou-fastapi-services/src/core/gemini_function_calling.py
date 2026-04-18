@@ -169,7 +169,9 @@ class GeminiFunctionCaller:
         self.total_latency_ms: float = 0
 
     def execute(
-        self, prompt: str, validation_callback: Callable[[str, dict[str, Any]], bool] | None = None,
+        self,
+        prompt: str,
+        validation_callback: Callable[[str, dict[str, Any]], bool] | None = None,
     ) -> str:
         """Execute a prompt with function calling.
 
@@ -245,7 +247,8 @@ class GeminiFunctionCaller:
                             parts=[
                                 genai.protos.Part(
                                     function_response=genai.protos.FunctionResponse(
-                                        name=fn_name, response={"result": result},
+                                        name=fn_name,
+                                        response={"result": result},
                                     ),
                                 ),
                             ],
@@ -296,7 +299,9 @@ class GeminiFunctionCaller:
         self.function_map[tool.name] = tool.function
         # Rebuild Gemini tools
         self.gemini_tools = [
-            genai.protos.Tool(function_declarations=[t.to_gemini_declaration() for t in self.tools]),
+            genai.protos.Tool(
+                function_declarations=[t.to_gemini_declaration() for t in self.tools]
+            ),
         ]
         # Recreate model with updated tools
         self.model = genai.GenerativeModel(

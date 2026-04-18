@@ -243,7 +243,10 @@ class CheatSheetFusion:
         return None
 
     async def test_variant(
-        self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None,
+        self,
+        variant_id: str,
+        ground_truth_data: list[dict],
+        test_fn: Any | None = None,
     ) -> DTETestResult:
         """Test a variant against ground truth using DTE.
 
@@ -380,7 +383,9 @@ class CheatSheetFusion:
                 Essential.CALL: 1,
             }
             keep_essentials = sorted(
-                new_essentials.keys(), key=lambda e: essential_importance.get(e, 0), reverse=True,
+                new_essentials.keys(),
+                key=lambda e: essential_importance.get(e, 0),
+                reverse=True,
             )[:7]
             new_essentials = {e: new_essentials[e] for e in keep_essentials}
 

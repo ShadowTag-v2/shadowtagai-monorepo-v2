@@ -154,4 +154,3 @@ class Stage extends \Google\Protobuf\Internal\Message
     }
 
 }
-

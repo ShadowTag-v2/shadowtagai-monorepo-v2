@@ -87,7 +87,9 @@ async def run_debate(request: DebateRequest) -> dict[str, Any]:
     - Glicko-2 ranked participants
     """
     result = await mas.run_debate(
-        topic=request.topic, num_participants=request.num_participants, rounds=request.rounds,
+        topic=request.topic,
+        num_participants=request.num_participants,
+        rounds=request.rounds,
     )
     return result
 
@@ -103,7 +105,9 @@ async def craft_code(request: CodeCraftRequest) -> dict[str, Any]:
     - IQ 160 implementation
     """
     response = await mas.craft_code(
-        task=request.task, language=request.language, use_cheat_sheet=request.use_cheat_sheet,
+        task=request.task,
+        language=request.language,
+        use_cheat_sheet=request.use_cheat_sheet,
     )
 
     return {
@@ -148,7 +152,8 @@ async def deep_reasoning(request: DeepReasoningRequest) -> dict[str, Any]:
     - Evolved strategies (+3.7% accuracy)
     """
     response = await mas.deep_reasoning(
-        problem=request.problem, use_dte_evolution=request.use_dte_evolution,
+        problem=request.problem,
+        use_dte_evolution=request.use_dte_evolution,
     )
 
     return {

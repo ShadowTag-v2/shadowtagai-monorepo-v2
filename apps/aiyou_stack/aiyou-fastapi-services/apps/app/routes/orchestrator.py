@@ -25,10 +25,12 @@ class ProcessQueryRequest(BaseModel):
 
     query: str = Field(..., description="User query to process", min_length=1)
     enable_review_rotation: bool = Field(
-        default=False, description="Enable 3-round peer review (slower, more accurate)",
+        default=False,
+        description="Enable 3-round peer review (slower, more accurate)",
     )
     metadata: dict[str, Any] | None = Field(
-        default=None, description="Optional metadata for tracking",
+        default=None,
+        description="Optional metadata for tracking",
     )
 
 
@@ -67,7 +69,8 @@ class IntelligenceClassificationRequest(BaseModel):
     content: str = Field(..., description="Full content text")
     tags: list[str] = Field(default_factory=list, description="Metadata tags")
     enable_debate: bool = Field(
-        default=True, description="Use multi-agent debate (3 agents, 2 rounds)",
+        default=True,
+        description="Use multi-agent debate (3 agents, 2 rounds)",
     )
 
 
@@ -125,7 +128,8 @@ async def process_query(request: ProcessQueryRequest):
     """
     try:
         result = await orchestrator.process_query(
-            query=request.query, enable_review_rotation=request.enable_review_rotation,
+            query=request.query,
+            enable_review_rotation=request.enable_review_rotation,
         )
 
         # Convert Thread dataclasses to Pydantic models

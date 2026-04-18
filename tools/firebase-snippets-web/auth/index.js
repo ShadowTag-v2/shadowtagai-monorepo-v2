@@ -82,7 +82,7 @@ function authWithCredential(credential) {
   firebase.auth()
     .signInWithCredential(credential)
     .then((result) => {
-      // Signed in 
+      // Signed in
       // ...
     })
     .catch((error) => {

@@ -67,7 +67,8 @@ class SafetyEstop:
         try:
             # Create the request
             request = modelarmor_v1.SanitizeUserPromptRequest(
-                name=ARMOR_TEMPLATE_ID, user_prompt_data=modelarmor_v1.DataItem(text=prompt),
+                name=ARMOR_TEMPLATE_ID,
+                user_prompt_data=modelarmor_v1.DataItem(text=prompt),
             )
 
             # Call Google API

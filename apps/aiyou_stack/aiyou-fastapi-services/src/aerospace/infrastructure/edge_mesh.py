@@ -261,7 +261,10 @@ class EdgeMeshArchitecture:
         return node
 
     def add_vehicle_node(
-        self, vehicle_id: str, hw_version: str = "HW6", revenue_per_month_usd: float = 10.0,
+        self,
+        vehicle_id: str,
+        hw_version: str = "HW6",
+        revenue_per_month_usd: float = 10.0,
     ) -> VehicleNode:
         """Add vehicle node to mesh"""
         node = VehicleNode(

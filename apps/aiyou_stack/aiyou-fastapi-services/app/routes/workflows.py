@@ -1,5 +1,4 @@
-"""API routes for workflow management.
-"""
+"""API routes for workflow management."""
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession

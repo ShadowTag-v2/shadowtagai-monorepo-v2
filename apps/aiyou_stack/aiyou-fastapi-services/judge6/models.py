@@ -1,5 +1,4 @@
-"""Core data models and type definitions for Judge #6 governance system.
-"""
+"""Core data models and type definitions for Judge #6 governance system."""
 
 from dataclasses import dataclass, field
 from enum import Enum

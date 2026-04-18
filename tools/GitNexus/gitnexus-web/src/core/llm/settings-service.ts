@@ -1,6 +1,6 @@
 /**
  * Settings Service
- * 
+ *
  * Handles localStorage persistence for LLM provider settings.
  * All API keys are stored locally - never sent to any server except the LLM provider.
  */
@@ -406,4 +406,3 @@ export const fetchOpenRouterModels = async (): Promise<Array<{ id: string; name:
     return [];
   }
 };
-

@@ -18,7 +18,8 @@ class PromptResult(BaseModel):
     prompt: str = Field(description="The formatted prompt sent to the model")
     response: str | None = Field(default=None, description="Model response")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Tracking data (tokens, cost, timing)",
+        default_factory=dict,
+        description="Tracking data (tokens, cost, timing)",
     )
 
 

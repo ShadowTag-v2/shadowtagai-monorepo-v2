@@ -1,5 +1,4 @@
-"""AWS Cost Explorer client for cost analysis operations.
-"""
+"""AWS Cost Explorer client for cost analysis operations."""
 
 import logging
 from typing import Any
@@ -144,7 +143,9 @@ class CostExplorerClient:
             raise
 
     def get_savings_plans_recommendations(
-        self, lookback_period: str = "THIRTY_DAYS", payment_option: str = "NO_UPFRONT",
+        self,
+        lookback_period: str = "THIRTY_DAYS",
+        payment_option: str = "NO_UPFRONT",
     ) -> dict[str, Any]:
         """Get Savings Plans recommendations.
 
@@ -173,7 +174,8 @@ class CostExplorerClient:
             raise
 
     def get_reservation_recommendations(
-        self, service: str = "Amazon Elastic Compute Cloud - Compute",
+        self,
+        service: str = "Amazon Elastic Compute Cloud - Compute",
     ) -> dict[str, Any]:
         """Get reservation purchase recommendations.
 

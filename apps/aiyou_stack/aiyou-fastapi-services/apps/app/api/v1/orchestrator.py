@@ -8,8 +8,7 @@ router = APIRouter()
 
 @router.post("/run", response_model=dict)
 async def run_orchestrator(task: TaskRequest):
-    """Executes the Antigravity Agent Swarm (Courtroom Flow).
-    """
+    """Executes the Antigravity Agent Swarm (Courtroom Flow)."""
     try:
         # Initial state
         initial_state = {

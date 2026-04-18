@@ -108,4 +108,3 @@ class Order extends \Google\Protobuf\Internal\Message
     }
 
 }
-

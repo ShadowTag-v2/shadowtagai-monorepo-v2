@@ -320,7 +320,10 @@ class LegalWhiteboard:
             self.notes[agent_id] = []
 
         note = AgentNote(
-            agent_id=agent_id, fact_id=fact_id, content=content, visibility=NoteVisibility.PRIVATE,
+            agent_id=agent_id,
+            fact_id=fact_id,
+            content=content,
+            visibility=NoteVisibility.PRIVATE,
         )
         self.notes[agent_id].append(note)
 

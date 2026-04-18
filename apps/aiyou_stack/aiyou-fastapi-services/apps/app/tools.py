@@ -1,5 +1,4 @@
-"""Tools for Antigravity Orchestrator (The "Witnesses")
-"""
+"""Tools for Antigravity Orchestrator (The "Witnesses")"""
 
 import re
 from pathlib import Path
@@ -43,8 +42,7 @@ def run_policy_gate(text: str) -> dict:
 
 
 def run_bugbot(code: str) -> dict:
-    """Simulated CI check. in reality this would trigger a docker build or pytest run.
-    """
+    """Simulated CI check. in reality this would trigger a docker build or pytest run."""
     # Simple heuristic check for syntax errors
     try:
         compile(code, "<string>", "exec")
@@ -72,12 +70,10 @@ def run_math(expression: str) -> str:
 
 
 def run_rag(query: str) -> str:
-    """Placeholder for RAG lookup.
-    """
+    """Placeholder for RAG lookup."""
     return f"[RAG Result] Simulated retrieval for: {query}"
 
 
 def run_shadowtag_verify(signature: str) -> bool:
-    """Placeholder for cryptographic verification.
-    """
+    """Placeholder for cryptographic verification."""
     return signature.startswith("valid_")

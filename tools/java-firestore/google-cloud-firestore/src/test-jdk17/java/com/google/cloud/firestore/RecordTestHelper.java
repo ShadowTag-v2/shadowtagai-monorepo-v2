@@ -74,7 +74,7 @@ public final class RecordTestHelper {
   public record SingleComponent(
       String foo) {
   }
-  
+
   public record NestedRecord(
       SingleComponent first,
       AllSupportedTypes second) {

@@ -66,7 +66,7 @@ gcloud run deploy toolbox \
 
 ### Alternative: Manual PRM File Override
 
-If you strictly need to define your own Protected Resource Metadata instead of auto-generating it from the `AuthService` config, you can use the `--mcp-prm-file <path>` flag. 
+If you strictly need to define your own Protected Resource Metadata instead of auto-generating it from the `AuthService` config, you can use the `--mcp-prm-file <path>` flag.
 
 1. Create a `prm.json` containing the RFC-9207 compliant metadata. Note that the `resource` field must match the `TOOLBOX_URL`:
    ```json

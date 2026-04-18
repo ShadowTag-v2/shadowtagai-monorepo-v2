@@ -138,4 +138,3 @@ class Filter extends \Google\Protobuf\Internal\Message
     }
 
 }
-

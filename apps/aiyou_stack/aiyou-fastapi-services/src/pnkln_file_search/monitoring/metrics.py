@@ -1,5 +1,4 @@
-"""Metrics collection for file search and enforcement operations
-"""
+"""Metrics collection for file search and enforcement operations"""
 
 from collections import deque
 

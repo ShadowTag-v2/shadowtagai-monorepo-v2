@@ -53,7 +53,7 @@ tags: [daily]
 # $TODAY
 EOF
   fi
-  
+
   echo "" >> "$DAILY"
   echo "## Session Wrap-Up ($(date +%H:%M))" >> "$DAILY"
   cat /tmp/session-summary-$(date +%Y%m%d).md >> "$DAILY"

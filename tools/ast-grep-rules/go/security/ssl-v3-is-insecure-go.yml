@@ -43,5 +43,3 @@ utils:
 rule:
   any:
     - matches: match_version
-
-

@@ -384,7 +384,11 @@ if __name__ == "__main__":
     # Demo 1: Basic GRPO training
     print("=== Demo 1: Basic GRPO Training ===\n")
     simulator = GRPOSimulator(
-        target_sum=15, trajectory_length=5, group_size=8, entropy_weight=0.1, learning_rate=0.1,
+        target_sum=15,
+        trajectory_length=5,
+        group_size=8,
+        entropy_weight=0.1,
+        learning_rate=0.1,
     )
 
     history = simulator.train(num_iterations=100, verbose=True)
@@ -392,7 +396,11 @@ if __name__ == "__main__":
     # Demo 2: GRPO vs PPO comparison
     print("\n" + "=" * 60 + "\n")
     simulator2 = GRPOSimulator(
-        target_sum=20, trajectory_length=6, group_size=10, entropy_weight=0.15, learning_rate=0.08,
+        target_sum=20,
+        trajectory_length=6,
+        group_size=10,
+        entropy_weight=0.15,
+        learning_rate=0.08,
     )
 
     comparison = simulator2.compare_to_ppo(num_iterations=100)
@@ -406,7 +414,11 @@ if __name__ == "__main__":
 
     for ew in entropy_weights:
         sim = GRPOSimulator(
-            target_sum=15, trajectory_length=5, group_size=8, entropy_weight=ew, learning_rate=0.1,
+            target_sum=15,
+            trajectory_length=5,
+            group_size=8,
+            entropy_weight=ew,
+            learning_rate=0.1,
         )
         hist = sim.train(num_iterations=50, verbose=False)
         results[ew] = {"final_reward": hist["avg_reward"][-1], "final_entropy": hist["entropy"][-1]}

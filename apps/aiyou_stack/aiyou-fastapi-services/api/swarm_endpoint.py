@@ -60,7 +60,10 @@ class SwarmVoteRequest(BaseModel):
     intent: str = Field(..., description="What action is being decided")
     risk_level: RiskLevel = Field(default=RiskLevel.MEDIUM, description="ATP 5-19 risk level")
     brake_count: int = Field(
-        default=0, ge=0, le=10, description="Number of safety brakes triggered",
+        default=0,
+        ge=0,
+        le=10,
+        description="Number of safety brakes triggered",
     )
     context: dict[str, Any] | None = Field(default=None, description="Additional context")
     webhook_url: str | None = Field(default=None, description="Webhook for async notification")

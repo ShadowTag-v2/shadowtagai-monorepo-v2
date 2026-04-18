@@ -170,9 +170,7 @@ class SonnetCoordinator:
 
         for idx, thread_data in enumerate(threads):
             # Assign based on domain and round-robin
-            assigned_llm = self._assign_by_domain(
-                thread_data["domain"], thread_data["complexity"], rotation_llms, idx
-            )
+            assigned_llm = self._assign_by_domain(thread_data["domain"], thread_data["complexity"], rotation_llms, idx)
 
             thread = Thread(
                 thread_id=thread_data["thread_id"],
@@ -183,9 +181,7 @@ class SonnetCoordinator:
 
         return assigned_threads
 
-    def _assign_by_domain(
-        self, domain: str, complexity: int, rotation_llms: list[LLMProvider], idx: int
-    ) -> LLMProvider:
+    def _assign_by_domain(self, domain: str, complexity: int, rotation_llms: list[LLMProvider], idx: int) -> LLMProvider:
         """Assign LLM based on domain expertise"""
         # Domain-based assignment
         domain_map = {
@@ -330,15 +326,9 @@ class ClaudeCodeSynthesizer:
         for thread in threads:
             synthesis_prompt += f"## Thread: {thread.thread_id}\n"
             synthesis_prompt += f"Task: {thread.content}\n\n"
-            synthesis_prompt += (
-                f"Initial Answer ({thread.assigned_llm.value}):\n{thread.round_1_response}\n\n"
-            )
-            synthesis_prompt += (
-                f"Review 1 ({thread.round_1_reviewer.value}):\n{thread.round_2_review}\n\n"
-            )
-            synthesis_prompt += (
-                f"Review 2 ({thread.round_2_reviewer.value}):\n{thread.round_3_review}\n\n"
-            )
+            synthesis_prompt += f"Initial Answer ({thread.assigned_llm.value}):\n{thread.round_1_response}\n\n"
+            synthesis_prompt += f"Review 1 ({thread.round_1_reviewer.value}):\n{thread.round_2_review}\n\n"
+            synthesis_prompt += f"Review 2 ({thread.round_2_reviewer.value}):\n{thread.round_3_review}\n\n"
             synthesis_prompt += "---\n\n"
 
         # Call Claude Code for final synthesis

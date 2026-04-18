@@ -135,7 +135,12 @@ async def get_kpi_dashboard(time_range: TimeRange = TimeRange.DAY):
                     status="good",
                 ),
                 KPIMetric(
-                    name="CPM Premium", value=35.0, unit="%", target=30.0, trend="up", status="good",
+                    name="CPM Premium",
+                    value=35.0,
+                    unit="%",
+                    target=30.0,
+                    trend="up",
+                    status="good",
                 ),
             ],
             KPICategory.RELIABILITY: [
@@ -205,7 +210,9 @@ async def get_category_kpis(category: KPICategory, time_range: TimeRange = TimeR
 
 @router.get("/metric/{metric_name}")
 async def get_metric_history(
-    metric_name: str, time_range: TimeRange = TimeRange.WEEK, granularity: str = "hour",
+    metric_name: str,
+    time_range: TimeRange = TimeRange.WEEK,
+    granularity: str = "hour",
 ):
     """Get historical data for specific metric
 

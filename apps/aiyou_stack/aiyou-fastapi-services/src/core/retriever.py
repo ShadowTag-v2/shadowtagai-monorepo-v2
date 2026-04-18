@@ -98,7 +98,10 @@ class VertexRAGRetriever:
         return self._embedder
 
     def chunk_document(
-        self, text: str, document_id: str = "default", preserve_cache: bool = True,
+        self,
+        text: str,
+        document_id: str = "default",
+        preserve_cache: bool = True,
     ) -> list[str]:
         """Split document into 300-word chunks with configurable overlap
 
@@ -173,7 +176,9 @@ class VertexRAGRetriever:
             raise
 
     def cosine_similarity(
-        self, query_embedding: np.ndarray, chunk_embeddings: np.ndarray,
+        self,
+        query_embedding: np.ndarray,
+        chunk_embeddings: np.ndarray,
     ) -> np.ndarray:
         """Compute cosine similarity between query and chunks
 
@@ -259,7 +264,11 @@ class VertexRAGRetriever:
         return retrieved_chunks
 
     def retrieve_with_indices(
-        self, query: str, document_text: str, document_id: str = "default", k: int = 5,
+        self,
+        query: str,
+        document_text: str,
+        document_id: str = "default",
+        k: int = 5,
     ) -> tuple[list[str], list[int], list[float]]:
         """Retrieve chunks with explicit indices (for prompt formatting)
 

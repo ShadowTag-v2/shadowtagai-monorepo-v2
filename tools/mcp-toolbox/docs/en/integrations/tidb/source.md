@@ -47,7 +47,7 @@ console.
     database: my_db
     user: ${TIDB_USERNAME}
     password: ${TIDB_PASSWORD}
-    # SSL is automatically enabled for TiDB Cloud    
+    # SSL is automatically enabled for TiDB Cloud
     ```
 
 - Self-Hosted TiDB
@@ -61,7 +61,7 @@ console.
     database: my_db
     user: ${TIDB_USERNAME}
     password: ${TIDB_PASSWORD}
-    # ssl: true  # Optional: enable SSL for secure connections    
+    # ssl: true  # Optional: enable SSL for secure connections
     ```
 
 {{< notice tip >}}

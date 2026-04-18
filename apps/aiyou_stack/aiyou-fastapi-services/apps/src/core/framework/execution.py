@@ -224,7 +224,10 @@ class OperatingFramework:
 
         # Decision validation
         approved, message = self.decision_protocol.validate_decision(
-            action, mission_aligned, doctrine_compliant, risk_level,
+            action,
+            mission_aligned,
+            doctrine_compliant,
+            risk_level,
         )
 
         return {

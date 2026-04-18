@@ -64,9 +64,7 @@ class ToolboxTool(BaseTool):
 
         description = getattr(core_tool, "__doc__", None)
         if not description:
-            raise ValueError(
-                f"Core tool {name} must have a valid __doc__ (description)"
-            )
+            raise ValueError(f"Core tool {name} must have a valid __doc__ (description)")
 
         super().__init__(
             name=name,
@@ -143,9 +141,7 @@ class ToolboxTool(BaseTool):
             else None
         )
 
-        return FunctionDeclaration(
-            name=self.name, description=self.description, parameters=parameters
-        )
+        return FunctionDeclaration(name=self.name, description=self.description, parameters=parameters)
 
     @override
     async def run_async(
@@ -157,19 +153,11 @@ class ToolboxTool(BaseTool):
         reset_token = None
 
         if self._auth_config and self._auth_config.type == CredentialType.USER_IDENTITY:
-            requires_auth = (
-                len(self._core_tool._required_authn_params) > 0
-                or len(self._core_tool._required_authz_tokens) > 0
-            )
+            requires_auth = len(self._core_tool._required_authn_params) > 0 or len(self._core_tool._required_authz_tokens) > 0
 
             if requires_auth:
-                if (
-                    not self._auth_config.client_id
-                    or not self._auth_config.client_secret
-                ):
-                    raise ValueError(
-                        "USER_IDENTITY requires client_id and client_secret"
-                    )
+                if not self._auth_config.client_id or not self._auth_config.client_secret:
+                    raise ValueError("USER_IDENTITY requires client_id and client_secret")
 
                 # Construct ADK AuthConfig
                 scopes = self._auth_config.scopes or ["openid", "profile", "email"]
@@ -213,15 +201,11 @@ class ToolboxTool(BaseTool):
                         creds = tool_context.get_auth_response(auth_config_adk)
 
                     if creds and creds.oauth2 and creds.oauth2.access_token:
-                        reset_token = USER_TOKEN_CONTEXT_VAR.set(
-                            creds.oauth2.access_token
-                        )
+                        reset_token = USER_TOKEN_CONTEXT_VAR.set(creds.oauth2.access_token)
 
                         # Bind the token to the underlying core_tool so it constructs headers properly
                         needed_services = set()
-                        for requested_service in list(
-                            self._core_tool._required_authn_params.values()
-                        ) + list(self._core_tool._required_authz_tokens):
+                        for requested_service in list(self._core_tool._required_authn_params.values()) + list(self._core_tool._required_authz_tokens):
                             if isinstance(requested_service, list):
                                 needed_services.update(requested_service)
                             else:
@@ -229,10 +213,7 @@ class ToolboxTool(BaseTool):
 
                         for s in needed_services:
                             # Only add if not already registered (prevents ValueError on duplicate params or subsequent runs)
-                            if (
-                                not hasattr(self._core_tool, "_auth_token_getters")
-                                or s not in self._core_tool._auth_token_getters
-                            ):
+                            if not hasattr(self._core_tool, "_auth_token_getters") or s not in self._core_tool._auth_token_getters:
                                 self._core_tool = self._core_tool.add_auth_token_getter(
                                     s,
                                     lambda t=creds.oauth2.id_token or creds.oauth2.access_token: t,
@@ -257,8 +238,7 @@ class ToolboxTool(BaseTool):
                         raise e
 
                     logging.warning(
-                        f"Unexpected error in get_auth_response during User Identity (OAuth2) retrieval: {e}. "
-                        "Falling back to request_credential.",
+                        f"Unexpected error in get_auth_response during User Identity (OAuth2) retrieval: {e}. Falling back to request_credential.",
                         exc_info=True,
                     )
                     tool_context.request_credential(auth_config_adk)
@@ -283,9 +263,7 @@ class ToolboxTool(BaseTool):
                     else:
                         bound_getter = getter
 
-                    self._core_tool = self._core_tool.add_auth_token_getter(
-                        service, bound_getter
-                    )
+                    self._core_tool = self._core_tool.add_auth_token_getter(service, bound_getter)
 
         result: Any | None = None
         error: Exception | None = None

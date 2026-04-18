@@ -19,8 +19,7 @@ class DeviceEnforcementSDK:
         self.active_hooks = []
 
     async def _execute_ambient_prod(self, event_data: dict[str, Any]):
-        """Ambient nudges: Smartwatch vibration, silent notifications.
-        """
+        """Ambient nudges: Smartwatch vibration, silent notifications."""
         logger.info(f"Executing Ambient Prod to User {self.user_id}: {event_data.get('message')}")
         await asyncio.sleep(0.1)  # Simulate network call to APNS/FCM
 
@@ -56,8 +55,7 @@ class DeviceEnforcementSDK:
             await tesla_controller.wake_vehicle()
 
     async def dispatch_prod(self, event_data: dict[str, Any]):
-        """Routes the prod based on the user's intensity configuration.
-        """
+        """Routes the prod based on the user's intensity configuration."""
         if self.intensity_level == "gentle":
             # Just push silently to timeline
             logger.info("Gentle mode active. No explicit prod sent.")
@@ -74,7 +72,6 @@ class DeviceEnforcementSDK:
                 # This would interface with an MDM profile or specific Android Accessibility hooks
 
     def register_os_hook(self, platform: str, callback: callable):
-        """Registers device-specific hooks (iOS Shortcuts, Android Intents).
-        """
+        """Registers device-specific hooks (iOS Shortcuts, Android Intents)."""
         self.active_hooks.append({"platform": platform, "callback": callback})
         logger.info(f"Registered OS hook for {platform}")

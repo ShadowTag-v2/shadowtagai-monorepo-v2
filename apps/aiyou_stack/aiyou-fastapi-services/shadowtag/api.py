@@ -31,10 +31,14 @@ logger = structlog.get_logger(__name__)
 
 # Prometheus metrics
 auth_requests = Counter(
-    "shadowtag_auth_requests_total", "Total authentication requests", ["asset_type"],
+    "shadowtag_auth_requests_total",
+    "Total authentication requests",
+    ["asset_type"],
 )
 verify_requests = Counter(
-    "shadowtag_verify_requests_total", "Total verification requests", ["result"],
+    "shadowtag_verify_requests_total",
+    "Total verification requests",
+    ["result"],
 )
 auth_latency = Histogram("shadowtag_auth_latency_seconds", "Authentication latency")
 

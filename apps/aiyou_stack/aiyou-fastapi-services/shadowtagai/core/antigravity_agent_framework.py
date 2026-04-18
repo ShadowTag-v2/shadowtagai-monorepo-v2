@@ -336,7 +336,10 @@ class PanelDebateSystem:
         self.jr_engine = JREngine()
 
     async def debate(
-        self, action: str, context: dict[str, Any], _initial_confidence: float,
+        self,
+        action: str,
+        context: dict[str, Any],
+        _initial_confidence: float,
     ) -> PanelDebateResult:
         """Run 3-round panel debate for edge case decision.
 
@@ -402,7 +405,10 @@ class PanelDebateSystem:
         )
 
     async def _defender_argument(
-        self, action: str, context: dict, prosecutor: DebateArgument,
+        self,
+        action: str,
+        context: dict,
+        prosecutor: DebateArgument,
     ) -> DebateArgument:
         """Counter prosecutor, provide context (Claude Sonnet equivalent)."""
         await asyncio.sleep(0.020)  # Simulate 20ms Sonnet call
@@ -433,7 +439,11 @@ class PanelDebateSystem:
         )
 
     async def _judge_decision(
-        self, action: str, context: dict, prosecutor: DebateArgument, defender: DebateArgument,
+        self,
+        action: str,
+        context: dict,
+        prosecutor: DebateArgument,
+        defender: DebateArgument,
     ) -> DebateArgument:
         """Synthesize arguments and make final decision (Claude Opus equivalent)."""
         await asyncio.sleep(0.060)  # Simulate 60ms Opus call
@@ -491,7 +501,11 @@ class AntigravityAgent:
         self.debate_system = PanelDebateSystem()
 
     async def execute_action(
-        self, purpose: Purpose, action: str, context: dict[str, Any], confidence: float,
+        self,
+        purpose: Purpose,
+        action: str,
+        context: dict[str, Any],
+        confidence: float,
     ) -> dict[str, Any]:
         """Execute coding action with full governance pipeline.
 

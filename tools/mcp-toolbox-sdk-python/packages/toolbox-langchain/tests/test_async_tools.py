@@ -79,12 +79,8 @@ class TestAsyncToolboxTool:
             ],
         }
 
-    def _create_core_tool_from_dict(
-        self, session, name, schema_dict, url, initial_auth_getters=None
-    ):
-        core_params_schemas = [
-            CoreParameterSchema(**p) for p in schema_dict["parameters"]
-        ]
+    def _create_core_tool_from_dict(self, session, name, schema_dict, url, initial_auth_getters=None):
+        core_params_schemas = [CoreParameterSchema(**p) for p in schema_dict["parameters"]]
 
         tool_constructor_params = []
         required_authn_for_core = {}
@@ -102,9 +98,7 @@ class TestAsyncToolboxTool:
             params=tool_constructor_params,
             required_authn_params=types.MappingProxyType(required_authn_for_core),
             required_authz_tokens=schema_dict.get("authRequired", []),
-            auth_service_token_getters=types.MappingProxyType(
-                initial_auth_getters or {}
-            ),
+            auth_service_token_getters=types.MappingProxyType(initial_auth_getters or {}),
             bound_params=types.MappingProxyType({}),
             client_headers=types.MappingProxyType({}),
         )
@@ -117,9 +111,7 @@ class TestAsyncToolboxTool:
             schema_dict=tool_schema_dict,
             url="http://test_url",
         )
-        core_tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = (
-            "test-result"
-        )
+        core_tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = "test-result"
         tool = AsyncToolboxTool(core_tool=core_tool_instance)
         return tool
 
@@ -131,9 +123,7 @@ class TestAsyncToolboxTool:
             schema_dict=auth_tool_schema_dict,
             url="https://test-url",
         )
-        core_tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = (
-            "test-result"
-        )
+        core_tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = "test-result"
         tool = AsyncToolboxTool(core_tool=core_tool_instance)
         return tool
 
@@ -144,9 +134,7 @@ class TestAsyncToolboxTool:
             schema_dict=tool_schema_dict,
             url="https://test-url",
         )
-        core_tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = (
-            "test-result"
-        )
+        core_tool_instance._ToolboxTool__transport.tool_invoke_mock.return_value = "test-result"
         tool = AsyncToolboxTool(core_tool=core_tool_instance)
         assert tool.name == "test_tool"
         assert tool.description == core_tool_instance.__doc__
@@ -161,24 +149,16 @@ class TestAsyncToolboxTool:
     )
     async def test_toolbox_tool_bind_params(self, toolbox_tool, params_to_bind):
         original_core_tool = toolbox_tool._AsyncToolboxTool__core_tool
-        with patch.object(
-            original_core_tool, "bind_params", wraps=original_core_tool.bind_params
-        ) as mock_core_bind_params:
+        with patch.object(original_core_tool, "bind_params", wraps=original_core_tool.bind_params) as mock_core_bind_params:
             new_langchain_tool = toolbox_tool.bind_params(params_to_bind)
             mock_core_bind_params.assert_called_once_with(params_to_bind)
-            assert isinstance(
-                new_langchain_tool._AsyncToolboxTool__core_tool, ToolboxCoreTool
-            )
-            new_core_tool_signature_params = (
-                new_langchain_tool._AsyncToolboxTool__core_tool.__signature__.parameters
-            )
+            assert isinstance(new_langchain_tool._AsyncToolboxTool__core_tool, ToolboxCoreTool)
+            new_core_tool_signature_params = new_langchain_tool._AsyncToolboxTool__core_tool.__signature__.parameters
             for bound_param_name in params_to_bind.keys():
                 assert bound_param_name not in new_core_tool_signature_params
 
     async def test_toolbox_tool_bind_params_invalid(self, toolbox_tool):
-        with pytest.raises(
-            ValueError, match="unable to bind parameters: no parameter named param3"
-        ):
+        with pytest.raises(ValueError, match="unable to bind parameters: no parameter named param3"):
             toolbox_tool.bind_params({"param3": "bound-value"})
 
     async def test_toolbox_tool_bind_params_duplicate(self, toolbox_tool):
@@ -192,9 +172,7 @@ class TestAsyncToolboxTool:
     async def test_toolbox_tool_bind_params_invalid_params(self, auth_toolbox_tool):
         auth_core_tool = auth_toolbox_tool._AsyncToolboxTool__core_tool
         assert "param1" not in [p.name for p in auth_core_tool._ToolboxTool__params]
-        with pytest.raises(
-            ValueError, match="unable to bind parameters: no parameter named param1"
-        ):
+        with pytest.raises(ValueError, match="unable to bind parameters: no parameter named param1"):
             auth_toolbox_tool.bind_params({"param1": "bound-value"})
 
     async def test_toolbox_tool_add_valid_auth_token_getter(self, auth_toolbox_tool):
@@ -205,50 +183,22 @@ class TestAsyncToolboxTool:
             "add_auth_token_getters",
             wraps=original_core_tool.add_auth_token_getters,
         ) as mock_core_add_getters:
-            tool = auth_toolbox_tool.add_auth_token_getters(
-                {"test-auth-source": get_token_lambda}
-            )
-            mock_core_add_getters.assert_called_once_with(
-                {"test-auth-source": get_token_lambda}
-            )
+            tool = auth_toolbox_tool.add_auth_token_getters({"test-auth-source": get_token_lambda})
+            mock_core_add_getters.assert_called_once_with({"test-auth-source": get_token_lambda})
             core_tool_after_add = tool._AsyncToolboxTool__core_tool
-            assert (
-                "test-auth-source"
-                in core_tool_after_add._ToolboxTool__auth_service_token_getters
-            )
-            assert (
-                core_tool_after_add._ToolboxTool__auth_service_token_getters[
-                    "test-auth-source"
-                ]
-                is get_token_lambda
-            )
-            assert not core_tool_after_add._ToolboxTool__required_authn_params.get(
-                "param1"
-            )
-            assert (
-                "test-auth-source"
-                not in core_tool_after_add._ToolboxTool__required_authz_tokens
-            )
+            assert "test-auth-source" in core_tool_after_add._ToolboxTool__auth_service_token_getters
+            assert core_tool_after_add._ToolboxTool__auth_service_token_getters["test-auth-source"] is get_token_lambda
+            assert not core_tool_after_add._ToolboxTool__required_authn_params.get("param1")
+            assert "test-auth-source" not in core_tool_after_add._ToolboxTool__required_authz_tokens
 
-    async def test_toolbox_tool_add_unused_auth_token_getter_raises_error(
-        self, auth_toolbox_tool
-    ):
+    async def test_toolbox_tool_add_unused_auth_token_getter_raises_error(self, auth_toolbox_tool):
         unused_lambda = lambda: "another-token"
         with pytest.raises(ValueError) as excinfo:
-            auth_toolbox_tool.add_auth_token_getters(
-                {"another-auth-source": unused_lambda}
-            )
-        assert (
-            "Authentication source(s) `another-auth-source` unused by tool `test_tool`"
-            in str(excinfo.value)
-        )
+            auth_toolbox_tool.add_auth_token_getters({"another-auth-source": unused_lambda})
+        assert "Authentication source(s) `another-auth-source` unused by tool `test_tool`" in str(excinfo.value)
 
-    async def test_toolbox_tool_add_auth_token_getters_duplicate(
-        self, auth_toolbox_tool
-    ):
-        tool = auth_toolbox_tool.add_auth_token_getters(
-            {"test-auth-source": lambda: "test-token"}
-        )
+    async def test_toolbox_tool_add_auth_token_getters_duplicate(self, auth_toolbox_tool):
+        tool = auth_toolbox_tool.add_auth_token_getters({"test-auth-source": lambda: "test-token"})
         with pytest.raises(
             ValueError,
             match="Authentication source\\(s\\) `test-auth-source` already registered in tool `test_tool`\\.",
@@ -267,9 +217,7 @@ class TestAsyncToolboxTool:
         assert result == "test-result"
         core_tool = toolbox_tool._AsyncToolboxTool__core_tool
         transport = core_tool._ToolboxTool__transport
-        transport.tool_invoke_mock.assert_awaited_once_with(
-            "test_tool", {"param1": "test-value", "param2": 123}, {}
-        )
+        transport.tool_invoke_mock.assert_awaited_once_with("test_tool", {"param1": "test-value", "param2": 123}, {})
 
     @pytest.mark.parametrize(
         "bound_param_map, expected_value",
@@ -278,29 +226,21 @@ class TestAsyncToolboxTool:
             ({"param1": lambda: "dynamic-value"}, "dynamic-value"),
         ],
     )
-    async def test_toolbox_tool_call_with_bound_params(
-        self, toolbox_tool, bound_param_map, expected_value
-    ):
+    async def test_toolbox_tool_call_with_bound_params(self, toolbox_tool, bound_param_map, expected_value):
         tool = toolbox_tool.bind_params(bound_param_map)
         result = await tool.ainvoke({"param2": 123})
         assert result == "test-result"
         core_tool = tool._AsyncToolboxTool__core_tool
         transport = core_tool._ToolboxTool__transport
-        transport.tool_invoke_mock.assert_awaited_once_with(
-            "test_tool", {"param1": expected_value, "param2": 123}, {}
-        )
+        transport.tool_invoke_mock.assert_awaited_once_with("test_tool", {"param1": expected_value, "param2": 123}, {})
 
     async def test_toolbox_tool_call_with_auth_tokens(self, auth_toolbox_tool):
-        tool = auth_toolbox_tool.add_auth_token_getters(
-            {"test-auth-source": lambda: "test-token"}
-        )
+        tool = auth_toolbox_tool.add_auth_token_getters({"test-auth-source": lambda: "test-token"})
         result = await tool.ainvoke({"param2": 123})
         assert result == "test-result"
         core_tool = tool._AsyncToolboxTool__core_tool
         transport = core_tool._ToolboxTool__transport
-        transport.tool_invoke_mock.assert_awaited_once_with(
-            "test_tool", {"param2": 123}, {"test-auth-source_token": "test-token"}
-        )
+        transport.tool_invoke_mock.assert_awaited_once_with("test_tool", {"param2": 123}, {"test-auth-source_token": "test-token"})
 
     async def test_toolbox_tool_call_with_invalid_input(self, toolbox_tool):
         with pytest.raises(ValidationError) as e:

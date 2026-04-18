@@ -335,7 +335,7 @@ These factors are discussed but do not contribute to the numerical score:
 - Contingency plans
 - Alternative strategies if initial approach doesn't work
 
-**Timeline**: 
+**Timeline**:
 - Sequence of activities for this aim
 - Estimated completion time
 
@@ -848,4 +848,3 @@ We have addressed these concerns as follows:
 ---
 
 **Key Takeaway**: NIH applications succeed through clear articulation of an important health-related problem, preliminary data demonstrating feasibility, detailed rigorous approach, and innovative methods. The Specific Aims page is the most critical component—invest time in crafting a compelling narrative that immediately conveys significance and feasibility.
-

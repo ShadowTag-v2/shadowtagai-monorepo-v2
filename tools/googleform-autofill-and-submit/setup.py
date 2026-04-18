@@ -6,7 +6,7 @@ if not sys.version_info >= (3, 6):
     sys.exit("Sorry, Python >= 3.6 is required")
 
 # Read the requirements from the requirements.txt file
-with open('requirements.txt') as f:
+with open("requirements.txt") as f:
     required = f.read().splitlines()
 
 setuptools.setup(
@@ -17,9 +17,11 @@ setuptools.setup(
     description="Toolkit to automate filling and submitting Google Form",
     long_description="Toolkit to automate filling and submitting Google Form",
     long_description_content_type="text",
-    license='LICENSE.txt',
+    license="LICENSE.txt",
     packages=setuptools.find_packages(),
     install_requires=required,
-    classifiers=['Operating System :: POSIX', ],
-    python_requires='>=3.6',
+    classifiers=[
+        "Operating System :: POSIX",
+    ],
+    python_requires=">=3.6",
 )

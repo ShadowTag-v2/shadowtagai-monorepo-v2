@@ -103,4 +103,3 @@ class ListFieldsResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

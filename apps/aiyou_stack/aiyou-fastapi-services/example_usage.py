@@ -18,13 +18,14 @@ from ungpt.orchestrator import PNKLNAtomicOrchestrator
 
 
 class AnthropicOrchestrator(PNKLNAtomicOrchestrator):
-    """Concrete implementation of atomic orchestrator using Anthropic Claude
-    """
+    """Concrete implementation of atomic orchestrator using Anthropic Claude"""
 
     def __init__(self, api_key: str, **kwargs):
         self.anthropic_client = Anthropic(api_key=api_key)
         super().__init__(
-            model_client=self.anthropic_client, model_name=Config.CLAUDE_MODEL, **kwargs,
+            model_client=self.anthropic_client,
+            model_name=Config.CLAUDE_MODEL,
+            **kwargs,
         )
 
     async def _call_model(self, prompt: str) -> str:
@@ -39,8 +40,7 @@ class AnthropicOrchestrator(PNKLNAtomicOrchestrator):
 
 
 async def demo_aunccrm_standalone():
-    """Demo 1: Standalone AunCRM compliance validation
-    """
+    """Demo 1: Standalone AunCRM compliance validation"""
     print("\n" + "=" * 80)
     print("DEMO 1: AunCRM Compliance Framework")
     print("=" * 80 + "\n")
@@ -119,8 +119,7 @@ async def demo_aunccrm_standalone():
 
 
 async def demo_atomic_orchestrator():
-    """Demo 2: Atomic thread orchestration with AunCRM
-    """
+    """Demo 2: Atomic thread orchestration with AunCRM"""
     print("\n" + "=" * 80)
     print("DEMO 2: UnGPT Atomic Thread Orchestrator")
     print("=" * 80 + "\n")
@@ -159,8 +158,7 @@ async def demo_atomic_orchestrator():
 
 
 async def demo_consensus_orchestrator():
-    """Demo 3: Multi-LLM consensus with peer review
-    """
+    """Demo 3: Multi-LLM consensus with peer review"""
     print("\n" + "=" * 80)
     print("DEMO 3: Multi-LLM Consensus System")
     print("=" * 80 + "\n")

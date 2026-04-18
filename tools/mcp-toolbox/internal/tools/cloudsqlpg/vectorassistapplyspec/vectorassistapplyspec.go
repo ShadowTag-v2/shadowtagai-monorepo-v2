@@ -32,7 +32,7 @@ import (
 const resourceType string = "vector-assist-apply-spec"
 
 const applySpecQuery = `
-    SELECT * FROM vector_assist.apply_spec(spec_id => @spec_id::TEXT, table_name => @table_name::TEXT, 
+    SELECT * FROM vector_assist.apply_spec(spec_id => @spec_id::TEXT, table_name => @table_name::TEXT,
     column_name => @column_name::TEXT, schema_name => @schema_name::TEXT);
 `
 

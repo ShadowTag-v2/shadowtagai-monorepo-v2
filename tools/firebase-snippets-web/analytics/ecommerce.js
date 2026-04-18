@@ -180,7 +180,7 @@ function ecommercePaymentInfo() {
   };
 
   // Log event
-  firebase.analytics().logEvent(firebase.analytics.EventName.ADD_PAYMENT_INFO, params9);  
+  firebase.analytics().logEvent(firebase.analytics.EventName.ADD_PAYMENT_INFO, params9);
   // [END analytics_ecommerce_payment_info]
 }
 

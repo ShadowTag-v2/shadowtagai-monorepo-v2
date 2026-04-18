@@ -101,7 +101,10 @@ def main():
     )
     parser.add_argument("--users", nargs="+", metavar="USER", help="One or more GitHub usernames.")
     parser.add_argument(
-        "--orgs", nargs="+", metavar="ORG", help="One or more GitHub organization names.",
+        "--orgs",
+        nargs="+",
+        metavar="ORG",
+        help="One or more GitHub organization names.",
     )
     parser.add_argument(
         "--dest-dir",

@@ -141,7 +141,7 @@ Datasets must follow HuggingFace datasets format with specific naming convention
 
 **Required files:**
 - `<TASK>_train.json`: Training data
-- `<TASK>_val.json`: Validation data  
+- `<TASK>_val.json`: Validation data
 - `<TASK>_test.json`: Test data
 
 **Required keys in JSON:**
@@ -203,16 +203,16 @@ prompt_templates:
     Feature 1: ${text_features_1}
     Feature 2: ${text_features_2}
     Observation: ${label}
-  
+
   # Required templates
   batched_generation:
     system: "Your system prompt here"
     user: "Your user prompt with ${num_hypotheses} placeholder"
-  
+
   inference:
     system: "Your inference system prompt"
     user: "Your inference user prompt"
-  
+
   # Optional templates for advanced features
   few_shot_baseline: {...}
   is_relevant: {...}
@@ -345,7 +345,7 @@ The `extract_label()` function is critical for parsing LLM outputs. Implement it
 ```python
 def extract_label(llm_output: str) -> str:
     """Extract predicted label from LLM inference text.
-    
+
     Default behavior: searches for 'final answer:\s+(.*)' pattern.
     Customize for your domain-specific output format.
     """
@@ -465,13 +465,13 @@ from hypogenic import BaseTask
 
 def extract_my_label(llm_output: str) -> str:
     """Custom label extraction for your task.
-    
+
     Must return labels in same format as dataset 'label' field.
     """
     # Example: Extract from specific format
     if "Final prediction:" in llm_output:
         return llm_output.split("Final prediction:")[-1].strip()
-    
+
     # Fallback to default pattern
     import re
     match = re.search(r'final answer:\s+(.*)', llm_output, re.IGNORECASE)
@@ -544,13 +544,13 @@ Liu, H., Huang, S., Hu, J., Zhou, Y., & Tan, C. (2025). HypoBench: Towards Syste
 **BibTeX:**
 ```bibtex
 @misc{liu2025hypobenchsystematicprincipledbenchmarking,
-      title={HypoBench: Towards Systematic and Principled Benchmarking for Hypothesis Generation}, 
+      title={HypoBench: Towards Systematic and Principled Benchmarking for Hypothesis Generation},
       author={Haokun Liu and Sicong Huang and Jingyu Hu and Yangqiaoyu Zhou and Chenhao Tan},
       year={2025},
       eprint={2504.11524},
       archivePrefix={arXiv},
       primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2504.11524}, 
+      url={https://arxiv.org/abs/2504.11524},
 }
 ```
 
@@ -565,13 +565,13 @@ Liu, H., Zhou, Y., Li, M., Yuan, C., & Tan, C. (2024). Literature Meets Data: A 
 **BibTeX:**
 ```bibtex
 @misc{liu2024literaturemeetsdatasynergistic,
-      title={Literature Meets Data: A Synergistic Approach to Hypothesis Generation}, 
+      title={Literature Meets Data: A Synergistic Approach to Hypothesis Generation},
       author={Haokun Liu and Yangqiaoyu Zhou and Mingxuan Li and Chenfei Yuan and Chenhao Tan},
       year={2024},
       eprint={2410.17309},
       archivePrefix={arXiv},
       primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2410.17309}, 
+      url={https://arxiv.org/abs/2410.17309},
 }
 ```
 
@@ -585,7 +585,7 @@ Zhou, Y., Liu, H., Srivastava, T., Mei, H., & Tan, C. (2024). Hypothesis Generat
 **BibTeX:**
 ```bibtex
 @inproceedings{zhou2024hypothesisgenerationlargelanguage,
-      title={Hypothesis Generation with Large Language Models}, 
+      title={Hypothesis Generation with Large Language Models},
       author={Yangqiaoyu Zhou and Haokun Liu and Tejes Srivastava and Hongyuan Mei and Chenhao Tan},
       booktitle = {Proceedings of EMNLP Workshop of NLP for Science},
       year={2024},

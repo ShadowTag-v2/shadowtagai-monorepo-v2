@@ -64,4 +64,3 @@ class Pipeline extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -37,12 +37,12 @@ name: search_users_by_email
 type: cassandra-cql
 source: my-cassandra-cluster
 statement: |
-  SELECT user_id, email, first_name, last_name, created_at 
-  FROM users 
+  SELECT user_id, email, first_name, last_name, created_at
+  FROM users
   WHERE email = ?
 description: |
   Use this tool to retrieve specific user information by their email address.
-  Takes an email address and returns user details including user ID, email, 
+  Takes an email address and returns user details including user ID, email,
   first name, last name, and account creation timestamp.
   Do NOT use this tool with a user ID or other identifiers.
   Example:

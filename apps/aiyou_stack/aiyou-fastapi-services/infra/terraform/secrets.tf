@@ -3,7 +3,7 @@
 # 1. Temporal API Key (for Workflow Refinery)
 resource "google_secret_manager_secret" "temporal_api_key" {
   secret_id = "temporal-api-key"
-  
+
   replication {
     auto {}
   }

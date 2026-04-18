@@ -53,7 +53,9 @@ REPLACEMENTS = {
 
 
 def scrub_pii(
-    text: str, patterns: dict[str, str] | None = None, _return_matches: bool = False,
+    text: str,
+    patterns: dict[str, str] | None = None,
+    _return_matches: bool = False,
 ) -> tuple[str, list[PIIMatch]]:
     """Scrub PII from text using regex patterns.
 
@@ -125,8 +127,7 @@ def scrub_document(doc: dict) -> tuple[dict, dict]:
 
 
 class PIIScrubber:
-    """Stateful PII scrubber with statistics tracking.
-    """
+    """Stateful PII scrubber with statistics tracking."""
 
     def __init__(self, custom_patterns: dict[str, str] | None = None):
         self.patterns = {**PII_PATTERNS, **(custom_patterns or {})}

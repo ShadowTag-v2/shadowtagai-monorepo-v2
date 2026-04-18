@@ -104,8 +104,8 @@ type: snowflake-sql
 source: snowflake-source
 description: "Lists detailed schema information for user-created tables."
 statement: |
-    SELECT table_name, table_type 
-    FROM information_schema.tables 
+    SELECT table_name, table_type
+    FROM information_schema.tables
     WHERE table_schema = current_schema()
     ORDER BY table_name;
 ```

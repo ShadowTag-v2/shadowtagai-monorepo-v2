@@ -1,5 +1,4 @@
-"""Panel Debate Multi-Agent System
-"""
+"""Panel Debate Multi-Agent System"""
 
 from .debate import DebateArgument, DebateResult, DebateRole, PanelDebate
 

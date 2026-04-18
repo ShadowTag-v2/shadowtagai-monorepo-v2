@@ -147,7 +147,11 @@ class FeatureIntervenor:
         # Register intervention hook
         if intervene_in_qk:
             hook = self._create_qk_intervention_hook(
-                layer, position, feature_idx, scale, specific_heads,
+                layer,
+                position,
+                feature_idx,
+                scale,
+                specific_heads,
             )
         else:
             hook = self._create_feature_scaling_hook(layer, position, feature_idx, scale)
@@ -452,7 +456,14 @@ def validate_circuit(
         head_layer, head_idx = qk_interaction["head"]
 
         results[f"qk_interaction_{i}"] = intervenor.validate_qk_circuit(
-            input_ids, q_layer, q_pos, q_idx, k_layer, k_pos, k_idx, head_idx,
+            input_ids,
+            q_layer,
+            q_pos,
+            q_idx,
+            k_layer,
+            k_pos,
+            k_idx,
+            head_idx,
         )
 
     return results

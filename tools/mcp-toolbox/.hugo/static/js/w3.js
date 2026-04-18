@@ -300,7 +300,7 @@ w3.getElementsByAttribute = function (x, att) {
     if (y[i].getAttribute(z) !== null) {arrCount += 1; arr[arrCount] = y[i];}
   }
   return arr;
-};  
+};
 w3.dataObject = {},
 w3.displayObject = function (id, data) {
   var htmlObj, htmlTemplate, html, arr = [], a, l, rowClone, x, j, i, ii, cc, repeat, repeatObj, repeatX = "";

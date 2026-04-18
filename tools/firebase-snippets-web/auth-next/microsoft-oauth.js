@@ -68,7 +68,7 @@ function msftSignInRedirect(provider) {
 function msftSignInRedirectResult() {
   // [START auth_msft_signin_redirect_result]
   const { getAuth, getRedirectResult, OAuthProvider } = require("firebase/auth");
-    
+
   const auth = getAuth();
   getRedirectResult(auth)
     .then((result) => {
@@ -121,7 +121,7 @@ function msftReauthPopup() {
         // should be able to perform sensitive operations like account
         // deletion and email or password update.
         // IdP data available in result.additionalUserInfo.profile.
-        
+
         // Get the OAuth access token and ID Token
         const credential = OAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;

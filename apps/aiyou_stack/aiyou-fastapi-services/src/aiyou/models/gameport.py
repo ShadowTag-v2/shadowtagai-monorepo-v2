@@ -38,7 +38,10 @@ class Game(Base):
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     publisher_id = Column(
-        String(36), ForeignKey("gameport_publishers.id"), nullable=False, index=True,
+        String(36),
+        ForeignKey("gameport_publishers.id"),
+        nullable=False,
+        index=True,
     )
 
     # Game metadata

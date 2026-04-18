@@ -14,7 +14,7 @@ class JetskiBrowserAgent(Agent):
         try:
             self.p = sync_playwright().start()
             # Headless=True for Cloud Run, False for Debugging
-            self.browser = self.p.chromium.launch(headless=True) 
+            self.browser = self.p.chromium.launch(headless=True)
             self.page = self.browser.new_page()
             self.dom_cache = {} # Map[Index, ElementHandle]
         except Exception as e:
@@ -30,7 +30,7 @@ class JetskiBrowserAgent(Agent):
         # Find all inputs, buttons, and links
         elements = self.page.query_selector_all("button, input, a, select, [role='button']")
         self.dom_cache = {i: el for i, el in enumerate(elements)}
-        
+
         # Generate the "LLM View"
         dom_text = []
         for i, el in self.dom_cache.items():
@@ -43,16 +43,16 @@ class JetskiBrowserAgent(Agent):
         return "\n".join(dom_text)
 
     def run(self, task: str) -> str:
-        # This is where the LLM Loop would live. 
+        # This is where the LLM Loop would live.
         # For the "God Mode" prototype, we hardcode the tool execution flow.
         # In prod, this calls Gemini 1.5 Pro with the System Prompt.
-        
+
         # 1. Inject System Prompt (The Soul)
         try:
             system_prompt = open("docs/jetski_protocol.md").read()
         except:
             system_prompt = "Jetski System Prompt Missing"
-        
+
         # 2. Execution (Simulated for this artifacts write)
         return f"🏄 [Jetski] Processed task: {task}. (Browser Agent Ready)"
 
@@ -61,7 +61,7 @@ class JetskiBrowserAgent(Agent):
     def browser_navigate(self, url: str):
         print(f"🏄 Navigating to {url}")
         if self.browser: self.page.goto(url)
-    
+
     def read_browser_page(self):
         return self._get_interactive_elements()
 

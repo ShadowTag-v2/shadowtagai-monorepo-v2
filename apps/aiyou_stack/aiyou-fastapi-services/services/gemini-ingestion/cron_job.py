@@ -89,12 +89,14 @@ class CronJobRunner:
         """Initialize pipeline with sources"""
         # Configure ethical crawling
         crawler_config = EthicalCrawlingConfig(
-            rate_limit_requests_per_minute=60, avoid_peak_hours=True,
+            rate_limit_requests_per_minute=60,
+            avoid_peak_hours=True,
         )
 
         # Create pipeline
         pipeline = IngestionPipeline(
-            crawler_config=crawler_config, gemini_api_key=self.config["gemini_api_key"],
+            crawler_config=crawler_config,
+            gemini_api_key=self.config["gemini_api_key"],
         )
 
         # Add V2X Mesh source (Tier 1 - highest priority)
@@ -264,15 +266,15 @@ class CronJobRunner:
         logger.info(f"  Total: {metrics.total_items_ingested}")
         logger.info(
             f"  Tier 1: {metrics.items_by_tier[DataTier.TIER_1]} "
-             f"({metrics.items_by_tier[DataTier.TIER_1] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
+            f"({metrics.items_by_tier[DataTier.TIER_1] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
         )
         logger.info(
             f"  Tier 2: {metrics.items_by_tier[DataTier.TIER_2]} "
-             f"({metrics.items_by_tier[DataTier.TIER_2] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
+            f"({metrics.items_by_tier[DataTier.TIER_2] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
         )
         logger.info(
             f"  Tier 3: {metrics.items_by_tier[DataTier.TIER_3]} "
-             f"({metrics.items_by_tier[DataTier.TIER_3] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
+            f"({metrics.items_by_tier[DataTier.TIER_3] / max(1, metrics.total_items_ingested) * 100:.1f}%)",
         )
 
         logger.info("\n📈 QUALITY:")

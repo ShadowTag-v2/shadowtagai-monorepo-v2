@@ -52,4 +52,3 @@ when the switch is selected.
    *  Why? This animates the growing & shrinking of the handle.
 *  margin-inline-start & margin-inline-end on .handle
    *  Why? This animates the position of the handle.
-

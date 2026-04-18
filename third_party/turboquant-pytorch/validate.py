@@ -46,7 +46,8 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
         quantization_config=BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16, bnb_4bit_quant_type="nf4"),
-        device_map="auto", dtype=torch.float16,
+        device_map="auto",
+        dtype=torch.float16,
     )
     model.eval()
     print(f"Loaded. GPU: {torch.cuda.memory_allocated() // 1024 // 1024} MB\n")
@@ -62,7 +63,7 @@ def main():
         input_ids_list = inputs["input_ids"][0].tolist()
         needle_start = None
         for i in range(len(input_ids_list) - len(needle_tokens) + 1):
-            if input_ids_list[i:i + len(needle_tokens)] == needle_tokens:
+            if input_ids_list[i : i + len(needle_tokens)] == needle_tokens:
                 needle_start = i
                 break
         # Fallback: search for partial match
@@ -70,7 +71,7 @@ def main():
             for width in range(len(needle_tokens), 0, -1):
                 sub = needle_tokens[:width]
                 for i in range(len(input_ids_list) - width + 1):
-                    if input_ids_list[i:i + width] == sub:
+                    if input_ids_list[i : i + width] == sub:
                         needle_start = i
                         break
                 if needle_start is not None:
@@ -105,7 +106,7 @@ def main():
             n_checks = 0
 
             for layer_idx in range(n_layers):
-                keys = cache.layers[layer_idx].keys      # (1, num_kv_heads, seq, head_dim)
+                keys = cache.layers[layer_idx].keys  # (1, num_kv_heads, seq, head_dim)
                 values = cache.layers[layer_idx].values
 
                 B, H, S, D = keys.shape
@@ -122,13 +123,13 @@ def main():
                 n_key_vecs = B * H * S
                 mse_bits = max(bits - 1, 1)
                 k_bits = n_key_vecs * D * mse_bits  # MSE indices
-                k_bits += n_key_vecs * D * 1         # QJL sign bits
-                k_bits += n_key_vecs * 16             # residual norms (fp16)
-                k_bits += n_key_vecs * 16             # vector norms (fp16)
+                k_bits += n_key_vecs * D * 1  # QJL sign bits
+                k_bits += n_key_vecs * 16  # residual norms (fp16)
+                k_bits += n_key_vecs * 16  # vector norms (fp16)
 
                 # Values: indices (mse_bits per coord) + vec_norms (fp16)
-                v_bits = n_key_vecs * D * bits        # MSE indices (full bits, no QJL)
-                v_bits += n_key_vecs * 16              # vector norms
+                v_bits = n_key_vecs * D * bits  # MSE indices (full bits, no QJL)
+                v_bits += n_key_vecs * 16  # vector norms
 
                 total_compressed_bytes += (k_bits + v_bits) / 8
                 total_uncompressed_bytes += (keys.numel() + values.numel()) * 2  # fp16
@@ -179,7 +180,9 @@ def main():
             avg_needle_rank = needle_rank_sum / n_checks if needle_start else -1
 
             print(f"\n  TQ-{bits}bit:")
-            print(f"    Compression:       {ratio:.1f}x  ({total_compressed_bytes / 1024 / 1024:.1f} MB vs {total_uncompressed_bytes / 1024 / 1024:.1f} MB)")
+            print(
+                f"    Compression:       {ratio:.1f}x  ({total_compressed_bytes / 1024 / 1024:.1f} MB vs {total_uncompressed_bytes / 1024 / 1024:.1f} MB)"
+            )
             print(f"    Score cosine sim:  {avg_cos:.6f}  (1.0 = perfect)")
             print(f"    Top-1 match:       {top1_pct:.1f}%  ({top1_matches}/{n_checks} heads)")
             print(f"    Top-5 match:       {top5_pct:.1f}%  ({top5_matches}/{n_checks} heads)")

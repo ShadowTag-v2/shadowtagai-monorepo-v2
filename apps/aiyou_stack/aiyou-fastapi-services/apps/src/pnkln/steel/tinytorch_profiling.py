@@ -140,7 +140,11 @@ class Profiler:
         }
 
     def measure_latency(
-        self, model, input_tensor, warmup: int = 10, iterations: int = 100,
+        self,
+        model,
+        input_tensor,
+        warmup: int = 10,
+        iterations: int = 100,
     ) -> float:
         """Measure model inference latency with statistical rigor."""
         # Warmup

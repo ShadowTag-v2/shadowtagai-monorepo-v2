@@ -17,8 +17,7 @@ billing = StripeManager()
 
 
 async def check_revenue_leaks(tokens: int, tier: str):
-    """Background task to check for revenue leaks without blocking the response.
-    """
+    """Background task to check for revenue leaks without blocking the response."""
     # Simulate looking up revenue from billing system based on tier/tokens
     revenue = 0.0 if tier == "free" else (tokens / 1000) * 0.01  # Mock revenue calc
 
@@ -59,8 +58,7 @@ async def judge_decision(
 
 @router.post("/v1/subscribe")
 async def create_subscription(email: str, x_api_key: str = Header(...)):
-    """Generate a Stripe Checkout link for upgrading to Pro.
-    """
+    """Generate a Stripe Checkout link for upgrading to Pro."""
     # Use API key as user ID proxy for now
     checkout_url = billing.create_checkout_session(user_id=x_api_key, email=email)
     return {"checkout_url": checkout_url}

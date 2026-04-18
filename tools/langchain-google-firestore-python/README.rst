@@ -72,7 +72,7 @@ Vector Store Usage
 Use a vector store to store embedded data and perform vector search.
 
 .. code-block:: python
-    
+
     from langchain_google_firestore import FirestoreVectorStore
     from langchain_google_vertexai import VertexAIEmbeddings
 
@@ -110,7 +110,7 @@ Use ``ChatMessageHistory`` to store messages and provide conversation
 history to LLMs.
 
 .. code:: python
-    
+
     from langchain_google_firestore import FirestoreChatMessageHistory
 
     history = FirestoreChatMessageHistory(
@@ -148,4 +148,3 @@ Disclaimer
 ----------
 
 This is not an officially supported Google product.
-

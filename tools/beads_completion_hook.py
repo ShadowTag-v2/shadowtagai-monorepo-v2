@@ -155,9 +155,7 @@ def cmd_scan(dry_run: bool = False) -> int:
     if dry_run:
         print(f"\n  {YELLOW}DRY RUN — nothing written.{NC}")
     else:
-        print(
-            f"\n  {GREEN}✅ {len(new_completions)} completion(s) appended to .beads/issues.jsonl{NC}"
-        )
+        print(f"\n  {GREEN}✅ {len(new_completions)} completion(s) appended to .beads/issues.jsonl{NC}")
 
     return 0
 
@@ -182,9 +180,7 @@ def cmd_status() -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Beads Completion Hook — scan tasks, append completions"
-    )
+    parser = argparse.ArgumentParser(description="Beads Completion Hook — scan tasks, append completions")
     parser.add_argument("--dry-run", action="store_true", help="Preview without writing")
     parser.add_argument("--status", action="store_true", help="Show beads state")
     args = parser.parse_args()

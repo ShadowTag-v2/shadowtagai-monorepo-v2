@@ -260,7 +260,8 @@ class CaliforniaAIAssessmentRequest(BaseModel):
     include_attestation: bool = Field(default=False, description="Include compliance certificate")
     strict_mode: bool = Field(default=True, description="Strict enforcement mode")
     frameworks: list[str] = Field(
-        default_factory=lambda: ["CA_AI_CHATBOT"], description="Compliance frameworks to assess",
+        default_factory=lambda: ["CA_AI_CHATBOT"],
+        description="Compliance frameworks to assess",
     )
 
     # Media attachments
@@ -361,7 +362,10 @@ class BatchAssessmentRequest(BaseModel):
     """Batch assessment request for multiple content items"""
 
     items: list[CaliforniaAIAssessmentRequest] = Field(
-        ..., min_length=1, max_length=100, description="Content items to assess",
+        ...,
+        min_length=1,
+        max_length=100,
+        description="Content items to assess",
     )
     parallel: bool = Field(default=True, description="Process items in parallel")
     fail_fast: bool = Field(default=False, description="Stop on first failure")

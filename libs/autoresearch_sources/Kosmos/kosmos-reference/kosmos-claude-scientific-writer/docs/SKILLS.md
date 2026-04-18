@@ -290,12 +290,12 @@ Claude will use validation scripts to ensure compliance and quality.
    - Personalized treatment protocols for specific conditions
    - Medication dosing, monitoring schedules, follow-up plans
    - HIPAA-compliant de-identification
-   
+
 2. **Patient Cohort Analysis**
    - Biomarker-stratified group analyses (e.g., PD-L1 expression levels, molecular subtypes)
    - Outcome comparisons with statistical testing (OS, PFS, ORR, safety)
    - Pharmaceutical-grade reports for clinical research
-   
+
 3. **Treatment Recommendation Reports**
    - Evidence-based clinical guidelines with GRADE grading
    - Treatment algorithms and decision pathways
@@ -871,4 +871,3 @@ To add your own skills:
 4. Restart the CLI
 
 The new skill will be automatically loaded and available.
-

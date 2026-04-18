@@ -80,4 +80,3 @@ class TargetChangeType
         return constant($const);
     }
 }
-

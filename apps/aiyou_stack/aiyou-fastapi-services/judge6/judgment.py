@@ -24,7 +24,6 @@ class JudgmentError(Exception):
     """Raised when judgment evaluation fails."""
 
 
-
 class JudgmentRule:
     """Judge #6: PNKLN's Governance Enforcement Engine
 
@@ -64,7 +63,9 @@ class JudgmentRule:
         )
 
     def evaluate_request(
-        self, user_input: str, declared_purpose: str | None = None,
+        self,
+        user_input: str,
+        declared_purpose: str | None = None,
     ) -> JudgmentDecision:
         """Execute six-gate evaluation process.
 
@@ -118,7 +119,9 @@ class JudgmentRule:
             provenance_stamp = None
             if approved:
                 provenance_stamp = self._gate6_generate_provenance(
-                    validated_purpose, reasoning, risk_level,
+                    validated_purpose,
+                    reasoning,
+                    risk_level,
                 )
 
             # Build metadata
@@ -220,7 +223,10 @@ class JudgmentRule:
         return resource_map.get(risk_level, resource_map[RiskLevel.RA_1])
 
     def _gate6_generate_provenance(
-        self, purpose: str, reasoning: str, risk_level: RiskLevel,
+        self,
+        purpose: str,
+        reasoning: str,
+        risk_level: RiskLevel,
     ) -> ProvenanceStamp | None:
         """GATE 6: Generate cryptographic provenance stamp.
 
@@ -236,14 +242,19 @@ class JudgmentRule:
         try:
             axioms_verified = [ax.axiom_id for ax in self.constitutional_layer]
             return self.watermark_engine.generate_stamp(
-                purpose, reasoning, risk_level, axioms_verified,
+                purpose,
+                reasoning,
+                risk_level,
+                axioms_verified,
             )
         except ProvenanceError as e:
             logger.error("Provenance generation failed: %s", str(e))
             return None
 
     def _determine_approval(
-        self, risk_level: RiskLevel, violated_axioms: list[ConstitutionalAxiom],
+        self,
+        risk_level: RiskLevel,
+        violated_axioms: list[ConstitutionalAxiom],
     ) -> bool:
         """Determine if request should be approved.
 
@@ -337,7 +348,10 @@ class JudgmentRule:
         return "\n".join(chain)
 
     def _get_gates_passed(
-        self, risk_level: RiskLevel, violated_axioms: list[ConstitutionalAxiom], approved: bool,
+        self,
+        risk_level: RiskLevel,
+        violated_axioms: list[ConstitutionalAxiom],
+        approved: bool,
     ) -> list[str]:
         """Get list of gates successfully passed."""
         gates = ["GATE1_RISK", "GATE2_PURPOSE"]

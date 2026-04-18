@@ -88,7 +88,11 @@ class CoreReasoningEngine:
             # Step 3: Execute reasoning based on mode
             if mode == "hybrid":
                 result = await self._hybrid_reasoning(
-                    session_id, query, context, reasoning_graph, expert,
+                    session_id,
+                    query,
+                    context,
+                    reasoning_graph,
+                    expert,
                 )
             elif mode == "bdh":
                 result = await self._bdh_reasoning(query, context)
@@ -188,7 +192,10 @@ class CoreReasoningEngine:
         }
 
     async def _rot_reasoning(
-        self, session_id: str, query: str, reasoning_graph: dict[str, Any] | None,
+        self,
+        session_id: str,
+        query: str,
+        reasoning_graph: dict[str, Any] | None,
     ) -> dict[str, Any]:
         """RoT reasoning using prior reasoning graphs"""
         graph_size = len(reasoning_graph.get("nodes", [])) if reasoning_graph else 0
@@ -200,7 +207,10 @@ class CoreReasoningEngine:
         }
 
     async def _moe_reasoning(
-        self, query: str, context: dict[str, Any] | None, expert: str,
+        self,
+        query: str,
+        context: dict[str, Any] | None,
+        expert: str,
     ) -> dict[str, Any]:
         """MoE reasoning with expert selection"""
         expert_info = self.experts.get(expert, {})
@@ -213,7 +223,9 @@ class CoreReasoningEngine:
         }
 
     async def _diffusion_reasoning(
-        self, query: str, context: dict[str, Any] | None,
+        self,
+        query: str,
+        context: dict[str, Any] | None,
     ) -> dict[str, Any]:
         """Diffusion-based parallel reasoning"""
         return {
@@ -247,7 +259,9 @@ class CoreReasoningEngine:
             logger.error(f"Failed to update reasoning graph: {e}")
 
     async def train_adapter(
-        self, expert_id: str, training_data: list[dict[str, Any]],
+        self,
+        expert_id: str,
+        training_data: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Train a MoE-CL adapter (scheduled nightly)
 

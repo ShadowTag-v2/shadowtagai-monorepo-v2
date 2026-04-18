@@ -1,7 +1,7 @@
 # Bootstrapped B2B Ideator - Flow Mock
 
 ## Objective
-To serve as a ruthless, lean SaaS brainstorming architecture constrained strictly by the HoldCo B2B pricing model ($20K/mo Enterprise minimum). 
+To serve as a ruthless, lean SaaS brainstorming architecture constrained strictly by the HoldCo B2B pricing model ($20K/mo Enterprise minimum).
 
 ## Component Flow
 1. **Input Interface**: "What is the specific, high-friction pain point your target vertical is experiencing?"

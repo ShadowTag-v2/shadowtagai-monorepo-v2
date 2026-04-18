@@ -79,7 +79,8 @@ class PipelineStage(Generic[T, U]):
         try:
             # Execute with timeout
             result = await asyncio.wait_for(
-                self.func(context, input_data), timeout=self.timeout_ms / 1000.0,
+                self.func(context, input_data),
+                timeout=self.timeout_ms / 1000.0,
             )
 
             # Record latency
@@ -282,7 +283,9 @@ class ConcurrentExecutor:
             )
 
             return ConcurrentResult(
-                results=successful_results, latency_ms=latency_ms, errors=errors,
+                results=successful_results,
+                latency_ms=latency_ms,
+                errors=errors,
             )
 
         except TimeoutError:

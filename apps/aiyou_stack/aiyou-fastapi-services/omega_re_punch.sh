@@ -21,9 +21,9 @@ echo ">>> 🥊 EXECUTING RE-PUNCH PROTOCOL..."
 mkdir -p apps/agent-manager-ui/public
 cat <<JAVASCRIPT > apps/agent-manager-ui/public/a2ui_renderer.js
 class A2UIRenderer {
-    constructor(target) { 
-        this.target = target; 
-        this.componentMap = {}; 
+    constructor(target) {
+        this.target = target;
+        this.componentMap = {};
     }
 
     render(payload) {
@@ -41,7 +41,7 @@ class A2UIRenderer {
         el.style.margin = "10px";
 
         // --- DISTINCTION: RICH MEDIA SUPPORT ---
-        
+
         if (comp.type === 'Map') {
             el.style.height = "300px";
             el.style.background = "#e0e0e0";
@@ -50,7 +50,7 @@ class A2UIRenderer {
             el.style.justifyContent = "center";
             el.innerText = \`🗺️ MAP VIEW\nLat: \${comp.props.lat}\nLng: \${comp.props.lng}\`;
         }
-        
+
         else if (comp.type === 'Chart') {
             const canvas = document.createElement('canvas');
             el.appendChild(canvas);
@@ -139,7 +139,7 @@ class GeminiCodeAssistProxy:
         # 1. THE BRAKE (Judge 6)
         # We verify the *content*, not just the intent.
         verdict = self.judge.evaluate(new_content)
-        
+
         if verdict["status"] == "BLOCKED":
             logging.error(f"⛔ BLOCKED: {verdict['reason']}")
             return {"status": "BLOCKED", "reason": verdict["reason"]}

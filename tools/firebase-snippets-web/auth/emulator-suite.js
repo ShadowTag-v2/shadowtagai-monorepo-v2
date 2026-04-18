@@ -13,6 +13,6 @@ function emulatorGoogleCredential() {
   const auth = firebase.auth();
   auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(
     '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
-  ));  
+  ));
   // [END auth_emulator_google_credential]
 }

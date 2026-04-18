@@ -1,5 +1,4 @@
-"""RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe.
-"""
+"""RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe."""
 
 import os
 
@@ -24,7 +23,8 @@ class RevenueGate:
         if balance < self.price_per_analysis:
             payment_link = self._create_checkout_session(customer_id="generic_user")
             raise HTTPException(
-                status_code=402, detail=f"Insufficient Credits. Top up here: {payment_link}",
+                status_code=402,
+                detail=f"Insufficient Credits. Top up here: {payment_link}",
             )
         return True
 

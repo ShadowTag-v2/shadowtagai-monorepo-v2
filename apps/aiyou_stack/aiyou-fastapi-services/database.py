@@ -6,7 +6,8 @@ from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 # 1. Fetch the Database URL from the environment (matching our Docker setup)
 DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://REDACTED_USER:REDACTED_PASS@localhost:5432/ShadowTag-v2_db",
+    "DATABASE_URL",
+    "postgresql://REDACTED_USER:REDACTED_PASS@localhost:5432/ShadowTag-v2_db",
 )
 
 # 2. Create the SQLAlchemy Engine

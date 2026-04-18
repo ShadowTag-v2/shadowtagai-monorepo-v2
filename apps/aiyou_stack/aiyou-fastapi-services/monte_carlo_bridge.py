@@ -25,7 +25,11 @@ except Exception as e:
 
 
 def calculate_midas_risk(
-    start_price: float, volatility: float, drift: float, steps: int = 252, simulations: int = 100000,
+    start_price: float,
+    volatility: float,
+    drift: float,
+    steps: int = 252,
+    simulations: int = 100000,
 ) -> dict:
     """Invokes the C++ Midas Monte Carlo simulator.
     Returns Quarter Kelly and 95% VaR (Value at Risk).
@@ -37,7 +41,13 @@ def calculate_midas_risk(
     kelly = ctypes.c_double(0.0)
 
     midas_lib.run_monte_carlo(
-        start_price, volatility, drift, steps, simulations, ctypes.byref(var95), ctypes.byref(kelly),
+        start_price,
+        volatility,
+        drift,
+        steps,
+        simulations,
+        ctypes.byref(var95),
+        ctypes.byref(kelly),
     )
 
     return {
@@ -51,6 +61,10 @@ def calculate_midas_risk(
 if __name__ == "__main__":
     # Test execution
     res = calculate_midas_risk(
-        start_price=100.0, volatility=0.15, drift=0.08, steps=252, simulations=100000,
+        start_price=100.0,
+        volatility=0.15,
+        drift=0.08,
+        steps=252,
+        simulations=100000,
     )
     print(f"Midas Simulation Output: {res}")

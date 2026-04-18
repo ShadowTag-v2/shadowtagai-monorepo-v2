@@ -1,5 +1,4 @@
-"""Pydantic models for request/response validation
-"""
+"""Pydantic models for request/response validation"""
 
 from datetime import datetime
 from enum import StrEnum

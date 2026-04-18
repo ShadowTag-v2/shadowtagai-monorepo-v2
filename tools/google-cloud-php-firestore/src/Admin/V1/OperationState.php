@@ -95,4 +95,3 @@ class OperationState
         return constant($const);
     }
 }
-

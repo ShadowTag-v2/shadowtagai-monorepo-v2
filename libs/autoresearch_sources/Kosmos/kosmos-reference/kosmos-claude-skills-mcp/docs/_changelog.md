@@ -454,4 +454,3 @@ The 5% represents normal unknowns that only surface with real-world Cursor usage
 ---
 
 ## End of Changelog Archive
-

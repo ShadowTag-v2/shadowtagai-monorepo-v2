@@ -13,7 +13,7 @@
       "scoring": "binary per citation — real case law = 1, hallucinated = 0"
     },
     {
-      "dimension": "citation_relevance", 
+      "dimension": "citation_relevance",
       "description": "Is the cited authority relevant to the legal question asked?",
       "weight": 0.25,
       "scoring": "0-1 scale — irrelevant = 0, tangential = 0.5, directly on-point = 1"

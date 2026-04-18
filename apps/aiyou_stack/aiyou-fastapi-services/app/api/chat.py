@@ -1,5 +1,4 @@
-"""Chat API endpoints with streaming support.
-"""
+"""Chat API endpoints with streaming support."""
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException
@@ -22,7 +21,8 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 
 
 async def get_ai_assistant(
-    db: AsyncSession = Depends(get_db), provider: str = settings.DEFAULT_LLM_PROVIDER,
+    db: AsyncSession = Depends(get_db),
+    provider: str = settings.DEFAULT_LLM_PROVIDER,
 ) -> AIAssistant:
     """Dependency for getting AI assistant instance."""
     return AIAssistant(db=db, provider=provider)
@@ -44,7 +44,8 @@ async def chat_completion(request: ChatRequest, db: AsyncSession = Depends(get_d
         if request.stream:
             # For streaming requests, redirect to streaming endpoint
             raise HTTPException(
-                status_code=400, detail="Use /chat/stream endpoint for streaming responses",
+                status_code=400,
+                detail="Use /chat/stream endpoint for streaming responses",
             )
 
         response, session_id = await assistant.chat(
@@ -114,7 +115,8 @@ async def chat_stream(request: ChatRequest, db: AsyncSession = Depends(get_db)):
 
 @router.post("/conversations", response_model=ConversationResponse)
 async def create_conversation(
-    request: ConversationCreate, assistant: AIAssistant = Depends(get_ai_assistant),
+    request: ConversationCreate,
+    assistant: AIAssistant = Depends(get_ai_assistant),
 ):
     """Create a new conversation.
 
@@ -158,7 +160,9 @@ async def get_conversation(session_id: str, assistant: AIAssistant = Depends(get
 
 @router.get("/conversations/{session_id}/messages", response_model=list[MessageResponse])
 async def get_conversation_messages(
-    session_id: str, limit: int = 100, assistant: AIAssistant = Depends(get_ai_assistant),
+    session_id: str,
+    limit: int = 100,
+    assistant: AIAssistant = Depends(get_ai_assistant),
 ):
     """Get messages from a conversation.
 
@@ -176,8 +180,7 @@ async def get_conversation_messages(
 
 @router.delete("/conversations/{session_id}")
 async def delete_conversation(session_id: str, assistant: AIAssistant = Depends(get_ai_assistant)):
-    """Delete a conversation and all its messages.
-    """
+    """Delete a conversation and all its messages."""
     try:
         deleted = await assistant.delete_conversation(session_id)
 
@@ -200,11 +203,12 @@ async def list_conversations(
     offset: int = 0,
     assistant: AIAssistant = Depends(get_ai_assistant),
 ):
-    """List conversations, optionally filtered by user ID.
-    """
+    """List conversations, optionally filtered by user ID."""
     try:
         conversations = await assistant.list_conversations(
-            user_id=user_id, limit=limit, offset=offset,
+            user_id=user_id,
+            limit=limit,
+            offset=offset,
         )
 
         return [ConversationResponse.model_validate(conv) for conv in conversations]

@@ -116,10 +116,7 @@ async def extract_intake_summary(
     model = model_override or "gemini/gemini-2.0-flash-lite"
 
     # Format transcript for analysis
-    formatted = "\n".join(
-        f"[{msg['role'].upper()}]: {msg['content']}"
-        for msg in transcript
-    )
+    formatted = "\n".join(f"[{msg['role'].upper()}]: {msg['content']}" for msg in transcript)
 
     user_prompt = f"""Analyze this confidential client intake session and extract a structured summary.
 
@@ -131,9 +128,7 @@ TRANSCRIPT:
 Extract the intake summary as valid JSON."""
 
     # Apply prompt repetition for non-reasoning models (arXiv 2512.14982)
-    is_non_reasoning = not any(
-        kw in model.lower() for kw in ["thinking", "r1", "reasoning"]
-    )
+    is_non_reasoning = not any(kw in model.lower() for kw in ["thinking", "r1", "reasoning"])
     if is_non_reasoning:
         user_prompt = f"{user_prompt}\n\nREPEAT INSTRUCTION: Extract the intake summary as valid JSON matching the specified schema."
 
@@ -159,9 +154,7 @@ Extract the intake summary as valid JSON."""
             key_facts=data.get("key_facts", []),
             legal_issues=data.get("legal_issues", []),
             opposing_parties=data.get("opposing_parties", []),
-            emotional_state=EmotionalState(
-                data.get("emotional_state", "calm")
-            ),
+            emotional_state=EmotionalState(data.get("emotional_state", "calm")),
             urgency=Urgency(data.get("urgency", "moderate")),
             suggested_actions=data.get("suggested_actions", []),
             potential_claims=data.get("potential_claims", []),

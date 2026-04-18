@@ -164,7 +164,10 @@ class EvidenceService:
         return artifact
 
     async def attest_dossier(
-        self, dossier: ComplianceDossier, signatory: str, signature: str,
+        self,
+        dossier: ComplianceDossier,
+        signatory: str,
+        signature: str,
     ) -> ComplianceDossier:
         """Attest to a compliance dossier.
 
@@ -188,7 +191,9 @@ class EvidenceService:
 
         # Record attestation in ledger
         entry = await self._ledger.record_attestation(
-            dossier_id=dossier.dossier_id, signatory=signatory, signature_hash=signature_hash,
+            dossier_id=dossier.dossier_id,
+            signatory=signatory,
+            signature_hash=signature_hash,
         )
         dossier.shadowtag_chain.append(entry.entry_id)
 
@@ -196,7 +201,9 @@ class EvidenceService:
         return dossier
 
     async def generate_report(
-        self, assessment_result: ComplianceAssessmentResult, report_type: str = "full",
+        self,
+        assessment_result: ComplianceAssessmentResult,
+        report_type: str = "full",
     ) -> dict[str, Any]:
         """Generate a compliance report from assessment results.
 
@@ -338,7 +345,9 @@ class EvidenceService:
         )
 
     async def generate_module_report(
-        self, module_result: ModuleResult, include_checklist: bool = True,
+        self,
+        module_result: ModuleResult,
+        include_checklist: bool = True,
     ) -> dict[str, Any]:
         """Generate a detailed report for a single module.
 

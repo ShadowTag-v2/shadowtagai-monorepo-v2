@@ -126,13 +126,15 @@ class EngagementFeatureRequest(BaseModel):
     """Request model for engagement feature design"""
 
     feature_type: str = Field(
-        ..., description="Type of feature (gamification, notifications, etc.)",
+        ...,
+        description="Type of feature (gamification, notifications, etc.)",
     )
     objective: str = Field(..., description="Feature objective")
     target_users: str = Field(..., description="Target user segment")
     constraints: list[str] | None = Field(None, description="Design constraints")
     existing_features: list[str] | None = Field(
-        None, description="Existing features to integrate with",
+        None,
+        description="Existing features to integrate with",
     )
 
     class Config:

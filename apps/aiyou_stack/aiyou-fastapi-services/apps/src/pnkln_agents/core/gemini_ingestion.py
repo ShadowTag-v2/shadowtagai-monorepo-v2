@@ -141,7 +141,8 @@ class EthicalComplianceValidator:
         self.max_requests_per_hour = self.config.get("max_requests_per_hour", 60)
         self.respect_robots_txt = self.config.get("respect_robots_txt", True)
         self.user_agent = self.config.get(
-            "user_agent", "SHADOWTAGAIBot/1.0 (+https://shadowtagai.ai/bot)",
+            "user_agent",
+            "SHADOWTAGAIBot/1.0 (+https://shadowtagai.ai/bot)",
         )
 
         # Track request history for rate limiting
@@ -326,7 +327,9 @@ class GeminiIngestionLayer:
         self.sources.append(source)
 
     def ingest(
-        self, sources: list[Source] | None = None, target_items: int | None = None,
+        self,
+        sources: list[Source] | None = None,
+        target_items: int | None = None,
     ) -> IngestionResult:
         """Run ingestion pipeline
 

@@ -389,7 +389,7 @@ Treatment discontinuation  6 (12%)  8 (18%)   -        -
 ### Reporting Standards
 
 - **CONSORT**: Randomized controlled trials
-- **STROBE**: Observational studies  
+- **STROBE**: Observational studies
 - **REMARK**: Tumor marker prognostic studies
 - **STARD**: Diagnostic accuracy studies
 - **TRIPOD**: Prediction model development/validation
@@ -424,4 +424,3 @@ Treatment discontinuation  6 (12%)  8 (18%)   -        -
 - Account for prior treatment exposure
 - Evaluate toxicity trade-offs
 - Assess quality of life impact
-

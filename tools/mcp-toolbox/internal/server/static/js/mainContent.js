@@ -55,9 +55,9 @@ function getToolInstructions() {
         <p class="resource-intro">To inspect and test a tool, please click on one of your tools to the left.</p>
         <h2 class="resource-subtitle">What are Tools?</h2>
         <p class="resource-description">
-          Tools define actions an agent can take, such as running a SQL statement or interacting with a source. 
+          Tools define actions an agent can take, such as running a SQL statement or interacting with a source.
           You can define Tools as a map in the <code>tools</code> section of your <code>tools.yaml</code> file. <br><br>
-          Some tools also use <strong>parameters</strong>. Parameters for each Tool will define what inputs the agent will need to provide to invoke them. 
+          Some tools also use <strong>parameters</strong>. Parameters for each Tool will define what inputs the agent will need to provide to invoke them.
         </p>
         <a href="https://mcp-toolbox.dev/documentation/configuration/tools/" class="btn btn--externalDocs" target="_blank" rel="noopener noreferrer">Tools Documentation</a>
       </div>

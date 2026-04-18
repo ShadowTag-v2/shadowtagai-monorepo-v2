@@ -187,9 +187,7 @@ class FederalRegisterCrawler:
             return "gov_defense"
         if any(x in agencies for x in ["energy", "ferc", "nuclear"]):
             return "energy"
-        if (
-            any(x in agencies for x in ["nasa", "faa"]) or "satellite" in text or "orbital" in text
-        ):
+        if any(x in agencies for x in ["nasa", "faa"]) or "satellite" in text or "orbital" in text:
             return "orbital"
         if any(x in agencies for x in ["fda", "health"]) or "medical device" in text:
             return "digital_mall"  # Healthcare SaaS
@@ -282,12 +280,16 @@ class FederalRegisterCrawler:
                     await asyncio.sleep(self.config["rate_limit"])
 
                     response = await client.get(
-                        f"{self.base_url}/documents", params=params, timeout=30.0,
+                        f"{self.base_url}/documents",
+                        params=params,
+                        timeout=30.0,
                     )
 
                     if response.status_code != 200:
                         logger.warning(
-                            "federal_register_api_error", status=response.status_code, page=page,
+                            "federal_register_api_error",
+                            status=response.status_code,
+                            page=page,
                         )
                         break
 
@@ -323,7 +325,9 @@ class FederalRegisterCrawler:
         documents.sort(key=lambda x: x.relevance_score, reverse=True)
 
         logger.info(
-            "federal_register_fetch_complete", total_documents=len(documents), days_back=days_back,
+            "federal_register_fetch_complete",
+            total_documents=len(documents),
+            days_back=days_back,
         )
 
         return documents
@@ -392,7 +396,9 @@ class FederalRegisterCrawler:
                 }
 
                 response = await client.get(
-                    f"{self.base_url}/documents", params=params, timeout=30.0,
+                    f"{self.base_url}/documents",
+                    params=params,
+                    timeout=30.0,
                 )
 
                 if response.status_code == 200:
@@ -420,7 +426,8 @@ class FederalRegisterCrawler:
                 await asyncio.sleep(self.config["rate_limit"])
 
                 response = await client.get(
-                    f"{self.base_url}/public-inspection-documents/current", timeout=30.0,
+                    f"{self.base_url}/public-inspection-documents/current",
+                    timeout=30.0,
                 )
 
                 if response.status_code == 200:
@@ -503,11 +510,15 @@ class FederalRegisterCrawler:
                 saved_files.append(str(filepath))
 
                 logger.debug(
-                    "document_saved", document_number=doc.document_number, file=str(filepath),
+                    "document_saved",
+                    document_number=doc.document_number,
+                    file=str(filepath),
                 )
             except Exception as e:
                 logger.error(
-                    "document_save_error", document_number=doc.document_number, error=str(e),
+                    "document_save_error",
+                    document_number=doc.document_number,
+                    error=str(e),
                 )
 
         logger.info("documents_saved", count=len(saved_files))

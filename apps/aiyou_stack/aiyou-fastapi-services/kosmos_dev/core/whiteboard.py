@@ -180,7 +180,8 @@ class Whiteboard:
 
             # Check if agent already voted
             existing = next(
-                (i for i, v in enumerate(finding.votes) if v.agent_id == vote.agent_id), None,
+                (i for i, v in enumerate(finding.votes) if v.agent_id == vote.agent_id),
+                None,
             )
             if existing is not None:
                 finding.votes[existing] = vote

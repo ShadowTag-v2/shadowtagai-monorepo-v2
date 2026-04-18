@@ -1,5 +1,4 @@
-"""Circuit Breaker pattern for model serving.
-"""
+"""Circuit Breaker pattern for model serving."""
 
 import logging
 import time

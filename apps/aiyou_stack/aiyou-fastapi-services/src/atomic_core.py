@@ -11,7 +11,8 @@ from google.genai import types
 try:
     if os.environ.get("GEMINI_API_KEY"):
         client = genai.Client(
-            api_key=os.environ["GEMINI_API_KEY"], http_options={"api_version": "v1beta"},
+            api_key=os.environ["GEMINI_API_KEY"],
+            http_options={"api_version": "v1beta"},
         )
     else:
         # Fallback to Vertex AI (Enterprise / Cloud Run Mode)
@@ -25,8 +26,7 @@ except Exception:
 
 
 def initiate_research_omega(query: str, file_store: str | None = None) -> str:
-    """Starts a stateful research interaction using the Deep Research Agent.
-    """
+    """Starts a stateful research interaction using the Deep Research Agent."""
     tools = [{"type": "google_search"}, {"type": "google_drive"}]
     if file_store:
         tools.append({"type": "file_search", "file_search_store_names": [file_store]})
@@ -62,7 +62,8 @@ def initiate_research_omega(query: str, file_store: str | None = None) -> str:
                 model=model_name,
                 contents=f"CONTEXT: {query}\n\n[SYSTEM] The Deep Research Agent is quota-limited. Perform a standard synthesis using available tools.",
                 config=types.GenerateContentConfig(
-                    tools=fallback_tools, response_modalities=["TEXT"],
+                    tools=fallback_tools,
+                    response_modalities=["TEXT"],
                 ),
             )
 
@@ -81,8 +82,7 @@ def initiate_research_omega(query: str, file_store: str | None = None) -> str:
 
 
 def monitor_and_capture_omega(interaction_id: str) -> str:
-    """Polls the interaction until complete.
-    """
+    """Polls the interaction until complete."""
     # Handle Simulated Fallback
     if interaction_id.startswith("simulated_"):
         print(f"🔍 Shadowtag-Omega-V2: Retrieving Simulated Context {interaction_id}...")

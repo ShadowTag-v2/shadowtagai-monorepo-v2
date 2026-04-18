@@ -137,7 +137,7 @@ def send_webhook(target_url: str, event: dict) -> dict:
         "User-Agent": "Stripe/1.0 (+https://stripe.com)",
     }
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"📤 Sending: {event['type']}")
     print(f"   Event ID: {event['id']}")
     print(f"   Target: {target_url}")
@@ -211,7 +211,7 @@ def main():
         result = send_webhook(args.target, event)
         results.append(result)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("📊 Summary:")
     for r in results:
         icon = "✅" if r["success"] else "❌"

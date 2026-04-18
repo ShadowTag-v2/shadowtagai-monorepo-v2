@@ -35,7 +35,11 @@ EXECUTIVE BRIEFING:
 
 
 async def create_briefing(
-    github_url: str, final_answer: str, crm_score: float, model: str, api_key: str,
+    github_url: str,
+    final_answer: str,
+    crm_score: float,
+    model: str,
+    api_key: str,
 ) -> dict[str, Any]:
     """Create executive briefing from research output.
 
@@ -58,7 +62,9 @@ async def create_briefing(
     answer_preview = final_answer[:3000] + "..." if len(final_answer) > 3000 else final_answer
 
     prompt = REPACKAGE_PROMPT.format(
-        github_url=github_url, final_answer=answer_preview, crm_score=crm_score,
+        github_url=github_url,
+        final_answer=answer_preview,
+        crm_score=crm_score,
     )
 
     async with httpx.AsyncClient(timeout=60.0) as client:

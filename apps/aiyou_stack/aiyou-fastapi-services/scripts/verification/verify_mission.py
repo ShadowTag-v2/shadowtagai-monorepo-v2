@@ -55,7 +55,10 @@ def run_test(name, command, cwd=".", wait_time=5, expect_success=True):
 print("🧪 Starting Verification Suite")
 run_test("Multi-Model Router", "npm run dev", cwd="router", wait_time=5)
 run_test(
-    "ACE Workflow", "npm run triple:pass", cwd="tools/orchestrator", wait_time=0,
+    "ACE Workflow",
+    "npm run triple:pass",
+    cwd="tools/orchestrator",
+    wait_time=0,
 )  # run to completion
 run_test("Vision Ingestion", "python3 -m ingestion.moondream_ingest", cwd=".", wait_time=0)
 run_test("Computer Use Agent", "python3 -m computer_use.agent", cwd=".", wait_time=3)

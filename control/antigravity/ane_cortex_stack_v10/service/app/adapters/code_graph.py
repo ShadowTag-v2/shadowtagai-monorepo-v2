@@ -14,10 +14,7 @@ def build_code_graph(repo_root: str) -> dict[str, Any]:
             continue
         if any(part in {".git", "build", "dist", "__pycache__", ".venv"} for part in path.parts):
             continue
-        if (
-            path.suffix.lower() not in {".py", ".m", ".h", ".c", ".cc", ".cpp", ".md"}
-            and path.name.lower() != "makefile"
-        ):
+        if path.suffix.lower() not in {".py", ".m", ".h", ".c", ".cc", ".cpp", ".md"} and path.name.lower() != "makefile":
             continue
         rel = str(path.relative_to(root))
         files.append(rel)

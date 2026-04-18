@@ -63,7 +63,10 @@ class InferenceUser(HttpUser):
         payload = {"prompt": "Test prompt for load testing", "max_tokens": 100, "temperature": 0.7}
 
         with self.client.post(
-            "/infer", json=payload, catch_response=True, name="inference",
+            "/infer",
+            json=payload,
+            catch_response=True,
+            name="inference",
         ) as response:
             if response.status_code == 200:
                 # Check if latency exceeds SLA

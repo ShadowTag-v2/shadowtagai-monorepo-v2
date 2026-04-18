@@ -284,4 +284,3 @@ class Aggregation extends \Google\Protobuf\Internal\Message
     }
 
 }
-

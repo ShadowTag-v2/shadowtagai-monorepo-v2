@@ -61,7 +61,9 @@ class User(Base):
     # Relationships
     sessions = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
     ingestion_jobs = relationship(
-        "IngestionJob", back_populates="user", cascade="all, delete-orphan",
+        "IngestionJob",
+        back_populates="user",
+        cascade="all, delete-orphan",
     )
     creator_profile = relationship("Creator", back_populates="user", uselist=False)
     subscriptions = relationship("Subscription", back_populates="user")
@@ -86,7 +88,10 @@ class UserSession(Base):
 
     # Foreign keys
     user_id = Column(
-        String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True,
+        String(36),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
 
     # Session data
@@ -118,7 +123,10 @@ class IngestionJob(Base):
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(
-        String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True,
+        String(36),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     job_type = Column(String(50))
     status = Column(String(20))

@@ -273,7 +273,8 @@ async def get_performance_bottlenecks(threshold_ms: float = Query(1000.0)):
 async def get_ml_anomalies(
     hours: int = Query(24, description="Hours of history to retrieve"),
     severity: str | None = Query(
-        None, description="Filter by severity (low, medium, high, critical)",
+        None,
+        description="Filter by severity (low, medium, high, critical)",
     ),
 ):
     """Get ML-detected anomalies.

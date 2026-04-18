@@ -7,8 +7,7 @@ from google.genai import types
 
 
 class CavMTOE:
-    """The Digital Council (Swarm).
-    """
+    """The Digital Council (Swarm)."""
 
     def __init__(self):
         self.client = genai.Client(vertexai=True, location="us-central1")

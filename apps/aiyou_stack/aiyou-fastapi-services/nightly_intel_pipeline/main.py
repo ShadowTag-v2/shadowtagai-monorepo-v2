@@ -41,11 +41,15 @@ Environment Variables Required:
     )
 
     parser.add_argument(
-        "--topics", nargs="+", help="GitHub topics to search for (overrides config)",
+        "--topics",
+        nargs="+",
+        help="GitHub topics to search for (overrides config)",
     )
 
     parser.add_argument(
-        "--days-back", type=int, help="Number of days to look back for papers/repos (default: 7)",
+        "--days-back",
+        type=int,
+        help="Number of days to look back for papers/repos (default: 7)",
     )
 
     parser.add_argument(

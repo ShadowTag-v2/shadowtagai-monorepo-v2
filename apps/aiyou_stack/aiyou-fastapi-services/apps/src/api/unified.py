@@ -358,7 +358,8 @@ async def unified_inference(request: InferenceRequest, api_key: str = Header(ali
 
 @router.post("/aerospace/deployment", response_model=AerospaceDeploymentResponse)
 async def analyze_aerospace_deployment(
-    request: AerospaceDeploymentRequest, api_key: str = Header(alias="X-API-Key"),
+    request: AerospaceDeploymentRequest,
+    api_key: str = Header(alias="X-API-Key"),
 ):
     """Analyze aerospace edge mesh deployment economics.
 
@@ -450,7 +451,8 @@ async def evolve_with_dte(request: DTEEvolutionRequest, api_key: str = Header(al
 
 @router.post("/valuation", response_model=ValuationResponse)
 async def calculate_enterprise_valuation(
-    request: ValuationRequest, api_key: str = Header(alias="X-API-Key"),
+    request: ValuationRequest,
+    api_key: str = Header(alias="X-API-Key"),
 ):
     """Calculate complete $715B enterprise valuation.
 

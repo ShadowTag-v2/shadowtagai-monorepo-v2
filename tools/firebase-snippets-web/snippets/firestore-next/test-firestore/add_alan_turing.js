@@ -6,7 +6,7 @@
 
 // [START add_alan_turing_modular]
 // Add a second document with a generated ID.
-import { addDoc, collection } from "firebase/firestore"; 
+import { addDoc, collection } from "firebase/firestore";
 
 try {
   const docRef = await addDoc(collection(db, "users"), {

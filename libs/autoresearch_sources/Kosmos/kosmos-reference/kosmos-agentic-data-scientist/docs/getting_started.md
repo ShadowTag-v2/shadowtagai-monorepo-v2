@@ -185,7 +185,7 @@ from agentic_data_scientist import DataScientist
 with DataScientist() as ds:
     result = ds.run("What is data science?")
     print(result.response)
-    
+
 # Access results
 print(f"Status: {result.status}")
 print(f"Duration: {result.duration}s")
@@ -242,14 +242,14 @@ from agentic_data_scientist import DataScientist
 async def chat():
     async with DataScientist() as ds:
         context = {}
-        
+
         # First turn
         result1 = await ds.run_async(
             "What are the main techniques for dimensionality reduction?",
             context=context
         )
         print("AI:", result1.response)
-        
+
         # Second turn (maintains context)
         result2 = await ds.run_async(
             "Which one would you recommend for high-dimensional gene expression data?",
@@ -267,24 +267,24 @@ When using `stream=True`, you'll receive events as the workflow progresses:
 ```python
 async for event in await ds.run_async("Your query", stream=True):
     event_type = event['type']
-    
+
     if event_type == 'message':
         # Regular text output from agents
         print(f"[{event['author']}] {event['content']}")
-        
+
     elif event_type == 'function_call':
         # Agent is using a tool
         print(f"Calling {event['name']}...")
-        
+
     elif event_type == 'function_response':
         # Tool returned a result
         print(f"Tool {event['name']} completed")
-        
+
     elif event_type == 'usage':
         # Token usage information
         tokens = event['usage']
         print(f"Tokens: {tokens['total_input_tokens']} in, {tokens['output_tokens']} out")
-        
+
     elif event_type == 'completed':
         # Workflow finished
         print(f"Done in {event['duration']}s")
@@ -299,7 +299,7 @@ Full multi-agent workflow with planning, validation, and adaptive execution.
 
 **When to use:**
 - Complex data analyses
-- Multi-step workflows  
+- Multi-step workflows
 - Tasks requiring validation
 - Production analyses
 

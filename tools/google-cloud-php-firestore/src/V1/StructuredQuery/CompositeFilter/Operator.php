@@ -62,4 +62,3 @@ class Operator
         return constant($const);
     }
 }
-

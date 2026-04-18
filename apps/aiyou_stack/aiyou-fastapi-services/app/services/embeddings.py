@@ -1,5 +1,4 @@
-"""Embeddings service for vector operations and semantic search.
-"""
+"""Embeddings service for vector operations and semantic search."""
 
 from typing import Any
 
@@ -25,7 +24,8 @@ class EmbeddingsService:
         # Initialize ChromaDB
         self.chroma_client = chromadb.Client(
             ChromaSettings(
-                persist_directory=settings.CHROMA_PERSIST_DIRECTORY, anonymized_telemetry=False,
+                persist_directory=settings.CHROMA_PERSIST_DIRECTORY,
+                anonymized_telemetry=False,
             ),
         )
 
@@ -67,7 +67,8 @@ class EmbeddingsService:
         """Create a new vector collection."""
         try:
             collection = self.chroma_client.get_or_create_collection(
-                name=collection_name, metadata=metadata or {},
+                name=collection_name,
+                metadata=metadata or {},
             )
 
             logger.info("Collection created", collection_name=collection_name)
@@ -127,7 +128,9 @@ class EmbeddingsService:
 
             # Search
             results = collection.query(
-                query_embeddings=[query_embedding], n_results=n_results, where=where,
+                query_embeddings=[query_embedding],
+                n_results=n_results,
+                where=where,
             )
 
             logger.info("Search completed", collection_name=collection_name, n_results=n_results)

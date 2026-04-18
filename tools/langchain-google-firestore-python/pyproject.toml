@@ -68,4 +68,3 @@ exclude = [
 [[tool.mypy.overrides]]
 module = "google.cloud.*"
 ignore_missing_imports = true
-

@@ -73,7 +73,14 @@ def uphillsnowball_case_intake(client_description: str) -> str:
 
     # Structured extraction from description
     risk_indicators = {
-        "HIGH": ["sanctions", "fraud", "criminal", "emergency", "injunction", "contempt"],
+        "HIGH": [
+            "sanctions",
+            "fraud",
+            "criminal",
+            "emergency",
+            "injunction",
+            "contempt",
+        ],
         "MEDIUM": ["breach", "dispute", "negligence", "compliance", "regulatory"],
         "LOW": ["contract review", "advisory", "formation", "trademark", "filing"],
     }
@@ -125,7 +132,9 @@ def uphillsnowball_sanctions_check(entity_name: str, jurisdiction: str = "US") -
         entity, jurisdiction, screening_id, risk_score, flags, and
         recommended_action.
     """
-    screening_id = f"SCR-{datetime.datetime.now(ZoneInfo('UTC')).strftime('%Y%m%d%H%M%S')}"
+    screening_id = (
+        f"SCR-{datetime.datetime.now(ZoneInfo('UTC')).strftime('%Y%m%d%H%M%S')}"
+    )
 
     # Jurisdiction-specific compliance databases
     compliance_dbs = {
@@ -159,7 +168,9 @@ def uphillsnowball_sanctions_check(entity_name: str, jurisdiction: str = "US") -
     return json.dumps(result, indent=2)
 
 
-def uphillsnowball_document_analysis(document_text: str, analysis_type: str = "risk") -> str:
+def uphillsnowball_document_analysis(
+    document_text: str, analysis_type: str = "risk"
+) -> str:
     """Analyzes legal documents for risk, compliance, or clause extraction.
 
     Performs structured analysis of legal document text using AST-style
@@ -178,13 +189,22 @@ def uphillsnowball_document_analysis(document_text: str, analysis_type: str = "r
         analysis_id, type, findings, risk_score, flagged_sections,
         and recommendations.
     """
-    analysis_id = f"DOC-{datetime.datetime.now(ZoneInfo('UTC')).strftime('%Y%m%d%H%M%S')}"
+    analysis_id = (
+        f"DOC-{datetime.datetime.now(ZoneInfo('UTC')).strftime('%Y%m%d%H%M%S')}"
+    )
 
     # Pattern-based legal text analysis
     risk_patterns = [
-        "indemnify", "hold harmless", "limitation of liability",
-        "force majeure", "termination", "arbitration", "waiver",
-        "non-compete", "non-solicitation", "confidentiality",
+        "indemnify",
+        "hold harmless",
+        "limitation of liability",
+        "force majeure",
+        "termination",
+        "arbitration",
+        "waiver",
+        "non-compete",
+        "non-solicitation",
+        "confidentiality",
     ]
 
     doc_lower = document_text.lower()
@@ -193,11 +213,13 @@ def uphillsnowball_document_analysis(document_text: str, analysis_type: str = "r
 
     for pattern in risk_patterns:
         if pattern in doc_lower:
-            findings.append({
-                "pattern": pattern,
-                "category": _categorize_legal_pattern(pattern),
-                "severity": "REVIEW_REQUIRED",
-            })
+            findings.append(
+                {
+                    "pattern": pattern,
+                    "category": _categorize_legal_pattern(pattern),
+                    "severity": "REVIEW_REQUIRED",
+                }
+            )
             risk_score += 10
 
     result = {
@@ -207,7 +229,11 @@ def uphillsnowball_document_analysis(document_text: str, analysis_type: str = "r
         "findings_count": len(findings),
         "findings": findings[:10],  # Cap at 10 for response size
         "risk_score": min(risk_score, 100),
-        "risk_level": "HIGH" if risk_score > 60 else "MEDIUM" if risk_score > 30 else "LOW",
+        "risk_level": "HIGH"
+        if risk_score > 60
+        else "MEDIUM"
+        if risk_score > 30
+        else "LOW",
         "recommendations": _get_analysis_recommendations(analysis_type, risk_score),
         "privilege_status": "PROTECTED",
         "timestamp": datetime.datetime.now(ZoneInfo("UTC")).isoformat(),
@@ -351,21 +377,21 @@ def _get_analysis_recommendations(analysis_type: str, risk_score: int) -> list[s
 # Agent Definition — UphillSnowball Legal AI
 # ---------------------------------------------------------------------------
 
-UPHILLSNOWBALL_INSTRUCTION = """You are the UphillSnowball Legal AI Agent, 
-a specialized legal technology assistant deployed within the ShadowTag 
+UPHILLSNOWBALL_INSTRUCTION = """You are the UphillSnowball Legal AI Agent,
+a specialized legal technology assistant deployed within the ShadowTag
 sovereign infrastructure. Your capabilities include:
 
-1. **Case Intake & Risk Assessment**: Use `uphillsnowball_case_intake` to 
+1. **Case Intake & Risk Assessment**: Use `uphillsnowball_case_intake` to
    perform structured legal case intake with preliminary risk classification.
 
-2. **Sanctions Screening**: Use `uphillsnowball_sanctions_check` to screen 
-   entities against international sanctions and compliance databases per 
+2. **Sanctions Screening**: Use `uphillsnowball_sanctions_check` to screen
+   entities against international sanctions and compliance databases per
    Heppner avoidance protocols.
 
-3. **Document Analysis**: Use `uphillsnowball_document_analysis` to analyze 
+3. **Document Analysis**: Use `uphillsnowball_document_analysis` to analyze
    legal documents for risk clauses, compliance alignment, or clause extraction.
 
-4. **Billing & Time Tracking**: Use `uphillsnowball_billing_tracker` to 
+4. **Billing & Time Tracking**: Use `uphillsnowball_billing_tracker` to
    record billable activities in LEDES-compliant format.
 
 Operating Doctrine:

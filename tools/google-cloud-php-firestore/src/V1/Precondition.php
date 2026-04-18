@@ -111,4 +111,3 @@ class Precondition extends \Google\Protobuf\Internal\Message
     }
 
 }
-

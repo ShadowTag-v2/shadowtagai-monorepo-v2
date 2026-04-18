@@ -18,7 +18,7 @@ function get_latest_released_version() {
     group_id_url_path="$(sed 's|\.|/|g' <<< "${group_id}")"
     url="https://repo1.maven.org/maven2/${group_id_url_path}/${artifact_id}/maven-metadata.xml"
     xml_content=$(curl -s --fail "${url}")
-    
+
     # 1. Extract all version tags
     # 2. Strip the XML tags to leave just the version numbers
     # 3. Filter for strictly numbers.numbers.numbers (e.g., 2.54.0)
@@ -28,7 +28,7 @@ function get_latest_released_version() {
       | sed -E 's/<[^>]+>//g' \
       | sort -V \
       | tail -n 1)
-    
+
     if [[ -z "${latest}" ]]; then
         echo "The latest version of ${group_id}:${artifact_id} is empty."
         echo "The returned json from maven.org is invalid: ${json_content}"

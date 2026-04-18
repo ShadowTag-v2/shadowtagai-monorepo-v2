@@ -1,5 +1,4 @@
-"""Gemini Ingestion Layer API Endpoints
-"""
+"""Gemini Ingestion Layer API Endpoints"""
 
 import logging
 

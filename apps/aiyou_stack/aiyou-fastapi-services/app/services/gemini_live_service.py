@@ -39,7 +39,9 @@ class GeminiLiveService:
 
         if genai:
             self.client = genai.Client(
-                vertexai=True, project=self.project_id, location=self.location,
+                vertexai=True,
+                project=self.project_id,
+                location=self.location,
             )
         else:
             self.client = None
@@ -85,8 +87,7 @@ class GeminiLiveService:
         return self.client.aio.live.connect(model=self.model_id, config=typed_config)
 
     async def run_proxy(self, client_ws, gemini_session):
-        """Proxy messages between the client (WebSocket) and Gemini (Live session).
-        """
+        """Proxy messages between the client (WebSocket) and Gemini (Live session)."""
 
         async def send_to_gemini():
             try:
@@ -107,7 +108,8 @@ class GeminiLiveService:
                     await client_ws.send_json(response.model_dump())
             except Exception as e:
                 logger.error(
-                    f"Error in Gemini Live WebSocket (receive_from_gemini): {e}", exc_info=True,
+                    f"Error in Gemini Live WebSocket (receive_from_gemini): {e}",
+                    exc_info=True,
                 )
                 with suppress(Exception):
                     await client_ws.close(code=1011, reason=str(e))

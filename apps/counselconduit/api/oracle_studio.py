@@ -32,6 +32,7 @@ tracer = trace.get_tracer("counselconduit.oracle_studio")
 
 # ── Oracle Stages ─────────────────────────────────────────────────────────
 
+
 class OracleStage(str, Enum):
     INTAKE = "intake"
     JURISDICTION = "jurisdiction"
@@ -77,9 +78,7 @@ _SYSTEM_PROMPTS: dict[OracleStage, str] = {
         "inline citations, (5) conclusion and recommendations. Use formal "
         "legal writing style. Every citation must be verifiable."
     ),
-    OracleStage.ATTESTATION: (
-        "Generate the Kovel attestation metadata for this session."
-    ),
+    OracleStage.ATTESTATION: ("Generate the Kovel attestation metadata for this session."),
 }
 
 # Non-reasoning models where prompt repetition improves accuracy
@@ -95,8 +94,10 @@ _NON_REASONING_MODELS = {
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
+
 class OracleRequest(BaseModel):
     """Client's research request to Oracle Studio."""
+
     session_id: str
     attorney_id: str
     firm_id: str
@@ -109,6 +110,7 @@ class OracleRequest(BaseModel):
 
 class OracleStageResult(BaseModel):
     """Result from a single Oracle stage."""
+
     stage: OracleStage
     content: str
     model_used: str
@@ -118,6 +120,7 @@ class OracleStageResult(BaseModel):
 
 class OracleResponse(BaseModel):
     """Complete Oracle Studio response."""
+
     session_id: str
     stages: list[OracleStageResult]
     memo: str  # The final synthesized memo
@@ -127,6 +130,7 @@ class OracleResponse(BaseModel):
 
 
 # ── Prompt Repetition (arXiv 2512.14982) ──────────────────────────────────
+
 
 def _apply_prompt_repetition(
     system_prompt: str,
@@ -144,16 +148,13 @@ def _apply_prompt_repetition(
 
     # Repeat the instruction at the end of user content
     repeated = (
-        f"{user_content}\n\n"
-        f"---\n\n"
-        f"[INSTRUCTION REPEAT — {stage.value.upper()}]\n"
-        f"{system_prompt}\n\n"
-        f"Analyze the above content and respond precisely."
+        f"{user_content}\n\n---\n\n[INSTRUCTION REPEAT — {stage.value.upper()}]\n{system_prompt}\n\nAnalyze the above content and respond precisely."
     )
     return system_prompt, repeated
 
 
 # ── LiteLLM Integration ──────────────────────────────────────────────────
+
 
 async def _call_llm(
     system_prompt: str,
@@ -175,9 +176,7 @@ async def _call_llm(
         },
     ) as span:
         # Apply prompt repetition
-        sys_prompt, user_msg = _apply_prompt_repetition(
-            system_prompt, user_content, model_id, stage
-        )
+        sys_prompt, user_msg = _apply_prompt_repetition(system_prompt, user_content, model_id, stage)
 
         try:
             import litellm
@@ -218,6 +217,7 @@ async def _call_llm(
 
 
 # ── Pipeline Execution ────────────────────────────────────────────────────
+
 
 async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
     """Execute the full 7-stage Oracle Studio pipeline.

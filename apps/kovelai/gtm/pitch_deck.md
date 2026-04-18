@@ -4,8 +4,8 @@
 ---
 
 ### Slide 1: Title
-**KovelAI**  
-*POST-HEPPNER PRIVILEGED CLIENT AI AND WEB SEARCH THROUGH YOUR FIRM, WHILE YOU GET PAID*  
+**KovelAI**
+*POST-HEPPNER PRIVILEGED CLIENT AI AND WEB SEARCH THROUGH YOUR FIRM, WHILE YOU GET PAID*
 Pre-Seed | Q2 2026
 
 ---
@@ -120,8 +120,8 @@ Client (CC) → Magic Link → S.E.U. Token → AI/Search APIs
 ---
 
 ### Slide 11: Team
-**Erik Hancock** — Founder & CEO  
-Attorney and technologist. Identified the Heppner gap from inside the courtroom. Built the entire V1 stack. CLE seminar presenter.  
+**Erik Hancock** — Founder & CEO
+Attorney and technologist. Identified the Heppner gap from inside the courtroom. Built the entire V1 stack. CLE seminar presenter.
 
 *Hiring with this raise:*
 - VP Engineering (infrastructure security, Docker/K8s)

@@ -1,5 +1,4 @@
-"""Terraform models and schemas
-"""
+"""Terraform models and schemas"""
 
 from typing import Any
 
@@ -15,7 +14,8 @@ class TerraformGenerateRequest(BaseModel):
     cloud_provider: CloudProvider
     components: list[dict[str, Any]]
     backend_config: dict[str, str] | None = Field(
-        default=None, description="Terraform backend configuration",
+        default=None,
+        description="Terraform backend configuration",
     )
     variables: dict[str, Any] | None = Field(default=None, description="Terraform variables")
 

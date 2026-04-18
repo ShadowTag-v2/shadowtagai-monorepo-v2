@@ -1,5 +1,4 @@
-"""DualCo REST API Router
-"""
+"""DualCo REST API Router"""
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session

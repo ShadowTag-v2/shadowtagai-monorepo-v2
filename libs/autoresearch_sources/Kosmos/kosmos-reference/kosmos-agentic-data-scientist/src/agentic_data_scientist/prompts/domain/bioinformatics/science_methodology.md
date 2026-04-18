@@ -4,4 +4,3 @@
 # Scientific Methodology Guidelines
 
 [TO BE FILLED: Scientific methodology and best practices for bioinformatics analysis]
-

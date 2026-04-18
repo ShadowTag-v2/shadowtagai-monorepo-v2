@@ -21,7 +21,6 @@ class ConversationCreate(ConversationBase):
     """Schema for creating a conversation."""
 
 
-
 class ConversationUpdate(BaseModel):
     """Schema for updating a conversation."""
 

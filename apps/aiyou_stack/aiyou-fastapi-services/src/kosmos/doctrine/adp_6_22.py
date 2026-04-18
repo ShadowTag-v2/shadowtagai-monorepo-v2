@@ -258,7 +258,9 @@ def create_agent_profile(
 
     """
     attributes = AgentAttributes(
-        agent_id=agent_id, leadership_level=level, expertise_domains=expertise or [],
+        agent_id=agent_id,
+        leadership_level=level,
+        expertise_domains=expertise or [],
     )
 
     competencies = LeaderCompetencies(agent_id=agent_id)

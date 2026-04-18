@@ -100,7 +100,13 @@ class UsageTracker:
         self._user_quotas: dict[str, int] = {}  # user_id -> remaining quota
 
     def record_usage(
-        self, user_id: str, query: str, intent: str, tier: str, cost_usd: float, latency_ms: float,
+        self,
+        user_id: str,
+        query: str,
+        intent: str,
+        tier: str,
+        cost_usd: float,
+        latency_ms: float,
     ) -> None:
         """Record a usage event.
 
@@ -257,7 +263,9 @@ class RevenueAnalytics:
 
     @staticmethod
     def calculate_ltv(
-        avg_monthly_revenue: float, avg_customer_lifetime_months: float, gross_margin: float = 0.80,
+        avg_monthly_revenue: float,
+        avg_customer_lifetime_months: float,
+        gross_margin: float = 0.80,
     ) -> float:
         """Calculate customer lifetime value.
 

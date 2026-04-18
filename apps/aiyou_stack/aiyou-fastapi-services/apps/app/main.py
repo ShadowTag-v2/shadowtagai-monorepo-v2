@@ -211,8 +211,7 @@ app.include_router(cor17.router, prefix="/api/v1")
 
 @app.get("/", tags=["Root"])
 async def root():
-    """API root endpoint with quick links.
-    """
+    """API root endpoint with quick links."""
     return {
         "service": "ShadowTag-v4 PNKLN Core Stack™ API",
         "version": "1.0.0",

@@ -14,7 +14,7 @@ function downloadCreateRef() {
 
   // Create a reference from an HTTPS URL
   // Note that in the URL, characters are URL escaped!
-  const httpsReference = ref(storage, 'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');  
+  const httpsReference = ref(storage, 'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
   // [END storage_download_create_ref]
 }
 
@@ -26,7 +26,7 @@ function downloadViaUrl() {
   getDownloadURL(ref(storage, 'images/stars.jpg'))
     .then((url) => {
       // `url` is the download URL for 'images/stars.jpg'
-    
+
       // This can be downloaded directly:
       const xhr = new XMLHttpRequest();
       xhr.responseType = 'blob';
@@ -35,7 +35,7 @@ function downloadViaUrl() {
       };
       xhr.open('GET', url);
       xhr.send();
-    
+
       // Or inserted into an <img> element
       const img = document.getElementById('myimg');
       img.setAttribute('src', url);

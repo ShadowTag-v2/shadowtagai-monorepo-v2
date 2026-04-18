@@ -48,7 +48,7 @@ resource "google_workstations_workstation_config" "god_mode" {
   workstation_cluster_id = google_workstations_workstation_cluster.cluster.workstation_cluster_id
   location = "$REGION"
   host { gce_instance { machine_type = "e2-standard-8"; boot_disk_size_gb = 100 } }
-  container { 
+  container {
     image = "us-central1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest"
     env { name = "OMEGA_MODE"; value = "TRUE" }
   }
@@ -110,16 +110,16 @@ class Jetski:
     def __init__(self):
         self.client = genai.Client(vertexai=True, location="$REGION")
         self.model = "gemini-2.0-flash-exp"
-    
+
     async def surf(self, task: str, url: str):
         brave = os.getenv("BRAVE_BIN") or shutil.which("brave-browser")
         args = {"headless": True, "executable_path": brave} if brave else {"headless": True}
-        
+
         async with async_playwright() as p:
             browser = await p.chromium.launch(**args)
             page = await browser.new_page()
             await page.goto(url)
-            
+
             # Vision Loop (One-Shot)
             shot = await page.screenshot(format="jpeg")
             prompt = f"TASK: {task}. Analyze screen. Return JSON {{'action': 'click', 'selector': '...'}}"
@@ -128,12 +128,12 @@ class Jetski:
                 config=types.GenerateContentConfig(response_mime_type="application/json")
             )
             decision = json.loads(res.text)
-            
+
             # Execute (Simplified)
             if decision.get("action") == "click":
                 try: await page.click(decision["selector"])
-                except: pass 
-            
+                except: pass
+
             await browser.close()
             return decision
 jetski = Jetski()
@@ -148,7 +148,7 @@ class GodWriter:
         # Safety Check (Judge 6 Logic Inline)
         if "sk-" in content or "PRIVATE KEY" in content:
             return {"status": "BLOCKED", "reason": "Secret Detected"}
-        
+
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f: f.write(content)
         return {"status": "SUCCESS", "path": path}
@@ -196,19 +196,19 @@ class A2UIRenderer {
         const build = (c) => {
             const el = document.createElement('div');
             el.className = \`comp-\${c.type.toLowerCase()}\`;
-            
+
             if(c.type === 'Text') { el.innerText = c.props.text; if(c.props.size==='h1') el.style.fontSize='2em'; }
-            if(c.type === 'Button') { 
-                const b = document.createElement('button'); 
+            if(c.type === 'Button') {
+                const b = document.createElement('button');
                 b.innerText = c.props.label; b.className = c.props.variant;
-                el.appendChild(b); 
+                el.appendChild(b);
             }
             if(c.type === 'Map') {
                 el.style.height = '300px'; el.style.background = '#e0e0e0';
                 el.innerText = \`🗺️ MAP [Lat: \${c.props.lat}, Lng: \${c.props.lng}]\`;
                 el.style.display = 'flex'; el.style.alignItems='center'; el.style.justifyContent='center';
             }
-            
+
             if(c.children) c.children.forEach(k => el.appendChild(build(k)));
             return el;
         };
@@ -287,7 +287,7 @@ def command(q: str):
     if "scan" in q:
         return {
             "root": {
-                "type": "Card", 
+                "type": "Card",
                 "children": [
                     {"type": "Text", "props": {"text": "Tegu Vision Active", "size": "h1"}},
                     {"type": "Text", "props": {"text": "Drop file to analyze layout."}}

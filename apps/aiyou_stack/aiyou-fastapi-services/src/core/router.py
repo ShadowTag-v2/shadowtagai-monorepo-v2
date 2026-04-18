@@ -194,7 +194,9 @@ class SelfRouteController:
             raise
 
     def classify_query(
-        self, query: str, domain_hint: str | None = None,
+        self,
+        query: str,
+        domain_hint: str | None = None,
     ) -> tuple[TaskType, str, bool]:
         """Classify query for routing strategy
 
@@ -255,7 +257,11 @@ class SelfRouteController:
         if force_lc:
             logger.info(f"Forcing LC due to query complexity: {complexity}")
             return self._route_to_lc(
-                query, context, task_type, method=RoutingMethod.FORCED_LC, start_time=start_time,
+                query,
+                context,
+                task_type,
+                method=RoutingMethod.FORCED_LC,
+                start_time=start_time,
             )
 
         # STEP 1: RAG-and-Route
@@ -264,7 +270,10 @@ class SelfRouteController:
         # Retrieve chunks
         try:
             retrieved_chunks = self.retriever.retrieve(
-                query=query, document_text=context, document_id=document_id, k=k,
+                query=query,
+                document_text=context,
+                document_id=document_id,
+                k=k,
             )
 
             chunk_texts = [chunk.text for chunk in retrieved_chunks]
@@ -283,7 +292,10 @@ class SelfRouteController:
 
         # Generate RAG prompt
         rag_prompt = PromptTemplates.get_rag_prompt(
-            task_type=task_type, query=query, chunks=chunk_texts, indices=chunk_indices,
+            task_type=task_type,
+            query=query,
+            chunks=chunk_texts,
+            indices=chunk_indices,
         )
 
         # Try RAG
@@ -367,7 +379,9 @@ class SelfRouteController:
         """
         # Generate LC prompt
         lc_prompt = PromptTemplates.get_lc_prompt(
-            task_type=task_type, query=query, full_context=context,
+            task_type=task_type,
+            query=query,
+            full_context=context,
         )
 
         try:

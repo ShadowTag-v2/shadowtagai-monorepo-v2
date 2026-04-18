@@ -61,7 +61,10 @@ class SemanticSearchService:
         logger.info("Semantic Search service shutdown")
 
     async def create_index(
-        self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content",
+        self,
+        index_name: str,
+        documents: list[dict[str, Any]],
+        content_field: str = "content",
     ) -> dict[str, Any]:
         """Create a new search index
 
@@ -120,7 +123,11 @@ class SemanticSearchService:
             return {"status": "error", "error": str(e)}
 
     async def search(
-        self, index_name: str, query: str, top_k: int = 10, min_score: float = 0.0,
+        self,
+        index_name: str,
+        query: str,
+        top_k: int = 10,
+        min_score: float = 0.0,
     ) -> dict[str, Any]:
         """Perform semantic search on an index
 
@@ -181,7 +188,11 @@ class SemanticSearchService:
             return {"status": "error", "error": str(e)}
 
     async def multimodal_search(
-        self, index_name: str, query: str, image_url: str | None = None, top_k: int = 10,
+        self,
+        index_name: str,
+        query: str,
+        image_url: str | None = None,
+        top_k: int = 10,
     ) -> dict[str, Any]:
         """Perform multimodal search (text + image)
 
@@ -221,7 +232,9 @@ class SemanticSearchService:
             for text in texts:
                 # Use Gemini's embedding endpoint
                 result = self.genai.embed_content(
-                    model="models/embedding-001", content=text, task_type="retrieval_document",
+                    model="models/embedding-001",
+                    content=text,
+                    task_type="retrieval_document",
                 )
                 embeddings.append(result["embedding"])
 

@@ -33,21 +33,21 @@ while true; do
     CYCLE=$((CYCLE + 1))
     TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
     echo "[$TIMESTAMP] Cycle $CYCLE: Refreshing application-default credentials..."
-    
+
     # Refresh ADC token
     gcloud auth application-default print-access-token > /dev/null 2>&1 || {
         echo "  ⚠️ ADC refresh failed. Attempting re-login..."
         gcloud auth application-default login --no-launch-browser 2>/dev/null || true
     }
-    
+
     # Verify project is still set
     CURRENT_PROJECT=$(gcloud config get-value project 2>/dev/null)
     if [ "$CURRENT_PROJECT" != "$PROJECT" ]; then
         echo "  ⚠️ Project drifted to $CURRENT_PROJECT. Resetting to $PROJECT..."
         gcloud config set project "$PROJECT" 2>/dev/null
     fi
-    
+
     echo "  ✅ Credentials refreshed. Next refresh in ${REFRESH_INTERVAL}s."
-    
+
     sleep $REFRESH_INTERVAL
 done

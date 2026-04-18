@@ -643,7 +643,7 @@ dio.post(
 
 ## 发送 FormData
 
-Dio 支持发送 `FormData`, 请求数据将会以 `multipart/form-data` 方式编码, 
+Dio 支持发送 `FormData`, 请求数据将会以 `multipart/form-data` 方式编码,
 `FormData` 中可以包含一个或多个文件。
 
 ```dart
@@ -670,7 +670,7 @@ final formDataWithBoundaryName = FormData(
 
 ### 多文件上传
 
-多文件上传时，通过给 key 加中括号 `[]` 方式作为文件数组的标记，大多数后台也会通过 `key[]` 来读取多个文件。 
+多文件上传时，通过给 key 加中括号 `[]` 方式作为文件数组的标记，大多数后台也会通过 `key[]` 来读取多个文件。
 然而 RFC 标准中并没有规定多文件上传必须要使用 `[]`，关键在于后台与客户端之间保持一致。
 
 ```dart
@@ -714,7 +714,7 @@ Future<void> _repeatedlyRequest() async {
       'file': await MultipartFile.fromFile('./text.txt',filename: 'upload.txt'),
     });
   }
-  
+
   await dio.post('some-url', data: await createFormData());
 }
 ```
@@ -735,7 +735,7 @@ Dio 实现了一个默认转换器 `DefaultTransformer`。
 从而避免在解析复杂 JSON 时导致的 UI 卡顿。
 
 ```dart
-/// 
+///
 Map<String, dynamic> _parseAndDecode(String response) {
   return jsonDecode(response) as Map<String, dynamic>;
 }
@@ -928,7 +928,7 @@ token.cancel('cancelled');
 ## 继承 Dio class
 
 `Dio` 是一个拥有工厂构造函数的接口类，因此不能直接继承 `Dio`，
-但是可以继承 `DioForNative` 或 `DioForBrowser`： 
+但是可以继承 `DioForNative` 或 `DioForBrowser`：
 
 ```dart
 import 'package:dio/dio.dart';

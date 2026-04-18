@@ -40,7 +40,9 @@ async def assess_governance(request: GovernanceAssessmentRequest):
     result = await governance_engine.assess(request)
 
     return GovernanceAssessmentResponse(
-        assessment_id=assessment_id, timestamp=datetime.utcnow(), **result,
+        assessment_id=assessment_id,
+        timestamp=datetime.utcnow(),
+        **result,
     )
 
 

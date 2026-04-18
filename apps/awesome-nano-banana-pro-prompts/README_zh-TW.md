@@ -3217,7 +3217,7 @@ AI 圖像生成 四格漫畫
 
 ```
 <instruction>
- 
+
 輸入 A 是一個複雜的機器 (例如，{argument name="machine type" default="一架太空梭"}、一台大鋼琴、一個發條錶)。
 拆解成 3 個組裝階段：
    階段 1: 原始底盤/框架。

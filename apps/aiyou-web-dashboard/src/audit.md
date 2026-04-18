@@ -4,7 +4,7 @@
 **Status:** COMPLETE
 
 ## Legacy Bindings Identified
-- `src/services/userService.ts`: Contains `fetchApi` references mapping to `/users` REST endpoints. 
+- `src/services/userService.ts`: Contains `fetchApi` references mapping to `/users` REST endpoints.
 - **Verdict:** These routes do not exist on the Zero-Trust FastAPI Temporal router (`aiyou-fastapi-services`). They violate the Unified Architecture.
 
 ## Action Taken

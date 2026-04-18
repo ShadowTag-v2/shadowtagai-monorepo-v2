@@ -13,7 +13,6 @@ class KernelChainError(Exception):
     """Base exception for kernel chain errors."""
 
 
-
 class Kernel(ABC):
     """Base class for all kernels in the chain.
 

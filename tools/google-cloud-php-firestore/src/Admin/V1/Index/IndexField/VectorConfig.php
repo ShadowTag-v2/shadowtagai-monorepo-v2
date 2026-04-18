@@ -114,4 +114,3 @@ class VectorConfig extends \Google\Protobuf\Internal\Message
     }
 
 }
-

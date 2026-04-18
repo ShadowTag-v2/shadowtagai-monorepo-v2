@@ -1418,4 +1418,4 @@ Total OpEx + Depreciation: ≈ $310M/yr.
 ⸻
 
 6) Why this is defensible (and “why now”)
-	1.	Starlink + edge compute finally makes sub-50 ms closed loops viable without 
+	1.	Starlink + edge compute finally makes sub-50 ms closed loops viable without

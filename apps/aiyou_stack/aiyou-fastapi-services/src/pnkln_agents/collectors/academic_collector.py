@@ -41,7 +41,8 @@ class AcademicCollector(BaseCollector):
 
         try:
             query = self.config.get(
-                "search_query", "cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.CV",
+                "search_query",
+                "cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.CV",
             )
             max_results = min(target_count, 100)
 

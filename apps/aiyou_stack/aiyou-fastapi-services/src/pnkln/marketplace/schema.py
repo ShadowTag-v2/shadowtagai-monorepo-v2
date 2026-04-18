@@ -8,7 +8,9 @@ Base = declarative_base()
 
 
 def calculate_platform_fee(
-    amount: float, category: SuperpowerCategory, developer_gmv: float = 0,
+    amount: float,
+    category: SuperpowerCategory,
+    developer_gmv: float = 0,
 ) -> dict[str, float]:
     """Calculate platform fee and splits
 

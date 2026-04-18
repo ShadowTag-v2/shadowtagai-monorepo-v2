@@ -68,7 +68,9 @@ class SearchService:
             )
 
             # Update max score
-            conversation_map[conv_id]["max_score"] = max(conversation_map[conv_id]["max_score"], result["score"])
+            conversation_map[conv_id]["max_score"] = max(
+                conversation_map[conv_id]["max_score"], result["score"]
+            )
 
         # Sort by max score and limit
         sorted_conversations = sorted(

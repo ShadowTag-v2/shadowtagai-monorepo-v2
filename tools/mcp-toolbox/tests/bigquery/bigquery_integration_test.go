@@ -605,7 +605,7 @@ func getBigQueryForecastToolInfo(tableName string) (string, string, []bigqueryap
 		CREATE TABLE IF NOT EXISTS %s (ts TIMESTAMP, data FLOAT64, id STRING);`, tableName)
 	insertStatement := fmt.Sprintf(`
 		INSERT INTO %s (ts, data, id) VALUES
-		(?, ?, ?), (?, ?, ?), (?, ?, ?), 
+		(?, ?, ?), (?, ?, ?), (?, ?, ?),
 		(?, ?, ?), (?, ?, ?), (?, ?, ?);`, tableName)
 	params := []bigqueryapi.QueryParameter{
 		{Value: "2025-01-01T00:00:00Z"}, {Value: 10.0}, {Value: "a"},
@@ -623,7 +623,7 @@ func getBigQueryAnalyzeContributionToolInfo(tableName string) (string, string, [
 	createStatement := fmt.Sprintf(`
 		CREATE TABLE IF NOT EXISTS %s (dim1 STRING, dim2 STRING, is_test BOOL, metric FLOAT64);`, tableName)
 	insertStatement := fmt.Sprintf(`
-		INSERT INTO %s (dim1, dim2, is_test, metric) VALUES 
+		INSERT INTO %s (dim1, dim2, is_test, metric) VALUES
 		(?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?);`, tableName)
 	params := []bigqueryapi.QueryParameter{
 		{Value: "a"}, {Value: "x"}, {Value: true}, {Value: 100.0},

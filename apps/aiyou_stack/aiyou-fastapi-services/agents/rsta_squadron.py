@@ -427,14 +427,25 @@ class RSTASquadron:
 
         for section_name, strength, role, function in config["sections"]:
             section = self._create_section(
-                troop_type, section_name, strength, role, function, model,
+                troop_type,
+                section_name,
+                strength,
+                role,
+                function,
+                model,
             )
             troop.sections.append(section)
 
         return troop
 
     def _create_section(
-        self, troop_type: TroopType, name: str, strength: int, role: str, function: str, model: str,
+        self,
+        troop_type: TroopType,
+        name: str,
+        strength: int,
+        role: str,
+        function: str,
+        model: str,
     ) -> Section:
         """Create a section with agents"""
         section = Section(
@@ -477,7 +488,9 @@ class RSTASquadron:
         return agents
 
     def get_available_agents(
-        self, count: int = 1, troop_type: TroopType | None = None,
+        self,
+        count: int = 1,
+        troop_type: TroopType | None = None,
     ) -> list[Agent]:
         """Get available agents for tasking"""
         available = []
@@ -565,7 +578,10 @@ class RSTASquadron:
         }
 
     async def _execute_reconnaissance(
-        self, task: str, execute_fn: Callable, recon_task: ReconTaskType | None = None,
+        self,
+        task: str,
+        execute_fn: Callable,
+        recon_task: ReconTaskType | None = None,
     ) -> list[dict[str, Any]]:
         """Execute differentiated reconnaissance per ATP 3-20.96 Chapter 3.
 
@@ -605,7 +621,10 @@ class RSTASquadron:
         return results
 
     async def _execute_security_voting(
-        self, task: str, prior_results: list[dict], security_task: SecurityTaskType | None = None,
+        self,
+        task: str,
+        prior_results: list[dict],
+        security_task: SecurityTaskType | None = None,
     ) -> dict[str, int]:
         """Execute differentiated security voting per ATP 3-20.96 Chapter 4.
 
@@ -641,7 +660,10 @@ class RSTASquadron:
         return []
 
     async def _parallel_execute(
-        self, agents: list[Agent], task: str, execute_fn: Callable,
+        self,
+        agents: list[Agent],
+        task: str,
+        execute_fn: Callable,
     ) -> list[dict[str, Any]]:
         """Execute task across agents in parallel"""
         tasks = []
@@ -661,7 +683,10 @@ class RSTASquadron:
         ]
 
     async def _vote_on_security(
-        self, agents: list[Agent], task: str, prior_results: list[dict],
+        self,
+        agents: list[Agent],
+        task: str,
+        prior_results: list[dict],
     ) -> dict[str, int]:
         """MFRC agents vote on security (replaces static allow/deny)"""
         approve = 0

@@ -238,8 +238,7 @@ class GeminiAgent:
         return "\n".join(context_parts)
 
     def _get_tool_descriptions(self) -> str:
-        """Dynamically builds a list of available tools and their docstrings for prompt injection.
-        """
+        """Dynamically builds a list of available tools and their docstrings for prompt injection."""
         descriptions: list[str] = []
         for name, fn in self.available_tools.items():
             doc = (fn.__doc__ or "No description provided.").strip().replace("\n", " ")
@@ -247,8 +246,7 @@ class GeminiAgent:
         return "\n".join(descriptions)
 
     def _format_context_messages(self, context_messages: list[dict[str, Any]]) -> str:
-        """Flattens structured context into a plain-text prompt block.
-        """
+        """Flattens structured context into a plain-text prompt block."""
         lines = [
             f"{msg.get('role', '').upper()}: {msg.get('content', '')}" for msg in context_messages
         ]
@@ -316,8 +314,7 @@ class GeminiAgent:
         return None, {}
 
     def summarize_memory(self, old_messages: list[dict[str, Any]], previous_summary: str) -> str:
-        """Summarize older history into a concise buffer using Gemini.
-        """
+        """Summarize older history into a concise buffer using Gemini."""
         history_block = "\n".join(
             [f"- {m.get('role', 'unknown')}: {m.get('content', '')}" for m in old_messages],
         )
@@ -338,8 +335,7 @@ class GeminiAgent:
         return self._call_gemini(prompt)
 
     def _generate_thought(self, task: str) -> str:
-        """Generates a Chain-of-Thought plan using the specific Deep Think prompt.
-        """
+        """Generates a Chain-of-Thought plan using the specific Deep Think prompt."""
         context_knowledge = self._load_context()
 
         # This prompt is derived from .antigravity/rules.md
@@ -361,13 +357,11 @@ class GeminiAgent:
         return thought_response
 
     def think(self, task: str) -> str:
-        """Simulates the 'Deep Think' process of Gemini 3.
-        """
+        """Simulates the 'Deep Think' process of Gemini 3."""
         return self._generate_thought(task)
 
     def act(self, task: str) -> str:
-        """Executes the task using available tools and generates a real response.
-        """
+        """Executes the task using available tools and generates a real response."""
         # 1) Record user input
         self.memory.add_entry("user", task)
 
@@ -445,8 +439,7 @@ class GeminiAgent:
             return response
 
     def reflect(self):
-        """Review past actions to improve future performance.
-        """
+        """Review past actions to improve future performance."""
         history = self.memory.get_history()
         print(f"Reflecting on {len(history)} past interactions...")
 

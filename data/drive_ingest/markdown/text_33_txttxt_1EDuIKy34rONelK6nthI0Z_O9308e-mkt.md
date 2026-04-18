@@ -1357,4 +1357,4 @@ Layered Market Applications
 	•	Use Case: C2 systems (command & control) with automated risk scoring and doctrinal adherence — an ATP-19-style fit.
 	•	Value: Military and national security orgs can safely integrate AI into decision loops without breaching doctrine.
 	•	Monetization: Direct government licensing, program integration, and classified system contracts.
-	4.	Energy & 
+	4.	Energy &

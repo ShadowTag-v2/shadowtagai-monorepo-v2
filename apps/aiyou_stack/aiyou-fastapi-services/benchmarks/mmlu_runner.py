@@ -217,7 +217,9 @@ MMLU_SUBJECTS = [
 
 
 async def run_benchmark(
-    subjects: list[str] = None, limit: int = 100, output_dir: str = "benchmarks/results",
+    subjects: list[str] = None,
+    limit: int = 100,
+    output_dir: str = "benchmarks/results",
 ) -> BenchmarkResults:
     """Run MMLU benchmark on specified subjects.
 
@@ -355,11 +357,17 @@ def main():
         description="MMLU Benchmark for n-autoresearch/Kosmos/BioAgents",
     )
     parser.add_argument(
-        "--subjects", type=str, default="all", help="Comma-separated list of subjects or 'all'",
+        "--subjects",
+        type=str,
+        default="all",
+        help="Comma-separated list of subjects or 'all'",
     )
     parser.add_argument("--limit", type=int, default=100, help="Max questions per subject")
     parser.add_argument(
-        "--output", type=str, default="benchmarks/results", help="Output directory for results",
+        "--output",
+        type=str,
+        default="benchmarks/results",
+        help="Output directory for results",
     )
 
     args = parser.parse_args()

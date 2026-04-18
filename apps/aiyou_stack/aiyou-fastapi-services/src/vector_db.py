@@ -1,5 +1,4 @@
-"""Vector DB stub for LanceDB integration.
-"""
+"""Vector DB stub for LanceDB integration."""
 
 
 def ingest_document(workspace_id: int, text_content: str):

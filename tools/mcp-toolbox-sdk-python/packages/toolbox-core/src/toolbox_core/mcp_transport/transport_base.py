@@ -51,12 +51,8 @@ class _McpHttpTransportBase(ITransport, ABC):
         if self._telemetry_enabled:
             self._tracer = telemetry.get_tracer("toolbox.mcp.sdk", version.__version__)
             meter = telemetry.get_meter("toolbox.mcp.sdk", version.__version__)
-            self._operation_duration_histogram = (
-                telemetry.create_operation_duration_histogram(meter)
-            )
-            self._session_duration_histogram = (
-                telemetry.create_session_duration_histogram(meter)
-            )
+            self._operation_duration_histogram = telemetry.create_operation_duration_histogram(meter)
+            self._session_duration_histogram = telemetry.create_session_duration_histogram(meter)
         self._session_start_time: float | None = None
 
         self._manage_session = session is None
@@ -64,15 +60,11 @@ class _McpHttpTransportBase(ITransport, ABC):
         self._init_lock = asyncio.Lock()
         self._init_task: asyncio.Task | None = None
 
-    async def _ensure_initialized(
-        self, headers: Mapping[str, str] | None = None
-    ) -> None:
+    async def _ensure_initialized(self, headers: Mapping[str, str] | None = None) -> None:
         """Ensures the session is initialized before making requests."""
         async with self._init_lock:
             if self._init_task is None:
-                self._init_task = asyncio.create_task(
-                    self._initialize_session(headers=headers)
-                )
+                self._init_task = asyncio.create_task(self._initialize_session(headers=headers))
         await self._init_task
 
     @property
@@ -94,9 +86,7 @@ class _McpHttpTransportBase(ITransport, ABC):
 
         return "".join(texts) or "null"
 
-    def _convert_parameter_schema(
-        self, name: str, schema: dict, required_fields: list[str]
-    ) -> ParameterSchema:
+    def _convert_parameter_schema(self, name: str, schema: dict, required_fields: list[str]) -> ParameterSchema:
         """Recursively converts a JSON Schema node to a ParameterSchema."""
         param_type = schema.get("type", "string")
         description = schema.get("description", "")
@@ -118,9 +108,7 @@ class _McpHttpTransportBase(ITransport, ABC):
         if param_type == "object":
             add_props = schema.get("additionalProperties")
             if isinstance(add_props, dict) and "type" in add_props:
-                additional_properties = AdditionalPropertiesSchema(
-                    type=add_props["type"]
-                )
+                additional_properties = AdditionalPropertiesSchema(type=add_props["type"])
             elif isinstance(add_props, bool):
                 additional_properties = add_props
 
@@ -149,13 +137,9 @@ class _McpHttpTransportBase(ITransport, ABC):
 
         if "_meta" in tool_data and isinstance(tool_data["_meta"], dict):
             meta = tool_data["_meta"]
-            if "toolbox/authParam" in meta and isinstance(
-                meta["toolbox/authParam"], dict
-            ):
+            if "toolbox/authParam" in meta and isinstance(meta["toolbox/authParam"], dict):
                 param_auth = meta["toolbox/authParam"]
-            if "toolbox/authInvoke" in meta and isinstance(
-                meta["toolbox/authInvoke"], list
-            ):
+            if "toolbox/authInvoke" in meta and isinstance(meta["toolbox/authInvoke"], list):
                 invoke_auth = meta["toolbox/authInvoke"]
 
         parameters = []
@@ -189,8 +173,6 @@ class _McpHttpTransportBase(ITransport, ABC):
             await self._session.close()
 
     @abstractmethod
-    async def _initialize_session(
-        self, headers: Mapping[str, str] | None = None
-    ) -> None:
+    async def _initialize_session(self, headers: Mapping[str, str] | None = None) -> None:
         """Initializes the MCP session."""
         pass

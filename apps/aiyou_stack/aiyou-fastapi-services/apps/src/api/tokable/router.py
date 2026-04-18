@@ -400,7 +400,8 @@ async def get_creator_revenue(creator_id: str, days: int = Query(30, ge=1, le=36
 
 @app.get("/tournaments", response_model=list[Tournament], tags=["Tournaments"])
 async def get_tournaments(
-    is_active: bool | None = Query(None), limit: int = Query(20, ge=1, le=100),
+    is_active: bool | None = Query(None),
+    limit: int = Query(20, ge=1, le=100),
 ):
     """Get active and upcoming tournaments"""
     # TODO: Implement tournament query

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START update_document_nested_modular]
-import { doc, setDoc, updateDoc } from "firebase/firestore"; 
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 // Create an initial document to update.
 const frankDocRef = doc(db, "users", "frank");

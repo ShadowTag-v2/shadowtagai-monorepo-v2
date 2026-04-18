@@ -203,11 +203,15 @@ if FASTAPI_AVAILABLE:
         """Request body for Oracle Studio Murder Board execution."""
 
         document_text: str = Field(
-            ..., min_length=10, max_length=100000, description="Legal text to analyze",
+            ...,
+            min_length=10,
+            max_length=100000,
+            description="Legal text to analyze",
         )
         attorney_id: str = Field(default="", description="Attorney's unique ID")
         steps: list[str] = Field(
-            default=[], description="Specific steps to run (empty = all 7 steps)",
+            default=[],
+            description="Specific steps to run (empty = all 7 steps)",
         )
 
     class VerbAuditRequest(BaseModel):
@@ -276,7 +280,8 @@ if FASTAPI_AVAILABLE:
             if not user_msg:
                 yield text_message_start(msg_id)
                 yield text_message_content(
-                    msg_id, "How can I help you with your legal research today?",
+                    msg_id,
+                    "How can I help you with your legal research today?",
                 )
                 yield text_message_end(msg_id)
             else:
@@ -388,15 +393,12 @@ if FASTAPI_AVAILABLE:
             yield text_message_start(msg_id)
             yield text_message_content(
                 msg_id,
-                f"## 📋 Step 1: Argument Extraction\n\n"
-                f"Decomposed into **{len(result.arguments)}** discrete arguments.\n\n",
+                f"## 📋 Step 1: Argument Extraction\n\nDecomposed into **{len(result.arguments)}** discrete arguments.\n\n",
             )
             for arg in result.arguments[:10]:
                 yield text_message_content(
                     msg_id,
-                    f"**{arg['id']}** [{arg['classification']}] "
-                    f"(strength: {arg['strength']})\n"
-                    f"> {arg['claim'][:200]}\n\n",
+                    f"**{arg['id']}** [{arg['classification']}] (strength: {arg['strength']})\n> {arg['claim'][:200]}\n\n",
                 )
             yield text_message_end(msg_id)
             yield step_finished(step_id)
@@ -408,8 +410,7 @@ if FASTAPI_AVAILABLE:
             yield text_message_start(msg_id)
             yield text_message_content(
                 msg_id,
-                f"## 🔬 Step 3: Assumption Auditing\n\n"
-                f"Excavated **{len(result.assumptions)}** hidden premises.\n\n",
+                f"## 🔬 Step 3: Assumption Auditing\n\nExcavated **{len(result.assumptions)}** hidden premises.\n\n",
             )
             for asm in result.assumptions:
                 yield text_message_content(
@@ -431,8 +432,7 @@ if FASTAPI_AVAILABLE:
             for score in result.relevance_scores:
                 yield text_message_content(
                     msg_id,
-                    f"**{score['argument_id']}**: {score['composite_score']} — "
-                    f"_{score['recommendation']}_\n\n",
+                    f"**{score['argument_id']}**: {score['composite_score']} — _{score['recommendation']}_\n\n",
                 )
             yield text_message_end(msg_id)
             yield step_finished(step_id)
@@ -446,8 +446,7 @@ if FASTAPI_AVAILABLE:
             for sm in result.steelman_results:
                 yield text_message_content(
                     msg_id,
-                    f"**{sm['argument_id']}**: {sm['net_assessment']}\n"
-                    f"> Attacks: {len(sm['attacks'])}\n\n",
+                    f"**{sm['argument_id']}**: {sm['net_assessment']}\n> Attacks: {len(sm['attacks'])}\n\n",
                 )
             yield text_message_end(msg_id)
             yield step_finished(step_id)
@@ -459,17 +458,16 @@ if FASTAPI_AVAILABLE:
             yield text_message_start(msg_id)
             yield text_message_content(
                 msg_id,
-                f"## 🎯 Step 6: Action Items\n\n"
-                f"**{len(result.action_items)}** next-move actions generated.\n\n",
+                f"## 🎯 Step 6: Action Items\n\n**{len(result.action_items)}** next-move actions generated.\n\n",
             )
             for act in result.action_items:
                 priority_icon = {"critical": "🔴", "high": "🟠", "medium": "🟡", "low": "🟢"}.get(
-                    act["priority"], "⚪",
+                    act["priority"],
+                    "⚪",
                 )
                 yield text_message_content(
                     msg_id,
-                    f"{priority_icon} **{act['id']}** [{act['priority'].upper()}]: "
-                    f"{act['action']}\n\n",
+                    f"{priority_icon} **{act['id']}** [{act['priority'].upper()}]: {act['action']}\n\n",
                 )
             yield text_message_end(msg_id)
             yield step_finished(step_id)
@@ -481,8 +479,7 @@ if FASTAPI_AVAILABLE:
             yield text_message_start(msg_id)
             yield text_message_content(
                 msg_id,
-                f"## 📝 Step 7: Permanent Notes\n\n"
-                f"Built **{len(result.permanent_notes)}** Zettelkasten notes for your vault.\n\n",
+                f"## 📝 Step 7: Permanent Notes\n\nBuilt **{len(result.permanent_notes)}** Zettelkasten notes for your vault.\n\n",
             )
             for note in result.permanent_notes:
                 yield text_message_content(

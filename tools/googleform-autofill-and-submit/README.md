@@ -55,7 +55,7 @@ https://docs.google.com/forms/d/e/form-index/formResponse
 
 ## Extract information
 ### Automatically
-Just copy the Google form URL and run [form.py](form.py) script. The script will return a *dictionary* which contains the name attributes of each input element and the data you need to fill out. 
+Just copy the Google form URL and run [form.py](form.py) script. The script will return a *dictionary* which contains the name attributes of each input element and the data you need to fill out.
 ```bash
 python form.py <your-gg-form-url>
 ```
@@ -108,7 +108,7 @@ def fill_form():
         "entry.77071893_day": date[2],
         # Hour
         "entry.855769839": hour[0] + 'h',
-        # Checkbox 
+        # Checkbox
         "entry.819260047": ["Cafe", "Fences"],
         # One choice
         "entry.1682233942": "Okay"

@@ -55,7 +55,9 @@ async def claude_code_preset_example():
 
     # Use Claude Code preset
     options = ClaudeAgentOptions(
-        system_prompt={"type": "preset", "preset": "claude_code"}, max_tokens=2048, api_key=api_key,
+        system_prompt={"type": "preset", "preset": "claude_code"},
+        max_tokens=2048,
+        api_key=api_key,
     )
 
     prompt = "Write a simple Python function to calculate fibonacci numbers."

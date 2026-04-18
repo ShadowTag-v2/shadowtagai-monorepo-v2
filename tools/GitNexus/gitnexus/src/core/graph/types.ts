@@ -110,7 +110,7 @@ export type RelationshipType =
 export interface GraphNode {
   id:  string,
   label: NodeLabel,
-  properties: NodeProperties,  
+  properties: NodeProperties,
 }
 
 export interface GraphRelationship {

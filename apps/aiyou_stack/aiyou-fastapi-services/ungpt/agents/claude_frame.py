@@ -52,7 +52,10 @@ CODE_LIKELY: [YES | NO | MAYBE]
 
 
 async def frame_query(
-    normalized_query: str, spt1: dict, model: str, api_key: str,
+    normalized_query: str,
+    spt1: dict,
+    model: str,
+    api_key: str,
 ) -> dict[str, Any]:
     """Frame the query and define structural requirements.
 
@@ -78,7 +81,9 @@ async def frame_query(
     client = anthropic.Anthropic(api_key=api_key)
 
     message = client.messages.create(
-        model=model, max_tokens=2000, messages=[{"role": "user", "content": prompt}],
+        model=model,
+        max_tokens=2000,
+        messages=[{"role": "user", "content": prompt}],
     )
 
     content = message.content[0].text

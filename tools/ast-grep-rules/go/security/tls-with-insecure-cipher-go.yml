@@ -68,4 +68,3 @@ rule:
   any:
     - matches: match_tls_ciphersuite
     - matches: method_tls_config
-

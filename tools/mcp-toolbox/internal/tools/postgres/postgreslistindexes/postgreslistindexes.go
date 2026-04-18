@@ -44,9 +44,9 @@ const listIndexesStatement = `
             s.idx_scan AS index_scans,
             s.idx_tup_read AS tuples_read,
             s.idx_tup_fetch AS tuples_fetched,
-            CASE 
-                WHEN s.idx_scan > 0 THEN true 
-                ELSE false 
+            CASE
+                WHEN s.idx_scan > 0 THEN true
+                ELSE false
             END AS is_used
         FROM pg_catalog.pg_class t
         JOIN pg_catalog.pg_index ix

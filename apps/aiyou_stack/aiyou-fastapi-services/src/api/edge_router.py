@@ -26,7 +26,8 @@ class PreferencePayload(BaseModel):
 
 @edge_router.post("/csrmc/evaluate")
 async def evaluate_threat_edge(
-    payload: SecurityPayload, identity: TemporalIdentityPayload = Depends(parse_and_lock_identity),
+    payload: SecurityPayload,
+    identity: TemporalIdentityPayload = Depends(parse_and_lock_identity),
 ):
     """PHASE II: The Micro (CSRMC Edge)
     A tiny endpoint for the consumer app serving as a nerve ending.
@@ -38,7 +39,8 @@ async def evaluate_threat_edge(
 
     if len(payload.threat_string) > 2048:
         raise HTTPException(
-            status_code=400, detail="Edge Router Rejection: Payload exceeds 2KB CSRMC tolerance.",
+            status_code=400,
+            detail="Edge Router Rejection: Payload exceeds 2KB CSRMC tolerance.",
         )
 
     if MOCK_CLOUD_RUN_ANE:
@@ -56,7 +58,8 @@ async def evaluate_threat_edge(
 
 @edge_router.post("/preference/terminal")
 async def sync_blind_box_preference(
-    payload: PreferencePayload, identity: TemporalIdentityPayload = Depends(parse_and_lock_identity),
+    payload: PreferencePayload,
+    identity: TemporalIdentityPayload = Depends(parse_and_lock_identity),
 ):
     """The Preference Terminal: The glass UI where the user logs their Keep/Return ratio
     and "Blind Box" limits. This feeds into the overarching Hive Mind structure.

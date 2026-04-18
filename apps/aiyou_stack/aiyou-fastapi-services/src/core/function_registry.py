@@ -51,7 +51,10 @@ class FunctionRegistry:
 
             # Create FunctionTool
             tool = FunctionTool(
-                name=func_name, description=description, function=func, parameters=parameters,
+                name=func_name,
+                description=description,
+                function=func,
+                parameters=parameters,
             )
 
             # Register

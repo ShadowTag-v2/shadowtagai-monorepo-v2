@@ -89,7 +89,9 @@ def train_gpt():
 
     train_dataset = CharDataset(train_text, SEQ_LEN, tokenizer)
     val_dataset = CharDataset(
-        val_text[: demo_limit // 10], SEQ_LEN, tokenizer,
+        val_text[: demo_limit // 10],
+        SEQ_LEN,
+        tokenizer,
     )  # Small validation set
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
@@ -156,7 +158,8 @@ def train_gpt():
 
             B, S, V = outputs.shape
             flat_outputs = Tensor(
-                outputs.data.reshape(B * S, V), requires_grad=outputs.requires_grad,
+                outputs.data.reshape(B * S, V),
+                requires_grad=outputs.requires_grad,
             )
             flat_targets = Tensor(targets.data.flatten())
 

@@ -29,7 +29,9 @@ async def store_embeddings(request: StoreEmbeddingsRequest, req: Request):
         raise HTTPException(status_code=503, detail="DataOps service not initialized")
 
     result = await dataops.store_embeddings(
-        embedding_id=request.embedding_id, embeddings=request.embeddings, metadata=request.metadata,
+        embedding_id=request.embedding_id,
+        embeddings=request.embeddings,
+        metadata=request.metadata,
     )
 
     return result

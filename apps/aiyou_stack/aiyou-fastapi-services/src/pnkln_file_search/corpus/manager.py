@@ -47,7 +47,9 @@ class CorpusManager:
             raise
 
     async def create_corpus(
-        self, vertical_config: VerticalConfig, force_recreate: bool = False,
+        self,
+        vertical_config: VerticalConfig,
+        force_recreate: bool = False,
     ) -> str:
         """Create a RAG corpus for a specific vertical
 

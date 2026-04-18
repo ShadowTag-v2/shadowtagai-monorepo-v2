@@ -31,4 +31,3 @@ class FlatIndex extends \Google\Protobuf\Internal\Message
     }
 
 }
-

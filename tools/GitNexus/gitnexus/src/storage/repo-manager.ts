@@ -1,6 +1,6 @@
 /**
  * Repository Manager
- * 
+ *
  * Manages GitNexus index storage in .gitnexus/ at repo root.
  * Also maintains a global registry at ~/.gitnexus/registry.json
  * so the MCP server can discover indexed repos from any cwd.
@@ -158,7 +158,7 @@ export const loadRepo = async (repoPath: string): Promise<IndexedRepo | null> =>
   const paths = getStoragePaths(repoPath);
   const meta = await loadMeta(paths.storagePath);
   if (!meta) return null;
-  
+
   return {
     repoPath: path.resolve(repoPath),
     ...paths,
@@ -172,13 +172,13 @@ export const loadRepo = async (repoPath: string): Promise<IndexedRepo | null> =>
 export const findRepo = async (startPath: string): Promise<IndexedRepo | null> => {
   let current = path.resolve(startPath);
   const root = path.parse(current).root;
-  
+
   while (current !== root) {
     const repo = await loadRepo(current);
     if (repo) return repo;
     current = path.dirname(current);
   }
-  
+
   return null;
 };
 
@@ -187,12 +187,12 @@ export const findRepo = async (startPath: string): Promise<IndexedRepo | null> =
  */
 export const addToGitignore = async (repoPath: string): Promise<void> => {
   const gitignorePath = path.join(repoPath, '.gitignore');
-  
+
   try {
     const content = await fs.readFile(gitignorePath, 'utf-8');
     if (content.includes(GITNEXUS_DIR)) return;
-    
-    const newContent = content.endsWith('\n') 
+
+    const newContent = content.endsWith('\n')
       ? `${content}${GITNEXUS_DIR}\n`
       : `${content}\n${GITNEXUS_DIR}\n`;
     await fs.writeFile(gitignorePath, newContent, 'utf-8');

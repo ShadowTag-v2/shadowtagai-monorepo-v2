@@ -65,4 +65,3 @@ class ListBackupSchedulesResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -151,8 +151,7 @@ class SourceManager:
         source: DataSource,
         max_items: int,
     ) -> list[dict]:
-        """Source-specific collection logic.
-        """
+        """Source-specific collection logic."""
         # Handle Google Drive Extraction
         if source.source_type == SourceType.DRIVE:
             items = []

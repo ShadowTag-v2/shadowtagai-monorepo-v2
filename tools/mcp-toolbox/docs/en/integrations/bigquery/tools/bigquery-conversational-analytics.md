@@ -57,7 +57,7 @@ name: ask_data_insights
 type: bigquery-conversational-analytics
 source: my-bigquery-source
 description: |
-  Use this tool to perform data analysis, get insights, or answer complex 
+  Use this tool to perform data analysis, get insights, or answer complex
   questions about the contents of specific BigQuery tables.
 ```
 

@@ -1,5 +1,4 @@
-"""FastAPI endpoints for Context Window Management
-"""
+"""FastAPI endpoints for Context Window Management"""
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
@@ -161,7 +160,8 @@ async def list_sessions(
 async def search_sessions(
     q: str = Query(..., description="Search query"),
     fields: list[str] = Query(
-        ["issue_title", "goal", "constraints"], description="Fields to search in",
+        ["issue_title", "goal", "constraints"],
+        description="Fields to search in",
     ),
 ):
     """Search sessions by text query

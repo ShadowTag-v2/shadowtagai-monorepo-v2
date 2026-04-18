@@ -145,15 +145,15 @@ Chest X-ray: Right lower lobe consolidation consistent with pneumonia
 
 **Example Assessment section:**
 ```
-A: 
+A:
 1. Community-acquired pneumonia (CAP), right lower lobe (J18.1)
    - Moderate severity (CURB-65 score 1)
    - Appropriate for outpatient management
    - Minimal improvement on azithromycin, likely bacterial etiology
-   
+
 2. Dehydration, mild (E86.0)
    - Secondary to decreased PO intake
-   
+
 3. Type 2 diabetes mellitus (E11.9)
    - Well-controlled, continue home medications
 ```
@@ -190,16 +190,16 @@ P:
    - Discontinue azithromycin
    - Start amoxicillin-clavulanate 875/125 mg PO BID x 7 days
    - Supportive care: adequate hydration, rest, acetaminophen for fever
-   Education: 
+   Education:
    - Explained bacterial pneumonia diagnosis and antibiotic change
    - Discussed expected improvement within 48-72 hours
    - Return precautions: worsening dyspnea, high fever >103°F, confusion
    Follow-up: Phone call in 48 hours to assess response, clinic visit in 1 week
-   
+
 2. Dehydration:
    - Encourage PO fluids, goal 2 liters/day
    - Sports drinks or electrolyte solutions acceptable
-   
+
 3. Type 2 diabetes:
    - Continue metformin 1000 mg PO BID
    - Home glucose monitoring
@@ -741,4 +741,3 @@ Patient Instructions:
 ---
 
 This reference provides comprehensive standards for patient clinical documentation including SOAP notes, H&P, and discharge summaries. Use these guidelines to ensure complete, accurate, and compliant clinical documentation.
-

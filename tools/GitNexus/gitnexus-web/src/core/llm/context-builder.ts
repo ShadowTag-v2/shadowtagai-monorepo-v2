@@ -1,6 +1,6 @@
 /**
  * Context Builder for Graph RAG Agent
- * 
+ *
  * Generates dynamic context about the loaded codebase to inject into the system prompt.
  * This helps the LLM understand the project structure, scale, and key entry points
  * without needing to explore from scratch.
@@ -67,7 +67,7 @@ export async function getCodebaseStats(
     ];
 
     const counts: Record<string, number> = {};
-    
+
     for (const { type, query } of countQueries) {
       try {
         const result = await executeQuery(query);
@@ -118,9 +118,9 @@ export async function getHotspots(
       LIMIT ${limit}
       RETURN n.name AS name, LABEL(n) AS type, n.filePath AS filePath, connections
     `;
-    
+
     const results = await executeQuery(query);
-    
+
     return results.map(row => {
       if (Array.isArray(row)) {
         return {
@@ -155,7 +155,7 @@ export async function getFolderTree(
     // Get all file paths
     const query = 'MATCH (f:File) RETURN f.filePath AS path ORDER BY path';
     const results = await executeQuery(query);
-    
+
     const paths = results.map(row => {
       if (Array.isArray(row)) return row[0];
       return row.path;
@@ -175,7 +175,7 @@ export async function getFolderTree(
  * Format paths as indented tree (TOON-style, no ASCII box chars)
  * Uses indentation only for hierarchy - more token efficient than ASCII tree
  * Shows complete structure with no truncation
- * 
+ *
  * Example output:
  * src/
  *   components/ (45 files)
@@ -192,22 +192,22 @@ function formatAsHybridAscii(paths: string[], maxDepth: number): string {
     children: Map<string, TreeNode>;
     fileCount: number;
   }
-  
+
   const root: TreeNode = { isFile: false, children: new Map(), fileCount: 0 };
-  
+
   for (const path of paths) {
     const normalized = path.replace(/\\/g, '/');
     const parts = normalized.split('/').filter(Boolean);
-    
+
     let current = root;
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i];
       const isFile = i === parts.length - 1;
-      
+
       if (!current.children.has(part)) {
         current.children.set(part, { isFile, children: new Map(), fileCount: 0 });
       }
-      
+
       current = current.children.get(part)!;
       if (isFile) {
         // Count files in parent directories
@@ -219,10 +219,10 @@ function formatAsHybridAscii(paths: string[], maxDepth: number): string {
       }
     }
   }
-  
+
   // Render tree with indentation only (no ASCII box chars)
   const lines: string[] = [];
-  
+
   function renderNode(node: TreeNode, indent: string, depth: number): void {
     const entries = [...node.children.entries()];
     // Sort: folders first (by file count desc), then files alphabetically
@@ -231,7 +231,7 @@ function formatAsHybridAscii(paths: string[], maxDepth: number): string {
       if (!aNode.isFile && !bNode.isFile) return bNode.fileCount - aNode.fileCount;
       return aName.localeCompare(bName);
     });
-    
+
     for (const [name, childNode] of entries) {
       if (childNode.isFile) {
         // File
@@ -240,7 +240,7 @@ function formatAsHybridAscii(paths: string[], maxDepth: number): string {
         // Directory
         const childCount = childNode.children.size;
         const fileCount = childNode.fileCount;
-        
+
         // Only collapse if beyond maxDepth
         if (depth >= maxDepth) {
           lines.push(`${indent}${name}/ (${fileCount} files)`);
@@ -251,9 +251,9 @@ function formatAsHybridAscii(paths: string[], maxDepth: number): string {
       }
     }
   }
-  
+
   renderNode(root, '', 0);
-  
+
   return lines.join('\n');
 }
 
@@ -262,23 +262,23 @@ function formatAsHybridAscii(paths: string[], maxDepth: number): string {
  */
 function buildTreeFromPaths(paths: string[], maxDepth: number): Map<string, any> {
   const root = new Map<string, any>();
-  
+
   for (const fullPath of paths) {
     // Normalize path separators
     const normalizedPath = fullPath.replace(/\\/g, '/');
     const parts = normalizedPath.split('/').filter(Boolean);
-    
+
     let current = root;
     const depth = Math.min(parts.length, maxDepth + 1); // +1 to include files at maxDepth
-    
+
     for (let i = 0; i < depth; i++) {
       const part = parts[i];
       const isFile = i === parts.length - 1;
-      
+
       if (!current.has(part)) {
         current.set(part, isFile ? null : new Map<string, any>());
       }
-      
+
       const next = current.get(part);
       if (next instanceof Map) {
         current = next;
@@ -287,7 +287,7 @@ function buildTreeFromPaths(paths: string[], maxDepth: number): Map<string, any>
       }
     }
   }
-  
+
   return root;
 }
 
@@ -301,7 +301,7 @@ function formatTreeAsAscii(
 ): string {
   const lines: string[] = [];
   const entries = Array.from(tree.entries());
-  
+
   // Sort: folders first, then files, alphabetically
   entries.sort(([a, aVal], [b, bVal]) => {
     const aIsDir = aVal instanceof Map;
@@ -309,12 +309,12 @@ function formatTreeAsAscii(
     if (aIsDir !== bIsDir) return bIsDir ? 1 : -1;
     return a.localeCompare(b);
   });
-  
+
   entries.forEach(([name, subtree], index) => {
     const isLastItem = index === entries.length - 1;
     const connector = isLastItem ? '└── ' : '├── ';
     const childPrefix = prefix + (isLastItem ? '    ' : '│   ');
-    
+
     if (subtree instanceof Map && subtree.size > 0) {
       // Folder with children
       const childCount = countItems(subtree);
@@ -329,7 +329,7 @@ function formatTreeAsAscii(
       lines.push(`${prefix}${connector}${name}`);
     }
   });
-  
+
   return lines.filter(Boolean).join('\n');
 }
 
@@ -374,12 +374,12 @@ export async function buildCodebaseContext(
  */
 export function formatContextForPrompt(context: CodebaseContext): string {
   const { stats, hotspots, folderTree } = context;
-  
+
   const lines: string[] = [];
-  
+
   // Project header with stats
   lines.push(`### 📊 CODEBASE: ${stats.projectName}`);
-  
+
   const statParts = [
     `Files: ${stats.fileCount}`,
     `Functions: ${stats.functionCount}`,
@@ -388,7 +388,7 @@ export function formatContextForPrompt(context: CodebaseContext): string {
   ].filter(Boolean);
   lines.push(statParts.join(' | '));
   lines.push('');
-  
+
   // Hotspots
   if (hotspots.length > 0) {
     lines.push('**Hotspots** (most connected):');
@@ -397,7 +397,7 @@ export function formatContextForPrompt(context: CodebaseContext): string {
     });
     lines.push('');
   }
-  
+
   // Folder tree
   if (folderTree) {
     lines.push('### 📁 STRUCTURE');
@@ -406,7 +406,7 @@ export function formatContextForPrompt(context: CodebaseContext): string {
     lines.push(folderTree);
     lines.push('```');
   }
-  
+
   return lines.join('\n');
 }
 
@@ -419,7 +419,7 @@ export function buildDynamicSystemPrompt(
   context: CodebaseContext
 ): string {
   const contextSection = formatContextForPrompt(context);
-  
+
   // Append context at the END - keeps core instructions at top for better adherence
   return `${basePrompt}
 

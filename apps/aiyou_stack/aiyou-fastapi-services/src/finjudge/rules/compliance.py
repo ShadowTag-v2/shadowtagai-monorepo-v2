@@ -55,7 +55,10 @@ class ComplianceEngine:
         }
 
     def check_compliance(
-        self, decision_type: DecisionType, regulations: list[str], evidence: list[Evidence],
+        self,
+        decision_type: DecisionType,
+        regulations: list[str],
+        evidence: list[Evidence],
     ) -> list[ComplianceFlag]:
         """Check compliance with specified regulations
 
@@ -100,7 +103,10 @@ class ComplianceEngine:
         return applicable
 
     def _check_regulation(
-        self, regulation: str, decision_type: DecisionType, evidence: list[Evidence],
+        self,
+        regulation: str,
+        decision_type: DecisionType,
+        evidence: list[Evidence],
     ) -> ComplianceFlag | None:
         """Check specific regulation compliance
 
@@ -218,8 +224,7 @@ class ComplianceEngine:
         )
 
     def _check_finra_4210(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """Check FINRA Rule 4210 (Margin Requirements)
-        """
+        """Check FINRA Rule 4210 (Margin Requirements)"""
         for item in evidence:
             if "margin" in item.data:
                 margin_posted = item.data["margin"].get("posted", 0)
@@ -262,8 +267,7 @@ class ComplianceEngine:
         )
 
     def _check_basel_iii(self, evidence: list[Evidence]) -> ComplianceFlag:
-        """Check Basel III capital and liquidity requirements
-        """
+        """Check Basel III capital and liquidity requirements"""
         for item in evidence:
             if "capital_ratio" in item.data:
                 tier1_ratio = item.data["capital_ratio"].get("tier1", 0)

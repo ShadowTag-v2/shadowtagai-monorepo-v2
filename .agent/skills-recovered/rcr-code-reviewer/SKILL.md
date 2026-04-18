@@ -35,6 +35,6 @@ Fix the code based on the critique.
 ```markdown
 ### [RCR Internal Audit]
 **Reflect:** I used a standard `forEach` loop which assumes synchronous execution, but the inner function calls an external API.
-**Critique:** The API calls will fire off unhandled promises without waiting, potentially crashing the rate limit or failing silently. 
+**Critique:** The API calls will fire off unhandled promises without waiting, potentially crashing the rate limit or failing silently.
 **Refine:** I will refactor to use `Promise.all()` with a concurrency chunker (or a standard `for...of` loop) to respect the asynchronous boundaries.
 ```

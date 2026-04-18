@@ -267,7 +267,9 @@ class ScientificSkillsLoader:
 
             # Extract description
             desc_match = re.search(
-                r'^description:\s*["\']?(.+?)["\']?\s*$', frontmatter, re.MULTILINE | re.DOTALL,
+                r'^description:\s*["\']?(.+?)["\']?\s*$',
+                frontmatter,
+                re.MULTILINE | re.DOTALL,
             )
             if desc_match:
                 description = desc_match.group(1).strip().strip("\"'")

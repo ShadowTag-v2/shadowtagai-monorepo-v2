@@ -75,7 +75,10 @@ def get_changed_files(diff_range: str) -> list:
     """Get list of changed Python files."""
     try:
         result = subprocess.run(
-            ["git", "diff", diff_range, "--name-only"], capture_output=True, text=True, check=True,
+            ["git", "diff", diff_range, "--name-only"],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         files = [f.strip() for f in result.stdout.strip().split("\n") if f.strip()]
         return [f for f in files if f.endswith(".py")]

@@ -24,9 +24,11 @@ def test_lloyd_max_codebook():
     for d in [64, 128, 256]:
         for bits in [1, 2, 3, 4]:
             cb = LloydMaxCodebook(d, bits)
-            print(f"  d={d:>4d}, bits={bits}: {cb.n_levels} levels, "
-                  f"distortion/coord={cb.distortion:.6f}, "
-                  f"centroids range=[{cb.centroids.min():.4f}, {cb.centroids.max():.4f}]")
+            print(
+                f"  d={d:>4d}, bits={bits}: {cb.n_levels} levels, "
+                f"distortion/coord={cb.distortion:.6f}, "
+                f"centroids range=[{cb.centroids.min():.4f}, {cb.centroids.max():.4f}]"
+            )
 
     # Verify symmetry (centroids should be symmetric around 0)
     cb = LloydMaxCodebook(128, 3)
@@ -60,13 +62,12 @@ def test_mse_quantizer():
         mse = ((x - x_hat) ** 2).sum(dim=-1).mean().item()
 
         # Theoretical upper bound from paper: D_mse <= sqrt(3)*pi/2 * (1/4^b)
-        theoretical_bound = math.sqrt(3) * math.pi / 2 * (1 / (4 ** bits))
+        theoretical_bound = math.sqrt(3) * math.pi / 2 * (1 / (4**bits))
 
         ratio = mse / theoretical_bound
         status = "OK" if ratio <= 1.5 else "WARN"  # allow some slack for finite d
 
-        print(f"  bits={bits}: MSE={mse:.6f}, theory_bound={theoretical_bound:.6f}, "
-              f"ratio={ratio:.3f} [{status}]")
+        print(f"  bits={bits}: MSE={mse:.6f}, theory_bound={theoretical_bound:.6f}, ratio={ratio:.3f} [{status}]")
 
     print()
 
@@ -105,10 +106,9 @@ def test_inner_product_unbiasedness():
         correlation = torch.corrcoef(torch.stack([true_ip, estimated_ip]))[0, 1].item()
 
         # Theoretical distortion bound: D_prod <= sqrt(3)*pi^2/d * (1/4^b)
-        theoretical_distortion = math.sqrt(3) * math.pi ** 2 / d * (1 / (4 ** bits))
+        theoretical_distortion = math.sqrt(3) * math.pi**2 / d * (1 / (4**bits))
 
-        print(f"  bits={bits}: bias={bias:+.6f}, RMSE={rmse:.6f}, "
-              f"corr={correlation:.4f}, theory_D={theoretical_distortion:.6f}")
+        print(f"  bits={bits}: bias={bias:+.6f}, RMSE={rmse:.6f}, corr={correlation:.4f}, theory_D={theoretical_distortion:.6f}")
 
     print()
 
@@ -137,7 +137,7 @@ def test_mse_only_inner_product_bias():
 
         bias = (mse_ip - true_ip).mean().item()
         # The bias factor for 1-bit is ~2/pi = 0.637, so ip is scaled by that
-        scale_factor = (mse_ip.mean() / true_ip.mean()).item() if true_ip.mean().abs() > 0.01 else float('nan')
+        scale_factor = (mse_ip.mean() / true_ip.mean()).item() if true_ip.mean().abs() > 0.01 else float("nan")
 
         print(f"  bits={bits}: bias={bias:+.6f} (MSE-only is biased, QJL fixes this)")
 
@@ -165,15 +165,16 @@ def test_kv_cache():
         cache.append(keys, values)
 
         usage = cache.memory_usage_bits()
-        print(f"  bits={bits}: compression={usage['compression_ratio']:.2f}x "
-              f"({usage['total_bits'] / 8 / 1024:.1f} KB vs "
-              f"{usage['fp16_bits'] / 8 / 1024:.1f} KB fp16)")
+        print(
+            f"  bits={bits}: compression={usage['compression_ratio']:.2f}x "
+            f"({usage['total_bits'] / 8 / 1024:.1f} KB vs "
+            f"{usage['fp16_bits'] / 8 / 1024:.1f} KB fp16)"
+        )
 
         # Test attention score computation
         query = torch.randn(1, d_key, device=device)
         scores = cache.attention_scores(query)
-        print(f"           attention scores shape: {scores.shape}, "
-              f"range=[{scores.min():.3f}, {scores.max():.3f}]")
+        print(f"           attention scores shape: {scores.shape}, range=[{scores.min():.3f}, {scores.max():.3f}]")
 
     print()
 
@@ -205,9 +206,7 @@ def test_needle_in_haystack():
             compressed = quantizer.quantize(keys)
 
             # Compute inner products
-            estimated_ips = quantizer.inner_product(
-                query.expand(seq_len, -1), compressed
-            )
+            estimated_ips = quantizer.inner_product(query.expand(seq_len, -1), compressed)
 
             # Check if needle is still the top result
             top_idx = estimated_ips.argmax().item()
@@ -218,8 +217,7 @@ def test_needle_in_haystack():
             in_top5 = needle_pos in top5
 
             status = "EXACT" if found else ("TOP-5" if in_top5 else "MISS")
-            print(f"  bits={bits}, seq={seq_len:>5d}: top1={top_idx:>5d} "
-                  f"(needle={needle_pos:>5d}) [{status}]")
+            print(f"  bits={bits}, seq={seq_len:>5d}: top1={top_idx:>5d} (needle={needle_pos:>5d}) [{status}]")
 
     print()
 
@@ -267,7 +265,7 @@ def test_gpu_if_available():
     t0 = time.perf_counter()
     for _ in range(100):
         for i in range(n_queries):
-            ip = quantizer.inner_product(queries[i:i+1].expand(seq_len, -1), compressed)
+            ip = quantizer.inner_product(queries[i : i + 1].expand(seq_len, -1), compressed)
     torch.cuda.synchronize()
     ip_time = (time.perf_counter() - t0) / 100
     print(f"  Inner product ({n_queries} queries x {seq_len} keys): {ip_time * 1000:.2f} ms")

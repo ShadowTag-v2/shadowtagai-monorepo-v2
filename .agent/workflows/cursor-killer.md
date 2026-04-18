@@ -11,7 +11,7 @@
 
 ## Phase 2: The Set (The Director)
 - Start the local dev server (e.g., `npm run dev` or `python main.py`) in the background. Wait for the designated port to bind.
-- Start the camera via the VDI engine: 
+- Start the camera via the VDI engine:
   ```bash
   python3 apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/src/telemetry/cinematic_studio.py start
   ```
@@ -26,7 +26,7 @@
   ```bash
   python3 apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/src/telemetry/cinematic_studio.py stop_and_critique "[Feature Description]"
   ```
-- Read `/tmp/vid_verdict.txt`. 
+- Read `/tmp/vid_verdict.txt`.
   - **Auto-Heal:** If it starts with `FAIL`, trigger Temporal-Reversal (`git reset --hard`), fix the CSS/structural breakdown, and loop back to Phase 1.
   - **Ship It:** If `PASS`, execute the Omni-Channel publisher:
   ```bash

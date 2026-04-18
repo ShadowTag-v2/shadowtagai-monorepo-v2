@@ -1,9 +1,9 @@
 /**
  * CSV Generator for LadybugDB Hybrid Schema
- * 
+ *
  * Generates separate CSV files for each node table and one relation CSV.
  * This enables efficient bulk loading via COPY FROM for hybrid schema.
- * 
+ *
  * RFC 4180 Compliant:
  * - Fields containing commas, double quotes, or newlines are enclosed in double quotes
  * - Double quotes within fields are escaped by doubling them ("")
@@ -20,7 +20,7 @@ import { NODE_TABLES, NodeTableName } from './schema';
 /**
  * Sanitize string to ensure valid UTF-8 and safe CSV content for LadybugDB
  * Removes or replaces invalid characters that would break CSV parsing.
- * 
+ *
  * Critical: LadybugDB's CSV parser can misinterpret \r\n inside quoted fields.
  * We normalize all line endings to \n only.
  */
@@ -85,11 +85,11 @@ const extractContent = (
 ): string => {
   const filePath = node.properties.filePath;
   const content = fileContents.get(filePath);
-  
+
   if (!content) return '';
   if (node.label === 'Folder') return '';
   if (isBinaryContent(content)) return '[Binary file - content not stored]';
-  
+
   // For File nodes, return content (limited)
   if (node.label === 'File') {
     const MAX_FILE_CONTENT = 10000;
@@ -98,18 +98,18 @@ const extractContent = (
     }
     return content;
   }
-  
+
   // For code elements, extract the relevant lines with context
   const startLine = node.properties.startLine;
   const endLine = node.properties.endLine;
-  
+
   if (startLine === undefined || endLine === undefined) return '';
-  
+
   const lines = content.split('\n');
   const contextLines = 2;
   const start = Math.max(0, startLine - contextLines);
   const end = Math.min(lines.length - 1, endLine + contextLines);
-  
+
   const snippet = lines.slice(start, end + 1).join('\n');
   const MAX_SNIPPET = 5000;
   if (snippet.length > MAX_SNIPPET) {
@@ -138,7 +138,7 @@ export interface CSVData {
 const generateFileCSV = (nodes: GraphNode[], fileContents: Map<string, string>): string => {
   const headers = ['id', 'name', 'filePath', 'content'];
   const rows: string[] = [headers.join(',')];
-  
+
   for (const node of nodes) {
     if (node.label !== 'File') continue;
     const content = extractContent(node, fileContents);
@@ -149,7 +149,7 @@ const generateFileCSV = (nodes: GraphNode[], fileContents: Map<string, string>):
       escapeCSVField(content),
     ].join(','));
   }
-  
+
   return rows.join('\n');
 };
 
@@ -160,7 +160,7 @@ const generateFileCSV = (nodes: GraphNode[], fileContents: Map<string, string>):
 const generateFolderCSV = (nodes: GraphNode[]): string => {
   const headers = ['id', 'name', 'filePath'];
   const rows: string[] = [headers.join(',')];
-  
+
   for (const node of nodes) {
     if (node.label !== 'Folder') continue;
     rows.push([
@@ -169,7 +169,7 @@ const generateFolderCSV = (nodes: GraphNode[]): string => {
       escapeCSVField(node.properties.filePath || ''),
     ].join(','));
   }
-  
+
   return rows.join('\n');
 };
 
@@ -184,7 +184,7 @@ const generateCodeElementCSV = (
 ): string => {
   const headers = ['id', 'name', 'filePath', 'startLine', 'endLine', 'isExported', 'content'];
   const rows: string[] = [headers.join(',')];
-  
+
   for (const node of nodes) {
     if (node.label !== label) continue;
     const content = extractContent(node, fileContents);
@@ -198,7 +198,7 @@ const generateCodeElementCSV = (
       escapeCSVField(content),
     ].join(','));
   }
-  
+
   return rows.join('\n');
 };
 
@@ -238,14 +238,14 @@ const generateMultiLangCSV = (
 const generateCommunityCSV = (nodes: GraphNode[]): string => {
   const headers = ['id', 'label', 'heuristicLabel', 'keywords', 'description', 'enrichedBy', 'cohesion', 'symbolCount'];
   const rows: string[] = [headers.join(',')];
-  
+
   for (const node of nodes) {
     if (node.label !== 'Community') continue;
-    
+
     // Handle keywords array - convert to LadybugDB array format
     const keywords = (node.properties as any).keywords || [];
     const keywordsStr = `[${keywords.map((k: string) => `'${k.replace(/'/g, "''")}'`).join(',')}]`;
-    
+
     rows.push([
       escapeCSVField(node.id),
       escapeCSVField(node.properties.name || ''),  // label is stored in name
@@ -257,7 +257,7 @@ const generateCommunityCSV = (nodes: GraphNode[]): string => {
       escapeCSVNumber(node.properties.symbolCount, 0),
     ].join(','));
   }
-  
+
   return rows.join('\n');
 };
 
@@ -268,14 +268,14 @@ const generateCommunityCSV = (nodes: GraphNode[]): string => {
 const generateProcessCSV = (nodes: GraphNode[]): string => {
   const headers = ['id', 'label', 'heuristicLabel', 'processType', 'stepCount', 'communities', 'entryPointId', 'terminalId'];
   const rows: string[] = [headers.join(',')];
-  
+
   for (const node of nodes) {
     if (node.label !== 'Process') continue;
-    
+
     // Handle communities array (string[])
     const communities = (node.properties as any).communities || [];
     const communitiesStr = `[${communities.map((c: string) => `'${c.replace(/'/g, "''")}'`).join(',')}]`;
-    
+
     rows.push([
       escapeCSVField(node.id),
       escapeCSVField(node.properties.name || ''), // label stores name
@@ -287,21 +287,21 @@ const generateProcessCSV = (nodes: GraphNode[]): string => {
       escapeCSVField((node.properties as any).terminalId || ''),
     ].join(','));
   }
-  
+
   return rows.join('\n');
 };
 
 /**
  * Generate CSV for the single CodeRelation table
  * Headers: from,to,type,confidence,reason
- * 
+ *
  * confidence: 0-1 score for CALLS edges (how sure are we about the target?)
  * reason: 'import-resolved' | 'same-file' | 'fuzzy-global' (or empty for non-CALLS)
  */
 const generateRelationCSV = (graph: KnowledgeGraph): string => {
   const headers = ['from', 'to', 'type', 'confidence', 'reason', 'step'];
   const rows: string[] = [headers.join(',')];
-  
+
   for (const rel of graph.relationships) {
     rows.push([
       escapeCSVField(rel.sourceId),
@@ -312,7 +312,7 @@ const generateRelationCSV = (graph: KnowledgeGraph): string => {
       escapeCSVNumber((rel as any).step, 0),
     ].join(','));
   }
-  
+
   return rows.join('\n');
 };
 
@@ -329,7 +329,7 @@ export const generateAllCSVs = (
   fileContents: Map<string, string>
 ): CSVData => {
   const nodes = Array.from(graph.nodes);
-  
+
   // Generate node CSVs
   const nodeCSVs = new Map<NodeTableName, string>();
   nodeCSVs.set('File', generateFileCSV(nodes, fileContents));
@@ -354,7 +354,6 @@ export const generateAllCSVs = (
 
   // Generate single relation CSV
   const relCSV = generateRelationCSV(graph);
-  
+
   return { nodes: nodeCSVs, relCSV };
 };
-

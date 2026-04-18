@@ -25,7 +25,7 @@ packages.
 ## Using
 
 > [!TIP]
-> This package contains common code for the Google Cloud client library packages.  
-> It should rarely be used by application developers.  
+> This package contains common code for the Google Cloud client library packages.
+> It should rarely be used by application developers.
 
 This library allows you to send JSON messages over an HTTP connection.

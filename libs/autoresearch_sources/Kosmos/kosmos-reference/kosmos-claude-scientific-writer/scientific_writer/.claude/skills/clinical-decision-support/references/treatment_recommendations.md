@@ -126,7 +126,7 @@ Prior Therapies:
 
 2. Second-Line: Docetaxel + ramucirumab (6 cycles)
    - Best Response: Stable disease
-   - PFS: 5 months  
+   - PFS: 5 months
    - Discontinuation Reason: Progressive disease
    - Residual Toxicity: Grade 2 peripheral neuropathy
 
@@ -263,7 +263,7 @@ Key Toxicities:
 
 Monitoring:
 - Blood pressure: Daily for first month, then weekly
-- Thyroid function: Every 6 weeks  
+- Thyroid function: Every 6 weeks
 - Liver enzymes: Before each cycle
 - Imaging: Every 6 weeks (RECIST v1.1)
 ```
@@ -518,4 +518,3 @@ Provider: [Name, credentials]
 - Clinical trial options mentioned when appropriate
 - Shared decision-making documented
 - Goals of care aligned with treatment intensity
-

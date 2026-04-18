@@ -51,7 +51,9 @@ class ArxivCrawler:
         for term in exclude_terms:
             if term.lower() in text_to_check:
                 logger.debug(
-                    "paper_excluded", title=paper.title, reason=f"Contains exclusion term: {term}",
+                    "paper_excluded",
+                    title=paper.title,
+                    reason=f"Contains exclusion term: {term}",
                 )
                 return True
         return False
@@ -139,7 +141,10 @@ class ArxivCrawler:
                     query = f"cat:{category} AND all:{search_term}"
 
                     logger.info(
-                        "searching_arxiv", category=category, search_term=search_term, query=query,
+                        "searching_arxiv",
+                        category=category,
+                        search_term=search_term,
+                        query=query,
                     )
 
                     # Search arXiv
@@ -334,13 +339,17 @@ class ArxivCrawler:
                 downloaded_files.append(metadata_file)
 
         logger.info(
-            "papers_download_complete", total_papers=len(papers), successful=len(downloaded_files),
+            "papers_download_complete",
+            total_papers=len(papers),
+            successful=len(downloaded_files),
         )
 
         return downloaded_files
 
     def get_recent_papers(
-        self, days_back: int | None = None, download_pdfs: bool = False,
+        self,
+        days_back: int | None = None,
+        download_pdfs: bool = False,
     ) -> list[str]:
         """Convenience method to get recent papers across all configured categories
 

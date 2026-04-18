@@ -23,9 +23,11 @@ logger = logging.getLogger(__name__)
 
 # ── Activity Inputs ────────────────────────────────────────────
 
+
 @dataclass
 class IngestInput:
     """Input for document ingestion activity."""
+
     file_paths: list[str]
     table_name: str = "shadowtag_docs"
     chunk_size: int = 512
@@ -35,6 +37,7 @@ class IngestInput:
 @dataclass
 class IngestResult:
     """Result from document ingestion activity."""
+
     files_processed: int
     chunks_created: int
     vectors_stored: int
@@ -45,6 +48,7 @@ class IngestResult:
 @dataclass
 class QueryInput:
     """Input for RAG query activity."""
+
     question: str
     top_k: int = 5
     table_name: str = "shadowtag_docs"
@@ -53,12 +57,14 @@ class QueryInput:
 @dataclass
 class QueryResult:
     """Result from RAG query activity."""
+
     answer: str
     sources: list[dict]
     num_sources: int
 
 
 # ── Activities ─────────────────────────────────────────────────
+
 
 async def ingest_documents_activity(input: IngestInput) -> IngestResult:
     """Activity: Ingest documents into LanceDB.
@@ -86,7 +92,14 @@ async def ingest_documents_activity(input: IngestInput) -> IngestResult:
                 documents.append(Document(content=content, source=str(path)))
             elif path.is_dir():
                 for f in path.rglob("*"):
-                    if f.is_file() and f.suffix in {".py", ".md", ".txt", ".yaml", ".json", ".html"}:
+                    if f.is_file() and f.suffix in {
+                        ".py",
+                        ".md",
+                        ".txt",
+                        ".yaml",
+                        ".json",
+                        ".html",
+                    }:
                         content = f.read_text(errors="replace")
                         documents.append(Document(content=content, source=str(f)))
         except Exception as e:
@@ -154,6 +167,7 @@ async def scan_for_changes_activity(
 
 
 # ── Workflows ──────────────────────────────────────────────────
+
 
 async def ingest_documents_workflow(input: IngestInput) -> IngestResult:
     """Workflow: Ingest documents into the RAG pipeline.
@@ -236,6 +250,7 @@ async def nightly_ingestion_workflow(
 
 
 # ── CLI / Worker ───────────────────────────────────────────────
+
 
 async def main():
     """Run a manual ingestion workflow."""

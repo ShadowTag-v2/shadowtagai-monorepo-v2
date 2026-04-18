@@ -244,7 +244,12 @@ class ConfidenceMonitor:
 
         # Build reasoning
         reasoning = self._build_reasoning(
-            min_conf, min_pos, level, action, len(critical_positions), context,
+            min_conf,
+            min_pos,
+            level,
+            action,
+            len(critical_positions),
+            context,
         )
 
         # Create result
@@ -337,7 +342,9 @@ class ConfidenceMonitor:
         return ConfidenceLevel.VERY_HIGH
 
     def _determine_action(
-        self, level: ConfidenceLevel, critical_positions: list[int],
+        self,
+        level: ConfidenceLevel,
+        critical_positions: list[int],
     ) -> ActionType:
         """Determine action based on confidence level"""
         # Check for multiple critical positions
@@ -588,7 +595,8 @@ class SOPCDecisionProtocol:
 
 # Convenience functions
 def analyze_confidence(
-    logits: Union[list, "np.ndarray"], threshold: float = 0.3,
+    logits: Union[list, "np.ndarray"],
+    threshold: float = 0.3,
 ) -> ConfidenceResult:
     """Quick confidence analysis
 
@@ -604,7 +612,8 @@ def analyze_confidence(
 
 
 def check_lowest_confidence(
-    confidences: list[float], threshold: float = 0.3,
+    confidences: list[float],
+    threshold: float = 0.3,
 ) -> tuple[bool, int, float]:
     """Check for lowest confidence token
 

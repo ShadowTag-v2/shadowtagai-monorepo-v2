@@ -508,7 +508,10 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("Serving Meal...")
     wellness.serve_meal(
-        "agent_alpha", data_quality=0.9, context_richness=0.8, example_diversity=0.7,
+        "agent_alpha",
+        data_quality=0.9,
+        context_richness=0.8,
+        example_diversity=0.7,
     )
     print(f"Meal quality: {wellness.get_health('agent_alpha').meal_quality.overall:.1%}")
 

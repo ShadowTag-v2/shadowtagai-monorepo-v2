@@ -8,7 +8,7 @@
                 ┌────────────────────────────┐
                 │  Developer / Org Terminal  │
                 │  (Gemini Code Assist Smart Actions forms call of question)
-                │  The Muscle (GAAS/Tegu/Antigravity/etc.)  
+                │  The Muscle (GAAS/Tegu/Antigravity/etc.)
                 │  The Brain - Antigravity via cloudworkstation on God-mode
                 │  aka “uphillsnowball”      │
                 └────────────┬───────────────┘
@@ -119,8 +119,8 @@ This system transforms from Probabilistic AI (Chatbots that "guess") to Determin
 
 ### Continual Shepardizing via Ice Lake
 We continuously scrape court APIs, FDA labels, and scholarly sources.
-- Our "Shepardizing Bot" runs continuous Cloud Functions against the immutable Artifact API. 
-- If a case is overturned or a drug recalled, the Artifact Metadata is dynamically updated to "INVALID". 
+- Our "Shepardizing Bot" runs continuous Cloud Functions against the immutable Artifact API.
+- If a case is overturned or a drug recalled, the Artifact Metadata is dynamically updated to "INVALID".
 - When Kosmos attempts to cite it, the 17-Layer DOW CRSMC Shield intercepts the API call, ensuring no malpractice occurs.
 
 ***

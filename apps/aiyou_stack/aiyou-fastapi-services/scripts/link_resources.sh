@@ -33,7 +33,7 @@ for src in "${PATHS[@]}"; do
         dirname=$(basename "$src")
         # Handle spaces in filenames safely
         target="knowledge/drive_resources/${dirname// /_}"
-        
+
         echo "   -> Linking '$dirname' to '$target'"
         ln -sfn "$src" "$target"
     else

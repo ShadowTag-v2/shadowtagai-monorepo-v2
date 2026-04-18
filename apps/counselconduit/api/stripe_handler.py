@@ -46,6 +46,7 @@ def _get_webhook_secret() -> str:
     global _WEBHOOK_SECRET  # noqa: PLW0603
     if _WEBHOOK_SECRET is None:
         from api.secret_client import get_secret
+
         _WEBHOOK_SECRET = get_secret("STRIPE_WEBHOOK_SECRET") or ""
     return _WEBHOOK_SECRET
 
@@ -141,6 +142,7 @@ def verify_stripe_signature(
 
 # ── Event Handlers ──────────────────────────────────────────────────────────
 
+
 def _handle_checkout_completed(event: dict[str, Any]) -> dict[str, str]:
     """Provision attorney access after successful checkout."""
     session = event.get("data", {}).get("object", {})
@@ -232,6 +234,7 @@ _EVENT_HANDLERS: dict[str, Any] = {
 
 
 # ── Route ───────────────────────────────────────────────────────────────────
+
 
 @router.post("/stripe", status_code=status.HTTP_200_OK)
 async def stripe_webhook(request: Request) -> dict[str, Any]:

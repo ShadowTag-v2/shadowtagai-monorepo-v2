@@ -151,7 +151,9 @@ Your Core Directives (Ultrathink):
         return "debate_train_evolve"
 
     async def process(
-        self, challenge: str, context: dict[str, Any] | None = None,
+        self,
+        challenge: str,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Process a challenge using the pinkln OS.
 
@@ -178,7 +180,9 @@ Your Core Directives (Ultrathink):
 
         # Process with selected strategy
         response = await self.reasoning_engine.process(
-            challenge, strategy=strategy, context=self.context,
+            challenge,
+            strategy=strategy,
+            context=self.context,
         )
 
         # Validate excellence
@@ -191,7 +195,9 @@ Your Core Directives (Ultrathink):
         return response
 
     async def _iterate_to_excellence(
-        self, response: dict[str, Any], max_iterations: int = 10,
+        self,
+        response: dict[str, Any],
+        max_iterations: int = 10,
     ) -> dict[str, Any]:
         """Iterate until response achieves "insanely great" status.
 

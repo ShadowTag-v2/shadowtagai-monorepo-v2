@@ -17,7 +17,11 @@ class Glicko2Engine:
         return 1.0 / (1.0 + math.exp(-self._g(phi_j) * (mu - mu_j)))
 
     def update_rating(
-        self, rating: float, rd: float, volatility: float, results: list[tuple[float, float, float]],
+        self,
+        rating: float,
+        rd: float,
+        volatility: float,
+        results: list[tuple[float, float, float]],
     ) -> tuple[float, float, float]:
         """Update rating for a single player based on a series of game results.
 

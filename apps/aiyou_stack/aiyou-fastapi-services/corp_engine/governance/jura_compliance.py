@@ -271,7 +271,11 @@ class JuraComplianceGate:
     # =========================================================================
 
     async def _check_gdpr(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """GDPR compliance check"""
         violations = []
@@ -316,7 +320,11 @@ class JuraComplianceGate:
         }
 
     async def _check_ccpa(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """CCPA compliance check"""
         violations = []
@@ -346,7 +354,11 @@ class JuraComplianceGate:
         }
 
     async def _check_hipaa(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """HIPAA compliance check"""
         violations = []
@@ -391,7 +403,11 @@ class JuraComplianceGate:
         }
 
     async def _check_soc2(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """SOC 2 compliance check"""
         violations = []
@@ -423,7 +439,11 @@ class JuraComplianceGate:
         }
 
     async def _check_eu_ai_act(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """EU AI Act compliance check - delegates to regulations module"""
         violations = []
@@ -461,7 +481,11 @@ class JuraComplianceGate:
         }
 
     async def _check_ca_ai_minor(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """California AI Minor Protection Act compliance"""
         violations = []
@@ -508,7 +532,11 @@ class JuraComplianceGate:
         }
 
     async def _check_fedramp(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """FedRAMP compliance check"""
         violations = []
@@ -541,7 +569,11 @@ class JuraComplianceGate:
         }
 
     async def _check_cmmc(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """CMMC (Cybersecurity Maturity Model Certification) check"""
         violations = []
@@ -564,7 +596,11 @@ class JuraComplianceGate:
         }
 
     async def _check_itar(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """ITAR (International Traffic in Arms Regulations) check"""
         violations = []
@@ -597,7 +633,11 @@ class JuraComplianceGate:
         }
 
     async def _check_pci_dss(
-        self, tenant_id: str, operation: str, data: dict[str, Any], level: ComplianceLevel,
+        self,
+        tenant_id: str,
+        operation: str,
+        data: dict[str, Any],
+        level: ComplianceLevel,
     ) -> dict[str, Any]:
         """PCI-DSS compliance check"""
         violations = []
@@ -659,7 +699,9 @@ class JuraComplianceGate:
     # =========================================================================
 
     def get_audit_trail(
-        self, tenant_id: str | None = None, limit: int = 100,
+        self,
+        tenant_id: str | None = None,
+        limit: int = 100,
     ) -> list[ComplianceResult]:
         """Get audit trail, optionally filtered by tenant"""
         results = self._audit_log[-limit:]

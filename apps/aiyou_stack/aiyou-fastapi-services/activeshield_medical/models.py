@@ -27,7 +27,8 @@ class ActiveShieldAuditLog(Base):
 
     # Context
     phase = Column(
-        String(20), nullable=False,
+        String(20),
+        nullable=False,
     )  # split from Enum to avoid DB-level enum migration pain
     action = Column(String(32), nullable=False)
     passed = Column(Boolean, nullable=False)
@@ -71,7 +72,8 @@ class ActiveShieldAdverseEvent(Base):
 
     # Event Details
     event_type = Column(
-        String(64), nullable=False,
+        String(64),
+        nullable=False,
     )  # e.g., "crisis_intervention", "drug_interaction_block"
     description = Column(String, nullable=False)
     severity = Column(String(32), nullable=False)  # critical, high, moderate

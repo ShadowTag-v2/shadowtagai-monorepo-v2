@@ -1,5 +1,4 @@
-"""Performance metrics data models
-"""
+"""Performance metrics data models"""
 
 from datetime import datetime
 from typing import Any

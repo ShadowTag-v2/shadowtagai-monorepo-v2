@@ -40,11 +40,11 @@ export async function loadTools(secondNavContent, toolDisplayArea, toolsetName) 
                 method: "tools/list",
             })
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const apiResponse = await response.json();
         renderToolList(apiResponse, secondNavContent, toolDisplayArea);
     } catch (error) {
@@ -96,7 +96,7 @@ function renderToolList(apiResponse, secondNavContent, toolDisplayArea) {
 }
 
 /**
- * Handles the click event on a tool button. 
+ * Handles the click event on a tool button.
  * @param {!Event} event The click event object.
  * @param {!HTMLElement} secondNavContent The parent element containing the tool buttons.
  * @param {!HTMLElement} toolDisplayArea The HTML element where tool details will be shown.
@@ -147,9 +147,9 @@ function renderToolDetails(toolName, toolDisplayArea) {
 
         toolParameters = Object.keys(props).map(paramName => {
             const param = props[paramName];
-            let inputType = 'text'; 
+            let inputType = 'text';
             const apiType = param.type ? param.type.toLowerCase() : 'string';
-            let valueType = 'string'; 
+            let valueType = 'string';
             let label = param.description || paramName;
 
             if (apiType === 'integer' || apiType === 'number') {
@@ -159,7 +159,7 @@ function renderToolDetails(toolName, toolDisplayArea) {
                 inputType = 'checkbox';
                 valueType = 'boolean';
             } else if (apiType === 'array') {
-                inputType = 'textarea'; 
+                inputType = 'textarea';
                 const itemType = param.items && param.items.type ? param.items.type.toLowerCase() : 'string';
                 valueType = `array<${itemType}>`;
                 label += ' (Array)';
@@ -167,8 +167,8 @@ function renderToolDetails(toolName, toolDisplayArea) {
 
             return {
                 name: paramName,
-                type: inputType,    
-                valueType: valueType, 
+                type: inputType,
+                valueType: valueType,
                 label: label,
                 required: requiredFields.includes(paramName),
                 authServices: toolAuthParams[paramName] || []

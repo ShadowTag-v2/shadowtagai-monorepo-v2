@@ -10,9 +10,9 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Overview
 
-**Agency**: National Science Foundation  
-**Typical Award**: $100K-$500K per year, 3-5 years  
-**Success Rate**: 20-25% (varies by program)  
+**Agency**: National Science Foundation
+**Typical Award**: $100K-$500K per year, 3-5 years
+**Success Rate**: 20-25% (varies by program)
 **Review Criteria**: Intellectual Merit + Broader Impacts (equally weighted)
 
 ---
@@ -54,7 +54,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
    - Broadening participation
    - Dissemination and outreach
 
-**Format**: Can be full-page text or sectioned  
+**Format**: Can be full-page text or sectioned
 **Audience**: Non-specialists (broad scientific community)
 
 **Template**: `assets/grants/nsf_project_summary.tex`
@@ -182,7 +182,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
    - What are the potential benefits to society?
    - How well-suited to achieve broader impacts?
 
-**Panel Review**: Proposals reviewed by panel of experts  
+**Panel Review**: Proposals reviewed by panel of experts
 **Timeline**: Typically 6 months from deadline to award decision
 
 ---
@@ -193,7 +193,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 - **Project Summary**: `assets/grants/nsf_project_summary.tex`
 - **Biographical Sketch**: Use NSF SciENcv or template
 
-**Resources**: 
+**Resources**:
 - NSF PAPPG: https://www.nsf.gov/publications/pub_summ.jsp?ods_key=pappg
 - NSF Fastlane: https://www.fastlane.nsf.gov/
 
@@ -203,8 +203,8 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Overview
 
-**Agency**: National Institutes of Health  
-**Funding Mechanisms**: 
+**Agency**: National Institutes of Health
+**Funding Mechanisms**:
 - **R01**: Research Project Grant (most common)
 - **R21**: Exploratory/Developmental Research Grant
 - **K Awards**: Career Development Awards
@@ -226,7 +226,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 | **Bibliography** | No limit | Arial 11pt | |
 | **Biographical Sketch** | 5 pages per person | Arial 11pt | |
 
-**Margins**: 0.5 inch minimum (all sides)  
+**Margins**: 0.5 inch minimum (all sides)
 **Paper Size**: Letter (8.5 × 11 inches)
 
 ---
@@ -398,13 +398,13 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Overview
 
-**Agency**: U.S. Department of Energy  
+**Agency**: U.S. Department of Energy
 **Offices**:
 - **Office of Science**: Basic research (BES, BER, ASCR, NP, HEP, FES)
 - **ARPA-E**: High-risk, high-reward energy technologies
 - **EERE**: Energy efficiency and renewable energy
 
-**Typical Award**: $200K-$1M per year, 3 years  
+**Typical Award**: $200K-$1M per year, 3 years
 **Success Rate**: 10-30% (varies by program)
 
 ---
@@ -504,9 +504,9 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Overview
 
-**Agency**: Defense Advanced Research Projects Agency (DoD)  
-**Mission**: High-risk, high-reward research for national security  
-**Typical Award**: $500K-$5M per year, 2-4 years  
+**Agency**: Defense Advanced Research Projects Agency (DoD)
+**Mission**: High-risk, high-reward research for national security
+**Typical Award**: $500K-$5M per year, 2-4 years
 **Success Rate**: 5-15% (highly competitive)
 
 ---
@@ -620,7 +620,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Gates Foundation
 
-**Focus Areas**: Global health, poverty alleviation, education  
+**Focus Areas**: Global health, poverty alleviation, education
 **Typical Award**: Varies widely ($100K to $10M+)
 
 **Proposal Requirements**:
@@ -639,8 +639,8 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Wellcome Trust
 
-**Focus**: Biomedical research, global health  
-**Geographic**: UK and international  
+**Focus**: Biomedical research, global health
+**Geographic**: UK and international
 **Typical Award**: £100K to £5M
 
 **Proposal Format** (varies by scheme):
@@ -658,8 +658,8 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Howard Hughes Medical Institute (HHMI)
 
-**Type**: Investigator appointments (not grants)  
-**Award**: ~$9M over 7 years (renewable)  
+**Type**: Investigator appointments (not grants)
+**Award**: ~$9M over 7 years (renewable)
 **Focus**: Biomedical research, early-career scientists
 
 **Selection**:
@@ -672,7 +672,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 ### Chan Zuckerberg Initiative (CZI)
 
-**Focus**: Science, education, justice & opportunity  
+**Focus**: Science, education, justice & opportunity
 **Award Types**:
 - **Imaging**: Advanced imaging technologies
 - **Neurodegeneration Challenge**: AD, ALS, PD, FTD
@@ -784,4 +784,3 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 8. **Submit early**: Technical glitches happen
 
 **Remember**: Grant writing is a skill developed over time. Seek feedback, revise, and persist!
-

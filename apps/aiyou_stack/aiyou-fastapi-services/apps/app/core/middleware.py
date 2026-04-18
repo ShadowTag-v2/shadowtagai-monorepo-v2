@@ -1,5 +1,4 @@
-"""Custom middleware for Omega Governance Service
-"""
+"""Custom middleware for Omega Governance Service"""
 
 import asyncio
 import time

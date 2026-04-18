@@ -94,7 +94,7 @@ export function initializeResize() {
     window.addEventListener('resize', () => {
         const currentWidth = secondNav.offsetWidth;
         const maxWidth = (window.innerWidth * MAX_WIDTH_PERCENT) / 100;
-        
+
         if (currentWidth > maxWidth) {
             setPanelWidth(secondNav, maxWidth);
             try {
@@ -113,4 +113,3 @@ export function initializeResize() {
 function setPanelWidth(panel, width) {
     panel.style.flex = `0 0 ${width}px`;
 }
-

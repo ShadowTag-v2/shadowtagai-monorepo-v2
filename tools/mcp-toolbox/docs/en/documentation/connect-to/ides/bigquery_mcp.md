@@ -15,7 +15,7 @@ manualLinkTarget: _blank
     <meta http-equiv="refresh" content="0;url=https://cloud.google.com/bigquery/docs/pre-built-tools-with-mcp-toolbox"/>
   </head>
   <body>
-    <p>Connecting to BigQuery using MCP... If you are not automatically redirected, please 
+    <p>Connecting to BigQuery using MCP... If you are not automatically redirected, please
        <a href="https://cloud.google.com/bigquery/docs/pre-built-tools-with-mcp-toolbox">click here to proceed</a>.
     </p>
   </body>

@@ -152,4 +152,3 @@ class FieldFilter extends \Google\Protobuf\Internal\Message
     }
 
 }
-

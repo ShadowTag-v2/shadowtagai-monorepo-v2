@@ -29,6 +29,7 @@ queries = [
     "My check in dates would be from April 10, 2024 to April 19, 2024.",
 ]
 
+
 async def main():
     # TODO(developer): replace this with another model if needed
     llm = GoogleGenAI(
@@ -58,5 +59,6 @@ async def main():
             response = await agent.run(user_msg=query, ctx=ctx)
             print(f"---- {query} ----")
             print(str(response))
+
 
 asyncio.run(main())

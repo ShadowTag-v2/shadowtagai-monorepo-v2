@@ -183,7 +183,9 @@ Respond with ONLY the JSON object, no additional text.
 
             # Call Claude API
             response = self.client.messages.create(
-                model=self.model, max_tokens=2000, messages=[{"role": "user", "content": prompt}],
+                model=self.model,
+                max_tokens=2000,
+                messages=[{"role": "user", "content": prompt}],
             )
 
             # Parse response
@@ -291,7 +293,9 @@ Respond with ONLY the JSON object, no additional text.
 
         """
         return self.score_content(
-            content=flattened_content, content_type="github_repo", content_id=repo_name,
+            content=flattened_content,
+            content_type="github_repo",
+            content_id=repo_name,
         )
 
     def score_arxiv_paper(self, paper_metadata: str, paper_id: str) -> JRScore:
@@ -306,7 +310,9 @@ Respond with ONLY the JSON object, no additional text.
 
         """
         return self.score_content(
-            content=paper_metadata, content_type="arxiv_paper", content_id=paper_id,
+            content=paper_metadata,
+            content_type="arxiv_paper",
+            content_id=paper_id,
         )
 
     def score_intel_event(self, event: "IntelEvent") -> JRScore:
@@ -342,7 +348,9 @@ Respond with ONLY the JSON object, no additional text.
         content_type = content_type_map.get(event.source_type.value, "web_content")
 
         return self.score_content(
-            content=enriched_content, content_type=content_type, content_id=event.id,
+            content=enriched_content,
+            content_type=content_type,
+            content_id=event.id,
         )
 
     def _build_enriched_content(self, event: "IntelEvent") -> str:

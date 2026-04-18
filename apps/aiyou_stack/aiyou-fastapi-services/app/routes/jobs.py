@@ -1,5 +1,4 @@
-"""API routes for scheduled job management.
-"""
+"""API routes for scheduled job management."""
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START disable_network_modular]
-import { disableNetwork } from "firebase/firestore"; 
+import { disableNetwork } from "firebase/firestore";
 
 await disableNetwork(db);
 console.log("Network disabled!");

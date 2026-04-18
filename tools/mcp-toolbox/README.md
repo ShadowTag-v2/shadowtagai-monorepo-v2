@@ -19,7 +19,7 @@
 [![Java SDK](https://img.shields.io/maven-central/v/com.google.cloud.mcp/mcp-toolbox-sdk-java?logo=apache-maven&logoColor=white&label=Java%20SDK)](https://mvnrepository.com/artifact/com.google.cloud.mcp/mcp-toolbox-sdk-java)
 </div>
 
-MCP Toolbox for Databases is an open source Model Context Protocol (MCP) server that connects your AI agents, IDEs, and applications directly to your enterprise databases. 
+MCP Toolbox for Databases is an open source Model Context Protocol (MCP) server that connects your AI agents, IDEs, and applications directly to your enterprise databases.
 
 <p align="center">
 <img src="docs/en/documentation/introduction/architecture.png" alt="architecture" width="50%"/>
@@ -32,7 +32,7 @@ It serves a **dual purpose**:
 
 This README provides a brief overview. For comprehensive details, see the [full documentation](https://mcp-toolbox.dev/).
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > **Repository Name Update:** The `genai-toolbox` repository has been officially renamed to `mcp-toolbox`. To ensure your local environment reflects the new name, you may update your remote:
 > `git remote set-url origin https://github.com/googleapis/mcp-toolbox.git`
 
@@ -94,7 +94,7 @@ You can use the Toolbox in any MCP-compatible IDE or client (e.g., Gemini CLI, G
 
 2. Set the appropriate environment variables to connect, see the [Prebuilt Tools Reference](https://mcp-toolbox.dev/documentation/configuration/prebuilt-configs/).
 
-When you run Toolbox with a `--prebuilt=<database>` flag, you instantly get access to standard tools to interact with that database. 
+When you run Toolbox with a `--prebuilt=<database>` flag, you instantly get access to standard tools to interact with that database.
 
 Supported databases currently include:
 - **Google Cloud:** AlloyDB, BigQuery, Cloud SQL (PostgreSQL, MySQL, SQL Server), Spanner, Firestore, Knowledge Catalog (formerly known as Dataplex).
@@ -106,7 +106,7 @@ For a full list of available tools and their capabilities across all supported d
 
 
 > [!TIP]
-> For users looking for a managed solution, [Google Cloud MCP Servers](https://cloud.google.com/blog/products/databases/managed-mcp-servers-for-google-cloud-databases) 
+> For users looking for a managed solution, [Google Cloud MCP Servers](https://cloud.google.com/blog/products/databases/managed-mcp-servers-for-google-cloud-databases)
 > provide a managed MCP experience with prebuilt tools; you can [learn more about the differences here](https://mcp-toolbox.dev/dev/reference/faq/).
 
 ---
@@ -216,7 +216,7 @@ npx @toolbox-sdk/server --config tools.yaml
 This runs the latest version of the Toolbox server with your configuration file.
 
 > [!NOTE]
-> This method is optimized for convenience rather than performance. 
+> This method is optimized for convenience rather than performance.
 > For a more standard and reliable installation, please use the binary
 > or container image as described in [Install & Run the Toolbox server](#install--run-the-toolbox-server).
 
@@ -369,7 +369,7 @@ To run Toolbox from binary:
 ./toolbox --config "tools.yaml"
 ```
 
-> ⓘ Note  
+> ⓘ Note
 > Toolbox enables dynamic reloading by default. To disable, use the
 > `--disable-reload` flag.
 
@@ -389,7 +389,7 @@ us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:$VERSION \
 --config "/app/tools.yaml"
 ```
 
-> ⓘ Note  
+> ⓘ Note
 > The `-v` flag mounts your local `tools.yaml` into the container, and `-p` maps
 > the container's port `5000` to your host's port `5000`.
 
@@ -406,7 +406,7 @@ and run:
 go run .
 ```
 
-> ⓘ Note  
+> ⓘ Note
 > This command runs the project from source, and is more suitable for development
 > and testing. It does **not** compile a binary into your `$GOPATH`. If you want
 > to compile a binary instead, refer the [Developer
@@ -466,7 +466,7 @@ section](https://mcp-toolbox.dev/documentation/deploy-to/)
 ## Connect to Toolbox
 
 Once your Toolbox server is up and running, you can load tools into your MCP-compatible client or
-application. 
+application.
 
 ### MCP Client
 
@@ -1033,8 +1033,8 @@ visit [Toolbox UI](https://mcp-toolbox.dev/documentation/configuration/toolbox-u
 
 ### Telemetry
 
-Toolbox emits traces and metrics via OpenTelemetry. Use `--telemetry-otlp=<endpoint>` 
-to export to any OTLP-compatible backend like Google Cloud Monitoring, Agnost AI, or 
+Toolbox emits traces and metrics via OpenTelemetry. Use `--telemetry-otlp=<endpoint>`
+to export to any OTLP-compatible backend like Google Cloud Monitoring, Agnost AI, or
 others. See the [telemetry docs](https://mcp-toolbox.dev/documentation/monitoring/export_telemetry/) for details.
 
 ### Generate Agent Skills
@@ -1074,7 +1074,7 @@ For more details, see our [Full Versioning Policy](https://mcp-toolbox.dev/refer
 
 ## Contributing
 
-Contributions are welcome. Please, see the [CONTRIBUTING](CONTRIBUTING.md) guide to get started. 
+Contributions are welcome. Please, see the [CONTRIBUTING](CONTRIBUTING.md) guide to get started.
 
 For technical details on setting up a environment for developing on Toolbox itself, see the [DEVELOPER](DEVELOPER.md) guide.
 

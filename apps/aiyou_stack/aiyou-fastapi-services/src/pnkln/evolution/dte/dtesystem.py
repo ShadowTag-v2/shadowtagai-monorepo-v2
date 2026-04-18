@@ -90,7 +90,10 @@ class DTESystem:
         return result
 
     async def _run_debate(
-        self, prompt: str, test_cases: list[dict[str, Any]], context: str | None = None,
+        self,
+        prompt: str,
+        test_cases: list[dict[str, Any]],
+        context: str | None = None,
     ) -> DebateRound:
         """Run multi-agent debate (MAD) for prompt improvement.
 
@@ -230,7 +233,8 @@ class DTESystem:
 
         nested_count = text.count("(") + text.count("[") + text.count("{")
         avg_sentence_len = len(text.split()) / max(
-            1, text.count(".") + text.count("!") + text.count("?"),
+            1,
+            text.count(".") + text.count("!") + text.count("?"),
         )
         simplicity = max(0.0, 1.0 - nested_count * 0.02 - avg_sentence_len / 100)
         has_headers = bool(re.search("^#{1,3}\\s", text, re.MULTILINE))

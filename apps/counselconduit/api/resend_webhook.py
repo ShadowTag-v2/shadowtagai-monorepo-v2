@@ -56,6 +56,7 @@ def _handle_bounced(data: dict[str, Any]) -> dict[str, Any]:
 
     # Fire Google Chat alert for bounced emails
     import asyncio
+
     try:
         try:
             from apps.counselconduit.api.workspace_alerts import send_chat_alert

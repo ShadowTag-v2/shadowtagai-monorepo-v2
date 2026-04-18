@@ -1,5 +1,4 @@
-"""Tests for Unified Search API
-"""
+"""Tests for Unified Search API"""
 
 import os
 import sys
@@ -92,12 +91,17 @@ class TestUnifiedSearchAPI:
         # Mock GPTRAM results
         mock_search_gptram.return_value = [
             SearchResult(
-                source="gptram", score=0.9, key="decision:test", text="Test decision", ts=1700000000,
+                source="gptram",
+                score=0.9,
+                key="decision:test",
+                text="Test decision",
+                ts=1700000000,
             ),
         ]
 
         response = client.post(
-            "/search", json={"query": "test query", "k": 5, "sources": ["gptram"]},
+            "/search",
+            json={"query": "test query", "k": 5, "sources": ["gptram"]},
         )
 
         assert response.status_code == 200

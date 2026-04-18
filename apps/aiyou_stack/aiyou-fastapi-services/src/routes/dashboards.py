@@ -122,9 +122,10 @@ async def delete_dashboard(
         )
 
 
-
 @router.post(
-    "/{dashboard_id}/widgets", response_model=WidgetResponse, status_code=status.HTTP_201_CREATED,
+    "/{dashboard_id}/widgets",
+    response_model=WidgetResponse,
+    status_code=status.HTTP_201_CREATED,
 )
 async def add_widget(
     dashboard_id: UUID,
@@ -162,4 +163,3 @@ async def delete_widget(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Widget not found",
         )
-

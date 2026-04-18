@@ -18,5 +18,5 @@ const mountainImagesRef = ref(storage, 'images/mountains.jpg');
 
 // While the file names are the same, the references point to different files
 mountainsRef.name === mountainImagesRef.name;           // true
-mountainsRef.fullPath === mountainImagesRef.fullPath;   // false 
+mountainsRef.fullPath === mountainImagesRef.fullPath;   // false
 // [END storage_upload_ref_modular]

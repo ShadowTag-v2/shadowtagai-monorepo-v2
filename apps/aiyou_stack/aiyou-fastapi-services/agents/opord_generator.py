@@ -266,7 +266,10 @@ class OPORDGenerator:
         return f"n-autoresearch/Kosmos/BioAgents Squadron {verb} {task} IOT achieve commander's intent."
 
     def _build_execution(
-        self, task: str, mission_type: MissionType, context: dict[str, Any],
+        self,
+        task: str,
+        mission_type: MissionType,
+        context: dict[str, Any],
     ) -> Execution:
         """Build Para 3: EXECUTION"""
         # Commander's Intent
@@ -512,7 +515,10 @@ class TroopLeadingProcedures:
         return self.context.get("issue_opord")
 
     async def _execute_step(
-        self, step_name: str, staff_section: str, ooda_phase: OODAPhase,
+        self,
+        step_name: str,
+        staff_section: str,
+        ooda_phase: OODAPhase,
     ) -> dict[str, Any]:
         """Execute individual TLP step"""
         if step_name == "receive_mission":

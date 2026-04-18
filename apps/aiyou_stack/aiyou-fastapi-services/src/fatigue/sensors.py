@@ -365,7 +365,9 @@ class IMUAnalyzer:
         head_drift = np.sqrt(pitch_std**2 + yaw_std**2)
 
         return IMUMetrics(
-            head_tilt_deg=avg_tilt, micro_saccade_rate=micro_saccade_rate, head_drift=head_drift,
+            head_tilt_deg=avg_tilt,
+            micro_saccade_rate=micro_saccade_rate,
+            head_drift=head_drift,
         )
 
     def get_fatigue_score(self) -> float:

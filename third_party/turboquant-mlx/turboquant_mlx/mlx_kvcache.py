@@ -44,11 +44,11 @@ class TurboQuantKVCache:
         self,
         r_bits: int = 4,
         theta_bits: int = 4,
-        compress_after: int = 128,       # Start compressing after this many tokens
-        fp16_sink_size: int = 128,        # Keep first N tokens in fp16 (attention sinks)
-        chunk_size: int = 64,             # Buffer N tokens before firing compressor
-        use_qjl_keys: bool = True,        # Full TurboQuant for keys (PolarQuant + QJL)
-        use_qjl_values: bool = False,     # PolarQuant only for values (asymmetric)
+        compress_after: int = 128,  # Start compressing after this many tokens
+        fp16_sink_size: int = 128,  # Keep first N tokens in fp16 (attention sinks)
+        chunk_size: int = 64,  # Buffer N tokens before firing compressor
+        use_qjl_keys: bool = True,  # Full TurboQuant for keys (PolarQuant + QJL)
+        use_qjl_values: bool = False,  # PolarQuant only for values (asymmetric)
         qjl_sketch_dim: int = 256,
     ):
         self.r_bits = r_bits
@@ -146,9 +146,7 @@ class TurboQuantKVCache:
     # Main interface
     # ------------------------------------------------------------------
 
-    def update_and_fetch(
-        self, keys: mx.array, values: mx.array
-    ) -> Tuple[mx.array, mx.array]:
+    def update_and_fetch(self, keys: mx.array, values: mx.array) -> Tuple[mx.array, mx.array]:
         """
         Append new keys/values and return full (decompressed) history.
         Shape: [batch, heads, seq, head_dim]
@@ -164,10 +162,8 @@ class TurboQuantKVCache:
             sink_k = keys[..., :sink_new, :]
             sink_v = values[..., :sink_new, :]
 
-            self._sink_keys = sink_k if self._sink_keys is None else \
-                mx.concatenate([self._sink_keys, sink_k], axis=-2)
-            self._sink_values = sink_v if self._sink_values is None else \
-                mx.concatenate([self._sink_values, sink_v], axis=-2)
+            self._sink_keys = sink_k if self._sink_keys is None else mx.concatenate([self._sink_keys, sink_k], axis=-2)
+            self._sink_values = sink_v if self._sink_values is None else mx.concatenate([self._sink_values, sink_v], axis=-2)
 
             # Remaining tokens go to buffer
             keys = keys[..., sink_new:, :]
@@ -175,25 +171,20 @@ class TurboQuantKVCache:
 
         # ---- Phase 2: Buffer tokens, compress when chunk is full ----
         if keys.shape[-2] > 0:
-            self._buf_keys = keys if self._buf_keys is None else \
-                mx.concatenate([self._buf_keys, keys], axis=-2)
-            self._buf_values = values if self._buf_values is None else \
-                mx.concatenate([self._buf_values, values], axis=-2)
+            self._buf_keys = keys if self._buf_keys is None else mx.concatenate([self._buf_keys, keys], axis=-2)
+            self._buf_values = values if self._buf_values is None else mx.concatenate([self._buf_values, values], axis=-2)
 
             # Fire compressor when buffer hits chunk_size AND we're past compress_after
             buf_len = self._buf_keys.shape[-2]
             buf_total = (self._sink_keys.shape[-2] if self._sink_keys is not None else 0) + buf_len
 
-            while self._buf_keys is not None and \
-                    self._buf_keys.shape[-2] >= self.chunk_size and \
-                    buf_total >= self.compress_after:
-
-                chunk_k = self._buf_keys[..., :self.chunk_size, :]
-                chunk_v = self._buf_values[..., :self.chunk_size, :]
+            while self._buf_keys is not None and self._buf_keys.shape[-2] >= self.chunk_size and buf_total >= self.compress_after:
+                chunk_k = self._buf_keys[..., : self.chunk_size, :]
+                chunk_v = self._buf_values[..., : self.chunk_size, :]
                 self._compress_chunk(chunk_k, chunk_v)
 
-                rest_k = self._buf_keys[..., self.chunk_size:, :]
-                rest_v = self._buf_values[..., self.chunk_size:, :]
+                rest_k = self._buf_keys[..., self.chunk_size :, :]
+                rest_v = self._buf_values[..., self.chunk_size :, :]
                 self._buf_keys = rest_k if rest_k.shape[-2] > 0 else None
                 self._buf_values = rest_v if rest_v.shape[-2] > 0 else None
 
@@ -247,8 +238,7 @@ class TurboQuantKVCache:
             parts_k.append(self._sink_keys)
             parts_v.append(self._sink_values)
         if self._comp_key_chunks:
-            head_dim = self._sink_keys.shape[-1] if self._sink_keys is not None else \
-                (self._buf_keys.shape[-1] if self._buf_keys is not None else 64)
+            head_dim = self._sink_keys.shape[-1] if self._sink_keys is not None else (self._buf_keys.shape[-1] if self._buf_keys is not None else 64)
             comp_k, comp_v = self._decompress_all_chunks(head_dim)
             parts_k.append(comp_k)
             parts_v.append(comp_v)
@@ -284,9 +274,7 @@ class TurboQuantKVCache:
         }
 
     def is_empty(self) -> bool:
-        return (self._sink_keys is None and
-                self._buf_keys is None and
-                not self._comp_key_chunks)
+        return self._sink_keys is None and self._buf_keys is None and not self._comp_key_chunks
 
     @property
     def memory_size(self) -> int:

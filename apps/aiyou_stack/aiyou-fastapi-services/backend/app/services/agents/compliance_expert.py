@@ -61,7 +61,10 @@ Provide responses in JSON format with:
 Be thorough but practical. Focus on what matters most for legal compliance."""
 
     async def analyze_endpoint(
-        self, endpoint_code: str, endpoint_path: str, request_method: str = "GET",
+        self,
+        endpoint_code: str,
+        endpoint_path: str,
+        request_method: str = "GET",
     ) -> dict[str, Any]:
         """Analyze an API endpoint for compliance issues
 
@@ -194,7 +197,10 @@ Provide compliance analysis in JSON format."""
             raise
 
     async def check_consent_requirements(
-        self, user_location: str, data_categories: list[str], processing_purposes: list[str],
+        self,
+        user_location: str,
+        data_categories: list[str],
+        processing_purposes: list[str],
     ) -> dict[str, Any]:
         """Determine what consent is required for data processing
 
@@ -307,7 +313,9 @@ Make it clear, comprehensive, and legally compliant."""
             raise
 
     async def audit_compliance(
-        self, system_description: str, regulations: list[str] = None,
+        self,
+        system_description: str,
+        regulations: list[str] = None,
     ) -> dict[str, Any]:
         """Perform comprehensive compliance audit
 

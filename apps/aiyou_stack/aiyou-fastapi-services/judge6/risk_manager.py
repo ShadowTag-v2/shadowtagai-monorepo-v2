@@ -16,10 +16,8 @@ class RiskAssessmentError(Exception):
     """Raised when risk assessment fails."""
 
 
-
 class AxiomValidationError(Exception):
     """Raised when axiom validation fails."""
-
 
 
 class YourRiskManager:
@@ -88,7 +86,9 @@ class YourRiskManager:
             raise RiskAssessmentError(f"Risk classification failed: {e!s}") from e
 
     def assess_axiom_violations(
-        self, user_input: str, axioms: list[ConstitutionalAxiom],
+        self,
+        user_input: str,
+        axioms: list[ConstitutionalAxiom],
     ) -> list[ConstitutionalAxiom]:
         """Check for constitutional axiom violations.
 

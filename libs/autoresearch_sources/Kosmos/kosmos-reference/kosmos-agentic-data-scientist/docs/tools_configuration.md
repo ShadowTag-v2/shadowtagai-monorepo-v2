@@ -258,14 +258,14 @@ from agentic_data_scientist.agents.adk import create_agent
 def custom_analysis_tool(data: str, working_dir: str) -> str:
     """
     Custom analysis tool with working_dir parameter.
-    
+
     Parameters
     ----------
     data : str
         Input data
     working_dir : str
         Working directory for security validation
-        
+
     Returns
     -------
     str
@@ -296,7 +296,7 @@ def tool_function(
 ) -> str:
     """
     Tool description.
-    
+
     Returns
     -------
     str
@@ -381,4 +381,3 @@ Web fetch operation exceeded timeout. Solutions:
 **Environment Variables:**
 - Required: `OPENROUTER_API_KEY`, `ANTHROPIC_API_KEY`
 - Optional: `CONTEXT7_API_KEY` (only if using Context7)
-

@@ -143,7 +143,9 @@ class EnterpriseValuationModel:
         }
 
     def calculate_division_value(
-        self, division_key: str, scenario: MarketScenario = MarketScenario.BASE,
+        self,
+        division_key: str,
+        scenario: MarketScenario = MarketScenario.BASE,
     ) -> float:
         """Calculate single division valuation"""
         division = self.divisions[division_key]
@@ -160,7 +162,8 @@ class EnterpriseValuationModel:
         return ebitda * adjusted_ebitda_multiple
 
     def calculate_total_enterprise_value(
-        self, scenario: MarketScenario = MarketScenario.BASE,
+        self,
+        scenario: MarketScenario = MarketScenario.BASE,
     ) -> float:
         """Calculate total enterprise value across all divisions"""
         total = 0.0
@@ -169,7 +172,8 @@ class EnterpriseValuationModel:
         return total
 
     def calculate_aerospace_contribution(
-        self, scenario: MarketScenario = MarketScenario.BASE,
+        self,
+        scenario: MarketScenario = MarketScenario.BASE,
     ) -> float:
         """Calculate aerospace division contribution to enterprise value"""
         # Aerospace is part of defense_pnt + infrastructure_mesh
@@ -179,7 +183,9 @@ class EnterpriseValuationModel:
         return aerospace_uplift
 
     def run_monte_carlo(
-        self, iterations: int = 10_000, target_valuation_usd: float = 12_000_000_000,
+        self,
+        iterations: int = 10_000,
+        target_valuation_usd: float = 12_000_000_000,
     ) -> MonteCarloResult:
         """Run Monte Carlo simulation for valuation range
 
@@ -323,10 +329,12 @@ class EnterpriseValuationModel:
                 "mean_usd": monte_carlo.mean,
                 "std_dev_usd": monte_carlo.std_dev,
                 "probability_ge_12b": monte_carlo.probability_above_threshold.get(
-                    12_000_000_000, 0,
+                    12_000_000_000,
+                    0,
                 ),
                 "probability_ge_20b": monte_carlo.probability_above_threshold.get(
-                    20_000_000_000, 0,
+                    20_000_000_000,
+                    0,
                 ),
             },
             "founder_value": self.calculate_founder_value(),

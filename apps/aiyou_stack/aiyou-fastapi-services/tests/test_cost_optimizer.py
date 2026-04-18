@@ -1,5 +1,4 @@
-"""Tests for AWS Cost Optimizer service.
-"""
+"""Tests for AWS Cost Optimizer service."""
 
 from unittest.mock import Mock, patch
 
@@ -69,7 +68,9 @@ class TestCostAnalysis:
         }
 
         result = await cost_optimizer_service.analyze_costs(
-            start_date="2024-01-01", end_date="2024-01-31", group_by=["SERVICE"],
+            start_date="2024-01-01",
+            end_date="2024-01-31",
+            group_by=["SERVICE"],
         )
 
         assert result.summary.total_cost == 75.00
@@ -98,7 +99,8 @@ class TestRecommendations:
         }
 
         result = await cost_optimizer_service.get_optimization_recommendations(
-            optimization_types=[OptimizationType.RIGHT_SIZING], min_savings_threshold=50.0,
+            optimization_types=[OptimizationType.RIGHT_SIZING],
+            min_savings_threshold=50.0,
         )
 
         assert result.total_estimated_savings >= 50.0
@@ -196,7 +198,10 @@ class TestCostSummary:
         ]
 
         summary = cost_optimizer_service._calculate_cost_summary(
-            data_points=data_points, start_date="2024-01-01", end_date="2024-01-03", raw_data={},
+            data_points=data_points,
+            start_date="2024-01-01",
+            end_date="2024-01-03",
+            raw_data={},
         )
 
         assert summary.total_cost == 450.00

@@ -146,7 +146,7 @@ log "═══ PHASE 6: NICE-TO-HAVE ═══"
 
 NICE_TOOLS=(
     jq          # JSON processor
-    yq          # YAML processor  
+    yq          # YAML processor
     ripgrep     # Fast grep (rg)
     fd          # Fast find
     bat         # Better cat

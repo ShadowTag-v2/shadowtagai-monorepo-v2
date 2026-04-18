@@ -47,7 +47,7 @@ This repository hosts the following Python packages. See the package-specific RE
     pip install toolbox-adk
 
     # OR
-    
+
     # For the core, framework-agnostic SDK
     pip install toolbox-core
 
@@ -57,7 +57,7 @@ This repository hosts the following Python packages. See the package-specific RE
     pip install toolbox-langchain
 
     # OR
-    
+
     # For the LlamaIndex integration
     pip install toolbox-llamaindex
 

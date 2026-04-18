@@ -20,7 +20,6 @@ class MessageCreate(MessageBase):
     """Schema for creating a message."""
 
 
-
 class MessageResponse(MessageBase):
     """Schema for message response."""
 

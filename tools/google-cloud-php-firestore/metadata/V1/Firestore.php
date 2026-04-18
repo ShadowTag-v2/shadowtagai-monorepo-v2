@@ -37,4 +37,3 @@ class Firestore
         static::$is_initialized = true;
     }
 }
-

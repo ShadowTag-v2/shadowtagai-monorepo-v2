@@ -259,7 +259,9 @@ class RiskManager:
     residual_risk: RiskLevel | None = None
 
     async def step1_identify_hazards(
-        self, task: str, context: dict[str, Any] = None,
+        self,
+        task: str,
+        context: dict[str, Any] = None,
     ) -> list[Hazard]:
         """Step 1: Identify Hazards
 
@@ -279,7 +281,11 @@ class RiskManager:
 
         for hid, desc, cat, src in hazard_templates:
             hazard = Hazard(
-                id=hid, description=desc, category=cat, source=src, identified_by="RiskManager",
+                id=hid,
+                description=desc,
+                category=cat,
+                source=src,
+                identified_by="RiskManager",
             )
             hazards.append(hazard)
 
@@ -392,8 +398,7 @@ class RiskManager:
         }
 
     async def full_assessment(self, task: str, context: dict[str, Any] = None) -> dict[str, Any]:
-        """Run complete 5-step CRM process.
-        """
+        """Run complete 5-step CRM process."""
         await self.step1_identify_hazards(task, context)
         await self.step2_assess_hazards()
         await self.step3_develop_controls()

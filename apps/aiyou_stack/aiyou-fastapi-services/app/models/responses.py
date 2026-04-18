@@ -1,5 +1,4 @@
-"""Response models for the Database Expert API
-"""
+"""Response models for the Database Expert API"""
 
 from typing import Any
 

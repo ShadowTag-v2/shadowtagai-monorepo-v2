@@ -117,7 +117,8 @@ def generate_test_dataset(size: int = 1000) -> list[LabeledItem]:
         content_parts = []
         if has_keywords:
             keywords = random.sample(
-                ["AI", "governance", "technology", "policy"], k=random.randint(1, 2),
+                ["AI", "governance", "technology", "policy"],
+                k=random.randint(1, 2),
             )
             content_parts.extend(keywords)
 
@@ -387,7 +388,10 @@ async def test_dte_evolution_convergence():
     test_data = generate_test_dataset(size=500)
 
     fusion = CheatSheetFusion(
-        source="twitter", use_case="governance_signals", dte_enabled=True, target_accuracy=0.65,
+        source="twitter",
+        use_case="governance_signals",
+        dte_enabled=True,
+        target_accuracy=0.65,
     )
 
     preset_essentials = PresetCheatSheets.twitter_governance_signals()
@@ -504,7 +508,8 @@ async def test_full_dte_validation_suite():
 if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Run test suite

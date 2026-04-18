@@ -1,5 +1,4 @@
-"""SEO Master Service - Business logic for SEO operations
-"""
+"""SEO Master Service - Business logic for SEO operations"""
 
 import re
 from datetime import datetime
@@ -33,8 +32,7 @@ class SEOService:
 
     @staticmethod
     def analyze_url(db: Session, url: str) -> SEOAnalysis:
-        """Perform comprehensive SEO analysis on a URL
-        """
+        """Perform comprehensive SEO analysis on a URL"""
         try:
             # Fetch the page
             response = requests.get(

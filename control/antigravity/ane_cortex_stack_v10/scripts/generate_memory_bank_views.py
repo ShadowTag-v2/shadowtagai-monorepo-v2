@@ -14,15 +14,12 @@ base = Path(".agent/memory")
 )
 
 (base / "product-vision.md").write_text(
-    "# Product Vision\n\n"
-    "Wake up current, stay current, and upgrade code from memory-first truth.\n",
+    "# Product Vision\n\nWake up current, stay current, and upgrade code from memory-first truth.\n",
     encoding="utf-8",
 )
 
 (base / "context.md").write_text(
-    "# Context\n\n"
-    f"Startup contract: {authority.get('startup_contract', {})}\n\n"
-    f"Settings: {authority.get('settings', {})}\n",
+    f"# Context\n\nStartup contract: {authority.get('startup_contract', {})}\n\nSettings: {authority.get('settings', {})}\n",
     encoding="utf-8",
 )
 
@@ -45,9 +42,7 @@ base = Path(".agent/memory")
 )
 
 (base / "patterns" / "common-tasks.md").write_text(
-    "# Common Tasks\n\n"
-    "## Session bootstrap\n"
-    "GET /api/hydrate-pack before any substantial reasoning.\n",
+    "# Common Tasks\n\n## Session bootstrap\nGET /api/hydrate-pack before any substantial reasoning.\n",
     encoding="utf-8",
 )
 

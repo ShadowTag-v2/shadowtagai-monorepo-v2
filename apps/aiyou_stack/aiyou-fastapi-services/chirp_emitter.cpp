@@ -25,7 +25,7 @@ void emit_chirp() {
         // Modulate signature into frequency chirps
         // (Simplified frequency sweep logic)
         for (int i = CHIRP_FREQ_START; i < CHIRP_FREQ_END; i += 100) {
-            tone(25, i); 
+            tone(25, i);
             delayMicroseconds(100);
         }
         noTone(25);

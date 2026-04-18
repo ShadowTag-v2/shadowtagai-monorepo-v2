@@ -1,5 +1,4 @@
-"""FastAPI service for Pnkln File Search
-"""
+"""FastAPI service for Pnkln File Search"""
 
 from contextlib import asynccontextmanager
 

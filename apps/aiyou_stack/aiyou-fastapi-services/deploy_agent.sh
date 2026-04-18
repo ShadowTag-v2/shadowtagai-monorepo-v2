@@ -33,7 +33,7 @@ gcloud beta workstations ssh "$WORKSTATION" --cluster="$CLUSTER" --config="$CONF
   mkdir -p $REMOTE_DIR
   tar -xzf agent_code.tar.gz -C $REMOTE_DIR
   cd $REMOTE_DIR
-  
+
   echo '🛠️ Checking for Chrome...'
   if ! command -v google-chrome >/dev/null 2>&1; then
     echo '⚠️ Chrome not found. Installing...'

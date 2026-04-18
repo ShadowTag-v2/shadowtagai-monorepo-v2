@@ -30,7 +30,8 @@ async def gemini_live_websocket(websocket: WebSocket):
     # Initialize service
     # Project ID is handled by ADC or env var in the service __init__
     service = GeminiLiveService(
-        location=settings.GEMINI_LIVE_LOCATION, model_id=settings.GEMINI_LIVE_MODEL,
+        location=settings.GEMINI_LIVE_LOCATION,
+        model_id=settings.GEMINI_LIVE_MODEL,
     )
 
     try:

@@ -71,7 +71,7 @@ To run these tests locally (they are automatically run for PRs using
 
 ## Maintainers
 
-The ability to triage issues, merge PRs, and assign reviewers is limited to 
+The ability to triage issues, merge PRs, and assign reviewers is limited to
 members of the [`cloud-sdk-dart-team`][] GitHub team.
 
 Team members also have access to the [`dart-sdk-testing`][] Google Cloud

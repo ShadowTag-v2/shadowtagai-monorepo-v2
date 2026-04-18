@@ -206,7 +206,7 @@ tools:
     source: my_cockroachdb
     description: Get expense summary by category for a user
     statement: |
-      SELECT 
+      SELECT
         category,
         COUNT(*) as count,
         SUM(amount) as total_amount,
@@ -234,7 +234,7 @@ tools:
     source: my_cockroachdb
     description: Get running total of expenses
     statement: |
-      SELECT 
+      SELECT
         expense_date,
         amount,
         SUM(amount) OVER (ORDER BY expense_date) as running_total
@@ -257,14 +257,14 @@ tools:
     description: Find top spending users
     statement: |
       WITH user_totals AS (
-        SELECT 
+        SELECT
           user_id,
           SUM(amount) as total_spent
         FROM expenses
         WHERE expense_date >= $1
         GROUP BY user_id
       )
-      SELECT 
+      SELECT
         u.name,
         u.email,
         ut.total_spent

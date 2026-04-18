@@ -20,10 +20,11 @@ class GroundedAgent:
         self.model = genai.GenerativeModel(model_name)
 
     def generate_grounded_content(
-        self, prompt: str, tools: list[Any] | None = None,
+        self,
+        prompt: str,
+        tools: list[Any] | None = None,
     ) -> dict[str, Any]:
-        """Generates content using the Gemini model, potentially using tools for grounding.
-        """
+        """Generates content using the Gemini model, potentially using tools for grounding."""
         try:
             logger.info(f"Generating content for prompt: {prompt[:50]}...")
 
@@ -57,7 +58,10 @@ class GroundedAgent:
                     for grounding_chunk in candidate.grounding_metadata.grounding_chunks:
                         if hasattr(grounding_chunk, "web"):
                             citations.append(
-                                {"uri": grounding_chunk.web.uri, "title": grounding_chunk.web.title},
+                                {
+                                    "uri": grounding_chunk.web.uri,
+                                    "title": grounding_chunk.web.title,
+                                },
                             )
 
             return {"text": text_content, "citations": citations, "error": None}

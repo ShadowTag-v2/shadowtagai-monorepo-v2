@@ -190,4 +190,3 @@ class BulkDeleteDocumentsRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

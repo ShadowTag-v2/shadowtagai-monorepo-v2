@@ -60,4 +60,3 @@ class ApiScope
         return constant($const);
     }
 }
-

@@ -72,7 +72,8 @@ class SovereignRepairLoop:
 
             # 4. Create PR
             subprocess.run(
-                ["gh", "pr", "create", "--title", pr_title, "--body", pr_body], check=True,
+                ["gh", "pr", "create", "--title", pr_title, "--body", pr_body],
+                check=True,
             )
 
             return f"PR Created: {branch_name}"

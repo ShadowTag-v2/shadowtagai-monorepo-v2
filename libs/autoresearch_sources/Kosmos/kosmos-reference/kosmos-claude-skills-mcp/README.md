@@ -93,7 +93,7 @@ uvx claude-skills-mcp --config config.json
 The server provides three tools for working with Claude Agent Skills:
 
 1. **`find_helpful_skills`** - Semantic search for relevant skills based on task description
-2. **`read_skill_document`** - Retrieve specific files (scripts, data, references) from skills  
+2. **`read_skill_document`** - Retrieve specific files (scripts, data, references) from skills
 3. **`list_skills`** - View complete inventory of all loaded skills (for exploration/debugging)
 
 See [API Documentation](docs/api.md) for detailed parameters, examples, and best practices.
@@ -106,7 +106,7 @@ The system uses a **two-package architecture** for optimal performance:
   - Starts instantly (<5 seconds) ✅ **No Cursor timeout!**
   - Auto-downloads backend on first use
   - MCP server (stdio) for Cursor
-  
+
 - **Backend** ([`claude-skills-mcp-backend`](https://pypi.org/project/claude-skills-mcp-backend/)): Heavy server (~250 MB)
   - Vector search with PyTorch & sentence-transformers
   - MCP server (streamable HTTP)
@@ -122,7 +122,7 @@ See [Architecture Guide](docs/architecture.md) for detailed design and data flow
 
 ## Skill Sources
 
-Load skills from **GitHub repositories** (direct skills or Claude Code plugins) or **local directories**. 
+Load skills from **GitHub repositories** (direct skills or Claude Code plugins) or **local directories**.
 
 By default, loads from:
 - [Official Anthropic Skills](https://github.com/anthropics/skills) - 15 diverse skills for documents, presentations, web artifacts, and more

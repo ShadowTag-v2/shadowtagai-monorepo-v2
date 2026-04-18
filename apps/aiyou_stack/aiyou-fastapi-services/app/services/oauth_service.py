@@ -49,7 +49,11 @@ class OAuthService:
         return self.PROVIDERS.get(provider.lower())
 
     def initiate_oauth_flow(
-        self, provider: str, integration_id: int, redirect_uri: str, scope: str | None = None,
+        self,
+        provider: str,
+        integration_id: int,
+        redirect_uri: str,
+        scope: str | None = None,
     ) -> dict[str, str]:
         """Initiate OAuth authorization flow"""
         config = self.get_provider_config(provider)
@@ -83,7 +87,10 @@ class OAuthService:
         return {"authorization_url": auth_url, "state": state}
 
     async def handle_oauth_callback(
-        self, code: str, state: str, user_id: int,
+        self,
+        code: str,
+        state: str,
+        user_id: int,
     ) -> Integration | None:
         """Handle OAuth callback and exchange code for tokens"""
         # Verify state
@@ -187,7 +194,9 @@ class OAuthService:
             return None
 
     async def refresh_access_token(
-        self, integration_id: int, user_id: int,
+        self,
+        integration_id: int,
+        user_id: int,
     ) -> IntegrationCredential | None:
         """Refresh OAuth access token"""
         integration = (

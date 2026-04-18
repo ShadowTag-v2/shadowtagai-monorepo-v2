@@ -23,7 +23,7 @@
             try {
                 const response = await fetch('/memory/firestore');
                 const data = await response.json();
-                
+
                 if (data && data.data && data.data.ui_payload) {
                     renderer.render(data.data.ui_payload);
                 } else {

@@ -38,26 +38,39 @@ class Subscription(Base):
 
     # User Relationship
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True,
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
 
     # Subscription Details
     tier: Mapped[str] = mapped_column(
-        String(50), nullable=False, comment="free, pro, or enterprise",
+        String(50),
+        nullable=False,
+        comment="free, pro, or enterprise",
     )
     status: Mapped[str] = mapped_column(
-        String(50), default="active", nullable=False, comment="active, canceled, past_due, trialing",
+        String(50),
+        default="active",
+        nullable=False,
+        comment="active, canceled, past_due, trialing",
     )
 
     # Stripe Integration
     stripe_subscription_id: Mapped[str | None] = mapped_column(
-        String(255), unique=True, nullable=True, index=True,
+        String(255),
+        unique=True,
+        nullable=True,
+        index=True,
     )
     stripe_customer_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
 
     # Pricing (in cents)
     price: Mapped[int] = mapped_column(
-        Integer, nullable=False, comment="Price in cents (e.g., 2900 = $29.00)",
+        Integer,
+        nullable=False,
+        comment="Price in cents (e.g., 2900 = $29.00)",
     )
 
     # Billing Period
@@ -71,13 +84,17 @@ class Subscription(Base):
     # Usage Tracking (for metered billing)
     api_calls_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     api_calls_limit: Mapped[int | None] = mapped_column(
-        Integer, nullable=True, comment="NULL = unlimited",
+        Integer,
+        nullable=True,
+        comment="NULL = unlimited",
     )
 
     # Payment
     last_payment_date: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     last_payment_amount: Mapped[int | None] = mapped_column(
-        Integer, nullable=True, comment="Last payment in cents",
+        Integer,
+        nullable=True,
+        comment="Last payment in cents",
     )
 
     # Cancellation
@@ -87,7 +104,10 @@ class Subscription(Base):
     # Audit
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False,
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+        nullable=False,
     )
 
     # Relationships

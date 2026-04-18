@@ -1,5 +1,4 @@
-"""Prompt management system with templates and engineering.
-"""
+"""Prompt management system with templates and engineering."""
 
 import json
 from datetime import datetime

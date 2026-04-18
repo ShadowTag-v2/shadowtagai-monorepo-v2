@@ -393,4 +393,3 @@ class FindNearest extends \Google\Protobuf\Internal\Message
         return $this;}
 
 }
-

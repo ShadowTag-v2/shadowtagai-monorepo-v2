@@ -1,5 +1,4 @@
-"""Workflow engine service for executing workflow automation blocks.
-"""
+"""Workflow engine service for executing workflow automation blocks."""
 
 import re
 import uuid
@@ -45,7 +44,9 @@ class WorkflowEngine:
         return self.workflows.get(workflow_name)
 
     def start_workflow(
-        self, workflow_name: str, initial_variables: dict[str, Any] | None = None,
+        self,
+        workflow_name: str,
+        initial_variables: dict[str, Any] | None = None,
     ) -> tuple[WorkflowExecution, WorkflowAction | None]:
         """Start a new workflow execution.
 
@@ -60,7 +61,8 @@ class WorkflowEngine:
         # Create execution context
         execution_id = str(uuid.uuid4())
         context = WorkflowExecutionContext(
-            variables=initial_variables or {}, current_action_index=0,
+            variables=initial_variables or {},
+            current_action_index=0,
         )
 
         execution = WorkflowExecution(
@@ -76,7 +78,9 @@ class WorkflowEngine:
         return self._execute_next_action(execution)
 
     def provide_input(
-        self, execution_id: str, input_value: str,
+        self,
+        execution_id: str,
+        input_value: str,
     ) -> tuple[WorkflowExecution, WorkflowAction | None]:
         """Provide user input for a waiting workflow.
 
@@ -119,7 +123,8 @@ class WorkflowEngine:
         return self.executions.get(execution_id)
 
     def _execute_next_action(
-        self, execution: WorkflowExecution,
+        self,
+        execution: WorkflowExecution,
     ) -> tuple[WorkflowExecution, WorkflowAction | None]:
         """Execute the next action in the workflow.
 
@@ -171,7 +176,9 @@ class WorkflowEngine:
                 # Create note with variable substitution
                 content = self._substitute_variables(action.content, execution.context.variables)
                 note_id = self.storage_service.create_note(
-                    folder=action.folder, title=action.noteTitle, content=content,
+                    folder=action.folder,
+                    title=action.noteTitle,
+                    content=content,
                 )
                 execution.context.variables[f"Note_{action.noteTitle}_ID"] = note_id
 

@@ -109,7 +109,7 @@ func TestParseFromYamlWithTemplateBigtable(t *testing.T) {
 				- name: fieldArray
 				  type: array
 				  description: The columns to return for the query.
-				  items: 
+				  items:
 						name: column
 						type: string
 						description: A column name that will be returned from the query.

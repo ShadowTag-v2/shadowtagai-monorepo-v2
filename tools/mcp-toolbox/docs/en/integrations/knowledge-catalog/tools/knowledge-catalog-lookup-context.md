@@ -2,7 +2,7 @@
 title: "dataplex-lookup-context"
 type: docs
 weight: 1
-description: > 
+description: >
   A "dataplex-lookup-context" tool provides rich metadata of one or more data assets along with their relationships.
 ---
 
@@ -13,7 +13,7 @@ A `dataplex-lookup-context` tool provides rich metadata of one or more data asse
 `dataplex-lookup-context` takes a required `name` parameter which contains the
 project and location to which the request should be attributed in the following
 form: projects/{project}/locations/{location} and also a required `resources`
-parameter which is a list of resource names for which metadata is needed in the 
+parameter which is a list of resource names for which metadata is needed in the
 following form: projects/{project}/locations/{location}/entryGroups/{group}/entries/{entry}
 
 ## Compatible Sources

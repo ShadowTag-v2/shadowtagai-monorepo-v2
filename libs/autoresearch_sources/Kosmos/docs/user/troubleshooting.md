@@ -47,7 +47,7 @@ ModuleNotFoundError: No module named 'kosmos'
 2. **Reinstall in editable mode:**
    ```bash
    pip install -e .
-   
+
    # Verify installation
    pip show kosmos
    ```
@@ -72,11 +72,11 @@ ERROR: pip's dependency resolver does not currently take into account all the pa
    ```bash
    # Remove old venv
    rm -rf venv
-   
+
    # Create fresh
    python3.11 -m venv venv
    source venv/bin/activate
-   
+
    # Install
    pip install --upgrade pip
    pip install -e .
@@ -118,7 +118,7 @@ Error: ANTHROPIC_API_KEY environment variable not set
    ```bash
    # Bash/Zsh
    export $(cat .env | grep -v '^#' | xargs)
-   
+
    # Or source if using direnv
    direnv allow
    ```

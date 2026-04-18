@@ -168,7 +168,8 @@ async def test_review_rotation():
 
     # Test without review
     result_no_review = await orchestrator.process_query(
-        query="Analyze financial data trends", enable_review_rotation=False,
+        query="Analyze financial data trends",
+        enable_review_rotation=False,
     )
 
     print("Without Review Rotation:")
@@ -182,7 +183,8 @@ async def test_review_rotation():
 
     # Test with review
     result_with_review = await orchestrator.process_query(
-        query="Analyze financial data trends", enable_review_rotation=True,
+        query="Analyze financial data trends",
+        enable_review_rotation=True,
     )
 
     print("\nWith Review Rotation:")

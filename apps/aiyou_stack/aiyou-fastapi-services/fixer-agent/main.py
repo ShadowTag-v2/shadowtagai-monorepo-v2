@@ -24,7 +24,8 @@ class FixRequest(BaseModel):
     original_code: str
     error_message: str
     rejection_reason: str | None = Field(
-        None, description="Feedback from the Reviewer on a previous failed attempt.",
+        None,
+        description="Feedback from the Reviewer on a previous failed attempt.",
     )
 
 
@@ -71,5 +72,6 @@ async def create_code_fix(request: FixRequest):
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"An error occurred in the Fixer Agent: {e!s}",
+            status_code=500,
+            detail=f"An error occurred in the Fixer Agent: {e!s}",
         )

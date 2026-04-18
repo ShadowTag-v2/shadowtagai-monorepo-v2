@@ -42,7 +42,7 @@ filterParams:
     type: string
     description: The city to search for customers in.
 projectPayload: |
-    { 
+    {
       "first_name": 1,
       "last_name": 1,
       "email": 1,

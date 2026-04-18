@@ -68,4 +68,3 @@ class ResourceIdentity extends \Google\Protobuf\Internal\Message
     }
 
 }
-

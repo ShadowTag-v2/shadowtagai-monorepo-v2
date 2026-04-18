@@ -238,7 +238,12 @@ class OracleStudio:
 
         # Executive summary
         result.executive_summary = self._generate_executive_summary(
-            arguments, assumptions, scores, steelmans, actions, verb_ledger,
+            arguments,
+            assumptions,
+            scores,
+            steelmans,
+            actions,
+            verb_ledger,
         )
         result.risk_assessment = self._assess_risk(assumptions, verb_ledger)
         result.win_probability = self._estimate_win_probability(scores, steelmans)
@@ -264,8 +269,7 @@ class OracleStudio:
             has_operative = any(
                 v.original_text.strip() == sentence.strip()
                 for v in verb_ledger.verbs
-                if v.classification.value
-                in ("performative", "operative", "coercive", "dispositive")
+                if v.classification.value in ("performative", "operative", "coercive", "dispositive")
             )
 
             claim_buffer.append(sentence)
@@ -299,9 +303,7 @@ class OracleStudio:
     def _classify_argument(self, text: str) -> str:
         """Classify an argument as factual, legal, procedural, or policy."""
         text_lower = text.lower()
-        if any(
-            w in text_lower for w in ["statute", "code", "section", "u.s.c.", "rule", "precedent"]
-        ):
+        if any(w in text_lower for w in ["statute", "code", "section", "u.s.c.", "rule", "precedent"]):
             return "legal"
         if any(w in text_lower for w in ["court", "motion", "filing", "hearing", "procedur"]):
             return "procedural"
@@ -332,31 +334,25 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _audit_verbs_against_arguments(
-        self, arguments: list[Argument], verb_ledger: VerbLedger,
+        self,
+        arguments: list[Argument],
+        verb_ledger: VerbLedger,
     ) -> None:
         """Cross-reference verb forensics against extracted arguments."""
         for arg in arguments:
             arg_text = arg.claim.lower()
             # Flag arguments with excessive hedging
-            hedging_verbs = [
-                v
-                for v in verb_ledger.verbs
-                if v.classification.value == "hedging" and v.verb.lower() in arg_text
-            ]
+            hedging_verbs = [v for v in verb_ledger.verbs if v.classification.value == "hedging" and v.verb.lower() in arg_text]
             if hedging_verbs:
                 arg.vulnerabilities.append(
-                    f"Contains {len(hedging_verbs)} hedging verb(s): "
-                    f"{', '.join(v.verb for v in hedging_verbs)} — weakens assertion",
+                    f"Contains {len(hedging_verbs)} hedging verb(s): {', '.join(v.verb for v in hedging_verbs)} — weakens assertion",
                 )
 
             # Flag passive constructions that obscure actor
-            passive_verbs = [
-                v for v in verb_ledger.verbs if v.is_passive and v.verb.lower() in arg_text
-            ]
+            passive_verbs = [v for v in verb_ledger.verbs if v.is_passive and v.verb.lower() in arg_text]
             if passive_verbs:
                 arg.vulnerabilities.append(
-                    f"Contains {len(passive_verbs)} passive construction(s) — "
-                    "actor obscured, opposing counsel can challenge attribution",
+                    f"Contains {len(passive_verbs)} passive construction(s) — actor obscured, opposing counsel can challenge attribution",
                 )
 
     # ──────────────────────────────────────
@@ -432,7 +428,9 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _filter_relevance(
-        self, arguments: list[Argument], assumptions: list[Assumption],
+        self,
+        arguments: list[Argument],
+        assumptions: list[Assumption],
     ) -> list[RelevanceScore]:
         """Score each argument's logical nexus to the central issue."""
         scores = []
@@ -476,7 +474,9 @@ class OracleStudio:
     # ──────────────────────────────────────
 
     def _steelman_challenge(
-        self, arguments: list[Argument], scores: list[RelevanceScore],
+        self,
+        arguments: list[Argument],
+        scores: list[RelevanceScore],
     ) -> list[SteelmanResult]:
         """Adversarial dialectic: for each argument, construct the
         strongest possible version AND the most devastating attack.
@@ -493,9 +493,7 @@ class OracleStudio:
             if arg.support:
                 steelman += f"Supported by: {'; '.join(arg.support[:3])}. "
             steelman += (
-                f"Strength assessment: {composite:.0%}. "
-                "If properly supported with documentary evidence, this argument "
-                "could withstand challenge."
+                f"Strength assessment: {composite:.0%}. If properly supported with documentary evidence, this argument could withstand challenge."
             )
 
             # Challenger: attack vectors
@@ -504,13 +502,11 @@ class OracleStudio:
                 attacks.extend(arg.vulnerabilities)
             if composite < 0.5:
                 attacks.append(
-                    "Low composite score suggests fundamental weakness — "
-                    "opposing counsel likely to move to strike or challenge standing",
+                    "Low composite score suggests fundamental weakness — opposing counsel likely to move to strike or challenge standing",
                 )
             if arg.classification == "factual" and not arg.support:
                 attacks.append(
-                    "Factual assertion without evidentiary foundation — "
-                    "challenge with Rule 56(e) (summary judgment standard)",
+                    "Factual assertion without evidentiary foundation — challenge with Rule 56(e) (summary judgment standard)",
                 )
 
             # Counter-arguments
@@ -749,7 +745,9 @@ class OracleStudio:
         return "🟢 LOW — Document appears structurally sound"
 
     def _estimate_win_probability(
-        self, scores: list[RelevanceScore], steelmans: list[SteelmanResult],
+        self,
+        scores: list[RelevanceScore],
+        steelmans: list[SteelmanResult],
     ) -> float:
         """Rough win probability estimate based on argument survival rates."""
         if not scores:
@@ -757,7 +755,8 @@ class OracleStudio:
 
         avg_relevance = sum(s.composite_score for s in scores) / len(scores)
         survival_rate = sum(1 for s in steelmans if "SURVIVES" in s.net_assessment) / max(
-            len(steelmans), 1,
+            len(steelmans),
+            1,
         )
 
         return min(0.95, max(0.05, (avg_relevance * 0.6 + survival_rate * 0.4)))

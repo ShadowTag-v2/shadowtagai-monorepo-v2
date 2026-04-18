@@ -539,4 +539,3 @@ result = md.convert("file_without_extension", file_extension=".pdf")
 with open("file", "rb") as f:
     result = md.convert_stream(f, file_extension=".pdf")
 ```
-

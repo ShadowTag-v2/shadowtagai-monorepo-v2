@@ -39,7 +39,9 @@ class Dashboard(Base):
 
     # Relationships
     widgets = relationship(
-        "DashboardWidget", back_populates="dashboard", cascade="all, delete-orphan",
+        "DashboardWidget",
+        back_populates="dashboard",
+        cascade="all, delete-orphan",
     )
 
     def __repr__(self):
@@ -56,7 +58,9 @@ class DashboardWidget(Base):
 
     # Foreign key
     dashboard_id = Column(
-        UUID(as_uuid=True), ForeignKey("dashboards.id", ondelete="CASCADE"), nullable=False,
+        UUID(as_uuid=True),
+        ForeignKey("dashboards.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     # Widget identification

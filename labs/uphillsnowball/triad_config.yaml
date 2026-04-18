@@ -53,7 +53,7 @@ triad:
       ane: true           # Apple Neural Engine
       gpu: "mlx"          # MLX framework
       max_concurrent: 4
-    
+
     execution:
       timeout_seconds: 300
       retry_count: 2

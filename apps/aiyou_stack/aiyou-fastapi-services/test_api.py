@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Quick API test script for Omega Governance Service
-"""
+"""Quick API test script for Omega Governance Service"""
 
 import asyncio
 import sys

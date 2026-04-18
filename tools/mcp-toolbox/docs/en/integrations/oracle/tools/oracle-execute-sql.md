@@ -2,7 +2,7 @@
 title: "oracle-execute-sql"
 type: docs
 weight: 1
-description: > 
+description: >
   An "oracle-execute-sql" tool executes a SQL statement against an Oracle database.
 ---
 

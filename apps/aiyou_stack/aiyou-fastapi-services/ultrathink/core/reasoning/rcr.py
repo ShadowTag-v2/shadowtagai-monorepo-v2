@@ -28,7 +28,9 @@ class RCRResult(BaseModel):
     final_output: str
     total_iterations: int
     improvement_score: float = Field(
-        ge=0.0, le=1.0, description="How much did iteration improve output",
+        ge=0.0,
+        le=1.0,
+        description="How much did iteration improve output",
     )
     metadata: dict = Field(default_factory=dict)
 

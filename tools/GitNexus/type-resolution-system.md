@@ -229,13 +229,13 @@ for user in users { user.save(); }
 
 This is handled by `resolveIterableElementType()` through a three-step cascade:
 
-1. **Declaration type nodes**  
+1. **Declaration type nodes**
    Uses raw type annotation nodes when available, including cases such as `User[]` or `List[User]`.
 
-2. **Scope environment string**  
+2. **Scope environment string**
    Uses `extractElementTypeFromString()` to parse a stored type string.
 
-3. **AST walk fallback**  
+3. **AST walk fallback**
    Walks upward to enclosing declarations or parameters when needed.
 
 ### Tier 0c: Pattern Binding
@@ -474,17 +474,17 @@ Important gaps still remain:
 
 When modifying this system, treat the following as load-bearing invariants:
 
-1. **Conservatism matters more than recall**  
+1. **Conservatism matters more than recall**
    A missed binding is usually safer than a misleading receiver type.
 
-2. **Scope-key format is shared behavior**  
+2. **Scope-key format is shared behavior**
    If scope keys change, constructor-binding verification and any downstream lookup using those keys must change in sync.
 
-3. **Tier naming may differ across code and PR discussions**  
+3. **Tier naming may differ across code and PR discussions**
    For-loop element inference may appear as "Tier 0b" in documentation and "Tier 1c" in Phase 6 PR / test naming.
 
-4. **Comment-based types are fallback signals, not primary truth**  
+4. **Comment-based types are fallback signals, not primary truth**
    They should remain lower-trust than explicit AST-derived types.
 
-5. **Return-type-aware inference already exists in constrained form**  
+5. **Return-type-aware inference already exists in constrained form**
    Future roadmap work should extend and generalize it rather than reintroduce it from scratch.

@@ -162,9 +162,7 @@ def main():
         context_parts = []
 
         if "latest_architecture" in results["context"]:
-            context_parts.append(
-                f"Current architecture: {results['context']['latest_architecture']}"
-            )
+            context_parts.append(f"Current architecture: {results['context']['latest_architecture']}")
 
         if "current_costs" in results["context"]:
             context_parts.append(f"Current costs: {results['context']['current_costs']}")

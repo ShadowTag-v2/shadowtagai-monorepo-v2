@@ -21,4 +21,3 @@ class RealtimeUpdates
         static::$is_initialized = true;
     }
 }
-

@@ -177,7 +177,9 @@ class AIInterpreter:
         return gesture, confidence
 
     async def _detect_emotion(
-        self, frame_data: bytes, keypoints: dict[str, Any],
+        self,
+        frame_data: bytes,
+        keypoints: dict[str, Any],
     ) -> tuple[str, float]:
         """Detect emotional state from facial expression + body language"""
         # TODO: Implement emotion detection
@@ -199,7 +201,10 @@ class AIInterpreter:
         return emotion, confidence
 
     async def _generate_text(
-        self, gesture_type: str, emotion: str, keypoints: dict[str, Any],
+        self,
+        gesture_type: str,
+        emotion: str,
+        keypoints: dict[str, Any],
     ) -> str:
         """Generate natural language interpretation of gesture + emotion"""
         # TODO: Implement text generation
@@ -235,7 +240,11 @@ class AIInterpreter:
         return random.choice(options)
 
     async def _generate_art(
-        self, frame_data: bytes, gesture_type: str, emotion: str, timestamp_ms: float,
+        self,
+        frame_data: bytes,
+        gesture_type: str,
+        emotion: str,
+        timestamp_ms: float,
     ) -> str:
         """Generate AI art from gesture + emotion
 
@@ -259,7 +268,10 @@ class AIInterpreter:
         return art_url
 
     async def generate_highlight_clip(
-        self, stream_id: str, start_timestamp_ms: float, _end_timestamp_ms: float,
+        self,
+        stream_id: str,
+        start_timestamp_ms: float,
+        _end_timestamp_ms: float,
     ) -> str:
         """Generate highlight clip from stream segment
 
@@ -277,7 +289,10 @@ class AIInterpreter:
         return clip_url
 
     async def compile_nft_media(
-        self, stream_id: str, duration_seconds: int, emotion_summary: dict[str, float],
+        self,
+        stream_id: str,
+        duration_seconds: int,
+        emotion_summary: dict[str, float],
     ) -> dict[str, str]:
         """Compile final NFT media from stream
 
@@ -337,7 +352,8 @@ class EmotionAnalytics:
 
     @staticmethod
     def find_peak_moments(
-        emotion_frames: list[dict[str, Any]], top_n: int = 5,
+        emotion_frames: list[dict[str, Any]],
+        top_n: int = 5,
     ) -> list[dict[str, Any]]:
         """Find most emotionally expressive moments
 

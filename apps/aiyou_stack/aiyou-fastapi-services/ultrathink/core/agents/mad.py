@@ -28,7 +28,8 @@ class DebateRound(BaseModel):
     round_number: int
     agent_responses: dict[str, str] = Field(description="agent_id -> response")
     critiques: dict[str, list[str]] = Field(
-        default_factory=dict, description="agent_id -> list of critiques",
+        default_factory=dict,
+        description="agent_id -> list of critiques",
     )
     consensus_reached: bool = False
 
@@ -164,7 +165,11 @@ REFINE your position:
                 for i, role in enumerate(self.roles[: self.agents]):
                     agent_id = f"agent_{i + 1}"
                     prompt = self.format_prompt(
-                        problem, agent_id, role, round_num, previous_responses,
+                        problem,
+                        agent_id,
+                        role,
+                        round_num,
+                        previous_responses,
                     )
 
                     llm_response = executor.execute(prompt, temperature=temperature)

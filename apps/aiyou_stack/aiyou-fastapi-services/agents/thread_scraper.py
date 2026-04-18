@@ -541,7 +541,6 @@ class RateLimitError(Exception):
     """Raised when rate limit is exceeded."""
 
 
-
 # Scheduled job runner
 async def run_scheduled_jobs(db: Session):
     """Run any scheduled scrape jobs that are due."""

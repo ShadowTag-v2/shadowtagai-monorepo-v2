@@ -53,7 +53,7 @@ sources:
     queryParams:
       sslmode: require
       application_name: my-app
-    
+
     # MCP Security Settings (recommended for production)
     readOnlyMode: true          # Read-only by default (MCP best practice)
     enableWriteMode: false      # Set to true to allow write operations
@@ -73,12 +73,12 @@ tools:
       - name: user_id
         type: string
         description: The user's ID
-  
+
   describe_expenses:
     type: cockroachdb-describe-table
     source: my_cockroachdb
     description: Describe the expenses table schema
-  
+
   list_expenses_indexes:
     type: cockroachdb-list-indexes
     source: my_cockroachdb

@@ -40,7 +40,10 @@ class JREngine:
     """
 
     def validate(
-        self, purpose: str, reasons: list[str], risks: list[dict[str, Any]],
+        self,
+        purpose: str,
+        reasons: list[str],
+        risks: list[dict[str, Any]],
     ) -> dict[str, Any]:
         # Implementation of validation logic
         return {"status": "validated", "risk_level": RiskLevel.LOW.value}

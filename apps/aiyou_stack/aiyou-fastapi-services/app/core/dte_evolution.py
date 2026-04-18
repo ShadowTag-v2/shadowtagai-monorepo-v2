@@ -248,7 +248,9 @@ class GRPOSimulator:
         logger.info(f"GRPO Simulator initialized (G={group_size})")
 
     def simulate_training_step(
-        self, rewards: list[float], baseline: float | None = None,
+        self,
+        rewards: list[float],
+        baseline: float | None = None,
     ) -> dict[str, Any]:
         """Simulate GRPO training step
 

@@ -24,7 +24,10 @@ def success_response(data: T | None = None, message: str | None = None) -> APIRe
 
 
 def error_response(
-    error: str, message: str, details: Any | None = None, path: str | None = None,
+    error: str,
+    message: str,
+    details: Any | None = None,
+    path: str | None = None,
 ) -> ErrorResponse:
     """Create an error response.
 
@@ -42,7 +45,9 @@ def error_response(
 
 
 def paginated_response(
-    data: list[T], pagination: PaginationMeta, message: str | None = None,
+    data: list[T],
+    pagination: PaginationMeta,
+    message: str | None = None,
 ) -> PaginatedResponse[T]:
     """Create a paginated API response.
 

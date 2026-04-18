@@ -49,8 +49,8 @@ resource "google_cloud_run_v2_service" "bridge_server" {
   template {
     service_account = google_service_account.bridge_sa.email
     containers {
-      # INSTRUCTION: Initially uses a placeholder. 
-      # Later, your CI/CD will update this to: 
+      # INSTRUCTION: Initially uses a placeholder.
+      # Later, your CI/CD will update this to:
       # region-docker.pkg.dev/PROJECT/bridge-repo/bridge-server:latest
       image = "us-docker.pkg.dev/cloudrun/container/hello"
 

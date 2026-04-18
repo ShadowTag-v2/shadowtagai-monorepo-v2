@@ -35,7 +35,8 @@ class PipelineBridge:
 
         # Output topic for processed intel
         self.output_topic = self.publisher.topic_path(
-            self.project_id, "corp-engine-intel-updates-prod",
+            self.project_id,
+            "corp-engine-intel-updates-prod",
         )
 
         self._running = False
@@ -59,7 +60,8 @@ class PipelineBridge:
     async def _subscribe_scored_items(self):
         """Subscribe to scored items from Nightly Pipeline"""
         subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscriptions["scored_items"],
+            self.project_id,
+            self.subscriptions["scored_items"],
         )
 
         def callback(message):
@@ -75,7 +77,8 @@ class PipelineBridge:
     async def _subscribe_config_changes(self):
         """Subscribe to tenant config changes"""
         subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscriptions["config_changes"],
+            self.project_id,
+            self.subscriptions["config_changes"],
         )
 
         def callback(message):
@@ -91,7 +94,8 @@ class PipelineBridge:
     async def _subscribe_auto_port(self):
         """Subscribe to auto-port framework notifications"""
         subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscriptions["auto_port"],
+            self.project_id,
+            self.subscriptions["auto_port"],
         )
 
         def callback(message):

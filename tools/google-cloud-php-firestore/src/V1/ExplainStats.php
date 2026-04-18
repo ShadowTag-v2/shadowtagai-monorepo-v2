@@ -84,4 +84,3 @@ class ExplainStats extends \Google\Protobuf\Internal\Message
     }
 
 }
-

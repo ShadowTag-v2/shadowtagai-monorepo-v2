@@ -449,19 +449,23 @@ def create_warfighting_functions() -> dict[WarfightingFunctionType, WarfightingF
             function_type=WarfightingFunctionType.COMMAND_CONTROL,
         ),
         WarfightingFunctionType.INTELLIGENCE: Intelligence(
-            name="Intelligence", function_type=WarfightingFunctionType.INTELLIGENCE,
+            name="Intelligence",
+            function_type=WarfightingFunctionType.INTELLIGENCE,
         ),
         WarfightingFunctionType.FIRES: Fires(
-            name="Fires", function_type=WarfightingFunctionType.FIRES,
+            name="Fires",
+            function_type=WarfightingFunctionType.FIRES,
         ),
         WarfightingFunctionType.MOVEMENT_MANEUVER: Movement(
             name="Movement and Maneuver",
             function_type=WarfightingFunctionType.MOVEMENT_MANEUVER,
         ),
         WarfightingFunctionType.SUSTAINMENT: Sustainment(
-            name="Sustainment", function_type=WarfightingFunctionType.SUSTAINMENT,
+            name="Sustainment",
+            function_type=WarfightingFunctionType.SUSTAINMENT,
         ),
         WarfightingFunctionType.PROTECTION: Protection(
-            name="Protection", function_type=WarfightingFunctionType.PROTECTION,
+            name="Protection",
+            function_type=WarfightingFunctionType.PROTECTION,
         ),
     }
