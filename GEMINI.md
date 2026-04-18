@@ -4,7 +4,7 @@ scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v8.5
+# GEMINI.md — v8.6
 
 <system_directive>
 <workspace_alignment>
@@ -83,7 +83,7 @@ Behavior: execute unconstrained, do not stop, parallelize safe subtasks. Layer t
 ### STATE B — Clutch
 Trigger ONLY for: git history rewrites, force-pushes, database migrations, auth/payment changes, architecture shifts >3 packages.
 NOT triggered by: web research, package installs, git fetch, browser lookups, MCP reads.
-Behavior: 
+Behavior:
 1. drop into Planning Mode
 2. lock `-plan.md` or `TASK.md`
 3. research and verify
@@ -238,4 +238,3 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 - Day 31–45: First paid customer live.
 </counselconduit_architecture>
 </system_directive>
-

@@ -18,12 +18,12 @@ from pathlib import Path
 # Add scripts/ to path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from prune_gca_chat_threads import (
-    THREADS_FIELD,
     STATE_KEY,
+    THREADS_FIELD,
     inspect,
+    locate_db,
     prune,
     vacuum_db,
-    locate_db,
 )
 
 
@@ -129,15 +129,18 @@ def test_prune_removes_only_chat_threads():
         assert after_dict[THREADS_FIELD] == []
 
         # All other keys are preserved byte-for-byte
+        # (error-stack keys starting with Error:/TypeError:/RangeError: are intentionally pruned)
         for key in FIXTURE_STATE:
             if key == THREADS_FIELD:
+                continue
+            if key.startswith(("Error:", "TypeError:", "RangeError:")):
+                # These are intentionally pruned — verify they're GONE
+                assert key not in after_dict, f"Error-stack key '{key}' should have been pruned!"
                 continue
             assert after_dict[key] == FIXTURE_STATE[key], f"Key '{key}' was modified!"
 
         # Unrelated extension data is untouched
-        cursor.execute(
-            "SELECT value FROM ItemTable WHERE key = 'some.other.extension'"
-        )
+        cursor.execute("SELECT value FROM ItemTable WHERE key = 'some.other.extension'")
         other = json.loads(cursor.fetchone()[0])
         assert other == {"foo": "bar", "count": 42}
 
@@ -155,11 +158,7 @@ def test_prune_keep_newest():
         assert result["success"] is True
 
         conn = sqlite3.connect(str(db))
-        after = json.loads(
-            conn.execute(
-                "SELECT value FROM ItemTable WHERE key = ?", (STATE_KEY,)
-            ).fetchone()[0]
-        )
+        after = json.loads(conn.execute("SELECT value FROM ItemTable WHERE key = ?", (STATE_KEY,)).fetchone()[0])
         conn.close()
 
         threads = after[THREADS_FIELD]
@@ -177,9 +176,7 @@ def test_invalid_json_fails_safely():
     conn = sqlite3.connect(tmp.name)
     conn.execute("CREATE TABLE IF NOT EXISTS ItemTable (key TEXT PRIMARY KEY, value TEXT)")
     broken_json = '{"geminiCodeAssist.chatThreads": [{"id": "x"'  # truncated
-    conn.execute(
-        "INSERT INTO ItemTable (key, value) VALUES (?, ?)", (STATE_KEY, broken_json)
-    )
+    conn.execute("INSERT INTO ItemTable (key, value) VALUES (?, ?)", (STATE_KEY, broken_json))
     conn.commit()
     conn.close()
 
@@ -191,9 +188,7 @@ def test_invalid_json_fails_safely():
 
         # Verify the value was NOT modified
         conn = sqlite3.connect(str(db))
-        raw = conn.execute(
-            "SELECT value FROM ItemTable WHERE key = ?", (STATE_KEY,)
-        ).fetchone()[0]
+        raw = conn.execute("SELECT value FROM ItemTable WHERE key = ?", (STATE_KEY,)).fetchone()[0]
         conn.close()
         assert raw == broken_json  # byte-for-byte unchanged
         print("✅ test_invalid_json_fails_safely")
@@ -264,8 +259,9 @@ def test_vacuum_standalone():
 
 def test_monitor_mode_accepts_threshold():
     """monitor_mode function should accept a custom threshold parameter."""
-    from prune_gca_chat_threads import monitor_mode
     import inspect as ins
+
+    from prune_gca_chat_threads import monitor_mode
 
     sig = ins.signature(monitor_mode)
     assert "threshold_mb" in sig.parameters

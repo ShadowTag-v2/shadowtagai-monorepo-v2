@@ -1,8 +1,8 @@
 {
   "version": "8.6",
   "scope": "antigravity_local_operator_invariants",
-  "locked_at": "2026-04-14T19:00:00Z",
-  "locked_by": "antigravity_session_b87c43d2",
+  "locked_at": "2026-04-18T02:20:00Z",
+  "locked_by": "antigravity_session_25e77ad2",
   "purpose": "Lean core constitution. Normalized Model Doctrine, Bounded YOLO, MCP physical barriers, GitHub control plane, and Queue Doctrine.",
   "settings": {
     "authorized_gcp_project": "shadowtag-omega-v4",
@@ -60,26 +60,22 @@
     "documentation": "FORBIDDEN from guessing API endpoints. Execute tool call to Documentation MCP to fetch current SDK surface."
   },
   "mcp_fleet_status": {
-    "last_verified": "2026-04-14T19:00:00Z",
+    "last_verified": "2026-04-18T02:20:00Z",
     "canonical_config": "antigravity-mcp-config.json",
     "servers": {
-      "google-developer-knowledge": "ONLINE",
-      "mcp-toolbox-sdk-java": "READY",
-      "firebase": "ONLINE (v0.3.0, 49 tools, Firestore CRUD verified)",
-      "chrome-devtools-mcp": "ONLINE",
-      "github-mcp": "ONLINE",
-      "supabase-mcp": "ONLINE",
       "sequential-thinking": "ONLINE",
-      "stitch": "ONLINE",
-      "dart-mcp-server": "ONLINE",
-      "gcloud-mcp": "ONLINE (v0.5.3, gcloud CLI wrapper)"
+      "firebase-mcp-server": "ONLINE (stdio, 49 tools)",
+      "google-developer-knowledge": "ONLINE (remote proxy)",
+      "StitchMCP": "ONLINE (remote proxy)",
+      "chrome-devtools-mcp": "ONLINE (stdio)"
     },
     "infrastructure": {
       "temporal": "ONLINE:7233+8233",
       "chrome-debug": "ONLINE:9222"
     },
-    "total_online": 10,
-    "total_dead": 0
+    "total_online": 5,
+    "total_dead": 0,
+    "note": "Reconciled v8.6: removed 5 phantom servers not in canonical config (github-mcp, supabase-mcp, dart-mcp-server, gcloud-mcp, mcp-toolbox-sdk-java)"
   },
   "pre_action_memory_gate": {
     "trigger": "Before ANY repo-wide action or batch push",
@@ -112,7 +108,7 @@
     "cloud_run": "LIVE (uphillsnowball-sovereign-767252945109.us-central1.run.app)",
     "cloud_run_verified": "2026-04-14T18:30:41Z — /health=200, /mission=MISSION_GO, attack=403_BLOCKED",
     "skill_fleet": "125 global + 2 workspace = 127 total skills. Sovereign State Protocol fully integrated. Gold Master + Sandbox/ADHD Mode + God Mode + Jetski + Hunter-Killer + Finish Protocol folded into 7 existing skills (temporal-rollback-doctrine, state-machine-autonomy, yolo-mode-operator, runtime-health-watchdog, cor-cursor-vdi, compiler-guillotine, sovereign-monorepo-hygiene). Zero duplication — each concept has exactly one canonical owner.",
-    "f821_errors": 23,
+    "f_violations": 628,
     "lighthouse": {
       "shadowtagai_bp": 100,
       "shadowtagai_seo": 100,
@@ -120,8 +116,11 @@
       "kovelai_seo": 100
     },
     "ci_cd": "firebase-deploy.yml ACTIVE",
-    "structural_tests": "30/30",
-    "dead_code": "clean (vulture + ruff)"
+    "structural_tests": "55/55",
+    "dead_code": "clean (vulture + ruff — external/vendored findings only)",
+    "nested_git_dirs": 0,
+    "dotnet_sdk": "11.0.100-preview.2.26159.112",
+    "venv_tools": "pytest 9.0.3, ruff 0.15.11, vulture 2.16"
   },
   "memory_state": "LOCKED"
 }
