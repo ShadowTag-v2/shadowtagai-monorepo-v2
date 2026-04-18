@@ -87,18 +87,13 @@ resource "google_secret_manager_secret" "app" {
 
   labels = {
     environment = "production"
-    managed_by  = "terraform"
+    managed_by  = "opentofu"
     team        = "counselconduit"
   }
 
-  # Rotation: 90 days for Stripe keys
-  dynamic "rotation" {
-    for_each = startswith(each.key, "stripe-") ? [1] : []
-    content {
-      rotation_period    = "7776000s" # 90 days
-      next_rotation_time = "2026-07-18T00:00:00Z"
-    }
-  }
+  # NOTE: rotation block requires a co-specified PubSub topic.
+  # Will add rotation + topics together when PubSub is configured.
+  # Target: 90-day rotation for Stripe keys.
 }
 
 # Grant production SA access to app secrets
