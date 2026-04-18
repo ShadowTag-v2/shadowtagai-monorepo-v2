@@ -124,7 +124,7 @@ resource "google_monitoring_alert_policy" "secret_access_anomaly" {
   conditions {
     display_name = "Unusual secret access volume"
     condition_threshold {
-      filter          = "resource.type=\"audited_resource\" AND protoPayload.serviceName=\"secretmanager.googleapis.com\""
+      filter          = "resource.type=\"audited_resource\" AND metric.type=\"logging.googleapis.com/user/secret_access_count\""
       comparison      = "COMPARISON_GT"
       threshold_value = 100
       duration        = "300s"
