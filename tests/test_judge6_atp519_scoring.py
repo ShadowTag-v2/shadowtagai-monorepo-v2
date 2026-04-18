@@ -81,8 +81,7 @@ class TestATP519Scoring:
             numeric = [level_order[lv] for lv in levels]
             for i in range(len(numeric) - 1):
                 assert numeric[i] <= numeric[i + 1], (
-                    f"Severity monotonicity violated: prob={prob}, "
-                    f"sev {i+1}→{levels[i]}, sev {i+2}→{levels[i+1]}"
+                    f"Severity monotonicity violated: prob={prob}, sev {i + 1}→{levels[i]}, sev {i + 2}→{levels[i + 1]}"
                 )
 
     def test_matrix_monotonic_probability(self):
@@ -95,8 +94,7 @@ class TestATP519Scoring:
             numeric = [level_order[lv] for lv in levels]
             for i in range(len(numeric) - 1):
                 assert numeric[i] <= numeric[i + 1], (
-                    f"Probability monotonicity violated: sev={sev}, "
-                    f"prob {i+1}→{levels[i]}, prob {i+2}→{levels[i+1]}"
+                    f"Probability monotonicity violated: sev={sev}, prob {i + 1}→{levels[i]}, prob {i + 2}→{levels[i + 1]}"
                 )
 
     def test_result_dict_has_all_fields(self):
@@ -112,16 +110,12 @@ class TestATP519Scoring:
     def test_severity_dict_completeness(self):
         """All 4 severity levels should be defined."""
         assert len(SEVERITY_LEVELS) == 4
-        assert set(SEVERITY_LEVELS.keys()) == {
-            "catastrophic", "critical", "moderate", "negligible"
-        }
+        assert set(SEVERITY_LEVELS.keys()) == {"catastrophic", "critical", "moderate", "negligible"}
 
     def test_probability_dict_completeness(self):
         """All 4 probability levels should be defined."""
         assert len(PROBABILITY_LEVELS) == 4
-        assert set(PROBABILITY_LEVELS.keys()) == {
-            "frequent", "likely", "occasional", "unlikely"
-        }
+        assert set(PROBABILITY_LEVELS.keys()) == {"frequent", "likely", "occasional", "unlikely"}
 
     def test_matrix_complete_4x4(self):
         """Risk matrix should have all 16 (4×4) cells."""
