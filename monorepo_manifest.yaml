@@ -112,7 +112,7 @@ hardened_state:
   dotnet_sdk: "11.0.100-preview.2.26159.112"
   structural_tests: "55/55"
   lighthouse_a11y: "100/100 (both sites)"
-  ruff_violations_remaining: 891
+  ruff_violations_remaining: 628
   firestore_databases: 2
   hosting_targets: 3
   preview_channels: 2
