@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START chain_filters_modular]
-import { query, where } from "firebase/firestore";  
+import { query, where } from "firebase/firestore";
 
 const q1 = query(citiesRef, where("state", "==", "CO"), where("name", "==", "Denver"));
 const q2 = query(citiesRef, where("state", "==", "CA"), where("population", "<", 1000000));

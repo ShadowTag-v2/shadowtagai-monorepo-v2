@@ -301,4 +301,3 @@ class RunAggregationQueryRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

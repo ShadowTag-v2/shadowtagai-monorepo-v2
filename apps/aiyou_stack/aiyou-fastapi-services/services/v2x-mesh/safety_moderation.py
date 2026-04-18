@@ -202,7 +202,8 @@ class V2XSafetyModerator:
         }
 
     async def moderate_event_message(
-        self, event_data: dict[str, Any],
+        self,
+        event_data: dict[str, Any],
     ) -> tuple[bool, ModerationResult]:
         """Moderate event message before broadcast
 
@@ -235,7 +236,8 @@ class V2XSafetyModerator:
         return result.is_safe, result
 
     async def moderate_map_update(
-        self, map_feature: dict[str, Any],
+        self,
+        map_feature: dict[str, Any],
     ) -> tuple[bool, ModerationResult]:
         """Moderate map feature update
 
@@ -275,7 +277,10 @@ class V2XSafetyModerator:
         return result.is_safe, result
 
     async def moderate_sensor_data(
-        self, sensor_type: str, data: bytes, metadata: dict[str, Any],
+        self,
+        sensor_type: str,
+        data: bytes,
+        metadata: dict[str, Any],
     ) -> tuple[bool, ModerationResult]:
         """Moderate sensor data (images, video)
 
@@ -404,7 +409,10 @@ class ModerationCostEstimator:
 
     @staticmethod
     def estimate_monthly_cost(
-        events_per_day: int, map_updates_per_day: int, images_per_day: int, videos_per_day: int,
+        events_per_day: int,
+        map_updates_per_day: int,
+        images_per_day: int,
+        videos_per_day: int,
     ) -> dict[str, float]:
         """Estimate monthly moderation costs"""
         # Cost per 1000 items

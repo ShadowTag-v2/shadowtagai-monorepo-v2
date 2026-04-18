@@ -53,7 +53,9 @@ class GeminiIngestionLayer:
         self.sources.append(source)
 
     def ingest(
-        self, sources: list[Source] | None = None, target_items: int | None = None,
+        self,
+        sources: list[Source] | None = None,
+        target_items: int | None = None,
     ) -> IngestionResult:
         """Run ingestion pipeline
 
@@ -137,7 +139,10 @@ class GeminiIngestionLayer:
         return items
 
     def _calculate_metrics(
-        self, items: list[IngestedItem], violations: list[EthicalViolation], runtime_minutes: float,
+        self,
+        items: list[IngestedItem],
+        violations: list[EthicalViolation],
+        runtime_minutes: float,
     ) -> IngestionMetrics:
         """Calculate ingestion metrics"""
         if not items:

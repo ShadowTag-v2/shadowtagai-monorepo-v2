@@ -10,7 +10,8 @@ from google import genai
 try:
     if os.environ.get("GEMINI_API_KEY"):
         client = genai.Client(
-            api_key=os.environ["GEMINI_API_KEY"], http_options={"api_version": "v1beta"},
+            api_key=os.environ["GEMINI_API_KEY"],
+            http_options={"api_version": "v1beta"},
         )
     else:
         # Fallback to Vertex AI (Enterprise / Cloud Run Mode)
@@ -82,8 +83,7 @@ def monitor_and_capture_omega(interaction_id: str) -> str:
 
 # MCP "USB-C" Integration
 def execute_mcp_tool_call(interaction_id: str, service: str = "bigquery") -> str:
-    """Leverages official MCP support for managed Google Services.
-    """
+    """Leverages official MCP support for managed Google Services."""
     response = client.interactions.create(
         model="gemini-3-pro-preview",
         input=f"Analyze current context using {service} MCP tool.",

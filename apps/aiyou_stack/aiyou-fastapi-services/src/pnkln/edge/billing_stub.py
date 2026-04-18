@@ -19,8 +19,7 @@ DATA_RATE_PER_GB = 0.04  # $0.04/GB
 
 
 def meter_usage(session_id: str, duration_sec: int, ingress_mb: float) -> dict[str, Any]:
-    """Calculates cost for a session.
-    """
+    """Calculates cost for a session."""
     compute_cost = duration_sec * EDGE_RATE_PER_SECOND
     data_cost = (ingress_mb / 1024) * DATA_RATE_PER_GB
     total_cost = compute_cost + data_cost
@@ -55,7 +54,10 @@ def log_event(event: dict[str, Any]):
 def main():
     parser = argparse.ArgumentParser(description="Edge Billing Meter")
     parser.add_argument(
-        "--session-id", type=str, default=f"sess-{int(time.time())}", help="Session ID",
+        "--session-id",
+        type=str,
+        default=f"sess-{int(time.time())}",
+        help="Session ID",
     )
     parser.add_argument("--duration", type=int, default=60, help="Duration in seconds")
     parser.add_argument("--data-mb", type=float, default=150.0, help="Data ingress in MB")

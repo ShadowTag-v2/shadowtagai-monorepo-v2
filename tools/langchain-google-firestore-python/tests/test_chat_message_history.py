@@ -29,9 +29,7 @@ def test_case() -> TestCase:
 
 def test_firestore_history_workflow(test_case: TestCase) -> None:
     session_id = uuid.uuid4().hex
-    chat_history = FirestoreChatMessageHistory(
-        session_id=session_id, collection="HistoryWorkflow"
-    )
+    chat_history = FirestoreChatMessageHistory(session_id=session_id, collection="HistoryWorkflow")
 
     chat_history.add_ai_message("AI message")
     chat_history.add_user_message("User message")
@@ -74,9 +72,7 @@ def test_firestore_without_encoding_workflow(test_case: TestCase) -> None:
 def test_firestore_load_messages(test_case: TestCase) -> None:
     NUM_MESSAGES = 25
     session_id = uuid.uuid4().hex
-    chat_history = FirestoreChatMessageHistory(
-        session_id=session_id, collection="HistoryLoad"
-    )
+    chat_history = FirestoreChatMessageHistory(session_id=session_id, collection="HistoryLoad")
 
     expected_messages: list[AIMessage | HumanMessage] = []
 
@@ -101,13 +97,9 @@ def test_firestore_load_messages(test_case: TestCase) -> None:
 def test_firestore_multiple_sessions(test_case: TestCase) -> None:
     collection = "MultipleSession"
     session_1 = uuid.uuid4().hex
-    chat_history_1 = FirestoreChatMessageHistory(
-        session_id=session_1, collection=collection
-    )
+    chat_history_1 = FirestoreChatMessageHistory(session_id=session_1, collection=collection)
     session_2 = uuid.uuid4().hex
-    chat_history_2 = FirestoreChatMessageHistory(
-        session_id=session_2, collection=collection
-    )
+    chat_history_2 = FirestoreChatMessageHistory(session_id=session_2, collection=collection)
 
     chat_history_1.add_ai_message("AI message session 1")
     chat_history_1.add_user_message("Human message session 1")
@@ -136,16 +128,12 @@ def test_firestore_multiple_sessions(test_case: TestCase) -> None:
 def test_firestore_reopen_session(test_case: TestCase) -> None:
     collection = "Session"
     session = uuid.uuid4().hex
-    chat_history = FirestoreChatMessageHistory(
-        session_id=session, collection=collection
-    )
+    chat_history = FirestoreChatMessageHistory(session_id=session, collection=collection)
 
     chat_history.add_ai_message("AI message")
     chat_history.add_user_message("Human message")
 
-    chat_history_reopen = FirestoreChatMessageHistory(
-        session_id=session, collection=collection
-    )
+    chat_history_reopen = FirestoreChatMessageHistory(session_id=session, collection=collection)
 
     expected_messages = [
         AIMessage(content="AI message"),
@@ -161,9 +149,7 @@ def test_firestore_reopen_session(test_case: TestCase) -> None:
 def test_firestore_custom_client(test_case: TestCase) -> None:
     client = Client(database="(default)")
     session_id = uuid.uuid4().hex
-    chat_history = FirestoreChatMessageHistory(
-        session_id=session_id, collection="HistoryWorkflow", client=client
-    )
+    chat_history = FirestoreChatMessageHistory(session_id=session_id, collection="HistoryWorkflow", client=client)
 
     chat_history.add_ai_message("AI message")
     chat_history.add_user_message("User message")

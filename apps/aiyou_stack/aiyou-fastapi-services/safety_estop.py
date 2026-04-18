@@ -61,7 +61,8 @@ class SafetyEstop:
             if entity in prompt_lower:
                 logger.warning(f"ESTOP TRIGGERED: Kill switch entity '{entity}' detected.")
                 raise HTTPException(
-                    status_code=403, detail="Policy Violation: Unauthorized Entity.",
+                    status_code=403,
+                    detail="Policy Violation: Unauthorized Entity.",
                 )
 
         for phrase in kill_list.get("blocked_phrases", []):
@@ -85,7 +86,8 @@ class SafetyEstop:
         # Check for Prompt Injection (Jailbreaking)
         if "ignore safety" in prompt.lower():
             raise HTTPException(
-                status_code=400, detail="Security Violation: Prompt Injection Detected.",
+                status_code=400,
+                detail="Security Violation: Prompt Injection Detected.",
             )
 
         return True, has_pii_person
@@ -119,8 +121,7 @@ class SafetyEstop:
                 )
 
     def verify_request(self, req: ImageGenerationRequest):
-        """The Dependency Injection Method.
-        """
+        """The Dependency Injection Method."""
         # 1. Local Kill Switch
         self._check_local_kill_switch(req.prompt)
 
@@ -145,10 +146,10 @@ async def safety_guardrail(request: ImageGenerationRequest):
 
 @app.post("/generate-image")
 async def generate_image(
-    request: ImageGenerationRequest, is_safe: bool = Depends(safety_guardrail),
+    request: ImageGenerationRequest,
+    is_safe: bool = Depends(safety_guardrail),
 ):
-    """This endpoint ONLY executes if 'safety_guardrail' passes.
-    """
+    """This endpoint ONLY executes if 'safety_guardrail' passes."""
     # CALL YOUR LLM / IMAGE GENERATOR HERE
     return {
         "status": "success",

@@ -51,52 +51,42 @@ bad_license_header = """/\\*
  \\*/
 """
 for library in s.get_staging_dirs():
-  # put any special-case replacements here
-  service = "firestore"
-  version = "v1"
-  s.replace(
-      f'owl-bot-staging/v1/proto-google-cloud-{service}-{version}-java/src/**/*.java',
-      protobuf_header,
-      f'{license_header}{protobuf_header}'
-  )
+    # put any special-case replacements here
+    service = "firestore"
+    version = "v1"
+    s.replace(f"owl-bot-staging/v1/proto-google-cloud-{service}-{version}-java/src/**/*.java", protobuf_header, f"{license_header}{protobuf_header}")
 
-  service == "firestore-admin"
-  s.replace(
-      f'owl-bot-staging/v1/grpc-google-cloud-{service}-{version}-java/src/**/*.java',
-      bad_license_header,
-      license_header
-  )
-  s.replace(
-      f'owl-bot-staging/v1/proto-google-cloud-{service}-{version}-java/src/**/*.java',
-      bad_license_header,
-      license_header
-  )
-  s.move(library)
+    service == "firestore-admin"
+    s.replace(f"owl-bot-staging/v1/grpc-google-cloud-{service}-{version}-java/src/**/*.java", bad_license_header, license_header)
+    s.replace(f"owl-bot-staging/v1/proto-google-cloud-{service}-{version}-java/src/**/*.java", bad_license_header, license_header)
+    s.move(library)
 
 s.remove_staging_dirs()
 
-java.common_templates(excludes=[
-    # firestore uses a different project for its integration tests
-    # due to the default project running datastore
-    '.kokoro/presubmit/integration.cfg',
-    '.kokoro/presubmit/graalvm-native-a.cfg',
-    '.kokoro/presubmit/graalvm-native-b.cfg',
-    '.kokoro/presubmit/graalvm-native-c.cfg',
-    '.kokoro/presubmit/samples.cfg',
-    '.kokoro/nightly/integration.cfg',
-    '.kokoro/nightly/java11-integration.cfg',
-    '.kokoro/nightly/samples.cfg',
-    '.kokoro/build.sh',
-    'samples/snapshot/pom.xml',
-    '.kokoro/release/publish_javadoc.sh',
-    '.kokoro/release/publish_javadoc11.sh',
-    '.kokoro/release/stage.sh',
-    '.kokoro/requirements.in',
-    '.kokoro/requirements.txt',
-    '.github/CODEOWNERS',
-    '.github/workflows/samples.yaml',
-    'renovate.json'
-])
+java.common_templates(
+    excludes=[
+        # firestore uses a different project for its integration tests
+        # due to the default project running datastore
+        ".kokoro/presubmit/integration.cfg",
+        ".kokoro/presubmit/graalvm-native-a.cfg",
+        ".kokoro/presubmit/graalvm-native-b.cfg",
+        ".kokoro/presubmit/graalvm-native-c.cfg",
+        ".kokoro/presubmit/samples.cfg",
+        ".kokoro/nightly/integration.cfg",
+        ".kokoro/nightly/java11-integration.cfg",
+        ".kokoro/nightly/samples.cfg",
+        ".kokoro/build.sh",
+        "samples/snapshot/pom.xml",
+        ".kokoro/release/publish_javadoc.sh",
+        ".kokoro/release/publish_javadoc11.sh",
+        ".kokoro/release/stage.sh",
+        ".kokoro/requirements.in",
+        ".kokoro/requirements.txt",
+        ".github/CODEOWNERS",
+        ".github/workflows/samples.yaml",
+        "renovate.json",
+    ]
+)
 
 # Fix for b/442875200: Inject library_path_overrides for FirestoreAdminClient
 # This ensures the doclet links to the correct source directory (google-cloud-firestore-admin)

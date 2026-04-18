@@ -24,4 +24,3 @@ class Snapshot
         static::$is_initialized = true;
     }
 }
-

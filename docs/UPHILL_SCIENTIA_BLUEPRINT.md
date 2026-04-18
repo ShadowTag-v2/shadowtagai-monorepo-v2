@@ -7,7 +7,7 @@ This document is the absolute, uncompromising engineering control-plane truth fo
 
 ## 1. Commercial Wedge & UX
 **If the feature does not multiply revenue without multiplying effort, it is functionally dropped.**
-*   **The Facade**: Hyper-premium, dark modernism ("Barney Style"). The UI completely obscures the God-Mode infrastructure (ANE, LanceDB Vectors, Orchestration DAG). 
+*   **The Facade**: Hyper-premium, dark modernism ("Barney Style"). The UI completely obscures the God-Mode infrastructure (ANE, LanceDB Vectors, Orchestration DAG).
 *   **Zero Ambiguity**: 1 input playground => 1 deterministic output.
 *   **Monetization Engine**: Enforce the Stripe Gateway Entitlement Pattern exactly.
     - Auth (Supabase/Firebase) -> Payment (Stripe Checkout API) -> Webhook DB Entitlement (`checkout.session.completed`) -> SaaS Consumption.

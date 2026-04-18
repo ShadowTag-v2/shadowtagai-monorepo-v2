@@ -23,8 +23,7 @@ Dtype = Any
 
 
 class MLP(nn.Module):
-    """Ironwood Multi-Layer Perceptron.
-    """
+    """Ironwood Multi-Layer Perceptron."""
 
     hidden_dim: int
     out_dim: int
@@ -47,8 +46,7 @@ class MLP(nn.Module):
 
 
 class IronwoodAttention(nn.Module):
-    """Ironwood Multi-Head Self-Attention.
-    """
+    """Ironwood Multi-Head Self-Attention."""
 
     num_heads: int
     dtype: Dtype = jnp.float32
@@ -108,8 +106,7 @@ class IronwoodBlock(nn.Module):
 
 
 class IronwoodGemini(nn.Module):
-    """Ironwood JAX/Flax Gemini-Style Model.
-    """
+    """Ironwood JAX/Flax Gemini-Style Model."""
 
     vocab_size: int
     embed_dim: int

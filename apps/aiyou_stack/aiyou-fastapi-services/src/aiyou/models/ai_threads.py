@@ -162,7 +162,9 @@ class AIThread(Base):
         order_by="AIThreadPost.position",
     )
     embeddings = relationship(
-        "AIThreadEmbedding", back_populates="thread", cascade="all, delete-orphan",
+        "AIThreadEmbedding",
+        back_populates="thread",
+        cascade="all, delete-orphan",
     )
 
     def __repr__(self):
@@ -182,7 +184,10 @@ class AIThreadPost(Base):
 
     # Foreign keys
     thread_id = Column(
-        String(36), ForeignKey("ai_threads.id", ondelete="CASCADE"), nullable=False, index=True,
+        String(36),
+        ForeignKey("ai_threads.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
 
     # Platform reference
@@ -230,10 +235,15 @@ class AIThreadEmbedding(Base):
 
     # Foreign keys
     thread_id = Column(
-        String(36), ForeignKey("ai_threads.id", ondelete="CASCADE"), nullable=False, index=True,
+        String(36),
+        ForeignKey("ai_threads.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     post_id = Column(
-        String(36), ForeignKey("ai_thread_posts.id", ondelete="SET NULL"), index=True,
+        String(36),
+        ForeignKey("ai_thread_posts.id", ondelete="SET NULL"),
+        index=True,
     )  # Null = full thread embedding
 
     # Embedding metadata
@@ -278,7 +288,9 @@ class AIThreadScrapeJob(Base):
 
     # Status
     status = Column(
-        String(50), default="pending", index=True,
+        String(50),
+        default="pending",
+        index=True,
     )  # pending, running, completed, failed
     threads_found = Column(Integer, default=0)
     threads_saved = Column(Integer, default=0)

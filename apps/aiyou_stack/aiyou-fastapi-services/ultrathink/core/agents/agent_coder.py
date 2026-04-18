@@ -22,7 +22,8 @@ class CodeIteration(BaseModel):
     test_results: dict[str, bool] = Field(description="test_name -> passed")
     optimizations: list[str] = Field(default_factory=list)
     metrics: dict[str, float] = Field(
-        default_factory=dict, description="Coverage, complexity, etc.",
+        default_factory=dict,
+        description="Coverage, complexity, etc.",
     )
 
 

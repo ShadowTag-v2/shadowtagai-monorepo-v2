@@ -1,6 +1,6 @@
 /**
  * Processes Panel
- * 
+ *
  * Lists all detected processes grouped by type (cross-community / intra-community).
  * Clicking a process opens the ProcessFlowModal with a flowchart.
  */

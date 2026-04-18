@@ -60,8 +60,7 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
         self.rate_limit_cache: dict[str, list] = {}  # {key_hash: [timestamp1, timestamp2, ...]}
 
     async def dispatch(self, request: Request, call_next):
-        """Process request with authentication and rate limiting
-        """
+        """Process request with authentication and rate limiting"""
         # Skip auth for health check endpoints
         if request.url.path in ["/health", "/healthz", "/metrics"]:
             return await call_next(request)
@@ -122,10 +121,13 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
         return self._check_rate_limit_memory(key_hash, limit, now, window_start)
 
     def _check_rate_limit_redis(
-        self, key_hash: str, limit: int, now: int, window_start: int,
+        self,
+        key_hash: str,
+        limit: int,
+        now: int,
+        window_start: int,
     ) -> tuple[bool, int, int]:
-        """Check rate limit using Redis (persistent, distributed)
-        """
+        """Check rate limit using Redis (persistent, distributed)"""
         redis_key = f"ratelimit:{key_hash}"
 
         try:
@@ -156,7 +158,11 @@ class AuthenticationMiddleware(BaseHTTPMiddleware):
             return True, limit, now + 60
 
     def _check_rate_limit_memory(
-        self, key_hash: str, limit: int, now: int, window_start: int,
+        self,
+        key_hash: str,
+        limit: int,
+        now: int,
+        window_start: int,
     ) -> tuple[bool, int, int]:
         """Check rate limit using in-memory cache (fallback)
 
@@ -198,7 +204,8 @@ def hash_api_key(api_key: str) -> str:
 
 
 def create_auth_middleware(
-    api_keys_config: dict[str, str], redis_url: str | None = None,
+    api_keys_config: dict[str, str],
+    redis_url: str | None = None,
 ) -> AuthenticationMiddleware:
     """Factory function to create authentication middleware
 

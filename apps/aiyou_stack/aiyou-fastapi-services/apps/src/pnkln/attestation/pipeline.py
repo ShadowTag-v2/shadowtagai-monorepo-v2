@@ -42,7 +42,9 @@ class AttestationPipeline:
         self.judge = get_judge()
 
     async def run_pipeline(
-        self, input_path: Path, metadata: dict[str, Any] | None = None,
+        self,
+        input_path: Path,
+        metadata: dict[str, Any] | None = None,
     ) -> AttestationResult:
         """Run the full Iron Core attestation loop.
 
@@ -109,7 +111,9 @@ class AttestationPipeline:
 
     # Legacy wrapper for backward compatibility if needed
     def process_asset(
-        self, file_path: str | Path, metadata: dict[str, Any] | None = None,
+        self,
+        file_path: str | Path,
+        metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Synchronous wrapper for run_pipeline (or legacy implementation).
         Modified to use the new flow synchronously if possible, or just legacy logic.
@@ -143,10 +147,12 @@ class AttestationPipeline:
         }
 
     def verify_asset(
-        self, file_path: str | Path, original_hash: str, threshold: float = 0.90,
+        self,
+        file_path: str | Path,
+        original_hash: str,
+        threshold: float = 0.90,
     ) -> dict[str, Any]:
-        """Verify if an asset matches a claimed original hash semantically.
-        """
+        """Verify if an asset matches a claimed original hash semantically."""
         # Re-compute hash of the current file
         # We can reuse NeuralHash directly here to avoid async complexity of pipeline
         path = Path(file_path)

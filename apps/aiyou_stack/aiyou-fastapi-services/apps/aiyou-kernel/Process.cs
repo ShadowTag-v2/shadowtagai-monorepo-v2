@@ -27,7 +27,7 @@ public class CompressionStep : KernelProcessStep
     [KernelFunction, Description("Extracts decision features from raw input")]
     public async Task<string> ExtractFeaturesAsync(KernelProcessStepContext context, string rawInput)
     {
-        // Real implementation would use a small local model (e.g., Phi-3) 
+        // Real implementation would use a small local model (e.g., Phi-3)
         // to strip noise and return a JSON feature vector.
         Console.WriteLine($"[Compressor] Processing: {rawInput.Substring(0, Math.Min(20, rawInput.Length))}...");
 
@@ -98,9 +98,9 @@ public class HumanGateStep : KernelProcessStep
     {
         Console.WriteLine($"[HumanGate] PAUSED. Risk: {risk.Level}. Waiting for Approval...");
         // In reality, this persists state to Postgres and sleeps until API wake-up
-        
+
         // Emulate human click after sleeping
-        await Task.Delay(1000); 
+        await Task.Delay(1000);
         Console.WriteLine("[HumanGate] APPROVED via mock internal trigger.");
         await context.EmitEventAsync(new() { Id = "Approved", Data = risk });
     }

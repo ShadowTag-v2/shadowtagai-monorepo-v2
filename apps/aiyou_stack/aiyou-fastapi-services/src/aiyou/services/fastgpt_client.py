@@ -127,7 +127,10 @@ class FastGPTClient:
             return []
 
     async def get_context_for_task(
-        self, task_id: str, query: str | None = None, limit: int = 8,
+        self,
+        task_id: str,
+        query: str | None = None,
+        limit: int = 8,
     ) -> ContextBundle:
         """GPTRAM: Retrieve + Augment for a task.
 
@@ -152,7 +155,8 @@ class FastGPTClient:
         if query:
             try:
                 response = await self._client.get(
-                    "/api/context/search", params={"query": query, "limit": limit},
+                    "/api/context/search",
+                    params={"query": query, "limit": limit},
                 )
                 if response.status_code == 200:
                     context_notes = response.json().get("notes", [])
@@ -174,7 +178,8 @@ class FastGPTClient:
         # 3. Fetch relevant Sonar issues (optional)
         try:
             response = await self._client.get(
-                "/api/quality/issues", params={"severity": "BLOCKER,CRITICAL", "limit": 5},
+                "/api/quality/issues",
+                params={"severity": "BLOCKER,CRITICAL", "limit": 5},
             )
             if response.status_code == 200:
                 sonar_issues = response.json().get("issues", [])
@@ -192,7 +197,10 @@ class FastGPTClient:
         )
 
     def _estimate_tokens(
-        self, context_notes: list[dict], intel_briefing: dict, sonar_issues: list[dict],
+        self,
+        context_notes: list[dict],
+        intel_briefing: dict,
+        sonar_issues: list[dict],
     ) -> int:
         """Rough token estimation (4 chars ~ 1 token)."""
         total_chars = 0

@@ -178,7 +178,8 @@ class GeminiResearchAgent:
 
             try:
                 gemini_response = self.gemini_caller.execute(
-                    prompt=synthesis_prompt, validation_callback=self._validate_function_call,
+                    prompt=synthesis_prompt,
+                    validation_callback=self._validate_function_call,
                 )
                 research_output = gemini_response
             except Exception as e:

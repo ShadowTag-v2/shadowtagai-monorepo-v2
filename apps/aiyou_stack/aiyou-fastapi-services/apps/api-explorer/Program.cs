@@ -10,19 +10,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        try 
+        try
         {
             var asm = typeof(Microsoft.SemanticKernel.ProcessBuilder).Assembly;
             Console.WriteLine($"Assembly: {asm.FullName}");
 
             var type = typeof(Microsoft.SemanticKernel.ProcessBuilder);
             Console.WriteLine($"Type: {type.FullName}");
-            
+
             Console.WriteLine("Methods:");
             foreach (var m in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
                 Console.WriteLine($" - {m.ReturnType.Name} {m.Name}({string.Join(", ", m.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})");
-                
+
                 // Inspect return type if it's interesting
                 if (m.Name.StartsWith("On") || m.Name.StartsWith("Add")) {
                      Console.WriteLine($"   -> Methods on {m.ReturnType.Name}:");
@@ -30,10 +30,10 @@ class Program
                         Console.WriteLine($"      - {rm.ReturnType.Name} {rm.Name}({string.Join(", ", rm.GetParameters().Select(p => p.ParameterType.Name + " " + p.Name))})");
                 }
             }
-            
+
             Console.WriteLine("\nExtensions on ProcessBuilder?");
             // This is harder to find without scanning all assemblies, but let's check the type itself first.
-            
+
             Console.WriteLine("\nType: Microsoft.SemanticKernel.ProcessFunctionTargetBuilder");
             var targetType = typeof(Microsoft.SemanticKernel.ProcessFunctionTargetBuilder);
             Console.WriteLine("Methods:");

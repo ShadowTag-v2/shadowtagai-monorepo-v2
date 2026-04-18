@@ -90,9 +90,7 @@ def firestore_client():
         ),
     ],
 )
-def test_convert_firestore_document_default_fields(
-    document_snapshot, langchain_doc
-) -> None:
+def test_convert_firestore_document_default_fields(document_snapshot, langchain_doc) -> None:
     return_doc = convert_firestore_document(document_snapshot)
 
     assert return_doc == langchain_doc
@@ -230,12 +228,8 @@ def test_convert_firestore_document_default_fields(
         ),
     ],
 )
-def test_convert_firestore_document_with_filters(
-    document_snapshot, langchain_doc, page_content_fields, metadata_fields
-) -> None:
-    return_doc = convert_firestore_document(
-        document_snapshot, page_content_fields, metadata_fields
-    )
+def test_convert_firestore_document_with_filters(document_snapshot, langchain_doc, page_content_fields, metadata_fields) -> None:
+    return_doc = convert_firestore_document(document_snapshot, page_content_fields, metadata_fields)
 
     assert return_doc == langchain_doc
 
@@ -305,9 +299,7 @@ def test_convert_firestore_document_with_filters(
                 },
                 "data": {
                     "page_content": "value",
-                    "metadata_field": DocumentReference(
-                        *["abc", "xyz"], client=firestore_client
-                    ),
+                    "metadata_field": DocumentReference(*["abc", "xyz"], client=firestore_client),
                 },
             },
         ),
@@ -415,11 +407,7 @@ def test_convert_langchain_document(langchain_doc, firestore_doc):
                     "field_2": [
                         "data",
                         2,
-                        {
-                            "nested": DocumentReference(
-                                *["abc", "xyz"], client=firestore_client
-                            )
-                        },
+                        {"nested": DocumentReference(*["abc", "xyz"], client=firestore_client)},
                     ],
                 },
                 exists=True,
@@ -526,11 +514,7 @@ def test_vector_type_to_firestore(langchain_doc, firestore_doc):
                     "field_2": [
                         "data",
                         2,
-                        {
-                            "nested": DocumentReference(
-                                *["abc", "xyz"], client=firestore_client
-                            )
-                        },
+                        {"nested": DocumentReference(*["abc", "xyz"], client=firestore_client)},
                     ],
                     "field_3": Vector([1, 2, 3]),
                 },

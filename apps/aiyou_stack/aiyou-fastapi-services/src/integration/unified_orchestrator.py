@@ -99,7 +99,8 @@ class UnifiedPinklnOrchestrator:
         # Wrap with Judge #6 if enabled
         if enable_jr_validation:
             self.judge = JudgeSix(
-                caller=self.gemini_caller, mission_statement=self._get_mission_statement(),
+                caller=self.gemini_caller,
+                mission_statement=self._get_mission_statement(),
             )
         else:
             self.judge = None
@@ -214,7 +215,9 @@ Allow: Research, analysis, optimization, collaboration
 """
 
     def execute(
-        self, user_request: str, context: dict[str, Any] | None = None,
+        self,
+        user_request: str,
+        context: dict[str, Any] | None = None,
     ) -> UnifiedExecutionResult:
         """Execute user request through unified orchestrator.
 

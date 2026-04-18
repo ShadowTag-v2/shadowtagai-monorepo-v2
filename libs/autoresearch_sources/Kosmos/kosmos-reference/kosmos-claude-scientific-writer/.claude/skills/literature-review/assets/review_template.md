@@ -10,12 +10,12 @@
 
 ## Abstract
 
-**Background**: [Context and rationale]  
-**Objectives**: [Primary and secondary objectives]  
-**Methods**: [Databases, dates, selection criteria, quality assessment]  
-**Results**: [n studies included; key findings by theme]  
-**Conclusions**: [Main conclusions and implications]  
-**Registration**: [PROSPERO ID or "Not registered"]  
+**Background**: [Context and rationale]
+**Objectives**: [Primary and secondary objectives]
+**Methods**: [Databases, dates, selection criteria, quality assessment]
+**Results**: [n studies included; key findings by theme]
+**Conclusions**: [Main conclusions and implications]
+**Registration**: [PROSPERO ID or "Not registered"]
 **Keywords**: [5-8 keywords]
 
 ---
@@ -45,29 +45,29 @@
 
 ### 2.1 Protocol and Registration
 
-**Protocol**: [PROSPERO ID / OSF link / Not registered]  
-**Deviations**: [Document any protocol deviations]  
+**Protocol**: [PROSPERO ID / OSF link / Not registered]
+**Deviations**: [Document any protocol deviations]
 **PRISMA**: [Checklist in Appendix B]
 
 ### 2.2 Search Strategy
 
-**Databases:** [PubMed, Scopus, Web of Science, bioRxiv, etc.]  
+**Databases:** [PubMed, Scopus, Web of Science, bioRxiv, etc.]
 **Supplementary:** [Citation chaining, grey literature, trial registries]
 
 **Search String Example:**
 ```
-("CRISPR"[Title/Abstract] OR "Cas9"[Title/Abstract]) AND 
+("CRISPR"[Title/Abstract] OR "Cas9"[Title/Abstract]) AND
 ("disease"[MeSH Terms]) AND ("2015/01/01"[Date] : "2024/12/31"[Date])
 ```
 
-**Dates:** [YYYY-MM-DD to YYYY-MM-DD] | **Executed:** [Date]  
+**Dates:** [YYYY-MM-DD to YYYY-MM-DD] | **Executed:** [Date]
 **Validation:** [Key papers used to test search strategy]
 
 ### 2.3 Tools and Software
 
-**Screening:** [Rayyan, Covidence, ASReview]  
-**Analysis:** [VOSviewer, R, Python]  
-**Citation Management:** [Zotero, Mendeley, EndNote]  
+**Screening:** [Rayyan, Covidence, ASReview]
+**Analysis:** [VOSviewer, R, Python]
+**Citation Management:** [Zotero, Mendeley, EndNote]
 **AI Tools:** [Any AI-assisted tools used; document validation approach]
 
 ### 2.4 Inclusion and Exclusion Criteria
@@ -89,12 +89,12 @@
 
 ### 2.5 Study Selection
 
-**Reviewers:** [n independent reviewers] | **Conflict resolution:** [Method]  
+**Reviewers:** [n independent reviewers] | **Conflict resolution:** [Method]
 **Inter-rater reliability:** [Cohen's kappa = X]
 
 **PRISMA Flow:**
 ```
-Records identified: n=[X] → Deduplicated: n=[Y] → 
+Records identified: n=[X] → Deduplicated: n=[Y] →
 Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 ```
 
@@ -102,7 +102,7 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 
 ### 2.6 Data Extraction
 
-**Method:** [Standardized form (Appendix E); pilot-tested on n studies]  
+**Method:** [Standardized form (Appendix E); pilot-tested on n studies]
 **Extractors:** [n independent] | **Verification:** [Double-checked]
 
 **Items:** Study ID, design, population, interventions/exposures, outcomes, statistics, funding, COI, bias domains
@@ -111,16 +111,16 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 
 ### 2.7 Quality Assessment
 
-**Tool:** [Cochrane RoB 2.0 / ROBINS-I / Newcastle-Ottawa / AMSTAR 2 / JBI]  
-**Method:** [2 independent reviewers; third for conflicts]  
-**Rating:** [Low/Moderate/High risk of bias]  
+**Tool:** [Cochrane RoB 2.0 / ROBINS-I / Newcastle-Ottawa / AMSTAR 2 / JBI]
+**Method:** [2 independent reviewers; third for conflicts]
+**Rating:** [Low/Moderate/High risk of bias]
 **Publication bias:** [Funnel plots, Egger's test - if meta-analysis]
 
 ### 2.8 Synthesis and Analysis
 
-**Approach:** [Narrative / Meta-analysis / Both]  
-**Statistics** (if meta-analysis): Effect measures, heterogeneity (I², τ²), sensitivity analyses, subgroups  
-**Software:** [RevMan, R, Stata]  
+**Approach:** [Narrative / Meta-analysis / Both]
+**Statistics** (if meta-analysis): Effect measures, heterogeneity (I², τ²), sensitivity analyses, subgroups
+**Software:** [RevMan, R, Stata]
 **Certainty:** [GRADE framework; factors: bias, inconsistency, indirectness, imprecision]
 
 ---
@@ -129,10 +129,10 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 
 ### 3.1 Study Selection
 
-**Summary:** [X records → Y deduplicated → Z full-text → N included (M in meta-analysis)]  
-**Study types:** [RCTs: n=X, Observational: n=Y, Reviews: n=Z]  
-**Years:** [Range; peak year]  
-**Geography:** [Countries represented]  
+**Summary:** [X records → Y deduplicated → Z full-text → N included (M in meta-analysis)]
+**Study types:** [RCTs: n=X, Observational: n=Y, Reviews: n=Z]
+**Years:** [Range; peak year]
+**Geography:** [Countries represented]
 **Source:** [Peer-reviewed: n=X, Preprints: n=Y]
 
 ### 3.2 Bibliometric Overview
@@ -153,32 +153,32 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 
 #### 3.4.1 Theme 1: [Title]
 
-**Findings:** [Synthesis of key findings from multiple studies]  
-**Supporting studies:** [X, Y, Z]  
-**Contradictory evidence:** [If any]  
+**Findings:** [Synthesis of key findings from multiple studies]
+**Supporting studies:** [X, Y, Z]
+**Contradictory evidence:** [If any]
 **Certainty:** [GRADE rating if applicable]
 
 ### 3.5 Methodological Approaches
 
-**Common methods:** [Method 1 (n studies), Method 2 (n studies)]  
-**Emerging techniques:** [New approaches observed]  
+**Common methods:** [Method 1 (n studies), Method 2 (n studies)]
+**Emerging techniques:** [New approaches observed]
 **Methodological quality:** [Overall assessment]
 
 ### 3.6 Meta-Analysis Results
 
 [Include only if conducting meta-analysis]
 
-**Effect estimates:** [Primary/secondary outcomes with 95% CI, p-values]  
-**Heterogeneity:** [I²=X%, τ²=Y, interpretation]  
-**Subgroups & sensitivity:** [Key findings from analyses]  
-**Publication bias:** [Funnel plot, Egger's p=X]  
+**Effect estimates:** [Primary/secondary outcomes with 95% CI, p-values]
+**Heterogeneity:** [I²=X%, τ²=Y, interpretation]
+**Subgroups & sensitivity:** [Key findings from analyses]
+**Publication bias:** [Funnel plot, Egger's p=X]
 **Forest plots:** [Include for primary outcomes]
 
 ### 3.7 Knowledge Gaps
 
-**Knowledge:** [Unanswered research questions]  
-**Methodological:** [Study design/measurement issues]  
-**Translational:** [Research-to-practice gaps]  
+**Knowledge:** [Unanswered research questions]
+**Methodological:** [Study design/measurement issues]
+**Translational:** [Research-to-practice gaps]
 **Populations:** [Underrepresented groups/contexts]
 
 ---
@@ -189,13 +189,13 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 
 [Synthesize key findings by research question]
 
-**Principal findings:** [Top 3-5 takeaways]  
-**Consensus:** [Where studies agree]  
+**Principal findings:** [Top 3-5 takeaways]
+**Consensus:** [Where studies agree]
 **Controversy:** [Conflicting results]
 
 ### 4.2 Interpretation and Implications
 
-**Context:** [How findings advance/challenge current understanding]  
+**Context:** [How findings advance/challenge current understanding]
 **Mechanisms:** [Potential explanations for observed patterns]
 
 **Implications for:**
@@ -237,7 +237,7 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 2. [Key finding conclusion]
 3. [Gap/future direction conclusion]
 
-**Evidence certainty:** [High/Moderate/Low/Very Low]  
+**Evidence certainty:** [High/Moderate/Low/Very Low]
 **Translation readiness:** [Ready / Needs more research / Preliminary]
 
 ---
@@ -254,8 +254,8 @@ Title/abstract screened: n=[Y] → Full-text assessed: n=[Z] → Included: n=[N]
 [Author-specific declarations] OR [None]
 
 ### Data Availability
-**Protocol:** [PROSPERO/OSF ID or "Not registered"]  
-**Data/Code:** [Repository URL/DOI or "Available upon request"]  
+**Protocol:** [PROSPERO/OSF ID or "Not registered"]
+**Data/Code:** [Repository URL/DOI or "Available upon request"]
 **Materials:** [Search strategies (Appendix A), PRISMA checklist (Appendix B), extraction form (Appendix E)]
 
 ### Acknowledgments
@@ -337,9 +337,9 @@ FUNDING/COI: _____
 
 [Only if meta-analysis performed]
 
-**Software:** [R 4.x.x with meta/metafor packages / RevMan / Stata]  
-**Model:** [Random-effects; justification]  
-**Code:** [Link to repository]  
+**Software:** [R 4.x.x with meta/metafor packages / RevMan / Stata]
+**Model:** [Random-effects; justification]
+**Code:** [Link to repository]
 **Sensitivity analyses:** [Details]
 
 ### Appendix G: Author Contacts
@@ -354,17 +354,17 @@ FUNDING/COI: _____
 
 [If applicable]
 
-**Tables:** S1 (Full study characteristics), S2 (Quality scores), S3 (Subgroups), S4 (Sensitivity)  
-**Figures:** S1 (PRISMA diagram), S2 (Risk of bias), S3 (Funnel plot), S4 (Forest plots), S5 (Networks)  
-**Data:** S1 (Extraction file), S2 (Search results), S3 (Analysis code), S4 (PRISMA checklist)  
+**Tables:** S1 (Full study characteristics), S2 (Quality scores), S3 (Subgroups), S4 (Sensitivity)
+**Figures:** S1 (PRISMA diagram), S2 (Risk of bias), S3 (Funnel plot), S4 (Forest plots), S5 (Networks)
+**Data:** S1 (Extraction file), S2 (Search results), S3 (Analysis code), S4 (PRISMA checklist)
 **Repository:** [OSF/GitHub/Zenodo URL with DOI]
 
 ---
 
 ## Review Metadata
 
-**Registration:** [Registry] ID: [Number] (Date: YYYY-MM-DD)  
-**Search dates:** Initial: [Date]; Updated: [Date]  
+**Registration:** [Registry] ID: [Number] (Date: YYYY-MM-DD)
+**Search dates:** Initial: [Date]; Updated: [Date]
 **Version:** [1.0] | **Last updated:** [Date]
 
 **Quality checks:**

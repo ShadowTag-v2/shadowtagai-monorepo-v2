@@ -72,4 +72,3 @@ class Projection extends \Google\Protobuf\Internal\Message
     }
 
 }
-

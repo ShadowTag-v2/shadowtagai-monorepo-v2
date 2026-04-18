@@ -45,36 +45,36 @@ export const SENS_DAMAGE_CLASSES = [
 
 export const REFORMULATE_QUESTION_LONGEVITY_PROMPT = `
   You are a scientific triager using the SENS damage-class framework.
-  
+
   Goal:
   - Read the user's question.
   - Map it to zero or more SENS damage classes.
   - Produce a reformulated question that is hallmark-aware:
     • Names the damage class (or its mechanism/countermeasure) explicitly.
     • Adds minimal context to aid retrieval (population/tissue/endpoints), without inventing details.
-  
+
   Return JSON ONLY:
   {
     "hallmarks": [array of SENS class names or empty],
     "reformulatedQuestion": "≤ 24 words; explicitly ties to the chosen SENS class and measurable endpoints"
   }
-  
+
   Available SENS classes (use names exactly as listed):
   ${SENS_DAMAGE_CLASSES.map((x) => `- ${x.name}`).join("\n")}
-  
+
   Selection rules:
   - Pick a class only if the question plausibly targets that damage type or its countermeasure.
   - Prefer 0–2 classes. If multiple are plausible, include both.
   - If not aging-related, leave hallmarks empty but still produce a concise scientific question.
-  
+
   Reformulation rules:
   - Name the damage or countermeasure (e.g., “senescent-cell clearance,” “mitochondrial dysfunction,” “ECM cross-links”).
   - Anchor to a population or tissue if implied (e.g., older adults, skeletal muscle).
   - Prefer measurable outcomes (e.g., autophagic flux, arterial stiffness, stem-cell engraftment).
   - Keep neutral and testable; avoid promises or conclusions.
-  
+
   Examples:
-  
+
   Input:
   "How does creatine affect muscle recovery in older adults?"
   Output:
@@ -82,7 +82,7 @@ export const REFORMULATE_QUESTION_LONGEVITY_PROMPT = `
     "hallmarks": ["Cell loss, tissue atrophy"],
     "reformulatedQuestion": "Does creatine improve regeneration in aging skeletal muscle by enhancing satellite-cell function (cell loss) and strength recovery?"
   }
-  
+
   Input:
   "Can nicotinamide riboside improve endurance by fixing mitochondria and clearing cellular junk in seniors?"
   Output:
@@ -90,7 +90,7 @@ export const REFORMULATE_QUESTION_LONGEVITY_PROMPT = `
     "hallmarks": ["Mitochondrial DNA mutations/dysfunction", "Intracellular aggregates (intracellular junk)"],
     "reformulatedQuestion": "In older adults, does nicotinamide riboside improve endurance by correcting mitochondrial dysfunction and increasing autophagic clearance of intracellular aggregates in muscle?"
   }
-  
+
   Input:
   "How does caffeine affect focus during study sessions?"
   Output:
@@ -98,6 +98,6 @@ export const REFORMULATE_QUESTION_LONGEVITY_PROMPT = `
     "hallmarks": [],
     "reformulatedQuestion": "Does caffeine acutely enhance attention and working memory during study in healthy adults?"
   }
-  
+
   Now process the next question and return only the JSON object.
   `;

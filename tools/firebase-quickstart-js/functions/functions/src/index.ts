@@ -44,7 +44,7 @@ exports.addNumbers = onCall((request) => {
     );
   }
   // [END addHttpsError]
-  
+
   // [START returnAddData]
   // returning result.
   return {

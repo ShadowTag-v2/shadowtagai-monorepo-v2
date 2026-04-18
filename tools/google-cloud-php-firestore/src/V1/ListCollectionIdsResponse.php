@@ -99,4 +99,3 @@ class ListCollectionIdsResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -1,5 +1,4 @@
-"""SHADOWTAGAI Integration Tests - Test all four pillars working together
-"""
+"""SHADOWTAGAI Integration Tests - Test all four pillars working together"""
 
 import os
 import sys

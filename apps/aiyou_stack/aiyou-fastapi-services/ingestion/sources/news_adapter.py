@@ -134,7 +134,10 @@ class NewsAdapter(SourceAdapter):
             logger.info("feed_added", url=feed_url)
 
     async def fetch_items(
-        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None,
+        self,
+        queries: list[str] | None = None,
+        max_items: int = 1000,
+        since: datetime | None = None,
     ) -> AsyncIterator[IngestedItem]:
         """Fetch news articles from RSS feeds.
 

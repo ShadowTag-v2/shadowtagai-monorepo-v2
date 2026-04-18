@@ -40,9 +40,7 @@ def scan_repo(sqlite_db: str, repo_id: str, repo_root: str):
         for path in root.rglob("*"):
             if not path.is_file():
                 continue
-            if any(
-                part in {".git", "build", "dist", "__pycache__", ".venv"} for part in path.parts
-            ):
+            if any(part in {".git", "build", "dist", "__pycache__", ".venv"} for part in path.parts):
                 continue
             kind, language = classify_kind(path)
             if kind == "other":
@@ -124,9 +122,7 @@ def chunk_text(sqlite_db: str):
     chunks = []
     with sqlite_conn(sqlite_db) as conn:
         cur = conn.cursor()
-        rows = cur.execute(
-            "SELECT doc_id, rel_path, abs_path, kind, language, sha256 FROM documents"
-        ).fetchall()
+        rows = cur.execute("SELECT doc_id, rel_path, abs_path, kind, language, sha256 FROM documents").fetchall()
         for doc_id, rel_path, abs_path, kind, language, sha in rows:
             try:
                 text = Path(abs_path).read_text(encoding="utf-8", errors="ignore")

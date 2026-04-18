@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START add_document_modular]
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore";
 
 // Add a new document with a generated id.
 const docRef = await addDoc(collection(db, "cities"), {

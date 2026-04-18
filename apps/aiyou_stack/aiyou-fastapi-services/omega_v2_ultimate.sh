@@ -53,7 +53,7 @@ class RecursiveAgent:
         # THE ECHO PROTOCOL: Fixes Causal Attention Masking.
         # Research: "Prompt Repetition Improves Non-Reasoning LLMs"
         final_prompt = prompt
-        
+
         # Apply Echo if explicitly requested OR if model is non-reasoning
         if force_echo or "thinking" not in self.model:
             final_prompt = f"{prompt}\\n\\n{prompt}"
@@ -75,7 +75,7 @@ from .recursive_rlm import RecursiveAgent
 import logging
 
 class ConsensusAgent:
-    def __init__(self): 
+    def __init__(self):
         self.agent = RecursiveAgent()
 
     def vote(self, prompt: str, rounds: int = 3) -> str:
@@ -85,12 +85,12 @@ class ConsensusAgent:
         """
         logging.info(f"🗳️ CONSENSUS: Polling {rounds} realities...")
         results = [self.agent.solve(prompt) for _ in range(rounds)]
-        
+
         # The Judge: Selects the best reality
         judge_prompt = f"ROLE: Supreme Court. SELECT the best option below:\\n"
         for i, res in enumerate(results):
             judge_prompt += f"OPTION {i+1}: {res[:500]}...\\n"
-        
+
         return self.agent.solve(judge_prompt)
 consensus = ConsensusAgent()
 PYTHON
@@ -116,7 +116,7 @@ cat <<PYTHON > libs/ShadowTag-v2/proxies/router.py
 from ..agents.recursive_rlm import RecursiveAgent
 class Router:
     def __init__(self): self.brain = RecursiveAgent()
-    
+
     def dispatch(self, user_req):
         # Uses ECHO to ensure Classification Accuracy (97%+)
         prompt = f"Classify task as 'LOCAL' (Simple) or 'SWARM' (Complex): {user_req}"
@@ -138,7 +138,7 @@ import logging
 class DriveConnector:
     def __init__(self):
         logging.info("☁️ DRIVE: Context Link Established.")
-        
+
     def search_docs(self, query):
         logging.info(f"☁️ DRIVE: Searching for '{query}'...")
         # Simulate retrieval

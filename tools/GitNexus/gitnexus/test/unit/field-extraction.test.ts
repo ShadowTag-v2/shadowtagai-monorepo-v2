@@ -168,7 +168,7 @@ describe('TypeScriptFieldExtractor', () => {
       expect(result!.fields).toHaveLength(4);
 
       const fields = result!.fields;
-      
+
       const idField = fields.find(f => f.name === 'id');
       expect(idField).toBeDefined();
       expect(idField!.visibility).toBe('public');
@@ -199,7 +199,7 @@ describe('TypeScriptFieldExtractor', () => {
 
       expect(result).not.toBeNull();
       expect(result!.fields).toHaveLength(2);
-      
+
       const nameField = result!.fields.find(f => f.name === 'name');
       expect(nameField).toBeDefined();
       expect(nameField!.type).toBeNull();
@@ -395,7 +395,7 @@ describe('TypeScriptFieldExtractor', () => {
       const tree = parse(`
         class Container {
           data: string;
-          
+
           process() {
             interface LocalInterface {
               value: number;

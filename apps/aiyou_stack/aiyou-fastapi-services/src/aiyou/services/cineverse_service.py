@@ -20,7 +20,11 @@ class CineverseService:
 
     @staticmethod
     def create_upload_job(
-        db: Session, user: User, content_type: ContentType, title: str, description: str | None,
+        db: Session,
+        user: User,
+        content_type: ContentType,
+        title: str,
+        description: str | None,
     ) -> IngestionJob:
         """Create an ingestion job for content upload."""
         job = IngestionJob(
@@ -80,7 +84,10 @@ class CineverseService:
 
     @staticmethod
     def list_content(
-        db: Session, content_type: str | None = None, skip: int = 0, limit: int = 20,
+        db: Session,
+        content_type: str | None = None,
+        skip: int = 0,
+        limit: int = 20,
     ) -> list[Content]:
         """List published content."""
         query = db.query(Content).filter(Content.is_published)

@@ -8,4 +8,3 @@ export async function hello(event: APIGatewayProxyEventV2): Promise<APIGatewayPr
     body: JSON.stringify({ message, time: new Date().toISOString() })
   };
 }
-

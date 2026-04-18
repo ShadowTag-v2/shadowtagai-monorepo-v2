@@ -27,8 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 class IntelligenceIngestion:
-    """Multi-source intelligence ingestion with ethical scraping
-    """
+    """Multi-source intelligence ingestion with ethical scraping"""
 
     def __init__(self, config: dict | None = None):
         """Initialize ingestion pipeline
@@ -393,10 +392,10 @@ class IntelligenceIngestion:
 
 
 async def main():
-    """Main ingestion entry point
-    """
+    """Main ingestion entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     ingestion = IntelligenceIngestion()

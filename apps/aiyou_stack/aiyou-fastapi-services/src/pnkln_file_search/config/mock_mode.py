@@ -1,5 +1,4 @@
-"""Mock mode for local development without GCP credentials
-"""
+"""Mock mode for local development without GCP credentials"""
 
 import os
 

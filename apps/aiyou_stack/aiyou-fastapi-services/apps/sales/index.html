@@ -93,7 +93,7 @@
             } else {
                 alert(`Redirecting to payment for ${tier}...`);
                 // Simulate redirect to Stripe Link
-                window.location.href = "https://checkout.stripe.com/mock_hosted_page"; 
+                window.location.href = "https://checkout.stripe.com/mock_hosted_page";
             }
         }
 
@@ -102,7 +102,7 @@
                 const res = await fetch(`${API_BASE}/store/transactions`);
                 const txns = await res.json();
                 const feed = document.getElementById('ledger-feed');
-                
+
                 if (txns.length === 0) {
                     feed.innerHTML = "<p>No transactions recorded yet.</p>";
                     return;
@@ -110,7 +110,7 @@
 
                 let html = "<table style='width:100%; border-collapse:collapse;'>";
                 html += "<tr style='border-bottom:1px solid #000;'><th>ID</th><th>Item</th><th>Buyer</th><th>Amt</th></tr>";
-                
+
                 txns.forEach(t => {
                     html += `<tr>
                         <td>${t.transaction_id.substring(0,8)}</td>

@@ -128,14 +128,12 @@ class minionOrchestrator:
         print(f"   Repository: {git_repo_path}")
 
     async def initialize_agents(self):
-        """Initialize 200 agents with proper distribution.
-        """
+        """Initialize 200 agents with proper distribution."""
         print("\n🏗️  Initializing 200 agents...")
         """Implementation stub."""
 
     async def execute_code_generation(self, task: CodeGenerationTask) -> dict[str, Any]:
-        """Execute code generation task with full swarm and Persistent Memory.
-        """
+        """Execute code generation task with full swarm and Persistent Memory."""
         print(f"\n🐒 Executing Task: {task.task_id}")
         print(f"   Description: {task.description}")
 

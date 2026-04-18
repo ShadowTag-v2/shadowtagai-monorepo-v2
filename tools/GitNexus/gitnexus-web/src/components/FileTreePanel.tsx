@@ -534,4 +534,3 @@ export const FileTreePanel = ({ onFocusNode }: FileTreePanelProps) => {
     </div>
   );
 };
-

@@ -65,4 +65,3 @@ function oidcDirectSignIn(provider, oidcIdToken) {
     });
   // [END auth_oidc_direct_sign_in]
 }
-

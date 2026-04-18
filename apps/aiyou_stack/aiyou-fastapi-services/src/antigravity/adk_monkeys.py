@@ -87,7 +87,9 @@ class ADKminion:
             raise ValueError("MAPS_API_KEY missing")
 
         return MCPToolset(
-            connection_params=SseServerParams(url=MAPS_MCP_URL, headers={"X-Goog-Api-Key": api_key}),
+            connection_params=SseServerParams(
+                url=MAPS_MCP_URL, headers={"X-Goog-Api-Key": api_key}
+            ),
         )
 
     def _get_bigquery_toolset(self) -> MCPToolset:
@@ -120,7 +122,9 @@ class ADKminion:
 
         response_text = []
         async with self.runner.run_async(
-            user_id=user_id, session_id=session.id, new_message=content,
+            user_id=user_id,
+            session_id=session.id,
+            new_message=content,
         ) as agen:
             async for event in agen:
                 if event.content and event.content.parts:
@@ -131,8 +135,7 @@ class ADKminion:
         return "".join(response_text)
 
     def execute_task(self, task: str) -> str:
-        """Runs the agent on a specific task.
-        """
+        """Runs the agent on a specific task."""
         logger.info(f"ADK Executing: {task}")
         try:
             return asyncio.run(self._run_async(task))

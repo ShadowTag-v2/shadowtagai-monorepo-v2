@@ -19,7 +19,11 @@ class CommentService:
 
     @staticmethod
     def create_comment(
-        db: Session, forum_post_id: int, author: User, content: str, parent_id: int | None = None,
+        db: Session,
+        forum_post_id: int,
+        author: User,
+        content: str,
+        parent_id: int | None = None,
     ) -> Comment:
         """Create a new comment."""
         comment = Comment(

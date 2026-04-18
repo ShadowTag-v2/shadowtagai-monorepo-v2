@@ -132,7 +132,9 @@ class IngestionPipeline:
 
                 if lid:
                     self.lineage_tracker.update_item(
-                        lid, stage="classified", metadata={"tier": tier},
+                        lid,
+                        stage="classified",
+                        metadata={"tier": tier},
                     )
 
             self.metrics["total_items_classified"] = len(classified_items)

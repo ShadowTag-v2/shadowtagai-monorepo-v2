@@ -82,7 +82,9 @@ class AttentionInjector:
 
         # Score and sort invariants descending
         scored = sorted(
-            self.invariants, key=lambda x: self._score_invariant(x, context_tags), reverse=True,
+            self.invariants,
+            key=lambda x: self._score_invariant(x, context_tags),
+            reverse=True,
         )
 
         # Slice the critical threshold

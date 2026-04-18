@@ -74,7 +74,7 @@ Add the following to your client's MCP configuration file (usually `mcp.json` or
 
 Set the appropriate environment variables to connect, see the [Prebuilt Tools Reference](https://mcp-toolbox.dev/documentation/configuration/prebuilt-configs/).
 
-When you run Toolbox with a `--prebuilt=<database>` flag, you instantly get access to standard tools to interact with that database. 
+When you run Toolbox with a `--prebuilt=<database>` flag, you instantly get access to standard tools to interact with that database.
 
 Supported databases currently include:
 - **Google Cloud:** AlloyDB, BigQuery, Cloud SQL (PostgreSQL, MySQL, SQL Server), Spanner, Firestore, Knowledge Catalog (formerly known as Dataplex).

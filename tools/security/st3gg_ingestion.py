@@ -33,10 +33,24 @@ ZERO_WIDTH_CHARS = {
 
 # Cyrillic homoglyphs that mimic Latin characters
 HOMOGLYPH_MAP = {
-    "А": "A", "В": "B", "С": "C", "Е": "E", "Н": "H",
-    "К": "K", "М": "M", "О": "O", "Р": "P", "Т": "T",
-    "Х": "X", "а": "a", "с": "c", "е": "e", "о": "o",
-    "р": "p", "х": "x", "у": "y",
+    "А": "A",
+    "В": "B",
+    "С": "C",
+    "Е": "E",
+    "Н": "H",
+    "К": "K",
+    "М": "M",
+    "О": "O",
+    "Р": "P",
+    "Т": "T",
+    "Х": "X",
+    "а": "a",
+    "с": "c",
+    "е": "e",
+    "о": "o",
+    "р": "p",
+    "х": "x",
+    "у": "y",
 }
 
 # Patterns that indicate hidden prompt injection

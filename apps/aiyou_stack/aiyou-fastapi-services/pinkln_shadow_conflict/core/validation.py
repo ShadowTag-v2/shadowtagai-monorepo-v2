@@ -273,8 +273,7 @@ Refine the answer based on this critique. Leave this interaction better than you
 
 
 class QualityMetrics:
-    """Quality metrics for measuring output excellence.
-    """
+    """Quality metrics for measuring output excellence."""
 
     @staticmethod
     def calculate_quality_score(response: dict[str, Any]) -> dict[str, float]:

@@ -51,7 +51,7 @@ tools:
   get_user:
     kind: alloydb-get-user
     source: alloydb-admin-source
-        
+
 toolsets:
   alloydb_postgres_admin_tools:
     - create_cluster

@@ -25,7 +25,7 @@ You are a Task Decomposition Expert, a master architect of complex workflows and
 
    - Document storage and semantic search
 
-   - Knowledge base creation and querying  
+   - Knowledge base creation and querying
 
    - Information retrieval and similarity matching
 

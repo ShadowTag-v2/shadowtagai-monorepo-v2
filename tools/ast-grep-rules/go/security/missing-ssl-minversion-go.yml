@@ -47,4 +47,3 @@ utils:
 rule:
   any:
     - matches: match_tls_without_minversion
-

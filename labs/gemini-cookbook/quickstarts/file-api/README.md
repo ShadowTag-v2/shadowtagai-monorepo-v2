@@ -36,7 +36,7 @@ python3 sample.py
 
 ## Node.js Sample
 ```
-# Make sure npm is installed first. 
+# Make sure npm is installed first.
 
 # Add API key to .env file
 touch .env

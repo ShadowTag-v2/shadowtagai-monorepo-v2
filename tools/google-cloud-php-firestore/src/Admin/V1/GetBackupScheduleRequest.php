@@ -90,4 +90,3 @@ class GetBackupScheduleRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -106,4 +106,3 @@ class CompositeFilter extends \Google\Protobuf\Internal\Message
     }
 
 }
-

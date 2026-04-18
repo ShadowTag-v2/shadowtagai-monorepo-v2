@@ -154,7 +154,10 @@ def demo_roi_calculator():
 
     # National scale deployment
     config = DeploymentConfig(
-        num_cell_towers=20_000, num_vehicles=1_000_000, num_satellites=20, deployment_months=36,
+        num_cell_towers=20_000,
+        num_vehicles=1_000_000,
+        num_satellites=20,
+        deployment_months=36,
     )
 
     calculator = ROICalculator(config)

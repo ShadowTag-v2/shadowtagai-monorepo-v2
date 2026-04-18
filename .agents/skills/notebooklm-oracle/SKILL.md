@@ -39,7 +39,7 @@ You are forbidden from transitioning to autonomous execution (STATE A) or writin
 ## Fallback Protocol
 
 If NotebookLM is unreachable:
-1. Check auth: `python3 -c "import notebooklm"` 
+1. Check auth: `python3 -c "import notebooklm"`
 2. Re-auth if needed: `notebooklm auth login`
 3. If still unreachable → fall back to LanceDB sovereign RAG
 4. Log failure to `.beads/issues.jsonl` with severity HIGH

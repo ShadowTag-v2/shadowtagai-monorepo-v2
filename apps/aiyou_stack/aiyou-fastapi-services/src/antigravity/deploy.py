@@ -37,7 +37,10 @@ class DeployManager:
         self.repo_full = f"{repo_owner}/{repo_name}"
 
     async def deploy(
-        self, code_items: list[dict[str, Any]], session_id: str, auto_merge: bool = False,
+        self,
+        code_items: list[dict[str, Any]],
+        session_id: str,
+        auto_merge: bool = False,
     ) -> dict[str, Any]:
         """Deploy code through the full pipeline.
 
@@ -142,7 +145,11 @@ class DeployManager:
             return create_response.json()
 
     async def _commit_file(
-        self, branch: str, path: str, content: str, message: str,
+        self,
+        branch: str,
+        path: str,
+        content: str,
+        message: str,
     ) -> dict[str, Any]:
         """Commit a file to the branch"""
         if not self.token:

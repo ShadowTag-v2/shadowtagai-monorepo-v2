@@ -233,7 +233,9 @@ Output a JSON object with this structure:
 }}"""
 
         response = await self.generate(
-            prompt, system_instruction=system_instruction, temperature=0.8,
+            prompt,
+            system_instruction=system_instruction,
+            temperature=0.8,
         )
 
         # Parse JSON from response
@@ -303,7 +305,9 @@ Output JSON:
 }}"""
 
         response = await self.generate(
-            prompt, system_instruction=system_instruction, temperature=0.3,
+            prompt,
+            system_instruction=system_instruction,
+            temperature=0.3,
         )
 
         try:
@@ -357,7 +361,9 @@ Requirements:
 - Assertions with helpful error messages"""
 
         response = await self.generate(
-            prompt, system_instruction=system_instruction, temperature=0.3,
+            prompt,
+            system_instruction=system_instruction,
+            temperature=0.3,
         )
         return response.content
 

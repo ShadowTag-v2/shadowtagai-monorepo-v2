@@ -59,4 +59,3 @@ class DatabaseEdition
         return constant($const);
     }
 }
-

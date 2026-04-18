@@ -193,7 +193,10 @@ class ShadowTagLedger:
                 logger.error(f"BigQuery write failed: {e}")
 
     async def record_assessment(
-        self, assessment_id: str, result: dict[str, Any], actor: str = "system",
+        self,
+        assessment_id: str,
+        result: dict[str, Any],
+        actor: str = "system",
     ) -> LedgerEntry:
         """Record a compliance assessment."""
         return await self.record_event(
@@ -211,7 +214,10 @@ class ShadowTagLedger:
         )
 
     async def record_validation(
-        self, validation_id: str, result: dict[str, Any], actor: str = "system",
+        self,
+        validation_id: str,
+        result: dict[str, Any],
+        actor: str = "system",
     ) -> LedgerEntry:
         """Record a content validation."""
         return await self.record_event(
@@ -319,7 +325,9 @@ class ShadowTagLedger:
         return None
 
     async def get_entries_for_resource(
-        self, resource_id: str, limit: int = 100,
+        self,
+        resource_id: str,
+        limit: int = 100,
     ) -> list[LedgerEntry]:
         """Get all ledger entries for a specific resource."""
         entries = [e for e in self._chain if e.resource_id == resource_id]

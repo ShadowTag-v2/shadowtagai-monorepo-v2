@@ -83,7 +83,8 @@ class LinkedInAdapter(SourceAdapter):
         url = f"{BASE}/company/openai/"
         if _HAS_SCRAPLING:
             page = await asyncio.get_event_loop().run_in_executor(
-                None, lambda: StealthyFetcher.fetch(url, headless=True, network_idle=True),
+                None,
+                lambda: StealthyFetcher.fetch(url, headless=True, network_idle=True),
             )
             if page and page.status < 400:
                 logger.info("linkedin_scrapling_reachable", status=page.status)

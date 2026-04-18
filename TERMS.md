@@ -1,7 +1,7 @@
 # TERMS.md — ShadowTag AI Terms of Service
 
-**Last Updated:** April 14, 2026  
-**Effective Date:** April 14, 2026  
+**Last Updated:** April 14, 2026
+**Effective Date:** April 14, 2026
 **Version:** 1.0.0
 
 ---

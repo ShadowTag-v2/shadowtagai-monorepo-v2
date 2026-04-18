@@ -33,7 +33,7 @@ It's compatible with the following sources:
 
 `conversational-analytics-ask-data-agent` accepts the following parameters:
 
-- **`user_query_with_context`:** The question to ask the agent, potentially 
+- **`user_query_with_context`:** The question to ask the agent, potentially
   including conversation history for context.
 - **`data_agent_id`:** The ID of the data agent to ask.
 
@@ -47,9 +47,9 @@ tools:
     location: global
     maxResults: 50
     description: |
-      Perform natural language data analysis and get insights by interacting 
-      with a specific BigQuery Data Agent. This tool allows for conversational 
-      queries and provides detailed responses based on the agent's configured 
+      Perform natural language data analysis and get insights by interacting
+      with a specific BigQuery Data Agent. This tool allows for conversational
+      queries and provides detailed responses based on the agent's configured
       data sources.
 ```
 

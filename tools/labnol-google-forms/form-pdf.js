@@ -2,15 +2,15 @@
  *  --------------------------
  *   Google Forms PDF Document
  *  --------------------------
- * 
+ *
  *  Generate PDF documents from Google Form Responses
- * 
+ *
  *  license: MIT
  *  language: Google Apps Script
  *  author: Amit Agarwal
  *  email: amit@labnol.org
  *  web: https://digitalinspiration.com/
- * 
+ *
  */
 
 function Initialize() {

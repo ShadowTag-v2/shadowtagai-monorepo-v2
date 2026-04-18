@@ -27,7 +27,7 @@ window.FeatureFlagEngine = {
     document.cookie = `ab_${experimentName}=${chosen}; path=/; max-age=2592000`; // 30 days
     return chosen;
   },
-  
+
   trackExperimentExposure: function(experimentName) {
     const variant = this.getVariant(experimentName);
     window.trackEvent('experiment_impression', {
@@ -55,9 +55,9 @@ window.VideoEngagementTracker = {
       for (let bp of breakpoints) {
         if (progress >= bp && !reached.has(bp)) {
           reached.add(bp);
-          window.trackEvent('video_progress', { 
-            video_title: videoId, 
-            percent: bp * 100 
+          window.trackEvent('video_progress', {
+            video_title: videoId,
+            percent: bp * 100
           });
         }
       }

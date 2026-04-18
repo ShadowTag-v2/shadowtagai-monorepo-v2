@@ -65,7 +65,9 @@ class OptimizationStrategy(BaseModel):
     mental_clarity: LifeArea | None = None
 
     focus_areas: list[AreaType] = Field(
-        ..., description="Primary areas of focus (2-3 recommended)", max_length=3,
+        ...,
+        description="Primary areas of focus (2-3 recommended)",
+        max_length=3,
     )
     timeline: str | None = Field(None, description="Timeline for this optimization period")
     success_metrics: list[str] | None = Field(None, description="How to measure success")

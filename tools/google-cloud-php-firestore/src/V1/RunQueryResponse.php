@@ -324,4 +324,3 @@ class RunQueryResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -39,9 +39,7 @@ class BeadsEngine:
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print(
-            "Usage: python3 tools/beads_manager.py '<action_or_fact>' '<comma_separated_entities>' '[tag]'"
-        )
+        print("Usage: python3 tools/beads_manager.py '<action_or_fact>' '<comma_separated_entities>' '[tag]'")
         sys.exit(1)
 
     action = sys.argv[1]

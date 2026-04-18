@@ -61,14 +61,14 @@ async function runTurn(runner, userId, sessionId, prompt) {
   console.log(`\nUSER: '${prompt}'`);
   const content = { role: 'user', parts: [{ text: prompt }] };
   const stream = runner.runAsync({ userId, sessionId, newMessage: content });
-  
+
   let fullText = "";
   for await (const chunk of stream) {
       if (chunk.content && chunk.content.parts) {
           fullText += chunk.content.parts.map(p => p.text || "").join("");
       }
   }
-  
+
   console.log("-".repeat(50));
   console.log(`AI: ${fullText}`);
 }
@@ -77,7 +77,7 @@ export async function main() {
   const userId = 'test_user';
   const client = new ToolboxClient('http://127.0.0.1:5000');
   const tools = await client.loadToolset("my-toolset");
-  
+
   const rootAgent = new LlmAgent({
     name: 'hotel_agent',
     model: 'gemini-2.5-flash',

@@ -23,7 +23,7 @@ const model = vertexAI.getGenerativeModel({ model: 'gemini-1.5-pro-preview-0409'
 // --- MAIN LOOP ---
 async function startWorker() {
   console.log("🚀 Agent Worker Started. Waiting for tasks...");
-  
+
   // Listen to the 'tasks' collection for status = 'queued'
   const taskCollection = firestore.collection('agent_tasks');
   const query = taskCollection.where('status', '==', 'queued').limit(1);
@@ -33,7 +33,7 @@ async function startWorker() {
 
     const doc = snapshot.docs[0];
     const task = doc.data();
-    
+
     // 1. Claim the task (Atomic lock)
     try {
       await firestore.runTransaction(async (t) => {
@@ -50,13 +50,13 @@ async function startWorker() {
     try {
       // 2. Execute The Agent Logic
       const resultData = await runAgentTask(task.goal);
-      
+
       // 3. Handle Data (The "Lake" Logic)
       const storagePath = await persistData(doc.id, resultData);
 
       // 4. Mark Complete
-      await doc.ref.update({ 
-        status: 'completed', 
+      await doc.ref.update({
+        status: 'completed',
         resultPath: storagePath,
         endTime: new Date(),
         a2ui_render: generateA2UI(doc.id, resultData, storagePath) # A2UI Output
@@ -79,9 +79,9 @@ async function runAgentTask(goal) {
     // A. Get State from Browser (via Bridge)
     // We assume the bridge has a /snapshot endpoint, or we ask it to execute extraction
     try {
-        const screenshotResp = await axios.post(BRIDGE_URL, { 
-          action: "exec", 
-          payload: { code: "await chrome.tabs.captureVisibleTab(null, {format: 'png'})" } 
+        const screenshotResp = await axios.post(BRIDGE_URL, {
+          action: "exec",
+          payload: { code: "await chrome.tabs.captureVisibleTab(null, {format: 'png'})" }
         });
         var base64Image = screenshotResp.data.result; // The Bridge returns the raw result
     } catch (e) {
@@ -94,7 +94,7 @@ async function runAgentTask(goal) {
       Goal: "${goal}"
       History: ${JSON.stringify(context)}
       Screen: [Attached]
-      
+
       Output JSON ONLY:
       {
         "thought": "Reasoning here...",
@@ -110,7 +110,7 @@ async function runAgentTask(goal) {
     const streamingResp = await model.generateContentStream(req);
     const response = await streamingResp.response;
     const text = response.candidates[0].content.parts[0].text;
-    
+
     // Parse JSON safely (Gemini sometimes adds markdown backticks)
     const cleanJson = text.replace(/```json|```/g, '').trim();
     const decision = JSON.parse(cleanJson);
@@ -125,23 +125,23 @@ async function runAgentTask(goal) {
 
     // Map Gemini action to Bridge Action
     let bridgePayload = {};
-    
+
     if (decision.action === 'navigate') {
         bridgePayload = { action: "navigate", payload: { url: decision.params.url }};
     } else if (decision.action === 'click') {
-        bridgePayload = { 
-            action: "exec", 
-            payload: { code: `document.querySelector('${decision.params.selector}').click()` } 
+        bridgePayload = {
+            action: "exec",
+            payload: { code: `document.querySelector('${decision.params.selector}').click()` }
         };
     } else if (decision.action === 'type') {
-        bridgePayload = { 
-            action: "exec", 
-            payload: { code: `document.querySelector('${decision.params.selector}').value = '${decision.params.text}'` } 
+        bridgePayload = {
+            action: "exec",
+            payload: { code: `document.querySelector('${decision.params.selector}').value = '${decision.params.text}'` }
         };
     }
 
     await axios.post(BRIDGE_URL, bridgePayload);
-    
+
     // Wait for page load/interaction
     await new Promise(r => setTimeout(r, 4000));
     step++;
@@ -154,10 +154,10 @@ async function persistData(taskId, dataObj) {
   // 1. Save to FILESTORE (Hot/Shared)
   const localDir = path.join(FILESTORE_PATH, 'processed_tasks');
   await fs.ensureDir(localDir);
-  
+
   const fileName = `task_${taskId}_${Date.now()}.json`;
   const localPath = path.join(localDir, fileName);
-  
+
   await fs.writeJson(localPath, dataObj);
   console.log(`💾 Saved to Filestore: ${localPath}`);
 
@@ -176,7 +176,7 @@ async function persistData(taskId, dataObj) {
       }
     }
   });
-  
+
   console.log(`🌊 Uploaded to Lake: gs://${LAKE_BUCKET}/${gcsPath}`);
   return `gs://${LAKE_BUCKET}/${gcsPath}`;
 }
@@ -187,12 +187,12 @@ function generateA2UI(taskId, dataObj, storagePath) {
     "component": "Panel",
     "title": "Extraction Complete",
     "children": [
-      { 
-        "component": "InteractiveChart", 
+      {
+        "component": "InteractiveChart",
         "type": "summary",
-        "data": { "value": dataObj.total || 0, "label": "Total Value" } 
+        "data": { "value": dataObj.total || 0, "label": "Total Value" }
       },
-      { 
+      {
         "component": "DynamicForm",
         "fields": [
             { "label": "Source", "value": dataObj.vendor || "Unknown", "readonly": true },

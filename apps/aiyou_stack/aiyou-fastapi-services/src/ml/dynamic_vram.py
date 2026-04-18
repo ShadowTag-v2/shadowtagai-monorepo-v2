@@ -67,7 +67,12 @@ class AimdoAllocator:
         )
 
     def fault(
-        self, model_id: str, layer_name: str, tensor_shape: tuple, dtype: torch.dtype, offset: int,
+        self,
+        model_id: str,
+        layer_name: str,
+        tensor_shape: tuple,
+        dtype: torch.dtype,
+        offset: int,
     ):
         if model_id not in self._vbars:
             raise KeyError(f"[Aimdo] Attempted to fault an unregistered model_id: {model_id}")
@@ -100,7 +105,8 @@ class AimdoAllocator:
                 f"[Aimdo] CRITICAL VRAM PRESSURE: only {available_gb:.2f}GB available! Initiating ComfyUI Smart Offload.",
             )
             eviction_target_bytes = max(
-                eviction_target_bytes, int((HEADROOM_GB - available_gb) * (1024**3)),
+                eviction_target_bytes,
+                int((HEADROOM_GB - available_gb) * (1024**3)),
             )
 
         cleared_bytes = 0

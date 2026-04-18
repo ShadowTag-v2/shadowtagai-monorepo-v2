@@ -51,21 +51,21 @@ const findEnclosingFunction = (
   symbolTable: SymbolTable
 ): string | null => {
   let current = node.parent;
-  
+
   while (current) {
     if (FUNCTION_NODE_TYPES.has(current.type)) {
       // Found enclosing function - try to get its name
       let funcName: string | null = null;
       let label = 'Function';
-      
+
       // Different node types have different name locations
-      if (current.type === 'function_declaration' || 
+      if (current.type === 'function_declaration' ||
           current.type === 'function_definition' ||
           current.type === 'async_function_declaration' ||
           current.type === 'generator_function_declaration' ||
           current.type === 'function_item') { // Rust function
         // Named function: function foo() {}
-        const nameNode = current.childForFieldName?.('name') || 
+        const nameNode = current.childForFieldName?.('name') ||
                          current.children?.find((c: any) => c.type === 'identifier' || c.type === 'property_identifier');
         funcName = nameNode?.text;
       } else if (current.type === 'impl_item') {
@@ -73,7 +73,7 @@ const findEnclosingFunction = (
         // We need to look inside for the function_item
         const funcItem = current.children?.find((c: any) => c.type === 'function_item');
         if (funcItem) {
-           const nameNode = funcItem.childForFieldName?.('name') || 
+           const nameNode = funcItem.childForFieldName?.('name') ||
                             funcItem.children?.find((c: any) => c.type === 'identifier');
            funcName = nameNode?.text;
            label = 'Method';
@@ -117,28 +117,28 @@ const findEnclosingFunction = (
           funcName = nameNode?.text;
         }
       }
-      
+
       if (funcName) {
         // Look up the function in symbol table to get its node ID
         // Try exact match first
         const nodeId = symbolTable.lookupExact(filePath, funcName);
         if (nodeId) return nodeId;
-        
+
         // Try construct ID manually if lookup fails (common for non-exported internal functions)
         // Format should match what parsing-processor generates: "Function:path/to/file:funcName"
         // Check if we already have a node with this ID in the symbol table to be safe
         const generatedId = generateId(label, `${filePath}:${funcName}`);
-        
+
         // Ideally we should verify this ID exists, but strictly speaking if we are inside it,
         // it SHOULD exist. Returning it is better than falling back to File.
         return generatedId;
       }
-      
+
       // Couldn't determine function name - try parent (might be nested)
     }
     current = current.parent;
   }
-  
+
   return null; // Top-level call (not inside any function)
 };
 
@@ -791,7 +791,7 @@ interface ResolveResult {
  * A. Check imported files first (highest confidence)
  * B. Check local file definitions
  * C. Fuzzy global search (lowest confidence)
- * 
+ *
  * Returns confidence score so agents know what to trust.
  */
 const resolveCallTarget = (
@@ -900,4 +900,3 @@ const BUILT_IN_NAMES = new Set([
 ]);
 
 const isBuiltInOrNoise = (name: string): boolean => BUILT_IN_NAMES.has(name);
-

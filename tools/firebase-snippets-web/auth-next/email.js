@@ -11,7 +11,7 @@ function signInWithEmailPassword() {
   const auth = getAuth();
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in 
+      // Signed in
       const user = userCredential.user;
       // ...
     })
@@ -32,7 +32,7 @@ function signUpWithEmailPassword() {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed up 
+      // Signed up
       const user = userCredential.user;
       // ...
     })

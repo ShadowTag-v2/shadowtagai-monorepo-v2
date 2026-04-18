@@ -58,4 +58,3 @@ class ChangeType
         return constant($const);
     }
 }
-

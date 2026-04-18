@@ -1,5 +1,4 @@
-"""Remote Agent Implementation for Zero Trust A2A.
-"""
+"""Remote Agent Implementation for Zero Trust A2A."""
 
 import logging
 from typing import Any

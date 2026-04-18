@@ -233,8 +233,8 @@ func SetupPostgresVectorTable(t *testing.T, ctx context.Context, pool *pgxpool.P
 	tableName := "vector_table_" + strings.ReplaceAll(uuid.New().String(), "-", "")
 
 	createTableStmt := fmt.Sprintf(`CREATE TABLE %s (
-		id SERIAL PRIMARY KEY, 
-		content TEXT, 
+		id SERIAL PRIMARY KEY,
+		content TEXT,
 		embedding vector(768)
 	)`, tableName)
 

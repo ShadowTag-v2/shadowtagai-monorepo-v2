@@ -29,4 +29,3 @@ resource "google_cloudbuild_worker_pool" "pool" {
     no_external_ip = false
   }
 }
-

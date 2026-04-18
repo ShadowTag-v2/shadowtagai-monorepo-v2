@@ -16,7 +16,6 @@ class RetryExhausted(Exception):
     """All retry attempts exhausted"""
 
 
-
 async def with_retry(
     func: Callable[..., T],
     *args,

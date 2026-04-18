@@ -206,13 +206,13 @@ MCP method being processed.
 **MCP method spans**
 
 Method-level spans follow the [MCP Semantic Conventions][mcp-server-semconv]. Each span
-represents the processing of a single MCP request or notification. 
+represents the processing of a single MCP request or notification.
 
-<br> 
+<br>
 
-The span name follows the format `{mcp.method.name} {target}` where target is 
-`{gen_ai.tool.name}` or `{gen_ai.prompt.name}` when applicable, otherwise just 
-`{mcp.method.name}`. Span status is set to `ERROR` when an error occurs, 
+The span name follows the format `{mcp.method.name} {target}` where target is
+`{gen_ai.tool.name}` or `{gen_ai.prompt.name}` when applicable, otherwise just
+`{mcp.method.name}`. Span status is set to `ERROR` when an error occurs,
 with the status description set to the JSON-RPC error message.
 
 [mcp-server-semconv]: https://opentelemetry.io/docs/specs/semconv/gen-ai/mcp/#server

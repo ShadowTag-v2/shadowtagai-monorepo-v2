@@ -65,7 +65,9 @@ class Integration(Base):
     # Relationships
     user = relationship("User", back_populates="integrations")
     credentials = relationship(
-        "IntegrationCredential", back_populates="integration", cascade="all, delete-orphan",
+        "IntegrationCredential",
+        back_populates="integration",
+        cascade="all, delete-orphan",
     )
     webhooks = relationship("Webhook", back_populates="integration", cascade="all, delete-orphan")
 

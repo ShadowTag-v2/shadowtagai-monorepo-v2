@@ -90,7 +90,11 @@ class TowerNode:
     def _read_hardware_sensors(self) -> Telemetry:
         # Placeholder for real sensor I/O
         return Telemetry(
-            latency_ms=12.0, jitter_ms=2.0, gpu_temp_c=45.0, power_draw_w=800.0, active_inferences=5,
+            latency_ms=12.0,
+            jitter_ms=2.0,
+            gpu_temp_c=45.0,
+            power_draw_w=800.0,
+            active_inferences=5,
         )
 
     def _evaluate_failover(self):

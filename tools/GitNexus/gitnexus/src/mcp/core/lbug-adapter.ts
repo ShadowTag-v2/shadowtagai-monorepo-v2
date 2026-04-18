@@ -373,14 +373,14 @@ export async function initLbugWithDb(
     // Extension may already be loaded or not installed
   }
 
-  pool.set(repoId, { 
+  pool.set(repoId, {
     db: existingDb,
     available,
     checkedOut: 0,
     waiters: [],
     lastUsed: Date.now(),
     dbPath,
-    closed: false 
+    closed: false
   });
   ensureIdleTimer();
 }
@@ -557,4 +557,3 @@ export const CYPHER_WRITE_RE = /(?<!:)\b(CREATE|DELETE|SET|MERGE|REMOVE|DROP|ALT
 export function isWriteQuery(query: string): boolean {
   return CYPHER_WRITE_RE.test(query);
 }
-

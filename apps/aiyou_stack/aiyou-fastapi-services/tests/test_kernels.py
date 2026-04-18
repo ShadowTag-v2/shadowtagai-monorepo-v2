@@ -136,7 +136,9 @@ class TestAuditCompressKernel:
         )
 
         kernel_input = KernelInput(
-            data=classification, trace_id="test-trace-123", metadata={"test": "metadata"},
+            data=classification,
+            trace_id="test-trace-123",
+            metadata={"test": "metadata"},
         )
 
         output = await kernel(kernel_input)

@@ -14,7 +14,7 @@ spec:
         env:
         - name: JETSKI_URL
           value: "http://localhost:3000"
-      
+
       # 2. THE HANDS (Jetski Browser Sidecar)
       - image: gcr.io/shadowtag-omega-v4/jetski:latest
         name: sidecar

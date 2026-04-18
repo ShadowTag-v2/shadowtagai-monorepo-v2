@@ -38,7 +38,7 @@ To run the sample app locally during development:
  1. Run `npm install` to install dependencies.
  2. Run `firebase emulators:start` to start the local Firebase emulators. Note: phone authentication required ReCaptcha verification which does not work with the Firebase emulators. These examples skip connecting to the emulators.
  3. Run `npm run dev` to serve the app locally using Vite
-   This will start a server locally that serves `index.html` on `http://localhost:5173/index.html`. 
+   This will start a server locally that serves `index.html` on `http://localhost:5173/index.html`.
 
 
 Running the app using the Firebase CLI:

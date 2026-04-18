@@ -305,7 +305,8 @@ class Ecosystem:
 
         # Get recommended team
         team = self.specialization.recommend_team(
-            list(domains), max(self.min_agents_per_task, len(domains)),
+            list(domains),
+            max(self.min_agents_per_task, len(domains)),
         )
 
         return team
@@ -470,7 +471,11 @@ class Ecosystem:
         }
 
     def _record_learnings(
-        self, task_id: str, agent_ids: list[str], debate_result: dict, validation: dict,
+        self,
+        task_id: str,
+        agent_ids: list[str],
+        debate_result: dict,
+        validation: dict,
     ) -> int:
         """Record learnings to persistent memory."""
         insights = 0

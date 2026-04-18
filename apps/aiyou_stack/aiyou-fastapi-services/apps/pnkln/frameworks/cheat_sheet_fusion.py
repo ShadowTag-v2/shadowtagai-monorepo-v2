@@ -245,7 +245,10 @@ class CheatSheetFusion:
         return None
 
     async def test_variant(
-        self, variant_id: str, ground_truth_data: list[dict], test_fn: Any | None = None,
+        self,
+        variant_id: str,
+        ground_truth_data: list[dict],
+        test_fn: Any | None = None,
     ) -> DTETestResult:
         """Test a variant against ground truth using DTE.
 

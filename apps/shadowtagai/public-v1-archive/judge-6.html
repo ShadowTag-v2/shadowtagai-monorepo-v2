@@ -96,7 +96,7 @@
             const output = document.getElementById('ast-output');
             output.innerHTML = 'Connecting to Judge-6 AST Indexer...<br/>';
             output.style.color = 'var(--on-surface-variant)';
-            
+
             try {
                 const result = await evaluateAST(input);
                 if(result.status === "VIOLATION") {

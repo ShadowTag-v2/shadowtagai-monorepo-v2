@@ -22,4 +22,3 @@ class ExplainStats
         static::$is_initialized = true;
     }
 }
-

@@ -22,4 +22,3 @@ class Common
         static::$is_initialized = true;
     }
 }
-

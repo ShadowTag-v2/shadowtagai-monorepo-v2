@@ -245,7 +245,7 @@ func (t Tool) Invoke(ctx context.Context, resourceMgr tools.SourceProvider, para
 		idColsFormatted := fmt.Sprintf("['%s']", strings.Join(idCols, "', '"))
 		idColsArg = fmt.Sprintf(", id_cols => %s", idColsFormatted)
 	}
-	sql := fmt.Sprintf(`SELECT * 
+	sql := fmt.Sprintf(`SELECT *
 		FROM AI.FORECAST(
             %s,
             data_col => '%s',

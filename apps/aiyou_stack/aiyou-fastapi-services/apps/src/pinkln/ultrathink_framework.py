@@ -422,8 +422,7 @@ class AgentType(StrEnum):
 
 @dataclass
 class Agent:
-    """Base agent with Glicko-2 rating and DTE evolution
-    """
+    """Base agent with Glicko-2 rating and DTE evolution"""
 
     id: str
     type: AgentType
@@ -554,8 +553,7 @@ Tests as excellence commitment.
 
 @dataclass
 class FrameworkComparison:
-    """Compare reinforcement learning & evolution frameworks
-    """
+    """Compare reinforcement learning & evolution frameworks"""
 
     @staticmethod
     def compare_all() -> dict[str, dict[str, Any]]:
@@ -745,7 +743,8 @@ class GRPOSimulator:
             "accuracy_curve": accuracy_curve,
             "examples_processed": min(epochs * batch_size, len(prioritized)),
             "convergence_epoch": next(
-                (i for i, acc in enumerate(accuracy_curve) if acc >= 0.9), epochs,
+                (i for i, acc in enumerate(accuracy_curve) if acc >= 0.9),
+                epochs,
             ),
         }
 

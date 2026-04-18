@@ -1,5 +1,4 @@
-"""SEO Master API Router
-"""
+"""SEO Master API Router"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
@@ -48,7 +47,8 @@ def analyze_url(url_data: SEOAnalysisCreate, db: Session = Depends(get_db)):
         return analysis
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to analyze URL: {e!s}",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to analyze URL: {e!s}",
         )
 
 
@@ -115,14 +115,14 @@ def create_meta_tags(meta_tag_data: MetaTagCreate, db: Session = Depends(get_db)
         return meta_tag
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to create meta tags: {e!s}",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to create meta tags: {e!s}",
         )
 
 
 @router.get("/meta-tags/{meta_tag_id}/html", response_model=MetaTagHTMLResponse)
 def get_meta_tags_html(meta_tag_id: int, db: Session = Depends(get_db)):
-    """Generate HTML meta tags ready to be inserted in <head> section.
-    """
+    """Generate HTML meta tags ready to be inserted in <head> section."""
     from app.db.models.seo import MetaTag
 
     meta_tag = db.query(MetaTag).filter(MetaTag.id == meta_tag_id).first()
@@ -188,7 +188,8 @@ def create_sitemap(sitemap_data: SitemapCreate, db: Session = Depends(get_db)):
         return sitemap
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Failed to create sitemap: {e!s}",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to create sitemap: {e!s}",
         )
 
 
@@ -225,7 +226,9 @@ def list_sitemaps(
 
 # Core Web Vitals Endpoints
 @router.post(
-    "/core-web-vitals", response_model=CoreWebVitalResponse, status_code=status.HTTP_201_CREATED,
+    "/core-web-vitals",
+    response_model=CoreWebVitalResponse,
+    status_code=status.HTTP_201_CREATED,
 )
 def record_core_web_vitals(vitals_data: CoreWebVitalCreate, db: Session = Depends(get_db)):
     """Record Core Web Vitals metrics for a URL.

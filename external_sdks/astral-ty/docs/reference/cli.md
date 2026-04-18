@@ -221,4 +221,3 @@ Print this message or the help of the given subcommand(s)
 ```
 ty help [COMMAND]
 ```
-

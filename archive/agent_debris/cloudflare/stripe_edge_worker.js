@@ -15,7 +15,7 @@ export default {
 
     const payload = await request.text()
     // STRIPE_WEBHOOK_SECRET injected via Cloudflare Environment Variables
-    const secret = env.STRIPE_WEBHOOK_SECRET 
+    const secret = env.STRIPE_WEBHOOK_SECRET
 
     if (!secret) {
       return new Response('Internal Server Error: Secret config missing', { status: 500 })
@@ -41,7 +41,7 @@ export default {
 
     const data = encoder.encode(`${timestamp}.${payload}`)
     const signature = await crypto.subtle.sign('HMAC', key, data)
-    
+
     const hexSignature = Array.from(new Uint8Array(signature))
       .map(b => b.toString(16).padStart(2, '0'))
       .join('')
@@ -52,13 +52,13 @@ export default {
 
     // Cryptography holds. Forward the request to the upstream Origin via Cloudflare Tunnel.
     const originUrl = new URL(request.url)
-    
+
     const upstreamRequest = new Request(originUrl.toString(), {
       method: request.method,
       headers: request.headers,
       body: payload
     })
-    
+
     return fetch(upstreamRequest)
   }
 }

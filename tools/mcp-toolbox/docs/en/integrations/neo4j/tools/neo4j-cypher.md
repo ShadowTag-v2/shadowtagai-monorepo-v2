@@ -123,7 +123,7 @@ statement: |
   LIMIT 1
   RETURN n.content as content
 description: |
-  Search for documents in Neo4j using natural language. 
+  Search for documents in Neo4j using natural language.
   Returns the most semantically similar result.
 parameters:
   - name: query

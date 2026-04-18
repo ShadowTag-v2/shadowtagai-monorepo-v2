@@ -110,4 +110,3 @@ class Cursor extends \Google\Protobuf\Internal\Message
     }
 
 }
-

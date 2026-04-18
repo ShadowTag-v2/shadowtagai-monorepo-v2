@@ -192,10 +192,16 @@ class TurboQuantKVCache:
 
     def __init__(self, key_dim: int, val_dim: int, bits: int = 3, device: str = "cpu"):
         self.key_quantizer = TurboQuantCompressorV2(
-            head_dim=key_dim, bits=bits, seed=42, device=device,
+            head_dim=key_dim,
+            bits=bits,
+            seed=42,
+            device=device,
         )
         self.val_quantizer = TurboQuantCompressorMSE(
-            head_dim=val_dim, bits=bits, seed=100, device=device,
+            head_dim=val_dim,
+            bits=bits,
+            seed=100,
+            device=device,
         )
         self.k_cache = []
         self.v_cache = []

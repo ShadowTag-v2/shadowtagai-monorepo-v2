@@ -1,5 +1,4 @@
-"""Pydantic schemas for automation API.
-"""
+"""Pydantic schemas for automation API."""
 
 from datetime import datetime
 from typing import Any
@@ -67,7 +66,6 @@ class ScheduledJobCreate(ScheduledJobBase):
     """Schema for creating a scheduled job."""
 
 
-
 class ScheduledJobUpdate(BaseModel):
     """Schema for updating a scheduled job."""
 
@@ -111,7 +109,6 @@ class TriggerCreate(TriggerBase):
     """Schema for creating a trigger."""
 
 
-
 class TriggerUpdate(BaseModel):
     """Schema for updating a trigger."""
 
@@ -145,7 +142,6 @@ class JobExecutionBase(BaseModel):
 
 class JobExecutionCreate(JobExecutionBase):
     """Schema for creating a job execution."""
-
 
 
 class JobExecutionResponse(JobExecutionBase):

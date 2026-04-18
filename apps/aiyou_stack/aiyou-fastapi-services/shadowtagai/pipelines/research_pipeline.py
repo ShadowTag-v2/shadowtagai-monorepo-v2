@@ -115,7 +115,10 @@ class MultiSourceResearchPipeline:
         self.tool_availability = check_tool_availability()
 
     async def execute(
-        self, query: str, intent: ResearchIntent, context: ExecutionContext | None = None,
+        self,
+        query: str,
+        intent: ResearchIntent,
+        context: ExecutionContext | None = None,
     ) -> ResearchResult:
         """Execute complete multi-source research workflow.
 
@@ -139,7 +142,10 @@ class MultiSourceResearchPipeline:
 
         # Initialize result
         result = ResearchResult(
-            query=query, topic=intent.extracted_topic, sources_queried=[], sources_successful=[],
+            query=query,
+            topic=intent.extracted_topic,
+            sources_queried=[],
+            sources_successful=[],
         )
 
         # =========================================
@@ -399,7 +405,9 @@ def get_pipeline() -> MultiSourceResearchPipeline:
 
 
 async def execute_research(
-    query: str, intent: ResearchIntent, context: ExecutionContext | None = None,
+    query: str,
+    intent: ResearchIntent,
+    context: ExecutionContext | None = None,
 ) -> ResearchResult:
     """Execute research query with multi-source orchestration.
 

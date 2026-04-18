@@ -1,5 +1,4 @@
-"""FinJudge CLI - Main Command Interface
-"""
+"""FinJudge CLI - Main Command Interface"""
 
 import json
 import sys
@@ -130,7 +129,9 @@ def _display_table(ruling: JudgeRuling):
     """Display ruling as formatted table"""
     # Risk Matrix Table
     risk_table = Table(
-        title="Risk Matrix (ATP 5-19)", show_header=True, header_style="bold magenta",
+        title="Risk Matrix (ATP 5-19)",
+        show_header=True,
+        header_style="bold magenta",
     )
     risk_table.add_column("Metric", style="cyan", width=20)
     risk_table.add_column("Value", style="green")
@@ -172,7 +173,9 @@ def _display_table(ruling: JudgeRuling):
             metrics_table.add_row(key, str(value))
 
         metrics_table.add_row(
-            "Primary Risk Driver", ruling.numeric_overview.primary_risk_driver, style="bold",
+            "Primary Risk Driver",
+            ruling.numeric_overview.primary_risk_driver,
+            style="bold",
         )
 
         console.print(metrics_table)
@@ -182,7 +185,8 @@ def _display_summary(ruling: JudgeRuling):
     """Display ruling as formatted summary"""
     # Header
     risk_color = {"EXTREME": "red", "HIGH": "yellow", "MODERATE": "blue", "LOW": "green"}.get(
-        ruling.risk_matrix.risk_level.value, "white",
+        ruling.risk_matrix.risk_level.value,
+        "white",
     )
 
     console.print(

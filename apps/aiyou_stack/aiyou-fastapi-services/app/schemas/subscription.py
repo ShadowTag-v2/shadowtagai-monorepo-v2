@@ -26,7 +26,8 @@ class SubscriptionCreate(SubscriptionBase):
     """
 
     payment_method_id: str | None = Field(
-        None, description="Stripe payment method ID (required for pro/enterprise)",
+        None,
+        description="Stripe payment method ID (required for pro/enterprise)",
     )
 
 

@@ -24,4 +24,3 @@ class QueryProfile
         static::$is_initialized = true;
     }
 }
-

@@ -30,7 +30,7 @@ COPY libs/ ./libs/
 COPY .beads/ ./.beads/
 
 # Cloud Run Native Entrypoint
-# Pointing to src/libs/ShadowTag-v2/main.py. 
+# Pointing to src/libs/ShadowTag-v2/main.py.
 # PYTHONPATH must include /app (root) to find 'libs' and 'src'
 ENV PYTHONPATH=/app:/app/src
 CMD ["uvicorn", "src.libs.ShadowTag-v2.main:app", "--host", "0.0.0.0", "--port", "8080"]

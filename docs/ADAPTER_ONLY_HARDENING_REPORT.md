@@ -1,5 +1,5 @@
 # Adapter-Only Hardening Report
-Generated: 2026-04-18T16:49:57Z
+Generated: 2026-04-18T18:44:02Z
 
 ## MCP Truth Surface
 - Canonical MCP: canonical
@@ -54,8 +54,28 @@ None
 ./reference_architectures/terraform/memorystore-cluster-autoscaler/.git
 ./reference_architectures/flagger/.git
 ./reference_architectures/awesome-tf/.git
+./reference_architectures/CL4R1T4S/.git
 ./reference_architectures/FFmpeg/.git
+./reference_architectures/obsidian-releases/.git
+./reference_architectures/claude-code-system-prompts/.git
+./reference_architectures/awesome-notebookLM-prompts/.git
+./reference_architectures/llm-app/.git
+./reference_architectures/obsidian-sample-plugin/.git
+./reference_architectures/notebooklm-skill/.git
+./reference_architectures/obsidian-day-planner/.git
+./reference_architectures/Best-README-Template/.git
+./reference_architectures/notebooklm-py/.git
+./reference_architectures/design-resources-for-developers/.git
+./reference_architectures/claudian/.git
 ./reference_architectures/semaphore/.git
+./reference_architectures/obsidian-excalidraw-plugin/.git
+./reference_architectures/Templater/.git
+./reference_architectures/clear-code/.git
+./reference_architectures/notebooklm-mcp-cli/.git
 ./reference_architectures/lighthouse/.git
 ./reference_architectures/lighthouse-ci/.git
+./reference_architectures/skillify-skill/.git
+./reference_architectures/datacore/.git
 ./reference_architectures/opentofu/.git
+./reference_architectures/gitignore/.git
+./reference_architectures/AdminLTE/.git

@@ -79,7 +79,9 @@ class VoiceCapture:
             console.print("\n[bold green]🎤 Listening... (speak now)[/bold green]")
             try:
                 audio = self.recognizer.listen(
-                    source, timeout=timeout, phrase_time_limit=phrase_time_limit,
+                    source,
+                    timeout=timeout,
+                    phrase_time_limit=phrase_time_limit,
                 )
                 console.print("[yellow]⏳ Transcribing...[/yellow]")
 
@@ -126,8 +128,7 @@ class VoiceCapture:
 
 
 class VoiceConsensusClient:
-    """Desktop client that captures voice and sends to consensus orchestrator.
-    """
+    """Desktop client that captures voice and sends to consensus orchestrator."""
 
     def __init__(
         self,
@@ -175,7 +176,9 @@ class VoiceConsensusClient:
                         while keyboard.is_pressed(self.hotkey):
                             try:
                                 chunk = self.voice.recognizer.listen(
-                                    source, timeout=0.5, phrase_time_limit=0.5,
+                                    source,
+                                    timeout=0.5,
+                                    phrase_time_limit=0.5,
                                 )
                                 audio_chunks.append(chunk)
                             except sr.WaitTimeoutError:
@@ -336,7 +339,9 @@ def main():
         help="Whisper model size: tiny/base/small/medium/large (default: base)",
     )
     parser.add_argument(
-        "--list-mics", action="store_true", help="List available microphones and exit",
+        "--list-mics",
+        action="store_true",
+        help="List available microphones and exit",
     )
     parser.add_argument(
         "--hotkey",
@@ -360,7 +365,9 @@ def main():
     orchestrator = ConsensusOrchestrator()
 
     client = VoiceConsensusClient(
-        voice_capture=voice_capture, orchestrator=orchestrator, hotkey=args.hotkey,
+        voice_capture=voice_capture,
+        orchestrator=orchestrator,
+        hotkey=args.hotkey,
     )
 
     # Run selected mode

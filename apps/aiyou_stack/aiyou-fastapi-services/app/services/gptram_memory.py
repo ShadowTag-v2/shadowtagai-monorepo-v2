@@ -46,7 +46,10 @@ class GPTRAMMemory:
             redis_url = f"redis://{self.redis_host}:{self.redis_port}/{self.redis_db}"
 
             self.redis_client = await redis.from_url(
-                redis_url, password=self.redis_password, encoding="utf-8", decode_responses=True,
+                redis_url,
+                password=self.redis_password,
+                encoding="utf-8",
+                decode_responses=True,
             )
             await self.redis_client.ping()
             logger.info(
@@ -64,7 +67,10 @@ class GPTRAMMemory:
             logger.info("GPTRAM memory connection closed")
 
     async def store_interaction(
-        self, session_id: str, interaction: dict[str, Any], ttl: int | None = None,
+        self,
+        session_id: str,
+        interaction: dict[str, Any],
+        ttl: int | None = None,
     ) -> bool:
         """Store an interaction in temporal memory
 
@@ -91,7 +97,8 @@ class GPTRAMMemory:
 
             # Add to session index (sorted set by timestamp)
             await self.redis_client.zadd(
-                f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()},
+                f"gptram:index:{session_id}",
+                {key: datetime.utcnow().timestamp()},
             )
 
             logger.debug(f"Stored interaction for session {session_id}")
@@ -101,7 +108,10 @@ class GPTRAMMemory:
             return False
 
     async def retrieve_session_history(
-        self, session_id: str, limit: int = 100, min_timestamp: datetime | None = None,
+        self,
+        session_id: str,
+        limit: int = 100,
+        min_timestamp: datetime | None = None,
     ) -> list[dict[str, Any]]:
         """Retrieve session interaction history
 
@@ -121,7 +131,11 @@ class GPTRAMMemory:
             # Get keys from session index (sorted by timestamp)
             min_score = min_timestamp.timestamp() if min_timestamp else 0
             keys = await self.redis_client.zrangebyscore(
-                f"gptram:index:{session_id}", min_score, "+inf", start=0, num=limit,
+                f"gptram:index:{session_id}",
+                min_score,
+                "+inf",
+                start=0,
+                num=limit,
             )
 
             # Retrieve interaction data

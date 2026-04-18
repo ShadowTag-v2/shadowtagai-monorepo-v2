@@ -64,7 +64,11 @@ class NotionImporter:
         }
 
     def _make_request(
-        self, method: str, endpoint: str, data: dict | None = None, retries: int = 3,
+        self,
+        method: str,
+        endpoint: str,
+        data: dict | None = None,
+        retries: int = 3,
     ) -> dict[str, Any]:
         """Make API request with retry logic"""
         url = f"{self.base_url}/{endpoint}"

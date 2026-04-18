@@ -110,4 +110,3 @@ class CollectionSelector extends \Google\Protobuf\Internal\Message
     }
 
 }
-

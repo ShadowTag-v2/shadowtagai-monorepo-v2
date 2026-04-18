@@ -5,7 +5,7 @@
 echo "📦 INITIATING SOVEREIGN HANDOFF..."
 
 # 1. Identify the Transfer Packet (Assuming I am running in the repo root)
-# We will pull the latest transfer packet from the Brain if available, 
+# We will pull the latest transfer packet from the Brain if available,
 # or use the one explicitly placed in the root if I write it there first.
 # For robustness, we will create the file content into the repo first.
 

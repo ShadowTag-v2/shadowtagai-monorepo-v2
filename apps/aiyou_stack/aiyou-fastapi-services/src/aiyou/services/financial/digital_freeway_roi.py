@@ -150,7 +150,9 @@ class DigitalFreewayROICalculator:
         return presets[customer_type]
 
     def calculate_congestion_savings(
-        self, congestion_reduction_pct: float, location: str = "us_avg",
+        self,
+        congestion_reduction_pct: float,
+        location: str = "us_avg",
     ) -> dict[str, float]:
         """Calculate congestion cost savings per driver per year.
 
@@ -208,7 +210,10 @@ class DigitalFreewayROICalculator:
         }
 
     def calculate_per_vehicle_roi(
-        self, congestion_reduction_pct: float, crash_reduction_pct: float, location: str = "us_avg",
+        self,
+        congestion_reduction_pct: float,
+        crash_reduction_pct: float,
+        location: str = "us_avg",
     ) -> dict:
         """Calculate comprehensive per-vehicle ROI.
 
@@ -261,7 +266,9 @@ class DigitalFreewayROICalculator:
 
         """
         per_vehicle = self.calculate_per_vehicle_roi(
-            congestion_reduction_pct, crash_reduction_pct, location,
+            congestion_reduction_pct,
+            crash_reduction_pct,
+            location,
         )
 
         annual_revenue = self.pricing.ANNUAL_FEE_PER_VEHICLE * fleet_size
@@ -282,7 +289,10 @@ class DigitalFreewayROICalculator:
         }
 
     def calculate_national_impact(
-        self, congestion_reduction_pct: float, crash_reduction_pct: float, adoption_pct: float = 1.0,
+        self,
+        congestion_reduction_pct: float,
+        crash_reduction_pct: float,
+        adoption_pct: float = 1.0,
     ) -> dict:
         """Calculate national-level impact for DOT/government stakeholders.
 
@@ -331,7 +341,9 @@ class DigitalFreewayROICalculator:
         }
 
     def calculate_scenario_comparison(
-        self, fleet_size: int = 1_000_000, location: str = "us_avg",
+        self,
+        fleet_size: int = 1_000_000,
+        location: str = "us_avg",
     ) -> dict:
         """Calculate conservative, mid, and aggressive scenarios.
 

@@ -89,7 +89,9 @@ class ParticleSwarm:
         """Create initial particle population."""
         self.particles = [
             Particle.random(
-                dimensions=self.config.dimensions, bounds=self.config.bounds, particle_id=i,
+                dimensions=self.config.dimensions,
+                bounds=self.config.bounds,
+                particle_id=i,
             )
             for i in range(self.config.num_particles)
         ]
@@ -137,7 +139,8 @@ class ParticleSwarm:
                 beta2=self.config.beta2,
             )
             particle.update_position(
-                bounds=self.config.bounds, max_velocity=self.config.max_velocity,
+                bounds=self.config.bounds,
+                max_velocity=self.config.max_velocity,
             )
 
         # Track history and stagnation
@@ -186,10 +189,14 @@ class ParticleSwarm:
         # Update velocities and positions
         for particle in self.particles:
             particle.update_velocity(
-                global_best=self.global_best, w=w, c1=self.config.c1, c2=self.config.c2,
+                global_best=self.global_best,
+                w=w,
+                c1=self.config.c1,
+                c2=self.config.c2,
             )
             particle.update_position(
-                bounds=self.config.bounds, max_velocity=self.config.max_velocity,
+                bounds=self.config.bounds,
+                max_velocity=self.config.max_velocity,
             )
 
         self.fitness_history.append(self.global_best_fitness)
@@ -260,7 +267,9 @@ class ParticleSwarm:
         )
 
     async def optimize_async(
-        self, fitness_fn: Callable[[np.ndarray], float], max_iterations: int | None = None,
+        self,
+        fitness_fn: Callable[[np.ndarray], float],
+        max_iterations: int | None = None,
     ) -> OptimizationResult:
         """Async optimization for integration with async frameworks.
 

@@ -375,7 +375,11 @@ class CavalrySquadron:
         return troop
 
     def _create_platoon(
-        self, troop_type: TroopType, name: str, strength: int, vehicle_type: VehicleType,
+        self,
+        troop_type: TroopType,
+        name: str,
+        strength: int,
+        vehicle_type: VehicleType,
     ) -> Platoon:
         """Create a platoon with vehicles and agents"""
         platoon = Platoon(
@@ -415,7 +419,10 @@ class CavalrySquadron:
         return platoon
 
     def _create_vehicle(
-        self, troop_type: TroopType, vehicle_type: VehicleType, index: int,
+        self,
+        troop_type: TroopType,
+        vehicle_type: VehicleType,
+        index: int,
     ) -> Vehicle:
         """Create a new vehicle"""
         self._vehicle_counter += 1
@@ -486,7 +493,9 @@ class CavalrySquadron:
         return []
 
     def get_available_agents(
-        self, troop_type: TroopType | None = None, count: int = 1,
+        self,
+        troop_type: TroopType | None = None,
+        count: int = 1,
     ) -> list[Agent]:
         """Get available agents for tasking"""
         available = []
@@ -503,7 +512,9 @@ class CavalrySquadron:
         return available
 
     def dispatch_mission(
-        self, task: str, troop_assignments: dict[TroopType, list[str]],
+        self,
+        task: str,
+        troop_assignments: dict[TroopType, list[str]],
     ) -> dict[str, Any]:
         """Dispatch mission to troops per OPORD assignments.
 

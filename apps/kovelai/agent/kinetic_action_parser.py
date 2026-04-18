@@ -398,9 +398,7 @@ class KineticActionParser:
 
         total = len(ledger.verbs)
         passive_count = sum(1 for v in ledger.verbs if v.is_passive)
-        hedging_count = sum(
-            1 for v in ledger.verbs if v.classification == VerbClassification.HEDGING
-        )
+        hedging_count = sum(1 for v in ledger.verbs if v.classification == VerbClassification.HEDGING)
         active_count = total - passive_count
 
         ledger.active_ratio = active_count / total
@@ -422,24 +420,19 @@ class KineticActionParser:
         # Red flags
         if ledger.passive_ratio > 0.4:
             ledger.red_flags.append(
-                f"⚠️ HIGH PASSIVE RATIO ({ledger.passive_ratio:.0%}): "
-                "Document systematically hides actors behind passive constructions",
+                f"⚠️ HIGH PASSIVE RATIO ({ledger.passive_ratio:.0%}): Document systematically hides actors behind passive constructions",
             )
         if ledger.hedging_ratio > 0.25:
             ledger.red_flags.append(
-                f"⚠️ EXCESSIVE HEDGING ({ledger.hedging_ratio:.0%}): "
-                "Document dilutes certainty — likely contains escape hatches",
+                f"⚠️ EXCESSIVE HEDGING ({ledger.hedging_ratio:.0%}): Document dilutes certainty — likely contains escape hatches",
             )
         if not any(v.obligation_grade == ObligationGrade.MANDATORY for v in ledger.verbs):
             ledger.red_flags.append(
                 "⚠️ NO MANDATORY OBLIGATIONS: Document creates no binding duties",
             )
 
-        dispositive_count = sum(
-            1 for v in ledger.verbs if v.classification == VerbClassification.DISPOSITIVE
-        )
+        dispositive_count = sum(1 for v in ledger.verbs if v.classification == VerbClassification.DISPOSITIVE)
         if dispositive_count > 0:
             ledger.red_flags.append(
-                f"🔴 DISPOSITIVE ACTIONS ({dispositive_count}): "
-                "Document contains state-changing verbs — review immediately",
+                f"🔴 DISPOSITIVE ACTIONS ({dispositive_count}): Document contains state-changing verbs — review immediately",
             )

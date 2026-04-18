@@ -59,7 +59,7 @@ describe("firestore-solution-counters", () => {
     before(() => {
         const { initializeApp } = require("firebase/app");
         const { getFirestore } = require("firebase/firestore");
-  
+
         const config = {
             apiKey: "AIzaSyArvVh6VSdXicubcvIyuB-GZs8ua0m0DTI",
             authDomain: "firestorequickstarts.firebaseapp.com",

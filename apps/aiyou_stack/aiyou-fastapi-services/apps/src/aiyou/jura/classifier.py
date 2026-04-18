@@ -89,10 +89,12 @@ class JuraClassifier:
 
     def __init__(self):
         self._high_pattern = re.compile(
-            r"\b(" + "|".join(self.HIGH_COMPLEXITY_KEYWORDS) + r")\b", re.IGNORECASE,
+            r"\b(" + "|".join(self.HIGH_COMPLEXITY_KEYWORDS) + r")\b",
+            re.IGNORECASE,
         )
         self._low_pattern = re.compile(
-            r"\b(" + "|".join(self.LOW_COMPLEXITY_KEYWORDS) + r")\b", re.IGNORECASE,
+            r"\b(" + "|".join(self.LOW_COMPLEXITY_KEYWORDS) + r")\b",
+            re.IGNORECASE,
         )
 
     def classify(

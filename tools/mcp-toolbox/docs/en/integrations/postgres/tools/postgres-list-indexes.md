@@ -32,20 +32,20 @@ name: list_indexes
 type: postgres-list-indexes
 source: postgres-source
 description: |
-  Lists available user indexes in the database, excluding system schemas (pg_catalog, 
-  information_schema). For each index, the following properties are returned: 
-  schema name, table name, index name, index type (access method), a boolean 
+  Lists available user indexes in the database, excluding system schemas (pg_catalog,
+  information_schema). For each index, the following properties are returned:
+  schema name, table name, index name, index type (access method), a boolean
   indicating if it's a unique index, a boolean indicating if it's for a primary key,
-  the index definition, index size in bytes, the number of index scans, the number of 
-  index tuples read, the number of table tuples fetched via index scans, and a boolean 
-  indicating if the index has been used at least once. 
+  the index definition, index size in bytes, the number of index scans, the number of
+  index tuples read, the number of table tuples fetched via index scans, and a boolean
+  indicating if the index has been used at least once.
 ```
 
 The response is a json array with the following elements:
 
 ```json
 {
- "schema_name": "schema name", 
+ "schema_name": "schema name",
  "table_name": "table name",
  "index_name": "index name",
  "index_type": "index access method (e.g btree, hash, gin)",
@@ -55,7 +55,7 @@ The response is a json array with the following elements:
  "index_size_bytes": "index size in bytes",
  "index_scans": "Number of index scans initiated on this index",
  "tuples_read": "Number of index entries returned by scans on this index",
- "tuples_fetched": "Number of live table rows fetched by simple index scans using this index", 
+ "tuples_fetched": "Number of live table rows fetched by simple index scans using this index",
  "is_used": "boolean indicating if the index has been scanned at least once"
 }
 ```

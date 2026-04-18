@@ -116,7 +116,9 @@ async def lifespan(app: FastAPI):
 
     # Create edge reasoning pipeline
     context = AttentionContext(
-        vehicle_position=(0.0, 0.0), vehicle_velocity=(0.0, 0.0), vehicle_heading=0.0,
+        vehicle_position=(0.0, 0.0),
+        vehicle_velocity=(0.0, 0.0),
+        vehicle_heading=0.0,
     )
     app_state.edge_pipeline = EdgeReasoningPipeline(context, use_gpu=True)
 
@@ -184,7 +186,8 @@ async def broadcast_event(event: EventRequest):
 
     if not is_safe:
         raise HTTPException(
-            status_code=400, detail=f"Event blocked by moderation: {moderation_result.categories}",
+            status_code=400,
+            detail=f"Event blocked by moderation: {moderation_result.categories}",
         )
 
     # Broadcast event
@@ -278,7 +281,9 @@ async def add_map_feature(feature_req: MapFeatureRequest):
     )
 
     return MapFeatureResponse(
-        feature_id=feature.feature_id, delta_id=delta.delta_id, status="added",
+        feature_id=feature.feature_id,
+        delta_id=delta.delta_id,
+        status="added",
     )
 
 

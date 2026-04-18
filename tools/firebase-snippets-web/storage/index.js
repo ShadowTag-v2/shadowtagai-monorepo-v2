@@ -40,7 +40,7 @@ function storageCustomApp() {
 }
 
 /**
- * @param {File} file 
+ * @param {File} file
  */
 function storageOnComplete(file) {
   // The file param would be a File object from a file selection event in the browser.

@@ -11,9 +11,9 @@ PRODUCT_PROFESSIONAL = "prod_UM2X10cpyay52e"
 PRODUCT_ENTERPRISE = "prod_UM2XMVp9Er7A0i"
 
 # ── Prices ──
-PRICE_PRO_MONTHLY = "price_1TNKSREHnWpykeMiRMDlVgLl"     # $149/mo
-PRICE_PRO_ANNUAL = "price_1TNKSjEHnWpykeMi0S9GCVjy"      # $1,428/yr ($119/mo)
-PRICE_ENT_MONTHLY = "price_1TNKSREHnWpykeMi8mrDf4rI"     # $20,000/mo
+PRICE_PRO_MONTHLY = "price_1TNKSREHnWpykeMiRMDlVgLl"  # $149/mo
+PRICE_PRO_ANNUAL = "price_1TNKSjEHnWpykeMi0S9GCVjy"  # $1,428/yr ($119/mo)
+PRICE_ENT_MONTHLY = "price_1TNKSREHnWpykeMi8mrDf4rI"  # $20,000/mo
 
 # ── Coupons ──
 COUPON_BETA_50 = "3wseBY7Z"  # 50% off, 3 months, max 100 redemptions

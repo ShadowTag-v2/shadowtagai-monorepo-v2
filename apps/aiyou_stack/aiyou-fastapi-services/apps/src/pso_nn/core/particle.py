@@ -110,7 +110,9 @@ class Particle:
         self.velocity = m_hat / (np.sqrt(v_hat) + eps)
 
     def update_position(
-        self, bounds: tuple[float, float] | None = None, max_velocity: float = 1.0,
+        self,
+        bounds: tuple[float, float] | None = None,
+        max_velocity: float = 1.0,
     ) -> None:
         """Update position using current velocity.
 

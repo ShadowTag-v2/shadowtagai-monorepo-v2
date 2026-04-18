@@ -2,7 +2,7 @@
 title: "list_tables"
 type: docs
 weight: 1
-description: > 
+description: >
    Lists all tables in the current user's schema
 ---
 
@@ -15,8 +15,8 @@ The specified SQL statement is executed using [prepared statements][oracle-stmt]
 for security and performance. It expects parameter placeholders in the SQL query
 to be in the native Oracle format (e.g., `:1`, `:2`).
 
-By default, tools are configured as **read-only** (SAFE mode). To execute data modification 
-statements (INSERT, UPDATE, DELETE), you must explicitly set the `readOnly` 
+By default, tools are configured as **read-only** (SAFE mode). To execute data modification
+statements (INSERT, UPDATE, DELETE), you must explicitly set the `readOnly`
 field to `false`.
 
 [oracle-stmt]: https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html

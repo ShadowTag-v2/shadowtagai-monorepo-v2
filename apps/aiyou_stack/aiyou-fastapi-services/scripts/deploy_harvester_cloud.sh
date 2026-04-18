@@ -10,7 +10,7 @@ JOB_NAME="harvester-job"
 echo ">>> 📦 PACKAGING HARVESTER (TROJAN HORSE)..."
 # Build the image with the current repo context (including .git)
 # Note: The Dockerfile (or default builder) needs to run pip install.
-# Since we are using 'gcloud builds submit' with a default builder, 
+# Since we are using 'gcloud builds submit' with a default builder,
 # we should ideally have a Dockerfile.
 # For now, we will assume a Dockerfile exists or create one.
 # Let's verify if a Dockerfile exists. If not, we should create it.

@@ -119,7 +119,10 @@ class StripeBillingService:
 
     # Customer Management
     async def create_customer(
-        self, email: str, name: str, metadata: dict[str, str] | None = None,
+        self,
+        email: str,
+        name: str,
+        metadata: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Create a new Stripe customer
 
@@ -188,7 +191,9 @@ class StripeBillingService:
 
     # Payment Method Management
     async def attach_payment_method(
-        self, customer_id: str, payment_method_id: str,
+        self,
+        customer_id: str,
+        payment_method_id: str,
     ) -> dict[str, Any]:
         """Attach payment method to customer"""
         try:
@@ -197,7 +202,8 @@ class StripeBillingService:
 
             # Set as default
             stripe.Customer.modify(
-                customer_id, invoice_settings={"default_payment_method": payment_method_id},
+                customer_id,
+                invoice_settings={"default_payment_method": payment_method_id},
             )
 
             return {
@@ -275,7 +281,9 @@ class StripeBillingService:
             return {"error": str(e)}
 
     async def update_subscription_quantity(
-        self, subscription_id: str, new_vehicle_count: int,
+        self,
+        subscription_id: str,
+        new_vehicle_count: int,
     ) -> dict[str, Any]:
         """Update subscription quantity (vehicle count)
 
@@ -310,7 +318,9 @@ class StripeBillingService:
             return {"error": str(e)}
 
     async def cancel_subscription(
-        self, subscription_id: str, immediate: bool = False,
+        self,
+        subscription_id: str,
+        immediate: bool = False,
     ) -> dict[str, Any]:
         """Cancel a subscription
 
@@ -324,7 +334,8 @@ class StripeBillingService:
                 subscription = stripe.Subscription.delete(subscription_id)
             else:
                 subscription = stripe.Subscription.modify(
-                    subscription_id, cancel_at_period_end=True,
+                    subscription_id,
+                    cancel_at_period_end=True,
                 )
 
             return {

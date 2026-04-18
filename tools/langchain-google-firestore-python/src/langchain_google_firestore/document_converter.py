@@ -49,9 +49,7 @@ def convert_firestore_document(
     for k in vector_keys:
         metadata[k] = _convert_from_firestore(data_doc.pop(k))
 
-    set_page_fields = set(
-        page_content_fields or (data_doc.keys() - set(metadata_fields or []))
-    )
+    set_page_fields = set(page_content_fields or (data_doc.keys() - set(metadata_fields or [])))
     set_metadata_fields = set(metadata_fields or (data_doc.keys() - set_page_fields))
 
     page_content = {}
@@ -133,7 +131,5 @@ def _convert_from_langchain(val: Any, client: Client) -> Any:
         elif val.get(FIRESTORE_TYPE) == VECTOR:
             val_converted = Vector(val["values"])
         else:
-            val_converted = {
-                k: _convert_from_langchain(v, client) for k, v in val.items()
-            }
+            val_converted = {k: _convert_from_langchain(v, client) for k, v in val.items()}
     return val_converted

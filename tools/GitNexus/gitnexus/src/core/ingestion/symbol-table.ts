@@ -37,7 +37,7 @@ export interface SymbolTable {
    * Returns the Node ID if found
    */
   lookupExact: (filePath: string, name: string) => string | undefined;
-  
+
   /**
    * High Confidence: Look for a symbol in a specific file, returning full definition.
    * Includes type information needed for heritage resolution (Class vs Interface).
@@ -76,7 +76,7 @@ export interface SymbolTable {
    * Debugging: See how many symbols are tracked
    */
   getStats: () => { fileCount: number; globalSymbolCount: number };
-  
+
   /**
    * Cleanup memory
    */

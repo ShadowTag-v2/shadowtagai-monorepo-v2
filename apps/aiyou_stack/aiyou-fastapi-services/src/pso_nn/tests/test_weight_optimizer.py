@@ -1,5 +1,4 @@
-"""Tests for PSO-NN Weight Optimizer.
-"""
+"""Tests for PSO-NN Weight Optimizer."""
 
 import numpy as np
 import pytest

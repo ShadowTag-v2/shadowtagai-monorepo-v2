@@ -16,8 +16,7 @@ class ROIProjector:
         self.model_cost_accrued = 0.0
 
     def log_processing_event(self, tokens_used: int, latency_ms: int, estimated_human_minutes: int):
-        """Record a successful Zero-Touch extraction and compute ROI.
-        """
+        """Record a successful Zero-Touch extraction and compute ROI."""
         self.total_events_processed += 1
 
         # GCP Vertex / Gemini Flash rough cost per 1M tokens ($0.15 input / $0.60 output)
@@ -34,8 +33,7 @@ class ROIProjector:
         )
 
     def get_roi_report(self) -> dict[str, Any]:
-        """Generates the financial snapshot to prove the platform's value.
-        """
+        """Generates the financial snapshot to prove the platform's value."""
         gross_value_created = self.total_hours_saved * self.hourly_lawyer_rate
         net_value = gross_value_created - self.model_cost_accrued
 

@@ -166,7 +166,9 @@ class SquadRoutingOptimizer:
         # Default: route through 5 random squads
         if required_squads is None:
             required_squads = np.random.choice(
-                self.num_squads, size=min(5, self.num_squads), replace=False,
+                self.num_squads,
+                size=min(5, self.num_squads),
+                replace=False,
             ).tolist()
 
         num_points = len(required_squads)

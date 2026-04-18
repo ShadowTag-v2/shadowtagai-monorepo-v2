@@ -63,7 +63,10 @@ class JudgeIntegration:
         }
 
     async def assess_layer3_rules(
-        self, query: str, _layer1_result: dict, _layer2_result: dict,
+        self,
+        query: str,
+        _layer1_result: dict,
+        _layer2_result: dict,
     ) -> dict:
         """Layer 3: Rules engine for deterministic compliance checks
 

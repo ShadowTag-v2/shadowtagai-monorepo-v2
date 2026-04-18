@@ -1286,7 +1286,7 @@
 ### Dependencies
 - chore(deps): update dependency nyc to v14 ([#600](https://github.com/googleapis/nodejs-firestore/pull/600))
 - chore(deps): update dependency typescript to ~3.4.0
-- docs: add .readme-metadata.json and generate new README.md 
+- docs: add .readme-metadata.json and generate new README.md
 
 ### Documentation
 - docs: Add example for Precondition ([#601](https://github.com/googleapis/nodejs-firestore/pull/601))
@@ -1319,7 +1319,7 @@
 03-10-2019 20:09 PDT
 
 ### New Features
-- feature: Added `FieldValue.increment()`, which can be used in `create()`, `update()` and `set(..., {merge:true})` to 
+- feature: Added `FieldValue.increment()`, which can be used in `create()`, `update()` and `set(..., {merge:true})` to
   increment or decrement numeric field values safely without transactions ([#444](https://github.com/googleapis/nodejs-firestore/pull/444))
 
 ### Implementation Changes

@@ -9,8 +9,7 @@ tesla = TeslaController(api_key="TBD", active_vin="TBD")
 
 
 async def _orchestrate_departure(schedule: CEOTrackSchedule):
-    """The background loop for Schiznit hardware prodding prior to an external meeting.
-    """
+    """The background loop for Schiznit hardware prodding prior to an external meeting."""
     # 15 mins prior: Wake up car and start pre-conditioning
     await tesla.wake_vehicle()
     await tesla.precondition_cabin(target_temp_c=21.0)

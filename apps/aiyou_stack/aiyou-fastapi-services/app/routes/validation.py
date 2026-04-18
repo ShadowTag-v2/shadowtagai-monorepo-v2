@@ -118,7 +118,8 @@ async def validate_item(request: ValidationRequest) -> ValidationResponse:
 
     if not item:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Item not found: {request.item_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Item not found: {request.item_id}",
         )
 
     # Perform validation
@@ -127,7 +128,8 @@ async def validate_item(request: ValidationRequest) -> ValidationResponse:
         return result
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Validation failed: {e!s}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Validation failed: {e!s}",
         )
 
 
@@ -370,7 +372,8 @@ async def batch_validate(request: BatchValidationRequest) -> BatchValidationResp
         if results
         else 0,
         "p99_latency_ms": round(
-            sorted([r.latency_ms for r in results])[int(len(results) * 0.99)], 1,
+            sorted([r.latency_ms for r in results])[int(len(results) * 0.99)],
+            1,
         )
         if results
         else 0,

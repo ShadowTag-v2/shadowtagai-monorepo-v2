@@ -38,6 +38,6 @@ Open the Google Spreadsheet associated with the Google Form, go to the Script ed
 
 ## Google Apps Script Developer 👨🏼‍💻
 
-[Amit Agarwal](https://digitalinspiration.com/google-developer) is a web geek and author of [labnol.org](https://www.labnol.org/), a popular tech how-to website. He frequently uses [Google Apps Script](https://ctrlq.org/) to automate workflows and enhance productivity. 
+[Amit Agarwal](https://digitalinspiration.com/google-developer) is a web geek and author of [labnol.org](https://www.labnol.org/), a popular tech how-to website. He frequently uses [Google Apps Script](https://ctrlq.org/) to automate workflows and enhance productivity.
 
 Reach him on Twitter [@labnol](https://twitter.com/labnol) or email amit@labnol.org

@@ -94,7 +94,7 @@ function checkLoginState(response) {
         // Build Firebase credential with the Facebook auth token.
         var credential = firebase.auth.FacebookAuthProvider.credential(
             response.authResponse.accessToken);
-        
+
         // Sign in with the credential from the Facebook user.
         firebase.auth().signInWithCredential(credential)
           .catch((error) => {
@@ -139,7 +139,7 @@ function authWithCredential(credential) {
   // Sign in with the credential from the Facebook user.
   firebase.auth().signInWithCredential(credential)
     .then((result) => {
-      // Signed in       
+      // Signed in
       var credential = result.credential;
       // ...
     })

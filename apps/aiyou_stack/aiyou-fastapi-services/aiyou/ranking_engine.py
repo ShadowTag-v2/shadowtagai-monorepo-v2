@@ -98,7 +98,9 @@ class NoveltyDetector(nn.Module):
         super().__init__()
 
         self.encoder = nn.Sequential(
-            nn.Linear(512, embedding_dim), nn.LayerNorm(embedding_dim), nn.ReLU(),
+            nn.Linear(512, embedding_dim),
+            nn.LayerNorm(embedding_dim),
+            nn.ReLU(),
         )
 
         # Memory bank of recent embeddings
@@ -258,7 +260,10 @@ class FeedRankingEngine:
         return ranked_items
 
     def generate_feed(
-        self, candidate_items: list[ContentItem], max_items: int = 50, diversity_factor: float = 0.8,
+        self,
+        candidate_items: list[ContentItem],
+        max_items: int = 50,
+        diversity_factor: float = 0.8,
     ) -> list[ContentItem]:
         """Generate personalized feed from candidate items.
 
@@ -308,7 +313,9 @@ class FeedRankingEngine:
         return features
 
     def _apply_diversity(
-        self, ranked_items: list[ContentItem], diversity_factor: float,
+        self,
+        ranked_items: list[ContentItem],
+        diversity_factor: float,
     ) -> list[ContentItem]:
         """Apply diversity filtering to prevent similar content clustering.
 

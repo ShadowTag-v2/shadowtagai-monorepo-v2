@@ -1,5 +1,4 @@
-"""Example API endpoints demonstrating monitoring integration.
-"""
+"""Example API endpoints demonstrating monitoring integration."""
 
 import asyncio
 import random
@@ -42,7 +41,9 @@ async def create_item(item: Item):
 
     # Simulate business operation
     MetricsCollector.record_business_operation(
-        operation_type="item_creation", status="success", duration=0.1,
+        operation_type="item_creation",
+        status="success",
+        duration=0.1,
     )
 
     return {

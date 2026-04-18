@@ -28,25 +28,25 @@ OUTPUT_FILE = os.path.join(OUTPUT_DIR, "legal-data-arch.mp4")
 # "Abstract Data Architecture" — Legal Tech precision aesthetic
 # Warm gold neural network on deep navy. Stable, prestigious, secure.
 HERO_PROMPT = """
-Abstract digital neural network infrastructure visualization. Thousands of fine, 
-luminous golden-white lines intersect and pulse across a deep navy-black void, 
-forming geometric lattice patterns that suggest data flow and legal precision. 
-Glowing amber and pale gold nodes pulse softly where lines converge, like synapses 
-firing through a secure private network. The structure is crystalline and ordered, 
-not chaotic — every line connects with purpose, evoking encrypted judicial records, 
+Abstract digital neural network infrastructure visualization. Thousands of fine,
+luminous golden-white lines intersect and pulse across a deep navy-black void,
+forming geometric lattice patterns that suggest data flow and legal precision.
+Glowing amber and pale gold nodes pulse softly where lines converge, like synapses
+firing through a secure private network. The structure is crystalline and ordered,
+not chaotic — every line connects with purpose, evoking encrypted judicial records,
 secure attorney-client privilege, and institutional trust.
 
-Camera: imperceptibly slow forward push, as if moving through infinite corridors 
-of encrypted legal data. The foreground lattice moves slightly faster than the 
-background, creating subtle 3D depth parallax. The overall palette is deep navy 
-(#0a0f1e), slate grey (#1e2a3a), with fine glowing gold (#c9a96e) and warm white 
-(#f5ede0aa) line highlights. 
+Camera: imperceptibly slow forward push, as if moving through infinite corridors
+of encrypted legal data. The foreground lattice moves slightly faster than the
+background, creating subtle 3D depth parallax. The overall palette is deep navy
+(#0a0f1e), slate grey (#1e2a3a), with fine glowing gold (#c9a96e) and warm white
+(#f5ede0aa) line highlights.
 
-Mood: prestigious, stable, secure, sovereign. Like the interior of a digital vault 
-inside a white-shoe law firm. No chaos, no consumer aesthetics — only precision 
+Mood: prestigious, stable, secure, sovereign. Like the interior of a digital vault
+inside a white-shoe law firm. No chaos, no consumer aesthetics — only precision
 engineering for the legal profession.
 
-The animation loops seamlessly: the final frame visually matches the first frame. 
+The animation loops seamlessly: the final frame visually matches the first frame.
 Duration: 8 seconds. 4K resolution. Cinematic, photorealistic render quality.
 """.strip()
 

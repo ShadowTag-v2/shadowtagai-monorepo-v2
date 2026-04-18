@@ -11,6 +11,7 @@ Usage:
     oracle history --clear                 - Reset history
     oracle context                         - Show FULLAUTO_CONTEXT.md
 """
+
 import subprocess
 import json
 import os
@@ -46,15 +47,17 @@ def save_history(prompt: str, response: str, files: List[str] = None):
         with open(history_file) as f:
             history = json.load(f)
 
-    history.append({
-        "timestamp": datetime.now().isoformat(),
-        "prompt": prompt,
-        "files": files or [],
-        "response": response[:2000],  # Truncate for history
-    })
+    history.append(
+        {
+            "timestamp": datetime.now().isoformat(),
+            "prompt": prompt,
+            "files": files or [],
+            "response": response[:2000],  # Truncate for history
+        }
+    )
 
     # Keep only last MAX_HISTORY * 2 (in case of long sessions)
-    history = history[-(MAX_HISTORY * 2):]
+    history = history[-(MAX_HISTORY * 2) :]
 
     with open(history_file, "w") as f:
         json.dump(history, f, indent=2)
@@ -67,8 +70,8 @@ def format_history(history: list) -> str:
 
     lines = ["## Previous Conversation"]
     for h in history:
-        prompt_preview = h['prompt'][:500]
-        response_preview = h['response'][:500]
+        prompt_preview = h["prompt"][:500]
+        response_preview = h["response"][:500]
         lines.append(f"\n### User:\n{prompt_preview}...")
         lines.append(f"\n### Oracle:\n{response_preview}...")
 
@@ -99,10 +102,7 @@ def oracle_ask(
     # Call gemini CLI
     try:
         result = subprocess.run(
-            ["gemini", "-p", full_prompt],
-            capture_output=True,
-            text=True,
-            timeout=120
+            ["gemini", "-p", full_prompt], capture_output=True, text=True, timeout=120
         )
         response = result.stdout
         if result.returncode != 0 and result.stderr:
@@ -125,10 +125,7 @@ def oracle_quick(prompt: str, files: Optional[List[str]] = None) -> str:
 
     try:
         result = subprocess.run(
-            ["gemini", "-p", full_prompt],
-            capture_output=True,
-            text=True,
-            timeout=120
+            ["gemini", "-p", full_prompt], capture_output=True, text=True, timeout=120
         )
         return result.stdout if result.returncode == 0 else f"Error: {result.stderr}"
     except subprocess.TimeoutExpired:
@@ -145,9 +142,9 @@ def show_history():
         return
 
     for i, h in enumerate(history, 1):
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"Exchange {i} - {h['timestamp']}")
-        if h.get('files'):
+        if h.get("files"):
             print(f"Files: {', '.join(h['files'])}")
         print(f"\nUser: {h['prompt'][:200]}...")
         print(f"\nOracle: {h['response'][:500]}...")

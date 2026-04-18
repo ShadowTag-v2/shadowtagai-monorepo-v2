@@ -185,8 +185,7 @@ class VertexMemoryManager:
 
 
 def generate_gke_deployment_yaml(output_path: str = "k8s/consensus-deployment.yaml"):
-    """Generate complete GKE deployment YAML with memory init container.
-    """
+    """Generate complete GKE deployment YAML with memory init container."""
     deployment_yaml = """apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -321,8 +320,7 @@ spec:
 
 
 def generate_vertex_notebook_startup():
-    """Generate Vertex Workbench startup script for memory sync.
-    """
+    """Generate Vertex Workbench startup script for memory sync."""
     startup_script = """#!/bin/bash
 # Vertex Workbench Startup Script
 # Auto-syncs consensus memory from GCS

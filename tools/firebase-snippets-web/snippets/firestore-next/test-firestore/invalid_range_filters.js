@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START invalid_range_filters_modular]
-import { query, where } from "firebase/firestore";  
+import { query, where } from "firebase/firestore";
 
 const q = query(citiesRef, where("state", ">=", "CA"), where("population", ">", 100000));
 // [END invalid_range_filters_modular]

@@ -34,7 +34,8 @@ async def main():
         # Create first checkpoint
         print("Creating checkpoint before changes...")
         checkpoint_id_1 = await checkpoint_manager.auto_checkpoint(
-            file_paths=[str(file1), str(file2)], user_message="Initial version",
+            file_paths=[str(file1), str(file2)],
+            user_message="Initial version",
         )
         print(f"✓ Checkpoint created: {checkpoint_id_1}\n")
 
@@ -47,7 +48,8 @@ async def main():
         # Create second checkpoint
         print("Creating checkpoint after changes...")
         checkpoint_id_2 = await checkpoint_manager.auto_checkpoint(
-            file_paths=[str(file1), str(file2)], user_message="Added name parameter",
+            file_paths=[str(file1), str(file2)],
+            user_message="Added name parameter",
         )
         print(f"✓ Checkpoint created: {checkpoint_id_2}\n")
 

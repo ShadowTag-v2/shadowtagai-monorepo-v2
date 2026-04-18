@@ -90,7 +90,10 @@ class MessageConsensusOrchestrator:
         self.models = ["Gemini", "Perplexity", "SuperGrok"]
 
     async def process_message(
-        self, user_message: str, auto_archive: bool = True, tags: list[str] = None,
+        self,
+        user_message: str,
+        auto_archive: bool = True,
+        tags: list[str] = None,
     ) -> dict[str, Any]:
         """Process user message through full consensus pipeline.
 
@@ -134,7 +137,10 @@ class MessageConsensusOrchestrator:
             # Layer 3: Claude synthesizes and prepares execution
             print("[Layer 3] Claude synthesizing final answer for execution...")
             result = await self._claude_synthesis(
-                user_message, claude_initial, layer2_responses, all_reviews,
+                user_message,
+                claude_initial,
+                layer2_responses,
+                all_reviews,
             )
 
         print("[✓] Consensus complete - ready for execution\n")
@@ -145,7 +151,10 @@ class MessageConsensusOrchestrator:
             try:
                 archive = TranscriptArchive()
                 transcript_id = archive.archive(
-                    user_query=user_message, result=result, system_type="simple", tags=tags or [],
+                    user_query=user_message,
+                    result=result,
+                    system_type="simple",
+                    tags=tags or [],
                 )
                 archive.close()
                 print(f"[Archive] Saved as transcript #{transcript_id}\n")
@@ -261,7 +270,9 @@ Be thorough but concise."""
             )
 
     async def _broadcast_to_models(
-        self, user_message: str, claude_analysis: str,
+        self,
+        user_message: str,
+        claude_analysis: str,
     ) -> list[ModelResponse]:
         """Broadcast to Gemini, Perplexity, SuperGrok in parallel"""
         base_prompt = f"""You are part of a multi-model consensus system.
@@ -296,7 +307,9 @@ Your response will be peer-reviewed by other models."""
         return [r for r in responses if isinstance(r, ModelResponse)]
 
     async def _circular_review_round(
-        self, responses: list[ModelResponse], shift: int,
+        self,
+        responses: list[ModelResponse],
+        shift: int,
     ) -> list[PeerReview]:
         """Perform one round of circular peer review.
         shift=1: Each reviews right neighbor
@@ -320,7 +333,9 @@ Your response will be peer-reviewed by other models."""
         return reviews
 
     async def _get_peer_review(
-        self, reviewer_response: ModelResponse, reviewed_response: ModelResponse,
+        self,
+        reviewer_response: ModelResponse,
+        reviewed_response: ModelResponse,
     ) -> PeerReview:
         """Get peer review from reviewer about reviewed"""
         review_prompt = f"""Peer review another AI model's response.

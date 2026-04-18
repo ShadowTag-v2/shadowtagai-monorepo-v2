@@ -40,8 +40,7 @@ def antigravity_ops_flow(query: str) -> str:
 
 
 def define_ops_flows() -> None:
-    """Define and register operational flows with Genkit.
-    """
+    """Define and register operational flows with Genkit."""
     gk = get_genkit()
 
     # Register the flow

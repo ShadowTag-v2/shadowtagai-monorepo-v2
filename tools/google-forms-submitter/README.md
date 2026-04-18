@@ -48,7 +48,7 @@ form.on('submit', function(e) {
 
   // Serialize
   let serializedData = $.param(params);
-  
+
   // Submit the form
   $.ajax({
     url: formURL,

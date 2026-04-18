@@ -373,7 +373,7 @@ Source Brain: db2902d9-2ccb-4311-b4ec-a95559dfab15
 - [x] Formally adopt `antigravity_github_app_policy.md` as the persistent operating model
 
 ## Stage 8: Execute Mechanical Fold-In
-- [x] Analyze `subtree_merge_57.py` and `fold_in_checklist.yaml` 
+- [x] Analyze `subtree_merge_57.py` and `fold_in_checklist.yaml`
 - [x] Develop resilient `execute_fold_in.py` migration script
 - [x] Extract, clean, and map the 50+ satellite repos into `apps/`, `infra/`, `control/`, `archive/`
 - [x] Stamp `MIGRATED_FROM.md` records and update `monorepo_manifest.yaml`
@@ -1370,7 +1370,7 @@ Source Brain: 78f0c788-9760-450b-9ff2-ec00c7eff741
 - [ ] Connect the AI swarm architecture to the new LadybugDB structure
 
 # Stage 22: Codebase Triage and Global Dependency Assimilation
-- [x] Clone NodeJS ecosystem dependencies (node-semver, node, cli, documentation, cacache) into `external_sdks/npm` 
+- [x] Clone NodeJS ecosystem dependencies (node-semver, node, cli, documentation, cacache) into `external_sdks/npm`
 - [x] Resolve strictly typed Pylance Python Errors in `hybrid_scraper.py` and `ingest_drive_docs.py`
 - [x] Correct biomejs pipeline linting errors regarding formatting lines in omega setup scripts
 - [x] Patch IDE `files.associations` settings to register `.aiexclude` as safely ignored syntax to suppress false alerts
@@ -2383,11 +2383,11 @@ Source Brain: 446782a4-9dd8-4329-9919-e466152b483a
 - [x] Stage resolved files and complete the merge
 - [x] Initialize missing external\_sdks submodules
 - [x] Apply Gemini model 2.5-pro target downgrade to prevent 3.0 quotas
-- [x] Clone and instantiate Pickle Rick extension 
+- [x] Clone and instantiate Pickle Rick extension
 - [x] Clone Gemini Cookbook natively
 - [x] Redact exposed Google OAuth Secret from gcli2api/src/utils.py to bypass GitHub Push Guard
 - [x] Commit and push changes bypass locally
-- [x] Verify toolbelt.md and apply "Missing Tool" fallback 
+- [x] Verify toolbelt.md and apply "Missing Tool" fallback
 - [x] Verify gcloud, service-account limits, and execute omega auth daemon
 - [x] Clone GitHub external git-lfs tracking extensions
 
@@ -3039,7 +3039,7 @@ Source Brain: be59a235-4514-4e1d-9d2a-b00b0f98cafc
   - [x] Run /live-engine and configure workspace
 - [x] 2. LadybugDB Subsystem / Ingestion Fold-in
   - [x] Execute strict fold-in bash scripts from ingested bundles
-  - [x] Clone target repositories into `external_sdks` 
+  - [x] Clone target repositories into `external_sdks`
 - [x] 3. Neural Matrix Synchronization
   - [x] Run `npx gitnexus analyze` at monorepo root
 - [x] 4. Rule Matrix Update

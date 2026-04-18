@@ -34,7 +34,9 @@ class DemoDirector:
             self.output_path,
         ]
         self._ffmpeg_process = subprocess.Popen(
-            cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            cmd,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
         time.sleep(2)  # Give ffmpeg buffer time
 

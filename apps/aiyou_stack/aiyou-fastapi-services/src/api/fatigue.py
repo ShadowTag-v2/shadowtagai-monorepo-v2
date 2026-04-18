@@ -251,7 +251,9 @@ async def update_session(update: SensorUpdate):
 
     if update.left_pupil_mm and update.right_pupil_mm:
         sensor_fusion.pupil_tracker.add_reading(
-            update.left_pupil_mm, update.right_pupil_mm, update.timestamp,
+            update.left_pupil_mm,
+            update.right_pupil_mm,
+            update.timestamp,
         )
 
     if update.rr_interval_ms:
@@ -450,7 +452,8 @@ async def connect_device(request: ConnectDeviceRequest, session_id: str):
         }
 
     raise HTTPException(
-        status_code=400, detail="Device type must be 'wearable' for this endpoint",
+        status_code=400,
+        detail="Device type must be 'wearable' for this endpoint",
     )
 
 

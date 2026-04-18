@@ -17,8 +17,7 @@ class DebateResult(BaseModel):
 
 
 class MultiAgentDebate:
-    """Orchestrates a debate between multiple agents to reach a consensus or refined answer.
-    """
+    """Orchestrates a debate between multiple agents to reach a consensus or refined answer."""
 
     def __init__(self, agents: list[AgentProfile]):
         self.agents = agents

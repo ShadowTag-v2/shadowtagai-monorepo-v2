@@ -84,19 +84,26 @@ class DecisionEngine:
 
         # 3. Compliance check
         compliance_flags = self.compliance_engine.check_compliance(
-            request.decision_type, request.constraints.regulatory, request.evidence,
+            request.decision_type,
+            request.constraints.regulatory,
+            request.evidence,
         )
         rules_applied.extend([f"Compliance-{flag.regulation}" for flag in compliance_flags])
 
         # 4. Policy rules
         policy_violations = self.policy_engine.check_policies(
-            request.constraints.policy_rules, request.evidence, request.constraints.risk_limits,
+            request.constraints.policy_rules,
+            request.evidence,
+            request.constraints.risk_limits,
         )
         rules_applied.extend(request.constraints.policy_rules)
 
         # 5. Synthesize decision
         decision, confidence = self._synthesize_decision(
-            risk_assessment, compliance_flags, policy_violations, evidence_score,
+            risk_assessment,
+            compliance_flags,
+            policy_violations,
+            evidence_score,
         )
 
         # 6. Generate rationale
@@ -111,7 +118,10 @@ class DecisionEngine:
 
         # 7. Determine conditions
         conditions = self._generate_conditions(
-            decision, risk_assessment, compliance_flags, policy_violations,
+            decision,
+            risk_assessment,
+            compliance_flags,
+            policy_violations,
         )
 
         # 8. Next steps
@@ -242,7 +252,10 @@ class DecisionEngine:
         )
 
     def _generate_mitigation(
-        self, risk_level: RiskLevel, severity: Severity, request: DecisionRequest,
+        self,
+        risk_level: RiskLevel,
+        severity: Severity,
+        request: DecisionRequest,
     ) -> list[str]:
         """Generate risk mitigation measures"""
         mitigation = []
@@ -506,7 +519,9 @@ class DecisionEngine:
 
         if any(x is not None for x in [estimated_pnl, capital_requirement, cost]):
             return FinancialImpact(
-                estimated_pnl=estimated_pnl, capital_requirement=capital_requirement, cost=cost,
+                estimated_pnl=estimated_pnl,
+                capital_requirement=capital_requirement,
+                cost=cost,
             )
 
         return None

@@ -1,5 +1,4 @@
-"""Compliance API endpoints
-"""
+"""Compliance API endpoints"""
 
 import uuid
 from datetime import datetime, timedelta

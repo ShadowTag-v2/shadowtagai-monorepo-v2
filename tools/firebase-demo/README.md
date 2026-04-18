@@ -2,15 +2,15 @@
 https://docs.google.com/presentation/d/1i01aSa1G0h9w00iIfgQSE1KizdYr_zVMnTIcrYDeW6Y/edit?usp=sharing
 
 # How to run this project
-## Clone the Project from Github repo 
+## Clone the Project from Github repo
 
-1. Clone this project open it in VSCode and from the terminal run 
+1. Clone this project open it in VSCode and from the terminal run
 	`npm install`
 
-## Create Firebase Project 
+## Create Firebase Project
 
 1. Sign Up for a free Firebase Spark Plan using an existing Google Account or create a new one.
-		
+
 		https://console.firebase.google.com/
 
 2. Create a new project in the Firebase Console
@@ -23,8 +23,8 @@ https://docs.google.com/presentation/d/1i01aSa1G0h9w00iIfgQSE1KizdYr_zVMnTIcrYDe
 
 4. Give your app a name. (Eg: SaltNPepper Menu) & register the app
 
-5. In the second step in Web UI, copy the 
-	const firebaseConfig....}; 
+5. In the second step in Web UI, copy the
+	const firebaseConfig....};
 	and go to VSCode and update the `src/utils/firestore.js` and replace the dummy section of const firebaseConfig = {}
 
 	![App Config](/src/assets/help/app_config.png)
@@ -62,7 +62,7 @@ https://docs.google.com/presentation/d/1i01aSa1G0h9w00iIfgQSE1KizdYr_zVMnTIcrYDe
 
 ![Authentication](/src/assets/help/firebase_auth.png)
 
-4. Select the "Users"-tab and click on "Add User". Add an email and password (I did Email: demo@snp.io & Password:Password123) and click "Add User". 
+4. Select the "Users"-tab and click on "Add User". Add an email and password (I did Email: demo@snp.io & Password:Password123) and click "Add User".
 *PS: We’ll only keep one email to log in and we’re not going to have signup functionality.*
 
 Now we have a user that we’ll use as an authenticated user to perform write operations on the Firestore database.
@@ -96,7 +96,7 @@ Now we have a user that we’ll use as an authenticated user to perform write op
 	Then select\
 	`Use an existing project and select the project you have created for this tutorial.`\
 	Then it’ll ask you to set a public directory, write build which will act as our public directory. We’re not using the public directory created for us during project creation as it’s firebase hosting so it’ll look for a build folder.
-	
+
 	Then for the next two questions, you have to type N\
 	`? Configure as a single-page app (rewrite all URLs to /index.html)? No`\
 	`? Set up automatic builds and deploys with GitHub? No`\

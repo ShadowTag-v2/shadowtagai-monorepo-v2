@@ -372,7 +372,8 @@ async def batch_validate(request: BatchValidationRequest) -> BatchValidationResp
         if results
         else 0,
         "p99_latency_ms": round(
-            sorted([r.latency_ms for r in results])[int(len(results) * 0.99)], 1,
+            sorted([r.latency_ms for r in results])[int(len(results) * 0.99)],
+            1,
         )
         if results
         else 0,

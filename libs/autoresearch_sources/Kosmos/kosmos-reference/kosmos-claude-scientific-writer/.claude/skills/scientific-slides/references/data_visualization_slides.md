@@ -331,7 +331,7 @@ If your audience may be unfamiliar, briefly explain: "Box shows middle 50% of da
 
 **Good Palettes**:
 - Blues: Light blue → Dark blue
-- Greens: Light green → Dark green  
+- Greens: Light green → Dark green
 - Grays: Light gray → Black
 - Viridis: Yellow → Purple (perceptually uniform)
 

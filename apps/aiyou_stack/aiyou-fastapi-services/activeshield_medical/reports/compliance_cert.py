@@ -103,8 +103,7 @@ class ComplianceCertificateGenerator:
         period_end: datetime,
         aggregate_metrics: dict[str, Any],
     ) -> dict[str, Any]:
-        """Generate periodic (weekly/monthly) compliance certificate.
-        """
+        """Generate periodic (weekly/monthly) compliance certificate."""
         cert_id = self._generate_cert_id(f"{customer_id}:{period_start.isoformat()}")
         issued_at = datetime.utcnow()
 
@@ -165,8 +164,7 @@ class ComplianceCertificateGenerator:
         incident_details: dict[str, Any],
         remediation_taken: list[str],
     ) -> dict[str, Any]:
-        """Generate incident report for compliance violation or crisis.
-        """
+        """Generate incident report for compliance violation or crisis."""
         cert_id = self._generate_cert_id(f"incident:{incident_id}")
         issued_at = datetime.utcnow()
 

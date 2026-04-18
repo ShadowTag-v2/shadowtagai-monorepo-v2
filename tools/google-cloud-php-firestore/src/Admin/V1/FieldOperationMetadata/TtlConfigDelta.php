@@ -112,4 +112,3 @@ class TtlConfigDelta extends \Google\Protobuf\Internal\Message
     }
 
 }
-

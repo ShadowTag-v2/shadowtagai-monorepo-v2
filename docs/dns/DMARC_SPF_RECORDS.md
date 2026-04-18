@@ -59,5 +59,5 @@ dig MX shadowtagai.com +short
 
 - [x] MX records configured (Google Workspace)
 - [ ] SPF record — add to DNS provider
-- [ ] DMARC record — add to DNS provider  
+- [ ] DMARC record — add to DNS provider
 - [ ] DKIM — generate via Google Workspace Admin Console

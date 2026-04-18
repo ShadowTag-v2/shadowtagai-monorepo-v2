@@ -11,14 +11,14 @@ judge6_constitution:
       block_unverified_binaries: true
       block_secret_exfiltration: true
       enforce_mfa_simulation: true
-    
+
     network_allowlist:
       - "github.com"
       - "pypi.org"
       - "googleapis.com"
       - "oauth2.googleapis.com"
       - "accounts.google.com"
-    
+
     blocked_patterns:
       - "curl | sh"
       - "wget | sh"
@@ -34,7 +34,7 @@ judge6_constitution:
       - "biometric_categorization"
       - "predictive_policing"
       - "emotion_recognition_workplace"
-    
+
     california_privacy_cpra:
       - "dark_pattern_ui"
       - "minor_data_collection"
@@ -46,7 +46,7 @@ judge6_constitution:
       max_instance_count_per_service: 10
       alert_threshold_monthly_usd: 50.00
       block_if_projected_spike_percent: 20 # Block if action suggests >20% cost spike
-    
+
     vendor_lock_in_prevention:
       flag_proprietary_features: true
       prefer_open_standards: true
@@ -73,7 +73,7 @@ judge6_constitution:
       - "iteration_2_judge_check"
       - "iteration_3_judge_check"
       - "final_punch_verification"
-    
+
     rogue_agent_protocol:
       action: "RKILL_IMMEDIATE"
       logging: "CHAOS_SINK"

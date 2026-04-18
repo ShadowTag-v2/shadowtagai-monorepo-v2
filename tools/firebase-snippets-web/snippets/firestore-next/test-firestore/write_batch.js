@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START write_batch_modular]
-import { writeBatch, doc } from "firebase/firestore"; 
+import { writeBatch, doc } from "firebase/firestore";
 
 // Get a new write batch
 const batch = writeBatch(db);

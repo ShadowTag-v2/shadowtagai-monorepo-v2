@@ -20,7 +20,7 @@ export const createKnowledgeGraph = (): KnowledgeGraph => {
     get nodes(){
       return Array.from(nodeMap.values())
     },
-  
+
     get relationships(){
       return Array.from(relationshipMap.values())
     },

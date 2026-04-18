@@ -95,9 +95,7 @@ class PromptGuardMiddleware(BaseHTTPMiddleware):
     # Routes that process user text for LLM consumption
     _LLM_ROUTES = {"/query", "/chat", "/oracle", "/stream"}
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         path = request.url.path
 
         # Only scan LLM-adjacent routes

@@ -14,22 +14,22 @@ This repository is a **monorepo** with two main products: the **CLI / MCP packag
 
 ## End-to-end flow: index → graph → tools
 
-1. **Ingestion** (`gitnexus analyze`)  
-   - Entry: `gitnexus/src/cli/analyze.ts` → `runPipelineFromRepo` in `gitnexus/src/core/ingestion/pipeline.ts`.  
-   - Walks the git working tree, parses supported languages via **Tree-sitter**, resolves imports/calls/inheritance, detects **communities** and **processes** (execution flows), and builds an in-memory **knowledge graph** (`gitnexus/src/core/graph/`).  
-   - Output is loaded into **LadybugDB** under **`.gitnexus/`** at the repo root (`lbug/`, `meta.json`, etc.). Optional **FTS** indexes and **embeddings** attach to the same store.  
+1. **Ingestion** (`gitnexus analyze`)
+   - Entry: `gitnexus/src/cli/analyze.ts` → `runPipelineFromRepo` in `gitnexus/src/core/ingestion/pipeline.ts`.
+   - Walks the git working tree, parses supported languages via **Tree-sitter**, resolves imports/calls/inheritance, detects **communities** and **processes** (execution flows), and builds an in-memory **knowledge graph** (`gitnexus/src/core/graph/`).
+   - Output is loaded into **LadybugDB** under **`.gitnexus/`** at the repo root (`lbug/`, `meta.json`, etc.). Optional **FTS** indexes and **embeddings** attach to the same store.
    - The repo is registered in **`~/.gitnexus/registry.json`** so MCP can find it from any working directory.
 
-2. **Persistence & metadata**  
-   - `gitnexus/src/storage/repo-manager.ts` — paths, registry, cleanup of legacy Kuzu artifacts.  
+2. **Persistence & metadata**
+   - `gitnexus/src/storage/repo-manager.ts` — paths, registry, cleanup of legacy Kuzu artifacts.
    - `gitnexus/src/core/lbug/lbug-adapter.ts` — graph load, queries, embedding restore batches.
 
-3. **Query & agents**  
-   - **MCP (stdio):** `gitnexus/src/cli/mcp.ts` → `startMCPServer` → `LocalBackend` (`gitnexus/src/mcp/local/local-backend.ts`) opens registered repos and serves **tools** from `gitnexus/src/mcp/tools.ts` and **resources** from `gitnexus/src/mcp/resources.ts`.  
-   - **Bridge HTTP:** `gitnexus/src/cli/serve.ts` → Express app in `gitnexus/src/server/api.ts` (CORS-limited) exposes REST + MCP-over-HTTP for the web UI.  
+3. **Query & agents**
+   - **MCP (stdio):** `gitnexus/src/cli/mcp.ts` → `startMCPServer` → `LocalBackend` (`gitnexus/src/mcp/local/local-backend.ts`) opens registered repos and serves **tools** from `gitnexus/src/mcp/tools.ts` and **resources** from `gitnexus/src/mcp/resources.ts`.
+   - **Bridge HTTP:** `gitnexus/src/cli/serve.ts` → Express app in `gitnexus/src/server/api.ts` (CORS-limited) exposes REST + MCP-over-HTTP for the web UI.
    - **CLI tools (no MCP):** `gitnexus query`, `context`, `impact`, `cypher` in `gitnexus/src/cli/tool.ts` call the same backend for scripts and CI.
 
-4. **Staleness**  
+4. **Staleness**
    - `gitnexus/src/mcp/staleness.ts` compares indexed `lastCommit` to `HEAD` and surfaces hints when the graph is behind git.
 
 ## MCP tools (summary)
@@ -60,7 +60,7 @@ This repository is a **monorepo** with two main products: the **CLI / MCP packag
 
 ## Related docs
 
-- [RUNBOOK.md](RUNBOOK.md) — operational commands and recovery.  
-- [GUARDRAILS.md](GUARDRAILS.md) — safety boundaries for humans and agents.  
-- [TESTING.md](TESTING.md) — how to run tests.  
+- [RUNBOOK.md](RUNBOOK.md) — operational commands and recovery.
+- [GUARDRAILS.md](GUARDRAILS.md) — safety boundaries for humans and agents.
+- [TESTING.md](TESTING.md) — how to run tests.
 - `AGENTS.md` / `CLAUDE.md` — agent workflows and tool usage expectations for **this** repo when indexed by GitNexus.

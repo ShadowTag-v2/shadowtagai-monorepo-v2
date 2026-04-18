@@ -84,7 +84,9 @@ async def store_interaction(request: StoreInteractionRequest):
 
     """
     success = await gptram.store_interaction(
-        session_id=request.session_id, interaction=request.interaction, ttl=request.ttl,
+        session_id=request.session_id,
+        interaction=request.interaction,
+        ttl=request.ttl,
     )
 
     if success:
@@ -98,7 +100,8 @@ async def store_interaction(request: StoreInteractionRequest):
 
 @router.get("/memory/{session_id}")
 async def get_session_memory(
-    session_id: str, limit: int = Query(default=100, description="Max interactions to retrieve"),
+    session_id: str,
+    limit: int = Query(default=100, description="Max interactions to retrieve"),
 ):
     """Retrieve session memory from GPTRAM
 
@@ -234,7 +237,9 @@ async def moderate_content(request: ModerateContentRequest):
 
     """
     result = await safety_service.moderate_content(
-        content=request.content, scrub_pii=request.scrub_pii, check_safety=request.check_safety,
+        content=request.content,
+        scrub_pii=request.scrub_pii,
+        check_safety=request.check_safety,
     )
 
     if result["status"] == "error":

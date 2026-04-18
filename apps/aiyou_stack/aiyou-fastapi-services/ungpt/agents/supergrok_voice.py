@@ -30,7 +30,10 @@ VOICE SCRIPT:
 
 
 async def generate_voice(
-    briefing: str, model: str, api_key: str, generate_audio: bool = False,
+    briefing: str,
+    model: str,
+    api_key: str,
+    generate_audio: bool = False,
 ) -> dict[str, Any]:
     """Generate voice-ready script from briefing.
 

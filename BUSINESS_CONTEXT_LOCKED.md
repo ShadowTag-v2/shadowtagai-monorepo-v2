@@ -44,7 +44,7 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - Secret Manager: 23 secrets, 9 imported to OpenTofu state
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
-- RISK_REGISTER: v9.0 (29 tracked risks)
+- RISK_REGISTER: v9.0 (35 tracked risks)
 - Open PRs: 0
 
 ### CounselConduit Cloud Run (2026-04-18)

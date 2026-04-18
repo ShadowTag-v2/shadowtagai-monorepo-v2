@@ -114,7 +114,7 @@ python validate_trial_report.py my_csr.md
 ### 1. Publishing a Clinical Case Report
 
 ```
-> Create a clinical case report for a 65-year-old patient with atypical 
+> Create a clinical case report for a 65-year-old patient with atypical
   presentation of acute appendicitis
 
 > Check this case report for HIPAA compliance
@@ -169,32 +169,32 @@ python validate_trial_report.py my_csr.md
 ## Best Practices
 
 ### Privacy and Ethics
-✓ Always obtain informed consent for case reports  
-✓ Remove all 18 HIPAA identifiers before publication  
-✓ Use de-identification validation scripts  
-✓ Document consent in manuscript  
-✓ Consider re-identification risk for rare conditions  
+✓ Always obtain informed consent for case reports
+✓ Remove all 18 HIPAA identifiers before publication
+✓ Use de-identification validation scripts
+✓ Document consent in manuscript
+✓ Consider re-identification risk for rare conditions
 
 ### Clinical Quality
-✓ Use professional medical terminology  
-✓ Follow structured reporting templates  
-✓ Include all required elements  
-✓ Document chronology clearly  
-✓ Support diagnoses with evidence  
+✓ Use professional medical terminology
+✓ Follow structured reporting templates
+✓ Include all required elements
+✓ Document chronology clearly
+✓ Support diagnoses with evidence
 
 ### Regulatory Compliance
-✓ Meet SAE reporting timelines (7-day, 15-day)  
-✓ Follow ICH-E3 structure for CSRs  
-✓ Maintain ALCOA-CCEA data integrity  
-✓ Document protocol adherence  
-✓ Use MedDRA coding for adverse events  
+✓ Meet SAE reporting timelines (7-day, 15-day)
+✓ Follow ICH-E3 structure for CSRs
+✓ Maintain ALCOA-CCEA data integrity
+✓ Document protocol adherence
+✓ Use MedDRA coding for adverse events
 
 ### Documentation Standards
-✓ Sign and date all clinical notes  
-✓ Document medical necessity  
-✓ Use standard abbreviations only  
-✓ Avoid prohibited abbreviations (JCAHO "Do Not Use" list)  
-✓ Maintain legibility and completeness  
+✓ Sign and date all clinical notes
+✓ Document medical necessity
+✓ Use standard abbreviations only
+✓ Avoid prohibited abbreviations (JCAHO "Do Not Use" list)
+✓ Maintain legibility and completeness
 
 ## Integration
 
@@ -233,4 +233,3 @@ For issues or questions about the clinical-reports skill:
 ## License
 
 Part of the Claude Scientific Writer project. See main LICENSE file.
-

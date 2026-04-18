@@ -223,7 +223,9 @@ class MetricsAggregator:
         return HealthStatus.HEALTHY
 
     def _aggregate_metrics(
-        self, v2x: ServiceMetrics | None, ingestion: ServiceMetrics | None,
+        self,
+        v2x: ServiceMetrics | None,
+        ingestion: ServiceMetrics | None,
     ) -> PlatformMetrics:
         """Aggregate service metrics into platform metrics"""
         platform = PlatformMetrics(timestamp=datetime.now())
@@ -247,7 +249,8 @@ class MetricsAggregator:
 
         # Aggregate resources
         platform.platform_cpu_usage_percent = sum(s.cpu_usage_percent for s in services) / max(
-            1, len(services),
+            1,
+            len(services),
         )
         platform.platform_memory_usage_mb = sum(s.memory_usage_mb for s in services)
 

@@ -11,7 +11,7 @@ import { getAuth, signInWithCredential, FacebookAuthProvider } from "firebase/au
 const auth = getAuth();
 signInWithCredential(auth, credential)
   .then((result) => {
-    // Signed in 
+    // Signed in
     const credential = FacebookAuthProvider.credentialFromResult(result);
   })
   .catch((error) => {

@@ -313,4 +313,3 @@ class BackupSchedule extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -11,8 +11,7 @@ from ..models import Action, PurposeVerdict, VerdictStatus
 
 
 class PurposeValidator:
-    """Validates the PURPOSE dimension of an action
-    """
+    """Validates the PURPOSE dimension of an action"""
 
     def validate(self, action: Action) -> PurposeVerdict:
         # Heuristic validation for prototype

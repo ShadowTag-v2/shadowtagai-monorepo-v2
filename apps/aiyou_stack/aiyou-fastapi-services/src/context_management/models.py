@@ -1,5 +1,4 @@
-"""Pydantic models for Context Window Management
-"""
+"""Pydantic models for Context Window Management"""
 
 from datetime import datetime
 from enum import StrEnum
@@ -51,7 +50,10 @@ class AnalysisSession(BaseModel):
     # AI Model information
     model_name: str = Field(default="gemini-2.0-pro", description="AI model used")
     confidence_threshold: float = Field(
-        default=0.60, ge=0.0, le=1.0, description="Minimum confidence threshold",
+        default=0.60,
+        ge=0.0,
+        le=1.0,
+        description="Minimum confidence threshold",
     )
 
     # Token usage tracking
@@ -90,15 +92,18 @@ class ChatSummary(BaseModel):
     key_decisions: list[str] = Field(default_factory=list, description="Key decisions made")
     findings: list[str] = Field(default_factory=list, description="Important findings")
     recommendations: list[str] = Field(
-        default_factory=list, description="Action items and recommendations",
+        default_factory=list,
+        description="Action items and recommendations",
     )
     risks_identified: list[str] = Field(
-        default_factory=list, description="Risks or blockers identified",
+        default_factory=list,
+        description="Risks or blockers identified",
     )
 
     # Metadata
     related_threads: list[str] = Field(
-        default_factory=list, description="Related discussion threads or URLs",
+        default_factory=list,
+        description="Related discussion threads or URLs",
     )
     tags: list[str] = Field(default_factory=list, description="Categorization tags")
 
@@ -152,7 +157,8 @@ class ContextIndex(BaseModel):
     )
 
     sessions: list[AnalysisSession] = Field(
-        default_factory=list, description="All tracked sessions",
+        default_factory=list,
+        description="All tracked sessions",
     )
 
     created_at: datetime = Field(default_factory=datetime.utcnow)

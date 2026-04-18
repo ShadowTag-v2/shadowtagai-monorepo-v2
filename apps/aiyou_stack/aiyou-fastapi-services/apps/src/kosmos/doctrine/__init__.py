@@ -68,7 +68,9 @@ class RiskManager:
         self._assessments: list[dict] = []
 
     async def full_assessment(
-        self, task: str, context: dict | None = None,
+        self,
+        task: str,
+        context: dict | None = None,
     ) -> dict:
         """Execute 5-step CRM: Identify → Assess → Develop Controls →
         Implement → Supervise.
@@ -176,7 +178,9 @@ class BattleDrillRouter:
         self._loaded = True
 
     async def route(
-        self, trigger: DrillTrigger, context: dict | None = None,
+        self,
+        trigger: DrillTrigger,
+        context: dict | None = None,
     ) -> dict:
         """Route a trigger through the appropriate battle drill.
 

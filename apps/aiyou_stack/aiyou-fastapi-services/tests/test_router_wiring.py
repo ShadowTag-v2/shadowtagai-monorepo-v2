@@ -23,7 +23,8 @@ def test_knowledge_router_imports_under_src_package() -> None:
     os.environ["DEBUG"] = "release"
 
     sys.modules.setdefault(
-        "src.vector_db", SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None),
+        "src.vector_db",
+        SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None),
     )
 
     knowledge = importlib.import_module("src.routers.knowledge")
@@ -36,7 +37,8 @@ def test_main_app_imports_and_registers_knowledge_route() -> None:
     os.environ["DEBUG"] = "release"
 
     sys.modules.setdefault(
-        "src.vector_db", SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None),
+        "src.vector_db",
+        SimpleNamespace(ingest_document=lambda *_args, **_kwargs: None),
     )
 
     main = importlib.import_module("src.main")

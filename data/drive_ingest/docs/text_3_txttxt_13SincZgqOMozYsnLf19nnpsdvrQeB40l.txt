@@ -32,10 +32,10 @@ Starlink’s own network load drops nearly in half because aircraft relay intra-
 Your orchestrator tracks every byte of rebroadcasted payload and invoices SpaceX or its enterprise tenants.
 
 Item	Model	Rate	Example
-Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul	
-AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node	
-Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity	
-Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing	
+Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul
+AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node
+Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity
+Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing
 
 Revenue potential
 
@@ -109,10 +109,10 @@ Starlink’s own network load drops nearly in half because aircraft relay intra-
 Your orchestrator tracks every byte of rebroadcasted payload and invoices SpaceX or its enterprise tenants.
 
 Item	Model	Rate	Example
-Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul	
-AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node	
-Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity	
-Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing	
+Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul
+AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node
+Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity
+Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing
 
 Revenue potential
 
@@ -186,10 +186,10 @@ Starlink’s own network load drops nearly in half because aircraft relay intra-
 Your orchestrator tracks every byte of rebroadcasted payload and invoices SpaceX or its enterprise tenants.
 
 Item	Model	Rate	Example
-Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul	
-AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node	
-Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity	
-Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing	
+Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul
+AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node
+Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity
+Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing
 
 Revenue potential
 
@@ -569,10 +569,10 @@ Latency Gain	27 % avg (to < 25 ms)
 Purpose: verification + explanation of every code/decision run inside Cursor / Gemini CLI.
 
 Step	Description
-Run 1: Primary LLM chain generates code or plan.	
-Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.	
-Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.	
-Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.	
+Run 1: Primary LLM chain generates code or plan.
+Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.
+Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.
+Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.
 
 ✅ Adds ≈ 18 % reliability uplift, reduces hallucinated commits ≈ 40 %.
 💵 Expected cost ≈ $0.002 / run vs >$0.01 manual review.
@@ -656,11 +656,11 @@ Security / Identity / IAM	Role-based permissions (least privilege), secrets / ke
 ⸻
 
 📦 Evidence from Public Docs & Practice (What We Know Now)
-	•	Starlink’s support site confirms that API access is available only for “Authorized Resellers or larger business/enterprise customers”.  
-	•	To set up API credentials in Starlink, you must use the “Your Service Accounts” section in your Starlink account; if you don’t see it, you must contact your Starlink account manager.  
-	•	For CoreWeave, the documentation shows you can create API Access Tokens (for object storage, etc.) via their Cloud Console.  
-	•	CoreWeave also uses role-based access and namespaces, and “organization admins” can manage tokens, permissions, etc.  
-	•	CoreWeave’s “Organization Access Policies” allow you to define permissions across S3 / AI Object Storage, giving fine-grained control.  
+	•	Starlink’s support site confirms that API access is available only for “Authorized Resellers or larger business/enterprise customers”.
+	•	To set up API credentials in Starlink, you must use the “Your Service Accounts” section in your Starlink account; if you don’t see it, you must contact your Starlink account manager.
+	•	For CoreWeave, the documentation shows you can create API Access Tokens (for object storage, etc.) via their Cloud Console.
+	•	CoreWeave also uses role-based access and namespaces, and “organization admins” can manage tokens, permissions, etc.
+	•	CoreWeave’s “Organization Access Policies” allow you to define permissions across S3 / AI Object Storage, giving fine-grained control.
 
 So we know the infrastructure supports what you need; the key is whether you can get access and roles.
 
@@ -679,7 +679,7 @@ Here’s how you should proceed to obtain or negotiate all the needed permission
 	•	Securely store and rotate these credentials.
 	3.	Set Up CoreWeave Organization + Permissions
 	•	Create a CoreWeave organization (or be invited).
-	•	Ensure your account is an organization admin so you can manage API tokens and RBAC.  
+	•	Ensure your account is an organization admin so you can manage API tokens and RBAC.
 	•	Generate API tokens / kubeconfig for your orchestrator to interact with CoreWeave clusters.
 	•	Define RBAC policies so your orchestrator only has the minimum required permissions.
 	4.	Contract & Peering / Networking Deals
@@ -716,34 +716,34 @@ If you like, I can now assemble a checklist & role matrix for all the credential
 
 1. Telemetry & Management APIs for Enterprise / Resellers
 
-Starlink provides a Management API and Telemetry API for enterprise-level customers (and authorized resellers).  
-	•	The Management API lets you manage accounts, terminals, settings, etc.  
-	•	The Telemetry API gives you deeper insights — throughput stats, performance data, etc.  
-	•	You need to become an enterprise (spend threshold, relationship with Starlink) or authorized reseller to get access.  
+Starlink provides a Management API and Telemetry API for enterprise-level customers (and authorized resellers).
+	•	The Management API lets you manage accounts, terminals, settings, etc.
+	•	The Telemetry API gives you deeper insights — throughput stats, performance data, etc.
+	•	You need to become an enterprise (spend threshold, relationship with Starlink) or authorized reseller to get access.
 
 ⸻
 
 2. Space Traffic / Satellite Coordination APIs
 
-Starlink also publishes a completely different set of APIs under Space Traffic Coordination for satellite operators. These are not about internet or ground connectivity, but orbital safety and maneuvering.  
-	•	Operators can submit orbits (ephemeris) for collision screening.  
-	•	There is an experimental “maneuver coordination” API being developed.  
+Starlink also publishes a completely different set of APIs under Space Traffic Coordination for satellite operators. These are not about internet or ground connectivity, but orbital safety and maneuvering.
+	•	Operators can submit orbits (ephemeris) for collision screening.
+	•	There is an experimental “maneuver coordination” API being developed.
 
 ⸻
 
 3. Local / Dish-level APIs (Unofficial / Reverse-Engineered)
 
 There are also local-level APIs (on the dish or router) that enthusiasts and developers have reverse-engineered — e.g. via gRPC or HTTP on local network.
-	•	The open-source Eitol / starlink-client library claims the dish runs a gRPC server on port 9200, accessible locally.  
-	•	Local operations like rebooting the dish, reading telemetry, changing config (e.g. “snow melt” mode) are exposed in these libraries.  
-	•	But these local APIs are not publicly documented by Starlink and are often only accessible over the same local network (i.e. not over the wider internet) unless bridged.  
+	•	The open-source Eitol / starlink-client library claims the dish runs a gRPC server on port 9200, accessible locally.
+	•	Local operations like rebooting the dish, reading telemetry, changing config (e.g. “snow melt” mode) are exposed in these libraries.
+	•	But these local APIs are not publicly documented by Starlink and are often only accessible over the same local network (i.e. not over the wider internet) unless bridged.
 
 ⸻
 
 ⚠️ Limitations & Constraints You Must Know
-	•	Access is gated. Enterprise or reseller status is required. Regular users won’t get Management / Telemetry API access.  
-	•	Secrets / Authentication must be provisioned through Starlink / account manager. You can’t self-enable random accounts.  
-	•	Local APIs may use gRPC, not REST. Some reverse-engineered tools suggest the protocol is gRPC (or gRPC-Web) rather than pure HTTP/REST.  
+	•	Access is gated. Enterprise or reseller status is required. Regular users won’t get Management / Telemetry API access.
+	•	Secrets / Authentication must be provisioned through Starlink / account manager. You can’t self-enable random accounts.
+	•	Local APIs may use gRPC, not REST. Some reverse-engineered tools suggest the protocol is gRPC (or gRPC-Web) rather than pure HTTP/REST.
 	•	Port exposure / firewalling. The dish’s local interface is not exposed to public internet by default — it sits behind routers etc. So your middleware would need a strategy to bridge or proxy that securely.
 	•	Rate limits / quotas are likely in place for telemetry, management operations (reboots, config changes etc.).
 	•	Regional / regulatory constraints. Some capabilities might be disabled in certain countries, or legal barriers may restrict remote control or data flow.
@@ -768,34 +768,34 @@ If you like, I can map out a capability matrix for Starlink’s API levels vs yo
 
 1. Telemetry & Management APIs for Enterprise / Resellers
 
-Starlink provides a Management API and Telemetry API for enterprise-level customers (and authorized resellers).  
-	•	The Management API lets you manage accounts, terminals, settings, etc.  
-	•	The Telemetry API gives you deeper insights — throughput stats, performance data, etc.  
-	•	You need to become an enterprise (spend threshold, relationship with Starlink) or authorized reseller to get access.  
+Starlink provides a Management API and Telemetry API for enterprise-level customers (and authorized resellers).
+	•	The Management API lets you manage accounts, terminals, settings, etc.
+	•	The Telemetry API gives you deeper insights — throughput stats, performance data, etc.
+	•	You need to become an enterprise (spend threshold, relationship with Starlink) or authorized reseller to get access.
 
 ⸻
 
 2. Space Traffic / Satellite Coordination APIs
 
-Starlink also publishes a completely different set of APIs under Space Traffic Coordination for satellite operators. These are not about internet or ground connectivity, but orbital safety and maneuvering.  
-	•	Operators can submit orbits (ephemeris) for collision screening.  
-	•	There is an experimental “maneuver coordination” API being developed.  
+Starlink also publishes a completely different set of APIs under Space Traffic Coordination for satellite operators. These are not about internet or ground connectivity, but orbital safety and maneuvering.
+	•	Operators can submit orbits (ephemeris) for collision screening.
+	•	There is an experimental “maneuver coordination” API being developed.
 
 ⸻
 
 3. Local / Dish-level APIs (Unofficial / Reverse-Engineered)
 
 There are also local-level APIs (on the dish or router) that enthusiasts and developers have reverse-engineered — e.g. via gRPC or HTTP on local network.
-	•	The open-source Eitol / starlink-client library claims the dish runs a gRPC server on port 9200, accessible locally.  
-	•	Local operations like rebooting the dish, reading telemetry, changing config (e.g. “snow melt” mode) are exposed in these libraries.  
-	•	But these local APIs are not publicly documented by Starlink and are often only accessible over the same local network (i.e. not over the wider internet) unless bridged.  
+	•	The open-source Eitol / starlink-client library claims the dish runs a gRPC server on port 9200, accessible locally.
+	•	Local operations like rebooting the dish, reading telemetry, changing config (e.g. “snow melt” mode) are exposed in these libraries.
+	•	But these local APIs are not publicly documented by Starlink and are often only accessible over the same local network (i.e. not over the wider internet) unless bridged.
 
 ⸻
 
 ⚠️ Limitations & Constraints You Must Know
-	•	Access is gated. Enterprise or reseller status is required. Regular users won’t get Management / Telemetry API access.  
-	•	Secrets / Authentication must be provisioned through Starlink / account manager. You can’t self-enable random accounts.  
-	•	Local APIs may use gRPC, not REST. Some reverse-engineered tools suggest the protocol is gRPC (or gRPC-Web) rather than pure HTTP/REST.  
+	•	Access is gated. Enterprise or reseller status is required. Regular users won’t get Management / Telemetry API access.
+	•	Secrets / Authentication must be provisioned through Starlink / account manager. You can’t self-enable random accounts.
+	•	Local APIs may use gRPC, not REST. Some reverse-engineered tools suggest the protocol is gRPC (or gRPC-Web) rather than pure HTTP/REST.
 	•	Port exposure / firewalling. The dish’s local interface is not exposed to public internet by default — it sits behind routers etc. So your middleware would need a strategy to bridge or proxy that securely.
 	•	Rate limits / quotas are likely in place for telemetry, management operations (reboots, config changes etc.).
 	•	Regional / regulatory constraints. Some capabilities might be disabled in certain countries, or legal barriers may restrict remote control or data flow.
@@ -1211,7 +1211,7 @@ Year	Event	% of Holdings Sold	Cash Realized	Purpose
 Year 2	Secondary (Series B)	5 %	≈ $67 M	Family + tax buffer + trust fund
 Year 3–4	IPO / strategic sale	20 %	≈ $500–600 M	Diversify + founder liquidity
 Year 4–5	Option exercise / rollover	5 %	≈ $150 M	Start AiYou Capital Fund
-Total retained	70 %	$1.4–1.8 B unrealized	Voting control + legacy trust	
+Total retained	70 %	$1.4–1.8 B unrealized	Voting control + legacy trust
 
 
 ⸻
@@ -1619,10 +1619,10 @@ Economic externality: ≈ $120 B / yr saved in U.S. traffic inefficiency + emiss
 🧮 7. Valuation Model: AiYou as Integrator
 
 Stage	Nodes Online	ARR	EV / ARR	Valuation
-Pilot (100 towers)	$3.6 M	15×	$54 M	
-Scale (5 000 towers)	$180 M	10×	$1.8 B	
-National (20 000 towers)	$720 M	8×	$5.8 B	
-Global (100 000+)	$3.6 B	6×	$21 B+	
+Pilot (100 towers)	$3.6 M	15×	$54 M
+Scale (5 000 towers)	$180 M	10×	$1.8 B
+National (20 000 towers)	$720 M	8×	$5.8 B
+Global (100 000+)	$3.6 B	6×	$21 B+
 
 
 ⸻
@@ -2360,8 +2360,8 @@ This gives enterprise-grade auditability and risk management—direct fit with y
 
 Scenario	Dev seats	Cost now	Post-ACP (open agent mix)	Annual delta
 JetBrains AI + Proprietary LLM	100	~$40 / seat / mo = $48 K / yr	—	—
-After ACP (mix GPT-5 Pro + local RWKV)	100	~$15 avg / seat / mo = $18 K / yr	– 62 % cost	
-Productivity lift (measured)	+12 % coding throughput	≈ +0.5 dev FTE per 10 engineers	+$150 K / yr value	
+After ACP (mix GPT-5 Pro + local RWKV)	100	~$15 avg / seat / mo = $18 K / yr	– 62 % cost
+Productivity lift (measured)	+12 % coding throughput	≈ +0.5 dev FTE per 10 engineers	+$150 K / yr value
 
 Even conservative models show ROI > 5× just from open-agent substitution and higher utilization.
 
@@ -3337,22 +3337,22 @@ If you like, I can generate a fully fleshed .gemini-extension.yaml for your full
 
 What it is (in one line)
 
-A block-diffusion decoder that adapts any pretrained AR LLM to generate multiple tokens in parallel, keeping AR quality while cutting latency—without retraining from scratch.  
+A block-diffusion decoder that adapts any pretrained AR LLM to generate multiple tokens in parallel, keeping AR quality while cutting latency—without retraining from scratch.
 
 Headline numbers
-	•	Speed: up to 2.5× faster decoding than standard AR (A100/H100), with accuracy on par with strong 7B baselines.  
-	•	Data to adapt: about ~1B finetune tokens (not 500B like Dream), i.e., ~500× less than prior full-attention diffusion LLMs.  
-	•	Throughput scaling: diffusion > AR as batch grows (A100: up to 1.5× at bs=64; H100: 1.8×).  
-	•	Practical knob: confidence threshold 0.9 yields ~2.6× speedup on GSM8K with negligible drop.  
-	•	Best runtime settings (paper): block size 32, sub-block 8 (best avg accuracy); mismatching train/infer block sizes hurts.  
+	•	Speed: up to 2.5× faster decoding than standard AR (A100/H100), with accuracy on par with strong 7B baselines.
+	•	Data to adapt: about ~1B finetune tokens (not 500B like Dream), i.e., ~500× less than prior full-attention diffusion LLMs.
+	•	Throughput scaling: diffusion > AR as batch grows (A100: up to 1.5× at bs=64; H100: 1.8×).
+	•	Practical knob: confidence threshold 0.9 yields ~2.6× speedup on GSM8K with negligible drop.
+	•	Best runtime settings (paper): block size 32, sub-block 8 (best avg accuracy); mismatching train/infer block sizes hurts.
 
 Why it’s fast (plain English)
 	•	Decode block-by-block, not strictly token-by-token; within a block, refine masked tokens in parallel.
-	•	Uses hierarchical caching: KV cache across blocks + DualCache inside a block → fewer recomputes.  
+	•	Uses hierarchical caching: KV cache across blocks + DualCache inside a block → fewer recomputes.
 
 Quality vs AR
 
-Benchmarks (HumanEval, MBPP, GSM8K, MMLU, GPQA, etc.) show the 7B Fast-dLLM v2 averages 60.3, beating Dream-7B (57.6) and matching Qwen2.5-7B FT (59.6). Translation: you keep AR-level quality while getting latency wins.  
+Benchmarks (HumanEval, MBPP, GSM8K, MMLU, GPQA, etc.) show the 7B Fast-dLLM v2 averages 60.3, beating Dream-7B (57.6) and matching Qwen2.5-7B FT (59.6). Translation: you keep AR-level quality while getting latency wins.
 
 ⸻
 
@@ -3360,25 +3360,25 @@ What we should do for ShadowTag/AiYou
 
 Goal: reduce end-to-end response time (and cloud cost) for code+reasoning steps while keeping accuracy.
 	1.	Inference integration (no training first):
-	•	When a provider exposes a block-diffusion decoder path (or we obtain a Fast-dLLM v2 checkpoint), run with: block=32, sub-block=8, threshold=0.9; prefer H100/A100 for best gains.    
-	•	Batch user prompts where safe to exploit the better batch scaling.  
+	•	When a provider exposes a block-diffusion decoder path (or we obtain a Fast-dLLM v2 checkpoint), run with: block=32, sub-block=8, threshold=0.9; prefer H100/A100 for best gains.
+	•	Batch user prompts where safe to exploit the better batch scaling.
 	2.	Adapt one of our 7B helpers (when we’re ready):
-	•	Finetune budget: ~1.3–3.1B tokens (paper’s runs), which they achieved in ~12h on 64×A100 for 7B; viable as a weekend job on rented GPUs.  
-	•	Training recipe: complementary masks + token-shift; keep block=32 during train to match infer.  
+	•	Finetune budget: ~1.3–3.1B tokens (paper’s runs), which they achieved in ~12h on 64×A100 for 7B; viable as a weekend job on rented GPUs.
+	•	Training recipe: complementary masks + token-shift; keep block=32 during train to match infer.
 	3.	Stack wiring (Cursor-first):
 	•	Add a “fast_decode” path in our router: try (a) native block-diffusion model → (b) speculative AR → (c) pure AR fallback.
-	•	Expose threshold as a perf slider in our env (default 0.9).  
+	•	Expose threshold as a perf slider in our env (default 0.9).
 	•	Update CI perf job: report tokens/s @ bs={1,8,32} and accuracy smoke tests (GSM8K mini) so we see speed/quality trade in PRs.
 
 Expected impact for us (near-term)
-	•	Latency: 30–60% cut for single requests; >70% under batched flows (retrieval+summaries) on H100-class hardware. (Based on 2.5× peak + 1.5–1.8× at large batch.)    
-	•	Cost: If we’re billed per second, a 1.5–2.5× tokens/s uplift lowers spend per answer proportionally, assuming similar accuracy (paper shows parity).  
+	•	Latency: 30–60% cut for single requests; >70% under batched flows (retrieval+summaries) on H100-class hardware. (Based on 2.5× peak + 1.5–1.8× at large batch.)
+	•	Cost: If we’re billed per second, a 1.5–2.5× tokens/s uplift lowers spend per answer proportionally, assuming similar accuracy (paper shows parity).
 
 ⸻
 
 Caveats to watch
-	•	Block size mismatch between train and inference hurts accuracy; keep 32/8 unless we retrain.  
-	•	Very small batches won’t see the full scaling win; still faster, just closer to ~1.3–1.6×.  
+	•	Block size mismatch between train and inference hurts accuracy; keep 32/8 unless we retrain.
+	•	Very small batches won’t see the full scaling win; still faster, just closer to ~1.3–1.6×.
 
 ⸻
 
@@ -4236,7 +4236,7 @@ Bottom line:
 Running AiYouJR on Gemini CLI is safe and strategic — you get new distribution, automation hooks, and partner exposure without surrendering IP.
 Just make sure the repo license explicitly says:
 
-© 2025 AiYou Labs. 
+© 2025 AiYou Labs.
 Use permitted for command execution; proprietary reasoning logic and data remain confidential.
 
 
@@ -4879,9 +4879,9 @@ Bottom line: upgrade to Next 16, keep next dev running, let AI tools run next bu
 “Got it — tying Astral’s Python 3.14 update to your Cursor/Bugbot flow + what to change right now.
 
 What’s new (why we care)
-	•	Python 3.14 shipped with the free-threaded build moving from “experimental” to “supported” per PEP 779 (i.e., blessed path to no-GIL), while the regular GIL build remains the default. The goal is safer multi-threaded speedups on CPU-bound pure-Python code, with a compatibility plan for native extensions.  
-	•	PEP 684 (per-interpreter GIL) continues to underpin the multi-interpreter direction—we get clearer isolation and a path to true concurrency.  
-	•	Astral (the uv/Ruff folks) announced day-one tool support for 3.14 (uv & Ruff have 3.14 builds), so your formatter/test runner story stays smooth.  
+	•	Python 3.14 shipped with the free-threaded build moving from “experimental” to “supported” per PEP 779 (i.e., blessed path to no-GIL), while the regular GIL build remains the default. The goal is safer multi-threaded speedups on CPU-bound pure-Python code, with a compatibility plan for native extensions.
+	•	PEP 684 (per-interpreter GIL) continues to underpin the multi-interpreter direction—we get clearer isolation and a path to true concurrency.
+	•	Astral (the uv/Ruff folks) announced day-one tool support for 3.14 (uv & Ruff have 3.14 builds), so your formatter/test runner story stays smooth.
 
 Practical effect (today)
 	•	Speed: Expect ~1.3–2.0× on CPU-bound, pure-Python threaded workloads with the free-threaded build; I/O-bound or C-extension heavy code sees little change (or may need waiting on wheels to go FT-safe).
@@ -5025,7 +5025,7 @@ Numbers & money (why it’s worth it)
 ⸻
 
 Guardrails / gotchas
-	1.	Not default: The free-threaded interpreter is supported but not the default 3.14; treat it as an opt-in compatibility rail until your dependencies ship FT-safe wheels.  
+	1.	Not default: The free-threaded interpreter is supported but not the default 3.14; treat it as an opt-in compatibility rail until your dependencies ship FT-safe wheels.
 	2.	C-extensions: NumPy/Pandas/etc. must publish FT builds to realize gains; otherwise use processes instead of threads for parallelism.
 	3.	Determinism: Threaded code may surface latent races. Keep your Bugbot tests strict and add a –runs=3 flake-check job for non-determinism.
 

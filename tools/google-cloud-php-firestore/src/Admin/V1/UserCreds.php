@@ -278,4 +278,3 @@ class UserCreds extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -85,7 +85,11 @@ class HybridSwarmOptimizer:
             return total
 
         aca = ACA_TSP(
-            func=aco_func, n_dim=n, size_pop=20, max_iter=max_iter, distance_matrix=distance_matrix,
+            func=aco_func,
+            n_dim=n,
+            size_pop=20,
+            max_iter=max_iter,
+            distance_matrix=distance_matrix,
         )
         best_route_indices, best_latency = aca.run()
 

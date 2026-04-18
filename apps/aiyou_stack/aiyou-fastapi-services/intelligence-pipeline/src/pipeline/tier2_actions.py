@@ -18,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class Tier2AutoActions:
-    """Automated action handler for Tier 2 items
-    """
+    """Automated action handler for Tier 2 items"""
 
     def __init__(self):
         """Initialize Tier 2 auto-actions"""
@@ -163,10 +162,10 @@ class Tier2AutoActions:
 
 
 async def main():
-    """Main Tier 2 actions entry point
-    """
+    """Main Tier 2 actions entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load synthesized items

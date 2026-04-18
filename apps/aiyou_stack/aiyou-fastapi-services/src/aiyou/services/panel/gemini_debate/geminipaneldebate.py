@@ -8,6 +8,7 @@ try:
     import google.generativeai as genai
     from google.generativeai import GenerationConfig
     from google.generativeai.types import HarmBlockThreshold, HarmCategory
+
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
@@ -57,7 +58,10 @@ class GeminiPanelDebate:
         self.defender_persona = "You are the DEFENDER in a content moderation panel debate.\n\nYour role:\n- Argue for APPROVING content when appropriate\n- Balance safety with creator freedom\n- Consider context, intent, and cultural factors\n- Cite precedents for similar content\n- Advocate for expression within policy\n\nYou protect creators from over-moderation."
         self.judge_persona = "You are the JUDGE in a content moderation panel debate.\n\nYour role:\n- Synthesize prosecutor and defender arguments\n- Make impartial final decision (APPROVE, REJECT, or ESCALATE)\n- Weigh evidence objectively\n- Consider platform policy, legal risk, community impact\n- Provide clear reasoning\n\nYou make the final call."
         self.config_argument = GenerationConfig(
-            max_output_tokens=500, temperature=0.3, top_p=0.95, top_k=40,
+            max_output_tokens=500,
+            temperature=0.3,
+            top_p=0.95,
+            top_k=40,
         )
         self.config_decision = GenerationConfig(
             max_output_tokens=1000,
@@ -91,7 +95,9 @@ class GeminiPanelDebate:
         return bool(initial_analysis.get("requires_debate"))
 
     async def conduct_debate(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
+        self,
+        content_analysis: dict[str, Any],
+        content_metadata: dict[str, Any],
     ) -> GeminiDebateResult:
         """Conduct 3-round panel debate using Gemini
 
@@ -117,12 +123,15 @@ class GeminiPanelDebate:
             total_tokens += defender_arg.tokens_used
             total_cost += self._calculate_cost(defender_arg.tokens_used, "input_output")
             judge_decision = await self._judge_decision(
-                debate_context, prosecutor_arg.argument, defender_arg.argument,
+                debate_context,
+                prosecutor_arg.argument,
+                defender_arg.argument,
             )
             total_tokens += judge_decision["tokens_used"]
             total_cost += self._calculate_cost(judge_decision["tokens_used"], "input_output")
             consensus_score = self._calculate_consensus(
-                prosecutor_arg.confidence, defender_arg.confidence,
+                prosecutor_arg.confidence,
+                defender_arg.confidence,
             )
             duration_ms = (datetime.utcnow() - start_time).total_seconds() * 1000
             result = GeminiDebateResult(
@@ -196,7 +205,9 @@ class GeminiPanelDebate:
             )
 
     async def _defender_argument(
-        self, debate_context: str, prosecutor_argument: str,
+        self,
+        debate_context: str,
+        prosecutor_argument: str,
     ) -> GeminiDebateArgument:
         """Generate defender's argument for content approval
 
@@ -237,7 +248,10 @@ class GeminiPanelDebate:
             )
 
     async def _judge_decision(
-        self, debate_context: str, prosecutor_argument: str, defender_argument: str,
+        self,
+        debate_context: str,
+        prosecutor_argument: str,
+        defender_argument: str,
     ) -> dict[str, Any]:
         """Judge synthesizes arguments and makes final decision
 
@@ -277,7 +291,9 @@ class GeminiPanelDebate:
             }
 
     def _build_debate_context(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
+        self,
+        content_analysis: dict[str, Any],
+        content_metadata: dict[str, Any],
     ) -> str:
         """Build shared context for all debate rounds
 
@@ -286,7 +302,9 @@ class GeminiPanelDebate:
         return f"CONTENT ANALYSIS:\n- Content ID: {content_metadata.get('content_id', 'unknown')}\n- Content Type: {content_metadata.get('content_type', 'unknown')}\n- Creator Tier: {content_metadata.get('creator_tier', 'standard')}\n- Detected Labels: {content_analysis.get('detected_labels', [])}\n- Detected Objects: {content_analysis.get('detected_objects', [])}\n- Detected Text: {content_analysis.get('detected_text', '')}\n- Moderation Category: {content_analysis.get('moderation_category', 'unknown')}\n- Moderation Confidence: {content_analysis.get('moderation_confidence', 0)}%\n- Quality Score: {content_analysis.get('quality_score', 0)}/100\n- Brand Safety Score: {content_analysis.get('brand_safety_score', 0)}/100\n\nPLATFORM POLICY GUIDELINES:\n- Violence: Reject graphic depictions, allow news/educational context\n- Nudity: Context matters - artistic/educational vs explicit\n- Hate Speech: Zero tolerance for targeted harassment\n- Misinformation: Verify claims, add context labels\n- Safety: Prioritize user wellbeing and platform reputation\n\nDECISION FRAMEWORK:\n- Consider severity, context, intent, precedent\n- Balance safety with creator freedom\n- Protect vulnerable users\n- Maintain brand safety for advertisers"
 
     def _calculate_consensus(
-        self, prosecutor_confidence: float, defender_confidence: float,
+        self,
+        prosecutor_confidence: float,
+        defender_confidence: float,
     ) -> float:
         """Calculate consensus score between prosecutor and defender
 

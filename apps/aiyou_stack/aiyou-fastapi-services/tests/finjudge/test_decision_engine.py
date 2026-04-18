@@ -1,5 +1,4 @@
-"""Tests for FinJudge Decision Engine
-"""
+"""Tests for FinJudge Decision Engine"""
 
 from datetime import datetime
 from uuid import uuid4
@@ -103,7 +102,9 @@ class TestRiskAssessment:
             request_id=uuid4(),
             decision_type=DecisionType.TRADE_APPROVAL,
             context=DecisionContext(
-                timestamp=datetime.utcnow(), entity="Low Risk Desk", purpose="Small trade, low risk",
+                timestamp=datetime.utcnow(),
+                entity="Low Risk Desk",
+                purpose="Small trade, low risk",
             ),
             evidence=[
                 Evidence(
@@ -481,7 +482,8 @@ class TestRealWorldScenarios:
                 ),
             ],
             constraints=Constraints(
-                regulatory=["Dodd-Frank"], policy_rules=["CREDIT-001", "RISK-002"],
+                regulatory=["Dodd-Frank"],
+                policy_rules=["CREDIT-001", "RISK-002"],
             ),
         )
 
@@ -511,7 +513,8 @@ class TestRealWorldScenarios:
                 ),
             ],
             constraints=Constraints(
-                risk_limits=RiskLimits(var_limit=10000000), policy_rules=["RISK-003"],
+                risk_limits=RiskLimits(var_limit=10000000),
+                policy_rules=["RISK-003"],
             ),
         )
 

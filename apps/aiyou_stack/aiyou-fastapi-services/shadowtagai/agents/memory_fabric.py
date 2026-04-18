@@ -162,7 +162,8 @@ class MemoryFabric:
         if fitness < current_best:
             self.set_global("best_fitness", fitness)
             self.set_global(
-                "best_position", position.tolist() if isinstance(position, np.ndarray) else position,
+                "best_position",
+                position.tolist() if isinstance(position, np.ndarray) else position,
             )
 
             # Update history
@@ -202,7 +203,11 @@ class MemoryFabric:
 
     # PSO-specific operations
     def store_particle_state(
-        self, agent_id: int, position: np.ndarray, velocity: np.ndarray, fitness: float,
+        self,
+        agent_id: int,
+        position: np.ndarray,
+        velocity: np.ndarray,
+        fitness: float,
     ):
         """Store full particle state."""
         self.set_agent(agent_id, "position", position.tolist())
@@ -234,7 +239,11 @@ class MemoryFabric:
 
     # ACO-specific operations
     def update_pheromones(
-        self, squad_id: int, route: list[int], quality: float, evaporation: float = 0.1,
+        self,
+        squad_id: int,
+        route: list[int],
+        quality: float,
+        evaporation: float = 0.1,
     ):
         """Update pheromone trails for a squad."""
         pheromones = self.get_team(squad_id, "pheromone_trail")

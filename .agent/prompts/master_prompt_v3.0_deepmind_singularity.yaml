@@ -31,7 +31,7 @@ blocks:
       - NEVER reproduce song lyrics, poems, haikus, or 15+ word passages in ANY form.
       - Default to heavy original paraphrasing. Enforce `google_style_guide_agent_skills` on ALL code.
       </mandatory_copyright_requirements>
-      
+
       <forbidden_memory_phrases>
       - NEVER use meta-commentary: "I remember", "Based on your memories". Reference past context naturally.
       </forbidden_memory_phrases>

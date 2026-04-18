@@ -9,7 +9,7 @@
 #       branch = "^main$"
 #     }
 #   }
-#   
+#
 #   # ... (Substitutions and Build steps omitted for brevity/commenting)
 #   # This resource requires manual GitHub App authorization in the Cloud Console.
 #   # Disabling to unblock 'Massive Consolidation' deployment.

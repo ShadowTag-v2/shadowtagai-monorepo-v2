@@ -122,7 +122,10 @@ class TestSignatureVerification:
 
         with pytest.raises(HTTPException) as exc_info:
             verify_stripe_signature(
-                payload, header, WEBHOOK_SECRET, tolerance=300,
+                payload,
+                header,
+                WEBHOOK_SECRET,
+                tolerance=300,
             )
         assert exc_info.value.status_code == 400
         assert "too old" in exc_info.value.detail.lower()
@@ -142,7 +145,9 @@ class TestSignatureVerification:
         timestamp = int(time.time())
         signed = f"{timestamp}.".encode() + bad_payload
         sig = hmac.new(
-            WEBHOOK_SECRET.encode(), signed, hashlib.sha256,
+            WEBHOOK_SECRET.encode(),
+            signed,
+            hashlib.sha256,
         ).hexdigest()
         header = f"t={timestamp},v1={sig}"
 

@@ -329,9 +329,7 @@ class StripeConnect:
         try:
             balance = stripe.Balance.retrieve(stripe_account=account_id)
             return {
-                "available": [
-                    {"amount": b.amount, "currency": b.currency} for b in balance.available
-                ],
+                "available": [{"amount": b.amount, "currency": b.currency} for b in balance.available],
                 "pending": [{"amount": b.amount, "currency": b.currency} for b in balance.pending],
                 "status": "live",
             }

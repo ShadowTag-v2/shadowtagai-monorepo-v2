@@ -55,7 +55,7 @@ resource "google_workstations_workstation_config" "god_mode" {
   workstation_config_id  = "god-mode-v2"
   workstation_cluster_id = google_workstations_workstation_cluster.omega_cluster.workstation_cluster_id
   location               = "$REGION"
-  
+
   host {
     gce_instance {
       machine_type = "e2-standard-8" # 8 vCPU for Parallel Swarms
@@ -63,7 +63,7 @@ resource "google_workstations_workstation_config" "god_mode" {
       disable_public_ip_addresses = false # Simplifies initial access
     }
   }
-  
+
   container {
     image = "us-central1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest"
     env {
@@ -109,18 +109,18 @@ class VisualCortex:
         """
         with open(file_path, "rb") as f:
             image_bytes = f.read()
-            
+
         prompt = f"""
         TASK: Extract data adhering to this schema: {json.dumps(extraction_schema)}
-        
+
         METHODOLOGY:
         1. **Anchor**: Find visual landmarks (e.g., 'Total:', 'Invoice #').
         2. **Region**: Define the bounding box relative to the anchor.
         3. **Extract**: Read the value inside the region.
-        
+
         Return pure JSON.
         """
-        
+
         response = self.client.models.generate_content(
             model=self.model,
             contents=[types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg"), prompt],
@@ -147,7 +147,7 @@ class Jetski:
     def __init__(self):
         self.client = genai.Client(vertexai=True, location="$REGION")
         self.model = "gemini-2.0-flash-exp"
-        
+
     def _find_brave(self):
         # Look for Brave in standard linux paths or allow override
         return os.getenv("BRAVE_BIN") or shutil.which("brave-browser")
@@ -161,14 +161,14 @@ class Jetski:
             browser = await p.chromium.launch(**launch_args)
             page = await browser.new_page()
             await page.goto(url)
-            
+
             # THE VISION LOOP
             screenshot = await page.screenshot(format="jpeg")
             prompt = f"TASK: {task}. Analyze screen. JSON Output: {{'action': 'click'|'type', 'selector': '...', 'value': '...'}}"
-            
+
             # (Gemini Call Omitted for brevity, assume decision logic here)
             # In production, this loop repeats until task is done.
-            
+
             await browser.close()
             return {"status": "Complete (Simulated for Speed)"}
 
@@ -185,7 +185,7 @@ class GodMode:
         # 1. JUDGE CHECK (Mocked import to prevent circular dep in this script)
         if "sk-" in content or "PRIVATE KEY" in content:
             return {"status": "BLOCKED", "reason": "Secret Detected"}
-        
+
         # 2. EXECUTE
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
@@ -218,7 +218,7 @@ cat <<BASH > tools/ci/gatekeeper.sh
 if ! command -v gemini &> /dev/null; then npm install -g @google/gemini-cli; fi
 
 gemini --yolo --config ../cli/settings.json <<EOF
-You are Judge 6. 
+You are Judge 6.
 Audit the code in 'libs/' against 'libs/governance/policies/global.md'.
 If any violations found, output "BLOCKED". Else "APPROVED".
 EOF

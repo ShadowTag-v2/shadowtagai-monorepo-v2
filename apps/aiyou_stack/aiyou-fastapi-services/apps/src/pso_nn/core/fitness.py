@@ -203,7 +203,8 @@ def create_batch_fitness(
 
 
 def create_noisy_fitness(
-    fitness_fn: Callable[[np.ndarray], float], noise_scale: float = 0.01,
+    fitness_fn: Callable[[np.ndarray], float],
+    noise_scale: float = 0.01,
 ) -> Callable[[np.ndarray], float]:
     """Add noise to fitness evaluation for exploration.
 

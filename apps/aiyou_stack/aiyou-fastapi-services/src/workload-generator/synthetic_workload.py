@@ -17,7 +17,8 @@ import aiohttp
 import numpy as np
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,8 @@ class WorkloadConfig:
     """Configuration for workload generator"""
 
     judge_endpoint: str = os.getenv(
-        "JUDGE_ENDPOINT", "http://judge-6-service.pnkln-core.svc.cluster.local",
+        "JUDGE_ENDPOINT",
+        "http://judge-6-service.pnkln-core.svc.cluster.local",
     )
     duration_seconds: int = int(os.getenv("WORKLOAD_DURATION_SEC", "3600"))  # 1 hour default
 
@@ -155,7 +157,9 @@ class SyntheticWorkloadGenerator:
         return base_request
 
     async def _send_request(
-        self, session: aiohttp.ClientSession, request_data: dict[str, Any],
+        self,
+        session: aiohttp.ClientSession,
+        request_data: dict[str, Any],
     ) -> RequestResult:
         """Send a single request and measure latency"""
         request_id = request_data["id"]
@@ -205,7 +209,11 @@ class SyntheticWorkloadGenerator:
             )
 
     async def _run_workload_phase(
-        self, phase_name: str, duration_sec: int, target_rps: float, session: aiohttp.ClientSession,
+        self,
+        phase_name: str,
+        duration_sec: int,
+        target_rps: float,
+        session: aiohttp.ClientSession,
     ):
         """Run a workload phase with specified RPS"""
         logger.info(
@@ -264,28 +272,40 @@ class SyntheticWorkloadGenerator:
             if self.config.enable_ramp_up:
                 ramp_duration = int(self.config.duration_seconds * 0.25)
                 await self._run_workload_phase(
-                    "ramp-up", ramp_duration, self.config.base_rps, session,
+                    "ramp-up",
+                    ramp_duration,
+                    self.config.base_rps,
+                    session,
                 )
 
             # Phase 2: Steady state (40% of duration)
             if self.config.enable_steady_state:
                 steady_duration = int(self.config.duration_seconds * 0.40)
                 await self._run_workload_phase(
-                    "steady-state", steady_duration, self.config.peak_rps, session,
+                    "steady-state",
+                    steady_duration,
+                    self.config.peak_rps,
+                    session,
                 )
 
             # Phase 3: Burst mode (20% of duration)
             if self.config.enable_burst_mode:
                 burst_duration = int(self.config.duration_seconds * 0.20)
                 await self._run_workload_phase(
-                    "burst", burst_duration, self.config.burst_rps, session,
+                    "burst",
+                    burst_duration,
+                    self.config.burst_rps,
+                    session,
                 )
 
             # Phase 4: Ramp-down (15% of duration)
             if self.config.enable_ramp_down:
                 rampdown_duration = int(self.config.duration_seconds * 0.15)
                 await self._run_workload_phase(
-                    "ramp-down", rampdown_duration, self.config.base_rps, session,
+                    "ramp-down",
+                    rampdown_duration,
+                    self.config.base_rps,
+                    session,
                 )
 
         # Analyze results

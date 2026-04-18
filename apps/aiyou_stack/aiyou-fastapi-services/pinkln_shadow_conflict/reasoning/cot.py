@@ -75,7 +75,11 @@ Think step-by-step:
         }
 
     def add_step(
-        self, description: str, reasoning: str, result: Any = None, confidence: float = 1.0,
+        self,
+        description: str,
+        reasoning: str,
+        result: Any = None,
+        confidence: float = 1.0,
     ):
         """Add a step to the thought chain.
 
@@ -202,7 +206,9 @@ Let's begin:
         return {"steps": [], "dependencies": [], "estimated_complexity": 0.5}
 
     async def _execute_plan(
-        self, plan: dict[str, Any], context: dict[str, Any] | None,
+        self,
+        plan: dict[str, Any],
+        context: dict[str, Any] | None,
     ) -> dict[str, Any]:
         """Execute the plan step-by-step."""
         return {"executed_steps": [], "final_result": None}

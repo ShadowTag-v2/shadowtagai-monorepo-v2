@@ -42,10 +42,12 @@ class CreateContextRequest(BaseModel):
         description="Commander's intent, concept of operations, tasks, coordinating instructions",
     )
     service_support: dict[str, Any] | None = Field(
-        None, description="Logistics, personnel, medical/error handling",
+        None,
+        description="Logistics, personnel, medical/error handling",
     )
     command_signal: dict[str, Any] | None = Field(
-        None, description="Command structure, signal channels, succession",
+        None,
+        description="Command structure, signal channels, succession",
     )
     tags: list[str] | None = Field(None, description="Tags for categorization")
 

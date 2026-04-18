@@ -36,5 +36,5 @@ jobs:
               allow_deletions: false,
               required_conversation_resolution: true
             });
-            
+
             console.log('✅ Branch protection rules applied to main');

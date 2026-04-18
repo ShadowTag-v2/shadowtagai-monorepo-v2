@@ -26,7 +26,7 @@ Compact at **natural breakpoints**, never mid-implementation.
 
 ```
 AUTOCOMPACT_BUFFER_TOKENS     = 13,000
-WARNING_THRESHOLD_BUFFER      = 20,000  
+WARNING_THRESHOLD_BUFFER      = 20,000
 ERROR_THRESHOLD_BUFFER        = 20,000
 MANUAL_COMPACT_BUFFER         = 3,000
 MAX_CONSECUTIVE_FAILURES      = 3 (circuit breaker)

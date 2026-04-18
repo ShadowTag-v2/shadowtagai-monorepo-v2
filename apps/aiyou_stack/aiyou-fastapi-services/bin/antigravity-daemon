@@ -9,6 +9,7 @@ Commands:
     antigravity-daemon monitor  - Continuous health monitoring (for launchd)
     antigravity-daemon restart  - Restart all services
 """
+
 import subprocess
 import sys
 import time
@@ -24,14 +25,14 @@ SERVICES = {
         "port": 8600,
         "script": "bin/n-autoresearch/Kosmos/BioAgentss-server",
         "health": "http://127.0.0.1:8600/health",
-        "env": {"PORT": "8600"}
+        "env": {"PORT": "8600"},
     },
     "oracle": {
         "port": 8700,
         "script": "bin/oracle-server",
         "health": "http://127.0.0.1:8700/health",
-        "env": {"ORACLE_PORT": "8700"}
-    }
+        "env": {"ORACLE_PORT": "8700"},
+    },
 }
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
@@ -77,6 +78,7 @@ def check_health(service: str) -> bool:
     config = SERVICES[service]
     try:
         import urllib.request
+
         with urllib.request.urlopen(config["health"], timeout=5) as response:
             return response.status == 200
     except Exception:
@@ -101,9 +103,9 @@ def start_service(service: str) -> bool:
 
     # Start the process
     with open(log_file, "a") as log_f:
-        log_f.write(f"\n{'='*60}\n")
+        log_f.write(f"\n{'=' * 60}\n")
         log_f.write(f"Starting {service} at {datetime.now()}\n")
-        log_f.write(f"{'='*60}\n")
+        log_f.write(f"{'=' * 60}\n")
 
         process = subprocess.Popen(
             [sys.executable, str(script)],
@@ -111,7 +113,7 @@ def start_service(service: str) -> bool:
             env=env,
             stdout=log_f,
             stderr=subprocess.STDOUT,
-            start_new_session=True
+            start_new_session=True,
         )
 
     # Save PID
@@ -176,7 +178,9 @@ def status_all():
         status_str = "HEALTHY" if healthy else ("RUNNING" if running else "STOPPED")
         status_icon = "●" if healthy else ("○" if running else "✗")
 
-        print(f"║  {status_icon} {service.upper():15} Port {config['port']:5}  Status: {status_str:10} ║")
+        print(
+            f"║  {status_icon} {service.upper():15} Port {config['port']:5}  Status: {status_str:10} ║"
+        )
 
     print("╚══════════════════════════════════════════════════════════════════════╝\n")
 
@@ -241,7 +245,7 @@ def main():
     parser.add_argument(
         "command",
         choices=["start", "stop", "status", "restart", "monitor"],
-        help="Command to execute"
+        help="Command to execute",
     )
 
     args = parser.parse_args()

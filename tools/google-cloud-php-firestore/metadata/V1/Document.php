@@ -25,4 +25,3 @@ class Document
         static::$is_initialized = true;
     }
 }
-

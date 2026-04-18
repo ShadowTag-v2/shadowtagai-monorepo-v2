@@ -93,4 +93,3 @@ class CustomerManagedEncryptionOptions extends \Google\Protobuf\Internal\Message
     }
 
 }
-

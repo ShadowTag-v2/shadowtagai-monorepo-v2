@@ -196,7 +196,8 @@ class AunCRMValidator:
         self.validated_contexts: list[ComplianceContext] = []
 
     def validate_context(
-        self, context: ComplianceContext,
+        self,
+        context: ComplianceContext,
     ) -> tuple[bool, list[str], dict[str, Any]]:
         """Validate compliance context against AunCRM rules
 

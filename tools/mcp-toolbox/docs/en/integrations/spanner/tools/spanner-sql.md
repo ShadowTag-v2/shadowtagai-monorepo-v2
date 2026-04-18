@@ -177,17 +177,17 @@ name: search_docs_spanner
 type: spanner-sql
 source: my-spanner-source
 statement: |
-  SELECT 
-    id, 
-    content, 
-    COSINE_DISTANCE(embedding, @query) AS distance 
-  FROM 
-    vector_table 
-  ORDER BY 
-    distance 
+  SELECT
+    id,
+    content,
+    COSINE_DISTANCE(embedding, @query) AS distance
+  FROM
+    vector_table
+  ORDER BY
+    distance
   LIMIT 1
 description: |
-  Search for documents in Spanner using natural language. 
+  Search for documents in Spanner using natural language.
   Returns the most semantically similar result.
 parameters:
   - name: query

@@ -25,4 +25,3 @@ class Field
         static::$is_initialized = true;
     }
 }
-

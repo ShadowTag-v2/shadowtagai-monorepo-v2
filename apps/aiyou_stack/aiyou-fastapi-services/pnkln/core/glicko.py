@@ -147,7 +147,11 @@ class Glicko2Player:
         return v * delta_sum
 
     def _compute_new_volatility(
-        self, v: float, delta: float, tau: float = TAU, tol: float = 1e-6,
+        self,
+        v: float,
+        delta: float,
+        tau: float = TAU,
+        tol: float = 1e-6,
     ) -> float:
         """Compute new volatility using Illinois algorithm.
 

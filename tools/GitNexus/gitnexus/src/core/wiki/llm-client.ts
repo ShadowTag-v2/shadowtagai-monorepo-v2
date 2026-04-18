@@ -1,9 +1,9 @@
 /**
  * LLM Client for Wiki Generation
- * 
+ *
  * OpenAI-compatible API client using native fetch.
  * Supports OpenAI, Azure, LiteLLM, Ollama, and any OpenAI-compatible endpoint.
- * 
+ *
  * Config priority: CLI flags > env vars > defaults
  */
 
@@ -27,7 +27,7 @@ export interface LLMResponse {
 /**
  * Resolve LLM configuration from env vars, saved config, and optional overrides.
  * Priority: overrides (CLI flags) > env vars > ~/.gitnexus/config.json > error
- * 
+ *
  * If no API key is found, returns config with empty apiKey (caller should handle).
  */
 export async function resolveLLMConfig(overrides?: Partial<LLMConfig>): Promise<LLMConfig> {

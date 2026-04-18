@@ -80,4 +80,3 @@ class Avg extends \Google\Protobuf\Internal\Message
     }
 
 }
-

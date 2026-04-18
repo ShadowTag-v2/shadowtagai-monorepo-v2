@@ -32,7 +32,8 @@ class FeatureSynthesizer:
         # Capital at risk
         if metrics.exposure:
             features["capital_at_risk"] = self._capital_at_risk(
-                metrics.exposure.notional, metrics.exposure.pct_aum,
+                metrics.exposure.notional,
+                metrics.exposure.pct_aum,
             )
 
         # VaR to budget ratio
@@ -40,7 +41,8 @@ class FeatureSynthesizer:
             # Assume default budget of 5% AUM if not specified
             default_var_limit = 5_000_000  # $5M default
             features["var_to_budget"] = self._var_to_budget(
-                metrics.tail_risk.var_95, metrics.custom.get("var_limit", default_var_limit),
+                metrics.tail_risk.var_95,
+                metrics.custom.get("var_limit", default_var_limit),
             )
 
         # Liquidity heat score
@@ -62,13 +64,16 @@ class FeatureSynthesizer:
         # Credit risk composite
         if metrics.credit_metrics:
             features["credit_risk_composite"] = self._credit_risk_composite(
-                metrics.credit_metrics.pd, metrics.credit_metrics.lgd, metrics.credit_metrics.ead,
+                metrics.credit_metrics.pd,
+                metrics.credit_metrics.lgd,
+                metrics.credit_metrics.ead,
             )
 
         # Tail risk severity
         if metrics.pnl_distribution_summary:
             features["tail_severity"] = self._tail_severity(
-                metrics.pnl_distribution_summary.skew, metrics.pnl_distribution_summary.kurtosis,
+                metrics.pnl_distribution_summary.skew,
+                metrics.pnl_distribution_summary.kurtosis,
             )
 
         # Flag severity
@@ -118,7 +123,10 @@ class FeatureSynthesizer:
         return abs(var_usd) / var_limit
 
     def _liquidity_heat(
-        self, spread_bps: float | None, depth_score: float | None, days_to_liquidate: float | None,
+        self,
+        spread_bps: float | None,
+        depth_score: float | None,
+        days_to_liquidate: float | None,
     ) -> float:
         """Calculate liquidity heat score
 
@@ -169,7 +177,10 @@ class FeatureSynthesizer:
         return sum(heat_components) / len(heat_components)
 
     def _regime_indicator(
-        self, regime_tag: str | None, realized_vol: float | None, implied_vol: float | None,
+        self,
+        regime_tag: str | None,
+        realized_vol: float | None,
+        implied_vol: float | None,
     ) -> str:
         """Determine volatility regime
 
@@ -198,7 +209,10 @@ class FeatureSynthesizer:
         return "normal"  # Default
 
     def _credit_risk_composite(
-        self, pd: float | None, lgd: float | None, ead: float | None,
+        self,
+        pd: float | None,
+        lgd: float | None,
+        ead: float | None,
     ) -> float:
         """Calculate composite credit risk score
 

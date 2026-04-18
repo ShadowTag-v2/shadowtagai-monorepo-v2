@@ -19,12 +19,13 @@ from turboquant.qjl import QJL
 @dataclass
 class OutlierCompressedVector:
     """Container for outlier-strategy compressed vector."""
-    outlier_indices: np.ndarray    # indices for outlier channels (higher bits)
-    outlier_norms: np.ndarray      # norms for outlier channels
-    normal_indices: np.ndarray     # indices for normal channels (lower bits)
-    normal_norms: np.ndarray       # norms for normal channels
-    qjl_signs: np.ndarray          # QJL signs for full residual
-    residual_norms: np.ndarray     # ||residual||_2
+
+    outlier_indices: np.ndarray  # indices for outlier channels (higher bits)
+    outlier_norms: np.ndarray  # norms for outlier channels
+    normal_indices: np.ndarray  # indices for normal channels (lower bits)
+    normal_norms: np.ndarray  # norms for normal channels
+    qjl_signs: np.ndarray  # QJL signs for full residual
+    residual_norms: np.ndarray  # ||residual||_2
     effective_bits: float
 
 
@@ -103,7 +104,7 @@ class OutlierTurboQuant:
 
         # Split channels
         x_outlier = x[:, self.outlier_idx]  # (batch, n_outlier)
-        x_normal = x[:, self.normal_idx]    # (batch, n_normal)
+        x_normal = x[:, self.normal_idx]  # (batch, n_normal)
 
         # Quantize outlier channels at higher bits
         if self.pq_outlier is not None:

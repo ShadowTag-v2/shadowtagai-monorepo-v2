@@ -186,7 +186,7 @@ function collectSnippets(filePath: string): SnippetsConfig {
     map: {},
   };
 
-  // If a file does not have '// [SNIPPETS_SEPARATION enabled]' in it then 
+  // If a file does not have '// [SNIPPETS_SEPARATION enabled]' in it then
   // we don't process it for this script.
   config.enabled = lines.some((l) => !!l.match(RE_SNIPPETS_SEPARATION));
   if (!config.enabled) {

@@ -55,4 +55,3 @@ do
 done
 
 printf "$output_string\n"
-

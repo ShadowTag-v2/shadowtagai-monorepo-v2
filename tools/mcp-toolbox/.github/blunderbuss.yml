@@ -103,4 +103,3 @@ assign_prs_by:
     - 'product: spanner'
     to:
     - 'googleapis/toolbox-spanner-team'
-

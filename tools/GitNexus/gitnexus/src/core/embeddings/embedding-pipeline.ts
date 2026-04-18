@@ -1,6 +1,6 @@
 /**
  * Embedding Pipeline Module
- * 
+ *
  * Orchestrates the background embedding process:
  * 1. Query embeddable nodes from LadybugDB
  * 2. Generate text representations
@@ -36,29 +36,29 @@ const queryEmbeddableNodes = async (
   executeQuery: (cypher: string) => Promise<any[]>
 ): Promise<EmbeddableNode[]> => {
   const allNodes: EmbeddableNode[] = [];
-  
+
   // Query each embeddable table with table-specific columns
   for (const label of EMBEDDABLE_LABELS) {
     try {
       let query: string;
-      
+
       if (label === 'File') {
         // File nodes don't have startLine/endLine
         query = `
           MATCH (n:File)
-          RETURN n.id AS id, n.name AS name, 'File' AS label, 
+          RETURN n.id AS id, n.name AS name, 'File' AS label,
                  n.filePath AS filePath, n.content AS content
         `;
       } else {
         // Code elements have startLine/endLine
         query = `
           MATCH (n:${label})
-          RETURN n.id AS id, n.name AS name, '${label}' AS label, 
+          RETURN n.id AS id, n.name AS name, '${label}' AS label,
                  n.filePath AS filePath, n.content AS content,
                  n.startLine AS startLine, n.endLine AS endLine
         `;
       }
-      
+
       const rows = await executeQuery(query);
       for (const row of rows) {
         allNodes.push({
@@ -137,7 +137,7 @@ const createVectorIndex = async (
 
 /**
  * Run the embedding pipeline
- * 
+ *
  * @param executeQuery - Function to execute Cypher queries against LadybugDB
  * @param executeWithReusedStatement - Function to execute with reused prepared statement
  * @param onProgress - Callback for progress updates
@@ -284,7 +284,7 @@ export const runEmbeddingPipeline = async (
     }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    
+
     if (isDev) {
       console.error('❌ Embedding pipeline error:', error);
     }
@@ -301,9 +301,9 @@ export const runEmbeddingPipeline = async (
 
 /**
  * Perform semantic search using the vector index
- * 
+ *
  * Uses CodeEmbedding table and queries each node table to get metadata
- * 
+ *
  * @param executeQuery - Function to execute Cypher queries
  * @param query - Search query text
  * @param k - Number of results to return (default: 10)
@@ -327,7 +327,7 @@ export const semanticSearch = async (
 
   // Query the vector index on CodeEmbedding to get nodeIds and distances
   const vectorQuery = `
-    CALL QUERY_VECTOR_INDEX('CodeEmbedding', 'code_embedding_idx', 
+    CALL QUERY_VECTOR_INDEX('CodeEmbedding', 'code_embedding_idx',
       CAST(${queryVecStr} AS FLOAT[${queryVec.length}]), ${k})
     YIELD node AS emb, distance
     WITH emb, distance
@@ -337,7 +337,7 @@ export const semanticSearch = async (
   `;
 
   const embResults = await executeQuery(vectorQuery);
-  
+
   if (embResults.length === 0) {
     return [];
   }
@@ -405,11 +405,11 @@ export const semanticSearch = async (
 
 /**
  * Semantic search with graph expansion (flattened results)
- * 
+ *
  * Note: With multi-table schema, graph traversal is simplified.
  * Returns semantic matches with their metadata.
  * For full graph traversal, use execute_vector_cypher tool directly.
- * 
+ *
  * @param executeQuery - Function to execute Cypher queries
  * @param query - Search query text
  * @param k - Number of initial semantic matches (default: 5)
@@ -425,7 +425,7 @@ export const semanticSearchWithContext = async (
   // For multi-table schema, just return semantic search results
   // Graph traversal is complex with separate tables - use execute_vector_cypher instead
   const results = await semanticSearch(executeQuery, query, k, 0.5);
-  
+
   return results.map(r => ({
     matchId: r.nodeId,
     matchName: r.name,
@@ -438,4 +438,3 @@ export const semanticSearchWithContext = async (
     relationType: null,
   }));
 };
-

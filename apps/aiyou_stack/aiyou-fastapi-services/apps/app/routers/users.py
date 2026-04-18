@@ -52,7 +52,10 @@ user_id_counter = 1
 async def get_users(
     skip: int = Query(0, ge=0, description="Number of records to skip for pagination"),
     limit: int = Query(
-        100, ge=1, le=1000, description="Maximum number of records to return (1-1000)",
+        100,
+        ge=1,
+        le=1000,
+        description="Maximum number of records to return (1-1000)",
     ),
 ) -> list[UserResponse]:
     """Get all users with pagination support.

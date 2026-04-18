@@ -24,9 +24,9 @@ _windows: dict[str, list[float]] = defaultdict(list)
 
 # Limits per route prefix
 _LIMITS: dict[str, tuple[int, int]] = {
-    "/vent/message": (30, 3600),       # 30 per hour
-    "/vent/start": (10, 3600),         # 10 per hour
-    "/enclave/v1/query": (10, 3600),   # 10 per hour
+    "/vent/message": (30, 3600),  # 30 per hour
+    "/vent/start": (10, 3600),  # 10 per hour
+    "/enclave/v1/query": (10, 3600),  # 10 per hour
     "/onboarding/create-matter": (20, 3600),  # 20 per hour
 }
 
@@ -61,7 +61,10 @@ def check_attorney_rate_limit(
         reset_in = int(window - (now - oldest))
         logger.warning(
             "Rate limit exceeded: attorney=%s route=%s count=%d limit=%d",
-            attorney_id, route, current, limit,
+            attorney_id,
+            route,
+            current,
+            limit,
         )
         return {
             "allowed": False,

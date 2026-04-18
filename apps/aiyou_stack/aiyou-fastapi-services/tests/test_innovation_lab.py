@@ -1,5 +1,4 @@
-"""Tests for Innovation Lab Service
-"""
+"""Tests for Innovation Lab Service"""
 
 import pytest
 from fastapi.testclient import TestClient

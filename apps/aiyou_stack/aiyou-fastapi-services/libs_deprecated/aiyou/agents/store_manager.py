@@ -14,8 +14,7 @@ class StoreManager:
         self.judge = judge
 
     def onboard_vendor(self, name: str, email: str) -> Vendor:
-        """Register and auto-approve a vendor (MVP).
-        """
+        """Register and auto-approve a vendor (MVP)."""
         vendor = self.store.register_vendor(name, email)
         # MVP: Auto-verify
         # In production, we would run ID checks here.
@@ -31,8 +30,7 @@ class StoreManager:
         category: str,
         content_to_scan: str = None,
     ) -> dict[str, Any]:
-        """Submit a product, vet it with JudgeSix, and list it if approved.
-        """
+        """Submit a product, vet it with JudgeSix, and list it if approved."""
         # 1. Draft Listing
         try:
             product = self.store.list_product(vendor_id, name, description, price, category)
@@ -52,7 +50,8 @@ class StoreManager:
 
         if decision.approved:
             self.store.approve_product(
-                product.product_id, risk_score=0.1,
+                product.product_id,
+                risk_score=0.1,
             )  # Mock low risk if approved
             return {
                 "status": "LISTED",
@@ -67,13 +66,11 @@ class StoreManager:
         }
 
     def purchase_product(self, product_id: str, buyer_id: str) -> Transaction:
-        """Execute a purchase.
-        """
+        """Execute a purchase."""
         return self.store.purchase(product_id, buyer_id)
 
     def get_catalog(self) -> list[dict]:
-        """Get public catalog.
-        """
+        """Get public catalog."""
         return [
             {
                 "id": p.product_id,
@@ -86,6 +83,5 @@ class StoreManager:
         ]
 
     def get_transactions(self) -> list[Transaction]:
-        """Get all transactions for the ledger.
-        """
+        """Get all transactions for the ledger."""
         return list(self.store.transactions.values())

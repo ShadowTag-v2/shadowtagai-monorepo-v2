@@ -68,9 +68,7 @@ class TestAsyncToolboxClient:
             if not tool_schema_dict:
                 raise ValueError(f"Tool '{name}' not in mock manifest_dict")
 
-            core_params = [
-                CoreParameterSchema(**p) for p in tool_schema_dict["parameters"]
-            ]
+            core_params = [CoreParameterSchema(**p) for p in tool_schema_dict["parameters"]]
             # Return a mock that looks like toolbox_core.tool.ToolboxTool
             core_tool_mock = AsyncMock(spec=ToolboxCoreTool)
             core_tool_mock.__name__ = name
@@ -82,14 +80,10 @@ class TestAsyncToolboxClient:
 
         mock.load_tool = AsyncMock(side_effect=mock_load_tool_impl)
 
-        async def mock_load_toolset_impl(
-            name, auth_token_getters, bound_params, strict
-        ):
+        async def mock_load_toolset_impl(name, auth_token_getters, bound_params, strict):
             core_tools_list = []
             for tool_name_iter, tool_schema_dict in MANIFEST_JSON["tools"].items():
-                core_params = [
-                    CoreParameterSchema(**p) for p in tool_schema_dict["parameters"]
-                ]
+                core_params = [CoreParameterSchema(**p) for p in tool_schema_dict["parameters"]]
                 core_tool_mock = AsyncMock(spec=ToolboxCoreTool)
                 core_tool_mock.__name__ = tool_name_iter
                 core_tool_mock.__doc__ = tool_schema_dict["description"]
@@ -117,10 +111,7 @@ class TestAsyncToolboxClient:
 
     async def test_create_with_existing_session(self, mock_client, mock_session):
         # AsyncToolboxClient stores the core_client, which stores the session
-        assert (
-            mock_client._AsyncToolboxClient__core_client._ToolboxClient__session
-            == mock_session
-        )
+        assert mock_client._AsyncToolboxClient__core_client._ToolboxClient__session == mock_session
 
     async def test_aload_tool(
         self,
@@ -136,9 +127,7 @@ class TestAsyncToolboxClient:
             name=tool_name, auth_token_getters={}, bound_params=test_bound_params
         )
         assert isinstance(tool, AsyncToolboxTool)
-        assert (
-            tool.metadata.name == tool_name
-        )  # AsyncToolboxTool gets its name from the core_tool
+        assert tool.metadata.name == tool_name  # AsyncToolboxTool gets its name from the core_tool
 
     async def test_aload_tool_auth_headers_deprecated(self, mock_client):
         tool_name = "test_tool_1"
@@ -224,9 +213,7 @@ class TestAsyncToolboxClient:
 
     async def test_aload_toolset(self, mock_client):
         test_bound_params = {"bp_set": "value_set"}
-        tools = await mock_client.aload_toolset(
-            bound_params=test_bound_params, strict=True
-        )
+        tools = await mock_client.aload_toolset(bound_params=test_bound_params, strict=True)
 
         mock_client._AsyncToolboxClient__core_client.load_toolset.assert_called_once_with(
             name=None,
@@ -294,9 +281,7 @@ class TestAsyncToolboxClient:
         token_lambda = lambda: "id_token"
         with catch_warnings(record=True) as w:
             simplefilter("always")
-            await mock_client.aload_toolset(
-                auth_tokens={"some_token_key": token_lambda}
-            )
+            await mock_client.aload_toolset(auth_tokens={"some_token_key": token_lambda})
             assert len(w) == 1
             assert issubclass(w[-1].category, DeprecationWarning)
             assert "auth_tokens" in str(w[-1].message)
@@ -330,21 +315,15 @@ class TestAsyncToolboxClient:
     async def test_load_tool_not_implemented(self, mock_client):
         with pytest.raises(NotImplementedError) as excinfo:
             mock_client.load_tool("test_tool")
-        assert "Synchronous methods not supported by async client." in str(
-            excinfo.value
-        )
+        assert "Synchronous methods not supported by async client." in str(excinfo.value)
 
     async def test_load_toolset_not_implemented(self, mock_client):
         with pytest.raises(NotImplementedError) as excinfo:
             mock_client.load_toolset()
-        assert "Synchronous methods not supported by async client." in str(
-            excinfo.value
-        )
+        assert "Synchronous methods not supported by async client." in str(excinfo.value)
 
     @patch("toolbox_llamaindex.async_client.ToolboxCoreClient")
-    async def test_init_with_client_headers(
-        self, mock_core_client_constructor, mock_session
-    ):
+    async def test_init_with_client_headers(self, mock_core_client_constructor, mock_session):
         """Tests that client_headers are passed to the core client during initialization."""
         headers = {"X-Test-Header": "value"}
         AsyncToolboxClient(URL, session=mock_session, client_headers=headers)
@@ -365,12 +344,8 @@ class TestAsyncToolboxClient:
         ids=["telemetry_disabled", "telemetry_enabled"],
     )
     @patch("toolbox_llamaindex.async_client.ToolboxCoreClient")
-    async def test_telemetry_enabled_forwarded(
-        self, mock_core_client_constructor, mock_session, telemetry_enabled
-    ):
+    async def test_telemetry_enabled_forwarded(self, mock_core_client_constructor, mock_session, telemetry_enabled):
         """Verifies that telemetry_enabled is forwarded to the core client."""
-        AsyncToolboxClient(
-            URL, session=mock_session, telemetry_enabled=telemetry_enabled
-        )
+        AsyncToolboxClient(URL, session=mock_session, telemetry_enabled=telemetry_enabled)
         call_kwargs = mock_core_client_constructor.call_args[1]
         assert call_kwargs["telemetry_enabled"] == telemetry_enabled

@@ -3,7 +3,7 @@
 > **Invariant #92**: All landing pages MUST be classified as ACTIVE, DEPRECATED, or DEV-ONLY.
 > Unclassified pages are BLOCKED from deployment.
 
-**Last Updated**: 2026-04-11  
+**Last Updated**: 2026-04-11
 **Total Pages**: 14
 
 ---

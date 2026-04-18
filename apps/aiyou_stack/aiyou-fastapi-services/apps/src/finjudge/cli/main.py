@@ -87,7 +87,9 @@ def upgrade(email: str):
     try:
         headers = {"x-api-key": api_key}
         response = requests.post(
-            f"{API_URL}/v1/subscribe", params={"email": email}, headers=headers,
+            f"{API_URL}/v1/subscribe",
+            params={"email": email},
+            headers=headers,
         )
         response.raise_for_status()
         url = response.json()["checkout_url"]

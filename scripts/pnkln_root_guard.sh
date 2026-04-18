@@ -39,7 +39,7 @@ check_root() {
 # 2. Path validation (from guard_path.sh)
 validate_path() {
     local target="$1"
-    
+
     if ! command -v realpath >/dev/null 2>&1; then
         echo "❌ ERROR: realpath is required." >&2
         exit 1

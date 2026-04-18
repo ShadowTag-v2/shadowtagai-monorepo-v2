@@ -143,7 +143,9 @@ class SwarmOrchestrator:
         return distribution
 
     def auto_spawn_grandchildren(
-        self, child_id: str, child_revenue: float,
+        self,
+        child_id: str,
+        child_revenue: float,
     ) -> dict[str, Any] | None:
         """Automatically spawn a grandchild when a child hits $10M.
 

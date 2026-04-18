@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START listen_for_users_modular]
-import { collection, where, query, onSnapshot } from "firebase/firestore"; 
+import { collection, where, query, onSnapshot } from "firebase/firestore";
 
 const q = query(collection(db, "users"), where("born", "<", 1900));
 const unsubscribe = onSnapshot(q, (snapshot) => {

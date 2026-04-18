@@ -1,5 +1,4 @@
-"""Storage service for managing notes, issues, and other data.
-"""
+"""Storage service for managing notes, issues, and other data."""
 
 import uuid
 from datetime import datetime

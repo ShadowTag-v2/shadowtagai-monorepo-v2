@@ -62,7 +62,10 @@ class QueryHandler:
             logger.info("query_handler_initialized", model=self.settings.vertex_ai_model)
 
     async def get_policy_context(
-        self, corpus_name: str, query: str, top_k: int | None = None,
+        self,
+        corpus_name: str,
+        query: str,
+        top_k: int | None = None,
     ) -> PolicyContext:
         """Query File Search API with retrieval config
 

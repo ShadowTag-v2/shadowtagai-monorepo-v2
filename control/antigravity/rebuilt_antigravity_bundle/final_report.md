@@ -33,7 +33,7 @@ Below is a recap of the key concepts, differences, and deliverables, followed by
 ### 3. **Memory‑First Architecture (v10/v11)**
 
 - **Artifacts**: Bundles such as `ane_cortex_stack_v10_bundle.tar.gz`, `antigravity_v11_merged_control_plane_final_bundle.tar.gz`, and scripts like `setup_antigravity_v10_local.sh`.
-- **Key elements**: 
+- **Key elements**:
   - `authority-current.json`: single source of canonical memory (policies, settings, procedures).
   - **Atoms**: fine‑grained memory facts for precise retrieval and conflict detection.
   - **Hydrate Pack**: precompiled launch packet for the IDE/agent to load memory, tasks, and monorepo truth at startup.
@@ -50,22 +50,22 @@ Below is a recap of the key concepts, differences, and deliverables, followed by
 
 ## Key Differences and Lessons Learned
 
-1. **Canonical Truth vs. Codebase Truth**: 
-   - *Canonical truth* is recorded in `authority-current.json` and associated atoms; it defines what **should** be.  
+1. **Canonical Truth vs. Codebase Truth**:
+   - *Canonical truth* is recorded in `authority-current.json` and associated atoms; it defines what **should** be.
    - *Codebase truth* reflects what actually exists in the files. It is only used to identify upgrades needed, not to override policy.
 
-2. **Repo Control Plane vs. Memory System**: 
-   - The `pnkln` control plane declares which repos are canonical; the memory system records how Antigravity should behave and recover state.  
+2. **Repo Control Plane vs. Memory System**:
+   - The `pnkln` control plane declares which repos are canonical; the memory system records how Antigravity should behave and recover state.
    - They must be **fused**, not replaced. The memory system should load and respect the control plane, then provide guidance to upgrade the codebase accordingly.
 
-3. **Atomic Memory vs. Document Memory**: 
-   - Atomised memories (`settings.*`, `startup_contract.*`) allow precise retrieval and enforcement.  
+3. **Atomic Memory vs. Document Memory**:
+   - Atomised memories (`settings.*`, `startup_contract.*`) allow precise retrieval and enforcement.
    - Human‑readable `.agent/memory/*.md` should be auto‑generated from atoms to aid developers but not act as law.
 
-4. **Git/GitHub Discipline**: 
+4. **Git/GitHub Discipline**:
    - The project exposed repeated failures due to Antigravity “forgetting” authentication settings. This was fixed by introducing `operator_invariants.json` and corresponding atoms that declare the GitHub app as the control plane, `ssh` as the preferred remote, and a repair command for HTTPS auth.
 
-5. **Business Focus**: 
+5. **Business Focus**:
    - The strategic plan is to turn `CounselConduit` into the business‑facing product, while `uphillsnowball` remains an internal lab. This splitting of concerns should be reflected in repository organisation and in how memory is used to drive new features.
 
 ---
@@ -177,30 +177,30 @@ This script ensures the monorepo uses the repo-native control plane and then ins
 
 ## Implementation Plan for Antigravity
 
-1. **Install v11 Locally**: 
-   - Unpack `antigravity_v11_merged_control_plane_final_bundle.tar.gz` in your monorepo root.  
-   - Run the installer script to stage the control plane, memory, invariants, and fold-in checklist.  
+1. **Install v11 Locally**:
+   - Unpack `antigravity_v11_merged_control_plane_final_bundle.tar.gz` in your monorepo root.
+   - Run the installer script to stage the control plane, memory, invariants, and fold-in checklist.
    - Ensure `.agent/memory/*` documents are auto‑generated from `authority-current.json`.
 
-2. **Adopt the Startup Sequence**: 
-   - At each session start, load `authority-current.json` → `operator_invariants.json` → monorepo control plane → atoms → active tasks → drift reports → fold-in checklist → **then** inspect code or run Git commands.  
+2. **Adopt the Startup Sequence**:
+   - At each session start, load `authority-current.json` → `operator_invariants.json` → monorepo control plane → atoms → active tasks → drift reports → fold-in checklist → **then** inspect code or run Git commands.
    - Reject any plan that attempts to derive operational decisions from code before the authority memory is loaded.
 
-3. **Use the GitHub App**: 
-   - Always fetch repository status and files through the GitHub app for freshness.  
+3. **Use the GitHub App**:
+   - Always fetch repository status and files through the GitHub app for freshness.
    - Use local clones only for indexing, semantic retrieval, and patch generation.
 
-4. **Classify and Fold Repos**: 
-   - Use `fold_in_checklist.yaml` to assign each repo into `canonical_in_monorepo`, `queued_for_fold_in`, etc.  
-   - Prioritise `ShadowTag-v2-*` repos, `pnkln`, `erik-hancock-llm-memory`, `cosmic-crab-payload`, `Pipeline`, and `nascent-apollo` for early canonicalization.  
+4. **Classify and Fold Repos**:
+   - Use `fold_in_checklist.yaml` to assign each repo into `canonical_in_monorepo`, `queued_for_fold_in`, etc.
+   - Prioritise `ShadowTag-v2-*` repos, `pnkln`, `erik-hancock-llm-memory`, `cosmic-crab-payload`, `Pipeline`, and `nascent-apollo` for early canonicalization.
    - Defer or archive templates, demos, or superseded duplicate repos.
 
-5. **Promote Lessons**: 
-   - When new operational rules or design patterns prove useful (e.g., *vibe coding* mode), add them to authority memory and generate atoms.  
+5. **Promote Lessons**:
+   - When new operational rules or design patterns prove useful (e.g., *vibe coding* mode), add them to authority memory and generate atoms.
    - Use derived profiles (e.g., `profiles/vibe_coding.yaml`) to modulate the assistant’s behaviour without changing the underlying invariants.
 
-6. **Business Execution**: 
-   - Focus commercial energy on `CounselConduit` while using `uphillsnowball` for R&D.  
+6. **Business Execution**:
+   - Focus commercial energy on `CounselConduit` while using `uphillsnowball` for R&D.
    - Keep `pnkln` as the operating doctrine; treat it as the source of system behaviour rather than a product root.
 
 ---
@@ -215,5 +215,4 @@ The key insight from revisiting the entire thread is **integration, not replacem
 - Derive `.agent/memory/*` from canonical memory and never treat them as the source of truth.
 - Systematically fold in all 56 repos using the checklist and respect differences between “application roots” and “packages/infra”.
 
-This approach will keep Antigravity from forgetting its state, reduce regression risk, and position the project for a stable single-monorepo future. In Steve Jobs’ spirit of **simplify to elegance**, the solution is to unify the control plane with the memory system, focusing on clarity and ruthlessly removing ambiguity.  
-
+This approach will keep Antigravity from forgetting its state, reduce regression risk, and position the project for a stable single-monorepo future. In Steve Jobs’ spirit of **simplify to elegance**, the solution is to unify the control plane with the memory system, focusing on clarity and ruthlessly removing ambiguity.

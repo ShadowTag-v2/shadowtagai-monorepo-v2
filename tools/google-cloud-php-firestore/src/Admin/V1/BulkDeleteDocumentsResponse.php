@@ -31,4 +31,3 @@ class BulkDeleteDocumentsResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

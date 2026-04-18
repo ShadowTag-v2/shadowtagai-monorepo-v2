@@ -19,10 +19,13 @@ class MarketAnalystAgent:
         }
 
     def generate_brief(
-        self, vertical_name: str, vertical_id: str, focus_area: str, product_angle: str,
+        self,
+        vertical_name: str,
+        vertical_id: str,
+        focus_area: str,
+        product_angle: str,
     ) -> str:
-        """Generates a Strategic Sales Brief for a specific vertical.
-        """
+        """Generates a Strategic Sales Brief for a specific vertical."""
         # In a real system, this would use an LLM (Gemini) to generate the content based on RAG.
         # For this implementation (The Campaign), we will use deterministic templates based on the
         # "Sovereign Doctrine" and "Generational Wealth" principles.
@@ -81,8 +84,7 @@ We do not sell "Chatbots". We sell **{focus_area}**.
         return brief
 
     def execute_campaign(self) -> dict[str, str]:
-        """Executes the 'Big Three' Campaign.
-        """
+        """Executes the 'Big Three' Campaign."""
         campaigns = [
             ("Gov/Defense", "02", "Sovereignty", "Judge #6 Governance"),
             ("Fintech", "05", "Risk Mitigation", "FinJudge Audit"),

@@ -439,10 +439,10 @@ Save the request body in a file named `request.json`,
 and execute the following command:
 
 ```
-curl -X POST \  
-     -H "Authorization: Bearer $(gcloud auth print-access-token)" \  
-     -H "Content-Type: application/json; charset=utf-8" \  
-     -d @request.json \  
+curl -X POST \
+     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+     -H "Content-Type: application/json; charset=utf-8" \
+     -d @request.json \
      "https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/publishers/google/models/MODEL_ID:generateContent"
 ```
 
@@ -462,14 +462,14 @@ Save the request body in a file named `request.json`,
 and execute the following command:
 
 ```
-$cred = gcloud auth print-access-token  
-$headers = @{ "Authorization" = "Bearer $cred" }  
-  
-Invoke-WebRequest `  
-    -Method POST `  
-    -Headers $headers `  
-    -ContentType: "application/json; charset=utf-8" `  
-    -InFile request.json `  
+$cred = gcloud auth print-access-token
+$headers = @{ "Authorization" = "Bearer $cred" }
+
+Invoke-WebRequest `
+    -Method POST `
+    -Headers $headers `
+    -ContentType: "application/json; charset=utf-8" `
+    -InFile request.json `
     -Uri "https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/publishers/google/models/MODEL_ID:generateContent" | Select-Object -Expand Content
 ```
 
@@ -665,10 +665,10 @@ Save the request body in a file named `request.json`,
 and execute the following command:
 
 ```
-curl -X POST \  
-     -H "Authorization: Bearer $(gcloud auth print-access-token)" \  
-     -H "Content-Type: application/json; charset=utf-8" \  
-     -d @request.json \  
+curl -X POST \
+     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+     -H "Content-Type: application/json; charset=utf-8" \
+     -d @request.json \
      "https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/publishers/google/models/MODEL_ID:generateContent"
 ```
 
@@ -688,14 +688,14 @@ Save the request body in a file named `request.json`,
 and execute the following command:
 
 ```
-$cred = gcloud auth print-access-token  
-$headers = @{ "Authorization" = "Bearer $cred" }  
-  
-Invoke-WebRequest `  
-    -Method POST `  
-    -Headers $headers `  
-    -ContentType: "application/json; charset=utf-8" `  
-    -InFile request.json `  
+$cred = gcloud auth print-access-token
+$headers = @{ "Authorization" = "Bearer $cred" }
+
+Invoke-WebRequest `
+    -Method POST `
+    -Headers $headers `
+    -ContentType: "application/json; charset=utf-8" `
+    -InFile request.json `
     -Uri "https://LOCATION-aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/publishers/google/models/MODEL_ID:generateContent" | Select-Object -Expand Content
 ```
 

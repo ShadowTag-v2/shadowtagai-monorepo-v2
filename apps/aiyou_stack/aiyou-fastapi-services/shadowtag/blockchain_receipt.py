@@ -186,7 +186,10 @@ class ArweaveStorage:
         logger.info("arweave_storage_initialized", gateway=gateway_url)
 
     def store_fingerprint(
-        self, asset_id: str, fingerprint_data: dict, private_key: str | None = None,
+        self,
+        asset_id: str,
+        fingerprint_data: dict,
+        private_key: str | None = None,
     ) -> dict:
         """Store fingerprint data on Arweave.
 
@@ -290,7 +293,11 @@ class ReceiptManager:
         logger.info("receipt_manager_initialized")
 
     def create_receipt(
-        self, asset_id: str, fingerprint_hash: str, fingerprint_data: dict, owner_address: str,
+        self,
+        asset_id: str,
+        fingerprint_hash: str,
+        fingerprint_data: dict,
+        owner_address: str,
     ) -> BlockchainReceipt:
         """Create blockchain receipt for authenticated asset.
 
@@ -306,12 +313,15 @@ class ReceiptManager:
         """
         # Step 1: Record on Polygon
         polygon_result = self.polygon.record_fingerprint(
-            asset_id=asset_id, fingerprint_hash=fingerprint_hash, owner_address=owner_address,
+            asset_id=asset_id,
+            fingerprint_hash=fingerprint_hash,
+            owner_address=owner_address,
         )
 
         # Step 2: Store on Arweave
         arweave_result = self.arweave.store_fingerprint(
-            asset_id=asset_id, fingerprint_data=fingerprint_data,
+            asset_id=asset_id,
+            fingerprint_data=fingerprint_data,
         )
 
         # Step 3: Calculate total cost

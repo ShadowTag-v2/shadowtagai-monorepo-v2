@@ -64,9 +64,5 @@ class TestMemoryFootprint:
 
     def test_components_add_up(self):
         result = memory_footprint_bytes(100, 64, 3)
-        expected_total = (
-            result["mse_indices_bytes"]
-            + result["qjl_signs_bytes"]
-            + result["norms_bytes"]
-        )
+        expected_total = result["mse_indices_bytes"] + result["qjl_signs_bytes"] + result["norms_bytes"]
         assert result["total_bytes"] == expected_total

@@ -157,7 +157,10 @@ class CursorFeatures:
                 if class_match:
                     symbols.append(
                         CodeSymbol(
-                            name=class_match.group(1), kind="class", file_path=file_path, line=i,
+                            name=class_match.group(1),
+                            kind="class",
+                            file_path=file_path,
+                            line=i,
                         ),
                     )
 

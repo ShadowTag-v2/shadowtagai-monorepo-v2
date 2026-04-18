@@ -76,8 +76,7 @@ class LLMResponse:
 
 
 class LLMRouter:
-    """Routes LLM requests based on Pure Gemini architecture.
-    """
+    """Routes LLM requests based on Pure Gemini architecture."""
 
     # Routing table: task_type -> preferred provider (Always Gemini now)
     ROUTING_TABLE = {

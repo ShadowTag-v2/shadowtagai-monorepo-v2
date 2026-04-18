@@ -61,10 +61,10 @@ for fpath in kosmos_files:
     if os.path.exists(fpath):
         with open(fpath, "r") as f:
             content = f.read()
-        
+
         # Replace [tool.ruff.per-file-ignores] with [tool.ruff.lint.per-file-ignores]
         content = content.replace("[tool.ruff.per-file-ignores]", "[tool.ruff.lint.per-file-ignores]")
-        
+
         # We need to move select and ignore under [tool.ruff.lint]
         # Find the [tool.ruff] section and extract it
         if "[tool.ruff.lint]" not in content:
@@ -74,4 +74,3 @@ for fpath in kosmos_files:
 
         with open(fpath, "w") as f:
             f.write(content)
-

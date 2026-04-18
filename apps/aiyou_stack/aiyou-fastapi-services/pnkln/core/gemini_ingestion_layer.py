@@ -366,7 +366,8 @@ class QualityGates:
 
         # Gate 5: Average relevance score
         avg_relevance = sum(m.avg_relevance_score for m in result.source_metrics.values()) / max(
-            len(result.source_metrics), 1,
+            len(result.source_metrics),
+            1,
         )
         gates_passed["avg_relevance"] = avg_relevance >= self.gates["min_avg_relevance"]
 
@@ -430,7 +431,9 @@ class GeminiIngestionLayer:
             # Build metrics dict
             source_metrics = {}
             for collector_type, metrics in zip(
-                self.collectors.keys(), source_metrics_list, strict=False,
+                self.collectors.keys(),
+                source_metrics_list,
+                strict=False,
             ):
                 if isinstance(metrics, Exception):
                     logger.error(f"Collector {collector_type} failed: {metrics}")
@@ -560,7 +563,9 @@ class GeminiIngestionLayer:
         )
 
     async def run_nightly_job(
-        self, job_id: str, max_items_per_source: int = 500,
+        self,
+        job_id: str,
+        max_items_per_source: int = 500,
     ) -> IngestionResult:
         """Execute nightly ingestion job.
 
@@ -674,7 +679,8 @@ async def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     asyncio.run(example_usage())

@@ -32,7 +32,10 @@ class YouTubeIntegration:
         self.base_url = "https://www.googleapis.com/youtube/v3"
 
     async def search_videos(
-        self, query: str, max_results: int = 20, published_after: datetime | None = None,
+        self,
+        query: str,
+        max_results: int = 20,
+        published_after: datetime | None = None,
     ) -> list[dict]:
         """Search YouTube videos"""
         logger.info(f"Searching YouTube: {query}")
@@ -71,7 +74,10 @@ class TwitterIntegration:
         self.base_url = "https://api.twitter.com/2"
 
     async def search_tweets(
-        self, query: str, max_results: int = 100, _since_hours: int = 24,
+        self,
+        query: str,
+        max_results: int = 100,
+        _since_hours: int = 24,
     ) -> list[dict]:
         """Search recent tweets"""
         logger.info(f"Searching Twitter: {query}")
@@ -109,7 +115,10 @@ class NewsAPIIntegration:
         self.base_url = "https://newsapi.org/v2"
 
     async def search_news(
-        self, query: str, sources: list[str] | None = None, from_date: datetime | None = None,
+        self,
+        query: str,
+        sources: list[str] | None = None,
+        from_date: datetime | None = None,
     ) -> list[dict]:
         """Search news articles"""
         logger.info(f"Searching NewsAPI: {query}")
@@ -175,7 +184,9 @@ class V2XMeshIntegration:
         self.gateway_url = mesh_gateway_url
 
     async def fetch_recent_events(
-        self, since_minutes: int = 30, min_severity: int = 5,
+        self,
+        since_minutes: int = 30,
+        min_severity: int = 5,
     ) -> list[dict]:
         """Fetch recent V2X events"""
         logger.info(f"Fetching V2X mesh events (last {since_minutes}min)")
@@ -313,7 +324,9 @@ class SourceOrchestrator:
         logger.info("Registered Web Scraper")
 
     async def fetch_all_sources(
-        self, sources: list[SourceConfig], query: str = "traffic transportation",
+        self,
+        sources: list[SourceConfig],
+        query: str = "traffic transportation",
     ) -> dict[str, list[dict]]:
         """Fetch from all configured sources concurrently"""
         logger.info(f"Fetching from {len(sources)} sources...")

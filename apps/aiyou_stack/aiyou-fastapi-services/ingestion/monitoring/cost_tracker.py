@@ -24,7 +24,8 @@ logger = structlog.get_logger(__name__)
 cost_total_usd = Gauge("ingestion_cost_total_usd", "Total cumulative cost in USD")
 cost_by_source = Gauge("ingestion_cost_by_source_usd", "Cost by source in USD", ["source"])
 cost_budget_utilization_pct = Gauge(
-    "ingestion_cost_budget_utilization_pct", "Percentage of monthly budget used",
+    "ingestion_cost_budget_utilization_pct",
+    "Percentage of monthly budget used",
 )
 cost_overage_events = Counter("ingestion_cost_overage_total", "Number of times budget was exceeded")
 

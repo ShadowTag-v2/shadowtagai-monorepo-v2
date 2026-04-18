@@ -106,7 +106,9 @@ class SustainedLoadEngine:
 
         try:
             response = await asyncio.to_thread(
-                model.generate_content, prompt, safety_settings=self.safety_config,
+                model.generate_content,
+                prompt,
+                safety_settings=self.safety_config,
             )
             self.total_requests += 1
             return response.text
@@ -229,10 +231,16 @@ async def main():
 
     parser = argparse.ArgumentParser(description="Gemini Sustained Load Runner")
     parser.add_argument(
-        "--mode", choices=["safe", "aggressive"], default="safe", help="Rate limiting mode",
+        "--mode",
+        choices=["safe", "aggressive"],
+        default="safe",
+        help="Rate limiting mode",
     )
     parser.add_argument(
-        "--hours", type=float, default=None, help="Duration in hours (default: indefinite)",
+        "--hours",
+        type=float,
+        default=None,
+        help="Duration in hours (default: indefinite)",
     )
     args = parser.parse_args()
 

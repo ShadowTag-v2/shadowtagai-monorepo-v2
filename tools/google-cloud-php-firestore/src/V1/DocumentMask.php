@@ -77,4 +77,3 @@ class DocumentMask extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -8,7 +8,7 @@ Language: English | [简体中文](README-ZH.md)
 A powerful HTTP networking package for Dart/Flutter,
 supports Global configuration, Interceptors, FormData,
 Request cancellation, File uploading/downloading,
-Timeout, Custom adapters, Transformers, etc. 
+Timeout, Custom adapters, Transformers, etc.
 
 > Don't forget to add [#dio](https://pub.dev/packages?q=topic%3Adio)
 > topic to your published dio related packages!
@@ -729,7 +729,7 @@ Future<void> _repeatedlyRequest() async {
       'file': await MultipartFile.fromFile('./text.txt',filename: 'upload.txt'),
     });
   }
-  
+
   await dio.post('some-url', data: await createFormData());
 }
 ```
@@ -738,7 +738,7 @@ Future<void> _repeatedlyRequest() async {
 
 `Transformer` allows changes to the request/response data
 before it is sent/received to/from the server.
-Dio has already implemented a `BackgroundTransformer` as default, 
+Dio has already implemented a `BackgroundTransformer` as default,
 which calls `jsonDecode` in an isolate if the response is larger than 50 KB.
 If you want to customize the transformation of request/response data,
 you can provide a `Transformer` by your self,
@@ -783,7 +783,7 @@ If you want to use platform adapters explicitly:
   dio.httpClientAdapter = IOHttpClientAdapter();
   ```
 
-[Here](../example_dart/lib/adapter.dart) is a simple example to custom adapter. 
+[Here](../example_dart/lib/adapter.dart) is a simple example to custom adapter.
 
 ### Using proxy
 

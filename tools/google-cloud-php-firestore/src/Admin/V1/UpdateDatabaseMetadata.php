@@ -30,4 +30,3 @@ class UpdateDatabaseMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

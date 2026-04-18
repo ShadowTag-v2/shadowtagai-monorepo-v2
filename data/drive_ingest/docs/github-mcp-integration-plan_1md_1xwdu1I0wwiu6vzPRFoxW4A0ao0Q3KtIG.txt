@@ -45,7 +45,7 @@ GitHub's official MCP server enables direct AI→GitHub integration with 40-60% 
        ├─> ENV: GITHUB_TOOLSETS="context,repos,actions,code_security,pull_requests"
        ├─> ENV: GITHUB_LOCKDOWN_MODE=1
        └─> ENV: GITHUB_READ_ONLY=1 (during POC)
-   
+
    GKE-native (M3+ prod)
    └─> 4-5 namespaces
        ├─> judge-six-ns: MCP server + enforcement
@@ -162,7 +162,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: ATP_519_scan
         id: scan
         run: |
@@ -170,7 +170,7 @@ jobs:
           python scripts/atp_519_scan.py \
             --input ${{ github.event.pull_request.diff_url }} \
             --output /tmp/scan_result.bin
-      
+
       - name: Judge#6 Enforcement
         env:
           JUDGE_SIX_ENDPOINT: ${{ secrets.JUDGE_SIX_ENDPOINT }}
@@ -180,13 +180,13 @@ jobs:
             -H "Content-Type: application/octet-stream" \
             -d @/tmp/scan_result.bin \
             --max-time 1 # p99 ≤90ms budget
-          
+
           # Exit code 0 = PASS, 1 = FAIL
           if [ $? -ne 0 ]; then
             echo "::error::Judge#6 governance violation detected"
             exit 1
           fi
-      
+
       - name: Post Result
         if: always()
         uses: actions/github-script@v7
@@ -225,7 +225,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Detect Video Changes
         id: detect
         uses: github/github-mcp-server@main
@@ -236,7 +236,7 @@ jobs:
             repo: ${{ github.event.repository.name }}
             sha: ${{ github.sha }}
             include_diff: true
-      
+
       - name: Apply ShadowTag
         run: |
           # DCT watermarking on changed videos
@@ -246,7 +246,7 @@ jobs:
               --output ${video%.mp4}_watermarked.mp4 \
               --metadata "repo=${{ github.repository }},commit=${{ github.sha }},timestamp=$(date -u +%s)"
           done
-      
+
       - name: Commit Watermarked Videos
         run: |
           git config user.name "ShadowTag Bot"

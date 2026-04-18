@@ -8,7 +8,7 @@ echo ">>> 🛠️  SHADOWTAG BOOT PROTOCOL: INITIATED..."
 
 # --- 1. THE "MICROSOFT JAILBREAK" (Persist Marketplace) ---
 # We patch product.json every boot so you can access Pylance/HexEditor
-PRODUCT_JSON="/usr/lib/code-server/lib/vscode/product.json" 
+PRODUCT_JSON="/usr/lib/code-server/lib/vscode/product.json"
 # Note: Path may vary slightly by image version; we try standard paths.
 if [ ! -f "$PRODUCT_JSON" ]; then
     # Fallback for different base images
@@ -19,7 +19,7 @@ if [[ -n "$PRODUCT_JSON" ]] && [[ -f "$PRODUCT_JSON" ]]; then
     echo ">>> 🔓 Unlocking Microsoft Marketplace in $PRODUCT_JSON..."
     # Backup original
     cp -n "$PRODUCT_JSON" "$PRODUCT_JSON.bak"
-    
+
     # Inject Microsoft Gallery URL
     sed -i 's/"serviceUrl": "https:\/\/open-vsx.org\/vscode\/gallery"/"serviceUrl": "https:\/\/marketplace.visualstudio.com\/_apis\/public\/gallery"/g' "$PRODUCT_JSON"
     sed -i 's/"itemUrl": "https:\/\/open-vsx.org\/vscode\/item"/"itemUrl": "https:\/\/marketplace.visualstudio.com\/items"/g' "$PRODUCT_JSON"
@@ -44,11 +44,11 @@ fi
 if ! command -v node &> /dev/null; then
     echo "Installing Brave, Node.js, and Antigravity Dependencies..."
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
-    
+
     # Brave Browser Repo
     curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" | tee /etc/apt/sources.list.d/brave-browser-release.list
-    
+
     apt-get update && apt-get install -y \
         nodejs \
         brave-browser \

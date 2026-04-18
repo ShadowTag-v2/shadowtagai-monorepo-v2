@@ -136,4 +136,3 @@ class Stats extends \Google\Protobuf\Internal\Message
     }
 
 }
-

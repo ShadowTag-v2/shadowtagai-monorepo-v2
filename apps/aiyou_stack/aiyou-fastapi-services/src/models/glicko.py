@@ -47,7 +47,8 @@ class Glicko2Match(BaseModel):
     player1_id: str
     player2_id: str
     score: float = Field(
-        ..., description="Score: 1.0 = player1 wins, 0.5 = draw, 0.0 = player2 wins",
+        ...,
+        description="Score: 1.0 = player1 wins, 0.5 = draw, 0.0 = player2 wins",
     )
     timestamp: datetime | None = None
     metadata: dict | None = None
@@ -107,7 +108,10 @@ class Glicko2System(BaseModel):
         return 1.0 / variance_sum if variance_sum > 0 else float("inf")
 
     def compute_delta(
-        self, variance: float, matches: list[tuple[float, float, float]], mu: float,
+        self,
+        variance: float,
+        matches: list[tuple[float, float, float]],
+        mu: float,
     ) -> float:
         """Compute improvement Δ
         matches: List of (mu_j, phi_j, score) tuples
@@ -121,7 +125,11 @@ class Glicko2System(BaseModel):
         return variance * delta_sum
 
     def compute_new_volatility(
-        self, sigma: float, phi: float, variance: float, delta: float,
+        self,
+        sigma: float,
+        phi: float,
+        variance: float,
+        delta: float,
     ) -> float:
         """Compute new volatility σ' using iterative algorithm
         This is the complex part of Glicko-2
@@ -256,8 +264,7 @@ class Glicko2System(BaseModel):
 
 
 class PerformanceTracker(BaseModel):
-    """Tracks performance of different strategies/agents/approaches using Glicko-2
-    """
+    """Tracks performance of different strategies/agents/approaches using Glicko-2"""
 
     system: Glicko2System = Field(default_factory=Glicko2System)
     players: dict[str, Glicko2Player] = Field(default_factory=dict)
@@ -270,7 +277,11 @@ class PerformanceTracker(BaseModel):
         return player
 
     def record_match(
-        self, player1_id: str, player2_id: str, score: float, metadata: dict | None = None,
+        self,
+        player1_id: str,
+        player2_id: str,
+        score: float,
+        metadata: dict | None = None,
     ) -> Glicko2Match:
         """Record a match result
 

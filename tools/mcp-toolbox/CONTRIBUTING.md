@@ -89,7 +89,7 @@ resources.
   scope]: description`. For example, if you are adding a new field in postgres
   source, the title should be `feat(source/postgres): add support for
   "new-field" field in postgres source`.
-  
+
   Here are some commonly used `type` in this GitHub repo.
 
   |     **type**    |                                **description**                                                        |
@@ -108,7 +108,7 @@ resources.
   Pull requests should always add scope whenever possible. The scope is
   formatted as `<scope-resource>/<scope-type>` (e.g., `sources/postgres`, or
   `tools/mssql-sql`).
-  
+
   Ideally, **each PR covers only one scope**, if this is
   inevitable, multiple scopes can be seaparated with a comma (e.g.
   `sources/postgres,sources/alloydbpg`). If the PR covers multiple `scope-type`

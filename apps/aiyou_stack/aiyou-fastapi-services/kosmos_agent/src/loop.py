@@ -10,7 +10,9 @@ console = Console()
 
 class KosmosAgent:
     def __init__(
-        self, model_reasoning: str = "gemini-1.5-pro", _model_tools: str = "gemini-1.5-flash",
+        self,
+        model_reasoning: str = "gemini-1.5-pro",
+        _model_tools: str = "gemini-1.5-flash",
     ):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.model_id = model_reasoning
@@ -29,8 +31,7 @@ class KosmosAgent:
 
     @tracer.start_as_current_span("agent_step")
     def step(self, input_text: str):
-        """Executes a single step of the ReAct loop.
-        """
+        """Executes a single step of the ReAct loop."""
         # Construct current context
         prompt = f"{self.system_prompt}\n\nHistory:\n"
         for msg in self.history:

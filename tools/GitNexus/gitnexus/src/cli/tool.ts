@@ -1,15 +1,15 @@
 /**
  * Direct CLI Tool Commands
- * 
+ *
  * Exposes GitNexus tools (query, context, impact, cypher) as direct CLI commands.
  * Bypasses MCP entirely — invokes LocalBackend directly for minimal overhead.
- * 
+ *
  * Usage:
  *   gitnexus query "authentication flow"
  *   gitnexus context --name "validateUser"
  *   gitnexus impact --target "AuthService" --direction upstream
  *   gitnexus cypher "MATCH (n:Function) RETURN n.name LIMIT 10"
- * 
+ *
  * Note: Output goes to stdout via fs.writeSync(fd 1), bypassing LadybugDB's
  * native module which captures the Node.js process.stdout stream during init.
  * See the output() function for details (#324).

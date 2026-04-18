@@ -225,12 +225,14 @@ def test_intelligence_agent():
                 print_metric("  Items collected", result.metrics["ingestion"]["items_collected"])
                 print_metric("  Unique sources", result.metrics["ingestion"]["unique_sources"])
                 print_metric(
-                    "  Avg relevance", f"{result.metrics['ingestion']['average_relevance']:.2f}",
+                    "  Avg relevance",
+                    f"{result.metrics['ingestion']['average_relevance']:.2f}",
                 )
 
                 print("\n  Enforcement Metrics:")
                 print_metric(
-                    "  Verification passed", result.metrics["enforcement"]["verification_passed"],
+                    "  Verification passed",
+                    result.metrics["enforcement"]["verification_passed"],
                 )
                 print_metric("  Violations", result.metrics["enforcement"]["violations"])
 

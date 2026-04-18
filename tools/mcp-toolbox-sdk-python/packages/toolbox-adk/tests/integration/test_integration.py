@@ -169,9 +169,7 @@ class TestToolboxAdkIntegration:
             server_url="http://localhost:5000",
             # Load a specific tool that we know the arguments for
             tool_names=["get-n-rows"],
-            credentials=CredentialStrategy.user_identity(
-                client_id="test-client-id", client_secret="test-client-secret"
-            ),
+            credentials=CredentialStrategy.user_identity(client_id="test-client-id", client_secret="test-client-secret"),
         )
 
         try:
@@ -200,17 +198,13 @@ class TestToolboxAdkIntegration:
             mock_cred_service_first = AsyncMock()
             mock_cred_service_first.load_credential.return_value = None
             mock_ctx_first._invocation_context = MagicMock()
-            mock_ctx_first._invocation_context.credential_service = (
-                mock_cred_service_first
-            )
+            mock_ctx_first._invocation_context.credential_service = mock_cred_service_first
 
             print("Running tool first time (expecting auth request)...")
             result_first = await tool.run_async({"num_rows": "1"}, mock_ctx_first)
 
             # The wrapper should catch the missing creds and request them.
-            assert (
-                isinstance(result_first, dict) and "error" in result_first
-            ), "Tool should return error sig for auth requirement"
+            assert isinstance(result_first, dict) and "error" in result_first, "Tool should return error sig for auth requirement"
             mock_ctx_first.request_credential.assert_called_once()
 
             # Inspect the requested config
@@ -228,9 +222,7 @@ class TestToolboxAdkIntegration:
             # Simulate "Auth Response Found"
             mock_creds = AuthCredential(
                 auth_type=AuthCredentialTypes.OAUTH2,
-                oauth2=OAuth2Auth(
-                    access_token="fake-access-token", id_token="fake-id-token"
-                ),
+                oauth2=OAuth2Auth(access_token="fake-access-token", id_token="fake-id-token"),
             )
             mock_ctx_second.get_auth_response.return_value = mock_creds
 
@@ -250,9 +242,7 @@ class TestToolboxAdkIntegration:
             except Exception as e:
                 mock_ctx_second.request_credential.assert_not_called()
                 err_msg = str(e).lower()
-                assert any(
-                    x in err_msg for x in ["401", "403", "unauthorized", "forbidden"]
-                ), f"Caught UNEXPECTED exception: {type(e).__name__}: {e}"
+                assert any(x in err_msg for x in ["401", "403", "unauthorized", "forbidden"]), f"Caught UNEXPECTED exception: {type(e).__name__}: {e}"
                 print(f"Caught expected server exception with fake token: {e}")
                 # Verify that the tool AT LEAST triggered save_credential before failing via core_tool inner HTTP req
                 mock_cred_service.save_credential.assert_called_once()
@@ -338,10 +328,7 @@ class TestToolboxAdkIntegration:
 
         try:
             # 4. Verify initialization
-            assert (
-                toolset.client._core_client_headers.get("Authorization")
-                == "Bearer fake-integration-token"
-            )
+            assert toolset.client._core_client_headers.get("Authorization") == "Bearer fake-integration-token"
         finally:
             await toolset.close()
 
@@ -364,9 +351,7 @@ class TestToolboxAdkIntegration:
         # Accessing private member for verification
         auth_header = toolset.client._core_client_headers.get("Authorization")
 
-        assert (
-            auth_header == creds_token
-        ), "CredentialStrategy MUST overwrite additional_headers['Authorization']"
+        assert auth_header == creds_token, "CredentialStrategy MUST overwrite additional_headers['Authorization']"
 
         await toolset.close()
 
@@ -458,9 +443,7 @@ class TestBasicE2E:
             tool = tools[0]
 
             ctx = MagicMock()
-            with pytest.raises(
-                TypeError, match="missing a required argument: 'num_rows'"
-            ):
+            with pytest.raises(TypeError, match="missing a required argument: 'num_rows'"):
                 await tool.run_async({}, ctx)
         finally:
             await toolset.close()
@@ -716,9 +699,7 @@ class TestOptionalParams:
             tool = tools[0]
             ctx = MagicMock()
 
-            response = await tool.run_async(
-                {"email": "twishabansal@google.com", "id": 3, "data": "row3"}, ctx
-            )
+            response = await tool.run_async({"email": "twishabansal@google.com", "id": 3, "data": "row3"}, ctx)
             assert '"email":"twishabansal@google.com"' in response
             assert "row3" in response
         finally:
@@ -772,9 +753,7 @@ class TestMapParams:
             )
 
             assert isinstance(response, str)
-            assert (
-                '"execution_context":{"env":"prod","id":1234,"user":1234.5}' in response
-            )
+            assert '"execution_context":{"env":"prod","id":1234,"user":1234.5}' in response
             assert '"user_scores":{"user1":100,"user2":200}' in response
             assert '"feature_flags":{"new_feature":true}' in response
         finally:
@@ -804,9 +783,7 @@ class TestMapParams:
             await toolset.close()
 
 
-@pytest.mark.skipif(
-    not os.environ.get("GEMINI_API_KEY"), reason="GEMINI_API_KEY not set"
-)
+@pytest.mark.skipif(not os.environ.get("GEMINI_API_KEY"), reason="GEMINI_API_KEY not set")
 @pytest.mark.asyncio
 class TestAgentIntegration:
     async def test_complex_params_e2e(self):
@@ -823,9 +800,7 @@ class TestAgentIntegration:
 
         # Object param (nested)
         object_param = MockParam("my_object", "object", "An object", True)
-        object_param.properties = {
-            "nested_str": MockParam("nested_str", "string", "A nested string", True)
-        }
+        object_param.properties = {"nested_str": MockParam("nested_str", "string", "A nested string", True)}
 
         class MyTool:
             def __init__(self):
@@ -866,11 +841,7 @@ class TestAgentIntegration:
             session_id="test_session",
             new_message=types.Content(
                 role="user",
-                parts=[
-                    types.Part(
-                        text="Use my_tool with array ['a'] and object {'nested_str': 'b'}"
-                    )
-                ],
+                parts=[types.Part(text="Use my_tool with array ['a'] and object {'nested_str': 'b'}")],
             ),
         ):
             event_count += 1

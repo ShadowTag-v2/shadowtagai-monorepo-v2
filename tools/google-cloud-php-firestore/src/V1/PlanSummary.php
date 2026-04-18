@@ -80,4 +80,3 @@ class PlanSummary extends \Google\Protobuf\Internal\Message
     }
 
 }
-

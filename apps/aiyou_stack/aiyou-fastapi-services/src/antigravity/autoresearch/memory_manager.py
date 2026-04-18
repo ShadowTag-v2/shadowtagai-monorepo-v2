@@ -56,7 +56,9 @@ class MemoryManager:
             logger.error(f"Failed to save memory: {e}")
 
     async def extract_rule_from_interaction(
-        self, user_feedback: str, _agent_action: str,
+        self,
+        user_feedback: str,
+        _agent_action: str,
     ) -> LearnedRule | None:
         """Use Gemini to infer a generalized rule from interaction.
         (Stubbed LLM call for now - GCA pattern)
@@ -82,8 +84,7 @@ class MemoryManager:
         return rule
 
     def retrieve_relevant_rules(self, context_tags: list[str]) -> list[LearnedRule]:
-        """Retrieve rules relevant to the current context.
-        """
+        """Retrieve rules relevant to the current context."""
         # Simple set intersection for now
         relevant = []
         for rule in self.rules:
@@ -95,8 +96,7 @@ class MemoryManager:
         return relevant
 
     def filter_suggestions(self, suggestions: list[str], context_tags: list[str]) -> list[str]:
-        """Filter agent suggestions against learned rules.
-        """
+        """Filter agent suggestions against learned rules."""
         rules = self.retrieve_relevant_rules(context_tags)
         filtered = []
 

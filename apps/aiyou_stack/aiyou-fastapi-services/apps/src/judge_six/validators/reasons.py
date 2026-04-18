@@ -11,8 +11,7 @@ from ..models import Action, ReasonsVerdict, VerdictStatus
 
 
 class ReasonsValidator:
-    """Validates the REASONS dimension of an action
-    """
+    """Validates the REASONS dimension of an action"""
 
     def validate(self, action: Action) -> ReasonsVerdict:
         # Heuristic validation

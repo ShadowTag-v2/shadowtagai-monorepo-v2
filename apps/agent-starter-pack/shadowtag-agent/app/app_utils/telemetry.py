@@ -20,7 +20,8 @@ def setup_telemetry() -> str | None:
     """Configure OpenTelemetry and GenAI telemetry with GCS upload."""
     bucket = os.environ.get("LOGS_BUCKET_NAME")
     capture_content = os.environ.get(
-        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT", "false",
+        "OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT",
+        "false",
     )
     if bucket and capture_content != "false":
         logging.info(
@@ -30,7 +31,8 @@ def setup_telemetry() -> str | None:
         os.environ.setdefault("OTEL_INSTRUMENTATION_GENAI_UPLOAD_FORMAT", "jsonl")
         os.environ.setdefault("OTEL_INSTRUMENTATION_GENAI_COMPLETION_HOOK", "upload")
         os.environ.setdefault(
-            "OTEL_SEMCONV_STABILITY_OPT_IN", "gen_ai_latest_experimental",
+            "OTEL_SEMCONV_STABILITY_OPT_IN",
+            "gen_ai_latest_experimental",
         )
         commit_sha = os.environ.get("COMMIT_SHA", "dev")
         os.environ.setdefault(

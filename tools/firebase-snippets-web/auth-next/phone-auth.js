@@ -121,4 +121,3 @@ function getRecaptchaResponse() {
   const recaptchaResponse = grecaptcha.getResponse(recaptchaWidgetId);
   // [END auth_get_recaptcha_response]
 }
-

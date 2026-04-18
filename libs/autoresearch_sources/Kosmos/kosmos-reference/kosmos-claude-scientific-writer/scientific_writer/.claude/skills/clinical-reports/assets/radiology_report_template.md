@@ -2,25 +2,25 @@
 
 ## Patient Information
 
-**Patient Name:** [Last, First]  
-**Medical Record Number:** [MRN]  
-**Date of Birth:** [MM/DD/YYYY]  
-**Age:** [years]  
-**Sex:** [M/F]  
-**Exam Date:** [MM/DD/YYYY]  
-**Exam Time:** [HH:MM]  
+**Patient Name:** [Last, First]
+**Medical Record Number:** [MRN]
+**Date of Birth:** [MM/DD/YYYY]
+**Age:** [years]
+**Sex:** [M/F]
+**Exam Date:** [MM/DD/YYYY]
+**Exam Time:** [HH:MM]
 **Accession Number:** [Number]
 
-**Referring Physician:** [Name]  
+**Referring Physician:** [Name]
 **Ordering Service:** [Service/Department]
 
 ---
 
 ## Examination
 
-**Exam Type:** [CT/MRI/X-Ray/Ultrasound/PET/Nuclear Medicine scan]  
-**Body Part:** [Anatomical region - e.g., Chest, Abdomen and Pelvis, Brain]  
-**Contrast:** [Yes - IV/Oral/Both | No]  
+**Exam Type:** [CT/MRI/X-Ray/Ultrasound/PET/Nuclear Medicine scan]
+**Body Part:** [Anatomical region - e.g., Chest, Abdomen and Pelvis, Brain]
+**Contrast:** [Yes - IV/Oral/Both | No]
 **Laterality:** [Right/Left/Bilateral if applicable]
 
 ---
@@ -35,7 +35,7 @@ Example: "Rule out pulmonary embolism in patient with acute dyspnea and chest pa
 
 ## Comparison
 
-**Prior Studies:**  
+**Prior Studies:**
 [Modality] of [body part] from [date]: [Available/Not available for comparison]
 
 Example: "CT chest without contrast from 6 months prior (01/15/2023) available for comparison"
@@ -50,8 +50,8 @@ OR: "No prior imaging available for comparison"
 
 **For CT:**
 ```
-Multidetector CT of the [body region] was performed [without/with] intravenous 
-contrast. [Volume] mL of [iodinated contrast agent name] was administered 
+Multidetector CT of the [body region] was performed [without/with] intravenous
+contrast. [Volume] mL of [iodinated contrast agent name] was administered
 intravenously. Images were acquired in the [arterial/venous/delayed] phase(s).
 Multiplanar reconstructions were performed.
 
@@ -77,7 +77,7 @@ Technical quality: [Adequate penetration and positioning / Limited by...]
 
 **For Ultrasound:**
 ```
-Real-time ultrasound examination of the [body part] was performed using 
+Real-time ultrasound examination of the [body part] was performed using
 [linear/curved] array transducer.
 Technical quality: [Adequate / Limited by bowel gas / Limited by body habitus]
 ```
@@ -193,9 +193,9 @@ Consider PET/CT for further characterization if clinically indicated.
 
 **Critical finding:** [Description]
 
-**Communicated to:** [Name and role of person notified]  
-**Date/Time:** [MM/DD/YYYY at HH:MM]  
-**Method:** [Phone call / Page / In person]  
+**Communicated to:** [Name and role of person notified]
+**Date/Time:** [MM/DD/YYYY at HH:MM]
+**Method:** [Phone call / Page / In person]
 **Read back verified:** [Yes]
 
 ---
@@ -203,34 +203,34 @@ Consider PET/CT for further characterization if clinically indicated.
 ## Structured Reporting (if applicable)
 
 ### For Lung Nodules (Lung-RADS):
-**Category:** [Lung-RADS 0/1/2/3/4A/4B/4X]  
+**Category:** [Lung-RADS 0/1/2/3/4A/4B/4X]
 **Recommendation:** [Per Lung-RADS guidelines]
 
 ### For Breast Imaging (BI-RADS):
-**Category:** [BI-RADS 0/1/2/3/4/5/6]  
+**Category:** [BI-RADS 0/1/2/3/4/5/6]
 **Recommendation:** [Per BI-RADS guidelines]
 
 ### For Liver Lesions (LI-RADS):
-**Category:** [LI-RADS 1/2/3/4/5/M/TIV]  
+**Category:** [LI-RADS 1/2/3/4/5/M/TIV]
 **Features:** [Arterial phase hyperenhancement, washout, capsule, size, growth]
 
 ### For Prostate (PI-RADS):
-**Score:** [PI-RADS 1/2/3/4/5]  
+**Score:** [PI-RADS 1/2/3/4/5]
 **Location:** [Peripheral zone / Transition zone]
 
 ---
 
 ## Signature
 
-**Interpreted by:**  
-[Radiologist name, MD]  
-[Board certification]  
+**Interpreted by:**
+[Radiologist name, MD]
+[Board certification]
 [NPI number if required]
 
 **Electronically signed:** [Date and time]
 
-**Dictated:** [Date and time]  
-**Transcribed:** [Date and time]  
+**Dictated:** [Date and time]
+**Transcribed:** [Date and time]
 **Signed:** [Date and time]
 
 ---
@@ -292,9 +292,9 @@ Consider PET/CT for further characterization if clinically indicated.
 
 ### Differential Diagnosis Language
 
-**Definite:** "Consistent with..."  
-**Probable:** "Most likely represents..." or "Favors..."  
-**Possible:** "Suggestive of..." or "Differential diagnosis includes..."  
+**Definite:** "Consistent with..."
+**Probable:** "Most likely represents..." or "Favors..."
+**Possible:** "Suggestive of..." or "Differential diagnosis includes..."
 **Uncertain:** "Cannot exclude..." or "Consider..."
 
 ### Recommendations
@@ -314,5 +314,3 @@ Consider PET/CT for further characterization if clinically indicated.
 **Biopsy/Intervention:**
 - "Consider biopsy for definitive diagnosis"
 - "Amenable to image-guided biopsy if clinically indicated"
-
-

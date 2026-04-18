@@ -9,10 +9,10 @@ OPTIONS (
 
 -- 2. Query the Agent's Work (Zero ETL)
 -- You can query the data seconds after the agent finishes
-SELECT 
-  task_id, 
-  invoice_total, 
-  vendor_name, 
+SELECT
+  task_id,
+  invoice_total,
+  vendor_name,
   processing_date
 FROM `agent_lakehouse.extracted_invoices`
 WHERE processing_date > '2025-01-01'

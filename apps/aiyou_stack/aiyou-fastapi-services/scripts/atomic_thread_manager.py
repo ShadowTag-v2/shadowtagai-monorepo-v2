@@ -79,7 +79,8 @@ class AtomicThreadManager:
         template = template.replace("status: ACTIVE | COMPLETE | BLOCKED", "status: ACTIVE")
         template = template.replace("parent: null | ATOMIC-XXX", f"parent: {parent or 'null'}")
         template = template.replace(
-            "insert_type: PROMPT | BUGFIX | OPTIMIZE | GENERAL", f"insert_type: {insert_type}",
+            "insert_type: PROMPT | BUGFIX | OPTIMIZE | GENERAL",
+            f"insert_type: {insert_type}",
         )
 
         if mission:
@@ -87,7 +88,8 @@ class AtomicThreadManager:
 
         if situation:
             template = template.replace(
-                "[One paragraph: What is broken/missing/needed? Be specific.]", situation,
+                "[One paragraph: What is broken/missing/needed? Be specific.]",
+                situation,
             )
 
         if insert_type != "GENERAL":
@@ -96,7 +98,8 @@ class AtomicThreadManager:
                 with open(insert_file) as f:
                     insert_content = f.read()
                 template = template.replace(
-                    "<!-- Include appropriate insert based on insert_type -->", insert_content,
+                    "<!-- Include appropriate insert based on insert_type -->",
+                    insert_content,
                 )
 
         thread_file = THREADS_DIR / f"{thread_id}.md"
@@ -184,7 +187,9 @@ def main():
     create_parser = subparsers.add_parser("create", help="Create new thread")
     create_parser.add_argument("--tier", choices=["FREE", "FLASH", "PRO"], default="FREE")
     create_parser.add_argument(
-        "--type", choices=["PROMPT", "BUGFIX", "OPTIMIZE", "GENERAL"], default="GENERAL",
+        "--type",
+        choices=["PROMPT", "BUGFIX", "OPTIMIZE", "GENERAL"],
+        default="GENERAL",
     )
     create_parser.add_argument("--parent", help="Parent thread ID")
     create_parser.add_argument("--mission", help="Brief mission statement")

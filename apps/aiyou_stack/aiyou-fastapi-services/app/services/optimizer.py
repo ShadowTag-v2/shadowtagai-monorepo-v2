@@ -18,16 +18,14 @@ from app.services.bottleneck_detector import BottleneckDetector
 
 
 class PerformanceOptimizer:
-    """Analyzes performance data and generates actionable optimization suggestions
-    """
+    """Analyzes performance data and generates actionable optimization suggestions"""
 
     def __init__(self, session: AsyncSession):
         self.session = session
         self.detector = BottleneckDetector(session)
 
     async def generate_all_suggestions(self) -> list[dict[str, Any]]:
-        """Generate all optimization suggestions based on current performance data
-        """
+        """Generate all optimization suggestions based on current performance data"""
         suggestions = []
 
         # Check for caching opportunities
@@ -53,8 +51,7 @@ class PerformanceOptimizer:
         return suggestions
 
     async def _suggest_caching(self) -> list[dict[str, Any]]:
-        """Identify endpoints that would benefit from caching
-        """
+        """Identify endpoints that would benefit from caching"""
         suggestions = []
         cutoff_time = datetime.utcnow() - timedelta(hours=1)
 
@@ -104,8 +101,7 @@ async def your_endpoint():
         return suggestions
 
     async def _suggest_database_optimizations(self) -> list[dict[str, Any]]:
-        """Suggest database-related optimizations
-        """
+        """Suggest database-related optimizations"""
         suggestions = []
 
         # Find N+1 query problems
@@ -199,8 +195,7 @@ users = await session.execute(stmt)
         return suggestions
 
     async def _suggest_async_improvements(self) -> list[dict[str, Any]]:
-        """Suggest where async/await can improve performance
-        """
+        """Suggest where async/await can improve performance"""
         suggestions = []
 
         # Find bottlenecks with I/O operations
@@ -257,8 +252,7 @@ results = await asyncio.gather(*[fetch_data(item) for item in items])
         return suggestions
 
     async def _suggest_code_optimizations(self) -> list[dict[str, Any]]:
-        """Suggest general code-level optimizations
-        """
+        """Suggest general code-level optimizations"""
         suggestions = []
 
         # Find CPU-intensive bottlenecks
@@ -328,8 +322,7 @@ results = await asyncio.gather(*[fetch_data(item) for item in items])
             print(f"Error storing suggestion: {e}")
 
     async def get_optimization_report(self) -> dict[str, Any]:
-        """Generate a comprehensive optimization report
-        """
+        """Generate a comprehensive optimization report"""
         suggestions = await self.generate_all_suggestions()
 
         # Group by impact

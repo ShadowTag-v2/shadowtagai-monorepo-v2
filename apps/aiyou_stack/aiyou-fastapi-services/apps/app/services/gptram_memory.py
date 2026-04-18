@@ -67,7 +67,10 @@ class GPTRAMMemory:
             logger.info("GPTRAM memory connection closed")
 
     async def store_interaction(
-        self, session_id: str, interaction: dict[str, Any], ttl: int | None = None,
+        self,
+        session_id: str,
+        interaction: dict[str, Any],
+        ttl: int | None = None,
     ) -> bool:
         """Store an interaction in temporal memory
 
@@ -97,7 +100,8 @@ class GPTRAMMemory:
 
             # Add to session index (sorted set by timestamp)
             await self.redis_client.zadd(
-                f"gptram:index:{session_id}", {key: datetime.utcnow().timestamp()},
+                f"gptram:index:{session_id}",
+                {key: datetime.utcnow().timestamp()},
             )
 
             logger.debug(f"Stored interaction for session {session_id}")
@@ -130,7 +134,11 @@ class GPTRAMMemory:
             # Get keys from session index (sorted by timestamp)
             min_score = min_timestamp.timestamp() if min_timestamp else 0
             keys = await self.redis_client.zrangebyscore(
-                f"gptram:index:{session_id}", min_score, "+inf", start=0, num=limit,
+                f"gptram:index:{session_id}",
+                min_score,
+                "+inf",
+                start=0,
+                num=limit,
             )
 
             # Retrieve interaction data

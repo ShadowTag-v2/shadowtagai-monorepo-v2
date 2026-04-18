@@ -6,8 +6,7 @@ LOCATION = "us-central1"
 
 
 def generate_grounded_content(prompt="How much is Google stock?"):
-    """Generates content grounded in Google Search.
-    """
+    """Generates content grounded in Google Search."""
     print(f"--- Generating content for: '{prompt}' ---")
 
     client = discoveryengine.GroundedGenerationServiceClient()

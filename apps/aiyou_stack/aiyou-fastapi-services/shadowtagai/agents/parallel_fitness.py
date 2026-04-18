@@ -31,7 +31,10 @@ class ParallelFitnessEvaluator:
     """
 
     def __init__(
-        self, num_workers: int = None, batch_size: int = 25, use_shared_memory: bool = True,
+        self,
+        num_workers: int = None,
+        batch_size: int = 25,
+        use_shared_memory: bool = True,
     ):
         """Initialize parallel evaluator.
 
@@ -47,7 +50,9 @@ class ParallelFitnessEvaluator:
         self._shared_mem = None
 
     def evaluate_batch(
-        self, positions: np.ndarray, fitness_fn: Callable[[np.ndarray], float],
+        self,
+        positions: np.ndarray,
+        fitness_fn: Callable[[np.ndarray], float],
     ) -> list[float]:
         """Evaluate fitness for a batch of positions in parallel.
 
@@ -72,7 +77,8 @@ class ParallelFitnessEvaluator:
         # Parallel evaluation
         with Pool(processes=self.num_workers) as pool:
             results = pool.starmap(
-                _evaluate_batch_worker, [(batch, fitness_fn) for batch in batches],
+                _evaluate_batch_worker,
+                [(batch, fitness_fn) for batch in batches],
             )
 
         # Flatten results
@@ -132,7 +138,10 @@ class ParallelFitnessEvaluator:
         }
 
     def evaluate_with_shared_memory(
-        self, positions: np.ndarray, agent_states: np.ndarray, fitness_fn_name: str,
+        self,
+        positions: np.ndarray,
+        agent_states: np.ndarray,
+        fitness_fn_name: str,
     ) -> list[float]:
         """Evaluate using shared memory for large state arrays.
 

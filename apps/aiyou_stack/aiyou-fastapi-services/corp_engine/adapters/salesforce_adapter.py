@@ -290,7 +290,8 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         """Get Salesforce schema information"""
         # Describe global to get all objects
         response = await self._sf_request(
-            "GET", f"/services/data/{self.sf_config.api_version}/sobjects",
+            "GET",
+            f"/services/data/{self.sf_config.api_version}/sobjects",
         )
 
         objects = {}
@@ -463,7 +464,8 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         # Poll for completion
         while True:
             status = await self._sf_request(
-                "GET", f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}",
+                "GET",
+                f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}",
             )
 
             if status and status.get("state") in ["JobComplete", "Failed", "Aborted"]:
@@ -474,7 +476,8 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
         # Get results
         if status.get("state") == "JobComplete":
             results = await self._sf_request(
-                "GET", f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}/results",
+                "GET",
+                f"/services/data/{self.sf_config.api_version}/jobs/query/{job_id}/results",
             )
             return results if isinstance(results, list) else []
 
@@ -485,7 +488,9 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
     # =========================================================================
 
     async def _batch_update(
-        self, object_type: str, records: list[dict[str, Any]],
+        self,
+        object_type: str,
+        records: list[dict[str, Any]],
     ) -> dict[str, int]:
         """Batch update records via composite API"""
         result = {"created": 0, "updated": 0, "failed": 0}
@@ -519,7 +524,9 @@ class SalesforceAdapter(BaseAdapter[SFRecord]):
                 )
 
         response = await self._sf_request(
-            "POST", f"/services/data/{self.sf_config.api_version}/composite", json=composite_request,
+            "POST",
+            f"/services/data/{self.sf_config.api_version}/composite",
+            json=composite_request,
         )
 
         if response and "compositeResponse" in response:

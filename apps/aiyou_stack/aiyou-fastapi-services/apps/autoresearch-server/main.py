@@ -130,8 +130,7 @@ def chat(r: Query):
 # ==============================================================================
 @app.post("/")
 async def agui_endpoint(request: Request):
-    """AG-UI Protocol Endpoint for CopilotKit integration.
-    """
+    """AG-UI Protocol Endpoint for CopilotKit integration."""
     try:
         body = await request.json()
     except:

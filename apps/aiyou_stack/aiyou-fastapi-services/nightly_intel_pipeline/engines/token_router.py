@@ -262,7 +262,10 @@ class LongShortRouter:
         return float(entropy)
 
     def _calculate_entropy_pure_python(
-        self, values: list[float], from_logits: bool, normalize: bool,
+        self,
+        values: list[float],
+        from_logits: bool,
+        normalize: bool,
     ) -> float:
         """Pure Python entropy calculation (no numpy)"""
         if from_logits:
@@ -370,7 +373,9 @@ class LongShortRouter:
         return decision
 
     def route_batch(
-        self, entropies: list[float], contexts: list[str] | None = None,
+        self,
+        entropies: list[float],
+        contexts: list[str] | None = None,
     ) -> list[RoutingDecision]:
         """Route a batch of tokens
 
@@ -392,7 +397,11 @@ class LongShortRouter:
         return decisions
 
     def _apply_context_rules(
-        self, tier: ModelTier, entropy: float, context: str, reasoning: str,
+        self,
+        tier: ModelTier,
+        entropy: float,
+        context: str,
+        reasoning: str,
     ) -> tuple[ModelTier, str]:
         """Apply context-specific routing rules"""
         # Critical contexts always use long model
@@ -439,12 +448,14 @@ class LongShortRouter:
         if current_short_ratio < target_short_ratio - 0.05:
             # Too many going to long model, increase threshold
             self._adaptive_threshold = min(
-                self.config["adaptive"]["max_threshold"], self._adaptive_threshold + adjustment_rate,
+                self.config["adaptive"]["max_threshold"],
+                self._adaptive_threshold + adjustment_rate,
             )
         elif current_short_ratio > target_short_ratio + 0.05:
             # Too many going to short model, decrease threshold
             self._adaptive_threshold = max(
-                self.config["adaptive"]["min_threshold"], self._adaptive_threshold - adjustment_rate,
+                self.config["adaptive"]["min_threshold"],
+                self._adaptive_threshold - adjustment_rate,
             )
 
         return self._adaptive_threshold
@@ -565,7 +576,10 @@ class TokenRouterPipeline:
         )
 
     async def infer(
-        self, prompt: str, context: str | None = None, estimate_entropy: bool = True,
+        self,
+        prompt: str,
+        context: str | None = None,
+        estimate_entropy: bool = True,
     ) -> dict:
         """Run inference with automatic routing
 
@@ -586,7 +600,9 @@ class TokenRouterPipeline:
 
         # Get routing decision
         decision = self.router.route(
-            entropy=entropy, context=context, num_tokens=len(prompt.split()),
+            entropy=entropy,
+            context=context,
+            num_tokens=len(prompt.split()),
         )
 
         # Execute on appropriate model
@@ -689,7 +705,9 @@ Generated: {datetime.now().isoformat()}
 
 # Convenience functions
 def route_token(
-    entropy: float, threshold: float = 0.3, context: str | None = None,
+    entropy: float,
+    threshold: float = 0.3,
+    context: str | None = None,
 ) -> RoutingDecision:
     """Quick token routing
 

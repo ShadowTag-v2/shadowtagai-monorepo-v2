@@ -34,7 +34,7 @@ tools:
     kind: mindsdb-sql
     source: mindsdb
     statement: |
-      SELECT * FROM {{.table_name}} 
+      SELECT * FROM {{.table_name}}
       WHERE {{.condition_column}} = ?
       LIMIT {{.limit}}
     description: |
@@ -54,7 +54,7 @@ tools:
     parameters:
       - name: value
         type: string
-        description: Value to match in the WHERE clause 
+        description: Value to match in the WHERE clause
 
 toolsets:
   mindsdb-tools:

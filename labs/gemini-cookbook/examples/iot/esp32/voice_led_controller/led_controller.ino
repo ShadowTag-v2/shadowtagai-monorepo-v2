@@ -74,7 +74,7 @@ void toggleLights(bool on) {
   } else {
     Serial.println("Turning off lights");
     pixels.clear();
-    pixels.show(); 
+    pixels.show();
   }
 }
 
@@ -124,7 +124,7 @@ void writeWavHeader(File& file, int sampleRate, int bitDepth, int channels) {
 
   file.write((const uint8_t*)"RIFF", 4);
   uint32_t fileSize = 36 + RECORD_DURATION * byteRate;
-  file.write((uint8_t*)&fileSize, 4); 
+  file.write((uint8_t*)&fileSize, 4);
   file.write((const uint8_t*)"WAVE", 4);
   file.write((const uint8_t*)"fmt ", 4);
   uint32_t subchunk1Size = 16;
@@ -286,7 +286,7 @@ void sendAudio() {
     uint8_t fileBuffer[BUFFER_SIZE];
 
     const int JSON_STRING_SIZE = 65536; // Allocate 64kb for the audio file request. Likely smaller.
-    char *jsonString = (char *)malloc(JSON_STRING_SIZE); 
+    char *jsonString = (char *)malloc(JSON_STRING_SIZE);
     if (jsonString == NULL) {
       Serial.println("Failed to allocate memory for JSON string");
       file.close();
@@ -304,7 +304,7 @@ void sendAudio() {
 
     file.close();
     SD.end(); // Close the SD connection after reading the file
-    
+
     int httpCode = http.POST(jsonString);
     free(jsonString);
     Serial.print(F("Http code: "));
@@ -352,14 +352,14 @@ void sendAudio() {
             } else {
               Serial.println("Args not found in function call.");
             }
-          } 
+          }
         } else {
           Serial.println("Function name not found.");
         }
       } else {
         Serial.println("Function call not found.");
       }
-      
+
     } else {
       Serial.println("HTTP POST request failed");
     }
@@ -413,16 +413,16 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   while (!Serial);
-  
+
   setupWifi();
 }
 
 void loop() {
   if (digitalRead(BUTTON_PIN) == LOW) {
     digitalWrite(LED_PIN, HIGH);
-    
+
     // This delay is to debounce the button and allow time to speak
-    delay(500); 
+    delay(500);
 
     recordAudio();
     digitalWrite(LED_PIN, LOW);

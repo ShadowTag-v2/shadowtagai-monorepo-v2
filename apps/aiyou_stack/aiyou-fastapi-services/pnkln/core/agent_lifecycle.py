@@ -201,7 +201,9 @@ class AgentLifecycle:
     # =========================================================================
 
     def regenerate(
-        self, agent_id: str, trigger: RegenerationTrigger = RegenerationTrigger.MANUAL,
+        self,
+        agent_id: str,
+        trigger: RegenerationTrigger = RegenerationTrigger.MANUAL,
     ) -> dict[str, Any]:
         """Regenerate an agent.
 

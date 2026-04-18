@@ -47,7 +47,7 @@ jobs:
               if (daysSinceUpdate >= DAYS_INACTIVE) {
                 // 检查是否有标签排除（可选）
                 const excludeLabels = ['keep-open', 'pinned'];
-                const hasExcludeLabel = issue.labels.some(label => 
+                const hasExcludeLabel = issue.labels.some(label =>
                   excludeLabels.includes(label.name)
                 );
 
@@ -72,4 +72,3 @@ jobs:
                 }
               }
             }
-

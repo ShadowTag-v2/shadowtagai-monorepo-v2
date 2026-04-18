@@ -41,7 +41,7 @@ filterParams:
     type: string
     description: The category of items to update.
 updatePayload: |
-    { 
+    {
       "$mul": { "price": {{json .discount_multiplier}} },
       "$set": { "on_sale": true }
     }

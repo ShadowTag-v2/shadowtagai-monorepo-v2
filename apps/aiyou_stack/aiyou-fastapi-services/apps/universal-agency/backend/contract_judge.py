@@ -43,8 +43,7 @@ class ContractJudge:
         ]
 
     def review_contract(self, request: ContractRequest) -> ContractReview:
-        """AI Agent Logic: "Would a human shark sign this?"
-        """
+        """AI Agent Logic: "Would a human shark sign this?" """
         red_flags = []
         leverage_points = []
         score = 85  # Start high, deduct for bad, add for good

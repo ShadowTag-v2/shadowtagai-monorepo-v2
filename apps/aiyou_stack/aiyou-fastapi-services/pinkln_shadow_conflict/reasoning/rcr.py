@@ -164,7 +164,9 @@ Refined solution:
         return refinement
 
     async def reflect(
-        self, solution: Any, context: dict[str, Any] | None = None,
+        self,
+        solution: Any,
+        context: dict[str, Any] | None = None,
     ) -> ReflectionResult:
         """Reflect on own solution.
 
@@ -186,7 +188,9 @@ Refined solution:
         )
 
     async def critique(
-        self, peer_solution: dict[str, Any], context: dict[str, Any] | None = None,
+        self,
+        peer_solution: dict[str, Any],
+        context: dict[str, Any] | None = None,
     ) -> CritiqueResult:
         """Critique a peer's solution.
 

@@ -141,4 +141,3 @@ class EncryptionConfig extends \Google\Protobuf\Internal\Message
     }
 
 }
-

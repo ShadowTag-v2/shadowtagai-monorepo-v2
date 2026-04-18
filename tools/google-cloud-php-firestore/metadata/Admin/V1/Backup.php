@@ -24,4 +24,3 @@ class Backup
         static::$is_initialized = true;
     }
 }
-

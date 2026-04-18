@@ -80,4 +80,3 @@ class FieldReference extends \Google\Protobuf\Internal\Message
     }
 
 }
-

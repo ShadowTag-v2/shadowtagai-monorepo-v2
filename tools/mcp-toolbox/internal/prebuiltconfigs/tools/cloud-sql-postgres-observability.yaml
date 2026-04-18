@@ -37,7 +37,7 @@ tools:
       7. Count streams: `count(avg_over_time({"__name__"="cloudsql.googleapis.com/database/cpu/utilization","monitored_resource"="cloudsql_database","project_id"="my-projectId","database_id"="my-projectId:my-instanceId"}[5m]))`
       8. Percentile with groupby on database_id: `quantile by ("database_id")(0.99,avg_over_time({"__name__"="cloudsql.googleapis.com/database/cpu/utilization","monitored_resource"="cloudsql_database","project_id"="my-projectId","database_id"="my-projectId:my-instanceId"}[5m]))`
 
-      Available Metrics List: metricname. description. monitored resource. labels. database_id is actually the instance id and the format is `project_id:instance_id`. 
+      Available Metrics List: metricname. description. monitored resource. labels. database_id is actually the instance id and the format is `project_id:instance_id`.
       1. `cloudsql.googleapis.com/database/postgresql/new_connection_count`: Count of new connections added to the postgres instance. `cloudsql_database`. `database`, `project_id`, `database_id`.
       2. `cloudsql.googleapis.com/database/postgresql/backends_in_wait`: Number of backends in wait in postgres instance. `cloudsql_database`. `backend_type`, `wait_event`, `wait_event_type`, `project_id`, `database_id`.
       3. `cloudsql.googleapis.com/database/postgresql/transaction_count`: Delta count of number of transactions. `cloudsql_database`. `database`, `transaction_type`, `project_id`, `database_id`.

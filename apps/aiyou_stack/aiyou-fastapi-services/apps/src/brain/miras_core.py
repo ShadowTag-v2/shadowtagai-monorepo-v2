@@ -14,7 +14,9 @@ class ShadowTagMemory(nn.Module):
         # Choice 1: Deep Memory Architecture (Two-layer MLP is crucial)
         # Deep Memory Architecture (Two-layer MLP is crucial)
         self.memory_mlp = nn.Sequential(
-            nn.Linear(d_model, d_model * 4), nn.SiLU(), nn.Linear(d_model * 4, d_model),
+            nn.Linear(d_model, d_model * 4),
+            nn.SiLU(),
+            nn.Linear(d_model * 4, d_model),
         )
 
         # Choice 2: Memory Learning Algorithm (Parametric step size & Momentum)

@@ -193,7 +193,9 @@ You make the final call."""
         return bool(initial_analysis.get("requires_debate"))
 
     async def conduct_debate(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
+        self,
+        content_analysis: dict[str, Any],
+        content_metadata: dict[str, Any],
     ) -> GeminiDebateResult:
         """Conduct 3-round panel debate using Gemini
 
@@ -228,14 +230,17 @@ You make the final call."""
 
             # Round 3: Judge (with both arguments)
             judge_decision = await self._judge_decision(
-                debate_context, prosecutor_arg.argument, defender_arg.argument,
+                debate_context,
+                prosecutor_arg.argument,
+                defender_arg.argument,
             )
             total_tokens += judge_decision["tokens_used"]
             total_cost += self._calculate_cost(judge_decision["tokens_used"], "input_output")
 
             # Calculate consensus score
             consensus_score = self._calculate_consensus(
-                prosecutor_arg.confidence, defender_arg.confidence,
+                prosecutor_arg.confidence,
+                defender_arg.confidence,
             )
 
             # Calculate total duration
@@ -337,7 +342,9 @@ Be thorough and cite specific evidence from the content analysis."""
             )
 
     async def _defender_argument(
-        self, debate_context: str, prosecutor_argument: str,
+        self,
+        debate_context: str,
+        prosecutor_argument: str,
     ) -> GeminiDebateArgument:
         """Generate defender's argument for content approval
 
@@ -398,7 +405,10 @@ Be balanced but advocate for creator freedom within policy."""
             )
 
     async def _judge_decision(
-        self, debate_context: str, prosecutor_argument: str, defender_argument: str,
+        self,
+        debate_context: str,
+        prosecutor_argument: str,
+        defender_argument: str,
     ) -> dict[str, Any]:
         """Judge synthesizes arguments and makes final decision
 
@@ -466,7 +476,9 @@ Decision criteria:
             }
 
     def _build_debate_context(
-        self, content_analysis: dict[str, Any], content_metadata: dict[str, Any],
+        self,
+        content_analysis: dict[str, Any],
+        content_metadata: dict[str, Any],
     ) -> str:
         """Build shared context for all debate rounds
 
@@ -498,7 +510,9 @@ DECISION FRAMEWORK:
 - Maintain brand safety for advertisers"""
 
     def _calculate_consensus(
-        self, prosecutor_confidence: float, defender_confidence: float,
+        self,
+        prosecutor_confidence: float,
+        defender_confidence: float,
     ) -> float:
         """Calculate consensus score between prosecutor and defender
 

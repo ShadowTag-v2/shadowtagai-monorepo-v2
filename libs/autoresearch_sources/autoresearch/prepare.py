@@ -98,9 +98,7 @@ def download_data(num_shards, download_workers=8):
         ids.append(VAL_SHARD)
 
     # Count what's already downloaded
-    existing = sum(
-        1 for i in ids if os.path.exists(os.path.join(DATA_DIR, f"shard_{i:05d}.parquet"))
-    )
+    existing = sum(1 for i in ids if os.path.exists(os.path.join(DATA_DIR, f"shard_{i:05d}.parquet")))
     if existing == len(ids):
         print(f"Data: all {len(ids)} shards already downloaded at {DATA_DIR}")
         return
@@ -123,9 +121,7 @@ def download_data(num_shards, download_workers=8):
 
 def list_parquet_files():
     """Return sorted list of parquet file paths in the data directory."""
-    files = sorted(
-        f for f in os.listdir(DATA_DIR) if f.endswith(".parquet") and not f.endswith(".tmp")
-    )
+    files = sorted(f for f in os.listdir(DATA_DIR) if f.endswith(".parquet") and not f.endswith(".tmp"))
     return [os.path.join(DATA_DIR, f) for f in files]
 
 
@@ -236,9 +232,7 @@ class Tokenizer:
 
     def encode(self, text, prepend=None, num_threads=8):
         if prepend is not None:
-            prepend_id = (
-                prepend if isinstance(prepend, int) else self.enc.encode_single_token(prepend)
-            )
+            prepend_id = prepend if isinstance(prepend, int) else self.enc.encode_single_token(prepend)
         if isinstance(text, str):
             ids = self.enc.encode_ordinary(text)
             if prepend is not None:
@@ -339,9 +333,7 @@ def make_dataloader(tokenizer, B, T, split, buffer_size=1000):
                     # No doc fits — crop shortest to fill remaining
                     shortest_idx = min(range(len(doc_buffer)), key=lambda i: len(doc_buffer[i]))
                     doc = doc_buffer.pop(shortest_idx)
-                    row_buffer[row_idx, pos : pos + remaining] = torch.tensor(
-                        doc[:remaining], dtype=torch.long
-                    )
+                    row_buffer[row_idx, pos : pos + remaining] = torch.tensor(doc[:remaining], dtype=torch.long)
                     pos += remaining
 
         cpu_inputs.copy_(row_buffer[:, :-1])
@@ -392,9 +384,7 @@ if __name__ == "__main__":
         default=10,
         help="Number of training shards to download (-1 = all). Val shard is always pinned.",
     )
-    parser.add_argument(
-        "--download-workers", type=int, default=8, help="Number of parallel download workers"
-    )
+    parser.add_argument("--download-workers", type=int, default=8, help="Number of parallel download workers")
     args = parser.parse_args()
 
     num_shards = MAX_SHARD if args.num_shards == -1 else args.num_shards

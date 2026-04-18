@@ -121,7 +121,10 @@ class SemanticMemory:
         return memory.id
 
     def retrieve(
-        self, query: str, top_k: int = 5, similarity_threshold: float = 0.5,
+        self,
+        query: str,
+        top_k: int = 5,
+        similarity_threshold: float = 0.5,
     ) -> list[dict[str, Any]]:
         """Retrieve memories semantically similar to query.
 

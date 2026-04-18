@@ -151,7 +151,10 @@ class KosmosWorldModel:
         self.status: str = "initialized"  # initialized, running, completed, failed
 
     def add_hypothesis(
-        self, text: str, confidence: float = 0.5, evidence: list[str] = None,
+        self,
+        text: str,
+        confidence: float = 0.5,
+        evidence: list[str] = None,
     ) -> Hypothesis:
         """Add a new research hypothesis to the world model.
 

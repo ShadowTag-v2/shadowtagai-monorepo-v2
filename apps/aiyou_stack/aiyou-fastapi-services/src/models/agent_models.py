@@ -45,7 +45,9 @@ class Agent(Base):
 
     # Relationships
     executions = relationship(
-        "AgentExecution", back_populates="agent", cascade="all, delete-orphan",
+        "AgentExecution",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     tools = relationship("AgentTool", back_populates="agent", cascade="all, delete-orphan")
 

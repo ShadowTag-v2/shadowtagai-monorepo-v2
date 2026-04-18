@@ -4696,7 +4696,7 @@ unreadable, but you can look at the details in your own console:
 Figure 5.14: Spring application console logs
 There are two lines at the end that will help you to know whether your ap -
 plication is online:
-Tomcat started on port 8080 (http) with context path 
+Tomcat started on port 8080 (http) with context path
 Started MyFirstSpringbootServerApplication in 1.615 s
 This means you are exposing your server in port 8080  of your computer ,
 which is the default Tomcat web server port. It is important to notice this
@@ -4913,7 +4913,7 @@ ties  endpoint, we could make it so that a curl  request would look like
 this:
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{"address": "the address st, 32", "rooms": 3}' 
+  -d '{"address": "the address st, 32", "rooms": 3}'
   http://homeit.com/api/v1/rental-properties
 Since the POST  request is used conventionally to create an object, our API
 service could send back a JSON payload as a response to our client, with
@@ -8164,7 +8164,7 @@ Let’s now create a class called RentalPropertyServiceJpaImpl ,
 which now injects the repository we have just created. The class declaration
 goes as follows:
 @Service
-public class RentalPropertyServiceJpaImpl implements 
+public class RentalPropertyServiceJpaImpl implements
     private RentalPropertyJpaRepository jpaRepository
     public RentalPropertyServiceJpaImpl
         (RentalPropertyJpaRepository jpaRepository) {
@@ -8239,7 +8239,7 @@ ArgsConstructor  to the class as well.
 And this is how the Address  class will be declared. Just add the
 @Builder  annotation to the record class:
 @Builder
-public record Address ( /* our attributes are here*/ 
+public record Address ( /* our attributes are here*/
 Finally , let’s add the same @Builder  annotation to our
 RentalPropertyDTO  record class:
 @Builder
@@ -8264,7 +8264,7 @@ public static RentalProperty toEntity(RentalPropertyD
         .build();
 }
 The second one will convert an entity object to a DTO object:
-public static RentalPropertyDTO toDTO(RentalProperty 
+public static RentalPropertyDTO toDTO(RentalProperty
     return RentalPropertyDTO.builder()
         .address(entity.getAddress().streetAddress())
         .name(entity.getName())
@@ -8363,7 +8363,7 @@ public interface RentalPropertyJpaRepository
     // Find all properties by landlord ID
     List<RentalProperty> findByLandlordID(
         UUID landlordID);
-    // Find properties by rent less than a specified 
+    // Find properties by rent less than a specified
     List<RentalProperty> findByRentLessThan(
         Double maxRent);
     // Find properties by landlord ID, city, and rent
@@ -8436,7 +8436,7 @@ public List<RentalPropertyDTO> search(
        String city, String country, String zipCode) {
     throw new UnsupportedOperationException(
         "This service implementation does not support
-        " Please, use another service implementation 
+        " Please, use another service implementation
 }
 We will create a service for implementing the search feature in a bit.
 Dealing with a very high volume of data
@@ -8667,7 +8667,7 @@ public class RentalPropertyServiceImpl
 }
 @Service
 @Qualifier("jpaRentalPropertyService")
-public class RentalPropertyServiceJpaImpl implements 
+public class RentalPropertyServiceJpaImpl implements
 // ... other service code
 }
 As you can see, now we have added two names or aliases for the conﬂicting
@@ -8863,7 +8863,7 @@ public Optional<RentalPropertyDTO> delete(UUID id) {
     try {
         transaction.begin();
         RentalProperty property =
-            entityManager.find(RentalProperty.class, 
+            entityManager.find(RentalProperty.class,
         dto = RentalPropertyConverter.toDTO(property)
         entityManager.remove(property);
         transaction.commit();
@@ -9829,7 +9829,7 @@ Here is how we create a user in this service implementation:
 @Override
 public Optional<UserDTO> createUser(String email,
     String password, String userType) {
-    if(!userRepository.findByEmail(email).isEmpty()) 
+    if(!userRepository.findByEmail(email).isEmpty())
         return Optional.empty(); // email already use
     }
     return Optional.of(userRepository.save(
@@ -10966,7 +10966,7 @@ public class SecurityConfig {
                             authentication.getName();
                         String credentials = authenti
                             .getCredentials().toStrin
-                        if (APP_ID.equals(principal) 
+                        if (APP_ID.equals(principal)
                             APP_SECRET.equals(
                                 credentials)){
                             Authentication auth = new
@@ -11293,7 +11293,7 @@ landlord can query the Rental Properties service later .
 The CreatedUser  record is fairly simple:
 private record CreatedUser(
     ExtractableResponse<Response> userIdResponse,
-    ExtractableResponse<Response> userTokenResponse) 
+    ExtractableResponse<Response> userTokenResponse)
     String userAccessToken() {
        return userTokenResponse.path("access_token");
     }
@@ -12067,7 +12067,7 @@ events.
 Run the following command in order to create a separate consumer in
 your terminal:
 cd ~/kafka/<your-kafka-extracted-directory>
-./bin/kafka-console-consumer.sh --bootstrap-server 
+./bin/kafka-console-consumer.sh --bootstrap-server
 This will ensure that every event published to proposal-topic  can
 be subscribed to in the console. It makes it easier for you to see the
 events being produced in real time.
@@ -12912,7 +12912,7 @@ Another way to set properties in your Spring application is to write them in
 your code. In our RentalProperties  service, we already did this. We
 wrote properties in our RentalPropertiesApplication  class like
 so:
-private static void virtualThreads(SpringApplication 
+private static void virtualThreads(SpringApplication
     app.setDefaultProperties(
         Map.of("spring.threads.virtual.enabled", "tru
 }
@@ -13582,7 +13582,7 @@ adding the @EnableDiscoveryClient  annotation:
 @EnableDiscoveryClient
 public class ApiGatewayApplication {
  public static void main(String[] args) {
-  SpringApplication.run(ApiGatewayApplication.class, 
+  SpringApplication.run(ApiGatewayApplication.class,
  }
 }
 Easy enough, right? Setting up the application  is quite simple. Now , we
@@ -14209,7 +14209,7 @@ service from excessive calls, which could lead to it completely breaking
 down and going ofﬂine.
 To use rate limiting in Resilience4j, use the following annotation as an
 example:
-@RateLimiter(name = "revokeTokenServiceRateLimiter", 
+@RateLimiter(name = "revokeTokenServiceRateLimiter",
 public boolean isTokenRevoked(String token) {
      // your service implementation goes here
 }

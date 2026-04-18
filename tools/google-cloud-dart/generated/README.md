@@ -45,11 +45,11 @@ generated code matches what the generator would actually produce.
 To prevent Librarian changes from causing workflow automation failures in this
 repository, the version of Librarian used by this automation is pinned.
 
-After making changes to Librarian you must 
+After making changes to Librarian you must
 [regenerate the Dart packages](#regenerating-the-dart-packages) and update
 the version of Librarian used in the automation:
 1. Find the head version of Librarian by running this command:
-   
+
    `GOPROXY=direct go list -m -u -f '{{.Version}}' github.com/googleapis/librarian@main`
 2. Modify the Librarian invocation in [../.github/workflows/dart_checks.yaml](../.github/workflows/dart_checks.yaml)
 

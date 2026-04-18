@@ -8,7 +8,10 @@ import numpy as np
 
 
 def odor_sim(
-    n: int = 128, src: list[tuple[int, int, float]] = None, k: float = 0.92, fx: float = 0.02,
+    n: int = 128,
+    src: list[tuple[int, int, float]] = None,
+    k: float = 0.92,
+    fx: float = 0.02,
 ) -> np.ndarray:
     """Simulate odor diffusion using a simple automata or PDE approximation.
     n: Grid size (n x n)

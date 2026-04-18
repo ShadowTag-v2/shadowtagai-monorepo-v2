@@ -11,8 +11,7 @@ class CurriculumTask:
 
 
 class CurriculumAgent:
-    """Generates violation scenarios to test the governance rules.
-    """
+    """Generates violation scenarios to test the governance rules."""
 
     def __init__(self, model_client=None):
         self.model_client = model_client
@@ -46,5 +45,4 @@ class CurriculumAgent:
         return task
 
     def feedback(self, task: CurriculumTask, executor_success: bool):
-        """Receives feedback on whether the Executor caught the violation.
-        """
+        """Receives feedback on whether the Executor caught the violation."""

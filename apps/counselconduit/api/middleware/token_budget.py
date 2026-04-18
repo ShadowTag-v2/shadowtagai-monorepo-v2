@@ -112,9 +112,7 @@ class TokenBudgetMiddleware(BaseHTTPMiddleware):
     - Circuit breaker for upstream LLM latency
     """
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         path = request.url.path
 
         # Only enforce on LLM-adjacent routes

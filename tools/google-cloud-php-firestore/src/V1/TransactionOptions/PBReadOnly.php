@@ -81,4 +81,3 @@ class PBReadOnly extends \Google\Protobuf\Internal\Message
     }
 
 }
-

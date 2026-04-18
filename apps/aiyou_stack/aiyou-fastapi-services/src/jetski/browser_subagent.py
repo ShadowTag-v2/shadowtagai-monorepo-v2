@@ -44,11 +44,13 @@ async def execute_tool(tool_name: str, request: Request) -> dict[str, Any]:
         logger.info("🚀 Booting Headless Chromium...")
         playwright_context = sync_playwright().start()
         browser = playwright_context.chromium.launch(
-            headless=True, args=["--no-sandbox", "--disable-blink-features=AutomationControlled"],
+            headless=True,
+            args=["--no-sandbox", "--disable-blink-features=AutomationControlled"],
         )
         # Persistent Context
         context = browser.new_context(
-            user_data_dir=PROFILE_DIR, viewport={"width": 1920, "height": 1080},
+            user_data_dir=PROFILE_DIR,
+            viewport={"width": 1920, "height": 1080},
         )
         stealth_sync(context)
         page = context.new_page()

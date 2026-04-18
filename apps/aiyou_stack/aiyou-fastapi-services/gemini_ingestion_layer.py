@@ -208,7 +208,10 @@ class TierClassifier:
             )
 
     def classify_item(
-        self, title: str, content: str, source_type: SourceType,
+        self,
+        title: str,
+        content: str,
+        source_type: SourceType,
     ) -> tuple[DataTier, float]:
         """Classify an intelligence item into a tier
 
@@ -399,7 +402,9 @@ class GeminiIngestionPipeline:
     """
 
     def __init__(
-        self, gemini_api_key: str | None = None, ethical_config: EthicalCrawlConfig | None = None,
+        self,
+        gemini_api_key: str | None = None,
+        ethical_config: EthicalCrawlConfig | None = None,
     ):
         """Initialize Gemini Ingestion Pipeline
 
@@ -418,13 +423,19 @@ class GeminiIngestionPipeline:
         # Initialize source ingesters
         self.ingesters: dict[SourceType, SourceIngester] = {
             SourceType.YOUTUBE: MockYouTubeIngester(
-                SourceType.YOUTUBE, self.ethical_config, self.robots_parser,
+                SourceType.YOUTUBE,
+                self.ethical_config,
+                self.robots_parser,
             ),
             SourceType.TWITTER: MockTwitterIngester(
-                SourceType.TWITTER, self.ethical_config, self.robots_parser,
+                SourceType.TWITTER,
+                self.ethical_config,
+                self.robots_parser,
             ),
             SourceType.NEWS: MockNewsIngester(
-                SourceType.NEWS, self.ethical_config, self.robots_parser,
+                SourceType.NEWS,
+                self.ethical_config,
+                self.robots_parser,
             ),
         }
 
@@ -433,7 +444,8 @@ class GeminiIngestionPipeline:
         logger.info("Gemini Ingestion Pipeline initialized")
 
     def run_ingestion_cycle(
-        self, source_configs: dict[SourceType, dict[str, Any]],
+        self,
+        source_configs: dict[SourceType, dict[str, Any]],
     ) -> IngestionMetrics:
         """Run a complete ingestion cycle across all configured sources
 
@@ -592,7 +604,9 @@ class GeminiIngestionPipeline:
         return briefing
 
     def export_metrics(
-        self, metrics: IngestionMetrics, output_path: str = "ingestion_metrics.json",
+        self,
+        metrics: IngestionMetrics,
+        output_path: str = "ingestion_metrics.json",
     ) -> str:
         """Export ingestion metrics"""
         with open(output_path, "w") as f:

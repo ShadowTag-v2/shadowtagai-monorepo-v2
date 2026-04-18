@@ -178,7 +178,7 @@ WITH FilterGraphNames AS (
   FROM UNNEST(IF(@graph_names = '' OR @graph_names IS NULL, ['%'], SPLIT(@graph_names, ','))) AS name
 )
 
-SELECT 
+SELECT
 	PG.PROPERTY_GRAPH_SCHEMA AS schema_name,
   PG.PROPERTY_GRAPH_NAME AS object_name,
   CASE
@@ -199,6 +199,6 @@ SELECT
       )
   END AS object_details
 FROM INFORMATION_SCHEMA.PROPERTY_GRAPHS PG
-WHERE 
+WHERE
 	EXISTS (SELECT 1 FROM FilterGraphNames WHERE FilterGraphNames.GRAPH_NAME = '%') OR PG.PROPERTY_GRAPH_NAME IN (SELECT GRAPH_NAME FROM FilterGraphNames)
 `

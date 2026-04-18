@@ -141,9 +141,7 @@ def atoms_from_authority(repo_id: str, authority: dict) -> list[dict]:
 def replace_authority_atoms(pg_dsn: str, repo_id: str, authority: dict):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM memory_atoms WHERE repo_id = %s AND source_type = 'authority'", (repo_id,)
-        )
+        cur.execute("DELETE FROM memory_atoms WHERE repo_id = %s AND source_type = 'authority'", (repo_id,))
     inserted = 0
     for atom in atoms_from_authority(repo_id, authority):
         insert_atom(

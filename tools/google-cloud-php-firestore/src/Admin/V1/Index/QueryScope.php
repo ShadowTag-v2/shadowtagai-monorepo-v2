@@ -71,4 +71,3 @@ class QueryScope
         return constant($const);
     }
 }
-

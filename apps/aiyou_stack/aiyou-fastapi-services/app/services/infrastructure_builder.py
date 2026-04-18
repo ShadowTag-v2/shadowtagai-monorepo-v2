@@ -17,7 +17,8 @@ class InfrastructureBuilderService:
     """Cloud infrastructure expert optimizing for scale and cost"""
 
     def design_architecture(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> InfrastructureDesignResponse:
         """Design cloud architecture based on requirements"""
         design_id = str(uuid.uuid4())
@@ -40,7 +41,8 @@ class InfrastructureBuilderService:
         )
 
     def _generate_components(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Generate infrastructure components based on workload type"""
         if request.workload_type == WorkloadType.WEB_APP:
@@ -54,7 +56,8 @@ class InfrastructureBuilderService:
         return self._default_components(request)
 
     def _web_app_components(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for web application workload"""
         provider = request.cloud_provider
@@ -83,7 +86,8 @@ class InfrastructureBuilderService:
 
         # Compute instances
         instance_count = max(
-            2 if request.high_availability else 1, request.expected_traffic // 1000,
+            2 if request.high_availability else 1,
+            request.expected_traffic // 1000,
         )
 
         compute_service = {
@@ -175,7 +179,8 @@ class InfrastructureBuilderService:
         return components
 
     def _microservices_components(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for microservices architecture"""
         provider = request.cloud_provider
@@ -241,7 +246,8 @@ class InfrastructureBuilderService:
         return components
 
     def _api_components(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for API workload"""
         provider = request.cloud_provider
@@ -275,7 +281,8 @@ class InfrastructureBuilderService:
         return components
 
     def _data_pipeline_components(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Components for data pipeline workload"""
         provider = request.cloud_provider
@@ -318,7 +325,8 @@ class InfrastructureBuilderService:
         return components
 
     def _default_components(
-        self, request: InfrastructureDesignRequest,
+        self,
+        request: InfrastructureDesignRequest,
     ) -> list[InfrastructureComponent]:
         """Default components for unknown workload types"""
         return self._web_app_components(request)
@@ -365,7 +373,9 @@ class InfrastructureBuilderService:
         return recommendations
 
     def _calculate_scalability_score(
-        self, request: InfrastructureDesignRequest, components: list[InfrastructureComponent],
+        self,
+        request: InfrastructureDesignRequest,
+        components: list[InfrastructureComponent],
     ) -> float:
         """Calculate scalability score (0-10)"""
         score = 5.0  # Base score
@@ -387,7 +397,9 @@ class InfrastructureBuilderService:
         return min(10.0, score)
 
     def _calculate_cost_efficiency(
-        self, request: InfrastructureDesignRequest, total_cost: float,
+        self,
+        request: InfrastructureDesignRequest,
+        total_cost: float,
     ) -> float:
         """Calculate cost efficiency score (0-10)"""
         # Calculate cost per expected RPS

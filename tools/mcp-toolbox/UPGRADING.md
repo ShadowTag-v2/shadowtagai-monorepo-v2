@@ -1,6 +1,6 @@
 # Upgrading to MCP Toolbox for Databases v1.0.0
 
-Welcome to the v1.0.0 release of the MCP Toolbox for Databases! 
+Welcome to the v1.0.0 release of the MCP Toolbox for Databases!
 
 This release stabilizes our core APIs and standardizes our protocol alignments.
 As part of this milestone, we have introduced several breaking changes and
@@ -26,13 +26,13 @@ The GitHub repository has been officially renamed to `googleapis/mcp-toolbox`. T
 3. Verify the update: `git remote -v`
 
 ### 2. Endpoint Transition: `/api` disabled by default
-The legacy `/api` endpoint for the native Toolbox protocol is now disabled by default. All official SDKs have been updated to use the `/mcp` endpoint, which aligns with the standard Model Context Protocol (MCP) specification. 
+The legacy `/api` endpoint for the native Toolbox protocol is now disabled by default. All official SDKs have been updated to use the `/mcp` endpoint, which aligns with the standard Model Context Protocol (MCP) specification.
 
 If you still require the legacy `/api` endpoint, you must explicitly activate it using a new command-line flag.
 
 * **Usage:** `./toolbox --enable-api`
 * **Migration:** You must update all custom implementations to use the `/mcp`
-  endpoint exclusively, as the `/api` endpoint is now deprecated. If your workflow  
+  endpoint exclusively, as the `/api` endpoint is now deprecated. If your workflow
   relied on a non-standard feature that is missing from the new implementation, please submit a
   feature request on our [GitHub Issues page](https://github.com/googleapis/mcp-toolbox/issues).
 

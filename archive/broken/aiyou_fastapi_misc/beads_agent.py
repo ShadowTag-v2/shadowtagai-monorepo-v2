@@ -24,7 +24,7 @@ class BeadsService:
     def get_context_chain(self) -> str:
         """Threads all beads into a single context string."""
         chain = "\n--- 📿 DURABLE MEMORY (BEADS) ---\n"
-        
+
         if os.path.exists(self.beads_dir):
             md_beads = sorted(glob.glob(os.path.join(self.beads_dir, "*.md")))
             for bead_path in md_beads:
@@ -44,7 +44,7 @@ class BeadsService:
                     pass
         else:
              chain += "[WARNING] Beads directory not found.\n"
-                
+
         chain += "------------------------------------\n"
         return chain
 
@@ -59,42 +59,42 @@ class BeadsAgent:
         """
         memory_context = self.memory.get_context_chain()
         state_dump = json.dumps(context_state) if context_state else "{}"
-        
+
         system_prompt = f\"\"\"
         {memory_context}
-        
+
         CURRENT STATE (AGUI): {state_dump}
         USER QUERY: {query}
-        
+
         OUTPUT INSTRUCTIONS:
         1. Analyze user intent.
         2. If UI is needed, generate A2UI JSON using 'PhotoUpload', 'GoogleMap', 'DynamicForm'.
         3. If just text, return text.
         4. Maintain strictly valid JSON format for UI.
         \"\"\"
-        
+
         try:
             response = self.client.models.generate_content(
-                model=MODEL_ID, 
+                model=MODEL_ID,
                 contents=system_prompt,
                 config=types.GenerateContentConfig(temperature=0.0)
             )
             response_text = response.text.strip()
-            
+
             # AGUI Protocol: Detect A2UI Payload
             if response_text.startswith('{') and '"component":' in response_text:
                 try:
                     ui_payload = json.loads(response_text)
                     return {
-                        "type": "a2ui_render", 
+                        "type": "a2ui_render",
                         "payload": ui_payload,
                         "shared_state": context_state # Echo state back or update it
                     }
                 except json.JSONDecodeError:
                     pass # Fallthrough to text
-            
+
             return {
-                "type": "text", 
+                "type": "text",
                 "payload": response_text,
                 "shared_state": context_state
             }

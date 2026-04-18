@@ -15,9 +15,9 @@
 */
 
 
-/**  If connecting to a live Firebase project (one that you set up in the 
+/**  If connecting to a live Firebase project (one that you set up in the
  * Firebase console) put your config vars into the `prod` field object here
- * and change the `initializeApp` value in `app.module.ts` to `environment.prod`. 
+ * and change the `initializeApp` value in `app.module.ts` to `environment.prod`.
  * Otherwise, leave untouched to enable connection to demo project and emulators.
 */
 

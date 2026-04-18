@@ -89,7 +89,8 @@ class AdtechEngine:
         # Duration detection
         duration = None
         duration_match = re.search(
-            r"<Duration>(\d{2}):(\d{2}):(\d{2})</Duration>", request.vast_xml,
+            r"<Duration>(\d{2}):(\d{2}):(\d{2})</Duration>",
+            request.vast_xml,
         )
         if duration_match:
             hours, mins, secs = map(int, duration_match.groups())
@@ -136,7 +137,8 @@ class AdtechEngine:
         )
 
     async def check_privacy_sandbox(
-        self, request: PrivacySandboxComplianceRequest,
+        self,
+        request: PrivacySandboxComplianceRequest,
     ) -> PrivacySandboxComplianceResponse:
         """Check Privacy Sandbox compliance"""
         logger.info(f"Checking Privacy Sandbox compliance at IQ {self.persona_iq}")

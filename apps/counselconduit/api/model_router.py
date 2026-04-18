@@ -29,6 +29,7 @@ logger = logging.getLogger("counselconduit.model_router")
 
 # ── Supported Models ──────────────────────────────────────────────────────
 
+
 class ModelProvider(str, Enum):
     GEMINI = "gemini"
     CLAUDE = "claude"
@@ -39,6 +40,7 @@ class ModelProvider(str, Enum):
 
 class ModelConfig(BaseModel):
     """Configuration for a single model."""
+
     provider: ModelProvider
     model_id: str
     display_name: str
@@ -118,8 +120,10 @@ AVAILABLE_MODELS: dict[str, ModelConfig] = {
 
 # ── Routing Logic ─────────────────────────────────────────────────────────
 
+
 class ModelRequest(BaseModel):
     """User's model selection or auto-route request."""
+
     preferred_model: str | None = None  # None = auto-route
     query_complexity: str = "medium"  # low, medium, high
     user_tier: str = "trial"
@@ -139,16 +143,10 @@ def select_model(req: ModelRequest) -> ModelConfig:
         model = AVAILABLE_MODELS[req.preferred_model]
         if req.preferred_model in req.firm_allowed_models:
             return model
-        logger.warning(
-            "Model %s not in firm policy, falling back", req.preferred_model
-        )
+        logger.warning("Model %s not in firm policy, falling back", req.preferred_model)
 
     # Auto-route by complexity + tier
-    tier_models = {
-        k: v
-        for k, v in AVAILABLE_MODELS.items()
-        if k in req.firm_allowed_models
-    }
+    tier_models = {k: v for k, v in AVAILABLE_MODELS.items() if k in req.firm_allowed_models}
 
     if not tier_models:
         # Absolute fallback
@@ -175,8 +173,4 @@ def get_models_for_tier(tier: str) -> list[ModelConfig]:
     tier_rank = {"trial": 0, "professional": 1, "enterprise": 2}
     user_rank = tier_rank.get(tier, 0)
 
-    return [
-        model
-        for model in AVAILABLE_MODELS.values()
-        if tier_rank.get(model.tier_minimum, 0) <= user_rank
-    ]
+    return [model for model in AVAILABLE_MODELS.values() if tier_rank.get(model.tier_minimum, 0) <= user_rank]

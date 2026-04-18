@@ -79,4 +79,3 @@ For each criterion, provide:
 - **Output only JSON** - no additional text
 - **Check every criterion** - include all in your updates array
 - **Be specific** in evidence - cite actual files, metrics, observations
-

@@ -27,7 +27,7 @@ export function SandTable() {
                 .sort(field("failureCount").descending())
                 .execute();
             */
-            
+
             // Natively reading the Swarm A2UI stream instead of mock aggregation
             const response = await fetch("http://127.0.0.1:8002/api/v1/agents/stream", {
                 method: "POST",
@@ -40,17 +40,17 @@ export function SandTable() {
             });
 
             if (!response.body) throw new Error("A2UI Matrix failed to return readable stream.");
-            
+
             const reader = response.body.getReader();
             const decoder = new TextDecoder("utf-8");
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                
+
                 const chunk = decoder.decode(value, { stream: true });
                 const lines = chunk.split('\n');
-                
+
                 for (const line of lines) {
                     if (line.startsWith('data: ')) {
                         try {
@@ -65,13 +65,13 @@ export function SandTable() {
                     }
                 }
             }
-            
+
         } catch (e) {
             console.error("Pipeline aggregation failure:", e);
             setLoading(false);
         }
     }
-    
+
     fetchComplianceTelemetry();
   }, []);
 
@@ -81,7 +81,7 @@ export function SandTable() {
          <span>[[ ATP 5-19 SHIELD : PIPELINE TELEMETRY ]]</span>
          <span className="text-[10px] bg-red-950 px-2 rounded">LIVE</span>
       </h3>
-      
+
       {loading ? (
           <div className="text-gray-500 text-xs font-mono animate-pulse">Aggregating Swarm Telemetry...</div>
       ) : (

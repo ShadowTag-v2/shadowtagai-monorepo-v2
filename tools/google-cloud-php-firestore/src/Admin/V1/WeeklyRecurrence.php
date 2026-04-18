@@ -69,4 +69,3 @@ class WeeklyRecurrence extends \Google\Protobuf\Internal\Message
     }
 
 }
-

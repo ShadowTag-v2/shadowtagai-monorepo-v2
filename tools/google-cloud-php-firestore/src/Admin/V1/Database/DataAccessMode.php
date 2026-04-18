@@ -58,4 +58,3 @@ class DataAccessMode
         return constant($const);
     }
 }
-

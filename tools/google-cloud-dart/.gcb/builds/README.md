@@ -1,6 +1,6 @@
 # Terraform Build Configuration
 
-This directory contains the Terraform configuration to provision the necessary Google Cloud resources to support the `google-cloud-dart` integration test builds. 
+This directory contains the Terraform configuration to provision the necessary Google Cloud resources to support the `google-cloud-dart` integration test builds.
 
 It assumes you have already created the remote state bucket as described in `../bootstrap/README.md`.
 

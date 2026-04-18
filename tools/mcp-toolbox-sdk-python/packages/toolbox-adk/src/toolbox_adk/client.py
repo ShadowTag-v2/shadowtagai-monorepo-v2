@@ -23,9 +23,7 @@ from google.oauth2 import id_token
 
 from .credentials import CredentialConfig, CredentialType
 
-USER_TOKEN_CONTEXT_VAR: ContextVar[str | None] = ContextVar(
-    "toolbox_user_token", default=None
-)
+USER_TOKEN_CONTEXT_VAR: ContextVar[str | None] = ContextVar("toolbox_user_token", default=None)
 
 
 class ToolboxClient:
@@ -49,9 +47,7 @@ class ToolboxClient:
             telemetry_enabled: Whether to enable OpenTelemetry tracing and metrics. (Default: False)
             **kwargs: Additional arguments passed to toolbox_core.ToolboxClient.
         """
-        self._core_client_headers: dict[
-            str, str | Callable[[], str] | Callable[[], Awaitable[str]]
-        ] = {}
+        self._core_client_headers: dict[str, str | Callable[[], str] | Callable[[], Awaitable[str]]] = {}
         self._credentials = credentials
 
         # Add static additional headers
@@ -83,9 +79,7 @@ class ToolboxClient:
                 raise ValueError("target_audience is required for WORKLOAD_IDENTITY")
 
             # Create an async capable token getter
-            self._core_client_headers["Authorization"] = self._create_adc_token_getter(
-                creds.target_audience
-            )
+            self._core_client_headers["Authorization"] = self._create_adc_token_getter(creds.target_audience)
 
         elif creds.type == CredentialType.MANUAL_TOKEN:
             if not creds.token:
@@ -98,9 +92,7 @@ class ToolboxClient:
                 raise ValueError("credentials object is required for MANUAL_CREDS")
 
             # Adapter for google-auth credentials object to callable
-            self._core_client_headers["Authorization"] = (
-                self._create_creds_token_getter(creds.credentials)
-            )
+            self._core_client_headers["Authorization"] = self._create_creds_token_getter(creds.credentials)
 
         elif creds.type == CredentialType.USER_IDENTITY:
             # For USER_IDENTITY (3LO), the *Tool* handles the interactive flow at runtime.
@@ -111,9 +103,7 @@ class ToolboxClient:
                     return ""
                 return f"Bearer {token}"
 
-            header_name = (
-                getattr(creds, "header_name", "Authorization") or "Authorization"
-            )
+            header_name = getattr(creds, "header_name", "Authorization") or "Authorization"
             self._core_client_headers[header_name] = get_user_token
 
         elif creds.type == CredentialType.API_KEY:
@@ -158,9 +148,7 @@ class ToolboxClient:
     def credential_config(self) -> CredentialConfig | None:
         return self._credentials
 
-    async def load_toolset(
-        self, toolset_name: str | None = None, **kwargs: Any
-    ) -> Any:
+    async def load_toolset(self, toolset_name: str | None = None, **kwargs: Any) -> Any:
         return await self._client.load_toolset(toolset_name, **kwargs)
 
     async def load_tool(self, tool_name: str, **kwargs: Any) -> Any:

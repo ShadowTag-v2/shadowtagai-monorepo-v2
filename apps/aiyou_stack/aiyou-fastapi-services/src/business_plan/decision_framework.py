@@ -160,7 +160,11 @@ class KillSwitches:
 
     @classmethod
     def evaluate(
-        cls, month: int, mrr: int, pilots: int = 0, ltv_cac: float = 0.0,
+        cls,
+        month: int,
+        mrr: int,
+        pilots: int = 0,
+        ltv_cac: float = 0.0,
     ) -> tuple[bool, str]:
         """Evaluate if kill-switch triggered
         Returns: (should_kill, reason)

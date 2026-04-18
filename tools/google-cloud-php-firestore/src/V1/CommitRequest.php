@@ -158,4 +158,3 @@ class CommitRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

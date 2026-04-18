@@ -182,4 +182,3 @@ sudo tlmgr install tcolorbox tikz pgf
 ---
 
 For complete documentation, see the "Professional Document Styling" section in SKILL.md
-

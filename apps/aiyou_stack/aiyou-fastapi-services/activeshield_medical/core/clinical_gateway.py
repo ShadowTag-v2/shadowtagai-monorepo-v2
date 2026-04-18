@@ -428,7 +428,8 @@ class ClinicalDecisionGateway:
         if ai_recommendation_id:
             # Check if recommendation was approved by gateway
             related_result = next(
-                (r for r in self._audit_log if r.decision_id == ai_recommendation_id), None,
+                (r for r in self._audit_log if r.decision_id == ai_recommendation_id),
+                None,
             )
             if related_result:
                 if not related_result.approved:

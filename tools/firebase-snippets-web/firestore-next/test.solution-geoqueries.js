@@ -48,9 +48,9 @@ async function queryHashes(done) {
   const promises = [];
   for (const b of bounds) {
     const q = query(
-      collection(db, 'cities'), 
-      orderBy('geohash'), 
-      startAt(b[0]), 
+      collection(db, 'cities'),
+      orderBy('geohash'),
+      startAt(b[0]),
       endAt(b[1]));
 
     promises.push(getDocs(q));
@@ -103,6 +103,3 @@ describe("firestore-solution-geoqueries", () => {
       });
     });
 });
-
-
-

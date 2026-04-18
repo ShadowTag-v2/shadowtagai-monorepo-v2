@@ -1,5 +1,4 @@
-"""Configuration management for Judge #6 governance system.
-"""
+"""Configuration management for Judge #6 governance system."""
 
 from dataclasses import dataclass, field
 

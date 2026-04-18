@@ -73,7 +73,10 @@ class PureJudge:
             severity_class=severity,
             risk_level=risk_level,
             rationale_summary=self._generate_rationale_summary(
-                probability, severity, risk_level, request,
+                probability,
+                severity,
+                risk_level,
+                request,
             ),
         )
 
@@ -82,7 +85,11 @@ class PureJudge:
 
         # 6. Recommendation
         recommendation = self._generate_recommendation(
-            risk_level, features, request.flags, prob_confidence, sev_confidence,
+            risk_level,
+            features,
+            request.flags,
+            prob_confidence,
+            sev_confidence,
         )
 
         # 7. Precedent links (placeholder - would query history)
@@ -90,7 +97,10 @@ class PureJudge:
 
         # 8. Natural language explanation
         explanation_nl = self._generate_explanation(
-            request, risk_matrix, features, numeric_overview,
+            request,
+            risk_matrix,
+            features,
+            numeric_overview,
         )
 
         # 9. Audit trail
@@ -254,7 +264,10 @@ class PureJudge:
         )
 
     def _generate_controls(
-        self, risk_level: RiskLevel, features: dict[str, Any], flags,
+        self,
+        risk_level: RiskLevel,
+        features: dict[str, Any],
+        flags,
     ) -> list[str]:
         """Generate required risk controls"""
         controls = []
@@ -297,7 +310,9 @@ class PureJudge:
         return controls
 
     def _generate_time_boundaries(
-        self, risk_level: RiskLevel, features: dict[str, Any],
+        self,
+        risk_level: RiskLevel,
+        features: dict[str, Any],
     ) -> TimeBoundary | None:
         """Generate time-based review boundaries"""
         if risk_level in (RiskLevel.LOW, RiskLevel.MODERATE):
@@ -400,7 +415,10 @@ class PureJudge:
         )
 
     def _create_audit_trail(
-        self, request: JudgeRequest, features: dict[str, Any], computation_time_ms: float,
+        self,
+        request: JudgeRequest,
+        features: dict[str, Any],
+        computation_time_ms: float,
     ) -> AuditTrail:
         """Create audit trail for decision"""
         # Hash input
@@ -412,5 +430,7 @@ class PureJudge:
         feature_vector_hash = hashlib.sha256(feature_json.encode()).hexdigest()
 
         return AuditTrail(
-            input_hash=input_hash, feature_vector_hash=feature_vector_hash, overrides=[],
+            input_hash=input_hash,
+            feature_vector_hash=feature_vector_hash,
+            overrides=[],
         )

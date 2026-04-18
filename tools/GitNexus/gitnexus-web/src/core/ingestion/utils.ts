@@ -48,4 +48,3 @@ export const getLanguageFromFilename = (filename: string): SupportedLanguages | 
   if (filename.endsWith('.dart')) return SupportedLanguages.Dart;
   return null;
 };
-

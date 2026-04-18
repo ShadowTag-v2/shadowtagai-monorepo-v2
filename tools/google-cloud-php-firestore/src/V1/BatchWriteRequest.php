@@ -149,4 +149,3 @@ class BatchWriteRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -89,7 +89,9 @@ class MCPBridge:
         print(f"   Max kernel bytes: {max_kernel_bytes}")
 
     async def atp_519_scan(
-        self, input_context: dict[str, Any], _target_bytes: int = 487,
+        self,
+        input_context: dict[str, Any],
+        _target_bytes: int = 487,
     ) -> ATP519Kernel:
         """ATP 5-19 Risk Assessment Scan.
 
@@ -170,7 +172,9 @@ class MCPBridge:
         return kernel
 
     async def judge_six_binary(
-        self, kernel: ATP519Kernel, max_latency_ms: int = 35,
+        self,
+        kernel: ATP519Kernel,
+        max_latency_ms: int = 35,
     ) -> Judge6Decision:
         """Judge#6 binary decision from compressed kernel.
 
@@ -268,7 +272,10 @@ class MCPBridge:
         ]
 
     def _calculate_risk_score(
-        self, threat_level: int, compliance: list[int], context: dict[str, Any],
+        self,
+        threat_level: int,
+        compliance: list[int],
+        context: dict[str, Any],
     ) -> int:
         """Calculate risk score (0-100)"""
         # Base risk from threat level

@@ -14,14 +14,14 @@ export default function Home() {
             <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
             <span className="text-xs font-mono text-ghost uppercase tracking-widest">System_Status: Sovereign</span>
           </div>
-          
+
           <h1 className="text-6xl md:text-8xl font-sans font-medium tracking-tighter leading-none bg-gradient-to-br from-white to-gray-500 bg-clip-text text-transparent">
             Sovereignty is the <br/>
             <span className="text-white">New Supremacy.</span>
           </h1>
-          
+
           <p className="text-lg md:text-xl text-ghost max-w-2xl mx-auto font-light leading-relaxed">
-            Stop renting ephemeral thoughts. <strong className="text-starlight font-medium">Judge6</strong> is a sovereign AI architecture extracted from your Cloud Workstation. 
+            Stop renting ephemeral thoughts. <strong className="text-starlight font-medium">Judge6</strong> is a sovereign AI architecture extracted from your Cloud Workstation.
             <span className="block mt-2 font-mono text-xs text-accent">Owned by You. Running on Your Metal.</span>
           </p>
 
@@ -75,7 +75,7 @@ export default function Home() {
 
       {/* COMPLIANCE SECTION */}
       <TeamSection />
-      
+
     </main>
   );
 }

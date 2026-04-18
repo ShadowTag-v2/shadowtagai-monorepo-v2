@@ -3,7 +3,7 @@ title: "postgres-database-overview"
 type: docs
 weight: 1
 description: >
-  The "postgres-database-overview" fetches the current state of the PostgreSQL server. 
+  The "postgres-database-overview" fetches the current state of the PostgreSQL server.
 ---
 
 ## About

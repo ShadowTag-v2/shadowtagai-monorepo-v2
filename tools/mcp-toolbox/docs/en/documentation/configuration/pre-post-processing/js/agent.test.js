@@ -45,7 +45,7 @@ describe(`${ORCH_NAME} Pre/Post Processing Agent`, () => {
       const msg = args.map(a => (typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a))).join(' ');
       capturedOutput.push(msg);
     };
-    
+
     console.error = (...args) => {
       const msg = args.map(a => (typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a))).join(' ');
       capturedErrors.push(msg);
@@ -66,8 +66,8 @@ describe(`${ORCH_NAME} Pre/Post Processing Agent`, () => {
     const actualErrors = capturedErrors.filter(err => !err.includes('Warning'));
 
     assert.equal(
-        actualErrors.length, 
-        0, 
+        actualErrors.length,
+        0,
         `Script produced stderr: ${actualErrors.join("\n")}`
     );
 

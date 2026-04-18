@@ -14,8 +14,8 @@ export const createImportMap = (): ImportMap => new Map();
 
 // Helper: Resolve import paths (relative and absolute/package-style)
 const resolveImportPath = (
-  currentFile: string, 
-  importPath: string, 
+  currentFile: string,
+  importPath: string,
   allFiles: Set<string>,
   allFileList: string[],
   resolveCache: Map<string, string | null>
@@ -26,7 +26,7 @@ const resolveImportPath = (
   // 1. Resolve '..' and '.' for relative imports
   const currentDir = currentFile.split('/').slice(0, -1);
   const parts = importPath.split('/');
-  
+
   for (const part of parts) {
     if (part === '.') continue;
     if (part === '..') {
@@ -35,12 +35,12 @@ const resolveImportPath = (
       currentDir.push(part);
     }
   }
-  
+
   const basePath = currentDir.join('/');
 
   // 2. Try extensions for all supported languages
   const extensions = [
-    '', 
+    '',
     // TypeScript/JavaScript
     '.tsx', '.ts', '.jsx', '.js', '/index.tsx', '/index.ts', '/index.jsx', '/index.js',
     // Python
@@ -58,7 +58,7 @@ const resolveImportPath = (
     // Ruby
     '.rb', '.rake',
   ];
-  
+
   if (importPath.startsWith('.')) {
     for (const ext of extensions) {
       const candidate = basePath + ext;
@@ -91,7 +91,7 @@ const resolveImportPath = (
       const suffixWithExt = suffix + ext;
       // Require path separator before match to avoid false positives like "View.java" matching "RootView.java"
       const suffixPattern = '/' + suffixWithExt;
-      const matchIdx = normalizedFileList.findIndex(filePath => 
+      const matchIdx = normalizedFileList.findIndex(filePath =>
         filePath.endsWith(suffixPattern) || filePath.toLowerCase().endsWith(suffixPattern.toLowerCase())
       );
       if (matchIdx !== -1) {
@@ -119,7 +119,7 @@ export const processImports = async (
   const parser = await loadParser();
   const resolveCache = new Map<string, string | null>();
   const allFileList = files.map(f => f.path);
-  
+
   // Track import statistics
   let totalImportsFound = 0;
   let totalImportsResolved = 0;
@@ -131,7 +131,7 @@ export const processImports = async (
     // 1. Check language support first
     const language = getLanguageFromFilename(file.path);
     if (!language) continue;
-    
+
     const queryStr = LANGUAGE_QUERIES[language];
     if (!queryStr) continue;
 
@@ -141,7 +141,7 @@ export const processImports = async (
     // 3. Get AST (Try Cache First)
     let tree = astCache.get(file.path);
     let wasReparsed = false;
-    
+
     if (!tree) {
       // Cache Miss: Re-parse (slower, but necessary if evicted)
       tree = parser.parse(file.content);
@@ -153,7 +153,7 @@ export const processImports = async (
     try {
       query = parser.getLanguage().query(queryStr);
       matches = query.matches(tree.rootNode);
-      
+
       // Removed verbose Java import logging
     } catch (queryError: any) {
       // Detailed debug logging for query failures
@@ -165,7 +165,7 @@ export const processImports = async (
       console.log('AST root type:', tree.rootNode?.type);
       console.log('AST has errors:', tree.rootNode?.hasError);
       console.groupEnd();
-      
+
       if (wasReparsed) tree.delete();
       continue;
     }
@@ -186,9 +186,9 @@ export const processImports = async (
         // Clean path (remove quotes)
         const rawImportPath = sourceNode.text.replace(/['"]/g, '');
         totalImportsFound++;
-        
+
         // Removed verbose per-import logging
-        
+
         // Resolve to actual file in the system
         const resolvedPath = resolveImportPath(
           file.path,
@@ -259,10 +259,8 @@ export const processImports = async (
       tree.delete();
     }
   }
-  
+
   if (import.meta.env.DEV) {
     console.log(`📊 Import processing complete: ${totalImportsResolved}/${totalImportsFound} imports resolved to graph edges`);
   }
 };
-
-

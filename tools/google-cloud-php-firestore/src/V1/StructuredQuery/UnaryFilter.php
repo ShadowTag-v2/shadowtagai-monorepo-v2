@@ -106,4 +106,3 @@ class UnaryFilter extends \Google\Protobuf\Internal\Message
     }
 
 }
-

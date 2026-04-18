@@ -134,4 +134,3 @@ class UpdateDatabaseRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

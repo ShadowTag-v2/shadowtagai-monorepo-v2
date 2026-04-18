@@ -79,7 +79,10 @@ class CCPACompliance:
         self.response_deadline_days = 45
 
     async def submit_request(
-        self, user_id: str, request_type: CCPARequestType, metadata: dict | None = None,
+        self,
+        user_id: str,
+        request_type: CCPARequestType,
+        metadata: dict | None = None,
     ) -> CCPARequest:
         """Submit a CCPA consumer request
 
@@ -115,7 +118,9 @@ class CCPACompliance:
         return request
 
     async def process_access_request(
-        self, request_id: str, export_format: DataExportFormat = DataExportFormat.JSON,
+        self,
+        request_id: str,
+        export_format: DataExportFormat = DataExportFormat.JSON,
     ) -> dict[str, Any]:
         """Process a data access request (right to know)
 
@@ -312,7 +317,8 @@ class CCPACompliance:
                 user_id,
             ),
             "preferences": await self.db.query(
-                "SELECT * FROM user_preferences WHERE user_id = ?", user_id,
+                "SELECT * FROM user_preferences WHERE user_id = ?",
+                user_id,
             ),
             "api_usage": await self.db.query(
                 "SELECT * FROM api_usage WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1000",

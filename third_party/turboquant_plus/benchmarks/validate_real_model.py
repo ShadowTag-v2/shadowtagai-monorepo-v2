@@ -81,8 +81,7 @@ def analyze_kv_distribution(kv: dict):
         print(f"    Value range:     [{flat.min():.4f}, {flat.max():.4f}]")
         print(f"    Mean:            {flat.mean():.6f}")
         print(f"    Std:             {flat.std():.6f}")
-        print(f"    Vector norms:    mean={norms.mean():.4f}, std={norms.std():.4f}, "
-              f"min={norms.min():.4f}, max={norms.max():.4f}")
+        print(f"    Vector norms:    mean={norms.mean():.4f}, std={norms.std():.4f}, min={norms.min():.4f}, max={norms.max():.4f}")
         print(f"    Kurtosis:        {_kurtosis(flat):.2f} (Gaussian=3.0)")
 
     return kv
@@ -100,8 +99,7 @@ def compress_and_compare(kv: dict):
 
     print(f"\n  Model KV shape: {k_cache.shape}")
     print(f"  Total vectors: {num_layers * num_heads * seq_len}")
-    print(f"  Original size: {k_cache.nbytes + v_cache.nbytes:,} bytes "
-          f"({(k_cache.nbytes + v_cache.nbytes) / 1024 / 1024:.1f} MB)")
+    print(f"  Original size: {k_cache.nbytes + v_cache.nbytes:,} bytes ({(k_cache.nbytes + v_cache.nbytes) / 1024 / 1024:.1f} MB)")
 
     print(f"\n  {'Config':<22} {'K MSE':>12} {'V MSE':>12} {'K Cosine':>10} {'Ratio':>8}")
     print(f"  {'─' * 66}")
@@ -222,8 +220,7 @@ def attention_quality_test(model, tokenizer, kv: dict):
                 attn_c = _softmax(scores_c)
                 out_comp = attn_c @ v_c
 
-                cos = np.dot(out_orig.ravel(), out_comp.ravel()) / (
-                    max(np.linalg.norm(out_orig) * np.linalg.norm(out_comp), 1e-10))
+                cos = np.dot(out_orig.ravel(), out_comp.ravel()) / (max(np.linalg.norm(out_orig) * np.linalg.norm(out_comp), 1e-10))
                 attn_cosines.append(cos)
 
         print(f"  {bits_label:<20} {np.mean(attn_cosines):>16.6f} {1 - min(attn_cosines):>16.6f}")
@@ -253,7 +250,7 @@ def niah_test(model, tokenizer):
             temperature=1.0,
         )
 
-    response = tokenizer.decode(outputs[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
+    response = tokenizer.decode(outputs[0][inputs["input_ids"].shape[1] :], skip_special_tokens=True)
     found = "TURBOQUANT42" in response
     print(f"  Response: {response[:100]}...")
     print(f"  Needle found: {'✅ YES' if found else '❌ NO'}")
@@ -294,10 +291,12 @@ def main():
     model, tokenizer = load_model()
 
     # Step 1: Extract real KV tensors
-    prompt = ("Explain the concept of vector quantization in the context of "
-              "large language model inference optimization, including KV cache "
-              "compression techniques and their impact on memory usage and "
-              "generation speed for long-context applications.")
+    prompt = (
+        "Explain the concept of vector quantization in the context of "
+        "large language model inference optimization, including KV cache "
+        "compression techniques and their impact on memory usage and "
+        "generation speed for long-context applications."
+    )
     print(f"\n  Extracting KV cache for prompt ({len(prompt)} chars)...")
     t0 = time.perf_counter()
     kv = extract_kv_cache(model, tokenizer, prompt)

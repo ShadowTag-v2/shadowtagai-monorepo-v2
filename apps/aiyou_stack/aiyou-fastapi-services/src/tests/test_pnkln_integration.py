@@ -1,5 +1,4 @@
-"""PNKLN Integration Tests - Test all four pillars working together
-"""
+"""PNKLN Integration Tests - Test all four pillars working together"""
 
 import os
 import sys
@@ -36,7 +35,9 @@ def full_stack():
     caller = GeminiFunctionCaller(model_name="gemini-2.0-flash-exp", tools=tools)
 
     judge = JudgeSix(
-        caller=caller, mission_statement="Perform mathematical operations", purpose_threshold=0.3,
+        caller=caller,
+        mission_statement="Perform mathematical operations",
+        purpose_threshold=0.3,
     )
 
     shadowtag = ShadowTag()

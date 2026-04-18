@@ -41,7 +41,9 @@ class CodeRefactorerService:
 
         # Parse the response
         refactor_response = self._parse_refactor_response(
-            response_text, request.code, request.language.value,
+            response_text,
+            request.code,
+            request.language.value,
         )
 
         return refactor_response
@@ -175,7 +177,9 @@ After: <complexity metrics>
         async for message in query(
             prompt=user_prompt,
             options=ClaudeAgentOptions(
-                system_prompt=system_prompt, model=self.model, max_tokens=self.max_tokens,
+                system_prompt=system_prompt,
+                model=self.model,
+                max_tokens=self.max_tokens,
             ),
         ):
             if hasattr(message, "text") and message.text:
@@ -184,7 +188,10 @@ After: <complexity metrics>
         return "".join(full_response)
 
     def _parse_refactor_response(
-        self, response: str, original_code: str, language: str,
+        self,
+        response: str,
+        original_code: str,
+        language: str,
     ) -> RefactorResponse:
         """Parse Claude's refactoring response into structured format."""
         # Extract refactored code

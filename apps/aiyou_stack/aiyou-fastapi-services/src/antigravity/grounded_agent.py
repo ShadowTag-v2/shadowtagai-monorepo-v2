@@ -11,7 +11,6 @@ class GroundingError(Exception):
     """Raised when safety blockations or lack of candidates occur during generation."""
 
 
-
 class GroundedAgent:
     """Agent implementation wrapper around genai.GenerativeModel.generate_content
     equipped with robust response.parts validation and integrated grounding metadata extraction.
@@ -30,7 +29,8 @@ class GroundedAgent:
         try:
             # Enable Google Search grounding dynamically via tools
             response = self.model.generate_content(
-                prompt, tools=[genai.Tool(google_search=genai.GoogleSearch())],
+                prompt,
+                tools=[genai.Tool(google_search=genai.GoogleSearch())],
             )
         except Exception as e:
             logger.error(f"Failed to reach Generative API: {e}")

@@ -15,7 +15,7 @@ manualLinkTarget: _blank
     <meta http-equiv="refresh" content="0;url=https://cloud.google.com/alloydb/docs/connect-ide-using-mcp-toolbox"/>
   </head>
   <body>
-    <p>Connecting to AlloyDB documentation... If you are not automatically redirected, please 
+    <p>Connecting to AlloyDB documentation... If you are not automatically redirected, please
        <a href="https://cloud.google.com/alloydb/docs/connect-ide-using-mcp-toolbox">click here to view the docs</a>.
     </p>
   </body>

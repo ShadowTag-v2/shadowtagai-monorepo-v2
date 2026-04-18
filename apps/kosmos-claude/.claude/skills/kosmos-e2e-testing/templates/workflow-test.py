@@ -29,7 +29,8 @@ async def test_workflow_basic(artifacts_dir: str) -> dict:
     print("Test: Basic workflow execution")
 
     workflow = ResearchWorkflow(
-        research_objective="What is machine learning?", artifacts_dir=artifacts_dir,
+        research_objective="What is machine learning?",
+        artifacts_dir=artifacts_dir,
     )
 
     start = time.time()
@@ -52,7 +53,8 @@ async def test_workflow_multi_cycle(artifacts_dir: str) -> dict:
     print("Test: Multi-cycle execution")
 
     workflow = ResearchWorkflow(
-        research_objective="Compare transformer architectures for NLP", artifacts_dir=artifacts_dir,
+        research_objective="Compare transformer architectures for NLP",
+        artifacts_dir=artifacts_dir,
     )
 
     start = time.time()
@@ -75,7 +77,8 @@ async def test_workflow_interruption(artifacts_dir: str) -> dict:
     print("Test: Interruption handling")
 
     workflow = ResearchWorkflow(
-        research_objective="Test interruption handling", artifacts_dir=artifacts_dir,
+        research_objective="Test interruption handling",
+        artifacts_dir=artifacts_dir,
     )
 
     # Start and cancel after short time
@@ -116,7 +119,8 @@ async def test_workflow_artifact_generation(artifacts_dir: str) -> dict:
     artifacts_path.mkdir(parents=True, exist_ok=True)
 
     workflow = ResearchWorkflow(
-        research_objective="What are recent advances in AI safety?", artifacts_dir=artifacts_dir,
+        research_objective="What are recent advances in AI safety?",
+        artifacts_dir=artifacts_dir,
     )
 
     start = time.time()

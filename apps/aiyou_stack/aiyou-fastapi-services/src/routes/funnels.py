@@ -100,7 +100,6 @@ async def delete_funnel(
         )
 
 
-
 @router.get("/{funnel_id}/analytics", response_model=FunnelAnalyticsResponse)
 async def analyze_funnel(
     funnel_id: UUID,

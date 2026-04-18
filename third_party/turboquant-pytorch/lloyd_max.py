@@ -44,7 +44,7 @@ def solve_lloyd_max(d: int, bits: int, use_exact: bool = False, max_iter: int = 
         centroids: sorted tensor of 2^bits optimal centroids
         boundaries: sorted tensor of 2^bits - 1 boundaries between centroids
     """
-    n_levels = 2 ** bits
+    n_levels = 2**bits
     pdf = (lambda x: beta_pdf(x, d)) if use_exact else (lambda x: gaussian_approx_pdf(x, d))
     sigma = 1.0 / math.sqrt(d)
 
@@ -110,14 +110,14 @@ class LloydMaxCodebook:
     def __init__(self, d: int, bits: int, use_exact: bool = False):
         self.d = d
         self.bits = bits
-        self.n_levels = 2 ** bits
+        self.n_levels = 2**bits
         self.centroids, self.boundaries = solve_lloyd_max(d, bits, use_exact)
         self.distortion = compute_expected_distortion(d, bits, self.centroids, self.boundaries, use_exact)
 
     def quantize(self, x: torch.Tensor) -> torch.Tensor:
         """Quantize values to nearest centroid indices."""
         # x: (...,) -> indices: (...,) as uint8/int16
-        diffs = (x.unsqueeze(-1) - self.centroids.to(x.device))  # (..., n_levels)
+        diffs = x.unsqueeze(-1) - self.centroids.to(x.device)  # (..., n_levels)
         return diffs.abs().argmin(dim=-1)
 
     def dequantize(self, indices: torch.Tensor) -> torch.Tensor:
@@ -125,7 +125,4 @@ class LloydMaxCodebook:
         return self.centroids.to(indices.device)[indices]
 
     def __repr__(self):
-        return (
-            f"LloydMaxCodebook(d={self.d}, bits={self.bits}, "
-            f"levels={self.n_levels}, distortion_per_coord={self.distortion:.6f})"
-        )
+        return f"LloydMaxCodebook(d={self.d}, bits={self.bits}, levels={self.n_levels}, distortion_per_coord={self.distortion:.6f})"

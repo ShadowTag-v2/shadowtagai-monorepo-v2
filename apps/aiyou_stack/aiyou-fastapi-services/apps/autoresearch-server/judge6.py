@@ -59,15 +59,18 @@ class Judge6Engine:
         return {"judge6_constitution": {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}}
 
     async def enforce(self, action: str, context: dict[str, Any]) -> JudgeDecision:
-        """The Core Loop: Validates action against CSRMC and Policy.
-        """
+        """The Core Loop: Validates action against CSRMC and Policy."""
         start_time = time.time()
 
         # 1. INSIDER THREAT SCAN (Pattern Matching)
         threat = self._scan_insider_threats(action, context)
         if threat:
             return self._finalize(
-                False, RiskLevel.CRITICAL, Verdict.BLOCKED, f"INSIDER THREAT: {threat}", start_time,
+                False,
+                RiskLevel.CRITICAL,
+                Verdict.BLOCKED,
+                f"INSIDER THREAT: {threat}",
+                start_time,
             )
 
         # 2. CSRMC DEFENSE GRID (Hard Security)
@@ -98,13 +101,22 @@ class Judge6Engine:
             # RKILL PROTOCOL
             self._trigger_shutdown("ROGUE_AGENT_DETECTED")
             return self._finalize(
-                False, RiskLevel.FATAL, Verdict.KILLED, "ROGUE AGENT TERMINATED", start_time,
+                False,
+                RiskLevel.FATAL,
+                Verdict.KILLED,
+                "ROGUE AGENT TERMINATED",
+                start_time,
             )
 
         return self._finalize(True, RiskLevel.LOW, Verdict.APPROVED, "CLEAN", start_time)
 
     def _finalize(
-        self, approved: bool, risk: RiskLevel, verdict: Verdict, reason: str, start_time: float,
+        self,
+        approved: bool,
+        risk: RiskLevel,
+        verdict: Verdict,
+        reason: str,
+        start_time: float,
     ) -> JudgeDecision:
         latency = (time.time() - start_time) * 1000
         # Telemetry would go here

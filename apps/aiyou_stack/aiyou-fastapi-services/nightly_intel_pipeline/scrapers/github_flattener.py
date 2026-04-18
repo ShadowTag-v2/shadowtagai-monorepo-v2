@@ -67,7 +67,9 @@ class GitHubFlattener:
                 logger.info("searching_repositories", topic=topic, query=query)
 
                 repositories = self.github.search_repositories(
-                    query=query, sort="stars", order="desc",
+                    query=query,
+                    sort="stars",
+                    order="desc",
                 )
 
                 count = 0
@@ -191,7 +193,8 @@ class GitHubFlattener:
                             # Download file content
                             try:
                                 file_content = content_file.decoded_content.decode(
-                                    "utf-8", errors="ignore",
+                                    "utf-8",
+                                    errors="ignore",
                                 )
                             except Exception as decode_error:
                                 logger.warning(
@@ -307,7 +310,9 @@ class GitHubFlattener:
                 query = f"topic:{topic} stars:>={self.config['min_stars']} pushed:>={cutoff_str}"
 
                 repositories = self.github.search_repositories(
-                    query=query, sort="updated", order="desc",
+                    query=query,
+                    sort="updated",
+                    order="desc",
                 )
 
                 count = 0

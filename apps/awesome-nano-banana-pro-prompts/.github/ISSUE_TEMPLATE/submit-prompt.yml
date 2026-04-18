@@ -45,7 +45,7 @@ body:
       placeholder: "This prompt generates..."
     validations:
       required: true
-  
+
   - type: dropdown
     id: need_reference_images
     attributes:

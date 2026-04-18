@@ -5,7 +5,7 @@ set -e
 PROJECT_ID="acquired-jet-478701-b3"
 REGION="us-central1"
 SERVICE_NAME="beads-agent-server"
-TARGET_MODEL="gemini-2.5-flash" 
+TARGET_MODEL="gemini-2.5-flash"
 
 echo ">>> 📿 INITIATING BEADS MEGA-IMPLANT (Active State + A2UI)..."
 
@@ -121,7 +121,7 @@ class BeadsService:
     def get_context_chain(self) -> str:
         """Threads all beads into a single context string."""
         chain = "\\n--- 📿 DURABLE MEMORY (BEADS) ---\\n"
-        
+
         # 1. Thread Markdown Beads (Static Context)
         md_beads = sorted(glob.glob(os.path.join(self.beads_dir, "*.md")))
         for bead_path in md_beads:
@@ -139,7 +139,7 @@ class BeadsService:
                     chain += f"[{bead_name}]\\n{json.dumps(data, indent=2)}\\n"
             except:
                 pass
-                
+
         chain += "------------------------------------\\n"
         return chain
 
@@ -170,14 +170,14 @@ class BeadsAgent:
         It updates the .beads/50_active_work.json file and commits it.
         """
         bead_path = ".beads/50_active_work.json"
-        
+
         # 1. Load the Active Bead
         if not os.path.exists(bead_path):
              return "Error: Active Bead not found."
 
         with open(bead_path, "r") as f:
             data = json.load(f)
-            
+
         # 2. Update the Issue
         found = False
         for issue in data.get("issues", []):
@@ -186,7 +186,7 @@ class BeadsAgent:
                 issue["resolution_summary"] = summary
                 found = True
                 break
-        
+
         if not found:
             return f"Error: Issue {issue_id} not found in Beads."
 
@@ -200,37 +200,37 @@ class BeadsAgent:
         # 4. Save and Commit (The "Memory Implant")
         with open(bead_path, "w") as f:
             json.dump(data, f, indent=2)
-            
+
         # 5. Git Commit (Simulated for Demo)
         # os.system(f'git add {bead_path} && git commit -m "agent: Landed plane for {issue_id}"')
-        
+
         return "Plane Landed. Memory Updated."
 
     def solve(self, query: str, env: TextEnvironment) -> Union[str, Dict]:
         memory_context = self.memory.get_context_chain()
-        doc_chunk = env.read(0) 
-        
+        doc_chunk = env.read(0)
+
         system_prompt = f\"\"\"
         {memory_context}
         GOAL: {query}
-        
+
         OUTPUT RULES:
         1. If you fixed an issue, Output "LAND_THE_PLANE: <issue_id> <summary>"
         2. If the user asks for data visualization, output A2UI JSON.
         3. If the user asks for action, use the 'Form' component.
         4. Otherwise, answer in text.
-        
+
         --- DOC CHUNK ---\\n{doc_chunk}\\n----------------
         \"\"\"
-        
+
         try:
             response = self.client.models.generate_content(
-                model=MODEL_ID, 
+                model=MODEL_ID,
                 contents=system_prompt,
                 config=types.GenerateContentConfig(temperature=0.0)
             )
             response_text = response.text.strip()
-            
+
             # Logic: Land the Plane
             if response_text.startswith("LAND_THE_PLANE"):
                 parts = response_text.split(" ", 2)
@@ -255,12 +255,12 @@ class BeadsAgent:
             if response_text.startswith('{') and '"component":' in response_text:
                 try:
                     return {
-                        "type": "a2ui_render", 
+                        "type": "a2ui_render",
                         "payload": json.loads(response_text)
                     }
                 except json.JSONDecodeError:
                     pass
-            
+
             return {"type": "text", "payload": response_text}
 
         except Exception as e:
@@ -290,7 +290,7 @@ def chat(request: QueryRequest):
     temp_path = "/tmp/request_doc.txt"
     with open(temp_path, "w") as f:
         f.write(request.doc_content)
-    
+
     env = TextEnvironment(temp_path)
     # Result is now a Dict (A2UI) or String
     answer = agent.solve(request.query, env)

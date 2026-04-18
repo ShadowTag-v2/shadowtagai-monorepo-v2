@@ -148,9 +148,7 @@ class TestInfrastructureOptimizer:
         )
 
         optimizer = InfrastructureOptimizer()
-        result = optimizer.project_savings(
-            100000, {"nvidia": 0.4, "aws": 0.45, "azure": 0.15}
-        )
+        result = optimizer.project_savings(100000, {"nvidia": 0.4, "aws": 0.45, "azure": 0.15})
         assert "gross_savings" in result
         assert "complexity_cost" in result
         assert "net_savings" in result

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START valid_filter_and_order_modular]
-import { query, where, orderBy } from "firebase/firestore";  
+import { query, where, orderBy } from "firebase/firestore";
 
 const q = query(citiesRef, where("population", ">", 100000), orderBy("population"));
 // [END valid_filter_and_order_modular]

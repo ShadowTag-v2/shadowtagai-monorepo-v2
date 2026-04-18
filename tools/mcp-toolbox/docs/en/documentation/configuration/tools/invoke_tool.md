@@ -51,7 +51,7 @@ For tools that require arguments, pass them as a JSON string. Ensure you escape 
 Assuming a tool named `mytool` taking `a` and `b`:
 
 ```bash
-toolbox --config tools.yaml invoke mytool '{"a": 10, "b": 20}' 
+toolbox --config tools.yaml invoke mytool '{"a": 10, "b": 20}'
 ```
 
 **Example: A tool that queries a database**

@@ -1,5 +1,4 @@
-"""FastAPI routes for privacy compliance (CCPA, GDPR)
-"""
+"""FastAPI routes for privacy compliance (CCPA, GDPR)"""
 
 from datetime import datetime, timedelta
 
@@ -85,8 +84,7 @@ async def get_ccpa_request_status(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """Get the status of a CCPA request
-    """
+    """Get the status of a CCPA request"""
     ccpa = CCPACompliance(db)
 
     try:
@@ -165,8 +163,7 @@ async def opt_out_of_sale(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """Opt-out of personal data sales (CCPA "Do Not Sell My Personal Information")
-    """
+    """Opt-out of personal data sales (CCPA "Do Not Sell My Personal Information")"""
     ccpa = CCPACompliance(db)
 
     # Create opt-out request
@@ -190,8 +187,7 @@ async def check_opt_out_status(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """Check if you have opted out of data sales
-    """
+    """Check if you have opted out of data sales"""
     ccpa = CCPACompliance(db)
 
     opted_out = await ccpa.check_opt_out_status(current_user["user_id"])
@@ -253,8 +249,7 @@ async def update_consent(
     current_user: dict = Depends(get_current_user),
     db=Depends(get_database),
 ):
-    """Update your consent for a specific purpose (GDPR)
-    """
+    """Update your consent for a specific purpose (GDPR)"""
     from app.compliance import GDPRCompliance
 
     gdpr = GDPRCompliance(db)

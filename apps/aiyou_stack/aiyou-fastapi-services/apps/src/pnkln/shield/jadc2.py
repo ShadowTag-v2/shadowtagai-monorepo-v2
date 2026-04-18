@@ -32,8 +32,7 @@ class JADC2System:
         self.kernel = DecisionKernel()
 
     def execute_ooda_loop(self, sensor_data: dict[str, Any]) -> OODAState:
-        """Executes a full OODA loop for a target.
-        """
+        """Executes a full OODA loop for a target."""
         start = time.time()
 
         # 1. OBSERVE (Ingest)

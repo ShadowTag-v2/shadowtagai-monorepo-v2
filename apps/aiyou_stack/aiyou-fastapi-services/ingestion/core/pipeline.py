@@ -98,7 +98,9 @@ class IngestionPipeline:
         return results
 
     async def fetch_all_sources(
-        self, queries: list[str] | None = None, since: datetime | None = None,
+        self,
+        queries: list[str] | None = None,
+        since: datetime | None = None,
     ) -> list[IngestedItem]:
         """Fetch items from all enabled sources concurrently.
 
@@ -120,7 +122,11 @@ class IngestionPipeline:
         for name, adapter in self.adapters.items():
             task = asyncio.create_task(
                 self._fetch_from_source(
-                    name, adapter, queries=queries, max_items=items_per_source, since=since,
+                    name,
+                    adapter,
+                    queries=queries,
+                    max_items=items_per_source,
+                    since=since,
                 ),
             )
             fetch_tasks.append(task)
@@ -153,7 +159,9 @@ class IngestionPipeline:
 
         try:
             async for item in adapter.fetch_items(
-                queries=queries, max_items=max_items, since=since,
+                queries=queries,
+                max_items=max_items,
+                since=since,
             ):
                 items.append(item)
                 items_fetched.labels(source=source_name).inc()
@@ -196,7 +204,9 @@ class IngestionPipeline:
         return scores
 
     def apply_quality_gates(
-        self, items: list[IngestedItem], scores: dict[str, TierScore],
+        self,
+        items: list[IngestedItem],
+        scores: dict[str, TierScore],
     ) -> tuple[list[IngestedItem], list[IngestedItem]]:
         """Apply quality gates to filter low-quality items.
 
@@ -231,7 +241,9 @@ class IngestionPipeline:
 
             if completeness < self.config.classification.completeness_min_pct:
                 logger.debug(
-                    "item_rejected_completeness", item_id=item.id, completeness=completeness,
+                    "item_rejected_completeness",
+                    item_id=item.id,
+                    completeness=completeness,
                 )
                 rejected.append(item)
                 continue

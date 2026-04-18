@@ -218,4 +218,3 @@ class ListFieldsRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

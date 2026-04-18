@@ -38,8 +38,7 @@ class GoogleCalendarController:
         event_hash: str,
         location: str | None = None,
     ) -> dict[str, Any]:
-        """Checks if the event ID exists. If yes, updates it. If no, creates it.
-        """
+        """Checks if the event ID exists. If yes, updates it. If no, creates it."""
         event_id = self._generate_idempotency_key(source_system, event_hash)
 
         if not self.service:
@@ -59,16 +58,10 @@ class GoogleCalendarController:
         try:
             try:
                 # Try inserting first (O(1) fast path)
-                event = (
-                    self.service.events().insert(calendarId=calendar_id, body=event_body).execute()
-                )
+                event = self.service.events().insert(calendarId=calendar_id, body=event_body).execute()
             except Exception:
                 # If it fails with 409 conflict, update instead
-                event = (
-                    self.service.events()
-                    .update(calendarId=calendar_id, eventId=event_id, body=event_body)
-                    .execute()
-                )
+                event = self.service.events().update(calendarId=calendar_id, eventId=event_id, body=event_body).execute()
 
             logger.info(f"Successfully upserted Google Calendar event: {event.get('id')}")
             return {"status": "success", "event_id": event.get("id"), "idempotent": True}

@@ -42,15 +42,11 @@ class TestToolboxClientAuth:
     @patch("toolbox_adk.client.id_token.fetch_id_token")
     @patch("toolbox_adk.client.google.auth.default")
     @patch("toolbox_adk.client.transport.requests.Request")
-    async def test_init_adc_success_fetch_id_token(
-        self, mock_req, mock_default, mock_fetch_id, mock_core_client
-    ):
+    async def test_init_adc_success_fetch_id_token(self, mock_req, mock_default, mock_fetch_id, mock_core_client):
         """Test ADC strategy where fetch_id_token succeeds."""
         mock_fetch_id.return_value = "id-token-123"
 
-        creds = CredentialStrategy.application_default_credentials(
-            target_audience="aud"
-        )
+        creds = CredentialStrategy.application_default_credentials(target_audience="aud")
         client = ToolboxClient(server_url="http://test", credentials=creds)
 
         _, kwargs = mock_core_client.call_args
@@ -68,9 +64,7 @@ class TestToolboxClientAuth:
     @patch("toolbox_adk.client.id_token.fetch_id_token")
     @patch("toolbox_adk.client.google.auth.default")
     @patch("toolbox_adk.client.transport.requests.Request")
-    async def test_init_adc_fallback_creds(
-        self, mock_req, mock_default, mock_fetch_id, mock_core_client
-    ):
+    async def test_init_adc_fallback_creds(self, mock_req, mock_default, mock_fetch_id, mock_core_client):
         """Test ADC strategy fallback to default() when fetch_id_token fails."""
         mock_fetch_id.side_effect = Exception("No metadata server")
 
@@ -80,9 +74,7 @@ class TestToolboxClientAuth:
         mock_creds.id_token = "fallback-id-token"
         mock_default.return_value = (mock_creds, "proj")
 
-        creds = CredentialStrategy.application_default_credentials(
-            target_audience="aud"
-        )
+        creds = CredentialStrategy.application_default_credentials(target_audience="aud")
         client = ToolboxClient(server_url="http://test", credentials=creds)
 
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
@@ -94,9 +86,7 @@ class TestToolboxClientAuth:
     @patch("toolbox_adk.client.id_token.fetch_id_token")
     @patch("toolbox_adk.client.google.auth.default")
     @patch("toolbox_adk.client.transport.requests.Request")
-    async def test_init_adc_fallback_creds_token(
-        self, mock_req, mock_default, mock_fetch_id, mock_core_client
-    ):
+    async def test_init_adc_fallback_creds_token(self, mock_req, mock_default, mock_fetch_id, mock_core_client):
         """Test ADC fallback when creds have .token but no .id_token."""
         mock_fetch_id.side_effect = Exception("No metadata server")
 
@@ -106,9 +96,7 @@ class TestToolboxClientAuth:
         mock_creds.token = "access-token-123"  # e.g. user creds
         mock_default.return_value = (mock_creds, "proj")
 
-        creds = CredentialStrategy.application_default_credentials(
-            target_audience="aud"
-        )
+        creds = CredentialStrategy.application_default_credentials(target_audience="aud")
         client = ToolboxClient(server_url="http://test", credentials=creds)
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         assert token_getter() == "Bearer access-token-123"
@@ -117,9 +105,7 @@ class TestToolboxClientAuth:
     @patch("toolbox_adk.client.id_token.fetch_id_token")
     @patch("toolbox_adk.client.google.auth.default")
     @patch("toolbox_adk.client.transport.requests.Request")
-    async def test_init_adc_fallback_no_token(
-        self, mock_req, mock_default, mock_fetch_id, mock_core_client
-    ):
+    async def test_init_adc_fallback_no_token(self, mock_req, mock_default, mock_fetch_id, mock_core_client):
         """Test ADC fallback when no token is available at all."""
         mock_fetch_id.side_effect = Exception("No metadata server")
 
@@ -131,9 +117,7 @@ class TestToolboxClientAuth:
 
         mock_default.return_value = (mock_creds, "proj")
 
-        creds = CredentialStrategy.application_default_credentials(
-            target_audience="aud"
-        )
+        creds = CredentialStrategy.application_default_credentials(target_audience="aud")
         client = ToolboxClient(server_url="http://test", credentials=creds)
         token_getter = mock_core_client.call_args[1]["client_headers"]["Authorization"]
         assert token_getter() == ""
@@ -198,9 +182,7 @@ class TestToolboxClientAuth:
             USER_TOKEN_CONTEXT_VAR.reset(token)
 
     async def test_validation_errors(self):
-        with pytest.raises(
-            ValueError, match="target_audience is required for WORKLOAD_IDENTITY"
-        ):
+        with pytest.raises(ValueError, match="target_audience is required for WORKLOAD_IDENTITY"):
             # WORKLOAD_IDENTITY requires audience
             creds = CredentialStrategy.workload_identity(target_audience="")
             ToolboxClient("http://test", credentials=creds)
@@ -213,13 +195,9 @@ class TestToolboxClientAuth:
             creds = CredentialStrategy.manual_credentials(credentials=None)
             ToolboxClient("http://test", credentials=creds)
 
-        with pytest.raises(
-            ValueError, match="api_key and header_name are required for API_KEY"
-        ):
+        with pytest.raises(ValueError, match="api_key and header_name are required for API_KEY"):
             # Manually constructing invalid config since factory enforces signature
-            creds = CredentialConfig(
-                type=CredentialType.API_KEY, api_key=None, header_name=None
-            )
+            creds = CredentialConfig(type=CredentialType.API_KEY, api_key=None, header_name=None)
             ToolboxClient("http://test", credentials=creds)
 
     @patch("toolbox_adk.client.toolbox_core.ToolboxClient")
@@ -228,9 +206,7 @@ class TestToolboxClientAuth:
         mock_instance = AsyncMock()
         mock_core_client_class.return_value = mock_instance
 
-        client = ToolboxClient(
-            "http://test", credentials=CredentialStrategy.toolbox_identity()
-        )
+        client = ToolboxClient("http://test", credentials=CredentialStrategy.toolbox_identity())
 
         # Test load_toolset
         await client.load_toolset("ts", foo="bar")
@@ -253,9 +229,7 @@ class TestToolboxClientAuth:
         ids=["telemetry_disabled", "telemetry_enabled"],
     )
     @patch("toolbox_adk.client.toolbox_core.ToolboxClient")
-    async def test_telemetry_enabled_forwarded(
-        self, mock_core_client, telemetry_enabled
-    ):
+    async def test_telemetry_enabled_forwarded(self, mock_core_client, telemetry_enabled):
         """Verifies that telemetry_enabled is forwarded to the core client."""
         ToolboxClient(server_url="http://test", telemetry_enabled=telemetry_enabled)
         call_kwargs = mock_core_client.call_args[1]

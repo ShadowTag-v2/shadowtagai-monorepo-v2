@@ -75,7 +75,7 @@ export const MermaidDiagram = ({ code }: MermaidDiagramProps) => {
         setSvg(sanitizedSvg);
         setError(null);
       } catch (err) {
-        // Silent catch for streaming: 
+        // Silent catch for streaming:
         // If render fails (common during partial streaming), we:
         // 1. Log to console for debugging
         // 2. Do NOT set error state (avoids flashing red box)

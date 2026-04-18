@@ -1,5 +1,4 @@
-"""Pydantic models for Gemini AI analysis.
-"""
+"""Pydantic models for Gemini AI analysis."""
 
 from datetime import datetime
 from enum import StrEnum
@@ -155,7 +154,8 @@ class ComparisonAnalysisResponse(BaseModel):
     system_b_name: str
 
     comparisons: dict[str, dict[str, str]] = Field(
-        ..., description="Aspect -> {system_a: value, system_b: value, analysis: text}",
+        ...,
+        description="Aspect -> {system_a: value, system_b: value, analysis: text}",
     )
 
     synergies: list[str] = Field(default_factory=list, description="Identified synergies")

@@ -517,10 +517,10 @@ export const registerTools = (server: McpServer): void => {
         .string()
         .optional()
         .describe(
-          `Optional. A comma-separated list of fields in Alert to use for sorting. 
-          The default sort direction is ascending. To specify descending order for a field, add a desc modifier. 
-          The following fields are supported: 'open_time', 'close_time'. 
-          For example, 'close_time desc, open_time' will return the alerts closed most recently, with ties broken in the order of older alerts listed first. 
+          `Optional. A comma-separated list of fields in Alert to use for sorting.
+          The default sort direction is ascending. To specify descending order for a field, add a desc modifier.
+          The following fields are supported: 'open_time', 'close_time'.
+          For example, 'close_time desc, open_time' will return the alerts closed most recently, with ties broken in the order of older alerts listed first.
           If the field is not set, the results are sorted by 'open_time desc'.`,
         ),
       pageSize: z
@@ -528,15 +528,15 @@ export const registerTools = (server: McpServer): void => {
         .optional()
         .default(20)
         .describe(
-          `Optional. The maximum number of results to return in a single response. 
-          Default is 20. If the value is negative, the request is rejected. 
+          `Optional. The maximum number of results to return in a single response.
+          Default is 20. If the value is negative, the request is rejected.
           The maximum value is 1000; values above 1000 will be coerced to 1000.`,
         ),
       pageToken: z
         .string()
         .optional()
         .describe(
-          `Optional. If non-empty, page_token must contain a value returned as the next_page_token in a previous response to request the next set of results. 
+          `Optional. If non-empty, page_token must contain a value returned as the next_page_token in a previous response to request the next set of results.
           The values of other method parameters should be identical to those in the previous call.`,
         ),
     },
@@ -644,7 +644,7 @@ export const registerTools = (server: McpServer): void => {
 
   server.tool(
     'list_group_stats',
-    `Use this tool ONLY to find and analyze recurring stack traces in your application. 
+    `Use this tool ONLY to find and analyze recurring stack traces in your application.
     It aggregates similar stack traces, providing statistics like the number of occurrences and the number of affected users.
 
     DO NOT use this tool for general error searches or to view individual error logs. For queries asking to "find errors", or "show me errors", you MUST use list_log_entries tool.

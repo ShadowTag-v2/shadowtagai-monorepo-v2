@@ -118,7 +118,9 @@ class CostOptimizerService:
         return breakdown
 
     def _identify_optimizations(
-        self, request: CostEstimateRequest, breakdown: list[CostBreakdown],
+        self,
+        request: CostEstimateRequest,
+        breakdown: list[CostBreakdown],
     ) -> list[str]:
         """Identify cost optimization opportunities"""
         optimizations = []

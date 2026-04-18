@@ -6,12 +6,8 @@ import time
 
 def run_build():
     env = os.environ.copy()
-    env["CARGO_HOME"] = (
-        "/Users/pikeymickey/.gemini/extensions/pickle-rick/sessions/2026-03-06-d83e665a/cargo_home"
-    )
-    env["RUSTUP_HOME"] = (
-        "/Users/pikeymickey/.gemini/extensions/pickle-rick/sessions/2026-03-06-d83e665a/rustup_home"
-    )
+    env["CARGO_HOME"] = "/Users/pikeymickey/.gemini/extensions/pickle-rick/sessions/2026-03-06-d83e665a/cargo_home"
+    env["RUSTUP_HOME"] = "/Users/pikeymickey/.gemini/extensions/pickle-rick/sessions/2026-03-06-d83e665a/rustup_home"
 
     biome_dir = "/Users/pikeymickey/.gemini/extensions/pickle-rick/sessions/2026-03-06-d83e665a/7a3f12e1/build/biome"
     target_bin = os.path.join(biome_dir, "target/release/biome")

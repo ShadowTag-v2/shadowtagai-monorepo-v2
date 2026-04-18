@@ -58,4 +58,3 @@ class Direction
         return constant($const);
     }
 }
-

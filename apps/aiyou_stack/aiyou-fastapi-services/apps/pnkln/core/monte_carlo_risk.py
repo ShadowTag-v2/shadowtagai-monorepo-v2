@@ -114,8 +114,7 @@ class ProbabilityModelA:
 
 
 class ProbabilityModelB:
-    """Model B: Likely events (1 per month - 1 per year).
-    """
+    """Model B: Likely events (1 per month - 1 per year)."""
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
         """Evaluate likely probability."""
@@ -126,7 +125,8 @@ class ProbabilityModelB:
         # Heuristic: moderate risk keywords
         likely_keywords = ["sometimes", "occasionally", "often"]
         score = sum(1 for kw in likely_keywords if kw in decision_text) / max(
-            len(likely_keywords), 1,
+            len(likely_keywords),
+            1,
         )
 
         severity = SeverityLevel.III_MODERATE if score > 0.3 else SeverityLevel.IV_NEGLIGIBLE
@@ -141,8 +141,7 @@ class ProbabilityModelB:
 
 
 class ProbabilityModelC:
-    """Model C: Occasional events (1 per 1-3 years).
-    """
+    """Model C: Occasional events (1 per 1-3 years)."""
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
         """Evaluate occasional probability."""
@@ -153,7 +152,8 @@ class ProbabilityModelC:
         # Heuristic: rare but possible
         occasional_keywords = ["maybe", "possible", "could"]
         score = sum(1 for kw in occasional_keywords if kw in decision_text) / max(
-            len(occasional_keywords), 1,
+            len(occasional_keywords),
+            1,
         )
 
         severity = SeverityLevel.III_MODERATE if score > 0.4 else SeverityLevel.IV_NEGLIGIBLE
@@ -168,8 +168,7 @@ class ProbabilityModelC:
 
 
 class ProbabilityModelD:
-    """Model D: Seldom events (1 per 10 years).
-    """
+    """Model D: Seldom events (1 per 10 years)."""
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
         """Evaluate seldom probability."""
@@ -180,7 +179,8 @@ class ProbabilityModelD:
         # Heuristic: very rare indicators
         seldom_keywords = ["rarely", "unlikely", "uncommon"]
         score = sum(1 for kw in seldom_keywords if kw in decision_text) / max(
-            len(seldom_keywords), 1,
+            len(seldom_keywords),
+            1,
         )
 
         severity = SeverityLevel.IV_NEGLIGIBLE
@@ -195,8 +195,7 @@ class ProbabilityModelD:
 
 
 class ProbabilityModelE:
-    """Model E: Unlikely events (<1 per 10 years).
-    """
+    """Model E: Unlikely events (<1 per 10 years)."""
 
     async def evaluate(self, decision: dict) -> ProbabilityModelResult:
         """Evaluate unlikely probability."""
@@ -207,7 +206,8 @@ class ProbabilityModelE:
         # Heuristic: extremely rare
         unlikely_keywords = ["never", "impossible", "won't happen"]
         score = sum(1 for kw in unlikely_keywords if kw in decision_text) / max(
-            len(unlikely_keywords), 1,
+            len(unlikely_keywords),
+            1,
         )
 
         severity = SeverityLevel.IV_NEGLIGIBLE

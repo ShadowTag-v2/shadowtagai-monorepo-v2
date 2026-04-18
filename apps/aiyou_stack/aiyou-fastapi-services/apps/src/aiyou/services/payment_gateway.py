@@ -1,5 +1,4 @@
-"""RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe.
-"""
+"""RevenueGate - Enforces "No Pay, No AI" doctrine via Stripe."""
 
 import os
 

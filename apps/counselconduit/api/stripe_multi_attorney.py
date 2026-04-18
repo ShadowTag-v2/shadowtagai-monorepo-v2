@@ -25,9 +25,7 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
 logger = logging.getLogger(__name__)
 
 
-async def create_firm_customer(
-    firm_name: str, admin_email: str, metadata: dict | None = None
-) -> dict:
+async def create_firm_customer(firm_name: str, admin_email: str, metadata: dict | None = None) -> dict:
     """Create a Stripe Customer representing the law firm."""
     customer = stripe.Customer.create(
         name=firm_name,

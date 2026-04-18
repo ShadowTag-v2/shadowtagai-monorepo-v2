@@ -74,7 +74,10 @@ def _init_ane() -> None:
 
 
 def _dispatch_ane(
-    text: str, prompt_description: str, examples: list[Any], file_name: str,
+    text: str,
+    prompt_description: str,
+    examples: list[Any],
+    file_name: str,
 ) -> list[dict[str, Any]]:
     """Route through Apple MLX Unified Memory pipeline natively.
     Replaces the stub proxies with actual physical Mac Silicon NPU/GPU execution frames.
@@ -280,8 +283,7 @@ def dispatch_compute(
     examples: list[Any],
     file_name: str,
 ) -> list[dict[str, Any]]:
-    """Wraps the computation with physical metrics tracking for the IDE testbed proxy.
-    """
+    """Wraps the computation with physical metrics tracking for the IDE testbed proxy."""
     start_time = time.time()
 
     result = _dispatch_compute_internal(text, prompt_description, examples, file_name)

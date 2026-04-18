@@ -43,7 +43,7 @@ where claude
 echo %PATH%
 ```
 
-The output should include `C:\Users\<username>\AppData\Roaming\npm`. 
+The output should include `C:\Users\<username>\AppData\Roaming\npm`.
 
 **To add npm to PATH (if missing):**
 1. Press `Win + X` and select "System"
@@ -379,4 +379,3 @@ Found a solution to a problem not listed here? Please contribute!
 3. Submit a pull request
 
 Your contribution helps the community! 🙏
-

@@ -71,7 +71,8 @@ class RateLimiter:
         self.requests_per_second = requests_per_minute / 60.0
 
         self.bucket = TokenBucket(
-            capacity=requests_per_minute, refill_rate=self.requests_per_second,
+            capacity=requests_per_minute,
+            refill_rate=self.requests_per_second,
         )
 
         # Statistics

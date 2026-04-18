@@ -867,4 +867,3 @@ Metadata extraction workflow:
 - `validate_citations.py`: Verify accuracy
 
 **Always validate** extracted metadata before final submission!
-

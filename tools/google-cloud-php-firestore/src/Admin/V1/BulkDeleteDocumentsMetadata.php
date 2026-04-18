@@ -370,4 +370,3 @@ class BulkDeleteDocumentsMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

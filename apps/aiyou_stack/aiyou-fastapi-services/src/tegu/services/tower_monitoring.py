@@ -46,7 +46,9 @@ class TowerMonitoringService:
         """
         # Initialize AiUCRM for compliance validation
         self.aiucrm = AiUCRM(
-            legal_frameworks=["FAA", "FCC"], risk_threshold=0.3, audit_enabled=True,
+            legal_frameworks=["FAA", "FCC"],
+            risk_threshold=0.3,
+            audit_enabled=True,
         )
 
         # Initialize Tegu YOLOv3 model (lazy loading)
@@ -90,7 +92,10 @@ class TowerMonitoringService:
             raise
 
     async def inspect_tower(
-        self, tower_id: str, image_path: str, metadata: dict[str, Any] | None = None,
+        self,
+        tower_id: str,
+        image_path: str,
+        metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Perform visual inspection of tower equipment
 
@@ -243,7 +248,9 @@ class TowerMonitoringService:
         }
 
     async def batch_inspect_towers(
-        self, tower_images: list[dict[str, str]], max_concurrent: int = 5,
+        self,
+        tower_images: list[dict[str, str]],
+        max_concurrent: int = 5,
     ) -> list[dict[str, Any]]:
         """Batch inspect multiple towers
 

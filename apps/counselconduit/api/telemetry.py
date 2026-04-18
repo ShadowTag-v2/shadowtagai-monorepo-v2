@@ -46,11 +46,13 @@ def setup_telemetry(app: object) -> None:
         sampling_rate = float(os.getenv("OTEL_TRACE_SAMPLING_RATE", "0.1"))
         sampler = TraceIdRatioBased(sampling_rate)
 
-        resource = Resource.create({
-            "service.name": service_name,
-            "service.version": "3.1.0",
-            "deployment.environment": os.getenv("ENVIRONMENT", "production"),
-        })
+        resource = Resource.create(
+            {
+                "service.name": service_name,
+                "service.version": "3.1.0",
+                "deployment.environment": os.getenv("ENVIRONMENT", "production"),
+            }
+        )
 
         provider = TracerProvider(resource=resource, sampler=sampler)
         exporter = OTLPSpanExporter(endpoint=otel_endpoint, insecure=False)

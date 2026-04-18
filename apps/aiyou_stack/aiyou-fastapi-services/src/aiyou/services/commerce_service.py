@@ -14,7 +14,10 @@ class CommerceService:
 
     @staticmethod
     def list_products(
-        db: Session, category: str | None = None, skip: int = 0, limit: int = 50,
+        db: Session,
+        category: str | None = None,
+        skip: int = 0,
+        limit: int = 50,
     ) -> list[dict]:
         """List active products with optional category filtering."""
         query = db.query(Product).filter(Product.is_active)

@@ -6,7 +6,7 @@ description: "Native Headless Web Automation. Provides a safe harness for browse
 # MCP: Puppeteer Server (Native Skill)
 
 ## Goal
-Automate visual regression tests, login flows, and PDF generation without exposing the external browser logic. 
+Automate visual regression tests, login flows, and PDF generation without exposing the external browser logic.
 
 ## Rules of Engagement (COR.30 Compliance)
 1. **Patch Equivalence Testing:** If validating a frontend UI PR change, invoke this skill to execute a local browser render comparison.

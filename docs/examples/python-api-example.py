@@ -384,9 +384,7 @@ def example12_complete_workflow():
     }
 
     print("\n--- Phase 1: Monetization Strategy ---\n")
-    stream_response(
-        "http://localhost:8000/analyze/monetization", {"business_context": business_context}
-    )
+    stream_response("http://localhost:8000/analyze/monetization", {"business_context": business_context})
 
     print("\n--- Phase 2: Opportunity Assessment ---\n")
     stream_response(

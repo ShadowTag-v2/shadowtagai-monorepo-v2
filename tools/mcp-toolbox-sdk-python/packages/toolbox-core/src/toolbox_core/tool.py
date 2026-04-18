@@ -51,15 +51,9 @@ class ToolboxTool:
         params: Sequence[ParameterSchema],
         required_authn_params: Mapping[str, list[str]],
         required_authz_tokens: Sequence[str],
-        auth_service_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ],
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ],
-        client_headers: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]] | str
-        ],
+        auth_service_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]],
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any],
+        client_headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str],
     ):
         """
         Initializes a callable that will trigger the tool invocation through the
@@ -90,20 +84,14 @@ class ToolboxTool:
         # default to prevent the "non-default argument follows default
         # argument" error when creating the function signature.
         inspect_type_params = [param.to_param() for param in self.__params]
-        params_no_default = [
-            p for p in inspect_type_params if p.default is Parameter.empty
-        ]
-        params_with_default = [
-            p for p in inspect_type_params if p.default is not Parameter.empty
-        ]
+        params_no_default = [p for p in inspect_type_params if p.default is Parameter.empty]
+        params_with_default = [p for p in inspect_type_params if p.default is not Parameter.empty]
         inspect_type_params = params_no_default + params_with_default
 
         # the following properties are set to help anyone that might inspect it determine usage
         self.__name__ = name
         self.__doc__ = create_func_docstring(self.__description, self.__params)
-        self.__signature__ = Signature(
-            parameters=inspect_type_params, return_annotation=str
-        )
+        self.__signature__ = Signature(parameters=inspect_type_params, return_annotation=str)
 
         self.__annotations__ = {p.name: p.annotation for p in inspect_type_params}
         self.__qualname__ = f"{self.__class__.__qualname__}.{self.__name__}"
@@ -193,15 +181,9 @@ class ToolboxTool:
             name=check(name, self.__name__),
             description=check(description, self.__description),
             params=check(params, self.__params),
-            required_authn_params=check(
-                required_authn_params, self.__required_authn_params
-            ),
-            required_authz_tokens=check(
-                required_authz_tokens, self.__required_authz_tokens
-            ),
-            auth_service_token_getters=check(
-                auth_service_token_getters, self.__auth_service_token_getters
-            ),
+            required_authn_params=check(required_authn_params, self.__required_authn_params),
+            required_authz_tokens=check(required_authz_tokens, self.__required_authz_tokens),
+            auth_service_token_getters=check(auth_service_token_getters, self.__auth_service_token_getters),
             bound_params=check(bound_params, self.__bound_parameters),
             client_headers=check(client_headers, self.__client_headers),
         )
@@ -226,19 +208,13 @@ class ToolboxTool:
         """
 
         # check if any auth services need to be specified yet
-        if (
-            len(self.__required_authn_params) > 0
-            or len(self.__required_authz_tokens) > 0
-        ):
+        if len(self.__required_authn_params) > 0 or len(self.__required_authz_tokens) > 0:
             # Gather all the required auth services into a set
             req_auth_services = set()
             for s in self.__required_authn_params.values():
                 req_auth_services.update(s)
             req_auth_services.update(self.__required_authz_tokens)
-            raise PermissionError(
-                f"One or more of the following authn services are required to invoke this tool"
-                f": {','.join(req_auth_services)}"
-            )
+            raise PermissionError(f"One or more of the following authn services are required to invoke this tool: {','.join(req_auth_services)}")
 
         # validate inputs to this call using the signature
         all_args = self.__signature__.bind(*args, **kwargs)
@@ -266,9 +242,7 @@ class ToolboxTool:
 
         # In case of conflict, override the client header by the auth token getter
         for auth_service, token_getter in self.__auth_service_token_getters.items():
-            headers[self.__get_auth_header(auth_service)] = await resolve_value(
-                token_getter
-            )
+            headers[self.__get_auth_header(auth_service)] = await resolve_value(token_getter)
 
         warn_if_http_and_headers(self.__transport.base_url, headers)
 
@@ -280,9 +254,7 @@ class ToolboxTool:
 
     def add_auth_token_getters(
         self,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ],
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]],
     ) -> "ToolboxTool":
         """
         Registers auth token getter functions that are used for AuthServices
@@ -306,16 +278,11 @@ class ToolboxTool:
         incoming_services = auth_token_getters.keys()
         duplicates = existing_services & incoming_services
         if duplicates:
-            raise ValueError(
-                f"Authentication source(s) `{', '.join(duplicates)}` already registered in tool `{self.__name__}`."
-            )
+            raise ValueError(f"Authentication source(s) `{', '.join(duplicates)}` already registered in tool `{self.__name__}`.")
 
         # Validate duplicates with client headers
         request_header_names = self.__client_headers.keys()
-        auth_token_names = [
-            self.__get_auth_header(auth_token_name)
-            for auth_token_name in incoming_services
-        ]
+        auth_token_names = [self.__get_auth_header(auth_token_name) for auth_token_name in incoming_services]
         duplicates = request_header_names & auth_token_names
         if duplicates:
             raise ValueError(
@@ -327,20 +294,16 @@ class ToolboxTool:
 
         # find the updated required authn params, authz tokens and the auth
         # token getters used
-        new_req_authn_params, new_req_authz_tokens, used_auth_token_getters = (
-            identify_auth_requirements(
-                self.__required_authn_params,
-                self.__required_authz_tokens,
-                auth_token_getters.keys(),
-            )
+        new_req_authn_params, new_req_authz_tokens, used_auth_token_getters = identify_auth_requirements(
+            self.__required_authn_params,
+            self.__required_authz_tokens,
+            auth_token_getters.keys(),
         )
 
         # ensure no auth token getter provided remains unused
         unused_auth = set(incoming_services) - used_auth_token_getters
         if unused_auth:
-            raise ValueError(
-                f"Authentication source(s) `{', '.join(unused_auth)}` unused by tool `{self.__name__}`."
-            )
+            raise ValueError(f"Authentication source(s) `{', '.join(unused_auth)}` unused by tool `{self.__name__}`.")
 
         return self.__copy(
             # create read-only values for updated getters, params and tokens
@@ -376,9 +339,7 @@ class ToolboxTool:
 
     def bind_params(
         self,
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ],
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any],
     ) -> "ToolboxTool":
         """
         Binds parameters to values or callables that produce values.
@@ -398,14 +359,10 @@ class ToolboxTool:
         param_names = set(p.name for p in self.__params)
         for name in bound_params.keys():
             if name in self.__bound_parameters:
-                raise ValueError(
-                    f"cannot re-bind parameter: parameter '{name}' is already bound"
-                )
+                raise ValueError(f"cannot re-bind parameter: parameter '{name}' is already bound")
 
             if name not in param_names:
-                raise ValueError(
-                    f"unable to bind parameters: no parameter named {name}"
-                )
+                raise ValueError(f"unable to bind parameters: no parameter named {name}")
 
         new_params = []
         for p in self.__params:

@@ -33,9 +33,9 @@ mkdir -p src/governance/judge_six
 # ==============================================================================
 cat <<JAVASCRIPT > apps/agent-manager-ui/public/a2ui_renderer.js
 class A2UIRenderer {
-    constructor(target) { 
-        this.target = target; 
-        this.componentMap = {}; 
+    constructor(target) {
+        this.target = target;
+        this.componentMap = {};
     }
 
     render(payload) {
@@ -151,7 +151,7 @@ class GeminiCodeAssistProxy:
     def trigger_smart_action(self, file_path: str, new_content: str):
         print(f"⚡ GOD MODE: Attempting write to {file_path}")
         verdict = self.judge.evaluate(new_content)
-        
+
         if verdict["status"] == "BLOCKED":
             print(f"⛔ BLOCKED: {verdict['reason']}")
             return {"status": "BLOCKED", "reason": verdict.get("reason")}
@@ -207,14 +207,14 @@ except ImportError:
 class ConsensusAgent:
     def __init__(self):
         self.agent = RecursiveAgent()
-        
+
     def execute_critical(self, prompt: str, rounds: int = 3) -> str:
         logging.info(f"🗳️ CONSENSUS: Initiating {rounds}-Round Voting...")
         results = []
         for i in range(rounds):
             res = self.agent.solve(prompt)
             results.append(res)
-            
+
         judge_prompt = f"""
         ROLE: Supreme Court Judge.
         TASK: Review drafts, pick best.
@@ -236,7 +236,7 @@ router = APIRouter()
 
 class Approval(BaseModel):
     agent_id: str
-    decision: str 
+    decision: str
 
 @router.post("/adjudicate")
 def adjudicate_agent(a: Approval):
@@ -286,10 +286,10 @@ class VideoRecorder:
     def __init__(self, session_id):
         self.session_id = session_id
         self.frames = []
-        
+
     def capture_frame(self, browser_context):
         self.frames.append(time.time())
-        
+
     def save(self):
         filename = f"artifacts/{self.session_id}.webp"
         logging.info(f"🎥 JETSKI: Compiling {len(self.frames)} frames into {filename}")

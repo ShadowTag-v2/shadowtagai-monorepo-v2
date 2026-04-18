@@ -188,7 +188,8 @@ class KosmosScientist:
         if p_value < 0.05:
             # Significant improvement - rollout to all agents
             hypothesis = next(
-                (h for h in self.hypotheses if h.id == experiment.hypothesis_id), None,
+                (h for h in self.hypotheses if h.id == experiment.hypothesis_id),
+                None,
             )
 
             if hypothesis:
@@ -210,7 +211,8 @@ class KosmosScientist:
         else:
             # No significant improvement - reject hypothesis
             hypothesis = next(
-                (h for h in self.hypotheses if h.id == experiment.hypothesis_id), None,
+                (h for h in self.hypotheses if h.id == experiment.hypothesis_id),
+                None,
             )
 
             if hypothesis:

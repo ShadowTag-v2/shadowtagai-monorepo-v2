@@ -1,7 +1,7 @@
 // docs/antigravity-experimental-settings.jsonc
-// 
+//
 // PROPOSED EXPERIMENTAL EXTENSION SETTINGS - GOD MODE
-// Do NOT merge these into the canonical `pnkln.code-workspace` until 
+// Do NOT merge these into the canonical `pnkln.code-workspace` until
 // the installed extensions are actively verified to support and respect them.
 // Mixing unverified keys can cause silent UX drift or extension crashes.
 {
@@ -31,7 +31,7 @@
     },
     "maxRequests": 50
   },
-  
+
   // Roo-Cline Mirror
   "roo-cline.autoApprovalSettings": {
     "enabled": true,

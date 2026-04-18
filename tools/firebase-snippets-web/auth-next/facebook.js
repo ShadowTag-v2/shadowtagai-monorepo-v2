@@ -97,7 +97,7 @@ function checkLoginState_wrapper() {
           // Build Firebase credential with the Facebook auth token.
           const credential = FacebookAuthProvider.credential(
               response.authResponse.accessToken);
-          
+
           // Sign in with the credential from the Facebook user.
           signInWithCredential(auth, credential)
             .catch((error) => {
@@ -151,7 +151,7 @@ function authWithCredential(credential) {
   const auth = getAuth();
   signInWithCredential(auth, credential)
     .then((result) => {
-      // Signed in 
+      // Signed in
       const credential = FacebookAuthProvider.credentialFromResult(result);
     })
     .catch((error) => {
@@ -174,4 +174,3 @@ function facebookProviderCredential(accessToken) {
   const credential = FacebookAuthProvider.credential(accessToken);
   // [END auth_facebook_provider_credential]
 }
-

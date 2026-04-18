@@ -40,7 +40,7 @@ RUN_STARTED → STEP_STARTED → (events) → STEP_FINISHED → RUN_FINISHED
 All events are validated with Zod schemas. Use the schema types when building:
 
 ```typescript
-import { 
+import {
   TextMessageContentEventSchema,
   ToolCallStartEventSchema,
   StateSnapshotEventSchema

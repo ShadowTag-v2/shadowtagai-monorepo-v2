@@ -33,10 +33,20 @@ def _load_pem() -> str:
     # 1. Secret Manager (production + CI)
     try:
         import subprocess
+
         result = subprocess.run(
-            ["/opt/homebrew/share/google-cloud-sdk/bin/gcloud", "secrets", "versions", "access", "latest",
-             "--secret=github-app-shadowtag-v2-pem", "--project=shadowtag-omega-v4"],
-            capture_output=True, text=True, timeout=10,
+            [
+                "/opt/homebrew/share/google-cloud-sdk/bin/gcloud",
+                "secrets",
+                "versions",
+                "access",
+                "latest",
+                "--secret=github-app-shadowtag-v2-pem",
+                "--project=shadowtag-omega-v4",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
         if result.returncode == 0 and result.stdout.strip():
             return result.stdout

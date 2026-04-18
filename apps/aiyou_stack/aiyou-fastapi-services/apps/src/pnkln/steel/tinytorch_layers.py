@@ -29,8 +29,7 @@ class Layer:
 
 
 class Linear(Layer):
-    """Linear (fully connected) layer: y = xW + b
-    """
+    """Linear (fully connected) layer: y = xW + b"""
 
     def __init__(self, in_features: int, out_features: int, bias: bool = True):
         self.in_features = in_features
@@ -65,8 +64,7 @@ class Linear(Layer):
 
 
 class Dropout(Layer):
-    """Dropout layer for regularization.
-    """
+    """Dropout layer for regularization."""
 
     def __init__(self, p: float = 0.5):
         if not DROPOUT_MIN_PROB <= p <= DROPOUT_MAX_PROB:
@@ -102,8 +100,7 @@ class Dropout(Layer):
 
 
 class Sequential(Layer):
-    """Container for sequential layers.
-    """
+    """Container for sequential layers."""
 
     def __init__(self, *layers):
         if len(layers) == 1 and isinstance(layers[0], (list, tuple)):

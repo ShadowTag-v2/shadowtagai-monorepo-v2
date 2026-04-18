@@ -21,7 +21,7 @@ export const runIngestionPipeline = async ( file: File, onProgress: (progress: P
     percent: 0,
     message: 'Extracting ZIP file...',
   });
-  
+
   // Fake progress for extraction (JSZip doesn't expose progress)
   const fakeExtractionProgress = setInterval(() => {
     onProgress({
@@ -30,10 +30,10 @@ export const runIngestionPipeline = async ( file: File, onProgress: (progress: P
       message: 'Extracting ZIP file...',
     });
   }, 200);
-  
+
   const files = await extractZip(file);
   clearInterval(fakeExtractionProgress);
-  
+
   // Continue with common pipeline
   return runPipelineFromFiles(files, onProgress);
 };
@@ -56,18 +56,18 @@ export const runPipelineFromFiles = async (
     astCache.clear();
     symbolTable.clear();
   };
-  
+
   try {
   // Store file contents for code panel
   files.forEach(f => fileContents.set(f.path, f.content));
-  
+
   onProgress({
     phase: 'extracting',
     percent: 15,
     message: 'ZIP extracted successfully',
     stats: { filesProcessed: 0, totalFiles: files.length, nodesCreated: 0 },
   });
-  
+
   // Phase 2: Structure (15-30%)
   onProgress({
     phase: 'structure',
@@ -75,17 +75,17 @@ export const runPipelineFromFiles = async (
     message: 'Analyzing project structure...',
     stats: { filesProcessed: 0, totalFiles: files.length, nodesCreated: 0 },
   });
-  
+
   const filePaths = files.map(f => f.path);
   processStructure(graph, filePaths);
-  
+
   onProgress({
     phase: 'structure',
     percent: 30,
     message: 'Project structure analyzed',
     stats: { filesProcessed: files.length, totalFiles: files.length, nodesCreated: graph.nodeCount },
   });
-  
+
   // Phase 3: Parsing (30-70%)
   onProgress({
     phase: 'parsing',
@@ -93,7 +93,7 @@ export const runPipelineFromFiles = async (
     message: 'Parsing code definitions...',
     stats: { filesProcessed: 0, totalFiles: files.length, nodesCreated: graph.nodeCount },
   });
-  
+
   await processParsing(graph, files, symbolTable, astCache, (current, total, filePath) => {
     const parsingProgress = 30 + ((current / total) * 40);
     onProgress({
@@ -123,7 +123,7 @@ export const runPipelineFromFiles = async (
       stats: { filesProcessed: current, totalFiles: total, nodesCreated: graph.nodeCount },
     });
   });
-  
+
   // Debug: Count IMPORTS relationships
   if (import.meta.env.DEV) {
     const importsCount = graph.relationships.filter(r => r.type === 'IMPORTS').length;
@@ -279,22 +279,22 @@ export const runPipelineFromFiles = async (
     });
   });
 
-  
+
   // Phase 9: Complete (100%)
   onProgress({
     phase: 'complete',
     percent: 100,
     message: `Graph complete! ${communityResult.stats.totalCommunities} communities, ${processResult.stats.totalProcesses} processes detected.`,
-    stats: { 
-      filesProcessed: files.length, 
-      totalFiles: files.length, 
-      nodesCreated: graph.nodeCount 
+    stats: {
+      filesProcessed: files.length,
+      totalFiles: files.length,
+      nodesCreated: graph.nodeCount
     },
   });
 
   // Cleanup WASM memory before returning
   astCache.clear();
-  
+
   return { graph, fileContents, communityResult, processResult };
 
   } catch (error) {

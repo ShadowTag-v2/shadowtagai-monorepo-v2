@@ -52,7 +52,11 @@ class AirtableImporter:
         }
 
     def _make_request(
-        self, method: str, endpoint: str, data: dict | None = None, retries: int = 3,
+        self,
+        method: str,
+        endpoint: str,
+        data: dict | None = None,
+        retries: int = 3,
     ) -> dict[str, Any]:
         """Make API request with retry logic"""
         url = f"{self.base_url}/{endpoint}"
@@ -163,7 +167,9 @@ class AirtableImporter:
 
 
 def import_registry(
-    api_key: str | None = None, base_id: str | None = None, registry_path: Path | None = None,
+    api_key: str | None = None,
+    base_id: str | None = None,
+    registry_path: Path | None = None,
 ) -> dict[str, Any]:
     """Convenience function to import registry to Airtable.
 

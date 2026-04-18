@@ -5,8 +5,7 @@ import time
 
 
 class GovernanceTracer:
-    """Manages audit trail traces and signed URLs.
-    """
+    """Manages audit trail traces and signed URLs."""
 
     def __init__(self):
         self._traces: dict[str, str] = {}

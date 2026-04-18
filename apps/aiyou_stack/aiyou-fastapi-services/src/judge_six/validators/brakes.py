@@ -11,8 +11,7 @@ from ..models import Action, BrakesVerdict, Severity, VerdictStatus
 
 
 class BrakesValidator:
-    """Validates the BRAKES dimension of an action (risk detection)
-    """
+    """Validates the BRAKES dimension of an action (risk detection)"""
 
     def validate(self, action: Action) -> BrakesVerdict:
         payload_str = str(action.payload).lower()

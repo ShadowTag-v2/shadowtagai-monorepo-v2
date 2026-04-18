@@ -19,7 +19,12 @@ async def ingest_logs_to_lancedb() -> str:
     )
     logs_pattern = os.path.join(repo_root, ".agent", "logs", "*.log")
     legacy_pattern = os.path.join(
-        repo_root, "control", "legacy_workspaces", "archive_brain_sessions", "*", "*.md",
+        repo_root,
+        "control",
+        "legacy_workspaces",
+        "archive_brain_sessions",
+        "*",
+        "*.md",
     )
 
     # In reality, this would import core/lancedb_indexer.py and trigger ingestion.
@@ -51,6 +56,7 @@ class OmegaDreamDaemon:
     @workflow.run
     async def run(self) -> str:
         result = await workflow.execute_activity(
-            ingest_logs_to_lancedb, start_to_close_timeout=timedelta(minutes=10),
+            ingest_logs_to_lancedb,
+            start_to_close_timeout=timedelta(minutes=10),
         )
         return result

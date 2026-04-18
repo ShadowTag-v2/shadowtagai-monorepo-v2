@@ -198,7 +198,8 @@ class MoneyOptimizationStrategy(BaseModel):
 
     # Advanced wealth analysis (Pinkln framework)
     wealth_analysis: WealthAnalysis | None = Field(
-        None, description="Deep wealth planning analysis (for businesses/serious optimization)",
+        None,
+        description="Deep wealth planning analysis (for businesses/serious optimization)",
     )
 
     # Integration

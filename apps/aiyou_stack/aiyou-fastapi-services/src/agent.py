@@ -56,8 +56,7 @@ class GeminiAgent:
         return "Plan formulated."
 
     def act(self, task: str) -> str:
-        """Executes the task using the Flying minion Swarm via Tools.
-        """
+        """Executes the task using the Flying minion Swarm via Tools."""
         self.memory.add_entry("user", task)
 
         # 1. Think
@@ -81,8 +80,7 @@ class GeminiAgent:
         return response
 
     def reflect(self):
-        """Review past actions to improve future performance.
-        """
+        """Review past actions to improve future performance."""
         history = self.memory.get_history()
         print(f"🧠 Reflecting on {len(history)} past interactions...")
 

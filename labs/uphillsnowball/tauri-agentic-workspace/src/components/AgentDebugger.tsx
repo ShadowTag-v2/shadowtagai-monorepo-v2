@@ -81,12 +81,12 @@ export function AgentDebugger() {
     if (agent) {
         const subscriber = {
             onEvent: ({ event }: { event: AgentEvent }) => {
-                const enrichedEvent = { 
-                    ...event, 
-                    _receivedAt: Date.now() 
+                const enrichedEvent = {
+                    ...event,
+                    _receivedAt: Date.now()
                 };
                 // Prepend so the newest event is at top
-                setEvents((prev) => [enrichedEvent, ...prev]); 
+                setEvents((prev) => [enrichedEvent, ...prev]);
             }
         };
 

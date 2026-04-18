@@ -71,7 +71,11 @@ class BaseAgent(ABC):
 
         """
         self.metadata = AgentMetadata(
-            name=name, role=role, agent_type=agent_type, version=version, description=description,
+            name=name,
+            role=role,
+            agent_type=agent_type,
+            version=version,
+            description=description,
         )
         self.skills: list[BaseSkill] = []
         self.skill_registry = SkillRegistry()

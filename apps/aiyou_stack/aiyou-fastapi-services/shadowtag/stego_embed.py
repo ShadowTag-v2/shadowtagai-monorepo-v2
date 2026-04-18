@@ -137,7 +137,9 @@ class UltrasonicEmbedder:
         self.carrier_freq = carrier_freq
         self.sample_rate = sample_rate
         logger.info(
-            "ultrasonic_embedder_initialized", carrier_freq=carrier_freq, sample_rate=sample_rate,
+            "ultrasonic_embedder_initialized",
+            carrier_freq=carrier_freq,
+            sample_rate=sample_rate,
         )
 
     def embed(self, audio_data: bytes, payload: WatermarkPayload) -> bytes:
@@ -245,7 +247,9 @@ class ShadowTagEmbedder:
         return watermarked
 
     def extract(
-        self, asset_data: bytes, asset_type: Literal["image", "video", "audio"],
+        self,
+        asset_data: bytes,
+        asset_type: Literal["image", "video", "audio"],
     ) -> WatermarkPayload | None:
         """Extract watermark from asset.
 

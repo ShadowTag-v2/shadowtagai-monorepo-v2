@@ -99,6 +99,6 @@ WHERE
   AND pid <> pg_backend_pid()
 ORDER BY
   xact_age DESC
-LIMIT 
+LIMIT
   COALESCE($2::int, 20);
 ```

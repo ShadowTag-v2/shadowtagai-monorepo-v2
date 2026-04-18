@@ -37,11 +37,7 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
         headers: Mapping[str, str] | None = None,
     ) -> ReceiveResultT | None:
         """Sends a JSON-RPC request to the MCP server."""
-        params = (
-            request.params.model_dump(mode="json", exclude_none=True, by_alias=True)
-            if isinstance(request.params, BaseModel)
-            else request.params
-        )
+        params = request.params.model_dump(mode="json", exclude_none=True, by_alias=True) if isinstance(request.params, BaseModel) else request.params
         rpc_msg: BaseModel
         if isinstance(request, types.MCPNotification):
             rpc_msg = types.JSONRPCNotification(method=request.method, params=params)
@@ -50,15 +46,10 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
 
         payload = rpc_msg.model_dump(mode="json", exclude_none=True)
 
-        async with self._session.post(
-            url, json=payload, headers=dict(headers or {})
-        ) as response:
+        async with self._session.post(url, json=payload, headers=dict(headers or {})) as response:
             if not response.ok:
                 error_text = await response.text()
-                raise RuntimeError(
-                    f"API request failed with status {response.status} "
-                    f"({response.reason}). Server response: {error_text}"
-                )
+                raise RuntimeError(f"API request failed with status {response.status} ({response.reason}). Server response: {error_text}")
 
             if response.status == 204 or response.content.at_eof():
                 return None
@@ -69,9 +60,7 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
             if "error" in json_resp:
                 try:
                     err = types.JSONRPCError.model_validate(json_resp).error
-                    raise RuntimeError(
-                        f"MCP request failed with code {err.code}: {err.message}"
-                    )
+                    raise RuntimeError(f"MCP request failed with code {err.code}: {err.message}")
                 except Exception:
                     raise RuntimeError(f"MCP request failed: {json_resp.get('error')}")
 
@@ -84,9 +73,7 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
                     raise RuntimeError(f"Failed to parse JSON-RPC response: {e}")
             return None
 
-    async def _initialize_session(
-        self, headers: Mapping[str, str] | None = None
-    ) -> None:
+    async def _initialize_session(self, headers: Mapping[str, str] | None = None) -> None:
         """Initializes the MCP session."""
         meta: types.MCPMeta | None = None
 
@@ -125,16 +112,12 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
             )
 
             if result is None:
-                raise RuntimeError(
-                    "Failed to initialize session: No response from server."
-                )
+                raise RuntimeError("Failed to initialize session: No response from server.")
 
             self._server_version = result.serverInfo.version
 
             if result.protocolVersion != self._protocol_version:
-                raise RuntimeError(
-                    f"MCP version mismatch: client does not support server version {result.protocolVersion}"
-                )
+                raise RuntimeError(f"MCP version mismatch: client does not support server version {result.protocolVersion}")
 
             if not result.capabilities.tools:
                 if self._manage_session:
@@ -195,20 +178,13 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
         try:
             result = await self._send_request(
                 url=url,
-                request=types.ListToolsRequest(
-                    params=types.ListToolsRequestParams(field_meta=meta)
-                ),
+                request=types.ListToolsRequest(params=types.ListToolsRequestParams(field_meta=meta)),
                 headers=headers,
             )
             if result is None:
                 raise RuntimeError("Failed to list tools: No response from server.")
 
-            tools_map = {
-                t.name: self._convert_tool_schema(
-                    t.model_dump(mode="json", by_alias=True)
-                )
-                for t in result.tools
-            }
+            tools_map = {t.name: self._convert_tool_schema(t.model_dump(mode="json", by_alias=True)) for t in result.tools}
             if self._server_version is None:
                 raise RuntimeError("Server version not available.")
 
@@ -232,9 +208,7 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
                 # End span
                 telemetry.end_span(span, error=error)
 
-    async def tool_get(
-        self, tool_name: str, headers: Mapping[str, str] | None = None
-    ) -> ManifestSchema:
+    async def tool_get(self, tool_name: str, headers: Mapping[str, str] | None = None) -> ManifestSchema:
         """Gets a single tool from the server by listing all and filtering."""
         manifest = await self.tools_list(headers=headers)
 
@@ -262,9 +236,7 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
         # Call parent's close method
         await super().close()
 
-    async def tool_invoke(
-        self, tool_name: str, arguments: dict, headers: Mapping[str, str] | None
-    ) -> str:
+    async def tool_invoke(self, tool_name: str, arguments: dict, headers: Mapping[str, str] | None) -> str:
         """Invokes a specific tool on the server using the MCP protocol."""
         await self._ensure_initialized(headers=headers)
 
@@ -290,18 +262,12 @@ class McpHttpTransportV20241105(_McpHttpTransportBase):
         try:
             result = await self._send_request(
                 url=self._mcp_base_url,
-                request=types.CallToolRequest(
-                    params=types.CallToolRequestParams(
-                        name=tool_name, arguments=arguments, field_meta=meta
-                    )
-                ),
+                request=types.CallToolRequest(params=types.CallToolRequestParams(name=tool_name, arguments=arguments, field_meta=meta)),
                 headers=headers,
             )
 
             if result is None:
-                raise RuntimeError(
-                    f"Failed to invoke tool '{tool_name}': No response from server."
-                )
+                raise RuntimeError(f"Failed to invoke tool '{tool_name}': No response from server.")
 
             return self._process_tool_result_content(result.content)
         except Exception as e:

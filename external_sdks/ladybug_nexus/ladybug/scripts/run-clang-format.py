@@ -8,7 +8,6 @@ A diff output is produced and a sensible exit code is returned.
 
 """
 
-
 import argparse
 import codecs
 import difflib
@@ -71,9 +70,7 @@ def list_files(files, recursive=False, extensions=None, exclude=None):
                     # os.walk() supports trimming down the dnames list
                     # by modifying it in-place,
                     # to avoid unnecessary directory listings.
-                    dnames[:] = [
-                        x for x in dnames if not fnmatch.fnmatch(os.path.join(dirpath, x), pattern)
-                    ]
+                    dnames[:] = [x for x in dnames if not fnmatch.fnmatch(os.path.join(dirpath, x), pattern)]
                     fpaths = [x for x in fpaths if not fnmatch.fnmatch(x, pattern)]
                 for f in fpaths:
                     ext = os.path.splitext(f)[1][1:]
@@ -169,9 +166,7 @@ def run_clang_format_diff(args, file):
             **encoding_py3,
         )
     except OSError as exc:
-        raise DiffError(
-            f"Command '{subprocess.list2cmdline(invocation)}' failed to start: {exc}"
-        )
+        raise DiffError(f"Command '{subprocess.list2cmdline(invocation)}' failed to start: {exc}")
     proc_stdout = proc.stdout
     proc_stderr = proc.stderr
     if sys.version_info[0] < 3:
@@ -253,17 +248,11 @@ def main():
         help=f"comma separated list of file extensions (default: {DEFAULT_EXTENSIONS})",
         default=DEFAULT_EXTENSIONS,
     )
-    parser.add_argument(
-        "-r", "--recursive", action="store_true", help="run recursively over directories"
-    )
+    parser.add_argument("-r", "--recursive", action="store_true", help="run recursively over directories")
     parser.add_argument("-d", "--dry-run", action="store_true", help="just print the list of files")
-    parser.add_argument(
-        "-i", "--in-place", action="store_true", help="format file instead of printing differences"
-    )
+    parser.add_argument("-i", "--in-place", action="store_true", help="format file instead of printing differences")
     parser.add_argument("files", metavar="file", nargs="+")
-    parser.add_argument(
-        "-q", "--quiet", action="store_true", help="disable output, useful for the exit code"
-    )
+    parser.add_argument("-q", "--quiet", action="store_true", help="disable output, useful for the exit code")
     parser.add_argument(
         "-j",
         metavar="N",
@@ -285,9 +274,7 @@ def main():
         default=[],
         help="exclude paths matching the given glob-like pattern(s) from recursive search",
     )
-    parser.add_argument(
-        "--style", help="formatting style to apply (LLVM, Google, Chromium, Mozilla, WebKit)"
-    )
+    parser.add_argument("--style", help="formatting style to apply (LLVM, Google, Chromium, Mozilla, WebKit)")
 
     args = parser.parse_args()
 

@@ -28,8 +28,7 @@ class EthicalComplianceMonitor:
         return True
 
     def check_rate_limit(self, domain: str, limit_seconds: int = 1) -> bool:
-        """Enforce rate limiting per domain.
-        """
+        """Enforce rate limiting per domain."""
         last_req = self.rate_limits.get(domain, 0)
         now = time.time()
 

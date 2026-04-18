@@ -69,7 +69,7 @@ alertPolicies:
     notificationChannels: []
 
   - displayName: "Firestore — Read Rate > 1000/min"
-    combiner: OR 
+    combiner: OR
     conditions:
       - displayName: "High Firestore read rate"
         conditionThreshold:

@@ -1,6 +1,6 @@
 /**
  * Text Generator Module
- * 
+ *
  * Pure functions to generate embedding text from code nodes.
  * Combines node metadata with code snippets for semantic matching.
  */
@@ -32,15 +32,15 @@ const truncateContent = (content: string, maxLength: number): string => {
   if (content.length <= maxLength) {
     return content;
   }
-  
+
   // Find last space before maxLength to avoid cutting words
   const truncated = content.slice(0, maxLength);
   const lastSpace = truncated.lastIndexOf(' ');
-  
+
   if (lastSpace > maxLength * 0.8) {
     return truncated.slice(0, lastSpace) + '...';
   }
-  
+
   return truncated + '...';
 };
 
@@ -191,7 +191,7 @@ const generateFileText = (
 /**
  * Generate embedding text for any embeddable node
  * Dispatches to the appropriate generator based on node label
- * 
+ *
  * @param node - The node to generate text for
  * @param config - Optional configuration for max snippet length
  * @returns Text suitable for embedding
@@ -221,7 +221,7 @@ export const generateEmbeddingText = (
 
 /**
  * Generate embedding texts for a batch of nodes
- * 
+ *
  * @param nodes - Array of nodes to generate text for
  * @param config - Optional configuration
  * @returns Array of texts in the same order as input nodes
@@ -232,4 +232,3 @@ export const generateBatchEmbeddingTexts = (
 ): string[] => {
   return nodes.map(node => generateEmbeddingText(node, config));
 };
-

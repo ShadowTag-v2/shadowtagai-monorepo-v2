@@ -45,13 +45,9 @@ class JudgeSixSentinel:
 
         # 3. Precedent Check (AlloyDB)
         # Ask the Hippocampus: "Have we rejected similar code before?"
-        similar_bad_code = self.db.recall_solution(
-            proposed_code
-        )  # Using recall for negative matching
+        similar_bad_code = self.db.recall_solution(proposed_code)  # Using recall for negative matching
         if similar_bad_code and "REJECTED" in similar_bad_code:
-            self._record_violation(
-                "PRECEDENT_VIOLATION", "Code matches previously rejected pattern."
-            )
+            self._record_violation("PRECEDENT_VIOLATION", "Code matches previously rejected pattern.")
             return False
 
         return True

@@ -130,7 +130,8 @@ class TestHTTPSemantics:
     def test_update_returns_200_or_404(self):
         """PUT should return 200 (updated) or 404 (not found)."""
         response = client.put(
-            "/api/v1/users/1", json={"name": "Updated Name", "email": "redacted@shadowtag-v4.local"},
+            "/api/v1/users/1",
+            json={"name": "Updated Name", "email": "redacted@shadowtag-v4.local"},
         )
         assert response.status_code in [200, 404]
 
@@ -253,7 +254,8 @@ class TestInputValidation:
     def test_invalid_email_format_error(self):
         """Invalid email should return helpful error."""
         response = client.post(
-            "/api/v1/users", json={"name": "Test", "email": "not-an-email", "age": 25},
+            "/api/v1/users",
+            json={"name": "Test", "email": "not-an-email", "age": 25},
         )
 
         assert response.status_code == 422
@@ -282,7 +284,8 @@ class TestInputValidation:
     def test_name_length_validation(self):
         """Name too short should return helpful error."""
         response = client.post(
-            "/api/v1/users", json={"name": "A", "email": "redacted@shadowtag-v4.local", "age": 25},
+            "/api/v1/users",
+            json={"name": "A", "email": "redacted@shadowtag-v4.local", "age": 25},
         )
 
         assert response.status_code == 422

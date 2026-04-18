@@ -23,13 +23,8 @@ def hydrate_pack():
             "SELECT bead_id, title, status, summary FROM beads_tasks WHERE repo_id = %s ORDER BY updated_at DESC LIMIT 12",
             (s.repo_id,),
         )
-        tasks = [
-            {"id": r[0], "title": r[1], "status": r[2], "summary": r[3] or ""}
-            for r in cur.fetchall()
-        ]
-        cur.execute(
-            "SELECT summary FROM ltm_thread_summaries WHERE is_active = true ORDER BY created_at DESC LIMIT 5"
-        )
+        tasks = [{"id": r[0], "title": r[1], "status": r[2], "summary": r[3] or ""} for r in cur.fetchall()]
+        cur.execute("SELECT summary FROM ltm_thread_summaries WHERE is_active = true ORDER BY created_at DESC LIMIT 5")
         summaries = [r[0] for r in cur.fetchall()]
         cur.execute(
             "SELECT rel_path, drift_kind, expected, observed, severity, suggested_fix FROM drift_reports WHERE repo_id = %s ORDER BY created_at DESC LIMIT 12",
@@ -50,10 +45,7 @@ def hydrate_pack():
             "SELECT observed_root, canonical_root, severity FROM repo_root_conflicts WHERE repo_id = %s ORDER BY created_at DESC LIMIT 12",
             (s.repo_id,),
         )
-        root_conflicts = [
-            {"observed_root": r[0], "canonical_root": r[1], "severity": r[2]}
-            for r in cur.fetchall()
-        ]
+        root_conflicts = [{"observed_root": r[0], "canonical_root": r[1], "severity": r[2]} for r in cur.fetchall()]
     atoms = search_atoms(
         s.postgres_dsn,
         s.repo_id,

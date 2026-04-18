@@ -77,7 +77,10 @@ class ShadowTagSigner:
         }
 
     def verify_signature(
-        self, content: Any, signature_b64: str, content_type: str = "json",
+        self,
+        content: Any,
+        signature_b64: str,
+        content_type: str = "json",
     ) -> dict:
         """Verify a signature against content.
 
@@ -174,7 +177,8 @@ class ShadowTagSigner:
     def _get_public_key_b64(self) -> str:
         """Get base64-encoded public key"""
         public_bytes = self.public_key.public_bytes(
-            encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw,
+            encoding=serialization.Encoding.Raw,
+            format=serialization.PublicFormat.Raw,
         )
         return base64.b64encode(public_bytes).decode("utf-8")
 

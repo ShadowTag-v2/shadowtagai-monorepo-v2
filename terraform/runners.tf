@@ -12,13 +12,13 @@ module "gh_actions_runners" {
 
   # Link context to our designated GitHub App
   github_app_id = "3018200"
-  
+
   # Network config defaults inside the module
   network = "default"
   subnet  = "default"
 
   machine_type = "e2-medium"
-  
+
   # Deploy 2 active runners bound to UphillSnowball
   target_size = 2
 }

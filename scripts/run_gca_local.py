@@ -55,7 +55,6 @@ COMMENT: <one-sentence explanation and fix>
 
 If no issues found, output: NO_FINDINGS
 """,
-
     "security": """\
 You are a security-focused code reviewer specialising in cryptographic libraries. \
 Examine this pull request diff for:
@@ -73,7 +72,6 @@ COMMENT: <one-sentence explanation referencing CVE number if applicable>
 
 If no issues found, output: NO_FINDINGS
 """,
-
     "perf": """\
 You are a performance-focused code reviewer. Examine this pull request diff for:
 - Algorithmic complexity regressions
@@ -90,7 +88,6 @@ COMMENT: <one-sentence explanation of the perf concern>
 
 If no issues found, output: NO_FINDINGS
 """,
-
     "arch": """\
 You are an architecture-focused code reviewer. Examine this pull request diff for:
 - Tight coupling between components
@@ -111,11 +108,13 @@ If no issues found, output: NO_FINDINGS
 
 # ── token helpers ─────────────────────────────────────────────────────────────
 
+
 def _get_github_token() -> str:
     """Return a valid GitHub App installation token, using auth_github_app.get_token()."""
     sys.path.insert(0, str(SCRIPTS_DIR))
     try:
         from auth_github_app import get_token  # type: ignore[import]
+
         return get_token()
     except Exception as exc:
         print(f"[auth] Failed to get token via auth_github_app: {exc}", file=sys.stderr)
@@ -127,6 +126,7 @@ def _get_github_token() -> str:
 
 
 # ── GitHub API helpers ────────────────────────────────────────────────────────
+
 
 def _gh_get(path: str, token: str, accept: str = "application/vnd.github+json") -> bytes:
     url = f"https://api.github.com{path}"
@@ -167,6 +167,7 @@ def fetch_diff(base_ref: str, head_sha: str, token: str) -> str:
 
 # ── agent runner ──────────────────────────────────────────────────────────────
 
+
 def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, bool]:
     """Run a single gemini agent. Returns (agent_name, success)."""
     prompt = AGENT_PROMPTS[agent] + f"\n\n--- DIFF ---\n{diff_text}\n--- END DIFF ---"
@@ -197,6 +198,7 @@ def run_gemini_agent(agent: str, diff_text: str, out_path: Path) -> tuple[str, b
 
 # ── ANE gate ──────────────────────────────────────────────────────────────────
 
+
 def run_ane_gate(diff_path: Path, ane_out_path: Path) -> dict:
     """Run ane_budget.py and write JSON report. Returns report dict."""
     print("[ane-gate] Running ANE budget check...", flush=True)
@@ -221,10 +223,9 @@ def run_ane_gate(diff_path: Path, ane_out_path: Path) -> dict:
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
+
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Run GCA multi-agent PR review locally (bypasses GitHub Actions)"
-    )
+    parser = argparse.ArgumentParser(description="Run GCA multi-agent PR review locally (bypasses GitHub Actions)")
     parser.add_argument("--pr", type=int, default=48, help="PR number to review (default: 48)")
     parser.add_argument(
         "--agents",
@@ -250,12 +251,12 @@ def main() -> int:
 
     workdir = Path(f"/tmp/gca_local_pr{args.pr}")
     workdir.mkdir(exist_ok=True)
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  GCA Local Orchestrator — PR #{args.pr} @ {args.repo}")
     print(f"  Agents: {', '.join(agents)}")
     print(f"  Workdir: {workdir}")
     print(f"  Dry-run: {args.dry_run}")
-    print(f"{'='*60}\n", flush=True)
+    print(f"{'=' * 60}\n", flush=True)
 
     # ── 1. setup: get token + PR metadata + diff ──────────────────────────────
     token = _get_github_token()
@@ -276,10 +277,7 @@ def main() -> int:
         ane_future = pool.submit(run_ane_gate, diff_path, ane_out_path)
 
         # Submit gemini agents
-        agent_futures = {
-            pool.submit(run_gemini_agent, agent, diff_text, agent_out_paths[agent]): agent
-            for agent in agents
-        }
+        agent_futures = {pool.submit(run_gemini_agent, agent, diff_text, agent_out_paths[agent]): agent for agent in agents}
 
         # Collect results as they complete
         for future in as_completed(list(agent_futures.keys()) + [ane_future]):
@@ -297,12 +295,18 @@ def main() -> int:
 
     print(f"\n[verify-post] Posting review to PR #{args.pr}...", flush=True)
     cmd = [
-        PYTHON, str(POST_REVIEW_SCRIPT),
-        "--repo", args.repo,
-        "--pr", str(args.pr),
-        "--commit", head_sha,
-        "--reviews", *review_globs,
-        "--ane-report", str(ane_out_path),
+        PYTHON,
+        str(POST_REVIEW_SCRIPT),
+        "--repo",
+        args.repo,
+        "--pr",
+        str(args.pr),
+        "--commit",
+        head_sha,
+        "--reviews",
+        *review_globs,
+        "--ane-report",
+        str(ane_out_path),
     ]
     if args.dry_run:
         cmd.append("--dry-run")

@@ -54,7 +54,11 @@ jr_engine = JREngine()
 def validate_action(payload: dict, source: str = "api", type: str = "create_task"):
     """Helper to run JR validation"""
     action = Action(
-        id=str(uuid.uuid4()), type=type, payload=payload, source=source, timestamp=datetime.utcnow(),
+        id=str(uuid.uuid4()),
+        type=type,
+        payload=payload,
+        source=source,
+        timestamp=datetime.utcnow(),
     )
     verdict = jr_engine.validate(action)
 

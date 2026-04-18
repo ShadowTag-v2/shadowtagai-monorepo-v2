@@ -80,4 +80,3 @@ class ExplainOptions extends \Google\Protobuf\Internal\Message
     }
 
 }
-

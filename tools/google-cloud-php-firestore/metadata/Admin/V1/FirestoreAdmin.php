@@ -38,4 +38,3 @@ class FirestoreAdmin
         static::$is_initialized = true;
     }
 }
-

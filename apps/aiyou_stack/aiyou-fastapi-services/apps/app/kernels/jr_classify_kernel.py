@@ -272,7 +272,8 @@ class EnhancedJRClassifyKernel(JRClassifyKernel):
 
             if jr_input:
                 fast_result = self.fast_classifier.classify(
-                    jr_input.ns_output, jr_input.user_age_category,
+                    jr_input.ns_output,
+                    jr_input.user_age_category,
                 )
 
                 if fast_result:

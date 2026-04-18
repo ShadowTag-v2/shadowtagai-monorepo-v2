@@ -48,7 +48,8 @@ async def intercept_tool_call(
         if cost_usd > 100:
             logger.info("[SHIELD 1] REQUIRE COA triggers on high budget utilization.")
             return ToolCallResponse(
-                status="REQUIRE_COA_CONFIRMATION", reason="Tier 3 Risk: High Cost Threshold",
+                status="REQUIRE_COA_CONFIRMATION",
+                reason="Tier 3 Risk: High Cost Threshold",
             )
 
         # Tier 1/2 (Cleared)
@@ -59,7 +60,8 @@ async def intercept_tool_call(
         scope = request.arguments.get("scope", "")
         if "core" in scope or "security" in scope:
             return ToolCallResponse(
-                status="REQUIRE_COA_CONFIRMATION", reason="Tier 3 Risk: Core modification",
+                status="REQUIRE_COA_CONFIRMATION",
+                reason="Tier 3 Risk: Core modification",
             )
         return ToolCallResponse(status="CLEARED")
 

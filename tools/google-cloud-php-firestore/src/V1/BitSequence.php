@@ -121,4 +121,3 @@ class BitSequence extends \Google\Protobuf\Internal\Message
     }
 
 }
-

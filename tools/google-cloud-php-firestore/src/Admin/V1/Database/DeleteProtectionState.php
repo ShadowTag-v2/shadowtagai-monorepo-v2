@@ -58,4 +58,3 @@ class DeleteProtectionState
         return constant($const);
     }
 }
-

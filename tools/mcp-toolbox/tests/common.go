@@ -984,7 +984,7 @@ func CleanupPostgresTables(t *testing.T, ctx context.Context, pool *pgxpool.Pool
 
 	query := `
 		SELECT table_name FROM information_schema.tables
-		WHERE table_schema = 'public' 
+		WHERE table_schema = 'public'
 		AND table_name LIKE $1;`
 	rows, err := pool.Query(ctx, query, "%\\_"+uniqueID)
 	if err != nil {

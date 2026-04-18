@@ -136,7 +136,11 @@ class ShadowTagAiAgent:
             # Step 5: Check verification
             if not verification_result.passed:
                 return self._rollback_and_log(
-                    task, raw_result, verification_result, audit_trail, start_time,
+                    task,
+                    raw_result,
+                    verification_result,
+                    audit_trail,
+                    start_time,
                 )
 
             # Step 6: Apply watermark and return
@@ -332,8 +336,7 @@ class ShadowTagAiAgent:
 
 
 class SimpleAgent(ShadowTagAiAgent):
-    """Simple example agent that demonstrates the enforcement-first pattern
-    """
+    """Simple example agent that demonstrates the enforcement-first pattern"""
 
     def __init__(self, executor: Callable[[AgentTask, dict[str, Any]], Any], **kwargs):
         super().__init__(**kwargs)

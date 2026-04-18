@@ -24,8 +24,7 @@ class MemoryInterface(ABC):
 
 
 class ShortTermMemory(MemoryInterface):
-    """In-memory rolling buffer for active conversation context.
-    """
+    """In-memory rolling buffer for active conversation context."""
 
     def __init__(self, max_entries: int = 50):
         self.max_entries = max_entries
@@ -33,7 +32,10 @@ class ShortTermMemory(MemoryInterface):
 
     def add(self, role: str, content: str, metadata: dict[str, Any] | None = None) -> None:
         entry = MemoryEntry(
-            timestamp=datetime.now(), role=role, content=content, metadata=metadata or {},
+            timestamp=datetime.now(),
+            role=role,
+            content=content,
+            metadata=metadata or {},
         )
         self.buffer.append(entry)
         if len(self.buffer) > self.max_entries:

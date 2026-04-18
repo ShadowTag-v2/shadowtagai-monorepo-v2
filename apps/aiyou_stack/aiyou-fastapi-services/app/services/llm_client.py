@@ -1,5 +1,4 @@
-"""LLM Client integration supporting multiple providers.
-"""
+"""LLM Client integration supporting multiple providers."""
 
 from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
@@ -119,7 +118,9 @@ class OpenAIClient(LLMClient):
         logger.info("OpenAI client initialized", model=self.model)
 
     def _convert_messages(
-        self, messages: list[dict[str, str]], system_prompt: str | None = None,
+        self,
+        messages: list[dict[str, str]],
+        system_prompt: str | None = None,
     ) -> list[dict[str, str]]:
         """Convert messages format and add system prompt."""
         formatted_messages = []
@@ -200,7 +201,9 @@ class LLMClientFactory:
 
     @staticmethod
     def create_client(
-        provider: str | None = None, api_key: str | None = None, model: str | None = None,
+        provider: str | None = None,
+        api_key: str | None = None,
+        model: str | None = None,
     ) -> LLMClient:
         """Create an LLM client based on the provider."""
         provider = provider or settings.DEFAULT_LLM_PROVIDER

@@ -83,7 +83,8 @@ def main():
         logger.info("🌤️  Detected Cloud Environment (Empty Repo). Hydrating...")
         try:
             repo_url = os.environ.get(
-                "REPO_URL", "https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services.git",
+                "REPO_URL",
+                "https://github.com/ShadowTag-v2/shadowtag_v4-fastapi-services.git",
             )
             subprocess.check_call(["git", "clone", repo_url, "."])
             subprocess.check_call(["git", "fetch", "--all"])

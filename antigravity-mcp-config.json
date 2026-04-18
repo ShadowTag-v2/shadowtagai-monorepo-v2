@@ -11,9 +11,11 @@
       }
     },
     "firebase-mcp-server": {
-      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/node",
+      "command": "/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin/npx",
       "args": [
-        "/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/scripts/firebase-mcp-fast.js",
+        "-y",
+        "firebase-tools@latest",
+        "mcp",
         "--only",
         "auth,firestore,storage,dataconnect,functions,apphosting,messaging,remoteconfig,realtimedatabase,hosting",
         "--dir",

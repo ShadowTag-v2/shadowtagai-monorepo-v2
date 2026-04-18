@@ -120,7 +120,12 @@ class JudgeSixEngine:
         return self._mint_receipt(decision_id, action, verdict, risk_score, notes)
 
     def _mint_receipt(
-        self, decision_id: str, action: str, verdict: Verdict, risk: float, notes: list[str],
+        self,
+        decision_id: str,
+        action: str,
+        verdict: Verdict,
+        risk: float,
+        notes: list[str],
     ) -> JudgeReceipt:
         """Create the immutable receipt"""
         receipt = JudgeReceipt(

@@ -77,7 +77,8 @@ class ACPServer:
                 response = ACPResponse(id=req_id, result=result)
             else:
                 response = ACPResponse(
-                    id=req_id, error={"code": -32601, "message": f"Method not found: {method}"},
+                    id=req_id,
+                    error={"code": -32601, "message": f"Method not found: {method}"},
                 )
 
             return json.dumps(asdict(response))
@@ -119,7 +120,9 @@ class ACPServer:
 
         # Generate context
         prompt = self.cursor.generate_prompt_context(
-            file_path, line, f"Complete the code after: {prefix}",
+            file_path,
+            line,
+            f"Complete the code after: {prefix}",
         )
 
         # Get completion from Gemini

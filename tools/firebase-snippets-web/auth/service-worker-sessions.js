@@ -61,7 +61,7 @@ function svcIntercept() {
     const host = pathArray[2];
     return protocol + '//' + host;
   };
-  
+
   // Get underlying body if available. Works for text and json bodies.
   const getBodyContent = (req) => {
     return Promise.resolve().then(() => {
@@ -79,7 +79,7 @@ function svcIntercept() {
       // Ignore error.
     });
   };
-  
+
   self.addEventListener('fetch', (event) => {
     /** @type {FetchEvent} */
     const evt = event;

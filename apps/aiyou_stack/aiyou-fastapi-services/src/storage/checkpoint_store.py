@@ -50,7 +50,10 @@ class CheckpointStore:
         return hashlib.sha256(content).hexdigest()
 
     async def save_file(
-        self, checkpoint_id: str, file_path: str, snapshot_id: str,
+        self,
+        checkpoint_id: str,
+        file_path: str,
+        snapshot_id: str,
     ) -> tuple[str, int, str]:
         """Save a file to checkpoint storage.
 

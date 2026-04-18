@@ -95,7 +95,11 @@ class DecisionProtocol:
     )
 
     def validate_decision(
-        self, action: str, mission_aligned: bool, doctrine_compliant: bool, risk_level: RiskLevel,
+        self,
+        action: str,
+        mission_aligned: bool,
+        doctrine_compliant: bool,
+        risk_level: RiskLevel,
     ) -> tuple[bool, str]:
         """Validate decision through protocol"""
         # Check purpose
@@ -202,7 +206,10 @@ class OperatingFramework:
 
         # Decision validation
         approved, message = self.decision_protocol.validate_decision(
-            action, mission_aligned, doctrine_compliant, risk_level,
+            action,
+            mission_aligned,
+            doctrine_compliant,
+            risk_level,
         )
 
         return {

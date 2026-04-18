@@ -16,7 +16,7 @@ server.register_tool(InventoryTool.new(firestore))
 if ENV['MCP_TRANSPORT'] == 'http'
   require 'rack'
   require 'rack/handler/puma'
-  
+
   puts "Starting Ruby MCP Server on port 8080..."
   Rack::Handler::Puma.run(server.rack_app, Port: 8080, Host: '0.0.0.0')
 else

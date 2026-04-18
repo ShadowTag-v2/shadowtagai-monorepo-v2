@@ -236,7 +236,8 @@ async def create_completion(request: CompletionRequest):
         model = registry.get_model(decision.model_name)
         if not model or not model.backend:
             raise HTTPException(
-                status_code=503, detail=f"Model {decision.model_name} not available",
+                status_code=503,
+                detail=f"Model {decision.model_name} not available",
             )
 
         # Update metrics

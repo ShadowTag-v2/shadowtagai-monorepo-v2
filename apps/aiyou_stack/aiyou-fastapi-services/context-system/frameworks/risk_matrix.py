@@ -109,7 +109,10 @@ class RiskMatrix:
 
     @staticmethod
     def evaluate_decision(
-        probability: str, severity: str, justification: str, mitigation: list[str],
+        probability: str,
+        severity: str,
+        justification: str,
+        mitigation: list[str],
     ) -> RiskAssessment:
         """Evaluate a business decision through risk matrix
 

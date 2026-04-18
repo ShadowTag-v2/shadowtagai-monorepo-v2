@@ -100,5 +100,3 @@ resource "google_cloudbuild_trigger" "post-merge" {
     _SCRIPT = lookup(each.value, "script", "")
   }
 }
-
-

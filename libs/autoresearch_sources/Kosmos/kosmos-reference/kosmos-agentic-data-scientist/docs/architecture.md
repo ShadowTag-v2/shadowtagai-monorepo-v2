@@ -149,13 +149,13 @@ The compression system uses LLM-based summarization to preserve critical context
 if len(events) > EVENT_THRESHOLD:
     # Summarize old events using LLM
     summary = await generate_summary(old_events)
-    
+
     # Replace old events with summary
     new_events = [summary_event] + recent_events
-    
+
     # Truncate large text in remaining events
     truncated_events = truncate_large_text(new_events)
-    
+
     # Direct assignment (not append/pop) to ensure ADK sees change
     session.events = truncated_events
 ```
@@ -248,16 +248,16 @@ class LoopDetectionAgent(LlmAgent):
         self.min_pattern_length = min_pattern_length
         self.repetition_threshold = repetition_threshold
         self.output_history = []
-    
+
     def detect_loop(self, new_output):
         """Detect if output is repeating."""
         self.output_history.append(new_output)
-        
+
         # Check for repeated patterns
         for i in range(len(self.output_history) - 1):
             if self.is_similar(self.output_history[i], new_output):
                 repetition_count += 1
-        
+
         if repetition_count >= self.repetition_threshold:
             raise LoopDetectedError("Agent is repeating itself")
 ```
@@ -284,16 +284,16 @@ class StageOrchestratorAgent:
     async def run_stage(self, stage):
         # 1. Implementation Loop
         implementation = await self.run_implementation_loop(stage)
-        
+
         # 2. Compress events (manual)
         await compress_session_events(self.session)
-        
+
         # 3. Check Success Criteria
         criteria_update = await self.check_criteria()
-        
+
         # 4. Reflect and Adapt
         adapted_stages = await self.reflect_on_progress()
-        
+
         return adapted_stages
 ```
 
@@ -341,12 +341,12 @@ Dedicated confirmation agents that parse review feedback and make exit decisions
 ```python
 class ReviewConfirmationAgent(LoopDetectionAgent):
     """Decides whether to exit review loop."""
-    
+
     instruction = """
     Review the feedback and decide:
     - exit: true if approved, false if needs revision
     - reason: explanation for decision
-    
+
     Output JSON: {"exit": true/false, "reason": "..."}
     """
 ```
@@ -516,4 +516,3 @@ Potential areas for enhancement:
 **Adaptive Thresholds**: Adjust compression based on token usage
 **Stage Checkpointing**: Save/resume from any stage
 **Cost Optimization**: Selectively use cheaper models for certain tasks
-

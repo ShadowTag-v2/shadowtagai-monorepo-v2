@@ -58,9 +58,7 @@ def main():
         if len(sys.argv) >= 5 and sys.argv[3] == "--repo":
             repo = sys.argv[4]
             data = github_request("GET", f"/repos/{repo}/issues")
-            print(
-                json.dumps([{"number": i["number"], "title": i["title"]} for i in data], indent=2)
-            )
+            print(json.dumps([{"number": i["number"], "title": i["title"]} for i in data], indent=2))
         else:
             print("Missing --repo owner/repo")
 

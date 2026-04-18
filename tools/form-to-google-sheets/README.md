@@ -20,7 +20,7 @@
 | --- | :-: | :-------: | :---: | :-: |
 | 1   | id  | timestamp | email |     |
 
-> [!TIP]  
+> [!TIP]
 > To learn how to add additional input fields, [checkout section 7 below](#7-adding-additional-form-data).
 
 ## 2. Create a Google Apps Script
@@ -30,14 +30,14 @@
 - Copy the contents of `form-script.js` and paste it into the `Code.gs` tab in the Script Editor.
 - Press `File > Save`:
 
-> [!TIP]  
+> [!TIP]
 > If you want to better understand what this script is doing, checkout the [`form-script-commented.js`](https://github.com/jamiewilson/form-to-google-sheets/blob/master/form-script-commented.js) file in the repo for a detailed explanation.
 
 ### Get notified of new submissions
 
 If you want to receive email notifications on new submissions, make sure to replace the placeholder values with your actual email and name.
 
-> [!NOTE]  
+> [!NOTE]
 > Thanks to @LandonMoss for the email notification feature
 
 - Uncomment this function to your `Code.gs` file:
@@ -76,7 +76,7 @@ sendNewSubmissionEmailNotification(errorSubject, errorBody)
 
 - Next, go to `Run > Run Function > initialSetup` to run this function.
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > If you're getting the **"Google hasn’t verified this app screen"**, you can click on `Advanced` and then `Go to Submit Form to Google Sheets (unsafe)`. This is because the script isn't verified by Google, but since you're the only one using it, I _think_ it's safe to proceed.
 
 - In the `Authorization Required` dialog, click on `Review Permissions`.
@@ -103,7 +103,7 @@ sendNewSubmissionEmailNotification(errorSubject, errorBody)
 - In the popup, copy the `Web app URL` from the dialog.
 - And click `Done`.
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > If you have a custom domain with Gmail, you _might_ need to click `OK`, refresh the page, and then go to `Publish > Deploy as web app…` again to get the proper web app URL. It should look something like `https://script.google.com/a/yourdomain.com/macros/s/XXXX…`.
 
 ## 6. Input your web app URL
@@ -115,7 +115,7 @@ Open `index.html`.
 - Update `const form = document.forms['YOUR_FORM_NAME']` to match the `name` attribute of your form
 - Specify sheet name in the value of the hidden input field
 
-> [!NOTE]  
+> [!NOTE]
 > Thanks to @lacabra for the sheet name feature
 
 ```html
@@ -143,7 +143,7 @@ Open `index.html`.
 </script>
 ```
 
-> [!TIP]  
+> [!TIP]
 > **Fun fact!** The `<html>`, `<head>`, and `body` tags are actually among a handful of optional tags, but since the [rules around how the browser parses a page are kinda complicated](https://www.w3.org/TR/2011/WD-html5-20110525/syntax.html#optional-tags), you'd probably not want to omit them on real websites.
 
 ## 7. Adding additional form data
@@ -165,7 +165,7 @@ Then create new headers with the exact, case-sensitive `name` values:
 | --- | :-: | :-------: | :---: | :-------: | :------: | :-: |
 | 1   | id  | timestamp | email | firstName | lastName |     |
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > If you are using checkboxes for your forms, then use a unique `name` attribute for every checkbox option and add these unique names to the sheet to collect all responses. Thanks to @ashwinbalaji0811!
 
 ## 8. Security, Validation and Restrictions
@@ -209,7 +209,7 @@ You can also add basic input validation and restrictions directly in your HTML f
 
 The google script sanitizes (by prepending a single quotation mark) and formats all inputs as plain text before inserting them into the spreadsheet. This ensures that any potentially harmful characters are neutralized and that the data is stored consistently.
 
-> [!NOTE]  
+> [!NOTE]
 > This means that any submissions that start with `=`, `+`, `-`, or `@` will be prepended with a single quote. This will not be visible in the cell but will be shown in the formula bar when the cell is selected.
 
 ---

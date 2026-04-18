@@ -25,7 +25,10 @@ class SwarmOrchestratorContextMixin:
         self.logger = logging.getLogger(__name__)
 
     def log_routing_decision(
-        self, task: dict[str, Any], assigned_agent: str, reasoning: str,
+        self,
+        task: dict[str, Any],
+        assigned_agent: str,
+        reasoning: str,
     ) -> int | None:
         """Log task routing decision to Context Index.
 
@@ -117,7 +120,11 @@ class SwarmOrchestratorContextMixin:
             return None
 
     def log_child_spawn(
-        self, parent_id: str, child_id: str, specialization: str, revenue_trigger: float,
+        self,
+        parent_id: str,
+        child_id: str,
+        specialization: str,
+        revenue_trigger: float,
     ) -> int | None:
         """Log child agent spawning event to Context Index.
 

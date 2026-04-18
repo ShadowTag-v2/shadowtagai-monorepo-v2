@@ -97,7 +97,10 @@ class PlatformContext:
         return 0.0
 
     def validate_bootstrap_gate(
-        self, cost_usd: float, expected_annual_benefit_usd: float, payback_months: int,
+        self,
+        cost_usd: float,
+        expected_annual_benefit_usd: float,
+        payback_months: int,
     ) -> dict[str, Any]:
         """Validate investment against bootstrap gates.
 
@@ -130,7 +133,11 @@ class PlatformContext:
         }
 
     def _get_gate_reasoning(
-        self, decision: str, roi: float, ltv_cac: float, payback_months: int,
+        self,
+        decision: str,
+        roi: float,
+        ltv_cac: float,
+        payback_months: int,
     ) -> str:
         """Generate reasoning for bootstrap gate decision"""
         if decision == "APPROVE":
@@ -202,7 +209,10 @@ class CofounderEnhancement:
         return message
 
     def calculate_agent_revenue_contribution(
-        self, agent_level: int, tasks_completed: int, success_rate: float,
+        self,
+        agent_level: int,
+        tasks_completed: int,
+        success_rate: float,
     ) -> dict[str, float]:
         """Calculate individual agent's revenue contribution.
 
@@ -269,7 +279,9 @@ if __name__ == "__main__":
     print("\n🚪 Bootstrap Gate Validation:\n")
 
     decision = enhancement.context.validate_bootstrap_gate(
-        cost_usd=10000, expected_annual_benefit_usd=50000, payback_months=3,
+        cost_usd=10000,
+        expected_annual_benefit_usd=50000,
+        payback_months=3,
     )
 
     print(decision["reasoning"])
@@ -280,7 +292,9 @@ if __name__ == "__main__":
     print("\n💰 Agent Revenue Contribution:\n")
 
     contribution = enhancement.calculate_agent_revenue_contribution(
-        agent_level=4, tasks_completed=100, success_rate=0.95,
+        agent_level=4,
+        tasks_completed=100,
+        success_rate=0.95,
     )
 
     print(f"Agent Level: {contribution['level']}")

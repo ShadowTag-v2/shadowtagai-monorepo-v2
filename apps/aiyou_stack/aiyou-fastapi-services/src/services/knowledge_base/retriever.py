@@ -96,8 +96,7 @@ DATA_STORE_ID = "shadowtag-knowledge-base"  # Placeholder
 
 
 def search_knowledge_base(query: str):
-    """Queries the Vertex AI Search Data Store.
-    """
+    """Queries the Vertex AI Search Data Store."""
     client = discoveryengine.SearchServiceClient()
     serving_config = client.serving_config_path(
         project=PROJECT_ID,

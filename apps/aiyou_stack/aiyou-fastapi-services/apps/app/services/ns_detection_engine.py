@@ -342,15 +342,18 @@ class NSDetectionEngine:
 
         # External APIs
         self.google_client = GoogleSafetyClient(
-            api_key=google_api_key, threshold=self.config.explicit_content_threshold,
+            api_key=google_api_key,
+            threshold=self.config.explicit_content_threshold,
         )
         self.hive_client = HiveModerationClient(
-            api_key=hive_api_key, threshold=self.config.explicit_content_threshold,
+            api_key=hive_api_key,
+            threshold=self.config.explicit_content_threshold,
         )
 
         # Cache
         self.cache = NSCacheManager(
-            enabled=self.config.cache_enabled, ttl_seconds=self.config.cache_ttl_seconds,
+            enabled=self.config.cache_enabled,
+            ttl_seconds=self.config.cache_ttl_seconds,
         )
 
         # Stats

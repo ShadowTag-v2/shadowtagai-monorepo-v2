@@ -1,5 +1,4 @@
-"""API routes for job execution management.
-"""
+"""API routes for job execution management."""
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,7 +21,8 @@ def get_execution_service(db: AsyncSession = Depends(get_db)) -> ExecutionServic
 async def execute_workflow(execution_request: ExecuteWorkflowRequest):
     """Manually execute a workflow."""
     execution = await workflow_engine.execute_workflow(
-        workflow_id=execution_request.workflow_id, input_data=execution_request.input_data,
+        workflow_id=execution_request.workflow_id,
+        input_data=execution_request.input_data,
     )
     return execution
 

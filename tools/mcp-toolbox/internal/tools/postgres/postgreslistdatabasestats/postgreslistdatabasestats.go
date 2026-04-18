@@ -33,11 +33,11 @@ const resourceType string = "postgres-list-database-stats"
 const listDatabaseStats = `
     WITH database_stats AS (
         SELECT
-            s.datname AS database_name, 
-            -- Database Metadata 
+            s.datname AS database_name,
+            -- Database Metadata
             d.datallowconn AS is_connectable,
-            pg_get_userbyid(d.datdba) AS database_owner, 
-            ts.spcname AS default_tablespace,             
+            pg_get_userbyid(d.datdba) AS database_owner,
+            ts.spcname AS default_tablespace,
 
             -- Cache Performance
             CASE
@@ -70,7 +70,7 @@ const listDatabaseStats = `
             -- General Info
             s.numbackends AS active_connections,
             s.stats_reset AS statistics_last_reset,
-            pg_database_size(s.datid) AS database_size_bytes 
+            pg_database_size(s.datid) AS database_size_bytes
         FROM
             pg_stat_database s
         JOIN

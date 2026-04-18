@@ -1,6 +1,7 @@
-""" Multiple pages Google Form Example 
-        just add the field "pageHistory" to the request body
+"""Multiple pages Google Form Example
+just add the field "pageHistory" to the request body
 """
+
 import requests
 
 URL = "https://docs.google.com/forms/d/e/1FAIpQLSezUGYpq5iV9fUXymNoGzogcZgAqHuNBY-dOLR6LSDy2yub1g/formResponse"
@@ -9,7 +10,7 @@ data = {
     # Your name (required)
     #   Option: any text
     "entry.1715763968": "Your name",
-    # Your age 
+    # Your age
     #   Option: any text
     "entry.2032428014": "22",
     # None: Quiz 1 (required)
@@ -27,7 +28,7 @@ data = {
     # Do something? (required)
     #   Options: ['Option 1', 'Option 2', 'Option 3']
     "entry.368358396": "Option 1",
-    # Page History 
+    # Page History
     #   Options: from 0 to (number of page - 1)
     "pageHistory": "0,1,2,3,4",
 }
@@ -37,4 +38,3 @@ if res.status_code == 200:
     print("Successfully submitted the form")
 else:
     print("Error! Can't submit form", res.status_code)
-

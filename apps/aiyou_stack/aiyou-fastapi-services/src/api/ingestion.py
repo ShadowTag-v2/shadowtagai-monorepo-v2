@@ -252,7 +252,8 @@ async def get_ingested_items(
     tier: int | None = Query(None, ge=1, le=3, description="Filter by tier (1/2/3)"),
     source: str | None = Query(None, description="Filter by source prefix (e.g. 'reddit')"),
     since: datetime | None = Query(
-        None, description="Only items ingested after this UTC timestamp",
+        None,
+        description="Only items ingested after this UTC timestamp",
     ),
     limit: int = Query(100, ge=1, le=1000),
     offset: int = Query(0, ge=0),

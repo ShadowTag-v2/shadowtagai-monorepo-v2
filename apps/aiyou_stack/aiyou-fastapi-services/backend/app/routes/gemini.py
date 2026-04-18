@@ -1,5 +1,4 @@
-"""FastAPI routes for Gemini AI analysis.
-"""
+"""FastAPI routes for Gemini AI analysis."""
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -33,7 +32,8 @@ async def get_gemini_status(service: GeminiService = Depends(get_gemini_service)
 
 @router.post("/analyze", response_model=GeminiAnalysisResponse)
 async def analyze_system(
-    request: GeminiAnalysisRequest, service: GeminiService = Depends(get_gemini_service),
+    request: GeminiAnalysisRequest,
+    service: GeminiService = Depends(get_gemini_service),
 ):
     """Perform AI-powered analysis of a system using Gemini.
 
@@ -45,7 +45,8 @@ async def analyze_system(
     """
     if not service.is_available():
         raise HTTPException(
-            status_code=503, detail="Gemini AI is not available. Please configure API key.",
+            status_code=503,
+            detail="Gemini AI is not available. Please configure API key.",
         )
 
     try:
@@ -59,7 +60,8 @@ async def analyze_system(
 
 @router.post("/compare", response_model=ComparisonAnalysisResponse)
 async def compare_systems(
-    request: ComparisonAnalysisRequest, service: GeminiService = Depends(get_gemini_service),
+    request: ComparisonAnalysisRequest,
+    service: GeminiService = Depends(get_gemini_service),
 ):
     """Compare two systems (e.g., Judge #6 vs Ingestion Layer).
 
@@ -75,7 +77,8 @@ async def compare_systems(
     """
     if not service.is_available():
         raise HTTPException(
-            status_code=503, detail="Gemini AI is not available. Please configure API key.",
+            status_code=503,
+            detail="Gemini AI is not available. Please configure API key.",
         )
 
     try:
@@ -108,7 +111,8 @@ async def analyze_ingestion_layer(
     """
     if not service.is_available():
         raise HTTPException(
-            status_code=503, detail="Gemini AI is not available. Please configure API key.",
+            status_code=503,
+            detail="Gemini AI is not available. Please configure API key.",
         )
 
     request = GeminiAnalysisRequest(

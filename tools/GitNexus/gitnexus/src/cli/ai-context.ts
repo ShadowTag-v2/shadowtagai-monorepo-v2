@@ -1,6 +1,6 @@
 /**
  * AI Context Generator
- * 
+ *
  * Creates AGENTS.md and CLAUDE.md with full inline GitNexus context.
  * AGENTS.md is the standard read by Cursor, Windsurf, OpenCode, Codex, Cline, etc.
  * CLAUDE.md is for Claude Code which only reads that file.

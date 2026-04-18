@@ -1,8 +1,6 @@
 import pytest
 
-GitNexusDockerEnvironment = pytest.importorskip(
-    "environments.gitnexus_docker"
-).GitNexusDockerEnvironment
+GitNexusDockerEnvironment = pytest.importorskip("environments.gitnexus_docker").GitNexusDockerEnvironment
 tool_registry = pytest.importorskip("tool_registry")
 TOOL_SPECS = tool_registry.TOOL_SPECS
 

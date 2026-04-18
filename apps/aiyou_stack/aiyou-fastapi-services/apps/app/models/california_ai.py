@@ -362,7 +362,10 @@ class BatchAssessmentRequest(BaseModel):
     """Batch assessment request for multiple content items"""
 
     items: list[CaliforniaAIAssessmentRequest] = Field(
-        ..., min_length=1, max_length=100, description="Content items to assess",
+        ...,
+        min_length=1,
+        max_length=100,
+        description="Content items to assess",
     )
     parallel: bool = Field(default=True, description="Process items in parallel")
     fail_fast: bool = Field(default=False, description="Stop on first failure")

@@ -139,8 +139,7 @@ class AtomicConsensusOrchestrator:
         auto_archive: bool = True,
         tags: list[str] = None,
     ) -> dict[str, Any]:
-        """Full pipeline: Decompose → Consensus → Stitch
-        """
+        """Full pipeline: Decompose → Consensus → Stitch"""
         print(f"\n{'=' * 80}")
         print("ATOMIC CONSENSUS ORCHESTRATOR (ULTRATHINK)")
         print(f"{'=' * 80}\n")
@@ -297,7 +296,9 @@ Decomposition Hints: {", ".join(intake_data.get("decomposition_hints", []))}
             return user_message
 
     def _extract_token_usage(
-        self, final_result: dict[str, Any], threads: list[AtomicThread],
+        self,
+        final_result: dict[str, Any],
+        threads: list[AtomicThread],
     ) -> dict[str, dict[str, int]]:
         """Extract token usage from result and threads for cost tracking (Ultrathink).
         Returns: {model_name: {input: X, output: Y}}
@@ -358,7 +359,9 @@ Decomposition Hints: {", ".join(intake_data.get("decomposition_hints", []))}
         return model_usage
 
     async def _decompose_into_threads(
-        self, user_message: str, max_threads: int,
+        self,
+        user_message: str,
+        max_threads: int,
     ) -> list[AtomicThread]:
         """JR Layer: Claude decomposes message into atomic threads
         with Purpose/Reasons/Brakes
@@ -441,10 +444,10 @@ Each prompt should be self-contained."""
             return threads
 
     async def _execute_threads_with_consensus(
-        self, threads: list[AtomicThread],
+        self,
+        threads: list[AtomicThread],
     ) -> list[AtomicThread]:
-        """Execute threads concurrently, each with full consensus pipeline
-        """
+        """Execute threads concurrently, each with full consensus pipeline"""
         # Build execution order (topological sort)
         executed = set()
         results = []
@@ -481,10 +484,12 @@ Each prompt should be self-contained."""
         return results
 
     async def _execute_single_thread(
-        self, thread: AtomicThread, thread_index: int = 0, total_threads: int = 1,
+        self,
+        thread: AtomicThread,
+        thread_index: int = 0,
+        total_threads: int = 1,
     ) -> AtomicThread:
-        """Execute single thread with multi-model consensus + peer review
-        """
+        """Execute single thread with multi-model consensus + peer review"""
         start_time = time.time()
 
         try:
@@ -501,7 +506,9 @@ You MUST respect the brakes above. Provide structured response with clear reason
 
             # Broadcast to models (with Ultrathink allocation)
             model_responses = await self._broadcast_to_models(
-                enforced_prompt, thread_index, total_threads,
+                enforced_prompt,
+                thread_index,
+                total_threads,
             )
             thread.model_responses = model_responses
 
@@ -515,7 +522,9 @@ You MUST respect the brakes above. Provide structured response with clear reason
 
             # Synthesize consensus for this thread
             thread.consensus_result = await self._synthesize_thread_consensus(
-                thread, model_responses, peer_reviews,
+                thread,
+                model_responses,
+                peer_reviews,
             )
 
         except Exception as e:
@@ -526,7 +535,10 @@ You MUST respect the brakes above. Provide structured response with clear reason
         return thread
 
     async def _broadcast_to_models(
-        self, prompt: str, thread_index: int = 0, total_threads: int = 1,
+        self,
+        prompt: str,
+        thread_index: int = 0,
+        total_threads: int = 1,
     ) -> list[dict[str, Any]]:
         """Broadcast prompt to models based on Ultrathink allocation.
 
@@ -630,7 +642,9 @@ You MUST respect the brakes above. Provide structured response with clear reason
         return all_reviews
 
     async def _get_peer_review(
-        self, reviewer_resp: dict[str, Any], reviewed_resp: dict[str, Any],
+        self,
+        reviewer_resp: dict[str, Any],
+        reviewed_resp: dict[str, Any],
     ) -> dict[str, Any]:
         """Get one model to review another's response"""
         review_prompt = f"""Peer-review another AI model's response.
@@ -686,7 +700,10 @@ Provide critical review in JSON:
         }
 
     async def _synthesize_thread_consensus(
-        self, thread: AtomicThread, responses: list[dict[str, Any]], reviews: list[dict[str, Any]],
+        self,
+        thread: AtomicThread,
+        responses: list[dict[str, Any]],
+        reviews: list[dict[str, Any]],
     ) -> str:
         """Synthesize consensus for single thread"""
         context = f"""THREAD: {thread.thread_id}
@@ -728,10 +745,11 @@ Keep it concise and execution-ready."""
             return data["content"][0]["text"]
 
     async def _stitch_results(
-        self, original_message: str, threads: list[AtomicThread],
+        self,
+        original_message: str,
+        threads: list[AtomicThread],
     ) -> dict[str, Any]:
-        """Cor Layer: Claude stitches all thread results into final output
-        """
+        """Cor Layer: Claude stitches all thread results into final output"""
         successful = [t for t in threads if t.error is None and t.consensus_result]
         failed = [t for t in threads if t.error is not None or not t.consensus_result]
 

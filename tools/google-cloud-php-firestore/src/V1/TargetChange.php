@@ -264,4 +264,3 @@ class TargetChange extends \Google\Protobuf\Internal\Message
     }
 
 }
-

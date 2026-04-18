@@ -1,4 +1,3 @@
-"""AI You FastAPI Services - Service Package
-"""
+"""AI You FastAPI Services - Service Package"""
 
 __version__ = "1.0.0"

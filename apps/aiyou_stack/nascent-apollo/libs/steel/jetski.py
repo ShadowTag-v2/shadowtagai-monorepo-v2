@@ -6,8 +6,7 @@ logger = logging.getLogger("Jetski")
 
 
 class Jetski:
-    """Real-world Shell Executor for Self-Prompting n-autoresearch/Kosmos/BioAgents.
-    """
+    """Real-world Shell Executor for Self-Prompting n-autoresearch/Kosmos/BioAgents."""
 
     def __init__(self, working_dir: str = "."):
         self.working_dir = working_dir
@@ -24,7 +23,11 @@ class Jetski:
 
         try:
             result = subprocess.run(
-                args, cwd=self.working_dir, capture_output=True, text=True, timeout=self.timeout,
+                args,
+                cwd=self.working_dir,
+                capture_output=True,
+                text=True,
+                timeout=self.timeout,
             )
 
             stdout = result.stdout.strip()

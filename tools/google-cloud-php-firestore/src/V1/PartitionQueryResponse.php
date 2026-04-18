@@ -159,4 +159,3 @@ class PartitionQueryResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

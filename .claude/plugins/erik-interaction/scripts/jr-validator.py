@@ -73,40 +73,27 @@ def validate_jr(metrics: dict) -> list[str]:
 
     # ROI check
     if "roi" in metrics and metrics["roi"] < JR_CONSTRAINTS["roi_minimum"]:
-        violations.append(
-            f"⚠️ JR VIOLATION: ROI {metrics['roi']}× < {JR_CONSTRAINTS['roi_minimum']}× minimum"
-        )
+        violations.append(f"⚠️ JR VIOLATION: ROI {metrics['roi']}× < {JR_CONSTRAINTS['roi_minimum']}× minimum")
 
     # LTV:CAC check
     if "ltv_cac" in metrics and metrics["ltv_cac"] < JR_CONSTRAINTS["ltv_cac_minimum"]:
-        violations.append(
-            f"⚠️ JR VIOLATION: LTV:CAC {metrics['ltv_cac']}:1 < {JR_CONSTRAINTS['ltv_cac_minimum']}:1 minimum"
-        )
+        violations.append(f"⚠️ JR VIOLATION: LTV:CAC {metrics['ltv_cac']}:1 < {JR_CONSTRAINTS['ltv_cac_minimum']}:1 minimum")
 
     # Latency check
     if "p99_latency" in metrics and metrics["p99_latency"] > JR_CONSTRAINTS["p99_latency_ms"]:
-        violations.append(
-            f"⚠️ JR VIOLATION: p99 {metrics['p99_latency']}ms > {JR_CONSTRAINTS['p99_latency_ms']}ms limit"
-        )
+        violations.append(f"⚠️ JR VIOLATION: p99 {metrics['p99_latency']}ms > {JR_CONSTRAINTS['p99_latency_ms']}ms limit")
 
     # Kill switch check
     if "has_kill_switch" in metrics and not metrics["has_kill_switch"]:
         violations.append("⚠️ JR VIOLATION: No kill switch defined for deployment")
 
     # Iteration time check
-    if (
-        "timeline_weeks" in metrics
-        and metrics["timeline_weeks"] > JR_CONSTRAINTS["iteration_weeks"]
-    ):
-        violations.append(
-            f"⚠️ JR VIOLATION: {metrics['timeline_weeks']} weeks > {JR_CONSTRAINTS['iteration_weeks']} week iteration limit"
-        )
+    if "timeline_weeks" in metrics and metrics["timeline_weeks"] > JR_CONSTRAINTS["iteration_weeks"]:
+        violations.append(f"⚠️ JR VIOLATION: {metrics['timeline_weeks']} weeks > {JR_CONSTRAINTS['iteration_weeks']} week iteration limit")
 
     # Burn rate check
     if "monthly_cost" in metrics and metrics["monthly_cost"] > JR_CONSTRAINTS["monthly_burn_max"]:
-        violations.append(
-            f"⚠️ JR VIOLATION: ${metrics['monthly_cost']:,.0f}/mo > ${JR_CONSTRAINTS['monthly_burn_max']:,} budget"
-        )
+        violations.append(f"⚠️ JR VIOLATION: ${metrics['monthly_cost']:,.0f}/mo > ${JR_CONSTRAINTS['monthly_burn_max']:,} budget")
 
     return violations
 

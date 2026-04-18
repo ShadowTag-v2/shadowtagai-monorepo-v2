@@ -12,7 +12,7 @@ func ShieldInterceptor(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Log edge trigger
 		log.Printf("[SHIELD] Access intercepted at path: %s", r.URL.Path)
-		
+
 		// CRSMC Layer 1 Logic
 		signature := r.Header.Get("X-Internal-Shield-Sig")
 		if signature == "" {

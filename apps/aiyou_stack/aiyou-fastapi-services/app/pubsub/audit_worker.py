@@ -33,7 +33,8 @@ class AuditWorker:
 
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.subscription_id,
+            self.project_id,
+            self.subscription_id,
         )
 
         # GCS client for audit storage
@@ -63,7 +64,9 @@ class AuditWorker:
 
         # Generate signed URL (7 days)
         signed_url = blob.generate_signed_url(
-            version="v4", expiration=timedelta(days=7), method="GET",
+            version="v4",
+            expiration=timedelta(days=7),
+            method="GET",
         )
 
         return signed_url
@@ -147,7 +150,8 @@ class AuditWorker:
         print("Waiting for messages...")
 
         streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path, callback=self.process_message,
+            self.subscription_path,
+            callback=self.process_message,
         )
 
         try:
@@ -158,7 +162,9 @@ class AuditWorker:
             streaming_pull_future.result()
 
     def start_with_callback(
-        self, callback: Callable[[dict], None], timeout: float | None = None,
+        self,
+        callback: Callable[[dict], None],
+        timeout: float | None = None,
     ) -> None:
         """Start worker with custom callback for processing.
 
@@ -194,7 +200,8 @@ class AuditWorker:
         print(f"Starting Audit Worker (custom callback) on {self.subscription_path}")
 
         streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path, callback=wrapped_callback,
+            self.subscription_path,
+            callback=wrapped_callback,
         )
 
         try:

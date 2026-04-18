@@ -1,5 +1,4 @@
-"""FastAPI routes for workflow automation.
-"""
+"""FastAPI routes for workflow automation."""
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -26,26 +25,27 @@ def get_workflow_engine() -> WorkflowEngine:
 
 @router.get("/", response_model=ListWorkflowsResponse)
 async def list_workflows(engine: WorkflowEngine = Depends(get_workflow_engine)):
-    """List all available workflows.
-    """
+    """List all available workflows."""
     workflows = engine.get_workflows()
     return ListWorkflowsResponse(workflows=workflows, count=len(workflows))
 
 
 @router.post("/start", response_model=StartWorkflowResponse)
 async def start_workflow(
-    request: StartWorkflowRequest, engine: WorkflowEngine = Depends(get_workflow_engine),
+    request: StartWorkflowRequest,
+    engine: WorkflowEngine = Depends(get_workflow_engine),
 ):
-    """Start a new workflow execution.
-    """
+    """Start a new workflow execution."""
     try:
         execution, next_action = engine.start_workflow(
-            workflow_name=request.workflow_name, initial_variables=request.initial_variables,
+            workflow_name=request.workflow_name,
+            initial_variables=request.initial_variables,
         )
 
         if execution.status == WorkflowExecutionStatus.FAILED:
             raise HTTPException(
-                status_code=500, detail=f"Workflow execution failed: {execution.error}",
+                status_code=500,
+                detail=f"Workflow execution failed: {execution.error}",
             )
 
         return StartWorkflowResponse(
@@ -63,18 +63,20 @@ async def start_workflow(
 
 @router.post("/input", response_model=ProvideInputResponse)
 async def provide_input(
-    request: ProvideInputRequest, engine: WorkflowEngine = Depends(get_workflow_engine),
+    request: ProvideInputRequest,
+    engine: WorkflowEngine = Depends(get_workflow_engine),
 ):
-    """Provide user input for a waiting workflow.
-    """
+    """Provide user input for a waiting workflow."""
     try:
         execution, next_action = engine.provide_input(
-            execution_id=request.execution_id, input_value=request.input_value,
+            execution_id=request.execution_id,
+            input_value=request.input_value,
         )
 
         if execution.status == WorkflowExecutionStatus.FAILED:
             raise HTTPException(
-                status_code=500, detail=f"Workflow execution failed: {execution.error}",
+                status_code=500,
+                detail=f"Workflow execution failed: {execution.error}",
             )
 
         return ProvideInputResponse(
@@ -92,10 +94,10 @@ async def provide_input(
 
 @router.get("/status/{execution_id}", response_model=WorkflowStatusResponse)
 async def get_workflow_status(
-    execution_id: str, engine: WorkflowEngine = Depends(get_workflow_engine),
+    execution_id: str,
+    engine: WorkflowEngine = Depends(get_workflow_engine),
 ):
-    """Get the status of a workflow execution.
-    """
+    """Get the status of a workflow execution."""
     execution = engine.get_execution(execution_id)
     if not execution:
         raise HTTPException(status_code=404, detail=f"Execution '{execution_id}' not found")

@@ -139,7 +139,8 @@ class ParticleSwarm:
                 beta2=self.config.beta2,
             )
             particle.update_position(
-                bounds=self.config.bounds, max_velocity=self.config.max_velocity,
+                bounds=self.config.bounds,
+                max_velocity=self.config.max_velocity,
             )
 
         # Track history and stagnation
@@ -188,10 +189,14 @@ class ParticleSwarm:
         # Update velocities and positions
         for particle in self.particles:
             particle.update_velocity(
-                global_best=self.global_best, w=w, c1=self.config.c1, c2=self.config.c2,
+                global_best=self.global_best,
+                w=w,
+                c1=self.config.c1,
+                c2=self.config.c2,
             )
             particle.update_position(
-                bounds=self.config.bounds, max_velocity=self.config.max_velocity,
+                bounds=self.config.bounds,
+                max_velocity=self.config.max_velocity,
             )
 
         self.fitness_history.append(self.global_best_fitness)

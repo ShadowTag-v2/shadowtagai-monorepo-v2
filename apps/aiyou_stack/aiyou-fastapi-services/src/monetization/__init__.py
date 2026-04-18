@@ -439,12 +439,14 @@ class UsageTracker:
                 "items_collected": self.current_usage.items_collected,
                 "items_limit": self.plan.max_items_per_day,
                 "items_remaining": max(
-                    0, self.plan.max_items_per_day - self.current_usage.items_collected,
+                    0,
+                    self.plan.max_items_per_day - self.current_usage.items_collected,
                 ),
                 "api_calls": self.current_usage.api_calls_made,
                 "api_calls_limit": self.plan.max_api_calls_per_month,
                 "api_calls_remaining": max(
-                    0, self.plan.max_api_calls_per_month - self.current_usage.api_calls_made,
+                    0,
+                    self.plan.max_api_calls_per_month - self.current_usage.api_calls_made,
                 ),
             },
             "overages": {

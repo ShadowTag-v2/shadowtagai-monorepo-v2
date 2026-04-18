@@ -195,7 +195,10 @@ class KillSwitch:
     action: str = ""
 
     def evaluate(
-        self, current_mrr: int, current_pilots: int = 0, current_ltv_cac: float = 0.0,
+        self,
+        current_mrr: int,
+        current_pilots: int = 0,
+        current_ltv_cac: float = 0.0,
     ) -> bool:
         """Check if kill-switch triggered"""
         triggers = []

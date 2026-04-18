@@ -99,7 +99,7 @@ function authWithCredential(credential) {
   const auth = getAuth();
   signInWithCredential(auth, credential)
     .then((result) => {
-      // Signed in 
+      // Signed in
       // ...
     })
     .catch((error) => {

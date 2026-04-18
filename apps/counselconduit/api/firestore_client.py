@@ -50,9 +50,7 @@ async def store_attestation(firm_id: str, attestation: dict[str, Any]) -> str:
     """Store an attestation receipt. Immutable — no update/delete allowed."""
     db = _get_client()
     attestation_id = attestation["attestation_id"]
-    doc_ref = db.collection("firms").document(firm_id).collection(
-        "attestations"
-    ).document(attestation_id)
+    doc_ref = db.collection("firms").document(firm_id).collection("attestations").document(attestation_id)
     await doc_ref.set(
         {
             **attestation,
@@ -67,13 +65,7 @@ async def store_attestation(firm_id: str, attestation: dict[str, Any]) -> str:
 async def get_attestation(firm_id: str, attestation_id: str) -> dict[str, Any] | None:
     """Retrieve an attestation receipt."""
     db = _get_client()
-    doc = (
-        await db.collection("firms")
-        .document(firm_id)
-        .collection("attestations")
-        .document(attestation_id)
-        .get()
-    )
+    doc = await db.collection("firms").document(firm_id).collection("attestations").document(attestation_id).get()
     return doc.to_dict() if doc.exists else None
 
 
@@ -84,9 +76,7 @@ async def store_matter(firm_id: str, matter: dict[str, Any]) -> str:
     """Store a magic link matter."""
     db = _get_client()
     matter_id = matter["matter_id"]
-    doc_ref = db.collection("firms").document(firm_id).collection(
-        "matters"
-    ).document(matter_id)
+    doc_ref = db.collection("firms").document(firm_id).collection("matters").document(matter_id)
     await doc_ref.set(
         {
             **matter,
@@ -100,9 +90,7 @@ async def store_matter(firm_id: str, matter: dict[str, Any]) -> str:
 async def consume_matter_token(firm_id: str, matter_id: str) -> bool:
     """Mark a magic link token as consumed (single-use)."""
     db = _get_client()
-    doc_ref = db.collection("firms").document(firm_id).collection(
-        "matters"
-    ).document(matter_id)
+    doc_ref = db.collection("firms").document(firm_id).collection("matters").document(matter_id)
     doc = await doc_ref.get()
     if not doc.exists:
         return False
@@ -120,9 +108,7 @@ async def store_gdpr_request(firm_id: str, request: dict[str, Any]) -> str:
     """Store a GDPR deletion request (30-day grace period)."""
     db = _get_client()
     request_id = request["receipt_id"]
-    doc_ref = db.collection("firms").document(firm_id).collection(
-        "gdpr"
-    ).document(request_id)
+    doc_ref = db.collection("firms").document(firm_id).collection("gdpr").document(request_id)
     await doc_ref.set(
         {
             **request,
@@ -140,9 +126,7 @@ async def store_session(firm_id: str, session: dict[str, Any]) -> str:
     """Store a vent/oracle session."""
     db = _get_client()
     session_id = session["session_id"]
-    doc_ref = db.collection("firms").document(firm_id).collection(
-        "sessions"
-    ).document(session_id)
+    doc_ref = db.collection("firms").document(firm_id).collection("sessions").document(session_id)
     await doc_ref.set(
         {
             **session,
@@ -152,16 +136,12 @@ async def store_session(firm_id: str, session: dict[str, Any]) -> str:
     return session_id
 
 
-async def append_session_message(
-    firm_id: str, session_id: str, role: str, content: str
-) -> None:
+async def append_session_message(firm_id: str, session_id: str, role: str, content: str) -> None:
     """Append a message to a session transcript."""
     from google.cloud import firestore as fs
 
     db = _get_client()
-    doc_ref = db.collection("firms").document(firm_id).collection(
-        "sessions"
-    ).document(session_id)
+    doc_ref = db.collection("firms").document(firm_id).collection("sessions").document(session_id)
     await doc_ref.update(
         {
             "messages": fs.ArrayUnion(
@@ -193,9 +173,7 @@ async def update_attorney_usage(
 
     db = _get_client()
     month_key = datetime.now(UTC).strftime("%Y-%m")
-    doc_ref = db.collection("attorneys").document(attorney_id).collection(
-        "usage"
-    ).document(month_key)
+    doc_ref = db.collection("attorneys").document(attorney_id).collection("usage").document(month_key)
     await doc_ref.set(
         {
             "tokens_used": fs.Increment(tokens_used),
@@ -249,4 +227,3 @@ async def write_audit_log(entry: AuditEntry) -> None:
         entry.resource_type,
         entry.resource_id,
     )
-

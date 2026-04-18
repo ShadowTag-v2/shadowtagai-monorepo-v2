@@ -163,7 +163,10 @@ class WeightOptimizer:
                 self.network.weights = weights
 
     def create_fitness_wrapper(
-        self, data: np.ndarray, labels: np.ndarray, batch_size: int | None = None,
+        self,
+        data: np.ndarray,
+        labels: np.ndarray,
+        batch_size: int | None = None,
     ) -> Callable[[np.ndarray], float]:
         """Create a fitness function wrapper for PSO.
 
@@ -266,7 +269,8 @@ class WeightOptimizer:
         fitness_wrapper = self.create_fitness_wrapper(data, labels, batch_size)
 
         result = await self.swarm.optimize_async(
-            fitness_fn=fitness_wrapper, max_iterations=max_iterations,
+            fitness_fn=fitness_wrapper,
+            max_iterations=max_iterations,
         )
 
         self._optimized_weights = result.best_position

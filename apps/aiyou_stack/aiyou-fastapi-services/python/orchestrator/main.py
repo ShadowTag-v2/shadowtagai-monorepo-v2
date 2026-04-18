@@ -15,13 +15,16 @@ from pydantic import BaseModel, Field
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 # Prometheus metrics
 REQUEST_COUNT = Counter(
-    "http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"],
+    "http_requests_total",
+    "Total HTTP requests",
+    ["method", "endpoint", "status"],
 )
 REQUEST_LATENCY = Histogram("http_request_duration_seconds", "HTTP request latency", ["endpoint"])
 JUDGE_COVERAGE = Gauge("judge_coverage_ratio", "Judge #6 coverage ratio")

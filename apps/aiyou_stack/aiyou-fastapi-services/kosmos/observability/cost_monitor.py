@@ -34,7 +34,6 @@ class BudgetExceededError(Exception):
     """Raised when budget limit would be exceeded."""
 
 
-
 class CostMonitor:
     """Monitor and control LLM inference costs.
 

@@ -2,12 +2,12 @@
 
 ## Patient Information
 
-**Patient Name:** [Last, First] or [Patient ID for teaching/research contexts]  
-**Date of Birth:** [MM/DD/YYYY]  
-**Medical Record Number:** [MRN]  
-**Date of Visit:** [MM/DD/YYYY]  
-**Time:** [HH:MM]  
-**Location:** [Clinic, Hospital Floor, ED, etc.]  
+**Patient Name:** [Last, First] or [Patient ID for teaching/research contexts]
+**Date of Birth:** [MM/DD/YYYY]
+**Medical Record Number:** [MRN]
+**Date of Visit:** [MM/DD/YYYY]
+**Time:** [HH:MM]
+**Location:** [Clinic, Hospital Floor, ED, etc.]
 **Provider:** [Your name and credentials]
 
 ---
@@ -65,36 +65,36 @@
 
 ### Physical Examination
 
-**General Appearance:**  
+**General Appearance:**
 [Well-appearing, no distress / ill-appearing / mild/moderate/severe distress]
 
-**HEENT:**  
+**HEENT:**
 - Head: [Normocephalic, atraumatic]
 - Eyes: [PERRLA, EOMI, conjunctiva, sclera]
 - Ears: [TMs clear bilaterally, canals patent]
 - Nose: [Nares patent, no discharge]
 - Throat: [Oropharynx clear, no erythema or exudate, mucosa moist]
 
-**Neck:**  
+**Neck:**
 [Supple, no lymphadenopathy, no thyromegaly, no JVD, carotids 2+ without bruits]
 
-**Cardiovascular:**  
-[RRR, normal S1/S2, no murmurs/rubs/gallops] OR [describe abnormalities]  
+**Cardiovascular:**
+[RRR, normal S1/S2, no murmurs/rubs/gallops] OR [describe abnormalities]
 [Peripheral pulses: radial 2+/2+ bilaterally, dorsalis pedis 2+/2+ bilaterally]
 
-**Pulmonary:**  
+**Pulmonary:**
 [Lungs clear to auscultation bilaterally, no wheezes/rales/rhonchi, normal work of breathing] OR [describe abnormalities]
 
-**Abdomen:**  
+**Abdomen:**
 [Soft, non-tender, non-distended, normoactive bowel sounds, no masses, no hepatosplenomegaly, no rebound/guarding]
 
-**Extremities:**  
+**Extremities:**
 [No edema, no cyanosis, no clubbing, full range of motion, no joint swelling or tenderness]
 
-**Skin:**  
+**Skin:**
 [Warm and dry, no rashes, no lesions, normal turgor, capillary refill <2 sec]
 
-**Neurological:**  
+**Neurological:**
 - Mental status: [Alert and oriented to person, place, time]
 - Cranial nerves: [II-XII intact] OR [specify abnormalities]
 - Motor: [5/5 strength all extremities, normal tone]
@@ -103,7 +103,7 @@
 - Gait: [Normal / not assessed]
 - Coordination: [Finger-to-nose intact, rapid alternating movements normal]
 
-**Psychiatric:**  
+**Psychiatric:**
 [Normal mood and affect, thought process logical and goal-directed, no SI/HI]
 
 ### Laboratory Results (if applicable)
@@ -215,8 +215,8 @@
 
 ## Signature
 
-[Provider name, credentials]  
-[Electronic signature or handwritten signature]  
+[Provider name, credentials]
+[Electronic signature or handwritten signature]
 [Date and time of documentation]
 
 ---
@@ -249,5 +249,3 @@
 - Include or exclude sections as relevant
 - Follow institutional templates if required
 - Use problem-oriented approach consistently
-
-

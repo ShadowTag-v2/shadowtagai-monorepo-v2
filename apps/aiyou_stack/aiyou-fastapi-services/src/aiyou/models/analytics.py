@@ -24,7 +24,9 @@ class RevenueEvent(Base):
 
     # Event classification
     event_type = Column(
-        String(100), nullable=False, index=True,
+        String(100),
+        nullable=False,
+        index=True,
     )  # subscription, purchase, stream, etc.
     service = Column(String(50), nullable=False, index=True)  # cineverse, gameport, commerce
 
@@ -48,7 +50,10 @@ class RevenueEvent(Base):
 
     # Timestamp
     occurred_at = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True,
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+        index=True,
     )
 
     def __repr__(self):
@@ -93,7 +98,10 @@ class UserEvent(Base):
 
     # Timestamp
     occurred_at = Column(
-        DateTime(timezone=True), server_default=func.now(), nullable=False, index=True,
+        DateTime(timezone=True),
+        server_default=func.now(),
+        nullable=False,
+        index=True,
     )
 
     def __repr__(self):

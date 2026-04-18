@@ -138,17 +138,17 @@ name: search_docs
 type: bigquery-sql
 source: my-bigquery-source
 statement: |
-  SELECT 
-    id, 
-    content, 
-    ML.DISTANCE(embedding, @query, 'COSINE') AS distance 
-  FROM 
-    `my-project.my-dataset.vector_table` 
-  ORDER BY 
-    distance 
+  SELECT
+    id,
+    content,
+    ML.DISTANCE(embedding, @query, 'COSINE') AS distance
+  FROM
+    `my-project.my-dataset.vector_table`
+  ORDER BY
+    distance
   LIMIT 1
 description: |
-  Search for documents using natural language. 
+  Search for documents using natural language.
   Returns the most semantically similar result.
 parameters:
   - name: query

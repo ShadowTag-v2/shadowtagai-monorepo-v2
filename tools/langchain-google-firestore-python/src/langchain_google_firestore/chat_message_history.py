@@ -59,9 +59,7 @@ class FirestoreChatMessageHistory(BaseChatMessageHistory):
         if doc.exists:
             data_messages = doc.to_dict()
             if "messages" in data_messages:
-                self.messages = convert_messages_to_langchain(
-                    self.encode_message, data_messages["messages"]
-                )
+                self.messages = convert_messages_to_langchain(self.encode_message, data_messages["messages"])
 
     def add_message(self, message: BaseMessage) -> None:
         self.messages.append(message)
@@ -82,9 +80,7 @@ def encode_messages(messages: list[BaseMessage]) -> list[bytes]:
     return [str.encode(m.json()) for m in messages]
 
 
-def convert_messages_to_langchain(
-    is_encoded: bool, messages: list[bytes]
-) -> list[BaseMessage]:
+def convert_messages_to_langchain(is_encoded: bool, messages: list[bytes]) -> list[BaseMessage]:
     if is_encoded:
         dict_messages = [json.loads(m.decode()) for m in messages]
     else:

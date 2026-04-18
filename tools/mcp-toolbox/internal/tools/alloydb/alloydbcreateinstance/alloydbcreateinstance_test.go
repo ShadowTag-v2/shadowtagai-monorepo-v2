@@ -60,7 +60,7 @@ func TestParseFromYaml(t *testing.T) {
             type: alloydb-create-instance
             source: my-alloydb-admin-source
             description: some description
-            authRequired: 
+            authRequired:
             - my-google-auth-service
             - other-auth-service
             `,

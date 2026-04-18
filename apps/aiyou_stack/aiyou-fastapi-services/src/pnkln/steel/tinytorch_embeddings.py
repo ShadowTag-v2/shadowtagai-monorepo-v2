@@ -16,7 +16,8 @@ class Embedding:
         # Xavier initialization
         limit = math.sqrt(6.0 / (vocab_size + embed_dim))
         self.weight = Tensor(
-            np.random.uniform(-limit, limit, (vocab_size, embed_dim)), requires_grad=True,
+            np.random.uniform(-limit, limit, (vocab_size, embed_dim)),
+            requires_grad=True,
         )
 
     def forward(self, indices: Tensor) -> Tensor:
@@ -49,7 +50,8 @@ class PositionalEncoding:
 
         limit = math.sqrt(2.0 / embed_dim)
         self.position_embeddings = Tensor(
-            np.random.uniform(-limit, limit, (max_seq_len, embed_dim)), requires_grad=True,
+            np.random.uniform(-limit, limit, (max_seq_len, embed_dim)),
+            requires_grad=True,
         )
 
     def forward(self, x: Tensor) -> Tensor:

@@ -242,7 +242,10 @@ class KernelFunctionRegistry:
             },
         )
         def wealth_analyze(
-            revenue_monthly: float, cac: float, ltv: float, churn_rate: float,
+            revenue_monthly: float,
+            cac: float,
+            ltv: float,
+            churn_rate: float,
         ) -> dict:
             """Wealth Planning Model
 

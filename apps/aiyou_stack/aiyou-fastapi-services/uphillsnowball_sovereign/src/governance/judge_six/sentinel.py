@@ -32,11 +32,11 @@ class JudgeSixSentinel:
     def __init__(self):
         self.memory = MemoryBank()
         self.forbidden = [
-            "sk-",          # API key leak
-            "rm -rf",       # destructive cmd
-            "0.0.0.0/0",   # open CIDR
-            "DROP TABLE",   # SQL injection
-            "sudo ",        # privilege escalation
+            "sk-",  # API key leak
+            "rm -rf",  # destructive cmd
+            "0.0.0.0/0",  # open CIDR
+            "DROP TABLE",  # SQL injection
+            "sudo ",  # privilege escalation
         ]
 
     def evaluate(self, query: str, context: str = "general") -> dict:

@@ -258,7 +258,10 @@ class ContentSafetyService:
         }
 
     async def log_violation(
-        self, violation_type: str, content_snippet: str, metadata: dict[str, Any] | None = None,
+        self,
+        violation_type: str,
+        content_snippet: str,
+        metadata: dict[str, Any] | None = None,
     ) -> bool:
         """Log a safety violation for audit trail"""
         try:

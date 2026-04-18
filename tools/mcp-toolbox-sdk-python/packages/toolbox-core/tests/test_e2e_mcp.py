@@ -110,9 +110,7 @@ class TestBasicE2E:
 @pytest.mark.asyncio
 @pytest.mark.usefixtures("toolbox_server")
 class TestBindParams:
-    async def test_bind_params(
-        self, toolbox: ToolboxClient, get_n_rows_tool: ToolboxTool
-    ):
+    async def test_bind_params(self, toolbox: ToolboxClient, get_n_rows_tool: ToolboxTool):
         """Bind a param to an existing tool."""
         new_tool = get_n_rows_tool.bind_params({"num_rows": "3"})
         response = await new_tool()
@@ -122,9 +120,7 @@ class TestBindParams:
         assert "row3" in response
         assert "row4" not in response
 
-    async def test_bind_params_callable(
-        self, toolbox: ToolboxClient, get_n_rows_tool: ToolboxTool
-    ):
+    async def test_bind_params_callable(self, toolbox: ToolboxClient, get_n_rows_tool: ToolboxTool):
         """Bind a callable param to an existing tool."""
         new_tool = get_n_rows_tool.bind_params({"num_rows": lambda: "3"})
         response = await new_tool()
@@ -138,9 +134,7 @@ class TestBindParams:
 @pytest.mark.asyncio
 @pytest.mark.usefixtures("toolbox_server")
 class TestAuth:
-    async def test_run_tool_unauth_with_auth(
-        self, toolbox: ToolboxClient, auth_token2: str
-    ):
+    async def test_run_tool_unauth_with_auth(self, toolbox: ToolboxClient, auth_token2: str):
         """Tests running a tool that doesn't require auth, with auth provided."""
 
         with pytest.raises(
@@ -187,9 +181,7 @@ class TestAuth:
         async def get_token_asynchronously():
             return auth_token1
 
-        auth_tool = tool.add_auth_token_getters(
-            {"my-test-auth": get_token_asynchronously}
-        )
+        auth_tool = tool.add_auth_token_getters({"my-test-auth": get_token_asynchronously})
         response = await auth_tool(id="2")
         assert "row2" in response
 
@@ -213,9 +205,7 @@ class TestAuth:
         assert "row5" in response
         assert "row6" in response
 
-    async def test_run_tool_param_auth_no_field(
-        self, toolbox: ToolboxClient, auth_token1: str
-    ):
+    async def test_run_tool_param_auth_no_field(self, toolbox: ToolboxClient, auth_token1: str):
         """Tests running a tool with a param requiring auth, with insufficient auth."""
         tool = await toolbox.load_tool(
             "get-row-by-content-auth",
@@ -423,15 +413,11 @@ class TestMapParams:
         assert '"user_scores":{"user1":100,"user2":200}' in response
         assert '"feature_flags":{"new_feature":true}' in response
 
-    async def test_run_tool_with_optional_map_param_omitted(
-        self, toolbox: ToolboxClient
-    ):
+    async def test_run_tool_with_optional_map_param_omitted(self, toolbox: ToolboxClient):
         """Invoke a tool without the optional map parameter."""
         tool = await toolbox.load_tool("process-data")
 
-        response = await tool(
-            execution_context={"env": "dev"}, user_scores={"user3": 300}
-        )
+        response = await tool(execution_context={"env": "dev"}, user_scores={"user3": 300})
         assert isinstance(response, str)
         assert '"execution_context":{"env":"dev"}' in response
         assert '"user_scores":{"user3":300}' in response

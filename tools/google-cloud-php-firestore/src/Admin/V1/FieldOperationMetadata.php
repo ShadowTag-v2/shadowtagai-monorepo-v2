@@ -370,4 +370,3 @@ class FieldOperationMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

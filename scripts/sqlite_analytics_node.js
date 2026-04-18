@@ -15,7 +15,7 @@ const db = new sqlite3.Database(':memory:', (err) => {
 db.serialize(() => {
     db.run("CREATE TABLE IF NOT EXISTS analytics (id INTEGER PRIMARY KEY, metric_name TEXT, count INTEGER, date TEXT)");
     const stmt = db.prepare("INSERT INTO analytics (metric_name, count, date) VALUES (?, ?, ?)");
-    
+
     // Seed dummy data matching our chart array lengths
     stmt.run("inbound_intake", 12, "Mon");
     stmt.run("inbound_intake", 19, "Tue");

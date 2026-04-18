@@ -58,9 +58,7 @@ def firestore_client():
 
 
 @pytest.fixture(autouse=True)
-def cleanup_firestore(
-    test_case: TestCase, test_collection: str, client: firestore.Client
-):
+def cleanup_firestore(test_case: TestCase, test_collection: str, client: firestore.Client):
     """Deletes all documents in the test collection. Will be run before each test."""
     collection = client.collection(test_collection)
     snapshots = collection.list_documents()
@@ -184,9 +182,7 @@ def test_firestore_add_image_vectors(
     An end-to-end test for adding image vectors to FirestoreVectorStore.
     """
     # Create FirestoreVectorStore instance
-    firestore_store = FirestoreVectorStore(
-        test_collection, image_embeddings, client=client
-    )
+    firestore_store = FirestoreVectorStore(test_collection, image_embeddings, client=client)
 
     image_uri1 = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
     image_uri2 = "gs://github-repo/img/vision/google-cloud-next.jpeg"
@@ -217,9 +213,7 @@ def test_firestore_add_image_vectors_store_encodings_true(
     A test for adding image vectors to FirestoreVectorStore without storing base64 encoding.
     """
     # Create FirestoreVectorStore instance
-    firestore_store = FirestoreVectorStore(
-        test_collection, image_embeddings, client=client
-    )
+    firestore_store = FirestoreVectorStore(test_collection, image_embeddings, client=client)
 
     image_uri = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
 
@@ -236,9 +230,7 @@ def test_firestore_add_image_vectors_store_encodings_true(
         data = doc.to_dict()
         test_case.assertEqual(doc.id, _id)
         test_case.assertEqual(data["metadata"], metadata)
-        test_case.assertEqual(
-            data["content"], firestore_store._encode_image(image_path)
-        )
+        test_case.assertEqual(data["content"], firestore_store._encode_image(image_path))
 
 
 def test_firestore_update_vectors(
@@ -356,9 +348,7 @@ def test_firestore_similarity_search_with_filters(
     query_vector = firestore_store.collection.document("1").get().to_dict()["embedding"]
 
     # Perform similarity search
-    results = firestore_store.similarity_search(
-        "test1", k=2, filters=FieldFilter("metadata.foo", "==", "bar")
-    )
+    results = firestore_store.similarity_search("test1", k=2, filters=FieldFilter("metadata.foo", "==", "bar"))
 
     # Verify that the search results are as expected with the filter applied
     test_case.assertEqual(
@@ -399,9 +389,7 @@ def test_firestore_similarity_search_by_vector(
     firestore_store.add_texts(["test1", "test2"], ids=["1", "2"])
 
     # Perform similarity search
-    results = firestore_store.similarity_search_by_vector(
-        embeddings.embed_query("test1"), k
-    )
+    results = firestore_store.similarity_search_by_vector(embeddings.embed_query("test1"), k)
 
     # Verify that the search results are as expected
     test_case.assertEqual(len(results), k)
@@ -418,9 +406,7 @@ def test_firestore_image_similarity_search(
     """
 
     # Create FirestoreVectorStore instance
-    firestore_store = FirestoreVectorStore(
-        test_collection, image_embeddings, client=client
-    )
+    firestore_store = FirestoreVectorStore(test_collection, image_embeddings, client=client)
 
     k = 1
 
@@ -487,9 +473,7 @@ def test_firestore_max_marginal_relevance_by_vector(
     )
 
     # Perform max marginal relevance
-    results = firestore_store.max_marginal_relevance_search_by_vector(
-        embeddings.embed_query("1"), k
-    )
+    results = firestore_store.max_marginal_relevance_search_by_vector(embeddings.embed_query("1"), k)
 
     # Verify that the search results are as expected, matching `k`
     test_case.assertEqual(len(results), k)

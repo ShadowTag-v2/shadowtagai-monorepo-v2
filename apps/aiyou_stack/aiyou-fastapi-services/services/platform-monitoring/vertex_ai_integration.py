@@ -59,7 +59,9 @@ class VertexAIAnalyzer:
         self.model = "gemini-2.0-pro"  # Mock for now
 
     async def analyze_cost_optimization(
-        self, cost_data: dict, budget_data: dict,
+        self,
+        cost_data: dict,
+        budget_data: dict,
     ) -> list[AIRecommendation]:
         """Analyze costs and provide optimization recommendations
 
@@ -155,7 +157,9 @@ class VertexAIAnalyzer:
         return recommendations
 
     async def detect_anomalies(
-        self, metrics_history: list[dict], current_metrics: dict,
+        self,
+        metrics_history: list[dict],
+        current_metrics: dict,
     ) -> list[dict]:
         """Detect anomalies in platform metrics
 
@@ -316,7 +320,10 @@ class VertexAIService:
         self.analyzer = VertexAIAnalyzer()
 
     async def get_optimization_recommendations(
-        self, cost_data: dict, performance_data: dict, budget_data: dict,
+        self,
+        cost_data: dict,
+        performance_data: dict,
+        budget_data: dict,
     ) -> list[AIRecommendation]:
         """Get all optimization recommendations"""
         cost_recs = await self.analyzer.analyze_cost_optimization(cost_data, budget_data)
@@ -331,13 +338,17 @@ class VertexAIService:
         return all_recs
 
     async def get_platform_insights(
-        self, all_metrics: dict, cost_data: dict, performance_data: dict,
+        self,
+        all_metrics: dict,
+        cost_data: dict,
+        performance_data: dict,
     ) -> dict:
         """Get comprehensive platform insights"""
         health_analysis = await self.analyzer.analyze_platform_health(all_metrics)
         anomalies = await self.analyzer.detect_anomalies([], all_metrics)
         intelligent_alerts = await self.analyzer.generate_intelligent_alerts(
-            all_metrics, {"latency_ms": 100, "error_rate": 0.05},
+            all_metrics,
+            {"latency_ms": 100, "error_rate": 0.05},
         )
 
         return {
@@ -361,7 +372,9 @@ if __name__ == "__main__":
 
         # Get recommendations
         recommendations = await service.get_optimization_recommendations(
-            cost_data, performance_data, budget_data,
+            cost_data,
+            performance_data,
+            budget_data,
         )
 
         print("AI Recommendations:")

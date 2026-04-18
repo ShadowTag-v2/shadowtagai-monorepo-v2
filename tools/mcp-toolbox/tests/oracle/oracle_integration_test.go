@@ -289,12 +289,12 @@ func testDmlQueries(t *testing.T, toolName, paramsJSON, wantResponseSubStr strin
 
 	// Construct the JSON-RPC request body
 	reqBody := fmt.Sprintf(`{
-		"jsonrpc": "2.0", 
-		"method": "tools/call", 
+		"jsonrpc": "2.0",
+		"method": "tools/call",
 		"params": {
-			"name": "%s", 
+			"name": "%s",
 			"arguments": %s
-		}, 
+		},
 		"id": 1
 	}`, toolName, paramsJSON)
 

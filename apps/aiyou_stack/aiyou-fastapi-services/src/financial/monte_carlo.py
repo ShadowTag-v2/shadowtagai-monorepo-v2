@@ -23,8 +23,7 @@ def mcarlo_rev(n, base, sd, yrs=5, gr=0.6):
 
 
 def mcarlo_val(n, rev_mult, rev_samples):
-    """Calculates valuation metrics from revenue samples.
-    """
+    """Calculates valuation metrics from revenue samples."""
     out = [max(0, rev_mult * rv) for rv in rev_samples]
     return {
         "mean": st.mean(out),
@@ -36,8 +35,7 @@ def mcarlo_val(n, rev_mult, rev_samples):
 
 
 def mcarlo_bundle(cfg):
-    """Bundles multiple scenarios into a total valuation.
-    """
+    """Bundles multiple scenarios into a total valuation."""
     vals = []
     comps = {}
     for k, v in cfg.items():

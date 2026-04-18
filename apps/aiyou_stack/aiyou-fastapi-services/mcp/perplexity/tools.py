@@ -56,7 +56,8 @@ def governance_score(
 
     # Calculate risk score
     base_risk = {"purchase": 30, "checkout": 40, "query": 10, "generate": 15, "delete": 50}.get(
-        request_type.lower(), 20,
+        request_type.lower(),
+        20,
     )
 
     if transaction_value and transaction_value > 1000:
@@ -148,7 +149,8 @@ def log_to_manifest(
     MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     run_id = governance_result.get(
-        "request_id", hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:16],
+        "request_id",
+        hashlib.sha256(str(datetime.now()).encode()).hexdigest()[:16],
     )
     timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 

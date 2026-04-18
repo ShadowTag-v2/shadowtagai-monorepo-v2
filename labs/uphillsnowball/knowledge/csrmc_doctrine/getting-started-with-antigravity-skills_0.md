@@ -335,10 +335,10 @@ Instructions
   - `array` -> `List[Type]`
   - `null` -> `Optional[Type]`
   - Nested Objects -> Create a separate sub-class.
- 
+
 3. **Follow the Example**:
   Review `examples/` to see how to structure the output code. notice how nested dictionaries like `preferences` are extracted into their own class.
- 
+
   - Input: `examples/input_data.json`
   - Output: `examples/output_model.py`
 
@@ -447,7 +447,7 @@ Instructions
 1. **Do not read the file manually** to check for errors. The rules are complex and easily missed by eye.
 2. **Run the Validation Script**:
   Use the `run_command` tool to execute the python script provided in the `scripts/` folder against the user's file.
- 
+
   `python scripts/validate_schema.py <path_to_user_file>`
 
 3. **Interpret Output**:
@@ -471,25 +471,25 @@ def validate_schema(filename):
    try:
        with open(filename, 'r') as f:
            content = f.read()
-          
+
        lines = content.split('\n')
        errors = []
-      
+
        # Check 1: No DROP TABLE
        if re.search(r'DROP TABLE', content, re.IGNORECASE):
            errors.append("ERROR: 'DROP TABLE' statements are forbidden.")
-          
+
        # Check 2 & 3: CREATE TABLE checks
        table_defs = re.finditer(r'CREATE TABLE\s+(?P<name>\w+)\s*\((?P<body>.*?)\);', content, re.DOTALL | re.IGNORECASE)
-      
+
        for match in table_defs:
            table_name = match.group('name')
            body = match.group('body')
-          
+
            # Snake case check
            if not re.match(r'^[a-z][a-z0-9_]*$', table_name):
                errors.append(f"ERROR: Table '{table_name}' must be snake_case.")
-              
+
            # Primary key check
            if not re.search(r'\bid\b.*PRIMARY KEY', body, re.IGNORECASE):
                errors.append(f"ERROR: Table '{table_name}' is missing a primary key named 'id'.")
@@ -501,7 +501,7 @@ def validate_schema(filename):
        else:
            print("Schema validation passed.")
            sys.exit(0)
-          
+
    except FileNotFoundError:
        print(f"Error: File '{filename}' not found.")
        sys.exit(1)
@@ -510,7 +510,7 @@ if __name__ == "__main__":
    if len(sys.argv) != 2:
        print("Usage: python validate_schema.py <schema_file>")
        sys.exit(1)
-      
+
    validate_schema(sys.argv[1])
 ```
 
@@ -559,20 +559,20 @@ Instructions
 
 1. **Identify the Tool Name**:
   Extract the name of the tool the user wants to build (e.g., "StockPrice", "EmailSender").
- 
+
 2. **Review the Example**:
   Check `examples/WeatherTool.py` to understand the expected structure of an ADK tool (imports, inheritance, schema).
 
 3. **Run the Scaffolder**:
   Execute the python script to generate the initial file.
- 
+
   `python scripts/scaffold_tool.py <ToolName>`
 
 4. **Refine**:
   After generation, you must edit the file to:
   - Update the `execute` method with real logic.
   - Define the JSON schema in `get_schema`.
- 
+
 Example Usage
 User: "Create a tool to search Wikipedia."
 Agent:

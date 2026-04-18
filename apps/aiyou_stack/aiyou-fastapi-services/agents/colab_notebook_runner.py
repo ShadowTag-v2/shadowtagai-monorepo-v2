@@ -69,7 +69,9 @@ class ColabNotebookRunner:
     """
 
     def __init__(
-        self, mode: ExecutionMode = ExecutionMode.LOCAL, runtime: RuntimeType = RuntimeType.CPU,
+        self,
+        mode: ExecutionMode = ExecutionMode.LOCAL,
+        runtime: RuntimeType = RuntimeType.CPU,
     ):
         """Initialize notebook runner.
 
@@ -156,7 +158,10 @@ class ColabNotebookRunner:
                     temp_file = f.name
 
                 result = subprocess.run(
-                    [sys.executable, temp_file], capture_output=True, text=True, timeout=60,
+                    [sys.executable, temp_file],
+                    capture_output=True,
+                    text=True,
+                    timeout=60,
                 )
 
                 output = result.stdout or result.stderr
@@ -201,7 +206,9 @@ class ColabNotebookRunner:
         )
 
     async def execute_cloud_code(
-        self, cells: list[NotebookCell], client: Any | None = None,
+        self,
+        cells: list[NotebookCell],
+        client: Any | None = None,
     ) -> NotebookResult:
         """Execute via Cloud Code API."""
         from agents.cloudcode_client import CloudCodeClient
@@ -344,7 +351,9 @@ class ColabNotebookRunner:
         )
 
     async def run(
-        self, notebook: str | list[NotebookCell] | dict[str, Any], **kwargs,
+        self,
+        notebook: str | list[NotebookCell] | dict[str, Any],
+        **kwargs,
     ) -> NotebookResult:
         """Execute a notebook.
 
@@ -397,7 +406,9 @@ class ColabNotebookRunner:
         return cells
 
     async def run_from_template(
-        self, template_name: str, variables: dict[str, Any],
+        self,
+        template_name: str,
+        variables: dict[str, Any],
     ) -> NotebookResult:
         """Run notebook from template with variable substitution.
 
@@ -470,7 +481,8 @@ if __name__ == "__main__":
             NotebookCell(cell_type="code", source="print('Hello from Colab Coop!')"),
             NotebookCell(cell_type="code", source="import sys; print(f'Python {sys.version}')"),
             NotebookCell(
-                cell_type="code", source="result = sum(range(100)); print(f'Sum: {result}')",
+                cell_type="code",
+                source="result = sum(range(100)); print(f'Sum: {result}')",
             ),
         ]
 

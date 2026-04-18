@@ -78,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
     @media (max-width: 991.98px) {
       .theme-banner-wrapper {
         position: relative !important;
-        top: auto !important; 
-        z-index: 1; 
+        top: auto !important;
+        z-index: 1;
       }
     }
   `;

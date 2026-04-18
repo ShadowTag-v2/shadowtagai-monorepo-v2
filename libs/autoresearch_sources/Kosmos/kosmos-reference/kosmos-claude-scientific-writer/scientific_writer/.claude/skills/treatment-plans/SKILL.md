@@ -221,7 +221,7 @@ The goal is professional, clinically complete documentation that respects clinic
   - Standard-of-care interventions widely accepted in the field
   - Basic medical facts and routine clinical practices
   - General patient education content
-- **Citation Format**: 
+- **Citation Format**:
   - Inline: "Initiate metformin as first-line therapy (ADA Standards of Care 2024)"
   - Minimal: "Treatment follows ACC/AHA heart failure guidelines"
   - Avoid formal numbered references and extensive bibliography sections unless document is for academic/research purposes
@@ -692,44 +692,44 @@ All treatment goals should meet SMART criteria:
 
 ### Patient-Centered Care
 
-✓ **Shared Decision-Making**: Involve patients in goal-setting and treatment choices  
-✓ **Cultural Competence**: Respect cultural beliefs, language preferences, health literacy  
-✓ **Patient Preferences**: Honor treatment preferences and personal values  
-✓ **Individualization**: Tailor plans to patient's unique circumstances  
-✓ **Empowerment**: Support patient activation and self-management  
+✓ **Shared Decision-Making**: Involve patients in goal-setting and treatment choices
+✓ **Cultural Competence**: Respect cultural beliefs, language preferences, health literacy
+✓ **Patient Preferences**: Honor treatment preferences and personal values
+✓ **Individualization**: Tailor plans to patient's unique circumstances
+✓ **Empowerment**: Support patient activation and self-management
 
 ### Evidence-Based Practice
 
-✓ **Clinical Guidelines**: Follow current specialty society recommendations  
-✓ **Quality Measures**: Incorporate HEDIS, CMS quality measures  
-✓ **Comparative Effectiveness**: Use treatments with proven efficacy  
-✓ **Avoid Low-Value Care**: Eliminate unnecessary tests and interventions  
-✓ **Stay Current**: Update plans based on emerging evidence  
+✓ **Clinical Guidelines**: Follow current specialty society recommendations
+✓ **Quality Measures**: Incorporate HEDIS, CMS quality measures
+✓ **Comparative Effectiveness**: Use treatments with proven efficacy
+✓ **Avoid Low-Value Care**: Eliminate unnecessary tests and interventions
+✓ **Stay Current**: Update plans based on emerging evidence
 
 ### Documentation Standards
 
-✓ **Completeness**: Include all required elements  
-✓ **Clarity**: Use clear, professional medical language  
-✓ **Accuracy**: Ensure factual correctness and current information  
-✓ **Timeliness**: Document plans promptly  
-✓ **Legibility**: Professional formatting and organization  
-✓ **Signature and Date**: Authenticate all treatment plans  
+✓ **Completeness**: Include all required elements
+✓ **Clarity**: Use clear, professional medical language
+✓ **Accuracy**: Ensure factual correctness and current information
+✓ **Timeliness**: Document plans promptly
+✓ **Legibility**: Professional formatting and organization
+✓ **Signature and Date**: Authenticate all treatment plans
 
 ### Regulatory Compliance
 
-✓ **HIPAA Privacy**: De-identify all protected health information  
-✓ **Informed Consent**: Document patient understanding and agreement  
-✓ **Billing Support**: Include documentation to support medical necessity  
-✓ **Quality Reporting**: Enable extraction of quality metrics  
-✓ **Legal Protection**: Maintain defensible clinical documentation  
+✓ **HIPAA Privacy**: De-identify all protected health information
+✓ **Informed Consent**: Document patient understanding and agreement
+✓ **Billing Support**: Include documentation to support medical necessity
+✓ **Quality Reporting**: Enable extraction of quality metrics
+✓ **Legal Protection**: Maintain defensible clinical documentation
 
 ### Multidisciplinary Coordination
 
-✓ **Team Communication**: Share plans across care team  
-✓ **Role Clarity**: Define responsibilities for each team member  
-✓ **Care Transitions**: Ensure continuity across settings  
-✓ **Specialist Integration**: Coordinate with subspecialty care  
-✓ **Patient-Centered Medical Home**: Align with PCMH principles  
+✓ **Team Communication**: Share plans across care team
+✓ **Role Clarity**: Define responsibilities for each team member
+✓ **Care Transitions**: Ensure continuity across settings
+✓ **Specialist Integration**: Coordinate with subspecialty care
+✓ **Patient-Centered Medical Home**: Align with PCMH principles
 
 ## LaTeX Template Usage
 
@@ -1176,8 +1176,8 @@ Enhanced table environment with medical styling:
 \begin{tabular}{|p{5cm}|p{4cm}|p{4.5cm}|}
 \hline
 \tableheadercolor  % Blue header with white text
-\textcolor{white}{\textbf{Column 1}} & 
-\textcolor{white}{\textbf{Column 2}} & 
+\textcolor{white}{\textbf{Column 1}} &
+\textcolor{white}{\textbf{Column 2}} &
 \textcolor{white}{\textbf{Column 3}} \\
 \hline
 Data row 1 content & Value 1 & Details 1 \\
@@ -1533,4 +1533,3 @@ Balance medical recommendations with patient autonomy and values while promoting
 ## License
 
 Part of the Claude Scientific Writer project. See main LICENSE file.
-

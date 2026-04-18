@@ -125,20 +125,26 @@ class GeminiService:
         """
         # Configure generation
         generation_config = genai.GenerationConfig(
-            temperature=temperature, max_output_tokens=max_tokens,
+            temperature=temperature,
+            max_output_tokens=max_tokens,
         )
 
         # Add system instruction if provided
         if system_instruction:
             model_with_system = genai.GenerativeModel(
-                self.model_name, system_instruction=system_instruction,
+                self.model_name,
+                system_instruction=system_instruction,
             )
             response = await asyncio.to_thread(
-                model_with_system.generate_content, prompt, generation_config=generation_config,
+                model_with_system.generate_content,
+                prompt,
+                generation_config=generation_config,
             )
         else:
             response = await asyncio.to_thread(
-                self.model.generate_content, prompt, generation_config=generation_config,
+                self.model.generate_content,
+                prompt,
+                generation_config=generation_config,
             )
 
         # Extract usage metadata
@@ -187,7 +193,8 @@ class GeminiService:
         # Start chat session
         if system_instruction:
             model_with_system = genai.GenerativeModel(
-                self.model_name, system_instruction=system_instruction,
+                self.model_name,
+                system_instruction=system_instruction,
             )
             chat = model_with_system.start_chat(history=[])
         else:
@@ -231,7 +238,10 @@ class GeminiService:
 
 
 async def ai_tutor_session(
-    student_id: str, task_description: str, subject: str, difficulty: str = "medium",
+    student_id: str,
+    task_description: str,
+    subject: str,
+    difficulty: str = "medium",
 ) -> dict[str, Any]:
     """AI tutor session using Gemini (replaces GPT-4)
 
@@ -262,7 +272,10 @@ Be supportive but don't give away answers."""
 Provide a helpful hint to get them started. Ask a guiding question."""
 
     response = await gemini.generate(
-        prompt=prompt, system_instruction=system_instruction, temperature=0.7, use_case="ai_tutor",
+        prompt=prompt,
+        system_instruction=system_instruction,
+        temperature=0.7,
+        use_case="ai_tutor",
     )
 
     return {
@@ -338,7 +351,9 @@ class AutoGenToGeminiMigrator:
         self.gemini = GeminiService()
 
     async def estimate_savings(
-        self, monthly_gpt4_cost: float, total_monthly_tokens: int,
+        self,
+        monthly_gpt4_cost: float,
+        total_monthly_tokens: int,
     ) -> dict[str, Any]:
         """Estimate cost savings from migration
 

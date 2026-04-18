@@ -28,6 +28,7 @@ from turboquant.hw_replay import (
 # Fixtures
 # ============================================================
 
+
 @pytest.fixture
 def m5_max_profile():
     """Real M5 Max profile (our baseline hardware)."""
@@ -169,8 +170,8 @@ def m1_max_profile():
 # Profile Serialization
 # ============================================================
 
-class TestProfileSerialization:
 
+class TestProfileSerialization:
     def test_to_json_roundtrip(self, m5_max_profile):
         """Profile survives JSON serialization."""
         json_str = m5_max_profile.to_json()
@@ -217,8 +218,8 @@ class TestProfileSerialization:
 # Curve Extraction
 # ============================================================
 
-class TestCurveExtraction:
 
+class TestCurveExtraction:
     def test_decode_curve(self, m5_max_profile):
         curve = m5_max_profile.get_decode_curve("turbo3")
         assert len(curve) == 5
@@ -266,10 +267,12 @@ class TestCurveExtraction:
 
     def test_unreliable_measurements(self):
         """Flag impossibly high tok/s at 1K context."""
-        profile = HardwareProfile(benchmarks=[
-            BenchResult("test 1K", "turbo3", "turbo3", 1024, "decode", 999999.0, 0.0),
-            BenchResult("test 4K", "turbo3", "turbo3", 4096, "decode", 70.0, 0.5),
-        ])
+        profile = HardwareProfile(
+            benchmarks=[
+                BenchResult("test 1K", "turbo3", "turbo3", 1024, "decode", 999999.0, 0.0),
+                BenchResult("test 4K", "turbo3", "turbo3", 4096, "decode", 70.0, 0.5),
+            ]
+        )
         warnings = profile.flag_unreliable_measurements()
         assert len(warnings) == 1
         assert "1K" in warnings[0]
@@ -284,8 +287,8 @@ class TestCurveExtraction:
 # Profile Comparison
 # ============================================================
 
-class TestComparison:
 
+class TestComparison:
     def test_compare_detects_hardware_diff(self, m5_max_profile, m1_max_profile):
         report = compare_profiles(m5_max_profile, m1_max_profile)
         assert "GPU Family ID" in report.hardware_diff
@@ -300,8 +303,7 @@ class TestComparison:
         report = compare_profiles(m5_max_profile, m1_max_profile)
         assert len(report.anomalies) > 0
         # Should flag constant cache thrashing
-        assert any("constant cache" in a.lower() or "tensor" in a.lower()
-                    for a in report.anomalies)
+        assert any("constant cache" in a.lower() or "tensor" in a.lower() for a in report.anomalies)
 
     def test_compare_markdown_output(self, m5_max_profile, m1_max_profile):
         report = compare_profiles(m5_max_profile, m1_max_profile)
@@ -324,8 +326,8 @@ class TestComparison:
 # Decode Prediction
 # ============================================================
 
-class TestPrediction:
 
+class TestPrediction:
     def test_predict_m1_from_m5(self, m5_max_profile):
         """Predict M1 decode ratios from M5 baseline."""
         predicted = predict_decode_from_baseline(
@@ -375,8 +377,8 @@ class TestPrediction:
 # Diagnostic Output Parsing
 # ============================================================
 
-class TestDiagParsing:
 
+class TestDiagParsing:
     SAMPLE_DIAG = """TURBO_DIAG_VERSION=3
 TURBO_DIAG_TIMESTAMP=2026-03-26T13:43:09Z
 TURBO_DIAG_MODEL=Qwen3.5-35B-A3B-Q8_0.gguf

@@ -32,9 +32,9 @@ node tables, edge tables, labels and property declarations.
    data governance policies
 
 This tool is read-only and executes pre-defined SQL queries against the
-`INFORMATION_SCHEMA` tables to gather metadata. 
+`INFORMATION_SCHEMA` tables to gather metadata.
 {{< notice warning >}}
-The tool only works for the GoogleSQL 
+The tool only works for the GoogleSQL
 source dialect, as Spanner Graph isn't available in the PostgreSQL dialect.
 {{< /notice >}}
 
@@ -267,7 +267,7 @@ description: |
   - List all graphs by leaving graph_names empty
   - Get specific graph schemas by providing comma-separated graph names
   - Choose between simple (names only) or detailed (full schema) output
-  
+
   Examples:
   1. List all graphs with details: {"output_format": "detailed"}
   2. Get specific graphs: {"graph_names": "FinGraph,SocialGraph", "output_format": "detailed"}

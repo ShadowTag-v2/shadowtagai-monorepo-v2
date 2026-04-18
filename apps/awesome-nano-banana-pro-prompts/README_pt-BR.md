@@ -2449,7 +2449,7 @@ Um prompt usado com Nano Banana Pro (Gemini 3 Pro Image) para gerar um mangá de
 
 ```
 Geração de Imagens com IA: Mangá de 4 Quadros
- 
+
 Título
 Amanhecer da Greve Evitada
 
@@ -3197,7 +3197,7 @@ Um prompt Nano Banana complexo e multiestágio, projetado para gerar uma fotogra
 
 ```
 <instruction>
- 
+
 1. A Entrada A é uma Máquina Complexa (por exemplo, {argument name="machine type" default="Um Ônibus Espacial"}, Um Piano de Cauda, Um Relógio de Corda).
    Desconstruir em 3 Fases de Montagem:
    *   Fase 1: Chassi/estrutura bruta.

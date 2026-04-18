@@ -6,7 +6,7 @@
 
 // [START or_query_modular]
 const q = query(collection(db, "cities"), and(
-  where('state', '==', 'CA'),   
+  where('state', '==', 'CA'),
   or(
     where('capital', '==', true),
     where('population', '>=', 1000000)

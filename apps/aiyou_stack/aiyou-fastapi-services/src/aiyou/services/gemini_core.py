@@ -289,8 +289,7 @@ class GeminiAntigravity:
         }
 
     def analyze_video_stream(self, video_uri: str, mime_type: str = "video/mp4") -> dict:
-        """Multimodal analysis: Single pass extraction of gestures, emotions, transcript.
-        """
+        """Multimodal analysis: Single pass extraction of gestures, emotions, transcript."""
         prompt = """
         Analyze this video segment for the 'ShadowTagAi' platform.
         Output JSON only with these keys:
@@ -322,8 +321,7 @@ class GeminiAntigravity:
             return {"raw_output": response.text}
 
     def generate_governance_decision(self, conflict_data: dict) -> str:
-        """The 'Living Regulator' logic: Proposes binding resolutions.
-        """
+        """The 'Living Regulator' logic: Proposes binding resolutions."""
         response = self.model.generate_content(
             f"Act as a neutral arbitrator. Review this conflict data: {conflict_data}. "
             "Propose a de-escalation path based on ATP 5-19 principles.",
@@ -385,6 +383,7 @@ class GeminiAntigravity:
         """
         chat_session = self.model.start_chat(history=messages[:-1] if len(messages) > 1 else [])
         response = chat_session.send_message(
-            messages[-1]["parts"] if messages else "", safety_settings=self.safety_config,
+            messages[-1]["parts"] if messages else "",
+            safety_settings=self.safety_config,
         )
         return response.text

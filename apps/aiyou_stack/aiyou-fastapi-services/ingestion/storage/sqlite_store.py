@@ -130,7 +130,8 @@ class IngestStore:
         where = "WHERE ingested_at >= ?" if since else ""
         params = [since.isoformat()] if since else []
         rows = self._conn.execute(
-            f"SELECT tier, COUNT(*) FROM items {where} GROUP BY tier", params,
+            f"SELECT tier, COUNT(*) FROM items {where} GROUP BY tier",
+            params,
         ).fetchall()
         counts: dict[str, int] = {f"tier_{t}": int(c) for t, c in rows}
         counts["total"] = sum(counts.values())
@@ -146,7 +147,11 @@ class IngestStore:
         self._conn.commit()
 
     def complete_job(
-        self, job_id: str, items_collected: int, sources_active: int, errors: list[str],
+        self,
+        job_id: str,
+        items_collected: int,
+        sources_active: int,
+        errors: list[str],
     ) -> None:
         self._conn.execute(
             """UPDATE jobs SET status=?, end_time=?, items_collected=?,

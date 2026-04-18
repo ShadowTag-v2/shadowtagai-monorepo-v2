@@ -1,5 +1,4 @@
-"""Configuration management for Omega Governance Service
-"""
+"""Configuration management for Omega Governance Service"""
 
 from functools import lru_cache
 
@@ -128,7 +127,8 @@ class Settings(BaseSettings):
 
     # Pricing Tier Configuration
     mcf_pricing_tier: str = Field(
-        default="pro", description="Default pricing tier (free, pro, enterprise)",
+        default="pro",
+        description="Default pricing tier (free, pro, enterprise)",
     )
     mcf_base_price_usd: float = Field(default=199.0, description="Base monthly price")
     mcf_addon_price_usd: float = Field(default=50.0, description="Per-module addon price")
@@ -140,7 +140,8 @@ class Settings(BaseSettings):
     # Post-Generation Validation (GPT Store Pattern)
     mcf_post_gen_validation_enabled: bool = Field(default=True)
     mcf_auto_remediation_enabled: bool = Field(
-        default=False, description="Auto-fix non-critical violations",
+        default=False,
+        description="Auto-fix non-critical violations",
     )
 
     @field_validator("cors_origins", mode="before")

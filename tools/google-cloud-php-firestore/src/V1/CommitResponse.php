@@ -120,4 +120,3 @@ class CommitResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

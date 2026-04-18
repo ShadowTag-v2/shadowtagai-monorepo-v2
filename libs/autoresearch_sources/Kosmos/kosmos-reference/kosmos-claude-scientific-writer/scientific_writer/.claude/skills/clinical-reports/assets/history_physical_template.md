@@ -1,15 +1,15 @@
 # History and Physical Examination (H&P) Template
 
-**Patient Name:** [Last, First]  
-**Medical Record Number:** [MRN]  
-**Date of Birth:** [MM/DD/YYYY]  
-**Age:** [years]  
+**Patient Name:** [Last, First]
+**Medical Record Number:** [MRN]
+**Date of Birth:** [MM/DD/YYYY]
+**Age:** [years]
 **Sex:** [M/F]
 
-**Date of Admission/Encounter:** [MM/DD/YYYY]  
-**Time:** [HH:MM]  
-**Location:** [Hospital floor, Clinic, ED]  
-**Admitting Service:** [Medicine, Surgery, etc.]  
+**Date of Admission/Encounter:** [MM/DD/YYYY]
+**Time:** [HH:MM]
+**Location:** [Hospital floor, Clinic, ED]
+**Admitting Service:** [Medicine, Surgery, etc.]
 **Attending Physician:** [Name]
 
 ---
@@ -26,17 +26,17 @@
 
 [Use OPQRST format for symptoms, provide chronological narrative]
 
-**Onset:** [When did symptoms start? Sudden vs gradual onset?]  
-**Location:** [Where? Does it radiate?]  
-**Duration:** [How long?]  
-**Character:** [Quality - sharp, dull, pressure, etc.]  
-**Aggravating factors:** [What makes it worse?]  
-**Relieving factors:** [What makes it better?]  
-**Timing:** [Constant or intermittent? Pattern?]  
-**Severity:** [0-10 scale for pain, functional impact]  
+**Onset:** [When did symptoms start? Sudden vs gradual onset?]
+**Location:** [Where? Does it radiate?]
+**Duration:** [How long?]
+**Character:** [Quality - sharp, dull, pressure, etc.]
+**Aggravating factors:** [What makes it worse?]
+**Relieving factors:** [What makes it better?]
+**Timing:** [Constant or intermittent? Pattern?]
+**Severity:** [0-10 scale for pain, functional impact]
 **Associated symptoms:** [Other symptoms?]
 
-**Prior evaluations and treatments:**  
+**Prior evaluations and treatments:**
 **Why presenting now:**
 
 ---
@@ -95,15 +95,15 @@
 
 ## Social History (SH)
 
-**Tobacco:** [Current/former/never], [pack-years if applicable]  
-**Alcohol:** [Frequency and amount, CAGE questions if indicated]  
-**Illicit drugs:** [Current/former/never, type, route]  
-**Occupation:** [Current or former occupation]  
-**Living situation:** [Lives alone/with family, housing type]  
-**Marital status:** [Single/married/divorced/widowed]  
-**Sexual history:** [If relevant]  
-**Exercise:** [Type and frequency]  
-**Diet:** [General diet description]  
+**Tobacco:** [Current/former/never], [pack-years if applicable]
+**Alcohol:** [Frequency and amount, CAGE questions if indicated]
+**Illicit drugs:** [Current/former/never, type, route]
+**Occupation:** [Current or former occupation]
+**Living situation:** [Lives alone/with family, housing type]
+**Marital status:** [Single/married/divorced/widowed]
+**Sexual history:** [If relevant]
+**Exercise:** [Type and frequency]
+**Diet:** [General diet description]
 **Functional status:** [ADL independence, baseline activity level]
 
 ---
@@ -112,19 +112,19 @@
 
 [Systematic review - check relevant systems]
 
-**Constitutional:** [ ] Fever [ ] Chills [ ] Night sweats [ ] Weight loss [ ] Weight gain [ ] Fatigue  
-**Eyes:** [ ] Vision changes [ ] Eye pain [ ] Discharge  
-**ENT:** [ ] Hearing loss [ ] Tinnitus [ ] Sinus problems [ ] Sore throat  
-**Cardiovascular:** [ ] Chest pain [ ] Palpitations [ ] Edema [ ] Orthopnea [ ] PND [ ] Claudication  
-**Respiratory:** [ ] Dyspnea [ ] Cough [ ] Wheezing [ ] Hemoptysis  
-**Gastrointestinal:** [ ] Nausea [ ] Vomiting [ ] Diarrhea [ ] Constipation [ ] Abdominal pain [ ] Melena [ ] Hematochezia  
-**Genitourinary:** [ ] Dysuria [ ] Frequency [ ] Urgency [ ] Hematuria [ ] Incontinence  
-**Musculoskeletal:** [ ] Joint pain [ ] Swelling [ ] Stiffness [ ] Back pain [ ] Weakness  
-**Skin:** [ ] Rash [ ] Lesions [ ] Itching [ ] Changes in moles  
-**Neurological:** [ ] Headache [ ] Dizziness [ ] Syncope [ ] Seizures [ ] Weakness [ ] Numbness [ ] Tingling  
-**Psychiatric:** [ ] Depression [ ] Anxiety [ ] Sleep disturbance  
-**Endocrine:** [ ] Heat/cold intolerance [ ] Polyuria [ ] Polydipsia [ ] Polyphagia  
-**Hematologic/Lymphatic:** [ ] Easy bruising [ ] Bleeding [ ] Lymph node swelling  
+**Constitutional:** [ ] Fever [ ] Chills [ ] Night sweats [ ] Weight loss [ ] Weight gain [ ] Fatigue
+**Eyes:** [ ] Vision changes [ ] Eye pain [ ] Discharge
+**ENT:** [ ] Hearing loss [ ] Tinnitus [ ] Sinus problems [ ] Sore throat
+**Cardiovascular:** [ ] Chest pain [ ] Palpitations [ ] Edema [ ] Orthopnea [ ] PND [ ] Claudication
+**Respiratory:** [ ] Dyspnea [ ] Cough [ ] Wheezing [ ] Hemoptysis
+**Gastrointestinal:** [ ] Nausea [ ] Vomiting [ ] Diarrhea [ ] Constipation [ ] Abdominal pain [ ] Melena [ ] Hematochezia
+**Genitourinary:** [ ] Dysuria [ ] Frequency [ ] Urgency [ ] Hematuria [ ] Incontinence
+**Musculoskeletal:** [ ] Joint pain [ ] Swelling [ ] Stiffness [ ] Back pain [ ] Weakness
+**Skin:** [ ] Rash [ ] Lesions [ ] Itching [ ] Changes in moles
+**Neurological:** [ ] Headache [ ] Dizziness [ ] Syncope [ ] Seizures [ ] Weakness [ ] Numbness [ ] Tingling
+**Psychiatric:** [ ] Depression [ ] Anxiety [ ] Sleep disturbance
+**Endocrine:** [ ] Heat/cold intolerance [ ] Polyuria [ ] Polydipsia [ ] Polyphagia
+**Hematologic/Lymphatic:** [ ] Easy bruising [ ] Bleeding [ ] Lymph node swelling
 **Allergic/Immunologic:** [ ] Seasonal allergies [ ] Frequent infections
 
 **All other systems reviewed and negative** [ ]
@@ -144,7 +144,7 @@
 - BMI: _____ kg/m²
 - Pain Score: ___/10
 
-**General:**  
+**General:**
 [Overall appearance, apparent vs stated age, nutritional status, distress level]
 
 **HEENT:**
@@ -154,7 +154,7 @@
 - Nose: [Nares, septum, discharge, sinus tenderness]
 - Throat: [Oropharynx, tonsils, dentition, mucosa]
 
-**Neck:**  
+**Neck:**
 [Supple/stiff, lymphadenopathy, thyroid, JVP, carotid bruits]
 
 **Cardiovascular:**
@@ -183,7 +183,7 @@
 - Strength: [5-point scale by major muscle groups]
 - Gait: [Normal, antalgic, ataxic, spastic]
 
-**Skin:**  
+**Skin:**
 [Color, temperature, moisture, turgor, lesions, rashes, wounds]
 
 **Neurological:**
@@ -195,13 +195,13 @@
 - Coordination: [Finger-to-nose, heel-to-shin, rapid alternating movements]
 - Gait: [Already documented above or describe here]
 
-**Psychiatric:**  
+**Psychiatric:**
 [Mood, affect, thought process, thought content, judgment, insight]
 
-**Genitourinary:** (if applicable)  
+**Genitourinary:** (if applicable)
 [Defer/document findings if examined]
 
-**Rectal:** (if applicable)  
+**Rectal:** (if applicable)
 [Defer/document findings if examined]
 
 ---
@@ -218,10 +218,10 @@
 | Hemoglobin | [Value] | [Range] | [H/L/-] |
 | [Additional labs] | | | |
 
-**Imaging ([Study], [Date]):**  
+**Imaging ([Study], [Date]):**
 [Key findings]
 
-**ECG ([Date]):**  
+**ECG ([Date]):**
 [Rate, rhythm, intervals, axis, ST-T changes, other findings]
 
 **Other Studies:**
@@ -273,14 +273,14 @@
 
 ## Signature
 
-**Physician:** [Name, credentials]  
-**Level:** [Intern, Resident, Attending]  
-**Date/Time:** [MM/DD/YYYY at HH:MM]  
+**Physician:** [Name, credentials]
+**Level:** [Intern, Resident, Attending]
+**Date/Time:** [MM/DD/YYYY at HH:MM]
 **Signature:** ____________________
 
-**Co-signature (if applicable):**  
-**Attending:** [Name, credentials]  
-**Date/Time:** [MM/DD/YYYY at HH:MM]  
+**Co-signature (if applicable):**
+**Attending:** [Name, credentials]
+**Date/Time:** [MM/DD/YYYY at HH:MM]
 **Signature:** ____________________
 
 ---
@@ -301,5 +301,3 @@
 - [ ] Disposition clear
 - [ ] Completed within 24 hours of admission (TJC requirement)
 - [ ] Signed and dated
-
-

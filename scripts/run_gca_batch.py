@@ -49,9 +49,9 @@ def review_pr(pr_num: int, token: str, dry_run: bool = False) -> dict:
     """Run GCA review on a single PR."""
     import subprocess
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  Reviewing PR #{pr_num}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
 
     cmd = [sys.executable, os.path.join(SCRIPTS_DIR, "run_gca_local.py"), "--pr", str(pr_num)]
     if dry_run:
@@ -137,9 +137,9 @@ def main() -> int:
             results.append({"pr": pr_num, "findings": -1, "error": str(e)})
 
     # Summary
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"  BATCH SUMMARY — {len(results)} PRs reviewed")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     for r in results:
         status = "✅ CLEAN" if r.get("findings", -1) == 0 else f"⚠️ {r.get('findings', '?')} findings"
         print(f"  PR #{r['pr']}: {status}")

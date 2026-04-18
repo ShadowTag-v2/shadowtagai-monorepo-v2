@@ -60,7 +60,10 @@ class Judge6:
             return {"csrmc_defense_grid": {"enforcement_mode": "STRICT_BLOCK"}}
 
     def evaluate(
-        self, prompt: str, file_paths: list[str] = None, mission_id: str = "default",
+        self,
+        prompt: str,
+        file_paths: list[str] = None,
+        mission_id: str = "default",
     ) -> Judgment:
         """The Main Gavel. Evaluates a prompt/action against the 5 Layers of the Constitution.
         Now strictly enforces CSRMC "High-Signal" Controls.
@@ -113,15 +116,16 @@ class Judge6:
             reason="cATO Granted. Policy Compliant. Ready for Code Punch.",
             iteration_count=current_iter,
             csrmc_status=CSRMCStatus(
-                cato_valid=True, phase=phase, high_signal_controls=["MFA", "EDR", "Logs"],
+                cato_valid=True,
+                phase=phase,
+                high_signal_controls=["MFA", "EDR", "Logs"],
             ),
         )
 
     # --- CSRMC ENFORCEMENT ---
 
     def _check_csrmc_compliance(self, prompt: str, files: list[str], phase: str) -> Judgment:
-        """Enforces the 10 Strategic Tenets and Critical Controls.
-        """
+        """Enforces the 10 Strategic Tenets and Critical Controls."""
         prompt_lower = prompt.lower()
 
         # 1. Critical Control: Unverified Binaries (Cyber Survivability)

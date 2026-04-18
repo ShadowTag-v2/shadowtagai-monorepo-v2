@@ -143,7 +143,10 @@ class DarkWebAdapter(SourceAdapter):
                     resp.raise_for_status()
                     if use_llm:
                         text = await asyncio.get_event_loop().run_in_executor(
-                            None, self._extract_with_scrapegraph, resp.text, source["url"],
+                            None,
+                            self._extract_with_scrapegraph,
+                            resp.text,
+                            source["url"],
                         )
                     if not use_llm or len(text) < 200:
                         text = self._strip_html(resp.text)

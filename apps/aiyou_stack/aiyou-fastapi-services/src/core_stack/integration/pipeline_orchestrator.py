@@ -78,7 +78,8 @@ class IngestionPublisher:
 
         # Trigger Pub/Sub event for Judge #6 to consume
         topic_path = self.pubsub_client.topic_path(
-            self.config.pubsub_project, self.config.pubsub_topic,
+            self.config.pubsub_project,
+            self.config.pubsub_topic,
         )
 
         message_data = {
@@ -107,7 +108,8 @@ class Judge6Updater:
         self.redis_client: redis.Redis | None = None
         self.subscriber = pubsub_v1.SubscriberClient()
         self.subscription_path = self.subscriber.subscription_path(
-            config.pubsub_project, config.pubsub_subscription,
+            config.pubsub_project,
+            config.pubsub_subscription,
         )
 
     async def connect_redis(self):
@@ -215,7 +217,8 @@ class Judge6Updater:
         """Start Pub/Sub subscription (blocking)"""
         logger.info(f"Listening to {self.subscription_path}")
         streaming_pull_future = self.subscriber.subscribe(
-            self.subscription_path, callback=lambda msg: asyncio.run(self.pubsub_callback(msg)),
+            self.subscription_path,
+            callback=lambda msg: asyncio.run(self.pubsub_callback(msg)),
         )
 
         try:

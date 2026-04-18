@@ -46,7 +46,6 @@ class RecipientCreate(RecipientBase):
     """Schema for creating a recipient"""
 
 
-
 class RecipientUpdate(BaseModel):
     """Schema for updating a recipient"""
 
@@ -80,7 +79,6 @@ class EmailTemplateBase(BaseModel):
 
 class EmailTemplateCreate(EmailTemplateBase):
     """Schema for creating an email template"""
-
 
 
 class EmailTemplateUpdate(BaseModel):
@@ -118,7 +116,6 @@ class FlowStepBase(BaseModel):
 
 class FlowStepCreate(FlowStepBase):
     """Schema for creating a flow step"""
-
 
 
 class FlowStepResponse(FlowStepBase):
@@ -182,7 +179,6 @@ class FlowEnrollmentCreate(FlowEnrollmentBase):
     """Schema for enrolling a recipient in a flow"""
 
 
-
 class FlowEnrollmentResponse(FlowEnrollmentBase):
     """Schema for flow enrollment response"""
 
@@ -211,7 +207,6 @@ class EmailBase(BaseModel):
 
 class EmailCreate(EmailBase):
     """Schema for creating an email"""
-
 
 
 class EmailSendRequest(BaseModel):

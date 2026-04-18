@@ -26,4 +26,3 @@ class Schedule
         static::$is_initialized = true;
     }
 }
-

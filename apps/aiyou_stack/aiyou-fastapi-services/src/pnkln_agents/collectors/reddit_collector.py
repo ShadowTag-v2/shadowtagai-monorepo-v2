@@ -37,7 +37,9 @@ class RedditCollector(BaseCollector):
             raise ValueError("Reddit client_id and client_secret required")
 
         self.reddit = praw.Reddit(
-            client_id=client_id, client_secret=client_secret, user_agent=user_agent,
+            client_id=client_id,
+            client_secret=client_secret,
+            user_agent=user_agent,
         )
         self.rate_limit_delay = 1.0  # 1 second between requests
         self.cost_per_request = 0.0  # Reddit API is free
@@ -49,7 +51,8 @@ class RedditCollector(BaseCollector):
         """
         items = []
         subreddits = self.config.get(
-            "subreddits", ["MachineLearning", "artificial", "LocalLLaMA", "OpenAI"],
+            "subreddits",
+            ["MachineLearning", "artificial", "LocalLLaMA", "OpenAI"],
         )
 
         try:

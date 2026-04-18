@@ -20,9 +20,7 @@ base = Path(".agent/memory")
 )
 
 (base / "context.md").write_text(
-    "# Context\n\n"
-    f"Startup contract: {authority.get('startup_contract', {})}\n\n"
-    f"Settings: {authority.get('settings', {})}\n",
+    f"# Context\n\nStartup contract: {authority.get('startup_contract', {})}\n\nSettings: {authority.get('settings', {})}\n",
     encoding="utf-8",
 )
 

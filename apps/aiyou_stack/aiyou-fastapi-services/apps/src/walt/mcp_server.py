@@ -58,7 +58,8 @@ except ImportError:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -115,7 +116,9 @@ metrics_tool_latency = Histogram(
 metrics_browser_pool = Gauge("walt_browser_pool_available", "Number of available browsers in pool")
 
 metrics_cost_spent = Counter(
-    "walt_cost_spent_dollars", "Total cost spent on WALT operations", ["call_type"],
+    "walt_cost_spent_dollars",
+    "Total cost spent on WALT operations",
+    ["call_type"],
 )
 
 # ============================================================================
@@ -424,7 +427,10 @@ class ToolExecutor:
         self.browser_manager = browser_manager
 
     async def execute(
-        self, tool_name: ToolName, arguments: dict[str, Any], session_id: str,
+        self,
+        tool_name: ToolName,
+        arguments: dict[str, Any],
+        session_id: str,
     ) -> tuple[bool, Any, str | None]:
         """Execute tool and return (success, result, error)"""
         # Get browser context and page
@@ -646,7 +652,9 @@ async def call_tool(request: ToolCallRequest) -> ToolCallResponse:
 
     # Execute tool
     success, result, error = await tool_executor.execute(
-        request.tool_name, request.arguments, request.session_id,
+        request.tool_name,
+        request.arguments,
+        request.session_id,
     )
 
     execution_time_ms = (time.time() - start_time) * 1000
@@ -659,7 +667,8 @@ async def call_tool(request: ToolCallRequest) -> ToolCallResponse:
     ).inc()
 
     metrics_tool_latency.labels(
-        tool_name=request.tool_name.value, call_type=actual_call_type.value,
+        tool_name=request.tool_name.value,
+        call_type=actual_call_type.value,
     ).observe(execution_time_ms / 1000)
 
     metrics_cost_spent.labels(call_type=actual_call_type.value).inc(cost)
@@ -732,7 +741,9 @@ def create_mcp_server():
     async def navigate(url: str, session_id: str = "default", wait_until: str = "load") -> str:
         """Navigate to a URL"""
         success, result, error = await tool_executor.execute(
-            ToolName.NAVIGATE, {"url": url, "wait_until": wait_until}, session_id,
+            ToolName.NAVIGATE,
+            {"url": url, "wait_until": wait_until},
+            session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -742,7 +753,9 @@ def create_mcp_server():
     async def click(selector: str, session_id: str = "default", button: str = "left") -> str:
         """Click an element"""
         success, result, error = await tool_executor.execute(
-            ToolName.CLICK, {"selector": selector, "button": button}, session_id,
+            ToolName.CLICK,
+            {"selector": selector, "button": button},
+            session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -752,7 +765,9 @@ def create_mcp_server():
     async def fill(selector: str, value: str, session_id: str = "default") -> str:
         """Fill a form field"""
         success, result, error = await tool_executor.execute(
-            ToolName.FILL, {"selector": selector, "value": value}, session_id,
+            ToolName.FILL,
+            {"selector": selector, "value": value},
+            session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -760,11 +775,15 @@ def create_mcp_server():
 
     @mcp.tool()
     async def extract_text(
-        selector: str, multiple: bool = False, session_id: str = "default",
+        selector: str,
+        multiple: bool = False,
+        session_id: str = "default",
     ) -> str:
         """Extract text from element(s)"""
         success, result, error = await tool_executor.execute(
-            ToolName.EXTRACT, {"selector": selector, "multiple": multiple}, session_id,
+            ToolName.EXTRACT,
+            {"selector": selector, "multiple": multiple},
+            session_id,
         )
         if not success:
             return f"Error: {error}"
@@ -772,7 +791,9 @@ def create_mcp_server():
 
     @mcp.tool()
     async def extract_structured(
-        selector: str, structure: str = "table", session_id: str = "default",
+        selector: str,
+        structure: str = "table",
+        session_id: str = "default",
     ) -> str:
         """Extract structured data"""
         success, result, error = await tool_executor.execute(
@@ -786,7 +807,9 @@ def create_mcp_server():
 
     @mcp.tool()
     async def screenshot(
-        selector: str = None, full_page: bool = True, session_id: str = "default",
+        selector: str = None,
+        full_page: bool = True,
+        session_id: str = "default",
     ) -> Any:
         """Take a screenshot"""
         import base64

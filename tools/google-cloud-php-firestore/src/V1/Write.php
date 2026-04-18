@@ -311,4 +311,3 @@ class Write extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -28,7 +28,7 @@ This reference provides comprehensive guidance on selecting, implementing, and d
 
 **Recommendation Strength**:
 - **Grade A**: Strong recommendation, high-quality evidence
-- **Grade B**: Moderate recommendation, moderate-quality evidence  
+- **Grade B**: Moderate recommendation, moderate-quality evidence
 - **Grade C**: Weak recommendation, low-quality evidence
 - **Grade D**: Recommendation against (evidence of harm or no benefit)
 
@@ -501,7 +501,6 @@ For each intervention, document:
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2025  
+**Document Version**: 1.0
+**Last Updated**: January 2025
 **Next Review**: January 2026
-

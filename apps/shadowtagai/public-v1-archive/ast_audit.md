@@ -3,7 +3,7 @@
 The newly structured AST Sandbox UI on the Judge-6 shield landing page underwent an automated heuristic evaluation against `web.dev` accessibility and modern structural UI/UX rules.
 
 ## 1. Contrast and Styling
-- **Status Contrast:** The terminal injection states rely heavily on absolute `#ff4444` (red) for violations and `#00ff88` (green) for OK states against `var(--surface)`. 
+- **Status Contrast:** The terminal injection states rely heavily on absolute `#ff4444` (red) for violations and `#00ff88` (green) for OK states against `var(--surface)`.
 - **Guideline Match:** The color ratios pass AA accessibility standards (> 4.5:1 ratio against the `#0f111a` dark mode background), but we advise pairing status colors with ARIA iconography for red/green colorblind users.
 
 ## 2. Interaction Targets

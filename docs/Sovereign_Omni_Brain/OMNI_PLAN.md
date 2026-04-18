@@ -203,13 +203,13 @@ Source Brain: c4583f73-7cf6-4d01-80ea-88a142ff2be1
 ## The Preamble: Elegance & Sovereignty
 > *"It comes down to trying to expose the minimum amount of complexity to the user."*
 
-In our haste to ship the zero-cost infrastructure, we deployed powerful standalone engines but failed to weave them into a unified, sovereign nervous system. We deployed processors without mapping the data buses. We shipped the Brain (Antigravity) and the HUD (GCA), but left the synaptic gap unaddressed. 
+In our haste to ship the zero-cost infrastructure, we deployed powerful standalone engines but failed to weave them into a unified, sovereign nervous system. We deployed processors without mapping the data buses. We shipped the Brain (Antigravity) and the HUD (GCA), but left the synaptic gap unaddressed.
 
 This document serves as the absolute, uncompromising master plan to re-cock the equation. Every atomic block has a designated orbit. By enforcing this strict architectural boundary, we eliminate friction, minimize token waste, and directly maximize the financial output and operational velocity of the Omega footprint.
 
 ## User Review Required
 > [!IMPORTANT]
-> **Database Credentials & HUD Interaction:** 
+> **Database Credentials & HUD Interaction:**
 > The `transcript_to_contract.py` engine MUST be natively coupled to the `shadowtag-local-pg` schema defined in `database_tools.yaml`. The HUD (GCA) requires this connection to query the active state. Please verify the `user:password` mapping in `database_tools.yaml` is active on port `5432`.
 
 ## Current State Analysis (The Reams Left on the Table)
@@ -237,7 +237,7 @@ import time
 
 def run_god_mode_cmd(cmd):
     """
-    Executes a high-velocity tactical command from the HUD (GCA) 
+    Executes a high-velocity tactical command from the HUD (GCA)
     against the persistent Brain daemon without requiring an interactive TTY.
     """
     try:
@@ -248,17 +248,17 @@ def run_god_mode_cmd(cmd):
             stderr=subprocess.PIPE,
             text=True
         )
-        
+
         # Fire the payload and cleanly stop the daemon to prevent socket hangs
         stdout, stderr = process.communicate(input=f"{cmd}\nstop\n", timeout=15)
-        
+
         print("--- STDOUT ---")
         print(stdout)
-        
+
         if stderr:
             print("--- STDERR ---")
             print(stderr)
-            
+
     except subprocess.TimeoutExpired:
         process.kill()
         print("ERROR: Command timed out. The engine might be hung.")
@@ -270,7 +270,7 @@ if __name__ == "__main__":
         print("Usage: python3 tools/gca_god_mode_bridge.py '<command>'")
         print("Example: python3 tools/gca_god_mode_bridge.py 'status'")
         sys.exit(1)
-        
+
     cmd = " ".join(sys.argv[1:])
     run_god_mode_cmd(cmd)
 ```
@@ -374,7 +374,7 @@ Source Brain: 7752040e-c13e-48ec-ab23-bda36d0e0873
 We are executing **Stage 2: Canonical Rebuild** of the Two-Stage Thread Recovery Protocol. The objective is to translate the commercial capabilities (defined in `apps/counselconduit/docs/CONDUIT_PITCH_DECK.md`) into executable code inside the `Monorepo-Uphillsnowball`. This will ensure the `counselconduit` application natively enforces the Kovel liability shield and the anti-forensic Heppner requirements.
 
 ## User Review Required
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > Please review the architecture beneath. I recommend implementing `EvaporatingChat.tsx` first to establish the frontend visual layer, followed by the `fastapi_kovel_enclave.py` execution handler. Will you approve this sequence?
 
 ## Proposed Changes
@@ -432,7 +432,7 @@ Today, we pick them up. We are separating the engine from the vehicle to achieve
 There is a profound, architectural dichotomy that we must forcefully acknowledge and permanently codify.
 
 ### 1. CounselConduit (The Vehicle)
-This is our business-facing MVP. It is a stateless, premium-priced legal SaaS wedge. It is the uncompromising commercial facade. 
+This is our business-facing MVP. It is a stateless, premium-priced legal SaaS wedge. It is the uncompromising commercial facade.
 - It relies entirely on BYOK (Bring Your Own Key) routing.
 - It guarantees high-trust summarization and liability-shielded retrieval.
 - It serves the simplest, cleanest buyer narrative for rapid onboarding and immediate revenue.
@@ -499,7 +499,7 @@ class DriveIngestionDaemon:
         doc_id = doc_metadata.get("id")
         doc_name = doc_metadata.get('name', 'Unknown')
         logger.info(f"Ingesting: {doc_name} [{doc_id}]")
-        
+
         # Pull text
         cmd = f"{self.workspace_cli} drive export --id {doc_id} --format text"
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
@@ -523,7 +523,7 @@ class DriveIngestionDaemon:
                     logger.debug("Volume nominal. Awaiting delta.")
             except Exception as e:
                 logger.error(f"Cycle disruption: {e}")
-            
+
             await asyncio.sleep(self.poll_interval)
 
     def stop(self):
@@ -566,29 +566,29 @@ IN_DIR.mkdir(parents=True, exist_ok=True)
 def process_vision_corpus():
     logger.info("Initiating SOP-A visual triage sequence...")
     sources = list(IN_DIR.glob("*.png")) + list(IN_DIR.glob("*.jpg"))
-    
+
     if not sources:
         logger.info("No visual artifacts found in input queue.")
         return
 
     processed_records = []
-    
+
     for image_path in sources:
         logger.info(f"Evaluating {image_path.name}...")
         # Stubbing the call to Vertex / Gemini 3.1 Vision API
         # In production, this uses the Google Cloud SDK or google-genai to pass the image
-        # and request a strict JSON schema return mapping the visual data to the 
+        # and request a strict JSON schema return mapping the visual data to the
         # CounselConduit defense metrics.
-        
+
         extracted_data = {
             "source_file": image_path.name,
             "confidence_score": 0.98,
             "liability_exposure": "low",
             "extracted_text_preview": "[REDACTED VISUAL TEXT]"
         }
-        
+
         processed_records.append(extracted_data)
-        
+
         # Move to processed
         image_path.rename(OUT_DIR / f"processed_{image_path.name}")
 
@@ -618,7 +618,7 @@ import json
 import logging
 
 # The Uphill Snowball Engine: RAG Accuracy Judge
-# Uncompromising evaluation of the LanceDB vector embeddings against 
+# Uncompromising evaluation of the LanceDB vector embeddings against
 # the CounselConduit "Fear & Greed" golden retrieval set.
 
 logging.basicConfig(level=logging.INFO)
@@ -626,8 +626,8 @@ logger = logging.getLogger("retriever-eval")
 
 def evaluate_retrieval_corpus():
     logger.info("Running deterministic RAG evaluation matrix...")
-    
-    # In live execution, we load the Golden Dataset, query LanceDB 
+
+    # In live execution, we load the Golden Dataset, query LanceDB
     # and compute intersection over union for retrieved chunks.
     precision = 0.942
     recall = 0.891
@@ -646,11 +646,11 @@ def evaluate_retrieval_corpus():
     }
 
     print(json.dumps(report, indent=2))
-    
+
     if not report["thresholds_met"]:
         logger.error("Accuracy thresholds failed. Do not deploy vector weights.")
         exit(1)
-    
+
 if __name__ == "__main__":
     evaluate_retrieval_corpus()
 ```
@@ -679,11 +679,11 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 def execute_green_cycle():
     logger.info("Initializing Green Loop patching phase...")
-    
+
     # Step 1: Run comprehensive tests (Bazel / Pytest depending on the active node)
     logger.info("Running global build and test targets...")
     build_pass = True  # Mocked test runner result
-    
+
     if build_pass:
         logger.info("System is green. Generating stabilization artifact.")
         payload = {
@@ -692,7 +692,7 @@ def execute_green_cycle():
             "goal": "patch, verify, summarize, preserve only passing artifacts",
             "last_green_hash": subprocess.getoutput("git rev-parse HEAD")
         }
-        
+
         artifact_path = OUT / "latest.json"
         artifact_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
         print(json.dumps(payload, indent=2))
@@ -708,11 +708,11 @@ if __name__ == "__main__":
 Please review this unified architectural vision. Once approved, I am prepared to surgically re-punch these Python systems directly into the `scripts/` directory, permanently bridging the gap between our internal Apple Silicon R&D lab and the CounselConduit commercial reality.
 
 ### V. The V11 Merged Control Plane Installer
-The right answer is not to replace Antigravity with a new stack, but to install the v10/v11 memory-and-control system inside the repo-native pnkln control plane that already exists. 
+The right answer is not to replace Antigravity with a new stack, but to install the v10/v11 memory-and-control system inside the repo-native pnkln control plane that already exists.
 
 * The core control-plane backbone: `manifests/monorepo_manifest.yaml`, `docs/MERGE_STATUS.md`, `docs/ANTIGRAVITY_CONTROL_PLANE.md`, `setup_antigravity_v11_merged.sh`
 * The memory/enforcement layer: `authority-current.json`, operator invariants, authority atoms, hydrate-pack, repo-root conflict detection.
-* GitHub app handles freshness, local clones handle indexing. 
+* GitHub app handles freshness, local clones handle indexing.
 * Treats the 56-repo fold-in as explicit backlog.
 
 ### VI. The Final Canonical Ingest Sequence
@@ -794,12 +794,12 @@ We are executing the final mile of the Thread Transfer for `shadowtag-omega-v4` 
 
 ### 1. The Environmental Crash Gate (FastAPI Hardening)
 *   **The Problem:** Silent failures on boot if the master key is missing, leading to degraded "offline" hallucinations.
-*   **The Fix:** I will inject a hard `assert` or `sys.exit(1)` initialization gate inside the FastAPI startup lifecycle (`apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/src/routers/agents.py` or the `main.py` entrypoint). 
+*   **The Fix:** I will inject a hard `assert` or `sys.exit(1)` initialization gate inside the FastAPI startup lifecycle (`apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/src/routers/agents.py` or the `main.py` entrypoint).
 *   **The Steve Jobs Standard:** "It just works, or it decisively dies." The app will refuse to boot in a compromised state, eliminating ghost errors down the pipeline.
 
 ### 2. The Vector Interface Wiring (Frontend → RAG Telemetry)
 *   **The Problem:** The Next.js Swiper UI is visually decoupled from the Sovereign RAG engine `vector_db.py`.
-*   **The Fix:** I will wire the React API handlers (via `apps/ShadowTag-v2-ui` or the Next.js `page.tsx`) to directly poll the `vector_db.py` search endpoints. 
+*   **The Fix:** I will wire the React API handlers (via `apps/ShadowTag-v2-ui` or the Next.js `page.tsx`) to directly poll the `vector_db.py` search endpoints.
 *   **The Steve Jobs Standard:** Inference trails must not be dark boxes. We will surface the LanceDB vector traversal mapping natively to the end-user UI for instant, visceral feedback on *how* the agent thinks.
 
 ### 3. The Janitor Lock Bypass (`finish_changes.py`)
@@ -876,7 +876,7 @@ To achieve the ultimate uplift in performance, accuracy, and financial output, w
 - We must immediately migrate `/biome.json` to the v2.4.9 standard or repair the `ignore` array.
 - We will execute the `ruff` unsafe fixes on `ShadowTag-v2_stack` to purge the remaining 335 errors.
 
-### Phase 2: Execution of `/omega-loop` 
+### Phase 2: Execution of `/omega-loop`
 As commanded, we will invoke the `/omega-loop` native script found in `toolbelt.md`.
 - **Command:** `python3 scripts/finish_changes.py`
 - This will instantiate the 160IQ ShadowTag-v2 Autonomous Sentinel, run the UI Auditor, and orchestrate the egress commit flawlessly.
@@ -884,9 +884,9 @@ As commanded, we will invoke the `/omega-loop` native script found in `toolbelt.
 ## User Review Required
 
 > [!CAUTION]
-> The `/omega-loop` command (`scripts/finish_changes.py`) automatically stages, commits, and pushes any repaired files to `origin/main`. I am running this directly within the `gemini-3.1-flash-lite-preview` context, project `shadowtag-omega-v4`. 
+> The `/omega-loop` command (`scripts/finish_changes.py`) automatically stages, commits, and pushes any repaired files to `origin/main`. I am running this directly within the `gemini-3.1-flash-lite-preview` context, project `shadowtag-omega-v4`.
 >
-> In order to achieve the "Steve Jobs-esque" financial accuracy and performance uplift, I recommend we also execute `scripts/deploy_modern_stack.sh` after the loop to ensure the APIs are actually spinning, rather than just lying dormant in memory. 
+> In order to achieve the "Steve Jobs-esque" financial accuracy and performance uplift, I recommend we also execute `scripts/deploy_modern_stack.sh` after the loop to ensure the APIs are actually spinning, rather than just lying dormant in memory.
 >
 > If this trajectory perfectly aligns with your vision, approve this payload, and I will unleash the `run_command` trigger for the Omega Loop.
 
@@ -1251,9 +1251,9 @@ Site Key: `6LeBmGksAAAAAKHaelFgvyTLC7iPGXf6GefAJkDp`
 - Add `import Script from 'next/script';`
 - Add the reCAPTCHA v3/Enterprise script tag to load globally and score traffic:
   ```tsx
-  <Script 
-    src="https://www.google.com/recaptcha/api.js?render=6LeBmGksAAAAAKHaelFgvyTLC7iPGXf6GefAJkDp" 
-    strategy="beforeInteractive" 
+  <Script
+    src="https://www.google.com/recaptcha/api.js?render=6LeBmGksAAAAAKHaelFgvyTLC7iPGXf6GefAJkDp"
+    strategy="beforeInteractive"
   />
   ```
 
@@ -1265,14 +1265,14 @@ Site Key: `6Lej92UsAAAAAM3v7gRytCt_IXz_-CxffCeXYdKO`
 - Add `import Script from 'next/script';`
 - Add the reCAPTCHA script tag:
   ```tsx
-  <Script 
-    src="https://www.google.com/recaptcha/api.js?render=6Lej92UsAAAAAM3v7gRytCt_IXz_-CxffCeXYdKO" 
-    strategy="beforeInteractive" 
+  <Script
+    src="https://www.google.com/recaptcha/api.js?render=6Lej92UsAAAAAM3v7gRytCt_IXz_-CxffCeXYdKO"
+    strategy="beforeInteractive"
   />
   ```
 
 ## Important Considerations
-Currently, these are "Invisible" reCAPTCHA keys that score traffic automatically when the script is loaded with a `render` ID. If you need explicit verification triggered on specific UI buttons (like form submissions or payment flows), we will also need to add `grecaptcha.execute()` calls to those components and send the token to your backend. 
+Currently, these are "Invisible" reCAPTCHA keys that score traffic automatically when the script is loaded with a `render` ID. If you need explicit verification triggered on specific UI buttons (like form submissions or payment flows), we will also need to add `grecaptcha.execute()` calls to those components and send the token to your backend.
 
 *Are there specific forms or API endpoints you need protected by verifying the token, or are we just adding the telemetry script to clear the automated Google Cloud warnings?*
 
@@ -1334,7 +1334,7 @@ Source Brain: 0f155a4e-36e6-4528-a693-619a039e5079
 "Design is not just what it looks like and feels like. Design is how it works." — Steve Jobs.
 
 ## 1. Vision: The God Mode Uplift
-We are transitioning from a collection of scripts to a unified Sovereign OS. This plan integrates the high-entropy reasoning of `Judge 6`, the neural state retention of `MirasCore`, and the exhaustive knowledge base of Google Drive. 
+We are transitioning from a collection of scripts to a unified Sovereign OS. This plan integrates the high-entropy reasoning of `Judge 6`, the neural state retention of `MirasCore`, and the exhaustive knowledge base of Google Drive.
 
 ## 2. Distinction Analysis
 - **Reactive vs Proactive**: We shift from regex-based security (`Judge.vet`) to LLM-guided constitutional compliance.
@@ -1379,7 +1379,7 @@ We are transitioning from a collection of scripts to a unified Sovereign OS. Thi
 
 ### [Phase E: The Singularity Engine v2.2 Integration]
 - **Goal**: Restore the "Singularity Engine" and "UphillSnowball Matrix" logic from recovered manifests.
-- **Action**: 
+- **Action**:
     - [NEW] `.agent/master_prompt_v2.2_singularity_engine.yaml`
     - [NEW] `.agent/hybrid_scraper.py`
     - [NEW] `.agent/singularity_daemon.py`
@@ -1527,14 +1527,14 @@ jq -r '.[].File' secrets_report.json | sort | uniq >> .gitignore
 ```
 
 ### 2. Stateful Chunk Pusher (`scripts/resume_chunked_push.py`)
-I will refactor the chunking script so that it **no longer destroys the `.git` directory on execution**. 
+I will refactor the chunking script so that it **no longer destroys the `.git` directory on execution**.
 
 1. By persisting `.git`, the chunker automatically retains the fact that Batches 1-13 are already pushed to `origin/main`.
 2. The script will simply call `git ls-files --others --exclude-standard`, which will strictly return only files that *have not yet been pushed*.
 3. It will then batch those remaining files into 90MB commits (Batch 14, 15, 16...) and resume sequential pushing until the payload is 0.
 
 ## User Review Required
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > Ignoring the secret-bearing files via `.gitignore` means those specific demo files (like `google-cloud-java` test protos and `dev.integrations.yaml`) will not be uploaded to GitHub. They will remain locally on your machine. This is standard practice for test keys, but please confirm this is acceptable before I execute the sanitation.
 
 ## Verification Plan
@@ -1553,7 +1553,7 @@ Source Brain: 7a232d54-e41a-4478-bbbe-434ea9b57b29
 
 ## Goal
 Fully flesh out the two major technical debts left on the table:
-1. **CopilotKit Proxy Structure Match**: Resolve the 422 Error and "Cannot convert undefined or null to object" by implementing the exact structural match between the Next.js Proxy and the Judge 6 Sentinel backend. 
+1. **CopilotKit Proxy Structure Match**: Resolve the 422 Error and "Cannot convert undefined or null to object" by implementing the exact structural match between the Next.js Proxy and the Judge 6 Sentinel backend.
 2. **Stripe Webhook Binding**: Set up an active listener endpoint in the Next.js application to process `checkout.session.completed` events and bind licenses/access back to users natively using the `<USER_KEY_PROVIDED>` live key.
 
 ## Proposed Changes
@@ -1561,11 +1561,11 @@ Fully flesh out the two major technical debts left on the table:
 ### 1. CopilotKit Exact Structure Match
 
 #### [MODIFY] [apps/shadowtag-web/app/api/copilotkit/\[\[...handle\]\]/route.ts]
-- Implement bidirectional streaming capabilities if the SDK expects Server-Sent Events (SSE). 
+- Implement bidirectional streaming capabilities if the SDK expects Server-Sent Events (SSE).
 - Ensure that the `/info` object explicitly matches the GraphQL/REST schema expected by CopilotKit React Core 1.51.x, which demands strict properties: `models`, `tools`, etc.
 
 #### [MODIFY] [apps/judge-sentinel/judge6_sentinel.py]
-- Ensure the backend FastAPI application accepts `POST /copilotkit_remote` conforming either to the native `copilotkit` Python SDK standards, or properly formats the manual override to return `data` streams properly. 
+- Ensure the backend FastAPI application accepts `POST /copilotkit_remote` conforming either to the native `copilotkit` Python SDK standards, or properly formats the manual override to return `data` streams properly.
 
 ### 2. Stripe Webhook Implementation
 
@@ -1601,7 +1601,7 @@ To prevent a catastrophic UI crash from rendering 200,000+ words simultaneously 
 ## 3. The Execution Steps (Pending Approval)
 
 ### Step A: The Janitor Protocol (`/omega-loop`)
-I will physically trigger `python3 scripts/finish_changes.py` across the monorepo root. 
+I will physically trigger `python3 scripts/finish_changes.py` across the monorepo root.
 - **Formatter**: Biome will lock the AST of the updated `mega_brain_compiler.py`, `ane_beads_ingest.py`, and `drive_ingest_daemon.py`.
 - **Git Hygiene**: Drops `index.lock` globally.
 - **Staging**: Adds the hardened `operator_invariants.json` to the git tree natively.
@@ -1684,7 +1684,7 @@ Source Brain: 78f0c788-9760-450b-9ff2-ec00c7eff741
 
 # The "Great Purge": Git Index Filtration
 
-To finally bypass the GitHub packfile cap and execute a clean `/omega-loop` egress, we must physically eradicate the massive external dependency binaries and monolithic logs from the actual `.git` history database. 
+To finally bypass the GitHub packfile cap and execute a clean `/omega-loop` egress, we must physically eradicate the massive external dependency binaries and monolithic logs from the actual `.git` history database.
 
 Since these artifacts were absorbed into the tree across the trailing 37 commits, we cannot simply `git rm`. We must rewrite history natively to mathematically eliminate their weight from the deployment layer.
 
@@ -1692,7 +1692,7 @@ Since these artifacts were absorbed into the tree across the trailing 37 commits
 
 > [!CAUTION]
 > **Git History Rewrite Warning:** `git filter-repo` forcefully recalculates all object hashes in history. Because your `main` branch locally holds 37 commits not yet deployed, this rewrite is perfectly safe and won't sever remote tracking.
-> 
+>
 > A secondary caution: This will explicitly annihilate the files mentioned below from the source tree. If you ever intended to persist 10MB PDFs or compilation `.c` builds in source, they will require LFS or external bucket tracking.
 
 ## Proposed Changes
@@ -1728,8 +1728,8 @@ git filter-repo --strip-blobs-bigger-than 10M --force
 ## Open Questions
 
 > [!IMPORTANT]
-> **Size Threshold Confirmation:** I have isolated specific massive paths. However, I have also proposed a universal `--strip-blobs-bigger-than 10M` fail-safe that guarantees no rogue models or media clips exceed push parameters. 
-> 
+> **Size Threshold Confirmation:** I have isolated specific massive paths. However, I have also proposed a universal `--strip-blobs-bigger-than 10M` fail-safe that guarantees no rogue models or media clips exceed push parameters.
+>
 > **Are you comfortable with stripping all files natively >10MB from the history, or do you prefer I only target the explicit file paths listed?**
 
 ## Verification Plan
@@ -2007,7 +2007,7 @@ Ingest all provided v10/v11 control plane bundles, operator invariant atoms, rul
 4. **Clone Reference Repositories**
    The prompt defined several repositories to clone. We will place these under a `reference/external_upstreams` or `reference/public-demos` folder so they are visible but not live application code.
    - Repos include: CortexLTM, CortexUI, prettier-vscode, beads, pgvector, postgres, grafana, payload, essentials-claude-code, grepai-beads-helpers, Threadwork, beads-templates, vllm, OpenViking, memory-lancedb-pro, Agentic-AI-Pipeline, claude-skills-automation.
-   
+
 5. **Clone Skill References**
    The prompt highlighted an arXiv paper on skills extraction and listed several skill repositories:
    - superpowers-optimized, agent-skills, agentskills, notebooklm-skill, stitch-skills, gemini-skills, skills (rodydavis), google_style_guide_agent_skills, coderabbitai/skills, payload, antigravity-skills.
@@ -2049,7 +2049,7 @@ Transition the ShadowTag monorepo from primary scaffolding to **Sentinel Ops**. 
   - `github` / `linear` / `googleworkspace-cli`: The trigger and notification layer.
 
 ### Gate 0 CodePMCS Enforcements
-  
+
 - **Action:** Implement a physical constraint layer via `.git/hooks/pre-commit` called the "Gate 0 Linter".
 - **Purpose:** Eliminate UI/UX semantic drift (e.g., hardcoded HEX values, manual pixel margins) before the code even triggers the agentic reasoning layer. If a commit violates the design system, the shock collar fires, rejecting the commit and forcing the agent back to fault localization.
 
@@ -2089,7 +2089,7 @@ The goal is to adopt the Stitch capabilities to supercharge UI rapid prototyping
 
 ## Proposed Changes
 
-We are introducing the `stitch-skills` suite and integrating it seamlessly within the `Cor.Ideate` planning layer. This is not strictly a code-level application implementation but rather an environment and workflow implementation to enable AI-assisted UI design before entering the explicit coding phase. 
+We are introducing the `stitch-skills` suite and integrating it seamlessly within the `Cor.Ideate` planning layer. This is not strictly a code-level application implementation but rather an environment and workflow implementation to enable AI-assisted UI design before entering the explicit coding phase.
 
 ### `external_sdks/stitch-skills` & `external_sdks/pickle-rick-extension`
 
@@ -2183,7 +2183,7 @@ Source Brain: 445c5c0a-7c90-4920-96eb-db03a4ea5aac
 # Unusual Machines Clone: Nano Banana Pro & Grounding Architecture
 
 ## Goal Description
-The user wants to scrap the existing website and build an exact, high-fidelity replica of `https://www.unusualmachines.com/` from scratch. 
+The user wants to scrap the existing website and build an exact, high-fidelity replica of `https://www.unusualmachines.com/` from scratch.
 Crucially, this rebuild must leverage the newest Gemini models: **Gemini 3 Pro Image (Nano Banana Pro)** for high-fidelity asset generation, and **Gemini 2.5 Flash with Google Search Grounding** for dynamic, factual content generation based on live search results.
 
 ## Proposed Changes
@@ -2230,9 +2230,9 @@ But in our speed, we left architectural shims on the table. This is unacceptable
 
 **Here is the exact distinction analysis:**
 
-### 1. The C++ Parallelization Lie 
+### 1. The C++ Parallelization Lie
 *   **The Assumption:** We assumed `midas_monte_carlo.cpp` was flawlessly running the full Quarter Kelly computation on the M-Series NPU because we pushed `mlx::core::sort` and ran the `eval()` barrier.
-*   **The Reality:** The actual threshold logic (`price > start_price`) and performance aggregations evaluating to `win_multiplier_avg` are still iterating sequentially in a scalar `for() ...` loop on the standard CPU *after* extracting the raw tensor pointer! 
+*   **The Reality:** The actual threshold logic (`price > start_price`) and performance aggregations evaluating to `win_multiplier_avg` are still iterating sequentially in a scalar `for() ...` loop on the standard CPU *after* extracting the raw tensor pointer!
 *   **The Fix:** We must inject conditional boolean arrays and `mlx::core::sum` masks natively into the NPU graph *before* evaluating the barrier, forcing the silicon to digest the full calculation in parallel.
 
 ### 2. The `src/api` Ingress Schism
@@ -2256,27 +2256,27 @@ But in our speed, we left architectural shims on the table. This is unacceptable
 <summary>View Target MLX NPU Optimization</summary>
 
 ```cpp
-        // 4. Output final prices 
+        // 4. Output final prices
         array start_price_arr = array(start_price, float32);
         array final_prices = multiply(start_price_arr, exp(total_log_returns));
-        
+
         // --- NEW MLX BOOLEAN GRAPH ---
         // Compute win/loss limits entirely on NPU
         array win_mask = greater(final_prices, start_price_arr);
         array loss_mask = less_equal(final_prices, start_price_arr);
-        
+
         array wins_count = sum(win_mask);
         array losses_count = sum(loss_mask);
-        
+
         array win_multipliers = multiply(win_mask, subtract(divide(final_prices, start_price_arr), array(1.0, float32)));
         array loss_multipliers = multiply(loss_mask, subtract(array(1.0, float32), divide(final_prices, start_price_arr)));
-        
+
         array win_sum = sum(win_multipliers);
         array loss_sum = sum(loss_multipliers);
 
         // Sort just for VaR distribution evaluation
         array sorted_final_prices = sort(final_prices, 0);
-        
+
         // Pull full calculation cleanly to execution barrier
         eval({sorted_final_prices, wins_count, losses_count, win_sum, loss_sum});
 ```
@@ -2819,7 +2819,7 @@ Conduct a structural audit of the Monorepo-Uphillsnowball workspace to identify 
 - Check for lingering `.git/index.lock` files, broken React links, or unformatted Biome code per Invariant 7 (`/omega-loop`).
 
 ## Verification Plan
-- After executing the read-only audit, I will generate a `drift_report_results.md` artifact detailing every physical variance from the invariants. 
+- After executing the read-only audit, I will generate a `drift_report_results.md` artifact detailing every physical variance from the invariants.
 - You will be given the option to auto-remediate the drift (e.g., executing `/omega-loop`, purging deprecated MCP paths, executing `finish_changes.py`) or manually intervene.
 
 
@@ -2920,7 +2920,7 @@ def main():
     print("==================================================")
     print("Binding to: shadowtag-omega-v4")
     print("Model target: gemini-3.1-flash-lite-preview")
-    
+
     try:
         # Run the egress protocol pipeline
         print("\n[LOOPIN] Triggering egress protocol (finish_changes.py)...")
@@ -2973,12 +2973,12 @@ class sovereign_gdrive_ingestor:
     def __init__(self, force_restart=False):
         self.force_restart = force_restart
         self.api_key = os.getenv("GEMINI_API_KEY")
-        self.client = genai.Client(api_key=self.api_key) 
-        
+        self.client = genai.Client(api_key=self.api_key)
+
         self.beads_dir = BEADS_DIR
         self.manuals_dir = self.beads_dir / "doctrinal_manuals"
         self.manuals_dir.mkdir(parents=True, exist_ok=True)
-        
+
         logger.info(f"🚀 HEADLESS GDRIVE INGESTION V8 INITIALIZED. Target: {PROJECT_ID}")
         logger.info(f"🧠 MODEL BINDING: Latching onto {MODEL_ID}")
 
@@ -2994,14 +2994,14 @@ class sovereign_gdrive_ingestor:
 
     async def fetch_and_extract_doc(self, file_id: str, file_name: str, mime_type: str):
         if not self.drive_service: return
-        
+
         output_file = self.manuals_dir / f"{file_name}_memory.json"
         if output_file.exists() and not self.force_restart:
             logger.info(f"⏭️ Skipping {file_name} - bead already exists.")
             return
 
         logger.info(f"⚡ Downloading from Google Drive API: {file_name} ({file_id})")
-        
+
         try:
             # Download file payload from Google Drive natively
             request = self.drive_service.files().get_media(fileId=file_id)
@@ -3030,7 +3030,7 @@ class sovereign_gdrive_ingestor:
 
     async def ingest_drive_folder(self, folder_id: str):
         if not self.drive_service: return
-        
+
         logger.info(f"Initiating recursive extraction for Google Drive Folder ID: {folder_id}...")
         try:
             results = self.drive_service.files().list(
@@ -3043,17 +3043,17 @@ class sovereign_gdrive_ingestor:
                 logger.warning(f"No files found in Drive Folder ID: {folder_id}.")
                 return
 
-            # Note: A true recursive sweep would check if mimeType == 'application/vnd.google-apps.folder' 
+            # Note: A true recursive sweep would check if mimeType == 'application/vnd.google-apps.folder'
             # and recurse. For elegant illustration, we process the immediate payloads.
             valid_items = [i for i in items if i['mimeType'] != 'application/vnd.google-apps.folder']
             logger.info(f"Found {len(valid_items)} files to process.")
 
             chunk_tasks = [
-                self.fetch_and_extract_doc(item['id'], item['name'], item['mimeType']) 
+                self.fetch_and_extract_doc(item['id'], item['name'], item['mimeType'])
                 for item in valid_items
             ]
             await asyncio.gather(*chunk_tasks)
-            
+
             logger.info("✅ Headless Omni-Sweep sequence complete.")
         except Exception as e:
             logger.error(f"❌ Drive API Query failed: {e}")
@@ -3166,7 +3166,7 @@ We ensure that the God Mode loop explicitly injects the correct `GCP_PROJECT_ID`
 
         # Auto-inject headless auth and strict target project into environment for God Mode
         os.environ["GCP_PROJECT_ID"] = "shadowtag-omega-v4"
-        
+
         key_file = os.path.expanduser("~/.gcp/headless-runner-key.json")
         if os.path.exists(key_file):
             os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_file
@@ -3765,7 +3765,7 @@ We will systematically remove or archive the legacy `FlyingMonkeys` artifacts.
 
 # Sovereign MLX TurboQuant Integration
 
-This plan outlines the architectural shift to bring Google Research's **TurboQuant** (Extreme Compression via PolarQuant + QJL) into the local Apple Silicon `Sovereign MLX` pipeline. 
+This plan outlines the architectural shift to bring Google Research's **TurboQuant** (Extreme Compression via PolarQuant + QJL) into the local Apple Silicon `Sovereign MLX` pipeline.
 
 ## Goal Description
 Currently, `core/sovereign_mlx/kv_cache_slab.py` uses the C++ `llama-server` to generate uncompressed KV cache `.bin` slabs for local RAG prefilling. To achieve the 6x Unified Memory compression detailed in the TurboQuant paper, we must pivot from `llama.cpp` to a native Python `mlx_lm` runtime patched with the newly cloned `turboquant-mlx` libraries.
@@ -3862,7 +3862,7 @@ To exactly copy the visual identity of `https://www.unusualmachines.com/`, we mu
 
 > [!WARNING]
 > This will entirely replace the Dark Luxury Web3 Aesthetic with a standard Light Corporate Aesthetic.
-> 
+>
 > Regarding your question on the **Chrome DevTools MCP**: I am **NOT** using `chrome-devtools-mcp`. It is not instantiated in my internal context, nor is it configured in the `mcp_servers.json` on this machine. My current active MCPs are limited to Stitch, BigQuery, Cloud SQL, Cloud Run, Dart, and Dataplex. If you would like me to use the Chrome DevTools MCP to natively inspect elements, we need to install and configure it in your global cursor/gemini settings.
 
 ## Proposed Changes
@@ -3872,7 +3872,7 @@ To exactly copy the visual identity of `https://www.unusualmachines.com/`, we mu
 #### [MODIFY] [page.tsx](file:///Users/pikeymickey/ShadowTag-v2-stack/ShadowTag-v2/apps/shadowtag-web/app/page.tsx)
 - **Remove:** The background `<video>`, `CitadelGrid`, ambient overlays, and `FinancialTicker`.
 - **Implement:** A clean, white/light-gray background layout.
-- **Structure:** 
+- **Structure:**
   1. A minimal corporate Header/Navbar.
   2. A clean Hero Section with the Leaf Logo and high-contrast text.
   3. A 3-column "Recent News / Quick Links / Upcoming Events" section.

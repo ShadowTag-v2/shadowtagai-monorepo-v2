@@ -153,7 +153,10 @@ class ColabCoop:
         except Exception as e:
             self.stats["tasks_failed"] += 1
             return CoopResult(
-                task_id=task.task_id, account_id=client.account_id, success=False, output=str(e),
+                task_id=task.task_id,
+                account_id=client.account_id,
+                success=False,
+                output=str(e),
             )
         finally:
             self.stats["tasks_distributed"] += 1
@@ -189,7 +192,10 @@ class ColabCoop:
         return results
 
     async def distribute_sharded(
-        self, notebook_template: str, data_shards: list[Any], aggregator: Callable | None = None,
+        self,
+        notebook_template: str,
+        data_shards: list[Any],
+        aggregator: Callable | None = None,
     ) -> dict[str, Any]:
         """Execute notebook with sharded data across accounts.
 
@@ -248,7 +254,9 @@ class ColabCoop:
         }
 
     async def execute_replicated(
-        self, notebook_code: str, num_replicas: int | None = None,
+        self,
+        notebook_code: str,
+        num_replicas: int | None = None,
     ) -> dict[str, Any]:
         """Execute same notebook on multiple accounts for redundancy/comparison.
 

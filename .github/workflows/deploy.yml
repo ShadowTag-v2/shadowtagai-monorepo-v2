@@ -67,4 +67,3 @@ jobs:
       run: |
         echo "Pushing canonical branch to Firebase Edge"
         firebase deploy --only hosting
-

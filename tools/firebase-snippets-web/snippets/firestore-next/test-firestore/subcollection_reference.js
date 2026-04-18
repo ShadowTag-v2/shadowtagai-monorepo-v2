@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START subcollection_reference_modular]
-import { doc } from "firebase/firestore"; 
+import { doc } from "firebase/firestore";
 
 const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
 // [END subcollection_reference_modular]

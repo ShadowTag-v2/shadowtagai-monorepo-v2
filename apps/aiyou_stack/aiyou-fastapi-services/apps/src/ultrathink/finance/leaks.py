@@ -12,8 +12,7 @@ class LeakWarning(BaseModel):
 
 
 class RevenueLeakDetector:
-    """Analyzes system logs to identify unmonetized value and revenue leaks.
-    """
+    """Analyzes system logs to identify unmonetized value and revenue leaks."""
 
     def __init__(self, token_cost_per_1k: float = 0.002, min_margin: float = 0.5):
         self.token_cost_per_1k = token_cost_per_1k

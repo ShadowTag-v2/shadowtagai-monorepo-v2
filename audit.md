@@ -1,7 +1,7 @@
 # UI Consistency Audit — Monorepo-Uphillsnowball
 
-**Generated**: 2026-04-11T13:20:00-07:00  
-**Scope**: 199 frontend files across 15 app directories  
+**Generated**: 2026-04-11T13:20:00-07:00
+**Scope**: 199 frontend files across 15 app directories
 **Auditor**: Antigravity (Memory LOCKED, Invariant #40 Senior Dev Override)
 
 ---
@@ -194,7 +194,7 @@
 
 ### Fix Plan
 - [ ] Mark each landing page as ACTIVE/DEPRECATED/ARCHIVED in a manifest
-- [ ] Delete truly abandoned pages  
+- [ ] Delete truly abandoned pages
 - [ ] Extract shared layout into a template system
 
 ---

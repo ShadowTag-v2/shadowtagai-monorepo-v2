@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""UserPromptSubmit hook - Validate user prompts and add context
-"""
+"""UserPromptSubmit hook - Validate user prompts and add context"""
 
 import datetime
 import json

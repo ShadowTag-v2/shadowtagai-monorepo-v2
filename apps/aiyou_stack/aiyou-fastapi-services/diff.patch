@@ -24,12 +24,12 @@ index e8ab469fd..7965326c8 100755
  DELTAS_DIR = MEMORY_DIR / "deltas"
 @@ -76,21 +77,62 @@ class ConversationExtractor:
          return conversations
- 
+
      def extract_claude_code_conversations(self) -> List[Dict[str, Any]]:
 -        """Extract from Claude Code history"""
 +        """Extract from Claude Code history.jsonl"""
          conversations = []
- 
+
          for base_path in CLAUDE_CODE_PATHS:
 -            if not base_path.exists():
 +            history_file = base_path / "history.jsonl"
@@ -68,7 +68,7 @@ index e8ab469fd..7965326c8 100755
 +        for conv_dir in ANTIGRAVITY_BRAIN_PATH.iterdir():
 +            if not conv_dir.is_dir():
                  continue
- 
+
 -            for history_file in base_path.glob("**/*.json"):
 +            # Read any .md files as conversation artifacts
 +            for md_file in conv_dir.glob("*.md"):
@@ -89,13 +89,13 @@ index e8ab469fd..7965326c8 100755
                  except Exception as e:
 -                    print(f"Warning: Could not read {history_file}: {e}", file=sys.stderr)
 +                    print(f"Warning: Could not read {md_file}: {e}", file=sys.stderr)
- 
+
          return conversations
- 
+
 @@ -143,7 +185,7 @@ class ConversationExtractor:
- 
+
          return list(tags)
- 
+
 -    def extract_all(self) -> List[Dict[str, Any]]:
 +    def extract_all(self) -> list[dict[str, Any]]:
          """Extract all conversations from all sources"""
@@ -104,7 +104,7 @@ index e8ab469fd..7965326c8 100755
 @@ -153,7 +195,11 @@ class ConversationExtractor:
          claude_convs = self.extract_claude_code_conversations()
          print(f"  Found {len(claude_convs)} Claude Code conversations")
- 
+
 -        all_convs = cursor_convs + claude_convs
 +        print("Extracting Antigravity conversations...")
 +        antigravity_convs = self.extract_antigravity_conversations()
