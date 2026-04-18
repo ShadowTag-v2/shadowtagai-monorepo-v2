@@ -175,7 +175,10 @@ class ToolboxTool:
                 values or callables that are called to produce values as needed.
             client_headers: Client specific headers bound to the tool.
         """
-        check = lambda val, default: val if val is not None else default
+
+        def check(val, default):
+            return val if val is not None else default
+
         return ToolboxTool(
             transport=check(transport, self.__transport),
             name=check(name, self.__name__),

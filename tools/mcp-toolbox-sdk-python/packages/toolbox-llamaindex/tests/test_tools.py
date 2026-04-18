@@ -219,7 +219,9 @@ class TestToolboxTool:
         assert new_llamaindex_tool._ToolboxTool__core_tool == returned_core_tool_mock
 
     def test_toolbox_tool_add_auth_token_getter(self, auth_toolbox_tool, mock_core_sync_auth_tool):
-        get_id_token = lambda: "test-token"
+        def get_id_token():
+            return "test-token"
+
         returned_core_tool_mock = mock_core_sync_auth_tool.add_auth_token_getters.return_value
 
         new_llamaindex_tool = auth_toolbox_tool.add_auth_token_getter("test-auth-source", get_id_token)

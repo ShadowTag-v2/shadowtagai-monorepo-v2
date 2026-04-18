@@ -154,8 +154,7 @@ def run_clang_format_diff(args, file):
     #
     # It's not pretty, due to Python 2 & 3 compatibility.
     encoding_py3 = {}
-    if sys.version_info[0] >= 3:
-        encoding_py3["encoding"] = "utf-8"
+    encoding_py3["encoding"] = "utf-8"
 
     try:
         proc = subprocess.Popen(
@@ -169,12 +168,6 @@ def run_clang_format_diff(args, file):
         raise DiffError(f"Command '{subprocess.list2cmdline(invocation)}' failed to start: {exc}")
     proc_stdout = proc.stdout
     proc_stderr = proc.stderr
-    if sys.version_info[0] < 3:
-        # make the pipes compatible with Python 3,
-        # reading lines should output unicode
-        encoding = "utf-8"
-        proc_stdout = codecs.getreader(encoding)(proc_stdout)
-        proc_stderr = codecs.getreader(encoding)(proc_stderr)
     # hopefully the stderr pipe won't get full and block the process
     outs = list(proc_stdout.readlines())
     errs = list(proc_stderr.readlines())
@@ -222,10 +215,7 @@ def colorize(diff_lines):
 def print_diff(diff_lines, use_color):
     if use_color:
         diff_lines = colorize(diff_lines)
-    if sys.version_info[0] < 3:
-        sys.stdout.writelines(l.encode("utf-8") for l in diff_lines)
-    else:
-        sys.stdout.writelines(diff_lines)
+    sys.stdout.writelines(diff_lines)
 
 
 def print_trouble(prog, message, use_colors):

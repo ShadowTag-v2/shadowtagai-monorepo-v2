@@ -32,9 +32,11 @@ TOP_K = 5
 
 # --- Data Models -------------------------------------------------------------
 
+
 @dataclass
 class SkillEntry:
     """A single skill registered for search."""
+
     name: str
     description: str
     path: str
@@ -42,6 +44,7 @@ class SkillEntry:
 
 
 # --- Index Builder -----------------------------------------------------------
+
 
 def build_index() -> list[dict]:
     """Scan all skills directories and build a searchable index."""
@@ -86,12 +89,50 @@ def build_index() -> list[dict]:
                 # Extract significant words from first 500 chars
                 text = content[:500].lower()
                 stop_words = {
-                    "the", "a", "an", "is", "are", "was", "were", "be",
-                    "to", "of", "and", "in", "that", "have", "it", "for",
-                    "not", "on", "with", "he", "as", "you", "do", "at",
-                    "this", "but", "his", "by", "from", "they", "we",
-                    "her", "she", "or", "will", "my", "one", "all",
-                    "use", "when", "if", "should", "must", "skill",
+                    "the",
+                    "a",
+                    "an",
+                    "is",
+                    "are",
+                    "was",
+                    "were",
+                    "be",
+                    "to",
+                    "of",
+                    "and",
+                    "in",
+                    "that",
+                    "have",
+                    "it",
+                    "for",
+                    "not",
+                    "on",
+                    "with",
+                    "he",
+                    "as",
+                    "you",
+                    "do",
+                    "at",
+                    "this",
+                    "but",
+                    "his",
+                    "by",
+                    "from",
+                    "they",
+                    "we",
+                    "her",
+                    "she",
+                    "or",
+                    "will",
+                    "my",
+                    "one",
+                    "all",
+                    "use",
+                    "when",
+                    "if",
+                    "should",
+                    "must",
+                    "skill",
                 }
                 words = set()
                 for word in text.split():
@@ -100,12 +141,14 @@ def build_index() -> list[dict]:
                         words.add(clean)
                 keywords = sorted(words)[:20]
 
-                entries.append({
-                    "name": name,
-                    "description": description[:200],
-                    "path": str(skill_file),
-                    "keywords": keywords,
-                })
+                entries.append(
+                    {
+                        "name": name,
+                        "description": description[:200],
+                        "path": str(skill_file),
+                        "keywords": keywords,
+                    }
+                )
 
             except (OSError, UnicodeDecodeError) as e:
                 print(f"[WARN] Error reading {skill_file}: {e}", file=sys.stderr)
@@ -124,6 +167,7 @@ def build_index() -> list[dict]:
 
 
 # --- Search ------------------------------------------------------------------
+
 
 def search(query: str, top_k: int = TOP_K) -> list[dict]:
     """Search the skills index for matching skills."""
@@ -148,9 +192,7 @@ def search(query: str, top_k: int = TOP_K) -> list[dict]:
         score += name_sim * 3.0
 
         # Description match
-        desc_sim = SequenceMatcher(
-            None, query_lower, entry["description"].lower()
-        ).ratio()
+        desc_sim = SequenceMatcher(None, query_lower, entry["description"].lower()).ratio()
         score += desc_sim * 2.0
 
         # Keyword overlap
@@ -172,15 +214,18 @@ def search(query: str, top_k: int = TOP_K) -> list[dict]:
     results = []
     for score, entry in scored[:top_k]:
         if score > 0.3:  # Minimum relevance threshold
-            results.append({
-                **entry,
-                "relevance": round(score, 2),
-            })
+            results.append(
+                {
+                    **entry,
+                    "relevance": round(score, 2),
+                }
+            )
 
     return results
 
 
 # --- Main --------------------------------------------------------------------
+
 
 def main():
     if "--index" in sys.argv:
