@@ -1,46 +1,75 @@
-# Dependabot / Renovate-equivalent auto-dependency updates
-# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+# Dependabot Configuration
+# Auto-merge patch/minor bumps, group by ecosystem
 
 version: 2
+
 updates:
-  # Python (pip) — root pyproject.toml
+  # Python (pip) — root
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
     labels:
       - "dependencies"
       - "python"
-    commit-message:
-      prefix: "chore(deps):"
-
-  # npm — root package.json
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
+    groups:
+      python-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
     open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-      - "npm"
-    commit-message:
-      prefix: "chore(deps):"
 
-  # NuGet — Semantic Kernel C# project
-  - package-ecosystem: "nuget"
-    directory: "/apps/aiyou_stack/aiyou-fastapi-services/apps/aiyou-kernel"
+  # Python — CounselConduit
+  - package-ecosystem: "pip"
+    directory: "/apps/counselconduit"
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 3
     labels:
       - "dependencies"
-      - "dotnet"
-    commit-message:
-      prefix: "chore(deps):"
+      - "python"
+      - "counselconduit"
+    groups:
+      counselconduit-deps:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 5
+
+  # Python — AiYou stack
+  - package-ecosystem: "pip"
+    directory: "/apps/aiyou_stack/aiyou-fastapi-services"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "python"
+      - "aiyou"
+    groups:
+      aiyou-deps:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 3
+
+  # npm — KovelAI
+  - package-ecosystem: "npm"
+    directory: "/apps/kovelai"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "kovelai"
+    groups:
+      kovelai-deps:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 3
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -48,9 +77,12 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 3
     labels:
       - "dependencies"
       - "ci"
-    commit-message:
-      prefix: "chore(ci):"
+    groups:
+      actions-deps:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 3

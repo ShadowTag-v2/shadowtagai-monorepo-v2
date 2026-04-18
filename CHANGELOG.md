@@ -1,55 +1,111 @@
-# Changelog
+# CHANGELOG — Monorepo-Uphillsnowball
 
-All notable changes to this project will be documented in this file.
-Format follows [Conventional Commits](https://www.conventionalcommits.org/).
+All notable changes to the ShadowTag-v2 monorepo.
 
-## [Unreleased]
+## [v9.0] — 2026-04-18
 
-### 2026-04-16
+### Infrastructure
+- **OpenTofu**: 19 resources provisioned (IAM bindings, log metric, alert policy)
+- **Secret Manager**: 23 secrets total, 9 imported to IaC state
+- **API Key Restriction**: Key 2 narrowed from 72 → 16 APIs
+- **Cloud Scheduler**: `firestore-backup-verify` daily probe
+- **Cloud Armor**: Rate limit rule (100 req/min/IP, 5min ban)
+- **Firestore Alerts**: Read (10K/5min) + Write (5K/5min) policies
+- **Email Channel**: `founder@shadowtagai.com` wired to 9 alert policies
+- **PubSub**: `secret-rotation-notifications` topic
 
-#### Infrastructure & Monitoring
-- **fix(lint):** ruff --fix UP045 annotation + omega debris cleanup (`21362b85ce1`)
-- **fix(infra):** dead code cleanup + uptime monitoring + Lighthouse CI (`46cc52e0fc8`)
-- **chore:** update BUSINESS_CONTEXT_LOCKED to v8.5 with full deployment state (`f8aa3c9ae9c`)
-- **feat:** production hardening batch — CSP fix, preview channels, GSC meta, deploy (`32fb1341fc6`)
+### CI/CD
+- **GCA Batch Reviewer**: `scripts/run_gca_batch.py` — batch PR review + auto-merge
+- **GCA CI Fallback**: `.github/workflows/gca-review.yml` — 4-agent Gemini review
+- **Pre-push Hook**: GCA advisory gate with soft-fail relock
+- **Cloud Build**: `cloudbuild.yaml` + `cloudbuild-staging.yaml` (source-based)
+- **Staging Branch**: Created and synced to origin
+- **Dependabot**: `.github/dependabot.yml` with grouped minor/patch updates
+- **Lighthouse CI**: `.lighthouserc.json` budget gates (P90/A90/BP100/SEO100)
 
-#### Security & Compliance
-- **docs(agents):** bump hardened state to v8.5 — 2 Firestore DBs, MCP-first, 3 hosting targets, CSP parity (`76ab6506657`)
-- **docs(doctrine):** add Firebase MCP-first deploy protocol, close risk #21, bump to v8.5 (`87aa1feac49`)
-- **feat(infra):** batch-3 hardening — CSP headers, A/B testing, WebP, Stripe tests (`7489d6a015f`)
+### Auth & Security
+- **SM-First PEM**: `auth_github_app.py` 5-tier fallback (SM → local → env)
+- **OTEL Sampling**: `OTEL_TRACE_SAMPLING_RATE` configurable (10% default)
+- **Cloud Armor Rate Limit**: 100 req/min per IP
+- **Bandit**: 0 high-severity findings on production code
 
-#### Performance
-- **perf(hosting):** CSP headers, 404 pages, WebP optimization for both sites (`c76b496fdd4`)
-- **perf(kovelai):** WebP image optimization — 89% LCP reduction on hero-bg (`ef74aee97bf`)
-- **feat(kovelai):** full 22-item production hardening sweep (`710fb36b47f`)
+### Code
+- `tests/test_heartbeat.py`: 4 new tests (TTL, dead-man's switch, rate limit)
+- `scripts/ffmpeg_demo_record.sh`: macOS screen recording script
+- `docs/PRODUCTION_RUNBOOK.md`: incident response procedures
+- `docs/SECRET_ROTATION.md`: rotation procedure for 23 secrets
 
-### 2026-04-15
+### Resolved
+- 10 PRs closed (8 Dependabot stale, PR #48 cryptography, PR #55 incorporated)
+- Auto-merge + delete-branch-on-merge enabled
+- `RISK_REGISTER.md` v9.0 (29 entries)
+- `BUSINESS_CONTEXT_LOCKED.md` v9.0
 
-#### Frontend
-- **fix(kovelai):** tablet 768px responsive clamp + ruff auto-fix labs quickstarts (`0f286e81466`)
-- **fix(kovelai):** tighten hero clamp for 768px + ruff dead code cleanup (`2c617eadc42`)
-- **fix(kovelai):** fluid clamp() typography + container padding for responsive hero (`29d0a7f2235`)
-- **feat(kovelai):** add first-party data harvesting engine & cookie audit tables (`e79f1c5701d`)
-- **feat(kovelai):** persistent cookie float button + cache-bust meta tags (`36ffd30a6bb`)
-- **feat(kovelai):** Unusual Machines cookie consent + no-cache headers (`e1db791b933`)
-- **feat(shadowtagai):** finalize hero and research pipeline sections (`3ce0278ccde`)
-- **feat(kovelai):** apply Fluid Kinetic Aura parity with ShadowTagAI (`2c30b24782b`)
-
-#### Infrastructure
-- **fix(mcp):** eliminate all npx cold-starts, add firebase-mcp-fast.js direct entrypoint (`d12b29cc8dd`)
-- **chore(sync):** monorepo bulk ingestion batch 1 of 1 (25MB chunks) (`7459f094e07`)
-
-### 2026-04-14
-
-#### Core Features
-- **feat(security):** harden IDOR/BAC + repair MCP fleet + Gmail MX DNS (`1ad98522d93`)
-- **feat:** Stripe webhook handler + Lighthouse performance hardening (`83176949efd`)
-- **feat(mcp):** rewrite fleet to 9-server config, enforce MCP-first routing (`e37229636a2`)
-- **feat(skills):** mega-audit 31 repos, install 8 novel skills, upgrade 3 core skills (`19fcaef9c34`)
-- **fix(models):** resolve all F821 undefined name errors with TYPE_CHECKING guards (`c2820ede672`)
-- **feat:** Compiler Guillotine sweep + Autoresearch Triad + Ignite Sovereign (`cee4f776f1a`)
-- **feat(invariants):** v8.6 — Sovereign State Protocol folded into 7 skills (`be70f168831`)
+### Tests
+- **68/68** passed (4 new heartbeat tests)
 
 ---
 
-*Generated from `git log --oneline --no-merges` on 2026-04-16.*
+## [v8.0] — 2026-04-18
+
+### Infrastructure
+- **Cloud Run**: Rev 00010-s74 on us-central1 (canary → 100%)
+- **OpenTofu**: Initialized, Google provider 7.28.0
+- **GDPR Cron**: Cloud Scheduler `gdpr-30day-cleanup` daily 02:00 UTC
+- **OpenTelemetry**: Cloud Trace OTLP exporter wired into FastAPI
+
+### Security
+- **25-Rule Security Contract**: AGENTS.md (auth, validation, secrets)
+- **15 Security Defaults**: Tokens, CORS, CSP, HSTS, rate limits
+- **Headless CLI Protocol**: PTY Buffer Trap prevention
+- **Cloud Armor WAF**: XSS + SQLi rules active
+
+### Deliverables
+- Staging `.env.example` (37 variables)
+- Mobile Networking Spec (Flutter/Dio 6-interceptor stack)
+- OAuth Desktop Client fix (redirect_uri_mismatch)
+- 40 reference repos cloned (gitignored)
+- Lighthouse: P93 / A93 / BP100 / SEO100
+
+---
+
+## [v7.0] — 2026-04-18
+
+### Infrastructure
+- **Google Workspace Alerts**: Gmail + Chat API replace Discord + Resend
+- **Secret Manager Migration**: 20+ secrets from .env to SM
+- **Terraform IaC**: `infra/terraform/secrets.tf`
+- **gws CLI v0.22.5**: Agent-driven email/chat
+
+### Security
+- Org-level storage public access prevention
+- GCS lifecycle: 30-day auto-delete on Cloud Build buckets
+- Dead code audit: 34 unused imports fixed
+- Bandit: 0 medium/high findings (4,074 LOC)
+
+---
+
+## [v4-5] — 2026-04-18
+
+### Features
+- Firebase Auth JWT verification
+- Video compression (hero 82% smaller, sphere 83%)
+- Transcript Viewer (7-stage Oracle Studio)
+- GDPR Export UI (Article 20 portability)
+- Dead-Man's Switch (session replay protection)
+- Attorney Onboarding (4-step wizard)
+- Intake Summarizer (LLM-powered)
+- Webhook Signatures (Stripe + Kovel + Resend HMAC)
+
+---
+
+## [Production Hardening] — 2026-04-16
+
+### Security
+- CSP + Permissions-Policy on both sites
+- WebP optimization (79–98% payload reduction)
+- Custom 404 pages
+- Firebase Storage zero-trust rules
+- GCS CORS hotlink protection
+- Cloud Monitoring error rate alerts
+- `captureLead` v2 Cloud Function (reCAPTCHA-gated)
