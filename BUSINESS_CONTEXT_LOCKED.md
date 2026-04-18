@@ -31,10 +31,10 @@
 Do not mix these lanes casually. Consumer and enterprise economics are different products.
 
 ## Hardened State
-- v8.5 canonicalized: 2026-04-16
-- Latest production commit: `32fb1341fc6` (2026-04-16)
+- v8.6 canonicalized: 2026-04-17
+- Latest production commit: `f2aba7896c2` (2026-04-17)
 - Lighthouse: A100 / BP100 / SEO100 (desktop)
-- Structural tests: 30/30
+- Structural tests: 55/55
 - Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
 
 ### Production Hardening (2026-04-16)

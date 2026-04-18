@@ -52,11 +52,12 @@ yaml.safe_load(p.read_text())
 print("[verify_mcp] yaml ok")
 PY
 
-echo "[verify_mcp] checking canonical stream command"
-grep -q 'gemini-3.1-flash-lite-preview:streamGenerateContent' "$CONFIG"
-
-echo "[verify_mcp] checking lancedb command"
-grep -q 'pnkln-lancedb-smoke-test' "$CONFIG"
+echo "[verify_mcp] checking canonical server entries"
+# Verify all 5 canonical MCP servers are present
+for server in "sequential-thinking" "firebase-mcp-server" "google-developer-knowledge" "StitchMCP" "chrome-devtools-mcp"; do
+  grep -q "\"$server\"" "$CONFIG" || { echo "[verify_mcp] missing server: $server"; exit 1; }
+done
+echo "[verify_mcp] all 5 canonical servers present"
 
 echo "[verify_mcp] optional adapter presence only"
 test -f "/Users/pikeymickey/.gemini/antigravity/mcp_config.json" && echo "[verify_mcp] retired adapter present"
