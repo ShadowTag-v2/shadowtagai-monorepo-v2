@@ -1,0 +1,45 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "attestations",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "attorney_id", "order": "ASCENDING" },
+        { "fieldPath": "_created_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "client_id", "order": "ASCENDING" },
+        { "fieldPath": "_created_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "type", "order": "ASCENDING" },
+        { "fieldPath": "_created_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "matters",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "consumed", "order": "ASCENDING" },
+        { "fieldPath": "_created_at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "gdpr",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "_created_at", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

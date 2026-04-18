@@ -72,6 +72,8 @@ try:
     from apps.counselconduit.api.magic_link import router as onboarding_router
     from apps.counselconduit.api.vent_mode import router as vent_router
     from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
+    from apps.counselconduit.api.stripe_connect_webhook import router as connect_webhook_router
+    from apps.counselconduit.api.resend_webhook import router as resend_router
 except ImportError:
     from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
     from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
@@ -82,6 +84,8 @@ except ImportError:
     from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
     from api.vent_mode import router as vent_router  # type: ignore[no-redef]
     from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
+    from api.stripe_connect_webhook import router as connect_webhook_router  # type: ignore[no-redef]
+    from api.resend_webhook import router as resend_router  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -149,6 +153,8 @@ app.include_router(attestation_router)
 app.include_router(onboarding_router)
 app.include_router(vent_router)
 app.include_router(tasks_router)
+app.include_router(connect_webhook_router)
+app.include_router(resend_router)
 
 
 @app.get("/")
@@ -172,8 +178,8 @@ async def health():
 
 def _verify_kovel_auth(x_kovel_auth: str | None) -> str:
     """Verify the Kovel authentication token.
-    
-    In production: validates Firebase Auth JWT.
+
+    In production: validates Firebase Auth JWT via firebase_admin.
     In development: accepts any non-empty token.
     """
     if not x_kovel_auth:
@@ -181,10 +187,34 @@ def _verify_kovel_auth(x_kovel_auth: str | None) -> str:
             status_code=403,
             detail="Kovel Authentication Missing. Operation Terminated.",
         )
-    # TODO: Firebase Auth JWT verification
-    # decoded = firebase_admin.auth.verify_id_token(x_kovel_auth)
-    # return decoded["uid"]
-    return x_kovel_auth  # Dev mode: return token as attorney_id
+
+    # Production: Firebase Auth JWT verification
+    if os.getenv("APP_ENV") != "development":
+        try:
+            import firebase_admin
+            from firebase_admin import auth as firebase_auth
+
+            # Initialize Firebase app if not already done
+            if not firebase_admin._apps:
+                firebase_admin.initialize_app()
+
+            decoded = firebase_auth.verify_id_token(x_kovel_auth)
+            attorney_id = decoded.get("uid", "")
+            if not attorney_id:
+                raise HTTPException(status_code=403, detail="Invalid token: no UID")
+            return attorney_id
+
+        except firebase_admin.exceptions.FirebaseError as e:
+            logger.warning("Firebase JWT verification failed: %s", e)
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid or expired authentication token.",
+            ) from e
+        except ImportError:
+            logger.warning("firebase_admin not installed — falling back to dev mode")
+
+    # Development: return token as attorney_id
+    return x_kovel_auth
 
 
 # ── Routes ─────────────────────────────────────────────────────────────────
