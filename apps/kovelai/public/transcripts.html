@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KovelAI — Oracle Studio Transcript Viewer</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0e1a; --surface: #111827; --surface-2: #1e293b;
+      --border: #1e293b; --text: #e2e8f0; --text-muted: #94a3b8;
+      --primary: #3b82f6; --success: #34d399; --warning: #fbbf24;
+      --purple: #a78bfa; --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    .viewer { display: grid; grid-template-columns: 340px 1fr; min-height: 100vh; }
+
+    /* Sidebar — session list */
+    .session-sidebar {
+      background: var(--surface); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 20px; border-bottom: 1px solid var(--border);
+      font-size: 16px; font-weight: 600;
+    }
+    .session-list { flex: 1; overflow-y: auto; padding: 8px; }
+    .session-card {
+      padding: 12px 16px; border-radius: 8px; cursor: pointer;
+      transition: all 0.2s; margin-bottom: 4px;
+    }
+    .session-card:hover { background: var(--surface-2); }
+    .session-card.active { background: rgba(59,130,246,0.1); border-left: 3px solid var(--primary); }
+    .session-card-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 4px; }
+    .session-card-type.oracle { color: var(--purple); }
+    .session-card-type.vent { color: var(--success); }
+    .session-card-question { font-size: 13px; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
+    .session-card-meta { font-size: 11px; color: var(--text-muted); }
+
+    /* Main transcript area */
+    .transcript-main { padding: 32px; overflow-y: auto; }
+    .transcript-header { margin-bottom: 24px; }
+    .transcript-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+    .transcript-meta { font-size: 13px; color: var(--text-muted); display: flex; gap: 16px; flex-wrap: wrap; }
+    .transcript-meta-item { display: flex; align-items: center; gap: 6px; }
+
+    /* Stage cards */
+    .stage-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-bottom: 16px; overflow: hidden;
+      transition: all 0.3s;
+    }
+    .stage-card:hover { border-color: var(--primary); }
+    .stage-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 20px; background: var(--surface-2); cursor: pointer;
+    }
+    .stage-number { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--primary); }
+    .stage-name { font-size: 14px; font-weight: 600; }
+    .stage-tokens { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .stage-body { padding: 20px; font-size: 14px; line-height: 1.7; white-space: pre-wrap; display: none; }
+    .stage-card.expanded .stage-body { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; } }
+
+    /* Citations */
+    .citations { margin-top: 24px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .citations-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .citation { font-size: 13px; color: var(--primary); padding: 4px 0; cursor: pointer; }
+    .citation:hover { text-decoration: underline; }
+
+    /* Kovel attestation receipt */
+    .attestation {
+      margin-top: 24px; padding: 16px 20px; border-radius: var(--radius);
+      background: rgba(52,211,153,0.05); border: 1px solid rgba(52,211,153,0.2);
+    }
+    .attestation-title { font-size: 14px; font-weight: 600; color: var(--success); margin-bottom: 8px; }
+    .attestation-hash { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); word-break: break-all; }
+
+    @media (max-width: 768px) {
+      .viewer { grid-template-columns: 1fr; }
+      .session-sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="viewer">
+    <!-- Sidebar -->
+    <aside class="session-sidebar">
+      <div class="sidebar-header">📜 Transcripts</div>
+      <div class="session-list" id="sessionList">
+        <div class="session-card active" onclick="selectSession(0)">
+          <div class="session-card-type oracle">Oracle Studio</div>
+          <div class="session-card-question">Can an LLC formed in Delaware enforce a non-compete against a remote employee in California?</div>
+          <div class="session-card-meta">Today · 7 stages · 2,341 tokens</div>
+        </div>
+        <div class="session-card" onclick="selectSession(1)">
+          <div class="session-card-type vent">Vent Session</div>
+          <div class="session-card-question">Client venting about landlord dispute</div>
+          <div class="session-card-meta">Yesterday · 12 messages</div>
+        </div>
+        <div class="session-card" onclick="selectSession(2)">
+          <div class="session-card-type oracle">Oracle Studio</div>
+          <div class="session-card-question">What is the standard of review for FOIA exemption 7(A)?</div>
+          <div class="session-card-meta">2 days ago · 7 stages · 3,102 tokens</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Transcript content -->
+    <main class="transcript-main" id="transcriptMain">
+      <div class="transcript-header">
+        <h1 class="transcript-title">Can an LLC formed in Delaware enforce a non-compete against a California remote employee?</h1>
+        <div class="transcript-meta">
+          <span class="transcript-meta-item">📅 April 17, 2026</span>
+          <span class="transcript-meta-item">🤖 gemini-2.5-flash</span>
+          <span class="transcript-meta-item">📊 2,341 tokens</span>
+          <span class="transcript-meta-item">👤 Jane Smith</span>
+        </div>
+      </div>
+
+      <div id="stages">
+        <div class="stage-card expanded">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">01</span> <span class="stage-name">Intake & Classification</span></div>
+            <span class="stage-tokens">312 tok</span>
+          </div>
+          <div class="stage-body">This query involves a multi-jurisdictional employment law question at the intersection of:
+
+1. Delaware contract law (LLC formation state)
+2. California labor law (employee location)
+3. Federal employment regulations
+
+Classification: Employment Law — Non-Compete Enforceability — Cross-Jurisdictional
+Complexity: HIGH — requires analysis of competing state policies
+Privilege-sensitive: YES — specific to named client employment situation</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">02</span> <span class="stage-name">Parallel Research</span></div>
+            <span class="stage-tokens">485 tok</span>
+          </div>
+          <div class="stage-body">Key findings from parallel research across legal databases:
+
+1. California Business and Professions Code § 16600 — California has near-absolute prohibition on non-compete agreements
+2. Edwards v. Arthur Andersen (2008) — California Supreme Court confirmed narrow read
+3. Delaware Chancery Court upholds reasonable non-competes
+4. Choice-of-law provision does not override California § 16600 when employee resides in CA
+5. SB 699 (2024) — California expanded enforcement against out-of-state employers</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">03</span> <span class="stage-name">Citation Verification</span></div>
+            <span class="stage-tokens">201 tok</span>
+          </div>
+          <div class="stage-body">All citations verified:
+✓ Cal. Bus. & Prof. Code § 16600 — Active, current text
+✓ Edwards v. Arthur Andersen, 44 Cal.4th 937 (2008) — Good law
+✓ SB 699 (Cal. Labor Code § 16600.5) — Effective Jan 1, 2024
+⚠ Delaware choice-of-law analysis requires Restatement (Second) §187 analysis</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">04</span> <span class="stage-name">Adversarial Review</span></div>
+            <span class="stage-tokens">389 tok</span>
+          </div>
+          <div class="stage-body">Counter-arguments the opposing side may raise:
+
+1. Delaware choice-of-law clause should be honored under contract freedom
+2. Employee agreed to Delaware jurisdiction in employment agreement
+3. The non-compete is narrowly tailored and reasonable
+4. Federal preemption arguments under DTSA for trade secrets</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">05</span> <span class="stage-name">Counter-Argument</span></div>
+            <span class="stage-tokens">356 tok</span>
+          </div>
+          <div class="stage-body">Rebuttal to adversarial positions:
+
+1. California's § 16600 represents a fundamental public policy that cannot be waived by contract choice-of-law
+2. Under Restatement (Second) Conflict of Laws § 187(2), California's materially greater interest prevails
+3. SB 699 specifically targets out-of-state employers — attempting to enforce contra CA policy is now independently actionable
+4. DTSA carve-out does not extend to non-competes generally</div>
+        </div>
+
+        <div class="stage-card">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">06</span> <span class="stage-name">Risk Assessment</span></div>
+            <span class="stage-tokens">198 tok</span>
+          </div>
+          <div class="stage-body">Risk Matrix:
+
+🔴 HIGH RISK: Attempting to enforce non-compete against CA employee
+🟡 MODERATE: Trade secret protections may survive under DTSA
+🟢 LOW RISK: Confidentiality and non-solicitation provisions
+🔵 RECOMMENDATION: Restructure agreement to focus on trade secrets + non-solicitation</div>
+        </div>
+
+        <div class="stage-card expanded">
+          <div class="stage-header" onclick="toggleStage(this)">
+            <div><span class="stage-number">07</span> <span class="stage-name">Synthesis & Oracle Memo</span></div>
+            <span class="stage-tokens">400 tok</span>
+          </div>
+          <div class="stage-body">ORACLE MEMO — PRIVILEGED & CONFIDENTIAL
+
+CONCLUSION: The non-compete clause is very likely unenforceable against the California remote employee.
+
+California's Business & Professions Code § 16600, strengthened by SB 699 (effective Jan 2024), creates a near-absolute prohibition on non-compete agreements. A Delaware choice-of-law provision will not save the clause because California's policy represents a fundamental state interest under Restatement (Second) § 187(2).
+
+RECOMMENDED ACTION:
+1. Do NOT attempt to enforce the non-compete against this employee
+2. Restructure the agreement to focus on trade secret protections (enforceable under DTSA)
+3. Consider non-solicitation of clients and employees (narrower, more defensible)
+4. Update template employment agreements for future CA-based hires
+
+RISK: Attempting enforcement may expose the LLC to sanctions under SB 699.</div>
+        </div>
+      </div>
+
+      <!-- Citations -->
+      <div class="citations">
+        <div class="citations-title">📚 Citations (4)</div>
+        <div class="citation">Cal. Bus. & Prof. Code § 16600</div>
+        <div class="citation">Edwards v. Arthur Andersen, 44 Cal.4th 937 (2008)</div>
+        <div class="citation">Cal. Labor Code § 16600.5 (SB 699, eff. Jan 1, 2024)</div>
+        <div class="citation">Restatement (Second) Conflict of Laws § 187</div>
+      </div>
+
+      <!-- Attestation -->
+      <div class="attestation">
+        <div class="attestation-title">🔐 Kovel Attestation Receipt</div>
+        <div class="attestation-hash">sha256:e4a1f3b2c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+          Generated: 2026-04-17T14:23:41Z · Session: sess_7a8b9c0d · Attorney: EH · Protected under Kovel doctrine
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleStage(header) {
+      const card = header.closest('.stage-card');
+      card.classList.toggle('expanded');
+    }
+
+    function selectSession(index) {
+      document.querySelectorAll('.session-card').forEach((c, i) => {
+        c.classList.toggle('active', i === index);
+      });
+    }
+  </script>
+</body>
+</html>
