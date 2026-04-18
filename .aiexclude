@@ -1,9 +1,62 @@
-# Gemini Code Assist: Exclude Massive Repos
+# Gemini Code Assist: Exclude heavy directories to prevent RAG cache death spiral
+# Root cause: GCA indexing package.json files across monorepo → 52% CPU → extension host freeze
+
+# Package managers & dependencies
 **/node_modules/**
+**/.pnpm-store/**
+**/bower_components/**
+
+# Python environments
 **/.venv/**
+**/venv/**
+**/__pycache__/**
+**/.tox/**
+**/*.egg-info/**
+
+# Build artifacts
+**/.next/**
+**/dist/**
+**/build/**
+**/out/**
+**/.turbo/**
+
+# Version control internals
+**/.git/**
+
+# Large media & binaries
+**/*.mp4
+**/*.webm
+**/*.pdf
+**/*.zip
+**/*.tar.gz
+**/*.whl
+**/*.pyc
+**/*.pyo
+**/*.so
+**/*.dylib
+
+# Database & caches
+**/.firebase/**
+**/.lancedb/**
+**/*.sqlite3
+**/state.vscdb*
+**/.cache/**
+**/.gradle/**
+
+# Monorepo heavy zones
 **/external_repos/**
 **/legacy_workspaces/**
 **/external_payloads/**
 **/devrel-demos/**
-**/.git/**
+**/deep-archive/**
+
+# AiYou stack (many nested package.json files — RAG cache thrash source)
+**/aiyou_stack/aiyou-fastapi-services/apps/**/node_modules/**
+**/aiyou_stack/aiyou-fastapi-services/infrastructure/**
+**/aiyou_stack/cosmic-crab-payload/node_modules/**
+**/aiyou_stack/nascent-apollo/node_modules/**
+
+# Secrets
 .env
+**/.env.local
+**/.env.production
