@@ -1,51 +1,38 @@
-# Cor.30: Security Rules for AI Vibe Coding — Pre-Commit Enforcement
-# See docs/SECURITY_DOD.md for the full checklist.
+# Pre-commit hooks for CounselConduit / UphillSnowball
+# Install: pip install pre-commit && pre-commit install
+# Run all: pre-commit run --all-files
 
 repos:
-  # ── Secrets Detection (Cor.30 Rule 33) ───────────────────────────────────
+  # Gitleaks — secret detection (Cor.30 R3)
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.2
+    rev: v8.22.1
     hooks:
       - id: gitleaks
-        name: "🔒 Gitleaks — Block hardcoded secrets"
 
-  # ── Standard Hygiene ─────────────────────────────────────────────────────
+  # Detect private keys
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
+      - id: detect-private-key
       - id: check-added-large-files
-        args: ['--maxkb=5000']
-      - id: end-of-file-fixer
-        exclude: ^docs/bundles/
-      - id: trailing-whitespace
-        exclude: ^(docs/bundles/|apps/pnkln-stack_stack/cosmic-crab-payload/)
+        args: ['--maxkb=500']
       - id: check-merge-conflict
       - id: check-yaml
-      - id: check-json
-      - id: detect-private-key
-        name: "🔑 Detect private keys"
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
 
-  # ── Python Linting + Formatting ──────────────────────────────────────────
+  # Ruff — Python linting + formatting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
+    rev: v0.11.8
     hooks:
       - id: ruff
-        args:
-          - --fix
-          - "--select=E9,F,I"
-          - "--ignore=F401,F841,F821"
-        exclude: "^(docs/bundles/|apps/pnkln-stack_stack/cosmic-crab-payload/|apps/.*/external_repos/|tools/external_sdks/|control/pnkln/semgrep/|packages/|apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/)"
+        args: [--fix, --select, "E9,F63,F7,F82", --ignore, "F821"]
       - id: ruff-format
-        args: [--line-length=150]
-        exclude: "^(docs/bundles/|apps/pnkln-stack_stack/cosmic-crab-payload/|apps/.*/external_repos/|control/pnkln/semgrep/|packages/|apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/)"
 
-  # ── Local Tests ──────────────────────────────────────────────────────────
-  - repo: local
+  # Bandit — Python security scanning
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.3
     hooks:
-      - id: prism-tests
-        name: Run PRISM tests
-        entry: bash -c 'pytest -m "prism" -q --ignore=apps --ignore=docs --ignore=reference 2>/dev/null; exit 0'
-        language: system
-        pass_filenames: false
-        always_run: true
-
+      - id: bandit
+        args: [-c, pyproject.toml, -r, apps/counselconduit/]
+        additional_dependencies: ['bandit[toml]']

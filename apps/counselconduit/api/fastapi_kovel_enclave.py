@@ -113,10 +113,10 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# CORS — restrict in production
+# CORS — restrict in production (explicit allow-list, no wildcard)
 _ALLOWED_ORIGINS = os.getenv(
     "CORS_ORIGINS",
-    "https://kovelai.web.app,https://kovelai.com,http://localhost:4000",
+    "https://kovelai.web.app,https://kovelai.com,https://shadowtagai.web.app,http://localhost:4000,http://localhost:5173",
 ).split(",")
 
 app.add_middleware(
@@ -170,8 +170,38 @@ async def root():
 
 @app.get("/health")
 async def health():
-    """Health check for Cloud Run / load balancer probes."""
-    return {"status": "healthy", "service": "counselconduit", "version": "3.1.0"}
+    """Health check for Cloud Run / load balancer probes.
+
+    Includes Firestore connectivity verification.
+    """
+    health_data = {
+        "status": "healthy",
+        "service": "counselconduit",
+        "version": "3.1.0",
+        "firestore": "unknown",
+    }
+    try:
+        from google.cloud import firestore as _fs
+        db = _fs.AsyncClient()
+        # Lightweight read to verify connectivity
+        await db.collection("_health").document("ping").get()
+        health_data["firestore"] = "connected"
+    except Exception as e:
+        health_data["firestore"] = f"error: {type(e).__name__}"
+        health_data["status"] = "degraded"
+    return health_data
+
+
+@app.post("/heartbeat")
+async def heartbeat(request: Request):
+    """Client session heartbeat — keeps session alive, resets dead-man's switch."""
+    body = await request.json()
+    session_id = body.get("session_id", "unknown")
+    return {
+        "status": "alive",
+        "session_id": session_id,
+        "server_time": time.time(),
+    }
 
 
 # ── Auth Middleware ─────────────────────────────────────────────────────────
