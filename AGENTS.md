@@ -42,6 +42,14 @@ All four repo roots must remain canonical:
 - fix root truth first, tooling second, runtime third
 - never COMPLECT orthogonal concerns (see `docs/doctrine/SIMPLICITY_DOCTRINE.md`)
 
+## Capability ownership
+
+- Every operational capability must have exactly one primary owner.
+- Shared capability claims are forbidden in steady state.
+- Human-readable doctrine may describe capability ownership, but executable ownership lives only in `antigravity-mcp-config.json`.
+- If prose doctrine conflicts with MCP truth, `antigravity-mcp-config.json` wins.
+- Verification capabilities and debugging capabilities must not be co-owned unless MCP truth defines an explicit fallback path.
+
 ## Security + App Contract (Non-Negotiable)
 
 1. Never store secrets, API keys, or credentials in frontend code, committed files, or chat logs. Use environment variables and managed secrets only.
