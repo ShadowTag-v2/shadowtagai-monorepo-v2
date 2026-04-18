@@ -1,140 +1,128 @@
-# Cor.30 — Security Definition of Done
+# Security Definition of Done (DoD) — CounselConduit
 
-**Stack:** Next.js frontend · FastAPI backend · Cloud Run · Firestore · Stripe · GCP Secret Manager
-**Version:** 2.5.0 — April 17, 2026
-**Authority:** This document is the canonical security gate for every PR, deployment, and AI-generated feature.
+> Cor.30 Anti-Vibe Security Manifesto | OWASP LLM Top 10 (2025)
+> Version: 2.0 | Last Updated: 2026-04-18
 
-> [!CAUTION]
-> No code ships to production unless EVERY applicable item below is checked.
-> AI velocity does not excuse missing security hygiene — it multiplies the cost of skipping it.
+## Overview
 
----
-
-## 1. Identity & Session (Rules 1–2, 13, 32)
-
-- [ ] **R1** Access tokens: 15–60 min, signed. Refresh tokens: rotated on every use, revocable, device-bound. Absolute session ceiling: 7–14 days.
-- [ ] **R1** Mandatory re-auth for sensitive actions (role changes, payments, exports, Oracle Studio runs).
-- [ ] **R1** Token versioning or revocation blocklist implemented — expiry alone does not cover forced logout.
-- [ ] **R2** Auth provider: Firebase Auth / Clerk / Supabase Auth ONLY. Never AI-built auth.
-- [ ] **R2** MFA mandated for admin and billing roles.
-- [ ] **R2** Passwords: Argon2id for new systems. Bcrypt min 10 rounds for legacy. Never store/log/return plaintext.
-- [ ] **R13** All redirect URLs validated against explicit allow-list.
-- [ ] **R32** CSRF protection: `SameSite=Strict` cookies + CSRF double-submit tokens (if cookie-based sessions).
-- [ ] **NEW** Data minimization: never collect SSNs, raw card details, or data you don't need. If you don't store it, you can't leak it.
+Every feature, PR, and deployment MUST pass this 6-Pillar security checklist before
+shipping. No exceptions. AI velocity does not excuse missing security hygiene — it
+**multiplies the cost** of skipping it.
 
 ---
 
-## 2. Secrets & Supply Chain (Rules 3–8, 33–35)
+## Pillar 1: Identity & Session (R1–2, R13, R32)
 
-- [ ] **R3** No API keys in AI chats. All via `process.env` + GCP Secret Manager.
-- [ ] **R4** `.gitignore` is the first file. Includes `.env`, `.env.local`, `node_modules`, `__pycache__`.
-- [ ] **R5** Event-driven rotation: rotate immediately on exposure/incident/departure. 60-day max floor.
-- [ ] **R5** Prefer short-lived credentials (OIDC Workload Identity on Cloud Run over static SA keys).
-- [ ] **R6** Every AI-suggested package verified on npm/PyPI before install (name, download count, publish date).
-- [ ] **R7** Prompt for "latest stable, non-deprecated version" — never use AI training-data defaults.
-- [ ] **R8** `npm audit` on every PR. Remediate with review — never blind `audit fix` on main.
-- [ ] **R33** Gitleaks pre-commit hook installed. TruffleHog in CI for verified credential detection.
-- [ ] **R34** Dependencies pinned. No floating versions (`^`, `~`, `*`). Lockfile diffs reviewed on every PR.
-- [ ] **R35** Least privilege: separate GCP SAs for database, secrets, storage, pub/sub. No god-mode keys.
+- [ ] Access tokens: short-lived (15–60 min), rotated refresh tokens
+- [ ] MFA enforced for admin and billing operations
+- [ ] CSRF protection on all state-changing endpoints
+- [ ] Redirect/callback URLs use strict allow-lists (no open redirects)
+- [ ] Firebase Auth JWT verified server-side (`firebase-admin` SDK)
+- [ ] Session inactivity timeout ≤ 30 minutes (client portal: 5 min dead-man's switch)
+- [ ] No session tokens in URL query parameters
+- [ ] Cookie flags: `HttpOnly`, `Secure`, `SameSite=Strict`
 
----
+## Pillar 2: Secrets & Supply Chain (R3–8, R33–35)
 
-## 3. API Hardening (Rules 9, 12, 14–16, 23, 31)
+- [ ] All secrets in Google Secret Manager (never in `.env` in production)
+- [ ] Gitleaks pre-commit hook active (`.pre-commit-config.yaml`)
+- [ ] Dependencies pinned with exact versions in `requirements.txt`
+- [ ] No `npm audit fix --force` (manual review only)
+- [ ] Package provenance verified (PyPI/npm signatures)
+- [ ] `.env` never committed (gitignored + `chflags uchg` locked)
+- [ ] No hardcoded API keys, connection strings, or JWTs in source
+- [ ] Stripe keys: only `STRIPE_PUBLISHABLE_KEY` in frontend HTML
 
-- [ ] **R9** Every input sanitized via Zod (TS) or Pydantic (Python). Parameterized queries always.
-- [ ] **R9** Validation covers webhook bodies, query params, path variables — not just forms.
-- [ ] **R12** CORS locked to production domains only. No wildcard. Ever.
-- [ ] **R14** Auth + rate limits on every endpoint, including mobile APIs.
-- [ ] **R14** Deny-by-default: every route requires auth middleware. Public routes must be explicitly commented `@public` with a security justification.
-- [ ] **R15** Rate limit by IP + authenticated user + route. Stricter for auth/payment/export/reset.
-- [ ] **R15** Exponential backoff + CAPTCHA (reCAPTCHA v3 / Cloudflare Turnstile) on repeated violations.
-- [ ] **R16** Password reset: 3 attempts/email/hour. Links expire in 15 min, single-use, new link invalidates prior.
-- [ ] **R23** Server-side permission checks on every request via FastAPI dependency injection.
-- [ ] **R31** Security headers set: CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
-- [ ] **NEW** Serialization: NEVER return raw DB objects in API responses. Always use explicit DTOs (Pydantic BaseModel / Zod schema) with selected fields only.
-- [ ] **NEW** Opaque errors: Use centralized `AppError` class → structured RFC 9457 JSON. Never expose stack traces, SQL, or system internals to clients.
+## Pillar 3: API Hardening (R9, R12, R14–16, R23, R31)
 
----
+- [ ] All input validated with Pydantic models (server-side)
+- [ ] Per-IP rate limiting: `RateLimitMiddleware` (60 req/min default)
+- [ ] Per-attorney rate limiting: sliding window (100 req/hr default)
+- [ ] Server-side authorization on every endpoint (no client-trust)
+- [ ] Security headers on all responses (Cor.30 R31):
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+  - `X-XSS-Protection: 1; mode=block`
+  - `Content-Security-Policy` (strict, script-src whitelist)
+  - `Strict-Transport-Security` (HSTS, 2-year max-age)
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy` (camera, microphone, geolocation denied)
+- [ ] CORS: explicit origin allow-list (no `*` in production)
+- [ ] OpenAPI schema published but `/docs` disabled in production
+- [ ] Cloud Armor WAF: XSS + SQLi rules active
 
-## 4. Storage & Uploads (Rules 10, 19–20)
+## Pillar 4: Storage & Uploads (R10, R19–20)
 
-- [ ] **R10** Row-Level Security / tenant isolation from day one (Firestore security rules or Postgres RLS).
-- [ ] **R19** Storage bucket access per-user only. Signed URLs with short TTLs (15 min).
-- [ ] **R20** File type validated by magic bytes (signature), not extension. Upload cap: 10 MB default.
-- [ ] **R20** Uploaded files scanned for malware before accessibility.
+- [ ] Tenant isolation: all Firestore queries scoped by `firm_id`
+- [ ] Signed URLs for any file access (no public bucket URLs)
+- [ ] File uploads: magic-byte validation (not just extension check)
+- [ ] Upload size limits enforced server-side
+- [ ] No direct Firestore/Storage access from client (server proxy only)
 
----
+## Pillar 5: Payments & Webhooks (R21–22, R30)
 
-## 5. Payments & Webhooks (Rules 21–22, 30)
+- [ ] Stripe webhook: HMAC signature verification (`stripe-signature` header)
+- [ ] Stripe Connect webhook: separate endpoint, separate secret
+- [ ] Idempotency keys on all payment mutations
+- [ ] Test/production Stripe key separation enforced
+- [ ] Email: SPF/DKIM/DMARC configured for sending domain
+- [ ] Resend webhook: signature verification on delivery events
+- [ ] Billing state never trusted from client — always server-verified
 
-- [ ] **R21** Webhook signatures verified cryptographically (constant-time comparison, 5-min timestamp tolerance).
-- [ ] **R21** Idempotency keys on every payment action.
-- [ ] **R22** Email via Resend/SendGrid with SPF + DKIM + DMARC (`p=reject`). Verify via MXToolbox.
-- [ ] **R30** Test webhooks NEVER touch production systems. Environment check at handler entry point.
+## Pillar 6: Ops & Audit (R11, R17–18, R24–30)
 
----
-
-## 6. OWASP LLM Top 10 (2025) — AI-Specific
-
-- [ ] **LLM01** Prompt Injection: System prompts structurally isolated from user input at API layer.
-- [ ] **LLM02** Sensitive Info Disclosure: PII/secrets stripped from LLM context windows. Outputs filtered before client.
-- [ ] **LLM03** Supply Chain: Pinned deps, lockfiles, SBOM, min-release-age validation.
-- [ ] **LLM04** Data Poisoning: No custom fine-tuning on untrusted data. Lawyer-approved corpora only.
-- [ ] **LLM05** Improper Output: All LLM output treated as untrusted. Escape before rendering. No server-side exec.
-- [ ] **LLM06** Excessive Agency: Every agent on minimum-permission tool manifest. Destructive actions require human confirm.
-- [ ] **LLM07** System Prompt Leakage: Prompts stored encrypted, never returned in API responses, never in logs.
-- [ ] **LLM08** Vector Weaknesses: Embeddings lawyer-curated and version-controlled. No untrusted documents.
-- [ ] **LLM09** Misinformation: Mandatory inline citations + hover-to-verify. Multi-model consensus at premium tier.
-- [ ] **LLM10** Unbounded Consumption: Hard token budget per request. Per-user rate limits. Circuit breaker for upstream.
-
----
-
-## 7. Ops & Audit (Rules 11, 17–18, 24–30)
-
-- [ ] **R11** No secrets/PII in any log. Structured logging (structlog/Winston) with severity. Debug stripped from client bundles.
-- [ ] **R17** AI API costs capped at provider dashboard AND in code (token budget middleware).
-- [ ] **R18** DDoS: Cloud Armor WAF + rate-based rules at edge.
-- [ ] **R24** AI security engineer review on every major PR. Paired with automated SAST (Semgrep/CodeQL).
-- [ ] **R25** AI red-team: "Act as offensive security engineer" prompts. Human pen test before Series A.
-- [ ] **R26** Append-only audit log for: deletions, role changes, payments, exports, Oracle Studio runs.
-- [ ] **R27** GDPR: Full account deletion flow (30-day deadline, automated, email receipt).
-- [ ] **R28** Automated backups + monthly restore drill. Untested backup = no backup.
-- [ ] **R29** Test/prod completely separated (VPCs, DB instances, service accounts).
-- [ ] **NEW** Observability: Sentry or Datadog integrated. We know when the app breaks before the client does.
+- [ ] Structured logging (JSON, no PII in logs)
+- [ ] Audit log: immutable `audit_log` Firestore collection
+- [ ] Token budget caps: per-session and per-tenant limits
+- [ ] GDPR Article 17: deletion request → Cloud Tasks 30-day hard delete
+- [ ] GDPR Article 20: data export endpoint with tenant scoping
+- [ ] Backup + restore drills: Firestore export tested quarterly
+- [ ] Cloud Monitoring: 5xx alert policy active
+- [ ] Discord alerts for payment failures and security events
 
 ---
 
-## 8. UI & Async Resilience
+## OWASP LLM Top 10 (2025) — Mandatory Controls
 
-- [ ] **NEW** Every async UI operation must have explicit `loading` state, `error` state, and timeout fallback. No dead spinners.
-- [ ] **NEW** LLM calls: `Promise.race` timeout (45s max). Graceful degradation UI if model hangs.
-- [ ] **NEW** File uploads: progress indicator + size validation + cancel button.
-- [ ] **NEW** Stripe flows: Loading skeleton during checkout redirect. Error recovery if session creation fails.
-
----
-
-## 9. Code Quality (Affects Security Surface)
-
-- [ ] **NEW** Write small, single-responsibility functions. If a function does more than one thing, split it.
-- [ ] **NEW** Before writing new code, search the codebase for existing utilities. Duplication is forbidden.
-- [ ] **NEW** AI self-audit: Before completing a feature, run internal prompt: "Review the code I just wrote for security risks, data exposure, and logical bugs."
+| # | Risk | Control | Status |
+|---|------|---------|--------|
+| LLM01 | Prompt Injection | System prompts isolated from user input in `_EXTRACTION_SYSTEM_PROMPT` | ✅ |
+| LLM02 | Sensitive Info Disclosure | PII stripped from context windows; no client data in prompts | ✅ |
+| LLM05 | Improper Output Handling | All LLM output treated as untrusted; sanitized before display | ✅ |
+| LLM06 | Excessive Agency | Minimum-permission tool manifests; no autonomous actions | ✅ |
+| LLM07 | Prompt Leakage | System prompts never in API responses or client logs | ✅ |
+| LLM10 | Unbounded Consumption | Token budget + per-attorney rate limits + circuit breaker | ✅ |
 
 ---
 
-## Threat Model Coverage
+## Vibe-Coding Anti-Patterns (Prohibited)
 
-| Threat | Defense | Rule(s) |
-|--------|---------|---------|
-| Voice AI IDOR/BAC | Tenant isolation + server-side authz + opaque IDs | R10, R23, R35 |
-| Perplexity .npmrc preload | Sandbox-bound ephemeral tokens + no shared FS + user-billed | R35, LLM03, LLM06 |
-| Vibe-coded sinking ship | This entire checklist | R1–R35 |
-| OWASP LLM Top 10 | Dedicated LLM section above | LLM01–LLM10 |
+1. **No deny-by-default routing bypass**: Every route must have explicit auth
+2. **No raw DB serialization**: Always use Pydantic models, never `dict` pass-through
+3. **No missing UI async states**: Every API call must show loading/error/success states
+4. **Never trust AI-generated auth code without manual review**
+5. **No `eval()` or `exec()` on any user-provided or LLM-generated content**
+6. **No shared secrets across environments** (staging ≠ production keys)
+7. **No `console.log` of tokens, keys, or PII**
+8. **No client-side privilege checks** (always server-verified)
+9. **No `innerHTML` with unsanitized content**
+10. **No blind dependency updates** (`npm audit fix --force` is banned)
 
 ---
 
-## Enforcement
+## Pre-Merge CI Gate
 
-- **Pre-commit:** Gitleaks blocks secrets before git history
-- **CI/CD:** Security audit workflow blocks PR merge on findings
-- **Code review:** Every PR must reference applicable rules
-- **Quarterly:** Backup restore drill + secret rotation audit
+- Gitleaks scan (pre-commit + CI)
+- Ruff lint (E9, F63, F7, F82)
+- Bandit scan (Python security)
+- npm audit (advisory check, no auto-fix)
+- Lighthouse (Performance ≥ 90, BP = 100, SEO = 100)
+
+## Sign-Off
+
+Every PR touching auth, payments, LLM integration, or deployment config
+MUST include this checklist as a PR comment with items checked.
+
+---
+
+*Generated: 2026-04-18 | Doctrine: Cor.30 v2.5 + OWASP LLM10 2025*
