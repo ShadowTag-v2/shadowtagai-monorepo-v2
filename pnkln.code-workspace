@@ -127,7 +127,6 @@
     "antigravity.ai.primaryEndpoint": "Anthropic Cloud",
     "antigravity.ai.fallbackEndpoint": "http://localhost:11434/v1",
     "antigravity.ai.fallbackApiKey": "ollama-local",
-    "gemini.codeassist.proxyUrl": "http://localhost:11434/v1",
     "cline.apiProvider": "openai",
     "cline.openai.baseUrl": "http://localhost:11434/v1",
     "cline.openai.apiKey": "ollama-local",
