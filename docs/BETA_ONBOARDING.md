@@ -1,69 +1,151 @@
-# Beta Client Onboarding Prep
+# Beta Client Onboarding Sequence
+## CounselConduit / KovelAI — Beta Program v1.0
 
-## Overview
-This document outlines the beta client onboarding process for KovelAI Professional tier.
+**Target: First 10 firms, 50% off for 3 months (coupon `3wseBY7Z`)**
 
-## Prerequisites for Beta Launch
-- [x] Stripe Live: Products, prices, portal, webhook configured
-- [x] Frontend: Chat, pricing, onboarding wizard deployed
-- [x] Backend: CounselConduit API with Judge #6 governance
-- [x] Auth: Firebase Auth JWT verification
-- [ ] SMTP: Wire SendGrid/Google Workspace for emails
-- [ ] Analytics: Wire Cloud Monitoring dashboards
-- [ ] Legal: Terms of Service, Privacy Policy finalized
+---
 
-## Beta Program Terms
-- **Coupon Code:** `3wseBY7Z` (50% off for 3 months, max 100 users)
-- **Tier:** Professional ($74.50/mo with coupon, normally $149/mo)
-- **Duration:** 3-month beta, auto-converts to standard pricing
-- **Token Limit:** 100,000 tokens/month
-- **Seats:** Up to 5 attorneys per firm
-- **SLA:** 99.5% uptime target (no contractual obligation during beta)
+## Pre-Onboarding Checklist (Internal)
 
-## Onboarding Sequence
+- [ ] Stripe Connect account active
+- [ ] Cloud Run deployed with security stack
+- [ ] Kovel attestation system tested
+- [ ] GDPR deletion flow tested
+- [ ] Oracle Studio pipeline wired to at least Gemini Flash
+- [ ] Rate limiting verified in production
+- [ ] Security headers verified via curl
+- [ ] Webhook handler deployed and tested
+- [ ] Client portal (ephemeral) build deployed
+- [ ] Attorney dashboard deployed
 
-### Phase 1: Intake (Day 0)
-1. Send beta invitation email with unique coupon link
-2. Attorney visits `kovelai.web.app/pricing.html`
-3. Clicks "Get Started" → Stripe Checkout with `3wseBY7Z` auto-applied
-4. Post-payment redirect to `kovelai.web.app/onboarding.html`
-5. 4-step wizard: identity, firm info, practice area, completion
+---
 
-### Phase 2: Configuration (Day 1-2)
-1. Admin creates Firestore attorney record
-2. Gemini RAG workspace initialized for practice area
-3. Welcome email sent with dashboard link
-4. Optional: Schedule 15-min demo call
+## Onboarding Phases
 
-### Phase 3: Activation (Day 3+)
-1. Attorney accesses chat via `kovelai.web.app/chat.html`
-2. First 5 queries monitored for Judge #6 calibration
-3. Usage dashboard shows real-time token consumption
-4. Weekly usage digest email begins
+### Phase 1: Discovery Call (Day 0)
+1. **Demo**: Show Oracle Studio 7-prompt pipeline live
+2. **Privilege Briefing**: Explain Kovel/Heppner doctrine and how attestation works
+3. **Pricing**: Present Professional tier ($149/mo with 50% beta discount = $74.50/mo)
+4. **Compliance**: Walk through SECURITY_DOD.md highlights (SOC 2 roadmap)
+5. **Deliverable**: Signed LOI (Letter of Intent)
 
-## Target Beta Cohort
-| Category | Count | Practice Area |
-|----------|-------|---------------|
-| Solo Practitioners | 5-10 | Varied |
-| Small Firms (2-5) | 3-5 | Corporate/IP |
-| Mid-Size Firms (6-20) | 1-2 | Litigation |
-| **Total Beta Seats** | **~30-50 attorneys** | |
+### Phase 2: Technical Setup (Day 1-3)
+1. **Stripe Account**: Onboard firm to Stripe Connect
+   - Attorney creates Stripe account (2 min)
+   - We send Connect onboarding link
+   - Attorney completes identity verification
+2. **Firm Configuration**:
+   - Create firm record in Firestore
+   - Set model policy (which AI models allowed)
+   - Configure billing attribution
+   - Set up firm branding (logo, colors)
+3. **Attorney Accounts**:
+   - Create attorney accounts
+   - Assign roles (admin, partner, associate)
+   - Set per-attorney token budgets
+4. **Integration** (optional):
+   - Clio/PracticePanther API key setup
+   - Matter import from existing PMS
 
-## Success Metrics
-- **Activation Rate:** % of sign-ups who complete onboarding (target: >80%)
-- **Query Volume:** Avg queries per attorney per week (target: >10)
-- **Retention:** 30-day retention rate (target: >70%)
-- **NPS:** Net Promoter Score (target: >50)
-- **Governance Accuracy:** Judge #6 false positive rate (target: <5%)
+### Phase 3: Training (Day 3-5)
+1. **Attorney Training** (1 hour):
+   - Oracle Studio walkthrough
+   - Magic link generation for clients
+   - Vent Mode intake fee setup
+   - Dashboard and analytics overview
+   - Attestation receipt verification
+2. **Support Setup**:
+   - Dedicated Slack channel (or Discord)
+   - Emergency contact escalation path
+   - Weekly 15-min check-in scheduled
 
-## Escalation Path
-1. In-app: Help button → support@kovelai.com
-2. Urgent: Discord #beta-support channel
-3. Critical: Direct line to founder Erik
+### Phase 4: Soft Launch (Day 5-7)
+1. **Pilot Client**: Attorney sends magic link to 1 real client
+2. **Supervised Session**: Our team monitors the first Oracle Studio run
+3. **Attestation Verification**: Verify receipt generation and HMAC integrity
+4. **Feedback Collection**: Structured form for attorney and client
 
-## Exit Criteria (End of Beta)
-- Achieve 30+ active weekly users
-- Zero data breaches or privilege violations
-- NPS > 40
-- Stripe MRR > $2,000 (after coupon)
-- Cloud Run p95 latency < 3 seconds
+### Phase 5: Go-Live (Day 7+)
+1. **Full Access**: Remove pilot restrictions
+2. **Billing Active**: First invoice at end of month
+3. **Monitoring**: Auto-alerts for payment failures, high error rates
+4. **Review**: 30-day check-in for tier upgrade discussion
+
+---
+
+## Attorney Email Templates
+
+### Welcome Email
+```
+Subject: Welcome to KovelAI Beta — Your Privileged AI Research Portal
+
+Dear [Attorney Name],
+
+Thank you for joining the KovelAI beta program. Your firm has been
+selected as one of our first 10 partners.
+
+Your login credentials:
+- Portal: https://kovelai.web.app/dashboard
+- Email: [attorney_email]
+- Password: [temp_password] (you'll be prompted to change on first login)
+
+Your beta pricing: $74.50/month (50% off Professional tier, 3 months)
+
+What's included:
+- Oracle Studio: 7-prompt legal research pipeline
+- Multi-model AI (Gemini, Claude, GPT, Grok, Perplexity)
+- Kovel attestation receipts for privilege protection
+- Client portal with magic-link onboarding
+- Vent Mode intake retainer system
+
+Your dedicated support channel: [slack/discord link]
+
+Best regards,
+CounselConduit Team
+```
+
+### Client Magic Link Email
+```
+Subject: Secure Legal Research Portal — [Firm Name]
+
+Dear [Client Name],
+
+Your attorney at [Firm Name] has set up a secure AI research session
+for your matter.
+
+Click this link to access your portal:
+[MAGIC_LINK]
+
+Important:
+- This link expires in 72 hours
+- It can only be used once
+- Your session will automatically end after [TTL] hours
+- All communications are protected under attorney-client privilege
+
+If you have questions, contact [Attorney Name] at [attorney_email].
+```
+
+---
+
+## Success Metrics (30/60/90 day)
+
+| Metric | 30 Day | 60 Day | 90 Day |
+|--------|--------|--------|--------|
+| Active firms | 3 | 7 | 10 |
+| Oracle sessions/week | 15 | 40 | 100 |
+| Vent Mode intakes | 5 | 20 | 50 |
+| MRR | $223 | $521 | $745 |
+| Churn | 0% | <10% | <15% |
+| NPS | >50 | >50 | >60 |
+
+---
+
+## Risk Mitigation
+
+| Risk | Mitigation |
+|------|-----------|
+| Attorney doesn't understand Kovel doctrine | Pre-call briefing doc + CLE credit partner |
+| Client ignores magic link TTL | Dead-man's switch auto-logout + email reminder |
+| Stripe Connect onboarding friction | Stripe Hosted Onboarding (embedded, 2 min) |
+| Model hallucination in Oracle Memo | Judge #6 policy gate + mandatory citation verification |
+| Privilege waiver accusation | Kovel attestation + immutable audit trail |
