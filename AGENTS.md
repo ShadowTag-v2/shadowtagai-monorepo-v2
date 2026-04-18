@@ -115,7 +115,7 @@ unless the user explicitly directs a control plane change:
 ## Hardened state
 
 - v9.3 canonicalized: 2026-04-18
-- Commit: `e21af38f05f`
+- Commit: `1bcd395a87c`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
@@ -135,3 +135,50 @@ unless the user explicitly directs a control plane change:
 - OG Social Images: generated + deployed for both sites
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
+- GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
+- Risk Register: 33 risks tracked (0 critical open)
+- CL4R1T4S: competitive intel archived, 6 adoptable patterns identified
+
+<!-- gitnexus:start -->
+# GitNexus — Code Intelligence
+
+This project is indexed by GitNexus as **Monorepo-Uphillsnowball** (445205 symbols, 685812 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+
+> If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
+
+## Always Do
+
+- **MUST run impact analysis before editing any symbol.** Before modifying a function, class, or method, run `gitnexus_impact({target: "symbolName", direction: "upstream"})` and report the blast radius (direct callers, affected processes, risk level) to the user.
+- **MUST run `gitnexus_detect_changes()` before committing** to verify your changes only affect expected symbols and execution flows.
+- **MUST warn the user** if impact analysis returns HIGH or CRITICAL risk before proceeding with edits.
+- When exploring unfamiliar code, use `gitnexus_query({query: "concept"})` to find execution flows instead of grepping. It returns process-grouped results ranked by relevance.
+- When you need full context on a specific symbol — callers, callees, which execution flows it participates in — use `gitnexus_context({name: "symbolName"})`.
+
+## Never Do
+
+- NEVER edit a function, class, or method without first running `gitnexus_impact` on it.
+- NEVER ignore HIGH or CRITICAL risk warnings from impact analysis.
+- NEVER rename symbols with find-and-replace — use `gitnexus_rename` which understands the call graph.
+- NEVER commit changes without running `gitnexus_detect_changes()` to check affected scope.
+
+## Resources
+
+| Resource | Use for |
+|----------|---------|
+| `gitnexus://repo/Monorepo-Uphillsnowball/context` | Codebase overview, check index freshness |
+| `gitnexus://repo/Monorepo-Uphillsnowball/clusters` | All functional areas |
+| `gitnexus://repo/Monorepo-Uphillsnowball/processes` | All execution flows |
+| `gitnexus://repo/Monorepo-Uphillsnowball/process/{name}` | Step-by-step execution trace |
+
+## CLI
+
+| Task | Read this skill file |
+|------|---------------------|
+| Understand architecture / "How does X work?" | `.claude/skills/gitnexus/gitnexus-exploring/SKILL.md` |
+| Blast radius / "What breaks if I change X?" | `.claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md` |
+| Trace bugs / "Why is X failing?" | `.claude/skills/gitnexus/gitnexus-debugging/SKILL.md` |
+| Rename / extract / split / refactor | `.claude/skills/gitnexus/gitnexus-refactoring/SKILL.md` |
+| Tools, resources, schema reference | `.claude/skills/gitnexus/gitnexus-guide/SKILL.md` |
+| Index, status, clean, wiki CLI commands | `.claude/skills/gitnexus/gitnexus-cli/SKILL.md` |
+
+<!-- gitnexus:end -->
