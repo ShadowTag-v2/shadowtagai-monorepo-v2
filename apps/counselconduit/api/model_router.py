@@ -20,7 +20,7 @@ Architecture: LiteLLM proxy with tenant-scoped, ephemeral, sandbox-bound tokens.
 from __future__ import annotations
 
 import logging
-from enum import Enum
+from enum import Enum, StrEnum
 
 from pydantic import BaseModel, Field
 
@@ -30,7 +30,7 @@ logger = logging.getLogger("counselconduit.model_router")
 # ── Supported Models ──────────────────────────────────────────────────────
 
 
-class ModelProvider(str, Enum):
+class ModelProvider(StrEnum):
     GEMINI = "gemini"
     CLAUDE = "claude"
     GPT = "openai"

@@ -177,7 +177,9 @@ class TestAsyncToolboxTool:
             auth_toolbox_tool.bind_params({"param1": "bound-value"})
 
     async def test_toolbox_tool_add_valid_auth_token_getter(self, auth_toolbox_tool):
-        get_token_lambda = lambda: "test-token-value"
+        def get_token_lambda():
+            return "test-token-value"
+
         original_core_tool = auth_toolbox_tool._AsyncToolboxTool__core_tool
         with patch.object(
             original_core_tool,
@@ -193,7 +195,9 @@ class TestAsyncToolboxTool:
             assert "test-auth-source" not in core_tool_after_add._ToolboxTool__required_authz_tokens
 
     async def test_toolbox_tool_add_unused_auth_token_getter_raises_error(self, auth_toolbox_tool):
-        unused_lambda = lambda: "another-token"
+        def unused_lambda():
+            return "another-token"
+
         with pytest.raises(ValueError) as excinfo:
             auth_toolbox_tool.add_auth_token_getters({"another-auth-source": unused_lambda})
         assert "Authentication source(s) `another-auth-source` unused by tool `test_tool`" in str(excinfo.value)

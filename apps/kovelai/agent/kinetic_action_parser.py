@@ -24,10 +24,10 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, StrEnum
 
 
-class VerbClassification(str, Enum):
+class VerbClassification(StrEnum):
     """Classification taxonomy for legal action verbs."""
 
     # Power verbs — direct, unambiguous action
@@ -49,7 +49,7 @@ class VerbClassification(str, Enum):
     FUTURE_CONTINGENT = "future_contingent"  # "may elect to", "could seek"
 
 
-class ObligationGrade(str, Enum):
+class ObligationGrade(StrEnum):
     """Obligation spectrum per legal drafting standards."""
 
     MANDATORY = "MANDATORY"  # shall, must, is required to

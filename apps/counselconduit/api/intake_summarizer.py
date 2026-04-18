@@ -14,20 +14,20 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 
 logger = logging.getLogger("counselconduit.intake_summarizer")
 
 
-class Urgency(str, Enum):
+class Urgency(StrEnum):
     LOW = "low"
     MODERATE = "moderate"
     HIGH = "high"
     CRITICAL = "critical"
 
 
-class EmotionalState(str, Enum):
+class EmotionalState(StrEnum):
     CALM = "calm"
     ANXIOUS = "anxious"
     FRUSTRATED = "frustrated"
