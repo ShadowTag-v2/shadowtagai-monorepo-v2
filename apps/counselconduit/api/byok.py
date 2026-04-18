@@ -17,10 +17,9 @@ Security:
 from __future__ import annotations
 
 import logging
-import os
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger("counselconduit.byok")

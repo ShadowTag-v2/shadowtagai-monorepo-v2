@@ -17,7 +17,6 @@ Per U.S. v. Heppner (S.D.N.Y., Feb 2026):
 
 from __future__ import annotations
 
-import logging
 import os
 import time
 
@@ -45,7 +44,6 @@ try:
     from apps.counselconduit.api.stripe_handler import router as stripe_router
 except ImportError:
     # Docker/Cloud Run context (running from /app/)
-    from api.auth import get_current_attorney  # type: ignore[no-redef]
     from api.firestore_client import (  # type: ignore[no-redef]
         update_attorney_usage,
         write_audit_log,

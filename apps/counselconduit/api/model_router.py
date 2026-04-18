@@ -20,9 +20,7 @@ Architecture: LiteLLM proxy with tenant-scoped, ephemeral, sandbox-bound tokens.
 from __future__ import annotations
 
 import logging
-import os
 from enum import Enum
-from typing import Any
 
 from pydantic import BaseModel, Field
 

@@ -21,13 +21,13 @@ non-reasoning models to boost accuracy by 1-8% at zero cost.
 from __future__ import annotations
 
 import logging
-import os
 from enum import Enum
-from typing import Any
 
+from opentelemetry import trace
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger("counselconduit.oracle_studio")
+tracer = trace.get_tracer("counselconduit.oracle_studio")
 
 
 # ── Oracle Stages ─────────────────────────────────────────────────────────
@@ -164,42 +164,57 @@ async def _call_llm(
     """Call LLM via LiteLLM with prompt repetition for non-reasoning models.
 
     Returns (response_text, tokens_consumed).
+    Instrumented with OpenTelemetry tracing.
     """
-    # Apply prompt repetition
-    sys_prompt, user_msg = _apply_prompt_repetition(
-        system_prompt, user_content, model_id, stage
-    )
-
-    try:
-        import litellm
-
-        response = await litellm.acompletion(
-            model=model_id,
-            messages=[
-                {"role": "system", "content": sys_prompt},
-                {"role": "user", "content": user_msg},
-            ],
-            max_tokens=4096,
-            temperature=0.3,  # Lower temp for legal precision
+    with tracer.start_as_current_span(
+        f"oracle.llm.{stage.value}",
+        attributes={
+            "oracle.stage": stage.value,
+            "oracle.model": model_id,
+            "oracle.prompt_repetition": model_id in _NON_REASONING_MODELS,
+        },
+    ) as span:
+        # Apply prompt repetition
+        sys_prompt, user_msg = _apply_prompt_repetition(
+            system_prompt, user_content, model_id, stage
         )
 
-        content = response.choices[0].message.content or ""
-        tokens = response.usage.total_tokens if response.usage else 0
+        try:
+            import litellm
 
-        logger.info(
-            "LLM call: stage=%s model=%s tokens=%d",
-            stage.value,
-            model_id,
-            tokens,
-        )
-        return content, tokens
+            response = await litellm.acompletion(
+                model=model_id,
+                messages=[
+                    {"role": "system", "content": sys_prompt},
+                    {"role": "user", "content": user_msg},
+                ],
+                max_tokens=4096,
+                temperature=0.3,  # Lower temp for legal precision
+            )
 
-    except ImportError:
-        logger.warning("litellm not installed — returning placeholder")
-        return f"[{stage.value}] Analysis pending — litellm not installed", 0
-    except Exception as e:
-        logger.error("LLM call failed: stage=%s error=%s", stage.value, e)
-        return f"[{stage.value}] Error: LLM call failed", 0
+            content = response.choices[0].message.content or ""
+            tokens = response.usage.total_tokens if response.usage else 0
+
+            span.set_attribute("oracle.tokens", tokens)
+            span.set_attribute("oracle.response_length", len(content))
+
+            logger.info(
+                "LLM call: stage=%s model=%s tokens=%d",
+                stage.value,
+                model_id,
+                tokens,
+            )
+            return content, tokens
+
+        except ImportError:
+            span.set_attribute("oracle.error", "litellm_not_installed")
+            logger.warning("litellm not installed — returning placeholder")
+            return f"[{stage.value}] Analysis pending — litellm not installed", 0
+        except Exception as e:
+            span.set_attribute("oracle.error", str(e))
+            span.record_exception(e)
+            logger.error("LLM call failed: stage=%s error=%s", stage.value, e)
+            return f"[{stage.value}] Error: LLM call failed", 0
 
 
 # ── Pipeline Execution ────────────────────────────────────────────────────
@@ -210,25 +225,35 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
     Each stage passes its output to the next stage as context.
     System prompts are structurally isolated (OWASP LLM01).
     Prompt repetition applied for non-reasoning models (arXiv 2512.14982).
+    Instrumented with OpenTelemetry distributed tracing.
     """
-    try:
-        from apps.counselconduit.api.model_router import (
-            ModelRequest,
-            select_model,
-        )
-    except ImportError:
-        from api.model_router import (  # type: ignore[no-redef]
-            ModelRequest,
-            select_model,
-        )
+    with tracer.start_as_current_span(
+        "oracle.pipeline",
+        attributes={
+            "oracle.session_id": req.session_id,
+            "oracle.attorney_id": req.attorney_id,
+            "oracle.firm_id": req.firm_id,
+            "oracle.include_counter": req.include_counter,
+        },
+    ) as pipeline_span:
+        try:
+            from apps.counselconduit.api.model_router import (
+                ModelRequest,
+                select_model,
+            )
+        except ImportError:
+            from api.model_router import (  # type: ignore[no-redef]
+                ModelRequest,
+                select_model,
+            )
 
-    stages: list[OracleStageResult] = []
-    total_tokens = 0
-    context = req.question
+        stages: list[OracleStageResult] = []
+        total_tokens = 0
+        context = req.question
 
-    # Add jurisdiction hint if provided
-    if req.jurisdiction_hint:
-        context = f"[Jurisdiction: {req.jurisdiction_hint}]\n\n{context}"
+        # Add jurisdiction hint if provided
+        if req.jurisdiction_hint:
+            context = f"[Jurisdiction: {req.jurisdiction_hint}]\n\n{context}"
 
     # Select model
     model_config = select_model(
