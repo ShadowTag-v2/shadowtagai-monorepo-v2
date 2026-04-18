@@ -3,7 +3,6 @@
 
 import os
 import tempfile
-import pytest
 from labs.uphillsnowball.agent.gauntlet import evaluate, GauntletVerdict
 
 

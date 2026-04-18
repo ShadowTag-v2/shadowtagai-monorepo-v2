@@ -18,7 +18,7 @@ import json
 import logging
 import os
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from enum import StrEnum
 from pathlib import Path
 from typing import Any

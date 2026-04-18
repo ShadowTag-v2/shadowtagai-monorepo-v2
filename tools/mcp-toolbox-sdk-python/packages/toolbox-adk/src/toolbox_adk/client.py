@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from contextvars import ContextVar
-from typing import Any, Dict, Optional, Union
+from typing import Any
 from collections.abc import Awaitable, Callable
 
 import google.auth

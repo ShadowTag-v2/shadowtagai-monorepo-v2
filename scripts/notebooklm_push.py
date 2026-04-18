@@ -1,6 +1,4 @@
 import os
-import json
-import requests
 
 # NotebookLM Push Sequence
 # Collects local `.beads/session_log.jsonl` and pushes to the Gemini context bucket

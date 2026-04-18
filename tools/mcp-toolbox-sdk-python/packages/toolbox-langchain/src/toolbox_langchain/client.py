@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from asyncio import to_thread
-from typing import Any, Optional, Union
+from typing import Any
 from collections.abc import Awaitable, Callable, Mapping
 from warnings import warn
 

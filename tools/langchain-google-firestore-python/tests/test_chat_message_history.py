@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import uuid
-from typing import List
 from unittest import TestCase
 
 import pytest
