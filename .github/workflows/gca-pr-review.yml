@@ -74,16 +74,15 @@ jobs:
 
           DIFF=$(cat /tmp/diff.txt)
 
-          # Use actual GCA command files for security and perf; inline for correctness and arch
           case "$AGENT" in
             correctness)
               EXTRA_PROMPT="Focus ONLY on logic errors, off-by-one bugs, wrong types, missing null checks, race conditions, and data corruption risks. Do not report security or performance issues."
               ;;
             security)
-              EXTRA_PROMPT=$(cat $BUNDLE/security-sweep.md)
+              EXTRA_PROMPT="Focus ONLY on security vulnerabilities: missing server-side authorization, weak session handling, unsafe redirects, unsanitized inputs, non-parameterized queries (SQL injection), missing rate limits on sensitive endpoints, insecure file upload handling, storage access control problems, leaked secrets in code or logs, missing webhook signature verification. Classify findings by severity. State uncertainty explicitly. Recommend the smallest secure fix first."
               ;;
             perf)
-              EXTRA_PROMPT=$(cat $BUNDLE/perf-pass.md)
+              EXTRA_PROMPT="Focus ONLY on performance issues: eliminate async waterfalls, reduce client bundle size, cut server-side waste, reduce unnecessary re-renders. Only then consider micro-optimizations. For each issue include: where it is, why it matters, likely impact, and the smallest fix."
               ;;
             arch)
               EXTRA_PROMPT="Focus ONLY on architecture: circular dependencies, abstraction leaks, violated contracts, breaking API changes, missing migrations, config drift, and modularity violations (files > 400 lines, no separation of concerns)."
