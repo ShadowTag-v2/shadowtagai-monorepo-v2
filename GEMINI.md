@@ -54,7 +54,7 @@ CRITICAL RULE: You are strictly forbidden from writing SQL or database logic wit
 2. **Read Hosting Guide**: `read_resource("firebase-mcp-server", "firebase://guides/init/hosting")`
 3. **Initialize**: Call `firebase_init` with hosting config.
 4. **Deploy** (MCP-orchestrated CLI): Only after auth + guide + init are confirmed.
-5. **Verify**: Delegate to `browser_subagent` for Lighthouse/responsive audits.
+5. **Verify**: Follow capability ownership defined in `antigravity-mcp-config.json`.
 
 ### Auth Refresh (only authorized CLI command for auth)
 If auth is expired: `npx -y firebase-tools@latest login --reauth`
@@ -62,6 +62,14 @@ If auth is expired: `npx -y firebase-tools@latest login --reauth`
 ### Skill Reference
 Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 </firebase_mcp_doctrine>
+
+<capability_resolution_doctrine>
+## Capability Resolution
+
+- `GEMINI.md` defines operator invariants, not capability ownership.
+- Capability ownership, precedence, conflict denial, and fallback behavior live only in `antigravity-mcp-config.json`.
+- If a verification task and a debugging tool both appear able to perform the work, MCP truth decides the owner.
+</capability_resolution_doctrine>
 
 <github_doctrine>
 ## GitHub Access — App PEM Exclusive

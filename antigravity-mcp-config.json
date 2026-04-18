@@ -36,9 +36,10 @@
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/mcp-remote/dist/proxy.js",
         "https://developerknowledge.googleapis.com/mcp",
         "--header",
-        "X-Goog-Api-Key: ***REMOVED_GOOGLE_API_KEY***"
+        "X-Goog-Api-Key: ${DEVELOPER_KNOWLEDGE_API_KEY}"
       ],
       "env": {
+        "DEVELOPER_KNOWLEDGE_API_KEY": "${DEVELOPER_KNOWLEDGE_API_KEY}",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
@@ -49,9 +50,10 @@
         "/Users/pikeymickey/.nvm/versions/node/v24.14.1/lib/node_modules/mcp-remote/dist/proxy.js",
         "https://stitch.googleapis.com/mcp",
         "--header",
-        "X-Goog-Api-Key: ***REMOVED_STITCH_API_KEY***"
+        "X-Goog-Api-Key: ${STITCH_API_KEY}"
       ],
       "env": {
+        "STITCH_API_KEY": "${STITCH_API_KEY}",
         "PATH": "/Users/pikeymickey/.local/bin:/Users/pikeymickey/.nvm/versions/node/v24.14.1/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin",
         "HOME": "/Users/pikeymickey"
       }
