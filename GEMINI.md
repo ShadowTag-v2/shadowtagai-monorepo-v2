@@ -307,5 +307,39 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 - `SBoudrias/Inquirer.js` — Node interactive prompts
 - `pexpect/pexpect` — Python programmatic terminal control
 </headless_cli_doctrine>
+
+<context_compaction_roadmap>
+## Context Compaction — Roadmap (from CC Leaks Analysis)
+
+**Source:** Claude Code source leak (src.zip), `docs/architecture/context_compaction_pipeline.md`
+**Status:** Documented, not implemented in Antigravity (platform handles context for us)
+
+### 4-Layer Architecture (CC Pattern)
+1. **Microcompact** — within-message stale tool result pruning
+2. **Auto-compact** — ~167K token threshold, 5-file retention + 50K summary
+3. **Reactive compact** — explicit /compact command or extreme pressure
+4. **History snip** — nuclear option, cuts old turns entirely
+
+### Our Implementation Status
+- Layer 0 (Microcompact): ❌ Not applicable to Antigravity
+- Layer 1 (Auto-compact): 📋 Documented in `.claude/rules/11-compaction-pipeline.md`
+- Layer 2 (Reactive): 📋 Timing rules in `.claude/rules/36-compact-timing-discipline.md`
+- Layer 3 (History snip): ❌ Platform-level (Antigravity truncation)
+
+### Daemon Integration
+- `scripts/dream_consolidation.py` — 4-phase KI maintenance → runs nightly via KAIROS
+- `scripts/loop_steward.py` — autonomous task continuation with reversibility heuristic
+</context_compaction_roadmap>
+
+<daemon_fleet_registry>
+## Daemon Fleet Registry
+
+| Daemon | Script | Schedule | Purpose |
+|--------|--------|----------|---------|
+| Dream Consolidation | `scripts/dream_consolidation.py` | Nightly | KI maintenance: orient → gather → consolidate → prune |
+| Loop Steward | `scripts/loop_steward.py` | 5-min cycles | Autonomous task continuation with idle scaling |
+| KAIROS | `scripts/kairos_daemon.py` | Background | Background autonomous agent mode |
+| pnkln-evolve | `scripts/pnkln-evolve.py` | Background | Recursive self-improvement loop |
+</daemon_fleet_registry>
 </system_directive>
 
