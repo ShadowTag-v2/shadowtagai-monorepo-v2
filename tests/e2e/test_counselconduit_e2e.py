@@ -21,16 +21,20 @@ Tests:
 from __future__ import annotations
 
 import json
+import os
 import httpx
 import pytest
 
-# Base URL for the deployed service
-BASE_URL = "https://counselconduit-767252945109.us-central1.run.app"
+# Base URL for the deployed service (override with COUNSELCONDUIT_BASE_URL env var)
+BASE_URL = os.getenv(
+    "COUNSELCONDUIT_BASE_URL",
+    "https://counselconduit-767252945109.us-central1.run.app",
+)
 LOCAL_URL = "http://localhost:8080"
 
 
 def _get_base() -> str:
-    """Return LOCAL_URL if service is running locally, else production."""
+    """Return LOCAL_URL if service is running locally, else env/production."""
     try:
         r = httpx.get(f"{LOCAL_URL}/health", timeout=2)
         if r.status_code == 200:
