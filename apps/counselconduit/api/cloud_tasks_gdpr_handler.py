@@ -113,9 +113,7 @@ async def execute_gdpr_deletion(
     # Generate idempotency key from attorney_id + requested_at
     import hashlib
 
-    idempotency_key = hashlib.sha256(
-        f"{payload.attorney_id}:{payload.requested_at}".encode()
-    ).hexdigest()[:16]
+    idempotency_key = hashlib.sha256(f"{payload.attorney_id}:{payload.requested_at}".encode()).hexdigest()[:16]
 
     logger.info(
         "gdpr_deletion_starting",
@@ -146,12 +144,7 @@ async def execute_gdpr_deletion(
         ]
 
         for collection_name in target_collections:
-            docs = (
-                db.collection(collection_name)
-                .where("attorney_id", "==", payload.attorney_id)
-                .limit(500)
-                .get()
-            )
+            docs = db.collection(collection_name).where("attorney_id", "==", payload.attorney_id).limit(500).get()
             batch = db.batch()
             count = 0
             for doc in docs:
@@ -169,21 +162,19 @@ async def execute_gdpr_deletion(
 
         # Anonymize retained collections
         for collection_name in anonymize_collections:
-            docs = (
-                db.collection(collection_name)
-                .where("attorney_id", "==", payload.attorney_id)
-                .limit(500)
-                .get()
-            )
+            docs = db.collection(collection_name).where("attorney_id", "==", payload.attorney_id).limit(500).get()
             batch = db.batch()
             count = 0
             for doc in docs:
-                batch.update(doc.reference, {
-                    "attorney_id": f"DELETED-{idempotency_key}",
-                    "email": "REDACTED",
-                    "firm_name": "REDACTED",
-                    "gdpr_anonymized_at": _fs.SERVER_TIMESTAMP,
-                })
+                batch.update(
+                    doc.reference,
+                    {
+                        "attorney_id": f"DELETED-{idempotency_key}",
+                        "email": "REDACTED",
+                        "firm_name": "REDACTED",
+                        "gdpr_anonymized_at": _fs.SERVER_TIMESTAMP,
+                    },
+                )
                 count += 1
             if count > 0:
                 batch.commit()
@@ -195,14 +186,16 @@ async def execute_gdpr_deletion(
         beta_doc = beta_ref.get()
         if beta_doc.exists:
             # Archive deletion receipt before deleting
-            db.collection("gdpr_deletion_receipts").document(idempotency_key).set({
-                "attorney_id": payload.attorney_id,
-                "firm_id": payload.firm_id,
-                "requested_at": payload.requested_at,
-                "executed_at": _fs.SERVER_TIMESTAMP,
-                "collections_deleted": collections_deleted,
-                "total_docs": total_docs_deleted,
-            })
+            db.collection("gdpr_deletion_receipts").document(idempotency_key).set(
+                {
+                    "attorney_id": payload.attorney_id,
+                    "firm_id": payload.firm_id,
+                    "requested_at": payload.requested_at,
+                    "executed_at": _fs.SERVER_TIMESTAMP,
+                    "collections_deleted": collections_deleted,
+                    "total_docs": total_docs_deleted,
+                }
+            )
             beta_ref.delete()
             collections_deleted.append("beta_accounts (1 doc)")
             total_docs_deleted += 1
