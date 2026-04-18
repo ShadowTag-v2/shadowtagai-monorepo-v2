@@ -1,10 +1,10 @@
 ---
-version: 8.6
+version: 9.0
 scope: antigravity_local_operator_invariants
 status: LOCKED
 ---
 
-# GEMINI.md — v8.6
+# GEMINI.md — v9.0
 
 <system_directive>
 <workspace_alignment>
