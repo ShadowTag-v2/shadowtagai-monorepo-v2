@@ -241,4 +241,3 @@ class RunAggregationQueryResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

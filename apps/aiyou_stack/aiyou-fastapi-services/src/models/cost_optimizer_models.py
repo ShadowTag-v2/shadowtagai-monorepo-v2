@@ -1,5 +1,4 @@
-"""Pydantic models for AWS Cost Optimizer API requests and responses.
-"""
+"""Pydantic models for AWS Cost Optimizer API requests and responses."""
 
 from datetime import datetime
 from enum import StrEnum
@@ -35,7 +34,8 @@ class CostAnalysisRequest(BaseModel):
     end_date: str | None = Field(None, description="End date (YYYY-MM-DD)")
     granularity: GranularityType = Field(GranularityType.DAILY, description="Data granularity")
     group_by: list[str] | None = Field(
-        None, description="Dimension to group by (e.g., SERVICE, INSTANCE_TYPE)",
+        None,
+        description="Dimension to group by (e.g., SERVICE, INSTANCE_TYPE)",
     )
     service_filter: list[str] | None = Field(None, description="Filter by specific AWS services")
 
@@ -56,10 +56,12 @@ class RecommendationRequest(BaseModel):
     """Request model for optimization recommendations."""
 
     optimization_types: list[OptimizationType] | None = Field(
-        None, description="Types of optimizations to analyze",
+        None,
+        description="Types of optimizations to analyze",
     )
     min_savings_threshold: float | None = Field(
-        100.0, description="Minimum monthly savings to include in recommendations",
+        100.0,
+        description="Minimum monthly savings to include in recommendations",
     )
     include_forecast: bool = Field(False, description="Include cost forecast in analysis")
 

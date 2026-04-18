@@ -1,6 +1,6 @@
 /**
  * Heritage Processor
- * 
+ *
  * Extracts class inheritance relationships:
  * - EXTENDS: Class extends another Class (TS, JS, Python)
  * - IMPLEMENTS: Class implements an Interface (TS only)
@@ -73,13 +73,13 @@ export const processHeritage = async (
         const childId = symbolTable.lookupExact(file.path, className) ||
                         symbolTable.lookupFuzzy(className)[0]?.nodeId ||
                         generateId('Class', `${file.path}:${className}`);
-        
+
         const parentId = symbolTable.lookupFuzzy(parentClassName)[0]?.nodeId ||
                          generateId('Class', `${parentClassName}`);
 
         if (childId && parentId && childId !== parentId) {
           const relId = generateId('EXTENDS', `${childId}->${parentId}`);
-          
+
           graph.addRelationship({
             id: relId,
             sourceId: childId,
@@ -100,13 +100,13 @@ export const processHeritage = async (
         const classId = symbolTable.lookupExact(file.path, className) ||
                         symbolTable.lookupFuzzy(className)[0]?.nodeId ||
                         generateId('Class', `${file.path}:${className}`);
-        
+
         const interfaceId = symbolTable.lookupFuzzy(interfaceName)[0]?.nodeId ||
                             generateId('Interface', `${interfaceName}`);
 
         if (classId && interfaceId) {
           const relId = generateId('IMPLEMENTS', `${classId}->${interfaceId}`);
-          
+
           graph.addRelationship({
             id: relId,
             sourceId: classId,
@@ -127,13 +127,13 @@ export const processHeritage = async (
         const structId = symbolTable.lookupExact(file.path, structName) ||
                          symbolTable.lookupFuzzy(structName)[0]?.nodeId ||
                          generateId('Struct', `${file.path}:${structName}`);
-        
+
         const traitId = symbolTable.lookupFuzzy(traitName)[0]?.nodeId ||
                         generateId('Trait', `${traitName}`);
 
         if (structId && traitId) {
           const relId = generateId('IMPLEMENTS', `${structId}->${traitId}`);
-          
+
           graph.addRelationship({
             id: relId,
             sourceId: structId,

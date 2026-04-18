@@ -1,5 +1,4 @@
-"""Unit tests for JR Engine (ATP 5-19 risk framework).
-"""
+"""Unit tests for JR Engine (ATP 5-19 risk framework)."""
 
 import pytest
 

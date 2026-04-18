@@ -429,4 +429,3 @@ class Index extends \Google\Protobuf\Internal\Message
     }
 
 }
-

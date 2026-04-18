@@ -155,4 +155,3 @@ class DocumentDelete extends \Google\Protobuf\Internal\Message
     }
 
 }
-

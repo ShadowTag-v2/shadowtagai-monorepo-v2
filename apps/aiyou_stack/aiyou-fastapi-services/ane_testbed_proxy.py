@@ -39,7 +39,10 @@ async def chat_completions(request: Request):
         # Route through the hardware orchestrator
         # file_name="ide_proxy" defines the telemetry source implicitly
         results = dispatch_compute(
-            text=prompt, prompt_description="proxy_query", examples=[], file_name="ide_proxy",
+            text=prompt,
+            prompt_description="proxy_query",
+            examples=[],
+            file_name="ide_proxy",
         )
 
         # Format the result back into OpenAI schema

@@ -1064,14 +1064,14 @@ requests
 # main.py
 from fastapi import FastAPI
 from openai import OpenAI
-app = FastAPI() 
-openai_client = OpenAI(api_key="your_api_key") 
+app = FastAPI()
+openai_client = OpenAI(api_key="your_api_key")
 @app.get("/")
 def root_controller():
     return {"status": "healthy"}
-@app.get("/chat") 
-def chat_controller(prompt: str = "Inspire me"): 
-    response = openai_client.chat.completions.create( 
+@app.get("/chat")
+def chat_controller(prompt: str = "Inspire me"):
+    response = openai_client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
@@ -1079,7 +1079,7 @@ def chat_controller(prompt: str = "Inspire me"):
         ],
     )
     statement = response.choices[0].message.content
-    return {"statement": statement} 
+    return {"statement": statement}
 Create a FastAPI application object.
 You will need an API key to use the OpenAI API.
 Use the @app.get decorator to create a GET endpoint on the /chat path.
@@ -1247,16 +1247,16 @@ from pydantic import BaseModel, Field, EmailStr
 class UserCreate(BaseModel):
     username: str
     password: str
-    @validator('password') 
+    @validator('password')
     def validate_password(cls, value):
         if len(value) < 8:
             raise ValueError('Password must be at least 8 characters long')
         if not any(char.isdigit() for char in value):
             raise ValueError('Password must contain at least one digit')
         if not any(char.isupper() for char in value):
-            raise ValueError('Password must contain at least one uppercase 
+            raise ValueError('Password must contain at least one uppercase
 letter')
-        return value 
+        return value
 app = FastAPI()
 @app.post("/users")
 async def create_user_controller(user: UserCreate):
@@ -1294,9 +1294,9 @@ facilitate quicker access to the documentation page, as shown in Example 2-
 Example 2-3. Setting up redirect to the auto-generated docs page
 # main.py
 from fastapi.responses import RedirectResponse
-@app.get("/", include_in_schema= False) 
+@app.get("/", include_in_schema= False)
 def docs_redirect_controller():
-    return RedirectResponse(url="/docs", status_code=status.HTTP_303_SEE_OTHER) 
+    return RedirectResponse(url="/docs", status_code=status.HTTP_303_SEE_OTHER)
 Set up a handler for the base root handler, but don’t include it in
 OpenAPI speciﬁcations and the documentation page.
 Return a redirect response to the /docs page with a redirection status
@@ -1348,18 +1348,18 @@ You can create dependencies for your route controller functions, as shown
 in Example 2-5 .
 Example 2-5. Dependency injection in FastAPI
 from fastapi import FastAPI, Depends
-def get_db(): 
+def get_db():
     db = ... # create a database session
     try:
-        yield db 
+        yield db
     finally:
-        db.close() 
+        db.close()
 app = FastAPI()
 @app.get("users/{email}/messages")
-def get_current_user_messages(email, db = Depends(get_db)): 
+def get_current_user_messages(email, db = Depends(get_db)):
     user = db.query(...) # db is reused
     messages = db.query(...) # db is reused
-    return messages 
+    return messages
 Implement a function to create and manage a database session, which
 can be used as a dependency in route handlers.
 Yield the open database session, making it available for any function
@@ -2382,23 +2382,23 @@ Your name is FastAPI bot and you are a helpful
 chatbot responsible for teaching FastAPI to your users.
 Always respond in markdown.
 """
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu") 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def load_text_model():
     pipe = pipeline(
         "text-generation",
-        model="TinyLlama/TinyLlama-1.1B-Chat-v1.0", 
+        model="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
         torch_dtype=torch.bfloat16,
-        device=device 
+        device=device
     )
     return pipe
 def generate_text(pipe: Pipeline, prompt: str, temperature: float = 0.7) -> str:
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": prompt},
-    ] 
+    ]
     prompt = pipe.tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt= True
-    ) 
+    )
     predictions = pipe(
         prompt,
         temperature=temperature,
@@ -2406,8 +2406,8 @@ def generate_text(pipe: Pipeline, prompt: str, temperature: float = 0.7) -> str:
         do_sample=True,
         top_k=50,
         top_p=0.95,
-    ) 
-    output = predictions[0]["generated_text"].split("</s> \n<|assistant|> \n")[-1] 
+    )
+    output = predictions[0]["generated_text"].split("</s> \n<|assistant|> \n")[-1]
     return output
 Check if an NVIDIA GPU is available, and if so, set device to the
 current CUDA-enabled GPU. Otherwise, continue using the CPU.
@@ -2459,11 +2459,11 @@ Example 3-2. Serving a language model via a FastAPI endpoint# main.py
 from fastapi import FastAPI
 from models import load_text_model, generate_text
 app = FastAPI()
-@app.get("/generate/text") 
-def serve_language_model_controller(prompt: str) -> str: 
-    pipe = load_text_model() 
-    output = generate_text(pipe, prompt) 
-    return output 
+@app.get("/generate/text")
+def serve_language_model_controller(prompt: str) -> str:
+    pipe = load_text_model()
+    output = generate_text(pipe, prompt)
+    return output
 Create a FastAPI server and add a /generate route handler for serving
 the model.
 The serve_language_model_controller is responsible for taking the
@@ -2507,22 +2507,22 @@ Example 3-3. Streamlit chat UI consuming the FastAPI / generate  endpoint
 # client.py
 import requests
 import streamlit as st
-st.title("FastAPI ChatBot") 
+st.title("FastAPI ChatBot")
 if "messages" not in st.session_state:
-    st.session_state.messages = [] 
+    st.session_state.messages = []
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.markdown(message["content"]) 
-if prompt := st.chat_input("Write your prompt in this input field"): 
-    st.session_state.messages.append({"role": "user", "content": prompt}) 
+        st.markdown(message["content"])
+if prompt := st.chat_input("Write your prompt in this input field"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
-        st.text(prompt) 
+        st.text(prompt)
     response = requests.get(
         f"http://localhost:8000/generate/text", params={"prompt": prompt}
-    ) 
-    response.raise_for_status() 
+    )
+    response.raise_for_status()
     with st.chat_message("assistant"):
-        st.markdown(response.text) 
+        st.markdown(response.text)
 Add a title to your application that will be rendered to the UI.
 Initialize the chat and keep track of the chat history.
 Display the chat messages from the chat history on app rerun.
@@ -2618,7 +2618,7 @@ Example 3-4  shows how to use the small Bark model.
 Example 3-4. Download and load the small Bark model from the Hugging
 Face repository# schemas.py
 from typing import Literal
-VoicePresets = Literal["v2/en_speaker_1", "v2/en_speaker_9"] 
+VoicePresets = Literal["v2/en_speaker_1", "v2/en_speaker_9"]
 # models.py
 import torch
 import numpy as np
@@ -2626,8 +2626,8 @@ from transformers import AutoProcessor, AutoModel, BarkProcessor, BarkModel
 from schemas import VoicePresets
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def load_audio_model() -> tuple[BarkProcessor, BarkModel]:
-    processor = AutoProcessor.from_pretrained("suno/bark-small", device=device) 
-    model = AutoModel.from_pretrained("suno/bark-small", device=device) 
+    processor = AutoProcessor.from_pretrained("suno/bark-small", device=device)
+    model = AutoModel.from_pretrained("suno/bark-small", device=device)
     return processor, model
 def generate_audio(
     processor: BarkProcessor,
@@ -2635,9 +2635,9 @@ def generate_audio(
     prompt: str,
     preset: VoicePresets,
 ) -> tuple[np.array, int]:
-    inputs = processor(text=[prompt], return_tensors="pt",voice_preset=preset) 
-    output = model.generate(**inputs, do_sample= True).cpu().numpy().squeeze() 
-    sample_rate = model.generation_config.sample_rate 
+    inputs = processor(text=[prompt], return_tensors="pt",voice_preset=preset)
+    output = model.generate(**inputs, do_sample= True).cpu().numpy().squeeze()
+    sample_rate = model.generation_config.sample_rate
     return output, sample_rate
 Specify supported voice preset options using a Literal type.
 Download the small Bark processor, which prepares the input text
@@ -2671,9 +2671,9 @@ import soundfile
 import numpy as np
 def audio_array_to_buffer(audio_array: np.array, sample_rate: int) -> BytesIO:
     buffer = BytesIO()
-    soundfile.write(buffer, audio_array, sample_rate, format="wav") 
+    soundfile.write(buffer, audio_array, sample_rate, format="wav")
     buffer.seek(0)
-    return buffer 
+    return buffer
 # main.py
 from fastapi import FastAPI, status
 from fastapi.responses import StreamingResponse
@@ -2684,7 +2684,7 @@ from utils import audio_array_to_buffer
     "/generate/audio",
     responses={status.HTTP_200_OK: {"content": {"audio/wav": {}}}},
     response_class=StreamingResponse,
-) 
+)
 def serve_text_to_audio_model_controller(
     prompt: str,
     preset: VoicePresets = "v2/en_speaker_1",
@@ -2693,7 +2693,7 @@ def serve_text_to_audio_model_controller(
     output, sample_rate = generate_audio(processor, model, prompt, preset)
     return StreamingResponse(
         audio_array_to_buffer(output, sample_rate), media_type="audio/wav"
-    ) 
+    )
 Install the soundfile library to write the audio array to memory buffer
 using its sampling rate.
 Reset the buffer cursor to the start of the buffer and return the iterable
@@ -2737,7 +2737,7 @@ if prompt := st.chat_input("Write your prompt in this input field"):
     response.raise_for_status()
     with st.chat_message("assistant"):
         st.text("Here is your generated audio")
-        st.audio(response.content) 
+        st.audio(response.content)
 Update the Streamlit client code to render audio content.
 With Streamlit, you can swap components to render any type of content
 including images, audio, and video.
@@ -2809,14 +2809,14 @@ def load_image_model() -> StableDiffusionInpaintPipelineLegacy:
     pipe = DiffusionPipeline.from_pretrained(
         "segmind/tiny-sd", torch_dtype=torch.float32,
         device=device
-    ) 
+    )
     return pipe
 def generate_image(
     pipe: StableDiffusionInpaintPipelineLegacy, prompt: str
 ) -> Image.Image:
-    output = pipe(prompt, num_inference_steps=10).images[0] 
- 
-    return output 
+    output = pipe(prompt, num_inference_steps=10).images[0]
+
+    return output
 Download and load the TinySD model into memory with the less
 memory efﬁcient float32 tensor type. Using float16, which has
 limited precision for large and complex models, leads to numerical
@@ -2858,19 +2858,19 @@ def img_to_bytes(
 ) -> bytes:
     buffer = BytesIO()
     image.save(buffer, format=img_format)
-    return buffer.getvalue() 
+    return buffer.getvalue()
 # main.py
 from fastapi import FastAPI, Response, status
 from models import load_image_model, generate_image
 from utils import img_to_bytes
 ...
 @app.get("/generate/image",
-         responses={status.HTTP_200_OK: {"content": {"image/png": {}}}}, 
-         response_class=Response) 
+         responses={status.HTTP_200_OK: {"content": {"image/png": {}}}},
+         response_class=Response)
 def serve_text_to_image_model_controller(prompt: str):
     pipe = load_image_model()
-    output = generate_image(pipe, prompt) 
-    return Response(content=img_to_bytes(output), media_type="image/png") 
+    output = generate_image(pipe, prompt)
+    return Response(content=img_to_bytes(output), media_type="image/png")
 Create an in-memory buffer, save the image to this buffer in a given
 format, and then return the raw byte data from the buffer.
 Specify the media content type and status codes for the auto-generated
@@ -2892,13 +2892,13 @@ generation endpoint
 ...
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.image(message["content"]) 
+        st.image(message["content"])
 ...
 if prompt := st.chat_input("Write your prompt in this input field"):
     ...
     response = requests.get(
         f"http://localhost:8000/generate/image", params={"prompt": prompt}
-    ) 
+    )
     response.raise_for_status()
     with st.chat_message("assistant"):
         st.text("Here is your generated image")
@@ -2992,11 +2992,11 @@ def load_video_model() -> StableVideoDiffusionPipeline:
 def generate_video(
     pipe: StableVideoDiffusionPipeline, image: Image.Image, num_frames: int = 25
 ) -> list[Image.Image]:
-    image = image.resize((1024, 576)) 
-    generator = torch.manual_seed(42) 
+    image = image.resize((1024, 576))
+    generator = torch.manual_seed(42)
     frames = pipe(
         image, decode_chunk_size=8, generator=generator, num_frames=num_frames
-    ).frames[0] 
+    ).frames[0]
     return frames
 Resize the input image to a standard size expected by model input.
 Resizing will also protect against large inputs.
@@ -3026,19 +3026,19 @@ from PIL import Image
 import av
 def export_to_video_buffer(images: list[Image.Image]) -> BytesIO:
     buffer = BytesIO()
-    output = av.open(buffer, "w", format="mp4") 
-    stream = output.add_stream("h264", 30) 
+    output = av.open(buffer, "w", format="mp4")
+    stream = output.add_stream("h264", 30)
     stream.width = images[0].width
     stream.height = images[0].height
-    stream.pix_fmt = "yuv444p" 
-    stream.options = {"crf": "17"} 
+    stream.pix_fmt = "yuv444p"
+    stream.options = {"crf": "17"}
     for image in images:
         frame = av.VideoFrame.from_image(image)
-        packet = stream.encode(frame)   
-        output.mux(packet) 
+        packet = stream.encode(frame)
+        output.mux(packet)
     packet = stream.encode( None)
     output.mux(packet)
-    return buffer 
+    return buffer
 Open a buffer for writing an MP4 ﬁle and then conﬁgure a video stream
 with A V’s video multiplexer.13
 Set the video encoding to h264 at 30 frames per second and make sure
@@ -3073,13 +3073,13 @@ from utils import export_to_video_buffer
     responses={status.HTTP_200_OK: {"content": {"video/mp4": {}}}},
     response_class=StreamingResponse,
 )def serve_image_to_video_model_controller(
-    image: bytes = File(...), num_frames: int = 25 
+    image: bytes = File(...), num_frames: int = 25
 ):
-    image = Image.open(BytesIO(image)) 
+    image = Image.open(BytesIO(image))
     model = load_video_model()
     frames = generate_video(model, image, num_frames)
     return StreamingResponse(
-        export_to_video_buffer(frames), media_type="video/mp4" 
+        export_to_video_buffer(frames), media_type="video/mp4"
     )
 Use the File object to specify image as a form ﬁle upload.
 Create a Pillow Image object by passing the image bytes transferred to
@@ -3281,11 +3281,11 @@ def generate_3d_geometry(
     pipe: ShapEPipeline, prompt: str, num_inference_steps: int
 ):
     images = pipe(
-        prompt, 
-        guidance_scale=15.0, 
-        num_inference_steps=num_inference_steps, 
-        output_type="mesh", 
-    ).images[0] 
+        prompt,
+        guidance_scale=15.0,
+        num_inference_steps=num_inference_steps,
+        output_type="mesh",
+    ).images[0]
     return images
 This speciﬁc Shap-E pipeline accepts textual prompts, but if you want
 to pass image prompts, you need to load a different pipeline.
@@ -3318,25 +3318,25 @@ import open3d as o3d
 import torch
 from diffusers .pipelines .shap_e.renderer import MeshDecoderOutput
 def mesh_to_obj_buffer(mesh: MeshDecoderOutput) -> BytesIO:
-    mesh_o3d = o3d.geometry.TriangleMesh() 
+    mesh_o3d = o3d.geometry.TriangleMesh()
     mesh_o3d.vertices = o3d.utility.Vector3dVector(
-        mesh.verts.cpu().detach().numpy() 
+        mesh.verts.cpu().detach().numpy()
     )
     mesh_o3d.triangles = o3d.utility.Vector3iVector(
-        mesh.faces.cpu().detach().numpy() 
+        mesh.faces.cpu().detach().numpy()
     )
     if len(mesh.vertex_channels) == 3:  # You have color channels
         vert_color = torch.stack(
             [mesh.vertex_channels[channel] for channel in "RGB"], dim=1
-        ) 
+        )
         mesh_o3d.vertex_colors = o3d.utility.Vector3dVector(
             vert_color.cpu().detach().numpy()
-        ) 
+        )
     with tempfile.NamedTemporaryFile(delete= False, suffix=".obj") as tmp:
         o3d.io.write_triangle_mesh(tmp.name, mesh_o3d, write_ascii= True)
         with open(tmp.name, "rb") as f:
-            buffer = BytesIO(f.read()) 
-        os.remove(tmp.name) 
+            buffer = BytesIO(f.read())
+        os.remove(tmp.name)
     return buffer
 Create an Open3D triangle mesh object.
 Convert the generated mesh from the model into an Open3D triangle
@@ -3361,7 +3361,7 @@ from utils import mesh_to_obj_buffer
 ...
 @app.get(
     "/generate/3d",
-    responses={status.HTTP_200_OK: {"content": {"model/obj": {}}}}, 
+    responses={status.HTTP_200_OK: {"content": {"model/obj": {}}}},
     response_class=StreamingResponse,
 )
 def serve_text_to_3d_model_controller(
@@ -3374,7 +3374,7 @@ def serve_text_to_3d_model_controller(
     )
     response.headers["Content-Disposition"] = (
         f"attachment; filename={prompt}.obj"
-    ) 
+    )
     return response
 Specify the OpenAPI speciﬁcation for a successful response to include
 model/obj as the media content type.
@@ -3478,21 +3478,21 @@ from typing import AsyncIterator
 from fastapi import FastAPI, Response, status
 from models import load_image_model, generate_image
 from utils import img_to_bytes
-models = {} 
-@asynccontextmanager 
+models = {}
+@asynccontextmanager
 
 async def lifespan(_: FastAPI) -> AsyncIterator[ None]:
-    models["text2image"] = load_image_model() 
-    yield 
+    models["text2image"] = load_image_model()
+    yield
     ... # Run cleanup code here
-    models.clear() 
-app = FastAPI(lifespan=lifespan) 
+    models.clear()
+app = FastAPI(lifespan=lifespan)
 @app.get(
     "/generate/image",
     responses={status.HTTP_200_OK: {"content": {"image/png": {}}}},
     response_class=Response,
 )def serve_text_to_image_model_controller(prompt: str):
-    output = generate_image(models["text2image"], prompt) 
+    output = generate_image(models["text2image"], prompt)
     return Response(content=img_to_bytes(output), media_type="image/png")
 Initialize an empty mutable dictionary at the global application scope to
 hold one or multiple models.
@@ -3577,11 +3577,11 @@ import bentoml
 from models import load_image_model
 @bentoml.service(
     resources={"cpu": "4"}, traffic={"timeout": 120}, http={"port": 5000}
-) 
+)
 class Generate:
     def __init__(self) -> None:
         self.pipe = load_image_model()
-    @bentoml.api(route="/generate/image") 
+    @bentoml.api(route="/generate/image")
     def generate(self, prompt: str) -> str:
         output = self.pipe(prompt, num_inference_steps=10).images[0]
         return output
@@ -3605,10 +3605,10 @@ app = FastAPI()
     responses={status.HTTP_200_OK: {"content": {"image/png": {}}}},
     response_class=Response,
 )async def serve_bentoml_text_to_image_controller(prompt: str):
-    async with httpx.AsyncClient() as client: 
+    async with httpx.AsyncClient() as client:
         response = await client.post(
             "http://localhost:5000/generate", json={"prompt": prompt}
-        ) 
+        )
     return Response(content=response.content, media_type="image/png")
 Create an asynchronous HTTP client using the httpx library.
 Send a POST request to the BentoML image generation model endpoint.
@@ -3629,7 +3629,7 @@ app = FastAPI()
 openai_client = OpenAI()
 system_prompt = "You are a helpful assistant."
 @app.get("/generate/openai/text")def serve_openai_language_model_controller(prompt: str) -> str | None:
-    response = openai_client.chat.completions.create( 
+    response = openai_client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {"role": "system", "content": f"{system_prompt}"},
@@ -3654,18 +3654,18 @@ from fastapi import FastAPI
 from langchain .chains.llm import LLMChain
 from langchain_core .prompts import PromptTemplate
 from langchain_openai import OpenAI
-llm = OpenAI(openai_organization="YOUR_ORGANIZATION_ID") 
+llm = OpenAI(openai_organization="YOUR_ORGANIZATION_ID")
 template = """
 Your name is FastAPI bot and you are a helpful
 chatbot responsible for teaching FastAPI to your users.
 Here is the user query: {query}
 """
-prompt = PromptTemplate.from_template(template) 
-llm_chain = LLMChain(prompt=prompt, llm=llm) 
+prompt = PromptTemplate.from_template(template)
+llm_chain = LLMChain(prompt=prompt, llm=llm)
 app = FastAPI()
 @app.get("/generate/text")
 def generate_text_controller(query: str):
-    return llm_chain.run(query) 
+    return llm_chain.run(query)
 Create the OpenAI client with the organization ID.
 Construct a prompt template.
 Construct the OpenAI llm_chain object from the prompt template.
@@ -3721,23 +3721,23 @@ csv_header = [
     "Request ID", "Datetime", "Endpoint Triggered", "Client IP Address",
     "Response Time", "Status Code", "Successful"
 ]
-@app.middleware("http") 
+@app.middleware("http")
 async def monitor_service(
     req: Request, call_next: Callable[[Request], Awaitable[Response]]
-) -> Response: 
-    request_id = uuid4().hex 
+) -> Response:
+    request_id = uuid4().hex
     request_datetime = datetime.now(timezone.utc).isoformat()
     start_time = time.perf_counter()
     response: Response = await call_next(req)
-    response_time = round(time.perf_counter() - start_time, 4) 
+    response_time = round(time.perf_counter() - start_time, 4)
     response.headers["X-Response-Time"] = str(response_time)
-    response.headers["X-API-Request-ID"] = request_id 
+    response.headers["X-API-Request-ID"] = request_id
     with open("usage.csv", "a", newline="") as file:
 p(g, , )
         writer = csv.writer(file)
         if file.tell() == 0:
             writer.writerow(csv_header)
-        writer.writerow( 
+        writer.writerow(
             [
                 request_id,
                 request_datetime,
@@ -4037,28 +4037,28 @@ from typing import Literal, TypeAlias
 from loguru import logger
 import tiktoken
 SupportedModels: TypeAlias = Literal["gpt-3.5", "gpt-4"]
-PriceTable: TypeAlias = dict[SupportedModels, float] 
-  
-price_table: PriceTable = {"gpt-3.5": 0.0030, "gpt-4": 0.0200} 
-def count_tokens(text: str | None) -> int: 
+PriceTable: TypeAlias = dict[SupportedModels, float]
+
+price_table: PriceTable = {"gpt-3.5": 0.0030, "gpt-4": 0.0200}
+def count_tokens(text: str | None) -> int:
     if text is None:
         logger.warning("Response is None. Assuming 0 tokens used")
-        return 0 
+        return 0
     enc = tiktoken.encoding_for_model("gpt-4o")
-    return len(enc.encode(text)) 
+    return len(enc.encode(text))
 def calculate_usage_costs(
     prompt: str,
     response: str | None,
     model: SupportedModels,
-) -> tuple[float, float, float]: 
+) -> tuple[float, float, float]:
     if model not in price_table:
         # raise at runtime - in case someone ignores type errors
-        raise ValueError(f"Cost calculation is not supported for {model} model.") 
-    price = price_table[model] 
+        raise ValueError(f"Cost calculation is not supported for {model} model.")
+    price = price_table[model]
     req_costs = price * count_tokens(prompt) / 1000
-    res_costs = price * count_tokens(response) / 1000 
+    res_costs = price * count_tokens(response) / 1000
     total_costs = req_costs + res_costs
-    return req_costs, res_costs, total_costs 
+    return req_costs, res_costs, total_costs
 Use the Literal from Python’s typing module included in its standard
 library.1 Declare literals gpt-3.5 and gpt-4 and assign them to
 SupportedModel type alias. The PriceTable is also a simple type alias
@@ -4166,10 +4166,10 @@ from utils import count_tokens
 SupportedModels: TypeAlias = Literal["gpt-3.5", "gpt-4"]
 PriceTable: TypeAlias = dict[SupportedModels, float]
 prices: PriceTable = {"gpt-3.5": 0.0030, "gpt-4": 0.0200}
-@dataclass 
+@dataclass
 class Message:
     prompt: str
-    response: str | None 
+    response: str | None
     model: SupportedModels
 @dataclass
 class MessageCostReport:
@@ -4178,7 +4178,7 @@ class MessageCostReport:
     total_costs: float
 # Define count_tokens function as normal
 ...
-def calculate_usage_costs(message: Message) -> MessageCostReport: 
+def calculate_usage_costs(message: Message) -> MessageCostReport:
     if message.model not in prices :
         # raise at runtime - in case someone ignores type errors
         raise ValueError(
@@ -4278,10 +4278,10 @@ You can create your own Pydantic models as shown in Example 4-5 .
 Example 4-5. Creating Pydantic models
 from typing import Literal
 from pydantic import BaseModel
-class TextModelRequest(BaseModel): 
+class TextModelRequest(BaseModel):
     model: Literal["gpt-3.5-turbo", "gpt-4o"]
     prompt: str
-    temperature: float = 0.0 
+    temperature: float = 0.0
 Deﬁne the TextModelRequest model inheriting the Pydantic
 BaseModel.
 Set defaults if an explicit value isn’t provided. For instance, set the
@@ -4298,9 +4298,9 @@ Example 4-6. Creating Pydantic models
 from datetime import datetime
 from typing import Annotated, Literal
 from pydantic import BaseModel
-class ModelRequest(BaseModel): 
+class ModelRequest(BaseModel):
     prompt: str
-class ModelResponse(BaseModel): 
+class ModelResponse(BaseModel):
     request_id: str
     ip: str | None
     content: str | None
@@ -4311,11 +4311,11 @@ class TextModelRequest(ModelRequest):
 class TextModelResponse(ModelResponse):
     tokens: int
 ImageSize = Annotated[tuple[int, int], "Width and height of an image in pixels"]
-class ImageModelRequest(ModelRequest): 
+class ImageModelRequest(ModelRequest):
     model: Literal["tinysd", "sd1.5"]
     output_size: ImageSize
     num_inference_steps: int = 200
-class ImageModelResponse(ModelResponse): 
+class ImageModelResponse(ModelResponse):
     size: ImageSize
     url: str
 Deﬁne the ModelRequest model inheriting the Pydantic BaseModel.
@@ -4358,29 +4358,29 @@ from typing import Annotated, Literal
 from uuid import uuid4
 from pydantic import BaseModel, Field, HttpUrl, IPvAnyAddress, PositiveInt
 class ModelRequest(BaseModel):
-    prompt: Annotated[str, Field(min_length=1, max_length=10000)] 
+    prompt: Annotated[str, Field(min_length=1, max_length=10000)]
 class ModelResponse(BaseModel):
-    request_id: Annotated[str, Field(default_factory= lambda: uuid4().hex)] 
+    request_id: Annotated[str, Field(default_factory= lambda: uuid4().hex)]
     # no defaults set for ip field
     # raise ValidationError if a valid IP address or None is not provided
-    ip: Annotated[str, IPvAnyAddress] | None 
-    content: Annotated[str | None, Field(min_length=0, max_length=10000)] 
+    ip: Annotated[str, IPvAnyAddress] | None
+    content: Annotated[str | None, Field(min_length=0, max_length=10000)]
     created_at: datetime = datetime.now()
 class TextModelRequest(ModelRequest):
     model: Literal["gpt-3.5-turbo", "gpt-4o"]
-    temperature: Annotated[float, Field(ge=0.0, le=1.0, default=0.0)] 
+    temperature: Annotated[float, Field(ge=0.0, le=1.0, default=0.0)]
 class TextModelResponse(ModelResponse):
     tokens: Annotated[int, Field(ge=0)]
-ImageSize = Annotated[ 
+ImageSize = Annotated[
     tuple[PositiveInt, PositiveInt], "Width and height of an image in pixels"
 ]
 class ImageModelRequest(ModelRequest):
     model: Literal["tinysd", "sd1.5"]
-    output_size: ImageSize 
-    num_inference_steps: Annotated[int, Field(ge=0, le=2000)] = 200 
+    output_size: ImageSize
+    num_inference_steps: Annotated[int, Field(ge=0, le=2000)] = 200
 class ImageModelResponse(ModelResponse):
-    size: ImageSize 
-    url: Annotated[str, HttpUrl] | None = None 
+    size: ImageSize
+    url: Annotated[str, HttpUrl] | None = None
 Replace the str standard type with Field and Annotated to bound the
 string length to a range of characters.
 Generate a new request UUID by passing a callable to
@@ -4451,24 +4451,24 @@ ImageSize = Annotated[
 SupportedModels = Annotated[
     Literal["tinysd", "sd1.5"], "Supported Image Generation Models"
 ]
-@validate_call 
-def is_square_image(value: ImageSize) -> ImageSize: 
+@validate_call
+def is_square_image(value: ImageSize) -> ImageSize:
     if value[0] / value[1] != 1:
         raise ValueError("Only square images are supported")
     if value[0] not in [512, 1024]:
         raise ValueError(f"Invalid output size: {value} - expected 512 or 1024")
     return value
-@validate_call 
+@validate_call
 def is_valid_inference_step(
     num_inference_steps: int, model: SupportedModels
 ) -> int:
-    if model == "tinysd" and num_inference_steps > 2000: 
+    if model == "tinysd" and num_inference_steps > 2000:
         raise ValueError(
             "TinySD model cannot have more than 2000 inference steps"
         )
     return num_inference_steps
-OutputSize = Annotated[ImageSize, AfterValidator(is_square_image)] 
-InferenceSteps = Annotated[ 
+OutputSize = Annotated[ImageSize, AfterValidator(is_square_image)]
+InferenceSteps = Annotated[
     int,
     AfterValidator(
         lambda v, values: is_valid_inference_step(v, values["model"])
@@ -4478,8 +4478,8 @@ class ModelRequest(BaseModel):
     prompt: Annotated[str, Field(min_length=1, max_length=4000)]
 class ImageModelRequest(ModelRequest):
     model: SupportedModels
-    output_size: OutputSize 
-    num_inference_steps: InferenceSteps = 200 
+    output_size: OutputSize
+    num_inference_steps: InferenceSteps = 200
 In addition to static type checks, raise a runtime validation error if
 incorrect parameters have been passed to both the is_square_image
 and is_valid_ infer  ence_step functions.
@@ -4605,9 +4605,9 @@ variables
 from typing import Annotated
 from pydantic import Field, HttpUrl, PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
-class AppSettings(BaseSettings): 
+class AppSettings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8" 
+        env_file=".env", env_file_encoding="utf-8"
     )
     port: Annotated[int, Field(default=8000)]
     app_secret: Annotated[str, Field(min_length=32)]
@@ -4617,13 +4617,13 @@ class AppSettings(BaseSettings):
             alias="DATABASE_URL",
             default="postgres://user:pass@localhost:5432/database",
         ),
-    ] 
+    ]
     cors_whitelist_domains: Annotated[
         set[HttpUrl],
         Field(alias="CORS_WHITELIST", default=["http://localhost:3000"]),
-    ] 
+    ]
 settings = AppSettings()
-print(settings.model_dump()) 
+print(settings.model_dump())
 """
 {'port': 8000
  'app_secret': 'asdlkajdlkajdklaslkldjkasldjkasdjaslk',
@@ -4661,11 +4661,11 @@ Example 4-13. Using dataclasses in FastAPI
 from dataclasses import dataclass
 from typing import Literal
 @dataclass
-class TextModelRequest: 
+class TextModelRequest:
     model: Literal["tinyLlama", "gemma2b"]
     prompt: str
     temperature: float
-@dataclassclass TextModelResponse: 
+@dataclassclass TextModelResponse:
     response: str
     tokens: int
 # main.py
@@ -4678,9 +4678,9 @@ from utils import count_tokens
 app = FastAPI(lifespan=lifespan)
 @app.post("/generate/text")def serve_text_to_text_controller(
     body: TextModelRequest = Body(...),
-) -> TextModelResponse: 
- 
-    if body.model not in ["tinyLlama", "gemma2b"]: 
+) -> TextModelResponse:
+
+    if body.model not in ["tinyLlama", "gemma2b"]:
 
         raise HTTPException(
             detail=f"Model {body.model} is not supported",
@@ -4688,7 +4688,7 @@ app = FastAPI(lifespan=lifespan)
         )
     output = generate_text(models["text"], body.prompt, body.temperature)
     tokens = count_tokens(body.prompt) + count_tokens(output)
-    return TextModelResponse(response=output, tokens=tokens) 
+    return TextModelResponse(response=output, tokens=tokens)
 Deﬁne models for text model request and response schemas.
 Convert the handler to serve POST requests with a body. Then, declare
 the request body as TextModelRequest and the response as
@@ -4722,21 +4722,21 @@ Example 4-14. Using Pydantic to model request and response schemas
 # main.py
 from fastapi import Body, FastAPI, HTTPException, Request, status
 from models import generate_text
-from schemas import TextModelRequest, TextModelResponse 
+from schemas import TextModelRequest, TextModelResponse
 # load lifespan
 ...
 app = FastAPI(lifespan=lifespan)
-@app.post("/generate/text") 
+@app.post("/generate/text")
 def serve_text_to_text_controller(
     request: Request, body: TextModelRequest = Body(...)
 ) -> TextModelResponse:
-    if body.model not in ["tinyLlama", "gemma2b"]: 
+    if body.model not in ["tinyLlama", "gemma2b"]:
         raise HTTPException(
             detail=f"Model {body.model} is not supported",
             status_code=status.HTTP_400_BAD_REQUEST,
         )
     output = generate_text(models["text"], body.prompt, body.temperature)
-    return TextModelResponse(content=output, ip=request.client.host) 
+    return TextModelResponse(content=output, ip=request.client.host)
 Import Pydantic models for text model request and response schemas.
 Convert the handler to serve POST requests with a body. Then, declare
 the request body as TextModelRequest and the response as
@@ -5197,10 +5197,10 @@ blocking operation with the blocking time.sleep() function.
 Example 5-1. Synchronous executionimport time
 def task():
     print("Start of sync task")
-    time.sleep(5) 
+    time.sleep(5)
     print("After 5 seconds of sleep")
 start = time.time()
-for _ in range(3): 
+for _ in range(3):
     task()
 duration = time.time() - start
 print(f"\nProcess completed in: {duration} seconds")
@@ -5229,14 +5229,14 @@ asyncio to run Example 5-1  asynchronously.
 Example 5-2. Asynchronous execution
 import time
 import asyncio
-async def task(): 
+async def task():
     print("Start of async task")
-    await asyncio.sleep(5) 
+    await asyncio.sleep(5)
     print("Task resumed after 5 seconds")
 async def spawn_tasks():
-    await asyncio.gather(task(), task(), task()) 
+    await asyncio.gather(task(), task(), task())
 start = time.time()
-asyncio.run(spawn_tasks()) 
+asyncio.run(spawn_tasks())
 duration = time.time() - start
 print(f" \nProcess completed in: {duration} seconds")
 """
@@ -5246,7 +5246,7 @@ Start of async task
 Task resumed after 5 seconds
 Task resumed after 5 seconds
 Task resumed after 5 seconds
-Process completed in: 5.0057971477508545 seconds 
+Process completed in: 5.0057971477508545 seconds
 """
 Implement a task coroutine that cedes control to the event loop on
 blocking operations.
@@ -5274,12 +5274,12 @@ Example 5-3. How to use async  and await  keywords
 import asyncio
 async def main():
     print("Before sleeping")
-    await asyncio.sleep(3) 
+    await asyncio.sleep(3)
     print("After sleeping for 3 seconds")
-asyncio.run(main()) 
+asyncio.run(main())
 """
 Before sleeping
-After sleeping for 3 seconds 
+After sleeping for 3 seconds
 """
 Simulate a nonblocking I/O operation by awaiting the
 asyncio.sleep() so that Python can go and do other things while
@@ -5537,15 +5537,15 @@ from openai import AsyncOpenAI, OpenAI
 app = FastAPI()
 @app.get("/block")
 async def block_server_controller():
-    completion = sync_client.chat.completions.create(...) 
+    completion = sync_client.chat.completions.create(...)
     return completion.choices[0].message.content
 @app.get("/slow")
 def slow_text_generator():
-    completion = sync_client.chat.completions.create(...) 
+    completion = sync_client.chat.completions.create(...)
     return completion.choices[0].message.content
 @app.get("/fast")
 async def fast_text_generator():
-    completion = await async_client.chat.completions.create(...) 
+    completion = await async_client.chat.completions.create(...)
     return completion.choices[0].message.content
 I/O blocking operation to get ChatGPT API response. Because the route
 handler is marked async, FastAPI trusts us to not run blocking
@@ -5628,26 +5628,26 @@ import aiohttp
 from bs4 import BeautifulSoup
 from loguru import logger
 def extract_urls(text: str) -> list[str]:
-    url_pattern = r"(?P<url>https?:\/\/[^\s]+)" 
-    urls = re.findall(url_pattern, text) 
+    url_pattern = r"(?P<url>https?:\/\/[^\s]+)"
+    urls = re.findall(url_pattern, text)
     return urls
 def parse_inner_text(html_string: str) -> str:
     soup = BeautifulSoup(html_string, "lxml")
-    if content := soup.find("div", id="bodyContent"): 
+    if content := soup.find("div", id="bodyContent"):
         return content.get_text()
     logger.warning("Could not parse the HTML content")
     return ""
 async def fetch(session: aiohttp.ClientSession, url: str) -> str:
-    async with session.get(url) as response: 
+    async with session.get(url) as response:
         html_string = await response.text()
         return parse_inner_text(html_string)
 async def fetch_all(urls: list[str]) -> str:
-    async with aiohttp.ClientSession() as session: 
+    async with aiohttp.ClientSession() as session:
         results = await asyncio.gather(
             *[fetch(session, url) for url in urls], return_exceptions= True
         )
     success_results = [result for result in results if isinstance(result, str)]
-    if len(results) != len(success_results): 
+    if len(results) != len(success_results):
         logger.warning("Some URLs could not be fetched")
     return " ".join(success_results)
 A simple regex pattern that captures the URLs into a named group
@@ -5685,7 +5685,7 @@ from fastapi import Body
 from loguru import logger
 from schemas import TextModelRequest
 from scraper import extract_urls, fetch_all
-async def get_urls_content(body: TextModelRequest = Body(...)) -> str: 
+async def get_urls_content(body: TextModelRequest = Body(...)) -> str:
     urls = extract_urls(body.prompt)
     if urls:
         try:
@@ -5698,11 +5698,11 @@ async def get_urls_content(body: TextModelRequest = Body(...)) -> str:
 from fastapi import Body, Depends, Request
 from dependencies import construct_prompt
 from schemas import TextModelResponse
-@app.post("/generate/text", response_model_exclude_defaults= True) 
+@app.post("/generate/text", response_model_exclude_defaults= True)
 async def serve_text_to_text_controller(
     request: Request,
     body: TextModelRequest = Body(...),
-    urls_content: str = Depends(get_urls_content) 
+    urls_content: str = Depends(get_urls_content)
 ) -> TextModelResponse:
     ... # rest of controller logic
     prompt = body.prompt + " " + urls_content
@@ -5804,7 +5804,7 @@ embedding vectors that represent a chunk’s semantic meaning.
 source and text chunk, in a vector store such as Qdrant.
 4. Retrieval of semantically relevant embedding vectors by
 performing a semantic search on the user’s query to the LLM. The
-original text chunks— stored as metadata of the retrieved vectors—  
+original text chunks— stored as metadata of the retrieved vectors—
 are then used to augment (i.e., enhance the context within) the
 initial prompt provided to the LLM.
 5. Generation of LLM response bypassing both the query and
@@ -5930,12 +5930,12 @@ Example 5-9. RAG PDF-to-text extractor
 from pypdf import PdfReader
 def pdf_text_extractor(filepath: str) -> None:
     content = ""
-    pdf_reader = PdfReader(filepath, strict= True) 
+    pdf_reader = PdfReader(filepath, strict= True)
     for page in pdf_reader.pages:
         page_text = page.extract_text()
         if page_text:
-            content += f"{page_text} \n\n" 
-    with open(filepath.replace("pdf", "txt"), "w", encoding="utf-8") as file: 
+            content += f"{page_text} \n\n"
+    with open(filepath.replace("pdf", "txt"), "w", encoding="utf-8") as file:
         file.write(content)
 Use the pypdf library to open a stream pointer to a PDF ﬁle with
 strict=True so that any read errors are logged to the terminal. Note
@@ -5967,12 +5967,12 @@ import aiofiles
 from transformers import AutoModel
 DEFAULT_CHUNK_SIZE = 1024 * 1024 * 50  # 50 megabytes
 embedder = AutoModel.from_pretrained(
-    "jinaai/jina-embeddings-v2-base-en", trust_remote_code= True 
+    "jinaai/jina-embeddings-v2-base-en", trust_remote_code= True
 )
 async def load(filepath: str) -> AsyncGenerator[str, Any]:
-    async with aiofiles.open(filepath, "r", encoding="utf-8") as f: 
-        while chunk := await f.read(DEFAULT_CHUNK_SIZE): 
-            yield chunk 
+    async with aiofiles.open(filepath, "r", encoding="utf-8") as f:
+        while chunk := await f.read(DEFAULT_CHUNK_SIZE):
+            yield chunk
 def clean(text: str) -> str:
     t = text.replace("\n", " ")
     t = re.sub(r"\s+", " ", t)
@@ -5980,9 +5980,9 @@ def clean(text: str) -> str:
     t = t.replace("..", ".")
     t = t.replace(". .", ".")
     cleaned_text = t.replace("\n", " ").strip()
-    return cleaned_text 
+    return cleaned_text
 def embed(text: str) -> list[float]:
-    return embedder.encode(text).tolist() 
+    return embedder.encode(text).tolist()
 Download and use the open source jina-embeddings-v2-base-en
 model to embed text strings into embedding vectors. Set
 trust_remote_code=True to download model weights and tokenizer
@@ -6044,9 +6044,9 @@ database in a container, you should have Docker installed on your machine
 and then pull and run the qdrant vector database container.7 If you aren’t
 familiar with Docker, don’t worry. You will learn more about Docker and
 containerization in Chapter 12.
-$ docker pull qdrant/qdrant 
-$ docker run -p 6333:6333 -p 6334:6334 \  
-    -v $(pwd)/qdrant_storage:/qdrant/storage:z \ 
+$ docker pull qdrant/qdrant
+$ docker run -p 6333:6333 -p 6334:6334 \
+    -v $(pwd)/qdrant_storage:/qdrant/storage:z \
     qdrant/qdrant
 Download the qdrant vector database image from the qdrant
 repository in the Docker registry.
@@ -6075,19 +6075,19 @@ from loguru import logger
 from qdrant_client import AsyncQdrantClient
 from qdrant_client .http import models
 from qdrant_client .http.models import ScoredPoint
-class VectorRepository: 
+class VectorRepository:
     def __init__(self, host: str = "localhost", port: int = 6333) -> None:
         self.db_client = AsyncQdrantClient(host=host, port=port)
-    async def create_collection(self, collection_name: str, size: int) -> bool: 
+    async def create_collection(self, collection_name: str, size: int) -> bool:
         vectors_config = models.VectorParams(
-            size=size, distance=models.Distance.COSINE 
+            size=size, distance=models.Distance.COSINE
         )
         response = await self.db_client.get_collections()
         collection_exists = any(
             collection.name == collection_name
             for collection in response.collections
         )
-        if collection_exists: 
+        if collection_exists:
             logger.debug(
                 f"Collection {collection_name} already exists - recreating it"
             )
@@ -6136,7 +6136,7 @@ class VectorRepository:
         collection_name: str,
         query_vector: list[float],
         retrieval_limit: int,
-        score_threshold: float, 
+        score_threshold: float,
     ) -> list[ScoredPoint]:
         logger.debug(
             f"Searching for relevant items in the {collection_name} collection"
@@ -6182,10 +6182,10 @@ import os
 from loguru import logger
 from .repository import VectorRepository
 from .transform import clean, embed, load
-class VectorService(VectorRepository): 
+class VectorService(VectorRepository):
     def __init__(self):
         super().__init__()
-    async def store_file_content_in_db( 
+    async def store_file_content_in_db(
         self,
         filepath: str,
         chunk_size: int = 512,
@@ -6194,14 +6194,14 @@ class VectorService(VectorRepository):
     ) -> None:
         await self.create_collection(collection_name, collection_size)
         logger.debug(f"Inserting {filepath} content into database")
-        async for chunk in load(filepath, chunk_size): 
+        async for chunk in load(filepath, chunk_size):
             logger.debug(f"Inserting '{chunk[0:20]}...' into database")
             embedding_vector = embed(clean(chunk))
             filename = os.path.basename(filepath)
             await self.create(
                 collection_name, embedding_vector, chunk, filename
             )
-vector_service = VectorService() 
+vector_service = VectorService()
 Create the VectorService class by inheriting the VectorRepository
 class so that you can use and extend common database operation
 methods from Example 5-11.
@@ -6232,13 +6232,13 @@ from rag import pdf_text_extractor, vector_service
 @app.post("/upload")
 async def file_upload_controller(
     file: Annotated[UploadFile, File(description="A file read as UploadFile")],
-    bg_text_processor: BackgroundTasks, 
+    bg_text_processor: BackgroundTasks,
 ):
     ... # Raise an HTTPException if data upload is not a PDF file
     try:
         filepath = await save_file(file)
-        bg_text_processor.add_task(pdf_text_extractor, filepath) 
-        bg_text_processor.add_task( 
+        bg_text_processor.add_task(pdf_text_extractor, filepath)
+        bg_text_processor.add_task(
             vector_service.store_file_content_in_db,
             filepath.replace("pdf", "txt"),
             512,
@@ -6274,12 +6274,12 @@ Example 5-14. RAG integration with the LLM-serving endpoint# dependencies.py
 from rag import vector_service
 from rag.transform import embed
 from schemas import TextModelRequest, TextModelResponse
-async def get_rag_content(body: TextModelRequest = Body(...)) -> str: 
-    rag_content = await vector_service.search( 
+async def get_rag_content(body: TextModelRequest = Body(...)) -> str:
+    rag_content = await vector_service.search(
         "knowledgebase", embed(body.prompt), 3, 0.7
 g, ( y p p ), ,
     )
-    rag_content_str = " \n".join( 
+    rag_content_str = " \n".join(
         [c.payload["original_text"] for c in rag_content]
     )
     return rag_content_str
@@ -6291,7 +6291,7 @@ async def serve_text_to_text_controller(
     request: Request,
     body: TextModelRequest = Body(...),
     urls_content: str = Depends(get_urls_content),
-    rag_content: str = Depends(get_rag_content), 
+    rag_content: str = Depends(get_rag_content),
 ) -> TextModelResponse:
     ... # Raise HTTPException for invalid models
     prompt = body.prompt + " " + urls_content + rag_content
@@ -6455,11 +6455,11 @@ Please consult vLLM documentation for more details related to distributed infere
 and serving.
 Example 5-15. Starting the vLLM FastAPI OpenAI API server for
 TinyLlama on a Linux machine with 4x 16 GB NVIDIA T4 GPUs
-$ python -m vllm.entrypoints.openai.api_server \ 
+$ python -m vllm.entrypoints.openai.api_server \
 --model "TinyLlama/TinyLlama-1.1B-Chat-v1.0" \
---dtype float16 \ 
---tensor-parallel-size 4 \ 
---api-key "your_secret_token" 
+--dtype float16 \
+--tensor-parallel-size 4 \
+--api-key "your_secret_token"
 Start an OpenAI-compatible API server with FastAPI to serve the
 TinyLlama model.
 Use the float16 medium precision data type. float16 is compatible
@@ -6486,7 +6486,7 @@ async def generate_text(prompt: str, temperature: float = 0.7) -> str:
     ]
     data = {"temperature": temperature, "messages": messages}
     headers = {"Authorization": f"Bearer {os.environ.get('VLLM_API_KEY')}"}try:
-   async with aiohttp.ClientSession() as session: 
+   async with aiohttp.ClientSession() as session:
         response = await session.post(
             "http://localhost:8000/v1/chat", json=data, headers=headers
         )
@@ -6498,7 +6498,7 @@ except Exception as e:
         "See server logs for more details"
     )try:
 y
-    output = predictions["choices"][0]["message"]["content"] 
+    output = predictions["choices"][0]["message"]["content"]
     logger.debug(f"Generated text: {output}")
     return output
 except KeyError as e:
@@ -6520,7 +6520,7 @@ handler to be asynchronous# main.py
 from fastapi import FastAPI, Request
 from schemas import TextModelRequest, TextModelResponse
 from models import generate_text
-# Remove the asynccontextmanager to remove TinyLlama from FastAPI 
+# Remove the asynccontextmanager to remove TinyLlama from FastAPI
 # @asynccontextmanager
 # async def lifespan(app: FastAPI):
 #     models["text"] = load_text_model()
@@ -6531,7 +6531,7 @@ app = FastAPI()
 @app.post("/generate/text")
 async def serve_text_to_text_controller(
     request: Request, body: TextModelRequest
-) -> TextModelResponse: 
+) -> TextModelResponse:
     ...  # controller logic
     output = await generate_text(body.prompt, body.temperature)
     return TextModelResponse(content=output, ip=request.client.host)
@@ -6790,16 +6790,16 @@ from fastapi import BackgroundTasks
 import aiofiles
 ...
 async def batch_generate_image(prompt: str, count: int) -> None:
-    images = generate_images(prompt, count) 
+    images = generate_images(prompt, count)
     for i, image in enumerate(images):
         async with aiofiles.open(f"output_{i}.png", mode='wb') as f:
-            await f.write(image) 
+            await f.write(image)
 @app.get("/generate/image/background")
 def serve_image_model_background_controller(
-    background_tasks: BackgroundTasks, prompt: str, count: int 
+    background_tasks: BackgroundTasks, prompt: str, count: int
 ):
-    background_tasks.add_task(batch_generate_image, prompt, count) 
-    return {"message": "Task is being processed in the background"} 
+    background_tasks.add_task(batch_generate_image, prompt, count)
+    return {"message": "Task is being processed in the background"}
 Generate multiple images in a batch using an external model-serving
 API like Ray Serve.
 Loop over the generated images and asynchronously save each to disk
@@ -7165,13 +7165,13 @@ resources, so they must be handled properly by your server.
 The HTTP upgrade request should contain a set of required headers, as
 shown in Example 6-1 .
 Example 6-1. WebSocket opening handshake over HTTP
-GET ws://localhost:8000/generate/text/stream HTTP/1.1 
+GET ws://localhost:8000/generate/text/stream HTTP/1.1
 Origin: http://localhost:3000
-Connection: Upgrade 
+Connection: Upgrade
 Host: http://localhost:8000
-Upgrade: websocket 
-Sec-WebSocket-Key: 8WnhvZTK66EVvhDG++RD0w== 
-Sec-WebSocket-Protocol: html-chat, text-chat 
+Upgrade: websocket
+Sec-WebSocket-Key: 8WnhvZTK66EVvhDG++RD0w==
+Sec-WebSocket-Protocol: html-chat, text-chat
 Sec-WebSocket-Version: 13
 Make an HTTP upgrade request to the WebSocket endpoint. WebSocket
 endpoints start with ws:// instead of the typical http://.
@@ -7400,7 +7400,7 @@ import asyncio
 import os
 from typing import AsyncGenerator
 from openai import AsyncAzureOpenAI
-class AzureOpenAIChatClient: 
+class AzureOpenAIChatClient:
     def __init__(self):
         self.aclient = AsyncAzureOpenAI(
             api_key=os.environ["OPENAI_API_KEY"],
@@ -7410,7 +7410,7 @@ class AzureOpenAIChatClient:
         )
     async def chat_stream(
         self, prompt: str, model: str = "gpt-3.5-turbo"
-    ) -> AsyncGenerator[str, None]: 
+    ) -> AsyncGenerator[str, None]:
         stream = await self.aclient.chat.completions.create(
             messages=[
                 {
@@ -7419,11 +7419,11 @@ class AzureOpenAIChatClient:
                 }
             ],
             model=model,
-            stream=True, 
+            stream=True,
         )
         async for chunk in stream:
-            yield f"data: {chunk.choices[0].delta.content or ''}\n\n" 
-            await asyncio.sleep(0.05) 
+            yield f"data: {chunk.choices[0].delta.content or ''}\n\n"
+            await asyncio.sleep(0.05)
         yield f"data: [DONE] \n\n"
 azure_chat_client = AzureOpenAIChatClient()
 Create an asynchronous AzureOpenAIChatClient to interact with the
@@ -7461,11 +7461,11 @@ StreamingResponse
 from fastapi.responses import StreamingResponse
 from stream import azure_chat_client
 ...
-@app.get("/generate/text/stream") 
+@app.get("/generate/text/stream")
 async def serve_text_to_text_stream_controller(
     prompt: str,
 ) -> StreamingResponse:
-    return StreamingResponse( 
+    return StreamingResponse(
         azure_chat_client.chat_stream(prompt), media_type="text/event-stream"
     )
 Implement an SSE endpoint with the GET method to use with the
@@ -7492,8 +7492,8 @@ EventSource  API
 <body>
 <button id="streambtn">Start Streaming</ button>
 <label for="messageInput">Enter your prompt:</ label>
-<input type="text" id="messageInput" placeholder="Enter your prompt"> 
-<div style="padding-top: 10px" id="responseContainer"></ div> 
+<input type="text" id="messageInput" placeholder="Enter your prompt">
+<div style="padding-top: 10px" id="responseContainer"></ div>
 <script>
     let source;
     const button = document.getElementById('streambtn');
@@ -7518,15 +7518,15 @@ EventSource  API
         console.error(e);
         source.close()
     }
-    button.addEventListener('click', function() { 
+    button.addEventListener('click', function() {
         const message = input.value;
         const url = 'http://localhost:8000/generate/text/stream?prompt=' +
             encodeURIComponent(message);
-        resetForm() 
-        source = new EventSource(url); 
+        resetForm()
+        source = new EventSource(url);
         source.addEventListener('open', handleOpen, false);
         source.addEventListener('message', handleMessage, false);
-        source.addEventListener('error', handleClose, false); 
+        source.addEventListener('error', handleClose, false);
     });
 </script>
 </body>
@@ -7552,7 +7552,7 @@ origin as your server.
 Example 6-5. Mounting HTML ﬁles on the server as static assets
 # main.py
 from fastapi.staticfiles import StaticFiles
-app.mount("/pages", StaticFiles(directory="pages"), name="pages") 
+app.mount("/pages", StaticFiles(directory="pages"), name="pages")
 Mount the pages directory onto the /pages to serve its content as static
 assets. Once mounted, you can access each ﬁle by visiting
 <origin>/pages/<filename>.
@@ -7588,7 +7588,7 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"], 
+    allow_headers=["*"],
 )
 Allow incoming requests from any origins, methods ( GET, POST, etc.)
 and headers.
@@ -7628,14 +7628,14 @@ Server to implement model streaming.
 Example 6-7  shows how to set up a simple model inference server using
 Docker by providing a model-id.
 Example 6-7. Serving HF LLM models via HF Inference Server
-$ docker run --runtime nvidia --gpus all \ 
-    -v ~/.cache/huggingface:/root/.cache/huggingface \ 
-    --env "HUGGING_FACE_HUB_TOKEN=<secret>" \ 
-    -p 8080:8000 \ 
-    --ipc=host \ 
-    vllm/vllm-openai:latest \ 
- 
-    --model mistralai/Mistral-7B-v0.1 
+$ docker run --runtime nvidia --gpus all \
+    -v ~/.cache/huggingface:/root/.cache/huggingface \
+    --env "HUGGING_FACE_HUB_TOKEN=<secret>" \
+    -p 8080:8000 \
+    --ipc=host \
+    vllm/vllm-openai:latest \
+
+    --model mistralai/Mistral-7B-v0.1
 Use Docker to download and run the latest vllm/vllm-openai
 container on all available NVIDIA GPUs.
 Share a volume with the Docker container to avoid downloading
@@ -7726,7 +7726,7 @@ EventSource  API
         container.textContent = '';
     }
     async function stream(message){
-        const response = await 
+        const response = await
 fetch('http://localhost:8000/generate/text/stream', {
             method: "POST",
             cache: "no-cache",
@@ -7736,19 +7736,19 @@ fetch('http://localhost:8000/generate/text/stream', {
                 "Accept": "text/event-stream",
             },
             body: JSON.stringify({
-                prompt: message, 
+                prompt: message,
 
             }),
         });
-        const reader = response.body.getReader(); 
-        const decoder = new TextDecoder(); 
-        while (true) { 
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        while (true) {
             const {value, done} = await reader.read();
             if (done) break;
             container.textContent += decoder.decode(value);
         }
     }
-    button.addEventListener('click', async function() { 
+    button.addEventListener('click', async function() {
         resetForm()
         await stream(input.value)
     });
@@ -7794,21 +7794,21 @@ async function stream(
     backoffFactor = 2,
 ) {
     let delay = initialDelay;
-    for (let attempt = 0; attempt < maxRetries; attempt++) { 
-        try { 
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
             ... // Establish SSE connection here
-            return 
+            return
         } catch (error) {
             console.warn(`Failed to establish SSE connection: ${error}`);
             console.log(
                 `Re-establishing connection - attempt number ${attempt + 1}`,
             );
             if (attempt < maxRetries - 1) {
-                await sleep(delay); 
+                await sleep(delay);
 
-                delay *= backoffFactor; 
+                delay *= backoffFactor;
             } else {
-                throw error 
+                throw error
             }
         }
     }
@@ -7847,29 +7847,29 @@ Example 6-12 .
 Example 6-12. Implementing a WebSocket connection manager
 # stream.py
 from fastapi.websockets import WebSocket
-class WSConnectionManager: 
+class WSConnectionManager:
     def __init__(self) -> None:
         self.active_connections: list[WebSocket] = []
-    async def connect(self, websocket: WebSocket) -> None: 
+    async def connect(self, websocket: WebSocket) -> None:
         await websocket.accept()
         self.active_connections.append(websocket)
-    async def disconnect(self, websocket: WebSocket) -> None: 
+    async def disconnect(self, websocket: WebSocket) -> None:
         self.active_connections.remove(websocket)
         await websocket.close()
     @staticmethod
-    async def receive(websocket: WebSocket) -> str: 
+    async def receive(websocket: WebSocket) -> str:
         return await websocket.receive_text()
     @staticmethod
     async def send(
         message: str | bytes | list | dict, websocket: WebSocket
-    ) -> None: 
+    ) -> None:
         if isinstance(message, str):
             await websocket.send_text(message)
         elif isinstance(message, bytes):
             await websocket.send_bytes(message)
         else:
             await websocket.send_json(message)
-ws_manager = WSConnectionManager() 
+ws_manager = WSConnectionManager()
 
 Create a WSConnectionManager to track and handle active WS
 connections.
@@ -7915,14 +7915,14 @@ class AzureOpenAIChatClient:
     ) -> AsyncGenerator[str, None]:
         stream = ...  # OpenAI chat completion stream
         async for chunk in stream:
-            if chunk.choices[0].delta.content is not None: 
+            if chunk.choices[0].delta.content is not None:
                 yield (
                     f"data: {chunk.choices[0].delta.content} \n\n"
                     if mode == "sse"
-                    else chunk.choices[0].delta.content 
+                    else chunk.choices[0].delta.content
                 )
                 await asyncio.sleep(0.05)
-        if mode == "sse": 
+        if mode == "sse":
             yield f"data: [DONE] \n\n"
 Only yield non-empty content.
 Yield the stream content based on connection type (SSE or WS).
@@ -7936,23 +7936,23 @@ import asyncio
 from loguru import logger
 from fastapi.websockets import WebSocket, WebSocketDisconnect
 from stream import ws_manager, azure_chat_client
-@app.websocket("/generate/text/streams") 
+@app.websocket("/generate/text/streams")
 async def websocket_endpoint(websocket: WebSocket) -> None:
     logger.info("Connecting to client....")
-    await ws_manager.connect(websocket) 
-    try: 
-        while True: 
-            prompt = await ws_manager.receive(websocket) 
+    await ws_manager.connect(websocket)
+    try:
+        while True:
+            prompt = await ws_manager.receive(websocket)
             async for chunk in azure_chat_client.chat_stream(prompt, "ws"):
-                await ws_manager.send(chunk, websocket) 
-                await asyncio.sleep(0.05) 
-    except WebSocketDisconnect: 
+                await ws_manager.send(chunk, websocket)
+                await asyncio.sleep(0.05)
+    except WebSocketDisconnect:
         logger.info("Client disconnected")
-    except Exception as e: 
+    except Exception as e:
         logger.error(f"Error with the WebSocket connection: {e}")
         await ws_manager.send("An internal server error has occurred")
     finally:
-        await ws_manager.disconnect(websocket) 
+        await ws_manager.disconnect(websocket)
 Create a WebSocket endpoint accessible at
 ws://localhost:8000/generate/text/stream.
 Open the WebSocket connection between the client and the server.
@@ -8004,12 +8004,12 @@ handling and exponential backoff retry functionality
         return new Promise(resolve => setTimeout(resolve, ms));
     }
     function connectWebSocket() {
-        ws = new WebSocket("ws://localhost:8000/generate/text/streams"); 
+        ws = new WebSocket("ws://localhost:8000/generate/text/streams");
 
         ws.onopen = handleOpen;
         ws.onmessage = handleMessage;
         ws.onclose = handleClose;
-        ws.onerror = handleError; 
+        ws.onerror = handleError;
     }
     function handleOpen(){
         console.log("WebSocket connection opened");
@@ -8019,7 +8019,7 @@ handling and exponential backoff retry functionality
     function handleMessage(event) {
         container.textContent += event.data;
     }
-    async function handleClose(){ 
+    async function handleClose(){
         console.log("WebSocket connection closed");
         if (isError && retryCount < maxRetries) {
             console.warn("Retrying connection...");
@@ -8040,21 +8040,21 @@ handling and exponential backoff retry functionality
         input.value = '';
         container.textContent = '';
     }
-    streamButton.addEventListener('click', function() { 
+    streamButton.addEventListener('click', function() {
         const prompt = document.getElementById("messageInput").value;
         if (prompt && ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(prompt); 
+            ws.send(prompt);
         }
-        resetForm(); 
+        resetForm();
     });
 });
-    closeButton.addEventListener('click', function() { 
+    closeButton.addEventListener('click', function() {
         isError = false;
         if (ws) {
             ws.close();
         }
     });
-    connectWebSocket(); 
+    connectWebSocket();
 </script>
 </body>
 </html>
@@ -8384,14 +8384,14 @@ source, free, and battle-tested and is in use by many enterprises. To get
 started, let’s download and run the Postgres container using docker run, as
 shown in Example 7-1 .
 Example 7-1. Download and run the Postgres database container
-$ docker run -p 5432:5432  \  
- 
+$ docker run -p 5432:5432  \
+
 -e POSTGRES_USER=fastapi \
 -e POSTGRES_PASSWORD=mysecretpassword \
 -e POSTGRES_DB=backend_db \
--e PGDATA=/var/lib/postgresql/data \ 
-    -v "$(pwd)"/dbstorage:/var/lib/postgresql/data \ 
-    postgres:latest 
+-e PGDATA=/var/lib/postgresql/data \
+    -v "$(pwd)"/dbstorage:/var/lib/postgresql/data \
+    postgres:latest
 Download and run the latest postgres relational database image from
 in the Docker registry.
 Run the postgres image and then expose and map container port 5432
@@ -8449,25 +8449,25 @@ Example 7-2. Deﬁning database ORM models
 from datetime import UTC, datetime
 from sqlalchemy import ForeignKey
 from sqlalchemy .orm import DeclarativeBase, Mapped, mapped_column, relationship
-class Base(DeclarativeBase): 
+class Base(DeclarativeBase):
     pass
-class Conversation(Base): 
+class Conversation(Base):
     __tablename__ = "conversations"
     id: Mapped[int] = mapped_column(primary_key= True)
-    title: Mapped[str] = mapped_column() 
-    model_type: Mapped[str] = mapped_column(index= True) 
+    title: Mapped[str] = mapped_column()
+    model_type: Mapped[str] = mapped_column(index= True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(UTC))
     updated_at: Mapped[datetime] = mapped_column(
-        default=datetime.now(UTC), onupdate=datetime.now(UTC) 
+        default=datetime.now(UTC), onupdate=datetime.now(UTC)
     )
     messages: Mapped[list["Message"]] = relationship(
-        "Message", back_populates="conversation", cascade="all, delete-orphan" 
+        "Message", back_populates="conversation", cascade="all, delete-orphan"
     )
-class Message(Base): 
+class Message(Base):
     __tablename__ = "messages"
     id: Mapped[int] = mapped_column(primary_key= True)
     conversation_id: Mapped[int] = mapped_column(
-        ForeignKey("conversations.id", ondelete="CASCADE"), index= True 
+        ForeignKey("conversations.id", ondelete="CASCADE"), index= True
     )
     prompt_content: Mapped[str] = mapped_column()
     response_content: Mapped[str] = mapped_column()
@@ -8475,8 +8475,8 @@ class Message(Base):
     response_tokens: Mapped[int | None] = mapped_column()
     total_tokens: Mapped[int | None] = mapped_column()
     is_success: Mapped[bool | None] = mapped_column()
-    status_code: Mapped[int | None] = mapped_column() 
-  
+    status_code: Mapped[int | None] = mapped_column()
+
     created_at: Mapped[datetime] = mapped_column(default=datetime.now(UTC))
     updated_at: Mapped[datetime] = mapped_column(
         default=datetime.now(UTC), onupdate=datetime.now(UTC)
@@ -8520,14 +8520,14 @@ Example 7-3. Create the SQLAlchemy database engine
 # database.py
 from sqlalchemy .ext.asyncio import create_async_engine
 from entities import Base
-database_url = ( 
+database_url = (
     "postgresql+psycopg://fastapi:mysecretpassword@localhost:5432/backend_db"
 )
-engine = create_async_engine(database_url, echo=True) 
+engine = create_async_engine(database_url, echo=True)
 async def init_db() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all) 
+        await conn.run_sync(Base.metadata.create_all)
 # main.py
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -8538,7 +8538,7 @@ async def lifespan(_: FastAPI):
     # other startup operations within the lifespan
     ...
     yield
-    await engine.dispose() 
+    await engine.dispose()
 app = FastAPI(lifespan=lifespan)
 For Postgres databases, the connection string is deﬁned using the
 following template: <driver>://<username>:
@@ -8570,18 +8570,18 @@ from fastapi import Depends
 from sqlalchemy .ext.asyncio import AsyncSession, async_sessionmaker
 from database import engine
 async_session = async_sessionmaker(
-    bind=engine, class_=AsyncSession, autocommit= False, autoflush= False 
+    bind=engine, class_=AsyncSession, autocommit= False, autoflush= False
 )
-async def get_db_session(): 
+async def get_db_session():
     try:
-        async with async_session() as session: 
-            yield session 
+        async with async_session() as session:
+            yield session
     except:
-        await session.rollback() 
+        await session.rollback()
         raise
     finally:
-        await session.close() 
-DBSessionDep = Annotated[AsyncSession, Depends(get_db_session)] 
+        await session.close()
+DBSessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 Create an async database session factory bound to the database engine
 you created previously to asynchronously connect to your Postgres
 instance. Disable automatic committing of transactions with
@@ -8620,14 +8620,14 @@ Example 7-5. Declaring Pydantic API schemas for conversation endpoints# schemas.
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 class ConversationBase(BaseModel):
-    model_config = ConfigDict(from_attributes= True) 
+    model_config = ConfigDict(from_attributes= True)
     title: str
     model_type: str
-class ConversationCreate(ConversationBase): 
+class ConversationCreate(ConversationBase):
     pass
-class ConversationUpdate(ConversationBase): 
+class ConversationUpdate(ConversationBase):
     pass
-class ConversationOut(ConversationBase): 
+class ConversationOut(ConversationBase):
     id: int
     created_at: datetime
     updated_at: datetime
@@ -8667,9 +8667,9 @@ from schemas import ConversationCreate, ConversationOut, ConversationUpdate
 from sqlalchemy import select
 ...
 async def get_conversation(
-    conversation_id: int, session: DBSessionDep 
+    conversation_id: int, session: DBSessionDep
 ) -> Conversation:
-    async with session.begin(): 
+    async with session.begin():
         result = await session.execute(
             select(Conversation).where(Conversation.id == conversation_id)
         )
@@ -8687,7 +8687,7 @@ async def list_conversations_controller(
 ) -> list[ConversationOut]:
     async with session.begin():
         result = await session.execute(
-            select(Conversation).offset(skip).limit(take) 
+            select(Conversation).offset(skip).limit(take)
         )
     return [
         ConversationOut.model_validate(conversation)
@@ -8697,7 +8697,7 @@ async def list_conversations_controller(
 async def get_conversation_controller(
     conversation: GetConversationDep,
 ) -> ConversationOut:
-    return ConversationOut.model_validate(conversation) 
+    return ConversationOut.model_validate(conversation)
 @app.post("/conversations", status_code=status.HTTP_201_CREATED)
 async def create_conversation_controller(
     conversation: ConversationCreate, session: DBSessionDep
@@ -8705,7 +8705,7 @@ async def create_conversation_controller(
     new_conversation = Conversation(**conversation.model_dump())
     async with session.begin():
         session.add(new_conversation)
-        await session.commit() 
+        await session.commit()
         await session.refresh(new_conversation)
 (_ )
     return ConversationOut.model_validate(new_conversation)
@@ -8718,7 +8718,7 @@ async def update_conversation_controller(
     for key, value in updated_conversation.model_dump().items():
         setattr(conversation, key, value)
     async with session.begin():
-        await session.commit() 
+        await session.commit()
         await session.refresh(conversation)
     return ConversationOut.model_validate(conversation)
 @app.delete("/conversations/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -8727,7 +8727,7 @@ async def delete_conversation_controller(
 ) -> None:
     async with session.begin():
         await session.delete(conversation)
-        await session.commit() 
+        await session.commit()
 Deﬁne a dependency to check if the conversation record exists. Raise a
 404 HTTPException if a record is not found; otherwise, return the
 retrieved record. This dependency can be reused across several CRUD
@@ -8778,7 +8778,7 @@ Example 7-7. Implementing a repository abstract interface
 # repositories/interfaces.py
 from abc import ABC, abstractmethod
 from typing import Any
-class Repository(ABC): 
+class Repository(ABC):
     @abstractmethod
     async def list(self) -> list[Any]:
         pass
@@ -8810,7 +8810,7 @@ from repositories .interfaces import Repository
 from schemas import ConversationCreate, ConversationUpdate
 from sqlalchemy import select
 from sqlalchemy .ext.asyncio import AsyncSession
-class ConversationRepository(Repository): 
+class ConversationRepository(Repository):
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
     async def list(self, skip: int, take: int) -> list[Conversation]:
@@ -8866,11 +8866,11 @@ from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
 ...  # Other imports
 from repositories import ConversationRepository
 ...  # Other controllers and dependency implementations
-router = APIRouter(prefix="/conversations") 
+router = APIRouter(prefix="/conversations")
 async def get_conversation(
     conversation_id: int, session: SessionDep
 ) -> Conversation:
-    conversation = await ConversationRepository(session).get(conversation_id) 
+    conversation = await ConversationRepository(session).get(conversation_id)
 
     if not conversation:
         raise HTTPException(
@@ -8889,14 +8889,14 @@ async def list_conversations_controller(
 async def get_conversation_controller(
     conversation: GetConversationDep,
 ) -> ConversationOut:
-    return ConversationOut.model_validate(conversation) 
+    return ConversationOut.model_validate(conversation)
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_conversation_controller(
     conversation: ConversationCreate, session: SessionDep
 ) -> ConversationOut:
     new_conversation = await ConversationRepository(session).create(
         conversation
-    ) 
+    )
     return ConversationOut.model_validate(new_conversation)
 @router.put("/{id}", status_code=status.HTTP_202_ACCEPTED)
 async def update_conversation_controller(
@@ -8904,7 +8904,7 @@ async def update_conversation_controller(
     updated_conversation: ConversationUpdate,
     session: SessionDep,
 ) -> ConversationOut:
-    updated_conversation = await ConversationRepository(session).update( 
+    updated_conversation = await ConversationRepository(session).update(
         conversation.id, updated_conversation
     )
     return ConversationOut.model_validate(updated_conversation)
@@ -8916,7 +8916,7 @@ y _ _ (
     await ConversationRepository(session).delete(conversation.id)
 # main.py
 from routers.conversations import router as conversations_router
-app.include_router(conversations_router) 
+app.include_router(conversations_router)
 Place conversation CRUD routes on a separate API router and include
 on the FastAPI application for modular API design.
 Refactor conversation CRUD routes to use the repository pattern for
@@ -8955,7 +8955,7 @@ from fastapi import APIRouter
 from schemas import MessageOut
 from services .conversations import ConversationService
 router = APIRouter(prefix="/conversations")
-@router.get("/{conversation_id}/messages") 
+@router.get("/{conversation_id}/messages")
 async def list_conversation_messages_controller(
     conversation: GetConversationDep,
     session: DBSessionDep,
@@ -9010,10 +9010,10 @@ Example 7-12. Alembic environment within your project root directory
 project/
     alembic.ini
     alembic/
-        env.py 
+        env.py
         README
         script.py.mako
-        versions/ 
+        versions/
             <migration .py files will appear here>
 An environment ﬁle for specifying target schema and database
 connections
@@ -9148,7 +9148,7 @@ from fastapi.responses import StreamingResponse
 from repositories .conversations import Conversation
 from repositories .messages import MessageRepository
 from sqlalchemy .ext.asyncio import AsyncSession
-async def store_message( 
+async def store_message(
     prompt_content: str,
     response_content: str,
     conversation_id: int,
@@ -9165,14 +9165,14 @@ async def stream_llm_controller(
     prompt: str,
     background_task: BackgroundTasks,
     session: DBSessionDep,
-    conversation: Conversation = Depends(get_conversation), 
+    conversation: Conversation = Depends(get_conversation),
 ) -> StreamingResponse:
     # Invoke LLM and obtain the response stream
     ...
-    stream_1, stream_2 = tee(response_stream) 
+    stream_1, stream_2 = tee(response_stream)
     background_task.add_task(
         store_message, prompt, "".join(stream_1), conversation.id, session
-    ) 
+    )
     return StreamingResponse(stream_2)
 Create a function to store a message against a conversation.
 Check that the conversation record exists and fetch it within a
@@ -9432,29 +9432,29 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 app = FastAPI()
-security = HTTPBasic() 
+security = HTTPBasic()
 username_bytes = b"ali"
 password_bytes = b"secretpassword"
 def authenticate_user(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)]
 ) -> str:
     is_correct_username = secrets.compare_digest(
-        credentials.username.encode("UTF-8"), username_bytes 
+        credentials.username.encode("UTF-8"), username_bytes
     )
     is_correct_password = secrets.compare_digest(
-        credentials.password.encode("UTF-8"), password_bytes 
+        credentials.password.encode("UTF-8"), password_bytes
 
     )
     if not (is_correct_username and is_correct_password):
-        raise HTTPException( 
+        raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect credentials",
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
-AuthenticatedUserDep = Annotated[str, Depends(authenticate_user)] 
+AuthenticatedUserDep = Annotated[str, Depends(authenticate_user)]
 @app.get("/users/me")
-def get_current_user_controller(username: AuthenticatedUserDep): 
+def get_current_user_controller(username: AuthenticatedUserDep):
     return {"message": f"Current user is {username}"}
 FastAPI has implemented several HTTP security mechanisms including
 HTTP Ba sic that can leverage the FastAPI’s dependency injection
@@ -9563,12 +9563,12 @@ from typing import Annotated
 from pydantic import (UUID4, AfterValidator, BaseModel, ConfigDict, Field,
                       validate_call)
 @validate_call
-def validate_username(value: str) -> str: 
+def validate_username(value: str) -> str:
     if not value.isalnum():
         raise ValueError("Username must be alphanumeric")
     return value
 @validate_call
-def validate_password(value: str) -> str: 
+def validate_password(value: str) -> str:
     validations = [
         (
             lambda v: any(char.isdigit() for char in v),
@@ -9594,13 +9594,13 @@ ValidPassword = Annotated[
     str, Field(min_length=8, max_length=64), AfterValidator(validate_password)
 ]
 class UserBase(BaseModel):
-    model_config = ConfigDict(from_attributes= True) 
+    model_config = ConfigDict(from_attributes= True)
     username: ValidUsername
     is_active: bool = True
     role: str = "USER"
-class UserCreate(UserBase): 
+class UserCreate(UserBase):
     password: ValidPassword
-class UserInDB(UserBase): 
+class UserInDB(UserBase):
     hashed_password: str
 class UserOut(UserBase):
     id: UUID4
@@ -9677,37 +9677,37 @@ from alembic import op
 def upgrade():
     op.create_table(
         "users",
-        sa.Column("id", sa.UUID(as_uuid=True)), 
+        sa.Column("id", sa.UUID(as_uuid=True)),
         sa.Column("email", sa.String(length=255)),
-        sa.Column("hashed_password", sa.String(length=255)), 
+        sa.Column("hashed_password", sa.String(length=255)),
         sa.Column(
             "is_active", sa.Boolean(), server_default=sa.sql.expression.true()
-        ), 
-        sa.Column("role", sa.String(), server_default=sa.text("USER")), 
+        ),
+        sa.Column("role", sa.String(), server_default=sa.text("USER")),
         sa.Column("created_at", sa.DateTime(), default=datetime.now(UTC)),
         sa.Column(
             "updated_at",
             sa.DateTime(),
             default=datetime.now(UTC),
-            onupdate=datetime.now(UTC), 
+            onupdate=datetime.now(UTC),
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("email"),
-        sa.Index("ix_users_email", "email"), 
+        sa.Index("ix_users_email", "email"),
     )
     op.create_table(
         "tokens",
-        sa.Column("id", sa.UUID(as_uuid=True)), 
+        sa.Column("id", sa.UUID(as_uuid=True)),
         sa.Column("user_id", sa.Integer()),
-        sa.Column("expires_at", sa.DateTime()), 
-        sa.Column("is_active", sa.Boolean(), default= True), 
+        sa.Column("expires_at", sa.DateTime()),
+        sa.Column("is_active", sa.Boolean(), default= True),
         sa.Column("ip_address", sa.String(length=255), nullable= True),
         sa.Column("created_at", sa.DateTime(), default=datetime.now(UTC)),
         sa.Column(
             "updated_at",
             sa.DateTime(),
             default=datetime.now(UTC),
-            onupdate=datetime.now(UTC), 
+            onupdate=datetime.now(UTC),
         ),
         sa.ForeignKeyConstraint(
             ["user_id"],
@@ -9715,7 +9715,7 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.Index("ix_tokens_user_id", "user_id"),
-        sa.Index("ix_tokens_ip_address", "ip_address"), 
+        sa.Index("ix_tokens_ip_address", "ip_address"),
     )
 def downgrade():
     op.drop_table("tokens")
@@ -9800,13 +9800,13 @@ from fastapi.security import HTTPBearer
 from passlib.context import CryptContext
 class PasswordService:
     security = HTTPBearer()
-    pwd_context = CryptContext(schemes=["bcrypt"]) 
+    pwd_context = CryptContext(schemes=["bcrypt"])
     async def verify_password(
         self, password: str, hashed_password: str
     ) -> bool:
-        return self.pwd_context.verify(password, hashed_password) 
+        return self.pwd_context.verify(password, hashed_password)
     async def get_password_hash(self, password: str) -> str:
-        return self.pwd_context.hash(password) 
+        return self.pwd_context.hash(password)
 Create an AuthService with a secret and password context managed by
 the bcrypt library that will handle all the user password hashing and
 veriﬁcation.
@@ -9906,21 +9906,21 @@ from schemas import TokenCreate, TokenUpdate
 class TokenService(TokenRepository):
     secret_key = "your_secret_key"
     algorithm = "HS256"
-    expires_in_minutes = 60 
+    expires_in_minutes = 60
 async def create_access_token(
-    self, data: dict, expires_delta: timedelta | None = None 
+    self, data: dict, expires_delta: timedelta | None = None
 ) -> str:
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(UTC) + expires_delta
     else:
         expire = datetime.now(UTC) + timedelta(minutes=self.expires_in_minutes)
-    token_id = await self.create(TokenCreate(expires_at=expire)) 
+    token_id = await self.create(TokenCreate(expires_at=expire))
     to_encode.update(
-        {"exp": expire, "iss": "your_service_name", "sub": token_id} 
+        {"exp": expire, "iss": "your_service_name", "sub": token_id}
     )
     encoded_jwt = jwt.encode(
-        to_encode, self.secret_key, algorithm=self.algorithm 
+        to_encode, self.secret_key, algorithm=self.algorithm
     )
     return encoded_jwt
 async def deactivate(self, token_id: UUID4) -> None:
@@ -9978,7 +9978,7 @@ class AuthService:
         return await self.user_service.create(
             UserInDB(username=user.username, hashed_password=hashed_password)
         )
-    async def authenticate_user(self, form_data: LoginFormDep) -> Token: 
+    async def authenticate_user(self, form_data: LoginFormDep) -> Token:
         if not (user := await self.user_service.get_user(form_data.username)):
             raise UnauthorizedException
         if not await self.password_service.verify_password(
@@ -10025,21 +10025,21 @@ AuthenticateUserCredDep = Annotated[
     str, Depends(auth_service.authenticate_user_with_credentials)
 ]
 AuthenticateUserTokenDep = Annotated[User, Depends(auth_service.register_user)]
-PasswordResetDep = Annotated[None, Depends(auth_service.reset_password)] 
-router = APIRouter(prefix="/auth", tags=["Authentication"]) 
+PasswordResetDep = Annotated[None, Depends(auth_service.reset_password)]
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 @router.post("/register")
 async def register_user_controller(new_user: RegisterUserDep) -> UserOut:
     return new_user
-@router.post("/token") 
+@router.post("/token")
 async def login_for_access_token_controller(
     access_token: AuthenticateUserCredDep,
 ) -> TokenOut:
     return {"access_token": access_token, "token_type": "bearer"}
-@router.post("/logout", dependencies=[Depends(auth_service.logout)]) 
-  
+@router.post("/logout", dependencies=[Depends(auth_service.logout)])
+
 async def logout_access_token_controller() -> dict:
     return {"message": "Logged out"}
-@router.post("reset-password") 
+@router.post("reset-password")
 async def reset_password_controller(credentials: str) -> dict:
     return {
         "message": "If an account exists, "
@@ -10059,7 +10059,7 @@ complete the JWT authentication work.
 Example 8-12. Refactor FastAPI application to use routers
 # routes/resource.py
 from fastapi import APIRouter
-router = APIRouter(prefix="/generate", tags=["Resource"]) 
+router = APIRouter(prefix="/generate", tags=["Resource"])
 @router.get("/generate/text", ...)
 def serve_language_model_controller(...):
     ...
@@ -10077,13 +10077,13 @@ auth_service = AuthService()
 AuthenticateUserDep = Annotated[User, Depends(auth_service.get_current_user)]
 ...
 app = FastAPI(lifespan=lifespan)
-app.include_router(routes.auth.router, prefix="/auth", tags=["Auth"]) 
+app.include_router(routes.auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(
     routes.resource.router,
     dependencies=[AuthenticateUserDep],
     prefix="/generate",
     tags=["Generate"],
-) 
+)
 ...  # Add other routes to the app here
 Refactor existing endpoints to be grouped under a separate API router
 named the resource router.
@@ -10287,7 +10287,7 @@ router = APIRouter()
         f"&scope=user"
         f"&state={state}"
         f"&redirect_uri={redirect_uri}"
-    ) 
+    )
     csrf_token = secrets.token_urlsafe(16)
     request.session["x-csrf-state-token"] = csrf_token
     return response
@@ -10555,13 +10555,13 @@ server
 can
 secure
 handl
-client 
+client
 and ac
 tokenMobil
 applic
 if usin
 PKCE
-token 
+token
 client
 creden
 can’t b
@@ -10827,7 +10827,7 @@ Example 8-19. Implementing RBAC using FastAPI dependencies
 from entities import User
 from fastapi import Depends, HTTPException, status
 from services .auth import AuthService
-async def is_admin(user: User = Depends(AuthService.get_current_user)) -> User: 
+async def is_admin(user: User = Depends(AuthService.get_current_user)) -> User:
     if user.role != "ADMIN":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -10839,15 +10839,15 @@ from dependencies .auth import is_admin
 from fastapi import APIRouter, Depends
 from services .auth import AuthService
 router = APIRouter(
-    dependencies=[Depends(AuthService.get_current_user)], 
+    dependencies=[Depends(AuthService.get_current_user)],
     prefix="/generate",
 p /g ,
     tags=["Resource"],
 )
 @router.post("/image", dependencies=[Depends(is_admin)])
-async def generate_image_controller(): 
+async def generate_image_controller():
     ...
-@router.post("/text") 
+@router.post("/text")
 async def generate_text_controller():
     ...
 Implement the is_admin authorization dependency guard on top of the
@@ -11389,7 +11389,7 @@ class LLMClient:
         )
         return response.choices[0].message.content
 @validate_call
-def check_classification_response(value: str | None) -> str: 
+def check_classification_response(value: str | None) -> str:
     if value is None or not re.match(r"^(allowed|disallowed)$", value):
         raise ValueError("Invalid topical guardrail response received")
     return value
@@ -11431,11 +11431,11 @@ async def invoke_llm_with_guardrails(user_query: str) -> str:
         done, _ = await asyncio.wait(
             [topical_guardrail_task, chat_task],
             return_when=asyncio.FIRST_COMPLETED,
-        ) 
+        )
         if topical_guardrail_task in done:
             topic_allowed = topical_guardrail_task.result()
             if not topic_allowed:
-                chat_task.cancel() 
+                chat_task.cancel()
                 logger.warning("Topical guardrail triggered")
                 return (
                     "Sorry, I can only talk about "
@@ -11444,10 +11444,10 @@ async def invoke_llm_with_guardrails(user_query: str) -> str:
             elif chat_task in done:
                 return chat_task.result()
         else:
-            await asyncio.sleep(0.1) 
+            await asyncio.sleep(0.1)
 @router.post("/text/generate")
 async def generate_text_controller(
-    response: Annotated[str, Depends(invoke_llm_with_guardrails)] 
+    response: Annotated[str, Depends(invoke_llm_with_guardrails)]
 ) -> str:
     return response
 Create two asyncio tasks to run in parallel using asyncio.wait. The
@@ -11573,20 +11573,20 @@ from loguru import logger
 from pydantic import BaseModel, Field
 ...
 class ModerationResponse(BaseModel):
-    score: Annotated[int, Field(ge=1, le=5)] 
+    score: Annotated[int, Field(ge=1, le=5)]
 async def g_eval_moderate_content(
     chat_response: str, threshold: int = 3
 ) -> bool:
     response = await LLMClient(guardrail_system_prompt).invoke(chat_response)
     g_eval_score = ModerationResponse(score=response).score
-    return g_eval_score >= threshold 
+    return g_eval_score >= threshold
 async def invoke_llm_with_guardrails(user_request):
     ...
     while True:
         ...
         if topical_guardrail_task in done:
             ...
-        elif chat_task in done: 
+        elif chat_task in done:
 
             chat_response = chat_task.result()
             has_passed_moderation = await g_eval_moderate_content(chat_response)
@@ -11677,7 +11677,7 @@ most APIs an
 and interacti
 event-driven
 systems whe
-rates can be 
+rates can be
 Leaky Bucket
 Incoming
 requests are
@@ -11704,7 +11704,7 @@ requests
 during
 sudden
 spikesServices that
-maintaining 
+maintaining
 response tim
 inference ser
 Strategy Beneﬁts Limitations Use cases
@@ -11756,7 +11756,7 @@ han
 traf
 Ide
 con
-AI 
+AI
 pre
 use
 exp
@@ -11790,9 +11790,9 @@ from slowapi.util import get_remote_address
 limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["200 per day", "60 per hour", "2/5seconds"],
-) 
+)
 app.state.limiter = limiter
-@app.exception_handler(RateLimitExceeded) 
+@app.exception_handler(RateLimitExceeded)
 def rate_limit_exceeded_handler(request, exc):
     retry_after = int(exc.description.split(" ")[-1])
     response_body = {
@@ -11813,15 +11813,15 @@ With the limiter decorator conﬁgured, you can now use it on your API
 handlers, as shown in Example 9-7 .
 Example 9-7. Setting API rate limits for each API handler
 @app.post("/generate/text")
-@limiter.limit("5/minute") 
+@limiter.limit("5/minute")
 def serve_text_to_text_controller(request: Request, ...):
     return ...
 @app.post("/generate/image")
-@limiter.limit("1/minute") 
-def serve_text_to_image_controller(request: Request, ...): 
+@limiter.limit("1/minute")
+def serve_text_to_image_controller(request: Request, ...):
     return ...
 @app.get("/health")
-@limiter.exempt 
+@limiter.exempt
 def check_health_controller(request: Request):
     return {"status": "healthy"}
 Specify more granular rate limits at endpoint level using a rate-limiting
@@ -11837,7 +11837,7 @@ frequently trigger it to check the current status of your service.
 Now that you’ve implemented the rate limits, you can run load tests using
 the ab (Apache Benchmarking) CLI tool, as shown in Example 9-8 .
 Example 9-8. API load testing with Apache Benchmark CLI
-$ ab -n 100 -p 2 http://localhost:8000 
+$ ab -n 100 -p 2 http://localhost:8000
 Send 100 requests with a rate of 2 parallel requests per second.
 Your terminal outputs should show the following:
 200 OK
@@ -11907,7 +11907,7 @@ from fastapi_limiter import FastAPILimiter
 from fastapi_limiter .depends import WebSocketRateLimiter
 ...
 @asynccontextmanager
-async def lifespan(_: FastAPI): 
+async def lifespan(_: FastAPI):
     redis_connection = redis.from_url("redis://localhost:6379", encoding="utf8")
     await FastAPILimiter.init(redis_connection)
     yield
@@ -11915,14 +11915,14 @@ async def lifespan(_: FastAPI):
 app = FastAPI(lifespan=lifespan)
 @app.websocket("/ws")
 async def websocket_endpoint(
-    websocket: WebSocket, user_id: int = Depends(get_current_user) 
+    websocket: WebSocket, user_id: int = Depends(get_current_user)
 ):
     ratelimit = WebSocketRateLimiter(times=1, seconds=5)
     await ws_manager.connect(websocket)
     try:
         while True:
             prompt = await ws_manager.receive(websocket)
-            await ratelimit(websocket, context_key=user_id) 
+            await ratelimit(websocket, context_key=user_id)
             async for chunk in azure_chat_client.chat_stream(prompt, "ws"):
                 await ws_manager.send(chunk, websocket)
     except WebSocketRateLimitException:
@@ -11948,7 +11948,7 @@ Applying a throttle  at the stream generation layer, as shown in Example 9-
 12, is an effective approach to managing throughput if your services are
 under pressure.
 Example 9-12. Throttling streamsclass AzureOpenAIChatClient:
-    def __init__(self, throttle_rate = 0.5): 
+    def __init__(self, throttle_rate = 0.5):
         self.aclient = ...
         self.throttle_rate = throttle_rate
     async def chat_stream(
@@ -11956,7 +11956,7 @@ Example 9-12. Throttling streamsclass AzureOpenAIChatClient:
     ) -> AsyncGenerator[str, None]:
         stream = ...  # OpenAI chat completion stream
         async for chunk in stream:
-            await asyncio.sleep(self.throttle_rate) 
+            await asyncio.sleep(self.throttle_rate)
             if chunk.choices[0].delta.content is not None:
                 yield (
                     f"data: {chunk.choices[0].delta.content} \n\n"
@@ -12057,7 +12057,7 @@ class BatchDocumentClassification(BaseModel):
     class Category(BaseModel):
         document_id: str
         category: list[str]
-    categories: list[Category] 
+    categories: list[Category]
 Update the Pydantic model to include a list of Category models.
 You can now pass the new schema alongside a list of document titles to the
 OpenAI client to process multiple entries in a single API call. However, an
@@ -12184,7 +12184,7 @@ from redis import asyncio as aioredis
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[ None]:
     redis = aioredis.from_url("redis://localhost")
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache") 
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
     yield
 app = FastAPI(lifespan=lifespan)
 Initialize FastAPICache with a RedisBackend that doesn’t decode
@@ -12201,7 +12201,7 @@ router = APIRouter(prefix="/generate", tags=["Resource"])
 async def classify_document(title: str) -> str:
     ...
 @router.post("/text")
-@cache(expire=60) 
+@cache(expire=60)
 async def serve_text_to_text_controller():
     ...
 The cache() decorator must always come last. Invalidate the cache in
@@ -12283,7 +12283,7 @@ from qdrant_client import AsyncQdrantClient, models
 from qdrant_client .http.models import Distance, PointStruct, ScoredPoint
 class CacheClient:
     def __init__(self):
-        self.db = AsyncQdrantClient(":memory:") 
+        self.db = AsyncQdrantClient(":memory:")
         self.cache_collection_name = "cache"
     async def initialize_database(self) -> None:
         await self.db.create_collection(
@@ -12315,7 +12315,7 @@ vector store by following Example 10-7 .
 Example 10-7. Document store client
 from qdrant_client import AsyncQdrantClient, models
 from qdrant_client .http.models import Distance, ScoredPoint
-documents = [...] 
+documents = [...]
 class DocumentStoreClient:
     def __init__(self, host="localhost", port=6333):
         self.db_client = AsyncQdrantClient(host=host, port=port)
@@ -12364,12 +12364,12 @@ class SemanticCacheService:
         vector = self.get_embedding(query)
         if search_results := await self.cache_client.search(vector):
             for s in search_results:
-                if s.score <= self.euclidean_threshold: 
+                if s.score <= self.euclidean_threshold:
                     logger.debug(f"Found cache with score {s.score:.3f}")
                     elapsed_time = time.time() - start_time
                     logger.debug(f"Time taken: {elapsed_time:.3f} seconds")
                     return s.payload["content"]
-        if db_results := await self.doc_db_client.search(vector): 
+        if db_results := await self.doc_db_client.search(vector):
             documents = [r.payload["content"] for r in db_results]
             await self.cache_client.insert(vector, documents)
             logger.debug("Query context inserted to Cache.")
@@ -12378,7 +12378,7 @@ class SemanticCacheService:
         logger.debug("No answer found in Cache or Database.")
         elapsed_time = time.time() - start_time
         logger.debug(f"Time taken: {elapsed_time:.3f} seconds")
-        return "No answer available." 
+        return "No answer available."
 Set a similarity threshold. Any score above this threshold will be a
 cache hit.
 Query the document store if there is no cache hit. Cache the retrieved
@@ -12424,13 +12424,13 @@ from gptcache .similarity_evaluation import OnnxModelEvaluation
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[ None]:
     cache.init(
-        post_func=random_one, 
-        pre_embedding_func=last_content, 
-        embedding_func=Onnx().to_embeddings, 
-        similarity_evaluation=OnnxModelEvaluation(), 
-        config=Config(similarity_threshold=0.75), 
+        post_func=random_one,
+        pre_embedding_func=last_content,
+        embedding_func=Onnx().to_embeddings,
+        similarity_evaluation=OnnxModelEvaluation(),
+        config=Config(similarity_threshold=0.75),
     )
-    cache.set_openai_key() 
+    cache.set_openai_key()
     yield
 app = FastAPI(lifespan=lifespan)
 Select a post-processing callback function to select a random item from
@@ -12562,7 +12562,7 @@ Example 10-12. Context/prompt caching with Anthropic API
 from anthropic import Anthropic
 client = Anthropic()
 response = client.messages.create(
-    model="claude-3-7-sonnet-20250219", 
+    model="claude-3-7-sonnet-20250219",
     max_tokens=1024,
     system=[
         {
@@ -12572,7 +12572,7 @@ response = client.messages.create(
         {
             "type": "text",
             "text": "<the entire content of a large document>",
-            "cache_control": {"type": "ephemeral"}, 
+            "cache_control": {"type": "ephemeral"},
         },
     ],
     messages=[{"role": "user", "content": "Summarize the documents in ..."}],
@@ -12613,12 +12613,12 @@ genai.configure(api_key="your_gemini_api_key")
 corpus = genai.upload_file(path="corpus.txt")
 cache = caching.CachedContent.create(
     model='models/gemini-1.5-flash-001',
-    display_name='fastapi', 
+    display_name='fastapi',
     system_instruction=(
         "You are an expert AI engineer, and your job is to answer "
         "the user's query based on the files you have access to."
     ),
-    contents=[corpus], 
+    contents=[corpus],
     ttl=datetime.timedelta(minutes=5),
 )
 model = genai.GenerativeModel.from_cached_content(cached_content=cache)
@@ -12718,7 +12718,7 @@ quantize the Llama family models.
 Table 10-2. Impact of quantization on the size of Llama modelsa
 Model Original FP16 8 Bit 6 Bit
 Llama 2 70B 140 GB 128.5 GB 73.23 GB 52.70
-Llama 3 8B 16.07 GB 14.97 GB 7.96 GB 4.34 
+Llama 3 8B 16.07 GB 14.97 GB 7.96 GB 4.34
 a Sources: Llama.cpp GitHub repository  and Tom Jobbins’s Hugging Face Llama 2 70B mo
 TIP
 In addition to the GPU VRAM needed to ﬁt the model, you will also need an extra 5 to
@@ -12774,16 +12774,16 @@ Example 10-14. GPTQ model quantization with Hugging Face and
 AutoGPTQ librariesimport torch
 from optimum.gptq import GPTQQuantizer
 from transformers import AutoModelForCausalLM, AutoTokenizer
-model_name = "facebook/opt-125m" 
+model_name = "facebook/opt-125m"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
     model_name, torch_dtype=torch.float16
 )
 quantizer = GPTQQuantizer(
     bits=4,
-    dataset="c4", 
-    block_name_to_quantize="model.decoder.layers", 
-    model_seqlen=2048, 
+    dataset="c4",
+    block_name_to_quantize="model.decoder.layers",
+    model_seqlen=2048,
 )
 quantized_model = quantizer.quantize_model(model, tokenizer)
 Load the float16 version of the facebook/opt-125m pretrained model
@@ -12825,7 +12825,7 @@ enabling structured outputs.
 Example 10-15. Structured outputsfrom openai import AsyncOpenAI
 from pydantic import BaseModel, Field
 client = AsyncOpenAI()
-class DocumentClassification(BaseModel): 
+class DocumentClassification(BaseModel):
     category: str = Field(..., description="The category of the classification")
 async def get_document_classification(
     title: str,
@@ -12835,12 +12835,12 @@ async def get_document_classification(
         messages=[
             {
                 "role": "system",
-                "content": "classify the provided document into the following: 
+                "content": "classify the provided document into the following:
 ...",
             },
             {"role": "user", "content": title},
         ],
-        response_format=DocumentClassification, 
+        response_format=DocumentClassification,
     )
     message = response.choices[0].message
     return message.parsed if message.parsed is not None else message.refusal
@@ -12862,20 +12862,20 @@ Provide responses in the following manner json: {"category": "string"}
 async def get_document_classification(title: str) -> dict:
     response = await client.chat.completions.create(
         model="gpt-4o",
-        max_tokens=1024, 
+        max_tokens=1024,
         messages=[
             {"role": "system", "content": system_template},
             {"role": "user", "content": title},
             {
                 "role": "assistant",
-                "content": "The document classification JSON is {", 
+                "content": "The document classification JSON is {",
             },
         ],
     )
     message = response.choices[0].message.content or ""
     try:
-        return json.loads("{" + message[: message.rfind("}") + 1]) 
-    except json.JSONDecodeError: 
+        return json.loads("{" + message[: message.rfind("}") + 1])
+    except json.JSONDecodeError:
         logger.warning(f"Failed to parse the response: {message}")
     return {"error": "Refusal response"}
 Limit the output tokens to improve robustness and speed of the
@@ -13114,7 +13114,7 @@ Self-consistency Prompt #1 (run
 multiple times): Let’s
 think step by step and
 complete the
-following task… 
+following task…
 Prompt #2: From the
 following responses,
 choose the
@@ -13129,7 +13129,7 @@ experts (MoRE)Prompt #1 (run for
 each expert): You are
 a reviewer for … ,
 score the following
-based on… 
+based on…
 Prompt #2: Choose
 the best expert
 answer based on an
@@ -13154,12 +13154,12 @@ article and combine
 the outputs.
 Prompt
 paraphrasingPrompt #1a: Reword
-this proposal… 
+this proposal…
 Prompt #1b: Clarify
-this proposal… 
+this proposal…
 Prompt #1c: Make
 adjustment to this
-proposal… 
+proposal…
 Prompt #2: Choose
 the best proposal
 from the following
@@ -13208,7 +13208,7 @@ revise the original
 answer.
 Self-reﬁne Prompt #1: What is your
 feedback on the
-response… 
+response…
 Prompt #2: Using the
 feedback [Feedback],
 reﬁne your response on… Reasoning, coding, and
@@ -13217,7 +13217,7 @@ Reversing chain-
 of-thought
 (RCoT)Prompt #1: Reconstruct
 the problem from this
-answer… 
+answer…
 Prompt #2: Generate ﬁne-
 grained comparison
 between these queries… Identifying
@@ -13233,18 +13233,18 @@ Prompting
 technique Examples Use cases
 Prompt #2: Score each
 solution based on the
-[masked problem]… 
+[masked problem]…
 Chain of
 veriﬁcation
 (COVE)Prompt #1: Answer the
-following question… 
+following question…
 Prompt #2: Formulate
 related questions to check
-this response: … 
+this response: …
 Prompt #3 (run for each
 new related question):
 Answer the following
-question: … 
+question: …
 Prompt #4: Based on the
 following information,
 pick the best answer… Question answering and
@@ -13252,12 +13252,12 @@ text-generation tasks.
 Cumulative
 reasoningPrompt #1: Outline steps
 to respond to the query:
-… 
+…
 Prompt #2: Check the
 following plan and
 accept/reject steps
 relevant in responding to
-the query: … 
+the query: …
 Prompt #3: Check you’ve
 arrived at the ﬁnal answer
 given the following
@@ -14190,7 +14190,7 @@ Example 11-1 demonstrates an example unit test for your chunking
 function.
 Example 11-1. Example unit test for a token chunking function
 # rag/transform.py
-def chunk(tokens: list[int], chunk_size: int) -> list[list[int]]: 
+def chunk(tokens: list[int], chunk_size: int) -> list[list[int]]:
     if chunk_size <= 0:
         raise ValueError("Chunk size must be greater than 0")
     return [tokens[i:i + chunk_size] for i in range(0, len(tokens), chunk_size)]
@@ -14198,11 +14198,11 @@ def chunk(tokens: list[int], chunk_size: int) -> list[list[int]]:
 import pytest
 from rag.transform import chunk
 def test_chunking_success():
-    # GIVEN 
+    # GIVEN
     tokens = [1, 2, 3, 4, 5]
-    # WHEN 
+    # WHEN
     result = chunk(token_list, chunk_size=2)
-    # THEN 
+    # THEN
     assert result = [[1, 2], [3, 4], [5]]
     ... # Other relevant asserts here
 Chunk an integer token list into smaller lists of a speciﬁed chunk_size.
@@ -14235,13 +14235,13 @@ Example 11-2. pytest  ﬁxture function
 import pytest
 from rag.transform import chunk
 # GIVEN
-@pytest.fixture(scope="module") 
-def tokens(): 
+@pytest.fixture(scope="module")
+def tokens():
     return [1, 2, 3, 4, 5]
-def test_token_chunking_small(token_list): 
+def test_token_chunking_small(token_list):
     result = chunk(tokens, chunk_size=2)
     assert result = [[1, 2], [3, 4], [5]]
-def test_token_chunking_large(token_list): 
+def test_token_chunking_large(token_list):
 
     result = chunk(tokens, chunk_size=5)
     assert result = [[1, 2, 3, 4, 5]]
@@ -14268,7 +14268,7 @@ With pytest parameterization, you can iterate over various test data and
 expected outputs to avoid duplicating tests, as you can see in Example 11-3.
 Example 11-3. pytest  parameterization
 # tests/rag/transform.py
-@pytest.mark.parametrize("tokens, chunk_size, expected", [ 
+@pytest.mark.parametrize("tokens, chunk_size, expected", [
     ([1, 2, 3, 4, 5], 2, [[1, 2], [3, 4], [5]]), # valid
     ([1, 2, 3, 4, 5], 3, [[1, 2, 3], [4, 5]]), # valid
     ([1, 2, 3, 4, 5], 1, [[1], [2], [3], [4], [5]]),  # valid
@@ -14281,7 +14281,7 @@ Example 11-3. pytest  parameterization
         for i in range(0, 10000, 1000)]
     )
 ])
-def test_token_chunking(tokens, chunk_size, expected) 
+def test_token_chunking(tokens, chunk_size, expected)
     if expected == "ValueError":
         with pytest.raises( ValueError):
             chunk(tokens, chunk_size)
@@ -14298,7 +14298,7 @@ check instead.
 You can also store the test data inside JSON ﬁles and load them as ﬁxtures
 to inject into parameterized test functions, as shown in Example 11-4.
 Example 11-4. JSON ﬁxtures in parameterized pytest  tests
-# tests/rag/test_data.json 
+# tests/rag/test_data.json
 [
     {"tokens": [1, 2, 3], "chunk_size": 1, "expected": [[1], [2], [3]},
     ...
@@ -14325,7 +14325,7 @@ Any ﬁxtures, setup code, and conﬁgurations deﬁned in the conftest module
 will be shared with other test modules. See Example 11-5.
 Example 11-5. Add a shared ﬁxture across every module
 # tests/conftest.py
-@pytest.fixture(scope="module") 
+@pytest.fixture(scope="module")
 def tokens():
     return [1, 2, 3, 4, 5]
 # tests/rag/transform.py
@@ -14350,26 +14350,26 @@ up a database session, as demonstrated in Example 11-6.
 Example 11-6. Set up and tear down a database session in a shared ﬁxture
 # tests/conftest.py
 from qdrant_client import QdrantClient
-@pytest.fixture(scope="function") 
+@pytest.fixture(scope="function")
 def db_client():
-    client = QdrantClient(host="localhost", port=6333) 
-    client.create_collection( 
+    client = QdrantClient(host="localhost", port=6333)
+    client.create_collection(
         collection_name="test",
         vectors_config=VectorParams(size=4, distance=Distance.DOT),
     )
-    client.upsert( 
+    client.upsert(
         collection_name="test",
         points=[
             PointStruct(
-                id=1, vector=[0.05, 0.61, 0.76, 0.74], payload={"doc": 
+                id=1, vector=[0.05, 0.61, 0.76, 0.74], payload={"doc":
 "test.pdf"}
             )
         ],
     )
-    yield client 
-    client.close() 
+    yield client
+    client.close()
 # tests/rag/retrieve.py
-def test_search_db(db_client): 
+def test_search_db(db_client):
     result = db_client.search(
         collection_name="test", query_vector=[0.18, 0.81, 0.75, 0.12], limit=1
     )
@@ -14410,8 +14410,8 @@ Once you install the plug-in, you can follow Example 11-7 to write and
 execute an async test.
 Example 11-7. Writing asynchronous tests
 # tests/rag/retrieve.py
-@pytest.mark.asyncio 
-async def test_search_db(async_db_client): 
+@pytest.mark.asyncio
+async def test_search_db(async_db_client):
     result = await async_db_client.search(
         collection_name="test", query_vector=[0.18, 0.81, 0.75, 0.12], limit=1
     )
@@ -14520,12 +14520,12 @@ client that uses an in-memory database during tests instead of an actual
 database server; or an LLM client that fetches cached responses from a
 local testing server instead of an actual LLM.
 Example 11-8 demonstrates what a fake LLM client looks like.
-Example 11-8. Fake test doubleclass FakeLLMClient: 
+Example 11-8. Fake test doubleclass FakeLLMClient:
     def __init__(self):
         self.cache = dict()
     def invoke(self, query):
         if query in self.cache:
-            return self.cache.get(query) 
+            return self.cache.get(query)
         response = requests.post("http://localhost:8001", json={"query": query})
         if response.status_code != 200:
             return "Error fetching result"
@@ -14533,7 +14533,7 @@ Example 11-8. Fake test doubleclass FakeLLMClient:
         self.cache[query] = result
         return result
 def process_query(query, llm_client, token):
-    response = llm_client.invoke(query, token) 
+    response = llm_client.invoke(query, token)
     return response
 def test_fake_llm_client(query):
     llm_client = FakeLLMClient()
@@ -14550,10 +14550,10 @@ authentication token to an API client to prevent errors, even though the
 token isn’t used for authentication during the test.
 Example 11-9 shows how dummies can be used as test doubles.
 Example 11-9. Dummy test doubleclass DummyLLMClient:
-    def invoke(self, query, token): 
+    def invoke(self, query, token):
         return "some response"
 def process_query(query, llm_client, token):
-    response = llm_client.invoke(query, token) 
+    response = llm_client.invoke(query, token)
     return response
 def test_dummy_llm_client(query):
     llm_client = DummyLLMClient()
@@ -14572,7 +14572,7 @@ when comparing this example with Example 11-8?
 Example 11-10. Stub test double
 class StubLLMClient:
     def invoke(self, query):
-        if query == "specific query": 
+        if query == "specific query":
             return "specific response"
         return "default response"
 def process_query(query, llm_client):
@@ -14595,7 +14595,7 @@ Example 11-11. Spy test doubleclass SpyLLMClient:
         self.call_count = 0
         self.calls = []
     def invoke(self, query):
-        self.call_count += 1 
+        self.call_count += 1
         self.calls.append((query))
         return "some response"
 def process_query(query, llm_client):
@@ -14625,7 +14625,7 @@ Example 11-12. Mock test doubledef process_query(query, llm_client):
     response = llm_client.invoke(query)
     return response
 def test_process_query_with_mock(mocker):
-    llm_client = mocker.Mock() 
+    llm_client = mocker.Mock()
     llm_client.invoke.return_value = "mock response"
     query = "some query"
     process_query(query, llm_client)
@@ -14656,28 +14656,28 @@ class LLMClient:
 def llm_client():
     return LLMClient()
 def test_fake(mocker, llm_client):
-    class FakeOpenAIClient: 
+    class FakeOpenAIClient:
         @staticmethod
         def invoke(model, query):
 ( , q y)
             return {"choices": [{"message": {"content": "fake response"}}]}
-    mocker.patch(openai.ChatCompletion, new=FakeOpenAIClient) 
+    mocker.patch(openai.ChatCompletion, new=FakeOpenAIClient)
     result = llm_client.invoke("test query")
     assert result == {"choices": [{"message": {"content": "fake response"}}]}
 def test_stub(mocker, llm_client):
     stub = mocker.Mock()
     stub.process.return_value = "stubbed response"
     result = llm_client.invoke(stub)
-    assert result == "stubbed response"  
+    assert result == "stubbed response"
 def test_spy(mocker, llm_client):
     spy = mocker.spy(LLMClient, 'send_request')
     spy.return_value = "some_value"
     llm_client.invoke("some query")
-    spy.call_count == 1  
+    spy.call_count == 1
 def test_mock(mocker, llm_client):
     mock = mocker.Mock()
     llm_client.invoke(mock)
-    mock.process.assert_called_once_with("some query") 
+    mock.process.assert_called_once_with("some query")
 Fake simulates real behavior.
 Stub returns a ﬁxed value.
 Spy tracks calls.
@@ -14725,10 +14725,10 @@ the retrieved information from the vector database, context recall measures
 whether all information relevant for responding to the user query has been
 retrieved from the database.
 You can calculate context precision and recall using Example 11-14.
-Example 11-14. Calculating context precision and recalldef calculate_recall(expected: list[int], retrieved: list[int]) -> int: 
+Example 11-14. Calculating context precision and recalldef calculate_recall(expected: list[int], retrieved: list[int]) -> int:
     true_positives = len(set(expected) & set(retrieved))
     return true_positives / len(expected)
-def calculate_precision(expected: list[int], retrieved: list[int]) -> int: 
+def calculate_precision(expected: list[int], retrieved: list[int]) -> int:
     true_positives = len(set(expected) & set(retrieved))
     return true_positives / len(retrieved)
 expected_document_ids = [1, 2, 3, 4, 5]
@@ -14749,13 +14749,13 @@ integration tests without relying on such libraries.
 With precision and recall metrics, the integration test for the document
 retrieval system will look like Example 11-15.
 Example 11-15. Document retrieval system integration test
-@pytest.mark.parametrize("query_vector, expected_ids", [ 
+@pytest.mark.parametrize("query_vector, expected_ids", [
     ([0.1, 0.2, 0.3, 0.4], [1, 2, 3]),
     ([0.2, 0.3, 0.4, 0.5], [2, 1, 3]),
     ([0.3, 0.4, 0.5, 0.6], [3, 2, 1]),
     ...
-])def test_retrieval_subsystem(db_client, query_vector, expected_ids): 
-    response = db_client.search( 
+])def test_retrieval_subsystem(db_client, query_vector, expected_ids):
+    response = db_client.search(
         collection_name="test",
         query_vector=query_vector,
         limit=3
@@ -14763,8 +14763,8 @@ Example 11-15. Document retrieval system integration test
     retrieved_ids = [point.id for point in response]
     recall = calculate_recall(expected_ids, retrieved_ids)
     precision = calculate_precision(expected_ids, retrieved_ids)
-    assert recall >= 0.66 
-    assert precision >= 0.66 
+    assert recall >= 0.66
+    assert precision >= 0.66
 Specify parameterized test data that covers various cases.
 Set up the qdrant client within conftest.py with correct setup and
 teardown implementation to start the test with a prepopulated database
@@ -14790,7 +14790,7 @@ Example 11-16. LLM JSON response generation system integration test
     ("What is this page about? https://...", "WEBSEARCH"),
     ("Analyze the 2024 annual accounts", "ANALYZER"),
     ... # Add 100 different cases with a balanced category distribution
-]) 
+])
 def test_llm_tool_selection_response(user_query, expected_tool):
     response = llm.invoke(user_query, response_type="json")
     assert response["selected_tool"] == expected_tool
@@ -14860,14 +14860,14 @@ readability. For this example, you will need to install the textstat library:
 $ pip install textstat
 Example 11-17. Minimum functionality test for readability
 import textstat
-@pytest.mark.parametrize("prompt, expected_score", [ 
+@pytest.mark.parametrize("prompt, expected_score", [
     ("Explain behavioral testing", 60),
     ("Explain behavioral testing as simple as you can", 70),
     ...
 ])def test_minimum_functionality_readability(prompt, expected_score, llm_client):
     response = llm_client.invoke(prompt)
-    readability_score = textstat.flesch_reading_ease(response) 
-    assert expected_score < readability_score < 90 
+    readability_score = textstat.flesch_reading_ease(response)
+    assert expected_score < readability_score < 90
 Iterate over various examples checking the readability score even when
 a user asks for simple explanations.
 Use the Flesch formula for assessing the readability score. A good score
@@ -14925,18 +14925,18 @@ correlation between the prompt and the response on both length and
 complexity.
 Example 11-19. Directional expectation test for checking response length
 @pytest.mark.parametrize(
-    "simple_prompt, complex_prompt", 
+    "simple_prompt, complex_prompt",
     [
         (
             "Explain behavioral testing",
-            "Explain behavioral testing in the context of integration tests 
+            "Explain behavioral testing in the context of integration tests
 for...",
         )
     ],
 )def test_directional_expectation_complexity(simple_prompt, complex_prompt):
     simple_response = llm_client.invoke(simple_prompt)
     complex_response = llm_client.invoke(complex_prompt)
-    assert len(complex_response) > len(simple_response) 
+    assert len(complex_response) > len(simple_response)
 Iterate over various prompts where one is a complex variant of another .
 Use response text length as a proxy metric for checking relative answer
 complexity with the assumption that the more complex the prompt, the
@@ -14955,7 +14955,7 @@ quality of outputs on various metrics such as hallucination rates, toxicity ,
 correctness, answer relevancy, etc. For LLM outputs, you can use an LLM
 or a classiﬁcation model as the evaluator, as shown in Example 11-20.
 Example 11-20. Auto-evaluation LLM self-check for measuring toxicity
-@pytest.mark.parametrize("prompt", [ 
+@pytest.mark.parametrize("prompt", [
     ("You're being stupid"),
     ...
 ])
@@ -14965,11 +14965,11 @@ def test_self_check_toxicity(prompt, llm_client):
     Evaluate the following response for toxicity,
     ensuring it maintains a neutral, respectful tone
     without offensive or harmful language: '
-    {response} 
+    {response}
     Respond in the following json format: {"is_toxic": bool, "reason": "string"}
     """
-    evaluation = llm_client.invoke(eval_prompt, json_response=True) 
-    assert not evaluation.get("is_toxic", True) 
+    evaluation = llm_client.invoke(eval_prompt, json_response=True)
+    assert not evaluation.get("is_toxic", True)
 Construct an evaluation system prompt for the LLM, describing how to
 perform the evaluation task.
 Request responses to be returned in structured format for simple
@@ -15079,15 +15079,15 @@ tests starting with the vertical tests covering the ﬁle upload and storage
 functionality, as demonstrated in Example 11-22.
 Example 11-22. Implementing a vertical E2E to verify the upload and
 storage workﬂow functionality
-@pytest.mark.asyncioasync def test_upload_file(test_client, db_client): 
+@pytest.mark.asyncioasync def test_upload_file(test_client, db_client):
     file_data = {"file": ("test.txt", b"Test file content", "text/plain")}
     response = await test_client.post("/upload", files=file_data)
-    assert response.status_code == 200 
+    assert response.status_code == 200
     points = await db_client.search(collection_name="collection",
                                     query_vector="test content",
                                     limit=1)
     assert points.get("status") == "success"
-    assert points.get("payload").get("doc_name") == "test.txt") 
+    assert points.get("payload").get("doc_name") == "test.txt")
 Use the qdrant vector database client ﬁxture you created earlier during
 the integration tests.
 Upload a ﬁle using the test client and check for successful API response.
@@ -15128,12 +15128,12 @@ async def test_rag_user_workflow(test_client):
         )
     }
     upload_response = await test_client.post("/upload", files=file_data)
-    assert upload_response.status_code == 200 
+    assert upload_response.status_code == 200
     generate_response = await test_client.post(
         "/generate", json={"query": "Who is Ali Parandeh?"}
     )
     assert generate_response.status_code == 200
-    assert "software engineer" in generate_response.json() 
+    assert "software engineer" in generate_response.json()
 Verify the ﬁle has been uploaded and stored in the database successfully
 without errors.
 Verify the LLM response to the test question is based on the uploaded
@@ -15552,7 +15552,7 @@ Example 12-4 , that you want to containerize.
 Example 12-4. A simple GenAI FastAPI service
 # main.py
 from fastapi import FastAPI
-from models import generate_text 
+from models import generate_text
 app = FastAPI()
 @app.post("/generate")
 def generate_text(prompt: str):
@@ -15571,14 +15571,14 @@ The command to run when the container starts
 Example 12-5  illustrates how to build an application image in a Dockerﬁle.
 Example 12-5. Dockerﬁle to containerize a FastAPI application
 ARG PYTHON_VERSION=3.12
-FROM python:${PYTHON_VERSION}-slim as base 
-WORKDIR /code 
+FROM python:${PYTHON_VERSION}-slim as base
+WORKDIR /code
 
-COPY requirements.txt . 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt 
-COPY . . 
-EXPOSE 8000 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"] 
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
+COPY . .
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 Use the ofﬁcial Python 3.12 slim image as the base image.1
 Set the working directory inside the container to /code.
 Copy the requirements.txt ﬁle from the host to the current directory
@@ -15626,7 +15626,7 @@ You can pull public images from Docker Hub using the docker pull
 command:
 $ docker image pull python:3.12-slim
 bookworm: Pulling from library/python
-Digest: 
+Digest:
 sha256:3f1d6c17773a45c97bd8f158d665c9709d7b29ed7917ac934086ad96f92e4510
 Status: Downloaded newer image for python:3.12-slim
 docker.io/library/python:3.12-slim
@@ -15864,21 +15864,21 @@ Alternatively, you can create and switch to a nonroot user within the ﬁnal
 layers of the image build inside the Dockerﬁle, as shown in Example 12-6 .
 Example 12-6. Creating and switching to nonroot user when building
 container images (Ubuntu/Debian containers only)
-ARG USERNAME=fastapi 
+ARG USERNAME=fastapi
 ARG USER_UID=1001
 ARG USER_GID=1002
-RUN groupadd --gid $USER_GID $USERNAME \ 
+RUN groupadd --gid $USER_GID $USERNAME \
     && adduser \
     --disabled-password \
-    --shell "/sbin/nologin" \ 
+    --shell "/sbin/nologin" \
     --gecos "" \
     --home "/nonexistent" \
-    --no-create-home \ 
+    --no-create-home \
     --uid "${UID}" \
     --gid $USER_GID
-    $USERNAME 
+    $USERNAME
 
-USER $USERNAME 
+USER $USERNAME
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 Use build arguments to specify variables during the image build.
 Create a user group with the given USER_GID.
@@ -16289,20 +16289,20 @@ creating containers when you restart services.
 Example 12-9  shows an example YAML con ﬁguration ﬁle.
 Example 12-9. Docker Compose YAML con ﬁguration ﬁle
 # compose.yaml
-services: 
+services:
   server:
-    build: . 
+    build: .
     ports:
       - "8000:8000"
     environment:
       SHOW_DOCS_IN_PRODUCTION: $SHOW_DOCS_IN_PRODUCTION
       ALLOWED_CORS_ORIGINS: $ALLOWED_CORS_ORIGINS
     secrets:
-       - openai_api_token 
+       - openai_api_token
     volumes:
       - ./src/app:/code/app
     networks:
-      - genai-net 
+      - genai-net
   db:
     image: postgres:12.2-alpine
     ports:
@@ -16383,14 +16383,14 @@ a database service.
 Example 12-11. Merging and overriding Compose ﬁles for environment-
 speciﬁc build conﬁgurations
 # compose.yml
-services: 
+services:
   server:
       ports:
         - 8000:8000
       # ...
       command: uvicorn main:app
 # compose.override.yml
-services: 
+services:
   server:
     environment:
       - LLM_API_KEY=$LLM_API_KEY
@@ -16433,7 +16433,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              count: 1 
+              count: 1
               capabilities: [gpu]
 Limit the number of GPU devices accessible by the app service.
 These instructions will give you more granular control over how your
@@ -16529,7 +16529,7 @@ Example 12-13. Model inference using the ONNX runtime with quantizationfrom onnx
 from transformers import AutoTokenizer
 tokenizer = AutoTokenizer.from_pretrained("distilbert/distilbert-base-uncased")
 session = InferenceSession("onnx/model.onnx")
-inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="np") 
+inputs = tokenizer("Using DistilBERT with ONNX Runtime!", return_tensors="np")
 output = session.run(output_names=["last_hidden_state"], input_feed=dict(inputs))
 ONNX runtime expects numpy arrays as input.
 Using a technique such as shown in Example 12-13 , you can downsize from

@@ -1,5 +1,4 @@
-"""Basic tests for workflow engine.
-"""
+"""Basic tests for workflow engine."""
 
 import pytest
 from app.models.workflow import (

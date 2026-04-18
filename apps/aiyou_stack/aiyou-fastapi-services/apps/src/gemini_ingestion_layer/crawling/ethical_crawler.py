@@ -94,7 +94,9 @@ class EthicalCrawler:
         return parsed.netloc
 
     async def _get_robots_parser(
-        self, domain: str, session: aiohttp.ClientSession,
+        self,
+        domain: str,
+        session: aiohttp.ClientSession,
     ) -> RobotFileParser | None:
         """Get or fetch robots.txt parser for domain.
 

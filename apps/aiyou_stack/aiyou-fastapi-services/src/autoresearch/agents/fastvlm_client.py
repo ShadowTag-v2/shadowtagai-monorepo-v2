@@ -312,7 +312,10 @@ class FastVLMClient:
             )
 
     async def batch_analyze(
-        self, image_paths: list[str], prompt: str = "Describe this image.", max_tokens: int = 256,
+        self,
+        image_paths: list[str],
+        prompt: str = "Describe this image.",
+        max_tokens: int = 256,
     ) -> list[VisionResult]:
         """Analyze multiple images.
 
@@ -350,7 +353,8 @@ class FastVLMClient:
 
         # Step 1: Visual analysis
         vision_result = await self.analyze(
-            image_path, f"Analyze this image for the following task: {task}",
+            image_path,
+            f"Analyze this image for the following task: {task}",
         )
 
         if not vision_result.success:
@@ -369,7 +373,9 @@ Based on the visual analysis above, complete the task.
 
         try:
             response = requests.post(
-                f"{self.fm_url}/task", json={"prompt": combined_prompt}, timeout=30,
+                f"{self.fm_url}/task",
+                json={"prompt": combined_prompt},
+                timeout=30,
             )
             fm_result = response.json()
 

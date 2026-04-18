@@ -772,4 +772,3 @@ export function findChild(node: SyntaxNode, type: string): SyntaxNode | null {
   }
   return null;
 }
-

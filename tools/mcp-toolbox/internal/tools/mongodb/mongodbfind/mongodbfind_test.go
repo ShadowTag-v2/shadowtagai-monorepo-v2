@@ -50,7 +50,7 @@ func TestParseFromYamlMongoQuery(t *testing.T) {
             filterPayload: |
                 { name: {{json .name}} }
             filterParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
             projectPayload: |

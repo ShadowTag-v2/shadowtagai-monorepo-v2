@@ -79,7 +79,7 @@ To solve startup timeout issues (60+ seconds), documents are loaded lazily:
 
 **Problem**: Fetching all documents for 90 skills at startup caused timeouts.
 
-**Solution**: 
+**Solution**:
 1. **Startup**: Load only SKILL.md files + document metadata (paths, sizes, types, URLs)
 2. **On-Demand**: Fetch document content when `read_skill_document` is called
 3. **Memory Cache**: Cache in Skill object for repeated access
@@ -105,7 +105,7 @@ To solve startup timeout issues (60+ seconds), documents are loaded lazily:
 ```
 read_skill_document called
     ↓
-Match documents by pattern  
+Match documents by pattern
     ↓
 For each matched document:
     ↓
@@ -416,7 +416,7 @@ Following Anthropic's Agent Skills architecture:
 
 **Problem**: GitHub API has a 60 requests/hour limit for unauthenticated access.
 
-**Solution**: 
+**Solution**:
 - Cache tree API responses (the rate-limited call)
 - 24-hour validity is reasonable for skill repositories
 - Dramatically speeds up development and testing
@@ -590,4 +590,3 @@ Solutions:
 - `config.py`: Configuration management
 
 **Dependencies**: `mcp`, `torch`, `sentence-transformers`, `starlette`, `uvicorn`, `httpx`, `numpy` (~250 MB total)
-

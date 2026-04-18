@@ -2,16 +2,16 @@
  *  ----------------------------------
  *   Google Forms Email Notifications
  *  ----------------------------------
- * 
+ *
  *  Get Google Forms response in an email message
- * 
+ *
  *  license: MIT
  *  language: Google Apps Script
  *  author: Amit Agarwal
  *  email: amit@labnol.org
  *  web: https://digitalinspiration.com/
  *  blog: http://labnol.org/?p=20884
- * 
+ *
  */
 
 /**

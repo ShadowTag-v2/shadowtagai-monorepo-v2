@@ -31,7 +31,7 @@ export const EmbeddingStatus = () => {
       await startEmbeddings(forceDevice);
     } catch (error: any) {
       // Check if it's a WebGPU not available error
-      if (error?.name === 'WebGPUNotAvailableError' || 
+      if (error?.name === 'WebGPUNotAvailableError' ||
           error?.message?.includes('WebGPU not available')) {
         setShowFallbackDialog(true);
       } else {
@@ -49,7 +49,7 @@ export const EmbeddingStatus = () => {
     setShowFallbackDialog(false);
     // Just close - user can try again later if they want
   };
-  
+
   const handleTestArrayParams = async () => {
     setTestResult('Testing...');
     const result = await testArrayParams();
@@ -89,7 +89,7 @@ export const EmbeddingStatus = () => {
               {testResult || 'Test'}
             </button>
           )}
-          
+
           <button
             onClick={() => handleStartEmbeddings()}
             className="flex items-center gap-2 px-3 py-1.5 bg-surface border border-border-subtle rounded-lg text-sm text-text-secondary hover:bg-hover hover:text-text-primary hover:border-accent/50 transition-all group"
@@ -115,7 +115,7 @@ export const EmbeddingStatus = () => {
           <div className="flex flex-col gap-0.5">
             <span className="text-text-secondary text-xs">Loading AI model...</span>
             <div className="w-24 h-1 bg-elevated rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-gradient-to-r from-accent to-node-interface rounded-full transition-all duration-300"
                 style={{ width: `${downloadPercent}%` }}
               />
@@ -132,7 +132,7 @@ export const EmbeddingStatus = () => {
     const processed = embeddingProgress?.nodesProcessed ?? 0;
     const total = embeddingProgress?.totalNodes ?? 0;
     const percent = embeddingProgress?.percent ?? 0;
-    
+
     return (
       <div className="flex items-center gap-2.5 px-3 py-1.5 bg-surface border border-node-function/30 rounded-lg text-sm">
         <Loader2 className="w-4 h-4 text-node-function animate-spin" />
@@ -141,7 +141,7 @@ export const EmbeddingStatus = () => {
             Embedding {processed}/{total} nodes
           </span>
           <div className="w-24 h-1 bg-elevated rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full bg-gradient-to-r from-node-function to-accent rounded-full transition-all duration-300"
               style={{ width: `${percent}%` }}
             />
@@ -164,7 +164,7 @@ export const EmbeddingStatus = () => {
   // Ready
   if (embeddingStatus === 'ready') {
     return (
-      <div 
+      <div
         className="flex items-center gap-2 px-3 py-1.5 bg-node-function/10 border border-node-function/30 rounded-lg text-sm text-node-function"
         title="Semantic search is ready! Use natural language in the AI chat."
       >
@@ -193,4 +193,3 @@ export const EmbeddingStatus = () => {
 
   return null;
 };
-

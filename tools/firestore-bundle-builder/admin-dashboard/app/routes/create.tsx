@@ -105,7 +105,7 @@ export const action: ActionFunction = async ({ request }) => {
       }
     }
   }
-  
+
   await createBundle(id, data);
   return redirect(`/`);
 };
@@ -115,7 +115,7 @@ const randomArray = (len: number) => Array.from({ length: len }, randomId);
 
 export default function Create() {
   const action = useActionData();
-  
+
   const [queries, setQueries] = useState<string[]>(
     action?.form.query ? randomArray(action?.form.query.length) : []
   );

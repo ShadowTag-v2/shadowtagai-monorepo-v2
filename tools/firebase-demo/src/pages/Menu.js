@@ -30,7 +30,7 @@ function Menu(props) {
                         <p style={{ marginTop: 8, fontSize: 12, color: '#A1A1A1' }}>Karlavagen 108, Stockholm </p>
                     </div>
                     <Button style={{ backgroundColor: '#BD2B2B', borderWidth: 0, }}>Place Order</Button>
-					
+
                 </Card.Header>
                 <Card.Body>
                     <Table responsive>

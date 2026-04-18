@@ -252,7 +252,9 @@ class VerbSpecification:
             if verb_upper in self.verb_templates:
                 template = self.verb_templates[verb_upper]
                 analyses[verb] = VerbAnalysis(
-                    verb=verb_upper, category=template["category"], questions=template["questions"],
+                    verb=verb_upper,
+                    category=template["category"],
+                    questions=template["questions"],
                 )
             else:
                 # Unknown verb - generic analysis
@@ -268,7 +270,10 @@ class VerbSpecification:
                 )
 
         return TaskDecomposition(
-            original_text=text, verbs=verbs, analyses=analyses, simple_sentences=simple_sentences,
+            original_text=text,
+            verbs=verbs,
+            analyses=analyses,
+            simple_sentences=simple_sentences,
         )
 
     def _split_compound_subjects(self, text: str) -> list[str]:
@@ -435,7 +440,9 @@ class VerbSpecification:
         return "\n".join(lines)
 
     def generate_spec_document(
-        self, decomposition: TaskDecomposition, filled_analyses: dict[str, dict[str, str]] = None,
+        self,
+        decomposition: TaskDecomposition,
+        filled_analyses: dict[str, dict[str, str]] = None,
     ) -> str:
         """Generate complete specification document.
 
@@ -483,7 +490,9 @@ class VerbSpecification:
     # =========================================================================
 
     def check_completeness(
-        self, decomposition: TaskDecomposition, filled_analyses: dict[str, dict[str, str]],
+        self,
+        decomposition: TaskDecomposition,
+        filled_analyses: dict[str, dict[str, str]],
     ) -> dict[str, Any]:
         """Check if all verbs have been fully analyzed.
 

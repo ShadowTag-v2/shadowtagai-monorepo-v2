@@ -186,7 +186,9 @@ class SupportBuilderService:
 
     @staticmethod
     async def update_article(
-        db: AsyncSession, article_id: int, article_data: HelpArticleUpdate,
+        db: AsyncSession,
+        article_id: int,
+        article_data: HelpArticleUpdate,
     ) -> HelpArticle | None:
         """Update a help article."""
         article = await SupportBuilderService.get_article(db, article_id)
@@ -237,7 +239,8 @@ class SupportBuilderService:
 
     @staticmethod
     async def create_widget_config(
-        db: AsyncSession, config_data: ChatWidgetConfigCreate,
+        db: AsyncSession,
+        config_data: ChatWidgetConfigCreate,
     ) -> ChatWidgetConfig:
         """Create a new chat widget configuration."""
         config = ChatWidgetConfig(**config_data.model_dump())
@@ -328,7 +331,9 @@ class SupportBuilderService:
             keywords = await support_agent.generate_faq_suggestion_keywords(user_message)
             search_query = " ".join(keywords)
             suggested_articles = await SupportBuilderService.search_articles(
-                db, search_query, limit=3,
+                db,
+                search_query,
+                limit=3,
             )
 
         # Save AI response message
@@ -358,7 +363,8 @@ class SupportBuilderService:
 
     @staticmethod
     async def get_conversation_history(
-        db: AsyncSession, session_db_id: int,
+        db: AsyncSession,
+        session_db_id: int,
     ) -> list[dict[str, str]]:
         """Get conversation history for a session."""
         result = await db.execute(

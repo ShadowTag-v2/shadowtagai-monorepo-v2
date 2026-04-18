@@ -76,10 +76,10 @@ resource "google_cloud_run_v2_service" "guardrail" {
 
   template {
     service_account = google_service_account.guardrail_sa.email
-    
+
     containers {
       image = "gcr.io/shadowtag-omega-v2/guardrail:latest"
-      
+
       env {
         name  = "HIVE_API_KEY"
         value = var.hive_api_key

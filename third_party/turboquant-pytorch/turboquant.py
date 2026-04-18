@@ -214,7 +214,7 @@ class TurboQuantKVCache:
         self.value_quantizer = TurboQuantMSE(d_value, bits, seed=seed + 100, device=device)
 
         # Storage
-        self.key_cache = []    # list of compressed key dicts
+        self.key_cache = []  # list of compressed key dicts
         self.value_cache = []  # list of (indices,) tuples
 
     def append(self, keys: torch.Tensor, values: torch.Tensor):
@@ -230,16 +230,20 @@ class TurboQuantKVCache:
         compressed_keys = self.key_quantizer.quantize(flat_keys)
         value_indices = self.value_quantizer.quantize(flat_values)
 
-        self.key_cache.append({
-            "mse_indices": compressed_keys["mse_indices"],
-            "qjl_signs": compressed_keys["qjl_signs"],
-            "residual_norm": compressed_keys["residual_norm"],
-            "shape": orig_shape,
-        })
-        self.value_cache.append({
-            "indices": value_indices,
-            "shape": values.shape,
-        })
+        self.key_cache.append(
+            {
+                "mse_indices": compressed_keys["mse_indices"],
+                "qjl_signs": compressed_keys["qjl_signs"],
+                "residual_norm": compressed_keys["residual_norm"],
+                "shape": orig_shape,
+            }
+        )
+        self.value_cache.append(
+            {
+                "indices": value_indices,
+                "shape": values.shape,
+            }
+        )
 
     def attention_scores(self, queries: torch.Tensor) -> torch.Tensor:
         """

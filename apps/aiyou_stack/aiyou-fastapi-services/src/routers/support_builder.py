@@ -63,7 +63,11 @@ async def get_faqs(
 ):
     """Get list of FAQs with optional filtering."""
     return await SupportBuilderService.get_faqs(
-        db, skip=skip, limit=limit, category=category, active_only=active_only,
+        db,
+        skip=skip,
+        limit=limit,
+        category=category,
+        active_only=active_only,
     )
 
 
@@ -147,7 +151,11 @@ async def get_articles(
 ):
     """Get list of help articles."""
     return await SupportBuilderService.get_articles(
-        db, skip=skip, limit=limit, category=category, published_only=published_only,
+        db,
+        skip=skip,
+        limit=limit,
+        category=category,
+        published_only=published_only,
     )
 
 

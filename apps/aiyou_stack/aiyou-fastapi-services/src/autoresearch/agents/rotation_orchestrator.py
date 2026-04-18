@@ -88,7 +88,8 @@ class RotationOrchestrator:
                     tier=ModelTier.GEMINI_LOW,
                     model_name="gemini-3-pro-low",
                     api_key=os.getenv(
-                        f"GEMINI_API_KEY_{i + 3 + 1}", os.getenv("GEMINI_API_KEY", ""),
+                        f"GEMINI_API_KEY_{i + 3 + 1}",
+                        os.getenv("GEMINI_API_KEY", ""),
                     ),
                     provider="gemini",
                 ),

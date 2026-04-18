@@ -202,7 +202,8 @@ async def batch_assess(
 
         if tier == UsageTier.FREE:
             raise HTTPException(
-                status_code=402, detail="Batch assessment requires STARTER tier or higher",
+                status_code=402,
+                detail="Batch assessment requires STARTER tier or higher",
             )
 
         result = await engine.batch_assess(request, tier=tier)
@@ -271,7 +272,8 @@ async def certify_content(
 
         if tier not in [UsageTier.GROWTH, UsageTier.ENTERPRISE]:
             raise HTTPException(
-                status_code=402, detail="Certification requires GROWTH tier or higher",
+                status_code=402,
+                detail="Certification requires GROWTH tier or higher",
             )
 
         engine = get_california_ai_engine()

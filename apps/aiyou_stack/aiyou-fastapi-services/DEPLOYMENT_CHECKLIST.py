@@ -312,7 +312,9 @@ class DeploymentChecker:
 
             # Create a test agent
             agent = orchestrator.create_agent(
-                name="TestAgent", role="Smoke Test", capabilities=["testing"],
+                name="TestAgent",
+                role="Smoke Test",
+                capabilities=["testing"],
             )
 
             self.add_result(

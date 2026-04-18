@@ -25,7 +25,8 @@ class GovernanceTracer:
 
         """
         self.bucket_name = bucket_name or os.getenv(
-            "GOVERNANCE_TRACES_BUCKET", "shadowtagai-governance-traces",
+            "GOVERNANCE_TRACES_BUCKET",
+            "shadowtagai-governance-traces",
         )
 
         if sa_json_path:
@@ -36,7 +37,12 @@ class GovernanceTracer:
         self.bucket = self.client.bucket(self.bucket_name)
 
     def capture_decision(
-        self, decision_id: str, logic_log: list, inputs: dict, result: str, metadata: dict = None,
+        self,
+        decision_id: str,
+        logic_log: list,
+        inputs: dict,
+        result: str,
+        metadata: dict = None,
     ) -> dict:
         """Packages execution context into rigid audit format.
 
@@ -117,7 +123,11 @@ class GovernanceTracer:
 
 # Convenience function for quick integration
 def trace_judge_decision(
-    decision_id: str, logic_log: list, inputs: dict, result: str, bucket_name: str = None,
+    decision_id: str,
+    logic_log: list,
+    inputs: dict,
+    result: str,
+    bucket_name: str = None,
 ) -> str:
     """One-liner to capture and sign a governance decision.
 

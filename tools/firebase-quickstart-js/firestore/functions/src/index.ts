@@ -45,12 +45,12 @@ export const updateNumRatings = onDocumentWritten(
 
         /**
          * In general, since the application only allows for the creation of
-         * new reviews (and not the deletion of existing reviews), we can 
+         * new reviews (and not the deletion of existing reviews), we can
          * expect that when this function is triggered the number of reviews
          * listed in the `restaurant.numRatings` field will be strictly less
          * than the actual length of the `ratings` sub-collection. In the case
          * of a race condition, restuarant.numRatings will be corrected on the
-         * next write to the `ratings` collection. 
+         * next write to the `ratings` collection.
          */
         assert(restaurantData.numRatings < actualRatings.length)
 
@@ -71,4 +71,3 @@ export const updateNumRatings = onDocumentWritten(
         return restuarantDocRef.set(newRestaurant)
     }
 )
-

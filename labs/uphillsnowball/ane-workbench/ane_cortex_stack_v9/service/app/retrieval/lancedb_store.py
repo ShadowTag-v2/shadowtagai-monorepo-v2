@@ -91,11 +91,7 @@ def keyword_search(root: str, query: str, limit: int = 8):
         # fallback keyword-like filter by title/content if FTS isn't configured
         rows = table.to_list()
         q = query.lower()
-        hits = [
-            r
-            for r in rows
-            if q in str(r.get("title", "")).lower() or q in str(r.get("content", "")).lower()
-        ]
+        hits = [r for r in rows if q in str(r.get("title", "")).lower() or q in str(r.get("content", "")).lower()]
         return hits[:limit]
     except Exception:
         return []

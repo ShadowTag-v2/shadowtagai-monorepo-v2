@@ -43,11 +43,11 @@ mvn com.spotify.fmt:fmt-maven-plugin:format
 
 When running integration tests, configure your execution using properties or environment variables:
 
--   **`FIRESTORE_EDITION`**: 
+-   **`FIRESTORE_EDITION`**:
     -   `standard` (Default)
     -   `enterprise`
     -   *Note*: **Pipelines can only be run against `enterprise` editions**, while standard Queries run on both.
--   **`FIRESTORE_NAMED_DATABASE`**: 
+-   **`FIRESTORE_NAMED_DATABASE`**:
     -   Enterprise editions usually require a named database (often `enterprise`). Adjust this flag if pointing to specific instances.
 -   **`FIRESTORE_TARGET_BACKEND`**:
     -   `PROD` (Default)
@@ -89,7 +89,7 @@ mvn verify -Penable-integration-tests -DFIRESTORE_EDITION=enterprise -DFIRESTORE
 If you run into issues executing tests with the commands above, **consult the Kokoro configuration files** as the ultimate source of truth:
 
 -   **Presubmit configurations**: See `.kokoro/presubmit/integration.cfg` (or `integration-named-db.cfg`)
--   **Nightly configurations**: See `.kokoro/nightly/integration.cfg` 
+-   **Nightly configurations**: See `.kokoro/nightly/integration.cfg`
 -   **Build shell scripts**: See `.kokoro/build.sh`
 
 These files define the exact environment variables (e.g., specific endpoints or endpoints overrides) the CI server uses!

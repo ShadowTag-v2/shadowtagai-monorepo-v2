@@ -44,7 +44,8 @@ class HiveStorageService:
                 self.data_bucket = self.gcs_client.bucket(settings.GCS_BUCKET_NAME)
                 if not self.data_bucket.exists():
                     self.data_bucket = self.gcs_client.create_bucket(
-                        settings.GCS_BUCKET_NAME, location=settings.GCP_REGION,
+                        settings.GCS_BUCKET_NAME,
+                        location=settings.GCP_REGION,
                     )
             except Exception as e:
                 logger.warning(f"Could not access data bucket: {e}")
@@ -54,7 +55,8 @@ class HiveStorageService:
                 self.model_bucket = self.gcs_client.bucket(settings.GCS_MODEL_BUCKET)
                 if not self.model_bucket.exists():
                     self.model_bucket = self.gcs_client.create_bucket(
-                        settings.GCS_MODEL_BUCKET, location=settings.GCP_REGION,
+                        settings.GCS_MODEL_BUCKET,
+                        location=settings.GCP_REGION,
                     )
             except Exception as e:
                 logger.warning(f"Could not access model bucket: {e}")
@@ -73,7 +75,10 @@ class HiveStorageService:
         logger.info("Hive Storage service shutdown")
 
     async def store_embeddings(
-        self, embedding_id: str, embeddings: list[float], metadata: dict[str, Any] | None = None,
+        self,
+        embedding_id: str,
+        embeddings: list[float],
+        metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Store embeddings with metadata
 

@@ -21,9 +21,9 @@ export const createKnowledgeGraph = (): KnowledgeGraph => {
    */
   const removeNode = (nodeId: string): boolean => {
     if (!nodeMap.has(nodeId)) return false;
-    
+
     nodeMap.delete(nodeId);
-    
+
     // Remove all relationships involving this node
     for (const [relId, rel] of relationshipMap) {
       if (rel.sourceId === nodeId || rel.targetId === nodeId) {

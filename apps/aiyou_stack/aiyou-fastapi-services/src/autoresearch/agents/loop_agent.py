@@ -149,7 +149,8 @@ Explain what changed for each feedback item.
         self.state.status = LoopStatus.CRITIQUING
 
         prompt = self.CRITIC_PROMPT.format(
-            architecture=self.state.current_doc, requirement=requirement,
+            architecture=self.state.current_doc,
+            requirement=requirement,
         )
 
         # Use governance endpoint for critical evaluation
@@ -170,7 +171,8 @@ Explain what changed for each feedback item.
         self.state.status = LoopStatus.REFINING
 
         prompt = self.REFINER_PROMPT.format(
-            architecture=self.state.current_doc, feedback=self.state.feedback,
+            architecture=self.state.current_doc,
+            feedback=self.state.feedback,
         )
 
         self.state.current_doc = self._call_minions(prompt, "task")

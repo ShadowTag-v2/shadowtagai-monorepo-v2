@@ -13,7 +13,8 @@ class FunnelStepCreate(BaseModel):
     step_order: int = Field(..., description="Order of the step in the funnel")
     event_name: str = Field(..., description="Event name for this step")
     event_filters: dict[str, Any] | None = Field(
-        default_factory=dict, description="Filters for the event",
+        default_factory=dict,
+        description="Filters for the event",
     )
     name: str | None = Field(None, description="Display name for the step")
     description: str | None = Field(None, description="Step description")
@@ -39,7 +40,8 @@ class FunnelCreate(BaseModel):
     name: str = Field(..., description="Funnel name")
     description: str | None = Field(None, description="Funnel description")
     time_window_hours: int = Field(
-        default=24, description="Time window for completing funnel (hours)",
+        default=24,
+        description="Time window for completing funnel (hours)",
     )
     steps: list[FunnelStepCreate] = Field(..., description="Funnel steps")
     tags: list[str] | None = Field(default_factory=list, description="Tags for categorization")

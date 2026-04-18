@@ -1,5 +1,4 @@
-"""Performance monitoring API endpoints
-"""
+"""Performance monitoring API endpoints"""
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,7 +14,8 @@ router = APIRouter(prefix="/performance", tags=["performance"])
 
 @router.get("/report", response_model=PerformanceReport)
 async def get_performance_report(
-    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session),
+    hours: int = Query(default=24, ge=1, le=168),
+    session: AsyncSession = Depends(get_session),
 ):
     """Get comprehensive performance report
 
@@ -111,7 +111,8 @@ async def get_bottleneck_fix(bottleneck_id: int, session: AsyncSession = Depends
 
 @router.get("/slow-endpoints")
 async def get_slow_endpoints(
-    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session),
+    hours: int = Query(default=24, ge=1, le=168),
+    session: AsyncSession = Depends(get_session),
 ):
     """Analyze slowest endpoints
 
@@ -163,7 +164,8 @@ async def detect_n_plus_one(session: AsyncSession = Depends(get_session)):
 
 @router.get("/memory-leaks")
 async def detect_memory_leaks(
-    hours: int = Query(default=24, ge=1, le=168), session: AsyncSession = Depends(get_session),
+    hours: int = Query(default=24, ge=1, le=168),
+    session: AsyncSession = Depends(get_session),
 ):
     """Detect potential memory leaks
 

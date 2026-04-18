@@ -56,5 +56,5 @@ parameters:
     description: The unique identifier for the user.
   - name: userNames
     type: array
-    description: The user names to be set.  
+    description: The user names to be set.
 ```

@@ -81,9 +81,7 @@ async def schedule_hard_delete(
             },
         }
 
-        response = client.create_task(
-            request={"parent": parent, "task": task}
-        )
+        response = client.create_task(request={"parent": parent, "task": task})
 
         logger.info(
             "GDPR deletion scheduled: request=%s execute_at=%s task=%s",
@@ -152,9 +150,7 @@ async def execute_deletion(request: Request) -> dict[str, Any]:
                 deleted_collections.append(f"{coll_name}:{count}")
 
         # Update GDPR request status
-        gdpr_ref = db.collection("firms").document(firm_id).collection(
-            "gdpr"
-        ).document(request_id)
+        gdpr_ref = db.collection("firms").document(firm_id).collection("gdpr").document(request_id)
         await gdpr_ref.update(
             {
                 "status": "completed",

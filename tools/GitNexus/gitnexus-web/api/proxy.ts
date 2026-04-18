@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 /**
  * CORS Proxy for isomorphic-git
- * 
+ *
  * isomorphic-git calls: /api/proxy?url=https://github.com/...
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -17,7 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Get URL from query parameter
   const { url } = req.query;
-  
+
   if (!url || typeof url !== 'string') {
     res.status(400).json({ error: 'Missing url query parameter' });
     return;
@@ -26,14 +26,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Only allow GitHub URLs for security
   const allowedHosts = ['github.com', 'raw.githubusercontent.com'];
   let parsedUrl: URL;
-  
+
   try {
     parsedUrl = new URL(url);
   } catch {
     res.status(400).json({ error: 'Invalid URL' });
     return;
   }
-  
+
   if (!allowedHosts.some(host => parsedUrl.hostname.endsWith(host))) {
     res.status(403).json({ error: 'Only GitHub URLs are allowed' });
     return;
@@ -43,7 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const headers: Record<string, string> = {
       'User-Agent': 'git/isomorphic-git',
     };
-    
+
     // Forward relevant headers
     if (req.headers.authorization) {
       headers['Authorization'] = req.headers.authorization as string;
@@ -80,12 +80,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Forward response headers (except ones that cause issues)
     const skipHeaders = [
-      'content-encoding', 
-      'transfer-encoding', 
+      'content-encoding',
+      'transfer-encoding',
       'connection',
       'www-authenticate', // IMPORTANT: Strip this to prevent browser's native auth popup!
     ];
-    
+
     response.headers.forEach((value, key) => {
       if (!skipHeaders.includes(key.toLowerCase())) {
         res.setHeader(key, value);
@@ -95,10 +95,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(response.status);
     const buffer = await response.arrayBuffer();
     res.send(Buffer.from(buffer));
-    
+
   } catch (error) {
     console.error('Proxy error:', error);
     res.status(500).json({ error: 'Proxy request failed', details: String(error) });
   }
 }
-

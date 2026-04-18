@@ -35,8 +35,7 @@ growth_agent = GrowthEngineerAgent()
 
 @router.get("/health", response_model=HealthResponse)
 async def health_check():
-    """Health check endpoint for the Growth Engineer agent.
-    """
+    """Health check endpoint for the Growth Engineer agent."""
     metadata = growth_agent.get_metadata()
     return HealthResponse(
         status="healthy",
@@ -48,8 +47,7 @@ async def health_check():
 
 @router.get("/metadata", response_model=AgentMetadata)
 async def get_agent_metadata():
-    """Get metadata about the Growth Engineer agent.
-    """
+    """Get metadata about the Growth Engineer agent."""
     metadata = growth_agent.get_metadata()
     return AgentMetadata(**metadata)
 
@@ -317,7 +315,8 @@ async def general_growth_query(request: GeneralGrowthQuery):
     """
     try:
         result = await growth_agent.general_growth_query(
-            user_query=request.query, context=request.context,
+            user_query=request.query,
+            context=request.context,
         )
 
         return AgentResponse(

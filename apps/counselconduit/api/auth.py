@@ -32,7 +32,7 @@ def _ensure_firebase_app() -> None:
     global _APP_INITIALIZED  # noqa: PLW0603
     if _APP_INITIALIZED:
         return
-    
+
     try:
         firebase_admin.get_app()
     except ValueError:
@@ -45,24 +45,24 @@ def _ensure_firebase_app() -> None:
             # Use Application Default Credentials (Cloud Run, local gcloud)
             firebase_admin.initialize_app(options={"projectId": _PROJECT_ID})
         logger.info("Firebase Admin SDK initialized: project=%s", _PROJECT_ID)
-    
+
     _APP_INITIALIZED = True
 
 
 def verify_firebase_token(id_token: str) -> dict[str, Any]:
     """Verify a Firebase ID token and return decoded claims.
-    
+
     Args:
         id_token: The Firebase ID token from the client.
-        
+
     Returns:
         Decoded token claims including uid, email, etc.
-        
+
     Raises:
         HTTPException(401): Token is invalid, expired, or revoked.
     """
     _ensure_firebase_app()
-    
+
     try:
         decoded = auth.verify_id_token(id_token, check_revoked=True)
         return decoded
@@ -94,7 +94,7 @@ def verify_firebase_token(id_token: str) -> dict[str, Any]:
 
 async def get_current_attorney(x_kovel_auth: str = Header(None)) -> dict[str, Any]:
     """FastAPI dependency: Extract and verify attorney from request header.
-    
+
     Usage in routes:
         @app.post("/endpoint")
         async def handler(attorney: dict = Depends(get_current_attorney)):
@@ -105,7 +105,7 @@ async def get_current_attorney(x_kovel_auth: str = Header(None)) -> dict[str, An
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Kovel Authentication Missing. Operation Terminated.",
         )
-    
+
     # Development mode bypass
     if os.getenv("APP_ENV") == "development" and x_kovel_auth.startswith("dev_"):
         return {
@@ -113,7 +113,7 @@ async def get_current_attorney(x_kovel_auth: str = Header(None)) -> dict[str, An
             "email": "dev@kovelai.test",
             "name": "Development Attorney",
         }
-    
+
     claims = verify_firebase_token(x_kovel_auth)
     return {
         "uid": claims.get("uid", ""),

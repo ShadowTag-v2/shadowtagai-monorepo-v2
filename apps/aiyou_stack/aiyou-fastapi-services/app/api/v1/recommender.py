@@ -117,7 +117,9 @@ async def update_recommender_config(request: RecommenderConfigRequest):
     - Topic preferences
     """
     return RecommenderConfigResponse(
-        user_id=request.user_id, config=request.dict(), updated_at=datetime.utcnow(),
+        user_id=request.user_id,
+        config=request.dict(),
+        updated_at=datetime.utcnow(),
     )
 
 

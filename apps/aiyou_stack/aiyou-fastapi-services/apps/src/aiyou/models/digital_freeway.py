@@ -34,7 +34,8 @@ class ROICalculationRequest(BaseModel):
     """Request model for ROI calculation"""
 
     customer_type: CustomerType = Field(
-        default=CustomerType.TESLA, description="Customer type (tesla, waymo, dot)",
+        default=CustomerType.TESLA,
+        description="Customer type (tesla, waymo, dot)",
     )
     fleet_size: int = Field(
         default=1_000_000,
@@ -90,10 +91,16 @@ class NationalImpactRequest(BaseModel):
     """Request model for national impact calculation"""
 
     congestion_reduction_pct: float = Field(
-        default=0.20, ge=0.10, le=0.30, description="Congestion reduction percentage",
+        default=0.20,
+        ge=0.10,
+        le=0.30,
+        description="Congestion reduction percentage",
     )
     crash_reduction_pct: float = Field(
-        default=0.05, ge=0.02, le=0.10, description="Crash reduction percentage",
+        default=0.05,
+        ge=0.02,
+        le=0.10,
+        description="Crash reduction percentage",
     )
     adoption_pct: float = Field(
         default=1.0,

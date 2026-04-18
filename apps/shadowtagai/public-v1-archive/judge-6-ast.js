@@ -6,7 +6,7 @@ export async function evaluateAST(input) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: input })
         });
-        
+
         const result = await response.json();
         return result;
     } catch (err) {

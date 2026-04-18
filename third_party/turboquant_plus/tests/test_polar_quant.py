@@ -29,10 +29,7 @@ class TestPolarQuantRoundTrip:
             mse_total += np.mean((x - x_hat) ** 2)
 
         avg_mse = mse_total / n_samples
-        assert avg_mse < expected_mse[bit_width] * 2.0, (
-            f"MSE {avg_mse:.4f} exceeds 2× paper bound {expected_mse[bit_width]} "
-            f"at d={d}, b={bit_width}"
-        )
+        assert avg_mse < expected_mse[bit_width] * 2.0, f"MSE {avg_mse:.4f} exceeds 2× paper bound {expected_mse[bit_width]} at d={d}, b={bit_width}"
 
     def test_zero_vector(self):
         """Zero vector should reconstruct to zero (norm=0 → rescale to 0)."""
@@ -63,9 +60,7 @@ class TestPolarQuantRoundTrip:
             norm_sq_per_d = np.linalg.norm(x) ** 2 / d
             if norm_sq_per_d > 1e-10:
                 relative_mse = np.mean((x - x_hat) ** 2) / norm_sq_per_d
-                assert relative_mse < 0.5, (
-                    f"Relative MSE {relative_mse:.4f} too high at scale={scale}"
-                )
+                assert relative_mse < 0.5, f"Relative MSE {relative_mse:.4f} too high at scale={scale}"
 
     def test_deterministic(self):
         """Same seed, same input → same output."""

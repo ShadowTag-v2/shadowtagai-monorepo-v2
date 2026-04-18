@@ -102,10 +102,15 @@ async def run_stress_test(
 async def main():
     parser = argparse.ArgumentParser(description="PNKLN Stress Test - Find capacity limits")
     parser.add_argument(
-        "--endpoint", default="http://judge6.pnkln.svc.cluster.local", help="Inference endpoint URL",
+        "--endpoint",
+        default="http://judge6.pnkln.svc.cluster.local",
+        help="Inference endpoint URL",
     )
     parser.add_argument(
-        "--p99-target-ms", type=float, default=90.0, help="p99 latency SLA target in milliseconds",
+        "--p99-target-ms",
+        type=float,
+        default=90.0,
+        help="p99 latency SLA target in milliseconds",
     )
     parser.add_argument("--start-qps", type=int, default=10, help="Starting QPS")
     parser.add_argument("--max-qps", type=int, default=200, help="Maximum QPS to test")

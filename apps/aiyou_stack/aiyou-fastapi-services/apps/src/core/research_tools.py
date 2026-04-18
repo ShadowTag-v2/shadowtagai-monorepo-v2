@@ -158,7 +158,9 @@ drive_search_tool = FunctionTool(
 
 
 def gmail_search_impl(
-    query: str, max_results: int = 10, include_attachments: bool = False,
+    query: str,
+    max_results: int = 10,
+    include_attachments: bool = False,
 ) -> dict[str, Any]:
     """Search Gmail for email threads matching query.
 
@@ -453,7 +455,9 @@ def _mime_to_type(mime_type: str) -> str:
         "application/pdf": "pdf",
         "application/vnd.google-apps.folder": "folder",
     }
-    return mime_map.get(mime_type, mime_type.rsplit("/", maxsplit=1)[-1] if mime_type else "unknown")
+    return mime_map.get(
+        mime_type, mime_type.rsplit("/", maxsplit=1)[-1] if mime_type else "unknown"
+    )
 
 
 # ============================================================================

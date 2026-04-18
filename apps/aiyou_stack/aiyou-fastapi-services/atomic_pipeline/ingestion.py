@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 async def extract_intel_event(
-    text: str, model_name: str = GeminiModel.GEMINI_20_FLASH.value,
+    text: str,
+    model_name: str = GeminiModel.GEMINI_20_FLASH.value,
 ) -> IntelEvent | None:
     """Calls Gemini to extract a structured IntelEvent from raw text.
 
@@ -52,7 +53,8 @@ The JSON object must conform to the following schema:
         try:
             model_enum = GeminiModel(model_name)
             config = GeminiConfig(
-                model=model_enum, temperature=0.0,
+                model=model_enum,
+                temperature=0.0,
             )  # Low temperature for extraction
         except ValueError:
             # Fallback or error if model_name is not in GeminiModel

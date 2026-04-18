@@ -1,6 +1,6 @@
 /**
  * Wiki Command
- * 
+ *
  * Generates repository documentation from the knowledge graph.
  * Usage: gitnexus wiki [path] [options]
  */
@@ -321,7 +321,7 @@ export const wikiCommand = async (
     if (options?.review && result.moduleTree) {
       console.log(`\n  Module structure ready for review (${elapsed}s)\n`);
       console.log('  Modules to generate:\n');
-      
+
       const printTree = (nodes: typeof result.moduleTree, indent = 0) => {
         for (const node of nodes) {
           const prefix = '  '.repeat(indent + 2);
@@ -335,10 +335,10 @@ export const wikiCommand = async (
         }
       };
       printTree(result.moduleTree);
-      
+
       console.log(`\n  Tree saved to: ${treeFile}`);
       console.log('  You can edit this file to remove/rename modules.\n');
-      
+
       // Ask for confirmation (auto-continue in non-interactive environments)
       if (!process.stdin.isTTY) {
         console.log('  Non-interactive mode — auto-continuing with generation.\n');
@@ -347,18 +347,18 @@ export const wikiCommand = async (
         ? await prompt('  Continue with generation? (Y/n/edit): ')
         : 'y';
       const choice = answer.trim().toLowerCase();
-      
+
       if (choice === 'n' || choice === 'no') {
         console.log('\n  Generation cancelled. Run `gitnexus wiki` later to generate.\n');
         return;
       }
-      
+
       if (choice === 'edit' || choice === 'e') {
         // Open editor for the user
         const editor = process.env.EDITOR || process.env.VISUAL || 'vi';
         console.log(`\n  Opening ${treeFile} in ${editor}...`);
         console.log('  Save and close the editor when done.\n');
-        
+
         try {
           execSync(`${editor} "${treeFile}"`, { stdio: 'inherit' });
         } catch {
@@ -367,17 +367,17 @@ export const wikiCommand = async (
           return;
         }
       }
-      
+
       // Continue with generation using the (possibly edited) tree
       console.log('\n  Continuing with wiki generation...\n');
       bar.start(100, 30, { phase: 'Generating pages...' });
-      
+
       // Re-run generator without reviewOnly flag
       const continueOptions: WikiOptions = {
         ...wikiOptions,
         reviewOnly: false,
       };
-      
+
       const continueGenerator = new WikiGenerator(
         repoPath,
         storagePath,
@@ -393,26 +393,26 @@ export const wikiCommand = async (
           bar.update(percent, { phase: label });
         },
       );
-      
+
       const continueResult = await continueGenerator.run();
-      
+
       bar.update(100, { phase: 'Done' });
       bar.stop();
-      
+
       const totalElapsed = ((Date.now() - t0) / 1000).toFixed(1);
       console.log(`\n  Wiki generated successfully (${totalElapsed}s)\n`);
       console.log(`  Mode: ${continueResult.mode}`);
       console.log(`  Pages: ${continueResult.pagesGenerated}`);
       console.log(`  Output: ${wikiDir}`);
       console.log(`  Viewer: ${viewerPath}`);
-      
+
       if (continueResult.failedModules && continueResult.failedModules.length > 0) {
         console.log(`\n  Failed modules (${continueResult.failedModules.length}):`);
         for (const mod of continueResult.failedModules) {
           console.log(`    - ${mod}`);
         }
       }
-      
+
       console.log('');
       await maybePublishGist(viewerPath, options?.gist);
       return;

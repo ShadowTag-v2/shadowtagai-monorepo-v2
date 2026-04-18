@@ -22,7 +22,7 @@ critical_controls:
 
 # RISK TIERS (Wet Fleece / Dry Ground)
 risk_matrix:
-  
+
   # RED (BLOCKED - Wet Fleece)
   # Immediate rejection. Requires Supervisor override.
   red_flags:

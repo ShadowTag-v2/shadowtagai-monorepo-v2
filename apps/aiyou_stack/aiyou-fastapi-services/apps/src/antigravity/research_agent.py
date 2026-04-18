@@ -40,7 +40,10 @@ class DeepResearchAgent:
             logger.warning("DeepResearchAgent disabled (missing SDK or Key).")
 
     async def standard_research(
-        self, topic: str, depth: int = 2, breadth: int = 3,
+        self,
+        topic: str,
+        depth: int = 2,
+        breadth: int = 3,
     ) -> dict[str, Any]:
         """Conducts deep research on a topic.
 

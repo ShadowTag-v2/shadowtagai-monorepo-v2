@@ -216,4 +216,3 @@ class ListCollectionIdsRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -183,7 +183,8 @@ def export_results(results: dict, service_name: str = "judge6"):
 
 
 async def measure_latency(
-    client: httpx.AsyncClient, request_id: int,
+    client: httpx.AsyncClient,
+    request_id: int,
 ) -> tuple[float | None, bool, str | None]:
     """Measure single request latency"""
     payload = PAYLOAD.copy()
@@ -261,7 +262,10 @@ async def run_validation():
         # Warmup phase (not counted in results)
         print(f"Warming up with {config.warmup_iterations} requests...")
         warmup_results = await run_batch(
-            client, -config.warmup_iterations, config.warmup_iterations, min(10, config.concurrency),
+            client,
+            -config.warmup_iterations,
+            config.warmup_iterations,
+            min(10, config.concurrency),
         )
         warmup_success = sum(1 for _, success, _ in warmup_results if success)
         print(f"Warmup complete: {warmup_success}/{config.warmup_iterations} successful\n")
@@ -283,7 +287,10 @@ async def run_validation():
                 continue
 
             batch_results = await run_batch(
-                client, batch_num * batch_size, this_batch_size, current_concurrency,
+                client,
+                batch_num * batch_size,
+                this_batch_size,
+                current_concurrency,
             )
 
             # Process batch results
@@ -307,7 +314,8 @@ async def run_validation():
                 batch_error_rate = batch_errors / len(batch_results)
                 batch_p99 = np.percentile(batch_latencies, 99)
                 new_concurrency = await load_controller.adjust_concurrency(
-                    batch_error_rate, batch_p99,
+                    batch_error_rate,
+                    batch_p99,
                 )
 
                 if new_concurrency != current_concurrency:
@@ -328,7 +336,8 @@ async def run_validation():
             "connections_in_use": connections_in_use,
             "max_connections": limits.max_connections,
             "connection_reuse_ratio": round(
-                (config.iterations - connections_created) / config.iterations, 2,
+                (config.iterations - connections_created) / config.iterations,
+                2,
             )
             if config.iterations > 0
             else 0,

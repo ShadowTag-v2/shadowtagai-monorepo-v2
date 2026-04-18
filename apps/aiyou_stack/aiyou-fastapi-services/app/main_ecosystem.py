@@ -63,7 +63,8 @@ async def lifespan(app: FastAPI):
 
     if not validation.passed:
         logger.error(
-            "Kernel chain failed JR Engine validation", extra={"validation": validation.dict()},
+            "Kernel chain failed JR Engine validation",
+            extra={"validation": validation.dict()},
         )
         raise RuntimeError("Kernel chain validation failed")
 
@@ -358,7 +359,8 @@ async def get_cheat_sheet(sheet_type: str = "kernel"):
         sheet = create_wealth_planning_cheat_sheet()
     else:
         raise HTTPException(
-            status_code=400, detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'",
+            status_code=400,
+            detail=f"Unknown sheet_type: {sheet_type}. Use 'kernel' or 'wealth'",
         )
 
     return {

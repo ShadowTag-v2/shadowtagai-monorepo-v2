@@ -1,5 +1,4 @@
-"""Tests for Glicko-2 rating system
-"""
+"""Tests for Glicko-2 rating system"""
 
 import pytest
 

@@ -68,15 +68,21 @@ error_responses_total = Counter(
 
 # System Metrics
 system_cpu_usage_percent = Gauge(
-    "system_cpu_usage_percent", "System CPU usage percentage", registry=metrics_registry,
+    "system_cpu_usage_percent",
+    "System CPU usage percentage",
+    registry=metrics_registry,
 )
 
 system_memory_usage_percent = Gauge(
-    "system_memory_usage_percent", "System memory usage percentage", registry=metrics_registry,
+    "system_memory_usage_percent",
+    "System memory usage percentage",
+    registry=metrics_registry,
 )
 
 system_memory_usage_bytes = Gauge(
-    "system_memory_usage_bytes", "System memory usage in bytes", registry=metrics_registry,
+    "system_memory_usage_bytes",
+    "System memory usage in bytes",
+    registry=metrics_registry,
 )
 
 system_disk_usage_percent = Gauge(
@@ -88,11 +94,15 @@ system_disk_usage_percent = Gauge(
 
 # Application Metrics
 app_uptime_seconds = Gauge(
-    "app_uptime_seconds", "Application uptime in seconds", registry=metrics_registry,
+    "app_uptime_seconds",
+    "Application uptime in seconds",
+    registry=metrics_registry,
 )
 
 active_connections = Gauge(
-    "active_connections", "Number of active connections", registry=metrics_registry,
+    "active_connections",
+    "Number of active connections",
+    registry=metrics_registry,
 )
 
 # Health Check Metrics

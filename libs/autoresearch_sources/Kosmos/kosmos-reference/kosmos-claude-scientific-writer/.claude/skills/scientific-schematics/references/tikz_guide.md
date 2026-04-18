@@ -181,7 +181,7 @@ Nodes have anchor points for precise connections:
 ```latex
 \node[draw] (A) at (0,0) {Node};
 
-% Anchor points: north, south, east, west, 
+% Anchor points: north, south, east, west,
 %                north east, north west, south east, south west
 %                center
 
@@ -303,7 +303,7 @@ Nodes have anchor points for precise connections:
 ```latex
 \begin{tikzpicture}[
   % Define styles within tikzpicture options
-  process/.style={rectangle, draw, fill=blue!20, 
+  process/.style={rectangle, draw, fill=blue!20,
                   minimum width=3cm, minimum height=1cm},
   decision/.style={diamond, draw, fill=orange!20, aspect=2},
   arrow/.style={-Stealth, thick}
@@ -322,9 +322,9 @@ Nodes have anchor points for precise connections:
 % In preamble or separate file
 \tikzset{
   process/.style={
-    rectangle, 
+    rectangle,
     rounded corners,
-    draw=black, 
+    draw=black,
     thick,
     fill=blue!20,
     minimum width=3cm,
@@ -422,7 +422,7 @@ Nodes have anchor points for precise connections:
   % Main content
   \node[draw] (A) {Node A};
   \node[draw, right=of A] (B) {Node B};
-  
+
   % Background layer
   \begin{scope}[on background layer]
     \node[fill=gray!20, rounded corners, fit=(A) (B),
@@ -437,13 +437,13 @@ Nodes have anchor points for precise connections:
 \begin{tikzpicture}
   % Normal drawing
   \draw (0,0) -- (1,0);
-  
+
   % Apply style only within scope
   \begin{scope}[thick, blue]
     \draw (0,0.5) -- (1,0.5);
     \draw (0,1) -- (1,1);
   \end{scope}
-  
+
   % Back to normal
   \draw (0,1.5) -- (1,1.5);
 \end{tikzpicture}
@@ -456,7 +456,7 @@ Nodes have anchor points for precise connections:
 ```latex
 \begin{tikzpicture}[
   node distance=1.5cm and 2cm,
-  process/.style={rectangle, rounded corners, draw, thick, 
+  process/.style={rectangle, rounded corners, draw, thick,
                   fill=blue!20, minimum width=3cm, minimum height=1cm},
   decision/.style={diamond, draw, thick, fill=orange!20, aspect=2},
   arrow/.style={-Stealth, thick}
@@ -483,7 +483,7 @@ Nodes have anchor points for precise connections:
 
 ```latex
 \begin{tikzpicture}[
-  block/.style={rectangle, draw, thick, fill=blue!20, 
+  block/.style={rectangle, draw, thick, fill=blue!20,
                 minimum width=2.5cm, minimum height=1cm},
   arrow/.style={-Stealth, thick}
 ]
@@ -496,7 +496,7 @@ Nodes have anchor points for precise connections:
 \draw[arrow] (process) -- node[above] {result} (output);
 
 % Feedback loop
-\draw[arrow] (output.north) |- ++(0,1) -| 
+\draw[arrow] (output.north) |- ++(0,1) -|
              node[near end, above] {feedback} (process.north);
 
 \end{tikzpicture}
@@ -532,18 +532,18 @@ Nodes have anchor points for precise connections:
 \begin{tikzpicture}
   % Timeline axis
   \draw[thick, -Stealth] (0,0) -- (10,0) node[right] {Time};
-  
+
   % Events
   \foreach \x/\label in {1/Baseline, 3/Week 4, 5/Week 8, 7/Week 12, 9/Final} {
     \draw[thick] (\x,0.1) -- (\x,-0.1);
     \node[below] at (\x,-0.1) {\label};
     \node[circle, fill=blue!20, draw, inner sep=2pt] at (\x,0) {};
   }
-  
+
   % Interventions as bars
   \draw[thick, blue] (1,0.5) -- (5,0.5) node[midway, above] {Treatment A};
   \draw[thick, red] (5,0.8) -- (9,0.8) node[midway, above] {Treatment B};
-  
+
 \end{tikzpicture}
 ```
 
@@ -557,20 +557,20 @@ CircuitikZ extends TikZ specifically for electrical circuits:
 \begin{circuitikz}[american]
   % Voltage source
   \draw (0,0) to[V, v=$V_s$] (0,2)
-  
+
   % Resistors
         to[R, l=$R_1$] (2,2)
         to[R, l=$R_2$] (4,2)
-  
+
   % Capacitor
         to[C, l=$C_1$] (4,0)
-  
+
   % Close circuit
         to[short] (0,0);
-  
+
   % Ground
   \draw (0,0) node[ground] {};
-  
+
 \end{circuitikz}
 ```
 
@@ -731,4 +731,3 @@ For complex diagrams, compile separately and include:
 - **TikZ Tutorial**: https://cremeronline.com/LaTeX/minimaltikz.pdf
 
 This guide provides the foundation for creating scientific diagrams with TikZ. Combine these techniques with the templates in the `assets/` directory for publication-ready figures.
-

@@ -210,7 +210,9 @@ async def get_category_kpis(category: KPICategory, time_range: TimeRange = TimeR
 
 @router.get("/metric/{metric_name}")
 async def get_metric_history(
-    metric_name: str, time_range: TimeRange = TimeRange.WEEK, granularity: str = "hour",
+    metric_name: str,
+    time_range: TimeRange = TimeRange.WEEK,
+    granularity: str = "hour",
 ):
     """Get historical data for specific metric
 

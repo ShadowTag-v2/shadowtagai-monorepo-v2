@@ -237,7 +237,11 @@ Answer:"""
 
     @classmethod
     def get_rag_prompt(
-        cls, task_type: TaskType, query: str, chunks: list[str], indices: list[int] = None,
+        cls,
+        task_type: TaskType,
+        query: str,
+        chunks: list[str],
+        indices: list[int] = None,
     ) -> str:
         """Get RAG prompt for specific task type
 

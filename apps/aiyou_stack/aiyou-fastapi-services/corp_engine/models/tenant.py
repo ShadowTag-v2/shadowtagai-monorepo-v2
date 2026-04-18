@@ -1,5 +1,4 @@
-"""Multi-Tenant Database Models with Row-Level Security
-"""
+"""Multi-Tenant Database Models with Row-Level Security"""
 
 from datetime import datetime
 from enum import StrEnum

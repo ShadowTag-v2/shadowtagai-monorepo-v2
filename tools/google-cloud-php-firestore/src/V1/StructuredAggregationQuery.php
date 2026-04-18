@@ -119,4 +119,3 @@ class StructuredAggregationQuery extends \Google\Protobuf\Internal\Message
     }
 
 }
-

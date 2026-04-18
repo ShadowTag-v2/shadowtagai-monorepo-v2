@@ -16,7 +16,6 @@ class Base(DeclarativeBase):
     """Base class for SQLAlchemy models."""
 
 
-
 # Create async engine
 engine = create_async_engine(
     settings.database_url,

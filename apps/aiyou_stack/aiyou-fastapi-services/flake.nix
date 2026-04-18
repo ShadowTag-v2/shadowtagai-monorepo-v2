@@ -6,15 +6,15 @@
     antigravity-nix.url = "github:jacopone/antigravity-nix";
   };
 
-  outputs = { self, nixpkgs, antigravity-nix }: 
+  outputs = { self, nixpkgs, antigravity-nix }:
   let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
-    
+
     # Extension URLs (Version Pinned)
     quotaWatcherUrl = "https://github.com/wusimpl/AntigravityQuotaWatcher/releases/download/v0.7.0/antigravity-quota-watcher-0.7.0.vsix";
     deepnoteUrl = "https://deepnote.gallerycdn.vsassets.io/extensions/deepnote/vscode-deepnote/0.2.5/1737736552124/Microsoft.VisualStudio.Services.VSIXPackage";
-    
+
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = [
@@ -38,7 +38,7 @@
             echo "📡 Downloading Telemetry (QuotaWatcher)..."
             curl -L -o .antigravity-extensions/quota-watcher.vsix "${quotaWatcherUrl}"
         fi
-        
+
         if [ ! -f .antigravity-extensions/deepnote.vsix ]; then
             echo "🧪 Downloading Lab Equipment (Deepnote)..."
             curl -L -o .antigravity-extensions/deepnote.vsix "${deepnoteUrl}"
@@ -54,7 +54,7 @@
         export PROXY_PORT=8080
         export HTTP_PROXY="http://localhost:8080"
         export HTTPS_PROXY="http://localhost:8080"
-        
+
         # 5. Security & Trust (The Critical "Corner")
         if [ ! -f ~/.mitmproxy/mitmproxy-ca-cert.pem ]; then
             echo "⚠️  FIRST RUN DETECTED: Start 'mitmdump' once to generate certificates."

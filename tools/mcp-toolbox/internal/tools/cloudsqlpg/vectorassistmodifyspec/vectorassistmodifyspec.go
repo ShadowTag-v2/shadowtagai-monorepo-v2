@@ -32,14 +32,14 @@ import (
 const resourceType string = "vector-assist-modify-spec"
 
 const modifySpecQuery = `
-    SELECT recommendation_id, vector_spec_id, table_name, schema_name, query, recommendation, applied, modified, created_at 
-    FROM vector_assist.modify_spec(spec_id => @spec_id::TEXT, table_name => @table_name::TEXT, schema_name => @schema_name::TEXT, 
-        vector_column_name => @vector_column_name::TEXT, text_column_name => @text_column_name::TEXT, 
+    SELECT recommendation_id, vector_spec_id, table_name, schema_name, query, recommendation, applied, modified, created_at
+    FROM vector_assist.modify_spec(spec_id => @spec_id::TEXT, table_name => @table_name::TEXT, schema_name => @schema_name::TEXT,
+        vector_column_name => @vector_column_name::TEXT, text_column_name => @text_column_name::TEXT,
         vector_index_type => @vector_index_type::TEXT, embeddings_available => @embeddings_available::BOOLEAN,
-        num_vectors => @num_vectors::INTEGER, dimensionality => @dimensionality::INTEGER, 
-        embedding_model => @embedding_model::TEXT, prefilter_column_names => @prefilter_column_names, 
-        distance_func => @distance_func::TEXT, quantization => @quantization::TEXT, 
-        memory_budget_kb => @memory_budget_kb::INTEGER, target_recall => @target_recall::FLOAT, 
+        num_vectors => @num_vectors::INTEGER, dimensionality => @dimensionality::INTEGER,
+        embedding_model => @embedding_model::TEXT, prefilter_column_names => @prefilter_column_names,
+        distance_func => @distance_func::TEXT, quantization => @quantization::TEXT,
+        memory_budget_kb => @memory_budget_kb::INTEGER, target_recall => @target_recall::FLOAT,
         target_top_k => @target_top_k::INTEGER, tune_vector_index => @tune_vector_index::BOOLEAN);
 `
 

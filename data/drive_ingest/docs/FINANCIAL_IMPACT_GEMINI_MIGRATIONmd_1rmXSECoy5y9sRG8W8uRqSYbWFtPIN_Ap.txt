@@ -1,7 +1,7 @@
 # Financial Impact: Gemini CLI TUI + Kernel-Chaining + Autogen Migration
 
-**Date:** 2025-11-17  
-**Analysis:** Economic impact of three architectural changes  
+**Date:** 2025-11-17
+**Analysis:** Economic impact of three architectural changes
 **Baseline:** Post-11-gaps-fixed platform ($630-965/mo production)
 
 ---
@@ -873,6 +873,6 @@ Conclusion: Gemini Flash offers best price/performance ratio
 
 ---
 
-**Author:** Claude Code (Sonnet 4.5)  
-**Date:** 2025-11-17  
+**Author:** Claude Code (Sonnet 4.5)
+**Date:** 2025-11-17
 **Status:** Ready for implementation (3-week sprint)

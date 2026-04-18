@@ -84,7 +84,9 @@ async def store_interaction(request: StoreInteractionRequest):
 
     """
     success = await gptram.store_interaction(
-        session_id=request.session_id, interaction=request.interaction, ttl=request.ttl,
+        session_id=request.session_id,
+        interaction=request.interaction,
+        ttl=request.ttl,
     )
 
     if success:

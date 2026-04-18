@@ -15,7 +15,7 @@
 */
 
 
-/**  If connecting to a live Firebase project (one that you set up in the 
+/**  If connecting to a live Firebase project (one that you set up in the
  * Firebase console) put your config vars into the `environment.prod.ts` file.
  * Otherwise, leave untouched to enable connection to demo project and emulators.
 */

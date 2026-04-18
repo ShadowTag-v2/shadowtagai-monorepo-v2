@@ -1,5 +1,4 @@
-"""FinJudge Python SDK - Usage Examples
-"""
+"""FinJudge Python SDK - Usage Examples"""
 
 from finjudge.client import FinJudgeClient, judge
 from finjudge.models.judge import (

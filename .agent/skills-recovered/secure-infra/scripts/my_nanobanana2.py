@@ -19,9 +19,7 @@ def get_nanobanana_token():
 
 def nano_banana_infer(endpoint, payload):
     token = get_nanobanana_token()
-    base_url = os.environ.get(
-        "NANO_BANANA_URL", "https://api.banana.dev/v1/run"
-    )  # Fallback to generic if unconfigured
+    base_url = os.environ.get("NANO_BANANA_URL", "https://api.banana.dev/v1/run")  # Fallback to generic if unconfigured
 
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 

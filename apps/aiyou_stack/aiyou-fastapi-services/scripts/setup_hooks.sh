@@ -69,4 +69,3 @@ EOF
 
 chmod +x "$POST_HOOK_PATH"
 echo "✅ Memory Hook Installed. Changes will be remembered forever."
-

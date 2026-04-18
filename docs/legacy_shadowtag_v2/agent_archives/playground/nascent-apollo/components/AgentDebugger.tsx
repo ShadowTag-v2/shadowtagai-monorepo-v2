@@ -15,7 +15,7 @@ interface AgentEvent {
 
 export function AgentDebugger() {
   const [events, setEvents] = useState<AgentEvent[]>([]);
-  
+
   // MOCK: Simulating event stream for Gemini 3.0 Agent
   useEffect(() => {
     const mockInterval = setInterval(() => {

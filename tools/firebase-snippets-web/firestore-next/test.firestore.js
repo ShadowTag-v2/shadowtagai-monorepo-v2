@@ -15,7 +15,7 @@ class City {
         return this.name + ', ' + this.state + ', ' + this.country;
     }
 }
-    
+
 // Firestore data converter
 const cityConverter = {
     toFirestore: (city) => {
@@ -80,7 +80,7 @@ describe("firestore", () => {
         persistentLocalCache,
         persistentSingleTabManager,
         persistentMultipleTabManager
-      } = require("firebase/firestore"); 
+      } = require("firebase/firestore");
 
       // [START initialize_persistence]
       // Memory cache is the default if no config is specified.
@@ -94,14 +94,14 @@ describe("firestore", () => {
 
       // Same as `initializeFirestore(app, {localCache: persistentLocalCache(/*settings*/{})})`,
       // but more explicit about tab management.
-      initializeFirestore(app, 
-        {localCache: 
+      initializeFirestore(app,
+        {localCache:
           persistentLocalCache(/*settings*/{tabManager: persistentSingleTabManager({})})
       });
 
       // Use multi-tab IndexedDb persistence.
-      initializeFirestore(app, 
-        {localCache: 
+      initializeFirestore(app,
+        {localCache:
           persistentLocalCache(/*settings*/{tabManager: persistentMultipleTabManager()})
         });
       // [END initialize_persistence]
@@ -109,7 +109,7 @@ describe("firestore", () => {
 
     it("should be able to enable/disable network", async () => {
       // [START disable_network]
-      const { disableNetwork } = require("firebase/firestore"); 
+      const { disableNetwork } = require("firebase/firestore");
 
       await disableNetwork(db);
       console.log("Network disabled!");
@@ -120,7 +120,7 @@ describe("firestore", () => {
       // [END disable_network]
 
       // [START enable_network]
-      const { enableNetwork } = require("firebase/firestore"); 
+      const { enableNetwork } = require("firebase/firestore");
 
       await enableNetwork(db);
       // Do online actions
@@ -133,8 +133,8 @@ describe("firestore", () => {
 
     it("should reply with .fromCache fields", () => {
       // [START use_from_cache]
-      const { collection, onSnapshot, where, query } = require("firebase/firestore"); 
-      
+      const { collection, onSnapshot, where, query } = require("firebase/firestore");
+
       const q = query(collection(db, "cities"), where("state", "==", "CA"));
       onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
           snapshot.docChanges().forEach((change) => {
@@ -152,7 +152,7 @@ describe("firestore", () => {
     describe("collection('users')", () => {
         it("should add data to a collection", async () => {
             // [START add_ada_lovelace]
-            const { collection, addDoc } = require("firebase/firestore"); 
+            const { collection, addDoc } = require("firebase/firestore");
 
             try {
               const docRef = await addDoc(collection(db, "users"), {
@@ -169,7 +169,7 @@ describe("firestore", () => {
 
         it("should get all users", async () => {
             // [START get_all_users]
-            const { collection, getDocs } = require("firebase/firestore"); 
+            const { collection, getDocs } = require("firebase/firestore");
 
             const querySnapshot = await getDocs(collection(db, "users"));
             querySnapshot.forEach((doc) => {
@@ -181,7 +181,7 @@ describe("firestore", () => {
         it("should add data to a collection with new fields", async () => {
             // [START add_alan_turing]
             // Add a second document with a generated ID.
-            const { addDoc, collection } = require("firebase/firestore"); 
+            const { addDoc, collection } = require("firebase/firestore");
 
             try {
               const docRef = await addDoc(collection(db, "users"), {
@@ -200,7 +200,7 @@ describe("firestore", () => {
 
         it("should loop through a watched collection", (done) => {
             // [START listen_for_users]
-            const { collection, where, query, onSnapshot } = require("firebase/firestore"); 
+            const { collection, where, query, onSnapshot } = require("firebase/firestore");
 
             const q = query(collection(db, "users"), where("born", "<", 1900));
             const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -235,7 +235,7 @@ describe("firestore", () => {
 
         it("should reference a specific document (alternative)", () => {
             // [START doc_reference_alternative]
-            const { doc } = require("firebase/firestore"); 
+            const { doc } = require("firebase/firestore");
 
             const alovelaceDocumentRef = doc(db, 'users/alovelace');
             // [END doc_reference_alternative]
@@ -243,7 +243,7 @@ describe("firestore", () => {
 
         it("should reference a document in a subcollection", () => {
             // [START subcollection_reference]
-            const { doc } = require("firebase/firestore"); 
+            const { doc } = require("firebase/firestore");
 
             const messageRef = doc(db, "rooms", "roomA", "messages", "message1");
             // [END subcollection_reference]
@@ -251,7 +251,7 @@ describe("firestore", () => {
 
         it("should set a document", async () => {
             // [START set_document]
-            const { doc, setDoc } = require("firebase/firestore"); 
+            const { doc, setDoc } = require("firebase/firestore");
 
             // Add a new document in collection "cities"
             await setDoc(doc(db, "cities", "LA"), {
@@ -264,8 +264,8 @@ describe("firestore", () => {
 
         it("should set document with a custom object converter", async () => {
             // [START set_custom_object]
-            const { doc, setDoc } = require("firebase/firestore"); 
-            
+            const { doc, setDoc } = require("firebase/firestore");
+
             // Set with cityConverter
             const ref = doc(db, "cities", "LA").withConverter(cityConverter);
             await setDoc(ref, new City("Los Angeles", "CA", "USA"));
@@ -274,7 +274,7 @@ describe("firestore", () => {
 
         it("should get document with a custom object converter", async () => {
             // [START get_custom_object]
-            const { doc, getDoc} = require("firebase/firestore"); 
+            const { doc, getDoc} = require("firebase/firestore");
 
             const ref = doc(db, "cities", "LA").withConverter(cityConverter);
             const docSnap = await getDoc(ref);
@@ -291,7 +291,7 @@ describe("firestore", () => {
 
         it("should support batch writes", async () => {
             // [START write_batch]
-            const { writeBatch, doc } = require("firebase/firestore"); 
+            const { writeBatch, doc } = require("firebase/firestore");
 
             // Get a new write batch
             const batch = writeBatch(db);
@@ -315,7 +315,7 @@ describe("firestore", () => {
 
         it("should set a document with every datatype #UNVERIFIED", async () => {
             // [START data_types]
-            const { doc, setDoc, Timestamp } = require("firebase/firestore"); 
+            const { doc, setDoc, Timestamp } = require("firebase/firestore");
 
             const docData = {
                 stringExample: "Hello world!",
@@ -337,7 +337,7 @@ describe("firestore", () => {
 
         it("should allow set with merge", async () => {
             // [START set_with_merge]
-            const { doc, setDoc } = require("firebase/firestore"); 
+            const { doc, setDoc } = require("firebase/firestore");
 
             const cityRef = doc(db, 'cities', 'BJ');
             setDoc(cityRef, { capital: true }, { merge: true });
@@ -346,7 +346,7 @@ describe("firestore", () => {
 
         it("should update a document's nested fields #UNVERIFIED", async () => {
             // [START update_document_nested]
-            const { doc, setDoc, updateDoc } = require("firebase/firestore"); 
+            const { doc, setDoc, updateDoc } = require("firebase/firestore");
 
             // Create an initial document to update.
             const frankDocRef = doc(db, "users", "frank");
@@ -370,7 +370,7 @@ describe("firestore", () => {
              * Delete a collection, in batches of batchSize. Note that this does
              * not recursively delete subcollections of documents in the collection
              */
-            const { collection, query, orderBy, limit, getDocs, writeBatch } = require("firebase/firestore"); 
+            const { collection, query, orderBy, limit, getDocs, writeBatch } = require("firebase/firestore");
 
             function deleteCollection(db, collectionRef, batchSize) {
               const q = query(collectionRef, orderBy('__name__'), limit(batchSize));
@@ -416,7 +416,7 @@ describe("firestore", () => {
     describe("collection('cities')", () => {
         it("should set documents", async () => {
             // [START example_data]
-            const { collection, doc, setDoc } = require("firebase/firestore"); 
+            const { collection, doc, setDoc } = require("firebase/firestore");
 
             const citiesRef = collection(db, "cities");
 
@@ -446,7 +446,7 @@ describe("firestore", () => {
             const data = {};
 
             // [START cities_document_set]
-            const { doc, setDoc } = require("firebase/firestore"); 
+            const { doc, setDoc } = require("firebase/firestore");
 
             await setDoc(doc(db, "cities", "new-city-id"), data);
             // [END cities_document_set]
@@ -454,7 +454,7 @@ describe("firestore", () => {
 
         it("should add a document", async () => {
             // [START add_document]
-            const { collection, addDoc } = require("firebase/firestore"); 
+            const { collection, addDoc } = require("firebase/firestore");
 
             // Add a new document with a generated id.
             const docRef = await addDoc(collection(db, "cities"), {
@@ -468,7 +468,7 @@ describe("firestore", () => {
         it("should add an empty a document", async () => {
             const data = {};
             // [START new_document]
-            const { collection, doc, setDoc } = require("firebase/firestore"); 
+            const { collection, doc, setDoc } = require("firebase/firestore");
 
             // Add a new document with a generated id
             const newCityRef = doc(collection(db, "cities"));
@@ -659,8 +659,8 @@ describe("firestore", () => {
             const { doc, onSnapshot } = require("firebase/firestore");
 
             const unsub = onSnapshot(
-              doc(db, "cities", "SF"), 
-              { includeMetadataChanges: true }, 
+              doc(db, "cities", "SF"),
+              { includeMetadataChanges: true },
               (doc) => {
                 // ...
               });
@@ -762,7 +762,7 @@ describe("firestore", () => {
               // Respond to data
               // ...
             });
-            
+
             // Later ...
 
             // Stop listening to changes
@@ -775,7 +775,7 @@ describe("firestore", () => {
             const { collection, onSnapshot } = require("firebase/firestore");
 
             const unsubscribe = onSnapshot(
-              collection(db, "cities"), 
+              collection(db, "cities"),
               (snapshot) => {
                 // ...
               },
@@ -875,7 +875,7 @@ describe("firestore", () => {
             });
 
             it("should handle other wheres", () => {
-              const { collection, query, where } = require("firebase/firestore");  
+              const { collection, query, where } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START example_filters]
@@ -890,29 +890,29 @@ describe("firestore", () => {
             });
 
             it("should handle array-contains where", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START array_contains_filter]
-              const { query, where } = require("firebase/firestore");  
+              const { query, where } = require("firebase/firestore");
               const q = query(citiesRef, where("regions", "array-contains", "west_coast"));
               // [END array_contains_filter]
             });
 
             it("should handle an array contains any where", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START array_contains_any_filter]
-              const { query, where } = require("firebase/firestore");  
+              const { query, where } = require("firebase/firestore");
 
-              const q = query(citiesRef, 
+              const q = query(citiesRef,
                 where('regions', 'array-contains-any', [['west_coast'], ['east_coast']]));
               // [END array_contains_any_filter]
             });
 
             it("should handle an in where", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               function inFilter() {
@@ -933,7 +933,7 @@ describe("firestore", () => {
 
               function inFilterWithArray() {
                 // [START in_filter_with_array]
-                const { query, where } = require("firebase/firestore");  
+                const { query, where } = require("firebase/firestore");
 
                 const q = query(citiesRef, where('regions', 'in', [['west_coast'], ['east_coast']]));
                 // [END in_filter_with_array]
@@ -941,11 +941,11 @@ describe("firestore", () => {
             });
 
             it("should handle compound queries", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START chain_filters]
-              const { query, where } = require("firebase/firestore");  
+              const { query, where } = require("firebase/firestore");
 
               const q1 = query(citiesRef, where("state", "==", "CO"), where("name", "==", "Denver"));
               const q2 = query(citiesRef, where("state", "==", "CA"), where("population", "<", 1000000));
@@ -953,11 +953,11 @@ describe("firestore", () => {
             });
 
             it("should handle range filters on one field", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START valid_range_filters]
-              const { query, where } = require("firebase/firestore");  
+              const { query, where } = require("firebase/firestore");
 
               const q1 = query(citiesRef, where("state", ">=", "CA"), where("state", "<=", "IN"));
               const q2 = query(citiesRef, where("state", "==", "CA"), where("population", ">", 1000000));
@@ -965,12 +965,12 @@ describe("firestore", () => {
             });
 
             it("should not handle range filters on multiple field", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               expect(() => {
                 // [START invalid_range_filters]
-                const { query, where } = require("firebase/firestore");  
+                const { query, where } = require("firebase/firestore");
 
                 const q = query(citiesRef, where("state", ">=", "CA"), where("population", ">", 100000));
                 // [END invalid_range_filters]
@@ -978,90 +978,90 @@ describe("firestore", () => {
             });
 
             it("should order and limit", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START order_and_limit]
-              const { query, orderBy, limit } = require("firebase/firestore");  
+              const { query, orderBy, limit } = require("firebase/firestore");
 
               const q = query(citiesRef, orderBy("name"), limit(3));
               // [END order_and_limit]
             });
 
             it("should order descending", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START order_and_limit_desc]
-              const { query, orderBy, limit } = require("firebase/firestore");  
+              const { query, orderBy, limit } = require("firebase/firestore");
 
               const q = query(citiesRef, orderBy("name", "desc"), limit(3));
               // [END order_and_limit_desc]
             });
 
             it("should order descending by other field", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START order_multiple]
-              const { query, orderBy } = require("firebase/firestore");  
+              const { query, orderBy } = require("firebase/firestore");
 
               const q = query(citiesRef, orderBy("state"), orderBy("population", "desc"));
               // [END order_multiple]
             });
 
             it("should where and order by with limit", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START filter_and_order]
-              const { query, where, orderBy, limit } = require("firebase/firestore");  
+              const { query, where, orderBy, limit } = require("firebase/firestore");
 
               const q = query(citiesRef, where("population", ">", 100000), orderBy("population"), limit(2));
               // [END filter_and_order]
             });
 
             it("should where and order on same field", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START valid_filter_and_order]
-              const { query, where, orderBy } = require("firebase/firestore");  
+              const { query, where, orderBy } = require("firebase/firestore");
 
               const q = query(citiesRef, where("population", ">", 100000), orderBy("population"));
               // [END valid_filter_and_order]
             });
 
             it("should not where and order on same field", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               expect(() => {
                 // [START invalid_filter_and_order]
-                const { query, where, orderBy } = require("firebase/firestore");  
-                
+                const { query, where, orderBy } = require("firebase/firestore");
+
                 const q = query(citiesRef, where("population", ">", 100000), orderBy("country"));
                 // [END invalid_filter_and_order]
               }).to.throw;
             });
 
             it("should handle startAt", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START order_and_start]
-              const { query, orderBy, startAt } = require("firebase/firestore");  
+              const { query, orderBy, startAt } = require("firebase/firestore");
 
               const q = query(citiesRef, orderBy("population"), startAt(1000000));
               // [END order_and_start]
             });
 
             it("should handle endAt", () => {
-              const { collection } = require("firebase/firestore");  
+              const { collection } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               // [START order_and_end]
-              const { query, orderBy, endAt } = require("firebase/firestore");  
+              const { query, orderBy, endAt } = require("firebase/firestore");
 
               const q = query(citiesRef, orderBy("population"), endAt(1000000));
               // [END order_and_end]
@@ -1069,11 +1069,11 @@ describe("firestore", () => {
 
             it("should handle startAt(doc) ", async () => {
               // [START start_doc]
-              const { collection, doc, getDoc, query, orderBy, startAt } = require("firebase/firestore");  
+              const { collection, doc, getDoc, query, orderBy, startAt } = require("firebase/firestore");
               const citiesRef = collection(db, "cities");
 
               const docSnap = await getDoc(doc(citiesRef, "SF"));
-              
+
               // Get all cities with a population bigger than San Francisco
               const biggerThanSf = query(citiesRef, orderBy("population"), startAt(docSnap));
               // ...
@@ -1083,7 +1083,7 @@ describe("firestore", () => {
             it("should handle multiple orderBy", () => {
                 // [START start_multiple_orderby]
                 // Will return all Springfields
-                const { collection, query, orderBy, startAt } = require("firebase/firestore");  
+                const { collection, query, orderBy, startAt } = require("firebase/firestore");
                 const q1 = query(collection(db, "cities"),
                    orderBy("name"),
                    orderBy("state"),
@@ -1099,8 +1099,8 @@ describe("firestore", () => {
 
             it("should paginate", async () => {
               // [START paginate]
-              const { collection, query, orderBy, startAfter, limit, getDocs } = require("firebase/firestore");  
-      
+              const { collection, query, orderBy, startAfter, limit, getDocs } = require("firebase/firestore");
+
               // Query the first page of docs
               const first = query(collection(db, "cities"), orderBy("population"), limit(25));
               const documentSnapshots = await getDocs(first);
@@ -1122,7 +1122,7 @@ describe("firestore", () => {
               const { collection, query, where, and } = require("firebase/firestore");
               // [START or_query]
               const q = query(collection(db, "cities"), and(
-                where('state', '==', 'CA'),   
+                where('state', '==', 'CA'),
                 or(
                   where('capital', '==', true),
                   where('population', '>=', 1000000)
@@ -1193,7 +1193,7 @@ describe("firestore", () => {
         describe('collectionGroup(landmarks)', () => {
             it("should setup example data", async () => {
                 // [START fs_collection_group_query_data_setup]
-                const { collection, addDoc } = require("firebase/firestore");  
+                const { collection, addDoc } = require("firebase/firestore");
 
                 const citiesRef = collection(db, 'cities');
 
@@ -1241,10 +1241,10 @@ describe("firestore", () => {
                 ]);
                 // [END fs_collection_group_query_data_setup]
             });
-            
+
             it("should query a collection group", async () => {
                 // [START fs_collection_group_query]
-                const { collectionGroup, query, where, getDocs } = require("firebase/firestore");  
+                const { collectionGroup, query, where, getDocs } = require("firebase/firestore");
 
                 const museums = query(collectionGroup(db, 'landmarks'), where('type', '==', 'museum'));
                 const querySnapshot = await getDocs(museums);
@@ -1258,7 +1258,7 @@ describe("firestore", () => {
 
     describe("aggregate queries", () => {
         it("should fetch the count of documents in a collection", async () => {
-            const { collection, getCountFromServer } = require("firebase/firestore"); 
+            const { collection, getCountFromServer } = require("firebase/firestore");
             // [START count_aggregate_collection]
             const coll = collection(db, "cities");
             const snapshot = await getCountFromServer(coll);
@@ -1267,7 +1267,7 @@ describe("firestore", () => {
         });
 
         it("should fetch the count of documents in a query", async () => {
-            const { collection, getCountFromServer, where, query } = require("firebase/firestore"); 
+            const { collection, getCountFromServer, where, query } = require("firebase/firestore");
             // [START count_aggregate_query]
             const coll = collection(db, "cities");
             const q = query(coll, where("state", "==", "CA"));
@@ -1281,7 +1281,7 @@ describe("firestore", () => {
     describe("solution-aggregation", () => {
         it("should update a restaurant in a transaction #UNVERIFIED", async () => {
             // [START add_rating_transaction]
-            const { collection, doc, runTransaction } = require("firebase/firestore");  
+            const { collection, doc, runTransaction } = require("firebase/firestore");
 
             async function addRating(restaurantRef, rating) {
                 // Create a reference for a new rating, for use inside the transaction

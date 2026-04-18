@@ -17,7 +17,7 @@
 
 To install the dependencies for this script, run:
 
-``` 
+```
 pip install google-genai opencv-python pyaudio pillow mss
 ```
 
@@ -26,7 +26,7 @@ variable is set to the api-key you obtained from Google AI Studio.
 
 Important: **Use headphones**. This script uses the system default audio
 input and output, which often won't include echo cancellation. So to prevent
-the model from interrupting itself it is important that you use headphones. 
+the model from interrupting itself it is important that you use headphones.
 
 ## Run
 
@@ -75,7 +75,7 @@ CHUNK_SIZE = 512
 
 host = "generativelanguage.googleapis.com"
 model = "gemini-2.5-flash-native-audio-latest"
-DEFAULT_MODE="camera"
+DEFAULT_MODE = "camera"
 
 
 api_key = os.environ["GOOGLE_API_KEY"]
@@ -84,7 +84,7 @@ uri = f"wss://{host}/ws/google.ai.generativelanguage.v1beta.GenerativeService.Bi
 
 class AudioLoop:
     def __init__(self, video_mode=DEFAULT_MODE):
-        self.video_mode=video_mode
+        self.video_mode = video_mode
         self.audio_in_queue = None
         self.out_queue = None
 
@@ -136,9 +136,7 @@ class AudioLoop:
     async def get_frames(self):
         # This takes about a second, and will block the whole program
         # causing the audio pipeline to overflow if you don't to_thread it.
-        cap = await asyncio.to_thread(
-            cv2.VideoCapture, 0
-        )  # 0 represents the default camera
+        cap = await asyncio.to_thread(cv2.VideoCapture, 0)  # 0 represents the default camera
 
         while True:
             frame = await asyncio.to_thread(self._get_frame, cap)
@@ -155,16 +153,16 @@ class AudioLoop:
     def _get_screen(self):
         sct = mss.mss()
         monitor = sct.monitors[0]
-        
+
         i = sct.grab(monitor)
         mime_type = "image/jpeg"
         image_bytes = mss.tools.to_png(i.rgb, i.size)
         img = PIL.Image.open(io.BytesIO(image_bytes))
-        
+
         image_io = io.BytesIO()
         img.save(image_io, format="jpeg")
         image_io.seek(0)
-        
+
         image_bytes = image_io.read()
         return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
 
@@ -173,7 +171,7 @@ class AudioLoop:
             frame = await asyncio.to_thread(self._get_screen)
             if frame is None:
                 break
-            
+
             await asyncio.sleep(1.0)
 
             msg = {"realtime_input": {"media_chunks": frame}}
@@ -217,9 +215,7 @@ class AudioLoop:
             response = json.loads(raw_response.decode("ascii"))
 
             try:
-                b64data = response["serverContent"]["modelTurn"]["parts"][0][
-                    "inlineData"
-                ]["data"]
+                b64data = response["serverContent"]["modelTurn"]["parts"][0]["inlineData"]["data"]
             except KeyError:
                 pass
             else:
@@ -241,9 +237,7 @@ class AudioLoop:
 
     async def play_audio(self):
         pya = pyaudio.PyAudio()
-        stream = pya.open(
-            format=FORMAT, channels=CHANNELS, rate=RECEIVE_SAMPLE_RATE, output=True
-        )
+        stream = pya.open(format=FORMAT, channels=CHANNELS, rate=RECEIVE_SAMPLE_RATE, output=True)
         while True:
             bytestream = await self.audio_in_queue.get()
             await asyncio.to_thread(stream.write, bytestream)
@@ -255,9 +249,7 @@ class AudioLoop:
         """
         try:
             async with (
-                await connect(
-                    uri, additional_headers={"Content-Type": "application/json"}
-                ) as ws,
+                await connect(uri, additional_headers={"Content-Type": "application/json"}) as ws,
                 asyncio.TaskGroup() as tg,
             ):
                 self.ws = ws

@@ -63,8 +63,7 @@ class IngestionItem:
 
 # --- MODULE 1: AI CLASSIFICATION (Ollama) ---
 async def consult_ollama(session, text):
-    """Asks local Llama 3 if the content is relevant.
-    """
+    """Asks local Llama 3 if the content is relevant."""
     system_prompt = """
     You are a Legal Tech & Emerging Tech Research Assistant.
     Analyze the input. Return JSON only:
@@ -88,8 +87,7 @@ async def consult_ollama(session, text):
 
 # --- MODULE 2: FORENSIC CAPTURE (Playwright) ---
 async def capture_evidence(browser, item):
-    """Renders page, injects timestamp, saves PDF, and hashes it.
-    """
+    """Renders page, injects timestamp, saves PDF, and hashes it."""
     safe_title = "".join([c for c in item.title if c.isalnum() or c in (" ", "-", "_")]).strip()[
         :50
     ]
@@ -127,8 +125,7 @@ async def capture_evidence(browser, item):
 
 # --- MODULE 3: INDEXING (Vector Store) ---
 def index_document(item):
-    """Extracts text from the PDF and stores it in ChromaDB with metadata.
-    """
+    """Extracts text from the PDF and stores it in ChromaDB with metadata."""
     try:
         if not item.evidence_path:
             return False

@@ -127,9 +127,7 @@ def test_firestore_write_doc_id_error(test_case: TestCase) -> None:
     doc_to_insert = [Document(page_content='{"f1": 1, "f2": 2}')]
     doc_id = ["a/b", "c/d"]
 
-    test_case.assertRaises(
-        ValueError, saver.upsert_documents, documents=doc_to_insert, document_ids=doc_id
-    )
+    test_case.assertRaises(ValueError, saver.upsert_documents, documents=doc_to_insert, document_ids=doc_id)
 
 
 def test_firestore_write_with_doc_id(test_case: TestCase) -> None:
@@ -140,9 +138,7 @@ def test_firestore_write_with_doc_id(test_case: TestCase) -> None:
     doc_to_insert = [
         Document(
             page_content='{"f1": 1, "f2": 2}',
-            metadata={
-                "reference": {"path": "foo/bar", "firestore_type": "document_reference"}
-            },
+            metadata={"reference": {"path": "foo/bar", "firestore_type": "document_reference"}},
         )
     ]
 
@@ -196,12 +192,8 @@ def test_firestore_load_with_fields(
         metadata_fields=metadata_fields,
     )
 
-    doc_to_insert = [
-        Document(page_content='{"f1": "v1", "f2": "v2", "f3": "v3"}', metadata={})
-    ]
-    expected_doc = [
-        Document(page_content=expected_page_content, metadata=expected_metadata)
-    ]
+    doc_to_insert = [Document(page_content='{"f1": "v1", "f2": "v2", "f3": "v3"}', metadata={})]
+    expected_doc = [Document(page_content=expected_page_content, metadata=expected_metadata)]
 
     saver.upsert_documents(doc_to_insert)
     # wait 1s for consistency

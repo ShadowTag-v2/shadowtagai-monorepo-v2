@@ -431,8 +431,7 @@ class AtomicPipelineOrchestrator:
     # =========================================================================
 
     async def _stage_publish(self, task: AtomicTask) -> AtomicTask:
-        """PUBLISH stage: Output to Git, Vertex AI Workbench, Colab.
-        """
+        """PUBLISH stage: Output to Git, Vertex AI Workbench, Colab."""
         task.status = TaskStatus.PUBLISHING
 
         # Run pre-hooks

@@ -33,7 +33,10 @@ Your refined version:
 
 
 async def refine(
-    gemini_draft: str, previous_draft: str, model: str = "gpt-4o", api_key: str = "",
+    gemini_draft: str,
+    previous_draft: str,
+    model: str = "gpt-4o",
+    api_key: str = "",
 ) -> dict[str, Any]:
     """Refine Gemini's draft and check for convergence.
 

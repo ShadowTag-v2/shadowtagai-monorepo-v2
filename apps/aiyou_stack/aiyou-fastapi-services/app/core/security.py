@@ -20,7 +20,9 @@ settings = get_settings()
 
 # Password hashing context (Bcrypt)
 pwd_context = CryptContext(
-    schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=settings.BCRYPT_ROUNDS,
+    schemes=["bcrypt"],
+    deprecated="auto",
+    bcrypt__rounds=settings.BCRYPT_ROUNDS,
 )
 
 

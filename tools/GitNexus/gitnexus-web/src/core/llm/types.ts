@@ -1,6 +1,6 @@
 /**
  * LLM Provider Types
- * 
+ *
  * Type definitions for multi-provider LLM support.
  * Supports OpenAI, Azure OpenAI, Gemini, Anthropic, Ollama, OpenRouter, MiniMax, and GLM5.
  */
@@ -380,4 +380,3 @@ NOTES:
 - For vector search, join CodeEmbedding.nodeId to the appropriate table's id
 - Use LIMIT to avoid returning too many results
 `;
-

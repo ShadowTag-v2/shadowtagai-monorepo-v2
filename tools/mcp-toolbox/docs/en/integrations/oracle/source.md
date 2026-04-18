@@ -134,7 +134,7 @@ walletLocation: "/path/to/my/wallet/directory"
 
 #### OCI-Based Driver (`useOCI: true`) - Oracle Wallet
 
-For the OCI-based driver, wallet authentication is triggered by setting tnsAdmin to the wallet directory and connecting via a tnsAlias. 
+For the OCI-based driver, wallet authentication is triggered by setting tnsAdmin to the wallet directory and connecting via a tnsAlias.
 
 ```yaml
 kind: source

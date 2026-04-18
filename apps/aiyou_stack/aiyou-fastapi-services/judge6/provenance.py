@@ -19,10 +19,8 @@ class ProvenanceError(Exception):
     """Raised when provenance operations fail."""
 
 
-
 class SignatureVerificationError(ProvenanceError):
     """Raised when signature verification fails."""
-
 
 
 class ShadowTagEngine:
@@ -56,7 +54,11 @@ class ShadowTagEngine:
         )
 
     def generate_stamp(
-        self, purpose: str, reasoning_chain: str, risk_level: RiskLevel, axioms_verified: list[str],
+        self,
+        purpose: str,
+        reasoning_chain: str,
+        risk_level: RiskLevel,
+        axioms_verified: list[str],
     ) -> ProvenanceStamp:
         """Generate cryptographic provenance stamp for a decision.
 
@@ -82,7 +84,10 @@ class ShadowTagEngine:
 
             # Generate cryptographic signature
             signature = self._generate_signature(
-                timestamp, purpose_hash, reasoning_hash, axioms_verified,
+                timestamp,
+                purpose_hash,
+                reasoning_hash,
+                axioms_verified,
             )
 
             stamp = ProvenanceStamp(
@@ -169,7 +174,11 @@ class ShadowTagEngine:
         raise ProvenanceError(f"Unsupported hash algorithm: {self.hash_algorithm}")
 
     def _generate_signature(
-        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str],
+        self,
+        timestamp: str,
+        purpose_hash: str,
+        reasoning_hash: str,
+        axioms_verified: list[str],
     ) -> str:
         """Generate cryptographic signature.
 
@@ -188,16 +197,26 @@ class ShadowTagEngine:
         """
         if self.enable_pki:
             return self._generate_pki_signature(
-                timestamp, purpose_hash, reasoning_hash, axioms_verified,
+                timestamp,
+                purpose_hash,
+                reasoning_hash,
+                axioms_verified,
             )
         # Simplified signature for demonstration
         signature_input = self._build_signature_input(
-            timestamp, purpose_hash, reasoning_hash, axioms_verified,
+            timestamp,
+            purpose_hash,
+            reasoning_hash,
+            axioms_verified,
         )
         return self._compute_hash(signature_input)
 
     def _build_signature_input(
-        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str],
+        self,
+        timestamp: str,
+        purpose_hash: str,
+        reasoning_hash: str,
+        axioms_verified: list[str],
     ) -> str:
         """Build canonical signature input string.
 
@@ -215,7 +234,11 @@ class ShadowTagEngine:
         return f"{timestamp}:{purpose_hash}:{reasoning_hash}:{self.cor_instance_id}:{axioms_str}"
 
     def _generate_pki_signature(
-        self, timestamp: str, purpose_hash: str, reasoning_hash: str, axioms_verified: list[str],
+        self,
+        timestamp: str,
+        purpose_hash: str,
+        reasoning_hash: str,
+        axioms_verified: list[str],
     ) -> str:
         """Generate PKI-based cryptographic signature.
 

@@ -23,8 +23,7 @@ class JREngine:
         self.brakes_validator = BrakesValidator()
 
     def validate(self, action: Action, policy_id: str | None = None) -> JRVerdict:
-        """Run full JR validation pipeline
-        """
+        """Run full JR validation pipeline"""
         time.time()
 
         # 1. Validate Purpose

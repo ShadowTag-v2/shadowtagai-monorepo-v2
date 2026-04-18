@@ -495,6 +495,6 @@ Useful API references:
 
 * [Experiment with LearnLM in AI Studio](https://aistudio.google.com/prompts/new_chat?model=learnlm-2.0-flash-experimental)
 * [Official LearnLM Documentation](https://ai.google.dev/gemini-api/docs/learnlm)
-* Guide to System Instructions: [JS](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/System_instructions.ipynb)  | [Python](https://github.com/google-gemini/cookbook/blob/main/quickstarts/System_instructions.ipynb) 
+* Guide to System Instructions: [JS](https://github.com/google-gemini/cookbook/blob/main/quickstarts-js/System_instructions.ipynb)  | [Python](https://github.com/google-gemini/cookbook/blob/main/quickstarts/System_instructions.ipynb)
 
 */

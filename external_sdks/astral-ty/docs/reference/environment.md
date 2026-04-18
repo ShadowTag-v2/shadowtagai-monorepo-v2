@@ -84,4 +84,3 @@ Path to user-level configuration directory on Unix systems.
 ### `_CONDA_ROOT`
 
 Used to determine the root install path of Conda.
-

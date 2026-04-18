@@ -16,6 +16,7 @@ from turboquant.turboquant import TurboQuant, TurboQuantMSE, CompressedVector
 @dataclass
 class CompressedKVCache:
     """Container for a compressed KV cache."""
+
     # Per-layer, per-head compressed K vectors
     k_compressed: list[list[CompressedVector]] = field(default_factory=list)
     # Per-layer, per-head compressed V (indices + norms)
@@ -121,17 +122,12 @@ class KVCacheCompressor:
         Returns:
             (k_cache, v_cache) both shape (num_layers, num_heads, seq_len, head_dim).
         """
-        k_cache = np.zeros((
-            compressed.num_layers, compressed.num_heads,
-            compressed.seq_len, compressed.head_dim
-        ))
+        k_cache = np.zeros((compressed.num_layers, compressed.num_heads, compressed.seq_len, compressed.head_dim))
         v_cache = np.zeros_like(k_cache)
 
         for layer in range(compressed.num_layers):
             for head in range(compressed.num_heads):
-                k_cache[layer, head] = self.k_quantizer.dequantize(
-                    compressed.k_compressed[layer][head]
-                )
+                k_cache[layer, head] = self.k_quantizer.dequantize(compressed.k_compressed[layer][head])
                 v_cache[layer, head] = self.v_quantizer.dequantize(
                     compressed.v_indices[layer][head],
                     compressed.v_norms[layer][head],

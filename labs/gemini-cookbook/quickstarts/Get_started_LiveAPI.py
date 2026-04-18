@@ -17,7 +17,7 @@
 
 To install the dependencies for this script, run:
 
-``` 
+```
 pip install google-genai opencv-python pyaudio pillow mss
 ```
 
@@ -26,7 +26,7 @@ variable is set to the api-key you obtained from Google AI Studio.
 
 Important: **Use headphones**. This script uses the system default audio
 input and output, which often won't include echo cancellation. So to prevent
-the model from interrupting itself it is important that you use headphones. 
+the model from interrupting itself it is important that you use headphones.
 
 ## Run
 
@@ -89,14 +89,10 @@ client = genai.Client(
 # Sliding window to retain the context within the context window limit
 CONFIG = types.LiveConnectConfig(
     response_modalities=["AUDIO"],
-    speech_config=types.SpeechConfig(
-        voice_config=types.VoiceConfig(
-            prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name = "Zephyr")
-        )
-    ),
+    speech_config=types.SpeechConfig(voice_config=types.VoiceConfig(prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name="Zephyr"))),
     context_window_compression=types.ContextWindowCompressionConfig(
-        trigger_tokens = 25600,
-        sliding_window = types.SlidingWindow(target_tokens=12800),
+        trigger_tokens=25600,
+        sliding_window=types.SlidingWindow(target_tokens=12800),
     ),
 )
 
@@ -108,7 +104,7 @@ class AudioVideoLoop:
         self.video_mode = video_mode
 
         self.audio_in_queue = asyncio.Queue()
-        self.out_queue = asyncio.Queue(maxsize = 5) # Limit size to avoid excess memory use
+        self.out_queue = asyncio.Queue(maxsize=5)  # Limit size to avoid excess memory use
 
         self.session = None
         self.audio_stream = None
@@ -130,20 +126,17 @@ class AudioVideoLoop:
             kwargs = {"exception_on_overflow": False}
         else:
             kwargs = {}
-        
+
         try:
             while True:
                 data = await asyncio.to_thread(self.audio_stream.read, CHUNK_SIZE, **kwargs)
-                payload = {
-                    "data": data,
-                    "mime_type": "audio/pcm"
-                }
+                payload = {"data": data, "mime_type": "audio/pcm"}
                 # To reduce latency instead of watiing to push in queue we pop oldest item in queue if its full
                 # This helps to keep the audio stream real time
                 try:
                     self.out_queue.put_nowait(payload)
                 except asyncio.QueueFull:
-                    _ = self.out_queue.get_nowait()  
+                    _ = self.out_queue.get_nowait()
                     self.out_queue.put_nowait(payload)
 
         except asyncio.CancelledError:
@@ -218,9 +211,7 @@ class AudioVideoLoop:
         return {"mime_type": mime_type, "data": base64.b64encode(image_bytes).decode()}
 
     async def capture_frames(self):
-        cap = await asyncio.to_thread(
-            cv2.VideoCapture, 0
-        )  # 0 represents the default camera
+        cap = await asyncio.to_thread(cv2.VideoCapture, 0)  # 0 represents the default camera
 
         try:
             while True:
@@ -238,9 +229,9 @@ class AudioVideoLoop:
     def _capture_screen(self):
         sct = mss.mss()
         monitor = sct.monitors[0]
-        
+
         i = sct.grab(monitor)
-        
+
         img = PIL.Image.frombytes("RGB", i.size, i.rgb)
 
         image_io = io.BytesIO()
@@ -309,7 +300,7 @@ class AudioVideoLoop:
                 send_text_task = tg.create_task(self.send_text())
                 tg.create_task(self.send_realtime())
                 tg.create_task(self.listen_audio())
-                
+
                 if self.video_mode == "camera":
                     tg.create_task(self.capture_frames())
                 elif self.video_mode == "screen":

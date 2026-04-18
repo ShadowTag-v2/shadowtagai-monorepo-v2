@@ -7,9 +7,9 @@ When you're confident in your Gemini capabilities, the [examples](https://github
 
 ---
 > **Gemini 3**: For the most recent updates on our latest generation, please check the [Get Started](./Get_started.ipynb) [![Colab](https://storage.googleapis.com/generativeai-downloads/images/colab_icon16.png)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Get_started.ipynb#gemini3) and the [thinking](./Get_started_thinking.ipynb) [![Colab](https://storage.googleapis.com/generativeai-downloads/images/colab_icon16.png)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Get_started_thinking.ipynb#gemini3) guides who include [migration guides](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Get_started.ipynb#gemini3migration).
-> 
+>
 > **🍌 Nano-Banana 2**: Go bananas with our latest image generation model: **Nano-Banana 2**. Get started [here](./Get_Started_Nano_Banana.ipynb) [![Colab](https://storage.googleapis.com/generativeai-downloads/images/colab_icon16.png)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Get_Started_Nano_Banana.ipynb#nano-banana-pro) with 512px, thinking, search and image grounding, and a ton of examples!
-> 
+>
 > **🎶 Lyria 3**: Channel your inner composer with **Lyria 3**. Get started [here](./Get_started_Lyria.ipynb) [![Colab](https://storage.googleapis.com/generativeai-downloads/images/colab_icon16.png)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Get_started_Lyria.ipynb) with 30s and full song generation, image-to-music, and a ton of examples!
 ---
 
@@ -50,7 +50,7 @@ Finally, these guides will deep-dive into specific capabilities of the Gemini mo
 | Quickstart | Description | Open |
 | -------- | ----------- | ---- |
 | [Grounding](./Grounding.ipynb) | Learn how to use diffrent ways (Google Search, Google Maps, Youtube, url context) to ground your answers with external sources. | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Grounding.ipynb) |
-| [File Search](./File_Search.ipynb) | Upload and search your data using the hosted RAG capability of the File Search tool. | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/File_Search.ipynb) | 
+| [File Search](./File_Search.ipynb) | Upload and search your data using the hosted RAG capability of the File Search tool. | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/File_Search.ipynb) |
 | [Search Grounding](./Search_Grounding.ipynb) | Deep-dive into the Google search grounding capabilities. | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Search_Grounding.ipynb) |
 | [Gemini Robotics-ER 1.5 Preview](./gemini-robotics-er.ipynb) | Learn how to use the Gemini Robotics Embodied Reasoning model for spatial understanding and reasoning| [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/gemini-robotics-er.ipynb) |
 | [Batch-mode](./Batch_mode.ipynb) | Use Batch-mode to send large volume of non-time-sensitive requests to the model and get a 50% discount. | [![Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/google-gemini/cookbook/blob/main/quickstarts/Batch_mode.ipynb) |

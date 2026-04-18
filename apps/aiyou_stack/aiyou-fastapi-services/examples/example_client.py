@@ -1,5 +1,4 @@
-"""Example client script demonstrating how to interact with the Automation Builder API.
-"""
+"""Example client script demonstrating how to interact with the Automation Builder API."""
 
 import asyncio
 

@@ -77,15 +77,15 @@ Route tasks to optimal model based on specialization, minimizing cost while maxi
 def delegate_task(task_description: str, context: dict) -> str:
     """
     Determine which model should handle the task.
-    
+
     Returns: "gemini" or "claude"
     """
-    
+
     # Judge#6 assessment
     purpose = extract_purpose(task_description)
     reasons = evaluate_reasons(context)
     brakes = evaluate_brakes(context)
-    
+
     # Delegation rules
     if any([
         "gcp deployment" in task_description.lower(),
@@ -97,7 +97,7 @@ def delegate_task(task_description: str, context: dict) -> str:
         context.get("requires_bootstrap_gates") == True
     ]):
         return "gemini"
-    
+
     elif any([
         "deep refactor" in task_description.lower(),
         "computer use" in task_description.lower(),
@@ -107,7 +107,7 @@ def delegate_task(task_description: str, context: dict) -> str:
         context.get("file_count", 0) > 10  # Multi-file complex edits
     ]):
         return "claude"
-    
+
     else:
         # Default: Use Gemini for general tasks
         return "gemini"
@@ -267,7 +267,7 @@ After task completion:
 ```yaml
 Task: "Deploy Judge#6 to GKE us-central1"
 Purpose: Infrastructure provisioning
-Reasons: 
+Reasons:
   - GCP-native task
   - Requires gcloud, kubectl
   - Production deployment
@@ -325,6 +325,6 @@ Abort delegation and escalate if:
 
 ---
 
-**Last Updated**: 2025-11-22  
-**Owner**: Gemini Antigravity + Claude Sonnet 4.5  
+**Last Updated**: 2025-11-22
+**Owner**: Gemini Antigravity + Claude Sonnet 4.5
 **Framework**: Judge#6 (Purpose → Reasons → Brakes)

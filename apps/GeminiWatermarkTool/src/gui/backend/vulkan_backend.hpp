@@ -32,15 +32,15 @@ public:
     // ==========================================================================
     // Lifecycle
     // ==========================================================================
-    
+
     [[nodiscard]] bool init(SDL_Window* window) override;
-    
+
     void shutdown() override;
 
     // ==========================================================================
     // ImGui Integration
     // ==========================================================================
-    
+
     void imgui_init() override;
     void imgui_shutdown() override;
     void imgui_new_frame() override;
@@ -49,7 +49,7 @@ public:
     // ==========================================================================
     // Frame Management
     // ==========================================================================
-    
+
     void begin_frame() override;
     void end_frame() override;
     void present() override;
@@ -58,19 +58,19 @@ public:
     // ==========================================================================
     // Texture Operations
     // ==========================================================================
-    
+
     [[nodiscard]] TextureHandle
     create_texture(const TextureDesc& desc, std::span<const uint8_t> data = {}) override;
-    
+
     void update_texture(TextureHandle handle, std::span<const uint8_t> data) override;
     void destroy_texture(TextureHandle handle) override;
-    
+
     [[nodiscard]] void* get_imgui_texture_id(TextureHandle handle) const override;
 
     // ==========================================================================
     // Backend Info
     // ==========================================================================
-    
+
     [[nodiscard]] std::string_view name() const noexcept override;
     [[nodiscard]] BackendType type() const noexcept override { return BackendType::Vulkan; }
     [[nodiscard]] bool supports_compute() const noexcept override { return true; }
@@ -84,7 +84,7 @@ private:
 
     SDL_Window* m_window{nullptr};
     bool m_initialized{false};
-    
+
     std::unordered_map<uint64_t, void*> m_textures;  // TODO: proper texture struct
     uint64_t m_next_handle_id{1};
 };

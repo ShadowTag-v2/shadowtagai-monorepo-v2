@@ -38,7 +38,7 @@ with open(manifest_path, 'w') as out:
     for skill_file in skill_files:
         skill_dir = os.path.dirname(skill_file)
         skill_name = os.path.basename(skill_dir)
-        
+
         # Extract description from YAML frontmatter
         description = ""
         try:
@@ -54,9 +54,9 @@ with open(manifest_path, 'w') as out:
                 description = ' '.join(line.strip() for line in m2.group(1).strip().splitlines())
         except Exception:
             pass
-        
+
         file_size = os.path.getsize(skill_file)
-        
+
         entry = {
             "skill_name": skill_name,
             "path": skill_file,
@@ -75,7 +75,7 @@ echo ""
 # Check if LanceDB Python package is available
 if python3 -c "import lancedb" 2>/dev/null; then
     echo "✅ LanceDB Python package available"
-    
+
     # Run actual ingestion
     python3 << 'PYTHON_EOF'
 import json

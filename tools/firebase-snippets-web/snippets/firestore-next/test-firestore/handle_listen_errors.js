@@ -8,7 +8,7 @@
 import { collection, onSnapshot } from "firebase/firestore";
 
 const unsubscribe = onSnapshot(
-  collection(db, "cities"), 
+  collection(db, "cities"),
   (snapshot) => {
     // ...
   },

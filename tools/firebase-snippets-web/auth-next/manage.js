@@ -74,7 +74,7 @@ function updateUserEmail() {
 function sendEmailVerification() {
   // [START send_email_verification]
   const { getAuth, sendEmailVerification } = require("firebase/auth");
-  
+
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -94,7 +94,7 @@ function updatePassword() {
 
   // [START auth_update_password]
   const { getAuth, updatePassword } = require("firebase/auth");
-  
+
   const auth = getAuth();
 
   const user = auth.currentUser;
@@ -112,7 +112,7 @@ function updatePassword() {
 function sendPasswordReset() {
   // [START auth_send_password_reset]
   const { getAuth, sendPasswordResetEmail } = require("firebase/auth");
-  
+
   const auth = getAuth();
   const emailAddress = "user@example.com";
 
@@ -128,7 +128,7 @@ function sendPasswordReset() {
 function deleteUser() {
   // [START auth_delete_user]
   const { getAuth, deleteUser } = require("firebase/auth");
-  
+
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -151,7 +151,7 @@ function reauthenticateWithCredential() {
 
   // [START auth_reauth_with_credential]
   const { getAuth, reauthenticateWithCredential } = require("firebase/auth");
-  
+
   const auth = getAuth();
   const user = auth.currentUser;
 

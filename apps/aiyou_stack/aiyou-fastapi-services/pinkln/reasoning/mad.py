@@ -76,7 +76,10 @@ class MultiAgentDebate:
         self.rcr = ReflectCritiqueRefine()
 
     async def debate(
-        self, problem: str, personas: list[str] | None = None, context: dict[str, Any] | None = None,
+        self,
+        problem: str,
+        personas: list[str] | None = None,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Conduct multi-agent debate.
 
@@ -142,7 +145,10 @@ class MultiAgentDebate:
             self.agents.append(agent)
 
     async def _run_round(
-        self, round_num: int, problem: str, context: dict[str, Any] | None,
+        self,
+        round_num: int,
+        problem: str,
+        context: dict[str, Any] | None,
     ) -> DebateRound:
         """Run a single round of debate.
 
@@ -197,14 +203,20 @@ class MultiAgentDebate:
         return debate_round
 
     async def _generate_initial_position(
-        self, agent: DebateAgent, problem: str, context: dict[str, Any] | None,
+        self,
+        agent: DebateAgent,
+        problem: str,
+        context: dict[str, Any] | None,
     ) -> str:
         """Generate initial position for an agent."""
         # Placeholder - would use LLM with agent persona in production
         return f"{agent.persona}'s position on: {problem}"
 
     async def _refine_position(
-        self, agent: DebateAgent, problem: str, context: dict[str, Any] | None,
+        self,
+        agent: DebateAgent,
+        problem: str,
+        context: dict[str, Any] | None,
     ) -> str:
         """Refine agent's position using RCR."""
         # Get last round's reflection and critiques
@@ -307,7 +319,10 @@ class PanelGPT(MultiAgentDebate):
         self.expert_domains = expert_domains or ["Technical", "Business", "User Experience"]
 
     async def debate(
-        self, problem: str, personas: list[str] | None = None, context: dict[str, Any] | None = None,
+        self,
+        problem: str,
+        personas: list[str] | None = None,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Conduct expert panel discussion.
 

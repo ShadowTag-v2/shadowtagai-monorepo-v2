@@ -35,7 +35,10 @@ async def run_swarm_payload(query: SwarmQuery):
         # Execute the swarm logic durably in the worker cluster
         # Using string name to prevent circular imports if necessary, or actual class
         result = await client.execute_workflow(
-            "SwarmWorkflow", query.task, id=task_id, task_queue="omega-swarm-queue",
+            "SwarmWorkflow",
+            query.task,
+            id=task_id,
+            task_queue="omega-swarm-queue",
         )
         status = "completed"
         message = result

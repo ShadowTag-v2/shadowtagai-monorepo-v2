@@ -142,7 +142,8 @@ async def get_sla_compliance():
 @router.get("/alerts", response_model=list[AlertResponse])
 async def list_alerts(
     category: str | None = Query(
-        None, description="Filter by category (cost, performance, quality, source_health)",
+        None,
+        description="Filter by category (cost, performance, quality, source_health)",
     ),
     priority: str | None = Query(None, description="Filter by priority (info, warning, critical)"),
 ):
@@ -272,7 +273,8 @@ async def get_performance_bottlenecks(threshold_ms: float = Query(1000.0)):
 async def get_ml_anomalies(
     hours: int = Query(24, description="Hours of history to retrieve"),
     severity: str | None = Query(
-        None, description="Filter by severity (low, medium, high, critical)",
+        None,
+        description="Filter by severity (low, medium, high, critical)",
     ),
 ):
     """Get ML-detected anomalies.

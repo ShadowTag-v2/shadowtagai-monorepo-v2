@@ -37,7 +37,9 @@ class PersonalizationEngine:
     # ========================================================================
 
     def rules_personalize(
-        self, user_context: dict[str, Any], video_metadata: dict[str, Any],
+        self,
+        user_context: dict[str, Any],
+        video_metadata: dict[str, Any],
     ) -> dict[str, Any]:
         """Stage 1: Simple rule-based personalization
 
@@ -169,7 +171,12 @@ class PersonalizationEngine:
         }
 
     def bandits_record_outcome(
-        self, video_id: str, arc: str, user_segment: str, converted: bool, revenue: float = 0.0,
+        self,
+        video_id: str,
+        arc: str,
+        user_segment: str,
+        converted: bool,
+        revenue: float = 0.0,
     ):
         """Record outcome for bandit learning
 
@@ -281,7 +288,10 @@ class PersonalizationEngine:
         return f"Welcome {name}! Let's find something perfect for you."
 
     def _select_demo_focus(
-        self, interests: list[str], product_category: str, purchase_history: list[str],
+        self,
+        interests: list[str],
+        product_category: str,
+        purchase_history: list[str],
     ) -> str:
         """Select which product aspects to emphasize"""
         if "technology" in interests or "electronics" in interests:
@@ -351,7 +361,10 @@ class PersonalizationEngine:
         return "balanced_professional"
 
     def _generate_scene_sequence(
-        self, user_profile: dict, product_info: dict, video_metadata: dict,
+        self,
+        user_profile: dict,
+        product_info: dict,
+        video_metadata: dict,
     ) -> list[dict[str, Any]]:
         """Generate personalized scene sequence"""
         scenes = [
@@ -445,7 +458,9 @@ if __name__ == "__main__":
     engine.bandits_record_outcome("video123", "emotional_story", "family_segment", True, 29.99)
 
     selected_arc, bandit_info = engine.bandits_select_arc(
-        "video123", available_arcs, "family_segment",
+        "video123",
+        available_arcs,
+        "family_segment",
     )
 
     print(f"Selected Arc: {selected_arc}")
@@ -476,7 +491,9 @@ if __name__ == "__main__":
     video_metadata = {"format": "premium_beacon", "duration": 5400}
 
     generative_result = engine.generative_create_narrative(
-        user_profile, product_info, video_metadata,
+        user_profile,
+        product_info,
+        video_metadata,
     )
 
     print(f'Intro Script: "{generative_result["intro_script"]}"')

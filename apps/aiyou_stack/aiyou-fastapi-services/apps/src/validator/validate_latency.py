@@ -186,7 +186,10 @@ class LatencyValidator:
             return result
 
     async def _try_request(
-        self, client: httpx.AsyncClient, request_id: int, attempt: int,
+        self,
+        client: httpx.AsyncClient,
+        request_id: int,
+        attempt: int,
     ) -> LatencyResult:
         """Try a single request (single attempt)"""
         result = LatencyResult()

@@ -54,7 +54,7 @@ void main() async {
 ```
 
 > [!NOTE]
-> You must [set up authentication][] before using this package outside of 
+> You must [set up authentication][] before using this package outside of
 > Google Cloud.
 
 ## Retries

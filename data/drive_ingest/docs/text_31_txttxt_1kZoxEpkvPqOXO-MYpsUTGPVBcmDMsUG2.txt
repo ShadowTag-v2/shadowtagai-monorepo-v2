@@ -127,10 +127,10 @@ Starlink’s own network load drops nearly in half because aircraft relay intra-
 Your orchestrator tracks every byte of rebroadcasted payload and invoices SpaceX or its enterprise tenants.
 
 Item	Model	Rate	Example
-Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul	
-AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node	
-Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity	
-Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing	
+Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul
+AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node
+Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity
+Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing
 
 Revenue potential
 
@@ -724,10 +724,10 @@ Each tier builds on the same lawful data fabric; revenue scales with government 
 6️⃣  Capitalization Mechanics
 
 Step	Mechanism	Est. Capital In	Target Valuation Out
-Seed Expansion (Phase 5 entry)	Convertible SAFEs → $2 M	$12 M post	
-Series A (Integrations + SaaS)	20 % equity → $15 M	$75 M post	
-Series B (Gov & Fin products)	15 % equity → $40 M	$250 M post	
-Series C (IPO ready)	10 % equity → $100 M	$1 B post	
+Seed Expansion (Phase 5 entry)	Convertible SAFEs → $2 M	$12 M post
+Series A (Integrations + SaaS)	20 % equity → $15 M	$75 M post
+Series B (Gov & Fin products)	15 % equity → $40 M	$250 M post
+Series C (IPO ready)	10 % equity → $100 M	$1 B post
 
 → Total dilution ≈ 45 %; founder net ≈ 55 % of $1 B exit ≈ $550 M.
 
@@ -1223,11 +1223,11 @@ all prepped to paste into Cursor.”
 <next>
 
 “Include a competitor to Netflix,
-But hosted entirely inside starlink. 
-Also our apis to allow video games to also be accessed from inside our virtual mall. So you walk out of the virtual Ai video theater, into world of Warcraft. Then into our Amazon equivalent to look at and handle, even virtually demo any product. 
-Show to your friends virtually next to you. Before actually purchasing. 
-The actual item comes to your house. 
-Full virtual tech support for purchased product. Their Ai figure walks you through troubleshooting, which you implement at home after taking off the goggles 
+But hosted entirely inside starlink.
+Also our apis to allow video games to also be accessed from inside our virtual mall. So you walk out of the virtual Ai video theater, into world of Warcraft. Then into our Amazon equivalent to look at and handle, even virtually demo any product.
+Show to your friends virtually next to you. Before actually purchasing.
+The actual item comes to your house.
+Full virtual tech support for purchased product. Their Ai figure walks you through troubleshooting, which you implement at home after taking off the goggles
 
 Here’s the fully rolled-up AiYou business plan and valuation, integrating everything: infrastructure, verified content, CineVerse (Starlink-native Netflix competitor), Game Port APIs, Virtual Commerce + AI support, and the verified-AI economic layer.
 
@@ -1353,7 +1353,7 @@ Base-case valuation: ≈ $ 4.5 B by 2027
 Bull-case valuation: ≈ $ 8 B + by 2028–29
 Ultimate exit potential: $ 10–12 B (verified-AI category leader).”
 
-<next> 
+<next>
 
 “This is so much money:
 
@@ -2300,10 +2300,10 @@ Starlink’s own network load drops nearly in half because aircraft relay intra-
 Your orchestrator tracks every byte of rebroadcasted payload and invoices SpaceX or its enterprise tenants.
 
 Item	Model	Rate	Example
-Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul	
-AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node	
-Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity	
-Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing	
+Rebroadcast bandwidth fee	$ 0.01 – 0.03 / GB	Starlink pays you for saved backhaul
+AI-edge processing fee	$ 0.002 / call	For inference handled at CoreWeave node
+Data-cache license (airline)	$ 500 / aircraft / mo	Airlines monetize cabin AI connectivity
+Maintenance & telemetry	flat 10 % O&M markup	Automatic in SaaS billing
 
 Revenue potential
 
@@ -2634,10 +2634,10 @@ Latency Gain	27 % avg (to < 25 ms)
 Purpose: verification + explanation of every code/decision run inside Cursor / Gemini CLI.
 
 Step	Description
-Run 1: Primary LLM chain generates code or plan.	
-Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.	
-Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.	
-Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.	
+Run 1: Primary LLM chain generates code or plan.
+Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.
+Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.
+Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.
 
 ✅ Adds ≈ 18 % reliability uplift, reduces hallucinated commits ≈ 40 %.
 💵 Expected cost ≈ $0.002 / run vs >$0.01 manual review.
@@ -2752,10 +2752,10 @@ Latency Gain	27 % avg (to < 25 ms)
 Purpose: verification + explanation of every code/decision run inside Cursor / Gemini CLI.
 
 Step	Description
-Run 1: Primary LLM chain generates code or plan.	
-Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.	
-Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.	
-Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.	
+Run 1: Primary LLM chain generates code or plan.
+Run 2 (Plan Mode): Same chain uses Cursor Plan to reverse-engineer Run 1 → produces “explanation” JSON.
+Run 3: Opposing chain re-runs using Run 2 as its data, outputs evaluation + correction.
+Cursor / Gemini Layer: merges both with weighted consensus (variance < 3 %) before commit.
 
 ✅ Adds ≈ 18 % reliability uplift, reduces hallucinated commits ≈ 40 %.
 💵 Expected cost ≈ $0.002 / run vs >$0.01 manual review.

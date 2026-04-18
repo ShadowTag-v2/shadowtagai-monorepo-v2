@@ -29,7 +29,10 @@ class UserCreate(UserBase):
     """
 
     password: str = Field(
-        ..., min_length=12, max_length=128, description="Password must be at least 12 characters",
+        ...,
+        min_length=12,
+        max_length=128,
+        description="Password must be at least 12 characters",
     )
 
     @field_validator("full_name")

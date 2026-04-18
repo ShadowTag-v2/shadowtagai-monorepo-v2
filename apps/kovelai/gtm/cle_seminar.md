@@ -1,9 +1,9 @@
 # CLE Seminar One-Pager
 ## *"AI, Privilege, and Revenue: What Every Litigator Must Know After Heppner"*
 
-**Format**: 60-minute CLE seminar (1.0 ethics credit eligible)  
-**Presenter**: Erik Hancock, J.D. | Founder, KovelAI  
-**Audience**: Solo practitioners and small-firm litigators  
+**Format**: 60-minute CLE seminar (1.0 ethics credit eligible)
+**Presenter**: Erik Hancock, J.D. | Founder, KovelAI
+**Audience**: Solo practitioners and small-firm litigators
 
 ---
 

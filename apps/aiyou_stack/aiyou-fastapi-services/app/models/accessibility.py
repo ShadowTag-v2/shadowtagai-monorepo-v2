@@ -1,5 +1,4 @@
-"""Accessibility and safety compliance models
-"""
+"""Accessibility and safety compliance models"""
 
 from enum import StrEnum
 

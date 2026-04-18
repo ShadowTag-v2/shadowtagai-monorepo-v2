@@ -30,9 +30,7 @@ class ITransport(ABC):
         pass
 
     @abstractmethod
-    async def tool_get(
-        self, tool_name: str, headers: Mapping[str, str] | None = None
-    ) -> ManifestSchema:
+    async def tool_get(self, tool_name: str, headers: Mapping[str, str] | None = None) -> ManifestSchema:
         """Gets a single tool from the server."""
         pass
 
@@ -46,9 +44,7 @@ class ITransport(ABC):
         pass
 
     @abstractmethod
-    async def tool_invoke(
-        self, tool_name: str, arguments: dict, headers: Mapping[str, str]
-    ) -> str:
+    async def tool_invoke(self, tool_name: str, arguments: dict, headers: Mapping[str, str]) -> str:
         """Invokes a specific tool on the server."""
         pass
 

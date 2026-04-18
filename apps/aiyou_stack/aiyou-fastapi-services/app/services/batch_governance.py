@@ -98,7 +98,9 @@ class BatchGovernanceEngine:
                 f"Filtering to top-{top_k_violations} highest risk items (token optimization)",
             )
             top_indices = sorted(
-                range(len(risk_scores)), key=lambda i: risk_scores[i], reverse=True,
+                range(len(risk_scores)),
+                key=lambda i: risk_scores[i],
+                reverse=True,
             )[:top_k_violations]
             items_to_assess = [items[i] for i in top_indices]
             risk_scores_filtered = [risk_scores[i] for i in top_indices]
@@ -108,7 +110,9 @@ class BatchGovernanceEngine:
 
         # Phase 3: Detailed assessment only for filtered items
         results = await self._batch_detailed_assessment(
-            items_to_assess, risk_scores_filtered, frameworks,
+            items_to_assess,
+            risk_scores_filtered,
+            frameworks,
         )
 
         # Phase 4: Find similar violations using embeddings
@@ -128,7 +132,9 @@ class BatchGovernanceEngine:
         return results, analytics
 
     async def _batch_risk_scoring(
-        self, items: list[dict[str, Any]], frameworks: list[ComplianceFramework],
+        self,
+        items: list[dict[str, Any]],
+        frameworks: list[ComplianceFramework],
     ) -> list[float]:
         """Phase 1: Quick risk scoring using batch execution
 
@@ -244,7 +250,9 @@ Format as JSON:
         return results
 
     async def _group_similar_violations(
-        self, results: list[BatchAssessmentResult], similarity_threshold: float,
+        self,
+        results: list[BatchAssessmentResult],
+        similarity_threshold: float,
     ) -> list[BatchAssessmentResult]:
         """Phase 4: Group similar violations using embeddings
 
@@ -309,7 +317,9 @@ Format as JSON:
         return RiskLevel.MINIMAL
 
     def _calculate_analytics(
-        self, results: list[BatchAssessmentResult], total_items: int,
+        self,
+        results: list[BatchAssessmentResult],
+        total_items: int,
     ) -> BatchAnalytics:
         """Calculate analytics across all assessments"""
         high_risk_count = sum(

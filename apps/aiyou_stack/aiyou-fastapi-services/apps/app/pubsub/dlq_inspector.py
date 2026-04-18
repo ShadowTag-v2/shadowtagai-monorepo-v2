@@ -34,7 +34,8 @@ class DLQInspector:
         self.publisher = pubsub_v1.PublisherClient()
 
         self.subscription_path = self.subscriber.subscription_path(
-            self.project_id, self.dlq_subscription,
+            self.project_id,
+            self.dlq_subscription,
         )
         self.topic_path = self.publisher.topic_path(self.project_id, self.main_topic)
 

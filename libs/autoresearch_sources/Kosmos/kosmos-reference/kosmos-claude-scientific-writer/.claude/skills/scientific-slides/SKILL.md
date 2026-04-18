@@ -384,7 +384,7 @@ python scripts/validate_presentation.py presentation.pdf --duration 15
 15. Conclusions (45 sec)
 16. Acknowledgments (15 sec)
 
-NOTE: Use research-lookup to find papers for background (slides 2-4) 
+NOTE: Use research-lookup to find papers for background (slides 2-4)
 and discussion (slides 13-14) BEFORE creating slides.
 ```
 
@@ -572,7 +572,7 @@ python ../document-skills/pptx/scripts/thumbnail.py presentation.pptx review/gri
 **Dry, Boring Presentations** (CRITICAL TO AVOID):
 - Problem: Text-heavy slides with no visual interest, missing research context
 - Signs: All bullet points, no images, default templates, no citations
-- Solution: 
+- Solution:
   - Use research-lookup to find 8-15 papers for credible context
   - Add high-quality visuals to EVERY slide (figures, photos, diagrams, icons)
   - Choose modern color palette reflecting your topic
@@ -767,7 +767,7 @@ Total time: ~7-9 hours for quality presentation with proper literature context
 9. **Validation**: Visual review workflow to catch overflow and overlap
 10. **White Space**: 40-50% of slide empty for visual breathing room
 
-**Remember**: 
+**Remember**:
 - **Boring = Forgotten**: Dry, text-heavy slides fail to communicate your science
 - **Visual + Research = Impact**: Combine compelling visuals with research-backed context
 - **You are the presentation, slides are visual support**: They should enhance, not replace your talk

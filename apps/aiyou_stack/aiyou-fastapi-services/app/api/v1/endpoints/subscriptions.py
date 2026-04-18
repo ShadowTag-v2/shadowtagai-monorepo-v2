@@ -67,7 +67,10 @@ async def get_usage(
 
     if subscription is None:
         return UsageResponse(
-            api_calls_count=0, api_calls_limit=1000, percentage_used=0.0, tier="free",
+            api_calls_count=0,
+            api_calls_limit=1000,
+            percentage_used=0.0,
+            tier="free",
         )
 
     percentage_used = None
@@ -108,7 +111,8 @@ async def upgrade_subscription(
 
     if new_tier_level <= current_tier_level:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Can only upgrade to higher tier",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Can only upgrade to higher tier",
         )
 
     # Get tier pricing
@@ -122,7 +126,10 @@ async def upgrade_subscription(
     # For now, we'll create/update subscription assuming payment succeeded
 
     subscription = await service.upgrade_subscription(
-        subscription, current_user, upgrade_data.new_tier, price,
+        subscription,
+        current_user,
+        upgrade_data.new_tier,
+        price,
     )
 
     logger.info(
@@ -150,12 +157,14 @@ async def cancel_subscription(
 
     if subscription is None:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="No active subscription found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No active subscription found",
         )
 
     if subscription.tier == "free":
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot cancel free tier",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot cancel free tier",
         )
 
     await service.cancel_subscription(subscription)

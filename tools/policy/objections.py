@@ -25,10 +25,12 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-OBJECTIONS_LOG = Path(os.environ.get(
-    "OBJECTIONS_LOG",
-    ".beads/objections.jsonl",
-))
+OBJECTIONS_LOG = Path(
+    os.environ.get(
+        "OBJECTIONS_LOG",
+        ".beads/objections.jsonl",
+    )
+)
 
 
 class ObjectionType(StrEnum):

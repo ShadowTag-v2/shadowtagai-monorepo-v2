@@ -16,5 +16,5 @@ const gsReference = ref(storage, 'gs://bucket/images/stars.jpg');
 
 // Create a reference from an HTTPS URL
 // Note that in the URL, characters are URL escaped!
-const httpsReference = ref(storage, 'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');  
+const httpsReference = ref(storage, 'https://firebasestorage.googleapis.com/b/bucket/o/images%20stars.jpg');
 // [END storage_download_create_ref_modular]

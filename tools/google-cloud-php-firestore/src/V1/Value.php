@@ -600,4 +600,3 @@ class Value extends \Google\Protobuf\Internal\Message
     }
 
 }
-

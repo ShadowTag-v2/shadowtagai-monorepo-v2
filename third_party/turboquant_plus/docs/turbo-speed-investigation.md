@@ -164,7 +164,7 @@ Target: D → 5-8 tok/s, then A/B → 20-40 tok/s.
 ### New investigation target: SET_ROWS (quantize path)
 - The quantize_turbo3_0 function in the Metal shader does:
   1. Normalize (128 ops)
-  2. Copy to working buffer (128 ops)  
+  2. Copy to working buffer (128 ops)
   3. Forward WHT rotation (896 ops)
   4. Centroid lookup + pack (128 ops)
   5. Inverse WHT rotation (896 ops)
@@ -307,7 +307,7 @@ Everyone else is CPU-only or CUDA. Our Metal kernels are unique.
   - Block size 128 (4 blocks per head) vs q8_0 block 32 (4 blocks per head too, but simpler dequant)
   - 128 centroid lookups (3-bit unpack + table) vs 32 byte * scale (q8_0)
   - This is the irreducible cost of the algorithm
-  
+
 ### FINAL PERFORMANCE
 
 | Model | q8_0 | turbo3 MSE-only | Speed | Compression |

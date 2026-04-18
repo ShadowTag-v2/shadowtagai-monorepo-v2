@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START add_ada_lovelace_modular]
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc } from "firebase/firestore";
 
 try {
   const docRef = await addDoc(collection(db, "users"), {

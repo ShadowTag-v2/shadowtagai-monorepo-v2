@@ -23,8 +23,7 @@ class Jetski:
 
     # --- TERMINAL CAPABILITIES ---
     async def terminal_run(self, command: str, timeout: int = 30) -> dict[str, Any]:
-        """Executes a terminal command safely.
-        """
+        """Executes a terminal command safely."""
         logger.info(f"🚤 [Jetski] Executing: {command}")
 
         # Security Guardrails (Judge6 should have caught this, but defense in depth)
@@ -39,7 +38,12 @@ class Jetski:
         try:
             # We use subprocess for local execution (containerized)
             process = subprocess.run(
-                command, shell=True, cwd=self.cwd, capture_output=True, text=True, timeout=timeout,
+                command,
+                shell=True,
+                cwd=self.cwd,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
             )
             return {
                 "exit_code": process.returncode,

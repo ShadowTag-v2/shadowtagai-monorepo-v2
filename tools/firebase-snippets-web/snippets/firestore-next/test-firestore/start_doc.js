@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START start_doc_modular]
-import { collection, doc, getDoc, query, orderBy, startAt } from "firebase/firestore";  
+import { collection, doc, getDoc, query, orderBy, startAt } from "firebase/firestore";
 const citiesRef = collection(db, "cities");
 
 const docSnap = await getDoc(doc(citiesRef, "SF"));

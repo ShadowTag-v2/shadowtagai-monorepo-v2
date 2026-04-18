@@ -9,11 +9,11 @@ steps:
       - '--env=GOOGLE_ENTRYPOINT="python3 src/pipeline/consolidation_beam.py"'
 
   # 2. Deploy to Cloud Run (Worker Pool)
-  # Note: Currently Cloud Run Worker Pools (for Pub/Sub) are often just Services 
-  # triggered by Eventarc or standalone Pull consumers. 
+  # Note: Currently Cloud Run Worker Pools (for Pub/Sub) are often just Services
+  # triggered by Eventarc or standalone Pull consumers.
   # We will deploy as a Cloud Run Job or Service with sidecar/pull configuration if needed.
-  # For Dataflow (Beam), we typically submit the template. 
-  # BUT since the user asked for "Cloud Run Worker Pool Pull-based Subscription", 
+  # For Dataflow (Beam), we typically submit the template.
+  # BUT since the user asked for "Cloud Run Worker Pool Pull-based Subscription",
   # we assume deploying a container that runs the Beam pipeline in "DirectRunner" or similar,
   # OR acting as a standard python Pub/Sub puller.
   # Given the "consolidation_beam.py" is a Dataflow pipeline, running it on Cloud Run requires DirectRunner
@@ -31,7 +31,7 @@ steps:
       - 'trinity-worker'
       - '--image=gcr.io/$PROJECT_ID/trinity-worker:latest'
       - '--region=$_REGION'
-      # Worker Pools custom flags (if any) or standard run flags. 
+      # Worker Pools custom flags (if any) or standard run flags.
       # Since we are pulling, we might not need specific trigger configs effectively here unless scaling.
       - '--set-env-vars=PROJECT_ID=$PROJECT_ID,TOPIC_ID=trinity-input-stream'
 

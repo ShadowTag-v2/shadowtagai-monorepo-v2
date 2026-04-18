@@ -59,4 +59,3 @@ class RealtimeUpdatesMode
         return constant($const);
     }
 }
-

@@ -21,34 +21,22 @@ load_dotenv()
 api_key = os.environ["GOOGLE_API_KEY"]
 
 # Initialize Google API Client
-client=genai.Client(api_key=api_key)
+client = genai.Client(api_key=api_key)
 
 # Upload a sample file to the client.files API
 file_path = "/content/image.png"
 display_name = "Gemini Logo"
-file_response = client.files.upload(
-    file=open(file_path, "rb"),
-    config={
-        "mime_type":"image/png",
-        "display_name":display_name
-    }
-)
+file_response = client.files.upload(file=open(file_path, "rb"), config={"mime_type": "image/png", "display_name": display_name})
 print(f"Uploaded file {file_response.display_name} as: {file_response.uri}")
 
 # Retrieve the uploaded file from the client.files.get
-get_file =client.files.get(name=file_response.name)
+get_file = client.files.get(name=file_response.name)
 print(f"Retrieved file {get_file.display_name} as: {get_file.uri}")
 
 # Generate content using the client.models API
 prompt = "Describe the image with a creative description"
 model_name = "gemini-2.5-flash"
-response = client.models.generate_content(
-    model=model_name,
-    contents=[
-      prompt,
-      file_response
-    ]
-)
+response = client.models.generate_content(model=model_name, contents=[prompt, file_response])
 print(response.text)
 
 # Delete the sample file

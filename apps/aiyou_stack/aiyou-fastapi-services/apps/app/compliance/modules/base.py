@@ -83,7 +83,9 @@ class ComplianceModule(ABC):
 
     @abstractmethod
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput,
+        self,
+        control: ControlDefinition,
+        input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single control against the input data.
 
@@ -214,7 +216,9 @@ class ComplianceModule(ABC):
         )
 
     async def validate_content(
-        self, content: str, context: str | None = None,
+        self,
+        content: str,
+        context: str | None = None,
     ) -> list[ValidationViolation]:
         """Validate generated content against this module's rules.
 
@@ -322,7 +326,9 @@ class ComplianceModule(ABC):
     # =========================================================================
 
     async def _generate_recommendations(
-        self, control_results: list[ControlResult], input_data: AssessmentInput,
+        self,
+        control_results: list[ControlResult],
+        input_data: AssessmentInput,
     ) -> list[str]:
         """Generate recommendations based on assessment results."""
         recommendations = []
@@ -342,7 +348,9 @@ class ComplianceModule(ABC):
         return recommendations
 
     def _requires_human_review(
-        self, control_results: list[ControlResult], input_data: AssessmentInput,
+        self,
+        control_results: list[ControlResult],
+        input_data: AssessmentInput,
     ) -> bool:
         """Determine if human review is required."""
         # High-risk content always requires review
@@ -363,7 +371,10 @@ class ComplianceModule(ABC):
         return avg_score < 0.5
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None,
+        self,
+        rule: ValidationRule,
+        content: str,
+        context: str | None,
     ) -> ValidationViolation | None:
         """Check a single validation rule against content.
 

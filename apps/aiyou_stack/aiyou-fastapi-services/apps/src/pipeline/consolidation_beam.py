@@ -11,8 +11,7 @@ FAILURE_TAG = "failure"
 
 
 class ConsolidateFn(beam.DoFn):
-    """Consolidates incoming data rows.
-    """
+    """Consolidates incoming data rows."""
 
     def process(self, row: dict[str, Any]) -> Any:
         try:
@@ -39,7 +38,8 @@ def run_pipeline(input_data: list[dict[str, Any]], runner: str = "DirectRunner")
         rows = p | "Create" >> beam.Create(input_data)
 
         results = rows | "Consolidate" >> beam.ParDo(ConsolidateFn()).with_outputs(
-            FAILURE_TAG, main=SUCCESS_TAG,
+            FAILURE_TAG,
+            main=SUCCESS_TAG,
         )
 
         success = results[SUCCESS_TAG]

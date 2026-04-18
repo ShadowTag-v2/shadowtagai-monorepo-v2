@@ -58,7 +58,12 @@ async def push_to_repo(
     # Prepare files
     files = {
         "README.md": _generate_readme(
-            query, readme_summary, crm_score, cycles, tools_used, query_id,
+            query,
+            readme_summary,
+            crm_score,
+            cycles,
+            tools_used,
+            query_id,
         ),
         "ANSWER.md": _generate_answer(query, answer),
         "EBP.md": _generate_ebp(ebp_content),
@@ -111,7 +116,8 @@ async def _get_base_sha(client: httpx.AsyncClient, repo_name: str, headers: dict
     """Get SHA of default branch"""
     for branch in ["main", "master"]:
         resp = await client.get(
-            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}", headers=headers,
+            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}",
+            headers=headers,
         )
         if resp.status_code == 200:
             return resp.json()["object"]["sha"]
@@ -119,7 +125,11 @@ async def _get_base_sha(client: httpx.AsyncClient, repo_name: str, headers: dict
 
 
 async def _create_branch(
-    client: httpx.AsyncClient, repo_name: str, branch: str, base_sha: str, headers: dict,
+    client: httpx.AsyncClient,
+    repo_name: str,
+    branch: str,
+    base_sha: str,
+    headers: dict,
 ) -> bool:
     """Create a new branch"""
     resp = await client.post(
@@ -152,7 +162,12 @@ async def _push_file(
 
 
 def _generate_readme(
-    query: str, summary: str, crm_score: float, cycles: int, tools: list[str], query_id: str,
+    query: str,
+    summary: str,
+    crm_score: float,
+    cycles: int,
+    tools: list[str],
+    query_id: str,
 ) -> str:
     """Generate README.md content"""
     tools_str = ", ".join(tools) if tools else "None"

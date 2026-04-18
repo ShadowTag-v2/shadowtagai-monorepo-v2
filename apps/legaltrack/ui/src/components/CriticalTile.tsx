@@ -47,11 +47,11 @@ export const CriticalTile: React.FC<CriticalTileProps> = ({
         <h3 className="text-sm tracking-widest uppercase opacity-70">{matterName}</h3>
       </div>
 
-      {/* 
+      {/*
         Compliance Note (NY SB S7263 UPL ban):
-        We surface ONLY the calculated procedural deadline and rule citation. 
-        Zero AI legal advice is generated here. The timeline exists as a router 
-        to the human-approved workflow or original court document. 
+        We surface ONLY the calculated procedural deadline and rule citation.
+        Zero AI legal advice is generated here. The timeline exists as a router
+        to the human-approved workflow or original court document.
       */}
       <div className="absolute top-8 right-8">
         <h3 className="text-xs uppercase tracking-widest opacity-60">Source: {ruleCitation}</h3>

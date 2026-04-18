@@ -189,7 +189,11 @@ class GPTRAM:
     # === Violation Tracking ===
 
     async def log_violation(
-        self, rule_id: str, severity: str, context_hash: str = "", details: dict[str, Any] = None,
+        self,
+        rule_id: str,
+        severity: str,
+        context_hash: str = "",
+        details: dict[str, Any] = None,
     ) -> str:
         """Record a violation event.
 
@@ -276,7 +280,9 @@ class GPTRAM:
         return stats
 
     async def get_recent_violations(
-        self, limit: int = 10, rule_id: str = None,
+        self,
+        limit: int = 10,
+        rule_id: str = None,
     ) -> list[dict[str, Any]]:
         """Get recent violations."""
         violations = []
@@ -481,7 +487,9 @@ if __name__ == "__main__":
 
         # Log another violation
         await gptram.log_violation(
-            rule_id="ATP_519_002", severity="II", details={"reason": "High risk without approval"},
+            rule_id="ATP_519_002",
+            severity="II",
+            details={"reason": "High risk without approval"},
         )
 
         # Get stats

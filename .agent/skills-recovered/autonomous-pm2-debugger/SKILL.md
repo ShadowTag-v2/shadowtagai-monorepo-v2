@@ -8,7 +8,7 @@ description: Empowers the agent to autonomously fetch backend logs and debug Nod
 Use this skill when working with backend microservices, when a service crashes, or when the user mentions errors in a running daemon/server.
 
 ## Core Philosophy
-Do NOT rely on the user to be a "human log-fetching service." If a backend service is failing, you have the autonomy and the tools to find out why yourself. 
+Do NOT rely on the user to be a "human log-fetching service." If a backend service is failing, you have the autonomy and the tools to find out why yourself.
 
 ## Execution Protocol
 

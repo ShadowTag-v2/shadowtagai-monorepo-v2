@@ -157,7 +157,11 @@ class PerplexityMCPServer:
 
         # Calculate risk score
         risk_score = self._calculate_risk_score(
-            request_type, content, user_context, compliance_flags, transaction_value,
+            request_type,
+            content,
+            user_context,
+            compliance_flags,
+            transaction_value,
         )
 
         # Make decision
@@ -198,7 +202,9 @@ class PerplexityMCPServer:
         )
 
     def _check_compliance_domains(
-        self, content: str, user_context: dict[str, Any],
+        self,
+        content: str,
+        user_context: dict[str, Any],
     ) -> dict[str, bool]:
         """Check which compliance domains apply."""
         flags = {}

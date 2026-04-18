@@ -27,9 +27,7 @@ def send_message(channel, message):
     payload = {"channel": channel, "text": message}
 
     try:
-        response = requests.post(
-            "https://slack.com/api/chat.postMessage", headers=headers, json=payload
-        )
+        response = requests.post("https://slack.com/api/chat.postMessage", headers=headers, json=payload)
         response.raise_for_status()
         data = response.json()
 

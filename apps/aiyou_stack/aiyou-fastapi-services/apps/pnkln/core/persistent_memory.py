@@ -219,8 +219,7 @@ class PersistentMemory:
         min_confidence: float = 0.5,
         limit: int = 10,
     ) -> list[Insight]:
-        """Search past learnings to apply to current task.
-        """
+        """Search past learnings to apply to current task."""
         results = []
 
         for insight in self.insights.values():
@@ -305,7 +304,9 @@ class PersistentMemory:
             "insights_contributed": agent.insights_contributed,
             "domains_mastered": agent.domains_mastered,
             "top_specializations": sorted(
-                agent.specializations.items(), key=lambda x: x[1], reverse=True,
+                agent.specializations.items(),
+                key=lambda x: x[1],
+                reverse=True,
             )[:5],
             "created": agent.created_at.isoformat(),
             "last_active": agent.last_active.isoformat(),
@@ -318,7 +319,9 @@ class PersistentMemory:
     def leaderboard(self, top_n: int = 10) -> list[dict[str, Any]]:
         """Get top agents by experience points."""
         sorted_agents = sorted(
-            self.agents.values(), key=lambda a: a.experience_points, reverse=True,
+            self.agents.values(),
+            key=lambda a: a.experience_points,
+            reverse=True,
         )
 
         return [
@@ -337,7 +340,10 @@ class PersistentMemory:
     # =========================================================================
 
     def transfer_knowledge(
-        self, from_agent_id: str, to_agent_id: str, domain: str,
+        self,
+        from_agent_id: str,
+        to_agent_id: str,
+        domain: str,
     ) -> dict[str, Any]:
         """Level 4 agent teaches Level 1-3 agent.
         Transfer domain knowledge.

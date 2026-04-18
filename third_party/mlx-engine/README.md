@@ -1,5 +1,5 @@
 <p align="center">
-  <picture> 
+  <picture>
     <img alt="lmstudio + MLX" src="https://github.com/user-attachments/assets/128bf3ba-d8d6-4fc8-85c9-4d0113ba5499">
   </picture>
 </p>
@@ -57,7 +57,7 @@ Download models with the `lms` CLI tool. The `lms` CLI documentation can be foun
 Run the `demo.py` script with an MLX text generation model:
 ```bash
 lms get mlx-community/Meta-Llama-3.1-8B-Instruct-4bit
-python demo.py --model mlx-community/Meta-Llama-3.1-8B-Instruct-4bit 
+python demo.py --model mlx-community/Meta-Llama-3.1-8B-Instruct-4bit
 ```
 [mlx-community/Meta-Llama-3.1-8B-Instruct-4bit](https://model.lmstudio.ai/download/mlx-community/Meta-Llama-3.1-8B-Instruct-4bit) - 4.53 GB
 

@@ -21,4 +21,3 @@ class Location
         static::$is_initialized = true;
     }
 }
-

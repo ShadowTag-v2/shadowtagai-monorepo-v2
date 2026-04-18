@@ -265,12 +265,12 @@ void ane_bridge_free(ANEKernelHandle *kernel) {
         free(kernel->ioOutputs);
         free(kernel->inputBytes);
         free(kernel->outputBytes);
-        
+
         // Explicitly nil Objective-C objects to trigger ARC release before freeing struct
         kernel->model = nil;
         kernel->request = nil;
         kernel->tmpDir = nil;
-        
+
         free(kernel);
     }
 }

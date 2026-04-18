@@ -113,9 +113,9 @@
     // Stripe publishable key (frontend-safe)
     const stripe = Stripe('pklive_51Syh9JEHnWpykeMix1QOpvIGqGYYMEXJhC0CHdCKQ1OAnQM6aSoE0Qk9e4axIf07r7b4ZaEQNU0izDO6F9ACZlNV00vF4W4mS2');
     const API_BASE = window.location.hostname === 'localhost'
-      ? 'http://localhost:8080' 
+      ? 'http://localhost:8080'
       : 'https://counselconduit-api.run.app';
-    
+
     // Live price IDs
     const PRICES = {
       pro_monthly: 'price_1TNKSREHnWpykeMiRMDlVgLl',
@@ -150,12 +150,12 @@
       btn.addEventListener('click', async (e) => {
         const card = e.target.closest('.pricing-card');
         const tier = card.querySelector('.tier-name').textContent.toLowerCase();
-        
+
         if (tier === 'trial') {
           window.location.href = '/onboarding.html';
           return;
         }
-        
+
         if (tier === 'enterprise') {
           window.location.href = 'mailto:enterprise@kovelai.com?subject=Enterprise%20Plan%20Inquiry';
           return;
@@ -191,4 +191,3 @@
   </script>
 </body>
 </html>
-

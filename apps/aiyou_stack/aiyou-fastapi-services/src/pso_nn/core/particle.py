@@ -55,7 +55,10 @@ class Particle:
 
     @classmethod
     def random(
-        cls, dimensions: int, bounds: tuple[float, float] = (-1.0, 1.0), particle_id: int = 0,
+        cls,
+        dimensions: int,
+        bounds: tuple[float, float] = (-1.0, 1.0),
+        particle_id: int = 0,
     ) -> "Particle":
         """Create a randomly initialized particle."""
         low, high = bounds
@@ -107,7 +110,9 @@ class Particle:
         self.velocity = m_hat / (np.sqrt(v_hat) + eps)
 
     def update_position(
-        self, bounds: tuple[float, float] | None = None, max_velocity: float = 1.0,
+        self,
+        bounds: tuple[float, float] | None = None,
+        max_velocity: float = 1.0,
     ) -> None:
         """Update position using current velocity.
 

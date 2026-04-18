@@ -27,8 +27,7 @@ def is_starlink_ip(ip_addr: str) -> bool:
 
 
 def get_routing_decision(ip_addr: str) -> dict[str, Any]:
-    """Returns the routing payload based on ingress source.
-    """
+    """Returns the routing payload based on ingress source."""
     is_satellite = is_starlink_ip(ip_addr)
 
     return {

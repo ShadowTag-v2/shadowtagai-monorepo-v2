@@ -23,9 +23,7 @@ SYSTEM_PROMPT = """
 
 
 # Pre processing
-async def enfore_business_rules(
-    tool: ToolboxTool, args: dict[str, Any], tool_context: ToolContext
-) -> dict[str, Any] | None:
+async def enfore_business_rules(tool: ToolboxTool, args: dict[str, Any], tool_context: ToolContext) -> dict[str, Any] | None:
     """
     Callback fired before a tool is executed.
     Enforces business logic: Max stay duration is 14 days.
@@ -77,9 +75,7 @@ async def enrich_response(
     return None
 
 
-async def run_chat_turn(
-    runner: Runner, session_id: str, user_id: str, message_text: str
-):
+async def run_chat_turn(runner: Runner, session_id: str, user_id: str, message_text: str):
     """Executes a single chat turn and prints the interaction."""
     print(f"\nUSER: '{message_text}'")
     response_text = ""
@@ -116,9 +112,7 @@ async def main():
     runner = Runner(app=app, session_service=InMemorySessionService())
     session_id = "test-session"
     user_id = "test-user"
-    await runner.session_service.create_session(
-        app_name=app.name, user_id=user_id, session_id=session_id
-    )
+    await runner.session_service.create_session(app_name=app.name, user_id=user_id, session_id=session_id)
 
     # First turn: Successful booking
     await run_chat_turn(runner, session_id, user_id, "Book hotel with id 3.")

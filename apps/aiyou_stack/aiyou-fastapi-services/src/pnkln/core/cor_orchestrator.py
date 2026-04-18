@@ -109,7 +109,11 @@ class ToolRegistry:
         self._tool_names: list[str] = []
 
     def register_tool(
-        self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None,
+        self,
+        name: str,
+        description: str,
+        func: Callable,
+        embedding: np.ndarray | None = None,
     ) -> None:
         """Register tool with optional embedding."""
         if embedding is None:
@@ -136,7 +140,10 @@ class ToolRegistry:
             )
 
     def retrieve_tools(
-        self, query: str, top_k: int = 5, min_similarity: float = 0.0,
+        self,
+        query: str,
+        top_k: int = 5,
+        min_similarity: float = 0.0,
     ) -> list[tuple[str, float]]:
         """Retrieve most relevant tools for query.
 
@@ -319,7 +326,8 @@ class PipelineStage(Generic[T, U]):
         try:
             # Execute with timeout
             result = await asyncio.wait_for(
-                self.func(context, input_data), timeout=self.timeout_ms / 1000.0,
+                self.func(context, input_data),
+                timeout=self.timeout_ms / 1000.0,
             )
 
             # Record latency
@@ -522,7 +530,9 @@ class ConcurrentExecutor:
             )
 
             return ConcurrentResult(
-                results=successful_results, latency_ms=latency_ms, errors=errors,
+                results=successful_results,
+                latency_ms=latency_ms,
+                errors=errors,
             )
 
         except TimeoutError:
@@ -672,7 +682,10 @@ class CorOrchestrator:
         logger.info(f"Registered executor: {name}")
 
     async def execute_pipeline(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
+        self,
+        pipeline_name: str,
+        context: ExecutionContext,
+        input_data: Any,
     ) -> Any:
         """Execute registered pipeline by name.
 
@@ -739,7 +752,9 @@ class CorOrchestrator:
 
         """
         return ExecutionContext(
-            request_id=request_id, latency_budget_ms=latency_budget_ms, metadata=metadata or {},
+            request_id=request_id,
+            latency_budget_ms=latency_budget_ms,
+            metadata=metadata or {},
         )
 
     # ========================================================================
@@ -751,7 +766,11 @@ class CorOrchestrator:
         self.tool_registry.register_tool(name, description, func)
 
     async def execute_with_tool_selection(
-        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3,
+        self,
+        context: ExecutionContext,
+        query: str,
+        input_data: Any,
+        top_k: int = 3,
     ) -> Any:
         """Execute using dynamically selected tools.
 
@@ -778,7 +797,9 @@ class CorOrchestrator:
         # Execute best tool
         best_tool_name, score = tools[0]
         result, latency_ms = await self.tool_registry.execute_tool(
-            best_tool_name, context, input_data,
+            best_tool_name,
+            context,
+            input_data,
         )
 
         # Store in memory
@@ -788,7 +809,10 @@ class CorOrchestrator:
         return result
 
     async def execute_pipeline_with_memory(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
+        self,
+        pipeline_name: str,
+        context: ExecutionContext,
+        input_data: Any,
     ) -> Any:
         """Execute pipeline and store result in memory.
 
@@ -881,7 +905,9 @@ async def example_usage():
     # Execute
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
     result = await orchestrator.execute_pipeline(
-        "judge_six", context, {"user_query": "example request"},
+        "judge_six",
+        context,
+        {"user_query": "example request"},
     )
 
     print(f"Result: {result}")
@@ -892,7 +918,8 @@ async def example_usage():
 if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Run example

@@ -280,7 +280,9 @@ class GPTRAM:
         return stats
 
     async def get_recent_violations(
-        self, limit: int = 10, rule_id: str = None,
+        self,
+        limit: int = 10,
+        rule_id: str = None,
     ) -> list[dict[str, Any]]:
         """Get recent violations."""
         violations = []

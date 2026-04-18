@@ -21,5 +21,3 @@ The Google Cloud client library for the Logging types.
 ## What's this?
 
 The Google Cloud client library for the Logging types.
-
-

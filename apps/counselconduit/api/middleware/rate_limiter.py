@@ -88,9 +88,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
     Cor.30 R14-R15: Rate limit by IP + route. Stricter for auth/payment/export.
     """
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         client_ip = _get_client_ip(request)
         path = request.url.path
         max_requests, window_seconds = _match_route_limit(path)
@@ -128,9 +126,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         # Add rate limit headers (RFC 6585 / draft-ietf-httpapi-ratelimit-headers)
         response.headers["X-RateLimit-Limit"] = str(max_requests)
-        response.headers["X-RateLimit-Remaining"] = str(
-            max(0, max_requests - current_count - 1)
-        )
+        response.headers["X-RateLimit-Remaining"] = str(max(0, max_requests - current_count - 1))
         response.headers["X-RateLimit-Reset"] = str(window_seconds)
 
         return response

@@ -25,12 +25,12 @@ declare -A SECRETS=(
 for secret_name in "${!SECRETS[@]}"; do
   env_var="${SECRETS[$secret_name]}"
   value=$(grep "^${env_var}=" "$ENV_FILE" | cut -d'=' -f2-)
-  
+
   if [ -z "$value" ]; then
     echo "⏭️  Skipping $secret_name ($env_var not found in .env)"
     continue
   fi
-  
+
   # Create or update secret
   if gcloud secrets describe "$secret_name" --project="$PROJECT" &>/dev/null; then
     echo "$value" | gcloud secrets versions add "$secret_name" \

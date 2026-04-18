@@ -30,4 +30,3 @@ class DeleteDatabaseMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""PreToolUse hook for Bash - Validate bash commands for best practices and safety
-"""
+"""PreToolUse hook for Bash - Validate bash commands for best practices and safety"""
 
 import json
 import re

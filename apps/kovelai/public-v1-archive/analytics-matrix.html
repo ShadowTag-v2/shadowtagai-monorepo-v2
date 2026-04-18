@@ -27,7 +27,7 @@
     <div class="dashboard-container">
         <h1 class="section-title gradient-sweep">Unified Analytics Matrix</h1>
         <p class="section-subtitle">Real-time G-K8M57QXYZ endpoint convergence across KovelAI and ShadowTag AI.</p>
-        
+
         <div class="matrix-grid">
             <div class="chart-card">
                 <h3>ShadowTag API Conversions (A/B)</h3>
@@ -55,8 +55,8 @@
                     borderWidth: 1
                 }]
             },
-            options: { 
-                responsive: true, 
+            options: {
+                responsive: true,
                 scales: { y: { beginAtZero: true } },
                 animation: {
                     duration: 2500,
@@ -71,7 +71,7 @@
                 const res = await fetch('http://localhost:3001/api/v1/analytics');
                 const parsed = await res.json();
                 const counts = parsed.data.map(row => row.count);
-                
+
                 const ctxIntake = document.getElementById('intakeChart').getContext('2d');
                 new Chart(ctxIntake, {
                     type: 'line',
@@ -86,8 +86,8 @@
                             backgroundColor: 'rgba(0, 255, 136, 0.1)'
                         }]
                     },
-                    options: { 
-                        responsive: true, 
+                    options: {
+                        responsive: true,
                         scales: { y: { beginAtZero: true } },
                         animation: {
                             duration: 3000,
@@ -99,7 +99,7 @@
                 console.warn("SQLite Node offline. Chart generation skipped.");
             }
         }
-        
+
         loadIntakeData();
     </script>
 </body>

@@ -40,8 +40,8 @@ def demo_single_vector():
         print(f"    MSE:              {mse:.6f}")
         print(f"    Cosine similarity: {cosine:.6f}")
         print(f"    Compression ratio: {ratio:.1f}×")
-        print(f"    Quantize time:     {t_quant*1000:.2f} ms")
-        print(f"    Dequantize time:   {t_dequant*1000:.2f} ms")
+        print(f"    Quantize time:     {t_quant * 1000:.2f} ms")
+        print(f"    Dequantize time:   {t_dequant * 1000:.2f} ms")
 
 
 def demo_kv_cache():

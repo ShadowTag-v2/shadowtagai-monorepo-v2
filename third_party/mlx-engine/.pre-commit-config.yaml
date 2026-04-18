@@ -13,4 +13,3 @@ repos:
       args: [--target-version, py311 ]
       exclude: ^mlx_engine/external/
       stages: [pre-commit]
-

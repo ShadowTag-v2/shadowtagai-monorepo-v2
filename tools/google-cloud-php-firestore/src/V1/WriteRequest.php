@@ -274,4 +274,3 @@ class WriteRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

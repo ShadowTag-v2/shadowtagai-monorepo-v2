@@ -1,2 +1,1 @@
-"""Innovation Lab Agents - AI-powered innovation specialists
-"""
+"""Innovation Lab Agents - AI-powered innovation specialists"""

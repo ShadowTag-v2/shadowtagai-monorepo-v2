@@ -486,12 +486,15 @@ class MultiAgentDebateSystem:
         # Step 4: Debate disputed conflicts
         if disputed_conflicts:
             debate_result = await self._conduct_debate(
-                transcript=transcript, disputed=disputed_conflicts, analyses=analyses,
+                transcript=transcript,
+                disputed=disputed_conflicts,
+                analyses=analyses,
             )
 
             # Step 5: Neutral agent synthesizes
             final_conflicts = await self._synthesize_consensus(
-                consensus=consensus_conflicts, debate_result=debate_result,
+                consensus=consensus_conflicts,
+                debate_result=debate_result,
             )
         else:
             final_conflicts = consensus_conflicts
@@ -541,7 +544,8 @@ class MultiAgentDebateSystem:
         return conflicts
 
     def _find_consensus(
-        self, analyses: dict[AgentRole, list[DetectedConflict]],
+        self,
+        analyses: dict[AgentRole, list[DetectedConflict]],
     ) -> list[DetectedConflict]:
         """Find conflicts where all 3 agents agree
 
@@ -601,7 +605,10 @@ class MultiAgentDebateSystem:
         return disputes
 
     async def _conduct_debate(
-        self, transcript, disputed: list[tuple], analyses: dict[AgentRole, list[DetectedConflict]],
+        self,
+        transcript,
+        disputed: list[tuple],
+        analyses: dict[AgentRole, list[DetectedConflict]],
     ) -> dict[str, Any]:
         """Conduct panel debate on disputed conflicts
 
@@ -663,7 +670,9 @@ OUTPUT FORMAT:
         return debate_result
 
     async def _synthesize_consensus(
-        self, consensus: list[DetectedConflict], debate_result: dict[str, Any],
+        self,
+        consensus: list[DetectedConflict],
+        debate_result: dict[str, Any],
     ) -> list[DetectedConflict]:
         """Synthesize final conflict list from consensus + debate
 
@@ -734,7 +743,11 @@ OUTPUT FORMAT:
                         confidence=0.85,
                     ),
                     party_b_proposal=Term(
-                        topic="timeline", value="ASAP", normalized=7, context="...", confidence=0.70,
+                        topic="timeline",
+                        value="ASAP",
+                        normalized=7,
+                        context="...",
+                        confidence=0.70,
                     ),
                     confidence=0.78,
                     explanation="Timeline ambiguity",
@@ -799,7 +812,9 @@ OUTPUT FORMAT:
         ]
 
     async def update_glicko_ratings(
-        self, conflicts: list[DetectedConflict], user_feedback: dict[UUID, bool],
+        self,
+        conflicts: list[DetectedConflict],
+        user_feedback: dict[UUID, bool],
     ) -> None:
         """Update Glicko-2 ratings based on user feedback
 

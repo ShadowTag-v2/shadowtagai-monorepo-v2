@@ -146,7 +146,9 @@ class AntigravityPipeline:
 
         # Agent Response Event (Intake thought process)
         current_session.add_event(
-            "model", f"Decomposed task into {len(atoms)} atoms.", type="message",
+            "model",
+            f"Decomposed task into {len(atoms)} atoms.",
+            type="message",
         )
 
         # ... (rest of pipeline)

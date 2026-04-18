@@ -50,9 +50,7 @@ def test_parameter_schema_float():
 
 def test_parameter_schema_boolean():
     """Tests ParameterSchema with type 'boolean'."""
-    schema = ParameterSchema(
-        name="is_active", type="boolean", description="Activity status"
-    )
+    schema = ParameterSchema(name="is_active", type="boolean", description="Activity status")
     expected_type = bool
     assert schema._ParameterSchema__get_type() == expected_type
 
@@ -66,9 +64,7 @@ def test_parameter_schema_boolean():
 def test_parameter_schema_array_string():
     """Tests ParameterSchema with type 'array' containing strings."""
     item_schema = ParameterSchema(name="", type="string", description="")
-    schema = ParameterSchema(
-        name="tags", type="array", description="List of tags", items=item_schema
-    )
+    schema = ParameterSchema(name="tags", type="array", description="List of tags", items=item_schema)
 
     assert schema._ParameterSchema__get_type() == list[str]
 
@@ -82,9 +78,7 @@ def test_parameter_schema_array_string():
 def test_parameter_schema_array_integer():
     """Tests ParameterSchema with type 'array' containing integers."""
     item_schema = ParameterSchema(name="", type="integer", description="")
-    schema = ParameterSchema(
-        name="scores", type="array", description="List of scores", items=item_schema
-    )
+    schema = ParameterSchema(name="scores", type="array", description="List of scores", items=item_schema)
 
     param = schema.to_param()
     assert isinstance(param, Parameter)
@@ -95,9 +89,7 @@ def test_parameter_schema_array_integer():
 
 def test_parameter_schema_array_no_items_defaults_to_any():
     """Tests that 'array' type defaults to list[Any] if 'items' is None."""
-    schema = ParameterSchema(
-        name="any_list", type="array", description="List without item type"
-    )
+    schema = ParameterSchema(name="any_list", type="array", description="List without item type")
 
     expected_type = list[Any]
     assert schema._ParameterSchema__get_type() == expected_type
@@ -112,9 +104,7 @@ def test_parameter_schema_array_no_items_defaults_to_any():
 def test_parameter_schema_unsupported_type_error():
     """Tests that an unsupported type raises ValueError."""
     unsupported_type = "datetime"
-    schema = ParameterSchema(
-        name="event_time", type=unsupported_type, description="When it happened"
-    )
+    schema = ParameterSchema(name="event_time", type=unsupported_type, description="When it happened")
 
     expected_error_msg = f"Unsupported schema type: {unsupported_type}"
     with pytest.raises(ValueError, match=expected_error_msg):

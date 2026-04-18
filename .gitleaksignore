@@ -1,0 +1,10 @@
+# Gitleaks false positive allowlist
+# These are test fixtures with deliberately fake API keys used to verify
+# that the 17-Layer Gauntlet correctly BLOCKS secrets in agent content.
+# They are NOT real credentials.
+
+# Test gauntlet: fake key used to test Layer 5 (secret detection)
+labs/uphillsnowball/tests/test_gauntlet.py:generic-api-key:41
+
+# Judge #6 Go test: fake key used in test assertions
+apps/counselconduit/judge6/main_test.go:generic-api-key:165

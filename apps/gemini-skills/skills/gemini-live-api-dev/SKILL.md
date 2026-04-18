@@ -255,7 +255,7 @@ This index contains links to all documentation pages in `.md.txt` format. Use we
 1. Fetch `llms.txt` to discover available documentation pages
 2. Fetch specific pages (e.g., `https://ai.google.dev/gemini-api/docs/live-session.md.txt`)
 
-### Key Documentation Pages 
+### Key Documentation Pages
 
 > [!IMPORTANT]
 > Those are not all the documentation pages. Use the `llms.txt` index to discover available documentation pages

@@ -1,5 +1,4 @@
-"""Simple example of using the Vertex AI RAG Service
-"""
+"""Simple example of using the Vertex AI RAG Service"""
 
 import json
 

@@ -194,7 +194,11 @@ class CorpusIndexer:
         return indexed
 
     def search(
-        self, query: str, doc_type: str = None, language: str = None, limit: int = 10,
+        self,
+        query: str,
+        doc_type: str = None,
+        language: str = None,
+        limit: int = 10,
     ) -> list[dict]:
         """Search the corpus.
 

@@ -45,7 +45,9 @@ class RangerStandardInspector:
         logger.info("🔍 CHECKING: Linting (Ruff)")
         try:
             res = subprocess.run(
-                ["ruff", "check", str(self.target_path), "--fix"], capture_output=True, timeout=60,
+                ["ruff", "check", str(self.target_path), "--fix"],
+                capture_output=True,
+                timeout=60,
             )
             if res.returncode != 0:
                 self.result.faults.append(

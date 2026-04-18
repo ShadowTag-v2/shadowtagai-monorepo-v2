@@ -25,7 +25,7 @@ EOF
 
 # Output JSON
 jq -n --arg directive "$DIRECTIVE" \
-  '{ 
+  '{
     decision: "allow",
     hookSpecificOutput: {
         hookEventName: "BeforeAgent",

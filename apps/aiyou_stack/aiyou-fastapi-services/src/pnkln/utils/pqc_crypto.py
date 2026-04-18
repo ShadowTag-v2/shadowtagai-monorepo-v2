@@ -45,8 +45,7 @@ class HybridSigner:
 
     @staticmethod
     def verify(public_key: bytes, message: bytes, signature: bytes) -> bool:
-        """Verifies both components of the hybrid signature.
-        """
+        """Verifies both components of the hybrid signature."""
         if len(public_key) < 64 or len(signature) < 128:
             logging.error("///▞ PQC :: Invalid hybrid key or signature length")
             return False

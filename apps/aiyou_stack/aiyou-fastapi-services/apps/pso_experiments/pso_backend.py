@@ -35,8 +35,7 @@ def _xor_dataset() -> tuple[list[list[float]], list[list[float]]]:
 # Public wrapper class
 # ----------------------------------------------------------------------
 class PsoModel:
-    """A convenience wrapper around the experimental ``Model`` class.
-    """
+    """A convenience wrapper around the experimental ``Model`` class."""
 
     def __init__(self) -> None:
         # Build a *very* small network – feel free to customise.

@@ -4,8 +4,8 @@ linkTitle: "Source"
 type: docs
 weight: 1
 description: >
-  Elasticsearch is a distributed, free and open search and analytics engine 
-  for all types of data, including textual, numerical, geospatial, structured, 
+  Elasticsearch is a distributed, free and open search and analytics engine
+  for all types of data, including textual, numerical, geospatial, structured,
   and unstructured.
 no_list: true
 ---

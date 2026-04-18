@@ -2,11 +2,11 @@
 
 ## 1. Is it still an IDE?
 
-**No, absolutely not.** 
+**No, absolutely not.**
 
-An IDE (Integrated Development Environment) is strictly a tool for writing, debugging, and compiling code. Because your target audience consists of non-technical end-users (e.g., financial analysts, legal researchers, marketers, or competitive intelligence teams), forcing them into an IDE paradigm will kill your product's adoption. 
+An IDE (Integrated Development Environment) is strictly a tool for writing, debugging, and compiling code. Because your target audience consists of non-technical end-users (e.g., financial analysts, legal researchers, marketers, or competitive intelligence teams), forcing them into an IDE paradigm will kill your product's adoption.
 
-What you are describing is an **Agentic Workspace**, an **Autonomous Command Center**, or an **AI Research Dashboard** (think of a next-generation Bloomberg Terminal). 
+What you are describing is an **Agentic Workspace**, an **Autonomous Command Center**, or an **AI Research Dashboard** (think of a next-generation Bloomberg Terminal).
 
 You are taking the best concept from Antigravity—the "Manager View" where a human orchestrates AI workers—and replacing the code editor with goal-setting inputs, live progress dashboards, data synthesis views, and approval queues.
 
@@ -31,9 +31,9 @@ If your primary selling point is **"continuous researching ability,"** you must 
 Furthermore, if your app aggressively runs headless browsers to scrape the web 24/7 from a user's home or office Wi-Fi, their personal IP address will quickly get blacklisted by Cloudflare and anti-bot systems.
 
 ### The Solution: Cloud-Browser APIs
-To make the research truly continuous and safe for end-users, your local Tauri app should offload the heavy web scraping. 
-*   Instead of running Playwright locally on the user's machine, your Python sidecar makes API calls to cloud-based agentic browser infrastructure (like **Browserbase**, **Steel.dev**, or **MultiOn**). 
-*   These cloud services handle the headless browsers, proxy rotation, and CAPTCHA solving on their servers, returning the clean, scraped text to your local desktop app. 
-*   This protects the user's IP, prevents their laptop from melting, and ensures reliable data extraction. 
+To make the research truly continuous and safe for end-users, your local Tauri app should offload the heavy web scraping.
+*   Instead of running Playwright locally on the user's machine, your Python sidecar makes API calls to cloud-based agentic browser infrastructure (like **Browserbase**, **Steel.dev**, or **MultiOn**).
+*   These cloud services handle the headless browsers, proxy rotation, and CAPTCHA solving on their servers, returning the clean, scraped text to your local desktop app.
+*   This protects the user's IP, prevents their laptop from melting, and ensures reliable data extraction.
 
 **Summary:** A beautiful **Tauri/React frontend**, an uncrackable **Rust backend** enforcing the safety brakes, and a bundled **Python sidecar** orchestrating LangGraph and cloud-browser APIs. That is the ultimate stack for the commercial product you are describing.

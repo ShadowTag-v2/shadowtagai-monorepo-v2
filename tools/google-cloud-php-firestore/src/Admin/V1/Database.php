@@ -1122,4 +1122,3 @@ class Database extends \Google\Protobuf\Internal\Message
     }
 
 }
-

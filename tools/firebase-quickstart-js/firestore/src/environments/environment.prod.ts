@@ -15,7 +15,7 @@
 */
 
 
-/**  If connecting to a live Firebase project (one that you set up in the 
+/**  If connecting to a live Firebase project (one that you set up in the
  * Firebase console) put your config vars into the the object in this file.
  * Otherwise, leave untouched to enable connection to demo project and emulators.
  * For more information about generating, finding, or using project config

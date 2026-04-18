@@ -23,7 +23,8 @@ from libs.steel.write_memory import SovereignMemoryPool
 from libs.steel.sentinel import JudgeSixSentinel
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("GodModeAdmin")
 
@@ -191,7 +192,8 @@ class GodModeRuntime:
 
                 self.swarm = SwarmOrchestrator()
             result = await self.swarm.run_parallel_mission(
-                recon_url=recon_url, executive_task=executive_task,
+                recon_url=recon_url,
+                executive_task=executive_task,
             )
             return json.dumps(result, default=str)[:3000]
 

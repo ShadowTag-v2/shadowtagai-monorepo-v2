@@ -64,9 +64,7 @@ class TestE2EClientAsync:
             ("my-toolset-2", 2, ["get-n-rows", "get-row-by-id"]),
         ],
     )
-    async def test_aload_toolset_specific(
-        self, toolbox, toolset_name, expected_length, expected_tools
-    ):
+    async def test_aload_toolset_specific(self, toolbox, toolset_name, expected_length, expected_tools):
         toolset = await toolbox.aload_toolset(toolset_name)
         assert len(toolset) == expected_length
         for tool in toolset:
@@ -211,9 +209,7 @@ class TestE2EClientSync:
             ("my-toolset-2", 2, ["get-n-rows", "get-row-by-id"]),
         ],
     )
-    def test_load_toolset_specific(
-        self, toolbox, toolset_name, expected_length, expected_tools
-    ):
+    def test_load_toolset_specific(self, toolbox, toolset_name, expected_length, expected_tools):
         toolset = toolbox.load_toolset(toolset_name)
         assert len(toolset) == expected_length
         for tool in toolset:

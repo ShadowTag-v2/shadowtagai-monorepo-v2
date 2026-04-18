@@ -404,4 +404,3 @@ class Target extends \Google\Protobuf\Internal\Message
     }
 
 }
-

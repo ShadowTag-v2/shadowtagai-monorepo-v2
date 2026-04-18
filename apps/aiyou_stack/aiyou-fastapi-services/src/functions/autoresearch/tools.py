@@ -29,8 +29,7 @@ def bash_exec(command: str):
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
 def jetski_browse(url: str):
-    """High-Speed Extraction using JetSki logic.
-    """
+    """High-Speed Extraction using JetSki logic."""
     print(f"🏄 JetSki Browsing: {url}")
     try:
         # User-Agent to avoid simple blocking

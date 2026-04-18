@@ -52,7 +52,10 @@ class PolicyEngine:
         }
 
     def check_policies(
-        self, policy_ids: list[str], evidence: list[Evidence], risk_limits: RiskLimits | None = None,
+        self,
+        policy_ids: list[str],
+        evidence: list[Evidence],
+        risk_limits: RiskLimits | None = None,
     ) -> list[str]:
         """Check policy compliance
 
@@ -83,7 +86,10 @@ class PolicyEngine:
         return violations
 
     def _check_policy(
-        self, policy_id: str, evidence: list[Evidence], risk_limits: RiskLimits | None,
+        self,
+        policy_id: str,
+        evidence: list[Evidence],
+        risk_limits: RiskLimits | None,
     ) -> str | None:
         """Check specific policy
 
@@ -126,7 +132,10 @@ class PolicyEngine:
         return None
 
     def _check_var_limit(
-        self, evidence: list[Evidence], risk_limits: RiskLimits | None, policy: dict,
+        self,
+        evidence: list[Evidence],
+        risk_limits: RiskLimits | None,
+        policy: dict,
     ) -> str | None:
         """Check VaR limit"""
         # Check risk_limits first

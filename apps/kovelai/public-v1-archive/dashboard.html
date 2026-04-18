@@ -13,7 +13,7 @@
         .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--outline-variant); }
         .data-table th { background: var(--surface-highest); font-weight: 600; color: var(--on-surface-variant); }
         .badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: rgba(0, 255, 136, 0.1); color: var(--primary); }
-        
+
         #toast-notification {
             position: fixed; bottom: -100px; right: 2rem; background: var(--surface-highest);
             border: 1px solid var(--primary); padding: 1rem 1.5rem; border-radius: 8px;
@@ -37,7 +37,7 @@
     <div class="dashboard-container">
         <h1 class="section-title gradient-sweep">Lead Intake CRM</h1>
         <p class="section-subtitle">Real-time WebSocket feed of incoming contact requests.</p>
-        
+
         <table class="data-table">
             <thead>
                 <tr>
@@ -82,7 +82,7 @@
             // Wait for Firebase to instantiate
             setTimeout(() => {
                 const db = window.firebase.firestore();
-                
+
                 // Realtime Listener
                 db.collection("contact_requests").orderBy("created_at", "desc").limit(50)
                 .onSnapshot((snapshot) => {
@@ -90,16 +90,16 @@
                         tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No leads found.</td></tr>';
                         return;
                     }
-                    
+
                     // We clear table instead of appending for simplicity on update
                     tableBody.innerHTML = '';
-                    
+
                     let isNewData = false;
-                    
+
                     snapshot.forEach((doc) => {
                         const data = doc.data();
                         const timeStr = data.created_at ? data.created_at.toDate().toLocaleString() : "Just now";
-                        
+
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${timeStr}</td>
@@ -110,16 +110,16 @@
                         `;
                         tableBody.appendChild(tr);
                     });
-                    
+
                     if (!initialLoad && snapshot.docs.length > loadedCount) {
                         // Brand new doc arrived via WS
                         const newestDoc = snapshot.docs[0].data();
                         showToast(newestDoc.name || 'Unknown');
                     }
-                    
+
                     initialLoad = false;
                     loadedCount = snapshot.docs.length;
-                    
+
                 }, (error) => {
                     console.error("Firestore Error:", error);
                     tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Access Denied. Admin authentication required.</td></tr>`;

@@ -65,4 +65,3 @@ class ListUserCredsResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

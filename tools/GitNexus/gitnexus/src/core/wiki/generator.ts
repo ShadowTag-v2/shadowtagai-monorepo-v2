@@ -1,12 +1,12 @@
 /**
  * Wiki Generator
- * 
+ *
  * Orchestrates the full wiki generation pipeline:
  *   Phase 0: Validate prerequisites + gather graph structure
  *   Phase 1: Build module tree (one LLM call)
  *   Phase 2: Generate module pages (one LLM call per module, bottom-up)
  *   Phase 3: Generate overview page
- * 
+ *
  * Supports incremental updates via git diff + module-file mapping.
  */
 
@@ -141,13 +141,13 @@ export class WikiGenerator {
 
   /**
    * Create streaming options that report LLM progress to the progress bar.
-   * 
+   *
    * Progress calculation:
    * - If fixedPercent is provided, we show incremental progress within that phase
    *   based on token generation (e.g., grouping at 15% → 15-28%)
    * - If fixedPercent is NOT provided, we only update the label with token count
    *   but keep the current percentage (avoids fluctuation during module generation)
-   * 
+   *
    * Also touches the DB connection periodically to prevent idle timeout.
    */
   private streamOpts(label: string, fixedPercent?: number, percentRange = 10): CallLLMOptions {
@@ -155,11 +155,11 @@ export class WikiGenerator {
     const startPercent = fixedPercent ?? this.lastPercent;
     const expectedTokens = 2000;
     let lastTouch = Date.now();
-    
+
     return {
       onChunk: (chars: number) => {
         const tokens = Math.round(chars / 4);
-        
+
         if (hasFixedStart) {
           // For fixed phases (like grouping), show incremental progress
           const progress = Math.min(1, tokens / expectedTokens);
@@ -169,7 +169,7 @@ export class WikiGenerator {
           // For module generation, only update the label, keep current percent
           this.onProgress('stream', this.lastPercent, `${label} (${tokens} tok)`);
         }
-        
+
         // Touch DB every 60s to prevent idle timeout during long LLM calls
         const now = Date.now();
         if (now - lastTouch > 60_000) {
@@ -689,7 +689,7 @@ export class WikiGenerator {
 
     // Get changed files since last generation
     const changedFiles = this.getChangedFiles(existingMeta.fromCommit, currentCommit);
-    
+
     // If null, commits are on divergent branches (e.g., wiki generated on feature branch,
     // now running on main). Fall back to full generation.
     if (changedFiles === null) {

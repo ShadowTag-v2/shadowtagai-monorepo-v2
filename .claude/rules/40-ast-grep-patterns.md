@@ -64,7 +64,7 @@ ast-grep scan --rule tools/ast-grep-rules/typescript/security/ apps/
 AST-grep runs BEFORE the Compiler Guillotine (Skill: compiler-guillotine):
 1. AST-grep security scan → CodeRabbit rules (Phase 0)
 2. AST-grep sweep → identify structural issues
-3. Vulture sweep → dead code detection  
+3. Vulture sweep → dead code detection
 4. Ruff fix → auto-format
 5. Regression test → confirm no breakage
 

@@ -119,7 +119,10 @@ class CalendarService:
 
         # Build event description with all details
         full_description = self._build_event_description(
-            description, case_number, document_links, deadline_id,
+            description,
+            case_number,
+            document_links,
+            deadline_id,
         )
 
         # Event structure
@@ -172,7 +175,10 @@ class CalendarService:
         # TODO: Implement Microsoft Graph API integration
 
         full_description = self._build_event_description(
-            description, case_number, document_links, deadline_id,
+            description,
+            case_number,
+            document_links,
+            deadline_id,
         )
 
         # Event structure for Microsoft Graph API
@@ -233,7 +239,10 @@ class CalendarService:
         return True
 
     async def delete_event(
-        self, provider: CalendarProvider, calendar_id: str, event_id: str,
+        self,
+        provider: CalendarProvider,
+        calendar_id: str,
+        event_id: str,
     ) -> bool:
         """Delete calendar event"""
         # TODO: Implement delete logic for each provider
@@ -314,7 +323,12 @@ class ReminderService:
         # Build reminder message
         urgency = self._get_urgency_level(days_until_deadline)
         message = self._build_reminder_message(
-            title, description, case_number, deadline_date, days_until_deadline, urgency,
+            title,
+            description,
+            case_number,
+            deadline_date,
+            days_until_deadline,
+            urgency,
         )
 
         # Send via each channel
@@ -401,7 +415,10 @@ Please ensure timely compliance to avoid missed deadlines.
         return {"subject": subject, "plain_text": plain_text, "html": html}
 
     async def _send_email_reminder(
-        self, recipients: list[str], message: dict[str, str], urgency: str,
+        self,
+        recipients: list[str],
+        message: dict[str, str],
+        urgency: str,
     ):
         """Send email reminder"""
         # TODO: Implement email sending via SendGrid, AWS SES, or similar
@@ -417,7 +434,10 @@ Please ensure timely compliance to avoid missed deadlines.
         print(f"[SMS] Sending reminder to {recipients}: {sms_text}")
 
     async def _send_slack_reminder(
-        self, recipients: list[str], message: dict[str, str], urgency: str,
+        self,
+        recipients: list[str],
+        message: dict[str, str],
+        urgency: str,
     ):
         """Send Slack reminder"""
         # TODO: Implement Slack webhook integration
@@ -425,7 +445,10 @@ Please ensure timely compliance to avoid missed deadlines.
         print(f"[SLACK] Sending {urgency} reminder to {recipients}")
 
     async def _send_push_reminder(
-        self, recipients: list[str], message: dict[str, str], urgency: str,
+        self,
+        recipients: list[str],
+        message: dict[str, str],
+        urgency: str,
     ):
         """Send push notification"""
         # TODO: Implement push notifications via Firebase Cloud Messaging or similar
@@ -433,8 +456,7 @@ Please ensure timely compliance to avoid missed deadlines.
 
 
 class VerificationWorkflow:
-    """Manages lawyer verification and approval workflow
-    """
+    """Manages lawyer verification and approval workflow"""
 
     def __init__(self):
         """Initialize verification workflow"""
@@ -459,7 +481,10 @@ class VerificationWorkflow:
         print(f"[REVIEW QUEUE] Deadline {deadline_id} queued: {reason} (confidence: {confidence})")
 
     async def notify_reviewer(
-        self, deadline_id: str, reviewer_email: str, _deadline_details: dict[str, Any],
+        self,
+        deadline_id: str,
+        reviewer_email: str,
+        _deadline_details: dict[str, Any],
     ):
         """Send notification to assigned reviewer"""
         # TODO: Send email/notification to reviewer
@@ -499,7 +524,9 @@ class VerificationWorkflow:
         return True
 
     async def get_pending_reviews(
-        self, _assigned_to: str | None = None, limit: int = 50,
+        self,
+        _assigned_to: str | None = None,
+        limit: int = 50,
     ) -> list[dict[str, Any]]:
         """Get list of deadlines pending review"""
         # TODO: Query review queue from database

@@ -5,8 +5,7 @@ import logging
 
 
 class DataflowPipeline:
-    """Handles large-scale data processing jobs via Google Dataflow (Apache Beam).
-    """
+    """Handles large-scale data processing jobs via Google Dataflow (Apache Beam)."""
 
     def __init__(self, project_id: str, bucket_name: str):
         self.project_id = project_id

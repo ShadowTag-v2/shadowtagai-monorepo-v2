@@ -66,7 +66,8 @@ class UnGPTRequest(BaseModel):
     query: str = Field(..., description="User query")
     user_location: str = Field(default="US", description="ISO country code for compliance")
     complexity: QueryComplexity | None = Field(
-        None, description="Force specific tier (auto-detect if None)",
+        None,
+        description="Force specific tier (auto-detect if None)",
     )
     max_cost: float = Field(default=0.50, description="Maximum cost in USD")
     include_reasoning: bool = Field(default=False, description="Include detailed reasoning chain")
@@ -112,10 +113,11 @@ QUERY_LIMITS = {"max_cost_per_query": 0.50, "require_approval_above": 0.30}
 
 
 async def check_budget(
-    user_id: str, estimated_cost: float, query_tier: str,
+    user_id: str,
+    estimated_cost: float,
+    query_tier: str,
 ) -> tuple[bool, str | None]:
-    """Check if query is within budget limits.
-    """
+    """Check if query is within budget limits."""
     today = datetime.utcnow().date().isoformat()
     key_prefix = f"cost:{user_id}:{today}"
 
@@ -243,7 +245,9 @@ async def execute_simple_path(query: str) -> dict[str, Any]:
         "consensus_level": "single_model",
         "execution_time": execution_time,
         "total_cost": calculate_cost(
-            "claude", response.usage.input_tokens, response.usage.output_tokens,
+            "claude",
+            response.usage.input_tokens,
+            response.usage.output_tokens,
         ),
         "models": ["claude-sonnet-4"],
         "risk_level": "RA-1",
@@ -315,11 +319,15 @@ Synthesize both perspectives into a final, comprehensive answer. Resolve any dis
     # Calculate total cost
     total_cost = (
         calculate_cost(
-            "claude", claude_response.usage.input_tokens, claude_response.usage.output_tokens,
+            "claude",
+            claude_response.usage.input_tokens,
+            claude_response.usage.output_tokens,
         )
         + calculate_cost("gemini", 500, 300)  # Estimated
         + calculate_cost(
-            "claude", final_response.usage.input_tokens, final_response.usage.output_tokens,
+            "claude",
+            final_response.usage.input_tokens,
+            final_response.usage.output_tokens,
         )
     )
 
@@ -437,11 +445,15 @@ Provide comprehensive, execution-ready response."""
     # Calculate costs
     total_cost = (
         calculate_cost(
-            "claude", layer1_response.usage.input_tokens, layer1_response.usage.output_tokens,
+            "claude",
+            layer1_response.usage.input_tokens,
+            layer1_response.usage.output_tokens,
         )
         + calculate_cost("gemini", 800, 500)
         + calculate_cost(
-            "claude", layer3_response.usage.input_tokens, layer3_response.usage.output_tokens,
+            "claude",
+            layer3_response.usage.input_tokens,
+            layer3_response.usage.output_tokens,
         )
     )
 
@@ -506,8 +518,7 @@ def get_user_id(authorization: str | None = Header(None)) -> str:
 
 @app.post("/v1/ungpt/query", response_model=UnGPTResponse)
 async def process_query(request: UnGPTRequest, user_id: str = Depends(get_user_id)):
-    """Main UnGPT endpoint with tiered routing and cost controls.
-    """
+    """Main UnGPT endpoint with tiered routing and cost controls."""
     # 1. Detect complexity if not specified
     if request.complexity is None:
         request.complexity = await detect_complexity(request.query)

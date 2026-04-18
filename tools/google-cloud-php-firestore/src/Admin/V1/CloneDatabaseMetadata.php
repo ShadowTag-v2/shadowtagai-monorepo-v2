@@ -275,4 +275,3 @@ class CloneDatabaseMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

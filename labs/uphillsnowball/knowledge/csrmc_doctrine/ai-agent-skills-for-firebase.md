@@ -1,6 +1,6 @@
 # Source: https://firebase.blog/posts/2026/02/ai-agent-skills-for-firebase
 
- Better code, fewer tokens: Introducing Agent Skills for Firebase 
+ Better code, fewer tokens: Introducing Agent Skills for Firebase
 
 Skip to content
 

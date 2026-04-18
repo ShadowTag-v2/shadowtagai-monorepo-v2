@@ -35,10 +35,12 @@ class TestGauntletLayers:
         assert result.blocked_by == 2
 
     def test_secret_in_content_blocked(self):
-        result = evaluate({
-            "agent_id": "test",
-            "content": 'api_key = "sk-1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"',
-        })
+        result = evaluate(
+            {
+                "agent_id": "test",
+                "content": 'api_key = "sk-1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMN"',
+            }
+        )
         assert result.passed is False
         assert result.blocked_by == 5
 
@@ -48,19 +50,23 @@ class TestGauntletLayers:
         assert result.blocked_by == 6
 
     def test_immutable_file_blocked(self):
-        result = evaluate({
-            "agent_id": "test",
-            "target_file": "/repo/AGENTS.md",
-            "type": "write",
-        })
+        result = evaluate(
+            {
+                "agent_id": "test",
+                "target_file": "/repo/AGENTS.md",
+                "type": "write",
+            }
+        )
         assert result.passed is False
         assert result.blocked_by == 7
 
     def test_banned_dependency_blocked(self):
-        result = evaluate({
-            "agent_id": "test",
-            "content": 'const queue = require("bullmq");',
-        })
+        result = evaluate(
+            {
+                "agent_id": "test",
+                "content": 'const queue = require("bullmq");',
+            }
+        )
         assert result.passed is False
         assert result.blocked_by == 10
 

@@ -525,7 +525,8 @@ async def create_persuasion_point(point: PersuasionPointCreate):
 
 @app.get("/persuasion-points")
 async def list_persuasion_points(
-    video_id: str | None = None, target_audience: PersuasionTarget | None = None,
+    video_id: str | None = None,
+    target_audience: PersuasionTarget | None = None,
 ):
     """List persuasion points with optional filters"""
     filtered = list(persuasion_points_db.values())
@@ -862,11 +863,13 @@ async def get_retailer_performance(retailer_id: str):
         "total_conversions": total_conversions,
         "total_revenue_usd": round(retailer_revenue, 2),
         "conversion_rate_pct": round(
-            (total_conversions / total_views * 100) if total_views > 0 else 0.0, 2,
+            (total_conversions / total_views * 100) if total_views > 0 else 0.0,
+            2,
         ),
         "revenue_share_pct": retailer["revenue_share_percentage"],
         "retailer_payout_usd": round(
-            retailer_revenue * (retailer["revenue_share_percentage"] / 100), 2,
+            retailer_revenue * (retailer["revenue_share_percentage"] / 100),
+            2,
         ),
     }
 
@@ -878,8 +881,7 @@ async def get_retailer_performance(retailer_id: str):
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize platform with demo data
-    """
+    """Initialize platform with demo data"""
     print("🎥 Adaptive Shoppable Video Platform (Amazon Challenger) starting...")
     print("✅ Billboards nag. YouTube interrupts. AdaptiveShoppableVideo entertains.")
 

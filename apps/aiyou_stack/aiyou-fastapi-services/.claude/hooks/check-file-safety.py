@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""PreToolUse hook for Write/Edit - Check file operations for safety
-"""
+"""PreToolUse hook for Write/Edit - Check file operations for safety"""
 
 import json
 import os

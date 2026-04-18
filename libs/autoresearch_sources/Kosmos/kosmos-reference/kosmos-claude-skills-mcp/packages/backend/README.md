@@ -128,4 +128,3 @@ uv run pytest tests/
 Apache License 2.0
 
 Copyright 2025 K-Dense AI (https://k-dense.ai)
-

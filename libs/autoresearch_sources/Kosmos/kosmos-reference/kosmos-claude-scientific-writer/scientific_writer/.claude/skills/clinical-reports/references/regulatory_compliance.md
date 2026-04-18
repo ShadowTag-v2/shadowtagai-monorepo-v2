@@ -574,4 +574,3 @@ Additional:
 ---
 
 This reference provides comprehensive guidance for regulatory compliance in clinical reports and clinical trials, including HIPAA, FDA regulations, ICH-GCP, and EU requirements. Ensure all clinical documentation adheres to applicable regulations.
-

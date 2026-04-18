@@ -80,7 +80,9 @@ class ATP519Extract:
 
 
 def atp_519_scan(
-    context: str, domain: str = "general", max_context_chars: int = 500,
+    context: str,
+    domain: str = "general",
+    max_context_chars: int = 500,
 ) -> ATP519Extract:
     if not context:
         return ATP519Extract("C", "III", "M", "access", "general", [], [], "")

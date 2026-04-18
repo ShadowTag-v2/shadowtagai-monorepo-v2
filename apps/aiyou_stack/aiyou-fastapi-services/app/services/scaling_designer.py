@@ -29,7 +29,11 @@ class ScalingDesignerService:
         scale_down_cooldown = 300  # 5 minutes - be conservative when scaling down
 
         recommendations = self._generate_scaling_recommendations(
-            workload_type, expected_traffic, min_instances, max_instances, target_cpu,
+            workload_type,
+            expected_traffic,
+            min_instances,
+            max_instances,
+            target_cpu,
         )
 
         return ScalingRecommendation(

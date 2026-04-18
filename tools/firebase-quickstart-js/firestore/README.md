@@ -54,7 +54,7 @@ Follow these steps to have a working version of the quickstart running with the 
  1. Create a new Firebase project in the [Firebase Console](https://console.firebase.google.com)
 
  2. On the project homepage, select `Web` under `Get Started By Adding Firebase To Your App` and follow prompts to create your app, making sure to **copy the `firebaseConfig` object** when presented.
- 
+
  ![Photo of Firebase Project Homepage](images/ProjectHomepage.png)
 
  ![Photo of firebaseConfig object](images/CopyWebConfig.png)
@@ -101,7 +101,7 @@ Follow these steps to have a working version of the quickstart running with the 
  ```
 
  > **Note:** To ensure that the script runs as intended, make sure that you have correctly populated the `environemnt.prod.ts` file with your Firebase credentials.
- 
+
 ## Support
 
 - [Firebase Support](https://firebase.google.com/support/)

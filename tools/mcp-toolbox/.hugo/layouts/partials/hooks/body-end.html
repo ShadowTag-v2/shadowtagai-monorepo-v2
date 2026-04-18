@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
       // Update the text on the dropdown button itself
       for (let n of relBtn.childNodes) {
         if (n.nodeType === 3 && n.textContent.trim().length > 1) {
-          n.textContent = ' ' + label; 
+          n.textContent = ' ' + label;
           break;
         }
       }
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const sidebarData = window.dynamicSidebarLinks;
   if (sidebarData && Object.keys(sidebarData).length > 0) {
     Object.keys(sidebarData).forEach(targetUrl => {
-      const targetLink = document.querySelector(`.td-sidebar-nav a[href="${targetUrl}"]`) || 
+      const targetLink = document.querySelector(`.td-sidebar-nav a[href="${targetUrl}"]`) ||
                          document.querySelector(`.td-sidebar-nav a[href="${targetUrl.replace(/\/$/, '')}"]`);
       if (!targetLink) return;
 
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
       let innerUl = parentLi.querySelector('ul');
       if (!innerUl) {
         innerUl = document.createElement('ul');
-        innerUl.className = "ul-2 list-unstyled pb-2 pl-3"; 
+        innerUl.className = "ul-2 list-unstyled pb-2 pl-3";
         innerUl.style.marginLeft = "1rem";
         parentLi.appendChild(innerUl);
         parentLi.classList.add('with-child');
@@ -210,13 +210,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
       sidebarData[targetUrl].forEach(group => {
         const groupLi = document.createElement('li');
-        groupLi.className = "with-child"; 
+        groupLi.className = "with-child";
         const isGroupActive = group.links.some(link => currentPath === link.url);
 
         const subUl = document.createElement('ul');
-        subUl.className = "ul-3 list-unstyled pb-2 pl-3"; 
+        subUl.className = "ul-3 list-unstyled pb-2 pl-3";
         subUl.style.marginLeft = "1rem";
-        subUl.style.display = isGroupActive ? "block" : "none"; 
+        subUl.style.display = isGroupActive ? "block" : "none";
 
         if (group.header) {
           const headerLabel = document.createElement('label');

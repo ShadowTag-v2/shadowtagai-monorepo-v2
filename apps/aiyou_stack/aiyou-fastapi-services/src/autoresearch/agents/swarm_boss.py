@@ -128,7 +128,9 @@ class SwarmBoss:
 
         # Swarm Intelligence
         self.optimizer = HybridSwarmOptimizer(
-            num_agents=len(self.units), num_tasks=50, num_squads=1,
+            num_agents=len(self.units),
+            num_tasks=50,
+            num_squads=1,
         )
         self.optimization_result = {}
 
@@ -366,7 +368,8 @@ class SwarmBoss:
                     # Use modern OpenAI SDK (v1.0+)
                     # self.model is already an OpenAI() client instance
                     response = self.model.chat.completions.create(
-                        model="gpt-oss-120b", messages=[{"role": "user", "content": prompt}],
+                        model="gpt-oss-120b",
+                        messages=[{"role": "user", "content": prompt}],
                     )
                     # Modern SDK returns an object with choices
                     if response and response.choices:
@@ -496,7 +499,9 @@ class SwarmBoss:
         }
 
     async def handle_error_with_drill(
-        self, error: Exception, context: dict[str, Any] | None = None,
+        self,
+        error: Exception,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Handle errors using FM 7-8 Battle Drills.
 

@@ -45,7 +45,8 @@ class NewsCollector(BaseCollector):
 
         try:
             query = self.config.get(
-                "search_query", 'AI OR "artificial intelligence" OR "machine learning"',
+                "search_query",
+                'AI OR "artificial intelligence" OR "machine learning"',
             )
             from_date = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d")
             page_size = min(target_count, 100)  # NewsAPI limit

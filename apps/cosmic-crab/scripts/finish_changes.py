@@ -43,7 +43,9 @@ def main():
     """
     parser = argparse.ArgumentParser(description="Finish changes cycle.")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Print commands instead of executing them.",
+        "--dry-run",
+        action="store_true",
+        help="Print commands instead of executing them.",
     )
     args = parser.parse_args()
 

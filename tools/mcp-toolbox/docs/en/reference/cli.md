@@ -127,7 +127,7 @@ The CLI supports multiple mutually exclusive ways to specify tool configurations
 **Prebuilt Configurations:**
 
 - `--prebuilt`: Use one or more predefined configurations for specific database types (e.g.,
-  'bigquery', 'postgres', 'spanner'). See [Prebuilt Tools 
+  'bigquery', 'postgres', 'spanner'). See [Prebuilt Tools
   Reference](../documentation/configuration/prebuilt-configs/_index.md) for allowed values.
 
 {{< notice tip >}}

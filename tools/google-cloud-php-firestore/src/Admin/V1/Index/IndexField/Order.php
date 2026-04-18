@@ -58,4 +58,3 @@ class Order
         return constant($const);
     }
 }
-

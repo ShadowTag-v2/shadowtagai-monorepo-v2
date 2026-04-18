@@ -228,7 +228,9 @@ class NISTRMFModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput,
+        self,
+        control: ControlDefinition,
+        input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single NIST AI RMF control."""
         metadata = input_data.metadata
@@ -349,7 +351,10 @@ class NISTRMFModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None,
+        self,
+        rule: ValidationRule,
+        content: str,
+        context: str | None,
     ) -> ValidationViolation | None:
         """Check NIST AI RMF validation rules."""
         content_lower = content.lower()

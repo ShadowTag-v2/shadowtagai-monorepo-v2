@@ -1,6 +1,6 @@
 /**
  * Setup Command
- * 
+ *
  * One-time global MCP configuration writer.
  * Detects installed AI editors and writes the appropriate MCP config
  * so the GitNexus MCP server is available in all projects.
@@ -390,7 +390,7 @@ async function copyDirRecursive(src: string, dest: string): Promise<void> {
 async function installCursorSkills(result: SetupResult): Promise<void> {
   const cursorDir = path.join(os.homedir(), '.cursor');
   if (!(await dirExists(cursorDir))) return;
-  
+
   const skillsDir = path.join(cursorDir, 'skills');
   try {
     const installed = await installSkillsTo(skillsDir);
@@ -408,7 +408,7 @@ async function installCursorSkills(result: SetupResult): Promise<void> {
 async function installOpenCodeSkills(result: SetupResult): Promise<void> {
   const opencodeDir = path.join(os.homedir(), '.config', 'opencode');
   if (!(await dirExists(opencodeDir))) return;
-  
+
   const skillsDir = path.join(opencodeDir, 'skill');
   try {
     const installed = await installSkillsTo(skillsDir);
@@ -461,7 +461,7 @@ export const setupCommand = async () => {
   await setupClaudeCode(result);
   await setupOpenCode(result);
   await setupCodex(result);
-  
+
   // Install global skills for platforms that support them
   await installClaudeCodeSkills(result);
   await installClaudeCodeHooks(result);

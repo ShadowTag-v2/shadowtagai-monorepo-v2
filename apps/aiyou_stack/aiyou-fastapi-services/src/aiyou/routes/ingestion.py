@@ -347,7 +347,8 @@ async def process_ingestion_job(job_id: str, user_id: str):
             raise Exception("GEMINI_API_KEY not configured")
 
         gemini_client = GeminiClient(
-            api_key=settings.gemini_api_key, project_id=settings.gemini_project_id,
+            api_key=settings.gemini_api_key,
+            project_id=settings.gemini_project_id,
         )
 
         # Process based on content type
@@ -401,7 +402,9 @@ async def process_ingestion_job(job_id: str, user_id: str):
 
         # Calculate costs
         cost_usd = gemini_client.calculate_cost(
-            job.gemini_tokens_used or 0, job.gemini_model_version or "gemini-1.5-pro", "total",
+            job.gemini_tokens_used or 0,
+            job.gemini_model_version or "gemini-1.5-pro",
+            "total",
         )
         job.processing_cost_cents = int(cost_usd * 100)
 

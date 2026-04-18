@@ -25,4 +25,3 @@ class Write
         static::$is_initialized = true;
     }
 }
-

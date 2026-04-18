@@ -2,7 +2,7 @@
 title: "yugabytedb-sql"
 type: docs
 weight: 1
-description: > 
+description: >
   A "yugabytedb-sql" tool executes a pre-defined SQL statement against a YugabyteDB
   database.
 ---

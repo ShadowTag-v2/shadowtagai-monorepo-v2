@@ -41,13 +41,13 @@ async function generateLift(assertion) {
 
   // 2. The Query (Strict Mode Interrogation)
   const prompt = `
-    You are a Strict Mode Logic Auditor. 
+    You are a Strict Mode Logic Auditor.
     Verify the following assertion using Google Search Grounding: "${assertion}"
-    
+
     If the assertion is TRUE based on current live web data, output: status: CLEARED
     If the assertion is FALSE or OUTDATED, output: status: GROUNDED (with reason)
     If the assertion is AMBIGUOUS, output: status: HOLD
-    
+
     Provide the confidence score of the supporting evidence.
   `;
 

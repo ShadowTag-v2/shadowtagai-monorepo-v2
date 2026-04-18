@@ -127,7 +127,7 @@ function fuiStartOauth() {
       firebase.auth.GithubAuthProvider.PROVIDER_ID
     ],
     // Other config options...
-  });  
+  });
   // [END auth_fui_start_oauth]
 }
 

@@ -10,5 +10,5 @@ provider.setCustomParameters({
   prompt: 'login',
   // Localize to French.
   language: 'fr'
-});  
+});
 // [END auth_yahoo_provider_params_modular]

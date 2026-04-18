@@ -35,7 +35,10 @@ class CheckoutRequest(BaseModel):
 
 @router.get("/products", response_model=list[ProductResponse])
 async def list_products(
-    category: str = None, db: Session = Depends(get_db), skip: int = 0, limit: int = 50,
+    category: str = None,
+    db: Session = Depends(get_db),
+    skip: int = 0,
+    limit: int = 50,
 ):
     """List products with optional filtering."""
     query = db.query(Product).filter(Product.is_active)

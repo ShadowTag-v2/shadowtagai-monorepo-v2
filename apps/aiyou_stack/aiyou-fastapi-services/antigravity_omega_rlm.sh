@@ -65,7 +65,7 @@ LOCATION = "$REGION"
 
 class RecursiveMemory:
     """
-    The RLM Engine. 
+    The RLM Engine.
     Instead of RAG (lookup), we use Recursion (update).
     """
     def __init__(self):
@@ -80,9 +80,9 @@ class RecursiveMemory:
         """
         with open(".gemini/compressor_prompt.md", "r") as f:
             sys_prompt = f.read()
-        
+
         prompt = f"CURRENT STATE:\\n{self.mental_state}\\n\\nNEW INPUT:\\n{new_input}"
-        
+
         # We use the smarter model (Pro) to perform the compression
         response = self.client.models.generate_content(
             model="$COMPILER_MODEL",
@@ -97,7 +97,7 @@ class RecursiveMemory:
         Answering based ONLY on the compressed Mental State.
         """
         prompt = f"CONTEXT:\\n{self.mental_state}\\n\\nUSER QUERY:\\n{query}"
-        
+
         # We use the fast model (Flash) to serve the answer
         response = self.client.models.generate_content(
             model="$SERVING_MODEL",

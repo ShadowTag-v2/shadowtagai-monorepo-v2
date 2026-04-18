@@ -93,7 +93,11 @@ async def classify_with_debate(
 
         # Run debate
         result = await chat.classify_with_debate(
-            title=title, content=content, tags=tags, rounds=rounds, voting_method=voting_method,
+            title=title,
+            content=content,
+            tags=tags,
+            rounds=rounds,
+            voting_method=voting_method,
         )
 
         return result
@@ -188,7 +192,10 @@ async def single_agent_proposal(
 
         # Get proposal
         proposal = await agent.propose_tier(
-            title=title, content=content, tags=tags, debate_history=debate_history,
+            title=title,
+            content=content,
+            tags=tags,
+            debate_history=debate_history,
         )
 
         return proposal

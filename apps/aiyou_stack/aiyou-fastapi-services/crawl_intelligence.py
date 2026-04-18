@@ -47,7 +47,10 @@ def execute_crawl_and_ingest():
                 html_content = page.html
 
             with tempfile.NamedTemporaryFile(
-                "w", suffix=".html", delete=False, encoding="utf-8",
+                "w",
+                suffix=".html",
+                delete=False,
+                encoding="utf-8",
             ) as f:
                 tmp_path = f.name
                 f.write(html_content)

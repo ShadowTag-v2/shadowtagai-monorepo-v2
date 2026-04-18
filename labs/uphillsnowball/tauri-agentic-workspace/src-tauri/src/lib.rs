@@ -63,16 +63,16 @@ async fn invoke_agent(app: AppHandle, task: String, target_domain: Option<String
                 "scope": task.clone()
             }
         });
-        
+
         let intercept_res = client.post("http://127.0.0.1:8081/api/v1/intercept/tool-call")
             .json(&intercept_payload)
             .send()
             .await
             .map_err(|e| format!("Interceptor Reachability Error: {}", e))?;
-            
+
         let json: serde_json::Value = intercept_res.json().await.map_err(|e| e.to_string())?;
         let status = json["status"].as_str().unwrap_or("RKILL");
-        
+
         if status == "RKILL" || status == "REQUIRE_COA_CONFIRMATION" {
             let reason = json["reason"].as_str().unwrap_or("Unknown ATP 5-19 Violation");
             let msg = format!("[SHIELD 1 BLOCKED] ToolCall Intercepted. Status: {}. Reason: {}", status, reason);
@@ -98,18 +98,18 @@ async fn invoke_agent(app: AppHandle, task: String, target_domain: Option<String
         .send()
         .await
         .map_err(|e| format!("Python Engine Communication Error: {}", e))?;
-        
+
     // 3. Consume SSE Stream chunks and route directly to React
     let mut buffer = String::new();
-    
+
     while let Some(chunk) = res.chunk().await.map_err(|e| e.to_string())? {
         let text = String::from_utf8_lossy(&chunk);
         buffer.push_str(&text);
-        
+
         while let Some(pos) = buffer.find("\n\n") {
             let event = buffer[..pos].to_string();
             buffer = buffer[pos + 2..].to_string();
-            
+
             if event.starts_with("data: ") {
                 let data_str = &event[6..];
                 if let Ok(payload) = serde_json::from_str::<StreamPayload>(data_str) {
@@ -118,7 +118,7 @@ async fn invoke_agent(app: AppHandle, task: String, target_domain: Option<String
             }
         }
     }
-    
+
     Ok(())
 }
 

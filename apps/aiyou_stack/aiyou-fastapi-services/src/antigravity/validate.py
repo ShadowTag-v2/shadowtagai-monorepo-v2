@@ -42,7 +42,8 @@ class CodePMCSClient:
         async with httpx.AsyncClient(timeout=60.0) as client:
             try:
                 response = await client.post(
-                    f"{self.base_url}/codepmcs/scan", json={"code": code, "language": language},
+                    f"{self.base_url}/codepmcs/scan",
+                    json={"code": code, "language": language},
                 )
 
                 if response.status_code == 200:
@@ -132,7 +133,8 @@ class CodePMCSClient:
         async with httpx.AsyncClient(timeout=60.0) as client:
             try:
                 response = await client.post(
-                    f"{self.base_url}/codepmcs/fix", json={"code": code, "issues": issues},
+                    f"{self.base_url}/codepmcs/fix",
+                    json={"code": code, "issues": issues},
                 )
 
                 if response.status_code == 200:

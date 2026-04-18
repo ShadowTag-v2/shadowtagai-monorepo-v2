@@ -9,7 +9,10 @@ MASK_VALUE = -1e9  # Large negative value used for attention masking (becomes ~0
 
 
 def scaled_dot_product_attention(
-    Q: Tensor, K: Tensor, V: Tensor, mask: Tensor | None = None,
+    Q: Tensor,
+    K: Tensor,
+    V: Tensor,
+    mask: Tensor | None = None,
 ) -> tuple[Tensor, Tensor]:
     """Compute scaled dot-product attention.
 

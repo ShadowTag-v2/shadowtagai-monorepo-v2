@@ -40,7 +40,10 @@ class ToolboxToolset(BaseToolset):
         credentials: CredentialConfig | None = None,
         additional_headers: dict[str, str | Callable[[], str] | Callable[[], Awaitable[str]]] | None = None,
         bound_params: Mapping[str, Callable[[], Any] | Any] | None = None,
-        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | Callable[[ToolContext], str] | Callable[[ToolContext], Awaitable[str]]] | None = None,
+        auth_token_getters: Mapping[
+            str, Callable[[], str] | Callable[[], Awaitable[str]] | Callable[[ToolContext], str] | Callable[[ToolContext], Awaitable[str]]
+        ]
+        | None = None,
         **kwargs: Any,
     ):
         """
@@ -77,9 +80,7 @@ class ToolboxToolset(BaseToolset):
         return self.__client
 
     @override
-    async def get_tools(
-        self, readonly_context: ReadonlyContext | None = None
-    ) -> list[BaseTool]:
+    async def get_tools(self, readonly_context: ReadonlyContext | None = None) -> list[BaseTool]:
         """Loads tools from the toolbox server and wraps them."""
         # Note: We don't close the client after get_tools because tools might need it.
 
@@ -120,9 +121,7 @@ class ToolboxToolset(BaseToolset):
             # Generate intuitive name for the error string if a specific toolset wasn't used
             validation_name = self.__toolset_name
             if not validation_name:
-                validation_name = (
-                    ", ".join(self.__tool_names) if self.__tool_names else "default"
-                )
+                validation_name = ", ".join(self.__tool_names) if self.__tool_names else "default"
 
             validate_unused_requirements(
                 provided_auth_keys=set(self.__auth_token_getters.keys()),

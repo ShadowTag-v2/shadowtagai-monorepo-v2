@@ -118,4 +118,3 @@ class RollbackRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -150,4 +150,3 @@ class PitrSnapshot extends \Google\Protobuf\Internal\Message
     }
 
 }
-

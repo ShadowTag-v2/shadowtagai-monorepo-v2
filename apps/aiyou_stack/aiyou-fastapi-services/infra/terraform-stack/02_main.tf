@@ -66,7 +66,7 @@ resource "google_workstations_workstation_config" "config" {
   workstation_config_id = "shadowtag-config"
   workstation_cluster_id = google_workstations_workstation_cluster.cluster.workstation_cluster_id
   location = "us-central1"
-  
+
   host {
     gce_instance {
       machine_type = "e2-standard-4"

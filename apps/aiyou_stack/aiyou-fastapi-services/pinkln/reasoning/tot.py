@@ -156,7 +156,9 @@ Provide reasoning for your rating.
         return ["Step 1", "Step 2", "Step 3"]
 
     async def _generate_thoughts(
-        self, step: str, context: dict[str, Any] | None = None,
+        self,
+        step: str,
+        context: dict[str, Any] | None = None,
     ) -> list[str]:
         """Generate multiple thoughts for a step.
 
@@ -186,7 +188,10 @@ Provide reasoning for your rating.
         return (ThoughtViability.LIKELY, 0.7)
 
     async def _explore_bfs(
-        self, root: ThoughtNode, steps: list[str], context: dict[str, Any] | None,
+        self,
+        root: ThoughtNode,
+        steps: list[str],
+        context: dict[str, Any] | None,
     ):
         """Explore tree using breadth-first search.
 
@@ -230,7 +235,10 @@ Provide reasoning for your rating.
                 queue.append(child)
 
     async def _explore_dfs(
-        self, root: ThoughtNode, steps: list[str], context: dict[str, Any] | None,
+        self,
+        root: ThoughtNode,
+        steps: list[str],
+        context: dict[str, Any] | None,
     ):
         """Explore tree using depth-first search.
 
@@ -352,7 +360,11 @@ Provide reasoning for your rating.
         return "\n".join(lines)
 
     def _visualize_node(
-        self, node_id: int, lines: list[str], prefix: str = "", is_last: bool = True,
+        self,
+        node_id: int,
+        lines: list[str],
+        prefix: str = "",
+        is_last: bool = True,
     ):
         """Recursively visualize tree nodes."""
         node = self.nodes[node_id]

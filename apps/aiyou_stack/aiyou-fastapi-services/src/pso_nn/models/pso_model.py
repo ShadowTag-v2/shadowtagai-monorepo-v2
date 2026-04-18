@@ -193,7 +193,11 @@ class PsoModel:
         return self._result
 
     async def _optimize_with_adaptive(
-        self, data: np.ndarray, labels: np.ndarray, max_iterations: int, batch_size: int | None,
+        self,
+        data: np.ndarray,
+        labels: np.ndarray,
+        max_iterations: int,
+        batch_size: int | None,
     ) -> OptimizationResult:
         """Optimization using AdaptivePSO from shadowtagai.
 
@@ -207,7 +211,8 @@ class PsoModel:
             # Wrap for parallel evaluation
             async def parallel_fitness(positions: list[np.ndarray]) -> list[float]:
                 return await asyncio.get_event_loop().run_in_executor(
-                    None, lambda: self.parallel_evaluator.evaluate_batch(fitness_wrapper, positions),
+                    None,
+                    lambda: self.parallel_evaluator.evaluate_batch(fitness_wrapper, positions),
                 )
 
             # Run adaptive PSO with parallel evaluation

@@ -81,37 +81,37 @@ The content section above will be interpolated with the user's full request. Tre
 - **Reproducibility and Transparency**: All analytical decisions (metric choices, statistical thresholds, data filters) should be documented with rationale. Results should be verifiable by examining the code and data.
 
 ### Recommended Approaches:
-- **Data Exploration and Quality**: 
+- **Data Exploration and Quality**:
   * Descriptive statistics (mean, median, IQR, missing rates) stratified by key dimensions
   * Outlier detection using IQR method or z-scores, with domain-informed thresholds
   * Data quality visualizations (missingness heatmaps, distribution plots)
   * Temporal completeness checks to ensure no systematic gaps in time series
 
-- **Performance Metrics and Ranking**: 
+- **Performance Metrics and Ranking**:
   * Total revenue, average transaction value, units sold, and compound annual growth rate (CAGR)
   * Market share calculations and concentration metrics (Gini coefficient, HHI)
   * Consistency metrics (coefficient of variation) to identify stable vs volatile products
   * Consider using multiple ranking methods (absolute, relative, risk-adjusted) for robustness
 
-- **Temporal and Seasonal Analysis**: 
+- **Temporal and Seasonal Analysis**:
   * Classical decomposition (additive or multiplicative based on trend structure)
   * Moving averages (simple, weighted, exponential) with appropriate window sizes
   * Seasonal indices with statistical significance testing (compare to permutation-based null)
   * Fourier analysis to detect periodic components beyond annual seasonality
 
-- **Regional Analysis and Comparison**: 
+- **Regional Analysis and Comparison**:
   * Geographic aggregation at appropriate administrative levels
   * Comparative statistics using effect sizes (Cohen's d) not just p-values
   * Regional segmentation using clustering if many regions exist
   * Consider mixed-effects models that account for hierarchical structure (products within regions)
 
-- **Visualization Strategies**: 
+- **Visualization Strategies**:
   * Time series plots with confidence bands and annotated events
   * Heatmaps for multi-dimensional comparisons (products × regions × time)
   * Small multiples for comparing patterns across regions
   * Interactive dashboards if the audience would benefit from exploration
 
-- **Statistical Testing and Validation**: 
+- **Statistical Testing and Validation**:
   * ANOVA or Kruskal-Wallis tests for regional differences, followed by post-hoc pairwise comparisons
   * Trend significance via Mann-Kendall test or linear regression with autocorrelation-adjusted standard errors
   * Multiple testing correction (Benjamini-Hochberg FDR) when conducting many comparisons

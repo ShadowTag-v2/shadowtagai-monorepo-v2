@@ -115,7 +115,7 @@
             <div class="slide-number">04</div>
             <h2>$15B+ Addressable Market</h2>
             <p style="margin-bottom:2rem;">Targeting top 100 global law firms, financial institutions, and defense contractors. Delivering defense-in-depth where conventional API keys fundamentally fail.</p>
-            
+
             <div style="margin-top:2rem; padding:2rem; background:rgba(0,0,0,0.2); border-radius:12px; border:1px solid rgba(0,255,136,0.3);">
                 <h3 style="font-family:'Outfit', sans-serif; margin-bottom:1rem; color:var(--primary);">Commit Capital (Beta Series A)</h3>
                 <p style="font-size:1rem; margin-bottom:1.5rem;">Secure your allocation now via our institutional payment gateway.</p>
@@ -123,13 +123,13 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Stripe JS -->
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         // Note: Replace with actual ShadowTag AI test publishable key (pk_test_...)
         const stripe = Stripe("pk_test_51MockKeyShadowTagAI00000000000000000000000000000000000000000000000");
-        
+
         const checkoutButton = document.getElementById("checkout-button");
         checkoutButton.addEventListener("click", () => {
             checkoutButton.innerText = "Processing...";

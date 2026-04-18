@@ -13,7 +13,6 @@ import json
 import time
 
 
-
 class TestStripeWebhookSignature:
     """Verify Stripe webhook HMAC validation."""
 
@@ -23,9 +22,7 @@ class TestStripeWebhookSignature:
         """Generate a valid Stripe-Signature header."""
         timestamp = str(int(time.time()))
         signed_payload = f"{timestamp}.{payload.decode()}"
-        expected_sig = hmac.new(
-            secret.encode(), signed_payload.encode(), hashlib.sha256
-        ).hexdigest()
+        expected_sig = hmac.new(secret.encode(), signed_payload.encode(), hashlib.sha256).hexdigest()
         return f"t={timestamp},v1={expected_sig}"
 
     def test_valid_signature_format(self):

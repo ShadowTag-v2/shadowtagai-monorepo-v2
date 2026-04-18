@@ -56,11 +56,12 @@ class TurboQuantCompressorV2:
 
     def _solve_codebook(self, d: int, bits: int) -> torch.Tensor:
         from scipy import integrate
-        n_levels = 2 ** bits
+
+        n_levels = 2**bits
         sigma = 1.0 / math.sqrt(d)
 
         def pdf(x):
-            return (1.0 / math.sqrt(2 * math.pi * sigma ** 2)) * math.exp(-x * x / (2 * sigma ** 2))
+            return (1.0 / math.sqrt(2 * math.pi * sigma**2)) * math.exp(-x * x / (2 * sigma**2))
 
         lo, hi = -3.5 * sigma, 3.5 * sigma
         centroids = [lo + (hi - lo) * (i + 0.5) / n_levels for i in range(n_levels)]
@@ -134,9 +135,9 @@ class TurboQuantCompressorV2:
         Returns:
             scores: (batch, heads, seq_q, seq_k)
         """
-        k_mse = compressed["k_mse"].float()       # (B, H, S_k, D)
-        signs = compressed["qjl_signs"].float()     # (B, H, S_k, D)
-        r_norm = compressed["residual_norm"].float() # (B, H, S_k)
+        k_mse = compressed["k_mse"].float()  # (B, H, S_k, D)
+        signs = compressed["qjl_signs"].float()  # (B, H, S_k, D)
+        r_norm = compressed["residual_norm"].float()  # (B, H, S_k)
 
         # Term 1: Q @ K_mse^T  (standard matmul)
         term1 = torch.matmul(queries.float(), k_mse.transpose(-2, -1))  # (B, H, S_q, S_k)
@@ -177,10 +178,13 @@ class TurboQuantCompressorMSE:
 
     def _solve_codebook(self, d, bits):
         from scipy import integrate
-        n_levels = 2 ** bits
+
+        n_levels = 2**bits
         sigma = 1.0 / math.sqrt(d)
+
         def pdf(x):
-            return (1.0 / math.sqrt(2 * math.pi * sigma ** 2)) * math.exp(-x * x / (2 * sigma ** 2))
+            return (1.0 / math.sqrt(2 * math.pi * sigma**2)) * math.exp(-x * x / (2 * sigma**2))
+
         lo, hi = -3.5 * sigma, 3.5 * sigma
         centroids = [lo + (hi - lo) * (i + 0.5) / n_levels for i in range(n_levels)]
         for _ in range(200):
@@ -219,5 +223,3 @@ class TurboQuantCompressorMSE:
         reconstructed = self.centroids[indices] @ self.Pi
         vec_norms = compressed["vec_norms"].float().unsqueeze(-1)
         return (reconstructed * vec_norms).reshape(B, H, S, D)
-
-

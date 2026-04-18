@@ -80,4 +80,3 @@ class MapValue extends \Google\Protobuf\Internal\Message
     }
 
 }
-

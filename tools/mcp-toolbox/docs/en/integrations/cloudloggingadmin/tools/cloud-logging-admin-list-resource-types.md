@@ -31,4 +31,3 @@ description: Lists monitored resource types.
 | type        |  string  |     true     | Must be "cloud-logging-admin-list-resource-types".|
 | source      |  string  |     true     | Name of the cloud-logging-admin source.            |
 | description |  string  |     true     | Description of the tool that is passed to the LLM. |
-

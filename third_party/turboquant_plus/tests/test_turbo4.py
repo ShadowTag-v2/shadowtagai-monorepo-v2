@@ -41,9 +41,7 @@ class TestTurbo4RoundTrip:
             mse_total += np.mean((x - x_hat) ** 2)
 
         avg_mse = mse_total / n_samples
-        assert avg_mse < 0.009 * 3.0, (
-            f"turbo4 MSE {avg_mse:.5f} exceeds 3× paper bound 0.009 at d={d}"
-        )
+        assert avg_mse < 0.009 * 3.0, f"turbo4 MSE {avg_mse:.5f} exceeds 3× paper bound 0.009 at d={d}"
 
     def test_non_128_head_dim_192(self):
         """turbo4 at d=192 — the head dim that triggers Bug #29.2.
@@ -95,8 +93,8 @@ class TestTurbo4QJLBenefit:
         We just verify both errors are small and in the same ballpark.
         """
         d = 128
-        tq_full = TurboQuant(d=d, bit_width=4, seed=42)     # 3-bit PQ + 1-bit QJL
-        tq_mse = TurboQuantMSE(d=d, bit_width=3, seed=42)   # 3-bit PQ only
+        tq_full = TurboQuant(d=d, bit_width=4, seed=42)  # 3-bit PQ + 1-bit QJL
+        tq_mse = TurboQuantMSE(d=d, bit_width=3, seed=42)  # 3-bit PQ only
 
         rng = np.random.default_rng(77)
 
@@ -207,6 +205,4 @@ class TestTurbo4EdgeCases:
             mse3 += np.mean((x - x3) ** 2)
             mse4 += np.mean((x - x4) ** 2)
 
-        assert mse4 / n < mse3 / n, (
-            f"turbo4 MSE ({mse4/n:.5f}) should be lower than turbo3 ({mse3/n:.5f})"
-        )
+        assert mse4 / n < mse3 / n, f"turbo4 MSE ({mse4 / n:.5f}) should be lower than turbo3 ({mse3 / n:.5f})"

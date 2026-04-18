@@ -221,7 +221,10 @@ class QuidditchCompetition:
         }
 
     def play_round(
-        self, rankings: list[str], winning_solution: str, seeker_decision: str,
+        self,
+        rankings: list[str],
+        winning_solution: str,
+        seeker_decision: str,
     ) -> RoundResult:
         """Execute a competition round.
 

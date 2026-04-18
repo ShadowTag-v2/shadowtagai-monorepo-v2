@@ -8,7 +8,8 @@ from datetime import datetime
 # --- CONFIGURATION ---
 # Default to a safe 'echo' command if not specified, usually replaced by node agent
 AGENT_COMMAND = os.environ.get(
-    "ANTIGRAVITY_AGENT_CMD", "node src/agents/scientific/scientific_agent.py",
+    "ANTIGRAVITY_AGENT_CMD",
+    "node src/agents/scientific/scientific_agent.py",
 )
 NUM_AGENTS = int(os.environ.get("ANTIGRAVITY_NUM_AGENTS", 4))
 

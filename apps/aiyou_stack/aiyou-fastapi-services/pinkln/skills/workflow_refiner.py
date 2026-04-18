@@ -1,5 +1,4 @@
-"""WorkflowRefinerSkill - Ruthless workflow simplification.
-"""
+"""WorkflowRefinerSkill - Ruthless workflow simplification."""
 
 import os
 import sys

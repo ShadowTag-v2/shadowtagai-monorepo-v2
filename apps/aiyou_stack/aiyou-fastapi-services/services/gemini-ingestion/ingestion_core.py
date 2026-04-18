@@ -229,7 +229,10 @@ class GeminiAnalyzer:
         self.api_key = api_key
 
     async def analyze_content(
-        self, title: str, content: str, source_type: SourceType,
+        self,
+        title: str,
+        content: str,
+        source_type: SourceType,
     ) -> dict[str, Any]:
         """Analyze content using Gemini API
 
@@ -458,7 +461,9 @@ class IngestionPipeline:
         """Process individual item"""
         # Analyze with Gemini
         analysis = await self.analyzer.analyze_content(
-            title=item_data["title"], content=item_data["content"], source_type=source.source_type,
+            title=item_data["title"],
+            content=item_data["content"],
+            source_type=source.source_type,
         )
 
         # Create item

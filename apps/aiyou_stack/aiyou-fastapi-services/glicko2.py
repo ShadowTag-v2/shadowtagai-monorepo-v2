@@ -103,7 +103,11 @@ class Glicko2:
         return 1 / v_inv if v_inv > 0 else float("inf")
 
     def _compute_delta(
-        self, mu: float, opponents: list[tuple[float, float]], outcomes: list[float], v: float,
+        self,
+        mu: float,
+        opponents: list[tuple[float, float]],
+        outcomes: list[float],
+        v: float,
     ) -> float:
         """Compute delta (Δ) from Step 4 of Glicko-2 algorithm.
         Measures improvement in rating.
@@ -189,7 +193,10 @@ class Glicko2:
         return math.exp(A / 2)
 
     def update_rating(
-        self, player: Player, opponents: list[Player], outcomes: list[float],
+        self,
+        player: Player,
+        opponents: list[Player],
+        outcomes: list[float],
     ) -> Player:
         """Update player rating based on match outcomes.
 

@@ -103,7 +103,7 @@ class ResearchDirectorAgent(BaseAgent):
         self.workflow = ResearchWorkflow(...)   # State machine
         self.max_iterations = ...
         # Loads 20+ other agents dynamically
-    
+
     async def execute(self):
         # Main research loop (async)
         # Iterates through states: GENERATING_HYPOTHESES -> DESIGNING_EXPERIMENTS
@@ -135,7 +135,7 @@ class Hypothesis(BaseModel):
     # Evolution tracking (Phase 7 - iterative refinement)
     parent_hypothesis_id: Optional[str]
     generation: int             # 1 = original, 2+ = refined
-    
+
     # Validators ensure predictive statements, not questions
     @field_validator('statement')
     def validate_statement(cls, v): ...
@@ -181,7 +181,7 @@ class ResearchWorkflow:
         WorkflowState.GENERATING_HYPOTHESES: [DESIGNING_EXPERIMENTS, CONVERGED, PAUSED, ERROR],
         # ... (complete state graph)
     }
-    
+
     def transition_to(self, target_state, action, metadata):
         # Validates transition is allowed
         # Records transition history
@@ -537,10 +537,10 @@ class TestNoveltyChecker:
         mock_search_inst = Mock()
         mock_search_inst.search.return_value = []
         mock_search.return_value = mock_search_inst
-        
+
         # Execute
         report = novelty_checker.check_novelty(sample_hypothesis)
-        
+
         # Assert
         assert report.novelty_score >= 0.8
         assert report.is_novel is True
@@ -710,7 +710,7 @@ All agents follow this contract:
 ```python
 class SomeAgent(BaseAgent):
     def __init__(self, agent_id, config): ...
-    
+
     async def execute(self, message: AgentMessage) -> AgentMessage:
         # 1. Validate input
         # 2. Perform domain logic

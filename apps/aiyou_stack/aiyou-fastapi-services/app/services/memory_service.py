@@ -103,7 +103,9 @@ class MemoryService:
         return by_category
 
     async def update_memory_entry(
-        self, memory_id: UUID, update_data: MemoryEntryUpdate,
+        self,
+        memory_id: UUID,
+        update_data: MemoryEntryUpdate,
     ) -> MemoryEntry | None:
         """Update a memory entry."""
         memory = await self.get_memory_entry(memory_id)

@@ -178,7 +178,10 @@ class AiUCRM:
 
         # Step 5: Calculate aggregated risk score
         risk_score = self._calculate_risk_score(
-            legal_result, ethical_result, safety_result, sovereignty_result,
+            legal_result,
+            ethical_result,
+            safety_result,
+            sovereignty_result,
         )
 
         # Step 6: Determine risk level
@@ -195,10 +198,17 @@ class AiUCRM:
 
         # Step 8: Generate explanation and recommendations
         explanation = self._generate_explanation(
-            status, legal_result, ethical_result, safety_result, sovereignty_result,
+            status,
+            legal_result,
+            ethical_result,
+            safety_result,
+            sovereignty_result,
         )
         recommendations = self._generate_recommendations(
-            legal_result, ethical_result, safety_result, sovereignty_result,
+            legal_result,
+            ethical_result,
+            safety_result,
+            sovereignty_result,
         )
 
         # Step 9: Build audit trail

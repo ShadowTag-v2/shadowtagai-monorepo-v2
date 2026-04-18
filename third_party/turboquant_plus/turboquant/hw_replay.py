@@ -27,6 +27,7 @@ from typing import Optional
 @dataclass
 class GPUInfo:
     """GPU hardware capabilities."""
+
     name: str = "unknown"
     family: str = "unknown"
     family_id: int = 0
@@ -43,6 +44,7 @@ class GPUInfo:
 @dataclass
 class SystemInfo:
     """System hardware specs (no PII)."""
+
     platform: str = "unknown"  # Darwin, Linux
     os_version: str = "unknown"
     arch: str = "unknown"
@@ -60,6 +62,7 @@ class SystemInfo:
 @dataclass
 class BenchResult:
     """Single benchmark measurement."""
+
     label: str
     cache_type_k: str
     cache_type_v: str
@@ -74,6 +77,7 @@ class BenchResult:
 @dataclass
 class LoadSnapshot:
     """System load at a point in time."""
+
     label: str
     timestamp: str = ""
     load_avg: str = ""
@@ -87,6 +91,7 @@ class LoadSnapshot:
 @dataclass
 class ModelInfo:
     """Model metadata."""
+
     filename: str = ""
     filesize_bytes: int = 0
     architecture: str = ""
@@ -106,6 +111,7 @@ class ModelInfo:
 @dataclass
 class PPLResult:
     """Perplexity measurement."""
+
     cache_type: str
     chunks: int
     ppl: float
@@ -116,6 +122,7 @@ class PPLResult:
 @dataclass
 class HardwareProfile:
     """Complete hardware profile from a diagnostic run."""
+
     diag_version: int = 0
     timestamp: str = ""
     system: SystemInfo = field(default_factory=SystemInfo)
@@ -199,9 +206,7 @@ class HardwareProfile:
                 curve[b.context_depth] = b.tok_per_sec
         return dict(sorted(curve.items()))
 
-    def get_ratio_curve(self, cache_type: str = "turbo3",
-                        baseline: str = "q8_0", mode: str = "decode",
-                        env: str = "") -> dict[int, float]:
+    def get_ratio_curve(self, cache_type: str = "turbo3", baseline: str = "q8_0", mode: str = "decode", env: str = "") -> dict[int, float]:
         """Compute turbo3/q8_0 ratio at each context depth."""
         target = {}
         base = {}
@@ -218,7 +223,6 @@ class HardwareProfile:
             if base[depth] > 0:
                 ratios[depth] = target[depth] / base[depth]
         return ratios
-
 
     def find_decode_inflection(self, cache_type: str = "turbo3") -> Optional[int]:
         """Find context depth where decode ratio drops most steeply.
@@ -252,17 +256,14 @@ class HardwareProfile:
         warnings = []
         for b in self.benchmarks:
             if b.context_depth == 1024 and b.tok_per_sec > 10000:
-                warnings.append(
-                    f"Unreliable measurement: {b.label} at 1K context "
-                    f"({b.tok_per_sec:.0f} tok/s — Metal async dispatch artifact)"
-                )
+                warnings.append(f"Unreliable measurement: {b.label} at 1K context ({b.tok_per_sec:.0f} tok/s — Metal async dispatch artifact)")
         return warnings
 
 
 def parse_diag_output(text: str) -> HardwareProfile:
     """Parse raw turbo-hardware-diag.sh output into a HardwareProfile."""
     profile = HardwareProfile()
-    lines = text.split('\n')
+    lines = text.split("\n")
 
     # Header
     for line in lines:
@@ -277,7 +278,7 @@ def parse_diag_output(text: str) -> HardwareProfile:
     for line in lines:
         if not line.startswith("[HW]"):
             continue
-        kv = line[len("[HW] "):]
+        kv = line[len("[HW] ") :]
         if "=" not in kv:
             continue
         key, val = kv.split("=", 1)
@@ -315,14 +316,14 @@ def parse_diag_output(text: str) -> HardwareProfile:
     # GPU info
     for line in lines:
         if "[GPU]" in line or "[METAL]" in line:
-            content = re.sub(r'^\[(GPU|METAL)\]\s*', '', line)
+            content = re.sub(r"^\[(GPU|METAL)\]\s*", "", line)
             if "GPU name:" in content:
                 profile.system.gpu.name = content.split("GPU name:")[-1].strip()
             elif "GPU family:" in content:
                 fam = content.split("GPU family:")[-1].strip()
                 profile.system.gpu.family = fam
                 # Extract family ID
-                m = re.search(r'\((\d+)\)', fam)
+                m = re.search(r"\((\d+)\)", fam)
                 if m:
                     profile.system.gpu.family_id = int(m.group(1))
             elif "has tensor" in content:
@@ -332,7 +333,7 @@ def parse_diag_output(text: str) -> HardwareProfile:
             elif "has bfloat" in content:
                 profile.system.gpu.has_bfloat = "true" in content.lower()
             elif "recommendedMax" in content:
-                m = re.search(r'([\d.]+)\s*MB', content)
+                m = re.search(r"([\d.]+)\s*MB", content)
                 if m:
                     profile.system.gpu.recommended_max_working_set_mb = float(m.group(1))
         if "[METAL_TENSOR]" in line and "has tensor" in line:
@@ -342,7 +343,7 @@ def parse_diag_output(text: str) -> HardwareProfile:
     for line in lines:
         if not line.startswith("[MODEL]"):
             continue
-        content = line[len("[MODEL] "):]
+        content = line[len("[MODEL] ") :]
         if "general.name" in content:
             profile.model.name = content.split("=")[-1].strip()
         elif "general.architecture" in content or "arch " in content:
@@ -384,7 +385,7 @@ def parse_diag_output(text: str) -> HardwareProfile:
     # Build info
     for line in lines:
         if line.startswith("[BUILD]"):
-            profile.build_commit = line[len("[BUILD] "):].strip()
+            profile.build_commit = line[len("[BUILD] ") :].strip()
 
     return profile
 
@@ -401,7 +402,7 @@ def _parse_bench_results(lines: list[str], profile: HardwareProfile) -> None:
             m = re.search(r'label="([^"]*)"', line)
             if m:
                 current_label = m.group(1)
-            m = re.search(r'ctk=(\S+)', line)
+            m = re.search(r"ctk=(\S+)", line)
             if m:
                 current_ctk = m.group(1)
             m = re.search(r'env="([^"]*)"', line)
@@ -413,8 +414,7 @@ def _parse_bench_results(lines: list[str], profile: HardwareProfile) -> None:
             _parse_bench_table_row(line, current_label, current_ctk, current_env, profile)
 
 
-def _parse_bench_table_row(line: str, label: str, ctk: str, env: str,
-                           profile: HardwareProfile) -> None:
+def _parse_bench_table_row(line: str, label: str, ctk: str, env: str, profile: HardwareProfile) -> None:
     """Parse a single llama-bench markdown table row."""
     # Format: | model | size | params | backend | threads | ctk | ctv | batch | test | t/s |
     cols = [c.strip() for c in line.split("|")]
@@ -425,7 +425,7 @@ def _parse_bench_table_row(line: str, label: str, ctk: str, env: str,
     test_col = ""
     tps_col = ""
     for i, col in enumerate(cols):
-        if re.match(r'(pp|tg)\d+', col):
+        if re.match(r"(pp|tg)\d+", col):
             test_col = col
             # t/s is typically the next column
             if i + 1 < len(cols):
@@ -440,29 +440,29 @@ def _parse_bench_table_row(line: str, label: str, ctk: str, env: str,
     context = 0
     if test_col.startswith("pp") and "+tg" in test_col:
         mode = "combined"
-        m = re.match(r'pp(\d+)\+tg(\d+)', test_col)
+        m = re.match(r"pp(\d+)\+tg(\d+)", test_col)
         if m:
             context = int(m.group(1))
     elif test_col.startswith("pp"):
         mode = "prefill"
-        m = re.match(r'pp(\d+)', test_col)
+        m = re.match(r"pp(\d+)", test_col)
         if m:
             context = int(m.group(1))
     elif test_col.startswith("tg"):
         mode = "decode"
-        m = re.search(r'd(\d+)', test_col)
+        m = re.search(r"d(\d+)", test_col)
         if m:
             context = int(m.group(1))
 
     # Parse tok/s
     tps = 0.0
     stddev = 0.0
-    m = re.match(r'([\d.]+)\s*±\s*([\d.]+)', tps_col)
+    m = re.match(r"([\d.]+)\s*±\s*([\d.]+)", tps_col)
     if m:
         tps = float(m.group(1))
         stddev = float(m.group(2))
-    elif re.match(r'[\d.]+', tps_col):
-        tps = float(re.match(r'[\d.]+', tps_col).group())
+    elif re.match(r"[\d.]+", tps_col):
+        tps = float(re.match(r"[\d.]+", tps_col).group())
 
     # Extract cache type from the row itself
     row_ctk = ctk
@@ -493,10 +493,10 @@ def _parse_ppl_results(lines: list[str], profile: HardwareProfile) -> None:
 
     for line in lines:
         if "[PPL_START]" in line:
-            m = re.search(r'ctk=(\S+)', line)
+            m = re.search(r"ctk=(\S+)", line)
             if m:
                 current_ctk = m.group(1)
-            m = re.search(r'chunks=(\d+)', line)
+            m = re.search(r"chunks=(\d+)", line)
             if m:
                 current_chunks = int(m.group(1))
             m = re.search(r'env="([^"]*)"', line)
@@ -504,15 +504,17 @@ def _parse_ppl_results(lines: list[str], profile: HardwareProfile) -> None:
                 current_env = m.group(1) if m.group(1) else ""
 
         if "Final estimate: PPL =" in line:
-            m = re.search(r'PPL = ([\d.]+) \+/- ([\d.]+)', line)
+            m = re.search(r"PPL = ([\d.]+) \+/- ([\d.]+)", line)
             if m:
-                profile.ppl_results.append(PPLResult(
-                    cache_type=current_ctk,
-                    chunks=current_chunks,
-                    ppl=float(m.group(1)),
-                    stddev=float(m.group(2)),
-                    env=current_env,
-                ))
+                profile.ppl_results.append(
+                    PPLResult(
+                        cache_type=current_ctk,
+                        chunks=current_chunks,
+                        ppl=float(m.group(1)),
+                        stddev=float(m.group(2)),
+                        env=current_env,
+                    )
+                )
 
 
 def _parse_load_snapshots(lines: list[str], profile: HardwareProfile) -> None:
@@ -525,7 +527,7 @@ def _parse_load_snapshots(lines: list[str], profile: HardwareProfile) -> None:
                 profile.load_snapshots.append(current_snap)
             label = line.split("label=")[1].split()[0]
             current_snap = LoadSnapshot(label=label)
-            m = re.search(r'timestamp=(\S+)', line)
+            m = re.search(r"timestamp=(\S+)", line)
             if m:
                 current_snap.timestamp = m.group(1)
         elif current_snap and "[LOAD_SNAPSHOT]" in line:
@@ -535,7 +537,7 @@ def _parse_load_snapshots(lines: list[str], profile: HardwareProfile) -> None:
             elif "process_count=" in content:
                 current_snap.process_count = _int(content.split("process_count=")[1].strip())
             elif "approx_free_ram=" in content or "mem_available_mb=" in content:
-                m = re.search(r'(\d+)', content.split("=")[-1])
+                m = re.search(r"(\d+)", content.split("=")[-1])
                 if m:
                     current_snap.free_ram_mb = float(m.group(1))
             elif "swap_used=" in content:
@@ -552,7 +554,7 @@ def _parse_load_snapshots(lines: list[str], profile: HardwareProfile) -> None:
 def _int(val: str) -> int:
     """Safe int parse."""
     try:
-        return int(re.sub(r'[^\d-]', '', val.strip()))
+        return int(re.sub(r"[^\d-]", "", val.strip()))
     except (ValueError, TypeError):
         return 0
 
@@ -561,9 +563,11 @@ def _int(val: str) -> int:
 # Comparison and Analysis
 # ============================================================
 
+
 @dataclass
 class ComparisonReport:
     """Result of comparing two hardware profiles."""
+
     baseline_name: str
     target_name: str
     hardware_diff: dict = field(default_factory=dict)
@@ -617,8 +621,11 @@ def compare_profiles(baseline: HardwareProfile, target: HardwareProfile) -> Comp
         ("GPU Family", baseline.system.gpu.family, target.system.gpu.family),
         ("GPU Family ID", str(baseline.system.gpu.family_id), str(target.system.gpu.family_id)),
         ("Tensor API", str(baseline.system.gpu.has_tensor), str(target.system.gpu.has_tensor)),
-        ("Max Working Set (MB)", f"{baseline.system.gpu.recommended_max_working_set_mb:.0f}",
-         f"{target.system.gpu.recommended_max_working_set_mb:.0f}"),
+        (
+            "Max Working Set (MB)",
+            f"{baseline.system.gpu.recommended_max_working_set_mb:.0f}",
+            f"{target.system.gpu.recommended_max_working_set_mb:.0f}",
+        ),
         ("Apple Silicon", str(baseline.system.apple_silicon), str(target.system.apple_silicon)),
     ]
     for name, bval, tval in hw_fields:
@@ -654,27 +661,21 @@ def compare_profiles(baseline: HardwareProfile, target: HardwareProfile) -> Comp
             if tr < br * 0.5:
                 report.anomalies.append(
                     f"Decode ratio at {depth:,} is {tr:.3f}x on target vs {br:.3f}x on baseline "
-                    f"({tr/br:.0%} of expected). Constant cache thrashing suspected."
+                    f"({tr / br:.0%} of expected). Constant cache thrashing suspected."
                 )
             elif tr < 0.5:
                 report.anomalies.append(
-                    f"Decode ratio at {depth:,} is {tr:.3f}x — below 0.5x threshold. "
-                    f"Hardware may not support turbo3 decode at this context depth."
+                    f"Decode ratio at {depth:,} is {tr:.3f}x — below 0.5x threshold. Hardware may not support turbo3 decode at this context depth."
                 )
 
     # Tensor API warning
     if baseline.system.gpu.has_tensor and not target.system.gpu.has_tensor:
-        report.anomalies.append(
-            "Target lacks Tensor API (M1/M2/M3/M4). "
-            "Turbo3 constant cache performance will be significantly worse."
-        )
+        report.anomalies.append("Target lacks Tensor API (M1/M2/M3/M4). Turbo3 constant cache performance will be significantly worse.")
 
     return report
 
 
-def predict_decode_from_baseline(baseline: HardwareProfile,
-                                  target_gpu_family_id: int,
-                                  target_has_tensor: bool) -> dict[int, float]:
+def predict_decode_from_baseline(baseline: HardwareProfile, target_gpu_family_id: int, target_has_tensor: bool) -> dict[int, float]:
     """Predict target decode ratios from baseline profile using a simple model.
 
     The model: constant cache throughput scales with GPU generation.
@@ -715,7 +716,7 @@ def predict_decode_from_baseline(baseline: HardwareProfile,
 
         # Scale cache penalty by generation gap + tensor API penalty
         # Each generation ~1.5-2x worse for divergent constant access
-        scaled_cache_penalty = cache_penalty * (1.8 ** gen_gap) * tensor_penalty
+        scaled_cache_penalty = cache_penalty * (1.8**gen_gap) * tensor_penalty
 
         predicted_ratio = max(0.01, 1.0 - non_cache_penalty - scaled_cache_penalty)
         predicted[depth] = round(predicted_ratio, 3)

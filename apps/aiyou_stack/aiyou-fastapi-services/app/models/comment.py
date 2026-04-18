@@ -17,7 +17,9 @@ class Comment(Base):
     forum_post_id = Column(Integer, ForeignKey("forum_posts.id", ondelete="CASCADE"), nullable=True)
     author_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     parent_id = Column(
-        Integer, ForeignKey("comments.id", ondelete="CASCADE"), nullable=True,
+        Integer,
+        ForeignKey("comments.id", ondelete="CASCADE"),
+        nullable=True,
     )  # For nested comments
 
     content = Column(Text, nullable=False)

@@ -406,7 +406,9 @@ class JRPolicyEngine:
         )
 
     def _calculate_risk_tier(
-        self, ns_output: NSDetectionOutput, violations: list[PolicyViolation],
+        self,
+        ns_output: NSDetectionOutput,
+        violations: list[PolicyViolation],
     ) -> RiskTier:
         """Calculate risk tier based on signals and violations"""
         # Critical violations = Tier 5

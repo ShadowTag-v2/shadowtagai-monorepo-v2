@@ -40,30 +40,30 @@ jobs:
         run: |
           # 1. Fetch main to get the compressed GIF
           git fetch origin main
-          
+
           git show origin/main:docs/en/documentation/configuration/toolbox-ui/edit-headers.gif > docs/en/how-to/toolbox-ui/edit-headers.gif
-          
+
           sed -i 's|/genai-toolbox/|/|g' .hugo/layouts/partials/navbar-version-selector.html
 
           sed -i 's|https://googleapis.github.io/genai-toolbox|https://mcp-toolbox.dev|g' .hugo/hugo.toml
 
           git show origin/main:.hugo/hugo.cloudflare.toml > modern_config.toml
-          
+
           # Graft the future version list into the old config using Node.js!
           node -e "
           const fs = require('fs');
           const modern = fs.readFileSync('modern_config.toml', 'utf8');
           let old = fs.readFileSync('.hugo/hugo.toml', 'utf8');
-          
+
           // Convert any old GitHub URLs to Cloudflare in the rest of the config
           old = old.replace(/https:\/\/googleapis\.github\.io\/genai-toolbox/g, 'https://mcp-toolbox.dev');
-          
+
           // Erase the outdated version list from the old config
           old = old.replace(/\[\[params\.versions\]\][\s\S]*?(?=\n\[\[|\n\[|$)/g, '');
-          
+
           // Extract the fully updated version list from the modern config
           const modernVersions = modern.match(/\[\[params\.versions\]\][\s\S]*?(?=\n\[\[|\n\[|$)/g);
-          
+
           // Inject the modern versions into the old config
           if (modernVersions) {
             fs.writeFileSync('.hugo/hugo.toml', old + '\n\n' + modernVersions.join('\n'));
@@ -88,7 +88,7 @@ jobs:
 
       - name: Build Hugo Site for Archived Version
         run: |
-          hugo --minify 
+          hugo --minify
           rm -f public/releases.releases
         working-directory: .hugo
         env:
@@ -115,7 +115,7 @@ jobs:
         run: rm -rf .hugo/public
 
       - name: Build Hugo Site
-        run: hugo --minify 
+        run: hugo --minify
         working-directory: .hugo
         env:
           HUGO_BASEURL: https://mcp-toolbox.dev/

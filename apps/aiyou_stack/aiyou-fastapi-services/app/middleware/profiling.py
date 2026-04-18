@@ -21,8 +21,7 @@ from app.models.performance import Bottleneck, PerformanceMetric
 
 
 class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
-    """Middleware that profiles every request and identifies bottlenecks
-    """
+    """Middleware that profiles every request and identifies bottlenecks"""
 
     def __init__(self, app):
         super().__init__(app)
@@ -160,7 +159,11 @@ class PerformanceProfilingMiddleware(BaseHTTPMiddleware):
             print(f"Error storing metrics: {e}")
 
     async def _store_bottlenecks(
-        self, session, endpoint: str, profile_data: dict[str, Any], total_duration: float,
+        self,
+        session,
+        endpoint: str,
+        profile_data: dict[str, Any],
+        total_duration: float,
     ):
         """Store detected bottlenecks"""
         for func_data in profile_data.get("top_functions", [])[:5]:

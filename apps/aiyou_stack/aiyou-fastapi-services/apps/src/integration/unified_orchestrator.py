@@ -218,7 +218,9 @@ Allow: Research, analysis, optimization, collaboration
 """
 
     def execute(
-        self, user_request: str, context: dict[str, Any] | None = None,
+        self,
+        user_request: str,
+        context: dict[str, Any] | None = None,
     ) -> UnifiedExecutionResult:
         """Execute user request through unified orchestrator.
 

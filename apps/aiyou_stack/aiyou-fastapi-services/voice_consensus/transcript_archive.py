@@ -157,7 +157,8 @@ class TranscriptArchive:
         summary = result.get("execution_summary", {})
         thread_count = summary.get("total_threads", 0)
         models_consulted = summary.get(
-            "total_models_consulted", len(result.get("layer2_responses", [])) + 2,
+            "total_models_consulted",
+            len(result.get("layer2_responses", [])) + 2,
         )
         peer_reviews = summary.get("total_peer_reviews", len(result.get("peer_reviews", [])))
         exec_time = summary.get("avg_execution_time", 0)
@@ -471,7 +472,9 @@ def main():
     search_parser.add_argument("--limit", type=int, default=10, help="Max results")
     search_parser.add_argument("--tags", nargs="+", help="Filter by tags")
     search_parser.add_argument(
-        "--type", choices=["atomic", "simple", "message"], help="System type",
+        "--type",
+        choices=["atomic", "simple", "message"],
+        help="System type",
     )
 
     # Recent
@@ -501,7 +504,10 @@ def main():
 
     if args.command == "search":
         results = archive.search(
-            query=args.query, limit=args.limit, tags=args.tags, system_type=args.type,
+            query=args.query,
+            limit=args.limit,
+            tags=args.tags,
+            system_type=args.type,
         )
 
         print(f"\nFound {len(results)} results:\n")

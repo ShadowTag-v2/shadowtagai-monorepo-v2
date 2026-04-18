@@ -19,9 +19,7 @@ from google.cloud.firestore_v1.services.firestore.transports.base import (  # ty
 )
 
 
-def client_with_user_agent(
-    user_agent: str, client: firestore.Client | None = None
-) -> firestore.Client:
+def client_with_user_agent(user_agent: str, client: firestore.Client | None = None) -> firestore.Client:
     client_info = DEFAULT_CLIENT_INFO
     client_info.user_agent = user_agent
     if not client:

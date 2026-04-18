@@ -1,7 +1,7 @@
 # PRIVACY.md — ShadowTag AI Open-Source Privacy Policy
 
-**Last Updated:** April 14, 2026  
-**Effective Date:** April 14, 2026  
+**Last Updated:** April 14, 2026
+**Effective Date:** April 14, 2026
 **Version:** 1.0.0
 
 ---

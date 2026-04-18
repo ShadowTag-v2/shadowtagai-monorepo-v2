@@ -126,7 +126,11 @@ class SemanticSearchService:
             return {"status": "error", "error": str(e)}
 
     async def search(
-        self, index_name: str, query: str, top_k: int = 10, min_score: float = 0.0,
+        self,
+        index_name: str,
+        query: str,
+        top_k: int = 10,
+        min_score: float = 0.0,
     ) -> dict[str, Any]:
         """Perform semantic search on an index
 

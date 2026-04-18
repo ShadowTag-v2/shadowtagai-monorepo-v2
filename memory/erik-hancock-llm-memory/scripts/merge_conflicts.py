@@ -25,9 +25,7 @@ class ConflictResolver:
 
     def get_conflicted_files(self) -> list[Path]:
         """Get list of files with merge conflicts"""
-        result = subprocess.run(
-            ["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True
-        )
+        result = subprocess.run(["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True)
 
         if result.returncode != 0:
             print("Error: Could not get conflicted files", file=sys.stderr)
@@ -216,9 +214,7 @@ Provide ONLY the resolved code, no explanations or markdown fences.
                 continue
 
             # Replace with resolution
-            resolved_content = (
-                "".join(lines[:start_idx]) + resolution + "".join(lines[end_idx + 1 :])
-            )
+            resolved_content = "".join(lines[:start_idx]) + resolution + "".join(lines[end_idx + 1 :])
 
         # Write resolved content
         with open(file_path, "w") as f:
@@ -271,9 +267,7 @@ def main():
         return 1
 
     # Check for conflicts
-    result = subprocess.run(
-        ["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True
-    )
+    result = subprocess.run(["git", "diff", "--name-only", "--diff-filter=U"], capture_output=True, text=True)
 
     if not result.stdout.strip():
         print("✓ No merge conflicts to resolve")

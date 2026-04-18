@@ -63,4 +63,3 @@ class AppEngineIntegrationMode
         return constant($const);
     }
 }
-

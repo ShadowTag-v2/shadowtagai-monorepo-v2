@@ -9,7 +9,7 @@ export const processStructure = ( graph: KnowledgeGraph, paths: string[])=>{
 
         parts.forEach( (part, index ) => {
             const isFile = index === parts.length - 1
-            const label = isFile ? 'File' : 'Folder' 
+            const label = isFile ? 'File' : 'Folder'
 
             currentPath = currentPath ? `${currentPath}/${part}` : part
 
@@ -45,4 +45,3 @@ export const processStructure = ( graph: KnowledgeGraph, paths: string[])=>{
         })
     })
 }
-

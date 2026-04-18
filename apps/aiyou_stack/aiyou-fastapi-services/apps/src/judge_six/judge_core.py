@@ -23,8 +23,7 @@ class JudgeSix:
 
     @staticmethod
     def validate_action(action: str, context: dict[str, Any]) -> Verdict:
-        """Validates an action against the Doctrine.
-        """
+        """Validates an action against the Doctrine."""
         purpose = context.get("purpose")
         reasons = context.get("reasons")
         brakes = context.get("brakes")
@@ -43,8 +42,7 @@ class JudgeSix:
 
     @staticmethod
     def audit_trail(decision_id: str, verdict: Verdict):
-        """Logs decision to immutable ledger (Elasticsearch/Log).
-        """
+        """Logs decision to immutable ledger (Elasticsearch/Log)."""
         # TODO: Push to Elasticsearch
 
 

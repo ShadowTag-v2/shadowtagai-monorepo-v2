@@ -44,7 +44,8 @@ class IngestionNamespace(NamespaceService):
 
         # Run ingestion
         response = await self.client.post(
-            f"{self.api_base}/api/v1/ingestion/run", json={"sources": None},
+            f"{self.api_base}/api/v1/ingestion/run",
+            json={"sources": None},
         )
         data = response.json()
 

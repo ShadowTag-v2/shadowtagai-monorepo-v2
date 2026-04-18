@@ -58,7 +58,8 @@ class BillingService:
 
             if "PNKLN Edge Inference" not in product_names:
                 self.inference_product = stripe.Product.create(
-                    name="PNKLN Edge Inference", description="Low-latency inference at edge node",
+                    name="PNKLN Edge Inference",
+                    description="Low-latency inference at edge node",
                 )
                 self.inference_price = stripe.Price.create(
                     product=self.inference_product.id,
@@ -107,7 +108,11 @@ class BillingService:
             return f"mock_customer_{client_id}"
 
     def record_usage(
-        self, client_id: str, node_id: str, gb_processed: float, inference_count: int,
+        self,
+        client_id: str,
+        node_id: str,
+        gb_processed: float,
+        inference_count: int,
     ) -> str:
         """Record usage for a client.
 

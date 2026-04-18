@@ -76,7 +76,8 @@ class CopyrightGuardrail:
                         "severity": "HIGH",
                         "detail": f"Forbidden source pattern found: '{matches[0]}'. Use obfuscated term instead.",
                         "suggested_replacement": SOURCE_OBFUSCATION_MAP.get(
-                            matches[0], "Proprietary Intelligence",
+                            matches[0],
+                            "Proprietary Intelligence",
                         ),
                     },
                 )

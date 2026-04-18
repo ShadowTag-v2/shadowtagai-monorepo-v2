@@ -2,7 +2,7 @@
 title: "oceanbase-execute-sql"
 type: docs
 weight: 1
-description: > 
+description: >
   An "oceanbase-execute-sql" tool executes a SQL statement against an OceanBase database.
 ---
 

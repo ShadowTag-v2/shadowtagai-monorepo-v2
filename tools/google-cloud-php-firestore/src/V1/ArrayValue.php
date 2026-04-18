@@ -64,4 +64,3 @@ class ArrayValue extends \Google\Protobuf\Internal\Message
     }
 
 }
-

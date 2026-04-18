@@ -187,7 +187,10 @@ async def search(
     query_time = (time.time() - start_time) * 1000
 
     return SearchResponse(
-        cards=cards, count=len(cards), query=q, query_time_ms=round(query_time, 2),
+        cards=cards,
+        count=len(cards),
+        query=q,
+        query_time_ms=round(query_time, 2),
     )
 
 

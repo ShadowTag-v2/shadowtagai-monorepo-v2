@@ -24,7 +24,7 @@ for dir in */; do
             echo "ERROR: Compilation failed for '$subdir'. Check the output above."
             exit 1
         fi
-        
+
     else
         : # skip directories like snippets and .github
     fi

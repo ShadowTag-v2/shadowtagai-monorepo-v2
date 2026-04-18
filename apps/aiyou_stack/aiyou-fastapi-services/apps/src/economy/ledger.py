@@ -9,8 +9,7 @@ from src.economy.mall import Transaction
 
 
 class LedgerBook:
-    """Manages the Sovereign Chart of Accounts and exports.
-    """
+    """Manages the Sovereign Chart of Accounts and exports."""
 
     # Chart of Accounts Mapping
     ACCOUNTS = {
@@ -52,8 +51,7 @@ class LedgerBook:
         return qif_content
 
     def export_csv(self, transactions: list[Transaction]) -> str:
-        """Generates a CSV string.
-        """
+        """Generates a CSV string."""
         csv_content = "Date,Description,Amount,Category,Memo\n"
 
         for txn in transactions:

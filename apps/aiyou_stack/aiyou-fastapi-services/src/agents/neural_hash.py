@@ -37,12 +37,14 @@ class NeuralFingerprint(BaseModel):
 
     # Semantic layer (Gemini embeddings)
     semantic_embedding: list[float] = Field(
-        ..., description="768-dim semantic embedding from Gemini",
+        ...,
+        description="768-dim semantic embedding from Gemini",
     )
 
     # Energy-based density model
     latent_density: dict[str, float] = Field(
-        ..., description="Latent PDF parameters for content value",
+        ...,
+        description="Latent PDF parameters for content value",
     )
 
     # Perceptual hash
@@ -55,10 +57,12 @@ class NeuralFingerprint(BaseModel):
 
     # Quality metrics
     collision_probability: float = Field(
-        default=1e-9, description="Theoretical collision probability",
+        default=1e-9,
+        description="Theoretical collision probability",
     )
     metadata_reduction: float = Field(
-        default=0.60, description="Metadata size reduction vs. raw (60%)",
+        default=0.60,
+        description="Metadata size reduction vs. raw (60%)",
     )
 
     class Config:
@@ -223,7 +227,8 @@ class NeuralHashAgent:
 
         # Get embedding via batch processor
         embeddings = await self.batch_processor.embed_documents_batch(
-            [text], task_type="SEMANTIC_SIMILARITY",
+            [text],
+            task_type="SEMANTIC_SIMILARITY",
         )
 
         if embeddings and len(embeddings) > 0:
@@ -233,7 +238,9 @@ class NeuralHashAgent:
         return [0.0] * 768
 
     async def _compute_latent_density(
-        self, asset: MediaAsset, semantic_embedding: list[float],
+        self,
+        asset: MediaAsset,
+        semantic_embedding: list[float],
     ) -> dict[str, float]:
         """Compute latent density model (energy-based)
 
@@ -282,7 +289,9 @@ class NeuralHashAgent:
         return perceptual_hash
 
     async def verify_fingerprint(
-        self, original_fingerprint: dict[str, Any], candidate_asset: MediaAsset,
+        self,
+        original_fingerprint: dict[str, Any],
+        candidate_asset: MediaAsset,
     ) -> dict[str, Any]:
         """Verify if candidate asset matches original fingerprint
 
@@ -299,7 +308,8 @@ class NeuralHashAgent:
 
         # Compare fingerprints
         similarity_scores = await self._compare_fingerprints(
-            NeuralFingerprint(**original_fingerprint), candidate_fingerprint,
+            NeuralFingerprint(**original_fingerprint),
+            candidate_fingerprint,
         )
 
         # Compute overall confidence
@@ -319,7 +329,9 @@ class NeuralHashAgent:
         }
 
     async def _compare_fingerprints(
-        self, fp1: NeuralFingerprint, fp2: NeuralFingerprint,
+        self,
+        fp1: NeuralFingerprint,
+        fp2: NeuralFingerprint,
     ) -> dict[str, float]:
         """Compare two fingerprints and return similarity scores"""
         # 1. Semantic similarity (cosine)
@@ -348,7 +360,8 @@ class NeuralHashAgent:
         }
 
     async def batch_generate_fingerprints(
-        self, assets: list[MediaAsset],
+        self,
+        assets: list[MediaAsset],
     ) -> list[NeuralFingerprint]:
         """Generate fingerprints for multiple assets in batch
 

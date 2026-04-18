@@ -40,7 +40,10 @@ def get_git_status(repo_path: Path) -> dict[str, Any]:
     try:
         # Get remote info
         remote = subprocess.check_output(
-            ["git", "remote", "-v"], cwd=repo_path, text=True, stderr=subprocess.DEVNULL,
+            ["git", "remote", "-v"],
+            cwd=repo_path,
+            text=True,
+            stderr=subprocess.DEVNULL,
         )
         status["remotes"] = remote.strip().split("\n")
     except subprocess.CalledProcessError:
@@ -51,13 +54,17 @@ def get_git_status(repo_path: Path) -> dict[str, Any]:
         # Assuming upstream is named 'upstream' or 'origin' - let's check HEAD vs origin/main
         # First check current branch
         branch = subprocess.check_output(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=repo_path, text=True,
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+            cwd=repo_path,
+            text=True,
         ).strip()
         status["branch"] = branch
 
         # Check status (clean/dirty)
         git_status = subprocess.check_output(
-            ["git", "status", "--porcelain"], cwd=repo_path, text=True,
+            ["git", "status", "--porcelain"],
+            cwd=repo_path,
+            text=True,
         ).strip()
         status["dirty"] = bool(git_status)
 

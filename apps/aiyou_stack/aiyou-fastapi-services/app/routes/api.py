@@ -151,8 +151,7 @@ async def reset_sandbox_stats(
 
 @router.post("/stripe/create-checkout-session")
 async def create_checkout_session(request: dict):
-    """Generate a mocked Stripe checkout session for the Investor slide.
-    """
+    """Generate a mocked Stripe checkout session for the Investor slide."""
     logger.info("stripe_checkout_requested", payload=request)
     return {
         "id": "cs_test_mock123456789",
@@ -162,8 +161,7 @@ async def create_checkout_session(request: dict):
 
 @router.post("/ast/parse")
 async def ast_parse(payload: dict):
-    """Evaluate AST structure against Judge-6 rules via GitNexus Indexer.
-    """
+    """Evaluate AST structure against Judge-6 rules via GitNexus Indexer."""
     input_action = payload.get("action", "")
     logger.info("ast_parse_requested", action=input_action)
 
@@ -183,14 +181,15 @@ async def ast_parse(payload: dict):
 
 @router.post("/stripe/webhook")
 async def stripe_webhook(request: dict):
-    """Parse generic incoming Stripe events, looking for checkout session completions.
-    """
+    """Parse generic incoming Stripe events, looking for checkout session completions."""
     event_type = request.get("type")
 
     if event_type == "checkout.session.completed":
         session_data = request.get("data", {}).get("object", {})
         customer_email = session_data.get("customer_email", "unknown")
-        logger.info("stripe_checkout_completed", email=customer_email, session_id=session_data.get("id"))
+        logger.info(
+            "stripe_checkout_completed", email=customer_email, session_id=session_data.get("id")
+        )
         return {"status": "success", "action": "ingested_completion"}
 
     logger.info("stripe_webhook_ignored", type=event_type)

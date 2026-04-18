@@ -4,8 +4,7 @@ from pathlib import Path
 
 
 def create_single_repo_workspace(base_path, name):
-    """Creates an Apigee single-repository workspace structure with boilerplate.
-    """
+    """Creates an Apigee single-repository workspace structure with boilerplate."""
     root = Path(base_path) / name
     target = root / "src" / "main" / "apigee"
     folders = ["apiproxies", "environments", "sharedflows", "tests"]
@@ -46,8 +45,7 @@ def create_single_repo_workspace(base_path, name):
 
 
 def create_multi_repo_workspace(base_path, name, proxies=None):
-    """Creates an Apigee multi-repository workspace with boilerplate.
-    """
+    """Creates an Apigee multi-repository workspace with boilerplate."""
     root = Path(base_path) / name
     root.mkdir(parents=True, exist_ok=True)
     workspace_file = root / f"{name}.code-workspace"

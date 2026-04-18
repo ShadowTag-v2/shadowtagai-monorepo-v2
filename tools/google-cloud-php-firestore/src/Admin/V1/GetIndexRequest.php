@@ -84,4 +84,3 @@ class GetIndexRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

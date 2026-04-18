@@ -217,8 +217,7 @@ class NeuralMemory(Layer):
 
 
 class TitansBlock(Layer):
-    """Hybrid Block: Attention + Neural Memory.
-    """
+    """Hybrid Block: Attention + Neural Memory."""
 
     def __init__(self, embed_dim, num_heads, _dropout_prob=0.1):
         self.attn = MultiHeadAttention(embed_dim, num_heads)
@@ -309,8 +308,7 @@ class TitansGemini(GeminiMini):
         return params
 
     def generate(self, prompt_tokens, max_new_tokens=50, temperature=1.0):
-        """Generate text autoregressively.
-        """
+        """Generate text autoregressively."""
         current_tokens = Tensor(prompt_tokens.data.copy())
 
         for _ in range(max_new_tokens):

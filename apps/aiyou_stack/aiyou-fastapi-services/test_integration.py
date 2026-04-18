@@ -36,7 +36,10 @@ async def test_agent_fallback_proposal():
     print("=" * 70)
 
     agent = GeminiAgent(
-        name="skeptic", persona="You are a skeptical analyst", temperature=0.5, api_key=None,
+        name="skeptic",
+        persona="You are a skeptical analyst",
+        temperature=0.5,
+        api_key=None,
     )
 
     # Test Tier 1 content (regulatory)

@@ -249,7 +249,10 @@ class NightlyIntelPipeline:
 
         if not documents:
             return IntelEventBatch(
-                events=[], batch_id="empty_batch", total_raw_documents=0, extraction_errors=0,
+                events=[],
+                batch_id="empty_batch",
+                total_raw_documents=0,
+                extraction_errors=0,
             )
 
         # Run Gemini normalization
@@ -278,7 +281,10 @@ class NightlyIntelPipeline:
         for i, repo_file in enumerate(ingestion_results["repos"], 1):
             try:
                 logger.info(
-                    "scoring_repo", index=i, total=len(ingestion_results["repos"]), file=repo_file,
+                    "scoring_repo",
+                    index=i,
+                    total=len(ingestion_results["repos"]),
+                    file=repo_file,
                 )
 
                 # Read flattened content

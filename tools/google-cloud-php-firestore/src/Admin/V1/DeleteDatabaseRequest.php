@@ -126,4 +126,3 @@ class DeleteDatabaseRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -148,7 +148,8 @@ async def list_invoices(client_id: str, limit: int = 10):
 
 @router.post("/webhooks/stripe")
 async def stripe_webhook(
-    request: Request, stripe_signature: str = Header(None, alias="Stripe-Signature"),
+    request: Request,
+    stripe_signature: str = Header(None, alias="Stripe-Signature"),
 ):
     """Handle Stripe webhook events.
 

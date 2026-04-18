@@ -109,7 +109,10 @@ class AuditPublisher:
         data = json.dumps(trace_data).encode("utf-8")
 
         return self.publisher.publish(
-            self.topic_path, data, decision_id=decision_id, decision=decision,
+            self.topic_path,
+            data,
+            decision_id=decision_id,
+            decision=decision,
         )
 
     def publish_batch(self, events: list[dict[str, Any]]) -> list[str]:

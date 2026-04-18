@@ -104,13 +104,13 @@ section.
     export IMAGE=us-central1-docker.pkg.dev/database-toolbox/toolbox/toolbox:latest
     ```
 
-   {{< notice note >}}  
-**The `$PORT` Environment Variable**  
+   {{< notice note >}}
+**The `$PORT` Environment Variable**
 Google Cloud Run dictates the port your application must listen on by setting
 the `$PORT` environment variable inside your container. This value defaults to
 **8080**. Your application's `--port` argument **must** be set to listen on this
 port. If there is a mismatch, the container will fail to start and the
-deployment will time out.  
+deployment will time out.
 {{< /notice >}}
 
 1. Deploy Toolbox to Cloud Run using the following command:
@@ -151,7 +151,7 @@ have to re-deploy the cloud run service with the new flag.
 To implement CORs checks, use the `--allowed-origins` flag to specify a list of
 origins permitted to access the server.
 
-1. Set an environment variable to the cloud run url: 
+1. Set an environment variable to the cloud run url:
 
     ```bash
     export URL=<cloud run url>

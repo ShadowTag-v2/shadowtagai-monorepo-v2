@@ -272,7 +272,8 @@ async def certify_content(
 
         if tier not in [UsageTier.GROWTH, UsageTier.ENTERPRISE]:
             raise HTTPException(
-                status_code=402, detail="Certification requires GROWTH tier or higher",
+                status_code=402,
+                detail="Certification requires GROWTH tier or higher",
             )
 
         engine = get_california_ai_engine()

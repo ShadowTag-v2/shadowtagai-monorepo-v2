@@ -13,8 +13,7 @@ class ReceiptPayload(BaseModel):
 
 @router.post("/log-receipt")
 async def secure_shadowtag_receipt(payload: ReceiptPayload):
-    """Immutable cryptographic ledger tracking AI asset generation.
-    """
+    """Immutable cryptographic ledger tracking AI asset generation."""
     try:
         spanner_client = spanner.Client(project="shadowtag-omega-v4")
         instance = spanner_client.instance("headfade-ledger")

@@ -248,7 +248,11 @@ class YRMClient:
     """Client for Omega Risk Engine (YRM) integration."""
 
     def report_hazard(
-        self, category: str, severity: str, description: str, details: dict[str, Any],
+        self,
+        category: str,
+        severity: str,
+        description: str,
+        details: dict[str, Any],
     ):
         """Report a hazard to the YRM.
 

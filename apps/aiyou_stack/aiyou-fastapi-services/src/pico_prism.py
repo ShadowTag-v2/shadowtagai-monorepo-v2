@@ -275,7 +275,11 @@ class DecisionEngine:
 
     @staticmethod
     def monte_carlo_simulation(
-        n_simulations: int, base_roi: float, roi_std: float, base_cost: float, cost_std: float,
+        n_simulations: int,
+        base_roi: float,
+        roi_std: float,
+        base_cost: float,
+        cost_std: float,
     ) -> dict[str, Any]:
         """Run Monte Carlo simulation for decision confidence"""
         roi_samples = np.random.normal(base_roi, roi_std, n_simulations)
@@ -320,7 +324,8 @@ class HashTooling:
     def verify_hash(data: bytes, expected_hash: str, algorithm: str) -> bool:
         """Verify data against expected hash"""
         computed_hash, algo_used = HashTooling.compute_hash(
-            data, prefer_blake3=(algorithm == "blake3"),
+            data,
+            prefer_blake3=(algorithm == "blake3"),
         )
         return computed_hash == expected_hash and algo_used == algorithm
 

@@ -68,7 +68,9 @@ async def refine(
         )
 
     prompt = REFINE_PROMPT.format(
-        current_draft=current_draft, tools_section=tools_section, feedback_section=feedback_section,
+        current_draft=current_draft,
+        tools_section=tools_section,
+        feedback_section=feedback_section,
     )
 
     async with httpx.AsyncClient(timeout=120.0) as client:

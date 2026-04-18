@@ -1,5 +1,4 @@
-"""Request models for the Database Expert API
-"""
+"""Request models for the Database Expert API"""
 
 from typing import Any
 
@@ -82,7 +81,8 @@ class ChatRequest(BaseModel):
 
     message: str = Field(..., description="User message", min_length=1)
     conversation_history: list[dict[str, str]] | None = Field(
-        None, description="Conversation history",
+        None,
+        description="Conversation history",
     )
 
     class Config:

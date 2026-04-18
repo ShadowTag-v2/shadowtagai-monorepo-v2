@@ -153,7 +153,9 @@ class GlassBoxIndexer:
             return False
 
     async def bulk_index(
-        self, documents: AsyncIterator[dict], progress_callback=None,
+        self,
+        documents: AsyncIterator[dict],
+        progress_callback=None,
     ) -> IndexStats:
         """Bulk index documents with Apertus-style parallel processing.
 
@@ -270,7 +272,10 @@ class GlassBoxIndexer:
             return []
 
     async def search_verdict(
-        self, verdict: str, component: str | None = None, limit: int = 100,
+        self,
+        verdict: str,
+        component: str | None = None,
+        limit: int = 100,
     ) -> list[dict]:
         """Search by verdict (ALLOW, BLOCK, etc.)
 

@@ -214,7 +214,7 @@ implementation](https://github.com/googleapis/mcp-toolbox/blob/main/internal/sou
 We recommend looking at an [example tool
 implementation](https://github.com/googleapis/mcp-toolbox/tree/main/internal/tools/postgres/postgressql).
 
-Remember to keep your PRs small. For example, if you are contributing a new Source, only include one or two core Tools within the same PR, the rest of the Tools can come in subsequent PRs. 
+Remember to keep your PRs small. For example, if you are contributing a new Source, only include one or two core Tools within the same PR, the rest of the Tools can come in subsequent PRs.
 
 * **Create a new directory** under `internal/tools` for your tool type (e.g., `internal/tools/newdb/newdbtool`).
 * **Define a configuration struct** for your tool in a file named `newdbtool.go`.
@@ -849,4 +849,3 @@ Trigger pull request tests for external contributors by:
 * (Suspended) .github/sync-repo-settings.yaml - configure repo settings
 * .github/release-please.yml - Creates GitHub releases
 * .github/ISSUE_TEMPLATE - templates for GitHub issues
-

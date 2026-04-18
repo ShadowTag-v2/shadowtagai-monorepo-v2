@@ -112,7 +112,7 @@ Step 10: Create comprehensive report
 - Write scientific summary with methodology, results, and recommendations
 - Export to PDF with proper citations
 
-Expected Output: 
+Expected Output:
 - Ranked list of 10-20 novel EGFR inhibitor candidates
 - Predicted activity and ADMET properties
 - Docking poses and binding analysis
@@ -2518,4 +2518,3 @@ These examples demonstrate:
 - Create PDFs for stakeholder communication
 
 These examples showcase the power of combining the skills in this repository to tackle complex, real-world scientific challenges across multiple domains.
-

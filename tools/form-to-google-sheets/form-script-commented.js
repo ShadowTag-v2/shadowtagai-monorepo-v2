@@ -14,7 +14,7 @@ function initialSetup() {
 }
 
 /**
-Prevents CSV/Formula Injection by prepending a single quote to force text formatting 
+Prevents CSV/Formula Injection by prepending a single quote to force text formatting
 which prevents inputs that start with =, +, -, or @ to be interpreted as formulas.
 */
 
@@ -103,9 +103,9 @@ function doPost(e) {
 		// Gets the last row and then adds one
 		const nextRow = sheet.getLastRow() + 1
 		/*
-    Maps the headers array to a new array. If the header is 'id', 
-		it generates a new UUID. If a header's value is 'timestamp' 
-		then it returns a new Date() object, otherwise it returns 
+    Maps the headers array to a new array. If the header is 'id',
+		it generates a new UUID. If a header's value is 'timestamp'
+		then it returns a new Date() object, otherwise it returns
 		the value of the matching URL parameter
     https://developers.google.com/apps-script/guides/web
     */

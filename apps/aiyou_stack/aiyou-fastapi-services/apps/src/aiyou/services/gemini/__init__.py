@@ -1,5 +1,4 @@
-"""Gemini AI Service Module
-"""
+"""Gemini AI Service Module"""
 
 from .client import GeminiClient, GeminiRateLimitExceeded, GeminiServiceError
 

@@ -235,7 +235,8 @@ class IntelligenceAgent(ShadowTagAiAgent):
 
         # Step 4: Generate AM briefing
         briefing = self.ingestion_layer.export_am_briefing(
-            ingestion_result.items, format="markdown",
+            ingestion_result.items,
+            format="markdown",
         )
 
         # Step 5: Calculate combined metrics

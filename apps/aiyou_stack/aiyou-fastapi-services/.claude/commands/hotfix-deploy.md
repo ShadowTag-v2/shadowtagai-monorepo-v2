@@ -39,7 +39,7 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
    git fetch --tags
    git checkout tags/v1.2.3  # Latest production version
    git checkout -b hotfix/critical-auth-fix
-   
+
    # Alternative: Branch from main if using trunk-based development
    git checkout main
    git pull origin main
@@ -65,7 +65,7 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
    # Run focused tests related to the fix
    npm test -- --testPathPattern=auth
    npm run test:security
-   
+
    # Manual testing checklist
    # [ ] Core functionality works correctly
    # [ ] Hotfix resolves the critical issue
@@ -92,20 +92,20 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
    # Update version for hotfix
    # 1.2.3 -> 1.2.4 (patch version)
    # or 1.2.3 -> 1.2.3-hotfix.1 (hotfix identifier)
-   
+
    # Commit with detailed message
    git add .
    git commit -m "hotfix: fix critical authentication vulnerability
 
-   
+
    - Fix password [VAPORIZED_PWD] logic
 
    - Resolve security issue allowing bypass
 
    - Minimal change to reduce deployment risk
-   
+
    Fixes: #1234"
-   
+
    # Tag the hotfix version
    git tag -a v1.2.4 -m "Hotfix v1.2.4: Critical auth security fix"
    git push origin hotfix/critical-auth-fix
@@ -117,43 +117,43 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
    ```bash
    # Deploy to staging environment for final validation
    ./deploy-staging.sh v1.2.4
-   
+
    # Critical path testing
    curl -X POST staging.example.com/api/auth/login \
         -H "Content-Type: application/json" \
         -d '{"email":"redacted@shadowtag-v4.local","password":"[VAPORIZED_PWD]"}'
-   
+
    # Run smoke tests
    npm run test:smoke:staging
    ```
 
 
 9. **Production Deployment Strategy**
-   
+
    **Blue-Green Deployment:**
    ```bash
    # Deploy to blue environment
    ./deploy-blue.sh v1.2.4
-   
+
    # Validate blue environment health
    ./health-check-blue.sh
-   
+
    # Switch traffic to blue environment
    ./switch-to-blue.sh
-   
+
    # Monitor deployment metrics
    ./monitor-deployment.sh
    ```
 
-   
+
    **Rolling Deployment:**
    ```bash
    # Deploy to subset of servers first
    ./deploy-rolling.sh v1.2.4 --batch-size 1
-   
+
    # Monitor each batch deployment
    ./monitor-batch.sh
-   
+
    # Continue with next batch if healthy
    ./deploy-next-batch.sh
    ```
@@ -167,10 +167,10 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
     # [ ] Monitoring alerts configured and active
     # [ ] Team members standing by for support
     # [ ] Communication channels established
-    
+
     # Execute production deployment
     ./deploy-production.sh v1.2.4
-    
+
     # Run immediate post-deployment validation
     ./validate-hotfix.sh
     ```
@@ -180,10 +180,10 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
     ```bash
     # Monitor key application metrics
     watch -n 10 'curl -s https://api.example.com/health | jq .'
-    
+
     # Monitor error rates and logs
     tail -f /var/log/app/error.log | grep -i "auth"
-    
+
     # Track critical metrics:
     # - Response times and latency
     # - Error rates and exception counts
@@ -196,15 +196,15 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
     ```bash
     # Run comprehensive validation tests
     ./test-critical-paths.sh
-    
+
     # Test user authentication functionality
     curl -X POST https://api.example.com/auth/login \
          -H "Content-Type: application/json" \
          -d '{"email":"redacted@shadowtag-v4.local","password":"[VAPORIZED_PWD]"}'
-    
+
     # Validate security fix effectiveness
     ./security-validation.sh
-    
+
     # Check overall system performance
     ./performance-check.sh
     ```
@@ -228,14 +228,14 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
     # Automated rollback script
     #!/bin/bash
     PREVIOUS_VERSION="v1.2.3"
-    
+
     if [ "$1" = "rollback" ]; then
         echo "Rolling back to $PREVIOUS_VERSION"
         ./deploy-production.sh $PREVIOUS_VERSION
         ./validate-rollback.sh
         echo "Rollback completed successfully"
     fi
-    
+
     # Manual rollback steps if automation fails:
     # 1. Switch load balancer back to previous version
     # 2. Validate previous version health and functionality
@@ -277,7 +277,7 @@ Follow this emergency hotfix deployment process: **$ARGUMENTS**
     git pull origin main
     git merge hotfix/critical-auth-fix
     git push origin main
-    
+
     # Clean up hotfix branch
     git branch -d hotfix/critical-auth-fix
     git push origin --delete hotfix/critical-auth-fix

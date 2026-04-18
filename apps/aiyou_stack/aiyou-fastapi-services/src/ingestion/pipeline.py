@@ -43,7 +43,6 @@ class IngestionPipeline:
         tier_classifier: TierClassifier | None = None,
         briefing_generator: BriefingGenerator | None = None,
     ):
-
         # Initialize components
         self.source_manager = source_manager or SourceManager(sources=DEFAULT_SOURCES)
         self.ethics_checker = ethics_checker or EthicalComplianceChecker()
@@ -133,7 +132,9 @@ class IngestionPipeline:
 
                 if lid:
                     self.lineage_tracker.update_item(
-                        lid, stage="classified", metadata={"tier": tier},
+                        lid,
+                        stage="classified",
+                        metadata={"tier": tier},
                     )
 
             self.metrics["total_items_classified"] = len(classified_items)

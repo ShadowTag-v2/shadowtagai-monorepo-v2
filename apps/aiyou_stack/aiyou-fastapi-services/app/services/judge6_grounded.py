@@ -145,7 +145,8 @@ class Judge6Grounded:
         self.project_id = project_id or os.getenv("VERTEX_PROJECT_ID", "acquired-jet-478701-b3")
         self.location = location
         self.datastore_id = datastore_id or os.getenv(
-            "JUDGE6_DATASTORE_ID", "judge6-doctrine-store",
+            "JUDGE6_DATASTORE_ID",
+            "judge6-doctrine-store",
         )
 
         # Derived paths
@@ -259,7 +260,9 @@ class Judge6Grounded:
         return GovernanceDecision.DENY, "Critical risk - auto-denied"
 
     async def _retrieve_grounding(
-        self, query: str, compliance_flags: ComplianceFlags,
+        self,
+        query: str,
+        compliance_flags: ComplianceFlags,
     ) -> list[GroundingChunk]:
         """Retrieve grounding from Vertex AI Search."""
         if not self._genai_model:

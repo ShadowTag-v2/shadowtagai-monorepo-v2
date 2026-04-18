@@ -22,4 +22,3 @@ class AggregationResult
         static::$is_initialized = true;
     }
 }
-

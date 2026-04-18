@@ -227,7 +227,10 @@ class PnklnOrchestrator:
         return self.agents.get("pnkln_orchestrator_meta")
 
     async def execute_skill(
-        self, skill: Skill, user_input: str, _llm_backend: Any | None = None,
+        self,
+        skill: Skill,
+        user_input: str,
+        _llm_backend: Any | None = None,
     ) -> str:
         """Execute a single skill.
 
@@ -370,7 +373,8 @@ Activation Prompt:
 
 # Convenience factory
 def create_orchestrator(
-    skills_path: str | None = None, agents_path: str | None = None,
+    skills_path: str | None = None,
+    agents_path: str | None = None,
 ) -> PnklnOrchestrator:
     """Create orchestrator with default or custom registry paths.
 

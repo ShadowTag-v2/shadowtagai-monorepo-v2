@@ -1,5 +1,4 @@
-"""Business & Analytics Agents for Vertex AI Workbench
-"""
+"""Business & Analytics Agents for Vertex AI Workbench"""
 
 from typing import Any
 

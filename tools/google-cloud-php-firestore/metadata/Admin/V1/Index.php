@@ -23,4 +23,3 @@ class Index
         static::$is_initialized = true;
     }
 }
-

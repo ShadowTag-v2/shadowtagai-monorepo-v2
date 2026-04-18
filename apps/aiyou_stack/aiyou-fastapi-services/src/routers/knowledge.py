@@ -33,7 +33,8 @@ async def upload_workspace_document(
 
     if not (file.filename.endswith(".txt") or file.filename.endswith(".md")):
         raise HTTPException(
-            status_code=400, detail="Only .txt and .md files are supported for now.",
+            status_code=400,
+            detail="Only .txt and .md files are supported for now.",
         )
 
     content = await file.read()

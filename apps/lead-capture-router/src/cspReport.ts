@@ -1,10 +1,10 @@
 /**
  * CSP Violation Report Endpoint — Cloud Function (Gen 2)
  * ══════════════════════════════════════════════════════
- * 
+ *
  * Receives CSP violation reports and logs them to Cloud Logging.
  * Add report-uri or report-to directive to CSP headers pointing to this function.
- * 
+ *
  * Deployed at: https://us-central1-shadowtag-omega-v4.cloudfunctions.net/cspReport
  */
 

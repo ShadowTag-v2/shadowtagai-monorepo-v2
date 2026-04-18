@@ -81,6 +81,7 @@ async def rag_query(req: RAGQueryRequest):
     try:
         # Lazy import to avoid loading ML models at startup
         import sys
+
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
         from src.rag.lancedb_pipeline import RAGPipeline
 
@@ -112,6 +113,7 @@ async def rag_stats():
     """Return LanceDB pipeline statistics."""
     try:
         import sys
+
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
         from src.rag.lancedb_pipeline import RAGPipeline
 
@@ -134,4 +136,3 @@ if __name__ == "__main__":
 
     port = int(os.environ.get("PORT", 8080))
     uvicorn.run(app, host="0.0.0.0", port=port)
-

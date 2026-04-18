@@ -70,5 +70,3 @@ uvx scientific-writer --help
 - Semantic versioning: breaking changes → major; features → minor; fixes → patch.
 - If a tag already exists, delete/recreate it or skip tagging with `--skip-tag`.
 - If your working tree is dirty, commit or use `--skip-git-check` (not recommended).
-
-

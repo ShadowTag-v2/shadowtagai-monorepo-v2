@@ -1,5 +1,4 @@
-"""Infrastructure models and schemas
-"""
+"""Infrastructure models and schemas"""
 
 from enum import StrEnum
 from typing import Any
@@ -32,7 +31,8 @@ class InfrastructureDesignRequest(BaseModel):
     high_availability: bool = Field(default=True, description="Enable HA configuration")
     budget_limit: float | None = Field(None, description="Monthly budget limit in USD")
     requirements: dict[str, Any] = Field(
-        default_factory=dict, description="Additional requirements",
+        default_factory=dict,
+        description="Additional requirements",
     )
 
 

@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START get_custom_object_modular]
-import { doc, getDoc} from "firebase/firestore"; 
+import { doc, getDoc} from "firebase/firestore";
 
 const ref = doc(db, "cities", "LA").withConverter(cityConverter);
 const docSnap = await getDoc(ref);

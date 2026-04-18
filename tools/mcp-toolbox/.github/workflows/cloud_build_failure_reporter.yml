@@ -44,9 +44,9 @@ jobs:
                   const testNameSubstring = '${{ inputs.trigger_names }}';
                   const testNameFound = new Map(); //keeps track of whether each test is found
                   testNameSubstring.split(',').forEach(testName => {
-                    testNameFound.set(testName, false); 
+                    testNameFound.set(testName, false);
                   });
-                  
+
                   // label for all issues opened by reporter
                   const periodicLabel = 'periodic-failure';
 
@@ -130,7 +130,7 @@ jobs:
                       for (const testName of testNameFound.keys()) {
                         if (testNameFound.get(testName) === true){
                           //skip if a check is already found for this name
-                          continue; 
+                          continue;
                         }
                         if (check.name.includes(testName)) {
                           relevantChecks.set(check, commit);

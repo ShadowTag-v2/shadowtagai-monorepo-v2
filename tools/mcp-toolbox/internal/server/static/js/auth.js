@@ -20,7 +20,7 @@ import { escapeHtml } from './sanitize.js';
  * @param {string} clientId The Google OAuth Client ID.
  * @param {string} authProfileName The name of the auth service in config.
  */
-function renderGoogleSignInButton(toolId, clientId, authProfileName) { 
+function renderGoogleSignInButton(toolId, clientId, authProfileName) {
     const UNIQUE_ID_BASE = `${toolId}-${authProfileName}`;
     const GIS_CONTAINER_ID = `gisContainer-${UNIQUE_ID_BASE}`;
     const gisContainer = document.getElementById(GIS_CONTAINER_ID);
@@ -38,8 +38,8 @@ function renderGoogleSignInButton(toolId, clientId, authProfileName) {
 
     // hide the setup button and show the container for the GIS button
     if (setupGisBtn) setupGisBtn.style.display = 'none';
-    gisContainer.innerHTML = ''; 
-    gisContainer.style.display = 'flex'; 
+    gisContainer.innerHTML = '';
+    gisContainer.style.display = 'flex';
     if (window.google && window.google.accounts && window.google.accounts.id) {
         try {
             const handleResponse = (response) => handleCredentialResponse(response, toolId, authProfileName);
@@ -56,13 +56,13 @@ function renderGoogleSignInButton(toolId, clientId, authProfileName) {
             console.error("Error initializing Google Sign-In:", error);
             alert("Error initializing Google Sign-In. Check the Client ID and browser console.");
             gisContainer.innerHTML = '<p style="color: red;">Error loading Sign-In button.</p>';
-            if (setupGisBtn) setupGisBtn.style.display = ''; 
+            if (setupGisBtn) setupGisBtn.style.display = '';
         }
     } else {
         console.error("GIS library not fully loaded yet.");
         alert("Google Identity Services library not ready. Please try again in a moment.");
         gisContainer.innerHTML = '<p style="color: red;">GIS library not ready.</p>';
-        if (setupGisBtn) setupGisBtn.style.display = ''; 
+        if (setupGisBtn) setupGisBtn.style.display = '';
     }
 }
 
@@ -72,7 +72,7 @@ function renderGoogleSignInButton(toolId, clientId, authProfileName) {
  * @param {string} toolId The ID of the tool.
  * @param {string} authProfileName The name of the auth service in config.
  */
-function handleCredentialResponse(response, toolId, authProfileName) { 
+function handleCredentialResponse(response, toolId, authProfileName) {
     console.debug("handleCredentialResponse called with:", { response, toolId, authProfileName });
     const headersTextarea = document.getElementById(`headers-textarea-${toolId}`);
     if (!headersTextarea) {
@@ -92,7 +92,7 @@ function handleCredentialResponse(response, toolId, authProfileName) {
             if (headersTextarea.value) {
                 currentHeaders = JSON.parse(headersTextarea.value);
             }
-            const HEADER_KEY = `${authProfileName}_token`; 
+            const HEADER_KEY = `${authProfileName}_token`;
             currentHeaders[HEADER_KEY] = `${idToken}`;
             headersTextarea.value = JSON.stringify(currentHeaders, null, 2);
 
@@ -106,14 +106,14 @@ function handleCredentialResponse(response, toolId, authProfileName) {
     } else {
         console.error("Error: No credential in response", response);
         alert('Error: No ID Token received. Check console for details.');
-        
+
         if (gisContainer) gisContainer.style.display = 'none';
         if (setupGisBtn) setupGisBtn.style.display = '';
     }
 }
 
 // creates the Google Auth method dropdown
-export function createGoogleAuthMethodItem(toolId, authProfileName) { 
+export function createGoogleAuthMethodItem(toolId, authProfileName) {
     const safeProfileName = escapeHtml(authProfileName);
     const UNIQUE_ID_BASE = `${toolId}-${authProfileName}`;
     const item = document.createElement('div');
@@ -131,7 +131,7 @@ export function createGoogleAuthMethodItem(toolId, authProfileName) {
                     <input type="text" id="clientIdInput-${UNIQUE_ID_BASE}" placeholder="Enter Client ID" class="auth-input">
                 </div>
                 <div class="auth-instructions">
-                    <strong>Action Required:</strong> Add this URL (e.g., http://localhost:PORT) to the Client ID's <strong>Authorized JavaScript origins</strong> to avoid a 401 error. If using Google OAuth, 
+                    <strong>Action Required:</strong> Add this URL (e.g., http://localhost:PORT) to the Client ID's <strong>Authorized JavaScript origins</strong> to avoid a 401 error. If using Google OAuth,
                     navigate to <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Google Cloud Console</a> for this setting.
                 </div>
                 <div class="auth-method-actions">
@@ -149,16 +149,16 @@ export function createGoogleAuthMethodItem(toolId, authProfileName) {
     const gisContainer = item.querySelector(`#gisContainer-${UNIQUE_ID_BASE}`);
 
     toggleBtn.addEventListener('click', () => {
-        const isVisible = detailsDiv.style.display === 'flex'; 
-        detailsDiv.style.display = isVisible ? 'none' : 'flex'; 
+        const isVisible = detailsDiv.style.display === 'flex';
+        detailsDiv.style.display = isVisible ? 'none' : 'flex';
         toggleBtn.textContent = isVisible ? 'Auto Setup' : 'Close';
-        if (!isVisible) { 
+        if (!isVisible) {
             if (gisContainer) {
                 gisContainer.innerHTML = '';
                 gisContainer.style.display = 'none';
             }
             if (setupGisBtn) {
-                setupGisBtn.style.display = ''; 
+                setupGisBtn.style.display = '';
             }
         }
     });

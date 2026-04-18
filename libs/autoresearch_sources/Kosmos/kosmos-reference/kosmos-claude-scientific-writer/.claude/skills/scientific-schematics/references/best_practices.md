@@ -261,7 +261,7 @@ convert diagram.pdf -colorspace gray diagram_gray.pdf
 ### Pitfall 1: Overcomplicated Diagrams
 
 **Problem**: Too much information in one diagram
-**Solution**: 
+**Solution**:
 - Split into multiple panels (A, B, C)
 - Create overview + detailed diagrams
 - Move details to supplementary figures
@@ -434,7 +434,7 @@ plt.rcParams['font.size'] = 8
 plt.rcParams['pdf.fonttype'] = 42  # TrueType fonts in PDF
 
 # Save with proper DPI and cropping
-fig.savefig('diagram.pdf', dpi=300, bbox_inches='tight', 
+fig.savefig('diagram.pdf', dpi=300, bbox_inches='tight',
             pad_inches=0.1, transparent=False)
 fig.savefig('diagram.png', dpi=300, bbox_inches='tight')
 ```
@@ -559,4 +559,3 @@ identify -verbose diagram.pdf
 - **ColorBrewer**: https://colorbrewer2.org/
 
 Following these best practices ensures your diagrams meet publication standards and effectively communicate to all readers, regardless of colorblindness or viewing conditions.
-

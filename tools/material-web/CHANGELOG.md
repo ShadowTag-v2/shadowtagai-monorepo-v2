@@ -346,7 +346,7 @@
     - ArrowUp and ArrowDown no longer navigate between chips. These are reserved for chip actions, like dropdown menu chips.
 * **list,menu,select:** the data-variant=".." selectors in list-item and all variants have been removed in favor of their respective slots. e.g. a slotted icon of the form `md-icon[slot=end][data-variant=icon]` should now be `md-icon[slot=end-icon]`.
 * **menu:** menu selected container color changed to secondary-container
-* **list:** 
+* **list:**
 * **list:** Aria and roles on List have been moved to the host element. list-tabindex attribute should be migrated to tabindex attribute. type attribute should be migrated to role attribute.
 * **list,menu,select:** removed `active` from list-item, menu-item, and select-option. Instead, List uses tabindex to track whether something is focusable.
 * **select:** `option.selected` no longer reflects. Set the attribute instead if relying on the attribute for styles/queries.

@@ -72,9 +72,7 @@ def run_coverage(threshold: int | None = None) -> dict[str, Any]:
             "threshold": threshold,
             "passed": result.returncode == 0,
             "files": files,
-            "timestamp": subprocess.check_output(["date", "-u", "+%Y-%m-%dT%H:%M:%SZ"])
-            .decode()
-            .strip(),
+            "timestamp": subprocess.check_output(["date", "-u", "+%Y-%m-%dT%H:%M:%SZ"]).decode().strip(),
         }
 
     except Exception as e:

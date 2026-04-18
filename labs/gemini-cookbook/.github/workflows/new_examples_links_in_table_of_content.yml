@@ -30,7 +30,7 @@ jobs:
             # Get the filename without the directory path
             filename=$(basename "$file")
 
-            # Check if link exists in $README 
+            # Check if link exists in $README
             if ! grep -q "$file" "$README" && ! grep -q "${file/examples\//](}" "$README"; then
               # Check if a README.md exists in the sub-folder, and if so, check for the link there
               if [[ -f "$notebook_dir/README.md" ]]; then

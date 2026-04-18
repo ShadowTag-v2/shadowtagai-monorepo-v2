@@ -12,7 +12,7 @@ Bundles are useful when you want to cache publicly available documents that are 
 - Public data visualizations (e.g. public poll results or disaster updates)
 - E-commerce catalogs
 
-[Kara’s Coffee](https://github.com/FirebaseExtended/karas-coffee), an online coffee shop built with Firebase Extensions, uses a [Firestore bundle](https://us-central1-karas-coffee.cloudfunctions.net/ext-firestore-bundle-server-serve/shop) to cache its catalog of coffee offerings. 
+[Kara’s Coffee](https://github.com/FirebaseExtended/karas-coffee), an online coffee shop built with Firebase Extensions, uses a [Firestore bundle](https://us-central1-karas-coffee.cloudfunctions.net/ext-firestore-bundle-server-serve/shop) to cache its catalog of coffee offerings.
 
 
 This extension simplifies the process of adding [Cloud Firestore data bundles](https://firebase.google.com/docs/firestore/bundles) to your application. Once this extension is configured, you can generate bundles on demand via HTTP requests.

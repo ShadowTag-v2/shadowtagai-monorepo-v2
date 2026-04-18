@@ -82,7 +82,11 @@ class LatencyTester:
         self.results: list[LatencyResult] = []
 
     async def send_request(
-        self, session: aiohttp.ClientSession, request_id: int, prompt: str, timeout: float = 30.0,
+        self,
+        session: aiohttp.ClientSession,
+        request_id: int,
+        prompt: str,
+        timeout: float = 30.0,
     ) -> LatencyResult:
         """Send single inference request and measure latency"""
         headers = {"Content-Type": "application/json"}
@@ -135,7 +139,10 @@ class LatencyTester:
             )
 
     async def run_test(
-        self, num_requests: int = 100, concurrency: int = 10, prompt: str = None,
+        self,
+        num_requests: int = 100,
+        concurrency: int = 10,
+        prompt: str = None,
     ) -> list[LatencyResult]:
         """Run concurrent latency test"""
         if prompt is None:
@@ -163,7 +170,10 @@ class LatencyTester:
             # Execute with progress bar
             results = []
             for coro in tqdm(
-                asyncio.as_completed(tasks), total=num_requests, desc="Requests", unit="req",
+                asyncio.as_completed(tasks),
+                total=num_requests,
+                desc="Requests",
+                unit="req",
             ):
                 result = await coro
                 results.append(result)
@@ -321,7 +331,9 @@ class LatencyTester:
 async def main():
     parser = argparse.ArgumentParser(description="PNKLN Judge #6 Latency Validation Harness")
     parser.add_argument(
-        "--endpoint", default="http://judge6.pnkln.svc.cluster.local", help="Inference endpoint URL",
+        "--endpoint",
+        default="http://judge6.pnkln.svc.cluster.local",
+        help="Inference endpoint URL",
     )
     parser.add_argument(
         "--p99-target-ms",
@@ -330,10 +342,16 @@ async def main():
         help="p99 latency SLA target in milliseconds (default: 90)",
     )
     parser.add_argument(
-        "--num-requests", type=int, default=100, help="Number of requests to send (default: 100)",
+        "--num-requests",
+        type=int,
+        default=100,
+        help="Number of requests to send (default: 100)",
     )
     parser.add_argument(
-        "--concurrency", type=int, default=10, help="Concurrent requests (default: 10)",
+        "--concurrency",
+        type=int,
+        default=10,
+        help="Concurrent requests (default: 10)",
     )
     parser.add_argument("--api-key", default=None, help="API key for authentication (optional)")
     parser.add_argument("--prompt", default=None, help="Custom prompt for testing (optional)")
@@ -347,7 +365,9 @@ async def main():
     # Run test
     time.time()
     await tester.run_test(
-        num_requests=args.num_requests, concurrency=args.concurrency, prompt=args.prompt,
+        num_requests=args.num_requests,
+        concurrency=args.concurrency,
+        prompt=args.prompt,
     )
 
     # Generate and print report

@@ -62,7 +62,8 @@ class JuraRouter:
         self._executor: Callable[[str, int, str, int], Awaitable[dict[str, Any]]] | None = None
 
     def set_executor(
-        self, executor: Callable[[str, int, str, int], Awaitable[dict[str, Any]]],
+        self,
+        executor: Callable[[str, int, str, int], Awaitable[dict[str, Any]]],
     ) -> None:
         """Set the agent executor function.
 

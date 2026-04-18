@@ -36,8 +36,7 @@ def find_extraction_files(input_dir: Path, pattern: str) -> list[Path]:
 
 
 def extract_conversations_from_data(data: Any, filename: str) -> list[dict[str, Any]]:
-    """Intelligently extracts conversation lists from various extraction formats.
-    """
+    """Intelligently extracts conversation lists from various extraction formats."""
     conversations = []
 
     # Case 1: Direct list (Legacy/Simple format)
@@ -120,10 +119,10 @@ def extract_conversations_from_data(data: Any, filename: str) -> list[dict[str, 
 
 
 def filter_conversations(
-    conversations: list[dict[str, Any]], exclude_keywords: list[str],
+    conversations: list[dict[str, Any]],
+    exclude_keywords: list[str],
 ) -> list[dict[str, Any]]:
-    """Filters out conversations that contain any of the exclusion keywords.
-    """
+    """Filters out conversations that contain any of the exclusion keywords."""
     if not exclude_keywords:
         return conversations
 
@@ -155,10 +154,10 @@ def filter_conversations(
 
 
 def merge_json_files(
-    file_paths: list[Path], exclude_keywords: list[str] = None,
+    file_paths: list[Path],
+    exclude_keywords: list[str] = None,
 ) -> list[dict[str, Any]]:
-    """Merges content from a list of JSON files.
-    """
+    """Merges content from a list of JSON files."""
     if exclude_keywords is None:
         exclude_keywords = []
     merged_data = []

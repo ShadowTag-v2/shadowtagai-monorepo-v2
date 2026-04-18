@@ -57,23 +57,23 @@ log_error() {
 
 check_prerequisites() {
     log_info "Checking prerequisites..."
-    
+
     local missing=0
-    
+
     if ! command -v gcloud &> /dev/null; then
         log_error "gcloud CLI not found. Install: https://cloud.google.com/sdk/docs/install"
         missing=1
     fi
-    
+
     if ! command -v jq &> /dev/null; then
         log_error "jq not found. Install: apt-get install jq / brew install jq"
         missing=1
     fi
-    
+
     if [ $missing -eq 1 ]; then
         exit 1
     fi
-    
+
     log_success "All prerequisites installed"
 }
 
@@ -81,7 +81,7 @@ prompt_if_empty() {
     local var_name=$1
     local prompt_text=$2
     local current_value="${!var_name}"
-    
+
     if [ -z "$current_value" ]; then
         read -p "$prompt_text: " input_value
         eval "$var_name=\"$input_value\""
@@ -90,19 +90,19 @@ prompt_if_empty() {
 
 validate_gcp_project() {
     log_info "Validating GCP project: $PROJECT_ID"
-    
+
     if ! gcloud projects describe "$PROJECT_ID" &> /dev/null; then
         log_error "Project $PROJECT_ID not found or you lack access"
         exit 1
     fi
-    
+
     gcloud config set project "$PROJECT_ID"
     log_success "Project validated: $PROJECT_ID"
 }
 
 enable_apis() {
     log_info "Enabling required GCP APIs..."
-    
+
     local apis=(
         "compute.googleapis.com"
         "notebooks.googleapis.com"
@@ -110,27 +110,27 @@ enable_apis() {
         "storage.googleapis.com"
         "iam.googleapis.com"
     )
-    
+
     for api in "${apis[@]}"; do
         log_info "  Enabling $api..."
         gcloud services enable "$api" --project="$PROJECT_ID" 2>/dev/null || true
     done
-    
+
     log_success "APIs enabled"
 }
 
 create_gcs_buckets() {
     log_info "Creating GCS buckets..."
-    
+
     local buckets=("$AGENT_MAIL_BUCKET" "$GOVERNANCE_BUCKET" "$ARTIFACTS_BUCKET")
-    
+
     for bucket in "${buckets[@]}"; do
         if gsutil ls -b "gs://$bucket" &> /dev/null; then
             log_warn "Bucket gs://$bucket already exists"
         else
             log_info "  Creating gs://$bucket..."
             gsutil mb -p "$PROJECT_ID" -l "$REGION" "gs://$bucket"
-            
+
             # Set lifecycle for Agent Mail (delete after 90 days)
             if [ "$bucket" == "$AGENT_MAIL_BUCKET" ]; then
                 cat > /tmp/lifecycle.json <<EOF
@@ -148,7 +148,7 @@ EOF
                 gsutil lifecycle set /tmp/lifecycle.json "gs://$bucket"
                 rm /tmp/lifecycle.json
             fi
-            
+
             log_success "  Created gs://$bucket"
         fi
     done
@@ -156,7 +156,7 @@ EOF
 
 create_service_account() {
     log_info "Creating service account: $SA_NAME"
-    
+
     if gcloud iam service-accounts describe "$SA_EMAIL" --project="$PROJECT_ID" &> /dev/null; then
         log_warn "Service account $SA_EMAIL already exists"
     else
@@ -165,15 +165,15 @@ create_service_account() {
             --project="$PROJECT_ID"
         log_success "Service account created"
     fi
-    
+
     log_info "Granting IAM roles..."
-    
+
     local roles=(
         "roles/storage.objectAdmin"
         "roles/aiplatform.user"
         "roles/notebooks.runner"
     )
-    
+
     for role in "${roles[@]}"; do
         gcloud projects add-iam-policy-binding "$PROJECT_ID" \
             --member="serviceAccount:$SA_EMAIL" \
@@ -181,18 +181,18 @@ create_service_account() {
             --condition=None \
             > /dev/null 2>&1 || true
     done
-    
+
     # Grant specific bucket permissions
     for bucket in "$AGENT_MAIL_BUCKET" "$GOVERNANCE_BUCKET" "$ARTIFACTS_BUCKET"; do
         gsutil iam ch "serviceAccount:$SA_EMAIL:objectAdmin" "gs://$bucket" 2>/dev/null || true
     done
-    
+
     log_success "IAM roles configured"
 }
 
 create_workbench_instance() {
     log_info "Creating Vertex AI Workbench instance: $INSTANCE_NAME"
-    
+
     # Check if instance exists
     if gcloud notebooks instances describe "$INSTANCE_NAME" \
         --location="$ZONE" \
@@ -200,9 +200,9 @@ create_workbench_instance() {
         log_warn "Instance $INSTANCE_NAME already exists"
         return
     fi
-    
+
     log_info "  Provisioning (this takes ~5 minutes)..."
-    
+
     gcloud notebooks instances create "$INSTANCE_NAME" \
         --location="$ZONE" \
         --machine-type="$MACHINE_TYPE" \
@@ -213,38 +213,38 @@ create_workbench_instance() {
         --project="$PROJECT_ID" \
         --metadata="proxy-mode=service_account,terraform=true" \
         --async
-    
+
     log_info "  Waiting for instance to be ACTIVE..."
-    
+
     local max_wait=600  # 10 minutes
     local elapsed=0
-    
+
     while [ $elapsed -lt $max_wait ]; do
         local state=$(gcloud notebooks instances describe "$INSTANCE_NAME" \
             --location="$ZONE" \
             --project="$PROJECT_ID" \
             --format="value(state)" 2>/dev/null || echo "PROVISIONING")
-        
+
         if [ "$state" == "ACTIVE" ]; then
             log_success "Instance is ACTIVE"
             return
         fi
-        
+
         echo -n "."
         sleep 10
         elapsed=$((elapsed + 10))
     done
-    
+
     log_error "Instance failed to become ACTIVE within ${max_wait}s"
     exit 1
 }
 
 upload_supporting_docs() {
     log_info "Uploading supporting documents to GCS..."
-    
+
     local docs_dir="/tmp/pnkln_docs"
     mkdir -p "$docs_dir"
-    
+
     # Create AGENTS.md
     cat > "$docs_dir/AGENTS.md" <<'EOF'
 # PNKLN Multi-Agent Registry
@@ -387,8 +387,8 @@ Integrate Bevy game engine with rust_scriptbots for visual rendering and UI comp
 ## Task Breakdown
 
 ### RA-2: Core Integration
-**Owner**: WhiteCastle  
-**Status**: Not Started  
+**Owner**: WhiteCastle
+**Status**: Not Started
 **Progress**: 0%
 
 Tasks:
@@ -407,8 +407,8 @@ Tasks:
 ---
 
 ### RA-1: UI Components
-**Owner**: OrangeCreek  
-**Status**: Not Started  
+**Owner**: OrangeCreek
+**Status**: Not Started
 **Progress**: 0%
 
 Tasks:
@@ -427,8 +427,8 @@ Tasks:
 ---
 
 ### RA-2: CI/CD Pipeline
-**Owner**: BrownSnow  
-**Status**: Not Started  
+**Owner**: BrownSnow
+**Status**: Not Started
 **Progress**: 0%
 
 Tasks:
@@ -458,7 +458,7 @@ Critical path: Core Integration must complete before UI Components.
 
 - **RA-2** (Core Integration): GPU dependencies might not work on Vertex
   - *Mitigation*: Validate GPU driver on instance provisioning
-  
+
 - **RA-2** (CI/CD): Bevy compilation time may exceed CI limits
   - *Mitigation*: Use sccache for cargo caching
 
@@ -493,15 +493,15 @@ EOF
     # Upload to artifacts bucket
     log_info "  Uploading to gs://$ARTIFACTS_BUCKET/docs/"
     gsutil -m cp "$docs_dir/"*.md "gs://$ARTIFACTS_BUCKET/docs/"
-    
+
     log_success "Supporting documents uploaded"
-    
+
     rm -rf "$docs_dir"
 }
 
 generate_startup_script() {
     log_info "Generating instance startup script..."
-    
+
     cat > /tmp/startup.sh <<'STARTUP_EOF'
 #!/bin/bash
 # PNKLN Vertex AI Workbench - Instance Initialization
@@ -560,7 +560,7 @@ STARTUP_EOF
     # Upload startup script to artifacts bucket
     gsutil cp /tmp/startup.sh "gs://$ARTIFACTS_BUCKET/scripts/startup.sh"
     rm /tmp/startup.sh
-    
+
     log_success "Startup script generated"
 }
 
@@ -621,23 +621,23 @@ main() {
     echo "║  Bootstrap from $0K → Multi-Agent Coordination                            ║"
     echo "╚═══════════════════════════════════════════════════════════════════════════╝"
     echo ""
-    
+
     check_prerequisites
-    
+
     # Prompt for missing configuration
     prompt_if_empty "PROJECT_ID" "Enter GCP Project ID"
     prompt_if_empty "REPO_URL" "Enter rust_scriptbots Git URL (or press Enter to skip)"
-    
+
     # Update SA email after PROJECT_ID is set
     SA_EMAIL="${SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
-    
+
     validate_gcp_project
     enable_apis
     create_gcs_buckets
     create_service_account
     upload_supporting_docs
     generate_startup_script
-    
+
     # Upload notebook template
     log_info "Uploading COR_MULTI_AGENT_TEMPLATE.ipynb..."
     if [ -f "./COR_MULTI_AGENT_TEMPLATE.ipynb" ]; then
@@ -647,9 +647,9 @@ main() {
         log_warn "COR_MULTI_AGENT_TEMPLATE.ipynb not found in current directory"
         log_warn "Upload manually after instance is ready"
     fi
-    
+
     create_workbench_instance
-    
+
     display_summary
 }
 

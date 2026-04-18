@@ -58,7 +58,11 @@ class UltrathinkEngine:
         self.execution_history: list = []
 
     async def process(
-        self, problem: str, strategy: str | None = None, context: Any | None = None, **kwargs,
+        self,
+        problem: str,
+        strategy: str | None = None,
+        context: Any | None = None,
+        **kwargs,
     ) -> dict[str, Any]:
         """Process a problem using Ultrathink.
 
@@ -154,7 +158,11 @@ class UltrathinkEngine:
         return "panel_gpt"
 
     async def _execute_strategy(
-        self, strategy: str, problem: str, context: Any | None, **kwargs,
+        self,
+        strategy: str,
+        problem: str,
+        context: Any | None,
+        **kwargs,
     ) -> dict[str, Any]:
         """Execute specific reasoning strategy.
 

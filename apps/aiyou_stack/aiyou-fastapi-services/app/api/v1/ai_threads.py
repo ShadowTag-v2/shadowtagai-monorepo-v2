@@ -89,7 +89,8 @@ async def get_thread(
     thread = await service.get_thread(thread_id)
     if not thread:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Thread not found: {thread_id}",
         )
     return thread
 
@@ -104,7 +105,8 @@ async def update_thread(
     thread = await service.update_thread(thread_id, data)
     if not thread:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Thread not found: {thread_id}",
         )
     return thread
 
@@ -118,7 +120,8 @@ async def delete_thread(
     deleted = await service.delete_thread(thread_id)
     if not deleted:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Thread not found: {thread_id}",
         )
 
 
@@ -261,7 +264,8 @@ async def bulk_import_threads(
 
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Import failed: {e!s}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Import failed: {e!s}",
         )
 
 
@@ -292,7 +296,8 @@ async def export_threads(
 
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Export failed: {e!s}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Export failed: {e!s}",
         )
 
 
@@ -377,7 +382,8 @@ async def get_scrape_job(
     job = service.get(job_id)
     if not job:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Scrape job not found: {job_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Scrape job not found: {job_id}",
         )
     return job
 
@@ -421,6 +427,7 @@ async def mark_thread_indexed(
     success = await service.mark_thread_indexed(thread_id, embedding_id)
     if not success:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Thread not found: {thread_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Thread not found: {thread_id}",
         )
     return {"status": "indexed", "embedding_id": embedding_id}

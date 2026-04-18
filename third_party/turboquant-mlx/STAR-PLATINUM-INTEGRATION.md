@@ -38,30 +38,30 @@ class LlamaAttentionTurboQuant(nn.Module):
     def __init__(self, config, layer_idx):
         super().__init__()
         # ... existing init ...
-        
+
         # Add TurboQuant cache manager
         self.turbo_cache = TurboQuantKVCache(
             head_dim=config.head_dim,
             num_heads=config.num_attention_heads,
             num_kv_heads=config.num_key_value_heads,
             r_bits=4,          # Configurable
-            theta_bits=4,      # Configurable  
+            theta_bits=4,      # Configurable
             group_size=128,
             residual_length=128,
         )
-    
+
     def __call__(self, hidden_states, attention_mask, position_ids, past_key_value):
         # ... compute q, k, v ...
-        
+
         # Use TurboQuant for KV cache
         if past_key_value is None:
             compressed_kv = self.turbo_cache.compress(key_states, value_states)
         else:
             compressed_kv = self.turbo_cache.update(past_key_value, key_states, value_states)
-        
+
         # Compute attention with compressed cache
         output, _ = self.turbo_cache.compute_attention(query_states, compressed_kv, attention_mask)
-        
+
         return output, compressed_kv
 ```
 
@@ -84,7 +84,7 @@ def serialize_cache(cache: TurboQuantizedCache) -> Dict[str, Any]:
         "residual_start_idx": cache.residual_start_idx,
         "values": np.array(cache.values),
     }
-    
+
     if cache.polar_keys is not None:
         data["polar_indices"] = np.array(cache.polar_keys.indices)
         data["polar_r_scale"] = np.array(cache.polar_keys.r_scale)
@@ -97,14 +97,14 @@ def serialize_cache(cache: TurboQuantizedCache) -> Dict[str, Any]:
             "group_size": cache.polar_keys.group_size,
             "original_seq_len": cache.polar_keys.original_seq_len,
         }
-    
+
     if cache.qjl_signs is not None:
         data["qjl_signs"] = np.array(cache.qjl_signs)
         data["qjl_scales"] = np.array(cache.qjl_scales)
-    
+
     if cache.residual_keys is not None:
         data["residual_keys"] = np.array(cache.residual_keys)
-    
+
     return data
 
 def deserialize_cache(data: Dict[str, Any]) -> TurboQuantizedCache:
@@ -119,7 +119,7 @@ def deserialize_cache(data: Dict[str, Any]) -> TurboQuantizedCache:
             theta_min=mx.array(data["polar_theta_min"]),
             **data["polar_config"]
         )
-    
+
     return TurboQuantizedCache(
         polar_keys=polar_keys,
         qjl_signs=mx.array(data["qjl_signs"]) if "qjl_signs" in data else None,
@@ -254,14 +254,14 @@ def generate_with_compressed_cache(model, prompt, max_tokens):
         num_heads=model.config.num_attention_heads,
         num_kv_heads=model.config.num_key_value_heads,
     )
-    
+
     # Initial forward pass
     outputs = model.generate(
         prompt,
         max_tokens=max_tokens,
         kv_cache_manager=cache_manager,
     )
-    
+
     return outputs
 ```
 
@@ -275,7 +275,7 @@ class LlamaAttentionHybrid(nn.Module):
         self.use_turboquant = use_turboquant
         if use_turboquant:
             self.turbo_cache = TurboQuantKVCache(...)
-    
+
     def __call__(self, ...):
         if self.use_turboquant:
             # Compressed path

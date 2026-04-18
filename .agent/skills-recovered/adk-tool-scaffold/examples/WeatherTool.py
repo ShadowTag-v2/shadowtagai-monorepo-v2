@@ -16,8 +16,6 @@ class WeatherTool(BaseTool):
     def get_schema(self) -> dict:
         return {
             "type": "object",
-            "properties": {
-                "city": {"type": "string", "description": "The city to get weather for"}
-            },
+            "properties": {"city": {"type": "string", "description": "The city to get weather for"}},
             "required": ["city"],
         }

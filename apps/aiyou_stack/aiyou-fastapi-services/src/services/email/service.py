@@ -33,7 +33,8 @@ class EmailService:
         recipient = self.repo.get_recipient_by_email(db, request.recipient_email)
         if not recipient:
             recipient = self.repo.create_recipient(
-                db, schemas.RecipientCreate(email=request.recipient_email),
+                db,
+                schemas.RecipientCreate(email=request.recipient_email),
             )
 
         # Get template if specified
@@ -108,7 +109,10 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send email {email.id}: {e!s}")
             self.repo.update_email_status(
-                db, email.id, models.EmailStatus.FAILED, error_message=str(e),
+                db,
+                email.id,
+                models.EmailStatus.FAILED,
+                error_message=str(e),
             )
             raise
 
@@ -141,14 +145,18 @@ class EmailService:
         return self.repo.create_flow(db, flow)
 
     def enroll_recipient(
-        self, db: Session, flow_id: int, recipient_email: str,
+        self,
+        db: Session,
+        flow_id: int,
+        recipient_email: str,
     ) -> models.FlowEnrollment:
         """Enroll recipient in email flow"""
         # Get or create recipient
         recipient = self.repo.get_recipient_by_email(db, recipient_email)
         if not recipient:
             recipient = self.repo.create_recipient(
-                db, schemas.RecipientCreate(email=recipient_email),
+                db,
+                schemas.RecipientCreate(email=recipient_email),
             )
 
         # Check if already enrolled
@@ -161,7 +169,9 @@ class EmailService:
         return self.repo.enroll_recipient(db, flow_id, recipient.id)
 
     async def bulk_enroll(
-        self, db: Session, request: schemas.BulkEnrollRequest,
+        self,
+        db: Session,
+        request: schemas.BulkEnrollRequest,
     ) -> schemas.BulkEnrollResponse:
         """Bulk enroll recipients in flow"""
         enrollments = []
@@ -312,7 +322,10 @@ class EmailService:
             logger.info(f"Email {email.id} clicked")
 
     def get_campaign_metrics(
-        self, db: Session, flow_id: int | None = None, days: int = 30,
+        self,
+        db: Session,
+        flow_id: int | None = None,
+        days: int = 30,
     ) -> dict[str, Any]:
         """Get campaign metrics"""
         start_date = datetime.utcnow() - timedelta(days=days)

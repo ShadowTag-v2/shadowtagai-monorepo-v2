@@ -2449,7 +2449,7 @@ Un prompt utilizado con Nano Banana Pro (Gemini 3 Pro Image) para generar un man
 
 ```
 Manga de 4 viñetas de generación de imágenes con IA
- 
+
 Título
 Amanecer de la prevención de huelgas
 
@@ -3481,7 +3481,7 @@ Este es el título y las frases clave utilizadas para generar una imagen de mang
 Título
 La leyenda del costo de los 5,000 yenes
 
-¿El costo de una torre de champán de 500,000 yenes es de solo 
+¿El costo de una torre de champán de 500,000 yenes es de solo
 5,000 yenes?
 
 Margen de beneficio superior al 90 %

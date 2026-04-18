@@ -1,5 +1,4 @@
-"""Unit tests for Ethical Crawler (robots.txt + rate limiting).
-"""
+"""Unit tests for Ethical Crawler (robots.txt + rate limiting)."""
 
 import pytest
 from shadowtagai.tools.ethical_crawler import (
@@ -116,7 +115,9 @@ class TestEthicalCrawler:
     async def test_custom_rate_limit_config(self):
         """Test custom rate limit configuration."""
         self.crawler.configure_rate_limit(
-            "custom_source", requests_per_minute=50, requests_per_hour=2000,
+            "custom_source",
+            requests_per_minute=50,
+            requests_per_hour=2000,
         )
 
         config = self.crawler.rate_limits["custom_source"]

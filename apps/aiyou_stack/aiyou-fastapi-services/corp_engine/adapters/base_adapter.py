@@ -203,7 +203,8 @@ class BaseAdapter(ABC, Generic[T]):
 
             # Calculate value added
             result.estimated_value_added_usd = await self._calculate_value_added(
-                original=data, processed=processed_data,
+                original=data,
+                processed=processed_data,
             )
 
             # Push changes back if write is enabled

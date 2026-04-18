@@ -50,13 +50,13 @@ func TestParseFromYamlMongoQuery(t *testing.T) {
             filterPayload: |
                 { name: {{json .name}} }
             filterParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
             updatePayload: |
                 { $set: { name: {{json .name}} } }
             updateParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
 			`,
@@ -106,14 +106,14 @@ func TestParseFromYamlMongoQuery(t *testing.T) {
             filterPayload: |
                 { name: {{json .name}} }
             filterParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
             canonical: true
             updatePayload: |
                 { $set: { name: {{json .name}} } }
             updateParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
 			`,
@@ -163,14 +163,14 @@ func TestParseFromYamlMongoQuery(t *testing.T) {
             filterPayload: |
                 { name: {{json .name}} }
             filterParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
             canonical: false
             updatePayload: |
                 { $set: { name: {{json .name}} } }
             updateParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
 			`,
@@ -270,7 +270,7 @@ func TestFailParseFromYamlMongoQuery(t *testing.T) {
             filterPayload: |
               { name : {{json .name}} }
             filterParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
             canonical: true

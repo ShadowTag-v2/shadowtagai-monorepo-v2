@@ -441,7 +441,7 @@ slash commands:
 In the Gemini CLI, start typing `/firebase:` to see a list of available
 commands.
 
-**Note:** You can also see this information using the command:   
+**Note:** You can also see this information using the command:
 `npx firebase-tools@latest mcp --generate-prompt-list`
 
 | Prompt Name | Feature Group | Description |
@@ -460,7 +460,7 @@ these tools to perform development tasks when needed.
 
 The following table describes the tools the MCP server makes available.
 
-**Note:** You can also see this information using the command:   
+**Note:** You can also see this information using the command:
 `npx firebase-tools@latest mcp --generate-tool-list`
 
 | Tool Name | Feature Group | Description |
@@ -516,7 +516,7 @@ relevant resources in the session context.
 
 The following table describes the resources the MCP server makes available.
 
-**Note:** You can also see this information using the command:   
+**Note:** You can also see this information using the command:
 `npx firebase-tools@latest mcp --generate-resource-list`
 
 | Resource Name | Description |

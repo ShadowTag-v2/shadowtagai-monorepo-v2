@@ -40,13 +40,19 @@ class Notification(Base):
     # Related entities (nullable for flexibility)
     related_user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     related_post_id = Column(
-        Integer, ForeignKey("forum_posts.id", ondelete="SET NULL"), nullable=True,
+        Integer,
+        ForeignKey("forum_posts.id", ondelete="SET NULL"),
+        nullable=True,
     )
     related_comment_id = Column(
-        Integer, ForeignKey("comments.id", ondelete="SET NULL"), nullable=True,
+        Integer,
+        ForeignKey("comments.id", ondelete="SET NULL"),
+        nullable=True,
     )
     related_topic_id = Column(
-        Integer, ForeignKey("forum_topics.id", ondelete="SET NULL"), nullable=True,
+        Integer,
+        ForeignKey("forum_topics.id", ondelete="SET NULL"),
+        nullable=True,
     )
 
     # Link to action
@@ -73,7 +79,10 @@ class NotificationPreference(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False,
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        unique=True,
+        nullable=False,
     )
 
     # Email notifications

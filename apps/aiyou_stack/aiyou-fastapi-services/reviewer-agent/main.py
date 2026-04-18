@@ -81,5 +81,6 @@ async def review_code_fix(request: ReviewRequest):
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"An error occurred in the Reviewer Agent: {e!s}",
+            status_code=500,
+            detail=f"An error occurred in the Reviewer Agent: {e!s}",
         )

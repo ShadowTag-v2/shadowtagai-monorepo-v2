@@ -7,18 +7,18 @@ git stash push -m "Auto-stash for PR processing" >> dependabot_ops_v2.log 2>&1
 
 for PR in 5 6 7; do
   echo ">>> Processing PR $PR" >> dependabot_ops_v2.log
-  
+
   # Fetch to ensure we know about the PR branch locally if checkout fails
   gh pr fetch $PR >> dependabot_ops_v2.log 2>&1
-  
+
   if gh pr checkout $PR >> dependabot_ops_v2.log 2>&1; then
       echo "Checked out PR $PR." >> dependabot_ops_v2.log
-      
+
       echo "Rebasing PR $PR on main..." >> dependabot_ops_v2.log
       if git rebase main >> dependabot_ops_v2.log 2>&1; then
         echo "Rebase successful. Pushing..." >> dependabot_ops_v2.log
         git push origin HEAD --force >> dependabot_ops_v2.log 2>&1
-        
+
         echo "Merging PR $PR..." >> dependabot_ops_v2.log
         # Try to merge immediately
         if gh pr merge $PR --merge --delete-branch >> dependabot_ops_v2.log 2>&1; then

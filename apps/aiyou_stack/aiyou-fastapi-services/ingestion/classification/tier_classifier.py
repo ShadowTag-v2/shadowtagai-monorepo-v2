@@ -143,7 +143,11 @@ class TierClassifier:
             raise ValueError(f"Failed to parse Gemini response: {e}")
 
     def _calculate_overall_score(
-        self, relevance: float, timeliness: float, completeness: float, source_authority: float,
+        self,
+        relevance: float,
+        timeliness: float,
+        completeness: float,
+        source_authority: float,
     ) -> float:
         """Calculate weighted overall score.
 
@@ -232,7 +236,9 @@ class TierClassifier:
             raise
 
     async def classify_batch(
-        self, items: list[IngestedItem], max_concurrent: int = 10,
+        self,
+        items: list[IngestedItem],
+        max_concurrent: int = 10,
     ) -> dict[str, TierScore]:
         """Classify multiple items concurrently.
 
@@ -254,7 +260,8 @@ class TierClassifier:
                 return item.id, score
 
         results = await asyncio.gather(
-            *[classify_with_semaphore(item) for item in items], return_exceptions=True,
+            *[classify_with_semaphore(item) for item in items],
+            return_exceptions=True,
         )
 
         # Filter out exceptions

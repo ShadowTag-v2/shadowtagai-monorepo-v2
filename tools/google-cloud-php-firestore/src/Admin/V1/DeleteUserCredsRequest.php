@@ -84,4 +84,3 @@ class DeleteUserCredsRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

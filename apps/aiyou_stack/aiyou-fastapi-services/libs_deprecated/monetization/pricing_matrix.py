@@ -22,8 +22,7 @@ DESCRIPTION = "Full unadulterated access used by Vertical Sovereigns. We build y
 
 
 def calculate_price(tier: SubscriptionTier, risk_surface_score: int = 10) -> int:
-    """Calculates dynamic pricing based on '10 Fingers & Monte Carlo' Doctrine.
-    """
+    """Calculates dynamic pricing based on '10 Fingers & Monte Carlo' Doctrine."""
     price = BASE_SUBSCRIPTION_CENTS
 
     if tier == SubscriptionTier.BASIC:

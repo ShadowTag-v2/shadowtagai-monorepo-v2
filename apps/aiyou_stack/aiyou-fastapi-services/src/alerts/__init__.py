@@ -457,7 +457,9 @@ class PredictiveAlertingSystem:
         return False
 
     def get_active_alerts(
-        self, category: str | None = None, priority: AlertPriority | None = None,
+        self,
+        category: str | None = None,
+        priority: AlertPriority | None = None,
     ) -> list[PredictiveAlert]:
         """Get active alerts with optional filtering."""
         alerts = self.active_alerts

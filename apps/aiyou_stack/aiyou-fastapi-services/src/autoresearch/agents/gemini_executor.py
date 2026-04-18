@@ -182,7 +182,10 @@ class GeminiVehicleExecutor:
 
         # Estimate cost
         cost = self._estimate_cost(
-            tier, len(agent_ids), 500, 200,
+            tier,
+            len(agent_ids),
+            500,
+            200,
         )  # ~500 input, ~200 output per agent
 
         return VehicleExecutionResult(
@@ -215,7 +218,8 @@ class GeminiVehicleExecutor:
         if self.enabled:
             try:
                 response_text = await asyncio.wait_for(
-                    self._call_gemini(model, full_prompt), timeout=timeout,
+                    self._call_gemini(model, full_prompt),
+                    timeout=timeout,
                 )
             except TimeoutError:
                 response_text = "ABSTAIN - Timeout exceeded"
@@ -309,7 +313,11 @@ Reason: {reasoning}
         return vote, confidence, reasoning
 
     def _estimate_cost(
-        self, tier: str, num_agents: int, input_tokens: int, output_tokens: int,
+        self,
+        tier: str,
+        num_agents: int,
+        input_tokens: int,
+        output_tokens: int,
     ) -> float:
         """Estimate cost for a set of agent calls"""
         costs = self.COST_PER_1K.get(tier, self.COST_PER_1K["flash"])

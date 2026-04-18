@@ -63,7 +63,11 @@ class ToolRegistry:
         self._tool_names: list[str] = []
 
     def register_tool(
-        self, name: str, description: str, func: Callable, embedding: np.ndarray | None = None,
+        self,
+        name: str,
+        description: str,
+        func: Callable,
+        embedding: np.ndarray | None = None,
     ) -> None:
         """Register tool with optional embedding."""
         if embedding is None:
@@ -89,7 +93,10 @@ class ToolRegistry:
             )
 
     def retrieve_tools(
-        self, query: str, top_k: int = 5, min_similarity: float = 0.0,
+        self,
+        query: str,
+        top_k: int = 5,
+        min_similarity: float = 0.0,
     ) -> list[tuple[str, float]]:
         """Retrieve most relevant tools for query.
 

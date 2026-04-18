@@ -23,13 +23,13 @@ resource "google_compute_subnetwork" "subnet" {
 resource "google_container_cluster" "primary" {
   name     = "pnkln-foundation" # Renamed to bypass locked 'pnkln-cluster'
   location = var.region
-  
+
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
   # node pool and immediately delete it.
   remove_default_node_pool = true
   initial_node_count       = 1
-  
+
   # CRITICAL: Force the default pool to use HDD to avoid SSD Quota limits during creation
   node_config {
     disk_type = "pd-standard"
@@ -42,7 +42,7 @@ resource "google_container_cluster" "primary" {
   workload_identity_config {
     workload_pool = "${var.project_id}.svc.id.goog"
   }
-  
+
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = false
@@ -96,7 +96,7 @@ resource "google_container_node_pool" "gpu_pool" {
   location   = var.region
   cluster    = google_container_cluster.primary.name
   initial_node_count = 0
-  
+
   autoscaling {
     min_node_count = 0
     max_node_count = 10

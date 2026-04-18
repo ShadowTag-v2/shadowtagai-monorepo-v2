@@ -523,7 +523,9 @@ Generate the code now (ONLY code, no markdown fences):"""
     return {{"error": "Code generation failed", "message": "{e!s}"}}"""
 
     async def generate_batch(
-        self, scenarios: list[tuple[str, dict[str, float], list[str], str]], max_concurrent: int = 5,
+        self,
+        scenarios: list[tuple[str, dict[str, float], list[str], str]],
+        max_concurrent: int = 5,
     ) -> list[str]:
         """Generate code for multiple scenarios in parallel.
 
@@ -543,7 +545,12 @@ Generate the code now (ONLY code, no markdown fences):"""
                 # Note: Gemini Python SDK is not async, so we run in executor
                 loop = asyncio.get_event_loop()
                 code = await loop.run_in_executor(
-                    None, self.generate_code, context, risk_vector, constraints, domain,
+                    None,
+                    self.generate_code,
+                    context,
+                    risk_vector,
+                    constraints,
+                    domain,
                 )
                 return code
 
@@ -1059,7 +1066,10 @@ class DatasetPipeline:
     """End-to-end dataset generation pipeline."""
 
     def __init__(
-        self, generator: CodeGenerator, output_dir: Path, num_synthetic_per_domain: int = 1000,
+        self,
+        generator: CodeGenerator,
+        output_dir: Path,
+        num_synthetic_per_domain: int = 1000,
     ):
         """Initialize pipeline."""
         self.generator = generator
@@ -1070,7 +1080,9 @@ class DatasetPipeline:
         logger.info(f"Initialized DatasetPipeline, output: {output_dir}")
 
     def generate_synthetic_examples(
-        self, domain: str, num_examples: int,
+        self,
+        domain: str,
+        num_examples: int,
     ) -> list[OrchestrationExample]:
         """Generate synthetic examples for a single domain."""
         logger.info(f"Generating {num_examples} synthetic examples for domain: {domain}")
@@ -1173,14 +1185,16 @@ class DatasetPipeline:
             console=console,
         ) as progress:
             task = progress.add_task(
-                "[cyan]Generating debug trajectories...", total=num_trajectories,
+                "[cyan]Generating debug trajectories...",
+                total=num_trajectories,
             )
 
             for example in sampled:
                 try:
                     # Choose error type based on distribution
                     random.choices(
-                        list(error_distribution.keys()), weights=list(error_distribution.values()),
+                        list(error_distribution.keys()),
+                        weights=list(error_distribution.values()),
                     )[0]
 
                     # Generate trajectory
@@ -1210,7 +1224,9 @@ class DatasetPipeline:
         return trajectories
 
     def run_full_pipeline(
-        self, aiurcm_test_suite: Path | None = None, num_multi_turn: int = 1000,
+        self,
+        aiurcm_test_suite: Path | None = None,
+        num_multi_turn: int = 1000,
     ) -> dict[str, Any]:
         """Run complete dataset generation pipeline.
 
@@ -1250,7 +1266,9 @@ class DatasetPipeline:
         # Stage 3: Quality filtering
         console.print("[bold]Stage 3:[/bold] Quality filtering and validation...")
         filtered_examples, filter_stats = QualityFilter.filter_dataset(
-            all_examples, min_executable_rate=0.95, max_security_violations=0,
+            all_examples,
+            min_executable_rate=0.95,
+            max_security_violations=0,
         )
         console.print(
             f"  ✓ Filtered: {filter_stats['passed']}/{filter_stats['total_examples']} passed",
@@ -1261,7 +1279,8 @@ class DatasetPipeline:
         # Stage 4: Multi-turn trajectories
         console.print("[bold]Stage 4:[/bold] Generating multi-turn debug trajectories...")
         trajectories = self.generate_multi_turn_trajectories(
-            filtered_examples, num_trajectories=num_multi_turn,
+            filtered_examples,
+            num_trajectories=num_multi_turn,
         )
         console.print(f"  ✓ Generated {len(trajectories)} trajectories\n")
 
@@ -1271,12 +1290,16 @@ class DatasetPipeline:
         # Export single-turn examples
         single_turn_path = self.output_dir / "single_turn_examples.jsonl"
         with open(single_turn_path, "w") as f:
-            f.writelines(json.dumps(example.to_gemini_format()) + "\n" for example in filtered_examples)
+            f.writelines(
+                json.dumps(example.to_gemini_format()) + "\n" for example in filtered_examples
+            )
 
         # Export multi-turn trajectories
         multi_turn_path = self.output_dir / "multi_turn_trajectories.jsonl"
         with open(multi_turn_path, "w") as f:
-            f.writelines(json.dumps(trajectory.to_gemini_format()) + "\n" for trajectory in trajectories)
+            f.writelines(
+                json.dumps(trajectory.to_gemini_format()) + "\n" for trajectory in trajectories
+            )
 
         console.print(f"  ✓ Exported single-turn: {single_turn_path}")
         console.print(f"  ✓ Exported multi-turn: {multi_turn_path}\n")
@@ -1333,7 +1356,9 @@ class DatasetPipeline:
     def _display_summary(stats: dict[str, Any]):
         """Display summary table."""
         table = Table(
-            title="Dataset Generation Summary", show_header=True, header_style="bold cyan",
+            title="Dataset Generation Summary",
+            show_header=True,
+            header_style="bold cyan",
         )
 
         table.add_column("Metric", style="cyan", width=30)
@@ -1365,7 +1390,9 @@ class DatasetPipeline:
 
 @click.command()
 @click.option(
-    "--aiurcm_tests", type=click.Path(exists=False), help="Path to AiURCM test suite JSON file",
+    "--aiurcm_tests",
+    type=click.Path(exists=False),
+    help="Path to AiURCM test suite JSON file",
 )
 @click.option(
     "--num_synthetic",
@@ -1455,14 +1482,17 @@ def main(
     num_per_domain = num_synthetic // num_domains
 
     pipeline = DatasetPipeline(
-        generator=generator, output_dir=Path(output_dir), num_synthetic_per_domain=num_per_domain,
+        generator=generator,
+        output_dir=Path(output_dir),
+        num_synthetic_per_domain=num_per_domain,
     )
 
     # Run pipeline
     try:
         aiurcm_path = Path(aiurcm_tests) if aiurcm_tests else None
         stats = pipeline.run_full_pipeline(
-            aiurcm_test_suite=aiurcm_path, num_multi_turn=num_multi_turn,
+            aiurcm_test_suite=aiurcm_path,
+            num_multi_turn=num_multi_turn,
         )
 
         console.print("\n[bold green]✓ Dataset generation complete![/bold green]")

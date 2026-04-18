@@ -100,7 +100,9 @@ class ContextIndexService:
         """
         if summary or decisions:
             success = self.chat_manager.complete_opord(
-                opord_number=opord_number, summary=summary or "", decisions=decisions or [],
+                opord_number=opord_number,
+                summary=summary or "",
+                decisions=decisions or [],
             )
             logger.info(f"Updated OPORD {opord_number:05d} with summary")
             return success
@@ -122,7 +124,10 @@ class ContextIndexService:
         Full-text search via query, structured filters via other params.
         """
         results = self.chat_manager.search_opords(
-            query=query, tags=tags, agent_id=agent_id, date_range=date_range,
+            query=query,
+            tags=tags,
+            agent_id=agent_id,
+            date_range=date_range,
         )
 
         # Additional filters
@@ -152,7 +157,11 @@ class ContextIndexService:
         return self.chat_manager.acknowledge_opord(opord_number, agent_id)
 
     def log_revenue_event(
-        self, opord_number: int, amount: float, source: str, generation: int,
+        self,
+        opord_number: int,
+        amount: float,
+        source: str,
+        generation: int,
     ) -> dict:
         """Log revenue event to context for audit trail.
 

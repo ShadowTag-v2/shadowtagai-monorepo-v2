@@ -22,8 +22,7 @@ class TelemetryEventBus:
         logger.info(f"Registered subscriber for topic: {topic}")
 
     async def publish(self, topic: str, payload: dict[str, Any]):
-        """Publishes event and routes to all registered subscribers async.
-        """
+        """Publishes event and routes to all registered subscribers async."""
         event = {
             "id": f"evt_{datetime.utcnow().timestamp()}",
             "topic": topic,

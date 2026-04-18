@@ -24,4 +24,3 @@ class Query
         static::$is_initialized = true;
     }
 }
-

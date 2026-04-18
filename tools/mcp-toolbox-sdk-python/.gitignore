@@ -10,7 +10,7 @@ venv
 *.pyc
 .python-version
 **.egg-info/
-__pycache__/** 
+__pycache__/**
 .coverage
 **/.coverage
 build/

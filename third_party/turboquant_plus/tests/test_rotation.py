@@ -46,8 +46,7 @@ class TestDenseRotation:
             Pi = random_rotation_dense(d, rng)
             sign, logdet = np.linalg.slogdet(Pi)
             assert sign > 0, f"det sign = {sign} for seed={seed}, expected +1"
-            np.testing.assert_allclose(logdet, 0.0, atol=1e-8,
-                err_msg=f"log|det| = {logdet} for seed={seed}, expected 0.0")
+            np.testing.assert_allclose(logdet, 0.0, atol=1e-8, err_msg=f"log|det| = {logdet} for seed={seed}, expected 0.0")
 
     def test_deterministic_same_seed(self):
         """Same seed should produce identical rotation matrix."""
@@ -79,9 +78,7 @@ class TestDenseRotation:
         for _ in range(100):
             x = rng_vec.standard_normal(d)
             y = Pi @ x
-            np.testing.assert_allclose(
-                np.linalg.norm(y), np.linalg.norm(x), rtol=1e-10
-            )
+            np.testing.assert_allclose(np.linalg.norm(y), np.linalg.norm(x), rtol=1e-10)
 
     def test_preserves_inner_products(self):
         """⟨Π@x, Π@y⟩ should equal ⟨x, y⟩ for any x, y."""
@@ -126,22 +123,15 @@ class TestDenseRotation:
         # Use 4σ bound: 4 * sqrt(1/d / 2000)
         mean_bound = 4 * np.sqrt(1.0 / d / n_samples)
         assert np.all(np.abs(coord_means) < max(mean_bound, 0.05)), (
-            f"Max coordinate mean: {np.max(np.abs(coord_means)):.4f}, "
-            f"expected < {max(mean_bound, 0.05):.4f}"
+            f"Max coordinate mean: {np.max(np.abs(coord_means)):.4f}, expected < {max(mean_bound, 0.05):.4f}"
         )
 
         # Each coordinate: variance ≈ 1/d
         coord_vars = rotated.var(axis=0)
         expected_var = 1.0 / d
         # Tighter bounds: [0.5, 1.8] × expected (still statistical)
-        assert np.all(coord_vars < expected_var * 1.8), (
-            f"Max coordinate variance: {np.max(coord_vars):.6f}, "
-            f"expected < {expected_var * 1.8:.6f}"
-        )
-        assert np.all(coord_vars > expected_var * 0.5), (
-            f"Min coordinate variance: {np.min(coord_vars):.6f}, "
-            f"expected > {expected_var * 0.5:.6f}"
-        )
+        assert np.all(coord_vars < expected_var * 1.8), f"Max coordinate variance: {np.max(coord_vars):.6f}, expected < {expected_var * 1.8:.6f}"
+        assert np.all(coord_vars > expected_var * 0.5), f"Min coordinate variance: {np.min(coord_vars):.6f}, expected > {expected_var * 0.5:.6f}"
 
     def test_small_dimension(self):
         """Should work for small d like 1, 2, and 4."""
@@ -267,9 +257,7 @@ class TestFastRotation:
         for _ in range(50):
             x = rng_vec.standard_normal(d)
             y = apply_fast_rotation(x, signs1, signs2, padded_d)
-            np.testing.assert_allclose(
-                np.linalg.norm(y), np.linalg.norm(x), rtol=1e-8
-            )
+            np.testing.assert_allclose(np.linalg.norm(y), np.linalg.norm(x), rtol=1e-8)
 
     def test_non_pow2_returns_correct_length(self):
         """For non-power-of-2 d, output should still have length d.
@@ -290,9 +278,7 @@ class TestFastRotation:
 
     def test_transpose_inverts(self):
         """apply_fast_rotation_transpose(apply_fast_rotation(x)) ≈ x."""
-        from turboquant.rotation import (
-            random_rotation_fast, apply_fast_rotation, apply_fast_rotation_transpose
-        )
+        from turboquant.rotation import random_rotation_fast, apply_fast_rotation, apply_fast_rotation_transpose
 
         d = 64
         rng = np.random.default_rng(42)
@@ -319,9 +305,7 @@ class TestFastRotation:
 
     def test_batch_matches_single(self):
         """Batch rotation should match single-vector rotation."""
-        from turboquant.rotation import (
-            random_rotation_fast, apply_fast_rotation, apply_fast_rotation_batch
-        )
+        from turboquant.rotation import random_rotation_fast, apply_fast_rotation, apply_fast_rotation_batch
 
         d = 64
         rng = np.random.default_rng(42)

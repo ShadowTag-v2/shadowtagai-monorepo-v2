@@ -210,7 +210,10 @@ class CircuitBreaker:
     """Circuit breaker for API protection"""
 
     def __init__(
-        self, failure_threshold: int = 5, timeout_seconds: int = 60, success_threshold: int = 2,
+        self,
+        failure_threshold: int = 5,
+        timeout_seconds: int = 60,
+        success_threshold: int = 2,
     ):
         self.failure_threshold = failure_threshold
         self.timeout = timedelta(seconds=timeout_seconds)
@@ -678,7 +681,9 @@ class EnhancedKeyRotator:
             cached = self.cache.get(flow)
             if cached:
                 flow.response = http.Response.make(
-                    200, cached, {"X-Cache": "HIT", "Content-Type": "application/json"},
+                    200,
+                    cached,
+                    {"X-Cache": "HIT", "Content-Type": "application/json"},
                 )
                 if self.metrics:
                     self.metrics.metrics["cache_hits"] += 1
@@ -723,7 +728,8 @@ class EnhancedKeyRotator:
                 # Check if key is stressed (high failure rate)
                 if key_health.consecutive_failures >= 2:
                     flow.request.path = flow.request.path.replace(
-                        "gemini-1.5-pro", "gemini-1.5-flash",
+                        "gemini-1.5-pro",
+                        "gemini-1.5-flash",
                     )
                     flow.request.path = flow.request.path.replace("gemini-pro", "gemini-flash")
                     print("🔄 Model fallback: pro → flash (key stress)")
@@ -773,7 +779,8 @@ class EnhancedKeyRotator:
         # FEATURE 4: Record for rate limit detection
         is_rate_limited = status_code == 429
         self.rate_detector.record_request(
-            success=(status_code == 200), is_rate_limited=is_rate_limited,
+            success=(status_code == 200),
+            is_rate_limited=is_rate_limited,
         )
 
         # Handle different status codes

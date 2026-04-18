@@ -40,18 +40,14 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     Referrer-Policy, Permissions-Policy set by default.
     """
 
-    async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint
-    ) -> Response:
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         response = await call_next(request)
 
         # Content Security Policy
         response.headers["Content-Security-Policy"] = _CSP
 
         # HSTS — 2 years + includeSubDomains + preload
-        response.headers["Strict-Transport-Security"] = (
-            "max-age=63072000; includeSubDomains; preload"
-        )
+        response.headers["Strict-Transport-Security"] = "max-age=63072000; includeSubDomains; preload"
 
         # Prevent MIME type sniffing
         response.headers["X-Content-Type-Options"] = "nosniff"
@@ -63,10 +59,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
         # Permissions policy — disable dangerous APIs
-        response.headers["Permissions-Policy"] = (
-            "camera=(), microphone=(), geolocation=(), "
-            "payment=(), usb=(), magnetometer=(), gyroscope=()"
-        )
+        response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
 
         # Remove server header if present
         if "Server" in response.headers:

@@ -46,7 +46,10 @@ class MarketAnalystAgent(BaseAgent):
         self.positioning_tools = MarketPositioningTools()
 
     async def process(
-        self, prompt: str, context: dict[str, Any] | None = None, stream: bool = False,
+        self,
+        prompt: str,
+        context: dict[str, Any] | None = None,
+        stream: bool = False,
     ) -> dict[str, Any]:
         """Process competitive analysis request
 
@@ -174,7 +177,10 @@ class MarketAnalystAgent(BaseAgent):
         return self.config.get("features", [])
 
     def analyze_competitors(
-        self, product: str, competitors: list[str], features: list[str],
+        self,
+        product: str,
+        competitors: list[str],
+        features: list[str],
     ) -> dict[str, Any]:
         """Perform structured competitive analysis
 

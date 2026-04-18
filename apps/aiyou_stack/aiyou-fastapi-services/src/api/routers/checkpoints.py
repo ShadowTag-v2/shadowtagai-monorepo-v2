@@ -52,7 +52,8 @@ async def create_checkpoint(
 
 @router.get("/{checkpoint_id}", response_model=CheckpointResponse)
 async def get_checkpoint(
-    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
+    checkpoint_id: str,
+    service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Get checkpoint details by ID.
 
@@ -71,7 +72,8 @@ async def get_checkpoint(
 
     if not checkpoint:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Checkpoint {checkpoint_id} not found",
         )
 
     return checkpoint
@@ -138,7 +140,8 @@ async def restore_checkpoint(
 
 @router.get("/{checkpoint_id}/files", response_model=list[FileSnapshotResponse])
 async def get_checkpoint_files(
-    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
+    checkpoint_id: str,
+    service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Get all file snapshots for a checkpoint.
 
@@ -157,7 +160,8 @@ async def get_checkpoint_files(
     checkpoint = service.get_checkpoint(checkpoint_id)
     if not checkpoint:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Checkpoint {checkpoint_id} not found",
         )
 
     # Get file snapshots
@@ -167,7 +171,8 @@ async def get_checkpoint_files(
 
 @router.delete("/{checkpoint_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_checkpoint(
-    checkpoint_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
+    checkpoint_id: str,
+    service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Delete a checkpoint.
 
@@ -185,13 +190,15 @@ async def delete_checkpoint(
 
     if not deleted:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Checkpoint {checkpoint_id} not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Checkpoint {checkpoint_id} not found",
         )
 
 
 @router.get("/sessions/{session_id}/stats")
 async def get_session_stats(
-    session_id: str, service: CheckpointingService = Depends(get_checkpoint_service),
+    session_id: str,
+    service: CheckpointingService = Depends(get_checkpoint_service),
 ):
     """Get checkpoint statistics for a session.
 

@@ -96,7 +96,10 @@ class ToolRegistry:
             )
 
     def retrieve_tools(
-        self, query: str, top_k: int = 5, min_similarity: float = 0.0,
+        self,
+        query: str,
+        top_k: int = 5,
+        min_similarity: float = 0.0,
     ) -> list[tuple[str, float]]:
         """Retrieve most relevant tools for query.
 

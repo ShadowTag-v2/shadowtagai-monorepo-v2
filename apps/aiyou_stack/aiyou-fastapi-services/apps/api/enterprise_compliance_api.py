@@ -327,7 +327,8 @@ class EnterpriseComplianceEngine:
         self.total_tokens_saved = 0
 
     async def generate_certificate(
-        self, request: ComplianceCertificateRequest,
+        self,
+        request: ComplianceCertificateRequest,
     ) -> ComplianceCertificate:
         """Generate compliance certificate with blockchain verification"""
         start_time = time.time()

@@ -1,5 +1,4 @@
-"""Tests for Pure Judge Engine (v0.2)
-"""
+"""Tests for Pure Judge Engine (v0.2)"""
 
 from uuid import uuid4
 
@@ -40,7 +39,9 @@ def basic_request():
         actor=Actor(role=ActorRole.TRADER, org_unit="Test Desk", jurisdiction="US"),
         intent_nl="Test decision for risk assessment",
         context=DecisionContext(
-            time_horizon=TimeHorizon.SWING, objective=Objective.ALPHA, constraints=[],
+            time_horizon=TimeHorizon.SWING,
+            objective=Objective.ALPHA,
+            constraints=[],
         ),
         metrics=Metrics(
             exposure=Exposure(notional=500000.0, pct_aum=2.5, leverage_ratio=1.0),
@@ -111,7 +112,8 @@ class TestRiskClassification:
             actor=Actor(role=ActorRole.TRADER, org_unit="Test", jurisdiction="US"),
             intent_nl="Large leveraged position",
             context=DecisionContext(
-                time_horizon=TimeHorizon.INTRA_DAY, objective=Objective.SPECULATION,
+                time_horizon=TimeHorizon.INTRA_DAY,
+                objective=Objective.SPECULATION,
             ),
             metrics=Metrics(
                 exposure=Exposure(notional=25000000.0, pct_aum=25.0, leverage_ratio=3.0),
@@ -177,7 +179,8 @@ class TestFeatureSynthesis:
             actor=Actor(role=ActorRole.TRADER, org_unit="Test", jurisdiction="US"),
             intent_nl="Test liquidity risk",
             context=DecisionContext(
-                time_horizon=TimeHorizon.INTRA_DAY, objective=Objective.SPECULATION,
+                time_horizon=TimeHorizon.INTRA_DAY,
+                objective=Objective.SPECULATION,
             ),
             metrics=Metrics(
                 exposure=Exposure(notional=500000.0, pct_aum=5.0),
@@ -283,7 +286,9 @@ class TestRealWorldScenarios:
                 ),
                 volatility=Volatility(realized_vol=0.38, implied_vol=0.45, regime_tag="high_vol"),
                 liquidity_metrics=LiquidityMetrics(
-                    spread_bps=8.0, depth_score=85.0, days_to_liquidate=1.5,
+                    spread_bps=8.0,
+                    depth_score=85.0,
+                    days_to_liquidate=1.5,
                 ),
             ),
         )

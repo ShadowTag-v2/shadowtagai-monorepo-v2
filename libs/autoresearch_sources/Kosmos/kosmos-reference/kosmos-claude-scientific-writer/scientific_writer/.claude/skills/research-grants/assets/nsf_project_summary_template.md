@@ -2,7 +2,7 @@
 
 **IMPORTANT**: NSF requires three labeled sections in the project summary (max 1 page):
 1. Overview
-2. Intellectual Merit  
+2. Intellectual Merit
 3. Broader Impacts
 
 ---
@@ -45,7 +45,7 @@ This research addresses a critical gap in understanding coastal wetland resilien
 Must address at least one of NSF's five broader impacts areas with specific, measurable activities:
 1. Advance discovery while promoting teaching, training, and learning
 2. Broaden participation of underrepresented groups
-3. Enhance infrastructure for research and education  
+3. Enhance infrastructure for research and education
 4. Broadly disseminate to enhance scientific understanding
 5. Benefit society
 
@@ -89,4 +89,3 @@ Impact will be assessed through pre/post surveys of student participants, tracki
 ✅ **Do** write Overview for broad audience
 ✅ **Do** convey enthusiasm and significance
 ✅ **Do** proofread carefully (this is the first thing reviewers see)
-

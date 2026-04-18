@@ -1,9 +1,9 @@
 /**
  * Community Detection Processor
- * 
+ *
  * Uses the Leiden algorithm (vendored from graphology-communities-leiden) to detect
  * communities/clusters in the code graph based on CALLS relationships.
- * 
+ *
  * Communities represent groups of code that work together frequently,
  * helping agents navigate the codebase by functional area rather than file structure.
  */
@@ -68,7 +68,7 @@ export const getCommunityColor = (communityIndex: number): string => {
 
 /**
  * Detect communities in the knowledge graph using Leiden algorithm
- * 
+ *
  * This runs AFTER all relationships (CALLS, IMPORTS, etc.) have been built.
  * It uses primarily CALLS edges to cluster code that works together.
  */
@@ -81,7 +81,7 @@ export const processCommunities = async (
   // Step 1: Build a graphology graph from the knowledge graph
   // We only include symbol nodes (Function, Class, Method) and CALLS edges
   const graph = buildGraphologyGraph(knowledgeGraph);
-  
+
   if (graph.order === 0) {
     // No nodes to cluster
     return {
@@ -147,7 +147,7 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph): Graph => {
 
   // Symbol types that should be clustered
   const symbolTypes = new Set<NodeLabel>(['Function', 'Class', 'Method', 'Interface']);
-  
+
   // Add symbol nodes
   knowledgeGraph.nodes.forEach(node => {
     if (symbolTypes.has(node.label)) {
@@ -162,7 +162,7 @@ const buildGraphologyGraph = (knowledgeGraph: KnowledgeGraph): Graph => {
   // Add CALLS edges (primary clustering signal)
   // We can also include EXTENDS/IMPLEMENTS for OOP clustering
   const clusteringRelTypes = new Set(['CALLS', 'EXTENDS', 'IMPLEMENTS']);
-  
+
   knowledgeGraph.relationships.forEach(rel => {
     if (clusteringRelTypes.has(rel.type)) {
       // Only add edge if both nodes exist in our symbol graph
@@ -194,7 +194,7 @@ const createCommunityNodes = (
 ): CommunityNode[] => {
   // Group node IDs by community
   const communityMembers = new Map<number, string[]>();
-  
+
   Object.entries(communities).forEach(([nodeId, commNum]) => {
     if (!communityMembers.has(commNum)) {
       communityMembers.set(commNum, []);
@@ -212,13 +212,13 @@ const createCommunityNodes = (
 
   // Create community nodes - SKIP SINGLETONS (isolated nodes)
   const communityNodes: CommunityNode[] = [];
-  
+
   communityMembers.forEach((memberIds, commNum) => {
     // Skip singleton communities - they're just isolated nodes
     if (memberIds.length < 2) return;
-    
+
     const heuristicLabel = generateHeuristicLabel(memberIds, nodePathMap, graph, commNum);
-    
+
     communityNodes.push({
       id: `comm_${commNum}`,
       label: heuristicLabel,
@@ -249,11 +249,11 @@ const generateHeuristicLabel = (
 ): string => {
   // Collect folder names from file paths
   const folderCounts = new Map<string, number>();
-  
+
   memberIds.forEach(nodeId => {
     const filePath = nodePathMap.get(nodeId) || '';
     const parts = filePath.split('/').filter(Boolean);
-    
+
     // Get the most specific folder (parent directory)
     if (parts.length >= 2) {
       const folder = parts[parts.length - 2];
@@ -267,7 +267,7 @@ const generateHeuristicLabel = (
   // Find most common folder
   let maxCount = 0;
   let bestFolder = '';
-  
+
   folderCounts.forEach((count, folder) => {
     if (count > maxCount) {
       maxCount = count;
@@ -304,16 +304,16 @@ const generateHeuristicLabel = (
  */
 const findCommonPrefix = (strings: string[]): string => {
   if (strings.length === 0) return '';
-  
+
   const sorted = strings.slice().sort();
   const first = sorted[0];
   const last = sorted[sorted.length - 1];
-  
+
   let i = 0;
   while (i < first.length && first[i] === last[i]) {
     i++;
   }
-  
+
   return first.substring(0, i);
 };
 

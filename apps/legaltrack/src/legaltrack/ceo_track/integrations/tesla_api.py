@@ -31,7 +31,10 @@ class TeslaController:
         return True
 
     async def set_navigation_target(
-        self, address: str, latitude: float | None = None, longitude: float | None = None,
+        self,
+        address: str,
+        latitude: float | None = None,
+        longitude: float | None = None,
     ) -> bool:
         """Pushes navigation data directly into the car's FSD interface."""
         logger.info(f"Pushing destination '{address}' to {self.vin} FSD...")

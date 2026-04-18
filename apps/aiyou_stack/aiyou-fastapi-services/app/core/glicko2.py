@@ -149,7 +149,11 @@ class Glicko2System:
         return 1 / v_inv if v_inv > 0 else float("inf")
 
     def _calculate_delta(
-        self, mu: float, opponents: list[tuple[float, float]], scores: list[float], v: float,
+        self,
+        mu: float,
+        opponents: list[tuple[float, float]],
+        scores: list[float],
+        v: float,
     ) -> float:
         """Calculate improvement (delta)"""
         return v * sum(
@@ -245,7 +249,10 @@ class AgentRanking:
 
         # Update opponent rating (inverse score)
         self.agents[opponent_id] = self.system.update(
-            opponent, [agent.mu], [agent.phi], [1 - score],
+            opponent,
+            [agent.mu],
+            [agent.phi],
+            [1 - score],
         )
 
     def get_rankings(self) -> list[tuple[str, float, float]]:

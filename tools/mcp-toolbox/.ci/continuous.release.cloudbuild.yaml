@@ -58,7 +58,7 @@ steps:
         apt-get update && apt-get install -y xz-utils
         echo "Downloading macOS 14.5 SDK..."
         curl -fL -o sdk.tar.xz https://github.com/alexey-lysiuk/macos-sdk/releases/download/14.5/MacOSX14.5.tar.xz
-        
+
         mkdir -p /macos-sdk/MacOSX14.5.sdk
         echo "Unpacking macOS 14.5 SDK..."
         tar -xf sdk.tar.xz -C /macos-sdk/MacOSX14.5.sdk --strip-components=1

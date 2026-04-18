@@ -1,5 +1,4 @@
-"""Data Lineage Tracking for Ingestion Pipeline.
-"""
+"""Data Lineage Tracking for Ingestion Pipeline."""
 
 import json
 import logging
@@ -12,8 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class DataLineageTracker:
-    """Tracks the lifecycle of a data item through the ingestion pipeline.
-    """
+    """Tracks the lifecycle of a data item through the ingestion pipeline."""
 
     def __init__(self, storage_path: str = "data/lineage"):
         self.storage_path = Path(storage_path)
@@ -54,8 +52,7 @@ class DataLineageTracker:
         transformed_content: Any = None,
         metadata: dict[str, Any] = None,
     ):
-        """Update the status/stage of an existing item.
-        """
+        """Update the status/stage of an existing item."""
         event = {
             "lineage_id": lineage_id,
             "run_id": self.current_run_id,
@@ -67,8 +64,7 @@ class DataLineageTracker:
         self._persist_event(event)
 
     def _persist_event(self, event: dict[str, Any]):
-        """Write event to storage (simulated BigQuery/DB).
-        """
+        """Write event to storage (simulated BigQuery/DB)."""
         # In a real system, this would insert into BigQuery
         # Here we append to a daily JSONL file
         date_str = datetime.utcnow().strftime("%Y-%m-%d")

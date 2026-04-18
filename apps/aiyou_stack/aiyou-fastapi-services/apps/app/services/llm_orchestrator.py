@@ -121,7 +121,12 @@ class GrokIntake:
         # Research queries
         if any(kw in query.lower() for kw in ["research", "search", "find", "web"]):
             return [
-                {"thread_id": "research_1", "content": query, "complexity": 6, "domain": "research"},
+                {
+                    "thread_id": "research_1",
+                    "content": query,
+                    "complexity": 6,
+                    "domain": "research",
+                },
             ]
 
         # Default: analysis
@@ -191,7 +196,9 @@ class PNKLNOrchestrator:
         self.gemini_chat = GeminiGroupChat(api_key=self.gemini_api_key)
 
     async def process_query(
-        self, query: str, enable_review_rotation: bool = False,
+        self,
+        query: str,
+        enable_review_rotation: bool = False,
     ) -> OrchestrationResult:
         """Process a user query through the full LLM orchestration pipeline
 
@@ -354,7 +361,11 @@ class PNKLNOrchestrator:
 
         # Run multi-agent debate (2 rounds)
         tier_result = await self.gemini_chat.classify_with_debate(
-            title=title, content=content, tags=tags, rounds=2, voting_method="weighted_confidence",
+            title=title,
+            content=content,
+            tags=tags,
+            rounds=2,
+            voting_method="weighted_confidence",
         )
 
         response = f"""Intelligence Classification Result:

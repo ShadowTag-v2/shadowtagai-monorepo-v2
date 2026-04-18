@@ -23,8 +23,8 @@ toolset = ToolboxToolset(
 )
 
 root_agent = Agent(
-    name='hotel_assistant',
-    model='gemini-2.5-flash',
+    name="hotel_assistant",
+    model="gemini-2.5-flash",
     instruction=prompt,
     tools=[toolset],
 )
@@ -39,11 +39,10 @@ queries = [
     "My check in dates would be from April 10, 2024 to April 19, 2024.",
 ]
 
+
 async def main():
     runner = InMemoryRunner(app=app)
-    session = await runner.session_service.create_session(
-        app_name=app.name, user_id="test_user"
-    )
+    session = await runner.session_service.create_session(app_name=app.name, user_id="test_user")
 
     for query in queries:
         print(f"\nUser: {query}")
@@ -52,6 +51,7 @@ async def main():
         async for event in runner.run_async(user_id="test_user", session_id=session.id, new_message=user_message):
             if event.is_final_response() and event.content and event.content.parts:
                 print(f"Agent: {event.content.parts[0].text}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

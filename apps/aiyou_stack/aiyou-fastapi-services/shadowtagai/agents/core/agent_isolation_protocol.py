@@ -198,7 +198,11 @@ class JuryDeliberationProtocol:
         self.anonymous_mapping: dict[str, str] = {}  # agent_id -> anonymous_id
 
     def phase_1_submit_blind(
-        self, agent_id: str, analysis: str, proposed_answer: str, confidence: float,
+        self,
+        agent_id: str,
+        analysis: str,
+        proposed_answer: str,
+        confidence: float,
     ):
         """Phase 1: Agent submits blind analysis.
 

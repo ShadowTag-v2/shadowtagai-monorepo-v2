@@ -46,7 +46,9 @@ class InfrastructureOptimizer:
         return "default_neuron_onnx"  # Portable fallback
 
     def project_savings(
-        self, current_spend: float, _multi_silicon_mix: dict[str, float],
+        self,
+        current_spend: float,
+        _multi_silicon_mix: dict[str, float],
     ) -> dict[str, float]:
         """Project cost savings from multi-silicon strategy.
 

@@ -73,7 +73,9 @@ class ConversationService:
         return list(conversations), total
 
     async def update_conversation(
-        self, conversation_id: UUID, update_data: ConversationUpdate,
+        self,
+        conversation_id: UUID,
+        update_data: ConversationUpdate,
     ) -> Conversation | None:
         """Update a conversation."""
         conversation = await self.get_conversation(conversation_id)
@@ -102,7 +104,9 @@ class ConversationService:
         return True
 
     async def add_message(
-        self, conversation_id: UUID, message_data: MessageCreate,
+        self,
+        conversation_id: UUID,
+        message_data: MessageCreate,
     ) -> Message | None:
         """Add a message to a conversation."""
         conversation = await self.get_conversation(conversation_id)

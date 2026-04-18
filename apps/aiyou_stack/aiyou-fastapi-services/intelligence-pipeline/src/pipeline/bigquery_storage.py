@@ -21,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class BigQueryStorage:
-    """BigQuery storage handler for intelligence items
-    """
+    """BigQuery storage handler for intelligence items"""
 
     def __init__(self, project_id: str = None, dataset_id: str = None):
         """Initialize BigQuery storage
@@ -114,7 +113,8 @@ class BigQueryStorage:
 
             table = bigquery.Table(table_ref, schema=schema)
             table.time_partitioning = bigquery.TimePartitioning(
-                type_=bigquery.TimePartitioningType.DAY, field="published_date",
+                type_=bigquery.TimePartitioningType.DAY,
+                field="published_date",
             )
             self.client.create_table(table)
 
@@ -147,10 +147,10 @@ class BigQueryStorage:
 
 
 async def main():
-    """Main BigQuery storage entry point
-    """
+    """Main BigQuery storage entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load processed items

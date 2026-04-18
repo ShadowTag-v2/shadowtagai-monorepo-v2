@@ -46,7 +46,8 @@ except ImportError:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -142,7 +143,8 @@ class CodeExecutionRequest(BaseModel):
     user_id: str = Field(..., description="User ID for audit logging")
     session_id: str = Field(..., description="Session ID for request correlation")
     context: dict[str, Any] | None = Field(
-        default_factory=dict, description="Variables to inject into execution context",
+        default_factory=dict,
+        description="Variables to inject into execution context",
     )
     timeout_seconds: int | None = Field(default=config.SANDBOX_TIMEOUT_SECONDS, ge=1, le=60)
 
@@ -321,7 +323,10 @@ class SandboxManager:
             logger.debug(f"Pool full, destroying {sandbox_id}")
 
     async def execute(
-        self, code: str, context: dict[str, Any], timeout_seconds: int,
+        self,
+        code: str,
+        context: dict[str, Any],
+        timeout_seconds: int,
     ) -> tuple[bool, Any, str | None, dict[str, float]]:
         """Execute code in gVisor sandbox.
 
@@ -371,7 +376,8 @@ class SandboxManager:
 
             # Execute with timeout
             await asyncio.wait_for(
-                asyncio.to_thread(exec, code, restricted_globals), timeout=timeout_seconds,
+                asyncio.to_thread(exec, code, restricted_globals),
+                timeout=timeout_seconds,
             )
 
             # Extract result (if code set a 'result' variable)
@@ -546,7 +552,9 @@ async def execute_code(request: CodeExecutionRequest) -> CodeExecutionResponse:
 
     # Step 2: Execute in sandbox
     success, result, error, resource_usage = await sandbox_manager.execute(
-        code=request.code, context=request.context, timeout_seconds=request.timeout_seconds,
+        code=request.code,
+        context=request.context,
+        timeout_seconds=request.timeout_seconds,
     )
 
     execution_time_ms = (time.time() - start_time) * 1000

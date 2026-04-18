@@ -60,7 +60,7 @@ tools:
   get_dicom_store:
     kind: cloud-healthcare-get-dicom-store
     description: Use this tool to get details about a DICOM store in the healthcare dataset
-    source: healthcare-source 
+    source: healthcare-source
   get_dicom_store_metrics:
     kind: cloud-healthcare-get-dicom-store-metrics
     description: Use this tool to get metrics about a DICOM store in the healthcare dataset

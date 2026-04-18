@@ -89,7 +89,9 @@ class DocumentAIProcessor:
         # Select processor
         processor_id = self.form_parser_processor_id if use_form_parser else self.ocr_processor_id
         processor_name = self.documentai_client.processor_path(
-            self.project_id, self.location, processor_id,
+            self.project_id,
+            self.location,
+            processor_id,
         )
 
         # Create request
@@ -147,7 +149,9 @@ class DocumentAIProcessor:
 
         processor_id = self.form_parser_processor_id if use_form_parser else self.ocr_processor_id
         processor_name = self.documentai_client.processor_path(
-            self.project_id, self.location, processor_id,
+            self.project_id,
+            self.location,
+            processor_id,
         )
 
         raw_document = documentai.RawDocument(content=document_content, mime_type=mime_type)

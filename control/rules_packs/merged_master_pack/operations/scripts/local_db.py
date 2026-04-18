@@ -39,11 +39,7 @@ def cmd_smoke_test() -> int:
     DB_ROOT.mkdir(parents=True, exist_ok=True)
     marker = DB_ROOT / "SMOKE_TEST_OK"
     marker.write_text("ok\n", encoding="utf-8")
-    print(
-        json.dumps(
-            {"status": "ok", "action": "smoke-test", "path": str(DB_ROOT), "marker": str(marker)}
-        )
-    )
+    print(json.dumps({"status": "ok", "action": "smoke-test", "path": str(DB_ROOT), "marker": str(marker)}))
     return 0
 
 

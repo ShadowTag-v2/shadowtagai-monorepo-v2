@@ -1,5 +1,4 @@
-"""Simple example demonstrating Judge #6 usage.
-"""
+"""Simple example demonstrating Judge #6 usage."""
 
 import json
 

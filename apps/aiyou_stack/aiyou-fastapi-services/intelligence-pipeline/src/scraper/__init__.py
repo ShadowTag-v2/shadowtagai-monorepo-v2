@@ -1,5 +1,4 @@
-"""PNKLN Intelligence Pipeline - Ethical Scraping Module
-"""
+"""PNKLN Intelligence Pipeline - Ethical Scraping Module"""
 
 from .ethical_scraper import DEFAULT_SCRAPING_CONFIG, EthicalScraper
 

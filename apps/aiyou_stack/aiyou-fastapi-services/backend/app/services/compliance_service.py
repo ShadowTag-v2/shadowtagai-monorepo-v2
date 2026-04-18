@@ -1,5 +1,4 @@
-"""Compliance Service - Business logic for compliance operations
-"""
+"""Compliance Service - Business logic for compliance operations"""
 
 import logging
 import uuid
@@ -170,7 +169,10 @@ class ComplianceService:
         return consent
 
     async def get_user_consents(
-        self, user_id: uuid.UUID, consent_type: ConsentType | None = None, active_only: bool = True,
+        self,
+        user_id: uuid.UUID,
+        consent_type: ConsentType | None = None,
+        active_only: bool = True,
     ) -> list[UserConsent]:
         """Get user's consent records"""
         query = select(UserConsent).where(UserConsent.user_id == user_id)
@@ -224,7 +226,9 @@ class ComplianceService:
 
     # Data Retention Methods
     async def get_retention_policies(
-        self, data_category: DataCategory | None = None, active_only: bool = True,
+        self,
+        data_category: DataCategory | None = None,
+        active_only: bool = True,
     ) -> list[DataRetentionPolicy]:
         """Get data retention policies"""
         query = select(DataRetentionPolicy)
@@ -242,11 +246,16 @@ class ComplianceService:
 
     # AI-Powered Compliance Analysis
     async def analyze_endpoint_compliance(
-        self, endpoint_code: str, endpoint_path: str, request_method: str = "GET",
+        self,
+        endpoint_code: str,
+        endpoint_path: str,
+        request_method: str = "GET",
     ) -> dict[str, Any]:
         """Use AI agent to analyze endpoint for compliance"""
         result = await self.agent.analyze_endpoint(
-            endpoint_code=endpoint_code, endpoint_path=endpoint_path, request_method=request_method,
+            endpoint_code=endpoint_code,
+            endpoint_path=endpoint_path,
+            request_method=request_method,
         )
 
         # Log the compliance check
@@ -261,7 +270,10 @@ class ComplianceService:
         return result
 
     async def check_consent_requirements(
-        self, user_location: str, data_categories: list[str], processing_purposes: list[str],
+        self,
+        user_location: str,
+        data_categories: list[str],
+        processing_purposes: list[str],
     ) -> dict[str, Any]:
         """Check what consent is required"""
         result = await self.agent.check_consent_requirements(
@@ -273,17 +285,22 @@ class ComplianceService:
         return result
 
     async def generate_compliance_report(
-        self, start_date: datetime, end_date: datetime,
+        self,
+        start_date: datetime,
+        end_date: datetime,
     ) -> dict[str, Any]:
         """Generate comprehensive compliance report"""
         # Get audit logs for period
         logs, total_logs = await self.get_audit_logs(
-            start_date=start_date, end_date=end_date, limit=10000,
+            start_date=start_date,
+            end_date=end_date,
+            limit=10000,
         )
 
         # Get consent records
         consent_query = select(UserConsent).where(
-            UserConsent.created_at >= start_date, UserConsent.created_at <= end_date,
+            UserConsent.created_at >= start_date,
+            UserConsent.created_at <= end_date,
         )
         consent_result = await self.db.execute(consent_query)
         consents = consent_result.scalars().all()

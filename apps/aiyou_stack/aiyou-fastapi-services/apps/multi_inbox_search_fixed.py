@@ -19,7 +19,8 @@ def get_service(subject_email, credentials_path):
     try:
         # Load Service Account Credentials
         creds = service_account.Credentials.from_service_account_file(
-            credentials_path, scopes=SCOPES,
+            credentials_path,
+            scopes=SCOPES,
         )
 
         # Create a delegated credential for the specific user
@@ -46,7 +47,11 @@ def search_inbox(service, target_email, query):
                 service.users()
                 .messages()
                 .list(
-                    userId="me", q=query, maxResults=50, includeSpamTrash=True, pageToken=page_token,
+                    userId="me",
+                    q=query,
+                    maxResults=50,
+                    includeSpamTrash=True,
+                    pageToken=page_token,
                 )
                 .execute()
             )
@@ -64,10 +69,12 @@ def search_inbox(service, target_email, query):
                 payload = txt.get("payload", {})
                 headers = payload.get("headers", [])
                 subject = next(
-                    (h["value"] for h in headers if h["name"].lower() == "subject"), "No Subject",
+                    (h["value"] for h in headers if h["name"].lower() == "subject"),
+                    "No Subject",
                 )
                 sender = next(
-                    (h["value"] for h in headers if h["name"].lower() == "from"), "Unknown Sender",
+                    (h["value"] for h in headers if h["name"].lower() == "from"),
+                    "Unknown Sender",
                 )
                 snippet = txt.get("snippet", "")
 
@@ -90,14 +97,21 @@ def search_inbox(service, target_email, query):
 def main():
     parser = argparse.ArgumentParser(description="Antigravity Multi-Inbox Search")
     parser.add_argument(
-        "--targets", nargs="+", help="List of email addresses to search", required=True,
+        "--targets",
+        nargs="+",
+        help="List of email addresses to search",
+        required=True,
     )
     parser.add_argument("--query", help="Gmail search query", required=True)
     parser.add_argument(
-        "--creds", help="Path to Service Account JSON", default="credentials/service_account.json",
+        "--creds",
+        help="Path to Service Account JSON",
+        default="credentials/service_account.json",
     )
     parser.add_argument(
-        "--output", help="Output file for results", default="multi_search_results.md",
+        "--output",
+        help="Output file for results",
+        default="multi_search_results.md",
     )
 
     args = parser.parse_args()

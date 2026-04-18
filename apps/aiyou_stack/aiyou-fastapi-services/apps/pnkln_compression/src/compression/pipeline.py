@@ -23,7 +23,10 @@ class PnklnCompressionPipeline:
         self.compressor = get_compressor()
 
     def process(
-        self, context: str, session_id: str, domain: str = "general",
+        self,
+        context: str,
+        session_id: str,
+        domain: str = "general",
     ) -> tuple[DecisionPacket, CompressionMetrics]:
         start_total = time.perf_counter()
         latencies = {}

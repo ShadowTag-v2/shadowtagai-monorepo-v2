@@ -49,7 +49,7 @@ class DeletionReceipt(BaseModel):
     deletion_date: str  # ISO 8601 — 30 days from now
     receipt_id: str
     message: str = (
-        "Your account and all associated data will be permanently deleted " "within 30 days. You will receive a confirmation email when complete."
+        "Your account and all associated data will be permanently deleted within 30 days. You will receive a confirmation email when complete."
     )
 
 

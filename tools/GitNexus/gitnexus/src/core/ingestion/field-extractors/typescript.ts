@@ -251,7 +251,7 @@ export class TypeScriptFieldExtractor extends BaseFieldExtractor {
 
     // Find all property_signature nodes within the object type
     const propertySignatures = objectTypeNode.descendantsOfType('property_signature');
-    
+
     for (const propNode of propertySignatures) {
       const field = this.extractField(propNode, context);
       if (field) {
@@ -314,7 +314,7 @@ export class TypeScriptFieldExtractor extends BaseFieldExtractor {
     for (const nested of nestedDeclarations) {
       // Skip the current node itself
       if (nested === node) continue;
-      
+
       const nestedName = nested.childForFieldName('name');
       if (nestedName) {
         nestedTypes.push(nestedName.text);

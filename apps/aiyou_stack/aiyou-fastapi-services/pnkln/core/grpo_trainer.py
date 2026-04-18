@@ -295,7 +295,10 @@ class GRPOTrainer:
         return list(zip(normalized_advantages, returns, strict=False))
 
     def _compute_policy_loss(
-        self, experiences: list[Experience], advantages: list[float], new_log_probs: list[float],
+        self,
+        experiences: list[Experience],
+        advantages: list[float],
+        new_log_probs: list[float],
     ) -> tuple[float, float, float]:
         """Compute PPO/GRPO policy loss.
 
@@ -344,7 +347,10 @@ class GRPOTrainer:
         return (avg_policy_loss, avg_kl_div, clip_fraction)
 
     def _compute_value_loss(
-        self, experiences: list[Experience], returns: list[float], new_values: list[float],
+        self,
+        experiences: list[Experience],
+        returns: list[float],
+        new_values: list[float],
     ) -> float:
         """Compute value function loss.
 
@@ -398,7 +404,9 @@ class GRPOTrainer:
 
         # Compute losses
         policy_loss, kl_div, clip_frac = self._compute_policy_loss(
-            experiences, advantages, new_log_probs,
+            experiences,
+            advantages,
+            new_log_probs,
         )
         value_loss = self._compute_value_loss(experiences, returns, new_values)
 
@@ -460,7 +468,9 @@ class GRPOTrainer:
 
         # Compute losses (same as PPO, but advantages are group-relative)
         policy_loss, kl_div, clip_frac = self._compute_policy_loss(
-            experiences, advantages, new_log_probs,
+            experiences,
+            advantages,
+            new_log_probs,
         )
         value_loss = self._compute_value_loss(experiences, returns, new_values)
 

@@ -446,6 +446,3 @@ export const RightPanel = () => {
     </aside>
   );
 };
-
-
-

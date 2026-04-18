@@ -157,7 +157,11 @@ class EUAIActCompliance:
     # =========================================================================
 
     def classify_system(
-        self, system_id: str, category: AISystemCategory, use_case: str, capabilities: list[str],
+        self,
+        system_id: str,
+        category: AISystemCategory,
+        use_case: str,
+        capabilities: list[str],
     ) -> RiskClassification:
         """Classify an AI system according to EU AI Act risk levels.
 
@@ -201,7 +205,10 @@ class EUAIActCompliance:
     # =========================================================================
 
     def assess_article26(
-        self, system_id: str, deployer_id: str, current_state: dict[str, Any],
+        self,
+        system_id: str,
+        deployer_id: str,
+        current_state: dict[str, Any],
     ) -> Article26Requirements:
         """Assess Article 26 compliance for a high-risk AI system.
 
@@ -363,7 +370,10 @@ class EUAIActCompliance:
     # =========================================================================
 
     async def full_compliance_check(
-        self, system_id: str, deployer_id: str, operation_data: dict[str, Any],
+        self,
+        system_id: str,
+        deployer_id: str,
+        operation_data: dict[str, Any],
     ) -> dict[str, Any]:
         """Full EU AI Act compliance check.
 

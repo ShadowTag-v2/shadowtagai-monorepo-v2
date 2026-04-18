@@ -48,7 +48,7 @@ async def enforce_business_rules(request, handler):
                 pass  # Ignore invalid date formats
 
     # PRE: Code here runs BEFORE the tool execution
-    
+
     # EXEC: Execute the tool (or next middleware)
     result = await handler(request)
 
@@ -65,7 +65,7 @@ async def enrich_response(request, handler):
     Standardizes output format.
     """
     # PRE: Code here runs BEFORE the tool execution
-    
+
     # EXEC: Execute the tool (or next middleware)
     result = await handler(request)
 
@@ -95,9 +95,7 @@ async def main():
         # Test post-processing
         user_input = "Book hotel with id 3."
         print(f"\n[INPUT] User: {user_input}")
-        response = await agent.ainvoke(
-            {"messages": [{"role": "user", "content": user_input}]}
-        )
+        response = await agent.ainvoke({"messages": [{"role": "user", "content": user_input}]})
 
         print("-" * 50)
         last_ai_msg = response["messages"][-1].content
@@ -107,9 +105,7 @@ async def main():
         print("-" * 50)
         user_input = "Update my hotel with id 3 with checkin date 2025-01-18 and checkout date 2025-02-20."
         print(f"\n[INPUT] User: {user_input}")
-        response = await agent.ainvoke(
-            {"messages": [{"role": "user", "content": user_input}]}
-        )
+        response = await agent.ainvoke({"messages": [{"role": "user", "content": user_input}]})
         last_ai_msg = response["messages"][-1].content
         print(f"[OUTPUT] AI: {last_ai_msg}")
 

@@ -24,8 +24,7 @@ class ChainExecutor:
         self.chain = chain
 
     async def execute_decision(self, context: DecisionContext) -> DecisionResult:
-        """Execute the full chain: Scan -> Classify -> Compress
-        """
+        """Execute the full chain: Scan -> Classify -> Compress"""
         try:
             # 1. ATP Scan
             scan_kernel = self.chain.kernels[0]

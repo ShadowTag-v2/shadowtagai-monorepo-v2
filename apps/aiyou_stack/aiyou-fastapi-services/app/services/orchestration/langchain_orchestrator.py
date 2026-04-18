@@ -58,7 +58,10 @@ class LangChainOrchestrator:
         logger.info("LangChain orchestrator shutdown")
 
     async def orchestrate_reasoning_chain(
-        self, session_id: str, query: str, context: dict[str, Any] | None = None,
+        self,
+        session_id: str,
+        query: str,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Orchestrate a reasoning chain with memory integration
 
@@ -105,7 +108,9 @@ Response:
 
             # Execute chain
             result = await chain.arun(
-                query=query, history=self._format_history(history), context=str(context or {}),
+                query=query,
+                history=self._format_history(history),
+                context=str(context or {}),
             )
 
             # Store interaction in GPTRAM
@@ -131,7 +136,10 @@ Response:
             return {"status": "error", "error": str(e), "session_id": session_id}
 
     async def orchestrate_multi_agent(
-        self, session_id: str, task: str, tools: list[Tool],
+        self,
+        session_id: str,
+        task: str,
+        tools: list[Tool],
     ) -> dict[str, Any]:
         """Orchestrate multiple agents for complex tasks
 

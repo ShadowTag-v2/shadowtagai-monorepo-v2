@@ -39,7 +39,9 @@ class EmailRepository:
 
     @staticmethod
     def update_recipient(
-        db: Session, recipient_id: int, recipient_update: schemas.RecipientUpdate,
+        db: Session,
+        recipient_id: int,
+        recipient_update: schemas.RecipientUpdate,
     ) -> models.Recipient | None:
         """Update recipient"""
         db_recipient = EmailRepository.get_recipient(db, recipient_id)
@@ -110,7 +112,10 @@ class EmailRepository:
     def enroll_recipient(db: Session, flow_id: int, recipient_id: int) -> models.FlowEnrollment:
         """Enroll recipient in flow"""
         db_enrollment = models.FlowEnrollment(
-            flow_id=flow_id, recipient_id=recipient_id, current_step=0, active=True,
+            flow_id=flow_id,
+            recipient_id=recipient_id,
+            current_step=0,
+            active=True,
         )
         db.add(db_enrollment)
         db.commit()
@@ -119,7 +124,9 @@ class EmailRepository:
 
     @staticmethod
     def get_enrollment(
-        db: Session, flow_id: int, recipient_id: int,
+        db: Session,
+        flow_id: int,
+        recipient_id: int,
     ) -> models.FlowEnrollment | None:
         """Get enrollment for recipient in flow"""
         return (
@@ -172,7 +179,10 @@ class EmailRepository:
 
     @staticmethod
     def update_email_status(
-        db: Session, email_id: int, status: models.EmailStatus, error_message: str | None = None,
+        db: Session,
+        email_id: int,
+        status: models.EmailStatus,
+        error_message: str | None = None,
     ) -> models.Email | None:
         """Update email status"""
         db_email = EmailRepository.get_email(db, email_id)
@@ -224,7 +234,10 @@ class EmailRepository:
 
     @staticmethod
     def update_analytics(
-        db: Session, email_id: int, event_type: str, event_data: dict = None,
+        db: Session,
+        email_id: int,
+        event_type: str,
+        event_data: dict = None,
     ) -> models.EmailAnalytics | None:
         """Update email analytics"""
         if event_data is None:
@@ -263,13 +276,18 @@ class EmailRepository:
 
     @staticmethod
     def create_event(
-        db: Session, email_id: int, event_type: str, event_data: dict = None,
+        db: Session,
+        email_id: int,
+        event_type: str,
+        event_data: dict = None,
     ) -> models.EmailEvent:
         """Create email event"""
         if event_data is None:
             event_data = {}
         db_event = models.EmailEvent(
-            email_id=email_id, event_type=event_type, event_data=event_data,
+            email_id=email_id,
+            event_type=event_type,
+            event_data=event_data,
         )
         db.add(db_event)
         db.commit()

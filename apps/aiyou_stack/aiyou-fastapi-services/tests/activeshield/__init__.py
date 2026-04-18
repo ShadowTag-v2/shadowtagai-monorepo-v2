@@ -1,2 +1,1 @@
-"""ActiveShield Medical Test Package
-"""
+"""ActiveShield Medical Test Package"""

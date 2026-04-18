@@ -219,7 +219,9 @@ class MDMPPipeline:
         return result
 
     async def step2_mission_analysis(
-        self, mission: dict[str, Any], atomize_func: Callable | None = None,
+        self,
+        mission: dict[str, Any],
+        atomize_func: Callable | None = None,
     ) -> dict[str, Any]:
         """Step 2: Mission Analysis (1/3 of planning time)
 
@@ -270,7 +272,9 @@ class MDMPPipeline:
         return result
 
     async def step3_coa_development(
-        self, analysis: dict[str, Any], approaches: list[str] = None,
+        self,
+        analysis: dict[str, Any],
+        approaches: list[str] = None,
     ) -> list[dict[str, Any]]:
         """Step 3: COA Development
 
@@ -313,7 +317,9 @@ class MDMPPipeline:
         return self.coas
 
     async def step4_coa_analysis(
-        self, coas: list[dict[str, Any]], wargame_func: Callable | None = None,
+        self,
+        coas: list[dict[str, Any]],
+        wargame_func: Callable | None = None,
     ) -> list[dict[str, Any]]:
         """Step 4: COA Analysis (Wargaming)
 
@@ -350,7 +356,9 @@ class MDMPPipeline:
         return results
 
     async def step5_coa_comparison(
-        self, wargame_results: list[dict[str, Any]], criteria: list[str] = None,
+        self,
+        wargame_results: list[dict[str, Any]],
+        criteria: list[str] = None,
     ) -> dict[str, Any]:
         """Step 5: COA Comparison
 
@@ -393,7 +401,9 @@ class MDMPPipeline:
         return result
 
     async def step6_coa_approval(
-        self, comparison: dict[str, Any], commander_decision: str | None = None,
+        self,
+        comparison: dict[str, Any],
+        commander_decision: str | None = None,
     ) -> dict[str, Any]:
         """Step 6: COA Approval
 
@@ -425,7 +435,9 @@ class MDMPPipeline:
         return result
 
     async def step7_orders_production(
-        self, approved_coa: dict[str, Any], generate_func: Callable | None = None,
+        self,
+        approved_coa: dict[str, Any],
+        generate_func: Callable | None = None,
     ) -> dict[str, Any]:
         """Step 7: Orders Production
 

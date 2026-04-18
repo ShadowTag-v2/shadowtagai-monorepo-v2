@@ -100,7 +100,9 @@ class IngestionJob(Base):
 
     # Moderation results
     moderation_category = Column(
-        SQLEnum(ModerationCategory), default=ModerationCategory.SAFE, index=True,
+        SQLEnum(ModerationCategory),
+        default=ModerationCategory.SAFE,
+        index=True,
     )
     moderation_confidence = Column(Integer)  # 0-100
     moderation_details = Column(JSON)  # Detailed scores per category
@@ -183,8 +185,7 @@ class IngestionReview(Base):
 
 
 class GeminiUsageMetrics(Base):
-    """Track Gemini API usage and costs for billing optimization
-    """
+    """Track Gemini API usage and costs for billing optimization"""
 
     __tablename__ = "gemini_usage_metrics"
 

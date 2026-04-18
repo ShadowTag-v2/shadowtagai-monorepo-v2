@@ -59,7 +59,10 @@ class GlickoRating:
 
     @staticmethod
     def from_glicko2_scale(
-        mu: float, phi: float, volatility: float, matches_played: int = 0,
+        mu: float,
+        phi: float,
+        volatility: float,
+        matches_played: int = 0,
     ) -> "GlickoRating":
         """Convert from Glicko-2 scale to standard rating."""
         rating = mu * 173.7178 + 1500.0
@@ -210,8 +213,7 @@ class GlickoEngine:
         return delta_sum
 
     def _f(self, x: float, delta: float, phi: float, v: float, a: float) -> float:
-        """f(x) function for volatility calculation (Illinois algorithm).
-        """
+        """f(x) function for volatility calculation (Illinois algorithm)."""
         ex = math.exp(x)
         phi_sq = phi * phi
         tau_sq = self.TAU * self.TAU
@@ -301,7 +303,10 @@ class GlickoEngine:
             phi_star = math.sqrt(phi * phi + sigma * sigma)
 
             new_rating = GlickoRating.from_glicko2_scale(
-                mu=mu, phi=phi_star, volatility=sigma, matches_played=old_rating.matches_played,
+                mu=mu,
+                phi=phi_star,
+                volatility=sigma,
+                matches_played=old_rating.matches_played,
             )
 
             execution_time_us = (time.perf_counter() - start_time) * 1_000_000
@@ -373,7 +378,10 @@ class GlickoEngine:
         )
 
     def record_match(
-        self, agent1_id: str, agent2_id: str, outcome: MatchOutcome,
+        self,
+        agent1_id: str,
+        agent2_id: str,
+        outcome: MatchOutcome,
     ) -> tuple[RatingUpdate, RatingUpdate]:
         """Record a match between two agents and update both ratings.
 

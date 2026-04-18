@@ -2,6 +2,7 @@
 """
 Antigravity ShadowTag Verifier Service
 """
+
 import base64
 import io
 import os
@@ -27,13 +28,16 @@ jura = JuraRouter()
 # nh = NeuralHash() # Assuming NeuralHash usage is static or instantiated.
 # Checking src/pnkln/neural_hash.py, it has static methods, so verification uses NeuralHash.compute_image_hash
 
+
 class VerifyRequest(BaseModel):
     content: str  # Base64 encoded image or text
     metadata: dict = {}
 
+
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": "shadowtag-verifier"}
+
 
 @app.post("/verify")
 async def verify(request: VerifyRequest):
@@ -47,7 +51,7 @@ async def verify(request: VerifyRequest):
         task="ShadowTag Verification",
         context_size=len(request.content),
         cost_tier=CostTier.PRO,  # High value service
-        metadata=request.metadata
+        metadata=request.metadata,
     )
 
     if not route_result.success:
@@ -74,8 +78,8 @@ async def verify(request: VerifyRequest):
             metadata={
                 "jura_request_id": route_result.request_id,
                 "cost_usd": route_result.cost_usd,
-                **request.metadata
-            }
+                **request.metadata,
+            },
         )
 
         return {
@@ -85,11 +89,12 @@ async def verify(request: VerifyRequest):
             "monetization": {
                 "cost_usd": route_result.cost_usd,
                 "tier": "PRO",
-                "request_id": route_result.request_id
-            }
+                "request_id": route_result.request_id,
+            },
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))

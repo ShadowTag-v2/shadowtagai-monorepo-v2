@@ -70,7 +70,10 @@ async def process_matrix_query(
         task_query = payload.q
 
         await client.start_workflow(
-            "OmegaPayloadOrchestrator", task_query, id=workflow_id, task_queue="omega-swarm-queue",
+            "OmegaPayloadOrchestrator",
+            task_query,
+            id=workflow_id,
+            task_queue="omega-swarm-queue",
         )
         return {
             "status": "Matrix accepted heavy lift via Temporal.io",

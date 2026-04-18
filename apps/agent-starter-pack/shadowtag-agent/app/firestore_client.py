@@ -52,7 +52,9 @@ def _get_db():
 
         project = os.environ.get("GOOGLE_CLOUD_PROJECT", "shadowtag-omega-v4")
         _db = firestore.Client(project=project, database="shadowtag-engine")
-        logger.info("Firestore client initialized: project=%s, db=shadowtag-engine", project)
+        logger.info(
+            "Firestore client initialized: project=%s, db=shadowtag-engine", project
+        )
     except Exception as e:
         logger.warning("Firestore unavailable (test env?): %s", e)
         _db = None
@@ -80,7 +82,9 @@ def create_intake(intake_data: dict[str, Any]) -> str | None:
         logger.warning("Firestore unavailable — intake not persisted")
         return None
 
-    doc_ref = db.collection("uphillsnowball_intakes").document(intake_data.get("intake_id"))
+    doc_ref = db.collection("uphillsnowball_intakes").document(
+        intake_data.get("intake_id")
+    )
     doc_ref.set(intake_data)
     logger.info("Intake persisted: %s", doc_ref.id)
     return doc_ref.id
@@ -101,7 +105,9 @@ def create_screening(screening_data: dict[str, Any]) -> str | None:
         logger.warning("Firestore unavailable — screening not persisted")
         return None
 
-    doc_ref = db.collection("uphillsnowball_screenings").document(screening_data.get("screening_id"))
+    doc_ref = db.collection("uphillsnowball_screenings").document(
+        screening_data.get("screening_id")
+    )
     doc_ref.set(screening_data)
     logger.info("Screening persisted: %s", doc_ref.id)
     return doc_ref.id
@@ -122,7 +128,9 @@ def create_analysis(analysis_data: dict[str, Any]) -> str | None:
         logger.warning("Firestore unavailable — analysis not persisted")
         return None
 
-    doc_ref = db.collection("uphillsnowball_analyses").document(analysis_data.get("analysis_id"))
+    doc_ref = db.collection("uphillsnowball_analyses").document(
+        analysis_data.get("analysis_id")
+    )
     doc_ref.set(analysis_data)
     logger.info("Analysis persisted: %s", doc_ref.id)
     return doc_ref.id
@@ -143,7 +151,9 @@ def create_billing_entry(billing_data: dict[str, Any]) -> str | None:
         logger.warning("Firestore unavailable — billing not persisted")
         return None
 
-    doc_ref = db.collection("uphillsnowball_billing").document(billing_data.get("entry_id"))
+    doc_ref = db.collection("uphillsnowball_billing").document(
+        billing_data.get("entry_id")
+    )
     doc_ref.set(billing_data)
     logger.info("Billing persisted: %s", doc_ref.id)
     return doc_ref.id
@@ -217,9 +227,14 @@ def list_intakes(matter_id: str | None = None, limit: int = 50) -> list[dict[str
     if db is None:
         return []
 
-    query = db.collection("uphillsnowball_intakes").order_by(
-        "timestamp", direction="DESCENDING",
-    ).limit(limit)
+    query = (
+        db.collection("uphillsnowball_intakes")
+        .order_by(
+            "timestamp",
+            direction="DESCENDING",
+        )
+        .limit(limit)
+    )
 
     if matter_id:
         query = query.where("matter_id", "==", matter_id)

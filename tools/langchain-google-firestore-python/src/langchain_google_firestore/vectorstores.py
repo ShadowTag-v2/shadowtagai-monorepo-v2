@@ -122,14 +122,10 @@ class FirestoreVectorStore(VectorStore):
             raise ValueError("No texts provided to add to the vector store.")
 
         if not metadatas_len_match:
-            raise ValueError(
-                "The length of metadatas must be the same as the length of texts or zero."
-            )
+            raise ValueError("The length of metadatas must be the same as the length of texts or zero.")
 
         if not ids_len_match:
-            raise ValueError(
-                "The length of ids must be the same as the length of texts or zero."
-            )
+            raise ValueError("The length of ids must be the same as the length of texts or zero.")
 
         _ids: list[str] = []
         db_batch = self.client.batch()
@@ -182,14 +178,10 @@ class FirestoreVectorStore(VectorStore):
             raise ValueError("No images provided to add to the vector store.")
 
         if not metadatas_len_match:
-            raise ValueError(
-                "The length of metadatas must be the same as the length of images or zero."
-            )
+            raise ValueError("The length of metadatas must be the same as the length of images or zero.")
 
         if not ids_len_match:
-            raise ValueError(
-                "The length of ids must be the same as the length of images or zero."
-            )
+            raise ValueError("The length of ids must be the same as the length of images or zero.")
 
         if metadatas is None:
             metadatas = [{"image_uri": uri} for uri in uris]
@@ -205,9 +197,7 @@ class FirestoreVectorStore(VectorStore):
                 _ids.append(doc.id)
 
                 data = {
-                    self.content_field: (
-                        self._encode_image(uri) if store_encodings else ""
-                    ),
+                    self.content_field: (self._encode_image(uri) if store_encodings else ""),
                     self.embedding_field: Vector(image_embeddings[i]),
                     self.metadata_field: metadatas[i] if metadatas else None,
                 }
@@ -279,13 +269,8 @@ class FirestoreVectorStore(VectorStore):
             List[Document]: List of documents most similar to the query text.
         """
 
-        docs = self._similarity_search(
-            self.embedding_service.embed_query(query), k, filters=filters
-        )
-        return [
-            convert_firestore_document(doc, page_content_fields=[self.content_field])
-            for doc in docs
-        ]
+        docs = self._similarity_search(self.embedding_service.embed_query(query), k, filters=filters)
+        return [convert_firestore_document(doc, page_content_fields=[self.content_field]) for doc in docs]
 
     def similarity_search_by_vector(
         self,
@@ -309,10 +294,7 @@ class FirestoreVectorStore(VectorStore):
         """
 
         docs = self._similarity_search(embedding, k, filters=filters)
-        return [
-            convert_firestore_document(doc, page_content_fields=[self.content_field])
-            for doc in docs
-        ]
+        return [convert_firestore_document(doc, page_content_fields=[self.content_field]) for doc in docs]
 
     def similarity_search_image(
         self,
@@ -337,10 +319,7 @@ class FirestoreVectorStore(VectorStore):
 
         embedding = self._images_embedding_helper([image_uri])[0]
         docs = self._similarity_search(embedding, k, filters=filters)
-        return [
-            convert_firestore_document(doc, page_content_fields=[self.content_field])
-            for doc in docs
-        ]
+        return [convert_firestore_document(doc, page_content_fields=[self.content_field]) for doc in docs]
 
     def max_marginal_relevance_search(
         self,
@@ -403,9 +382,7 @@ class FirestoreVectorStore(VectorStore):
             List[Document]: List of documents most similar to the query vector.
         """
         doc_results = self._similarity_search(embedding, fetch_k, filters=filters)
-        doc_embeddings = [
-            self._vector_to_list(d.to_dict()[self.embedding_field]) for d in doc_results
-        ]
+        doc_embeddings = [self._vector_to_list(d.to_dict()[self.embedding_field]) for d in doc_results]
         mmr_doc_indexes = maximal_marginal_relevance(
             np.array(embedding, dtype=np.float32),
             doc_embeddings,
@@ -466,9 +443,7 @@ class FirestoreVectorStore(VectorStore):
             try:
                 embeddings = self.embedding_service.embed_images(image_uris)
             except Exception as e:
-                raise Exception(
-                    f"Make sure your selected embedding model supports list of image URIs as input. {str(e)}"
-                )
+                raise Exception(f"Make sure your selected embedding model supports list of image URIs as input. {str(e)}")
         elif hasattr(self.embedding_service, "embed_image"):
             try:
                 # Handle embed_image() methods with a single image or a list of images
@@ -477,24 +452,14 @@ class FirestoreVectorStore(VectorStore):
                 parameters = list(signature.parameters.values())
                 first_param = parameters[0]
 
-                if (
-                    first_param.annotation == list[str]
-                    or first_param.annotation == list
-                ):
+                if first_param.annotation == list[str] or first_param.annotation == list:
                     embeddings = self.embedding_service.embed_image(image_uris)
                 elif first_param.annotation == str:
-                    embeddings = [
-                        self.embedding_service.embed_image(uri) for uri in image_uris
-                    ]
+                    embeddings = [self.embedding_service.embed_image(uri) for uri in image_uris]
             except Exception as e:
-                raise Exception(
-                    f"Make sure your selected embedding model supports a list of image URIs or a single image URI as "
-                    f"input. {str(e)}"
-                )
+                raise Exception(f"Make sure your selected embedding model supports a list of image URIs or a single image URI as input. {str(e)}")
         else:
-            raise ValueError(
-                "Please use an embedding model that supports image embedding."
-            )
+            raise ValueError("Please use an embedding model that supports image embedding.")
         return embeddings
 
     def _vector_to_list(self, vector: Vector) -> list[float]:

@@ -65,9 +65,9 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto p-4 bg-gray-900 text-white shadow-md min-h-screen">
-      <ConditionalRender 
-        condition={!needsToRunEmulators} 
-        preferred={carousels} 
+      <ConditionalRender
+        condition={!needsToRunEmulators}
+        preferred={carousels}
         alternate={<PlaceholderMessage />} />
     </div>
   );

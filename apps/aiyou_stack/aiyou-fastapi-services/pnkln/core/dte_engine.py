@@ -174,7 +174,11 @@ class DTEEngine:
         return f"node_{self.node_counter}"
 
     def _create_node(
-        self, prompt: str, depth: int, parent_id: str | None = None, metadata: dict | None = None,
+        self,
+        prompt: str,
+        depth: int,
+        parent_id: str | None = None,
+        metadata: dict | None = None,
     ) -> TreeNode:
         """Create and register new tree node."""
         node_id = self._generate_node_id()
@@ -195,7 +199,9 @@ class DTEEngine:
         return node
 
     async def _evaluate_node(
-        self, node: TreeNode, evaluator: Callable[[str], tuple[str, float]],
+        self,
+        node: TreeNode,
+        evaluator: Callable[[str], tuple[str, float]],
     ) -> TreeNode:
         """Evaluate a single node by generating response and scoring.
 
@@ -222,7 +228,9 @@ class DTEEngine:
         return node
 
     async def _explore_nodes_parallel(
-        self, nodes: list[TreeNode], evaluator: Callable[[str], tuple[str, float]],
+        self,
+        nodes: list[TreeNode],
+        evaluator: Callable[[str], tuple[str, float]],
     ) -> list[TreeNode]:
         """Explore multiple nodes in parallel.
 
@@ -241,7 +249,10 @@ class DTEEngine:
         return results
 
     def _generate_variations(
-        self, base_prompt: str, parent_node: TreeNode, count: int,
+        self,
+        base_prompt: str,
+        parent_node: TreeNode,
+        count: int,
     ) -> list[str]:
         """Generate prompt variations for exploration.
 

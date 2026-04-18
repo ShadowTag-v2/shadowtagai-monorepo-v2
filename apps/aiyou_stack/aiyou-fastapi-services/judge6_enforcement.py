@@ -139,7 +139,10 @@ class ReasonsGate:
         self.skill_registry = skill_registry
 
     def validate(
-        self, task_description: str, justification: str, risk_level: str,
+        self,
+        task_description: str,
+        justification: str,
+        risk_level: str,
     ) -> tuple[float, list[str]]:
         """Validate task justification is sound
 
@@ -182,7 +185,10 @@ class BrakesGate:
         self.doctrine = doctrine
 
     def validate(
-        self, task_description: str, skill: SkillMetadata | None, context: dict[str, Any],
+        self,
+        task_description: str,
+        skill: SkillMetadata | None,
+        context: dict[str, Any],
     ) -> tuple[bool, list[str]]:
         """Check if brakes should be triggered
 
@@ -266,7 +272,10 @@ class GeminiValidator:
             logger.warning("Gemini validator disabled (API key missing or package not installed)")
 
     def validate_task(
-        self, task_description: str, justification: str, risk_level: str,
+        self,
+        task_description: str,
+        justification: str,
+        risk_level: str,
     ) -> dict[str, Any] | None:
         """Perform secondary validation using Gemini
 
@@ -322,8 +331,7 @@ Provide scores and brief rationale. Format response as JSON:
 
 
 class Judge6Enforcer:
-    """Judge #6 Enforcement Engine - Complete PRB validation and enforcement
-    """
+    """Judge #6 Enforcement Engine - Complete PRB validation and enforcement"""
 
     def __init__(
         self,
@@ -356,7 +364,10 @@ class Judge6Enforcer:
         logger.info("Judge #6 Enforcer initialized with PRB gates")
 
     def validate_task(
-        self, task_description: str, justification: str = "", context: dict[str, Any] | None = None,
+        self,
+        task_description: str,
+        justification: str = "",
+        context: dict[str, Any] | None = None,
     ) -> ValidationResult:
         """Perform complete PRB validation on a task
 
@@ -388,13 +399,17 @@ class Judge6Enforcer:
 
         # GATE 2: REASONS validation
         reasons_score, reasons_violations = self.reasons_gate.validate(
-            task_description, justification, risk_level,
+            task_description,
+            justification,
+            risk_level,
         )
         violations.extend(reasons_violations)
 
         # GATE 3: BRAKES check
         brakes_triggered, brakes_violations = self.brakes_gate.validate(
-            task_description, skill, context,
+            task_description,
+            skill,
+            context,
         )
         violations.extend(brakes_violations)
 
@@ -402,7 +417,9 @@ class Judge6Enforcer:
         gemini_result = None
         if self.gemini_validator.enabled:
             gemini_result = self.gemini_validator.validate_task(
-                task_description, justification, risk_level,
+                task_description,
+                justification,
+                risk_level,
             )
 
             if gemini_result and gemini_result.get("recommendation") == "REJECT":

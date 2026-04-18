@@ -145,7 +145,11 @@ class DeployManager:
             return create_response.json()
 
     async def _commit_file(
-        self, branch: str, path: str, content: str, message: str,
+        self,
+        branch: str,
+        path: str,
+        content: str,
+        message: str,
     ) -> dict[str, Any]:
         """Commit a file to the branch"""
         if not self.token:

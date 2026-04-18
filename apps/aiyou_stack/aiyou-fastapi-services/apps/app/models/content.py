@@ -1,5 +1,4 @@
-"""Content provenance and C2PA models
-"""
+"""Content provenance and C2PA models"""
 
 from datetime import datetime
 from enum import StrEnum

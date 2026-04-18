@@ -126,7 +126,8 @@ Focus on finding genuine value moments, not manipulative tactics."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -163,7 +164,8 @@ Design for sustainable, user-value-aligned growth."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -201,7 +203,8 @@ Ensure statistical rigor and practical feasibility."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -238,7 +241,8 @@ Focus on highest-leverage opportunities first."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -276,7 +280,8 @@ Balance engagement with user value and ethical design."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -287,7 +292,8 @@ Balance engagement with user value and ethical design."""
         }
 
     async def implement_analytics_tracking(
-        self, tracking_requirements: dict[str, Any],
+        self,
+        tracking_requirements: dict[str, Any],
     ) -> dict[str, Any]:
         """Implement analytics tracking for growth metrics.
 
@@ -315,7 +321,8 @@ Use industry best practices and ensure GDPR/privacy compliance."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -352,7 +359,8 @@ Focus on improving conversion at each step of the referral funnel."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 
@@ -363,7 +371,9 @@ Focus on improving conversion at each step of the referral funnel."""
         }
 
     async def general_growth_query(
-        self, user_query: str, context: dict[str, Any] | None = None,
+        self,
+        user_query: str,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Handle general growth engineering queries with optional context.
 
@@ -381,7 +391,8 @@ Focus on improving conversion at each step of the referral funnel."""
 
         results = []
         async for message in query(
-            prompt=prompt, options=ClaudeAgentOptions(system_prompt=self.system_prompt),
+            prompt=prompt,
+            options=ClaudeAgentOptions(system_prompt=self.system_prompt),
         ):
             results.append(message)
 

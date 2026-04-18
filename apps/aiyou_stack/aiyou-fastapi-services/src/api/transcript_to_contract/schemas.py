@@ -28,7 +28,8 @@ class UploadAudioRequest(BaseModel):
     jurisdiction: Jurisdiction
     customer_location_state: Jurisdiction
     consent_obtained: bool = Field(
-        ..., description="Whether all-party consent was obtained for recording",
+        ...,
+        description="Whether all-party consent was obtained for recording",
     )
 
 

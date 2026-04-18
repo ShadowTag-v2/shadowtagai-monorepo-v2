@@ -42,7 +42,12 @@ class TestAntigravityLogic(unittest.TestCase):
                 {
                     "content": {
                         "parts": [
-                            {"functionCall": {"name": "code_search_tool", "args": {"query": "foo"}}},
+                            {
+                                "functionCall": {
+                                    "name": "code_search_tool",
+                                    "args": {"query": "foo"},
+                                }
+                            },
                         ],
                     },
                 },

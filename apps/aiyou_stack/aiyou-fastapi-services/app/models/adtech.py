@@ -1,5 +1,4 @@
-"""Adtech compliance models
-"""
+"""Adtech compliance models"""
 
 from enum import StrEnum
 

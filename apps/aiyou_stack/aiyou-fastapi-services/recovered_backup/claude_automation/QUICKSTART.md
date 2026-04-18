@@ -1,7 +1,7 @@
 # PNKLN Multi-Agent Quick Start
 
-**Target:** Cursor → Vertex AI Workbench migration (rust_scriptbots/Bevy)  
-**Time to First Execution:** < 30 minutes  
+**Target:** Cursor → Vertex AI Workbench migration (rust_scriptbots/Bevy)
+**Time to First Execution:** < 30 minutes
 **Bootstrap Capital:** $0K
 
 ---
@@ -34,7 +34,7 @@ gsutil cp gs://pnkln-task-artifacts/notebooks/COR_MULTI_AGENT_TEMPLATE.ipynb not
 From this deployment, you have:
 
 ### 1. `deploy_pnkln_agents.sh`
-**Purpose:** One-command infrastructure provisioning  
+**Purpose:** One-command infrastructure provisioning
 **What it does:**
 - Creates 3 GCS buckets (Agent Mail, Governance Logs, Artifacts)
 - Provisions Vertex AI Workbench instance (n1-standard-8, 200GB SSD)
@@ -54,7 +54,7 @@ From this deployment, you have:
 ```
 
 ### 2. `COR_MULTI_AGENT_TEMPLATE.ipynb`
-**Purpose:** Jupyter notebook for multi-agent orchestration  
+**Purpose:** Jupyter notebook for multi-agent orchestration
 **Architecture:**
 - **Cell 1-2**: Environment + GCS connection
 - **Cell 3**: ShadowTag-v2JR governance (Judge #6, ATP 5-19)
@@ -72,8 +72,8 @@ From this deployment, you have:
 - Cell 10: Coordination prompt (optional - customize task/project name)
 
 ### 3. `PREFLIGHT_CHECKLIST.md`
-**Purpose:** Gate-based validation (ATP 5-19 compliance)  
-**Use case:** Run through checklist before executing deployment  
+**Purpose:** Gate-based validation (ATP 5-19 compliance)
+**Use case:** Run through checklist before executing deployment
 **Key phases:**
 - Phase 1: GCP prerequisites
 - Phase 2: Git repository access
@@ -238,10 +238,10 @@ initial_coordination_prompt = """
    ```python
    # Check all Agent Mail
    review_agent_mail()
-   
+
    # Check specific agent inbox
    review_agent_mail("WhiteCastle")
-   
+
    # Review governance logs
    review_governance_logs("risk")  # Risk assessments
    review_governance_logs("validations")  # Judge #6 results
@@ -475,6 +475,6 @@ gcloud iam service-accounts delete pnkln-agent-orchestrator@$GCP_PROJECT_ID.iam.
 
 ---
 
-**PNKLN Core Stack™**  
-*Bootstrap from $0K → Multi-Agent Coordination → $1.33T valuation by Year 30*  
+**PNKLN Core Stack™**
+*Bootstrap from $0K → Multi-Agent Coordination → $1.33T valuation by Year 30*
 *Military-grade execution. Zero compromise on governance.*

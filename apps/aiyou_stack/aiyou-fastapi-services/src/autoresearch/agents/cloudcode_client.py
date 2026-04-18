@@ -178,7 +178,9 @@ Return ONLY the code, no explanations."""
             return {"error": str(e), "code": "", "success": False}
 
     async def execute_notebook_cell(
-        self, code: str, notebook_context: str | None = None,
+        self,
+        code: str,
+        notebook_context: str | None = None,
     ) -> dict[str, Any]:
         """Prepare code for Colab notebook execution.
 
@@ -357,7 +359,8 @@ if __name__ == "__main__":
 
         # Test code generation
         result = await client.generate_code(
-            "Create a function that calculates fibonacci numbers", language="python",
+            "Create a function that calculates fibonacci numbers",
+            language="python",
         )
         print("Generated Code:", result)
 

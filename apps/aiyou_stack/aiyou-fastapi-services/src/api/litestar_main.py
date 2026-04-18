@@ -17,7 +17,8 @@ class TemporalIdentityPayload(BaseModel):
 
 
 async def verify_zero_trust_token(
-    connection: ASGIConnection, _: BaseException | None = None,
+    connection: ASGIConnection,
+    _: BaseException | None = None,
 ) -> None:
     api_key = connection.headers.get(API_KEY_NAME)
     valid_key = os.getenv("DEVELOPER_KNOWLEDGE_API_KEY")

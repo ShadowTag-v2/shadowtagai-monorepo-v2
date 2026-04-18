@@ -57,7 +57,10 @@ class TwitterAdapter(SourceAdapter):
         return num_items * self.config.ingestion.cost_per_twitter_item
 
     async def fetch_items(
-        self, queries: list[str] | None = None, max_items: int = 1000, since: datetime | None = None,
+        self,
+        queries: list[str] | None = None,
+        max_items: int = 1000,
+        since: datetime | None = None,
     ) -> AsyncIterator[IngestedItem]:
         """Fetch tweets from Twitter.
 

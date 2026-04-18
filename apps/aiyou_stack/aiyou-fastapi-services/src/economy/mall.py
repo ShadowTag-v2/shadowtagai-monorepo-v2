@@ -116,16 +116,14 @@ class GeminiStore:
         }
 
     def register_vendor(self, name: str, email: str) -> Vendor:
-        """Register a new vendor (initially PENDING).
-        """
+        """Register a new vendor (initially PENDING)."""
         vendor = Vendor(name=name, email=email)
         self.vendors[vendor.vendor_id] = vendor
         self.stats["total_vendors"] += 1
         return vendor
 
     def approve_vendor(self, vendor_id: str, compliance_score: float = 1.0) -> bool:
-        """Approve a vendor after verification.
-        """
+        """Approve a vendor after verification."""
         vendor = self.vendors.get(vendor_id)
         if not vendor:
             return False
@@ -137,17 +135,25 @@ class GeminiStore:
         return True
 
     def list_product(
-        self, vendor_id: str, name: str, description: str, price: float, category: str = "agent",
+        self,
+        vendor_id: str,
+        name: str,
+        description: str,
+        price: float,
+        category: str = "agent",
     ) -> Product:
-        """Submit a product for listing (starts as PENDING).
-        """
+        """Submit a product for listing (starts as PENDING)."""
         # Verify vendor exists and is verified
         vendor = self.vendors.get(vendor_id)
         if not vendor or vendor.status != VendorStatus.VERIFIED:
             raise ValueError(f"Vendor {vendor_id} not verified")
 
         product = Product(
-            vendor_id=vendor_id, name=name, description=description, price=price, category=category,
+            vendor_id=vendor_id,
+            name=name,
+            description=description,
+            price=price,
+            category=category,
         )
 
         self.products[product.product_id] = product
@@ -157,8 +163,7 @@ class GeminiStore:
         return product
 
     def approve_product(self, product_id: str, risk_score: float = 0.0) -> bool:
-        """Approve a product after JudgeSix validation.
-        """
+        """Approve a product after JudgeSix validation."""
         product = self.products.get(product_id)
         if not product:
             return False
@@ -170,8 +175,7 @@ class GeminiStore:
         return True
 
     def purchase(self, product_id: str, buyer_id: str) -> Transaction:
-        """Process purchase transaction
-        """
+        """Process purchase transaction"""
         product = self.products.get(product_id)
         if not product or product.status != ProductStatus.ACTIVE:
             raise ValueError(f"Product {product_id} not available")

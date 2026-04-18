@@ -21,4 +21,3 @@ class BloomFilter
         static::$is_initialized = true;
     }
 }
-

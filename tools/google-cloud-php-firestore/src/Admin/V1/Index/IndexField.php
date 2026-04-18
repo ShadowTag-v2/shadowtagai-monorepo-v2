@@ -188,4 +188,3 @@ class IndexField extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -177,12 +177,12 @@ function accountExistsPopup(facebookProvider, goToApp, promptUserForPassword, pr
     const pendingCred = error.credential;
     // The provider account's email address.
     const email = error.email;
-    
+
     // Present the user with a list of providers they might have
     // used to create the original account.
     // Then, ask the user to sign in with the existing provider.
     const method = promptUserForSignInMethod();
-      
+
     if (method === 'password') {
       // TODO: Ask the user for their password.
       // In real scenario, you should handle this asynchronously.
@@ -195,7 +195,7 @@ function accountExistsPopup(facebookProvider, goToApp, promptUserForPassword, pr
       });
       return;
     }
-      
+
     // All other cases are external providers.
     // Construct provider object for that provider.
     // TODO: Implement getProviderForProviderId.

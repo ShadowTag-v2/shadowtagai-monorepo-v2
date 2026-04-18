@@ -99,7 +99,8 @@ class ARMPHeader:
 
         # Unpack geo-scope
         lat, lon, radius, ttl = struct.unpack(
-            "!ffHH", data[24:36] if len(data) >= 36 else data[24:32] + b"\x00" * 4,
+            "!ffHH",
+            data[24:36] if len(data) >= 36 else data[24:32] + b"\x00" * 4,
         )
         geo_scope = GeoScope(lat, lon, radius, ttl) if radius > 0 else None
 

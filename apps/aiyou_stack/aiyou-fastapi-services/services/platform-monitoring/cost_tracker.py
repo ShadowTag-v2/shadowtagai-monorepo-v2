@@ -215,7 +215,9 @@ class CostTracker:
         return "Monitor closely and review cost breakdown"
 
     def get_cost_breakdown_by_category(
-        self, service: str | None = None, days: int = 30,
+        self,
+        service: str | None = None,
+        days: int = 30,
     ) -> dict[str, float]:
         """Get cost breakdown by category"""
         cutoff = datetime.now() - timedelta(days=days)
@@ -356,11 +358,17 @@ if __name__ == "__main__":
 
     # Record some costs
     tracker.record_cost(
-        "gemini-ingestion", CostCategory.API_CALLS, 2.50, "Gemini API - 1000 items analyzed",
+        "gemini-ingestion",
+        CostCategory.API_CALLS,
+        2.50,
+        "Gemini API - 1000 items analyzed",
     )
     tracker.record_cost("v2x-mesh", CostCategory.COMPUTE, 100.0, "GKE compute - daily cost")
     tracker.record_cost(
-        "gemini-ingestion", CostCategory.EXTERNAL_SERVICES, 0.50, "NewsAPI - 100 requests",
+        "gemini-ingestion",
+        CostCategory.EXTERNAL_SERVICES,
+        0.50,
+        "NewsAPI - 100 requests",
     )
 
     # Get report

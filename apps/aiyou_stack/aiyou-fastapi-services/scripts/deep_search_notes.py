@@ -77,7 +77,8 @@ def search_deep(service):
                 payload = txt["payload"]
                 headers = payload.get("headers", [])
                 subject = next(
-                    (h["value"] for h in headers if h["name"] == "Subject"), "No Subject",
+                    (h["value"] for h in headers if h["name"] == "Subject"),
+                    "No Subject",
                 )
                 date = next((h["value"] for h in headers if h["name"] == "Date"), "Unknown Date")
                 txt.get("snippet", "")

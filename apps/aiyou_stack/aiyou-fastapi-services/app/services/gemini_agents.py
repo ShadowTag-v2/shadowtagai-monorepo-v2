@@ -53,7 +53,9 @@ class GeminiAgent:
         if genai and api_key:
             genai.configure(api_key=api_key)
             self.model = genai.GenerativeModel(
-                model_name=model_name, system_instruction=persona, tools=self.tools,
+                model_name=model_name,
+                system_instruction=persona,
+                tools=self.tools,
             )
         else:
             self.model = None
@@ -66,7 +68,11 @@ class GeminiAgent:
         }
 
     async def propose_tier(
-        self, title: str, content: str, tags: list[str], debate_history: list[dict] = None,
+        self,
+        title: str,
+        content: str,
+        tags: list[str],
+        debate_history: list[dict] = None,
     ) -> dict[str, Any]:
         """Generate tier proposal with reasoning
 
@@ -106,7 +112,11 @@ class GeminiAgent:
             return self._fallback_proposal(title, content, tags)
 
     def _build_debate_prompt(
-        self, title: str, content: str, tags: list[str], debate_history: list[dict] | None,
+        self,
+        title: str,
+        content: str,
+        tags: list[str],
+        debate_history: list[dict] | None,
     ) -> str:
         """Build debate prompt with history context"""
         prompt = f"""
@@ -278,7 +288,10 @@ Decision Tendency: No bias, pure evidence-based classification.""",
             # Each agent proposes tier with reasoning
             for agent_name, agent in self.agents.items():
                 proposal = await agent.propose_tier(
-                    title=title, content=content, tags=tags, debate_history=debate_rounds,
+                    title=title,
+                    content=content,
+                    tags=tags,
+                    debate_history=debate_rounds,
                 )
                 round_proposals[agent_name] = proposal
 
@@ -286,7 +299,8 @@ Decision Tendency: No bias, pure evidence-based classification.""",
 
         # Aggregate votes
         final_tier, final_confidence, reasoning = self._aggregate_votes(
-            debate_rounds, method=voting_method,
+            debate_rounds,
+            method=voting_method,
         )
 
         # Extract common tags from all proposals
@@ -308,7 +322,9 @@ Decision Tendency: No bias, pure evidence-based classification.""",
         )
 
     def _aggregate_votes(
-        self, debate_rounds: list[list[dict]], method: str = "weighted_confidence",
+        self,
+        debate_rounds: list[list[dict]],
+        method: str = "weighted_confidence",
     ) -> tuple[int, float, str]:
         """Aggregate agent votes into final tier classification
 
@@ -455,13 +471,13 @@ def create_atp_519_tools() -> list[dict]:
 
 # Example usage function
 async def example_usage():
-    """Example: AutoGen → Gemini migration in action
-    """
+    """Example: AutoGen → Gemini migration in action"""
     import os
 
     # Initialize group chat
     chat = GeminiGroupChat(
-        api_key=os.getenv("GEMINI_API_KEY"), agents=["skeptic", "optimist", "neutral"],
+        api_key=os.getenv("GEMINI_API_KEY"),
+        agents=["skeptic", "optimist", "neutral"],
     )
 
     # Classify intelligence item

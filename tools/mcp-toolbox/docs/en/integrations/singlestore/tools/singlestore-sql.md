@@ -140,17 +140,17 @@ name: search_docs_singlestore
 type: singlestore-sql
 source: my-s2-source
 statement: |
-  SELECT 
-    id, 
-    content, 
-    DOT_PRODUCT(embedding, JSON_ARRAY_PACK(?)) AS score 
-  FROM 
-    vector_table 
-  ORDER BY 
+  SELECT
+    id,
+    content,
+    DOT_PRODUCT(embedding, JSON_ARRAY_PACK(?)) AS score
+  FROM
+    vector_table
+  ORDER BY
     score DESC
   LIMIT 1
 description: |
-  Search for documents in SingleStore using natural language. 
+  Search for documents in SingleStore using natural language.
   Returns the most semantically similar result.
 parameters:
   - name: query

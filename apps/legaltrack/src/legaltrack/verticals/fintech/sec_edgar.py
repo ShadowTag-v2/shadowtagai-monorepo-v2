@@ -20,7 +20,9 @@ class FinTechEdgarPipeline:
     """
 
     def __init__(self):
-        self.edgar_rss_url = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&company=&dateb=&owner=include&start=0&count=40&output=atom"
+        self.edgar_rss_url = (
+            "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=&company=&dateb=&owner=include&start=0&count=40&output=atom"
+        )
 
     async def ingest_sec_feed(self) -> dict[str, Any]:
         """Simulates ingesting the live SEC feed. In production, this runs as an aggressive
@@ -55,8 +57,7 @@ class FinTechEdgarPipeline:
         return detected_event
 
     async def execute_algorithmic_compliance(self, _sec_event: dict[str, Any]):
-        """Executes immediate downstream trades or automated compliance filings based on the parsed 8-K.
-        """
+        """Executes immediate downstream trades or automated compliance filings based on the parsed 8-K."""
         logger.info(
             "FinTech Vertical: Executing HFLT Compliance response in 35ms via 3-Kernel Spec.",
         )

@@ -23,4 +23,3 @@ class Pipeline
         static::$is_initialized = true;
     }
 }
-

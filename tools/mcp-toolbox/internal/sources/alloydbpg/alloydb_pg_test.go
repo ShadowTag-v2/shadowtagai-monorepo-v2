@@ -151,7 +151,7 @@ func TestFailParseFromYaml(t *testing.T) {
 			region: my-region
 			cluster: my-cluster
 			instance: my-instance
-			ipType: fail 
+			ipType: fail
 			database: my_db
 			user: my_user
 			password: my_pass

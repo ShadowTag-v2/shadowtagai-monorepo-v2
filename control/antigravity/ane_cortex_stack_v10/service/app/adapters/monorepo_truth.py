@@ -61,9 +61,7 @@ def summarize_control_plane(path: str) -> dict[str, Any]:
     }
 
 
-def load_monorepo_truth(
-    manifest_path: str, merge_status_path: str, control_plane_path: str
-) -> dict[str, Any]:
+def load_monorepo_truth(manifest_path: str, merge_status_path: str, control_plane_path: str) -> dict[str, Any]:
     manifest = read_manifest(manifest_path)
     merge_status = summarize_merge_status(merge_status_path)
     control_plane = summarize_control_plane(control_plane_path)

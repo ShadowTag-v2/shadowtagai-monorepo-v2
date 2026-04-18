@@ -69,7 +69,10 @@ class IngestionJob(Base):
 
     # Processing status
     status = Column(
-        SQLEnum(IngestionStatus), default=IngestionStatus.PENDING, nullable=False, index=True,
+        SQLEnum(IngestionStatus),
+        default=IngestionStatus.PENDING,
+        nullable=False,
+        index=True,
     )
     started_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
@@ -87,7 +90,9 @@ class IngestionJob(Base):
 
     # Moderation results
     moderation_category = Column(
-        SQLEnum(ModerationCategory), default=ModerationCategory.SAFE, index=True,
+        SQLEnum(ModerationCategory),
+        default=ModerationCategory.SAFE,
+        index=True,
     )
     moderation_confidence = Column(Integer)  # 0-100
     moderation_details = Column(JSON)  # Detailed scores per category
@@ -170,8 +175,7 @@ class IngestionReview(Base):
 
 
 class GeminiUsageMetrics(Base):
-    """Track Gemini API usage and costs for billing optimization
-    """
+    """Track Gemini API usage and costs for billing optimization"""
 
     __tablename__ = "gemini_usage_metrics"
 
@@ -228,7 +232,11 @@ class ContentEmbedding(Base):
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     job_id = Column(
-        String(36), ForeignKey("ingestion_jobs.id"), nullable=False, unique=True, index=True,
+        String(36),
+        ForeignKey("ingestion_jobs.id"),
+        nullable=False,
+        unique=True,
+        index=True,
     )
 
     # Embedding metadata

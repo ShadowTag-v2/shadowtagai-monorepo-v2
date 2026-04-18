@@ -45,9 +45,7 @@ def main():
     else:
         beads_summary.append("  (no .beads/issues.jsonl found)")
 
-    context_block = "BEADS CONTEXT (last {}):\n{}".format(
-        len(beads_summary), "\n".join(beads_summary)
-    )
+    context_block = "BEADS CONTEXT (last {}):\n{}".format(len(beads_summary), "\n".join(beads_summary))
 
     # Write hook response
     response = {

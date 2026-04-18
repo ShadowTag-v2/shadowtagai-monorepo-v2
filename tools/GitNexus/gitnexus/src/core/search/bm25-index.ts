@@ -80,10 +80,10 @@ export const searchFTSFromLbug = async (query: string, limit: number = 20, repoI
     methodResults = await queryFTS('Method', 'method_fts', query, limit, false).catch(() => []);
     interfaceResults = await queryFTS('Interface', 'interface_fts', query, limit, false).catch(() => []);
   }
-  
+
   // Merge results by filePath, summing scores for same file
   const merged = new Map<string, { filePath: string; score: number }>();
-  
+
   const addResults = (results: any[]) => {
     for (const r of results) {
       const existing = merged.get(r.filePath);
@@ -94,18 +94,18 @@ export const searchFTSFromLbug = async (query: string, limit: number = 20, repoI
       }
     }
   };
-  
+
   addResults(fileResults);
   addResults(functionResults);
   addResults(classResults);
   addResults(methodResults);
   addResults(interfaceResults);
-  
+
   // Sort by score descending and add rank
   const sorted = Array.from(merged.values())
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
-  
+
   return sorted.map((r, index) => ({
     filePath: r.filePath,
     score: r.score,

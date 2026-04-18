@@ -168,7 +168,11 @@ class MADOrchestrator:
         self.agents: dict[str, AgentProfile] = {}
 
     def register_agent(
-        self, agent_id: str, role: AgentRole, expertise: str, persona: str = "",
+        self,
+        agent_id: str,
+        role: AgentRole,
+        expertise: str,
+        persona: str = "",
     ) -> AgentProfile:
         """Register agent for debate participation.
 
@@ -283,7 +287,10 @@ class MADOrchestrator:
         """
         # Generate position
         position, reasoning, confidence = await position_generator(
-            agent.agent_id, topic, round_number, previous_positions,
+            agent.agent_id,
+            topic,
+            round_number,
+            previous_positions,
         )
 
         # Generate critiques of other agents' latest positions
@@ -340,7 +347,11 @@ class MADOrchestrator:
         # Get positions from all agents in parallel
         position_tasks = [
             self._get_agent_position(
-                agent, topic, round_number, previous_positions, position_generator,
+                agent,
+                topic,
+                round_number,
+                previous_positions,
+                position_generator,
             )
             for agent in agents
         ]
@@ -458,7 +469,11 @@ class MADOrchestrator:
         for round_num in range(1, self.max_rounds + 1):
             # Run round
             round_result = await self._run_round(
-                round_num, topic, agents, all_positions, position_generator,
+                round_num,
+                topic,
+                agents,
+                all_positions,
+                position_generator,
             )
 
             rounds.append(round_result)
@@ -502,7 +517,8 @@ class MADOrchestrator:
         )
 
     def get_leaderboard(
-        self, top_n: int | None = None,
+        self,
+        top_n: int | None = None,
     ) -> list[tuple[str, AgentProfile, GlickoRating]]:
         """Get agent leaderboard based on Glicko-2 ratings.
 

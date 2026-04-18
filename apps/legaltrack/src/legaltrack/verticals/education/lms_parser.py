@@ -22,8 +22,7 @@ class UphillsnowballEducationParser:
         self.tenant_id = tenant_id
 
     async def parse_lms_webhook(self, payload: dict[str, Any]) -> dict[str, Any]:
-        """Ingests native Canvas/Blackboard webhooks (e.g. 'Assignment Created').
-        """
+        """Ingests native Canvas/Blackboard webhooks (e.g. 'Assignment Created')."""
         course_id = payload.get("course_id")
         due_date = payload.get("due_date")
         logger.info(f"EDU Vertical: Ingested LMS Webhook for Course {course_id}. Due: {due_date}")

@@ -164,7 +164,10 @@ class CompositeAgent(BaseAgent):
     """
 
     def __init__(
-        self, agent_id: int, components: list[BaseAgent], tier: AgentTier = AgentTier.FREE,
+        self,
+        agent_id: int,
+        components: list[BaseAgent],
+        tier: AgentTier = AgentTier.FREE,
     ):
         """Initialize composite agent.
 
@@ -291,7 +294,10 @@ class TaskProcessorAgent(BaseAgent):
             self.errors += 1
             self.status = AgentStatus.ERROR
             return AgentResult(
-                output=None, latency_ms=(time.time() - start) * 1000, success=False, error=str(e),
+                output=None,
+                latency_ms=(time.time() - start) * 1000,
+                success=False,
+                error=str(e),
             )
 
     def backward(self, grad_output: np.ndarray) -> np.ndarray:
@@ -371,7 +377,10 @@ class PheromoneAgent(BaseAgent):
             self.errors += 1
             self.status = AgentStatus.ERROR
             return AgentResult(
-                output=None, latency_ms=(time.time() - start) * 1000, success=False, error=str(e),
+                output=None,
+                latency_ms=(time.time() - start) * 1000,
+                success=False,
+                error=str(e),
             )
 
     def backward(self, grad_output: np.ndarray) -> np.ndarray:

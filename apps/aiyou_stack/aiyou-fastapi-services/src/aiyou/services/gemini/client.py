@@ -20,10 +20,8 @@ class GeminiRateLimitExceeded(Exception):
     """Raised when Gemini API rate limit is hit"""
 
 
-
 class GeminiServiceError(Exception):
     """Base exception for Gemini service errors"""
-
 
 
 def async_retry(max_retries: int = 3, backoff_seconds: float = 1.0):
@@ -346,7 +344,9 @@ class GeminiClient:
 
     @async_retry(max_retries=3, backoff_seconds=2.0)
     async def generate_metadata(
-        self, content_description: str, content_type: str = "video",
+        self,
+        content_description: str,
+        content_type: str = "video",
     ) -> dict[str, Any]:
         """Generate title, description, and tags for content
 

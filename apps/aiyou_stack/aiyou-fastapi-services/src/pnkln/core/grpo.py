@@ -200,7 +200,9 @@ class GRPOTrainer:
 
 
 def generate_synthetic_batch(
-    num_groups: int = 8, responses_per_prompt: int = 4, reward_noise: float = 0.1,
+    num_groups: int = 8,
+    responses_per_prompt: int = 4,
+    reward_noise: float = 0.1,
 ) -> GRPOBatch:
     """Generate synthetic GRPO batch for testing.
 
@@ -312,7 +314,10 @@ if __name__ == "__main__":
 
     # Create trainer
     config = GRPOConfig(
-        num_groups=8, responses_per_prompt=4, learning_rate=1e-4, normalize_advantages=True,
+        num_groups=8,
+        responses_per_prompt=4,
+        learning_rate=1e-4,
+        normalize_advantages=True,
     )
     trainer = GRPOTrainer(config)
 
@@ -323,7 +328,8 @@ if __name__ == "__main__":
 
     # Generate synthetic batch
     batch = generate_synthetic_batch(
-        num_groups=config.num_groups, responses_per_prompt=config.responses_per_prompt,
+        num_groups=config.num_groups,
+        responses_per_prompt=config.responses_per_prompt,
     )
 
     print("\nBatch statistics:")

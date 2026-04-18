@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START use_from_cache_modular]
-import { collection, onSnapshot, where, query } from "firebase/firestore"; 
+import { collection, onSnapshot, where, query } from "firebase/firestore";
 
 const q = query(collection(db, "cities"), where("state", "==", "CA"));
 onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {

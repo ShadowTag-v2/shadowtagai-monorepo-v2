@@ -152,7 +152,9 @@ class ShadowTagWatermarkService:
 
         # Embed watermark
         watermarked_asset, watermark_data = await self.embed_watermark(
-            asset, creator_id, neural_fingerprint_id,
+            asset,
+            creator_id,
+            neural_fingerprint_id,
         )
 
         return {
@@ -258,7 +260,9 @@ class ShadowTagWatermarkService:
         return WatermarkType.TEXT_SEMANTIC
 
     async def _embed_visual_dct(
-        self, asset: MediaAsset, watermark_data: WatermarkData,
+        self,
+        asset: MediaAsset,
+        watermark_data: WatermarkData,
     ) -> tuple[MediaAsset, float]:
         """Embed watermark in DCT frequency domain (images)
 
@@ -300,7 +304,9 @@ class ShadowTagWatermarkService:
         return asset, psnr
 
     async def _embed_audio_ultrasonic(
-        self, asset: MediaAsset, watermark_data: WatermarkData,
+        self,
+        asset: MediaAsset,
+        watermark_data: WatermarkData,
     ) -> MediaAsset:
         """Embed watermark in ultrasonic frequency band (20-22 kHz)
 
@@ -337,7 +343,9 @@ class ShadowTagWatermarkService:
         return asset
 
     async def _embed_hybrid(
-        self, asset: MediaAsset, watermark_data: WatermarkData,
+        self,
+        asset: MediaAsset,
+        watermark_data: WatermarkData,
     ) -> tuple[MediaAsset, float]:
         """Embed hybrid watermark (visual + audio for video)
 
@@ -356,7 +364,9 @@ class ShadowTagWatermarkService:
         return asset, psnr
 
     async def _embed_text_semantic(
-        self, asset: MediaAsset, watermark_data: WatermarkData,
+        self,
+        asset: MediaAsset,
+        watermark_data: WatermarkData,
     ) -> MediaAsset:
         """Embed semantic watermark in text documents
 

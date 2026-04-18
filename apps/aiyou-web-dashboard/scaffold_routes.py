@@ -43,7 +43,7 @@ export default function Page() {
               Corporate Record: {page_title}
             </h2>
             <p className="text-slate-600 font-inter text-lg leading-relaxed">
-              This intelligence node has been successfully mapped to the unusualmachines.com architecture. 
+              This intelligence node has been successfully mapped to the unusualmachines.com architecture.
               The Stitch 2 UI generator has confirmed the light-theme compliance of this exact structural path.
             </p>
             <div className="mt-8 pt-6 border-t border-slate-200">

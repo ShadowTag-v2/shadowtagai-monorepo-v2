@@ -20,10 +20,12 @@ import os
 # Try to import requests, fall back to urllib
 try:
     import requests
+
     HAS_REQUESTS = True
 except ImportError:
     import urllib.request
     import urllib.error
+
     HAS_REQUESTS = False
 
 
@@ -50,10 +52,7 @@ def api_request(endpoint, data=None):
         return r.json()
     else:
         if data:
-            req = urllib.request.Request(
-                url, data=json.dumps(data).encode(),
-                headers={"Content-Type": "application/json"}
-            )
+            req = urllib.request.Request(url, data=json.dumps(data).encode(), headers={"Content-Type": "application/json"})
         else:
             req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=300) as resp:
@@ -79,15 +78,24 @@ def run_benchmark(model_name, model_path, cache_type):
     # Start server
     cmd = [
         SERVER_BIN,
-        "-m", model_path,
-        "-ngl", "99",
-        "-c", "4096",
-        "-fa", "on",
-        "-ctk", cache_type,
-        "-ctv", cache_type,
-        "-np", "1",
-        "--host", "127.0.0.1",
-        "--port", str(PORT),
+        "-m",
+        model_path,
+        "-ngl",
+        "99",
+        "-c",
+        "4096",
+        "-fa",
+        "on",
+        "-ctk",
+        cache_type,
+        "-ctv",
+        cache_type,
+        "-np",
+        "1",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        str(PORT),
     ]
 
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -104,20 +112,26 @@ def run_benchmark(model_name, model_path, cache_type):
         # Run completion
         t0 = time.time()
         try:
-            result = api_request("/v1/chat/completions", {
-                "model": "test",
-                "messages": [{"role": "user", "content": PROMPT}],
-                "max_tokens": N_PREDICT,
-                "temperature": 0.0,
-            })
+            result = api_request(
+                "/v1/chat/completions",
+                {
+                    "model": "test",
+                    "messages": [{"role": "user", "content": PROMPT}],
+                    "max_tokens": N_PREDICT,
+                    "temperature": 0.0,
+                },
+            )
         except Exception as e:
             # Try non-chat endpoint
             try:
-                result = api_request("/completion", {
-                    "prompt": PROMPT,
-                    "n_predict": N_PREDICT,
-                    "temperature": 0.0,
-                })
+                result = api_request(
+                    "/completion",
+                    {
+                        "prompt": PROMPT,
+                        "n_predict": N_PREDICT,
+                        "temperature": 0.0,
+                    },
+                )
             except Exception as e2:
                 print(f"    ERROR: {e2}")
                 return None
@@ -191,8 +205,7 @@ def main():
             result = run_benchmark(model_name, model_path, cache_type)
             if result:
                 results.append(result)
-                print(f"    {cache_type}: {result['tok_s']:.1f} tok/s, "
-                      f"{result['completion_tokens']} tokens in {result['elapsed_s']:.1f}s")
+                print(f"    {cache_type}: {result['tok_s']:.1f} tok/s, {result['completion_tokens']} tokens in {result['elapsed_s']:.1f}s")
                 print(f"    Preview: {result['output_preview'][:80]}")
             else:
                 print(f"    {cache_type}: FAILED")
@@ -205,7 +218,7 @@ def main():
             f.write("# TurboQuant+ Benchmark Results\n\n")
             f.write(f"Date: {time.strftime('%Y-%m-%d %H:%M')}\n")
             f.write(f"Hardware: Apple M5 Max 128GB\n")
-            f.write(f"Prompt: \"{PROMPT}\"\n")
+            f.write(f'Prompt: "{PROMPT}"\n')
             f.write(f"Max tokens: {N_PREDICT}\n\n")
 
             f.write("| Model | Cache Type | Bits/val | tok/s | Tokens | Time (s) | Compression |\n")
@@ -214,9 +227,11 @@ def main():
             for r in results:
                 bits = {"q8_0": "8", "q4_0": "4", "turbo3": "3.25", "turbo4": "4.25"}.get(r["cache_type"], "?")
                 compression = {"q8_0": "2.0×", "q4_0": "4.0×", "turbo3": "4.9×", "turbo4": "3.8×"}.get(r["cache_type"], "?")
-                f.write(f"| {r['model']} | {r['cache_type']} | {bits} | "
-                        f"{r['tok_s']:.1f} | {r['completion_tokens']} | "
-                        f"{r['elapsed_s']:.1f} | {compression} |\n")
+                f.write(
+                    f"| {r['model']} | {r['cache_type']} | {bits} | "
+                    f"{r['tok_s']:.1f} | {r['completion_tokens']} | "
+                    f"{r['elapsed_s']:.1f} | {compression} |\n"
+                )
 
             f.write("\n## Output Samples\n\n")
             for r in results:
@@ -226,7 +241,7 @@ def main():
         print(f"\nResults saved to {report_path}")
         print(f"\nSummary:")
         print(f"{'Model':<25} {'Cache':<10} {'tok/s':>8} {'Compression':>12}")
-        print(f"{'─'*60}")
+        print(f"{'─' * 60}")
         for r in results:
             compression = {"q8_0": "2.0×", "q4_0": "4.0×", "turbo3": "4.9×", "turbo4": "3.8×"}.get(r["cache_type"], "?")
             print(f"{r['model']:<25} {r['cache_type']:<10} {r['tok_s']:>8.1f} {compression:>12}")

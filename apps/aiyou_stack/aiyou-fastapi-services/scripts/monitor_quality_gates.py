@@ -3,7 +3,8 @@ import os
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger("QualityGateMonitor")
 
@@ -35,8 +36,7 @@ def check_quality_gates(log_file_path: str) -> bool:
 
 
 def send_alert(message: str):
-    """Simulates sending an alert (e.g., Slack, Email, PagerDuty).
-    """
+    """Simulates sending an alert (e.g., Slack, Email, PagerDuty)."""
     # In a real scenario, use requests.post to a webhook URL
     print(f"\n[ALERT SYSTEM] Sending alert: {message}\n")
 

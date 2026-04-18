@@ -3190,7 +3190,7 @@ Một lời nhắc Nano Banana phức tạp, đa giai đoạn, được thiết 
 
 ```
 <instruction>
- 
+
 Đầu vào A là một Cỗ máy Phức tạp (ví dụ: {argument name="machine type" default="A Space Shuttle"}, một cây Đại dương cầm, một chiếc Đồng hồ cơ khí).
 Phân rã thành 3 Giai đoạn Lắp ráp:
    Giai đoạn 1: Khung/vỏ thô.

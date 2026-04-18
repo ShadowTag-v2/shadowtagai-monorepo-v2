@@ -30,7 +30,11 @@ class minionsClient:
         self.base_url = base_url.rstrip("/")
 
     async def vote(
-        self, code: str, task: str, threshold: float = 0.75, jura_tier: str = "FLASH",
+        self,
+        code: str,
+        task: str,
+        threshold: float = 0.75,
+        jura_tier: str = "FLASH",
     ) -> dict[str, Any]:
         """Submit code for 650-agent consensus voting.
 

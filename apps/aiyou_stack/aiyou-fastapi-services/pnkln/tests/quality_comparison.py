@@ -113,11 +113,17 @@ class QualityEvaluator:
         coverage = self._score_coverage(query, results)
 
         return ResultQuality(
-            relevance=relevance, freshness=freshness, authority=authority, coverage=coverage,
+            relevance=relevance,
+            freshness=freshness,
+            authority=authority,
+            coverage=coverage,
         )
 
     def evaluate_grounding(
-        self, query: str, response_text: str, grounding_metadata: dict,
+        self,
+        query: str,
+        response_text: str,
+        grounding_metadata: dict,
     ) -> ResultQuality:
         """Evaluate Google Grounding results.
 
@@ -243,7 +249,8 @@ class ComparisonRunner:
             brave_latency = (time.perf_counter() - brave_start) * 1000
 
             brave_quality = self.evaluator.evaluate_brave(
-                query, [r.__dict__ for r in brave_response.results],
+                query,
+                [r.__dict__ for r in brave_response.results],
             )
 
             print(f"  Brave: {brave_quality.overall_score:.2f} ({brave_latency:.0f}ms)")

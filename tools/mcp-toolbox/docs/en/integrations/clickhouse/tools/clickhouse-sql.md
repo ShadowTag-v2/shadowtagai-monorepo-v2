@@ -28,11 +28,11 @@ type: clickhouse-sql
 source: my-clickhouse-instance
 description: Get user analytics for a specific date range
 statement: |
-  SELECT 
+  SELECT
     user_id,
     count(*) as event_count,
     max(timestamp) as last_event
-  FROM events 
+  FROM events
   WHERE date >= ? AND date <= ?
   GROUP BY user_id
   ORDER BY event_count DESC
@@ -40,7 +40,7 @@ statement: |
 parameters:
   - name: start_date
     description: Start date for the query (YYYY-MM-DD format)
-  - name: end_date  
+  - name: end_date
     description: End date for the query (YYYY-MM-DD format)
   - name: limit
     description: Maximum number of results to return

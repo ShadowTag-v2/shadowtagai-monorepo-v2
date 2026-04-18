@@ -265,7 +265,8 @@ async def typeform_webhook(
 
     if not email:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Email not found in Typeform response",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email not found in Typeform response",
         )
 
     # Generate API key
@@ -273,7 +274,9 @@ async def typeform_webhook(
 
     try:
         plaintext_key, api_key_record = key_manager.generate_key(
-            email=email, organization=organization, tier=TierLevel.FREE,
+            email=email,
+            organization=organization,
+            tier=TierLevel.FREE,
         )
 
         # Send welcome email
@@ -312,7 +315,9 @@ async def manual_signup(request: SignupRequest):
 
     try:
         plaintext_key, api_key_record = key_manager.generate_key(
-            email=request.email, organization=request.organization, tier=TierLevel.FREE,
+            email=request.email,
+            organization=request.organization,
+            tier=TierLevel.FREE,
         )
 
         # Send welcome email

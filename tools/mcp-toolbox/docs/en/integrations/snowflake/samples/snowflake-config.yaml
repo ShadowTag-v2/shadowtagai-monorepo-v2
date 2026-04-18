@@ -50,7 +50,7 @@ type: snowflake-sql
 source: my-snowflake-db
 description: Generate daily sales report for a specific date
 statement: |
-  SELECT 
+  SELECT
     DATE(order_date) as sales_date,
     COUNT(*) as total_orders,
     SUM(total_amount) as total_revenue,

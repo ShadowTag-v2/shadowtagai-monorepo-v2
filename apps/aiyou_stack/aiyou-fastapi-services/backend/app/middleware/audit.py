@@ -1,5 +1,4 @@
-"""Audit Middleware - Automatically log all API requests for compliance
-"""
+"""Audit Middleware - Automatically log all API requests for compliance"""
 
 import logging
 import time

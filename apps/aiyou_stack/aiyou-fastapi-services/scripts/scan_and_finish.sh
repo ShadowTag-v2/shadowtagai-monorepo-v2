@@ -30,13 +30,13 @@ for FILE in $MODIFIED_FILES; do
     if [ ! -f "$FILE" ]; then continue; fi
 
     echo ">>> ✨ POLISHING: $FILE"
-    
+
     # Python Polish
     if [[ "$FILE" == *.py ]]; then
         python3 -m black "$FILE" --quiet || true
         python3 -m isort "$FILE" --quiet || true
     fi
-    
+
     # TS/JS Polish (if prettier is available)
     if [[ "$FILE" == *.ts || "$FILE" == *.tsx ]]; then
         if command -v prettier &> /dev/null; then

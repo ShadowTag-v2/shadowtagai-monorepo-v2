@@ -14,7 +14,7 @@ Usage:
     --set-env-vars="GEMINI_API_KEY=<key>" \
     --memory=512Mi \
     --task-timeout=600s
-    
+
   # Execute manually
   gcloud run jobs execute veo-hero-gen --project=shadowtag-omega-v4
 

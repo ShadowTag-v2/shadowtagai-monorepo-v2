@@ -26,8 +26,7 @@ class GeminiCodeAssistProxy:
         return f"# Generated code for: {prompt}\nprint('Hello God Mode from Proxy')"
 
     def trigger_smart_action(self, action_type, file_path, prompt, context):
-        """Level 2: The 'God Mode' (Bypass the Preview)
-        """
+        """Level 2: The 'God Mode' (Bypass the Preview)"""
         # 1. Generate the code
         # In reality, 'prompt' and 'context' would go to the model.
         new_code = self.generate_code(prompt, context)

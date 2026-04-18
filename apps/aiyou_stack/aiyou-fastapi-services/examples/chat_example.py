@@ -1,5 +1,4 @@
-"""Example usage of the chat API endpoints.
-"""
+"""Example usage of the chat API endpoints."""
 
 import asyncio
 

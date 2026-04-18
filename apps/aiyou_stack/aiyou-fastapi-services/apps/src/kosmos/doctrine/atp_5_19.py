@@ -34,6 +34,7 @@ class Severity(Enum):
 def _get_risk_level():
     """Lazy import to break circular dependency."""
     from src.kosmos.doctrine import RiskLevel
+
     return RiskLevel
 
 

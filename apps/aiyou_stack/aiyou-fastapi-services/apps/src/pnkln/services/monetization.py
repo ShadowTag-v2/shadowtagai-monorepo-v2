@@ -2,8 +2,7 @@ from pydantic import BaseModel
 
 
 class RateCard(BaseModel):
-    """Pnkln Monetization Model (v1 - Dec 2025)
-    """
+    """Pnkln Monetization Model (v1 - Dec 2025)"""
 
     currency: str = "USD"
 

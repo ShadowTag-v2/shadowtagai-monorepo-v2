@@ -3,7 +3,7 @@
    ========================================================================== */
 
 :root {
-  --pagefind-ui-scale: 0.9; 
+  --pagefind-ui-scale: 0.9;
   --pagefind-ui-primary: #0d6efd;
 }
 
@@ -15,10 +15,10 @@
 /* Base Modal Backdrop & Body State */
 #global-search-backdrop {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); 
+  background-color: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   z-index: 2147483646 !important; /* Max value minus 1 */
-  opacity: 0; pointer-events: none; transition: none; 
+  opacity: 0; pointer-events: none; transition: none;
   transition: opacity 0.1s ease-in-out;
 
   &.active { opacity: 1; pointer-events: auto; }
@@ -27,9 +27,9 @@
 body.global-search-active {
   /* Explicitly target Docsy's layout structure to avoid blurring injected modals */
   header, main, footer, .td-main, .td-outer, .td-sidebar, .td-sidebar-toc {
-    filter: blur(6px) !important; 
-    opacity: 0.4 !important; 
-    pointer-events: none !important; 
+    filter: blur(6px) !important;
+    opacity: 0.4 !important;
+    pointer-events: none !important;
     transition: none !important;
   }
 }
@@ -38,27 +38,27 @@ body.global-search-active {
 body {
   .custom-pagefind-wrapper {
     position: relative;
-    z-index: 9999 !important; 
+    z-index: 9999 !important;
 
     /* Modal Pop-out State */
     &.active-modal {
-      position: fixed !important; 
-      top: 12vh !important; 
-      left: 50% !important; 
+      position: fixed !important;
+      top: 12vh !important;
+      left: 50% !important;
       transform: translateX(-50%) !important;
-      width: 90vw !important; 
-      max-width: 650px !important; 
+      width: 90vw !important;
+      max-width: 650px !important;
       z-index: 2147483647 !important; /* Absolute max value possible */
-      margin: 0 !important; 
+      margin: 0 !important;
       padding: 0 !important;
 
       .pagefind-ui__drawer {
-        position: absolute !important; 
-        top: 100% !important; 
-        left: 0 !important; 
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
         right: 0 !important;
-        width: 100% !important; 
-        max-width: 100% !important; 
+        width: 100% !important;
+        max-width: 100% !important;
         max-height: 70vh !important;
         z-index: 999999 !important;
         animation: simpleSlideDown 0.2s ease-out forwards !important;
@@ -76,40 +76,40 @@ body {
   }
 
   /* Pagefind Internal Element Overrides */
-  .pagefind-ui__form { 
-    --pagefind-ui-text: #ffffff !important; 
-    position: relative !important; 
-    box-sizing: border-box !important; 
+  .pagefind-ui__form {
+    --pagefind-ui-text: #ffffff !important;
+    position: relative !important;
+    box-sizing: border-box !important;
     &:focus-within { --pagefind-ui-text: #4484f4 !important; }
     &::before {
       top: 50% !important; transform: translateY(-50%) !important; margin-top: 0 !important;
-      width: 18px !important; height: 18px !important; left: 14px !important; 
+      width: 18px !important; height: 18px !important; left: 14px !important;
     }
   }
 
-  .pagefind-ui__search-input { 
-    background-color: rgba(0, 0, 0, 0.1) !important; 
-    border: 1.5px solid transparent !important; 
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15) !important; 
+  .pagefind-ui__search-input {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    border: 1.5px solid transparent !important;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15) !important;
     color: #ffffff !important; border-radius: 50px !important; font-weight: 400 !important;
-    transition: all 0.2s ease-in-out !important; height: 38px !important; font-size: 0.95rem !important; 
-    padding-left: 40px !important; padding-right: 36px !important; box-sizing: border-box !important; 
+    transition: all 0.2s ease-in-out !important; height: 38px !important; font-size: 0.95rem !important;
+    padding-left: 40px !important; padding-right: 36px !important; box-sizing: border-box !important;
 
     &::placeholder { color: #ffffff !important; opacity: 0.9 !important; }
 
     &:focus {
       background-color: #ffffff !important; border-color: #4484f4 !important; color: #212529 !important; outline: 0 !important;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(68, 132, 244, 0.15) !important; 
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(68, 132, 244, 0.15) !important;
       &::placeholder { color: #6c757d !important; opacity: 1 !important; }
     }
   }
 
   .pagefind-ui__search-clear {
-    position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; right: 12px !important; 
-    width: 24px !important; height: 24px !important; min-height: 24px !important; padding: 0 !important; margin: 0 !important; 
-    background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; 
-    font-size: 0 !important; color: transparent !important; display: flex !important; align-items: center !important; 
-    justify-content: center !important; overflow: hidden !important; cursor: pointer !important; z-index: 99 !important; 
+    position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; right: 12px !important;
+    width: 24px !important; height: 24px !important; min-height: 24px !important; padding: 0 !important; margin: 0 !important;
+    background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important;
+    font-size: 0 !important; color: transparent !important; display: flex !important; align-items: center !important;
+    justify-content: center !important; overflow: hidden !important; cursor: pointer !important; z-index: 99 !important;
 
     &::after {
       content: "\00d7" !important; font-size: 22px !important; font-weight: 300 !important;
@@ -118,11 +118,11 @@ body {
   }
 
   .pagefind-ui__drawer {
-    position: absolute !important; top: 100% !important; width: 500px !important; 
-    max-width: calc(100vw - 2rem) !important; margin-top: 12px !important; z-index: 99999 !important; 
-    background-color: #ffffff !important; border: 1px solid #dee2e6 !important; border-radius: 12px !important; 
+    position: absolute !important; top: 100% !important; width: 500px !important;
+    max-width: calc(100vw - 2rem) !important; margin-top: 12px !important; z-index: 99999 !important;
+    background-color: #ffffff !important; border: 1px solid #dee2e6 !important; border-radius: 12px !important;
     padding: 1.5rem !important;
-    max-height: 80vh !important; overflow-y: auto !important; overscroll-behavior: contain !important; 
+    max-height: 80vh !important; overflow-y: auto !important; overscroll-behavior: contain !important;
 
     box-sizing: border-box !important;
     overflow-y: auto !important;
@@ -138,8 +138,8 @@ body {
     }
   }
 
-  .pagefind-ui__result-title, .pagefind-ui__result-excerpt, .pagefind-ui__message { 
-    color: #212529 !important; 
+  .pagefind-ui__result-title, .pagefind-ui__result-excerpt, .pagefind-ui__message {
+    color: #212529 !important;
   }
 
   .pagefind-ui__button { margin-top: 1rem !important; }
@@ -155,13 +155,13 @@ body {
   // DESKTOP SEARCH BAR
   @media (min-width: 992px) {
     .td-navbar .custom-pagefind-wrapper:not(.active-modal) {
-      position: absolute !important; 
-      left: 50% !important; 
-      top: 50% !important; 
-      transform: translate(-50%, -50%) !important; 
-      width: 100% !important; 
-      max-width: 500px !important; 
-      margin: 0 !important; 
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 100% !important;
+      max-width: 500px !important;
+      margin: 0 !important;
       z-index: 1060 !important;
     }
     .td-navbar .pagefind-ui__drawer { left: 0 !important; right: 0 !important; width: 100% !important; max-width: 100% !important; }
@@ -187,17 +187,17 @@ body {
 
 
     .custom-pagefind-wrapper.active-modal {
-      top: 15px !important; 
-      width: calc(100vw - 30px) !important; 
+      top: 15px !important;
+      width: calc(100vw - 30px) !important;
 
       .pagefind-ui__drawer {
-        max-height: calc(100dvh - 100px) !important; 
+        max-height: calc(100dvh - 100px) !important;
       }
     }
 
     .td-sidebar__toggle {
-      display: flex !important; align-items: center !important; justify-content: flex-end !important; width: 20% !important; 
-      height: auto !important; background-color: transparent !important; border: none !important; box-shadow: none !important; 
+      display: flex !important; align-items: center !important; justify-content: flex-end !important; width: 20% !important;
+      height: auto !important; background-color: transparent !important; border: none !important; box-shadow: none !important;
       color: inherit !important; font-size: 1rem !important; padding: 0 !important;
       &::after { content: none !important; }
     }
@@ -215,13 +215,13 @@ html[data-bs-theme="dark"], body.td-dark {
   .pagefind-ui__form { --pagefind-ui-text: #ffffff !important; &:focus-within { --pagefind-ui-text: #8ab4f8 !important; } }
 
   .pagefind-ui__search-input {
-    background-color: rgba(0, 0, 0, 0.2) !important; border-color: transparent !important; 
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3) !important; color: #ffffff !important; 
+    background-color: rgba(0, 0, 0, 0.2) !important; border-color: transparent !important;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3) !important; color: #ffffff !important;
 
     &::placeholder { color: #ffffff !important; opacity: 0.9 !important; }
 
     &:focus {
-      background-color: #303134 !important; border-color: #8ab4f8 !important; color: #f8f9fa !important; 
+      background-color: #303134 !important; border-color: #8ab4f8 !important; color: #f8f9fa !important;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(138, 180, 248, 0.15) !important;
       &::placeholder { color: #e8eaed !important; opacity: 1 !important; }
     }

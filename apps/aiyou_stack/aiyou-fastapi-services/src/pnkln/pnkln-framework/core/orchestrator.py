@@ -372,7 +372,10 @@ class PnklnOrchestrator:
         }
 
     def _generate_reasoning_chain(
-        self, agent: Agent, skills: list[Skill], prompt: str,
+        self,
+        agent: Agent,
+        skills: list[Skill],
+        prompt: str,
     ) -> list[str]:
         """Generate reasoning chain using agent's preferred methods.
 
@@ -438,7 +441,11 @@ class PnklnOrchestrator:
         return "\n".join(output_lines)
 
     def _create_audit_hash(
-        self, agent: Agent, skills: list[Skill], prompt: str, output: str,
+        self,
+        agent: Agent,
+        skills: list[Skill],
+        prompt: str,
+        output: str,
     ) -> str:
         """Create audit trail hash (Boy Scout Rule)"""
         audit_data = {

@@ -129,7 +129,8 @@ async def get_item(item_id: str) -> IngestionItemResponse:
 
     if not item:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Item not found: {item_id}",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Item not found: {item_id}",
         )
 
     # Build response

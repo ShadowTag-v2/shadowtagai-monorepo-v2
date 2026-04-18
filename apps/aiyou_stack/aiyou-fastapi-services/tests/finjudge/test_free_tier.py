@@ -14,7 +14,9 @@ class TestAPIKeyManager:
         manager = APIKeyManager(db_url="sqlite:///:memory:")
 
         plaintext_key, api_key = manager.generate_key(
-            email="redacted@shadowtag-v4.local", organization="Test Corp", tier=TierLevel.FREE,
+            email="redacted@shadowtag-v4.local",
+            organization="Test Corp",
+            tier=TierLevel.FREE,
         )
 
         assert plaintext_key.startswith("fj_")
@@ -30,7 +32,8 @@ class TestAPIKeyManager:
         manager = APIKeyManager(db_url="sqlite:///:memory:")
 
         plaintext_key, api_key = manager.generate_key(
-            email="redacted@shadowtag-v4.local", tier=TierLevel.FREE,
+            email="redacted@shadowtag-v4.local",
+            tier=TierLevel.FREE,
         )
 
         is_valid, validated_key, error = manager.validate_key(plaintext_key)
@@ -65,13 +68,16 @@ class TestAPIKeyManager:
         manager = APIKeyManager(db_url="sqlite:///:memory:")
 
         plaintext_key, api_key = manager.generate_key(
-            email="redacted@shadowtag-v4.local", tier=TierLevel.FREE,
+            email="redacted@shadowtag-v4.local",
+            tier=TierLevel.FREE,
         )
 
         # Record 1000 requests (at limit)
         for i in range(1000):
             manager.record_usage(
-                api_key_id=api_key.id, endpoint="/v1/judge", decision_id=f"test_{i}",
+                api_key_id=api_key.id,
+                endpoint="/v1/judge",
+                decision_id=f"test_{i}",
             )
 
         # 1001st request should be rejected
@@ -85,7 +91,8 @@ class TestAPIKeyManager:
         manager = APIKeyManager(db_url="sqlite:///:memory:")
 
         plaintext_key, api_key = manager.generate_key(
-            email="redacted@shadowtag-v4.local", tier=TierLevel.FREE,
+            email="redacted@shadowtag-v4.local",
+            tier=TierLevel.FREE,
         )
 
         # Record some usage
@@ -111,7 +118,8 @@ class TestAPIKeyManager:
         manager = APIKeyManager(db_url="sqlite:///:memory:")
 
         plaintext_key, api_key = manager.generate_key(
-            email="redacted@shadowtag-v4.local", tier=TierLevel.FREE,
+            email="redacted@shadowtag-v4.local",
+            tier=TierLevel.FREE,
         )
 
         # Upgrade to Pro

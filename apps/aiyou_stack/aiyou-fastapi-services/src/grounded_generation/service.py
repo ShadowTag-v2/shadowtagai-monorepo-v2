@@ -74,7 +74,8 @@ class GroundedGenerationService:
         logger.info(f"Generating grounded content for prompt: '{prompt}'")
 
         location_path = self.client.common_location_path(
-            project=self.project_number, location=self.location,
+            project=self.project_number,
+            location=self.location,
         )
 
         request = discoveryengine.GenerateGroundedContentRequest(
@@ -119,7 +120,8 @@ class GroundedGenerationService:
 
         loop = asyncio.get_running_loop()
         response = await loop.run_in_executor(
-            None, partial(self.client.generate_grounded_content, request),
+            None,
+            partial(self.client.generate_grounded_content, request),
         )
 
         # Parse response

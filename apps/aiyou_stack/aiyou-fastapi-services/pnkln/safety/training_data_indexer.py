@@ -380,7 +380,9 @@ class TrainingDataIndexer:
 
             # Safety scan
             scan_result = await self.scan_document(
-                doc.get("content", ""), doc.get("id", doc_hash), doc.get("language", "en"),
+                doc.get("content", ""),
+                doc.get("id", doc_hash),
+                doc.get("language", "en"),
             )
 
             # Prepare for indexing
@@ -560,7 +562,9 @@ async def main():
 
     parser = argparse.ArgumentParser(description="Training Data Safety Indexer")
     parser.add_argument(
-        "command", choices=["scan", "search", "report", "index"], help="Command to run",
+        "command",
+        choices=["scan", "search", "report", "index"],
+        help="Command to run",
     )
     parser.add_argument("--file", "-f", help="File to scan")
     parser.add_argument("--query", "-q", help="Search query")

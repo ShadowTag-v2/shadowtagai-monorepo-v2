@@ -17,9 +17,7 @@ class PromotionRequest(BaseModel):
 @router.post("/promotions/propose")
 def propose(req: PromotionRequest):
     s = load_settings()
-    pid = propose_promotion(
-        s.postgres_dsn, s.repo_id, req.promotion_kind, req.subject, req.payload, req.proposed_by
-    )
+    pid = propose_promotion(s.postgres_dsn, s.repo_id, req.promotion_kind, req.subject, req.payload, req.proposed_by)
     return {"promotion_id": pid, "status": "proposed"}
 
 

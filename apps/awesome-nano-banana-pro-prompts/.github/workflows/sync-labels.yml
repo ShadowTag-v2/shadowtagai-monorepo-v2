@@ -23,22 +23,22 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            
+
             // Read labels.yml file
             const labelsFile = fs.readFileSync('.github/labels.yml', 'utf8');
-            
+
             // Simple YAML parsing for array format
             const lines = labelsFile.split('\n');
             const labels = [];
             let currentLabel = null;
-            
+
             for (const line of lines) {
               const trimmed = line.trim();
               if (trimmed.startsWith('- name:')) {
                 if (currentLabel) labels.push(currentLabel);
                 const nameMatch = trimmed.match(/- name:\s*(.+)/);
                 if (nameMatch) {
-                  currentLabel = { 
+                  currentLabel = {
                     name: nameMatch[1].trim().replace(/^['"]|['"]$/g, ''),
                     color: '',
                     description: ''
@@ -61,21 +61,21 @@ jobs:
               }
             }
             if (currentLabel) labels.push(currentLabel);
-            
+
             // Get existing labels
             const existingLabels = await github.rest.issues.listLabelsForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            
+
             const existingLabelNames = new Set(existingLabels.data.map(label => label.name));
-            
+
             // Sync labels
             for (const label of labels) {
               const labelName = label.name;
               const labelColor = label.color.replace('#', '');
               const labelDescription = label.description || '';
-              
+
               try {
                 if (existingLabelNames.has(labelName)) {
                   // Update existing label
@@ -102,6 +102,5 @@ jobs:
                 console.error(`Error syncing label ${labelName}:`, error.message);
               }
             }
-            
-            console.log('Labels sync completed!');
 
+            console.log('Labels sync completed!');

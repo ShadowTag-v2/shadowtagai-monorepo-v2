@@ -68,4 +68,3 @@ rule:
       - inside:
           stopBy: end
           kind: ERROR
-

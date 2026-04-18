@@ -28,6 +28,7 @@ GOLDEN_KEYWORDS = [
     "POLICY CHECK: Intercepting 'update-hotel'",
 ]
 
+
 # --- Execution Tests ---
 class TestExecution:
     """Test framework execution and output validation."""

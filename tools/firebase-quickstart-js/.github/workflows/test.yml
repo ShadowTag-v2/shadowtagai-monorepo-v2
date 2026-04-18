@@ -30,8 +30,6 @@ jobs:
         run: |
           npm ci
           npm run bootstrap
-      
+
       - name: Run tests
         run: npm test
-
-      

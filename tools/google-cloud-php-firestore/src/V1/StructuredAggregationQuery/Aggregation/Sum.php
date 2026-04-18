@@ -89,4 +89,3 @@ class Sum extends \Google\Protobuf\Internal\Message
     }
 
 }
-

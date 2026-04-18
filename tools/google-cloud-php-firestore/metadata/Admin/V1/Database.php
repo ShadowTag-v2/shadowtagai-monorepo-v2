@@ -26,4 +26,3 @@ class Database
         static::$is_initialized = true;
     }
 }
-

@@ -1,6 +1,6 @@
 /**
  * MCP Tool Definitions
- * 
+ *
  * Defines the tools that GitNexus exposes to external AI agents.
  * All tools support an optional `repo` parameter for multi-repo setups.
  */

@@ -1306,4 +1306,4 @@ Exit Vectors
 Route	Buyer / Market	Est. Value ($ B)	Timing
 Strategic Sale	NVIDIA / Meta / Starlink / Amazon	4–6	2028
 IPO (Verified AI Index)	Public Markets	6–10	2029-30
-Gov / 
+Gov /

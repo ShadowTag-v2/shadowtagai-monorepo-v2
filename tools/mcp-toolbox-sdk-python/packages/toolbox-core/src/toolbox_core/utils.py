@@ -47,9 +47,7 @@ def create_func_docstring(description: str, params: Sequence[ParameterSchema]) -
 def warn_if_http_and_headers(url: str, headers: Mapping[str, Any] | None) -> None:
     """Logs a warning if the url uses HTTP and sensitive headers are present."""
     if url.lower().startswith("http://") and headers:
-        warnings.warn(
-            "This connection is using HTTP. To prevent credential exposure, please ensure all communication is sent over HTTPS."
-        )
+        warnings.warn("This connection is using HTTP. To prevent credential exposure, please ensure all communication is sent over HTTPS.")
 
 
 def identify_auth_requirements(
@@ -112,9 +110,7 @@ def identify_auth_requirements(
     return required_authn_params, required_authz_tokens, used_services
 
 
-def params_to_pydantic_model(
-    tool_name: str, params: Sequence[ParameterSchema]
-) -> type[BaseModel]:
+def params_to_pydantic_model(tool_name: str, params: Sequence[ParameterSchema]) -> type[BaseModel]:
     """Converts the given parameters to a Pydantic BaseModel class."""
     field_definitions = {}
     for field in params:
@@ -184,24 +180,14 @@ def validate_unused_requirements(
         error_messages = []
         if unused_auth:
             if is_toolset:
-                error_messages.append(
-                    f"unused auth tokens could not be applied to any tool: {', '.join(unused_auth)}"
-                )
+                error_messages.append(f"unused auth tokens could not be applied to any tool: {', '.join(unused_auth)}")
             else:
                 error_messages.append(f"unused auth tokens: {', '.join(unused_auth)}")
         if unused_bound:
             if is_toolset:
-                error_messages.append(
-                    f"unused bound parameters could not be applied to any tool: {', '.join(unused_bound)}"
-                )
+                error_messages.append(f"unused bound parameters could not be applied to any tool: {', '.join(unused_bound)}")
             else:
-                error_messages.append(
-                    f"unused bound parameters: {', '.join(unused_bound)}"
-                )
+                error_messages.append(f"unused bound parameters: {', '.join(unused_bound)}")
 
-        final_target_type = (
-            target_type if target_type else ("toolset" if is_toolset else "tool")
-        )
-        raise ValueError(
-            f"Validation failed for {final_target_type} '{name}': {'; '.join(error_messages)}."
-        )
+        final_target_type = target_type if target_type else ("toolset" if is_toolset else "tool")
+        raise ValueError(f"Validation failed for {final_target_type} '{name}': {'; '.join(error_messages)}.")

@@ -15,7 +15,7 @@ jobs:
   sync:
     # Only trigger when 'approved' label is added AND issue has 'prompt-submission' label
     # Works for both open and closed issues
-    # Note: We check both conditions - the added label must be 'approved' 
+    # Note: We check both conditions - the added label must be 'approved'
     # AND the issue must already have 'prompt-submission' label
     if: |
       github.event.label.name == 'approved' &&

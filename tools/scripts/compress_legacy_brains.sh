@@ -23,12 +23,12 @@ cd "$LEGACY_DIR" || exit 1
 for dir in */; do
     # Remove trailing slash
     target="${dir%/}"
-    
+
     if [ -d "$target" ]; then
         echo "Tarballing $target..."
         # Compress using gz and remove the original directory natively
         tar -czf "${target}.tar.gz" "$target"
-        
+
         if [ $? -eq 0 ]; then
             echo "Success! Incinerating raw directory $target..."
             rm -rf "$target"

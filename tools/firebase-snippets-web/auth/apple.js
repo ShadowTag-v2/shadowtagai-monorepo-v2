@@ -112,13 +112,13 @@ function appleReauthenticatePopup() {
       // address or password.
       /** @type {firebase.auth.OAuthCredential} */
       var credential = result.credential;
-  
+
       // The signed-in user info.
       var user = result.user;
        // You can also get the Apple OAuth Access and ID Tokens.
       var accessToken = credential.accessToken;
       var idToken = credential.idToken;
-  
+
       // IdP data available in result.additionalUserInfo.profile.
         // ...
     })
@@ -130,7 +130,7 @@ function appleReauthenticatePopup() {
       var email = error.email;
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
-  
+
       // ...
     });
   // [END auth_apple_reauthenticate_popup]
@@ -149,7 +149,7 @@ function appleLinkFacebook() {
 
         // Additional Facebook OAuth access token can also be retrieved.
         // result.credential.accessToken
-  
+
         // The user can now sign in to the same account
         // with either Apple or Facebook.
       })
@@ -175,7 +175,7 @@ function appleNonceNode() {
     }
     return nonce.slice(0, length);
   };
-  
+
   const unhashedNonce = generateNonce(10);
 
   // SHA256-hashed nonce in hex

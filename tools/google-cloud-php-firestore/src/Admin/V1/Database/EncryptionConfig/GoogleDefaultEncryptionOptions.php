@@ -30,4 +30,3 @@ class GoogleDefaultEncryptionOptions extends \Google\Protobuf\Internal\Message
     }
 
 }
-

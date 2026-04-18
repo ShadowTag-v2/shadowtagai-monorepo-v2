@@ -12,13 +12,13 @@ spec:
         spec:
           serviceAccountName: default # Uses the Compute SA (God Mode)
           restartPolicy: OnFailure
-          
+
           # THE SHARED BRAIN
           volumes:
             - name: shared-workspace
               emptyDir: {} # Ephemeral handoff space
             - name: infinite-drive
-              nfs: 
+              nfs:
                 server: 10.x.x.x # REPLACE WITH TERRAFORM OUTPUT IP
                 path: /monorepo
 

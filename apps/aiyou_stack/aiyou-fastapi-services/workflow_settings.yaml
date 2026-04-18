@@ -5,6 +5,6 @@ dataformCoreVersion: "3.0.0"
 
 # THE ENTERPRISE FLAG
 # This enforces that the Service Account MUST have explicit permission
-# to act as the Dataform agent. 
+# to act as the Dataform agent.
 # Reference: https://cloud.google.com/dataform/docs/strict-act-as-mode
-enforceStrictActAs: true 
+enforceStrictActAs: true

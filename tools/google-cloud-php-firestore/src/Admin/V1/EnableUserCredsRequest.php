@@ -84,4 +84,3 @@ class EnableUserCredsRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

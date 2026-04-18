@@ -154,6 +154,8 @@ This doctrine is NOT aspirational. It is enforced by:
 | **Invariant #90** | 10 Anti-Vibe-Code patterns |
 | **Invariant #93** | This doctrine as a mandatory reference |
 | **Pre-Action Memory Gate** | Requires LOCKED state before any repo-wide action |
+| **NotebookLM Protocol** (`rule-49`) | Session knowledge not archived to Master Brain; DevKnowledge MCP not consulted before planning |
+| **ATP 5-19 Process Skeleton** | Risk decisions not scored through the 7-step ATP 5-19 framework (Judge #6's stable substrate) |
 
 ---
 

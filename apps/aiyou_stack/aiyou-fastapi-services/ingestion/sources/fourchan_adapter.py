@@ -66,7 +66,10 @@ class FourChanAdapter(SourceAdapter):
             return resp.json().get("posts", [])
         except Exception as e:
             logger.warning(
-                "fourchan_thread_fetch_failed", board=board, thread=thread_no, error=str(e),
+                "fourchan_thread_fetch_failed",
+                board=board,
+                thread=thread_no,
+                error=str(e),
             )
             return []
 

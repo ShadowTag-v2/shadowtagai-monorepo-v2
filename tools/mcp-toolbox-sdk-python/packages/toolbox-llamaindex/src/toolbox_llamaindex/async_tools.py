@@ -55,9 +55,7 @@ class AsyncToolboxTool(AsyncBaseTool):
         return ToolMetadata(
             name=self.__core_tool.__name__,
             description=self.__core_tool.__doc__,
-            fn_schema=params_to_pydantic_model(
-                self.__core_tool._name, self.__core_tool._params
-            ),
+            fn_schema=params_to_pydantic_model(self.__core_tool._name, self.__core_tool._params),
         )
 
     def call(self, *args: Any, **kwargs: Any) -> ToolOutput:  # type: ignore
@@ -82,9 +80,7 @@ class AsyncToolboxTool(AsyncBaseTool):
             raw_output=output_content,
         )
 
-    def add_auth_token_getters(
-        self, auth_token_getters: dict[str, Callable[[], str]]
-    ) -> "AsyncToolboxTool":
+    def add_auth_token_getters(self, auth_token_getters: dict[str, Callable[[], str]]) -> "AsyncToolboxTool":
         """
         Registers functions to retrieve ID tokens for the corresponding
         authentication sources.
@@ -105,9 +101,7 @@ class AsyncToolboxTool(AsyncBaseTool):
         new_core_tool = self.__core_tool.add_auth_token_getters(auth_token_getters)
         return AsyncToolboxTool(core_tool=new_core_tool)
 
-    def add_auth_token_getter(
-        self, auth_source: str, get_id_token: Callable[[], str]
-    ) -> "AsyncToolboxTool":
+    def add_auth_token_getter(self, auth_source: str, get_id_token: Callable[[], str]) -> "AsyncToolboxTool":
         """
         Registers a function to retrieve an ID token for a given authentication
         source.
@@ -127,15 +121,11 @@ class AsyncToolboxTool(AsyncBaseTool):
         return self.add_auth_token_getters({auth_source: get_id_token})
 
     @deprecated("Please use `add_auth_token_getters` instead.")
-    def add_auth_tokens(
-        self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True
-    ) -> "AsyncToolboxTool":
+    def add_auth_tokens(self, auth_tokens: dict[str, Callable[[], str]], strict: bool = True) -> "AsyncToolboxTool":
         return self.add_auth_token_getters(auth_tokens)
 
     @deprecated("Please use `add_auth_token_getter` instead.")
-    def add_auth_token(
-        self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True
-    ) -> "AsyncToolboxTool":
+    def add_auth_token(self, auth_source: str, get_id_token: Callable[[], str], strict: bool = True) -> "AsyncToolboxTool":
         return self.add_auth_token_getter(auth_source, get_id_token)
 
     def bind_params(

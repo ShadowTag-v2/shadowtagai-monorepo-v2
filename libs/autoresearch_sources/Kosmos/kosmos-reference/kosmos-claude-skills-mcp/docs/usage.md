@@ -429,4 +429,3 @@ The server uses two-level caching to minimize GitHub API usage and speed up star
 - Model is cached after first download
 - Use subpath filtering to load fewer skills
 - Use local directories for faster access
-

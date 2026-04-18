@@ -1,5 +1,4 @@
-"""FastAPI routes for ingestion layer management and monitoring.
-"""
+"""FastAPI routes for ingestion layer management and monitoring."""
 
 from typing import Optional
 
@@ -34,7 +33,8 @@ def get_ingestion_service() -> IngestionService:
 
 @router.post("/sources", response_model=DataSource)
 async def create_source(
-    request: CreateDataSourceRequest, service: IngestionService = Depends(get_ingestion_service),
+    request: CreateDataSourceRequest,
+    service: IngestionService = Depends(get_ingestion_service),
 ):
     """Create a new data source."""
     try:
@@ -86,12 +86,15 @@ async def delete_source(source_id: str, service: IngestionService = Depends(get_
 
 @router.post("/jobs/start", response_model=IngestionJobStatusResponse)
 async def start_job(
-    request: StartIngestionJobRequest, service: IngestionService = Depends(get_ingestion_service),
+    request: StartIngestionJobRequest,
+    service: IngestionService = Depends(get_ingestion_service),
 ):
     """Start a new ingestion job."""
     try:
         job = await service.start_job(
-            job_name=request.job_name, source_ids=request.source_ids, parameters=request.parameters,
+            job_name=request.job_name,
+            source_ids=request.source_ids,
+            parameters=request.parameters,
         )
         return IngestionJobStatusResponse(job=job, message=f"Job {job.job_id} started successfully")
     except Exception as e:
@@ -129,7 +132,8 @@ async def get_latest_metrics(service: IngestionService = Depends(get_ingestion_s
 
 @router.get("/metrics/summary")
 async def get_metrics_summary(
-    days: int = Query(7, ge=1, le=90), service: IngestionService = Depends(get_ingestion_service),
+    days: int = Query(7, ge=1, le=90),
+    service: IngestionService = Depends(get_ingestion_service),
 ):
     """Get metrics summary for the past N days."""
     return service.get_metrics_summary(days=days)
@@ -159,7 +163,8 @@ async def get_tier_metrics(service: IngestionService = Depends(get_ingestion_ser
 
 @router.get("/compliance/check/{source_id}")
 async def check_source_compliance(
-    source_id: str, service: IngestionService = Depends(get_ingestion_service),
+    source_id: str,
+    service: IngestionService = Depends(get_ingestion_service),
 ):
     """Perform ethical compliance check for a source."""
     try:
@@ -180,7 +185,8 @@ async def get_compliance_summary(service: IngestionService = Depends(get_ingesti
 
 @router.get("/briefings/effectiveness")
 async def get_briefing_effectiveness(
-    days: int = Query(7, ge=1, le=90), service: IngestionService = Depends(get_ingestion_service),
+    days: int = Query(7, ge=1, le=90),
+    service: IngestionService = Depends(get_ingestion_service),
 ):
     """Get AM briefing effectiveness metrics."""
     return service.get_briefing_effectiveness(days=days)

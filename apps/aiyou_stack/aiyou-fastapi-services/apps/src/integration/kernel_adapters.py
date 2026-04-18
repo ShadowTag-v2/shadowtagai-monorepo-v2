@@ -295,7 +295,10 @@ class WealthAdapter(KernelAdapter):
         try:
             accelerator = self.WealthAccelerator()
             result = accelerator.analyze_business(
-                revenue_monthly=revenue_monthly, cac=cac, ltv=ltv, churn_rate=churn_rate,
+                revenue_monthly=revenue_monthly,
+                cac=cac,
+                ltv=ltv,
+                churn_rate=churn_rate,
             )
             return result
         except Exception as e:

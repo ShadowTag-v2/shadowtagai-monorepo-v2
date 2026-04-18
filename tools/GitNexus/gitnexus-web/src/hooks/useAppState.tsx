@@ -1218,4 +1218,3 @@ export const useAppState = (): AppState => {
   }
   return context;
 };
-

@@ -3,8 +3,7 @@ from typing import Any
 
 
 class ExecutorAgent:
-    """Generates ATP_519_scan detection patterns (Rules) to catch violations.
-    """
+    """Generates ATP_519_scan detection patterns (Rules) to catch violations."""
 
     def __init__(self, model_client=None):
         self.model_client = model_client

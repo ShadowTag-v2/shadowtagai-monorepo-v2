@@ -162,7 +162,10 @@ class LiveSwarm:
             json.dump(data, f, indent=2)
 
     def spawn_agent(
-        self, parent_id: str, name: str, specialization: str = "general",
+        self,
+        parent_id: str,
+        name: str,
+        specialization: str = "general",
     ) -> SwarmAgent | None:
         """Spawn a new child agent from a parent.
 
@@ -196,7 +199,9 @@ class LiveSwarm:
         # If grandparent exists, add cascading share
         if parent.parent_id:
             grandparent_share = DNAShare(
-                parent_id=parent.parent_id, child_id=child_id, share_bps=self.GRANDCHILD_SHARE_BPS,
+                parent_id=parent.parent_id,
+                child_id=child_id,
+                share_bps=self.GRANDCHILD_SHARE_BPS,
             )
             child.dna_shares.append(grandparent_share)
 
@@ -214,7 +219,10 @@ class LiveSwarm:
         return child
 
     def record_revenue(
-        self, agent_id: str, amount_usd: float, simulated: bool = False,
+        self,
+        agent_id: str,
+        amount_usd: float,
+        simulated: bool = False,
     ) -> dict[str, float]:
         """Record revenue and distribute DNA shares.
 

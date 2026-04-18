@@ -331,7 +331,7 @@
     <differenceType>7009</differenceType>
     <method>void internalStream(*)</method>
   </difference>
-  
+
   <!-- Relocate constants in TraceUtil -->
   <difference>
     <differenceType>6011</differenceType>

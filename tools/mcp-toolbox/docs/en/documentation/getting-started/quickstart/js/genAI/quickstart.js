@@ -35,18 +35,18 @@ function mapZodTypeToOpenAPIType(zodTypeName) {
 }
 
 export async function main() {
-   
-    const toolboxClient = new ToolboxClient(TOOLBOX_URL); 
+
+    const toolboxClient = new ToolboxClient(TOOLBOX_URL);
     const toolboxTools = await toolboxClient.loadToolset("my-toolset");
-    
+
     const geminiTools = [{
         functionDeclarations: toolboxTools.map(tool => {
-            
+
             const schema = tool.getParamSchema();
             const properties = {};
             const required = [];
 
-         
+
             for (const [key, param] of Object.entries(schema.shape)) {
                 properties[key] = {
                         type: mapZodTypeToOpenAPIType(param.constructor.name),
@@ -54,7 +54,7 @@ export async function main() {
                     };
                 required.push(key)
                 }
-            
+
             return {
                 name: tool.getName(),
                 description: tool.getDescription(),
@@ -65,7 +65,7 @@ export async function main() {
 
 
     const genAI = new GoogleGenAI({ apiKey: GOOGLE_API_KEY });
-    
+
     const chat = genAI.chats.create({
         model: "gemini-2.5-flash",
         config: {
@@ -75,12 +75,12 @@ export async function main() {
     });
 
     for (const query of queries) {
-        
+
         let currentResult = await chat.sendMessage({ message: query });
-        
+
         let finalResponseGiven = false
         while (!finalResponseGiven) {
-            
+
             const response = currentResult;
             const functionCalls = response.functionCalls || [];
 
@@ -92,7 +92,7 @@ export async function main() {
                 for (const call of functionCalls) {
                     const toolName = call.name
                     const toolToExecute = toolboxTools.find(t => t.getName() === toolName);
-                    
+
                     if (toolToExecute) {
                         try {
                             const functionResult = await toolToExecute(call.args);
@@ -107,11 +107,11 @@ export async function main() {
                         }
                     }
                 }
-                
+
                 currentResult = await chat.sendMessage({ message: toolResponses });
             }
         }
-        
+
     }
 }
 

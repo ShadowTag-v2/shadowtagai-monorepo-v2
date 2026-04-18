@@ -189,7 +189,9 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         return total_loss
 
     def _compute_gradient_penalty(
-        self, logits: "torch.Tensor", probs: "torch.Tensor",
+        self,
+        logits: "torch.Tensor",
+        probs: "torch.Tensor",
     ) -> "torch.Tensor":
         """Compute gradient penalty for regularization
 
@@ -221,7 +223,8 @@ class GAINRLLoss(nn.Module if TORCH_AVAILABLE else object):
         # Proportional control
         adjustment = 0.01 * entropy_error
         self.temperature = max(
-            self.min_temperature, min(self.max_temperature, self.temperature + adjustment),
+            self.min_temperature,
+            min(self.max_temperature, self.temperature + adjustment),
         )
 
     def get_stats(self) -> dict:
@@ -619,12 +622,14 @@ class CriticalForkScheduler:
         if current_ratio < self.target_active_ratio - 0.05:
             # Too few critical forks, lower threshold
             new_threshold = max(
-                self.min_threshold, self.loss_fn.entropy_threshold - self.adjustment_rate,
+                self.min_threshold,
+                self.loss_fn.entropy_threshold - self.adjustment_rate,
             )
         elif current_ratio > self.target_active_ratio + 0.05:
             # Too many critical forks, raise threshold
             new_threshold = min(
-                self.max_threshold, self.loss_fn.entropy_threshold + self.adjustment_rate,
+                self.max_threshold,
+                self.loss_fn.entropy_threshold + self.adjustment_rate,
             )
         else:
             return  # No adjustment needed

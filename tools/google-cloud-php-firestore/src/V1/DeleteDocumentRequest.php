@@ -131,4 +131,3 @@ class DeleteDocumentRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

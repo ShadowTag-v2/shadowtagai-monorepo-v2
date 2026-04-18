@@ -30,21 +30,21 @@ class ShadowTagEngine:
         try:
             with open(filepath, 'r') as f:
                 content = f.read()
-            
+
             # SKIP IF ALREADY TAGGED
             if f"st_{self.signature}" in content:
                 return False
 
             # L1 TAG: COMMENT INJECTION (Visible)
             header = f"# ▛///▞ SHADOWTAG ID: {self.signature} | DO NOT REMOVE\n"
-            
+
             # L0 TAG: WHITESPACE STEGANOGRAPHY (Invisible)
             # We encode the signature into trailing spaces/tabs on the last line
             binary = ''.join(format(ord(c), '08b') for c in self.signature)
             stego = binary.replace('0', ' ').replace('1', '\t')
-            
+
             new_content = header + content + f"\n# {stego}"
-            
+
             with open(filepath, 'w') as f:
                 f.write(new_content)
             return True
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python3 shadowtag_injector.py <file>")
         sys.exit(1)
-        
+
     injector = ShadowTagEngine()
     target_file = sys.argv[1]
     if injector.inject(target_file):
@@ -77,11 +77,11 @@ echo "def calculate_revenue(users): return users * 10" > "$INGEST_DIR/revenue_co
 shopt -s nullglob
 for file in "$INGEST_DIR"/*.py; do
     echo ">> PROCESSING: $(basename "$file")"
-    
+
     # STEP A: ENTROPY CHECK (Simulated)
     # If file size > 1000 bytes, we assume high complexity
     FILE_SIZE=$(wc -c < "$file")
-    
+
     if [ $FILE_SIZE -gt 1000 ]; then
         echo "⚠️ HIGH ENTROPY DETECTED. ROUTING TO JUDGE #6..."
         # (Here we would trigger the Gemini Pro API call)
@@ -92,15 +92,15 @@ for file in "$INGEST_DIR"/*.py; do
 
     # STEP B: SHADOWTAG APPLICATION
     python3 "$CORE_DIR/shadowtag_injector.py" "$file"
-    
+
     # STEP C: MOVE TO SAFE HARBOR (Production Ready)
     mv "$file" "$SAFE_DIR/"
-    
+
     # STEP D: GENERATE RoT TEMPLATE (Memory)
     # We turn this code into a template for future agents
     BASENAME=$(basename "$file" .py)
     echo "{\"type\": \"code_snippet\", \"source\": \"$BASENAME\", \"trace\": \"verified_revenue_logic\"}" > "$ROT_DIR/${BASENAME}_template.json"
-    
+
     echo "💾 INDEXED TO RoT STORE."
 done
 

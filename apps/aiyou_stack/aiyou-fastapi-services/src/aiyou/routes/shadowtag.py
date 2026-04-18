@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 # This URL will be updated once the Cloud Run deployment finishes
 # For now, we use a placeholder or env var
 VERIFIER_SERVICE_URL = os.getenv(
-    "SHADOWTAG_VERIFIER_URL", "https://shadowtag-verifier-placeholder-uc.a.run.app/verify",
+    "SHADOWTAG_VERIFIER_URL",
+    "https://shadowtag-verifier-placeholder-uc.a.run.app/verify",
 )
 
 

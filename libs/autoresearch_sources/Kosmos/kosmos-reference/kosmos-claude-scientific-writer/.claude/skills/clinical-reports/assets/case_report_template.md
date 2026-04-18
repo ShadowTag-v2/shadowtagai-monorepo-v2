@@ -10,9 +10,9 @@ Example: Unusual Presentation of Acute Appendicitis in an Elderly Patient: A Cas
 
 [Author names, affiliations, ORCID IDs]
 
-**Corresponding Author:**  
-[Name]  
-[Email]  
+**Corresponding Author:**
+[Name]
+[Email]
 [Institution]
 
 ## Keywords
@@ -348,5 +348,3 @@ Verify all HIPAA identifiers removed:
 - Follow journal's reference style
 - Include institutional review/ethics exemption if applicable
 - Consider attaching CARE checklist when submitting
-
-

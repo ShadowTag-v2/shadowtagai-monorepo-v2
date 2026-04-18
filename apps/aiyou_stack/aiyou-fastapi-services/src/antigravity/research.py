@@ -151,7 +151,10 @@ Return ONLY valid JSON."""
         self.api_key = api_key or os.getenv("GROK_API_KEY")
 
     async def research(
-        self, atom: Atom, handoff: ReasoningHandoff, perplexity_findings: dict[str, Any],
+        self,
+        atom: Atom,
+        handoff: ReasoningHandoff,
+        perplexity_findings: dict[str, Any],
     ) -> dict[str, Any]:
         """Research using SuperGrok (X + Grokipedia)"""
         if not self.api_key:
@@ -187,7 +190,10 @@ Return ONLY valid JSON."""
         return self._fallback_research(atom, handoff, perplexity_findings)
 
     def _fallback_research(
-        self, atom: Atom, handoff: ReasoningHandoff, perplexity_findings: dict[str, Any],
+        self,
+        atom: Atom,
+        handoff: ReasoningHandoff,
+        perplexity_findings: dict[str, Any],
     ) -> dict[str, Any]:
         return {
             "x_findings": [],

@@ -100,4 +100,3 @@ class Progress extends \Google\Protobuf\Internal\Message
     }
 
 }
-

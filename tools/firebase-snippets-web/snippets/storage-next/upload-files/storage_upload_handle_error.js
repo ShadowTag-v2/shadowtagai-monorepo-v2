@@ -33,7 +33,7 @@ uploadTask.on('state_changed',
         console.log('Upload is running');
         break;
     }
-  }, 
+  },
   (error) => {
     // A full list of error codes is available at
     // https://firebase.google.com/docs/storage/web/handle-errors
@@ -51,7 +51,7 @@ uploadTask.on('state_changed',
         // Unknown error occurred, inspect error.serverResponse
         break;
     }
-  }, 
+  },
   () => {
     // Upload completed successfully, now we can get the download URL
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

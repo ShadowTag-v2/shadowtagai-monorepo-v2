@@ -54,7 +54,8 @@ class MagicLinkRequest(BaseModel):
     attorney_id: str = Field(..., description="Attorney's unique ID")
     client_email: str = Field(..., description="Client's email for Magic Link delivery")
     session_rate_cents: int = Field(
-        default=1500, description="Per-query rate in cents ($15 default)",
+        default=1500,
+        description="Per-query rate in cents ($15 default)",
     )
     session_ttl_seconds: int = Field(default=1800, description="Session timeout (30 min default)")
 
@@ -64,7 +65,8 @@ class ClientQuery(BaseModel):
 
     query: str = Field(..., max_length=4000, description="Client's natural language query")
     query_type: str = Field(
-        default="ai_chat", description="ai_chat | web_search | translation | osint",
+        default="ai_chat",
+        description="ai_chat | web_search | translation | osint",
     )
 
 
@@ -144,7 +146,8 @@ class SEUProxyEngine:
             raise HTTPException(status_code=401, detail="S.E.U. REJECTED: Token expired or invalid")
         if session["bound_ip"] != client_ip:
             raise HTTPException(
-                status_code=403, detail="S.E.U. REJECTED: IP mismatch — possible exfiltration",
+                status_code=403,
+                detail="S.E.U. REJECTED: IP mismatch — possible exfiltration",
             )
         return session
 

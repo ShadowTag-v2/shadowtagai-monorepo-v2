@@ -1,10 +1,10 @@
 /**
  * LadybugDB Schema Definitions
- * 
+ *
  * Hybrid Schema:
  * - Separate node tables for each code element type (File, Function, Class, etc.)
  * - Single CodeRelation table with 'type' property for all relationships
- * 
+ *
  * This allows LLMs to write natural Cypher queries like:
  *   MATCH (f:Function)-[r:CodeRelation {type: 'CALLS'}]->(g:Function) RETURN f, g
  */

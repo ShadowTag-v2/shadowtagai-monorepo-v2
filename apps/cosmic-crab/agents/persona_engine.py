@@ -1,5 +1,4 @@
-"""Persona Engine — Manages and injects Antigravity personas from .antigravity/prompts/
-"""
+"""Persona Engine — Manages and injects Antigravity personas from .antigravity/prompts/"""
 
 import logging
 from pathlib import Path

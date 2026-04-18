@@ -32,16 +32,16 @@ import { Restaurant } from "types/restaurant";
  * The class is marked with the @Injectable decorator, which allows it to be
  * injected into the Homepage component via the `inject()` function. The
  * benefit of injecting this service class, as opposed to calling the Firestore
- * methods from directly within the Homepage component, is that injection 
+ * methods from directly within the Homepage component, is that injection
  * allows for the component's UI logic to be decoupled from its datafetching
  * logic. This decoupling enables the HomepageComponent to be unit tested with
- * a mock implementation of this datafetching class that simply returns 
- * predefined data without needing to establish a connection to a running 
- * instance of Firestore (as showcased by the MockHomepageFirestore implemented 
- * in `homepage.component.spec.ts`). Such decoupling, and the ability to be 
- * unit tested, would not be possible if the HomepageComponent's Firestore 
+ * a mock implementation of this datafetching class that simply returns
+ * predefined data without needing to establish a connection to a running
+ * instance of Firestore (as showcased by the MockHomepageFirestore implemented
+ * in `homepage.component.spec.ts`). Such decoupling, and the ability to be
+ * unit tested, would not be possible if the HomepageComponent's Firestore
  * methods had been written directly into the`homepage.component.ts` file.
- * 
+ *
  * For more information about dependency injection and unit testing in Angular
  * visit the Angular docs: https://angular.io/guide/dependency-injection
  */

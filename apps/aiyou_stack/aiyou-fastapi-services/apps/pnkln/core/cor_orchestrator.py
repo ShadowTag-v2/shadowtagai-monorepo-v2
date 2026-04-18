@@ -84,7 +84,10 @@ class CorOrchestrator:
         logger.info(f"Registered executor: {name}")
 
     async def execute_pipeline(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
+        self,
+        pipeline_name: str,
+        context: ExecutionContext,
+        input_data: Any,
     ) -> Any:
         """Execute registered pipeline by name.
 
@@ -165,7 +168,11 @@ class CorOrchestrator:
         self.tool_registry.register_tool(name, description, func)
 
     async def execute_with_tool_selection(
-        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3,
+        self,
+        context: ExecutionContext,
+        query: str,
+        input_data: Any,
+        top_k: int = 3,
     ) -> Any:
         """Execute using dynamically selected tools.
 
@@ -192,7 +199,9 @@ class CorOrchestrator:
         # Execute best tool
         best_tool_name, score = tools[0]
         result, latency_ms = await self.tool_registry.execute_tool(
-            best_tool_name, context, input_data,
+            best_tool_name,
+            context,
+            input_data,
         )
 
         # Store in memory
@@ -202,7 +211,10 @@ class CorOrchestrator:
         return result
 
     async def execute_pipeline_with_memory(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
+        self,
+        pipeline_name: str,
+        context: ExecutionContext,
+        input_data: Any,
     ) -> Any:
         """Execute pipeline and store result in memory.
 
@@ -295,7 +307,9 @@ async def example_usage():
     # Execute
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
     result = await orchestrator.execute_pipeline(
-        "judge_six", context, {"user_query": "example request"},
+        "judge_six",
+        context,
+        {"user_query": "example request"},
     )
 
     print(f"Result: {result}")

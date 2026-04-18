@@ -1,5 +1,4 @@
-"""Core components of the pinkln Agent Architecture System.
-"""
+"""Core components of the pinkln Agent Architecture System."""
 
 from .base_agent import BaseAgent
 from .base_skill import BaseSkill

@@ -1,5 +1,4 @@
-"""API routes for file search service
-"""
+"""API routes for file search service"""
 
 import structlog
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -103,7 +102,8 @@ async def create_corpus(
     try:
         vertical_config = get_vertical_config(create_req.vertical)
         corpus_name = await corpus_manager.create_corpus(
-            vertical_config, force_recreate=create_req.force_recreate,
+            vertical_config,
+            force_recreate=create_req.force_recreate,
         )
 
         return {
