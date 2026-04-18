@@ -68,11 +68,9 @@ repo_roots:
     status: canonical
     path: apps/counselconduit
     notes: >-
-      Production CounselConduit v3.1.0 on Cloud Run. 16 API modules:
-      oracle_studio, model_router, vent_mode, kovel_attestation,
-      magic_link, gdpr, byok, stripe_handler, stripe_connect,
-      cloud_tasks_gdpr, email_service, discord_alerts, firestore_client,
-      judge6, auth, prompt_guard. OpenAPI docs at /docs.
+      Production CounselConduit v3.1.0 on Cloud Run. 33 API modules.
+      Phase 1 + 2 LIVE. OpenAPI docs at /docs.
+      Secrets: GCP Secret Manager (prod), .env (local dev only).
 
 control_plane:
   canonical_mcp_config: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json
@@ -109,8 +107,8 @@ highest_value_opportunities:
   - KovelAI (formerly CounselConduit) is the Google Cloud billing gateway product. uphillsnowball is the independent local R&D lab. They remain completely detached.
 
 hardened_state:
-  version: "9.4"
-  timestamp: "2026-04-18T19:23:00Z"
+  version: "9.5"
+  timestamp: "2026-04-18T21:16:00Z"
   ci_python: "3.13"
   venv_primary: "3.14.3"
   venv_secondary: "3.14.3"
@@ -124,9 +122,9 @@ hardened_state:
   lighthouse_a11y: "93+"
   lighthouse_bp: "100"
   lighthouse_seo: "100"
-  ruff_violations_total: 1170
-  ruff_f401: 30
+  ruff_violations_counselconduit: 0
   ruff_version: "0.11.8"
+  vulture_false_positives: 2
   nested_git_remaining: 0
   firestore_databases: 2
   firestore_collections: ["system_idempotency_keys", "beta_accounts", "stripe_events"]
@@ -137,8 +135,11 @@ hardened_state:
   scheduler_jobs: 2
   dashboards: 2
   api_modules: 33
-  risk_register_count: 39
+  risk_register_count: 40
   cloud_armor_policy: "apps/counselconduit/cloud_armor_policy.yaml"
+  fleet_vanguard_version: "11.0"
+  secrets_doctrine: "secrets_manager_doctrine"
+  model_refs_purged: true
 
 infra:
   monitoring:
