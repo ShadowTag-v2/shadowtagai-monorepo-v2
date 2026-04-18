@@ -53,6 +53,18 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 | Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00010-s74 (100% traffic) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
+### Wave 9.3 Deliverables (2026-04-18)
+- **OG Social Images**: Generated + deployed for KovelAI and ShadowTagAI (visible on Facebook/LinkedIn)
+- **CSP Hardening**: Removed `unsafe-eval` + `cdn.tailwindcss.com` from both sites
+- **Lighthouse BP 100**: Fixed favicon 404s → console errors eliminated
+- **New Modules**: `silent_detector.py`, `blast_radius.py`, `null_model_validator.py`, `ucmj_discipline.py`
+- **Dead Code**: `discord_alerts.py` deleted (replaced by `workspace_alerts.py`)
+- **Dependabot**: `.github/dependabot.yml` — weekly grouped updates
+- **CHANGELOG.md**: Complete Wave 4→9 history
+- **Tests**: 68/68 passed (0 skipped)
+- **API Modules**: 33 total
+- **GEMINI.md**: v9.0
+- **Git Repack**: 46GB → 33GB
 
 ### Wave 9 Deliverables (2026-04-18)
 - **IaC Apply**: 13 resources created (IAM bindings + log metric + alert policy)
