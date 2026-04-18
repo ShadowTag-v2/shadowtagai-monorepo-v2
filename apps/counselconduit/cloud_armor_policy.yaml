@@ -1,0 +1,93 @@
+# apps/counselconduit/cloud_armor_policy.yaml
+# Cloud Armor WAF rules for Cloud Run endpoint
+# Deploy: gcloud compute security-policies import counselconduit-waf \
+#          --file-name=cloud_armor_policy.yaml --project=shadowtag-omega-v4
+#
+# Architecture: Cloud Armor → Cloud Run (counselconduit service)
+# Rate limits are ADDITIVE with application-level rate limiting.
+
+type: CLOUD_ARMOR
+name: counselconduit-waf
+description: "CounselConduit WAF — Cor.30 compliant"
+
+rules:
+  # Rule 1: Block known botnets and scanners
+  - action: deny(403)
+    priority: 1000
+    description: "Block known bad bots"
+    match:
+      expr:
+        expression: >-
+          evaluatePreconfiguredExpr('sqli-v33-stable') ||
+          evaluatePreconfiguredExpr('xss-v33-stable') ||
+          evaluatePreconfiguredExpr('rce-v33-stable') ||
+          evaluatePreconfiguredExpr('scannerdetection-v33-stable')
+
+  # Rule 2: Rate limit — 60 requests/minute per IP
+  - action: rate_based_ban
+    priority: 2000
+    description: "Rate limit: 60 req/min per IP"
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges: ["*"]
+    rateLimitOptions:
+      conformAction: allow
+      exceedAction: deny(429)
+      rateLimitThreshold:
+        count: 60
+        intervalSec: 60
+      banDurationSec: 300
+
+  # Rule 3: Rate limit /enclave endpoints — 10 req/min per IP
+  - action: rate_based_ban
+    priority: 2100
+    description: "Oracle Studio rate limit: 10 req/min"
+    match:
+      expr:
+        expression: "request.path.startsWith('/enclave/')"
+    rateLimitOptions:
+      conformAction: allow
+      exceedAction: deny(429)
+      rateLimitThreshold:
+        count: 10
+        intervalSec: 60
+      banDurationSec: 600
+
+  # Rule 4: Block non-US traffic to /webhooks (Stripe only sends from US)
+  - action: deny(403)
+    priority: 3000
+    description: "Geo-restrict webhooks to US"
+    match:
+      expr:
+        expression: >-
+          request.path.startsWith('/webhooks/') &&
+          origin.region_code != 'US'
+
+  # Rule 5: Require minimum TLS 1.2
+  - action: deny(403)
+    priority: 4000
+    description: "Reject TLS < 1.2"
+    match:
+      expr:
+        expression: >-
+          request.headers['x-tls-version'] != '' &&
+          request.headers['x-tls-version'] < 'TLSv1.2'
+
+  # Rule 6: Block requests with suspiciously large payloads (>1MB)
+  - action: deny(413)
+    priority: 5000
+    description: "Block oversized requests"
+    match:
+      expr:
+        expression: >-
+          int(request.headers['content-length']) > 1048576
+
+  # Default rule: Allow
+  - action: allow
+    priority: 2147483647
+    description: "Default allow"
+    match:
+      versionedExpr: SRC_IPS_V1
+      config:
+        srcIpRanges: ["*"]

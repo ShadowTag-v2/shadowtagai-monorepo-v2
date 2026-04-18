@@ -65,9 +65,14 @@ repo_roots:
     notes: Institutional memory archive.
 
   - name: counselconduit
-    status: folded-in
+    status: canonical
     path: apps/counselconduit
-    notes: Operational backend for KovelAI. Retained as development alias.
+    notes: >-
+      Production CounselConduit v3.1.0 on Cloud Run. 16 API modules:
+      oracle_studio, model_router, vent_mode, kovel_attestation,
+      magic_link, gdpr, byok, stripe_handler, stripe_connect,
+      cloud_tasks_gdpr, email_service, discord_alerts, firestore_client,
+      judge6, auth, prompt_guard. OpenAPI docs at /docs.
 
 control_plane:
   canonical_mcp_config: /Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/antigravity-mcp-config.json
@@ -105,14 +110,18 @@ highest_value_opportunities:
 
 hardened_state:
   version: "8.6"
-  timestamp: "2026-04-18T02:20:00Z"
+  timestamp: "2026-04-18T03:30:00Z"
   ci_python: "3.13"
-  venv_primary: "3.13.7"
+  venv_primary: "3.14.3"
   venv_secondary: "3.14.3"
   dotnet_sdk: "11.0.100-preview.2.26159.112"
+  dotnet_target_framework: "net11.0"
+  counselconduit_version: "3.1.0"
   structural_tests: "55/55"
+  e2e_tests: "tests/e2e/test_counselconduit_e2e.py"
   lighthouse_a11y: "100/100 (both sites)"
   ruff_violations_remaining: 628
+  nested_git_remaining: 0
   firestore_databases: 2
   hosting_targets: 3
   preview_channels: 2
@@ -120,6 +129,7 @@ hardened_state:
   alert_policies: 5
   scheduler_jobs: 2
   dashboards: 2
+  cloud_armor_policy: "apps/counselconduit/cloud_armor_policy.yaml"
 
 infra:
   monitoring:
