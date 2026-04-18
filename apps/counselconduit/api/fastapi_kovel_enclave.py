@@ -64,10 +64,22 @@ except ImportError:
 # Middleware + Error handlers (same path in both contexts)
 try:
     from apps.counselconduit.api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware
+    from apps.counselconduit.api.middleware.token_budget import TokenBudgetMiddleware
+    from apps.counselconduit.api.middleware.prompt_guard import PromptGuardMiddleware
     from apps.counselconduit.api.app_error import AppError, app_error_handler, unhandled_error_handler
+    from apps.counselconduit.api.gdpr import router as gdpr_router
+    from apps.counselconduit.api.kovel_attestation import router as attestation_router
+    from apps.counselconduit.api.magic_link import router as onboarding_router
+    from apps.counselconduit.api.vent_mode import router as vent_router
 except ImportError:
     from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
+    from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
+    from api.middleware.prompt_guard import PromptGuardMiddleware  # type: ignore[no-redef]
     from api.app_error import AppError, app_error_handler, unhandled_error_handler  # type: ignore[no-redef]
+    from api.gdpr import router as gdpr_router  # type: ignore[no-redef]
+    from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
+    from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
+    from api.vent_mode import router as vent_router  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -107,7 +119,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
-    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining"],
+    expose_headers=["X-Kovel-Signature", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-Token-Budget-Remaining"],
 )
 
 # Cor.30 R31: Security headers on every response
@@ -115,6 +127,12 @@ app.add_middleware(SecurityHeadersMiddleware)
 
 # Cor.30 R14-R15: Per-IP + per-route rate limiting
 app.add_middleware(RateLimitMiddleware)
+
+# OWASP LLM10: Token budget + circuit breaker
+app.add_middleware(TokenBudgetMiddleware)
+
+# OWASP LLM01: Prompt injection detection
+app.add_middleware(PromptGuardMiddleware)
 
 # Cor.30: Opaque error handling — never expose stack traces
 app.add_exception_handler(AppError, app_error_handler)
@@ -124,6 +142,10 @@ app.add_exception_handler(Exception, unhandled_error_handler)
 
 app.include_router(stripe_router)
 app.include_router(billing_router)
+app.include_router(gdpr_router)
+app.include_router(attestation_router)
+app.include_router(onboarding_router)
+app.include_router(vent_router)
 
 
 @app.get("/")
@@ -239,7 +261,7 @@ async def stream_query(
 
 
 @app.get("/enclave/v1/health")
-async def health():
+async def enclave_health():
     """Health check endpoint for Cloud Run and load balancers."""
     return {
         "status": "operational",
