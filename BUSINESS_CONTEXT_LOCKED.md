@@ -1,4 +1,4 @@
-# BUSINESS_CONTEXT_LOCKED — v8.8
+# BUSINESS_CONTEXT_LOCKED — v9.0
 
 ## Consumer Syndicate
 - Price: `$149/mo`
@@ -31,24 +31,53 @@
 Do not mix these lanes casually. Consumer and enterprise economics are different products.
 
 ## Hardened State
-- v8.6 canonicalized: 2026-04-18
-- Latest production commit: `7e40a3d98b1` (2026-04-18)
-- Lighthouse Mobile (KovelAI): P93 / A93 / BP100 / SEO100
-- Lighthouse Mobile (ShadowTagAI): P93 / A93 / BP100 / SEO100
-- Structural tests: 64/64
+- v9.0 canonicalized: 2026-04-18
+- Latest production commit: `afb244705d5` (2026-04-18)
+- Lighthouse LHCI (KovelAI): P93+ / A93+ / BP100 / SEO100
+- Lighthouse LHCI (ShadowTagAI): P93+ / A93+ / BP96 / SEO100
+- Structural tests: 68/68
 - Dead code: clean (vulture + ruff) — Kosmos dead code noted, production paths clean
 - CounselConduit: v3.1.0 LIVE on Cloud Run (20 API modules)
 - Cloud Armor WAF: `counselconduit-waf` (XSS + SQLi rules active)
-- Cloud Monitoring: 5xx alert policy active (ID: 18301790723072591820)
+- Cloud Monitoring: 7 alert policies + email channel (17531835029676919705)
 - Security: Cor.30 v2.5 + OWASP LLM10 enforced (docs/SECURITY_DOD.md)
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
+- Secret Manager: 23 secrets, 9 imported to OpenTofu state
+- OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
+- RISK_REGISTER: v9.0 (29 tracked risks)
+- Open PRs: 0
 
 ### CounselConduit Cloud Run (2026-04-18)
 | Service | URL | Rev |
 |---------|-----|-----|
-| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00010-s74 (canary 90/10) |
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00010-s74 (100% traffic) |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
 
+
+### Wave 9 Deliverables (2026-04-18)
+- **IaC Apply**: 13 resources created (IAM bindings + log metric + alert policy)
+- **IaC Import**: 9 existing secrets imported to OpenTofu state
+- **API Key Restriction**: Key 2 restricted 72→16 APIs
+- **GCA Batch Reviewer**: `scripts/run_gca_batch.py` — batch Dependabot PR review + auto-merge
+- **GCA CI Fallback**: `.github/workflows/gca-review.yml` — 4-agent review on PRs
+- **Pre-push GCA Hook**: `.git/hooks/pre-push` — advisory gate (soft-fail relock)
+- **SM-First Auth**: `auth_github_app.py` 5-tier PEM fallback (SM→keys→Downloads→.ssh→$env)
+- **OTEL Sampling**: `OTEL_TRACE_SAMPLING_RATE` configurable (10% default, 100% staging)
+- **Lighthouse CI**: `.lighthouserc.json` — P90/A90/BP100/SEO100 budget gates
+- **Cloud Build**: `cloudbuild.yaml` + `cloudbuild-staging.yaml` (source-based deploy)
+- **Staging Branch**: `staging` created + pushed to origin
+- **Email Alerts**: Notification channel wired to 7 alert policies
+- **Cloud Scheduler**: `firestore-backup-verify` daily 06:00 UTC health probe
+- **Firestore Backup**: Daily schedule, 7d retention
+- **PubSub Topic**: `secret-rotation-notifications`
+- **Production Runbook**: `docs/PRODUCTION_RUNBOOK.md`
+- **Secret Rotation**: `docs/SECRET_ROTATION.md`
+- **Heartbeat Tests**: 4 new tests (TTL, dead-man's, rate limit)
+- **FFmpeg Demo**: `scripts/ffmpeg_demo_record.sh`
+- **10 PRs Resolved**: 8 Dependabot closed (head deleted), PR #48 closed, PR #55 closed (incorporated)
+- **Auto-merge**: Enabled + delete-branch-on-merge for future PRs
+- **Risk Register v9.0**: 4 new entries (#26-29)
+- **Reference Repos**: 41 total (FFmpeg added)
 
 ### Wave 8 Deliverables (2026-04-18)
 - **25-Rule Security Contract**: Non-negotiable security canon in AGENTS.md (auth, input validation, secrets)
