@@ -22,7 +22,8 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, AsyncGenerator
+from typing import Any
+from collections.abc import AsyncGenerator
 
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
@@ -158,13 +159,19 @@ async def start_vent_session(req: VentSessionRequest) -> VentCheckoutResponse:
     The fee goes to the attorney's Stripe Connect account.
     After payment, client is redirected to the Vent chat interface.
     """
-    from apps.counselconduit.api.uuid7 import uuid7_str
+    try:
+        from apps.counselconduit.api.uuid7 import uuid7_str
+    except ImportError:
+        from api.uuid7 import uuid7_str  # type: ignore[no-redef]
 
     session_id = uuid7_str()
 
     # Store session in Firestore
     try:
-        from apps.counselconduit.api.firestore_client import store_session
+        try:
+            from apps.counselconduit.api.firestore_client import store_session
+        except ImportError:
+            from api.firestore_client import store_session  # type: ignore[no-redef]
 
         await store_session(
             req.firm_id,
@@ -236,7 +243,10 @@ async def send_vent_message(msg: VentMessage) -> dict[str, Any]:
     """Send a message in an active Vent session (non-streaming)."""
     # Store message in Firestore
     try:
-        from apps.counselconduit.api.firestore_client import append_session_message
+        try:
+            from apps.counselconduit.api.firestore_client import append_session_message
+        except ImportError:
+            from api.firestore_client import append_session_message  # type: ignore[no-redef]
 
         await append_session_message(
             firm_id="default",  # TODO: resolve from session
