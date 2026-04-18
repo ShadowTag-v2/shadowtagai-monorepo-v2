@@ -15,7 +15,6 @@ permissions:
   pull-requests: write
 
 env:
-  BUNDLE: antigravity_gca_repo_bundle/.gemini/commands
   GEMINI_SANDBOX: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 
 jobs:
