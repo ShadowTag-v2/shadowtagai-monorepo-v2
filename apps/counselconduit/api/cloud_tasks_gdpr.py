@@ -132,7 +132,10 @@ async def execute_deletion(request: Request) -> dict[str, Any]:
     deleted_collections = []
 
     try:
-        from apps.counselconduit.api.firestore_client import _get_client
+        try:
+            from apps.counselconduit.api.firestore_client import _get_client
+        except ImportError:
+            from api.firestore_client import _get_client  # type: ignore[no-redef]
 
         db = _get_client()
 
