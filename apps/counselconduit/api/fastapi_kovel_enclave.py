@@ -71,6 +71,7 @@ try:
     from apps.counselconduit.api.kovel_attestation import router as attestation_router
     from apps.counselconduit.api.magic_link import router as onboarding_router
     from apps.counselconduit.api.vent_mode import router as vent_router
+    from apps.counselconduit.api.cloud_tasks_gdpr import router as tasks_router
 except ImportError:
     from api.middleware import RateLimitMiddleware, SecurityHeadersMiddleware  # type: ignore[no-redef]
     from api.middleware.token_budget import TokenBudgetMiddleware  # type: ignore[no-redef]
@@ -80,6 +81,7 @@ except ImportError:
     from api.kovel_attestation import router as attestation_router  # type: ignore[no-redef]
     from api.magic_link import router as onboarding_router  # type: ignore[no-redef]
     from api.vent_mode import router as vent_router  # type: ignore[no-redef]
+    from api.cloud_tasks_gdpr import router as tasks_router  # type: ignore[no-redef]
 
 # ── Structured Logging ─────────────────────────────────────────────────────
 
@@ -101,10 +103,10 @@ logger = structlog.get_logger("counselconduit")
 
 app = FastAPI(
     title="CounselConduit: Kovel Enclave",
-    version="3.0.0",
+    version="3.1.0",
     description="Privileged Legal AI under the Kovel Doctrine. Zero-retention architecture.",
-    docs_url="/docs" if os.getenv("APP_ENV") == "development" else None,
-    redoc_url=None,
+    docs_url="/docs",  # OpenAPI/Swagger enabled — API documentation
+    redoc_url="/redoc",
 )
 
 # CORS — restrict in production
@@ -146,6 +148,7 @@ app.include_router(gdpr_router)
 app.include_router(attestation_router)
 app.include_router(onboarding_router)
 app.include_router(vent_router)
+app.include_router(tasks_router)
 
 
 @app.get("/")
@@ -162,7 +165,7 @@ async def root():
 @app.get("/health")
 async def health():
     """Health check for Cloud Run / load balancer probes."""
-    return {"status": "healthy", "service": "counselconduit", "version": "3.0.0"}
+    return {"status": "healthy", "service": "counselconduit", "version": "3.1.0"}
 
 
 # ── Auth Middleware ─────────────────────────────────────────────────────────

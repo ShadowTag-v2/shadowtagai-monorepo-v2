@@ -66,6 +66,11 @@
   <style>
     @font-face { font-family: 'Inter'; font-display: optional; src: local('Inter'); }
     body { margin: 0; background: #080c18; color: #dfe2f4; font-family: 'Inter', -apple-system, sans-serif; }
+    /* Mobile performance: hide heavy video on small screens */
+    @media (max-width: 768px) {
+      .hero-video { display: none !important; }
+      .hero { background: url('/images/hero-bg.avif') center/cover no-repeat; }
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet" media="print" onload="this.media='all'"/>
   <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=optional" rel="stylesheet"/></noscript>
@@ -142,10 +147,16 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="hero">
-  <!-- Layer 0: Veo 3.1 video background -->
-  <video class="hero-video" autoplay loop muted playsinline poster="/images/hero-bg.avif">
+  <!-- Layer 0: Veo 3.1 video background (hidden on mobile via CSS for performance) -->
+  <video class="hero-video" autoplay loop muted playsinline poster="/images/hero-bg.avif" preload="none">
     <source src="/videos/hero-bg.mp4" type="video/mp4"/>
   </video>
+  <script>
+    // Desktop-only video: prevent 10MB download on mobile
+    if (window.innerWidth > 768) {
+      document.querySelector('.hero-video').preload = 'auto';
+    }
+  </script>
   <div class="hero-bg"></div>
   <div class="hero-fade"></div>
   <div class="hero-grain"></div>
