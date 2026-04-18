@@ -241,7 +241,7 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 
 ### Implementation Phases
 1. **Phase 1 (Secure MVP)**: ✅ LIVE — Cloud Run v3.1.0 + RBAC + billing tiers + HMAC webhooks + Cloud Armor WAF + OpenAPI docs.
-2. **Phase 2 (Privilege)**: ✅ LIVE — Judge #6 gate + Kovel attestation (HMAC-SHA256) + Oracle Studio 7-stage pipeline + LiteLLM multi-model routing + SSE streaming (Vent Mode) + prompt repetition (arXiv 2512.14982) + Firestore persistence + Cloud Tasks GDPR 30-day delete + Resend email service + Discord ops alerts + Stripe Connect onboarding.
+2. **Phase 2 (Privilege)**: ✅ LIVE — Judge #6 gate + Kovel attestation (HMAC-SHA256) + Oracle Studio 7-stage pipeline + LiteLLM multi-model routing + SSE streaming (Vent Mode) + prompt repetition (arXiv 2512.14982) + Firestore persistence + Cloud Tasks GDPR 30-day delete + Google Workspace alerts (Gmail API + Chat API) + Stripe Connect onboarding.
 3. **Phase 3 (Sandbox)**: Isolated tool runners + read-only FS + short-lived proxy tokens + tenant-billed token issuance.
 4. **Phase 4 (Enterprise)**: BYOC/BYOK + regional isolation + custom retention + FedRAMP + evidence-grade audit exports.
 
@@ -249,4 +249,38 @@ CounselConduit is the "Shopify for Legal AI" — a privilege-preserving routing 
 - Day 0–30: Core fork + security hardening. ✅ COMPLETE
 - Day 31–45: First paid customer live.
 </counselconduit_architecture>
+
+<headless_cli_doctrine>
+## Headless CLI Protocol — PTY Buffer Trap Prevention
+
+**Trigger:** Any interactive TUI (charmbracelet/bubbletea, Inquirer.js, gum, fzf, etc.)
+**Root cause:** Agent terminals lack full PTY attachment; raw TTY key events misfire in background shells.
+
+### Mandatory Rules
+
+1. **Force Headless Mode:** Prepend `export CI=true DEBIAN_FRONTEND=noninteractive` to every command that might launch a TUI.
+2. **Non-Interactive Flags:** Always use `--non-interactive`, `--quiet`, `--no-user-output-enabled`, `--yes/-y` when available.
+3. **Never blindly inject newlines or arrow keys** into interactive TUI prompts — they will loop forever.
+4. **pexpect Fallback:** If a CLI absolutely requires interactive input, write a Python script using `pexpect` to programmatically control it.
+5. **Human Handoff:** If it's an OAuth browser flow or complex account selector that can't be bypassed headlessly, **STOP** and tell the user the exact command to run in their Mac Terminal. Do NOT "note it and move on."
+
+### Prohibited Behavior
+
+- **NEVER** say "Let me note this for the user and commit everything" when hitting an interactive prompt. This is a commit-abort pattern.
+- **NEVER** commit code in a broken state because a CLI blocked you.
+- **NEVER** skip authentication or deployment steps because a TUI trapped you.
+
+### Recovery Sequence
+
+1. Terminate the hung process immediately.
+2. Retry with `CI=true` + `--non-interactive` flags.
+3. If still blocked, write a `pexpect` script or instruct the user.
+4. Only proceed to the next task after the blocked task is resolved or explicitly deferred by the user.
+
+### Reference Repos
+- `charmbracelet/bubbletea` — Go TUI framework (raw TTY mode)
+- `SBoudrias/Inquirer.js` — Node interactive prompts
+- `pexpect/pexpect` — Python programmatic terminal control
+</headless_cli_doctrine>
 </system_directive>
+

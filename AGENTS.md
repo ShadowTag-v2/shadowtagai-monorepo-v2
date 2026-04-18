@@ -42,6 +42,37 @@ All four repo roots must remain canonical:
 - fix root truth first, tooling second, runtime third
 - never COMPLECT orthogonal concerns (see `docs/doctrine/SIMPLICITY_DOCTRINE.md`)
 
+## Security + App Contract (Non-Negotiable)
+
+1. Never store secrets, API keys, or credentials in frontend code, committed files, or chat logs. Use environment variables and managed secrets only.
+2. Every API route is authenticated by default. Public routes must be explicitly documented with a reason.
+3. Validate all request inputs with schema validation (Zod/Pydantic) before processing. Never trust user input.
+4. Never return raw database objects. Always serialize and explicitly select exposed fields.
+5. Handle errors through a single structured app error contract (RFC 9457). Never expose stack traces or system internals to clients.
+6. If passwords are ever handled locally, hash with bcrypt/argon2 under the approved minimum work factor. Never store, log, or return plaintext passwords.
+7. Use parameterized queries or ORM methods only. Never concatenate user input into SQL.
+8. Every async UI operation must have both loading and error states.
+9. Write small, focused functions. Split functions that do more than one thing.
+10. Before writing new code, check for an existing utility, hook, service, or action. Do not duplicate logic.
+
+## Security Defaults
+
+11. Access tokens must be short-lived (15–60 min). Refresh tokens must rotate and be revocable. Absolute session timeout required.
+12. Never build auth from scratch unless explicitly approved. Use managed auth providers (Firebase Auth, Clerk) by default.
+13. Secrets rotate on exposure, incident, or personnel change; prefer short-lived credentials where possible.
+14. Run dependency audit on every PR. Never apply blind security fixes (`npm audit fix --force`) to main without review and tests.
+15. Use strict CORS, redirect allow-lists, and per-route authz checks server-side.
+16. Rate limit by IP, user, and endpoint. Stricter limits for auth, payment, reset, export, and AI-costly routes.
+17. Enable RLS / tenant isolation from day one for multi-tenant systems.
+18. Lock down storage buckets and validate uploads by signature, size, and policy.
+19. Verify webhook signatures and enforce idempotency.
+20. No secrets or PII in logs. Use structured logging with severity and correlation IDs.
+21. Enforce backups, restore tests, test/prod separation, and account deletion flows.
+22. Enable CSP, HSTS, Referrer-Policy, X-Content-Type-Options, and CSRF protections where applicable.
+23. Run secrets scanning in pre-commit and CI (Gitleaks + detect-private-key).
+24. Use lockfiles, pinned dependencies, and least-privilege service roles.
+25. Every LLM timeout must fail gracefully in the UI and server responses.
+
 ## Architectural philosophy
 
 - `docs/doctrine/SIMPLICITY_DOCTRINE.md` is the CANONICAL architectural philosophy
