@@ -64,11 +64,36 @@ Full doctrine: `skills/firebase-mcp-deploy-doctrine/SKILL.md`
 </firebase_mcp_doctrine>
 
 <github_doctrine>
-- ALL git operations MUST target `git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git` (SSH PRIMARY).
-- GitHub App: ID `3018200`, Client ID `Iv23ctYqrxPQIt2ir8gY`, PEM at `$SHADOWTAG_PEM` (see WORKSTATION_LOCAL_OVERRIDES).
-- SSH is the mandatory transport for push/pull. HTTPS is last-resort fallback only.
-- GitHub App JWT is for API operations (PRs, issues, releases) ONLY.
-- **Deploy keys are NOT acceptable. GitHub Apps are the required model.**
+## GitHub Access — App PEM Exclusive
+
+**ABSOLUTE RULE: The GitHub App PEM is the ONLY authorized authentication path.**
+
+### Canonical Credentials
+- **Repo**: `https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball.git`
+- **PEM**: `/Users/pikeymickey/Downloads/antigravity-shadowtag-manager.2026-03-17.private-key.pem`
+- **App ID**: `3018200`
+- **Client ID**: `Iv23ctYqrxPQIt2ir8gY`
+- **Env var**: `$SHADOWTAG_PEM` points to the PEM above
+
+### Transport
+- SSH (`git@github.com:ShadowTag-v2/Monorepo-Uphillsnowball.git`) is PRIMARY for push/pull.
+- HTTPS is last-resort fallback only.
+- GitHub App JWT (generated from PEM) is for ALL API operations (PRs, issues, releases, actions).
+
+### Prohibited
+- **`gh auth login`** — NEVER use the GitHub CLI's browser OAuth flow. It creates stale credentials.
+- **`gh auth token`** — NEVER rely on `gh` CLI token cache.
+- **Deploy keys** — NOT acceptable. GitHub Apps are the required model.
+- **Personal access tokens (PATs)** — NEVER. App installation tokens only.
+- **macOS Keychain GitHub entries** — Must remain purged (resolved in Risk #8).
+
+### JWT Generation
+Use `scripts/auth_github_app.py` with the 5-tier PEM fallback chain:
+1. GCP Secret Manager (`github-app-shadowtag-v2-pem`)
+2. `keys/` directory
+3. `~/Downloads/` (canonical PEM location)
+4. `~/.ssh/`
+5. `$SHADOWTAG_PEM` env var
 </github_doctrine>
 
 <approval_envelope>
