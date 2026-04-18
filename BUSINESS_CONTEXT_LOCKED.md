@@ -46,8 +46,24 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 ### CounselConduit Cloud Run (2026-04-18)
 | Service | URL | Rev |
 |---------|-----|-----|
-| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00006-jpl |
+| Production | https://counselconduit-767252945109.us-central1.run.app | counselconduit-00008-wpf |
 | Staging | https://counselconduit-staging-767252945109.us-central1.run.app | counselconduit-staging-00003-l9h |
+
+### Wave 7 Deliverables (2026-04-18)
+- **Google Workspace Alerts**: Gmail API + Google Chat API replace Discord + Resend (workspace_alerts.py)
+- **Secret Manager Migration**: 20+ secrets migrated from .env to Google Secret Manager
+- **Terraform IaC**: infra/terraform/secrets.tf (secrets, IAM, anomaly alerts)
+- **gws CLI v0.22.5**: Google Workspace CLI installed for agent-driven email/chat
+- **Org-Level Storage Policy**: `constraints/storage.publicAccessPrevention` enforced
+- **GCS Lifecycle**: 30-day auto-delete on Cloud Build source buckets
+- **Deployment Runbook**: docs/DEPLOYMENT_RUNBOOK.md (pre-deploy, canary, rollback)
+- **.gcloudignore**: Prevents 2GB Cloud Build tarball upload
+- **Dead Code Audit**: 34 unused imports fixed via ruff --fix
+- **Bandit Scan**: 0 medium/high severity findings across 4,074 LOC
+- **Cloud Run Labels**: managed_by=opentofu, environment=production
+- **Hero Videos on CDN**: Migrated to Firebase Hosting (apps/kovelai/public/videos/)
+- **gcloud PATH Fix**: Cloud Code now finds Homebrew gcloud correctly
+- **22 Reference Repos**: Terraform/IaC shallow clones (gitignored, 2.2 GB)
 
 ### Wave 4-5 Deliverables (2026-04-18)
 - **Firebase Auth JWT**: Server-side verification via firebase-admin SDK
@@ -57,7 +73,7 @@ Do not mix these lanes casually. Consumer and enterprise economics are different
 - **GDPR Export UI**: Article 20 data portability page (export.html)
 - **Dead-Man's Switch**: Client portal session replay protection + DevTools defeat
 - **Attorney Onboarding**: 4-step wizard (firm info → plan → models → Stripe Connect)
-- **Discord Alerts**: Payment failure, security event, GDPR deletion notifications
+- **Google Workspace Alerts**: Payment failure, security event, GDPR deletion (replaced Discord)
 - **Intake Summarizer**: LLM-powered intake extraction for Vent Mode
 - **Webhook Signatures**: Stripe + Kovel + Resend HMAC verification tests (9 tests)
 - **Mobile Spec**: Flutter/Dio interceptor stack (auth, Kovel, rate limit, dead-man's switch)

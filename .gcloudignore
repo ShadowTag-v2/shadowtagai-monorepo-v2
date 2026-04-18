@@ -1,15 +1,54 @@
+# Prevent uploading the entire monorepo as Cloud Build context
+# This file prevents the 2GB tarball problem
+
+# Version control
 .git/
 .gitignore
-.dockerignore
 
-# BLOCK THE HEAVY ITEMS
-external_sdks/
-browser_artifacts/
-antigravity-data/
+# Virtual environments
+.venv/
+.venv-*/
 node_modules/
-*.mp4
-*.webm
 
-# Keep the build scripts
-!Dockerfile
-!startup-scripts/
+# Reference repos (2.2 GB)
+reference_architectures/
+
+# Archives & legacy
+archive/
+control/
+external_repos/
+external_sdks/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Large assets (use GCS/CDN instead)
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.zip
+*.tar.gz
+*.tgz
+
+# Databases
+*.db
+*.sqlite
+.lancedb/
+.lancedb_vault/
+.chroma_db/
+
+# Tools
+tools/
+third_party/
+bazel-*/
