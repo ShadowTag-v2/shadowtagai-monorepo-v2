@@ -219,11 +219,13 @@ async def check_onboarding_status(
         stripe.api_key = secret
         account = stripe.Account.retrieve(account_id)
 
-        onboarding_complete = all([
-            account.charges_enabled,
-            account.payouts_enabled,
-            account.details_submitted,
-        ])
+        onboarding_complete = all(
+            [
+                account.charges_enabled,
+                account.payouts_enabled,
+                account.details_submitted,
+            ]
+        )
 
         # Update Firestore if onboarding just completed
         if onboarding_complete and not data.get("onboarding_complete"):

@@ -19,7 +19,7 @@ Usage:
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from dataclasses import dataclass, field
 
@@ -141,7 +141,7 @@ def gather(entries: list[KIEntry], report: DreamReport) -> dict:
         "next week",
     ]
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     for entry in entries:
         # Check for relative dates in summaries
@@ -269,7 +269,7 @@ def run_dream_cycle(ki_dir: Path) -> DreamReport:
     report = DreamReport()
 
     print("=" * 60)
-    print(f"KAIROS Dream Consolidation — {datetime.now(timezone.utc).isoformat()}")
+    print(f"KAIROS Dream Consolidation — {datetime.now(UTC).isoformat()}")
     print(f"KI Directory: {ki_dir}")
     print(f"Mode: {'DRY RUN' if DRY_RUN else 'LIVE'}")
     print("=" * 60)
@@ -334,7 +334,7 @@ if __name__ == "__main__":
             "default",
         )
         report_text = (
-            f"# Dream Consolidation Report — {datetime.now(timezone.utc).isoformat()}\n"
+            f"# Dream Consolidation Report — {datetime.now(UTC).isoformat()}\n"
             f"KIs scanned: {report.ki_scanned}\n"
             f"Contradictions: {report.contradictions_found}\n"
             f"Dates to normalize: {report.dates_normalized}\n"
