@@ -211,11 +211,16 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
     System prompts are structurally isolated (OWASP LLM01).
     Prompt repetition applied for non-reasoning models (arXiv 2512.14982).
     """
-    from apps.counselconduit.api.model_router import (
-        AVAILABLE_MODELS,
-        ModelRequest,
-        select_model,
-    )
+    try:
+        from apps.counselconduit.api.model_router import (
+            ModelRequest,
+            select_model,
+        )
+    except ImportError:
+        from api.model_router import (  # type: ignore[no-redef]
+            ModelRequest,
+            select_model,
+        )
 
     stages: list[OracleStageResult] = []
     total_tokens = 0
@@ -278,7 +283,10 @@ async def run_oracle_pipeline(req: OracleRequest) -> OracleResponse:
 
     # Store session in Firestore
     try:
-        from apps.counselconduit.api.firestore_client import store_session
+        try:
+            from apps.counselconduit.api.firestore_client import store_session
+        except ImportError:
+            from api.firestore_client import store_session  # type: ignore[no-redef]
 
         await store_session(
             req.firm_id,
