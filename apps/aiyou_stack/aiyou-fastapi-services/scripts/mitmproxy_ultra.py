@@ -724,11 +724,11 @@ class EnhancedKeyRotator:
 
         # FEATURE 9: Model fallback (pro → flash)
         if self.enable_model_fallback:
-            if "gemini-1.5-pro" in flow.request.path or "gemini-pro" in flow.request.path:
+            if "gemini-3.1-flash-lite-preview" in flow.request.path or "gemini-pro" in flow.request.path:
                 # Check if key is stressed (high failure rate)
                 if key_health.consecutive_failures >= 2:
                     flow.request.path = flow.request.path.replace(
-                        "gemini-1.5-pro",
+                        "gemini-3.1-flash-lite-preview",
                         "gemini-1.5-flash",
                     )
                     flow.request.path = flow.request.path.replace("gemini-pro", "gemini-flash")

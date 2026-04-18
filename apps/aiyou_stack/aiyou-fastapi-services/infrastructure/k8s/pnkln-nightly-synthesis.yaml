@@ -34,7 +34,7 @@ spec:
                 mountPath: /monorepo
             env:
               - name: MODEL_VERSION
-                value: "gemini-2.5-pro"
+                value: "gemini-3.1-flash-lite-preview"
 
           # STEP 2: BUILD (Node / Gemini 2.5)
           containers:

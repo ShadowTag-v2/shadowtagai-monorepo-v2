@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     gcp_location: str = "us-central1"
 
     # Gemini Model Configuration
-    gemini_model: str = "gemini-1.5-pro-001"
+    gemini_model: str = "gemini-3.1-flash-lite-preview"
 
     # RAG Configuration
     default_k: int = 5

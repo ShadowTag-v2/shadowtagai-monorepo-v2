@@ -61,6 +61,6 @@ python3 run_operation_glow_up.py
 
 ## Next Steps
 
-1. **Connect Real Vertex AI**: Replace the random burn logic in `swarm_boss.py` with actual `gemini-1.5-pro` inference calls.
+1. **Connect Real Vertex AI**: Replace the random burn logic in `swarm_boss.py` with actual `gemini-3.1-flash-lite-preview` inference calls.
 
 2. **Headless Docker**: Integrate `computer_spawner.py` to spin up actual containers if needed (though Python threads are more efficient for pure API burning).

@@ -52,7 +52,7 @@ def get_strong_llm(temperature: float = 0.0):
     # Fallback to strongest available Gemini
     if HAS_GOOGLE and settings.gemini_api_key:
         return ChatGoogleGenerativeAI(
-            model="gemini-1.5-pro",
+            model="gemini-3.1-flash-lite-preview",
             google_api_key=settings.gemini_api_key,
             temperature=temperature,
             convert_system_message_to_human=True,

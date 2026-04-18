@@ -87,7 +87,7 @@ class JURATier(StrEnum):
 
 # Model mapping by tier
 TIER_MODELS = {
-    JURATier.PRO: "gemini-2.5-pro-preview-06-05",
+    JURATier.PRO: "gemini-3.1-flash-lite-preview-preview-06-05",
     JURATier.FLASH: "gemini-2.5-flash",
     JURATier.FREE: "gemini-2.0-flash",
 }
@@ -295,7 +295,7 @@ class RSTASquadron:
             "name": "TROOP B 'BRAVO' - Heavy Armor / Backend Dev",
             "callsign": "BRAVO",
             "target_strength": 130,
-            "model": "gemini-1.5-pro",
+            "model": "gemini-3.1-flash-lite-preview",
             "secondary_model": "gemini-2.5-flash",
             "rsta_function": "Heavy Lift Engineering",
             "atp_reference": "ATP 3-20.96 Heavy Maneuver",
@@ -920,7 +920,7 @@ class RSTASquadron:
                 "TROOP_B": {
                     "name": "BRAVO",
                     "strength": 130,
-                    "model": "gemini-1.5-pro",
+                    "model": "gemini-3.1-flash-lite-preview",
                     "role": "Heavy Armor / Backend Dev",
                 },
                 "TROOP_C": {

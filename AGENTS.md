@@ -122,21 +122,21 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v9.4 canonicalized: 2026-04-18
-- Commit: `eaa313da449`
+- v9.5 canonicalized: 2026-04-18
+- Commit: `3949efee358`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
-- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.1)
+- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.5)
 - Semantic Kernel: .NET 11.0 Preview 2
 - Tests: 87 unit passed (E2E skipped — live Cloud Run endpoints)
 - Lighthouse: P93+ / A93+ / BP100 / SEO100
-- Dead code: clean (vulture + ruff — Kosmos dead code noted, production paths clean)
+- Dead code: clean (vulture + ruff — 2 false-positive items in counselconduit, production paths clean)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
 - Nested `.git` directories: 0 (reference_architectures/ clones are gitignored)
-- Ruff violations: 1170 total, 30 F401 (ruff 0.11.8 — expanded rule set)
+- Ruff violations: 0 in counselconduit (ruff 0.11.8, `--fix --unsafe-fixes` applied)
 - CounselConduit: v3.1.0 on Cloud Run (Phase 1 + 2 LIVE, 33 API modules)
 - Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml`
 - Prompt Repetition: wired into Oracle Studio + Vent Mode (arXiv 2512.14982)
@@ -144,12 +144,15 @@ unless the user explicitly directs a control plane change:
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
 - GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
-- Risk Register: 39 risks tracked (0 critical open)
+- Risk Register: 40 risks tracked (0 critical open)
 - CL4R1T4S: competitive intel archived, 6 adoptable patterns identified, source code (1,902 files) extracted
-- Architecture docs: 7 specs (compaction, flags, memory, Judge #6, steward, AGNT comparison, GrowthBook)
+- Architecture docs: 7 specs + 229 Cor.Atlantis recovered docs
 - Daemons: Dream consolidation (nightly) + Loop steward (5-min) — both tested
 - Reference architectures: 29 repos cloned (gitignored)
 - CLAUDE.md: 4-layer hierarchy (global 13KB + user 4.8KB + project 5.3KB + 51 rules)
+- MCP Fleet Vanguard: v11.0 (secrets_manager_doctrine, no inline routing tables)
+- Model refs: all aiyou_stack purged from deprecated gemini-1.5/2.5 → gemini-3.1-flash-lite-preview
+- Secrets doctrine: `secrets_manager_doctrine` replaces `env_master_doctrine` in GEMINI.md v9.5
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence

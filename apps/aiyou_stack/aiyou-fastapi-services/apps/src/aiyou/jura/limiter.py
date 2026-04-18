@@ -58,7 +58,7 @@ class JuraLimiter:
             max_response_time_ms=10000,
             max_cost_usd=1.0,
             models=[
-                "gemini-2.5-pro-preview-06-05",  # Primary: Gemini 2.5 Pro Preview
+                "gemini-3.1-flash-lite-preview-preview-06-05",  # Primary: Gemini 2.5 Pro Preview
                 "claude-sonnet-4-20250514",  # Fallback 1: Claude Sonnet 4
                 "gemini-2.0-flash",  # Fallback 2 (rate limit)
             ],

@@ -14,7 +14,7 @@ class JudgeSixEngine:
         try:
             vertexai.init(project=self.project_id, location=self.location)
             # User requested "Gemini 2.5 Pro". Mapping to latest high-IQ model.
-            self.model = GenerativeModel("gemini-1.5-pro-001")
+            self.model = GenerativeModel("gemini-3.1-flash-lite-preview")
         except Exception as e:
             print(f"Judge 6 Warning: Could not init Vertex AI ({e}). Using fallback logic.")
             self.model = None

@@ -41,7 +41,7 @@ class CodeMenderAgent:
         # 1. Thinking Model for Root Cause Analysis
         self.think_model_name = "gemini-2.0-flash-thinking-exp-1219"
         # 2. Coding Model for Patch Generation
-        self.code_model_name = "gemini-1.5-pro-002"
+        self.code_model_name = "gemini-3.1-flash-lite-preview"
 
         if self.project_id:
             vertexai.init(project=self.project_id, location=self.location)

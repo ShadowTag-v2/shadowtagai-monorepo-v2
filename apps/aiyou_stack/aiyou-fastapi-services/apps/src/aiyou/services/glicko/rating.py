@@ -213,7 +213,7 @@ class ModelRating(Base):
         String(100),
         nullable=False,
         index=True,
-    )  # "gemini-1.5-pro", "claude-3.5-sonnet"
+    )  # "gemini-3.1-flash-lite-preview", "claude-3.5-sonnet"
     model_version = Column(String(50))
     task_type = Column(String(50), nullable=False, index=True)
 
@@ -472,8 +472,8 @@ class GlickoModelSelector:
     def _get_default_model(self, task_type: TaskType) -> dict[str, any]:
         """Return default model when no ratings exist"""
         defaults = {
-            TaskType.IMAGE_MODERATION: "gemini-1.5-pro-vision",
-            TaskType.VIDEO_MODERATION: "gemini-1.5-pro-vision",
+            TaskType.IMAGE_MODERATION: "gemini-3.1-flash-lite-preview-vision",
+            TaskType.VIDEO_MODERATION: "gemini-3.1-flash-lite-preview-vision",
             TaskType.TEXT_MODERATION: "claude-3.5-sonnet",
             TaskType.NSFW_DETECTION: "nsfw-detector-v4",
             TaskType.COPYRIGHT_CHECK: "copyright-matcher-v2",
@@ -482,7 +482,7 @@ class GlickoModelSelector:
         }
 
         return {
-            "model_name": defaults.get(task_type, "gemini-1.5-pro"),
+            "model_name": defaults.get(task_type, "gemini-3.1-flash-lite-preview"),
             "rating": 1500.0,
             "confidence": 0.3,  # Low confidence initially
             "expected_cost": 0.015,

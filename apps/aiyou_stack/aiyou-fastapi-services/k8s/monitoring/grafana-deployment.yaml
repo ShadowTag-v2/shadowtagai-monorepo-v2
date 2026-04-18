@@ -79,7 +79,7 @@ data:
           {
             "title": "Model Allocation",
             "targets": [
-              {"expr": "sum(rate(llm_requests_total{model=\"gemini-1.5-pro-002\"}[5m]))", "legendFormat": "Gemini (40%)"},
+              {"expr": "sum(rate(llm_requests_total{model=\"gemini-3.1-flash-lite-preview\"}[5m]))", "legendFormat": "Gemini (40%)"},
               {"expr": "sum(rate(llm_requests_total{model=\"claude-3-5-sonnet-20241022\"}[5m]))", "legendFormat": "Claude (35%)"},
               {"expr": "sum(rate(llm_requests_total{model=\"gpt-4\"}[5m]))", "legendFormat": "GPT-4 (15%)"},
               {"expr": "sum(rate(llm_requests_total{model=\"grok-beta\"}[5m]))", "legendFormat": "Grok (5%)"},

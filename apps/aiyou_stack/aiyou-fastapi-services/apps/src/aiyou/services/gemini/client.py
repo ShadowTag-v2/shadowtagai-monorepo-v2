@@ -90,15 +90,15 @@ class GeminiClient:
 
         # Model configurations
         self.models = {
-            "vision": "gemini-1.5-pro-vision",  # For image/video analysis
-            "text": "gemini-1.5-pro",  # For text analysis
+            "vision": "gemini-3.1-flash-lite-preview-vision",  # For image/video analysis
+            "text": "gemini-3.1-flash-lite-preview",  # For text analysis
             "embedding": "textembedding-gecko@003",  # For embeddings
         }
 
         # Cost tracking (per 1M tokens)
         self.pricing = {
-            "gemini-1.5-pro": {"input": 3.50, "output": 10.50},  # USD per 1M tokens
-            "gemini-1.5-pro-vision": {"input": 3.50, "output": 10.50},
+            "gemini-3.1-flash-lite-preview": {"input": 3.50, "output": 10.50},  # USD per 1M tokens
+            "gemini-3.1-flash-lite-preview-vision": {"input": 3.50, "output": 10.50},
             "gemini-1.5-flash": {
                 "input": 0.35,
                 "output": 1.05,
@@ -108,7 +108,7 @@ class GeminiClient:
 
         # Rate limits (requests per minute)
         self.rate_limits = {
-            "gemini-1.5-pro": 60,
+            "gemini-3.1-flash-lite-preview": 60,
             "gemini-1.5-flash": 360,
         }
 
@@ -157,7 +157,7 @@ class GeminiClient:
             Dict with analysis results
 
         """
-        await self._check_rate_limit("gemini-1.5-pro-vision")
+        await self._check_rate_limit("gemini-3.1-flash-lite-preview-vision")
 
         try:
             # Load image
@@ -241,7 +241,7 @@ class GeminiClient:
             Dict with video analysis results
 
         """
-        await self._check_rate_limit("gemini-1.5-pro-vision")
+        await self._check_rate_limit("gemini-3.1-flash-lite-preview-vision")
 
         # For MVP, we'll analyze as image sequence
         # Production would use proper video API
@@ -302,7 +302,7 @@ class GeminiClient:
             }
 
         """
-        await self._check_rate_limit("gemini-1.5-pro")
+        await self._check_rate_limit("gemini-3.1-flash-lite-preview")
 
         prompt = f"""
         Analyze the following text for content safety and moderation:

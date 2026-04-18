@@ -117,7 +117,7 @@ class JudgeSixSentinel:
         try:
             vertexai.init(project=PROJECT_ID, location=LOCATION)
             self.grounding = Tool.from_google_search_retrieval(grounding.GoogleSearchRetrieval())
-            self.model = GenerativeModel("gemini-1.5-pro-001")
+            self.model = GenerativeModel("gemini-3.1-flash-lite-preview")
             print(f"{Fore.GREEN}>>> 🌍 Vertex AI Grounding: ACTIVE ({PROJECT_ID}){Style.RESET_ALL}")
         except Exception as e:
             print(f"{Fore.RED}>>> 📵 Auth Failed: {e}{Style.RESET_ALL}")
