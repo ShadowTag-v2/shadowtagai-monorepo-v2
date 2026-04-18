@@ -34,19 +34,30 @@ class ROICalculationRequest(BaseModel):
     """Request model for ROI calculation"""
 
     customer_type: CustomerType = Field(
-        default=CustomerType.TESLA, description="Customer type (tesla, waymo, dot)",
+        default=CustomerType.TESLA,
+        description="Customer type (tesla, waymo, dot)",
     )
     fleet_size: int = Field(
-        default=1_000_000, ge=1, le=100_000_000, description="Number of vehicles in fleet",
+        default=1_000_000,
+        ge=1,
+        le=100_000_000,
+        description="Number of vehicles in fleet",
     )
     congestion_reduction_pct: float = Field(
-        default=0.20, ge=0.10, le=0.30, description="Congestion reduction percentage (0.10 to 0.30)",
+        default=0.20,
+        ge=0.10,
+        le=0.30,
+        description="Congestion reduction percentage (0.10 to 0.30)",
     )
     crash_reduction_pct: float = Field(
-        default=0.05, ge=0.02, le=0.10, description="Crash reduction percentage (0.02 to 0.10)",
+        default=0.05,
+        ge=0.02,
+        le=0.10,
+        description="Crash reduction percentage (0.02 to 0.10)",
     )
     location: LocationType = Field(
-        default=LocationType.US_AVG, description="Geographic location for congestion data",
+        default=LocationType.US_AVG,
+        description="Geographic location for congestion data",
     )
 
     class Config:
@@ -65,10 +76,14 @@ class ScenarioComparisonRequest(BaseModel):
     """Request model for scenario comparison"""
 
     fleet_size: int = Field(
-        default=1_000_000, ge=1, le=100_000_000, description="Number of vehicles in fleet",
+        default=1_000_000,
+        ge=1,
+        le=100_000_000,
+        description="Number of vehicles in fleet",
     )
     location: LocationType = Field(
-        default=LocationType.US_AVG, description="Geographic location for congestion data",
+        default=LocationType.US_AVG,
+        description="Geographic location for congestion data",
     )
 
 
@@ -76,13 +91,22 @@ class NationalImpactRequest(BaseModel):
     """Request model for national impact calculation"""
 
     congestion_reduction_pct: float = Field(
-        default=0.20, ge=0.10, le=0.30, description="Congestion reduction percentage",
+        default=0.20,
+        ge=0.10,
+        le=0.30,
+        description="Congestion reduction percentage",
     )
     crash_reduction_pct: float = Field(
-        default=0.05, ge=0.02, le=0.10, description="Crash reduction percentage",
+        default=0.05,
+        ge=0.02,
+        le=0.10,
+        description="Crash reduction percentage",
     )
     adoption_pct: float = Field(
-        default=1.0, ge=0.01, le=1.0, description="Vehicle adoption percentage (0.01 to 1.0)",
+        default=1.0,
+        ge=0.01,
+        le=1.0,
+        description="Vehicle adoption percentage (0.01 to 1.0)",
     )
 
 

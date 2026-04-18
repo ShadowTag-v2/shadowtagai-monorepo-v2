@@ -69,10 +69,7 @@ class EdgeSignal:
         while self.value < value:
             elapsed_ms = time.time() * 1000 - start_ms
             if elapsed_ms > timeout_ms:
-                raise TimeoutError(
-                    f"Signal wait timeout: {timeout_ms}ms exceeded. "
-                    f"Expected value={value}, got value={self.value}"
-                )
+                raise TimeoutError(f"Signal wait timeout: {timeout_ms}ms exceeded. Expected value={value}, got value={self.value}")
             time.sleep(0.001)  # 1ms poll interval
 
 
@@ -108,9 +105,7 @@ class EdgeQueue:
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
 
-        self.commands.append(
-            EdgeCommand(type="wait", args={"signal_id": signal.do_id, "value": value})
-        )
+        self.commands.append(EdgeCommand(type="wait", args={"signal_id": signal.do_id, "value": value}))
         return self
 
     def exec(self, policy: PolicyWASM, context: dict[str, Any]) -> "EdgeQueue":
@@ -136,9 +131,7 @@ class EdgeQueue:
         if self._submitted:
             raise RuntimeError("Cannot modify queue after submit()")
 
-        self.commands.append(
-            EdgeCommand(type="signal", args={"signal_id": signal.do_id, "value": value})
-        )
+        self.commands.append(EdgeCommand(type="signal", args={"signal_id": signal.do_id, "value": value}))
         return self
 
     def timestamp(self, signal: EdgeSignal) -> "EdgeQueue":

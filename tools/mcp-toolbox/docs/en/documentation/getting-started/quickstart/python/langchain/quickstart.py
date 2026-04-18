@@ -26,6 +26,7 @@ queries = [
     "My check in dates would be from April 10, 2024 to April 19, 2024.",
 ]
 
+
 async def main():
     # TODO(developer): replace this with another model if needed
     model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
@@ -43,5 +44,6 @@ async def main():
             print(f"\n[INPUT] User: {query}")
             response = agent.invoke(inputs, stream_mode="values", config=config)
             print(f"[OUTPUT] AI: {response['messages'][-1].content}")
+
 
 asyncio.run(main())

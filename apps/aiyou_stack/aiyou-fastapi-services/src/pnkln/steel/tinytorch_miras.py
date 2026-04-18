@@ -61,8 +61,7 @@ class RetentionGate:
 
 
 class ExponentialDecayBias(AttentionalBias):
-    """Simple exponential decay bias, similar to ALiBi or Mamba's decay.
-    """
+    """Simple exponential decay bias, similar to ALiBi or Mamba's decay."""
 
     def __init__(self, decay_rate: float = 0.9):
         self.decay_rate = decay_rate
@@ -78,8 +77,7 @@ class ExponentialDecayBias(AttentionalBias):
 
 
 class LearnedDecayBias(AttentionalBias):
-    """Learned exponential decay.
-    """
+    """Learned exponential decay."""
 
     def __init__(self, dim: int):
         # Learn a decay rate per dimension
@@ -90,8 +88,7 @@ class LearnedDecayBias(AttentionalBias):
 
 
 class SimpleRetentionGate(RetentionGate):
-    """Standard sigmoidal forget gate.
-    """
+    """Standard sigmoidal forget gate."""
 
     def __init__(self, input_dim: int):
         self.linear = Linear(input_dim, input_dim)
@@ -376,11 +373,16 @@ class MirasLayer:
 
 
 class MirasGemini(GeminiMini):
-    """Miras Architecture applied to Gemini-Mini.
-    """
+    """Miras Architecture applied to Gemini-Mini."""
 
     def __init__(
-        self, vocab_size, embed_dim, num_layers, num_heads, max_seq_len=1024, hidden_dim=None,
+        self,
+        vocab_size,
+        embed_dim,
+        num_layers,
+        num_heads,
+        max_seq_len=1024,
+        hidden_dim=None,
     ):
         super().__init__(vocab_size, embed_dim, num_layers, num_heads, max_seq_len)
         self.max_seq_len = max_seq_len
@@ -388,7 +390,8 @@ class MirasGemini(GeminiMini):
         # Embeddings
         self.token_embedding = Embedding(vocab_size, embed_dim)
         self.pos_embedding = Embedding(
-            max_seq_len, embed_dim,
+            max_seq_len,
+            embed_dim,
         )  # Optional for RNNs but keeping for parity
 
         d_inner = hidden_dim if hidden_dim is not None else 4 * embed_dim
@@ -423,8 +426,7 @@ class MirasGemini(GeminiMini):
         return self.forward(tokens)
 
     def generate(self, prompt_tokens, max_new_tokens=50, temperature=1.0):
-        """Generate text autoregressively (inefficient O(L^2) due to parallel forward).
-        """
+        """Generate text autoregressively (inefficient O(L^2) due to parallel forward)."""
         current_tokens = Tensor(prompt_tokens.data.copy())
 
         for _ in range(max_new_tokens):
@@ -462,12 +464,9 @@ class Moneta(MirasModelBase):
     """High Recall model."""
 
 
-
 class Yaad(MirasModelBase):
     """Balanced Reasoning model."""
 
 
-
 class Memora(MirasModelBase):
     """Long-term Retention model."""
-

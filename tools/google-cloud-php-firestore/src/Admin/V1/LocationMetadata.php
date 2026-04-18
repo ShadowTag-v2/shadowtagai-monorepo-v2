@@ -31,4 +31,3 @@ class LocationMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

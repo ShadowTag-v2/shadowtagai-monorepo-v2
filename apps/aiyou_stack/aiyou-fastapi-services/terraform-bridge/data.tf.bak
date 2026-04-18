@@ -25,7 +25,7 @@ resource "google_filestore_instance" "shared_drive" {
     network = google_compute_network.agent_vpc.name
     modes   = ["MODE_IPV4"]
   }
-  
+
   depends_on = [google_service_networking_connection.private_service_access]
 }
 

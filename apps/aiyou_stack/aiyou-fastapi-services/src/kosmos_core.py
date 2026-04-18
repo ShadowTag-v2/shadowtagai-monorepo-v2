@@ -119,7 +119,8 @@ def run_kosmos_system(objective, dataset, num_cycles=3):
             ("LiteratureSearch", "flash", 2),
         ]:
             t = threading.Thread(
-                target=run_agent_thread, args=(conn, agent_type, objective, cycle, level, mode),
+                target=run_agent_thread,
+                args=(conn, agent_type, objective, cycle, level, mode),
             )
             threads.append(t)
             t.start()

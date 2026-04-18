@@ -195,7 +195,10 @@ class KillSwitch:
     action: str = ""
 
     def evaluate(
-        self, current_mrr: int, current_pilots: int = 0, current_ltv_cac: float = 0.0,
+        self,
+        current_mrr: int,
+        current_pilots: int = 0,
+        current_ltv_cac: float = 0.0,
     ) -> bool:
         """Check if kill-switch triggered"""
         triggers = []
@@ -225,7 +228,10 @@ class KillSwitchGates:
             ),
             KillSwitch(month=6, mrr_threshold=35_000, action="Reassess pricing/ICP"),
             KillSwitch(
-                month=12, mrr_threshold=100_000, ltv_cac_threshold=4.0, action="Scale or sell",
+                month=12,
+                mrr_threshold=100_000,
+                ltv_cac_threshold=4.0,
+                action="Scale or sell",
             ),
         ]
 

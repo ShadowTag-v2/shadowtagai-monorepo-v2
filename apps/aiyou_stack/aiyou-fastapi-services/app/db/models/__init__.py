@@ -1,5 +1,4 @@
-"""Database models package
-"""
+"""Database models package"""
 
 from app.db.models.seo import (
     CoreWebVital,

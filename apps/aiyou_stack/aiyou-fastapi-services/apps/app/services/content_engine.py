@@ -171,7 +171,8 @@ class ContentEngine:
         )
 
     async def create_provenance(
-        self, request: ContentProvenanceRequest,
+        self,
+        request: ContentProvenanceRequest,
     ) -> ContentProvenanceResponse:
         """Create content provenance record"""
         logger.info(f"Creating provenance record at IQ {self.persona_iq}")
@@ -285,7 +286,8 @@ class ContentEngine:
 
         # Verify immediately to ensure integrity
         verify_result = shadowtag_verify(
-            media_path=result_path, media_type=request.content_type.value,
+            media_path=result_path,
+            media_type=request.content_type.value,
         )
 
         return WatermarkResponse(

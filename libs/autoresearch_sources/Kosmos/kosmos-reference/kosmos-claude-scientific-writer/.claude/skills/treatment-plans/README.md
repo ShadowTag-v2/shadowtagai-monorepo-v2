@@ -299,40 +299,40 @@ All treatment plans use SMART criteria for goal-setting:
 ## Best Practices
 
 ### Patient-Centered Care
-✓ Involve patients in goal-setting and decision-making  
-✓ Respect cultural beliefs and language preferences  
-✓ Address health literacy with appropriate language  
-✓ Align plan with patient values and life circumstances  
-✓ Support patient activation and self-management  
+✓ Involve patients in goal-setting and decision-making
+✓ Respect cultural beliefs and language preferences
+✓ Address health literacy with appropriate language
+✓ Align plan with patient values and life circumstances
+✓ Support patient activation and self-management
 
 ### Evidence-Based Practice
-✓ Follow current clinical practice guidelines  
-✓ Use interventions with proven efficacy  
-✓ Incorporate quality measures (HEDIS, CMS)  
-✓ Avoid low-value or ineffective interventions  
-✓ Update plans based on emerging evidence  
+✓ Follow current clinical practice guidelines
+✓ Use interventions with proven efficacy
+✓ Incorporate quality measures (HEDIS, CMS)
+✓ Avoid low-value or ineffective interventions
+✓ Update plans based on emerging evidence
 
 ### Regulatory Compliance
-✓ De-identify per HIPAA Safe Harbor method (18 identifiers)  
-✓ Document medical necessity for billing support  
-✓ Include informed consent documentation  
-✓ Sign and date all treatment plans  
-✓ Maintain professional documentation standards  
+✓ De-identify per HIPAA Safe Harbor method (18 identifiers)
+✓ Document medical necessity for billing support
+✓ Include informed consent documentation
+✓ Sign and date all treatment plans
+✓ Maintain professional documentation standards
 
 ### Quality Documentation
-✓ Complete all required sections  
-✓ Use clear, professional medical language  
-✓ Include specific, measurable goals  
-✓ Specify exact medications (dose, route, frequency)  
-✓ Define monitoring parameters and frequency  
-✓ Address safety and risk mitigation  
+✓ Complete all required sections
+✓ Use clear, professional medical language
+✓ Include specific, measurable goals
+✓ Specify exact medications (dose, route, frequency)
+✓ Define monitoring parameters and frequency
+✓ Address safety and risk mitigation
 
 ### Care Coordination
-✓ Communicate plan to entire care team  
-✓ Define roles and responsibilities  
-✓ Coordinate across care settings  
-✓ Integrate specialist recommendations  
-✓ Plan for care transitions  
+✓ Communicate plan to entire care team
+✓ Define roles and responsibilities
+✓ Coordinate across care settings
+✓ Integrate specialist recommendations
+✓ Plan for care transitions
 
 ## Integration with Other Skills
 
@@ -485,4 +485,3 @@ Part of the Claude Scientific Writer project. See main LICENSE file.
 ---
 
 For detailed documentation, see `SKILL.md`. For issues or questions, consult the comprehensive reference files in the `references/` directory.
-

@@ -249,7 +249,10 @@ class AgentRanking:
 
         # Update opponent rating (inverse score)
         self.agents[opponent_id] = self.system.update(
-            opponent, [agent.mu], [agent.phi], [1 - score],
+            opponent,
+            [agent.mu],
+            [agent.phi],
+            [1 - score],
         )
 
     def get_rankings(self) -> list[tuple[str, float, float]]:

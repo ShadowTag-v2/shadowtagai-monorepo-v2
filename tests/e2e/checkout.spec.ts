@@ -14,14 +14,14 @@ test.describe('KovelAI Pricing & Checkout', () => {
   test('monthly/annual toggle updates pricing', async ({ page }) => {
     await page.goto(`${BASE_URL}/pricing.html`);
     const proPrice = page.locator('#pro-price');
-    
+
     // Default: monthly
     await expect(proPrice).toContainText('$149');
-    
+
     // Switch to annual
     await page.locator('#annual-btn').click();
     await expect(proPrice).toContainText('$119');
-    
+
     // Switch back to monthly
     await page.locator('#monthly-btn').click();
     await expect(proPrice).toContainText('$149');
@@ -49,13 +49,13 @@ test.describe('KovelAI Pricing & Checkout', () => {
   test('professional CTA triggers Stripe checkout', async ({ page }) => {
     await page.goto(`${BASE_URL}/pricing.html`);
     const proBtn = page.locator('.pricing-card.featured .cta-btn');
-    
+
     // Intercept the API call to /billing/checkout
     const [request] = await Promise.all([
       page.waitForRequest(req => req.url().includes('/billing/checkout'), { timeout: 5000 }).catch(() => null),
       proBtn.click(),
     ]);
-    
+
     // Either the API request was made or Stripe.redirectToCheckout was called
     expect(true).toBeTruthy();
   });
@@ -87,23 +87,23 @@ test.describe('KovelAI Onboarding Wizard', () => {
 
   test('full wizard completion flow', async ({ page }) => {
     await page.goto(`${BASE_URL}/onboarding.html`);
-    
+
     // Step 1
     await page.fill('#attorney-name', 'Jane Attorney');
     await page.fill('#attorney-email', 'jane@lawfirm.com');
     await page.fill('#bar-number', 'CA-123456');
     await page.click('button:has-text("Continue")');
-    
+
     // Step 2
     await page.fill('#firm-name', 'Smith & Associates');
     await page.click('.practice-size:has-text("Solo")');
     await page.click('button:has-text("Continue")');
-    
+
     // Step 3
     await page.selectOption('#practice-area', 'Corporate / M&A');
     await page.selectOption('#jurisdiction', 'California');
     await page.click('button:has-text("Continue")');
-    
+
     // Step 4 — completion
     await expect(page.locator('.success')).toBeVisible();
     await expect(page.locator('text=You\'re All Set')).toBeVisible();

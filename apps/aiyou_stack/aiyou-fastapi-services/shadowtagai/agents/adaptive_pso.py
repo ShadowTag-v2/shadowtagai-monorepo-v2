@@ -172,7 +172,8 @@ class AdaptivePSO:
 
                 # Get adaptive weights
                 adaptive_w, adaptive_c1, adaptive_c2 = self._compute_adaptive_weights(
-                    particle, gradient,
+                    particle,
+                    gradient,
                 )
 
                 # Random components

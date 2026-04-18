@@ -22,7 +22,6 @@ from toolbox_adk.tool import ToolboxTool
 
 
 class TestToolboxTool:
-
     @pytest.mark.asyncio
     async def test_run_async_passthrough(self):
         mock_core = AsyncMock()
@@ -132,9 +131,7 @@ class TestToolboxTool:
         tool = ToolboxTool(core_tool, auth_config=auth_config)
         ctx = MagicMock()  # Mock the context
 
-        with pytest.raises(
-            ValueError, match="USER_IDENTITY requires client_id and client_secret"
-        ):
+        with pytest.raises(ValueError, match="USER_IDENTITY requires client_id and client_secret"):
             await tool.run_async({"arg": "val"}, ctx)
 
     @pytest.mark.asyncio
@@ -148,9 +145,7 @@ class TestToolboxTool:
         core_tool._required_authn_params = {"mock_param": "mock_service"}
         core_tool._required_authz_tokens = []
 
-        auth_config = CredentialConfig(
-            type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec"
-        )
+        auth_config = CredentialConfig(type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec")
 
         tool = ToolboxTool(core_tool, auth_config=auth_config)
 
@@ -181,9 +176,7 @@ class TestToolboxTool:
         core_tool._required_authz_tokens = ["mock_service"]
         core_tool.add_auth_token_getter = MagicMock(return_value=core_tool)
 
-        auth_config = CredentialConfig(
-            type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec"
-        )
+        auth_config = CredentialConfig(type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec")
 
         tool = ToolboxTool(core_tool, auth_config=auth_config)
 
@@ -239,9 +232,7 @@ class TestToolboxTool:
         core_tool._required_authn_params = {"mock_param": "mock_service"}
         core_tool._required_authz_tokens = []
 
-        auth_config = CredentialConfig(
-            type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec"
-        )
+        auth_config = CredentialConfig(type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec")
         tool = ToolboxTool(core_tool, auth_config=auth_config)
         ctx = MagicMock()
 
@@ -267,9 +258,7 @@ class TestToolboxTool:
         core_tool._required_authn_params = {"mock_param": "mock_service"}
         core_tool._required_authz_tokens = []
 
-        auth_config = CredentialConfig(
-            type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec"
-        )
+        auth_config = CredentialConfig(type=CredentialType.USER_IDENTITY, client_id="cid", client_secret="csec")
         tool = ToolboxTool(core_tool, auth_config=auth_config)
         ctx = MagicMock()
 
@@ -352,9 +341,7 @@ class TestToolboxTool:
 
         # Object param (nested)
         object_param = MockParam("my_object", "object", "An object", True)
-        object_param.properties = {
-            "nested_str": MockParam("nested_str", "string", "A nested string", True)
-        }
+        object_param.properties = {"nested_str": MockParam("nested_str", "string", "A nested string", True)}
 
         core_tool._params = [array_param, object_param]
 

@@ -46,7 +46,7 @@ const enrichmentMiddleware = createMiddleware({
   wrapToolCall: async (request, handler) => {
     const result = await handler(request);
     const toolName = request.toolCall.name;
-    
+
     let content = result;
     if (typeof result === 'object' && result !== null && result.content) {
         content = result.content;
@@ -83,11 +83,11 @@ async function main() {
     model: "gemini-2.5-flash",
   });
 
-  const agent = createAgent({ 
-    model: model, 
-    tools: tools, 
-    systemPrompt: systemPrompt, 
-    middleware: [businessRulesMiddleware, enrichmentMiddleware] 
+  const agent = createAgent({
+    model: model,
+    tools: tools,
+    systemPrompt: systemPrompt,
+    middleware: [businessRulesMiddleware, enrichmentMiddleware]
   });
 
   for (const query of queries) {

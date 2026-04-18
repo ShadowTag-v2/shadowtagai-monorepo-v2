@@ -1,5 +1,4 @@
-"""Tests for Compliance API Endpoints
-"""
+"""Tests for Compliance API Endpoints"""
 
 import pytest
 from fastapi.testclient import TestClient

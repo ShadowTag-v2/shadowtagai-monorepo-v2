@@ -15,8 +15,7 @@ ai = Genkit(plugins=[vertexai()])
 
 @ai.tool
 def search_knowledge(query: str) -> str:
-    """Searches the Sovereign Lake (Vertex AI Search) for truth.
-    """
+    """Searches the Sovereign Lake (Vertex AI Search) for truth."""
     logging.info(f"🔍 Searching Knowledge Base for: {query}")
     # Integration Point: Vertex AI Search Client
     # client = discoveryengine.SearchServiceClient()
@@ -26,8 +25,7 @@ def search_knowledge(query: str) -> str:
 
 @ai.tool
 def trigger_transformation(dataset_name: str) -> str:
-    """Triggers a Dataform SQL transformation workspace calibration.
-    """
+    """Triggers a Dataform SQL transformation workspace calibration."""
     logging.info(f"⚙️ Triggering Dataform for: {dataset_name}")
     # Integration Point: Dataform Client
     return f"Dataform calibration started for {dataset_name}. Job ID: df-job-999"

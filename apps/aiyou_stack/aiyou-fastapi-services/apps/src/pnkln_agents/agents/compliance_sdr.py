@@ -56,8 +56,7 @@ class LeadGenerationResult:
     audit_report: dict[str, Any]
 
     def to_a2ui_payload(self) -> dict[str, Any]:
-        """Convert result to A2UI payload for Agent Manager Dashboard.
-        """
+        """Convert result to A2UI payload for Agent Manager Dashboard."""
         # Calculate stats for chart
         stats = [
             {"label": "Approved", "value": len(self.approved_leads)},

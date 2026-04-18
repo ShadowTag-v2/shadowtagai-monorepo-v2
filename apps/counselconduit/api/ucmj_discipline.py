@@ -26,23 +26,26 @@ logger = logging.getLogger(__name__)
 
 class Infraction(IntEnum):
     """UCMJ article mapping for agent infractions."""
-    AWOL = 86          # No response within deadline
-    DERELICTION = 92   # Timeout exceeded
-    GENERAL = 134      # Invalid or unsafe output
+
+    AWOL = 86  # No response within deadline
+    DERELICTION = 92  # Timeout exceeded
+    GENERAL = 134  # Invalid or unsafe output
 
 
 class Punishment(IntEnum):
     """Graduated punishment scale."""
-    COUNSELING = 1     # Log warning
-    REPRIMAND = 2      # Alert + metric
-    RESTRICTION = 3    # Reduce concurrency
-    DEMOTION = 4       # Downgrade model tier
-    SEPARATION = 5     # Terminate + replace
+
+    COUNSELING = 1  # Log warning
+    REPRIMAND = 2  # Alert + metric
+    RESTRICTION = 3  # Reduce concurrency
+    DEMOTION = 4  # Downgrade model tier
+    SEPARATION = 5  # Terminate + replace
 
 
 @dataclass(frozen=True)
 class Verdict:
     """Immutable record of an agent discipline assessment."""
+
     agent_id: str
     infraction: Infraction | None
     punishment: Punishment
@@ -77,28 +80,36 @@ def assess(
         punishment = Punishment.SEPARATION
         logger.critical(
             "UCMJ Art.86 AWOL: agent=%s elapsed=%.0fms sla=%.0fms (3x exceeded)",
-            agent_id, elapsed_ms, sla_ms,
+            agent_id,
+            elapsed_ms,
+            sla_ms,
         )
     elif elapsed_ms > sla_ms * 2:
         infraction = Infraction.DERELICTION
         punishment = Punishment.RESTRICTION
         logger.warning(
             "UCMJ Art.92 Dereliction: agent=%s elapsed=%.0fms sla=%.0fms (2x exceeded)",
-            agent_id, elapsed_ms, sla_ms,
+            agent_id,
+            elapsed_ms,
+            sla_ms,
         )
     elif elapsed_ms > sla_ms:
         infraction = Infraction.DERELICTION
         punishment = Punishment.REPRIMAND
         logger.warning(
             "UCMJ Art.92 Dereliction: agent=%s elapsed=%.0fms sla=%.0fms (exceeded)",
-            agent_id, elapsed_ms, sla_ms,
+            agent_id,
+            elapsed_ms,
+            sla_ms,
         )
     elif not output_valid:
         infraction = Infraction.GENERAL
         punishment = Punishment.COUNSELING
         logger.info(
             "UCMJ Art.134 General: agent=%s invalid output (sla ok: %.0fms/%.0fms)",
-            agent_id, elapsed_ms, sla_ms,
+            agent_id,
+            elapsed_ms,
+            sla_ms,
         )
 
     return Verdict(
@@ -114,12 +125,12 @@ def assess(
 
 # Default SLA thresholds per agent tier (milliseconds)
 SLA_THRESHOLDS: dict[str, float] = {
-    "judge6_fast":          500,    # 500ms for inline risk gate
-    "judge6_autonomous":    5000,   # 5s for post-hoc audit
-    "oracle_studio":        30000,  # 30s for 7-stage pipeline
-    "vent_mode":            10000,  # 10s per streaming chunk
-    "model_router":         1000,   # 1s for routing decision
-    "silent_detector":      50,     # 50ms for pattern scan
-    "kovel_attestation":    200,    # 200ms for HMAC generation
-    "intake_summarizer":    15000,  # 15s for LLM summarization
+    "judge6_fast": 500,  # 500ms for inline risk gate
+    "judge6_autonomous": 5000,  # 5s for post-hoc audit
+    "oracle_studio": 30000,  # 30s for 7-stage pipeline
+    "vent_mode": 10000,  # 10s per streaming chunk
+    "model_router": 1000,  # 1s for routing decision
+    "silent_detector": 50,  # 50ms for pattern scan
+    "kovel_attestation": 200,  # 200ms for HMAC generation
+    "intake_summarizer": 15000,  # 15s for LLM summarization
 }

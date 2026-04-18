@@ -82,7 +82,9 @@ class OmegaPayloadOrchestrator:
     async def run(self, anomaly_payload: str) -> str:
         # 1. Dispatch the Heavy Lift
         mitigation_result = await workflow.execute_activity(
-            mitigate_anomaly, anomaly_payload, start_to_close_timeout=timedelta(minutes=10),
+            mitigate_anomaly,
+            anomaly_payload,
+            start_to_close_timeout=timedelta(minutes=10),
         )
 
         # 2. In a live system, Judge 6 would re-evaluate `mitigation_result` here.

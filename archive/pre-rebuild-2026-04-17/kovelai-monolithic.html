@@ -211,7 +211,7 @@
           }
         }
       };
-      // Apply config immediately if Tailwind already loaded (cached), 
+      // Apply config immediately if Tailwind already loaded (cached),
       // otherwise async loader will apply via window.__tw_cfg
       try { if(typeof tailwind !== 'undefined') tailwind.config = window.__tw_cfg; } catch(e){}
     </script>
@@ -2647,30 +2647,30 @@ document.getElementById('contactForm').addEventListener('submit', async function
     const originalText = btn.textContent;
     btn.textContent = 'Submitting...';
     btn.disabled = true;
-    
+
     try {
         const formData = new FormData(this);
         // Honeypot check — abort silently if filled
         if (formData.get('_honey')) { btn.textContent = originalText; btn.disabled = false; return; }
-        
+
         // reCAPTCHA v3 — get invisible token
         let recaptchaToken = '';
         if (typeof grecaptcha !== 'undefined') {
             recaptchaToken = await grecaptcha.execute('6LfLP7EsAAAAAAXMAb0d47AyLjtsqQSqU_MG4Z27', {action: 'contact_submit'});
         }
-        
+
         // Use URL-encoded form data (simple request — no CORS preflight)
         const urlEncoded = new URLSearchParams();
         formData.forEach((value, key) => { if (key !== '_honey' && key !== 'recaptcha_token') urlEncoded.append(key, value); });
         urlEncoded.append('recaptcha_token', recaptchaToken);
         urlEncoded.append('recaptcha_action', 'contact_submit');
-        
+
         const response = await fetch(this.action, {
             method: 'POST',
             mode: 'no-cors',
             body: urlEncoded,
         });
-        
+
         // Apps Script returns a redirect or HTML for form-urlencoded — any 2xx/3xx is success
         closeContactModal();
         this.reset();

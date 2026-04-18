@@ -72,7 +72,9 @@ class ScoutMetadataTracker:
     """
 
     def __init__(
-        self, audit_trail: AuditTrailPersistence | None = None, registry_path: Path | None = None,
+        self,
+        audit_trail: AuditTrailPersistence | None = None,
+        registry_path: Path | None = None,
     ):
         self.audit_trail = audit_trail or create_audit_trail()
         self.registry_path = (
@@ -288,7 +290,8 @@ class ScoutSession:
 
     def __enter__(self) -> "ScoutSession":
         self.execution_id = self.tracker.start_session(
-            self.agent_name, baseline_state=self.baseline,
+            self.agent_name,
+            baseline_state=self.baseline,
         )
         return self
 

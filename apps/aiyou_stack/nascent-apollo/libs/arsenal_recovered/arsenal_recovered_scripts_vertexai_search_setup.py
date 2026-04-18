@@ -88,7 +88,7 @@ def import_documents_to_datastore(
         if response.error_samples and len(response.error_samples) > 0:
             print(f"Document import completed with errors. Error Config {response.error_config}")
             for i, error_sample in enumerate(response.error_samples):
-                print(f"  Error sample {i+1}: {error_sample.message}")
+                print(f"  Error sample {i + 1}: {error_sample.message}")
             raise Exception("Document import failed with errors", response)
         else:
             print("Successfully imported documents.")

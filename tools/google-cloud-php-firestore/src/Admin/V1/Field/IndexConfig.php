@@ -202,4 +202,3 @@ class IndexConfig extends \Google\Protobuf\Internal\Message
     }
 
 }
-

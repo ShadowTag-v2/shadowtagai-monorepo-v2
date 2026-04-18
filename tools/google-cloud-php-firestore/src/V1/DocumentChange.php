@@ -151,4 +151,3 @@ class DocumentChange extends \Google\Protobuf\Internal\Message
     }
 
 }
-

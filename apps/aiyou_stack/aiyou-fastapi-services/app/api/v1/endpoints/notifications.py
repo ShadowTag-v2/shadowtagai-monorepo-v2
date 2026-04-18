@@ -54,7 +54,8 @@ async def mark_notification_read(
 
 @router.put("/read-all", status_code=status.HTTP_200_OK)
 async def mark_all_notifications_read(
-    current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
 ):
     """Mark all notifications as read."""
     NotificationService.mark_all_read(db, current_user.id)
@@ -77,7 +78,8 @@ async def delete_notification(
 
 @router.get("/preferences", response_model=NotificationPreferenceResponse)
 async def get_notification_preferences(
-    current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
 ):
     """Get notification preferences for current user."""
     return NotificationService.get_preferences(db, current_user.id)

@@ -361,4 +361,3 @@ class PartitionQueryRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

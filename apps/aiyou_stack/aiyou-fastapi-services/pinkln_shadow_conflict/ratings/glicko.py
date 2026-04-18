@@ -97,7 +97,9 @@ class GlickoSystem:
 
         # Step 7: Convert back to original scale
         new_rating = GlickoRating(
-            rating=173.7178 * mu_prime + 1500, rd=173.7178 * phi_prime, volatility=sigma_prime,
+            rating=173.7178 * mu_prime + 1500,
+            rd=173.7178 * phi_prime,
+            volatility=sigma_prime,
         )
 
         return new_rating
@@ -112,7 +114,11 @@ class GlickoSystem:
         )
 
     def _compute_delta(
-        self, mu: float, opponents: list[GlickoRating], outcomes: list[float], v: float,
+        self,
+        mu: float,
+        opponents: list[GlickoRating],
+        outcomes: list[float],
+        v: float,
     ) -> float:
         """Compute performance difference."""
         return v * sum(

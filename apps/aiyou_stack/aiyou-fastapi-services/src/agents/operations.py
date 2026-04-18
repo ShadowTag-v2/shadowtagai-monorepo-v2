@@ -1,5 +1,4 @@
-"""Operations Agents for Vertex AI Workbench
-"""
+"""Operations Agents for Vertex AI Workbench"""
 
 from typing import Any
 

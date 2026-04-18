@@ -77,7 +77,8 @@ class Settings(BaseSettings):
 
     # Security
     secret_key: SecretStr = Field(
-        "CHANGE_ME", min_length=32,
+        "CHANGE_ME",
+        min_length=32,
     )  # Default placeholder, should be overridden in .env
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 7

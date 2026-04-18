@@ -140,4 +140,3 @@ function handleVerifyEmail(auth, actionCode, continueUrl, lang) {
   });
 }
 // [END auth_handle_verify_email]
-

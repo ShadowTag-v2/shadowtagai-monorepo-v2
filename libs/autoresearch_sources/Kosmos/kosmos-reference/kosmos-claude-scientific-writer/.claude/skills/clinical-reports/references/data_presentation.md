@@ -97,13 +97,13 @@ Change in FPG, mg/dL
 
 % achieving HbA1c <7%
   n (%)                            78 (52.0)      25 (17.2)      -              <0.001
-  95% CI                           (43.9, 60.1)   (11.4, 24.5)   
+  95% CI                           (43.9, 60.1)   (11.4, 24.5)
 
 Change in body weight, kg
   Mean (SE)                        -3.2 (0.4)     -0.5 (0.4)     -2.7          <0.001
   95% CI                           (-4.0, -2.4)   (-1.3, 0.3)    (-3.8, -1.6)
 ──────────────────────────────────────────────────────────────────────────────
-SE = standard error; CI = confidence interval; HbA1c = hemoglobin A1c; 
+SE = standard error; CI = confidence interval; HbA1c = hemoglobin A1c;
 FPG = fasting plasma glucose
 ```
 
@@ -172,7 +172,7 @@ Creatinine >1.5× baseline            12 (8.0)       5 (3.4)
 Hemoglobin <10 g/dL                  3 (2.0)        2 (1.4)
 Platelets <100 × 10³/μL              1 (0.7)        0 (0.0)
 ──────────────────────────────────────────────────────────────────────────
-ULN = upper limit of normal; ALT = alanine aminotransferase; 
+ULN = upper limit of normal; ALT = alanine aminotransferase;
 AST = aspartate aminotransferase
 ```
 
@@ -527,4 +527,3 @@ p-value for interaction testing heterogeneity of treatment effect across subgrou
 ---
 
 This reference provides comprehensive guidance for presenting clinical data in tables and figures following best practices and publication standards. Use these guidelines to create clear, accurate, and professional data presentations.
-

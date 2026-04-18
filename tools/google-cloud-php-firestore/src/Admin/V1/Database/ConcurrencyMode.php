@@ -75,4 +75,3 @@ class ConcurrencyMode
         return constant($const);
     }
 }
-

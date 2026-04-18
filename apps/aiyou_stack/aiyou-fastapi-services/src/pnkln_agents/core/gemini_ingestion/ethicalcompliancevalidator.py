@@ -21,7 +21,8 @@ class EthicalComplianceValidator:
         self.max_requests_per_hour = self.config.get("max_requests_per_hour", 60)
         self.respect_robots_txt = self.config.get("respect_robots_txt", True)
         self.user_agent = self.config.get(
-            "user_agent", "SHADOWTAGAIBot/1.0 (+https://shadowtagai.ai/bot)",
+            "user_agent",
+            "SHADOWTAGAIBot/1.0 (+https://shadowtagai.ai/bot)",
         )
         self.request_history: dict[str, list[datetime]] = {}
 

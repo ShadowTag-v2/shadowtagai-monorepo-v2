@@ -47,8 +47,7 @@ def health_check():
 # Core endpoints
 @app.post("/verify/endpoint")
 def verify_endpoint(check: EndpointCheck):
-    """Verify an API endpoint is accessible and returns expected status.
-    """
+    """Verify an API endpoint is accessible and returns expected status."""
     try:
         jetski = get_jetski()
         result = jetski.verify_endpoint(str(check.url), check.expected_status)

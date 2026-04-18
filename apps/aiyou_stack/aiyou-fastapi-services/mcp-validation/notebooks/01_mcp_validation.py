@@ -297,7 +297,11 @@ class MCPClient:
         self.client = httpx.AsyncClient(timeout=30.0)
 
     async def execute_code(
-        self, code: str, user_id: str, session_id: str, context: dict[str, Any] | None = None,
+        self,
+        code: str,
+        user_id: str,
+        session_id: str,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Execute code via MCP server"""
         request = {
@@ -512,7 +516,9 @@ class ValidationRunner:
 
         # GO/NO-GO decision
         go_decision, decision_rationale = self._make_go_decision(
-            p99_latency, success_rate, security_tests_failed,
+            p99_latency,
+            success_rate,
+            security_tests_failed,
         )
 
         return ValidationSummary(
@@ -534,7 +540,10 @@ class ValidationRunner:
         )
 
     def _make_go_decision(
-        self, p99_latency: float, success_rate: float, security_failures: int,
+        self,
+        p99_latency: float,
+        success_rate: float,
+        security_failures: int,
     ) -> tuple[str, str]:
         """Determine GO/NO-GO decision based on validation results"""
         # ABORT criteria

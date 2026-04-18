@@ -48,7 +48,9 @@ def list_recipients(
 
 @router.patch("/recipients/{recipient_id}", response_model=schemas.RecipientResponse)
 def update_recipient(
-    recipient_id: int, recipient_update: schemas.RecipientUpdate, db: Session = Depends(get_db),
+    recipient_id: int,
+    recipient_update: schemas.RecipientUpdate,
+    db: Session = Depends(get_db),
 ):
     """Update recipient"""
     recipient = repository.EmailRepository.update_recipient(db, recipient_id, recipient_update)

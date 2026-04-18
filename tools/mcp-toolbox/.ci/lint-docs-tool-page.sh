@@ -5,17 +5,17 @@ python3 - << 'EOF'
 """
 MCP TOOLBOX: TOOL PAGE LINTER
 =============================
-This script enforces a standardized structure for individual Tool pages 
-and their parent directory wrappers. It ensures LLM agents can parse 
+This script enforces a standardized structure for individual Tool pages
+and their parent directory wrappers. It ensures LLM agents can parse
 tool capabilities and parameter definitions reliably.
 
 MAINTENANCE GUIDE:
 ------------------
-1. TO ADD A NEW HEADING: 
-   Add the exact heading text to the 'ALLOWED_ORDER' list in the desired 
+1. TO ADD A NEW HEADING:
+   Add the exact heading text to the 'ALLOWED_ORDER' list in the desired
    sequence.
 
-2. TO MAKE A HEADING MANDATORY/OPTIONAL: 
+2. TO MAKE A HEADING MANDATORY/OPTIONAL:
    Add or remove the heading text in the 'REQUIRED' set.
 
 3. TO UPDATE SHORTCODE LOGIC:
@@ -23,11 +23,11 @@ MAINTENANCE GUIDE:
 
 4. SCOPE & BEHAVIOR:
    This script targets all .md files in docs/en/integrations/**/tools/.
-   - For `_index.md` files: It only validates the frontmatter (requiring 
+   - For `_index.md` files: It only validates the frontmatter (requiring
      `title: "Tools"` and `weight: 2`) and ignores the body.
-   - For regular tool files: It validates H1/H2 hierarchy, checks for 
-     required headings ("About", "Example"), and enforces that the 
-     `{{< compatible-sources >}}` shortcode is paired with the 
+   - For regular tool files: It validates H1/H2 hierarchy, checks for
+     required headings ("About", "Example"), and enforces that the
+     `{{< compatible-sources >}}` shortcode is paired with the
      "## Compatible Sources" heading.
 """
 

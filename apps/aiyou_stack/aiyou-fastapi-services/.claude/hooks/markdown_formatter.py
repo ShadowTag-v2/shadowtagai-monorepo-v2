@@ -22,18 +22,22 @@ def detect_language(code):
             pass
 
     # Python detection
-    if re.search(r"^\s*def\s+\w+\s*\(", s, re.MULTILINE) or re.search(r"^\s*(import|from)\s+\w+", s, re.MULTILINE):
+    if re.search(r"^\s*def\s+\w+\s*\(", s, re.MULTILINE) or re.search(
+        r"^\s*(import|from)\s+\w+", s, re.MULTILINE
+    ):
         return "python"
 
     # JavaScript detection
     if re.search(r"\b(function\s+\w+\s*\(|const\s+\w+\s*=)", s) or re.search(
-        r"=>|console\.(log|error)", s,
+        r"=>|console\.(log|error)",
+        s,
     ):
         return "javascript"
 
     # Bash detection
     if re.search(r"^#!.*\b(bash|sh)\b", s, re.MULTILINE) or re.search(
-        r"\b(if|then|fi|for|in|do|done)\b", s,
+        r"\b(if|then|fi|for|in|do|done)\b",
+        s,
     ):
         return "bash"
 

@@ -9,6 +9,6 @@ function onDocumentReady() {
   if (location.hostname === "localhost") {
     // Point to the Storage emulator running on localhost.
     connectStorageEmulator(storage, "127.0.0.1", 9199);
-  } 
+  }
   // [END storage_emulator_connect]
 }

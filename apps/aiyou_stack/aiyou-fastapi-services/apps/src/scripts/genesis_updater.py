@@ -47,8 +47,7 @@ def genesis_scan():
 
 
 def deploy_simulation(tech_name):
-    """Simulates the 'Updater' creating a new feature branch.
-    """
+    """Simulates the 'Updater' creating a new feature branch."""
     print(f"[UPDATER] Spinning up Shadow Fork for '{tech_name}'...")
     print("[UPDATER] Refactoring Codebase...")
 

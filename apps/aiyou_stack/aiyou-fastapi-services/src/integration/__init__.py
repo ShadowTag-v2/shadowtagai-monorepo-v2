@@ -227,7 +227,10 @@ class KernelFunctionRegistry:
             },
         )
         def wealth_analyze(
-            revenue_monthly: float, cac: float, ltv: float, churn_rate: float,
+            revenue_monthly: float,
+            cac: float,
+            ltv: float,
+            churn_rate: float,
         ) -> dict:
             """Wealth Planning Model
 
@@ -238,7 +241,10 @@ class KernelFunctionRegistry:
                 accelerator = WealthAccelerator()
 
                 result = accelerator.analyze_business(
-                    revenue_monthly=revenue_monthly, cac=cac, ltv=ltv, churn_rate=churn_rate,
+                    revenue_monthly=revenue_monthly,
+                    cac=cac,
+                    ltv=ltv,
+                    churn_rate=churn_rate,
                 )
 
                 return {

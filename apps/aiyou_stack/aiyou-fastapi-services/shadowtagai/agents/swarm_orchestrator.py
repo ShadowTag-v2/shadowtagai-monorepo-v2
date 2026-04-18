@@ -320,7 +320,10 @@ def main():
 
     if args.command == "mission":
         result = orchestrator.process_mission(
-            mission=args.text, tier=args.tier, required_squads=args.squads, num_tasks=args.tasks,
+            mission=args.text,
+            tier=args.tier,
+            required_squads=args.squads,
+            num_tasks=args.tasks,
         )
         print(f"\n///▞ Thread created: {result['thread_id']}")
         print(f"    Route: {' → '.join(result['route']) if result['route'] else 'N/A'}")

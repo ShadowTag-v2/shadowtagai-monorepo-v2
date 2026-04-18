@@ -73,7 +73,7 @@ The `toolbox-llamaindex` package provides a dedicated integration to seamlessly 
 - [Asynchronous Usage](https://mcp-toolbox.dev/documentation/connect-to/toolbox-sdks/python-sdk/llamaindex/#asynchronous-usage)
 - [OpenTelemetry](https://mcp-toolbox.dev/documentation/connect-to/toolbox-sdks/python-sdk/llamaindex/#opentelemetry)
 
-# Contributing 
+# Contributing
 
 Contributions are welcome! Please refer to the [`DEVELOPER.md`](https://github.com/googleapis/mcp-toolbox-sdk-python/blob/main/packages/toolbox-llamaindex/DEVELOPER.md) file for guidelines on how to set up a development environment and run tests.
 

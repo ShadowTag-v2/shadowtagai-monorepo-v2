@@ -1,5 +1,4 @@
-"""DualCo Strategy Engine Core Logic
-"""
+"""DualCo Strategy Engine Core Logic"""
 
 import json
 from datetime import datetime
@@ -38,7 +37,9 @@ class DualCoEngine:
         )
         if not state:
             state = DualCoGateState(
-                gate_name=gate_name.value, status="PENDING", consecutive_failures=0,
+                gate_name=gate_name.value,
+                status="PENDING",
+                consecutive_failures=0,
             )
             self.db.add(state)
             self.db.flush()

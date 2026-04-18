@@ -402,8 +402,7 @@ class CostTracker:
         }
 
     def get_optimization_recommendations(self) -> list[dict]:
-        """Provide cost optimization recommendations based on usage patterns.
-        """
+        """Provide cost optimization recommendations based on usage patterns."""
         stats = self.get_cost_stats(30)
         recommendations = []
 
@@ -508,7 +507,9 @@ def main():
     stats_parser = subparsers.add_parser("stats", help="Show cost statistics")
     stats_parser.add_argument("--days", type=int, default=30, help="Days to analyze")
     stats_parser.add_argument(
-        "--type", choices=["atomic", "simple", "single"], help="Filter by system type",
+        "--type",
+        choices=["atomic", "simple", "single"],
+        help="Filter by system type",
     )
 
     # ROI

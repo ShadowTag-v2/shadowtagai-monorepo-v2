@@ -293,4 +293,3 @@ class BatchGetDocumentsRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

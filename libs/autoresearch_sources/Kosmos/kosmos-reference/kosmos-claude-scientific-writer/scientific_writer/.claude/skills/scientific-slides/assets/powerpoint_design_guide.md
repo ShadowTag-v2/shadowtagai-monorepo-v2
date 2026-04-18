@@ -289,31 +289,31 @@ const DESIGN = {
 function addTitleSlide(pptx, title, subtitle, author) {
   const slide = pptx.addSlide();
   slide.background = { color: DESIGN.colors.primary };
-  
+
   slide.addText(title, {
     x: 1, y: 2, w: 8, h: 1,
     fontSize: 44, bold: true, color: "FFFFFF",
     align: "center"
   });
-  
+
   slide.addText(subtitle, {
     x: 1, y: 3.2, w: 8, h: 0.5,
     fontSize: 24, color: "FFFFFF",
     align: "center"
   });
-  
+
   slide.addText(author, {
     x: 1, y: 4, w: 8, h: 0.4,
     fontSize: 18, color: "FFFFFF",
     align: "center"
   });
-  
+
   return slide;
 }
 
 function addContentSlide(pptx, title, bullets) {
   const slide = pptx.addSlide();
-  
+
   slide.addText(title, {
     x: DESIGN.layout.margin,
     y: DESIGN.layout.titleY,
@@ -322,7 +322,7 @@ function addContentSlide(pptx, title, bullets) {
     ...DESIGN.fonts.heading,
     color: DESIGN.colors.primary
   });
-  
+
   slide.addText(bullets, {
     x: DESIGN.layout.margin,
     y: DESIGN.layout.contentY,
@@ -331,7 +331,7 @@ function addContentSlide(pptx, title, bullets) {
     ...DESIGN.fonts.body,
     bullet: true
   });
-  
+
   return slide;
 }
 ```
@@ -659,4 +659,3 @@ Effective PowerPoint presentations for science require:
 6. Accessibility considerations
 
 Use the pptx skill for programmatic creation and the visual review workflow to ensure professional quality before presenting.
-

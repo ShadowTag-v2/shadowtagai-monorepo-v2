@@ -144,7 +144,8 @@ class Video(Base):
 
     # AI and personalization
     personalization_stage = Column(
-        SQLEnum(PersonalizationStage), default=PersonalizationStage.RULES,
+        SQLEnum(PersonalizationStage),
+        default=PersonalizationStage.RULES,
     )
     available_runtimes = Column(JSON)  # List of supported runtime modes
     narrative_arcs = Column(JSON)  # Story branch definitions
@@ -320,8 +321,7 @@ class PersuasionPoint(Base):
 
 
 class User(Base):
-    """User profiles for personalization and tracking
-    """
+    """User profiles for personalization and tracking"""
 
     __tablename__ = "users"
 
@@ -407,8 +407,7 @@ class UserInteraction(Base):
 
 
 class Retailer(Base):
-    """Retail partners sponsoring Premium Beacons and shoppable content
-    """
+    """Retail partners sponsoring Premium Beacons and shoppable content"""
 
     __tablename__ = "retailers"
 

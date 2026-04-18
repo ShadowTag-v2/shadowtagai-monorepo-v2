@@ -35,16 +35,12 @@ def mock_async_tool() -> MagicMock:
 
     # Create a simple signature for the mock tool
     param_a = Parameter("a", Parameter.POSITIONAL_OR_KEYWORD, annotation=str)
-    param_b = Parameter(
-        "b", Parameter.POSITIONAL_OR_KEYWORD, annotation=int, default=10
-    )
+    param_b = Parameter("b", Parameter.POSITIONAL_OR_KEYWORD, annotation=int, default=10)
     tool.__signature__ = Signature(parameters=[param_a, param_b])
 
     tool.__annotations__ = {"a": str, "b": int, "return": str}
 
-    tool.add_auth_token_getters.return_value = create_autospec(
-        ToolboxTool, instance=True
-    )
+    tool.add_auth_token_getters.return_value = create_autospec(ToolboxTool, instance=True)
     tool.bind_params.return_value = create_autospec(ToolboxTool, instance=True)
 
     return tool
@@ -89,22 +85,16 @@ def test_toolbox_sync_tool_init_success(
 
 def test_toolbox_sync_tool_init_type_error():
     """Tests TypeError if async_tool is not a ToolboxTool instance."""
-    with pytest.raises(
-        TypeError, match="async_tool must be an instance of ToolboxTool"
-    ):
+    with pytest.raises(TypeError, match="async_tool must be an instance of ToolboxTool"):
         ToolboxSyncTool("not_a_toolbox_tool", Mock(), Mock())
 
 
-def test_toolbox_sync_tool_name_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_name_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the __name__ property."""
     assert toolbox_sync_tool.__name__ == mock_async_tool.__name__
 
 
-def test_toolbox_sync_tool_doc_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_doc_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the __doc__ property."""
     assert toolbox_sync_tool.__doc__ == mock_async_tool.__doc__
 
@@ -114,81 +104,52 @@ def test_toolbox_sync_tool_doc_property(
     assert sync_tool_no_doc.__doc__ is None
 
 
-def test_toolbox_sync_tool_signature_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_signature_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the __signature__ property."""
     assert toolbox_sync_tool.__signature__ is mock_async_tool.__signature__
 
 
-def test_toolbox_sync_tool_annotations_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_annotations_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the __annotations__ property."""
     assert toolbox_sync_tool.__annotations__ is mock_async_tool.__annotations__
 
 
-def test_toolbox_sync_tool_underscore_name_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_name_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _name property."""
     assert toolbox_sync_tool._name == mock_async_tool._name
 
 
-def test_toolbox_sync_tool_underscore_description_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_description_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _description property."""
     assert toolbox_sync_tool._description == mock_async_tool._description
 
 
-def test_toolbox_sync_tool_underscore_params_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_params_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _params property."""
     assert toolbox_sync_tool._params == mock_async_tool._params
 
 
-def test_toolbox_sync_tool_underscore_bound_params_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_bound_params_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _bound_params property."""
     assert toolbox_sync_tool._bound_params == mock_async_tool._bound_params
 
 
-def test_toolbox_sync_tool_underscore_required_authn_params_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_required_authn_params_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _required_authn_params property."""
-    assert (
-        toolbox_sync_tool._required_authn_params
-        == mock_async_tool._required_authn_params
-    )
+    assert toolbox_sync_tool._required_authn_params == mock_async_tool._required_authn_params
 
 
-def test_toolbox_sync_tool_underscore_required_authz_tokens_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_required_authz_tokens_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _required_authz_tokens property."""
-    assert (
-        toolbox_sync_tool._required_authz_tokens
-        == mock_async_tool._required_authz_tokens
-    )
+    assert toolbox_sync_tool._required_authz_tokens == mock_async_tool._required_authz_tokens
 
 
-def test_toolbox_sync_tool_underscore_auth_service_token_getters_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_auth_service_token_getters_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _auth_service_token_getters property."""
-    assert (
-        toolbox_sync_tool._auth_service_token_getters
-        is mock_async_tool._auth_service_token_getters
-    )
+    assert toolbox_sync_tool._auth_service_token_getters is mock_async_tool._auth_service_token_getters
 
 
-def test_toolbox_sync_tool_underscore_client_headers_property(
-    toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock
-):
+def test_toolbox_sync_tool_underscore_client_headers_property(toolbox_sync_tool: ToolboxSyncTool, mock_async_tool: MagicMock):
     """Tests the _client_headers property."""
     assert toolbox_sync_tool._client_headers is mock_async_tool._client_headers
 
@@ -241,12 +202,8 @@ def test_toolbox_sync_tool_add_auth_token_getters(
     assert new_sync_tool is not toolbox_sync_tool
     assert new_sync_tool._ToolboxSyncTool__async_tool is new_mock_async_tool
     assert new_sync_tool._ToolboxSyncTool__loop is event_loop  # Should be the same loop
-    assert (
-        new_sync_tool._ToolboxSyncTool__thread is mock_thread
-    )  # Should be the same thread
-    assert (
-        new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
-    )
+    assert new_sync_tool._ToolboxSyncTool__thread is mock_thread  # Should be the same thread
+    assert new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
 
 
 def test_toolbox_sync_tool_add_auth_token_getter(
@@ -262,24 +219,16 @@ def test_toolbox_sync_tool_add_auth_token_getter(
     new_mock_async_tool = mock_async_tool.add_auth_token_getters.return_value
     new_mock_async_tool.__name__ = "new_async_tool_with_auth"
 
-    new_sync_tool = toolbox_sync_tool.add_auth_token_getter(
-        auth_service, auth_token_getter
-    )
+    new_sync_tool = toolbox_sync_tool.add_auth_token_getter(auth_service, auth_token_getter)
 
-    mock_async_tool.add_auth_token_getters.assert_called_once_with(
-        {auth_service: auth_token_getter}
-    )
+    mock_async_tool.add_auth_token_getters.assert_called_once_with({auth_service: auth_token_getter})
 
     assert isinstance(new_sync_tool, ToolboxSyncTool)
     assert new_sync_tool is not toolbox_sync_tool
     assert new_sync_tool._ToolboxSyncTool__async_tool is new_mock_async_tool
     assert new_sync_tool._ToolboxSyncTool__loop is event_loop  # Should be the same loop
-    assert (
-        new_sync_tool._ToolboxSyncTool__thread is mock_thread
-    )  # Should be the same thread
-    assert (
-        new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
-    )
+    assert new_sync_tool._ToolboxSyncTool__thread is mock_thread  # Should be the same thread
+    assert new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
 
 
 def test_toolbox_sync_tool_bind_params(
@@ -306,9 +255,7 @@ def test_toolbox_sync_tool_bind_params(
     assert new_sync_tool._ToolboxSyncTool__async_tool is new_mock_async_tool
     assert new_sync_tool._ToolboxSyncTool__loop is event_loop
     assert new_sync_tool._ToolboxSyncTool__thread is mock_thread
-    assert (
-        new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
-    )
+    assert new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
 
 
 def test_toolbox_sync_tool_bind_param(
@@ -333,6 +280,4 @@ def test_toolbox_sync_tool_bind_param(
     assert new_sync_tool._ToolboxSyncTool__async_tool is new_mock_async_tool
     assert new_sync_tool._ToolboxSyncTool__loop is event_loop
     assert new_sync_tool._ToolboxSyncTool__thread is mock_thread
-    assert (
-        new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"
-    )
+    assert new_sync_tool.__qualname__ == f"ToolboxSyncTool.{new_mock_async_tool.__name__}"

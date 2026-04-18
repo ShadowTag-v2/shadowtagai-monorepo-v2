@@ -166,7 +166,7 @@ Example: "Urban Heat Islands: A Machine Learning Framework for Mitigation"
 % Simple format
 \author{\textbf{Jane Smith}\textsuperscript{1}, John Doe\textsuperscript{2}}
 \institute{
-  \textsuperscript{1}University of Example, 
+  \textsuperscript{1}University of Example,
   \textsuperscript{2}Research Institute
 }
 
@@ -189,15 +189,15 @@ Example: "Urban Heat Islands: A Machine Learning Framework for Mitigation"
 
 **Example** (95 words):
 ```
-Antibiotic resistance causes 700,000 deaths annually, projected to reach 
-10 million by 2050. Current diagnostic methods require 48-72 hours, 
-delaying appropriate treatment. Machine learning offers potential for 
-rapid resistance prediction, but existing models lack generalizability 
-across bacterial species. 
+Antibiotic resistance causes 700,000 deaths annually, projected to reach
+10 million by 2050. Current diagnostic methods require 48-72 hours,
+delaying appropriate treatment. Machine learning offers potential for
+rapid resistance prediction, but existing models lack generalizability
+across bacterial species.
 
-We developed a transformer-based deep learning model to predict antibiotic 
-resistance from genomic sequences across multiple pathogen species. Our 
-approach integrates evolutionary information and protein structure to 
+We developed a transformer-based deep learning model to predict antibiotic
+resistance from genomic sequences across multiple pathogen species. Our
+approach integrates evolutionary information and protein structure to
 improve cross-species accuracy.
 ```
 
@@ -231,7 +231,7 @@ improve cross-species accuracy.
   \node (process) [box, below of=start] {Preprocessing\\Quality Control};
   \node (analysis) [box, below of=process] {Statistical Analysis\\Mixed Models};
   \node (end) [box, below of=analysis] {Validation\\Independent Cohort};
-  
+
   \draw [arrow] (start) -- (process);
   \draw [arrow] (process) -- (analysis);
   \draw [arrow] (analysis) -- (end);
@@ -295,8 +295,8 @@ Methods
 
 **Example Caption**:
 ```latex
-\caption{Treatment significantly improved outcomes. 
-Mean±SD shown for control (blue, n=45) and treatment (orange, n=47) groups. 
+\caption{Treatment significantly improved outcomes.
+Mean±SD shown for control (blue, n=45) and treatment (orange, n=47) groups.
 **p<0.01, ***p<0.001 (two-tailed t-test).}
 ```
 
@@ -312,7 +312,7 @@ Key Findings
 • Model achieved 87% accuracy on test set (vs. 73% baseline)
 • Performance consistent across 5 bacterial species (p<0.001)
 • Prediction speed: <30 seconds per isolate
-• Feature importance: protein structure (42%), sequence (35%), 
+• Feature importance: protein structure (42%), sequence (35%),
   evolutionary conservation (23%)
 ```
 
@@ -353,11 +353,11 @@ Key Findings
 **Example**:
 ```
 Conclusions
-• First cross-species model for antibiotic resistance prediction 
+• First cross-species model for antibiotic resistance prediction
   achieving >85% accuracy
-• Protein structure integration critical for generalizability 
+• Protein structure integration critical for generalizability
   (improved accuracy by 14%)
-• Prediction speed enables clinical decision support within 
+• Prediction speed enables clinical decision support within
   consultation timeframe
 • Potential to reduce inappropriate antibiotic use by 20-30%
 ```
@@ -425,7 +425,7 @@ Jones, A., & Lee, B. (2024). Title. Science, 383, 112-118.
 
 **Minimal (For Space Constraints)**:
 ```
-Key References: Smith (Nature 2023), Jones (Science 2024), 
+Key References: Smith (Nature 2023), Jones (Science 2024),
 Chen (Cell 2022). Full bibliography: [QR Code]
 ```
 
@@ -442,8 +442,8 @@ Chen (Cell 2022). Full bibliography: [QR Code]
 **Format** (25-50 words):
 ```
 Acknowledgments
-Funded by NIH Grant R01-123456 and NSF Award 7890123. 
-We thank Dr. X for data access, the Y Core Facility for 
+Funded by NIH Grant R01-123456 and NSF Award 7890123.
+We thank Dr. X for data access, the Y Core Facility for
 sequencing, and Z for helpful discussions.
 ```
 
@@ -580,7 +580,7 @@ Treatment increased response by 23.5% (95% CI: 18.2-28.8%, p<0.001, n=150)
 
 **Callout Boxes**:
 ```latex
-\begin{tcolorbox}[colback=yellow!10, colframe=orange!80, 
+\begin{tcolorbox}[colback=yellow!10, colframe=orange!80,
                   title=Key Finding]
 Our method reduces errors by 34\% compared to state-of-the-art.
 \end{tcolorbox}
@@ -745,4 +745,3 @@ Effective poster content:
 - **Actionable**: Clear implications and next steps
 
 Remember: Your poster is a conversation starter, not a comprehensive treatise. Design content to intrigue, engage, and invite discussion.
-

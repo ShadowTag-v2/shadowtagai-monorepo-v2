@@ -26,7 +26,10 @@ class GDCClient:
         """Get status of a specific edge node."""
         # Simulation
         return HardwareStatus(
-            gpu_utilization_pct=85.5, memory_usage_gb=42.0, temperature_c=68.2, power_draw_w=350.0,
+            gpu_utilization_pct=85.5,
+            memory_usage_gb=42.0,
+            temperature_c=68.2,
+            power_draw_w=350.0,
         )
 
     def deploy_workload(self, node_id: str, container_image: str) -> str:

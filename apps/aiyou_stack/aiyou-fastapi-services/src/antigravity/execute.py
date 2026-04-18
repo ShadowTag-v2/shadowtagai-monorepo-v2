@@ -87,7 +87,10 @@ OUTPUT JSON:
 Return ONLY valid JSON with working code."""
 
     def __init__(
-        self, pool_size: int = 10, use_kosmos: bool = True, model: str = "gemini-2.0-flash-exp",
+        self,
+        pool_size: int = 10,
+        use_kosmos: bool = True,
+        model: str = "gemini-2.0-flash-exp",
     ):
         self.pool_size = pool_size
         self.semaphore = asyncio.Semaphore(pool_size)
@@ -105,7 +108,8 @@ Return ONLY valid JSON with working code."""
         # Initialize Kosmos pool if available
         if self.use_kosmos:
             self.kosmos_pool = create_kosmos_pool(
-                KosmosType.GEMINI_CODE_ASSIST, pool_size=pool_size,
+                KosmosType.GEMINI_CODE_ASSIST,
+                pool_size=pool_size,
             )
         else:
             self.kosmos_pool = None
@@ -260,7 +264,8 @@ raise SecurityError("Task blocked by RSTA consensus - security validation failed
 
 # Factory function with environment-based selection
 def create_execution_pool(
-    pool_size: int = 10, model: str = "gemini-2.0-flash-exp",
+    pool_size: int = 10,
+    model: str = "gemini-2.0-flash-exp",
 ) -> GeminiCodeAssistPool:
     """Create execution pool based on environment config.
 

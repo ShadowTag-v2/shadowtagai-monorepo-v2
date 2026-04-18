@@ -20,8 +20,7 @@ class GideonGuard:
         }
 
     def audit(self, domain: str):
-        """The Decorator: Grants 'Authority to Operate' (cATO) per function call.
-        """
+        """The Decorator: Grants 'Authority to Operate' (cATO) per function call."""
 
         def decorator(func):
             @functools.wraps(func)

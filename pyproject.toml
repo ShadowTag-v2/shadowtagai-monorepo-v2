@@ -96,7 +96,7 @@ directory = "htmlcov"
 [tool.basedpyright]
 # -- 1. Global Type Checking Mode --
 # "recommended" is basedpyright's default, but you can use "standard" (less noisy) or "all" (extremely strict)
-typeCheckingMode = "standard" 
+typeCheckingMode = "standard"
 
 # -- 2. Global Scope --
 # Explicitly tell it where your Python code lives to save memory
@@ -136,7 +136,7 @@ extraPaths = [
 root = "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
 # You can override global settings for just this app
 # pythonVersion = "3.11"
-# typeCheckingMode = "strict" 
+# typeCheckingMode = "strict"
 
 [[tool.basedpyright.executionEnvironments]]
 root = "apps/another_app"

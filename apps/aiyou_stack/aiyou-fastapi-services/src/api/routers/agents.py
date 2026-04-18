@@ -65,7 +65,10 @@ async def process_matrix_query(payload: SwarmQuery, auth: str = Depends(verify_z
             raise HTTPException(status_code=400, detail="Invalid target queue.")
 
         await client.start_workflow(
-            "OmegaPayloadOrchestrator", payload.task, id=workflow_id, task_queue="omega-swarm-queue",
+            "OmegaPayloadOrchestrator",
+            payload.task,
+            id=workflow_id,
+            task_queue="omega-swarm-queue",
         )
         return {
             "status": "Matrix accepted heavy lift via Temporal.io",

@@ -2447,7 +2447,7 @@ Un prompt utilizado con Nano Banana Pro (Gemini 3 Pro Image) para generar un man
 
 ```
 Manga de 4 viñetas generado por IA
- 
+
 Título
 Amanecer de la Prevención de Huelgas
 

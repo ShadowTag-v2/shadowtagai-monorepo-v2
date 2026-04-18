@@ -71,8 +71,8 @@ function createParamInput(param, toolId) {
         boolValueLabel.className = 'checkbox-bool-label';
         boolValueLabel.textContent = inputElement.checked ? ' true' : ' false';
 
-        inputContainer.appendChild(inputElement); 
-        inputContainer.appendChild(boolValueLabel); 
+        inputContainer.appendChild(inputElement);
+        inputContainer.appendChild(boolValueLabel);
 
         inputElement.addEventListener('change', () => {
             boolValueLabel.textContent = inputElement.checked ? ' true' : ' false';
@@ -139,7 +139,7 @@ function createParamInput(param, toolId) {
 
     // add event listener to the include checkbox
     includeCheckbox.addEventListener('change', updateParamIncludedState);
-    updateParamIncludedState(); 
+    updateParamIncludedState();
 
     return paramItem;
 }
@@ -158,7 +158,7 @@ function createHeaderEditorModal(toolId, currentHeaders, toolParameters, authReq
     let modal = document.getElementById(MODAL_ID);
 
     if (modal) {
-        modal.remove(); 
+        modal.remove();
     }
 
     modal = document.createElement('div');
@@ -276,7 +276,7 @@ function createAuthTokenInfoDropdown() {
     const tabButtons = document.createElement('div');
     const leftTab = document.createElement('button');
     const rightTab = document.createElement('button');
-    
+
     tabButtons.className = 'auth-tab-group';
     leftTab.className = 'auth-tab-picker active';
     leftTab.textContent = 'With Standard Account';
@@ -294,7 +294,7 @@ function createAuthTokenInfoDropdown() {
     const serviceAccInstructions = document.createElement('div');
 
     standardAccInstructions.id = 'auth-tab-standard';
-    standardAccInstructions.className = 'auth-tab-content active'; 
+    standardAccInstructions.className = 'auth-tab-content active';
     standardAccInstructions.innerHTML = AUTH_TOKEN_INSTRUCTIONS_STANDARD;
     serviceAccInstructions.id = 'auth-tab-service';
     serviceAccInstructions.className = 'auth-tab-content';
@@ -378,7 +378,7 @@ export function renderToolInterface(tool, containerElement) {
     paramsHeader.className = 'params-header';
     paramsContainer.appendChild(paramsHeader);
     disclaimerText.textContent = DISLCAIMER_INFO;
-    disclaimerText.className = 'params-disclaimer'; 
+    disclaimerText.className = 'params-disclaimer';
     paramsContainer.appendChild(disclaimerText);
 
     form.id = `tool-params-form-${TOOL_ID}`;

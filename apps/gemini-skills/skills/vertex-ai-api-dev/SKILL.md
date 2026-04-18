@@ -32,7 +32,7 @@ Provide these key capabilities:
 - **C#/.NET**: Install `Google.GenAI` with `dotnet add package Google.GenAI`
 - **Java**:
   - groupId: `com.google.genai`, artifactId: `google-genai`
-  - Latest version can be found here: https://central.sonatype.com/artifact/com.google.genai/google-genai/versions (let's call it `LAST_VERSION`) 
+  - Latest version can be found here: https://central.sonatype.com/artifact/com.google.genai/google-genai/versions (let's call it `LAST_VERSION`)
   - Install in `build.gradle`:
 
     ```

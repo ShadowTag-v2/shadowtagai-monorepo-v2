@@ -42,9 +42,7 @@ class VertexMemoryManager:
             print(f"✓ Created bucket: {BUCKET_NAME}")
 
             # Set lifecycle policy (delete old versions after 90 days)
-            bucket.lifecycle_rules = [
-                {"action": {"type": "Delete"}, "condition": {"age": 90, "isLive": False}}
-            ]
+            bucket.lifecycle_rules = [{"action": {"type": "Delete"}, "condition": {"age": 90, "isLive": False}}]
             bucket.patch()
             print("✓ Set lifecycle policy: 90-day retention")
 
@@ -187,9 +185,7 @@ def setup_vertex_workbench(memory_source: Path = None):
         manager.upload_memory(memory_source)
     else:
         print("\n2. Skipping upload (no source file provided)")
-        print(
-            f"   Upload manually: gsutil cp memory/current.json gs://{BUCKET_NAME}/{MEMORY_BLOB_PATH}"
-        )
+        print(f"   Upload manually: gsutil cp memory/current.json gs://{BUCKET_NAME}/{MEMORY_BLOB_PATH}")
 
     # Download to local
     print("\n3. Downloading memory to local...")

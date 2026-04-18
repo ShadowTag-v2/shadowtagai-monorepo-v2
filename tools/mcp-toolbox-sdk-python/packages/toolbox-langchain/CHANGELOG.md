@@ -152,7 +152,7 @@
 ### Bug Fixes
 
 * fix auth_methods module ([#313](https://github.com/googleapis/mcp-toolbox-sdk-python/issues/313)) ([6cf6d6b](https://github.com/googleapis/mcp-toolbox-sdk-python/commit/6cf6d6ba3cd67d7c4e18e919a10c37f34971dcf1))
-  
+
 
 ## [0.3.0](https://github.com/googleapis/mcp-toolbox-sdk-python/compare/toolbox-langchain-v0.2.1...toolbox-langchain-v0.3.0) (2025-07-02)
 
@@ -262,7 +262,7 @@
 
 * Improve PyPI package name
 * Migrate existing state and APIs to a tools level class
-* deprecate 'add_auth_headers' in favor of 'add_auth_tokens' 
+* deprecate 'add_auth_headers' in favor of 'add_auth_tokens'
 
 ### Features
 

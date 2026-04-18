@@ -32,9 +32,9 @@ queries = [
     "My check in dates for my booking would be from April 10, 2024 to April 19, 2024.",
 ]
 
+
 async def main():
     async with ToolboxClient("http://127.0.0.1:5000") as toolbox_client:
-
         # The toolbox_tools list contains Python callables (functions/methods) designed for LLM tool-use
         # integration. While this example uses Google's genai client, these callables can be adapted for
         # various function-calling or agent frameworks. For easier integration with supported frameworks
@@ -42,18 +42,9 @@ async def main():
         # provided wrapper packages, which handle framework-specific boilerplate.
         toolbox_tools = await toolbox_client.load_toolset("my-toolset")
         tool_map = {tool.__name__: tool for tool in toolbox_tools}
-        genai_client = genai.Client(
-            vertexai=True, project=project, location="us-central1"
-        )
+        genai_client = genai.Client(vertexai=True, project=project, location="us-central1")
 
-        genai_tools = [
-            Tool(
-                function_declarations=[
-                    FunctionDeclaration.from_callable_with_api_option(callable=tool)
-                ]
-            )
-            for tool in toolbox_tools
-        ]
+        genai_tools = [Tool(function_declarations=[FunctionDeclaration.from_callable_with_api_option(callable=tool)]) for tool in toolbox_tools]
         history = []
         for query in queries:
             print(f"\n[INPUT] User: {query}")
@@ -78,7 +69,7 @@ async def main():
                 for function_call in response.function_calls:
                     fn_name = function_call.name
                     print(f"[TOOL CALL] Model requested tool '{fn_name}' with args: {function_call.args}")
-                    
+
                     if fn_name in tool_map:
                         function_result = await tool_map[fn_name](**function_call.args)
                     else:
@@ -107,5 +98,6 @@ async def main():
                 print(f"[OUTPUT] AI: {response2.text}")
             else:
                 print(f"[OUTPUT] AI: {response.text}")
+
 
 asyncio.run(main())

@@ -11,7 +11,7 @@ function onDocumentReady() {
   if (location.hostname === "localhost") {
     // Point to the RTDB emulator running on localhost.
     db.useEmulator("127.0.0.1", 9000);
-  } 
+  }
   // [END rtdb_emulator_connect]
 }
 

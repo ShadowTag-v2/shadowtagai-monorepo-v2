@@ -75,9 +75,7 @@ class FirestoreLoader(BaseLoader):
         """A lazy loader for Documents."""
         query = None
         if isinstance(self.source, DocumentReference):
-            self.source._client = client_with_user_agent(
-                USER_AGENT_LOADER, self.source._client
-            )
+            self.source._client = client_with_user_agent(USER_AGENT_LOADER, self.source._client)
             yield convert_firestore_document(self.source.get())
         else:
             if isinstance(self.source, str):
@@ -131,9 +129,7 @@ class FirestoreSaver:
         db_batch = self.client.batch()
 
         if document_ids and len(document_ids) != len(documents):
-            raise ValueError(
-                "`documents` and `document_ids` parameters must be the same length"
-            )
+            raise ValueError("`documents` and `document_ids` parameters must be the same length")
 
         docs_list = itertools.zip_longest(documents, document_ids or [])
 
@@ -150,9 +146,7 @@ class FirestoreSaver:
                         client=self.client,
                     )
                 else:
-                    raise ValueError(
-                        "Unable to construct document_path for document: " + str(doc)
-                    )
+                    raise ValueError("Unable to construct document_path for document: " + str(doc))
 
                 db_batch.set(
                     reference=doc_ref,
@@ -187,20 +181,10 @@ class FirestoreSaver:
                     document_path = doc_id
                 elif doc:
                     document_dict = convert_langchain_document(doc, self.client)
-                    if (
-                        document_dict.get("reference", {}).get(FIRESTORE_TYPE)
-                        == DOC_REF
-                    ):
+                    if document_dict.get("reference", {}).get(FIRESTORE_TYPE) == DOC_REF:
                         document_path = document_dict["reference"]["path"]
                 if not document_path:
-                    raise ValueError(
-                        "Unable to construct document_path for document: "
-                        + str(doc)
-                        + "or doc_id: "
-                        + str(doc_id)
-                    )
-                doc_ref = DocumentReference(
-                    *document_path.split("/"), client=self.client
-                )
+                    raise ValueError("Unable to construct document_path for document: " + str(doc) + "or doc_id: " + str(doc_id))
+                doc_ref = DocumentReference(*document_path.split("/"), client=self.client)
                 db_batch.delete(doc_ref)
             db_batch.commit()

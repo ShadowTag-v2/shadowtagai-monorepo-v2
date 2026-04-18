@@ -1,5 +1,4 @@
-"""Health check and status endpoints.
-"""
+"""Health check and status endpoints."""
 
 from datetime import datetime
 

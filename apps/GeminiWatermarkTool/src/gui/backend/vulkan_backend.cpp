@@ -31,7 +31,7 @@ bool VulkanBackend::is_available() noexcept {
         spdlog::debug("Vulkan library not available: {}", SDL_GetError());
         return false;
     }
-    
+
     // Check if we can create an instance
     VkApplicationInfo app_info{};
     app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -47,13 +47,13 @@ bool VulkanBackend::is_available() noexcept {
 
     VkInstance test_instance{VK_NULL_HANDLE};
     VkResult result = vkCreateInstance(&create_info, nullptr, &test_instance);
-    
+
     if (result == VK_SUCCESS && test_instance) {
         vkDestroyInstance(test_instance, nullptr);
         SDL_Vulkan_UnloadLibrary();
         return true;
     }
-    
+
     SDL_Vulkan_UnloadLibrary();
     spdlog::debug("Vulkan instance creation failed: {}", static_cast<int>(result));
     return false;

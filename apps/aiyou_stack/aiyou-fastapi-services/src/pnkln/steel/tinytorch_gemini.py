@@ -26,8 +26,7 @@ class GeminiLayer:
         self.model = genai.GenerativeModel(model_name)
 
     def forward(self, x: Tensor, prompt_template: str = "Analyze this data: {data}") -> Tensor:
-        """Performs the 'Forward Pass' through the Gemini Intelligence Unit.
-        """
+        """Performs the 'Forward Pass' through the Gemini Intelligence Unit."""
         # 1. Project Tensor to Symbol (Data -> Text)
         input_data = x.numpy().tolist()
         prompt = prompt_template.format(data=input_data)

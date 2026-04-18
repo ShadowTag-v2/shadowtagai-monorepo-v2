@@ -35,7 +35,7 @@ description: Use this tool to get details of a serverless spark session template
 
 ```json
 {
-  "sessionTemplate": { 
+  "sessionTemplate": {
     "name": "projects/my-project/locations/us-central1/sessionTemplates/my-session-template",
     "description": "Template for Spark Session",
     // ... complete session template resource definition
@@ -51,4 +51,3 @@ description: Use this tool to get details of a serverless spark session template
 | source       |  string  |     true     | Name of the source the tool should use.            |
 | description  |  string  |     true     | Description of the tool that is passed to the LLM. |
 | authRequired | string[] |    false     | List of auth services required to invoke this tool |
-  

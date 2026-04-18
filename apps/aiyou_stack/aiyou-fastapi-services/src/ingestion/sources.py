@@ -151,8 +151,7 @@ class SourceManager:
         source: DataSource,
         max_items: int,
     ) -> list[dict]:
-        """Source-specific collection logic.
-        """
+        """Source-specific collection logic."""
         # Handle Google Drive Extraction
         if source.source_type == SourceType.DRIVE:
             items = []
@@ -168,7 +167,8 @@ class SourceManager:
                 # Parse delimited text
                 # === SOURCE: Label / Filename ===
                 pattern = re.compile(
-                    r"=== SOURCE: (.*?) / (.*?) ===\n\n(.*?)(?=\n=== SOURCE:|\Z)", re.DOTALL,
+                    r"=== SOURCE: (.*?) / (.*?) ===\n\n(.*?)(?=\n=== SOURCE:|\Z)",
+                    re.DOTALL,
                 )
 
                 matches = pattern.findall(content)

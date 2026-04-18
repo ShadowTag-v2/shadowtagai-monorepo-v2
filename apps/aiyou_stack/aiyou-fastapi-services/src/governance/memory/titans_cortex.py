@@ -35,7 +35,9 @@ class AntigravityMirasLayer(nn.Module):
         # As per Titans paper: Shallow memory fails. We go deep.
         # This acts as the "Associative Memory" that stores context.
         self.memory_mlp = nn.Sequential(
-            nn.Linear(d_model, d_model * 4), nn.GELU(), nn.Linear(d_model * 4, d_model),
+            nn.Linear(d_model, d_model * 4),
+            nn.GELU(),
+            nn.Linear(d_model * 4, d_model),
         )
 
         # 2. THE SURPRISE GATE (Plasticity)

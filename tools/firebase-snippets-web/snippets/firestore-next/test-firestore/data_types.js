@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START data_types_modular]
-import { doc, setDoc, Timestamp } from "firebase/firestore"; 
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 
 const docData = {
     stringExample: "Hello world!",

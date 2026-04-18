@@ -10,7 +10,7 @@ description: >
 
 ## About
 
-The `vector-assist-apply-spec` tool automatically executes all the SQL recommendations associated with a specific vector specification (spec_id) or table. It runs the necessary commands in the correct sequence to provision the workload, marking each step as applied once successful. 
+The `vector-assist-apply-spec` tool automatically executes all the SQL recommendations associated with a specific vector specification (spec_id) or table. It runs the necessary commands in the correct sequence to provision the workload, marking each step as applied once successful.
 
 Use this tool when the user has reviewed the generated recommendations from a defined (or modified) spec and is ready to apply the changes directly to their database instance to finalize the vector search setup. Under the hood, this tool connects to the target database and executes the `vector_assist.apply_spec` function.
 
@@ -20,7 +20,7 @@ Use this tool when the user has reviewed the generated recommendations from a de
 
 ## Requirements
 
-{{< notice tip >}} 
+{{< notice tip >}}
 Ensure that your target PostgreSQL database has the required `vector_assist` extension installed, in order for this tool to execute successfully.
 {{< /notice >}}
 
@@ -36,8 +36,8 @@ The tool takes the following input parameters:
 | `schema_name` | string | Schema name for the target table.                                     | No       |
 
 > Note
-> Parameters are marked as required or optional based on the vector assist function definitions. 
-> The function may perform further validation on optional parameters to ensure all necessary 
+> Parameters are marked as required or optional based on the vector assist function definitions.
+> The function may perform further validation on optional parameters to ensure all necessary
 > data is available before returning a response.
 
 ## Example

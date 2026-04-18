@@ -68,7 +68,9 @@ class BrightnessAdapter:
         self.ambient_light_level = np.clip(level, 0.0, 1.0)
 
     def calculate_adjustment(
-        self, fatigue_score: float, pupil_diameter: float,
+        self,
+        fatigue_score: float,
+        pupil_diameter: float,
     ) -> tuple[float, str]:
         """Calculate brightness adjustment
 
@@ -147,7 +149,10 @@ class HueShifter:
         self.oscillation_period = 30.0  # seconds
 
     def calculate_adjustment(
-        self, fatigue_score: float, blink_rate: float, time_of_day_hour: int,
+        self,
+        fatigue_score: float,
+        blink_rate: float,
+        time_of_day_hour: int,
     ) -> tuple[float, str]:
         """Calculate hue shift adjustment
 
@@ -234,7 +239,9 @@ class ContrastModulator:
         self.max_contrast = 1.3
 
     def calculate_adjustment(
-        self, fatigue_score: float, session_duration_min: float,
+        self,
+        fatigue_score: float,
+        session_duration_min: float,
     ) -> tuple[float, str]:
         """Calculate contrast adjustment"""
         # Base contrast
@@ -316,15 +323,19 @@ class DisplayController:
 
         # Calculate adjustments for each component
         target_brightness, brightness_reason = self.brightness_adapter.calculate_adjustment(
-            fatigue_score, pupil_metrics.avg_diameter,
+            fatigue_score,
+            pupil_metrics.avg_diameter,
         )
 
         target_hue, hue_reason = self.hue_shifter.calculate_adjustment(
-            fatigue_score, blink_metrics.blink_rate, time_of_day,
+            fatigue_score,
+            blink_metrics.blink_rate,
+            time_of_day,
         )
 
         target_contrast, contrast_reason = self.contrast_modulator.calculate_adjustment(
-            fatigue_score, session_duration_min,
+            fatigue_score,
+            session_duration_min,
         )
 
         # Check if blink trigger needed
@@ -337,7 +348,8 @@ class DisplayController:
 
         # Calculate deltas from current state
         delta_brightness = self.brightness_adapter.apply_gradual_transition(
-            target_brightness, duration_seconds=2.0,
+            target_brightness,
+            duration_seconds=2.0,
         )
 
         delta_hue = target_hue - self.current_state.hue_shift
@@ -365,12 +377,16 @@ class DisplayController:
         """Apply adjustment to current state"""
         self.current_state = DisplayState(
             brightness=np.clip(
-                self.current_state.brightness + adjustment.delta_brightness, 0.0, 1.0,
+                self.current_state.brightness + adjustment.delta_brightness,
+                0.0,
+                1.0,
             ),
             hue_shift=np.clip(self.current_state.hue_shift + adjustment.delta_hue, -30.0, 10.0),
             contrast=np.clip(self.current_state.contrast + adjustment.delta_contrast, 0.5, 1.5),
             saturation=np.clip(
-                self.current_state.saturation + adjustment.delta_saturation, 0.0, 1.0,
+                self.current_state.saturation + adjustment.delta_saturation,
+                0.0,
+                1.0,
             ),
             timestamp=datetime.utcnow(),
             mode=self.mode,

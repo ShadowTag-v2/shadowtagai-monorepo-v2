@@ -1,5 +1,4 @@
-"""Trigger system for event-based automation.
-"""
+"""Trigger system for event-based automation."""
 
 import logging
 from typing import Any
@@ -14,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class TriggerManager:
-    """Manages triggers for event-based automation.
-    """
+    """Manages triggers for event-based automation."""
 
     def __init__(self):
         self._event_triggers = {}
@@ -74,7 +72,9 @@ class TriggerManager:
         logger.info(f"Unregistered trigger {trigger_id}")
 
     async def trigger_event(
-        self, event_name: str, event_data: dict[str, Any] | None = None,
+        self,
+        event_name: str,
+        event_data: dict[str, Any] | None = None,
     ) -> list[int]:
         """Trigger all workflows associated with an event.
 
@@ -119,7 +119,9 @@ class TriggerManager:
         return execution_ids
 
     async def trigger_webhook(
-        self, webhook_path: str, webhook_data: dict[str, Any] | None = None,
+        self,
+        webhook_path: str,
+        webhook_data: dict[str, Any] | None = None,
     ) -> int | None:
         """Trigger a workflow via webhook.
 

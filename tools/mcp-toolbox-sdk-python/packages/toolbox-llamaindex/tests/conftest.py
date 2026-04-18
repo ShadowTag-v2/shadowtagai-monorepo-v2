@@ -39,9 +39,7 @@ def get_env_var(key: str) -> str:
     return value
 
 
-def access_secret_version(
-    project_id: str, secret_id: str, version_id: str = "latest"
-) -> str:
+def access_secret_version(project_id: str, secret_id: str, version_id: str = "latest") -> str:
     """Accesses the payload of a given secret version from Secret Manager."""
     client = secretmanager.SecretManagerServiceClient()
     name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
@@ -56,9 +54,7 @@ def create_tmpfile(content: str) -> str:
         return tmpfile.name
 
 
-def download_blob(
-    bucket_name: str, source_blob_name: str, destination_file_name: str
-) -> None:
+def download_blob(bucket_name: str, source_blob_name: str, destination_file_name: str) -> None:
     """Downloads a blob from a GCS bucket."""
     storage_client = storage.Client()
 
@@ -72,9 +68,7 @@ def download_blob(
 def get_toolbox_binary_url(toolbox_version: str) -> str:
     """Constructs the GCS path to the toolbox binary."""
     os_system = platform.system().lower()
-    arch = (
-        "arm64" if os_system == "darwin" and platform.machine() == "arm64" else "amd64"
-    )
+    arch = "arm64" if os_system == "darwin" and platform.machine() == "arm64" else "amd64"
     return f"v{toolbox_version}/{os_system}/{arch}/toolbox"
 
 
@@ -117,17 +111,13 @@ def tools_file_path(project_id: str) -> Generator[str]:
 
 @pytest_asyncio.fixture(scope="session")
 def auth_token1(project_id: str) -> str:
-    client_id = access_secret_version(
-        project_id=project_id, secret_id="sdk_testing_client1"
-    )
+    client_id = access_secret_version(project_id=project_id, secret_id="sdk_testing_client1")
     return get_auth_token(client_id)
 
 
 @pytest_asyncio.fixture(scope="session")
 def auth_token2(project_id: str) -> str:
-    client_id = access_secret_version(
-        project_id=project_id, secret_id="sdk_testing_client2"
-    )
+    client_id = access_secret_version(project_id=project_id, secret_id="sdk_testing_client2")
     return get_auth_token(client_id)
 
 
@@ -143,9 +133,7 @@ def toolbox_server(toolbox_version: str, tools_file_path: str) -> Generator[None
         # Make toolbox executable
         os.chmod("toolbox", 0o700)
         # Run toolbox binary
-        toolbox_server = subprocess.Popen(
-            ["./toolbox", "--tools-file", tools_file_path]
-        )
+        toolbox_server = subprocess.Popen(["./toolbox", "--tools-file", tools_file_path])
 
         # Wait for server to start
         # Retry logic with a timeout

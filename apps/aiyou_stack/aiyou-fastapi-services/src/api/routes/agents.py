@@ -68,7 +68,8 @@ async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisRespon
 
         if "error" in result:
             raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=result["error"],
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=result["error"],
             )
 
         return MarketAnalysisResponse(**result)
@@ -77,7 +78,8 @@ async def analyze_market(request: MarketAnalysisRequest) -> MarketAnalysisRespon
         raise
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Analysis failed: {e!s}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Analysis failed: {e!s}",
         )
 
 
@@ -104,7 +106,9 @@ async def competitor_analysis(request: CompetitorAnalysisRequest) -> CompetitorA
 
     try:
         result = market_analyst.analyze_competitors(
-            product=request.product, competitors=request.competitors, features=request.features,
+            product=request.product,
+            competitors=request.competitors,
+            features=request.features,
         )
 
         return CompetitorAnalysisResponse(**result)
@@ -136,7 +140,8 @@ async def prioritize_features(request: FeaturePrioritizationRequest) -> dict[str
         features_list = [feature.dict() for feature in request.features]
 
         prioritized = market_analyst.tools.prioritize_features(
-            features=features_list, criteria=request.criteria,
+            features=features_list,
+            criteria=request.criteria,
         )
 
         return {

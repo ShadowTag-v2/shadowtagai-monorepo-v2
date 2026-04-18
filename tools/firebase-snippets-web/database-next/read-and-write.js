@@ -154,8 +154,8 @@ function toggleStar_wrapped() {
 }
 
 /**
- * @param {string} uid 
- * @param {string} key 
+ * @param {string} uid
+ * @param {string} key
  */
 // [START rtdb_social_star_increment]
 function addStar(uid, key) {

@@ -35,6 +35,7 @@ _PLATFORM_URL = os.getenv("KOVELAI_BASE_URL", "https://kovelai.web.app")
 
 class ConnectOnboardRequest(BaseModel):
     """Attorney initiates Stripe Connect onboarding."""
+
     attorney_id: str
     firm_id: str
     email: str
@@ -44,6 +45,7 @@ class ConnectOnboardRequest(BaseModel):
 
 class ConnectOnboardResponse(BaseModel):
     """Response with Stripe Connect onboarding URL."""
+
     account_id: str
     onboarding_url: str
     message: str = "Complete your Stripe account setup to start receiving payments."
@@ -51,6 +53,7 @@ class ConnectOnboardResponse(BaseModel):
 
 class ConnectStatusResponse(BaseModel):
     """Status of attorney's Stripe Connect account."""
+
     account_id: str
     charges_enabled: bool
     payouts_enabled: bool

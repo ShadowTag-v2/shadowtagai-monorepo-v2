@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START set_document_modular]
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
 
 // Add a new document in collection "cities"
 await setDoc(doc(db, "cities", "LA"), {

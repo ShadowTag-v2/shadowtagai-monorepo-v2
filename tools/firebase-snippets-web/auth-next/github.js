@@ -85,4 +85,3 @@ function githubSignInRedirectResult() {
     });
   // [END auth_github_signin_redirect_result]
 }
-

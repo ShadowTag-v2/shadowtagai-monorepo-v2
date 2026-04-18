@@ -34,7 +34,7 @@ description: |
   LookML models define the data structure and relationships that users can query.
   The output includes details like the model's `name` and `label`, which are
   essential for subsequent calls to tools like `get_explores` or `query`.
-  
+
   This tool takes no parameters.
 ---
 kind: tool
@@ -154,12 +154,12 @@ description: |
   This tool generates the underlying SQL query that Looker would execute
   against the database for a given set of parameters. It is useful for
   understanding how Looker translates a request into SQL.
-  
+
   Parameters:
   All parameters for this tool are identical to those of the `query` tool.
   This includes `model_name`, `explore_name`, `fields` (required),
   and optional parameters like `pivots`, `filters`, `sorts`, `limit`, and `query_timezone`.
-  
+
   Output:
   The result of this tool is the raw SQL text.
 ---

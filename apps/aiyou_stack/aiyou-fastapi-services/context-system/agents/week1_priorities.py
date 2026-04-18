@@ -44,7 +44,8 @@ class Week1Priorities:
                 ),
                 SubTask(description="Integrate Apollo API for lead scraping", estimated_hours=6.0),
                 SubTask(
-                    description="Build LinkedIn → Gmail personalization flow", estimated_hours=8.0,
+                    description="Build LinkedIn → Gmail personalization flow",
+                    estimated_hours=8.0,
                 ),
                 SubTask(description="Deploy on Vertex AI Workbench", estimated_hours=4.0),
                 SubTask(description="Record Loom demo (5-min walkthrough)", estimated_hours=2.0),
@@ -84,11 +85,13 @@ class Week1Priorities:
                     estimated_hours=4.0,
                 ),
                 SubTask(
-                    description="Build simple landing page (Webflow/Framer)", estimated_hours=6.0,
+                    description="Build simple landing page (Webflow/Framer)",
+                    estimated_hours=6.0,
                 ),
                 SubTask(description="Set up GCP Secret Manager for API keys", estimated_hours=2.0),
                 SubTask(
-                    description="Create pilot agreement template (1-page PDF)", estimated_hours=1.0,
+                    description="Create pilot agreement template (1-page PDF)",
+                    estimated_hours=1.0,
                 ),
             ],
             deadline="End of Week 1",

@@ -14,9 +14,9 @@ export function useCaptureLead() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         if (response.status === 400) {
           throw new Error(data.error || "Validation Failed. Please check the form parameters.");
@@ -25,7 +25,7 @@ export function useCaptureLead() {
         }
         throw new Error("An unexpected error occurred.");
       }
-      
+
       setSuccess(true);
       return data;
     } catch (err: any) {

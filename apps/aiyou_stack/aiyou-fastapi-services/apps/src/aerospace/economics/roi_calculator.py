@@ -170,7 +170,10 @@ class ROICalculator:
         Pilot: 10 towers, 100 vehicles, 3 months
         """
         pilot_config = DeploymentConfig(
-            num_cell_towers=10, num_vehicles=100, num_satellites=3, deployment_months=3,
+            num_cell_towers=10,
+            num_vehicles=100,
+            num_satellites=3,
+            deployment_months=3,
         )
 
         pilot_calc = ROICalculator(pilot_config, self.costs, self.revenue)

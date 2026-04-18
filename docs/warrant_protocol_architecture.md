@@ -52,10 +52,10 @@ Instead of the standard IAM Airlock (which simply revokes active sessions and lo
 
 If UEBA (Layer 1) or KYE (Layer 10) detects severe insider fraud (e.g., a purchasing officer taking kickbacks), the agent executes the following:
 
-1. **The Sandbox Shift:** At the network router level, the suspect’s instance of Google Workspace / ERP is silently migrated to a completely cloned, isolated VPC ("The Honeypot"). 
+1. **The Sandbox Shift:** At the network router level, the suspect’s instance of Google Workspace / ERP is silently migrated to a completely cloned, isolated VPC ("The Honeypot").
 2. **The Illusion of Normalcy:** The suspect continues to log in. They see their emails, they can "message" their external vendor. They believe nothing is amiss.
 3. **The Interception (MitM):** In reality, the ShadowTag agent intercepting the traffic is quietly archiving every keystroke, message, and file upload as mathematically hashed evidence into BigQuery for the prosecutor.
-4. **The Silent Replacement:** Concurrently, in the *real* corporate network, a substitute employee (or the AI itself, mimicking the suspect) communicates with the legitimate external vendor to complete the actual, legal business deal seamlessly. 
+4. **The Silent Replacement:** Concurrently, in the *real* corporate network, a substitute employee (or the AI itself, mimicking the suspect) communicates with the legitimate external vendor to complete the actual, legal business deal seamlessly.
 
 ### The Warrant Protocol (Judicial Toggle)
 This system is inherently invasive. Therefore, the "Sandbox Shift" logic is biologically locked.

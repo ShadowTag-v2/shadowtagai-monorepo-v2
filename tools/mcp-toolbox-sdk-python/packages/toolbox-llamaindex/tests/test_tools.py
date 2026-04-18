@@ -26,51 +26,33 @@ from toolbox_core.utils import params_to_pydantic_model
 from toolbox_llamaindex.tools import ToolboxTool
 
 
-def assert_pydantic_models_equivalent(
-    model_cls1: type[BaseModel], model_cls2: type[BaseModel], expected_model_name: str
-):
+def assert_pydantic_models_equivalent(model_cls1: type[BaseModel], model_cls2: type[BaseModel], expected_model_name: str):
     assert issubclass(model_cls1, BaseModel), "model_cls1 is not a Pydantic BaseModel"
     assert issubclass(model_cls2, BaseModel), "model_cls2 is not a Pydantic BaseModel"
-    assert (
-        model_cls1.__name__ == expected_model_name
-    ), f"model_cls1 name mismatch: expected {expected_model_name}, got {model_cls1.__name__}"
-    assert (
-        model_cls2.__name__ == expected_model_name
-    ), f"model_cls2 name mismatch: expected {expected_model_name}, got {model_cls2.__name__}"
+    assert model_cls1.__name__ == expected_model_name, f"model_cls1 name mismatch: expected {expected_model_name}, got {model_cls1.__name__}"
+    assert model_cls2.__name__ == expected_model_name, f"model_cls2 name mismatch: expected {expected_model_name}, got {model_cls2.__name__}"
 
     fields1 = model_cls1.model_fields
     fields2 = model_cls2.model_fields
 
-    assert (
-        fields1.keys() == fields2.keys()
-    ), f"Field names mismatch: {fields1.keys()} != {fields2.keys()}"
+    assert fields1.keys() == fields2.keys(), f"Field names mismatch: {fields1.keys()} != {fields2.keys()}"
 
     for field_name in fields1.keys():
         field_info1 = fields1[field_name]
         field_info2 = fields2[field_name]
 
-        assert (
-            field_info1.annotation == field_info2.annotation
-        ), f"Field '{field_name}': Annotation mismatch ({field_info1.annotation} != {field_info2.annotation})"
-        assert (
-            field_info1.description == field_info2.description
-        ), f"Field '{field_name}': Description mismatch ('{field_info1.description}' != '{field_info2.description}')"
-        is_required1 = (
-            field_info1.is_required()
-            if hasattr(field_info1, "is_required")
-            else not field_info1.is_nullable()
+        assert field_info1.annotation == field_info2.annotation, (
+            f"Field '{field_name}': Annotation mismatch ({field_info1.annotation} != {field_info2.annotation})"
         )
-        is_required2 = (
-            field_info2.is_required()
-            if hasattr(field_info2, "is_required")
-            else not field_info2.is_nullable()
+        assert field_info1.description == field_info2.description, (
+            f"Field '{field_name}': Description mismatch ('{field_info1.description}' != '{field_info2.description}')"
         )
-        assert (
-            is_required1 == is_required2
-        ), f"Field '{field_name}': Required status mismatch ({is_required1} != {is_required2})"
-        assert (
-            field_info1.default == field_info2.default
-        ), f"Field '{field_name}': Default value mismatch ({field_info1.default} != {field_info2.default})"
+        is_required1 = field_info1.is_required() if hasattr(field_info1, "is_required") else not field_info1.is_nullable()
+        is_required2 = field_info2.is_required() if hasattr(field_info2, "is_required") else not field_info2.is_nullable()
+        assert is_required1 == is_required2, f"Field '{field_name}': Required status mismatch ({is_required1} != {is_required2})"
+        assert field_info1.default == field_info2.default, (
+            f"Field '{field_name}': Default value mismatch ({field_info1.default} != {field_info2.default})"
+        )
 
 
 class TestToolboxTool:
@@ -112,9 +94,7 @@ class TestToolboxTool:
         sync_mock.__name__ = "test_tool_name_for_llamaindex"
         sync_mock.__doc__ = tool_schema_dict["description"]
         sync_mock._name = "TestToolPydanticModel"
-        sync_mock._params = [
-            CoreParameterSchema(**p) for p in tool_schema_dict["parameters"]
-        ]
+        sync_mock._params = [CoreParameterSchema(**p) for p in tool_schema_dict["parameters"]]
 
         mock_async_tool_attr = AsyncMock(spec=CoreAsyncTool)
         mock_async_tool_attr.return_value = "dummy_internal_async_tool_result"
@@ -127,17 +107,11 @@ class TestToolboxTool:
         new_mock_instance_for_methods.__doc__ = sync_mock.__doc__
         new_mock_instance_for_methods._name = sync_mock._name
         new_mock_instance_for_methods._params = sync_mock._params
-        new_mock_instance_for_methods._ToolboxSyncTool__async_tool = AsyncMock(
-            spec=CoreAsyncTool
-        )
-        new_mock_instance_for_methods._ToolboxSyncTool__loop = Mock(
-            spec=asyncio.AbstractEventLoop
-        )
+        new_mock_instance_for_methods._ToolboxSyncTool__async_tool = AsyncMock(spec=CoreAsyncTool)
+        new_mock_instance_for_methods._ToolboxSyncTool__loop = Mock(spec=asyncio.AbstractEventLoop)
         new_mock_instance_for_methods._ToolboxSyncTool__thread = Mock()
 
-        sync_mock.add_auth_token_getters = Mock(
-            return_value=new_mock_instance_for_methods
-        )
+        sync_mock.add_auth_token_getters = Mock(return_value=new_mock_instance_for_methods)
         sync_mock.bind_params = Mock(return_value=new_mock_instance_for_methods)
 
         return sync_mock
@@ -148,9 +122,7 @@ class TestToolboxTool:
         sync_mock.__name__ = "test_auth_tool_lc_name"
         sync_mock.__doc__ = auth_tool_schema_dict["description"]
         sync_mock._name = "TestAuthToolPydanticModel"
-        sync_mock._params = [
-            CoreParameterSchema(**p) for p in auth_tool_schema_dict["parameters"]
-        ]
+        sync_mock._params = [CoreParameterSchema(**p) for p in auth_tool_schema_dict["parameters"]]
 
         mock_async_tool_attr = AsyncMock(spec=CoreAsyncTool)
         mock_async_tool_attr.return_value = "dummy_internal_async_auth_tool_result"
@@ -163,17 +135,11 @@ class TestToolboxTool:
         new_mock_instance_for_methods.__doc__ = sync_mock.__doc__
         new_mock_instance_for_methods._name = sync_mock._name
         new_mock_instance_for_methods._params = sync_mock._params
-        new_mock_instance_for_methods._ToolboxSyncTool__async_tool = AsyncMock(
-            spec=CoreAsyncTool
-        )
-        new_mock_instance_for_methods._ToolboxSyncTool__loop = Mock(
-            spec=asyncio.AbstractEventLoop
-        )
+        new_mock_instance_for_methods._ToolboxSyncTool__async_tool = AsyncMock(spec=CoreAsyncTool)
+        new_mock_instance_for_methods._ToolboxSyncTool__loop = Mock(spec=asyncio.AbstractEventLoop)
         new_mock_instance_for_methods._ToolboxSyncTool__thread = Mock()
 
-        sync_mock.add_auth_token_getters = Mock(
-            return_value=new_mock_instance_for_methods
-        )
+        sync_mock.add_auth_token_getters = Mock(return_value=new_mock_instance_for_methods)
         sync_mock.bind_params = Mock(return_value=new_mock_instance_for_methods)
         return sync_mock
 
@@ -192,12 +158,8 @@ class TestToolboxTool:
         assert tool.metadata.description == mock_core_tool.__doc__
         assert tool._ToolboxTool__core_tool == mock_core_tool
 
-        expected_args_schema = params_to_pydantic_model(
-            mock_core_tool._name, mock_core_tool._params
-        )
-        assert_pydantic_models_equivalent(
-            tool.metadata.fn_schema, expected_args_schema, mock_core_tool._name
-        )
+        expected_args_schema = params_to_pydantic_model(mock_core_tool._name, mock_core_tool._params)
+        assert_pydantic_models_equivalent(tool.metadata.fn_schema, expected_args_schema, mock_core_tool._name)
 
         # Verify defaults actually persisted from the schema correctly
         assert tool.metadata.fn_schema.model_fields["param2"].default == 42
@@ -249,34 +211,20 @@ class TestToolboxTool:
         auth_toolbox_tool,
         mock_core_sync_auth_tool,
     ):
-        returned_core_tool_mock = (
-            mock_core_sync_auth_tool.add_auth_token_getters.return_value
-        )
-        new_llamaindex_tool = auth_toolbox_tool.add_auth_token_getters(
-            auth_token_getters
-        )
+        returned_core_tool_mock = mock_core_sync_auth_tool.add_auth_token_getters.return_value
+        new_llamaindex_tool = auth_toolbox_tool.add_auth_token_getters(auth_token_getters)
 
-        mock_core_sync_auth_tool.add_auth_token_getters.assert_called_once_with(
-            auth_token_getters
-        )
+        mock_core_sync_auth_tool.add_auth_token_getters.assert_called_once_with(auth_token_getters)
         assert isinstance(new_llamaindex_tool, ToolboxTool)
         assert new_llamaindex_tool._ToolboxTool__core_tool == returned_core_tool_mock
 
-    def test_toolbox_tool_add_auth_token_getter(
-        self, auth_toolbox_tool, mock_core_sync_auth_tool
-    ):
+    def test_toolbox_tool_add_auth_token_getter(self, auth_toolbox_tool, mock_core_sync_auth_tool):
         get_id_token = lambda: "test-token"
-        returned_core_tool_mock = (
-            mock_core_sync_auth_tool.add_auth_token_getters.return_value
-        )
+        returned_core_tool_mock = mock_core_sync_auth_tool.add_auth_token_getters.return_value
 
-        new_llamaindex_tool = auth_toolbox_tool.add_auth_token_getter(
-            "test-auth-source", get_id_token
-        )
+        new_llamaindex_tool = auth_toolbox_tool.add_auth_token_getter("test-auth-source", get_id_token)
 
-        mock_core_sync_auth_tool.add_auth_token_getters.assert_called_once_with(
-            {"test-auth-source": get_id_token}
-        )
+        mock_core_sync_auth_tool.add_auth_token_getters.assert_called_once_with({"test-auth-source": get_id_token})
         assert isinstance(new_llamaindex_tool, ToolboxTool)
         assert new_llamaindex_tool._ToolboxTool__core_tool == returned_core_tool_mock
 
@@ -299,9 +247,7 @@ class TestToolboxTool:
 
     @pytest.mark.asyncio
     @patch("toolbox_llamaindex.tools.to_thread", new_callable=AsyncMock)
-    async def test_toolbox_tool_arun(
-        self, mock_to_thread_in_tools, toolbox_tool, mock_core_tool
-    ):
+    async def test_toolbox_tool_arun(self, mock_to_thread_in_tools, toolbox_tool, mock_core_tool):
         kwargs_to_run = {"param1": "arun_value1", "param2": 200}
         expected_result = ToolOutput(
             content="async_run_output",
@@ -321,9 +267,7 @@ class TestToolboxTool:
         result = await toolbox_tool.acall(**kwargs_to_run)
 
         assert result == expected_result
-        mock_to_thread_in_tools.assert_awaited_once_with(
-            mock_core_tool, **kwargs_to_run
-        )
+        mock_to_thread_in_tools.assert_awaited_once_with(mock_core_tool, **kwargs_to_run)
 
         assert mock_core_tool.call_count == 1
         assert mock_core_tool.call_args == call(**kwargs_to_run)

@@ -31,7 +31,7 @@ Add the dependency to your `pom.xml`:
 ```
 dependencies {
     // Replace 'VERSION' with the latest version from https://mvnrepository.com/artifact/com.google.cloud.mcp/mcp-toolbox-sdk-java
-    implementation("com.google.cloud.mcp:mcp-toolbox-sdk-java:VERSION") 
+    implementation("com.google.cloud.mcp:mcp-toolbox-sdk-java:VERSION")
 }
 ```
 
@@ -47,7 +47,7 @@ public class App {
     public static void main(String[] args) {
         // 1. Create the Client
         McpToolboxClient client = McpToolboxClient.builder()
-            .baseUrl("https://my-toolbox-service.a.run.app/mcp") 
+            .baseUrl("https://my-toolbox-service.a.run.app/mcp")
             .build();
 
         // 2. Invoke a Tool
@@ -107,7 +107,7 @@ You can load all available tools or a specific subset (toolset) if your server s
 // Load all tools (alias for listTools)
 client.loadToolset().thenAccept(tools -> {
     System.out.println("Available Tools: " + tools.keySet());
-    
+
     tools.forEach((name, definition) -> {
         System.out.println("Tool: " + name);
         System.out.println("Description: " + definition.description());
@@ -162,8 +162,8 @@ This section describes how to authenticate the `ToolboxClient` itself when conne
 
 You'll need this if your MCP Toolbox server is configured to deny unauthenticated requests. For example:
 
-* Your MCP Toolbox server is deployed on **Google Cloud Run** and configured to "Require authentication" (default).  
-* Your server is behind an Identity-Aware Proxy (IAP).  
+* Your MCP Toolbox server is deployed on **Google Cloud Run** and configured to "Require authentication" (default).
+* Your server is behind an Identity-Aware Proxy (IAP).
 * You have custom authentication middleware.
 
 Without proper client authentication, attempts to connect (like `listTools`) will fail with `401 Unauthorized` or `403 Forbidden` errors.
@@ -184,7 +184,7 @@ For MCP Toolbox servers hosted on Google Cloud (e.g., Cloud Run), the SDK provid
 
 Grant the **`roles/run.invoker`** IAM role on the Cloud Run service to the principal calling the service.
 
-* **Local Dev:** Grant this role to your *User Account Email*.  
+* **Local Dev:** Grant this role to your *User Account Email*.
 * **Production:** Grant this role to the *Service Account* attached to your application.
 
 #### 2\. Configure Credentials
@@ -252,13 +252,13 @@ import com.google.cloud.mcp.AuthTokenGetter;
 
 // Define your token retrieval logic
 AuthTokenGetter salesforceTokenGetter = () -> {
-    return CompletableFuture.supplyAsync(() -> fetchTokenFromVault()); 
+    return CompletableFuture.supplyAsync(() -> fetchTokenFromVault());
 };
 //example tool: search-salesforce and related sample params
 client.loadTool("search-salesforce").thenCompose(tool -> {
     // Register the getter. It will be called every time 'execute' is run.
     tool.addAuthTokenGetter("salesforce_auth", salesforceTokenGetter);
-    
+
     return tool.execute(Map.of("query", "recent leads"));
 });
 ```
@@ -283,7 +283,7 @@ public class AuthExample {
         // 1. Define your token retrieval logic
         AuthTokenGetter tokenGetter = () -> {
             // Logic to retrieve ID token (e.g., from local storage, OAuth flow)
-            return CompletableFuture.completedFuture("YOUR_ID_TOKEN"); 
+            return CompletableFuture.completedFuture("YOUR_ID_TOKEN");
         };
 
         // 2. Initialize the client
@@ -296,7 +296,7 @@ public class AuthExample {
             .thenCompose(tool -> {
                 // "my_auth" must match the name in the tool's authSource config
                 tool.addAuthTokenGetter("my_auth", tokenGetter);
-                
+
                 return tool.execute(Map.of("input", "some input"));
             })
             .thenAccept(result -> {
@@ -314,8 +314,8 @@ The SDK allows you to pre-set, or "bind", values for specific tool parameters be
 
 ### Why Bind Parameters?
 
-* Protecting sensitive information: API keys, secrets, etc.  
-* Enforcing consistency: Ensuring specific values for certain parameters.  
+* Protecting sensitive information: API keys, secrets, etc.
+* Enforcing consistency: Ensuring specific values for certain parameters.
 * Pre-filling known data: Providing defaults or context.
 
 {{< notice info >}}
@@ -334,9 +334,9 @@ Bind a fixed value to a tool object.
 client.loadTool("get-toy-price").thenCompose(tool -> {
     // Bind 'currency' to 'USD' permanently for this tool instance
     tool.bindParam("currency", "USD");
-    
+
     // Now invoke without specifying currency
-    return tool.execute(Map.of("description", "lego set")); 
+    return tool.execute(Map.of("description", "lego set"));
 });
 ```
 
@@ -348,7 +348,7 @@ Instead of a static value, you can bind a parameter to a synchronous or asynchro
 client.loadTool("check-order-status").thenCompose(tool -> {
     // Bind 'user_id' to a function that fetches the current user from context
     tool.bindParam("user_id", () -> SecurityContext.getCurrentUser().getId());
-    
+
     // Invoke: The SDK will call the supplier to fill 'user_id'
     return tool.execute(Map.of("order_id", "12345"));
 });

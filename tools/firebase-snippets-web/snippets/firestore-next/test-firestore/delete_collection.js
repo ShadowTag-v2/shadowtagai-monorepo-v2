@@ -9,7 +9,7 @@
  * Delete a collection, in batches of batchSize. Note that this does
  * not recursively delete subcollections of documents in the collection
  */
-import { collection, query, orderBy, limit, getDocs, writeBatch } from "firebase/firestore"; 
+import { collection, query, orderBy, limit, getDocs, writeBatch } from "firebase/firestore";
 
 function deleteCollection(db, collectionRef, batchSize) {
   const q = query(collectionRef, orderBy('__name__'), limit(batchSize));

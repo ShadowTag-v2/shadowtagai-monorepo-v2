@@ -15,7 +15,8 @@ except ImportError:
     sys.path.append(
         os.path.abspath(
             os.path.join(
-                os.path.dirname(__file__), "../apps/n-autoresearch/Kosmos/BioAgents-server/src",
+                os.path.dirname(__file__),
+                "../apps/n-autoresearch/Kosmos/BioAgents-server/src",
             ),
         ),
     )

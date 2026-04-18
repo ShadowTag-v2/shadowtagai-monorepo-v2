@@ -14,7 +14,7 @@ function googleProvider() {
   // [START auth_google_provider_scopes]
   provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
   // [END auth_google_provider_scopes]
-  
+
   // [START auth_google_provider_params]
   provider.setCustomParameters({
     'login_hint': 'user@example.com'
@@ -109,7 +109,7 @@ function onSignIn(googleUser) {
       // Build Firebase credential with the Google ID token.
       var credential = firebase.auth.GoogleAuthProvider.credential(
           googleUser.getAuthResponse().id_token);
-  
+
       // Sign in with credential from the Google user.
       // [START auth_google_signin_credential]
       firebase.auth().signInWithCredential(credential).catch((error) => {

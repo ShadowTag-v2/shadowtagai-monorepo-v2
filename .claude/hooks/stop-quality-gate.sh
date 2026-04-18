@@ -23,7 +23,7 @@ WARNINGS=""
 if [ -f "$CWD/tsconfig.json" ]; then
   TSC_OUTPUT=$(cd "$CWD" && npx tsc --noEmit 2>&1 || true)
   TSC_ERROR_COUNT=$(echo "$TSC_OUTPUT" | grep -c "error TS" || echo "0")
-  
+
   if [ "$TSC_ERROR_COUNT" -gt 0 ]; then
     ERRORS="${ERRORS}\n❌ TypeScript: ${TSC_ERROR_COUNT} type errors found"
     # Include first 5 errors for context
@@ -37,7 +37,7 @@ CHANGED_TS=$(cd "$CWD" && git diff --name-only HEAD 2>/dev/null | grep -E '\.(ts
 if [ -n "$CHANGED_TS" ] && [ -f "$CWD/.eslintrc.json" -o -f "$CWD/.eslintrc.js" -o -f "$CWD/eslint.config.js" -o -f "$CWD/eslint.config.mjs" ]; then
   ESLINT_OUTPUT=$(cd "$CWD" && echo "$CHANGED_TS" | xargs npx eslint --no-error-on-unmatched-pattern 2>&1 || true)
   ESLINT_ERROR_COUNT=$(echo "$ESLINT_OUTPUT" | grep -cE "^\s+[0-9]+:[0-9]+\s+error" || echo "0")
-  
+
   if [ "$ESLINT_ERROR_COUNT" -gt 0 ]; then
     WARNINGS="${WARNINGS}\n⚠️ ESLint: ${ESLINT_ERROR_COUNT} lint errors in changed files"
   fi
@@ -50,7 +50,7 @@ if [ -n "$CHANGED_PY" ] && command -v mypy &>/dev/null; then
   if [ -f "$CWD/mypy.ini" -o -f "$CWD/pyproject.toml" ]; then
     MYPY_OUTPUT=$(cd "$CWD" && echo "$CHANGED_PY" | xargs mypy --ignore-missing-imports 2>&1 || true)
     MYPY_ERROR_COUNT=$(echo "$MYPY_OUTPUT" | grep -c "error:" || echo "0")
-    
+
     if [ "$MYPY_ERROR_COUNT" -gt 0 ]; then
       WARNINGS="${WARNINGS}\n⚠️ mypy: ${MYPY_ERROR_COUNT} type errors in changed Python files"
     fi
@@ -62,7 +62,7 @@ if [ -n "$ERRORS" ] || [ -n "$WARNINGS" ]; then
   CONTEXT="🔍 Stop Quality Gate Results:"
   [ -n "$ERRORS" ] && CONTEXT="${CONTEXT}\n${ERRORS}"
   [ -n "$WARNINGS" ] && CONTEXT="${CONTEXT}\n${WARNINGS}"
-  
+
   python3 -c "
 import json
 output = {

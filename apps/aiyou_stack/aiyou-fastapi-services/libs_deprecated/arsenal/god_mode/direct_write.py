@@ -4,8 +4,7 @@ from src.governance.judge_six.sentinel import JudgeSentinel
 
 
 class GeminiCodeAssistProxy:
-    """GOD MODE: Direct Write Capability.
-    """
+    """GOD MODE: Direct Write Capability."""
 
     def __init__(self):
         self.judge = JudgeSentinel()

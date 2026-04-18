@@ -200,7 +200,7 @@ fonttitle=\bfseries\small,coltitle=black]
 
 \textbf{Indications}: [When to consider this option - e.g., patient preference for oral therapy, specific contraindication to Option 1]
 
-\textbf{Trade-offs}: 
+\textbf{Trade-offs}:
 \begin{itemize}
 \item Advantages: [e.g., Oral administration, better tolerability]
 \item Disadvantages: [e.g., Lower response rate, less survival benefit]
@@ -294,7 +294,7 @@ $\geq$60 & Normal/Mild & Standard dosing \\
   \node [process, left of=biomarker, node distance=3.5cm] (optionA) {Targeted\\ Therapy};
   \node [process, right of=biomarker, node distance=3.5cm] (optionB) {Standard\\ Therapy};
   \node [terminal, below of=biomarker, node distance=2.5cm] (monitor) {Monitor Response\\ Every X weeks};
-  
+
   \draw [arrow] (start) -- (biomarker);
   \draw [arrow] (biomarker) -- node[above] {Yes} (optionA);
   \draw [arrow] (biomarker) -- node[above] {No} (optionB);
@@ -526,4 +526,3 @@ Year 5+ & Annually & Annually & Annually \\
 }
 
 \end{document}
-

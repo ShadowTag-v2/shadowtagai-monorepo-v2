@@ -294,7 +294,8 @@ class WealthOptimizer:
 
         # 3. IDENTIFY LEVERAGE (Challenge)
         analysis.leverage_opportunities = await self._identify_leverage(
-            ingestion_result, historical_data,
+            ingestion_result,
+            historical_data,
         )
         analysis.total_leverage_value = sum(
             opp.projected_3yr_value for opp in analysis.leverage_opportunities
@@ -493,7 +494,9 @@ class WealthOptimizer:
         return redesigns
 
     async def _identify_leverage(
-        self, result: Any, historical_data: list[Any] | None,
+        self,
+        result: Any,
+        historical_data: list[Any] | None,
     ) -> list[LeverageOpportunity]:
         """Identify compounding leverage opportunities"""
         opportunities = []

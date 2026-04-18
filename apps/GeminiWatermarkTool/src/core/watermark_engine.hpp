@@ -24,10 +24,10 @@ struct DetectionResult {
     float confidence;        // Detection confidence (0.0 - 1.0)
     cv::Rect region;         // Detected watermark region
     WatermarkSize size;      // Detected watermark size
-    
+
     // Debug info
     float spatial_score;     // Stage 1: Spatial NCC score
-    float gradient_score;    // Stage 2: Gradient NCC score  
+    float gradient_score;    // Stage 2: Gradient NCC score
     float variance_score;    // Stage 3: Variance analysis score
 };
 
@@ -258,7 +258,7 @@ private:
     float logo_value_;          // Logo brightness (255 = white)
 
     cv::Mat& get_alpha_map_mutable(WatermarkSize size);
-    
+
     /**
      * Create an interpolated alpha map for a custom size
      * Uses bilinear interpolation from the 96x96 alpha map

@@ -10,7 +10,12 @@ from shadowtag_v2.testing.robustness_tests import RobustnessTests
 
 
 def test_watermark_survival(
-    shadowtag, original_video, original_audio, attacked_video, attacked_audio, test_name,
+    shadowtag,
+    original_video,
+    original_audio,
+    attacked_video,
+    attacked_audio,
+    test_name,
 ):
     """Test if watermark survives after attack."""
     print(f"\nTesting: {test_name}")

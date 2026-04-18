@@ -6,7 +6,7 @@ export default function OutlookDemo() {
     <div className="min-h-screen bg-[#0a0a0b] text-neutral-200 font-sans selection:bg-indigo-500/30">
       {/* Dynamic Background Mesh */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
-      
+
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
         <header className="mb-16 border-b border-white/5 pb-8">
           <div className="flex items-center justify-between">
@@ -37,8 +37,8 @@ export default function OutlookDemo() {
             { tag: "VRAM Buffer", val: "16 GB ANE", act: "Stable" },
             { tag: "LanceDB Array", val: "Port 8080", act: "Ingesting" }
           ].map((node, i) => (
-             <div 
-               key={i} 
+             <div
+               key={i}
                className="group relative backdrop-blur-xl bg-white/[0.02] border border-white/[0.05] rounded-2xl p-6 transition-all duration-500 hover:bg-white/[0.04] hover:border-white/10 hover:-translate-y-1 shadow-2xl shadow-black/50 overflow-hidden"
              >
                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -53,7 +53,7 @@ export default function OutlookDemo() {
              </div>
           ))}
         </div>
-        
+
         <VectorRetrieval />
       </div>
     </div>

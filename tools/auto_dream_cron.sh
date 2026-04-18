@@ -41,7 +41,7 @@ if [ -d "$BRAIN_SESSIONS" ]; then
         session_name=$(basename "$session_dir")
         # Skip non-UUID directories
         [[ "$session_name" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]] || continue
-        
+
         # Check age (7+ days old)
         if [ -f "$session_dir/task.md" ]; then
             age_days=$(( ($(date +%s) - $(stat -f %m "$session_dir/task.md" 2>/dev/null || echo $(date +%s))) / 86400 ))

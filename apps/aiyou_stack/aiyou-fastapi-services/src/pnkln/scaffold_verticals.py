@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Scaffolds the directory structure for the 30 Sovereign Verticals.
-"""
+"""Scaffolds the directory structure for the 30 Sovereign Verticals."""
 
 import logging
 import os

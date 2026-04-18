@@ -61,9 +61,7 @@ class SovereignPatcher:
 
                 # Deterministic check: The original block MUST exist exactly as described
                 if original_block not in file_content:
-                    logger.error(
-                        f"Patch failed: original_block not found in {filepath}. AST mismatch or temporal drift."
-                    )
+                    logger.error(f"Patch failed: original_block not found in {filepath}. AST mismatch or temporal drift.")
                     # At this point, the Temporal-Reversal Git Hook takes over in the bash layer
                     return False
 

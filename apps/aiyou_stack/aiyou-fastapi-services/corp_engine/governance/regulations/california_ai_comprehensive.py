@@ -536,7 +536,9 @@ class CaliforniaAIComprehensiveCompliance:
         return int(duration.total_seconds() / 60)
 
     def check_break_reminder(
-        self, session_id: str, protection_level: MinorProtectionLevel,
+        self,
+        session_id: str,
+        protection_level: MinorProtectionLevel,
     ) -> dict[str, Any]:
         """Check if break reminder is due"""
         duration = self.get_session_duration_minutes(session_id)

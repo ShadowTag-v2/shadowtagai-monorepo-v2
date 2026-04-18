@@ -152,7 +152,10 @@ class OrderItem(Base):
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     order_id = Column(
-        String(36), ForeignKey("commerce_orders.id", ondelete="CASCADE"), nullable=False, index=True,
+        String(36),
+        ForeignKey("commerce_orders.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     product_id = Column(String(36), ForeignKey("commerce_products.id"), nullable=False, index=True)
 

@@ -1,12 +1,12 @@
 /**
  * Copyright 2026 Google LLC
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,11 +35,11 @@ const WORKSPACE_TOOLS = {
          "recipient": {
            "type": "string",
            "description": "The name of the recipient."
-         },   
+         },
          "filename": {
            "type": "string",
            "description": "The name of the file."
-         },                     
+         },
        },
        "required": [
          "time",
@@ -61,14 +61,14 @@ const WORKSPACE_TOOLS = {
             "recipient": {
               "type": "string",
               "description": "The name of the recipient."
-            },            
+            },
           },
           "required": [
             "sheet_name",
             "recipient"
           ]
         }
-      },   
+      },
       {
         "name": "createDeck",
         "description": "Build a simple presentation deck with Google Slides and return the URL.",
@@ -86,7 +86,7 @@ const WORKSPACE_TOOLS = {
         }
       },
 
-   // You add tools here.        
+   // You add tools here.
  ]
 };
 
@@ -100,13 +100,13 @@ function callGemini(prompt, temperature=0) {
           },
         ]
       }
-    ], 
+    ],
     "generationConfig":  {
       "temperature": temperature,
     },
   };
 
-  const options = { 
+  const options = {
     'method' : 'post',
     'contentType': 'application/json',
     'payload': JSON.stringify(payload)
@@ -140,16 +140,16 @@ function callGeminiProVision(prompt, image, temperature=0) {
               "mimeType": "image/png",
               "data": imageData
             }
-          }          
+          }
         ]
       }
-    ], 
+    ],
     "generationConfig":  {
       "temperature": temperature,
     },
   };
 
-  const options = { 
+  const options = {
     'method' : 'post',
     'contentType': 'application/json',
     'payload': JSON.stringify(payload)
@@ -179,14 +179,14 @@ function callGeminiWithTools(prompt, tools, temperature=0) {
           },
         ]
       }
-    ], 
+    ],
     "tools" : tools,
     "generationConfig":  {
       "temperature": temperature,
-    },    
+    },
   };
 
-  const options = { 
+  const options = {
     'method' : 'post',
     'contentType': 'application/json',
     'payload': JSON.stringify(payload)
@@ -249,28 +249,28 @@ function attachFileToMeeting(event, file, fileName) {
     };
 
     // Patch the event to add the file as an attachment.
-    Calendar.Events.patch(patch, 'primary', eventId, {"supportsAttachments": true});  
+    Calendar.Events.patch(patch, 'primary', eventId, {"supportsAttachments": true});
 }
 
 function setupMeeting(time, recipient, filename) {
   const files = DriveApp.getFilesByName(filename);
   const file = files.next();
   const blogContent = file.getAs("text/*").getDataAsString();
-  
+
   var geminiOutput = callGemini("Give me a really short title of this blog and a summary with less than three sentences. Please return the result as a JSON with two fields: title and summary. \n" +  blogContent);
 
   // The Gemini model likes to enclose the JSON with ```json and ```
-  geminiOutput = JSON.parse(geminiOutput.replace(/```(?:json|)/g, ""));  
+  geminiOutput = JSON.parse(geminiOutput.replace(/```(?:json|)/g, ""));
   const title = geminiOutput['title'];
   const fileSummary = geminiOutput['summary'];
 
-  const event = CalendarApp.getDefaultCalendar().createEventFromDescription(`meet ${recipient} at ${time} to discuss "${title}"`); 
+  const event = CalendarApp.getDefaultCalendar().createEventFromDescription(`meet ${recipient} at ${time} to discuss "${title}"`);
   event.setDescription(fileSummary);
   attachFileToMeeting(event, file, filename);
 }
 
 function draftEmail(sheet_name, recipient) {
-  
+
   const prompt = `Compose the email body for ${recipient} with your insights for this chart. Use information in this chart only and do not do historical comparisons. Be concise.`;
 
   var files = DriveApp.getFilesByName(sheet_name);
@@ -287,17 +287,17 @@ function draftEmail(sheet_name, recipient) {
 
 function createDeck(topic) {
   const prompt = `I'm preparing a ${NUM_SLIDES}-slide deck to discuss ${topic}. Please help me brainstorm and generate main bullet points for each slide. Keep the title of each slide short. Please produce the result as a valid JSON so that I can pass it to other APIs.`;
-  
+
   var geminiOutput = callGemini(prompt, 0.4);
   // The Gemini model likes to enclose the JSON with ```json and ```
   geminiOutput = geminiOutput.replace(/```(?:json|)/g, "");
   const bulletPoints = JSON.parse(geminiOutput);
-    
+
   // Create a Google Slides presentation.
   const presentation = SlidesApp.create("My New Presentation");
 
   // Set up the opening slide.
-  var slide = presentation.getSlides()[0]; 
+  var slide = presentation.getSlides()[0];
   var shapes = slide.getShapes();
   shapes[0].getText().setText(topic);
 
@@ -307,7 +307,7 @@ function createDeck(topic) {
       shapes = slide.getShapes();
       // Set title.
       shapes[0].getText().setText(bulletPoints['slides'][i]['title']);
-  
+
       // Set body.
       body = "";
       for (var j = 0; j < bulletPoints['slides'][i]['bullets'].length; j++) {
@@ -315,8 +315,7 @@ function createDeck(topic) {
         body += '* ' + bulletPoints['slides'][i]['bullets'][j] + '\n';
       }
       shapes[1].getText().setText(body);
-  } 
+  }
 
   return presentation.getUrl();
 }
-

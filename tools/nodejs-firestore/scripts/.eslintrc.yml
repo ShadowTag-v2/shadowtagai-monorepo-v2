@@ -4,4 +4,3 @@ rules:
   no-unused-vars: off
   node/no-unpublished-require: off
   node/no-extraneous-require: off
-

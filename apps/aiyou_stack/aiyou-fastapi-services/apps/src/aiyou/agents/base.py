@@ -213,10 +213,8 @@ class SecurityError(Exception):
     """Raised when sandbox detects forbidden operations."""
 
 
-
 class AntigravityAgent:
-    """Base agent class supporting Advanced Tool Use patterns.
-    """
+    """Base agent class supporting Advanced Tool Use patterns."""
 
     def __init__(self, name: str, model: str = "claude-3-5-sonnet-20241022"):
         self.name = name
@@ -250,8 +248,7 @@ class AntigravityAgent:
         return f"Found and loaded {len(found_tools)} tools: {[t['name'] for t in found_tools]}"
 
     def _execute_tool(self, tool_name: str, **kwargs) -> Any:
-        """Execute a tool by name. Override this for actual tool implementations.
-        """
+        """Execute a tool by name. Override this for actual tool implementations."""
         tool_def = registry.get_tool(tool_name)
         if not tool_def:
             return {"error": f"Tool '{tool_name}' not found"}

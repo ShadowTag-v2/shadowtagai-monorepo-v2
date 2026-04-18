@@ -154,7 +154,9 @@ class Agent0POC:
         """Call minions API."""
         try:
             response = requests.post(
-                f"{self.fm_url}/{endpoint}", json={"prompt": prompt}, timeout=60,
+                f"{self.fm_url}/{endpoint}",
+                json={"prompt": prompt},
+                timeout=60,
             )
             response.raise_for_status()
             return response.json()
@@ -350,7 +352,10 @@ Confidence should reflect how reliably the pattern catches true violations."""
                 print(f"///▞ AGENT0 :: Difficulty ↓ to {self.state.difficulty}")
 
     async def evolve(
-        self, iterations: int | None = None, domain: str = "general", verbose: bool = True,
+        self,
+        iterations: int | None = None,
+        domain: str = "general",
+        verbose: bool = True,
     ) -> list[DetectionRule]:
         """Run the co-evolution loop.
 
@@ -459,7 +464,8 @@ Confidence should reflect how reliably the pattern catches true violations."""
 
 # Convenience function
 def create_agent0(
-    minions_url: str = "http://localhost:8600", max_iterations: int = 100,
+    minions_url: str = "http://localhost:8600",
+    max_iterations: int = 100,
 ) -> Agent0POC:
     """Create an Agent0 instance."""
     return Agent0POC(minions_url=minions_url, max_iterations=max_iterations)

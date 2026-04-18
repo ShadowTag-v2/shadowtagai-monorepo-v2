@@ -33,14 +33,17 @@ class BusinessDayCalculator:
     def next_business_day(d: date, jurisdiction: Jurisdiction = Jurisdiction.FEDERAL) -> date:
         """Roll forward to next business day."""
         while BusinessDayCalculator.is_weekend(d) or BusinessDayCalculator.is_holiday(
-            d, jurisdiction,
+            d,
+            jurisdiction,
         ):
             d += timedelta(days=1)
         return d
 
     @staticmethod
     def add_business_days(
-        start_date: date, days: int, jurisdiction: Jurisdiction = Jurisdiction.FEDERAL,
+        start_date: date,
+        days: int,
+        jurisdiction: Jurisdiction = Jurisdiction.FEDERAL,
     ) -> date:
         """Add N business days to start_date."""
         current = start_date
@@ -61,10 +64,12 @@ class RulesEngine:
         self._rules_cache = {}
 
     def calculate_deadline(
-        self, jurisdiction: Jurisdiction, event_type: EventType, trigger_date: date,
+        self,
+        jurisdiction: Jurisdiction,
+        event_type: EventType,
+        trigger_date: date,
     ) -> DeadlineCalculationResponse | None:
-        """Calculate deadline based on jurisdiction and event type.
-        """
+        """Calculate deadline based on jurisdiction and event type."""
         # MVP Hardcoded Rules
         # In real impl, fetch from DB
 

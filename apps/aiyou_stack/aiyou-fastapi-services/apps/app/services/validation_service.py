@@ -76,7 +76,11 @@ class ATP519RuleEngine:
         return "C (Fairly Reliable)"
 
     def rate_credibility(
-        self, title: str, content: str, tags: list[str], cross_references: int = 0,
+        self,
+        title: str,
+        content: str,
+        tags: list[str],
+        cross_references: int = 0,
     ) -> int:
         """Rate information credibility (1-6 scale)"""
         # If cross-referenced by multiple sources

@@ -101,7 +101,10 @@ class MultiAgentSystem:
         logger.info(f"Registered agent {agent_id} ({role.value}) with rating {initial_rating}")
 
     async def run_debate(
-        self, topic: str, num_participants: int = 3, rounds: int = 2,
+        self,
+        topic: str,
+        num_participants: int = 3,
+        rounds: int = 2,
     ) -> dict[str, Any]:
         """Run multi-agent debate panel
 
@@ -140,7 +143,10 @@ class MultiAgentSystem:
             rating = player.mu if player else 1500.0
 
             participant = DebateParticipant(
-                agent_id=agent_id, position=position, arguments=[], rating=rating,
+                agent_id=agent_id,
+                position=position,
+                arguments=[],
+                rating=rating,
             )
             participants.append(participant)
 
@@ -151,7 +157,9 @@ class MultiAgentSystem:
             for participant in participants:
                 # Generate argument (at IQ 160)
                 argument = self._generate_argument(
-                    topic=topic, position=participant.position, round_num=round_num,
+                    topic=topic,
+                    position=participant.position,
+                    round_num=round_num,
                 )
                 participant.arguments.append(argument)
 
@@ -209,7 +217,10 @@ class MultiAgentSystem:
         )
 
     async def craft_code(
-        self, task: str, language: str = "python", use_cheat_sheet: bool = True,
+        self,
+        task: str,
+        language: str = "python",
+        use_cheat_sheet: bool = True,
     ) -> AgentResponse:
         """Code crafter agent enhanced with cheat sheet fusion
 

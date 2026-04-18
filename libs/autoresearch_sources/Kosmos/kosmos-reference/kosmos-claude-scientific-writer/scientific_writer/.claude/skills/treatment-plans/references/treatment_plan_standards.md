@@ -117,7 +117,7 @@ Short-term goals (weeks to 3 months) and long-term goals (3-12+ months) should b
 - Avoid ambiguous language
 - Specific rather than vague descriptions
 
-**Good Example**: "Reduce HbA1c from 8.5% to <7% within 3 months"  
+**Good Example**: "Reduce HbA1c from 8.5% to <7% within 3 months"
 **Poor Example**: "Improve diabetes control"
 
 #### Completeness
@@ -315,27 +315,27 @@ For rehabilitation treatment plans:
 ## Common Documentation Deficiencies and Solutions
 
 ### Problem: Vague Goals
-**Deficiency**: "Improve diabetes"  
+**Deficiency**: "Improve diabetes"
 **Solution**: "Reduce HbA1c from 8.5% to <7% within 3 months through medication intensification and lifestyle modification"
 
 ### Problem: Missing Rationales
-**Deficiency**: Lists medications without explanation  
+**Deficiency**: Lists medications without explanation
 **Solution**: "Metformin 1000mg BID - first-line therapy for T2DM, reduces hepatic glucose production, target dose for HbA1c reduction"
 
 ### Problem: No Timeline
-**Deficiency**: Goals without timeframes  
+**Deficiency**: Goals without timeframes
 **Solution**: "Short-term (3 months): HbA1c <7.5%; Long-term (6 months): HbA1c <7%"
 
 ### Problem: Incomplete Monitoring
-**Deficiency**: "Monitor labs"  
+**Deficiency**: "Monitor labs"
 **Solution**: "HbA1c every 3 months until at goal, then every 6 months; CMP every 6 months to monitor renal function on metformin and ACE inhibitor"
 
 ### Problem: Absent Patient Education
-**Deficiency**: No documentation of education provided  
+**Deficiency**: No documentation of education provided
 **Solution**: Dedicated section documenting: condition education, self-management skills taught, warning signs communicated, resources provided
 
 ### Problem: Missing Safety Planning
-**Deficiency**: No risk mitigation  
+**Deficiency**: No risk mitigation
 **Solution**: Specific safety concerns addressed (e.g., hypoglycemia risk with insulin, monitoring plan, patient taught recognition and treatment)
 
 ## Electronic Health Record (EHR) Integration
@@ -479,7 +479,6 @@ For rehabilitation treatment plans:
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2025  
+**Document Version**: 1.0
+**Last Updated**: January 2025
 **Next Review**: January 2026
-

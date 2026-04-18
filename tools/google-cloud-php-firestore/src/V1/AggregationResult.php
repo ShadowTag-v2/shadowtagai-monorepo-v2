@@ -83,4 +83,3 @@ class AggregationResult extends \Google\Protobuf\Internal\Message
     }
 
 }
-

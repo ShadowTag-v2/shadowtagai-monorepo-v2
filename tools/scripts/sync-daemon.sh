@@ -11,10 +11,10 @@ LOG_FILE="$REPO_DIR/sync-daemon.log"
 GIT_BIN="/usr/bin/git"
 PYTHON_BIN="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/python3"
 NPX_BIN="/opt/homebrew/bin/npx"
-PYRIGHT_BIN="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/basedpyright" 
+PYRIGHT_BIN="/Users/pikeymickey/.gemini/antigravity/Monorepo-Uphillsnowball/.venv/bin/basedpyright"
 
 # Log size limit in bytes (5MB = 5242880 bytes)
-MAX_LOG_SIZE=5242880 
+MAX_LOG_SIZE=5242880
 # ==========================================
 
 # ---------------------------------------------------------

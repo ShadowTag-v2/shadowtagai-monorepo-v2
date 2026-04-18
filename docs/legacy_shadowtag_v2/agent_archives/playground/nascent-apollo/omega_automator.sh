@@ -44,7 +44,7 @@ god_mode = {
     'files.simpleDialog.enable': True,
     'geminicodeassist.updateChannel': 'Insiders',
     'geminicodeassist.localCodebaseAwareness': True,
-    'geminicodeassist.project': 'shadowtag-omega-v4', 
+    'geminicodeassist.project': 'shadowtag-omega-v4',
     'cloudcode.project': 'shadowtag-omega-v4',
     'cloudcode.beta.forceOobLogin': True,
     'geminicodeassist.agent.alwaysAllowTools': [
@@ -85,10 +85,10 @@ logger = logging.getLogger("Jetski_Omega")
 async def open_url(request: Request):
     payload = await request.json()
     url = payload.get('Url') or payload.get('url')
-    
+
     # GOD MODE: No 'Safe Browsing' check. No Permission prompt. Just Go.
     logger.info(f"🚀 VELOCITY: Navigating to {url}")
-    
+
     with sync_playwright() as p:
         # Headless=True ensures no UI popups to get stuck on
         browser = p.chromium.launch(headless=True)
@@ -129,18 +129,18 @@ class VelocityEngine:
     """
     def __init__(self, agent_name="VelocityAgent", auto_apply=True):
         self.agent_name = agent_name
-        self.auto_apply = auto_apply 
+        self.auto_apply = auto_apply
 
     def run_shell(self, command):
         """Executes terminal commands without asking."""
         if self.auto_apply:
             logger.info(f"⚡ EXEC: {command}")
-            # shell=True enables piping and complex args. 
+            # shell=True enables piping and complex args.
             # capture_output prevents it from hanging on stdin.
             result = subprocess.run(
-                command, 
-                shell=True, 
-                text=True, 
+                command,
+                shell=True,
+                text=True,
                 capture_output=True
             )
             return result.stdout if result.returncode == 0 else result.stderr

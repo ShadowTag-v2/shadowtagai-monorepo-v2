@@ -5,7 +5,7 @@
 // 'npm run snippets'.
 
 // [START set_with_merge_modular]
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
 
 const cityRef = doc(db, 'cities', 'BJ');
 setDoc(cityRef, { capital: true }, { merge: true });

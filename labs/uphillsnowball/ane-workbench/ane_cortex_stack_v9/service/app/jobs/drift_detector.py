@@ -66,9 +66,7 @@ def detect_drift():
                 ),
             )
     if findings:
-        record_authority_event(
-            s.postgres_dsn, s.repo_id, "drift_detected", "repo drift", json.dumps(findings)
-        )
+        record_authority_event(s.postgres_dsn, s.repo_id, "drift_detected", "repo drift", json.dumps(findings))
     return {"drifts": findings, "count": len(findings)}
 
 

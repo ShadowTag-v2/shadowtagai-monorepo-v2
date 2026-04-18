@@ -111,4 +111,3 @@ class StructuredPipeline extends \Google\Protobuf\Internal\Message
     }
 
 }
-

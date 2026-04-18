@@ -880,4 +880,3 @@ export const SettingsPanel = ({ isOpen, onClose, onSettingsSaved, backendUrl, is
     </div>
   );
 };
-

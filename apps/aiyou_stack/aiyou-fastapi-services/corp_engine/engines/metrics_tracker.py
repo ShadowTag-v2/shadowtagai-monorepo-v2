@@ -124,7 +124,11 @@ class MetricsTracker:
     # =========================================================================
 
     def record(
-        self, tenant_id: str, metric_type: MetricType, value: float, source: str = "system",
+        self,
+        tenant_id: str,
+        metric_type: MetricType,
+        value: float,
+        source: str = "system",
     ) -> MetricDataPoint:
         """Record a metric data point"""
         point = MetricDataPoint(
@@ -151,7 +155,10 @@ class MetricsTracker:
         return point
 
     def record_batch(
-        self, tenant_id: str, metrics: dict[MetricType, float], source: str = "system",
+        self,
+        tenant_id: str,
+        metrics: dict[MetricType, float],
+        source: str = "system",
     ) -> list[MetricDataPoint]:
         """Record multiple metrics at once"""
         points = []
@@ -314,7 +321,10 @@ class MetricsTracker:
         }
 
     def get_trajectory_chart_data(
-        self, tenant_id: str, metric_type: MetricType, days: int = 30,
+        self,
+        tenant_id: str,
+        metric_type: MetricType,
+        days: int = 30,
     ) -> list[dict[str, Any]]:
         """Get data for trajectory chart"""
         points = self._get_points(tenant_id, metric_type)

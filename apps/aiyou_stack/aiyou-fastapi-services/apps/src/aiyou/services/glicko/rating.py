@@ -202,8 +202,7 @@ class Glicko2Player:
 
 
 class ModelRating(Base):
-    """Track Glicko-2 ratings for AI models across different task types
-    """
+    """Track Glicko-2 ratings for AI models across different task types"""
 
     __tablename__ = "model_ratings"
 
@@ -211,7 +210,9 @@ class ModelRating(Base):
 
     # Model identification
     model_name = Column(
-        String(100), nullable=False, index=True,
+        String(100),
+        nullable=False,
+        index=True,
     )  # "gemini-1.5-pro", "claude-3.5-sonnet"
     model_version = Column(String(50))
     task_type = Column(String(50), nullable=False, index=True)
@@ -247,8 +248,7 @@ class ModelRating(Base):
 
 
 class ModelMatch(Base):
-    """Record of model performance comparison (match result)
-    """
+    """Record of model performance comparison (match result)"""
 
     __tablename__ = "model_matches"
 
@@ -286,8 +286,7 @@ class ModelMatch(Base):
 
 
 class GlickoModelSelector:
-    """Select best AI model for each task using Glicko-2 ratings
-    """
+    """Select best AI model for each task using Glicko-2 ratings"""
 
     def __init__(self, db: Session):
         self.db = db
@@ -448,7 +447,9 @@ class GlickoModelSelector:
             import uuid
 
             rating = ModelRating(
-                id=str(uuid.uuid4()), model_name=model_name, task_type=task_type.value,
+                id=str(uuid.uuid4()),
+                model_name=model_name,
+                task_type=task_type.value,
             )
             self.db.add(rating)
             self.db.commit()

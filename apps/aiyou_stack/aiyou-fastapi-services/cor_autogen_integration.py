@@ -171,7 +171,10 @@ class ClaudeAgent:
 
         try:
             response = self.client.messages.create(
-                model=self.model, max_tokens=4096, system=self.system_prompt, messages=messages,
+                model=self.model,
+                max_tokens=4096,
+                system=self.system_prompt,
+                messages=messages,
             )
 
             assistant_message = response.content[0].text
@@ -213,7 +216,10 @@ class COROrchestrator:
         logger.info("COR Orchestrator initialized")
 
     def create_agent(
-        self, name: str, role: str, capabilities: list[str] | None = None,
+        self,
+        name: str,
+        role: str,
+        capabilities: list[str] | None = None,
     ) -> ClaudeAgent:
         """Create a specialized agent
 
@@ -275,7 +281,9 @@ Always provide clear, actionable outputs with proper reasoning.
         else:
             # Create default execution agent
             agent = self.create_agent(
-                name=f"Agent_{task_id}", role="Task Executor", capabilities=["general_execution"],
+                name=f"Agent_{task_id}",
+                role="Task Executor",
+                capabilities=["general_execution"],
             )
 
         # Execute task
@@ -318,7 +326,9 @@ Execute this task using the recommended skill approach."""
         return result
 
     def execute_multi_agent_task(
-        self, task_description: str, agent_roles: list[dict[str, str]],
+        self,
+        task_description: str,
+        agent_roles: list[dict[str, str]],
     ) -> dict[str, Any]:
         """Execute a task using multiple agents in collaboration
 

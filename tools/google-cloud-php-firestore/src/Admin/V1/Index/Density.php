@@ -106,4 +106,3 @@ class Density
         return constant($const);
     }
 }
-

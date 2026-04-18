@@ -355,7 +355,8 @@ async def process_ingestion_job(job_id: str, user_id: str):
             raise Exception("GEMINI_API_KEY not configured")
 
         gemini_client = GeminiClient(
-            api_key=settings.gemini_api_key, project_id=settings.gemini_project_id,
+            api_key=settings.gemini_api_key,
+            project_id=settings.gemini_project_id,
         )
 
         # Process based on content type

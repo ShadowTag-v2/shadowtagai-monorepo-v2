@@ -13,6 +13,7 @@ from dataclasses import dataclass
 @dataclass
 class SignalPacket:
     """Immutable record of a detected signal."""
+
     signal_type: str
     confidence: float
     raw_match: str
@@ -50,20 +51,24 @@ def scan_input(text: str) -> list[SignalPacket]:
         for match in re.finditer(pattern, text, re.IGNORECASE):
             ctx_start = max(0, match.start() - 50)
             ctx_end = min(len(text), match.end() + 50)
-            signals.append(SignalPacket(
-                signal_type="PROMPT_INJECTION",
-                confidence=0.9,
-                raw_match=match.group(),
-                context=text[ctx_start:ctx_end],
-            ))
+            signals.append(
+                SignalPacket(
+                    signal_type="PROMPT_INJECTION",
+                    confidence=0.9,
+                    raw_match=match.group(),
+                    context=text[ctx_start:ctx_end],
+                )
+            )
     for pattern in EXFIL_PATTERNS:
         for match in re.finditer(pattern, text, re.IGNORECASE):
             ctx_start = max(0, match.start() - 50)
             ctx_end = min(len(text), match.end() + 50)
-            signals.append(SignalPacket(
-                signal_type="DATA_EXFIL",
-                confidence=0.7,
-                raw_match=match.group(),
-                context=text[ctx_start:ctx_end],
-            ))
+            signals.append(
+                SignalPacket(
+                    signal_type="DATA_EXFIL",
+                    confidence=0.7,
+                    raw_match=match.group(),
+                    context=text[ctx_start:ctx_end],
+                )
+            )
     return signals

@@ -250,4 +250,3 @@ class Field extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -16,21 +16,21 @@
 >
 > This project achieves high-precision restoration by using my calibrated **48×48** and **96×96** **Reverse-Alpha Masks** to invert the blending equation. Since I published this work and these assets, many derivative tools (desktop apps, websites, browser extensions, etc.) have appeared using the same approach and/or directly reusing the masks produced by this project — because the method is deterministic and highly effective.
 >
-> ✅ **MIT License reminder**  
-> This project is released under the **MIT License**. Commercial use and ports are allowed.  
+> ✅ **MIT License reminder**
+> This project is released under the **MIT License**. Commercial use and ports are allowed.
 > However, if you **redistribute** any substantial portion of this project (including code or mask assets), you must:
 > - Preserve the original **copyright notice**
 > - Include the full **MIT license text**
 > - (Recommended) Provide attribution with a link back to this repository
 >
-> 📖 For the full technical write-up (including how the Reverse-Alpha Masks were derived and calibrated), see:  
-> **Removing Gemini AI Watermarks: A Deep Dive into Reverse Alpha Blending**  
+> 📖 For the full technical write-up (including how the Reverse-Alpha Masks were derived and calibrated), see:
+> **Removing Gemini AI Watermarks: A Deep Dive into Reverse Alpha Blending**
 > https://allenkuo.medium.com/removing-gemini-ai-watermarks-a-deep-dive-into-reverse-alpha-blending-bbbd83af2a3f
 
-Gemini Watermark Tool removes Gemini visible watermarks from images using a **mathematically accurate reverse alpha blending algorithm**.  
+Gemini Watermark Tool removes Gemini visible watermarks from images using a **mathematically accurate reverse alpha blending algorithm**.
 Unlike many tools that rely entirely on generative inpainting, this project focuses on **deterministic reconstruction** combined with lightweight AI-assisted cleanup.
 
-The design philosophy is simple:  
+The design philosophy is simple:
 **small, standalone, fast, and reliable.**
 
 The entire toolkit is distributed as a **portable executable with zero runtime dependencies**, making it easy to install, automate, and integrate into scripts or pipelines without complex setup.
@@ -253,8 +253,8 @@ Detection is **enabled by default** in simple/drag-and-drop mode and **disabled 
 ![Comparison](artworks/comparison.png)
 Best for: **slides, documents, UI screenshots, diagrams, logos**.
 
-**Focus on the bottom example (text-heavy slide).**  
-Generative inpainting often breaks text: warped edges, wrong spacing, invented strokes.  
+**Focus on the bottom example (text-heavy slide).**
+Generative inpainting often breaks text: warped edges, wrong spacing, invented strokes.
 GeminiWatermarkTool reverses the blending equation to recover pixels, keeping text crisp.
 
 ---
@@ -268,7 +268,7 @@ GeminiWatermarkTool reverses the blending equation to recover pixels, keeping te
 SynthID is Google DeepMind's **invisible watermarking** technology embedded in AI-generated images. Unlike visible watermarks:
 
 - **Invisible** to human eyes
-- **Integrated** during generation (not added afterward)  
+- **Integrated** during generation (not added afterward)
 - **Extremely robust** against common image manipulations
 
 ### Why Can't SynthID Be Removed?
@@ -747,7 +747,7 @@ When images have been resized or recompressed after watermarking, the exact math
 
 ## Legal Disclaimer
 
-This tool is provided for **personal and educational use only**. 
+This tool is provided for **personal and educational use only**.
 
 The removal of watermarks may have legal implications depending on your jurisdiction and the intended use of the images. Users are solely responsible for ensuring their use of this tool complies with applicable laws, terms of service, and intellectual property rights.
 
@@ -762,7 +762,7 @@ MIT License
 ## Author
 
 **Allen Kuo** ([@allenk](https://github.com/allenk))
-- GitHub: https://github.com/allenk  
+- GitHub: https://github.com/allenk
 - LinkedIn: https://www.linkedin.com/in/allen-kuo-7b513a45/
 - Medium: https://allenkuo.medium.com
 

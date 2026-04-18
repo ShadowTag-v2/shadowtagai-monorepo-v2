@@ -245,7 +245,10 @@ class CRDTMapStore:
                 self.stats["merge_conflicts"] += 1
 
     def create_delta(
-        self, operation: str, feature: MapFeature, parent_deltas: list[str] | None = None,
+        self,
+        operation: str,
+        feature: MapFeature,
+        parent_deltas: list[str] | None = None,
     ) -> MapDelta:
         """Create new map delta"""
         delta = MapDelta(
@@ -325,7 +328,12 @@ class CRDTMapStore:
         return cells
 
     def _in_bounds(
-        self, feature: MapFeature, min_lat: float, max_lat: float, min_lon: float, max_lon: float,
+        self,
+        feature: MapFeature,
+        min_lat: float,
+        max_lat: float,
+        min_lon: float,
+        max_lon: float,
     ) -> bool:
         """Check if feature is in bounds"""
         bbox = self._get_bbox(feature.geometry)

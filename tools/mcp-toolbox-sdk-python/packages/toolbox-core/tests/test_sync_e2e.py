@@ -84,9 +84,7 @@ class TestBasicE2E:
 
 @pytest.mark.usefixtures("toolbox_server")
 class TestBindParams:
-    def test_bind_params(
-        self, toolbox: ToolboxSyncClient, get_n_rows_tool: ToolboxSyncTool
-    ):
+    def test_bind_params(self, toolbox: ToolboxSyncClient, get_n_rows_tool: ToolboxSyncTool):
         """Bind a param to an existing tool."""
         new_tool = get_n_rows_tool.bind_params({"num_rows": "3"})
         response = new_tool()
@@ -96,9 +94,7 @@ class TestBindParams:
         assert "row3" in response
         assert "row4" not in response
 
-    def test_bind_params_callable(
-        self, toolbox: ToolboxSyncClient, get_n_rows_tool: ToolboxSyncTool
-    ):
+    def test_bind_params_callable(self, toolbox: ToolboxSyncClient, get_n_rows_tool: ToolboxSyncTool):
         """Bind a callable param to an existing tool."""
         new_tool = get_n_rows_tool.bind_params({"num_rows": lambda: "3"})
         response = new_tool()
@@ -111,9 +107,7 @@ class TestBindParams:
 
 @pytest.mark.usefixtures("toolbox_server")
 class TestAuth:
-    def test_run_tool_unauth_with_auth(
-        self, toolbox: ToolboxSyncClient, auth_token2: str
-    ):
+    def test_run_tool_unauth_with_auth(self, toolbox: ToolboxSyncClient, auth_token2: str):
         """Tests running a tool that doesn't require auth, with auth provided."""
 
         with pytest.raises(
@@ -172,9 +166,7 @@ class TestAuth:
         assert "row5" in response
         assert "row6" in response
 
-    def test_run_tool_param_auth_no_field(
-        self, toolbox: ToolboxSyncClient, auth_token1: str
-    ):
+    def test_run_tool_param_auth_no_field(self, toolbox: ToolboxSyncClient, auth_token1: str):
         """Tests running a tool with a param requiring auth, with insufficient auth."""
         tool = toolbox.load_tool(
             "get-row-by-content-auth",

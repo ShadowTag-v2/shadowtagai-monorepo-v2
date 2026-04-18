@@ -176,7 +176,7 @@ from scientific_writer import generate_paper
 
 async def create_paper():
     query = "Create a Nature paper on quantum computing"
-    
+
     async for update in generate_paper(query):
         if update["type"] == "progress":
             print(f"Progress: {update['message']}")
@@ -225,7 +225,7 @@ async def with_data_files():
         "./figures/performance_graph.png",
         "./appendix_data.json"
     ]
-    
+
     async for update in generate_paper(
         "Create a paper analyzing the experimental results",
         data_files=data_files
@@ -242,11 +242,11 @@ import json
 
 async def save_to_json():
     result = None
-    
+
     async for update in generate_paper("Create a paper"):
         if update["type"] == "result":
             result = update
-    
+
     if result:
         with open("paper_result.json", "w") as f:
             json.dump(result, f, indent=2)
@@ -298,20 +298,20 @@ async def list_all_files():
     async for update in generate_paper("Create a paper"):
         if update["type"] == "result":
             files = update["files"]
-            
+
             print("Generated files:")
             print(f"  PDF: {files['pdf_final']}")
             print(f"  TeX: {files['tex_final']}")
             print(f"  Bibliography: {files['bibliography']}")
-            
+
             print(f"\nDrafts ({len(files['pdf_drafts'])} versions):")
             for draft in files['pdf_drafts']:
                 print(f"  - {draft}")
-            
+
             print(f"\nFigures ({len(files['figures'])} files):")
             for fig in files['figures']:
                 print(f"  - {fig}")
-            
+
             print(f"\nData files ({len(files['data'])} files):")
             for data in files['data']:
                 print(f"  - {data}")
@@ -488,7 +488,7 @@ async for update in generate_paper(query):
         word_count = update["metadata"]["word_count"]  # Estimated from TeX
         created_at = update["metadata"]["created_at"]  # ISO 8601 timestamp
         topic = update["metadata"]["topic"]        # From directory name
-        
+
         # Citation information
         citation_count = update["citations"]["count"]  # From .bib file
         citation_style = update["citations"]["style"]  # BibTeX style
@@ -539,7 +539,7 @@ async for update in generate_paper(query):
     # Log all updates
     with open(log_file, "a") as f:
         f.write(json.dumps(update) + "\n")
-    
+
     if update["type"] == "progress":
         print(f"[{update['percentage']}%] {update['message']}")
 ```
@@ -558,13 +558,13 @@ async def generate_multiple_sequential():
         "Create a paper on machine learning",
         "Create a paper on climate change"
     ]
-    
+
     results = []
     for query in papers:
         async for update in generate_paper(query):
             if update["type"] == "result":
                 results.append(update)
-    
+
     return results
 
 # Parallel generation (advanced)
@@ -573,13 +573,13 @@ async def generate_multiple_parallel():
         async for update in generate_paper(query):
             if update["type"] == "result":
                 return update
-    
+
     papers = [
         "Create a paper on quantum computing",
         "Create a paper on machine learning",
         "Create a paper on climate change"
     ]
-    
+
     results = await asyncio.gather(*[generate_one(q) for q in papers])
     return results
 ```
@@ -590,5 +590,3 @@ async def generate_multiple_parallel():
 - [FEATURES.md](FEATURES.md) - Complete features guide
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Troubleshooting issues
 - [example_api_usage.py](../example_api_usage.py) - Complete code examples
-
-

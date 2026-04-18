@@ -6,24 +6,24 @@ python3 - << 'EOF'
 """
 MCP TOOLBOX: SOURCE PAGE LINTER
 ===============================
-This script enforces a standardized structure for integration Source pages 
+This script enforces a standardized structure for integration Source pages
 (source.md files). It ensures users can predictably find connection details
 and configurations across all database integrations.
 
-Note: The structural _index.md folder wrappers are intentionally ignored 
+Note: The structural _index.md folder wrappers are intentionally ignored
 by this script as they should only contain YAML frontmatter.
 
 MAINTENANCE GUIDE:
 ------------------
-1. TO ADD A NEW HEADING: 
-   Add the exact heading text to the 'ALLOWED_ORDER' list in the desired 
+1. TO ADD A NEW HEADING:
+   Add the exact heading text to the 'ALLOWED_ORDER' list in the desired
    sequence.
 
-2. TO MAKE A HEADING MANDATORY/OPTIONAL: 
-   Add or remove the heading text in the 'REQUIRED' set. 
+2. TO MAKE A HEADING MANDATORY/OPTIONAL:
+   Add or remove the heading text in the 'REQUIRED' set.
 
 3. TO IGNORE NEW CONTENT TYPES:
-   Update the regex in the 'clean_body' variable to strip out 
+   Update the regex in the 'clean_body' variable to strip out
    Markdown before linting.
 
 4. SCOPE:

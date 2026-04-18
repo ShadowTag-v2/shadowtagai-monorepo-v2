@@ -2,9 +2,9 @@
 *Delivered from the Office of the Architect, Core Engineering*
 
 ## 1. The Prologue: What We Inherited
-When we opened this sequence, the Uphill Snowball infrastructure was fractured. It was a massive 3.1GB payload floating across 58 siloed repository roots, plagued by duplicated legacy mirrors, broken IDE diagnostics triggering infinite loop exclusions, missing Python interpreters, and a Git history so bloated it shattered GitHub’s 500-commit Unpack ingestion limits. 
+When we opened this sequence, the Uphill Snowball infrastructure was fractured. It was a massive 3.1GB payload floating across 58 siloed repository roots, plagued by duplicated legacy mirrors, broken IDE diagnostics triggering infinite loop exclusions, missing Python interpreters, and a Git history so bloated it shattered GitHub’s 500-commit Unpack ingestion limits.
 
-The tools were disjointed. The data was inaccessible. 
+The tools were disjointed. The data was inaccessible.
 It was a mess. But we don't do messes. We build monoliths.
 
 ## 2. The Execution: What We Achieved

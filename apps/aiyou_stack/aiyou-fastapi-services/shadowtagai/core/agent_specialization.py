@@ -158,7 +158,10 @@ class AgentSpecialization:
     # =========================================================================
 
     def register_agent(
-        self, agent_id: str, primary: ExpertiseDomain, secondary: list[ExpertiseDomain] = None,
+        self,
+        agent_id: str,
+        primary: ExpertiseDomain,
+        secondary: list[ExpertiseDomain] = None,
     ) -> SpecializedAgent:
         """Register agent with T-shaped expertise.
 
@@ -187,7 +190,9 @@ class AgentSpecialization:
     # =========================================================================
 
     def get_experts_for_domain(
-        self, domain: ExpertiseDomain, min_weight: float = 0.5,
+        self,
+        domain: ExpertiseDomain,
+        min_weight: float = 0.5,
     ) -> list[tuple]:
         """Get agents with expertise in a domain.
 
@@ -237,7 +242,9 @@ class AgentSpecialization:
     # =========================================================================
 
     def calculate_weighted_consensus(
-        self, domain: ExpertiseDomain, opinions: dict[str, Any],
+        self,
+        domain: ExpertiseDomain,
+        opinions: dict[str, Any],
     ) -> dict[str, Any]:
         """Calculate weighted consensus for a domain.
 
@@ -341,7 +348,9 @@ class AgentSpecialization:
         }
 
     def _cross_domain_recommendation(
-        self, cross_domain_agents: list[dict], gaps: list[ExpertiseDomain],
+        self,
+        cross_domain_agents: list[dict],
+        gaps: list[ExpertiseDomain],
     ) -> str:
         """Generate recommendation for cross-domain coverage."""
         if gaps:

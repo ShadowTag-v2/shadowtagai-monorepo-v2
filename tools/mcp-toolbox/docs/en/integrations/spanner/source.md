@@ -4,7 +4,7 @@ linkTitle: "Source"
 type: docs
 weight: 1
 description: >
-  Spanner is a fully managed database service from Google Cloud that combines 
+  Spanner is a fully managed database service from Google Cloud that combines
   relational, key-value, graph, and search capabilities.
 no_list: true
 ---

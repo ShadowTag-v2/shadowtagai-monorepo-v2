@@ -5,9 +5,7 @@ import subprocess
 import sys
 
 # Configure Logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("GodModeAdmin")
 
 
@@ -75,9 +73,7 @@ def handle_command(line):
                     if response.status_code == 200:
                         logger.info("JSON: Task successfully dispatched to FastAPI agent pipeline.")
                     else:
-                        logger.error(
-                            f"JSON: Failed to dispatch. Status Code: {response.status_code} - {response.text}"
-                        )
+                        logger.error(f"JSON: Failed to dispatch. Status Code: {response.status_code} - {response.text}")
                 except Exception as net_err:
                     logger.error(f"JSON: Connection error to FastAPI matrix: {net_err}")
 

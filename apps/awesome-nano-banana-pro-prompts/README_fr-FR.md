@@ -2449,7 +2449,7 @@ Un prompt utilisé avec Nano Banana Pro (Gemini 3 Pro Image) pour générer un m
 
 ```
 Manga en 4 cases généré par IA
- 
+
 Titre
 L'aube de l'évitement de grève
 
@@ -3225,7 +3225,7 @@ Un prompt Nano Banana complexe et multi-étapes, conçu pour générer une photo
 
 ```
 <instruction>
- 
+
 L'objet A est une machine complexe (par exemple, une navette spatiale, un grand piano, une montre à mouvement mécanique).
 Décomposer en 3 phases d'assemblage :
    Phase 1 : Châssis/structure brute.
@@ -4438,16 +4438,16 @@ Une structure de prompt complexe et pondérée pour Nano Banana, conçue pour g�
 #### 📝 Prompt
 
 ```
-Cible_De_Rendu = 
-( Diorama_Pop_Up_3D_Livre_Ouvert * 2.0 ) + 
-( Environnement_3D_Inféré_[SÉRIE_DE_BANDES_DESSINÉES] * 1.5 ) + 
-( Jouet_Vinyle_3D_[HÉROS] + Jouet_Vinyle_3D_[MÉCHANTS] * 1.8 ) + 
-( Effets_Énergie_Plastique_Translucide * 1.5 ) + 
-( Texte_3D_Flottant_"{argument name="texte sfx" default="TEXTE_SFX"}" * 1.5 ) + 
-( Boîte_De_Titre_Jaune_Flottante_"{argument name="série de bandes dessinées" default="SÉRIE_DE_BANDES_DESSINÉES"} | {argument name="année" default="ANNÉE"}" * 1.2 ) + 
-( Bande_Dessinée_Plate_Vintage_Sur_Bureau_En_Bois * 1.0 ) - 
-( Personnages_Plats_2D / 2.0 ) - 
-( Réalisme_Humain / 2.0 ) - 
+Cible_De_Rendu =
+( Diorama_Pop_Up_3D_Livre_Ouvert * 2.0 ) +
+( Environnement_3D_Inféré_[SÉRIE_DE_BANDES_DESSINÉES] * 1.5 ) +
+( Jouet_Vinyle_3D_[HÉROS] + Jouet_Vinyle_3D_[MÉCHANTS] * 1.8 ) +
+( Effets_Énergie_Plastique_Translucide * 1.5 ) +
+( Texte_3D_Flottant_"{argument name="texte sfx" default="TEXTE_SFX"}" * 1.5 ) +
+( Boîte_De_Titre_Jaune_Flottante_"{argument name="série de bandes dessinées" default="SÉRIE_DE_BANDES_DESSINÉES"} | {argument name="année" default="ANNÉE"}" * 1.2 ) +
+( Bande_Dessinée_Plate_Vintage_Sur_Bureau_En_Bois * 1.0 ) -
+( Personnages_Plats_2D / 2.0 ) -
+( Réalisme_Humain / 2.0 ) -
 ( Échelle_Grandeur_Nature )
 ```
 

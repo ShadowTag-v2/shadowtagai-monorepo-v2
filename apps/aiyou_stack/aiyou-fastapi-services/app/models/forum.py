@@ -57,7 +57,9 @@ class ForumTopic(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     category_id = Column(
-        Integer, ForeignKey("forum_categories.id", ondelete="CASCADE"), nullable=False,
+        Integer,
+        ForeignKey("forum_categories.id", ondelete="CASCADE"),
+        nullable=False,
     )
     author_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 

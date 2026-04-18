@@ -42,12 +42,11 @@ async def stripe_connect_webhook(request: Request) -> dict[str, Any]:
         import stripe
 
         stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
-        event = stripe.Webhook.construct_event(
-            raw_body, sig_header, _CONNECT_WEBHOOK_SECRET
-        )
+        event = stripe.Webhook.construct_event(raw_body, sig_header, _CONNECT_WEBHOOK_SECRET)
     except ImportError:
         logger.warning("stripe not installed — parsing raw")
         import json
+
         event = json.loads(raw_body)
     except Exception as e:
         logger.warning("Connect webhook sig failed: %s", e)
@@ -74,12 +73,16 @@ def _handle_account_updated(event: dict[str, Any]) -> dict[str, Any]:
 
     logger.info(
         "Connect account updated: id=%s charges=%s payouts=%s details=%s",
-        account_id, charges, payouts, details,
+        account_id,
+        charges,
+        payouts,
+        details,
     )
 
     # Alert Google Chat when attorney completes onboarding
     if charges and payouts and details:
         import asyncio
+
         try:
             try:
                 from apps.counselconduit.api.workspace_alerts import send_chat_alert

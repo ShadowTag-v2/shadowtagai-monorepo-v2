@@ -51,7 +51,7 @@ func TestParseFromYamlMongoQuery(t *testing.T) {
             pipelinePayload: |
                 [{ $match: { name: {{json .name}} }}]
             pipelineParams:
-                - name: name 
+                - name: name
                   type: string
                   description: small description
 			`,

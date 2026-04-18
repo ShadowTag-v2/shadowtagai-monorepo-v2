@@ -104,7 +104,9 @@ class JurisdictionRuleEngine:
         # Apply service method additions
         if service_method:
             service_addition = self._get_service_method_addition(
-                jurisdiction, service_method, deadline_type,
+                jurisdiction,
+                service_method,
+                deadline_type,
             )
             notes.append(f"Service method '{service_method.value}' adds {service_addition} days")
 
@@ -130,7 +132,11 @@ class JurisdictionRuleEngine:
 
         # Apply jurisdiction-specific adjustments
         current_date = self._apply_jurisdiction_specific_rules(
-            current_date, jurisdiction, deadline_type, notes, rule_citations,
+            current_date,
+            jurisdiction,
+            deadline_type,
+            notes,
+            rule_citations,
         )
 
         # Calculate total calendar days
@@ -138,7 +144,9 @@ class JurisdictionRuleEngine:
 
         # Calculate confidence
         confidence = self._calculate_calculation_confidence(
-            jurisdiction, deadline_type, service_method,
+            jurisdiction,
+            deadline_type,
+            service_method,
         )
 
         return DeadlineCalculation(
@@ -154,7 +162,10 @@ class JurisdictionRuleEngine:
         )
 
     def _get_service_method_addition(
-        self, jurisdiction: str, service_method: ServiceMethod, deadline_type: str,
+        self,
+        jurisdiction: str,
+        service_method: ServiceMethod,
+        deadline_type: str,
     ) -> int:
         """Get additional days based on service method"""
         # Federal rules (FRCP)
@@ -243,7 +254,8 @@ class JurisdictionRuleEngine:
         # Federal courts: If deadline falls on weekend or holiday, move to next business day
         if jurisdiction == "federal":
             while self._is_weekend(calculated_date) or self._is_holiday(
-                calculated_date, jurisdiction,
+                calculated_date,
+                jurisdiction,
             ):
                 calculated_date += timedelta(days=1)
                 notes.append("Moved to next business day (federal rule)")
@@ -252,7 +264,8 @@ class JurisdictionRuleEngine:
         # California: If last day is holiday/weekend, extends to next court day
         elif jurisdiction == "CA":
             while self._is_weekend(calculated_date) or self._is_holiday(
-                calculated_date, jurisdiction,
+                calculated_date,
+                jurisdiction,
             ):
                 calculated_date += timedelta(days=1)
                 notes.append("Extended to next court day (CCP § 12)")
@@ -261,7 +274,8 @@ class JurisdictionRuleEngine:
         # New York: Similar rule
         elif jurisdiction == "NY":
             while self._is_weekend(calculated_date) or self._is_holiday(
-                calculated_date, jurisdiction,
+                calculated_date,
+                jurisdiction,
             ):
                 calculated_date += timedelta(days=1)
                 notes.append("Extended to next business day (CPLR 2)")
@@ -496,7 +510,10 @@ class RuleDatabase:
         ]
 
     def get_rule(
-        self, jurisdiction: str, deadline_type: str, trigger: str | None = None,
+        self,
+        jurisdiction: str,
+        deadline_type: str,
+        trigger: str | None = None,
     ) -> dict[str, Any] | None:
         """Retrieve specific rule from database"""
         if jurisdiction not in self.rules:

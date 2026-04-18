@@ -221,7 +221,9 @@ async def verify_watermark(
 
             blockchain_config = BlockchainConfig(chain=ChainType(request.chain.value))
             receipt_result = verify_blockchain_receipt(
-                request.tx_hash, request.expected_prompt, blockchain_config,
+                request.tx_hash,
+                request.expected_prompt,
+                blockchain_config,
             )
 
         return VerifyResponse(

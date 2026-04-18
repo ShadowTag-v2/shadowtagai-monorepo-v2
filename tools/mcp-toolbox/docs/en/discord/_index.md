@@ -15,7 +15,7 @@ manualLinkTarget: _blank
     <meta http-equiv="refresh" content="0;url=https://discord.gg/Dmm69peqjh"/>
   </head>
   <body>
-    <p>Connecting to the community... If you are not automatically redirected, please 
+    <p>Connecting to the community... If you are not automatically redirected, please
        <a href="https://discord.gg/Dmm69peqjh">click here to join our Discord</a>.
     </p>
   </body>

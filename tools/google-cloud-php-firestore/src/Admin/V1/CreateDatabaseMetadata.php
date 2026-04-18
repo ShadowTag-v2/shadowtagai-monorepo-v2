@@ -30,4 +30,3 @@ class CreateDatabaseMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

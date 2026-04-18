@@ -54,9 +54,7 @@ def _is_token_valid() -> bool:
     """Checks if the cached token exists and is not nearing expiry."""
     if not _token_cache["token"]:
         return False
-    return datetime.now(UTC) < (
-        _token_cache["expires_at"] - CACHE_REFRESH_MARGIN
-    )
+    return datetime.now(UTC) < (_token_cache["expires_at"] - CACHE_REFRESH_MARGIN)
 
 
 def _update_cache(new_token: str, clock_skew_in_seconds: int) -> None:
@@ -73,18 +71,14 @@ def _update_cache(new_token: str, clock_skew_in_seconds: int) -> None:
         # verify_oauth2_token not only decodes but also validates the token's
         # signature and claims against Google's public keys.
         # It's a synchronous, CPU-bound operation, safe for async contexts.
-        claims = id_token.verify_oauth2_token(
-            new_token, Request(), clock_skew_in_seconds=clock_skew_in_seconds
-        )
+        claims = id_token.verify_oauth2_token(new_token, Request(), clock_skew_in_seconds=clock_skew_in_seconds)
 
         expiry_timestamp = claims.get("exp")
         if not expiry_timestamp:
             raise ValueError("Token does not contain an 'exp' claim.")
 
         _token_cache["token"] = new_token
-        _token_cache["expires_at"] = datetime.fromtimestamp(
-            expiry_timestamp, tz=UTC
-        )
+        _token_cache["expires_at"] = datetime.fromtimestamp(expiry_timestamp, tz=UTC)
 
     except (ValueError, GoogleAuthError) as e:
         # Clear cache on failure to prevent using a stale or invalid token
@@ -93,14 +87,9 @@ def _update_cache(new_token: str, clock_skew_in_seconds: int) -> None:
         raise ValueError(f"Failed to validate and cache the new token: {e}") from e
 
 
-def get_google_token_from_aud(
-    clock_skew_in_seconds: int = 0, audience: str | None = None
-) -> str:
+def get_google_token_from_aud(clock_skew_in_seconds: int = 0, audience: str | None = None) -> str:
     if clock_skew_in_seconds < 0 or clock_skew_in_seconds > 60:
-        raise ValueError(
-            f"Illegal clock_skew_in_seconds value: {clock_skew_in_seconds}. Must be between 0 and 60"
-            ", inclusive."
-        )
+        raise ValueError(f"Illegal clock_skew_in_seconds value: {clock_skew_in_seconds}. Must be between 0 and 60, inclusive.")
 
     if _is_token_valid():
         return BEARER_TOKEN_PREFIX + _token_cache["token"]
@@ -119,8 +108,7 @@ def get_google_token_from_aud(
 
     if audience is None:
         raise Exception(
-            "You are not authenticating using User Credentials."
-            " Please set the audience string to the Toolbox service URL to get the Google ID token."
+            "You are not authenticating using User Credentials. Please set the audience string to the Toolbox service URL to get the Google ID token."
         )
 
     # Get credentials for Google Cloud environments or for service account key files
@@ -131,14 +119,10 @@ def get_google_token_from_aud(
         return BEARER_TOKEN_PREFIX + _token_cache["token"]
 
     except GoogleAuthError as e:
-        raise GoogleAuthError(
-            f"Failed to fetch Google ID token for audience '{audience}': {e}"
-        ) from e
+        raise GoogleAuthError(f"Failed to fetch Google ID token for audience '{audience}': {e}") from e
 
 
-def get_google_id_token(
-    audience: str | None = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW
-) -> Callable[[], str]:
+def get_google_id_token(audience: str | None = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW) -> Callable[[], str]:
     """
     Returns a SYNC function that, when called, fetches a Google ID token.
     This function uses Application Default Credentials for local systems
@@ -165,9 +149,7 @@ def get_google_id_token(
     return _token_getter
 
 
-def aget_google_id_token(
-    audience: str | None = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW
-) -> Callable[[], Coroutine[Any, Any, str]]:
+def aget_google_id_token(audience: str | None = None, clock_skew_in_seconds: int = DEFAULT_CLOCK_SKEW) -> Callable[[], Coroutine[Any, Any, str]]:
     """
     Returns an ASYNC function that, when called, fetches a Google ID token.
     This function uses Application Default Credentials for local systems
@@ -189,8 +171,6 @@ def aget_google_id_token(
     """
 
     async def _token_getter() -> str:
-        return await asyncio.to_thread(
-            get_google_token_from_aud, clock_skew_in_seconds, audience
-        )
+        return await asyncio.to_thread(get_google_token_from_aud, clock_skew_in_seconds, audience)
 
     return _token_getter

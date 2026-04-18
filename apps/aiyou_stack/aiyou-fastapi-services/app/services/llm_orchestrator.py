@@ -28,8 +28,7 @@ def get_aclient():
 
 
 async def gpt5(system: str, user: str, temperature: float = 0.2) -> str:
-    """Wrapper for GPT-5 (or strongest available model)
-    """
+    """Wrapper for GPT-5 (or strongest available model)"""
     client = get_aclient()
     try:
         resp = await client.chat.completions.create(
@@ -44,7 +43,9 @@ async def gpt5(system: str, user: str, temperature: float = 0.2) -> str:
 
 
 async def produce_with_dual_review(
-    pool: HFClientPool, spec: DraftSpec, hf_gen_kwargs: dict[str, Any] | None = None,
+    pool: HFClientPool,
+    spec: DraftSpec,
+    hf_gen_kwargs: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     prompt = f"Task: {spec.task}\nConstraints: {spec.constraints or {}}\nStyle: {spec.style or 'default'}"
 
@@ -57,7 +58,8 @@ async def produce_with_dual_review(
     # 2) Two parallel GPT-5 reviews
     review_payload = f"Draft:\n{draft}\n\nTask:\n{spec.task}"
     r1, r2 = await asyncio.gather(
-        gpt5(SYSTEM_REVIEWER, review_payload), gpt5(SYSTEM_REVIEWER, review_payload),
+        gpt5(SYSTEM_REVIEWER, review_payload),
+        gpt5(SYSTEM_REVIEWER, review_payload),
     )
 
     # 3) Arbiter (GPT-5) to synthesize the final

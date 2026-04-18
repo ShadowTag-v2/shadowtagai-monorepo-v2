@@ -108,7 +108,7 @@ This skill features **intelligent model selection** based on query complexity:
 
 **1. Sonar Pro** (`perplexity/sonar-pro`)
 - **Use Case**: Straightforward information lookup
-- **Best For**: 
+- **Best For**:
   - Simple fact-finding queries
   - Recent publication searches
   - Basic protocol lookups
@@ -196,7 +196,7 @@ python research_lookup.py "your query"
 This skill integrates with OpenRouter (openrouter.ai) to access Perplexity's Sonar models:
 
 **Model Specifications**:
-- **Models**: 
+- **Models**:
   - `perplexity/sonar-pro-online` (fast lookup)
   - `perplexity/sonar-reasoning-pro-online` (deep analysis)
 - **Search Mode**: Academic/scholarly mode (prioritizes peer-reviewed sources)

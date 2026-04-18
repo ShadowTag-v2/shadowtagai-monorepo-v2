@@ -1,5 +1,4 @@
-"""Pydantic models for storage (notes, issues, etc.).
-"""
+"""Pydantic models for storage (notes, issues, etc.)."""
 
 from datetime import datetime
 

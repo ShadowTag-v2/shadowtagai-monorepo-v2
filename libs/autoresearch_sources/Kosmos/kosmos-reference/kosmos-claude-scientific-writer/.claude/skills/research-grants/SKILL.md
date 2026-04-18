@@ -80,7 +80,7 @@ Every proposal needs a concise overview that communicates the essential elements
 
 **Purpose**: Provide a standalone summary that captures the research vision, significance, and approach
 
-**Length**: 
+**Length**:
 - NSF: 1 page (Project Summary with separate Overview, Intellectual Merit, Broader Impacts)
 - NIH: 30 lines (Project Summary/Abstract)
 - DOE: Varies (typically 1 page)
@@ -893,4 +893,3 @@ Load these references as needed when working on specific aspects of grant writin
 ---
 
 **Final Note**: Grant writing is both an art and a science. Success requires not only excellent research ideas but also clear communication, strategic positioning, and meticulous attention to detail. Start early, seek feedback, and remember that even the best researchers face rejection—persistence and revision are key to funding success.
-

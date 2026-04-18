@@ -182,7 +182,10 @@ class AttributionGraph:
         return pruned
 
     def prune_to_path(
-        self, start_node: AttributionNode, end_node: AttributionNode, max_paths: int = 10,
+        self,
+        start_node: AttributionNode,
+        end_node: AttributionNode,
+        max_paths: int = 10,
     ) -> "AttributionGraph":
         """Create pruned graph containing only paths from start to end.
 
@@ -208,7 +211,10 @@ class AttributionGraph:
         return pruned
 
     def _find_paths(
-        self, start: AttributionNode, end: AttributionNode, max_paths: int,
+        self,
+        start: AttributionNode,
+        end: AttributionNode,
+        max_paths: int,
     ) -> list[list[AttributionEdge]]:
         """Find paths from start to end using DFS."""
         paths = []
@@ -248,7 +254,8 @@ class AttributionGraph:
         return [e for e in self.edges if e.crosses_positions]
 
     def get_attention_mediated_edges(
-        self, min_attention_fraction: float = 0.5,
+        self,
+        min_attention_fraction: float = 0.5,
     ) -> list[AttributionEdge]:
         """Get edges where attention component is dominant.
 
@@ -478,7 +485,8 @@ class AttributionGraphBuilder:
 
         # For same position and adjacent positions
         for source_pos in range(
-            max(0, target_node.position - 1), min(self.seq_length, target_node.position + 2),
+            max(0, target_node.position - 1),
+            min(self.seq_length, target_node.position + 2),
         ):
             # Get top-k active features at source
             activations = self.sae_activations[source_layer][source_pos]

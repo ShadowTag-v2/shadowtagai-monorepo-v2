@@ -15,8 +15,7 @@ class SubscriptionStatus(BaseModel):
 
 
 class StripeManager:
-    """Handles all Stripe interactions for FinJudge SaaS.
-    """
+    """Handles all Stripe interactions for FinJudge SaaS."""
 
     def __init__(self):
         self.pro_price_id = os.getenv("STRIPE_PRO_PRICE_ID", "price_123456")
@@ -49,15 +48,16 @@ class StripeManager:
             raise e
 
     def check_subscription(self, api_key: str) -> SubscriptionStatus:
-        """Verify if an API key (mapped to a user) has an active subscription.
-        """
+        """Verify if an API key (mapped to a user) has an active subscription."""
         # In a real app, we'd look up the user_id from the api_key in our DB first.
         # Here we simulate the logic.
 
         # MOCK LOGIC for v0.2
         if api_key.startswith("sk-pro"):
             return SubscriptionStatus(
-                is_active=True, plan_id="pro_monthly", expires_at=datetime(2026, 1, 1),
+                is_active=True,
+                plan_id="pro_monthly",
+                expires_at=datetime(2026, 1, 1),
             )
 
         return SubscriptionStatus(is_active=False, plan_id="free", expires_at=None)

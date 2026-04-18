@@ -1,5 +1,4 @@
-"""Infrastructure design and management endpoints
-"""
+"""Infrastructure design and management endpoints"""
 
 from typing import Any
 

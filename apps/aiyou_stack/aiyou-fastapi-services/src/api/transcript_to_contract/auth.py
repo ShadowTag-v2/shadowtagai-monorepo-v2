@@ -46,5 +46,6 @@ def verify_zero_trust(
 
     except Exception as e:
         raise HTTPException(
-            status_code=401, detail=f"Pnkln Kovel Shield: Unauthorized Identity Matrix ({e!s})",
+            status_code=401,
+            detail=f"Pnkln Kovel Shield: Unauthorized Identity Matrix ({e!s})",
         )

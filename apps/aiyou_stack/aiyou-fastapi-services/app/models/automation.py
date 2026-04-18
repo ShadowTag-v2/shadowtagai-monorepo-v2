@@ -1,5 +1,4 @@
-"""Database models for automation system.
-"""
+"""Database models for automation system."""
 
 import enum
 from datetime import datetime
@@ -38,8 +37,7 @@ class TriggerType(enum.StrEnum):
 
 
 class Workflow(Base):
-    """Workflow model representing an automation workflow.
-    """
+    """Workflow model representing an automation workflow."""
 
     __tablename__ = "workflows"
 
@@ -64,8 +62,7 @@ class Workflow(Base):
 
 
 class ScheduledJob(Base):
-    """Scheduled job model for time-based automation.
-    """
+    """Scheduled job model for time-based automation."""
 
     __tablename__ = "scheduled_jobs"
 
@@ -101,8 +98,7 @@ class ScheduledJob(Base):
 
 
 class Trigger(Base):
-    """Trigger model for event-based automation.
-    """
+    """Trigger model for event-based automation."""
 
     __tablename__ = "triggers"
 
@@ -134,8 +130,7 @@ class Trigger(Base):
 
 
 class JobExecution(Base):
-    """Job execution model tracking individual workflow runs.
-    """
+    """Job execution model tracking individual workflow runs."""
 
     __tablename__ = "job_executions"
 

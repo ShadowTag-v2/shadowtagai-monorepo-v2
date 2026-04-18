@@ -77,7 +77,8 @@ class GoogleDocsMCP:
         """Append content to a Google Doc."""
         requests = [{"insertText": {"location": {"index": 1}, "text": content}}]
         self.docs_service.documents().batchUpdate(
-            documentId=doc_id, body={"requests": requests},
+            documentId=doc_id,
+            body={"requests": requests},
         ).execute()
         return True
 
@@ -94,7 +95,9 @@ class GoogleDocsMCP:
         # Move to target folder if configured
         if self.folder_id:
             self.drive_service.files().update(
-                fileId=doc_id, addParents=self.folder_id, fields="id, parents",
+                fileId=doc_id,
+                addParents=self.folder_id,
+                fields="id, parents",
             ).execute()
 
         logger.info(f"Created Cor snapshot: {doc_id}")

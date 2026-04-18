@@ -905,4 +905,3 @@ Defaults to `full`.
     ```
 
 ---
-

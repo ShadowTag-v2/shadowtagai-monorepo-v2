@@ -16,12 +16,12 @@ function uploadRef() {
 
   // While the file names are the same, the references point to different files
   mountainsRef.name === mountainImagesRef.name;           // true
-  mountainsRef.fullPath === mountainImagesRef.fullPath;   // false 
+  mountainsRef.fullPath === mountainImagesRef.fullPath;   // false
   // [END storage_upload_ref]
 }
 
 /**
- * @param {File} file 
+ * @param {File} file
  */
 function uploadBlob(file) {
   // [START storage_upload_blob]
@@ -85,7 +85,7 @@ function uploadString() {
 }
 
 /**
- * @param {File} file 
+ * @param {File} file
  */
 function uploadMetadata(file) {
   // [START storage_upload_metadata]
@@ -130,7 +130,7 @@ function manageUploads(file) {
 }
 
 /**
- * @param {File} file 
+ * @param {File} file
  */
 function monitorUpload(file) {
   // [START storage_monitor_upload]
@@ -145,7 +145,7 @@ function monitorUpload(file) {
   // 1. 'state_changed' observer, called any time the state changes
   // 2. Error observer, called on failure
   // 3. Completion observer, called on successful completion
-  uploadTask.on('state_changed', 
+  uploadTask.on('state_changed',
     (snapshot) => {
       // Observe state change events such as progress, pause, and resume
       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
@@ -159,10 +159,10 @@ function monitorUpload(file) {
           console.log('Upload is running');
           break;
       }
-    }, 
+    },
     (error) => {
       // Handle unsuccessful uploads
-    }, 
+    },
     () => {
       // Handle successful uploads on complete
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
@@ -175,7 +175,7 @@ function monitorUpload(file) {
 }
 
 /**
- * @param {File} file 
+ * @param {File} file
  */
 function uploadHandleError(file) {
   // [START storage_upload_handle_error]
@@ -207,7 +207,7 @@ function uploadHandleError(file) {
           console.log('Upload is running');
           break;
       }
-    }, 
+    },
     (error) => {
       // A full list of error codes is available at
       // https://firebase.google.com/docs/storage/web/handle-errors
@@ -225,7 +225,7 @@ function uploadHandleError(file) {
           // Unknown error occurred, inspect error.serverResponse
           break;
       }
-    }, 
+    },
     () => {
       // Upload completed successfully, now we can get the download URL
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {

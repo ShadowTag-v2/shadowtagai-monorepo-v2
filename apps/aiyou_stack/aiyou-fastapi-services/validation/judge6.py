@@ -332,7 +332,10 @@ class Judge6Validator:
         return any(domain in item.url for domain in credible_domains)
 
     def _assess_risk(
-        self, item: IngestedItem, tier_score: TierScore, validation_checks: dict[str, bool],
+        self,
+        item: IngestedItem,
+        tier_score: TierScore,
+        validation_checks: dict[str, bool],
     ) -> dict:
         """ATP 5-19 Risk Assessment.
 
@@ -397,7 +400,10 @@ class Judge6Validator:
         }
 
     async def _gemini_deep_check(
-        self, item: IngestedItem, tier_score: TierScore, validation_checks: dict[str, bool],
+        self,
+        item: IngestedItem,
+        tier_score: TierScore,
+        validation_checks: dict[str, bool],
     ) -> dict:
         """Gemini-powered deep content analysis.
 
@@ -463,7 +469,10 @@ Respond in JSON:
             }
 
     def _check_jr_compliance(
-        self, item: IngestedItem, validation_checks: dict[str, bool], risk_assessment: dict,
+        self,
+        item: IngestedItem,
+        validation_checks: dict[str, bool],
+        risk_assessment: dict,
     ) -> dict:
         """ShadowTagJR (Judgment Rule) compliance check.
 
@@ -474,7 +483,8 @@ Respond in JSON:
         """
         # Informed: Do we have enough data?
         informed = validation_checks.get("metadata_valid", False) and validation_checks.get(
-            "completeness", False,
+            "completeness",
+            False,
         )
 
         # Reasonable: Does risk assessment make sense?
@@ -522,7 +532,10 @@ Respond in JSON:
         return round(confidence, 3)
 
     def _determine_status(
-        self, validation_checks: dict[str, bool], confidence: float, risk_assessment: dict,
+        self,
+        validation_checks: dict[str, bool],
+        confidence: float,
+        risk_assessment: dict,
     ) -> ValidationStatus:
         """Determine final validation status."""
         # Hard blocks

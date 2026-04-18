@@ -10,7 +10,7 @@ resource "google_eventarc_trigger" "vllm_doc_processor" {
     attribute = "type"
     value     = "google.cloud.storage.object.v1.finalized"
   }
-  
+
   # Filter by specific bucket
   matching_criteria {
     attribute = "bucket"

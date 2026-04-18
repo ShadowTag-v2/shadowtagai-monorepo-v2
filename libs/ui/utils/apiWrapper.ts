@@ -5,7 +5,7 @@
 export async function apiWrapper<T>(url: string, options?: RequestInit): Promise<{ data: T | null; error: string | null; status: number }> {
     try {
         const res = await fetch(url, options);
-        
+
         let data = null;
         try {
             data = await res.json();

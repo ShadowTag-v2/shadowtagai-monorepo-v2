@@ -7,9 +7,7 @@ import fcntl
 # Uses fcntl for file locking to prevent corruption under concurrent agent writes,
 # directly addressing the "shatter under concurrent writes" issue of standard memory MCPs.
 
-MEMORY_FILE = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".beads", "agent_memory.json"
-)
+MEMORY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".beads", "agent_memory.json")
 
 
 def ensure_file_exists():

@@ -206,7 +206,10 @@ class UsageMeter:
         self.usage_cache = {}
 
     async def record_api_call(
-        self, api_key: str, endpoint: str, _tier_accessed: int | None = None,
+        self,
+        api_key: str,
+        endpoint: str,
+        _tier_accessed: int | None = None,
     ) -> dict[str, Any]:
         """Record API call and check limits
 
@@ -259,7 +262,10 @@ class UsageMeter:
         }
 
     async def record_enrichment(
-        self, api_key: str, service: str, num_items: int,
+        self,
+        api_key: str,
+        service: str,
+        num_items: int,
     ) -> dict[str, float]:
         """Record enrichment usage and calculate cost
 
@@ -346,7 +352,8 @@ class UsageMeter:
 
 
 def project_iaas_revenue(
-    num_customers: dict[str, int], avg_overage_pct: float = 0.15,
+    num_customers: dict[str, int],
+    avg_overage_pct: float = 0.15,
 ) -> dict[str, float]:
     """Project Intelligence-as-a-Service revenue
 
@@ -395,7 +402,8 @@ def project_iaas_revenue(
 
 
 def calculate_pipeline_roi(
-    monthly_cost: float = 77.0, monthly_revenue: float = 0.0,
+    monthly_cost: float = 77.0,
+    monthly_revenue: float = 0.0,
 ) -> dict[str, Any]:
     """Calculate ROI of turning intelligence pipeline into revenue stream
 
@@ -503,7 +511,8 @@ async def main():
     # Pro customer makes API calls
     for i in range(5):
         result = await meter.record_api_call(
-            api_key="REDACTED_API_KEY", endpoint="/intelligence/tier1",
+            api_key="REDACTED_API_KEY",
+            endpoint="/intelligence/tier1",
         )
         print(f"\nAPI call #{i + 1}:")
         print(f"  Allowed: {result['allowed']}")
@@ -513,7 +522,9 @@ async def main():
 
     # Customer uses enrichment
     enrichment_result = await meter.record_enrichment(
-        api_key="REDACTED_API_KEY", service="sentiment", num_items=150,
+        api_key="REDACTED_API_KEY",
+        service="sentiment",
+        num_items=150,
     )
     print("\nEnrichment usage:")
     print("  Items: 150")

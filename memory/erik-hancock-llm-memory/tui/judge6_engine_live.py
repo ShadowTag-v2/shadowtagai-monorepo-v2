@@ -40,9 +40,7 @@ class RealJudge6Engine:
         self.decision_count = 0
 
         # Default policy: Check for PII in commits
-        self.policy = PolicyUOp(
-            op=PolicyOps.CHECK_PII, args={"patterns": [ATP519Patterns.SSN, ATP519Patterns.CCN]}
-        )
+        self.policy = PolicyUOp(op=PolicyOps.CHECK_PII, args={"patterns": [ATP519Patterns.SSN, ATP519Patterns.CCN]})
 
         # Compile policy to WASM (once at startup)
         self.wasm_text = self.renderer.render(self.policy)
@@ -193,9 +191,7 @@ if __name__ == "__main__":
             latencies.append(metric.latency_ms)
 
             status = "✓" if metric.result == "PASS" else "✗"
-            print(
-                f"{status} Decision {i + 1}: {metric.latency_ms:.1f}ms - {metric.result} {metric.violation_type}"
-            )
+            print(f"{status} Decision {i + 1}: {metric.latency_ms:.1f}ms - {metric.result} {metric.violation_type}")
 
         avg = sum(latencies) / len(latencies)
         print(f"\n📊 Average latency: {avg:.1f}ms")

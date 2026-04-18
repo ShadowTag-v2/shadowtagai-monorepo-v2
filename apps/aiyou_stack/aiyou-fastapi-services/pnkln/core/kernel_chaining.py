@@ -320,7 +320,10 @@ class KernelChainingOrchestrator:
         self.chains[chain_name].append(hop)
 
     async def execute_chain(
-        self, chain_name: str, initial_input: Any, chain_id: str | None = None,
+        self,
+        chain_name: str,
+        initial_input: Any,
+        chain_id: str | None = None,
     ) -> tuple[Any, ChainState]:
         """Execute named chain workflow.
 
@@ -364,7 +367,10 @@ class KernelChainingOrchestrator:
         return (current_output, state)
 
     async def reality_distortion(
-        self, impossible_goal: str, chain_name: str, max_iterations: int = 5,
+        self,
+        impossible_goal: str,
+        chain_name: str,
+        max_iterations: int = 5,
     ) -> tuple[Any, ChainState]:
         """Reality Distortion Field (Jobs-inspired).
 
@@ -392,7 +398,8 @@ class KernelChainingOrchestrator:
         for iteration in range(max_iterations):
             # Execute chain
             result, state = await self.execute_chain(
-                chain_name, {"goal": impossible_goal, "iteration": iteration},
+                chain_name,
+                {"goal": impossible_goal, "iteration": iteration},
             )
 
             # Check if "impossible" solved
@@ -407,7 +414,8 @@ class KernelChainingOrchestrator:
 
             # Critique assumptions for next iteration
             state.add_critique(
-                f"Iteration {iteration + 1} failed - challenging assumptions", category="assumption",
+                f"Iteration {iteration + 1} failed - challenging assumptions",
+                category="assumption",
             )
 
             # Evolve chain (would integrate with DTE here)
@@ -527,7 +535,8 @@ async def example_usage():
     print("=== Kernel Chaining Demo ===\n")
 
     result, state = await orchestrator.execute_chain(
-        "design_to_code", {"goal": "Build insanely great app"},
+        "design_to_code",
+        {"goal": "Build insanely great app"},
     )
 
     print(f"Final Result: {result}\n")
@@ -542,7 +551,8 @@ async def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     asyncio.run(example_usage())

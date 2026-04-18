@@ -23,22 +23,22 @@ function App() {
   const [task, setTask] = useState("");
   const [domain, setDomain] = useState("");
   const [useAne, setUseAne] = useState(false);
-  
+
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState<LogEntry[]>([]);
 
   useEffect(() => {
     let unlisten: () => void;
-    
+
     async function setupListener() {
       unlisten = await listen<StreamPayload>("agent_stream", (event) => {
         const payload: StreamPayload = event.payload;
-        
+
         let type: "info" | "error" | "success" | "node" = "info";
         if (payload.status === "error") type = "error";
         if (payload.status === "success") type = "success";
         if (payload.node) type = "node";
-        
+
         if (payload.log) {
           setLogs(prev => [...prev, {
             timestamp: new Date().toLocaleTimeString(),
@@ -46,7 +46,7 @@ function App() {
             type
           }]);
         }
-        
+
         if (payload.status === "success" || payload.status === "error") {
           setLoading(false);
         }
@@ -64,10 +64,10 @@ function App() {
       message: ">>> LAUNCHING SWARM. RUST ENFORCER VERIFYING PAYLOAD...",
       type: "info"
     }]);
-    
+
     try {
       // THE BRAKES: This call routes physically through Rust before hitting the Python engine
-      await invoke("invoke_agent", { 
+      await invoke("invoke_agent", {
         task: task,
         targetDomain: domain ? domain : null,
         useAne: useAne
@@ -93,7 +93,7 @@ function App() {
           <div className="indicator active">PYTHON SIDECAR: SSE CONNECTED</div>
         </div>
       </header>
-      
+
       <main className="terminal-main">
         <section className="dispatch-panel">
           <h2>[ NEW MISSION DIRECTIVE ]</h2>
@@ -108,7 +108,7 @@ function App() {
                 required
               />
             </div>
-            
+
             <div className="form-group row">
               <div className="input-half">
                 <label htmlFor="domain-input">Target Domain (Optional):</label>
@@ -119,24 +119,24 @@ function App() {
                   placeholder="e.g. competitor.com or restricted.gov"
                 />
               </div>
-              
+
               <div className="input-half checkbox">
                 <label>
-                  <input 
-                    type="checkbox" 
-                    checked={useAne} 
-                    onChange={(e) => setUseAne(e.target.checked)} 
+                  <input
+                    type="checkbox"
+                    checked={useAne}
+                    onChange={(e) => setUseAne(e.target.checked)}
                   />
                   Require Local ANE Zero-Token Inference
                 </label>
               </div>
             </div>
-            
+
             <button type="submit" className="dispatch-btn" disabled={loading}>
               {loading ? ">>> EXECUTING..." : "DISPATCH AGENT SWARM"}
             </button>
           </form>
-          
+
           {/* CISO Command Center Pipeline Component */}
           <SandTable />
         </section>
@@ -147,14 +147,14 @@ function App() {
             <CopilotKit runtimeUrl="http://127.0.0.1:8081/api/v1/agents/stream" agent="data_science_agent">
                <AgentDebugger />
             </CopilotKit>
-            
+
             {loading && (
               <div className="log-entry processing mt-2">
                 <span className="timestamp">{new Date().toLocaleTimeString()}</span>
                 <span className="message cursor-blink">_</span>
               </div>
             )}
-            
+
             {logs.map((log, i) => (
               <div key={i} className={`log-entry ${log.type}`}>
                 <span className="timestamp">{log.timestamp}</span>

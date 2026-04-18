@@ -128,4 +128,3 @@ class WriteResult extends \Google\Protobuf\Internal\Message
     }
 
 }
-

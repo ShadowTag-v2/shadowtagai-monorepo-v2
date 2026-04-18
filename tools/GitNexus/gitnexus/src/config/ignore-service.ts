@@ -9,7 +9,7 @@ const DEFAULT_IGNORE_LIST = new Set([
     '.svn',
     '.hg',
     '.bzr',
-    
+
     // IDEs & Editors
     '.idea',
     '.vscode',
@@ -18,7 +18,7 @@ const DEFAULT_IGNORE_LIST = new Set([
     '.settings',
     '.DS_Store',
     'Thumbs.db',
-  
+
     // Dependencies
     'node_modules',
     'bower_components',
@@ -40,7 +40,7 @@ const DEFAULT_IGNORE_LIST = new Set([
     'parts',
     'sdist',
     'wheels',
-  
+
     // Build Outputs
     'dist',
     'build',
@@ -60,7 +60,7 @@ const DEFAULT_IGNORE_LIST = new Set([
     '.parcel-cache',
     '.turbo',
     '.svelte-kit',
-  
+
     // Test & Coverage
     'coverage',
     '.nyc_output',
@@ -69,7 +69,7 @@ const DEFAULT_IGNORE_LIST = new Set([
     '__tests__',        // Often just test files
     '__mocks__',
     '.jest',
-    
+
     // Logs & Temp
     'logs',
     'log',
@@ -79,18 +79,18 @@ const DEFAULT_IGNORE_LIST = new Set([
     '.cache',
     '.tmp',
     '.temp',
-    
+
     // Generated/Compiled
     '.generated',
     'generated',
     'auto-generated',
     '.terraform',
     '.serverless',
-    
+
     // Documentation (optional - might want to keep)
     // 'docs',
     // 'documentation',
-    
+
     // Misc
     '.husky',
     '.github',          // GitHub config, not code
@@ -105,10 +105,10 @@ const IGNORED_EXTENSIONS = new Set([
     // Images
     '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.webp', '.bmp', '.tiff', '.tif',
     '.psd', '.ai', '.sketch', '.fig', '.xd',
-    
+
     // Archives
     '.zip', '.tar', '.gz', '.rar', '.7z', '.bz2', '.xz', '.tgz',
-    
+
     // Binary/Compiled
     '.exe', '.dll', '.so', '.dylib', '.a', '.lib', '.o', '.obj',
     '.class', '.jar', '.war', '.ear',
@@ -116,37 +116,37 @@ const IGNORED_EXTENSIONS = new Set([
     '.beam',            // Erlang
     '.wasm',            // WebAssembly - important!
     '.node',            // Native Node addons
-    
+
     // Documents
     '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
     '.odt', '.ods', '.odp',
-    
+
     // Media
     '.mp4', '.mp3', '.wav', '.mov', '.avi', '.mkv', '.flv', '.wmv',
     '.ogg', '.webm', '.flac', '.aac', '.m4a',
-    
+
     // Fonts
     '.woff', '.woff2', '.ttf', '.eot', '.otf',
-    
+
     // Databases
     '.db', '.sqlite', '.sqlite3', '.mdb', '.accdb',
-    
+
     // Minified/Bundled files
     '.min.js', '.min.css', '.bundle.js', '.chunk.js',
-    
+
     // Source maps (debug files, not source)
     '.map',
-    
+
     // Lock files (handled separately, but also here)
     '.lock',
-    
+
     // Certificates & Keys (security - don't index!)
     '.pem', '.key', '.crt', '.cer', '.p12', '.pfx',
-    
+
     // Data files (often large/binary)
     '.csv', '.tsv', '.parquet', '.avro', '.feather',
     '.npy', '.npz', '.pkl', '.pickle', '.h5', '.hdf5',
-    
+
     // Misc binary
     '.bin', '.dat', '.data', '.raw',
     '.iso', '.img', '.dmg',
@@ -218,7 +218,7 @@ export const shouldIgnorePath = (filePath: string): boolean => {
   if (lastDotIndex !== -1) {
     const ext = fileNameLower.substring(lastDotIndex);
     if (IGNORED_EXTENSIONS.has(ext)) return true;
-    
+
     // Handle compound extensions like .min.js, .bundle.js
     const secondLastDot = fileNameLower.lastIndexOf('.', lastDotIndex - 1);
     if (secondLastDot !== -1) {
@@ -236,7 +236,7 @@ export const shouldIgnorePath = (filePath: string): boolean => {
   }
 
   // Ignore files that look like generated/bundled code
-  if (fileNameLower.includes('.bundle.') || 
+  if (fileNameLower.includes('.bundle.') ||
       fileNameLower.includes('.chunk.') ||
       fileNameLower.includes('.generated.') ||
       fileNameLower.endsWith('.d.ts')) { // TypeScript declaration files
@@ -328,4 +328,3 @@ export const createIgnoreFilter = async (repoPath: string, options?: IgnoreOptio
     },
   };
 };
-

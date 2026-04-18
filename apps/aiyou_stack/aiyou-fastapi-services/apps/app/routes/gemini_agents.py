@@ -195,7 +195,10 @@ async def single_agent_proposal(
 
         # Get proposal
         proposal = await agent.propose_tier(
-            title=title, content=content, tags=tags, debate_history=debate_history,
+            title=title,
+            content=content,
+            tags=tags,
+            debate_history=debate_history,
         )
 
         return proposal

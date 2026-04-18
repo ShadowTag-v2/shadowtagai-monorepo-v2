@@ -95,9 +95,7 @@ def cmd_status(_args: argparse.Namespace) -> int:
     open_count = sum(1 for b in beads if b.get("status") == "open")
     print(f"\n  📊 Beads: {len(beads)} total, {open_count} open")
 
-    print(
-        f"\n{GREEN if all_ok else RED}═══ {'ALL CACHES SOUND' if all_ok else 'DRIFT DETECTED — REVIEW ABOVE'} ═══{NC}"
-    )
+    print(f"\n{GREEN if all_ok else RED}═══ {'ALL CACHES SOUND' if all_ok else 'DRIFT DETECTED — REVIEW ABOVE'} ═══{NC}")
     return 0 if all_ok else 1
 
 

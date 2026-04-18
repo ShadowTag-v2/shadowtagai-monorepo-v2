@@ -45,7 +45,7 @@ export async function handleRunTool(toolId, form, responseArea, parameters, pret
             if (VALUE_TYPE === 'boolean') {
                 typedParams[NAME] = RAW_VALUE !== null;
                 console.debug(`Parameter ${NAME} (boolean) set to: ${typedParams[NAME]}`);
-                continue; 
+                continue;
             }
 
             // process remaining types
@@ -74,7 +74,7 @@ export async function handleRunTool(toolId, form, responseArea, parameters, pret
         } catch (error) {
             console.error('Error processing parameter:', NAME, error);
             responseArea.value = `Error for ${NAME}: ${error.message}`;
-            return; 
+            return;
         }
     }
 
@@ -90,8 +90,8 @@ export async function handleRunTool(toolId, form, responseArea, parameters, pret
             }
         };
 
-        const mcpHeaders = { 
-            ...headers, 
+        const mcpHeaders = {
+            ...headers,
             'Content-Type': 'application/json',
             'MCP-Protocol-Version': '2025-11-25'
         };
@@ -106,7 +106,7 @@ export async function handleRunTool(toolId, form, responseArea, parameters, pret
             const errorBody = await response.text();
             throw new Error(`HTTP error ${response.status}: ${errorBody}`);
         }
-        
+
         const results = await response.json();
         updateLastResults(results);
         displayResults(results, responseArea, prettifyCheckbox.checked);

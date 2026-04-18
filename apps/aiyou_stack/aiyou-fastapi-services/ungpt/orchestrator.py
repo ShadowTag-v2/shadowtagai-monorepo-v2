@@ -85,7 +85,9 @@ class AtomicThread:
 
         brake_objs = [
             Brake(
-                constraint=brake, enforcement_method="runtime_check", violation_action="halt_thread",
+                constraint=brake,
+                enforcement_method="runtime_check",
+                violation_action="halt_thread",
             )
             for brake in self.brakes
         ]
@@ -141,7 +143,10 @@ class PNKLNAtomicOrchestrator:
         self.enable_compliance = enable_compliance
 
     async def decompose_query(
-        self, query: str, max_threads: int = 10, risk_threshold: RiskLevel = RiskLevel.RA_3,
+        self,
+        query: str,
+        max_threads: int = 10,
+        risk_threshold: RiskLevel = RiskLevel.RA_3,
     ) -> DecompositionResult:
         """JR (Judgment Rule) decomposition: Break query into atomic threads
         Each thread gets Purpose, Reasons, Brakes per AunCRM doctrine
@@ -290,7 +295,8 @@ Provide your response in structured format with clear reasoning.
 
             # Execute ready threads concurrently
             batch_results = await asyncio.gather(
-                *[self.execute_thread(t) for t in ready], return_exceptions=True,
+                *[self.execute_thread(t) for t in ready],
+                return_exceptions=True,
             )
 
             for thread_result in batch_results:
@@ -377,7 +383,10 @@ Generate the final synthesized response now.
         }
 
     async def process_query(
-        self, query: str, max_threads: int = 10, output_format: str = "markdown_report",
+        self,
+        query: str,
+        max_threads: int = 10,
+        output_format: str = "markdown_report",
     ) -> dict[str, Any]:
         """Full AoT pipeline with AunCRM enforcement
         Decompose → Execute → Stitch

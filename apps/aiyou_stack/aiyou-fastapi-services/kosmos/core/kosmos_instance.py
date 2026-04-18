@@ -192,7 +192,9 @@ class KosmosInstance:
         }
 
     async def _generate_output(
-        self, task: str, context: dict[str, Any] | None = None,
+        self,
+        task: str,
+        context: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Generate final output after consensus reached"""
         if not self.api_key:

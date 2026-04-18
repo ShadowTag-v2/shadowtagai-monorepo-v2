@@ -237,8 +237,7 @@ async def handle_invoice_payment_failed(event_data: dict[str, Any]) -> dict:
     attempt_count = invoice.get("attempt_count", 0)
 
     logger.warning(
-        f"Payment failed: customer={customer_id}, "
-        f"attempt={attempt_count}",
+        f"Payment failed: customer={customer_id}, attempt={attempt_count}",
     )
 
     return {

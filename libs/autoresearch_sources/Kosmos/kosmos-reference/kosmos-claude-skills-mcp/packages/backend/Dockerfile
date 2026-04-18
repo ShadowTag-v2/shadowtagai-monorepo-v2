@@ -28,4 +28,3 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
 # For remote access, override with: --host 0.0.0.0
 ENTRYPOINT ["claude-skills-mcp-backend"]
 CMD ["--host", "0.0.0.0", "--port", "8765"]
-

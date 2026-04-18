@@ -27,17 +27,18 @@ innovation_agent = InnovationAgent()
 
 @router.get("/health", response_model=HealthCheckResponse, tags=["System"])
 async def health_check():
-    """Health check endpoint for the Innovation Lab service.
-    """
+    """Health check endpoint for the Innovation Lab service."""
     return HealthCheckResponse(
-        status="healthy", service=config.service_name, version=config.version, innovation_ready=True,
+        status="healthy",
+        service=config.service_name,
+        version=config.version,
+        innovation_ready=True,
     )
 
 
 @router.get("/", tags=["System"])
 async def root():
-    """Root endpoint with service information.
-    """
+    """Root endpoint with service information."""
     return {
         "service": config.service_name,
         "version": config.version,

@@ -131,7 +131,10 @@ Respond in JSON format:
             print(f"⚠️  WARNING: Intent classification slow: {latency_ms:.1f}ms")
 
         return IntentClassification(
-            intent=intent, confidence=confidence, reasoning=reasoning, latency_ms=latency_ms,
+            intent=intent,
+            confidence=confidence,
+            reasoning=reasoning,
+            latency_ms=latency_ms,
         )
 
 
@@ -195,7 +198,10 @@ class CorOrchestrator:
         self.executions = []
 
     def execute(
-        self, query: str, user_tier: str = "free", force_intent: str | None = None,
+        self,
+        query: str,
+        user_tier: str = "free",
+        force_intent: str | None = None,
     ) -> OrchestrationResult:
         """Execute query with appropriate routing.
 
@@ -274,7 +280,11 @@ class CorOrchestrator:
             total_latency_ms=total_latency_ms,
             cost_usd=cost_usd,
             metrics=self._collect_metrics(
-                intent, internal_results, web_results, total_latency_ms, cost_usd,
+                intent,
+                internal_results,
+                web_results,
+                total_latency_ms,
+                cost_usd,
             ),
         )
 
@@ -322,7 +332,8 @@ Provide a unified answer that:
 Response:"""
 
         response = self.synthesis_model.generate_content(
-            synthesis_prompt, generation_config={"temperature": 0.3, "max_output_tokens": 500},
+            synthesis_prompt,
+            generation_config={"temperature": 0.3, "max_output_tokens": 500},
         )
 
         latency_ms = (time.perf_counter() - start_time) * 1000
@@ -337,7 +348,10 @@ Response:"""
         return response.text.strip()
 
     def _calculate_cost(
-        self, intent: IntentClassification, internal: dict | None, web: dict | None,
+        self,
+        intent: IntentClassification,
+        internal: dict | None,
+        web: dict | None,
     ) -> float:
         """Calculate total execution cost."""
         cost = 0.0

@@ -39,18 +39,12 @@ def create_fake_tools_list_result():
     )
 
 
-@pytest_asyncio.fixture(
-    params=[False, True], ids=["telemetry_disabled", "telemetry_enabled"]
-)
+@pytest_asyncio.fixture(params=[False, True], ids=["telemetry_disabled", "telemetry_enabled"])
 async def transport(request, mocker):
     if request.param:
         mocker.patch("toolbox_core.mcp_transport.telemetry.TELEMETRY_AVAILABLE", True)
-        mocker.patch(
-            "toolbox_core.mcp_transport.telemetry.get_tracer", return_value=MagicMock()
-        )
-        mocker.patch(
-            "toolbox_core.mcp_transport.telemetry.get_meter", return_value=MagicMock()
-        )
+        mocker.patch("toolbox_core.mcp_transport.telemetry.get_tracer", return_value=MagicMock())
+        mocker.patch("toolbox_core.mcp_transport.telemetry.get_meter", return_value=MagicMock())
         mocker.patch(
             "toolbox_core.mcp_transport.telemetry.create_operation_duration_histogram",
             return_value=MagicMock(),
@@ -196,9 +190,7 @@ class TestMcpHttpTransportV20250326:
     @patch("toolbox_core.mcp_transport.v20250326.mcp.version")
     async def test_initialize_session_success(self, mock_version, transport, mocker):
         mock_version.__version__ = "1.2.3"
-        mock_send = mocker.patch.object(
-            transport, "_send_request", new_callable=AsyncMock
-        )
+        mock_send = mocker.patch.object(transport, "_send_request", new_callable=AsyncMock)
 
         async def side_effect(*args, **kwargs):
             request = kwargs.get("request")
@@ -219,18 +211,14 @@ class TestMcpHttpTransportV20250326:
         assert transport._session_id == "sess-123"
 
     @patch("toolbox_core.mcp_transport.v20250326.mcp.version")
-    async def test_initialize_session_custom_client_info(
-        self, mock_version, transport, mocker
-    ):
+    async def test_initialize_session_custom_client_info(self, mock_version, transport, mocker):
         mock_version.__version__ = "1.2.3"
 
         # Override transport's client info
         transport._client_name = "custom-client"
         transport._client_version = "9.9.9"
 
-        mock_send = mocker.patch.object(
-            transport, "_send_request", new_callable=AsyncMock
-        )
+        mock_send = mocker.patch.object(transport, "_send_request", new_callable=AsyncMock)
 
         async def side_effect(*args, **kwargs):
             request = kwargs.get("request")
@@ -268,9 +256,7 @@ class TestMcpHttpTransportV20250326:
         # Mock close since it will be called on failure
         mocker.patch.object(transport, "close", new_callable=AsyncMock)
 
-        with pytest.raises(
-            RuntimeError, match="Server did not return a Mcp-Session-Id"
-        ):
+        with pytest.raises(RuntimeError, match="Server did not return a Mcp-Session-Id"):
             await transport._initialize_session()
 
     async def test_ensure_initialized_passes_headers(self, transport):
@@ -344,9 +330,7 @@ class TestMcpHttpTransportV20250326:
             transport,
             "_send_request",
             new_callable=AsyncMock,
-            return_value=types.CallToolResult(
-                content=[types.TextContent(type="text", text="Result")]
-            ),
+            return_value=types.CallToolResult(content=[types.TextContent(type="text", text="Result")]),
         )
         result = await transport.tool_invoke("tool", {}, {})
         assert result == "Result"

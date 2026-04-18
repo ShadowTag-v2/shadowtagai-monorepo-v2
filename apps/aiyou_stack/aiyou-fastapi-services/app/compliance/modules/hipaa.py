@@ -278,7 +278,9 @@ class HIPAAModule(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput,
+        self,
+        control: ControlDefinition,
+        input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single HIPAA control."""
         metadata = input_data.metadata
@@ -424,7 +426,10 @@ class HIPAAModule(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None,
+        self,
+        rule: ValidationRule,
+        content: str,
+        context: str | None,
     ) -> ValidationViolation | None:
         """Check HIPAA validation rules against content."""
         content_lower = content.lower()

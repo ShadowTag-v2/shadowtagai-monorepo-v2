@@ -1,5 +1,4 @@
-"""Vertex AI-Specific Agents for Vertex AI Workbench
-"""
+"""Vertex AI-Specific Agents for Vertex AI Workbench"""
 
 from typing import Any
 

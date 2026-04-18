@@ -480,7 +480,7 @@ IMAGE
 
 I'm now fully immersed in the requested scenario. My primary focus is on the "unusual yet realistic" aspects. The scene is starting to take shape with the key elements established.
 
-RESPONSE: 
+RESPONSE:
 <img src="https://storage.googleapis.com/generativeai-downloads/cookbook/image_out/lamas.jpg" style="height:auto; width:100%;" />
 
 */

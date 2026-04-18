@@ -51,7 +51,7 @@ function updateUserProfile() {
   }).catch((error) => {
     // An error occurred
     // ...
-  });  
+  });
   // [END auth_update_user_profile]
 }
 

@@ -26,9 +26,7 @@ import pytest
 # Import niah_test.py as a module
 # ---------------------------------------------------------------------------
 
-spec = importlib.util.spec_from_file_location(
-    "niah", str(Path(__file__).parent.parent / "scripts" / "niah_test.py")
-)
+spec = importlib.util.spec_from_file_location("niah", str(Path(__file__).parent.parent / "scripts" / "niah_test.py"))
 niah = importlib.util.module_from_spec(spec)
 # Register in sys.modules so dataclasses can resolve the module's __dict__
 sys.modules["niah"] = niah
@@ -171,11 +169,13 @@ class TestDistractors:
         distractors = []
         for i in range(num_distractors):
             d_key = niah.DISTRACTOR_KEYS[i % len(niah.DISTRACTOR_KEYS)]
-            distractors.append(niah.Needle(
-                key=d_key,
-                value=niah._make_magic_number(rng),
-                depth_pct=(i + 1) / (num_distractors + 2),
-            ))
+            distractors.append(
+                niah.Needle(
+                    key=d_key,
+                    value=niah._make_magic_number(rng),
+                    depth_pct=(i + 1) / (num_distractors + 2),
+                )
+            )
         assert len(distractors) == 3
         assert distractors[0].key == "The secret password is"
         assert distractors[1].key == "The hidden code is"
@@ -735,9 +735,7 @@ class TestQueryServer:
     """Tests for _query_server()."""
 
     def _make_chat_response(self, content: str):
-        body = json.dumps({
-            "choices": [{"message": {"content": content}}]
-        }).encode()
+        body = json.dumps({"choices": [{"message": {"content": content}}]}).encode()
         resp = MagicMock()
         resp.read.return_value = body
         resp.__enter__ = MagicMock(return_value=resp)
@@ -790,9 +788,7 @@ class TestQueryServer:
     @patch("time.sleep")
     @patch("urllib.request.urlopen")
     def test_thinking_tags_stripped(self, mock_urlopen, mock_sleep):
-        mock_urlopen.return_value = self._make_chat_response(
-            "<think>let me think...</think>1234567"
-        )
+        mock_urlopen.return_value = self._make_chat_response("<think>let me think...</think>1234567")
         result = niah._query_server(8090, "haystack")
         assert result == "1234567"
 
@@ -906,22 +902,37 @@ class TestParseArgs:
         assert args.verbose is True
 
     def test_all_options(self):
-        args = niah.parse_args([
-            "/llama", "/model.gguf",
-            "--mode", "multi-key",
-            "--depths", "1024",
-            "--depths-sweep", "0,50,100",
-            "--cache-types", "f16",
-            "--num-distractors", "7",
-            "--value-counts", "1,2",
-            "--port", "9090",
-            "--output-dir", "/tmp/out",
-            "--verbose",
-            "--server-timeout", "60",
-            "--query-timeout", "120",
-            "--server-bin", "/path/to/server",
-            "--chars-per-token", "3.5",
-        ])
+        args = niah.parse_args(
+            [
+                "/llama",
+                "/model.gguf",
+                "--mode",
+                "multi-key",
+                "--depths",
+                "1024",
+                "--depths-sweep",
+                "0,50,100",
+                "--cache-types",
+                "f16",
+                "--num-distractors",
+                "7",
+                "--value-counts",
+                "1,2",
+                "--port",
+                "9090",
+                "--output-dir",
+                "/tmp/out",
+                "--verbose",
+                "--server-timeout",
+                "60",
+                "--query-timeout",
+                "120",
+                "--server-bin",
+                "/path/to/server",
+                "--chars-per-token",
+                "3.5",
+            ]
+        )
         assert args.mode == "multi-key"
         assert args.depths == "1024"
         assert args.depths_sweep == "0,50,100"

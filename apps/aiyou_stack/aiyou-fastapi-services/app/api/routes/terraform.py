@@ -1,5 +1,4 @@
-"""Terraform infrastructure as code endpoints
-"""
+"""Terraform infrastructure as code endpoints"""
 
 from fastapi import APIRouter, HTTPException
 

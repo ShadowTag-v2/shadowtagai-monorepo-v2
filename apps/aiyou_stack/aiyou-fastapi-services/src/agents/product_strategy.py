@@ -1,5 +1,4 @@
-"""Product Strategy Agents for Vertex AI Workbench
-"""
+"""Product Strategy Agents for Vertex AI Workbench"""
 
 from typing import Any
 

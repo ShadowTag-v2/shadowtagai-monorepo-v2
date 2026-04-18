@@ -172,7 +172,8 @@ def calculate_risk_level(probability: Probability, severity: Severity) -> RiskLe
 
 
 def calculate_risk_from_loss(
-    probability_pct: float, loss_usd: float,
+    probability_pct: float,
+    loss_usd: float,
 ) -> tuple[Probability, Severity, RiskLevel]:
     """Calculate full risk assessment from probability and loss
 
@@ -191,7 +192,9 @@ def calculate_risk_from_loss(
 
 
 def calculate_risk_from_var(
-    probability_pct: float, var_usd: float, portfolio_value: float,
+    probability_pct: float,
+    var_usd: float,
+    portfolio_value: float,
 ) -> tuple[Probability, Severity, RiskLevel]:
     """Calculate risk assessment from VaR metrics
 
@@ -312,7 +315,9 @@ def get_risk_description(risk_level: RiskLevel) -> str:
 
 
 def validate_risk_assessment(
-    probability: Probability, severity: Severity, risk_level: RiskLevel,
+    probability: Probability,
+    severity: Severity,
+    risk_level: RiskLevel,
 ) -> bool:
     """Validate that risk level matches ATP 5-19 matrix
 

@@ -41,9 +41,9 @@ const listRolesStatement = `
             r.rolcreaterole AS can_create_roles,
             r.rolcreatedb AS can_create_db,
             r.rolcanlogin AS can_login,
-            r.rolreplication AS is_replication_role, 
-            r.rolbypassrls AS bypass_rls,          
-            r.rolvaliduntil AS valid_until,         
+            r.rolreplication AS is_replication_role,
+            r.rolbypassrls AS bypass_rls,
+            r.rolvaliduntil AS valid_until,
             -- List of roles that belong to this role (Direct Members)
             ARRAY(
                 SELECT m_r.rolname
@@ -60,7 +60,7 @@ const listRolesStatement = `
             ) AS member_of
         FROM pg_roles r
     -- Exclude system and internal roles
-        WHERE r.rolname NOT LIKE 'cloudsql%' 
+        WHERE r.rolname NOT LIKE 'cloudsql%'
         AND r.rolname NOT LIKE 'alloydb_%'
         AND r.rolname NOT LIKE 'pg_%'
     )

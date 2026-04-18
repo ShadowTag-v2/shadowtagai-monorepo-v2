@@ -83,7 +83,9 @@ class FunnelService:
 
     @staticmethod
     async def update_funnel(
-        db: AsyncSession, funnel_id: UUID, funnel_data: FunnelUpdate,
+        db: AsyncSession,
+        funnel_id: UUID,
+        funnel_data: FunnelUpdate,
     ) -> Funnel | None:
         """Update funnel"""
         funnel = await FunnelService.get_funnel(db, funnel_id)

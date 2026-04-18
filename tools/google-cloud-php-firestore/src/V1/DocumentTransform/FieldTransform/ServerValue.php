@@ -53,4 +53,3 @@ class ServerValue
         return constant($const);
     }
 }
-

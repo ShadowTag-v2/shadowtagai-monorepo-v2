@@ -28,7 +28,10 @@ class ProductDeliveryGate:
     """
 
     async def validate(
-        self, feature: str, variant_id: str = None, metrics: dict[str, Any] = None,
+        self,
+        feature: str,
+        variant_id: str = None,
+        metrics: dict[str, Any] = None,
     ) -> dict[str, Any]:
         """Validate product delivery readiness.
 

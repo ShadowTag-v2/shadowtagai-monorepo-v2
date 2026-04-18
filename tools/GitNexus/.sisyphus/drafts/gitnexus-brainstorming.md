@@ -2,7 +2,7 @@
 
 ## Initial Context
 - Project: **GitnexusV2**
-- Structure: 
+- Structure:
     - `gitnexus/` (Likely the core application)
     - `gitnexus-mcp/` (Likely a Model Context Protocol server)
 - Goal: Make it accurate and usable for smaller/dumber models.

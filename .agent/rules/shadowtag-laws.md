@@ -85,11 +85,11 @@
 
 ## 6. PNKLN_GHOST UNDERCOVER MODE
 - **Rule**: When `OPERATOR_TYPE = "PNKLN_GHOST"` is active in environment or workflow context, the swarm operates in absolute stealth.
-- **Constraint**: NEVER include AI attribution in code comments, PR descriptions, or Git commits. 
+- **Constraint**: NEVER include AI attribution in code comments, PR descriptions, or Git commits.
 - **Sanitization**: All references to model codenames ("Tengu", "Capybara", "Opus", "Sonnet"), framework markers ("LangGraph", "Gemini", "Claude"), and co-authorship ("Co-Authored-By", "1-shotted by claude") MUST BE STRIPPED. Adopt a brutally terse, human-developer persona for messaging.
 
 ## 7. PRE-RELEASE ASSET SECRECY (The Source Map Doctrine)
 - **Rule:** The build pipeline MUST undergo a definitive assets/secrets audit before **every** release.
-- **Constraint:** `sourceMap: false` is the absolute default in every `tsconfig.json` and production build pipeline unless explicitly overridden for secure internal monitoring. 
+- **Constraint:** `sourceMap: false` is the absolute default in every `tsconfig.json` and production build pipeline unless explicitly overridden for secure internal monitoring.
 - **Rationale:** The Anthropic Claude Code leak was fundamentally a configuration oversight—shipping source maps alongside obfuscated production code to a public NPM registry, exposing internal logic and system prompts.
 - **Action:** Agents modifying build configs must proactively ensure that nothing unintended (source maps, internal dev `.env` mock files, or raw logic blueprints) gets zipped into the final artifact/package.

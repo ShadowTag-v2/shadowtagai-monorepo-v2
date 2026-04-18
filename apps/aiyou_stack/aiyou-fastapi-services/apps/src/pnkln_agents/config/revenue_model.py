@@ -69,7 +69,9 @@ class RevenueModel:
         return ltv / cac if cac > 0 else float("inf")
 
     def calculate_break_even_timeline_days(
-        self, tier: PricingTier, actual_cac: float = None,
+        self,
+        tier: PricingTier,
+        actual_cac: float = None,
     ) -> int:
         """Calculate days to break even on CAC"""
         cac = actual_cac or self.target_cac_usd

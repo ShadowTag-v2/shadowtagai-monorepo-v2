@@ -43,7 +43,7 @@ import { MatCardModule } from '@angular/material/card';
 /**
  * This is a mock implementation of the `HomepageFirestore` class that returns
  * mock restaurant data without calling Firestore methods. For more information
- * about this class, and dependency inject in Angular more generally, see the 
+ * about this class, and dependency inject in Angular more generally, see the
  * comment on line 29 of `homepage.service.ts`.
  */
 @Injectable()
@@ -117,10 +117,10 @@ describe('HomepageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  /** 
+  /**
    * Tests to see that the #empty-restaurants-container div has not
-   * been rendered. This div is rendered only when no restaurants have been 
-   * retrieved from Firestore (or, in this case, the MockHomepageFirestore 
+   * been rendered. This div is rendered only when no restaurants have been
+   * retrieved from Firestore (or, in this case, the MockHomepageFirestore
    * element).
    * */
   it('should call service and get restuarants on init', () => {
@@ -132,8 +132,8 @@ describe('HomepageComponent', () => {
 
   /**
    * Tests to see that exactly 1 restaurant is rendered when filtering for
-   * restaurants with a price of just one $. This tests that the 
-   * `getRestaurantsGivenConstraints` function is called in the 
+   * restaurants with a price of just one $. This tests that the
+   * `getRestaurantsGivenConstraints` function is called in the
    * MockHomepageFirestoreClass, and that the `sortingData` field
    * was correctly updated.
    */

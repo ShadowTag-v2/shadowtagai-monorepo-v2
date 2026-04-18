@@ -12,7 +12,7 @@ Pipeline steps (sequential, immutable order):
 
 Risk Matrix (ATP 5-19):
     Severity (1-5) × Probability (1-5) = Risk Score (1-25)
-    
+
     GREEN  (1-9):   Approved automatically
     AMBER  (10-15): Approved with warning flags
     RED    (16-25): BLOCKED — requires human attorney review
@@ -36,14 +36,16 @@ logger = logging.getLogger("counselconduit.judge6")
 
 class RiskLevel(Enum):
     """ATP 5-19 risk classification."""
-    GREEN = "green"    # Auto-approved
-    AMBER = "amber"    # Approved with warnings
-    RED = "red"        # Blocked
+
+    GREEN = "green"  # Auto-approved
+    AMBER = "amber"  # Approved with warnings
+    RED = "red"  # Blocked
 
 
 @dataclass
 class RiskAssessment:
     """Result of Judge #6 risk evaluation."""
+
     risk_score: int  # 1-25
     risk_level: RiskLevel
     approved: bool
@@ -55,6 +57,7 @@ class RiskAssessment:
 @dataclass
 class GovernanceResult:
     """Full governance pipeline output."""
+
     input_text: str
     output_text: str  # May be modified by enforcement
     assessment: RiskAssessment
@@ -84,37 +87,36 @@ _REQUIRED_PATTERNS: list[tuple[str, str]] = [
 
 # ── Pipeline Steps ─────────────────────────────────────────────────────────
 
+
 def _step_extract(text: str) -> list[dict[str, Any]]:
     """Step 1: EXTRACT — Parse output for risk-relevant claims."""
     claims = []
     for pattern, label, base_score in _HIGH_RISK_PATTERNS:
         matches = re.findall(pattern, text, re.IGNORECASE)
         if matches:
-            claims.append({
-                "pattern": label,
-                "match_count": len(matches),
-                "base_score": base_score,
-            })
+            claims.append(
+                {
+                    "pattern": label,
+                    "match_count": len(matches),
+                    "base_score": base_score,
+                }
+            )
     return claims
 
 
 def _step_score(claims: list[dict[str, Any]]) -> tuple[int, list[str]]:
     """Step 2: SCORE — Compute aggregate risk score.
-    
+
     Uses the highest individual claim score (not sum) because
     a single critical risk should trigger blocking regardless
     of how many safe items exist.
     """
     if not claims:
         return 1, []
-    
+
     max_score = max(c["base_score"] for c in claims)
-    flags = [
-        f"{c['pattern']} (score={c['base_score']}, matches={c['match_count']})"
-        for c in claims
-        if c["base_score"] >= 10
-    ]
-    
+    flags = [f"{c['pattern']} (score={c['base_score']}, matches={c['match_count']})" for c in claims if c["base_score"] >= 10]
+
     return min(max_score, 25), flags
 
 
@@ -130,13 +132,13 @@ def _step_gate(risk_score: int) -> tuple[RiskLevel, bool, str]:
 
 def _step_enforce(text: str, risk_level: RiskLevel) -> str:
     """Step 4: ENFORCE — Apply corrections to output.
-    
+
     For AMBER: Append warning disclosure.
     For RED: Replace with blocked message.
     """
     if risk_level == RiskLevel.GREEN:
         return text
-    
+
     if risk_level == RiskLevel.AMBER:
         disclaimer = (
             "\n\n---\n⚠️ *This response contains language flagged by the "
@@ -144,7 +146,7 @@ def _step_enforce(text: str, risk_level: RiskLevel) -> str:
             "relying on this analysis.*"
         )
         return text + disclaimer
-    
+
     # RED — blocked
     return (
         "⛔ This response has been blocked by the Judge #6 governance pipeline. "
@@ -155,28 +157,29 @@ def _step_enforce(text: str, risk_level: RiskLevel) -> str:
 
 # ── Main Pipeline ──────────────────────────────────────────────────────────
 
+
 def evaluate(text: str) -> GovernanceResult:
     """Run the full Judge #6 governance pipeline on AI output.
-    
+
     This is the main entry point. Call after every Gemini response
     before returning to the client.
     """
     start = time.monotonic()
-    
+
     # Step 1: Extract
     claims = _step_extract(text)
-    
+
     # Step 2: Score
     risk_score, flags = _step_score(claims)
-    
+
     # Step 3: Gate
     risk_level, approved, blocked_reason = _step_gate(risk_score)
-    
+
     # Step 4: Enforce
     output_text = _step_enforce(text, risk_level)
-    
+
     elapsed_ms = int((time.monotonic() - start) * 1000)
-    
+
     assessment = RiskAssessment(
         risk_score=risk_score,
         risk_level=risk_level,
@@ -184,17 +187,20 @@ def evaluate(text: str) -> GovernanceResult:
         flags=flags,
         blocked_reason=blocked_reason,
     )
-    
+
     result = GovernanceResult(
         input_text=text,
         output_text=output_text,
         assessment=assessment,
         pipeline_ms=elapsed_ms,
     )
-    
+
     logger.info(
         "Judge #6 evaluation: score=%d level=%s approved=%s flags=%d",
-        risk_score, risk_level.value, approved, len(flags),
+        risk_score,
+        risk_level.value,
+        approved,
+        len(flags),
     )
-    
+
     return result

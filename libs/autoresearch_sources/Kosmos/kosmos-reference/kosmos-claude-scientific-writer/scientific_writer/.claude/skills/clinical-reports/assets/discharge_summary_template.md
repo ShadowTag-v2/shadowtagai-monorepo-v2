@@ -2,19 +2,19 @@
 
 ## Patient Information
 
-**Patient Name:** [Last, First]  
-**Medical Record Number:** [MRN]  
-**Date of Birth:** [MM/DD/YYYY]  
-**Age:** [years]  
+**Patient Name:** [Last, First]
+**Medical Record Number:** [MRN]
+**Date of Birth:** [MM/DD/YYYY]
+**Age:** [years]
 **Sex:** [M/F]
 
-**Admission Date:** [MM/DD/YYYY]  
-**Discharge Date:** [MM/DD/YYYY]  
+**Admission Date:** [MM/DD/YYYY]
+**Discharge Date:** [MM/DD/YYYY]
 **Length of Stay:** [X days]
 
-**Admitting Service:** [Medicine/Surgery/Cardiology/etc.]  
-**Attending Physician:** [Name]  
-**Primary Care Physician:** [Name and contact]  
+**Admitting Service:** [Medicine/Surgery/Cardiology/etc.]
+**Attending Physician:** [Name]
+**Primary Care Physician:** [Name and contact]
 **Consulting Services:** [List specialties that saw patient]
 
 ---
@@ -117,12 +117,12 @@ Example:
 
 Example:
 ```
-Mr. [Name] was admitted with acute decompensated heart failure in the setting of 
-medication non-adherence. He was diuresed with IV furosemide with net negative 
-5 liters over 3 days, with significant improvement in dyspnea and resolution of 
-lower extremity edema. Echocardiogram showed EF 30%, similar to prior. Kidney 
-function improved to baseline with diuresis. He was transitioned to oral diuretics 
-on hospital day 3 and remained stable. Patient was ambulating without dyspnea on 
+Mr. [Name] was admitted with acute decompensated heart failure in the setting of
+medication non-adherence. He was diuresed with IV furosemide with net negative
+5 liters over 3 days, with significant improvement in dyspnea and resolution of
+lower extremity edema. Echocardiogram showed EF 30%, similar to prior. Kidney
+function improved to baseline with diuresis. He was transitioned to oral diuretics
+on hospital day 3 and remained stable. Patient was ambulating without dyspnea on
 room air by discharge. Comprehensive heart failure education was provided.
 ```
 
@@ -229,8 +229,8 @@ room air by discharge. Comprehensive heart failure education was provided.
 
 Example:
 ```
-Patient is hemodynamically stable, ambulatory without assistance, no supplemental 
-oxygen requirement, euvolemic on physical exam, pain well-controlled, and has 
+Patient is hemodynamically stable, ambulatory without assistance, no supplemental
+oxygen requirement, euvolemic on physical exam, pain well-controlled, and has
 returned to baseline functional status.
 ```
 
@@ -400,11 +400,11 @@ Topics discussed with patient and/or family:
 
 ## Signature
 
-**Prepared by:**  
-[Physician name, credentials]  
+**Prepared by:**
+[Physician name, credentials]
 [Pager/Contact number]
 
-**Cosigned by (if resident/fellow):**  
+**Cosigned by (if resident/fellow):**
 [Attending physician name]
 
 **Date and Time:** [MM/DD/YYYY at HH:MM]
@@ -449,5 +449,3 @@ Topics discussed with patient and/or family:
 - Clear communication of changes
 - Specific follow-up plans
 - Patient education documented
-
-

@@ -153,7 +153,8 @@ async def get_template_example(template_type: TemplateType):
 
     if template_type not in examples:
         raise HTTPException(
-            status_code=404, detail=f"No example found for template type: {template_type}",
+            status_code=404,
+            detail=f"No example found for template type: {template_type}",
         )
 
     return {"template_type": template_type, "example": examples[template_type]}

@@ -120,7 +120,9 @@ class ACPServer:
 
         # Generate context
         prompt = self.cursor.generate_prompt_context(
-            file_path, line, f"Complete the code after: {prefix}",
+            file_path,
+            line,
+            f"Complete the code after: {prefix}",
         )
 
         # Get completion from Gemini

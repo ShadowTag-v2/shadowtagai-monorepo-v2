@@ -4,12 +4,12 @@ echo "Processing Dependabot PRs..." > dependabot_ops.log
 for PR in 5 6 7; do
   echo ">>> Processing PR $PR" >> dependabot_ops.log
   gh pr checkout $PR >> dependabot_ops.log 2>&1
-  
+
   echo "Rebasing PR $PR on main..." >> dependabot_ops.log
   if git rebase main >> dependabot_ops.log 2>&1; then
     echo "Rebase successful. Pushing..." >> dependabot_ops.log
     git push origin HEAD --force >> dependabot_ops.log 2>&1
-    
+
     echo "Merging PR $PR..." >> dependabot_ops.log
     # Try to merge immediately
     if gh pr merge $PR --merge --delete-branch >> dependabot_ops.log 2>&1; then

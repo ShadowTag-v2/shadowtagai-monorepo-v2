@@ -30,7 +30,8 @@ class Settings(BaseSettings):
 
     # Security
     SECRET_KEY: str = Field(
-        default="changeme-in-production", description="Secret key for signing tokens",
+        default="changeme-in-production",
+        description="Secret key for signing tokens",
     )
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30

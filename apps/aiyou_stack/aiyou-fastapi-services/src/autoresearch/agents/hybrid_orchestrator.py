@@ -134,7 +134,9 @@ class HybridOrchestrator:
         """Execute code in E2B sandbox."""
         if not self.E2B_API_KEY:
             return TaskResult(
-                layer=ExecutionLayer.E2B, success=False, output="E2B_API_KEY not configured",
+                layer=ExecutionLayer.E2B,
+                success=False,
+                output="E2B_API_KEY not configured",
             )
 
         try:
@@ -209,7 +211,9 @@ class HybridOrchestrator:
                 else:
                     # Get diff from git
                     result = subprocess.run(
-                        ["git", "diff", diff_range], capture_output=True, text=True,
+                        ["git", "diff", diff_range],
+                        capture_output=True,
+                        text=True,
                     )
                     f.write(result.stdout)
                 diff_file = f.name
@@ -284,7 +288,10 @@ class HybridOrchestrator:
             code = task.get("code", task.get("prompt", ""))
 
             result = subprocess.run(
-                ["python3", "-c", code], capture_output=True, text=True, timeout=30,
+                ["python3", "-c", code],
+                capture_output=True,
+                text=True,
+                timeout=30,
             )
 
             return TaskResult(

@@ -20,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class BriefingDelivery:
-    """Briefing delivery handler
-    """
+    """Briefing delivery handler"""
 
     def __init__(self):
         """Initialize briefing delivery"""
@@ -260,10 +259,10 @@ PIPELINE STATS:
 
 
 async def main():
-    """Main briefing delivery entry point
-    """
+    """Main briefing delivery entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load processed items

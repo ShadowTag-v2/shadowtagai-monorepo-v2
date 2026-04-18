@@ -31,8 +31,7 @@ class GenkitInterface:
         self._initialized = False
 
     def initialize(self) -> Genkit:
-        """Lazy initialization of the Genkit instance.
-        """
+        """Lazy initialization of the Genkit instance."""
         if not self._initialized:
             logger.info("Initializing Genkit with plugins: %s", self.plugins)
             # In a real implementation, we would pass plugins to genkit.

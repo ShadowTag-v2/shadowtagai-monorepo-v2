@@ -131,4 +131,3 @@ class BeginTransactionRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

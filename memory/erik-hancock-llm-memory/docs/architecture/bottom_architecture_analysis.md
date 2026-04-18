@@ -1,9 +1,9 @@
 # BOTTOM (btm) - DEEP ARCHITECTURE ANALYSIS
-**Cross-Platform TUI System Monitor**  
-**Repository:** https://github.com/ClementTsang/bottom  
-**Language:** Rust (Edition 2021, MSRV 1.81)  
-**Maintainer:** Clement Tsang  
-**License:** MIT  
+**Cross-Platform TUI System Monitor**
+**Repository:** https://github.com/ClementTsang/bottom
+**Language:** Rust (Edition 2021, MSRV 1.81)
+**Maintainer:** Clement Tsang
+**License:** MIT
 **Current Version:** 0.11.4
 
 ---
@@ -118,17 +118,17 @@ src/
 loop {
     // 1. COLLECT: Pull fresh system metrics
     let data = data_collector.update();
-    
+
     // 2. UPDATE: Process events and mutate app state
     if let Some(event) = event_stream.next() {
         app.handle_event(event);
     }
-    
+
     // 3. RENDER: Draw entire UI from scratch
     terminal.draw(|frame| {
         painter.draw(frame, &app, &data);
     })?;
-    
+
     // 4. RATE LIMIT: Sleep until next frame (60Hz default)
     std::thread::sleep(Duration::from_millis(16));
 }
@@ -149,12 +149,12 @@ fn draw_cpu_widget(frame: &mut Frame, data: &CpuData, area: Rect) {
     let sparkline = Sparkline::default()
         .data(&data.history)
         .max(100);
-    
+
     // 2. Wrap in styled block
     let block = Block::default()
         .title("CPU")
         .borders(Borders::ALL);
-    
+
     // 3. Render to frame area
     frame.render_widget(sparkline.block(block), area);
 }
@@ -208,10 +208,10 @@ trait DataCollector {
 impl DataCollector {
     #[cfg(target_os = "linux")]
     fn platform_specific() { /* Linux impl */ }
-    
+
     #[cfg(target_os = "macos")]
     fn platform_specific() { /* macOS impl */ }
-    
+
     #[cfg(target_os = "windows")]
     fn platform_specific() { /* Windows impl */ }
 }
@@ -341,7 +341,7 @@ Search Filter: <10ms (regex compile + filter)
   ratio = 1
   [[row.child]]
     type = "cpu"
-  
+
 [[row]]
   ratio = 2
   [[row.child]]
@@ -433,11 +433,11 @@ platforms:
     - x86_64-unknown-linux-musl     # Static binary
     - aarch64-unknown-linux-gnu
     - armv7-unknown-linux-gnueabihf
-  
+
   macos:
     - x86_64-apple-darwin
     - aarch64-apple-darwin          # Apple Silicon
-  
+
   windows:
     - x86_64-pc-windows-msvc
     - x86_64-pc-windows-gnu
@@ -499,10 +499,10 @@ use anyhow::{Context, Result};
 fn load_config() -> Result<Config> {
     let path = get_config_path()
         .context("Failed to determine config path")?;
-    
+
     let contents = fs::read_to_string(&path)
         .with_context(|| format!("Failed to read config at {}", path.display()))?;
-    
+
     toml::from_str(&contents)
         .context("Failed to parse TOML config")?
 }
@@ -546,14 +546,14 @@ fn format_process_name(name: &str, truncate: bool) -> Cow<str> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_cpu_percentage_calculation() {
         let collector = CpuCollector::new();
         assert!(collector.get_usage() >= 0.0);
         assert!(collector.get_usage() <= 100.0);
     }
-    
+
     #[test]
     fn test_process_filtering() {
         let filter = ProcessFilter::from_regex("btm").unwrap();
@@ -738,20 +738,20 @@ impl Judge6Widget {
             decisions_per_sec: metrics.rate,
             violations: metrics.violations,
         });
-        
+
         // Trim to 60 seconds of history
         while self.decision_history.len() > 60 {
             self.decision_history.pop_front();
         }
     }
-    
+
     fn render(&self, frame: &mut Frame, area: Rect) {
         // Top: Latency sparkline (p99 SLA line at 90ms)
         let latencies: Vec<u64> = self.decision_history
             .iter()
             .map(|m| m.latency_p99.as_millis() as u64)
             .collect();
-        
+
         let sparkline = Sparkline::default()
             .data(&latencies)
             .max(120)  // 120ms ceiling
@@ -760,12 +760,12 @@ impl Judge6Widget {
             } else {
                 Style::default().fg(Color::Green)
             });
-        
+
         // Bottom: Violation table
         let violations: Vec<Row> = self.decision_history.last()
             .map(|m| m.violations.clone())
             .unwrap_or_default();
-        
+
         // ... render table
     }
 }
@@ -784,15 +784,15 @@ impl ShadowTagViewer {
     fn render(&self, frame: &mut Frame, area: Rect) {
         // Left: Video preview (ASCII art from frame buffer)
         // Right: Watermark metadata table
-        
+
         let chunks = Layout::default()
             .direction(Direction::Horizontal)
             .constraints([Constraint::Percentage(60), Constraint::Percentage(40)])
             .split(area);
-        
+
         // Render ASCII frame preview
         self.render_frame_preview(frame, chunks[0]);
-        
+
         // Render watermark metadata
         self.render_watermark_table(frame, chunks[1]);
     }
@@ -882,16 +882,16 @@ impl CorDashboard {
 ### Assumptions to Validate
 1. **Assumption**: ratatui is fastest TUI framework
    **Validation**: Benchmark vs tui-rs (unmaintained), cursive, termion
-   
+
 2. **Assumption**: 60Hz refresh rate acceptable for monitoring
    **Validation**: User study - does 30Hz feel sluggish? Does 120Hz improve UX?
-   
+
 3. **Assumption**: TOML layout DSL is user-friendly
    **Validation**: A/B test vs GUI layout editor
-   
+
 4. **Assumption**: Single-threaded event loop sufficient
    **Validation**: Profile with tokio-console, check for blocking syscalls
-   
+
 5. **Assumption**: Bottom's architecture scales to 10K+ processes
    **Validation**: Stress test with process bomb, measure p99 latency
 
@@ -938,7 +938,7 @@ impl CorDashboard {
 
 **END OF ANALYSIS**
 
-*Generated: 2025-11-21*  
-*Analyst: Claude Sonnet 4.5*  
-*Framework: ATP 5-19 Risk Management + JR Engine Doctrine*  
+*Generated: 2025-11-21*
+*Analyst: Claude Sonnet 4.5*
+*Framework: ATP 5-19 Risk Management + JR Engine Doctrine*
 *SLA Compliance: p99 < 90ms required for Judge #6 integration*

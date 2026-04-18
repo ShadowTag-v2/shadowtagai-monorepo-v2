@@ -2,7 +2,7 @@
 title: "neo4j-schema"
 type: "docs"
 weight: 1
-description: > 
+description: >
   A "neo4j-schema" tool extracts a comprehensive schema from a Neo4j
   database.
 ---
@@ -37,7 +37,7 @@ type: neo4j-schema
 source: my-neo4j-movies-instance
 description: |
   Use this tool to get the full schema of the movie database.
-  This provides information on all available node labels (like Movie, Person), 
+  This provides information on all available node labels (like Movie, Person),
   relationships (like ACTED_IN), and the properties on each.
   This tool takes no parameters.
 # Optional configuration to cache the schema for 2 hours

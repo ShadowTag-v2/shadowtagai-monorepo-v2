@@ -35,7 +35,9 @@ class CircuitBreaker:
             self.state = "open"
             self.opened_at = datetime.now()
             logger.warning(
-                "circuit_breaker_opened", failures=self.failures, timeout=self.timeout_seconds,
+                "circuit_breaker_opened",
+                failures=self.failures,
+                timeout=self.timeout_seconds,
             )
 
     def record_success(self):
@@ -87,7 +89,9 @@ class EthicalScraper:
         self.retry_config = self.config["retry_policy"]
 
         logger.info(
-            "ethical_scraper_initialized", user_agent=self.user_agent, rate_limits=self.rate_config,
+            "ethical_scraper_initialized",
+            user_agent=self.user_agent,
+            rate_limits=self.rate_config,
         )
 
     def _get_domain(self, url: str) -> str:
@@ -194,7 +198,10 @@ class EthicalScraper:
                     remaining = max(0.1, remaining + jitter)
 
                 logger.debug(
-                    "rate_limit_applied", domain=domain, delay=remaining, configured_delay=delay,
+                    "rate_limit_applied",
+                    domain=domain,
+                    delay=remaining,
+                    configured_delay=delay,
                 )
                 time.sleep(remaining)
 
@@ -210,10 +217,16 @@ class EthicalScraper:
         return self.circuit_breakers[domain]
 
     @retry(
-        stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10), reraise=True,
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=1, max=10),
+        reraise=True,
     )
     async def fetch_url(
-        self, url: str, method: str = "GET", headers: dict | None = None, **kwargs,
+        self,
+        url: str,
+        method: str = "GET",
+        headers: dict | None = None,
+        **kwargs,
     ) -> tuple[int, str]:
         """Fetch URL with full ethical compliance
 
@@ -271,7 +284,9 @@ class EthicalScraper:
             raise
 
     async def fetch_multiple(
-        self, urls: list[str], max_concurrent: int | None = None,
+        self,
+        urls: list[str],
+        max_concurrent: int | None = None,
     ) -> dict[str, tuple[int, str]]:
         """Fetch multiple URLs with concurrency control
 

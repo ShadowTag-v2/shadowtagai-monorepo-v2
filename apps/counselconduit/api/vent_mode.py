@@ -36,8 +36,10 @@ router = APIRouter(prefix="/vent", tags=["Vent Mode"])
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
+
 class VentSessionRequest(BaseModel):
     """Client starts a Vent Mode intake session."""
+
     firm_id: str
     attorney_id: str
     client_name: str
@@ -47,12 +49,14 @@ class VentSessionRequest(BaseModel):
 
 class VentMessage(BaseModel):
     """Client message in a Vent session."""
+
     session_id: str
     message: str = Field(..., min_length=1, max_length=5000)
 
 
 class VentIntakeSummary(BaseModel):
     """AI-generated intake summary from Vent session."""
+
     session_id: str
     client_narrative: str  # anonymized summary
     identified_issues: list[str]
@@ -64,6 +68,7 @@ class VentIntakeSummary(BaseModel):
 
 class VentCheckoutResponse(BaseModel):
     """Stripe Checkout session for Vent intake fee."""
+
     checkout_url: str
     session_id: str
     amount_display: str  # e.g., "$50.00"
@@ -84,6 +89,7 @@ _VENT_SYSTEM_PROMPT = (
 
 
 # ── SSE Streaming ─────────────────────────────────────────────────────
+
 
 async def _stream_vent_response(
     message: str,
@@ -150,6 +156,7 @@ async def _stream_vent_response(
 
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
+
 
 @router.post("/start", response_model=VentCheckoutResponse)
 async def start_vent_session(req: VentSessionRequest) -> VentCheckoutResponse:

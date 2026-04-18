@@ -16,7 +16,7 @@ This folder contains example notebooks demonstrating how to combine the **Gemini
 
 * **[Hybrid Search & Reranking with Qdrant: Under the Hood of Legal AI](./Hybrid_Search_Legal.ipynb)**
   Embed and index a legal dataset with the Gemini API and Qdrant, combining dense (based on Matryoshka Representations of Gemini embeddings) and sparse (based on the Qdrant's custom keywords-based retriever miniCOIL) vectors for hybrid search to ensure high accuracy, citation-grounded legal domain question answering.
-  
+
 
 ---
 

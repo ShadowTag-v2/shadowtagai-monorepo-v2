@@ -8,7 +8,7 @@ description: "Details of the Oracle prebuilt configuration."
 
 *   `--prebuilt` value: `oracledb`
 *   **Environment Variables:**
-   
+
     *   `ORACLE_CONNECTION_STRING`: The connection string for the Oracle server (e.g., "hostname:port/servicename").
     *   `ORACLE_USERNAME`: The database username.
     *   `ORACLE_PASSWORD`: The password for the database user.

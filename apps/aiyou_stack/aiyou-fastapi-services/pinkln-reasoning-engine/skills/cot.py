@@ -58,7 +58,10 @@ Therefore: [Final answer]
 """
 
         super().__init__(
-            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet,
+            name=name,
+            description=description,
+            initial_rating=initial_rating,
+            cheatsheet=cheatsheet,
         )
 
         self.model = model

@@ -30,7 +30,7 @@ from google.adk.agents import Agent
 
 # Create the Toolset
 toolset = ToolboxToolset(
-    server_url="http://127.0.0.1:5000" 
+    server_url="http://127.0.0.1:5000"
 )
 
 # Use in your ADK Agent
@@ -271,4 +271,3 @@ toolset = ToolboxToolset(
 ```
 
 Configure your OpenTelemetry `TracerProvider` and `MeterProvider` before creating the client. See the [toolbox-core OpenTelemetry documentation](https://mcp-toolbox.dev/documentation/connect-to/toolbox-sdks/python-sdk/core/#opentelemetry) for a full setup example.
-

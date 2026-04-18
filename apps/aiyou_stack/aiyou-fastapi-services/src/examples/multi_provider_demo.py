@@ -135,7 +135,9 @@ def demo_provider_override(orchestrator: UnifiedOrchestrator):
     print(f"\nTask: {task}")
     print("Forcing Provider: Gemini")
     result = orchestrator.execute(
-        task, provider=Provider.GEMINI, complexity=TaskComplexity.MODERATE,
+        task,
+        provider=Provider.GEMINI,
+        complexity=TaskComplexity.MODERATE,
     )
     print_result(result)
 
@@ -143,7 +145,9 @@ def demo_provider_override(orchestrator: UnifiedOrchestrator):
     print(f"\nTask: {task}")
     print("Forcing Provider: Anthropic")
     result = orchestrator.execute(
-        task, provider=Provider.ANTHROPIC, complexity=TaskComplexity.MODERATE,
+        task,
+        provider=Provider.ANTHROPIC,
+        complexity=TaskComplexity.MODERATE,
     )
     print_result(result)
 

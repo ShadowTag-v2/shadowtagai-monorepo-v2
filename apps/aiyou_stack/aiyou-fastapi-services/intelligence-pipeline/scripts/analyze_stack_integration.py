@@ -433,7 +433,9 @@ def main():
         help="Base path to repository root",
     )
     parser.add_argument(
-        "--api-key", type=str, help="Google API key (or set GOOGLE_API_KEY env var)",
+        "--api-key",
+        type=str,
+        help="Google API key (or set GOOGLE_API_KEY env var)",
     )
 
     args = parser.parse_args()

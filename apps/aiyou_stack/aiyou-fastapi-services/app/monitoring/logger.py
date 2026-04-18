@@ -43,7 +43,10 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
     """Custom JSON formatter with additional context fields."""
 
     def add_fields(
-        self, log_record: dict[str, Any], record: logging.LogRecord, message_dict: dict[str, Any],
+        self,
+        log_record: dict[str, Any],
+        record: logging.LogRecord,
+        message_dict: dict[str, Any],
     ):
         """Add custom fields to the log record."""
         super().add_fields(log_record, record, message_dict)
@@ -82,12 +85,14 @@ def setup_logging() -> None:
     if settings.log_format.lower() == "json":
         # JSON formatter for structured logging
         formatter = CustomJsonFormatter(
-            "%(timestamp)s %(level)s %(logger)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
+            "%(timestamp)s %(level)s %(logger)s %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
         )
     else:
         # Standard text formatter
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S",
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
         )
 
     # Console handler

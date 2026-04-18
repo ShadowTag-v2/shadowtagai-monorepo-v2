@@ -243,7 +243,11 @@ class VehicleCrew:
         return vehicle_vote
 
     def _determine_decision(
-        self, approve: int, reject: int, abstain: int, total: int,
+        self,
+        approve: int,
+        reject: int,
+        abstain: int,
+        total: int,
     ) -> VoteOption:
         """Determine vehicle decision based on consensus type.
 
@@ -313,7 +317,9 @@ class SquadronVotingEngine:
         return crew
 
     async def conduct_vote(
-        self, decision: dict[str, Any], timeout_seconds: float = 30.0,
+        self,
+        decision: dict[str, Any],
+        timeout_seconds: float = 30.0,
     ) -> SquadronConsensus:
         """Conduct squadron-wide vote on a decision.
 
@@ -337,7 +343,8 @@ class SquadronVotingEngine:
         # Collect votes from all vehicles (with timeout)
         try:
             await asyncio.wait_for(
-                self._collect_all_vehicle_votes(decision), timeout=timeout_seconds,
+                self._collect_all_vehicle_votes(decision),
+                timeout=timeout_seconds,
             )
         except TimeoutError:
             logger.warning("Vote collection timed out")
@@ -399,7 +406,10 @@ class SquadronVotingEngine:
 
         # Determine squadron decision
         decision, consensus_achieved = self._determine_squadron_decision(
-            vehicles_approve, vehicles_reject, vehicles_abstain, total_vehicles,
+            vehicles_approve,
+            vehicles_reject,
+            vehicles_abstain,
+            total_vehicles,
         )
 
         consensus = SquadronConsensus(
@@ -423,7 +433,11 @@ class SquadronVotingEngine:
         return consensus
 
     def _determine_squadron_decision(
-        self, approve: int, reject: int, abstain: int, total: int,
+        self,
+        approve: int,
+        reject: int,
+        abstain: int,
+        total: int,
     ) -> tuple[VoteOption, bool]:
         """Determine squadron decision and whether consensus was achieved"""
         if total == 0:

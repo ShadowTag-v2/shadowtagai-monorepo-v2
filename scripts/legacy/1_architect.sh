@@ -33,7 +33,7 @@ done
 # 3. Promote Shared Libraries (The "Nerves")
 if [ -d "utils" ]; then
     echo "🧠 Promoting 'utils' to 'libs/utils'..."
-    # We move contents deeper to support 'src/libs/utils' layout if preferred, 
+    # We move contents deeper to support 'src/libs/utils' layout if preferred,
     # or simple flat layout. Let's stick to flat for Python simplicity unless src-layout needed.
     # Moving to libs/utils directly for simpler import 'from libs import utils'
     mv utils libs/

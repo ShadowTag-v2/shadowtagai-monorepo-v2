@@ -126,4 +126,3 @@ class QueryTarget extends \Google\Protobuf\Internal\Message
     }
 
 }
-

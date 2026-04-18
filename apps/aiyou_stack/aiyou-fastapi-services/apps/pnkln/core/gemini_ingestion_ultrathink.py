@@ -223,7 +223,9 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
 
             source_metrics = {}
             for collector_type, metrics in zip(
-                self.collectors.keys(), source_metrics_list, strict=False,
+                self.collectors.keys(),
+                source_metrics_list,
+                strict=False,
             ):
                 if isinstance(metrics, Exception):
                     logger.error(f"Collector {collector_type} failed: {metrics}")
@@ -400,11 +402,15 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
         )
 
         self.pipeline.add_stage(
-            "tier_classification", tier_classification, timeout_ms=12 * 60 * 1000,
+            "tier_classification",
+            tier_classification,
+            timeout_ms=12 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
-            "quality_gate_validation", quality_gate_validation, timeout_ms=3 * 60 * 1000,
+            "quality_gate_validation",
+            quality_gate_validation,
+            timeout_ms=3 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
@@ -414,11 +420,15 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
         )
 
         self.pipeline.add_stage(
-            "am_briefing_generation", am_briefing_generation, timeout_ms=5 * 60 * 1000,
+            "am_briefing_generation",
+            am_briefing_generation,
+            timeout_ms=5 * 60 * 1000,
         )
 
     async def run_nightly_job(
-        self, job_id: str, max_items_per_source: int = 500,
+        self,
+        job_id: str,
+        max_items_per_source: int = 500,
     ) -> IngestionResult:
         """Execute nightly ingestion job (ultrathink edition).
 

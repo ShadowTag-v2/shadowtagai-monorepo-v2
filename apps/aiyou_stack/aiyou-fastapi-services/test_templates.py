@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Quick test script to validate template functionality
-"""
+"""Quick test script to validate template functionality"""
 
 from src.models.optimization import AreaType, DoingLessBetterResults, LifeArea, OptimizationStrategy
 from src.models.problem_solving import DimensionType, IsIsNotDiagram, IsIsNotDimension

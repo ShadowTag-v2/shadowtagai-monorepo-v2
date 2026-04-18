@@ -22,7 +22,7 @@ type LoaderData = {
 
 export default function Index() {
   const { bundles, projectId, bundlesCollectionPath } = useLoaderData<LoaderData>();
-  
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="flex justify-end p-3 mb-2">

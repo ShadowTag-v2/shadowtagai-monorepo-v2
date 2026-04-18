@@ -24,7 +24,10 @@ class BottleneckDetector:
         self.session = session
 
     async def find_top_bottlenecks(
-        self, limit: int = 5, endpoint: str = None, severity: str = None,
+        self,
+        limit: int = 5,
+        endpoint: str = None,
+        severity: str = None,
     ) -> list[BottleneckResponse]:
         """Find the top bottlenecks in the application
 

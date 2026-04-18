@@ -45,7 +45,7 @@ Goals must include quantifiable metrics or observable criteria to track progress
   - Vital signs: BP, heart rate, weight
   - Scales: Pain (0-10 NRS), PHQ-9, GAD-7, FIM
   - Functional: Distance walked, ROM degrees, strength grades
-  
+
 - **Qualitative Observable**: Behaviors that can be observed and verified
   - "Patient demonstrates proper insulin injection technique"
   - "Patient ambulates 150 feet with walker independently"
@@ -188,10 +188,10 @@ Useful for rehabilitation and functional goals:
 
 1. **Impairment-Level Goals**: Body structure/function
    - Example: "Increase shoulder flexion ROM from 90° to 140°"
-   
+
 2. **Activity-Level Goals**: Task performance
    - Example: "Dress upper body independently"
-   
+
 3. **Participation-Level Goals**: Life role engagement
    - Example: "Return to work as teacher"
 
@@ -199,13 +199,13 @@ Useful for rehabilitation and functional goals:
 
 1. **Biological/Clinical Goals**: Lab values, vital signs, disease markers
    - Example: "HbA1c <7%, BP <130/80, LDL <70 mg/dL"
-   
+
 2. **Symptom Goals**: Patient-reported symptoms
    - Example: "Pain ≤4/10, no dyspnea with ADLs"
-   
+
 3. **Functional Goals**: What patient can do
    - Example: "Walk 1 mile, climb 2 flights of stairs"
-   
+
 4. **Quality of Life Goals**: Overall well-being
    - Example: "Return to hobbies, improve sleep quality"
 
@@ -327,31 +327,31 @@ Tools to facilitate SDM:
 ## Common Goal-Setting Pitfalls
 
 ### Pitfall 1: Provider-Centric Goals
-**Problem**: Goals reflect what provider thinks is important, not patient priorities  
+**Problem**: Goals reflect what provider thinks is important, not patient priorities
 **Solution**: Ask patient early in visit what they hope to achieve, incorporate their language
 
 ### Pitfall 2: Too Many Goals
-**Problem**: Overwhelming patient with 10+ goals  
+**Problem**: Overwhelming patient with 10+ goals
 **Solution**: Prioritize 3-5 key goals, build on success
 
 ### Pitfall 3: All-or-Nothing Thinking
-**Problem**: Goal is "cure" or "perfection"  
+**Problem**: Goal is "cure" or "perfection"
 **Solution**: Incremental goals, meaningful improvement valued
 
 ### Pitfall 4: Ignoring Barriers
-**Problem**: Goals set without assessing feasibility (resources, support, access)  
+**Problem**: Goals set without assessing feasibility (resources, support, access)
 **Solution**: Identify barriers during assessment, problem-solve or adjust goals
 
 ### Pitfall 5: Static Goals
-**Problem**: Set goals and never revisit  
+**Problem**: Set goals and never revisit
 **Solution**: Regular reassessment, modify as patient progresses or circumstances change
 
 ### Pitfall 6: Purely Clinical Metrics
-**Problem**: All goals are lab values, no functional or QoL goals  
+**Problem**: All goals are lab values, no functional or QoL goals
 **Solution**: Balance clinical markers with functional, symptom, and QoL outcomes
 
 ### Pitfall 7: No Patient Buy-In
-**Problem**: Patient doesn't believe goal is achievable or important  
+**Problem**: Patient doesn't believe goal is achievable or important
 **Solution**: Shared decision-making, motivational interviewing to explore ambivalence
 
 ## Examples of SMART Goals by Condition
@@ -405,7 +405,6 @@ Tools to facilitate SDM:
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2025  
+**Document Version**: 1.0
+**Last Updated**: January 2025
 **Next Review**: January 2026
-

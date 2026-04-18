@@ -62,39 +62,39 @@ beamerposter extends the popular Beamer presentation class for poster-sized docu
 
 \begin{document}
 \begin{frame}[t]
-  
+
   % Title block
   \begin{block}{}
     \maketitle
   \end{block}
-  
+
   \begin{columns}[t]
     \begin{column}{.45\linewidth}
-      
+
       \begin{block}{Introduction}
         Your introduction text here...
       \end{block}
-      
+
       \begin{block}{Methods}
         Your methods text here...
       \end{block}
-      
+
     \end{column}
-    
+
     \begin{column}{.45\linewidth}
-      
+
       \begin{block}{Results}
         Your results text here...
         \includegraphics[width=\linewidth]{figure.pdf}
       \end{block}
-      
+
       \begin{block}{Conclusions}
         Your conclusions here...
       \end{block}
-      
+
     \end{column}
   \end{columns}
-  
+
 \end{frame}
 \end{document}
 ```
@@ -219,29 +219,29 @@ tikzposter is built on the powerful TikZ graphics package, offering modern desig
 % First column
 \begin{columns}
   \column{0.5}
-  
+
   \block{Introduction}{
     Your introduction text here...
   }
-  
+
   \block{Methods}{
     Your methods text here...
   }
-  
+
   % Second column
   \column{0.5}
-  
+
   \block{Results}{
     Your results text here...
     \begin{tikzfigure}
       \includegraphics[width=0.9\linewidth]{figure.pdf}
     \end{tikzfigure}
   }
-  
+
   \block{Conclusions}{
     Your conclusions here...
   }
-  
+
 \end{columns}
 
 \end{document}
@@ -518,16 +518,16 @@ baposter (Box Area Poster) uses a box-based layout system with automatic positio
   grid=false,                    % Show layout grid (debug)
   columns=3,                     % Number of columns
   colspacing=1em,                % Space between columns
-  
+
   % Background
   background=plain,              % plain, shadetb, shadelr, user
   bgColorOne=white,
   bgColorTwo=lightgray,
-  
+
   % Borders
   borderColor=blue!50,
   linewidth=2pt,
-  
+
   % Header
   headerColorOne=blue!80,
   headerColorTwo=blue!70,
@@ -536,13 +536,13 @@ baposter (Box Area Poster) uses a box-based layout system with automatic positio
   headershape=roundedright,      % rectangle, rounded, roundedright, roundedleft
   headershade=plain,             % plain, shadetb, shadelr
   headerborder=open,             % open, closed
-  
+
   % Boxes
   boxColorOne=white,
   boxColorTwo=blue!10,
   boxshade=plain,                % plain, shadetb, shadelr
   textborder=roundedleft,        % none, rectangle, rounded, roundedleft, roundedright
-  
+
   % Eye catcher
   eyecatcher=true
 }
@@ -742,4 +742,3 @@ All three packages are excellent choices for different scenarios:
 - **baposter**: Best for structured, professional multi-section posters
 
 Choose based on your specific needs, aesthetic preferences, and time constraints. When in doubt, start with tikzposter for modern conferences or beamerposter for traditional academic venues.
-

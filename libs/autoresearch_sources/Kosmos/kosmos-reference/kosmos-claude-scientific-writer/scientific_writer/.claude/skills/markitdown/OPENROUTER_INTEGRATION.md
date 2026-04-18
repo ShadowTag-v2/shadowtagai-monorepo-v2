@@ -182,7 +182,7 @@ def convert_with_best_model(filepath):
             llm_client=client,
             llm_model="anthropic/claude-sonnet-4.5"
         )
-    
+
     return md.convert(filepath)
 
 # Use it
@@ -356,4 +356,3 @@ For OpenRouter-specific issues:
 For MarkItDown skill issues:
 - Check documentation in this skill directory
 - Review examples in `assets/example_usage.md`
-

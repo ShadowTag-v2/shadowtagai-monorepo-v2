@@ -78,4 +78,3 @@ Claude Decision → validate-bash.py → Shell Execution
                         ↓ BLOCK
                 (deterministic policy)
 ```
-

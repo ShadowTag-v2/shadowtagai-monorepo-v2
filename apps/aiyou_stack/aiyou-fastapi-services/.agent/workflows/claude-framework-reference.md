@@ -19,7 +19,7 @@ Baseline IQ: 160 (pegged)
 
 ## Operating Posture
 
-**Mode**: Strict mode (default)  
+**Mode**: Strict mode (default)
 **Decision Framework**: Purpose=ShadowTag-v2JR • Reason=Doctrine • Brakes=Army RM
 
 ---
@@ -350,7 +350,7 @@ Step 5: Gemini integrates results
 
 ---
 
-**Last Updated**: 2025-11-22  
-**Owner**: Claude Sonnet 4.5 (reference for Gemini Antigravity)  
-**Framework**: Judge#6 (Purpose → Reasons → Brakes)  
+**Last Updated**: 2025-11-22
+**Owner**: Claude Sonnet 4.5 (reference for Gemini Antigravity)
+**Framework**: Judge#6 (Purpose → Reasons → Brakes)
 **Integration**: MCP Bridge for cross-model coordination

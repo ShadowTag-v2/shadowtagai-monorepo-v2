@@ -23,4 +23,3 @@ arsenal = { workspace = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/n-autoresearch/Kosmos/BioAgentss_server"]
-

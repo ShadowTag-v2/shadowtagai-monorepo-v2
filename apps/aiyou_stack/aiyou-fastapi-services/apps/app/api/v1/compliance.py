@@ -63,10 +63,15 @@ class BatchAssessmentRequest(BaseModel):
     """Request for batch assessment"""
 
     inputs: list[AssessmentInput] = Field(
-        ..., max_length=100, description="List of assessment inputs (max 100)",
+        ...,
+        max_length=100,
+        description="List of assessment inputs (max 100)",
     )
     max_concurrent: int = Field(
-        default=10, ge=1, le=50, description="Maximum concurrent assessments",
+        default=10,
+        ge=1,
+        le=50,
+        description="Maximum concurrent assessments",
     )
 
 
@@ -193,7 +198,8 @@ async def run_assessment(
 )
 async def list_modules(
     jurisdiction: str | None = Query(
-        None, description="Filter by jurisdiction (us, eu, uk, apac, global)",
+        None,
+        description="Filter by jurisdiction (us, eu, uk, apac, global)",
     ),
 ) -> ModuleListResponse:
     """List all available compliance modules.
@@ -370,8 +376,7 @@ async def get_audit_trail(
     description="Check compliance engine health status.",
 )
 async def health_check() -> HealthResponse:
-    """Get compliance engine health status.
-    """
+    """Get compliance engine health status."""
     engine = get_compliance_engine()
     health = engine.health_check()
 
@@ -407,7 +412,8 @@ async def assess_single_module(
         reg_id = RegulationId(regulation_id)
     except ValueError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Module not found"},
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"error": "Module not found"},
         )
 
     # Override modules in input
@@ -434,7 +440,8 @@ async def get_module_checklist(regulation_id: str) -> dict[str, Any]:
         reg_id = RegulationId(regulation_id)
     except ValueError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail={"error": "Module not found"},
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"error": "Module not found"},
         )
 
     info = engine.get_module_info(reg_id)

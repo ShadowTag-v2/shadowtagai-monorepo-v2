@@ -225,7 +225,7 @@ tools:
     type: cockroachdb-list-schemas
     source: my_cockroachdb
     description: List all schemas first
-    
+
   list_tables:
     type: cockroachdb-list-tables
     source: my_cockroachdb

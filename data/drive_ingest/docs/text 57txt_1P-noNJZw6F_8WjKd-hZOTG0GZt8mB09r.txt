@@ -67,7 +67,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path .ci | Out-Null
           $health = Get-Content ".\.slurm\out\github_health.json" -Raw | ConvertFrom-Json
-          $issues = (Get-ChildItem ".\.slurm\out\issues_open.json" -ErrorAction SilentlyContinue | ForEach-Object { Get-Content $_ -Raw | ConvertFrom-Json }) 
+          $issues = (Get-ChildItem ".\.slurm\out\issues_open.json" -ErrorAction SilentlyContinue | ForEach-Object { Get-Content $_ -Raw | ConvertFrom-Json })
           $prs    = (Get-ChildItem ".\.slurm\out\prs_all.json" -ErrorAction SilentlyContinue | ForEach-Object { Get-Content $_ -Raw | ConvertFrom-Json })
           $commitsFile = Get-ChildItem ".\.slurm\out\commits_*.json" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
           $commits = @(); if ($commitsFile) { $commits = Get-Content $commitsFile -Raw | ConvertFrom-Json }
@@ -218,7 +218,7 @@ Minimal setup checklist
 
 Want me to also wire blocking review with Cursor CLI (fail the job on 🚨/🔒 issues) into a third workflow? I can drop that in next.”
 
-“Got it. I can’t see your private GitHub from here (no live connector), so I’m giving you ready-to-paste files and a one-time setup checklist. These implement your headless Cursor CLI agents for Docs updates, CI auto-fix, and PR code review with blocking, plus the “always notify if GitHub isn’t visible” guard and your Bourne / AiYouJR posture. I’ve staged this under your persona brief.    
+“Got it. I can’t see your private GitHub from here (no live connector), so I’m giving you ready-to-paste files and a one-time setup checklist. These implement your headless Cursor CLI agents for Docs updates, CI auto-fix, and PR code review with blocking, plus the “always notify if GitHub isn’t visible” guard and your Bourne / AiYouJR posture. I’ve staged this under your persona brief.
 
 ⸻
 
@@ -547,11 +547,11 @@ Open a PR. Once merged, the agents will run automatically on PRs / failures.
 ⸻
 
 Why this matches your brief
-	•	Strict / Bourne posture + AiYouJR doctrine embedded in .cursorrules.  
+	•	Strict / Bourne posture + AiYouJR doctrine embedded in .cursorrules.
 	•	Cursor-only, headless: agents run inside GitHub Actions via Cursor CLI; they don’t open PRs, they only push to persistent branches and leave one sticky comment, per your rules.
 	•	Always notify if GH not visible: guard step prints warnings and prevents confusing failures.
 	•	Blocking reviews: a fast switch (BLOCKING_REVIEW=true) fails the workflow if 🚨 or 🔒 issues appear.
-	•	Deterministic permissions: .cursor/cli.json prevents accidental writes outside docs/ or MD files (tune as needed).  
+	•	Deterministic permissions: .cursor/cli.json prevents accidental writes outside docs/ or MD files (tune as needed).
 
 If you want, I can also hand you a minimal Codespaces devcontainer and the GPTRAM microservice from earlier to keep everything cloud-side and avoid local flakiness.”
 
@@ -869,7 +869,7 @@ If you want, I can also add:
 	•	A nightly “secret audit” job (enumerate secrets usage across workflows & environments and post a report comment).
 	•	The Codespaces devcontainer/bootstrap you asked for earlier so these same flows are reproducible in cloud VS Code.
 
-All of the above is aligned with your staged operating posture (strict mode, AiYouJR purpose, doctrine reasoning, Army RM brakes).  
+All of the above is aligned with your staged operating posture (strict mode, AiYouJR purpose, doctrine reasoning, Army RM brakes).
 
 Next step (copy-paste checklist):
 	1.	Add .cursor/cli.json
@@ -2427,7 +2427,7 @@ Path(OUT).parent.mkdir(parents=True, exist_ok=True)
 w=0
 with open(OUT,'a',encoding='utf-8') as out:
   for root in ROOTS:
-    p=Path(root); 
+    p=Path(root);
     if not p.exists(): continue
     for f in p.rglob('*'):
       if not f.is_file(): continue
@@ -2785,7 +2785,7 @@ If you want, I’ll also:
 
 # Shadowtag
 
-Welcome! This is the official codebase for the Shadowtag app.  
+Welcome! This is the official codebase for the Shadowtag app.
 Shadowtag is built for AI-driven collaboration with devs, agents, and vibes.
 
 ---
@@ -2793,38 +2793,38 @@ Shadowtag is built for AI-driven collaboration with devs, agents, and vibes.
 ## 🚀 Development Setup
 
 ### Use Codespaces (no Docker needed!)
-- You don’t need Docker Desktop locally.  
-- Codespaces runs your devcontainer server-side, already provisioned.  
+- You don’t need Docker Desktop locally.
+- Codespaces runs your devcontainer server-side, already provisioned.
 - Just click **Code → Codespaces → New codespace** in GitHub and start coding instantly.
 
 ### GPUs in Codespaces
-- GitHub recently added GPU SKUs (Business/Enterprise plans).  
+- GitHub recently added GPU SKUs (Business/Enterprise plans).
 - For larger GPU needs, we can switch this repo to:
-  - **Hugging Face Spaces** (`space.yml` + `app.py`)  
-  - **Modal** (`modal.py`)  
+  - **Hugging Face Spaces** (`space.yml` + `app.py`)
+  - **Modal** (`modal.py`)
 
 This lets you run Shadowtag with scalable GPU backends in one command.
 
 ### LangChain / GPTRAM cache
-- Later, we’ll pipe in a caching layer for agents.  
+- Later, we’ll pipe in a caching layer for agents.
 - Same devcontainer, just add:
-  - SQLite service for local caching, or  
-  - Lightweight HTTP microservice for distributed cache.  
+  - SQLite service for local caching, or
+  - Lightweight HTTP microservice for distributed cache.
 
 Everything stays inside the codespace.
 
 ### Sourcegraph / Cody Integration
-- Install the **Cody** extension inside Codespaces (works in-browser VS Code).  
-- Auth flow runs cleanly (no desktop bugs like “Claude data dir not found”).  
+- Install the **Cody** extension inside Codespaces (works in-browser VS Code).
+- Auth flow runs cleanly (no desktop bugs like “Claude data dir not found”).
 - Great for AI code search & refactors.
 
 ---
 
 ## 🛠️ Tech Stack
-- Next.js 14 App Router  
-- TailwindCSS  
-- Firebase (Auth, Storage, Database)  
-- AI endpoints via Vercel AI SDK (OpenAI, Anthropic, Replicate)  
+- Next.js 14 App Router
+- TailwindCSS
+- Firebase (Auth, Storage, Database)
+- AI endpoints via Vercel AI SDK (OpenAI, Anthropic, Replicate)
 
 ---
 
@@ -2875,16 +2875,16 @@ MIT License
 ---
 
 ### ✅ What this does
-1. Removes Docker dependency: you’ll use Codespaces as your primary runtime.  
-2. Builds in GPU migration paths (Spaces/Modal).  
-3. Pre-bakes LangChain cache support (not now, but documented).  
-4. Solves Sourcegraph Cody auth inside Codespaces.  
-5. README now explains this to *anyone* joining the repo — so you don’t have to.  
+1. Removes Docker dependency: you’ll use Codespaces as your primary runtime.
+2. Builds in GPU migration paths (Spaces/Modal).
+3. Pre-bakes LangChain cache support (not now, but documented).
+4. Solves Sourcegraph Cody auth inside Codespaces.
+5. README now explains this to *anyone* joining the repo — so you don’t have to.
 
 ---
 
-👉 Two clarifications for you before I generate the automation scripts:  
-1. Do you want me to **set Shadowtag’s repo public** (like Bluesky) or keep it **private until ready**?  
+👉 Two clarifications for you before I generate the automation scripts:
+1. Do you want me to **set Shadowtag’s repo public** (like Bluesky) or keep it **private until ready**?
 2. Should I scaffold the Hugging Face Spaces + Modal files (`space.yml`, `app.py`, `modal.py`) now, or wait until GPUs are needed?”
 
 “Perfect — let’s fold those points into your Shadowtag GitHub setup so you don’t have to juggle them later. I’ll show you how they slot into your repo README (the public-facing page, like Bluesky’s), and also what they mean in practice.
@@ -2895,7 +2895,7 @@ MIT License
 
 # Shadowtag
 
-Welcome! This is the official codebase for the Shadowtag app.  
+Welcome! This is the official codebase for the Shadowtag app.
 Shadowtag is built for AI-driven collaboration with devs, agents, and vibes.
 
 ---
@@ -2903,38 +2903,38 @@ Shadowtag is built for AI-driven collaboration with devs, agents, and vibes.
 ## 🚀 Development Setup
 
 ### Use Codespaces (no Docker needed!)
-- You don’t need Docker Desktop locally.  
-- Codespaces runs your devcontainer server-side, already provisioned.  
+- You don’t need Docker Desktop locally.
+- Codespaces runs your devcontainer server-side, already provisioned.
 - Just click **Code → Codespaces → New codespace** in GitHub and start coding instantly.
 
 ### GPUs in Codespaces
-- GitHub recently added GPU SKUs (Business/Enterprise plans).  
+- GitHub recently added GPU SKUs (Business/Enterprise plans).
 - For larger GPU needs, we can switch this repo to:
-  - **Hugging Face Spaces** (`space.yml` + `app.py`)  
-  - **Modal** (`modal.py`)  
+  - **Hugging Face Spaces** (`space.yml` + `app.py`)
+  - **Modal** (`modal.py`)
 
 This lets you run Shadowtag with scalable GPU backends in one command.
 
 ### LangChain / GPTRAM cache
-- Later, we’ll pipe in a caching layer for agents.  
+- Later, we’ll pipe in a caching layer for agents.
 - Same devcontainer, just add:
-  - SQLite service for local caching, or  
-  - Lightweight HTTP microservice for distributed cache.  
+  - SQLite service for local caching, or
+  - Lightweight HTTP microservice for distributed cache.
 
 Everything stays inside the codespace.
 
 ### Sourcegraph / Cody Integration
-- Install the **Cody** extension inside Codespaces (works in-browser VS Code).  
-- Auth flow runs cleanly (no desktop bugs like “Claude data dir not found”).  
+- Install the **Cody** extension inside Codespaces (works in-browser VS Code).
+- Auth flow runs cleanly (no desktop bugs like “Claude data dir not found”).
 - Great for AI code search & refactors.
 
 ---
 
 ## 🛠️ Tech Stack
-- Next.js 14 App Router  
-- TailwindCSS  
-- Firebase (Auth, Storage, Database)  
-- AI endpoints via Vercel AI SDK (OpenAI, Anthropic, Replicate)  
+- Next.js 14 App Router
+- TailwindCSS
+- Firebase (Auth, Storage, Database)
+- AI endpoints via Vercel AI SDK (OpenAI, Anthropic, Replicate)
 
 ---
 
@@ -2985,16 +2985,16 @@ MIT License
 ---
 
 ### ✅ What this does
-1. Removes Docker dependency: you’ll use Codespaces as your primary runtime.  
-2. Builds in GPU migration paths (Spaces/Modal).  
-3. Pre-bakes LangChain cache support (not now, but documented).  
-4. Solves Sourcegraph Cody auth inside Codespaces.  
-5. README now explains this to *anyone* joining the repo — so you don’t have to.  
+1. Removes Docker dependency: you’ll use Codespaces as your primary runtime.
+2. Builds in GPU migration paths (Spaces/Modal).
+3. Pre-bakes LangChain cache support (not now, but documented).
+4. Solves Sourcegraph Cody auth inside Codespaces.
+5. README now explains this to *anyone* joining the repo — so you don’t have to.
 
 ---
 
-👉 Two clarifications for you before I generate the automation scripts:  
-1. Do you want me to **set Shadowtag’s repo public** (like Bluesky) or keep it **private until ready**?  
+👉 Two clarifications for you before I generate the automation scripts:
+1. Do you want me to **set Shadowtag’s repo public** (like Bluesky) or keep it **private until ready**?
 2. Should I scaffold the Hugging Face Spaces + Modal files (`space.yml`, `app.py`, `modal.py`) now, or wait until GPUs are needed?
 “Got it ✅ — you’re asking how to make a GitHub page for Shadowtag that looks like the Bluesky one you screenshotted (README-driven landing page). Let me break it down:
 
@@ -3021,25 +3021,25 @@ Example starter README for Shadowtag:
 
 # Shadowtag
 
-Welcome! This is the official codebase for the Shadowtag app.  
+Welcome! This is the official codebase for the Shadowtag app.
 
 ### Get the app
-- Web: [shadowtag.app](https://shadowtag.app)  
-- iOS: [App Store](https://apps.apple.com/)  
-- Android: [Play Store](https://play.google.com/)  
+- Web: [shadowtag.app](https://shadowtag.app)
+- iOS: [App Store](https://apps.apple.com/)
+- Android: [Play Store](https://play.google.com/)
 
 ---
 
 ## Development Resources
 This is a **Next.js 14** + **AI-powered** application with:
-- TailwindCSS for UI  
-- Firebase (Auth, Storage, Database)  
-- AI endpoints: OpenAI, Anthropic, Replicate via Vercel AI SDK  
+- TailwindCSS for UI
+- Firebase (Auth, Storage, Database)
+- AI endpoints: OpenAI, Anthropic, Replicate via Vercel AI SDK
 
 ---
 
 ## Build Instructions
-1. Clone the repo  
+1. Clone the repo
    ```bash
    git clone https://github.com/YOURNAME/shadowtag
    cd shadowtag
@@ -3062,31 +3062,31 @@ License
 
 MIT License.
 
-That will render almost exactly like the Bluesky example.  
+That will render almost exactly like the Bluesky example.
 
 ---
 
 ### 2. Will it be public?
-- **Yes, if the repo visibility is set to public.**  
-Anyone can see the README and clone it.  
-- If you want to **develop privately** (until you’re ready to launch), keep the repo **private**.  
+- **Yes, if the repo visibility is set to public.**
+Anyone can see the README and clone it.
+- If you want to **develop privately** (until you’re ready to launch), keep the repo **private**.
 You can later flip it to public, or set up **GitHub Pages** for a docs-style site.
 
 ---
 
 ### 3. GitHub Pages (optional, separate from README)
 If you want an actual website at `shadowtag.github.io`:
-1. Go to repo → Settings → Pages.  
-2. Pick the branch (usually `main`) and folder (root).  
-3. It will serve your README.md as a webpage.  
+1. Go to repo → Settings → Pages.
+2. Pick the branch (usually `main`) and folder (root).
+3. It will serve your README.md as a webpage.
 
 That way you can have both:
 - Repo homepage (README on GitHub).
-- Public mini-site (GitHub Pages).  
+- Public mini-site (GitHub Pages).
 
 ---
 
-👉 Question for you:  
+👉 Question for you:
 Do you want Shadowtag’s GitHub repo **public now** (like Bluesky), or **private until it’s polished**? I can draft both workflows (public launch vs stealth build). Would you like me to?”
 
 “Got it ✅ — yes, I can automate almost everything in your 15 Rules of Vibe Coding list so you don’t need to constantly remember them. Here’s how it breaks down:
@@ -3211,7 +3211,7 @@ Once I have that, I’ll wire the template to Shadowtag (primary) and leave AiYo
 	3.	Use Perplexity
 	•	Prompt template:
 
-“You are Perplexity. Find me fresh design + API integrations for [feature]. 
+“You are Perplexity. Find me fresh design + API integrations for [feature].
 Include examples of React/Next.js code.”
 
 
@@ -3244,7 +3244,7 @@ function vibe-clone { gh repo fork $args[0] --clone }
 	9.	Copy errors → Composer
 	•	Prompt template:
 
-“Error message: [paste]. 
+“Error message: [paste].
 Explain cause, suggest 3 fixes with code examples.”
 
 
@@ -3284,7 +3284,7 @@ git config --global alias.vibe "commit -am 'vibe commit'"
 
 👉 Do you want me to actually write the install + start scripts + .cursorrules + vibe-prompts.md for Shadowtag right now so you can drop them in and never think about it again?”
 
-“How much of the following, can you automate and/or include prompts? Because once I get in a vibe, all these are hard to remember. Can you do them all for me? 
+“How much of the following, can you automate and/or include prompts? Because once I get in a vibe, all these are hard to remember. Can you do them all for me?
 “15 Rules of Vibe Coding
 • CHORD •
 Cursor
@@ -3719,37 +3719,37 @@ Below is a tight, CEO-level snapshot of where AiYou/YouAi stands right now, inte
 ⸻
 
 1) Strategy & Doctrine (Operating Model)
-	•	Design-doc-first, TDD, brutal review is the standard path: proposal → system design → review → subsystem docs → backlog → TDD build → staging → prod; +~30% cycle speed when followed.    
+	•	Design-doc-first, TDD, brutal review is the standard path: proposal → system design → review → subsystem docs → backlog → TDD build → staging → prod; +~30% cycle speed when followed.
 	•	Strict posture active: structured pre-mortems/5-Whys/postmortems; Cursor-only prompting; objections logged.
 Readiness: 92% (gap: make objections/decision logs fully automatic in every repo).
 
 2) GPU/Infra Plan (NVIDIA-first, hedged)
-	•	Why NVIDIA first: fastest time-to-launch, deepest SDKs (CUDA, TensorRT, RAPIDS), investor optics (+15–20% valuation at seed).    
-	•	Credits effect: CoreWeave + NVIDIA programs plausibly cut month-1 GPU spend to $200–$500; total monthly burn ~$400–$850 after credits. Apply early + track credit burn.    
-	•	AMD/Intel roles: AMD saves on long fine-tunes; Intel is “budget inference,” slower to innovate.    
+	•	Why NVIDIA first: fastest time-to-launch, deepest SDKs (CUDA, TensorRT, RAPIDS), investor optics (+15–20% valuation at seed).
+	•	Credits effect: CoreWeave + NVIDIA programs plausibly cut month-1 GPU spend to $200–$500; total monthly burn ~$400–$850 after credits. Apply early + track credit burn.
+	•	AMD/Intel roles: AMD saves on long fine-tunes; Intel is “budget inference,” slower to innovate.
 Readiness: 84% (gap: submit credit apps + stand up cost tracker).
 
 3) Inference Portability (CUDA → ROCm/CANN)
-	•	Portability thesis: avoid CUDA lock-in; abstract engine so cuda|rocm|cann is a config, not a rewrite.    
-	•	Market signal: ROCm catching up; Ascend (CANN/MindSpore) gaining momentum via vLLM/SGLang—plan a hedge path while shipping NVIDIA.    
+	•	Portability thesis: avoid CUDA lock-in; abstract engine so cuda|rocm|cann is a config, not a rewrite.
+	•	Market signal: ROCm catching up; Ascend (CANN/MindSpore) gaining momentum via vLLM/SGLang—plan a hedge path while shipping NVIDIA.
 Readiness: 70% (gap: land engine-selector + container images that don’t assume CUDA-only).
 
 4) Build Process & “Vibe Coding” Adoption
-	•	Solo-speed stack: Cursor + AI pair-coding + TDD → weeks → days; non-coders can iterate rapidly.    
+	•	Solo-speed stack: Cursor + AI pair-coding + TDD → weeks → days; non-coders can iterate rapidly.
 Adoption: 88% (gap: enforce CI lint-gates + coverage ratchet everywhere; some repos lag).
 
 5) Business & GTM
-	•	NVIDIA-first story improves fundraising and speed (25–50% faster vs. AMD/Intel for launch).    
-	•	Lean entry (platform/API-only) is a viable early posture to de-risk UI/marketing.  
+	•	NVIDIA-first story improves fundraising and speed (25–50% faster vs. AMD/Intel for launch).
+	•	Lean entry (platform/API-only) is a viable early posture to de-risk UI/marketing.
 Readiness: 72% (gap: live demo + 2 lighthouse pilots).
 
 6) Compliance / China Option (if pursued)
-	•	Gate checklist: PIPL/data residency, in-country hosting, Ascend support, localized filters & billing, partner channels.    
+	•	Gate checklist: PIPL/data residency, in-country hosting, Ascend support, localized filters & billing, partner channels.
 Readiness: 45% (only conceptual; no legal/vendor work started).
 
 7) Corpus Gaps (P1 acquisitions)
 	•	Security/Guardrails: ML Security Principles; Trustworthy AI; Evaluating LLMs (Field Guide).
-	•	MLOps/Scale: Designing ML Systems (Huyen); Practical MLOps; microservices/cloud-native texts.  
+	•	MLOps/Scale: Designing ML Systems (Huyen); Practical MLOps; microservices/cloud-native texts.
 Coverage: 68% (Acquisition Queue pending; some items already staged).
 
 ⸻
@@ -3758,12 +3758,12 @@ Progress Dashboard (weighted for impact)
 
 Track	Now	Δ since last brief	Notes
 Strategy & Doctrine	92%	+2%	Strict mode + objections log patterns spreading.
-GPU/Infra (credits+costs)	84%	+4%	Credit plan clearer; tracker not built.  
-Inference Portability	70%	+5%	Engine-selector spec drafted; needs code merge.  
-Build/Vibe/TDD	88%	+3%	Lint+coverage gates rolling out.  
-GTM / Fundraising Story	72%	+2%	NVIDIA narrative locked; pilots outstanding.  
-Compliance (CN option)	45%	—	Decision pending; checklist defined.  
-Corpus Coverage	68%	+8%	P1 book list identified; not yet procured.  
+GPU/Infra (credits+costs)	84%	+4%	Credit plan clearer; tracker not built.
+Inference Portability	70%	+5%	Engine-selector spec drafted; needs code merge.
+Build/Vibe/TDD	88%	+3%	Lint+coverage gates rolling out.
+GTM / Fundraising Story	72%	+2%	NVIDIA narrative locked; pilots outstanding.
+Compliance (CN option)	45%	—	Decision pending; checklist defined.
+Corpus Coverage	68%	+8%	P1 book list identified; not yet procured.
 
 Weighted Overall: ~79% toward MVP under 98%/double-green posture.
 
@@ -3771,26 +3771,26 @@ Weighted Overall: ~79% toward MVP under 98%/double-green posture.
 
 7-Day “All-Hands” Orders (strict, auto-approve on green)
 	1.	Ship engine-selector (cuda|rocm|cann|cpu) + tests; build Docker targets that don’t assume CUDA. (Owner: Eng)
-Definition of Done: env-selectable backend, CPU test suite green in CI; ROCm smoke-stub compiled.  
-	2.	Apply for CoreWeave + NVIDIA Inception; stand up credit-usage tracker and reflect new burn. (Owner: Ops/CTO)    
+Definition of Done: env-selectable backend, CPU test suite green in CI; ROCm smoke-stub compiled.
+	2.	Apply for CoreWeave + NVIDIA Inception; stand up credit-usage tracker and reflect new burn. (Owner: Ops/CTO)
 	3.	Enforce lint→tests gates + coverage ≥98% and double-green auto-merge in all repos. (Owner: Eng Productivity)
 Rollout metric: % repos with gate on.
-	4.	Spin up 2 lighthouse pilots (API-only entry acceptable). (Owner: GTM)  
-	5.	YouAi Acquisition Queue (P1 books/docs w/ ISBNs) → procure or add to reading list with owners/dates. (Owner: PM)  
+	4.	Spin up 2 lighthouse pilots (API-only entry acceptable). (Owner: GTM)
+	5.	YouAi Acquisition Queue (P1 books/docs w/ ISBNs) → procure or add to reading list with owners/dates. (Owner: PM)
 
 ⸻
 
 30-Day Outcomes (what “green” looks like)
-	•	MVP demo on NVIDIA infra; burn tracked post-credits; ≥98% coverage; two consecutive green CI runs per PR as the norm.  
-	•	Portability proven: ROCm stub executes a smoke-graph; Ascend plan documented (delta list + containers).  
+	•	MVP demo on NVIDIA infra; burn tracked post-credits; ≥98% coverage; two consecutive green CI runs per PR as the norm.
+	•	Portability proven: ROCm stub executes a smoke-graph; Ascend plan documented (delta list + containers).
 	•	Two pilot logos live on API-only lane with SLAs.
 
 ⸻
 
 Risks & Brakes (Army RM)
-	•	Lock-in risk (CUDA): mitigated by engine abstraction + container neutrality.  
-	•	Ecosystem immaturity (Ascend): defer hard commitment; keep hedge path only.  
-	•	Cost drift: require credit-usage telemetry before scaling GPU hours.  
+	•	Lock-in risk (CUDA): mitigated by engine abstraction + container neutrality.
+	•	Ecosystem immaturity (Ascend): defer hard commitment; keep hedge path only.
+	•	Cost drift: require credit-usage telemetry before scaling GPU hours.
 
 ⸻
 
@@ -3913,7 +3913,7 @@ class KBStore:
         with open(self.path, "a", encoding="utf-8") as f:
             for it in items:
                 text = redact(it.get("text",""))
-                if not text: 
+                if not text:
                     continue
                 vec = _embed(text)
                 rec = {
@@ -3929,7 +3929,7 @@ class KBStore:
 
     def _load(self):
         rows = []
-        if not os.path.exists(self.path): 
+        if not os.path.exists(self.path):
             return rows
         with open(self.path, "r", encoding="utf-8") as f:
             for line in f:
@@ -4106,7 +4106,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check remotes are SSH (advisory)
         run: |
-          echo "Ensure your local remotes use SSH (git@github.com:...)" 
+          echo "Ensure your local remotes use SSH (git@github.com:...)"
           echo "Org policy enforces SSH protocol."
 '@
   Write-Text ".github/workflows/ssh_remote_guard.yml" $sshGuard

@@ -84,4 +84,3 @@ class GetDatabaseRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

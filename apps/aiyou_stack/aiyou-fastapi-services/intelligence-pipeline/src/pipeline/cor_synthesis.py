@@ -24,8 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 class CorBrainEngine:
-    """Cor Brain synthesis engine for Tier 1 items
-    """
+    """Cor Brain synthesis engine for Tier 1 items"""
 
     def __init__(self, api_key: str | None = None):
         """Initialize Cor Brain engine
@@ -180,10 +179,10 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """Main Cor Brain synthesis entry point
-    """
+    """Main Cor Brain synthesis entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load classified items

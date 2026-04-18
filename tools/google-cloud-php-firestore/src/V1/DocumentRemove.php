@@ -157,4 +157,3 @@ class DocumentRemove extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -649,4 +649,3 @@ class StructuredQuery extends \Google\Protobuf\Internal\Message
     }
 
 }
-

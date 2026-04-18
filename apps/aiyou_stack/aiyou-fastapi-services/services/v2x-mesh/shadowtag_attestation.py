@@ -351,7 +351,10 @@ class RevocationAuthority:
         self.issued_revocations: list[RevocationEntry] = []
 
     def issue_revocation(
-        self, pseudonym: bytes, reason: str, duration: int | None = None,
+        self,
+        pseudonym: bytes,
+        reason: str,
+        duration: int | None = None,
     ) -> RevocationEntry:
         """Issue revocation for a pseudonym"""
         now = int(time.time())

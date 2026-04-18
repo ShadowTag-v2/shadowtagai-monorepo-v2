@@ -148,7 +148,9 @@ class SemanticEmbedder(nn.Module):
 
         # Energy model head (for density scoring)
         self.energy_head = nn.Sequential(
-            nn.Linear(embedding_dim, 128), nn.ReLU(), nn.Linear(128, 1),
+            nn.Linear(embedding_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 1),
         )
 
     def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
@@ -292,7 +294,10 @@ class NeuralHasher:
         return semantic_hash, float(density_score)
 
     def verify_fingerprint(
-        self, data: bytes, fingerprint: NeuralFingerprint, tolerance: float = 0.95,
+        self,
+        data: bytes,
+        fingerprint: NeuralFingerprint,
+        tolerance: float = 0.95,
     ) -> dict:
         """Verify asset against stored fingerprint.
 
@@ -313,12 +318,14 @@ class NeuralHasher:
 
         # Check perceptual hash (Hamming distance)
         perceptual_similarity = self._hamming_similarity(
-            new_fp.perceptual_hash, fingerprint.perceptual_hash,
+            new_fp.perceptual_hash,
+            fingerprint.perceptual_hash,
         )
 
         # Check semantic hash (cosine similarity)
         semantic_similarity = self._cosine_similarity(
-            new_fp.semantic_hash, fingerprint.semantic_hash,
+            new_fp.semantic_hash,
+            fingerprint.semantic_hash,
         )
 
         # Overall match decision

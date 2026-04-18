@@ -13,10 +13,12 @@ class DynamicPricingEngine:
         self.cost_per_filing = 15.0  # High value enterprise routing fee
 
     def calculate_monthly_invoice(
-        self, firm_id: str, filings_processed: int, api_calls_made: int,
+        self,
+        firm_id: str,
+        filings_processed: int,
+        api_calls_made: int,
     ) -> float:
-        """Determines the true value provided and prices accordingly to capture consumer surplus.
-        """
+        """Determines the true value provided and prices accordingly to capture consumer surplus."""
         if filings_processed > 500:
             logger.info(f"Pricing Engine: Enterprise Tier activated for Firm {firm_id}")
             # Volume discount + API SLA access

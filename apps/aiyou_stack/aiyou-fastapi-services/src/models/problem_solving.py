@@ -117,12 +117,14 @@ class StructuredProblemSolvingProcess(BaseModel):
 
     # Step 2a: Potential Causes
     potential_causes: list[str] = Field(
-        default_factory=list, description="Identified potential causes",
+        default_factory=list,
+        description="Identified potential causes",
     )
 
     # Step 2b: Data Analysis
     data_analysis_techniques: list[ProblemSolvingTechnique] = Field(
-        default_factory=list, description="Techniques used for data analysis",
+        default_factory=list,
+        description="Techniques used for data analysis",
     )
     analysis_findings: str | None = None
 

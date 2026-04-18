@@ -29,8 +29,10 @@ router = APIRouter(prefix="/byok", tags=["BYOK"])
 
 # ── Models ─────────────────────────────────────────────────────────────────
 
+
 class BYOKProviderConfig(BaseModel):
     """Configuration for a BYOK provider."""
+
     provider: str = Field(..., pattern="^(gemini|claude|openai|grok|perplexity)$")
     api_key: str = Field(..., min_length=10, max_length=200)
     region: str = Field(default="us-central1", description="Preferred API region")
@@ -39,12 +41,14 @@ class BYOKProviderConfig(BaseModel):
 
 class BYOKSetupRequest(BaseModel):
     """Enterprise firm configures BYOK providers."""
+
     firm_id: str
     providers: list[BYOKProviderConfig] = Field(..., max_length=5)
 
 
 class BYOKStatus(BaseModel):
     """Status of BYOK configuration for a firm."""
+
     firm_id: str
     configured_providers: list[str]
     is_active: bool
@@ -52,6 +56,7 @@ class BYOKStatus(BaseModel):
 
 
 # ── Endpoints ──────────────────────────────────────────────────────────────
+
 
 @router.post("/configure", response_model=BYOKStatus)
 async def configure_byok(req: BYOKSetupRequest) -> BYOKStatus:

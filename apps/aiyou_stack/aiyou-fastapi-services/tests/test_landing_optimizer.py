@@ -89,7 +89,8 @@ class TestLandingOptimizerEndpoints:
         mock_anthropic.return_value = mock_client
 
         response = client.post(
-            "/api/v1/landing-optimizer/analyze", json=sample_optimization_request,
+            "/api/v1/landing-optimizer/analyze",
+            json=sample_optimization_request,
         )
 
         assert response.status_code == 200

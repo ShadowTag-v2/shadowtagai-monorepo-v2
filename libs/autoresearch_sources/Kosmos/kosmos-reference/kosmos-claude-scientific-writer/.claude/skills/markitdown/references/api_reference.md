@@ -117,11 +117,11 @@ class CustomConverter(DocumentConverter):
     def convert(self, stream, file_extension):
         """
         Convert a document from a binary stream.
-        
+
         Parameters:
             stream (BinaryIO): Binary file-like object
             file_extension (str): File extension (e.g., ".custom")
-            
+
         Returns:
             DocumentConverterResult: Conversion result
         """
@@ -212,7 +212,7 @@ class MyConverter(DocumentConverter):
             text_content=markdown,
             title="My Document"
         )
-    
+
     def process(self, content):
         # Process content
         return "# Converted Content\n\n..."
@@ -362,7 +362,7 @@ with ThreadPoolExecutor(max_workers=4) as executor:
    ```bash
    # Old
    pip install markitdown
-   
+
    # New
    pip install 'markitdown[all]'
    ```
@@ -372,7 +372,7 @@ with ThreadPoolExecutor(max_workers=4) as executor:
    # Old (also accepted text)
    with open("file.pdf", "r") as f:  # text mode
        result = md.convert_stream(f)
-   
+
    # New (binary only)
    with open("file.pdf", "rb") as f:  # binary mode
        result = md.convert_stream(f, file_extension=".pdf")
@@ -396,4 +396,3 @@ with ThreadPoolExecutor(max_workers=4) as executor:
 | `OPENROUTER_API_KEY` | OpenRouter API key for image descriptions | `sk-or-v1-...` |
 | `AZURE_DOCUMENT_INTELLIGENCE_KEY` | Azure DI authentication | `key123...` |
 | `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | Azure DI endpoint | `https://...` |
-

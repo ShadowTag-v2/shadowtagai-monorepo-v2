@@ -35,7 +35,9 @@ class PaymentService:
 
     @staticmethod
     async def create_customer(
-        email: str, name: str | None = None, metadata: dict[str, str] | None = None,
+        email: str,
+        name: str | None = None,
+        metadata: dict[str, str] | None = None,
     ) -> str | None:
         """Create Stripe customer
 
@@ -59,7 +61,10 @@ class PaymentService:
 
     @staticmethod
     async def create_subscription(
-        customer_id: str, price_id: str, payment_method_id: str, trial_days: int | None = None,
+        customer_id: str,
+        price_id: str,
+        payment_method_id: str,
+        trial_days: int | None = None,
     ) -> dict[str, Any] | None:
         """Create Stripe subscription
 
@@ -79,7 +84,8 @@ class PaymentService:
 
             # Set as default payment method
             stripe.Customer.modify(
-                customer_id, invoice_settings={"default_payment_method": payment_method_id},
+                customer_id,
+                invoice_settings={"default_payment_method": payment_method_id},
             )
 
             # Create subscription
@@ -156,7 +162,9 @@ class PaymentService:
         """
         try:
             event = stripe.Webhook.construct_event(
-                payload, signature, settings.STRIPE_WEBHOOK_SECRET,
+                payload,
+                signature,
+                settings.STRIPE_WEBHOOK_SECRET,
             )
             return event
 

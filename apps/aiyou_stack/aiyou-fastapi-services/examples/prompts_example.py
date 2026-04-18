@@ -1,5 +1,4 @@
-"""Example usage of the prompt management API.
-"""
+"""Example usage of the prompt management API."""
 
 import asyncio
 

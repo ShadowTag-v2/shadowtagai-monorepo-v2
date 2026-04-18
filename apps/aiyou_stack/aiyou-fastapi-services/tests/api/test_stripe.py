@@ -4,6 +4,7 @@ from app.main import app
 
 client = TestClient(app)
 
+
 def test_create_checkout_session():
     """Ensure the /stripe/create-checkout-session endpoint returns the correct payload
     dictating the mock testing checkout session for the UI matrix.

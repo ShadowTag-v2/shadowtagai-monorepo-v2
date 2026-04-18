@@ -108,7 +108,11 @@ class BillingService:
             return f"mock_customer_{client_id}"
 
     def record_usage(
-        self, client_id: str, node_id: str, gb_processed: float, inference_count: int,
+        self,
+        client_id: str,
+        node_id: str,
+        gb_processed: float,
+        inference_count: int,
     ) -> str:
         """Record usage for a client.
 

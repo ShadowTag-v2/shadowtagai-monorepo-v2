@@ -451,6 +451,6 @@ Abort delegation and escalate if:
 
 ---
 
-**Last Updated**: 2025-11-22  
-**Owner**: Gemini Antigravity + Claude Sonnet 4.5  
+**Last Updated**: 2025-11-22
+**Owner**: Gemini Antigravity + Claude Sonnet 4.5
 **Framework**: Judge#6 (Purpose → Reasons → Brakes)

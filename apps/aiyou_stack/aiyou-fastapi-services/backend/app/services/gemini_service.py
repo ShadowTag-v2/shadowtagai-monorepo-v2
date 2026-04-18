@@ -1,5 +1,4 @@
-"""Gemini AI integration service for intelligent analysis.
-"""
+"""Gemini AI integration service for intelligent analysis."""
 
 import json
 import time
@@ -25,8 +24,7 @@ from app.models.gemini import (
 
 
 class GeminiService:
-    """Service for interacting with Google Gemini AI for analysis tasks.
-    """
+    """Service for interacting with Google Gemini AI for analysis tasks."""
 
     def __init__(self, api_key: str | None = None, model_name: str = "gemini-2.0-flash-exp"):
         """Initialize the Gemini service.
@@ -326,7 +324,9 @@ Minimum confidence: {request.confidence_threshold * 100}%
         return prompt.strip()
 
     def _parse_analysis_sections(
-        self, analysis_text: str, confidence_threshold: float,
+        self,
+        analysis_text: str,
+        confidence_threshold: float,
     ) -> list[AnalysisSection]:
         """Parse analysis text into sections."""
         # Simple section parsing (can be enhanced)
@@ -346,7 +346,9 @@ Minimum confidence: {request.confidence_threshold * 100}%
                 if current_section and current_content:
                     sections.append(
                         self._create_section(
-                            current_section, "\n".join(current_content), confidence_threshold,
+                            current_section,
+                            "\n".join(current_content),
+                            confidence_threshold,
                         ),
                     )
 
@@ -360,14 +362,19 @@ Minimum confidence: {request.confidence_threshold * 100}%
         if current_section and current_content:
             sections.append(
                 self._create_section(
-                    current_section, "\n".join(current_content), confidence_threshold,
+                    current_section,
+                    "\n".join(current_content),
+                    confidence_threshold,
                 ),
             )
 
         return sections
 
     def _create_section(
-        self, section_name: str, content: str, base_confidence: float,
+        self,
+        section_name: str,
+        content: str,
+        base_confidence: float,
     ) -> AnalysisSection:
         """Create an analysis section."""
         # Extract findings and recommendations
@@ -398,7 +405,8 @@ Minimum confidence: {request.confidence_threshold * 100}%
         return sum(s.confidence for s in sections) / len(sections)
 
     def _extract_insights(
-        self, sections: list[AnalysisSection],
+        self,
+        sections: list[AnalysisSection],
     ) -> tuple[list[str], list[str], list[str]]:
         """Extract key findings, recommendations, and risks from sections."""
         findings = []
@@ -439,7 +447,8 @@ Minimum confidence: {request.confidence_threshold * 100}%
         return ConfidenceLevel.LOW
 
     async def compare_systems(
-        self, request: ComparisonAnalysisRequest,
+        self,
+        request: ComparisonAnalysisRequest,
     ) -> ComparisonAnalysisResponse:
         """Compare two systems (e.g., Judge #6 vs Ingestion Layer).
 

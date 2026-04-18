@@ -1,5 +1,4 @@
-"""Observability setup using OpenTelemetry
-"""
+"""Observability setup using OpenTelemetry"""
 
 import logging
 
@@ -32,15 +31,21 @@ class Metrics:
             self.meter = otel_metrics.get_meter(__name__)
 
             self.request_counter = self.meter.create_counter(
-                "http_requests_total", description="Total HTTP requests", unit="1",
+                "http_requests_total",
+                description="Total HTTP requests",
+                unit="1",
             )
 
             self.request_duration = self.meter.create_histogram(
-                "http_request_duration_seconds", description="HTTP request duration", unit="s",
+                "http_request_duration_seconds",
+                description="HTTP request duration",
+                unit="s",
             )
 
             self.error_counter = self.meter.create_counter(
-                "http_errors_total", description="Total HTTP errors", unit="1",
+                "http_errors_total",
+                description="Total HTTP errors",
+                unit="1",
             )
 
             logger.info("Metrics initialized successfully")

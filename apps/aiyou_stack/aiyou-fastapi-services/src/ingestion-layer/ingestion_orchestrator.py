@@ -55,7 +55,8 @@ except ImportError as e:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -340,7 +341,9 @@ Items:
             )
 
             response = await asyncio.to_thread(
-                self.gemini.generate_content, prompt, generation_config=generation_config,
+                self.gemini.generate_content,
+                prompt,
+                generation_config=generation_config,
             )
 
             scores = json.loads(response.text)
@@ -428,7 +431,8 @@ Items:
             ]
 
             blob.upload_from_string(
-                json.dumps(items_data, indent=2, default=str), content_type="application/json",
+                json.dumps(items_data, indent=2, default=str),
+                content_type="application/json",
             )
 
             logger.info(f"✓ Saved to GCS: gs://{bucket.name}/{blob_name}")

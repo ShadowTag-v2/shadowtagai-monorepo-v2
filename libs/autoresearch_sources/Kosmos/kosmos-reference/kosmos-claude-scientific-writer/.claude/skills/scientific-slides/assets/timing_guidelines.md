@@ -183,7 +183,7 @@ Slide 7: Conclusion + Contact (30 seconds)
 ```
 Option 1 - Progressive Build:
 - Show panel 1: 60 seconds
-- Add panel 2: 60 seconds  
+- Add panel 2: 60 seconds
 - Add panel 3: 60 seconds
 - Integrate: 60 seconds
 
@@ -594,4 +594,3 @@ Emergency Strategies:
 
 Remember: Better to finish early than run over!
 ```
-

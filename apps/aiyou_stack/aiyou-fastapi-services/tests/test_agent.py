@@ -25,7 +25,8 @@ def test_list_models():
 def test_query_agent():
     """Test agent query endpoint (requires API key)"""
     response = client.post(
-        "/api/v1/query", json={"prompt": "Hello, what is 2+2?", "temperature": 0.7},
+        "/api/v1/query",
+        json={"prompt": "Hello, what is 2+2?", "temperature": 0.7},
     )
     assert response.status_code == 200
     data = response.json()

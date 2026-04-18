@@ -46,7 +46,7 @@ function cordovaRedirectResult() {
   getRedirectResult(auth)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      if (credential) {        
+      if (credential) {
         // This gives you a Google Access Token.
         // You can use it to access the Google API.
         const token = credential.accessToken;

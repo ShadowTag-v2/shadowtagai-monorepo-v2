@@ -18,7 +18,8 @@ def test_debate_limits_valid():
 
 def test_debate_limits_invalid_agents():
     response = client.post(
-        "/debate", params={"question": "test", "num_agents": 100, "max_rounds": 3},
+        "/debate",
+        params={"question": "test", "num_agents": 100, "max_rounds": 3},
     )
     assert response.status_code == 422
     assert (
@@ -29,7 +30,8 @@ def test_debate_limits_invalid_agents():
 
 def test_debate_limits_invalid_rounds():
     response = client.post(
-        "/debate", params={"question": "test", "num_agents": 3, "max_rounds": 100},
+        "/debate",
+        params={"question": "test", "num_agents": 3, "max_rounds": 100},
     )
     assert response.status_code == 422
     assert (

@@ -96,7 +96,10 @@ async def get_analytics_overview(
     total_events = await EventService.get_event_count(db, start_date=start_date, end_date=end_date)
     unique_users = await EventService.get_unique_users(db, start_date=start_date, end_date=end_date)
     top_events = await EventService.get_top_events(
-        db, start_date=start_date, end_date=end_date, limit=5,
+        db,
+        start_date=start_date,
+        end_date=end_date,
+        limit=5,
     )
 
     return {

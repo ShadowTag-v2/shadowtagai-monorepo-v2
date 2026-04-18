@@ -11,7 +11,7 @@ namespace gwt::cli {
 
 /**
  * Run the CLI application
- * 
+ *
  * @param argc  Argument count
  * @param argv  Argument values
  * @return      Exit code (0 = success)
@@ -20,7 +20,7 @@ int run(int argc, char** argv);
 
 /**
  * Run in simple mode (drag & drop / single file)
- * 
+ *
  * @param argc  Argument count
  * @param argv  Argument values (file paths only, no flags)
  * @return      Exit code (0 = success)

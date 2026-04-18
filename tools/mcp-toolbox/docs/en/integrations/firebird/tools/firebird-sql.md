@@ -2,7 +2,7 @@
 title: "firebird-sql"
 type: docs
 weight: 1
-description: > 
+description: >
   A "firebird-sql" tool executes a pre-defined SQL statement against a Firebird
   database.
 ---

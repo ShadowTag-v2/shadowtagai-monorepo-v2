@@ -1,5 +1,4 @@
-"""Scheduler for managing scheduled jobs and automation.
-"""
+"""Scheduler for managing scheduled jobs and automation."""
 
 import logging
 from datetime import datetime
@@ -19,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class AutomationScheduler:
-    """Manages scheduled jobs for automation workflows.
-    """
+    """Manages scheduled jobs for automation workflows."""
 
     def __init__(self):
         self.scheduler = AsyncIOScheduler(

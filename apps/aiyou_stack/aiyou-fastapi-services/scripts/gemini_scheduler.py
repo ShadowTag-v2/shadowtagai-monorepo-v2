@@ -53,8 +53,7 @@ class GeminiScheduler:
             f.write(log_entry + "\n")
 
     def run_ingestion(self):
-        """Run the ingestion workflow (replaces GitHub Actions 'Ingestion (hourly)').
-        """
+        """Run the ingestion workflow (replaces GitHub Actions 'Ingestion (hourly)')."""
         self._log("Starting ingestion run")
 
         # Step 1: Static analysis (no Gemini needed)
@@ -144,7 +143,10 @@ def main():
     parser = argparse.ArgumentParser(description="Gemini Scheduler")
     parser.add_argument("--run-once", action="store_true", help="Run ingestion once and exit")
     parser.add_argument(
-        "--interval", type=int, default=60, help="Interval in minutes (default: 60)",
+        "--interval",
+        type=int,
+        default=60,
+        help="Interval in minutes (default: 60)",
     )
 
     args = parser.parse_args()

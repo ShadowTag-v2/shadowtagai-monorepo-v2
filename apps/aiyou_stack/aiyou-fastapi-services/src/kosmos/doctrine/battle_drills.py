@@ -498,7 +498,9 @@ class BattleDrillRouter:
         if drill:
             # Create fresh instance for execution
             drill_instance = type(drill)(
-                name=drill.name, drill_number=drill.drill_number, triggers=drill.triggers,
+                name=drill.name,
+                drill_number=drill.drill_number,
+                triggers=drill.triggers,
             )
             return await drill_instance.execute(context)
         return {"error": f"No drill registered for trigger: {trigger.value}"}

@@ -3,9 +3,9 @@ Cor.28 Bugbot
 “Got it — tying Astral’s Python 3.14 update to your Cursor/Bugbot flow + what to change right now.
 
 What’s new (why we care)
-	•	Python 3.14 shipped with the free-threaded build moving from “experimental” to “supported” per PEP 779 (i.e., blessed path to no-GIL), while the regular GIL build remains the default. The goal is safer multi-threaded speedups on CPU-bound pure-Python code, with a compatibility plan for native extensions.  
-	•	PEP 684 (per-interpreter GIL) continues to underpin the multi-interpreter direction—we get clearer isolation and a path to true concurrency.  
-	•	Astral (the uv/Ruff folks) announced day-one tool support for 3.14 (uv & Ruff have 3.14 builds), so your formatter/test runner story stays smooth.  
+	•	Python 3.14 shipped with the free-threaded build moving from “experimental” to “supported” per PEP 779 (i.e., blessed path to no-GIL), while the regular GIL build remains the default. The goal is safer multi-threaded speedups on CPU-bound pure-Python code, with a compatibility plan for native extensions.
+	•	PEP 684 (per-interpreter GIL) continues to underpin the multi-interpreter direction—we get clearer isolation and a path to true concurrency.
+	•	Astral (the uv/Ruff folks) announced day-one tool support for 3.14 (uv & Ruff have 3.14 builds), so your formatter/test runner story stays smooth.
 
 Practical effect (today)
 	•	Speed: Expect ~1.3–2.0× on CPU-bound, pure-Python threaded workloads with the free-threaded build; I/O-bound or C-extension heavy code sees little change (or may need waiting on wheels to go FT-safe).
@@ -149,7 +149,7 @@ Numbers & money (why it’s worth it)
 ⸻
 
 Guardrails / gotchas
-	1.	Not default: The free-threaded interpreter is supported but not the default 3.14; treat it as an opt-in compatibility rail until your dependencies ship FT-safe wheels.  
+	1.	Not default: The free-threaded interpreter is supported but not the default 3.14; treat it as an opt-in compatibility rail until your dependencies ship FT-safe wheels.
 	2.	C-extensions: NumPy/Pandas/etc. must publish FT builds to realize gains; otherwise use processes instead of threads for parallelism.
 	3.	Determinism: Threaded code may surface latent races. Keep your Bugbot tests strict and add a –runs=3 flake-check job for non-determinism.
 
@@ -973,7 +973,7 @@ Plan revision loops	15–20	5–7	−65 %	“Plan mode” pre-consensus saves re
 Merge conflicts / week	6–8	1–2	−75 %	Opposing chains simulate code review.
 Post-merge bug fixes	12–15 %	4–5 %	−70 %	Reflection loop catches logic flaws early.
 Dev hours / feature	8 h	3.5–4 h	−50 %	Fewer reversions.
-Time to MVP	11 days	≈ 6.5 days	−41 % overall.	
+Time to MVP	11 days	≈ 6.5 days	−41 % overall.
 
 
 ⸻
@@ -1022,7 +1022,7 @@ Build Layer	Duration	Cost	Deliverable
 Hook + Opposing Chain orchestration	1 week	$1 k	Plan interception + reflection runner
 Explainer + Publisher integration	1 week	$0.8 k	Auto docs & PR posts
 Tuning & rollout	1 week	$0.6 k	Stable 2-chain workflow
-Total	≈ 3 weeks / $2.4 k	Saves ~5 weeks manual cost	
+Total	≈ 3 weeks / $2.4 k	Saves ~5 weeks manual cost
 
 
 ⸻
@@ -1736,24 +1736,24 @@ say the word and I’ll ship those files too.”
 
 What it is (in 1 line)
 
-A model (“gemini-3.1-computer-use-preview-10-2025”) that reads screenshots of a live browser session and returns UI actions (click, type, navigate, etc.) that your client executes—i.e., an agent that drives the web like a human.  
+A model (“gemini-3.1-computer-use-preview-10-2025”) that reads screenshots of a live browser session and returns UI actions (click, type, navigate, etc.) that your client executes—i.e., an agent that drives the web like a human.
 
 How it works (developer view)
 	1.	You run a loop:
 
 	•	Send: your goal + current screenshot + enable the Computer Use tool.
 	•	Receive: one or more function_calls like open_web_browser, navigate, click_at, type_text_at, plus an optional safety_decision that may ask you to confirm risky actions.
-	•	Execute: your app translates those calls to real actions (Playwright is the reference handler).  
+	•	Execute: your app translates those calls to real actions (Playwright is the reference handler).
 
-	2.	It supports a finite set of predefined actions (open/search/navigate/click/type/back/forward/wait, etc.). You can exclude actions (allowlist/denylist) and add custom functions (e.g., Android long-press). Coordinates are normalized; recommended viewport is 1440×900.  
-	3.	It’s preview: Google advises you keep it sandboxed (VM/container/profile), log everything, and avoid sensitive/critical tasks.  
+	2.	It supports a finite set of predefined actions (open/search/navigate/click/type/back/forward/wait, etc.). You can exclude actions (allowlist/denylist) and add custom functions (e.g., Android long-press). Coordinates are normalized; recommended viewport is 1440×900.
+	3.	It’s preview: Google advises you keep it sandboxed (VM/container/profile), log everything, and avoid sensitive/critical tasks.
 
 What it’s good for (now)
 	•	Data entry & form flows without APIs
 	•	Lightweight web QA/UI smoke tests
-	•	Multi-site “research” passes (price/spec scraping with supervision)  
+	•	Multi-site “research” passes (price/spec scraping with supervision)
 
-Press/early coverage notes it’s browser-scoped (not full OS control) and currently exposes ~a dozen UI primitives; Google claims strong results on web/mobile benchmarks vs other agents. Available via AI Studio / Vertex AI; a Browserbase demo exists.  
+Press/early coverage notes it’s browser-scoped (not full OS control) and currently exposes ~a dozen UI primitives; Google claims strong results on web/mobile benchmarks vs other agents. Available via AI Studio / Vertex AI; a Browserbase demo exists.
 
 ⸻
 
@@ -1776,7 +1776,7 @@ Fold-in plan for ShadowTag / AiYou
 	•	Sandbox only (Docker devcontainer or Codespaces VM).
 	•	Allowlist sites; blocklists as backup.
 	•	Human-confirm on risky actions when require_confirmation appears.
-	•	Tight logging for incident review. (All are straight from Google’s safety guidance.)  
+	•	Tight logging for incident review. (All are straight from Google’s safety guidance.)
 
 4) Cost / throughput (ballpark)
 	•	Pricing is via Gemini API (token-based; Computer Use sends/receives images+text). For planning:
@@ -1785,8 +1785,8 @@ Fold-in plan for ShadowTag / AiYou
 (Exact price depends on your Google billing; treat the above as planning ranges.)
 
 5) Compare to Anthropic/OpenAI “computer use”
-	•	Scope: Google’s is browser-only (safer, simpler) vs some OS-level pilots elsewhere. Fewer failure modes, but no desktop apps.  
-	•	Dev ergonomics: Similar to function/tool-calling; Google’s doc is explicit about Playwright mapping and safety signals.  
+	•	Scope: Google’s is browser-only (safer, simpler) vs some OS-level pilots elsewhere. Fewer failure modes, but no desktop apps.
+	•	Dev ergonomics: Similar to function/tool-calling; Google’s doc is explicit about Playwright mapping and safety signals.
 	•	Our choice: Use Gemini Computer Use for web flows; keep our existing Playwright scripts for brittle or highly fixed paths; revisit OS-level agents later.
 
 ⸻
@@ -1794,7 +1794,7 @@ Fold-in plan for ShadowTag / AiYou
 “Do it now” snippets (Cursor tasks)
 
 Install (Codespace/Devcontainer):
-pip install google-genai playwright && playwright install chromium  
+pip install google-genai playwright && playwright install chromium
 
 Skeleton (Python orchestration) – outline only:
 
@@ -1865,8 +1865,8 @@ Where this pays off (numbers & money)
 ⸻
 
 Callouts / limits
-	•	It’s preview: expect occasional misclicks; we’ll add confirmation for destructive actions and cap turn count.  
-	•	Browser only; no desktop app control (keep Selenium/Playwright scripts for fixed internal tools).  
+	•	It’s preview: expect occasional misclicks; we’ll add confirmation for destructive actions and cap turn count.
+	•	Browser only; no desktop app control (keep Selenium/Playwright scripts for fixed internal tools).
 
 ⸻
 
@@ -2271,8 +2271,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cursor-agent -p "
-          You are an automated security repair agent. You can use `gh` to comment and push to a **ci-fix/<head>** branch but you must **not** merge.  
-          Goal: auto-fix trivial security issues discovered in this PR (lint, deprecated APIs, insecure config).  
+          You are an automated security repair agent. You can use `gh` to comment and push to a **ci-fix/<head>** branch but you must **not** merge.
+          Goal: auto-fix trivial security issues discovered in this PR (lint, deprecated APIs, insecure config).
           Do not touch business logic. Post or update a single comment with a compare link to review changes.
           " --force --model gpt-5 --output-format=text
 

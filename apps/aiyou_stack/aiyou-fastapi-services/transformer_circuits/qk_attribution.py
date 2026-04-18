@@ -469,7 +469,10 @@ def compute_attention_scores(
     # feat_proj: [n_feat, n_feat]
     # Result: [seq_q, seq_k]
     scores = einsum(
-        query_activations, feat_proj, key_activations, "sq nf1, nf1 nf2, sk nf2 -> sq sk",
+        query_activations,
+        feat_proj,
+        key_activations,
+        "sq nf1, nf1 nf2, sk nf2 -> sq sk",
     )
 
     if apply_softmax:

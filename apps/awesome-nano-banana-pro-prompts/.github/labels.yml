@@ -41,4 +41,3 @@
 - name: wontfix
   color: '#ffffff'
   description: 'This will not be worked on'
-

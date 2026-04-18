@@ -15,7 +15,7 @@ The test suite covers unit tests, integration tests, and end-to-end workflows ac
 cd packages/backend
 uv run pytest tests/
 
-# Frontend tests  
+# Frontend tests
 cd packages/frontend
 uv run pytest tests/
 
@@ -251,4 +251,3 @@ def test_my_integration():
 ```
 
 Mark with `@pytest.mark.integration` so it can be excluded with `-m "not integration"`.
-

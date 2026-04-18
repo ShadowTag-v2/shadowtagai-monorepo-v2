@@ -211,7 +211,9 @@ def run() -> None:
 
     if thesis.tvi_score < TREND_VELOCITY_THRESHOLD:
         log.info(
-            "TVI=%d below threshold=%d — no action", thesis.tvi_score, TREND_VELOCITY_THRESHOLD,
+            "TVI=%d below threshold=%d — no action",
+            thesis.tvi_score,
+            TREND_VELOCITY_THRESHOLD,
         )
         return
 

@@ -138,7 +138,9 @@ class SemanticCache:
 
         try:
             result = self._embedder.embed_content(
-                model=self.embedding_model, content=text, task_type="retrieval_query",
+                model=self.embedding_model,
+                content=text,
+                task_type="retrieval_query",
             )
             return result["embedding"]
         except Exception as e:
@@ -188,7 +190,8 @@ class SemanticCache:
 
                 if hash_key in self._embeddings:
                     similarity = self._cosine_similarity(
-                        query_embedding, self._embeddings[hash_key],
+                        query_embedding,
+                        self._embeddings[hash_key],
                     )
 
                     if similarity > best_score:
@@ -250,7 +253,8 @@ class SemanticCache:
         """Evict least recently used entries"""
         # Sort by hit_count, remove bottom 10%
         sorted_entries = sorted(
-            self._cache.items(), key=lambda x: (x[1].hit_count, x[1].created_at),
+            self._cache.items(),
+            key=lambda x: (x[1].hit_count, x[1].created_at),
         )
 
         to_remove = len(sorted_entries) // 10
@@ -520,8 +524,7 @@ class PrefetchPipeline:
         queries: list[str],
         strategy: PrefetchStrategy | None = None,
     ) -> list[PrefetchResult]:
-        """Process batch of queries, deduplicating similar ones.
-        """
+        """Process batch of queries, deduplicating similar ones."""
         # Deduplicate queries
         unique_queries = list(set(queries))
 

@@ -186,7 +186,9 @@ Be thorough but concise. Show your reasoning clearly."""
             )
 
     async def layer2_parallel_analysis(
-        self, claude_response: str, original_query: str,
+        self,
+        claude_response: str,
+        original_query: str,
     ) -> list[ModelResponse]:
         """Layer 2: Broadcast Claude's response to 3 models for parallel analysis"""
         base_prompt = f"""You are participating in a multi-model consensus system.
@@ -226,7 +228,8 @@ Be thorough. Your response will be peer-reviewed by other advanced models."""
         return valid_responses
 
     async def layer2_5_cross_validation(
-        self, responses: list[ModelResponse],
+        self,
+        responses: list[ModelResponse],
     ) -> dict[ModelType, list[PeerReview]]:
         """Layer 2.5: Cross-validation - each model reviews the other two"""
         reviews = {}
@@ -238,7 +241,8 @@ Be thorough. Your response will be peer-reviewed by other advanced models."""
                     continue  # Don't review yourself
 
                 review = await self._get_peer_review(
-                    reviewer=reviewer_response.model, target_response=target_response,
+                    reviewer=reviewer_response.model,
+                    target_response=target_response,
                 )
                 peer_reviews.append(review)
 
@@ -247,7 +251,9 @@ Be thorough. Your response will be peer-reviewed by other advanced models."""
         return reviews
 
     async def _get_peer_review(
-        self, reviewer: ModelType, target_response: ModelResponse,
+        self,
+        reviewer: ModelType,
+        target_response: ModelResponse,
     ) -> PeerReview:
         """Get one model to review another model's response"""
         review_prompt = f"""You are peer-reviewing another advanced AI model's response.
@@ -574,7 +580,8 @@ This is your final output - make it authoritative and actionable."""
         }
 
     def check_consensus_reached(
-        self, peer_reviews: dict[ModelType, list[PeerReview]],
+        self,
+        peer_reviews: dict[ModelType, list[PeerReview]],
     ) -> dict[str, Any]:
         """Check if consensus threshold is met based on ATP 5-19 risk level.
 

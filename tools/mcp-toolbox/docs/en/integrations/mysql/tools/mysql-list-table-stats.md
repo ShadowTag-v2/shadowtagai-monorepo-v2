@@ -10,11 +10,11 @@ description: >
 
 A `mysql-list-table-stats` tool generates table-level performance and resource consumption statistics to facilitate bottleneck identification and workload analysis.
 
-`mysql-list-table-stats` outputs detailed table-level resource consumption including estimated row counts, table size, a complete breakdown of CRUD activity (rows fetched, inserted, updated, and deleted), and IO statistics such as total, read, write and miscellaneous latency. The output is a JSON formatted array of the top 10 MySQL tables ranked by total latency. 
+`mysql-list-table-stats` outputs detailed table-level resource consumption including estimated row counts, table size, a complete breakdown of CRUD activity (rows fetched, inserted, updated, and deleted), and IO statistics such as total, read, write and miscellaneous latency. The output is a JSON formatted array of the top 10 MySQL tables ranked by total latency.
 
 Below are some use cases for `mysql-list-table-stats`
-- **Finding hottest tables**: Identify tables with highest total latency, read or writes based on the `sort_by` column. 
-- **Finding tables with most reads**: Identify tables with highest reads by sorting on `rows_fetched`. 
+- **Finding hottest tables**: Identify tables with highest total latency, read or writes based on the `sort_by` column.
+- **Finding tables with most reads**: Identify tables with highest reads by sorting on `rows_fetched`.
 - **Monitoring growth**: Track `row_count` and `size_MB` of table over time to estimate growth."
 
 ## Compatible Sources
@@ -23,7 +23,7 @@ Below are some use cases for `mysql-list-table-stats`
 
 ## Requirements
 
-- `performance_schema` should be turned ON for this tool to work. 
+- `performance_schema` should be turned ON for this tool to work.
 
 ## Parameters
 
@@ -47,7 +47,7 @@ description: Display table statistics including table size, total latency, rows 
 ```
 
 ## Output Format
- 
+
 The response is a json array with the following fields:
 ```json
 [
@@ -76,5 +76,3 @@ The response is a json array with the following fields:
 | type        |  string  |     true     | Must be "mysql-list-table-stats".                  |
 | source      |  string  |     true     | Name of the source the SQL should execute on.      |
 | description |  string  |     true     | Description of the tool that is passed to the LLM. |
-
-

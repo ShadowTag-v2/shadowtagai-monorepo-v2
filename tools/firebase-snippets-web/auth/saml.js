@@ -50,4 +50,3 @@ function samlSignInRedirectResult(provider) {
     });
   // [END auth_saml_signin_redirect_result]
 }
-

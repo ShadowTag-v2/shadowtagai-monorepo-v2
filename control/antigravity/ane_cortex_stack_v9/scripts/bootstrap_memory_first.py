@@ -29,9 +29,7 @@ state = authority.write(
         ],
     }
 )
-persist_snapshot(
-    s.postgres_dsn, s.repo_id, "startup", "memory-first-bootstrap", json.dumps(state), "v1"
-)
+persist_snapshot(s.postgres_dsn, s.repo_id, "startup", "memory-first-bootstrap", json.dumps(state), "v1")
 replace_authority_atoms(s.postgres_dsn, s.repo_id, state)
 JsonMemoryStore(s.json_memory_path).append(
     {

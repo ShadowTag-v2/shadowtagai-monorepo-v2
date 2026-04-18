@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY api/ ./api/
-COPY src/ ./src/ 
+COPY src/ ./src/
 
 # Cloud Run expects PORT env
 ENV PORT=8080

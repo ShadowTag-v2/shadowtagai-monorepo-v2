@@ -48,7 +48,7 @@ description: Use this tool to execute SQL statements across multiple datasources
 
 ```sql
 -- Join Salesforce opportunities with GitHub activity
-SELECT 
+SELECT
     s.opportunity_name,
     s.amount,
     g.repository_name,
@@ -63,7 +63,7 @@ GROUP BY s.opportunity_name, s.amount, g.repository_name;
 
 ```sql
 -- Analyze email patterns with Slack activity
-SELECT 
+SELECT
     e.sender,
     e.subject,
     s.channel_name,
@@ -78,7 +78,7 @@ GROUP BY e.sender, e.subject, s.channel_name;
 
 ```sql
 -- Use ML model to predict customer churn
-SELECT 
+SELECT
     customer_id,
     customer_name,
     predicted_churn_probability,
@@ -91,7 +91,7 @@ WHERE predicted_churn_probability > 0.8;
 
 ```sql
 -- Query MongoDB collections as structured tables
-SELECT 
+SELECT
     name,
     email,
     department,

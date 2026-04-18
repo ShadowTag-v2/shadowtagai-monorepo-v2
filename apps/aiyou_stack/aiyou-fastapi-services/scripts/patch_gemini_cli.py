@@ -25,8 +25,7 @@ def patch_gemini_env():
 
 
 def filter_debug_warnings():
-    """Wrapper to filter out 'Duplicate tool registration' warnings from stderr.
-    """
+    """Wrapper to filter out 'Duplicate tool registration' warnings from stderr."""
 
     # This is a mock of the internal logic patch.
     # In a real scenario, this would monkey-patch the logger.

@@ -1,6 +1,6 @@
 # Contributing to Our Open Source Projects
 
-First off, thank you for considering contributing to our open source projects! 👾❤️ 
+First off, thank you for considering contributing to our open source projects! 👾❤️
 
 ## Communication
 
@@ -20,7 +20,7 @@ First off, thank you for considering contributing to our open source projects! �
 2. **Create a new branch** for your changes
 3. Follow the development instructions in the README.md
 4. Make your changes
-5. Test thoroughly 
+5. Test thoroughly
 6. Make sure the pre-commit hooks pass
 7. Submit your PR
 

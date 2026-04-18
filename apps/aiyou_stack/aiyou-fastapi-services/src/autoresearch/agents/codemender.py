@@ -59,10 +59,12 @@ class CodeMenderAgent:
             self.code_model = None
 
     async def resolve_issue(
-        self, file_path: str, issue_description: str, test_command: str | None = None,
+        self,
+        file_path: str,
+        issue_description: str,
+        test_command: str | None = None,
     ) -> dict[str, Any]:
-        """Main entry point to fix an issue in a file.
-        """
+        """Main entry point to fix an issue in a file."""
         if not self.think_model:
             return {"status": "error", "reason": "CodeMender not initialized"}
 
@@ -152,8 +154,7 @@ class CodeMenderAgent:
             return f"Patch gen failed: {e!s}"
 
     async def _verify_fix(self, file_path: str, patch: str, test_cmd: str) -> tuple[bool, str]:
-        """Applies patch temporarily, runs test, reverts if fails.
-        """
+        """Applies patch temporarily, runs test, reverts if fails."""
         # Read original
         try:
             with open(file_path) as f:

@@ -78,8 +78,7 @@ class ToolboxClient:
 
         if protocol != Protocol.MCP_LATEST:
             logging.warning(
-                f"A newer version of MCP ({Protocol.MCP_LATEST.value}) is available. "
-                "Please use Protocol.MCP_LATEST to use the latest features."
+                f"A newer version of MCP ({Protocol.MCP_LATEST.value}) is available. Please use Protocol.MCP_LATEST to use the latest features."
             )
 
         match protocol:
@@ -129,23 +128,15 @@ class ToolboxClient:
         self,
         name: str,
         schema: ToolSchema,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ],
-        all_bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ],
-        client_headers: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]] | str
-        ],
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]],
+        all_bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any],
+        client_headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str],
     ) -> tuple[ToolboxTool, set[str], set[str]]:
         """Internal helper to create a callable tool from its schema."""
         # sort into reg, authn, and bound params
         params = []
         authn_params: dict[str, list[str]] = {}
-        bound_params: dict[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ] = {}
+        bound_params: dict[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any] = {}
         for p in schema.parameters:
             if p.authSources:  # authn parameter
                 authn_params[p.name] = p.authSources
@@ -211,12 +202,8 @@ class ToolboxClient:
     async def load_tool(
         self,
         name: str,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ] = {},
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ] = {},
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]] = {},
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any] = {},
     ) -> ToolboxTool:
         """
         Asynchronously loads a tool from the server.
@@ -242,10 +229,7 @@ class ToolboxClient:
                 one provided parameter or auth token (if any provided).
         """
         # Resolve client headers
-        resolved_headers = {
-            name: await resolve_value(val)
-            for name, val in self.__client_headers.items()
-        }
+        resolved_headers = {name: await resolve_value(val) for name, val in self.__client_headers.items()}
 
         warn_if_http_and_headers(self.__transport.base_url, auth_token_getters)
 
@@ -280,12 +264,8 @@ class ToolboxClient:
     async def load_toolset(
         self,
         name: str | None = None,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ] = {},
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ] = {},
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]] = {},
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any] = {},
         strict: bool = False,
     ) -> list[ToolboxTool]:
         """
@@ -313,10 +293,7 @@ class ToolboxClient:
 
         # Resolve client headers
         original_headers = self.__client_headers
-        resolved_headers = {
-            header_name: await resolve_value(original_headers[header_name])
-            for header_name in original_headers
-        }
+        resolved_headers = {header_name: await resolve_value(original_headers[header_name]) for header_name in original_headers}
 
         warn_if_http_and_headers(self.__transport.base_url, auth_token_getters)
 
@@ -363,9 +340,7 @@ class ToolboxClient:
 
         return tools
 
-    @deprecated(
-        "Use the `client_headers` parameter in the ToolboxClient constructor instead."
-    )
+    @deprecated("Use the `client_headers` parameter in the ToolboxClient constructor instead.")
     def add_headers(
         self,
         headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]],
@@ -381,9 +356,7 @@ class ToolboxClient:
         incoming_headers = headers.keys()
         duplicates = existing_headers & incoming_headers
         if duplicates:
-            raise ValueError(
-                f"Client header(s) `{', '.join(duplicates)}` already registered in the client."
-            )
+            raise ValueError(f"Client header(s) `{', '.join(duplicates)}` already registered in the client.")
 
         merged_headers = {**self.__client_headers, **headers}
         self.__client_headers = merged_headers

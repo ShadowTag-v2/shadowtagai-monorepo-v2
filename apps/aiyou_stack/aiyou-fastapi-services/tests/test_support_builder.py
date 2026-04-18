@@ -1,5 +1,4 @@
-"""Unit tests for Support Builder feature.
-"""
+"""Unit tests for Support Builder feature."""
 
 import pytest
 from httpx import AsyncClient

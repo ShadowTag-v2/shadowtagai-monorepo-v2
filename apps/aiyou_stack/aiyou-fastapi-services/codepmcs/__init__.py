@@ -45,7 +45,9 @@ class CodePMCS:
         return await self.scanner.scan(repo_path, rules)
 
     async def remediate(
-        self, scan_result: "ScanResult", auto_fix: bool = True,
+        self,
+        scan_result: "ScanResult",
+        auto_fix: bool = True,
     ) -> "RemediationResult":
         """Generate fixes for detected issues."""
         return await self.remediator.remediate(scan_result, auto_fix)

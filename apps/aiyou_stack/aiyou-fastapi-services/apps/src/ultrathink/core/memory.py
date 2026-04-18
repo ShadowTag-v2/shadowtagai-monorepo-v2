@@ -24,8 +24,7 @@ class MemoryInterface(ABC):
 
 
 class ShortTermMemory(MemoryInterface):
-    """In-memory rolling buffer for active conversation context.
-    """
+    """In-memory rolling buffer for active conversation context."""
 
     def __init__(self, max_entries: int = 50):
         self.max_entries = max_entries

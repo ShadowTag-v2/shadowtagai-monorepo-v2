@@ -157,7 +157,8 @@ class ModelRegistry:
         metrics.active_requests = max(0, metrics.active_requests + active_change)
         metrics.total_tokens += tokens
         metrics.active_tokens = max(
-            0, metrics.active_tokens + (tokens if active_change > 0 else -tokens),
+            0,
+            metrics.active_tokens + (tokens if active_change > 0 else -tokens),
         )
         metrics.last_request_time = datetime.now()
 

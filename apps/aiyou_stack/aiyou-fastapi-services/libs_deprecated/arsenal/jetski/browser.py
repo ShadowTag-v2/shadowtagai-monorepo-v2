@@ -11,8 +11,7 @@ from playwright.async_api import async_playwright
 
 
 def find_brave_path():
-    """Locates the Brave Browser executable on the host system.
-    """
+    """Locates the Brave Browser executable on the host system."""
     # 1. Check Environment Override
     if os.environ.get("BRAVE_BIN"):
         return os.environ["BRAVE_BIN"]
@@ -34,8 +33,7 @@ def find_brave_path():
 
 
 class JetskiAgent:
-    """Brave-Driven Vision Agent.
-    """
+    """Brave-Driven Vision Agent."""
 
     def __init__(self):
         self.client = genai.Client(vertexai=True, location="us-central1")

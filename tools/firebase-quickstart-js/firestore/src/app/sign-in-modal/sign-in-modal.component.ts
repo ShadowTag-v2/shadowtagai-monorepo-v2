@@ -35,9 +35,9 @@ export interface SignInOptions {
 })
 
 /**
- * A popup window that appears when the user selects the "Sign In" or 
+ * A popup window that appears when the user selects the "Sign In" or
  * "Create Account" buttons on the homepage. Uses the boolean passed in
- * `data` to decide whether to render the "Sign In" modal (whose button 
+ * `data` to decide whether to render the "Sign In" modal (whose button
  * launches the `signInWithUserInfo` function) or the "Create Account"
  * modal (whose button launches the `createNewUserAccount` function).
  */

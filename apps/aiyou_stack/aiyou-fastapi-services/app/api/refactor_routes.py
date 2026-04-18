@@ -55,12 +55,15 @@ async def analyze_code(request: AnalyzeRequest) -> AnalyzeResponse:
         return result
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Analysis failed: {e!s}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Analysis failed: {e!s}",
         )
 
 
 @router.get(
-    "/health", summary="Health check", description="Check if the refactoring service is operational",
+    "/health",
+    summary="Health check",
+    description="Check if the refactoring service is operational",
 )
 async def health_check():
     """Health check endpoint for the refactoring service."""

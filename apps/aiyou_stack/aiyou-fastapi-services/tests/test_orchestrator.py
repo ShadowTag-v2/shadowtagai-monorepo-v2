@@ -1,5 +1,4 @@
-"""Validation tests for pnkln orchestrator
-"""
+"""Validation tests for pnkln orchestrator"""
 
 import asyncio
 import sys
@@ -18,7 +17,8 @@ async def test_intent_detection():
     print("=" * 60)
 
     orchestrator = create_orchestrator(
-        skills_path="pnkln/skills/registry.yaml", agents_path="pnkln/agents/registry.yaml",
+        skills_path="pnkln/skills/registry.yaml",
+        agents_path="pnkln/agents/registry.yaml",
     )
 
     test_cases = [
@@ -80,7 +80,8 @@ async def test_execution_flow():
     print("=" * 60)
 
     orchestrator = create_orchestrator(
-        skills_path="pnkln/skills/registry.yaml", agents_path="pnkln/agents/registry.yaml",
+        skills_path="pnkln/skills/registry.yaml",
+        agents_path="pnkln/agents/registry.yaml",
     )
 
     test_query = "Research edge AI compute market and identify revenue opportunities"
@@ -108,7 +109,8 @@ async def test_audit_trail():
     print("=" * 60)
 
     orchestrator = create_orchestrator(
-        skills_path="pnkln/skills/registry.yaml", agents_path="pnkln/agents/registry.yaml",
+        skills_path="pnkln/skills/registry.yaml",
+        agents_path="pnkln/agents/registry.yaml",
     )
 
     # Execute multiple queries
@@ -144,7 +146,8 @@ async def test_monetization_framework():
     print("=" * 60)
 
     orchestrator = create_orchestrator(
-        skills_path="pnkln/skills/registry.yaml", agents_path="pnkln/agents/registry.yaml",
+        skills_path="pnkln/skills/registry.yaml",
+        agents_path="pnkln/agents/registry.yaml",
     )
 
     # Execute with wealth_accelerator agent explicitly

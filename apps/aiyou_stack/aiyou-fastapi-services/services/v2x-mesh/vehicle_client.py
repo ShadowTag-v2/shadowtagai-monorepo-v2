@@ -73,7 +73,9 @@ class VehicleClient:
         # Initialize protocols
         self.armp = ARMPProtocol(self.node_id)
         self.gossip = GossipProtocol(
-            node_id=self.node_id, config=GossipConfig(), send_callback=self._send_to_radio,
+            node_id=self.node_id,
+            config=GossipConfig(),
+            send_callback=self._send_to_radio,
         )
 
         # Current vehicle state
@@ -280,7 +282,8 @@ class VehicleClient:
         if message.header.msg_type == MessageType.BEACON:
             payload = message.payload
             self.gossip.add_peer(
-                message.header.sender_id, position=(payload.position[0], payload.position[1]),
+                message.header.sender_id,
+                position=(payload.position[0], payload.position[1]),
             )
 
         # Handle critical events
@@ -366,7 +369,6 @@ class MockCryptoProvider:
     """Mock crypto provider for development"""
 
     def __init__(self):
-
         self.keys = {}
 
     async def sign(self, data: bytes) -> bytes:
@@ -407,7 +409,9 @@ if __name__ == "__main__":
         config = V2XClientConfig(vehicle_id="TEST-VEHICLE-001", vehicle_type="car")
 
         client = VehicleClient(
-            config=config, crypto_provider=MockCryptoProvider(), radio_provider=MockRadioProvider(),
+            config=config,
+            crypto_provider=MockCryptoProvider(),
+            radio_provider=MockRadioProvider(),
         )
 
         # Define FSD planner callback

@@ -65,7 +65,10 @@ class ErrorResponse(BaseModel):
 async def root():
     """FinJudge API root endpoint"""
     return HealthResponse(
-        status="operational", version="v0.1.0", timestamp=datetime.utcnow(), engine_ready=True,
+        status="operational",
+        version="v0.1.0",
+        timestamp=datetime.utcnow(),
+        engine_ready=True,
     )
 
 
@@ -76,7 +79,10 @@ async def health_check():
     Returns service health status and readiness
     """
     return HealthResponse(
-        status="healthy", version="v0.1.0", timestamp=datetime.utcnow(), engine_ready=True,
+        status="healthy",
+        version="v0.1.0",
+        timestamp=datetime.utcnow(),
+        engine_ready=True,
     )
 
 
@@ -149,7 +155,8 @@ async def evaluate_decision(request: DecisionRequest):
 
     except ValueError as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid request: {e!s}",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid request: {e!s}",
         )
     except Exception as e:
         raise HTTPException(
@@ -183,7 +190,8 @@ async def get_ruling(ruling_id: str):
     """
     if ruling_id not in ruling_store:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Ruling {ruling_id} not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Ruling {ruling_id} not found",
         )
 
     return ruling_store[ruling_id]
@@ -192,7 +200,8 @@ async def get_ruling(ruling_id: str):
 @app.get("/finjudge/rulings", response_model=RulingListResponse, tags=["Decisions"])
 async def list_rulings(
     decision_outcome: DecisionOutcome | None = Query(
-        None, description="Filter by decision outcome",
+        None,
+        description="Filter by decision outcome",
     ),
     limit: int = Query(100, ge=1, le=1000, description="Max rulings to return"),
     offset: int = Query(0, ge=0, description="Pagination offset"),
@@ -233,7 +242,8 @@ async def list_rulings(
     tags=["Decisions"],
 )
 async def get_precedents(
-    ruling_id: str, limit: int = Query(10, ge=1, le=50, description="Max precedents to return"),
+    ruling_id: str,
+    limit: int = Query(10, ge=1, le=50, description="Max precedents to return"),
 ):
     """Find similar past rulings (precedents)
 
@@ -256,7 +266,8 @@ async def get_precedents(
     """
     if ruling_id not in ruling_store:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Ruling {ruling_id} not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Ruling {ruling_id} not found",
         )
 
     base_ruling = ruling_store[ruling_id]
@@ -330,7 +341,8 @@ async def get_metrics(days: int = Query(7, ge=1, le=90, description="Number of d
             "avg_confidence": round(avg_confidence, 1),
             "avg_computation_ms": round(avg_computation_ms, 1),
             "compliance_violation_rate": round(
-                (compliance_violations / len(recent_rulings)) * 100, 1,
+                (compliance_violations / len(recent_rulings)) * 100,
+                1,
             ),
         },
     }

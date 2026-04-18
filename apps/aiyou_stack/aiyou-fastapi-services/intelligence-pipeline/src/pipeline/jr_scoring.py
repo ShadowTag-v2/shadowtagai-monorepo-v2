@@ -1,4 +1,3 @@
-
 """PNKLN Intelligence Pipeline - JR Engine Scoring
 
 JR (Junior) Engine provides initial scoring and reasoning for intelligence items.
@@ -27,8 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 class JRScoringEngine:
-    """JR Engine for scoring intelligence items using Claude API
-    """
+    """JR Engine for scoring intelligence items using Claude API"""
 
     def __init__(self, api_key: str | None = None):
         """Initialize JR scoring engine
@@ -172,10 +170,10 @@ Provide ONLY the JSON response, no other text.
 
 
 async def main():
-    """Main JR scoring entry point
-    """
+    """Main JR scoring entry point"""
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     # Load items from ingestion

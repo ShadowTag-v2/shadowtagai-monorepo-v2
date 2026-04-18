@@ -54,7 +54,10 @@ class NowgrepService:
             logger.error(f"Error during Nowgrep shutdown: {e}")
 
     async def create_index(
-        self, index_name: str, documents: list[dict[str, Any]], content_field: str = "content",
+        self,
+        index_name: str,
+        documents: list[dict[str, Any]],
+        content_field: str = "content",
     ) -> dict[str, Any]:
         """Create a new search index
 
@@ -169,7 +172,11 @@ class NowgrepService:
             return {"status": "error", "error": str(e)}
 
     async def multimodal_search(
-        self, index_name: str, query: str, modalities: list[str] = None, top_k: int = 10,
+        self,
+        index_name: str,
+        query: str,
+        modalities: list[str] = None,
+        top_k: int = 10,
     ) -> dict[str, Any]:
         """Perform multimodal semantic search
 
@@ -233,7 +240,9 @@ class NowgrepService:
             raise
 
     def _compute_similarity(
-        self, query_vector: np.ndarray, document_vectors: list[np.ndarray],
+        self,
+        query_vector: np.ndarray,
+        document_vectors: list[np.ndarray],
     ) -> np.ndarray:
         """Compute cosine similarity between query and documents"""
         # Stack document vectors

@@ -261,7 +261,8 @@ class AgentMemoryManager:
         # 2. Extract working state (keep only last 3 actions post-fold)
         working.last_n_actions = deque(list(working.last_n_actions)[-3:], maxlen=10)
         working.context_tokens = self._estimate_tokens(
-            str(working.current_state), working.last_n_actions,
+            str(working.current_state),
+            working.last_n_actions,
         )
 
         # 3. Aggregate tool stats
@@ -357,7 +358,8 @@ class AgentMemoryManager:
         """Calculate token savings from compression"""
         original_tokens = len(episodic.timeline) * 100  # Estimate: 100 tokens/action
         compressed_tokens = self._estimate_tokens(
-            episodic.compressed_summary, working.current_state,
+            episodic.compressed_summary,
+            working.current_state,
         )
 
         if original_tokens == 0:
@@ -552,7 +554,11 @@ if __name__ == "__main__":
     # Record tool usage
     print("\n2. Recording tool usage...")
     manager.record_tool_use(
-        tool_name="navigate", source="WALT", latency_ms=45.2, cost=0.0001, success=True,
+        tool_name="navigate",
+        source="WALT",
+        latency_ms=45.2,
+        cost=0.0001,
+        success=True,
     )
 
     manager.record_tool_use(

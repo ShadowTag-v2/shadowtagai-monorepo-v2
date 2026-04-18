@@ -284,4 +284,3 @@ class IndexOperationMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

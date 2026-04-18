@@ -1,7 +1,7 @@
 # TINYGRAD RUNTIME ARCHITECTURE → JUDGE#6 INTEGRATION BLUEPRINT
-**Date**: 2025-11-21  
-**Purpose**: Extract portable runtime patterns for p99≤90ms governance enforcement  
-**Target**: CloudFlare Workers + WASM execution environment  
+**Date**: 2025-11-21
+**Purpose**: Extract portable runtime patterns for p99≤90ms governance enforcement
+**Target**: CloudFlare Workers + WASM execution environment
 
 ---
 
@@ -49,7 +49,7 @@ support/
 └── compiler_*.py            # Device-specific compilers
 ```
 
-**KEY OBSERVATION**: 17 runtime implementations, all conforming to ONE interface.  
+**KEY OBSERVATION**: 17 runtime implementations, all conforming to ONE interface.
 → Judge#6 needs ONE governance runtime, portable across 5+ edge platforms.
 
 ---
@@ -156,13 +156,13 @@ class ClangJITCompiler(Compiler):
             '-nostdlib',           # No libc
             '-fno-ident'           # Strip compiler metadata
         ]
-        
+
         # Compile C source to ELF object file in-memory
         obj = subprocess.check_output(
             [getenv("CC", 'clang'), '-c', '-x', 'c', *args, '-', '-o', '-'],
             input=src.encode('utf-8')
         )
-        
+
         # Load ELF into executable memory
         return jit_loader(obj)
 
@@ -171,13 +171,13 @@ class CPUProgram:
         # lib = executable machine code in memory
         # Cast to C function pointer: void (*fxn)(void)
         self.fxn = CFUNCTYPE(None)(ctypes.c_void_p(lib))
-    
+
     def __call__(self, *bufs, global_size, local_size, vals, wait):
         # Direct function call - no syscalls, no overhead
         self.fxn()
 ```
 
-**KEY INSIGHT**: JIT compilation happens ONCE per policy (cached).  
+**KEY INSIGHT**: JIT compilation happens ONCE per policy (cached).
 Execution is bare-metal function call (~ns latency).
 
 **JUDGE#6 TRANSLATION**:
@@ -187,36 +187,36 @@ class WASMCompiler(Compiler):
     def compile(self, jr_policy: str) -> bytes:
         # Step 1: JR Engine DSL → Intermediate Representation (IR)
         ir = JREngineParser().parse(jr_policy)
-        
+
         # Step 2: IR → WASM text format (WAT)
         wat = JRtoWAT().codegen(ir)
-        
+
         # Step 3: WAT → WASM binary (via wabt toolkit)
         wasm = subprocess.check_output(
             ['wat2wasm', '-'],
             input=wat.encode('utf-8')
         )
-        
+
         # Step 4: Compress with zstd (target: 487 bytes)
         compressed = zstd.compress(wasm, level=22)
-        
+
         return compressed
 
 class WASMProgram:
     def __init__(self, edge_device, name: str, wasm_binary: bytes):
         # Decompress
         wasm = zstd.decompress(wasm_binary)
-        
+
         # Instantiate WASM module in Worker
         self.module = WebAssembly.Module(wasm)
         self.instance = WebAssembly.Instance(self.module)
-    
+
     def __call__(self, context_ptr, context_size, global_size, local_size, vals, wait):
         # Call exported function: check_policy(context) -> pass/fail bit
         start = performance.now()
         result = self.instance.exports.check_policy(context_ptr, context_size)
         latency_us = (performance.now() - start) * 1000
-        
+
         return latency_us  # Track for p99≤90ms SLA
 ```
 
@@ -234,13 +234,13 @@ class WASMProgram:
 class HWQueue:
     def wait(self, signal: HCQSignal, value: int) -> HWQueue:
         # Wait until signal.value >= value (GPU fence)
-    
+
     def exec(self, program: HCQProgram, args_state, global_dims, local_dims) -> HWQueue:
         # Enqueue kernel execution
-    
+
     def signal(self, signal: HCQSignal, value: int) -> HWQueue:
         # Write value + timestamp to signal after kernel completes
-    
+
     def submit(self, device) -> None:
         # Flush queue to hardware (single syscall)
 
@@ -260,10 +260,10 @@ HWQueue() \
 ```python
 class EdgeQueue(HWQueue):
     """CloudFlare Workers as 'hardware' queue"""
-    
+
     def __init__(self):
         self.commands = []  # Queue of pending operations
-    
+
     def wait(self, signal: EdgeSignal, value: int):
         # Edge variant: Wait for fetch() to complete
         self.commands.append({
@@ -272,7 +272,7 @@ class EdgeQueue(HWQueue):
             'value': value
         })
         return self
-    
+
     def exec(self, wasm_policy, context, global_dims, local_dims):
         # Edge variant: Execute WASM module
         self.commands.append({
@@ -282,7 +282,7 @@ class EdgeQueue(HWQueue):
             'dims': (global_dims, local_dims)
         })
         return self
-    
+
     def signal(self, signal: EdgeSignal, value: int):
         # Edge variant: Write to Durable Object for distributed sync
         self.commands.append({
@@ -291,7 +291,7 @@ class EdgeQueue(HWQueue):
             'value': value
         })
         return self
-    
+
     def submit(self, edge_device):
         # CRITICAL: All commands execute in SINGLE Worker invocation
         # No network round-trips → predictable latency
@@ -300,12 +300,12 @@ class EdgeQueue(HWQueue):
 
 class EdgeSignal(HCQSignal):
     """Distributed synchronization primitive"""
-    
+
     def __init__(self, durable_object_id: str):
         self.do_id = durable_object_id  # CloudFlare Durable Object
         self.value_off = 0  # Byte offset for pass/fail bit
         self.timestamp_off = 8  # Byte offset for latency (μs)
-    
+
     def timestamp(self) -> int:
         # Fetch timestamp from Durable Object storage
         # Used for p99 latency tracking
@@ -366,11 +366,11 @@ class PolicyUOp:
 
 class GovernanceScheduler:
     """Breaks policy graph → WASM-sized chunks"""
-    
+
     def schedule(self, uop_graph: PolicyUOp) -> list[EnforcementItem]:
         # Tinygrad analogy: One ScheduleItem = one GPU kernel
         # Judge#6: One EnforcementItem = one WASM invocation
-        
+
         chunks = []
         for subgraph in self.topological_sort(uop_graph):
             # Fuse sequential checks if they fit in single WASM call
@@ -380,7 +380,7 @@ class GovernanceScheduler:
                     bufs=self.collect_contexts(subgraph),
                     latency_budget_ms=90  # p99 SLA
                 ))
-        
+
         return chunks
 
 class EnforcementItem:
@@ -395,26 +395,26 @@ class EnforcementItem:
 ```python
 def can_fuse(policy_checks: list[PolicyUOp]) -> bool:
     """Decide if policies can merge into single WASM call"""
-    
+
     # Rule 1: Total WASM size must fit in Worker memory (128MB)
     total_wasm_bytes = sum(p.ast.wasm_size for p in policy_checks)
     if total_wasm_bytes > 50_000_000:  # 50MB safety margin
         return False
-    
+
     # Rule 2: Expected latency must be <90ms (p99 budget)
     estimated_latency_ms = sum(p.ast.estimated_latency_ms for p in policy_checks)
     if estimated_latency_ms > 80:  # 10ms safety margin for p99
         return False
-    
+
     # Rule 3: No circular dependencies (DAG requirement)
     if has_cycle(policy_checks):
         return False
-    
+
     # Rule 4: All checks operate on same context (avoid data movement)
     contexts = {p.context_id for p in policy_checks}
     if len(contexts) > 1:
         return False  # Different contexts = can't fuse
-    
+
     return True
 ```
 
@@ -444,7 +444,7 @@ class WebGPUProgram:
                 'entryPoint': name
             }
         })
-    
+
     def __call__(self, *bufs, global_size, local_size, vals, wait):
         # Submit compute pass to GPU queue
         encoder = device.gpu.createCommandEncoder()
@@ -463,13 +463,13 @@ class WASMCompiler(Compiler):
     def compile(self, jr_policy: str) -> bytes:
         # Input: JR Engine policy DSL
         # Output: WASM bytecode (edge-native compute)
-        
+
         # Step 1: Parse JR Engine rules
         ast = JREngineParser().parse(jr_policy)
-        
+
         # Step 2: Lower to WASM IR (like WGSL → SPIR-V)
         wasm_ir = JRtoWASM().lower(ast)
-        
+
         # Step 3: Optimize for size (487 byte target)
         optimized = WASMOptimizer().optimize(wasm_ir, {
             'inline_threshold': 50,  # Aggressive inlining
@@ -477,23 +477,23 @@ class WASMCompiler(Compiler):
             'constant_folding': True,
             'loop_unrolling': False  # Avoid code bloat
         })
-        
+
         # Step 4: Assemble to binary
         binary = WASMAssembler().assemble(optimized)
-        
+
         # Step 5: Compress (zstd level 22)
         compressed = zstd.compress(binary, level=22)
-        
+
         # Verify size constraint
         assert len(compressed) <= 487, f"WASM too large: {len(compressed)} bytes"
-        
+
         return compressed
 
 class WASMProgram:
     def __init__(self, edge_device, name: str, wasm_binary: bytes):
         # Decompress
         wasm = zstd.decompress(wasm_binary)
-        
+
         # Instantiate WASM module in CloudFlare Worker
         self.module = WebAssembly.instantiate(wasm, {
             'env': {
@@ -501,26 +501,26 @@ class WASMProgram:
                 'abort': lambda msg: raise_governance_error(msg)
             }
         })
-        
+
         self.check_policy = self.module.instance.exports[name]
-    
+
     def __call__(self, context_ptr, context_size, global_size, local_size, vals, wait):
         # Execute WASM function: check_policy(context) -> 0 (fail) or 1 (pass)
         start_us = performance.now() * 1000
-        
+
         result = self.check_policy(context_ptr, context_size)
-        
+
         end_us = performance.now() * 1000
         latency_us = end_us - start_us
-        
+
         # Track p99 latency
         edge_device.latency_histogram.record(latency_us)
-        
+
         # Enforce SLA
         if latency_us > 90_000:  # 90ms = 90,000μs
             edge_device.sla_violations.increment()
             raise SLAViolationError(f"Policy check took {latency_us}μs > 90ms SLA")
-        
+
         return result, latency_us
 ```
 
@@ -533,25 +533,25 @@ class WASMProgram:
 ```python
 class LRUAllocator:
     """Cache freed buffers instead of returning to OS"""
-    
+
     def __init__(self, underlying_allocator):
         self.base = underlying_allocator
         self.cache = {}  # size → list[Buffer]
-    
+
     def alloc(self, size: int, options: BufferSpec) -> Buffer:
         # Check cache first
         if size in self.cache and self.cache[size]:
             return self.cache[size].pop()  # Reuse freed buffer
-        
+
         # Cache miss - allocate new
         return self.base.alloc(size, options)
-    
+
     def free(self, buf: Buffer) -> None:
         # Don't actually free - cache for reuse
         if buf.size not in self.cache:
             self.cache[buf.size] = []
         self.cache[buf.size].append(buf)
-        
+
         # Evict LRU if cache too large
         if len(self.cache[buf.size]) > 10:  # Arbitrary limit
             oldest = self.cache[buf.size].pop(0)
@@ -563,45 +563,45 @@ class LRUAllocator:
 ```python
 class ContextAllocator:
     """Cache request contexts to avoid re-parsing"""
-    
+
     def __init__(self, worker_memory: ArrayBuffer):
         self.memory = worker_memory
         self.cache = {}  # context_hash → (ptr, size, timestamp)
         self.next_ptr = 0
-    
+
     def alloc(self, context: RequestContext) -> ContextBuffer:
         # Hash context to check cache
         ctx_hash = hashlib.sha256(context.serialize()).digest()
-        
+
         # Cache hit - reuse parsed context
         if ctx_hash in self.cache:
             ptr, size, timestamp = self.cache[ctx_hash]
             self.cache[ctx_hash] = (ptr, size, time.now())  # Update LRU timestamp
             return ContextBuffer(ptr, size, cached=True)
-        
+
         # Cache miss - parse and store
         serialized = context.serialize()
         size = len(serialized)
-        
+
         # Allocate in Worker linear memory
         ptr = self.next_ptr
         self.next_ptr += size
-        
+
         # Write to WASM memory
         self.memory.set(serialized, ptr)
-        
+
         # Cache for future requests
         self.cache[ctx_hash] = (ptr, size, time.now())
-        
+
         return ContextBuffer(ptr, size, cached=False)
-    
+
     def evict_lru(self, target_bytes: int):
         """Free oldest contexts when memory pressure"""
         sorted_by_age = sorted(
             self.cache.items(),
             key=lambda x: x[1][2]  # timestamp field
         )
-        
+
         freed_bytes = 0
         for ctx_hash, (ptr, size, timestamp) in sorted_by_age:
             del self.cache[ctx_hash]
@@ -621,19 +621,19 @@ class Compiler:
     def __init__(self, cachekey: str | None = None):
         self.cachekey = cachekey  # e.g., "compile_clang_jit"
         self.cache_dir = Path.home() / ".cache" / "tinygrad"
-    
+
     def compile_cached(self, src: str) -> bytes:
         # Hash source to create cache key
         cache_key = hashlib.sha256(
             f"{self.cachekey}:{src}".encode()
         ).hexdigest()
-        
+
         cache_path = self.cache_dir / cache_key
-        
+
         # Check disk cache
         if cache_path.exists():
             return cache_path.read_bytes()  # Cache hit - no compilation
-        
+
         # Cache miss - compile and store
         compiled = self.compile(src)
         cache_path.write_bytes(compiled)
@@ -653,20 +653,20 @@ class WASMCompiler(Compiler):
         cache_key = hashlib.sha256(
             f"jr_engine_{JR_ENGINE_VERSION}:{jr_policy}".encode()
         ).hexdigest()
-        
+
         # Check S3/R2 cache (persistent across Workers)
         cache_url = f"https://governance-cache.r2.cloudflarestorage.com/{cache_key}.wasm.zst"
-        
+
         cached = fetch(cache_url)
         if cached.ok:
             return cached.arrayBuffer()  # Cache hit
-        
+
         # Cache miss - compile and upload
         wasm = self.compile(jr_policy)
-        
+
         # Upload to R2 (CloudFlare object storage)
         upload_to_r2(cache_url, wasm)
-        
+
         return wasm
 
 # Bootstrap cost analysis:
@@ -697,23 +697,23 @@ class Compiled:
 class EdgeDevice(Compiled):
     def synchronize(self):
         """Wait for all Workers to finish policy checks"""
-        
+
         # Collect all pending signals from Durable Objects
         pending = self.get_pending_signals()
-        
+
         # Poll until all signals written (with timeout)
         timeout_ms = 100  # 10ms buffer above 90ms SLA
         start = time.now()
-        
+
         while pending and (time.now() - start) < timeout_ms:
             for signal_id in list(pending):
                 signal = EdgeSignal(signal_id)
                 if signal.value >= 1:  # Policy check completed
                     pending.remove(signal_id)
-            
+
             if pending:
                 await sleep(1)  # 1ms poll interval
-        
+
         if pending:
             raise TimeoutError(f"{len(pending)} policy checks timed out")
 ```
@@ -727,7 +727,7 @@ class EdgeDevice(Compiled):
 ```python
 class ClangRenderer:
     """Generate C source code from UOp AST"""
-    
+
     def render(self, uop: UOp) -> str:
         if uop.op == BinaryOps.ADD:
             return f"({self.render(uop.a)} + {self.render(uop.b)})"
@@ -744,31 +744,31 @@ class ClangRenderer:
 ```python
 class JREngineRenderer:
     """Generate WASM IR from JR Engine AST"""
-    
+
     def render(self, policy: PolicyUOp) -> str:
         """Output: WebAssembly Text format (WAT)"""
-        
+
         if policy.type == PolicyOps.CHECK_PII:
             return f"""
             (func $check_pii (param $context i32) (result i32)
                 (local $has_ssn i32)
                 (local $has_ccn i32)
-                
+
                 ;; Scan context for SSN pattern (ATP_519_scan)
                 (local.set $has_ssn
-                    (call $atp_519_scan $context 
+                    (call $atp_519_scan $context
                         (i32.const {PII_PATTERNS.SSN})))
-                
+
                 ;; Scan context for credit card pattern
                 (local.set $has_ccn
                     (call $atp_519_scan $context
                         (i32.const {PII_PATTERNS.CCN})))
-                
+
                 ;; Return: 0 if PII found (fail), 1 if clean (pass)
                 (i32.eqz (i32.or (local.get $has_ssn) (local.get $has_ccn)))
             )
             """
-        
+
         elif policy.type == PolicyOps.CHECK_RATE_LIMIT:
             return f"""
             (func $check_rate_limit (param $user_id i32) (result i32)
@@ -776,12 +776,12 @@ class JREngineRenderer:
                 (local $count i32)
                 (local.set $count
                     (call $fetch_rate_limit_count $user_id))
-                
+
                 ;; Check if under limit (100 req/min)
                 (i32.lt_u (local.get $count) (i32.const 100))
             )
             """
-        
+
         elif policy.type == PolicyOps.AND:
             # Fuse multiple checks: check_pii AND check_rate_limit
             left = self.render(policy.inputs[0])
@@ -842,7 +842,7 @@ class EdgeAllocator:
     def __init__(self, heap_size_mb=64):
         self.heap = ArrayBuffer(heap_size_mb * 1024 * 1024)
         self.next_ptr = 0
-    
+
     def alloc(self, size: int) -> EdgeBuffer:
         ptr = self.next_ptr
         self.next_ptr += size
@@ -861,7 +861,7 @@ class WASMProgram:
         self.module = WebAssembly.Module(lib)
         self.instance = WebAssembly.Instance(self.module)
         self.check = self.instance.exports[name]
-    
+
     def __call__(self, context_ptr, context_size):
         return self.check(context_ptr, context_size)
 
@@ -898,23 +898,23 @@ curl -X POST https://judge6-test.workers.dev/check \
 
 class JREngineRenderer:
     """PolicyUOp AST → WASM text format (WAT)"""
-    
+
     def render(self, policy: PolicyUOp) -> str:
         # Start with WASM module skeleton
         wat = ["(module"]
-        
+
         # Import ATP_519_scan from host
         wat.append('(import "env" "atp_519_scan" (func $atp_scan (param i32 i32) (result i32)))')
-        
+
         # Render policy logic
         wat.append(self._render_policy(policy))
-        
+
         # Export main check function
         wat.append('(export "check_policy" (func $check_policy))')
-        
+
         wat.append(")")
         return "\n".join(wat)
-    
+
     def _render_policy(self, policy: PolicyUOp) -> str:
         if policy.op == PolicyOps.CHECK_PII:
             return """
@@ -951,19 +951,19 @@ ls -lh output.wasm  # Target: <5KB before compression
 
 class GovernanceScheduler:
     """Break policy graph → executable chunks"""
-    
+
     def schedule(self, uop: PolicyUOp) -> list[EnforcementItem]:
         # Topological sort to respect dependencies
         sorted_ops = self._topo_sort(uop)
-        
+
         # Greedy fusion: merge sequential ops if under latency budget
         chunks = []
         current_chunk = []
         current_latency_estimate_ms = 0
-        
+
         for op in sorted_ops:
             op_latency = self._estimate_latency(op)
-            
+
             if current_latency_estimate_ms + op_latency < 80:  # 10ms buffer
                 current_chunk.append(op)
                 current_latency_estimate_ms += op_latency
@@ -975,14 +975,14 @@ class GovernanceScheduler:
                 ))
                 current_chunk = [op]
                 current_latency_estimate_ms = op_latency
-        
+
         # Flush final chunk
         if current_chunk:
             chunks.append(EnforcementItem(
                 ast=self._merge_ops(current_chunk),
                 latency_budget_ms=90
             ))
-        
+
         return chunks
 ```
 
@@ -1016,16 +1016,16 @@ print(f'Fused {len(policy_graph.inputs)} checks into {len(chunks)} WASM calls')
 
 class LatencyHistogram:
     """Track p50/p90/p99 latencies"""
-    
+
     def __init__(self):
         self.samples = []
         self.max_samples = 10_000  # Rolling window
-    
+
     def record(self, latency_us: int):
         self.samples.append(latency_us)
         if len(self.samples) > self.max_samples:
             self.samples.pop(0)  # Evict oldest
-    
+
     def percentile(self, p: float) -> float:
         """Get p-th percentile (e.g., p=0.99 for p99)"""
         sorted_samples = sorted(self.samples)
@@ -1038,21 +1038,21 @@ class EdgeDevice(Compiled):
         super().__init__(...)
         self.latency_histogram = LatencyHistogram()
         self.sla_violations = 0
-    
+
     def execute_policy(self, wasm_program, context):
         start_us = performance.now() * 1000
         result = wasm_program(context)
         end_us = performance.now() * 1000
-        
+
         latency_us = end_us - start_us
         self.latency_histogram.record(latency_us)
-        
+
         # Check SLA
         if latency_us > 90_000:  # 90ms
             self.sla_violations += 1
             if self.sla_violations > 100:  # 1% error budget
                 raise SLAViolationError("p99 > 90ms - killing switch activated")
-        
+
         return result
 ```
 
@@ -1177,4 +1177,3 @@ ASSUMPTION 7: Users will adopt portable runtime vs vendor lock-in
 ```
 
 **END CRITIQUE**
-

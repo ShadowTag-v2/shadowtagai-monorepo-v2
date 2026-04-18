@@ -3,7 +3,7 @@
 **Title**: Optimize ShadowTagAI Edge Deployment Speed (< 45s)
 
 ## Description
-The deployment cadence for `shadowtag-omega-v4` via the Firebase MCP deployment protocol evaluates to 2m30s due to unoptimized context and static assets routing natively. 
+The deployment cadence for `shadowtag-omega-v4` via the Firebase MCP deployment protocol evaluates to 2m30s due to unoptimized context and static assets routing natively.
 
 ## Objectives
 - Integrate `deploy_shield.sh` directly into the GitHub Actions matrix using `omega-sync`.

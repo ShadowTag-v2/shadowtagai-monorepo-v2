@@ -276,7 +276,10 @@ if __name__ == "__main__":
             {"topic": "DoD Procurement", "items": 3421, "avg_score": 0.82},
         ],
         quality_metrics=QualityMetrics(
-            avg_relevance=0.76, completeness=0.94, timeliness=0.89, source_diversity=23,
+            avg_relevance=0.76,
+            completeness=0.94,
+            timeliness=0.89,
+            source_diversity=23,
         ),
         cost_summary=CostSummary(
             total_cost_usd=2.54,

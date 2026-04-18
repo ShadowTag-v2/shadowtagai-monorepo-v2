@@ -9,12 +9,12 @@
 **STATUS:** GOD MODE ACTIVE (IQ 160 LOCK)
 
 ## ⏺ ///▙▖▙▖▞ OVERVIEW & BUSINESS ROLE
-While `apps/counselconduit` serves as the commercial wedge, **Uphill Snowball** (`labs/uphillsnowball`) is the Sovereign Internal R&D Lab. 
+While `apps/counselconduit` serves as the commercial wedge, **Uphill Snowball** (`labs/uphillsnowball`) is the Sovereign Internal R&D Lab.
 
 It is the absolute vanguard of the Omega Protocol. Uphill Snowball serves as the "Sovereign OS" operating locally on Apple Silicon to manage, marshal, and execute the multi-agent swarm against the overarching Monorepo (`Monorepo-Uphillsnowball`).
 
 ## ⏺ ///▙▖▙▖▞ THE NEXUS EVENT CONTEXT
-Uphill Snowball emerges from the ashes of a 3.1GB fractured ecosystem (The Nexus Event). By leveraging the "500-Commit Eraser," we stripped 150,000 files into a clean slate, bypassed GitHub's limits, and established the **LadybugDB Neural Matrix** (1.07M Nodes, 2.48M Edges). 
+Uphill Snowball emerges from the ashes of a 3.1GB fractured ecosystem (The Nexus Event). By leveraging the "500-Commit Eraser," we stripped 150,000 files into a clean slate, bypassed GitHub's limits, and established the **LadybugDB Neural Matrix** (1.07M Nodes, 2.48M Edges).
 
 Uphill Snowball uses this AST node map to give the AI swarm completely unfactured, structural vision across the monorepo codebase. Every iteration is mechanically folded-in using strict realpath verification and the `manifests/monorepo_manifest.yaml` as the sole source of truth. There is no longer "merge by vibes."
 
@@ -31,10 +31,10 @@ Uphill Snowball agents operate exclusively under the *Cor.Vibe.Coding* and *Cor.
    - **The Boy Scout Rule:** Leave every file cleaner than when you found it. Apply `biome` formatting and rigid typing dynamically.
 
 3. **The "Grandma-Simple" GUI Mandate:**
-   - Complex under the hood, but intuitive enough for "Fortune-500-CEO-Grandpa" and "Non-digital-native Grandma." 
+   - Complex under the hood, but intuitive enough for "Fortune-500-CEO-Grandpa" and "Non-digital-native Grandma."
    - Uses **Stitch 2 and Nano Banana 2** via MCP for ideating and generating the declarative UI streaming instead of Dark Luxury aesthetics. No generic V0-generated layouts.
 
-## ⏺ ///▙▖▙▖▞ UPHILL SNOWBALL CORE ARCHITECTURE 
+## ⏺ ///▙▖▙▖▞ UPHILL SNOWBALL CORE ARCHITECTURE
 
 ### 1. The Tri-Mind Topology (Split-Brain Execution)
 Uphill Snowball separates the control plane from the data plane.
@@ -56,8 +56,8 @@ Because Uphill Snowball is operated by a Solo-Founder (Tiny Teams Thesis) operat
 3. Automatically execute follow-ups if the CEO prompts "Yes", or persist in raising critical unaddressed choices.
 
 ### Strategic Filters (The Cockpit)
-Agents must filter features using McKinsey Horizons and the VRIO framework: 
-* If a proposed application element does not multiply income without multiplying effort (LTV:CAC >= 4:1 within 12 months), it is discarded. 
+Agents must filter features using McKinsey Horizons and the VRIO framework:
+* If a proposed application element does not multiply income without multiplying effort (LTV:CAC >= 4:1 within 12 months), it is discarded.
 
 ---
 

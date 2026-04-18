@@ -26,7 +26,7 @@ while IFS= read -r repo_path; do
   [ -z "$repo_path" ] && continue
 
   dirname=$(basename "$repo_path")
-  
+
   # Check against skip list
   skip_repo=false
   for skip in "${SKIP_LIST[@]}"; do
@@ -35,7 +35,7 @@ while IFS= read -r repo_path; do
       break
     fi
   done
-  
+
   if [ "$skip_repo" = true ]; then
     echo "[$((++count))/$total] EXPLICITLY SKIPPED $dirname (Heavy)" | tee -a "$LOG_FILE"
     continue
@@ -43,9 +43,9 @@ while IFS= read -r repo_path; do
 
   if [ -d "$repo_path" ]; then
     target="$TARGET_BASE/$dirname"
-    
+
     ((count++))
-    
+
     if [ -d "$target" ]; then
       # Silent skip for existing
       :

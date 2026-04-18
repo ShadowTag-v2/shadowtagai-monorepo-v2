@@ -1,4 +1,4 @@
-## 
+##
 
 The Google Cloud client library for the .
 
@@ -21,5 +21,3 @@ The Google Cloud client library for the .
 ## What's this?
 
 The Google Cloud client library for the .
-
-

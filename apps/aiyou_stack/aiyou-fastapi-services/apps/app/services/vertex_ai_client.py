@@ -196,7 +196,9 @@ class VertexAIClient:
         return results, total_tokens
 
     async def generate_embeddings(
-        self, texts: list[str], model: str = "textembedding-gecko@003",
+        self,
+        texts: list[str],
+        model: str = "textembedding-gecko@003",
     ) -> tuple[list[list[float]], int]:
         """Generate embeddings for semantic search
 
@@ -234,7 +236,8 @@ class VertexAIClient:
             for i in range(0, len(texts), batch_size):
                 batch = texts[i : i + batch_size]
                 embeddings = await asyncio.get_event_loop().run_in_executor(
-                    None, lambda: model_instance.get_embeddings(batch),
+                    None,
+                    lambda: model_instance.get_embeddings(batch),
                 )
                 all_embeddings.extend([emb.values for emb in embeddings])
 
@@ -260,7 +263,10 @@ class VertexAIClient:
         return dot_product / (norm_a * norm_b) if norm_a > 0 and norm_b > 0 else 0.0
 
     async def find_most_similar(
-        self, query: str, candidates: list[str], top_k: int = 10,
+        self,
+        query: str,
+        candidates: list[str],
+        top_k: int = 10,
     ) -> list[tuple[str, float, int]]:
         """Find top-K most similar texts
 

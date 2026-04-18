@@ -2,24 +2,24 @@
 
 ## Patient and Specimen Information
 
-**Patient Name:** [Last, First]  
-**Medical Record Number:** [MRN]  
-**Date of Birth:** [MM/DD/YYYY]  
-**Age:** [years]  
+**Patient Name:** [Last, First]
+**Medical Record Number:** [MRN]
+**Date of Birth:** [MM/DD/YYYY]
+**Age:** [years]
 **Sex:** [M/F]
 
-**Accession Number:** [PathologyAccessionNumber]  
-**Specimen Received:** [Date and time]  
+**Accession Number:** [PathologyAccessionNumber]
+**Specimen Received:** [Date and time]
 **Report Date:** [Date]
 
-**Ordering Physician:** [Name]  
+**Ordering Physician:** [Name]
 **Clinical Service:** [Department]
 
 ---
 
 ## Specimen(s) Submitted
 
-**Specimen A:** [Description of specimen]  
+**Specimen A:** [Description of specimen]
 Example: "Skin, left forearm, excisional biopsy"
 
 **Specimen B:** [If multiple specimens]
@@ -55,11 +55,11 @@ Example: "72-year-old woman with enlarging pigmented lesion on left forearm. Cli
 **Example:**
 ```
 Specimen A labeled "Skin, left forearm, excisional biopsy":
-Received fresh is an oriented ellipse of skin measuring 3.5 x 1.2 x 0.8 cm with a 
-suture indicating superior. The epidermis contains a 1.1 cm diameter irregularly 
-pigmented lesion located 1.5 cm from superior, 1.2 cm from inferior, 0.8 cm from  
-medial, and 1.2 cm from lateral margins. Inking: superior blue, inferior black, 
-medial green, lateral red, deep yellow. Serially sectioned perpendicular to long 
+Received fresh is an oriented ellipse of skin measuring 3.5 x 1.2 x 0.8 cm with a
+suture indicating superior. The epidermis contains a 1.1 cm diameter irregularly
+pigmented lesion located 1.5 cm from superior, 1.2 cm from inferior, 0.8 cm from
+medial, and 1.2 cm from lateral margins. Inking: superior blue, inferior black,
+medial green, lateral red, deep yellow. Serially sectioned perpendicular to long
 axis into 10 slices. Entirely submitted in cassettes A1-A4.
 ```
 
@@ -83,12 +83,12 @@ axis into 10 slices. Entirely submitted in cassettes A1-A4.
 
 **Example:**
 ```
-Sections show skin with an asymmetric melanocytic proliferation composed of 
-epithelioid and spindled melanocytes arranged in irregular nests at the 
+Sections show skin with an asymmetric melanocytic proliferation composed of
+epithelioid and spindled melanocytes arranged in irregular nests at the
 dermoepidermal junction with extension into the papillary and reticular dermis.
 Melanocytes show marked cytologic atypia with nuclear enlargement, hyperchromasia,
-and prominent nucleoli. Mitotic activity is present with 4 mitoses per mm². 
-No ulceration identified. The lesion extends to a Breslow depth of 1.8 mm 
+and prominent nucleoli. Mitotic activity is present with 4 mitoses per mm².
+No ulceration identified. The lesion extends to a Breslow depth of 1.8 mm
 (Clark level IV). Margins are free of tumor (closest margin: deep, 0.3 cm).
 ```
 
@@ -172,9 +172,9 @@ Additional Findings: [Other relevant findings]
 
 **Example:**
 ```
-The morphologic and immunohistochemical findings are diagnostic of melanoma. The 
+The morphologic and immunohistochemical findings are diagnostic of melanoma. The
 Breslow thickness of 1.8 mm places this tumor in the T2 category (AJCC 8th edition).
-Sentinel lymph node biopsy is recommended for staging. BRAF mutation testing may be 
+Sentinel lymph node biopsy is recommended for staging. BRAF mutation testing may be
 considered for treatment planning. Close clinical follow-up is recommended.
 ```
 
@@ -182,14 +182,14 @@ considered for treatment planning. Close clinical follow-up is recommended.
 
 ## Signature
 
-**Pathologist:**  
-[Name, MD]  
-[Board Certification]  
+**Pathologist:**
+[Name, MD]
+[Board Certification]
 [License number]
 
 **Electronically signed:** [Date and time]
 
-**Gross examination by:** [Name, credentials]  
+**Gross examination by:** [Name, credentials]
 **Microscopic examination by:** [Name, MD]
 
 ---
@@ -236,14 +236,12 @@ considered for treatment planning. Close clinical follow-up is recommended.
 
 **Frozen Section Diagnosis:**
 
-**Specimen:** [Description]  
-**Clinical Question:** [Reason for frozen]  
-**Frozen Section Diagnosis:** [Diagnosis given intraoperatively]  
-**Time:** [Time reported]  
+**Specimen:** [Description]
+**Clinical Question:** [Reason for frozen]
+**Frozen Section Diagnosis:** [Diagnosis given intraoperatively]
+**Time:** [Time reported]
 **Pathologist:** [Name]
 
 **Note:** Permanent sections to follow.
 
 **Final Diagnosis:** [State if concordant or discordant with frozen]
-
-

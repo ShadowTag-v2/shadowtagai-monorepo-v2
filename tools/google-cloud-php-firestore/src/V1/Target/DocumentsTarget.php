@@ -76,4 +76,3 @@ class DocumentsTarget extends \Google\Protobuf\Internal\Message
     }
 
 }
-

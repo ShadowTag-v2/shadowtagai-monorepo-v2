@@ -79,8 +79,8 @@ client, err := core.NewToolboxClient("http://localhost:5000")
 
 All interactions for loading and invoking tools happen through this client.
 
-{{< notice note >}} 
-For advanced use cases, you can provide an external custom `http.Client` during initialization (e.g., `core.NewToolboxClient(URL, core.WithHTTPClient(myClient)`). 
+{{< notice note >}}
+For advanced use cases, you can provide an external custom `http.Client` during initialization (e.g., `core.NewToolboxClient(URL, core.WithHTTPClient(myClient)`).
 If you provide your own session, you are responsible for managing its lifecycle; `ToolboxClient` *will not* close it.
 {{< /notice >}}
 
@@ -442,7 +442,7 @@ You do not need to modify the tool's configuration in the Toolbox service to bin
 
 #### Option A: Add Default Bound Parameters to a Client
 
-You can add default tool level bound parameters to a client. Every tool / toolset  
+You can add default tool level bound parameters to a client. Every tool / toolset
 loaded by the client will have the bound parameter.
 
 ```go

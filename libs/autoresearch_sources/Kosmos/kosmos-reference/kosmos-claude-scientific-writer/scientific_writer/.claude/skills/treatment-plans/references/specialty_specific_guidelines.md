@@ -649,7 +649,6 @@ This reference provides detailed guidelines for developing treatment plans speci
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: January 2025  
+**Document Version**: 1.0
+**Last Updated**: January 2025
 **Next Review**: January 2026
-

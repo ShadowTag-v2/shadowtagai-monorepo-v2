@@ -55,8 +55,7 @@ class MemoryAsAService:
         return extracted_memory
 
     async def inject_context(self, attorney_id: str, case_id: str, current_prompt: str) -> str:
-        """Injects the persisted memory directly into the Zero-Touch context window.
-        """
+        """Injects the persisted memory directly into the Zero-Touch context window."""
         logger.debug(f"MaaS: Retrieving continuous memory state for Case {case_id}")
         historical_context = "MEMORY CONTEXT: None retrieved."
 

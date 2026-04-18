@@ -1,5 +1,4 @@
-"""Verification Script for Pnkln Ingestion
-"""
+"""Verification Script for Pnkln Ingestion"""
 
 import os
 import sys

@@ -78,9 +78,7 @@ class ToolboxSyncClient:
                 telemetry_enabled=telemetry_enabled,
             )
 
-        self.__async_client = run_coroutine_threadsafe(
-            create_client(), self.__class__.__loop
-        ).result()
+        self.__async_client = run_coroutine_threadsafe(create_client(), self.__class__.__loop).result()
 
     def close(self):
         """
@@ -93,12 +91,8 @@ class ToolboxSyncClient:
     def load_tool(
         self,
         name: str,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ] = {},
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ] = {},
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]] = {},
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any] = {},
     ) -> ToolboxSyncTool:
         """
         Synchronously loads a tool from the server.
@@ -130,12 +124,8 @@ class ToolboxSyncClient:
     def load_toolset(
         self,
         name: str | None = None,
-        auth_token_getters: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]]
-        ] = {},
-        bound_params: Mapping[
-            str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any
-        ] = {},
+        auth_token_getters: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]]] = {},
+        bound_params: Mapping[str, Callable[[], Any] | Callable[[], Awaitable[Any]] | Any] = {},
         strict: bool = False,
     ) -> list[ToolboxSyncTool]:
         """
@@ -160,27 +150,18 @@ class ToolboxSyncClient:
         Raises:
             ValueError: If validation fails based on the `strict` flag.
         """
-        coro = self.__async_client.load_toolset(
-            name, auth_token_getters, bound_params, strict
-        )
+        coro = self.__async_client.load_toolset(name, auth_token_getters, bound_params, strict)
 
         if not self.__loop or not self.__thread:
             raise ValueError("Background loop or thread cannot be None.")
 
         async_tools = run_coroutine_threadsafe(coro, self.__loop).result()
-        return [
-            ToolboxSyncTool(async_tool, self.__loop, self.__thread)
-            for async_tool in async_tools
-        ]
+        return [ToolboxSyncTool(async_tool, self.__loop, self.__thread) for async_tool in async_tools]
 
-    @deprecated(
-        "Use the `client_headers` parameter in the ToolboxClient constructor instead."
-    )
+    @deprecated("Use the `client_headers` parameter in the ToolboxClient constructor instead.")
     def add_headers(
         self,
-        headers: Mapping[
-            str, Callable[[], str] | Callable[[], Awaitable[str]] | str
-        ],
+        headers: Mapping[str, Callable[[], str] | Callable[[], Awaitable[str]] | str],
     ) -> None:
         """
         Add headers to be included in each request sent through this client.

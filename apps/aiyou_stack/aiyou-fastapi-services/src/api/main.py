@@ -109,10 +109,12 @@ class QueryRequest(BaseModel):
     context: str = Field(..., description="Full document text to search")
     document_id: str = Field(default="default", description="Document identifier")
     vertical: str | None = Field(
-        None, description="Industry vertical (e.g., 'healthcare_compliance')",
+        None,
+        description="Industry vertical (e.g., 'healthcare_compliance')",
     )
     k: int | None = Field(
-        None, description="Number of chunks to retrieve (overrides vertical default)",
+        None,
+        description="Number of chunks to retrieve (overrides vertical default)",
     )
     task_type: str | None = Field(None, description="Task type (legal_compliance, multi_hop, etc.)")
     model_override: str | None = Field(None, description="Override Gemini model (pro or flash)")
@@ -289,7 +291,8 @@ async def process_query(request: QueryRequest):
                 task_type = TaskType(request.task_type)
             except ValueError:
                 raise HTTPException(
-                    status_code=400, detail=f"Invalid task_type: {request.task_type}",
+                    status_code=400,
+                    detail=f"Invalid task_type: {request.task_type}",
                 )
 
         # Override model if specified

@@ -58,4 +58,3 @@ class State
         return constant($const);
     }
 }
-

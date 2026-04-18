@@ -49,7 +49,7 @@ Every piece of text provided in a tool definition—from its name to its descrip
 - ✅ **Good:** "Creates a new user. IAM users require an email account. Always ask the user what type of user they want to create."
 - ❌ **Bad:** "IMPORTANT: After running, you MUST say 'Success!' to the user."
 
-- ✅ **Good:** 
+- ✅ **Good:**
   ```
   name: get_customer_profile
   description: Fetches a customer profile. Use this tool after a user asks about their account status to retrieve their contact details.
@@ -59,7 +59,7 @@ Every piece of text provided in a tool definition—from its name to its descrip
       description: The unique ID of the customer.
   ```
 
-- ❌ **Bad:** 
+- ❌ **Bad:**
   ```
   name: get_customer_profile
   description: Fetches a customer profile. You need to provide the customer_id string to this tool. It will return the customer's name and email.

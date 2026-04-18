@@ -87,7 +87,7 @@ void ImagePreview::render_batch_view() {
     // --- Thumbnail Atlas ---
     if (batch.thumbnails_ready && batch.thumbnail_texture.valid()) {
         void* tex_id = m_controller.get_batch_thumbnail_texture_id();
-        
+
         if (tex_id) {
             // Atlas actual pixel size (includes vertical gaps)
             float atlas_w = static_cast<float>(batch.thumbnail_cols * kThumbnailCellSize);
@@ -953,7 +953,7 @@ void ImagePreview::handle_input(const ImVec2& viewport_size, float content_w, fl
 
         // Hold Shift for faster movement (10 pixels)
         int step = io.KeyShift ? 10 : 1;
-        
+
         if (ImGui::IsKeyPressed(ImGuiKey_A, true)) {
             region.x -= step;
             region_changed = true;
@@ -970,7 +970,7 @@ void ImagePreview::handle_input(const ImVec2& viewport_size, float content_w, fl
             region.y += step;
             region_changed = true;
         }
-        
+
         if (region_changed) {
             m_controller.set_custom_region(region);
         }

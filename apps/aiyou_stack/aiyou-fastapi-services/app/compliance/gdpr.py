@@ -34,7 +34,8 @@ class GDPRCompliance(CCPACompliance):
         from .ccpa import DataExportFormat
 
         return await self.process_access_request(
-            f"GDPR-{user_id}", export_format=DataExportFormat.JSON,
+            f"GDPR-{user_id}",
+            export_format=DataExportFormat.JSON,
         )
 
     async def check_consent(self, user_id: str, purpose: str) -> bool:

@@ -153,7 +153,10 @@ class EconomicJuggernaut:
     # =========================================================================
 
     def _create_proposal(
-        self, tenant_id: str, opt_type: OptimizationType, opportunity: dict[str, Any],
+        self,
+        tenant_id: str,
+        opt_type: OptimizationType,
+        opportunity: dict[str, Any],
     ) -> ValueProposal:
         """Create a value proposal from an identified opportunity"""
         proposal_id = self._generate_id(f"{tenant_id}:{opt_type}:{datetime.utcnow()}")
@@ -185,7 +188,9 @@ class EconomicJuggernaut:
     # =========================================================================
 
     async def implement_proposal(
-        self, proposal_id: str, force: bool = False,
+        self,
+        proposal_id: str,
+        force: bool = False,
     ) -> ImplementationResult:
         """Implement a value proposal.
         Changes are invisible to end users - they just see better results.

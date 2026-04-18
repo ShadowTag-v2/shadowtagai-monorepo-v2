@@ -9,7 +9,7 @@ Verify that ALL of the following identifiers have been removed or altered:
 - [ ] **2. Geographic subdivisions smaller than state**
   - No street addresses
   - No cities (unless >20,000 population and part of ZIP can be kept if >20,000)
-  - No counties  
+  - No counties
   - First 3 digits of ZIP code acceptable only if geographic unit >20,000 people
   - All other portions of ZIP codes removed
 
@@ -359,8 +359,8 @@ Notification must include:
 
 ## Final Compliance Verification
 
-**Reviewed by:** ____________________  
-**Date:** ____________________  
+**Reviewed by:** ____________________
+**Date:** ____________________
 **Signature:** ____________________
 
 **Compliance Status:** [ ] Compliant  [ ] Needs revision  [ ] Not compliant
@@ -373,7 +373,7 @@ Notification must include:
 1. [Action]
 2. [Action]
 
-**Re-review required:** [ ] Yes  [ ] No  
+**Re-review required:** [ ] Yes  [ ] No
 **Re-review date:** ____________________
 
 ---
@@ -391,5 +391,3 @@ Keep on file:
 - [ ] Audit logs
 
 **Retention period:** Minimum 6 years per HIPAA requirement
-
-

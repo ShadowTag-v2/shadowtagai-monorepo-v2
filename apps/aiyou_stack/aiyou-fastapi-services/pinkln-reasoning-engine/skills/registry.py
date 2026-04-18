@@ -82,7 +82,9 @@ class SkillRegistry:
         return sorted_skills[:n]
 
     def recommend_skill(
-        self, task: str, context: dict[str, Any] | None = None,
+        self,
+        task: str,
+        context: dict[str, Any] | None = None,
     ) -> SkillRecommendation:
         """Recommend best skill for a task
 

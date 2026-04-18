@@ -21,7 +21,8 @@ style_judge = LlmAgent(
 
 # 2. Fan-Out (The Swarm)
 judge_swarm = ParallelAgent(
-    name="JudgeSixSwarm", sub_agents=[security_judge, performance_judge, style_judge],
+    name="JudgeSixSwarm",
+    sub_agents=[security_judge, performance_judge, style_judge],
 )
 
 # 3. The Synthesizer (The Verdict)

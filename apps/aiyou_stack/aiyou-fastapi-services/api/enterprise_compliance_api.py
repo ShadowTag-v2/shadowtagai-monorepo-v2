@@ -133,7 +133,8 @@ class ComplianceCertificateRequest(BaseModel):
 
     # Regulatory context
     frameworks: list[str] = Field(
-        default=["EU_AI_ACT", "NIST_RMF", "ISO_42001"], description="Frameworks to validate against",
+        default=["EU_AI_ACT", "NIST_RMF", "ISO_42001"],
+        description="Frameworks to validate against",
     )
     jurisdiction: str = Field(default="global", description="Primary jurisdiction")
 
@@ -322,7 +323,8 @@ class EnterpriseComplianceEngine:
         self.total_tokens_saved = 0
 
     async def generate_certificate(
-        self, request: ComplianceCertificateRequest,
+        self,
+        request: ComplianceCertificateRequest,
     ) -> ComplianceCertificate:
         """Generate compliance certificate with blockchain verification"""
         start_time = time.time()
@@ -452,7 +454,11 @@ class EnterpriseComplianceEngine:
                 conditional += 1
 
             results.append(
-                {"item_id": item.get("id", str(uuid.uuid4())[:8]), "status": status, "score": score},
+                {
+                    "item_id": item.get("id", str(uuid.uuid4())[:8]),
+                    "status": status,
+                    "score": score,
+                },
             )
 
         tokens_saved = estimated_single_tokens - actual_tokens

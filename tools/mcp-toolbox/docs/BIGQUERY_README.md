@@ -37,7 +37,7 @@ An editor configured to use the BigQuery MCP server can use its AI capabilities 
 You'll now be able to see all enabled tools in the "Tools" tab.
 
 
-### Usage 
+### Usage
 
 Once configured, the MCP server will automatically provide BigQuery capabilities to your AI assistant. You can:
 

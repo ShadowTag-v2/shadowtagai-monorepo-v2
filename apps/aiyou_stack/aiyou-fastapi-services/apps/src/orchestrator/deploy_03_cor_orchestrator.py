@@ -41,7 +41,8 @@ except ImportError:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -83,7 +84,9 @@ class COROrchestrator:
         logger.info(f"Initialized Gemini model: {model_name}")
 
     def generate_orchestration_plan(
-        self, task_description: str, context: dict[str, Any] | None = None,
+        self,
+        task_description: str,
+        context: dict[str, Any] | None = None,
     ) -> OrchestrationPlan:
         """Generate a structured orchestration plan (NOT executable code)
 

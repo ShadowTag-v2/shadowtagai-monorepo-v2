@@ -42,7 +42,11 @@ PR_COMMENT:
 
 
 async def review_pr(
-    github_url: str, repo_name: str, model: str, api_key: str, github_token: str,
+    github_url: str,
+    repo_name: str,
+    model: str,
+    api_key: str,
+    github_token: str,
 ) -> dict[str, Any]:
     """Review the PR and add a comment if needed.
 
@@ -68,7 +72,9 @@ async def review_pr(
     client = anthropic.Anthropic(api_key=api_key)
 
     message = client.messages.create(
-        model=model, max_tokens=1000, messages=[{"role": "user", "content": prompt}],
+        model=model,
+        max_tokens=1000,
+        messages=[{"role": "user", "content": prompt}],
     )
 
     content = message.content[0].text
@@ -119,7 +125,8 @@ async def _post_github_comment(github_url: str, repo_name: str, comment: str, to
     async with httpx.AsyncClient(timeout=30.0) as client:
         # Get latest commit on branch
         ref_resp = await client.get(
-            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}", headers=headers,
+            f"https://api.github.com/repos/{repo_name}/git/ref/heads/{branch}",
+            headers=headers,
         )
 
         if ref_resp.status_code != 200:

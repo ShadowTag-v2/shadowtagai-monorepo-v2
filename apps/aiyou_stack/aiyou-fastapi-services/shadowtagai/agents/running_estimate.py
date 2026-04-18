@@ -328,7 +328,10 @@ def main():
             queued = np.random.poisson(100)
 
             manager.update(
-                latencies=latencies, errors=errors, tasks_completed=completed, tasks_queued=queued,
+                latencies=latencies,
+                errors=errors,
+                tasks_completed=completed,
+                tasks_queued=queued,
             )
 
             time.sleep(0.1)

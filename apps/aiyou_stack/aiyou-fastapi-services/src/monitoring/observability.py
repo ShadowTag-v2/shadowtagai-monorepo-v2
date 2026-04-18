@@ -212,7 +212,8 @@ class ObservabilityManager:
                 if decision.requires_escalation:
                     span.set_attribute("decision.escalated", True)
                     span.set_attribute(
-                        "decision.escalation_reason", decision.escalation_reason or "",
+                        "decision.escalation_reason",
+                        decision.escalation_reason or "",
                     )
 
         except Exception as e:

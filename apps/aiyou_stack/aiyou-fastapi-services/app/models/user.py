@@ -48,28 +48,41 @@ class User(Base):
 
     # Security
     is_locked: Mapped[bool] = mapped_column(
-        Boolean, default=False, nullable=False, comment="Account locked due to suspicious activity",
+        Boolean,
+        default=False,
+        nullable=False,
+        comment="Account locked due to suspicious activity",
     )
     failed_login_attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     last_login: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
     # Subscription (for revenue)
     subscription_tier: Mapped[str] = mapped_column(
-        String(50), default="free", nullable=False, comment="free, pro, or enterprise",
+        String(50),
+        default="free",
+        nullable=False,
+        comment="free, pro, or enterprise",
     )
 
     # Audit
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False,
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow,
+        nullable=False,
     )
     deleted_at: Mapped[datetime | None] = mapped_column(
-        DateTime, nullable=True, comment="Soft delete timestamp",
+        DateTime,
+        nullable=True,
+        comment="Soft delete timestamp",
     )
 
     # Relationships
     subscriptions: Mapped[list[Subscription]] = relationship(
-        "Subscription", back_populates="user", lazy="selectin",
+        "Subscription",
+        back_populates="user",
+        lazy="selectin",
     )
 
     def __repr__(self) -> str:

@@ -117,4 +117,3 @@ class SourceInfo extends \Google\Protobuf\Internal\Message
     }
 
 }
-

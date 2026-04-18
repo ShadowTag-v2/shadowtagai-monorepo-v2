@@ -23,7 +23,7 @@ public class Program
                 // In production: var db = ConnectionMultiplexer.Connect("...").GetDatabase();
                 var tableId = toolArgs["table_id"]?.ToString();
                 var userId = toolArgs["user_id"]?.ToString();
-                
+
                 if (string.IsNullOrEmpty(tableId) || string.IsNullOrEmpty(userId))
                     return "ERROR: Missing parameters";
 

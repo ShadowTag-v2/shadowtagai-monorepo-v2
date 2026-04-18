@@ -241,8 +241,7 @@ class DeployReadyOrchestrator:
         idea: str,
         framework: str,
     ) -> dict[str, Any]:
-        """PROMPT 1: IDEA - Generate design spec using Gemini 3 Pro.
-        """
+        """PROMPT 1: IDEA - Generate design spec using Gemini 3 Pro."""
         design_spec = await self._gemini.design_component(
             description=idea,
             framework=framework,
@@ -261,8 +260,7 @@ class DeployReadyOrchestrator:
         design: dict[str, Any],
         framework: str,
     ) -> ScaffoldResult:
-        """PROMPT 2: SCAFFOLD - Generate project structure.
-        """
+        """PROMPT 2: SCAFFOLD - Generate project structure."""
         project_name = design.get("component_name", "project").lower().replace(" ", "_")
 
         # Generate appropriate structure based on framework
@@ -390,8 +388,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
         design: dict[str, Any],
         scaffold: ScaffoldResult,
     ) -> ImplementationResult:
-        """PROMPT 3: IMPLEMENT - Build core features via atomic pipeline.
-        """
+        """PROMPT 3: IMPLEMENT - Build core features via atomic pipeline."""
         start_time = datetime.utcnow()
 
         # Run the atomic pipeline
@@ -425,8 +422,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
         implementation: ImplementationResult,
         framework: str,
     ) -> TestResult:
-        """PROMPT 4: TEST - Generate comprehensive tests.
-        """
+        """PROMPT 4: TEST - Generate comprehensive tests."""
         test_framework = "pytest" if framework != "react" else "jest"
         test_files = []
         tests_generated = 0
@@ -457,8 +453,7 @@ CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
         tests: TestResult,
         target: DeployTarget,
     ) -> DeploymentResult:
-        """PROMPT 5: DEPLOY - Push to production target.
-        """
+        """PROMPT 5: DEPLOY - Push to production target."""
         artifacts = []
         logs = []
 

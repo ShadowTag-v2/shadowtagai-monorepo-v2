@@ -298,7 +298,9 @@ class ISO42001Module(ComplianceModule):
         ]
 
     async def assess_control(
-        self, control: ControlDefinition, input_data: AssessmentInput,
+        self,
+        control: ControlDefinition,
+        input_data: AssessmentInput,
     ) -> ControlResult:
         """Assess a single ISO 42001 control."""
         metadata = input_data.metadata
@@ -415,7 +417,10 @@ class ISO42001Module(ComplianceModule):
         return RiskTier.MINIMAL
 
     async def _check_validation_rule(
-        self, rule: ValidationRule, content: str, context: str | None,
+        self,
+        rule: ValidationRule,
+        content: str,
+        context: str | None,
     ) -> ValidationViolation | None:
         """Check ISO 42001 validation rules."""
         content_lower = content.lower()

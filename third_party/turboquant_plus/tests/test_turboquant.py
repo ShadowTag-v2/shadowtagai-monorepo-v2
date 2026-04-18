@@ -33,10 +33,7 @@ class TestTurboQuantRoundTrip:
             mse_total += np.mean((x - x_hat) ** 2)
 
         avg_mse = mse_total / n_samples
-        assert avg_mse < expected_mse[bit_width] * 3.0, (
-            f"MSE {avg_mse:.5f} exceeds 3× paper bound {expected_mse[bit_width]} "
-            f"at d={d}, b={bit_width}"
-        )
+        assert avg_mse < expected_mse[bit_width] * 3.0, f"MSE {avg_mse:.5f} exceeds 3× paper bound {expected_mse[bit_width]} at d={d}, b={bit_width}"
 
     @pytest.mark.parametrize("bit_width", [2, 3, 4])
     def test_inner_product_preservation(self, bit_width):
@@ -72,9 +69,7 @@ class TestTurboQuantRoundTrip:
         # Paper bound is on E[|error|²] for single-side quantization.
         # We quantize BOTH sides and measure |error| (not squared), so bound is looser.
         # Use empirical sanity check: avg absolute IP error should be < 0.5 for any b≥2
-        assert avg_ip_error < 0.5, (
-            f"Avg IP error {avg_ip_error:.6f} unreasonably high at d={d}, b={bit_width}"
-        )
+        assert avg_ip_error < 0.5, f"Avg IP error {avg_ip_error:.6f} unreasonably high at d={d}, b={bit_width}"
 
     def test_bit_width_1_raises(self):
         """TurboQuant requires bit_width >= 2."""

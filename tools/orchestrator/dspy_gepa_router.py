@@ -92,18 +92,12 @@ class GEPARouter:
 
         # Phase 2: Audit via 31B only if needed
         # Simple heuristic: short drafts or drafts with "TODO" need audit
-        needs_audit = (
-            len(draft_text) < 50
-            or "TODO" in draft_text.upper()
-            or "FIXME" in draft_text.upper()
-        )
+        needs_audit = len(draft_text) < 50 or "TODO" in draft_text.upper() or "FIXME" in draft_text.upper()
 
         if needs_audit:
             heavy = dspy.LM(model=HEAVY_MODEL, api_base=HEAVY_31B_ENDPOINT)
             with dspy.context(lm=heavy):
-                audit_module = dspy.ChainOfThought(
-                    "task, draft -> confidence_score, final_code_payload"
-                )
+                audit_module = dspy.ChainOfThought("task, draft -> confidence_score, final_code_payload")
                 final = audit_module(task=task, draft=draft_text)
 
             return GEPAResult(

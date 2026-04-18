@@ -69,7 +69,10 @@ class CorOrchestrator:
         logger.info(f"Registered executor: {name}")
 
     async def execute_pipeline(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
+        self,
+        pipeline_name: str,
+        context: ExecutionContext,
+        input_data: Any,
     ) -> Any:
         """Execute registered pipeline by name."""
         if pipeline_name not in self.pipelines:
@@ -101,7 +104,9 @@ class CorOrchestrator:
     ) -> ExecutionContext:
         """Create execution context for request."""
         return ExecutionContext(
-            request_id=request_id, latency_budget_ms=latency_budget_ms, metadata=metadata or {},
+            request_id=request_id,
+            latency_budget_ms=latency_budget_ms,
+            metadata=metadata or {},
         )
 
     # ========================================================================
@@ -113,7 +118,11 @@ class CorOrchestrator:
         self.tool_registry.register_tool(name, description, func)
 
     async def execute_with_tool_selection(
-        self, context: ExecutionContext, query: str, input_data: Any, top_k: int = 3,
+        self,
+        context: ExecutionContext,
+        query: str,
+        input_data: Any,
+        top_k: int = 3,
     ) -> Any:
         """Execute using dynamically selected tools (DeepAgent pattern)."""
         tools = self.tool_registry.retrieve_tools(query, top_k=top_k)
@@ -125,7 +134,9 @@ class CorOrchestrator:
 
         best_tool_name, score = tools[0]
         result, latency_ms = await self.tool_registry.execute_tool(
-            best_tool_name, context, input_data,
+            best_tool_name,
+            context,
+            input_data,
         )
 
         importance = score
@@ -134,7 +145,10 @@ class CorOrchestrator:
         return result
 
     async def execute_pipeline_with_memory(
-        self, pipeline_name: str, context: ExecutionContext, input_data: Any,
+        self,
+        pipeline_name: str,
+        context: ExecutionContext,
+        input_data: Any,
     ) -> Any:
         """Execute pipeline and store result in memory."""
         result = await self.execute_pipeline(pipeline_name, context, input_data)
@@ -212,7 +226,9 @@ async def example_usage():
 
     context = orchestrator.create_context("req_001", latency_budget_ms=90.0)
     result = await orchestrator.execute_pipeline(
-        "judge_six", context, {"user_query": "example request"},
+        "judge_six",
+        context,
+        {"user_query": "example request"},
     )
 
     print(f"Result: {result}")
@@ -222,7 +238,8 @@ async def example_usage():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
     asyncio.run(example_usage())
 

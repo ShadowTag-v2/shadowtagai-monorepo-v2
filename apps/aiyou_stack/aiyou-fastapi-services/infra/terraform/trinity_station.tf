@@ -21,7 +21,7 @@ resource "google_storage_bucket" "trinity_knowledge" {
   name          = "trinity-knowledge-vault-${var.project_id}"
   location      = "US"
   force_destroy = true
-  
+
   uniform_bucket_level_access = true
   versioning {
     enabled = true
@@ -35,7 +35,7 @@ resource "google_workstations_workstation_cluster" "trinity_cluster" {
   network                = google_compute_network.trinity_vpc.id
   subnetwork             = google_compute_subnetwork.trinity_subnet.id
   location               = var.region
-  
+
   private_cluster_config {
     enable_private_endpoint = true
   }
@@ -51,9 +51,9 @@ resource "google_workstations_workstation_config" "trinity_config" {
     gce_instance {
       machine_type      = "e2-standard-4" # 4 vCPU, 16GB RAM
       boot_disk_size_gb = 50
-      
+
       # ANTIGRAVITY SECURITY: No Public IP
-      disable_public_ip_addresses = true 
+      disable_public_ip_addresses = true
       service_account             = google_service_account.trinity_sa.email
     }
   }

@@ -1,5 +1,4 @@
-"""PSO-NN Core: Particle and swarm primitives for optimization.
-"""
+"""PSO-NN Core: Particle and swarm primitives for optimization."""
 
 from .fitness import CrossEntropyFitness, FitnessFunction, MSEFitness
 from .particle import Particle, ParticleState

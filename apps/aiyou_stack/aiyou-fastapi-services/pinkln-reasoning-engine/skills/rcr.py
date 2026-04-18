@@ -91,7 +91,10 @@ Critique V2:
 """
 
         super().__init__(
-            name=name, description=description, initial_rating=initial_rating, cheatsheet=cheatsheet,
+            name=name,
+            description=description,
+            initial_rating=initial_rating,
+            cheatsheet=cheatsheet,
         )
 
         self.model = model
@@ -209,7 +212,9 @@ Critique V2:
             issues.append("Could be more concise")
 
         return CritiqueResult(
-            issues=issues, score=score, is_acceptable=score >= self.acceptance_threshold,
+            issues=issues,
+            score=score,
+            is_acceptable=score >= self.acceptance_threshold,
         )
 
     async def _refine(self, task: str, current_response: str, critique: CritiqueResult) -> str:

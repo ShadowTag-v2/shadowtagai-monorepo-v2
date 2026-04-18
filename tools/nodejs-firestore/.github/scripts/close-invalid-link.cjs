@@ -65,7 +65,7 @@ module.exports = async ({ github, context }) => {
                 if (!isValidLink) {
                     await closeIssue(github, owner, repo, number);
                 }
-              }            
+              }
         } catch (err) {
             await closeIssue(github, owner, repo, number);
         }

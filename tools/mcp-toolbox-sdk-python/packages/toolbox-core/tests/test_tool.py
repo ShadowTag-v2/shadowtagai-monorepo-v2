@@ -87,9 +87,7 @@ class MockTransport(ITransport):
 def sample_tool_params() -> list[ParameterSchema]:
     """Parameters for the sample tool."""
     return [
-        ParameterSchema(
-            name="message", type="string", description="A message to process"
-        ),
+        ParameterSchema(name="message", type="string", description="A message to process"),
         ParameterSchema(name="count", type="integer", description="A number"),
     ]
 
@@ -179,19 +177,11 @@ def test_create_func_docstring_one_param_real_schema():
     Tests create_func_docstring with one real ParameterSchema instance.
     """
     description = "This tool does one thing."
-    params = [
-        ParameterSchema(
-            name="input_file", type="string", description="Path to the input file."
-        )
-    ]
+    params = [ParameterSchema(name="input_file", type="string", description="Path to the input file.")]
 
     result_docstring = create_func_docstring(description, params)
 
-    expected_docstring = (
-        "This tool does one thing.\n\n"
-        "Args:\n"
-        "    input_file (str): Path to the input file."
-    )
+    expected_docstring = "This tool does one thing.\n\nArgs:\n    input_file (str): Path to the input file."
 
     assert result_docstring == expected_docstring
 
@@ -203,12 +193,8 @@ def test_create_func_docstring_multiple_params_real_schema():
     description = "This tool does multiple things."
     params = [
         ParameterSchema(name="query", type="string", description="The search query."),
-        ParameterSchema(
-            name="max_results", type="integer", description="Maximum results to return."
-        ),
-        ParameterSchema(
-            name="verbose", type="boolean", description="Enable verbose output."
-        ),
+        ParameterSchema(name="max_results", type="integer", description="Maximum results to return."),
+        ParameterSchema(name="verbose", type="boolean", description="Enable verbose output."),
     ]
 
     result_docstring = create_func_docstring(description, params)
@@ -229,17 +215,11 @@ def test_create_func_docstring_no_description_real_schema():
     Tests create_func_docstring with empty description and one real ParameterSchema.
     """
     description = ""
-    params = [
-        ParameterSchema(
-            name="config_id", type="string", description="The ID of the configuration."
-        )
-    ]
+    params = [ParameterSchema(name="config_id", type="string", description="The ID of the configuration.")]
 
     result_docstring = create_func_docstring(description, params)
 
-    expected_docstring = (
-        "\n\nArgs:\n" "    config_id (str): The ID of the configuration."
-    )
+    expected_docstring = "\n\nArgs:\n    config_id (str): The ID of the configuration."
 
     assert result_docstring == expected_docstring
     assert result_docstring.startswith("\n\nArgs:")
@@ -303,9 +283,7 @@ async def test_tool_creation_callable_and_run(
 
     assert actual_result == expected_tool_result
 
-    transport.tool_invoke_mock.assert_awaited_once_with(
-        TEST_TOOL_NAME, expected_payload, {}
-    )
+    transport.tool_invoke_mock.assert_awaited_once_with(TEST_TOOL_NAME, expected_payload, {})
 
 
 @pytest.mark.asyncio
@@ -427,9 +405,7 @@ def test_tool_init_basic(http_session, sample_tool_params, sample_tool_descripti
             bound_params={},
             client_headers={},
         )
-    assert (
-        len(record) == 0
-    ), f"ToolboxTool instantiation unexpectedly warned: {[f'{w.category.__name__}: {w.message}' for w in record]}"
+    assert len(record) == 0, f"ToolboxTool instantiation unexpectedly warned: {[f'{w.category.__name__}: {w.message}' for w in record]}"
 
     assert tool_instance.__name__ == TEST_TOOL_NAME
     assert inspect.iscoroutinefunction(tool_instance.__call__)
@@ -440,9 +416,7 @@ def test_tool_init_basic(http_session, sample_tool_params, sample_tool_descripti
     assert tool_instance._ToolboxTool__auth_service_token_getters == {}
 
 
-def test_tool_init_with_client_headers(
-    http_session, sample_tool_params, sample_tool_description, static_client_header
-):
+def test_tool_init_with_client_headers(http_session, sample_tool_params, sample_tool_description, static_client_header):
     """Tests tool initialization *with* client headers."""
     transport = MockTransport(HTTPS_BASE_URL)
     tool_instance = ToolboxTool(
@@ -478,13 +452,9 @@ def test_tool_add_auth_token_getters_conflict_with_existing_client_header(
         required_authz_tokens=[],
         auth_service_token_getters={},
         bound_params={},
-        client_headers={
-            "X-Shared-Auth-Token_token": "value_from_initial_client_headers"
-        },
+        client_headers={"X-Shared-Auth-Token_token": "value_from_initial_client_headers"},
     )
-    new_auth_getters_causing_conflict = {
-        "X-Shared-Auth-Token": lambda: "token_value_from_new_getter"
-    }
+    new_auth_getters_causing_conflict = {"X-Shared-Auth-Token": lambda: "token_value_from_new_getter"}
     expected_error_message = (
         "Client header\\(s\\) `X-Shared-Auth-Token_token` already registered in client. "
         "Cannot register client the same headers in the client as well as tool."
@@ -614,9 +584,7 @@ async def test_bind_param_success(
 
     # Verify the payload includes both the argument and the bound parameter
     expected_payload = {"message": "hello", "count": 100}
-    transport.tool_invoke_mock.assert_awaited_once_with(
-        TEST_TOOL_NAME, expected_payload, {}
-    )
+    transport.tool_invoke_mock.assert_awaited_once_with(TEST_TOOL_NAME, expected_payload, {})
 
 
 @pytest.mark.asyncio
@@ -654,18 +622,14 @@ async def test_bind_params_success_with_callable(
     await bound_tool()
 
     expected_payload = {"message": "from-callable", "count": 99}
-    transport.tool_invoke_mock.assert_awaited_once_with(
-        TEST_TOOL_NAME, expected_payload, {}
-    )
+    transport.tool_invoke_mock.assert_awaited_once_with(TEST_TOOL_NAME, expected_payload, {})
 
 
 def test_bind_param_invalid_parameter_name(toolbox_tool: ToolboxTool):
     """
     Tests that binding a parameter that does not exist raises a ValueError.
     """
-    with pytest.raises(
-        ValueError, match="unable to bind parameters: no parameter named invalid_param"
-    ):
+    with pytest.raises(ValueError, match="unable to bind parameters: no parameter named invalid_param"):
         toolbox_tool.bind_param("invalid_param", "some_value")
 
 
@@ -675,9 +639,7 @@ def test_bind_params_rebinding_parameter_fails(toolbox_tool: ToolboxTool):
     """
     tool_with_one_bound_param = toolbox_tool.bind_param("count", 50)
 
-    with pytest.raises(
-        ValueError, match="cannot re-bind parameter: parameter 'count' is already bound"
-    ):
+    with pytest.raises(ValueError, match="cannot re-bind parameter: parameter 'count' is already bound"):
         tool_with_one_bound_param.bind_params({"count": 75})
 
 
@@ -704,9 +666,7 @@ async def test_bind_param_chaining(
     )
 
     # Chain the calls
-    fully_bound_tool = tool.bind_param("count", 42).bind_param(
-        "message", "chained-call"
-    )
+    fully_bound_tool = tool.bind_param("count", 42).bind_param("message", "chained-call")
 
     assert len(fully_bound_tool.__signature__.parameters) == 0
     assert fully_bound_tool._bound_params == {
@@ -719,9 +679,7 @@ async def test_bind_param_chaining(
     tool._ToolboxTool__transport.tool_invoke_mock.return_value = "Success"
     await fully_bound_tool()
 
-    tool._ToolboxTool__transport.tool_invoke_mock.assert_awaited_once_with(
-        TEST_TOOL_NAME, {"count": 42, "message": "chained-call"}, {}
-    )
+    tool._ToolboxTool__transport.tool_invoke_mock.assert_awaited_once_with(TEST_TOOL_NAME, {"count": 42, "message": "chained-call"}, {})
 
 
 @pytest.mark.asyncio
@@ -758,9 +716,7 @@ async def test_tool_call_http_warning(
         transport=transport,
         name=TEST_TOOL_NAME,
         description="A tool",
-        params=[
-            ParameterSchema(name="param1", type="string", description="param1 desc")
-        ],
+        params=[ParameterSchema(name="param1", type="string", description="param1 desc")],
         required_authn_params={},
         required_authz_tokens=[],
         auth_service_token_getters={},
@@ -782,6 +738,4 @@ async def test_tool_call_http_warning(
             await tool(param1="value1")
 
         warning_messages = [str(w.message) for w in record]
-        assert not any(
-            "This connection is using HTTP" in msg for msg in warning_messages
-        )
+        assert not any("This connection is using HTTP" in msg for msg in warning_messages)

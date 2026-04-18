@@ -105,8 +105,8 @@ Tip: For quick iteration, use **Deploy → Test deployments** to get a `/dev` UR
 Create a HTML form like the following, replacing `YOUR_WEBAPP_URL` with the URL you saved from the previous step.
 
 ```html
-<form 
-  method="POST" 
+<form
+  method="POST"
   action="YOUR_WEBAPP_URL"
 >
   <input name="Email" type="email" placeholder="Email" required>
@@ -123,7 +123,7 @@ Now when you submit this form from any location, the data will be saved in the G
 
 _Note: If you want to intercept the submit event so the user isn't redirected to the webapp, [you can do this by attaching a JavaScript event listener to the form submission and creating the `POST` request yourself](https://codepen.io/levinunnink-the-bashful/pen/YzxPyoG?editors=0010)._
 
-## Issues? 
+## Issues?
 
 If you want to submit your HTML forms to Google Sheets without using App scripts, try a free service like [Sheet Monkey](https://sheetmonkey.io), which allows you to do submit forms to Google Sheets without any backend code.
 

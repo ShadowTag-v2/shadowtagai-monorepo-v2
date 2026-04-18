@@ -37,9 +37,11 @@ TABLE_NAME = os.environ.get("LANCEDB_TABLE", "shadowtag_docs")
 
 # ── Data Models ────────────────────────────────────────────────
 
+
 @dataclass
 class Document:
     """A source document to be ingested into the RAG pipeline."""
+
     content: str
     source: str
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -55,6 +57,7 @@ class Document:
 @dataclass
 class Chunk:
     """A text chunk derived from a document."""
+
     text: str
     doc_id: str
     chunk_index: int
@@ -65,6 +68,7 @@ class Chunk:
 @dataclass
 class RetrievalResult:
     """A single retrieval result from the vector store."""
+
     text: str
     source: str
     score: float
@@ -72,6 +76,7 @@ class RetrievalResult:
 
 
 # ── Chunker ────────────────────────────────────────────────────
+
 
 class TextChunker:
     """Split documents into overlapping chunks for embedding."""
@@ -99,13 +104,15 @@ class TextChunker:
 
             chunk_text = text[start:end].strip()
             if chunk_text:
-                chunks.append(Chunk(
-                    text=chunk_text,
-                    doc_id=doc.doc_id,
-                    chunk_index=idx,
-                    source=doc.source,
-                    metadata=doc.metadata,
-                ))
+                chunks.append(
+                    Chunk(
+                        text=chunk_text,
+                        doc_id=doc.doc_id,
+                        chunk_index=idx,
+                        source=doc.source,
+                        metadata=doc.metadata,
+                    )
+                )
                 idx += 1
 
             start = end - self.overlap if end < len(text) else len(text)
@@ -115,6 +122,7 @@ class TextChunker:
 
 
 # ── Embedder ───────────────────────────────────────────────────
+
 
 class Embedder:
     """Generate embeddings using sentence-transformers (local) or Gemini (API)."""
@@ -128,6 +136,7 @@ class Embedder:
         if self._model is None:
             try:
                 from sentence_transformers import SentenceTransformer
+
                 self._model = SentenceTransformer(self.model_name)
                 logger.info(f"Loaded embedding model: {self.model_name}")
             except ImportError:
@@ -147,6 +156,7 @@ class Embedder:
         """Fallback: use Gemini API for embeddings."""
         try:
             import google.generativeai as genai
+
             result = genai.embed_content(
                 model="models/text-embedding-004",
                 content=texts,
@@ -159,6 +169,7 @@ class Embedder:
 
 
 # ── LanceDB Vector Store ───────────────────────────────────────
+
 
 class VectorStore:
     """LanceDB vector store for RAG retrieval."""
@@ -173,6 +184,7 @@ class VectorStore:
         """Connect to LanceDB."""
         if self._db is None:
             import lancedb
+
             os.makedirs(self.db_path, exist_ok=True)
             self._db = lancedb.connect(self.db_path)
             logger.info(f"Connected to LanceDB at {self.db_path}")
@@ -185,14 +197,16 @@ class VectorStore:
         if self.table_name in self._db.list_tables():
             self._table = self._db.open_table(self.table_name)
         else:
-            schema = pa.schema([
-                pa.field("vector", pa.list_(pa.float32(), sample_vector_dim)),
-                pa.field("text", pa.string()),
-                pa.field("doc_id", pa.string()),
-                pa.field("chunk_index", pa.int32()),
-                pa.field("source", pa.string()),
-                pa.field("metadata", pa.string()),
-            ])
+            schema = pa.schema(
+                [
+                    pa.field("vector", pa.list_(pa.float32(), sample_vector_dim)),
+                    pa.field("text", pa.string()),
+                    pa.field("doc_id", pa.string()),
+                    pa.field("chunk_index", pa.int32()),
+                    pa.field("source", pa.string()),
+                    pa.field("metadata", pa.string()),
+                ]
+            )
             self._table = self._db.create_table(self.table_name, schema=schema)
             logger.info(f"Created table '{self.table_name}'")
 
@@ -204,14 +218,16 @@ class VectorStore:
 
         records = []
         for chunk, emb in zip(chunks, embeddings, strict=False):
-            records.append({
-                "vector": emb,
-                "text": chunk.text,
-                "doc_id": chunk.doc_id,
-                "chunk_index": chunk.chunk_index,
-                "source": chunk.source,
-                "metadata": json.dumps(chunk.metadata),
-            })
+            records.append(
+                {
+                    "vector": emb,
+                    "text": chunk.text,
+                    "doc_id": chunk.doc_id,
+                    "chunk_index": chunk.chunk_index,
+                    "source": chunk.source,
+                    "metadata": json.dumps(chunk.metadata),
+                }
+            )
 
         self._table.add(records)
         logger.info(f"Added {len(records)} vectors to '{self.table_name}'")
@@ -222,12 +238,7 @@ class VectorStore:
 
         self._get_or_create_table(len(query_vector))
 
-        results = (
-            self._table
-            .search(query_vector)
-            .limit(top_k)
-            .to_pandas()
-        )
+        results = self._table.search(query_vector).limit(top_k).to_pandas()
 
         return [
             RetrievalResult(
@@ -246,6 +257,7 @@ class VectorStore:
 
 
 # ── RAG Pipeline ───────────────────────────────────────────────
+
 
 class RAGPipeline:
     """End-to-end RAG pipeline: ingest → retrieve → generate."""
@@ -291,13 +303,12 @@ class RAGPipeline:
         """Full RAG: retrieve context + generate answer."""
         results = self.retrieve(question, top_k)
 
-        context = "\n\n---\n\n".join([
-            f"[Source: {r.source}]\n{r.text}" for r in results
-        ])
+        context = "\n\n---\n\n".join([f"[Source: {r.source}]\n{r.text}" for r in results])
 
         # Generate answer using Gemini
         try:
             import google.generativeai as genai
+
             model = genai.GenerativeModel("gemini-2.0-flash")
             prompt = (
                 f"Answer the following question using ONLY the provided context. "
@@ -315,7 +326,9 @@ class RAGPipeline:
         return {
             "question": question,
             "answer": answer,
-            "sources": [{"source": r.source, "score": r.score, "text": r.text[:200]} for r in results],
+            "sources": [
+                {"source": r.source, "score": r.score, "text": r.text[:200]} for r in results
+            ],
             "num_sources": len(results),
         }
 
@@ -332,6 +345,7 @@ class RAGPipeline:
 
 
 # ── CLI Entry Point ────────────────────────────────────────────
+
 
 def main():
     """CLI entry point for the RAG pipeline."""
@@ -367,7 +381,14 @@ def main():
                 docs.append(Document(content=content, source=str(path)))
             elif path.is_dir():
                 for f in path.rglob("*"):
-                    if f.is_file() and f.suffix in {".py", ".md", ".txt", ".yaml", ".json", ".html"}:
+                    if f.is_file() and f.suffix in {
+                        ".py",
+                        ".md",
+                        ".txt",
+                        ".yaml",
+                        ".json",
+                        ".html",
+                    }:
                         content = f.read_text(errors="replace")
                         docs.append(Document(content=content, source=str(f)))
 
@@ -379,6 +400,7 @@ def main():
 
     elif args.command == "query":
         import json
+
         result = pipeline.query(args.question, top_k=args.top_k)
         print(f"\n📝 Answer:\n{result['answer']}\n")
         print(f"📚 Sources ({result['num_sources']}):")
@@ -387,6 +409,7 @@ def main():
 
     elif args.command == "stats":
         import json
+
         stats = pipeline.stats()
         print(json.dumps(stats, indent=2))
 

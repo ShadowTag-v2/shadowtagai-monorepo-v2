@@ -4,11 +4,14 @@ logger = logging.getLogger(__name__)
 
 
 class Glicko2Agent:
-    """Tracks the performance of an individual sub-agent (e.g. Designer, Panel).
-    """
+    """Tracks the performance of an individual sub-agent (e.g. Designer, Panel)."""
 
     def __init__(
-        self, name: str, rating: float = 1500.0, rd: float = 350.0, volatility: float = 0.06,
+        self,
+        name: str,
+        rating: float = 1500.0,
+        rd: float = 350.0,
+        volatility: float = 0.06,
     ):
         self.name = name
         self.rating = rating

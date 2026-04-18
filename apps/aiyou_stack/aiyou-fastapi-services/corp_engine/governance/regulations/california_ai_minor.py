@@ -132,7 +132,9 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def determine_protection_level(
-        self, birth_date: date | None = None, age: int | None = None,
+        self,
+        birth_date: date | None = None,
+        age: int | None = None,
     ) -> MinorProtectionLevel:
         """Determine appropriate protection level based on age.
 
@@ -321,7 +323,10 @@ class CaliforniaAIMinorCompliance:
         return result
 
     def record_parental_consent(
-        self, user_id: str, consent_scope: list[str], verification_method: str,
+        self,
+        user_id: str,
+        consent_scope: list[str],
+        verification_method: str,
     ) -> DataProtectionStatus:
         """Record parental consent for a minor"""
         if user_id not in self._user_records:
@@ -341,7 +346,9 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def _check_data_minimization(
-        self, protection_level: MinorProtectionLevel, data_categories: list[Any],
+        self,
+        protection_level: MinorProtectionLevel,
+        data_categories: list[Any],
     ) -> dict[str, Any]:
         """Check data minimization requirements for minors"""
         result = {
@@ -391,7 +398,9 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def _check_ai_requirements(
-        self, protection_level: MinorProtectionLevel, data: dict[str, Any],
+        self,
+        protection_level: MinorProtectionLevel,
+        data: dict[str, Any],
     ) -> dict[str, Any]:
         """Check AI-specific requirements for content involving minors"""
         violations = []
@@ -461,7 +470,9 @@ class CaliforniaAIMinorCompliance:
     # =========================================================================
 
     def _assess_content_risk(
-        self, content: Any, protection_level: MinorProtectionLevel,
+        self,
+        content: Any,
+        protection_level: MinorProtectionLevel,
     ) -> ContentRisk:
         """Assess content risk for a minor"""
         # In production, this would use content classification AI

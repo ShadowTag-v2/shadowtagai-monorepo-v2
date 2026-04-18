@@ -65,4 +65,3 @@ class BeginTransactionResponse extends \Google\Protobuf\Internal\Message
     }
 
 }
-

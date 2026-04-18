@@ -70,7 +70,8 @@ class ScanRequest(BaseModel):
     session_id: str = Field(..., description="Unique session identifier")
     user_input: str = Field(..., description="User input to validate")
     context: dict[str, Any] = Field(
-        default_factory=dict, description="Session context (ai_disclosure_shown, user_age, etc.)",
+        default_factory=dict,
+        description="Session context (ai_disclosure_shown, user_age, etc.)",
     )
 
 

@@ -136,4 +136,3 @@ class UpdateFieldRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

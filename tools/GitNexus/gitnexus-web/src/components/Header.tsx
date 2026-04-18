@@ -294,4 +294,3 @@ export const Header = ({ onFocusNode, availableRepos = [], onSwitchRepo }: Heade
     </header>
   );
 };
-

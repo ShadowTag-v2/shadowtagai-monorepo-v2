@@ -1426,10 +1426,10 @@ Each tier builds on the same lawful data fabric; revenue scales with government 
 6️⃣  Capitalization Mechanics
 
 Step	Mechanism	Est. Capital In	Target Valuation Out
-Seed Expansion (Phase 5 entry)	Convertible SAFEs → $2 M	$12 M post	
-Series A (Integrations + SaaS)	20 % equity → $15 M	$75 M post	
-Series B (Gov & Fin products)	15 % equity → $40 M	$250 M post	
-Series C (IPO ready)	10 % equity → $100 M	$1 B post	
+Seed Expansion (Phase 5 entry)	Convertible SAFEs → $2 M	$12 M post
+Series A (Integrations + SaaS)	20 % equity → $15 M	$75 M post
+Series B (Gov & Fin products)	15 % equity → $40 M	$250 M post
+Series C (IPO ready)	10 % equity → $100 M	$1 B post
 
 → Total dilution ≈ 45 %; founder net ≈ 55 % of $1 B exit ≈ $550 M.
 

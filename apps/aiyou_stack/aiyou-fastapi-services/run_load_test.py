@@ -107,8 +107,7 @@ class LoadTestRunner:
         return self.run_scenario(scenario, headless)
 
     def run_breaking_point_test(self) -> bool:
-        """Run a breaking point test - incrementally increase load until system breaks
-        """
+        """Run a breaking point test - incrementally increase load until system breaks"""
         print("\n" + "=" * 80)
         print("🔍 BREAKING POINT TEST")
         print("=" * 80)
@@ -271,11 +270,15 @@ Examples:
     )
 
     parser.add_argument(
-        "--list-scenarios", action="store_true", help="List all available scenarios",
+        "--list-scenarios",
+        action="store_true",
+        help="List all available scenarios",
     )
 
     parser.add_argument(
-        "--no-headless", action="store_true", help="Run with web UI instead of headless mode",
+        "--no-headless",
+        action="store_true",
+        help="Run with web UI instead of headless mode",
     )
 
     args = parser.parse_args()

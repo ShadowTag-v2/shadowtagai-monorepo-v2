@@ -57,7 +57,7 @@ def main():
             cosines.append(cos)
         elapsed = time.perf_counter() - t0
 
-        ratio = q.compression_ratio() if hasattr(q, 'compression_ratio') else 16 / bits
+        ratio = q.compression_ratio() if hasattr(q, "compression_ratio") else 16 / bits
 
         print(f"{name:<20} {bits:>10.1f} {ratio:>9.1f}× {np.mean(mses):>12.6f} {np.mean(cosines):>10.6f}")
 

@@ -177,7 +177,10 @@ async def main():
 
     generator = TelemetryGenerator(num_vehicles=args.vehicles)
     await generator.run(
-        api_url=args.url, update_hz=args.hz, duration_seconds=args.duration, batch_size=args.batch,
+        api_url=args.url,
+        update_hz=args.hz,
+        duration_seconds=args.duration,
+        batch_size=args.batch,
     )
 
 

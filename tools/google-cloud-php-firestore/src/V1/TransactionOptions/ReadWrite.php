@@ -66,4 +66,3 @@ class ReadWrite extends \Google\Protobuf\Internal\Message
     }
 
 }
-

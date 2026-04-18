@@ -60,7 +60,7 @@ The most straightforward way to connect to Looker in Antigravity is by using the
 1. Locate **Looker** in the list of available servers and click Install.
 1. Follow the on-screen prompts to securely link your accounts where applicable.
 
-After you install Looker in the MCP Store, resources and tools from the server are automatically available to the editor. 
+After you install Looker in the MCP Store, resources and tools from the server are automatically available to the editor.
 
 {{% /tab %}}
 {{% tab header="Custom config" lang="en" %}}
@@ -69,7 +69,7 @@ After you install Looker in the MCP Store, resources and tools from the server a
 1. Open Antigravity and navigate to the MCP store using the **"..."** drop-down at the top of the editor's agent panel.
 1. To open the **mcp_config.json** file, click **MCP Servers** and then click **Manage MCP Servers > View raw config**.
 1. Add the following configuration, replace the environment variables with your values, and save.
-    
+
     ```json
     {
       "mcpServers": {
@@ -461,7 +461,7 @@ curl -O https://storage.googleapis.com/mcp-toolbox-for-databases/v1.1.0/windows/
     ```json
           "args": ["--stdio", "--prebuilt", "looker,looker-dev"],
     ```
-    
+
     If you want to access tools to develop LookML as well as query data
     and create content, change the following line
     ```json
@@ -471,7 +471,7 @@ curl -O https://storage.googleapis.com/mcp-toolbox-for-databases/v1.1.0/windows/
     ```json
           "args": ["--stdio", "--prebuilt", "looker,looker-dev"],
     ```
-    
+
 
 {{% /tab %}}
 {{< /tabpane >}}

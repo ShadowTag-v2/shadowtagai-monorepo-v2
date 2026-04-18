@@ -99,10 +99,7 @@ def get_tracer(name: str = "toolbox.mcp.sdk", version: str | None = None) -> Tra
         RuntimeError: If OpenTelemetry is not installed
     """
     if not TELEMETRY_AVAILABLE:
-        raise RuntimeError(
-            "Telemetry support requires OpenTelemetry. Install with: "
-            "pip install toolbox-core[telemetry]"
-        )
+        raise RuntimeError("Telemetry support requires OpenTelemetry. Install with: pip install toolbox-core[telemetry]")
     return trace.get_tracer(name, version)
 
 
@@ -125,10 +122,7 @@ def get_meter(name: str = "toolbox.mcp.sdk", version: str | None = None) -> Mete
         RuntimeError: If OpenTelemetry is not installed
     """
     if not TELEMETRY_AVAILABLE:
-        raise RuntimeError(
-            "Telemetry support requires OpenTelemetry. Install with: "
-            "pip install toolbox-core[telemetry]"
-        )
+        raise RuntimeError("Telemetry support requires OpenTelemetry. Install with: pip install toolbox-core[telemetry]")
     return metrics.get_meter(name, version or "")
 
 

@@ -168,7 +168,7 @@ Note the following about providing audio as inline data:
 
 /* Markdown (render)
 ### Refer to timestamps in the audio file
-A prompt can specify timestamps of the form `MM:SS` to refer to particular sections in an audio file. For example: 
+A prompt can specify timestamps of the form `MM:SS` to refer to particular sections in an audio file. For example:
 `prompt = "Generate a transcript of the speech."`
 */
 

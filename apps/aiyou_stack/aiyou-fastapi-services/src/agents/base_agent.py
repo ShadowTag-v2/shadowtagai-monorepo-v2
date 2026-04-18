@@ -23,7 +23,10 @@ class BaseAgent(ABC):
 
     @abstractmethod
     async def process(
-        self, prompt: str, context: dict[str, Any] | None = None, stream: bool = False,
+        self,
+        prompt: str,
+        context: dict[str, Any] | None = None,
+        stream: bool = False,
     ) -> AsyncIterator[str] | dict[str, Any]:
         """Process user request through the agent
 

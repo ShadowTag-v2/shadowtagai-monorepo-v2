@@ -197,7 +197,10 @@ class Whiteboard:
                 self._handle_git_error(e, attempt, max_retries)
 
     def _handle_git_error(
-        self, error: subprocess.CalledProcessError, attempt: int, max_retries: int,
+        self,
+        error: subprocess.CalledProcessError,
+        attempt: int,
+        max_retries: int,
     ) -> None:
         """Handle git failure with retry logic"""
         import random

@@ -103,8 +103,7 @@ Return ONLY valid JSON array, no markdown."""
         genai.configure(api_key=self.api_key)
 
     async def decompose(self, input_text: str) -> list[Atom]:
-        """Atomize input into discrete tasks using Gemini 3 Pro's 2M context.
-        """
+        """Atomize input into discrete tasks using Gemini 3 Pro's 2M context."""
         # Alias for pipeline compatibility
         return await self._atomize_impl(input_text)
 

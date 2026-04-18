@@ -1,5 +1,4 @@
-"""Pydantic models for ingestion layer and intelligence collection.
-"""
+"""Pydantic models for ingestion layer and intelligence collection."""
 
 from datetime import datetime
 from enum import StrEnum

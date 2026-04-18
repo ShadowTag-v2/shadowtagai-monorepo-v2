@@ -19,11 +19,12 @@ from turboquant.qjl import QJL
 @dataclass
 class CompressedVector:
     """Container for a TurboQuant-compressed vector."""
-    mse_indices: np.ndarray   # (d,) or (batch, d) — PolarQuant indices, (b-1)-bit integers
+
+    mse_indices: np.ndarray  # (d,) or (batch, d) — PolarQuant indices, (b-1)-bit integers
     vector_norms: np.ndarray  # scalar or (batch,) — original ||x||_2 for rescaling
-    qjl_signs: np.ndarray     # (d,) or (batch, d) — QJL sign bits, int8 {+1, -1}
-    residual_norms: np.ndarray # scalar or (batch,) — ||residual||_2
-    bit_width: int             # total bits per coordinate
+    qjl_signs: np.ndarray  # (d,) or (batch, d) — QJL sign bits, int8 {+1, -1}
+    residual_norms: np.ndarray  # scalar or (batch,) — ||residual||_2
+    bit_width: int  # total bits per coordinate
 
 
 class TurboQuant:
@@ -48,8 +49,7 @@ class TurboQuant:
             seed: Random seed for both rotation and projection matrices.
         """
         if bit_width < 2:
-            raise ValueError("TurboQuant requires bit_width >= 2 (1 bit PolarQuant + 1 bit QJL). "
-                             "For 1-bit, use QJL directly.")
+            raise ValueError("TurboQuant requires bit_width >= 2 (1 bit PolarQuant + 1 bit QJL). For 1-bit, use QJL directly.")
 
         self.d = d
         self.bit_width = bit_width

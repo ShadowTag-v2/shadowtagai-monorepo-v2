@@ -30,7 +30,10 @@ class PGVectorStore:
         host = self.db_config.get("host")  # Should be the private VPC IP
 
         self.pool = await asyncpg.create_pool(
-            user=user, password=password, database=database, host=host,
+            user=user,
+            password=password,
+            database=database,
+            host=host,
         )
         if self.pool is not None:
             # Register the vector type with the pool
@@ -78,8 +81,7 @@ class PGVectorStore:
         logger.info(f"Ingested {len(documents)} documents securely into Cloud SQL pgvector.")
 
     async def search(self, query: str, limit: int = 5) -> list[dict[str, Any]]:
-        """Perform a native cosine distance search (L2, Inner Product also supported).
-        """
+        """Perform a native cosine distance search (L2, Inner Product also supported)."""
         if not self.pool:
             await self.connect()
 

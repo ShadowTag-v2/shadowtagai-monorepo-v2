@@ -35,9 +35,7 @@ def run_query(query_string):
 def main():
     if len(sys.argv) < 2:
         print('Usage: python3 my_bigquery.py "<SQL_QUERY>"')
-        print(
-            'Example: python3 my_bigquery.py "SELECT * FROM `my_project.my_dataset.my_table` LIMIT 10"'
-        )
+        print('Example: python3 my_bigquery.py "SELECT * FROM `my_project.my_dataset.my_table` LIMIT 10"')
         sys.exit(1)
 
     query_string = sys.argv[1]

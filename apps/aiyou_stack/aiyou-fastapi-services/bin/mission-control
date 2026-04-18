@@ -8,6 +8,7 @@ Usage:
   ./bin/mission-control alpha --topic "Query"
   ./bin/mission-control beta --spec "Microservice Name"
 """
+
 import argparse
 import json
 import os
@@ -16,7 +17,11 @@ import time
 from urllib import request, parse, error
 
 # Configuration
-SERVICE_URL = os.environ.get("n-autoresearch/Kosmos/BioAgentsS_URL", "https://n-autoresearch/Kosmos/BioAgentss-server-x6h2e7g3aa-uc.a.run.app")
+SERVICE_URL = os.environ.get(
+    "n-autoresearch/Kosmos/BioAgentsS_URL",
+    "https://n-autoresearch/Kosmos/BioAgentss-server-x6h2e7g3aa-uc.a.run.app",
+)
+
 
 def print_banner():
     print(r"""
@@ -30,6 +35,7 @@ def print_banner():
     """)
     print(f"Target: {SERVICE_URL}")
     print("-" * 60)
+
 
 def check_status():
     """Verify Swarm Health."""
@@ -45,6 +51,7 @@ def check_status():
     except error.URLError as e:
         print(f"[!] CONNECTION FAILED: {e}")
 
+
 def dispatch_alpha(topic):
     """
     Mission Alpha: Knowledge Harvest (Grounding Test)
@@ -59,12 +66,13 @@ def dispatch_alpha(topic):
             "mission_type": "knowledge_harvest",
             "topic": topic,
             "depth": "deep_research",
-            "grounding": True
+            "grounding": True,
         },
-        "require_consensus": True
+        "require_consensus": True,
     }
 
     _send_mission(payload)
+
 
 def dispatch_beta(spec):
     """
@@ -80,30 +88,27 @@ def dispatch_beta(spec):
             "mission_type": "code_factory",
             "spec": spec,
             "validation": "shadowtag",
-            "cost_tier": "pro"
+            "cost_tier": "pro",
         },
-        "require_consensus": True
+        "require_consensus": True,
     }
 
     _send_mission(payload)
 
+
 def _send_mission(payload):
     """Helper to post mission data."""
     try:
-        data = json.dumps(payload).encode('utf-8')
+        data = json.dumps(payload).encode("utf-8")
 
         # Check for Auth Token
-        headers = {'Content-Type': 'application/json'}
+        headers = {"Content-Type": "application/json"}
         token = os.environ.get("IDENTITY_TOKEN")
         if token:
-            headers['Authorization'] = f"Bearer {token}"
-            headers['X-Antigravity-Key'] = "ag_dev_key_123" # Default dev key for server
+            headers["Authorization"] = f"Bearer {token}"
+            headers["X-Antigravity-Key"] = "ag_dev_key_123"  # Default dev key for server
 
-        req = request.Request(
-            f"{SERVICE_URL}/mission",
-            data=data,
-            headers=headers
-        )
+        req = request.Request(f"{SERVICE_URL}/mission", data=data, headers=headers)
         with request.urlopen(req) as response:
             result = json.loads(response.read())
             print(f"[+] MISSION ACCEPTED: ID {result.get('mission_id')}")
@@ -117,6 +122,7 @@ def _send_mission(payload):
             pass
     except Exception as e:
         print(f"[!] ERROR: {e}")
+
 
 def main():
     print_banner()
@@ -144,6 +150,7 @@ def main():
         dispatch_beta(args.spec)
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

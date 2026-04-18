@@ -73,7 +73,9 @@ class SMTPProvider(EmailProvider):
 
             # Send email
             async with aiosmtplib.SMTP(
-                hostname=self.host, port=self.port, use_tls=self.use_tls,
+                hostname=self.host,
+                port=self.port,
+                use_tls=self.use_tls,
             ) as smtp:
                 if self.username and self.password:
                     await smtp.login(self.username, self.password)
@@ -190,7 +192,10 @@ class MailgunProvider(EmailProvider):
 
             async with httpx.AsyncClient() as client:
                 response = await client.post(
-                    f"{self.base_url}/messages", auth=("api", self.api_key), data=data, timeout=30.0,
+                    f"{self.base_url}/messages",
+                    auth=("api", self.api_key),
+                    data=data,
+                    timeout=30.0,
                 )
 
                 if response.status_code >= 400:

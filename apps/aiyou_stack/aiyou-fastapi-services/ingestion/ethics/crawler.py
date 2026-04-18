@@ -77,7 +77,9 @@ class EthicalCrawler:
                 logger.info("robots_txt_fetched", domain=domain, success=True)
                 return parser
             logger.warning(
-                "robots_txt_fetch_failed", domain=domain, status_code=response.status_code,
+                "robots_txt_fetch_failed",
+                domain=domain,
+                status_code=response.status_code,
             )
             return None
         except Exception as e:
@@ -198,7 +200,9 @@ class EthicalCrawler:
             raise
 
     async def fetch_many(
-        self, urls: list[str], max_concurrent: int = 5,
+        self,
+        urls: list[str],
+        max_concurrent: int = 5,
     ) -> list[httpx.Response | Exception]:
         """Fetch multiple URLs concurrently while respecting rate limits.
 
@@ -222,7 +226,8 @@ class EthicalCrawler:
                     return e
 
         results = await asyncio.gather(
-            *[fetch_with_semaphore(url) for url in urls], return_exceptions=True,
+            *[fetch_with_semaphore(url) for url in urls],
+            return_exceptions=True,
         )
 
         return results

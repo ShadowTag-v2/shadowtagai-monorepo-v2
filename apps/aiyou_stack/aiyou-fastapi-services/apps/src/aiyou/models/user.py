@@ -61,7 +61,9 @@ class User(Base):
     # Relationships
     sessions = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
     ingestion_jobs = relationship(
-        "IngestionJob", back_populates="user", cascade="all, delete-orphan",
+        "IngestionJob",
+        back_populates="user",
+        cascade="all, delete-orphan",
     )
     creator_profile = relationship("Creator", back_populates="user", uselist=False)
     subscriptions = relationship("Subscription", back_populates="user")

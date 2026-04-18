@@ -65,7 +65,8 @@ class IntelligenceAPI:
     def log_usage(self, customer_id: str, enrichment: EnrichmentType | None = None):
         if customer_id not in self.usage_db:
             self.usage_db[customer_id] = UsageRecord(
-                customer_id=customer_id, timestamp=datetime.now(),
+                customer_id=customer_id,
+                timestamp=datetime.now(),
             )
 
         record = self.usage_db[customer_id]

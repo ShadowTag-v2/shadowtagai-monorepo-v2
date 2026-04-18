@@ -115,18 +115,14 @@ for git_source, dest_path in REPOS:
     print(f"[{repo_name}] Landing Tree...")
     abs_dest = os.path.join(MONO_ROOT, dest_path)
     os.makedirs(abs_dest, exist_ok=True)
-    subprocess.run(
-        ["rsync", "-a", "--exclude=.git", f"{clone_path}/", abs_dest], capture_output=True
-    )
+    subprocess.run(["rsync", "-a", "--exclude=.git", f"{clone_path}/", abs_dest], capture_output=True)
 
     print(f"[{repo_name}] Updating Manifest...")
     try:
         with open(MANIFEST_PATH) as f:
             manifest_lines = f.readlines()
 
-        insert_idx = next(
-            (i + 1 for i, line in enumerate(manifest_lines) if line.startswith("repo_roots:")), -1
-        )
+        insert_idx = next((i + 1 for i, line in enumerate(manifest_lines) if line.startswith("repo_roots:")), -1)
         exists = any(f"  {repo_name}:" in line for line in manifest_lines)
 
         if insert_idx != -1 and not exists:

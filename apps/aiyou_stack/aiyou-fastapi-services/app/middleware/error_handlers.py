@@ -59,7 +59,8 @@ async def api_exception_handler(request: Request, exc: APIException) -> JSONResp
 
 
 async def validation_exception_handler(
-    request: Request, exc: RequestValidationError | PydanticValidationError,
+    request: Request,
+    exc: RequestValidationError | PydanticValidationError,
 ) -> JSONResponse:
     """Handle Pydantic validation errors with user-friendly messages.
 

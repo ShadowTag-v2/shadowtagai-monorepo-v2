@@ -3184,7 +3184,7 @@ Un prompt "Nano Banana" complesso e multifase, progettato per generare una fotog
 
 ```
 <instruction>
- 
+
 L'Input A è una Macchina Complessa (ad es. {argument name="machine type" default="Uno Space Shuttle"}, Un Pianoforte a Coda, Un Orologio Meccanico).
 Decomporre in   3 Fasi di Assemblaggio  :
    Fase 1:  Telaio/struttura grezza.

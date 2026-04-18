@@ -26,7 +26,7 @@ export type AccessControlResult =
     };
 
 const notAllowedMessage = `Execution denied: This command is not on the access control's allowlist.
-* Do not attempt to run this command again - it will always fail. 
+* Do not attempt to run this command again - it will always fail.
 * Instead, proceed a different way or ask the user for clarification.`;
 
 const deniedMessage = `Execution denied: This command is on the access control's denylist.

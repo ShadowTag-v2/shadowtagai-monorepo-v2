@@ -9,7 +9,8 @@ import time
 # Timestamp: 2026-01-29
 
 CONTRACT_PATH = os.path.join(
-    os.path.dirname(__file__), "../src/governance/contracts/GOD_MODE_CONTRACT.md",
+    os.path.dirname(__file__),
+    "../src/governance/contracts/GOD_MODE_CONTRACT.md",
 )
 PASSPHRASE = "I AM OMEGA"
 

@@ -96,7 +96,9 @@ class CostOptimizerService:
             summary = self._calculate_cost_summary(data_points, start_date, end_date, cost_data)
 
             return CostAnalysisResponse(
-                summary=summary, data_points=data_points, granularity=granularity,
+                summary=summary,
+                data_points=data_points,
+                granularity=granularity,
             )
 
         except Exception as e:
@@ -276,7 +278,8 @@ class CostOptimizerService:
         )
 
     async def _get_rightsizing_recommendations(
-        self, min_savings: float,
+        self,
+        min_savings: float,
     ) -> list[OptimizationRecommendation]:
         """Get EC2 right-sizing recommendations."""
         try:
@@ -300,7 +303,8 @@ class CostOptimizerService:
                             current_cost=float(current_instance.get("MonthlyCost", 0)),
                             estimated_savings=round(savings, 2),
                             savings_percentage=round(
-                                (savings / float(current_instance.get("MonthlyCost", 1))) * 100, 2,
+                                (savings / float(current_instance.get("MonthlyCost", 1))) * 100,
+                                2,
                             ),
                             description=f"Right-size {current_instance.get('ResourceId')}",
                             action_items=[
@@ -319,7 +323,8 @@ class CostOptimizerService:
             return []
 
     async def _get_savings_plans_recommendations(
-        self, min_savings: float,
+        self,
+        min_savings: float,
     ) -> list[OptimizationRecommendation]:
         """Get Savings Plans recommendations."""
         try:
@@ -327,7 +332,8 @@ class CostOptimizerService:
             recommendations = []
 
             for rec in data.get("SavingsPlansPurchaseRecommendation", {}).get(
-                "SavingsPlansPurchaseRecommendationDetails", [],
+                "SavingsPlansPurchaseRecommendationDetails",
+                [],
             ):
                 savings = float(rec.get("EstimatedMonthlySavingsAmount", 0))
 
@@ -340,7 +346,8 @@ class CostOptimizerService:
                             current_cost=float(rec.get("EstimatedOnDemandCost", 0)),
                             estimated_savings=round(savings, 2),
                             savings_percentage=round(
-                                float(rec.get("EstimatedSavingsPercentage", 0)), 2,
+                                float(rec.get("EstimatedSavingsPercentage", 0)),
+                                2,
                             ),
                             description=f"Purchase {rec.get('SavingsPlansType')} Savings Plan",
                             action_items=[
@@ -359,7 +366,8 @@ class CostOptimizerService:
             return []
 
     async def _get_reservation_recommendations(
-        self, min_savings: float,
+        self,
+        min_savings: float,
     ) -> list[OptimizationRecommendation]:
         """Get Reserved Instance recommendations."""
         try:
@@ -379,7 +387,8 @@ class CostOptimizerService:
                             current_cost=float(details.get("EstimatedOnDemandCost", 0)),
                             estimated_savings=round(savings, 2),
                             savings_percentage=round(
-                                float(details.get("EstimatedSavingsPercentage", 0)), 2,
+                                float(details.get("EstimatedSavingsPercentage", 0)),
+                                2,
                             ),
                             description="Purchase Reserved Instances",
                             action_items=[

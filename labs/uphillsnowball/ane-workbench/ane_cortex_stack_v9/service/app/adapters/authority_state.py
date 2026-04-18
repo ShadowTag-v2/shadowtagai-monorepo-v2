@@ -68,9 +68,7 @@ def persist_snapshot(
         )
 
 
-def record_authority_event(
-    pg_dsn: str, repo_id: str, event_type: str, subject: str, body_json: str
-):
+def record_authority_event(pg_dsn: str, repo_id: str, event_type: str, subject: str, body_json: str):
     with pg_conn(pg_dsn) as conn:
         cur = conn.cursor()
         cur.execute(

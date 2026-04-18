@@ -562,7 +562,9 @@ async def main():
 
     parser = argparse.ArgumentParser(description="Training Data Safety Indexer")
     parser.add_argument(
-        "command", choices=["scan", "search", "report", "index"], help="Command to run",
+        "command",
+        choices=["scan", "search", "report", "index"],
+        help="Command to run",
     )
     parser.add_argument("--file", "-f", help="File to scan")
     parser.add_argument("--query", "-q", help="Search query")

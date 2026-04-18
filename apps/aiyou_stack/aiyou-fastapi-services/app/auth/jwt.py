@@ -128,7 +128,9 @@ async def get_current_user(token: str | None = Depends(oauth2_scheme)) -> User |
     # For now, we'll create a mock user
     # TODO: Replace with actual database query
     user = User(
-        username=token_data.username, email=f"{token_data.username}@example.com", is_active=True,
+        username=token_data.username,
+        email=f"{token_data.username}@example.com",
+        is_active=True,
     )
 
     if user is None:

@@ -51,4 +51,3 @@ class ArrayConfig
         return constant($const);
     }
 }
-

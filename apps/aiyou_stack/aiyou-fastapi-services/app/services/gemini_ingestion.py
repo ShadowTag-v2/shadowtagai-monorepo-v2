@@ -41,7 +41,8 @@ class GeminiIngestionService:
         return sources
 
     async def run_ingestion_pipeline(
-        self, sources: list[SourceType] | None = None,
+        self,
+        sources: list[SourceType] | None = None,
     ) -> IngestionMetrics:
         """Run the complete ingestion pipeline
 
@@ -140,7 +141,9 @@ class GeminiIngestionService:
         return True
 
     def _calculate_metrics(
-        self, items: list[IngestedItem], runtime_minutes: float,
+        self,
+        items: list[IngestedItem],
+        runtime_minutes: float,
     ) -> IngestionMetrics:
         """Calculate ingestion metrics from items"""
         if not items:

@@ -104,7 +104,8 @@ async def main():
             restore_data = {"restore_code": True, "restore_conversation": False}
 
             response = await client.post(
-                f"{BASE_URL}/checkpoints/{checkpoint_id}/restore", json=restore_data,
+                f"{BASE_URL}/checkpoints/{checkpoint_id}/restore",
+                json=restore_data,
             )
 
             if response.status_code == 200:

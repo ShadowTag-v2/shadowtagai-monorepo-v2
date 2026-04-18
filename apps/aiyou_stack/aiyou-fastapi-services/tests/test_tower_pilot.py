@@ -33,7 +33,11 @@ def test_heartbeat_normal(node):
     # Mock sensors to return normal values
     with patch.object(node, "_read_hardware_sensors") as mock_sensors:
         mock_sensors.return_value = Telemetry(
-            latency_ms=20.0, jitter_ms=2.0, gpu_temp_c=40.0, power_draw_w=500.0, active_inferences=1,
+            latency_ms=20.0,
+            jitter_ms=2.0,
+            gpu_temp_c=40.0,
+            power_draw_w=500.0,
+            active_inferences=1,
         )
 
         t = node.heartbeat()

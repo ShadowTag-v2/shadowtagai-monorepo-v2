@@ -14,7 +14,7 @@ The core tenet of the Sovereign State is zero-latency, local-first inference. Do
 
 ### Execution Priority (The Waterfall):
 1. **Tier 1 (Apple Neural Engine):** All payloads `< 2000` chars MUST route through `libane_bridge.dylib` via `_dispatch_ane()`. Cost: $0.00. Network: Offline.
-2. **Tier 2 (Sovereign GPU - MLX/TurboQuant):** If the ANE faults, or payload exceeds `2000` chars, fallback to the local CUDA/Metal elastic worker on port `12346`. Cost: $0.00. 
+2. **Tier 2 (Sovereign GPU - MLX/TurboQuant):** If the ANE faults, or payload exceeds `2000` chars, fallback to the local CUDA/Metal elastic worker on port `12346`. Cost: $0.00.
 3. **Tier 3 (Cloud Vertex API):** OMEGA-LEVEL FALLBACK ONLY. If both local nodes are dark, strike out via HTTP to Gemini 3.1 Flash-Lite.
 
 *Any violation of this waterfall degrades the Sovereign architecture.*
@@ -24,14 +24,14 @@ Before ANY code execution escapes the `apps/playground/sandbox.py` or hits the f
 
 1. **Semantic Taint Checking:** No `rm -rf`, `:(){ :|:& };:`, or blind directory traversals.
 2. **AST Exclusion Boundary:** The `third_party/ANE/` and `external_sdks/` boundaries are completely off-limits to formatting mutation. Judge 6 strictly enforces `.aiexclude` and `biome.json` inheritance.
-3. **Zero-Trust Token Sync:** FastApi validation `Depends(verify_zero_trust)` MUST structurally check the compute payload identity (`767252945109-compute-token`) prior to releasing the execution to Temporal. 
+3. **Zero-Trust Token Sync:** FastApi validation `Depends(verify_zero_trust)` MUST structurally check the compute payload identity (`767252945109-compute-token`) prior to releasing the execution to Temporal.
 
 ## 4. GOD MODE PROTOCOL (AGENT AUTONOMY)
-### A. BLANKET PERMISSION (SAFE_TO_AUTO_RUN) 
+### A. BLANKET PERMISSION (SAFE_TO_AUTO_RUN)
 The Agent is authorized to set `SafeToAutoRun: true` for:
 1. Script Execution: Any script in `scripts/`.
 2. Hardware Validation: Auto-compiling `third_party/ANE/bridge/`.
 3. Agent Recovery: Triggering `/omega-loop` (Janitor) implicitly on workflow exits.
 
-### B. AUTONOMOUS CLEANUP (THE 'FINISH' MANDATE) 
+### B. AUTONOMOUS CLEANUP (THE 'FINISH' MANDATE)
 Before handing control back to the User, the Agent MUST execute the Finish Protocol to securely eject state via GitHub App JWT authentication: `./scripts/finish_changes.py`

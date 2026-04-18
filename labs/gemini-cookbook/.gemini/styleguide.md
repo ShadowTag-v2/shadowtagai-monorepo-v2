@@ -54,7 +54,7 @@ Most of the cookbook content is Colab notebooks, which are stored as Json.
 * Include an overview section before any code.
 * use `%pip` instead of `!pip`
 * Put the imports when they are first used. Try to avoid having a big "import" cell at the beginning.
-* Keep code as brief as possible. 
+* Keep code as brief as possible.
 * Break text cells at headings
 * Break code cells between "building" and "running".
 * Necessary but uninteresting code (like helper functions) should be hidden in a toggleable code cell by putting `# @title`
@@ -124,7 +124,7 @@ Most of the cookbook content is Colab notebooks, which are stored as Json.
             "response_mime_type": "application/json",
             "response_schema": Schema
         }
-    )    
+    )
     ```
 Notice the line break on the first and last lines.
 * Long text variables should use triple double quotes and proper indentation for better readability:
@@ -134,7 +134,7 @@ Notice the line break on the first and last lines.
         Halvah croissant candy canes bonbon candy. Apple pie jelly beans topping carrot cake danish tart cake cheesecake.
         Muffin danish chocolate soufflé pastry icing bonbon oat cake. Powder cake jujubes oat cake.
         Lemon drops tootsie roll marshmallow halvah carrot cake.
-    """    
+    """
     ```
 Notice the line break on the first and last lines.
 * When a multiline string is used inside a function call, add an extra indent level between the `"""` delimiters and the text body to visually separate the string content from the surrounding code:
@@ -153,7 +153,7 @@ Notice the line break on the first and last lines.
         ],
     )
     ```
-    
+
 ## Naming Conventions
 
 * **Variables:** Use lowercase with underscores (snake_case): `user_name`, `total_count`

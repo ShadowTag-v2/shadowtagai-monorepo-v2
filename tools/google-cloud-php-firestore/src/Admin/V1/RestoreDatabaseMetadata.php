@@ -265,4 +265,3 @@ class RestoreDatabaseMetadata extends \Google\Protobuf\Internal\Message
     }
 
 }
-

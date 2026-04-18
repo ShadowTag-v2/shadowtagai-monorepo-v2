@@ -11,7 +11,7 @@ namespace gwt::gui {
 
 /**
  * Run the GUI application
- * 
+ *
  * @param argc  Argument count
  * @param argv  Argument values
  * @return      Exit code (0 = success)

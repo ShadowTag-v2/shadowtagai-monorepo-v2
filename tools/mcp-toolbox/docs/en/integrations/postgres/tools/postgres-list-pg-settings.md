@@ -28,7 +28,7 @@ name: list_indexes
 type: postgres-list-pg-settings
 source: postgres-source
 description: |
-  Lists configuration parameters for the postgres server ordered lexicographically, 
+  Lists configuration parameters for the postgres server ordered lexicographically,
   with a default limit of 50 rows. It returns the parameter name, its current setting,
   unit of measurement, a short description, the source of the current setting (e.g.,
   default, configuration file, session), and whether a restart is required when the

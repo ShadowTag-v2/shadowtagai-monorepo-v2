@@ -249,4 +249,3 @@ describe('resolveImportPath — no proximity for Java or TypeScript', () => {
     expect(result).toBe('src/services/user.ts');
   });
 });
-

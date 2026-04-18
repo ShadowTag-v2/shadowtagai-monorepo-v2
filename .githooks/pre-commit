@@ -7,7 +7,7 @@ DB_PATH="$HOME/Library/Application Support/Antigravity/User/globalStorage/state.
 if [ -f "$DB_PATH" ]; then
     SIZE_BYTES=$(stat -f%z "$DB_PATH" 2>/dev/null || stat -c%s "$DB_PATH" 2>/dev/null)
     SIZE_MB=$((SIZE_BYTES / 1024 / 1024))
-    
+
     if [ "$SIZE_MB" -gt 20 ]; then
         echo "⚠️  WARNING: state.vscdb is ${SIZE_MB}MB (threshold: 20MB)"
         echo "   Run: python3 scripts/prune_gca_chat_threads.py --write"

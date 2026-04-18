@@ -251,7 +251,8 @@ class AtomicChatManager:
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT acknowledgments FROM opord_contexts WHERE opord_number = ?", (opord_number,),
+            "SELECT acknowledgments FROM opord_contexts WHERE opord_number = ?",
+            (opord_number,),
         )
         result = cursor.fetchone()
 

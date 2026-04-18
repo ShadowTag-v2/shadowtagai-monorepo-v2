@@ -18,9 +18,7 @@ class JREngineAST:
 
 
 class PolicyUOp:
-    def __init__(
-        self, op: PolicyOps, inputs: list["PolicyUOp"] | None = None, ast: JREngineAST | None = None
-    ):
+    def __init__(self, op: PolicyOps, inputs: list["PolicyUOp"] | None = None, ast: JREngineAST | None = None):
         self.op = op
         self.inputs = inputs or []
         self.ast = ast or JREngineAST(op)

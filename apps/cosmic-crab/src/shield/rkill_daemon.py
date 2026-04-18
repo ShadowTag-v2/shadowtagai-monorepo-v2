@@ -46,9 +46,7 @@ class RkillDaemon:
                         continue
 
                     # Strike 1: Memory Violation
-                    mem_usage = (
-                        proc.info.get("memory_info").rss if proc.info.get("memory_info") else 0
-                    )
+                    mem_usage = proc.info.get("memory_info").rss if proc.info.get("memory_info") else 0
                     if mem_usage > self.memory_limit:
                         self._add_strike(pid, "memory")
                         logger.warning(

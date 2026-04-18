@@ -16,7 +16,9 @@ class TestCompetitiveAnalysisTools:
         tools = CompetitiveAnalysisTools()
 
         matrix = tools.create_feature_matrix(
-            product="MyProduct", competitors=["CompA", "CompB"], features=["Feature1", "Feature2"],
+            product="MyProduct",
+            competitors=["CompA", "CompB"],
+            features=["Feature1", "Feature2"],
         )
 
         assert matrix["product"] == "MyProduct"
@@ -90,7 +92,10 @@ class TestCompetitiveAnalysisTools:
         tools = CompetitiveAnalysisTools()
 
         swot = tools.generate_swot_matrix(
-            strengths=["S1", "S2"], weaknesses=["W1"], opportunities=["O1", "O2"], threats=["T1"],
+            strengths=["S1", "S2"],
+            weaknesses=["W1"],
+            opportunities=["O1", "O2"],
+            threats=["T1"],
         )
 
         assert len(swot["swot_analysis"]["strengths"]) == 2

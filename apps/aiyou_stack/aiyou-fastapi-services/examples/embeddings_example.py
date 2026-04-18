@@ -1,5 +1,4 @@
-"""Example usage of the embeddings and semantic search API.
-"""
+"""Example usage of the embeddings and semantic search API."""
 
 import asyncio
 
@@ -37,7 +36,9 @@ async def generate_batch_embeddings():
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"{BASE_URL}/embeddings/generate", json={"texts": texts}, timeout=30.0,
+            f"{BASE_URL}/embeddings/generate",
+            json={"texts": texts},
+            timeout=30.0,
         )
 
         result = response.json()

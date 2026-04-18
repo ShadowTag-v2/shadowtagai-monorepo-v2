@@ -106,7 +106,9 @@ class TDDRedPhaseAgent:
             if report.passed:
                 audit_path = self._write_audit_log(report, test_code)
                 return TestOutput(
-                    test_code=test_code, compliance_report=report, audit_path=audit_path,
+                    test_code=test_code,
+                    compliance_report=report,
+                    audit_path=audit_path,
                 )
 
             # Fail-fast on too many violations
@@ -114,7 +116,9 @@ class TDDRedPhaseAgent:
                 report.passed = False
                 audit_path = self._write_audit_log(report, test_code)
                 return TestOutput(
-                    test_code=test_code, compliance_report=report, audit_path=audit_path,
+                    test_code=test_code,
+                    compliance_report=report,
+                    audit_path=audit_path,
                 )
 
             # Phase 3: Fix violations and retry
@@ -122,13 +126,17 @@ class TDDRedPhaseAgent:
 
         # Escalation: max iterations exceeded
         final_report = self._validate(
-            test_code, MAX_ITERATIONS, int((time.time() - start_time) * 1000),
+            test_code,
+            MAX_ITERATIONS,
+            int((time.time() - start_time) * 1000),
         )
         final_report.passed = False
         audit_path = self._write_audit_log(final_report, test_code, escalated=True)
 
         return TestOutput(
-            test_code=test_code, compliance_report=final_report, audit_path=audit_path,
+            test_code=test_code,
+            compliance_report=final_report,
+            audit_path=audit_path,
         )
 
     def _write_tests(self, spec: str) -> str:
@@ -216,7 +224,9 @@ class Test{self._to_class_name(spec)}:
         if tests_analyzed == 0:
             violations.append(
                 Violation(
-                    rule="no_tests", message="No test functions found", severity=Severity.CRITICAL,
+                    rule="no_tests",
+                    message="No test functions found",
+                    severity=Severity.CRITICAL,
                 ),
             )
             score = 0.0
@@ -332,7 +342,10 @@ class Test{self._to_class_name(spec)}:
         return "\n".join(lines)
 
     def _write_audit_log(
-        self, report: ComplianceReport, test_code: str, escalated: bool = False,
+        self,
+        report: ComplianceReport,
+        test_code: str,
+        escalated: bool = False,
     ) -> str:
         """Write audit trail for compliance decisions."""
         timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")

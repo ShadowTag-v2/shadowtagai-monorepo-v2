@@ -4393,16 +4393,16 @@ Uma estrutura de prompt complexa e ponderada para Nano Banana, concebida para ge
 #### 📝 Prompt
 
 ```
-Render_Target = 
-( Diorama_Pop-Up_3D_de_Livro_Aberto * 2.0 ) + 
-( Ambiente_3D_Inferido_[COMIC_SERIES] * 1.5 ) + 
-( Brinquedo_de_Vinil_3D_[HEROES] + Brinquedo_de_Vinil_3D_[VILLAINS] * 1.8 ) + 
-( Efeitos_de_Energia_de_Plástico_Translúcido * 1.5 ) + 
-( Texto_3D_Flutuante_"{argument name="sfx text" default="SFX_TEXT"}" * 1.5 ) + 
-( Caixa_de_Título_Amarela_Flutuante_"{argument name="comic series" default="COMIC_SERIES"} | {argument name="year" default="YEAR"}" * 1.2 ) + 
-( Quadrinho_Plano_Vintage_Em_Mesa_de_Madeira * 1.0 ) - 
-( Personagens_Planos_2D / 2.0 ) - 
-( Realismo_Humano / 2.0 ) - 
+Render_Target =
+( Diorama_Pop-Up_3D_de_Livro_Aberto * 2.0 ) +
+( Ambiente_3D_Inferido_[COMIC_SERIES] * 1.5 ) +
+( Brinquedo_de_Vinil_3D_[HEROES] + Brinquedo_de_Vinil_3D_[VILLAINS] * 1.8 ) +
+( Efeitos_de_Energia_de_Plástico_Translúcido * 1.5 ) +
+( Texto_3D_Flutuante_"{argument name="sfx text" default="SFX_TEXT"}" * 1.5 ) +
+( Caixa_de_Título_Amarela_Flutuante_"{argument name="comic series" default="COMIC_SERIES"} | {argument name="year" default="YEAR"}" * 1.2 ) +
+( Quadrinho_Plano_Vintage_Em_Mesa_de_Madeira * 1.0 ) -
+( Personagens_Planos_2D / 2.0 ) -
+( Realismo_Humano / 2.0 ) -
 ( Escala_Tamanho_Real )
 ```
 
@@ -4691,7 +4691,7 @@ Um prompt para gerar um mangá de quatro painéis intitulado "2026 Solo Camping 
 
 ```
 4-panel manga
- 
+
 Título
 2026: Declaração de Independência do Acampamento Solo
 
@@ -4733,7 +4733,7 @@ Um prompt para gerar um mangá de quatro painéis intitulado 'A Escuridão do SN
 
 ```
 4-panel manga
- 
+
 Título
 A Escuridão das Redes Sociais
 
@@ -4923,7 +4923,7 @@ Um prompt para gerar um mangá de quatro painéis intitulado 'Contagem Regressiv
 
 ```
 4-panel manga
- 
+
 Título
 Contagem regressiva para o desaparecimento
 

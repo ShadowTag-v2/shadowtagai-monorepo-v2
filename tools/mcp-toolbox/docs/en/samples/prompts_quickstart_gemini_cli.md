@@ -121,7 +121,7 @@ postgres` and a password next time.
       rating INT CHECK (rating >= 1 AND rating <= 5),
       review_text TEXT,
       is_published BOOLEAN DEFAULT false,
-      moderation_status VARCHAR(50) DEFAULT 'pending_manual_review',      
+      moderation_status VARCHAR(50) DEFAULT 'pending_manual_review',
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
     ```
@@ -241,13 +241,13 @@ Configure the Gemini CLI to talk to your local Toolbox MCP server.
       }
     }
     ```
-3. Start Gemini CLI using 
+3. Start Gemini CLI using
     ```sh
     gemini
     ```
     In case Gemini CLI is already running, use `/mcp refresh` to refresh the MCP server.
 
-4. Use gemini slash commands to run your prompt: 
+4. Use gemini slash commands to run your prompt:
     ```sh
     /investigate_missing_review --user_email="jane.d@example.com" --restaurant_name="The Corner Bistro"
     ```

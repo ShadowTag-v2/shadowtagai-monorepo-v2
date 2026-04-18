@@ -82,7 +82,7 @@ class KovelPrivilegeInterceptor extends Interceptor {
     // Inject Kovel attestation session ID
     options.headers['X-Kovel-Session'] = SessionManager.currentSessionId;
     options.headers['X-Kovel-Firm'] = SessionManager.firmId;
-    
+
     // Strip any client-side system prompt injection attempts (OWASP LLM01)
     if (options.data is Map) {
       (options.data as Map).remove('system_prompt');
@@ -111,7 +111,7 @@ class KovelPrivilegeInterceptor extends Interceptor {
 ```dart
 class RateLimitInterceptor extends Interceptor {
   final _requestCounts = <String, List<DateTime>>{};
-  
+
   // Per-endpoint limits (AGENTS.md Rule 16)
   static const _limits = {
     '/api/oracle/': 10,      // 10 req/min for AI-costly routes
@@ -124,12 +124,12 @@ class RateLimitInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final path = options.path;
     final limit = _getLimitForPath(path);
-    
+
     _requestCounts.putIfAbsent(path, () => []);
     _requestCounts[path]!.removeWhere(
       (t) => DateTime.now().difference(t).inMinutes >= 1,
     );
-    
+
     if (_requestCounts[path]!.length >= limit) {
       handler.reject(DioException(
         requestOptions: options,
@@ -138,7 +138,7 @@ class RateLimitInterceptor extends Interceptor {
       ));
       return;
     }
-    
+
     _requestCounts[path]!.add(DateTime.now());
     handler.next(options);
   }
@@ -244,7 +244,7 @@ dependencies:
   riverpod: ^2.6.0
   freezed_annotation: ^2.4.0
   json_annotation: ^4.9.0
-  
+
 dev_dependencies:
   freezed: ^2.5.0
   json_serializable: ^6.8.0

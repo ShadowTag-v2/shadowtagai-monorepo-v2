@@ -15,11 +15,11 @@ from turboquant import TurboQuant, TurboQuantMSE, KVCacheCompressor
 # Qwen 3.5 architecture constants
 QWEN_27B = {
     "name": "Qwen 3.5 27B (dense)",
-    "num_layers": 28,      # decoder layers (actually varies, use 28 as approx)
-    "num_heads": 32,       # attention heads
-    "num_kv_heads": 8,     # GQA: 8 KV heads
-    "head_dim": 128,       # per-head dimension
-    "hidden_dim": 4096,    # total hidden
+    "num_layers": 28,  # decoder layers (actually varies, use 28 as approx)
+    "num_heads": 32,  # attention heads
+    "num_kv_heads": 8,  # GQA: 8 KV heads
+    "head_dim": 128,  # per-head dimension
+    "hidden_dim": 4096,  # total hidden
 }
 
 QWEN_MOE = {
@@ -97,7 +97,7 @@ def test_compression(config: dict, seq_len: int, k_bits: int, v_bits: int):
     print(f"    Compress time:     {t_compress:.2f}s")
     print(f"    Decompress time:   {t_decompress:.2f}s")
 
-    return stats['compression_ratio'], avg_cosine, k_mse
+    return stats["compression_ratio"], avg_cosine, k_mse
 
 
 def test_attention_preservation(config: dict, seq_len: int = 64):
@@ -134,9 +134,7 @@ def test_attention_preservation(config: dict, seq_len: int = 64):
         out_comp = attn_comp @ v_hat
 
         # Compare
-        cosine = np.dot(out_orig.ravel(), out_comp.ravel()) / (
-            np.linalg.norm(out_orig) * np.linalg.norm(out_comp)
-        )
+        cosine = np.dot(out_orig.ravel(), out_comp.ravel()) / (np.linalg.norm(out_orig) * np.linalg.norm(out_comp))
         mse = np.mean((out_orig - out_comp) ** 2)
 
         print(f"    {k_bits}-bit: attn output cosine={cosine:.4f}, MSE={mse:.8f}")

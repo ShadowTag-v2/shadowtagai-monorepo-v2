@@ -109,7 +109,8 @@ class DeadlineRule(BaseModel):
     exclude_weekends: bool = Field(default=True, description="Exclude weekends")
     exclude_holidays: bool = Field(default=True, description="Exclude court holidays")
     service_method_additions: dict[str, int] = Field(
-        default_factory=dict, description="Additional days based on service method",
+        default_factory=dict,
+        description="Additional days based on service method",
     )
     trigger_event: str = Field(..., description="Event that triggers deadline")
     rule_source: str = Field(..., description="Legal source (e.g., 'FRCP 12(a)(1)(A)')")
@@ -152,10 +153,12 @@ class ExtractedDeadline(BaseModel):
     requires_review: bool = Field(default=False, description="Flagged for human review")
     review_reason: str | None = Field(None, description="Reason for review")
     calculation_details: dict[str, Any] = Field(
-        default_factory=dict, description="Details of deadline calculation",
+        default_factory=dict,
+        description="Details of deadline calculation",
     )
     reminder_schedule: list[date] = Field(
-        default_factory=list, description="Scheduled reminder dates",
+        default_factory=list,
+        description="Scheduled reminder dates",
     )
     assigned_to: str | None = Field(None, description="Assigned lawyer/staff")
     extracted_at: datetime = Field(default_factory=datetime.utcnow)
@@ -241,7 +244,8 @@ class ReminderConfig(BaseModel):
     frequency: ReminderFrequency = Field(..., description="Reminder frequency")
     custom_days: list[int] | None = Field(None, description="Custom reminder days before deadline")
     notification_channels: list[str] = Field(
-        default_factory=lambda: ["email"], description="Notification channels",
+        default_factory=lambda: ["email"],
+        description="Notification channels",
     )
     recipients: list[str] = Field(..., description="Recipient email/user IDs")
 
@@ -345,11 +349,12 @@ async def upload_document(
 
 
 @app.get(
-    "/documents/{document_id}/deadlines", response_model=list[ExtractedDeadline], tags=["Documents"],
+    "/documents/{document_id}/deadlines",
+    response_model=list[ExtractedDeadline],
+    tags=["Documents"],
 )
 async def get_document_deadlines(document_id: str):
-    """Get all deadlines extracted from a specific document
-    """
+    """Get all deadlines extracted from a specific document"""
     # TODO: Implement actual database query
 
     # Mock response
@@ -406,7 +411,8 @@ async def get_deadline(deadline_id: str):
     """Get specific deadline by ID"""
     # TODO: Implement actual retrieval
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail=f"Deadline {deadline_id} not found",
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Deadline {deadline_id} not found",
     )
 
 
@@ -564,7 +570,10 @@ async def get_jurisdiction_rules(jurisdiction: str):
 
 
 @app.post(
-    "/rules", response_model=DeadlineRule, status_code=status.HTTP_201_CREATED, tags=["Rules"],
+    "/rules",
+    response_model=DeadlineRule,
+    status_code=status.HTTP_201_CREATED,
+    tags=["Rules"],
 )
 async def create_rule(rule: DeadlineRule):
     """Create new jurisdiction rule

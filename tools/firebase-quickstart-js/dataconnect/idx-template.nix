@@ -11,7 +11,7 @@
 {pkgs, ... }: {
   packages = [];
   bootstrap = ''
-    mkdir "$out" 
+    mkdir "$out"
     mkdir "$out"/.idx
     mkdir "$out"/app
     mkdir "$out"/dataconnect
@@ -25,8 +25,8 @@
     cp ${./firebase.json} "$out"/firebase.json
     cp ${./README.md} "$out"/README.md
     cp ${./.gitignore} "$out"/.gitignore
-    chmod -R u+w "$out" 
-    mv "$out"/app/src/lib/firebase.idx.tsx "$out"/app/src/lib/firebase.tsx  
-    mv "$out"/app/vite.config.idx.ts "$out"/app/vite.config.ts 
+    chmod -R u+w "$out"
+    mv "$out"/app/src/lib/firebase.idx.tsx "$out"/app/src/lib/firebase.tsx
+    mv "$out"/app/vite.config.idx.ts "$out"/app/vite.config.ts
   '';
 }

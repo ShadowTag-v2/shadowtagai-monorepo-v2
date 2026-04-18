@@ -3183,7 +3183,7 @@ Karmaşık, çok aşamalı bir Nano Banana istemi; teknik sanatı ve makro işle
 
 ```
 <instruction>
- 
+
 Girdi A karmaşık bir makinedir (örneğin, {argument name="machine type" default="Bir Uzay Mekiği"}, Bir Kuyruklu Piyano, Bir Kurmalı Saat).
 3 Montaj Aşamasına Ayırın:
    Aşama 1: Ham şasi/iskelet.

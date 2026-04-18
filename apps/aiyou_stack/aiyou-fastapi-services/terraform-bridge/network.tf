@@ -9,7 +9,7 @@ resource "google_compute_subnetwork" "agent_subnet" {
   ip_cidr_range = "10.0.0.0/24"
   region        = var.region
   network       = google_compute_network.agent_vpc.id
-  
+
   # Enable Google Private Access so agents can reach BigQuery/GCS without public IP
   private_ip_google_access = true
 }

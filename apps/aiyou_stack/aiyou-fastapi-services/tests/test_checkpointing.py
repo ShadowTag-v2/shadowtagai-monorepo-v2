@@ -214,7 +214,9 @@ class TestCheckpointStore:
     async def test_save_file(self, test_storage, test_file):
         """Test saving a file to storage."""
         content_hash, size_bytes, storage_path = await test_storage.save_file(
-            checkpoint_id="test_checkpoint", file_path=test_file, snapshot_id="test_snapshot",
+            checkpoint_id="test_checkpoint",
+            file_path=test_file,
+            snapshot_id="test_snapshot",
         )
 
         assert content_hash is not None
@@ -226,7 +228,9 @@ class TestCheckpointStore:
         """Test restoring a file from storage."""
         # Save file
         content_hash, size_bytes, storage_path = await test_storage.save_file(
-            checkpoint_id="test_checkpoint", file_path=test_file, snapshot_id="test_snapshot",
+            checkpoint_id="test_checkpoint",
+            file_path=test_file,
+            snapshot_id="test_snapshot",
         )
 
         # Create a new target path

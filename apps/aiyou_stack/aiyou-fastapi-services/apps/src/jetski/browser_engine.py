@@ -38,7 +38,8 @@ class JetskiEngine:
         }
 
         self.driver = webdriver.Chrome(
-            options=chrome_options, seleniumwire_options=seleniumwire_options,
+            options=chrome_options,
+            seleniumwire_options=seleniumwire_options,
         )
 
     def verify_endpoint(self, url: str, expected_status: int = 200) -> dict:

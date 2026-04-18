@@ -28,7 +28,6 @@ from .version import __version__
 # end-user. It should not be used directly by external code. Changes to this
 # class will not be considered breaking changes to the public API.
 class AsyncToolboxClient:
-
     def __init__(
         self,
         url: str,

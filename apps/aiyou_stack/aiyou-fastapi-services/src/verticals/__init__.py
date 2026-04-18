@@ -5,8 +5,7 @@ from .roadmesh import RoadMeshFreeways
 
 
 def get_sovereign_metrics():
-    """Rolls up all 19 verticals (represented by key layers) for the SOTP valuation.
-    """
+    """Rolls up all 19 verticals (represented by key layers) for the SOTP valuation."""
     v1 = GulfstreamOffshore().get_metrics()
     v4 = RoadMeshFreeways().get_metrics()
     v5 = AiUOrbital().get_metrics()

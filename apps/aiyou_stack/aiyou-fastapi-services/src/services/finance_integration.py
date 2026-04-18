@@ -14,16 +14,14 @@ class FinanceIntegration:
         # stripe.api_key = self.stripe_api_key
 
     def handle_stripe_webhook(self, payload: dict[str, Any], sig_header: str, endpoint_secret: str):
-        """Handle Stripe webhook events.
-        """
+        """Handle Stripe webhook events."""
         # event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
         # if event['type'] == 'payment_intent.succeeded':
         #     payment_intent = event['data']['object']
         #     print(f"Payment for {payment_intent['amount']} succeeded.")
 
     def export_to_qfx(self, transactions: list[dict[str, Any]]) -> str:
-        """Export transactions to Quicken QFX format (OFX).
-        """
+        """Export transactions to Quicken QFX format (OFX)."""
         header = """OFXHEADER:100
 DATA:OFXSGML
 VERSION:102
@@ -58,8 +56,7 @@ NEWFILEUID:NONE
         return header + body
 
     def export_to_qif(self, transactions: list[dict[str, Any]]) -> str:
-        """Export transactions to Quicken QIF format.
-        """
+        """Export transactions to Quicken QIF format."""
         qif_content = "!Type:Bank\n"
         for tx in transactions:
             qif_content += f"D{tx.get('date', datetime.now().strftime('%m/%d/%Y'))}\n"

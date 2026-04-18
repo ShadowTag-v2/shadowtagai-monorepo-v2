@@ -35,13 +35,13 @@ Every clinical recommendation should address:
 ```
 STRONG RECOMMENDATION FOR (Grade 1):
 
-"We recommend osimertinib 80 mg daily as first-line therapy for adults with 
-advanced NSCLC harboring EGFR exon 19 deletion or L858R mutation (Strong 
+"We recommend osimertinib 80 mg daily as first-line therapy for adults with
+advanced NSCLC harboring EGFR exon 19 deletion or L858R mutation (Strong
 recommendation, High-quality evidence - GRADE 1A)."
 
 Rationale:
 - Large PFS benefit: 18.9 vs 10.2 months (HR 0.46, p<0.001)
-- OS benefit: 38.6 vs 31.8 months (HR 0.80, p=0.046)  
+- OS benefit: 38.6 vs 31.8 months (HR 0.80, p=0.046)
 - Better tolerability: Lower grade 3-4 AEs
 - Evidence: High-quality (large RCT, low risk of bias)
 - Benefits clearly outweigh harms
@@ -50,8 +50,8 @@ Rationale:
 ```
 STRONG RECOMMENDATION AGAINST (Grade 1):
 
-"We recommend against using bevacizumab in the first-line treatment of newly 
-diagnosed glioblastoma to improve overall survival (Strong recommendation against, 
+"We recommend against using bevacizumab in the first-line treatment of newly
+diagnosed glioblastoma to improve overall survival (Strong recommendation against,
 High-quality evidence - GRADE 1A)."
 
 Rationale:
@@ -81,8 +81,8 @@ Rationale:
 ```
 CONDITIONAL RECOMMENDATION FOR (Grade 2):
 
-"We suggest considering maintenance pemetrexed after first-line platinum-pemetrexed 
-chemotherapy for advanced non-squamous NSCLC in patients without disease progression 
+"We suggest considering maintenance pemetrexed after first-line platinum-pemetrexed
+chemotherapy for advanced non-squamous NSCLC in patients without disease progression
 (Conditional recommendation, Moderate-quality evidence - GRADE 2B)."
 
 Rationale:
@@ -97,9 +97,9 @@ Rationale:
 ```
 CONDITIONAL RECOMMENDATION - EITHER OPTION ACCEPTABLE (Grade 2):
 
-"We suggest either pembrolizumab monotherapy OR pembrolizumab plus platinum-doublet 
-chemotherapy as first-line treatment for PD-L1 ≥50% NSCLC, based on patient 
-preferences and clinical factors (Conditional recommendation, High-quality evidence - 
+"We suggest either pembrolizumab monotherapy OR pembrolizumab plus platinum-doublet
+chemotherapy as first-line treatment for PD-L1 ≥50% NSCLC, based on patient
+preferences and clinical factors (Conditional recommendation, High-quality evidence -
 GRADE 2A)."
 
 Rationale:
@@ -325,4 +325,3 @@ Before finalizing recommendations, verify:
 - [ ] Guideline concordance is documented
 - [ ] Special populations are addressed (elderly, renal/hepatic impairment)
 - [ ] Monitoring requirements are specified
-

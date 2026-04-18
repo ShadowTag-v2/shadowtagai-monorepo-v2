@@ -89,9 +89,7 @@ class TestKVCacheCompressor:
         out_comp = attn_comp @ v_hat
 
         # Output should be similar
-        cosine_sim = np.dot(out_orig.ravel(), out_comp.ravel()) / (
-            np.linalg.norm(out_orig) * np.linalg.norm(out_comp)
-        )
+        cosine_sim = np.dot(out_orig.ravel(), out_comp.ravel()) / (np.linalg.norm(out_orig) * np.linalg.norm(out_comp))
         # 3-bit quantization on both K and V with small d=64 and seq_len=16
         # introduces significant error. Cosine > 0.5 is reasonable here.
         # Higher d and higher bit-width would give much better similarity.

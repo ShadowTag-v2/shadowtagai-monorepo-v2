@@ -160,7 +160,9 @@ class KVCompression:
         self.similarity_threshold = similarity_threshold
 
     def compress_kv_cache(
-        self, keys: np.ndarray, values: np.ndarray,
+        self,
+        keys: np.ndarray,
+        values: np.ndarray,
     ) -> tuple[np.ndarray, np.ndarray, dict]:
         """Compress KV cache by merging similar entries
 
@@ -202,7 +204,9 @@ class KVCompression:
         return compressed_keys, compressed_values, metadata
 
     def _cluster_similar(
-        self, similarity_matrix: np.ndarray, target_clusters: int,
+        self,
+        similarity_matrix: np.ndarray,
+        target_clusters: int,
     ) -> list[list[int]]:
         """Simple clustering based on similarity"""
         n = similarity_matrix.shape[0]
@@ -304,7 +308,8 @@ class TowerCache:
 
         # Find LRU
         lru_key = min(
-            self.cache.keys(), key=lambda k: (self.access_counts[k], self.cache[k]["timestamp"]),
+            self.cache.keys(),
+            key=lambda k: (self.access_counts[k], self.cache[k]["timestamp"]),
         )
 
         # Remove
@@ -336,7 +341,9 @@ class GPUInferenceAccelerator:
         self.inference_cache = TowerCache(max_size_gb=2.0)
 
     async def process_scene(
-        self, sensor_data: dict[str, np.ndarray], mesh_context: list[dict],
+        self,
+        sensor_data: dict[str, np.ndarray],
+        mesh_context: list[dict],
     ) -> dict[str, Any]:
         """Process scene using GPU acceleration
 
@@ -460,7 +467,9 @@ class EdgeReasoningPipeline:
         }
 
     async def process_mesh_messages(
-        self, messages: list[dict], sensor_data: dict | None = None,
+        self,
+        messages: list[dict],
+        sensor_data: dict | None = None,
     ) -> dict[str, Any]:
         """Process incoming mesh messages with full reasoning pipeline
 

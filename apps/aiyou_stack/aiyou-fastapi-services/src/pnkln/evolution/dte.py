@@ -44,7 +44,9 @@ if __name__ == "__main__":
 
     async def run_test():
         result = await dte.evolve_prompt(
-            current_prompt=test_prompt, test_cases=test_cases, strategy=EvolutionStrategy.HYBRID,
+            current_prompt=test_prompt,
+            test_cases=test_cases,
+            strategy=EvolutionStrategy.HYBRID,
         )
         return result
 

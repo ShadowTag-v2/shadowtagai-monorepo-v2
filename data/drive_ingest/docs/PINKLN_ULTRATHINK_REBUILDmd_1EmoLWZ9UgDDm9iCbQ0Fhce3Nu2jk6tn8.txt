@@ -1180,4 +1180,3 @@ print(f"Final acceptance rate: {metrics['acceptance_rate'][-1]:.1%}")
 **Version**: 1.0
 **Date**: 2025-11-17
 **Philosophy**: Pause/Breathe/Design/Urgency → Insanely Great
-

@@ -52,7 +52,8 @@ class ShadowLedger:
             ]
             table = bigquery.Table(self.table_ref, schema=schema)
             table.time_partitioning = bigquery.TimePartitioning(
-                type_=bigquery.TimePartitioningType.DAY, field="timestamp",
+                type_=bigquery.TimePartitioningType.DAY,
+                field="timestamp",
             )
             self.client.create_table(table)
 

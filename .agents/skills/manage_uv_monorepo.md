@@ -20,11 +20,11 @@ The workspace is a monorepo. Dependencies are managed at the app level, but you 
     `uv add <package_name> --package shadowtag-omega-v4-fastapi-services`
 * **Syncing the Environment:** If you modify `pyproject.toml`, immediately sync the environment to lock dependencies:
     `uv sync`
-* **Running Scripts:** Do not try to activate the virtual environment manually. Always prefix execution commands with `uv run`. 
+* **Running Scripts:** Do not try to activate the virtual environment manually. Always prefix execution commands with `uv run`.
     `uv run --package shadowtag-omega-v4-fastapi-services uvicorn main:app --reload`
 * **Running the Linter/Type-checker:** `uv run basedpyright`
 
 ### 4. Error Handling
-* If `uv` throws a resolution error, read the structured stderr output. 
-* Do not attempt to switch to `pip` or `poetry` as a fallback. 
+* If `uv` throws a resolution error, read the structured stderr output.
+* Do not attempt to switch to `pip` or `poetry` as a fallback.
 * If a lockfile conflict occurs, use `uv lock` to regenerate it before attempting the installation again.

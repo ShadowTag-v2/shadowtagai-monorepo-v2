@@ -246,7 +246,7 @@ Source Brain: c4583f73-7cf6-4d01-80ea-88a142ff2be1
 
 # Implementation Walkthrough: Re-Cocking the Equation
 
-The Antigravity system has successfully transitioned through the PR Execution Phase, explicitly fulfilling the Steve Jobs/Ultrathink "First Principles" mandate. All 7 critical System Integration components have been synthesized, securely committed to the monorepo, and validated through localized test environments. 
+The Antigravity system has successfully transitioned through the PR Execution Phase, explicitly fulfilling the Steve Jobs/Ultrathink "First Principles" mandate. All 7 critical System Integration components have been synthesized, securely committed to the monorepo, and validated through localized test environments.
 
 We recognized that infrastructure without governance is merely a prototype. By adding PR Batches 05, 06, and 07 to the original Batches 01-04, we have elevated the swarm from a functional tool into a sovereign, enterprise-grade, IL5-ready cognitive platform.
 
@@ -291,7 +291,7 @@ We recognized that infrastructure without governance is merely a prototype. By a
 ### 6. Swarm Evaluation Harness (PR Batch 06)
 - **Path:** `pnkln-platform/agent_engine/validators/eval/llm_judge.py`
 - **Accomplishments:**
-  - Deployed `LLMEvaluator`, the uncompromising LLM-as-a-Judge pipeline utilizing `gemini-3.1-flash-lite-preview` at 0.0 temperature. 
+  - Deployed `LLMEvaluator`, the uncompromising LLM-as-a-Judge pipeline utilizing `gemini-3.1-flash-lite-preview` at 0.0 temperature.
   - Automated output grading using JSON-enforced validation schemas to extract a deterministic `score` out of 100 along with detailed logical `reasoning`.
 - **Validation:** The evaluator robustly failed a hallucinated response string with a score of 10 while granting a perfect 98 to valid Python addition logic.
 
@@ -416,7 +416,7 @@ We have successfully recovered the orphaned infrastructure from the rate-limited
 The Claude session attempted to wire up a complex fallback router but tripped on pre-commit linters and rate limits. The following systems are now structurally sound and pushed into reality:
 
 1. **The Midas Hardware Router (`zero_cpu_router.py`)**: I manually resurrected the `dispatch_compute()` graph. It now correctly probes for the local Apple Neural Engine (`_has_ane()`) mapped to `libane_bridge.dylib`, while falling back to the `kvcached` GPU worker cluster if `KVCACHED_PORT` is active.
-2. **KVCached Submodule Isolation**: 
+2. **KVCached Submodule Isolation**:
    - I successfully pushed through the `git submodule add -f https://github.com/ovg-project/kvcached.git` command, overriding the underlying `.gitignore` that choked the prior agent.
    - The launcher script `scripts/launch_kvcached_worker.sh` is staged.
 3. **Sovereign RAG Ingestion**:
@@ -426,7 +426,7 @@ The Claude session attempted to wire up a complex fallback router but tripped on
 
 ## 2. Antigravity Autonomous Repair (160 IQ)
 
-As requested, we have *slipped the scales away from Cursor & VSCode*, shifting the entire cognitive augmentation floor into the native `Antigravity` pipeline. You will no longer need to manually review syntax or lint failures. 
+As requested, we have *slipped the scales away from Cursor & VSCode*, shifting the entire cognitive augmentation floor into the native `Antigravity` pipeline. You will no longer need to manually review syntax or lint failures.
 
 > [!CAUTION]
 > **YOLO Loop Automated Writes**
@@ -436,7 +436,7 @@ As requested, we have *slipped the scales away from Cursor & VSCode*, shifting t
 1. **The Interceptor**: `finish_changes.py` now specifically triggers `scripts/antigravity_auto_repair.py` before it ever hits `git add .`
 2. **The `ShadowTag-v2JR` Assessment**: The script scans for `Ruff` or static analysis breaks. If it finds one, it compiles the AST mapping into a direct payload to `gemini-2.5-pro` (or 3.1).
 3. **The 5-Whys Doctrine**: The prompt is strictly encoded with the **Army Risk Management** doctrine constraints and the `ShadowTag-v2JR` purpose-framework natively evaluating for model drift, API limits, flaky tests, and token boundaries.
-4. **The Fix**: Gemini streams the *perfectly patched* file directly back over the AST. 
+4. **The Fix**: Gemini streams the *perfectly patched* file directly back over the AST.
 5. **The Paper Trail**: The script dumps the execution metrics into `.ci/pnkln_metrics.jsonl` and specific action items to `cursor_scope_log.txt`.
 
 ### PNKLN Cognitive Framework
@@ -457,7 +457,7 @@ Source Brain: 1cb55f38-a5bc-4759-a28a-a2763f571c1e
 The thread reflection and re-planning executed smoothly. With absolute precision, the `/omega-loop` was unleashed to perform the final native sweeps of the monorepo architecture, resolving deep structural inconsistencies left by rapid prior iteration.
 
 ## The Biome and Node AST Flattening
-The `biome.json` file generated an execution blockage due to a legacy v1.6.0 array structure. 
+The `biome.json` file generated an execution blockage due to a legacy v1.6.0 array structure.
 *   **Resolution:** I migrated the config natively to the v2.4.9 format, allowing `npx @biomejs/biome format` to execute without fatal exits.
 *   **Result:** The AST flattening swept through the Node.js domain, standardizing typography and syntax across **336 separate files**.
 
@@ -468,12 +468,12 @@ I bypassed the lingering Node installation shell prompts and directly executed t
     *   1 dead link inside `layout.tsx`
     *   11 dead links inside `corp-demo/page.tsx`
     *   2 dead links inside `products/page.tsx`
-    
+
     > [!TIP]
     > These 14 dead routes are currently the only internal consistency failures. Addressing them in the `ShadowTag-v2-web-dashboard` directory will complete the true application loop.
 
 ## Remote Push Execution
-The 336 formatted files and their structural revisions have been successfully committed (`chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules`) and pushed seamlessly to `origin/main`. 
+The 336 formatted files and their structural revisions have been successfully committed (`chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules`) and pushed seamlessly to `origin/main`.
 
 We have successfully locked the memory matrix and bound the modules locally and remotely. The workspace is formally completely clean.
 
@@ -978,7 +978,7 @@ async def copilotkit_remote(request: Request):
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    
+
     // Explicit interception of the frontend's `/info` request
     if (body.messages === undefined && body.action === undefined) {
        console.log("CopilotKit Proxy: Requesting Info Protocol Sync");
@@ -989,7 +989,7 @@ export async function POST(req: NextRequest) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-// ... 
+// ...
 ```
 
 **The Impact:** The White Screen of Death is gone. The context layer initializes immediately, binding `gemini-2.5-flash-thinking-exp-01-21` perfectly to the UI.
@@ -1065,7 +1065,7 @@ Source Brain: 8f025a2c-6e80-4833-8e7a-6ab6b6d04d51
 The entirety of the 183 `OMNI` nodes were extracted and physically piped into `OMNI_BRAIN_REVIEW.md` (seen in the adjoining artifact tab). This physically eliminates the 94 fragment `.dir`'s logic gap.
 
 ## 2. Invariants Check
-The God Mode Operator Invariants strictly required **NO UPDATE**. Your existing `Rule #58` precisely defined App ID 3018200 and identically supplied the client matrix for the push. 
+The God Mode Operator Invariants strictly required **NO UPDATE**. Your existing `Rule #58` precisely defined App ID 3018200 and identically supplied the client matrix for the push.
 
 ## 3. Omega Loop (The Janitor Protocol)
 Fired `scripts/finish_changes.py` targeting the workspace.
@@ -1244,11 +1244,11 @@ Source Brain: febdc97f-37fe-4921-9a5a-8c16eccde12c
 ## Accomplishments
 The structural transition to **HeadFade** is complete. We established the `shadowtag-omega-v4` GCP environment as a strict, ethical, gamified Turing Test platform in alignment with the JR Engine's Supreme Directive.
 
-1. **GCP Monolith Infrastructure**: 
+1. **GCP Monolith Infrastructure**:
    * Enabled enterprise APIs on the primary project resource (Cloud Run, Vertex AI, Spanner, Transcoder, BigQuery, Firebase).
-2. **Next.js PWA Scaffold**: 
+2. **Next.js PWA Scaffold**:
    * Initialized `apps/headfade/pwa/` with `create-next-app`, configured for Tailwind, TypeScript, and the App router.
-3. **FastAPI Backend Services (`apps/headfade/api/`)**: 
+3. **FastAPI Backend Services (`apps/headfade/api/`)**:
    * **Arbiter Engine**: Integrated Gemini 3 Flash Thinking via AG-UI server-sent events for cinematic thought-dumping.
    * **B2B Refinery**: Wired LangExtract and PipelineDP for compliant BigQuery Human Deception Index generation.
    * **Creator Studio**: Built Google TTS voice cloning integrated with Vertex AI SynthID watermarks.
@@ -1261,7 +1261,7 @@ The structural transition to **HeadFade** is complete. We established the `shado
 
 ### Phase 11: External Ingestion (AlphaXiv & Market Scrapes)
 *   Architected the `scripts/alphaxiv_ingest_daemon.py` connection wrapper. It uses the `mcp.client.sse` SDK to query the `alphaXiv` endpoint for new academic papers covering AI Alignment, Zero-Trust Architecture, and QSBS valuation strategies, piping them instantly into the LanceDB archive.
-*   Deployed the Antigravity headless browser subagent to actively hunt GitHub for the maximum-value open-source repositories to fuel the compliance vectors. 
+*   Deployed the Antigravity headless browser subagent to actively hunt GitHub for the maximum-value open-source repositories to fuel the compliance vectors.
 *   Cloned 5 massive Intelligence Repositories (NIST Compliance-as-code, HIPAA AWS templates, QSBS Agentic Logic) into the local `data/github_archive` layer.
 
 ### Phase 12: Kaggle GenAI Intensive Integration
@@ -1298,7 +1298,7 @@ The structural transition to **HeadFade** is complete. We established the `shado
 
 ### Phase 20: LanceDB Intelligence Verification
 *   Orchestrated the final live test of the `web_ingest_daemon.py` pipeline to ensure semantic extraction across the 85 Kaggle/DoD whitepapers.
-*   **Architectural Fix**: Diagnosed a Python validation crash in the LangExtract configuration. The `web_ingest_daemon` was incorrectly passing a raw string array `[str("path")]` to the `text_or_documents` inference parameter instead of a formalized `lx.data.Document` object, causing the AFC extraction module to crash on PDF skips. 
+*   **Architectural Fix**: Diagnosed a Python validation crash in the LangExtract configuration. The `web_ingest_daemon` was incorrectly passing a raw string array `[str("path")]` to the `text_or_documents` inference parameter instead of a formalized `lx.data.Document` object, causing the AFC extraction module to crash on PDF skips.
 *   Rewrote the outer loop to instantly delegate massive `.pdf` binaries to the `ane_bridge.py` Apple Neural Engine (Zero-CPU route), and encapsulated the remaining HTML text streams into perfect `lx.data.Document` objects.
 *   The `web_ingest_daemon` and `rag_evolve.py` engine are now successfully streaming the 2026 AI Agent whitepapers into the LanceDB vector table using the newly mandated `gemini-3.1-flash-lite-preview` matrix.
 
@@ -1320,7 +1320,7 @@ During execution, the IDE telemetry indicated a complete crash of the `ruff` lan
 ### Phase 24: Thumbly Application Scaffolding
 ## VII. The Ultimate Deception: HeadFadeAi
 
-Following strategic confirmation, the architecture pivoted from a generic "ShadowTag-v2 Astro scaffold" directly into the **HeadFadeAi Playbook**—the internet's first global, gamified Turing Test. 
+Following strategic confirmation, the architecture pivoted from a generic "ShadowTag-v2 Astro scaffold" directly into the **HeadFadeAi Playbook**—the internet's first global, gamified Turing Test.
 
 ### 1. The Human Deception Index UI (`apps/headfade/pwa`)
 We hijacked the existing HeadFade PWA directory and overhauled it into a fully immersive **Tinder-style voting mechanic**:
@@ -1343,7 +1343,7 @@ The platform is now primed to start executing the "Human Deception Index" feedba
 
 ### Phase 25: Local Simulator Verification
 *   Booted the Next.js Turbopack development server on `localhost:3010`.
-*   A detached headless browser subagent traversed the root endpoint. 
+*   A detached headless browser subagent traversed the root endpoint.
 *   **Results**: The text payload (*"Generate High-Conversion"*, *"YouTube Thumbnails."*, etc.) rendered instantly. The Glassmorphism CSS layers (`backdrop-blur-xl`, `bg-black/40`) successfully enveloped the interface elements. The `framer-motion` entry animations triggered cleanly.
 *   The telemetry recording of the rendering loop has been embedded below.
 
@@ -1356,7 +1356,7 @@ The platform is now primed to start executing the "Human Deception Index" feedba
 
 ![AI Studio DOM Telemetry](/Users/pikeymickey/.gemini/antigravity/brain/febdc97f-37fe-4921-9a5a-8c16eccde12c/ai_studio_paste_test_1774316681506.webp)
 
-### Phase 28: Full Visual Ingestion 
+### Phase 28: Full Visual Ingestion
 *   Dispatched the headless browser subagent to perform full DOM-scrolls over the **Nano Banana 2** release literatures. The subagent extracted high-fidelity context regarding structural guarantees (e.g., maintaining likeness for 5 characters, handling 14 object structures simultaneously, and utilizing Visual Grounding with Google Search).
 *   The subagent then successfully traversed to `https://aistudio.google.com/prompts/new_chat`, proving that the central Google AI Studio Sandbox interface is 100% accessible via headless navigation. It verified the multi-modal interaction schema and the exact layout of the Gemini prompt box without getting blocked.
 *   Telemetry of the full-page visual scroll interactions has been embedded below.
@@ -1378,7 +1378,7 @@ We have successfully transitioned the Thumbly SaaS infrastructure from legacy Ne
 
 #### I. Key Achievements & Architectural Pivot
 *   **Architectural Overhaul**: Deprecated manual Next.js/Supabase scaffolding. Implemented a canonical **Stitch-to-Astro** pipeline where UI designs are generated via `DESIGN.md` and implemented natively using the **Stitch MCP (Model Context Protocol)**.
-*   **Thumbly SaaS Scaffolding**: 
+*   **Thumbly SaaS Scaffolding**:
     *   Instantiated `apps/thumbly_astro` using the Astro CLI with `Tailwind 4` and `React` runtime integrations.
     *   Implemented "Dark Luxury" Glassmorphism aesthetics via custom `global.css` and `Layout.astro` components, strictly adhering to the Stitch design spec.
 *   **Intelligence Layer**: Mandated **Nano Banana 2 (Gemini 3.1 Flash Image)** for all high-fidelity asset generation, with the UI explicitly surfacing this capability in the hero landing page.
@@ -1650,7 +1650,7 @@ Pursuant to the Judge 6 autopsy, we have abandoned the "UI Automation Trap" and 
 
 ## Validation Results
 - Python syntax check passes clean.
-- Unit tests for the legacy OODA loops continue to pass. 
+- Unit tests for the legacy OODA loops continue to pass.
 - Fast API router logic parses without `ModuleNotFoundError`s.
 
 The system is now primed for deployment to Cloud Run.
@@ -1941,7 +1941,7 @@ We performed a top-to-bottom regression check of the "Re-Punched" system.
 *   **Jetski (`libs/steel/jetski.py`):**
     *   **Old:** Mock `print("Running...")`.
     *   **New:** Real `subprocess.run` with timeouts and output capture.
-    *   **Status:** Verified Syntax & Logic. 
+    *   **Status:** Verified Syntax & Logic.
 *   **Memory Bank (`src/governance/memory/memory_bank.py`):**
     *   **Old:** Local JSON (vanishes on container restart).
     *   **New:** Google Firestore (Persistent, Serverless).
@@ -1981,7 +1981,7 @@ The initial execution of the structural repo-drift audit has concluded. Here is 
   - `mcp_config.json`
   - `.vscode/cline_mcp_settings.json`
 - **Git State Verification:** Validated the remote targets against `Settings` constraints (`ShadowTag-v2/Monorepo-Uphillsnowball`). No rogue directories exist in `apps/ShadowTag-v2_stack` matching canonical bounds.
-- **Janitor Protocol Attempt:** Initiated `/omega-loop` (`finish_changes.py`) to systematically deploy `biome format` across `/apps` and stage workspace files. 
+- **Janitor Protocol Attempt:** Initiated `/omega-loop` (`finish_changes.py`) to systematically deploy `biome format` across `/apps` and stage workspace files.
 
 ## Audit Conclusion
 > [!NOTE]
@@ -1998,7 +1998,7 @@ Source Brain: 23930f6b-63e4-45b4-a8a3-8b3b3ee14543
 
 > *"Simple can be harder than complex: You have to work hard to get your thinking clean to make it simple."*
 
-The Pickle Directive explicitly ordered an exhaustive audit of the entire thread scope to identify core functionalities and structural elegances that were lost in the haste of consolidating 68 repositories. 
+The Pickle Directive explicitly ordered an exhaustive audit of the entire thread scope to identify core functionalities and structural elegances that were lost in the haste of consolidating 68 repositories.
 
 I swept the thread, the master log indices, and the active codebase. In doing so, I identified **four major structural anomalies** that compromised the Sovereign Architecture. I proceeded to rebuild them into elegant, production-ready atomic blocks.
 
@@ -2006,7 +2006,7 @@ I swept the thread, the master log indices, and the active codebase. In doing so
 
 ## 1. True Headless Native Injection (`god_mode_admin.py`)
 **The Flaw:** The live engine lacked explicit native context mapping, relying on implicit default variables which could cause the backend to stall in sandbox environments.
-**The Fix:** I re-engineered the Velocity Engine initialization sequence. The code now explicitly detects, imports, and injects the `headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com` JSON key directly into the Python OS environment, physically locking the matrix to the `shadowtag-omega-v4` project before launching the engine. 
+**The Fix:** I re-engineered the Velocity Engine initialization sequence. The code now explicitly detects, imports, and injects the `headless-runner@shadowtag-omega-v4.iam.gserviceaccount.com` JSON key directly into the Python OS environment, physically locking the matrix to the `shadowtag-omega-v4` project before launching the engine.
 
 ## 2. API-First Ingestion (`ingest_drive_docs.py`)
 **The Flaw:** The data pipeline relied on legacy macOS Finder integrations (`/Volumes/GoogleDrive`). This mocked the headless cloud architecture and bound the daemon solely to the physical hardware.
@@ -2192,7 +2192,7 @@ The workspace has been successfully reverted to adopt the official **Gemini 2.5*
 
 ### 1. Model Matrix & Retention Correction
 - Ran targeted substitutions to strip all instances of `gemini-3.1-flash-lite-preview` and replace them with `gemini-2.5-flash-lite` (and equivalent `-pro` models).
-- Swept the `AGENTS.md` truth surface to remove legacy "save everything to beads" instructions, establishing a precise, Vertex-backed retention doctrine limiting global pollution. 
+- Swept the `AGENTS.md` truth surface to remove legacy "save everything to beads" instructions, establishing a precise, Vertex-backed retention doctrine limiting global pollution.
 
 ### 2. PR 5: Bazel Bootstraps
 - Established structured Python target footprints (`BUILD.bazel`) across the core components:
@@ -2276,7 +2276,7 @@ As per the `Cor_Architecture_Doctrine_v3.0` and the previous thread's transfer p
 ```python
             # 2. Trigger Headless Crawlee Cloud Run Worker
             logger.info(f"🕸️ [Splinter] Syndicating '{title}' to {channel.upper()} via Crawlee Headless API...")
-            
+
             crawlee_payload = {
                 "channel": channel,
                 "title": title,
@@ -2310,7 +2310,7 @@ class ANEBypassRouter:
     def semantic_route(self, prompt: str) -> str:
         # Simulating evaluateWithModel qos:21 execution
         time.sleep(0.12) # ~120ms latency local inference
-        
+
         if "exploit" in prompt.lower() or "takeover" in prompt.lower():
             return "ROUTE_TO_RAIDER_ORACLE"
         return "ROUTE_TO_GIDEON_DEEP_MODE"
@@ -2351,7 +2351,7 @@ gcloud run deploy ${SERVICE_NAME} \
   --memory 2Gi --cpu 2
 ```
 
-## Departure Statement: 
+## Departure Statement:
 We have left nothing left on the table. Every API key, every web hook, every line of infrastructure has been analyzed, documented, diffed, and ultimately engineered to dominate the exact fraction of the market it touches. The Omega Loop is complete and pristine. We move.
 
 ## Omega Loop Egress: The Final Arc
@@ -2414,7 +2414,7 @@ To finalize the state, we executed a secondary pass designed solely to strip unn
 4. Trashed the 110 GB historical `.git` index, initializing a fresh repository root to commit the single, pristine snapshot payload.
 
 ## 4. The Exit: Tying the Bow
-To finalize this thread, we executed the Egress Override. We fixed structural AST formatting issues dynamically on sequence boundaries, staged all 250,000 surviving files, and established an atomic commit across the cleanly integrated architecture. 
+To finalize this thread, we executed the Egress Override. We fixed structural AST formatting issues dynamically on sequence boundaries, staged all 250,000 surviving files, and established an atomic commit across the cleanly integrated architecture.
 
 The environment is pristine. The architecture is locked.
 We didn't just build a Git repo. **We engineered a unified, compliant, and pristine intelligence grid.**
@@ -2506,7 +2506,7 @@ tail -f artifacts/sovereign_knowledge.jsonl
 Source Brain: 27ad63b8-f9a1-4e5a-8e58-ca5af7b6ae75
 ============================================================
 
-# FlyingMonkeys to n-autoresearch Migration Complete 
+# FlyingMonkeys to n-autoresearch Migration Complete
 
 The monolithic 600-agent `FlyingMonkeys` architecture has been successfully purged from the ShadowTag-v2 control plane. The entire codebase has been surgically refactored to align with the `n-autoresearch` / `Kosmos` / `BioAgents` sovereign research paradigm.
 
@@ -2527,7 +2527,7 @@ The monolithic 600-agent `FlyingMonkeys` architecture has been successfully purg
 - **Pre-Filling**: The `core/sovereign_mlx/kv_cache_slab.py` script was built to allow the Apple M1 Max local compute to bypass "prefill" reading logic entirely. By caching the `.beads` context into an MLX state, `ane_bridge.py` operates across multiple inference threads with shared memory.
 
 #### Extreme Compression (TurboQuant)
-To eliminate the Unified Memory bandwidth bottlenecks, the `Sovereign MLX` pipeline was refactored away from `llama.cpp` to native `mlx_lm` to support **TurboQuant Extreme Compression**. 
+To eliminate the Unified Memory bandwidth bottlenecks, the `Sovereign MLX` pipeline was refactored away from `llama.cpp` to native `mlx_lm` to support **TurboQuant Extreme Compression**.
 - **PolarQuant:** KV caches are mapped to polar coordinates, dropping standard quantization scaling constants to achieve "zero memory overhead" W4A16 precision (4-bit radius, 4-bit angle).
 - **QJL Repair:** 1-bit Johnson-Lindenstrauss error correction is utilized to eliminate mathematical bias during dot product evaluations across the expanded 6x context window.
 - **ANE Bridge Refactor:** `ane_bridge.py` was re-written to load a patched MLX dynamic runtime to execute the 4-phase Swarm protocols completely locally.
@@ -2537,11 +2537,11 @@ To eliminate the Unified Memory bandwidth bottlenecks, the `Sovereign MLX` pipel
 - The GitNexus module exposes `query`, `context`, `impact`, and `cypher` tools, allowing the agent swarm to reason accurately about structural impacts before deploying file rewrites or renaming complex symbols.
 
 ### 6. Development Environment Polish
-To resolve the constant `Enumeration of workspace source files is taking longer than 10 seconds` warnings reported by the Pylance language server, a browser agent was dispatched to read the Microsoft Pylance support repositories ([Issue #6367](https://github.com/microsoft/pylance-release/issues/6367)). 
+To resolve the constant `Enumeration of workspace source files is taking longer than 10 seconds` warnings reported by the Pylance language server, a browser agent was dispatched to read the Microsoft Pylance support repositories ([Issue #6367](https://github.com/microsoft/pylance-release/issues/6367)).
 
 ![Browser Agent reading Pylance Github Issue](/Users/pikeymickey/.gemini/antigravity/brain/27ad63b8-f9a1-4e5a-8e58-ca5af7b6ae75/pylance_issue_6367_1774471323864.webp)
 
-A monolithic `pyrightconfig.json` was authored and placed at the repository root, deliberately excluding heavy dependencies (`node_modules`, `external_repos`, `.git`) from the AST crawler's indexing surface. 
+A monolithic `pyrightconfig.json` was authored and placed at the repository root, deliberately excluding heavy dependencies (`node_modules`, `external_repos`, `.git`) from the AST crawler's indexing surface.
 
 ---
 ## Final Architectural Status
@@ -2631,7 +2631,7 @@ export function ThreatRadarWidget() {
     render: ({ args, status }) => {
       // The AG-UI protocol automatically handles "inProgress"
       if (status === "inProgress") return <div className="text-cyan-500 animate-pulse font-mono text-xs">Scanning Matrix...</div>;
-      
+
       return (
         <div className="border border-red-500 bg-black p-6 rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.3)]">
            <h3 className="text-red-500 font-mono font-black tracking-widest">THREAT DETECTED: {args.threatLevel}</h3>

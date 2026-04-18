@@ -152,8 +152,7 @@ Return violations in JSON format only."""
 
         except json.JSONDecodeError as e:
             raise KernelChainError(
-                f"Failed to parse Gemini response as JSON: {e!s}\n"
-                f"Response: {response_text[:200]}",
+                f"Failed to parse Gemini response as JSON: {e!s}\nResponse: {response_text[:200]}",
             ) from e
         except Exception as e:
             raise KernelChainError(f"ATP 5-19 scan failed: {e!s}") from e

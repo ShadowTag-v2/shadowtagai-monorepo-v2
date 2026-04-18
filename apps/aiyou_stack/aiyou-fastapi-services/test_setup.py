@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Test script to validate Mobile Optimizer setup
-"""
+"""Test script to validate Mobile Optimizer setup"""
 
 import json
 import sys

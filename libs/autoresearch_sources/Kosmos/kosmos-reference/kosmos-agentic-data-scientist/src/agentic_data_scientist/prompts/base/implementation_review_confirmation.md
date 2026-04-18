@@ -40,7 +40,3 @@ Respond with JSON matching the output schema:
 - `reason`: string - brief explanation of your decision
 
 Be decisive. If the reviewer is satisfied, approve. If blocking issues remain, continue iteration.
-
-
-
-

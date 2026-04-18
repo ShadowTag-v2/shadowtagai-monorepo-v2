@@ -171,4 +171,3 @@ addNumbersButton.addEventListener('click', addNumbers.bind(this));
 onAuthStateChanged(auth, onAuthStateChangedHandler);
 // Listen for new Messages to be displayed.
 onChildAdded(query(ref(database, '/messages'), limitToLast(10)), onNewMessage);
-

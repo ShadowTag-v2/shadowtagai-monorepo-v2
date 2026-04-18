@@ -42,8 +42,7 @@ class VelocityEngine:
         return "\n".join(matches[:20])  # Limit output to avoid flooding
 
     def read_pm2_logs(self, service: str = "backend", lines: int = 50) -> str:
-        """Reads the logs of a PM2 managed process.
-        """
+        """Reads the logs of a PM2 managed process."""
         try:
             cmd = ["pm2", "logs", service, "--lines", str(lines), "--nostream", "--raw"]
             result = subprocess.run(cmd, capture_output=True, text=True)

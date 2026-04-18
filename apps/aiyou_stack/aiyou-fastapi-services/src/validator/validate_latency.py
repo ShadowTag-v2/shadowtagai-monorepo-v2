@@ -120,7 +120,10 @@ class LatencyValidator:
 
         # Create async client with connection pooling
         timeout = httpx.Timeout(
-            connect=self.config.connect_timeout, read=self.config.read_timeout, write=5.0, pool=5.0,
+            connect=self.config.connect_timeout,
+            read=self.config.read_timeout,
+            write=5.0,
+            pool=5.0,
         )
 
         limits = httpx.Limits(
@@ -183,7 +186,10 @@ class LatencyValidator:
             return result
 
     async def _try_request(
-        self, client: httpx.AsyncClient, request_id: int, attempt: int,
+        self,
+        client: httpx.AsyncClient,
+        request_id: int,
+        attempt: int,
     ) -> LatencyResult:
         """Try a single request (single attempt)"""
         result = LatencyResult()

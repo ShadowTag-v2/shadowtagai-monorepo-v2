@@ -411,4 +411,3 @@ class FieldTransform extends \Google\Protobuf\Internal\Message
     }
 
 }
-

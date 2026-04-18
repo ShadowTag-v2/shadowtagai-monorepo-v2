@@ -1,9 +1,9 @@
-/Users/pikeymickey/aiyou-stack/ShadowTag-v2/bin/n-autoresearch/Kosmos/BioAgents-server:153: DeprecationWarning: 
+/Users/pikeymickey/aiyou-stack/ShadowTag-v2/bin/n-autoresearch/Kosmos/BioAgents-server:153: DeprecationWarning:
         on_event is deprecated, use lifespan event handlers instead.
 
         Read more about it in the
         [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
-        
+
   @app.on_event("startup")
     MCP Bridge:       Enabled (Gemini CLI integration)
 
@@ -17,7 +17,7 @@
     ║  Provider: Vertex AI ($350K GCP Credits)                     ║
     ║  Endpoints: /task, /governance, /jura/*, /mcp/*              ║
     ╚══════════════════════════════════════════════════════════════╝
-    
+
 INFO:     Started server process [36450]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.

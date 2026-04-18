@@ -1,5 +1,4 @@
-"""Security utilities for secret management and encryption.
-"""
+"""Security utilities for secret management and encryption."""
 
 import base64
 import os

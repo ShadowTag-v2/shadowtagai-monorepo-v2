@@ -83,4 +83,3 @@ If everything looks good and no adaptations are needed:
 - **Empty arrays are fine** - most of the time, no changes will be needed
 - **Focus on substance** - don't make cosmetic changes to descriptions
 - **Preserve intent** - if modifying, keep the core purpose of the stage
-

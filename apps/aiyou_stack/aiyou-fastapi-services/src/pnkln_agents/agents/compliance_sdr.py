@@ -15,8 +15,7 @@ class ComplianceSDRAgent:
         self.blocked_leads = 0
 
     def generate_leads(self, count: int, target_profile: str):
-        """Generates dummy leads and checks them against a mock Governance Engine.
-        """
+        """Generates dummy leads and checks them against a mock Governance Engine."""
         print(f"🔍 [ComplianceSDR] Generating {count} leads for '{target_profile}'...")
 
         for i in range(count):
@@ -43,8 +42,7 @@ class ComplianceSDRAgent:
         print(f"    Total Processed: {count}")
 
     def judge_six_governance_check(self, lead: dict) -> dict:
-        """Simulates Judge #6 Governance Engine (GDPR Rule).
-        """
+        """Simulates Judge #6 Governance Engine (GDPR Rule)."""
         # Rule: EU emails require explicit consent.
         if "germany" in lead["location"].lower() or ".de" in lead["email"]:
             # 34% chance of missing consent (matching Ultrathink Report stats)

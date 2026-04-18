@@ -84,4 +84,3 @@ class GetFieldRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -56,7 +56,9 @@ class ProductionEthicalValidator:
         if redis_url:
             try:
                 self.rate_limiter = RedisRateLimiter(
-                    redis_url=redis_url, default_limit=60, default_window=3600,
+                    redis_url=redis_url,
+                    default_limit=60,
+                    default_window=3600,
                 )
                 print(f"✅ Using Redis rate limiter at {redis_url}")
             except Exception as e:
@@ -91,7 +93,9 @@ class ProductionEthicalValidator:
         rate_key = f"rate_limit:{domain}"
 
         is_allowed = self.rate_limiter.is_allowed(
-            key=rate_key, limit=source.rate_limit_per_hour, window=3600,
+            key=rate_key,
+            limit=source.rate_limit_per_hour,
+            window=3600,
         )
 
         if not is_allowed:
@@ -158,21 +162,24 @@ class ProductionIngestionLayer:
         # YouTube collector
         if api_keys.get("youtube"):
             self.collectors[SourceType.YOUTUBE] = YouTubeCollector(
-                api_key=api_keys["youtube"], config=self.config.get("youtube", {}),
+                api_key=api_keys["youtube"],
+                config=self.config.get("youtube", {}),
             )
             print("✅ YouTube collector initialized")
 
         # Twitter collector
         if api_keys.get("twitter"):
             self.collectors[SourceType.TWITTER] = TwitterCollector(
-                api_key=api_keys["twitter"], config=self.config.get("twitter", {}),
+                api_key=api_keys["twitter"],
+                config=self.config.get("twitter", {}),
             )
             print("✅ Twitter collector initialized")
 
         # News collector
         if api_keys.get("news"):
             self.collectors[SourceType.NEWS] = NewsCollector(
-                api_key=api_keys["news"], config=self.config.get("news", {}),
+                api_key=api_keys["news"],
+                config=self.config.get("news", {}),
             )
             print("✅ News collector initialized")
 
@@ -197,7 +204,9 @@ class ProductionIngestionLayer:
         self.sources.append(source)
 
     def ingest(
-        self, sources: list[Source] | None = None, target_items: int | None = None,
+        self,
+        sources: list[Source] | None = None,
+        target_items: int | None = None,
     ) -> IngestionResult:
         """Run production ingestion pipeline"""
         start_time = time.perf_counter()
@@ -260,7 +269,10 @@ class ProductionIngestionLayer:
         )
 
     def _calculate_metrics(
-        self, items: list[IngestedItem], violations: list[EthicalViolation], runtime_minutes: float,
+        self,
+        items: list[IngestedItem],
+        violations: list[EthicalViolation],
+        runtime_minutes: float,
     ) -> IngestionMetrics:
         """Calculate metrics"""
         if not items:

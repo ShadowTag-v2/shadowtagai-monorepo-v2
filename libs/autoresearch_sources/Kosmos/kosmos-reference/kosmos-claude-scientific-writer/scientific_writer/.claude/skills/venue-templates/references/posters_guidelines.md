@@ -205,14 +205,14 @@ Use colorblind-friendly color combinations:
 #### 2. Introduction/Background
 - **Purpose**: Context and motivation
 - **Length**: 100-200 words
-- **Include**: 
+- **Include**:
   - Problem statement
   - Research gap
   - Objectives/hypothesis
 
 #### 3. Methods
 - **Purpose**: How you did the study
-- **Format**: 
+- **Format**:
   - Bullet points preferred
   - Flow diagram if complex
   - Key parameters
@@ -299,9 +299,9 @@ Use colorblind-friendly color combinations:
 
 ### beamerposter
 
-**Description**: Extension of Beamer for posters  
-**Best For**: Academic conferences, classic layout  
-**Pros**: 
+**Description**: Extension of Beamer for posters
+**Best For**: Academic conferences, classic layout
+**Pros**:
 - Familiar to Beamer users
 - Clean, professional appearance
 - Many themes available
@@ -323,8 +323,8 @@ Use colorblind-friendly color combinations:
 
 ### tikzposter
 
-**Description**: Modern poster package using TikZ  
-**Best For**: Colorful, modern designs  
+**Description**: Modern poster package using TikZ
+**Best For**: Colorful, modern designs
 **Pros**:
 - Highly customizable
 - Modern, attractive themes
@@ -347,8 +347,8 @@ Use colorblind-friendly color combinations:
 
 ### baposter
 
-**Description**: Box-and-poster system  
-**Best For**: Structured, multi-column layouts  
+**Description**: Box-and-poster system
+**Best For**: Structured, multi-column layouts
 **Pros**:
 - Excellent column control
 - Header boxes, structured layout
@@ -392,7 +392,7 @@ Before printing:
 **Options**:
 1. **University print shop**: Often cheapest, convenient
 2. **FedEx Office**: Widely available
-3. **Online services**: 
+3. **Online services**:
    - Vistaprint
    - Printful
    - Academic Poster Printing (specialized)
@@ -425,7 +425,7 @@ Generate QR codes linking to:
 
 ### Placement
 
-- **Common locations**: 
+- **Common locations**:
   - Bottom right corner
   - Next to references
   - Near contact information
@@ -443,24 +443,24 @@ Generate QR codes linking to:
 
 ### Do's
 
-✓ **Use large fonts** (28pt+ for body text)  
-✓ **Keep text minimal** (30-40% of poster)  
-✓ **Use visuals** (60-70% figures, plots, images)  
-✓ **Tell a story** (clear narrative flow)  
-✓ **Colorblind-safe colors**  
-✓ **Test readability** (view from 6 feet away)  
-✓ **Include contact info** (email, QR code)  
+✓ **Use large fonts** (28pt+ for body text)
+✓ **Keep text minimal** (30-40% of poster)
+✓ **Use visuals** (60-70% figures, plots, images)
+✓ **Tell a story** (clear narrative flow)
+✓ **Colorblind-safe colors**
+✓ **Test readability** (view from 6 feet away)
+✓ **Include contact info** (email, QR code)
 ✓ **Proofread** (multiple times!)
 
 ### Don'ts
 
-✗ **Don't use small fonts** (<24pt body text)  
-✗ **Don't overcrowd** (leave white space)  
-✗ **Don't use complex tables** (simplify or visualize)  
-✗ **Don't use full paragraphs** (use bullets)  
-✗ **Don't use many fonts** (1-2 max)  
-✗ **Don't use low-res images** (<300 dpi)  
-✗ **Don't use red-green contrasts** (colorblind issue)  
+✗ **Don't use small fonts** (<24pt body text)
+✗ **Don't overcrowd** (leave white space)
+✗ **Don't use complex tables** (simplify or visualize)
+✗ **Don't use full paragraphs** (use bullets)
+✗ **Don't use many fonts** (1-2 max)
+✗ **Don't use low-res images** (<300 dpi)
+✗ **Don't use red-green contrasts** (colorblind issue)
 ✗ **Don't make it a paper** (posters ≠ papers)
 
 ---
@@ -625,4 +625,3 @@ Generate QR codes linking to:
 8. **Accessibility**: Readable from distance, clear hierarchy
 
 **Remember**: A poster is **not a paper** - it's a visual summary designed to spark conversations!
-

@@ -1,8 +1,8 @@
 # SynthID Image Watermark Research Report
 
 > **Researchers**: Allen Kuo
-> **Date**: December 2025  
-> **Status**: Ongoing Research  
+> **Date**: December 2025
+> **Status**: Ongoing Research
 > **Conclusion**: SynthID cannot be removed while preserving image quality
 
 ---
@@ -68,7 +68,7 @@ S = (V · K) / (||V|| · ||K||)     # Compute alignment with key
 
 Decision:
   S < τ_low      → "Not Detected"
-  τ_low < S < τ_high → "Part of this image..." 
+  τ_low < S < τ_high → "Part of this image..."
   S > τ_high     → "Most or all of this image..."
 ```
 
@@ -140,7 +140,7 @@ SynthID operates as a **parasite of entropy**:
 ```
 
 **Google's Design Philosophy**:
-> "If you want to keep my painting, you must keep my signature.  
+> "If you want to keep my painting, you must keep my signature.
 > If you want to remove my signature, you must destroy my painting."
 
 ---
@@ -198,7 +198,7 @@ If detector model becomes available:
 SynthID is a constraint in an optimization problem:
 
 Generate x such that:
-  
+
   L_visual(x) minimized    AND    φ(x) · K > τ
   ───────────────────            ─────────────
      Image looks real            Features match Google's
@@ -229,7 +229,7 @@ Low Denoising (0.3):
   V_new · K ≈ 0.8 · (V_Google · K) > τ → "Part of"
 
 High Denoising (0.9):
-  x_new = 0.1 · x_Google + 0.9 · x_SD  
+  x_new = 0.1 · x_Google + 0.9 · x_SD
   V_new · K ≈ 0.1 · (V_Google · K) < τ → Not Detected
 ```
 

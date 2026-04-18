@@ -66,8 +66,7 @@ class RecursiveAgent:
         """
 
     def solve(self, query: str, start_index: int = 0, depth: int = 0) -> str:
-        """The recursive loop. The agent reads, thinks, and moves.
-        """
+        """The recursive loop. The agent reads, thinks, and moves."""
         current_pos = start_index
         steps_taken = 0
         max_steps = 10  # Safety limit

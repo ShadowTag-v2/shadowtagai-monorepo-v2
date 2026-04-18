@@ -34,7 +34,7 @@ spec:
             nvidia.com/gpu: 1
         ports:
         - containerPort: 8000
-      
+
       # Judge #6 Sidecar (Enforcement)
       - name: judge-enforcer
         image: pnkln/judge:v6.2

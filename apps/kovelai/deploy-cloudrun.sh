@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ════════════════════════════════════════════════════════════
 # KovelAI — Cloud Run Deployment Script
-# 
+#
 # Deploys both services to Cloud Run on shadowtag-omega-v4.
 # Handles: Artifact Registry, Secret Manager, Cloud Run.
 # TLS/HTTPS is automatic (Google-managed certs).

@@ -62,7 +62,7 @@ Because these events are standard and self-describing, the front-end knows exact
 
 Standardizing these -- decouples the UI from the agent logic and vice versa. The UI doesn’t need custom glue code to understand the agent’s behavior.
 
-Any agent backend can **emit AG-UI events**.  
+Any agent backend can **emit AG-UI events**.
 And any AG-UI compliant UI can **consume them**.
 
 The protocol groups all the events into five high-level categories:
@@ -126,10 +126,10 @@ Lifecycle events help to monitor the overall run and its sub-steps. They tell th
 
 The five lifecycle events are:
 
-1) `RunStarted` : signals the start of an agent run  
-2) `RunFinished` : signals successful completion of a run.  
-3) `RunError` : signals a failure during the run.  
-4) `StepStarted` (optional) : start of a sub-task within a run.  
+1) `RunStarted` : signals the start of an agent run
+2) `RunFinished` : signals successful completion of a run.
+3) `RunError` : signals a failure during the run.
+4) `StepStarted` (optional) : start of a sub-task within a run.
 5) `StepFinished` : marks the completion of a sub-task.
 
 There could be multiple `StepStarted` / `StepFinished` pairs within a single run, representing progress through intermediate sub-tasks.
@@ -187,7 +187,7 @@ case 'RUN_ERROR':
   offerRetryOption();
   logErrorForDebugging(event);
   break;
-    
+
 }
 }
 ```
@@ -267,8 +267,8 @@ These events represent the lifecycle of tool calls made by agents. Tool calls fo
 
 4) `TOOL_CALL_RESULT` : carries the final output returned by the tool.
 
-Example flow:  
-  
+Example flow:
+
 `TOOL_CALL_START → (TOOL_CALL_ARGS ...) → TOOL_CALL_END → TOOL_CALL_RESULT`
 
 Here's how it looks on the agent side (emitting events):
@@ -377,7 +377,7 @@ Here’s how to handle those events on the frontend side:
 async function handleStateEvents(event) {
   switch(event.type) {
     case 'STATE_SNAPSHOT':
-      setAppState(event.snapshot);  
+      setAppState(event.snapshot);
       restoreUIFromState(event.snapshot); // restore UI from snapshot
       break;
 

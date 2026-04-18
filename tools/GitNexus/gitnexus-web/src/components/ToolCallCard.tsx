@@ -1,6 +1,6 @@
 /**
  * ToolCallCard Component
- * 
+ *
  * Displays a tool call with expand/collapse functionality.
  * Shows the tool name, status, and when expanded, the query/args and result.
  */

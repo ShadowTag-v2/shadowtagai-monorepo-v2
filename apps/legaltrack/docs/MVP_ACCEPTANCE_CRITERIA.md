@@ -31,7 +31,7 @@ The architecture must protect against the devastating "Tea app" failure class.
 * **[ ] EF.2 (Cross-Industry Scalability):** The core enforcement algorithm must remain abstracted such that it easily crosses over into Tax/Accounting, Healthcare Admin, and Securities without core rewrites.
 
 ### Pillar E: Cross-Platform Dark Luxury UI
-* **[ ] UI.1 (Mobile Critical Tiles):** Mobile applications must feature full-screen "Tap-to-Act" tiles featuring high-contrast typography, single-word directives ("FILE", "SIGN"), and escalating ambient alerts. 
+* **[ ] UI.1 (Mobile Critical Tiles):** Mobile applications must feature full-screen "Tap-to-Act" tiles featuring high-contrast typography, single-word directives ("FILE", "SIGN"), and escalating ambient alerts.
 
 ## 3. The Pnkln Ultrathink Rebuild (Agent Architecture)
 We replaced standard pipelines with Dynamic Template Evolution (DTE) wrapped in a Glicko-2 ranking system to achieve elite, self-healing code routing.
@@ -40,5 +40,5 @@ We replaced standard pipelines with Dynamic Template Evolution (DTE) wrapped in 
 
 ---
 
-**AUTHORIZATION SIGN-OFF:**  
+**AUTHORIZATION SIGN-OFF:**
 Execution of the React/Vite UI scaffolds and the Branko-Proof Cloud Run Gen2 Terraform definitions hinges on final executive approval of this document.

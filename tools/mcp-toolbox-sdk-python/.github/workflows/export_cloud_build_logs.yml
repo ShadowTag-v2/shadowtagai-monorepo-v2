@@ -13,11 +13,11 @@
 # limitations under the License.
 name: Export Cloud Build Failure Logs
 
-permissions: 
+permissions:
   contents: read
   checks: read
-  issues: write 
-  pull-requests: write 
+  issues: write
+  pull-requests: write
 
 on:
   check_suite:
@@ -92,7 +92,7 @@ jobs:
             core.setOutput('failure_detected', 'true');
             core.setOutput('failed_checks', JSON.stringify(failed.map(f => ({ name: f.name, id: f.id, html_url: f.html_url, details_url: f.details_url, external_id: f.external_id || '' }))));
             core.setOutput('pr_number', pr_number);
-  
+
   process-failed-builds:
     needs: detect-build-failure
     if: needs.detect-build-failure.outputs.failure_detected == 'true'
@@ -121,7 +121,7 @@ jobs:
         run: |
           LOG_FILE="cloudbuild_error_logs.txt"
           GCLOUD_OUTPUT=$(gcloud builds log "${STEPS_PARSE_BUILD_INFO_OUTPUTS_BUILD_ID}" --project="${STEPS_PARSE_BUILD_INFO_OUTPUTS_PROJECT_ID}" 2>&1)
-          
+
           if echo "$GCLOUD_OUTPUT" | grep -q "ERROR"; then
             echo "Failed to fetch logs from gcloud builds log." > "${LOG_FILE}"
             echo "--- gcloud command output ---" >> "${LOG_FILE}"
@@ -155,7 +155,7 @@ jobs:
         env:
           PR_NUMBER: ${{ needs.detect-build-failure.outputs.pr_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = process.env.PR_NUMBER;
             if (!prNumber) {
@@ -167,12 +167,12 @@ jobs:
             const { data: artifacts } = await github.rest.actions.listWorkflowRunArtifacts({ owner, repo, run_id });
             const logArtifacts = artifacts.artifacts.filter(a => a.name.startsWith('logs-'));
             const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number: prNumber });
-            
+
             // The botLogin is 'github-actions' when using GITHUB_TOKEN
             // You should filter comments by user.login for robustness
-            const botLogin = 'github-actions[bot]'; 
+            const botLogin = 'github-actions[bot]';
             const existing = comments.find(c => c.user.login === 'github-actions[bot]' && c.body && c.body.includes('**Download Error logs:**'));
-            
+
             if (logArtifacts.length > 0) {
               let body = '🔗 **Download Error logs:**\n\n';
               for (const artifact of logArtifacts) {
@@ -182,7 +182,7 @@ jobs:
                 if (openParenIndex !== -1) {
                   displayName = artifact.name.substring(0, openParenIndex);
                 } else {
-                  displayName = artifact.name.replace(/^logs-/, ''); 
+                  displayName = artifact.name.replace(/^logs-/, '');
                 }
                 displayName = displayName.trim();
 

@@ -35,7 +35,10 @@ class Model:
         self.metric_fn = metric_fn
 
         self.loss_fn = partial(
-            loss_fn, layers=self.layers, n_wts=self.n_wts, dims=self._calc_dims(),
+            loss_fn,
+            layers=self.layers,
+            n_wts=self.n_wts,
+            dims=self._calc_dims(),
         )
 
         self.optimizer = partial(
@@ -80,7 +83,10 @@ class Model:
         assert self.compiled, "Call compile before Prediction"
 
         data_loader = self.dataloader_cls(
-            X, batch_size=32, repeat=False, shuffle=False,
+            X,
+            batch_size=32,
+            repeat=False,
+            shuffle=False,
         ).get_generator()
         y = []
         for X in data_loader:
@@ -89,7 +95,11 @@ class Model:
 
     def _loss(self, X, y):
         data_loader = self.dataloader_cls(
-            X, y, batch_size=32, repeat=False, shuffle=False,
+            X,
+            y,
+            batch_size=32,
+            repeat=False,
+            shuffle=False,
         ).get_generator()
         loss_fn = self.loss_fn(data_loader=data_loader)
         y = []

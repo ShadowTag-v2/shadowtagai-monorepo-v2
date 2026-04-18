@@ -141,7 +141,10 @@ class DeadlineExtractor:
         return deadlines
 
     def _extract_rule_based(
-        self, text: str, service_date: date | None, filing_date: date | None,
+        self,
+        text: str,
+        service_date: date | None,
+        filing_date: date | None,
     ) -> list[dict[str, Any]]:
         """Extract deadlines using rule-based pattern matching"""
         deadlines = []
@@ -167,7 +170,10 @@ class DeadlineExtractor:
 
                 # Calculate deadline date
                 deadline_date = self._calculate_deadline_date(
-                    match.group(0), service_date, filing_date, trigger_event,
+                    match.group(0),
+                    service_date,
+                    filing_date,
+                    trigger_event,
                 )
 
                 if deadline_date:
@@ -189,7 +195,10 @@ class DeadlineExtractor:
         return deadlines
 
     def _extract_ner_based(
-        self, text: str, service_date: date | None, filing_date: date | None,
+        self,
+        text: str,
+        service_date: date | None,
+        filing_date: date | None,
     ) -> list[dict[str, Any]]:
         """Extract deadlines using Named Entity Recognition"""
         deadlines = []

@@ -1,9 +1,9 @@
 /**
  * Embedder Module
- * 
+ *
  * Singleton factory for transformers.js embedding pipeline.
  * Handles model loading, caching, and both single and batch embedding operations.
- * 
+ *
  * Uses snowflake-arctic-embed-xs by default (22M params, 384 dims, ~90MB)
  */
 
@@ -65,7 +65,7 @@ export const getCurrentDevice = (): 'webgpu' | 'wasm' | null => currentDevice;
 /**
  * Initialize the embedding model
  * Uses singleton pattern - only loads once, subsequent calls return cached instance
- * 
+ *
  * @param onProgress - Optional callback for model download progress
  * @param config - Optional configuration override
  * @param forceDevice - Force a specific device (bypasses WebGPU check)
@@ -88,7 +88,7 @@ export const initEmbedder = async (
   }
 
   isInitializing = true;
-  
+
   const finalConfig = { ...DEFAULT_EMBEDDING_CONFIG, ...config };
   const requestedDevice = forceDevice || finalConfig.device;
 
@@ -96,7 +96,7 @@ export const initEmbedder = async (
     try {
       // Configure transformers.js environment
       env.allowLocalModels = false;
-      
+
       if (import.meta.env.DEV) {
         console.log(`🧠 Loading embedding model: ${finalConfig.modelId}`);
       }
@@ -117,9 +117,9 @@ export const initEmbedder = async (
         if (import.meta.env.DEV) {
           console.log('🔧 Checking WebGPU availability...');
         }
-        
+
         const webgpuAvailable = await checkWebGPUAvailability();
-        
+
         if (!webgpuAvailable) {
           if (import.meta.env.DEV) {
             console.warn('⚠️ WebGPU not available');
@@ -128,13 +128,13 @@ export const initEmbedder = async (
           initPromise = null;
           throw new WebGPUNotAvailableError();
         }
-        
+
         // Try WebGPU
         try {
           if (import.meta.env.DEV) {
             console.log('🔧 Initializing WebGPU backend...');
           }
-          
+
           // Type assertion needed due to complex union types in transformers.js
           embedderInstance = await (pipeline as any)(
             'feature-extraction',
@@ -146,7 +146,7 @@ export const initEmbedder = async (
             }
           );
           currentDevice = 'webgpu';
-          
+
           if (import.meta.env.DEV) {
             console.log('✅ Using WebGPU backend');
           }
@@ -164,7 +164,7 @@ export const initEmbedder = async (
         if (import.meta.env.DEV) {
           console.log('🔧 Initializing WASM backend (this will be slower)...');
         }
-        
+
         // Type assertion needed due to complex union types in transformers.js
         embedderInstance = await (pipeline as any)(
           'feature-extraction',
@@ -176,7 +176,7 @@ export const initEmbedder = async (
           }
         );
         currentDevice = 'wasm';
-        
+
         if (import.meta.env.DEV) {
           console.log('✅ Using WASM backend');
         }
@@ -223,18 +223,18 @@ export const getEmbedder = (): FeatureExtractionPipeline => {
 
 /**
  * Embed a single text string
- * 
+ *
  * @param text - Text to embed
  * @returns Float32Array of embedding vector (384 dimensions)
  */
 export const embedText = async (text: string): Promise<Float32Array> => {
   const embedder = getEmbedder();
-  
+
   const result = await embedder(text, {
     pooling: 'mean',
     normalize: true,
   });
-  
+
   // Result is a Tensor, convert to Float32Array
   return new Float32Array(result.data as ArrayLike<number>);
 };
@@ -242,7 +242,7 @@ export const embedText = async (text: string): Promise<Float32Array> => {
 /**
  * Embed multiple texts in a single batch
  * More efficient than calling embedText multiple times
- * 
+ *
  * @param texts - Array of texts to embed
  * @returns Array of Float32Array embedding vectors
  */
@@ -252,25 +252,25 @@ export const embedBatch = async (texts: string[]): Promise<Float32Array[]> => {
   }
 
   const embedder = getEmbedder();
-  
+
   // Process batch
   const result = await embedder(texts, {
     pooling: 'mean',
     normalize: true,
   });
-  
+
   // Result shape is [batch_size, dimensions]
   // Need to split into individual vectors
   const data = result.data as ArrayLike<number>;
   const dimensions = DEFAULT_EMBEDDING_CONFIG.dimensions;
   const embeddings: Float32Array[] = [];
-  
+
   for (let i = 0; i < texts.length; i++) {
     const start = i * dimensions;
     const end = start + dimensions;
     embeddings.push(new Float32Array(Array.prototype.slice.call(data, start, end)));
   }
-  
+
   return embeddings;
 };
 
@@ -299,4 +299,3 @@ export const disposeEmbedder = async (): Promise<void> => {
     initPromise = null;
   }
 };
-

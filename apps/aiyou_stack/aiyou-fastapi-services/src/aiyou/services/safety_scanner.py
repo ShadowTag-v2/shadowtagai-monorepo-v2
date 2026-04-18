@@ -144,7 +144,11 @@ class SafetyScanner:
             return self.scan_content(content, file_path)
         except Exception as e:
             return ScanResult(
-                path=file_path, safe=False, flags=[f"error:{e!s}"], redactions=[], confidence=0.0,
+                path=file_path,
+                safe=False,
+                flags=[f"error:{e!s}"],
+                redactions=[],
+                confidence=0.0,
             )
 
     def scan_discovery_output(self, discovery_json: dict) -> dict:
@@ -166,7 +170,11 @@ class SafetyScanner:
                 scan = self.scan_file(path)
             else:
                 scan = ScanResult(
-                    path=path, safe=True, flags=["file_not_found"], redactions=[], confidence=0.5,
+                    path=path,
+                    safe=True,
+                    flags=["file_not_found"],
+                    redactions=[],
+                    confidence=0.5,
                 )
 
             # Annotate script

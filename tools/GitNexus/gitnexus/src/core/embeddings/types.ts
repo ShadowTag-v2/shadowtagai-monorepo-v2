@@ -1,6 +1,6 @@
 /**
  * Embedding Pipeline Types
- * 
+ *
  * Type definitions for the embedding generation and semantic search system.
  */
 
@@ -10,7 +10,7 @@
  */
 export const EMBEDDABLE_LABELS = [
   'Function',
-  'Class', 
+  'Class',
   'Method',
   'Interface',
   'File',
@@ -27,7 +27,7 @@ export const isEmbeddableLabel = (label: string): label is EmbeddableLabel =>
 /**
  * Embedding pipeline phases
  */
-export type EmbeddingPhase = 
+export type EmbeddingPhase =
   | 'idle'
   | 'loading-model'
   | 'embedding'
@@ -115,4 +115,3 @@ export interface ModelProgress {
   loaded?: number;
   total?: number;
 }
-

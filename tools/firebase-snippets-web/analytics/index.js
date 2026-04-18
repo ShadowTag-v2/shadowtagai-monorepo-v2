@@ -15,7 +15,7 @@ function logEvent() {
 
 function logEventParams() {
   const analytics = firebase.analytics();
-  
+
   // [START analytics_log_event_params]
   analytics.logEvent('select_content', {
     content_type: 'image',
@@ -45,7 +45,7 @@ function recordScreenView() {
 
   // [START analytics_record_screen_view]
   firebase.analytics().logEvent('screen_view', {
-    firebase_screen: screenName, 
+    firebase_screen: screenName,
     firebase_screen_class: screenClass
   });
   // [END analytics_record_screen_view]

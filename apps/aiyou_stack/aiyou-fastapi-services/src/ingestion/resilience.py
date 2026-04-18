@@ -167,7 +167,6 @@ class CircuitBreakerOpenError(Exception):
     """Raised when circuit breaker is open."""
 
 
-
 @dataclass
 class CostAlert:
     """Cost spike alert."""

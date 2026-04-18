@@ -74,7 +74,9 @@ class CheckpointingService:
             try:
                 # Save file to storage
                 content_hash, size_bytes, storage_path = await self.store.save_file(
-                    checkpoint_id=checkpoint_id, file_path=file_path, snapshot_id=snapshot_id,
+                    checkpoint_id=checkpoint_id,
+                    file_path=file_path,
+                    snapshot_id=snapshot_id,
                 )
 
                 # Create file snapshot record
@@ -108,7 +110,9 @@ class CheckpointingService:
         return checkpoint
 
     async def restore_checkpoint(
-        self, checkpoint_id: str, restore_data: CheckpointRestore,
+        self,
+        checkpoint_id: str,
+        restore_data: CheckpointRestore,
     ) -> Checkpoint:
         """Restore a checkpoint.
 
@@ -145,7 +149,8 @@ class CheckpointingService:
                 try:
                     # Restore file from storage
                     await self.store.restore_file(
-                        storage_path=snapshot.storage_path, target_path=snapshot.file_path,
+                        storage_path=snapshot.storage_path,
+                        target_path=snapshot.file_path,
                     )
                 except Exception as e:
                     print(f"Error restoring file {snapshot.file_path}: {e}")
@@ -177,7 +182,10 @@ class CheckpointingService:
         )
 
     def list_checkpoints(
-        self, session_id: str, limit: int = 100, offset: int = 0,
+        self,
+        session_id: str,
+        limit: int = 100,
+        offset: int = 0,
     ) -> tuple[list[Checkpoint], int]:
         """List checkpoints for a session.
 

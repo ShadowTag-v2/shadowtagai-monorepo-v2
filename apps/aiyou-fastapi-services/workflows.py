@@ -10,8 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"
 
 @activity.defn
 async def execute_swarm_agent(task_payload: str) -> str:
-    """Activity: Imports the global steel swarm orchestrator and executes the job.
-    """
+    """Activity: Imports the global steel swarm orchestrator and executes the job."""
     from libs.steel.swarm import SwarmOrchestrator
 
     orchestrator = SwarmOrchestrator()
@@ -26,8 +25,7 @@ async def execute_swarm_agent(task_payload: str) -> str:
 class SwarmWorkflow:
     @workflow.run
     async def run(self, task_payload: str) -> str:
-        """Durable workflow to execute agents
-        """
+        """Durable workflow to execute agents"""
         # Schedule the activity out to the Worker nodes
         return await workflow.execute_activity(
             execute_swarm_agent,

@@ -141,7 +141,10 @@ class AgentService:
             }
 
     def get_execution_history(
-        self, agent_id: str, limit: int = 10, offset: int = 0,
+        self,
+        agent_id: str,
+        limit: int = 10,
+        offset: int = 0,
     ) -> dict[str, Any]:
         """Get execution history for an agent.
 

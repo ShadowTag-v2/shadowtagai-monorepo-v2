@@ -23,7 +23,7 @@ router = APIRouter(prefix="/agents", tags=["agents"])
 
 class DebateRequest(BaseModel):
     """Request for multi-agent debate (PanelGPT)."""
-    
+
     question: str = Field(..., description="Question to debate")
     num_agents: int = Field(3, ge=2, le=10, description="Number of agents (2-10)")
     max_rounds: int = Field(3, ge=1, le=10, description="Maximum debate rounds")
@@ -32,7 +32,7 @@ class DebateRequest(BaseModel):
 
 class WealthAnalysisRequest(BaseModel):
     """Request for wealth planning analysis."""
-    
+
     revenue_monthly: float = Field(..., gt=0, description="Monthly recurring revenue")
     cac: float = Field(..., gt=0, description="Customer acquisition cost")
     ltv: float = Field(..., gt=0, description="Lifetime value")
@@ -47,7 +47,7 @@ class WealthAnalysisRequest(BaseModel):
 async def multi_agent_debate(request: DebateRequest) -> DebateResult:
     """
     PanelGPT: Multi-Agent Debate for collaborative reasoning.
-    
+
     **Requires**: Agent API tier ($10,000/month)
     """
     try:
@@ -56,7 +56,7 @@ async def multi_agent_debate(request: DebateRequest) -> DebateResult:
             "A creative problem solver who thinks outside the box",
             "A detail-oriented analyst who focuses on facts",
         ]
-        
+
         agents = []
         for i in range(request.num_agents):
             config = AgentConfig(
@@ -65,16 +65,16 @@ async def multi_agent_debate(request: DebateRequest) -> DebateResult:
                 model="gemini-2.0-flash-exp",
             )
             agents.append(DebateAgent(config, persona=personas[i % len(personas)]))
-        
+
         orchestrator = DebateOrchestrator(
             agents=agents,
             max_rounds=request.max_rounds,
             consensus_threshold=request.consensus_threshold,
         )
-        
+
         result = await orchestrator.run_debate(request.question)
         return result
-        
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Debate failed: {str(e)}")
 
@@ -83,12 +83,12 @@ async def multi_agent_debate(request: DebateRequest) -> DebateResult:
 async def wealth_accelerator(request: WealthAnalysisRequest) -> WealthPlan:
     """
     Wealth Accelerator: Revenue leak detection and optimization planning.
-    
+
     **Requires**: Agent API tier ($10,000/month)
     """
     try:
         accelerator = WealthAccelerator()
-        
+
         plan = accelerator.analyze_business(
             revenue_monthly=request.revenue_monthly,
             cac=request.cac,
@@ -96,8 +96,8 @@ async def wealth_accelerator(request: WealthAnalysisRequest) -> WealthPlan:
             churn_rate=request.churn_rate,
             conversion_rates=request.conversion_rates or {},
         )
-        
+
         return plan
-        
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Wealth analysis failed: {str(e)}")

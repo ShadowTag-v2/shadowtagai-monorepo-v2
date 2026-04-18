@@ -219,7 +219,8 @@ class COR53UnifiedPipeline:
 
             try:
                 execution_output = self.orchestrator.execute_task(
-                    task_description=task_request.description, enable_skill_routing=True,
+                    task_description=task_request.description,
+                    enable_skill_routing=True,
                 )
 
                 overall_status = "COMPLETED"
@@ -286,7 +287,8 @@ class COR53UnifiedPipeline:
         return results
 
     def run_intelligence_ingestion(
-        self, source_configs: dict[SourceType, dict[str, Any]],
+        self,
+        source_configs: dict[SourceType, dict[str, Any]],
     ) -> IngestionMetrics:
         """Run PHASE 0: Intelligence ingestion cycle
 
@@ -331,7 +333,9 @@ class COR53UnifiedPipeline:
         return self.ingestion_pipeline.generate_am_briefing(date)
 
     def intelligence_to_tasks(
-        self, min_tier: DataTier = DataTier.TIER_1_CRITICAL, auto_execute: bool = False,
+        self,
+        min_tier: DataTier = DataTier.TIER_1_CRITICAL,
+        auto_execute: bool = False,
     ) -> list[TaskRequest]:
         """Convert ingested intelligence items to task requests
 

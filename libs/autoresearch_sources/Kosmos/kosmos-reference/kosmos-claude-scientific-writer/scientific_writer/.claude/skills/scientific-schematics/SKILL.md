@@ -95,7 +95,7 @@ def create_transformer_diagram(output_dir='figures'):
     Zero-shot generation with automatic layout.
     """
     Path(output_dir).mkdir(exist_ok=True)
-    
+
     # Create directed graph with TB (top-to-bottom) layout
     dot = graphviz.Digraph(
         'transformer',
@@ -122,12 +122,12 @@ def create_transformer_diagram(output_dir='figures'):
             'penwidth': '1.5'
         }
     )
-    
+
     # ENCODER STACK (left side)
     with dot.subgraph(name='cluster_encoder') as enc:
         enc.attr(label='Encoder', fontsize='14', fontname='Arial-Bold')
         enc.attr(style='rounded', color='blue', penwidth='2')
-        
+
         # Encoder layers (bottom to top)
         enc.node('enc_input_emb', 'Input Embedding', fillcolor='#E8F4F8')
         enc.node('enc_pos', 'Positional Encoding', fillcolor='#E8F4F8')
@@ -135,19 +135,19 @@ def create_transformer_diagram(output_dir='figures'):
         enc.node('enc_an1', 'Add & Norm', fillcolor='#CCE5FF')
         enc.node('enc_ff', 'Feed Forward', fillcolor='#B3D9E6')
         enc.node('enc_an2', 'Add & Norm', fillcolor='#CCE5FF')
-        
+
         # Encoder flow
         enc.edge('enc_input_emb', 'enc_pos')
         enc.edge('enc_pos', 'enc_mha')
         enc.edge('enc_mha', 'enc_an1')
         enc.edge('enc_an1', 'enc_ff')
         enc.edge('enc_ff', 'enc_an2')
-    
+
     # DECODER STACK (right side)
     with dot.subgraph(name='cluster_decoder') as dec:
         dec.attr(label='Decoder', fontsize='14', fontname='Arial-Bold')
         dec.attr(style='rounded', color='red', penwidth='2')
-        
+
         # Decoder layers (bottom to top)
         dec.node('dec_output_emb', 'Output Embedding', fillcolor='#FFE8E8')
         dec.node('dec_pos', 'Positional Encoding', fillcolor='#FFE8E8')
@@ -159,7 +159,7 @@ def create_transformer_diagram(output_dir='figures'):
         dec.node('dec_an3', 'Add & Norm', fillcolor='#FFCCCC')
         dec.node('dec_linear', 'Linear & Softmax', fillcolor='#FF9999')
         dec.node('dec_output', 'Output\nProbabilities', fillcolor='#FFE8E8')
-        
+
         # Decoder flow
         dec.edge('dec_output_emb', 'dec_pos')
         dec.edge('dec_pos', 'dec_mmha')
@@ -170,44 +170,44 @@ def create_transformer_diagram(output_dir='figures'):
         dec.edge('dec_ff', 'dec_an3')
         dec.edge('dec_an3', 'dec_linear')
         dec.edge('dec_linear', 'dec_output')
-    
+
     # Cross-attention connection (encoder to decoder)
-    dot.edge('enc_an2', 'dec_cross', 
-             style='dashed', 
-             color='purple', 
+    dot.edge('enc_an2', 'dec_cross',
+             style='dashed',
+             color='purple',
              label='  context  ',
              fontsize='9')
-    
+
     # Input and output labels
-    dot.node('input_seq', 'Input Sequence', 
+    dot.node('input_seq', 'Input Sequence',
              shape='ellipse', fillcolor='lightgreen')
-    dot.node('target_seq', 'Target Sequence', 
+    dot.node('target_seq', 'Target Sequence',
              shape='ellipse', fillcolor='lightgreen')
-    
+
     dot.edge('input_seq', 'enc_input_emb')
     dot.edge('target_seq', 'dec_output_emb')
-    
+
     # Render to files
     output_path = f'{output_dir}/transformer_architecture'
     dot.render(output_path, cleanup=True)
-    
+
     # Also save as SVG and EPS
     dot.format = 'svg'
     dot.render(output_path, cleanup=True)
     dot.format = 'eps'
     dot.render(output_path, cleanup=True)
-    
+
     print(f"✓ Transformer diagram created:")
     print(f"  - {output_path}.pdf")
     print(f"  - {output_path}.svg")
     print(f"  - {output_path}.eps")
-    
+
     return f"{output_path}.pdf"
 
 # Usage
 if __name__ == '__main__':
     diagram_path = create_transformer_diagram('figures')
-    
+
     # Run quality checks
     from quality_checker import run_quality_checks
     run_quality_checks(diagram_path.replace('.pdf', '.png'))
@@ -233,7 +233,7 @@ from pathlib import Path
 def create_consort_flowchart(output_dir='figures'):
     """Create a CONSORT participant flow diagram."""
     Path(output_dir).mkdir(exist_ok=True)
-    
+
     dot = graphviz.Digraph(
         'consort',
         format='pdf',
@@ -254,24 +254,24 @@ def create_consort_flowchart(output_dir='figures'):
             'height': '0.6'
         }
     )
-    
+
     # Enrollment
     dot.node('assessed', 'Assessed for eligibility\n(n=500)')
     dot.node('excluded', 'Excluded (n=150)\n• Age < 18: n=80\n• Declined: n=50\n• Other: n=20')
     dot.node('randomized', 'Randomized\n(n=350)')
-    
+
     # Allocation
     dot.node('treatment', 'Allocated to treatment\n(n=175)', fillcolor='#C8E6C9')
     dot.node('control', 'Allocated to control\n(n=175)', fillcolor='#FFECB3')
-    
+
     # Follow-up
     dot.node('treat_lost', 'Lost to follow-up (n=15)', fillcolor='#FFCDD2')
     dot.node('ctrl_lost', 'Lost to follow-up (n=10)', fillcolor='#FFCDD2')
-    
+
     # Analysis
     dot.node('treat_analyzed', 'Analyzed (n=160)', fillcolor='#C8E6C9')
     dot.node('ctrl_analyzed', 'Analyzed (n=165)', fillcolor='#FFECB3')
-    
+
     # Connect nodes
     dot.edge('assessed', 'excluded')
     dot.edge('assessed', 'randomized')
@@ -281,11 +281,11 @@ def create_consort_flowchart(output_dir='figures'):
     dot.edge('treatment', 'treat_analyzed')
     dot.edge('control', 'ctrl_lost')
     dot.edge('control', 'ctrl_analyzed')
-    
+
     # Render
     output_path = f'{output_dir}/consort_flowchart'
     dot.render(output_path, cleanup=True)
-    
+
     print(f"✓ CONSORT flowchart created: {output_path}.pdf")
     return f"{output_path}.pdf"
 ```
@@ -300,7 +300,7 @@ def create_cnn_architecture(output_dir='figures'):
         format='pdf',
         graph_attr={'rankdir': 'LR', 'bgcolor': 'white'}
     )
-    
+
     # Define layers
     layers = [
         ('input', 'Input\n32×32×3', '#FFE8E8'),
@@ -313,20 +313,20 @@ def create_cnn_architecture(output_dir='figures'):
         ('fc2', 'FC 10', '#C8B3E6'),
         ('softmax', 'Softmax', '#FFC8C8')
     ]
-    
+
     # Create nodes
     for node_id, label, color in layers:
-        dot.node(node_id, label, 
-                shape='box', style='rounded,filled', 
+        dot.node(node_id, label,
+                shape='box', style='rounded,filled',
                 fillcolor=color, fontname='Arial')
-    
+
     # Connect layers
     for i in range(len(layers) - 1):
         dot.edge(layers[i][0], layers[i+1][0])
-    
+
     output_path = f'{output_dir}/cnn_architecture'
     dot.render(output_path, cleanup=True)
-    
+
     print(f"✓ CNN diagram created: {output_path}.pdf")
     return f"{output_path}.pdf"
 ```
@@ -433,7 +433,7 @@ from pathlib import Path
 def create_diagram(output_dir='figures', diagram_name='my_diagram'):
     """Universal diagram creation template."""
     Path(output_dir).mkdir(exist_ok=True, parents=True)
-    
+
     dot = graphviz.Digraph(
         name=diagram_name,
         format='pdf',
@@ -461,12 +461,12 @@ def create_diagram(output_dir='figures', diagram_name='my_diagram'):
             'arrowsize': '0.8'
         }
     )
-    
+
     # Add your nodes and edges here
     dot.node('node1', 'Label 1')
     dot.node('node2', 'Label 2')
     dot.edge('node1', 'node2')
-    
+
     # Render to multiple formats
     output_path = f'{output_dir}/{diagram_name}'
     dot.render(output_path, cleanup=True)  # PDF
@@ -474,7 +474,7 @@ def create_diagram(output_dir='figures', diagram_name='my_diagram'):
     dot.render(output_path, cleanup=True)  # SVG
     dot.format = 'eps'
     dot.render(output_path, cleanup=True)  # EPS
-    
+
     print(f"✓ Diagram saved: {output_path}.{{pdf,svg,eps}}")
     return f"{output_path}.pdf"
 ```
@@ -679,9 +679,9 @@ For comprehensive publication guidelines, see `references/best_practices.md`.
 \centering
 \begin{tikzpicture}[
     node distance=2cm,
-    process/.style={rectangle, rounded corners, draw=black, thick, 
+    process/.style={rectangle, rounded corners, draw=black, thick,
                     fill=okabe-blue!20, minimum width=3cm, minimum height=1cm},
-    decision/.style={diamond, draw=black, thick, fill=okabe-orange!20, 
+    decision/.style={diamond, draw=black, thick, fill=okabe-orange!20,
                      minimum width=2cm, aspect=2},
     arrow/.style={-Stealth, thick}
 ]
@@ -690,9 +690,9 @@ For comprehensive publication guidelines, see `references/best_practices.md`.
 \node (start) [process] {Screen Participants\\(n=500)};
 \node (exclude) [process, below of=start] {Exclude (n=150)\\Age $<$ 18 years};
 \node (randomize) [process, below of=exclude] {Randomize (n=350)};
-\node (treatment) [process, below left=1.5cm and 2cm of randomize] 
+\node (treatment) [process, below left=1.5cm and 2cm of randomize]
                   {Treatment Group\\(n=175)};
-\node (control) [process, below right=1.5cm and 2cm of randomize] 
+\node (control) [process, below right=1.5cm and 2cm of randomize]
                 {Control Group\\(n=175)};
 \node (analyze) [process, below=3cm of randomize] {Analyze Data};
 
@@ -770,8 +770,8 @@ proteins = [
 
 for name, x, y in proteins:
     color = colors['gene'] if name == 'Gene' else colors['protein']
-    box = FancyBboxPatch((x-0.4, y-0.3), 0.8, 0.6, 
-                         boxstyle="round,pad=0.1", 
+    box = FancyBboxPatch((x-0.4, y-0.3), 0.8, 0.6,
+                         boxstyle="round,pad=0.1",
                          facecolor=color, edgecolor='black', linewidth=2)
     ax.add_patch(box)
     ax.text(x, y, name, ha='center', va='center', fontsize=10, fontweight='bold')
@@ -786,7 +786,7 @@ arrows = [
 
 for x1, y1, x2, y2, color in arrows:
     arrow = FancyArrowPatch((x1, y1), (x2, y2),
-                           arrowstyle='->', mutation_scale=20, 
+                           arrowstyle='->', mutation_scale=20,
                            linewidth=2, color=color)
     ax.add_patch(arrow)
 
@@ -815,7 +815,7 @@ Follow this systematic workflow for all diagrams:
 
 2. **Determine layout direction**
    - Vertical flow (top-to-bottom)? → `rankdir='TB'`
-   - Bottom-up (like Transformer)? → `rankdir='BT'`  
+   - Bottom-up (like Transformer)? → `rankdir='BT'`
    - Left-to-right sequence? → `rankdir='LR'`
    - Right-to-left? → `rankdir='RL'`
 
@@ -1100,66 +1100,66 @@ from pathlib import Path
 def detect_overlaps(image_path, threshold=0.95):
     """
     Detect potential overlapping regions in a diagram.
-    
+
     Args:
         image_path: Path to the rendered diagram (PNG/PDF)
         threshold: Similarity threshold for detecting overlaps (0-1)
-        
+
     Returns:
         dict: Overlap report with locations and severity
     """
     # Load image
     img = Image.open(image_path).convert('RGB')
     img_array = np.array(img)
-    
+
     # Detect dense regions (potential overlaps)
     gray = np.mean(img_array, axis=2)
-    
+
     # Edge detection to find boundaries
     from scipy.ndimage import sobel
     edges_x = sobel(gray, axis=0)
     edges_y = sobel(gray, axis=1)
     edge_magnitude = np.hypot(edges_x, edges_y)
-    
+
     # Find regions with high edge density (overlaps)
     from scipy.ndimage import label, find_objects
     binary_edges = edge_magnitude > np.percentile(edge_magnitude, 85)
     labeled_regions, num_features = label(binary_edges)
-    
+
     overlaps = []
     slices = find_objects(labeled_regions)
-    
+
     for i, slice_obj in enumerate(slices):
         if slice_obj is not None:
             region = edge_magnitude[slice_obj]
             density = np.mean(region)
-            
+
             # High density suggests potential overlap
             if density > threshold * np.max(edge_magnitude):
                 y_center = (slice_obj[0].start + slice_obj[0].stop) // 2
                 x_center = (slice_obj[1].start + slice_obj[1].stop) // 2
-                
+
                 overlaps.append({
                     'region_id': i + 1,
                     'position': (x_center, y_center),
                     'density': float(density),
                     'severity': 'high' if density > 0.98 * np.max(edge_magnitude) else 'medium'
                 })
-    
+
     report = {
         'image': str(image_path),
         'overlaps_detected': len(overlaps),
         'overlap_regions': overlaps,
         'status': 'PASS' if len(overlaps) == 0 else 'WARNING'
     }
-    
+
     return report
 
 def save_overlap_report(report, output_path='overlap_report.json'):
     """Save overlap detection report to JSON."""
     with open(output_path, 'w') as f:
         json.dump(report, indent=2, fp=f)
-    
+
     print(f"Overlap Report: {report['status']}")
     print(f"  - Overlaps detected: {report['overlaps_detected']}")
     if report['overlap_regions']:
@@ -1177,28 +1177,28 @@ Ensure diagrams meet accessibility standards for colorblind readers:
 def verify_accessibility(image_path):
     """
     Verify diagram meets accessibility standards.
-    
+
     Checks:
     - Sufficient contrast ratios
     - Grayscale readability
     - Text size adequacy
     """
     from PIL import ImageFilter, ImageStat
-    
+
     img = Image.open(image_path).convert('RGB')
-    
+
     # Test 1: Grayscale conversion
     grayscale = img.convert('L')
     gray_stat = ImageStat.Stat(grayscale)
-    
+
     # Calculate contrast (std dev of grayscale)
     contrast = gray_stat.stddev[0]
     min_contrast = 30  # Minimum standard deviation for good contrast
-    
+
     # Test 2: Color distribution
     rgb_array = np.array(img)
     unique_colors = len(np.unique(rgb_array.reshape(-1, 3), axis=0))
-    
+
     # Test 3: Simulate common color blindness (deuteranopia)
     def simulate_colorblind(img_array):
         # Simplified deuteranopia simulation
@@ -1206,13 +1206,13 @@ def verify_accessibility(image_path):
         colorblind[:, :, 0] = 0.625 * img_array[:, :, 0] + 0.375 * img_array[:, :, 1]
         colorblind[:, :, 1] = 0.7 * img_array[:, :, 1] + 0.3 * img_array[:, :, 0]
         return colorblind.astype(np.uint8)
-    
+
     colorblind_img = simulate_colorblind(np.array(img))
     cb_image = Image.fromarray(colorblind_img)
     cb_gray = cb_image.convert('L')
     cb_stat = ImageStat.Stat(cb_gray)
     cb_contrast = cb_stat.stddev[0]
-    
+
     report = {
         'image': str(image_path),
         'checks': {
@@ -1231,17 +1231,17 @@ def verify_accessibility(image_path):
                 'status': 'INFO'
             }
         },
-        'overall_status': 'PASS' if (contrast >= min_contrast and 
+        'overall_status': 'PASS' if (contrast >= min_contrast and
                                      cb_contrast >= min_contrast * 0.8) else 'FAIL'
     }
-    
+
     return report
 
 def save_accessibility_report(report, output_path='accessibility_report.json'):
     """Save accessibility report to JSON."""
     with open(output_path, 'w') as f:
         json.dump(report, indent=2, fp=f)
-    
+
     print(f"Accessibility Report: {report['overall_status']}")
     for check_name, check_data in report['checks'].items():
         print(f"  - {check_name}: {check_data['status']}")
@@ -1257,7 +1257,7 @@ Verify text is readable at publication size:
 def validate_resolution(image_path, target_dpi=300, min_text_size_pt=7):
     """
     Validate image resolution and estimated text size.
-    
+
     Args:
         image_path: Path to diagram image
         target_dpi: Target DPI for publication (default 300)
@@ -1265,22 +1265,22 @@ def validate_resolution(image_path, target_dpi=300, min_text_size_pt=7):
     """
     from PIL import Image
     import pytesseract
-    
+
     img = Image.open(image_path)
-    
+
     # Check DPI
     dpi = img.info.get('dpi', (72, 72))
     actual_dpi = dpi[0] if isinstance(dpi, tuple) else dpi
-    
+
     # Estimate text size (simplified - assumes text detection)
     # For production, use OCR or PDF text extraction
     width, height = img.size
     dpi_ratio = actual_dpi / 72  # Convert to screen pixels
-    
+
     # Calculate physical size in inches
     width_inches = width / actual_dpi if actual_dpi > 0 else width / 72
     height_inches = height / actual_dpi if actual_dpi > 0 else height / 72
-    
+
     report = {
         'image': str(image_path),
         'resolution': {
@@ -1290,22 +1290,22 @@ def validate_resolution(image_path, target_dpi=300, min_text_size_pt=7):
         },
         'dimensions': {
             'pixels': {'width': width, 'height': height},
-            'inches': {'width': round(width_inches, 2), 
+            'inches': {'width': round(width_inches, 2),
                       'height': round(height_inches, 2)}
         },
         'recommendations': []
     }
-    
+
     if actual_dpi < target_dpi:
         report['recommendations'].append(
             f"Increase resolution to {target_dpi} DPI for publication quality"
         )
-    
+
     if width_inches > 7:
         report['recommendations'].append(
             "Image width exceeds typical single-column width (7 inches)"
         )
-    
+
     return report
 ```
 
@@ -1317,30 +1317,30 @@ Run all verification stages in sequence:
 def run_quality_checks(image_path, output_dir='quality_reports'):
     """
     Run comprehensive quality checks on diagram.
-    
+
     Args:
         image_path: Path to diagram to verify
         output_dir: Directory to save reports
-        
+
     Returns:
         dict: Comprehensive quality report
     """
     import os
     from datetime import datetime
-    
+
     Path(output_dir).mkdir(exist_ok=True)
-    
+
     print(f"Running quality checks on: {image_path}")
     print("=" * 60)
-    
+
     # Stage 1: Overlap Detection
     print("\n[Stage 1/4] Detecting overlaps...")
     overlap_report = detect_overlaps(image_path)
     save_overlap_report(
-        overlap_report, 
+        overlap_report,
         f"{output_dir}/overlap_report.json"
     )
-    
+
     # Stage 2: Accessibility
     print("\n[Stage 2/4] Verifying accessibility...")
     accessibility_report = verify_accessibility(image_path)
@@ -1348,13 +1348,13 @@ def run_quality_checks(image_path, output_dir='quality_reports'):
         accessibility_report,
         f"{output_dir}/accessibility_report.json"
     )
-    
+
     # Stage 3: Resolution
     print("\n[Stage 3/4] Validating resolution...")
     resolution_report = validate_resolution(image_path)
     with open(f"{output_dir}/resolution_report.json", 'w') as f:
         json.dump(resolution_report, f, indent=2)
-    
+
     # Stage 4: Generate visual report
     print("\n[Stage 4/4] Generating visual report...")
     create_visual_report(
@@ -1363,14 +1363,14 @@ def run_quality_checks(image_path, output_dir='quality_reports'):
         accessibility_report,
         f"{output_dir}/visual_report.png"
     )
-    
+
     # Comprehensive summary
     all_pass = (
         overlap_report['status'] != 'FAIL' and
         accessibility_report['overall_status'] != 'FAIL' and
         resolution_report['resolution']['status'] != 'FAIL'
     )
-    
+
     summary = {
         'timestamp': datetime.now().isoformat(),
         'image': str(image_path),
@@ -1382,27 +1382,27 @@ def run_quality_checks(image_path, output_dir='quality_reports'):
         },
         'reports_saved_to': output_dir
     }
-    
+
     with open(f"{output_dir}/summary.json", 'w') as f:
         json.dump(summary, f, indent=2)
-    
+
     print("\n" + "=" * 60)
     print(f"OVERALL STATUS: {summary['overall_status']}")
     print(f"Reports saved to: {output_dir}/")
     print("=" * 60)
-    
+
     return summary
 
 def create_visual_report(image_path, overlap_report, accessibility_report, output_path):
     """Create visual report with annotations."""
     import matplotlib.pyplot as plt
     from matplotlib.patches import Circle
-    
+
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
-    
+
     # Load original image
     img = Image.open(image_path)
-    
+
     # Panel 1: Original with overlap markers
     axes[0].imshow(img)
     axes[0].set_title('Overlap Detection', fontsize=12, fontweight='bold')
@@ -1413,22 +1413,22 @@ def create_visual_report(image_path, overlap_report, accessibility_report, outpu
             circle = Circle((x, y), 20, color=color, fill=False, linewidth=2)
             axes[0].add_patch(circle)
     axes[0].axis('off')
-    axes[0].text(0.02, 0.98, f"Status: {overlap_report['status']}", 
+    axes[0].text(0.02, 0.98, f"Status: {overlap_report['status']}",
                 transform=axes[0].transAxes, fontsize=10,
-                verticalalignment='top', bbox=dict(boxstyle='round', 
+                verticalalignment='top', bbox=dict(boxstyle='round',
                 facecolor='wheat', alpha=0.5))
-    
+
     # Panel 2: Grayscale version
     gray_img = img.convert('L')
     axes[1].imshow(gray_img, cmap='gray')
     axes[1].set_title('Grayscale Preview', fontsize=12, fontweight='bold')
     axes[1].axis('off')
     gray_status = accessibility_report['checks']['grayscale_contrast']['status']
-    axes[1].text(0.02, 0.98, f"Status: {gray_status}", 
+    axes[1].text(0.02, 0.98, f"Status: {gray_status}",
                 transform=axes[1].transAxes, fontsize=10,
-                verticalalignment='top', bbox=dict(boxstyle='round', 
+                verticalalignment='top', bbox=dict(boxstyle='round',
                 facecolor='wheat', alpha=0.5))
-    
+
     # Panel 3: Colorblind simulation
     img_array = np.array(img)
     colorblind = img_array.copy().astype(float)
@@ -1438,11 +1438,11 @@ def create_visual_report(image_path, overlap_report, accessibility_report, outpu
     axes[2].set_title('Colorblind Simulation', fontsize=12, fontweight='bold')
     axes[2].axis('off')
     cb_status = accessibility_report['checks']['colorblind_contrast']['status']
-    axes[2].text(0.02, 0.98, f"Status: {cb_status}", 
+    axes[2].text(0.02, 0.98, f"Status: {cb_status}",
                 transform=axes[2].transAxes, fontsize=10,
-                verticalalignment='top', bbox=dict(boxstyle='round', 
+                verticalalignment='top', bbox=dict(boxstyle='round',
                 facecolor='wheat', alpha=0.5))
-    
+
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     print(f"Visual report saved: {output_path}")
@@ -1460,7 +1460,7 @@ from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 # Step 1: Create diagram
 def create_flowchart_with_verification(output_base='flowchart'):
     """Create flowchart with automated quality checks."""
-    
+
     # Okabe-Ito colorblind-safe palette
     colors = {
         'process': '#56B4E9',    # Blue
@@ -1468,9 +1468,9 @@ def create_flowchart_with_verification(output_base='flowchart'):
         'data': '#009E73',       # Green
         'terminal': '#CC79A7'    # Purple
     }
-    
+
     fig, ax = plt.subplots(figsize=(8, 10))
-    
+
     # Define flowchart elements with careful spacing
     elements = [
         ('Start', 4, 9, 'terminal'),
@@ -1482,23 +1482,23 @@ def create_flowchart_with_verification(output_base='flowchart'):
         ('Output', 4, 1.5, 'data'),
         ('End', 4, 0, 'terminal')
     ]
-    
+
     # Draw boxes with adequate spacing
     box_positions = {}
     for label, x, y, element_type in elements:
         color = colors[element_type]
         width, height = (1.2, 0.6) if element_type != 'decision' else (1.5, 1.0)
-        
+
         box = FancyBboxPatch(
             (x - width/2, y - height/2), width, height,
             boxstyle="round,pad=0.1" if element_type != 'decision' else "round,pad=0.05",
             facecolor=color, edgecolor='black', linewidth=2
         )
         ax.add_patch(box)
-        ax.text(x, y, label, ha='center', va='center', 
+        ax.text(x, y, label, ha='center', va='center',
                fontsize=10, fontweight='bold')
         box_positions[label] = (x, y)
-    
+
     # Draw arrows with proper spacing
     arrows = [
         ('Start', 'Input Data'),
@@ -1510,11 +1510,11 @@ def create_flowchart_with_verification(output_base='flowchart'):
         ('Process B2', 'Output'),
         ('Output', 'End')
     ]
-    
+
     for start, end in arrows:
         x1, y1 = box_positions[start]
         x2, y2 = box_positions[end]
-        
+
         # Calculate arrow start/end points to avoid overlap
         if x1 == x2:  # Vertical arrow
             y1_adj = y1 - 0.3 if y2 < y1 else y1 + 0.3
@@ -1529,28 +1529,28 @@ def create_flowchart_with_verification(output_base='flowchart'):
                 arrowstyle='->', mutation_scale=20, linewidth=2, color='black'
             )
         ax.add_patch(arrow)
-    
+
     ax.set_xlim(0, 8)
     ax.set_ylim(-0.5, 9.5)
     ax.set_aspect('equal')
     ax.axis('off')
-    
+
     plt.tight_layout()
-    
+
     # Save in multiple formats
     plt.savefig(f'{output_base}.pdf', bbox_inches='tight', dpi=300)
     plt.savefig(f'{output_base}.png', bbox_inches='tight', dpi=300)
     plt.savefig(f'{output_base}.svg', bbox_inches='tight')
     print(f"Diagram saved: {output_base}.pdf/.png/.svg")
     plt.close()
-    
+
     # Step 2: Run quality checks
     print("\nRunning quality verification...")
     quality_report = run_quality_checks(
         f'{output_base}.png',
         output_dir=f'{output_base}_quality_reports'
     )
-    
+
     # Step 3: Review and iterate if needed
     if quality_report['overall_status'] != 'PASS':
         print("\n⚠️  Diagram needs review. Check quality reports for details.")
@@ -1572,7 +1572,7 @@ For complex diagrams, use an iterative refinement process:
 def iterative_diagram_refinement(create_function, max_iterations=3):
     """
     Iteratively refine diagram until it passes quality checks.
-    
+
     Args:
         create_function: Function that creates and saves diagram
         max_iterations: Maximum refinement attempts
@@ -1581,23 +1581,23 @@ def iterative_diagram_refinement(create_function, max_iterations=3):
         print(f"\n{'='*60}")
         print(f"ITERATION {iteration}/{max_iterations}")
         print(f"{'='*60}")
-        
+
         # Create diagram
         diagram_path = create_function(iteration)
-        
+
         # Run checks
         quality_report = run_quality_checks(
             diagram_path,
             output_dir=f'iteration_{iteration}_reports'
         )
-        
+
         if quality_report['overall_status'] == 'PASS':
             print(f"\n✓ Diagram approved after {iteration} iteration(s)")
             return True
         else:
             print(f"\n⚠️  Issues found. Adjusting parameters for next iteration...")
             # Here you would adjust spacing, colors, etc. based on reports
-    
+
     print(f"\n❌ Maximum iterations reached. Manual review required.")
     return False
 ```
@@ -1680,7 +1680,7 @@ Illustrate software/hardware components and relationships:
   \node (micro) [component, right=of adc] {Microcontroller};
   \node (wifi) [component, above right=of micro] {WiFi Module};
   \node (display) [component, below right=of micro] {Display};
-  
+
   \draw [dataflow] (sensor) -- node[above] {Analog} (adc);
   \draw [dataflow] (adc) -- node[above] {Digital} (micro);
   \draw [dataflow] (micro) -- (wifi);
@@ -1718,7 +1718,7 @@ with open('methodology_flow.tex', 'w') as f:
 
 # Or create with automatic verification
 success = create_with_verification(
-    description, 
+    description,
     output='methodology_flow',
     verify=True
 )
@@ -2032,4 +2032,3 @@ Before submitting diagrams, verify:
 - [ ] No compilation warnings or errors related to figure
 
 Use this skill to create clear, accessible, publication-quality diagrams that effectively communicate complex scientific concepts. The integrated quality verification workflow ensures all diagrams meet professional standards before publication.
-

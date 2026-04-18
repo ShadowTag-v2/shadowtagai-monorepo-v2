@@ -136,7 +136,9 @@ class InfrastructureAnalysisSkill:
         self.analysis_history = []
 
     def analyze_system(
-        self, spec: SystemSpec, focus_areas: list[MetricType] | None = None,
+        self,
+        spec: SystemSpec,
+        focus_areas: list[MetricType] | None = None,
     ) -> AnalysisResult:
         """Analyze a single infrastructure system.
 
@@ -166,7 +168,9 @@ class InfrastructureAnalysisSkill:
         return result
 
     def _analyze_judge_system(
-        self, spec: SystemSpec, focus_areas: list[MetricType],
+        self,
+        spec: SystemSpec,
+        focus_areas: list[MetricType],
     ) -> AnalysisResult:
         """Analyze a judge/validation system."""
         result = AnalysisResult(system_name=spec.name)
@@ -207,7 +211,9 @@ class InfrastructureAnalysisSkill:
         return result
 
     def _analyze_ingestion_system(
-        self, spec: SystemSpec, focus_areas: list[MetricType],
+        self,
+        spec: SystemSpec,
+        focus_areas: list[MetricType],
     ) -> AnalysisResult:
         """Analyze an ingestion/collection system."""
         result = AnalysisResult(system_name=spec.name)
@@ -304,7 +310,8 @@ class InfrastructureAnalysisSkill:
             "architecture_comparison": self._compare_architectures(spec1, spec2),
             "integration_analysis": self._analyze_integration_relationship(spec1, spec2),
             "combined_recommendations": self._generate_combined_recommendations(
-                analysis1, analysis2,
+                analysis1,
+                analysis2,
             ),
         }
 
@@ -367,7 +374,9 @@ class InfrastructureAnalysisSkill:
         }
 
     def _analyze_integration_relationship(
-        self, spec1: SystemSpec, spec2: SystemSpec,
+        self,
+        spec1: SystemSpec,
+        spec2: SystemSpec,
     ) -> dict[str, Any]:
         """Analyze how systems integrate."""
         return {
@@ -384,7 +393,9 @@ class InfrastructureAnalysisSkill:
         }
 
     def _generate_combined_recommendations(
-        self, analysis1: AnalysisResult, analysis2: AnalysisResult,
+        self,
+        analysis1: AnalysisResult,
+        analysis2: AnalysisResult,
     ) -> list[str]:
         """Generate recommendations for the combined system."""
         return [
@@ -397,7 +408,9 @@ class InfrastructureAnalysisSkill:
         ]
 
     def generate_gemini_prompt(
-        self, spec: SystemSpec, include_sections: list[str] | None = None,
+        self,
+        spec: SystemSpec,
+        include_sections: list[str] | None = None,
     ) -> str:
         """Generate a Gemini 2.0 Pro analysis prompt for a system.
 

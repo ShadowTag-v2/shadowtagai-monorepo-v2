@@ -24,8 +24,7 @@ logger = logging.getLogger(__name__)
 
 # --- 1. Session Layer (Short-Term Working Memory) ---
 class Session:
-    """The 'RAM'. Manages the sliding window of the immediate conversation.
-    """
+    """The 'RAM'. Manages the sliding window of the immediate conversation."""
 
     def __init__(self, user_id: str, max_turns: int = 5):
         self.user_id = user_id
@@ -39,8 +38,7 @@ class Session:
         self._prune()
 
     def _prune(self):
-        """Implements 'Compaction'. Keeps the session within context limits.
-        """
+        """Implements 'Compaction'. Keeps the session within context limits."""
         if len(self.history) > self.max_turns * 2:
             # Keep the last N turns (*2 because user+ai = 1 turn)
             self.history = self.history[-self.max_turns * 2 :]

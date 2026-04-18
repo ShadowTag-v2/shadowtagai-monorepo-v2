@@ -179,7 +179,8 @@ class SelfConfiguringEngine:
         """Generate AI configuration based on tenant profile"""
         # Get base configs
         industry_config = self.INDUSTRY_CONFIGS.get(
-            industry, self.INDUSTRY_CONFIGS[IndustryVertical.TECHNOLOGY],
+            industry,
+            self.INDUSTRY_CONFIGS[IndustryVertical.TECHNOLOGY],
         )
         size_config = self.SIZE_CONFIGS.get(company_size, self.SIZE_CONFIGS[CompanySize.SMB])
 
@@ -225,7 +226,9 @@ class SelfConfiguringEngine:
         return config
 
     def _recommend_integrations(
-        self, tech_stack: list[str], industry: IndustryVertical,
+        self,
+        tech_stack: list[str],
+        industry: IndustryVertical,
     ) -> list[str]:
         """Recommend integrations based on tech stack"""
         integrations = []

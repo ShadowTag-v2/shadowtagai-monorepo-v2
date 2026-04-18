@@ -1,5 +1,4 @@
-"""Embeddings API endpoints for vector operations and semantic search.
-"""
+"""Embeddings API endpoints for vector operations and semantic search."""
 
 import structlog
 from fastapi import APIRouter, HTTPException
@@ -39,13 +38,16 @@ async def generate_embeddings(request: EmbeddingRequest):
 
         if request.text and request.texts:
             raise HTTPException(
-                status_code=400, detail="Provide either 'text' or 'texts', not both",
+                status_code=400,
+                detail="Provide either 'text' or 'texts', not both",
             )
 
         if request.text:
             embedding = await service.generate_embedding(request.text)
             return EmbeddingResponse(
-                embedding=embedding, dimension=len(embedding), model=request.model or service.model,
+                embedding=embedding,
+                dimension=len(embedding),
+                model=request.model or service.model,
             )
         if request.texts:
             embeddings = await service.generate_embeddings(request.texts)
@@ -120,8 +122,7 @@ async def search_documents(request: SearchRequest):
 
 @router.get("/collections")
 async def list_collections():
-    """List all vector collections.
-    """
+    """List all vector collections."""
     try:
         service = get_embeddings_service()
         collections = service.list_collections()
@@ -135,8 +136,7 @@ async def list_collections():
 
 @router.delete("/collections/{collection_name}")
 async def delete_collection(collection_name: str):
-    """Delete a vector collection.
-    """
+    """Delete a vector collection."""
     try:
         service = get_embeddings_service()
         service.delete_collection(collection_name)
@@ -150,8 +150,7 @@ async def delete_collection(collection_name: str):
 
 @router.post("/collections/{collection_name}")
 async def create_collection(collection_name: str, metadata: dict = None):
-    """Create a new vector collection.
-    """
+    """Create a new vector collection."""
     try:
         service = get_embeddings_service()
         collection = service.create_collection(collection_name=collection_name, metadata=metadata)

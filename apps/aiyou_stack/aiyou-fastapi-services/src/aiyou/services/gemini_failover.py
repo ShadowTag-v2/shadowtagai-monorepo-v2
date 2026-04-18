@@ -46,7 +46,6 @@ class GeminiFailoverError(Exception):
     """Raised when all failover attempts fail."""
 
 
-
 class KeyStatus(Enum):
     """API key health status"""
 

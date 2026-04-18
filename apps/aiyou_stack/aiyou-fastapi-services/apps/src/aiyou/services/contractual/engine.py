@@ -29,8 +29,7 @@ class ContractualEngine:
         self.version = "Contractual-1.0-Alpha"
 
     async def analyze_transcript(self, transcript: str, location: str = "US-CA") -> dict[str, Any]:
-        """The 'Lawyer Meter': Analyzes a conversation for legal bindingness and risks.
-        """
+        """The 'Lawyer Meter': Analyzes a conversation for legal bindingness and risks."""
         # 1. Log the 'Input' to Universal Tape (Immutable Record)
         log_event(
             source="Contractual-Engine",
@@ -80,8 +79,7 @@ class ContractualEngine:
         return terms
 
     def _calculate_risk(self, terms: list[dict[str, str]], location: str) -> float:
-        """Calculates risk based on ambiguity and missing terms.
-        """
+        """Calculates risk based on ambiguity and missing terms."""
         risk = 0.0
         # Risk 1: Verbal Agreement without Price
         has_price = any(t["type"] == "financial" for t in terms)
@@ -100,8 +98,7 @@ class ContractualEngine:
         return min(risk, 1.0)
 
     def _generate_napkin(self, terms: list[dict[str, str]]) -> str:
-        """Generates the simple "Butcher Block" summary.
-        """
+        """Generates the simple "Butcher Block" summary."""
         if not terms:
             return "No binding terms detected."
 

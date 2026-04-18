@@ -275,7 +275,8 @@ async def get_session(session_id: UUID) -> NegotiationSession:
     description="Update session status or other metadata",
 )
 async def update_session(
-    session_id: UUID, status: SessionStatus | None = None,
+    session_id: UUID,
+    status: SessionStatus | None = None,
 ) -> NegotiationSession:
     """Update session metadata"""
     # TODO: Update in database
@@ -473,7 +474,8 @@ async def get_conflict(conflict_id: UUID) -> DetectedConflict:
     """,
 )
 async def resolve_conflict(
-    conflict_id: UUID, request: ConflictResolutionRequest,
+    conflict_id: UUID,
+    request: ConflictResolutionRequest,
 ) -> ResolvedConflict:
     """Submit resolution choice"""
     # TODO: Fetch conflict from database
@@ -621,7 +623,10 @@ async def get_contract(contract_id: UUID) -> Contract:
     """,
 )
 async def sign_contract(
-    contract_id: UUID, user_id: UUID, signature_data: str, ip_address: str,
+    contract_id: UUID,
+    user_id: UUID,
+    signature_data: str,
+    ip_address: str,
 ) -> Signature:
     """Add e-signature to contract"""
     # TODO: Validate user has permission to sign

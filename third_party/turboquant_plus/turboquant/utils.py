@@ -21,7 +21,7 @@ def pack_bits(signs: np.ndarray) -> np.ndarray:
         # Pad to multiple of 8
         padded_len = (len(bits) + 7) // 8 * 8
         padded = np.zeros(padded_len, dtype=np.uint8)
-        padded[:len(bits)] = bits
+        padded[: len(bits)] = bits
         # Pack 8 bits into each byte
         packed = np.packbits(padded)
         return packed
@@ -48,10 +48,10 @@ def unpack_bits(packed: np.ndarray, d: int) -> np.ndarray:
     if packed.ndim == 1:
         bits = np.unpackbits(packed)[:d]
         # Convert {1, 0} → {+1, -1}
-        return (bits.astype(np.int8) * 2 - 1)
+        return bits.astype(np.int8) * 2 - 1
     else:
         bits = np.unpackbits(packed, axis=1)[:, :d]
-        return (bits.astype(np.int8) * 2 - 1)
+        return bits.astype(np.int8) * 2 - 1
 
 
 def pack_indices(indices: np.ndarray, bit_width: int) -> np.ndarray:

@@ -48,7 +48,7 @@ Add the dependency to your `pom.xml`:
 ```
 dependencies {
     // Replace 'VERSION' with the latest version from https://mvnrepository.com/artifact/com.google.cloud.mcp/mcp-toolbox-sdk-java
-    implementation("com.google.cloud.mcp:mcp-toolbox-sdk-java:VERSION") 
+    implementation("com.google.cloud.mcp:mcp-toolbox-sdk-java:VERSION")
 }
 ```
 

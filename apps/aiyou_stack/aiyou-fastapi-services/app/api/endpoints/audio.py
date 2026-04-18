@@ -89,7 +89,10 @@ async def encode_audio(
             receipt_id = _create_audio_receipt("encode", audio_path, payload_data, stats, config)
 
         return EncodeResponse(
-            success=True, output_file=str(output_path), stats=stats, receipt_id=receipt_id,
+            success=True,
+            output_file=str(output_path),
+            stats=stats,
+            receipt_id=receipt_id,
         )
 
     except Exception as e:

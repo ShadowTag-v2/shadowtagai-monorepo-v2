@@ -106,7 +106,10 @@ async def get_metrics_overview():
     )
 
     compliance_metrics = ComplianceMetrics(
-        robots_txt_violations=0, rate_limit_violations=0, compliance_score=1.0, flagged_domains=0,
+        robots_txt_violations=0,
+        rate_limit_violations=0,
+        compliance_score=1.0,
+        flagged_domains=0,
     )
 
     return StackMetrics(
@@ -180,7 +183,10 @@ async def get_quality_metrics():
 async def get_compliance_metrics():
     """Get ethical compliance metrics"""
     return ComplianceMetrics(
-        robots_txt_violations=0, rate_limit_violations=0, compliance_score=1.0, flagged_domains=0,
+        robots_txt_violations=0,
+        rate_limit_violations=0,
+        compliance_score=1.0,
+        flagged_domains=0,
     )
 
 

@@ -241,7 +241,7 @@ M3 — How to Use: 4 usage methods + icons
 M4 — Key Metrics: 5 EXACT data points
 Format: [icon] [Label] [Bold Value] [Unit]
 FOOD: Calories: [X] kcal/100g, Carbs: [X]g (fiber [X]g, sugar [X]g), Protein: [X]g, [Key Vitamin]: [X]mg ([X]% DV), [Key Mineral]: [X]mg ([X]% DV)
-MEDICINE:Active: [name], Strength: [X] mg, Onset: [X] min, Duration: [X] hrs, Half-life: [X] hrs 
+MEDICINE:Active: [name], Strength: [X] mg, Onset: [X] min, Duration: [X] hrs, Half-life: [X] hrs
 TECH:Chip: [model], Battery: [X] hrs, Weight: [X]g,[Key spec]: [value], Connectivity: [protocols]
 M5 — Who It's For: 4 recommended groups with green checkmark icons | 3 caution groups with amber warning icons
 M6 — Important Notes: 4 precautions + warning icons
@@ -1109,9 +1109,9 @@ A detailed prompt for Nano Banana Pro to generate a cinematic 2x2 grid featuring
 ```
 A cinematic 2×2 grid of a young man showing four different environments and moods with consistent identity.
 
-Panel 1: golden hour outdoor portrait with warm sunlight.  
-Panel 2: neon night street portrait with blue and pink lighting.  
-Panel 3: indoor minimal portrait with soft white background.  
+Panel 1: golden hour outdoor portrait with warm sunlight.
+Panel 2: neon night street portrait with blue and pink lighting.
+Panel 3: indoor minimal portrait with soft white background.
 Panel 4: rainy street scene with reflections and moody lighting.
 
 The subject wears different outfits in each panel including casual shirt, hoodie, and streetwear with dim white cargo loose baggie trousers. Smooth grid layout, thin borders, cinematic color grading, ultra realistic skin detail, 50mm lens, 8k.
@@ -2400,7 +2400,7 @@ A prompt used with Nano Banana Pro (Gemini 3 Pro Image) to generate a four-panel
 
 ```
 AI Image Generation 4-panel manga
- 
+
 Title
 Dawn of Strike Avoidance
 
@@ -3135,7 +3135,7 @@ A complex, multi-stage Nano Banana prompt designed to generate a 'Kinetic Bluepr
 
 ```
 <instruction>
- 
+
 Input A is a Complex Machine (e.g., {argument name="machine type" default="A Space Shuttle"}, A Grand Piano, A Clockwork Watch).
 Deconstruct into   3 Assembly Phases  :
    Phase 1:  Raw chassis/frame.
@@ -3148,7 +3148,7 @@ The Layout: The wedges are partially unfolded across a drafting table surface.
 3. The Dioramas (The Exploded View):
 Internal Content: Each wedge holds a different "Phase" of the machine.
 Visual Link: Real copper wires or brass chains physically cross the gaps between the acrylic wedges, "connecting" the assembly line.
-4. Visual 
+4. Visual
 Background: A cluttered workshop desk with blueprints and calipers.
 Lighting: Hard side-lighting to cast shadows of the internal gears through the clear acrylic walls onto the table.
 Output: ONE image, 16:9 Aspect Ratio, 3D Macro Render, "Technical Art" aesthetic.
@@ -3201,12 +3201,12 @@ ENVIRONMENT:
 A high-tech architectural lab with a dark, minimal interior. The blueprint originates from a glossy black glass table embedded with touch controls, glowing UI panels, and soft neon edges. Subtle reflections of the hologram appear on the table surface. Background is clean, futuristic, and slightly blurred.
 
 STRUCTURAL DETAILS:
-The central spire rises as glowing gridlines before solidifying into steel and glass  
-Tiered setbacks of the tower assemble through hovering robotic drones  
-Glass facade panels lock into place with precise alignment and reflections  
-Laser beams scan and map each level during construction  
-Small AI drones orbit around the structure, actively building and welding components  
-Materials transition from holographic light into real textures — polished glass, steel beams, and concrete core  
+The central spire rises as glowing gridlines before solidifying into steel and glass
+Tiered setbacks of the tower assemble through hovering robotic drones
+Glass facade panels lock into place with precise alignment and reflections
+Laser beams scan and map each level during construction
+Small AI drones orbit around the structure, actively building and welding components
+Materials transition from holographic light into real textures — polished glass, steel beams, and concrete core
 Floating UI overlays show measurements, grids, and rotating architectural schematics
 
 VISUAL MECHANIC:
@@ -3465,7 +3465,7 @@ A complex prompt for Nano Banana Pro designed to generate a 3x3 grid image conta
 ```
 A 3x3 photo grid presented as a single image on a dark grey background. Each of the nine grid cells contains a different portrait of the same subject from the uploaded image, maintaining the perfect character consistency, outfit and pose across all panels. Below each individual portrait, a clean sans-serif text label with a number and name is clearly displayed.
 
-The grid layout and lighting setups are: 
+The grid layout and lighting setups are:
 
 - Top row, left to right:
 
@@ -4345,16 +4345,16 @@ A complex, weighted prompt structure for Nano Banana, designed to generate a 3D 
 #### 📝 Prompt
 
 ```
-Render_Target = 
-( Open_Book_3D_Pop_Up_Diorama * 2.0 ) + 
-( Inferred_3D_Environment_[COMIC_SERIES] * 1.5 ) + 
-( 3D_Vinyl_Toy_[HEROES] + 3D_Vinyl_Toy_[VILLAINS] * 1.8 ) + 
-( Translucent_Plastic_Energy_FX * 1.5 ) + 
-( Floating_3D_Text_"{argument name="sfx text" default="SFX_TEXT"}" * 1.5 ) + 
-( Floating_Yellow_Title_Box_"{argument name="comic series" default="COMIC_SERIES"} | {argument name="year" default="YEAR"}" * 1.2 ) + 
-( Vintage_Flat_Comic_Book_On_Wooden_Desk * 1.0 ) - 
-( 2D_Flat_Characters / 2.0 ) - 
-( Human_Realism / 2.0 ) - 
+Render_Target =
+( Open_Book_3D_Pop_Up_Diorama * 2.0 ) +
+( Inferred_3D_Environment_[COMIC_SERIES] * 1.5 ) +
+( 3D_Vinyl_Toy_[HEROES] + 3D_Vinyl_Toy_[VILLAINS] * 1.8 ) +
+( Translucent_Plastic_Energy_FX * 1.5 ) +
+( Floating_3D_Text_"{argument name="sfx text" default="SFX_TEXT"}" * 1.5 ) +
+( Floating_Yellow_Title_Box_"{argument name="comic series" default="COMIC_SERIES"} | {argument name="year" default="YEAR"}" * 1.2 ) +
+( Vintage_Flat_Comic_Book_On_Wooden_Desk * 1.0 ) -
+( 2D_Flat_Characters / 2.0 ) -
+( Human_Realism / 2.0 ) -
 ( Life_Size_Scale )
 ```
 
@@ -4635,7 +4635,7 @@ A prompt for generating a four-panel manga titled '2026 Solo Camping Declaration
 
 ```
 4-panel manga
- 
+
 Title
 2026 Solo Camping Declaration of Independence
 
@@ -4677,7 +4677,7 @@ A prompt for generating a four-panel manga titled 'The Darkness of SNS' using Na
 
 ```
 4-panel manga
- 
+
 Title
 The Darkness of SNS
 
@@ -4731,7 +4731,7 @@ A prompt for generating a four-panel manga titled 'The Darkness of SNS' using Na
 
 ```
 4-panel manga
- 
+
 Title
 The Darkness of SNS
 
@@ -4823,7 +4823,7 @@ A prompt for generating a four-panel manga titled 'Labyrinth of Objection' using
 
 ```
 4-panel manga
- 
+
 Title
 Labyrinth of Objection
 
@@ -4867,7 +4867,7 @@ A prompt for generating a four-panel manga titled 'Countdown to Disappearance' u
 
 ```
 4-panel manga
- 
+
 Title
 Countdown to Disappearance
 

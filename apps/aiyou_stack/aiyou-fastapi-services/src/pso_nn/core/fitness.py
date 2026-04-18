@@ -181,7 +181,10 @@ class SimpleFitness:
 
 
 def create_batch_fitness(
-    fitness_fn: FitnessFunction, data: np.ndarray, labels: np.ndarray, batch_size: int = 32,
+    fitness_fn: FitnessFunction,
+    data: np.ndarray,
+    labels: np.ndarray,
+    batch_size: int = 32,
 ) -> Callable[[np.ndarray], float]:
     """Create a fitness function that evaluates on random mini-batches.
 
@@ -200,7 +203,8 @@ def create_batch_fitness(
 
 
 def create_noisy_fitness(
-    fitness_fn: Callable[[np.ndarray], float], noise_scale: float = 0.01,
+    fitness_fn: Callable[[np.ndarray], float],
+    noise_scale: float = 0.01,
 ) -> Callable[[np.ndarray], float]:
     """Add noise to fitness evaluation for exploration.
 

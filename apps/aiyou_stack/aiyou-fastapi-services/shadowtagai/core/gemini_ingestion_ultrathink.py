@@ -117,7 +117,9 @@ class UltrathinkSourceCollector(BaseSourceCollector):
         return metrics
 
     async def validate_and_evolve(
-        self, metrics: SourceCoverageMetrics, ground_truth_data: list[dict] | None = None,
+        self,
+        metrics: SourceCoverageMetrics,
+        ground_truth_data: list[dict] | None = None,
     ):
         """Validate collection quality and evolve prompt via DTE.
 
@@ -217,7 +219,9 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
 
             source_metrics = {}
             for collector_type, metrics in zip(
-                self.collectors.keys(), source_metrics_list, strict=False,
+                self.collectors.keys(),
+                source_metrics_list,
+                strict=False,
             ):
                 if isinstance(metrics, Exception):
                     logger.error(f"Collector {collector_type} failed: {metrics}")
@@ -382,15 +386,21 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
 
         # Add stages to pipeline
         self.pipeline.add_stage(
-            "multi_source_collection", multi_source_collection, timeout_ms=35 * 60 * 1000,
+            "multi_source_collection",
+            multi_source_collection,
+            timeout_ms=35 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
-            "tier_classification", tier_classification, timeout_ms=12 * 60 * 1000,
+            "tier_classification",
+            tier_classification,
+            timeout_ms=12 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
-            "quality_gate_validation", quality_gate_validation, timeout_ms=3 * 60 * 1000,
+            "quality_gate_validation",
+            quality_gate_validation,
+            timeout_ms=3 * 60 * 1000,
         )
 
         self.pipeline.add_stage(
@@ -400,11 +410,15 @@ class GeminiIngestionUltrathink(GeminiIngestionLayer):
         )
 
         self.pipeline.add_stage(
-            "am_briefing_generation", am_briefing_generation, timeout_ms=5 * 60 * 1000,
+            "am_briefing_generation",
+            am_briefing_generation,
+            timeout_ms=5 * 60 * 1000,
         )
 
     async def run_nightly_job(
-        self, job_id: str, max_items_per_source: int = 500,
+        self,
+        job_id: str,
+        max_items_per_source: int = 500,
     ) -> IngestionResult:
         """Execute nightly ingestion job (ultrathink edition).
 
@@ -449,7 +463,8 @@ async def example_ultrathink_ingestion():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     asyncio.run(example_ultrathink_ingestion())

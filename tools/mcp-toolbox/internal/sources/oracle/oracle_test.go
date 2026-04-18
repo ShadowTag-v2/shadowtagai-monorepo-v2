@@ -77,7 +77,7 @@ func TestParseFromYamlOracle(t *testing.T) {
 			tnsAdmin: /opt/oracle/network/admin
 			user: my_user
 			password: my_pass
-			useOCI: true 
+			useOCI: true
 			`,
 			want: map[string]sources.SourceConfig{
 				"my-oracle-tns-oci": Config{

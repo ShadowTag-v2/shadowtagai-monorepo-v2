@@ -210,7 +210,9 @@ class RevenueTracker:
         return self.metrics
 
     def get_opportunities(
-        self, min_priority: int = 1, min_confidence: float = 0.0,
+        self,
+        min_priority: int = 1,
+        min_confidence: float = 0.0,
     ) -> list[RevenueOpportunity]:
         """Get detected revenue opportunities.
 
