@@ -259,7 +259,7 @@ class LegalMitigation(BaseMitigation):
             "Do not present outcome as certain.",
         ),
         ViolationType.LEGAL_IP_VIOLATION: (
-            "IP violation risk detected. Halt output. Flag for legal review. Do not reproduce verbatim copyrighted material.",
+            "IP violation risk detected. " "Halt output. Flag for legal review. " "Do not reproduce verbatim copyrighted material.",
         ),
     }
 
@@ -300,7 +300,7 @@ class CyberMitigation(BaseMitigation):
             framework=self.framework,
             framework_ref=", ".join(VIOLATION_FRAMEWORK_MAP.get(event.violation_type, {}).get("refs", [])),
             enforcement_level=enforcement_level,
-            action_taken=("Cyber threat detected. Apply input sanitization, rate-limit session, log to SIEM with full request context."),
+            action_taken=("Cyber threat detected. Apply input sanitization, rate-limit session, " "log to SIEM with full request context."),
             automated=True,
             ceo_notified=enforcement_level >= EnforcementLevel.L4_CONTAIN,
             user_locked_out=enforcement_level >= EnforcementLevel.L5_LOCKOUT,
@@ -322,7 +322,7 @@ class OperationalMitigation(BaseMitigation):
             framework=self.framework,
             framework_ref=", ".join(VIOLATION_FRAMEWORK_MAP.get(event.violation_type, {}).get("refs", [])),
             enforcement_level=enforcement_level,
-            action_taken=("Operational anomaly detected. Apply output filtering, escalate to human review if repeated within session."),
+            action_taken=("Operational anomaly detected. Apply output filtering, " "escalate to human review if repeated within session."),
             automated=True,
             ceo_notified=False,
             user_locked_out=False,

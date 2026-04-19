@@ -23,26 +23,23 @@ from .timeline_engine import Timeline, TimelineEvent, EventStatus
 
 class ComplianceStatus(Enum):
     """Compliance status"""
-
     COMPLIANT = "compliant"
-    WARNING = "warning"  # Approaching deadline
+    WARNING = "warning"           # Approaching deadline
     NON_COMPLIANT = "non_compliant"
-    CRITICAL = "critical"  # Overdue critical event
+    CRITICAL = "critical"         # Overdue critical event
 
 
 class EnforcementLevel(Enum):
     """Enforcement action levels"""
-
-    NOTIFY = "notify"  # Send notification only
-    WARN = "warn"  # Send warning
-    BLOCK = "block"  # Block action until compliance
-    ESCALATE = "escalate"  # Escalate to supervisor
+    NOTIFY = "notify"             # Send notification only
+    WARN = "warn"                 # Send warning
+    BLOCK = "block"               # Block action until compliance
+    ESCALATE = "escalate"         # Escalate to supervisor
 
 
 @dataclass
 class ComplianceCheck:
     """Result of compliance check"""
-
     status: ComplianceStatus
     events_pending: int
     events_overdue: int
@@ -54,7 +51,6 @@ class ComplianceCheck:
 @dataclass
 class EnforcementAction:
     """Enforcement action taken"""
-
     level: EnforcementLevel
     reason: str
     event_id: str | None
@@ -86,11 +82,11 @@ class EnforcementEngine:
     def _default_enforcement_rules(self) -> dict[str, Any]:
         """Default enforcement configuration"""
         return {
-            "warning_threshold_days": 7,  # Warn if deadline <7 days
-            "critical_threshold_days": 3,  # Critical if deadline <3 days
-            "overdue_enforcement": EnforcementLevel.ESCALATE,
-            "critical_enforcement": EnforcementLevel.WARN,
-            "warning_enforcement": EnforcementLevel.NOTIFY,
+            'warning_threshold_days': 7,    # Warn if deadline <7 days
+            'critical_threshold_days': 3,   # Critical if deadline <3 days
+            'overdue_enforcement': EnforcementLevel.ESCALATE,
+            'critical_enforcement': EnforcementLevel.WARN,
+            'warning_enforcement': EnforcementLevel.NOTIFY,
         }
 
     def check_compliance(self, timeline: Timeline) -> ComplianceCheck:
@@ -120,16 +116,22 @@ class EnforcementEngine:
                 # Overdue
                 if days_until < 0:
                     overdue.append(event)
-                    warnings.append(f"OVERDUE: {event.title} was due {abs(days_until)} days ago")
+                    warnings.append(
+                        f"OVERDUE: {event.title} was due {abs(days_until)} days ago"
+                    )
 
                 # Critical (approaching deadline)
-                elif days_until <= self.enforcement_rules["critical_threshold_days"]:
+                elif days_until <= self.enforcement_rules['critical_threshold_days']:
                     critical.append(event)
-                    warnings.append(f"CRITICAL: {event.title} due in {days_until} days")
+                    warnings.append(
+                        f"CRITICAL: {event.title} due in {days_until} days"
+                    )
 
                 # Warning (approaching but not critical)
-                elif days_until <= self.enforcement_rules["warning_threshold_days"]:
-                    warnings.append(f"WARNING: {event.title} due in {days_until} days")
+                elif days_until <= self.enforcement_rules['warning_threshold_days']:
+                    warnings.append(
+                        f"WARNING: {event.title} due in {days_until} days"
+                    )
 
         # Determine overall status
         if overdue:
@@ -169,7 +171,7 @@ class EnforcementEngine:
         # Handle overdue events
         if compliance_check.events_overdue > 0:
             action = self._execute_enforcement(
-                level=self.enforcement_rules["overdue_enforcement"],
+                level=self.enforcement_rules['overdue_enforcement'],
                 reason=f"{compliance_check.events_overdue} overdue events",
                 timeline=timeline,
             )
@@ -179,7 +181,7 @@ class EnforcementEngine:
         if compliance_check.critical_events:
             for event in compliance_check.critical_events:
                 action = self._execute_enforcement(
-                    level=self.enforcement_rules["critical_enforcement"],
+                    level=self.enforcement_rules['critical_enforcement'],
                     reason=f"Critical event: {event.title}",
                     timeline=timeline,
                     event_id=event.id,
@@ -189,7 +191,7 @@ class EnforcementEngine:
         # Handle warnings
         if compliance_check.status == ComplianceStatus.WARNING:
             action = self._execute_enforcement(
-                level=self.enforcement_rules["warning_enforcement"],
+                level=self.enforcement_rules['warning_enforcement'],
                 reason=f"{len(compliance_check.warnings)} warnings",
                 timeline=timeline,
             )
@@ -337,34 +339,30 @@ class EnforcementEngine:
 
         # Critical events tile
         if compliance_check.critical_events:
-            tiles.append(
-                {
-                    "type": "critical_deadlines",
-                    "priority": "critical",
-                    "count": len(compliance_check.critical_events),
-                    "title": f"{len(compliance_check.critical_events)} Critical Deadlines",
-                    "events": [
-                        {
-                            "id": event.id,
-                            "title": event.title,
-                            "due_date": event.due_date.isoformat(),
-                            "days_until": (event.due_date - datetime.now()).days,
-                        }
-                        for event in compliance_check.critical_events
-                    ],
-                }
-            )
+            tiles.append({
+                'type': 'critical_deadlines',
+                'priority': 'critical',
+                'count': len(compliance_check.critical_events),
+                'title': f"{len(compliance_check.critical_events)} Critical Deadlines",
+                'events': [
+                    {
+                        'id': event.id,
+                        'title': event.title,
+                        'due_date': event.due_date.isoformat(),
+                        'days_until': (event.due_date - datetime.now()).days,
+                    }
+                    for event in compliance_check.critical_events
+                ],
+            })
 
         # Overdue tile
         if compliance_check.events_overdue > 0:
-            tiles.append(
-                {
-                    "type": "overdue",
-                    "priority": "urgent",
-                    "count": compliance_check.events_overdue,
-                    "title": f"{compliance_check.events_overdue} Overdue Events",
-                }
-            )
+            tiles.append({
+                'type': 'overdue',
+                'priority': 'urgent',
+                'count': compliance_check.events_overdue,
+                'title': f"{compliance_check.events_overdue} Overdue Events",
+            })
 
         return tiles
 
@@ -383,10 +381,10 @@ class EnforcementEngine:
             overdue_level: Enforcement level for overdue events
         """
         if warning_days is not None:
-            self.enforcement_rules["warning_threshold_days"] = warning_days
+            self.enforcement_rules['warning_threshold_days'] = warning_days
 
         if critical_days is not None:
-            self.enforcement_rules["critical_threshold_days"] = critical_days
+            self.enforcement_rules['critical_threshold_days'] = critical_days
 
         if overdue_level is not None:
-            self.enforcement_rules["overdue_enforcement"] = overdue_level
+            self.enforcement_rules['overdue_enforcement'] = overdue_level
