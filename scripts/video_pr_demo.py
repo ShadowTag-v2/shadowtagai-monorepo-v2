@@ -65,11 +65,16 @@ def concatenate_videos(
     """Concatenate videos using ffmpeg concat demuxer."""
     output.parent.mkdir(parents=True, exist_ok=True)
     cmd = [
-        ffmpeg, "-y",
-        "-f", "concat",
-        "-safe", "0",
-        "-i", str(concat_file),
-        "-c", "copy",
+        ffmpeg,
+        "-y",
+        "-f",
+        "concat",
+        "-safe",
+        "0",
+        "-i",
+        str(concat_file),
+        "-c",
+        "copy",
         str(output),
     ]
     print(f"🎬 Concatenating → {output}")
