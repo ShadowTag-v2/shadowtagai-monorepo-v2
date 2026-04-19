@@ -197,3 +197,5 @@ infra/terraform/.terraform/
 .beads/gitleaks_*.md
 .beads/gitleaks_*.csv
 .gitleaksignore.bak.*
+public/frames/
+labs/uphillsnowball/external_payloads/veo_output/

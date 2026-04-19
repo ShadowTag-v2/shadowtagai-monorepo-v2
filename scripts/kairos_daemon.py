@@ -181,7 +181,7 @@ def write_heartbeat(status: dict) -> None:
     """Write heartbeat file for monitoring."""
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
     heartbeat = {
-        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "timestamp": datetime.datetime.now(datetime.UTC).isoformat(),
         "pid": os.getpid(),
         "status": status,
     }
