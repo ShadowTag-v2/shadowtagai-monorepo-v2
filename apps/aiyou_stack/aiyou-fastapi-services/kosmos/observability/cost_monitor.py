@@ -46,7 +46,6 @@ class CostMonitor:
         "gemini-2.0-flash-exp": {"input": 0.075, "output": 0.30},
         "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},
         "gemini-2.5-flash": {"input": 0.075, "output": 0.30},  # When available
-        "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},  # When available
     }
 
     def __init__(
