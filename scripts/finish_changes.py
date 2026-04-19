@@ -34,14 +34,23 @@ def main():
         os.remove(".git/index.lock")
     run_cmd("git add .")
 
-    # 2.5 Security Gate: Gitleaks
-    print("\n[SECURITY] Running Gitleaks gate on staged files...")
-    # Altered for Steve Jobs-esque Egress: Logging only, do not halt the core architecture on legacy payload keys.
-    subprocess.run(
-        "/opt/homebrew/bin/gitleaks protect --staged --verbose || echo 'Gitleaks found keys (logged).'",
-        shell=True,
+    # 2.5 Security Gate: Gitleaks Guardian (BLOCKING)
+    # Per AGENTS.md Rule 23 + Cor.30 R3: Secrets MUST be blocked before commit.
+    # Uses gitleaks_guardian.py for classification (BLOCK/WARN/IGNORE).
+    print("\n[SECURITY] Running Gitleaks Guardian gate on staged files...")
+    guardian_result = subprocess.run(
+        [sys.executable, "scripts/gitleaks_guardian.py", "--mode", "gate"],
         check=False,
     )
+    if guardian_result.returncode == 1:
+        print("\n❌ [SECURITY] Gitleaks Guardian BLOCKED the commit.")
+        print("   Real credentials detected in staged files.")
+        print("   Run: python3 scripts/gitleaks_guardian.py --mode scan --scope production")
+        print("   Remediate findings, then retry.")
+        sys.exit(1)
+    elif guardian_result.returncode == 2:
+        print("\n⚠️  [SECURITY] Gitleaks binary not found — install: brew install gitleaks")
+        # Non-fatal: allow commit but warn
 
     # 3. Commit with standard convention
     run_cmd("git commit -m \"chore(omega-loop): Thread Transfer Egress and Re-Binding of Source Modules\" --no-verify || echo 'Clean working tree.'")

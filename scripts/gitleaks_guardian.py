@@ -40,9 +40,8 @@ import re
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
-from typing import Optional
 
 # ============================================================================
 # Configuration
@@ -54,7 +53,7 @@ GITLEAKS_CONFIG = REPO_ROOT / ".gitleaks.toml"
 GITLEAKS_IGNORE = REPO_ROOT / ".gitleaksignore"
 REPORT_DIR = REPO_ROOT / ".beads"
 
-# Production-relevant scan paths (skip 100GB+ of archived/external content)
+# Production-relevant scan paths — used by --scope production (see run_scan())
 PRODUCTION_PATHS = [
     "apps/counselconduit/",
     "apps/kovelai/",
@@ -263,7 +262,9 @@ def run_gitleaks_scan(scope: str = "production") -> list[dict]:
         ]
 
     print(f"🔍 Running: {' '.join(cmd)}")
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    if proc.returncode not in (0, 1):
+        print(f"⚠️ Gitleaks exited with code {proc.returncode}: {proc.stderr[:200]}")
 
     # Gitleaks exit 1 = findings, exit 0 = clean
     if os.path.exists(report_path):
