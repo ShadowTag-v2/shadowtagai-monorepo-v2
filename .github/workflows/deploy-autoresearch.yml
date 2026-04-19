@@ -1,12 +1,12 @@
-name: Deploy n-autoresearch/Kosmos/BioAgentss to Cloud Run
+name: Deploy Autoresearch to Cloud Run
 
 on:
   push:
     branches: [main]
     paths:
       - 'agents/autoresearch.py'
-      - 'bin/n-autoresearch/Kosmos/BioAgentss-server'
-      - 'n-autoresearch/Kosmos/BioAgentss-server.Dockerfile'
+      - 'bin/autoresearch-server/**'
+      - 'autoresearch-server.Dockerfile'
       - 'requirements.txt'
       - 'src/shadowtag-omega-v4/**'
 
@@ -22,9 +22,9 @@ on:
           - prod
 
 env:
-  PROJECT_ID: acquired-jet-478701-b3
+  PROJECT_ID: shadowtag-omega-v4
   REGION: us-central1
-  REPOSITORY: n-autoresearch/Kosmos/BioAgentss
+  REPOSITORY: n-autoresearch
   IMAGE: server
 
 jobs:
@@ -42,8 +42,8 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: 'projects/215390634092/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
-          service_account: 'github-actions@acquired-jet-478701-b3.iam.gserviceaccount.com'
+          workload_identity_provider: 'projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-actions@shadowtag-omega-v4.iam.gserviceaccount.com'
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -56,13 +56,13 @@ jobs:
           docker build \
             -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
             -t us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:latest \
-            -f n-autoresearch/Kosmos/BioAgentss-server.Dockerfile .
+            -f autoresearch-server.Dockerfile .
           docker push --all-tags us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE
 
       - name: Deploy to Cloud Run (Dev)
         if: github.event.inputs.environment != 'prod'
         run: |
-          gcloud run deploy n-autoresearch/Kosmos/BioAgentss-server-dev \
+          gcloud run deploy autoresearch-server-dev \
             --image us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
             --region $REGION \
             --platform managed \
@@ -73,7 +73,7 @@ jobs:
       - name: Deploy to Cloud Run (Prod)
         if: github.event.inputs.environment == 'prod'
         run: |
-          gcloud run deploy n-autoresearch/Kosmos/BioAgentss-server \
+          gcloud run deploy autoresearch-server \
             --image us-central1-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${{ github.sha }} \
             --region $REGION \
             --platform managed \
@@ -83,7 +83,7 @@ jobs:
 
       - name: Output Service URL
         run: |
-          SERVICE_NAME=${{ github.event.inputs.environment == 'prod' && 'n-autoresearch/Kosmos/BioAgentss-server' || 'n-autoresearch/Kosmos/BioAgentss-server-dev' }}
+          SERVICE_NAME=${{ github.event.inputs.environment == 'prod' && 'autoresearch-server' || 'autoresearch-server-dev' }}
           URL=$(gcloud run services describe $SERVICE_NAME --region $REGION --format 'value(status.url)')
           echo "## Deployed to Cloud Run" >> $GITHUB_STEP_SUMMARY
           echo "Service URL: $URL" >> $GITHUB_STEP_SUMMARY
