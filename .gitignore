@@ -192,3 +192,8 @@ tools/PureMac/
 reference_architectures/
 infra/terraform/.terraform/
 .lighthouseci/
+
+# Gitleaks Guardian reports (may contain redacted findings)
+.beads/gitleaks_*.md
+.beads/gitleaks_*.csv
+.gitleaksignore.bak.*
