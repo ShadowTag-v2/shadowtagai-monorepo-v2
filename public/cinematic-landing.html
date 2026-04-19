@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CounselConduit — Privilege-Preserving Legal AI</title>
+  <meta name="description" content="The Shopify for Legal AI. Privilege-preserving routing between law firms and frontier LLMs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: rgba(18, 18, 26, 0.7);
+      --accent-teal: #00d4aa;
+      --accent-teal-dim: rgba(0, 212, 170, 0.15);
+      --accent-blue: #4a9eff;
+      --text-primary: #f0f0f5;
+      --text-secondary: #8888a0;
+      --text-muted: #555566;
+      --border: rgba(255, 255, 255, 0.06);
+      --glass: rgba(255, 255, 255, 0.03);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Scroll-Driven Video Canvas ── */
+    .scroll-video-container {
+      position: relative;
+      height: 500vh;
+    }
+
+    .scroll-video-sticky {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #scroll-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .scroll-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(10, 10, 15, 0.3) 0%,
+        rgba(10, 10, 15, 0.1) 40%,
+        rgba(10, 10, 15, 0.6) 80%,
+        rgba(10, 10, 15, 0.95) 100%
+      );
+      pointer-events: none;
+    }
+
+    .scroll-text-overlay {
+      position: absolute;
+      bottom: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 2;
+    }
+
+    .scroll-text-overlay h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .scroll-text-overlay p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 10, 15, 0.6);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.4s ease;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .logo span { color: var(--accent-teal); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .nav-cta {
+      padding: 0.6rem 1.5rem;
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+    }
+
+    /* ── Sections ── */
+    section {
+      padding: 8rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--accent-teal);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 640px;
+      font-weight: 300;
+    }
+
+    /* ── Feature Cards ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-teal), transparent);
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 212, 170, 0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-teal-dim);
+      border-radius: 12px;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ── Pricing ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+      transition: all 0.35s;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent-teal);
+      box-shadow: 0 0 40px rgba(0, 212, 170, 0.1);
+    }
+
+    .pricing-card.featured::after {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .pricing-tier {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .pricing-amount {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-amount span {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 2rem 0;
+      text-align: left;
+    }
+
+    .pricing-features li {
+      padding: 0.5rem 0;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--accent-teal);
+      font-weight: 700;
+    }
+
+    .pricing-cta {
+      width: 100%;
+      padding: 0.9rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-primary);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pricing-card.featured .pricing-cta {
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+      border-color: var(--accent-teal);
+    }
+
+    .pricing-cta:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--accent-teal);
+    }
+
+    .pricing-card.featured .pricing-cta:hover {
+      box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 4rem 3rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ── Animations ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav id="main-nav">
+    <div class="logo">Counsel<span>Conduit</span></div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#security">Security</a></li>
+    </ul>
+    <button class="nav-cta" id="cta-start">Start Free Trial</button>
+  </nav>
+
+  <!-- Scroll-Driven Video Hero -->
+  <div class="scroll-video-container" id="hero">
+    <div class="scroll-video-sticky">
+      <canvas id="scroll-canvas"></canvas>
+      <div class="scroll-overlay"></div>
+      <div class="scroll-text-overlay">
+        <h1>Privilege-Preserving<br>Legal AI</h1>
+        <p>Route your firm through frontier LLMs without breaking attorney-client privilege. Protected under <em>United States v. Heppner</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="fade-in">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title">Enterprise-grade AI for<br>legal professionals</h2>
+      <p class="section-desc">Multi-model routing, cryptographic attestation, and immutable audit trails — built from day one for courtroom defensibility.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🛡️</div>
+        <h3>Kovel Attestation</h3>
+        <p>HMAC-SHA256 cryptographic receipts per session proving privileged communication under the Kovel doctrine.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🤖</div>
+        <h3>Multi-Model Routing</h3>
+        <p>Query Gemini, Claude, GPT-4, Grok, and Perplexity through a single privileged interface with model-specific routing policies.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">⚖️</div>
+        <h3>Judge #6 Policy Gate</h3>
+        <p>Mandatory governance checkpoint on every model route, export action, and regulated-domain answer. Zero unauthorized data exfiltration.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">📋</div>
+        <h3>Oracle Studio</h3>
+        <p>7-stage analysis pipeline that transforms raw legal queries into cited, jurisdiction-aware legal memoranda.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🔐</div>
+        <h3>Ephemeral Client View</h3>
+        <p>Auto-logout, screen wipe, no export, no copy, dead-man's switch. Research vanishes when the session ends.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">📊</div>
+        <h3>Immutable Transcripts</h3>
+        <p>Every AI interaction is logged with tamper-proof audit trails. Lawyer oversight dashboard for all sessions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="fade-in">
+      <p class="section-label">Pricing</p>
+      <h2 class="section-title">Scale with your practice</h2>
+      <p class="section-desc">All plans include every LLM API cost. No surprise token bills. Auto-tier upgrade keeps you compliant.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card fade-in">
+        <p class="pricing-tier">Solo</p>
+        <p class="pricing-amount">$299<span>/mo</span></p>
+        <ul class="pricing-features">
+          <li>1 attorney seat</li>
+          <li>All LLM models included</li>
+          <li>Kovel attestation</li>
+          <li>Ephemeral client portal</li>
+          <li>Standard support</li>
+        </ul>
+        <button class="pricing-cta" id="cta-solo">Get Started</button>
+      </div>
+      <div class="pricing-card featured fade-in">
+        <p class="pricing-tier">Practice</p>
+        <p class="pricing-amount">$599<span>/mo</span></p>
+        <ul class="pricing-features">
+          <li>5 attorney seats</li>
+          <li>All LLM models included</li>
+          <li>Oracle Studio memos</li>
+          <li>Priority model routing</li>
+          <li>Dedicated account manager</li>
+        </ul>
+        <button class="pricing-cta" id="cta-practice">Start Free Trial</button>
+      </div>
+      <div class="pricing-card fade-in">
+        <p class="pricing-tier">Enterprise</p>
+        <p class="pricing-amount">$999<span>/mo</span></p>
+        <ul class="pricing-features">
+          <li>Unlimited seats</li>
+          <li>BYOC/BYOK support</li>
+          <li>Regional data isolation</li>
+          <li>Custom retention policies</li>
+          <li>FedRAMP compliance path</li>
+        </ul>
+        <button class="pricing-cta" id="cta-enterprise">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 CounselConduit — ShadowTag AI. All rights reserved. Protected under <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026).</p>
+  </footer>
+
+  <!-- Scroll Animation Controller -->
+  <script src="scroll-frames.js"></script>
+</body>
+</html>
