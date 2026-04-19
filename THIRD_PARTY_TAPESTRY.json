@@ -1,0 +1,41 @@
+{
+  "repositories": [
+    {
+      "name": "PyCQA/bandit",
+      "url": "https://github.com/PyCQA/bandit",
+      "purpose": "Python security SAST scanner (Cor.30 compliance)",
+      "version_pinned": "1.9.4",
+      "cloned_to": "reference_architectures/bandit/",
+      "license": "Apache-2.0",
+      "size_mb": 5.9,
+      "status": "active_reference"
+    },
+    {
+      "name": "GoogleChrome/lighthouse",
+      "url": "https://github.com/GoogleChrome/lighthouse",
+      "purpose": "Web performance + a11y + SEO auditing",
+      "version_pinned": "latest",
+      "cloned_to": "reference_architectures/lighthouse/",
+      "license": "Apache-2.0",
+      "status": "active_reference"
+    },
+    {
+      "name": "GoogleChrome/lighthouse-ci",
+      "url": "https://github.com/GoogleChrome/lighthouse-ci",
+      "purpose": "Lighthouse CI/CD automation for performance budgets",
+      "version_pinned": "latest",
+      "cloned_to": "reference_architectures/lighthouse-ci/",
+      "license": "Apache-2.0",
+      "status": "active_reference"
+    },
+    {
+      "name": "FFmpeg/FFmpeg",
+      "url": "https://github.com/FFmpeg/FFmpeg",
+      "purpose": "Video processing, frame extraction, transcoding for Veo pipeline",
+      "version_pinned": "latest (shallow clone)",
+      "cloned_to": "reference_architectures/FFmpeg/",
+      "license": "LGPL-2.1",
+      "status": "active_reference"
+    }
+  ]
+}
