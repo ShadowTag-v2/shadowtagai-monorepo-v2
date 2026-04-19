@@ -15,10 +15,16 @@ permissions:
   contents: read
   security-events: write
 
+
+concurrency:
+  group: security-and-lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   bandit:
     name: Bandit Security Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,7 +39,7 @@ jobs:
 
       - name: Run Bandit (Medium+ severity)
         run: |
-          bandit -r apps/counselconduit/ scripts/ core/ \
+          bandit -r apps/counselconduit/ scripts/ core/ tools/eval/ \
             --skip B101 \
             -ll \
             --configfile pyproject.toml \
@@ -62,7 +68,7 @@ jobs:
       - name: Upload SARIF
         if: always()
         run: |
-          bandit -r apps/counselconduit/ scripts/ core/ \
+          bandit -r apps/counselconduit/ scripts/ core/ tools/eval/ \
             --skip B101 -ll \
             --configfile pyproject.toml \
             -f sarif \
@@ -83,6 +89,7 @@ jobs:
   lighthouse-ci:
     name: Lighthouse CI Performance Budget
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: bandit
     steps:
       - name: Checkout

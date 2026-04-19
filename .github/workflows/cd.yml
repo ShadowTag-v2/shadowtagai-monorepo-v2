@@ -19,10 +19,16 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
+
+concurrency:
+  group: cd-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Deploy to ${{ inputs.environment || 'production' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment: ${{ inputs.environment || 'production' }}
     permissions:
       contents: read

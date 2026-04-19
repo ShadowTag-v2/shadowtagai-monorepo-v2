@@ -8,9 +8,15 @@ on:
       - 'tests/**'
       - 'Makefile'
 
+
+concurrency:
+  group: make-check-pr-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality-gate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

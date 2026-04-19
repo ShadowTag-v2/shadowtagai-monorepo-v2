@@ -12,6 +12,11 @@ env:
   PYTHON_VERSION: '3.11'
   RUST_VERSION: 'stable'
 
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   # 1. PYTHON SERVICES
@@ -19,6 +24,7 @@ jobs:
   python-services:
     name: Python Services (FastAPI)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         python-version: ['3.10', '3.11', '3.12']
@@ -79,6 +85,7 @@ jobs:
   node-services:
     name: Node.js Services
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         node-version: ['20', '22']
@@ -137,6 +144,7 @@ jobs:
   rust-services:
     name: Rust Services
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: contains(github.event.head_commit.modified, 'Cargo.toml') || contains(github.event.head_commit.modified, '*.rs')
 
     steps:
@@ -192,6 +200,7 @@ jobs:
   docker-build:
     name: Docker Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     if: contains(github.event.head_commit.modified, 'Dockerfile') || github.event_name == 'workflow_dispatch'
 
     steps:
@@ -219,6 +228,7 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       security-events: write
 
@@ -246,6 +256,7 @@ jobs:
   cognitive-stack-validation:
     name: Cognitive Stack Validation
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout code
@@ -301,6 +312,7 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [python-services, node-services]
     if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
 
@@ -384,6 +396,7 @@ jobs:
   summary:
     name: CI Summary
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [python-services, node-services, cognitive-stack-validation]
     if: always()
 

@@ -12,6 +12,11 @@ permissions:
   pull-requests: write
   checks: read
 
+
+concurrency:
+  group: conditional-automerge-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check-automerge-conditions:
     # Only run if PR has 'automerge' label

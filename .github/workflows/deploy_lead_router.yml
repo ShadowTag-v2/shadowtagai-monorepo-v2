@@ -6,9 +6,15 @@ on:
     paths:
       - 'apps/lead-capture-router/**'
 
+
+concurrency:
+  group: deploy_lead_router-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js

@@ -11,6 +11,11 @@ permissions:
   contents: write
   pull-requests: write
 
+
+concurrency:
+  group: code-quality-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   refactor-analysis:
     runs-on: ubuntu-latest
