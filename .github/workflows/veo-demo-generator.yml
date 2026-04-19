@@ -47,6 +47,7 @@ jobs:
         with:
           project_id: ${{ env.GCP_PROJECT }}
           workload_identity_provider: projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: 'github-actions@shadowtag-omega-v4.iam.gserviceaccount.com'
 
       - name: Set up Python
 

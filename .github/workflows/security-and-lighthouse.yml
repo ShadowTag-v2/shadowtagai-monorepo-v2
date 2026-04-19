@@ -44,7 +44,7 @@ jobs:
       - name: Parse Results
         id: parse
         run: |
-          python3 -c "
+          python3 << 'PARSE_SCRIPT'
           import json, os
           d = json.load(open('bandit-results.json'))
           results = d.get('results', [])
@@ -56,8 +56,8 @@ jobs:
               f.write(f'medium_count={len(med)}\n')
           if len(high) > 0:
               for h in high[:10]:
-                  print(f'::warning file={h[\"filename\"]},line={h[\"line_number\"]}::{h[\"test_id\"]}: {h[\"issue_text\"][:100]}')
-          "
+                  print(f'::warning file={h["filename"]},line={h["line_number"]}::{h["test_id"]}: {h["issue_text"][:100]}')
+          PARSE_SCRIPT
 
       - name: Upload SARIF
         if: always()
