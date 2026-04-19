@@ -19,7 +19,7 @@ Usage:
 import json
 import os
 import sys
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
 from pathlib import Path
 from dataclasses import dataclass, field
 
@@ -323,7 +323,35 @@ if __name__ == "__main__":
 
     report = run_dream_cycle(ki_dir)
 
-    # Phase 5: Archive to NotebookLM Master Brain (if available)
+    # Phase 5: Gitleaks nightly production scan
+    repo_root = Path(__file__).resolve().parent.parent
+    guardian_script = repo_root / "scripts" / "gitleaks_guardian.py"
+    if guardian_script.exists():
+        import subprocess as _sp
+
+        print("\n[GITLEAKS] Running nightly production scan...")
+        gl_report = repo_root / ".beads" / f"gitleaks_nightly_{datetime.now(UTC).strftime('%Y%m%d')}.md"
+        cmd = [
+            sys.executable, str(guardian_script),
+            "--mode", "scan",
+            "--scope", "production",
+            "--output", str(gl_report),
+        ]
+        if DRY_RUN:
+            print(f"[GITLEAKS] DRY RUN — would run: {' '.join(cmd)}")
+        else:
+            result = _sp.run(cmd, capture_output=True, text=True, timeout=120)
+            if result.returncode == 0:
+                print(f"[GITLEAKS] ✅ Production clean — report at {gl_report}")
+            else:
+                print(f"[GITLEAKS] ⚠️ Findings detected (exit {result.returncode})")
+                if result.stdout:
+                    print(result.stdout[:500])
+                report.actions.append(f"GITLEAKS: Production scan found issues — review {gl_report}")
+    else:
+        print("[GITLEAKS] Guardian script not found — skipping nightly scan")
+
+    # Phase 6: Archive to NotebookLM Master Brain (if available)
     try:
         from notebooklm import NotebookLM  # noqa: F811
 
