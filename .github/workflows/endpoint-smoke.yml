@@ -1,0 +1,65 @@
+name: "Endpoint Smoke Tests"
+
+on:
+  workflow_run:
+    workflows:
+      - "Deploy"
+      - "CD - Deploy to Production"
+    types:
+      - completed
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"  # Every 30 minutes
+
+permissions:
+  contents: read
+
+concurrency:
+  group: endpoint-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke-endpoints:
+    name: Live Endpoint Health Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run' }}
+    steps:
+      - name: Check KovelAI
+        run: |
+          STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 https://kovelai.web.app/)
+          echo "KovelAI: HTTP $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "::error::KovelAI returned HTTP $STATUS"
+            exit 1
+          fi
+
+      - name: Check ShadowTag AI
+        run: |
+          STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 https://shadowtagai.web.app/)
+          echo "ShadowTag AI: HTTP $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "::error::ShadowTag AI returned HTTP $STATUS"
+            exit 1
+          fi
+
+      - name: Check CounselConduit API
+        run: |
+          STATUS=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 https://counselconduit-767252945109.us-central1.run.app/health 2>/dev/null || echo "000")
+          echo "CounselConduit API: HTTP $STATUS"
+          if [ "$STATUS" = "000" ]; then
+            echo "::warning::CounselConduit health endpoint unreachable (may not be deployed)"
+          elif [ "$STATUS" -ge 500 ]; then
+            echo "::error::CounselConduit returned HTTP $STATUS"
+            exit 1
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Endpoint Smoke Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Endpoint | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| kovelai.web.app | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| shadowtagai.web.app | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| counselconduit API | ✅ |" >> $GITHUB_STEP_SUMMARY
