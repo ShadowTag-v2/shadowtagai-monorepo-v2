@@ -9,10 +9,16 @@ on:
   schedule:
     - cron: '21 10 * * 1'
 
+
+concurrency:
+  group: codeql-analysis-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     permissions:
       actions: read
       contents: read

@@ -1,6 +1,9 @@
 # Antigravity v11 Merged Control-Plane Bundle
 
 [![Quality Gate](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/quality-gate.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/quality-gate.yml)
+[![Security — Bandit SAST](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/security-and-lighthouse.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/security-and-lighthouse.yml)
+[![Backend CI](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/backend-ci.yml)
+[![CodeQL](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/codeql-analysis.yml)
 [![PageSpeed Monitor](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/pagespeed-monitor.yml/badge.svg)](https://github.com/ShadowTag-v2/Monorepo-Uphillsnowball/actions/workflows/pagespeed-monitor.yml)
 [![KovelAI](https://img.shields.io/badge/KovelAI-Live-gold?logo=firebase)](https://kovelai.web.app)
 [![ShadowTag AI](https://img.shields.io/badge/ShadowTagAI-Live-00ff88?logo=firebase)](https://shadowtagai.web.app)

@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: '0 * * * *' # Run hourly
 
+
+concurrency:
+  group: playwright_api_limits-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     timeout-minutes: 15

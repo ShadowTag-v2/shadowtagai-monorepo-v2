@@ -9,10 +9,16 @@ permissions:
   pull-requests: write
   contents: read
 
+
+concurrency:
+  group: auto-approve-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   approve:
     if: contains(join(github.event.pull_request.labels.*.name, ','), 'auto-approve')
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Auto-approve PR
         uses: hmarr/auto-approve-action@v4

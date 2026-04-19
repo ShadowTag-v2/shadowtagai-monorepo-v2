@@ -16,9 +16,15 @@ on:
 permissions:
   contents: read
 
+
+concurrency:
+  group: gemini-ingestion-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate-config:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -59,6 +65,7 @@ jobs:
 
   quality-gates-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -111,6 +118,7 @@ jobs:
 
   ethical-compliance-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -149,6 +157,7 @@ jobs:
 
   cost-model-validation:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -202,6 +211,7 @@ jobs:
 
   integration-readiness:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [validate-config, quality-gates-check, ethical-compliance-audit, cost-model-validation]
     steps:
       - uses: actions/checkout@v4
@@ -244,6 +254,7 @@ jobs:
 
   summary:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: [validate-config, quality-gates-check, ethical-compliance-audit, cost-model-validation, integration-readiness]
     if: always()
     steps:
