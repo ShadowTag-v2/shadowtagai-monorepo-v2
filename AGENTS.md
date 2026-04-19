@@ -177,6 +177,7 @@ unless the user explicitly directs a control plane change:
 - Ruff: 0 violations across all recovered + existing Python (95 auto-fixed, 12 manual)
 - Vulture: 0 findings at 90%+ confidence across recovered Python
 - Tests: 5 passed (test_dispatch_compute.py)
+- Veo 3.1 Pipeline: veo_pipeline.py operational (6 presets, Veo 3.1/3.1-Fast/3.1-Lite/3.0/2.0), google-genai SDK 1.66.0+, GCS bucket gs://shadowtag-omega-v4-media, frame extraction via ffmpeg 8.1
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
