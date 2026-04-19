@@ -275,7 +275,7 @@ def _save_videos(client, operation, prefix: str) -> list[Path]:
             print(f"✅ Saved: {out_path}")
             saved.append(out_path)
         else:
-            print(f"   ℹ️  Video stored at GCS URI (Vertex AI). Download via gsutil:")
+            print("   ℹ️  Video stored at GCS URI (Vertex AI). Download via gsutil:")
             print(f"      gsutil cp '{video.uri}' '{out_path}'")
     return saved
 

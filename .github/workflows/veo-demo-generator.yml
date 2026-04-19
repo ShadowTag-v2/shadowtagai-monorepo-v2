@@ -1,0 +1,95 @@
+name: Veo Demo Video Generator
+on:
+  workflow_dispatch:
+    inputs:
+      preset:
+        description: 'Veo preset to generate'
+        required: true
+        type: choice
+        options:
+          - hero_drift
+          - counselconduit_hero
+          - shadowtagai_marketing
+          - onboarding_flow
+          - billing_explainer
+          - stripe_webhook
+      model:
+        description: 'Veo model to use'
+        required: false
+        default: 'veo-3.1-fast'
+        type: choice
+        options:
+          - veo-3.1
+          - veo-3.1-fast
+          - veo-3.1-lite
+          - veo-3.0
+          - veo-2.0
+          - veo-2.0-flash
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly Monday 6am UTC
+
+env:
+  GCP_PROJECT: shadowtag-omega-v4
+  GCS_BUCKET: gs://shadowtag-omega-v4-media/veo-output
+
+jobs:
+  generate-demo:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT }}
+          workload_identity_provider: projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+
+      - name: Set up Python
+
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install google-genai>=1.66.0
+
+      - name: Get Gemini API Key
+        id: secrets
+        run: |
+          echo "GEMINI_API_KEY=$(gcloud secrets versions access latest --secret=gemini-api-key)" >> $GITHUB_ENV
+
+      - name: Generate Video
+        run: |
+          python scripts/veo_pipeline.py \
+            --preset ${{ github.event.inputs.preset || 'hero_drift' }} \
+            --model ${{ github.event.inputs.model || 'veo-3.1-fast' }}
+
+      - name: Upload to GCS
+        run: |
+          gcloud storage cp labs/uphillsnowball/external_payloads/veo_output/*.mp4 ${{ env.GCS_BUCKET }}/
+
+      - name: Extract Frames
+        run: |
+          for f in labs/uphillsnowball/external_payloads/veo_output/*.mp4; do
+            python scripts/veo_pipeline.py --extract "$f" --fps 10
+          done
+
+      - name: Upload Frames to GCS
+        run: |
+          gcloud storage cp -r public/frames/ ${{ env.GCS_BUCKET }}/../frames/
+
+      - name: Create Demo Reel
+        run: |
+          python scripts/video_pr_demo.py --output demo_${{ github.run_id }}.mp4
+
+      - name: Upload Demo Reel
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-reel-${{ github.run_id }}
+          path: public/demos/*.mp4
+          retention-days: 30

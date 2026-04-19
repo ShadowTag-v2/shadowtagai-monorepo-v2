@@ -1,5 +1,4 @@
 // ── Imports and re-exports ──────────────────────────────────────────────
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 export 'src/models.dart';
 
@@ -106,38 +105,50 @@ class StatelessWidget extends Widget {
   const StatelessWidget();
   Widget build(BuildContext context) => const Widget();
 }
+
 class StatefulWidget extends Widget {
   const StatefulWidget();
   State createState() => State<StatefulWidget>();
 }
+
 class State<T extends StatefulWidget> {
   void initState() {}
   void dispose() {}
   Widget build(BuildContext context) => const Widget();
 }
+
 class Widget {
   const Widget();
 }
+
 class BuildContext {}
+
 class Text extends Widget {
   const Text(String text);
 }
+
 class Bloc<E, S> {
   void onEvent(E event) {}
 }
+
 class ChangeNotifier {
   void notifyListeners() {}
 }
+
 class User {
   final String name;
   User(this.name);
 }
+
 class Dog {
   Dog(String name, String breed);
   factory Dog.unknown() => Dog('?', '?');
 }
+
 class Repository<T> {}
+
 class UserEvent {}
+
 class UserState {}
 
 // ── Helper functions for call extraction tests ─────────────────────────
