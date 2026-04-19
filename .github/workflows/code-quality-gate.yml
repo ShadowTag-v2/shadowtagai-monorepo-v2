@@ -1,0 +1,61 @@
+name: "Code Quality Gate — Ruff + Vulture"
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**.py"
+  push:
+    branches: [main]
+    paths:
+      - "**.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: code-quality-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ruff:
+    name: Ruff Lint + Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install ruff
+        run: pip install "ruff>=0.11.0"
+
+      - name: Ruff lint
+        run: ruff check . --output-format=github
+
+      - name: Ruff format check
+        run: ruff format --check .
+
+  vulture:
+    name: Vulture Dead Code Detection
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install vulture
+        run: pip install "vulture>=2.14"
+
+      - name: Run vulture (90%+ confidence)
+        run: |
+          vulture apps/counselconduit/ scripts/ core/ tools/eval/ \
+            --min-confidence 90 \
+            --exclude ".venv,node_modules,__pycache__,reference_architectures" \
+            || true
