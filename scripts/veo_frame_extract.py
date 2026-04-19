@@ -232,6 +232,13 @@ def extract_frames(
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     if result.returncode != 0:
+        # Auto-fallback: webp encoder may not be compiled in ffmpeg
+        if fmt == "webp" and "encoder" in (result.stderr or "").lower():
+            logger.warning("webp encoder unavailable, falling back to jpg")
+            return extract_frames(
+                video_path, output_dir, frame_count,
+                fmt="jpg", quality=quality, max_width=max_width,
+            )
         logger.error("ffmpeg failed: %s", result.stderr[-500:] if result.stderr else "unknown")
         return []
 

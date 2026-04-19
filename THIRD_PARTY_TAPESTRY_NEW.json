@@ -1,0 +1,277 @@
+{
+  "repos": [
+    {
+      "name": "DataflowTemplates",
+      "url": "https://github.com/GoogleCloudPlatform/DataflowTemplates.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Java",
+      "has_license_file": true
+    },
+    {
+      "name": "FFmpeg",
+      "url": "https://github.com/FFmpeg/FFmpeg.git",
+      "organization": "FFmpeg",
+      "license": "BSD",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "Inquirer.js",
+      "url": "https://github.com/SBoudrias/Inquirer.js.git",
+      "organization": "SBoudrias",
+      "license": "MIT",
+      "primary_language": "TypeScript",
+      "has_license_file": true
+    },
+    {
+      "name": "agent-starter-pack",
+      "url": "https://github.com/GoogleCloudPlatform/agent-starter-pack.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "agentsmithy",
+      "url": "https://github.com/GoogleCloudPlatform/agentsmithy.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "bubbletea",
+      "url": "https://github.com/charmbracelet/bubbletea.git",
+      "organization": "charmbracelet",
+      "license": "MIT",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "click-to-deploy",
+      "url": "https://github.com/GoogleCloudPlatform/click-to-deploy.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "click-to-deploy-solutions",
+      "url": "https://github.com/GoogleCloudPlatform/click-to-deploy-solutions.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "TypeScript",
+      "has_license_file": true
+    },
+    {
+      "name": "cloud-builders",
+      "url": "https://github.com/GoogleCloudPlatform/cloud-builders.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "cloud-foundation-fabric",
+      "url": "https://github.com/GoogleCloudPlatform/cloud-foundation-fabric.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "cloud-run-button",
+      "url": "https://github.com/GoogleCloudPlatform/cloud-run-button.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "cloud-run-mcp",
+      "url": "https://github.com/GoogleCloudPlatform/cloud-run-mcp.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "JavaScript",
+      "has_license_file": true
+    },
+    {
+      "name": "firebase-extensions",
+      "url": "https://github.com/GoogleCloudPlatform/firebase-extensions.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "TypeScript",
+      "has_license_file": true
+    },
+    {
+      "name": "flagger",
+      "url": "https://github.com/fluxcd/flagger.git",
+      "organization": "fluxcd",
+      "license": "Apache-2.0",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "gcloud-mcp",
+      "url": "https://github.com/googleapis/gcloud-mcp.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "TypeScript",
+      "has_license_file": true
+    },
+    {
+      "name": "gcsfuse",
+      "url": "https://github.com/GoogleCloudPlatform/gcsfuse.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "gke-mcp",
+      "url": "https://github.com/GoogleCloudPlatform/gke-mcp.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "god-cli",
+      "url": "https://github.com/alexsmedile/god-cli.git",
+      "organization": "alexsmedile",
+      "license": "MIT",
+      "primary_language": "unknown",
+      "has_license_file": true
+    },
+    {
+      "name": "google-api-nodejs-client",
+      "url": "https://github.com/googleapis/google-api-nodejs-client.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "TypeScript",
+      "has_license_file": true
+    },
+    {
+      "name": "google-api-php-client",
+      "url": "https://github.com/googleapis/google-api-php-client.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "PHP",
+      "has_license_file": true
+    },
+    {
+      "name": "google-cloud-php-firestore",
+      "url": "https://github.com/googleapis/google-cloud-php-firestore.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "PHP",
+      "has_license_file": true
+    },
+    {
+      "name": "java-firestore",
+      "url": "https://github.com/googleapis/java-firestore.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "Java",
+      "has_license_file": true
+    },
+    {
+      "name": "langchain-google-firestore-python",
+      "url": "https://github.com/googleapis/langchain-google-firestore-python.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "lighthouse",
+      "url": "https://github.com/GoogleChrome/lighthouse.git",
+      "organization": "GoogleChrome",
+      "license": "Apache-2.0",
+      "primary_language": "JavaScript",
+      "has_license_file": true
+    },
+    {
+      "name": "lighthouse-ci",
+      "url": "https://github.com/GoogleChrome/lighthouse-ci.git",
+      "organization": "GoogleChrome",
+      "license": "Apache-2.0",
+      "primary_language": "JavaScript",
+      "has_license_file": true
+    },
+    {
+      "name": "mcp-toolbox",
+      "url": "https://github.com/googleapis/mcp-toolbox.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "mcp-toolbox-sdk-python",
+      "url": "https://github.com/googleapis/mcp-toolbox-sdk-python.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "memorystore-cluster-autoscaler",
+      "url": "https://github.com/GoogleCloudPlatform/memorystore-cluster-autoscaler.git",
+      "organization": "GoogleCloudPlatform",
+      "license": "Apache-2.0",
+      "primary_language": "JavaScript",
+      "has_license_file": true
+    },
+    {
+      "name": "nodejs-firestore",
+      "url": "https://github.com/googleapis/nodejs-firestore.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "TypeScript",
+      "has_license_file": true
+    },
+    {
+      "name": "opentofu",
+      "url": "https://github.com/opentofu/opentofu.git",
+      "organization": "opentofu",
+      "license": "MPL",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "php-jwt",
+      "url": "https://github.com/googleapis/php-jwt.git",
+      "organization": "googleapis",
+      "license": "ISC",
+      "primary_language": "PHP",
+      "has_license_file": true
+    },
+    {
+      "name": "python-genai",
+      "url": "https://github.com/googleapis/python-genai.git",
+      "organization": "googleapis",
+      "license": "Apache-2.0",
+      "primary_language": "Python",
+      "has_license_file": true
+    },
+    {
+      "name": "semaphore",
+      "url": "https://github.com/semaphoreui/semaphore.git",
+      "organization": "semaphoreui",
+      "license": "MIT",
+      "primary_language": "Go",
+      "has_license_file": true
+    },
+    {
+      "name": "terraform-google-gcloud",
+      "url": "https://github.com/terraform-google-modules/terraform-google-gcloud.git",
+      "organization": "terraform-google-modules",
+      "license": "Apache-2.0",
+      "primary_language": ".rb",
+      "has_license_file": true
+    }
+  ],
+  "total_count": 34
+}
