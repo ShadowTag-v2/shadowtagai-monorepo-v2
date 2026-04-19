@@ -68,7 +68,7 @@ def build_engine(
             ]
             if not val
         ]
-        raise OSError(f"RKILL_DRY_RUN=false but required env vars not set: {missing}. Set them or set RKILL_DRY_RUN=true.")
+        raise OSError(f"RKILL_DRY_RUN=false but required env vars not set: {missing}. " "Set them or set RKILL_DRY_RUN=true.")
 
     cfg = RkillConfig(
         project=project,
