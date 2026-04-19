@@ -411,66 +411,100 @@
       .pricing-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
     }
+
+    /* ── A11y: Skip nav + Focus styles ── */
+    .skip-nav {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      background: var(--accent-teal);
+      color: var(--bg-primary);
+      padding: 0.75rem 1.5rem;
+      z-index: 200;
+      font-weight: 600;
+      border-radius: 0 0 8px 0;
+      transition: top 0.2s;
+    }
+    .skip-nav:focus { top: 0; }
+    *:focus-visible {
+      outline: 2px solid var(--accent-teal);
+      outline-offset: 2px;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border-width: 0;
+    }
   </style>
 </head>
 <body>
+  <!-- Skip Navigation (a11y) -->
+  <a href="#features" class="skip-nav">Skip to main content</a>
+
   <!-- Navigation -->
-  <nav id="main-nav">
-    <div class="logo">Counsel<span>Conduit</span></div>
-    <ul class="nav-links">
+  <nav id="main-nav" aria-label="Main navigation">
+    <a href="/" class="logo" aria-label="CounselConduit home">Counsel<span>Conduit</span></a>
+    <ul class="nav-links" role="list">
       <li><a href="#features">Features</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#security">Security</a></li>
     </ul>
-    <button class="nav-cta" id="cta-start">Start Free Trial</button>
+    <button class="nav-cta" id="cta-start" aria-label="Start free trial of CounselConduit">Start Free Trial</button>
   </nav>
 
   <!-- Scroll-Driven Video Hero -->
-  <div class="scroll-video-container" id="hero">
+  <header class="scroll-video-container" id="hero" role="banner">
     <div class="scroll-video-sticky">
-      <canvas id="scroll-canvas"></canvas>
-      <div class="scroll-overlay"></div>
+      <canvas id="scroll-canvas" role="img" aria-label="Cinematic visualization of legal AI technology in motion"></canvas>
+      <div class="scroll-overlay" aria-hidden="true"></div>
       <div class="scroll-text-overlay">
         <h1>Privilege-Preserving<br>Legal AI</h1>
         <p>Route your firm through frontier LLMs without breaking attorney-client privilege. Protected under <em>United States v. Heppner</em>.</p>
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Features -->
-  <section id="features">
+  <main id="main-content">
+  <section id="features" aria-labelledby="features-title">
     <div class="fade-in">
       <p class="section-label">Capabilities</p>
-      <h2 class="section-title">Enterprise-grade AI for<br>legal professionals</h2>
+      <h2 class="section-title" id="features-title">Enterprise-grade AI for<br>legal professionals</h2>
       <p class="section-desc">Multi-model routing, cryptographic attestation, and immutable audit trails — built from day one for courtroom defensibility.</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card fade-in">
+    <div class="features-grid" role="list" aria-label="Key features">
+      <div class="feature-card fade-in" role="listitem">
         <div class="feature-icon">🛡️</div>
         <h3>Kovel Attestation</h3>
         <p>HMAC-SHA256 cryptographic receipts per session proving privileged communication under the Kovel doctrine.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card fade-in" role="listitem">
         <div class="feature-icon">🤖</div>
         <h3>Multi-Model Routing</h3>
         <p>Query Gemini, Claude, GPT-4, Grok, and Perplexity through a single privileged interface with model-specific routing policies.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card fade-in" role="listitem">
         <div class="feature-icon">⚖️</div>
         <h3>Judge #6 Policy Gate</h3>
         <p>Mandatory governance checkpoint on every model route, export action, and regulated-domain answer. Zero unauthorized data exfiltration.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card fade-in" role="listitem">
         <div class="feature-icon">📋</div>
         <h3>Oracle Studio</h3>
         <p>7-stage analysis pipeline that transforms raw legal queries into cited, jurisdiction-aware legal memoranda.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card fade-in" role="listitem">
         <div class="feature-icon">🔐</div>
         <h3>Ephemeral Client View</h3>
         <p>Auto-logout, screen wipe, no export, no copy, dead-man's switch. Research vanishes when the session ends.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card fade-in" role="listitem">
         <div class="feature-icon">📊</div>
         <h3>Immutable Transcripts</h3>
         <p>Every AI interaction is logged with tamper-proof audit trails. Lawyer oversight dashboard for all sessions.</p>
@@ -479,10 +513,10 @@
   </section>
 
   <!-- Pricing -->
-  <section id="pricing">
+  <section id="pricing" aria-labelledby="pricing-title">
     <div class="fade-in">
       <p class="section-label">Pricing</p>
-      <h2 class="section-title">Scale with your practice</h2>
+      <h2 class="section-title" id="pricing-title">Scale with your practice</h2>
       <p class="section-desc">All plans include every LLM API cost. No surprise token bills. Auto-tier upgrade keeps you compliant.</p>
     </div>
     <div class="pricing-grid">
@@ -524,9 +558,10 @@
       </div>
     </div>
   </section>
+  </main>
 
   <!-- Footer -->
-  <footer>
+  <footer role="contentinfo">
     <p>&copy; 2026 CounselConduit — ShadowTag AI. All rights reserved. Protected under <em>United States v. Heppner</em> (S.D.N.Y., Feb. 10, 2026).</p>
   </footer>
 

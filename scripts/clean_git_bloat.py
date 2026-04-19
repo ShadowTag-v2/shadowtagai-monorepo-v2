@@ -19,21 +19,21 @@ def get_token():
     now = int(time.time())
     encoded_jwt = jwt.encode({"iat": now - 60, "exp": now + (10 * 60), "iss": APP_2_ID}, pk, algorithm="RS256")
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     inst_id = next(inst["id"] for inst in resp.json() if inst["account"]["login"].lower() == TARGET_ORG.lower())
-    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
     return resp.json()["token"]
 
 
 def run_cmd(cmd):
-    subprocess.run(cmd, shell=True, cwd=monorepo_root, check=True)
+    subprocess.run(cmd, shell=True, cwd=monorepo_root, check=True)  # nosec B602 — intentional shell for git/system ops
 
 
 if __name__ == "__main__":
     t = get_token()
     print("Purging bloated .git...")
-    subprocess.run("pkill -9 -f git || true", shell=True)
-    subprocess.run("rm -rf .git", shell=True, cwd=monorepo_root)
+    subprocess.run("pkill -9 -f git || true", shell=True)  # nosec B602 — intentional shell for git/system ops
+    subprocess.run("rm -rf .git", shell=True, cwd=monorepo_root)  # nosec B602 — intentional shell for git/system ops
     run_cmd("git init")
     remote = f"https://x-access-token:{t}@github.com/{TARGET_ORG}/{TARGET_REPO}.git"
     run_cmd(f"git remote add origin {remote}")

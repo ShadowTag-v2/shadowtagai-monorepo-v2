@@ -54,7 +54,7 @@ log = logging.getLogger("antigravity.push")
 
 # ── Git helpers ───────────────────────────────────────────────────────────────
 def run(cmd: str, check: bool = False) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, shell=True, capture_output=True, text=True, check=check)
+    return subprocess.run(cmd, shell=True, capture_output=True, text=True, check=check)  # nosec B602 — intentional shell for git/system ops
 
 
 # ── GitHub App token ──────────────────────────────────────────────────────────

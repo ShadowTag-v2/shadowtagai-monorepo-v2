@@ -84,13 +84,12 @@ try:
         pk = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
     enc = jwt.encode(payload, pk, algorithm="RS256")
-    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"})
+    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"}, timeout=30)
     r.raise_for_status()
     inst = r.json()[0]
     r2 = requests.post(
         f"https://api.github.com/app/installations/{inst['id']}/access_tokens",
-        headers={"Authorization": f"Bearer {enc}"},
-    )
+        headers={"Authorization": f"Bearer {enc}"},, timeout=30)
     r2.raise_for_status()
     token = r2.json()["token"]
 

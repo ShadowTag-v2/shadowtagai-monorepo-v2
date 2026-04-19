@@ -27,7 +27,7 @@ def get_installation_id(jwt_token, org_name):
     url = "https://api.github.com/app/installations"
     headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=30)
     response.raise_for_status()
 
     installations = response.json()
@@ -42,7 +42,7 @@ def get_access_token(jwt_token, installation_id):
     url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
     headers = {"Authorization": f"Bearer {jwt_token}", "Accept": "application/vnd.github.v3+json"}
 
-    response = requests.post(url, headers=headers)
+    response = requests.post(url, headers=headers, timeout=30)
     response.raise_for_status()
 
     return response.json()["token"]

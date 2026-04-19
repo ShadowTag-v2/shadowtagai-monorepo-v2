@@ -13,7 +13,7 @@ claude-code-configurator/
 │   ├── package.json
 │   └── ...
 ├── packages/website/               # Website (Next.js)
-│   ├── app/                        # ← Website CI/CD triggers  
+│   ├── app/                        # ← Website CI/CD triggers
 │   ├── components/
 │   ├── package.json
 │   └── ...
@@ -40,7 +40,7 @@ claude-code-configurator/
 
 - **`publish-npm.yml`** - NPM package publishing
 
-- **`publish-docker.yml`** - Docker image publishing  
+- **`publish-docker.yml`** - Docker image publishing
 
 - **`security.yml`** - Security scanning (scheduled)
 
@@ -108,7 +108,7 @@ claude-code-configurator/
 
 - **Package workflows**: Prefixed with "CACI Package"
 
-- **Website workflows**: Prefixed with "Website" 
+- **Website workflows**: Prefixed with "Website"
 
 - No ambiguity about which system is being built
 
@@ -154,7 +154,7 @@ claude-code-configurator/
 
 3. Prefix name with "CACI Package"
 
-### Adding New Website Workflows  
+### Adding New Website Workflows
 
 
 1. Use working directory: `packages/website/`
@@ -171,7 +171,7 @@ claude-code-configurator/
 
 git commit -m "test" packages/caci/src/test.ts
 
-# Test website CI triggers  
+# Test website CI triggers
 
 git commit -m "test" packages/website/app/test.tsx
 
@@ -183,5 +183,5 @@ git log --oneline --name-only
 
 ---
 
-**Last Updated**: 2025-08-22  
+**Last Updated**: 2025-08-22
 **Maintained By**: CI/CD Pipeline Team

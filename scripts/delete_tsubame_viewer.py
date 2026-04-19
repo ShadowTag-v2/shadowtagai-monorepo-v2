@@ -15,7 +15,7 @@ def get_token(client_id, pem_path, owner_name):
     encoded_jwt = jwt.encode(payload, pem_data, algorithm="RS256")
 
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
 
     installations = resp.json()
     target_installation_id = None
@@ -29,8 +29,7 @@ def get_token(client_id, pem_path, owner_name):
 
     resp = requests.post(
         f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
-        headers=headers,
-    )
+        headers=headers,, timeout=30)
     if resp.status_code == 201:
         return resp.json()["token"]
     return None
@@ -56,7 +55,7 @@ if __name__ == "__main__":
     print(f"Deleting repository: {url}")
 
     # Needs delete_repo scope, which the GitHub App must have
-    resp = requests.delete(url, headers=headers)
+    resp = requests.delete(url, headers=headers, timeout=30)
 
     if resp.status_code == 204:
         print("Successfully deleted ehanc69/TsubameViewer")

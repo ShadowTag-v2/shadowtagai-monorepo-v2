@@ -74,40 +74,40 @@ PRODUCTION_PATHS = [
 
 # Paths that are ALWAYS false positives (third-party bundled code)
 IGNORE_PATH_PATTERNS = [
-    r"tools/antigravity/extensions/",       # VS Code extension bundles
-    r"node_modules/",                        # npm dependencies
-    r"\.venv/",                              # Python venv
-    r"venv/",                                # Python venv (alt)
-    r"__pycache__/",                         # Python cache
-    r"reference_architectures/",             # Cloned repos (gitignored)
-    r"external_repos/",                      # External repos
-    r"control/legacy_workspaces/",           # Archived sessions
-    r"data/lancedb/",                        # Vector DB
-    r"data/drive_ingest/",                   # Google Drive ingest
-    r"data/sovereign_mlx/",                  # MLX models
-    r"\.gitnexus/",                          # GitNexus index
-    r"\.claude/",                            # Claude rules
-    r"\.agents/",                            # Agent rules
-    r"docs/atlantis/",                       # Recovered docs
-    r"docs/Cor\.Atlantis/",                  # Recovered docs
-    r"docs/AUDIT_REPORT\.md",               # Audit reports quoting found keys
-    r"docs/CANONICALIZATION_REPORT",         # Canonicalization reports quoting config dumps
-    r"\.agent/reports/",                     # Agent fold-in/rollup reports quoting keys
-    r"\.next/",                              # Next.js build
-    r"archive/",                             # Archived content
-    r"labs/",                                # R&D lab content
-    r"libs/cyberpunk_stack/",                # Third-party lib
-    r"memory/erik-hancock-llm-memory/",      # Archived memory
-    r"\.stitch-sdk/",                        # Stitch SDK bundled code
+    r"tools/antigravity/extensions/",  # VS Code extension bundles
+    r"node_modules/",  # npm dependencies
+    r"\.venv/",  # Python venv
+    r"venv/",  # Python venv (alt)
+    r"__pycache__/",  # Python cache
+    r"reference_architectures/",  # Cloned repos (gitignored)
+    r"external_repos/",  # External repos
+    r"control/legacy_workspaces/",  # Archived sessions
+    r"data/lancedb/",  # Vector DB
+    r"data/drive_ingest/",  # Google Drive ingest
+    r"data/sovereign_mlx/",  # MLX models
+    r"\.gitnexus/",  # GitNexus index
+    r"\.claude/",  # Claude rules
+    r"\.agents/",  # Agent rules
+    r"docs/atlantis/",  # Recovered docs
+    r"docs/Cor\.Atlantis/",  # Recovered docs
+    r"docs/AUDIT_REPORT\.md",  # Audit reports quoting found keys
+    r"docs/CANONICALIZATION_REPORT",  # Canonicalization reports quoting config dumps
+    r"\.agent/reports/",  # Agent fold-in/rollup reports quoting keys
+    r"\.next/",  # Next.js build
+    r"archive/",  # Archived content
+    r"labs/",  # R&D lab content
+    r"libs/cyberpunk_stack/",  # Third-party lib
+    r"memory/erik-hancock-llm-memory/",  # Archived memory
+    r"\.stitch-sdk/",  # Stitch SDK bundled code
 ]
 
 # Content patterns that indicate Windows API calls (not secrets)
 IGNORE_CONTENT_PATTERNS = [
-    r"windll\.advapi32\.",      # Windows Registry API calls in pydevd
-    r"serialized_pb=b",         # Protobuf serialized bytes
-    r"RegCloseKey",             # Windows API name
-    r"RegEnumKey",              # Windows API name
-    r"RegFlushKey",             # Windows API name
+    r"windll\.advapi32\.",  # Windows Registry API calls in pydevd
+    r"serialized_pb=b",  # Protobuf serialized bytes
+    r"RegCloseKey",  # Windows API name
+    r"RegEnumKey",  # Windows API name
+    r"RegFlushKey",  # Windows API name
 ]
 
 # Rules that ALWAYS indicate real credentials when found in production paths
@@ -223,6 +223,7 @@ class Finding:
 # Scan Functions
 # ============================================================================
 
+
 def run_gitleaks_scan(scope: str = "production") -> list[dict]:
     """Run gitleaks and return parsed JSON findings."""
     if not os.path.exists(GITLEAKS_BIN):
@@ -234,18 +235,28 @@ def run_gitleaks_scan(scope: str = "production") -> list[dict]:
 
     if scope == "staged":
         cmd = [
-            GITLEAKS_BIN, "protect", "--staged",
-            "--config", str(GITLEAKS_CONFIG),
-            "--report-format", "json",
-            "--report-path", report_path,
+            GITLEAKS_BIN,
+            "protect",
+            "--staged",
+            "--config",
+            str(GITLEAKS_CONFIG),
+            "--report-format",
+            "json",
+            "--report-path",
+            report_path,
         ]
     elif scope == "production":
         # Scan only production-relevant paths
         cmd = [
-            GITLEAKS_BIN, "detect", "--no-git",
-            "--config", str(GITLEAKS_CONFIG),
-            "--report-format", "json",
-            "--report-path", report_path,
+            GITLEAKS_BIN,
+            "detect",
+            "--no-git",
+            "--config",
+            str(GITLEAKS_CONFIG),
+            "--report-format",
+            "json",
+            "--report-path",
+            report_path,
         ]
         # Use --source for each production path
         # Gitleaks doesn't support multiple --source, so we scan the root
@@ -254,11 +265,17 @@ def run_gitleaks_scan(scope: str = "production") -> list[dict]:
     else:
         # Full scan
         cmd = [
-            GITLEAKS_BIN, "detect", "--no-git",
-            "--config", str(GITLEAKS_CONFIG),
-            "--report-format", "json",
-            "--report-path", report_path,
-            "--source", str(REPO_ROOT),
+            GITLEAKS_BIN,
+            "detect",
+            "--no-git",
+            "--config",
+            str(GITLEAKS_CONFIG),
+            "--report-format",
+            "json",
+            "--report-path",
+            report_path,
+            "--source",
+            str(REPO_ROOT),
         ]
 
     print(f"🔍 Running: {' '.join(cmd)}")
@@ -292,6 +309,7 @@ def load_existing_report(path: str) -> list[dict]:
 # Classification & Remediation
 # ============================================================================
 
+
 def classify_findings(raw_findings: list[dict]) -> list[Finding]:
     """Classify all findings and return Finding objects."""
     return [Finding(f) for f in raw_findings]
@@ -312,9 +330,7 @@ def auto_remediate_ignores(findings: list[Finding]) -> int:
         if f.verdict == "IGNORE" and f.fingerprint:
             entry = f"{f.file}:{f.rule_id}:{f.line}"
             if entry not in existing_fingerprints:
-                new_entries.append(
-                    f"\n# Auto-classified IGNORE: {f.reason}\n{entry}"
-                )
+                new_entries.append(f"\n# Auto-classified IGNORE: {f.reason}\n{entry}")
 
     if new_entries:
         with open(GITLEAKS_IGNORE, "a") as fh:
@@ -328,6 +344,7 @@ def auto_remediate_ignores(findings: list[Finding]) -> int:
 # ============================================================================
 # Reporting
 # ============================================================================
+
 
 def generate_report(findings: list[Finding], output_path: str | None = None) -> str:
     """Generate a markdown audit report."""
@@ -422,6 +439,7 @@ def _suggest_remediation(finding: Finding) -> str:
 # Pipeline Gate
 # ============================================================================
 
+
 def gate_check(findings: list[Finding]) -> bool:
     """Return True if pipeline should HALT (BLOCK findings exist)."""
     blocks = [f for f in findings if f.verdict == "BLOCK"]
@@ -438,6 +456,7 @@ def gate_check(findings: list[Finding]) -> bool:
 # ============================================================================
 # Main
 # ============================================================================
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -683,14 +702,16 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
         writer.writerow(["Rule", "Risk", "Secret_Redacted", "File", "Line", "Source_Repo"])
         for f in raw_findings:
             secret = f.get("Secret", "")
-            writer.writerow([
-                f.get("RuleID", ""),
-                risk_csv.get(f.get("RuleID", ""), "LOW"),
-                _redact(secret),
-                f.get("File", ""),
-                f.get("StartLine", 0),
-                _extract_repo(f.get("File", "")),
-            ])
+            writer.writerow(
+                [
+                    f.get("RuleID", ""),
+                    risk_csv.get(f.get("RuleID", ""), "LOW"),
+                    _redact(secret),
+                    f.get("File", ""),
+                    f.get("StartLine", 0),
+                    _extract_repo(f.get("File", "")),
+                ]
+            )
     print(f"  📊 CSV: {csv_path}")
 
     # ── Per-repo sub-manifests ──
@@ -709,7 +730,7 @@ def _generate_manifest(raw_findings: list[dict], output_dir: str | None = None) 
     # ── Deduplicated secrets-only list ──
     dedup_path = out_dir / "third_party_secrets_deduped.txt"
     with open(dedup_path, "w") as f:
-        for (rule, secret) in sorted(secrets.keys()):
+        for rule, secret in sorted(secrets.keys()):
             f.write(f"{rule}\t{_redact(secret)}\n")
     print(f"  🔑 Deduped: {dedup_path} ({len(secrets)} unique)")
     print("\n  ✅ Manifest generation complete")

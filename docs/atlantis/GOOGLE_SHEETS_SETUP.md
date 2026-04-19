@@ -56,7 +56,7 @@ GOOGLE_APPS_SCRIPT_URL=your_web_app_url_from_step_2
 
    - A1: "Email"
 
-   - B1: "Timestamp" 
+   - B1: "Timestamp"
 
    - C1: "Source"
 

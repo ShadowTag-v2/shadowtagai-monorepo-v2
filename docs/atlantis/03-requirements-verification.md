@@ -19,7 +19,7 @@ Please help me plan the features for this MVP"
 
 - **Requirement**: "call 'npx claude-config' and it will open up a cli interface like bmad-method installer"
 
-- **Implementation**: 
+- **Implementation**:
 
   - Created `claude-config/` directory with proper package.json
 

@@ -2025,4 +2025,3 @@
 
 
 - [Рецепты TypeScript (with Color Images) -- Стефан Баумгартнер -- 2025 -- Спринт Бук -- 9781098136628 -- 5e88b7ce50672948a1764fdbaa1e3f1f -- Anna’s Archive.pdf](https://drive.google.com/file/d/1PGfFNdFu8Gmze6tEink1SCZfiIqq5ASt/view?usp=drivesdk) `(6.6MB)`
-

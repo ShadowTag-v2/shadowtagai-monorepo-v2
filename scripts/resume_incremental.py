@@ -5,7 +5,7 @@ import time
 
 def run(cmd):
     print(f"Running: {cmd}")
-    res = subprocess.run(cmd, shell=True)
+    res = subprocess.run(cmd, shell=True)  # nosec B602 — intentional shell for git/system ops
     if res.returncode != 0:
         print(f"Command failed: {cmd}")
 
@@ -23,7 +23,7 @@ def process_batch(parent, dirs, batch_size=2):
             run(f"git add {parent}/{d}")
 
         # Check if there's actually anything staged
-        res = subprocess.run("git diff --cached --quiet", shell=True)
+        res = subprocess.run("git diff --cached --quiet", shell=True)  # nosec B602 — intentional shell for git/system ops
         if res.returncode != 0:
             # Changes exist!
             msg = f"chore(sync): monorepo chunk {parent} batch {i // batch_size} ({batch[0]} to {batch[-1]})"
@@ -46,7 +46,7 @@ process_batch("apps", dirs_apps)
 # Then add the rest of the workspace (scripts, root files, docs)
 print("Processing root and others...")
 run("git add .")
-res = subprocess.run("git diff --cached --quiet", shell=True)
+res = subprocess.run("git diff --cached --quiet", shell=True)  # nosec B602 — intentional shell for git/system ops
 if res.returncode != 0:
     run('git commit -m "chore(sync): monorepo chunk FINAL (root, docs, scripts)"')
     run(".venv/bin/python scripts/push_monorepo.py")

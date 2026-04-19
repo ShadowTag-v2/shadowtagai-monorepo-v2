@@ -25,7 +25,7 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    # Activate incident response team
    # Set up communication channels
    # Notify stakeholders immediately
-   
+
    # Example emergency notification
    echo "🚨 ROLLBACK INITIATED
    Issue: Critical performance degradation after v1.3.0 deployment
@@ -41,13 +41,13 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    # Verify current production version
    curl -s https://api.example.com/version
    kubectl get deployments -o wide
-   
+
    # Check system status
    curl -s https://api.example.com/health | jq .
-   
+
    # Identify target rollback version
    git tag --sort=-version:refname | head -5
-   
+
    # Verify rollback target exists and is deployable
    git show v1.2.9 --stat
    ```
@@ -57,11 +57,11 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    ```bash
    # Check for database migrations since last version
    ./check-migrations.sh v1.2.9 v1.3.0
-   
+
    # If migrations exist, plan database rollback
    # WARNING: Database rollbacks can cause data loss
    # Consider forward fix instead if migrations are present
-   
+
    # Create database backup before rollback
    ./backup-database.sh "pre-rollback-$(date +%Y%m%d-%H%M%S)"
    ```
@@ -72,10 +72,10 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    # Prepare to redirect traffic
    # Option 1: Maintenance page
    ./enable-maintenance-mode.sh
-   
+
    # Option 2: Load balancer management
    ./drain-traffic.sh --gradual
-   
+
    # Option 3: Circuit breaker activation
    ./activate-circuit-breaker.sh
    ```
@@ -86,13 +86,13 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    # Kubernetes rollback
    kubectl rollout history deployment/app-deployment
    kubectl rollout undo deployment/app-deployment
-   
+
    # Or rollback to specific revision
    kubectl rollout undo deployment/app-deployment --to-revision=3
-   
+
    # Monitor rollback progress
    kubectl rollout status deployment/app-deployment --timeout=300s
-   
+
    # Verify pods are running
    kubectl get pods -l app=your-app
    ```
@@ -102,13 +102,13 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    ```bash
    # List service history
    docker service ps app-service --no-trunc
-   
+
    # Rollback to previous version
    docker service update --rollback app-service
-   
+
    # Or update to specific image
    docker service update --image app:v1.2.9 app-service
-   
+
    # Monitor rollback
    docker service ps app-service
    ```
@@ -118,10 +118,10 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    ```bash
    # Blue-Green deployment rollback
    ./switch-to-blue.sh  # or green, depending on current
-   
+
    # Rolling deployment rollback
    ./deploy-version.sh v1.2.9 --rolling
-   
+
    # Symlink-based rollback
    ln -sfn /releases/v1.2.9 /current
    sudo systemctl restart app-service
@@ -132,10 +132,10 @@ Follow this systematic rollback procedure: **$ARGUMENTS**
    ```bash
    # Update load balancer to point to old version
    aws elbv2 modify-target-group --target-group-arn $TG_ARN --targets Id=old-instance
-   
+
    # Clear CDN cache if needed
    aws cloudfront create-invalidation --distribution-id $DIST_ID --paths \"/*\"
-   
+
    # Update DNS if necessary (last resort, has propagation delay)
    # aws route53 change-resource-record-sets ...
    ```
