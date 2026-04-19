@@ -107,6 +107,50 @@ DEMO_PRESETS = {
         "professional color palette with greens for revenue and blues for costs. "
         "Numbers animate upward showing healthy margins."
     ),
+    # ── ShadowTagAI Marketing Presets ──
+    "shadowtag_hero": (
+        "Cinematic aerial shot of a fortified glass data center in a mountain "
+        "valley at dawn. Camera glides through layers of security — laser grids, "
+        "biometric scanners, armored server racks with pulsing blue LEDs. A "
+        "holographic ShadowTag AI logo materializes above the central server "
+        "cluster. Text overlay: 'SOVEREIGN · AUTONOMOUS · ZERO-TRUST'. Ultra "
+        "wide anamorphic lens, ARRI Alexa quality. Dramatic volumetric fog, "
+        "indigo and amber lighting."
+    ),
+    "shadowtag_uphillsnowball": (
+        "A MacBook Pro sits on an architect's desk in a minimalist office. The "
+        "screen shows the UphillSnowball platform — a dark-themed sovereign AI "
+        "dashboard with real-time inference metrics, daemon fleet status (green "
+        "dots), and a local LLM chat interface. Camera slowly pushes in as "
+        "neural network visualizations flow across the screen. Zero cloud "
+        "dependency badge glows in the corner. Cinematic shallow depth of field, "
+        "warm desk lamp lighting, premium tech aesthetic."
+    ),
+    "shadowtag_zero_trust": (
+        "A 3D visualization of the 17-layer security shield. Camera passes "
+        "through each translucent layer — biometric auth, encrypted transit, "
+        "token validation, RBAC gates, audit logging, compliance firewall, "
+        "steganographic watermark — each layer lights up as the camera passes "
+        "through it. At the center: a glowing orb representing sovereign data. "
+        "Dark background, neon indigo edges, holographic HUD elements."
+    ),
+    "shadowtag_ane_inference": (
+        "Extreme close-up of an Apple M4 chip with visible neural engine "
+        "pathways glowing with data. Camera pulls back to show the chip inside "
+        "a Mac Studio, then continues to reveal a sovereign AI control room "
+        "with multiple screens showing real-time inference — zero latency, "
+        "zero cloud calls. Metrics overlay: '10.22 TOPS · INT8 W8A8 · 0ms "
+        "cloud latency'. Futuristic aesthetic, dark mode, amber and indigo."
+    ),
+    "stripe_webhook_flow": (
+        "Animated diagram showing a Stripe payment flow: a credit card swipe "
+        "triggers a webhook arrow flowing to a Cloud Run endpoint, through "
+        "HMAC signature verification (green checkmark), into Firestore "
+        "persistence, then fanning out to email notification and billing "
+        "ledger update. Clean motion graphics on dark background, Stripe "
+        "purple and CounselConduit indigo. Each step animates sequentially "
+        "with satisfying micro-animations."
+    ),
 }
 
 

@@ -20,7 +20,9 @@ jobs:
           github-token: ${{ secrets.AUTO_APPROVE_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Auto-merge if enabled
-        if: ${{ secrets.AUTO_APPROVE_PAT }}
+        env:
+          AUTO_APPROVE_PAT: ${{ secrets.AUTO_APPROVE_PAT }}
+        if: env.AUTO_APPROVE_PAT != ''
         uses: peter-evans/enable-pull-request-automerge@v3
         with:
           token: ${{ secrets.AUTO_APPROVE_PAT }}

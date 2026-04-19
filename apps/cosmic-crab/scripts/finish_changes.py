@@ -54,6 +54,10 @@ def main():
         logger.info("[DRY RUN] Running in dry-run mode. No changes will be made.")
 
     # Linting
+    if not run_command(["ruff", "check", "--fix", "."], dry_run=args.dry_run):
+        logger.error("Linting with ruff failed. Aborting.")
+        sys.exit(1)
+
     if not run_command(["oxlint"], dry_run=args.dry_run):
         logger.error("Linting with oxlint failed. Aborting.")
         sys.exit(1)
@@ -63,6 +67,10 @@ def main():
         sys.exit(1)
 
     # Formatting
+    if not run_command(["ruff", "format", "."], dry_run=args.dry_run):
+        logger.error("Formatting with ruff failed. Aborting.")
+        sys.exit(1)
+
     if not run_command(["dprint", "fmt"], dry_run=args.dry_run):
         logger.error("Formatting with dprint failed. Aborting.")
         sys.exit(1)
@@ -78,10 +86,14 @@ def main():
 
     # Committing
     # Check if there are any changes to commit
+    if args.dry_run:
+        logger.info("[DRY RUN] Skipping git status check and commit.")
+        return
+
     status_result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
     if not status_result.stdout:
         logger.info("No changes to commit. Workspace is clean.")
-    elif not run_command(["git", "commit", "-m", "chore: finish changes"], dry_run=args.dry_run):
+    elif not run_command(["git", "commit", "-m", "chore: finish changes"]):
         logger.error("Committing changes failed. Aborting.")
         sys.exit(1)
 
