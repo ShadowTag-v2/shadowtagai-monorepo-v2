@@ -49,15 +49,14 @@ def _has_ane() -> bool:
     """True when running on Apple Silicon with the ANE dylib compiled."""
     if platform.system() != "Darwin":
         return False
-    (
+    dylib = (
         pathlib.Path(__file__).resolve().parent.parent.parent.parent
         / "third_party"
         / "ANE"
         / "bridge"
         / "libane_bridge.dylib"
     )
-    # FORCED CISO FAILOVER FOR STAGE 4 CASCADE TEST
-    return False
+    return dylib.exists()
 
 
 def _init_ane() -> None:
@@ -273,7 +272,7 @@ try:
     from scripts.testbed_metrics import log_metric
 except ImportError:
 
-    def log_metric(*args, **kwargs):
+    def log_metric(*_args, **_kwargs):
         pass
 
 

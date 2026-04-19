@@ -1,7 +1,7 @@
 {
-  "version": 1,
+  "version": 2,
   "scope": "antigravity_local_operator_invariants",
-  "purpose": "Canonical startup invariants for GitHub auth, git transport, clone/sync policy, and hydration order.",
+  "purpose": "Canonical startup invariants for GitHub auth, git transport, clone/sync policy, hydration order, and sovereign compute topology.",
   "settings": {
     "github_control_plane": "github_app",
     "git_remote_preference": "ssh",
@@ -18,15 +18,162 @@
     "hydrate_before_reasoning": true,
     "ignore_codebase_as_authority": true,
     "upgrade_codebase_from_memory": true,
-    "load_github_git_invariants_before_repo_actions": true
+    "load_github_git_invariants_before_repo_actions": true,
+    "query_lancedb_before_planning": true,
+    "load_operator_invariants_before_execution": true
   },
   "procedures": [
     "Load authority memory first",
     "Load operator invariants second",
     "Load monorepo control-plane truth third",
     "Load active tasks and drift reports fourth",
+    "Query LanceDB workspace_knowledge table before planning architectural changes",
     "Only then inspect code or perform Git/GitHub operations",
     "If remote uses HTTPS and auth fails, repair with gh auth login && gh auth setup-git or switch remote to SSH",
     "Use GitHub app for repo freshness and truth; use local clones for indexing and execution only"
-  ]
+  ],
+  "sovereign_compute_topology": {
+    "tier_1_ane": {
+      "engine": "ane_bridge.py",
+      "dylib": "libs/cyberpunk_stack/ggml-ane/build/libane_bridge.dylib",
+      "status": "ONLINE",
+      "verified": "2026-04-18",
+      "benchmark": "INT8 W8A8 10.22 TOPS on M4 h13",
+      "llama_cpp_ane": "libs/cyberpunk_stack/llama.cpp-ane (GGML_ANE=ON compiled)"
+    },
+    "tier_2_metal_mlx": {
+      "engine": "mlx (Apple Silicon native)",
+      "kv_cache_slab": "data/sovereign_mlx/kv_cache_slab.bin",
+      "llama_server": "llama.cpp Metal acceleration",
+      "models": [
+        "unsloth/gemma-4-31B-it-GGUF",
+        "ggml-org/gemma-4-26b-a4b-it-GGUF"
+      ],
+      "endpoint": "http://localhost:8080/v1"
+    },
+    "tier_3_vertex_ai": {
+      "engine": "litellm → Vertex AI",
+      "model": "gemini-3.1-flash-lite-preview-thinking",
+      "project": "shadowtag-omega-v4",
+      "region": "us-central1"
+    },
+    "dispatch_cascade": "ANE → Metal/MLX → Vertex AI (zero_cpu_router.py)"
+  },
+  "semantic_kernel": {
+    "runtime": ".NET 11.0 Preview 2",
+    "project": "apps/AiYou.Kernel/ShadowTagV4.Kernel.csproj",
+    "process_cs": "apps/AiYou.Kernel/Process.cs",
+    "status": "COMPILED (0 errors, 0 warnings)",
+    "api_fix": "OnExternalEvent → OnInputEvent (Semantic Kernel 1.x migration)",
+    "packages": ["Microsoft.SemanticKernel", "Microsoft.SemanticKernel.Process.Core"],
+    "suppress": "SKEXP0080"
+  },
+  "aegaeon_protocol": {
+    "purpose": "84% cost reduction via Gemini Context Caching (KV Slab Architecture)",
+    "cache_id": "cachedContents/o8ot1k9tbc58rf4sraeqrvjp2mi3v7e4z8ftn5l0",
+    "cache_state": "data/aegaeon/cache_state.json",
+    "swarm_router": "core/aegaeon/swarm_router.py (7 instances, Semaphore(5)+Semaphore(2))",
+    "context_cache": "core/aegaeon/context_cache.py",
+    "cost_math": "Cached tokens = 25% of standard input token cost. 7 agents sharing 1 cache = ~84% savings"
+  },
+  "sovereign_mlx_protocol": {
+    "purpose": "Local M1/M4 Apple Silicon KV-cache slab sharing for multi-agent routing",
+    "kv_slab_builder": "core/sovereign_mlx/kv_cache_slab.py",
+    "ane_bridge": "core/sovereign_mlx/ane_bridge.py",
+    "weights_loaded_once": true,
+    "prompt_cache_flag": "--prompt-cache-all --prompt-cache-ro",
+    "advantage": "Unified Memory = no VRAM transfers. Metal skips prefill for cached context."
+  },
+  "intelligence_pipeline": {
+    "path": "scripts/intelligence_pipeline/",
+    "steps": {
+      "1_domain_tagger": "domain_tagger.py (Regex → Gemini Flash → crossref.db::doc_domains)",
+      "2_codebase_embedder": "codebase_embedder.py (CodeChunker → Vertex AI → code_files LanceDB)",
+      "3_cross_domain_matcher": "cross_domain_matcher.py (ANN doc→code, cosine doc→doc + doc→commit)",
+      "4_gap_analyzer": "gap_analyzer.py (Type A/B/C gap detection → gap_matrix SQLite)",
+      "5_synthesis_report": "synthesis_report.py (Gemini Flash → data/reports/gap_report_*.json/.md)",
+      "6_memory_injector": "memory_injector.py (Idempotent CLAUDE.md injection + JSONL)",
+      "7_github_sync": "github_sync.py (Push branch + create PRs via GitHub App)",
+      "orchestrator": "run_pipeline.py (--skip-step, --start-from, --dry-run, --report-only)"
+    },
+    "retriever": "retriever.py (search_lancedb: documents + code_files tables, Vertex AI embeddings)"
+  },
+  "drive_ingest": {
+    "total_docs_extracted": 2860,
+    "total_docs_vectorized": 897,
+    "lancedb_table": "workspace_knowledge",
+    "lancedb_path": "data/lancedb/workspace_knowledge",
+    "daemon": "scripts/drive_ingest_daemon.py",
+    "state_db": "data/drive_ingest/ingest.db",
+    "fast_ingest_state": "data/drive_ingest/fast_ingest_state.json"
+  },
+  "gitnexus": {
+    "path": "apps/gitnexus/ (or tools/GitNexus/)",
+    "stats": "445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows",
+    "indexed": "2026-04-18",
+    "mcp_tools": ["query", "context", "impact", "detect_changes", "rename", "cypher", "list_repos"],
+    "node_memory": "--max-old-space-size=30720 (30GB of 64GB unified)"
+  },
+  "daemons": {
+    "kairos": {
+      "script": "scripts/kairos_daemon.py",
+      "status": "ONLINE",
+      "schedule": "background",
+      "health_check": ".beads/kairos_heartbeat.json",
+      "fix_applied": "datetime.UTC → datetime.timezone.utc (Python 3.9 compat)"
+    },
+    "dream_consolidation": {
+      "script": "scripts/dream_consolidation.py",
+      "schedule": "nightly"
+    },
+    "loop_steward": {
+      "script": "scripts/loop_steward.py",
+      "schedule": "5-min cycles"
+    },
+    "pnkln_evolve": {
+      "script": "scripts/pnkln-evolve.py",
+      "schedule": "background"
+    }
+  },
+  "venv_deps": {
+    "python": "CPython 3.14.3",
+    "installed": ["mlx", "litellm", "lancedb", "psutil", "scipy", "numpy"],
+    "missing": ["torch (requires Apple Silicon nightly build)"],
+    "pip_bootstrap": ".venv/bin/python3 -m ensurepip --upgrade"
+  },
+  "ane_bridge_fixes": {
+    "removed_c_int8_import": true,
+    "removed_ane_bridge_free_blob": "Symbol doesn't exist in C bridge; using libc free() via ctypes.CDLL(None)",
+    "status": "init_bridge() returns True, compile_count: 0"
+  },
+  "cor_autoresearch": {
+    "purpose": "Karpathy-style evidence-based ML training loop",
+    "metric": "val_bpb (Validation Bits Per Byte)",
+    "flow": "Kosmos Director → BioAgents Queue → GPU Worker → Feedback Loop (Neo4J + Redis)",
+    "constraint": "5-minute budget, single file (train.py), git reset --hard on failure"
+  },
+  "counselconduit": {
+    "version": "v3.1.0",
+    "production_url": "https://counselconduit-767252945109.us-central1.run.app",
+    "sa": "counselconduit-sa@shadowtag-omega-v4.iam.gserviceaccount.com",
+    "phase_1": "LIVE (Cloud Run + RBAC + billing + HMAC + WAF + OpenAPI)",
+    "phase_2": "LIVE (Judge #6 + Kovel + Oracle Studio + LiteLLM + SSE + Stripe Connect)",
+    "phase_3": "PLANNED (Isolated tool runners + ephemeral tokens)",
+    "phase_4": "PLANNED (BYOC/BYOK + regional isolation + FedRAMP)"
+  },
+  "repo_drift_remediation": {
+    "delete_targets": [
+      "agent0/", "agents/", "agent_engine/",
+      "aiyou-global-edge-fabric/", "antigravity_gca_repo_bundle/",
+      "app/", "frontend/", "backend/", "fast-api/", "fastapi/",
+      "01_repo_census.json", "04_canonical_state.md", "gate0_summary.csv"
+    ],
+    "gitignore_patches": ["frontend/", "backend/", "fastapi/", "fast-api/"],
+    "canonical_roots_preserved": [
+      "apps/aiyou_stack/aiyou-fastapi-services",
+      "apps/aiyou_stack/cosmic-crab-payload",
+      "apps/aiyou_stack/Pipeline",
+      "apps/aiyou_stack/nascent-apollo"
+    ]
+  }
 }

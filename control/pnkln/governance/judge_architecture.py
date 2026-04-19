@@ -27,21 +27,26 @@ from typing import Any
 
 import numpy as np
 
+from src.kosmos.doctrine import (
+    BattleDrillRouter,
+    DrillTrigger,
+    MDMPPipeline,
+    TLPPipeline,
+)
+from src.kosmos.doctrine import (
+    RiskLevel as DoctrineRiskLevel,
+)
+
 # Army Doctrine Integration
 from src.kosmos.doctrine import (
     RiskManager as DoctrineRiskManager,
-    RiskLevel as DoctrineRiskLevel,
-    MDMPPipeline,
-    TLPPipeline,
-    BattleDrillRouter,
-    DrillTrigger,
 )
 from src.kosmos.doctrine.atp_5_19 import (
-    CONSENSUS_THRESHOLDS,
     APPROVAL_AUTHORITY,
+    CONSENSUS_THRESHOLDS,
+    RISK_MATRIX,
     Probability,
     Severity,
-    RISK_MATRIX,
 )
 
 logger = logging.getLogger(__name__)
@@ -319,24 +324,12 @@ class RegulatoryComplianceEngine:
     async def _check_gdpr(self, decision: Decision) -> ComplianceCheck:
         """Validate against GDPR requirements."""
         # Simplified placeholder - production would be comprehensive
-        return ComplianceCheck(
-            framework=RegulatoryFramework.GDPR,
-            compliant=True,
-            gaps=[],
-            remediation=[],
-            risk_level=RiskLevel.LOW,
-        )
+        return ComplianceCheck(framework=RegulatoryFramework.GDPR, compliant=True, gaps=[], remediation=[], risk_level=RiskLevel.LOW)
 
     async def _check_coppa(self, decision: Decision) -> ComplianceCheck:
         """Validate against COPPA/AADC requirements."""
         # Simplified placeholder
-        return ComplianceCheck(
-            framework=RegulatoryFramework.COPPA,
-            compliant=True,
-            gaps=[],
-            remediation=[],
-            risk_level=RiskLevel.LOW,
-        )
+        return ComplianceCheck(framework=RegulatoryFramework.COPPA, compliant=True, gaps=[], remediation=[], risk_level=RiskLevel.LOW)
 
     async def _check_ftc(self, decision: Decision) -> ComplianceCheck:
         """Validate against FTC Endorsement Guides."""
@@ -362,12 +355,7 @@ class RegulatoryComplianceEngine:
 
     def _calculate_highest_risk(self, compliance_profile: dict[str, ComplianceCheck]) -> RiskLevel:
         """Calculate overall risk from compliance checks."""
-        risk_priority = {
-            RiskLevel.EXTREMELY_HIGH: 4,
-            RiskLevel.HIGH: 3,
-            RiskLevel.MEDIUM: 2,
-            RiskLevel.LOW: 1,
-        }
+        risk_priority = {RiskLevel.EXTREMELY_HIGH: 4, RiskLevel.HIGH: 3, RiskLevel.MEDIUM: 2, RiskLevel.LOW: 1}
 
         max_risk = RiskLevel.LOW
         max_priority = 0
@@ -481,11 +469,7 @@ class InfrastructureOptimizer:
         complexity_cost = current_spend * 0.05  # +5% ops overhead
         net_savings = gross_savings - complexity_cost
 
-        return {
-            "gross_savings": gross_savings,
-            "complexity_cost": complexity_cost,
-            "net_savings": net_savings,
-        }
+        return {"gross_savings": gross_savings, "complexity_cost": complexity_cost, "net_savings": net_savings}
 
     async def analyze(self, decision: Decision) -> dict[str, Any]:
         """Analyze infrastructure impact of decision."""
@@ -509,11 +493,7 @@ class SupplyChainSecurityGate:
     """
 
     async def validate(
-        self,
-        function_name: str = None,
-        callable: Any = None,
-        sbom: dict[str, Any] = None,
-        decision: Decision = None,
+        self, function_name: str = None, callable: Any = None, sbom: dict[str, Any] = None, decision: Decision = None
     ) -> dict[str, Any]:
         """
         Validate supply chain security for function or decision.
@@ -522,7 +502,7 @@ class SupplyChainSecurityGate:
             {
                 "risk_score": "L" | "M" | "H" | "EH",
                 "slsa_provenance_verified": bool,
-                "cve_vulnerabilities": list[str],
+                "cve_vulnerabilities": List[str],
                 "reason": str
             }
         """
@@ -558,7 +538,7 @@ class ProductDeliveryGate:
         Returns:
             {
                 "status": "APPROVED" | "BLOCKED",
-                "blockers": list[str],
+                "blockers": List[str],
                 "checklist_complete": bool
             }
         """
@@ -599,8 +579,8 @@ class BlockchainIntegrationEvaluator:
             {
                 "recommendation": "PRIORITIZE" | "EVALUATE" | "DEFER",
                 "reason": str,
-                "approved_features": list[str],
-                "deferred_features": list[str]
+                "approved_features": List[str],
+                "deferred_features": List[str]
             }
         """
         # Simplified placeholder
@@ -660,7 +640,7 @@ class MilestoneTracker:
     Phases:
     - Day 1-30: Doctrine hardening (EU AI Act, DSA, WCAG, VAST)
     - Day 31-60: Product readiness (C2PA, "Why this?", SKAN/Topics)
-    - Day 61-90: Governance publication (ISO 42001, YouAi Governance Report v0.1)
+    - Day 61-90: Governance publication (ISO 42001, pnkln-stack Governance Report v0.1)
     """
 
     def __init__(self):
@@ -672,7 +652,7 @@ class MilestoneTracker:
         return {
             "days_1_30": [
                 {"task": "Map YRM ↔️ NIST AI RMF ↔️ ISO 42001", "owner": "CTO", "status": "PENDING"},
-                {"task": "EU AI Act profile in YouAiNS", "owner": "GC", "status": "PENDING"},
+                {"task": "EU AI Act profile in pnkln-stackNS", "owner": "GC", "status": "PENDING"},
                 {"task": "DSA VLOP checklist", "owner": "GC", "status": "PENDING"},
                 {"task": "WCAG 2.2 audit + fixes", "owner": "Frontend", "status": "PENDING"},
                 {"task": "COPPA/AADC minors' defaults", "owner": "Product", "status": "PENDING"},
@@ -681,25 +661,17 @@ class MilestoneTracker:
             ],
             "days_31_60": [
                 {"task": "C2PA for creator uploads", "owner": "CTO", "status": "PENDING"},
-                {"task": "C2PA for YouAi overlays", "owner": "CTO", "status": "PENDING"},
+                {"task": "C2PA for pnkln-stack overlays", "owner": "CTO", "status": "PENDING"},
                 {"task": "'Why this?' recommender UI", "owner": "Product", "status": "PENDING"},
                 {"task": "SKAN/Topics instrumentation", "owner": "Growth", "status": "PENDING"},
                 {"task": "OpenTelemetry observability", "owner": "CTO", "status": "PENDING"},
-                {
-                    "task": "Advertiser dashboard (OM + brand safety)",
-                    "owner": "Product",
-                    "status": "PENDING",
-                },
+                {"task": "Advertiser dashboard (OM + brand safety)", "owner": "Product", "status": "PENDING"},
             ],
             "days_61_90": [
                 {"task": "ISO 42001 control matrix", "owner": "Cofounder", "status": "PENDING"},
-                {"task": "YouAi Governance Report v0.1", "owner": "CEO", "status": "PENDING"},
+                {"task": "pnkln-stack Governance Report v0.1", "owner": "CEO", "status": "PENDING"},
                 {"task": "Infra SLOs documented", "owner": "CTO", "status": "PENDING"},
-                {
-                    "task": "Creator console: brand safety 95%",
-                    "owner": "Product",
-                    "status": "PENDING",
-                },
+                {"task": "Creator console: brand safety 95%", "owner": "Product", "status": "PENDING"},
                 {"task": "FTC disclosure templates", "owner": "Product", "status": "PENDING"},
             ],
         }
@@ -919,12 +891,7 @@ class JudgeArchitecture:
         """
         processing_start = time.time()
 
-        verdict = JudgeVerdict(
-            decision_id=decision.id,
-            status=DecisionStatus.PENDING,
-            reason="",
-            iq_level=self.iq_monitor.iq_lock_level,
-        )
+        verdict = JudgeVerdict(decision_id=decision.id, status=DecisionStatus.PENDING, reason="", iq_level=self.iq_monitor.iq_lock_level)
 
         # === Layer 0: ATP 5-19 Composite Risk Management ===
         # 5-step CRM process: Identify → Assess → Develop Controls → Implement → Supervise
@@ -990,9 +957,7 @@ class JudgeArchitecture:
         # Layer 16: Product Delivery
         if decision.ships_feature:
             product_check = await self.product_gate.validate(
-                feature=decision.feature_name or "unknown",
-                variant_id=decision.variant_id,
-                metrics=decision.metrics,
+                feature=decision.feature_name or "unknown", variant_id=decision.variant_id, metrics=decision.metrics
             )
             verdict.layer_results["product"] = product_check
             if product_check["status"] != "APPROVED":
