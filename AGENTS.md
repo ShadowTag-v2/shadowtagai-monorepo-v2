@@ -154,6 +154,29 @@ unless the user explicitly directs a control plane change:
 - MCP Fleet Vanguard: v11.0 (secrets_manager_doctrine, no inline routing tables)
 - Model refs: all aiyou_stack purged from deprecated gemini-1.5/2.5 → gemini-3.1-flash-lite-preview
 - Secrets doctrine: `secrets_manager_doctrine` replaces `env_master_doctrine` in GEMINI.md v9.5
+- ANE NPU: ane_bridge.py ONLINE (init_bridge()=True), libane_bridge.dylib compiled, INT8 W8A8 10.22 TOPS (M4 h13)
+- ANE GGML: llama.cpp-ane compiled (GGML_ANE=ON), ggml_backend_ane_init() registered, MUL_MAT routed through ANE
+- Semantic Kernel: ShadowTagV4.Kernel compiled (0 errors), OnExternalEvent→OnInputEvent fix, SKEXP0080 suppressed
+- Aegaeon Protocol: Gemini Context Cache slab active (cachedContents/o8ot1k9tbc58rf4sraeqrvjp2mi3v7e4z8ftn5l0), ~84% cost reduction
+- Sovereign MLX: KV cache slab architecture wired (core/sovereign_mlx/), --prompt-cache-all for multi-agent routing
+- Intelligence Pipeline: 9 scripts (domain_tagger → github_sync), retriever.py LanceDB search wired
+- Drive Ingest: 2,860 docs extracted, 897 vectorized to data/lancedb/workspace_knowledge
+- Zero CPU Router: 4-tier dispatch cascade (ANE→Metal/MLX→Vertex AI), vulture fixes applied
+- KAIROS Daemon: datetime.UTC→datetime.timezone.utc fix, --once test passes
+- .venv: CPython 3.14.3 + mlx + litellm 1.83.7 + lancedb 0.30.2 + scipy 1.17.1 + numpy 2.4.3
+- Cor.Autoresearch: Karpathy evidence-based ML loop (val_bpb metric, 5-min budget, git reset on failure)
+- Operator Invariants: v2 with full sovereign compute topology, Aegaeon protocol, intelligence pipeline state
+- Governance Recovery: 7 packages from Claude mono-fresh (control/pnkln/governance, core/governance, core/zt1, core/lawtrack, src/lawtrack, infra/migrations, apps/lawtrack-ui)
+- Judge6 Engine: judge6_core + judge_architecture + judge6_factory (2,057 LOC governance control plane)
+- RKILL Protocol: rkill.py + judge6_rkill_bridge.py + rkill_daemon.py (circuit breaker against hallucination)
+- SilentDetector: silent_detector.py (secret/credential leak detection in AI outputs)
+- ZT1 Deadlines: frcp_calculator.py + test_frcp_calculator.py (FRCP Rule 6 date calculator)
+- LawTrack: core/lawtrack (schema + API + services) + src/lawtrack (enforcement + rules_database + timeline_engine) — 1,305 LOC
+- 50-State Holidays: infra/migrations/003_jurisdiction_holidays_50_states.sql (339 LOC, all 50 state judicial holidays)
+- LawTrack UI: apps/lawtrack-ui (React + Vite + TypeScript case dashboard)
+- Ruff: 0 violations across all recovered + existing Python (95 auto-fixed, 12 manual)
+- Vulture: 0 findings at 90%+ confidence across recovered Python
+- Tests: 5 passed (test_dispatch_compute.py)
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence

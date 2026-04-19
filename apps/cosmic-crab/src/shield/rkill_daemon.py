@@ -1,7 +1,9 @@
 # src/shield/rkill_daemon.py
+import json
 import logging
 import os
 import time
+from datetime import datetime
 
 import psutil
 from agents.legal_whiteboard import whiteboard
@@ -11,7 +13,8 @@ logger = logging.getLogger("RkillDaemon")
 
 
 class RkillDaemon:
-    """ShadowTag Omega V7 Rkill Daemon
+    """
+    ShadowTag Omega V7 Rkill Daemon
     Enforces the "Three Strikes of Death" policy to prevent rogue agent behavior.
     Integrated with Memory Beads (Whiteboard Patterns).
     """
@@ -37,9 +40,7 @@ class RkillDaemon:
         logger.info("💀 RKILL DAEMON: Monitoring initiated.")
         while True:
             self._load_dynamic_boundaries()  # Hot-reload patterns
-            for proc in psutil.process_iter(
-                ["pid", "name", "memory_info", "create_time", "open_files"],
-            ):
+            for proc in psutil.process_iter(["pid", "name", "memory_info", "create_time", "open_files"]):
                 try:
                     pid = proc.info["pid"]
                     if pid == os.getpid():
@@ -49,9 +50,7 @@ class RkillDaemon:
                     mem_usage = proc.info.get("memory_info").rss if proc.info.get("memory_info") else 0
                     if mem_usage > self.memory_limit:
                         self._add_strike(pid, "memory")
-                        logger.warning(
-                            f"⚠️ [STRIKE] PID {pid} exceeded memory limit: {mem_usage / 1024 / 1024:.2f} MB",
-                        )
+                        logger.warning(f"⚠️ [STRIKE] PID {pid} exceeded memory limit: {mem_usage / 1024 / 1024:.2f} MB")
 
                     # Strike 2: Temporal Violation
                     uptime = time.time() - proc.info["create_time"]
@@ -64,9 +63,7 @@ class RkillDaemon:
                         for f in proc.info["open_files"]:
                             if any(p in f.path for p in self.blacklist_paths):
                                 self._add_strike(pid, "boundary")
-                                logger.warning(
-                                    f"⚠️ [STRIKE] PID {pid} accessed blacklisted path: {f.path}",
-                                )
+                                logger.warning(f"⚠️ [STRIKE] PID {pid} accessed blacklisted path: {f.path}")
 
                     # Check for termination
                     if sum(self.strikes.get(pid, {}).values()) >= 3:

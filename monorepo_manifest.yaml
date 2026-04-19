@@ -38,6 +38,53 @@ repo_roots:
     status: folded-in
     path: labs/uphillsnowball
 
+  - name: governance-control-plane
+    status: canonical
+    path: control/pnkln/governance
+    notes: >-
+      Judge6 governance engine, RKILL protocol, SilentDetector.
+      7 Python modules (2,057 LOC). Recovered from Claude session 2026-03-24.
+
+  - name: core-aegaeon
+    status: canonical
+    path: core/aegaeon
+    notes: Gemini Context Cache slab + swarm router. ~260 LOC.
+
+  - name: core-sovereign-mlx
+    status: canonical
+    path: core/sovereign_mlx
+    notes: KV cache slab architecture for MLX multi-agent routing. ~177 LOC.
+
+  - name: core-governance
+    status: canonical
+    path: core/governance
+    notes: Governance fabric (NY RAISE parameters, risk scoring). ~128 LOC.
+
+  - name: core-zt1
+    status: canonical
+    path: core/zt1
+    notes: Zero-Touch Legal Deadline Management. FRCP calculator + tests. ~124 LOC.
+
+  - name: core-lawtrack
+    status: canonical
+    path: core/lawtrack
+    notes: LawTrack schema, API, and services (ingestion, timeline, help-on-demand). ~218 LOC.
+
+  - name: src-lawtrack
+    status: canonical
+    path: src/lawtrack
+    notes: LawTrack enforcement engine, rules database, timeline engine. ~1,087 LOC.
+
+  - name: lawtrack-ui
+    status: canonical
+    path: apps/lawtrack-ui
+    notes: LawTrack React UI (Vite + TypeScript). Approval queue and case dashboard.
+
+  - name: infra-migrations
+    status: canonical
+    path: infra/migrations
+    notes: SQL migrations (001 init, 002 ZT legal, 003 50-state holidays). ~590 LOC.
+
   # ─── Shared Libraries ───
   - name: ui
     status: canonical
