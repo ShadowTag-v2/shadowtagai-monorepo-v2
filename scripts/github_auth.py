@@ -26,7 +26,7 @@ def get_installation_token():
     # 1. Get Installation ID for the repo
     print(f"Fetching installation ID for {REPO_OWNER}/{REPO_NAME}...")
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/installation"
-    resp = requests.get(url, headers=headers)
+    resp = requests.get(url, headers=headers, timeout=30)
 
     if resp.status_code != 200:
         print(f"Error fetching installation: {resp.status_code} {resp.text}")
@@ -38,7 +38,7 @@ def get_installation_token():
     # 2. Get Access Token
     print("Generating access token...")
     token_url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    resp = requests.post(token_url, headers=headers)
+    resp = requests.post(token_url, headers=headers, timeout=30)
 
     if resp.status_code != 201:
         print(f"Error getting access token: {resp.status_code} {resp.text}")

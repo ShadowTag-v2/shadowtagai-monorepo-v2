@@ -38,7 +38,9 @@ class GeminiModel(StrEnum):
     """Available Gemini models - Gemini 2.5 Preview (latest)"""
 
     # Gemini 2.5 Preview series (latest - 1M context)
-    GEMINI_25_PRO = "gemini-3.1-flash-lite-preview-preview-06-05"  # 1M+ context, best design/reasoning
+    GEMINI_25_PRO = (
+        "gemini-3.1-flash-lite-preview-preview-06-05"  # 1M+ context, best design/reasoning
+    )
     GEMINI_25_FLASH = "gemini-2.5-flash-preview-05-20"  # Fast inference, 1M context
 
     # Gemini 2.0 series (stable)

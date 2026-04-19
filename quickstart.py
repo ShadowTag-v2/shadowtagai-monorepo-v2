@@ -33,8 +33,8 @@ BANNER = """
 def print_banner():
     print(BANNER)
 
-def check_n-autoresearch/Kosmos/BioAgentss():
-    """Check if n-autoresearch/Kosmos/BioAgentss is running"""
+def check_bioagents_server():
+    """Check if bioagents_server is running"""
     try:
         import requests
         response = requests.get("http://localhost:8888/health", timeout=2)
@@ -42,11 +42,11 @@ def check_n-autoresearch/Kosmos/BioAgentss():
     except:
         return False
 
-def start_n-autoresearch/Kosmos/BioAgentss():
-    """Start n-autoresearch/Kosmos/BioAgentss server"""
-    print("🐵 Starting n-autoresearch/Kosmos/BioAgentss 650-Agent Swarm...")
+def start_bioagents_server():
+    """Start bioagents_server server"""
+    print("🐵 Starting bioagents_server 650-Agent Swarm...")
     subprocess.Popen(
-        ["./run_n-autoresearch/Kosmos/BioAgentss_api.sh"],
+        ["./run_bioagents_server_api.sh"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL
     )
@@ -60,7 +60,7 @@ def show_menu():
     print("="*70)
     print()
     print("1. 🔧 Configure API Keys (Interactive Setup)")
-    print("2. 🐵 Start n-autoresearch/Kosmos/BioAgentss Server")
+    print("2. 🐵 Start bioagents_server Server")
     print("3. 📊 View System Status")
     print("4. 🔍 Monitor System (Live)")
     print("5. 📖 View Documentation")
@@ -79,17 +79,17 @@ def run_option(choice):
         subprocess.run(["bash", "setup_antigravity.sh"])
 
     elif choice == "2":
-        if check_n-autoresearch/Kosmos/BioAgentss():
-            print("\n✅ n-autoresearch/Kosmos/BioAgentss already running on http://localhost:8888")
+        if check_bioagents_server():
+            print("\n✅ bioagents_server already running on http://localhost:8888")
         else:
-            start_n-autoresearch/Kosmos/BioAgentss()
+            start_bioagents_server()
             print("\n⏳ Waiting for server to start...")
             import time
             time.sleep(3)
-            if check_n-autoresearch/Kosmos/BioAgentss():
-                print("✅ n-autoresearch/Kosmos/BioAgentss operational!")
+            if check_bioagents_server():
+                print("✅ bioagents_server operational!")
             else:
-                print("⚠️  Server may still be starting. Check logs: tail -f n-autoresearch/Kosmos/BioAgentss.log")
+                print("⚠️  Server may still be starting. Check logs: tail -f bioagents_server.log")
 
     elif choice == "3":
         print("\n📊 System Status:")
@@ -120,7 +120,7 @@ def run_option(choice):
         print("\n🧪 Testing Gemini Failover...")
         print("="*70)
         test_code = """
-from src.shadowtag-omega-v4.services.gemini_failover import get_failover_client
+from src.shadowtag_omega_v4.services.gemini_failover import get_failover_client
 client = get_failover_client()
 health = client.health_check()
 print(f"Status: {health['status']}")
@@ -131,9 +131,9 @@ print(f"Metrics: {health['metrics']}")
     elif choice == "7":
         print("\n🚀 Deploying All Services...")
         print("="*70)
-        if not check_n-autoresearch/Kosmos/BioAgentss():
-            start_n-autoresearch/Kosmos/BioAgentss()
-        print("✅ n-autoresearch/Kosmos/BioAgentss: http://localhost:8888")
+        if not check_bioagents_server():
+            start_bioagents_server()
+        print("✅ bioagents_server: http://localhost:8888")
         print("✅ Gemini Failover: Configured")
         print("\n📊 Run 'python3 antigravity_status.py' to verify")
 
@@ -150,8 +150,8 @@ def main():
     print_banner()
 
     # Quick status check
-    fm_status = "✅ RUNNING" if check_n-autoresearch/Kosmos/BioAgentss() else "❌ OFFLINE"
-    print(f"n-autoresearch/Kosmos/BioAgentss: {fm_status}")
+    fm_status = "✅ RUNNING" if check_bioagents_server() else "❌ OFFLINE"
+    print(f"bioagents_server: {fm_status}")
 
     # Check for API keys
     has_gemini = bool(os.getenv("GEMINI_API_KEYS") or os.getenv("GEMINI_API_KEY"))

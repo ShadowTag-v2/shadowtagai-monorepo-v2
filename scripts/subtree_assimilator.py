@@ -14,7 +14,7 @@ TARGET_REPO_TO_DELETE = "ehanc69/TsubameViewer"
 
 def run_cmd(cmd, cwd=None):
     print(f"Running: {cmd}")
-    res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
+    res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
     if res.returncode != 0:
         print(f"Error ({res.returncode}): {res.stderr}")
     return res
@@ -31,7 +31,7 @@ def get_installation_token():
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
     # 1. Find the installation ID for ehanc69
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     resp.raise_for_status()
     installations = resp.json()
 
@@ -46,7 +46,7 @@ def get_installation_token():
         sys.exit(1)
 
     # 2. Get access token
-    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
     resp.raise_for_status()
     return resp.json()["token"]
 
@@ -59,7 +59,7 @@ def delete_repo(token, full_name):
         "X-GitHub-Api-Version": "2022-11-28",
     }
     url = f"https://api.github.com/repos/{full_name}"
-    resp = requests.delete(url, headers=headers)
+    resp = requests.delete(url, headers=headers, timeout=30)
     if resp.status_code == 204:
         print(f"Successfully deleted {full_name}")
     elif resp.status_code == 404:
@@ -73,7 +73,7 @@ def get_repos(token):
     repos = []
     url = f"https://api.github.com/users/{TARGET_LOGIN}/repos?per_page=100"
     while url:
-        resp = requests.get(url, headers=headers)
+        resp = requests.get(url, headers=headers, timeout=30)
         resp.raise_for_status()
         repos.extend(resp.json())
         url = resp.links.get("next", {}).get("url")

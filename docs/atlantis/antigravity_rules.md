@@ -1,13 +1,13 @@
 # Guide to Separating Rules and Workflows
 
-This document explains how to separate **rules (custom instructions)** and  
+This document explains how to separate **rules (custom instructions)** and
 **workflows (custom commands)** in this repository, and how to use them effectively.
 
 ## Terminology
 
 
-- **Rules**  
-  Files that define how the model should behave or format outputs.  
+- **Rules**
+  Files that define how the model should behave or format outputs.
   These are always loaded as part of the agent's context.
 
   - **Windsurf**: `.windsurf/rules/*.md`
@@ -17,8 +17,8 @@ This document explains how to separate **rules (custom instructions)** and
   - Examples: commit message rules, PR message rules, test strategy rules.
 
 
-- **Workflows**  
-  Files that define frequently used Git operations or development flows.  
+- **Workflows**
+  Files that define frequently used Git operations or development flows.
   These are invoked explicitly as commands (e.g. `/commit-only`, `/commit-push`).
 
   - **Windsurf**: `.windsurf/workflows/*.md`
@@ -36,27 +36,27 @@ This document explains how to separate **rules (custom instructions)** and
 
    - Examples:
 
-     - `commit-message-format.md`: Defines the format for commit messages  
-       (Prefix + summary + bullet-list body), language selection (`language`),  
+     - `commit-message-format.md`: Defines the format for commit messages
+       (Prefix + summary + bullet-list body), language selection (`language`),
        and the requirement to base messages on the actual diff.
 
-     - `pr-message-format.md`: Defines the structure of PR titles and bodies  
+     - `pr-message-format.md`: Defines the structure of PR titles and bodies
        (Overview / Changes / Technical details / Tests / Related issues).
 
-     - `test-strategy.md`: Defines how to design tests (equivalence classes, boundary values,  
+     - `test-strategy.md`: Defines how to design tests (equivalence classes, boundary values,
        Given/When/Then comments, coverage goals, etc.).
 
 
 2. **Workflows define “how to execute safely”**
 
-   - Workflows describe concrete command sequences such as `git add`, `git commit`, `git push`,  
+   - Workflows describe concrete command sequences such as `git add`, `git commit`, `git push`,
      and optional quality checks.
 
    - They **do not** restate the detailed rules; instead they point to rule files.
 
    - Examples:
 
-     - `commit-only.md`: Minimal flow to commit local changes  
+     - `commit-only.md`: Minimal flow to commit local changes
        (`git add -A` → `git commit -m "$MSG"`), assuming `MSG` follows `commit-message-format.md`.
 
      - `commit-push.md`: Template for commit + push, including branch checks and optional quality checks.
@@ -75,7 +75,7 @@ This document explains how to separate **rules (custom instructions)** and
 
      - “Required sections in PR descriptions”
 
-   - Workflows should show **examples** of how to apply those policies, but the normative definition  
+   - Workflows should show **examples** of how to apply those policies, but the normative definition
      belongs in rule files or project docs (README/CONTRIBUTING).
 
 ## Examples of Rule Files
@@ -147,7 +147,7 @@ This document explains how to separate **rules (custom instructions)** and
 ```mermaid
 flowchart TB
     WLabel[Workflows<br/>workflows/*.md]
-    
+
     subgraph Workflow[" "]
         direction LR
         W1[commit-only]
@@ -162,7 +162,7 @@ flowchart TB
         space[ ]
         V5[v5: Coding Foundation Rules]
     end
-    
+
     RLabel[Rules<br/>rules/*.md]
 
     WLabel ~~~ Workflow
@@ -173,7 +173,7 @@ flowchart TB
     W2 -->|refs| R1
     W3 -->|refs| R1
     W3 -->|refs| R2
-    
+
     R1 -.->|complies| V5
     R2 -.->|complies| V5
 
@@ -182,7 +182,7 @@ flowchart TB
     style WLabel fill:none,stroke:none
     style RLabel fill:none,stroke:none
     style space fill:none,stroke:none
-    
+
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
     linkStyle 2 stroke:none
@@ -206,7 +206,7 @@ flowchart TB
         space2[ ]
         V5T[v5: Coding Foundation Rules]
     end
-    
+
     RLabelT[Rules<br/>rules/*.md]
 
     TestWork ~~~ TestRules
@@ -215,14 +215,14 @@ flowchart TB
     T1 -->|refs| TR1
     T2 -->|refs| TR1
     T3 -->|refs| TR1
-    
+
     TR1 -.->|complies| V5T
 
     style TestWork fill:#e8e8f4,stroke:#44a
     style TestRules fill:#e8f4e8,stroke:#4a4
     style RLabelT fill:none,stroke:none
     style space2 fill:none,stroke:none
-    
+
     linkStyle 0 stroke:none
     linkStyle 1 stroke:none
 
@@ -258,5 +258,3 @@ flowchart TB
   - Keep workflows as templates:
 
     - Show safe defaults (branch checks, optional quality checks), but let adopters plug in their own scripts.
-
-

@@ -52,7 +52,7 @@ def generate_installation_token():
     encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     if resp.status_code != 200:
         print(f"Error fetching installations: HTTP {resp.status_code}\n{resp.text}")
         return None
@@ -64,7 +64,7 @@ def generate_installation_token():
 
     inst_id = installations[0]["id"]
     url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    res = requests.post(url, headers=headers)
+    res = requests.post(url, headers=headers, timeout=30)
 
     if res.status_code != 201:
         print(f"Error creating access token: HTTP {res.status_code}\n{res.text}")

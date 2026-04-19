@@ -9,7 +9,9 @@ from vertexai.generative_models import GenerativeModel, Part
 from src.pnkln.prompts import PNKLN_PROMPTS
 
 
-def vcmirror(profile_txt: str, company_info: str, model_name: str = "gemini-3.1-flash-lite-preview") -> str:
+def vcmirror(
+    profile_txt: str, company_info: str, model_name: str = "gemini-3.1-flash-lite-preview"
+) -> str:
     """Extract investor thesis and produce pitch copy."""
     model = GenerativeModel(model_name)
     system_prompt = PNKLN_PROMPTS.get("sys_vcm", "You are pnkln-vc-mirror.")

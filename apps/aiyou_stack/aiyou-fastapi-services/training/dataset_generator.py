@@ -391,7 +391,9 @@ class ScenarioGenerator:
 class CodeGenerator:
     """Use Gemini to generate orchestration code from scenarios."""
 
-    def __init__(self, model_name: str = "gemini-3.1-flash-lite-preview", api_key: str | None = None):
+    def __init__(
+        self, model_name: str = "gemini-3.1-flash-lite-preview", api_key: str | None = None
+    ):
         """Initialize Gemini client."""
         if api_key:
             genai.configure(api_key=api_key)

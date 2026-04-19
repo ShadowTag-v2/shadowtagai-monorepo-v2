@@ -15,7 +15,7 @@ def test_watermark():
 
     print(f"Sending request to {url}...")
     try:
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, timeout=30)
         print(f"Status: {response.status_code}")
         try:
             print(f"Response: {json.dumps(response.json(), indent=2)}")

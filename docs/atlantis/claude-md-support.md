@@ -9,7 +9,7 @@ Extend CACI to manage CLAUDE.md files alongside component configurations. Curren
 
 - **Detection**: Automatically detect existing CLAUDE.md files in project root
 
-- **Backup**: Include CLAUDE.md in backup operations before modifications  
+- **Backup**: Include CLAUDE.md in backup operations before modifications
 
 - **Templates**: Provide CLAUDE.md templates for common project types
 

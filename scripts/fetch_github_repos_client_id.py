@@ -18,7 +18,7 @@ def get_repos_with_client_id(client_id, pem_path, owner_name):
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
     # Get installations
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
 
     if resp.status_code != 200:
         print(f"Failed to get installations for {client_id}: {resp.status_code} {resp.text}")
@@ -43,8 +43,7 @@ def get_repos_with_client_id(client_id, pem_path, owner_name):
     # Get installation access token
     resp = requests.post(
         f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
-        headers=headers,
-    )
+        headers=headers,, timeout=30)
     if resp.status_code != 201:
         print(f"Failed to get access token for {client_id}: {resp.status_code} {resp.text}")
         return []
@@ -63,8 +62,7 @@ def get_repos_with_client_id(client_id, pem_path, owner_name):
     while True:
         resp = requests.get(
             f"https://api.github.com/installation/repositories?per_page=100&page={page}",
-            headers=auth_headers,
-        )
+            headers=auth_headers,, timeout=30)
         resp.raise_for_status()
         data = resp.json()
         repos.extend(data["repositories"])

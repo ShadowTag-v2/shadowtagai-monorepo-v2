@@ -5,7 +5,7 @@ import subprocess
 def run_cmd(cmd):
     print(f"[OMEGA-LOOP] Executing: {cmd}")
     try:
-        subprocess.run(cmd, shell=True, check=True)
+        subprocess.run(cmd, shell=True, check=True)  # nosec B602 — intentional shell for git/system ops
     except subprocess.CalledProcessError as e:
         print(f"[OMEGA-LOOP] Error running {cmd}: {e}")
 
@@ -27,7 +27,7 @@ def main():
     print("\n[UI AUDITOR] Validating React UI linkages...")
     import subprocess
 
-    subprocess.run("python3 scripts/ui_consistency_auditor.py", shell=True)
+    subprocess.run("python3 scripts/ui_consistency_auditor.py", shell=True)  # nosec B602 — intentional shell for git/system ops
 
     # 3. Stage All Valid Work
     if os.path.exists(".git/index.lock"):

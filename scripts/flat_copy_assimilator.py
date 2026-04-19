@@ -40,7 +40,7 @@ EXCLUDE_DIRS = {
 
 
 def run_cmd(cmd, cwd=None):
-    res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)
+    res = subprocess.run(cmd, shell=True, cwd=cwd, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
     if res.returncode != 0 and "Deleted branch" not in res.stderr and "No such remote" not in res.stderr:
         print(f"Error ({res.returncode}): {res.stderr}", flush=True)
     return res
@@ -53,7 +53,7 @@ def get_installation_token(app_id, pem_path, target_account):
     payload = {"iat": now - 60, "exp": now + (10 * 60), "iss": app_id}
     encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     resp.raise_for_status()
     installations = resp.json()
     inst_id = next(
@@ -63,7 +63,7 @@ def get_installation_token(app_id, pem_path, target_account):
     if not inst_id:
         print(f"Could not find installation for {target_account} using App {app_id}")
         sys.exit(1)
-    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+    resp = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
     resp.raise_for_status()
     return resp.json()["token"]
 
@@ -73,7 +73,7 @@ def get_repos(token):
     repos = []
     url = "https://api.github.com/installation/repositories?per_page=100"
     while url:
-        resp = requests.get(url, headers=headers)
+        resp = requests.get(url, headers=headers, timeout=30)
         resp.raise_for_status()
         data = resp.json()
         repos.extend(data.get("repositories", []))

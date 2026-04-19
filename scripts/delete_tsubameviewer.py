@@ -13,7 +13,7 @@ def get_installation_token(app_id, key_path, target_login):
 
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     if resp.status_code != 200:
         print(f"Error fetching installations: {resp.text}")
         return None
@@ -33,7 +33,7 @@ def get_installation_token(app_id, key_path, target_login):
         return None
 
     url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    res = requests.post(url, headers=headers)
+    res = requests.post(url, headers=headers, timeout=30)
     if res.status_code != 201:
         print(f"Error creating access token: {res.text}")
         return None
@@ -45,7 +45,7 @@ def delete_repo(token, owner, repo):
     headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/repos/{owner}/{repo}"
     print(f"Deleting {url}...")
-    res = requests.delete(url, headers=headers)
+    res = requests.delete(url, headers=headers, timeout=30)
     if res.status_code == 204:
         print(f"SUCCESS: Deleted {owner}/{repo}")
     elif res.status_code == 404:
