@@ -1,7 +1,15 @@
 # Dependabot Configuration
 # Auto-merge patch/minor bumps, group by ecosystem
+# Security updates are enabled separately via GitHub repo settings
 
 version: 2
+
+# Registries for private packages (configure secrets in repo settings)
+# registries:
+#   npm-registry:
+#     type: npm-registry
+#     url: https://npm.pkg.github.com
+#     token: ${{secrets.NPM_TOKEN}}
 
 updates:
   # Python (pip) — root
