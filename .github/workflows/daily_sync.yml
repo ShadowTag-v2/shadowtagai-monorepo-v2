@@ -6,9 +6,15 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:  # Allow manual trigger
 
+
+concurrency:
+  group: daily_sync-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   extract_and_sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
 

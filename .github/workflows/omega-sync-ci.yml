@@ -11,10 +11,16 @@ permissions:
   checks: write
   pull-requests: write
 
+
+concurrency:
+  group: omega-sync-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   structural-tests:
     name: Structural Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -43,6 +49,7 @@ jobs:
   lint:
     name: Lint & Dead Code
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -63,6 +70,7 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 

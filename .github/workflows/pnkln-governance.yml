@@ -1,13 +1,19 @@
-name: CI
+name: Pnkln Governance CI
 
 on:
   pull_request:
   push:
     branches: [main, master]
 
+
+concurrency:
+  group: pnkln-governance-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   checks:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -53,6 +59,7 @@ jobs:
 
   lighthouse:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Lighthouse CI

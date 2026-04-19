@@ -17,11 +17,17 @@ permissions:
 env:
   GEMINI_SANDBOX: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 
+
+concurrency:
+  group: gca-pr-review-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # ── Stage 0: Resolve PR context (works for both pull_request and workflow_dispatch) ──
   setup:
     name: "Resolve PR context"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     outputs:
       pr_number: ${{ steps.ctx.outputs.pr_number }}
       base_ref:  ${{ steps.ctx.outputs.base_ref }}
@@ -43,6 +49,7 @@ jobs:
     name: "Agent: ${{ matrix.agent }}"
     needs: setup
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         agent: [correctness, security, perf, arch]
@@ -147,6 +154,7 @@ jobs:
     name: "ANE L2 SRAM Gate"
     needs: setup
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     outputs:
       overflow_risk: ${{ steps.check.outputs.overflow_risk }}
       risk_detail: ${{ steps.check.outputs.risk_detail }}
@@ -174,6 +182,7 @@ jobs:
     name: "Verify + Post Inline Comments"
     needs: [setup, analyze, ane-gate]
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.1.11
 

@@ -3,6 +3,9 @@ name: Offline Eval + Promotion Gate
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/eval/**'
+      - 'policy/**'
   schedule:
     - cron: "23 9 * * *"
   workflow_dispatch:
@@ -11,9 +14,15 @@ permissions:
   contents: write
   pull-requests: write
 
+
+concurrency:
+  group: offline-eval-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   eval:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }

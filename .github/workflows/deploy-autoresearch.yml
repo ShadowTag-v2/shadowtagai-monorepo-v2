@@ -27,9 +27,15 @@ env:
   REPOSITORY: n-autoresearch
   IMAGE: server
 
+
+concurrency:
+  group: deploy-autoresearch-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
       id-token: write

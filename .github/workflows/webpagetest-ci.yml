@@ -12,6 +12,11 @@ permissions:
   contents: read
   issues: write
 
+
+concurrency:
+  group: webpagetest-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   webpagetest:
     runs-on: ubuntu-latest

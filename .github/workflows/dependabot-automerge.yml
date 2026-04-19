@@ -8,9 +8,15 @@ permissions:
   contents: write
   pull-requests: write
 
+
+concurrency:
+  group: dependabot-automerge-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dependabot-automerge:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     if: github.actor == 'dependabot[bot]'
 
     steps:
