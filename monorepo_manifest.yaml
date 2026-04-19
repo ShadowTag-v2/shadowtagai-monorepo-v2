@@ -111,6 +111,23 @@ repo_roots:
     path: memory/erik-hancock-llm-memory
     notes: Institutional memory archive.
 
+  - name: veo-pipeline
+    status: canonical
+    path: scripts/veo_pipeline.py
+    notes: >-
+      Veo 3.1 cinematic video generation pipeline. 6 presets
+      (hero_drift, counselconduit_hero, shadowtagai_marketing,
+      onboarding_flow, billing_explainer, stripe_webhook).
+      Frame extraction via ffmpeg. Vertex AI google-genai SDK.
+
+  - name: pinkln-docs
+    status: folded-in
+    path: docs/pinkln
+    notes: >-
+      PINKLN Ultrathink ecosystem documentation. 11 files, 27K words.
+      Relocated from apps/aiyou_stack/aiyou-fastapi-services/.
+      Architecture diagram at docs/pinkln/ARCHITECTURE.md.
+
   - name: counselconduit
     status: canonical
     path: apps/counselconduit
@@ -207,6 +224,11 @@ hardened_state:
   fleet_vanguard_version: "11.0"
   secrets_doctrine: "secrets_manager_doctrine"
   model_refs_purged: true
+  veo_pipeline: "scripts/veo_pipeline.py (6 presets)"
+  veo_presets: ["hero_drift", "counselconduit_hero", "shadowtagai_marketing", "onboarding_flow", "billing_explainer", "stripe_webhook"]
+  skills_added: ["google-external-cognitive-suite", "veo3-flow-cinematic"]
+  pinkln_docs_relocated: "docs/pinkln/ (11 files, 27K words)"
+  disk_reclaimed_gb: 219
 
 infra:
   monitoring:
