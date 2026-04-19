@@ -72,7 +72,7 @@ days_8_14:
       dependencies: []
       blockers: []
 
-    - task: "Create EU AI Act profile in YouAiNS (risk class, transparency, logging)"
+    - task: "Create EU AI Act profile in pnkln-stackNS (risk class, transparency, logging)"
       owner: "GC + CTO"
       status: "PENDING"
       day: 11-12
@@ -147,7 +147,7 @@ days_31_40:
       blockers: []
       success_criteria: "80%+ upload coverage with C2PA metadata"
 
-    - task: "C2PA for YouAi overlays (tamper-evident metadata)"
+    - task: "C2PA for pnkln-stack overlays (tamper-evident metadata)"
       owner: "CTO"
       status: "PENDING"
       day: 36-40
@@ -215,10 +215,10 @@ days_61_70:
       success_criteria: "100% control coverage, gap analysis complete"
 
 days_71_80:
-  name: "Week 11-12: YouAi Governance Report + Infra SLOs"
+  name: "Week 11-12: pnkln-stack Governance Report + Infra SLOs"
   completion_target: 1.00
   milestones:
-    - task: "Publish YouAi Governance Report v0.1 (DSA-style risk assessment)"
+    - task: "Publish pnkln-stack Governance Report v0.1 (DSA-style risk assessment)"
       owner: "CEO + GC"
       status: "PENDING"
       day: 71-75
@@ -291,7 +291,7 @@ completion_gates:
 
   governance:
     - "ISO 42001 control matrix (cert-ready)"
-    - "YouAi Governance Report v0.1 (public-facing)"
+    - "pnkln-stack Governance Report v0.1 (public-facing)"
     - "NIST AI RMF alignment (documented)"
     - "YRM mapping complete (purpose/reasons/brakes validation)"
 
@@ -387,7 +387,7 @@ success_metrics:
       target: "100% controls mapped, cert-ready"
       current: "0% (not started)"
 
-    - metric: "YouAi Governance Report v0.1"
+    - metric: "pnkln-stack Governance Report v0.1"
       target: "Public-facing, investor-ready"
       current: "0% (not started)"
 
