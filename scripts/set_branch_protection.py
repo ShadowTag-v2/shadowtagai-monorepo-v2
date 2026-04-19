@@ -22,7 +22,7 @@ def generate_jwt(app_id, pem_path):
 def get_installation_id(encoded_jwt, owner):
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/orgs/{owner}/installation"
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=30)
     response.raise_for_status()
     return response.json()["id"]
 
@@ -30,7 +30,7 @@ def get_installation_id(encoded_jwt, owner):
 def get_installation_token(encoded_jwt, installation_id):
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
     url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
-    response = requests.post(url, headers=headers)
+    response = requests.post(url, headers=headers, timeout=30)
     response.raise_for_status()
     return response.json()["token"]
 
@@ -52,7 +52,7 @@ def set_branch_protection(token, owner, repo, branch):
         "restrictions": None,
     }
     print(f"Applying protection to {branch}...")
-    response = requests.put(url, headers=headers, json=payload)
+    response = requests.put(url, headers=headers, json=payload, timeout=30)
     if response.status_code == 200:
         print("Branch protection rules applied successfully!")
     else:

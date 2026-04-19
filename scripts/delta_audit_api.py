@@ -20,13 +20,12 @@ try:
         pk = f.read()
     payload = {"iat": int(time.time()), "exp": int(time.time()) + (10 * 60), "iss": APP_ID}
     enc = jwt.encode(payload, pk, algorithm="RS256")
-    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"})
+    r = requests.get("https://api.github.com/app/installations", headers={"Authorization": f"Bearer {enc}"}, timeout=30)
     r.raise_for_status()
     insts = r.json()
     r2 = requests.post(
         f"https://api.github.com/app/installations/{insts[0]['id']}/access_tokens",
-        headers={"Authorization": f"Bearer {enc}"},
-    )
+        headers={"Authorization": f"Bearer {enc}"},, timeout=30)
     r2.raise_for_status()
     TOKEN = r2.json()["token"]
 except Exception as e:
@@ -43,7 +42,7 @@ def get_remote_tree(repo):
     for org in orgs:
         for branch in branches:
             url = f"https://api.github.com/repos/{org}/{repo}/git/trees/{branch}?recursive=1"
-            res = requests.get(url, headers=headers)
+            res = requests.get(url, headers=headers, timeout=30)
             if res.status_code == 200:
                 tree = [item["path"] for item in res.json().get("tree", []) if item["type"] == "blob"]
                 return tree

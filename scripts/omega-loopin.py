@@ -42,7 +42,7 @@ def run(cmd: str, check: bool = True, dry_run: bool = False) -> subprocess.Compl
     if dry_run:
         print("     [DRY RUN] Skipped.")
         return subprocess.CompletedProcess(args=cmd, returncode=0, stdout="", stderr="")
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=str(REPO_ROOT))
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=str(REPO_ROOT))  # nosec B602 — intentional shell for git/system ops
     if check and result.returncode != 0:
         print(f"     {FAIL} Exit {result.returncode}: {result.stderr[:500]}")
     return result

@@ -133,14 +133,14 @@ if __name__ == "__main__":
         # Try ehanc69 token first
         if token_e:
             cmd = f"git clone https://x-access-token:{token_e}@github.com/ehanc69/{repo}.git {dest}"
-            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B602 — intentional shell for git/system ops
             if res.returncode == 0:
                 success = True
 
         # Fallback to ShadowTag-v2 token
         if not success and token_s:
             cmd = f"git clone https://x-access-token:{token_s}@github.com/ShadowTag-v2/{repo}.git {dest}"
-            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B602 — intentional shell for git/system ops
             if res.returncode == 0:
                 success = True
 
@@ -174,7 +174,7 @@ if __name__ == "__main__":
         if not os.path.exists(dest):
             print(f"Cloning external: {name}...")
             cmd = f"git clone {url} {dest}"
-            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            res = subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec B602 — intentional shell for git/system ops
             if res.returncode == 0:
                 git_dir = os.path.join(dest, ".git")
                 if os.path.exists(git_dir):

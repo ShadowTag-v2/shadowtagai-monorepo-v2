@@ -308,7 +308,9 @@ class LLMRouter:
                 self._gemini_models[model] = genai.GenerativeModel(model)
             except Exception as e:
                 # Fallback to default if specific model fails load
-                logger.warning(f"Failed to load {model}: {e}. Fallback to gemini-3.1-flash-lite-preview")
+                logger.warning(
+                    f"Failed to load {model}: {e}. Fallback to gemini-3.1-flash-lite-preview"
+                )
                 model = "gemini-3.1-flash-lite-preview"
                 if model not in self._gemini_models:
                     self._gemini_models[model] = genai.GenerativeModel(model)

@@ -15,7 +15,7 @@ from datetime import datetime
 
 def run(cmd: str, cwd: str = ".") -> tuple[int, str]:
     """Run a command and return (exit_code, stdout)."""
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd, timeout=30)
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=cwd, timeout=30)  # nosec B602 — intentional shell for git/system ops
     return result.returncode, result.stdout.strip()
 
 

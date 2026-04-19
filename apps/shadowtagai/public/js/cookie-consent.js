@@ -1,6 +1,6 @@
 /**
  * CounselConduit / KovelAI — GDPR Cookie Consent Banner
- * 
+ *
  * Drop-in cookie consent banner compliant with:
  *   - GDPR (EU General Data Protection Regulation)
  *   - CCPA (California Consumer Privacy Act)

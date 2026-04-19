@@ -15,7 +15,7 @@ encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
 
 headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-res = requests.get("https://api.github.com/app/installations", headers=headers)
+res = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
 res.raise_for_status()
 installations = res.json()
 
@@ -25,7 +25,7 @@ if not target_inst:
     exit(1)
 
 inst_id = target_inst["id"]
-res2 = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+res2 = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
 res2.raise_for_status()
 token = res2.json()["token"]
 

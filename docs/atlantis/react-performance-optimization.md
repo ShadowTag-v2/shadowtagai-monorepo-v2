@@ -26,7 +26,7 @@ Use this agent for:
 
 - Slow loading React applications
 
-- Janky or unresponsive user interactions  
+- Janky or unresponsive user interactions
 
 - Large bundle sizes affecting load times
 

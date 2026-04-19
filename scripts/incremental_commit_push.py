@@ -34,14 +34,14 @@ payload = {"iat": int(time.time()) - 60, "exp": int(time.time()) + (10 * 60), "i
 encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
 headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-res = requests.get("https://api.github.com/app/installations", headers=headers)
+res = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
 insts = res.json()
 if not insts:
     print("No installations found.")
     exit(1)
 
 inst_id = insts[0]["id"]
-res = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers)
+res = requests.post(f"https://api.github.com/app/installations/{inst_id}/access_tokens", headers=headers, timeout=30)
 token = res.json()["token"]
 remote_url = f"https://x-access-token:{token}@github.com/{REPO}.git"
 

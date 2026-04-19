@@ -137,7 +137,11 @@ class PanelDebate:
             arguments_against=arguments_against,
             consensus_score=consensus_score,
             duration_seconds=duration,
-            models_used=["gemini-3.1-flash-lite-preview", "gemini-3.1-flash-lite-preview", "gemini-3.1-flash-lite-preview"],
+            models_used=[
+                "gemini-3.1-flash-lite-preview",
+                "gemini-3.1-flash-lite-preview",
+                "gemini-3.1-flash-lite-preview",
+            ],
         )
 
         logger.info(f"Debate concluded: {result.decision} (confidence: {result.confidence:.2f})")

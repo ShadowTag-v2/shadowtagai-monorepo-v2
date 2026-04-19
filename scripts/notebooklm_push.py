@@ -15,7 +15,7 @@ def push_to_notebooklm():
 
     print("Transmitting session log to Master Brain...")
     # NOTE: Assuming NotebookLM hook here
-    # requests.post(url="https://generativelanguage.googleapis.com/.../notebooklm:sync", data=...)
+    # requests.post(url="https://generativelanguage.googleapis.com/.../notebooklm:sync", data=..., timeout=30)
 
     print("Transmission complete.")
 

@@ -689,4 +689,3 @@ reference_architectures/terraform/terragrunt-infrastructure-catalog-example/exam
 reference_architectures/terraform/terragrunt/internal/gcphelper/config_test.go:private-key:60
 reference_architectures/terraform/terragrunt/test/fixtures/sops/test_pgp_key.asc:private-key:1
 reference_architectures/terraform/terragrunt/test/fixtures/units-reading/test_pgp_key.asc:private-key:1
-

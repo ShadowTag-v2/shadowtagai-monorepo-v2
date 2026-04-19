@@ -62,7 +62,7 @@ def check_stage_3():
     print("3. Auditing Nested Git Roots...")
     # we can use find across domains
     search_dirs = " ".join([d for d in domains if os.path.exists(d)])
-    nested_git = os.popen(f"find {search_dirs} -mindepth 2 -type d -name '.git' 2>/dev/null").read().strip()
+    nested_git = os.popen(f"find {search_dirs} -mindepth 2 -type d -name '.git' 2>/dev/null").read().strip()  # nosec B605 — intentional shell for git/system ops
     if nested_git:
         lines = nested_git.split("\n")
         print(f" [DRIFT] Found {len(lines)} nested `.git` folders in live trees.")

@@ -44,7 +44,7 @@ def get_token():
 
 def run(cmd, **kwargs):
     """Run a shell command and return output."""
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=REPO_DIR, **kwargs)
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=REPO_DIR, **kwargs)  # nosec B602 — intentional shell for git/system ops
     return result.stdout.strip(), result.returncode
 
 

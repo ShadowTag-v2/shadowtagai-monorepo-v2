@@ -174,10 +174,7 @@ async def rag_generate(
         text = hit.get("text", "")[:2000]
         context_blocks.append(f"[{doc_id}] {text}")
 
-    user_content = (
-        f"CONTEXT:\n{''.join(context_blocks) if context_blocks else '(no context available)'}\n\n"
-        f"QUERY: {query}"
-    )
+    user_content = f"CONTEXT:\n{''.join(context_blocks) if context_blocks else '(no context available)'}\n\nQUERY: {query}"
 
     # Apply prompt repetition
     sys_prompt, user_msg = _apply_rag_prompt_repetition(system_prompt, user_content, model_id)

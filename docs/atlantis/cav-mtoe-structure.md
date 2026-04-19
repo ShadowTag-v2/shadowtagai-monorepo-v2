@@ -146,7 +146,7 @@ platoon_leader_coalesces = "A"  # 75% approve
 
 ```
 
-**Coalescence Rule:** 
+**Coalescence Rule:**
 
 
 - ≥75% agree → that vote
@@ -236,15 +236,15 @@ final_vote = "A"  # 80% approve
 class GeminiIntake:
     def __init__(self):
         self.flying_monkeys = CavMTOE(650)  # Full complement
-        
+
 class PerplexityResearch:
     def __init__(self):
         self.flying_monkeys = CavMTOE(650)  # Full complement
-        
+
 class SuperGrok:
     def __init__(self):
         self.flying_monkeys = CavMTOE(650)  # Full complement
-        
+
 class GeminiCodeAssistPool:
     def __init__(self):
         # Each of 10 licenses has 650
@@ -285,7 +285,7 @@ vote = self.flying_monkeys.bottom_up_vote(
 
 if vote["final_action"] == "R":
     return []  # Swarm rejected
-    
+
 
 # Continue with atomization...
 
@@ -298,7 +298,7 @@ async def ask_llm(self, from_llm: str, to_llm: str, question: str):
     # Both LLMs' swarms vote on the question
     from_vote = self.llms[from_llm]["flying_monkeys"].bottom_up_vote(question)
     to_vote = self.llms[to_llm]["flying_monkeys"].bottom_up_vote(question)
-    
+
     # If both swarms approve, proceed with conversation
     if from_vote["final_action"] == "A" and to_vote["final_action"] == "A":
         answer = await self._route_question(to_llm, question)
