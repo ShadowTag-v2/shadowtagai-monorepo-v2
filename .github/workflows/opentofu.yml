@@ -1,0 +1,104 @@
+name: "OpenTofu Plan/Apply"
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - ".tofu/**"
+      - "*.tf"
+  push:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - ".tofu/**"
+      - "*.tf"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: tofu-${{ github.ref }}
+  cancel-in-progress: false  # Never cancel infra changes mid-apply
+
+jobs:
+  plan:
+    name: OpenTofu Plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: "1.9"
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-deployer@shadowtag-omega-v4.iam.gserviceaccount.com'
+
+      - name: OpenTofu Init
+        working-directory: infra
+        run: tofu init -input=false
+        continue-on-error: true
+
+      - name: OpenTofu Plan
+        working-directory: infra
+        run: |
+          tofu plan -input=false -no-color -out=tfplan 2>&1 | tee plan-output.txt
+        continue-on-error: true
+
+      - name: Comment PR with Plan
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let plan = '';
+            try {
+              plan = fs.readFileSync('infra/plan-output.txt', 'utf8');
+            } catch (e) {
+              plan = 'No plan output available';
+            }
+            const truncated = plan.length > 60000 ? plan.substring(0, 60000) + '\n...(truncated)' : plan;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## OpenTofu Plan\n\`\`\`\n${truncated}\n\`\`\``
+            });
+
+  apply:
+    name: OpenTofu Apply
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: plan
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: "1.9"
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/767252945109/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'github-deployer@shadowtag-omega-v4.iam.gserviceaccount.com'
+
+      - name: OpenTofu Init
+        working-directory: infra
+        run: tofu init -input=false
+
+      - name: OpenTofu Apply
+        working-directory: infra
+        run: tofu apply -input=false -auto-approve
