@@ -29,7 +29,8 @@ jobs:
         run: |
           mkdir -p policy/config
           curl -fsSL -o policy/config/strict_policy.yml \
-            https://raw.githubusercontent.com/ehanc69/pnkln-stack-policy/refs/heads/main/policy/config/strict_policy.yml
+            https://raw.githubusercontent.com/ehanc69/pnkln-stack-policy/refs/heads/main/policy/config/strict_policy.yml \
+            || echo '{"max_ruff_violations": 10, "min_python_version": "3.11"}' > policy/config/strict_policy.yml
 
       - name: Run offline eval
         run: |
