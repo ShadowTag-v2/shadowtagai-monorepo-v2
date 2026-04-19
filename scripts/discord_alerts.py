@@ -26,7 +26,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from enum import Enum
 from typing import Any
 
@@ -48,6 +48,7 @@ class AlertLevel(Enum):
 
 # ── Embed Builder ─────────────────────────────────────────────────────
 
+
 def _build_embed(
     level: AlertLevel,
     title: str,
@@ -59,15 +60,12 @@ def _build_embed(
     embed: dict[str, Any] = {
         "title": f"{_level_emoji(level)} {title}",
         "color": level.value,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
     if description:
         embed["description"] = description
     if fields:
-        embed["fields"] = [
-            {"name": k, "value": str(v), "inline": len(str(v)) < 40}
-            for k, v in fields.items()
-        ]
+        embed["fields"] = [{"name": k, "value": str(v), "inline": len(str(v)) < 40} for k, v in fields.items()]
     if footer:
         embed["footer"] = {"text": footer}
     else:
@@ -86,6 +84,7 @@ def _level_emoji(level: AlertLevel) -> str:
 
 
 # ── Sender ────────────────────────────────────────────────────────────
+
 
 def send_alert(
     level: AlertLevel,
@@ -143,6 +142,7 @@ def send_alert(
 
 
 # ── Convenience Functions ─────────────────────────────────────────────
+
 
 def alert_deploy(
     service: str,
