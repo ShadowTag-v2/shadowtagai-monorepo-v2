@@ -1,9 +1,15 @@
 name: Judge 6 Sovereign Code Review
 on:
   pull_request: { types: [opened, synchronize] }
+
+concurrency:
+  group: judge6_yolo_gate-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   csrmc-audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - run: npm install -g @google/gemini-cli-beta

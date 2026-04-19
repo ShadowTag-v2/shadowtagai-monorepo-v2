@@ -10,10 +10,16 @@ on:
       - 'apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services/**'
       - '.github/workflows/backend-ci.yml'
 
+
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-and-typecheck:
     name: Lint, Format, and Type Check
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     # Set the default directory so we don't have to `cd` in every single step
     defaults:

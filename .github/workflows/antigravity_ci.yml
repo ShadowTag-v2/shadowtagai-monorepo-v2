@@ -6,9 +6,15 @@ on:
   pull_request:
     branches: [ main ]
 
+
+concurrency:
+  group: antigravity_ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-proxy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:

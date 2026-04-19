@@ -11,10 +11,16 @@ on:
         required: true
         type: string
 
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
       packages: write
@@ -74,6 +80,7 @@ jobs:
   notify:
     name: Notify Release
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: release
     steps:
       - name: Send notification

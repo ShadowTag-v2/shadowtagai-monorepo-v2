@@ -14,11 +14,17 @@ permissions:
   contents: read
   security-events: write
 
+
+concurrency:
+  group: security-audit-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # ── Rule 33: Secrets Scanning ────────────────────────────────────────────
   gitleaks:
     name: "🔒 Secrets Scan"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +39,7 @@ jobs:
   dependency-audit:
     name: "📦 Dependency Audit"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -66,6 +73,7 @@ jobs:
   sast:
     name: "🔍 Static Analysis"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -87,6 +95,7 @@ jobs:
   python-lint:
     name: "🐍 Python Lint (ruff + vulture)"
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
