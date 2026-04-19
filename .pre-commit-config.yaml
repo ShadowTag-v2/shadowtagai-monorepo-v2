@@ -37,3 +37,4 @@ repos:
       - id: bandit
         args: [-c, pyproject.toml, -r, apps/counselconduit/, --skip, 'B101', -ll]
         additional_dependencies: ['bandit[toml]']
+        pass_filenames: false
