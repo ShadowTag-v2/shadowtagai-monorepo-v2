@@ -224,22 +224,40 @@ def main():
         sys.exit(1)
 
     # Step 1: Generate JWT
-    print("  [1/4] Generating JWT...")
+    print("  [1/5] Generating JWT...")
     jwt_token = generate_jwt(target["app_id"], target["pem_path"])
-    print("  [1/4] JWT generated ✅")
+    print("  [1/5] JWT generated ✅")
 
     # Step 2: Get installation ID
-    print(f"  [2/4] Finding installation for {target['org']}...")
+    print(f"  [2/5] Finding installation for {target['org']}...")
     installation_id = get_installation_id(jwt_token, target["org"])
-    print(f"  [2/4] Installation ID: {installation_id} ✅")
+    print(f"  [2/5] Installation ID: {installation_id} ✅")
 
     # Step 3: Get access token
-    print("  [3/4] Exchanging JWT for access token...")
+    print("  [3/5] Exchanging JWT for access token...")
     access_token = get_access_token(jwt_token, installation_id)
-    print("  [3/4] Access token acquired ✅")
+    print("  [3/5] Access token acquired ✅")
 
-    # Step 4: Push
-    print("  [4/4] Pushing...")
+    # Step 4: Gitleaks Guardian Gate (BLOCKING)
+    # Per AGENTS.md Rule 23 + Cor.30 R3: No push without secret scan.
+    print("  [4/5] Running Gitleaks Guardian gate...")
+    guardian_result = subprocess.run(
+        [sys.executable, os.path.join(os.path.dirname(__file__), "gitleaks_guardian.py"),
+         "--mode", "gate"],
+        check=False,
+    )
+    if guardian_result.returncode == 1:
+        print("  ❌ Gitleaks Guardian BLOCKED the push.")
+        print("     Real credentials detected. Remediate before pushing.")
+        print("     Run: python3 scripts/gitleaks_guardian.py --mode scan --scope production")
+        sys.exit(1)
+    elif guardian_result.returncode == 0:
+        print("  [4/5] Secret scan clean ✅")
+    else:
+        print("  ⚠️  Gitleaks binary not found — proceeding with caution")
+
+    # Step 5: Push
+    print("  [5/5] Pushing...")
     repo = target["repo"]
     if not repo:
         repo = input("  Enter repo name: ").strip()

@@ -41,16 +41,34 @@ public class Program
 // MOCKS & STUBS (For Self-Contained Compilation)
 // ---------------------------------------------------------
 
-public class McpServer(string name, string version)
+public class McpServer
 {
+    public string Name { get; }
+    public string Version { get; }
+
+    public McpServer(string name, string version)
+    {
+        Name = name;
+        Version = version;
+    }
+
     public void AddTool(Tool tool) { /* Register tool */ }
     public Task StartAsync() { /* Start stdio loop */ return Task.CompletedTask; }
 }
 
-public class Tool(string name, string description)
+public class Tool
 {
-    public object Parameters { get; set; }
-    public Func<System.Collections.Generic.Dictionary<string, object>, Task<string>> Handler { get; set; }
+    public string Name { get; }
+    public string Description { get; }
+
+    public Tool(string name, string description)
+    {
+        Name = name;
+        Description = description;
+    }
+
+    public object? Parameters { get; set; }
+    public Func<System.Collections.Generic.Dictionary<string, object>, Task<string>>? Handler { get; set; }
 }
 
 public class MockRedisClient

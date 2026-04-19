@@ -123,7 +123,7 @@ unless the user explicitly directs a control plane change:
 ## Hardened state
 
 - v9.5 canonicalized: 2026-04-18
-- Commit: `3949efee358`
+- Commit: `3e75a769a3`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
 - Firestore: 2 databases (`(default)`, `shadowtag-engine`)
@@ -132,7 +132,7 @@ unless the user explicitly directs a control plane change:
 - Semantic Kernel: .NET 11.0 Preview 2
 - Tests: 87 unit passed (E2E skipped — live Cloud Run endpoints)
 - Lighthouse: P93+ / A93+ / BP100 / SEO100
-- Dead code: clean (vulture + ruff — 2 false-positive items in counselconduit, production paths clean)
+- Dead code: clean (vulture + ruff — 0 violations at 80%+ confidence in gitleaks_guardian.py)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
 - Nested `.git` directories: 0 (reference_architectures/ clones are gitignored)
@@ -144,11 +144,12 @@ unless the user explicitly directs a control plane change:
 - Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
 - GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
-- Risk Register: 40 risks tracked (0 critical open)
+- Risk Register: 43 risks tracked (0 critical open, Risk #42-43 resolved — third-party false positives)
+- Gitleaks Guardian: 686 third-party findings audited → 0 risk confirmed, .gitleaksignore (668 fingerprints)
 - CL4R1T4S: competitive intel archived, 6 adoptable patterns identified, source code (1,902 files) extracted
 - Architecture docs: 7 specs + 229 Cor.Atlantis recovered docs
 - Daemons: Dream consolidation (nightly) + Loop steward (5-min) — both tested
-- Reference architectures: 29 repos cloned (gitignored)
+- Reference architectures: purged from disk (4.3GB freed), 29 repos documented in THIRD_PARTY_TAPESTRY.json
 - CLAUDE.md: 4-layer hierarchy (global 13KB + user 4.8KB + project 5.3KB + 51 rules)
 - MCP Fleet Vanguard: v11.0 (secrets_manager_doctrine, no inline routing tables)
 - Model refs: all aiyou_stack purged from deprecated gemini-1.5/2.5 → gemini-3.1-flash-lite-preview
@@ -157,7 +158,7 @@ unless the user explicitly directs a control plane change:
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **Monorepo-Uphillsnowball** (445713 symbols, 686652 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **Monorepo-Uphillsnowball** (450959 symbols, 692008 relationships, 300 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 
