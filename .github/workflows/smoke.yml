@@ -1,7 +1,17 @@
 name: smoke
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - 'LICENSE'
+      - '.github/workflows/README.md'
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - 'LICENSE'
+      - '.github/workflows/README.md'
 
 concurrency:
   group: smoke-${{ github.ref }}

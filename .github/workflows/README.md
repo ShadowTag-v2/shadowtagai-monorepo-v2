@@ -1,392 +1,147 @@
-# Claude Code GitHub Actions Workflows
+# CI/CD Workflows — Monorepo-Uphillsnowball
 
-This directory contains GitHub Actions workflows that integrate Claude Code AI into our development process.
+> **Note**: All workflows require GitHub Actions minutes. On the free plan,
+> private repos get 2,000 min/month. Runs show `startup_failure` when exhausted.
 
-## Prerequisites
+## Hardening Standards
 
-Before using these workflows, ensure you have:
+All workflows enforce:
 
-
-1. **Installed the Claude GitHub App** to this repository
-
-   - Visit: https://github.com/apps/claude
-
-   - Grant permissions for Contents, Issues, and Pull Requests
-
-
-2. **Added the ANTHROPIC_API_KEY secret**
-
-   - Go to: Repository Settings → Secrets and variables → Actions
-
-   - Create a new secret named `ANTHROPIC_API_KEY`
-
-   - Add your Claude API key from https://console.anthropic.com
-
-## Available Workflows
-
-### 1. Claude Code (`claude.yml`)
-
-**Trigger**: `@claude` mention in issue comments or PR comments
-
-**Purpose**: Interactive AI assistant that responds to mentions
-
-**Usage**:
-
-```
-
-@claude implement user authentication
-@claude fix the bug in the login endpoint
-@claude how should I structure this feature?
-
-```
-
-**Features**:
-
-- Responds to natural language requests
-
-- Creates PRs with implementations
-
-- Answers questions about code
-
-- Provides suggestions and recommendations
+- **`timeout-minutes`**: Every job has a timeout (5–45m by workflow type)
+- **`concurrency`**: Every workflow has `cancel-in-progress: true` to avoid stacking runs
+- **`paths` / `paths-ignore`**: Scoped triggers to avoid unnecessary runs on docs-only changes
 
 ---
 
-### 2. Claude PR Review (`claude-pr-review.yml`)
+## Workflow Catalog
 
-**Trigger**: When a PR is opened or updated
+### Security
 
-**Purpose**: Automatic code review for all pull requests
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Bandit SAST + Lighthouse | `security-and-lighthouse.yml` | Push/PR `**.py` | SAST scan + performance budget |
+| CodeQL Analysis | `codeql-analysis.yml` | Push/PR/Schedule | GitHub native code scanning |
+| Security Audit | `security-audit.yml` | Push/PR | Dependency vulnerability audit |
+| Firestore Rules Validation | `firestore-rules-validate.yml` | PR `*.rules` | Checks for overly permissive rules |
+| Dependency Review | `dependency-review.yml` | PR | License + vulnerability check on deps |
 
-**What it checks**:
+### Quality
 
-- Code quality and style
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Quality Gate | `quality-gate.yml` | PR `control/pnkln/**` | Ruff + Vulture + pytest |
+| Code Quality Gate | `code-quality-gate.yml` | Push/PR `**.py` | Ruff lint/format + Vulture dead code |
+| Backend CI | `backend-ci.yml` | Push/PR | uv + ruff + basedpyright |
+| Pnkln Governance CI | `pnkln-governance.yml` | Push/PR | Governance checks |
+| Code Quality | `code-quality.yml` | Push/PR | Additional quality checks |
 
-- Potential bugs
+### Deployment
 
-- Best practices adherence
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Deploy | `deploy.yml` | Push main + tags | Docker build + Firebase Hosting |
+| CD | `cd.yml` | Push main | CD to production |
+| Firebase Deploy | `firebase-deploy.yml` | Push main | Firebase-specific deploy |
+| Deploy Autoresearch | `deploy-autoresearch.yml` | Push/dispatch | Autoresearch service deploy |
+| Deploy Lead Router | `deploy_lead_router.yml` | Push | Lead router service deploy |
+| Docker | `docker.yml` | Push/PR | Docker image builds |
+| OpenTofu | `opentofu.yml` | PR/Push `infra/**` | Infrastructure plan/apply |
 
-- Documentation completeness
+### Testing
 
-**Configuration**:
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Smoke | `smoke.yml` | Push/PR | File existence + basic test run |
+| Endpoint Smoke | `endpoint-smoke.yml` | After deploy / 30min | Live endpoint health checks |
+| Coverage | `coverage.yml` | Push/PR | Test coverage reporting |
+| Offline Eval | `offline-eval.yml` | PR `tools/eval/**` / daily | Eval pipeline + promotion gate |
 
-- Max turns: 5
+### Code Review
 
-- Auto-runs on every PR
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| GCA PR Review | `gca-pr-review.yml` | PR | Gemini-powered 4-agent code review |
 
-**To disable**: Remove or comment out the workflow file
+### Automation
 
----
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Auto Approve | `auto-approve.yml` | PR | Auto-approve Dependabot PRs |
+| Conditional Automerge | `conditional-automerge.yml` | PR | Merge when checks pass |
+| Dependabot Automerge | `dependabot-automerge.yml` | PR | Auto-merge patch/minor bumps |
+| CI Notify | `ci-notify.yml` | Workflow failure | Webhook notification on CI failure |
+| Daily Sync | `daily_sync.yml` | Schedule | Daily sync tasks |
 
-### 3. Claude Bug Fix (`claude-bug-fix.yml`)
+### Monitoring
 
-**Trigger**: When an issue is labeled with "bug"
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| PageSpeed Monitor | `pagespeed-monitor.yml` | Push/Schedule | PageSpeed Insights tracking |
+| Lighthouse CI | `lighthouse-ci.yml` | Push/PR | Lighthouse performance budget |
+| WebPageTest CI | `webpagetest-ci.yml` | Push/PR | WebPageTest benchmarks |
 
-**Purpose**: Automatically analyzes and attempts to fix bugs
+### Governance
 
-**Usage**:
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Branch Protection | `branch-protection.yml` | PR | Branch protection verification |
+| Make Check PR | `make-check-pr.yml` | PR | Makefile-based PR checks |
+| Judge6 YOLO Gate | `judge6_yolo_gate.yml` | PR | Judge #6 policy gate |
+| Omega Sync CI | `omega-sync-ci.yml` | Push/PR | Omega sync verification |
+| Safety Evidence | `safety-evidence.yml` | Push/PR | Safety evidence collection |
 
-1. Create an issue describing the bug
+### Special Purpose
 
-2. Add the "bug" label
-
-3. Claude will analyze and create a fix PR
-
-**What Claude does**:
-
-- Investigates the root cause
-
-- Implements a fix
-
-- Adds regression tests
-
-- Creates a PR with the changes
-
----
-
-### 4. Claude Security Review (`claude-security-review.yml`)
-
-**Trigger**: When a PR is labeled with "security-review"
-
-**Purpose**: Comprehensive security analysis of code changes
-
-**Usage**:
-
-1. Create or update a PR
-
-2. Add the "security-review" label
-
-3. Claude performs deep security analysis
-
-**Security checks**:
-
-- OWASP Top 10 vulnerabilities
-
-- Input validation issues
-
-- Authentication/authorization flaws
-
-- SQL injection and XSS
-
-- Sensitive data exposure
-
-- API security
-
-- Dependency vulnerabilities
-
-**Model**: Uses Claude Opus for thorough analysis
-
----
-
-### 5. Claude Code Quality Check (`claude-code-quality.yml`)
-
-**Trigger**: When Python files change in a PR
-
-**Purpose**: Automated code quality review
-
-**What it reviews**:
-
-- PEP 8 compliance
-
-- Type hints usage
-
-- Code duplication
-
-- Function complexity
-
-- Error handling
-
-- Documentation
-
-- Test coverage
-
-- Performance
-
-**Output**: Quality score (1-10) with specific improvement suggestions
+| Workflow | File | Trigger | Purpose |
+|----------|------|---------|---------|
+| Veo Demo Generator | `veo-demo-generator.yml` | Dispatch | Veo 3.1 video demo generation |
+| Gemini Ingestion CI | `gemini-ingestion-ci.yml` | Push/PR | Gemini knowledge ingestion |
+| Release | `release.yml` | Push tags | Release automation |
+| Antigravity CI | `antigravity_ci.yml` | Push/PR | Antigravity toolchain CI |
+| Python 3.14 CI | `python-3.14-ci.yml` | Push/PR | Python 3.14 compatibility |
+| Playwright API Limits | `playwright_api_limits.yml` | Push/PR | API rate limit testing |
+| Ingest | `ingest.yml` | Dispatch | Data ingestion pipeline |
 
 ---
 
-## Customizing Workflows
+## Secrets Required
 
-### Change the Model
+| Secret | Used By | Purpose |
+|--------|---------|---------|
+| `GITHUB_TOKEN` | Most workflows | Auto-provided by GitHub |
+| `GEMINI_API_KEY` | GCA review, ingestion | Gemini API access |
+| `GH_APP_ID` | GCA review | GitHub App ID (3018200) |
+| `GH_APP_PEM` | GCA review | GitHub App private key |
+| `FIREBASE_TOKEN` | Firebase deploy | Firebase CLI auth |
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase deploy | SA JSON key |
+| `DOCKER_USERNAME` | Docker build/push | Docker Hub auth |
+| `DOCKER_PASSWORD` | Docker build/push | Docker Hub auth |
+| `ANTHROPIC_API_KEY` | Claude workflows | Claude API access |
+| `AUTO_APPROVE_PAT` | Auto-approve | PAT for PR approval |
+| `CI_NOTIFICATION_WEBHOOK` | CI notify | Slack/Discord webhook URL |
 
-Edit the `claude_args` parameter:
+## WIF (Workload Identity Federation)
 
-```yaml
-claude_args: "--model claude-opus-4-1-20250805"
-
-```
-
-Available models:
-
-- `claude-sonnet-4-5-20250929` (default, fast and capable)
-
-- `claude-opus-4-1-20250805` (most capable, for complex tasks)
-
-- `claude-haiku-4-1-20250805` (fastest, for simple tasks)
-
-### Adjust Conversation Length
-
-Control how many back-and-forth interactions Claude can have:
-
-```yaml
-claude_args: "--max-turns 10"
-
-```
-
-### Custom Prompts
-
-Modify the `prompt` parameter to customize behavior:
-
-```yaml
-prompt: |
-  Review this code for:
-
-  1. Security issues
-
-  2. Performance problems
-
-  3. Code style
-
-```
-
-### Add Custom Tools
-
-Restrict or specify which tools Claude can use:
-
-```yaml
-claude_args: "--allowed-tools Read,Write,Bash"
-
-```
-
-## Best Practices
-
-### 1. API Usage Optimization
-
-
-- Use specific prompts to reduce API calls
-
-- Set appropriate `--max-turns` limits
-
-- Enable only needed workflows
-
-- Use workflow conditions to limit runs
-
-### 2. Security
-
-
-- Never commit API keys to the repository
-
-- Always use GitHub Secrets
-
-- Review Claude's suggestions before merging
-
-- Use security-review workflow for sensitive changes
-
-### 3. Cost Management
-
-
-- Monitor GitHub Actions minutes usage
-
-- Track Claude API token consumption
-
-- Use concurrency controls for workflows
-
-- Set appropriate timeouts
-
-### 4. Workflow Triggers
-
-
-- Use specific labels to control when workflows run
-
-- Combine conditions to prevent unnecessary runs
-
-- Test workflows on feature branches first
-
-## Configuration Files
-
-### CLAUDE.md
-
-The `CLAUDE.md` file in the repository root defines:
-
-- Code style guidelines
-
-- Review criteria
-
-- Project-specific rules
-
-- FastAPI best practices
-
-Claude follows these guidelines when generating code.
-
-### Workflow Conditions
-
-Each workflow includes conditions to control when it runs:
-
-```yaml
-if: |
-  (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude'))
-
-```
-
-Modify these to customize trigger behavior.
+Deploy workflows use keyless auth via WIF:
+- **Pool**: `github-pool` (project 767252945109)
+- **Provider**: `github-provider`
+- **CI SA**: `github-actions@shadowtag-omega-v4.iam.gserviceaccount.com`
+- **Deploy SA**: `github-deployer@shadowtag-omega-v4.iam.gserviceaccount.com`
 
 ## Troubleshooting
 
-### Claude not responding
+### `startup_failure` on all runs
+GitHub Actions minutes exhausted. Check billing at:
+Settings → Billing → Actions
 
-
-1. ✅ Verify GitHub App is installed
-
-2. ✅ Check ANTHROPIC_API_KEY secret exists
-
-3. ✅ Ensure workflow triggers are correct
-
-4. ✅ Check Actions tab for workflow runs
-
-5. ✅ Verify `@claude` mention syntax
-
-### Workflow not running
-
-
-1. Check workflow file syntax (YAML validation)
-
-2. Verify trigger conditions are met
-
-3. Check repository permissions
-
-4. Look for errors in Actions tab
-
-### API rate limits
-
-
-1. Reduce `--max-turns` value
-
-2. Use more specific prompts
-
-3. Disable auto-running workflows
-
-4. Implement concurrency controls
-
-## Examples
-
-### Request a feature implementation
-
+### YAML validation
+```bash
+python3 -c "import yaml, glob; [yaml.safe_load(open(f)) for f in glob.glob('.github/workflows/*.yml')]"
 ```
 
-@claude implement a new endpoint for user profile updates with these requirements:
-
-- PUT /api/v1/users/{user_id}/profile
-
-- Accept JSON body with name, email, bio
-
-- Validate all inputs
-
-- Return updated user profile
-
-- Add tests
-
+### Duplicate detection
+```bash
+for f in .github/workflows/*.yml; do
+  echo "$f: $(grep -c 'concurrency:' $f) concurrency, $(grep -c 'timeout-minutes:' $f) timeout"
+done
 ```
-
-### Ask for architecture advice
-
-```
-
-@claude how should I structure the authentication system for this API?
-Consider JWT tokens, refresh tokens, and role-based access control.
-
-```
-
-### Request code refactoring
-
-```
-
-@claude refactor the database connection code to use dependency injection
-and follow the FastAPI best practices outlined in CLAUDE.md
-
-```
-
-## Resources
-
-
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
-
-- [Claude Code GitHub Actions](https://github.com/anthropics/claude-code-action)
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-
-## Support
-
-For issues with:
-
-- **Claude Code**: https://github.com/anthropics/claude-code/issues
-
-- **Workflows**: Create an issue in this repository
-
-- **API access**: https://console.anthropic.com
-
----
-
-**Note**: These workflows consume both GitHub Actions minutes and Claude API tokens. Monitor usage and adjust configurations as needed.
