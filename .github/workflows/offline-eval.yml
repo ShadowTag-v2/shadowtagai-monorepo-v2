@@ -43,7 +43,8 @@ jobs:
 
       - name: Label PR if blocked
         if: github.event_name == 'pull_request' && steps.gate.outcome == 'failure'
-        env: { GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr edit ${{ github.event.pull_request.number }} --add-label "blocked:promotion-gate"
           gh pr comment ${{ github.event.pull_request.number }} --body "Offline eval uplift below policy threshold."
