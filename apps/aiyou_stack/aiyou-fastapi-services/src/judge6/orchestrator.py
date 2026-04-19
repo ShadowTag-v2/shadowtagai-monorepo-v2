@@ -242,10 +242,11 @@ Return ONLY a JSON object with:
         response = self.fast_llm.invoke(messages)
 
         # Parse response (in production, use structured output)
-        import json
 
         try:
-            result = json.loads(response.content.strip("```json\n").strip("```"))
+            result = json.loads(
+                response.content.removeprefix("```json\n").removesuffix("```").strip()
+            )
             state["compliance_framework"] = result["framework"]
             state["confidence_score"] = result["confidence"]
             state["document_type"] = result.get("document_type", "unknown")
@@ -291,9 +292,9 @@ Return a JSON object with:
         response = self.fast_llm.invoke(messages)
 
         try:
-            import json
-
-            result = json.loads(response.content.strip("```json\n").strip("```"))
+            result = json.loads(
+                response.content.removeprefix("```json\n").removesuffix("```").strip()
+            )
             state["agent_outputs"]["parse"] = result
         except Exception as e:
             logger.error(f"Parsing failed: {e}")
@@ -339,9 +340,9 @@ Return as JSON array: {{"policies": [...]}}
         response = self.thinking_llm.invoke(messages)
 
         try:
-            import json
-
-            result = json.loads(response.content.strip("```json\n").strip("```"))
+            result = json.loads(
+                response.content.removeprefix("```json\n").removesuffix("```").strip()
+            )
             state["extracted_policies"] = result.get("policies", [])
             state["agent_outputs"]["extract"] = result
         except Exception as e:
@@ -391,9 +392,9 @@ Return:
         response = self.thinking_llm.invoke(messages)
 
         try:
-            import json
-
-            result = json.loads(response.content.strip("```json\n").strip("```"))
+            result = json.loads(
+                response.content.removeprefix("```json\n").removesuffix("```").strip()
+            )
             state["violations"] = result.get("violations", [])
             state["warnings"] = result.get("warnings", [])
             state["agent_outputs"]["check"] = result
@@ -446,9 +447,9 @@ Return: {{"recommendations": [...]}}
         response = self.thinking_llm.invoke(messages)
 
         try:
-            import json
-
-            result = json.loads(response.content.strip("```json\n").strip("```"))
+            result = json.loads(
+                response.content.removeprefix("```json\n").removesuffix("```").strip()
+            )
             state["recommendations"] = result.get("recommendations", [])
             state["agent_outputs"]["recommend"] = result
         except Exception as e:
