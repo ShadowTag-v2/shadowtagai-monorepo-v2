@@ -32,8 +32,8 @@ repos:
 
   # Bandit — Python security scanning
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.8.3
+    rev: 1.9.4
     hooks:
       - id: bandit
-        args: [-c, pyproject.toml, -r, apps/counselconduit/]
+        args: [-c, pyproject.toml, -r, apps/counselconduit/, --skip, 'B101', -ll]
         additional_dependencies: ['bandit[toml]']

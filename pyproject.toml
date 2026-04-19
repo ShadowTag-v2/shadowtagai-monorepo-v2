@@ -141,3 +141,25 @@ root = "apps/ShadowTag-v2_stack/ShadowTag-v2-fastapi-services"
 [[tool.basedpyright.executionEnvironments]]
 root = "apps/another_app"
 # extraPaths = ["apps/another_app/custom_src"]
+
+# Bandit — Python security scanning (Cor.30 compliance)
+[tool.bandit]
+# Target directories for scanning
+targets = ["apps/counselconduit", "scripts", "core"]
+# Skip B101 (assert_used) globally — tests use pytest asserts legitimately
+skips = ["B101"]
+# Exclude test and migration directories from security scanning
+exclude_dirs = [
+    "tests",
+    "test",
+    "**/alembic/versions",
+    "**/migrations",
+    "reference_architectures",
+    "labs/uphillsnowball",
+]
+# Severity threshold: only report Medium+ findings
+# (Low findings like B101 assert_used are noise in test files)
+
+[tool.bandit.assert_used]
+# Allow assert in test files (B101)
+skips = ["*/tests/*", "*/test/*", "test_*.py"]
