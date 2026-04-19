@@ -199,3 +199,4 @@ infra/terraform/.terraform/
 .gitleaksignore.bak.*
 public/frames/
 labs/uphillsnowball/external_payloads/veo_output/
+tools/google-workspace-cli/.git/
