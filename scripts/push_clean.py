@@ -10,7 +10,7 @@ from urllib3.util.retry import Retry
 
 
 def run(cmd):
-    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    res = subprocess.run(cmd, shell=True, capture_output=True, text=True)  # nosec B602 — intentional shell for git/system ops
     return res
 
 

@@ -1,11 +1,11 @@
 
 # GitHub CLI (gh) – Comprehensive Cheat Sheet
 
-> **Purpose:** Quick, copy‑paste friendly reference that shows how to do the most common and useful things with `gh`.  
-> **Conventions:**  
-> - Replace placeholders like `<RUN_ID>`, `<REPO>`, `<ORG>`, `<ENV>`, `<PR#>` with your values.  
-> - Use `-R OWNER/REPO` to target another repo from anywhere.  
-> - Add `--json ...`, `--jq ...`, or `--template ...` to format output.  
+> **Purpose:** Quick, copy‑paste friendly reference that shows how to do the most common and useful things with `gh`.
+> **Conventions:**
+> - Replace placeholders like `<RUN_ID>`, `<REPO>`, `<ORG>`, `<ENV>`, `<PR#>` with your values.
+> - Use `-R OWNER/REPO` to target another repo from anywhere.
+> - Add `--json ...`, `--jq ...`, or `--template ...` to format output.
 > - `gh help <command>` shows full docs. `gh <cmd> -h` for flags.
 
 ---
@@ -523,11 +523,11 @@ gh release view <TAG> --json assets --jq '.assets[].name'
 ## 17) Troubleshooting
 
 
-- Use `GH_DEBUG=api gh ...` or add `--verbose` on `gh api` to inspect HTTP traffic.  
+- Use `GH_DEBUG=api gh ...` or add `--verbose` on `gh api` to inspect HTTP traffic.
 
-- If a feature is missing, it might exist via `gh api` or an extension.  
+- If a feature is missing, it might exist via `gh api` or an extension.
 
-- For Actions reruns: job **databaseId** is required for `--job` re-runs, not the numeric tail in the URL.  
+- For Actions reruns: job **databaseId** is required for `--job` re-runs, not the numeric tail in the URL.
 
 ---
 

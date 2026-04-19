@@ -163,3 +163,7 @@ exclude_dirs = [
 [tool.bandit.assert_used]
 # Allow assert in test files (B101)
 skips = ["*/tests/*", "*/test/*", "test_*.py"]
+
+[project.entry-points."bandit.plugins"]
+kovel_transcript_leak = "scripts.bandit_kovel_plugin:kovel_transcript_leak"
+kovel_unprotected_export = "scripts.bandit_kovel_plugin:kovel_unprotected_export"

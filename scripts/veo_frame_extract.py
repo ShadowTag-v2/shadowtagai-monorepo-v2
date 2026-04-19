@@ -121,6 +121,7 @@ SCROLL_PRESETS = {
 
 # ── Frame Extraction ──────────────────────────────────────────────────
 
+
 def check_ffmpeg() -> bool:
     """Verify ffmpeg is available."""
     return shutil.which("ffmpeg") is not None
@@ -130,8 +131,10 @@ def get_video_info(video_path: str) -> dict:
     """Get video duration, fps, and resolution via ffprobe."""
     cmd = [
         "ffprobe",
-        "-v", "quiet",
-        "-print_format", "json",
+        "-v",
+        "quiet",
+        "-print_format",
+        "json",
         "-show_format",
         "-show_streams",
         video_path,
@@ -193,7 +196,10 @@ def extract_frames(
     info = get_video_info(video_path)
     logger.info(
         "Video: %.1fs @ %.0ffps, %dx%d (%d total frames)",
-        info["duration"], info["fps"], info["width"], info["height"],
+        info["duration"],
+        info["fps"],
+        info["width"],
+        info["height"],
         info["total_frames"],
     )
 
@@ -221,8 +227,10 @@ def extract_frames(
 
     cmd = [
         "ffmpeg",
-        "-i", video_path,
-        "-vf", vf,
+        "-i",
+        video_path,
+        "-vf",
+        vf,
         *quality_args,
         "-y",  # Overwrite existing
         output_pattern,
@@ -236,8 +244,12 @@ def extract_frames(
         if fmt == "webp" and "encoder" in (result.stderr or "").lower():
             logger.warning("webp encoder unavailable, falling back to jpg")
             return extract_frames(
-                video_path, output_dir, frame_count,
-                fmt="jpg", quality=quality, max_width=max_width,
+                video_path,
+                output_dir,
+                frame_count,
+                fmt="jpg",
+                quality=quality,
+                max_width=max_width,
             )
         logger.error("ffmpeg failed: %s", result.stderr[-500:] if result.stderr else "unknown")
         return []
@@ -387,6 +399,7 @@ def generate_scroll_js(output_dir: str, frames: list[str]) -> str:
 
 # ── Full Pipeline (Veo + Extract) ─────────────────────────────────────
 
+
 def run_full_pipeline(
     veo_prompt: str,
     output_dir: str,
@@ -491,7 +504,9 @@ def _download_gcs(gcs_uri: str, output_dir: str) -> str | None:
         local_path = os.path.join(output_dir, Path(gcs_uri).name)
         subprocess.run(
             ["gsutil", "cp", gcs_uri, local_path],
-            check=True, capture_output=True, text=True,
+            check=True,
+            capture_output=True,
+            text=True,
         )
         return local_path
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
@@ -501,11 +516,11 @@ def _download_gcs(gcs_uri: str, output_dir: str) -> str | None:
 
 # ── CLI ───────────────────────────────────────────────────────────────
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Extract frames from Veo 3.1 videos for scroll animations.\n"
-            "Replaces the Kling 3.0 step in the Antigravity + Nano Banana 2 workflow."
+            "Extract frames from Veo 3.1 videos for scroll animations.\nReplaces the Kling 3.0 step in the Antigravity + Nano Banana 2 workflow."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
@@ -548,25 +563,19 @@ Examples:
     parser.add_argument("--output", required=True, help="Output directory for frames")
 
     # Frame extraction options
-    parser.add_argument("--frame-count", type=int, default=DEFAULT_FRAME_COUNT,
-                        help=f"Number of frames to extract (default: {DEFAULT_FRAME_COUNT})")
-    parser.add_argument("--format", choices=SUPPORTED_FORMATS, default="webp",
-                        help="Output frame format (default: webp)")
-    parser.add_argument("--quality", type=int, default=DEFAULT_QUALITY,
-                        help=f"Compression quality 1-100 (default: {DEFAULT_QUALITY})")
-    parser.add_argument("--max-width", type=int, default=DEFAULT_MAX_WIDTH,
-                        help=f"Max frame width in px (default: {DEFAULT_MAX_WIDTH})")
+    parser.add_argument("--frame-count", type=int, default=DEFAULT_FRAME_COUNT, help=f"Number of frames to extract (default: {DEFAULT_FRAME_COUNT})")
+    parser.add_argument("--format", choices=SUPPORTED_FORMATS, default="webp", help="Output frame format (default: webp)")
+    parser.add_argument("--quality", type=int, default=DEFAULT_QUALITY, help=f"Compression quality 1-100 (default: {DEFAULT_QUALITY})")
+    parser.add_argument("--max-width", type=int, default=DEFAULT_MAX_WIDTH, help=f"Max frame width in px (default: {DEFAULT_MAX_WIDTH})")
 
     # Veo options (for pipeline mode)
     parser.add_argument("--veo-image", help="Reference image for Veo image-to-video")
-    parser.add_argument("--veo-model", default="veo-3.1-generate-001",
-                        help="Veo model (default: veo-3.1-generate-001)")
+    parser.add_argument("--veo-model", default="veo-3.1-generate-001", help="Veo model (default: veo-3.1-generate-001)")
     parser.add_argument("--aspect-ratio", default="16:9", choices=("16:9", "9:16"))
     parser.add_argument("--output-gcs", help="GCS URI for Veo output (Vertex AI mode)")
 
     # Misc
-    parser.add_argument("--no-scroll-js", action="store_true",
-                        help="Skip generating scroll JS controller")
+    parser.add_argument("--no-scroll-js", action="store_true", help="Skip generating scroll JS controller")
     parser.add_argument("--list-presets", action="store_true", help="List presets")
     parser.add_argument("-v", "--verbose", action="store_true")
 
@@ -614,11 +623,7 @@ Examples:
     # Mode 2: Full Veo pipeline
     preset = SCROLL_PRESETS.get(args.preset, {})
     prompt = args.veo_prompt or preset.get("veo_prompt")
-    frame_count = (
-        args.frame_count
-        if args.frame_count != DEFAULT_FRAME_COUNT
-        else preset.get("frame_count", DEFAULT_FRAME_COUNT)
-    )
+    frame_count = args.frame_count if args.frame_count != DEFAULT_FRAME_COUNT else preset.get("frame_count", DEFAULT_FRAME_COUNT)
     aspect = args.aspect_ratio or preset.get("aspect_ratio", "16:9")
 
     if not prompt:

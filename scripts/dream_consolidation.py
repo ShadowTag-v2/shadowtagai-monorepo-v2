@@ -332,10 +332,14 @@ if __name__ == "__main__":
         print("\n[GITLEAKS] Running nightly production scan...")
         gl_report = repo_root / ".beads" / f"gitleaks_nightly_{datetime.now(UTC).strftime('%Y%m%d')}.md"
         cmd = [
-            sys.executable, str(guardian_script),
-            "--mode", "scan",
-            "--scope", "production",
-            "--output", str(gl_report),
+            sys.executable,
+            str(guardian_script),
+            "--mode",
+            "scan",
+            "--scope",
+            "production",
+            "--output",
+            str(gl_report),
         ]
         if DRY_RUN:
             print(f"[GITLEAKS] DRY RUN — would run: {' '.join(cmd)}")

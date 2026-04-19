@@ -6,11 +6,7 @@ import json
 from pathlib import Path
 
 
-def repeat_prompt(text: str, times: int = 2, separator: str = "
-
---- REPEAT ---
-
-") -> str:
+def repeat_prompt(text: str, times: int = 2, separator: str = "\n\n--- REPEAT ---\n\n") -> str:
     if times < 1:
         raise ValueError("times must be >= 1")
     return separator.join([text] * times)

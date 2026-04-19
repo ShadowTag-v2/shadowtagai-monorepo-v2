@@ -20,7 +20,7 @@ def get_installation_token(app_id: int, pem_file_path: str, repo_owner: str, rep
 
     # Getting the installation ID for the repo
     repo_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/installation"
-    r = requests.get(repo_url, headers=headers)
+    r = requests.get(repo_url, headers=headers, timeout=30)
     if r.status_code != 200:
         print(f"Error getting installation for {repo_owner}/{repo_name}: {r.json()}")
         sys.exit(1)
@@ -29,7 +29,7 @@ def get_installation_token(app_id: int, pem_file_path: str, repo_owner: str, rep
 
     # Getting the token
     token_url = f"https://api.github.com/app/installations/{inst_id}/access_tokens"
-    r2 = requests.post(token_url, headers=headers)
+    r2 = requests.post(token_url, headers=headers, timeout=30)
     if r2.status_code != 201:
         print(f"Error getting token for installation {inst_id}: {r2.json()}")
         sys.exit(1)

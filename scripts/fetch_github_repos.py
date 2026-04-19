@@ -19,7 +19,7 @@ def get_repos(app_id, pem_path, owner_name):
     # Authenticate as App to get installations
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     resp.raise_for_status()
     installations = resp.json()
 
@@ -36,8 +36,7 @@ def get_repos(app_id, pem_path, owner_name):
     # Get installation access token
     resp = requests.post(
         f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
-        headers=headers,
-    )
+        headers=headers,, timeout=30)
     resp.raise_for_status()
     token_data = resp.json()
     access_token = token_data["token"]
@@ -53,8 +52,7 @@ def get_repos(app_id, pem_path, owner_name):
     while True:
         resp = requests.get(
             f"https://api.github.com/installation/repositories?per_page=100&page={page}",
-            headers=auth_headers,
-        )
+            headers=auth_headers,, timeout=30)
         resp.raise_for_status()
         data = resp.json()
         repos.extend(data["repositories"])

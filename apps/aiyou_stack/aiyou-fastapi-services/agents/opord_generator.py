@@ -245,7 +245,9 @@ class OPORDGenerator:
             },
             friendly={
                 "agents_available": context.get("agents_available", 600),
-                "models": context.get("models", ["gemini-2.5-flash", "gemini-3.1-flash-lite-preview"]),
+                "models": context.get(
+                    "models", ["gemini-2.5-flash", "gemini-3.1-flash-lite-preview"]
+                ),
                 "existing_code": context.get("existing_code", []),
             },
             attachments=context.get("attachments", []),

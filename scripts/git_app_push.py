@@ -21,7 +21,7 @@ def get_app_token(app_id, pem_path):
     headers = {"Authorization": f"Bearer {encoded_jwt}", "Accept": "application/vnd.github.v3+json"}
 
     print("[-] Fetching distinct Installation ID...")
-    resp = requests.get("https://api.github.com/app/installations", headers=headers)
+    resp = requests.get("https://api.github.com/app/installations", headers=headers, timeout=30)
     installations = resp.json()
 
     if not installations or "message" in installations:
@@ -33,7 +33,7 @@ def get_app_token(app_id, pem_path):
 
     print("[-] Acquiring ephemeral Installation Access Token...")
     token_url = f"https://api.github.com/app/installations/{installation_id}/access_tokens"
-    resp2 = requests.post(token_url, headers=headers)
+    resp2 = requests.post(token_url, headers=headers, timeout=30)
     token_data = resp2.json()
 
     if "token" not in token_data:

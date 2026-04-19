@@ -242,8 +242,7 @@ def main():
     # Per AGENTS.md Rule 23 + Cor.30 R3: No push without secret scan.
     print("  [4/5] Running Gitleaks Guardian gate...")
     guardian_result = subprocess.run(
-        [sys.executable, os.path.join(os.path.dirname(__file__), "gitleaks_guardian.py"),
-         "--mode", "gate"],
+        [sys.executable, os.path.join(os.path.dirname(__file__), "gitleaks_guardian.py"), "--mode", "gate"],
         check=False,
     )
     if guardian_result.returncode == 1:

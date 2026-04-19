@@ -63,7 +63,7 @@ grug say: **complexity very, very bad**
 
    - what error messages bug make? (error messages often grug's friend, even when mean to grug)
 
-   - what supposed to happen vs what actually happen? 
+   - what supposed to happen vs what actually happen?
 
    - what input make bug angry?
 
@@ -164,7 +164,7 @@ grug say: **complexity very, very bad**
 
    - what was actual problem? (often stupider than grug first think)
 
-   - why did solution work? 
+   - why did solution work?
 
    - how can grug avoid same trap next time?
 

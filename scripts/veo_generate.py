@@ -156,6 +156,7 @@ DEMO_PRESETS = {
 
 # ── Vertex AI Mode ────────────────────────────────────────────────────
 
+
 def generate_vertex_ai(
     prompt: str,
     output_gcs_uri: str,
@@ -217,6 +218,7 @@ def generate_vertex_ai(
 
 
 # ── Gemini API Mode ───────────────────────────────────────────────────
+
 
 def generate_gemini_api(
     prompt: str,
@@ -285,11 +287,7 @@ def generate_gemini_api(
         if hasattr(video, "video_bytes") and video.video_bytes:
             out_path = Path(output_dir) / f"veo_{int(time.time())}.mp4"
             out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_bytes(
-                base64.b64decode(video.video_bytes)
-                if isinstance(video.video_bytes, str)
-                else video.video_bytes
-            )
+            out_path.write_bytes(base64.b64decode(video.video_bytes) if isinstance(video.video_bytes, str) else video.video_bytes)
             logger.info("Video saved: %s", out_path)
             return str(out_path)
 
@@ -302,6 +300,7 @@ def generate_gemini_api(
 
 
 # ── Google Flow Browser Helper ────────────────────────────────────────
+
 
 def print_flow_instructions(prompt: str) -> None:
     """Print instructions for using Google Flow in browser."""
@@ -330,6 +329,7 @@ def print_flow_instructions(prompt: str) -> None:
 
 # ── Utilities ─────────────────────────────────────────────────────────
 
+
 def _guess_mime(path: str) -> str:
     """Guess MIME type from file extension."""
     ext = Path(path).suffix.lower()
@@ -343,6 +343,7 @@ def _guess_mime(path: str) -> str:
 
 
 # ── CLI ───────────────────────────────────────────────────────────────
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(

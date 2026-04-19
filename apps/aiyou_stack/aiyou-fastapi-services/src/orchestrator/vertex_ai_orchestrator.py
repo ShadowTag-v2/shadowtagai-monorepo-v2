@@ -41,7 +41,9 @@ class Config:
 
     # Model configuration
     gemini_model: str = os.getenv("GEMINI_MODEL_NAME", "gemini-3.1-flash-lite-preview")
-    gemini_tuned_model: str = os.getenv("GEMINI_TUNED_MODEL_NAME", "gemini-3.1-flash-lite-preview-tuned")
+    gemini_tuned_model: str = os.getenv(
+        "GEMINI_TUNED_MODEL_NAME", "gemini-3.1-flash-lite-preview-tuned"
+    )
 
     # SLA configuration
     latency_sla_p99_ms: int = int(os.getenv("LATENCY_SLA_P99_MS", "90"))
