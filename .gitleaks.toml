@@ -38,6 +38,34 @@ title = "Monorepo-Uphillsnowball Gitleaks Config"
     # Claude legacy plans
     '''\.claude/''',
     '''\.agents/''',
+    # ── Third-party incorporated work product (1,631 assets) ──
+    # Reference architectures, archived assets, and third-party
+    # libraries leveraged as incorporated work product.
+    '''archive/''',
+    '''\.gitnexus/''',
+    '''libs/cyberpunk_stack/''',
+    '''labs/''',
+    '''control/legacy_workspaces/''',
+    '''data/lancedb/''',
+    '''data/drive_ingest/''',
+    '''docs/canonicalization/''',
+    '''docs/legacy_shadowtag_v2/''',
+    '''\.agent/incoming_repos/''',
+    '''\.env\.backup''',
+    '''\.next/''',
+    # ── HIGH-risk third-party allowlist (audited 2026-04-19) ──
+    # Stripe sk_test_ key: Odoo payment_stripe test fixture (NOT our account)
+    # Vault s.Fg8w token: OpenTofu website example doc (NOT live)
+    # OpenClaw Discord: bundled SDK dist (NOT our Discord app)
+    '''libs/cyberpunk_stack/openclaw/dist/''',
+  ]
+
+  # Specific third-party test secrets (confirmed false positives)
+  regexes = [
+    # Odoo payment_stripe test key — NOT acct_1Syh9JEHnWpykeMi
+    '''sk_test_KJtHgNwt2KS3xM7QJPr4O5E8''',
+    # OpenTofu doc example vault token
+    '''s\.Fg8wA4nDrP08TirpjE''',
   ]
 
 # Allow Stripe publishable keys (public by design)
