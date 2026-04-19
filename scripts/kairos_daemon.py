@@ -43,6 +43,7 @@ HEALTH_CHECK_INTERVAL = 300  # 5 minutes
 DREAM_INTERVAL = 86400  # 24 hours
 DEAD_CODE_INTERVAL = 86400  # 24 hours
 LOOP_STEWARD_INTERVAL = 300  # 5 minutes
+STANDUP_INTERVAL = 86400  # 24 hours
 
 _running = True
 
@@ -177,6 +178,28 @@ def run_loop_steward() -> bool:
         return False
 
 
+def run_standup_report() -> bool:
+    """Generate and post standup report via gws CLI."""
+    gws_cmd = "gws"
+    try:
+        result = subprocess.run(
+            [gws_cmd, "workflow", "+standup-report"],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            cwd=str(REPO_ROOT),
+            env={**os.environ, "PATH": f"/opt/homebrew/bin:{os.environ.get('PATH', '')}"},
+        )
+        if result.returncode == 0:
+            logger.info("Standup report posted successfully")
+            return True
+        logger.warning("Standup report failed: %s", result.stderr[:300])
+        return False
+    except (subprocess.TimeoutExpired, FileNotFoundError) as e:
+        logger.warning("Standup report skipped: %s", e)
+        return False
+
+
 def write_heartbeat(status: dict) -> None:
     """Write heartbeat file for monitoring."""
     BEADS_DIR.mkdir(parents=True, exist_ok=True)
@@ -202,6 +225,7 @@ def main_loop(once: bool = False) -> None:
     last_dream = 0.0
     last_dead_code = 0.0
     last_steward = 0.0
+    last_standup = 0.0
 
     cycle = 0
     while _running:
@@ -232,6 +256,12 @@ def main_loop(once: bool = False) -> None:
             run_loop_steward()
             last_steward = now
             status["steward"] = "ran"
+
+        # Standup report (daily, at 8 AM local)
+        if now - last_standup >= STANDUP_INTERVAL and hour == 8:
+            run_standup_report()
+            last_standup = now
+            status["standup"] = "ran"
 
         write_heartbeat(status)
 
