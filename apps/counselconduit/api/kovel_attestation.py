@@ -129,7 +129,18 @@ async def create_attestation(req: AttestationRequest) -> SessionAttestation:
     """
     attestation = generate_attestation(req)
 
-    # TODO: Store in Firestore (immutable, append-only collection)
+    # Store in Firestore (immutable, append-only collection)
+    try:
+        try:
+            from apps.counselconduit.api.firestore_client import store_attestation
+        except ImportError:
+            from api.firestore_client import store_attestation  # type: ignore[no-redef]
+
+        await store_attestation(req.firm_id, attestation.model_dump())
+    except Exception as e:
+        # Non-fatal: attestation is still returned to client even if persistence fails
+        logger.warning("Firestore attestation store failed (non-fatal): %s", e)
+
     logger.info(
         "Kovel attestation generated: id=%s session=%s firm=%s",
         attestation.attestation_id,

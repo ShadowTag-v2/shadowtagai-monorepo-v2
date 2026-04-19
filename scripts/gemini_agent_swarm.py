@@ -26,6 +26,7 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -37,6 +38,39 @@ from core.rag_evolve import search_corpus  # type: ignore[import]
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("gemini_agent_swarm")
+
+# ── Prompt Repetition (arXiv 2512.14982) ────────────────────────────────────
+# Zero-cost accuracy boost (1-8%) for non-reasoning models.
+# Repeat the instruction at the end of the prompt to reduce drift.
+
+_NON_REASONING_MODELS = {
+    "gemini-3.1-flash-lite-preview",
+    "gemini-2.5-flash",
+    "gpt-4.1",
+    "gpt-4o-mini",
+    "claude-3.5-haiku",
+    "pplx-api",
+}
+
+# Read from env — defaults to gemini-3.1-flash-lite-preview
+_ACTIVE_MODEL = os.environ.get("SWARM_MODEL", "gemini-3.1-flash-lite-preview")
+
+
+def _apply_prompt_repetition(prompt: str, role: str) -> str:
+    """Apply prompt repetition if active model is non-reasoning.
+
+    Repeats the core instruction block at the end of the prompt,
+    separated by a delimiter, to reduce attention drift in flash/lite models.
+    """
+    if _ACTIVE_MODEL not in _NON_REASONING_MODELS:
+        return prompt
+    return (
+        f"{prompt}\n\n---\n\n"
+        f"[INSTRUCTION REPEAT — {role.upper()}]\n"
+        f"{prompt.split(chr(10), 1)[0]}\n"
+        f"Respond precisely and completely to the task above."
+    )
+
 
 # ── Agent role prompts ──────────────────────────────────────────────────────
 
@@ -122,9 +156,13 @@ async def run_swarm(query: str) -> dict:
     except Exception:
         ast_result = "[AST Nexus: Local graph compilation unavailable or timed out.]"
 
+    research_prompt = _apply_prompt_repetition(
+        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result),
+        "research",
+    )
     research_task = SwarmTask(
         "research",
-        _RESEARCH_TMPL.format(query=query, corpus_hits=corpus_text or "(no hits)", ast_context=ast_result),
+        research_prompt,
         tier=SwarmTier.FAST,
     )
     [research_result] = await router.dispatch([research_task])
@@ -132,14 +170,22 @@ async def run_swarm(query: str) -> dict:
     evidence_str = json.dumps(research_data.get("evidence", []), indent=2)
 
     # Phase 2 — Synthesize (Fast Path) + Critique (Heavy Lift): parallel
+    synth_prompt = _apply_prompt_repetition(
+        _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
+        "synthesize",
+    )
+    crit_prompt = _apply_prompt_repetition(
+        _CRITIQUE_TMPL.format(recommendation=evidence_str),
+        "critique",
+    )
     synth_task = SwarmTask(
         "synthesize",
-        _SYNTHESIZE_TMPL.format(query=query, evidence=evidence_str),
+        synth_prompt,
         tier=SwarmTier.FAST,
     )
     crit_task = SwarmTask(
         "critique_preliminary",
-        _CRITIQUE_TMPL.format(recommendation=evidence_str),
+        crit_prompt,
         tier=SwarmTier.HEAVY,
     )
     synth_result, _ = await router.dispatch([synth_task, crit_task])
@@ -147,20 +193,28 @@ async def run_swarm(query: str) -> dict:
     recommendation = synth_data.get("recommendation", synth_result.text[:500])
 
     # Phase 3 — Final critique + architect directive: parallel
+    final_crit_prompt = _apply_prompt_repetition(
+        _CRITIQUE_TMPL.format(recommendation=recommendation),
+        "critique",
+    )
     final_crit_task = SwarmTask(
         "critique_final",
-        _CRITIQUE_TMPL.format(recommendation=recommendation),
+        final_crit_prompt,
         tier=SwarmTier.HEAVY,
     )
     [crit_result] = await router.dispatch([final_crit_task])
     crit_data = _safe_json(crit_result.text)
 
-    arch_task = SwarmTask(
-        "architect",
+    arch_prompt = _apply_prompt_repetition(
         _ARCHITECT_TMPL.format(
             recommendation=recommendation,
             verdict=crit_data.get("verdict", "unknown"),
         ),
+        "architect",
+    )
+    arch_task = SwarmTask(
+        "architect",
+        arch_prompt,
         tier=SwarmTier.HEAVY,
     )
     [arch_result] = await router.dispatch([arch_task])
