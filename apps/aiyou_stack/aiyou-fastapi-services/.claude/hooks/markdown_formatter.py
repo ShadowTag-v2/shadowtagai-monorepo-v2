@@ -18,7 +18,7 @@ def detect_language(code):
         try:
             json.loads(s)
             return "json"
-        except:
+        except (json.JSONDecodeError, ValueError):
             pass
 
     # Python detection
