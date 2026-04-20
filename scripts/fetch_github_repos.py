@@ -34,9 +34,7 @@ def get_repos(app_id, pem_path, owner_name):
         return []
 
     # Get installation access token
-    resp = requests.post(
-        f"https://api.github.com/app/installations/{target_installation_id}/access_tokens",
-        headers=headers,, timeout=30)
+    resp = requests.post(f"https://api.github.com/app/installations/{target_installation_id}/access_tokens", headers=headers, timeout=30)
     resp.raise_for_status()
     token_data = resp.json()
     access_token = token_data["token"]
@@ -50,9 +48,7 @@ def get_repos(app_id, pem_path, owner_name):
     repos = []
     page = 1
     while True:
-        resp = requests.get(
-            f"https://api.github.com/installation/repositories?per_page=100&page={page}",
-            headers=auth_headers,, timeout=30)
+        resp = requests.get(f"https://api.github.com/installation/repositories?per_page=100&page={page}", headers=auth_headers, timeout=30)
         resp.raise_for_status()
         data = resp.json()
         repos.extend(data["repositories"])
