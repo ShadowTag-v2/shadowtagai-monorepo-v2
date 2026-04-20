@@ -343,7 +343,7 @@ if __name__ == "__main__":
         if DRY_RUN:
             print(f"[GITLEAKS] DRY RUN — would run: {' '.join(cmd)}")
         else:
-            result = _sp.run(cmd, capture_output=True, text=True, timeout=120)
+            result = _sp.run(cmd, capture_output=True, text=True, timeout=300)
             if result.returncode == 0:
                 print(f"[GITLEAKS] ✅ Production clean — report at {gl_report}")
             else:
