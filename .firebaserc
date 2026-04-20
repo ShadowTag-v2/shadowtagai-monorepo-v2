@@ -6,10 +6,20 @@
   "targets": {
     "shadowtag-omega-v4": {
       "hosting": {
-        "kovelai": ["kovelai"],
-        "shadowtagai": ["shadowtagai"],
-        "default-site": ["shadowtag-omega-v4"]
+        "kovelai": [
+          "kovelai"
+        ],
+        "shadowtagai": [
+          "shadowtagai"
+        ],
+        "default-site": [
+          "shadowtag-omega-v4"
+        ],
+        "uphillsnowball": [
+          "uphillsnowball"
+        ]
       }
     }
-  }
+  },
+  "etags": {}
 }

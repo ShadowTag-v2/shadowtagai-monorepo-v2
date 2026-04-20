@@ -35,8 +35,12 @@ repo_roots:
 
   # ─── Folded-in (labs/data/control) ───
   - name: uphillsnowball
-    status: folded-in
+    status: canonical
     path: labs/uphillsnowball
+    notes: >-
+      Sovereign R&D Lab. Dashboard at labs/uphillsnowball/dashboard.
+      API at labs/uphillsnowball/api (Cloud Run source deploy).
+      F1 eval harness at scripts/eval_uphillsnowball_f1.py.
 
   - name: governance-control-plane
     status: canonical
@@ -212,7 +216,7 @@ hardened_state:
   nested_git_remaining: 0
   firestore_databases: 2
   firestore_collections: ["beta_accounts", "kovelai_firms", "kovelai_leads", "leads"]
-  hosting_targets: 3
+  hosting_targets: 4
   preview_channels: 2
   cloud_functions: 1
   alert_policies: 7
