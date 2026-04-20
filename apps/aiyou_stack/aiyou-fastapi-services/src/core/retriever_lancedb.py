@@ -219,7 +219,8 @@ class LanceDBRetriever:
 
     def list_tables(self) -> list[str]:
         """List all available tables in the LanceDB database."""
-        return self.db.table_names()
+        result = self.db.list_tables()
+        return result.tables if hasattr(result, "tables") else list(result)
 
     def table_stats(self) -> dict:
         """Get statistics about the current table."""

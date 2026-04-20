@@ -70,7 +70,9 @@ def get_or_create_table(db):
         pa.field("domain", pa.string()),
         pa.field("ingested_at", pa.string()),
     ])
-    if "workspace_knowledge" in db.table_names():
+    result = db.list_tables()
+    table_names = result.tables if hasattr(result, "tables") else list(result)
+    if "workspace_knowledge" in table_names:
         return db.open_table("workspace_knowledge")
     return db.create_table("workspace_knowledge", schema=schema)
 
