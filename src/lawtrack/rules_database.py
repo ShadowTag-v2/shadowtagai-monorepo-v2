@@ -22,18 +22,20 @@ from enum import Enum
 
 class RuleType(Enum):
     """Rule categories"""
-    FILING = "filing"                  # Filing deadlines
-    DISCOVERY = "discovery"            # Discovery timelines
-    MOTION = "motion"                  # Motion practice
-    APPEARANCE = "appearance"          # Court appearances
-    NOTICE = "notice"                  # Notice requirements
-    SERVICE = "service"                # Service of process
-    APPEAL = "appeal"                  # Appellate procedures
-    TRIAL = "trial"                    # Trial procedures
+
+    FILING = "filing"  # Filing deadlines
+    DISCOVERY = "discovery"  # Discovery timelines
+    MOTION = "motion"  # Motion practice
+    APPEARANCE = "appearance"  # Court appearances
+    NOTICE = "notice"  # Notice requirements
+    SERVICE = "service"  # Service of process
+    APPEAL = "appeal"  # Appellate procedures
+    TRIAL = "trial"  # Trial procedures
 
 
 class Jurisdiction(Enum):
     """Jurisdiction types"""
+
     FEDERAL = "federal"
     STATE = "state"
     LOCAL = "local"
@@ -43,6 +45,7 @@ class Jurisdiction(Enum):
 @dataclass
 class TimeCalculation:
     """Time calculation rules"""
+
     base_event: str  # Event that triggers the timeline
     offset_days: int  # Days to add/subtract
     business_days_only: bool  # Count only business days
@@ -53,6 +56,7 @@ class TimeCalculation:
 @dataclass
 class JurisdictionRule:
     """Procedural rule representation"""
+
     id: str
     jurisdiction: Jurisdiction
     jurisdiction_name: str  # e.g., "California", "Federal", "E.D. Virginia"
@@ -98,8 +102,8 @@ class RulesDatabase:
         """Load default federal and common state rules"""
 
         # Federal Rule: Response to Complaint
-        self.rules['frcp_12_a_1_a'] = JurisdictionRule(
-            id='frcp_12_a_1_a',
+        self.rules["frcp_12_a_1_a"] = JurisdictionRule(
+            id="frcp_12_a_1_a",
             jurisdiction=Jurisdiction.FEDERAL,
             jurisdiction_name="Federal",
             rule_type=RuleType.FILING,
@@ -128,8 +132,8 @@ class RulesDatabase:
         )
 
         # Federal Rule: Discovery Cut-Off
-        self.rules['frcp_26_d'] = JurisdictionRule(
-            id='frcp_26_d',
+        self.rules["frcp_26_d"] = JurisdictionRule(
+            id="frcp_26_d",
             jurisdiction=Jurisdiction.FEDERAL,
             jurisdiction_name="Federal",
             rule_type=RuleType.DISCOVERY,
@@ -155,8 +159,8 @@ class RulesDatabase:
         )
 
         # California State Rule: Summary Judgment
-        self.rules['ca_ccp_437c'] = JurisdictionRule(
-            id='ca_ccp_437c',
+        self.rules["ca_ccp_437c"] = JurisdictionRule(
+            id="ca_ccp_437c",
             jurisdiction=Jurisdiction.STATE,
             jurisdiction_name="California",
             rule_type=RuleType.MOTION,
@@ -184,8 +188,8 @@ class RulesDatabase:
         )
 
         # New York State Rule: Motion to Dismiss
-        self.rules['ny_cplr_3211'] = JurisdictionRule(
-            id='ny_cplr_3211',
+        self.rules["ny_cplr_3211"] = JurisdictionRule(
+            id="ny_cplr_3211",
             jurisdiction=Jurisdiction.STATE,
             jurisdiction_name="New York",
             rule_type=RuleType.MOTION,
