@@ -122,26 +122,26 @@ unless the user explicitly directs a control plane change:
 
 ## Hardened state
 
-- v9.6 canonicalized: 2026-04-20
-- Commit: `02f2659f61`
+- v9.7 canonicalized: 2026-04-20
+- Commit: `c220ff2234`
 - CI Python: 3.13 (all 3 workflows)
 - venv primary: CPython 3.14.3
-- Firestore: 2 databases (`(default)`, `shadowtag-engine`)
+- Firestore: 2 databases (`(default)`, `shadowtag-engine`) — CANONICAL database layer (Supabase evaluated and rejected; see Firestore-vs-Supabase verdict below)
 - Firestore rules: zero-trust deployed (default deny-all, admin-only access)
-- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.5)
+- Firebase deployment: MCP-first doctrine enforced (see `GEMINI.md` v9.6)
 - Semantic Kernel: .NET 11.0 Preview 2 (UNVERIFIED — see GEMINI.md v9.6)
-- Tests: 87 unit passed (E2E skipped — live Cloud Run endpoints)
-- Lighthouse: shadowtagai P89/A100/BP100/SEO100, kovelai P89/A96/BP100/SEO100 (PageSpeed Insights verified 2026-04-20)
-- Dead code: clean (vulture + ruff — 0 violations at 80%+ confidence in gitleaks_guardian.py)
+- Tests: 90 unit passed, 2 skipped (torch), 0 failed (E2E skipped — live Cloud Run endpoints)
+- Lighthouse: shadowtagai P89/A100/BP100/SEO100, kovelai P89/A97/BP100/SEO100, uphillsnowball A88+ (noindex intentional)
+- Dead code: clean (vulture 90%+ = 0 findings, 10 whitelisted false positives)
 - CSP headers: full parity across kovelai + shadowtagai (unsafe-eval removed)
 - Infrastructure: shadowtagai.web.app + kovelai.web.app + shadowtag-omega-v4.web.app deployed
 - Nested `.git` directories: 0 (reference_architectures/ clones are gitignored)
-- Ruff violations: 0 in counselconduit (ruff 0.11.8, `--fix --unsafe-fixes` applied)
+- Ruff: 990 remaining (ALL in tools/mcp-toolbox third-party — 0 first-party violations)
 - CounselConduit: v3.1.0 on Cloud Run (Phase 1 + 2 LIVE, 27 endpoints, revision `counselconduit-00015-mmq`)
 - Cloud Armor WAF: `apps/counselconduit/cloud_armor_policy.yaml`
 - Prompt Repetition: wired into Oracle Studio + Vent Mode (arXiv 2512.14982)
 - OG Social Images: generated + deployed for both sites
-- Pre-commit: Gitleaks + Ruff + Bandit + detect-private-key
+- Pre-commit: Gitleaks 8.22.1 + Ruff 0.11.8 + Bandit 1.9.4 + detect-private-key
 - OpenTofu: 19 resources provisioned (IAM + alerts + log metrics)
 - GitNexus: 445,205 nodes | 685,812 edges | 6,090 clusters | 300 flows (indexed 2026-04-18)
 - Risk Register: 46 risks tracked (0 critical open, Risk #46 resolved GCP sprawl audit)
@@ -160,7 +160,7 @@ unless the user explicitly directs a control plane change:
 - Aegaeon Protocol: context_cache.py + swarm_router.py scaffolded (core/aegaeon/), no active slab (data/aegaeon/ empty), 90% discount available via implicit caching on Gemini 2.5+ models
 - Sovereign MLX: kv_cache_slab.py scaffolded (core/sovereign_mlx/), slab_prompt.txt exists (26KB corpus), no kv_cache_slab.bin built
 - Intelligence Pipeline: 9 scripts (domain_tagger → github_sync), retriever.py LanceDB search wired
-- Drive Ingest: 2,860 docs extracted, 897 vectorized to data/lancedb/workspace_knowledge
+- Drive Ingest: 2,860 docs extracted + 1,088 markdown files queued for re-vectorization (LanceDB table rebuilt 2026-04-20)
 - Zero CPU Router: 4-tier dispatch cascade (ANE→Metal/MLX→Vertex AI), vulture fixes applied
 - KAIROS Daemon: datetime.UTC→datetime.timezone.utc fix, --once test passes
 - .venv: CPython 3.14.3 + mlx + litellm 1.83.7 + lancedb 0.30.2 + scipy 1.17.1 + numpy 2.4.3
@@ -173,11 +173,15 @@ unless the user explicitly directs a control plane change:
 - ZT1 Deadlines: frcp_calculator.py + test_frcp_calculator.py (FRCP Rule 6 date calculator)
 - LawTrack: core/lawtrack (schema + API + services) + src/lawtrack (enforcement + rules_database + timeline_engine) — 1,305 LOC
 - 50-State Holidays: infra/migrations/003_jurisdiction_holidays_50_states.sql (339 LOC, all 50 state judicial holidays)
-- LawTrack UI: apps/lawtrack-ui (React + Vite + TypeScript case dashboard)
-- Ruff: 62,221 unsafe-fixes applied (v9.6), tools/ excluded in pyproject.toml, 830 remaining (non-critical style)
-- Vulture: 0 findings at 90%+ confidence across recovered Python
-- Tests: 10 passed (test_judge6.py — 10/10, test_dispatch_compute.py — 5/5)
+- LawTrack UI: apps/lawtrack-ui (React + Vite + TypeScript case dashboard), 0 biome violations
+- Ruff: 62,221 unsafe-fixes applied (v9.7), tools/ excluded in pyproject.toml, 990 remaining (all third-party)
+- Vulture: 0 findings at 90%+ confidence (10 whitelisted: SwarmVoter, VoteDecision, SavedModelMetadata, etc.)
+- Tests: 90 passed, 2 skipped (torch), 0 failed (test_judge6.py 10/10, test_dispatch_compute.py 5/5)
 - CI/CD: 10x_vibe_matrix.yml (4-phase: Gitleaks → ruff+vulture+biome → UI audit → auto-commit)
+- CI/CD: gca-pr-review.yml (dependabot guard: `if: github.actor != 'dependabot[bot]'` on setup job)
+- CI/CD: judge6_yolo_gate.yml (dependabot guard on csrmc-audit job)
+- CI/CD: antigravity_ci.yml (dependabot guard on test-proxy job)
+- GCA vs 10x Compatibility: DO NOT FOLD — orthogonal concerns (PR review vs hygiene enforcement)
 - GCP Cleanup: 9 APIs disabled, 3 Cloud Run deleted, 5 secrets purged (2026-04-20)
 - Veo 3.1 Pipeline: veo_pipeline.py operational (6 presets, Veo 3.1/3.1-Fast/3.1-Lite/3.0/2.0), google-genai SDK 1.66.0+, GCS bucket gs://shadowtag-omega-v4-media, frame extraction via ffmpeg 8.1
 - Video Compression: 52MB → 20MB kovelai (10 videos), 19MB → 8.8MB shadowtagai (7 videos), CRF 30, H.264, faststart
@@ -187,18 +191,35 @@ unless the user explicitly directs a control plane change:
 - Security Headers: CSP + HSTS (preload) + XFO (DENY) + CORP + COOP + Permissions-Policy — all 8 verified live
 - Multi-site Deploy: kovelai.web.app + shadowtagai.web.app + shadowtag-omega-v4.web.app — all 3 live (2026-04-20)
 - Launchd Daemons: com.pnkln.kairos (5-min) + com.pnkln.dream-consolidation (nightly 03:00) — loaded via launchctl
+- LanceDB: corrupted table ablated + rebuilt (2026-04-20); drive_embedder.py re-ingesting 1,088 markdown files via Vertex AI text-embedding-005
 - LanceDB Retriever Bridge: retriever_lancedb.py (local-first RAG, Vertex AI fallback, hybrid search)
-- Ruff Unsafe Fixes: 1 hidden fix applied (995→994 remaining, all in tools/mcp-toolbox third-party)
+- Ruff Unsafe Fixes: 1 hidden fix applied (995→990 remaining, all in tools/mcp-toolbox third-party)
 - Gitleaks Production Sweep: 173 findings (all in docs/CANONICALIZATION_REPORT — third-party token samples, not real secrets)
 - Staging Channel: kovelai--staging-zjaqs7fe.web.app (7d TTL, deployed 2026-04-20)
 - Cloud Run Health: CounselConduit 200 OK, Stripe webhook endpoint LIVE (400 on invalid payload = correct)
-
+- SSE Transport: /vent/message/stream 200 OK (LLM session error on unauth probe = correct), /enclave/v1/query/stream 403 (Kovel auth required = correct)
+- HeadFade Triage: .next/ cache purged, no hallucinated package.json found in api/ (Python FastAPI only)
+- Security Tools: 4 repos cloned to third_party/security/ (gitleaks, gitleaks-action, secrets-patterns-db, betterleaks) — .git purged, gitignored
+- Secret Scanner Duo: Gitleaks PRIMARY (CI/pre-commit), Betterleaks SECONDARY (local validation, CEL engine evaluated)
+- npm audit: 0 vulnerabilities in lawtrack-ui
+- Biome: 0 violations in lawtrack-ui (8 missing button types fixed)
+- .gitignore: *.egg-info/, .pytest_cache/, .ruff_cache/, third_party/security/ added
 - Gemma-4 31B Sovereign: gemma-4-31B-it-Q4_K_M.gguf (17GB) at ~/models/, served via llama-server (ANE build) on 127.0.0.1:8080, OpenAI-compat API, thinking mode active, inference verified (2026-04-20)
 - GEPA Router: dspy_gepa_router.py (118 LOC) at tools/orchestrator/, sidekick :8080 + auditor :8081 endpoints configured
 - Nested .git purge: 30 dirs removed from external_repos/ (was 30 → 0), verified clean (2026-04-20)
 - .env quarantine: 5 Kosmos test configs untracked from git index, *.env in .gitignore
 - Vulture whitelist: vulture_whitelist.py added (NotebookLM dynamic import false positive)
 - Dead code sweep: 10 vulture findings fixed (judge_architecture.py, fabric.py, judge_six_pipeline.py, governance_tools.py)
+
+## Firestore-vs-Supabase verdict
+
+Firestore is the CANONICAL database for this architecture. Supabase was evaluated and rejected:
+- Firestore is native GCP (zero network egress from Cloud Run, ADC auth, no extra credentials)
+- CounselConduit Phases 1+2 are LIVE on Firestore — migration = downtime risk
+- Document model is natural fit for sessions, transcripts, Kovel attestation receipts, tenant configs
+- Supabase would COMPLECT the architecture (violating Simple Made Easy doctrine)
+- Supabase adds external dependency, connection pooling headaches, secrets sprawl, and dual-auth complexity
+- The only Supabase advantage (PostgreSQL JOINs) is not needed for CounselConduit's document-oriented data model
 
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
