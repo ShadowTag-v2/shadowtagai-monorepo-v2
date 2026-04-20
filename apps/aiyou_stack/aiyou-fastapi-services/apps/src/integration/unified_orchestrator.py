@@ -86,7 +86,7 @@ class UnifiedPinklnOrchestrator:
 
         # Create Gemini function caller
         self.gemini_caller = GeminiFunctionCaller(
-            model_name="gemini-2.0-flash-exp",  # Fastest model
+            model_name="gemini-3.1-flash-lite-preview",  # Fastest model
             tools=self.registry.get_all_tools(),
             api_key=api_key,
             system_instruction=self._get_system_instruction(),

@@ -9,7 +9,7 @@ from vertexai.generative_models import GenerativeModel, Part
 from src.pnkln.prompts import PNKLN_PROMPTS
 
 
-def tokable_script(theme: str, persona: str, model_name: str = "gemini-1.5-flash-001") -> str:
+def tokable_script(theme: str, persona: str, model_name: str = "gemini-3.1-flash-lite-preview-001") -> str:
     """Write a 45-90s emotion-first script."""
     model = GenerativeModel(model_name)
     system_prompt = PNKLN_PROMPTS.get("sys_tokable", "You are pnkln-tokable.")

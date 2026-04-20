@@ -145,7 +145,7 @@ class GeminiIngestionOrchestrator:
         # Load configuration from environment
         self.project_id = os.getenv("PROJECT_ID", "pnkln-core-stack")
         self.region = os.getenv("REGION", "us-central1")
-        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp")
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite-preview")
 
         # Quality gates
         self.min_items_per_day = int(os.getenv("MIN_ITEMS_PER_DAY", "100"))

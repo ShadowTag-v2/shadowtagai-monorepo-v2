@@ -731,7 +731,7 @@ class EnhancedKeyRotator:
             if key_health.consecutive_failures >= 2:
                 flow.request.path = flow.request.path.replace(
                     "gemini-3.1-flash-lite-preview",
-                    "gemini-1.5-flash",
+                    "gemini-3.1-flash-lite-preview",
                 )
                 flow.request.path = flow.request.path.replace("gemini-pro", "gemini-flash")
                 print("🔄 Model fallback: pro → flash (key stress)")

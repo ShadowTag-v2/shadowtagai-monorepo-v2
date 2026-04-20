@@ -41,7 +41,7 @@ SLAB_SOURCES = [
 ]
 
 # Default model for caching
-DEFAULT_MODEL = "models/gemini-2.5-flash"
+DEFAULT_MODEL = "models/gemini-3.1-flash-lite-preview"
 DEFAULT_TTL_HOURS = 24
 
 

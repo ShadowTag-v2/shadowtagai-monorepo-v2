@@ -46,7 +46,7 @@ class ModelType(Enum):
 
     CLAUDE = "claude-sonnet-4-20250514"
     GROK = "grok-2-latest"
-    GEMINI = "gemini-2.0-flash-exp"
+    GEMINI = "gemini-3.1-flash-lite-preview"
     GPT4 = "gpt-4-turbo-preview"
 
 
@@ -128,7 +128,7 @@ class ConsensusOrchestrator:
 
             if self.google_key:
                 genai.configure(api_key=self.google_key)
-                self.gemini_model = genai.GenerativeModel("gemini-2.0-flash-exp")
+                self.gemini_model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
             else:
                 self.gemini_model = None
         except ImportError:

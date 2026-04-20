@@ -17,7 +17,6 @@ Usage:
 
 from __future__ import annotations
 
-import json
 import logging
 import os
 from pathlib import Path
@@ -30,7 +29,6 @@ LANCEDB_PATH = REPO_ROOT / "data" / "lancedb" / "workspace_knowledge"
 # Non-reasoning models where prompt repetition boosts accuracy
 _NON_REASONING_MODELS = {
     "gemini-3.1-flash-lite-preview",
-    "gemini-2.5-flash",
     "gpt-4.1",
     "gpt-4o-mini",
     "claude-3.5-haiku",

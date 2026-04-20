@@ -48,7 +48,7 @@ class Config:
 
     # Model Names
     CLAUDE_MODEL: str = "claude-sonnet-4-20250514"
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_MODEL: str = "gemini-3.1-flash-lite-preview"
     GPT_MODEL: str = "gpt-4-turbo-preview"
     GROK_MODEL: str = "grok-2-latest"
 

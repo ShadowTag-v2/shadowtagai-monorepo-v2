@@ -42,7 +42,7 @@ class SwarmRouter:
     def __init__(
         self,
         cache_name: str | None = None,
-        model: str = "models/gemini-2.5-flash",
+        model: str = "models/gemini-3.1-flash-lite-preview",
     ):
         self._cache_name = cache_name
         self._model = model

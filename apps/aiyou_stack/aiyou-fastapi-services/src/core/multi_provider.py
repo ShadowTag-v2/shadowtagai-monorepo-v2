@@ -80,9 +80,9 @@ class MultiProviderExecutor:
         "claude-sonnet-4-5-20250929": {"input": 3.00, "output": 15.00},
         "claude-opus-4-20250514": {"input": 15.00, "output": 75.00},
         "claude-3-5-haiku-20241022": {"input": 0.80, "output": 4.00},
-        "gemini-2.0-flash-exp": {"input": 0.0, "output": 0.0},  # Free tier
+        "gemini-3.1-flash-lite-preview": {"input": 0.0, "output": 0.0},  # Free tier
         "gemini-3.1-flash-lite-preview": {"input": 1.25, "output": 5.00},
-        "gemini-1.5-flash": {"input": 0.075, "output": 0.30},
+        "gemini-3.1-flash-lite-preview": {"input": 0.075, "output": 0.30},
     }
 
     def __init__(
@@ -246,7 +246,7 @@ class MultiProviderExecutor:
         if not self.gemini_available:
             raise ValueError("Gemini API key not configured")
 
-        model_name = model or "gemini-2.0-flash-exp"
+        model_name = model or "gemini-3.1-flash-lite-preview"
         temperature = temperature if temperature is not None else 0.7
 
         generation_config = {

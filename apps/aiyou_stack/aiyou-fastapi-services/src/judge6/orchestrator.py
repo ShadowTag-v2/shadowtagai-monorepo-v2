@@ -120,21 +120,21 @@ class Judge6Orchestrator:
 
         # Initialize LLM clients for different agents
         self.supervisor_llm = ChatVertexAI(
-            model="gemini-2.0-flash-exp",
+            model="gemini-3.1-flash-lite-preview",
             project=project_id,
             location=location,
             temperature=0.1,  # Low temperature for consistent routing
         )
 
         self.thinking_llm = ChatVertexAI(
-            model="gemini-2.0-flash-thinking-exp-1219",
+            model="gemini-3.1-flash-lite-preview-thinking-exp-1219",
             project=project_id,
             location=location,
             temperature=0.3,  # Slightly higher for reasoning
         )
 
         self.fast_llm = ChatVertexAI(
-            model="gemini-2.0-flash-exp",
+            model="gemini-3.1-flash-lite-preview",
             project=project_id,
             location=location,
             temperature=0,  # Deterministic for classification

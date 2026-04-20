@@ -221,7 +221,7 @@ class GeminiNSScanKernel(NSScanKernel):
 
             genai.configure(api_key=self.gemini_api_key)
             self._gemini_model = genai.GenerativeModel(
-                model_name="gemini-1.5-flash",
+                model_name="gemini-3.1-flash-lite-preview",
                 generation_config={
                     "temperature": 0.1,
                     "max_output_tokens": 500,

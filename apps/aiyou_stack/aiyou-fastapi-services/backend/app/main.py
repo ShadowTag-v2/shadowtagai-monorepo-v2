@@ -43,7 +43,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     gemini_api_key = getattr(settings, "gemini_api_key", None)
     gemini_service = GeminiService(
         api_key=gemini_api_key,
-        model_name=getattr(settings, "gemini_model", "gemini-2.0-flash-exp"),
+        model_name=getattr(settings, "gemini_model", "gemini-3.1-flash-lite-preview"),
     )
 
     # Register the predefined workflows

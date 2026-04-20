@@ -34,7 +34,7 @@ class SearchProvider:
 DEFAULT_SEARCH_PROVIDER = SearchProvider.BRAVE
 
 # Model configuration
-INTENT_CLASSIFIER_MODEL = "gemini-1.5-flash"
+INTENT_CLASSIFIER_MODEL = "gemini-3.1-flash-lite-preview"
 ORCHESTRATOR = "cor_routing_layer"
 
 # ============================================================================

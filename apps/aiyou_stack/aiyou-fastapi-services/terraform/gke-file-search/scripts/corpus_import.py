@@ -116,7 +116,7 @@ def query_corpus(project_id: str, region: str, vertical: str, query: str, top_k:
             sys.exit(1)
 
         # Create model with RAG retrieval
-        model = GenerativeModel("gemini-2.0-flash-exp")
+        model = GenerativeModel("gemini-3.1-flash-lite-preview")
 
         response = model.generate_content(
             query,

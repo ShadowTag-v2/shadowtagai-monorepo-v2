@@ -32,7 +32,7 @@ class ChainOfThought(Skill):
         name: str = "ChainOfThought",
         description: str = "Step-by-step reasoning with explicit intermediate steps",
         initial_rating: float = 1500.0,
-        model: str = "gemini-2.0-flash-exp",
+        model: str = "gemini-3.1-flash-lite-preview",
     ):
         # CheatSheet for CoT
         cheatsheet = """

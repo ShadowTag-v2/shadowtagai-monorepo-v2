@@ -102,7 +102,7 @@ def main():
     # Create function caller
     print("🚀 Initializing Gemini Function Caller...")
     caller = GeminiFunctionCaller(
-        model_name="gemini-2.0-flash-exp",
+        model_name="gemini-3.1-flash-lite-preview",
         tools=tools,
         system_instruction="""You are a research assistant. When given a topic to research:
 1. First call research_topic to gather information

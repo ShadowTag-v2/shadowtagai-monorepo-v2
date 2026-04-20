@@ -48,7 +48,7 @@ def function_caller():
     ]
 
     return GeminiFunctionCaller(
-        model_name="gemini-2.0-flash-exp",  # Fastest model
+        model_name="gemini-3.1-flash-lite-preview",  # Fastest model
         tools=tools,
     )
 

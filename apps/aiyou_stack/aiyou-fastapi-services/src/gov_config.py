@@ -22,9 +22,9 @@ class EnvironmentType(StrEnum):
 class ModelTier(StrEnum):
     """Gemini model tiers for cost/performance optimization."""
 
-    FLASH_LITE = "gemini-2.0-flash-lite"  # $0.00027/decision
-    FLASH = "gemini-2.0-flash"  # $0.0012/decision
-    PRO = "gemini-2.0-pro"  # $0.0049/decision
+    FLASH_LITE = "gemini-3.1-flash-lite-preview-lite"  # $0.00027/decision
+    FLASH = "gemini-3.1-flash-lite-preview"  # $0.0012/decision
+    PRO = "gemini-3.1-flash-lite-preview"  # $0.0049/decision
 
 
 class DeploymentMode(StrEnum):

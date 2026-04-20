@@ -59,7 +59,7 @@ class IngestionConfig:
     )
 
     # Gemini API Configuration
-    gemini_model: str = "gemini-2.5-flash-lite"  # Cost-effective at $0.10/$0.40
+    gemini_model: str = "gemini-3.1-flash-lite-preview-lite"  # Cost-effective at $0.10/$0.40
     gemini_max_tokens: int = 8192
     gemini_temperature: float = 0.3  # Lower temperature for factual extraction
 

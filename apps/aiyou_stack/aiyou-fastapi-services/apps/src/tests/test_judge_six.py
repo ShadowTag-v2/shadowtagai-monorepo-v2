@@ -45,7 +45,7 @@ def judge_six():
         ),
     ]
 
-    caller = GeminiFunctionCaller(model_name="gemini-2.0-flash-exp", tools=tools)
+    caller = GeminiFunctionCaller(model_name="gemini-3.1-flash-lite-preview", tools=tools)
 
     return JudgeSix(
         caller=caller,

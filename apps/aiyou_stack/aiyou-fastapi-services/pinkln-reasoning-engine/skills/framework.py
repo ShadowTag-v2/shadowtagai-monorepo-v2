@@ -47,7 +47,7 @@ class FrameworkReasoning(Skill):
         name: str = "FrameworkReasoning",
         description: str = "Apply structured frameworks (SWOT, 5 Whys, etc.)",
         initial_rating: float = 1550.0,
-        model: str = "gemini-2.0-flash-exp",
+        model: str = "gemini-3.1-flash-lite-preview",
         default_framework: Framework = Framework.FIRST_PRINCIPLES,
     ):
         # CheatSheet for Framework reasoning

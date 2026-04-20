@@ -20,7 +20,7 @@ class ModelType(Enum):
 
     CLAUDE = "claude-sonnet-4-20250514"
     GROK = "grok-2-latest"
-    GEMINI = "gemini-2.0-flash-exp"
+    GEMINI = "gemini-3.1-flash-lite-preview"
     GPT5 = "gpt-4-turbo-preview"  # Update when GPT-5 available
 
 

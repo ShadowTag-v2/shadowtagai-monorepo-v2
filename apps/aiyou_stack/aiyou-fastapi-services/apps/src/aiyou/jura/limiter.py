@@ -47,9 +47,9 @@ class JuraLimiter:
             max_response_time_ms=2000,
             max_cost_usd=0.01,
             models=[
-                "gemini-2.5-flash-preview-05-20",  # Primary: Gemini 2.5 Flash Preview
-                "gemini-2.0-flash",  # Fallback 1
-                "gemini-2.0-flash-lite",  # Fallback 2 (rate limit)
+                "gemini-3.1-flash-lite-preview-preview-05-20",  # Primary: Gemini 2.5 Flash Preview
+                "gemini-3.1-flash-lite-preview",  # Fallback 1
+                "gemini-3.1-flash-lite-preview-lite",  # Fallback 2 (rate limit)
             ],
             agent_pool="execution",
         ),
@@ -60,7 +60,7 @@ class JuraLimiter:
             models=[
                 "gemini-3.1-flash-lite-preview-preview-06-05",  # Primary: Gemini 2.5 Pro Preview
                 "claude-sonnet-4-20250514",  # Fallback 1: Claude Sonnet 4
-                "gemini-2.0-flash",  # Fallback 2 (rate limit)
+                "gemini-3.1-flash-lite-preview",  # Fallback 2 (rate limit)
             ],
             agent_pool="strategy",
         ),
@@ -151,7 +151,7 @@ class JuraLimiter:
     def get_primary_model(self, tier: CostTier) -> str:
         """Get the primary (first) model for a tier."""
         models = self.get_allowed_models(tier)
-        return models[0] if models else "gemini-2.0-flash"
+        return models[0] if models else "gemini-3.1-flash-lite-preview"
 
     def get_fallback_model(self, tier: CostTier, failed_model: str) -> str | None:
         """Get next fallback model when primary is rate limited.
@@ -197,7 +197,7 @@ class JuraLimiter:
                 return model
 
         # All rate limited - return last fallback anyway
-        return models[-1] if models else "gemini-2.0-flash"
+        return models[-1] if models else "gemini-3.1-flash-lite-preview"
 
     def estimate_cost(self, tier: CostTier, input_tokens: int, output_tokens: int) -> float:
         """Estimate cost for a request based on tier.

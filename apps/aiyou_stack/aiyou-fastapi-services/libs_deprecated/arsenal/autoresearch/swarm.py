@@ -11,7 +11,7 @@ class CavMTOE:
 
     def __init__(self):
         self.client = genai.Client(vertexai=True, location="us-central1")
-        self.model = "gemini-2.0-flash-exp"
+        self.model = "gemini-3.1-flash-lite-preview"
         self.personas = [
             {"role": "Security", "bias": "Paranoid", "prompt": "Block if any secrets exposed."},
             {"role": "Product", "bias": "Optimistic", "prompt": "Approve if UX improves."},

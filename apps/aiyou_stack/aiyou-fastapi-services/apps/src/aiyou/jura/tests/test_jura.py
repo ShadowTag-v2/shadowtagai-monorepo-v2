@@ -201,7 +201,7 @@ class TestJuraCostTracker:
         record = self.tracker.record(
             tier=CostTier.FLASH,
             agent_ids=["agent_1", "agent_2"],
-            model_used="gemini-2.0-flash",
+            model_used="gemini-3.1-flash-lite-preview",
             input_tokens=500,
             output_tokens=200,
             cost_usd=0.005,
@@ -218,7 +218,7 @@ class TestJuraCostTracker:
             self.tracker.record(
                 tier=CostTier.FLASH,
                 agent_ids=[f"agent_{i}"],
-                model_used="gemini-2.0-flash",
+                model_used="gemini-3.1-flash-lite-preview",
                 input_tokens=100,
                 output_tokens=50,
                 cost_usd=0.001,
@@ -237,7 +237,7 @@ class TestJuraCostTracker:
             self.tracker.record(
                 tier=CostTier.FLASH,
                 agent_ids=["a1"],
-                model_used="gemini-2.0-flash",
+                model_used="gemini-3.1-flash-lite-preview",
                 input_tokens=100,
                 output_tokens=50,
                 cost_usd=0.01,
@@ -249,7 +249,7 @@ class TestJuraCostTracker:
         self.tracker.record(
             tier=CostTier.PRO,
             agent_ids=["a2"],
-            model_used="gemini-2.0-pro",
+            model_used="gemini-3.1-flash-lite-preview",
             input_tokens=500,
             output_tokens=200,
             cost_usd=0.10,
@@ -268,7 +268,7 @@ class TestJuraCostTracker:
         self.tracker.record(
             tier=CostTier.FLASH,
             agent_ids=["agent_a", "agent_b"],
-            model_used="gemini-2.0-flash",
+            model_used="gemini-3.1-flash-lite-preview",
             input_tokens=100,
             output_tokens=50,
             cost_usd=0.10,  # $0.10 split between 2 agents
@@ -303,7 +303,7 @@ class TestJuraCostTracker:
         self.tracker.record(
             tier=CostTier.FLASH,
             agent_ids=["a1"],
-            model_used="gemini-2.0-flash",
+            model_used="gemini-3.1-flash-lite-preview",
             input_tokens=100,
             output_tokens=50,
             cost_usd=0.01,
@@ -323,7 +323,7 @@ class TestJuraCostTracker:
             self.tracker.record(
                 tier=CostTier.FLASH,
                 agent_ids=["a1"],
-                model_used="gemini-2.0-flash",
+                model_used="gemini-3.1-flash-lite-preview",
                 input_tokens=100,
                 output_tokens=50,
                 cost_usd=0.01,
@@ -340,7 +340,7 @@ class TestJuraCostTracker:
         self.tracker.record(
             tier=CostTier.FLASH,
             agent_ids=["a1"],
-            model_used="gemini-2.0-flash",
+            model_used="gemini-3.1-flash-lite-preview",
             input_tokens=100,
             output_tokens=50,
             cost_usd=0.01,
@@ -465,7 +465,7 @@ class TestJuraCostRecord:
             timestamp=datetime(2024, 1, 1, 12, 0, 0, tzinfo=UTC),
             tier=CostTier.FLASH,
             agent_ids=["a1", "a2"],
-            model_used="gemini-2.0-flash",
+            model_used="gemini-3.1-flash-lite-preview",
             input_tokens=100,
             output_tokens=50,
             cost_usd=0.01,
@@ -487,7 +487,7 @@ class TestJuraCostRecord:
             "timestamp": "2024-01-01T12:00:00+00:00",
             "tier": "pro",
             "agent_ids": ["a1"],
-            "model_used": "gemini-2.0-pro",
+            "model_used": "gemini-3.1-flash-lite-preview",
             "input_tokens": 500,
             "output_tokens": 200,
             "cost_usd": 0.10,

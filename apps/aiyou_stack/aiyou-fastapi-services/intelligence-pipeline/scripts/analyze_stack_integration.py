@@ -323,7 +323,7 @@ class StackIntegrationAnalyzer:
             raise ValueError("GOOGLE_API_KEY environment variable not set")
 
         genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
+        self.model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
 
     def load_component_specs(self, base_path: Path) -> dict[str, str]:
         """Load specifications for both components"""
@@ -400,7 +400,7 @@ Execute the integration analysis framework above. Focus on actionable insights f
 
         metadata = f"""---
 generated: {datetime.now().isoformat()}
-analyzer: Gemini 2.0 Pro (gemini-2.0-flash-exp)
+analyzer: Gemini 2.0 Pro (gemini-3.1-flash-lite-preview)
 analysis_type: Stack Integration (Intelligence Pipeline ↔ Judge #6)
 confidence_floor: 55%
 ---

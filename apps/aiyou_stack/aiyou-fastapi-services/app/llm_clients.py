@@ -27,7 +27,7 @@ def get_cheap_llm(temperature: float = 0.0):
     """
     if HAS_GOOGLE and settings.gemini_api_key:
         return ChatGoogleGenerativeAI(
-            model=settings.gemini_model or "gemini-2.0-flash-exp",
+            model=settings.gemini_model or "gemini-3.1-flash-lite-preview",
             google_api_key=settings.gemini_api_key,
             temperature=temperature,
             convert_system_message_to_human=True,

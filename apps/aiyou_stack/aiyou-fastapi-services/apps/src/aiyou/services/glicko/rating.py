@@ -478,7 +478,7 @@ class GlickoModelSelector:
             TaskType.NSFW_DETECTION: "nsfw-detector-v4",
             TaskType.COPYRIGHT_CHECK: "copyright-matcher-v2",
             TaskType.POLICY_INTERPRETATION: "claude-3.5-sonnet",
-            TaskType.METADATA_GENERATION: "gemini-1.5-flash",
+            TaskType.METADATA_GENERATION: "gemini-3.1-flash-lite-preview",
         }
 
         return {

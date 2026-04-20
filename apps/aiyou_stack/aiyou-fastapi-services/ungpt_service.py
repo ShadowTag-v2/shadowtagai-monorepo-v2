@@ -37,7 +37,7 @@ app.add_middleware(
 # Initialize clients
 anthropic_client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
 genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
-gemini_model = genai.GenerativeModel("gemini-2.0-flash-exp")
+gemini_model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
 
 # Redis for cost tracking
 redis_client = redis.Redis(
@@ -291,7 +291,7 @@ Provide your independent analysis. Do you agree with Claude? What would you add 
     reasoning_chain.append(
         {
             "step": "gemini_analysis",
-            "model": "gemini-2.0-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "result": gemini_text[:200] + "...",
         },
     )
@@ -345,7 +345,7 @@ Synthesize both perspectives into a final, comprehensive answer. Resolve any dis
         "consensus_level": "two_model_synthesis",
         "execution_time": execution_time,
         "total_cost": total_cost,
-        "models": ["claude-sonnet-4", "gemini-2.0-flash"],
+        "models": ["claude-sonnet-4", "gemini-3.1-flash-lite-preview"],
         "risk_level": "RA-2",
         "reasoning_chain": reasoning_chain,
     }
@@ -408,7 +408,7 @@ Provide your independent analysis:
     reasoning_chain.append(
         {
             "step": "layer2_parallel",
-            "model": "gemini-2.0-flash",
+            "model": "gemini-3.1-flash-lite-preview",
             "result": layer2_text[:300] + "...",
         },
     )
@@ -471,7 +471,7 @@ Provide comprehensive, execution-ready response."""
         "consensus_level": "multi_model_consensus",
         "execution_time": execution_time,
         "total_cost": total_cost,
-        "models": ["claude-sonnet-4", "gemini-2.0-flash"],  # Will add grok, gpt-5 when configured
+        "models": ["claude-sonnet-4", "gemini-3.1-flash-lite-preview"],  # Will add grok, gpt-5 when configured
         "risk_level": "RA-3",
         "reasoning_chain": reasoning_chain,
     }

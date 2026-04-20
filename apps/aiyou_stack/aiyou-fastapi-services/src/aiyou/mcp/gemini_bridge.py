@@ -56,8 +56,8 @@ MCP_TOOL_TIERS = {
 
 # Model mapping per tier (Vertex AI)
 TIER_MODELS = {
-    "free": "gemini-1.5-flash",
-    "flash": "gemini-2.5-flash",  # Updated from 2.0
+    "free": "gemini-3.1-flash-lite-preview",
+    "flash": "gemini-3.1-flash-lite-preview",  # Updated from 2.0
     "pro": "gemini-3-pro-preview",
 }
 

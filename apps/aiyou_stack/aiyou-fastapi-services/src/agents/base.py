@@ -109,7 +109,7 @@ class BaseGovernanceAgent(ABC):
         self,
         agent_id: str,
         name: str,
-        model: str = "gemini-2.0-flash",
+        model: str = "gemini-3.1-flash-lite-preview",
         temperature: float = 0.1,
         max_input_tokens: int = 1500,
         max_output_tokens: int = 300,
@@ -190,12 +190,12 @@ class BaseGovernanceAgent(ABC):
 
         """
         pricing = {
-            "gemini-2.0-flash-lite": (0.10, 0.40),
-            "gemini-2.0-flash": (0.30, 2.50),
-            "gemini-2.0-pro": (1.25, 10.00),
+            "gemini-3.1-flash-lite-preview-lite": (0.10, 0.40),
+            "gemini-3.1-flash-lite-preview": (0.30, 2.50),
+            "gemini-3.1-flash-lite-preview": (1.25, 10.00),
         }
 
-        input_price, output_price = pricing.get(self.model, pricing["gemini-2.0-flash"])
+        input_price, output_price = pricing.get(self.model, pricing["gemini-3.1-flash-lite-preview"])
 
         # Calculate base cost
         uncached_input = max(0, input_tokens - cached_tokens)

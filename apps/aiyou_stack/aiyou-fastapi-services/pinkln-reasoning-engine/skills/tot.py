@@ -50,7 +50,7 @@ class TreeOfThoughts(Skill):
         name: str = "TreeOfThoughts",
         description: str = "Explore multiple reasoning paths and select the best",
         initial_rating: float = 1600.0,  # Higher than CoT (more sophisticated)
-        model: str = "gemini-2.0-flash-exp",
+        model: str = "gemini-3.1-flash-lite-preview",
         breadth: int = 3,  # Candidate steps per node
         depth: int = 4,  # Max depth
         top_k: int = 2,  # Keep top-K paths

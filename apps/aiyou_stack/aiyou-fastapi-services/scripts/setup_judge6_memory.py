@@ -75,7 +75,7 @@ def query_judge6_grounded(project_id: str, location: str, data_store_id: str, qu
         ),
     )
 
-    model = GenerativeModel("gemini-1.5-flash-001")
+    model = GenerativeModel("gemini-3.1-flash-lite-preview-001")
 
     print(f"❓ Question: {query}")
     try:
