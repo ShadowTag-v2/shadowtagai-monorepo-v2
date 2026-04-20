@@ -73,3 +73,9 @@
 - **Severity**: 🟠 High
 - **Status**: RESOLVED
 - **Description**: Veo-generated video (`porsche-peelout-compressed.mp4`) and UI labels on kovelai.web.app referenced "Porsche" trademark. Renamed file to `supercar-peelout-compressed.mp4`, updated all 8 references across showreel.html, video-gallery.html, cinematic-landing.html, index.html, scroll-frames.js, video-sitemap.xml, OG/Twitter meta tags. Zero remaining trademark references in `apps/kovelai/` and `apps/shadowtagai/`. aiyou_stack internal references retained (non-customer-facing).
+
+## Risk #49: Firestore PITR (Point-in-Time Recovery) Disabled
+- **Type**: Data Loss / Backup
+- **Severity**: 🟠 High
+- **Status**: RESOLVED
+- **Description**: Both Firestore databases lacked Point-in-Time Recovery, exposing the project to unrecoverable data loss from accidental writes or deletions. PITR enabled on both `(default)` (nam5) and `shadowtag-engine` (us-central1) via Firebase MCP on 2026-04-20. 7-day version retention confirmed for both databases. Delete-protection was already enabled.
