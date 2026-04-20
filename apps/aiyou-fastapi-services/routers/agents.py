@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Any
 
 from fastapi import APIRouter
 from pydantic import BaseModel
@@ -9,8 +10,6 @@ from temporalio.client import Client  # Temporal temporalio routing logic
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
 router = APIRouter(tags=["Agents"])
-
-from typing import Any
 
 
 class SwarmQuery(BaseModel):

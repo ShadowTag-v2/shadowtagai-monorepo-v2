@@ -50,3 +50,19 @@ verify_workspace_access = None  # noqa: F841
 from google.cloud import billing_v1  # noqa: F401
 
 _ = billing_v1
+
+# --- Swarm/Judge6 conditional imports ---
+# swarm_endpoint.py and judge6/nodes.py: SwarmVoter/VoteDecision inside try/except
+SwarmVoter = None  # noqa: F841 — conditional import in try/except
+VoteDecision = None  # noqa: F841 — conditional import in try/except
+
+# autofix_agent.py: SavedModelMetadata inside try/except
+SavedModelMetadata = None  # noqa: F841 — conditional import in try/except
+
+# --- SQLAlchemy event listener params ---
+# database.py: connection_record is a required SQLAlchemy event listener parameter
+connection_record = None  # noqa: F841 — SQLAlchemy event API requirement
+
+# --- Required function params ---
+# jetski/recorder.py: browser_context is a required method parameter
+browser_context = None  # noqa: F841 — required API parameter

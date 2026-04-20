@@ -2,10 +2,11 @@
 
 from pathlib import Path
 
-import cv2
 import numpy as np
 import pytest
-import soundfile as sf
+
+cv2 = pytest.importorskip("cv2", reason="opencv-python not installed")
+sf = pytest.importorskip("soundfile", reason="soundfile not installed")
 
 
 @pytest.fixture
