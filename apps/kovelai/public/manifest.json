@@ -1,0 +1,17 @@
+{
+  "name": "CounselConduit",
+  "short_name": "CounselConduit",
+  "description": "Privilege-Preserving Legal AI — The Shopify for Legal AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "/images/kovelai-billboard.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /frames/
 
-Sitemap: https://kovelai.com/sitemap.xml
+Sitemap: https://kovelai.web.app/sitemap.xml
+Sitemap: https://kovelai.web.app/video-sitemap.xml
