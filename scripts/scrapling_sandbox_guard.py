@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Any
 
@@ -56,7 +56,7 @@ def validate_write_path(target_path: str | Path) -> Path:
     parts = relative.parts
     if not parts:
         raise SandboxViolationError(
-            f"SANDBOX VIOLATION: Cannot write to workspace root"
+            "SANDBOX VIOLATION: Cannot write to workspace root"
         )
 
     root_dir = parts[0]
@@ -148,7 +148,7 @@ def _log_write(
         "operation": operation,
         "target": target,
         "allowed": allowed,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
     if size is not None:
         entry["size_bytes"] = size
