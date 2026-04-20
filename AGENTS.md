@@ -154,11 +154,11 @@ unless the user explicitly directs a control plane change:
 - MCP Fleet Vanguard: v11.0 (secrets_manager_doctrine, no inline routing tables)
 - Model refs: all aiyou_stack purged from deprecated gemini-1.5/2.5 → gemini-3.1-flash-lite-preview
 - Secrets doctrine: `secrets_manager_doctrine` replaces `env_master_doctrine` in GEMINI.md v9.5
-- ANE NPU: ane_bridge.py ONLINE (init_bridge()=True), libane_bridge.dylib compiled, INT8 W8A8 10.22 TOPS (M4 h13)
-- ANE GGML: llama.cpp-ane compiled (GGML_ANE=ON), ggml_backend_ane_init() registered, MUL_MAT routed through ANE
+- ANE NPU: ane_bridge.py scaffolded, libane_bridge.dylib exists in archive/third_party only (not compiled in-tree), INT8 benchmark UNVERIFIED
+- ANE GGML: UNVERIFIED — no compiled ggml-ane binaries found in repo, architecture documented but not built
 - Semantic Kernel: ShadowTagV4.Kernel compiled (0 errors), OnExternalEvent→OnInputEvent fix, SKEXP0080 suppressed
-- Aegaeon Protocol: Gemini Context Cache slab active (cachedContents/o8ot1k9tbc58rf4sraeqrvjp2mi3v7e4z8ftn5l0), ~84% cost reduction
-- Sovereign MLX: KV cache slab architecture wired (core/sovereign_mlx/), --prompt-cache-all for multi-agent routing
+- Aegaeon Protocol: context_cache.py + swarm_router.py scaffolded (core/aegaeon/), no active slab (data/aegaeon/ empty), 90% discount available via implicit caching on Gemini 2.5+ models
+- Sovereign MLX: kv_cache_slab.py scaffolded (core/sovereign_mlx/), slab_prompt.txt exists (26KB corpus), no kv_cache_slab.bin built
 - Intelligence Pipeline: 9 scripts (domain_tagger → github_sync), retriever.py LanceDB search wired
 - Drive Ingest: 2,860 docs extracted, 897 vectorized to data/lancedb/workspace_knowledge
 - Zero CPU Router: 4-tier dispatch cascade (ANE→Metal/MLX→Vertex AI), vulture fixes applied
